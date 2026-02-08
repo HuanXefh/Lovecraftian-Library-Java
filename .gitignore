@@ -1,3 +1,5 @@
+*.bkp
+
 logs/
 /core/assets/mindustry-saves/
 /core/assets/mindustry-maps/
@@ -33,7 +35,6 @@ desktop-sdl/build/
 ios/robovm.properties
 packr-out/
 config/
-*.gif
 
 version.properties
 

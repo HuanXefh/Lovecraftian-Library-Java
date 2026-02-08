@@ -1,39 +1,21 @@
-# Mindustry Java Mod Template
-A Java Mindustry mod template that works on Android and PC. The Kotlin version of this mod can be seen [here](https://github.com/Anuken/MindustryKotlinModTemplate).
+# Lovecraftian Library
 
-## Building for Desktop Testing
+A **JavaScript** library for my other mods, containing utility methods and all the content templates. The library does not add any new contents, but can serve as a QOL mod with its features like damage display, recipe searching, etc.
 
-1. Install JDK **17**.
-2. Run `gradlew jar` [1].
-3. Your mod jar will be in the `build/libs` directory. **Only use this version for testing on desktop. It will not work with Android.**
-To build an Android-compatible version, you need the Android SDK. You can either let Github Actions handle this, or set it up yourself. See steps below.
+Lovec is based on my previous mod [Reindustrialization](https://github.com/HuanXefh/Reindustrialization), which has been archived and separated into several mods now. Also see [LovecLab](https://github.com/HuanXefh/Lovecraftian-Laboratory) and [ProjReind](https://github.com/HuanXefh/Project-Reindustrialization) where actual contents are created.
 
-## Building through Github Actions
+Mod forum on Discord: https://discord.com/channels/391020510269669376/1346118807734845440.
 
-This repository is set up with Github Actions CI to automatically build the mod for you every commit. This requires a Github repository, for obvious reasons.
-To get a jar file that works for every platform, do the following:
-1. Make a Github repository with your mod name, and upload the contents of this repo to it. Perform any modifications necessary, then commit and push. 
-2. Check the "Actions" tab on your repository page. Select the most recent commit in the list. If it completed successfully, there should be a download link under the "Artifacts" section. 
-3. Click the download link (should be the name of your repo). This will download a **zipped jar** - **not** the jar file itself [2]! Unzip this file and import the jar contained within in Mindustry. This version should work both on Android and Desktop.
+Library features:
 
-## Building Locally
+- JS-based class structure and methods.
 
-Building locally takes more time to set up, but shouldn't be a problem if you've done Android development before.
-1. Download the Android SDK, unzip it and set the `ANDROID_HOME` environment variable to its location.
-2. Make sure you have API level 30 installed, as well as any recent version of build tools (e.g. 30.0.1)
-3. Add a build-tools folder to your PATH. For example, if you have `30.0.1` installed, that would be `$ANDROID_HOME/build-tools/30.0.1`.
-4. Run `gradlew deploy`. If you did everything correctlly, this will create a jar file in the `build/libs` directory that can be run on both Android and desktop. 
+- Extensible content templates for adding contents.
 
-## Adding Dependencies
+## For JS modders
 
-Please note that all dependencies on Mindustry, Arc or its submodules **must be declared as compileOnly in Gradle**. Never use `implementation` for core Mindustry or Arc dependencies. 
+Lovec is not a good start for modders to learn modding in JavaScript, since there are major changes in modding structure and common methods. If you are still new to JavaScript, I personally recommend starting from [Sapphirium](https://github.com/3Snake3/Sapphirium) or [AdvanceContent](https://github.com/EyeOfDarkness/AdvanceContent).
 
-- `implementation` **places the entire dependency in the jar**, which is, in most mod dependencies, very undesirable. You do not want the entirety of the Mindustry API included with your mod.
-- `compileOnly` means that the dependency is only around at compile time, and not included in the jar.
+If you do want to know how Lovec works, check the [wiki page](https://github.com/HuanXefh/Lovecraftian-Library/wiki).
 
-Only use `implementation` if you want to package another Java library *with your mod*, and that library is not present in Mindustry already.
-
---- 
-
-*[1]* *On Linux/Mac it's `./gradlew`, but if you're using Linux I assume you know how to run executables properly anyway.*  
-*[2]: Yes, I know this is stupid. It's a Github UI limitation - while the jar itself is uploaded unzipped, there is currently no way to download it as a single file.*
+A lot of methods in Lovec are defined globally (and used everywhere). See [globalScript.js](https://github.com/HuanXefh/Lovecraftian-Library/blob/main/scripts/globalScript.js) and [jsExt](https://github.com/HuanXefh/Lovecraftian-Library/tree/main/scripts/run/jsExt) for more info.

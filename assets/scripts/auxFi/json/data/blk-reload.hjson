@@ -1,0 +1,54 @@
+mass-driver: true
+payload-mass-driver: true
+large-payload-mass-driver: true
+shockwave-tower: true
+
+lancer: true
+ripple: true
+foreshadow: true
+meltdown: true
+titan: true
+afflict: true
+scathe: true
+
+new-horizon-hive: true
+new-horizon-ancient-artillery: true
+new-horizon-prism: true
+new-horizon-interferon: true
+new-horizon-eternity: true
+new-horizon-atom-separator: true
+new-horizon-blood-star: true
+new-horizon-multiple-launcher: true
+new-horizon-rail-gun: true
+new-horizon-end-of-era: true
+new-horizon-thermo-turret: true
+new-horizon-pulse: true
+new-horizon-bombard: true
+new-horizon-electro: true
+
+aquarion-truncate: true
+aquarion-vector: true
+aquarion-thrash: true
+aquarion-flagellate: true
+
+sfire-mod-gaosi: true
+sfire-mod-liebao: true
+sfire-mod-longjuan: true
+sfire-mod-qingning: true
+sfire-mod-chongchao: true
+sfire-mod-relang: true
+sfire-mod-sizhao: true
+sfire-mod-liemei: true
+sfire-mod-kuosan: true
+sfire-mod-poxiao: true
+sfire-mod-fenqing: true
+sfire-mod-zhulin: true
+sfire-mod-luolong: true
+sfire-mod-defense-platform-nuke: true
+sfire-mod-defense-platform-plasma: true
+
+ve-burst: true
+ve-halberd: true
+ve-parasite: true
+ve-stab: true
+ve-sweep: true

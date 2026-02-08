@@ -1,0 +1,43 @@
+'.source.js':
+
+  'exported function':
+    prefix: 'lc_expfun'
+    body: '''
+    const ${1:name} = function() {
+      ${2:}
+    };
+    exports.${1:name} = ${1:name};
+    '''
+
+  'multifunction':
+    prefix: 'lc_multifun'
+    body: '''
+    const ${1:name} = newMultifunction(
+      ${2:}
+    );
+    '''
+
+  'exported multifunction':
+    prefix: 'lc_expmultifun'
+    body: '''
+    const ${1:name} = newMultifunction(
+      ${2:}
+    );
+    exports.${1:name} = ${1:name};
+    '''
+
+  'function class':
+    prefix: 'lc_cls'
+    body: 'newClass().initClass()'
+
+  'function class extend':
+    prefix: 'lc_clsext'
+    body: 'newClass().extendClass(${1:class}).initClass()'
+
+  'function class extend implement':
+    prefix: 'lc_clsextimp'
+    body: 'newClass().extendClass(${1:class}).implement(${2:interface}).initClass()'
+
+  'ERROR HANDLER throw':
+    prefix: 'lc_throw'
+    body: 'ERROR_HANDLER.throw(${1:name})'

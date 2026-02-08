@@ -1,0 +1,85 @@
+'.source.js':
+
+  'Core.post':
+    prefix: 'lc_post'
+    body: '''
+    Core.app.post(() => {
+      ${1:}
+    });
+    '''
+
+  'Time.run':
+    prefix: 'lc_timed'
+    body: '''
+    Time.run(${1:delay}, () => {
+      ${2:}
+    });
+    '''
+
+  'on init':
+    prefix: 'lc_oninit'
+    body: '''
+    MDL_event._c_onInit(() => {
+      ${1:}
+    });
+    '''
+
+  'on load':
+    prefix: 'lc_onload'
+    body: '''
+    MDL_event._c_onLoad(() => {
+      ${1:}
+    });
+    '''
+
+  'on load post':
+    prefix: 'lc_onloadpost'
+    body: '''
+    MDL_event._c_onLoad(() => {
+      Core.app.post(() => {
+        ${1:}
+      });
+    });
+    '''
+
+  'on load delay':
+    prefix: 'lc_onloadtimed'
+    body: '''
+    MDL_event._c_onLoad(() => {
+      Time.run(${1:delay}, () => {
+        ${2:}
+      });
+    });
+    '''
+
+  'on world load':
+    prefix: 'lc_onworldload'
+    body: '''
+    MDL_event._c_onWorldLoad(() => {
+      ${1:}
+    });
+    '''
+
+  'on world save':
+    prefix: 'lc_onworldsave'
+    body: '''
+    MDL_event._c_onWorldSave(() => {
+      ${1:}
+    });
+    '''
+
+  'on update':
+    prefix: 'lc_onupdate'
+    body: '''
+    MDL_event._c_onUpdate(() => {
+      ${1:}
+    });
+    '''
+
+  'on draw':
+    prefix: 'lc_ondraw'
+    body: '''
+    MDL_event._c_onDraw(() => {
+      ${1:}
+    });
+    '''

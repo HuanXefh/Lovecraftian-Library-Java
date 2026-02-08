@@ -1,23 +1,26 @@
-#the mod name as displayed in-game
-displayName: "Java Mod Template"
+name: lovec
+displayName: Lovecraftian Library
+subtitle: "v101"
 
-#the internal name of your mod
-name: "example-java-mod"
 
-#your name
-author: "You"
-
-#the fully qualified main class of the mod
-main: "example.ExampleJavaMod"
-
-#the mod description as seen in the mod dialog
-description: "A Mindustry Java mod template."
-
-#the mod version
-version: 1.0
-
-#the minimum game build required to run this mod
-minGameVersion: 154
-
-#this is a java mod
+hidden: false
 java: true
+main: lovec.Lovec
+
+
+author: MaboroshiX
+repo: HuanXefh/Lovecraftian-Library-Java
+minGameVersion: 155
+dependencies: []
+softDependencies: [
+  tmi
+  multi-block-lib
+]
+
+
+description:
+'''
+A JavaScript library for my other mods, with codes for multi-crafters, recipe dictionary, damage display, etc.
+'''
+
+version: 100.26020801

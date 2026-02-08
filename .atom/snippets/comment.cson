@@ -1,0 +1,29 @@
+'.source.js':
+
+  'section comment':
+    prefix: 'lc_section'
+    body: '''
+    /*
+      ========================================
+      Section: ${1:name}
+      ========================================
+    */
+    '''
+
+  'note comment':
+    prefix: 'lc_note'
+    body: '''
+    /* ----------------------------------------
+     * NOTE:
+     *
+     * ${1:description}
+     * ---------------------------------------- */
+    '''
+
+  'splitter comment':
+    prefix: 'lc_split'
+    body: '/* <---------- ${1:name} ----------> */'
+
+  'long splitter comment':
+    prefix: 'lc_splitlong'
+    body: '/* <------------------------------ ${1:name} ------------------------------ */'

@@ -1,0 +1,79 @@
+'.source.js':
+
+  # Global
+
+  'EFF':
+    prefix: 'lc_eff'
+    body: 'const EFF = require("lovec/glb/GLB_eff");'
+
+  'PARAM':
+    prefix: 'lc_param'
+    body: 'const PARAM = require("lovec/glb/GLB_param");'
+
+  'SAVE':
+    prefix: 'lc_save'
+    body: 'const SAVE = require("lovec/glb/GLB_save");'
+
+  'TIMER':
+    prefix: 'lc_timer'
+    body: 'const TIMER = require("lovec/glb/GLB_timer");'
+
+  'VAR':
+    prefix: 'lc_var'
+    body: 'const VAR = require("lovec/glb/GLB_var");'
+
+  'VARGEN':
+    prefix: 'lc_gen'
+    body: 'const VARGEN = require("lovec/glb/GLB_varGen");'
+
+  # Global (box)
+
+  'TRIGGER':
+    prefix: 'lc_trigger'
+    body: 'const TRIGGER = require("lovec/glb/BOX_trigger");'
+
+  # Common
+
+  'RUN_xxx':
+    prefix: 'lc_run'
+    body: 'const ${1:name} = require("lovec/run/${1:name}");'
+
+  'LIB_xxx':
+    prefix: 'lc_lib'
+    body: 'const ${1:name} = require("lovec/lib/${1:name}");'
+
+  'MATH_xxx':
+    prefix: 'lc_math'
+    body: 'const ${1:name} = require("lovec/math/${1:name}");'
+
+  'FRAG_xxx':
+    prefix: 'lc_frag'
+    body: 'const ${1:name} = require("lovec/frag/${1:name}");'
+
+  'MDL_xxx':
+    prefix: 'lc_mdl'
+    body: 'const ${1:name} = require("lovec/mdl/${1:name}");'
+
+  'TP_xxx':
+    prefix: 'lc_tp'
+    body: 'const ${1:name} = require("lovec/tp/${1:name}");'
+
+  'DB_xxx':
+    prefix: 'lc_db'
+    body: 'const ${1:name} = require("lovec/db/${1:name}");'
+
+  'PARENT':
+    prefix: 'lc_parent'
+    body: 'const PARENT = require("lovec/temp/${1:type}/${2:name}");'
+
+  'CLS_contentTemplate':
+    prefix: 'lc_rootparent'
+    body: 'const PARENT = require("lovec/cls/util/CLS_contentTemplate");'
+
+  'INTF':
+    prefix: 'lc_interface'
+    body: 'const INTF = require("lovec/temp/intf/INTF_${1:name}");'
+
+  'TEMPLATE':
+    prefix: 'lc_temp'
+    body: 'const TEMPLATE = require("lovec/temp/${1:type}/${2:name}");'

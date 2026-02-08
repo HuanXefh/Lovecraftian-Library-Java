@@ -1,0 +1,17 @@
+'.source.js':
+
+  'use strict':
+    prefix: 'us;'
+    body: '"use strict";'
+
+  'immediately called function':
+    prefix: 'icfun'
+    body: '''
+    (function() {
+      ${1:}
+    })();
+    '''
+
+  'module.exports':
+    prefix: 'mdlexp'
+    body: 'module.exports = ${1:}'

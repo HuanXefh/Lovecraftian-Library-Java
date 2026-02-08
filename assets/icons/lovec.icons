@@ -1,0 +1,9 @@
+priority 20
+
+icon auto @-emoji-normal-face normal
+icon auto @-emoji-not-normal-face not-normal
+icon auto @-emoji-big-normal-face big-normal
+icon auto @-icon-mining pickaxe
+icon auto @-icon-sword sword
+icon auto @-icon-question-mark question
+icon auto @-icon-thumb-up thumb-up

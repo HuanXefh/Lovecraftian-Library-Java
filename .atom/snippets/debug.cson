@@ -1,0 +1,13 @@
+'.source.js':
+
+  'console log info':
+    prefix: 'lc_logi'
+    body: 'Log.info("[LOVEC] ${1:info}")'
+
+  'console log warning':
+    prefix: 'lc_logw'
+    body: 'Log.warn("[LOVEC] ${1:info}")'
+
+  'console log error':
+    prefix: 'lc_loge'
+    body: 'Log.err("[LOVEC] ${1:info}")'
