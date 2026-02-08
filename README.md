@@ -16,4 +16,4 @@ Library features:
 
 Lovec is not a good start for modders to learn modding in JavaScript, since there are major changes in modding structure and common methods. If you are still new to JavaScript, I personally recommend starting from [Sapphirium](https://github.com/3Snake3/Sapphirium) or [AdvanceContent](https://github.com/EyeOfDarkness/AdvanceContent).
 
-A lot of methods in Lovec are defined globally (and used everywhere). See [globalScript.js](https://github.com/HuanXefh/Lovecraftian-Library-Java/blob/main/assets/scripts/globalScript.js) and [jsExt](https://github.com/HuanXefh/Lovecraftian-Library-Java/tree/main/assets/scripts/run/jsExt) for more info.
+A lot of methods in Lovec are defined globally (and used everywhere). See [globalScript.js](https://github.com/HuanXefh/Lovecraftian-Library-Java/blob/master/assets/scripts/globalScript.js) and [jsExt](https://github.com/HuanXefh/Lovecraftian-Library-Java/tree/master/assets/scripts/run/jsExt) for more info.
