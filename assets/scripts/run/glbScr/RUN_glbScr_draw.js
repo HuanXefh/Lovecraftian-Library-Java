@@ -86,26 +86,6 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * Collection of basic draw methods for convenience.
-   * ---------------------------------------- */
-  LCDraw = fetchClass("lovec.graphics.LCDraw");
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Collection of pseudo-3D draw methods.
-   * ----------------------------------------
-   * DEDICATION:
-   *
-   * Inspired by Meepscellaneous Concepts.
-   * ---------------------------------------- */
-  LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
    * Collection of methods related to RGB color.
    * ---------------------------------------- */
   RGB = {

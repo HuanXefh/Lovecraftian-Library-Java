@@ -32,7 +32,6 @@
 
   const MDL_bundle = require("lovec/mdl/MDL_bundle");
   const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
 
 
   const MOD_tmi = require("lovec/mod/MOD_tmi");
@@ -54,11 +53,6 @@
       tb.row();
       MDL_table.setDisplay_recipe(tb, blk.rcMdl, blk);
       MDL_table.__btn(tb, MDL_bundle._term("lovec", "new-window"), () => {
-        if(Core.app.isMobile()) {
-          MDL_ui.show_fadeInfo("lovec", "non-mobile");
-          return;
-        };
-
         new CLS_window(
           "[$1] ([$2])".format(fetchStat("lovec", "blk0fac-recipes").localized(), blk.localizedName),
           tb1 => MDL_table.setDisplay_recipe(tb1, blk.rcMdl, blk, true, true),

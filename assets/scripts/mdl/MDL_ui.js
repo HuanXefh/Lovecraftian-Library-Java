@@ -555,11 +555,16 @@
         animTup = [0.0, [Actions.fadeIn(0.0)]];
 
     };
-    setActor_action(tb, delay, animTup[1].concat(customActs).concat([
-      Actions.run(() => tb.update(() => {
-        if(endGetter()) removeActor(tb);
-      })),
-    ]), true);
+
+    if(!fetchSetting("test-show-errored-chara") && !Core.atlas.has(nmMod + "-chara-" + chara)) {
+      // Do nothing
+    } else {
+      setActor_action(tb, delay, animTup[1].concat(customActs).concat([
+        Actions.run(() => tb.update(() => {
+          if(endGetter()) removeActor(tb);
+        })),
+      ]), true);
+    };
 
     return animTup[0] + customActTimeS;
   };

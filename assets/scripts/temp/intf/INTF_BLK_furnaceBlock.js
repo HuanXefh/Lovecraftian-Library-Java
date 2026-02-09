@@ -29,9 +29,6 @@
   const VARGEN = require("lovec/glb/GLB_varGen");
 
 
-  const CLS_window = require("lovec/cls/ui/CLS_window");
-
-
   const FRAG_attack = require("lovec/frag/FRAG_attack");
   const FRAG_fluid = require("lovec/frag/FRAG_fluid");
   const FRAG_item = require("lovec/frag/FRAG_item");
@@ -81,11 +78,20 @@
     if(!blk.noFuelInput) {
       blk.stats.add(fetchStat("lovec", "blk0fac-fuel"), newStatValue(tb => {
         tb.row();
-        MDL_table.__btnSmall(tb, "?", () => {
-          new CLS_window(
-            "[$1] ([$2])".format(MDL_bundle._term("lovec", "fuel"), blk.localizedName),
-            tb1 => MDL_table.setDisplay_ctLi(tb1, MDL_fuel._fuelArr(blk), null, 10),
-          ).add();
+        tb.table(Styles.none, tb1 => {
+          let matArr = [[
+            "",
+            fetchStat("lovec", "rs0fuel-point").localized(),
+            fetchStat("lovec", "rs0fuel-level").localized(),
+          ]];
+          MDL_fuel._fuelArr(blk).forEachFast(rs => {
+            matArr.push([
+              rs,
+              rs instanceof Item ? MDL_fuel._fuelPon(rs) : "-",
+              MDL_fuel._fuelLvl(rs),
+            ]);
+          });
+          MDL_table.setTable_base(tb1, matArr);
         }).left().padLeft(28.0);
       }));
 

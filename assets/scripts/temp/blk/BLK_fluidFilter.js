@@ -28,7 +28,6 @@
 
 
   const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
   const MDL_io = require("lovec/mdl/MDL_io");
 
 
@@ -59,7 +58,7 @@
 
 
   function comp_drawSelect(b) {
-    MDL_draw._reg_rsIcon(b.x, b.y, b.ctTg, b.block.size);
+    LCDraw.contentIcon(b.x, b.y, b.ctTg, b.block.size);
   };
 
 

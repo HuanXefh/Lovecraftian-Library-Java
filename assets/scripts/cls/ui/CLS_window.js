@@ -249,6 +249,10 @@ ptp.rebuild = function() {
  * ---------------------------------------- */
 ptp.add = function() {
   if(Core.scene == null || this.added) return;
+  if(Core.app.isMobile()) {
+    MDL_ui.show_fadeInfo("lovec", "non-mobile");
+    return;
+  };
 
   this.rebuild();
   Core.scene.add(this.root);

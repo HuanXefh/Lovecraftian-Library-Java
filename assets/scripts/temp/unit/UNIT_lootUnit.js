@@ -151,7 +151,7 @@
 
     // Amount text
     if(PARAM.drawLootAmount && MDL_cond._posHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
-      MDL_draw._d_text(unit.x, unit.y - 4.0, String(unit.stack.amount), 0.85, unit.team.color);
+      LCDraw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
     };
   };
 

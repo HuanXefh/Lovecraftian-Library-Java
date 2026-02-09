@@ -36,6 +36,8 @@
   global.lovecUtil = {
 
 
+
+
     prop: {
 
 
@@ -44,6 +46,8 @@
 
 
     },
+
+
 
 
     fun: {
@@ -119,6 +123,8 @@
     },
 
 
+
+
     db: {
 
 
@@ -131,9 +137,9 @@
 
       stat: {},
       statUnit: {},
-      statCateg: {},
+      statCategory: {},
       shader: {},
-      cacheLay: {},
+      cacheLayer: {},
 
 
       keyBindListener: [],
@@ -146,15 +152,17 @@
       partTemplate: [],
 
 
-      abilitySetter: [],
-      aiSetter: [],
+      ability: [],
+      ai: [],
       sortF: {},
-      drawerSetter: [],
-      consumerSetter: [],
-      dialogGetter: [],
+      drawer: [],
+      consumer: [],
+      dialog: [],
 
 
     },
+
+
 
 
   };

@@ -1,12 +1,17 @@
 package lovec.graphics;
 
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Fill;
-import arc.graphics.g2d.Lines;
-import arc.graphics.g2d.TextureRegion;
+import arc.graphics.Color;
+import arc.graphics.g2d.*;
 import arc.math.Mathf;
+import arc.scene.ui.layout.Scl;
+import arc.util.Align;
+import arc.util.Nullable;
 import arc.util.Time;
+import arc.util.pooling.Pools;
+import mindustry.gen.Building;
 import mindustry.Vars;
+import mindustry.ctype.UnlockableContent;
+import mindustry.graphics.Layer;
 import mindustry.world.Tile;
 
 /**
@@ -127,6 +132,93 @@ public class LCDraw {
 
 
     /**
+     * Draws content UI icon.
+     */
+    public static void content(float x, float y, @Nullable UnlockableContent ct, float size) {
+        if(ct == null) return;
+
+        var w = size * Vars.tilesize * (ct.uiIcon.width > ct.uiIcon.height ? 1f : (float)(ct.uiIcon.width / ct.uiIcon.height));
+        var h = size * Vars.tilesize * (ct.uiIcon.height > ct.uiIcon.width ? 1f : (float)(ct.uiIcon.height / ct.uiIcon.width));
+
+        Draw.rect(ct.uiIcon, x, y, w, h);
+    }
+    // Overloading
+    public static void content(float x, float y, @Nullable UnlockableContent ct) {
+        content(x, y, ct, 1);
+    }
+
+
+    /**
+     * Variant of {@link #content} that usually used for {@link Building#drawSelect}, like in drills.
+     */
+    public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size) {
+        if(ct == null) return;
+
+        float
+                x_fi = x - Vars.tilesize * size * 0.5f,
+                y_fi = y + Vars.tilesize * size * 0.5f,
+                w = ct.uiIcon.width > ct.uiIcon.height ? 8f : ((ct.uiIcon.width * 8f) / ct.uiIcon.height),
+                h = ct.uiIcon.height > ct.uiIcon.width ? 8f : ((ct.uiIcon.height * 8f) / ct.uiIcon.width);
+
+        Draw.mixcol(Color.darkGray, 1f);
+        Draw.rect(ct.uiIcon, x_fi, y_fi - 1f, w, h);
+        Draw.mixcol();
+        Draw.rect(ct.uiIcon, x_fi, y_fi, w, h);
+    }
+    // Overloading
+    public static void contentIcon(float x, float y, @Nullable UnlockableContent ct) {
+        contentIcon(x, y, ct, 1);
+    }
+
+
+    /**
+     * Draws text.
+     */
+    public static void text(
+            float x, float y, @Nullable String str, Font font,
+            float sizeScl, Color color, int align, float offX, float offY, float offZ
+    ) {
+        if(str == null || str.isEmpty()) return;
+
+        var zPrev = Draw.z();
+        var layout = Pools.obtain(GlyphLayout.class, GlyphLayout::new);
+        var useInt = font.usesIntegerPositions();
+        Draw.z(Layer.playerName + 0.5f + offZ);
+        font.setUseIntegerPositions(false);
+        font.getData().setScale(0.25f / Scl.scl(1f) * sizeScl);
+        layout.setText(font, str);
+        font.setColor(color);
+        font.draw(str, x + offX, y + offY, 0, align, false);
+        Draw.reset();
+        Draw.z(zPrev);
+
+        Pools.free(layout);
+        font.getData().setScale(1f);
+        font.setColor(Color.white);
+        font.setUseIntegerPositions(useInt);
+    }
+    // Overloading
+    public static void text(
+            float x, float y, @Nullable String str, Font font,
+            float sizeScl, Color color, int align, float offX, float offY
+    ) {
+        text(x, y, str, font, sizeScl, color, align, offX, offY, 0f);
+    }
+    public static void text(
+            float x, float y, @Nullable String str, Font font,
+            float sizeScl, Color color, int align
+    ) {
+        text(x, y, str, font, sizeScl, color, align, 0f, 0f);
+    }
+    public static void text(
+            float x, float y, @Nullable String str, Font font,
+            float sizeScl, Color color
+    ) {
+        text(x, y, str, font, sizeScl, color, Align.center);
+    }
+
+
+    /**
      * Generic method to draw a tree.
      */
     public static void tree(
@@ -134,12 +226,11 @@ public class LCDraw {
             Tile t, float offSha, float scl, float mag, float wob, float a, float z,
             boolean shouldDrawWobble, boolean shouldCheckDst
     ) {
-        if(a < 0.01) {
-            return;
-        }
+        if(a < 0.01) return;
+
         var zPrev = Draw.z();
         if(shaReg.found()) {
-            Draw.z(z);
+            Draw.z(z - 0.01f);
             Draw.rect(shaReg, t.worldx() + offSha, t.worldy() + offSha, Mathf.randomSeed(t.pos(), 0f, 360f));
         }
         if(!shouldCheckDst) {
@@ -149,6 +240,7 @@ public class LCDraw {
             var dst = unitPl == null ? 99999999f : Mathf.dst(t.worldx(), t.worldy(), unitPl.x, unitPl.y);
             Draw.alpha(a * dst < reg.width * 0.15f ? 0.37f : 1f);
         }
+        Draw.z(z);
         if(!shouldDrawWobble) {
             Draw.rect(reg, t.worldx(), t.worldy(), Mathf.randomSeed(t.pos(), 0f, 360f));
         } else {

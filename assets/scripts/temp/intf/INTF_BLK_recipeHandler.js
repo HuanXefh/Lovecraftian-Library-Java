@@ -290,7 +290,7 @@
 
 
   function comp_drawSelect(b) {
-    MDL_draw._reg_rsIcon(b.x, b.y, b.rcIconNm, b.block.size);
+    LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rcIconNm), b.block.size);
   };
 
 

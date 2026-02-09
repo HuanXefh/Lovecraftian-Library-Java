@@ -25,8 +25,8 @@
   /* <---------- stat category ----------> */
 
 
-  newStatCateg("lovec", "pressure");
-  newStatCateg("lovec", "heat");
+  newStatCategory("lovec", "pressure");
+  newStatCategory("lovec", "heat");
 
 
   /* <---------- stat ----------> */

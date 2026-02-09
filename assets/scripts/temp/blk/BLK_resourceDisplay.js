@@ -55,7 +55,7 @@
   function comp_draw(b) {
     MDL_draw.comp_draw_baseBuilding(b);
 
-    MDL_draw._reg_rs(b.x, b.y, b.ctTg, b.block.size - b.block.delegee.rsRegPad / Vars.tilesize);
+    LCDraw.content(b.x, b.y, b.ctTg, b.block.size - b.block.delegee.rsRegPad / Vars.tilesize);
     Draw.rect(b.block.delegee.topReg, b.x, b.y);
   };
 

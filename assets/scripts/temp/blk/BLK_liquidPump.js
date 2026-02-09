@@ -61,7 +61,7 @@
 
 
   function comp_drawSelect(b) {
-    MDL_draw._reg_rsIcon(b.x, b.y, b.ex_getRsTg(), b.block.size);
+    LCDraw.contentIcon(b.x, b.y, b.ex_getRsTg(), b.block.size);
   };
 
 

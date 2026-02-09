@@ -99,10 +99,11 @@
       });
     };
 
-    _d_text(
+    LCDraw.text(
       (t.build == null ? t.worldx() : t.build.x) + (!PARAM.drawBuildStat || t.build == null ? 0.0 : ((VAR.r_offBuildStat + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
       (t.build == null ? t.worldy() : t.build.y) + (-(!PARAM.drawBuildStat || t.build == null ? 10.0 : ((VAR.r_offBuildStat + t.build.block.size * 0.5) * Vars.tilesize + 2.0))),
-      thisFun.tmpStr, 0.8, Color.white, Align.left, 0.0, 0.0, 10.0, Fonts.def,
+      thisFun.tmpStr, Fonts.def,
+      0.8, Color.white, Align.left, 0.0, 0.0, 10.0,
     );
   }.setProp({
     tmpT: null,
@@ -710,64 +711,6 @@
     _reg_plan(t.x.toFCoord(blk.size), t.y.toFCoord(blk.size), MDL_texture._regBlk(blk), color_gn);
   };
   exports._reg_planPlace = _reg_planPlace;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Draws a resource icon like that shown for drills.
-   * ---------------------------------------- */
-  const _reg_rsIcon = function(
-    x, y, rs_gn,
-    size, z
-  ) {
-    let rs = MDL_content._ct(rs_gn, null, true);
-    if(rs == null) return;
-    if(size == null) size = 1;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
-
-    let
-      x_fi = x - Vars.tilesize * 0.5 * size,
-      y_fi = y + Vars.tilesize * 0.5 * size,
-      w = rs.uiIcon.width >= rs.uiIcon.height ? 8.0 : (rs.uiIcon.width / rs.uiIcon.height * 8.0),
-      h = rs.uiIcon.height >= rs.uiIcon.width ? 8.0 : (rs.uiIcon.height / rs.uiIcon.width * 8.0);
-
-    processZ(z);
-
-    Draw.mixcol(Color.darkGray, 1.0);
-    Draw.rect(rs.uiIcon, x_fi, y_fi - 1.0, w, h);
-    Draw.mixcol();
-    Draw.rect(rs.uiIcon, x_fi, y_fi, w, h);
-
-    processZ(z);
-  };
-  exports._reg_rsIcon = _reg_rsIcon;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Draws a resource icon.
-   * ---------------------------------------- */
-  const _reg_rs = function(
-    x, y, rs_gn,
-    size, z
-  ) {
-    let rs = MDL_content._ct(rs_gn, null, true);
-    if(rs == null) return;
-    if(size == null) size = 1;
-
-    let
-      w = size * Vars.tilesize * (rs.uiIcon.width > rs.uiIcon.height ? 1.0 : (rs.uiIcon.width / rs.uiIcon.height)),
-      h = size * Vars.tilesize * (rs.uiIcon.height > rs.uiIcon.width ? 1.0 : (rs.uiIcon.height / rs.uiIcon.width));
-
-    processZ(z);
-
-    Draw.rect(rs.uiIcon, x, y, w, h);
-
-    processZ(z);
-  };
-  exports._reg_rs = _reg_rs;
 
 
   /* ----------------------------------------
@@ -1502,43 +1445,6 @@
   /* <---------- text ----------> */
 
 
-  const _d_text = function(
-    x, y, str,
-    sizeScl, color_gn, align, offX, offY, offZ,
-    font_ow
-  ) {
-    if(str == null || str === "") return;
-    if(sizeScl == null) sizeScl = 1.0;
-    if(align == null) align = Align.center;
-    if(offX == null) offX = 0.0;
-    if(offY == null) offY = 0.0;
-    if(offZ == null) offZ = 0.0;
-
-    processZ(Drawf.text());
-
-    let
-      font = tryVal(font_ow, Fonts.outline),
-      layout = Pools.obtain(GlyphLayout, () => new GlyphLayout()),
-      useInt = font.usesIntegerPositions();
-
-    Draw.z(Layer.playerName + 0.5 + offZ);
-    font.setUseIntegerPositions(false);
-    font.getData().setScale(0.25 / Scl.scl(1.0) * sizeScl);
-    layout.setText(font, str);
-    font.setColor(MDL_color._color(tryVal(color_gn, Color.white)));
-    font.draw(str, x + offX, y + offY, 0, align, false);
-    Draw.reset();
-
-    processZ(TMP_Z);
-
-    Pools.free(layout);
-    font.getData().setScale(1.0);
-    font.setColor(Color.white);
-    font.setUseIntegerPositions(useInt);
-  };
-  exports._d_text = _d_text;
-
-
   const _d_textPlace = function(blk, tx, ty, str, valid, offTy) {
     if(blk == null || str == null) return;
     if(valid == null) valid = true;
@@ -1634,48 +1540,42 @@
     // Stats
     if(PARAM.unitStatStyle === 1 || PARAM.unitStatStyle === 2) {
       if(armor != null) {
-        _d_text(
-          e.x, e.y, Strings.autoFixed(armor, 0),
+        LCDraw.text(
+          e.x, e.y, Strings.autoFixed(armor, 0), Fonts.def,
           1.2, Color.gray, Align.right,
           -w * 0.5 - 4.0,
           offY + (PARAM.unitStatStyle === 2 ? 2.5 : 4.5),
-          null, Fonts.def,
         );
       };
       if(shield != null && shield > 0.0) {
-        _d_text(
-          e.x, e.y, Strings.autoFixed(shield, 0),
+        LCDraw.text(
+          e.x, e.y, Strings.autoFixed(shield, 0), Fonts.def,
           1.2, Pal.techBlue, Align.left,
           w * 0.5 + 4.0,
           offY + (PARAM.unitStatStyle === 2 ? 2.75 : 4.5),
-          null, Fonts.def,
         );
       };
     };
     if(PARAM.unitStatStyle === 1) {
-      _d_text(
-        e.x, e.y, Strings.autoFixed(e.maxHealth, 0),
+      LCDraw.text(
+        e.x, e.y, Strings.autoFixed(e.maxHealth, 0), Fonts.def,
         0.8, color_fi, Align.center,
-        0.0,
-        offY + 6.0,
-        null, Fonts.def,
+        0.0, offY + 6.0,
       );
       if(speedMtp != null && size >= 3.0) {
-        _d_text(
-          e.x, e.y, "S: " + Strings.fixed(speedMtp, 2),
+        LCDraw.text(
+          e.x, e.y, "S: " + Strings.fixed(speedMtp, 2), Fonts.def,
           0.6, Color.gray, Align.left,
           -w * 0.5 - 2.5,
           offY + 5.0,
-          null, Fonts.def,
         );
       };
       if(dpsMtp != null && dpsMtp >= 3.0) {
-        _d_text(
-          e.x, e.y, "D: " + Strings.fixed(dpsMtp, 2),
+        LCDraw.text(
+          e.x, e.y, "D: " + Strings.fixed(dpsMtp, 2), Fonts.def,
           0.6, Color.gray, Align.right,
           w * 0.5 + 2.5,
           offY + 5.0,
-          null, Fonts.def,
         );
       };
     };

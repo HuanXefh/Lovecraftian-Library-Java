@@ -75,6 +75,32 @@
   /* <---------- class & package ----------> */
 
 
+  /* ----------------------------------------
+   * NOTE:
+   *
+   * Used to get Java classes by path, e.g. "aquarion.AquaItems" from Aquarion.
+   * Will return {null} if not found.
+   * Do not include this in main loops!
+   * ---------------------------------------- */
+  fetchClass = function(nmCls, suppressWarning) {
+    let cls;
+    try {
+      cls = Packages.rhino.NativeJavaClass(
+        Vars.mods.scripts.scope,
+        java.net.URLClassLoader(
+          [Vars.mods.getMod("lovec").file.file().toURI().toURL()],
+          Vars.mods.mainLoader(),
+        ).loadClass(nmCls),
+      );
+    } catch(err) {
+      cls = null;
+      if(!suppressWarning) Log.warn("[LOVEC] Failed to fetch class:\n" + err);
+    };
+
+    return cls;
+  };
+
+
   // Common packages
   com = Packages.com;
   net = Packages.net;
@@ -161,7 +187,12 @@
   /* <---------- load ----------> */
 
 
-  // Container of all annotations
+  // Lovec Java
+  LCDraw = fetchClass("lovec.graphics.LCDraw");
+  LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
+
+
+  // Lovec internal
   LCAnno = {};
 
 

@@ -341,7 +341,7 @@
    * Gets a stat category unit by name from registered ones.
    * ---------------------------------------- */
   fetchStatCategory = function(nmMod, nm) {
-    let statCateg = global.lovecUtil.db.statCateg[nmMod][nm];
+    let statCateg = global.lovecUtil.db.statCategory[nmMod][nm];
     if(statCateg == null) ERROR_HANDLER.throw("unregisteredContent", nmMod + "-" + nm);
     return statCateg;
   };
@@ -366,7 +366,7 @@
    * Gets a cache layer by name from registered ones.
    * ---------------------------------------- */
   fetchCacheLayer = function(nm) {
-    let cacheLay = global.lovecUtil.db.cacheLay[nm];
+    let cacheLay = global.lovecUtil.db.cacheLayer[nm];
     if(cacheLay == null) ERROR_HANDLER.throw("unregisteredContent", nm);
     return cacheLay;
   };
@@ -414,7 +414,7 @@
    * Gets an ability from registered ability getter functions.
    * ---------------------------------------- */
   fetchAbility = function(nm, paramObj) {
-    return global.lovecUtil.db.abilitySetter.read(nm, Function.airNull)(paramObj);
+    return global.lovecUtil.db.ability.read(nm, Function.airNull)(paramObj);
   };
 
 
@@ -424,7 +424,7 @@
    * Gets an AI from registered AI getter functions.
    * ---------------------------------------- */
   fetchAi = function(nm, paramObj) {
-    return global.lovecUtil.db.aiSetter.read(nm, Function.airNull)(paramObj);
+    return global.lovecUtil.db.ai.read(nm, Function.airNull)(paramObj);
   };
 
 
@@ -434,7 +434,7 @@
    * Gets a drawer from registered drawer getter functions.
    * ---------------------------------------- */
   fetchDrawer = function(nm, paramObj) {
-    return global.lovecUtil.db.drawerSetter.read(nm, Function.airNull)(paramObj);
+    return global.lovecUtil.db.drawer.read(nm, Function.airNull)(paramObj);
   };
 
 
@@ -444,7 +444,7 @@
    * Gets a consumer from registered consumer getter functions.
    * ---------------------------------------- */
   fetchConsumer = function(nm, paramObj) {
-    return global.lovecUtil.db.consumerSetter.read(nm, Function.airNull)(paramObj);
+    return global.lovecUtil.db.consumer.read(nm, Function.airNull)(paramObj);
   };
 
 
@@ -454,7 +454,7 @@
    * Gets a dialog by name from registered ones.
    * ---------------------------------------- */
   fetchDialog = function(nm) {
-    return global.lovecUtil.db.dialogGetter.read(nm, global.lovecUtil.db.dialogGetter.read("def"));
+    return global.lovecUtil.db.dialog.read(nm, global.lovecUtil.db.dialog.read("def"));
   };
 
 
@@ -522,9 +522,9 @@
    *
    * Registers a new stat category.
    * ---------------------------------------- */
-  newStatCateg = function(nmMod, nm) {
-    if(global.lovecUtil.db.statCateg[nmMod] === undefined) global.lovecUtil.db.statCateg[nmMod] = {};
-    global.lovecUtil.db.statCateg[nmMod][nm] = extend(StatCat, nmMod + "-" + nm, {
+  newStatCategory = function(nmMod, nm) {
+    if(global.lovecUtil.db.statCategory[nmMod] === undefined) global.lovecUtil.db.statCategory[nmMod] = {};
+    global.lovecUtil.db.statCategory[nmMod][nm] = extend(StatCat, nmMod + "-" + nm, {
       compareTo(statCateg) {
         return statCateg === StatCat.function ? -1 : this.super$compareTo(statCateg);
       },
@@ -626,7 +626,7 @@
     if(shader == null) return tryVal(cacheLayFallback, CacheLayer.normal);
     let cacheLay = new CacheLayer.ShaderLayer(shader);
     CacheLayer.add(cacheLay);
-    global.lovecUtil.db.cacheLay[nm] = cacheLay;
+    global.lovecUtil.db.cacheLayer[nm] = cacheLay;
   };
 
 
@@ -674,8 +674,8 @@
    * ---------------------------------------- */
   newAbility = function(nm, getter) {
     Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.abilitySetter.includes(nm)) return;
-      global.lovecUtil.db.abilitySetter.push(nm, getter);
+      if(global.lovecUtil.db.ability.includes(nm)) return;
+      global.lovecUtil.db.ability.push(nm, getter);
     });
   };
 
@@ -688,8 +688,8 @@
    * ---------------------------------------- */
   newAi = function(nm, getter) {
     Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.aiSetter.includes(nm)) return;
-      global.lovecUtil.db.aiSetter.push(nm, getter);
+      if(global.lovecUtil.db.ai.includes(nm)) return;
+      global.lovecUtil.db.ai.push(nm, getter);
     });
   };
 
@@ -740,8 +740,8 @@
    * ---------------------------------------- */
   newDrawer = function(nm, getter) {
     Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.drawerSetter.includes(nm)) return;
-      global.lovecUtil.db.drawerSetter.push(nm, getter);
+      if(global.lovecUtil.db.drawer.includes(nm)) return;
+      global.lovecUtil.db.drawer.push(nm, getter);
     });
   };
 
@@ -754,8 +754,8 @@
    * ---------------------------------------- */
   newConsumer = function(nm, getter) {
     Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.consumerSetter.includes(nm)) return;
-      global.lovecUtil.db.consumerSetter.push(nm, getter);
+      if(global.lovecUtil.db.consumer.includes(nm)) return;
+      global.lovecUtil.db.consumer.push(nm, getter);
     });
   };
 
@@ -768,8 +768,8 @@
    * ---------------------------------------- */
   newDialog = function(nm, getter) {
     Events.run(ClientLoadEvent, () => {
-      if(global.lovecUtil.db.dialogGetter.includes(nm)) return;
-      global.lovecUtil.db.dialogGetter.push(nm, getter());
+      if(global.lovecUtil.db.dialog.includes(nm)) return;
+      global.lovecUtil.db.dialog.push(nm, getter());
     });
   };
 

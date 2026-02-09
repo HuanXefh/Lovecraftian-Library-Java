@@ -27,9 +27,6 @@
   const TIMER = require("lovec/glb/GLB_timer");
 
 
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-
-
   /* <---------- component ----------> */
 
 
@@ -58,7 +55,7 @@
 
 
   function comp_drawSelect(b) {
-    MDL_draw._reg_rsIcon(b.x, b.y, b.lastRs, b.block.size);
+    LCDraw.contentIcon(b.x, b.y, b.lastRs, b.block.size);
   };
 
 
