@@ -80,7 +80,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_conveyor").initClass()
     .setParent(Conveyor)
     .setTags("blk-dis", "blk-conv")
     .setParam({
@@ -111,7 +111,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_conveyor").initClass()
     .setParent(Conveyor.ConveyorBuild)
     .setParam({
       shouldDrawSide1: false,

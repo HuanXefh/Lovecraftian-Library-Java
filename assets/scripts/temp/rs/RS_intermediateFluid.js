@@ -56,7 +56,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_intermediateFluid").initClass()
   .setParent(Liquid)
   .setTags("rs-intmd")
   .setParam({

@@ -56,7 +56,7 @@
           thisCls[nm] = fun;
       });
     } else {
-      thisCls.setMethod(intf.interfaceObj);
+      thisCls.setMethod(intf.interfaceObj, true);
     };
     intf.children.push(this);
 

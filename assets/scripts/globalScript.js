@@ -194,6 +194,7 @@
 
   // Lovec internal
   LCAnno = {};
+  LCTemp = {};
 
 
   [

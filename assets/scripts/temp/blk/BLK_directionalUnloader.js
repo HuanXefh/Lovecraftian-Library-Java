@@ -61,7 +61,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_directionalUnloader").initClass()
     .setParent(DirectionalUnloader)
     .setTags("blk-dis", "blk-gate")
     .setParam({})
@@ -77,7 +77,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_directionalUnloader").initClass()
     .setParent(DirectionalUnloader.DirectionalUnloaderBuild)
     .setParam({})
     .setMethod({

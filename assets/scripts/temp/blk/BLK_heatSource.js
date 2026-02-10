@@ -83,7 +83,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_heatSource").initClass()
     .setParent(Wall)
     .setTags()
     .setParam({
@@ -115,7 +115,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_heatSource").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
       tempSet: 0.0,

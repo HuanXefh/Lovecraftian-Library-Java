@@ -90,7 +90,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_depthPump").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
     .setParent(AttributeCrafter)
     .setTags("blk-pump")
     .setParam({
@@ -147,7 +147,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_depthPump").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
     .setParent(AttributeCrafter.AttributeCrafterBuild)
     .setParam({})
     .setMethod({

@@ -39,7 +39,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_baseLogicBlock").initClass()
     .setParent(null)
     .setTags("blk-log")
     .setParam({})
@@ -47,7 +47,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_baseLogicBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

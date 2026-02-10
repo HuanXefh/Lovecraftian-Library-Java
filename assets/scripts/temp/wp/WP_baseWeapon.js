@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "WP_baseWeapon").initClass()
   .setParent(null)
   .setTags()
   .setParam({

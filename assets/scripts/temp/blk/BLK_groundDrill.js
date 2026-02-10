@@ -60,7 +60,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_groundDrill").initClass()
     .setParent(Drill)
     .setTags("blk-min", "blk-drl")
     .setParam({
@@ -71,7 +71,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_groundDrill").initClass()
     .setParent(Drill.DrillBuild)
     .setParam({
       timeDrilledInc: 0.0,

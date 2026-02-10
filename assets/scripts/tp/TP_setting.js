@@ -51,6 +51,7 @@
 
 
   new CLS_settingTerm("test-draw", useScl => Core.settings.getBool("lovec-test-draw", false)).setDialSetter("lovec", "debug", tb => tb.checkPref("lovec-test-draw", false));
+  new CLS_settingTerm("test-intf-nosuper-warning", useScl => Core.settings.getBool("lovec-test-intf-nosuper-warning", false)).setDialSetter("lovec", "debug", tb => tb.checkPref("lovec-test-intf-nosuper-warning", false));
   new CLS_settingTerm("test-show-error-chara", useScl => Core.settings.getBool("lovec-test-show-error-chara", false)).setDialSetter("lovec", "debug", tb => tb.checkPref("lovec-test-show-error-chara", false));
   new CLS_settingTerm("test-memory", useScl => Core.settings.getBool("lovec-test-memory", false)).setDialSetter("lovec", "debug", tb => tb.checkPref("lovec-test-memory", false));
   new CLS_settingTerm("test0error-shader", useScl => Core.settings.getBool("lovec-test0error-shader", false)).setDialSetter("lovec", "debug", tb => tb.checkPref("lovec-test0error-shader", false));

@@ -66,7 +66,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_electricFurnaceRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-furn")
     .setParam({})
@@ -82,7 +82,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_electricFurnaceRecipeFactory").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
       tempReq: 0.0,
@@ -108,6 +108,14 @@
       .setProp({
         noSuper: true,
         override: true,
+      }),
+
+
+      buildConfiguration: function(tb) {
+
+      }
+      .setProp({
+        noSuper: true,
       }),
 
 

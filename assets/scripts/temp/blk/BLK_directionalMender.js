@@ -66,7 +66,7 @@
       blk.bHealAmt,
       blk.bHealPerc,
     ));
-    blk.stats.add(fetchStat("lovec", "blk0misc-repairr"), blk.range / Vars.tilesize, StatUnit.blocks);
+    blk.stats.add(fetchStat("lovec", "blk0misc-repairr"), 1.0, StatUnit.blocks);
     blk.stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
   };
 
@@ -134,7 +134,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_directionalMender").initClass()
     .setParent(MendProjector)
     .setTags("blk-proj", "blk-mend")
     .setParam({
@@ -185,7 +185,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_directionalMender").initClass()
     .setParent(MendProjector.MendBuild)
     .setParam({})
     .setMethod({

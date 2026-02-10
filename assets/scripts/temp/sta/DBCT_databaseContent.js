@@ -51,7 +51,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "DBCT_databaseContent").initClass()
   .setParent(null)
   .setTags()
   .setParam({

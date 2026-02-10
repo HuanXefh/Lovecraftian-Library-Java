@@ -89,7 +89,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_dynamicWallHarvester").implement(INTF[0]).initClass()
     .setParent(WallCrafter)
     .setTags("blk-min", "blk-harv")
     .setParam({
@@ -178,7 +178,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_dynamicWallHarvester").implement(INTF[1]).initClass()
     .setParent(WallCrafter.WallCrafterBuild)
     .setParam({})
     .setMethod({

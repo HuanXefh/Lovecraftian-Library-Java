@@ -88,7 +88,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_baseTree").initClass()
   .setParent(null)
   .setTags("blk-env")
   .setParam({

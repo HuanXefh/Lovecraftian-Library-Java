@@ -42,7 +42,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_wasteFluid").initClass()
   .setParent(Liquid)
   .setTags("rs-waste")
   .setParam({

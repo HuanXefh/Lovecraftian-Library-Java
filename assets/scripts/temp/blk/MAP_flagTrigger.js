@@ -53,7 +53,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "MAP_flagTrigger").implement(INTF[0]).initClass()
     .setParent(null)
     .setTags("blk-log")
     .setParam({
@@ -88,7 +88,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "MAP_flagTrigger").implement(INTF[1]).initClass()
     .setParent(null)
     .setParam({
       isDormant: false,

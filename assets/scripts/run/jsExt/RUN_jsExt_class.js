@@ -105,7 +105,7 @@
    * Should be called before {initClass}.
    * You can use {this.super(nmFun, ...args)} to call super methods later.
    * ---------------------------------------- */
-  ptp.extendClass = function(cls) {
+  ptp.extendClass = function(cls, nm) {
     if(typeof cls !== "function" || !cls.__IS_CLASS__) ERROR_HANDLER.throw("notClass", cls);
 
     Object.assign(this, cls);
@@ -140,6 +140,13 @@
       if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nmFun);
 
       return funParent.apply(this, Array.from(arguments).splice(1));
+    };
+
+    if(nm != null && typeof nm === "string") {
+      this.nm = nm;
+      if(this.__IS_CONTENT_TEMPLATE__) {
+        LCTemp[nm] = this;
+      };
     };
 
     return this;

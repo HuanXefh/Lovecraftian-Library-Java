@@ -161,7 +161,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_terrainDynamicDrill").initClass()
     .setParent(Drill)
     .setTags("blk-min", "blk-drl")
     .setParam({
@@ -183,7 +183,10 @@
 
       drawPlace: function(tx, ty, rot, valid) {
         comp_drawPlace(this, tx, ty, rot, valid);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       ex_findPlaceRsIcon: function(tx, ty, itm) {
@@ -209,7 +212,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_terrainDynamicDrill").initClass()
     .setParent(Drill.DrillBuild)
     .setParam({
       terCur: null,

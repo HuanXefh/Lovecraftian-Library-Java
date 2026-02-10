@@ -108,7 +108,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_overflowGate").initClass()
     .setParent(OverflowGate)
     .setTags("blk-dis", "blk-gate")
     .setParam({
@@ -131,7 +131,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_overflowGate").initClass()
     .setParent(OverflowGate.OverflowGateBuild)
     .setParam({
       isInv: false,

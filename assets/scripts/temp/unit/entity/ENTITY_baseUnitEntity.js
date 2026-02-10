@@ -63,7 +63,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENTITY_baseUnitEntity").initClass()
   .setParent(null)
   .setParam({})
   .setMethod({

@@ -54,7 +54,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_ore").initClass()
   .setParent(OreBlock)
   .setTags("blk-env", "blk-ore")
   .setParam({})
@@ -67,6 +67,6 @@
     init: function() {
       comp_init(this);
     },
-    
+
 
   });

@@ -45,7 +45,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_baseItemDistributor").initClass()
     .setParent(null)
     .setTags("blk-dis")
     .setParam({})
@@ -61,7 +61,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_baseItemDistributor").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

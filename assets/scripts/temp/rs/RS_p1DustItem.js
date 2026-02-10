@@ -40,7 +40,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_p1DustItem").initClass()
   .setParent(Item)
   .setTags("rs-intmd", "rs-dust", "rs-p1")
   .setParam({

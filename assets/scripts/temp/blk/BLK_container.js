@@ -83,7 +83,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_container").implement(INTF[0]).initClass()
     .setParent(StorageBlock)
     .setTags("blk-cont")
     .setParam({})
@@ -104,7 +104,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_container").implement(INTF[1]).initClass()
     .setParent(StorageBlock.StorageBuild)
     .setParam({
       timerDump: prov(() => new Interval(1)),

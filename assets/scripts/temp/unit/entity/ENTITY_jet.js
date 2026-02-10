@@ -60,7 +60,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENTITY_jet").initClass()
   .setParent(UnitEntity)
   .setParam({})
   .setMethod({

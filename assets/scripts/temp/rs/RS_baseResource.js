@@ -157,7 +157,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_baseResource").initClass()
   .setParent(null)
   .setTags()
   .setParam({

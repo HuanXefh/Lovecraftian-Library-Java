@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * Variant of {ENV_vent} that vent size is the only thing to change.
+   * Variant of {ENV_vent} where vent size is the only thing to change.
    * You can make 2x2 vents with this for example with {ventSize: 2}.
    * ---------------------------------------- */
 
@@ -24,7 +24,7 @@
 
 
   const PARENT = require("lovec/temp/env/ENV_baseFloor");
-  const INTF = require("lovec/temp/intf/INTF_ENV_sizableVent");
+  const INTF = require("lovec/temp/intf/INTF_ENV_dynamicSizeVent");
 
 
   /* <---------- component ----------> */
@@ -37,7 +37,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).implement(INTF).initClass()
+  module.exports = newClass().extendClass(PARENT, "EXT_ENV_dynamicSizeVent").implement(INTF).initClass()
   .setParent(SteamVent)
   .setTags("blk-env", "blk-vent")
   .setParam({})

@@ -80,7 +80,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_router").initClass()
     .setParent(Router)
     .setTags("blk-dis", "blk-gate", "blk-router")
     .setParam({})
@@ -100,7 +100,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_router").initClass()
     .setParent(Router.RouterBuild)
     .setParam({
       lastRs: null,

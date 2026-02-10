@@ -107,7 +107,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_ventGenerator").initClass()
     .setParent(ThermalGenerator)
     .setTags("blk-pow", "blk-pow0gen")
     .setParam({})
@@ -144,7 +144,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_ventGenerator").initClass()
     .setParent(ThermalGenerator.ThermalGeneratorBuild)
     .setParam({
       lastEffc: 0.0,

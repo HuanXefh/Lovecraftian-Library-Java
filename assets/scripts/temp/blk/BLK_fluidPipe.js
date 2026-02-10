@@ -126,7 +126,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_fluidPipe").implement(INTF[0]).initClass()
     .setParent(Conduit)
     .setTags("blk-liq", "blk-fcond")
     .setParam({
@@ -154,7 +154,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_fluidPipe").implement(INTF[1]).initClass()
     .setParent(Conduit.ConduitBuild)
     .setParam({
       isLeak: false,

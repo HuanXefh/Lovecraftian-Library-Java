@@ -75,7 +75,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_armoredCable").initClass()
     .setParent(ArmoredConveyor)
     .setTags("blk-pow", "blk-pow0trans", "blk-cable", "blk-arm0cable")
     .setParam({})
@@ -103,7 +103,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_armoredCable").initClass()
     .setParent(ArmoredConveyor.ArmoredConveyorBuild)
     .setParam({})
     .setMethod({

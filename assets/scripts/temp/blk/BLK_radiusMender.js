@@ -103,7 +103,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_radiusMender").initClass()
     .setParent(MendProjector)
     .setTags("blk-proj", "blk-mend")
     .setParam({
@@ -136,7 +136,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_radiusMender").initClass()
     .setParent(MendProjector.MendBuild)
     .setParam({})
     .setMethod({

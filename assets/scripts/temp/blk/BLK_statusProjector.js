@@ -95,7 +95,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_statusProjector").implement(INTF[0]).initClass()
     .setParent(MendProjector)
     .setTags("blk-proj", "blk-mend")
     .setParam({
@@ -142,7 +142,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_statusProjector").implement(INTF[1]).initClass()
     .setParent(MendProjector.MendBuild)
     .setParam({})
     .setMethod({

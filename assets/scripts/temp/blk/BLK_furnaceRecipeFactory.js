@@ -68,7 +68,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_furnaceRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-furn")
     .setParam({})
@@ -80,11 +80,29 @@
       },
 
 
+      consumesItem: function thisFun(itm) {
+        return thisFun.funPrev.apply(this, arguments);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      consumesLiquid: function thisFun(liq) {
+        return thisFun.funPrev.apply(this, arguments);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
     }),
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_furnaceRecipeFactory").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
       tempReq: 0.0,

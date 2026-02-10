@@ -80,7 +80,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_baseItem").initClass()
   .setParent(Item)
   .setTags()
   .setParam({})

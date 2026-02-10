@@ -28,6 +28,7 @@ var cls = CLS_contentTemplate;
 
 
 cls.__IS_CONTENT_TEMPLATE__ = true;
+cls.nm = "!UNDEF";
 cls.paramObj = {
   tempParent: null,
   tempTags: [],
@@ -132,7 +133,7 @@ cls.setTags = function() {
  * "__PARAM_ALIAS_SETTER__" - Result will be used for {setParamAlias}.
  * "__PARAM_PARSER_SETTER__" - Result will be used for {setParamParser}.
  * ---------------------------------------- */
-cls.setMethod = function(nmFunObj) {
+cls.setMethod = function(nmFunObj, isFromIntf) {
   const thisCls = this;
 
   Object._it(nmFunObj, (nm, fun) => {
@@ -169,7 +170,8 @@ cls.setMethod = function(nmFunObj) {
     } else {
       let superFun = thisCls.funObj[nm];
       if(superFun != null) {
-        if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) Log.warn("[LOVEC] [$1] has mismatched argument length ([$2]) with super method ([$3])!".format(nm.color(Pal.accent), fun.argLen, superFun.argLen));
+        if((fetchSetting("test-intf-nosuper-warning") ? true : !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) Log.warn("[LOVEC] [$1][$2] has mismatched {noSuper} with super method in [$3]!".format(nm.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.nm.color(Pal.accent)));
+        if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) Log.warn("[LOVEC] [$1] has mismatched argument length ([$2]) with super method in [$3]!".format(nm.color(Pal.accent), fun.argLen, this.nm.color(Pal.accent)));
       };
       // Call super method if defined
       thisCls.funObj[nm] = superFun == null ?
@@ -221,7 +223,7 @@ cls.setMethod = function(nmFunObj) {
         str += fun;
       });
       Log.warn(String.multiline(
-        "[LOVEC] Found a ex_xxx method without {noSuper = true}:",
+        "[LOVEC] Found a ex_xxx method without {noSuper = true} in [$1]:".format(this.nm.color(Pal.accent)),
         nm,
         thisCls.funObj[nm],
         "Full object:",
@@ -252,6 +254,7 @@ cls.getParent = function() {
  * ---------------------------------------- */
 cls.build = function(paramObj) {
   const obj = {};
+  const thisFun = this;
 
   if(this.getParent() == null) ERROR_HANDLER.throw("contentTemplateNoParentJavaClass");
 
@@ -319,6 +322,14 @@ cls.build = function(paramObj) {
       );
     obj[nm].argLen = fun.argLen;
   });
+
+  // Make sure the template is accessible afterwards, mostly for test
+  obj.ex_getTemp = function() {
+    return thisFun;
+  };
+  obj.ex_getTempNm = function() {
+    return thisFun.nm;
+  };
 
   return obj;
 };

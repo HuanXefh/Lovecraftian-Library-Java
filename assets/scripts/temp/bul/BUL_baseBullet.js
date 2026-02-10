@@ -84,7 +84,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "BUL_baseBullet").initClass()
   .setParent(null)
   .setTags()
   .setParam({

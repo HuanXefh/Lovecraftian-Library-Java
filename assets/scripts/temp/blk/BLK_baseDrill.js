@@ -88,7 +88,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_baseDrill").initClass()
     .setParent(null)
     .setTags("blk-min", "blk-drl")
     .setParam({
@@ -110,8 +110,8 @@
       },
 
 
-      ex_calcDropHardess: function(oblk, itm) {
-        return tryJsProp(oblk, "dropHardess", itm.hardness) * tryJsProp(oblk, "dropHardnessMtp", 1.0);
+      ex_calcDropHardness: function(oblk, itm) {
+        return tryJsProp(oblk, "dropHardness", itm.hardness) * tryJsProp(oblk, "dropHardnessMtp", 1.0);
       }
       .setProp({
         noSuper: true,
@@ -123,7 +123,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_baseDrill").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

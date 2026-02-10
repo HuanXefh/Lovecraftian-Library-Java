@@ -67,9 +67,9 @@
 
     let isDpore = isFloorDrop ? false : MDL_cond._isDepthOre(t.overlay());
     if(isDpore) {
-      if(!blk.canMineDepthOre || blk.ex_calcDropHardess(t.overlay(), itm) > blk.tier * blk.depthTierMtp) return false;
+      if(!blk.canMineDepthOre || blk.ex_calcDropHardness(t.overlay(), itm) > blk.tier * blk.depthTierMtp) return false;
     } else {
-      if(blk.ex_calcDropHardess(isFloorDrop ? t.floor() : t.overlay(), itm) > blk.tier) return false;
+      if(blk.ex_calcDropHardness(isFloorDrop ? t.floor() : t.overlay(), itm) > blk.tier) return false;
     };
 
     return true;
@@ -135,7 +135,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).implement(INTF_A[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_baseGroundDrill").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(null)
     .setTags("blk-min", "blk-drl")
     .setParam({
@@ -194,7 +194,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).implement(INTF_A[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_baseGroundDrill").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(null)
     .setParam({})
     .setMethod({

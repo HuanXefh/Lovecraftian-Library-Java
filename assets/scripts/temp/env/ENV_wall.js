@@ -53,7 +53,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_wall").initClass()
   .setParent(StaticWall)
   .setTags("blk-env")
   .setParam({

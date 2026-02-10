@@ -163,7 +163,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "UNIT_lootUnit").initClass()
   .setParent(UnitType)
   .setTags()
   .setParam({

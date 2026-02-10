@@ -47,7 +47,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "PLA_basePlanet").initClass()
   .setParent(null)
   .setTags("")
   .setParam({

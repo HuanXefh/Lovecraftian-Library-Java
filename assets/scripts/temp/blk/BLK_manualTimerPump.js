@@ -40,7 +40,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_manualTimerPump").implement(INTF[0]).initClass()
     .setParent(Pump)
     .setTags("blk-pump")
     .setParam({
@@ -50,10 +50,22 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_manualTimerPump").implement(INTF[1]).initClass()
     .setParent(Pump.PumpBuild)
     .setParam({})
-    .setMethod({}),
+    .setMethod({
+
+
+      shouldConsume: function thisFun() {
+        return thisFun.funPrev.call(this);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+    }),
 
 
   ];

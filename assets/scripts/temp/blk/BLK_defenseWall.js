@@ -47,7 +47,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_defenseWall").initClass()
     .setParent(Wall)
     .setTags("blk-wall")
     .setParam({})
@@ -63,7 +63,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_defenseWall").initClass()
     .setParent(Wall.WallBuild)
     .setParam({})
     .setMethod({}),

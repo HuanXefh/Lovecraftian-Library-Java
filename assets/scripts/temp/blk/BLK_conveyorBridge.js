@@ -70,7 +70,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_conveyorBridge").initClass()
     .setParent(ItemBridge)
     .setTags("blk-dis", "blk-brd")
     .setParam({})
@@ -100,7 +100,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_conveyorBridge").initClass()
     .setParent(ItemBridge.ItemBridgeBuild)
     .setParam({
       lastRs: null,

@@ -40,7 +40,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_blendItem").initClass()
   .setParent(Item)
   .setTags("rs-intmd", "rs-blend")
   .setParam({

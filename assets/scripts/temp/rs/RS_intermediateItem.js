@@ -57,7 +57,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_intermediateItem").initClass()
   .setParent(Item)
   .setTags("rs-intmd")
   .setParam({

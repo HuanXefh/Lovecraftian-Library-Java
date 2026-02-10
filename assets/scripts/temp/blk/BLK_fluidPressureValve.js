@@ -92,7 +92,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_fluidPressureValve").implement(INTF[0]).initClass()
     .setParent(LiquidJunction)
     .setTags("blk-liq", "blk-gate")
     .setParam({
@@ -115,7 +115,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_fluidPressureValve").implement(INTF[1]).initClass()
     .setParent(LiquidJunction.LiquidJunctionBuild)
     .setParam({
       presAllowFrac: 1.0,

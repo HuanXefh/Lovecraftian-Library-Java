@@ -56,7 +56,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "STA_baseStatus").initClass()
   .setParent(StatusEffect)
   .setTags()
   .setParam({

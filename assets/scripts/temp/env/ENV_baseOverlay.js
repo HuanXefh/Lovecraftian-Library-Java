@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_baseOverlay").initClass()
   .setParent(OverlayFloor)
   .setTags("blk-env")
   .setParam({})

@@ -52,7 +52,7 @@
   }
   .setProp({
     tmpTup: [],
-    tmpBoolF: (blk, t, team, rot) => {
+    tmpBoolF: function(blk, t, team, rot) {
       let ot = null, itm = null, isBlockDrop = false;
       for(let i = 0; i < blk.size; i++) {
         blk.nearbySide(t.x, t.y, rot, i, Tmp.p1);
@@ -65,7 +65,7 @@
               itm = ot.block().itemDrop;
               isBlockDrop = true;
             };
-            if(itm != null && blk.ex_calcDropHardess(isBlockDrop ? t.block() : t.overlay(), itm) <= blk.tier && !(
+            if(itm != null && blk.ex_calcDropHardness(isBlockDrop ? ot.block() : ot.overlay(), itm) <= blk.tier && !(
               (blk.blockedItems != null && blk.blockedItems.contains(itm))
                 || ((blk.blockedItems == null || blk.blockedItems.size === 0) && blk.itmWhitelist.length > 0 && !blk.itmWhitelist.includes(itm))
             )) return true;
@@ -91,7 +91,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_wallDrill").initClass()
     .setParent(BeamDrill)
     .setTags("blk-min", "blk-drl")
     .setParam({})
@@ -118,7 +118,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_wallDrill").initClass()
     .setParent(BeamDrill.BeamDrillBuild)
     .setParam({})
     .setMethod({}),

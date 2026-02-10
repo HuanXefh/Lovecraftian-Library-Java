@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "WEA_baseWeather").initClass()
   .setParent(null)
   .setTags("")
   .setParam({

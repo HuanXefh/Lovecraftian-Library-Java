@@ -44,7 +44,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_basePowerBlock").initClass()
     .setParent(null)
     .setTags("blk-pow")
     .setParam({})
@@ -60,7 +60,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_basePowerBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

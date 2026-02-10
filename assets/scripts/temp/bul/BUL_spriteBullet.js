@@ -56,7 +56,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "BUL_spriteBullet").initClass()
   .setParent(BasicBulletType)
   .setTags()
   .setParam({

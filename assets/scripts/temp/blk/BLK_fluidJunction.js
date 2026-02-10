@@ -59,7 +59,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_fluidJunction").initClass()
     .setParent(LiquidJunction)
     .setTags("blk-liq", "blk-gate")
     .setParam({})
@@ -84,7 +84,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_fluidJunction").initClass()
     .setParent(LiquidJunction.LiquidJunctionBuild)
     .setParam({})
     .setMethod({

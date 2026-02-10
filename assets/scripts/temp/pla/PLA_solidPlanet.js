@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "PLA_solidPlanet").initClass()
   .setParent(Planet)
   .setTags("pla-sol")
   .setParam({})

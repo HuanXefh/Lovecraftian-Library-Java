@@ -102,7 +102,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_transmissionRod").initClass()
     .setParent(Wall)
     .setTags("blk-trans0rod")
     .setParam({
@@ -140,7 +140,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_transmissionRod").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
       rotProg: 0.0,

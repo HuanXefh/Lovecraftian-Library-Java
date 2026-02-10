@@ -30,7 +30,7 @@
 
 
   const PARENT = require("lovec/temp/env/ENV_materialFloor");
-  const INTF = require("lovec/temp/intf/INTF_ENV_sizableVent");
+  const INTF = require("lovec/temp/intf/INTF_ENV_dynamicSizeVent");
   const EFF = require("lovec/glb/GLB_eff");
 
 
@@ -93,7 +93,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).implement(INTF).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_vent").implement(INTF).initClass()
   .setParent(SteamVent)
   .setTags("blk-env", "blk-vent")
   .setParam({

@@ -47,7 +47,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_baseFluidDistributor").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
     .setParent(null)
     .setTags("blk-liq")
     .setParam({})
@@ -63,7 +63,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_baseFluidDistributor").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
     .setParent(null)
     .setParam({})
     .setMethod({

@@ -55,7 +55,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_wallOre").initClass()
   .setParent(OreBlock)
   .setTags("blk-env", "blk-wore")
   .setParam({})
@@ -68,6 +68,6 @@
     init: function() {
       comp_init(this);
     },
-    
+
 
   });

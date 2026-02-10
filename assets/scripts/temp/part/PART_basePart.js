@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "PART_basePart").initClass()
   .setParent(null)
   .setTags()
   .setParam({

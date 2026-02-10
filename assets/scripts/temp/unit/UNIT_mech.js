@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "UNIT_mech").initClass()
   .setParent(UnitType)
   .setTags("utp-inf")
   .setParam({

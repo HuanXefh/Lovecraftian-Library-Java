@@ -39,7 +39,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_messageBlock").initClass()
     .setParent(MessageBlock)
     .setTags("blk-log")
     .setParam({})
@@ -47,7 +47,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_messageBlock").initClass()
     .setParent(MessageBlock.MessageBuild)
     .setParam({})
     .setMethod({}),

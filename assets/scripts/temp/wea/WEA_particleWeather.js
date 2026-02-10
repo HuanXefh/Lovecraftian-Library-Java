@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "WEA_particleWeather").initClass()
   .setParent(ParticleWeather)
   .setTags("wea-deco")
   .setParam({})

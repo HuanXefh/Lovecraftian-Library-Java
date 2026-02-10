@@ -91,7 +91,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "MAP_dialFlowTrigger").initClass()
     .setParent(Wall)
     .setTags("blk-log")
     .setParam({
@@ -118,7 +118,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "MAP_dialFlowTrigger").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
       nmDialFlow: "lovec-test",

@@ -73,7 +73,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "DBCT_infoContent").initClass()
   .setParent(StatusEffect)
   .setTags()
   .setParam({

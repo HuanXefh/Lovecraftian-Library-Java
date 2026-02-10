@@ -160,7 +160,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_multiFilterGate").initClass()
     .setParent(Sorter)
     .setTags("blk-dis", "blk-gate")
     .setParam({
@@ -191,7 +191,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_multiFilterGate").initClass()
     .setParent(Sorter.SorterBuild)
     .setParam({
       isInv: false,

@@ -41,7 +41,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_wasteItem").initClass()
   .setParent(Item)
   .setTags("rs-was")
   .setParam({})

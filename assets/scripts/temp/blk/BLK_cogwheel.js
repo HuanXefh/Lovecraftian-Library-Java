@@ -169,7 +169,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_cogwheel").initClass()
     .setParent(Wall)
     .setTags("blk-cog")
     .setParam({
@@ -196,7 +196,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_cogwheel").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
       isInv: false

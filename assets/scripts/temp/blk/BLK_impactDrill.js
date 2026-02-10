@@ -51,13 +51,21 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_impactDrill").implement(INTF[0]).initClass()
     .setParent(BurstDrill)
     .setTags("blk-min", "blk-drl")
     .setParam({
       canMineDepthOre: true,
     })
     .setMethod({
+
+
+      drawPlace: function(tx, ty, rot, valid) {
+
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       ex_calcImpactIntv: function(b) {
@@ -84,7 +92,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_impactDrill").implement(INTF[1]).initClass()
     .setParent(BurstDrill.BurstDrillBuild)
     .setParam({
       justCrafted: false,

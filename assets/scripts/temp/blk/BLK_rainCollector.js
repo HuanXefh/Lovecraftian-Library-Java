@@ -108,7 +108,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_rainCollector").initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac")
     .setParam({
@@ -140,7 +140,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_rainCollector").initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
       rsTg: null,

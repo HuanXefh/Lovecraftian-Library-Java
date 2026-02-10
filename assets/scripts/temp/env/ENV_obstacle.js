@@ -53,7 +53,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_obstacle").initClass()
   .setParent(Prop)
   .setTags("blk-env")
   .setParam({})

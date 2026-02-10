@@ -40,7 +40,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "EXT_BLK_multiBlockLibRecipeFactory").initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac")
     .setParam({
@@ -53,7 +53,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "EXT_BLK_multiBlockLibRecipeFactory").initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({}),

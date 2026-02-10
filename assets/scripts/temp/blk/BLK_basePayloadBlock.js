@@ -40,7 +40,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_basePayloadBlock").initClass()
     .setParent(null)
     .setTags()
     .setParam({})
@@ -48,7 +48,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_basePayloadBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

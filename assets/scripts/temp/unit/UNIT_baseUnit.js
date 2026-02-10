@@ -85,7 +85,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "UNIT_baseUnit").initClass()
   .setParent(null)
   .setTags()
   .setParam({

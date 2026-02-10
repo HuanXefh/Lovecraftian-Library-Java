@@ -55,7 +55,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_core").implement(INTF[0]).initClass()
     .setParent(CoreBlock)
     .setTags("blk-core")
     .setParam({})
@@ -63,7 +63,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_core").implement(INTF[1]).initClass()
     .setParent(CoreBlock.CoreBuild)
     .setParam({})
     .setMethod({

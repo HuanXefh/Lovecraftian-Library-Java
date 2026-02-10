@@ -58,7 +58,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_heap").initClass()
   .setParent(TallBlock)
   .setTags("blk-env")
   .setParam({

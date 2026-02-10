@@ -184,7 +184,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_baseFluid").initClass()
   .setParent(Liquid)
   .setTags()
   .setParam({

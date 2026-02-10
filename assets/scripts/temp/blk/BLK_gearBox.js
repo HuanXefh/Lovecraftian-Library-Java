@@ -88,7 +88,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_gearBox").initClass()
     .setParent(Wall)
     .setTags("blk-cog", "blk-cog0box")
     .setParam({
@@ -115,7 +115,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_gearBox").initClass()
     .setParent(Wall.WallBuild)
     .setParam({})
     .setMethod({

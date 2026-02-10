@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENTITY_tetheredAirUnit").initClass()
   .setParent(UnitEntity)
   .setParam({})
   .setMethod({});

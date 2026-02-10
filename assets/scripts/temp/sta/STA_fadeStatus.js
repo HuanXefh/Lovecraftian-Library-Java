@@ -57,7 +57,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "STA_fadeStatus").initClass()
   .setParent(StatusEffect)
   .setTags("sta-fade")
   .setParam({

@@ -67,7 +67,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_abstractFluid").initClass()
   .setParent(Liquid)
   .setTags("rs-aux")
   .setParam({

@@ -193,7 +193,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT).implement(INTF[0]).implement(INTF_A[0]).initClass()
+    newClass().extendClass(PARENT, "BLK_baseBlock").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(null)
     .setTags()
     .setParam({
@@ -301,7 +301,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT).implement(INTF[1]).implement(INTF_A[1]).initClass()
+    newClass().extendClass(PARENT, "BLK_baseBlock").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(null)
     .setParam({})
     .setMethod({

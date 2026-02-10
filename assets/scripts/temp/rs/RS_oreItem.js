@@ -46,7 +46,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_oreItem").initClass()
   .setParent(Item)
   .setTags("rs-ore")
   .setParam({

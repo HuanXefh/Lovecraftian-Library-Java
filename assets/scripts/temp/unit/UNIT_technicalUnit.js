@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "UNIT_technicalUnit").initClass()
   .setParent(UnitType)
   .setTags()
   .setParam({

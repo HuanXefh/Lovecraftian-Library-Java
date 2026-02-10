@@ -47,7 +47,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "RS_concentrateItem").initClass()
   .setParent(Item)
   .setTags("rs-intmd", "rs-ore0conc")
   .setParam({

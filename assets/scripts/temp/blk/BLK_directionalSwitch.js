@@ -116,7 +116,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_directionalSwitch").initClass()
     .setParent(SwitchBlock)
     .setTags("blk-log", "blk-switch")
     .setParam({
@@ -156,7 +156,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_directionalSwitch").initClass()
     .setParent(SwitchBlock.SwitchBuild)
     .setParam({})
     .setMethod({

@@ -64,7 +64,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_baseTurret").initClass()
     .setParent(null)
     .setTags("blk-tur")
     .setParam({})
@@ -89,7 +89,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_baseTurret").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

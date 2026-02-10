@@ -40,7 +40,7 @@
 
 
     // Block
-    newClass().extendClass(PARENT[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_armoredConveyor").initClass()
     .setParent(ArmoredConveyor)
     .setTags("blk-dis", "blk-conv")
     .setParam({})
@@ -48,7 +48,7 @@
 
 
     // Building
-    newClass().extendClass(PARENT[1]).initClass()
+    newClass().extendClass(PARENT[1], "BLK_armoredConveyor").initClass()
     .setParent(ArmoredConveyor.ArmoredConveyorBuild)
     .setParam({})
     .setMethod({}),

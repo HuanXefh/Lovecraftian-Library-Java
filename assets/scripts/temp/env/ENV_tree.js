@@ -35,7 +35,7 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT).initClass()
+  module.exports = newClass().extendClass(PARENT, "ENV_tree").initClass()
   .setParent(TreeBlock)
   .setTags("blk-env", "blk-tree")
   .setParam({
