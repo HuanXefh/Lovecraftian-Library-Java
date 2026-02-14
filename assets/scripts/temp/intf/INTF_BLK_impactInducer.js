@@ -46,17 +46,17 @@
   };
 
 
-  function comp_ex_calcImpactDmg(blk) {
+  function comp_ex_calcImpactDmg(blk, b) {
     return FRAG_attack._impactDmg(blk.size, blk.ex_calcImpactIntv(b));
   };
 
 
-  function comp_ex_calcImpactDur(blk) {
+  function comp_ex_calcImpactDur(blk, b) {
     return FRAG_attack._impactDur(blk.ex_calcImpactIntv(b));
   };
 
 
-  function comp_ex_calcImpactMinRad(blk) {
+  function comp_ex_calcImpactMinRad(blk, b) {
     return FRAG_attack._impactMinRad(blk.size);
   };
 
@@ -128,7 +128,7 @@
 
 
       ex_calcImpactDmg: function(b) {
-        return comp_ex_calcImpactDmg(this);
+        return comp_ex_calcImpactDmg(this, b);
       }
       .setProp({
         noSuper: true,
@@ -137,7 +137,7 @@
 
 
       ex_calcImpactDur: function(b) {
-        return comp_ex_calcImpactDur(this);
+        return comp_ex_calcImpactDur(this, b);
       }
       .setProp({
         noSuper: true,
@@ -155,7 +155,7 @@
 
 
       ex_calcImpactMinRad: function(b) {
-        return comp_ex_calcImpactMinRad(this);
+        return comp_ex_calcImpactMinRad(this, b);
       }
       .setProp({
         noSuper: true,

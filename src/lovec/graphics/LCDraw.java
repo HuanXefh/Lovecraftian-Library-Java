@@ -21,6 +21,9 @@ import mindustry.world.Tile;
 public class LCDraw {
 
 
+    static final Color[] tmpColors = new Color[]{new Color()};
+
+
     /**
      * Draws colored line.
      */
@@ -132,6 +135,18 @@ public class LCDraw {
 
 
     /**
+     * Draws circular shield, not force shield.
+     */
+    public static void shieldCircle(float x, float y, float rad, Color color, float a) {
+        Fill.light(x, y, Lines.circleVertices(rad), rad, Color.clear, tmpColors[0].set(color).a(a * 0.7f));
+    }
+    // Overloading
+    public static void shieldCircle(float x, float y, float rad, Color color) {
+        shieldCircle(x, y, rad, color, color.a);
+    };
+
+
+    /**
      * Draws content UI icon.
      */
     public static void content(float x, float y, @Nullable UnlockableContent ct, float size) {
@@ -154,20 +169,32 @@ public class LCDraw {
     public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size) {
         if(ct == null) return;
 
-        float
-                x_fi = x - Vars.tilesize * size * 0.5f,
-                y_fi = y + Vars.tilesize * size * 0.5f,
-                w = ct.uiIcon.width > ct.uiIcon.height ? 8f : ((ct.uiIcon.width * 8f) / ct.uiIcon.height),
-                h = ct.uiIcon.height > ct.uiIcon.width ? 8f : ((ct.uiIcon.height * 8f) / ct.uiIcon.width);
-
-        Draw.mixcol(Color.darkGray, 1f);
-        Draw.rect(ct.uiIcon, x_fi, y_fi - 1f, w, h);
-        Draw.mixcol();
-        Draw.rect(ct.uiIcon, x_fi, y_fi, w, h);
+        regionIcon(x, y, ct.uiIcon, size);
     }
     // Overloading
     public static void contentIcon(float x, float y, @Nullable UnlockableContent ct) {
-        contentIcon(x, y, ct, 1);
+        regionIcon(x, y, ct.uiIcon);
+    }
+
+
+    /**
+     * Variant of {@link #contentIcon} that uses a drawable texture region instead of unlockable content.
+     */
+    public static void regionIcon(float x, float y, TextureRegion reg, float size) {
+        float
+                x_fi = x - Vars.tilesize * size * 0.5f,
+                y_fi = y + Vars.tilesize * size * 0.5f,
+                w = reg.width > reg.height ? 8f : ((reg.width * 8f) / reg.height),
+                h = reg.height > reg.width ? 8f : ((reg.height * 8f) / reg.width);
+
+        Draw.mixcol(Color.darkGray, 1f);
+        Draw.rect(reg, x_fi, y_fi - 1f, w, h);
+        Draw.mixcol();
+        Draw.rect(reg, x_fi, y_fi, w, h);
+    }
+    // Overloading
+    public static void regionIcon(float x, float y, TextureRegion reg) {
+        regionIcon(x, y, reg, 1);
     }
 
 

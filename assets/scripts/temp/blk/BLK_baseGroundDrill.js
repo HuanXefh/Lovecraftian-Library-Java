@@ -116,11 +116,19 @@
   function comp_onProximityUpdate(b) {
     b.dominantItems = Math.round(b.dominantItems * b.block.delegee.drillAmtMtp);
     b.requiresScanner = b.block.ex_isMiningDpore(b.tileX(), b.tileY(), b.dominantItem);
+    b.dpLvlReqCur = b.block.ex_calcDpLvlReq(b.tileX(), b.tileY(), b.dominantItem);
   };
 
 
   function comp_pickedUp(b) {
     b.requiresScanner = false;
+  };
+
+
+  function comp_drawSelect(b) {
+    if(b.dominantItem == null) return;
+
+    LCDraw.regionIcon(b.x, b.y, b.block.ex_findPlaceRsIcon(b.tileX(), b.tileY(), b.dominantItem), b.block.size);
   };
 
 
@@ -208,6 +216,14 @@
       pickedUp: function() {
         comp_pickedUp(this);
       },
+
+
+      drawSelect: function() {
+        comp_drawSelect(this);
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
     }),

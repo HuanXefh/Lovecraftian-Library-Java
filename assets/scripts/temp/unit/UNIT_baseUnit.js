@@ -69,12 +69,29 @@
   };
 
 
+  function comp_draw(utp, unit) {
+    if(utp.drawShields && (utp.baseShieldA > 0.0 || unit.shieldAlpha > 0.0) && unit.shield > 0.0) {
+      utp.ex_drawShield(unit);
+    };
+  };
+
+
   function comp_drawLight(utp, unit) {
     if(!utp.useConicalLight) {
       utp.super$drawLight(unit);
     } else {
       MDL_draw._l_arc(unit.x, unit.y, 1.0, utp.lightRadius, utp.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
     };
+  };
+
+
+  function comp_ex_drawShield(utp, unit) {
+    LCDraw.shieldCircle(
+      unit.x, unit.y,
+      unit.hitSize * utp.shieldRadScl * 1.3 + Mathf.lerp(0.0, utp.shieldRadHitInc, unit.shieldAlpha),
+      utp.ex_getShieldColor(unit),
+      Mathf.lerp(utp.baseShieldA, 1.0, unit.shieldAlpha),
+    );
   };
 
 
@@ -97,6 +114,12 @@
     skipOutlineSetup: false,
     // @PARAM: Whether to enable health-based status effects.
     useLovecDamagePenalty: true,
+    // @PARAM: If larger than 0.0, the shield will always be drawn.
+    baseShieldA: 0.0,
+    // @PARAM: Multiplier on shield radius.
+    shieldRadScl: 1.0,
+    // @PARAM: Increase of shield radius when shield it hit (or regenerated).
+    shieldRadHitInc: 0.75,
     // @PARAM: Whether to use conical unit light instead of vanilla circular one.
     useConicalLight: true,
     // @PARAM: Affects cone angle of the light.
@@ -123,8 +146,37 @@
     },
 
 
+    draw: function(unit) {
+      comp_draw(this, unit);
+    },
+
+
     drawLight: function(unit) {
       comp_drawLight(this, unit);
+    }
+    .setProp({
+      noSuper: true,
+    }),
+
+
+    drawShield: function(unit) {
+
+    }
+    .setProp({
+      noSuper: true,
+    }),
+
+
+    ex_getShieldColor: function(unit) {
+      return Tmp.c2.set(tryVal(this.shieldColor, unit.team.color)).lerp(Color.white, Mathf.clamp(unit.hitTime / 2.0));
+    }
+    .setProp({
+      noSuper: true,
+    }),
+
+
+    ex_drawShield: function(unit) {
+      comp_ex_drawShield(this, unit);
     }
     .setProp({
       noSuper: true,

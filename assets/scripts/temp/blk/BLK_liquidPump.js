@@ -145,7 +145,7 @@
 
 
       ex_getRsTg: function() {
-        return this.liquidDrop;
+        return tryVal(this.liquidDrop, null);
       }
       .setProp({
         noSuper: true,

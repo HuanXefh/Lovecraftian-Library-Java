@@ -981,8 +981,8 @@
    *
    * Gets an active ore scanner in range.
    * ---------------------------------------- */
-  const _b_scan = function(x, y, team, rad) {
-    return _b_base(x, y, team, rad, b => MDL_cond._isOreScanner(b.block) && b.efficiency > 0.0 && Mathf.dst(x, y, b.x, b.y) < b.block.delegee.blkRad);
+  const _b_scan = function(x, y, team, rad, dpLvlReq) {
+    return _b_base(x, y, team, rad, b => MDL_cond._isOreScanner(b.block) && b.block.delegee.scanTier >= tryVal(dpLvlReq, 0) && b.efficiency > 0.0 && Mathf.dst(x, y, b.x, b.y) < b.block.delegee.blkRad);
   };
   exports._b_scan = _b_scan;
 

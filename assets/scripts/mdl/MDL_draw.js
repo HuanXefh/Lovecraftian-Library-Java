@@ -780,6 +780,7 @@
     color_gn, a, isDashed, z
   ) {
     if(a == null) a = 1.0;
+    if(isDashed == null) isDashed = false;
     if(z == null) z = Layer.effect + VAR.lay_offDraw;
 
     processZ(z);
@@ -808,6 +809,7 @@
   ) {
     if(stroke == null) stroke = 1.5;
     if(scl == null) scl = 1.0;
+    if(isDashed == null) isDashed = false;
     if(z == null) z = Layer.effect + VAR.lay_offDraw;
 
     processZ(z);
@@ -977,6 +979,7 @@
     if(r == null) r = 0;
     if(size == null) size = 1;
     if(a == null) a = 1.0;
+    if(isDashed == null) isDashed = false;
     if(z == null) z = Layer.effect + VAR.lay_offDraw;
 
     processZ(z);
@@ -1028,6 +1031,7 @@
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return;
     if(a == null) a = 1.0;
+    if(isDashed == null) isDashed = false;
     if(z == null) z = Layer.effect + VAR.lay_offDraw;
 
     processZ(z);
@@ -1502,7 +1506,8 @@
       amtSeg = Math.ceil(w / 4.0 / segScl),
       segW = (w + 5.0) / (amtSeg + 1);
 
-    processZ(z);
+    let zPrev = Draw.z();
+    Draw.z(z);
 
     if(PARAM.unitStatStyle === 3) {
       offY -= 4.0;
@@ -1587,13 +1592,13 @@
         _d_progRing(
           x, y_sta,
           Mathf.clamp(1.0 - (e == null ? 0.0 : e.getDuration(stackSta)) / stackSta.delegee.burstTime),
-          2.25, 2.75, 90.0, Color.white, 1.0, true,
+          2.25, 2.75, 90.0, Color.white, 1.0, true, z,
         );
         Draw.rect(stackSta.uiIcon, x, y_sta, 4.0, 4.0);
       };
     };
 
-    processZ(z);
+    Draw.z(zPrev);
   };
   exports._d_unitStat = _d_unitStat;
 

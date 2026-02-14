@@ -51,23 +51,13 @@ var cls = CLS_achievement;
 /* ----------------------------------------
  * NOTE:
  *
- * Returns the string used in {Core.settings}.
- * ---------------------------------------- */
-cls.getHeader = function(nm) {
-  return "lovec-achieve-" + nm;
-};
-
-
-/* ----------------------------------------
- * NOTE:
- *
  * Clears all completed achievements.
  * ---------------------------------------- */
 cls.clear = function() {
   if(Vars.headless) return;
 
-  insNms.forEachFast(nm => {
-    Core.settings.put(CLS_achievement.getHeader(nm), false);
+  VARGEN.achievements.forEachFast(achievement => {
+    Core.settings.put(achievement.getHeader(), false);
   });
   Core.settings.put("lovec-misc-secret-code-crashed", false);
   Log.info("[LOVEC] Lovec achievement data has been [$1].".format("cleared".color(Pal.remove)));
@@ -97,7 +87,7 @@ ptp.getMod = function() {
  * Variant of {getHeader} called by instances.
  * ---------------------------------------- */
 ptp.getHeader = function() {
-  return CLS_achievement.getHeader(this.name);
+  return this.name;
 };
 
 

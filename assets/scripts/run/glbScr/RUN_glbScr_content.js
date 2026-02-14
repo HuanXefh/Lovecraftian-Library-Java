@@ -63,7 +63,7 @@
         return false;
       },
       display() {
-        Core.bundle.get("info.lovec-info-no-unlock.name");
+        return Core.bundle.get("info.lovec-info-no-unlock.name");
       },
     }));
   };

@@ -52,6 +52,18 @@
   };
 
 
+  function comp_ex_calcDpLvlReq(blk, tx, ty, rs) {
+    let val = 0, tmpVal = 0;
+    blk.ex_findDporesInLinkedTiles(tx, ty, rs).each(ot => {
+      tmpVal = ot.overlay().delegee.depthLvl;
+      if(tmpVal > val) {
+        val = tmpVal;
+      };
+    });
+    return val;
+  };
+
+
   function comp_ex_isMiningDepore(blk, tx, ty, rs) {
     return blk.ex_findDporesInLinkedTiles(tx, ty, rs).size > 0;
   };
@@ -93,6 +105,15 @@
 
       ex_findDporesInLinkedTiles: function(tx, ty, rs) {
         return comp_ex_findDporesInLinkedTiles(this, tx, ty, rs);
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 3,
+      }),
+
+
+      ex_calcDpLvlReq: function(tx, ty, rs) {
+        return comp_ex_calcDpLvlReq(this, tx, ty, rs);
       }
       .setProp({
         noSuper: true,

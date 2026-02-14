@@ -37,7 +37,7 @@
 
   function comp_updateTile(b) {
     if(b.requiresScanner && TIMER.effc) {
-      b.scannerCur = MDL_pos._b_scan(b.x, b.y, b.team);
+      b.scannerCur = MDL_pos._b_scan(b.x, b.y, b.team, null, b.delegee.dpLvlReqCur);
     };
   };
 
@@ -76,6 +76,8 @@
 
 
       __PARAM_OBJ_SETTER__: () => ({
+        // @PARAM: Currently required minimum depth tier of ore scanner. Should be updated in templates.
+        dpLvlReqCur: 0,
         // @PARAM: Offset for the text displayed when no scanner is found.
         noScannerTextOffTy: 0,
       }),

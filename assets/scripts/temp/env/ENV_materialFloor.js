@@ -54,7 +54,7 @@
         blk.statusDuration = VAR.time_flrStaDef;
       };
 
-      if(blk.speedMultiplier.fEqual(1.0)) blk.speedMultiplier = DB_env.db["grpParam"]["floor"]["speed"].read(blk.ex_matGrp, 1.0);
+      if(blk.speedMultiplier.fEqual(1.0)) blk.speedMultiplier = DB_env.db["grpParam"]["floor"]["speed"].read(blk.matGrp, 1.0);
     };
 
     DB_env.db["grpParam"]["floor"]["extraSetter"].read(blk.matGrp, Function.air)(blk, blk.overwriteVanillaProp);

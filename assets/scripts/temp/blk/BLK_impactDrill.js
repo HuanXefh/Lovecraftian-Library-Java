@@ -105,6 +105,14 @@
       },
 
 
+      drawSelect: function() {
+
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
       ex_onCraft: function() {
         this.ex_createImpactWave();
       }
