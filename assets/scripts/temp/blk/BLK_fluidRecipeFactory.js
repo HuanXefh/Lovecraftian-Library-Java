@@ -43,7 +43,7 @@
     // Block
     newClass().extendClass(PARENT[0], "BLK_fluidRecipeFactory").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac")
+    .setTags("blk-fac", "blk-rc0fac")
     .setParam({})
     .setMethod({}),
 

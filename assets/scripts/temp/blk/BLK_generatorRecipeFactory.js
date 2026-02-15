@@ -63,7 +63,7 @@
     // Block
     newClass().extendClass(PARENT[0], "BLK_generatorRecipeFactory").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-pow", "blk-pow0gen")
+    .setTags("blk-pow", "blk-rc0fac", "blk-pow0gen")
     .setParam({
       // @PARAM: Minimum warmup required to create explosion when destroyed.
       exploMinWarmup: Infinity,

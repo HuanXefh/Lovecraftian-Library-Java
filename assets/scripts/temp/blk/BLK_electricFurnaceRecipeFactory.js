@@ -68,7 +68,7 @@
     // Block
     newClass().extendClass(PARENT[0], "BLK_electricFurnaceRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac", "blk-furn")
+    .setTags("blk-fac", "blk-rc0fac", "blk-furn")
     .setParam({})
     .setMethod({
 

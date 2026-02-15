@@ -43,7 +43,7 @@
     // Block
     newClass().extendClass(PARENT[0], "BLK_chemicalReactor").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac", "blk-chem0reac")
+    .setTags("blk-fac", "blk-rc0fac", "blk-chem0reac")
     .setParam({
       noFuelInput: true,                // Reactor is not a furnace, it just requires heating
       furnHeatA: 0.3,

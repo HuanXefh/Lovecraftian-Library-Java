@@ -36,6 +36,25 @@
   /* ----------------------------------------
    * NOTE:
    *
+   * Called just after script is loaded.
+   * ---------------------------------------- */
+  const _c_onPostRun = function thisFun(scr, id) {
+    if(id != null && thisFun.ids.includes(id)) return;
+    if(id != null) thisFun.ids.push(id);
+
+    Core.app.post(() => {
+      scr();
+    });
+  }
+  .setProp({
+    ids: [],
+  });
+  exports._c_onPostRun = _c_onPostRun;
+
+
+  /* ----------------------------------------
+   * NOTE:
+   *
    * Called on after all contents are initialized (after {postInit}).
    * ---------------------------------------- */
   const _c_onInit = function thisFun(scr, id) {

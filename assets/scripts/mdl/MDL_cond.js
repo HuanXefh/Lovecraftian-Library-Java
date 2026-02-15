@@ -576,6 +576,17 @@
   /* ----------------------------------------
    * NOTE:
    *
+   * Whether this block is a recipe factory (multi-crafter).
+   * ---------------------------------------- */
+  const _isRecipeFactory = function(blk_gn) {
+    return matchTag(blk_gn, "blk-rc0fac", "blk");
+  };
+  exports._isRecipeFactory = _isRecipeFactory;
+
+
+  /* ----------------------------------------
+   * NOTE:
+   *
    * Whether this block is a furnace.
    * ---------------------------------------- */
   const _isFurnace = function(blk_gn) {

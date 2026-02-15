@@ -106,11 +106,9 @@
   const DB_unit = require("lovec/db/DB_unit");
 
 
-  const MOD_tmi = require("lovec/mod/MOD_tmi");
-
-
-  // Keep this at bottom!
+  // Keep these at bottom!
   const RUN_global = require("lovec/run/RUN_global");
+  const RUN_tmi = require("lovec/run/RUN_tmi");
 
 
   /* <---------- load ----------> */
@@ -139,15 +137,6 @@
 
     // Map reading fallback addition
     DB_misc.db["block"]["migration"].forEachRow(2, (nm_f, nm_t) => SaveVersion.fallback.put(nm_f, nm_t));
-
-
-    // Prepare for TMI loading
-    if(!Vars.headless) {
-      Vars.content.blocks().each(
-        blk => blk instanceof BeamDrill,
-        blk => MOD_tmi._r_wallDrillDeposit(blk),
-      );
-    };
 
 
     // Set up ore dictionary, EXPERIMENTAL!

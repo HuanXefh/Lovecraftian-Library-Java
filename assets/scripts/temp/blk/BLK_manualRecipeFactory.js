@@ -59,7 +59,7 @@
     // Block
     newClass().extendClass(PARENT[0], "BLK_manualRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac")
+    .setTags("blk-fac", "blk-rc0fac")
     .setParam({
       skipTapConfig: true,
     })

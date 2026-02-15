@@ -41,6 +41,30 @@
 
   const ENABLED = fetchMod("tmi") != null;
   exports.ENABLED = ENABLED;
+  const TooManyItems = !ENABLED ? null : fetchClass("tmi.TooManyItems");
+  exports.TooManyItems = TooManyItems;
+  const Recipe = !ENABLED ? null : fetchClass("tmi.recipe.Recipe");
+  exports.Recipe = Recipe;
+  const RecipeItemGroup = !ENABLED ? null : fetchClass("tmi.recipe.RecipeItemGroup");
+  exports.RecipeItemGroup = RecipeItemGroup;
+  const RecipeParser = !ENABLED ? null : fetchClass("tmi.recipe.RecipeParser");
+  exports.RecipeParser = RecipeParser;
+  const RecipeType = !ENABLED ? null : fetchClass("tmi.recipe.RecipeType");
+  exports.RecipeType = RecipeType;
+  const AttributeCrafterParser = !ENABLED ? null : fetchClass("tmi.recipe.parser.AttributeCrafterParser");
+  exports.AttributeCrafterParser = AttributeCrafterParser;
+  const BeamDrillParser = !ENABLED ? null : fetchClass("tmi.recipe.parser.BeamDrillParser");
+  exports.BeamDrillParser = BeamDrillParser;
+  const GenericCrafterParser = !ENABLED ? null : fetchClass("tmi.recipe.parser.GenericCrafterParser");
+  exports.GenericCrafterParser = GenericCrafterParser;
+  const WallCrafterParser = !ENABLED ? null : fetchClass("tmi.recipe.parser.WallCrafterParser");
+  exports.WallCrafterParser = WallCrafterParser;
+  const HeatMark = !ENABLED ? null : fetchClass("tmi.recipe.types.HeatMark");
+  exports.HeatMark = HeatMark;
+  const PowerMark = !ENABLED ? null : fetchClass("tmi.recipe.types.PowerMark");
+  exports.PowerMark = PowerMark;
+  const RecipeItemType = !ENABLED ? null : fetchClass("tmi.recipe.types.RecipeItemType");
+  exports.RecipeItemType = RecipeItemType;
 
 
   /* ----------------------------------------
@@ -94,12 +118,30 @@
    * NOTE:
    *
    * Adds a raw recipe to TMI recipe manager.
-   * Remember to complete it before registration.
+   * Remember to complete it by {rawRc.complete()} before registration.
    * ---------------------------------------- */
   const regisRc = function(rawRc) {
     TooManyItems.recipesManager.addRecipe(rawRc, true);
   };
   exports.regisRc = regisRc;
+
+
+  /* ----------------------------------------
+   * NOTE:
+   *
+   * Adds a recipe parser to TMI recipe manager.
+   * ---------------------------------------- */
+  const regisParser = function(obj) {
+    processClassLoader();
+    let rcParser = extend(RecipeParser, obj);
+    processClassLoader();
+
+    TooManyItems.recipesManager.registerParser(rcParser);
+  };
+  exports.regisParser = regisParser;
+
+
+  /* <---------- recipe ----------> */
 
 
   /* ----------------------------------------
@@ -162,6 +204,24 @@
     return rawRc;
   };
   exports.addConsBooster = addConsBooster;
+
+
+  /* ----------------------------------------
+   * NOTE:
+   *
+   * Adds an alternate consumption term to the raw recipe.
+   * ---------------------------------------- */
+  const addConsAlter = function(rawRc, rcGrp, ct_gn, amt, isContinuous) {
+    let rcStack = !isContinuous ?
+      rawRc.addMaterialFloat(_ct(ct_gn), amt) :
+      rawRc.addMaterialPersec(_ct(ct_gn), amt);
+
+    rcStack
+    .setGroup(rcGrp);
+
+    return rawRc;
+  };
+  exports.addConsAlter = addConsAlter;
 
 
   /* ----------------------------------------
@@ -239,7 +299,7 @@
     let blk = MDL_content._ct(blk_gn, "blk");
     if(blk == null || blk.itemDrop == null) return;
 
-    rawRc.addMaterial(_ct(blk.itemDrop), isWallEffc ? size : Math.round(size, 2))
+    rawRc.addMaterial(_ct(blk), isWallEffc ? size : Math.round(size, 2))
     .setType(RecipeItemType.ATTRIBUTE)
     .setEff(realEffc)
     .emptyFormat()
@@ -248,24 +308,6 @@
     return rawRc;
   };
   exports.addMineTile = addMineTile;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds an alternate consumption term to the raw recipe.
-   * ---------------------------------------- */
-  const addConsAlter = function(rawRc, rcGrp, ct_gn, amt, isContinuous) {
-    let rcStack = !isContinuous ?
-      rawRc.addMaterialFloat(_ct(ct_gn), amt) :
-      rawRc.addMaterialPersec(_ct(ct_gn), amt);
-
-    rcStack
-    .setGroup(rcGrp);
-
-    return rawRc;
-  };
-  exports.addConsAlter = addConsAlter;
 
 
   /* ----------------------------------------
@@ -290,21 +332,6 @@
     return rawRc;
   };
   exports.addOpt = addOpt;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Builds the sub info table of {rawRc}.
-   * ---------------------------------------- */
-  const addSubInfo = function(rawRc, str0tableF, shouldPrepend) {
-    typeof str0tableF !== "string" ?
-      (shouldPrepend ? rawRc.prependSubInfo(str0tableF) : rawRc.appendSubInfo(str0tableF)) :
-      (shouldPrepend ? rawRc.prependSubInfo(tb => {tb.add(str0tableF).left(); tb.row()}) : rawRc.appendSubInfo(tb => {tb.row(); tb.add(str0tableF).left()}));
-
-    return rawRc;
-  };
-  exports.addSubInfo = addSubInfo;
 
 
   /* ----------------------------------------
@@ -346,39 +373,53 @@
   exports.baseParse = baseParse;
 
 
-  /* <---------- lovec ----------> */
+  /* ----------------------------------------
+   * NOTE:
+   *
+   * Builds the sub info table of {rawRc}.
+   * ---------------------------------------- */
+  const addSubInfo = function(rawRc, str0tableF, shouldPrepend) {
+    typeof str0tableF !== "string" ?
+      (shouldPrepend ? rawRc.prependSubInfo(str0tableF) : rawRc.appendSubInfo(str0tableF)) :
+      (shouldPrepend ? rawRc.prependSubInfo(tb => {tb.add(str0tableF).left(); tb.row()}) : rawRc.appendSubInfo(tb => {tb.row(); tb.add(str0tableF).left()}));
+
+    return rawRc;
+  };
+  exports.addSubInfo = addSubInfo;
 
 
   /* ----------------------------------------
    * NOTE:
    *
-   * Used to fix unparsed deposit mining recipes.
+   * Builds sub info for optional input.
    * ---------------------------------------- */
-  const _r_wallDrillDeposit = function thisFun(blk) {
-    if(!ENABLED) return;
+  const addSubInfo_opt = function(rawRc, opt) {
+    if(opt == null || opt.length === 0) return rawRc;
 
-    MDL_event._c_onLoad(() => {
-      Vars.content.blocks().each(
-        oblk => MDL_cond._isOreDepo(oblk) && oblk.itemDrop != null,
-        oblk => {
-          if(!thisFun.oreGrpMap.containsKey(oblk.itemDrop)) thisFun.oreGrpMap.put(oblk.itemDrop, new RecipeItemGroup());
-
-          let rawRc = _rawRc("collecting", blk, blk.drillTime, true);
-
-          baseParse(blk, rawRc, blk.optionalBoostIntensity);
-          addMineTile(rawRc, thisFun.oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size, true);
-          addProd(rawRc, oblk.itemDrop, blk.size, false);
-
-          rawRc.complete();
-          regisRc(rawRc);
-        },
-      );
+    addSubInfo(rawRc, tb => {
+      tb.row();
+      tb.table(Styles.none, tb1 => {
+        let i = 0;
+        opt.forEachRow(4, (ct, amt, p, mtp) => {
+          tb1.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
+          MDL_table.__rcCt(tb1, ct, amt, p).padRight(72.0);
+          tb1.add(MDL_text._statText(
+            MDL_bundle._term("lovec", "efficiency-multiplier"),
+            mtp.perc(0),
+          )).center().padRight(6.0);
+          tb1.row();
+          i += 4;
+        });
+      }).row();
+      MDL_table.__break(tb);
     });
-  }
-  .setProp({
-    oreGrpMap: new ObjectMap(),
-  });
-  exports._r_wallDrillDeposit = _r_wallDrillDeposit;
+
+    return rawRc;
+  };
+  exports.addSubInfo_opt = addSubInfo_opt;
+
+
+  /* <---------- registration ----------> */
 
 
   /* ----------------------------------------
@@ -462,37 +503,6 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * Builds sub info for optional input.
-   * ---------------------------------------- */
-  const addSubInfo_opt = function(rawRc, opt) {
-    if(opt == null || opt.length === 0) return rawRc;
-
-    addSubInfo(rawRc, tb => {
-      tb.row();
-      tb.table(Styles.none, tb1 => {
-        let i = 0;
-        opt.forEachRow(4, (ct, amt, p, mtp) => {
-          tb1.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
-          MDL_table.__rcCt(tb1, ct, amt, p).padRight(72.0);
-          tb1.add(MDL_text._statText(
-            MDL_bundle._term("lovec", "efficiency-multiplier"),
-            mtp.perc(0),
-          )).center().padRight(6.0);
-          tb1.row();
-          i += 4;
-        });
-      }).row();
-      MDL_table.__break(tb);
-    });
-
-    return rawRc;
-  };
-  exports.addSubInfo_opt = addSubInfo_opt;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
    * Registers recipes for the recipe factory.
    * ---------------------------------------- */
   const _r_recipe = function thisFun(blk, rcMdl) {
@@ -511,10 +521,12 @@
         let aux = MDL_recipe._aux(rcMdl, rcHeader);
         let reqOpt = MDL_recipe._reqOpt(rcMdl, rcHeader);
         let opt = MDL_recipe._opt(rcMdl, rcHeader);
+        let payi = MDL_recipe._payi(rcMdl, rcHeader);
         let co = MDL_recipe._co(rcMdl, rcHeader);
         let bo = MDL_recipe._bo(rcMdl, rcHeader);
         let failP = MDL_recipe._failP(rcMdl, rcHeader);
         let fo = MDL_recipe._fo(rcMdl, rcHeader);
+        let payo = MDL_recipe._payo(rcMdl, rcHeader);
         // Specific
         let isGen = MDL_recipe._isGen(rcMdl, rcHeader);
 
@@ -526,23 +538,33 @@
         };
 
         // Regular IO
+        let ciAlterChecked = false, biAlterChecked = false;
         thisFun.tmpSeq.each(ct0 => {
           let amtCi = 0.0, amtBi = 0.0, amtCo = 0.0, amtBo = 0.0;
 
           // CI
-          ci.forEachRow(2, (ct, amt) => {
-            if(ct === ct0) amtCi += amt;
+          ci.forEachRow(2, (tmp, amt) => {
+            if(!(tmp instanceof Array)) {
+              if(tmp === ct0) amtCi += amt;
+            } else if(!ciAlterChecked) {
+              let rcGrpCi = new RecipeItemGroup();
+              tmp.forEachRow(2, (tmp1, amt1) => {
+                addConsAlter(rawRc, rcGrpCi, tmp1, amt1, true);
+              });
+              ciAlterChecked = true;
+            };
           });
 
           // BI
           bi.forEachRow(3, (tmp, amt, p) => {
             if(!(tmp instanceof Array)) {
               if(tmp === ct0) amtBi += amt * p;
-            } else {
+            } else if(!biAlterChecked) {
               let rcGrpBi = new RecipeItemGroup();
               tmp.forEachRow(3, (tmp1, amt1, p1) => {
                 addConsAlter(rawRc, rcGrpBi, tmp1, amt1 * p1, false);
               });
+              biAlterChecked = true;
             };
           });
 
@@ -552,6 +574,11 @@
           });
 
           // OPT (skipped here)
+
+          // PAYI
+          payi.forEachRow(2, (nmCt, amt) => {
+            addCons(rawRc, nmCt, amt, false);
+          });
 
           // CO
           co.forEachRow(2, (ct, amt) => {
@@ -566,6 +593,11 @@
           // FO
           fo.forEachRow(3, (ct, amt, p) => {
             if(ct === ct0) amtBo += amt * p * failP;
+          });
+
+          // PAYO
+          payo.forEachRow(2, (nmCt, amt) => {
+            addProd(rawRc, nmCt, amt, false);
           });
 
           if(amtCi > 0.0) addCons(rawRc, ct0, amtCi, true);
