@@ -134,8 +134,26 @@
       }),
 
 
+      ex_getCraftTime: function() {
+        return 300.0;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
       ex_getDynaAttrBaseAmt_liq: function() {
         return this.liqProdRate;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      ex_getDynaAttrProdTypeStr: function() {
+        return "collecting";
       }
       .setProp({
         noSuper: true,

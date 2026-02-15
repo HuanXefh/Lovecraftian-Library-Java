@@ -174,6 +174,24 @@
       }),
 
 
+      ex_getDynaAttrProdTypeStr: function() {
+        return "collecting";
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      ex_getDynaAttrProdIsWall: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
     }),
 
 

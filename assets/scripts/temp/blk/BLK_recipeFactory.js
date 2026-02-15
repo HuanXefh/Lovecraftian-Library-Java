@@ -31,6 +31,7 @@
 
 
   const MDL_bundle = require("lovec/mdl/MDL_bundle");
+  const MDL_recipe = require("lovec/mdl/MDL_recipe");
   const MDL_table = require("lovec/mdl/MDL_table");
 
 
@@ -59,6 +60,10 @@
         ).add();
       }).row();
     }));
+
+    if(!MDL_recipe._hasAnyOutput_pay(blk.rcMdl)) {
+      blk.stats.remove(fetchStat("lovec", "blk0fac-payroom"));
+    };
   };
 
 

@@ -35,6 +35,9 @@
   const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
 
 
+  const MOD_tmi = require("lovec/mod/MOD_tmi");
+
+
   /* <---------- component ----------> */
 
 
@@ -47,6 +50,8 @@
         );
       });
     });
+
+    MOD_tmi._r_rainCollector(blk);
   };
 
 

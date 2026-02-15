@@ -700,6 +700,17 @@
   /* ----------------------------------------
    * NOTE:
    *
+   * Whether this block is a deposit (tall block ore).
+   * ---------------------------------------- */
+  const _isOreDepo = function(blk_gn) {
+    return matchTag(blk_gn, "blk-depo", "blk");
+  };
+  exports._isOreDepo = _isOreDepo;
+
+
+  /* ----------------------------------------
+   * NOTE:
+   *
    * Whether this block is a large tree (or mushroom).
    * ---------------------------------------- */
   const _isTreeBlock = function(blk_gn) {

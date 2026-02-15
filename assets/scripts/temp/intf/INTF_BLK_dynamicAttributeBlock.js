@@ -78,7 +78,7 @@
       });
     });
 
-    MOD_tmi._r_dynaAttr(blk, blk.attrRsMap);
+    MOD_tmi._r_dynaAttr(blk, blk.attrRsMap, blk.ex_getDynaAttrProdTypeStr(), blk.ex_getDynaAttrProdIsWall());
   };
 
 
@@ -398,6 +398,24 @@
        * ---------------------------------------- */
       ex_getDynaAttrBaseAmt_liq: function() {
         return 0.0;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      // @LATER
+      ex_getDynaAttrProdTypeStr: function() {
+        return null;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      // @LATER
+      ex_getDynaAttrProdIsWall: function() {
+        return false;
       }
       .setProp({
         noSuper: true,
