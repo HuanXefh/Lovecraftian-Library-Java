@@ -35,9 +35,6 @@
   const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
 
 
-  const MOD_tmi = require("lovec/mod/MOD_tmi");
-
-
   /* <---------- component ----------> */
 
 
@@ -48,8 +45,6 @@
         MDL_recipeDict.addFldProdTerm(blk, blk.presProd > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, Math.abs(blk.presProd), null);
       });
     });
-
-    MOD_tmi._r_presPump(blk, Math.abs(blk.presProd), blk.presProd < 0.0);
   };
 
 

@@ -22,9 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
   const MDL_attr = require("lovec/mdl/MDL_attr");
   const MDL_bundle = require("lovec/mdl/MDL_bundle");
   const MDL_cond = require("lovec/mdl/MDL_cond");
@@ -450,28 +447,6 @@
     });
   };
   exports._r_dynaAttr = _r_dynaAttr;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Registers pressure/vacuum output for the pressure pump.
-   * ---------------------------------------- */
-  const _r_presPump = function(blk, prodAmt, isVac) {
-    if(!ENABLED) return;
-    if(prodAmt < 0.0001) return;
-
-    MDL_event._c_onLoad(() => {
-      let rawRc = _rawRc("factory", blk, -1.0);
-
-      baseParse(blk, rawRc);
-      addProd(rawRc, isVac ? VARGEN.auxVac : VARGEN.auxPres, prodAmt, true);
-
-      rawRc.complete();
-      regisRc(rawRc);
-    });
-  };
-  exports._r_presPump = _r_presPump;
 
 
   /* ----------------------------------------

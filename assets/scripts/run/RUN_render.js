@@ -34,7 +34,7 @@
   const DB_env = require("lovec/db/DB_env");
 
 
-  /* <---------- base ----------> */
+  /* <---------- noise ----------> */
 
 
   let noiseArgs = null;
@@ -46,12 +46,11 @@
 
 
   function drawNoise() {
-    if(Vars.state.isMenu() || noiseArgs == null) return;
+    if(Vars.state.isMenu() || !Core.settings.getBool("showweather") || noiseArgs == null) return;
     let tex = VARGEN.noiseTexs[noiseArgs[0]];
     if(tex == null) return;
 
-    let z = Draw.z();
-    Draw.z(Layer.weather - 0.9);
+    processZ(Layer.weather - 0.9);
 
     let i = 0, iCap = noiseArgs.iCap();
     while(i < iCap) {
@@ -60,7 +59,7 @@
     };
     Draw.reset();
 
-    Draw.z();
+    processZ(Layer.weather - 0.9);
   };
 
 

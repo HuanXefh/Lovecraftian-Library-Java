@@ -30,11 +30,13 @@
 
 
   function comp_init(blk) {
-    if(blk.itemDrop != null) {
-      if(blk.dropHardness < 0.0) blk.dropHardness = blk.itemDrop.hardness;
-    } else {
-      blk.dropHardness = 0.0;
-    };
+    Core.app.post(() => {
+      if(blk.itemDrop != null) {
+        if(blk.dropHardness < 0.0) blk.dropHardness = blk.itemDrop.hardness;
+      } else {
+        blk.dropHardness = Number.n4;
+      };
+    });
   };
 
 

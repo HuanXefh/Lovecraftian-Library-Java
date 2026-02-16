@@ -44,7 +44,7 @@
 
 
   function comp_ex_isValidTg(blk, oblk) {
-    return MDL_cond._isMiner(oblk) || MDL_cond._isPump(oblk) || MDL_cond._isFactory(oblk);
+    return MDL_cond._isMiner(oblk) || MDL_cond._isPump(oblk) || MDL_cond._isFactory(oblk) || MDL_cond._isProjector(oblk);
   };
 
 

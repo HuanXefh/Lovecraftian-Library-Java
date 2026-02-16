@@ -86,10 +86,12 @@
 
 
       excludes: Seq.with(
+        MOD_tmi.AttributeCrafterParser,
         MOD_tmi.GenericCrafterParser,
         MOD_tmi.WallCrafterParser,
       ),
       temps: [
+        "BLK_depthPump",
         "BLK_dynamicWallHarvester",
         "BLK_fuelLight",
         "BLK_incinerator",
