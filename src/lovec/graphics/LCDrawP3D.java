@@ -21,6 +21,9 @@ public class LCDrawP3D {
     static final float camOffScl = 0.06f;
 
 
+    /* <-------------------- calculation --------------------> */
+
+
     /**
      * Calculates the offset coordinate.
      */
@@ -75,6 +78,9 @@ public class LCDrawP3D {
 
         return 0f;
     }
+
+
+    /* <-------------------- draw --------------------> */
 
 
     /**

@@ -314,7 +314,9 @@
    * Converts a tile coordination to world coordination.
    * ---------------------------------------- */
   ptp.toFCoord = function(size) {
-    return this * Vars.tilesize + (tryVal(size, 1) % 2 === 0 ? 4.0 : 0.0);
+    return size == null ?
+      LCFormat.toFCoord(this) :
+      LCFormat.toFCoord(this, size);
   };
 
 
@@ -324,7 +326,7 @@
    * Converts a world coordination to tile coordination.
    * ---------------------------------------- */
   ptp.toIntCoord = function() {
-    return Math.round(this / Vars.tilesize);
+    return LCFormat.toIntCoord(this);
   };
 
 

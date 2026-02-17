@@ -119,6 +119,10 @@
   SDLVideo = org.lwjgl.sdl.SDLVideo;
 
 
+  // Arc
+  SDL = arc.backend.sdl.jni.SDL;
+
+
   // Java class storage
   JAVA = {
 
@@ -190,6 +194,8 @@
   // Lovec Java
   LCDraw = fetchClass("lovec.graphics.LCDraw");
   LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
+  LCRaycast = fetchClass("lovec.math.LCRaycast");
+  LCFormat = fetchClass("lovec.utils.LCFormat");
 
 
   // Lovec internal

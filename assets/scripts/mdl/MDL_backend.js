@@ -25,6 +25,9 @@
   /* <---------- base ----------> */
 
 
+  let useSDL3 = typeof SDLVideo.SDL_SetWindowTitle === "function";
+
+
   /* ----------------------------------------
    * NOTE:
    *
@@ -52,7 +55,7 @@
    * Minimizes a window.
    * ---------------------------------------- */
   const _w_min = function(winLong) {
-    SDLVideo.SDL_MinimizeWindow(tryVal(winLong, Core.app.window));
+    (useSDL3 ? SDLVideo : SDL).SDL_MinimizeWindow(tryVal(winLong, Core.app.window));
   }
   .setAnno("windows-only");
   exports._w_min = _w_min;
@@ -64,7 +67,7 @@
    * Maximizes a window.
    * ---------------------------------------- */
   const _w_max = function(winLong) {
-    SDLVideo.SDL_MaximizeWindow(tryVal(winLong, Core.app.window));
+    (useSDL3 ? SDLVideo : SDL).SDL_MaximizeWindow(tryVal(winLong, Core.app.window));
   }
   .setAnno("windows-only");
   exports._w_max = _w_max;
@@ -76,7 +79,7 @@
    * Restores a window.
    * ---------------------------------------- */
   const _w_restor = function(winLong) {
-    SDLVideo.SDL_RestoreWindow(tryVal(winLong, Core.app.window));
+    (useSDL3 ? SDLVideo : SDL).SDL_RestoreWindow(tryVal(winLong, Core.app.window));
   }
   .setAnno("windows-only");
   exports._w_restor = _w_restor;
@@ -88,7 +91,7 @@
    * Sets the title of a window.
    * ---------------------------------------- */
   const setWinTitle = function(winLong, str) {
-    SDLVideo.SDL_SetWindowTitle(tryVal(winLong, Core.app.window), tryVal(str, Vars.appName));
+    (useSDL3 ? SDLVideo : SDL).SDL_SetWindowTitle(tryVal(winLong, Core.app.window), tryVal(str, Vars.appName));
   }
   .setAnno("windows-only");
   exports.setWinTitle = setWinTitle;
@@ -103,7 +106,7 @@
     if(mode != null) mode = "info";
     if(!mode.equalsAny(thisFun.modes)) return;
 
-    SDLVideo.SDL_ShowSimpleMessageBox(
+    (useSDL3 ? SDLVideo : SDL).SDL_ShowSimpleMessageBox(
       mode === "info" ?
         0x00000040 :
         mode === "warn" ?

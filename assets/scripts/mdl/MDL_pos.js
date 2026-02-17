@@ -139,19 +139,7 @@
   /* <---------- raycast ----------> */
 
 
-  /* raycast boolean function */
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The basic raycast boolean function.
-   * Filter is given as {boolF}.
-   * ---------------------------------------- */
-  const _rayBool_base = function(x1, y1, x2, y2, boolF) {
-    return World.raycast(x1.toIntCoord(), y1.toIntCoord(), x2.toIntCoord(), y2.toIntCoord(), boolF);
-  };
-  exports._rayBool_base = _rayBool_base;
+  /* raycast check */
 
 
   /* ----------------------------------------
@@ -159,15 +147,14 @@
    *
    * Whether the ray passes insulated blocks.
    * ---------------------------------------- */
-  const _rayBool_insulated = function(x1, x2, y1, y2, team) {
-    return _rayBool_base(x1, y1, x2, y2, (tx, ty) => {
-      let ob = Vars.world.build(tx, ty);
-
-      if(ob == null) return false;
-      if(ob.isInsulated()) return team == null ? true : ob.team !== team;
+  const _rayCheck_insulated = function(x1, x2, y1, y2, team) {
+    let ob;
+    return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) => {
+      ob = Vars.world.build(tx, ty);
+      return ob != null && ob.isInsulated() && (team == null ? true : ob.team !== team);
     });
   };
-  exports._rayBool_insulated = _rayBool_insulated;
+  exports._rayCheck_insulated = _rayCheck_insulated;
 
 
   /* ----------------------------------------
@@ -175,15 +162,14 @@
    *
    * Whether the ray passes laser absorbers.
    * ---------------------------------------- */
-  const _rayBool_laser = function(x1, x2, y1, y2, team) {
-    return _rayBool_base(x1, y1, x2, y2, (tx, ty) => {
-      let ob = Vars.world.build(tx, ty);
-
-      if(ob == null) return false;
-      if(ob.block.absorbLasers) return team == null ? true : ob.team !== team;
+  const _rayCheck_laser = function(x1, x2, y1, y2, team) {
+    let ob;
+    return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) => {
+      ob = Vars.world.build(tx, ty);
+      return ob != null && ob.block.absorbLasers && (team == null ? true : ob.team !== team);
     });
   };
-  exports._rayBool_laser = _rayBool_laser;
+  exports._rayCheck_laser = _rayCheck_laser;
 
 
   /* ----------------------------------------
@@ -191,14 +177,14 @@
    *
    * Whether the ray passes solid blocks.
    * ---------------------------------------- */
-  const _rayBool_solid = function(x1, y1, x2, y2) {
-    return _rayBool_base(x1, y1, x2, y2, (tx, ty) => {
-      let ot = Vars.world.tile(tx, ty);
-
+  const _rayCheck_solid = function(x1, y1, x2, y2) {
+    let ot;
+    return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) => {
+      ot = Vars.world.tile(tx, ty);
       return ot != null && ot.solid();
     });
   };
-  exports._rayBool_solid = _rayBool_solid;
+  exports._rayCheck_solid = _rayCheck_solid;
 
 
   /* ----------------------------------------
@@ -208,37 +194,18 @@
    * Liquid floor and empty floor are considered mobile, which may reduce the transmission of impact wave.
    * Use {minRad} to set the minimum range required to return {true}.
    * ---------------------------------------- */
-  const _rayBool_mobileFlr = function(x1, y1, x2, y2, minRad) {
+  const _rayCheck_mobileFlr = function(x1, y1, x2, y2, minRad) {
     if(minRad == null) minRad = 0.0;
-
-    return _rayBool_base(x1, y1, x2, y2, (tx, ty) => {
-      let ot = Vars.world.tile(tx, ty);
-      if(Mathf.dst(x1, y1, x2, y2) < minRad) return false;
-
-      return ot != null && (ot.floor() instanceof EmptyFloor || ot.floor().isLiquid);
+    let ot;
+    return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) => {
+      ot = Vars.world.tile(tx, ty);
+      return ot != null && Mathf.dst(x1, y1, x2, y2) >= minRad && (ot.floor() instanceof EmptyFloor || ot.floor().isLiquid);
     });
   };
-  exports._rayBool_mobileFlr = _rayBool_mobileFlr;
+  exports._rayCheck_mobileFlr = _rayCheck_mobileFlr;
 
 
-  /* raycast getter */
-
-
-  let tmpRayGet = null;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The basic raycast getter function.
-   * You should include {tmpRayGet} in {boolF}, or it only returns {null}.
-   * ---------------------------------------- */
-  const _rayGet_base = function(x1, y1, x2, y2, boolF) {
-    tmpRayGet = null;
-
-    return _rayBool_base(x1, y1, x2, y2, boolF) ? tmpRayGet : null;
-  };
-  exports._rayGet_base = _rayGet_base;
+  /* raycast find */
 
 
   /* ----------------------------------------
@@ -246,15 +213,16 @@
    *
    * Gets the first insulated building on the way.
    * ---------------------------------------- */
-  const _rayGet_insulated = function(x1, y1, x2, y2, team) {
-    return _rayGet_base(x1, y1, x2, y2, (tx, ty) => {
-      tmpRayGet = Vars.world.build(tx, ty);
-
-      if(tmpRayGet == null) return true;
-      if(tmpRayGet.isInsulated()) return team == null ? true : tmpRayGet.team !== team;
+  const _rayFind_insulated = function(x1, y1, x2, y2, team) {
+    let ob;
+    return LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) => {
+      ob = Vars.world.build(tx, ty);
+      return ob == null || !ob.isInsulated() || (team == null ? false : ob.team === team) ?
+        null :
+        ob;
     });
   };
-  exports._rayGet_insulated = _rayGet_insulated;
+  exports._rayFind_insulated = _rayFind_insulated;
 
 
   /* ----------------------------------------
@@ -262,15 +230,16 @@
    *
    * Gets the first laser-absorbing building on the way.
    * ---------------------------------------- */
-  const _rayGet_laser = function(x1, y1, x2, y2, team) {
-    return _rayGet_base(x1, y1, x2, y2, (tx, ty) => {
-      tmpRayGet = Vars.world.build(tx, ty);
-
-      if(tmpRayGet == null) return false;
-      if(tmpRayGet.block.absorbLasers) return team == null ? true : tmpRayGet.team !== team;
+  const _rayFind_laser = function(x1, y1, x2, y2, team) {
+    let ob;
+    return LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) => {
+      ob = Vars.world.build(tx, ty);
+      return ob == null || !ob.block.absorbLasers || (team == null ? false : ob.team === team) ?
+        null :
+        ob;
     });
   };
-  exports._rayGet_laser = _rayGet_laser;
+  exports._rayFind_laser = _rayFind_laser;
 
 
   /* ----------------------------------------
@@ -278,39 +247,16 @@
    *
    * Gets the first solid tile on the way.
    * ---------------------------------------- */
-  const _rayGet_solid = function(x1, y1, x2, y2) {
-    return _rayGet_base(x1, y1, x2, y2, (tx, ty) => {
-      tmpRayGet = Vars.world.tile(tx, ty);
-
-      return tmpRayGet == null || tmpRayGet.solid();
+  const _rayFind_solid = function(x1, y1, x2, y2) {
+    let ot;
+    return LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) => {
+      ot = Vars.world.tile(tx, ty);
+      return ot == null || !ot.solid() ?
+        null :
+        ot;
     });
   };
-  exports._rayGet_solid = _rayGet_solid;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the last non-solid tile on the way.
-   * On rare occasions the result can be {null}.
-   * ---------------------------------------- */
-  const _rayGet_nonSolid = function(x1, y1, x2, y2) {
-    let tmp = Vars.world.tile(x1, y1);
-
-    if(!_rayBool_base(x1, y1, x2, y2, (tx, ty) => {
-      tmpRayGet = Vars.world.tile(tx, ty);
-
-      if(tmpRayGet != null && !tmpRayGet.solid()) {
-        tmp = tmpRayGet;
-        return false;
-      } else return true;
-    })) {
-      tmp = Vars.world.tile(x2, y2);
-    };
-
-    return tmp;
-  };
-  exports._rayGet_nonSolid = _rayGet_nonSolid;
+  exports._rayFind_solid = _rayFind_solid;
 
 
   /* ----------------------------------------
@@ -318,15 +264,16 @@
    *
    * Gets the first matching unit on the way.
    * ---------------------------------------- */
-  const _rayGet_unit = function(x1, y1, x2, y2, boolF, caller) {
-    return _rayGet_base(x1, y1, x2, y2, (tx, ty) => {
-      tmpRayGet = _unit(tx * Vars.tilesize, ty * Vars.tilesize, 4.0, caller);
-
-      if(tmpRayGet == null) return false;
-      return boolF(tmpRayGet);
+  const _rayFind_unit = function(x1, y1, x2, y2, boolF, caller) {
+    let ounit;
+    return LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) => {
+      ounit = _unit(tx.toFCoord(), ty.toFCoord(), 4.0, caller);
+      return ounit == null || !boolF(ounit) ?
+        null :
+        ounit;
     });
   };
-  exports._rayGet_unit = _rayGet_unit;
+  exports._rayFind_unit = _rayFind_unit;
 
 
   /* <---------- coordinate ----------> */
@@ -1252,10 +1199,9 @@
    * NOTE:
    *
    * Gets targets in a chain, like chained lightning.
-   * {chainRayBool} is a raycast boolean function used to determine whether the chain is blocked.
-   * By default you may want {_rayBool_insulated} which is used for lightnings.
+   * {chainRayCheck} is used to determine whether the chain is blocked.
    * ---------------------------------------- */
-  const _esTgChain = function thisFun(x, y, team, rad, rad_chain, chainCap, chainRayBool, contArr) {
+  const _esTgChain = function thisFun(x, y, team, rad, rad_chain, chainCap, chainRayCheck, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
 
     if(team == null) return arr;
@@ -1263,7 +1209,7 @@
     if(rad < 0.0001) return arr;
     if(rad_chain == null) rad_chain = 0.0;
     if(chainCap == null) chainCap = -1;
-    if(chainRayBool == null) chainRayBool = Function.airFalse;
+    if(chainRayCheck == null) chainRayCheck = Function.airFalse;
 
     let es = _esTg(x, y, team, rad * 2.0, thisFun.tmpEs);
     let tmpTg;
@@ -1275,7 +1221,7 @@
       tmpTg = Geometry.findClosest(tmpX, tmpY, es);
       if(tmpTg == null) break;
       if(Mathf.dst(tmpX, tmpY, tmpTg.x, tmpTg.y) > (isFirst ? rad : rad_chain) + 0.0001) break;
-      if(chainRayBool(tmpX, tmpY, tmpTg.x, tmpTg.y)) break;
+      if(chainRayCheck(tmpX, tmpY, tmpTg.x, tmpTg.y)) break;
 
       arr.push(tmpTg);
       es.remove(tmpTg);

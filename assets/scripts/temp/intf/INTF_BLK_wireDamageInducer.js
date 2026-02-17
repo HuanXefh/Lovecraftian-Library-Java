@@ -59,7 +59,7 @@
     if(dmg < 0.0001) return;
     let b_t = b.ex_findWireTarget();
     if(b_t == null || b_t.power == null || b_t.power < 0.01) return;
-    let unit = MDL_pos._rayGet_unit(b.x, b.y, b_t.x, b_t.y, ounit => MDL_cond._isBoosting(ounit));
+    let unit = MDL_pos._rayFind_unit(b.x, b.y, b_t.x, b_t.y, ounit => MDL_cond._isBoosting(ounit));
     if(unit == null) return;
 
     TRIGGER.wireTouch.fire(b, unit);
