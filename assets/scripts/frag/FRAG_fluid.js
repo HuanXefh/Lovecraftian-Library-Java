@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods for liquid module.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,45 +20,23 @@
   /* <---------- import ----------> */
 
 
-  const EFF = require("lovec/glb/GLB_eff");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-  const FRAG_puddle = require("lovec/frag/FRAG_puddle");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_flow = require("lovec/mdl/MDL_flow");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_reaction = require("lovec/mdl/MDL_reaction");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
-  const DB_fluid = require("lovec/db/DB_fluid");
-
-
   /* <---------- liquid module ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds liquid to some building, with {b_f} as the source.
-   * Use negative {rate} for consumption.
-   * Set {returnFrac} to {true} for efficiency calculation.
-   * ---------------------------------------- */
+  /**
+   * Adds liquid to some building.
+   * @param {Building} b
+   * @param {Building|null} b_f
+   * @param {Liquid} liq
+   * @param {number} rate - Can be negative for consumption.
+   * @param {boolean|unset} [forced] - If true, liquid will be added regardless of `acceptLiquid`.
+   * @param {boolean|unset} [returnFrac] - If true, an efficiency fraction is returned instead of amount transferred.
+   * @param {boolean|unset} [noDelta] - If true, delta is not included in amount transferred.
+   * @return {number}
+   */
   const addLiquid = function(b, b_f, liq, rate, forced, returnFrac, noDelta) {
     let amtTrans = 0.0;
     if(b.liquids == null || (!forced && rate > 0.0 && !b.acceptLiquid(tryVal(b_f, b), liq))) return amtTrans;
-    if(rate == null) rate = 0.0;
     if(Math.abs(rate) < 0.0001) return amtTrans;
 
     let delta = noDelta ?
@@ -84,16 +60,18 @@
   exports.addLiquid = addLiquid;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used when a large amount of liquid is produced at once.
-   * Use negative {amt} for consumption.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link addLiquid} when a large amount of liquid is produced at once.
+   * @param {Building} b
+   * @param {Building|null} b_f
+   * @param {Liquid} liq
+   * @param {number} amt
+   * @param {boolean|unset} [forced]
+   * @return {number}
+   */
   const addLiquidBatch = function(b, b_f, liq, amt, forced) {
     let amtTrans = 0.0;
     if(b.liquids == null || (!forced && amt > 0.0 && !b.acceptLiquid(tryVal(b_f, b), liq))) return amtTrans;
-    if(amt == null) amt = 0.0;
     if(Math.abs(amt) < 0.0001) return amtTrans;
 
     amtTrans = amt > 0.0 ?
@@ -106,17 +84,19 @@
   exports.addLiquidBatch = addLiquidBatch;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a building transfer liquid to {b_t}.
-   * Uses {edelta} of {b} by default, set {isActiveTrans} to {true} to use {b_t}'s {edelta} instead.
-   * ---------------------------------------- */
+  /**
+   * Transfers liquid from `b` to `b_t`.
+   * @param {Building} b
+   * @param {Building|null} b_t
+   * @param {Liquid} liq
+   * @param {number} rate
+   * @param {boolean|unset} [isActiveTrans] - If true, edelta of `b_t` will be used instead of `b`.
+   * @return {number}
+   */
   const transLiquid = function(b, b_t, liq, rate, isActiveTrans) {
     let amtTrans = 0.0;
     if(b_t == null) return amtTrans;
     if(b.liquids == null || b_t.liquids == null || !b_t.acceptLiquid(b, liq)) return amtTrans;
-    if(rate == null) rate = 0.0;
     if(Math.abs(rate) < 0.0001) return amtTrans;
 
     let amtCur = b.liquids.get(liq);

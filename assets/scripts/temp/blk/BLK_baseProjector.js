@@ -23,7 +23,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseBlock");
-  const VAR = require("lovec/glb/GLB_var");
 
 
   /* <---------- component ----------> */

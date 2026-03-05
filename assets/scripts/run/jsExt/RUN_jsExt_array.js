@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Extension for JavaScript array, with methods from various JS packages.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,25 +20,17 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- array ----------> */
 
 
   var cls = Array;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: ele, arr1, arr2, arr3, ...
-   * Whether {ele} is found in any of those arrays.
-   * ---------------------------------------- */
+  /**
+   * Whether `ele` is found in any of these arrays.
+   * <br> <ARGS>: ele, arr1, arr2, arr3, ...
+   * @return {boolean}
+   */
   cls.someIncludes = function() {
     let i = 1, iCap = arguments.length;
     while(i < iCap) {
@@ -52,12 +42,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: ele, arr1, arr2, arr3, ...
-   * Whether {ele} is found in all those arrays.
-   * ---------------------------------------- */
+  /**
+   * Whether `ele` is found in all these arrays.
+   * <br> <ARGS>: ele, arr1, arr2, arr3, ...
+   * @return {boolean}
+   */
   cls.everyIncludes = function() {
     let i = 2, iCap = arguments.length;
     while(i < iCap) {
@@ -69,13 +58,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: arr, shouldUpdateArr, ele1, ele2, ele3, ...
-   * Whether given elements don't match the ones found in this array.
-   * IF {shouldUpdateArr}, elements of this array will be replaced by the given arguments.
-   * ---------------------------------------- */
+  /**
+   * Whether given elements don't match the ones found in given array.
+   * If `shouldUpdateArr`, this array will be updated with given elements.
+   * <br> <ARGS>: arr, shouldUpdateArr, ele1, ele2, ele3, ...
+   * @return {boolean}
+   */
   cls.someMismatch = function() {
     let arr = arguments[0];
     if(arr.length === 0) return true;
@@ -84,7 +72,8 @@
     while(i < iCap) {
       if(arguments[i] !== arr[i - 2]) {
         if(arguments[1]) {
-          j = 2, jCap = iCap;
+          j = 2;
+          jCap = iCap;
           while(j < jCap) {
             arr[j - 2] = arguments[j];
             j++;
@@ -99,12 +88,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an index array.
-   * If {isStatistical}, this will starts at 1 instead of 0.
-   * ---------------------------------------- */
+  /**
+   * Gets an index array.
+   * If `isStatistical`, the array will start at 1 instead of 0.
+   * @return {Array<number>}
+   */
   cls.getIndArr = function(len, isStatistical) {
     const arr = [];
 
@@ -121,42 +109,39 @@
   var ptp = Array.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the first element, {null} if not found.
-   * ---------------------------------------- */
+  /**
+   * Gets first element, null if not found.
+   * @return {any}
+   */
   ptp.first = function() {
     return this[0] == null ? null : this[0];
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the last element, {null} if not found.
-   * ---------------------------------------- */
+  /**
+   * Gets last element, null if not found.
+   * @return {any}
+   */
   ptp.last = function() {
     return this.length === 0 ? null : this[this.length - 1];
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns index of the last element, 0 if empty array.
-   * ---------------------------------------- */
+  /**
+   * Gets index of the last element, 0 if empty array.
+   * @return {number}
+   */
   ptp.lastInd = function() {
     return this.length === 0 ? 0 : this.length - 1;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * 1. Returns a copy of this array.
-   * 2. Copies elements from another array (overwrites this array).
-   * ---------------------------------------- */
+  /**
+   * 1. Gets a copy of this array.
+   * <br> 2. Copies elements from given array.
+   * @param {Array|unset} [arr]
+   * @return {this}
+   */
   ptp.cpy = newMultiFunction(
     [], function() {
       return this.slice();
@@ -167,26 +152,28 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns fraction of index (of given element) by array length.
-   * ---------------------------------------- */
-  ptp.getIndFrac = function(ele0ind, useInd, returnNull) {
-    let ind = useInd ? ele0ind : this.indexOf(ele0ind);
+  /**
+   * Gets fraction of index of some element by array length.
+   * @param {any} ele
+   * @param {boolean|unset} [useInd] - If true, `ele` will be treated as index directly.
+   * @param {boolean|unset} [returnNull] - If true, this method will return null instead of 0.0 if element not in the array.
+   * @return {number|null}
+   */
+  ptp.getIndFrac = function(ele, useInd, returnNull) {
+    let ind = useInd ? ele : this.indexOf(ele);
     return ind < 0 ?
       (returnNull ? null : 0.0) :
       ((ind + 1) / this.length);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Pushes the element only when it is not in the array.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#push} that only pushes the element when it's not in the array.
+   * @param {any} ele
+   * @return {this}
+   */
   ptp.pushUnique = function(ele) {
-    var cond = true;
+    let cond = true;
     if(this.includes(ele)) cond = false;
     if(ele instanceof Array && this.some(ele0 => ele0 instanceof Array && ele0.equals(ele))) cond = false;
     if(cond) this.push(ele);
@@ -195,12 +182,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Pushes the element only when it's not {null}.
-   * Double equality so {undefined} won't be pushed.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#push} that only pushes the element when it's not null (nor undefined).
+   * @param {any} ele
+   * @return {this}
+   */
   ptp.pushNonNull = function(ele) {
     if(ele == null) return this;
 
@@ -210,12 +196,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Pushes every element from {arr_p} to the array.
-   * In case of chaining, use this instead of {push}!
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#push} that pushes all elements from given array into this array.
+   * Use this method instead if in case of chaining.
+   * @param {any} eles_p
+   * @return {this}
+   */
   ptp.pushAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.push(eles_p) :
@@ -225,14 +211,15 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Inserts an element at some index, modifying the original array.
-   * ---------------------------------------- */
+  /**
+   * Inserts an element at given index.
+   * @param {any} ele
+   * @param {number} ind
+   * @return {number} Array length.
+   */
   ptp.insert = function(ele, ind) {
-    let i = this.iCap(), iBase = ind;
-    while(i > iBase) {
+    let i = this.iCap();
+    while(i > ind) {
       this[i] = this[i - 1];
       i--;
     };
@@ -242,15 +229,17 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Batch variant of {insert}.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#insert} that inserts all elements from given array into this array.
+   * Use this method instead if in case of chaining.
+   * @param {any} eles_p
+   * @param {number} ind
+   * @return {this}
+   */
   ptp.insertAll = function(eles_p, ind) {
     let eles = eles_p instanceof Array ? eles_p : [eles_p];
-    let i = this.iCap(), iBase = ind, j = 0, jCap = eles.iCap();
-    while(i > iBase) {
+    let i = this.iCap(), j = 0, jCap = eles.iCap();
+    while(i > ind) {
       this[i + jCap - 1] = this[i - 1];
       i--;
     };
@@ -263,11 +252,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Removes the first matching element in the array.
-   * ---------------------------------------- */
+   * This method does not remove all matching elements, see {@link Array#pull} instead.
+   * @param {any} ele
+   * @return {any} The element removed or null if not found.
+   */
   ptp.remove = function(ele) {
     let ind = this.indexOf(ele);
     if(ind > -1) {
@@ -278,11 +268,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Batch variant of {remove}.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#remove} that removes multiple elements.
+   * Use this method instead if in case of chaining.
+   * @param {any} eles_p
+   * @return {this}
+   */
   ptp.removeAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.remove(eles_p) :
@@ -292,13 +283,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Remove some row in a formatted array.
-   * Note that {rowInd} for the 1st row is {0}.
-   * No negative index for reversed order.
-   * ---------------------------------------- */
+  /**
+   * Removes some row in a formatted array.
+   * `rowInd` for the first row is 0.
+   * @param {number|unset} [ord]
+   * @param {number|unset} [rowInd]
+   * @return {this}
+   */
   ptp.removeRow = function(ord, rowInd) {
     if(ord == null) ord = 1;
     if(rowInd == null) rowInd = 0;
@@ -311,13 +302,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Removes all matching element in the array.
-   * This does not return the array, in consistence with {push}.
-   * Don't use this in chaining!
-   * ---------------------------------------- */
+  /**
+   * Removes all matching elements in the array.
+   * @param {any} ele
+   * @return {number} Array length.
+   */
   ptp.pull = function(ele) {
     while(this.includes(ele)) {
       this.remove(ele);
@@ -327,11 +316,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Batch variant of {pull}.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#pull} that pulls multiple elements.
+   * @param {any} eles_p
+   * @return {this}
+   */
   ptp.pullAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.pull(eles_p) :
@@ -341,12 +330,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Pulls out elements at the start of an array.
-   * If {forResult}, this returns removed elements instead of the array.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#shift} that removes multiple elements at one time.
+   * @param {number|unset} [amt]
+   * @param {boolean|unset} [forResult] - If true, returns removed elements instead of this array.
+   * @return {Array}
+   */
   ptp.shiftAll = function(amt, forResult) {
     if(amt == null) amt = 1;
 
@@ -368,12 +357,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Puts elements at the start of an array.
-   * Yep batch variant of {unshift}.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#unshift} that adds multiple elements at one time.
+   * @param {any} eles_p
+   * @return {this}
+   */
   ptp.unshiftAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.unshift(eles_p) :
@@ -383,24 +371,26 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Swaps position of two elements.
-   * ---------------------------------------- */
+   * @param {any} ele1
+   * @param {any} ele2
+   * @return {this}
+   */
   ptp.swap = function(ele1, ele2) {
-    return this.swap(
+    return this.swapByInd(
       this.indexOf(ele1),
       this.indexOf(ele2),
     );
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {swap} using index.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#swap} using index.
+   * @param {number} ind1
+   * @param {number} ind2
+   * @return {this}
+   */
   ptp.swapByInd = function(ind1, ind2) {
     if(ind1 < 0 || ind2 < 0) return this;
 
@@ -412,11 +402,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {map} that don't return a new array.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#map} that doesn't return a new array.
+   * @param {function(any): any} mapF
+   * @return {this}
+   */
   ptp.inSituMap = function(mapF) {
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
@@ -428,11 +418,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {filter} that don't return a new array.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#filter} that doesn't return a new array.
+   * @param {function(any): boolean} boolF
+   * @return {this}
+   */
   ptp.inSituFilter = function(boolF) {
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
@@ -446,21 +436,20 @@
 
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {sort} for purely numeric array, since native {sort} always treats elements as strings.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#sort} for purely numeric array.
+   * @param {boolean|unset} [rev] - If true, the order is reversed (larger to smaller).
+   * @return {this}
+   */
   ptp.numSort = function(rev) {
     return this.sort((a, b) => rev ? (b - a) : (a - b));
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {sort} for mixed-type array.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#sort} for mixed-type array.
+   * @return {this}
+   */
   ptp.mixSort = function thisFun() {
     return this.sort((a, b) => {
       // Sort different types
@@ -476,12 +465,12 @@
   });
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Randomizes the orders of elements in the array.
+  /**
+   * Randomizes order of elements in this array.
    * Can be used for a formatted array.
-   * ---------------------------------------- */
+   * @param {number|unset} [ord]
+   * @return {this}
+   */
   ptp.randomize = function(ord) {
     if(ord == null) ord = 1;
 
@@ -500,15 +489,15 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Replaces elements in the array.
-   * Will modify this array.
+  /**
+   * Replaces matching elements in this array.
+   * Modifies the original array.
    * Can be used for a formatted array.
-   *
-   * I won't call this REPLACE cauz it returns a new object for string.
-   * ---------------------------------------- */
+   * @param {function(any): any} mapF
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @return {this}
+   */
   ptp.substitute = function(mapF, ord, off) {
     if(ord == null) ord = 1;
     if(off == null) off = 0;
@@ -523,12 +512,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: ele1, ele2, ele3, ...
-   * Whether any of the elements given is found in the array.
-   * ---------------------------------------- */
+  /**
+   * Whether any of the given elements is found in this array.
+   * <br> <ARGS>: ele1, ele2, ele3, ...
+   * @return {boolean}
+   */
   ptp.includesAny = function() {
     let i = 0, iCap = arguments.length;
     while(i < iCap) {
@@ -540,12 +528,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: ele1, ele2, ele3, ...
-   * Whether all of the elements given are found in the array.
-   * ---------------------------------------- */
+  /**
+   * Whether all the given elements are found in this array.
+   * <br> <ARGS>: ele1, ele2, ele3, ...
+   * @return {boolean}
+   */
   ptp.includesAll = function() {
     let i = 0, iCap = arguments.length;
     while(i < iCap) {
@@ -557,12 +544,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether the two arrays are equal with each other.
-   * WTF why is this not defined?!
-   * ---------------------------------------- */
+  /**
+   * Whether this array equals the given array.
+   * @param {Array} arr
+   * @param {(function(any): boolean)|unset} [mapF]
+   * @return {boolean}
+   */
   ptp.equals = function(arr, mapF) {
     let i = 0, iCap = this.iCap();
     if(iCap !== arr.length) return false;
@@ -584,21 +571,23 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether the two arrays equal each other regardless of order.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#equals} that ignores order of elements.
+   * @param {Array} arr
+   * @return {boolean}
+   */
   ptp.looseEquals = function(arr) {
-    return this.cpy().mixSort().equals(arr.cpy().mixSort());
+    return Array.prototype.looseEquals.tmpArr1.cpy(this).mixSort().equals(Array.prototype.looseEquals.tmpArr2.cpy(arr).mixSort());
   };
+  ptp.looseEquals.tmpArr1 = [];
+  ptp.looseEquals.tmpArr2 = [];
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether this array contains another array (loose equality).
-   * ---------------------------------------- */
+   * @param {Array} arr
+   * @return {boolean}
+   */
   ptp.looseIncludes = function(arr) {
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
@@ -611,11 +600,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {includes} used for formatted arrays.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#includes} used for formatted arrays.
+   * @param {any} ele
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @return {boolean}
+   */
   ptp.colIncludes = function(ele, ord, off) {
     if(ord == null) ord = 1;
     if(off == null) off = 0;
@@ -630,12 +621,11 @@
   };
 
 
-
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether this array is a subset of another array.
-   * ---------------------------------------- */
+   * @param {Array} arr
+   * @return {boolean}
+   */
   ptp.subsetOf = function(arr) {
     const countArr = this.toCountArr();
 
@@ -650,12 +640,15 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Counts how many times an element occurs in the array.
+  /**
+   * Counts how many times an element occurs in this array.
    * Can be used for a formatted array.
-   * ---------------------------------------- */
+   * @param {any} ele
+   * @param {(function(any): any)|unset} [mapF]
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @return {number}
+   */
   ptp.count = function(ele, mapF, ord, off) {
     let count = 0;
     if(ord == null) ord = 1;
@@ -678,12 +671,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Example:
-   * [0, 1, 2, 1, 2, 3, 0, 4, 5].unique();    // Returns [0, 1, 2, 3, 4, 5]
-   * ---------------------------------------- */
+  /**
+   * Removes duplicate elements.
+   * Result is returned as a new array.
+   * @param {(function(any): any)|unset} [mapF]
+   * @return {Array}
+   */
   ptp.unique = function(mapF) {
     const arr = [];
 
@@ -710,28 +703,29 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of random elements in the array.
-   * ---------------------------------------- */
+  /**
+   * Picks random elements from this array, returns the result as a new array.
+   * @param {number|unset} [amt]
+   * @return {Array}
+   */
   ptp.sample = function(amt) {
-    const arr = this.cpy().randomize();
-
+    const arr = Array.prototype.sample.tmpArr.cpy(this).randomize();
     if(amt == null) amt = this.iCap();
 
     return amt >= arr.length ?
-      arr :
+      arr.slice() :
       arr.slice(0, amt);
   };
+  ptp.sample.tmpArr = [];
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Example:
-   * [0, 1, 2, 3, 4].intersect([2, 3, 4, 5, 6]);    // Returns [2, 3, 4]
-   * ---------------------------------------- */
+  /**
+   * Finds elements that are in both array.
+   * Result is returned as a new array.
+   * @param {any} eles_p
+   * @param {(function(any): any)|unset} [mapF]
+   * @return {Array}
+   */
   ptp.intersect = function(eles_p, mapF) {
     const arr = [];
 
@@ -739,7 +733,7 @@
     if(mapF == null) {
       while(i < iCap) {
         if(!(eles_p instanceof Array) ? this[i] === eles_p : eles_p.includes(this[i])) {
-          arr.push(ele);
+          arr.push(eles_p);
         };
         i++;
       };
@@ -749,7 +743,7 @@
       while(i < iCap) {
         tmp = mapF(this[i]);
         if(!(eles_p instanceof Array) ? tmp === mapF(eles_p) : tmpArr.includes(tmp)) {
-          arr.push(ele);
+          arr.push(eles_p);
         };
         i++;
       };
@@ -760,12 +754,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Example:
-   * [0, 1, 2, 3, 4].differ([2, 3, 4, 5, 6]);    // Returns [0, 1]
-   * ---------------------------------------- */
+  /**
+   * Finds elements in this array that are not in given array.
+   * @param {any} eles_p
+   * @param {(function(any): any)|unset} [mapF]
+   * @return {Array}
+   */
   ptp.differ = function(eles_p, mapF) {
     const arr = [];
 
@@ -773,7 +767,7 @@
     if(mapF == null) {
       while(i < iCap) {
         if(!(eles_p instanceof Array) ? this[i] !== eles_p : !eles_p.includes(this[i])) {
-          arr.push(ele);
+          arr.push(eles_p);
         };
         i++;
       };
@@ -783,7 +777,7 @@
       while(i < iCap) {
         tmp = mapF(this[i]);
         if(!(eles_p instanceof Array) ? tmp !== mapF(eles_p) : !tmpArr.includes(tmp)) {
-          arr.push(ele);
+          arr.push(eles_p);
         };
         i++;
       };
@@ -794,13 +788,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Example:
-   * [0, 1, 2, 3, 4, 5, 6].chunk(3);    // Returns [[0, 1, 2], [3, 4, 5], [6]]
-   * [0, 1, 2, 3, 4, 5, 6].chunk(3, 0);    // Returns [[0, 1, 2], [3, 4, 5], [6, 0, 0]]
-   * ---------------------------------------- */
+  /**
+   * Converts this formatted array into 2D-array.
+   * @param {number|unset} [ord]
+   * @param {number|unset} [def] - If set, incomplete rows will be filled with `def`.
+   * @return {Array}
+   */
   ptp.chunk = function(ord, def) {
     const arr = [];
     if(ord == null) ord = 1;
@@ -826,14 +819,10 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Why is {Array.prototype.flat} absent?!
-   *
-   * Example:
-   * [0, 1, [2, 3], [4, 5, 6]].flatten();    // Returns [0, 1, 2, 3, 4, 5, 6]
-   * ---------------------------------------- */
+  /**
+   * {@link Array#flat}, which doesn't exist in Rhino.
+   * @return {Array}
+   */
   ptp.flatten = function() {
     const arr = [];
 
@@ -849,12 +838,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {flatten} that ensures no array exists in the result (on most occassions excluding self-reference).
-   * Very costy however.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#flatten} that ensures no array exists in the result.
+   * Very costy.
+   * Do not call this on arrays that have self-reference.
+   * @param {number|unset} [maxTry]
+   * @return {Array}
+   */
   ptp.flattenAll = function(maxTry) {
     let i = 0, iCap = tryVal(maxTry, 500), arr = this.flatten();
     while(i < iCap && arr.some(ele => ele instanceof Array)) {
@@ -866,15 +856,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns a 2-array of elements and their frequencies.
+  /**
+   * Counts each element in this array, result is returned as a 2-array.
    * Can be used for a formatted array.
-   *
-   * Example:
-   * [0, 0, 1, 2, 3, 3, 3, 4].toCountArr()    // Returns [0, 2, 1, 1, 2, 1, 3, 3, 4, 1]
-   * ---------------------------------------- */
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @return {Array} <ROW>: ele, count.
+   */
   ptp.toCountArr = function(ord, off) {
     const arr = [];
     if(ord == null) ord = 1;
@@ -893,12 +881,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an object of categories and lists of elements, whose category is determined in {categGetter}.
-   * If the category returned in {categGetter} is {null} for some element, it will be skipped.
-   * ---------------------------------------- */
+  /**
+   * Gets an object of categories and elements for this array.
+   * @param {function(any): string|null} categGetter - Determines which category an element is in. If this returns null, the element will be skipped.
+   * @return {Object}
+   */
   ptp.categorize = function(categGetter) {
     let key;
     return this.reduce((obj, ele) => {
@@ -911,14 +898,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * How many rows (or lines) this formatted array has.
-   *
-   * Example:
-   * [0, 1, 2, 0, 2, 3, 0, 3, 4, 0].rowAmt(3);    // Returns 4
-   * ---------------------------------------- */
+  /**
+   * Gets row amount of this formatted array.
+   * @param {number|unset} [ord]
+   * @return {number}
+   */
   ptp.rowAmt = function(ord) {
     if(this.length === 0) return 0;
     if(ord == null) ord = 1;
@@ -947,16 +931,20 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Reads data from a formatted array.
-   * Use {def} for default value.
-   * Use {isUnordered} to ignore order of the elements.
-   * If there are multiple matching results, this only returns the first one.
-   *
-   * Given a target row of {0, 1, 2, 3}, then {nms_p} should be {[0, 1, 2]}.
-   * ---------------------------------------- */
+   * For arrays containing multiple matching results, see {@link Array#readList}.
+   * @param {string|Array<string>} nms_p
+   * @param {any} [def]
+   * @param {boolean|unset} [isUnordered]
+   * @return {any}
+   * @example
+   * [
+   *   "a", "b", 0,
+   *   "b", "c", 1,
+   *   "a", "c", 2,
+   * ].read(["b", "c"]);                // Returns 1
+   */
   ptp.read = function(nms_p, def, isUnordered) {
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];
@@ -970,12 +958,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Like {read} but returns the row index.
-   * Will return {-1} if not found.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#read} that returns row index.
+   * Will return -1 if not found.
+   * @param {string|Array<string>} nms_p
+   * @param {boolean|unset} [isUnordered]
+   * @return {number}
+   */
   ptp.readRowInd = function(nms_p, isUnordered) {
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];
@@ -989,11 +978,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of elements with the same offset (in the same column) in a formatted array.
-   * ---------------------------------------- */
+  /**
+   * Gets elements in the same column in a formatted array.
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @return {Array}
+   */
   ptp.readCol = function(ord, off) {
     const arr = [];
     if(ord == null) ord = 1;
@@ -1009,12 +999,14 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns a random element.
-   * Supports formatted array.
-   * ---------------------------------------- */
+  /**
+   * Gets a random element in this array.
+   * Can be used for a formatted array.
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @param {any} [def]
+   * @return {any}
+   */
   ptp.readRand = function(ord, off, def) {
     if(this.length === 0) return null;
 
@@ -1027,40 +1019,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns a random element that is not found in {refArr}.
-   * Supports formatted array.
-   * ---------------------------------------- */
-  ptp.readRandUnique = function(refArr, mapF, ord, off, def, maxTry) {
-    if(this.length === 0) return null;
-
-    if(mapF == null) mapF = Function.airSelf;
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-    if(maxTry == null) maxTry = 50;
-
-    let tmp = "!PENDING";
-    let i = 0;
-    while(tmp === "!PENDING" && i < maxTry) {
-      tmp = this[Math.round((this.rowAmt(ord) - 1).randInt() * ord + off)];
-      if(refArr.includes(mapF(tmp))) {
-        tmp = "!PENDING";
-      } else break;
-      i++;
-    };
-
-    return tmp === "!PENDING" ? null : tmp;
-  };
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Reads data from a formatted array, and returns the results as an array.
-   * Mostly useful when there are multiple matching results.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#read} that returns all found results as a new array.
+   * @param {string|Array<string>} nms_p
+   * @param {boolean|unset} [isUnordered]
+   * @return {Array}
+   */
   ptp.readList = function(nms_p, isUnordered) {
     const arr = [];
 
@@ -1076,11 +1040,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The other side of {read}, pretty much obvious.
-   * ---------------------------------------- */
+  /**
+   * The other side of {@link Array#read}.
+   * @param {string|Array<string>} nms_p
+   * @param {any} val
+   * @param {boolean|unset} [isUnordered]
+   * @return {this}
+   */
   ptp.write = function(nms_p, val, isUnordered) {
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];
@@ -1100,11 +1066,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Removes the first matching row in a formatted array.
-   * ---------------------------------------- */
+  /**
+   * Removes first matching row in a formatted array.
+   * @param {string|Array<string>} nms_p
+   * @param {boolean|unset} [isUnordered]
+   * @return {this}
+   */
   ptp.removeFormatRow = function(nms_p, isUnordered) {
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];

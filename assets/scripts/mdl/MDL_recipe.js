@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * The bedrock for multi-crafters.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,29 +20,16 @@
   /* <---------- import ----------> */
 
 
-  const FRAG_recipe = require("lovec/frag/FRAG_recipe");
-
-
-  const MDL_attr = require("lovec/mdl/MDL_attr");
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
-  const DB_item = require("lovec/db/DB_item");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the recipe module for a block.
-   * Use this in {CT_BLK_recipeFactory} or something alike.
-   * You should NEVER call this after the game is loaded. {require} finds nothing then.
-   * ---------------------------------------- */
+  /**
+   * Gets recipe module for some block.
+   * <br> <PATH>: "<nmMod>/scripts/auxFi/rc/<nmBlk>.js".
+   * @param {string} nmMod
+   * @param {string} nmBlk
+   * @return {RecipeModule}
+   */
   const _rcMdl = function(nmMod, nmBlk) {
     let rcMdl;
     try {
@@ -58,12 +43,11 @@
   exports._rcMdl = _rcMdl;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fetches the base object in {rcMdl}.
-   * Returns an empty object if errored.
-   * ---------------------------------------- */
+  /**
+   * Gets base object in a recipe module.
+   * @param {RecipeModule} rcMdl
+   * @return {RecipeBase}
+   */
   const _rcBase = function(rcMdl) {
     return rcMdl == null ?
       Object.air :
@@ -72,23 +56,24 @@
   exports._rcBase = _rcBase;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fetches a key value in the recipe base.
-   * ---------------------------------------- */
+  /**
+   * Gets some value in a base object.
+   * @param {RecipeModule} rcMdl
+   * @param {string} key
+   * @param {any} [def]
+   * @return {any}
+   */
   const _rcBaseVal = function(rcMdl, key, def) {
     return tryVal(_rcBase(rcMdl)[key], def);
   };
   exports._rcBaseVal= _rcBaseVal;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fetches the recipe array in {rcMdl}.
-   * Returns an empty array if errored.
-   * ---------------------------------------- */
+  /**
+   * Gets all recipes in a recipe module.
+   * @param {RecipeModule} rcMdl
+   * @return {Array<RecipeObject>}
+   */
   const _rcLi = function(rcMdl) {
     return rcMdl == null ?
       Array.air :
@@ -97,56 +82,57 @@
   exports._rcLi = _rcLi;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the amount of recipe objects.
-   * ---------------------------------------- */
+  /**
+   * Gets amount of recipe objects in a recipe module.
+   * @param {RecipeModule} rcMdl
+   * @return {number}
+   */
   const _rcSize = function(rcMdl) {
     return _rcLi(rcMdl).iCap() / 2;
   };
   exports._rcSize = _rcSize;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fetches an recipe object in {rcMdl}, with the header string matching {rcHeader}.
-   * Returns {null} if no object is found.
-   * ---------------------------------------- */
+  /**
+   * Gets a recipe object by header in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {RecipeObject|null}
+   */
   const _rcObj = function(rcMdl, rcHeader) {
-    return _rcLi(rcMdl).read(rcHeader);
+    return _rcLi(rcMdl).read(rcHeader, null);
   };
   exports._rcObj = _rcObj;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of headers found in {rcMdl}.
-   * ---------------------------------------- */
+  /**
+   * Gets all headers foudn in some recipe module.
+   * @param {RecipeModule} rcMdl
+   * @return {Array<string>}
+   */
   const _rcHeaders = function(rcMdl) {
     return _rcLi(rcMdl).readCol(2, 0);
   };
   exports._rcHeaders = _rcHeaders;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of recipe objects found in {rcMdl}.
-   * ---------------------------------------- */
+  /**
+   * Gets all recipe objects found in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @return {Array<RecipeObject>}
+   */
   const _rcObjs = function(rcMdl) {
     return _rcLi(rcMdl).readCol(2, 1);
   };
   exports._rcObjs = _rcObjs;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether the header exists in {rcMdl}.
-   * ---------------------------------------- */
+  /**
+   * Whether a header exists in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {boolean}
+   */
   const _hasHeader = function(rcMdl, rcHeader) {
     let rcLi = _rcLi(rcMdl), tmpHeader;
     let i = 0, iCap = rcLi.iCap();
@@ -161,17 +147,25 @@
   exports._hasHeader = _hasHeader;
 
 
+  /**
+   * Gets first header in `rcMdl`, which is usually the default header.
+   * @param {RecipeModule} rcMdl
+   * @return {string}
+   */
   const _firstHeader = function(rcMdl) {
     return tryVal(_rcLi(rcMdl)[0], "");
   };
   exports._firstHeader = _firstHeader;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fetches a key value in the matching recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets a value in target recipe object if found.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {string} key
+   * @param {any} [def]
+   * @return {any}
+   */
   const _rcVal = function(rcMdl, rcHeader, key, def) {
     let rcObj = _rcObj(rcMdl, rcHeader);
     return rcObj == null ?
@@ -181,11 +175,12 @@
   exports._rcVal = _rcVal;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether there is some resource input in a recipe module.
-   * ---------------------------------------- */
+  /**
+   * Whether some resource exists in the inputs of `rcMdl`.
+   * @param {ResourceGn} rs_gn
+   * @param {RecipeModule} rcMdl
+   * @return {boolean}
+   */
   const _hasInput = function thisFun(rs_gn, rcMdl) {
     let ci, bi, aux, opt;
     return _rcHeaders(rcMdl).some(rcHeader => {
@@ -206,11 +201,11 @@
   exports._hasInput = _hasInput;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether there is any payload input in a recipe module.
-   * ---------------------------------------- */
+  /**
+   * Whether there's any payload input in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @return {boolean}
+   */
   const _hasAnyInput_pay = function thisFun(rcMdl) {
     let payi;
     return _rcHeaders(rcMdl).some(rcHeader => {
@@ -225,11 +220,12 @@
   exports._hasAnyInput_pay = _hasAnyInput_pay;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether there is some resource output in a recipe module.
-   * ---------------------------------------- */
+  /**
+   * Whether some resource exists in the outputs of `rcMdl`.
+   * @param {ResourceGn} rs_gn
+   * @param {RecipeModule} rcMdl
+   * @return {boolean}
+   */
   const _hasOutput = function thisFun(rs_gn, rcMdl) {
     let co, bo, fo;
     return _rcHeaders(rcMdl).some(rcHeader => {
@@ -248,11 +244,11 @@
   exports._hasOutput = _hasOutput;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether there's any item output in the recipe module.
-   * ---------------------------------------- */
+  /**
+   * Whether there's any item output in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @return {boolean}
+   */
   const _hasAnyOutput_itm = function thisFun(rcMdl) {
     let bo, fo;
     return _rcHeaders(rcMdl).some(rcHeader => {
@@ -269,11 +265,11 @@
   exports._hasAnyOutput_itm = _hasAnyOutput_itm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether there's any fluid output in the recipe module.
-   * ---------------------------------------- */
+  /**
+   * Whether there's any fluid output in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @return {boolean}
+   */
   const _hasAnyOutput_liq = function thisFun(rcMdl, includeAux) {
     let co, bo;
     return _rcHeaders(rcMdl).some(rcHeader => {
@@ -290,11 +286,11 @@
   exports._hasAnyOutput_liq = _hasAnyOutput_liq;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether there is any payload output in a recipe module.
-   * ---------------------------------------- */
+  /**
+   * Whether there's any payload output in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @return {boolean}
+   */
   const _hasAnyOutput_pay = function thisFun(rcMdl) {
     let payo;
     return _rcHeaders(rcMdl).some(rcHeader => {
@@ -312,23 +308,25 @@
   /* <---------- recipe fields ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the icon string.
-   * ---------------------------------------- */
+  /**
+   * Gets icon string of a recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {string}
+   */
   const _iconNm = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "icon", "null");
   };
   exports._iconNm = _iconNm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the icon for a recipe.
-   * By default it should be the {uiIcon} of a content, use {notContent} to get something else.
-   * ---------------------------------------- */
+  /**
+   * Gets icon of a recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {boolean|unset} [notContent]
+   * @return {TextureRegionDrawable}
+   */
   const _icon = function(rcMdl, rcHeader, notContent) {
     let iconNm = _iconNm(rcMdl, rcHeader);
     if(notContent) return new TextureRegionDrawable(Core.atlas.find(iconNm));
@@ -341,25 +339,24 @@
   exports._icon = _icon;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the category of a recipe.
-   * Recipes in the same category will be displayed together.
-   * If not set, {"uncategorized"} is used.
-   * ---------------------------------------- */
+  /**
+   * Gets category of a recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {string}
+   */
   const _categ = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "category", "uncategorized");
   };
   exports._categ = _categ;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of all found categories in {rcMdl}.
-   * {"uncategorized"} will always appear at the end.
-   * ---------------------------------------- */
+  /**
+   * Gets all categories found in `rcMdl`.
+   * "uncategorized" will always appear at the end.
+   * @param {RecipeModule} rcMdl
+   * @return {Array<string>}
+   */
   const _categs = function(rcMdl) {
     const arr = [];
 
@@ -382,11 +379,11 @@
   exports._categs = _categs;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an object of categories and their recipe headers.
-   * ---------------------------------------- */
+  /**
+   * Gets object of categories and recipe headers.
+   * @param {RecipeModule} rcMdl
+   * @return {Object<string: string>}
+   */
   const _categHeaderObj = function(rcMdl) {
     const obj = {};
 
@@ -403,46 +400,49 @@
   exports._categHeaderObj = _categHeaderObj;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the name of a category from the bundle.
-   * Format: {term.common-term-categ-*category name*.name}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "term.common-term-categ-<categ>.name".
+   * @param {string} categ
+   * @return {string}
+   */
   const _categB = function(categ) {
     return MDL_bundle._term("common", "categ-" + categ);
   };
   exports._categB = _categB;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether the recipe is generated instead of manually set.
-   * You shouldn't touch this field.
-   * ---------------------------------------- */
+  /**
+   * Whether this recipe is generated.
+   * Do not set this field.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {boolean}
+   */
   const _isGen = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "isGenerated", false);
   };
   exports._isGen = _isGen;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A function to check whether the recipe is allowed now.
-   * ---------------------------------------- */
+  /**
+   * Gets the function used to check whether this recipe is allowed now.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {function(Building): boolean}
+   */
   const _validGetter = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "validGetter", Function.airTrue);
   };
   exports._validGetter = _validGetter;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Contents that are required to be unlocked for the recipe.
-   * ---------------------------------------- */
+  /**
+   * Gets contents required to be unlocked for this recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {boolean|unset} [toCts]
+   * @return {Array<string>|Array<UnlockableContent>}
+   */
   const _lockedBy = function(rcMdl, rcHeader, toCts) {
     const arr = _rcVal(rcMdl, rcHeader, "lockedBy", Array.air);
     if(!toCts) return arr;
@@ -458,11 +458,12 @@
   exports._lockedBy = _lockedBy;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the final {validGetter} used in multi-crafters.
-   * ---------------------------------------- */
+  /**
+   * Gets the final `validGetter` used in multi-crafters.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {function(Building): boolean}
+   */
   const _finalValidGetter = function(rcMdl, rcHeader) {
     let validGetter = _validGetter(rcMdl, rcHeader);
     let cts = _lockedBy(rcMdl, rcHeader, true);
@@ -472,11 +473,13 @@
   exports._finalValidGetter = _finalValidGetter;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {_finalValidGetter} for tuple.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _finalValidGetter} for tuple.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contTup]
+   * @return {[function(): boolean]}
+   */
   const _validTup = function(rcMdl, rcHeader, contTup) {
     const tup = contTup != null ? contTup.clear() : [];
 
@@ -487,115 +490,121 @@
   exports._validTup = _validTup;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets crafting time scale of the recipe.
-   * ---------------------------------------- */
+  /**
+   * Gets crafting time scaling of a recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _timeScl = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "timeScl", 1.0);
   };
   exports._timeScl = _timeScl;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Extra pollution added to the block for this recipe.
-   * ---------------------------------------- */
+  /**
+   * Gets block pollution of a recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _pol = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "pollution", 0.0);
   };
   exports._pol = _pol;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Wether the crafter consumes even when full of output.
-   * ---------------------------------------- */
+  /**
+   * Whether the crafter consumes even when full of output items.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {boolean}
+   */
   const _ignoreItemFullness = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "ignoreItemFullness", false);
   };
   exports._ignoreItemFullness = _ignoreItemFullness;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the attribute that affects efficiency of the recipe.
-   * ---------------------------------------- */
+  /**
+   * Gets attribute that affects efficiency of this recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {string}
+   */
   const _attr = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "attr", _rcBaseVal(rcMdl, "baseAttr", null));
   };
   exports._attr = _attr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the attribute value minimum (0.0 efficiency).
-   * Don't include block size here.
-   * ---------------------------------------- */
+  /**
+   * Gets attribute value for 0.0 efficiency.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _attrMin = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "attrMin", _rcBaseVal(rcMdl, "baseAttrMin", 0.0));
   };
   exports._attrMin = _attrMin;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the attribute value maximum (1.0 efficiency).
-   * Don't include block size here.
-   * ---------------------------------------- */
+  /**
+   * Gets attribute value for 1.0 efficiency.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _attrMax = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "attrMax", _rcBaseVal(rcMdl, "baseAttrMax", 1.0));
   };
   exports._attrMax = _attrMax;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the multiplier on final boost.
-   * You can use a negative scaling for something.
-   * ---------------------------------------- */
+  /**
+   * Gets multiplier on final attrbute boost.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _attrBoostScl = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "attrBoostScl", _rcBaseVal(rcMdl, "baseAttrBoostScl", 1.0));
   };
   exports._attrBoostScl = _attrBoostScl;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the maximum efficiency that can be reached with attribute boost.
-   * ---------------------------------------- */
+  /**
+   * Gets maximum efficiency that can be reached with attribute boost.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _attrBoostCap = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "attrBoostCap", _rcBaseVal(rcMdl, "baseAttrBoostCap", Infinity));
   };
   exports._attrBoostCap = _attrBoostCap;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the tooltip bundle piece.
-   * Can return {null} if not found!
-   * ---------------------------------------- */
+  /**
+   * Gets tooltip bundle piece of this recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {string|null}
+   */
   const _tt = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "tooltip", null);
   };
   exports._tt = _tt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the full text for recipe tooltip.
-   * Very unsightreadable cauz why not.
-   * ---------------------------------------- */
+  /**
+   * Gets full text for recipe tooltip.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {boolean|unset} [valid]
+   * @return {string}
+   */
   const _ttStr = function(rcMdl, rcHeader, valid) {
     if(Vars.headless) return "";
 
@@ -620,19 +629,19 @@
           return str === "\n" ? null : str;
         })(),
       );
-    } else {
-      // When content is still locked
-      return String.multiline(
-        MDL_bundle._info("lovec", "recipe-unavailable"),
-        (function() {
-          let str = String.multiline(
-            "",
-            (function() {let cts = _lockedBy(rcMdl, rcHeader, true); let str1 = null; if(cts.length > 0) {str1 = MDL_text._statText(MDL_bundle._term("lovec", "locked"), ""); cts.forEachFast(ct => str1 += "\n- " + ct.localizedName.plain().color(Pal.remove))}; return str1})(),
-          );
-          return str === "\n" ? null : str;
-        })(),
-      );
     };
+
+    // When content is still locked
+    return String.multiline(
+      MDL_bundle._info("lovec", "recipe-unavailable"),
+      (function() {
+        let str = String.multiline(
+          "",
+          (function() {let cts = _lockedBy(rcMdl, rcHeader, true); let str1 = null; if(cts.length > 0) {str1 = MDL_text._statText(MDL_bundle._term("lovec", "locked"), ""); cts.forEachFast(ct => str1 += "\n- " + ct.localizedName.plain().color(Pal.remove))}; return str1})(),
+        );
+        return str === "\n" ? null : str;
+      })(),
+    );
   };
   exports._ttStr = _ttStr;
 
@@ -640,12 +649,13 @@
   /* <---------- recipe I/O ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Call this to add data to recipe dictionary.
-   * Should be called in {init}.
-   * ---------------------------------------- */
+  /**
+   * Adds recipe data to recipe dictionary.
+   * Should be called on INIT.
+   * @param {RecipeModule} rcMdl
+   * @param {Block} blkInit - Owner of the recipes.
+   * @return {void}
+   */
   const initRc = function thisFun(rcMdl, blkInit) {
     if(thisFun.blks.includes(blkInit)) throw new Error("Block [$1] has its recipe initialized more than once???".format(blkInit.name));
 
@@ -669,12 +679,17 @@
   exports.initRc = initRc;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parses a row in the I/O array, and pushes results into {arr}.
-   * ---------------------------------------- */
-  const parseRcIoRow = function(arr, tg, amt, p, ctCaller, isSecondary) {
+  /**
+   * Parses given I/O row data, and pushes results into `outArr`.
+   * @param {Array} outArr
+   * @param {string|Array|UnlockableContent} tg
+   * @param {number} amt
+   * @param {number|unset} [p]
+   * @param {function(UnlockableContent, number, number|null): void} [ctCaller] - <ARGS>: ct, amt, p.
+   * @param {boolean|unset} [isSecondary] - Do not set this.
+   * @return {void}
+   */
+  const parseRcIoRow = function(outArr, tg, amt, p, ctCaller, isSecondary) {
     if(ctCaller == null) ctCaller = Function.air;
     let isContinuous = p == null;
 
@@ -686,25 +701,25 @@
       };
       if(tmpArr.length > 0) {
         isSecondary ?
-          arr.pushAll(tmpArr) :
+          outArr.pushAll(tmpArr) :
           isContinuous ?
             (
               tmpArr.length === 2 ?
-                arr.push(tmpArr[0], tmpArr[1]) :
-                arr.push(tmpArr, -1.0)
+                outArr.push(tmpArr[0], tmpArr[1]) :
+                outArr.push(tmpArr, -1.0)
             ) :
             (
               tmpArr.length === 3 ?
-                arr.push(tmpArr[0], tmpArr[1], tmpArr[2]) :
-                arr.push(tmpArr, -1.0, -1.0)
+                outArr.push(tmpArr[0], tmpArr[1], tmpArr[2]) :
+                outArr.push(tmpArr, -1.0, -1.0)
             );
       };
     } else if(tg instanceof UnlockableContent) {
       if(isContinuous) {
-        arr.push(tg, amt);
+        outArr.push(tg, amt);
         ctCaller(tg, amt, null);
       } else {
-        arr.push(tg, Math.round(amt), p);
+        outArr.push(tg, Math.round(amt), p);
         ctCaller(tg, Math.round(amt), p);
       };
     } else if(typeof tg === "string") {
@@ -720,37 +735,41 @@
         });
         if(tmpArr.length > 0) {
           isSecondary ?
-            arr.pushAll(tmpArr) :
+            outArr.pushAll(tmpArr) :
             isContinuous ?
               (
                 tmpArr.length === 2 ?
-                  arr.push(tmpArr[0], tmpArr[1]) :
-                  arr.push(tmpArr, -1.0)
+                  outArr.push(tmpArr[0], tmpArr[1]) :
+                  outArr.push(tmpArr, -1.0)
               ) :
               (
                 tmpArr.length === 3 ?
-                  arr.push(tmpArr[0], tmpArr[1], tmpArr[2]) :
-                  arr.push(tmpArr, -1.0, -1.0)
+                  outArr.push(tmpArr[0], tmpArr[1], tmpArr[2]) :
+                  outArr.push(tmpArr, -1.0, -1.0)
               );
         } else {
           Log.warn("[LOVEC] No content found under [$1]!".format(tg.color(Pal.accent)));
         };
       } else {
         let ct = MDL_content._ct(tg, null, true);
-        if(ct != null) parseRcIoRow(arr, ct, amt, p, ctCaller);
+        if(ct != null) parseRcIoRow(outArr, ct, amt, p, ctCaller);
       };
     } else {
-      throw new Error("WTF did you put into the I/O array???\n" + tg);
+      printObj(tg);
+      throw new Error("WTF did you put into the I/O array???");
     };
   };
   exports.parseRcIoRow = parseRcIoRow;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the continuous input list from a recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed CI data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @return {Array}
+   */
   const _ci = function(rcMdl, rcHeader, contArr, blkInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -772,11 +791,15 @@
   exports._ci = _ci;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the batch input list from a recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed BI data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @param {number|unset} [timeSclInit]
+   * @return {Array}
+   */
   const _bi = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -803,12 +826,14 @@
   exports._bi = _bi;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the auxiliay list from a recipe object.
-   * It's just another CI.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed AUX data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @return {Array}
+   */
   const _aux = function(rcMdl, rcHeader, contArr, blkInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -830,22 +855,26 @@
   exports._aux = _aux;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether there should be at least one optional input present for the recipe.
-   * ---------------------------------------- */
+  /**
+   * Whether at least one OPT should be met for this recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {boolean}
+   */
   const _reqOpt = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "reqOpt", false);
   };
   exports._reqOpt = _reqOpt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the optional input list from a recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed OPT data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @return {Array}
+   */
   const _opt = function(rcMdl, rcHeader, contArr, blkInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -868,11 +897,14 @@
   exports._opt = _opt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the payload input list from a recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed PAYI data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @return {Array}
+   */
   const _payi = function(rcMdl, rcHeader, contArr, blkInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -894,11 +926,14 @@
   exports._payi = _payi;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the continuous output list from a recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed CO data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @return {Array}
+   */
   const _co = function(rcMdl, rcHeader, contArr, blkInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -920,11 +955,16 @@
   exports._co = _co;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the batch output list from a recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed BO data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @param {number|unset} [timeSclInit]
+   * @param {number|unset} [failPInit]
+   * @return {Array}
+   */
   const _bo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, failPInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -946,23 +986,28 @@
   exports._bo = _bo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the chance to fail a recipe.
-   * Hmmmmm... it's kinda overcooked.
-   * ---------------------------------------- */
+  /**
+   * Gets chance to fail a recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _failP = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "failP", 0.0);
   };
   exports._failP = _failP;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the failure output list from a recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed FO data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @param {number|unset} [timeSclInit]
+   * @param {number|unset} [failPInit]
+   * @return {Array}
+   */
   const _fo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, failPInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -984,11 +1029,15 @@
   exports._fo = _fo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts the payload output list from a recipe object.
-   * ---------------------------------------- */
+  /**
+   * Gets parsed PAYO data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contArr]
+   * @param {Block|unset} [blkInit]
+   * @param {number|unset} [timeSclInit]
+   * @return {Array}
+   */
   const _payo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -1010,11 +1059,12 @@
   exports._payo = _payo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the script called whenever the building updates.
-   * ---------------------------------------- */
+  /**
+   * Gets script called whenever the building updates.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {[function(Building): void, function(Building): void]}
+   */
   const _updateScr = function(rcMdl, rcHeader) {
     return b => {
       _rcVal(rcMdl, rcHeader, "updateScr", Function.air)(b);
@@ -1025,11 +1075,12 @@
   exports._updateScr = _updateScr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the script called every frame when the building is running.
-   * ---------------------------------------- */
+  /**
+   * Gets script called every frame when the building is running.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {[function(Building): void, function(Building): void]}
+   */
   const _runScr = function(rcMdl, rcHeader) {
     return b => {
       _rcVal(rcMdl, rcHeader, "runScr", Function.air)(b);
@@ -1040,11 +1091,12 @@
   exports._runScr = _runScr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the script called when the building finishes crafting.
-   * ---------------------------------------- */
+  /**
+   * Gets script called when the building finishes crafting.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {[function(Building): void, function(Building): void]}
+   */
   const _craftScr = function(rcMdl, rcHeader) {
     return b => {
       _rcVal(rcMdl, rcHeader, "craftScr", Function.air)(b);
@@ -1055,12 +1107,13 @@
   exports._craftScr = _craftScr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the script called when the building is no longer running.
+  /**
+   * Gets script called when the building is no longer running.
    * Won't be called if the building has never been active.
-   * ---------------------------------------- */
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {[function(Building): void, function(Building): void]}
+   */
   const _stopScr = function(rcMdl, rcHeader) {
     return b => {
       _rcVal(rcMdl, rcHeader, "stopScr", Function.air)(b);
@@ -1071,11 +1124,13 @@
   exports._stopScr = _stopScr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a 4-tuple of recipe scripts for storage.
-   * ---------------------------------------- */
+  /**
+   * Gets a 4-tuple of recipe scripts.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {Array|unset} [contTup]
+   * @return {[function(Building): void, function(Building): void, function(Building): void, function(Building): void]}
+   */
   const _scrTup = function(rcMdl, rcHeader, contTup) {
     const tup = contTup != null ? contTup.clear() : [];
 
@@ -1094,53 +1149,52 @@
   /* <---------- specific ----------> */
 
 
-  /* BLK_generatorRecipeFactory */
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the multiplier on power produced.
-   * ---------------------------------------- */
+  /**
+   * Gets multiplier on power produced.
+   * For {@link BLK_generatorRecipeFactory}.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _powProdMtp = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "powProdMtp", 1.0);
   };
   exports._powProdMtp = _powProdMtp;
 
 
-  /* BLK_furnaceRecipeFactory */
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the temperature required for a recipe.
-   * ---------------------------------------- */
+  /**
+   * Gets temperature required for a recipe.
+   * For {@link BLK_furnaceRecipeFactory}.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _tempReq = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "tempReq", 0.0);
   };
   exports._tempReq = _tempReq;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the temperature allowed for a recipe, beyond which failure occurs more frequently.
-   * ---------------------------------------- */
+  /**
+   * Gets temperature allowed for a recipe, beyond which failure occurs more frequently.
+   * For {@link BLK_furnaceRecipeFactory}.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _tempAllowed = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "tempAllowed", Infinity);
   };
   exports._tempAllowed = _tempAllowed;
 
 
-  /* BLK_durabilityRecipeFactory */
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the multiplier on durability decrease rate.
-   * ---------------------------------------- */
+  /**
+   * Gets multiplier on durability decrease rate.
+   * For {@link BLK_durabilityRecipeFactory}.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
   const _durabDecMtp = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "durabDecMtp", 1.0);
   };

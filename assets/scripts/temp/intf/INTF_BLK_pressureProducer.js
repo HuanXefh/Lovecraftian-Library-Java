@@ -22,17 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-
-
   /* <---------- component ----------> */
 
 

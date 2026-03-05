@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Conveyor, the most basic way of item transportation.
    * I tried to change that item capacity of 3, but it's too hard-coded.
    * ---------------------------------------- */
@@ -25,10 +25,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemDistributor");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
 
 
   /* <---------- component ----------> */

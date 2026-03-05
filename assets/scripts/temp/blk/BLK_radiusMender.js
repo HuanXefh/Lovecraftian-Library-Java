@@ -26,15 +26,6 @@
   const PARENT = require("lovec/temp/blk/BLK_baseMender");
 
 
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
   /* <---------- component ----------> */
 
 
@@ -84,7 +75,7 @@
       if(b.block.delegee.healsUnit) {
         MDL_pos._it_units(b.x, b.y, rad, b.team, ounit => MDL_cond._canHeal(ounit), ounit => {
           if(FRAG_attack.heal(ounit, (ounit.maxHealth * b.block.delegee.unitHealPerc + b.block.delegee.unitHealAmt) * (1.0 + b.phaseHeat * b.block.phaseBoost) * b.efficiency)) {
-            MDL_effect.showBetween_line(b.x, b.y, null, ounit, Pal.heal);
+            MDL_effect._e_line(b.x, b.y, null, ounit, Pal.heal);
           };
         });
       };

@@ -24,14 +24,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_contentMultiSelector");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
 
 
   /* <---------- component ----------> */

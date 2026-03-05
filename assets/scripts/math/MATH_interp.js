@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to interpolation.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -20,9 +18,6 @@
 
 
   /* <---------- import ----------> */
-
-
-  const MATH_geometry = require("lovec/math/MATH_geometry");
 
 
   /* <---------- base ----------> */
@@ -38,22 +33,30 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * More generalized lerp method.
-   * ---------------------------------------- */
+  /**
+   * Generalized lerp method.
+   * @param {number} val_f
+   * @param {number} val_t
+   * @param {number|unset} [param]
+   * @param {number|unset} [param_f]
+   * @param {number|unset} [param_t]
+   * @return {number}
+   */
   const lerp = function(val_f, val_t, param, param_f, param_t) {
     return val_f + (val_t - val_f) * _paramFrac(param, param_f, param_t);
   };
   exports.lerp = lerp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Smooth version of {lerp}.
-   * ---------------------------------------- */
+  /**
+   * Smooth version of {@link lerp}.
+   * @param {number} val_f
+   * @param {number} val_t
+   * @param {number|unset} [param]
+   * @param {number|unset} [param_f]
+   * @param {number|unset} [param_t]
+   * @return {number}
+   */
   const smoothLerp = function thisFun(val_f, val_t, param, param_f, param_t) {
     return val_f + (val_t - val_f) * thisFun.calcA(_paramFrac(param, param_f, param_t));
   }
@@ -65,11 +68,21 @@
   exports.smoothLerp = smoothLerp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Bilinear version of {lerp}.
-   * ---------------------------------------- */
+  /**
+   * Bilinear version of {@link lerp}.
+   * @param {number} val1_f
+   * @param {number} val1_t
+   * @param {number} val2_f
+   * @param {number} val2_t
+   * @param {number|unset} [param1]
+   * @param {number|unset} [param2]
+   * @param {number|unset} [a_12]
+   * @param {number|unset} [param1_f]
+   * @param {number|unset} [param1_t]
+   * @param {number|unset} [param2_f]
+   * @param {number|unset} [param2_t]
+   * @return {number}
+   */
   const biLerp = function(val1_f, val1_t, val2_f, val2_t, param1, param2, a_12, param1_f, param1_t, param2_f, param2_t) {
     return lerp(
       lerp(val1_f, val1_t, param1, param1_f, param1_t),
@@ -80,11 +93,21 @@
   exports.biLerp = biLerp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Smooth version of {biLerp}.
-   * ---------------------------------------- */
+  /**
+   * Smooth version of {@link biLerp}.
+   * @param {number} val1_f
+   * @param {number} val1_t
+   * @param {number} val2_f
+   * @param {number} val2_t
+   * @param {number|unset} [param1]
+   * @param {number|unset} [param2]
+   * @param {number|unset} [a_12]
+   * @param {number|unset} [param1_f]
+   * @param {number|unset} [param1_t]
+   * @param {number|unset} [param2_f]
+   * @param {number|unset} [param2_t]
+   * @return {number}
+   */
   const smoothBiLerp = function(val1_f, val1_t, val2_f, val2_t, param1, param2, a_12, param1_f, param1_t, param2_f, param2_t) {
     return smoothLerp(
       smoothLerp(val1_f, val1_t, param1, param1_f, param1_t),
@@ -95,15 +118,17 @@
   exports.smoothBiLerp = smoothBiLerp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lerp method on a series of points.
-   * This returns an n-tuple whose length depends on {dim}.
-   * ---------------------------------------- */
+  /**
+   * Path version of {@link lerp}.
+   * @param {PathData} pathData
+   * @param {number|unset} [dim]
+   * @param {number|unset} [param]
+   * @param {number|unset} [param_f]
+   * @param {number|unset} [param_t]
+   * @return {Array<number>} Result is returned as n-dimensional point.
+   */
   const pathLerp = function(pathData, dim, param, param_f, param_t) {
     const tup = [];
-
     if(dim == null) dim = 2;
 
     let paramFrac = _paramFrac(param, param_f, param_t);
@@ -116,7 +141,7 @@
       tmpFrac2 += pathSegLens[i] / pathLen;
       if(tmpFrac2 > paramFrac) {
         tmpFrac3 = (paramFrac - tmpFrac1) / (tmpFrac2 - tmpFrac1);
-        dim._it(1, ind => {
+        dim._it(ind => {
           tup.push(Mathf.lerp(pathData[i * dim + ind], pathData[i * dim + dim + ind], tmpFrac3));
         });
         break;
@@ -124,32 +149,46 @@
       i++;
     };
 
-    if(tmpFrac3 == null) dim._it(1, ind => tup.push(pathData[ind]));
+    if(tmpFrac3 == null) dim._it(ind => tup.push(pathData[ind]));
 
     return tup;
   };
   exports.pathLerp = pathLerp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The path version of {biLerp}.
-   * ---------------------------------------- */
+  /**
+   * Bilinear version of {@link pathLerp}.
+   * @param {PathData} pathData1
+   * @param {PathData} pathData2
+   * @param {number|unset} [dim]
+   * @param {number|unset} [param1]
+   * @param {number|unset} [param2]
+   * @param {number|unset} [a_12]
+   * @param {number|unset} [param1_f]
+   * @param {number|unset} [param1_t]
+   * @param {number|unset} [param2_f]
+   * @param {number|unset} [param2_t]
+   * @return {Array<number>}
+   */
   const pathBiLerp = function(pathData1, pathData2, dim, param1, param2, a_12, param1_f, param1_t, param2_f, param2_t) {
     return pathLerp([
       pathLerp(pathData1, dim, param1, param1_f, param1_t),
       pathLerp(pathData2, dim, param2, param2_f, param2_t),
-    ].flatten(), dim, a12);
+    ].flatten(), dim, a_12);
   };
   exports.pathBiLerp = pathBiLerp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * More generalized interpolation method.
-   * ---------------------------------------- */
+  /**
+   * Generalized way to use {@link Interp}.
+   * @param {number} val_f
+   * @param {number} val_t
+   * @param {number|unset} [param]
+   * @param {Interp|unset} [interp]
+   * @param {number|unset} [param_f]
+   * @param {number|unset} [param_t]
+   * @return {number}
+   */
   const applyInterp = function(val_f, val_t, param, interp, param_f, param_t) {
     return val_f + (val_f - val_t) * tryVal(interp, Interp.linear).apply(_paramFrac(param, param_f, param_t));
   };

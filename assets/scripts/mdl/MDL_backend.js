@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Some backend methods, do not try this util you know how it works.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -25,23 +23,23 @@
   /* <---------- base ----------> */
 
 
-  let useSDL3 = typeof SDLVideo.SDL_SetWindowTitle === "function";
+  const useSDL3 = typeof SDLVideo.SDL_SetWindowTitle === "function";
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets/sets clipboard text.
-   * ---------------------------------------- */
+   * @param {string} param
+   * @return {string}
+   */
   const accClipboard = function(param) {
     if(param === "read") {
       return Core.app.getClipboardText();
-    } else {
-      let str = String(param);
-      Core.app.setClipboardText(str);
-
-      return str;
     };
+
+    let str = String(param);
+    Core.app.setClipboardText(str);
+
+    return str;
   };
   exports.accClipboard = accClipboard;
 
@@ -49,11 +47,11 @@
   /* <---------- window ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Minimizes a window.
-   * ---------------------------------------- */
+   * @param {number|unset} [winLong]
+   * @return {void}
+   */
   const _w_min = function(winLong) {
     (useSDL3 ? SDLVideo : SDL).SDL_MinimizeWindow(tryVal(winLong, Core.app.window));
   }
@@ -61,11 +59,11 @@
   exports._w_min = _w_min;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Maximizes a window.
-   * ---------------------------------------- */
+   * @param {number|unset} [winLong]
+   * @return {void}
+   */
   const _w_max = function(winLong) {
     (useSDL3 ? SDLVideo : SDL).SDL_MaximizeWindow(tryVal(winLong, Core.app.window));
   }
@@ -73,37 +71,40 @@
   exports._w_max = _w_max;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Restores a window.
-   * ---------------------------------------- */
-  const _w_restor = function(winLong) {
+   * @param {number|unset} [winLong]
+   * @return {void}
+   */
+  const _w_restore = function(winLong) {
     (useSDL3 ? SDLVideo : SDL).SDL_RestoreWindow(tryVal(winLong, Core.app.window));
   }
   .setAnno("windows-only");
-  exports._w_restor = _w_restor;
+  exports._w_restore = _w_restore;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets the title of a window.
-   * ---------------------------------------- */
-  const setWinTitle = function(winLong, str) {
-    (useSDL3 ? SDLVideo : SDL).SDL_SetWindowTitle(tryVal(winLong, Core.app.window), tryVal(str, Vars.appName));
+  /**
+   * Sets title of a window.
+   * @param {number|unset} [winLong]
+   * @param {string|unset} [title]
+   * @return {void}
+   */
+  const setWinTitle = function(winLong, title) {
+    (useSDL3 ? SDLVideo : SDL).SDL_SetWindowTitle(tryVal(winLong, Core.app.window), tryVal(title, Vars.appName));
   }
   .setAnno("windows-only");
   exports.setWinTitle = setWinTitle;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Simply creates a message window.
-   * ---------------------------------------- */
+  /**
+   * Creates a message window.
+   * @param {string|unset} [mode]
+   * @param {string|unset} [title]
+   * @param {string|unset} [str]
+   * @return {void}
+   */
   const showMessage = function thisFun(mode, title, str) {
-    if(mode != null) mode = "info";
+    if(mode == null) mode = "info";
     if(!mode.equalsAny(thisFun.modes)) return;
 
     (useSDL3 ? SDLVideo : SDL).SDL_ShowSimpleMessageBox(

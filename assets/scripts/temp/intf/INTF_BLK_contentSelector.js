@@ -22,14 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_io = require("lovec/mdl/MDL_io");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 
@@ -69,7 +61,7 @@
 
 
   function comp_ex_buildSelector(b, tb) {
-    MDL_table.setSelector_ct(
+    MDL_table._s_ct(
       tb, b.block, b.block.delegee.selectionQueue,
       () => b.delegee.ctTg, val => b.configure(val == null ? null : val.name), false,
       b.block.selectionRows, b.block.selectionColumns,

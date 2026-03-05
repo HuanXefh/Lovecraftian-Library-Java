@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to network.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -25,13 +23,14 @@
   /* <---------- packet ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a new packet handler.
-   * ---------------------------------------- */
+   * @param {string|unset} mode
+   * @param {string} header
+   * @param {function(string): void} payloadCaller
+   * @return {void};
+   */
   const __packetHandler = function thisFun(mode, header, payloadCaller) {
-    if(header == null) return;
     if(thisFun.headers.includes(header)) ERROR_HANDLER.throw("headerConflict", header);
     if(mode == null) mode = "client";
     if(!mode.equalsAny(thisFun.modes)) return;
@@ -49,13 +48,17 @@
   exports.__packetHandler = __packetHandler;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Sends out a packet.
-   * ---------------------------------------- */
+   * @param {string|unset} mode
+   * @param {string} header
+   * @param {string|unset} [payload]
+   * @param {boolean|unset} [isReliable]
+   * @param {boolean|unset} [useConnection]
+   * @return {void}
+   */
   const sendPacket = function thisFun(mode, header, payload, isReliable, useConnection) {
-    if(!global.lovec.param.modded || header == null || payload == null) return;
+    if(!PARAM.modded || payload == null) return;
     if(mode == null) mode = "server";
     if(!mode.equalsAny(thisFun.modes)) return;
 
@@ -78,20 +81,22 @@
   /* <---------- http ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fetches the latest version (tag) of a repository on GitHub.
-   * If errored, the value will be {undefined}.
-   * ---------------------------------------- */
-  const fetchLatestVer = function(owner, repo, valCaller) {
-    let val;
+  /**
+   * Gets latest version (tag) of a repository on GitHub.
+   * If errored the result will be null.
+   * @param {string} owner
+   * @param {string} repo
+   * @param {function(any): void} callback
+   * @return {void}
+   */
+  const fetchLatestVer = function(owner, repo, callback) {
+    let val = null;
     Http.get("https://api.github.com/repos/" + owner + "/" + repo + "/releases/latest")
     .header("X-GitHub-Api-Version", "2022-11-28")
-    .error(err => valCaller(val))
+    .error(err => callback(val))
     .submit((res, exc) => {
       if(exc == null) val = parseResponse(res).tag_name;
-      valCaller(val);
+      callback(val);
     });
   };
   exports.fetchLatestVer = fetchLatestVer;

@@ -23,13 +23,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseTorqueBlock");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MDL_call = require("lovec/mdl/MDL_call");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
 
 
   /* <---------- component ----------> */
@@ -53,7 +46,7 @@
       b.onProximityUpdate();
       b.delegee.isInv = bool;
       b.delegee.rpmCur = b.ex_calcRpmTg();
-      MDL_effect.showAt_click(b.x, b.y, b.team);
+      MDL_effect._e_click(b.x, b.y, b.team.color);
       Sounds.click.at(b);
     });
   };
@@ -154,7 +147,7 @@
     };
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
 
 

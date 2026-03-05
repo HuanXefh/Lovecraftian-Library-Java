@@ -26,12 +26,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 

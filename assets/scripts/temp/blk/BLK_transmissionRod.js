@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Better than cogwheel for remote torque transfer.
    * ---------------------------------------- */
 
@@ -24,12 +24,7 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseTorqueBlock");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-
+  
 
   /* <---------- component ----------> */
 

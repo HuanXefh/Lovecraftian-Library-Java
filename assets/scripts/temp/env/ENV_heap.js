@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Decorative tall blocks for walls.
    * Bullets won't collide with {TallBlock}, I can't do much with it.
    * ---------------------------------------- */
@@ -25,11 +25,6 @@
 
 
   const PARENT = require("lovec/temp/env/ENV_baseProp");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_text = require("lovec/mdl/MDL_text");
 
 
   /* <---------- component ----------> */

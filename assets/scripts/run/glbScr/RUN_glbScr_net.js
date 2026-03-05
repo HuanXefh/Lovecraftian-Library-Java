@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Global net methods in Lovec.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,32 +20,27 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- package ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts an array into Json string for packets.
-   * The array should only contain primitive values.
-   * ---------------------------------------- */
+  /**
+   * Converts an array into JSON string for packets.
+   * This array should only contain primitive values.
+   * @global
+   * @param {Array} arr
+   * @return {string}
+   */
   packPayload = function(arr) {
     return JSON.stringify(Object.arrToObj(arr));
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a Json string back into an array of primitive values.
-   * ---------------------------------------- */
+  /**
+   * Converts given JSON string back into an array of primitive values.
+   * @global
+   * @param {string} payload
+   * @return {Array}
+   */
   unpackPayload = function(payload) {
     return Object.objToArr(JSON.parse(payload));
   };
@@ -56,21 +49,25 @@
   /* <---------- http ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parses an HTTP response as Json object.
-   * ---------------------------------------- */
+  /**
+   * Parses an HTTP response to JSON object.
+   * @global
+   * @param {Http.HttpResponse} res
+   * @return {Object}
+   */
   parseResponse = function(res) {
     return JSON.parse(res.getResultAsString());
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Writes an HTTP response into some file.
-   * ---------------------------------------- */
+   * @global
+   * @param {Http.HttpResponse} res
+   * @param {Fi} fi
+   * @param {boolean|unset} [shouldAppend]
+   * @return {Fi}
+   */
   writeResponse = function(res, fi, shouldAppend) {
     fi.write(res.getResultAsStream(), tryVal(shouldAppend, false));
 

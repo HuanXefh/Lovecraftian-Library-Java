@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A nightmare of table, that's all it's for.
-   * ---------------------------------------- */
+  /**
+   * A nightmare of tables, that's all.
+   */
 
 
 /*
@@ -22,28 +20,15 @@
   /* <---------- import ----------> */
 
 
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_attr = require("lovec/mdl/MDL_attr");
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_recipe = require("lovec/mdl/MDL_recipe");
-  const MDL_text = require("lovec/mdl/MDL_text");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets margin for the cell quickly.
-   * ---------------------------------------- */
+  /**
+   * Sets margin for a table or cell.
+   * @param {Table|Cell} tb
+   * @param {number|unset} [scl]
+   * @return {Table|Cell}
+   */
   const __margin = function(tb, scl) {
     if(scl == null) scl = 1.0;
 
@@ -52,24 +37,28 @@
   exports.__margin = __margin;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds empty lines.
-   * ---------------------------------------- */
+  /**
+   * Adds empty lines for a table.
+   * @param {Table} tb
+   * @param {number|unset} [repeat]
+   * @return {void}
+   */
   const __break = function(tb, repeat) {
-    tryVal(repeat, 2)._it(1, i => {
+    tryVal(repeat, 2)._it(i => {
       tb.add("").row();
     });
   };
   exports.__break = __break;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A horizonal bar.
-   * ---------------------------------------- */
+  /**
+   * Adds a horizonal bar for a table.
+   * @param {Table} tb
+   * @param {Color|unset} [color]
+   * @param {number|unset} [w]
+   * @param {number|unset} [stroke]
+   * @return {void}
+   */
   const __bar = function(tb, color, w, stroke) {
     if(color == null) color = Color.darkGray;
     if(stroke == null) stroke = 4.0;
@@ -81,11 +70,14 @@
   exports.__bar = __bar;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A vertical bar.
-   * ---------------------------------------- */
+  /**
+   * Adds a vertical bar for a table.
+   * @param {Table} tb
+   * @param {Color|unset} [color]
+   * @param {number|unset} [h]
+   * @param {number|unset} [stroke]
+   * @return {Cell}
+   */
   const __barV = function(tb, color, h, stroke) {
     if(color == null) color = Color.darkGray;
     if(stroke == null) stroke = 4.0;
@@ -97,11 +89,15 @@
   exports.__barV = __barV;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A standard text line with length wrapped.
-   * ---------------------------------------- */
+  /**
+   * Adds a wrapped text line for a table.
+   * @param {Table} tb
+   * @param {string} str
+   * @param {number|unset} [align]
+   * @param {number|unset} [ord]
+   * @param {number|unset} [padLeft]
+   * @return {void}
+   */
   const __wrapLine = function(tb, str, align, ord, padLeft) {
     tb.add(str)
     .center()
@@ -114,11 +110,11 @@
   exports.__wrapLine = __wrapLine;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used when a dialog has no contents.
-   * ---------------------------------------- */
+   * @param {Table} tb
+   * @return {void}
+   */
   const __textNothing = function(tb) {
     tb.add(MDL_bundle._info("lovec", "nothing")
     .color(Color.lightGray))
@@ -128,13 +124,17 @@
   exports.__textNothing = __textNothing;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The basic button template.
-   * ---------------------------------------- */
-  const __btn = function(tb, nm, scr, w, h) {
-    return tb.button(nm, scr)
+  /**
+   * Adds basic button for a table.
+   * @param {Table} tb
+   * @param {string} text
+   * @param {function(): void} scr
+   * @param {number|unset} [w]
+   * @param {number|unset} [h]
+   * @return {Cell}
+   */
+  const __btn = function(tb, text, scr, w, h) {
+    return tb.button(text, scr)
     .size(tryVal(w, 200.0), tryVal(h, 50.0))
     .center()
     .pad(12.0);
@@ -142,11 +142,13 @@
   exports.__btn = __btn;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Template for icon button.
-   * ---------------------------------------- */
+  /**
+   * Adds an icon button for a table.
+   * @param {Table} tb
+   * @param {string|TextureRegionDrawable} icon
+   * @param {function(): void} scr
+   * @return {Cell}
+   */
   const __btnSmall = function(tb, icon, scr) {
     return tb.button(icon, scr)
     .size(42.0)
@@ -156,11 +158,14 @@
   exports.__btnSmall = __btnSmall;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A button to close the dialog.
-   * ---------------------------------------- */
+  /**
+   * Adds a close button for a table.
+   * @param {Table} tb
+   * @param {Dialog} dial - Dialog to close.
+   * @param {number|unset} [w]
+   * @param {number|unset} [h]
+   * @return {Cell}
+   */
   const __btnClose = function(tb, dial, w, h) {
     dial.addCloseListener();
     return __btn(tb, "@close", () => dial.hide(), w, h);
@@ -168,44 +173,63 @@
   exports.__btnClose = __btnClose;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A button to visit some website.
-   * ---------------------------------------- */
-  const __btnLink = function(tb, nm, url, w, h) {
-    return __btn(tb, nm, () => Core.app.openURI(url), w, h);
+  /**
+   * Adds a link button for a table.
+   * @param {Table} tb
+   * @param {string} text
+   * @param {string} url
+   * @param {number|unset} [w]
+   * @param {number|unset} [h]
+   * @return {Cell}
+   */
+  const __btnLink = function(tb, text, url, w, h) {
+    return __btn(tb, text, () => Core.app.openURI(url), w, h);
   };
   exports.__btnLink = __btnLink;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Basic config button.
-   * ---------------------------------------- */
+  /**
+   * Adds a small config button for a table.
+   * @param {Table} tb
+   * @param {Building} b
+   * @param {function(Building): void} scr
+   * @param {string|TextureRegionDrawable} icon
+   * @param {number|unset} [w]
+   * @return {Cell}
+   */
   const __btnCfg = function(tb, b, scr, icon, w) {
     return tb.button(icon, tryVal(w, 24.0), () => scr(b)).center();
   };
   exports.__btnCfg = __btnCfg;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A config button to switch {bool} property in a building.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link __btnCfg} used to toggle a boolean config.
+   * @param {Table} tb
+   * @param {Building} b
+   * @param {string|TextureRegionDrawable} iconTrue
+   * @param {string|TextureRegionDrawable} iconFalse
+   * @param {boolean} bool - Value of target boolean.
+   * @param {number|unset} [w]
+   * @return {Cell}
+   */
   const __btnCfgToggle = function(tb, b, iconTrue, iconFalse, bool, w) {
     return tb.button(bool ? iconTrue : iconFalse, tryVal(w, 24.0), () => {b.configure(!bool); b.deselect()}).center();
   };
   exports.__btnCfgToggle = __btnCfgToggle;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Simply a slider.
-   * ---------------------------------------- */
+  /**
+   * Adds a slider for a table.
+   * @param {Table} tb
+   * @param {function(number): void} valCaller
+   * @param {number|unset} [min]
+   * @param {number|unset} [max]
+   * @param {number|unset} [step]
+   * @param {number|unset} [def]
+   * @param {number|unset} [w]
+   * @return {Cell}
+   */
   const __slider = function(tb, valCaller, min, max, step, def, w) {
     let sliderCell = tb.slider(
       tryVal(min, 0),
@@ -226,11 +250,18 @@
   exports.__slider = __slider;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A slider bar used mostly for config.
-   * ---------------------------------------- */
+  /**
+   * Adds a config slider for a table.
+   * @param {Table} tb
+   * @param {Building} b
+   * @param {function(Building): string} strGetter - Gets string to display for current value.
+   * @param {number|unset} [min]
+   * @param {number|unset} [max]
+   * @param {number|unset} [step]
+   * @param {number|unset} [def]
+   * @param {number|unset} [w]
+   * @return {Cell}
+   */
   const __sliderCfg = function(tb, b, strGetter, min, max, step, def, w) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
@@ -242,12 +273,19 @@
   exports.__sliderCfg = __sliderCfg;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Like what's done in {Stat.tiles}, but displays the attribute in tooltip.
-   * ---------------------------------------- */
-  const __blkEffc = function(tb, blk, mtp, nmAttr, w, dial) {
+  /**
+   * Adds block efficiency display for a table.
+   * Like what's done in most `Stat.tiles`, however, involved attribute is displayed in the tooltip.
+   * @param {Table} tb
+   * @param {Block} blk
+   * @param {number} mtp
+   * @param {string} nmAttr
+   * @param {number|unset} [w]
+   * @param {Dialog|unset} [dialToHide]
+   * @param {ContentInfoDialog|unset} [ctDial]
+   * @return {Cell}
+   */
+  const __blkEffc = function(tb, blk, mtp, nmAttr, w, dialToHide, ctDial) {
     if(blk == null) return;
     if(w == null) w = 64.0;
     let str = (Math.abs(mtp) < 0.0001) ? "" : ((mtp < 0.0 ? "-" : "") + Strings.autoFixed(mtp * 100.0, 2) + "%");
@@ -256,10 +294,10 @@
       tb.left();
       tb1.table(Styles.none, tb2 => {
         tb2.left();
-        // @TABLE: block icon
+        // <TABLE>: block icon
         let btn = tb2.button(new TextureRegionDrawable(blk.uiIcon), w, () => {
-          Vars.ui.content.show(blk);
-          if(dial != null) dial.hide();
+          tryVal(ctDial, Vars.ui.content).show(blk);
+          if(dialToHide != null) dialToHide.hide();
         })
         .tooltip(blk.localizedName + ((nmAttr == null) ? "" : ("\n\n[green]" + MDL_attr._attrB(nmAttr) + "[]")))
         .padRight(-18.0)
@@ -269,7 +307,7 @@
         btnStyle.up = Styles.none;
         btnStyle.down = Styles.none;
         btnStyle.over = Styles.flatOver;
-        // @TABLE: efficiency label
+        // <TABLE>: efficiency label
         tb2.table(Styles.none, tb3 => {
           tb3.left();
           __break(tb3);
@@ -281,19 +319,23 @@
   exports.__blkEffc = __blkEffc;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A content icon that can be clicked to show its stat page.
-   * ---------------------------------------- */
-  const __ct = function(tb, ct, w, pad, dial) {
+  /**
+   * Adds a content display for a table.
+   * @param {Table} tb
+   * @param {UnlockableContent} ct
+   * @param {number|unset} [w]
+   * @param {number|unset} [pad]
+   * @param {Dialog|unset} [dialToHide]
+   * @param {ContentInfoDialog|unset} [ctDial]
+   */
+  const __ct = function(tb, ct, w, pad, dialToHide, ctDial) {
     if(ct == null) return;
     if(w == null) w = 32.0;
     if(pad == null) pad = 4.0;
 
     let btnCell = tb.button(new TextureRegionDrawable(ct.uiIcon), w, () => {
-      Vars.ui.content.show(ct);
-      if(dial != null) dial.hide();
+      tryVal(ctDial, Vars.ui.content).show(ct);
+      if(dialToHide != null) dialToHide.hide();
     })
     .pad(pad)
     .tooltip(ct.localizedName, true);
@@ -309,11 +351,14 @@
   exports.__ct = __ct;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used by recipe factories to replace consumer-based table.
-   * ---------------------------------------- */
+  /**
+   * Adds a generic content requirement display for a table.
+   * @param {Table} tb
+   * @param {UnlockableContent} ct
+   * @param {number} amt
+   * @param {function(): number} amtGetter
+   * @return {Cell}
+   */
   const __reqCt = function(tb, ct, amt, amtGetter) {
     let reqImg = new ReqImage(
       StatValues.stack(ct, amt),
@@ -325,11 +370,14 @@
   exports.__reqCt = __reqCt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used by recipe factories to replace consumer-based table.
-   * ---------------------------------------- */
+  /**
+   * Adds a resource requirement display for a table.
+   * @param {Table} tb
+   * @param {Building} b
+   * @param {Resource} rs
+   * @param {number} amt
+   * @return {Cell}
+   */
   const __reqRs = function(tb, b, rs, amt) {
     let reqImg = new ReqImage(
       rs instanceof Item ? StatValues.stack(rs, amt) : rs.uiIcon,
@@ -341,11 +389,13 @@
   exports.__reqRs = __reqRs;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used by recipe factories to replace consumer-based table.
-   * ---------------------------------------- */
+  /**
+   * Adds a multiple resource requirement display for a table.
+   * @param {Table} tb
+   * @param {Building} b
+   * @param {Array<Resource>} rss
+   * @return {Cell}
+   */
   const __reqMultiRs = function(tb, b, rss) {
     let multiReqImg = new MultiReqImage();
     rss.forEachFast(rs => {
@@ -360,12 +410,18 @@
   exports.__reqMultiRs = __reqMultiRs;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A group of elements mainly used by recipe tables.
-   * ---------------------------------------- */
-  const __rcCt = function(tb, ct, amt, p, cancelLiq, w, dial) {
+  /**
+   * Adds a recipe content display for a table.
+   * @param {Table} tb
+   * @param {UnlockableContent} ct
+   * @param {number|unset} [amt] - Leave empty to hide amount text.
+   * @param {number|unset} [p]
+   * @param {boolean|unset} [cancelLiq] - Set this to true for batch fluid I/O.
+   * @param {number|unset} [w]
+   * @param {Dialog|unset} [dialToHide]
+   * @param {ContentInfoDialog|unset} [ctDial]
+   */
+  const __rcCt = function(tb, ct, amt, p, cancelLiq, w, dialToHide, ctDial) {
     if(ct == null) return;
     if(amt == null) amt = -1;
     if(p == null) p = 1.0;
@@ -380,10 +436,10 @@
       tb1.left();
       tb1.table(Styles.none, tb2 => {
         tb2.left();
-        // @TABLE: content icon
+        // <TABLE>: content icon
         let btn = tb2.button(new TextureRegionDrawable(ct.uiIcon), w, () => {
-          if(dial != null) dial.hide();
-          Vars.ui.content.show(ct);
+          tryVal(ctDial, Vars.ui.content).show(ct);
+          if(dialToHide != null) dialToHide.hide();
         })
         .tooltip(ct.localizedName)
         .padRight(-4.0)
@@ -393,7 +449,7 @@
         btnStyle.up = Styles.none;
         btnStyle.down = Styles.none;
         btnStyle.over = Styles.flatOver;
-        // @TABLE: content label
+        // <TABLE>: content label
         tb2.table(Styles.none, tb3 => {
           tb3.left();
           // Probability (top right)
@@ -414,33 +470,42 @@
   /* <---------- text ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets a gray area holding text lines.
-   * ---------------------------------------- */
-  const setDisplay_note = function(tb, str, ord, padLeft) {
+  /**
+   * Sets a gray area to hold wrapped text.
+   * @param {Table} tb
+   * @param {string} text
+   * @param {number|unset} [ord]
+   * @param {number|unset} [padLeft]
+   * @return {Cell}
+   */
+  const _d_note = function(tb, text, ord, padLeft) {
     const noteCell = tb.table(Tex.whiteui, tb1 => {
       tb1.center().setColor(Pal.darkestGray);
       __margin(tb1, 1.5);
-      __wrapLine(tb1, str.color(Color.gray), Align.left, tryVal(ord, 1), padLeft);
+      __wrapLine(tb1, text.color(Color.gray), Align.left, tryVal(ord, 1), padLeft);
     }).padTop(8.0).padBottom(8.0);
     noteCell.row();
 
     return noteCell;
   };
-  exports.setDisplay_note = setDisplay_note;
+  exports._d_note = _d_note;
 
 
   /* <---------- table ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets up an outlined table for data display.
-   * ---------------------------------------- */
-  const setTable_base = function(tb, matArr, colorLine, colorTitle, colorBase, stroke, imgW) {
+  /**
+   * Sets an outlined table.
+   * @param {Table} tb
+   * @param {Array<Array>} matArr
+   * @param {Color|unset} [colorLine]
+   * @param {Color|unset} [colorTitle]
+   * @param {Color|unset} [colorBase]
+   * @param {number|unset} [stroke]
+   * @param {number|unset} [imgW]
+   * @return {Cell}
+   */
+  const _l_table = function(tb, matArr, colorLine, colorTitle, colorBase, stroke, imgW) {
     if(colorLine == null) colorLine = Color.darkGray;
     if(colorTitle == null) colorTitle = colorLine;
     if(colorBase == null) colorBase = Pal.darkestGray;
@@ -449,10 +514,10 @@
 
     let rowAmt = matArr.iCap();
     let colAmt = matArr[0].iCap();
-    if(rowAmt === 0 || colAmt === 0) return;
 
     const contCell = tb.table(Styles.none, tb1 => {});
     const cont = contCell.get();
+    if(rowAmt === 0 || colAmt === 0) return contCell;
 
     for(let i = 0; i < colAmt; i++) {
       let tbCol = cont.table(Styles.none, tb1 => {}).grow().get();
@@ -476,7 +541,7 @@
           if(tmp instanceof TextureRegion) {
             tbCell.image(tmp).width(imgW).height(imgW);
           } else if(tmp instanceof UnlockableContent) {
-            __ct(tbCell, tmp, imgW);
+            __ct(tbCell, tmp, imgW, null, null, VAR.dial_ct1);
           } else if(typeof tmp === "function") {
             tmp(tbCell);
           } else if(typeof tmp === "string") {
@@ -499,18 +564,20 @@
 
     return contCell;
   };
-  exports.setTable_base = setTable_base;
+  exports._l_table = _l_table;
 
 
   /* <---------- content ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Sets a list that shows contents in rows.
-   * ---------------------------------------- */
-  const setDisplay_ctRow = function thisFun(tb, cts_gn_p, showOrd) {
+   * @param {Table} tb
+   * @param {ContentGn|Array<ContentGn>} cts_gn_p
+   * @param {boolean|unset} [showOrd]
+   * @return {Cell}
+   */
+  const _l_ctRow = function thisFun(tb, cts_gn_p, showOrd) {
     let cts_gn = cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p];
     showOrd = showOrd && cts_gn.length > 0;
 
@@ -551,31 +618,36 @@
       }).marginRight(18.0).growY();
     },
     buildRowContent: (tb, ct) => {
-      // @TABLE: content icon
+      // <TABLE>: content icon
       tb.table(Styles.none, tb1 => {
         tb1.left();
         tb1.image(ct.uiIcon).size(Vars.iconLarge).padRight(18.0);
         __barV(tb1).padRight(18.0);
         tb1.add(ct.localizedName);
       });
-      // @TABLE: spacing
+      // <TABLE>: spacing
       tb.table(Styles.none, tb1 => {}).width(80.0).growX().growY();
-      // @TABLE: "?" button
+      // <TABLE>: "?" button
       tb.table(Styles.none, tb1 => {
         tb1.left();
         tb1.button("?", () => Vars.ui.content.show(ct)).size(VAR.rad_charBtnRad);
       });
     },
   });
-  exports.setDisplay_ctRow = setDisplay_ctRow;
+  exports._l_ctRow = _l_ctRow;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Sets a list that shows content just like in the database.
-   * ---------------------------------------- */
-  const setDisplay_ctLi = function(tb, cts_gn_p, iconW, colAmt, dial) {
+   * @param {Table} tb
+   * @param {ContentGn|Array<ContentGn>} cts_gn_p
+   * @param {number|unset} [iconW]
+   * @param {number|unset} [colAmt]
+   * @param {Dialog|unset} [dialToHide]
+   * @param {ContentInfoDialog|unset} [ctDial]
+   * @return {Cell}
+   */
+  const _l_ctLi = function(tb, cts_gn_p, iconW, colAmt, dialToHide, ctDial) {
     if(iconW == null) iconW = 32.0;
     if(colAmt == null) colAmt = MDL_ui._colAmt(iconW, 0.0, 2);
     let cts_gn = cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p];
@@ -588,7 +660,7 @@
       while(i < iCap) {
         (function(i) {
           let ct = MDL_content._ct(cts_gn[i], null, true);
-          if(ct != null) __ct(tb1, ct, iconW, null, dial);
+          if(ct != null) __ct(tb1, ct, iconW, null, dialToHide, ctDial);
         })(i);
 
         if(j % colAmt === colAmt - 1) tb1.row();
@@ -600,16 +672,22 @@
 
     return contCell;
   };
-  exports.setDisplay_ctLi = setDisplay_ctLi;
+  exports._l_ctLi = _l_ctLi;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets a selector for choosing a content.
-   * Improved vanilla {ItemSelection} with better text search.
-   * ---------------------------------------- */
-  const setSelector_ct = function(tb, blk, cts, ctGetter, cfgCaller, closeSelect, rowAmt, colAmt) {
+  /**
+   * Sets a selector for single content selection.
+   * @param {Table} tb
+   * @param {Block} blk
+   * @param {Array<UnlockableContent>} cts
+   * @param {function(): UnlockableContent|null} ctGetter
+   * @param {function(UnlockableContent|null): void} cfgCaller
+   * @param {boolean|unset} [closeSelect]
+   * @param {number|unset} [rowAmt]
+   * @param {number|unset} [colAmt]
+   * @return {void}
+   */
+  const _s_ct = function(tb, blk, cts, ctGetter, cfgCaller, closeSelect, rowAmt, colAmt) {
     if(closeSelect == null) closeSelect = false;
     if(rowAmt == null) rowAmt = 4;
     if(colAmt == null) colAmt = 4;
@@ -631,7 +709,9 @@
       searchText = search == null ? "" : search.getText().replace(/=/g, "");
       searchArr = cts.filter(ct => searchText === "" || MDL_text._searchValid(ct, searchText));
       countRow = 0;
-      i = 0, iCap = searchArr.iCap(), j = 0;
+      i = 0;
+      iCap = searchArr.iCap();
+      j = 0;
       while(i < iCap) {
         j += (function(i) {
           let ct = searchArr[i];
@@ -678,15 +758,23 @@
     root.add(pn).maxHeight(rowAmt * 40.0).growX();
     tb.top().add(root).width(colAmt * 40.0 + 28.0);
   };
-  exports.setSelector_ct = setSelector_ct;
+  exports._s_ct = _s_ct;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets a selector for choosing multiple contents.
-   * ---------------------------------------- */
-  const setSelector_ctMulti = function(tb, blk, cts, ctsGetter, cfgCaller, closeSelect, rowAmt, colAmt, max) {
+  /**
+   * Sets a selector for multiple content selection.
+   * @param {Table} tb
+   * @param {Block} blk
+   * @param {Array<UnlockableContent>} cts
+   * @param {function(): Array<UnlockableContent>} ctsGetter
+   * @param {function(Array): void} cfgCaller
+   * @param {boolean|unset} [closeSelect]
+   * @param {number|unset} [rowAmt]
+   * @param {number|unset} [colAmt]
+   * @param {number|unset} [max]
+   * @return {void}
+   */
+  const _s_ctMulti = function(tb, blk, cts, ctsGetter, cfgCaller, closeSelect, rowAmt, colAmt, max) {
     if(closeSelect == null) closeSelect = false;
     if(rowAmt == null) rowAmt = 4;
     if(colAmt == null) colAmt = 4;
@@ -709,14 +797,16 @@
       searchText = search == null ? "" : search.getText().replace(/=/g, "");
       searchArr = cts.filter(ct => searchText === "" || MDL_text._searchValid(ct, searchText));
       countRow = 0;
-      i = 0, iCap = searchArr.iCap(), j = 0;
+      i = 0;
+      iCap = searchArr.iCap();
+      j = 0;
       while(i < iCap) {
         j += (function(i) {
           let ct = searchArr[i];
           if(!MDL_cond._isRsAvailable(ct)) return 0;
 
           let btn = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(ct.selectionSize, 0.0, 40.0), () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ct.localizedName, true).group(btnGrp).get();
-          btn.changed(() => cfgCaller((btn.isChecked() ? ["selector", ct, true] : ["selector", ct, false]).toJavaArr()));
+          btn.changed(() => cfgCaller((btn.isChecked() ? ["selector", ct, true] : ["selector", ct, false]).toJavaArr(JAVA.object)));
           btn.getStyle().imageUp = new TextureRegionDrawable(ct.uiIcon);
           btn.update(() => btn.setChecked(ctsGetter().includes(ct)));
 
@@ -756,31 +846,38 @@
     root.add(pn).maxHeight(rowAmt * 40.0).growX();
     tb.top().add(root).width(colAmt * 40.0 + 28.0);
   };
-  exports.setSelector_ctMulti = setSelector_ctMulti;
+  exports._s_ctMulti = _s_ctMulti;
 
 
   /* <---------- misc stat ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets attribute display that supports multiple attributes.
-   * ---------------------------------------- */
-  const setDisplay_attr = function(tb, attrs_gn_p, boolF, scl, iconW, colAmt, dial) {
+  /**
+   * Sets an attribute display that supports multiple attributes.
+   * @param {Table} tb
+   * @param {AttrGn|Array<AttrGn>} attrs_gn_p
+   * @param {(function(Block): boolean)|unset} [boolF]
+   * @param {number|unset} [scl]
+   * @param {number|unset} [iconW]
+   * @param {number|unset} [colAmt]
+   * @param {Dialog|unset} [dialToHide]
+   * @param {ContentInfoDialog|unset} [ctDial]
+   * @return {void}
+   */
+  const _d_attr = function(tb, attrs_gn_p, boolF, scl, iconW, colAmt, dialToHide, ctDial) {
     if(scl == null) scl = 1.0;
     if(iconW == null) iconW = 64.0;
     if(colAmt == null) colAmt = MDL_ui._colAmt(iconW, 0.0, 2);
 
-    let map = MDL_attr._blkAttrMap(attrs_gn_p, boolF);
-    let i = 0, iCap = map.iCap(), j = 0;
+    let arr = MDL_attr._blkAttrArr(attrs_gn_p, boolF);
+    let i = 0, iCap = arr.iCap(), j = 0;
     tb.table(Styles.none, tb1 => {
       tb1.left();
       __margin(tb1, 0.5);
 
       while(i < iCap) {
         (function(i) {
-          __blkEffc(tb1, map[i], map[i + 1] * scl, map[i + 2], iconW, dial);
+          __blkEffc(tb1, arr[i], arr[i + 1] * scl, arr[i + 2], iconW, dialToHide, tryVal(ctDial, VAR.dial_ct2));
         })(i);
         if(j % colAmt === colAmt - 1) {
           tb1.row();
@@ -791,15 +888,16 @@
       };
     }).left().row();
   };
-  exports.setDisplay_attr = setDisplay_attr;
+  exports._d_attr = _d_attr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets a gray area holding faction icon and name.
-   * ---------------------------------------- */
-  const setDisplay_faction = function(tb, ct) {
+  /**
+   * Sets a gray area to hold faction icon and name.
+   * @param {Table} tb
+   * @param {UnlockableContent} ct
+   * @return {void}
+   */
+  const _d_faction = function(tb, ct) {
     let
       faction = MDL_content._faction(ct),
       factionB = MDL_content._factionB(faction),
@@ -837,15 +935,16 @@
     .growX()
     .row();
   };
-  exports.setDisplay_faction = setDisplay_faction;
+  exports._d_faction = _d_faction;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets factory family boxes.
-   * ---------------------------------------- */
-  const setDisplay_facFami = function(tb, blk) {
+  /**
+   * Sets boxes to display factory family information.
+   * @param {Table} tb
+   * @param {Block} blk
+   * @return {void}
+   */
+  const _d_facFami = function(tb, blk) {
     const root = new Table();
     __break(tb, 1);
     tb.left().add(root).row();
@@ -854,33 +953,37 @@
     MDL_content._facFamis(blk).forEachFast(fami => {
       let cont = new Table();
       root.left().add(cont).width(420.0).growX().row();
-      // @TABLE: title
+      // <TABLE>: title
       cont.table(Tex.whiteui, tb1 =>{
         tb1.center().setColor(Color.darkGray);
         __margin(tb1, 0.5);
         tb1.add(MDL_content._facFamiB(fami)).pad(4.0);
       }).left().growX().row();
-      // @TABLE: contents
+      // <TABLE>: contents
       cont.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(Pal.darkestGray);
         __margin(tb1, 0.5);
-        setDisplay_ctLi(tb1, VARGEN.facFamis[fami], 48.0);
+        _l_ctLi(tb1, VARGEN.facFamis[fami], 48.0);
       }).left().growX().row();
     });
   };
-  exports.setDisplay_facFami = setDisplay_facFami;
+  exports._d_facFami = _d_facFami;
 
 
   /* <---------- recipe ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets recipe display for {BLK_recipeFactory}.
+  /**
+   * Sets recipe display for {@link BLK_recipeFactory}.
    * Table hell ahead!
-   * ---------------------------------------- */
-  const setDisplay_recipe = function(tb, rcMdl, blk, isCollapsed, noInnerPane) {
+   * @param {Table} tb
+   * @param {RecipeModule} rcMdl
+   * @param {Block} blk
+   * @param {boolean|unset} [isCollapsed]
+   * @param {boolean|unset} [noInnerPane]
+   * @return {void}
+   */
+  const _d_rc = function(tb, rcMdl, blk, isCollapsed, noInnerPane) {
     if(MDL_recipe._rcSize(rcMdl) === 0) {
       __textNothing(tb);
       return;
@@ -911,7 +1014,7 @@
         coll.setCollapsed(tryVal(isCollapsed, false), false);
       });
 
-      // @TABLE: category title
+      // <TABLE>: category title
       chunk.table(Tex.whiteui, tb1 => {
         tb1.center().setColor(Color.darkGray);
         __margin(tb1, 0.5);
@@ -939,7 +1042,7 @@
         let fo = MDL_recipe._fo(rcMdl, rcHeader);
         let payo = MDL_recipe._payo(rcMdl, rcHeader);
 
-        // @TABLE: recipe root
+        // <TABLE>: recipe root
         rcRoot.table(Tex.whiteui, tb1 => {
           tb1.left().setColor(Pal.darkestGray);
 
@@ -997,13 +1100,13 @@
         tb1.table(Styles.none, tb2 => {
           bi.forEachRow(3, (tmp, amt, p) => {
             if(!(tmp instanceof Array)) {
-              __rcCt(tb2, tmp, amt, p, true);
+              __rcCt(tb2, tmp, amt, p, true, null, VAR.dial_ct1);
             } else {
               tb2.table(Tex.whiteui, tb3 => {
                 tb3.left().setColor(Pal.darkerGray);
                 tb3.pane(pn => {
                   tmp.forEachRow(3, (tmp1, amt, p) => {
-                    __rcCt(pn, tmp1, amt, p, true).row();
+                    __rcCt(pn, tmp1, amt, p, true, null, VAR.dial_ct1).row();
                   });
                 });
               }).padRight(16.0).maxHeight(82.0);
@@ -1021,13 +1124,13 @@
         tb1.table(Styles.none, tb2 => {
           ci.forEachRow(2, (tmp, amt) => {
             if(!(tmp instanceof Array)) {
-              __rcCt(tb2, tmp, amt);
+              __rcCt(tb2, tmp, amt, null, false, null, VAR.dial_ct1);
             } else {
               tb2.table(Tex.whiteui, tb3 => {
                 tb3.left().setColor(Pal.darkerGray);
                 tb3.pane(pn => {
                   tmp.forEachRow(2, (tmp1, amt) => {
-                    __rcCt(pn, tmp1, amt).row();
+                    __rcCt(pn, tmp1, amt, null, false, null, VAR.dial_ct1).row();
                   });
                 });
               }).padRight(16.0).maxHeight(82.0);
@@ -1044,7 +1147,7 @@
         tb1.add("AUX:").left().tooltip(MDL_bundle._term("lovec", "aux"), true).row();
         tb1.table(Styles.none, tb2 => {
           aux.forEachRow(2, (tmp, amt) => {
-            __rcCt(tb2, tmp, amt);
+            __rcCt(tb2, tmp, amt, null, false, null, VAR.dial_ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1066,7 +1169,7 @@
         tb1.add("PAYI:").left().tooltip(MDL_bundle._term("lovec", "payi"), true).row();
         tb1.table(Styles.none, tb2 => {
           payi.forEachRow(2, (nm, amt) => {
-            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true);
+            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dial_ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1079,7 +1182,7 @@
         tb1.add("BO:").left().tooltip(MDL_bundle._term("lovec", "bo"), true).row();
         tb1.table(Styles.none, tb2 => {
           bo.forEachRow(3, (tmp, amt, p) => {
-            __rcCt(tb2, tmp, amt, p, true);
+            __rcCt(tb2, tmp, amt, p, true, null, VAR.dial_ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1092,7 +1195,7 @@
         tb1.add("CO:").left().tooltip(MDL_bundle._term("lovec", "co"), true).row();
         tb1.table(Styles.none, tb2 => {
           co.forEachRow(2, (tmp, amt) => {
-            __rcCt(tb2, tmp, amt);
+            __rcCt(tb2, tmp, amt, null, false, null, VAR.dial_ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1105,7 +1208,7 @@
         tb1.add("FO:").left().tooltip(MDL_bundle._term("lovec", "fo"), true).row();
         tb1.table(Styles.none, tb2 => {
           bo.forEachRow(3, (tmp, amt, p) => {
-            __rcCt(tb2, tmp, amt, p, true);
+            __rcCt(tb2, tmp, amt, p, true, null, VAR.dial_ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1118,7 +1221,7 @@
         tb1.add("PAYO:").left().tooltip(MDL_bundle._term("lovec", "payo"), true).row();
         tb1.table(Styles.none, tb2 => {
           payo.forEachRow(2, (nm, amt) => {
-            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true);
+            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dial_ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1175,14 +1278,14 @@
               pn.table(Styles.none, tb3 => {
                 tb3.left();
                 tb3.add(MDL_text._statText(MDL_bundle._term("lovec", "require-unlocking"), "")).left();
-                lockedByCts.forEachFast(ct => __ct(tb3, ct, 28.0, 0.0));
+                lockedByCts.forEachFast(ct => __ct(tb3, ct, 28.0, 0.0, null, VAR.dial_ct2));
               }).left().row();
             };
             if(attr != null) {
               pn.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left().tooltip(cons(tb => {
                 tb.table(Styles.black6, tb1 => {
                   __margin(tb1);
-                  setDisplay_attr(tb1, attr, null, attrBoostScl, 40.0, 5);
+                  _d_attr(tb1, attr, null, attrBoostScl, 40.0, 5);
                 });
               })).row();
             };
@@ -1200,15 +1303,21 @@
       buildCateg(categ);
     };
   };
-  exports.setDisplay_recipe = setDisplay_recipe;
+  exports._d_rc = _d_rc;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets recipe selector for {BLK_recipeFactory}.
-   * ---------------------------------------- */
-  const setSelector_recipe = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, closeSelect, colAmt) {
+  /**
+   * Sets recipe selector for {@link BLK_recipeFactory}.
+   * @param {Table} tb
+   * @param {Building} b
+   * @param {function(): string} headerGetter
+   * @param {function(string): void} cfgCaller
+   * @param {Array<function(Table): void>|unset} [extraBtnSetters]
+   * @param {boolean|unset} [closeSelect]
+   * @param {number|unset} [colAmt]
+   * @return {void}
+   */
+  const _s_rc = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, closeSelect, colAmt) {
     if(closeSelect == null) closeSelect = true;
     if(colAmt == null) colAmt = 4;
 
@@ -1245,7 +1354,6 @@
         let j = 0;
         let chunk = new Table();
         categHeaderObj[categ].forEachFast(rcHeader => {
-          let ct = MDL_content._ct(MDL_recipe._iconNm(rcMdl, rcHeader), null, true);
           let icon = MDL_recipe._icon(rcMdl, rcHeader);
           let validGetter = MDL_recipe._finalValidGetter(rcMdl, rcHeader);
           let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validGetter(b));
@@ -1272,4 +1380,4 @@
     };
     rebuildCont();
   };
-  exports.setSelector_recipe = setSelector_recipe;
+  exports._s_rc = _s_rc;

@@ -1,16 +1,17 @@
-/* ----------------------------------------
- * NOTE:
- *
- * The simplest noise and parent of most noise generators.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * The simplest noise and parent of most noise generators.
+ * @class
+ * @param {number|unset} [w]
+ * @param {number|unset} [h]
+ * @param {number|unset} [gridW]
+ * @param {number|unset} [gridH]
+ */
 const CLS_whiteNoise = newClass().initClass();
 
 
@@ -26,9 +27,10 @@ CLS_whiteNoise.prototype.init = function(w, h, gridW, gridH) {
   this.gridHeight = gridH;
   this.tileWidth = w / gridW;
   this.tileHeight = h / gridH;
+  /** @type {Array<Array<number>>} */
   this.noiseData = [].setVal(() => [].setVal(0.0, w), h);
+  /** @type {Array<Array<Vec2>>} */
   this.vecData = [].setVal(() => [].setVal(() => new Vec2(0.0, 0.0), gridW), gridH);
-
   this.isBuilt = false;
 };
 
@@ -42,11 +44,12 @@ CLS_whiteNoise.prototype.init = function(w, h, gridW, gridH) {
 var ptp = CLS_whiteNoise.prototype;
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Prints {noiseData} of the noise as colored zeros.
- * ---------------------------------------- */
+/**
+ * Prints `noiseData` as colored zeros.
+ * @param {number|unset} [base]
+ * @param {number|unset} [cap]
+ * @return {void}
+ */
 ptp.print = function(base, cap) {
   if(base == null) base = 0.0;
   if(cap == null) cap = 1.0;
@@ -63,13 +66,16 @@ ptp.print = function(base, cap) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns the proper coordination for a looped noise, when offset is used.
- * ---------------------------------------- */
+/**
+ * Gets proper coordination of a looped noise when offset is used.
+ * @param {number} coord
+ * @param {number|unset} [off]
+ * @param {boolean|unset} [isY]
+ * @param {boolean|unset} [isGrid]
+ * @return {number}
+ */
 ptp.getOffsetCoord = function(coord, off, isY, isGrid) {
-  let tmpCoord = tryVal(coord, 0) + tryVal(off, 0);
+  let tmpCoord = coord + tryVal(off, 0);
   let w = isY ? (isGrid ? this.gridHeight : this.height) : (isGrid ? this.gridWidth : this.width);
   while(tmpCoord < 0) {
     tmpCoord += w;
@@ -82,91 +88,100 @@ ptp.getOffsetCoord = function(coord, off, isY, isGrid) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Converts a point coordination to grid point coordination.
- * ---------------------------------------- */
+/**
+ * Converts a point coordinate to grid point coordinate.
+ * @param {number} coord
+ * @param {boolean|unset} [isY]
+ * @return {number}
+ */
 ptp.toGridCoord = function(coord, isY) {
-  return Math.floor(tryVal(coord, 0) / (isY ? this.height : this.width) * (isY ? this.gridHeight : this.gridWidth));
+  return Math.floor(coord / (isY ? this.height : this.width) * (isY ? this.gridHeight : this.gridWidth));
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Reversed version of {toGridCoord}.
- * ---------------------------------------- */
+/**
+ * Converts a grid point coordinate to point coordinate.
+ * @param {number} gCoord
+ * @param {boolean|unset} [isY]
+ * @return {number}
+ */
 ptp.toPonCoord = function(gCoord, isY) {
   return Math.round(gCoord * (isY ? this.height / this.gridHeight : this.width / this.gridWidth));
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns the z-value at (x, y).
- * ---------------------------------------- */
+/**
+ * Gets z-value at (x, y).
+ * @param {number} x
+ * @param {number} y
+ * @param {number|unset} [offX]
+ * @param {number|unset} [offY]
+ * @return {number}
+ */
 ptp.getZ = function(x, y, offX, offY) {
   return this.noiseData[this.getOffsetCoord(y, offY, true)][this.getOffsetCoord(x, offX, false)];
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns the vector at (gx, gy).
- * ---------------------------------------- */
+/**
+ * Gets vector at (gx, gy).
+ * @param {number} gx
+ * @param {number} gy
+ * @param {number|unset} [offGx]
+ * @param {number|unset} [offGy]
+ * @return {Vec2}
+ */
 ptp.getVec = function(gx, gy, offGx, offGy) {
   return this.vecData[this.getOffsetCoord(gy, offGy, true, true)][this.getOffsetCoord(gx, offGx, false, true)];
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Iteration over each point of the noise.
- * ---------------------------------------- */
+/**
+ * Iterates through all points of the noise.
+ * @param {function(Number, Number): void} scr - <ARGS>: x, y.
+ * @return {void}
+ */
 ptp.forEachPon = function(scr) {
-  this.height._it(1, j => {
-    this.width._it(1, i => {
+  this.height._it(j => {
+    this.width._it(i => {
       scr(i, j);
     });
   });
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Iteration over each grid point of the noise.
- * ---------------------------------------- */
+/**
+ * Iterates through all grid points of the noise.
+ * @param {function(): void} scr
+ * @return {void}
+ */
 ptp.forEachVert = function(scr) {
-  this.gridHeight._it(1, j => {
-    this.gridWidth._it(1, i => {
+  this.gridHeight._it(j => {
+    this.gridWidth._it(i => {
       scr(i, j);
     });
   });
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * @LATER
- * Sets up the {vecData}, not used for white noise.
- * ---------------------------------------- */
+/**
+ * Sets up vectors, not used for white noise.
+ * <br> <LATER>
+ * @return {void}
+ */
 ptp.setVecData = function() {
 
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Sets up {noiseData}.
- * This should be overrided for other noise types.
- * ---------------------------------------- */
+/**
+ * Sets up noise data.
+ * This method should be overrided for other noise types.
+ * @param {number|unset} [base]
+ * @param {number|unset} [cap]
+ * @param {number|unset} [seed]
+ * @return {Array<number>}
+ */
 ptp.buildNoise = function(base, cap, seed) {
   if(this.isBuilt) return this.noiseData;
   if(base == null) base = 0.0;

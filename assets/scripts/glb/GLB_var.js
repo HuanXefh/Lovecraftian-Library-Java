@@ -5,12 +5,10 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Most basic static parameters, just like {Vars} in Mindustry.
+  /**
+   * Most basic static parameters, just like {@link Vars} in Mindustry.
    * Do not import anything here!
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -24,8 +22,6 @@
 
 
   exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
-  exports.json = LOVEC_JSON_PARSER;
-  exports.jsonReader = LOVEC_JSON_READER;
 
 
   /* <---------- layer ----------> */
@@ -127,6 +123,10 @@
   exports.r_offBuildStat = 2.25;
 
 
+  exports.rad_treeScl = 0.15;
+  exports.rad_tallGrassScl = 0.5;
+
+
   /* <---------- length ----------> */
 
 
@@ -134,6 +134,18 @@
   exports.len_bgH = 1080.0;
   exports.len_charaW = 450.0;
   exports.len_charaH = 900.0;
+
+
+  /* <---------- color ----------> */
+
+
+  exports.color_whiteClear = Color.valueOf("ffffff00");
+  exports.color_darkMix = Color.valueOf("606060");
+  exports.color_heatMix = Color.valueOf("ff3838");
+  exports.color_smogWhite = Color.valueOf("ffffff40");
+  exports.color_smogWhiteThick = Color.valueOf("ffffff60");
+  exports.color_smogWhiteThickest = Color.valueOf("ffffffc0");
+  exports.color_rotorWhite = Color.valueOf("ffffff30");
 
 
   /* <---------- damage ----------> */
@@ -169,3 +181,13 @@
   exports.blk_shortCircuitDmgFrac = 0.12;
   exports.blk_ovCogA1 = 0.315;
   exports.blk_ovCogA2 = 0.7;
+
+
+  /* <---------- dialog ----------> */
+
+
+  MDL_event._c_onLoad(() => {
+    exports.dial_ct1 = Vars.headless ? null : new ContentInfoDialog();
+    exports.dial_ct2 = Vars.headless ? null : new ContentInfoDialog();
+    exports.dial_ct3 = Vars.headless ? null : new ContentInfoDialog();
+  });

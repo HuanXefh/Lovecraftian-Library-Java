@@ -25,15 +25,6 @@
   const PARENT = require("lovec/temp/blk/BLK_baseFactory");
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureProducer");
   const INTF_A = require("lovec/temp/intf/INTF_BLK_furnaceBlock");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const EFF = require("lovec/glb/GLB_eff");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
 
 
   /* <---------- component ----------> */

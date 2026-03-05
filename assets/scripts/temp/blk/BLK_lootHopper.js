@@ -25,13 +25,6 @@
   const PARENT = require("lovec/temp/blk/BLK_baseLootBlock");
 
 
-  const FRAG_item = require("lovec/frag/FRAG_item");
-
-
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 
@@ -67,7 +60,7 @@
   function comp_ex_lootCall(b, loots, amt) {
     let loot = loots.readRand();
     if(loot != null) {
-      if(FRAG_item.takeLoot(b, loot, amt, true)) MDL_effect.showBetween_itemTransfer(loot.x, loot.y, b);
+      if(FRAG_item.takeLoot(b, loot, amt, true)) MDL_effect._e_itemTransfer(loot.x, loot.y, b);
     };
   };
 

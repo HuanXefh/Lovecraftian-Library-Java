@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers new drawers.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,19 +20,12 @@
   /* <---------- import ----------> */
 
 
-  const MDL_color = require("lovec/mdl/MDL_color");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-
-
   /* <---------- region ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A modified {DrawSprite} for rotators, where clockwise rotation is supported.
-   * ---------------------------------------- */
+  /**
+   * A modified {@link DrawRegion} for rotators, where clockwise rotation is supported.
+   */
   newDrawer(
     "DrawRotator",
     (paramObj) => extend(DrawBlock, {
@@ -87,11 +78,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Draws the icon of some content.
-   * ---------------------------------------- */
+   */
   newDrawer(
     "DrawContentIcon",
     (paramObj) => extend(DrawBlock, {
@@ -134,11 +123,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A modified {DrawLiquidRegion}.
-   * ---------------------------------------- */
+  /**
+   * A modified {@link DrawLiquidRegion}.
+   */
   newDrawer(
     "DrawMixedLiquid",
     (paramObj) => extend(DrawBlock, {
@@ -179,11 +166,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * A drawer that spawns effect.
-   * ---------------------------------------- */
+   */
   newDrawer(
     "DrawEffect",
     (paramObj) => extend(DrawBlock, {
@@ -210,11 +195,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Draws fire that won't spread.
-   * ---------------------------------------- */
+   */
   newDrawer(
     "DrawFire",
     (paramObj) => extend(DrawBlock, {
@@ -260,11 +243,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawBubbles} but alpha of color is supported.
-   * ---------------------------------------- */
+  /**
+   * {@link DrawBubbles} but alpha of color is supported.
+   */
   newDrawer(
     "DrawRipple",
     (paramObj) => extend(DrawBlock, {
@@ -289,7 +270,7 @@
 
 
       draw(b) {
-        let warmup = tryProp(b.warmup, b, 0.0);
+        let warmup = tryProp(b.warmup, b);
         if(warmup < 0.01) return;
 
         Draw.color(this.color, this.color.a * warmup);

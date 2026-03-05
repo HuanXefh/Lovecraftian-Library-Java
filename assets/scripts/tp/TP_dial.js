@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers new dialogs.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,25 +20,15 @@
   /* <---------- import ----------> */
 
 
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const CLS_window = require("lovec/cls/ui/CLS_window");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-  const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_text = require("lovec/mdl/MDL_text");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
   /* <---------- auxiliary ----------> */
 
 
+  /**
+   * Clears content of a dialog.
+   * @param {Dialog} dial
+   * @param {string|unset} [title]
+   * @return {void}
+   */
   const resetDial = function(dial, title) {
     dial.cont.clear();
     dial.buttons.clear();
@@ -55,11 +43,9 @@
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Fallback when a dialog name is not found.
-   * ---------------------------------------- */
+   */
   newDialog(
     "def",
     () => extend(BaseDialog, "ohno", {
@@ -68,13 +54,13 @@
       ex_show() {
         resetDial(this);
 
-        // @TABLE: text
+        // <TABLE>: text
         this.cont.add("You're not supposed to see this.");
         this.cont.row();
         this.cont.add("If you do, something just went wrong :(");
         this.cont.row();
 
-        // @TABLE: buttons
+        // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -89,6 +75,9 @@
   /* <---------- info ----------> */
 
 
+  /**
+   * A dialog for {@link DBCT_infoContent}.
+   */
   newDialog(
     "infoContent",
     () => extend(BaseDialog, "", {
@@ -97,13 +86,13 @@
       ex_show(nmMod, nmInfo) {
         resetDial(this, MDL_bundle._info(nmMod, "content-" + nmInfo));
 
-        // @TABLE: text
+        // <TABLE>: text
         this.cont.pane(pn => {
           MDL_table.__margin(pn);
           MDL_table.__wrapLine(pn, MDL_bundle._info(nmMod, "content-" + nmInfo, true), Align.left, 1);
         }).width(MDL_ui._uiW()).row();
 
-        // @TABLE: buttons
+        // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -115,11 +104,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * A dialog for wave enemy display.
-   * ---------------------------------------- */
+   */
   newDialog(
     "waveInfo",
     () => extend(BaseDialog, "", {
@@ -133,12 +120,12 @@
 
         if(countWave == null) countWave = Vars.state.wave;
 
-        // @TABLE: title
+        // <TABLE>: title
         this.title.setText((MDL_bundle._info("lovec", "dial-wave-enemies") + " (" + countWave + ")").color(Pal.accent));
         this.title.getStyle().fontColor = Color.white;
         this.tmpCount = countWave;
 
-        // @TABLE: list
+        // <TABLE>: list
         this.cont.pane(pn => {
           MDL_table.__margin(pn);
           if(countWave < 1) {
@@ -166,11 +153,11 @@
             });
             matArr.length === 1 ?
               MDL_table.__textNothing(pn) :
-              MDL_table.setTable_base(pn, matArr);
+              MDL_table._l_table(pn, matArr);
           };
         }).width(MDL_ui._uiW()).row();
 
-        // @TABLE: buttons
+        // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
         MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "last-wave"), () => this.ex_show(Math.max(this.tmpCount - 1, 1)));
@@ -184,11 +171,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A dialog for achievements, see {CLS_achievement}.
-   * ---------------------------------------- */
+  /**
+   * A dialog for achievements, see {@link CLS_achievement}.
+   */
   newDialog(
     "achievement",
     () => extend(BaseDialog, MDL_bundle._term("lovec", "achievement"), {
@@ -209,7 +194,7 @@
         resetDial(this);
         const thisDial = this;
 
-        // @TABLE: list
+        // <TABLE>: list
         this.cont.pane(pn => {
           MDL_table.__margin(pn);
           if(VARGEN.achievements.length === 0) {
@@ -239,7 +224,7 @@
           };
         }).width(MDL_ui._uiW() * 1.25).row();
 
-        // @TABLE: buttons
+        // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -254,12 +239,9 @@
   /* <---------- content ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * A dialog that shows a list of contents.
-   * If the dialog is shown after content database dialog, better set {isAfterCt} to {true}.
-   * ---------------------------------------- */
+   */
   newDialog(
     "cts",
     () => extend(BaseDialog, "", {
@@ -269,7 +251,7 @@
         resetDial(this, title);
         const thisDial = this;
 
-        // @TABLE: content
+        // <TABLE>: content
         MDL_table.__break(this.cont);
         this.cont.pane(pn => {
           MDL_table.__margin(pn);
@@ -288,7 +270,7 @@
           };
         }).width(MDL_ui._uiW()).row();
 
-        // @TABLE: buttons
+        // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -300,11 +282,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * A dialog for content display in rows.
-   * ---------------------------------------- */
+   */
   newDialog(
     "ctsRow",
     () => extend(BaseDialog, "", {
@@ -313,13 +293,13 @@
       ex_show(title, cts_gn) {
         resetDial(this, title);
 
-        // @TABLE: content
+        // <TABLE>: content
         MDL_table.__break(this.cont);
         this.cont.pane(pn => {
-          MDL_table.setDisplay_ctRow(pn, cts_gn, true);
+          MDL_table._l_ctRow(pn, cts_gn, true);
         }).width(MDL_ui._uiW()).row();
 
-        // @TABLE: buttons
+        // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -334,11 +314,9 @@
   /* <---------- recipe ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Dialog used for optional input display of multi-crafters.
-   * ---------------------------------------- */
+  /**
+   * A dialog used for optional input display of multi-crafters.
+   */
   newDialog(
     "rcOpt",
     () => extend(BaseDialog, "", {
@@ -347,15 +325,15 @@
       ex_show(title, opt) {
         resetDial(this, title);
 
-        // @TABLE: info
+        // <TABLE>: info
         MDL_table.__break(this.cont);
-        MDL_table.setDisplay_note(this.cont, MDL_bundle._info("lovec", "opt"));
+        MDL_table._d_note(this.cont, MDL_bundle._info("lovec", "opt"));
 
-        // @TABLE: bar
+        // <TABLE>: bar
         MDL_table.__break(this.cont);
         MDL_table.__bar(this.cont, null, MDL_ui._uiW());
 
-        // @TABLE: content
+        // <TABLE>: content
         MDL_table.__break(this.cont);
         this.cont.pane(pn => {
           MDL_table.__margin(pn);
@@ -379,7 +357,7 @@
           };
         }).width(MDL_ui._uiW()).row();
 
-        // @TABLE: buttons
+        // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -391,11 +369,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Dialog used for recipe dictionary display.
-   * ---------------------------------------- */
+  /**
+   * A dialog used for recipe dictionary display.
+   */
   newDialog(
     "rcDict",
     () => extend(BaseDialog, "", {
@@ -405,16 +381,16 @@
         let i = 0, iCap = rcDictArr.iCap(), j = 0;
         while(i < iCap) {
           let rcCont = tb.table(Styles.none, tb1 => tb1.left()).left().width(240.0).height(60.0).get();
-          // @TABLE: small icon
+          // <TABLE>: small icon
           rcCont.table(Styles.none, tb1 => {
             MDL_table.__ct(tb1, rcDictArr[i], 48.0, 8.0, this);
           });
-          // @TABLE: recipe text
+          // <TABLE>: recipe text
           rcCont.table(Styles.none, tb1 => {
             let data = rcDictArr[i + 2];
             let craftTime = data.time != null ? data.time : MDL_content._craftTime(rcDictArr[i], data.icon === "lovec-icon-mining", ct);
             let craftRate = (!isFinite(craftTime) && !(ct instanceof Liquid)) ? null : (!(ct instanceof Liquid) ? (rcDictArr[i + 1] / craftTime * 60.0) : (rcDictArr[i + 1] * 60.0));
-            // @TABLE: rate text
+            // <TABLE>: rate text
             tb1.add(MDL_text._statText(
               MDL_bundle._term("lovec", "rate"),
               craftRate == null ? "-" : ((craftRate < 0.01 ? "<0.01" : craftRate.roundFixed(2)) + "/s"),
@@ -422,10 +398,10 @@
             .left()
             .tooltip(typeof craftRate !== "number" ? "-" : (craftRate.roundFixed(7) + "/s"), true)
             .row();
-            // @TABLE: extra icon
+            // <TABLE>: extra icon
             tb1.table(Styles.none, tb2 => {
               tb2.left();
-              // @TABLE: content icon
+              // <TABLE>: content icon
               let oct = MDL_content._ct(data.ct, null, true);
               if(oct != null) {
                 let btn = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
@@ -434,7 +410,7 @@
                 }).left().get();
                 btn.getStyle().imageUp = new TextureRegionDrawable(oct.uiIcon);
               };
-              // @TABLE: tag icon
+              // <TABLE>: tag icon
               if(data.icon != null) {
                 tb2.image(Core.atlas.find(data.icon)).left().width(26.0).height(26.0);
               };
@@ -452,29 +428,29 @@
         let ct = MDL_content._ct(ct_gn, null, true);
         if(ct == null) return;
 
-        // @TABLE: content
+        // <TABLE>: content
         MDL_table.__break(this.cont);
         this.cont.pane(pn => {
           MDL_table.__margin(pn);
           let cont = new Table();
 
-          // @TABLE: icon
+          // <TABLE>: icon
           cont.button(new TextureRegionDrawable(ct.uiIcon), 48.0, () => {
             this.hide();
             Vars.ui.content.show(ct);
           }).left().row();
           pn.add(cont).growX();
 
-          // @TABLE: producer
+          // <TABLE>: producer
           let prodArr = MDL_recipeDict._producers(ct, true);
           if(prodArr.length > 0) {
-            // @TABLE: consumer title
+            // <TABLE>: consumer title
             cont.table(Tex.whiteui, tb => {
               tb.center().setColor(Color.darkGray);
               MDL_table.__margin(tb, 0.5);
               tb.add(MDL_bundle._term("lovec", "produced-in")).pad(4.0);
             }).left().growX().row();
-            // @TABLE: consumer list
+            // <TABLE>: consumer list
             cont.table(Tex.whiteui, tb => {
               tb.left().setColor(Pal.darkestGray);
               MDL_table.__margin(tb);
@@ -482,16 +458,16 @@
             }).left().growX().row();
           };
 
-          // @TABLE: consumer
+          // <TABLE>: consumer
           let consArr = MDL_recipeDict._consumers(ct, true);
           if(consArr.length > 0) {
-            // @TABLE: consumer title
+            // <TABLE>: consumer title
             cont.table(Tex.whiteui, tb => {
               tb.center().setColor(Color.darkGray);
               MDL_table.__margin(tb, 0.5);
               tb.add(MDL_bundle._term("lovec", "used-in")).pad(4.0);
             }).left().growX().row();
-            // @TABLE: consumer list
+            // <TABLE>: consumer list
             cont.table(Tex.whiteui, tb => {
               tb.left().setColor(Pal.darkestGray);
               MDL_table.__margin(tb);
@@ -499,26 +475,26 @@
             }).left().growX().row();
           };
 
-          // @TABLE: building
+          // <TABLE>: building
           if(ct instanceof Item) {
             let reqBlks = MDL_content._reqBlks(ct);
             if(reqBlks.length > 0) {
-              // @TABLE: building title
+              // <TABLE>: building title
               cont.table(Tex.whiteui, tb => {
                 tb.center().setColor(Color.darkGray);
                 MDL_table.__margin(tb, 0.5);
                 tb.add(MDL_bundle._term("lovec", "building")).pad(4.0);
               }).left().growX().row();
-              // @TABLE: building list
+              // <TABLE>: building list
               cont.table(Tex.whiteui, tb => {
                 tb.center().setColor(Pal.darkestGray);
-                MDL_table.setDisplay_ctLi(tb, reqBlks, 48.0, null, this);
+                MDL_table._l_ctLi(tb, reqBlks, 48.0, null, this);
               }).left().growX().row();
             };
           };
         }).row();
 
-        // @TABLE: buttons
+        // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
         MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "new-window"), () => {

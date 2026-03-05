@@ -27,11 +27,6 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_radiusDisplay");
 
 
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 
@@ -104,7 +99,7 @@
       // @PARAM: Duration of the status effect.
       staDur: 0.0,
       // @PARAM: Filter script used to select target units.
-      // @ARGS: b, ounit
+      // <ARGS>: b, ounit
       filterScrTup: prov(() => [Function.airTrue]),
     })
     .setMethod({

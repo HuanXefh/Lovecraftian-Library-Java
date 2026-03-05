@@ -23,14 +23,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
-
-
   /* <---------- component ----------> */
 
 

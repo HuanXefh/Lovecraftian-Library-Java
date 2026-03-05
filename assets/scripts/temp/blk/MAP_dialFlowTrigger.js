@@ -24,12 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/MAP_flagTrigger");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
 
 
   /* <---------- component ----------> */

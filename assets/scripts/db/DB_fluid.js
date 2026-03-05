@@ -1,8 +1,6 @@
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Database of fluid properties.
- * ---------------------------------------- */
+ */
 
 
 const db = {
@@ -11,29 +9,13 @@ const db = {
   /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-  map: {
-
-
-    recipe: {
-
-
-    },
-
-
-  },
-
-
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
-
-
   group: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * The most basic fluid groups. Fluids in the same groups will share some parameters.
-     * ---------------------------------------- */
+     * <br> <ROW-xxx>: liq.
+     */
     elementary: {
 
 
@@ -94,11 +76,10 @@ const db = {
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Fluid tag groups, used for corrosion affinities.
-     * ---------------------------------------- */
+     * <br> <ROW-xxx>: liq.
+     */
     fTag: {
 
 
@@ -123,57 +104,51 @@ const db = {
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * @CONTENTGEN
-     * These fluids contains water.
-     * ---------------------------------------- */
+    /**
+     * These fluids contain water.
+     * <br> <CONTENTGEN>
+     * <br> <ROW>: liq.
+     */
     aqueous: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * @CONTENTGEN
+    /**
      * These fluids are acidic.
-     * ---------------------------------------- */
+     * <br> <CONTENTGEN>
+     * <br> <ROW>: liq.
+     */
     acidic: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * @CONTENTGEN
+    /**
      * These fluids are basic.
-     * ---------------------------------------- */
+     * <br> <CONTENTGEN>
+     * <br> <ROW>: liq.
+     */
     basic: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * @CONTENTGEN
+    /**
      * These fluids are conductive, and cause short circuit for some blocks.
-     * Automatically merges with {"aqueous"} group.
-     * ---------------------------------------- */
+     * Automatically merges with "aqueous" group.
+     * <br> <CONTENTGEN>
+     * <br> <ROW>: liq.
+     */
     conductive: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * These fluids will fume.
-     * I mean extra visual effects for the puddle, don't put gas here.
-     * ---------------------------------------- */
+    /**
+     * These fluids will fume (extra visual effects for the puddle).
+     * Don't put gas here.
+     * <br> <ROW>: liq.
+     */
     fuming: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Fluids like regular air.
-     * ---------------------------------------- */
+     * <br> <ROW>: liq.
+     */
     air: [],
 
 
@@ -186,6 +161,10 @@ const db = {
   grpParam: {
 
 
+    /**
+     * Density for a fluid group.
+     * <br> <ROW>: eleGrp, dens.
+     */
     dens: [
 
       "acidGas", 0.00121,
@@ -207,6 +186,10 @@ const db = {
     ],
 
 
+    /**
+     * Wrapped viscosity for a fluid group.
+     * <br> <ROW>: eleGrp, viscWrap.
+     */
     viscWrap: [
 
       "alc", 0.5286,
@@ -224,11 +207,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Default boiling point for elementary fluid groups.
-     * ---------------------------------------- */
+    /**
+     * Default boiling point for a fluid group.
+     * <br> <ROW>: eleGrp, boilPon.
+     */
     boil: [
 
       "brine", 100.0,
@@ -253,11 +235,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Default boiling point for sovents.
-     * ---------------------------------------- */
+    /**
+     * Default boiling point for a solvent.
+     * <br> <ROW>: solvent, boilPon.
+     */
     solventBoil: [
 
       "ethanol", 78.0,
@@ -266,11 +247,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Default corrosion power for elementary fluid groups.
-     * ---------------------------------------- */
+    /**
+     * Default corrosion power for a fluid group.
+     * <br> <ROW>: eleGrp, corPow.
+     */
     corrosion: [
 
       "brine", 1.0,
@@ -295,11 +275,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Corrosion multiplier for a pair of material and fluid.
-     * ---------------------------------------- */
+    /**
+     * Corrosion scaling for a pair of fluid group and block material group.
+     * <br> <ROW-xxx>: eleGrp, scl.
+     */
     matEleScl: {
 
 
@@ -393,11 +372,10 @@ const db = {
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Extra corrosion multiplier for a pair of material and fluid tag.
-     * ---------------------------------------- */
+    /**
+     * Extra corrosion multiplier for a pair of fluid tag and block material group.
+     * <br> <ROW-xxx>: fldTag, mtp.
+     */
     matFTagScl: {
 
 

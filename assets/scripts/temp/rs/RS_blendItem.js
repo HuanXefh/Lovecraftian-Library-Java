@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Intermediate: blend.
    * Produced from a mixer or ball mill.
    * ---------------------------------------- */
@@ -25,9 +25,6 @@
 
 
   const PARENT = require("lovec/temp/rs/RS_intermediateItem");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
 
 
   /* <---------- component ----------> */

@@ -22,15 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const FRAG_item = require("lovec/frag/FRAG_item");
-
-
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 

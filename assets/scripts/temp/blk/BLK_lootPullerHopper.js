@@ -25,11 +25,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_lootHopper");
   const INTF = require("lovec/temp/intf/INTF_BLK_radiusDisplay");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
 
 
   /* <---------- component ----------> */
@@ -55,7 +50,7 @@
       b.progWait += b.edelta();
       if(b.progWait > b.block.delegee.intvPull) {
         b.progWait %= b.block.delegee.intvPull;
-        MDL_pos._loots(b.x, b.y, b.block.delegee.blkRad, null, b.pullTgs).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
+        MDL_pos._loots(b.x, b.y, b.block.delegee.blkRad, b.pullTgs).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
         b.isPulling = b.pullTgs.length > 0;
       };
     } else {

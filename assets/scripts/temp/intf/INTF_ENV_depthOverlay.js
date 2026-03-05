@@ -22,21 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
-
-
-  const DB_misc = require("lovec/db/DB_misc");
-
-
   /* <---------- component ----------> */
 
 
@@ -58,12 +43,12 @@
 
       Draw.alpha(0.65);
       blk.drawnMap.each((t, cond) => {
-        if(!cond || !MDL_cond._posVisible(t.worldx(), t.worldy(), 8.0)) return;
+        if(!cond || !LCFormat.checkPosVisible(t.worldx(), t.worldy(), 8.0)) return;
         Draw.rect(MDL_texture._regVari(blk, t), t.worldx(), t.worldy());
       });
       Draw.color();
 
-      processZ(VAR.lay_dporeRevealed);
+      processZ();
     });
   };
 

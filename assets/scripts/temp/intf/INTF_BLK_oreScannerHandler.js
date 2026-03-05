@@ -23,15 +23,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 

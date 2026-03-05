@@ -26,11 +26,6 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_lootProducer");
 
 
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 
@@ -40,7 +35,7 @@
 
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table.setDisplay_attr(tb, blk.attribute);
+      MDL_table._d_attr(tb, blk.attribute);
     }));
   };
 

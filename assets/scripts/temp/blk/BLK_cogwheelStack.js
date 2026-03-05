@@ -23,20 +23,13 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_cogwheel");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
 
 
   /* <---------- component ----------> */
 
 
   function comp_createIcons(blk, packer) {
-    MDL_texture.comp_createIcons_ctTag(blk, packer, blk.undCog, blk.ovCog, "-full-gen");
+    MDL_texture._ip_ctTg(blk, packer, "-full-gen", blk.undCog, blk.ovCog);
   };
 
 
@@ -112,7 +105,7 @@
       Draw.rect(b.block.region, b.x, b.y, b.block.delegee.cogDrawW, b.block.delegee.cogDrawW, ang - 90.0);
     };
 
-    processZ(z1);
+    processZ();
     processZ(z2);
 
     Draw.alpha(0.5);
@@ -130,7 +123,7 @@
     };
     Draw.color();
 
-    processZ(z2);
+    processZ();
   };
 
 

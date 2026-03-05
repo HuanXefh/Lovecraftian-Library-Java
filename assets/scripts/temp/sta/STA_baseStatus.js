@@ -22,13 +22,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/cls/util/CLS_contentTemplate");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-
-
-  const DB_status = require("lovec/db/DB_status");
+  const PARENT = CLS_contentTemplate;
 
 
   /* <---------- component ----------> */

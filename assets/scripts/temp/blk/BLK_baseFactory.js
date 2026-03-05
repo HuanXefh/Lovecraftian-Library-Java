@@ -25,10 +25,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_facilityBlock");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_effect = require("lovec/mdl/MDL_effect");
 
 
   /* <---------- component ----------> */

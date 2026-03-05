@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Parent of all item transportation gates.
    * ---------------------------------------- */
 

@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Similar to {ENV_materialFloor} but for liquid floors.
    * Set {blk.shallow}.
    * Name will be generated from {blk.liquidDrop} if not set in bundle.
@@ -26,18 +26,6 @@
 
 
   const PARENT = require("lovec/temp/env/ENV_baseFloor");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MATH_interp = require("lovec/math/MATH_interp");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
-  const DB_env = require("lovec/db/DB_env");
 
 
   /* <---------- component ----------> */

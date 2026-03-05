@@ -5,12 +5,10 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods mostly related to spawning.
-   * Well I don't know what this do either.
-   * ---------------------------------------- */
+   * Well I don't know what this is for.
+   */
 
 
 /*
@@ -23,36 +21,15 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const EFF = require("lovec/glb/GLB_eff");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const FRAG_item = require("lovec/frag/FRAG_item");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_net = require("lovec/mdl/MDL_net");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
-  const DB_status = require("lovec/db/DB_status");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Script called by this will be called only once in each round of update.
-   * ---------------------------------------- */
+  /**
+   * Scripts called by this will only get called once in each update.
+   * @param {number|string} id
+   * @param {function(): void} scr
+   * @return {void}
+   */
   const callOnce = function thisFun(id, scr) {
     if(Vars.state.updateId !== thisFun.idCurMap.get(id, 0)) {
       thisFun.idCurMap.put(id, Vars.state.updateId);
@@ -73,14 +50,19 @@
   /* <---------- unit ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Spawns a unit at (x, y).
-   * Use {repeat} to spawn multiple times in radius of {rad}.
-   * Set {ang} to apply a specific rotation.
-   * Use {scr} to furthur modify those spawned units.
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {UnitTypeGn} utp_gn
+   * @param {Team|unset} [team]
+   * @param {number|unset} [rad] - Radius of spead.
+   * @param {number|unset} [ang] - Rotation of spawned units, random by default.
+   * @param {number|unset} [repeat] - Use this to spawn multiple times quickly.
+   * @param {boolean|unset} [applyDefSta] - If true, default status effects will be applied like what wave spawners do.
+   * @param {(function(unit): void)|unset} [scr] - Script called on each spawned unit.
+   * @return {void}
+   */
   const spawnUnit_server = function(x, y, utp_gn, team, rad, ang, repeat, applyDefSta, scr) {
     let utp = MDL_content._ct(utp_gn, "utp");
     if(utp == null) return;
@@ -107,11 +89,18 @@
   exports.spawnUnit_server = spawnUnit_server;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {spawnUnit} for sync.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link spawnUnit_server} for client side.
+   * @param {number} x
+   * @param {number} y
+   * @param {UnitTypeGn} [utp_gn]
+   * @param {Team|unset} [team]
+   * @param {number|unset} [rad]
+   * @param {number|unset} [ang]
+   * @param {number|unset} [repeat]
+   * @param {boolean|unset} [applyDefSta]
+   * @return {void}
+   */
   const spawnUnit_client = function(x, y, utp_gn, team, rad, ang, repeat, applyDefSta) {
     let utp = MDL_content._ct(utp_gn, "utp");
     if(utp == null) return;
@@ -136,11 +125,11 @@
   exports.spawnUnit_client = spawnUnit_client;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a unit despawn.
-   * ---------------------------------------- */
+   * @param {Unit|null} unit
+   * @return {void}
+   */
   const despawnUnit = function(unit) {
     if(unit == null) return;
 
@@ -150,11 +139,12 @@
   exports.despawnUnit = despawnUnit;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Rotates the unit by some angle.
-   * ---------------------------------------- */
+  /**
+   * Rotates a unit by some angle.
+   * @param {Unit} unit
+   * @param {number} ang
+   * @return {void}
+   */
   const rotateUnit = function(unit, ang) {
     unit.rotation += ang;
     if(unit.baseRotation != null) unit.baseRotation += ang;
@@ -162,20 +152,22 @@
   exports.rotateUnit = rotateUnit;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Applys knockback for {unit} from a center of (x, y), with {pow} as the power.
-   * {pow} can be negative to pull the target.
-   * Set {rad} to apply range knockback, e.g. for splash damage.
-   * Set {ang} to push/pull the target in a specific angle.
-   * ---------------------------------------- */
+  /**
+   * Applies knockback on some unit from a center.
+   * @param {number} x
+   * @param {number} y
+   * @param {Unit|null} unit
+   * @param {number|unset} [pow] - Knockback power, can be negative to pull units.
+   * @param {number|unset} [rad] - Knockback radius, the power decreases when target gets farther.
+   * @param {number|unset} [ang] - Angle to knockback, leave empty to push units back from the center.
+   * @return {void}
+   */
   const knockback = function(x, y, unit, pow, rad, ang) {
     if(unit == null || MDL_cond._isHighAir(unit)) return;
     if(pow == null) pow = 0.0;
     if(Math.abs(pow) < 0.0001) return;
 
-    var pow_fi = rad == null ? pow : (pow * (1.0 - Mathf.clamp(Mathf.dst(x, y, unit.x, unit.y) / rad)) * 4.0);
+    let pow_fi = rad == null ? pow : (pow * (1.0 - Mathf.clamp(Mathf.dst(x, y, unit.x, unit.y) / rad)) * 4.0);
     if(unit.flying) pow_fi *= 2.5;
 
     let vec2 = Tmp.v1.set(unit).sub(x, y).nor().scl(pow_fi * 80.0);
@@ -186,12 +178,16 @@
   exports.knockback = knockback;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Spawns a loot unit.
-   * It's item on the ground which can be picked up by player units.
-   * ---------------------------------------- */
+  /**
+   * Spawns a loot unit (dropped item) at (x, y), see {@link spawnUnit_server}.
+   * @param {number} x
+   * @param {number} y
+   * @param {ItemGn} itm_gn
+   * @param {number|unset} [amt]
+   * @param {number|unset} [rad]
+   * @param {number|unset} [repeat]
+   * @return {void}
+   */
   const spawnLoot_server = function(x, y, itm_gn, amt, rad, repeat) {
     if(!PARAM.modded) return;
     let itm = MDL_content._ct(itm_gn, "rs");
@@ -204,7 +200,7 @@
     spawnUnit_server(x, y, Vars.content.unit("loveclab-unit0misc-loot"), Vars.player.team(), rad, null, repeat, false, unit => {
       unit.addItem(itm, amt);
       MDL_effect.showAt_global(unit.x, unit.y, EFF.circlePulseDynamic, 5.0, Pal.accent);
-      MDL_effect.showBetween_line(x, y, null, unit, Pal.accent);
+      MDL_effect._e_line(x, y, null, unit, Pal.accent);
       Core.app.post(() => TRIGGER.lootSpawn.fire(unit));
     });
   }
@@ -212,11 +208,16 @@
   exports.spawnLoot_server = spawnLoot_server;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {spawnLoot} used on client side.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link spawnLoot_server} for client side.
+   * @param {number} x
+   * @param {number} y
+   * @param {ItemGn} itm_gn
+   * @param {number|unset} [amt]
+   * @param {number|unset} [rad]
+   * @param {number|unset} [repeat]
+   * @return {void}
+   */
   const spawnLoot_client = function(x, y, itm_gn, amt, rad, repeat) {
     if(!PARAM.modded) return;
     let itm = MDL_content._ct(itm_gn, "rs");
@@ -240,11 +241,10 @@
   exports.spawnLoot_client = spawnLoot_client;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Clears all loot units, only called on server side.
-   * ---------------------------------------- */
+  /**
+   * Removes all existing loot units.
+   * @return {void}
+   */
   const clearLoot = function() {
     Groups.unit.each(unit => {
       if(MDL_cond._isLoot(unit)) unit.remove();
@@ -257,12 +257,21 @@
   /* <---------- bullet ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Like {spawnUnit} but for bullets.
-   * Set {se_gn} if a sound should be played.
-   * ---------------------------------------- */
+  /**
+   * Spawns a bullet at (x, y).
+   * @param {number} x
+   * @param {number} y
+   * @param {BulletType|null} btp
+   * @param {SoundGn} se_gn
+   * @param {Team|unset} [team]
+   * @param {number|unset} [rad]
+   * @param {number|unset} [ang]
+   * @param {number|unset} [repeat]
+   * @param {number|unset} [dmg_ow]
+   * @param {number|unset} [scl] - Multiplier on lifetime.
+   * @param {number|unset} [velScl] - Multiplier on velocity.
+   * @return {void}
+   */
   const spawnBul = function(x, y, btp, se_gn, team, rad, ang, repeat, dmg_ow, scl, velScl) {
     if(btp == null) return;
     if(team == null) team = Team.derelict;
@@ -273,8 +282,7 @@
     if(scl == null) scl = 1.0;
     if(velScl == null) velScl = 1.0;
 
-    var x_i;
-    var y_i;
+    let x_i, y_i, ang_i;
     for(let i = 0; i < repeat; i++) {
       x_i = x + Mathf.range(rad);
       y_i = y + Mathf.range(rad);
@@ -289,12 +297,12 @@
   exports.spawnBul = spawnBul;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Applies damage to a bullet.
-   * Destroys the bullet if bullet damage is reduced to below zero.
-   * ---------------------------------------- */
+  /**
+   * Applies damage on a bullet, will destroy it if bullet damage is reduced to zero.
+   * @param {Bullet|null} bul
+   * @param {number|unset} [dmg]
+   * @return {void}
+   */
   const damageBul = function(bul, dmg) {
     if(bul == null) return;
     if(dmg == null) dmg = 0.0;

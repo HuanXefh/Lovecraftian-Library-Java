@@ -25,15 +25,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
-
-
   /* <---------- component ----------> */
 
 

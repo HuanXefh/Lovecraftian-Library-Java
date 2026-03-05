@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Another part of extension called later than {RUN_methodExt}.
-   * ---------------------------------------- */
+  /**
+   * Another part of extension called later than {@link RUN_methodExt}.
+   */
 
 
 /*

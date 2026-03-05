@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Collection of recipe generators.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,30 +20,13 @@
   /* <---------- import ----------> */
 
 
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const CLS_recipeGenerator = require("lovec/cls/util/CLS_recipeGenerator");
-  const CLS_recipeBuilder = require("lovec/cls/util/builder/CLS_recipeBuilder");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-  const MDL_fuel = require("lovec/mdl/MDL_fuel");
-
-
-  const DB_item = require("lovec/db/DB_item");
-
-
   /* <---------- generator ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: alloy furnace.
    * Converts materials into alloy metal.
-   * ---------------------------------------- */
+   */
   const _g_alloyFurnace = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -76,12 +57,10 @@
   exports._g_alloyFurnace = _g_alloyFurnace;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: brick kiln.
    * Converts brick blend to brick.
-   * ---------------------------------------- */
+   */
   const _g_brickKiln = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -116,12 +95,10 @@
   exports._g_brickKiln = _g_brickKiln;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: caster.
    * Converts materials into casting target items.
-   * ---------------------------------------- */
+   */
   const _g_caster = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -162,12 +139,10 @@
   exports._g_caster = _g_caster;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: forge.
    * Converts materials into forging target items.
-   * ---------------------------------------- */
+   */
   const _g_forge = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -208,12 +183,10 @@
   exports._g_forge = _g_forge;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: mixer.
    * Mixes materials into blend.
-   * ---------------------------------------- */
+   */
   const _g_mixer = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -231,7 +204,7 @@
 
       let itm = MDL_content._ct(nmItm, "rs");
       if(itm == null) return;
-      if(!boolF(itm)) return;
+      if(!boolF(itm) || itm.hardness < minHardness || itm.hardness > maxHardness) return;
 
       let bi = this.parseRawBi(rawBi, amtO, pO);
       let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nmRs => MDL_content._ct(nmRs, "rs").hardness).pullAll(undefined).unshiftAll(0.0));
@@ -249,12 +222,10 @@
   exports._g_mixer = _g_mixer;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: liquid mixer.
    * Mixes items and liquids to produce a solution.
-   * ---------------------------------------- */
+   */
   const _g_liquidMixer = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -275,8 +246,8 @@
         rc, liq.name, "liquid-mixing", null,
         obj => {this.setBaseParam(obj, paramObj); objF(obj)},
         new CLS_recipeBuilder()
-        .__ci(this.parseRawCi(liq, amtO * 6.0 / time))
-        .__bi(this.parseRawBi(liq, amtO))
+        .__ci(this.parseRawCi(rawCi, amtO * 6.0 / time))
+        .__bi(this.parseRawBi(rawBi, amtO, 1.0))
         .__co(this.processCo(liq, amtO * 6.0 / time, paramObj))
         .build(),
       );
@@ -303,12 +274,10 @@
   exports._g_liquidMixer = _g_liquidMixer;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: filter.
    * Separates items from slurry, or liquids from morbid solution.
-   * ---------------------------------------- */
+   */
   const _g_filter = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -342,12 +311,10 @@
   exports._g_filter = _g_filter;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: purifier.
    * Purifies ore chunks/dusts.
-   * ---------------------------------------- */
+   */
   const _g_purifier = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -377,12 +344,10 @@
   exports._g_purifier = _g_purifier;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: purifier.
    * Purifies ore chunks/dusts. Specially designed for magnetic separators.
-   * ---------------------------------------- */
+   */
   const _g_purifierMagnetic = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -411,12 +376,10 @@
   exports._g_purifierMagnetic = _g_purifierMagnetic;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: rock crusher.
    * Converts ore items into chunks.
-   * ---------------------------------------- */
+   */
   const _g_rockCrusher = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -448,13 +411,11 @@
   exports._g_rockCrusher = _g_rockCrusher;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: rock crusher.
    * Converts some rocks into aggregate.
-   * See {DB_item.db["group"]["aggregate"]}.
-   * ---------------------------------------- */
+   * See {@link DB_item}.
+   */
   const _g_rockCrusherAggregate = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -496,12 +457,10 @@
   exports._g_rockCrusherAggregate = _g_rockCrusherAggregate;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: pulverizer.
    * Converts ore items into dust.
-   * ---------------------------------------- */
+   */
   const _g_pulverizer = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -533,12 +492,10 @@
   exports._g_pulverizer = _g_pulverizer;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: roasting furnace.
    * Converts items to their roasted form.
-   * ---------------------------------------- */
+   */
   const _g_roastingFurnace = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -575,12 +532,10 @@
   exports._g_roastingFurnace = _g_roastingFurnace;
 
 
-  /* ----------------------------------------
-  * NOTE:
-  *
-  * Recipe generator: sintering furnace.
-  * Converts dust items back into their parent items (the ore at most time).
-  * ---------------------------------------- */
+  /**
+   * Recipe generator: sintering furnace.
+   * Converts dust items back into their parent items (the ore at most time).
+   */
   const _g_sinteringFurnace = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),
@@ -634,12 +589,10 @@
   exports._g_sinteringFurnace = _g_sinteringFurnace;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Recipe generator: smelter.
    * Converts ore items (or concentrate items) to their refined form.
-   * ---------------------------------------- */
+   */
   const _g_smelter = new CLS_recipeGenerator(function(rc, paramObj) {
     let
       objF = readParam(paramObj, "objF", Function.air),

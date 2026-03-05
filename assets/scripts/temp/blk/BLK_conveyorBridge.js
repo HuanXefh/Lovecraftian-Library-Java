@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Simply item bridge.
    * ---------------------------------------- */
 
@@ -24,7 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemDistributor");
-  const TIMER = require("lovec/glb/GLB_timer");
 
 
   /* <---------- component ----------> */

@@ -23,12 +23,6 @@
 
 
   const PARENT = require("lovec/temp/sta/STA_baseStatus");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
 
 
   /* <---------- component ----------> */

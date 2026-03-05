@@ -5,14 +5,12 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * globalScript.js is run BEFORE Lovec is loaded, and NOT in STRICT MODE. Don't explicitly {require} anything!
+  /**
+   * globalScript.js is run BEFORE Lovec is loaded, and NOT in STRICT MODE. Don't explicitly `require` anything!
    * This is mostly intended for console and some generic methods.
    * For your own mod, simply create another globalScript.js in your "scripts" folder, it will be automatically loaded.
    * Beware of naming conflict!
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,36 +20,26 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Methods defined here can be used anywhere, like {extend} and {prov}.
-   * You can define more global methods likewise in your own globalScript.js.
-   * Better use a prefix for compatibility.
-   *
-   * If you need temporary variables here, don't define them directly with something like {let a = 0.0}.
-   * Any variables defined here are in the global scope, and will make its way to the console.
-   * You should use {(function() {...})()} and define them inside the immediate function call.
-   * ----------------------------------------
-   * IMPORTANT:
-   *
-   * {RUN_methodExt} is not run yet, call native methods only!
-   * Well seems that I'm the only one possible to screw it...
-   * ---------------------------------------- */
+  /**
+   * <IMPORTANT>: {@link RUN_methodExt} has not been run yet!
+   */
 
 
   /* <---------- base ----------> */
 
 
+  /** @global */
   CONTEXT = Packages.rhino.Context.getContext();
+  /** @global */
   SCOPE = Vars.mods.scripts.scope;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Evaluates the given string in global scope.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} scrStr
+   * @return {void}
+   */
   globalEval = function(scrStr) {
     Vars.mods.scripts.context.evaluateString(SCOPE, scrStr, "globalEval_" + globalEval.ind + ".js", 0);
     globalEval.ind++;
@@ -59,11 +47,13 @@
   globalEval.ind = 0;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Requires a JS file (as Arc Fi instance), which will be run in global scope.
-   * ---------------------------------------- */
+  /**
+   * Requires a JS file (as {@link Fi}), which will be run in global scope.
+   * @global
+   * @param {string} nmMod
+   * @param {function(Fi): Fi} fiGetter - <ARGS>: modRoot
+   * @return {void}
+   */
   globalRequire = function(nmMod, fiGetter) {
     let fi = fiGetter(Vars.mods.locateMod(nmMod).root);
     if(fi == null || !fi.exists() || fi.extension() !== "js") throw new Error("Failed to require a script in global script for [$1]! [$2] is not a valid .js file.".format(nmMod, fi));
@@ -75,14 +65,16 @@
   /* <---------- class & package ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used to get Java classes by path, e.g. "aquarion.AquaItems" from Aquarion.
-   * Will return {null} if not found.
+   * Will return null if not found.
    * Do not include this in main loops!
-   * ---------------------------------------- */
-  fetchClass = function(nmCls, suppressWarning) {
+   * @global
+   * @param {string} clsPath
+   * @param {boolean|unset} [suppressWarning]
+   * @return {Class}
+   */
+  fetchClass = function(clsPath, suppressWarning) {
     let cls;
     try {
       cls = Packages.rhino.NativeJavaClass(
@@ -90,7 +82,7 @@
         java.net.URLClassLoader(
           [Vars.mods.getMod("lovec").file.file().toURI().toURL()],
           Vars.mods.mainLoader(),
-        ).loadClass(nmCls),
+        ).loadClass(clsPath),
       );
     } catch(err) {
       cls = null;
@@ -102,32 +94,49 @@
 
 
   // Common packages
+  /** @global */
   com = Packages.com;
+  /** @global */
   net = Packages.net;
+  /** @global */
   org = Packages.org;
+  /** @global */
   arc = Packages.arc;
+  /** @global */
   mdt = Packages.mindustry;
+  /** @global */
   rhino = Packages.rhino;
 
 
   // Java
+  /** @global */
   Pattern = java.util.regex.Pattern;
+  /** @global */
   Matcher = java.util.regex.Matcher;
 
 
   // LWJGL
+  /** @global */
   SDLVideo = org.lwjgl.sdl.SDLVideo;
 
 
   // Arc
+  /** @global */
   SDL = arc.backend.sdl.jni.SDL;
 
 
-  // Java class storage
+  /**
+   * Container of commonly used Java classes.
+   * @global
+   */
   JAVA = {
 
 
-    // Will be called in main.js of Lovec later, you can push more classes in your global script
+    /**
+     * More classes will be populated here later.
+     * You can push more classes in your global script.
+     * @return {void}
+     */
     init() {
       function convertName(javaCls) {
         let str = javaCls.__javaObject__.getSimpleName();
@@ -152,7 +161,7 @@
     },
 
 
-    // {SomeClass[]} will be created for these classes as "someClass_arr"
+    // `SomeClass[]` will be created for these classes as "someClass_arr"
     clsTgs: [
       Boolc, Boolf, Boolf2, Boolf3, Boolp, Cons, Cons2, Cons3, Cons4, ConsT, FloatFloatf, Floatc, Floatc2, Floatc4, Floatf, Floatp, Func, Func2, Func3, IntIntf, Intc, Intc4, Intf, Intp, Longf, Prov,
       ArrayMap, BinaryHeap, Bits, BoolSeq, ByteSeq, ComparableTimSort, DelayedRemovalSeq, EnumSet, FloatSeq, GridBits, GridMap, IntFloatMap, IntIntMap, IntMap, IntQueue, IntSeq, IntSeq, LongMap, LongQueue, LongSeq, ObjectFloatMap, ObjectIntMap, ObjectMap, ObjectSet, OrderedMap, OrderedSet, PQueue, Queue, Seq, ShortSeq, SnapshotSeq, Sort, StringMap, TimSort,
@@ -181,7 +190,9 @@
     string: java.lang.String,
     object: java.lang.Object,
     class: java.lang.Class,
+    classLoader: java.lang.ClassLoader,
     runnable: java.lang.Runnable,
+    thread: java.lang.Thread,
     file: java.io.File,
 
 
@@ -192,14 +203,24 @@
 
 
   // Lovec Java
+  /** @global */
   LCDraw = fetchClass("lovec.graphics.LCDraw");
+  /** @global */
   LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
+  /** @global */
   LCRaycast = fetchClass("lovec.math.LCRaycast");
+  /** @global */
+  LCCheck = fetchClass("lovec.utils.LCCheck");
+  /** @global */
   LCFormat = fetchClass("lovec.utils.LCFormat");
+  /** @global */
+  LCGeneralizer = fetchClass("lovec.utils.LCGeneralizer");
 
 
   // Lovec internal
+  /** @global */
   LCAnno = {};
+  /** @global */
   LCTemp = {};
 
 
@@ -212,6 +233,7 @@
     "RUN_glbScr_extend",
     "RUN_glbScr_net",
     "RUN_glbScr_util",
+    "RUN_glbScr_module",
   ]
   .forEach(nm => {
     globalRequire("lovec", dir => dir.child("scripts").child("run").child("glbScr").child(nm + ".js"));
@@ -225,29 +247,26 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods defined here are only intended for console.
-   * DO NOT use these in regular coding!
-   * ---------------------------------------- */
+   * DO NOT use these in regular codes!
+   */
 
 
   Events.run(ClientLoadEvent, () => Core.app.post(() => {
 
 
-    lovec = global.lovec;
+    /** @global */
     lovecUtil = global.lovecUtil;
 
 
     /* <---------- debug ----------> */
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Used to test some draw function in game quickly.
-     * ---------------------------------------- */
+     * @global
+     */
     DRAW_TEST = {
       enabled: false, safe: false,
       xGetter: Function.airZero, yGetter: Function.airZero, radGetter: Function.airZero, colorGetter: Function.airWhite,
@@ -309,25 +328,27 @@
     /* <---------- cheat ----------> */
 
 
+    /**
+     * @global
+     */
     CHEAT = {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Whether cheat is allowed now.
        * I won't ban these for single player, you decide how to play.
-       * ---------------------------------------- */
+       * @return {boolean}
+       */
       checkCheatState: function() {
         return Groups.player.size() === 1 && !Vars.net.client();
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Kills your unit or someone's instead.
-       * ---------------------------------------- */
+       * @param {string|unset} [nm]
+       * @return {void}
+       */
       kill: function(nm) {
         if(!CHEAT.checkCheatState()) return;
         let unit = lovec.mdl_pos._unitPlNm(nm);
@@ -340,11 +361,10 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Infinite resources for factories and so on.
-       * ---------------------------------------- */
+       * @return {void}
+       */
       toggleCheatProduce: function() {
         if(!CHEAT.checkCheatState()) return;
         let unit = Vars.player.unit();
@@ -357,11 +377,10 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Literally toggles invincibility.
-       * ---------------------------------------- */
+      /**
+       * Toggles invincibility of your unit.
+       * @return {void}
+       */
       toggleInvincible: function() {
         if(!CHEAT.checkCheatState()) return;
         let unit = Vars.player.unit();
@@ -376,11 +395,10 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Toggles invincibility of cores.
-       * ---------------------------------------- */
+       * @return {void}
+       */
       toggleCoreInvincible: function thisFun() {
         if(!CHEAT.checkCheatState()) return;
 
@@ -399,11 +417,11 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Changes your team.
-       * ---------------------------------------- */
+       * @param {string|Team} team
+       * @return {void}
+       */
       changeTeam: function(team) {
         if(!CHEAT.checkCheatState()) return;
         if(typeof team === "string") {
@@ -419,12 +437,12 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Spawns some unit at your unit.
        * Internal units are banned, which may lead to crash.
-       * ---------------------------------------- */
+       * @param {UnitTypeGn} utp_gn
+       * @return {void}
+       */
       spawnUnit: function thisFun(utp_gn) {
         if(!CHEAT.checkCheatState()) return;
         let unit = Vars.player.unit();

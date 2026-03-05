@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to units.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,70 +20,94 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const EFF = require("lovec/glb/GLB_eff");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_flow = require("lovec/mdl/MDL_flow");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- base ----------> */
 
 
   const STA_DUR = VAR.time_unitStaDef;
 
 
+  /**
+   * Whether `e` is `caller` of part of it.
+   * Use to avoid damage to the caller itself on some occasions like impact wave.
+   * @param {Building|Unit|Bullet} e
+   * @param {Building|Unit|Bullet|unset} [caller]
+   */
+  const checkCaller = function(e, caller) {
+    if(caller == null) return false;
+    if(e === caller) return true;
+
+    if(e instanceof Bullet) {
+      // Do nothing
+    } else if(e instanceof Building) {
+      if(MOD_multiBlockLib.ENABLED) {
+        if(e.block instanceof MOD_multiBlockLib.CLASSES.PlaceholderBlock && e.linkBuild === caller) return true;
+        if(e.block instanceof MOD_multiBlockLib.CLASSES.LinkBlock && e.linkBuild === caller) return true;
+      };
+    } else if(e instanceof Unit) {
+      if(e instanceof Segmentc && e.headSegment === caller) return true;
+    };
+
+    return false;
+  };
+  exports.checkCaller = checkCaller;
+
+
   /* <---------- component (unit type) ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Makes a unit gain status effects based on current health.
-   * Called only for Lovec units for obvious reason.
-   * ---------------------------------------- */
+   * Called only by Lovec units for obvious reason.
+   * @param {UnitType} utp
+   * @param {Unit} unit
+   * @return {void}
+   */
   const comp_update_damaged = function(utp, unit) {
     if(!TIMER.unit || !Mathf.chance(VAR.p_unitUpdateP)) return;
 
     let healthFrac = Mathf.clamp(unit.health / unit.maxHealth);
 
     if(MDL_cond._isNonRobot(utp)) {
-      let sta1 = Vars.content.statusEffect("loveclab-sta-slightly-injured");
-      let sta2 = Vars.content.statusEffect("loveclab-sta-injured");
-      let sta3 = Vars.content.statusEffect("loveclab-sta-heavily-injured");
-
-      if(healthFrac < 0.25) {unit.apply(sta3, STA_DUR); unit.unapply(sta1); unit.unapply(sta2)}
-      else if(healthFrac < 0.5) {unit.apply(sta2, STA_DUR); unit.unapply(sta1); unit.unapply(sta3)}
-      else if(healthFrac < 0.75) {unit.apply(sta1, STA_DUR); unit.unapply(sta2); unit.unapply(sta3)}
-      else {unit.unapply(sta1); unit.unapply(sta2); unit.unapply(sta3)};
+      if(healthFrac < 0.25) {
+        unit.apply(VARGEN.staHeavilyInjured, STA_DUR);
+        unit.unapply(VARGEN.staSlightlyInjured);
+        unit.unapply(VARGEN.staInjured);
+      } else if(healthFrac < 0.5) {
+        unit.apply(VARGEN.staInjured, STA_DUR);
+        unit.unapply(VARGEN.staSlightlyInjured);
+        unit.unapply(VARGEN.staHeavilyInjured);
+      } else if(healthFrac < 0.75) {
+        unit.apply(VARGEN.staSlightlyInjured, STA_DUR);
+        unit.unapply(VARGEN.staInjured);
+        unit.unapply(VARGEN.staHeavilyInjured);
+      } else {
+        unit.unapply(sta1);
+        unit.unapply(sta2);
+        unit.unapply(sta3);
+      };
     } else {
-      let sta1 = Vars.content.statusEffect("loveclab-sta-damaged");
-      let sta2 = Vars.content.statusEffect("loveclab-sta-severely-damaged");
-
-      if(healthFrac < 0.25) {unit.apply(sta2, STA_DUR); unit.unapply(sta1)}
-      else if(healthFrac < 0.5) {unit.apply(sta1, STA_DUR); unit.unapply(sta2)}
-      else {unit.unapply(sta1); unit.unapply(sta2)};
+      if(healthFrac < 0.25) {
+        unit.apply(VARGEN.staSeverelyDamaged, STA_DUR);
+        unit.unapply(VARGEN.staDamaged)
+      } else if(healthFrac < 0.5) {
+        unit.apply(VARGEN.staDamaged, STA_DUR);
+        unit.unapply(VARGEN.staSeverelyDamaged)
+      } else {
+        unit.unapply(VARGEN.staDamaged);
+        unit.unapply(VARGEN.staSeverelyDamaged)
+      };
     };
   };
   exports.comp_update_damaged = comp_update_damaged;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Generic update that handles surroundings of a unit.
    * Called for every unit.
-   * ---------------------------------------- */
+   * @param {UnitType} utp
+   * @param {Unit} unit
+   * @return {void}
+   */
   const comp_update_surrounding = function thisFun(utp, unit) {
     if(!TIMER.unit || !Mathf.chance(VAR.p_unitUpdateP)) return;
 
@@ -108,10 +130,14 @@
 
       // Tree
       if(
-        ob == null && oblk !== Blocks.air
-          && MDL_cond._isCoverable(unit, true) && MDL_cond._isTreeBlock(oblk)
-          && oblk.delegee.hidable
-          && dst < oblk.region.width * VAR.rad_treeScl
+        ob == null && oblk !== Blocks.air && MDL_cond._isCoverable(unit, true)
+          && (
+            MDL_cond._isTreeBlock(oblk) ?
+              oblk.delegee.hidable && dst < oblk.region.width * VAR.rad_treeScl :
+              MDL_cond._isTallGrassBlock(oblk) ?
+                oblk.delegee.hidable && dst < oblk.size * Vars.tilesize * VAR.rad_tallGrassScl :
+                false
+          )
       ) {
         if(VARGEN.staHiddenWell != null && !unit.hasEffect(VARGEN.staHiddenWell)) TRIGGER.treeHide.fire(unit);
         unit.apply(VARGEN.staHiddenWell, STA_DUR);
@@ -124,11 +150,12 @@
   exports.comp_update_surrounding = comp_update_surrounding;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Handles heat damage, called for every unit.
-   * ---------------------------------------- */
+   * @param {UnitType} utp
+   * @param {Unit} unit
+   * @return {void}
+   */
   const comp_update_heat = function(utp, unit) {
     if(!TIMER.unit || !Mathf.chance(VAR.p_unitUpdateP * 0.3)) return;
     if(!MDL_cond._isHeatDamageable(unit)) return;
@@ -143,7 +170,7 @@
     FRAG_attack.damage(unit, dmg_fi, 0.0, "heat");
     let i = 0;
     while(i < staStackAmt) {
-      unit.apply(Vars.content.statusEffect("loveclab-sta0bur-overheated"));
+      unit.apply(VARGEN.staOverheated);
       i++;
     };
     if(Mathf.chance(0.5)) EFF.heatSmog.at(unit);

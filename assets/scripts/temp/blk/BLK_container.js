@@ -27,10 +27,6 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_contentMultiSelector");
 
 
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-
-
   /* <---------- component ----------> */
 
 

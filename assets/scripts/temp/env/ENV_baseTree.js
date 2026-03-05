@@ -24,23 +24,6 @@
 
 
   const PARENT = require("lovec/temp/env/ENV_baseProp");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MATH_geometry = require("lovec/math/MATH_geometry");
-
-
-  const FRAG_faci = require("lovec/frag/FRAG_faci");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
-  const DB_env = require("lovec/db/DB_env");
 
 
   /* <---------- auxiliay ----------> */
@@ -90,7 +73,7 @@
 
   module.exports = newClass().extendClass(PARENT, "ENV_baseTree").initClass()
   .setParent(null)
-  .setTags("blk-env")
+  .setTags("blk-env", "blk-tree")
   .setParam({
     // @PARAM: Z-value of the tree.
     layTree: 76.0,

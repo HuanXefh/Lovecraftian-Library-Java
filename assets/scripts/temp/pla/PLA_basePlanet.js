@@ -12,9 +12,9 @@
    * ----------------------------------------
    * IMPORTANT:
    *
-   * Don't put Json files under "content/planets" which will cause name conflict.
+   * Don't put .json files under "content/planets" which will cause name conflict.
    * Put them under "scripts/auxFi/json/planets".
-   * In the Json file mod name prefix is always required.
+   * In the .json file mod name prefix is always required.
    * ---------------------------------------- */
 
 
@@ -28,13 +28,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/cls/util/CLS_contentTemplate");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_file = require("lovec/mdl/MDL_file");
-  const MDL_json = require("lovec/mdl/MDL_json");
+  const PARENT = CLS_contentTemplate;
 
 
   /* <---------- component ----------> */
@@ -89,7 +83,7 @@
   });
 
 
-  // Parse the Json file without creating a new planet
+  // Parse the .json file without creating a new planet
   module.exports.initPlanet = function thisFun(pla) {
     let dir = MDL_file._script(MDL_content._mod(pla)).child("auxFi").child("json").child("planets");
     let fi = (function() {

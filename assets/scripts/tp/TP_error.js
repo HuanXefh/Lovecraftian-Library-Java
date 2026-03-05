@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Registers new errors to {ERROR_HANDLER}.
-   * ---------------------------------------- */
+  /**
+   * Registers new errors to {@link ERROR_HANDLER}.
+   */
 
 
 /*

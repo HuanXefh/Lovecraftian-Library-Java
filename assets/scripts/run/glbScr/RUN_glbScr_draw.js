@@ -5,12 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Global draw methods in Lovec.
-   * Also responsible for color methods.
-   * ---------------------------------------- */
+  /**
+   * Global draw methods in Lovec, also responsible for color methods.
+   */
 
 
 /*
@@ -23,36 +20,36 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- base ----------> */
 
 
+  /** @global */
   TMP_Z = 0;
+  /** @global */
   TMP_Z_A = 0;
+  /** @global */
   TMP_Z_B = 0;
+  /** @global */
   TMP_XSCL = 1.0;
+  /** @global */
   TMP_YSCL = 1.0;
+  /** @global */
   TMP_REG = new TextureRegion();
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used for draw methods to control z-layer.
+  /**
+   * Used to control z-layer.
    * Should always be called twice!
-   * ---------------------------------------- */
+   * @global
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   processZ = function(z) {
-    if(z == null) return;
-
     if(!processZ.isTail) {
       TMP_Z = Draw.z();
-      Draw.z(z);
+      if(z != null) {
+        Draw.z(z);
+      };
     } else {
       Draw.z(TMP_Z);
     };
@@ -62,11 +59,15 @@
   processZ.isTail = false;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Basically {Draw.scl}, which cannot be called in JS cauz it's name of both field and method.
-   * ---------------------------------------- */
+  /**
+   * Used to control scaling.
+   * Basically {@link Draw.scl} which cannot be called in JS cauz it's name of both property and method.
+   * Should always be called twice!
+   * @global
+   * @param {number|unset} [xscl]
+   * @param {number|unset} [yscl]
+   * @return {void}
+   */
   processScl = function(xscl, yscl) {
     if(!processScl.isTail) {
       TMP_XSCL = Draw.xscl;
@@ -83,19 +84,18 @@
   processScl.isTail = false;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Collection of methods related to RGB color.
-   * ---------------------------------------- */
+   * @global
+   */
   RGB = {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Used to define color converter methods.
-     * ---------------------------------------- */
+     * @param {function(Number, Number, Number, Number): any} rgbaCaller - <ARGS>: r, g, b, a.
+     * @return {function(): any}
+     */
     newColorConvert: function(rgbaCaller) {
       return newMultiFunction(
         [Color], function(color) {
@@ -111,6 +111,10 @@
     },
 
 
+    /**
+     * @param {number} param
+     * @return {number}
+     */
     calcLinearRgbParam: function(param) {
       return param < 0.04045 ?
         param / 12.92 :
@@ -121,32 +125,38 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a grayscale color.
-   * ---------------------------------------- */
+  /**
+   * Gets grayscale color.
+   * <br> <ARGS>: color.
+   * <br> <ARGS>: r, g, b, a.
+   * <br> <ARGS>: r, g, b.
+   * @return {Color}
+   */
   RGB.toGrayscale = RGB.newColorConvert(function(r, g, b, a) {
     let val = r * 0.2126 + g * 0.7152 + b * 0.0722;
     return Tmp.c1.set(val, val, val, a);
   });
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a negative color.
-   * ---------------------------------------- */
+  /**
+   * Gets negative color.
+   * <br> <ARGS>: color.
+   * <br> <ARGS>: r, g, b, a.
+   * <br> <ARGS>: r, g, b.
+   * @return {Color}
+   */
   RGB.toNegative = RGB.newColorConvert(function(r, g, b, a) {
     return Tmp.c1.set(1.0 - r, 1.0 - g, 1.0 - b, a);
   });
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Calculates luminance of a color.
-   * ---------------------------------------- */
+  /**
+   * Gets luminance of given color.
+   * <br> <ARGS>: color.
+   * <br> <ARGS>: r, g, b, a.
+   * <br> <ARGS>: r, g, b.
+   * @return {number}
+   */
   RGB.calcLuminance = RGB.newColorConvert(function(r, g, b, a) {
     let
       rLinear = RGB.calcLinearRgbParam(r),
@@ -157,11 +167,13 @@
   });
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Calculates perceived lightness of a color.
-   * ---------------------------------------- */
+  /**
+   * Gets perceived lightness of given color.
+   * <br> <ARGS>: color.
+   * <br> <ARGS>: r, g, b, a.
+   * <br> <ARGS>: r, g, b.
+   * @return {number}
+   */
   RGB.calcLightness = RGB.newColorConvert(function(r, g, b, a) {
     let lumin = RGB.calcLuminance(r, g, b, a);
     return lumin < 0.008856 ?

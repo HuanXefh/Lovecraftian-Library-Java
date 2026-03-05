@@ -24,11 +24,7 @@
 
 
   const PARENT = require("lovec/temp/rs/RS_baseItem");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_table = require("lovec/mdl/MDL_table")
-
+  
 
   /* <---------- component ----------> */
 
@@ -45,7 +41,7 @@
     itm.stats.add(fetchStat("lovec", "rs-isintermediate"), true);
     if(itm.intmdParent != null) itm.stats.add(fetchStat("lovec", "rs0int-parent"), newStatValue(tb => {
       tb.row();
-      MDL_table.setDisplay_ctRow(tb, itm.intmdParent);
+      MDL_table._l_ctRow(tb, itm.intmdParent);
     }));
   };
 

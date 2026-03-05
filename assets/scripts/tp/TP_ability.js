@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers new abilities.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,47 +20,27 @@
   /* <---------- import ----------> */
 
 
-  const PARAM = require("lovec/glb/GLB_param");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_call = require("lovec/mdl/MDL_call");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
   /* <---------- auxiliay ----------> */
 
 
-  const comp_addStats = function(abi, tb, tableF) {
+  function comp_addStats(abi, tb, tableF) {
     tb.add("\n\n[gray]" + Core.bundle.get("ability.lovec-abi-" + abi.nm + ".description") + "[]\n\n").wrap().width(350.0);
     tb.row();
     tableF(tb);
   };
-  exports.comp_addStats = comp_addStats;
 
 
-  const comp_localized = function(abi) {
+  function comp_localized(abi) {
     return Core.bundle.get("ability.lovec-abi-" + abi.nm + ".name");
   };
-  exports.comp_localized = comp_localized;
 
 
   /* <---------- attack ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Creates explosion upon death.
-   * ---------------------------------------- */
+   */
   newAbility(
     "explosion",
     (paramObj) => extend(Ability, {
@@ -96,7 +74,7 @@
         });
 
         MDL_effect.showAt(unit.x, unit.y, this.rad < 16.0 ? EFF.explosionSmall : EFF.explosion, 0.0);
-        MDL_effect.showAt_shake(unit.x, unit.y, this.dmg / 160.0);
+        MDL_effect._e_shake(unit.x, unit.y, this.dmg / 160.0);
         MDL_effect.playAt(unit.x, unit.y, this.se, 1.0, 1.0, 0.1);
       },
 
@@ -113,11 +91,9 @@
   /* <---------- support ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Actively regenerates shield.
-   * ---------------------------------------- */
+   */
   newAbility(
     "shield-core",
     (paramObj) => extend(Ability, {
@@ -157,12 +133,10 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Targets and eliminates incoming bullets.
    * Can overheat.
-   * ---------------------------------------- */
+   */
   newAbility(
     "laser-defense",
     (paramObj) => extend(Ability, {
@@ -200,7 +174,7 @@
           let bul = MDL_pos._bulTg(unit.x, unit.y, unit.team, this.rad);
           if(bul != null) {
             prog = Mathf.maxZero(prog - Mathf.clamp((bul.damage + bul.type.splashDamage) / this.dmg, 0.25, 1.0) * this.dmg);
-            MDL_effect.showBetween_pointLaser(unit.x, unit.y, bul, Pal.remove, this.se);
+            MDL_effect._e_pointLaser(unit.x, unit.y, bul, Pal.remove, this.se);
             MDL_call.damageBul(bul, this.dmg);
           };
         };
@@ -231,11 +205,9 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Actively repairs buildings in range.
-   * ---------------------------------------- */
+   */
   newAbility(
     "building-repairer-module",
     (paramObj) => extend(Ability, {
@@ -268,7 +240,7 @@
         if(b == null) return;
 
         FRAG_attack.heal(b, b.maxHealth * this.healPerc + this.healAmt);
-        MDL_effect.showBetween_laser(unit.x, unit.y, unit, b, Pal.heal, this.strokeScl);
+        MDL_effect._e_laser(unit.x, unit.y, unit, b, Pal.heal, this.strokeScl);
       },
 
 

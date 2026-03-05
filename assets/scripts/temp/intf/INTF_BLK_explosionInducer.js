@@ -22,18 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const EFF = require("lovec/glb/GLB_eff");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-
-
   /* <---------- component ----------> */
 
 
@@ -63,7 +51,7 @@
     };
     let shake = b.block.ex_calcExploShake(b);
     if(shake > 0.0) {
-      MDL_effect.showAt_shake(b.x, b.y, shake, b.block.ex_calcExploShakeDur(b));
+      MDL_effect._e_shake(b.x, b.y, shake, b.block.ex_calcExploShakeDur(b));
     };
     if(b.block.delegee.hasImpactOnExplosion) {
       FRAG_attack._a_impact(b.x, b.y, b.block.ex_calcExploDmg(b) * 0.5, 480.0, b.block.ex_calcExploRad(b), 0.0, 0.0);

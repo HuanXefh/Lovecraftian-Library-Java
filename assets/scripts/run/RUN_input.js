@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Handles player input.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,28 +20,21 @@
   /* <---------- import ----------> */
 
 
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- base ----------> */
 
 
   let
-    unit_pl = null,
-    t_pl = null;
+    unitPlayer = null,
+    tMouse = null;
 
 
-  function evComp_update_keyBind(unit_pl) {
+  function updateKeybind(unitPlayer, tMouse) {
     if(Core.scene.hasField() || Core.scene.hasDialog()) return;
 
     let i = 0, iCap = global.lovecUtil.db.keyBindListener.iCap();
     while(i < iCap) {
       if(Core.input.keyTap(global.lovecUtil.db.keyBindListener[i])) {
-        global.lovecUtil.db.keyBindListener[i + 1](unit_pl);
+        global.lovecUtil.db.keyBindListener[i + 1](unitPlayer, tMouse);
       };
       i += 2;
     };
@@ -61,9 +52,9 @@
 
   if(!Vars.headless) MDL_event._c_onUpdate(() => {
 
-    unit_pl = Vars.player.unit();
-    t_pl = MDL_pos._tMouse();
+    unitPlayer = Vars.player.unit();
+    tMouse = MDL_pos._tMouse();
 
-    evComp_update_keyBind(unit_pl);
+    updateKeybind(unitPlayer, tMouse);
 
   }, 70216990);

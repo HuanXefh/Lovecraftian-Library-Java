@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Not a typical junction, controls pressure/vacuum.
    * ---------------------------------------- */
 
@@ -25,11 +25,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_fluidJunction");
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureBlock");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_table = require("lovec/mdl/MDL_table");
 
 
   /* <---------- component ----------> */

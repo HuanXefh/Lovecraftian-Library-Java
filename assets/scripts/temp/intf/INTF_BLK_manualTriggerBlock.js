@@ -22,13 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
   /* <---------- component ----------> */
 
 

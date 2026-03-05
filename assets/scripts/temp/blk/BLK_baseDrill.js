@@ -23,15 +23,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseMiner");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_faci = require("lovec/frag/FRAG_faci");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_table = require("lovec/mdl/MDL_table");
 
 
   /* <---------- component ----------> */
@@ -66,12 +57,12 @@
     if(blk.blockedItems != null && blk.blockedItems.size > 0) {
       blk.stats.add(fetchStat("lovec", "blk0min-blockeditms"), newStatValue(tb => {
         tb.row();
-        MDL_table.setDisplay_ctLi(tb, blk.blockedItems.toArray());
+        MDL_table._l_ctLi(tb, blk.blockedItems.toArray());
       }));
     } else if(blk.itmWhitelist.length > 0) {
       blk.stats.add(fetchStat("lovec", "blk0min-alloweditms"), newStatValue(tb => {
         tb.row();
-        MDL_table.setDisplay_ctLi(tb, blk.itmWhitelist);
+        MDL_table._l_ctLi(tb, blk.itmWhitelist);
       }));
     };
   };

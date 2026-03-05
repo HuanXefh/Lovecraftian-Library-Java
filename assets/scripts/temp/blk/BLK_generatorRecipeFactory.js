@@ -26,10 +26,6 @@
   const PARENT = require("lovec/temp/blk/BLK_recipeFactory");
   const INTF = require("lovec/temp/intf/INTF_BLK_powerProducer");
   const INTF_A = require("lovec/temp/intf/INTF_BLK_explosionInducer");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_recipe = require("lovec/mdl/MDL_recipe");
 
 
   /* <---------- component ----------> */

@@ -24,11 +24,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_configTurret");
   const INTF = require("lovec/temp/intf/INTF_BLK_impactInducer");
-  const PARAM = require("lovec/glb/GLB_param");
-
-
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_event = require("lovec/mdl/MDL_event");
 
 
   /* <---------- component ----------> */
@@ -179,7 +174,7 @@
 
       ex_onCraft: function() {
         this.ex_createImpactWave();
-        MDL_effect.showAt_impactWave(this.x, this.y, this.block.ex_calcImpactRad(this));
+        MDL_effect._e_impactWave(this.x, this.y, this.block.ex_calcImpactRad(this));
       }
       .setProp({
         noSuper: true,

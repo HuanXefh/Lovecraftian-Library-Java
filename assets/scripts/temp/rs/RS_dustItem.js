@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Intermediate: dust.
    * Produced from a pulverizer.
    * ---------------------------------------- */
@@ -25,9 +25,6 @@
 
 
   const PARENT = require("lovec/temp/rs/RS_intermediateItem");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
 
 
   /* <---------- component ----------> */

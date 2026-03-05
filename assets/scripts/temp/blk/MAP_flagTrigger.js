@@ -26,9 +26,6 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_mapBlock");
 
 
-  const MDL_flag = require("lovec/mdl/MDL_flag");
-
-
   /* <---------- component ----------> */
 
 

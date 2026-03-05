@@ -28,11 +28,6 @@
   const INTF_A = require("lovec/temp/intf/INTF_BLK_oreScannerHandler");
 
 
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-
-
   /* <---------- component ----------> */
 
 

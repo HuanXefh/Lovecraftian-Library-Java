@@ -5,12 +5,10 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods to create effects.
-   * Unlike {TP_effect} which provides effects, this module is only meant to spawn pre-defined effects.
-   * ---------------------------------------- */
+   * Unlike {@link TP_effect} which provides effects, this module is only meant to spawn pre-defined effects.
+   */
 
 
 /*
@@ -23,27 +21,15 @@
   /* <---------- import ----------> */
 
 
-  const EFF = require("lovec/glb/GLB_eff");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_color = require("lovec/mdl/MDL_color");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
-  const TP_effect = require("lovec/tp/TP_effect");
-
-
   /* <---------- base ----------> */
 
 
+  /**
+   * Gets final chance by fraction (capped).
+   * @param {number} p
+   * @param {number} frac
+   * @return {number}
+   */
   const _p_frac = function(p, frac) {
     return Math.min(p * frac, VAR.p_effPCap);
   };
@@ -53,6 +39,11 @@
   /* <---------- sound ----------> */
 
 
+  /**
+   * Plays a sound.
+   * @param {SoundGn} se_gn
+   * @return {void}
+   */
   const play = function(se_gn) {
     if(se_gn == null) return;
 
@@ -62,6 +53,14 @@
   exports.play = play;
 
 
+  /**
+   * Variant of {@link play} for server side.
+   * @param {SoundGn} se_gn
+   * @param {number|unset} [vol]
+   * @param {number|unset} [pitch]
+   * @param {number|unset} [offPitch]
+   * @return {void}
+   */
   const play_server = function(se_gn, vol, pitch, offPitch) {
     if(se_gn == null) return;
     if(vol == null) vol = 1.0;
@@ -75,6 +74,16 @@
   exports.play_server = play_server;
 
 
+  /**
+   * Plays a sound at (x, y).
+   * @param {number} x
+   * @param {number} y
+   * @param {SoundGn} se_gn
+   * @param {number|unset} [vol]
+   * @param {number|unset} [pitch]
+   * @param {number|unset} [offPitch]
+   * @return {void}
+   */
   const playAt = function(x, y, se_gn, vol, pitch, offPitch) {
     if(se_gn == null) return;
     if(vol == null) vol = 1.0;
@@ -90,8 +99,18 @@
   /* <---------- effect ----------> */
 
 
+  /**
+   * Shows an effect at (x, y).
+   * @param {number} x
+   * @param {number} y
+   * @param {Effect} eff
+   * @param {number|unset} [rot] - Leave empty for random rotation.
+   * @param {Color|unset} [color]
+   * @param {Object|unset} [data]
+   * @return {void}
+   */
   const showAt = function(x, y, eff, rot, color, data) {
-    if(Vars.state.isPaused() || eff == null) return;
+    if(Vars.state.isPaused()) return;
     if(rot == null) rot = Mathf.random(360.0);
     if(color == null) color = Color.white;
 
@@ -103,8 +122,18 @@
   exports.showAt = showAt;
 
 
+  /**
+   * Variant of {@link showAt} for sync.
+   * @param {number} x
+   * @param {number} y
+   * @param {Effect} eff
+   * @param {number|unset} [rot]
+   * @param {Color|unset} [color]
+   * @param {Object|unset} [data]
+   * @return {void}
+   */
   const showAt_global = function(x, y, eff, rot, color, data) {
-    if(Vars.state.isPaused() || eff == null) return;
+    if(Vars.state.isPaused()) return;
     if(rot == null) rot = Mathf.random(360.0);
     if(color == null) color = Color.white;
 
@@ -118,8 +147,19 @@
   exports.showAt_global = showAt_global;
 
 
+  /**
+   * Shows an effect around (x, y).
+   * @param {number} x
+   * @param {number} y
+   * @param {Effect} eff
+   * @param {number|unset} [rad]
+   * @param {number|unset} [rot]
+   * @param {Color|unset} [color]
+   * @param {Object|unset} [data]
+   * @return {void}
+   */
   const showAround = function(x, y, eff, rad, rot, color, data) {
-    if(Vars.state.isPaused() || eff == null) return;
+    if(Vars.state.isPaused()) return;
 
     showAt(x + Mathf.range(rad), y + Mathf.range(rad), eff, rot, color, data);
   }
@@ -127,8 +167,19 @@
   exports.showAround = showAround;
 
 
+  /**
+   * Variant of {@link showAround} for sync.
+   * @param {number} x
+   * @param {number} y
+   * @param {Effect} eff
+   * @param {number|unset} [rad]
+   * @param {number|unset} [rot]
+   * @param {Color|unset} [color]
+   * @param {Object|unset} [data]
+   * @return {void}
+   */
   const showAround_global = function(x, y, eff, rad, rot, color, data) {
-    if(Vars.state.isPaused() || eff == null) return;
+    if(Vars.state.isPaused()) return;
 
     showAt_global(x + Mathf.range(rad), y + Mathf.range(rad), eff, rot, color, data);
   }
@@ -136,15 +187,48 @@
   exports.showAround_global = showAround_global;
 
 
+  /* <---------- special sounds ----------> */
+
+
+  /**
+   * Payload drop sound.
+   * @param {number} x
+   * @param {number} y
+   * @param {string|Block|UnitType|null} ct_gn
+   * @return {void}
+   */
+  const _s_payloadDrop = function(x, y, ct_gn) {
+    let ct = MDL_content._ct(ct_gn, null, true);
+    if(ct == null) return;
+
+    playAt(
+      x, y,
+      ct instanceof Block ?
+        ct.placeSound :
+        ct.hitSize <= 12.0 ?
+          Sounds.payloadDrop1 :
+          ct.hitSize <= 20.0 ?
+            Sounds.payloadDrop2 :
+            Sounds.payloadDrop3,
+      1.0, 1.0, 0.1,
+    );
+  }
+  .setAnno("non-headless");
+  exports._s_payloadDrop = _s_payloadDrop;
+
+
   /* <---------- special effects ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a regular shake effect.
-   * ---------------------------------------- */
-  const showAt_shake = function(x, y, pow, dur) {
+  /**
+   * Regular shake effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [pow]
+   * @param {number|unset} [dur]
+   * @return {void}
+   */
+  const _e_shake = function(x, y, pow, dur) {
     if(Vars.state.isPaused()) return;
     if(pow == null) pow = 4.0;
     if(dur == null) dur = 60.0;
@@ -153,40 +237,45 @@
     Effect.shake(pow, dur, x, y);
   }
   .setAnno("non-headless");
-  exports.showAt_shake = showAt_shake;
+  exports._e_shake = _e_shake;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates floor dust effects in a range.
-   * ---------------------------------------- */
-  const showAt_dust = function(x, y, rad, repeat) {
+  /**
+   * Floor dust.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {number|unset} [repeat]
+   * @return {void}
+   */
+  const _e_dust = function(x, y, rad, repeat) {
     if(Vars.state.isPaused()) return;
     if(rad == null) rad = 8.0;
     if(repeat == null) repeat = 1;
 
     let x_i, y_i;
-    (repeat)._it(1, i => {
+    (repeat)._it(i => {
       x_i = x + Mathf.range(rad);
       y_i = y + Mathf.range(rad);
       Effect.floorDust(x_i, y_i, 8.0);
     });
   }
   .setAnno("non-headless");
-  exports.showAt_dust = showAt_dust;
+  exports._e_dust = _e_dust;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates an effect that shows click.
-   * ---------------------------------------- */
-  const showAt_click = function thisFun(x, y, color_gn) {
+  /**
+   * Click effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {Color|unset} [color]
+   * @return {void}
+   */
+  const _e_click = function thisFun(x, y, color) {
     if(Vars.state.isPaused()) return;
-    if(color_gn == null) color_gn = Pal.accent;
+    if(color == null) color = Pal.accent;
 
-    showAt(x, y, thisFun.eff, 0.0, MDL_color._color(color_gn));
+    showAt(x, y, thisFun.eff, 0.0, color);
   }
   .setProp({
     eff: TP_effect._circleWave({
@@ -196,19 +285,23 @@
     }),
   })
   .setAnno("non-headless");
-  exports.showAt_click = showAt_click;
+  exports._e_click = _e_click;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates several circle spark effects.
-   * ---------------------------------------- */
-  const showAt_colorDust = function thisFun(x, y, rad, color_gn) {
+  /**
+   * Colored circle spark effects.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {Color|unset} [color]
+   * @return {void}
+   */
+  const _e_colorDust = function thisFun(x, y, rad, color) {
     if(Vars.state.isPaused()) return;
     if(rad == null) rad = 20.0;
+    if(color == null) color = Color.white;
 
-    showAt(x, y, thisFun.eff, rad, MDL_color._color(color_gn));
+    showAt(x, y, thisFun.eff, rad, color);
   }
   .setProp({
     eff: (function() {
@@ -236,18 +329,20 @@
     })(),
   })
   .setAnno("non-headless");
-  exports.showAt_colorDust = showAt_colorDust;
+  exports._e_colorDust = _e_colorDust;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a triangular effect that moves towards the nearest core.
-   * Mostly used by CEP consumer blocks.
-   * ---------------------------------------- */
-  const showAt_coreSignal = function thisFun(x, y, team, pad, rad) {
+  /**
+   * Triangles that move towards the nearest core.
+   * @param {number} x
+   * @param {number} y
+   * @param {Team|unset} [team]
+   * @param {number|unset} [pad] - Distance between center and actual starting position.
+   * @param {number|unset} [rad] - Length of path.
+   * @return {void}
+   */
+  const _e_coreSignal = function thisFun(x, y, team, pad, rad) {
     if(Vars.state.isPaused() || team == null) return;
-    if(team == null) return;
     let b = Vars.state.teams.closestCore(x, y, team);
     if(b == null) return;
     if(pad == null) pad = 0.0;
@@ -273,20 +368,26 @@
     }),
   })
   .setAnno("non-headless");
-  exports.showAt_coreSignal = showAt_coreSignal;
+  exports._e_coreSignal = _e_coreSignal;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a ripple effect.
-   * ---------------------------------------- */
-  const showAt_ripple = function thisFun(x, y, rad, color_gn) {
+  /**
+   * Ripple effect on liquid floor.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {Color|unset} [color]
+   * @return {void}
+   */
+  const _e_ripple = function thisFun(x, y, rad, color) {
     if(Vars.state.isPaused()) return;
     if(rad == null) rad = 18.0;
-    if(color_gn == null) color_gn = Vars.world.tileWorld(x, y);
+    if(color == null) {
+      let t = Vars.world.tileWorld(x, y);
+      color = t == null ? Color.white : t.getFloorColor();
+    };
 
-    showAt(x, y, thisFun.eff, rad, MDL_color._color(color_gn));
+    showAt(x, y, thisFun.eff, rad, color);
   }
   .setProp({
     eff: (function() {
@@ -304,15 +405,17 @@
     })(),
   })
   .setAnno("non-headless");
-  exports.showAt_ripple = showAt_ripple;
+  exports._e_ripple = _e_ripple;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates impact wave effect.
-   * ---------------------------------------- */
-  const showAt_impactWave = function thisFun(x, y, rad) {
+  /**
+   * Impact wave effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @return {void}
+   */
+  const _e_impactWave = function thisFun(x, y, rad) {
     if(Vars.state.isPaused()) return;
 
     thisFun.effs.forEachFast(eff => {
@@ -328,16 +431,17 @@
     ],
   })
   .setAnno("non-headless");
-  exports.showAt_impactWave = showAt_impactWave;
+  exports._e_impactWave = _e_impactWave;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates rotor wave effect.
-   * Used by rotor units.
-   * ---------------------------------------- */
-  const showAt_rotorWave = function thisFun(x, y, rad) {
+  /**
+   * Rotor wave effect for some units.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @return {void}
+   */
+  const _e_rotorWave = function thisFun(x, y, rad) {
     if(Vars.state.isPaused()) return;
 
     showAt(x, y, thisFun.eff, rad);
@@ -347,7 +451,7 @@
       const tmp = new Effect(20.0, eff => {
         eff.lifetime = 20.0 * Math.pow(eff.rotation * 0.025, 0.5);
 
-        Draw.color(showAt_rotorWave.effColor1, showAt_rotorWave.effColor2, eff.fin());
+        Draw.color(_e_rotorWave.effColor1, _e_rotorWave.effColor2, eff.fin());
         Lines.stroke(2.0);
         Lines.circle(eff.x, eff.y, eff.rotation * eff.fin());
         Draw.reset();
@@ -356,24 +460,28 @@
 
       return tmp;
     })(),
-    effColor1: Color.valueOf("ffffff30"),
-    effColor2: Color.valueOf("ffffff00"),
+    effColor1: VAR.color_rotorWhite,
+    effColor2: VAR.color_whiteClear,
   })
   .setAnno("non-headless");
-  exports.showAt_rotorWave = showAt_rotorWave;
+  exports._e_rotorWave = _e_rotorWave;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates liquid corrosion effect.
-   * ---------------------------------------- */
-  const showAt_corrosion = function thisFun(x, y, size, liqColor, isClogging) {
+  /**
+   * Liquid corrosion effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [size]
+   * @param {Color|unset} [color]
+   * @param {boolean|unset} [isClogging]
+   * @return {void}
+   */
+  const _e_corrosion = function thisFun(x, y, size, color, isClogging) {
     if(Vars.state.isPaused()) return;
     if(size == null) size = 1;
-    if(liqColor == null) liqColor = Color.white;
+    if(color == null) color = Color.white;
 
-    showAround(x, y, thisFun.eff, size * Vars.tilesize * 0.5, null, liqColor, tryVal(isClogging, false));
+    showAround(x, y, thisFun.eff, size * Vars.tilesize * 0.5, null, color, tryVal(isClogging, false));
   }
   .setProp({
     eff: new Effect(120.0, eff => {
@@ -390,16 +498,22 @@
     }),
   })
   .setAnno("non-headless");
-  exports.showAt_corrosion = showAt_corrosion;
+  exports._e_corrosion = _e_corrosion;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Creates remains of a unit or building.
-   * ---------------------------------------- */
-  const showAt_remains = function thisFun(x, y, e0etp, team, isPermanent, forceHot) {
-    if(e0etp == null || team == null) return;
+   * @param {number} x
+   * @param {number} y
+   * @param {Building|Unit|Block|UnitType|null} e0etp
+   * @param {Team|unset} [team]
+   * @param {boolean|unset} [isPermanent] - If true, the remains won't despawn regardless of settings.
+   * @param {boolean|unset} [forceHot] - If true, the remains will be heated regardless of tile and status effect.
+   * @return {void}
+   */
+  const _e_remains = function thisFun(x, y, e0etp, team, isPermanent, forceHot) {
+    if(e0etp == null) return;
+    if(team == null) team = Team.sharded;
     let e = (e0etp instanceof Unit) ? e0etp : (e0etp instanceof Building ? e0etp : null);
     let etp = (e0etp instanceof Unit) ? e0etp.type : (e0etp instanceof Building ? e0etp.block : e0etp);
     if(etp instanceof Block && thisFun.shader == null) return;
@@ -447,7 +561,7 @@
       hitSize: MDL_entity._hitSize(etp),
       rotation: etp instanceof Block ? (Mathf.random(90.0) - 45.0) : Mathf.random(360.0),
       team: team,
-      color: Color.valueOf("606060"),
+      color: VAR.color_darkMix,
       tint: tint,
       a: a,
       aSha: etp instanceof Block ? 0.3 : 0.5,
@@ -465,7 +579,8 @@
         let
           x = this.x + (!this.shouldFloat ? 0.0 : Math.sin((Time.time + this.offTime) * 0.01) * 0.35 * Vars.tilesize),
           y = this.y + (!this.shouldFloat ? 0.0 : Math.cos((Time.time + this.offTime) * 0.05 + 32.0) * 0.15 * Vars.tilesize);
-        if(this.shouldFloat && Mathf.chanceDelta(0.01)) showAt_ripple(x, y, this.hitSize * 1.2);
+
+        if(this.shouldFloat && Mathf.chanceDelta(0.01)) _e_ripple(x, y, this.hitSize * 1.2);
 
         processZ(this.z - 1.0);
 
@@ -501,7 +616,7 @@
           Draw.color();
           if(this.isHot) {
             Draw.blend(Blending.additive);
-            Draw.mixcol(Color.valueOf(Tmp.c3, "ff3838"), 1.0);
+            Draw.mixcol(VAR.color_heatMix, 1.0);
             Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * !this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.5 - Mathf.curve(this.fin(), 0.98) * 0.5) : (0.5 - Interp.pow2Out.apply(this.fin()) * 0.5));
             Draw.rect(this.region, x, y, this.rotation);
             Draw.blend();
@@ -509,7 +624,7 @@
         };
         Draw.reset();
 
-        processZ(this.z - 1.0);
+        processZ();
       },
 
 
@@ -521,28 +636,28 @@
     tmpTs: [],
   })
   .setAnno("non-headless");
-  exports.showAt_remains = showAt_remains;
+  exports._e_remains = _e_remains;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a flash effect over an entity.
-   * Color is only used for buildings, due to hard-coded {applyColor()}.
-   * The only exception for unit is {Pal.heal}.
-   * ---------------------------------------- */
-  const showAt_flash = function thisFun(e, color_gn) {
+  /**
+   * Creates flash effect over an entity.
+   * @param {Building|Unit} e
+   * @param {Color|unset} [color]
+   * @return {void}
+   */
+  const _e_flash = function thisFun(e, color) {
     if(Vars.state.isPaused() || e == null) return;
+    if(color == null) color = Color.white;
 
     if(e instanceof Building) {
       let reg = !(e.block instanceof BaseTurret) ?
         e.block.fullIcon :
         tryVal(MDL_texture._regTurBase(e.block), e.block.region);
       if(reg != null) {
-        showAt(MDL_ui._cameraX(), MDL_ui._cameraY(), thisFun.eff, 0.0, MDL_color._color(color_gn), [reg, e]);
+        showAt(MDL_ui._cameraX(), MDL_ui._cameraY(), thisFun.eff, 0.0, color, [reg, e]);
       };
     } else {
-      MDL_color._color(color_gn).equals(Pal.heal) ?
+      color.equals(Pal.heal) ?
         unit.healTime = 1.0 :
         unit.hitTime = 1.0;
     };
@@ -559,71 +674,61 @@
     }),
   })
   .setAnno("non-headless");
-  exports.showAt_flash = showAt_flash;
+  exports._e_flash = _e_flash;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Creates a texture region or icon that fades out.
-   * ---------------------------------------- */
-  const showAt_regFade = function thisFun(x, y, reg0icon, color_gn, scl) {
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegion|Icon|null} reg0icon
+   * @param {Color|unset} [color]
+   * @param {number|unset} [scl]
+   * @return {void}
+   */
+  const _e_regFade = function thisFun(x, y, reg0icon, color, scl) {
     if(Vars.state.isPaused() || reg0icon == null) return;
+    if(color == null) color = Color.white;
     if(scl == null) scl = 1.0;
 
-    showAt(x, y, thisFun.eff, scl, MDL_color._color(color_gn), reg0icon);
+    showAt(x, y, thisFun.eff, scl, color, reg0icon);
   }
   .setProp({
     eff: new Effect(40.0, eff => {
       eff.lifetime = 40.0 * eff.rotation;
 
       eff.data instanceof TextureRegion ?
-        MDL_draw._reg_normal(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * color.a, Layer.effect + VAR.lay_offDrawOver) :
-        MDL_draw._reg_icon(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * color.a);
+        MDL_draw._reg_normal(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a, Layer.effect + VAR.lay_offDrawOver) :
+        MDL_draw._reg_icon(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a);
     }),
   })
   .setAnno("non-headless");
-  exports.showAt_regFade = showAt_regFade;
+  exports._e_regFade = _e_regFade;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a damage number effect.
-   * Only works when damage display is enabled.
-   * ---------------------------------------- */
-  const showAt_dmg = function thisFun(x, y, dmg, team, mode) {
-    if(!PARAM.displayDamage || dmg == null || dmg < 0.0001 || dmg < PARAM.damageDisplayThreshold) return;
+  /**
+   * Damage display effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} dmg
+   * @param {Team|unset} [team]
+   * @param {string|unset} [mode] - Determines format of damage text, see {@link CLS_damageTextMode}.
+   * @return {void}
+   */
+  const _e_dmg = function thisFun(x, y, dmg, team, mode) {
+    if(!PARAM.displayDamage || dmg < 0.0001 || dmg < PARAM.damageDisplayThreshold) return;
     if(mode == null) mode = "health";
-    if(!mode.equalsAny(thisFun.modes)) return;
     if(team == null) team = Team.derelict;
+    let dmgTextMode = CLS_damageTextMode.get(mode);
+    if(dmgTextMode == null) return;
 
-    let color = null;
     let str = dmg > 9.9999 ? Strings.fixed(dmg, 0) : (dmg > 0.9999 ? Strings.fixed(dmg, 1) : Strings.fixed(dmg, 2));
-    switch(mode) {
-      case "health" :
-        color = team === Team.derelict ? Color.white : team.color;
-        break;
-      case "shield" :
-        color = Pal.techBlue;
-        str = "<" + str + ">";
-        break;
-      case "heal" :
-        color = Pal.heal;
-        str = "+" + str;
-        break;
-      case "heat" :
-        color = Color.orange;
-        str = "^" + str;
-        break;
-    };
-    if(color == null) return;
+    str = dmgTextMode.getText(str);
     let sizeScl = Math.max(Math.log((dmg + 10.0) / 10.0), 0.7);
 
-    showAround(x, y, thisFun.eff, 8.0, dmg, color, [str, sizeScl]);
+    showAround(x, y, thisFun.eff, 8.0, dmg, dmgTextMode.getColor(team), [str, sizeScl]);
   }
   .setProp({
-    modes: ["health", "shield", "heal", "heat"],
     eff: new Effect(40.0, eff => {
       LCDraw.text(
         eff.x, eff.y, eff.data[0], Fonts.def,
@@ -633,19 +738,25 @@
     }),
   })
   .setAnno("non-headless");
-  exports.showAt_dmg = showAt_dmg;
+  exports._e_dmg = _e_dmg;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a line effect from (x, y) or {e0} to {e}.
-   * ---------------------------------------- */
-  const showBetween_line = function thisFun(x, y, e0, e, color_gn, strokeScl) {
-    if(Vars.state.isPaused() || e == null) return;
+  /**
+   * Line effect from (x, y) or an entity to another entity.
+   * @param {number} x
+   * @param {number} y
+   * @param {PoscGn|null} e_f
+   * @param {PoscGn|null} e_t
+   * @param {Color|unset} [color]
+   * @param {number|unset} [strokeScl]
+   * @return {void}
+   */
+  const _e_line = function thisFun(x, y, e_f, e_t, color, strokeScl) {
+    if(Vars.state.isPaused() || e_t == null) return;
+    if(color == null) color = Color.white;
     if(strokeScl == null) strokeScl = 1.0;
 
-    showAt(x, y, thisFun.eff, strokeScl, MDL_color._color(color_gn), [e0, e]);
+    showAt(x, y, thisFun.eff, strokeScl, color, [e_f, e_t]);
   }
   .setProp({
     eff: new Effect(40.0, eff => {
@@ -660,57 +771,70 @@
     }),
   })
   .setAnno("non-headless");
-  exports.showBetween_line = showBetween_line;
+  exports._e_line = _e_line;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a item transfer effect from (x, y) to {posIns}.
-   * ---------------------------------------- */
-  const showBetween_itemTransfer = function(x, y, posIns, color_gn, repeat, isGlobal) {
+  /**
+   * Item transfer effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {PosGn|null} posIns
+   * @param {Color|unset} [color]
+   * @param {number|unset} [repeat]
+   * @param {boolean|unset} [isGlobal]
+   * @return {void}
+   */
+  const _e_itemTransfer = function(x, y, posIns, color, repeat, isGlobal) {
     if(Vars.state.isPaused() || posIns == null) return;
-    if(color_gn == null) color_gn = Pal.accent;
+    if(color == null) color = Pal.accent;
     if(repeat == null) repeat = 3;
 
     for(let i = 0; i < repeat; i++) {
-      (isGlobal ? showAt_global : showAt)(x, y, Fx.itemTransfer, 0.0, MDL_color._color(color_gn), posIns);
+      (isGlobal ? showAt_global : showAt)(x, y, Fx.itemTransfer, 0.0, color, posIns);
     };
   }
   .setAnno("non-headless");
-  exports.showBetween_itemTransfer = showBetween_itemTransfer;
+  exports._e_itemTransfer = _e_itemTransfer;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a chain lightning effect from (x, y) to {e}.
-   * ---------------------------------------- */
-  const showBetween_lightning = function(x, y, e, color_gn, hasSound) {
+  /**
+   * Lightning effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {PoscGn|null} e
+   * @param {Color|unset} [color]
+   * @param {boolean|unset} [hasSound]
+   * @return {void}
+   */
+  const _e_lightning = function(x, y, e, color, hasSound) {
     if(Vars.state.isPaused() || posIns == null) return;
-    if(color_gn == null) color_gn = Pal.accent;
+    if(color == null) color = Pal.accent;
 
-    showAt(x, y, Fx.chainLightning, 0.0, MDL_color._color(color_gn), e);
+    showAt(x, y, Fx.chainLightning, 0.0, color, e);
     if(hasSound) playAt(x, y, Sounds.shootArc);
   }
   .setAnno("non-headless");
-  exports.showBetween_lightning = showBetween_lightning;
+  exports._e_lightning = _e_lightning;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {showBetween_lightning} that is used for a list of entities.
-   * ---------------------------------------- */
-  const showAmong_lightning = function thisFun(x, y, es, color_gn, hasSound) {
-    if(Vars.state.isPaused() || es == null || es.length === 0) return;
+  /**
+   * Chain lightning effect with multiple targets.
+   * @param {number} x
+   * @param {number} y
+   * @param {Array<PoscGn>} es
+   * @param {Color|unset} [color]
+   * @param {boolean|unset} [hasSound]
+   * @return {void}
+   */
+  const _e_chainLightning = function thisFun(x, y, es, color, hasSound) {
+    if(Vars.state.isPaused() || es.length === 0) return;
 
     let i = 0, iCap = es.iCap();
     let e1, e2;
     while(i < iCap) {
       e1 = (i === 0) ? thisFun.tmpVec.set(x, y) : es[i - 1];
       e2 = es[i];
-      showBetween_lightning(e1.x, e1.y, e2, color_gn);
+      _e_lightning(e1.x, e1.y, e2, color);
       i++;
     };
 
@@ -720,19 +844,25 @@
     tmpVec: new Vec2(),
   })
   .setAnno("non-headless");
-  exports.showAmong_lightning = showAmong_lightning;
+  exports._e_chainLightning = _e_chainLightning;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Line effect but replaced with laser.
-   * ---------------------------------------- */
-  const showBetween_laser = function thisFun(x, y, e0, e, color_gn, strokeScl, hasLight) {
+  /**
+   * Laser beam effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {PoscGn|null} e_f
+   * @param {PoscGn|null} e_t
+   * @param {Color|unset} [color]
+   * @param {number|unset} [strokeScl]
+   * @param {boolean|unset} [hasLight]
+   * @return {void}
+   */
+  const _e_laser = function thisFun(x, y, e_f, e_t, color, strokeScl, hasLight) {
     if(Vars.state.isPaused() || e == null) return;
-    if(color_gn == null) color_gn = Pal.accent;
+    if(color == null) color = Pal.accent;
 
-    showAt(x, y, thisFun.eff, tryVal(strokeScl, 1.0), MDL_color._color(color_gn), [e0, e, hasLight]);
+    showAt(x, y, thisFun.eff, tryVal(strokeScl, 1.0), color, [e_f, e_t, tryVal(hasLight, false)]);
   }
   .setProp({
     eff: new Effect(30.0, eff => {
@@ -750,19 +880,21 @@
     }),
   })
   .setAnno("non-headless");
-  exports.showBetween_laser = showBetween_laser;
+  exports._e_laser = _e_laser;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a point laser effect, e.g. the one used in laser defense ability.
-   * ---------------------------------------- */
-  const showBetween_pointLaser = function thisFun(x, y, e, color_gn, se_gn) {
+  /**
+   * Point laser effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {PoscGn|null} e
+   * @param {Color|unset} [color]
+   * @param {SoundGn|unset} [se_gn]
+   * @return {void}
+   */
+  const _e_pointLaser = function thisFun(x, y, e, color, se_gn) {
     if(Vars.state.isPaused() || e == null) return;
-    if(color_gn == null) color_gn = Pal.remove;
-
-    let color = MDL_color._color(color_gn);
+    if(color == null) color = Pal.remove;
     let tup = [e.x, e.y];
 
     showAt(x, y, thisFun.eff1, 0.0, color, tup);
@@ -786,22 +918,23 @@
     }),
   })
   .setAnno("non-headless");
-  exports.showBetween_pointLaser = showBetween_pointLaser;
+  exports._e_pointLaser = _e_pointLaser;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Generalized vanilla payload deposit effect.
-   * ---------------------------------------- */
-  const showBetween_payloadDeposit = function(x1, y1, x2, y2, ct_gn) {
+  /**
+   * Payload deposit effect.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {ContentGn} ct_gn
+   * @return {void}
+   */
+  const _e_payloadDeposit = function(x1, y1, x2, y2, ct_gn) {
     let ct = MDL_content._ct(ct_gn, null, true);
     if(ct == null) return;
 
-    Fx.payloadDeposit.at(x1, y1, Angles.angle(x1, y1, x2, y2), new UnitAssembler.YeetData(
-      Tmp.v4.set(x2, y2).cpy(),
-      ct,
-    ));
+    Fx.payloadDeposit.at(x1, y1, Angles.angle(x1, y1, x2, y2), new UnitAssembler.YeetData(new Vec2(x2, y2), ct));
   }
   .setAnno("non-headless");
-  exports.showBetween_payloadDeposit = showBetween_payloadDeposit;
+  exports._e_payloadDeposit = _e_payloadDeposit;

@@ -22,7 +22,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/cls/util/CLS_contentTemplate");
+  const PARENT = CLS_contentTemplate;
 
 
   /* <---------- component ----------> */

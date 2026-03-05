@@ -5,14 +5,11 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Methods related to Arc {Fi} class.
+  /**
+   * Methods related to Arc {@link Fi} class.
    * Also provides methods to read/write files.
-   *
-   * For Json-related methods, see {MDL_json}.
-   * ---------------------------------------- */
+   * For JSON-related methods, see {@link MDL_json}.
+   */
 
 
 /*
@@ -28,86 +25,68 @@
   /* <---------- directory ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * "Mindustry/saves/mods", or "io.anuke.mindustry/files/mods".
-   *
-   * Don't use {root} here, or {arc.util.ArcRuntimeException} is thrown.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "Mindustry/saves/mods" or "io.anuke.mindustry/files/mods".
+   */
   const mod = (function() {return fetchMod("lovec").file.parent()})();
   exports.mod = mod;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * "Mindustry/saves", or "io.anuke.mindustry/files" on Android.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "Mindustry/saves" or "io.anuke.mindustry/files".
+   */
   const save = mod.parent();
   exports.save = save;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * "Mindustry/saves/maps", or "io.anuke.mindustry/files/maps" on Android.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "Mindustry/saves/maps" or "io.anuke.mindustry/files/maps".
+   */
   const map = mod.sibling("maps");
   exports.map = map;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * "Mindustry/saves/saves", or "io.anuke.mindustry/files/saves" on Android.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "Mindustry/saves/saves" or "io.anuke.mindustry/files/saves".
+   */
   const gameSave = mod.sibling("saves");
   exports.gameSave = gameSave;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * "Mindustry/saves/schematics", or "io.anuke.mindustry/files/schematics" on Android.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "Mindustry/saves/schematics" or "io.anuke.mindustry/files/schematics".
+   */
   const schematic = mod.sibling("schematics");
   exports.schematic = schematic;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * "Mindustry/saves/mods/data/sharedData", or "io.anuke.mindustry/files/mods/data/sharedData" on Android.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "Mindustry/saves/mods/data/sharedData" or "io.anuke.mindustry/files/mods/data/sharedData".
+   */
   const sharedData = mod.child("data").child("sharedData");
   exports.sharedData = sharedData;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * "Mindustry/saves/mods/data/lovec", or "io.anuke.mindustry/files/mods/data/lovec" on Android.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "Mindustry/saves/mods/data/lovec" or "io.anuke.mindustry/files/mods/data/lovec".
+   */
   const lovecData = mod.child("data").child("lovec");
   exports.lovecData = lovecData;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * "Mindustry/cache/lovec", or "io.anuke.mindustry/cache/lovec" on Android.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "Mindustry/cache/lovec" or "io.anuke.mindustry/cache/lovec".
+   */
   const lovecCache = Core.files.cache("lovec");
   exports.lovecCache = lovecCache;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Returns the root directory of a mod.
-   * {mod.file} and {mod.root} can be different if the mod file is a zip file, handle it carefully!
-   * ---------------------------------------- */
+   * @param {string} nmMod
+   * @param {boolean|unset} [returnZipRoot] - If true, this method will return directory of the file instead of extracted data. Handle this carefully!
+   * @return {Fi|null}
+   */
   const _root = function(nmMod, returnZipRoot) {
     let mod = fetchMod(nmMod, true);
     return mod == null ? null : (returnZipRoot ? mod.file : mod.root);
@@ -115,11 +94,11 @@
   exports._root = _root;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the "content" folder of a mod.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "<nmMod>/content".
+   * @param {string} nmMod
+   * @return {Fi|null}
+   */
   const _content = function(nmMod) {
     let dirRt = _root(nmMod);
     if(dirRt == null) return null;
@@ -130,13 +109,13 @@
   exports._content = _content;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the "content/xxx" folder of a mod according to {ctType}.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "<nmMod>/content/xxx", based on given type.
+   * @param {string} nmMod
+   * @param {ContentType} ctType
+   * @return {Fi|null}
+   */
   const _subContent = function(nmMod, ctType) {
-    if(ctType == null) return null;
     let dirCt = _content(nmMod);
     if(dirCt == null) return null;
     let str = ctType.name().toLowerCase();
@@ -147,11 +126,11 @@
   exports._subContent = _subContent;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the "scripts" folder of a mod.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "<nmMod>/scripts".
+   * @param {string} nmMod
+   * @return {Fi|null}
+   */
   const _script = function(nmMod) {
     let dirRt = _root(nmMod);
     if(dirRt == null) return null;
@@ -162,11 +141,11 @@
   exports._script = _script;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the "sprites" folder of a mod.
-   * ---------------------------------------- */
+  /**
+   * <PATH>: "<nmMod>/sprites".
+   * @param {string} nmMod
+   * @return {Fi|null}
+   */
   const _sprite = function(nmMod) {
     let dirRt = _root(nmMod);
     if(dirRt == null) return null;
@@ -180,15 +159,16 @@
   /* <---------- file ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns a directory or file using relative path.
-   * By default uses "Mindustry/saves" as the root directory.
-   * ---------------------------------------- */
+  /**
+   * Gets a directory or file using relative path.
+   * By default, this uses "Mindustry/saves" as root directory.
+   * @param {Fi|null} dirCur
+   * @param {string} path
+   * @param {boolean} ignoreExist - If true, this method won't return null if file does not exist.
+   * @return {Fi|null}
+   */
   const parsePath = function thisFun(dirCur, path, ignoreExist) {
     if(dirCur == null) dirCur = save;
-    if(path == null) path = "";
 
     let path_fi = path;
     if(!path.endsWith("/")) path_fi += "/";
@@ -224,13 +204,14 @@
   exports.parsePath = parsePath;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the .json or .hjson file of a mod content.
-   * ---------------------------------------- */
+  /**
+   * Gets the .json or .hjson file of some mod content.
+   * Do not even try vanilla content!
+   * @param {ContentGn} ct_gn
+   * @return {Fi|null}
+   */
   const _jsonCt = function(ct_gn) {
-    let ct = global.lovecUtil.fun._ct(ct_gn);
+    let ct = findContent(ct_gn);
     if(ct == null || ct.minfo.mod == null) return null;
     let nmMod = ct.minfo.mod.name;
     let dirSubCt = _subContent(nmMod, ct.getContentType());
@@ -243,11 +224,11 @@
   exports._jsonCt = _jsonCt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the current Lovec data file.
-   * ---------------------------------------- */
+  /**
+   * Gets current LSAV file.
+   * @param {boolean|unset} [isBackup] - If true, return {@link Fi} of the backup.
+   * @return {Fi|null}
+   */
   const _lsav = function(isBackup) {
     if(Vars.state.isMenu()) return null;
     let saveSlotCur = Vars.control.saves.getCurrent();
@@ -261,11 +242,12 @@
   /* <---------- read & write ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the string in a text file.
-   * ---------------------------------------- */
+  /**
+   * Reads string in a .txt file.
+   * @param {Fi|null} fi
+   * @param {boolean|unset} [bypassExt]
+   * @return {string}
+   */
   const _r_txt = function(fi, bypassExt) {
     if(fi == null || (!bypassExt && fi.extension() !== "txt")) return "";
 
@@ -274,24 +256,28 @@
   exports._r_txt = _r_txt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Writes {str} in a text file.
-   * ---------------------------------------- */
+  /**
+   * Writes string to a .txt file.
+   * @param {Fi|null} fi
+   * @param {string} str
+   * @param {boolean|unset} [shouldAppend]
+   * @param {boolean|unset} [bypassExt]
+   * @return {void}
+   */
   const _w_txt = function(fi, str, shouldAppend, bypassExt) {
-    if(fi == null || (!bypassExt && fi.extension() !== "txt") || str == null) return;
+    if(fi == null || (!bypassExt && fi.extension() !== "txt")) return;
 
     fi.writeString(str, Boolean(shouldAppend));
   };
   exports._w_txt = _w_txt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Reads a .csv file and returns the result as an array.
-   * ---------------------------------------- */
+  /**
+   * Reads data in a .csv file and returns result as a string array.
+   * @param {Fi|null} fi
+   * @param {boolean|unset} [bypassExt]
+   * @return {Array}
+   */
   const _r_csv = function(fi, bypassExt) {
     const arr = [];
 
@@ -326,7 +312,7 @@
         };
       } else if(l.charCodeAt(0) === 13) {
         ol = str[i + 1];
-        if((ol.charCodeAt(0) === 10 || ol == null) && tmp !== "") {
+        if(ol.charCodeAt(0) === 10 && tmp !== "") {
           arr.push(String(tmp));
           tmp = "";
         };
@@ -344,13 +330,17 @@
   exports._r_csv = _r_csv;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Writes a .csv file with given n-array.
-   * ---------------------------------------- */
+  /**
+   * Writes an n-array to a .csv file.
+   * @param {Fi|null} fi
+   * @param {Array} arr
+   * @param {number|unset} [ord]
+   * @param {boolean|unset} [shouldAppend]
+   * @param {boolean|unset} [bypassExt]
+   * @return {void}
+   */
   const _w_csv = function(fi, arr, ord, shouldAppend, bypassExt) {
-    if(fi == null || (!bypassExt && fi.extension() !== "csv") || arr == null) return;
+    if(fi == null || (!bypassExt && fi.extension() !== "csv")) return;
     if(ord == null) ord = 2;
 
     let str = "";
@@ -372,12 +362,11 @@
   /* <---------- misc ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Tries opening the file in explorer, or other file managers.
-   * Open the file directly? Nope, that's a rabbit hole.
-   * ---------------------------------------- */
+  /**
+   * Opens a file in explorer or other file manager based on OS.
+   * @param {Fi|null} fi
+   * @return {boolean}
+   */
   const openFi = function(fi) {
     if(fi == null || !fi.exists()) return false;
 

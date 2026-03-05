@@ -22,13 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const MDL_recipe = require("lovec/mdl/MDL_recipe");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 
@@ -52,7 +45,7 @@
 
   function comp_buildConfiguration(b, tb) {
     tb.row();
-    MDL_table.setSelector_recipe(
+    MDL_table._s_rc(
       tb, b,
       () => b.rcHeader, val => b.configure(val),
       b.ex_getSelectorExtraBtnSetters(),

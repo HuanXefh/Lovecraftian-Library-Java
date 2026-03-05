@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Most generated parameters, some are only populated after CLIENT LOAD.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,19 +20,6 @@
   /* <---------- import ----------> */
 
 
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
-
-
-  const DB_block = require("lovec/db/DB_block");
-  const DB_env = require("lovec/db/DB_env");
-  const DB_fluid = require("lovec/db/DB_fluid");
-  const DB_item = require("lovec/db/DB_item");
-  const DB_misc = require("lovec/db/DB_misc");
-
-
   /* <---------- key binding ----------> */
 
 
@@ -42,6 +27,13 @@
   exports.bindings = bindings;
 
 
+  /**
+   * Adds a new key binding.
+   * @param {string} nm
+   * @param {KeyCode} keyCodeDef
+   * @param {string} categ
+   * @return {boolean}
+   */
   const addKeyBind = function(nm, keyCodeDef, categ) {
     if(bindings[nm] !== undefined) {
       Log.warn("[LOVEC] Key binding [$1] has already been registered!".format(nm.color(Pal.accent)));
@@ -57,15 +49,17 @@
   /* <---------- dialog flow ----------> */
 
 
-  const dialFlowNmCtMap = new ObjectMap();
-  exports.dialFlowNmCtMap = dialFlowNmCtMap;
+  exports.dialFlowNmCtMap = new ObjectMap();
+  exports.dialFlowBgPool = [];
+  exports.dialFlowImgPool = [];
+  exports.dialFlowCharaPool = [];
+  exports.dialFlowSelectionPool = [];
 
 
   /* <---------- achievement ----------> */
 
 
-  const achievements = [];
-  exports.achievements = achievements;
+  exports.achievements = [];
 
 
   /* <---------- sprite ----------> */
@@ -257,7 +251,7 @@
 
     exports.nonEnvBlks = Vars.content.blocks().select(blk => blk.synthetic()).toArray();
     Time.run(1.0, () => {
-      exports.payMatBlks = module.exports.nonEnvBlks.filter(blk => global.lovec.mdl_recipeDict.rcDict.cons.block[blk.id].length > 0 || global.lovec.mdl_recipeDict.rcDict.prod.block[blk.id].length > 0);
+      exports.payMatBlks = module.exports.nonEnvBlks.filter(blk => MDL_recipeDict.rcDict.cons.block[blk.id].length > 0 || MDL_recipeDict.rcDict.prod.block[blk.id].length > 0);
     });
 
 
@@ -316,6 +310,12 @@
 
     exports.staHiddenWell = Vars.content.statusEffect("loveclab-sta-hidden-well");
     exports.staStunned = Vars.content.statusEffect("loveclab-sta-stunned");
+    exports.staSlightlyInjured = Vars.content.statusEffect("loveclab-sta-slightly-injured");
+    exports.staInjured = Vars.content.statusEffect("loveclab-sta-injured");
+    exports.staHeavilyInjured = Vars.content.statusEffect("loveclab-sta-heavily-injured");
+    exports.staDamaged = Vars.content.statusEffect("loveclab-sta-damaged");
+    exports.staSeverelyDamaged = Vars.content.statusEffect("loveclab-sta-severely-damaged");
+    exports.staOverheated = Vars.content.statusEffect("loveclab-sta0bur-overheated");
 
 
   }, 54888119);

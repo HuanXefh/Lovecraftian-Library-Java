@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles Json read/write.
-   * ---------------------------------------- */
+  /**
+   * Handles JSON read/write.
+   */
 
 
 /*
@@ -22,20 +20,14 @@
   /* <---------- import ----------> */
 
 
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_file = require("lovec/mdl/MDL_file");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns Json value of a .json or .hjson file.
-   * ---------------------------------------- */
+  /**
+   * Returns JSON value of a .json or .hjson file.
+   * @param {Fi|string|null} fi0str
+   * @return {JsonValue|null}
+   */
   const parse = function(fi0str) {
     if(fi0str == null) return null;
     if(fi0str instanceof Fi && !fi0str.exists()) return null;
@@ -43,32 +35,36 @@
     let jsonStr = fi0str instanceof Fi ? fi0str.readString("UTF-8") : fi0str;
     if(fi0str instanceof Fi && fi0str.extension() === "json") jsonStr = jsonStr.replace("#", "\\#");
 
-    return VAR.json.fromJson(null, Jval.read(jsonStr).toString(Jval.Jformat.plain));
+    return LOVEC_JSON_PARSER.fromJson(null, Jval.read(jsonStr).toString(Jval.Jformat.plain));
   };
   exports.parse = parse;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Writes Json string/object to {fi}.
-   * Note that there should be primitive values only.
-   * ---------------------------------------- */
-  const write = function(fi, json_gn) {
-    if(fi == null || json_gn == null) return;
+  /**
+   * Writes JSON string/object to `fi`.
+   * Only primitive values are allowed.
+   * @param {Fi|null} fi
+   * @param {string|Object|null} str0obj
+   * @return {void}
+   */
+  const write = function(fi, str0obj) {
+    if(fi == null || str0obj == null) return;
 
-    var str = (typeof json_gn === "string") ? json_gn : JSON.stringify(json_gn);
-    fi.writeString(str);
+    fi.writeString(typeof str0obj === "string" ? str0obj : JSON.stringify(str0obj));
   };
   exports.write = write;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a sub-Json value.
-   * ---------------------------------------- */
+  /**
+   * Reads value from a JSON value, null if not found.
+   * @param {JsonValue|null} jsonVal
+   * @param {string|Array<string>} keys_p - Object keys in order.
+   * @param {boolean|unset} [noConvert] - If true, this method will return JSON value even if it's a final value.
+   * @param {string|unset} [arrMode] - When final value is an array, this determines type of the result array.
+   * @return {any}
+   */
   const fetch = function(jsonVal, keys_p, noConvert, arrMode) {
+    if(jsonVal == null) return null;
     let tmpJsonVal;
     if(!(keys_p instanceof Array)) {
       tmpJsonVal = jsonVal.get(keys_p);
@@ -117,15 +113,13 @@
   exports.fetch = fetch;
 
 
-  /* ----------------------------------------
-  * NOTE:
-  *
-  * Returns Json value of .json file of the content.
-  *
-  * Don't do extra Json fields.
-  * It's possible to write extra fields in the .json file but the game's gonna warn you a lot in the console.
-  * ---------------------------------------- */
+  /**
+   * Gets JSON value of .json/.hjson file of some content.
+   * @param {ContentGn} ct_gn
+   * @return {JsonValue|null}
+   */
   const _jsonVal_ct = function(ct_gn) {
-    return parse(MDL_file._json_ct(ct_gn));
+    let fi = MDL_file._json_ct(ct_gn);
+    return fi == null ? null : parse(fi);
   };
   exports._jsonVal_ct = _jsonVal_ct;

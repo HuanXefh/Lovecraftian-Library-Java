@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * A block that conducts power.
    * ----------------------------------------
    * DEDICATION:
@@ -28,13 +28,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_basePowerTransmitter");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
 
 
   /* <---------- component ----------> */

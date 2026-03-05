@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to objective flags and LSAV flags.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,28 +20,25 @@
   /* <---------- import ----------> */
 
 
-  const SAVE = require("lovec/glb/GLB_save");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether a world processor flag is set.
-   * ---------------------------------------- */
+   * @param {string} flag
+   * @return {boolean}
+   */
   const _hasFlag = function(flag) {
     return Vars.state.rules.objectiveFlags.contains(flag);
   };
   exports._hasFlag = _hasFlag;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Adds a world processor flag.
-   * ---------------------------------------- */
+   * @param {string} flag
+   * @return {boolean}
+   */
   const addFlag = function(flag) {
     if(_hasFlag(flag)) return false;
 
@@ -54,11 +49,11 @@
   exports.addFlag = addFlag;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Removes a world processor flag.
-   * ---------------------------------------- */
+   * @param {string} flag
+   * @return {boolean}
+   */
   const removeFlag = function(flag) {
     if(_hasFlag(flag)) return false;
 
@@ -72,22 +67,22 @@
   /* <---------- LSAV ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether a LSAV flag is set.
-   * ---------------------------------------- */
+   * @param {string} flag
+   * @return {boolean}
+   */
   const _hasLsavFlag = function(flag) {
     return SAVE.get("flags").includes(flag);
   };
   exports._hasLsavFlag = _hasLsavFlag;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Adds a flag to LSAV.
-   * ---------------------------------------- */
+   * @param {string} flag
+   * @return {boolean}
+   */
   const addLsavFlag = function(flag) {
     if(_hasLsavFlag(flag)) return false;
 
@@ -98,11 +93,11 @@
   exports.addLsavFlag = addLsavFlag;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Removes a flag from LSAV.
-   * ---------------------------------------- */
+   * @param {string} flag
+   * @return {boolean}
+   */
   const removeLsavFlag = function(flag) {
     if(!_hasLsavFlag(flag)) return false;
 

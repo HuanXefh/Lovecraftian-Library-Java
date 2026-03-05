@@ -22,19 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const FRAG_faci = require("lovec/frag/FRAG_faci");
-
-
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-
-
-  const DB_block = require("lovec/db/DB_block");
-
-
   /* <---------- component ----------> */
 
 
@@ -73,7 +60,7 @@
       b.cepEffc = FRAG_faci._cepEffcCur(b.team);
     };
     if(TIMER.coreSignal && b.efficiency > 0.0 && b.shouldConsume()) {
-      MDL_effect.showAt_coreSignal(b.x, b.y, b.team, b.block.size * 0.6 * Vars.tilesize);
+      MDL_effect._e_coreSignal(b.x, b.y, b.team, b.block.size * 0.6 * Vars.tilesize);
     };
   };
 

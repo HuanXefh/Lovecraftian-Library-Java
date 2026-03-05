@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to recipe dictionary.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -20,14 +18,6 @@
 
 
   /* <---------- import ----------> */
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
-  const DB_block = require("lovec/db/DB_block");
-  const DB_misc = require("lovec/db/DB_misc");
 
 
   /* <---------- base ----------> */
@@ -41,21 +31,16 @@
   exports.rcDict = rcDict;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Possible fields for {data} used in recipe dictionary terms:
-   * icon: str                @PARAM: Arbitrary texture region used.
-   * ct: str                @PARAM: Content button used.
-   * time: f                @PARAM: Craft time used.
-   * ---------------------------------------- */
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds an item consumption term to recipe dictionary.
-   * ---------------------------------------- */
+  /**
+   * Adds an item consumption term.
+   * Should be called strictly after CLIENT LOAD.
+   * @param {BlockGn} blk_gn
+   * @param {ItemGn} itm_gn
+   * @param {number} amt
+   * @param {number|unset} [p]
+   * @param {RecipeDictionaryData|unset} [data]
+   * @return {void}
+   */
   const addItmConsTerm = function(blk_gn, itm_gn, amt, p, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
@@ -63,8 +48,6 @@
     if(blk == null) return;
     let itm = MDL_content._ct(itm_gn, "rs");
     if(itm == null) return;
-    if(amt == null) amt = 0;
-    if(amt < 1) return;
     if(p == null) p = 1.0;
     if(p < 0.0001) return;
 
@@ -77,11 +60,15 @@
   exports.addItmConsTerm = addItmConsTerm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds a fluid consumption term to recipe dictionary.
-   * ---------------------------------------- */
+  /**
+   * Adds a fluid consumption term.
+   * Should be called strictly after CLIENT LOAD.
+   * @param {BlockGn} blk_gn
+   * @param {LiquidGn} liq_gn
+   * @param {number} amt
+   * @param {RecipeDictionaryData|unset} [data]
+   * @return {void}
+   */
   const addFldConsTerm = function(blk_gn, liq_gn, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
@@ -89,8 +76,6 @@
     if(blk == null) return;
     let liq = MDL_content._ct(liq_gn, "rs");
     if(liq == null) return;
-    if(amt == null) amt = 0.0;
-    if(amt < 0.0001) return;
 
     rcDict.cons.fluid[liq.id].push(
       blk,
@@ -101,11 +86,15 @@
   exports.addFldConsTerm = addFldConsTerm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds a payload consumption term to recipe dictionary.
-   * ---------------------------------------- */
+  /**
+   * Adds a payload consumption term.
+   * Should be called strictly after CLIENT LOAD.
+   * @param {BlockGn} blk_gn
+   * @param {string|Block|UnitType|null} ct_gn
+   * @param {number} amt
+   * @param {RecipeDictionaryData|unset} [data]
+   * @return {void}
+   */
   const addPayConsTerm = function(blk_gn, ct_gn, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
@@ -113,8 +102,6 @@
     if(blk == null) return;
     let ct = MDL_content._ct(ct_gn, null, true);
     if(ct == null) return;
-    if(amt == null) amt = 0;
-    if(amt < 0.0001) return;
 
     rcDict.cons[(ct instanceof Block ? "block" : "unit")][ct.id].push(
       blk,
@@ -125,11 +112,16 @@
   exports.addPayConsTerm = addPayConsTerm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds an item production term to recipe dictionary.
-   * ---------------------------------------- */
+  /**
+   * Adds an item production term.
+   * Should be called strictly after CLIENT LOAD.
+   * @param {BlockGn} blk_gn
+   * @param {ItemGn} itm_gn
+   * @param {number} amt
+   * @param {number|unset} [p]
+   * @param {RecipeDictionaryData|unset} [data]
+   * @return {void}
+   */
   const addItmProdTerm = function(blk_gn, itm_gn, amt, p, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
@@ -137,8 +129,6 @@
     if(blk == null) return;
     let itm = MDL_content._ct(itm_gn, "rs");
     if(itm == null) return;
-    if(amt == null) amt = 0;
-    if(amt < 1) return;
     if(p == null) p = 1.0;
     if(p < 0.0001) return;
 
@@ -151,11 +141,15 @@
   exports.addItmProdTerm = addItmProdTerm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds a fluid production term to recipe dictionary.
-   * ---------------------------------------- */
+  /**
+   * Adds a fluid production term.
+   * Should be called strictly after CLIENT LOAD.
+   * @param {BlockGn} blk_gn
+   * @param {LiquidGn} liq_gn
+   * @param {number} amt
+   * @param {RecipeDictionaryData|unset} [data]
+   * @return {void}
+   */
   const addFldProdTerm = function(blk_gn, liq_gn, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
@@ -163,8 +157,6 @@
     if(blk == null) return;
     let liq = MDL_content._ct(liq_gn, "rs");
     if(liq == null) return;
-    if(amt == null) amt = 0.0;
-    if(amt < 0.0001) return;
 
     rcDict.prod.fluid[liq.id].push(
       blk,
@@ -175,11 +167,15 @@
   exports.addFldProdTerm = addFldProdTerm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds a payload production term to recipe dictionary.
-   * ---------------------------------------- */
+  /**
+   * Adds a payload production term.
+   * Should be called strictly after CLIENT LOAD.
+   * @param {BlockGn} blk_gn
+   * @param {string|Block|UnitType|null} ct_gn
+   * @param {number} amt
+   * @param {RecipeDictionaryData|unset} [data]
+   * @return {void}
+   */
   const addPayProdTerm = function(blk_gn, ct_gn, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
@@ -187,8 +183,6 @@
     if(blk == null) return;
     let ct = MDL_content._ct(ct_gn, null, true);
     if(ct == null) return;
-    if(amt == null) amt = 0;
-    if(amt < 0.0001) return;
 
     rcDict.prod[(ct instanceof Block ? "block" : "unit")][ct.id].push(
       blk,
@@ -199,11 +193,12 @@
   exports.addPayProdTerm = addPayProdTerm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets consumption amount of {ct_gn} by {blk_gn}.
-   * ---------------------------------------- */
+  /**
+   * Gets consumption amount of `ct_gn` by `blk_gn`.
+   * @param {ContentGn} ct_gn
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _consAmt = function(ct_gn, blk_gn) {
     let val = 0.0;
     let ct = MDL_content._ct(ct_gn, null, true);
@@ -231,11 +226,12 @@
   exports._consAmt = _consAmt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets production amount of {ct_gn} by {blk_gn}.
-   * ---------------------------------------- */
+  /**
+   * Gets production amount of `ct_gn` by `blk_gn`.
+   * @param {ContentGn} ct_gn
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _prodAmt = function(ct_gn, blk_gn) {
     let val = 0.0;
     let ct = MDL_content._ct(ct_gn, null, true);
@@ -263,11 +259,12 @@
   exports._prodAmt = _prodAmt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether {ct_gn} exists in {blk_gn}'s I/O entries.'
-   * ---------------------------------------- */
+  /**
+   * Whether `blk_gn` consumes or produces `ct_gn`.
+   * @param {ContentGn} ct_gn
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
   const _hasIo = function(ct_gn, blk_gn) {
     return _consAmt(ct_gn, blk_gn) > 0.0 || _prodAmt(ct_gn, blk_gn) > 0.0;
   }
@@ -275,33 +272,36 @@
   exports._hasIo = _hasIo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether anyone in {cts_gn} exists in {blk_gn}'s I/O entries.'
-   * ---------------------------------------- */
+  /**
+   * Whether `blk_gn` consumes or produces anyone in `cts_gn`.
+   * @param {Array<ContentGn>} cts_gn
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
   const _hasAnyIo =  function(cts_gn, blk_gn) {
     return cts_gn.some(ct_gn => _hasIo(ct_gn, blk_gn));
   };
   exports._hasAnyIo = _hasAnyIo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether everyone in {cts_gn} exists in {blk_gn}'s I/O entries.'
-   * ---------------------------------------- */
+  /**
+   * Whether `blk_gn` consumes or produces everyone in `cts_gn`.
+   * @param {Array<ContentGn>} cts_gn
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
   const _hasAllIo =  function(cts_gn, blk_gn) {
     return cts_gn.every(ct_gn => _hasIo(ct_gn, blk_gn));
   };
   exports._hasAllIo = _hasAllIo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array or 3-array of all blocks that consume the content.
-   * ---------------------------------------- */
+  /**
+   * Finds all blocks that consume `ct_gn`.
+   * @param {ContentGn} ct_gn
+   * @param {boolean|unset} [appendData] - If true, this method will return a 3-array instead. <br> <ROW>: blk, amt, data.
+   * @return {Array}
+   */
   const _consumers = function(ct_gn, appendData) {
     const arr = [];
 
@@ -336,11 +336,12 @@
   exports._consumers = _consumers;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array or 3-array of all blocks that produce the content.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _consumers} that finds producers instead.
+   * @param {ContentGn} ct_gn
+   * @param {boolean|unset} [appendData]
+   * @return {Array}
+   */
   const _producers = function(ct_gn, appendData) {
     const arr = [];
 
@@ -413,17 +414,6 @@
     rcDict.hasInit = true;
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Reads consumers and output lists of blocks to build the recipe dictionary.
-     * Methods used for each block class are defined in {DB_misc.db["recipe"]}.
-     * This only works for Java mods, since JS mods don't create classes.
-     * ----------------------------------------
-     * IMPORTANT:
-     *
-     * Use {Core.app.post} or {Time.run} for methods that modify recipe dictionary, after CLIENT LOAD.
-     * ---------------------------------------- */
     Core.app.post(() => Vars.content.blocks().each(blk => {
       let arr, cls, i, iCap;
 
@@ -436,7 +426,8 @@
           };
 
           let dictCaller = null;
-          i = 0, iCap = arr.iCap();
+          i = 0;
+          iCap = arr.iCap();
           while(i < iCap) {
             cls = arr[i];
             if(cons instanceof cls) {
@@ -448,7 +439,8 @@
         });
 
         let dictCaller = null;
-        i = 0, iCap = arr.iCap();
+        i = 0;
+        iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
           if(blk instanceof cls) {
@@ -462,7 +454,8 @@
       if(!DB_block.db["group"]["noRcDict"]["prod"].includes(blk.name)) {
         arr = DB_misc.db["recipe"]["produceReader"];
         let dictCaller = null;
-        i = 0, iCap = arr.iCap();
+        i = 0;
+        iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
           if(blk instanceof cls) {

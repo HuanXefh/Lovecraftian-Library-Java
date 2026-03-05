@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers new dialog flows.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,13 +20,13 @@
   /* <---------- import ----------> */
 
 
-  const CLS_dialogFlowBuilder = require("lovec/cls/util/builder/CLS_dialogFlowBuilder");
-
-
   /* <---------- base ----------> */
 
 
-  // Example dialog flow, type {lovec.mdl_ui._d_flow('lovec-test')} in console to see
+  /**
+   * Example dialog flow.
+   * Type `MDL_ui._d_flow("lovec-test")` in console to see.
+   */
   newDialogFlow(
     "lovec-test",
     new CLS_dialogFlowBuilder()

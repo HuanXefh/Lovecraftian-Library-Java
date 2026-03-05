@@ -27,12 +27,6 @@
   const INTF_A = require("lovec/temp/intf/INTF_BLK_fluidHeatAcceptor");
   const INTF_B = require("lovec/temp/intf/INTF_BLK_pressureProducer");
   const INTF_C = require("lovec/temp/intf/INTF_BLK_facilityBlock");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
 
 
   /* <---------- component ----------> */

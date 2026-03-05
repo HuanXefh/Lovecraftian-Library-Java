@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods for item module, unit item stack and loot units.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,24 +20,18 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-
-
-  const MDL_call = require("lovec/mdl/MDL_call");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_net = require("lovec/mdl/MDL_net");
-  const MDL_reaction = require("lovec/mdl/MDL_reaction");
-
-
   /* <---------- item module ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Generic {offload}.
-   * ---------------------------------------- */
+  /**
+   * More generic `offLoad`.
+   * @param {Building} b
+   * @param {Building} b_f
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {boolean|unset} [checkAccept]
+   * @return {boolean}
+   */
   const offload = function(b, b_f, itm, amt, checkAccept) {
     if(amt == null) amt = 1;
     if(amt < 1) return false;
@@ -56,11 +48,16 @@
   exports.offload = offload;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {offload} called on server side only for sync.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link offload} for server side.
+   * Use this method when random amount is involved!
+   * @param {Building} b
+   * @param {Building} b_f
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {boolean|unset} [checkAccept]
+   * @return {boolean}
+   */
   const offload_server = function(b, b_f, itm, amt, checkAccept) {
     if(amt == null) amt = 1;
     if(amt < 1) return false;
@@ -86,11 +83,16 @@
   exports.offload_server = offload_server;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds item to some building from {b_f}.
-   * ---------------------------------------- */
+  /**
+   * Adds item to some building from `b_f`.
+   * @param {Building} b
+   * @param {Building} b_f
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {number|unset} [p]
+   * @param {boolean|unset} [isForced]
+   * @return {boolean}
+   */
   const addItem = function(b, b_f, itm, amt, p, isForced) {
     if(b.items == null || (!isForced && !b.acceptItem(b_f, itm))) return false;
     if(amt == null) amt = 1;
@@ -105,11 +107,16 @@
   exports.addItem = addItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a building transfer items to {b_t}.
-   * ---------------------------------------- */
+  /**
+   * Transfers item from `b` to `b_t`.
+   * @param {Building} b
+   * @param {Building} b_t
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {number|unset} [p]
+   * @param {boolean|unset} [isForced]
+   * @return {boolean}
+   */
   const transItem = function(b, b_t, itm, amt, p, isForced) {
     if(b_t == null) return false;
     if(b.items == null || b_t.items == null || (!isForced && !b_t.acceptItem(b, itm))) return false;
@@ -129,11 +136,14 @@
   exports.transItem = transItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a building consume some items.
-   * ---------------------------------------- */
+  /**
+   * Lets a building consume item.
+   * @param {Building} b
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {number|unset} [p]
+   * @return {boolean}
+   */
   const consumeItem = function(b, itm, amt, p) {
     if(b.items == null) return false;
     if(amt == null) amt = 1;
@@ -150,11 +160,14 @@
   exports.consumeItem = consumeItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a building produce some items.
-   * ---------------------------------------- */
+  /**
+   * Lets a building produce item.
+   * @param {Building} b
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {number|unset} [p]
+   * @return {boolean}
+   */
   const produceItem = function(b, itm, amt, p) {
     if(b.items == null) return false;
     if(amt == null) amt = 1;
@@ -172,11 +185,13 @@
   exports.produceItem = produceItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Set the amount of item in {b}.
-   * ---------------------------------------- */
+  /**
+   * Sets amount of item in `b`.
+   * @param {Building} b
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @return {boolean}
+   */
   const setItem = function(b, itm, amt) {
     if(b.items == null) return false;
 
@@ -187,11 +202,11 @@
   exports.setItem = setItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Removes all items in {b}.
-   * ---------------------------------------- */
+  /**
+   * Removes all items in `b`.
+   * @param {Building} b
+   * @return {boolean}
+   */
   const clearItem = function(b) {
     Call.clearItems(b);
 
@@ -200,11 +215,14 @@
   exports.clearItem = clearItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a building take items from a loot unit.
-   * ---------------------------------------- */
+  /**
+   * Lets a building take a loot.
+   * @param {Building} b
+   * @param {Unit} loot
+   * @param {number|unset} [max]
+   * @param {boolean|unset} [isForced]
+   * @return {boolean}
+   */
   const takeLoot = function(b, loot, max, isForced) {
     if(!MDL_cond._isLoot(loot) || b.items == null) return false;
     let itm = loot.item();
@@ -223,31 +241,16 @@
   exports.takeLoot = takeLoot;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a building drop its item to spawn a loot.
-   * ---------------------------------------- */
-  const dropLoot = function(b, itm, max) {
-    if(b.items == null) return false;
-    if(max == null) max = Infinity;
-    let amtCur = b.items.get(itm);
-    let amtTrans = Math.min(amtCur, max);
-    if(amtTrans < 1) return false;
-
-    setItem(b, itm, amtCur - amtTrans);
-    MDL_call.spawnLoot_server(b.x, b.y, itm, amtTrans, b.block.size * Vars.tilesize * 0.7);
-
-    return true;
-  };
-  exports.dropLoot = dropLoot;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a building drop its item at (x, y) and spawn a loot there.
-   * ---------------------------------------- */
+  /**
+   * Lets a building drop its item and spawn a loot at (x, y).
+   * @param {number} x
+   * @param {number} y
+   * @param {Building} b
+   * @param {Item} itm
+   * @param {number|unset} [max]
+   * @param {boolean|unset} [ignoreLoot]
+   * @return {boolean}
+   */
   const dropLootAt = function(x, y, b, itm, max, ignoreLoot) {
     if(b.items == null) return false;
     if(max == null) max = Infinity;
@@ -255,7 +258,7 @@
     let amtTrans = Math.min(amtCur, max);
     if(amtTrans < 1) return false;
 
-    if(MDL_cond._posHasLoot(x, y) && !ignoreLoot) return false;
+    if(!ignoreLoot && MDL_cond._posHasLoot(x, y)) return false;
     setItem(b, itm, amtCur - amtTrans);
     MDL_call.spawnLoot_server(b.x, b.y, itm, amtTrans, b.block.size * Vars.tilesize * 0.7);
 
@@ -264,36 +267,22 @@
   exports.dropLootAt = dropLootAt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a building technically produce a loot.
-   * ---------------------------------------- */
-  const produceLoot = function(b, itm, amt) {
-    if(b.items == null) return false;
-    if(amt == null) amt = 0;
-    if(amt < 1) return false;
-
-    TRIGGER.itemProduce.fire(b, itm, amt);
-    b.produced(itm, amt);
-    MDL_call.spawnLoot_server(b.x, b.y, itm, amt, b.block.size * Vars.tilesize * 0.7);
-
-    return true;
-  };
-  exports.produceLoot = produceLoot;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a building produce a loot at (x, y).
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {Building} b
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {boolean|unset} [ignoreLoot]
+   * @return {boolean}
+   */
   const produceLootAt = function(x, y, b, itm, amt, ignoreLoot) {
     if(b.items == null) return false;
     if(amt == null) amt = 0;
     if(amt < 1) return false;
 
-    if(MDL_cond._posHasLoot(x, y) && !ignoreLoot) return false;
+    if(!ignoreLoot && MDL_cond._posHasLoot(x, y)) return false;
     TRIGGER.itemProduce.fire(b, itm, amt);
     b.produced(itm, amt);
     MDL_call.spawnLoot_server(x, y, itm, amt, 0.0);
@@ -303,12 +292,16 @@
   exports.produceLootAt = produceLootAt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a building convert the content of a loot.
    * This resets lifetime by default.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @param {Unit} loot
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {boolean|unset} [noReset]
+   * @return {boolean}
+   */
   const convertLoot = function(b, loot, itm, amt, noReset) {
     if(!MDL_cond._isLoot(loot)) return false;
     if(amt == null) amt = 0;
@@ -331,11 +324,11 @@
   exports.convertLoot = convertLoot;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Destroys a loot unit.
-   * ---------------------------------------- */
+   * @param {Unit} loot
+   * @return {boolean}
+   */
   const destroyLoot = function(loot) {
     if(!MDL_cond._isLoot(loot)) return false;
 
@@ -347,11 +340,11 @@
   exports.destroyLoot = destroyLoot;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {destroyLoot} for sync.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link destroyLoot} for sync.
+   * @param {Unit} loot
+   * @return {boolean}
+   */
   const destroyLoot_global = function(loot) {
     if(!MDL_cond._isLoot(loot)) return false;
 
@@ -376,11 +369,14 @@
   /* <---------- unit item stack ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds items to some unit. Will overwrite previous items the unit carries.
-   * ---------------------------------------- */
+  /**
+   * Adds item to some unit. Will overwrite previous item.
+   * @param {Unit} unit
+   * @param {Item} itm
+   * @param {number|unset} [amt]
+   * @param {number|unset} [p]
+   * @return {boolean}
+   */
   const addUnitItem = function(unit, itm, amt, p) {
     if(amt == null) amt = 1;
     if(amt < 1) return false;
@@ -395,12 +391,17 @@
   exports.addUnitItem = addUnitItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used for unit mining.
-   * ---------------------------------------- */
+  /**
+   * Adds item to some unit by item mining.
+   * @param {Unit} unit
+   * @param {number} x
+   * @param {number} y
+   * @param {Item} itm
+   * @return {boolean}
+   */
   const addUnitItem_mine = function(unit, x, y, itm) {
+    if(!unit.acceptsItem(itm)) return false;
+
     Call.transferItemToUnit(itm, x, y, unit);
 
     return true;
@@ -408,11 +409,14 @@
   exports.addUnitItem_mine = addUnitItem_mine;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a unit transfer its items to another unit.
-   * ---------------------------------------- */
+  /**
+   * Transfers item from `unit` to `unit_t`.
+   * @param {Unit} unit
+   * @param {Unit} unit_t
+   * @param {number|unset} [amt]
+   * @param {number|unset} [p]
+   * @return {boolean}
+   */
   const transUnitItem = function(unit, unit_t, amt, p) {
     if(!unit_t.acceptsItem(unit.item())) return false;
     if(amt == null) amt = 1;
@@ -429,12 +433,14 @@
   exports.transUnitItem = transUnitItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a unit take items from a building, the first item by default.
-   * No need for effect.
-   * ---------------------------------------- */
+  /**
+   * Lets a unit take item from a building, the first item by default.
+   * @param {Unit} unit
+   * @param {Building} b
+   * @param {Item|unset} [itm]
+   * @param {number|unset} [max]
+   * @return {boolean}
+   */
   const takeBuildItem = function(unit, b, itm, max) {
     if(b.items == null) return false;
     if(itm == null) itm = b.items.first();
@@ -448,12 +454,14 @@
   exports.takeBuildItem = takeBuildItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a unit drop its items to a building.
-   * No need for effect.
-   * ---------------------------------------- */
+  /**
+   * Lets a unit drop its item to a building.
+   * @param {Unit} unit
+   * @param {Building} b
+   * @param {number|unset} [max]
+   * @param {boolean|unset} [alwaysClearStack] - If true, the excess will be emptied.
+   * @return {boolean}
+   */
   const dropBuildItem = function(unit, b, max, alwaysClearStack) {
     if(b.items == null || !b.acceptItem(b, unit.item())) return false;
     if(max == null) max = Infinity;
@@ -468,11 +476,13 @@
   exports.dropBuildItem = dropBuildItem;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a unit take items from a loot unit.
-   * ---------------------------------------- */
+  /**
+   * Lets a unit take item from a loot.
+   * @param {Unit} unit
+   * @param {Unit} loot
+   * @param {number|unset} [max]
+   * @return {boolean}
+   */
   const takeUnitLoot = function(unit, loot, max) {
     if(!MDL_cond._isLoot(loot)) return false;
     let itm = loot.item();
@@ -492,11 +502,13 @@
   exports.takeUnitLoot = takeUnitLoot;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {takeUnitLoot} for sync.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link takeUnitLoot} for sync.
+   * @param {Unit} unit
+   * @param {Unit} loot
+   * @param {number|unset} [max]
+   * @return {boolean}
+   */
   const takeUnitLoot_global = function(unit, loot, max) {
     if(!MDL_cond._isLoot(loot)) return false;
 
@@ -520,11 +532,12 @@
   exports.takeUnitLoot_global = takeUnitLoot_global;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a unit drop its item to spawn a loot.
-   * ---------------------------------------- */
+   * @param {Unit} unit
+   * @param {number|unset} [max]
+   * @return {boolean}
+   */
   const dropUnitLoot = function(unit, max) {
     if(max == null) max = Infinity;
     let itm = unit.item();

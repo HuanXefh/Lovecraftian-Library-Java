@@ -26,11 +26,6 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_furnaceBlock");
 
 
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_recipe = require("lovec/mdl/MDL_recipe");
-
-
   /* <---------- component ----------> */
 
 

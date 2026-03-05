@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to sprites and pixmaps (or pixmap regions sometimes).
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,72 +20,69 @@
   /* <---------- import ----------> */
 
 
-  const MDL_color = require("lovec/mdl/MDL_color");
-
-
   /* <---------- region ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the default complete region for a block.
-   * ---------------------------------------- */
+  /**
+   * Gets default full region of some block.
+   * @param {BlockGn} blk_gn
+   * @param {boolean|unset} [shouldReturnName]
+   * @return {TextureRegion|string}
+   */
   const _regBlk = function(blk_gn, shouldReturnName) {
-    if(Vars.headless) return shouldReturnName ? "" : null;
+    if(Vars.headless) return shouldReturnName ? "" : ARC_AIR.reg;
 
-    let blk = global.lovecUtil.fun._ct(blk_gn, "block");
-    if(blk == null) return null;
+    let blk = findContent(blk_gn);
+    if(blk == null) return ARC_AIR.reg;
+    if(!shouldReturnName) return blk.fullIcon;
 
-    if(!shouldReturnName) {
-      return blk.fullIcon;
-    } else {
-      return Core.atlas.has(blk.name + "-full") ?
-        blk.name + "-full" :
-        blk.name + "-icon";
-    };
-  };
+    return Core.atlas.has(blk.name + "-full") ?
+      blk.name + "-full" :
+      blk.name + "-icon";
+  }
+  .setCache();
   exports._regBlk = _regBlk;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the block heat region for the inputted size.
-   * ---------------------------------------- */
+  /**
+   * Gets heat region for a size, usually used as default heat region for blocks.
+   * @param {number} size
+   * @return {TextureRegion}
+   */
   const _regHeat = function(size) {
-    return Core.atlas.find("lovec-ast-block-heat" + Math.round(size));
+    return Vars.headless ? ARC_AIR.reg : Core.atlas.find("lovec-ast-block-heat" + Math.round(size));
   }
-  .setAnno("non-headless");
+  .setCache();
   exports._regHeat = _regHeat;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a random region from variant regions, based on tile position.
-   * ---------------------------------------- */
+  /**
+   * Gets a random region from a block's variant regions based on tile position.
+   * @param {BlockGn} blk_gn
+   * @param {Tile} t
+   * @param {number|unset} [off]
+   * @return {TextureRegion}
+   */
   const _regVari = function(blk_gn, t, off) {
-    let blk = global.lovec.mdl_content._ct(blk_gn, "block");
-    if(blk == null) return null;
-
+    let blk = MDL_content._ct(blk_gn, "block");
+    if(blk == null) return ARC_AIR.reg;
     if(blk.variants === 0) return blk.region;
 
     if(off == null) off = 0;
     return blk.variantRegions[Math.floor(Mathf.randomSeed(t.pos() + off, 0.0, Mathf.maxZero(blk.variantRegions.length - 1) + 0.9999))];
   }
-  .setAnno("non-headless");
+  .setAnno("non-headless", null, ARC_AIR.reg);
   exports._regVari = _regVari;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a the base region of a turret.
-   * ---------------------------------------- */
+  /**
+   * Gets base region of a turret.
+   * @param {BlockGn} blk_gn
+   * @return {TextureRegion}
+   */
   const _regTurBase = function(blk_gn) {
-    let blk = global.lovec.mdl_content._ct(blk_gn, "block");
-    if(blk == null) return null;
+    let blk = MDL_content._ct(blk_gn, "block");
+    if(blk == null) return ARC_AIR.reg;
     if(blk.baseRegion != null) return blk.baseRegion;
 
     if(blk instanceof Turret) {
@@ -99,21 +94,22 @@
       };
     };
 
-    return null;
+    return ARC_AIR.reg;
   }
-  .setAnno("non-headless");
+  .setCache()
+  .setAnno("non-headless", null, ARC_AIR.reg);
   exports._regTurBase = _regTurBase;
 
 
   /* random overlay */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns a function that gets an array of random overlay regions.
-   * See {DB_env.db["map"]["randRegTag"]}.
-   * ---------------------------------------- */
+  /**
+   * Converts texture name to random overlay region getter.
+   * See {@link DB_env}.
+   * @param {string} nm
+   * @return {function(): TextureRegion[]}
+   */
   const _randRegsGetter = function(nm) {
     return function() {
       const arr = [];
@@ -134,19 +130,18 @@
   /* <---------- pixmap ----------> */
 
 
-  /* ----------------------------------------
-   * IMPORTANT:
-   *
-   * In Lovec {pix} refers to both {Pixmap} and {PixmapRegion}.
-   * The only thing you and I need to remember is, don't use {pix.each} which can lead to crash.
-   * ---------------------------------------- */
+  /**
+   * <IMPORTANT>: Do not use `each` method on {@link PixmapGn}!
+   */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Draws pixels from {pixTop} on top of {pixBot}, ignores transparent pixels.
-   * ---------------------------------------- */
+  /**
+   * Draws a pixmap over another pixmap, ignores transparent pixels.
+   * @param {PixmapGn} pixBot
+   * @param {PixmapGn} pixTop
+   * @param {number|unset} [aThr] - Alpha thresh below which top pixel is ignored.
+   * @return {Pixmap}
+   */
   const _pix_stack = function(pixBot, pixTop, aThr) {
     let
       pix = new Pixmap(pixBot.width, pixBot.height),
@@ -173,13 +168,14 @@
   exports._pix_stack = _pix_stack;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Draws a smaller icon of {ct_gn} on top of {pixBase}.
-   * ---------------------------------------- */
+  /**
+   * Draws a smaller icon of some content over a pixmap in the bottom right corner.
+   * @param {PixmapGn} pixBase
+   * @param {ContentGn} ct_gn
+   * @return {Pixmap}
+   */
   const _pix_ctStack = function(pixBase, ct_gn) {
-    let ct = global.lovecUtil.fun._ct(ct_gn);
+    let ct = findContent(ct_gn);
     if(ct == null) ERROR_HANDLER.throw("noContentFound", ct_gn);
     let
       pixCt = Core.atlas.getPixmap(ct instanceof Block ? _regBlk(ct) : ct.fullIcon),
@@ -194,11 +190,12 @@
   exports._pix_ctStack = _pix_ctStack;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Copies colors from {pixRef}, and recolor {pixBase} which is from a grayscale sprite.
-   * ---------------------------------------- */
+  /**
+   * Copies colors from a reference pixmap, and returns recolored base pixmap.
+   * @param {PixmapGn} pixBase - Expected to be grayscale.
+   * @param {PixmapGn} pixRef
+   * @return {Pixmap}
+   */
   const _pix_gsColor = function(pixBase, pixRef) {
     let pix = new Pixmap(pixBase.width, pixBase.height);
     let
@@ -237,14 +234,40 @@
   exports._pix_gsColor = _pix_gsColor;
 
 
-  const comp_createIcons_ctTag = function(ct, packer, ctUnd_gn, ctOv_gn, suffix) {
-    let ctUnd = global.lovecUtil.fun._ct(ctUnd_gn);
-    if(ctUnd == null) ERROR_HANDLER.throw("noContentFound", ctUnd_gn);
-    let ctOv = global.lovecUtil.fun._ct(ctOv_gn);
-    if(ctOv == null) ERROR_HANDLER.throw("noContentFound", ctOv_gn);
+  /* <---------- icon packing ----------> */
 
-    let pix = _pix_ctStack(Core.atlas.getPixmap(ctUnd.name), ctOv);
-    packer.add(MultiPacker.PageType.main, ct.name + suffix, pix);
+
+  /**
+   * Base for methods that packs new icon.
+   * New texture regions will be named as "<nmCt>-<suffix>".
+   * @param {UnlockableContent} ct
+   * @param {MultiPacker} packer
+   * @param {string} suffix
+   * @param {function(): Pixmap} pixGetter
+   * @param {MultiPacker.PageType|unset} [pageType]
+   */
+  const _ip_base = function(ct, packer, suffix, pixGetter, pageType) {
+    let pix = pixGetter();
+    packer.add(tryVal(pageType, MultiPacker.PageType.main), ct.name + suffix, pix);
     pix.dispose();
   };
-  exports.comp_createIcons_ctTag = comp_createIcons_ctTag;
+  exports._ip_base = _ip_base;
+
+
+  /**
+   * Creates a content icon tag sprite for some content.
+   * @param {UnlockableContent} ct
+   * @param {MultiPacker} packer
+   * @param {string} suffix
+   * @param {ContentGn} ctUnd_gn
+   * @param {ContentGn} ctOv_gn
+   */
+  const _ip_ctTg = function(ct, packer, suffix, ctUnd_gn, ctOv_gn) {
+    let ctUnd = findContent(ctUnd_gn);
+    if(ctUnd == null) ERROR_HANDLER.throw("noContentFound", ctUnd_gn);
+    let ctOv = findContent(ctOv_gn);
+    if(ctOv == null) ERROR_HANDLER.throw("noContentFound", ctOv_gn);
+
+    _ip_base(ct, packer, suffix, () => _pix_ctStack(Core.atlas.getPixmap(ctUnd.name), ctOv));
+  };
+  exports._ip_ctTg = _ip_ctTg;

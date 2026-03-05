@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Utility global methods.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,35 +20,47 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- internal ----------> */
 
 
+  /** @global */
   TRIGGER_BACKGROUND = false;
+  /** @global */
   TRIGGER_MUSIC = false;
+  /** @global */
+  TRIGGERS_IMAGE = [
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+    false, false, false, false, false, false, false, false, false, false,
+  ];
 
 
   /* <---------- dependency ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a version string to an array of integers.
-   * This implies that the string should not contain letters.
-   * ---------------------------------------- */
+  /**
+   * Converts a version string to an array of numbers.
+   * No letter allowed.
+   * @global
+   * @param {string} verStr
+   * @return {Array<number>}
+   * @example
+   * verStrToInts("1.12.1");                // Returns [1, 12, 1]
+   */
   verStrToInts = function(verStr) {
     const arr = [];
 
     let tmp = "", l, i, iCap;
 
-    i = 0, iCap = verStr.length;
+    i = 0;
+    iCap = verStr.length;
     while(i < iCap) {
       l = verStr[i];
       if(l === ".") {
@@ -63,7 +73,8 @@
     };
     arr.push(tmp);
 
-    i = 0, iCap = arr.length;
+    i = 0;
+    iCap = arr.length;
     while(i < iCap) {
       arr[i] = parseInt(arr[i], 10);
       if(isNaN(arr[i])) {
@@ -76,12 +87,22 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
+  /**
+   * 1. Checks whether a version string is newer or equal to given version string.
+   * <br> 2. Whether all version requirements are met.
+   * <br> <ARGS>: verStrReq, verStrCur.
+   * <br> <ARGS>: nmMod, minVerArr
+   * <br> <ROW-minVerArr>: nmMod, verStrReq
+   * @return {boolean}
+   * @example
+   * // Check version requirement
+   * checkVersion("154", "146");                // Returns false
    *
-   * 1. Whether {verStrCur} is newer or equal to {verStrReq}.
-   * 2. Whether all version requirements defined in {minVerArr} are met.
-   * ---------------------------------------- */
+   * // Check dependency
+   * checkVersion("test-mod", [
+   *   "lovec", "101",
+   * ]);
+   */
   checkVersion = newMultiFunction(
     ["string", "string"], function(verStrReq, verStrCur) {
       let
@@ -135,13 +156,16 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Runs {scr} only when all required mods are found.
-   * Used to optionally load something.
-   * By default this will show error message about missing mods, set {suppressWarning} to {true} if you wish it skip quietly.
-   * ---------------------------------------- */
+  /**
+   * Runs `scr` only when all required mods are found.
+   * Used mostly to load something optionally.
+   * @global
+   * @param {string} nmModCur
+   * @param {string|Array<string>} nmMods_p
+   * @param {function(): void} scr
+   * @param {boolean|unset} [suppressWarning] - If true, error message about missing mods won't be shown.
+   * @return {void}
+   */
   runWithDependency = function(nmModCur, nmMods_p, scr, suppressWarning) {
     let
       arr1 = (nmMods_p instanceof Array ? nmMods_p : [nmMods_p]),
@@ -165,11 +189,14 @@
   /* <---------- format array ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Checks if the given name has been registered, and throw an error if it does.
-   * ---------------------------------------- */
+  /**
+   * Checks if the given name has already been registered in `nms`.
+   * @global
+   * @param {string} nm
+   * @param {Array<string>} nms
+   * @param {string|unset} [tag]
+   * @return {string}
+   */
   registerUniqueName = function(nm, nms, tag) {
     if(nm == null || nms.includes(nm)) ERROR_HANDLER.throw("notUniqueName", nm, tryVal(tag, "unknown"));
     nms.push(nm);
@@ -178,11 +205,14 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to read any 2-array of classes and functions.
-   * ---------------------------------------- */
+  /**
+   * Used to read 2-arrays that map classes to functions.
+   * @global
+   * @param {Array} arr - <ROW>: cls, fun.
+   * @param {Object} ins
+   * @param {any} [def]
+   * @return {Function}
+   */
   readClassFunMap = function(arr, ins, def) {
     let fun = tryVal(def, Function.air);
     let i = 0, iCap = arr.iCap();
@@ -198,6 +228,10 @@
   /* <---------- debug ----------> */
 
 
+  /**
+   * Collection of log types.
+   * @global
+   */
   LOG_HANDLER = {
 
 
@@ -206,6 +240,13 @@
     __ERR_MAP__: new ObjectMap(),
 
 
+    /**
+     * Registers a new log type.
+     * @param {string} type - <VALS>: "i", "w", "e".
+     * @param {string} nm
+     * @param {function(): string} strGetter
+     * @return {void}
+     */
     add(type, nm, strGetter) {
       switch(type) {
         case "i" :
@@ -223,6 +264,11 @@
     },
 
 
+    /**
+     * Finds log type and string getter for given name.
+     * @param {string} nm
+     * @return {[string, function(): string]}
+     */
     find(nm) {
       let strGetter;
       strGetter = this.__INFO_MAP__.get(nm);
@@ -236,6 +282,12 @@
     },
 
 
+    /**
+     * Prints something in the console.
+     * <br> <ARGS>: nm, arg1, arg2, arg3, ...
+     * @param {string} nm
+     * @return {void}
+     */
     log(nm) {
       let tup = this.find(nm);
       if(tup == null) throw new Error("Unregistered log name: " + nm);
@@ -259,23 +311,32 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Collection of some errors that may frequently occur.
-   * Errors are registered in {TP_error}.
-   * ---------------------------------------- */
+  /**
+   * Collection of errors, see {@link TP_error}.
+   * @global
+   */
   ERROR_HANDLER = {
 
 
     __ERR_MAP__: new ObjectMap(),
 
 
+    /**
+     * Registers a new error.
+     * @param {string} nm
+     * @param {string} str
+     */
     add(nm, str) {
       this.__ERR_MAP__.put(nm, str);
     },
 
 
+    /**
+     * Throws some error found by name.
+     * <br> <ARGS>: nm, arg1, arg2, arg3, ...
+     * @param {string} nm
+     * @return {void}
+     */
     throw(nm) {
       let str = this.__ERR_MAP__.get(nm);
       if(str == null) return;
@@ -294,38 +355,29 @@
   /* <---------- game ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to control some in-game HUD related things.
-   * ---------------------------------------- */
+  /**
+   * Collection of methods that control in-game HUD.
+   * @global
+   */
   HUD_HANDLER = {
 
 
-    placeFrag: {
-
-
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Used for blocks that can have different placement HUD layouts for buildings, e.g. multi-crafters.
-       * ---------------------------------------- */
-      forceUpdate() {
-        Reflect.set(PlacementFragment, Vars.ui.hudfrag.blockfrag, "lastDisplayState", null);
-      },
-
-
+    /**
+     * Used for blocks with dynamic building info layout for their buildings, e.g. multi-crafters.
+     * @return {void}
+     */
+    forceUpdateBlockFrag() {
+      Reflect.set(PlacementFragment, Vars.ui.hudfrag.blockfrag, "lastDisplayState", null);
     },
 
 
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used to mute vanilla sound control and play custom music.
-   * ---------------------------------------- */
+   * @global
+   */
   MUSIC_HANDLER = {
 
 
@@ -334,6 +386,9 @@
     isActive: false,
 
 
+    /**
+     * @return {void}
+     */
     init() {
       Events.run(Trigger.update, () => {
         this.update();
@@ -341,6 +396,9 @@
     },
 
 
+    /**
+     * @return {void}
+     */
     update() {
       if(this.isActive) {
         Vars.control.sound.stop();
@@ -360,7 +418,14 @@
     },
 
 
-    setMusic(mus, endGetter, pauseGetter) {
+    /**
+     * Sets current music and temporarily disables vanilla sound control.
+     * @param {MusicGn} mus_gn
+     * @param {(function(): boolean)|unset} endGetter - The music will stop as soon as this function returns true.
+     * @param {(function(): boolean)|unset} pauseGetter - The music will be paused when this function returns true.
+     */
+    setMusic(mus_gn, endGetter, pauseGetter) {
+      let mus = fetchMusic(mus_gn);
       if(mus == null) {
         this.stop();
         return;
@@ -378,80 +443,14 @@
     },
 
 
+    /**
+     * Stops custom music and lets vanilla sound control take over.
+     * @return {void}
+     */
     stop() {
       this.isActive = false;
       this.endGetter = null;
       this.pauseGetter = null;
-    },
-
-
-  };
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to set position-related config for buildings.
-   * ---------------------------------------- */
-  POS_CONFIG_HANDLER = {
-
-
-    isReady: false,
-    __INT_QUEUE__: [],
-    __PON2_QUEUE__: [],
-    __VEC2_QUEUE__: [],
-
-
-    init() {
-      Events.run(ClientLoadEvent, () => {
-        Core.app.post(() => {
-          global.lovec.mdl_event._c_onTileTap(t => this.trigger(t), 12050505);
-        });
-      });
-    },
-
-
-    add(b, posType) {
-      switch(posType) {
-        case "int":
-          this.__INT_QUEUE__.push(b);
-          break;
-        case "pon2":
-          this.__PON2_QUEUE__.push(b);
-          break;
-        case "vec2":
-          this.__VEC2_QUEUE__.push(b);
-          break;
-        default :
-          throw new Error("Unknown position type: " + posType);
-      };
-      this.isReady = true;
-    },
-
-
-    remove(b) {
-      this.__INT_QUEUE__.pull(b);
-      this.__PON2_QUEUE__.pull(b);
-      this.__VEC2_QUEUE__.pull(b);
-      this.isReady = this.__INT_QUEUE__.length > 0 && this.__PON2_QUEUE__.length > 0 && this.__VEC2_QUEUE__.length > 0;
-    },
-
-
-    clear() {
-      this.__INT_QUEUE__.clear();
-      this.__PON2_QUEUE__.clear();
-      this.__VEC2_QUEUE__.clear();
-      this.isReady = false;
-    },
-
-
-    trigger(t) {
-      if(!this.isReady) return;
-
-      this.__INT_QUEUE__.forEachFast(b => b.configure(t.pos()));
-      this.__PON2_QUEUE__.forEachFast(b => b.configure(Tmp.p1.set(t.x, t.y)));
-      this.__VEC2_QUEUE__.forEachFast(b => b.configure(Tmp.v1.set(t.worldx(), t.worldy())));
-      this.clear();
     },
 
 

@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Intermediate: slurry.
    * Fluid with insolubles as the products.
    * ---------------------------------------- */
@@ -25,9 +25,6 @@
 
 
   const PARENT = require("lovec/temp/rs/RS_solutionFluid");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
 
 
   /* <---------- component ----------> */

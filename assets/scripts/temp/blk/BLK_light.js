@@ -26,9 +26,6 @@
   const PARENT = require("lovec/temp/blk/BLK_baseFactory");
 
 
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-
-
   /* <---------- component ----------> */
 
 

@@ -27,14 +27,11 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_dynamicAttributeBlock");
 
 
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 
   function comp_init(blk) {
-    if(blk.attrRsMap == null) ERROR_HANDLER.throw("nullArgument", "attrRsMap");
+    if(blk.attrRsArr == null) ERROR_HANDLER.throw("nullArgument", "attrRsArr");
   };
 
 

@@ -23,12 +23,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemGate");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
 
 
   /* <---------- component ----------> */

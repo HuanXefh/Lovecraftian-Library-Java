@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Utility methods.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,35 +20,27 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- object ----------> */
 
 
   var cls = Object;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a random key in {obj}.
-   * ---------------------------------------- */
+  /**
+   * Gets a random key in `obj`.
+   * @param {Object} obj
+   * @return {string}
+   */
   cls.randKey = function(obj) {
     return Object.keys(obj).readRand();
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts array to object.
-   * This also works on function arguments.
-   * ---------------------------------------- */
+  /**
+   * Converts an array or argument object to object.
+   * @param {Arguments} arr
+   * @return {Object}
+   */
   cls.arrToObj = function(arr) {
     const obj = {};
 
@@ -64,11 +54,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts object to array (loses all keys).
-   * ---------------------------------------- */
+  /**
+   * Converts an object to array (loses all keys).
+   * @param {Object} obj
+   * @return {Array}
+   */
   cls.objToArr = function(obj) {
     const arr = [];
 
@@ -82,11 +72,11 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts object to 2-array.
-   * ---------------------------------------- */
+  /**
+   * Converts an object to 2-array (keeps all keys).
+   * @param {Object} obj
+   * @return {Array}
+   */
   cls.objTo2Arr = function(obj) {
     const arr = [];
     if(obj == null) return arr;
@@ -102,13 +92,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: obj1, obj2, obj3, ...
-   * Simply merges a series of objects.
+  /**
+   * Merges a series of objects.
    * Properties defined later will overwrite the ones defined before.
-   * ---------------------------------------- */
+   * <br> <ARGS>: obj1, obj2, obj3, ...
+   * @return {Object}
+   */
   cls.mergeObj = function() {
     const obj0 = {};
 
@@ -122,15 +111,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: obj1, obj2, obj3, ...
-   * A variant of {mergeObj} that tries merging methods.
-   * Mostly used for modification of objects built by content templates.
-   *
-   * {addSuper} is used to call {super$xxx} on rare occassions.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Object.mergeObj} that mixes methods.
+   * Instead of `noSuper`, `addSuper` is used to call `super$xxx`.
+   * <br> <ARGS>: obj1, obj2, obj3, ...
+   * @return {Object}
+   */
   cls.mergeObjMixin = function() {
     const obj0 = {};
 
@@ -221,14 +207,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Merges two DB objects.
-   * Only objects and arrays should be present in the object.
-   *
-   * I have no idea how to simply this.
-   * ---------------------------------------- */
+   * @param {Object} obj0
+   * @param {Object} obj
+   * @return {Object}
+   */
   cls.mergeObjDB = function thisFun(obj0, obj) {
     Object._it(obj0, (key1, val1) => {
       // Depth: 0
@@ -237,19 +221,19 @@
         Object._it(obj0[key1], (key2, val2) => {
           // Depth: 1
           val2 instanceof Array ?
-            thisFun.applyMerge(key2, Object.dir(obj, [key1], Object.air), val2) :
+            thisFun.applyMerge(key2, Object.findByKeys(obj, [key1], Object.air), val2) :
             Object._it(obj0[key1][key2], (key3, val3) => {
               // Depth: 2
               val3 instanceof Array ?
-                thisFun.applyMerge(key3, Object.dir(obj, [key1, key2], Object.air), val3) :
+                thisFun.applyMerge(key3, Object.findByKeys(obj, [key1, key2], Object.air), val3) :
                 Object._it(obj0[key1][key2][key3], (key4, val4) => {
                   // Depth: 3
                   val4 instanceof Array ?
-                    thisFun.applyMerge(key4, Object.dir(obj, [key1, key2, key3], Object.air), val4) :
+                    thisFun.applyMerge(key4, Object.findByKeys(obj, [key1, key2, key3], Object.air), val4) :
                     Object._it(obj0[key1][key2][key3][key4], (key5, val5) => {
                       // Depth: 4
                       val5 instanceof Array ?
-                        thisFun.applyMerge(key5, Object.dir(obj, [key1, key2, key3, key4], Object.air), val5) :
+                        thisFun.applyMerge(key5, Object.findByKeys(obj, [key1, key2, key3, key4], Object.air), val5) :
                         Log.warn("[LOVEC] Cannot fully merge an object due to " + "too many layers".color(Pal.remove) + ".");
                     });
                 });
@@ -257,6 +241,7 @@
         });
     });
 
+    return obj0;
   }
   .setProp({
     applyMerge: (key, objTg, arrTg) => {
@@ -268,12 +253,14 @@
   });
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Merges all found DB files with the same name, in "scripts/db".
+  /**
+   * Merges all found DB files with the same name in "scripts/db" folder.
    * Cross-mod.
-   * ---------------------------------------- */
+   * @param {Object} dbObj
+   * @param {string} nmFi
+   * @param {string|unset} [nmModCur]
+   * @return {void}
+   */
   cls.mergeDB = function(dbObj, nmFi, nmModCur) {
     if(nmModCur == null) nmModCur = "lovec";
 
@@ -308,11 +295,11 @@
   var ptp = Number.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a tile coordination to world coordination.
-   * ---------------------------------------- */
+  /**
+   * Converts a tile coordinate to world coordinate.
+   * @param {number|unset} [size]
+   * @return {number}
+   */
   ptp.toFCoord = function(size) {
     return size == null ?
       LCFormat.toFCoord(this) :
@@ -320,23 +307,32 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a world coordination to tile coordination.
-   * ---------------------------------------- */
+  /**
+   * Converts a world coordinate to tile coordinate.
+   * @return {number}
+   */
   ptp.toIntCoord = function() {
     return LCFormat.toIntCoord(this);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a rectangular range parameter to full width of the rectangle.
-   * ---------------------------------------- */
+  /**
+   * Converts a rectangular range parameter to full width.
+   * @param {number} size
+   * @return {number}
+   */
   ptp.toRectW = function(size) {
-    return (this * 2.0 + size) * Vars.tilesize;
+    return LCFormat.calcRectW(this, size);
+  };
+
+
+  /**
+   * Converts a rectangular range parameter to half width.
+   * @param {number} size
+   * @return {number}
+   */
+  ptp.toRectHW = function(size) {
+    return LCFormat.calcRectHW(this, size);
   };
 
 
@@ -346,12 +342,11 @@
   var ptp = Array.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether {obj} is an instance of at least one class from this array.
-   * Used only for class arrays.
-   * ---------------------------------------- */
+  /**
+   * Whether `obj` is instance of any class from this array.
+   * @param {Object} obj
+   * @return {boolean}
+   */
   ptp.hasIns = function(obj) {
     return this.some(cls => obj instanceof cls);
   };

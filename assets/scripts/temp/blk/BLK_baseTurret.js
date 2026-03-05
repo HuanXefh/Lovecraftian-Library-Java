@@ -27,9 +27,6 @@
   const PARENT = require("lovec/temp/blk/BLK_baseBlock");
 
 
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
   /* <---------- component ----------> */
 
 

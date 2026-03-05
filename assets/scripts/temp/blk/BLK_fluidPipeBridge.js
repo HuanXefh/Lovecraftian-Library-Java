@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Serpulo liquid bridge.
    * ---------------------------------------- */
 
@@ -25,10 +25,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseFluidDistributor");
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureBlock");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MDL_pos = require("lovec/mdl/MDL_pos");
 
 
   /* <---------- component ----------> */

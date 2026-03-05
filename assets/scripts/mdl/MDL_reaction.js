@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods to process reactions (mostly chemical) between resource.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -20,14 +18,6 @@
 
 
   /* <---------- import ----------> */
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_net = require("lovec/mdl/MDL_net");
-
-
-  const DB_reaction = require("lovec/db/DB_reaction");
 
 
   /* <---------- auxiliay ----------> */
@@ -42,18 +32,18 @@
   exports.reactionCache = reactionCache;
 
 
-  const grpBitsMapTup = (function() {
+  const grpBitsetMapTup = (function() {
     const itmMap = new ObjectMap();
     const liqMap = new ObjectMap();
 
     MDL_event._c_onLoad(() => {
       Time.run(5.0, () => {
         DB_reaction.db["groupCond"].forEachRow(2, (grp, boolF) => {
-          let itmBits = new Bits(), liqBits = new Bits();
-          Vars.content.items().each(boolF, rs => itmBits.set(rs.id));
-          Vars.content.liquids().each(boolF, rs => liqBits.set(rs.id));
-          itmMap.put(grp, itmBits);
-          liqMap.put(grp, liqBits);
+          let itmBitset = new Bits(), liqBitset = new Bits();
+          Vars.content.items().each(boolF, rs => itmBitset.set(rs.id));
+          Vars.content.liquids().each(boolF, rs => liqBitset.set(rs.id));
+          itmMap.put(grp, itmBitset);
+          liqMap.put(grp, liqBitset);
         });
       });
     });
@@ -65,18 +55,19 @@
   /* <---------- parameter ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list of reaction groups.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of reaction groups for some reactant.
+   * @param {string|UnlockableContent} reac
+   * @param {Array|unset} [contArr]
+   * @return {Array<string>}
+   */
   const _reacGrps = function(reac, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
 
     !(reac instanceof UnlockableContent) ?
       arr.push(reac) :
-      grpBitsMapTup[(reac instanceof Item ? 0 : 1)].each((grp, bits) => {
-        if(bits.get(reac.id)) arr.push(grp);
+      grpBitsetMapTup[(reac instanceof Item ? 0 : 1)].each((grp, bitset) => {
+        if(bitset.get(reac.id)) arr.push(grp);
       });
 
     return arr;
@@ -84,12 +75,12 @@
   exports._reacGrps = _reacGrps;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Reads possible reactions between {reac1} and {reac2}.
-   * The final result is an array with arrays of reaction type and parameter.
-   * ---------------------------------------- */
+  /**
+   * Reads possible reactions between `reac1` and `reac2`.
+   * @param {string|UnlockableContent} reac1
+   * @param {string|UnlockableContent} reac2
+   * @return {Array} <ROW>: reacType, paramObj.
+   */
   const _reactions = function thisFun(reac1, reac2) {
     const arr = [];
 
@@ -115,12 +106,17 @@
   /* <---------- application ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Actually calls the reactions.
-   * Called on server side only.
-   * ---------------------------------------- */
+  /**
+   * Actually calls given reactions.
+   * Called on sever side only for sync.
+   * @param {Array} reactions
+   * @param {number} pMtp
+   * @param {number} x
+   * @param {number} y
+   * @param {Building|Unit|unset} [e] - Entity involved, like a building where reaction happens.
+   * @param {ResourceGn|unset} [rs_gn] - Resource involved.
+   * @return {void}
+   */
   const applyReaction = function(reactions, pMtp, x, y, e, rs_gn) {
     let rs = MDL_content._ct(rs_gn, "rs");
 
@@ -137,19 +133,24 @@
   exports.applyReaction = applyReaction;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Request the host to apply some reactions.
-   * ---------------------------------------- */
-  const requestReaction = function(reactions, pMtp, x, y, b, rs_gn) {
+   * @param {Array} reactions
+   * @param {number} pMtp
+   * @param {number} x
+   * @param {number} y
+   * @param {Building|Unit|unset} [e]
+   * @param {ResourceGn|unset} [rs_gn]
+   * @return {void}
+   */
+  const requestReaction = function(reactions, pMtp, x, y, e, rs_gn) {
     let rs = MDL_content._ct(rs_gn, "rs");
 
     MDL_net.sendPacket(
       "client", "lovec-client-reaction",
       packPayload([
         reactions, pMtp, x, y,
-        b == null ? -1 : b.pos(),
+        e == null ? -1 : e.pos(),
         rs == null ? "null" : rs.name,
       ]),
       true, true,
@@ -166,11 +167,14 @@
   exports.requestReaction = requestReaction;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Calls possible reactions between {reac1} and {reac2}, at {t0e}.
-   * ---------------------------------------- */
+  /**
+   * Calls possible reactions between `reac1` and `reac2` at `t0e`.
+   * @param {string|UnlockableContent} reac1
+   * @param {string|UnlockableContent} reac2
+   * @param {number} pMtp
+   * @param {Tile|Building|Unit|unset} [t0e]
+   * @return {void}
+   */
   const handleReaction = function(reac1, reac2, pMtp, t0e) {
     applyReaction(
       _reactions(reac1, reac2),
@@ -184,11 +188,14 @@
   exports.handleReaction = handleReaction;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {handleReaction} for sync.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link handleReaction} for sync.
+   * @param {string|UnlockableContent} reac1
+   * @param {string|UnlockableContent} reac2
+   * @param {number} pMtp
+   * @param {Tile|Building|Unit|unset} [t0e]
+   * @return {void}
+   */
   const handleReaction_global = function(reac1, reac2, pMtp, t0e) {
     if(!Vars.net.client()) {
       handleReaction(reac1, reac2, pMtp, t0e);

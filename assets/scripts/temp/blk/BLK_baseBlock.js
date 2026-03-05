@@ -22,22 +22,9 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/cls/util/CLS_contentTemplate");
+  const PARENT = CLS_contentTemplate;
   const INTF = require("lovec/temp/intf/INTF_BLK_coreEnergyConsumer");
   const INTF_A = require("lovec/temp/intf/INTF_BLK_multiBlockHandler");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-
-
-  const FRAG_faci = require("lovec/frag/FRAG_faci");
-
-
-  const MDL_call = require("lovec/mdl/MDL_call");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_pollution = require("lovec/mdl/MDL_pollution");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
-  const DB_block = require("lovec/db/DB_block");
 
 
   /* <---------- auxiliary ----------> */
@@ -79,7 +66,7 @@
     if(DB_block.db["map"]["facFami"].colIncludes(blk.name, 2, 0)) {
       blk.stats.add(fetchStat("lovec", "spec-facfami"), newStatValue(tb => {
         tb.row();
-        MDL_table.setDisplay_facFami(tb, blk);
+        MDL_table._d_facFami(tb, blk);
       }));
     };
 
@@ -366,7 +353,7 @@
        * NOTE:
        *
        * @LATER
-       * Fallback when the config string is not a Json string for some object.
+       * Fallback when the config string is not a JSON string for some object.
        * ---------------------------------------- */
       ex_handleConfigStrDef: function(str) {
 

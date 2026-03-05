@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Steam vents with varied size.
    * Will load parameters from {blk.parent}.
    * Vents should always be loaded after the parent floors!
@@ -31,15 +31,6 @@
 
   const PARENT = require("lovec/temp/env/ENV_materialFloor");
   const INTF = require("lovec/temp/intf/INTF_ENV_dynamicSizeVent");
-  const EFF = require("lovec/glb/GLB_eff");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
-  const TP_effect = require("lovec/tp/TP_effect");
 
 
   /* <---------- component ----------> */

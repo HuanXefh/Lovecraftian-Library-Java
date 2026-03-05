@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to fluids and abstract fluids.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -20,25 +18,6 @@
 
 
   /* <---------- import ----------> */
-
-
-  const PARAM = require("lovec/glb/GLB_param");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
-  const DB_block = require("lovec/db/DB_block");
-  const DB_fluid = require("lovec/db/DB_fluid");
 
 
   /* <---------- auxiliay ----------> */
@@ -56,12 +35,11 @@
   /* <---------- base (group) ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the elementary group of a fluid.
-   * An elementary group is a collection of fluids similar in properties.
-   * ---------------------------------------- */
+  /**
+   * Gets elementary group of a fluid, null if not found.
+   * @param {LiquidGn} liq_gn
+   * @returns {string|null}
+   */
   const _eleGrp = function(liq_gn) {
     let liq = MDL_content._ct(liq_gn, "rs");
     if(liq == null) return null;
@@ -72,32 +50,32 @@
     };
 
     return null;
-  };
+  }
+  .setCache();
   exports._eleGrp = _eleGrp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the name of elementary group from the bundle.
-   * For {"acidAq"}, this will return {"term.common-term-grp-acidaq.name"}.
-   * The same for other groups.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "term.common-term-grp-<eleGrp>.name".
+   * @param {LiquidGn} liq_gn
+   * @return {string}
+   */
   const _eleGrpB = function(liq_gn) {
     let eleGrp = _eleGrp(liq_gn);
     if(eleGrp == null) return "!ERR";
 
     return MDL_bundle._term("common", "grp-" + eleGrp);
-  };
+  }
+  .setCache();
   exports._eleGrpB = _eleGrpB;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the material group of a block, mostly for corrosion calculation.
-   * This is not floor material, which is related to terrain instead.
-   * ---------------------------------------- */
+  /**
+   * Gets material group of a block, mostly for corrosion calculation.
+   * Not floor material in {@link ENV_materialFloor}!
+   * @param {BlockGn} blk_gn
+   * @returns {string|null}
+   */
   const _matGrp = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
     if(blk == null) return null;
@@ -108,30 +86,31 @@
     };
 
     return null;
-  };
+  }
+  .setCache();
   exports._matGrp = _matGrp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the name of material group from the bundle.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "term.common-term-grp-<matGrp>.name".
+   * @param {BlockGn} blk_gn
+   * @return {string}
+   */
   const _matGrpB = function(blk_gn) {
     let matGrp = _matGrp(blk_gn);
     if(matGrp == null) return "!ERR";
 
     return MDL_bundle._term("common", "grp-" + matGrp);
-  };
+  }
+  .setCache();
   exports._matGrpB = _matGrpB;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list of fluid tags of the fluid.
-   * Fluid tags provide extra multipliers on corrosion damage.
-   * ---------------------------------------- */
+  /**
+   * Gets fluid tags of the given fluid.
+   * @param {LiquidGn} liq_gn
+   * @return {Array<string>}
+   */
   const _fTags = function(liq_gn) {
     const arr0 = [];
 
@@ -148,27 +127,29 @@
   exports._fTags = _fTags;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the tag text of fluid tags based on the bundle.
-   * ---------------------------------------- */
+  /**
+   * Gets fluid tag text of the given fluid.
+   * <BR> <BUNDLE>: "term.common-grp-<fldTag>.name".
+   * @param {LiquidGn} liq_gn
+   * @return {string}
+   */
   const _fTagsB = function(liq_gn) {
     return MDL_text._tagText(
       _fTags(liq_gn).cpy().substitute(tag => MDL_bundle._term("common", "grp-" + tag))
     );
-  };
+  }
+  .setCache();
   exports._fTagsB = _fTagsB;
 
 
   /* <---------- base (param) ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets density of a fluid.
-   * ---------------------------------------- */
+   * @param {LiquidGn} liq_gn
+   * @return {number}
+   */
   const _dens = function(liq_gn) {
     let dens = 1.0;
     let liq = MDL_content._ct(liq_gn, "rs");
@@ -182,15 +163,16 @@
     };
 
     return dens;
-  };
+  }
+  .setCache();
   exports._dens = _dens;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets boiling point of a fluid.
-   * ---------------------------------------- */
+  /**
+   * Gets boiling point of a fluid (in HU).
+   * @param {LiquidGn} liq_gn
+   * @return {number}
+   */
   const _boilPon = function(liq_gn) {
     let boilPon = 100.0;
     let liq = MDL_content._ct(liq_gn, "rs");
@@ -210,16 +192,16 @@
     };
 
     return boilPon;
-  };
+  }
+  .setCache();
   exports._boilPon = _boilPon;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets fluid heat of a fluid.
-   * This will affect temperature.
-   * ---------------------------------------- */
+   * @param {LiquidGn} liq_gn
+   * @return {number}
+   */
   const _fHeat = function(liq_gn) {
     let def = 26.0, fHeat = def;
     let liq = MDL_content._ct(liq_gn, "rs");
@@ -228,26 +210,28 @@
     fHeat = DB_HANDLER.read("liq-fheat", liq, def);
 
     return fHeat;
-  };
+  }
+  .setCache();
   exports._fHeat = _fHeat;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets wrapped temperature.
-   * ---------------------------------------- */
+  /**
+   * Gets wrapped temperature of a fluid.
+   * @param {LiquidGn} liq_gn
+   * @return {number}
+   */
   const _tempWrap = function(liq_gn) {
     return halfLogWrap(_fHeat(liq_gn), 26.0, 1500.0);
-  };
+  }
+  .setCache();
   exports._tempWrap  = _tempWrap;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets wrapped viscosity.
-   * ---------------------------------------- */
+  /**
+   * Gets wrapped viscosity of a fluid.
+   * @param {LiquidGn} liq_gn
+   * @return {number}
+   */
   const _viscWrap = function(liq_gn) {
     let viscWrap = 0.5;
     let liq = MDL_content._ct(liq_gn, "rs");
@@ -266,15 +250,16 @@
     };
 
     return viscWrap;
-  };
+  }
+  .setCache();
   exports._viscWrap = _viscWrap;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the maximum pressure allowed in a block.
-   * ---------------------------------------- */
+  /**
+   * Gets maximum pressure allowed for a block.
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _presRes = function(blk_gn) {
     let res = 5.0;
     let blk = MDL_content._ct(blk_gn, "blk");
@@ -287,15 +272,16 @@
     };
 
     return res;
-  };
+  }
+  .setCache();
   exports._presRes = _presRes;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the maximum vacuum allowed in a block.
-   * ---------------------------------------- */
+  /**
+   * Gets maximum vacuum allowed for a block.
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _vacRes = function(blk_gn) {
     let res = -5.0;
     let blk = MDL_content._ct(blk_gn, "blk");
@@ -308,16 +294,16 @@
     };
 
     return res;
-  };
+  }
+  .setCache();
   exports._vacRes = _vacRes;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the pressure in a building.
-   * Can be negative which is for vacuum.
-   * ---------------------------------------- */
+  /**
+   * Gets pressure in a building, can be negative for vacuum.
+   * @param {Building} b
+   * @return {number}
+   */
   const _pres = function(b) {
     return tryFun(
       b.ex_getPres, b,
@@ -330,11 +316,11 @@
   /* <---------- corrosion ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets corrosion power of a fluid.
-   * ---------------------------------------- */
+   * @param {LiquidGn} liq_gn
+   * @return {number}
+   */
   const _corPow = function(liq_gn) {
     let corPow = 0.0;
     let liq = MDL_content._ct(liq_gn, "rs");
@@ -347,15 +333,17 @@
     };
 
     return corPow;
-  };
+  }
+  .setCache();
   exports._corPow = _corPow;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets multiplier on corrosion damage based on fluid and material of the block.
-   * ---------------------------------------- */
+  /**
+   * Gets multiplier on corrosion damage for a pair of block and fluid.
+   * @param {BlockGn} blk_gn
+   * @param {LiquidGn} liq_gn
+   * @return {number}
+   */
   const _corMtp = function(blk_gn, liq_gn) {
     let corMtp = 1.0;
     let blk = MDL_content._ct(blk_gn, "blk");
@@ -375,15 +363,16 @@
     });
 
     return corMtp;
-  };
+  }
+  .setCache();
   exports._corMtp = _corMtp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets corrosion resistance of the block.
-   * ---------------------------------------- */
+  /**
+   * Gets corrosion resistance of a block.
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _corRes = function(blk_gn) {
     let corRes = 1.0;
     let blk = MDL_content._ct(blk_gn, "blk");
@@ -396,18 +385,19 @@
     };
 
     return corRes;
-  };
+  }
+  .setCache();
   exports._corRes = _corRes;
 
 
   /* <---------- heat ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the maximum heat that this block can withstand.
-   * ---------------------------------------- */
+  /**
+   * Gets maximum heat allowed for a block.
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _heatRes = function(blk_gn) {
     let heatRes = Infinity;
     let blk = MDL_content._ct(blk_gn, "blk");
@@ -420,15 +410,16 @@
     };
 
     return heatRes;
-  };
+  }
+  .setCache();
   exports._heatRes = _heatRes;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets heat in a building.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @return {number}
+   */
   const _heat_b = function(b) {
     return tryFun(
       b.ex_getHeat, b,
@@ -438,11 +429,12 @@
   exports._heat_b = _heat_b;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets current fluid heat in a building.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @param {boolean|unset} [forceCalc] - If true, this method will always calculate heat based on liquid module.
+   * @return {number}
+   */
   const _fHeat_b = function(b, forceCalc) {
     let def = PARAM.glbHeat;
     if(!forceCalc) {
@@ -462,11 +454,11 @@
   exports._fHeat_b = _fHeat_b;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the range heat at {t}.
-   * ---------------------------------------- */
+  /**
+   * Gets range heat at some tile.
+   * @param {Tile|null} t
+   * @return {number}
+   */
   const _rHeat = function(t) {
     if(t == null) return 0.0;
 
@@ -478,7 +470,7 @@
     rHeat += t.floor().attributes.get(Attribute.get("lovec-attr0env-heat")) * 100.0;
     // Heat from nearby buildings
     let rHeatSpare = 0.0, countSpare = 0, ot;
-    (4)._it(1, ind => {
+    (4)._it(ind => {
       ot = t.nearby(ind);
       if(ot != null && ot.build != null) {
         rHeatSpare += _heat_b(ot.build);
@@ -492,11 +484,11 @@
   exports._rHeat = _rHeat;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the range heat resistance for a unit type.
-   * ---------------------------------------- */
+  /**
+   * Gets range heat resistance of a unit type.
+   * @param {UnitType} utp
+   * @return {number}
+   */
   const _rHeatRes = function(utp) {
     return Math.sqrt(utp.health) * utp.hitSize * 0.75;
   };

@@ -24,14 +24,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_basePowerBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_facilityBlock");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
 
 
   /* <---------- component ----------> */

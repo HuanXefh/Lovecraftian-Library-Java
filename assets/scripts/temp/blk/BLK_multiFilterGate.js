@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Like {BLK_filterGate} but for multi-item selection.
    * ---------------------------------------- */
 
@@ -24,16 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemGate");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const EFF = require("lovec/glb/GLB_eff");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_io = require("lovec/mdl/MDL_io");
-  const MDL_table = require("lovec/mdl/MDL_table");
 
 
   /* <---------- component ----------> */
@@ -125,7 +115,7 @@
 
 
   function comp_buildConfiguration(b, tb) {
-    MDL_table.setSelector_ctMulti(
+    MDL_table._s_ctMulti(
       tb, b.block, Vars.content.items().toArray(),
       () => b.rsTgs, val => b.configure(val), false,
       b.block.selectionRows, b.block.selectionColumns,
@@ -219,7 +209,7 @@
       config: function() {
         return ["selectorBlock", this.isInv]
         .pushAll(this.rsTgs.map(rs => rs == null ? "null" : rs.name))
-        .toJavaArr();
+        .toJavaArr(JAVA.object);
       }
       .setProp({
         noSuper: true,

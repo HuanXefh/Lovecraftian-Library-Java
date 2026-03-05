@@ -5,13 +5,11 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Method extension to native javascript classes.
-   * I don't think a conflict will happen since most guys won't dig deeper in js.
-   * If that really happens, disable other js mods.
-   * ---------------------------------------- */
+  /**
+   * Method extension to native JavaScript classes.
+   * I don't think a conflict will happen since most guys won't dig deeper in JS.
+   * If that really happens, disable other JS mods.
+   */
 
 
 /*

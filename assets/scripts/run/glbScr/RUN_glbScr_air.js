@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Some kind of null objects.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,16 +20,13 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- base ----------> */
 
 
+  /**
+   * Collection of null objects from Arc.
+   * @global
+   */
   ARC_AIR = {
 
     seq: new Seq(),
@@ -40,5 +35,7 @@
     pon3: new Point3(),
     vec2: new Vec2(),
     vec3: new Vec3(),
+
+    reg: new TextureRegion(),
 
   };

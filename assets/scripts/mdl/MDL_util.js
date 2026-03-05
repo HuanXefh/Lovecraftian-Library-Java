@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Anything I'm lazy to make a MDL file for.
-   * ---------------------------------------- */
+  /**
+   * Anything that I'm too lazy to make a MDL file for.
+   */
 
 
 /*
@@ -22,14 +20,6 @@
   /* <---------- import ----------> */
 
 
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_net = require("lovec/mdl/MDL_net");
-
-
-  const DB_misc = require("lovec/db/DB_misc");
-
-
   /* <---------- input ----------> */
 
 
@@ -39,12 +29,11 @@
   let mouseMoveStartY = 0.0;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Mouse movement velocity in pixels per second.
    * LMB must be pressed.
-   * ---------------------------------------- */
+   * @return {number}
+   */
   const _mouseVel = function() {
     return Math.sqrt(Math.pow(mouseMoveX, 2) + Math.pow(mouseMoveY, 2));
   };
@@ -54,12 +43,12 @@
   /* <---------- mod ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Localizes the mod stats.
-   * Put {info.modname-info-mod} in your bundle.
-   * ---------------------------------------- */
+  /**
+   * Localizes mod stats.
+   * Put "info.<nmMod>-info-mod" in your bundle.
+   * @param {string} nmMod
+   * @return {void}
+   */
   const localizeModMeta = function(nmMod) {
     let mod = fetchMod(nmMod);
     if(mod == null) return;
@@ -71,12 +60,14 @@
   exports.localizeModMeta = localizeModMeta;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Locks contents from some mod, for testing purpose.
-   * If {cts} is given, this only locks mod contents in the array (NOT SEQ).
-   * ---------------------------------------- */
+  /**
+   * Locks all contents from some mod for testing purpose.
+   * If `cts` is given, only these contents will be locked.
+   * @param {string} nmMod
+   * @param {Array<UnlockableContent>|unset} [cts]
+   * @param {boolean|unset} [isUnlocking] - If true, this method will unlock contents instead.
+   * @return {void}
+   */
   const lockModContents = function thisFun(nmMod, cts, isUnlocking) {
     if(cts != null) {
       cts.forEachFast(ct => {
@@ -86,7 +77,7 @@
     } else {
       thisFun.defSeqs.forEachFast(seq => seq.each(
         ct => thisFun.checkTg(ct, nmMod),
-        ct => {isUnlocking ? ct.unlock() : ct.clearUnlock(); Log.info("[LOVEC] Cleared unlock state for " + ct.name.color(Pal.accent) + ".")},
+        ct => {isUnlocking ? ct.unlock() : ct.clearUnlock(); Log.info("[LOVEC] Changed unlock state for " + ct.name.color(Pal.accent) + ".")},
       ));
       TechTree.all.each(node => thisFun.checkTg(node.content, nmMod), node => node.reset());
     };

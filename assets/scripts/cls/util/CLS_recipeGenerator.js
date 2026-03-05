@@ -1,31 +1,17 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Utility class for automatic recipe generation.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
-
-
-const MDL_content = require("lovec/mdl/MDL_content");
-const MDL_event = require("lovec/mdl/MDL_event");
-const MDL_recipe = require("lovec/mdl/MDL_recipe");
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Utility class for automatic recipe generation.
+ * @class
+ * @param {function(Object, Object): void} setter - `this` here refers to the generator itself. <br> <ARGS>: rcObj, paramObj.
+ */
 const CLS_recipeGenerator = newClass().initClass();
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * {setter} is used to write some recipe object.
- * {this} in the setter function refers to the recipe generator.
- * Format for {setter}: {(rcObj, paramObj) => {...}}.
- * ---------------------------------------- */
 CLS_recipeGenerator.prototype.init = function(setter) {
   this.setter = tryVal(setter, Function.air);
 };
@@ -40,24 +26,32 @@ CLS_recipeGenerator.prototype.init = function(setter) {
 var ptp = CLS_recipeGenerator.prototype;
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns the standard generated header name for some recipe.
- * ---------------------------------------- */
+/**
+ * Gets standard generated header for some recipe.
+ * @param {string} nmCt
+ * @param {string|unset} [categ]
+ * @param {string|unset} [tag]
+ * @return {string}
+ * @example
+ * rcGen.getHeaderName("copper")                // Returns "UNCATEGORIZED: copper"
+ * rcGen.getHeaderName("lead", "smelting", "early game");                // Returns "SMELTING: lead (early game)"
+ */
 ptp.getHeaderName = function(nmCt, categ, tag) {
   return tryVal(categ, "uncategorized").toUpperCase() + ": <[$1][$2]>".format(nmCt, tag == null ? "" : " ([$1])".format(tag));
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Adds recipe to the recipe object.
+/**
+ * Adds a recipe.
  * Any recipe added by this method will be tagged as GENERATED.
- *
- * Use {CLS_recipeBuilder} to modify the I/O fields (obtain the builder object).
- * ---------------------------------------- */
+ * @param {Object} rc
+ * @param {string} nmCt
+ * @param {string|unset} [categ]
+ * @param {string|unset} [tag]
+ * @param {(function(Object): void)|unset} [objF] - Used to further modify the recipe.
+ * @param {Object|unset} [rcBuilderObj] - Expected to be built with {@link CLS_recipeBuilder}.
+ * @return {void}
+ */
 ptp.addRc = function(rc, nmCt, categ, tag, objF, rcBuilderObj) {
   let rcObj = {
     icon: nmCt,
@@ -71,15 +65,16 @@ ptp.addRc = function(rc, nmCt, categ, tag, objF, rcBuilderObj) {
     objF(rcObj);
   };
 
-  rc["recipe"].push(this.getHeaderName(nmCt, categ, tag), rcObj);
+  rc["recipe"].write(this.getHeaderName(nmCt, categ, tag), rcObj);
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Used by some generators for better control.
- * ---------------------------------------- */
+/**
+ * Reads basic parameters from `paramObj`.
+ * @param {Object} rcObj
+ * @param {Object|unset} [paramObj]
+ * @return {void}
+ */
 ptp.setBaseParam = function(rcObj, paramObj) {
   readParamAndCall(paramObj, "validGetter", val => rcObj.validGetter = val);
   readParamAndCall(paramObj, "lockedBy", val => rcObj.lockedBy = val);
@@ -97,11 +92,13 @@ ptp.setBaseParam = function(rcObj, paramObj) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Used to set up CI.
- * ---------------------------------------- */
+/**
+ * Sets up single-content CI.
+ * @param {ContentGn} ct_gn
+ * @param {number} amtI
+ * @param {Object|unset} [paramObj]
+ * @return {[string, number]} <TUP>: nmCt, amt.
+ */
 ptp.processCi = function(ct_gn, amtI, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
@@ -110,11 +107,14 @@ ptp.processCi = function(ct_gn, amtI, paramObj) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Used to set up BI.
- * ---------------------------------------- */
+/**
+ * Sets up single-content BI.
+ * @param {ContentGn} ct_gn
+ * @param {number} amtI
+ * @param {number} pI
+ * @param {Object|unset} [paramObj]
+ * @return {[string, number, number]} <TUP>: nmCt, amt, p.
+ */
 ptp.processBi = function(ct_gn, amtI, pI, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
@@ -124,11 +124,13 @@ ptp.processBi = function(ct_gn, amtI, pI, paramObj) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Used to set up PAYI.
- * ---------------------------------------- */
+/**
+ * Sets up single-content PAYI.
+ * @param {ContentGn} ct_gn
+ * @param {number} payAmtI
+ * @param {Object|unset} [paramObj]
+ * @return {[string, number]} <TUP>: nmCt, amt.
+ */
 ptp.processPayi = function(ct_gn, payAmtI, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
@@ -137,11 +139,13 @@ ptp.processPayi = function(ct_gn, payAmtI, paramObj) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Used to set up CO.
- * ---------------------------------------- */
+/**
+ * Sets up single-content CO.
+ * @param {ContentGn} ct_gn
+ * @param {number} amtO
+ * @param {Object|unset} [paramObj]
+ * @return {[string, number]} <TUP>: nmCt, amt.
+ */
 ptp.processCo = function(ct_gn, amtO, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
@@ -150,11 +154,14 @@ ptp.processCo = function(ct_gn, amtO, paramObj) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Used to set up BO.
- * ---------------------------------------- */
+/**
+ * Sets up single-content BO.
+ * @param {ContentGn} ct_gn
+ * @param {number} amtO
+ * @param {number} pO
+ * @param {Object|unset} [paramObj]
+ * @return {[string, number, number]} <TUP>: nmCt, amt, p.
+ */
 ptp.processBo = function(ct_gn, amtO, pO, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
@@ -164,11 +171,13 @@ ptp.processBo = function(ct_gn, amtO, pO, paramObj) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Used to set up PAYO.
- * ---------------------------------------- */
+/**
+ * Sets up single-content PAYI.
+ * @param {ContentGn} ct_gn
+ * @param {number} payAmtO
+ * @param {Object|unset} [paramObj]
+ * @return {[string, number]} <TUP>: nmCt, amt.
+ */
 ptp.processPayo = function(ct_gn, payAmtO, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
@@ -177,11 +186,13 @@ ptp.processPayo = function(ct_gn, payAmtO, paramObj) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Parses a raw I/O array.
- * ---------------------------------------- */
+/**
+ * Parses raw IO array.
+ * @param {Array} raw
+ * @param {number} baseAmt
+ * @param {boolean|unset} [isContinuous]
+ * @return {Array}
+ */
 ptp.parseRawIo = function thisFun(raw, baseAmt, isContinuous) {
   const arr = [];
 
@@ -213,67 +224,85 @@ ptp.parseRawIo = function thisFun(raw, baseAmt, isContinuous) {
 });
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Parses raw CI data, returns the array used in recipe object.
- * ---------------------------------------- */
+/**
+ * Parses raw CI array.
+ * @param {Array} rawCi
+ * @param {number} amtO
+ * @return {Array}
+ */
 ptp.parseRawCi = function(rawCi, amtO) {
   return this.parseRawIo(rawCi, amtO, true);
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Parses raw BI data, returns the array used in recipe object.
- * ---------------------------------------- */
+/**
+ * Parses raw BI array.
+ * @param {Array} rawBi
+ * @param {number} amtO
+ * @param {number} pO
+ * @return {Array}
+ */
 ptp.parseRawBi = function(rawBi, amtO, pO) {
   return this.parseRawIo(rawBi, amtO * pO, false);
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Parses raw PAYI data, returns the array used in recipe object.
- * ---------------------------------------- */
+/**
+ * Parses raw CI array.
+ * @param {Array} rawPayi
+ * @param {number} payAmtO
+ * @return {Array}
+ */
 ptp.parseRawPayi = function(rawPayi, payAmtO) {
   return this.parseRawIo(rawPayi, payAmtO, true);
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Parses raw CO data, returns the array used in recipe object.
- * ---------------------------------------- */
+/**
+ * Parses raw CO array.
+ * @param {Array} rawCo
+ * @param {number} amtI
+ * @return {Array}
+ */
 ptp.parseRawCo = function(rawCo, amtI) {
   return this.parseRawIo(rawCo, amtI, true);
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Parses raw BO data, returns the array used in recipe object.
- * ---------------------------------------- */
+/**
+ * Parses raw BO array.
+ * @param {Array} rawBo
+ * @param {number} amtI
+ * @param {number} pI
+ * @return {Array}
+ */
 ptp.parseRawBo = function(rawBo, amtI, pI) {
   return this.parseRawIo(rawBo, amtI * pI, false);
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Modifies {rc} on CLIENT LOAD.
- * ---------------------------------------- */
+/**
+ * Parses raw PAYO array.
+ * @param {Array} rawPayo
+ * @param {number} payAmtI
+ * @return {Array}
+ */
+ptp.parseRawPayo = function(rawPayo, payAmtI) {
+  return this.parseRawIo(rawPayo, payAmtI, true);
+};
+
+
+/**
+ * Modifies `rc` on CLIENT LOAD.
+ * @param {Object} rc
+ * @param {Object|unset} [paramObj]
+ * @return {void}
+ */
 ptp.run = function(rc, paramObj) {
   MDL_event._c_onLoad(() => {
     this.setter(rc, paramObj);
   });
 };
-
 
 
 module.exports = CLS_recipeGenerator;

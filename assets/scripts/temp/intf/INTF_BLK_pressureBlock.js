@@ -22,22 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_flow = require("lovec/mdl/MDL_flow");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-
-
   /* <---------- component ----------> */
 
 

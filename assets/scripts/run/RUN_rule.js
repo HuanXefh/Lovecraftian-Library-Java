@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Sets up current map rules.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,18 +20,6 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_backend = require("lovec/mdl/MDL_backend");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
-  const DB_env = require("lovec/db/DB_env");
-
-
   /* <---------- base ----------> */
 
 
@@ -43,20 +29,20 @@
     hasWea = false;
 
 
-  function evComp_updateBase() {
-    if(!hasInit) evComp_init();
-    evComp_updateWeather();
+  function update() {
+    if(!hasInit) init();
+    updateWeather();
   };
 
 
-  function evComp_init() {
+  function init() {
     rules = Vars.state.rules;
     hasWea = false;
     hasInit = true;
   };
 
 
-  function evComp_updateWeather() {
+  function updateWeather() {
     if(hasWea || !Vars.state.isGame() || Vars.state.isEditor()) return;
 
     hasWea = true;
@@ -88,8 +74,10 @@
 
 
   TRIGGER.mapChange.addGlobalListener(nmMap => {
+
     hasInit = false;
     PARAM.forceLoadParam();
+
     MDL_backend.setWinTitle(
       null,
       "[$1][$2]".format(
@@ -97,6 +85,7 @@
         !fetchSetting("misc-title-map") ? "" : ": [$1]".format(nmMap === "" ? "menu" : nmMap),
       ),
     );
+    
   });
 
 
@@ -104,6 +93,6 @@
 
   MDL_event._c_onUpdate(() => {
 
-    evComp_updateBase();
+    update();
 
   }, 72663182);

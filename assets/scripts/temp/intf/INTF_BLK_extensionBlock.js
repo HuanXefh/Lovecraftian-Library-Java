@@ -22,15 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 
@@ -45,7 +36,7 @@
   function comp_setStats(blk) {
     blk.stats.add(fetchStat("lovec", "blk0misc-blktg"), newStatValue(tb => {
       tb.row();
-      MDL_table.setDisplay_ctLi(tb, blk.blkTgs.length > 0 ? blk.blkTgs : blk.extensionTmpBlks);
+      MDL_table._l_ctLi(tb, blk.blkTgs.length > 0 ? blk.blkTgs : blk.extensionTmpBlks);
     }));
   };
 
@@ -110,7 +101,7 @@
 
       __PARAM_OBJ_SETTER__: () => ({
         // @PARAM: Condition for valid extension. By default, this checks if a block is found in {blkTgs}.
-        // @ARGS: blk, oblk
+        // <ARGS>: blk, oblk
         filterScrTup: prov(() => [(blk, oblk) => blk.delegee.blkTgs.includes(oblk)]),
         // @PARAM: Blocks seen as extension targets.
         blkTgs: prov(() => []),

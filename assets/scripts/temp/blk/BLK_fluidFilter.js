@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Unlike item filter gate, fluid filter has no side output since it's meant for blocks with multiple fluid outputs.
    * ---------------------------------------- */
 
@@ -25,10 +25,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_fluidJunction");
   const INTF = require("lovec/temp/intf/INTF_BLK_contentSelector");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_io = require("lovec/mdl/MDL_io");
 
 
   /* <---------- component ----------> */

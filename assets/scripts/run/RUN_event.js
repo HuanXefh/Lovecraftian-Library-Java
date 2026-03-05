@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Handles various events globally.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,37 +20,15 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_unit = require("lovec/frag/FRAG_unit");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
-  const DB_block = require("lovec/db/DB_block");
-  const DB_unit = require("lovec/db/DB_unit");
-
-
   /* <---------- update ----------> */
 
 
-  function evComp_update_test() {
+  function testUpdate() {
 
   };
 
 
-  function evComp_update_unit() {
+  function updateUnit() {
     Groups.unit.each(unit => {
       if(PARAM.modded && !MDL_cond._isIrregularUnit(unit)) {
         FRAG_unit.comp_update_surrounding(unit.type, unit);
@@ -65,12 +41,12 @@
   /* <---------- draw ----------> */
 
 
-  const evComp_draw_test = function thisFun() {
+  const testDraw = function thisFun() {
     if(!PARAM.testDraw) return;
 
-    let unit_pl = Vars.player.unit();
-    if(unit_pl != null) {
-      MDL_pos._tsDstManh(unit_pl.tileOn(), VAR.r_unitSurRange, thisFun.tmpTs).forEachFast(ot => MDL_draw._d_areaShrink(ot, 1, Pal.accent, 0.5, VAR.lay_debugFlr));
+    let unitPlayer = Vars.player.unit();
+    if(unitPlayer != null) {
+      MDL_pos._tsDstManh(unitPlayer.tileOn(), VAR.r_unitSurRange, thisFun.tmpTs).forEachFast(ot => MDL_draw._d_areaShrink(ot, 1, Pal.accent, 0.5, VAR.lay_debugFlr));
     };
   }
   .setProp({
@@ -78,12 +54,12 @@
   });
 
 
-  function evComp_draw_unitStat() {
+  function drawUnitStat() {
     if(!Vars.ui.hudfrag.shown) return;
 
     Groups.unit.each(
       unit => !(
-        (!MDL_cond._isVisible(unit) || MDL_cond._isIrregularUnit(unit))
+        (!LCCheck.checkEntityVisible(unit) || MDL_cond._isIrregularUnit(unit))
           || ((!unit.isPlayer() || !PARAM.drawPlayerStat) && !unit.isMissile() && PARAM.drawUnitNearMouse && Mathf.dst(Core.input.mouseWorldX(), Core.input.mouseWorldY(), unit.x, unit.y) > VAR.rad_mouseRad + unit.hitSize * 0.5)
           || (unit.isMissile() && !PARAM.drawMissileStat)
           || (!unit.type.logicControllable && !unit.type.playerControllable && unit.type.hidden && !unit.type.drawCell && !unit.isMissile())
@@ -94,7 +70,7 @@
           let z = Draw.z();
           Draw.z(VAR.lay_unitRange);
 
-          let wp, rot = unit.rotation - 90.0, mtX, mtY, mtRot, hasAnyMountShown = false;
+          let wp, rot = unit.rotation - 90.0, mtX, mtY, hasAnyMountShown = false;
           unit.mounts.forEachFast(mt => {
             wp = mt.weapon;
             // Probably not a weapon
@@ -187,13 +163,13 @@
   };
 
 
-  const evComp_draw_buildStat = function thisFun() {
+  const drawBuildStat = function thisFun() {
     if(!Vars.ui.hudfrag.shown) return;
 
     let t = MDL_pos._tMouse();
     let b = t == null ? null : t.build;
-    let unit_pl = Vars.player.unit();
-    let b_pl = (unit_pl == null || !(unit_pl instanceof BlockUnitc)) ? null : unit_pl.tile();
+    let unitPlayer = Vars.player.unit();
+    let b_pl = (unitPlayer == null || !(unitPlayer instanceof BlockUnitc)) ? null : unitPlayer.tile();
 
     // Draw player building
     if(b_pl != null && PARAM.drawPlayerStat) {
@@ -208,7 +184,7 @@
 
       // Draw bridge tranportation
       if(b.block instanceof ItemBridge || b.block instanceof DirectionBridge) {
-        MDL_draw.comp_drawSelect_bridgeLine(b);
+        MDL_draw.drawBridgeLine(b);
       };
     };
   }
@@ -243,24 +219,24 @@
   });
 
 
-  function evComp_draw_extraInfo() {
+  function drawExtraInfo() {
     if(!PARAM.showExtraInfo || !Vars.ui.hudfrag.shown) return;
 
-    MDL_draw.comp_drawSelect_extraInfo(MDL_pos._tMouse());
+    MDL_draw.drawExtraInfo(MDL_pos._tMouse());
   };
 
 
   /* <---------- build damage ----------> */
 
 
-  function evComp_damage_buildDamageDisplay(b, bul) {
+  function createBuildDamageDisplay(b, bul) {
     if(!PARAM.displayDamage) return;
     if(b == null || bul == null) return;
 
     let dmg = MDL_entity._bulDmg(bul, b);
     if(dmg < PARAM.damageDisplayThreshold) return;
 
-    MDL_effect.showAt_dmg(
+    MDL_effect._e_dmg(
       b.x, b.y, dmg, bul.team,
       MDL_entity._bShield(b, true) > dmg ?
         "shield" :
@@ -269,10 +245,21 @@
   };
 
 
+  /* <---------- build destroy ----------> */
+
+
+  function createBuildRemains(b) {
+    if(!PARAM.createBuildingRemains || b == null || b.block instanceof ConstructBlock || b.block.size < 2) return;
+    if(MDL_cond._hasNoRemains(b.block)) return;
+
+    MDL_effect._e_remains(b.x, b.y, b, b.team);
+  };
+
+
   /* <---------- unit damage ----------> */
 
 
-  function evComp_damage_unitDamageDisplay(unit, bul) {
+  function createUnitDamageDisplay(unit, bul) {
     if(!PARAM.displayDamage) return;
     if(unit == null || bul == null) return;
     if(unit.isMissile() && !PARAM.drawMissileStat) return;
@@ -280,7 +267,7 @@
     let dmg = MDL_entity._bulDmg(bul, unit);
     if(dmg < PARAM.damageDisplayThreshold) return;
 
-    MDL_effect.showAt_dmg(
+    MDL_effect._e_dmg(
       unit.x, unit.y, dmg, bul.team,
       unit.shield > dmg ?
         "shield" :
@@ -292,23 +279,15 @@
   /* <---------- unit destroy ----------> */
 
 
-  function evComp_destroy_buildingRemains(b) {
-    if(!PARAM.createBuildingRemains || b == null || b.block instanceof ConstructBlock || b.block.size < 2) return;
-    if(MDL_cond._hasNoRemains(b.block)) return;
-
-    MDL_effect.showAt_remains(b.x, b.y, b, b.team);
-  };
-
-
-  function evComp_destroy_unitRemains(unit) {
+  function createUnitRemains(unit) {
     if(MDL_cond._hasNoRemains(unit.type)) return;
 
-    MDL_effect.showAt_remains(unit.x, unit.y, unit, unit.team);
+    MDL_effect._e_remains(unit.x, unit.y, unit, unit.team);
     if(PARAM.secret_steelPipe) MDL_effect.playAt(unit.x, unit.y, "se-meme-steel-pipe");
   };
 
 
-  function evComp_destroy_deathStatus(unit) {
+  function callDeathStatus(unit) {
     let tup;
     VARGEN.deathStas.forEachFast(sta => {
       if(!unit.hasEffect(sta)) return;
@@ -330,8 +309,8 @@
 
   MDL_event._c_onUpdate(() => {
 
-    evComp_update_test();
-    evComp_update_unit();
+    testUpdate();
+    updateUnit();
 
     if(Vars.state.isGame() && TIMER.paramLarge) {
       TRIGGER.majorIter.start.fire();
@@ -353,10 +332,14 @@
 
   MDL_event._c_onDraw(() => {
 
-    evComp_draw_test();
-    evComp_draw_unitStat();
-    evComp_draw_buildStat();
-    evComp_draw_extraInfo();
+    testDraw();
+    drawUnitStat();
+    drawBuildStat();
+    drawExtraInfo();
+
+    if(DRAW_TEST != null && DRAW_TEST.enabled) {
+      DRAW_TEST.draw();
+    };
 
   }, 12597784);
 
@@ -365,7 +348,7 @@
 
   MDL_event._c_onBDamage((b, bul) => {
 
-    evComp_damage_buildDamageDisplay(b, bul);
+    createBuildDamageDisplay(b, bul);
 
   }, 45751111);
 
@@ -374,7 +357,7 @@
 
   MDL_event._c_onBDestroy(t => {
 
-    evComp_destroy_buildingRemains(t.build);
+    createBuildRemains(t.build);
 
   }, 44932710);
 
@@ -383,7 +366,7 @@
 
   MDL_event._c_onUnitDamage((unit, bul) => {
 
-    evComp_damage_unitDamageDisplay(unit, bul);
+    createUnitDamageDisplay(unit, bul);
 
   }, 76523545);
 
@@ -392,7 +375,7 @@
 
   MDL_event._c_onUnitDestroy(unit => {
 
-    evComp_destroy_unitRemains(unit);
-    evComp_destroy_deathStatus(unit);
+    createUnitRemains(unit);
+    callDeathStatus(unit);
 
   }, 47596662);

@@ -1,6 +1,5 @@
 package lovec.math;
 
-
 import arc.func.Boolf2;
 import arc.func.Func2;
 import arc.struct.Seq;

@@ -9,7 +9,7 @@
    * NOTE:
    *
    * Fluid without any feature.
-   * You should set {liq.gas} in their Json files.
+   * You should set {liq.gas} in their .json files.
    * No {RS_oreFluid} since every fluid can be ore in some way.
    * Fluid groups and some universal properties are assigned in {DB_fluid}.
    * ---------------------------------------- */
@@ -26,29 +26,6 @@
 
 
   const PARENT = require("lovec/temp/rs/RS_baseResource");
-  const EFF = require("lovec/glb/GLB_eff");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-  const FRAG_puddle = require("lovec/frag/FRAG_puddle");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_flow = require("lovec/mdl/MDL_flow");
-  const MDL_fuel = require("lovec/mdl/MDL_fuel");
-  const MDL_reaction = require("lovec/mdl/MDL_reaction");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
-  const DB_fluid = require("lovec/db/DB_fluid");
-
-
-  const TP_effect = require("lovec/tp/TP_effect");
 
 
   /* <---------- component ----------> */
@@ -116,7 +93,7 @@
       liq.stats.add(fetchStat("lovec", "rs-isore"), true);
       liq.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
         tb.row();
-        MDL_table.setDisplay_ctLi(tb, oreblks, 48.0);
+        MDL_table._l_ctLi(tb, oreblks, 48.0);
       }));
     };
 

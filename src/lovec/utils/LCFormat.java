@@ -28,4 +28,23 @@ public class LCFormat {
     }
 
 
+    /* <-------------------- width --------------------> */
+
+
+    /**
+     * Gets rectangular width.
+     */
+    public static float calcRectW(float r, float size) {
+        return (r * 2f + size) * Vars.tilesize;
+    }
+
+
+    /**
+     * Gets rectangular half width.
+     */
+    public static float calcRectHW(float r, float size) {
+        return (r + size * 0.5f) * Vars.tilesize;
+    }
+
+
 }

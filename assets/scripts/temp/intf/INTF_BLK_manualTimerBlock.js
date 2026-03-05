@@ -22,14 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
   /* <---------- component ----------> */
 
 
@@ -38,7 +30,7 @@
 
     let scr = b => {
       b.delegee.timeClickCur = Math.min(b.delegee.timeClickCur + blk.manualTimerClickInc, blk.manualTimerCap);
-      MDL_effect.showAt_click(b.x, b.y, b.team);
+      MDL_effect._e_click(b.x, b.y, b.team.color);
       Sounds.click.at(b);
     };
     switch(blk.manualTimerCfgTp) {

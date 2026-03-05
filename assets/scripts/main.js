@@ -10,7 +10,7 @@
 
 
   // Log Lovec version in case that someone sends me a crash log from a very outdated version
-  Log.info("[LOVEC] Loaded Lovec version: " + Vars.mods.locateMod("lovec").meta.version);
+  Log.info("[LOVEC] Current Lovec version: " + Vars.mods.locateMod("lovec").meta.version);
 
 
   // Load global scripts before everything
@@ -23,12 +23,13 @@
     };
     let runGlbScr = mod => {
       let fi = findGlbScr(mod);
-      if(fi == null) return;
-      try {
-        Vars.mods.scripts.context.evaluateString(Vars.mods.scripts.scope, fi.readString(), fi.name(), 0);
-      } catch(err) {
-        Log.err("[LOVEC] Error loading global script for " + mod.meta.name + ":\n" + err);
+      if(fi == null) {
+        Log.info("[LOVEC] No globalScript.js found for " + mod.meta.name + ", skipped loading.");
+        return;
       };
+      // Don't use `try` for loading global scripts, which makes debugging impossible
+      Log.info("[LOVEC] Loading global script " + fi.path() + " for " + mod.meta.name + "...");
+      Vars.mods.scripts.context.evaluateString(Vars.mods.scripts.scope, fi.readString(), fi.name(), 0);
     };
 
     // Lovec globalScript.js should always get loaded first
@@ -41,74 +42,10 @@
     // Initialize some global objects
     JAVA.init();
     MUSIC_HANDLER.init();
-    POS_CONFIG_HANDLER.init();
   })();
 
 
   /* <---------- import ----------> */
-
-
-  // Keep these at top! The order matters!
-  const TP_error = require("lovec/tp/TP_error");
-  const TP_log = require("lovec/tp/TP_log");
-  const RUN_methodExt = require("lovec/run/RUN_methodExt");
-  const TP_anno = require("lovec/tp/TP_anno");
-  const RUN_methodPostExt = require("lovec/run/RUN_methodPostExt");
-  const RUN_globalInternal = require("lovec/run/RUN_globalInternal");
-  const TP_db = require("lovec/tp/TP_db");
-  const TP_shader = require("lovec/tp/TP_shader");
-  const TP_cacheLayer = require("lovec/tp/TP_cacheLayer");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const PARAM = require("lovec/glb/GLB_param");
-  const SAVE = require("lovec/glb/GLB_save");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const RUN_event = require("lovec/run/RUN_event");
-  const RUN_input = require("lovec/run/RUN_input");
-  const RUN_memMonitor = require("lovec/run/RUN_memMonitor");
-  const RUN_render = require("lovec/run/RUN_render");
-  const RUN_rule = require("lovec/run/RUN_rule");
-
-
-  const CLS_dragButton = require("lovec/cls/ui/CLS_dragButton");
-
-
-  const MDL_backend = require("lovec/mdl/MDL_backend");
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_file = require("lovec/mdl/MDL_file");
-  const MDL_json = require("lovec/mdl/MDL_json");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-  const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_util = require("lovec/mdl/MDL_util");
-
-
-  const TP_ability = require("lovec/tp/TP_ability");
-  const TP_ai = require("lovec/tp/TP_ai");
-  const TP_cons = require("lovec/tp/TP_cons");
-  const TP_dial = require("lovec/tp/TP_dial");
-  const TP_dialFlow = require("lovec/tp/TP_dialFlow");
-  const TP_drawer = require("lovec/tp/TP_drawer");
-  const TP_keyBind = require("lovec/tp/TP_keyBind");
-  const TP_setting = require("lovec/tp/TP_setting");
-  const TP_sortF = require("lovec/tp/TP_sortF");
-  const TP_stat = require("lovec/tp/TP_stat");
-
-
-  const DB_env = require("lovec/db/DB_env");
-  const DB_misc = require("lovec/db/DB_misc");
-  const DB_status = require("lovec/db/DB_status");
-  const DB_unit = require("lovec/db/DB_unit");
-
-
-  // Keep these at bottom!
-  const RUN_global = require("lovec/run/RUN_global");
-  const RUN_tmi = require("lovec/run/RUN_tmi");
 
 
   /* <---------- load ----------> */
@@ -182,7 +119,7 @@
         if(itmRedir == null) return;
         itm.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
           tb.row();
-          MDL_table.setDisplay_ctRow(tb, itmRedir);
+          MDL_table._l_ctRow(tb, itmRedir);
         }));
         itmRedir.shownPlanets.addAll(itm.shownPlanets);
         itmRedir.databaseTabs.addAll(itm.databaseTabs);
@@ -192,7 +129,7 @@
         if(liqRedir == null) return;
         liq.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
           tb.row();
-          MDL_table.setDisplay_ctRow(tb, liqRedir);
+          MDL_table._l_ctRow(tb, liqRedir);
         }));
         liqRedir.shownPlanets.addAll(liq.shownPlanets);
         liqRedir.databaseTabs.addAll(liq.databaseTabs);
@@ -203,7 +140,7 @@
           itmStack.item = oreDict.get(itmStack.item, itmStack.item);
         });
         Vars.content.planets().each(pla => pla.accessible && pla.isLandable(), pla => {
-          // No {every} here, or too many blocks hidden
+          // No `every` here, or too many blocks hidden
           if(blk.requirements.some(itmStack => itmStack.item.isOnPlanet(pla))) blk.shownPlanets.add(pla);
         });
         blk.databaseTabs.addAll(blk.shownPlanets);
@@ -389,10 +326,10 @@
 
     // Set up faction
     (function() {
-      let setFaction = ct => {
+      function setFaction(ct) {
         if(MDL_content._faction(ct) !== "none") ct.stats.add(fetchStat("lovec", "spec-faction"), newStatValue(tb => {
           tb.row();
-          MDL_table.setDisplay_faction(tb, ct);
+          MDL_table._d_faction(tb, ct);
         }));
       };
       Vars.content.blocks().each(blk => setFaction(blk));
@@ -415,16 +352,20 @@
     });
 
 
-    // Initialize some settings
+    // Initialize miscellaneous things
     (function() {
+      // Settings
       Core.settings.put("lovec-window-show", true);
+
+      // Damage text modes
+      new CLS_damageTextMode("health", team => team === Team.derelict ? Color.white : team.color);
+      new CLS_damageTextMode("shield", team => Pal.techBlue, str => "<" + str + ">");
+      new CLS_damageTextMode("heal", team => Pal.heal, str => "+" + str);
+      new CLS_damageTextMode("heat", team => Color.orange, str => "^" + str);
+
+      // Draggable button
+      if(!Vars.headless) new CLS_dragButton().add();
     })();
-
-
-    // Add draggable button to the scene
-    if(!Vars.headless) {
-      new CLS_dragButton().add();
-    };
 
 
     // Screw it
@@ -443,7 +384,7 @@
 
     Time.run(240.0, () => {
       if(Core.settings.getBool("lovec-misc-secret-code-crashed", false)) {
-        global.lovec.trigger.secretCodeCrash.fire();
+        TRIGGER.secretCodeCrash.fire();
       };
     });
 

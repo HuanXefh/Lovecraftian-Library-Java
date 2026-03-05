@@ -1,11 +1,6 @@
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Database of environmental blocks, planets and maps, basically everything related to a map.
- * ---------------------------------------- */
-
-
-const MDL_texture = require("lovec/mdl/MDL_texture");
+ */
 
 
 const db = {
@@ -17,28 +12,25 @@ const db = {
     pla: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Wind attribute multiplier for a planet.
-       * ---------------------------------------- */
+       * <br> <ROW>: pla, mtp.
+       */
       wind: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Global heat for a planet.
        * 1.0 here equals 100.0 HU.
-       * ---------------------------------------- */
+       * <br> <ROW>: pla, heat.
+       */
       heat: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Base pollution for a planet.
-       * ---------------------------------------- */
+       * <br> <ROW>: pla, pol.
+       */
       pol: [],
 
 
@@ -48,46 +40,40 @@ const db = {
     map: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Noise layer drawn for each map.
-       * Format: {nmMap, args}.
-       * Format for {args}: {nmTex, color, noiseScl, opac, spd, intens, windX, windY, off}.
-       * ---------------------------------------- */
+       * <br> <ROW>: nmMap, args.
+       * <br> <ROW-args>: nmTex, color, noiseScl, opac, spd, intens, windX, windY, off.
+       */
       noise: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Weather entries for a map (always permanent), used for campaign maps but works for any map.
        * No need to set weathers for those maps in editor.
-       * ---------------------------------------- */
+       * <br> <ROW>: nmMap, weas.
+       */
       weaEn: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Wind attribute multiplier for a map.
-       * ---------------------------------------- */
+       * <br> <ROW>: nmMap, mtp.
+       */
       wind: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Global heat for a map.
-       * ---------------------------------------- */
+       * <br> <ROW>: nmMap, heat.
+       */
       heat: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Base pollution for a map.
-       * ---------------------------------------- */
+       * <br> <ROW>: nmMap, pol.
+       */
       pol: [],
 
 
@@ -103,35 +89,30 @@ const db = {
     rule: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Default values for campaign rules assigned to some planet.
-       * Check {CampaignRules} class.
-       * Format: {nmPla, ruleSetter}.
-       * ---------------------------------------- */
+      /**
+       * Default values for campaign rules of some planet.
+       * <br> <ROW>: nmPla, ruleSetter.
+       * <br> <ARGS>: rule.
+       */
       campaignRule: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Maps a planet to a rule setter function.
+      /**
+       * Maps a planet to a rule setter function, that sets planet rules.
        * Fog should be set in campaign rules, you should ask Anuke why.
-       * Format: {nmPla, ruleSetter}.
-       * ---------------------------------------- */
+       * <br> <ROW>: nmPla, ruleSetter.
+       * <br> <ARGS>: rule.
+       */
       planetRule: [],
 
 
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Maps a random overlay region tag to a region array getter function.
-     * Format: {tag, regsGetter}.
-     * ---------------------------------------- */
+     * <br> <ROW>: tag, regsGetter.
+     */
     randRegTag: [
 
       "rock", MDL_texture._randRegsGetter("lovec-ov0rand-rock"),
@@ -154,11 +135,10 @@ const db = {
     map: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * These maps are considered as cave, where flying units cannot go over walls.
-       * ---------------------------------------- */
+       * <br> <ROW>: nmMap.
+       */
       cave: [],
 
 
@@ -177,13 +157,11 @@ const db = {
     floor: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Used to set speed multiplier of floor blocks in the same material group.
-       * See {ENV_materialFloor}.
-       * Format: {matGrp, spdMtp}.
-       * ---------------------------------------- */
+       * See {@link ENV_materialFloor}.
+       * <br> <ROW>: matGrp, spdMtp.
+       */
       speed: [
 
         "none", 1.0,
@@ -199,11 +177,10 @@ const db = {
       ],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Maps a liquid floor material to some cache layer.
-       * ---------------------------------------- */
+       * <br> <ROW>: matGrp, cacheLay.
+       */
       cacheLayer: [
 
         "none", CacheLayer.water,
@@ -215,11 +192,11 @@ const db = {
       ],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Used to more deeply set properties of the floor.
-       * ---------------------------------------- */
+      /**
+       * Used to more deeply set properties of some floor material.
+       * <br> <ROW>: matGrp, propSetter.
+       * <br> <ARGS>: flr, overwriteVanillaProp.
+       */
       extraSetter: [
 
         "ice", (flr, overwriteVanillaProp) => {
@@ -244,12 +221,11 @@ const db = {
       ],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * These liquid floor materials have {Sounds.splash} as the {walkSound}.
+      /**
+       * These liquid floor materials have default `walkSound` (same as vanilla water).
        * Used when you don't feel like making a sound for the material.
-       * ---------------------------------------- */
+       * <br> <ROW>: matGrp.
+       */
       splashMaterial: [
 
         "none",
@@ -263,12 +239,11 @@ const db = {
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Tree parameters used for tree types.
-     * See {ENV_baseTree}.
-     * ---------------------------------------- */
+     * See {@link ENV_baseTree}.
+     * <br> <ROW>: treeGrp, {scl, mag, wob, attrsGetter}.
+     */
     tree: [
 
       "tree", {
@@ -309,26 +284,20 @@ const db = {
   /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Maps name of a node root to the localized name of a content.
-   *
-   * Example:
-   * "core-shard", "serpulo",    // Sets the name of root with {Blocks.coreShard} to localized name of {Planets.serpulo}
-   * ---------------------------------------- */
+  /**
+   * Maps name of some root node to localized name of some content.
+   * <br> <ROW>: nmRoot, ct.
+   */
   nodeRootNameMap: [],
 
 
   /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Extra teams to be added into {VARGEN.mainTeams}.
+  /**
+   * Extra teams to be added into {@link VARGEN.mainTeams}.
    * This affects team-based mechanics like CEP.
-   * ---------------------------------------- */
+   */
   extraMainTeam: [],
 
 

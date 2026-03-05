@@ -25,11 +25,6 @@
   const PARENT = require("lovec/temp/blk/BLK_baseHeatBlock");
 
 
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 

@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods to deal damage, heal, and create events that deal damage.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,30 +20,14 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const EFF = require("lovec/glb/GLB_eff");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_call = require("lovec/mdl/MDL_call");
-  const MDL_color = require("lovec/mdl/MDL_color");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-  const MDL_net = require("lovec/mdl/MDL_net");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets default pressure explosion radius.
-   * ---------------------------------------- */
+   * @param {number|unset} [size]
+   * @return {number}
+   */
   const _presExploRad = function(size) {
     if(size == null) size = 1;
 
@@ -54,11 +36,11 @@
   exports._presExploRad = _presExploRad;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets default pressure explosion damage.
-   * ---------------------------------------- */
+   * @param {number|unset} [size]
+   * @return {number}
+   */
   const _presExploDmg = function(size) {
     if(size == null) size = 1;
 
@@ -67,11 +49,12 @@
   exports._presExploDmg = _presExploDmg;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets default impact damage.
-   * ---------------------------------------- */
+   * @param {number|unset} [size]
+   * @param {number|unset} [intv]
+   * @return {number}
+   */
   const _impactDmg = function(size, intv) {
     if(size == null) size = 1;
     if(intv == null) intv = 0.0;
@@ -81,11 +64,11 @@
   exports._impactDmg = _impactDmg;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets default impact status duration.
-   * ---------------------------------------- */
+   * @param {number|unset} [intv]
+   * @return {number}
+   */
   const _impactDur = function(intv) {
     if(intv == null) intv = 0.0;
 
@@ -94,11 +77,11 @@
   exports._impactDur = _impactDur;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets default impact minimum radius that impact can be absorbed by liquid floor.
-   * ---------------------------------------- */
+  /**
+   * Gets default impact minimum radius above which impact wave can be absorbed by liquid floor.
+   * @param {number|unset} [size]
+   * @return {number}
+   */
   const _impactMinRad = function(size) {
     if(size == null) size = 1;
 
@@ -107,11 +90,11 @@
   exports._impactMinRad = _impactMinRad;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets default impact radius for dust effect.
-   * ---------------------------------------- */
+   * @param {number|unset} [size]
+   * @return {number}
+   */
   const _impactDustRad = function(size) {
     if(size == null) size = 1;
 
@@ -123,21 +106,23 @@
   /* <---------- damage ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Applies damage (triggers damage display).
-   * ---------------------------------------- */
+   * @param {Building|Unit} e
+   * @param {number} dmg
+   * @param {number|unset} [armorMtp]
+   * @param {string|unset} [mode_ow]
+   * @return {boolean}
+   */
   const damage = function(e, dmg, armorMtp, mode_ow) {
-    if(e == null) return false;
     if(dmg < 0.0001) return false;
 
     let dmg_fi = MDL_entity._dmgTake(e, dmg, armorMtp);
     if(e instanceof Building) {
-      MDL_effect.showAt_dmg(e.x, e.y, dmg_fi, null, tryVal(mode_ow, MDL_entity._bShield(e, true) > dmg_fi ? "shield" : "health"));
-      MDL_effect.showAt_flash(e);
+      MDL_effect._e_dmg(e.x, e.y, dmg_fi, null, tryVal(mode_ow, MDL_entity._bShield(e, true) > dmg_fi ? "shield" : "health"));
+      MDL_effect._e_flash(e);
     } else {
-      MDL_effect.showAt_dmg(e.x, e.y, dmg_fi, null, tryVal(mode_ow, e.shield > dmg_fi ? "shield" : "health"));
+      MDL_effect._e_dmg(e.x, e.y, dmg_fi, null, tryVal(mode_ow, e.shield > dmg_fi ? "shield" : "health"));
     };
     e.damagePierce(dmg_fi, true);
 
@@ -146,21 +131,21 @@
   exports.damage = damage;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Applies heal (triggers damage display).
-   * ---------------------------------------- */
+   * @param {Building|Unit} e
+   * @param {number} healAmt
+   * @return {boolean}
+   */
   const heal = function(e, healAmt) {
-    if(e == null) return false;
     if(healAmt < 0.0001) return false;
 
     if(e instanceof Building) {
-      MDL_effect.showAt_dmg(e.x, e.y, healAmt, null, "heal");
-      MDL_effect.showAt_flash(e, Pal.heal);
+      MDL_effect._e_dmg(e.x, e.y, healAmt, null, "heal");
+      MDL_effect._e_flash(e, Pal.heal);
       e.recentlyHealed();
     } else {
-      MDL_effect.showAt_dmg(e.x, e.y, healAmt, null, "heal");
+      MDL_effect._e_dmg(e.x, e.y, healAmt, null, "heal");
       e.healTime = 1.0;
     };
     e.heal(healAmt);
@@ -170,31 +155,34 @@
   exports.heal = heal;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Finds the multiplier on final damage based on type affinity.
-   * ---------------------------------------- */
-  const _dmgMtp_type = function(e, type, mtp) {
+  /**
+   * Gets multiplier on final damage based on type affinity.
+   * @param {Unit} unit
+   * @param {string} type
+   * @param {number} mtp - The multiplier returned if type matches.
+   * @return {number}
+   */
+  const _dmgMtp_type = function(unit, type, mtp) {
     let tag = DB_unit.db["grpParam"]["typeTagMap"].read(type);
-    return tag == null || !MDL_content._hasTag(e.type, tag) ?
+    return tag == null || !MDL_content._hasTag(unit.type, tag) ?
       1.0 :
       mtp;
   };
   exports._dmgMtp_type = _dmgMtp_type;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Calculates the final damage multiplier with given type multipliers.
-   * ---------------------------------------- */
-  const _dmgMtp_typeMtpArr = function(e, typeMtpArr) {
+  /**
+   * Calculates final damage multiplier with given type multipliers.
+   * @param {Unit} unit
+   * @param {Array|null} typeMtpArr - <ROW>: type, mtp.
+   * @return {number}
+   */
+  const _dmgMtp_typeMtpArr = function(unit, typeMtpArr) {
     if(typeMtpArr == null || typeMtpArr.length === 0) return 1.0;
 
     let i = 0, iCap = typeMtpArr.iCap(), mtp = 1.0;
     while(i < iCap) {
-      mtp *= _dmgMtp_type(e, typeMtpArr[i], typeMtpArr[i + 1]);
+      mtp *= _dmgMtp_type(unit, typeMtpArr[i], typeMtpArr[i + 1]);
       i += 2;
     };
 
@@ -206,17 +194,21 @@
   /* <---------- event ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Creates a basic explosion.
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {number} dmg
+   * @param {number|unset} [rad]
+   * @param {number|unset} [shake]
+   * @param {string|unset} [se_gn]
+   * @return {void}
+   */
   const _a_explosion = function(
     x, y, dmg,
-    rad, shake, noSound
+    rad, shake, se_gn
   ) {
     if(!Vars.state.rules.reactorExplosions) return;
-    if(dmg == null) dmg = 0.0;
     if(dmg < 0.0001) return;
     if(rad == null) rad = 40.0;
     if(rad < 0.0001) return;
@@ -224,30 +216,35 @@
 
     Damage.damage(x, y, rad, dmg);
     MDL_effect.showAt(x, y, rad < 16.0 ? EFF.explosionSmall : EFF.explosion, 0.0);
-    MDL_effect.showAt_shake(x, y, shake);
-    if(!noSound) MDL_effect.playAt(x, y, "se-shot-explosion", 1.0, 1.0, 0.1);
+    MDL_effect._e_shake(x, y, shake);
+    MDL_effect.playAt(x, y, tryVal(se_gn, "se-shot-explosion"), 1.0, 1.0, 0.1);
   };
   exports._a_explosion = _a_explosion;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {_a_explosion} for sync.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _a_explosion} for sync.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} dmg
+   * @param {number|unset} [rad]
+   * @param {number|unset} [shake]
+   * @param {string|unset} [se_gn]
+   * @return {void}
+   */
   const _a_explosion_global = function(
     x, y, dmg,
-    rad, shake, noSound
+    rad, shake, se_gn
   ) {
     if(!Vars.state.rules.reactorExplosions) return;
 
     MDL_net.sendPacket(
       "both", "lovec-both-attack-explosion",
-      packPayload([x, y, dmg, rad, shake, noSound]),
+      packPayload([x, y, dmg, rad, shake, se_gn]),
       true, true,
     );
 
-    _a_explosion(x, y, dmg, rad, shake, noSound);
+    _a_explosion(x, y, dmg, rad, shake, se_gn);
   }
   .setAnno("init", function() {
     MDL_net.__packetHandler("both", "lovec-both-attack-explosion", payload => {
@@ -257,17 +254,22 @@
   exports._a_explosion_global = _a_explosion_global;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Creates an impact wave.
-   * ---------------------------------------- */
-  const _a_impact = function(
-    x, y, dmg, staDur,
-    rad, minRad, shake, caller
+   * @param {number} x
+   * @param {number} y
+   * @param {number} dmg
+   * @param {number|unset} [staDur]
+   * @param {number|unset} [rad]
+   * @param {number|unset} [minRad]
+   * @param {number|unset} [shake]
+   * @param {Unit|unset} [caller] - This single unit won't be affected by impact wave.
+   * @return {void}
+   */
+  const _a_impact = function thisFun(
+    x, y, dmg,
+    staDur, rad, minRad, shake, caller
   ) {
-    if(dmg == null) dmg = 0.0;
-    if(dmg < 0.0001) return;
     if(staDur == null) staDur = 120.0;
     if(rad == null) rad = 40.0;
     if(rad < 0.0001) return;
@@ -275,8 +277,8 @@
     if(shake == null) shake = 0.0;
 
     let dst, frac, dmg_fi;
-    MDL_pos._units(x, y, rad, caller).forEachFast(unit => {
-      if(!MDL_cond._isOnFloor(unit) || MDL_pos._rayCheck_mobileFlr(x, y, unit.x, unit.y, minRad)) return;
+    MDL_pos._units(x, y, rad, thisFun.tmpUnits).forEachFast(unit => {
+      if(FRAG_unit.checkCaller(unit, caller) || !MDL_cond._isOnFloor(unit) || MDL_pos._rayCheck_mobileFlr(x, y, unit.x, unit.y, minRad)) return;
       dst = Mathf.dst(x, y, unit.x, unit.y);
       frac = 1.0 - dst / rad;
       dmg_fi = dmg * (Mathf.random(0.6) + 0.7) * Math.max(frac, 0.1) + VAR.dmg_impactMinDmg;
@@ -299,19 +301,31 @@
       if(Mathf.chance(Math.max(frac, 0.2))) unit.apply(VARGEN.staStunned, staDur);
     });
 
-    MDL_effect.showAt_shake(x, y, shake);
-  };
+    MDL_effect._e_shake(x, y, shake);
+  }
+  .setProp({
+    tmpUnits: [],
+  });
   exports._a_impact = _a_impact;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Creates lightning arcs.
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {Team|unset} [team]
+   * @param {number|unset} [dmg]
+   * @param {number|unset} [amt]
+   * @param {number|unset} [r]
+   * @param {number|unset} [offR]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {string|unset} [hitMode] - <VALS>: "none", "ground", "air".
+   * @param {SoundGn|unset} [se_gn]
+   * @return {void}
+   */
   const _a_lightning = function(
     x, y, team, dmg, amt,
-    r, offR, color_gn, hitMode, noSound
+    r, offR, color_gn, hitMode, se_gn
   ) {
     if(team == null) team = Team.derelict;
     if(dmg == null) dmg = VAR.blk_lightningDmg;
@@ -343,6 +357,6 @@
       i++;
     };
 
-    if(!noSound) MDL_effect.playAt(x, y, Sounds.shootArc);
+    MDL_effect.playAt(x, y, tryVal(se_gn, Sounds.shootArc));
   };
   exports._a_lightning = _a_lightning;

@@ -5,12 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds some methods to {global} so you can use them in game, if you know how to use console.
-   * Can be used to avoid module coupling.
-   * ---------------------------------------- */
+  /**
+   * Sets up the structure of global object before definition.
+   */
 
 
 /*
@@ -23,91 +20,6 @@
   /* <---------- import ----------> */
 
 
-  const NOISE = require("lovec/glb/BOX_noise");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const EFF = require("lovec/glb/GLB_eff");
-  const PARAM = require("lovec/glb/GLB_param");
-  const SAVE = require("lovec/glb/GLB_save");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const CLS_matrix = require("lovec/cls/math/CLS_matrix");
-  const CLS_enumBuilder = require("lovec/cls/struct/CLS_enumBuilder");
-  const CLS_objectBox = require("lovec/cls/struct/CLS_objectBox");
-  const CLS_window = require("lovec/cls/ui/CLS_window");
-  const CLS_achievement = require("lovec/cls/util/CLS_achievement");
-  const CLS_settingTerm = require("lovec/cls/util/CLS_settingTerm");
-
-
-  const MATH_function = require("lovec/math/MATH_function");
-  const MATH_geometry = require("lovec/math/MATH_geometry");
-  const MATH_interp = require("lovec/math/MATH_interp");
-  const MATH_probability = require("lovec/math/MATH_probability");
-  const MATH_statistics = require("lovec/math/MATH_statistics");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-  const FRAG_faci = require("lovec/frag/FRAG_faci");
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-  const FRAG_item = require("lovec/frag/FRAG_item");
-  const FRAG_payload = require("lovec/frag/FRAG_payload");
-  const FRAG_puddle = require("lovec/frag/FRAG_puddle");
-  const FRAG_unit = require("lovec/frag/FRAG_unit");
-
-
-  const MDL_ai = require("lovec/mdl/MDL_ai");
-  const MDL_attr = require("lovec/mdl/MDL_attr");
-  const MDL_backend = require("lovec/mdl/MDL_backend");
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_call = require("lovec/mdl/MDL_call");
-  const MDL_color = require("lovec/mdl/MDL_color");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_file = require("lovec/mdl/MDL_file");
-  const MDL_flag = require("lovec/mdl/MDL_flag");
-  const MDL_flow = require("lovec/mdl/MDL_flow");
-  const MDL_fuel = require("lovec/mdl/MDL_fuel");
-  const MDL_io = require("lovec/mdl/MDL_io");
-  const MDL_json = require("lovec/mdl/MDL_json");
-  const MDL_market = require("lovec/mdl/MDL_market");
-  const MDL_net = require("lovec/mdl/MDL_net");
-  const MDL_pollution = require("lovec/mdl/MDL_pollution");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_reaction = require("lovec/mdl/MDL_reaction");
-  const MDL_recipe = require("lovec/mdl/MDL_recipe");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-  const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_terrain = require("lovec/mdl/MDL_terrain");
-  const MDL_text = require("lovec/mdl/MDL_text");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-  const MDL_util = require("lovec/mdl/MDL_util");
-
-
-  const TP_attr = require("lovec/tp/TP_attr");
-  const TP_effect = require("lovec/tp/TP_effect");
-  const TP_recipeGen = require("lovec/tp/TP_recipeGen");
-
-
-  const DB_block = require("lovec/db/DB_block");
-  const DB_env = require("lovec/db/DB_env");
-  const DB_fluid = require("lovec/db/DB_fluid");
-  const DB_item = require("lovec/db/DB_item");
-  const DB_misc = require("lovec/db/DB_misc");
-  const DB_reaction = require("lovec/db/DB_reaction");
-  const DB_status = require("lovec/db/DB_status");
-  const DB_unit = require("lovec/db/DB_unit");
-
-
-  const MOD_tmi = require("lovec/mod/MOD_tmi");
-
-
 /*
   ========================================
   Section: Application
@@ -117,121 +29,129 @@
 
 
 
-  MDL_event._c_onLoad(() => {
+  global.lovecUtil = {
 
 
-    global.lovec = {
 
 
-      noise: NOISE,
-      trigger: TRIGGER,
-      eff: EFF,
-      param: PARAM,
-      save: SAVE,
-      timer: TIMER,
-      var: VAR,
-      varGen: VARGEN,
+    /**
+     * Some global static properties.
+     */
+    prop: {
 
 
-      cls_matrix: CLS_matrix,
-      cls_enumBuilder: CLS_enumBuilder,
-      cls_objectBox: CLS_objectBox,
-      cls_window: CLS_window,
-      cls_achievement: CLS_achievement,
-      cls_settingTerm: CLS_settingTerm,
+      locale: Core.settings.getString("locale"),
+      useRecolorSpr: Core.settings.getBool("lovec-load-gen-recolor", true),
 
 
-      math_function: MATH_function,
-      math_geometry: MATH_geometry,
-      math_interp: MATH_interp,
-      math_probability: MATH_probability,
-      math_statistics: MATH_statistics,
+    },
 
 
-      frag_attack: FRAG_attack,
-      frag_faci: FRAG_faci,
-      frag_fluid: FRAG_fluid,
-      frag_item: FRAG_item,
-      frag_payload: FRAG_payload,
-      frag_puddle: FRAG_puddle,
-      frag_unit: FRAG_unit,
 
 
-      mdl_ai: MDL_ai,
-      mdl_attr: MDL_attr,
-      mdl_backend: MDL_backend,
-      mdl_bundle: MDL_bundle,
-      mdl_call: MDL_call,
-      mdl_color: MDL_color,
-      mdl_cond: MDL_cond,
-      mdl_content: MDL_content,
-      mdl_draw: MDL_draw,
-      mdl_effect: MDL_effect,
-      mdl_entity: MDL_entity,
-      mdl_event: MDL_event,
-      mdl_file: MDL_file,
-      mdl_flag: MDL_flag,
-      mdl_flow: MDL_flow,
-      mdl_fuel: MDL_fuel,
-      mdl_io: MDL_io,
-      mdl_json: MDL_json,
-      mdl_market: MDL_market,
-      mdl_net: MDL_net,
-      mdl_pollution: MDL_pollution,
-      mdl_pos: MDL_pos,
-      mdl_reaction: MDL_reaction,
-      mdl_recipe: MDL_recipe,
-      mdl_recipeDict: MDL_recipeDict,
-      mdl_table: MDL_table,
-      mdl_terrain: MDL_terrain,
-      mdl_text: MDL_text,
-      mdl_texture: MDL_texture,
-      mdl_ui: MDL_ui,
-      mdl_util: MDL_util,
+    /**
+     * Internal functions, do not abuse.
+     */
+    fun: {
 
 
-      tp_attr: TP_attr,
-      tp_effect: TP_effect,
-      tp_recipeGen: TP_recipeGen,
+      /**
+       * Gets current planet as string.
+       * @return {string}
+       */
+      _plaCur() {
+        let nm = "";
+        if(!Vars.state.isMenu() && Vars.state.getPlanet() != null) {
+          nm = Vars.state.getPlanet().name;
+        };
 
-
-      db_block: DB_block,
-      db_env: DB_env,
-      db_fluid: DB_fluid,
-      db_item: DB_item,
-      db_misc: DB_misc,
-      db_reaction: DB_reaction,
-      db_status: DB_status,
-      db_unit: DB_unit,
-
-
-      mod_tmi: MOD_tmi,
-
-
-    };
-
-
-    global.lovec.debug = {
-
-
-      printLiq(tx, ty) {
-        LOG_HANDLER.log("liquidInfo", tx, ty);
+        return nm;
       },
 
 
-      printCep(team) {
-        LOG_HANDLER.log("cepInfo", team);
+      /**
+       * Gets current map as string.
+       * @return {string}
+       */
+      _mapCur() {
+        let nm = "";
+        if(!Vars.state.isMenu()) {
+          if(Vars.state.sector != null && Vars.state.sector.preset != null) {
+            nm = Vars.state.sector.preset.name;
+          } else if(Vars.state.map != null) {
+            nm = Vars.state.map.plainName();
+          };
+        };
+
+        return nm;
       },
 
 
-    };
+      /**
+       * Calculates global heat for current map.
+       * @return {number}
+       */
+      _glbHeat() {
+        let nmPla = global.lovecUtil.fun._plaCur();
+        if(nmPla === "") return 26.0;
+        let nmMap = Vars.state.map.plainName();
+
+        return DB_env.db["param"]["map"]["heat"].read(
+          nmMap,
+          DB_env.db["param"]["pla"]["heat"].read(nmPla, 0.26)
+        ) * 100.0;
+      },
 
 
-    Time.run(1.0, () => {
-      MDL_event._c_onDraw(() => {
-        if(DRAW_TEST.enabled) DRAW_TEST.draw();
-      });
-    });
+    },
 
 
-  }, 75112593);
+
+
+    /**
+     * Stores various contents.
+     */
+    db: {
+
+
+      oreDict: new ObjectMap(),
+      rs: {
+        hardness: readAuxJsonData({}, "hardness"),
+        sintTemp: readAuxJsonData({}, "sintTemp"),
+      },
+
+
+      stat: {},
+      statUnit: {},
+      statCategory: {},
+      shader: {},
+      cacheLayer: {},
+
+
+      keyBindListener: [],
+      dialFlow: [],
+      settingTerm: [],
+
+
+      weaponTemplate: [],
+      bulletTemplate: [],
+      partTemplate: [],
+
+
+      ability: [],
+      ai: [],
+      sortF: {},
+      drawer: [],
+      consumer: [],
+      dialog: [],
+
+
+    },
+
+
+
+
+  };
+
+
+  eval("NGU2YTYzMzI1OTdhNWE2ZDRlNmE0OTMyNGQ1NDVhNmE0ZTU3NDk3OTRkNmE1OTc5NGU0NDYzN2E0ZjU0NGQ3OTRlNTc0NTMxNGU3YTUyNmM0ZTU0NTkzMjRlNDQ1MTMzNGU2ZDRkMzM0ZDdhNDk3OTRkNmQ1NTMyNGU0NDU5MzE0ZTZhNGQzMjVhNmE1OTMwNGU2YTU1N2E0ZTZhNGQzMDRkNmE2Nzc5NGY1NDU2NmI0ZTU3NDk3OTRkNmE1OTdhNGU0NDY3MzA1OTU0NjMzMjRlNmE0ZDMwNGQ1NDRlNmI0ZDMyNTE3OTRkNmE0YTZjNGU2YTUxMzI0ZTU0NTk3YTRlNmQ1OTMyNGU0NDU5MzE0ZDdhNTk3YTRlNDQ0OTM0NGQ2YTZiMzE1YTQ0NTY2OTRkNmE0OTMxNTk1NDUxMzM0ZTU0NTkzMjRmNTQ1OTMwNGU1NDYzMzI0ZDdhNGU2YjRkNmE0OTc5NWE1NDU5MzA0ZTZhNTUzMjRkN2E1YTZkNGU2YTUxMzI0ZTU0NGQzMjRkN2E1MTc5NGY0NDQ5MzU0ZTU3NTE3YTVhNDQ0OTM0NGU2YTU5MzM0ZTU0NWE2YzRlNmE0ZDMzNGU0NDU5MzU0ZTZkNTkzMjVhNTQ0OTM0NGQ2YTZiMzM1OTZhNTkzNTRlNmE1OTc5NGY0NDUxN2E0ZTZkNTkzMzRkNmE1OTMxNGU1NzQ5Nzk0ZDZhNTk3YTRkN2E0OTMxNGU2YTRkNzc0ZTZhNTEzMDRlN2E1YTZhNGU3YTU1MzE1OTU0NGQ3YTRlNDc1MTdhNWE0NDQ5Nzk0ZDZkNTUzMjRlNDQ1OTMxNGU2YTRkMzI1YTZhNTkzMDRlNmE1NTdhNGU2YTRkMzA0ZDZhNjc3OTRmNTQ1NjZiNGU1NzQ5Nzk0ZDZhNTY2ODRkN2E0OTMxNGU2YTRkNzc0ZTU0NTU3YTRkN2E1NTc5NGU3YTZiMzI0ZDU0NTUzMzRkN2E1NTMyNWE1NDQ5Nzk0ZDZkNTUzMjRlNDQ1OTMxNGU2YTRkMzI1YTZhNTkzMDRlNmE1NTdhNGU2YTRkMzA0ZDZhNjc3OTRmNTQ1NjZiNGQ2YTY3Nzk0ZDZhNTk3OTRlNDQ2MzdhNGY1NDRkNzk0ZTU3NDUzMTRlN2E1MjZiNGU3YTUxMzI0ZDZhNTUzMzRlNmQ0ZDMzNTk1NDU1MzU0ZTdhNmI3YTRkNTQ2NDY4NGU1NzQ1MzE0ZTdhNTI2YzRlN2E2YjMxNTk1NDU1MzQ0ZTU0NDUzMzRlNDQ1NTM1NGQ3YTQ5N2E0ZjU0NWE2OTRlNTc0NTMxNGQ1NDRlNmI0ZDMyNTE3OTRkNmE0YTZjNGU2YTUxMzI0ZTU0NTk3YTRlNmQ1OTMyNGU0NDU5MzE0ZDdhNTk3YTRlNDQ0OTM0NGQ2YTZiNzk1OTdhNDk3NzRkNmE0OTc5NGQ2YTQ5MzU0ZTU3NDk3OTRkNmE1OTc4NGU1NDYzN2E0ZTU0NWE2ODRlNmE0OTMwNGY0NDU1MzI0ZTZkNDkzMTU5NTQ1NTM0NGU0NzUxN2E1YTQ0NDk3OTRkNmQ1NTMyNGU0NDU5MzE0ZTZhNGQzMjVhNmE1OTMwNGU2YTU1N2E0ZTZhNGQzMDRkNmE2Nzc5NGY1NDU2NmI0ZDZhNjc3OTRkNmE1NTc3NGU0NDYzMzA0ZTZhNjMzMTRlNmE1MTMxNGU3YTYzMzA0ZTZkNGQzMDU5N2E1NTMzNGQ3YTQ1MzM0ZTZhNTY2ODRlNDQ2MzMxNGU1NDRhNjk0ZDZhNDk3OTVhNTQ1OTMwNGU2YTU1MzI0ZDdhNWE2ZDRlNmE1MTMyNGU1NDRkMzI0ZDdhNTE3OTRmNDQ0OTM1NGQ2YTZiNzk0ZjU0NjQ2OTRlNDc0ZDMyNWE2YTU5MzM0ZDZkNTUzMjRmNTQ1YTZjNGU2YTU5MzI1YTZhNDkzNDRkNmE0OTMxNTk2YTUyNmE0ZTQ3NTkzMTRlNmE1MTMxNGU0NDRkMzE1YTQ0NDk3NzRlNTc0OTc5NGU0NDRkNzg0ZTU3NTE3OTRkNDQ1OTM1NGU3YTRkNzk0ZDQ0NTkzMTRlNmQ1NTMyNGQ1NDU5Nzk0ZTZkNGQzMjRlNTQ1OTMwNGQ2ZDU1Nzk0ZDZhNGE2YzRlNmE1OTMyNWE2YTYzNzk0ZTZkNTEzMjRkNTQ2MzMwNGQ2YTY3Nzk0ZDZhNTEzMDRlNmE1NTMyNGQ2YTYzMzE0ZTZhNjM3OTRkNDQ1YTZiNGU2ZDU5MzI0ZTQ0NTkzMTRkNmE0OTc5NWE1NDU5N2E0ZTZkNTkzMjU5N2E1YTZkNGU3YTQ5Nzk0ZjQ0NTU3NzRlNmE0NTMyNTk3YTRhNmM0ZTZhNDUzMjRkN2E1OTdhNGU2YTU1MzI1YTU0NjMzMDRkNmE2Yjc5NGY1NDQ5MzU0ZDMyNDkzMzRkNmE1OTMxNGU3YTUxMzM0ZTU0NjM3OTRlNmQ1NTc5NGQ0NDYzMzA0ZTdhNDkzMzRlNTQ1OTMxNGUzMjUxMzI0ZTU0NWE2YTRlN2E0ZDMyNGU1NDY0Njk0ZTdhNDkzMjRlNTQ2MzMwNGU3YTU1MzM0ZDZhNWE2YzRkNmE0MTMyNGU2YTU5Nzg0ZTZkNGQzMzRkN2E1OTMxNGUzMjUxMzM1YTQ0NDkzNTRkNmE2Nzc5NGY1MTNkM2Q=".decode64().decodeHex().decode64().decodeHex());

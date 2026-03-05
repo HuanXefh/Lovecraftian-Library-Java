@@ -22,29 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-  const FRAG_item = require("lovec/frag/FRAG_item");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_flow = require("lovec/mdl/MDL_flow");
-  const MDL_fuel = require("lovec/mdl/MDL_fuel");
-  const MDL_io = require("lovec/mdl/MDL_io");
-  const MDL_pollution = require("lovec/mdl/MDL_pollution");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 
@@ -87,11 +64,11 @@
           MDL_fuel._fuelArr(blk).forEachFast(rs => {
             matArr.push([
               rs,
-              rs instanceof Item ? MDL_fuel._fuelPon(rs) : "-",
-              MDL_fuel._fuelLvl(rs),
+              rs instanceof Liquid ? "-" : (MDL_fuel._fuelPon(rs) / blk.fuelConsMtp).color(blk.fuelConsMtp.fEqual(1.0) ? Color.white : blk.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
+              (MDL_fuel._fuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
             ]);
           });
-          MDL_table.setTable_base(tb1, matArr);
+          MDL_table._l_table(tb1, matArr);
         }).left().padLeft(28.0);
       }));
 
@@ -247,7 +224,7 @@
 
 
   function comp_ex_buildFuelSelector(b, tb) {
-    MDL_table.setSelector_ct(
+    MDL_table._s_ct(
       tb, b.block, MDL_fuel._fuelArr(b.block),
       () => b.delegee.fuelSel, val => b.configure("FUEL: " + (val == null ? "null" : val.name)), false,
       b.block.selectionRows, b.block.selectionColumns - 1,

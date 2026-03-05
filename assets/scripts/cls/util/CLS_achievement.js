@@ -1,25 +1,20 @@
-/* ----------------------------------------
- * NOTE:
- *
- * The Lovec version of {Achievement}.
- * Achievements should be created on CLIENT LOAD, and not on headless end.
- * See {TP_achievement} in ProjReind.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
-
-
-const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-const MDL_bundle = require("lovec/mdl/MDL_bundle");
-const MDL_ui = require("lovec/mdl/MDL_ui");
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Lovec achievement.
+ * Achievements should be created on CLIENT LOAD and not on headless end.
+ * See {@link TP_achievement} in ProjReind for examples.
+ * @class
+ * @param {string} nmMod
+ * @param {string} nm
+ * @param {TextureRegionDrawable} icon
+ * @param {CLS_eventTrigger} trigger - Trigger used to check state of the achievement.
+ * @param {Function|unset} [listener] - Complete the achievement here. If not set, the achievement will be completed when trigger is fired.
+ */
 const CLS_achievement = newClass().initClass();
 
 
@@ -48,11 +43,10 @@ const insNms = [];
 var cls = CLS_achievement;
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Clears all completed achievements.
- * ---------------------------------------- */
+ * @return {void}
+ */
 cls.clear = function() {
   if(Vars.headless) return;
 
@@ -71,51 +65,47 @@ cls.clear = function() {
 var ptp = CLS_achievement.prototype;
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns mod of this achievement.
- * ---------------------------------------- */
+/**
+ * Gets mod of this achievement.
+ * @return {Mod}
+ */
 ptp.getMod = function() {
   return fetchMod(this.mod);
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Variant of {getHeader} called by instances.
- * ---------------------------------------- */
+/**
+ * Gets header of this achievement.
+ * @return {string}
+ */
 ptp.getHeader = function() {
   return this.name;
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns icon used by this achievement (as drawable texture region).
- * ---------------------------------------- */
+/**
+ * Gets icon used by this achievement.
+ * @return {TextureRegionDrawable}
+ */
 ptp.getIcon = function() {
   return this.icon;
-},
+};
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns text description of this achievement.
- * ---------------------------------------- */
+/**
+ * Gets text description of this achievement.
+ * <br> <BUNDLE>: "info.common-info-achieve-<nmMod>-<nm>".
+ * @return {string}
+ */
 ptp.getText = function() {
   return MDL_bundle._info("common", "achieve-" + this.name);
-},
+};
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Whether this achievement has been completed.
- * ---------------------------------------- */
+ * @return {boolean}
+ */
 ptp.isCompleted = function() {
   return Vars.headless ?
     false :
@@ -123,11 +113,10 @@ ptp.isCompleted = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Completes this achievement.
- * ---------------------------------------- */
+ * @return {void}
+ */
 ptp.complete = function() {
   if(Vars.headless || this.isCompleted()) return;
 

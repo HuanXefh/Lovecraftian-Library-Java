@@ -5,12 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Methods specifically used by {BLK_recipeFactory}.
-   * If you're trying to figure out how multi-crafter in Lovec works, also see {MDL_recipe}, {INTF_BLK_recipeSelector}, {INTF_BLK_recipeHandler} and {BLK_recipeFactory}.
-   * ---------------------------------------- */
+  /**
+   * Methods specifically used by {@link BLK_recipeFactory}.
+   */
 
 
 /*
@@ -23,26 +20,18 @@
   /* <---------- import ----------> */
 
 
-  const EFF = require("lovec/glb/GLB_eff");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-  const FRAG_item = require("lovec/frag/FRAG_item");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-
-
   /* <---------- condition ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether {rs_gn} is an input in the multi-crafter.
-   * ---------------------------------------- */
+  /**
+   * Whether `rs_gn` is an input in the multi-crafter.
+   * @param {ResourceGn} rs_gn
+   * @param {Array} ci
+   * @param {Array} bi
+   * @param {Array} aux
+   * @param {Array} opt
+   * @return {boolean}
+   */
   const _hasInput = function(rs_gn, ci, bi, aux, opt) {
     let rs = MDL_content._ct(rs_gn, "rs");
     if(rs == null) return false;
@@ -109,22 +98,25 @@
   exports._hasInput = _hasInput;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether the multi-crafter has any payload input.
-   * ---------------------------------------- */
+   * @param {Array} payi
+   * @return {boolean}
+   */
   const _hasInput_pay = function(payi) {
     return payi.length > 0;
   };
   exports._hasInput_pay = _hasInput_pay;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether {rs_gn} is an output in the multi-crafter.
-   * ---------------------------------------- */
+  /**
+   * Whether `rs_gn` is an output in the multi-crafter.
+   * @param {ResourceGn} rs_gn
+   * @param {Array} co
+   * @param {Array} bo
+   * @param {Array} fo
+   * @return {boolean}
+   */
   const _hasOutput = function(rs_gn, co, bo, fo) {
     let rs = MDL_content._ct(rs_gn, "rs");
     if(rs == null) return false;
@@ -162,11 +154,12 @@
   exports._hasOutput = _hasOutput;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether the multi-crafter has any item output.
-   * ---------------------------------------- */
+   * @param {Array} bo
+   * @param {Array} fo
+   * @return {boolean}
+   */
   const _hasOutput_itm = function(bo, fo) {
     let i, iCap;
 
@@ -187,11 +180,13 @@
   exports._hasOutput_itm = _hasOutput_itm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether the multi-crafter has any fluid output.
-   * ---------------------------------------- */
+   * @param {boolean} includeAux
+   * @param {Array} co
+   * @param {Array} bo
+   * @return {boolean}
+   */
   const _hasOutput_liq = function(includeAux, co, bo) {
     let i, iCap, tmp;
 
@@ -228,22 +223,25 @@
   exports._hasOutput_liq = _hasOutput_liq;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether the multi-crafter has any payload output.
-   * ---------------------------------------- */
+   * @param {Array} payo
+   * @return {boolean}
+   */
   const _hasOutput_pay = function(payo) {
     return payo.length > 0;
   };
   exports._hasOutput_pay = _hasOutput_pay;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of all liquids found in inputs.
-   * ---------------------------------------- */
+  /**
+   * Gets all liquids found in outputs.
+   * @param {Array|unset} contArr
+   * @param {Array} ci
+   * @param {Array} bi
+   * @param {Array} aux
+   * @return {Array<Liquid>}
+   */
   const _inputLiqs = function(contArr, ci, bi, aux) {
     const arr = contArr != null ? contArr.clear() : [];
     let i, iCap, j, jCap;
@@ -298,11 +296,13 @@
   exports._inputLiqs = _inputLiqs;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of all liquids found in outputs.
-   * ---------------------------------------- */
+  /**
+   * Gets all liquids found in outputs.
+   * @param {Array|unset} contArr
+   * @param {Array} co
+   * @param {Array} bo
+   * @return {Array<Liquid>}
+   */
   const _outputLiqs = function(contArr, co, bo) {
     const arr = contArr != null ? contArr.clear() : [];
     let i, iCap;
@@ -329,11 +329,15 @@
   exports._outputLiqs = _outputLiqs;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether the multi-crafter can add resource any more.
-   * ---------------------------------------- */
+  /**
+   * Whether the multi-crafter can add resource anymore.
+   * @param {Building} b
+   * @param {boolean} ignoreItemFullness
+   * @param {Array} co
+   * @param {Array} bo
+   * @param {Array} fo
+   * @return {boolean}
+   */
   const _canAdd = function(b, ignoreItemFullness, co, bo, fo) {
     let i, iCap, tmp, amt, p;
 
@@ -392,12 +396,15 @@
   /* <---------- calculation ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns a 2-tuple of items and fluids to dump.
-   * {co} is called in dump method for output direction.
-   * ---------------------------------------- */
+  /**
+   * Gets a 2-tuptle of items and fluids to dump.
+   * `co` is not used here due to liquid output directions.
+   * @param {Building} b
+   * @param {Array|unset} contTup
+   * @param {Array} bo
+   * @param {Array} fo
+   * @return {[Array<Item>, Array<Liquid>]}
+   */
   const _dumpTup = function(b, contTup, bo, fo) {
     const tup = contTup != null ? contTup : [[], []];
 
@@ -429,12 +436,13 @@
   exports._dumpTup = _dumpTup;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns a 4-tuple for currently used optional input.
-   * Returns {null} if no optional input.
-   * ---------------------------------------- */
+  /**
+   * Gets a 4-tuple of preferred optional input.
+   * Returns null if no optional input.
+   * @param {Building} b
+   * @param {Array} opt
+   * @return {[Item, number, number, number]|null} <TUP>: item, amt, p, mtp.
+   */
   const _optTup = function(b, opt) {
     if(b.items == null) return null;
 
@@ -461,11 +469,16 @@
   exports._optTup = _optTup;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns current efficiency of the multi-crafter.
-   * ---------------------------------------- */
+  /**
+   * Calculates current efficiency of the multi-crafter.
+   * @param {Building} b
+   * @param {Array} ci
+   * @param {Array} bi
+   * @param {Array} aux
+   * @param {boolean} reqOpt
+   * @param {Array} opt
+   * @return {number}
+   */
   const _effc = function(b, ci, bi, aux, reqOpt, opt) {
     if(b.cheating()) return 1.0;
 
@@ -486,7 +499,9 @@
             0.0 :
             Math.min(b.liquids.get(tmp) / amt * b.delta() * b.efficiencyScale(), 1.0);
         } else {
-          j = 0, jCap = tmp.iCap(), allAbsent = true;
+          j = 0;
+          jCap = tmp.iCap();
+          allAbsent = true;
           while(j < jCap) {
             if(b.liquids.get(tmp[j]) > 0.01) {
               amt = tmp[j + 1];
@@ -575,11 +590,13 @@
   /* <---------- application ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a multi-crafter consume items.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @param {Array} bi
+   * @param {Array} opt
+   * @return {void}
+   */
   const consume_itm = function(b, bi, opt) {
     if((b.items == null || !b.items.any()) && b.liquids == null) return;
 
@@ -628,11 +645,15 @@
   exports.consume_itm = consume_itm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a multi-crafter consume liquids.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @param {number} progIncLiq
+   * @param {number} timeScl
+   * @param {Array} ci
+   * @param {Array} aux
+   * @return {void}
+   */
   const consume_liq = function(b, progIncLiq, timeScl, ci, aux) {
     if(b.liquids == null) return;
 
@@ -647,7 +668,8 @@
         amt = ci[i + 1];
         b.liquids.remove(tmp, Math.min(amt * progIncLiq, timeScl, b.liquids.get(tmp)));
       } else {
-        j = 0, jCap = tmp.iCap();
+        j = 0;
+        jCap = tmp.iCap();
         while(j < jCap) {
           if(b.liquids.get(tmp[j]) > 0.01) {
             amt = tmp[j + 1];
@@ -673,11 +695,14 @@
   exports.consume_liq = consume_liq;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a multi-crafter produce items.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @param {Array} bo
+   * @param {number} failP
+   * @param {Array} fo
+   * @return {void}
+   */
   const produce_itm = function(b, bo, failP, fo) {
     let failed = Mathf.chance(failP);
 
@@ -720,11 +745,14 @@
   exports.produce_itm = produce_itm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a multi-crafter produce liquids.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @param {number} progIncLiq
+   * @param {number} timeScl
+   * @param {Array} co
+   * @return {void}
+   */
   const produce_liq = function(b, progIncLiq, timeScl, co) {
     if(b.liquids == null) return;
 
@@ -743,11 +771,13 @@
   exports.produce_liq = produce_liq;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a multi-crafter dump some resource in it.
-   * ---------------------------------------- */
+  /**
+   * Lets a multi-crafter dump resource in it.
+   * @param {Building} b
+   * @param {Array} co
+   * @param {[Array<Item>, Array<Liquid>]} dumpTup
+   * @return {void}
+   */
   const dump = function(b, co, dumpTup) {
     if(dumpTup == null) return;
 

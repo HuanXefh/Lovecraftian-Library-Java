@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Mostly function decorators.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,25 +20,18 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- function ----------> */
 
 
   var ptp = Function.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Wraps {length} of this function.
-   * This is ridiculous.
-   * ---------------------------------------- */
+  /**
+   * Wraps `Function#length`, mostly for {@link JavaAdapter}.
+   * It's ridiculous.
+   * @param {number|unset} [len]
+   * @return {Function}
+   */
   ptp.wrapLen = function(len) {
     const thisFun = this;
 
@@ -70,14 +61,24 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The method's returned values will be cached.
-   * If {objMap} is given it will be used to store cached results.
-   * If {stateGetter} is given, the cache will be cleared whenever state is changed. {this} will be passed to the getter.
-   * Used for very costy methods.
-   * ---------------------------------------- */
+  /**
+   * Marks a method as abstract method.
+   * @return {Function}
+   */
+  ptp.setAbstr = function() {
+    return function() {
+      throw new Error("Abstract method should be overrided before being called!");
+    };
+  };
+
+
+  /**
+   * Returned values will be cached for this method for better performance.
+   * Used for costy methods that have static inputs.
+   * @param {ObjectMap|unset} [objMap] - If set, this object map will be used to store cache.
+   * @param {(function(): number)|unset} [stateGetter] - If set, cache will be cleared when state is changed.
+   * @return {Function}
+   */
   ptp.setCache = function thisDecor(objMap, stateGetter) {
     const thisFun = this;
 
@@ -115,11 +116,11 @@
   });
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * For test, monitors function time cost.
-   * ---------------------------------------- */
+  /**
+   * For test only. Monitors time spent on this method.
+   * @param {number|unset} [dataAmt] - How many data to collect before printing the average.
+   * @return {Function}
+   */
   ptp.setTimeTest = function(dataAmt) {
     const thisFun = this;
 
@@ -141,11 +142,10 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * For test, monitors behaviour of some function.
-   * ---------------------------------------- */
+  /**
+   * For test only. Monitors various behaviors of this method.
+   * @return {Function}
+   */
   ptp.setSpy = function thisDecor() {
     const thisFun = this;
 
@@ -172,101 +172,51 @@
     setMethods: function(fun) {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Returns how many times this function has been called now.
-       * ---------------------------------------- */
       fun.getCallCount = function() {
         return fun.__CALLED_COUNT__;
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Returns a list of used {this} values.
-       * ---------------------------------------- */
       fun.getCallThis = function() {
         return fun.__CALLED_THIS__.cpy();
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Returns the last {this} value.
-       * ---------------------------------------- */
       fun.getLastThis = function() {
         return fun.__CALLED_THIS__.cpy();
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Whether {obj} has been {this} value of the function before.
-       * ---------------------------------------- */
       fun.hasCalledOn = function(obj) {
         return fun.__CALLED_THIS__.includes(obj);
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Returns a list of used arguments.
-       * ---------------------------------------- */
       fun.getCallArgs = function() {
         return fun.__CALLED_ARGS__.cpy();
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Returns the last argument array.
-       * ---------------------------------------- */
       fun.getLastCallArg = function() {
         return fun.__CALLED_ARGS__.last();
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Whether the given argument array has been called before.
-       * ---------------------------------------- */
       fun.isArgCalled = function(args) {
         return fun.__CALLED_ARGS__.some(args1 => args.equals(args1));
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Returns a list of returned values.
-       * ---------------------------------------- */
       fun.getReturnVals = function() {
         return fun.__RETURNED_VALS__.cpy();
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Returns the last returned value.
-       * ---------------------------------------- */
       fun.getLastReturnVal = function() {
         return fun.__RETURNED_VALS__.last();
       };
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Whether the function has returned {val} at least once.
-       * ---------------------------------------- */
       fun.hasReturned = function(val) {
         return fun.__RETURNED_VALS__.includes(val);
       };

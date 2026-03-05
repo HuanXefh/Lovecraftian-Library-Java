@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers new consumers.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,25 +20,12 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- special ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Consumes one liquid among a list of liquids, where each liquid has an efficiency multiplier.
-   * ---------------------------------------- */
+   */
   newConsumer(
     "ConsumeLiquidEfficiencyMap",
     (paramObj) => extend(
@@ -94,12 +79,10 @@
   );
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * A power consumer that releases lightning arcs, used by some metallic conduits.
    * Triggered manually.
-   * ---------------------------------------- */
+   */
   newConsumer(
     "ConsumePowerShortCircuitPipe",
     (paramObj) => extend(ConsumePower, {

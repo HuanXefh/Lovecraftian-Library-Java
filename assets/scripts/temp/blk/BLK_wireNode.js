@@ -26,12 +26,6 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_wireDamageInducer");
 
 
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-
-
-  const DB_misc = require("lovec/db/DB_misc");
-
-
   /* <---------- component ----------> */
 
 

@@ -26,10 +26,6 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_manualClickBlock");
 
 
-  const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
   /* <---------- component ----------> */
 
 

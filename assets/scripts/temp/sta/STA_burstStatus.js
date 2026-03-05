@@ -50,7 +50,7 @@
   .setTags()
   .setParam({
     // @PARAM: Time getter, the time is added to current time when effect is applied.
-    // @ARGS: unit, time
+    // <ARGS>: unit, time
     timeGetterTup: prov(() => [(unit, time) => 300.0]),
 
     justApplied: false,

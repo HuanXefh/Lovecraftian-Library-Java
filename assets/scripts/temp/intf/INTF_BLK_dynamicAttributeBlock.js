@@ -22,25 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const FRAG_item = require("lovec/frag/FRAG_item");
-
-
-  const MDL_attr = require("lovec/mdl/MDL_attr");
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
-  const MOD_tmi = require("lovec/mod/MOD_tmi");
-
-
   /* <---------- component ----------> */
 
 
@@ -50,7 +31,7 @@
     };
 
     let cond1 = false, cond2 = false;
-    blk.attrRsMap.forEachRow(2, (nmAttr, nmRs) => {
+    blk.attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
       if(cond1 && cond2) return;
       let rs = MDL_content._ct(nmRs, "rs");
       if(rs == null) return;
@@ -67,7 +48,7 @@
 
     MDL_event._c_onLoad(() => {
       Core.app.post(() => {
-        blk.attrRsMap.forEachRow(2, (nmAttr, nmRs) => {
+        blk.attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
           let rs = MDL_content._ct(nmRs, "rs");
           if(rs == null) return;
 
@@ -78,7 +59,7 @@
       });
     });
 
-    MOD_tmi._r_dynaAttr(blk, blk.attrRsMap, blk.ex_getDynaAttrProdTypeStr(), blk.ex_getDynaAttrProdIsWall());
+    MOD_tmi._r_dynaAttr(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr(), blk.ex_getDynaAttrProdIsWall());
   };
 
 
@@ -95,18 +76,18 @@
 
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table.setDisplay_attr(tb, MDL_attr._attrs_attrRsMap(blk.attrRsMap));
+      MDL_table._d_attr(tb, MDL_attr._attrs_attrRsArr(blk.attrRsArr));
     }));
     blk.stats.add(fetchStat("lovec", "blk-attroutput"), newStatValue(tb => {
       tb.row();
-      MDL_table.setTable_base(tb, (function() {
+      MDL_table._l_table(tb, (function() {
         let matArr = [[
           "",
           MDL_bundle._term("lovec", "resource"),
           fetchStat("lovec", "blk-attrreq").localized(),
           MDL_bundle._term("lovec", "efficiency-multiplier"),
         ]];
-        blk.attrRsMap.forEachRow(2, (nmAttr, nmRs) => {
+        blk.attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
           let rs = MDL_content._ct(nmRs, "rs");
           if(rs == null) return;
           matArr.push([rs, rs.localizedName, MDL_attr._attrB(nmAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
@@ -149,7 +130,7 @@
     if(t == null) return 0.0;
 
     if(Array.someMismatch(thisFun.tmpTup, true, blk, t, rot)) {
-      let tup = MDL_attr._dynaAttrTup(blk.attrRsMap, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
+      let tup = MDL_attr._dynaAttrTup(blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
       thisFun.tmpTup[3] = tup == null ? 0.0 : tup[1];
     };
 
@@ -163,7 +144,7 @@
   function comp_onProximityUpdate(b) {
     b.dynaAttrTs = b.block.ex_findDynaAttrTs(b.dynaAttrTs, b.tileX(), b.tileY(), b.rotation);
 
-    let tup = MDL_attr._dynaAttrTup(b.block.delegee.attrRsMap, b.dynaAttrTs, b.block.delegee.attrMode);
+    let tup = MDL_attr._dynaAttrTup(b.block.delegee.attrRsArr, b.dynaAttrTs, b.block.delegee.attrMode);
     if(tup == null) {
       b.dynaAttrSum = 0.0;
       b.dynaAttrRs = null;
@@ -249,10 +230,10 @@
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: See {MDL_attr._sum_ts}.
+        // @PARAM: See {MDL_attr._sumTs}.
         attrMode: "floor",
         // @PARAM: The attribute-resource map used for this block. See {DB_item.db["map"]["attr"]}.
-        attrRsMap: null,
+        attrRsArr: null,
         // @PARAM: Used to add efficiency multipliers on specific resources.
         dynaAttrRsEffcMap: prov(() => new ObjectMap()),
         // @PARAM: Whether the efficiency should be drawn in {blk.drawPlace}.

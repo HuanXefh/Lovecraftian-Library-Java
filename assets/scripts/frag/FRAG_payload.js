@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods for payload.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,39 +20,35 @@
   /* <---------- import ----------> */
 
 
-  const DB_block = require("lovec/db/DB_block");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Converts a block or unit type into a payload.
-   * ---------------------------------------- */
+   * @param {string|Block|UnitType|null} ct_gn
+   * @param {Team} team
+   * @return {Payload|null}
+   */
   const _pay = function(ct_gn, team) {
-    if(team == null) return null;
-
-    let ct = global.lovecUtil.fun._ct(ct_gn);
+    let ct = findContent(ct_gn);
     if(ct instanceof Block) {
       return new BuildPayload(ct, team);
     } else if(ct instanceof UnitType) {
       return new UnitPayload(ct.create(team));
-    } else {
-      return null;
     };
+
+    return null;
   };
   exports._pay = _pay;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the size of some content as payload.
-   * ---------------------------------------- */
+  /**
+   * Gets size of some content as payload.
+   * @param {string|Block|UnitType|null} ct_gn
+   * @return {number}
+   */
   const _paySize = function(ct_gn) {
-    let ct = global.lovecUtil.fun._ct(ct_gn);
+    let ct = findContent(ct_gn);
     if(ct instanceof Block) return ct.size;
     if(ct instanceof UnitType) return ct.hitSize / Vars.tilesize;
     return 1;
@@ -63,11 +57,12 @@
   exports._paySize = _paySize;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list of payload input sites around {b}.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of payload input sites around `b`.
+   * @param {Building} b
+   * @param {Array|unset} [contArr]
+   * @return {Array<Building>}
+   */
   const _bsPayInput = function(b, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -84,11 +79,12 @@
   exports._bsPayInput = _bsPayInput;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list of payload output sites around {b}.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of payload output sites around `b`.
+   * @param {Building} b
+   * @param {Array|unset} [contArr]
+   * @return {Array<Building>}
+   */
   const _bsPayOutput = function(b, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
 
@@ -112,11 +108,11 @@
   /* <---------- crafting ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Takes a payload out of some building.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @return {Payload|null}
+   */
   const takeAt = function(b) {
     let pay = null;
     if(b.getPayload() == null) return pay;
@@ -134,16 +130,20 @@
   exports.takeAt = takeAt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Produces a payload in some building.
-   * ---------------------------------------- */
+   * @param {Building} b
+   * @param {Payload|null} pay
+   * @param {number|unset} [delay] - Used for effect.
+   * @return {boolean}
+   */
   const produceAt = function(b, pay, delay) {
     if(pay == null || !b.acceptPayload(b, pay)) return false;
 
     Time.run(tryVal(delay, 25.0), () => {
       b.handlePayload(b, pay);
+      Fx.placeBlock.at(b, pay.size() / Vars.tilesize);
+      MDL_effect._s_payloadDrop(b.x, b.y, pay.content());
     });
 
     return true;

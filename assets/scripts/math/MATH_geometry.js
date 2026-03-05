@@ -5,12 +5,10 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Methods that handles geometrical calculation.
+  /**
+   * Handles geometrical calculation.
    * Some of these are really costy!
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -26,12 +24,11 @@
   /* <---------- point ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
-   * Simply calculates distance.
-   * ---------------------------------------- */
+  /**
+   * Calculates distance between two n-dimensional points.
+   * <br> <ARGS>: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
+   * @return {number}
+   */
   const _dst = function() {
     let val = 0.0;
     let i = 0, iCap = arguments.length / 2;
@@ -45,12 +42,11 @@
   exports._dst = _dst;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
-   * Manhattan distance.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _dst} for Manhattan distance.
+   * <br> <ARGS>: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
+   * @return {number}
+   */
   const _dstManh = function() {
     let val = 0.0;
     let i = 0, iCap = arguments.length / 2;
@@ -64,12 +60,11 @@
   exports._dstManh = _dstManh;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
-   * Chebyshev distance.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _dst} for Chebyshev distance.
+   * <br> <ARGS>: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
+   * @return {number}
+   */
   const _dstCheb = function() {
     let val = 0.0;
     let i = 0, iCap = arguments.length / 2;
@@ -88,18 +83,19 @@
 
   function fetchPathTwoPointArg(arr, pathData, dim, ponInd_t) {
     arr.clear();
-    dim._it(1, ind => arr.push(pathData[ponInd_t + ind]));
-    dim._it(1, ind => arr.push(pathData[ponInd_t - dim + ind]));
+    dim._it(ind => arr.push(pathData[ponInd_t + ind]));
+    dim._it(ind => arr.push(pathData[ponInd_t - dim + ind]));
 
     return arr;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Calculates the total length of a path.
-   * ---------------------------------------- */
+  /**
+   * Gets total length of a path.
+   * @param {PathData} pathData
+   * @param {number|unset} [dim]
+   * @return {number}
+   */
   const _pathLen = function(pathData, dim) {
     if(dim == null) dim = 2;
 
@@ -113,16 +109,17 @@
       i += dim;
     };
 
-    return val;
+    return len;
   };
   exports._pathLen = _pathLen;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of distances between points on the path.
-   * ---------------------------------------- */
+  /**
+   * Gets an array of distances between points on the path.
+   * @param {PathData} pathData
+   * @param {number|unset} [dim]
+   * @return {Array<number>}
+   */
   const _pathSegLens = function(pathData, dim) {
     const arr = [];
 
@@ -145,14 +142,12 @@
   /* <---------- area ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARG: x1, y1, x2, y2, x3, y3, ...
-   * Calculates the area of a polygon.
-   * Point coorinates should be arranged clockwise or anticlockwise.
-   * See Shoelace Theorem.
-   * ---------------------------------------- */
+  /**
+   * Gets area of a 2D polygon.
+   * <br> <ARGS>: x1, y1, x2, y2, x3, y3, ...
+   * <br> <REFERENCE>: Shoelace theorem.
+   * @return {number}
+   */
   const _area = function() {
     let iCap = arguments.length;
     if(iCap < 6) return 0.0;
@@ -173,30 +168,11 @@
   exports._area = _area;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether (x, y) is inside a rectangle at (cx, cy).
-   * ---------------------------------------- */
-  const _inRect = function(x, y, cx, cy, hw, hh) {
-    if(hw == null) hw = 0.0;
-    if(hh == null) hh = hw;
-    if(hw < 0.0001 || hh < 0.0001) return false;
-
-    return x > cx - hw
-      && x < cx + hw
-      && y > cy - hh
-      && y < cy + hh;
-  };
-  exports._inRect = _inRect;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARG: x, y, x1, y1, x2, y2, x3, y3, ...
-   * Whether (x, y) is in the range of a polygon.
-   * ---------------------------------------- */
+  /**
+   * Whether (x, y) is inside a 2D-polygon.
+   * <br> <ARGS>: x, y, x1, y1, x2, y2, x3, y3, ...
+   * @return {boolean}
+   */
   const _inPolygon = function() {
     let iCap = arguments.length;
     if(iCap < 8) return true;

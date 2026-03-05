@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Overflow gate with {blk.invert} being useless.
    * ---------------------------------------- */
 
@@ -24,14 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemGate");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const EFF = require("lovec/glb/GLB_eff");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_table = require("lovec/mdl/MDL_table");
 
 
   /* <---------- component ----------> */

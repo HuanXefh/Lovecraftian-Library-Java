@@ -42,7 +42,7 @@
       Draw.rect(btp.shaReg, bul.x + btp.offSha, bul.y + btp.offSha, bul.rotation - 90.0);
       Draw.color();
 
-      processZ(btp.layer - 1.0);
+      processZ();
     };
 
     btp.super$draw(bul);

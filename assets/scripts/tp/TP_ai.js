@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers new unit AIs.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,19 +20,12 @@
   /* <---------- import ----------> */
 
 
-  const MDL_ai = require("lovec/mdl/MDL_ai");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- attack ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Only targets missiles in range.
-   * ---------------------------------------- */
+   */
   newAi(
     "missile-interceptor",
     (paramObj) => extend(MissileAI, {
@@ -69,12 +60,10 @@
   /* <---------- support ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Mines selected item and offload it into {dockB}.
+  /**
+   * Mines selected item and offload it into `dockB`.
    * If this unit has any weapon, it will attack enemies in range.
-   * ---------------------------------------- */
+   */
   newAi(
     "miner",
     (paramObj) => extend(AIController, {
@@ -88,9 +77,9 @@
 
 
       updateMovement() {
-        if(!MDL_ai.comp_updateMovement_attack(this, this.unit)) {
+        if(!MDL_ai._d_attack(this, this.unit)) {
           if(this.dockB != null) {
-            MDL_ai.comp_updateMovement_mine(this, this.unit, this.dockB, this.dockB.delegee.rsTg, this.dockB.block.delegee.blkR * Vars.tilesize);
+            MDL_ai._d_mine(this, this.unit, this.dockB, this.dockB.delegee.rsTg, this.dockB.block.delegee.blkR * Vars.tilesize);
           };
         };
       },

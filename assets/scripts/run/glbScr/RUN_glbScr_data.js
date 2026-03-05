@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Read/write methods.
-   * ---------------------------------------- */
+  /**
+   * Handles data processing.
+   */
 
 
 /*
@@ -22,30 +20,27 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- internal ----------> */
 
 
+  /** @global */
   LOVEC_REVISION = 5;
+  /** @global */
   MOD_REVISION = {};                // For other mods if you don't define another global variable
+  /** @global */
   LOVEC_JSON_PARSER = new Json();
-  LOVEC_JSON_READER = new JsonReader();
 
 
   /* <---------- read & write ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used for read & write.
-   * ---------------------------------------- */
+   * @global
+   * @param {Writes|Reads} wr0rd
+   * @param {string|unset} [nmMod]
+   * @return {number}
+   */
   processRevision = function(wr0rd, nmMod) {
     if(wr0rd instanceof Writes) {
       let revi = nmMod == null ?
@@ -61,48 +56,57 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * For quick definition of {ex_processData}.
-   * ---------------------------------------- */
-  processData = function(wr0rd, revi, wrArrowFun, rdArrowFun) {
+  /**
+   * For quick definition of `ex_processData`.
+   * @global
+   * @param {Writes|Reads} wr0rd
+   * @param {number} revi
+   * @param {function(Writes, number): void} wrFun - <ARGS>: wr, revi.
+   * @param {function(Reads, number): void} rdFun - <ARGS>: rd, revi.
+   * @return {void}
+   */
+  processData = function(wr0rd, revi, wrFun, rdFun) {
     wr0rd instanceof Writes ?
-      wrArrowFun(wr0rd, revi) :
-      rdArrowFun(wr0rd, revi);
+      wrFun(wr0rd, revi) :
+      rdFun(wr0rd, revi);
   };
 
 
   /* <---------- config ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a config object into string.
-   * ---------------------------------------- */
+  /**
+   * Converts config object into JSON string.
+   * @global
+   * @param {Object} obj
+   * @return {string}
+   */
   packConfig = function(obj) {
     return "CONFIG: " + JSON.stringify(obj);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a config object string back into object.
-   * ---------------------------------------- */
-  unpackConfig = function(cfgObjStr) {
-    return JSON.parse(cfgObjStr.replace("CONFIG: ", ""));
+  /**
+   * Converts config JSON string into object.
+   * @global
+   * @param {string} cfgStr
+   * @return {Object}
+   */
+  unpackConfig = function(cfgStr) {
+    return JSON.parse(cfgStr.replace("CONFIG: ", ""));
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles a config object or its string, based on given {keyCallerArr}.
-   * ---------------------------------------- */
-  processConfig = function(b, cfgObjStr, keyCallerArr) {
-    let obj = isNativeObject(cfgObjStr) ? cfgObjStr : unpackConfig(cfgObjStr);
+  /**
+   * Handles a config object or its JSON string, see {@link BLK_baseBlock}.
+   * @global
+   * @param {Building} b
+   * @param {string|Object} cfgObj0cfgStr
+   * @param {Array} keyCallerArr - <ROW>: key, cfgCaller.
+   * @return {void}
+   */
+  processConfig = function(b, cfgObj0cfgStr, keyCallerArr) {
+    let obj = isNativeObject(cfgObj0cfgStr) ? cfgObj0cfgStr : unpackConfig(cfgObj0cfgStr);
 
     Object._it(obj, (key, val) => {
       keyCallerArr.read(key, Function.air)(b, val);
@@ -113,12 +117,14 @@
   /* <---------- database ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Reads "{modName}/scripts/auxFi/data/{nmFi}.json" of every mod that is enabled, and writes the values into {contObj}.
-   * Supports .hjson files.
-   * ---------------------------------------- */
+  /**
+   * Reads "<nmMod>/scripts/auxFi/data/<nmFi>.json" of every enabled mod and writes values into `contObj`.
+   * Also supports .hjson files.
+   * @global
+   * @param {Object} contObj
+   * @param {string} nmFi
+   * @return {Object}
+   */
   readAuxJsonData = function(contObj, nmFi) {
     let dir, fi, str, obj;
     Vars.mods.eachEnabled(mod => {
@@ -144,6 +150,10 @@
   };
 
 
+  /**
+   * Handles DB objects.
+   * @global
+   */
   DB_HANDLER = {
 
 
@@ -151,16 +161,33 @@
     __TMP_ARGS__: [],
 
 
+    /**
+     * Adds a reader for "<key>.json", see {@link readAuxJsonData}.
+     * @param {string} key
+     * @param {Function} fun - Arguments of this function will be passed down from {@link DB_HANDLER.read}.
+     * @return {void}
+     */
     addReader(key, fun) {
       DB_HANDLER.__KEY_TUP_MAP__.put(key, [readAuxJsonData({}, key), fun]);
     },
 
 
+    /**
+     * Adds a reader specifically meant for reading properties for contents.
+     * @param {string} key
+     * @return {void}
+     */
     addContentReader(key) {
       DB_HANDLER.addReader(key, (obj, ct_gn, def) => tryVal(obj[typeof ct_gn === "string" ? ct_gn : ct_gn.name], def));
     },
 
 
+    /**
+     * Reads a registered DB object.
+     * <br> <ARGS>: key, arg1, arg2, arg3, ...
+     * @param {string} key
+     * @return {any}
+     */
     read(key) {
       let tup = DB_HANDLER.__KEY_TUP_MAP__.get(key);
       if(tup == null) throw new Error("Database key [$1] is not registered!".format(key));

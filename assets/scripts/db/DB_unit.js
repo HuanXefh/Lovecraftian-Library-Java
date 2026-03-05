@@ -1,15 +1,10 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Database of unit properties.
+/**
+ * Database of unit properties (sometimes for bullets).
  * Entity id mapping is done here.
- * ---------------------------------------- */
+ */
 
 
 const db = {
-
-
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
   /* <------------------------------ CHUNK SPLITTER ------------------------------ */
@@ -21,12 +16,11 @@ const db = {
     entity: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Maps type to a unit class and extra id if possible.
        * Make sure the id here is not used by vanilla game!
-       * ---------------------------------------- */
+       * <br> <ROW>: type, javaCls0id.
+       */
       type: [
 
         "base", UnitEntity,
@@ -49,12 +43,10 @@ const db = {
       ],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Used to define new entity types.
-       * Format: {id, templateGetter}.
-       * ---------------------------------------- */
+       * <br> <ROW>: id, tempGetter.
+       */
       entityDef: [
 
         // lovec-air
@@ -75,11 +67,10 @@ const db = {
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Faction for unit type. See {DB_block.db["map"]["faction"]}.
-     * ---------------------------------------- */
+    /**
+     * Faction for unit type.
+     * <br> <ROW>: utp, faction.
+     */
     faction: [],
 
 
@@ -92,32 +83,30 @@ const db = {
   group: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * These units are related to core in some way.
-     * ---------------------------------------- */
+    /**
+     * These units are related to core in some way (not only spawned by core).
+     * <br> <ROW>: utp.
+     */
     coreUnit: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * These units are not robots, and they don't create remains upon death.
-     * ---------------------------------------- */
+     * <br> <ROW>: utp.
+     */
     nonRobot: [
 
-      "renale", "latum",
+      "renale",
+      "latum",
 
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * These units are rare exceptions that don't create remains.
+    /**
+     * These units are rare (?) exceptions that don't create remains.
      * No need to add biotic units here.
-     * ---------------------------------------- */
+     * <br> <ROW>: utp.
+     */
     noRemains: [
 
       "new-horizon-nucleoid",
@@ -144,11 +133,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * If a mod has customized unit debris, don't create extra remains.
-     * ---------------------------------------- */
+     * <br> <ROW>: nmMod.
+     */
     noRemainsMod: [
 
       "aquarion",
@@ -165,12 +153,11 @@ const db = {
   grpParam: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Outline parameters used for units & turrets.
-     * Format: {nmMod, [stroke, color]}.
-     * ---------------------------------------- */
+    /**
+     * Outline parameters used for units & turrets in some mod.
+     * Note that only contents created with content template will be affected.
+     * <br> <ROW>: nmMod, [stroke, color].
+     */
     outline: [
 
       "loveclab", [2, "373a4d"],
@@ -179,12 +166,11 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Maps a type to some template tag.
      * The type used here can affect damage dealt by Lovec bullets.
-     * ---------------------------------------- */
+     * <br> <ROW>: type, tempTag.
+     */
     typeTagMap: [
 
       // Highest priority
@@ -220,11 +206,10 @@ const db = {
     btp: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * These bullets can deal damage remotely.
-       * ---------------------------------------- */
+       * <br> <ROW>: javaCls.
+       */
       remote: [
 
         ContinuousBulletType,

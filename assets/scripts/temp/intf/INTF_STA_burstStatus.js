@@ -23,16 +23,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
   /* <---------- component ----------> */
 
 
@@ -75,7 +65,7 @@
       // @PARAM: Color of the effect.
       burstEffColor: Color.white,
       // @PARAM: Script called when the status effect bursts.
-      // @ARGS: unit
+      // <ARGS>: unit
       burstScrTup: null,
     }),
 

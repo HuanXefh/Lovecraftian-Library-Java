@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Toggable liquid junction.
    * ---------------------------------------- */
 
@@ -24,9 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_fluidJunction");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
 
 
   /* <---------- component ----------> */

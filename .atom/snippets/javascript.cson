@@ -4,6 +4,26 @@
     prefix: 'us;'
     body: '"use strict";'
 
+  'jsdoc':
+    prefix: 'jd'
+    body: '''
+    /**
+     * ${1:}
+     */
+    '''
+
+  'jsdoc def':
+    prefix: 'jdd'
+    body: '/** ${1:} */'
+
+  'jsdoc def type':
+    prefix: 'jddt'
+    body: '/** @type {${1:}} */'
+
+  'jsdoc def global':
+    prefix: 'jddg'
+    body: '/** @global ${1:} */'
+
   'immediately called function':
     prefix: 'icfun'
     body: '''

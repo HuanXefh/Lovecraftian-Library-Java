@@ -22,17 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_flow = require("lovec/mdl/MDL_flow");
-
-
   /* <---------- component ----------> */
 
 
@@ -71,7 +60,7 @@
     let corRes = tryJsProp(b.block, "corRes", 1.0);
 
     b.damagePierce((b.maxHealth * VAR.blk_corDmgFrac + VAR.blk_corDmgMin) * corPow * corMtp / corRes);
-    if(Mathf.chance(0.5)) MDL_effect.showAt_corrosion(b.x, b.y, b.block.size, liq.color);
+    if(Mathf.chance(0.5)) MDL_effect._e_corrosion(b.x, b.y, b.block.size, liq.color);
   };
 
 
@@ -79,7 +68,7 @@
     if(liq.viscosity < VAR.blk_clogViscThr) return;
 
     b.damagePierce((b.maxHealth * VAR.blk_clogDmgFrac + VAR.blk_clogDmgMin) * Mathf.lerp(0.5, 1.0, amt / b.block.liquidCapacity) * Mathf.lerp(0.5, 1.0, liq.viscosity / VAR.blk_clogViscThr * 4.0));
-    if(Mathf.chance(0.5)) MDL_effect.showAt_corrosion(b.x, b.y, b.block.size, liq.color, true);
+    if(Mathf.chance(0.5)) MDL_effect._e_corrosion(b.x, b.y, b.block.size, liq.color, true);
   };
 
 

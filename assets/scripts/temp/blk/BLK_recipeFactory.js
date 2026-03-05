@@ -27,17 +27,6 @@
   const INTF_A = require("lovec/temp/intf/INTF_BLK_recipeHandler");
 
 
-  const CLS_window = require("lovec/cls/ui/CLS_window");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_recipe = require("lovec/mdl/MDL_recipe");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
-  const MOD_tmi = require("lovec/mod/MOD_tmi");
-
-
   /* <---------- component ----------> */
 
 
@@ -52,11 +41,11 @@
     blk.stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
     blk.stats.add(fetchStat("lovec", "blk0fac-recipes"), newStatValue(tb => {
       tb.row();
-      MDL_table.setDisplay_recipe(tb, blk.rcMdl, blk);
+      MDL_table._d_rc(tb, blk.rcMdl, blk);
       MDL_table.__btn(tb, MDL_bundle._term("lovec", "new-window"), () => {
         new CLS_window(
           "[$1] ([$2])".format(fetchStat("lovec", "blk0fac-recipes").localized(), blk.localizedName),
-          tb1 => MDL_table.setDisplay_recipe(tb1, blk.rcMdl, blk, true, true),
+          tb1 => MDL_table._d_rc(tb1, blk.rcMdl, blk, true, true),
         ).add();
       }).row();
     }));

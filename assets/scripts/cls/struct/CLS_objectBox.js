@@ -1,19 +1,15 @@
-/* ----------------------------------------
- * NOTE:
- *
- * A container formed from an object, not expected to be modified afterwards.
- * You cannot modify the box after it being created.
- *
- * Object boxes are named like {BOX_xxx}.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * A container formed from an object that cannot be modified afterward.
+ * Object boxes are named like "BOX_xxx".
+ * @class
+ * @param {Object} obj
+ */
 const CLS_objectBox = newClass().initClass();
 
 
@@ -43,24 +39,19 @@ CLS_objectBox.prototype.init = function(obj) {
 var ptp = CLS_objectBox.prototype;
 
 
-/* meta */
-
-
-/* ----------------------------------------
- * NOTE:
- *
- * Returns size of the box.
- * ---------------------------------------- */
+/**
+ * Gets size of the box.
+ * @return {number}
+ */
 ptp.getSize = function() {
   return this.size;
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns possible keys of the container.
- * ---------------------------------------- */
+/**
+ * Gets available keys of the box.
+ * @return {Array<string>}
+ */
 ptp.getKeys = function() {
   return this.keys;
 };

@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods to read contents and their properties.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,41 +20,23 @@
   /* <---------- import ----------> */
 
 
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
-  const DB_block = require("lovec/db/DB_block");
-  const DB_item = require("lovec/db/DB_item");
-  const DB_unit = require("lovec/db/DB_unit");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a content from generalized content (mostly names).
-   * Use {mode} to specify the category, for better performance.
-   * This will print a warning to console if content not found, use {suppressWarning} to disable it.
-   *
-   * Example:
-   * _ct("copper");    // Returns vanilla copper item
-   * _ct("water");    // Returns vanilla water liquid
-   * _ct("shallow-water");    // Returns shallow water floor
-   * _ct(Blocks.router);    // Returns router block
-   * _ct("router", "rs", true);    // Returns null since there's no item or liquid named router, but warning is suppressed
-   *
-   * Don't do stupid things like naming something "null".
-   * ---------------------------------------- */
+  /**
+   * Converts generalized content to content.
+   * @param {ContentGn} ct_gn
+   * @param {string|unset} [mode] - Used to specify category for faster calculation, leave empty to search in all categories.
+   * @param {boolean|unset} [suppressWarning] - If false, a warning will be logged if content not found.
+   * @return {UnlockableContent|null}
+   */
   const _ct = function thisFun(ct_gn, mode, suppressWarning) {
     if(ct_gn == null || ct_gn === "null") return null;
     if(ct_gn instanceof UnlockableContent) return global.lovecUtil.db.oreDict.get(ct_gn, ct_gn);
-    if(typeof ct_gn !== "string") throw new Error("What is this?\n" + ct_gn);
+    if(typeof ct_gn !== "string") {
+      printObj(ct_gn);
+      throw new Error("What is this?\n" + ct_gn);
+    };
 
     let ct = null;
     if(mode != null) {
@@ -89,11 +69,11 @@
   exports._ct = _ct;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether this content has name in bundle.
-   * ---------------------------------------- */
+   * @param {ContentGn} ct_gn
+   * @return {boolean}
+   */
   const _hasBundle = function(ct_gn) {
     let ct = _ct(ct_gn);
     if(ct == null) return false;
@@ -103,17 +83,18 @@
   exports._hasBundle = _hasBundle;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Renames a content on client load.
-   * Only called if bundle is not provided.
-   * ---------------------------------------- */
+  /**
+   * Renames this content if bundle name is not provided.
+   * Should be called on INIT.
+   * @param {ContentGn} ct_gn
+   * @param {string} nm
+   * @return {void}
+   */
   const rename = function(ct_gn, nm) {
     let ct = _ct(ct_gn);
     if(ct == null || _hasBundle(ct)) return;
 
-    MDL_event._c_onLoad(() => {
+    Core.app.post(() => {
       ct.localizedName = nm;
     });
   }
@@ -121,13 +102,12 @@
   exports.rename = rename;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the mod that adds the content.
-   * Returns name by default.
-   * Will return {"vanilla"} or {null} if it's vanilla content.
-   * ---------------------------------------- */
+  /**
+   * Gets mod that adds this content.
+   * @param {ContentGn} ct_gn
+   * @param {boolean|unset} [returnMod] - If true, this method will return instance of {@link Mod} instead of string name.
+   * @return {string|Mod}
+   */
   const _mod = function(ct_gn, returnMod) {
     let ct = _ct(ct_gn);
     if(ct == null) return null;
@@ -140,22 +120,24 @@
   exports._mod = _mod;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the content name without mod name prefix.
-   * ---------------------------------------- */
+  /**
+   * Gets content name without mod name prefix.
+   * Do not call this on vanilla contents.
+   * @param {UnlockableContent} ct
+   * @return {string}
+   */
   const _nmCtNoPrefix = function(ct) {
     return ct.name.replace(_mod(ct) + "-", "");
   };
   exports._nmCtNoPrefix = _nmCtNoPrefix;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether the content has some template tag.
-   * ---------------------------------------- */
+  /**
+   * Whether this content has some content template tag.
+   * @param {UnlockableContent} ct
+   * @param {string} tag
+   * @return {boolean}
+   */
   const _hasTag = function(ct, tag) {
     return ct == null ?
       false :
@@ -167,38 +149,40 @@
   /* <---------- resource ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of blocks that is built with the resource.
-   * ---------------------------------------- */
-  const _reqBlks = function(rs_gn, appendAmt) {
+  /**
+   * Gets a list of blocks that are built with the given item.
+   * @param {ItemGn} itm_gn
+   * @param {boolean|unset} [appendAmt] - If true, a 2-array will be returned instead, where amount is appended.
+   * @return {Array<Block>|Array}
+   */
+  const _reqBlks = function(itm_gn, appendAmt) {
     const arr = [];
-    let rs = _ct(rs_gn, "rs");
-    if(rs == null || !(rs instanceof Item)) return arr;
+    let itm = _ct(itm_gn, "rs");
+    if(itm == null || !(itm instanceof Item)) return arr;
 
     Vars.content.blocks().each(blk => blk.placeablePlayer, blk => {
       blk.requirements.forEachFast(itmStack => {
-        if(itmStack.item === rs && itmStack.amount > 0) !appendAmt ? arr.push(blk) : arr.push(blk, itmStack.amount);
+        if(itmStack.item === itm && itmStack.amount > 0) !appendAmt ? arr.push(blk) : arr.push(blk, itmStack.amount);
       });
     });
 
     return arr;
-  };
+  }
+  .setCache();
   exports._reqBlks = _reqBlks;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of blocks that drop the resource.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of blocks that drop the given resource.
+   * @param {ResourceGn} rs_gn
+   * @return {Array<Block>}
+   */
   const _oreBlks = function(rs_gn) {
     const arr = [];
     let rs = _ct(rs_gn, "rs");
     if(rs == null) return arr;
 
-    let li = Vars.content.blocks();
+    const li = Vars.content.blocks();
     if(rs instanceof Item) {
       li.each(blk => blk.itemDrop === rs || tryFun(blk.ex_getRsDrop, blk, null) === rs, blk => arr.push(blk));
     } else if(rs instanceof Liquid) {
@@ -206,28 +190,18 @@
     };
 
     return arr;
-  };
+  }
+  .setCache();
   exports._oreBlks = _oreBlks;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of intermediate tags from a resource.
-   * Intermediate tags are listed in DB_item.db["intmd"]["tag"].
-   * ---------------------------------------- */
-  const _intmdTags = function(rs) {
-    return tryJsProp(rs, "tempTags", Array.air).filter(tag => DB_item.db["intmd"]["tag"].includes(tag));
-  };
-  exports._intmdTags = _intmdTags;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the intermediate of {rs_gn} with a specific tag.
-   * {rs_gn} can be an intermediate, will use its parent instead.
-   * ---------------------------------------- */
+  /**
+   * Gets intermediate of given resource that has a specific intermediate tag.
+   * If the given resource is an intermediate, its parent will be used instead.
+   * @param {ResourceGn} rs_gn
+   * @param {string} intmdTag
+   * @return {Resource|null}
+   */
   const _intmd = function(rs_gn, intmdTag) {
     let rs = _ct(rs_gn, "rs");
     if(rs == null) return null;
@@ -237,18 +211,21 @@
     if(arr == null) return null;
 
     return arr.find(ors => ors.delegee.intmdParent === rs);
-  };
+  }
+  .setCache();
   exports._intmd = _intmd;
 
 
   /* <---------- block ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns generalized craft time for the block. See {DB_misc}.
-   * ---------------------------------------- */
+  /**
+   * Gets generalized craft time of some block. See {@link DB_block}.
+   * @param {BlockGn} blk_gn
+   * @param {boolean|unset} [isDrillTime]
+   * @param {ContentGn|unset} [ct_gn] - The content to craft.
+   * @return {number}
+   */
   const _craftTime = function(blk_gn, isDrillTime, ct_gn) {
     const arr = DB_block.db["class"]["map"]["craftTime"];
     let val = Infinity;
@@ -271,17 +248,16 @@
   exports._craftTime = _craftTime;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns power consumption of {blk_gn}.
-   * ---------------------------------------- */
+  /**
+   * Gets power consumption of some block.
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _powConsAmt = function(blk_gn) {
     let blk = _ct(blk_gn, "blk");
     if(!blk.hasPower) return 0.0;
 
     let powCons = blk.consumers.find(cons => cons instanceof ConsumePower);
-
     return powCons == null ? 0.0 : powCons.usage;
   };
   exports._powConsAmt = _powConsAmt;
@@ -290,11 +266,11 @@
   /* <---------- unit type ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the damage affinity type of some unit type.
-   * ---------------------------------------- */
+  /**
+   * Gets damage affinity type of some unit type.
+   * @param {UnitTypeGn} utp_gn
+   * @return {string|null}
+   */
   const _unitDmgType = function(utp_gn) {
     let utp = _ct(utp_gn, "utp");
     if(utp == null) return null;
@@ -308,21 +284,21 @@
     };
 
     return null;
-  };
+  }
+  .setCache();
   exports._unitDmgType = _unitDmgType;
 
 
   /* <---------- faction ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the faction of a block or unit type.
-   * Returns {"none"} if not set.
-   * ---------------------------------------- */
-  const _faction = function(blk0utp_gn) {
-    let ct = _ct(blk0utp_gn, null, true);
+  /**
+   * Gets faction of some block or unit type, "none" if not found.
+   * @param {string|Block|UnitType|null} ct_gn
+   * @return {string}
+   */
+  const _faction = function(ct_gn) {
+    let ct = _ct(ct_gn, null, true);
     if(ct == null) {
       return "none";
     } else if(ct instanceof Block) {
@@ -332,39 +308,41 @@
     };
 
     return "none";
-  };
+  }
+  .setCache();
   exports._faction = _faction;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the name for a faction from the bundle.
-   * Format: {term.common-term-faction-*faction name*.name}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "term.common-term-faction-<nmFaction>.name".
+   * @param {string} faction
+   * @return {string}
+   */
   const _factionB = function(faction) {
     return MDL_bundle._term("common", "faction-" + faction);
   };
   exports._factionB = _factionB;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the color of a faction.
-   * Returns white by default.
-   * ---------------------------------------- */
-  const _factionColor = function(faction) {
-    return Color.valueOf(DB_block.db["grpParam"]["factionColor"].read(faction, "ffffff"));
+  /**
+   * Gets color of some faction.
+   * @param {string} faction
+   * @param {Color|unset} [colorCont]
+   * @return {Color}
+   */
+  const _factionColor = function(faction, colorCont) {
+    const color = colorCont != null ? colorCont : new Color();
+
+    return Color.valueOf(color, DB_block.db["grpParam"]["factionColor"].read(faction, "ffffff"));
   };
   exports._factionColor = _factionColor;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns a list of all blocks and unit types in the faction.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of blocks and unit types belong to given faction.
+   * @param {string} faction
+   * @return {Array<UnlockableContent>}
+   */
   const _factionCts = function(faction) {
     const arr = [];
     const li1 = DB_block.db["map"]["faction"];
@@ -381,55 +359,56 @@
     };
 
     return arr;
-  };
+  }
+  .setCache();
   exports._factionCts = _factionCts;
 
 
   /* <---------- factory ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of factory families the block is in.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of factory families the given block is in.
+   * @param {BlockGn} blk_gn
+   * @return {Array<string>}
+   */
   const _facFamis = function(blk_gn) {
     let blk = _ct(blk_gn, "blk");
     if(blk == null) return [];
 
     return DB_block.db["map"]["facFami"].readList(blk.name);
-  };
+  }
+  .setCache();
   exports._facFamis = _facFamis;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the name for a factory family from the bundle.
-   * Format: {term.common-term-fami-*factory family name*.name}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "term.common-term-fami-<nmFami>.name".
+   * @param {string} facFami
+   * @return {string}
+   */
   const _facFamiB = function(facFami) {
     return MDL_bundle._term("common", "fami-" + facFami);
   };
   exports._facFamiB = _facFamiB;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of all defined factory families.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of defined factory families.
+   * @return {Array<string>}
+   */
   const _facFamisDefined = function() {
     return DB_block.db["map"]["facFami"].readCol(2, 1).unique();
-  };
+  }
+  .setCache();
   exports._facFamisDefined = _facFamisDefined;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns an array of blocks in the family.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of blocks that are in the given factory family.
+   * @param {string} facFami
+   * @return {Array<Block>}
+   */
   const _facFamiBlks = function(facFami) {
     const arr = [];
     const arr1 = DB_block.db["map"]["facFami"];
@@ -442,5 +421,6 @@
     };
 
     return arr;
-  };
+  }
+  .setCache();
   exports._facFamiBlks = _facFamiBlks;

@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Registers new logs to {LOG_HANDLER}.
-   * ---------------------------------------- */
+  /**
+   * Registers new logs to {@link LOG_HANDLER}.
+   */
 
 
 /*
@@ -54,7 +52,7 @@
     this.addContentReader("liq-visc");
     this.addContentReader("liq-cor-pow");
     this.addReader("liq-solvent", (obj, solvent, def) => {
-      return tryVal(global.lovecUtil.fun._ct(tryVal(obj[solvent], null), "liquid"), def);
+      return tryVal(findContent(tryVal(obj[solvent], null)), def);
     });
 
 

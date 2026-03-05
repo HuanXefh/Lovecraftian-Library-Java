@@ -24,10 +24,7 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseLogicBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_contentSelector");
-
-
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-
+  
 
   /* <---------- component ----------> */
 

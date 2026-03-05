@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods mostly used for formatting.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,34 +20,42 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- number ----------> */
 
 
   var ptp = Number.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * To percentage string.
-   * ---------------------------------------- */
+   * @param {number|unset} [deciAmt]
+   * @return {string}
+   */
   ptp.perc = function(deciAmt) {
     return Strings.fixed((this * 100.0).roundFixed(tryVal(deciAmt, 2)), tryVal(deciAmt, 2)) + "%";
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {perc} with color.
-   * ---------------------------------------- */
+  /**
+   * To colored string.
+   * @param {Color} color
+   * @param {number|unset} [deciAmt]
+   * @return {string}
+   */
+  ptp.color = function(color, deciAmt) {
+    return String(this.roundFixed(deciAmt)).color(color);
+  };
+
+
+  /**
+   * Variant of {@link Number#perc} with color.
+   * @param {number|unset} deciAmt
+   * @param {Color|unset} overColor
+   * @param {Color|unset} lessColor
+   * @param {Color|unset} midColor
+   * @param {number|unset} midTol
+   * @return {string}
+   */
   ptp.percColor = function(deciAmt, overColor, lessColor, midColor, midTol) {
     return this.perc(deciAmt).color(
       this.fEqual(1.0, tryVal(midTol, 0.025)) ?
@@ -61,21 +67,21 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * To scientific notation string.
-   * ---------------------------------------- */
+   * @param {number} pow
+   * @param {number|unset} [deciAmt]
+   * @return {string}
+   */
   ptp.sci = function(pow, deciAmt) {
     return Strings.fixed(this * Math.pow(10, -pow), tryVal(deciAmt, 2)) + " × 10^" + pow;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * To UI format.
-   * ---------------------------------------- */
+   * @return {string}
+   */
   ptp.ui = function() {
     let intNum = Math.round(this);
     let abs = Math.abs(Math.round(this));
@@ -90,9 +96,9 @@
       return intNum / 1000000000.0 + "b";
     } else if(abs < 1000000000000000.0) {
       return intNum / 1000000000000.0 + "t";
-    } else {
-      return "!LARGE";
     };
+
+    return "!LARGE";
   };
 
 
@@ -102,14 +108,11 @@
   var cls = String;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: str1, str2, str3, ...
-   * Builds a multiline string with given strings.
-   * {null} in the arguments will be ignored.
-   * Arrays in the arguments will finally get flattened.
-   * ---------------------------------------- */
+  /**
+   * Builds a multiline string with given strings, null will be ignored and array will be flattened.
+   * <br> <ARGS> str1, str2, str3, ...
+   * @return {string}
+   */
   cls.multiline = function() {
     let str_fi = "";
     let args = Array.from(arguments).flatten().filter(tmp => tmp != null);
@@ -127,12 +130,11 @@
   var ptp = String.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: str1, str2, str3, ...
-   * Replaces {"[$1]"} in the string with {str1}, and so on...
-   * ---------------------------------------- */
+  /**
+   * Replaces `"[$1]"` in the string with `str1`, and so on.
+   * <br> <ARGS>: str1, str2, str3, ...
+   * @return {string}
+   */
   ptp.format = function() {
     let str = this, strTg;
     let i = 0, iCap = arguments.length;
@@ -146,36 +148,36 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Removes color markup.
-   * WTF why should it be strictly Java string.
-   * ---------------------------------------- */
+   * @return {string}
+   */
   ptp.plain = function() {
+    // WTF why should it be strictly Java string
     return Strings.stripColors(new java.lang.String(this));
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Adds color markup.
-   * ---------------------------------------- */
+   * @param {Color} color
+   * @return {string}
+   */
   ptp.color = function(color) {
     return "[#" + color.toString() + "]" + this + "[]";
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Rainbow color for the string.
-   * Can be used for not only rainbow.
-   * ---------------------------------------- */
+  /**
+   * Colorful string.
+   * @param {Array<Color>|unset} [colors]
+   * @param {number|unset} [scl]
+   * @param {number|unset} [off]
+   * @return {string}
+   */
   ptp.rainbow = function(colors, scl, off) {
     let str = "";
-    if(colors == null) colors = [Color.red, Color.orange, Color.yellow, Color.green, Color.cyan, Color.blue, Color.purple];
+    if(colors == null) colors = String.prototype.rainbow.defColors;
     if(scl == null) scl = 1.0;
     if(off == null) off = 0.0;
 
@@ -198,47 +200,40 @@
 
     return str;
   };
+  ptp.rainbow.defColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.cyan, Color.blue, Color.purple];
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Example:
-   * "string".firstUpperCase()    // Returns "String"
-   * ---------------------------------------- */
+  /**
+   * Makes first letter capitalized.
+   * @return {string}
+   */
   ptp.firstUpperCase = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Example:
-   * "Convert this to camelCase".toCamelCase()    // Returns "convertThisToCamelCase"
-   * ---------------------------------------- */
+  /**
+   * Converts this string to camel case.
+   * @return {string}
+   */
   ptp.toCamelCase = function() {
-    return this.replace(/(?:^\w|[A-Z]|\b\w)/g, (l, ind) => ind === 0 ? l.toLowerCase() : l.toUpperCase()).replace(/\s+/g, "").replace(/-/g, "");
+    return this.replace(/^\w|[A-Z]|\b\w/g, (l, ind) => ind === 0 ? l.toLowerCase() : l.toUpperCase()).replace(/\s+/g, "").replace(/-/g, "");
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Example:
-   * "Convert this to kebab-case".toKebabCase()    // Returns "convert-this-to-kebab-case"
-   * ---------------------------------------- */
+  /**
+   * Converts this string to kebab case.
+   * @return {string}
+   */
   ptp.toKebabCase = function() {
     return this.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/[\s+_]/g, "-").toLowerCase();
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Example:
-   * "convertThisToSnakeCase".toSnakeCase()    // Returns "convert_this_to_snake_case"
-   * ---------------------------------------- */
+  /**
+   * Converts this string to snake case.
+   * @return {string}
+   */
   ptp.toSnakeCase = function() {
     return this.replace(/([a-zA-Z])(?=[A-Z])/g, "$1_").replace(/-/g, "_").toLowerCase();
   };

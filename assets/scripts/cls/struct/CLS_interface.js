@@ -1,20 +1,15 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Interface formed from an object.
- * Used to add properties to a class.
- *
- * Interface instances are named like {INTF_xxx}.
- * More like a mixin though, I'm not gonna rename it.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Used to add properties to a class by `cls.implement(intf)`.
+ * Interfaces are usually named like "INTF_xxx".
+ * @class
+ * @param {Object} obj
+ */
 const CLS_interface = newClass().initClass();
 
 
@@ -37,11 +32,11 @@ CLS_interface.prototype.init = function(obj) {
 var ptp = CLS_interface.prototype;
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Makes a new interface by merging two interfaces.
- * ---------------------------------------- */
+ * @param {CLS_interface} intf
+ * @return {CLS_interface}
+ */
 ptp.extendInterface = function(intf) {
   if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
 
@@ -49,11 +44,11 @@ ptp.extendInterface = function(intf) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Whether some class has implemented this interface.
- * ---------------------------------------- */
+ * @param {Function} cls
+ * @return {boolean}
+ */
 ptp.isImplementedBy = function(cls) {
   return this.children.includes(cls);
 };

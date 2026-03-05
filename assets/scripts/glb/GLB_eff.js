@@ -5,12 +5,10 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Static effects used widely.
-   * This module is simply used to prevent duplication of effects, which renders Json files a mess.
-   * ---------------------------------------- */
+   * This module is simply used to prevent duplication of effects, which renders .json files a mess.
+   */
 
 
 /*
@@ -21,9 +19,6 @@
 
 
   /* <---------- import ----------> */
-
-
-  const TP_effect = require("lovec/tp/TP_effect");
 
 
   /* <---------- static ----------> */
@@ -153,7 +148,7 @@
 
   exports.squareFadePack = (function() {
     let arr = [];
-    (10)._it(1, size => {
+    (10)._it(size => {
       arr.push(size === 0 ? Fx.none : TP_effect._squareFade({
         r: size * 0.5,
         color: Pal.accent,
@@ -165,7 +160,7 @@
 
   exports.disableFadePack = (function() {
     let arr = [];
-    (10)._it(1, size => {
+    (10)._it(size => {
       arr.push(size === 0 ? Fx.none : TP_effect._squareFade({
         r: size * 0.5,
         color: Pal.sap,
@@ -195,7 +190,7 @@
 
   exports.drillPulsePack = (function() {
     let arr = [];
-    (10)._it(1, size => {
+    (10)._it(size => {
       arr.push(size === 0 ? Fx.none : TP_effect._rectPulse({
         r: size * 0.5,
         color: Pal.techBlue,

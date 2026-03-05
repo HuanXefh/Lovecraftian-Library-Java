@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Fundamental methods for JavaScript native types.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,26 +20,20 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- object ----------> */
 
 
   var cls = Object;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the last child object that is not {undefined} when searching with given keys.
-   * If {def} is given, returns it instead if not found.
-   * ---------------------------------------- */
-  cls.dir = function(obj, keys, def) {
+  /**
+   * Gets last child object found in `obj` when searching with given keys.
+   * @param {Object} obj
+   * @param {Array<string>} keys
+   * @param {any} [def] - If given, returns `def` if not found.
+   * @return {any}
+   */
+  cls.findByKeys = function(obj, keys, def) {
     let tg = obj;
     let tmp = null;
 
@@ -60,12 +52,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Deletes every accessible properties in {obj}.
+  /**
+   * Deletes every accessible property in `obj`.
    * Use with care!
-   * ---------------------------------------- */
+   * @template T
+   * @param {T} obj
+   * @return {T}
+   */
   cls.clear = function(obj) {
     for(let key in obj) {
       delete obj[key];
@@ -75,12 +68,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Iterates through an object (or function, whatever), if you're that lazy.
-   * {_it_xxx} means interation, I assume that you have seen it in {MDL_pos}.
-   * ---------------------------------------- */
+  /**
+   * Iterates through all key-value pairs in an object.
+   * @param {Object} obj
+   * @param {function(string, any): void} scr - <ARGS>: key, val.
+   * @param {boolean|unset} [forceIns] - If true, methods in `obj` will be ignored.
+   * @return {void}
+   */
   cls._it = function(obj, scr, forceIns) {
     if(!forceIns) {
       for(let key in obj) {
@@ -94,35 +88,38 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: obj, propObj
-   * @ARGS: obj, isFinal, nmProp1, val1, nmProp2, val2, nmProp3, val3, ...
-   * Sets a lot of properties for {obj}.
-   * ---------------------------------------- */
-  cls.setProp = function() {
-    if(arguments.length === 2 && typeof arguments[1] === "object") {
+  /**
+   * Sets a lot of properties for `obj`.
+   * <br> <ARGS>: obj, propObj
+   * <br> <ARGS>: obj, isFinal, nmProp1, val1, nmProp2, val2, nmProp3, val3, ...
+   * @template T
+   * @param {T} obj
+   * @return {T}
+   */
+  cls.setProp = function(obj) {
+    if(arguments.length === 2) {
       for(let key in arguments[1]) {
-        arguments[0][key] = arguments[1][key];
+        obj[key] = arguments[1][key];
       };
     } else {
       let i = 2, iCap = arguments.length;
       while(i < iCap) {
-        Object.defineProperty(arguments[0], arguments[i], {value: arguments[i + 1], writable: !arguments[1]});
+        Object.defineProperty(obj, arguments[i], {value: arguments[i + 1], writable: !arguments[1]});
         i += 2;
       };
     };
 
-    return arguments[0];
+    return obj;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Clones all properties from {objOld} to {objNew}.
-   * ---------------------------------------- */
+  /**
+   * Clones all properties from `objOld` to `objNew`.
+   * @template T
+   * @param {T} objNew
+   * @param {Object} objOld
+   * @return {T}
+   */
   cls.cloneProp = function(objNew, objOld) {
     Object._it(objOld, (key, prop) => {
       objNew[key] = prop;
@@ -132,34 +129,28 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether {obj} has {key}.
-   * ---------------------------------------- */
-  cls.hasKey = function(obj, key) {
-    return obj[key] !== undefined;
-  };
-
-
   var ptp = Object.prototype;
 
 
-  /* ----------------------------------------
-  * NOTE:
-  *
-  * Instance version of {Object._it}.
-  * ---------------------------------------- */
+  /**
+   * Variant of {@link Object._it} for instance.
+   * @func Object#_it
+   * @param {function(string, any): void} scr
+   * @param {boolean|unset} [forceIns]
+   * @return {void}
+   */
   setHiddenProp(ptp, "_it", function(scr, forceIns) {
     Object._it(this, scr, forceIns);
   });
 
 
-  /* ----------------------------------------
-  * NOTE:
-  *
-  * Instance version of {Object.setProp}.
-  * ---------------------------------------- */
+  /**
+   * Variant of {@link Object.setProp} for instance.
+   * <br> <ARGS>: obj, propObj
+   * <br> <ARGS>: obj, isFinal, nmProp1, val1, nmProp2, val2, nmProp3, val3, ...
+   * @func Object#setProp
+   * @return {this}
+   */
   setHiddenProp(ptp, "setProp", function() {
     let args = Array.from(arguments);
     args.unshift(this);
@@ -167,11 +158,12 @@
   });
 
 
-  /* ----------------------------------------
-  * NOTE:
-  *
-  * Instance version of {Object.cloneProp}.
-  * ---------------------------------------- */
+  /**
+   * Variant of {@link Object.cloneProp} for instance.
+   * @func Object#cloneProp
+   * @param {Object} objOld
+   * @return {this}
+   */
   setHiddenProp(ptp, "cloneProp", function(objOld) {
     return Object.cloneProp(this, objOld);
   });
@@ -183,20 +175,24 @@
   var ptp =  Number.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Interation using this number as cap.
-   * ---------------------------------------- */
-  ptp._it = function(gap, scr) {
+  /**
+   * Interation using this number (rounded) as cap.
+   * @override
+   * @param {function(number): void} scr
+   * @param {number|unset} [gap]
+   * @param {number|unset} [base]
+   * @return {void}
+   */
+  ptp._it = function(scr, gap, base) {
     if(gap == null) gap = 1;
+    if(base == null) base = 0;
 
     gap = Math.round(gap);
     if(gap < 1) return;
     let iCap = Math.round(this);
     if(iCap < 1) return;
 
-    let i = 0;
+    let i = base;
     while(i < iCap) {
       scr(i);
       i += gap;
@@ -204,11 +200,10 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the next integer.
-   * ---------------------------------------- */
+  /**
+   * Gets next integer.
+   * @return {number}
+   */
   ptp.next = function() {
     return Math.round(this) + 1;
   };
@@ -220,11 +215,10 @@
   var ptp = String.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Capacity for iteration.
-   * ---------------------------------------- */
+  /**
+   * Gets cap for iteration.
+   * @return {number}
+   */
   ptp.iCap = function() {
     return this.length;
   };
@@ -236,11 +230,13 @@
   var cls = Array;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Iterates through each pair in {arr1} and {arr2}.
-   * ---------------------------------------- */
+  /**
+   * Interates through each element pair in `arr1` and `arr2`.
+   * @param {Array} arr1
+   * @param {Array} arr2
+   * @param {function(any, any): void} scr
+   * @return {void}
+   */
   cls.forEachPair = function(arr1, arr2, scr) {
     let i = 0, j, iCap = arr1.iCap(), jCap = arr2.iCap();
     while(i < iCap) {
@@ -257,22 +253,21 @@
   var ptp = Array.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Capacity for iteration.
-   * ---------------------------------------- */
+  /**
+   * Gets cap for iteration.
+   * @return {number}
+   */
   ptp.iCap = function() {
     return this.length;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Faster {forEach}, or not, I hope so.
-   * Use this instead of {forEach} so you won't accidentally call it on something like a seq, which crash the game on Android.
-   * ---------------------------------------- */
+  /**
+   * Not really faster.
+   * Use this instead of {@link Array#forEach} so you won't accidentally call it on something like {@link Seq}, which can crash the game on Android.
+   * @param {function(any): void} scr
+   * @return {void}
+   */
   ptp.forEachFast = function(scr) {
     let iCap = this.iCap();
     if(iCap === 0) return;
@@ -282,30 +277,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {forEach} but the index is used instead of element.
-   * ---------------------------------------- */
-  ptp.forEachInd = function(gap, scr) {
-    if(gap == null) gap = 1;
-
-    gap = Math.round(gap);
-    if(gap < 1) return;
-
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      scr(i);
-      i += gap;
-    };
-  };
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {forEach} with a condition check.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#forEach} with a condition check.
+   * @param {function(any): boolean} boolF
+   * @param {function(any): void} scr
+   * @return {void}
+   */
   ptp.forEachCond = function(boolF, scr) {
     if(boolF == null) boolF = Function.airTrue;
 
@@ -317,12 +294,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {forEach} that works for layered array.
-   * This one provides index and array reference in {scr}, which are hard to access directly.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#forEach} used for layered array.
+   * This one provides index and array reference which are hard to access directly.
+   * @param {function(any, number, Array): void} scr
+   * @return {void}
+   */
   ptp.forEachAll = function(scr) {
     Array.prototype.forEachAll.callIt.apply(this, [scr]);
   };
@@ -337,11 +314,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Iterates through a formatted array.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Array#forEach} used for formatted array.
+   * @param {number|unset} ord
+   * @param {function(...any): void} scr - Arguments here will be elements in each row.
+   * @return {void}
+   */
   ptp.forEachRow = function(ord, scr) {
     if(ord == null) ord = 1;
 
@@ -360,11 +338,10 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Empties the array.
-   * ---------------------------------------- */
+  /**
+   * Empties this array.
+   * @return {this}
+   */
   ptp.clear = function() {
     this.length = 0;
 
@@ -372,12 +349,12 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets array length and fills it with {val}.
-   * If {val} here is an object (like array), use a getter function to avoid filling with the same object.
-   * ---------------------------------------- */
+  /**
+   * Sets length and fills this array with some value.
+   * @param {any} val0valGetter - Use a function here if the value to fill is an object like array.
+   * @param {number|unset} [len]
+   * @return {this}
+   */
   ptp.setVal = function(val0valGetter, len) {
     if(len == null) len = this.length;
 

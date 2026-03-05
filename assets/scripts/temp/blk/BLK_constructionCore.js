@@ -37,18 +37,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_materialBlock");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_text = require("lovec/mdl/MDL_text");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
 
 
   /* <---------- component ----------> */

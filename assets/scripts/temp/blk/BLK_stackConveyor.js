@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Vanilla stack conveyor I guess.
    * ---------------------------------------- */
 
@@ -24,9 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemDistributor");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
 
 
   /* <---------- component ----------> */

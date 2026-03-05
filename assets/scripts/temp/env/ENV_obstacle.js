@@ -25,9 +25,6 @@
   const PARENT = require("lovec/temp/env/ENV_baseProp");
 
 
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
   /* <---------- component ----------> */
 
 

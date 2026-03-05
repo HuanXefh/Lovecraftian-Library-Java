@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Intermediate: diluted slurry.
    * Slurry that should be thickened before further processing.
    * ---------------------------------------- */
@@ -25,10 +25,7 @@
 
 
   const PARENT = require("lovec/temp/rs/RS_slurryLiquid");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-
+  
 
   /* <---------- component ----------> */
 

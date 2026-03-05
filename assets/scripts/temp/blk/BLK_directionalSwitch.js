@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Enables or disables the valid building in front of it.
    * ---------------------------------------- */
 
@@ -24,10 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseLogicBlock");
-  const EFF = require("lovec/glb/GLB_eff");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
 
 
   /* <---------- component ----------> */

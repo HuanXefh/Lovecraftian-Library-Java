@@ -5,17 +5,10 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lovec will create .lsav files for each save, in "Mindustry/saves/mods/data/lovec/saves".
-   * To register a new field, check {DB_misc.db["lsav"]["header"]}.
-   * You can use {set} method defined here to change a value, and it will be saved finally.
-   * ----------------------------------------
-   * IMPORTANT:
-   *
-   * LSAV is only saved on server side, don't use it directly on client side.
-   * ---------------------------------------- */
+  /**
+   * Lovec creates .lsav files for each save in "Mindustry/saves/mods/data/Lovec/saves".
+   * Fields are registered in {@link DB_misc}.
+   */
 
 
 /*
@@ -28,28 +21,13 @@
   /* <---------- import ----------> */
 
 
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_file = require("lovec/mdl/MDL_file");
-  const MDL_json = require("lovec/mdl/MDL_json");
-  const MDL_net = require("lovec/mdl/MDL_net");
-
-
-  const DB_misc = require("lovec/db/DB_misc");
-
-
   /* <---------- base ----------> */
 
 
   let lsavJsonVal = null;
   let lsav = {};
-  let saveRevision = 0;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets up the LSAV with default values.
-   * ---------------------------------------- */
   function initLsav() {
     DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
       lsav[header] = def;
@@ -58,11 +36,6 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Loads the LSAV object, delayed so world is completely loaded then.
-   * ---------------------------------------- */
   function loadLsav() {
     Time.run(6.0, () => {
       if(Vars.state.isEditor()) return;
@@ -93,24 +66,24 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Writes the LSAV object to local file.
-   * ---------------------------------------- */
+  /**
+   * Saves LSAV data.
+   * @return {void}
+   */
   const saveLsav = function() {
     if(Vars.state.isEditor()) return;
 
     MDL_json.write(MDL_file._lsav(), lsav);
   }
-  .setAnno("server");
+  .setAnno("server")
+  .setAnno("non-console");
+  exports.saveLsav = saveLsav;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns the local LSAV object, only used for testing.
-   * ---------------------------------------- */
+  /**
+   * Gets local LSAV object, only used for debugging.
+   * @return {Object}
+   */
   const _lsav = function() {
     return lsav;
   }
@@ -118,11 +91,11 @@
   exports._lsav = _lsav;
 
 
-  /* ----------------------------------------
-  * NOTE:
-  *
-  * Overwrites the LSAV object with {obj}.
-  * ---------------------------------------- */
+  /**
+   * Overwrites local LSAV object with `obj`.
+   * @param {Object} obj
+   * @return {void}
+   */
   const __lsav = function(obj) {
     lsav = obj;
   }
@@ -130,15 +103,17 @@
   exports.__lsav = __lsav;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Sets a value in LSAV.
-   * ---------------------------------------- */
+   * @param {string} header
+   * @param {any} val
+   * @param {boolean|unset} [suppressWarning]
+   * @return {void}
+   */
   const set = function(header, val, suppressWarning) {
     if(header == null) return;
 
-    var cond = false;
+    let cond = false;
     if(suppressWarning) {
       cond = true;
     } else {
@@ -162,11 +137,12 @@
   exports.set = set;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Sets a LSAV value only if it's marked as safe.
-   * ---------------------------------------- */
+   * @param {string} header
+   * @param {any} val
+   * @return {void}
+   */
   const setSafe = function(header, val) {
     if(header == null) return;
 
@@ -178,22 +154,21 @@
   exports.setSafe = setSafe;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets a value in local LSAV.
-   * ---------------------------------------- */
+   * @param {string} header
+   * @return {any}
+   */
   const get = function(header) {
     return lsav[header];
   };
   exports.get = get;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Called on server side, synchronizes LSAV on all client sides.
-   * ---------------------------------------- */
+   * @return {void}
+   */
   const sync = function() {
     MDL_net.sendPacket(
       "server", "lovec-server-lsav-sync",
@@ -210,11 +185,10 @@
   exports.sync = sync;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Requests the server to send sync packets.
-   * ---------------------------------------- */
+   * @return {void}
+   */
   const requestSync = function() {
     MDL_net.sendPacket(
       "client", "lovec-client-lsav-sync-request",
@@ -232,12 +206,13 @@
   exports.requestSync = requestSync;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Requests the server to set an LSAV value.
    * Only safe properties are allowed.
-   * ---------------------------------------- */
+   * @param {string} header
+   * @param {any} val
+   * @return {void}
+   */
   const requestSet = function(header, val) {
     MDL_net.sendPacket(
       "client", "lovec-client-lsav-set-request",

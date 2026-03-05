@@ -1,18 +1,6 @@
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Database of miscellaneous uncategorized data.
- * ---------------------------------------- */
-
-
-// Be careful with any module here to avoid looped reference!
-// Better use {global.lovec} if possible
-const LIB_pinyin = require("lovec/lib/LIB_pinyin");
-const MDL_bundle = require("lovec/mdl/MDL_bundle");
-const MDL_cond = require("lovec/mdl/MDL_cond");
-const MDL_text = require("lovec/mdl/MDL_text");
-const DB_item = require("lovec/db/DB_item");
-const DB_fluid = require("lovec/db/DB_fluid");
+ */
 
 
 const db = {
@@ -24,12 +12,11 @@ const db = {
   block: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Maps a block name before change to the changed name.
+    /**
+     * Maps a block/unit name before change to the changed name.
      * Used when internal name of some block is changed.
-     * ---------------------------------------- */
+     * <br> <ROW>: nmPrev, nmCur.
+     */
     migration: [
 
       "lovec-unit0misc-loot", "loveclab-unit0misc-loot",
@@ -37,14 +24,13 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Extra text information shown when mouse hovered over a tile.
+    /**
+     * Extra text information shown when mouse hovered over a tile, see {@link MDL_draw.drawExtraInfo}.
      * Put functions that return string here to build final string. Yep, string only.
-     * Tile won't be {null} here. It's safe to return {undefined} or {null}.
-     * Format: {(t, b) => str}.
-     * ---------------------------------------- */
+     * Tile won't be null here, and it's safe to return undefined or null, result will be skipped.
+     * <br> <ROW>: strGetter.
+     * <br> <ARGS>: t, b.
+     */
     extraInfo: [
 
       // Ore item info
@@ -83,12 +69,12 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Maps depth level to a term.
-     * See {INTF_ENV_depthOverlay}.
-     * ---------------------------------------- */
+     * See {@link INTF_ENV_depthOverlay}.
+     * <br> <ROW>: lvl, [nmMod, tag].
+     * <br> <BUNDLE>: "term.<nmMod>-term-<tag>.name".
+     */
     depthName: [
 
       0, ["lovec", "depth-0"],
@@ -100,11 +86,11 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Filters for {BLK_wireNode}.
-     * ---------------------------------------- */
+    /**
+     * Filters for {@link BLK_wireNode} that select valid links.
+     * <br> <ROW>: mode, boolF.
+     * <br> <ARGS>: b, b_t.
+     */
     nodeLinkFilter: [
 
       "any", (b, b_t) => true,
@@ -133,22 +119,20 @@ const db = {
   mod: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * @CONTENTGEN
+    /**
      * List of names of Lovec-based mods.
-     * {PARAM.modded} will be {true} if any of these exists, which enables extra mechanics.
-     * You don't need put your mod name here, just use write {dependencies} or {softDependencies} in your mod.json.
+     * {@link PARAM.modded} will be true if any of these exists, which enables extra mechanics.
+     * You don't need to put your mod name here, just use write `dependencies` or `softDependencies` in your mod.json.
+     * <br> <CONTENTGEN>
+     * <br> <ROW>: nmMod.
      * ---------------------------------------- */
     lovecMod: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Overwrites the vanilla list of menu flyers.
-     * ---------------------------------------- */
+     * <br> <ROW>: utp.
+     */
     menuFlyer: [
 
       "crawler",
@@ -158,11 +142,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Sounds listed here will be loaded beforehand, or it takes time to be loaded in game.
-     * ---------------------------------------- */
+     * <br> <ROW>: nmSe.
+     */
     extraSound: [
 
       "se-meme-steel-pipe",
@@ -170,14 +153,11 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Used to set up draggable button group.
-     * Format: {nm, [rowInd, iconStr, isToggle, scr, updateScr]}.
-     *
-     * {this} in {updateScr} is the button.
-     * ---------------------------------------- */
+     * `this` in `updateScr` is the button.
+     * <br> <ROW>: nm, {rowInd, icon, isToggle, clickScr, updateScr}.
+     */
     dragButton: {
 
 
@@ -198,7 +178,7 @@ const db = {
           icon: "lovec-icon-health",
           clickScr: function() {
             Core.settings.put("lovec-unit0stat-show", !fetchSetting("unit0stat-show"));
-            global.lovec.param.forceLoadParam();
+            PARAM.forceLoadParam();
           },
         },
 
@@ -207,7 +187,7 @@ const db = {
           icon: "lovec-icon-range",
           clickScr: function() {
             Core.settings.put("lovec-unit0stat-range", !fetchSetting("unit0stat-range"));
-            global.lovec.param.forceLoadParam();
+            PARAM.forceLoadParam();
           },
         },
 
@@ -230,11 +210,10 @@ const db = {
       ],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Buttons defined here will only be added if {PARAM.modded}.
-       * ---------------------------------------- */
+      /**
+       * Buttons defined here will only be added if `PARAM.modded`.
+       * <br> <ROW>: nm, {rowInd, icon, isToggle, clickScr, updateScr}.
+       */
       modded: [
 
         "lovec-player-take-loot", {
@@ -243,10 +222,10 @@ const db = {
           clickScr: function() {
             let unit = Vars.player.unit();
             if(unit == null) return;
-            let loot = Units.closest(null, unit.x, unit.y, global.lovec.var.rad_lootPickRad, ounit => global.lovec.mdl_cond._isLoot(ounit));
+            let loot = Units.closest(null, unit.x, unit.y, VAR.rad_lootPickRad, ounit => MDL_cond._isLoot(ounit));
             if(loot == null) return;
-            if(global.lovec.frag_item.takeUnitLoot_global(unit, loot)) {
-              global.lovec.mdl_effect.showBetween_itemTransfer(loot.x, loot.y, unit, null, null, true);
+            if(FRAG_item.takeUnitLoot_global(unit, loot)) {
+              MDL_effect._e_itemTransfer(loot.x, loot.y, unit, null, null, true);
             };
           },
         },
@@ -259,8 +238,8 @@ const db = {
             if(unit == null) return;
             if(unit.stack.amount > 0) {
               Vars.net.client() ?
-                global.lovec.mdl_call.spawnLoot_client(unit.x, unit.y, unit.item(), unit.stack.amount, 0.0) :
-                global.lovec.mdl_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount, 0.0);
+                MDL_call.spawnLoot_client(unit.x, unit.y, unit.item(), unit.stack.amount, 0.0) :
+                MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount, 0.0);
               unit.clearItem();
             };
           },
@@ -272,9 +251,9 @@ const db = {
           clickScr: function() {
             let unit = Vars.player.unit();
             if(unit == null) return;
-            let loot = Units.closest(null, unit.x, unit.y, global.lovec.var.rad_lootPickRad, ounit => global.lovec.mdl_cond._isLoot(ounit));
+            let loot = Units.closest(null, unit.x, unit.y, VAR.rad_lootPickRad, ounit => MDL_cond._isLoot(ounit));
             if(loot == null) return;
-            global.lovec.frag_item.destroyLoot_global(loot);
+            FRAG_item.destroyLoot_global(loot);
           },
         },
 
@@ -293,14 +272,14 @@ const db = {
   search: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Extra tags used for search.
-     * ---------------------------------------- */
+     * <br> <ROW>: prefix, boolF.
+     * <br> <ARGS>: ct, str.
+     */
     tag: [
 
-      "no:", (ct, str) => !ct.name.toLowerCase().includes(str) && !Strings.stripColors(ct.localizedName).toLowerCase().includes(str) && (!Core.settings.getString("locale") === "zh_CN" || !LIB_pinyin.fetchPinyin(Strings.stripColors(ct.localizedName)).toLowerCase().includes(str)),
+      "no:", (ct, str) => !ct.name.toLowerCase().includes(str) && !Strings.stripColors(ct.localizedName).toLowerCase().includes(str) && (Core.settings.getString("locale") !== "zh_CN" || !LIB_pinyin.fetchPinyin(Strings.stripColors(ct.localizedName)).toLowerCase().includes(str)),
 
       "mod:", (ct, str) => ct.minfo.mod !== null && ct.minfo.mod.name === str,
 
@@ -311,12 +290,12 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * @CONTENTGEN
-     * {"group:xxx"}.
-     * ---------------------------------------- */
+    /**
+     * Used for "group: xxx" tags.
+     * <br> <CONTENTGEN>
+     * <br> <ROW>: str, boolF.
+     * <br> <ARGS>: ct.
+     */
     group: [
 
       "flammable", ct => ct.flammability != null && ct.flammability > 0.0,
@@ -348,12 +327,11 @@ const db = {
   recipe: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Used to read a particular consumer.
-     * Format: {cls, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {...}}.
-     * ---------------------------------------- */
+    /**
+     * Used to read a particular consumer for recipe dictionary.
+     * <br> <ROW>: javaCls, rcReader.
+     * <br> <ARGS>: blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp.
+     */
     consumeReader: [
 
       /* <---------- item ----------> */
@@ -460,12 +438,11 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Used to read a particular class of blocks to get production list.
-     * Format: {cls, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {...}}.
-     * ---------------------------------------- */
+    /**
+     * Used to read a particular class of blocks to get production list for recipe dictionary.
+     * <br> <ROW>: javaCls, rcReader.
+     * <br> <ARGS>: blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp.
+     */
     produceReader: [
 
       Drill, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
@@ -529,13 +506,12 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Used to generate default files for ore dictionary.
+     * For other mods, simply put .csv files in "Mindustry/saves/mods/data/sharedData/ore-dict".
      * DO NOT MODIFY THIS!
-     * For other mods, simply put .csv files in "./saves/mods/data/sharedData/ore-dict".
-     * ---------------------------------------- */
+     * <br> <ROW>: rsTg, rss.
+     */
     oreDictDef: [
 
       "beryllium", [],
@@ -567,6 +543,11 @@ const db = {
     ],
 
 
+    /**
+     * How to modify consumers for ore dictionary.
+     * <br> <ROW>: javaCls, setter.
+     * <br> <ARGS>: blk, cons, oreDict.
+     */
     oreDictConsSetter: [
 
       ConsumeItems, (blk, cons, oreDict) => {
@@ -584,6 +565,11 @@ const db = {
     ],
 
 
+    /**
+     * How to modify producers for ore dictionary.
+     * <br> <ROW>: javaCls, setter.
+     * <br> <ARGS>: blk, oreDict.
+     */
     oreDictProdSetter: [
 
       WallCrafter, (blk, oreDict) => {
@@ -619,12 +605,10 @@ const db = {
   lsav: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Properties that is saved in a .lsav file.
-     * Format: {header, def, arrMode}.
-     * ---------------------------------------- */
+    /**
+     * Properties that are saved in a LSAV.
+     * <br> <ROW>: header, def, arrMode.
+     */
     header: [
 
       "useless-field", "ohno", null,
@@ -638,11 +622,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Properties here are safe (or required) to be set by client sides.
-     * ---------------------------------------- */
+     * <br> <ROW>: header.
+     */
     safe: [
 
       "bits",
@@ -660,12 +643,10 @@ const db = {
   texture: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Icons polulated in {VARGEN.icons}.
-     * Format: {nm, nmReg}.
-     * ---------------------------------------- */
+    /**
+     * Icons populated in {@link VARGEN.icons}.
+     * <br> <ROW>: nm, regStr.
+     */
     icon: [
 
       "ohno", "error",
@@ -680,12 +661,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Noise textures polulated in {VARGEN.noiseTexs}.
-     * Format: {nm, path}.
-     * ---------------------------------------- */
+    /**
+     * Noise textures polulated in {@link VARGEN.noiseTexs}.
+     * <br> <ROW>: nm, path.
+     */
     noise: [
 
       "caustics", "sprites/caustics.png",
@@ -710,12 +689,10 @@ const db = {
     chara: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * The colors used for characters in dialog flow.
-       * Format: {nmMod, nmChara, color_gn}.
-       * ---------------------------------------- */
+       * <br> <ROW>: nmMod, nmChara, color.
+       */
       color: [
 
         "lovec", "earlan", "d4c0d8",

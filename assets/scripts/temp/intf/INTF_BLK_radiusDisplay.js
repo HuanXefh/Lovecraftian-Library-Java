@@ -22,14 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-
-
   /* <---------- component ----------> */
 
 
@@ -41,10 +33,10 @@
 
 
   function comp_draw(b) {
-    if(!b.isPayload() && b.block.delegee.useP3dRange && MDL_cond._posHoveredRect(b.x, b.y, 0, b.block.size)) {
+    if(!b.isPayload() && b.block.delegee.useP3dRange && LCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
       processZ(VAR.lay_p3dRange);
       LCDrawP3D.cylinderFade(b.x, b.y, 1.0, b.block.delegee.blkRad, b.block.ex_getBlkRadColor(true));
-      processZ(VAR.lay_p3dRange);
+      processZ();
     };
   };
 

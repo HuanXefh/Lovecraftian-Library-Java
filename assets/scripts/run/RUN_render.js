@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * For in-game rendering.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -20,18 +18,6 @@
 
 
   /* <---------- import ----------> */
-
-
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
-  const DB_env = require("lovec/db/DB_env");
 
 
   /* <---------- noise ----------> */
@@ -59,7 +45,7 @@
     };
     Draw.reset();
 
-    processZ(Layer.weather - 0.9);
+    processZ();
   };
 
 
@@ -74,14 +60,11 @@
 
   TRIGGER.gameLoad.addGlobalListener(() => {
 
-
     MDL_ui._d_fade(0.0, Color.black, 0.0, 2.0, 0.5);
-
 
     Time.run(30.0, () => {
       noiseArgs = _noiseArgs();
     });
-
 
   });
 

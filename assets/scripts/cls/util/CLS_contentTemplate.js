@@ -1,18 +1,15 @@
-/* ----------------------------------------
- * NOTE:
- *
- * The base class of content templates.
- * Templates are used to create the object used in {extend} and its variants in Lovec.
- * No instance usage.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Base class of all content templates, provides basic methods to define a template.
+ * Content templates are used to build the object for `extend` and its Lovec variants.
+ * Do not create instance of templates!
+ * @class
+ */
 const CLS_contentTemplate = newClass().initClass();
 
 
@@ -29,20 +26,34 @@ var cls = CLS_contentTemplate;
 
 cls.__IS_CONTENT_TEMPLATE__ = true;
 cls.nm = "!UNDEF";
+/**
+ * @type {Object}
+ */
 cls.paramObj = {
   tempParent: null,
   tempTags: [],
 };
+/**
+ * <ROW>: nmPropNew, nmPropOld, def.
+ * @type {Array}
+ */
 cls.paramAliasArr = [];
+/**
+ * <ROW>: nmProp, valGetter.
+ * @type {Array}
+ */
 cls.paramParserArr = [];
+/**
+ * @type {Object}
+ */
 cls.funObj = {};
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Overwrites {paramObj} to set new fields and default values.
- * ---------------------------------------- */
+/**
+ * Sets new properties and their default values.
+ * @param {Object} obj
+ * @return {this}
+ */
 cls.setParam = function(obj) {
   this.paramObj = mergeObj(this.paramObj, obj);
 
@@ -50,12 +61,11 @@ cls.setParam = function(obj) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Overwrites {paramAliasArr} to set aliases for existing fields, with default values given.
- * Format for {arr}: {nmPropNew, nmPropOld, def}
- * ---------------------------------------- */
+/**
+ * Sets aliases for properties.
+ * @param {Array} arr - <ROW>: nmPropNew, nmPropOld, def.
+ * @return {this}
+ */
 cls.setParamAlias = function(arr) {
   let i = 0, iCap = arr.iCap();
   while(i < iCap) {
@@ -70,13 +80,17 @@ cls.setParamAlias = function(arr) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Overwrites {paramParserArr} to set parser function for some parameter, that is run when building the object.
- * {this} in the parser refers to the object built.
- * Format for {arr}: {nmProp, parser}.
- * ---------------------------------------- */
+/**
+ * Sets parsers to change value of some property before building final object.
+ * `this` in the parsers refers to the object being built.
+ * @param {Array} arr - <ROW>: nmProp, valGetter
+ * @return {this}
+ * @example
+ * // The property "file" is a path string that needs to be converted
+ * temp.setParamParser([
+ *   "file", function(path) {return require(path)};
+ * ]);
+ */
 cls.setParamParser = function(arr) {
   let i = 0, iCap = arr.iCap();
   while(i < iCap) {
@@ -88,11 +102,11 @@ cls.setParamParser = function(arr) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Sets the Java class used for {extend}.
- * ---------------------------------------- */
+/**
+ * Sets the Java class used in `extend`.
+ * @param {Function} javaCls
+ * @return {this}
+ */
 cls.setParent = function(javaCls) {
   this.paramObj.tempParent = javaCls;
 
@@ -100,12 +114,11 @@ cls.setParent = function(javaCls) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * @ARGS: tag1, tag2, tag3, ...
- * Sets tags used to specify the template.
- * ---------------------------------------- */
+/**
+ * Sets tags of the template.
+ * <br> <ARGS>: tag1, tag2, tag3, ...
+ * @return {this}
+ */
 cls.setTags = function() {
   this.paramObj.tempTags = Array.from(arguments);
 
@@ -113,26 +126,16 @@ cls.setTags = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Overrides the method in {funObj}.
- * Uses properties of {fun}:
- * fun.noSuper: bool                @PARAM: Whether {this.super$xxx} should be skipped.
- * fun.override: bool                @PARAM: Whether to skip methods from the parent template.
- * fun.final: bool                @PARAM: Whether the method is fixed and cannot be mixed when inherited later.
- * fun.boolMode: str                @PARAM: Used for functions that return a boolean. Possible values: "none", "and", "or".
- * fun.superBoolMode: str                @PARAM: Like {boolMode} but for {super$xxx}, same as {boolMode} by default.
- * fun.mergeMode: str                @PARAM: Used for functions that return an object or array. This field can be a function for customization.
- * fun.argLen: int                @PARAM: The expected argument length of final Java method.
- * fun.funPrev: *DO NOT SET*                @PARAM: The method from parent template before mixing, for advanced use.
- * fun.funCur: *DO NOT SET*                @PARAM: The method from current template before mixing, for advanced use.
- *
- * Special method names for template customization:
- * "__PARAM_OBJ_SETTER__" - Result will be used for {setParam}.
- * "__PARAM_ALIAS_SETTER__" - Result will be used for {setParamAlias}.
- * "__PARAM_PARSER_SETTER__" - Result will be used for {setParamParser}.
- * ---------------------------------------- */
+/**
+ * Sets methods, which will be mixed with previous methods.
+ * <br> Special method names:
+ * <br> "__PARAM_OBJ_SETTER__" - Result will be used in `setParam`.
+ * <br> "__PARAM_ALIAS_SETTER__" - Result will be used in `setParamAlias`.
+ * <br> "__PARAM_PARSER_SETTER__" - Result will be used in `setParamParser`.
+ * @param {Object<string, TemplateFunction>} nmFunObj
+ * @param {boolean|unset} [isFromIntf] - Do not set this!
+ * @return {this}
+ */
 cls.setMethod = function(nmFunObj, isFromIntf) {
   const thisCls = this;
 
@@ -210,7 +213,7 @@ cls.setMethod = function(nmFunObj, isFromIntf) {
             boolMode: fun.boolMode,
             superBoolMode: fun.superBoolMode,
             mergeMode: fun.mergeMode,
-            argLen: superFun == null ? fun.argLen : Math.max(superFun.argLen, fun.argLen),
+            argLen: Math.max(superFun.argLen, fun.argLen),
             funPrev: superFun,
             funCur: fun,
           });
@@ -236,22 +239,20 @@ cls.setMethod = function(nmFunObj, isFromIntf) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns the class used in {extend}.
- * ---------------------------------------- */
+/**
+ * Gets the Java class used in `extend`.
+ * @return {Function}
+ */
 cls.getParent = function() {
   return this.paramObj.tempParent;
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Returns the object used in {extend}.
- * You may need {mergeObj} for customization without a new template.
- * ---------------------------------------- */
+/**
+ * Builds the object used in `extend`.
+ * @param {Object} paramObj - Sets values of properties in a template. Only properties defined with content template can be set.
+ * @return {Object}
+ */
 cls.build = function(paramObj) {
   const obj = {};
   const thisFun = this;
@@ -323,7 +324,7 @@ cls.build = function(paramObj) {
     obj[nm].argLen = fun.argLen;
   });
 
-  // Make sure the template is accessible afterwards, mostly for test
+  // Make sure the template is accessible afterward, mostly for test
   obj.ex_getTemp = function() {
     return thisFun;
   };

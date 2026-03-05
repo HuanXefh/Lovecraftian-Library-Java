@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Erekir unloader.
    * ---------------------------------------- */
 
@@ -26,9 +26,6 @@
   const PARENT = require("lovec/temp/blk/BLK_baseItemGate");
 
 
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 
@@ -42,7 +39,7 @@
 
 
   function comp_buildConfiguration(b, tb) {
-    MDL_table.setSelector_ct(
+    MDL_table._s_ct(
       tb, b.block, Vars.content.items().toArray(),
       () => b.unloadItem, val => b.configure(val), false,
       b.block.selectionRows, b.block.selectionColumns,

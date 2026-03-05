@@ -1,23 +1,15 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Used to register settings less randomly. See {TP_setting}.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
-
-
-const PARAM = require("lovec/glb/GLB_param");
-
-
-const MDL_bundle = require("lovec/mdl/MDL_bundle");
-const MDL_event = require("lovec/mdl/MDL_event");
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Use to register settings, see {@link TP_setting}.
+ * @class
+ * @param {string} nm
+ * @param {function(boolean): void} valGetter - <ARGS>: useScl.
+ */
 const CLS_settingTerm = newClass().initClass();
 
 
@@ -58,11 +50,14 @@ MDL_event._c_onLoad(() => {
 var cls = CLS_settingTerm;
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Call this to add a new category.
- * ---------------------------------------- */
+/**
+ * Registers a new setting category, which will be displayed in setting dialog.
+ * <br> <BUNDLE>: "term.<nmMod>-term-settings-<nmCateg>.name".
+ * @param {string} nmMod
+ * @param {string} nmCateg
+ * @param {boolean|unset} [isDebugCateg] - If true, this category is shown only in debug mode.
+ * @return {void}
+ */
 cls.registerCategory = function(nmMod, nmCateg, isDebugCateg) {
   (isDebugCateg ? categSetterDebugArr : categSetterArr).write([nmMod, nmCateg], []);
 };
@@ -74,12 +69,14 @@ cls.registerCategory = function(nmMod, nmCateg, isDebugCateg) {
 var ptp = CLS_settingTerm.prototype;
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Used to set the {Vars.ui.settings} dialog.
- * If the method is not called, the setting won't show up there.
- * ---------------------------------------- */
+/**
+ * Used to set setting dialog.
+ * If this method is not called, this setting won't show up there.
+ * @param {string} nmMod
+ * @param {string} nmCateg
+ * @param {function(Table): void} tableF
+ * @return {this}
+ */
 ptp.setDialSetter = function thisFun(nmMod, nmCateg, tableF) {
   thisFun.tmpTup.clear().push(nmMod, nmCateg);
 

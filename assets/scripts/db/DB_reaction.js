@@ -1,23 +1,6 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Database of reaction properties used in {MDL_reaction}.
- * ---------------------------------------- */
-
-
-const EFF = require("lovec/glb/GLB_eff");
-
-
-const FRAG_attack = require("lovec/frag/FRAG_attack");
-const FRAG_puddle = require("lovec/frag/FRAG_puddle");
-
-
-const MDL_content = require("lovec/mdl/MDL_content");
-const MDL_effect = require("lovec/mdl/MDL_effect");
-
-
-const DB_fluid = require("lovec/db/DB_fluid");
-const DB_item = require("lovec/db/DB_item");
+/**
+ * Database of reaction properties used in {@link MDL_reaction}.
+ */
 
 
 const db = {
@@ -26,12 +9,11 @@ const db = {
   /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Reaction definition, {e} and {rs} can be {null}.
+  /**
+   * Reaction definition, `e` and `rs` can be null.
    * Note that the script is called on server side only.
-   * Format: {reaction, [p, (paramObj, x, y, e, rs) => {...}]}.
+   * <br> <ROW>: reaction, [p, scr].
+   * <br> <ARGS>: paramObj, x, y, e, rs.
    * ---------------------------------------- */
   reaction: [
 
@@ -50,7 +32,7 @@ const db = {
     // Create fire
     "heat", [0.01, (paramObj, x, y, e, rs) => {
       MDL_effect.showAt_global(x, y, EFF.heatSmog, 0.0);
-      if(e != null) global.lovec.frag_attack.damage(e, readParam(paramObj, "dmg", 10.0), 0.0, "heat");
+      if(e != null) FRAG_attack.damage(e, readParam(paramObj, "dmg", 10.0), 0.0, "heat");
       Bullets.fireball.createNet(Team.derelict, x, y, Mathf.random(360.0), -1.0, 1, 1);
     }],
 
@@ -58,7 +40,7 @@ const db = {
     "denaturing", [0.002, (paramObj, x, y, b, rs) => {
       if(e == null || rs == null) return;
       if(e instanceof Building ? e.items == null : e.stack.amount < 1) return;
-      let itm = global.lovec.mdl_content._ct(db["denaturingTarget"].read(rs.name), "rs");
+      let itm = MDL_content._ct(db["denaturingTarget"].read(rs.name), "rs");
       if(itm == null) return;
 
       let amt = Math.round(readParam(paramObj, "amt", 1));
@@ -104,11 +86,11 @@ const db = {
   ],
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Conditions for each reaction group.
-   * ---------------------------------------- */
+   * <br> <ROW>: reacGrp, boolF.
+   * <br> <ARGS>: rs.
+   */
   groupCond: [
 
     "GROUP: air", (rs) => DB_fluid.db["group"]["air"].includes(rs.name),
@@ -132,13 +114,11 @@ const db = {
   ],
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * List of fluid reactants and the event called.
-   * This is expected to be read without order.
-   * Format: {reactant1, reactant2, [reaction, param]}.
-   * ---------------------------------------- */
+   * Expected to be orderless.
+   * <br> <ROW>: reac1, reac2, [reaction, paramObj].
+   */
   fluid: [
 
     "GROUP: water", "GROUP: dehydrative", ["heat", {}],
@@ -146,11 +126,11 @@ const db = {
   ],
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * For item reaction. The first reactant is item and second is fluid.
-   * ---------------------------------------- */
+  /**
+   * List of item reactant, fluid reactant and the event called (item cannot react with item directly).
+   * Expected to be orderless.
+   * <br> <ROW>: reac1, reac2, [reaction, paramObj].
+   */
   item: [
 
     "ITEMGROUP: denaturing", "GROUP: air", ["denaturing", {amt: 1}],
@@ -164,21 +144,19 @@ const db = {
   ],
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Target item in a denaturing reaction.
-   * If {null} no item will be formed.
-   * ---------------------------------------- */
+   * If null no item will be formed.
+   * <br> <ROW>: itm_f, itm_t.
+   */
   denaturingTarget: [],
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Target liquid in a solvation reaction.
-   * If {null} no liquid puddle will be changed.
-   * ---------------------------------------- */
+   * If null content of puddle won't be changed.
+   * <br> <ROW-xxx>: itm, liq.
+   */
   solvationTarget: {
 
 

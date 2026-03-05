@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Handles color, mostly Arc color.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -39,13 +37,13 @@
   ];
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Generalized color thing.
-   * If given {colorMod}, this will try overwriting it instead of using default temporary color object.
-   * If {colorMod} is {"new"}, this will create a new color object.
-   * ---------------------------------------- */
+  /**
+   * Converts generalized color to Arc color.
+   * Use "null" to return null.
+   * @param {ColorGn} color_gn
+   * @param {string|Color|unset} [colorMod] - If given color, it will be the output. If given "new", the method will return a new instance of {@link Color}.
+   * @return {Color|null}
+   */
   const _color = function(color_gn, colorMod) {
     if(color_gn === "null") return null;
     if(colorMod == null) colorMod = tmpColors[9];
@@ -71,16 +69,18 @@
   /* <---------- sprite ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the default color from the icon of a content.
-   * ---------------------------------------- */
+  /**
+   * Gets the default color of some content, from its icon.
+   * Should only be called in `createIcons`.
+   * @param {ContentGn} ct_gn
+   * @param {number|unset} [colorInd] - Index of the final color, leave empty for automatic selection.
+   * @param {Color|unset} [colorCont]
+   * @return {Color}
+   */
   const _iconColor = function(ct_gn, colorInd, colorCont) {
-    const color = colorCont == null ? colorCont.set(0, 0, 0, 1) : new Color(0, 0, 0, 1);
-
+    const color = colorCont != null ? colorCont.set(0, 0, 0, 1) : new Color(0, 0, 0, 1);
     if(Vars.headless) return color;
-    let ct = global.lovecUtil.fun._ct(ct_gn);
+    let ct = findContent(ct_gn);
     if(ct == null) return color;
     let colors = _pixColors(Core.atlas.getPixmap(ct.fullIcon));
     if(colorInd == null) colorInd = colors.length >= 3 ? 1 : 0;
@@ -91,11 +91,12 @@
   exports._iconColor = _iconColor;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list colors in a pixmap, no transparent ones.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of colors present in a pixmap excluding transparent ones.
+   * @param {PixmapGn} pix
+   * @param {boolean|unset} [useArcColor] - If true, this method will return Arc colors instead of numbers.
+   * @return {Array<number>|Array<Color>}
+   */
   const _pixColors = function thisFun(pix, useArcColor) {
     // No need for temporary array, there are always new color objects anyway
     const arr = [];
@@ -133,14 +134,16 @@
   /* <---------- misc ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the color for some character.
-   * ---------------------------------------- */
+  /**
+   * Gets the color of some character.
+   * Used mostly for dialog flow texts.
+   * @param {string} nmMod
+   * @param {string} nmChara
+   * @return {Color}
+   */
   const _charaColor = function thisFun(nmMod, nmChara) {
     thisFun.tmpArgs.clear().push(nmMod, nmChara);
-    return _color(global.lovec.db_misc.db["drama"]["chara"]["color"].read(thisFun.tmpArgs));
+    return _color(DB_misc.db["drama"]["chara"]["color"].read(thisFun.tmpArgs));
   }
   .setProp({
     tmpArgs: [],

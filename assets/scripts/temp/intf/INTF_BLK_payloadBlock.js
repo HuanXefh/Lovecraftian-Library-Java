@@ -22,18 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const FRAG_payload = require("lovec/frag/FRAG_payload");
-
-
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_io = require("lovec/mdl/MDL_io");
-
-
   /* <---------- component ----------> */
 
 
@@ -77,7 +65,7 @@
         ob => {
           let pay = FRAG_payload.takeAt(ob);
           b.payReqObj[pay.content().name] = tryVal(b.payReqObj[pay.content().name], 0) + 1;
-          MDL_effect.showBetween_payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content());
+          MDL_effect._e_payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content());
         },
       );
     };
@@ -86,14 +74,14 @@
     if(b.hasPayOutput && TIMER.secHalf && b.payOutputBs.length > 0) {
       if(b.lastDumpPay == null) {
         let nmCt = Object.randKey(b.payStockObj);
-        if(nmCt != null) {
+        if(nmCt != null && b.payStockObj[nmCt] > 0) {
           b.lastDumpPay = FRAG_payload._pay(nmCt, b.team);
         };
       } else {
         let b_t = b.payOutputBs[b.payDumpIncre % b.payOutputBs.length];
         b.payDumpIncre++;
         if(b_t.added && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
-          MDL_effect.showBetween_payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content());
+          MDL_effect._e_payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content());
           b.payStockObj[b.lastDumpPay.content().name] = tryVal(b.payStockObj[b.lastDumpPay.content().name], 0) - 1;
           b.lastDumpPay = null;
         };

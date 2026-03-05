@@ -5,12 +5,10 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to terrain calculation.
    * The proper name should be "biome", but it's too late for me too.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -23,24 +21,14 @@
   /* <---------- import ----------> */
 
 
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A list of terrain types, populated on CLIENT LOAD.
-   * See {ENV_materialFloor} and {ENV_liquidMaterialFloor}.
-   * ---------------------------------------- */
+  /**
+   * A list of terrain types polulated on CLIENT LOAD.
+   * See {@link ENV_materialFloor} and {@link ENV_liquidMaterialFloor}.
+   * @type {Array<string>}
+   */
   const ters = (function() {
     const arr = [];
 
@@ -57,14 +45,11 @@
   exports.ters = ters;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parameters used to check bank terrain type.
-   * ---------------------------------------- */
+  /** Parameters used to check bank terrain type. */
   const bankLiqParams = {
     liqFrac: 0.55,
     groundFrac: 0.45,
+    /** These solid terrain types will be used for "river". */
     bankGroundTers: [
       "dirt",
       "grass",
@@ -74,6 +59,7 @@
       "sand",
       "snow",
     ],
+    /** These solid terrain types will be used for "beach". */
     beachGroundTers: [
       "gravel",
       "ice",
@@ -85,12 +71,14 @@
   exports.bankLiqParams = bankLiqParams;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the terrain type at some tile.
-   * You can push more getters to this function for customized terrain types.
-   * ---------------------------------------- */
+  /**
+   * Gets terrain type at some tile.
+   * You can register new terrain types by pushing more getters into this function.
+   * @param {Tile} t
+   * @param {number|unset} [size]
+   * @param {number|unset} [checkR]
+   * @return {string|null} - Transition is null.
+   */
   const _ter = function thisFun(t, size, checkR) {
     if(t == null) return null;
 
@@ -140,25 +128,24 @@
   exports._ter = _ter;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the name for some terrain type from the bundle.
-   * Format: {"term.common-term-ter-xxx.name"}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "term.common-term-ter-<ter>.name".
+   * @param {string|unset} [ter]
+   * @return {string}
+   */
   const _terB = function(ter) {
     return Vars.headless ? "" : MDL_bundle._term("common", "ter-" + (tryVal(ter, "transition")));
   };
   exports._terB = _terB;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: countMap, ters
-   * @ARGS: countMap, ter1, ter2, ter3, ...
-   * Used to count floor blocks matching some terrain type or types.
-   * ---------------------------------------- */
+  /**
+   * Used to count floor blocks matching some terrain type(s).
+   * <br> <ARGS>: countMap, ters.
+   * <br> <ARGS>: countMap, ter1, ter2, ter3, ...
+   * @param {ObjectMap} countMap
+   * @return {number}
+   */
   const sumCountTers = function(countMap) {
     let count = 0;
     if(arguments[1] instanceof Array) {
@@ -181,11 +168,16 @@
   /* <---------- component ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used to show current terrain type at some tile.
-   * ---------------------------------------- */
+   * @param {Block} blk
+   * @param {number} tx
+   * @param {number} ty
+   * @param {number} rot
+   * @param {boolean} valid
+   * @param {number|unset} [offTy]
+   * @return {void}
+   */
   const comp_drawPlace_ter = function thisFun(blk, tx, ty, rot, valid, offTy) {
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;

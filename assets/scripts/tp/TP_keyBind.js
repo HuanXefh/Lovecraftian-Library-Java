@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers new key bindings.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,15 +20,12 @@
   /* <---------- import ----------> */
 
 
-  const PARAM = require("lovec/glb/GLB_param");
-
-
   /* <---------- auxiliary ----------> */
 
 
   function toggleSetting(nmCfg) {
     Core.settings.put("lovec-" + nmCfg, !fetchSetting(nmCfg));
-    global.lovec.param.forceLoadParam();
+    PARAM.forceLoadParam();
   };
 
 
@@ -39,19 +34,19 @@
 
   newKeyBind(
     "lovec-setting-toggle-win", KeyCode.semicolon, "lovec",
-    unit_pl => toggleSetting("window-show"),
+    (unitPlayer, tMouse) => toggleSetting("window-show"),
   );
 
 
   newKeyBind(
     "lovec-setting-toggle-unit-stat", KeyCode.unset, "lovec",
-    unit_pl => toggleSetting("unit0stat-show"),
+    (unitPlayer, tMouse) => toggleSetting("unit0stat-show"),
   );
 
 
   newKeyBind(
     "lovec-setting-toggle-damage-display", KeyCode.unset, "lovec",
-    unit_pl => toggleSetting("damagedisplay-show"),
+    (unitPlayer, tMouse) => toggleSetting("damagedisplay-show"),
   );
 
 
@@ -63,13 +58,13 @@
 
     newKeyBind(
       "lovec-player-drop-loot", KeyCode.l, "lovec",
-      unit_pl => global.lovec.db_misc.db["mod"]["dragButton"]["modded"].read("lovec-player-drop-loot").clickScr(),
+      (unitPlayer, tMouse) => DB_misc.db["mod"]["dragButton"]["modded"].read("lovec-player-drop-loot").clickScr(),
     );
 
 
     newKeyBind(
       "lovec-player-take-loot", KeyCode.k, "lovec",
-      unit_pl => {global.lovec.db_misc.db["mod"]["dragButton"]["modded"].read("lovec-player-take-loot").clickScr()},
+      (unitPlayer, tMouse) => DB_misc.db["mod"]["dragButton"]["modded"].read("lovec-player-take-loot").clickScr(),
     );
 
 

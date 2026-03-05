@@ -23,12 +23,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 
@@ -123,7 +117,7 @@
        * Pushes target loots to {b.LootQueue}.
        * ---------------------------------------- */
       ex_updateLootQueue: function() {
-        MDL_pos._lootsTs(this.lootTs, null, this.lootQueue);
+        MDL_pos._lootsTs(this.lootTs, this.lootQueue);
       }
       .setProp({
         noSuper: true,

@@ -22,17 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const EFF = require("lovec/glb/GLB_eff");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_io = require("lovec/mdl/MDL_io");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 
@@ -88,7 +77,7 @@
 
 
   function comp_ex_buildSelector(b, tb) {
-    MDL_table.setSelector_ctMulti(
+    MDL_table._s_ctMulti(
       tb, b.block, b.block.delegee.selectionQueue,
       () => b.ex_accCtTgs("read", false), val => b.configure(val), false,
       b.block.selectionRows, b.block.selectionColumns,
@@ -151,7 +140,7 @@
       config: function() {
         return ["selectorBlock"]
         .pushAll(this.ctTgs.map(ct => ct == null ? "null" : ct.name))
-        .toJavaArr();
+        .toJavaArr(JAVA.object);
       }
       .setProp({
         noSuper: true,

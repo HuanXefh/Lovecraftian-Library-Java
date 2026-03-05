@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Similar to {ENV_depthOre}, but for liquid.
    * ---------------------------------------- */
 
@@ -25,14 +25,6 @@
 
   const PARENT = require("lovec/temp/env/ENV_baseOverlay");
   const INTF = require("lovec/temp/intf/INTF_ENV_depthOverlay");
-
-
-  const MDL_attr = require("lovec/mdl/MDL_attr");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
-  const DB_item = require("lovec/db/DB_item");
 
 
   /* <---------- auxiliary ----------> */

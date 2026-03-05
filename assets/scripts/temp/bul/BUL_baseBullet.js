@@ -22,10 +22,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/cls/util/CLS_contentTemplate");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
+  const PARENT = CLS_contentTemplate;
 
 
   /* <---------- component ----------> */

@@ -24,19 +24,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseMiner");
   const INTF = require("lovec/temp/intf/INTF_BLK_radiusDisplay");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_io = require("lovec/mdl/MDL_io");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
-  const DB_misc = require("lovec/db/DB_misc");
 
 
   /* <---------- component ----------> */
@@ -110,8 +97,8 @@
       b.revealedInts.push(ot.pos());
 
       if(b.team === Vars.player.team()) {
-        MDL_effect.showAt_click(ot.worldx(), ot.worldy(), b.block.delegee.scanColor);
-        MDL_effect.showBetween_line(ot.worldx(), ot.worldy(), null, b, b.block.delegee.scanColor);
+        MDL_effect._e_click(ot.worldx(), ot.worldy(), b.block.delegee.scanColor);
+        MDL_effect._e_line(ot.worldx(), ot.worldy(), null, b, b.block.delegee.scanColor);
         ot.overlay().ex_accRevealed(ot, true);
       };
     };

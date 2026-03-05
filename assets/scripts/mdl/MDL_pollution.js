@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to the Lovec pollution mechanics.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,20 +20,6 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const PARAM = require("lovec/glb/GLB_param");
-  const SAVE = require("lovec/glb/GLB_save");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
-  const DB_env = require("lovec/db/DB_env");
-
-
   /* <---------- base ----------> */
 
 
@@ -44,11 +28,11 @@
   let dynaPol = 0.0;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets pollution produced/reduced by some block.
-   * ---------------------------------------- */
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _blkPol = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
     if(blk == null) return 0.0;
@@ -59,11 +43,11 @@
   exports._blkPol = _blkPol;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets pollution of some resource.
-   * ---------------------------------------- */
+   * @param {ResourceGn} rs_gn
+   * @return {number}
+   */
   const _rsPol = function(rs_gn) {
     let rs = MDL_content._ct(rs_gn, "rs");
     if(rs == null) return 0.0;
@@ -81,42 +65,47 @@
   exports._rsPol = _rsPol;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets current total pollution.
-   * ---------------------------------------- */
+  /**
+   * Gets total pollution of current save.
+   * @return {number}
+   */
   const _glbPol = function() {
     return basePol + mapPol + dynaPol * 0.25;
   };
   exports._glbPol = _glbPol;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets pollution tolerance of some block or unit type.
-   * ---------------------------------------- */
+   * @param {string|Block|UnitType|null} ct_gn
+   * @return {number}
+   */
   const _polTol = function(ct_gn) {
-    let ct = MDL_content._ct(ct, null, true);
+    let ct = MDL_content._ct(ct_gn, null, true);
     if(ct == null) return 500.0;
 
     return DB_HANDLER.read(ct instanceof UnitType ? "utp-pol-tol" : "blk-pol-tol", ct, 500.0);
-  };
+  }
+  .setCache();
   exports._polTol = _polTol;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Increases current dynamic pollution.
-   * ---------------------------------------- */
+  /**
+   * Increases dynamic pollution.
+   * @param {number} amt
+   * @return {number}
+   */
   const addDynaPol = function(amt) {
-    dynaPol += amt;
+    return dynaPol += amt;
   };
   exports.addDynaPol = addDynaPol;
 
 
+  /**
+   * Sets pollution related stats.
+   * @param {Block} blk
+   * @return {void}
+   */
   const comp_setStats_pol = function(blk) {
     let pol = _blkPol(blk);
     if(!pol.fEqual(0.0)) blk.stats.add(pol > 0.0 ? fetchStat("lovec", "blk-pol") : fetchStat("lovec", "blk-polred"), Math.abs(pol), fetchStatUnit("lovec", "polunits"));

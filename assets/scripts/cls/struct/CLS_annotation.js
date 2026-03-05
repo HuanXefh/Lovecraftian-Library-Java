@@ -1,26 +1,18 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Annotation marks and modifies other methods.
- * See {Function.prototype.setAnno} in {RUN_methodExt}.
- *
- * {funCaller} defines how to modify the original method {this}.
- * If you are using {this}, don't write arrow functions!
- * By returning {true} the original method will not be called.
- * Format: (arg1, arg2, arg3, ...) => {...}.
- *
- * {loadScr} is called just after the function is defined.
- *
- * {funArgCaller} is similar to {funCaller}, but {this} refers to {arguments} of the original method.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Used to modify methods.
+ * Annotations can be applied by `fun.setAnno(nm, annoArgs, skipDef)`.
+ * @class
+ * @param {string} nm
+ * @param {Function|unset} [funCaller] - Called before the original function is called, `this` refers to the original function. If ture is returned, the original function will be skipped.
+ * @param {Function|unset} [loadScr] - Called just after the original function is defined, `this` refers to the original function.
+ * @param {Function|unset} [funArgCaller] - Like `funCaller` but `this` refers to arguments of the original function.
+ */
 const CLS_annotation = newClass().initClass();
 
 

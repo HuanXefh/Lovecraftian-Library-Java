@@ -28,13 +28,6 @@
   const INTF_B = require("lovec/temp/intf/INTF_BLK_oreScannerHandler");
 
 
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
-  const DB_item = require("lovec/db/DB_item");
-
-
   /* <---------- component ----------> */
 
 
@@ -99,7 +92,7 @@
 
       liqReg: null,
       attrMode: "overlay",
-      attrRsMap: DB_item.db["map"]["attr"]["dpliq"],
+      attrRsArr: DB_item.db["map"]["attr"]["dpliq"],
       shouldDrawDynaAttrText: false,
     })
     .setMethod({

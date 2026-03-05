@@ -23,15 +23,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseGroundDrill");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-  const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_terrain = require("lovec/mdl/MDL_terrain");
 
 
   /* <---------- component ----------> */
@@ -127,7 +118,7 @@
           matArr.push([rs, rs.localizedName, MDL_terrain._terB(ter)]);
         });
 
-        MDL_table.setTable_base(tb1, matArr);
+        MDL_table._l_table(tb1, matArr);
       }).growX().row();
     });
   };

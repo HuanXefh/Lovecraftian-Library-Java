@@ -23,20 +23,6 @@
 
 
   const PARENT = require("lovec/temp/unit/UNIT_technicalUnit");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_reaction = require("lovec/mdl/MDL_reaction");
-
-
-  const DB_status = require("lovec/db/DB_status");
 
 
   /* <---------- component ----------> */
@@ -81,7 +67,7 @@
 
     // Merge loot units randomly
     if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {
-      let ounit = MDL_pos._loot(unit.x, unit.y, VAR.rad_lootMergeRad, unit);
+      let ounit = MDL_pos._lootOther(unit.x, unit.y, VAR.rad_lootMergeRad, unit);
       if(ounit != null && ounit.item() === unit.item()) {
         unit.stack.amount += ounit.stack.amount;
         ounit.remove();
@@ -140,17 +126,17 @@
     // Heat
     if(MDL_cond._isHot(unit)) {
       Draw.blend(Blending.additive);
-      Draw.mixcol(Color.valueOf(Tmp.c2, "ff3838"), 1.0);
+      Draw.mixcol(VAR.color_heatMix, 1.0);
       Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * 0.75);
       Draw.rect(unit.item().uiIcon, unit.x, unit.y, regW, regW, unit.rotation);
       Draw.blend();
     };
     Draw.reset();
 
-    processZ(z);
+    processZ();
 
     // Amount text
-    if(PARAM.drawLootAmount && MDL_cond._posHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
+    if(PARAM.drawLootAmount && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
       LCDraw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
     };
   };

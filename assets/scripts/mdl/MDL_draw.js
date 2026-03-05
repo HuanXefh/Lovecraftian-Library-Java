@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to draw.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,150 +20,22 @@
   /* <---------- import ----------> */
 
 
-  const PARAM = require("lovec/glb/GLB_param");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_color = require("lovec/mdl/MDL_color");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
-
-
-  const DB_misc = require("lovec/db/DB_misc");
-
-
-  /* <---------- component ----------> */
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {drawPlace} that every block should have.
-   * Used if {blk.super$drawPlace} is not called.
-   * ---------------------------------------- */
-  const comp_drawPlace_baseBlock = function(blk, tx, ty, rot, valid) {
-    blk.drawPotentialLinks(tx, ty);
-    blk.drawOverlay(tx.toFCoord(blk.size), ty.toFCoord(blk.size), rot);
-  };
-  exports.comp_drawPlace_baseBlock = comp_drawPlace_baseBlock;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {draw} that every building should have.
-   * Used if {b.super$draw} is not called.
-   * ---------------------------------------- */
-  const comp_draw_baseBuilding = function(b) {
-    b.block.variant === 0 || b.block.variantRegions == null ?
-      Draw.rect(b.block.region, b.x, b.y, b.drawrot()) :
-      Draw.rect(b.block.variantRegions[Mathf.randomSeed(b.tile.pos(), 0, Mathf.maxZero(b.block.variantRegions.length - 1))], b.x, b.y, b.drawrot());
-
-    b.drawTeamTop();
-  };
-  exports.comp_draw_baseBuilding = comp_draw_baseBuilding;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Shows extra information for a tile/building.
-   * See {DB_misc.db["block"]["extraInfo"]}.
-   * ---------------------------------------- */
-  const comp_drawSelect_extraInfo = function thisFun(t) {
-    if(t == null) return;
-    if(t === thisFun.tmpT) {
-      thisFun.tmpCd--;
-    } else {
-      thisFun.tmpT = t;
-      thisFun.tmpCd = VAR.time_extraInfoCooldown;
-      thisFun.tmpStr = null;
-    };
-    if(thisFun.tmpCd > 0.0) return;
-
-    if(thisFun.tmpStr == null) {
-      thisFun.tmpStr = "";
-      let str1;
-      DB_misc.db["block"]["extraInfo"].forEachFast(strGetter => {
-        str1 = strGetter(t, t.build);
-        if(str1 != null) {
-          thisFun.tmpStr += str1 + "\n";
-        };
-      });
-    };
-
-    LCDraw.text(
-      (t.build == null ? t.worldx() : t.build.x) + (!PARAM.drawBuildStat || t.build == null ? 0.0 : ((VAR.r_offBuildStat + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
-      (t.build == null ? t.worldy() : t.build.y) + (-(!PARAM.drawBuildStat || t.build == null ? 10.0 : ((VAR.r_offBuildStat + t.build.block.size * 0.5) * Vars.tilesize + 2.0))),
-      thisFun.tmpStr, Fonts.def,
-      0.8, Color.white, Align.left, 0.0, 0.0, 10.0,
-    );
-  }.setProp({
-    tmpT: null,
-    tmpCd: 0.0,
-    tmpStr: null,
-  });
-  exports.comp_drawSelect_extraInfo = comp_drawSelect_extraInfo;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Shows how bridges are connected and the transport destination.
-   * ---------------------------------------- */
-  const comp_drawSelect_bridgeLine = function thisFun(b) {
-    if(!PARAM.drawBridgeTransportLine) return;
-
-    let tmpB = b, tmpOb, isFirst = true;
-    if(b.block instanceof DirectionBridge) {
-      tmpOb = b.findLink();
-      thisFun.tmpBs.clear().push(tmpB);
-      while(tmpOb != null) {
-        if(!thisFun.tmpBs.includes(tmpOb)) {
-          if(!isFirst) _d_conCircleArrow(tmpOb, tmpB);
-          thisFun.tmpBs.push(tmpOb);
-          tmpB = tmpOb;
-          tmpOb = tmpB.findLink();
-          isFirst = false;
-        } else break;
-      };
-    } else if(b.block instanceof ItemBridge) {
-      let ot = Vars.world.tile(b.link);
-      tmpOb = null;
-      thisFun.tmpBs.clear().push(tmpB);
-      while(ot != null) {
-        tmpOb = ot.build;
-        if(tmpOb != null && tmpOb.block === b.block && !thisFun.tmpBs.includes(tmpOb)) {
-          if(!isFirst) _d_conCircleArrow(tmpOb, tmpB);
-          thisFun.tmpBs.push(tmpOb);
-          tmpB = ot.build;
-          // Idk why but on rare occasions this throws NullPointerException
-          if(tmpB == null || tmpB.block !== b.block) break;
-          ot = Vars.world.tile(tmpB.link);
-          isFirst = false;
-        } else break;
-      };
-    };
-  }
-  .setProp({
-    tmpBs: [],
-  });
-  exports.comp_drawSelect_bridgeLine = comp_drawSelect_bridgeLine;
-
-
   /* <---------- region ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawRegion}.
-   * ---------------------------------------- */
+  /**
+   * Draws region.
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [ang]
+   * @param {number|unset} [regScl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @param {number|unset} [mixcolA]
+   * @return {void}
+   */
   const _reg_normal = function(
     x, y, reg,
     ang, regScl, color_gn, a, z,
@@ -190,16 +60,23 @@
     );
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._reg_normal = _reg_normal;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawSideRegion}.
-   * ---------------------------------------- */
+  /**
+   * Draws side region, which is based on rotation.
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegion|null} reg1 - Right and up.
+   * @param {TextureRegion|null} reg2 - Left and down.
+   * @param {number|unset} [rot]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_side = function(
     x, y, reg1, reg2,
     rot, color_gn, a, z
@@ -215,16 +92,22 @@
     Draw.rect(rot < 2 ? reg1 : reg2, x, y, rot * 90.0);
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports._reg_side = _reg_side;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Simply draws the edge sprite four times.
-   * ---------------------------------------- */
+  /**
+   * Draws edge region four times for each direction.
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegion|null} reg1 - Right and up.
+   * @param {TextureRegion|null} reg2 - Left and down.
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_edge = function(
     x, y, reg1, reg2,
     color_gn, a, z
@@ -241,51 +124,25 @@
     };
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports._reg_edge = _reg_edge;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A planar region that flips, that's it.
-   * ---------------------------------------- */
-  const _reg_flip = function(
-    x, y, reg, flipAng,
-    ang, regScl, color_gn, a, z
-  ) {
-    if(reg == null) return;
-    if(regScl == null) regScl = 1.0;
-
-    processZ(z);
-
-    Draw.color(MDL_color._color(color_gn), tryVal(a, 1.0));
-    Draw.rect(
-      reg, x, y,
-      reg.width * reg.scl() * regScl * Mathf.cos(Mathf.wrapAngleAroundZero(tryVal(flipAng, 0.0) * Mathf.degressToRadians)),
-      reg.height * reg.scl() * regScl,
-      tryVal(ang, 0.0),
-    );
-    Draw.color();
-
-    processZ(z);
-  };
-  exports._reg_flip = _reg_flip;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * See {BLK_materialFloor}.
-   * Randomly chooses one in {regs} to draw over the floor.
-   * Higher {denom} means sparser distribution.
-   * ---------------------------------------- */
+  /**
+   * Draw random overlay, see {@link BLK_materialFloor}.
+   * @param {Tile|null} t
+   * @param {Array<TextureRegion>} regs
+   * @param {number|unset} [denom] - Larger value means sparser distribution.
+   * @param {number|unset} [off1]
+   * @param {number|unset} [off2]
+   * @return {void}
+   */
   const _reg_randOv = function(
     t, regs,
     denom, off1, off2
   ) {
-    if(t == null || regs == null || regs.length === 0) return;
+    if(t == null || regs.length === 0) return;
     if(denom == null) denom = 80;
     if(off1 == null) off1 = 0;
     if(off2 == null) off2 = 0;
@@ -300,81 +157,123 @@
   exports._reg_randOv = _reg_randOv;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawFrame}.
-   * ---------------------------------------- */
+  /**
+   * {@link DrawFrame}.
+   * @param {number} x
+   * @param {number} y
+   * @param {Array<TextureRegion>} regs
+   * @param {number} tProg
+   * @param {number} intv
+   * @param {number|unset} [ang]
+   * @param {number|unset} [offInd]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_frame = function(
     x, y, regs, tProg, intv,
-    ang, offInd
+    ang, offInd, color_gn, a, z
   ) {
-    if(regs == null || regs.length === 0) return;
+    if(regs.length === 0) return;
+    if(a == null) a = 1.0;
 
+    processZ(z);
+
+    Draw.color(MDL_color._color(color_gn));
+    Draw.alpha(a);
     Draw.rect(x, y, regs[Mathf.mod(Math.floor(tProg / intv) + tryVal(offInd, 0), regs.length)], tryVal(ang, 0.0));
+    Draw.color();
+
+    processZ();
   };
   exports._reg_frame = _reg_frame;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawFrame} but the previous frame gradually fades into the next frame.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _reg_frame} where previous frame gradually fades into the next frame.
+   * @param {number} x
+   * @param {number} y
+   * @param {Array<TextureRegion>} regs
+   * @param {number} tProg
+   * @param {number} intv
+   * @param {number|unset} [ang]
+   * @param {number|unset} [offInd]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_frameFade = function(
     x, y, regs, tProg, intv,
-    ang, offInd
+    ang, offInd, color_gn, a, z
   ) {
-    if(regs == null || regs.length === 0) return;
-    let a = Mathf.mod(tProg, intv) / intv;
+    if(regs.length === 0) return;
+    if(a == null) a = 1.0;
+    let a1 = Mathf.mod(tProg, intv) / intv;
 
-    Draw.alpha(1.0 - a);
-    _reg_frame(x, y, regs, tProg, intv, ang, offInd);
-    Draw.alpha(a);
-    _reg_frame(x, y, regs, tProg, intv, ang, offInd + 1);
-    Draw.color();
+    _reg_frame(x, y, regs, tProg, intv, ang, offInd, color_gn, a * (1.0 - a1), z);
+    _reg_frame(x, y, regs, tProg, intv, ang, offInd + 1, color_gn, a * a1, z);
   };
   exports._reg_frameFade = _reg_frameFade;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Draws something like {Icon.power}, not in a table.
-   * ---------------------------------------- */
+  /**
+   * Draws something like {@link Icon.power}.
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegionDrawable|null} icon
+   * @param {number|unset} [ang]
+   * @param {number|unset} [regScl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_icon = function(
     x, y, icon,
-    ang, regScl, color_gn, a
+    ang, regScl, color_gn, a, z
   ) {
     if(icon == null) return;
     if(ang == null) ang = 0.0;
     if(regScl == null) regScl = 1.0;
     if(a == null) a = 1.0;
 
+    processZ(z);
+
     Draw.color(MDL_color._color(color_gn), a * 0.8);
-    Draw.rect(icon.getRegion(), x, y, 6.0 * regScl, 6.0 * regScl);
+    Draw.rect(icon.getRegion(), x, y, 6.0 * regScl, 6.0 * regScl, ang);
     Draw.color();
+
+    processZ();
   };
   exports._reg_icon = _reg_icon;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Just a big red cross.
-   * ---------------------------------------- */
-  const _reg_redCross = function(x, y) {
-    _reg_icon(x, y, Icon.cancel, 0.0, 1.0, Color.scarlet, 1.0);
+  /**
+   * Simply draws a big red cross.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
+  const _reg_redCross = function(x, y, a, z) {
+    _reg_icon(x, y, Icon.cancel, 0.0, 1.0, Color.scarlet, a, z);
   };
   exports._reg_redCross = _reg_redCross;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Draws block status.
    * Rarely used unless something about consumer is screwed.
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [size]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_blkStatus = function(
     x, y,
     size, color_gn, z
@@ -395,16 +294,24 @@
     Fill.square(x_fi, y_fi, mtp * 1.5, 45.0);
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports._reg_blkStatus = _reg_blkStatus;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawFade}.
-   * ---------------------------------------- */
+  /**
+   * {@link DrawFade}.
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [ang]
+   * @param {number|unset} [regScl]
+   * @param {number|unset} [fadeScl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_fade = function(
     x, y, reg,
     ang, regScl, fadeScl, color_gn, a, z
@@ -421,12 +328,19 @@
   exports._reg_fade = _reg_fade;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * This fading region will become opaque when {frac} approaches 1.0 (not linearly).
-   * Used for some very dangerous blocks like reactors.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _reg_fade} where the region becomes opaque when `frac` approaches 1.0 (not linearly).
+   * @param {number} x
+   * @param {number} y
+   * @param {number} frac
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [ang]
+   * @param {number|unset} [regScl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_fadeAlert = function(
     x, y, frac, reg,
     ang, regScl, color_gn, a, z
@@ -436,19 +350,28 @@
     _reg_fade(
       x, y, reg,
       ang, regScl, 0.2, color_gn,
-      1.0 - Math.pow(Mathf.clamp(tryVal(frac, 0.0)) - 1.0, 2),
+      1.0 - Math.pow(Mathf.clamp(frac) - 1.0, 2),
       z,
     );
   };
   exports._reg_fadeAlert = _reg_fadeAlert;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawFade} controlled by total progress instead of {Time.globalTime}.
-   * Can be used for accelerating flashers.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _reg_fade} where progress is controlled by `fadeProg` instead of {@link Time.globalTime}.
+   * Used for accelerating flashers.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} fadeProg
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [ang]
+   * @param {number|unset} [regScl]
+   * @param {number|unset} [fadeScl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_fadeProg = function(
     x, y, fadeProg, reg,
     ang, regScl, fadeScl, color_gn, a, z
@@ -464,12 +387,21 @@
   exports._reg_fadeProg = _reg_fadeProg;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Spin sprite I think.
-   * {sideAmt} should match your sprite's symmetry.
-   * ---------------------------------------- */
+  /**
+   * Draws rotating sprite.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} rotProg
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [ang]
+   * @param {number|unset} [regScl]
+   * @param {number|unset} [spd]
+   * @param {number|unset} [sideAmt]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_rot = function(
     x, y, rotProg, reg,
     ang, regScl, spd, sideAmt, color_gn, a, z
@@ -501,17 +433,28 @@
     };
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports._reg_rot = _reg_rot;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Alternative for {DrawFlame}, where you don't have a fixed "-top" region.
+  /**
+   * {@link DrawFlame} where no hard-coded "-top" region used.
    * Light is not included.
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {number} warmup
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [rad]
+   * @param {number|unset} [radIn]
+   * @param {number|unset} [radScl]
+   * @param {number|unset} [radMag]
+   * @param {number|unset} [radInMag]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_flame = function(
     x, y, warmup, reg,
     rad, radIn, radScl, radMag, radInMag, color_gn, a, z
@@ -544,16 +487,23 @@
     Fill.circle(x, y, radIn_fi);
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._reg_flame = _reg_flame;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawWeave} but that texture region is gone.
-   * ---------------------------------------- */
+  /**
+   * {@link DrawWeave} where "-weave" region is gone.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} scanProg
+   * @param {number} warmup
+   * @param {number|unset} [size]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const drawRegion_scan = function(
     x, y, scanProg, warmup,
     size, color_gn, a, z
@@ -570,16 +520,26 @@
     );
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports.drawRegion_scan = drawRegion_scan;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Draws sublimate torch, no flare.
-   * ---------------------------------------- */
+  /**
+   * Draws Sublimate torch, no flare included.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} warmup
+   * @param {number|unset} [len]
+   * @param {number|unset} [w]
+   * @param {number|unset} [size]
+   * @param {number|unset} [ang]
+   * @param {ColorGn|unset} [color1_gn]
+   * @param {ColorGn|unset} [color2_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _reg_torch = function(
     x, y, warmup,
     len, w, size, ang, color1_gn, color2_gn, a, z
@@ -620,16 +580,23 @@
     };
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._reg_torch = _reg_torch;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawGlow}.
-   * ---------------------------------------- */
+  /**
+   * {@link DrawGlowRegion}.
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [ang]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [pulse]
+   * @param {number|unset} [pulseScl]
+   * @return {void}
+   */
   const _reg_glow = function(
     x, y, reg,
     ang, color_gn, a, pulse, pulseScl
@@ -649,16 +616,21 @@
     Draw.blend();
     Draw.color();
 
-    processZ(Layer.blockAdditive);
+    processZ();
   };
   exports._reg_glow = _reg_glow;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {DrawHeat}.
-   * ---------------------------------------- */
+  /**
+   * {@link DrawHeatRegion}.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} heatFrac
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [ang]
+   * @param {number|unset} [size]
+   * @return {void}
+   */
   const _reg_heat = function(
     x, y, heatFrac, reg,
     ang, size
@@ -673,12 +645,18 @@
   exports._reg_heat = _reg_heat;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A transparent region that shrinks and expands with time.
+  /**
+   * Draws a transparent region that shrinks and expands with time.
    * Used to indicate placement.
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegion|null} reg
+   * @param {number|unset} [ang]
+   * @param {number|unset} [regScl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @return {void}
+   */
   const _reg_plan = function(
     x, y, reg,
     ang, regScl, color_gn, a
@@ -700,11 +678,18 @@
     Draw.rect(reg, x, y, ang, w, h);
     Draw.reset();
 
-    processZ(Layer.power - 0.01);
+    processZ();
   };
   exports._reg_plan = _reg_plan;
 
 
+  /**
+   * Variant of {@link _reg_plan} for block placement.
+   * @param {Block|null} blk
+   * @param {Tile|null} t
+   * @param {ColorGn|unset} [color_gn]
+   * @return {void}
+   */
   const _reg_planPlace = function(blk, t, color_gn) {
     if(blk == null || t == null) return;
 
@@ -713,26 +698,41 @@
   exports._reg_planPlace = _reg_planPlace;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Draws cicular light.
-   * ---------------------------------------- */
+  /**
+   * Draws circular light.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} warmup
+   * @param {number|unset} [rad]
+   * @param {number|unset} [size]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [sinScl]
+   * @param {number|unset} [sinMag]
+   * @return {void}
+   */
   const _l_disk = function(
     x, y, warmup,
     rad, size, color_gn, a,
     sinScl, sinMag
   ) {
-    Drawf.light(x, y, (tryVal(rad, 40.0) + Mathf.absin(tryVal(sinScl, 16.0), tryVal(sinMag, 6.0))) * tryVal(warmup, 0.0) * tryVal(size, 1), MDL_color._color(tryVal(color_gn, "ffc999")), tryVal(a, 0.65));
+    Drawf.light(x, y, (tryVal(rad, 40.0) + Mathf.absin(tryVal(sinScl, 16.0), tryVal(sinMag, 6.0))) * warmup * tryVal(size, 1), MDL_color._color(tryVal(color_gn, "ffc999")), tryVal(a, 0.65));
   };
   exports._l_disk = _l_disk;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Draws conical light.
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {number} warmup
+   * @param {number|unset} [rad]
+   * @param {number|unset} [coneScl]
+   * @param {number|unset} [ang]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @return {void}
+   */
   const _l_arc = function thisFun(
     x, y, warmup,
     rad, coneScl, ang, color_gn, a
@@ -745,8 +745,8 @@
 
     let
       fBits = MDL_color._color(color_gn).toFloatBits(),
-      w = rad * thisFun.lightReg.scl() * Vars.tilesize * coneScl,
-      h = rad * thisFun.lightReg.scl() * Vars.tilesize;
+      w = rad * thisFun.lightReg.scl() * Vars.tilesize * coneScl * warmup,
+      h = rad * thisFun.lightReg.scl() * Vars.tilesize * warmup;
     Vars.renderer.lights.add(() => {
       Draw.color(fBits);
       Draw.alpha(a);
@@ -770,11 +770,18 @@
   /* <---------- line ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla way to draw lines..
-   * ---------------------------------------- */
+  /**
+   * Draws an outlined line.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {boolean|unset} [isDashed]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_line = function(
     x1, y1, x2, y2,
     color_gn, a, isDashed, z
@@ -793,16 +800,24 @@
     LCDraw.line(x1, y1, x2, y2, isDashed);
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_line = _d_line;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The line has no outline, and it fades in and out.
-   * ---------------------------------------- */
+  /**
+   * Draws a fading line.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {number|unset} [stroke]
+   * @param {number|unset} [scl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {boolean|unset} [isDashed]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_lineFlick = function(
     x1, y1, x2, y2,
     stroke, scl, color_gn, isDashed, z
@@ -819,16 +834,25 @@
     LCDraw.line(x1, y1, x2, y2, isDashed);
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_lineFlick = _d_lineFlick;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * It's laser but not vanilla mining beam.
-   * ---------------------------------------- */
+  /**
+   * Draws a laser line.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {number|unset} [strokeScl]
+   * @param {ColorGn|unset} [color1_gn] - Outer part.
+   * @param {ColorGn|unset} [color2_gn] - Inner part.
+   * @param {number|unset} [a]
+   * @param {boolean|unset} [hasLight]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_laser = function(
     x1, y1, x2, y2,
     strokeScl, color1_gn, color2_gn, a, hasLight, z
@@ -847,25 +871,30 @@
     Fill.circle(x1, y1, 2.4 * strokeScl_fi);
     Fill.circle(x2, y2, 2.4 * strokeScl_fi);
     // Front
-    Lines.stroke(1.0 * strokeScl_fi, MDL_color._color(tryVal(color2_gn, Color.white)));
+    Lines.stroke(strokeScl_fi, MDL_color._color(tryVal(color2_gn, Color.white)));
     Draw.alpha(a == null ? Vars.renderer.laserOpacity : a);
     Lines.line(x1, y1, x2, y2);
     Fill.circle(x1, y1, 1.2 * strokeScl_fi);
     Fill.circle(x2, y2, 1.2 * strokeScl_fi);
     Draw.reset();
 
-    processZ(z);
+    processZ();
 
     if(hasLight) Drawf.light(x1, y1, x2, y2);
   };
   exports._d_laser = _d_laser;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla laser, no color change so it's always yellow.
-   * ---------------------------------------- */
+  /**
+   * Draws vanilla laser.
+   * No color allowed, so it's always yellow.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {number|unset} [strokeScl]
+   * @return {void}
+   */
   const _d_laserV = function(
     x1, y1, x2, y2,
     strokeScl
@@ -875,11 +904,19 @@
   exports._d_laserV = _d_laserV;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A line with a moving arrow.
-   * ---------------------------------------- */
+  /**
+   * Draws a line with moving arrow.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {number|unset} [strokeScl]
+   * @param {number|unset} [scl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_arrowLine = function(
     x1, y1, x2, y2,
     strokeScl, scl, color_gn, a, z
@@ -895,7 +932,7 @@
 
     processZ(z);
 
-    Lines.stroke(1.0 * strokeScl, MDL_color._color(tryVal(color_gn, Pal.accent)));
+    Lines.stroke(strokeScl, MDL_color._color(tryVal(color_gn, Pal.accent)));
     Draw.alpha(a);
     LCDraw.line(x1, y1, x2, y2, false);
     Tmp.v1.set(x1, y1).lerp(x2, y2, frac1);
@@ -907,16 +944,23 @@
     processScl();
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_arrowLine = _d_arrowLine;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Draws a wire that connects two positions.
-   * ---------------------------------------- */
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {string|unset} [wireMat]
+   * @param {number|unset} [strokeScl]
+   * @param {number|unset} [glowA]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_wire = function(
     x1, y1, x2, y2,
     wireMat, strokeScl, glowA, z
@@ -958,7 +1002,7 @@
     Draw.blend();
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_wire = _d_wire;
 
@@ -966,12 +1010,18 @@
   /* <---------- rect ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Ordinary rectangular range indicator.
-   * {2 * r + size} is the total width in blocks.
-   * ---------------------------------------- */
+  /**
+   * Draws an outlined rectangle.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [r]
+   * @param {number|unset} [size]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {boolean|unset} [isDashed]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_rect = function(
     x, y,
     r, size, color_gn, a, isDashed, z
@@ -992,38 +1042,55 @@
     LCDraw.rect(x, y, r, size, isDashed);
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_rect = _d_rect;
 
 
+  /**
+   * Variant of {@link _d_rect} for block placement.
+   * @param {Block} blk
+   * @param {number} tx
+   * @param {number} ty
+   * @param {number|unset} [r]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {boolean|unset} [isDashed]
+   * @return {void}
+   */
   const _d_rectPlace = function(blk, tx, ty, r, color_gn, isDashed) {
     _d_rect(tx.toFCoord(blk.size), ty.toFCoord(blk.size), r, blk.size, color_gn, 1.0, isDashed);
   };
   exports._d_rectPlace = _d_rectPlace;
 
 
+  /**
+   * Variant of {@link _d_rect} for building selection.
+   * @param {Building} b
+   * @param {number|unset} [r]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {boolean|unset} [isDashed]
+   * @return {void}
+   */
   const _d_rectSelect = function(b, r, color_gn, isDashed) {
     _d_rect(b.x, b.y, r, b.block.size, color_gn, 1.0, isDashed);
   };
   exports._d_rectSelect = _d_rectSelect;
 
 
-  const _d_rectBuild = function(b, color_gn, isDashed) {
-    _d_rect(b.x, b.y, 0, b.block.size, color_gn, 1.0, isDashed);
-  };
-  exports._d_rectBuild = _d_rectBuild;
-
-
   /* <---------- circle ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Classic circular range indicator.
-   * {rad} and {r} are different by the way.
-   * ---------------------------------------- */
+  /**
+   * Draws an outlined circle.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {boolean|unset} [isDashed]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_circle = function(
     x, y,
     rad, color_gn, a, isDashed, z
@@ -1044,17 +1111,35 @@
     LCDraw.circle(x, y, rad, isDashed);
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_circle = _d_circle;
 
 
+  /**
+   * Variant of {@link _d_circle} for block placement.
+   * @param {Block} blk
+   * @param {number} tx
+   * @param {number} ty
+   * @param {number|unset} [rad]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {boolean|unset} [isDashed]
+   * @return {void}
+   */
   const _d_circlePlace = function(blk, tx, ty, rad, color_gn, isDashed) {
     _d_circle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), rad, color_gn, 1.0, isDashed);
   };
   exports._d_circlePlace = _d_circlePlace;
 
 
+  /**
+   * Variant of {@link _d_circle} for building selection.
+   * @param {Building} b
+   * @param {number|unset} [rad]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {boolean|unset} [isDashed]
+   * @return {void}
+   */
   const _d_circleSelect = function(b, rad, color_gn, isDashed) {
     _d_circle(b.x, b.y, rad, color_gn, 1.0, isDashed);
   };
@@ -1064,11 +1149,16 @@
   /* <---------- area ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A filled square, what else can it be?
-   * ---------------------------------------- */
+  /**
+   * Draws a filled square.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [size]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_area = function(
     x, y,
     size, color_gn, a, z
@@ -1083,17 +1173,20 @@
     LCDraw.area(x, y, size);
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports._d_area = _d_area;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The square slightly shrinks in and out with time.
-   * Used as tile indicator.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _d_area} for tile indication.
+   * @param {Tile|null} t
+   * @param {number|unset} [size]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_areaShrink = function(
     t,
     size, color_gn, a, z
@@ -1112,16 +1205,19 @@
   exports._d_areaShrink = _d_areaShrink;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A filled area that covers a building.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link _d_area} for building indication.
+   * @param {Building} b
+   * @param {number|unset} [pad]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_areaBuild = function(
     b,
     pad, color_gn, a, z
   ) {
-    if(b == null) return;
     if(pad == null) pad = 0.0;
     if(a == null) a = 1.0;
     if(z == null) z = Layer.effect + VAR.lay_offDraw;
@@ -1132,7 +1228,7 @@
     LCDraw.area(b.x, b.y, b.block.size - pad * 2.0 / Vars.tilesize);
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports._d_areaBuild = _d_areaBuild;
 
@@ -1140,11 +1236,17 @@
   /* <---------- disk ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A disk that expands from the center and fades out.
-   * ---------------------------------------- */
+  /**
+   * Draws a disk that expands from the center and fades out.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {number|unset} [scl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_diskExpand = function(
     x, y,
     rad, scl, color_gn, a, z
@@ -1163,17 +1265,23 @@
     LCDraw.disk(x, y, Mathf.lerp(0.0, rad, frac));
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports._d_diskExpand = _d_diskExpand;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A disk that fades in and out.
-   * Usually in red to visualize explosion range.
-   * ---------------------------------------- */
+  /**
+   * Draws a disk that fades in and out.
+   * Usually used to indicate explosion range.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {number|unset} [scl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_diskWarning = function(
     x, y,
     rad, scl, color_gn, a, z
@@ -1193,7 +1301,7 @@
     LCDraw.disk(x, y, rad);
     Draw.color();
 
-    processZ(z);
+    processZ();
   };
   exports._d_diskWarning = _d_diskWarning;
 
@@ -1201,11 +1309,17 @@
   /* <---------- pulse ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The hollow squares expand and disappear.
-   * ---------------------------------------- */
+  /**
+   * Draws hollow squares that expand and disappear.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {number|unset} [scl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_pulseRect = function(
     x, y,
     rad, scl, color_gn, a, z
@@ -1240,17 +1354,22 @@
     };
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_pulseRect = _d_pulseRect;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Now they are rings.
-   * Used for impact range indication.
-   * ---------------------------------------- */
+  /**
+   * Draws circles that expand and disappear.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {number|unset} [scl]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_pulseCircle = function(
     x, y,
     rad, scl, color_gn, a, z
@@ -1288,7 +1407,7 @@
     };
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_pulseCircle = _d_pulseCircle;
 
@@ -1296,16 +1415,28 @@
   /* <---------- connector ----------> */
 
 
+  /**
+   * Draws a connector with dashed rectangles and a dashed line.
+   * @param {Building|null} b
+   * @param {Building|null} ob
+   * @return {void}
+   */
   const _d_conRect = function(b, ob) {
     if(b == null || ob == null) return;
 
-    _d_rectBuild(b);
-    _d_rectBuild(ob);
+    _d_rectSelect(b);
+    _d_rectSelect(ob);
     _d_line(b.x, b.y, ob.x, ob.y);
   };
   exports._d_conRect = _d_conRect;
 
 
+  /**
+   * Draws a connector with filled squares and a flickering line.
+   * @param {Building|null} b
+   * @param {Building|null} ob
+   * @return {void}
+   */
   const _d_conArea = function(b, ob) {
     if(b == null || ob == null) return;
 
@@ -1316,11 +1447,15 @@
   exports._d_conArea = _d_conArea;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Mass driver indicators.
-   * ---------------------------------------- */
+  /**
+   * Vanilla mass driver connector.
+   * @param {Building|null} b
+   * @param {Building|unset} [b_f]
+   * @param {Building|unset} [b_t]
+   * @param {Array<Building>|unset} [bs_f]
+   * @param {Array<Building>|unset} [bs_t]
+   * @return {void}
+   */
   const _d_conCircleArrow = function(b, b_f, b_t, bs_f, bs_t) {
     if(b == null) return;
 
@@ -1359,11 +1494,19 @@
   /* <---------- progress ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A regular progress bar.
-   * ---------------------------------------- */
+  /**
+   * Draws a regular progress bar.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} frac
+   * @param {number|unset} [size]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [offW]
+   * @param {number|unset} [offTy]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_progBar = function(
     x, y, frac,
     size, color_gn, a, offW, offTy, z
@@ -1392,20 +1535,25 @@
     Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, Mathf.clamp(frac)), y + offY);
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_progBar = _d_progBar;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Progress ring.
-   * ----------------------------------------
-   * DEDICATION:
-   *
-   * Inspired by New Horizon.
-   * ---------------------------------------- */
+  /**
+   * Draws a progress ring.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} frac
+   * @param {number|unset} [stroke]
+   * @param {number|unset} [rad]
+   * @param {number|unset} [ang]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {boolean|unset} [rev]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_progRing = function(
     x, y, frac,
     stroke, rad, ang, color_gn, a, rev, z
@@ -1418,10 +1566,7 @@
     if(a < 0.0001) return;
     if(z == null) z = Layer.effect + VAR.lay_offDraw;
 
-    let
-      color = MDL_color._color(tryVal(color_gn, Pal.accent)),
-      radIn = rad - stroke * 0.3,
-      radOut = rad + stroke * 0.3;
+    let color = MDL_color._color(tryVal(color_gn, Pal.accent));
 
     processZ(z);
 
@@ -1441,7 +1586,7 @@
     );
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_progRing = _d_progRing;
 
@@ -1449,8 +1594,18 @@
   /* <---------- text ----------> */
 
 
+  /**
+   * Draws text for block placement.
+   * @param {Block} blk
+   * @param {number} tx
+   * @param {number} ty
+   * @param {string|null} str
+   * @param {boolean|unset} [valid]
+   * @param {number|unset} [offTy]
+   * @return {void}
+   */
   const _d_textPlace = function(blk, tx, ty, str, valid, offTy) {
-    if(blk == null || str == null) return;
+    if(str == null) return;
     if(valid == null) valid = true;
     if(offTy == null) offTy = 0;
 
@@ -1459,8 +1614,16 @@
   exports._d_textPlace = _d_textPlace;
 
 
+  /**
+   * Draws text for building selection.
+   * @param {Building} b
+   * @param {string|null} str
+   * @param {boolean|unset} [valid]
+   * @param {number|unset} [offTy]
+   * @return {void}
+   */
   const _d_textSelect = function(b, str, valid, offTy) {
-    if(b == null || str == null) return;
+    if(str == null) return;
     if(valid == null) valid = true;
     if(offTy == null) offTy = 0;
 
@@ -1472,20 +1635,31 @@
   /* <---------- unit ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used to draw unit health bar and more.
-   * Will draw nothing if the unit is hidden by trees.
    * Also used for buildings.
-   * ---------------------------------------- */
+   * @todo Make a class to configure the style.
+   * @param {Building|Unit} e
+   * @param {number} healthFrac
+   * @param {number|unset} [size]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [offW]
+   * @param {number|unset} [offTy]
+   * @param {number|unset} [segScl]
+   * @param {number|unset} [armor]
+   * @param {number|unset} [shield]
+   * @param {number|unset} [speedMtp]
+   * @param {number|unset} [dpsMtp]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_unitStat = function(
     e, healthFrac,
     size, color_gn, a, offW, offTy, segScl,
     armor, shield, speedMtp, dpsMtp,
     z
   ) {
-    if(e == null || healthFrac == null) return;
     if(e.dead || (e instanceof Unit && MDL_cond._isCovered(e))) return;
     if(size == null) size = 1;
     if(a == null) a = 1.0;
@@ -1591,7 +1765,7 @@
         let y_sta = y - e.hitSize * 0.5 - 8.0;
         _d_progRing(
           x, y_sta,
-          Mathf.clamp(1.0 - (e == null ? 0.0 : e.getDuration(stackSta)) / stackSta.delegee.burstTime),
+          Mathf.clamp(1.0 - e.getDuration(stackSta) / stackSta.delegee.burstTime),
           2.25, 2.75, 90.0, Color.white, 1.0, true, z,
         );
         Draw.rect(stackSta.uiIcon, x, y_sta, 4.0, 4.0);
@@ -1603,18 +1777,24 @@
   exports._d_unitStat = _d_unitStat;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used to draw unit reload bar.
-   * ---------------------------------------- */
+   * @param {Building|Unit} e
+   * @param {Array<number>|null} mtIds
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [a]
+   * @param {number|unset} [offW]
+   * @param {number|unset} [offTy]
+   * @param {number|unset} [frac_ow]
+   * @param {number|unset} [z]
+   * @return {void}
+   */
   const _d_reload = function(
     e, mtIds,
     color_gn, a, offW, offTy,
     frac_ow,
     z
   ) {
-    if(e == null) return;
     if(e.dead || (e instanceof Unit && MDL_cond._isCovered(e))) return;
     if(a == null) a = 1.0;
     if(a < 0.0001) return;
@@ -1651,6 +1831,128 @@
     Lines.line(x - w * 0.5, y - offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y - offY);
     Draw.reset();
 
-    processZ(z);
+    processZ();
   };
   exports._d_reload = _d_reload;
+
+
+  /* <---------- component ----------> */
+
+
+  /**
+   * `drawPlace` that every block should have.
+   * Used if `blk.super$drawPlace` is not called.
+   * @param {Block} blk
+   * @param {number} tx
+   * @param {number} ty
+   * @param {number} rot
+   * @param {boolean} valid
+   * @return {void}
+   */
+  const comp_drawPlace_baseBlock = function(blk, tx, ty, rot, valid) {
+    blk.drawPotentialLinks(tx, ty);
+    blk.drawOverlay(tx.toFCoord(blk.size), ty.toFCoord(blk.size), rot);
+  };
+  exports.comp_drawPlace_baseBlock = comp_drawPlace_baseBlock;
+
+
+  /**
+   * `draw` that every building should have.
+   * Used if `b.super$draw` is not called.
+   * @param {Building} b
+   * @return {void}
+   */
+  const comp_draw_baseBuilding = function(b) {
+    b.block.variant === 0 || b.block.variantRegions == null ?
+      Draw.rect(b.block.region, b.x, b.y, b.drawrot()) :
+      Draw.rect(b.block.variantRegions[Mathf.randomSeed(b.tile.pos(), 0, Mathf.maxZero(b.block.variantRegions.length - 1))], b.x, b.y, b.drawrot());
+
+    b.drawTeamTop();
+  };
+  exports.comp_draw_baseBuilding = comp_draw_baseBuilding;
+
+
+  /**
+   * Shows extra information for a tile/building, see {@link DB_misc}.
+   * @param {Tile|null} t
+   * @return {void}
+   */
+  const drawExtraInfo = function thisFun(t) {
+    if(t == null) return;
+    if(t === thisFun.tmpT) {
+      thisFun.tmpCd--;
+    } else {
+      thisFun.tmpT = t;
+      thisFun.tmpCd = VAR.time_extraInfoCooldown;
+      thisFun.tmpStr = null;
+    };
+    if(thisFun.tmpCd > 0.0) return;
+
+    if(thisFun.tmpStr == null) {
+      thisFun.tmpStr = "";
+      let str1;
+      DB_misc.db["block"]["extraInfo"].forEachFast(strGetter => {
+        str1 = strGetter(t, t.build);
+        if(str1 != null) {
+          thisFun.tmpStr += str1 + "\n";
+        };
+      });
+    };
+
+    LCDraw.text(
+      (t.build == null ? t.worldx() : t.build.x) + (!PARAM.drawBuildStat || t.build == null ? 0.0 : ((VAR.r_offBuildStat + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
+      (t.build == null ? t.worldy() : t.build.y) + (-(!PARAM.drawBuildStat || t.build == null ? 10.0 : ((VAR.r_offBuildStat + t.build.block.size * 0.5) * Vars.tilesize + 2.0))),
+      thisFun.tmpStr, Fonts.def,
+      0.8, Color.white, Align.left, 0.0, 0.0, 10.0,
+    );
+  }.setProp({
+    tmpT: null,
+    tmpCd: 0.0,
+    tmpStr: null,
+  });
+  exports.drawExtraInfo = drawExtraInfo;
+
+
+  /**
+   * Shows how bridges are connected and the transport destination.
+   * @param {Building} b
+   * @return {void}
+   */
+  const drawBridgeLine = function thisFun(b) {
+    if(!PARAM.drawBridgeTransportLine) return;
+
+    let tmpB = b, tmpOb, isFirst = true;
+    if(b.block instanceof DirectionBridge) {
+      tmpOb = b.findLink();
+      thisFun.tmpBs.clear().push(tmpB);
+      while(tmpOb != null) {
+        if(!thisFun.tmpBs.includes(tmpOb)) {
+          if(!isFirst) _d_conCircleArrow(tmpOb, tmpB);
+          thisFun.tmpBs.push(tmpOb);
+          tmpB = tmpOb;
+          tmpOb = tmpB.findLink();
+          isFirst = false;
+        } else break;
+      };
+    } else if(b.block instanceof ItemBridge) {
+      let ot = Vars.world.tile(b.link);
+      tmpOb = null;
+      thisFun.tmpBs.clear().push(tmpB);
+      while(ot != null) {
+        tmpOb = ot.build;
+        if(tmpOb != null && tmpOb.block === b.block && !thisFun.tmpBs.includes(tmpOb)) {
+          if(!isFirst) _d_conCircleArrow(tmpOb, tmpB);
+          thisFun.tmpBs.push(tmpOb);
+          tmpB = ot.build;
+          // On rare occasions this throws `NullPointerException`, WTF
+          if(tmpB == null || tmpB.block !== b.block) break;
+          ot = Vars.world.tile(tmpB.link);
+          isFirst = false;
+        } else break;
+      };
+    };
+  }
+  .setProp({
+    tmpBs: [],
+  });
+  exports.drawBridgeLine = drawBridgeLine;

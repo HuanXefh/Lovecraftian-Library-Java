@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * A mess of UI and dialog flow methods.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,144 +20,130 @@
   /* <---------- import ----------> */
 
 
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_color = require("lovec/mdl/MDL_color");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * X coordinate of camera.
-   * ---------------------------------------- */
+  /**
+   * Gets y of camera.
+   * @return {number}
+   */
   const _cameraX = function() {
     return Core.camera.position.x;
   };
   exports._cameraX = _cameraX;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Y coordinate of camera.
-   * ---------------------------------------- */
+  /**
+   * Gets y of camera.
+   * @return {number}
+   */
   const _cameraY = function() {
     return Core.camera.position.y;
   };
   exports._cameraY = _cameraY;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Screen width.
-   * ---------------------------------------- */
+  /**
+   * Gets screen width.
+   * @return {number}
+   */
   const _screenW = function() {
     return Core.graphics.getWidth();
   };
   exports._screenW = _screenW;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Screen height.
-   * ---------------------------------------- */
+  /**
+   * Gets screen height.
+   * @return {number}
+   */
   const _screenH = function() {
     return Core.graphics.getHeight();
   };
   exports._screenH = _screenH;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * X coordinate of screen center.
-   * ---------------------------------------- */
+  /**
+   * Gets x of screen center.
+   * @return {number}
+   */
   const _centerX = function() {
     return Core.graphics.getWidth() * 0.5;
   };
   exports._centerX = _centerX;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Y coordinate of screen center.
-   * ---------------------------------------- */
+  /**
+   * Gets y of screen center.
+   * @return {number}
+   */
   const _centerY = function() {
     return Core.graphics.getHeight() * 0.5;
   };
   exports._centerY = _centerY;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Zoom scale.
-   * ---------------------------------------- */
+  /**
+   * Gets current zoom scaling.
+   * @return {number}
+   */
   const _zoom = function() {
     return Vars.renderer.getDisplayScale();
   };
   exports._zoom = _zoom;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Standard UI width.
-   * ---------------------------------------- */
-  const _uiW = function(pad, cap, offW, offH) {
+  /**
+   * Gets standard UI width.
+   * @param {number|unset} [pad]
+   * @param {number|unset} [cap]
+   * @param {number|unset} [offW]
+   * @return {number}
+   */
+  const _uiW = function(pad, cap, offW) {
     if(pad == null) pad = 20.0;
     if(cap == null) cap = 760.0;
     if(offW == null) offW = 0.0;
-    if(offH == null) offH = 0.0;
 
     return Math.max(Math.min(_screenW() - pad * 2.0, cap), 64.0) - offW;
   };
   exports._uiW = _uiW;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Standard UI height.
-   * ---------------------------------------- */
-  const _uiH = function(pad, cap, offW, offH) {
+  /**
+   * Gets standard UI height.
+   * @param {number|unset} [pad]
+   * @param {number|unset} [cap]
+   * @param {number|unset} [offH]
+   * @return {number}
+   */
+  const _uiH = function(pad, cap, offH) {
     if(pad == null) pad = 20.0;
     if(cap == null) cap = 760.0;
-    if(offW == null) offW = 0.0;
     if(offH == null) offH = 0.0;
 
-    return h_fi = Math.max(Math.min(_screenH() - pad * 2.0, cap), 64.0) - offH;
+    return Math.max(Math.min(_screenH() - pad * 2.0, cap), 64.0) - offH;
   };
   exports._uiH = _uiH;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Standard scale for some UI fragments.
-   * ---------------------------------------- */
+  /**
+   * Gets standard UI scaling.
+   * @return {number}
+   */
   const _uiScl = function() {
     return Math.min(_screenW() / VAR.len_bgW, _screenH() / VAR.len_bgH);
   };
   exports._uiScl = _uiScl;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * How many columns is suitable for current window size.
-   * ---------------------------------------- */
+  /**
+   * Gets prefered column amount.
+   * @param {number|unset} [w]
+   * @param {number|unset} [pad]
+   * @param {number|unset} [ord]
+   * @return {number}
+   */
   const _colAmt = function(w, pad, ord) {
     if(w == null) w = 32.0;
     if(pad == null) pad = 4.0;
@@ -173,11 +157,13 @@
   /* <---------- info ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Displays information at screen center.
-   * ---------------------------------------- */
+   * @param {string|unset} [nmMod]
+   * @param {string|unset} [bp]
+   * @param {number|unset} [timeS]
+   * @return {void}
+   */
   const show_announce = function(nmMod, bp, timeS) {
     if(nmMod == null) nmMod = "lovec";
     if(bp == null) bp = "test";
@@ -189,11 +175,13 @@
   exports.show_announce = show_announce;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Displays information at upper position that fades out.
-   * ---------------------------------------- */
+  /**
+   * Displays information that fades out at upper position.
+   * @param {string|unset} [nmMod]
+   * @param {string|unset} [bp]
+   * @param {number|unset} [timeS]
+   * @return {void}
+   */
   const show_fadeInfo = function(nmMod, bp, timeS) {
     if(nmMod == null) nmMod = "lovec";
     if(bp == null) bp = "test";
@@ -205,12 +193,15 @@
   exports.show_fadeInfo = show_fadeInfo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Content unlocked, sector captured...
    * Only possible to show in game.
-   * ---------------------------------------- */
+   * @param {string|unset} [nmMod]
+   * @param {string|unset} [bp]
+   * @param {TextureRegionDrawable|unset} [icon]
+   * @param {number|unset} [w]
+   * @return {void}
+   */
   const show_toast = function(nmMod, bp, icon, w) {
     if(nmMod == null) nmMod = "lovec";
     if(bp == null) bp = "test";
@@ -223,11 +214,15 @@
   exports.show_toast = show_toast;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Displays information at some world position.
-   * ---------------------------------------- */
+   * @param {number} x
+   * @param {number} y
+   * @param {string|unset} [nmMod]
+   * @param {string|unset} [bp]
+   * @param {number|unset} [timeS]
+   * @return {void}
+   */
   const show_label = function(x, y, nmMod, bp, timeS) {
     if(nmMod == null) nmMod = "lovec";
     if(bp == null) bp = "test";
@@ -239,11 +234,12 @@
   exports.show_label = show_label;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Displays an error dialog.
-   * ---------------------------------------- */
+   * @param {string|unset} [nmMod]
+   * @param {string|unset} [bp]
+   * @return {void}
+   */
   const show_error = function(nmMod, bp) {
     if(nmMod == null) nmMod = "lovec";
     if(bp == null) bp = "test";
@@ -259,11 +255,14 @@
   /* <---------- drama ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Makes the actor appear at a position, by default the center of screen.
-   * ---------------------------------------- */
+  /**
+   * Makes the actor appear at a position, by default center of screen.
+   * @param {Table} tb
+   * @param {number|unset} [x]
+   * @param {number|unset} [y]
+   * @param {number|unset} [align]
+   * @return {void}
+   */
   const setActor_pos = function(tb, x, y, align) {
     let done = false;
     tb.update(() => {
@@ -276,15 +275,22 @@
   exports.setActor_pos = setActor_pos;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Applys a list of actions to the actor, and adds it to the scene.
-   * If {permanent} is {true}, the actor won't get removed finally.
-   * ---------------------------------------- */
+  /**
+   * Applys a list of actions to some actor, then adds it to the scene.
+   * @param {Table} tb
+   * @param {number|unset} delay
+   * @param {Array<Action>} acts
+   * @param {boolean|unset} [permanent] - If true, the actor won't get removed finally.
+   * @return {void}
+   */
   const setActor_action = function(tb, delay, acts, permanent) {
-    let acts_fi = [Actions.fadeOut(0.0), Actions.delay(tryVal(delay, 0.0))].pushAll(acts);
+    if(delay == null) delay = 0.0;
+
+    let acts_fi = [Actions.fadeOut(0.0)];
+    if(delay > 0.0) acts_fi.push(Actions.delay(delay));
+    acts_fi.pushAll(acts);
     if(!permanent) acts_fi.push(Actions.remove());
+
     tb.actions.apply(tb, acts_fi);
     tb.pack();
     tb.act(0.1);
@@ -293,22 +299,44 @@
   exports.setActor_action = setActor_action;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Simply removes the acctor from the scene.
-   * ---------------------------------------- */
+  /**
+   * Removes actor from the scene.
+   * @param {Table} tb
+   * @return {void}
+   */
   const removeActor = function(tb) {
     tb.actions(Actions.remove());
   };
   exports.removeActor = removeActor;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
+   * Clears background, BGM, image, and characters.
+   * @return {void}
+   */
+  const clearDialFlow = function() {
+    TRIGGER_BACKGROUND = false;
+    TRIGGER_MUSIC = false;
+    TRIGGERS_IMAGE.setVal(false);
+    MUSIC_HANDLER.stop();
+    VARGEN.dialFlowBgPool.forEachFast(tb => removeActor(tb));
+    VARGEN.dialFlowImgPool.forEachFast(tb => removeActor(tb));
+    VARGEN.dialFlowCharaPool.forEachFast(tb => removeActor(tb));
+    VARGEN.dialFlowSelectionPool.forEachFast(tb => removeActor(tb));
+    _d_flow.tmpBools.clear();
+  };
+  exports.clearDialFlow = clearDialFlow;
+
+
+  /**
    * Creates a color transition.
-   * ---------------------------------------- */
+   * @param {number} delay
+   * @param {Color|unset} [color]
+   * @param {number|unset} [inTimeS]
+   * @param {number|unset} [outTimeS]
+   * @param {number|unset} [susTimeS]
+   * @return {number}
+   */
   const _d_fade = function(delay, color, inTimeS, outTimeS, susTimeS) {
     if(color == null) color = Color.black;
     if(inTimeS == null) inTimeS = 1.0;
@@ -340,11 +368,12 @@
   exports._d_fade = _d_fade;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Creates a simple flash.
-   * ---------------------------------------- */
+   * @param {number} delay
+   * @param {Color|unset} [color]
+   * @return {number}
+   */
   const _d_flash = function(delay, color) {
     if(color == null) color = Color.white;
 
@@ -353,16 +382,20 @@
   exports._d_flash = _d_flash;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Shows a background image.
-   * ---------------------------------------- */
+   * @param {number} delay
+   * @param {string} nmBg
+   * @param {function(): boolean} endGetter
+   * @param {number|unset} [inTimeS]
+   * @return {number}
+   */
   const _d_bg = function(delay, nmBg, endGetter, inTimeS) {
     if(inTimeS == null) inTimeS = 1.0;
 
     const tb = new Table();
     tb.touchable = Touchable.disabled;
+    VARGEN.dialFlowBgPool.push(tb);
 
     tb.table(new TextureRegionDrawable(Core.atlas.find(nmBg)), tb1 => {})
     .width(VAR.len_bgW * _uiScl())
@@ -373,7 +406,10 @@
     setActor_action(tb, delay, [
       Actions.fadeIn(inTimeS),
       Actions.run(() => tb.update(() => {
-        if(endGetter()) removeActor(tb);
+        if(endGetter()) {
+          VARGEN.dialFlowBgPool.pull(tb);
+          removeActor(tb);
+        };
       })),
     ], true);
 
@@ -382,18 +418,19 @@
   exports._d_bg = _d_bg;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a background music player.
-   * This temporarily mutes vanilla sound control.
-   * ---------------------------------------- */
-  const _d_bgm = function(delay, mus, endGetter) {
+  /**
+   * Plays background music, temporarily mutes vanilla sound control.
+   * @param {number} delay
+   * @param {MusicGn} mus_gn
+   * @param {function(): boolean} endGetter
+   * @return {number}
+   */
+  const _d_bgm = function(delay, mus_gn, endGetter) {
     const tb = new Table();
 
     setActor_action(tb, delay, [
       Actions.run(() => {
-        MUSIC_HANDLER.setMusic(mus);
+        MUSIC_HANDLER.setMusic(mus_gn);
       }),
       Actions.run(() => tb.update(() => {
         if(endGetter()) {
@@ -408,40 +445,44 @@
   exports._d_bgm = _d_bgm;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Shows a character art.
-   * Format for image name: {chara-*character name*}.
-   *
-   * {fracX} determines the initial position of the character, 0.5 for center.
-   * {isDark0color} can be boolean or Arc color. If {true} the character is darkened, if color the image will be tinted.
-   * {anim} is the animation used, see the code below.
-   * {customActs} is a list of cutomized actions, and {customActTimeS} is the expected duration in seconds.
-   * ---------------------------------------- */
+   * The sprite is named like "chara-<nmChara>".
+   * @param {number} delay
+   * @param {string} nmMod
+   * @param {string} nmChara
+   * @param {function(): boolean} endGetter
+   * @param {number|unset} [fracX] - The initial x position of image as fraction.
+   * @param {boolean|Color|unset} [isDark0color] - Determines color of the image. The character art will be darkened if this property is true.
+   * @param {string|unset} [anim] - Determines animation used on the image.
+   * @param {Object|unset} [animParamObj]
+   * @param {Array<Action>|unset} [customActs]
+   * @param {number|unset} [customActTimeS] - Time spent on `customActs`.
+   * @return {number}
+   */
   const _d_chara = function(
-    delay, nmMod, chara, endGetter,
+    delay, nmMod, nmChara, endGetter,
     fracX, isDark0color, anim, animParamObj,
     customActs, customActTimeS
   ) {
-    if(customActs == null) customActs = [];
     if(customActTimeS == null) customActTimeS = 0.0;
 
     const tb = new Table();
     tb.touchable = Touchable.disabled;
+    VARGEN.dialFlowCharaPool.push(tb);
 
-    tb.table(new TextureRegionDrawable(Core.atlas.find(nmMod + "-chara-" + chara, Core.atlas.find("lovec-chara-error"))), tb1 => {
+    tb.table(new TextureRegionDrawable(Core.atlas.find(nmMod + "-chara-" + nmChara, Core.atlas.find("lovec-chara-error"))), tb1 => {
       if(isDark0color instanceof Color) {
         tb1.setColor(isDark0color);
       } else if(isDark0color) {
-        tb1.setColor(Color.valueOf("606060"));
+        tb1.setColor(VAR.color_darkMix);
       };
     })
     .width(VAR.len_charaW * _uiScl())
     .height(VAR.len_charaH * _uiScl())
     .row();
 
-    var done = false;
+    let done = false;
     tb.update(() => {
       if(!done) {
         tb.setPosition(_screenW() * (tryVal(fracX, 0.5)), _screenH() * 0.4, Align.center);
@@ -449,18 +490,13 @@
       };
     });
 
-    // I have to hard-code this or it's bugged, WTF???
+    // I have to hard-code this, or it's bugged, WTF???
     let
       animTup,
       transTimeS, fracXFrom, fracXTo;
     switch(anim) {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Lets the chara fades in or out.
-       * ---------------------------------------- */
       case "fade-in" :
         transTimeS = readParam(animParamObj, "transTimeS", 0.75);
         animTup = [transTimeS, [
@@ -478,11 +514,6 @@
         break;
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Lets the chara move somewhere else, no y-coordinate.
-       * ---------------------------------------- */
       case "move" :
         transTimeS = readParam(animParamObj, "transTimeS", 0.75);
         fracXFrom = readParam(animParamObj, "fracXFrom", 0.5);
@@ -495,11 +526,6 @@
         break;
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Lets the chara jump twice.
-       * ---------------------------------------- */
       case "jump" :
         animTup = [0.5, [
           Actions.fadeIn(0.0),
@@ -511,11 +537,6 @@
         break;
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Lets the chara jump six times.
-       * ---------------------------------------- */
       case "jump-violent" :
         animTup = [1.5, [
           Actions.fadeIn(0.0),
@@ -535,11 +556,6 @@
         break;
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Lets the chara shake horizonally.
-       * ---------------------------------------- */
       case "shake" :
         animTup = [0.5, [
           Actions.fadeIn(0.0),
@@ -556,14 +572,19 @@
 
     };
 
-    if(!fetchSetting("test-show-errored-chara") && !Core.atlas.has(nmMod + "-chara-" + chara)) {
+    if(!fetchSetting("test-show-error-chara") && !Core.atlas.has(nmMod + "-chara-" + nmChara)) {
       // Do nothing
     } else {
-      setActor_action(tb, delay, animTup[1].concat(customActs).concat([
-        Actions.run(() => tb.update(() => {
-          if(endGetter()) removeActor(tb);
-        })),
-      ]), true);
+      if(customActs != null) {
+        animTup[1].clear().pushAll(customActs);
+      };
+      animTup[1].push(Actions.run(() => tb.update(() => {
+        if(endGetter()) {
+          VARGEN.dialFlowCharaPool.pull(tb);
+          removeActor(tb);
+        };
+      })));
+      setActor_action(tb, delay, animTup[1], true);
     };
 
     return animTup[0] + customActTimeS;
@@ -571,16 +592,19 @@
   exports._d_chara = _d_chara;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Shows selection buttons for branched dialog flow.
-   * Is it really needed for a linear progression game???
-   * ---------------------------------------- */
+  /**
+   * Shows selection buttons for dialog flow.
+   * @param {number} delay
+   * @param {Array} textScrArr - <ROW>: text, scr.
+   * @param {number|unset} [w]
+   * @param {number|unset} [h]
+   * @param {number|unset} [inTimeS]
+   * @return {number}
+   */
   const _d_selection = function(delay, textScrArr, w, h, inTimeS) {
     if(w == null) w = 500.0;
     if(h == null) h = 50.0;
-    if(inTimeS == null) inTimeS = 0.75;
+    if(inTimeS == null) inTimeS = 0.5;
 
     const tb = new Table();
     tb.center();
@@ -591,13 +615,17 @@
       }).center().size(w, h).row();
       tb.add("").row();
     });
+    VARGEN.dialFlowSelectionPool.push(tb);
 
     let shouldClose = false;
     setActor_pos(tb);
     setActor_action(tb, delay, [
       Actions.fadeIn(inTimeS),
       Actions.run(() => tb.update(() => {
-        if(shouldClose) removeActor(tb);
+        if(shouldClose) {
+          VARGEN.dialFlowSelectionPool.pull(tb);
+          removeActor(tb);
+        };
       })),
     ], true);
 
@@ -606,121 +634,144 @@
   exports._d_selection = _d_selection;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A common text box used for drama that is shown at the bottom of screen.
-   * {tupDial} is a 3-tuple of {nmMod}, {nmDial} and {ind}.
-   * {tupChara} is a 2-tuple of {nmMod} and {nmChara}.
-   * {scr} is called before the box is removed.
-   * ---------------------------------------- */
-  const _d_text = function(delay, tupDial, tupChara, scr, paramObj, endGetter) {
+  /**
+   * Shows clickable text box at the bottom of screen.
+   * @param {number} delay
+   * @param {DialogTuple|unset} [dialTup]
+   * @param {CharacterTuple|unset} [charaTup]
+   * @param {(function(): void)|unset} [scr] - Called just before the text box is removed.
+   * @param {Object|unset} [paramObj]
+   * @param {SoundGn|unset} [paramObj.sound] - If set, the sound will be played when the text is shown.
+   * @param {number|unset} [paramObj.haltTimeS] - If set, the box will be removed after some seconds.
+   * @param {boolean|unset} [paramObj.autoClick] - If true, the box will be automatically clicked.
+   * @param {boolean|unset} [paramObj.isTail] - Set this to true for last text.
+   * @param {Function|unset} [paramObj.selectionScr] - Use this field to call {@link _d_selection}.
+   * @param {(function(): boolean)|unset} [endGetter]
+   * @return {number}
+   */
+  const _d_text = function(delay, dialTup, charaTup, scr, paramObj, endGetter) {
     if(scr == null) scr = Function.air;
-    if(paramObj == null) paramObj = Object.air;
 
     const tb = new Table();
+    let
+      sound = readParam(paramObj, "sound", null),
+      haltTimeS = readParam(paramObj, "haltTimeS", -1.0),
+      autoClick = readParam(paramObj, "autoClick", false),
+      isTail = readParam(paramObj, "isTail", false),
+      selectionScr = readParam(paramObj, "selectionScr", null);
+
+    let shouldTriggerScrOnClick = haltTimeS < 0.0 && !autoClick && !isTail && selectionScr == null;
+    let actions_fi = haltTimeS >= 0.0 ?
+      [Actions.delay(haltTimeS), Actions.run(() => scr()), Actions.remove()] :
+      autoClick ?
+        [Actions.fadeIn(0.25), Actions.run(() => scr()), Actions.remove()] :
+        isTail ?
+          [Actions.fadeIn(0.25), Actions.run(() => scr()), Actions.fadeOut(0.25), Actions.remove()] :
+          null;
+    let delay_fi = haltTimeS != null ?
+      haltTimeS :
+      autoClick ?
+        0.25 :
+        null;
 
     let color = Color.white;
-    if(tupChara != null) {
-      color = MDL_color._charaColor(tupChara[0], tupChara[1]);
-      // @TABLE: character name
+    if(charaTup != null) {
+      color = MDL_color._charaColor(charaTup[0], charaTup[1]);
+      // <TABLE>: character name
       tb.table(Tex.bar, tb1 => {
-        tb1.marginLeft(24.0).marginRight(24.0).marginTop(8.0).marginBottom(8.0).setColor(Color.darkGray);
-        tb1.add(MDL_bundle._chara(tupChara[0], tupChara[1]).color(color)).center().fontScale(1.35).labelAlign(Align.left);
+        tb1.top().marginLeft(36.0).marginRight(36.0).marginTop(16.0).marginBottom(16.0).setColor(Color.darkGray);
+        tb1.add(MDL_bundle._chara(charaTup[0], charaTup[1]).color(color)).center().fontScale(1.35).labelAlign(Align.left);
       }).left().row();
     };
-    // @TABLE: text box
+    // <TABLE>: text box
     tb.table(Tex.bar, tb1 => {
-      tb1.left().top().marginLeft(48.0).marginRight(48.0).marginTop(32.0).marginBottom(32.0).setColor(Pal.darkestGray);
-      let dialText = tupDial == null ? "" : MDL_bundle._dialText(tupDial[0], tupDial[1], tupDial[2]).color(color);
-      tb1.add(dialText).left().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.left).wrap().width(_uiW(90.0));
-    }).width(_screenW() * 0.6).height(160.0).row();
+      tb1.top().setColor(Pal.darkestGray);
+      // <TABLE>: text container
+      tb1.table(Styles.none, tb2 => {
+        if(shouldTriggerScrOnClick) tb2.clicked(() => {
+          scr();
+          tb.actions(Actions.remove());
+        });
 
-    if(paramObj.haltTimeS == null && !paramObj.autoClick && !paramObj.isTail && paramObj.selectionScr == null) tb.clicked(() => {
-      scr();
-      tb.actions(Actions.remove());
-    });
+        tb2.left().marginLeft(48.0).marginRight(48.0).marginTop(28.0).marginBottom(28.0);
+        let dialText = dialTup == null ? "" : MDL_bundle._dialText(dialTup[0], dialTup[1], dialTup[2]).color(color);
+        tb2.add(dialText).left().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.left).wrap().width(_uiW(90.0));
+      }).left();
+      // <TABLE>: spacing
+      tb1.table(Styles.none, tb2 => {}).growX();
+      // <TABLE>: buttons
+      tb1.table(Styles.none, tb2 => {
+        tb2.button("X", () => Vars.ui.showConfirm(MDL_bundle._info("lovec", "dial-skip-dial-confirm"), MDL_bundle._info("lovec", "dial-skip-dial-confirm", true), () => {
+          clearDialFlow();
+          removeActor(tb);
+        })).size(40.0).tooltip(MDL_bundle._info("lovec", "tt-skip-dial"), true).row();
+      }).right();
+    }).width(_screenW() * 0.6).height(160.0).row();
 
     setActor_pos(tb, null, 0.0, Align.bottom);
     setActor_action(tb, delay,
-      paramObj.haltTimeS != null ?
-        [Actions.delay(paramObj.haltTimeS), Actions.run(() => scr()), Actions.remove()] :
-        paramObj.autoClick ?
-          [Actions.fadeIn(0.25), Actions.run(() => scr()), Actions.remove()] :
-          paramObj.isTail ?
-            [Actions.fadeIn(0.25), Actions.run(() => scr()), Actions.fadeOut(0.25), Actions.remove()] :
-            [Actions.fadeIn(0.25), Actions.run(() => tb.update(() => {
-              if(endGetter != null && endGetter()) {
-                removeActor(tb);
-              };
-            }))],
+      actions_fi != null ?
+        actions_fi :
+        [Actions.fadeIn(0.25), Actions.run(() => tb.update(() => {
+          if(endGetter != null && endGetter()) removeActor(tb);
+        }))],
       true,
     );
 
-    if(paramObj.selectionScr != null) paramObj.selectionScr();
-    if(paramObj.sound != null) MDL_effect.play(paramObj.sound);
+    if(selectionScr != null) paramObj.selectionScr();
+    if(sound != null) MDL_effect.play(paramObj.sound);
 
-    return paramObj.haltTimeS != null ?
-      paramObj.haltTimeS :
-      paramObj.autoClick ?
-        0.25 :
-        0.5;
+    return delay_fi != null ?
+      delay_fi :
+      0.5;
   };
   exports._d_text = _d_text;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Creates a dialog flow (multiple texts in sequence).
-   * Format for {dialFlowArr}: {[nmMod1, nmDial, dialInd], [nmMod2, nmChara], paramObj, charaArgs}.
-   * Format for {charaArgs}: {[delay, nmMod, nmChara, fracX, isDark0color, anim, animParamObj, customActs]}
-   * ---------------------------------------- */
+  /**
+   * Creates a dialog flow, which should be defined with {@link newDialogFlow} beforehand.
+   * See {@link DialogFlowData}.
+   * @param {string} nmDialFlow
+   * @return {void}
+   */
   const _d_flow = function thisFun(nmDialFlow) {
-    let dialFlowArr = fetchDialogFlow(nmDialFlow);
-    if(dialFlowArr.length === 0) {
+    let dialFlowData = fetchDialogFlow(nmDialFlow);
+    if(dialFlowData.length === 0) {
       Log.warn("[LOVEC] Cannot find dialog flow for " + nmDialFlow + "!");
       return;
     };
 
-    thisFun.flowIndMap.put(dialFlowArr, 0);
-    thisFun.callFlow(dialFlowArr);
+    thisFun.flowIndMap.put(dialFlowData, 0);
+    thisFun.callFlow(dialFlowData);
   }
   .setProp({
     flowIndMap: new ObjectMap(),
-    callFlow: flowArr => {
-      let ind = _d_flow.flowIndMap.get(flowArr, 0);
-      let obj = tryVal(flowArr[ind * 4 + 2], Object.air);
-      let args = flowArr[ind * 4 + 3];
+    callFlow: function(dialFlowData) {
+      let ind = _d_flow.flowIndMap.get(dialFlowData, 0);
+      let obj = tryVal(dialFlowData[ind * 4 + 2], Object.air);
+      let args = dialFlowData[ind * 4 + 3];
 
       if(obj.scr != null) obj.scr();
       if(args != null) {
         args.forEachFast(arr => _d_chara(arr[0], arr[1], arr[2], () => _d_flow.tmpBools[ind], arr[3], arr[4], arr[5], arr[6], arr[7]));
       };
-      _d_text(0.0, flowArr[ind * 4], flowArr[ind * 4 + 1], () => {
+      _d_text(0.0, dialFlowData[ind * 4], dialFlowData[ind * 4 + 1], () => {
         let nextInd = ind + 1;
-        _d_flow.flowIndMap.put(flowArr, nextInd);
+        _d_flow.flowIndMap.put(dialFlowData, nextInd);
         _d_flow.tmpBools[ind] = true;
-        if(nextInd * 4 < flowArr.length) {
-          _d_flow.callFlow(flowArr);
+        if(nextInd * 4 < dialFlowData.length) {
+          _d_flow.callFlow(dialFlowData);
         } else {
           _d_flow.tmpBools.clear();
         };
       }, obj, () => _d_flow.tmpBools[ind]);
     },
-    callNext: flowArr => {
-      let nextInd = _d_flow.flowIndMap.get(flowArr, 0) + 1;
-      _d_flow.flowIndMap.put(flowArr, nextInd);
+    callNext: function(dialFlowData) {
+      let nextInd = _d_flow.flowIndMap.get(dialFlowData, 0) + 1;
+      _d_flow.flowIndMap.put(dialFlowData, nextInd);
       _d_flow.tmpBools[nextInd - 1] = true;
-      _d_flow.callFlow(flowArr);
+      _d_flow.callFlow(dialFlowData);
     },
     tmpBools: [],
   });
   exports._d_flow = _d_flow;
-
-
-/*
-  ========================================
-  Section: Application
-  ========================================
-*/

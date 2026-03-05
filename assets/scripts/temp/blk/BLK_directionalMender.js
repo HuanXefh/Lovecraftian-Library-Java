@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * A tiny mender that repairs the building in front of it.
    * No optional input since I don't need it.
    *
@@ -27,14 +27,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseMender");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_text = require("lovec/mdl/MDL_text");
 
 
   /* <---------- component ----------> */

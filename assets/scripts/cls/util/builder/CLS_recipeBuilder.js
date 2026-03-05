@@ -1,20 +1,15 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Used to build a recipe object.
- * Only contains fields related to I/O.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
-
-
-const CLS_paramBuilder = require("lovec/cls/util/builder/CLS_paramBuilder");
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Used to build a recipe object.
+ * Only contains fields related to I/O.
+ * @class
+ * @extends CLS_paramBuilder
+ */
 const CLS_recipeBuilder = newClass().extendClass(CLS_paramBuilder).initClass();
 
 
@@ -32,6 +27,11 @@ CLS_recipeBuilder.prototype.init = function() {
 var ptp = CLS_recipeBuilder.prototype;
 
 
+/**
+ * Sets CI field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__ci = function(arr) {
   this.builderObj["ci"] = tryVal(arr, Array.air);
 
@@ -39,6 +39,11 @@ ptp.__ci = function(arr) {
 };
 
 
+/**
+ * Sets BI field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__bi = function(arr) {
   this.builderObj["bi"] = tryVal(arr, Array.air);
 
@@ -46,6 +51,11 @@ ptp.__bi = function(arr) {
 };
 
 
+/**
+ * Sets AUX field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__aux = function(arr) {
   this.builderObj["aux"] = tryVal(arr, Array.air);
 
@@ -53,6 +63,11 @@ ptp.__aux = function(arr) {
 };
 
 
+/**
+ * Sets `reqOpt`.
+ * @param {boolean|unset} [bool]
+ * @return {this}
+ */
 ptp.__reqOpt = function(bool) {
   this.builderObj["reqOpt"] = tryVal(bool, false);
 
@@ -60,6 +75,11 @@ ptp.__reqOpt = function(bool) {
 };
 
 
+/**
+ * Sets OPT field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__opt = function(arr) {
   this.builderObj["opt"] = tryVal(arr, Array.air);
 
@@ -67,6 +87,11 @@ ptp.__opt = function(arr) {
 };
 
 
+/**
+ * Sets PAYI field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__payi = function(arr) {
   this.builderObj["payi"] = tryVal(arr, Array.air);
 
@@ -74,6 +99,11 @@ ptp.__payi = function(arr) {
 };
 
 
+/**
+ * Sets CO field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__co = function(arr) {
   this.builderObj["co"] = tryVal(arr, Array.air);
 
@@ -81,6 +111,11 @@ ptp.__co = function(arr) {
 };
 
 
+/**
+ * Sets BO field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__bo = function(arr) {
   this.builderObj["bo"] = tryVal(arr, Array.air);
 
@@ -88,6 +123,11 @@ ptp.__bo = function(arr) {
 };
 
 
+/**
+ * Sets `failP`.
+ * @param {number|unset} [frac]
+ * @return {this}
+ */
 ptp.__failP = function(frac) {
   this.builderObj["failP"] = tryVal(frac, 0.0);
 
@@ -95,6 +135,11 @@ ptp.__failP = function(frac) {
 };
 
 
+/**
+ * Sets FO field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__fo = function(arr) {
   this.builderObj["fo"] = tryVal(arr, Array.air);
 
@@ -102,6 +147,11 @@ ptp.__fo = function(arr) {
 };
 
 
+/**
+ * Sets PAYO field.
+ * @param {Array|unset} [arr]
+ * @return {this}
+ */
 ptp.__payo = function(arr) {
   this.builderObj["payo"] = tryVal(arr, Array.air);
 

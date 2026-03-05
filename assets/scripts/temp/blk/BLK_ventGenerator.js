@@ -25,12 +25,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseGenerator");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_table = require("lovec/mdl/MDL_table");
 
 
   /* <---------- component ----------> */
@@ -56,7 +50,7 @@
     blk.stats.remove(Stat.affinities);
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table.setDisplay_attr(tb, blk.attribute, oblk => MDL_cond._isVentBlock(oblk) && oblk.delegee.ventSize === blk.size);
+      MDL_table._d_attr(tb, blk.attribute, oblk => MDL_cond._isVentBlock(oblk) && oblk.delegee.ventSize === blk.size);
     }));
   };
 

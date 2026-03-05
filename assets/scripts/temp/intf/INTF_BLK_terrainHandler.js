@@ -22,15 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_terrain = require("lovec/mdl/MDL_terrain");
-  const MDL_text = require("lovec/mdl/MDL_text");
-
-
   /* <---------- component ----------> */
 
 

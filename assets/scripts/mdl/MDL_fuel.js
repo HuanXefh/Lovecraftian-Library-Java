@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Methods related to fuels, used mostly for {INTF_BLK_furnaceBlock}.
-   * ---------------------------------------- */
+  /**
+   * Methods related to fuels, used mostly for {@link INTF_BLK_furnaceBlock}.
+   */
 
 
 /*
@@ -22,25 +20,15 @@
   /* <---------- import ----------> */
 
 
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-
-
-  const DB_item = require("lovec/db/DB_item");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets fuel point of some resource.
    * Returns consumption rate if it's a fluid.
-   * ---------------------------------------- */
+   * @param {ResourceGn} rs_gn
+   * @return {number}
+   */
   const _fuelPon = function(rs_gn) {
     let rs = MDL_content._ct(rs_gn, "rs");
     return rs == null ?
@@ -51,11 +39,11 @@
   exports._fuelPon = _fuelPon;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets fuel level of some resource.
-   * ---------------------------------------- */
+  /**
+   * Gets fuel level (1% of target temperature) of some resource.
+   * @param {ResourceGn} rs_gn
+   * @return {number}
+   */
   const _fuelLvl = function(rs_gn) {
     let rs = MDL_content._ct(rs_gn, "rs");
     return rs == null ?
@@ -66,11 +54,11 @@
   exports._fuelLvl = _fuelLvl;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list of available fuels for some block.
-   * ---------------------------------------- */
+  /**
+   * Gets available fuels for some block.
+   * @param {BlockGn} blk_gn
+   * @return {Resource[]}
+   */
   const _fuelArr = function(blk_gn) {
     const arr = [];
 
@@ -104,11 +92,12 @@
   exports._fuelArr = _fuelArr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Whether some resource can be consumed by this block as fuel.
-   * ---------------------------------------- */
+   * @param {BlockGn} blk_gn
+   * @param {ResourceGn} rs_gn
+   * @return {boolean}
+   */
   const _hasFuelInput = function(blk_gn, rs_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
     if(blk == null || tryJsProp(blk, "noFuelInput", false)) return false;
@@ -131,11 +120,11 @@
   exports._hasFuelInput = _hasFuelInput;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the prefered fuel tuple for some building.
-   * ---------------------------------------- */
+  /**
+   * Gets prefered fuel tuple for some building, which should be a furnace.
+   * @param {Building} b
+   * @return {[Resource, number, number]|null} <TUP>: fuel, fuelPon, fuelLvl.
+   */
   const _fuelTup = function thisFun(b) {
     if(tryJsProp(b.block, "noFuelInput", false)) return null;
 
@@ -154,7 +143,7 @@
       return [fuelSel, _fuelPon(fuelSel), _fuelLvl(fuelSel)];
     };
 
-    // Find the fuel with highest fuel level
+    // Find fuel with the highest fuel level
     let tmpLvl;
     if(b.items != null && fuelType.equalsAny(thisFun.filterTup1)) VARGEN.fuelItms.forEachFast(itm => {
       if((allowedFuels != null ? !allowedFuels.includes(itm.name) : blockedFuels.includes(itm.name)) || !b.items.has(itm)) return;
@@ -189,7 +178,7 @@
       });
     };
 
-    // If the building produces the target fuel, try using the one with second highest level
+    // If the building produces the target fuel, try using the one with second-highest level
     if(fuel != null && MDL_recipeDict._prodAmt(fuel, b.block) > 0.0 && fuelSpare != null) {
       fuel = fuelSpare;
       fuelLvl = fuelLvlSpare;

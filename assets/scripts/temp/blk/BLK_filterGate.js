@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Vanilla sorter but two modes in one block.
    * {blk.invert} is useless for this.
    * ---------------------------------------- */
@@ -25,16 +25,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemGate");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const EFF = require("lovec/glb/GLB_eff");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_io = require("lovec/mdl/MDL_io");
-  const MDL_table = require("lovec/mdl/MDL_table");
 
 
   /* <---------- component ----------> */
@@ -107,7 +97,7 @@
 
   function comp_buildConfiguration(b, tb) {
     if(!b.block.delegee.hideSelection) {
-      MDL_table.setSelector_ct(
+      MDL_table._s_ct(
         tb, b.block, Vars.content.items().toArray(),
         () => b.sortItem, val => b.configure(val), false,
         b.block.selectionRows, b.block.selectionColumns,
@@ -141,7 +131,7 @@
     .setTags("blk-dis", "blk-gate")
     .setParam({
       // @PARAM: Item is selected when this returns {true}.
-      // @ARGS: b, b_f, itm
+      // <ARGS>: b, b_f, itm
       filterScrTup: prov(() => [(b, b_f, itm) => itm === b.sortItem]),
       // @PARAM: Set this to {true} if item selection is not used.
       hideSelection: false,
@@ -199,7 +189,7 @@
           "selectorBlock",
           this.sortItem == null ? "null" : this.sortItem.name,
           this.isInv,
-        ].toJavaArr();
+        ].toJavaArr(JAVA.object);
       }
       .setProp({
         noSuper: true,

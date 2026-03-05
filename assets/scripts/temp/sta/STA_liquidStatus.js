@@ -24,11 +24,6 @@
 
   const PARENT = require("lovec/temp/sta/STA_baseStatus");
   const INTF = require("lovec/temp/intf/INTF_STA_burstStatus");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
 
 
   /* <---------- component ----------> */

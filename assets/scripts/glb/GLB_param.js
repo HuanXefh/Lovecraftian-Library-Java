@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Some universal parameters (for settings mostly), only updated every several seconds.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,32 +20,20 @@
   /* <---------- import ----------> */
 
 
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
-  const DB_env = require("lovec/db/DB_env");
-  const DB_misc = require("lovec/db/DB_misc");
-
-
   /* <---------- base ----------> */
 
 
   let
     updateSuppressCd = 0, updateSuppressCooldown = 300,
-    unit_pl = null,
+    unitPlayer = null,
     secretCode = "",
     shouldLoadParam = true;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Forces all parameters to get immediately updated.
-   * ---------------------------------------- */
+   * @return {void}
+   */
   const forceLoadParam = function() {
     shouldLoadParam = true;
   };
@@ -103,7 +89,7 @@
 
 
       // Param load
-      unit_pl = Vars.player.unit();
+      unitPlayer = Vars.player.unit();
       secretCode = fetchSetting("misc-secret-code");
       shouldLoadParam = false;
 
@@ -128,7 +114,7 @@
       exports.drawStaticLoot = fetchSetting("draw0loot-static");
       exports.drawLootAmount = fetchSetting("draw0loot-amount");
       exports.treeAlpha = (Groups.player.size() > 1) ? 1.0 : fetchSetting("draw0tree-alpha", true);
-      exports.checkTreeDst = fetchSetting("draw0tree-player") && unit_pl != null && MDL_cond._isCoverable(unit_pl);
+      exports.checkTreeDst = fetchSetting("draw0tree-player") && unitPlayer != null && MDL_cond._isCoverable(unitPlayer);
       exports.showExtraInfo = fetchSetting("draw0aux-extra-info");
       exports.drawBridgeTransportLine = fetchSetting("draw0aux-bridge");
       exports.drawRouterHeresy = fetchSetting("draw0aux-router");
@@ -168,8 +154,8 @@
       };
       exports.secret_legacySound = secretCode.includesAny("<legacy>");
       exports.secret_fireInTheHole = secretCode.includesAny("<fire-in-the-hole>", "<fire-in-da-hole>", "<fith>");
-      exports.secret_steelPipe = secretCode.includes("<steel-pipe>", "<metal-pipe>");
-      exports.secret_revisionFix = secretCode.includes("<revision-fix>");
+      exports.secret_steelPipe = secretCode.includesAny("<steel-pipe>", "<metal-pipe>");
+      exports.secret_revisionFix = secretCode.includesAny("<revision-fix>");
 
 
     };

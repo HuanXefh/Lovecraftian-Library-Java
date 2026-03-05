@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods to read the bundle.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -25,46 +23,52 @@
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Base bundle reader method.
-   * ---------------------------------------- */
+  /**
+   * Most basic bundle reader method.
+   * Will return empty string on headless ends.
+   * @param {string} bundleStr
+   * @return {string}
+   */
   const _base = function(bundleStr) {
     return Vars.headless ? "" : Core.bundle.get(bundleStr.toLowerCase());
   };
   exports._base = _base;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {info.*nmMod*-info-*bp*.name} or {info.*nmMod*-info-*bp*.description}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "info.<nmMod>-info-<bp>.name" or "info.<nmMod>-info-<bp>.description".
+   * @param {string} nmMod
+   * @param {string} bp
+   * @param {boolean|unset} [isDes]
+   * @return string
+   */
   const _info = function(nmMod, bp, isDes) {
-    return Vars.headless ? "" : Core.bundle.get(("info." + nmMod + "-info-" + bp + (isDes ? ".description" : ".name")).toLowerCase());
+    return _base("info." + nmMod + "-info-" + bp + (isDes ? ".description" : ".name"));
   };
   exports._info = _info;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {term.*nmMod*-term-*bp*.name} or {term.*nmMod*-term-*bp*.description}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "info.<nmMod>-term-<bp>.name" or "info.<nmMod>-term-<bp>.description".
+   * @param {string} nmMod
+   * @param {string} bp
+   * @param {boolean|unset} [isDes]
+   * @return string
+   */
   const _term = function(nmMod, bp, isDes) {
-    return Vars.headless ? "" : Core.bundle.get(("term." + nmMod + "-term-" + bp + (isDes ? ".description" : ".name")).toLowerCase());
+    return _base("term." + nmMod + "-term-" + bp + (isDes ? ".description" : ".name"));
   };
   exports._term = _term;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {stat.*nmMod*-stat-*bp*}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "stat.<nmMod>-stat-<bp>".
+   * @param {string} nmMod
+   * @param {string} bp
+   * @return string
+   */
   const _stat = function(nmMod, bp) {
-    return Vars.headless ? "" : Core.bundle.get(("stat." + nmMod + "-stat-" + bp).toLowerCase());
+    return _base("stat." + nmMod + "-stat-" + bp);
   };
   exports._stat = _stat;
 
@@ -72,34 +76,39 @@
   /* <---------- drama ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {chara.*nmMod*-*nmChara*}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "chara.<nmMod>-<nmChara>".
+   * @param {string} nmMod
+   * @param {string} nmChara
+   * @return string
+   */
   const _chara = function(nmMod, nmChara) {
-    return Vars.headless ? "" : Core.bundle.get(("chara." + nmMod + "-" + nmChara).toLowerCase());
+    return _base("chara." + nmMod + "-" + nmChara);
   };
   exports._chara = _chara;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {dial.*nmMod*-*nmDial*-*ind*}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "dial.<nmMod>-<nmDial>-<ind>".
+   * @param {string} nmMod
+   * @param {string} nmDial
+   * @param {number} ind
+   * @return string
+   */
   const _dialText = function(nmMod, nmDial, ind) {
-    return Vars.headless ? "" : Core.bundle.get(("dial." + nmMod + "-" + nmDial + "-" + ind).toLowerCase());
+    return _base("dial." + nmMod + "-" + nmDial + "-" + ind);
   };
   exports._dialText = _dialText;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {dial.*nmMod*-*nmDial*-s*ind*}.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "dial.<nmMod>-<nmDial>-s<ind>".
+   * @param {string} nmMod
+   * @param {string} nmDial
+   * @param {number} selInd
+   * @return string
+   */
   const _dialSelText = function(nmMod, nmDial, selInd) {
-    return Vars.headless ? "" : Core.bundle.get(("dial." + nmMod + "-" + nmDial + "-s" + selInd).toLowerCase());
+    return _base("dial." + nmMod + "-" + nmDial + "-s" + selInd);
   };
   exports._dialSelText = _dialSelText;

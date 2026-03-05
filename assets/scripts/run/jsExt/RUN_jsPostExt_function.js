@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * More methods for JavaScript function that should be called later.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,32 +20,20 @@
   /* <---------- import ----------> */
 
 
-  const CLS_annotation = require("lovec/cls/struct/CLS_annotation");
-
-
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- function ----------> */
 
 
   var ptp = Function.prototype;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Modifies the method, the behaviour is defined in annotation.
-   * {skipVal} is the value returned when method is skipped somehow.
-   * ----------------------------------------
-   * IMPORTANT:
-   *
-   * Annotation application should be done last, after any other function decorators!
-   * ---------------------------------------- */
+  /**
+   * Modifies the method with annotation.
+   * <br> <IMPORTANT>: Should be applied last after any decorator!
+   * @param {string} nmAnno
+   * @param {Arguments|unset} [args_p] - Arguments passed down to the annotation.
+   * @param {any} [skipVal] - Value returned if the original method is skipped.
+   * @return {this}
+   */
   ptp.setAnno = function(nmAnno, args_p, skipVal) {
     const thisFun = this;
 
@@ -72,11 +58,14 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
+  /**
+   * Gets a list of annotations applied on this function.
    *
-   * Gets a copy of the annotation list of this function.
-   * ---------------------------------------- */
+   * @return {Array<CLS_annotation>}
+   */
   ptp.getAnnos = function() {
-    return tryVal(this.annos, Array.air).cpy();
+    if(this.annos == null) {
+      this.annos = [];
+    };
+    return this.annos;
   };

@@ -40,7 +40,7 @@
   .setTags("sta-death")
   .setParam({
     // @PARAM: Script called when the unit is destroyed.
-    // @ARGS: unit
+    // <ARGS>: unit
     killedScrTup: null,
   })
   .setMethod({});

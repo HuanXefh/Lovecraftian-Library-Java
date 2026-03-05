@@ -1,6 +1,6 @@
 name: lovec
 displayName: Lovecraftian Library
-subtitle: "v101"
+subtitle: "v102"
 
 
 hidden: false
@@ -10,7 +10,7 @@ main: lovec.Lovec
 
 author: MaboroshiX
 repo: HuanXefh/Lovecraftian-Library-Java
-minGameVersion: 155
+minGameVersion: 156
 dependencies: []
 softDependencies: [
   tmi
@@ -24,4 +24,4 @@ A JavaScript library for my other mods, with codes for multi-crafters, recipe di
 Well, not 100% JavaScript.
 '''
 
-version: 101
+version: 101.0026030501

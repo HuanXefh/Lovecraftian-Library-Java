@@ -23,30 +23,7 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
   const INTF = require("lovec/temp/intf/INTF_BLK_payloadBlock");
-  const EFF = require("lovec/glb/GLB_eff");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MATH_interp = require("lovec/math/MATH_interp");
-
-
-  const FRAG_recipe = require("lovec/frag/FRAG_recipe");
-
-
-  const MDL_attr = require("lovec/mdl/MDL_attr");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_io = require("lovec/mdl/MDL_io");
-  const MDL_pollution = require("lovec/mdl/MDL_pollution");
-  const MDL_recipe = require("lovec/mdl/MDL_recipe");
-  const MDL_table = require("lovec/mdl/MDL_table");
 
 
   /* <---------- component ----------> */
@@ -322,7 +299,7 @@
   function comp_ex_resetRcParam(b) {
     b.itmAcceptCacheMap.clear();
     b.liqAcceptCacheMap.clear();
-    HUD_HANDLER.placeFrag.forceUpdate();
+    HUD_HANDLER.forceUpdateBlockFrag();
 
     if(!PARAM.updateSuppressed) {
       b.progress = 0.0;
@@ -365,7 +342,7 @@
       b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
       b.attrEffc = b.attr == null ?
         1.0 :
-        Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sum_rect(b.tile, 0, b.block.size, b.attr, "floor"), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
+        Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, "floor"), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
     });
   };
 

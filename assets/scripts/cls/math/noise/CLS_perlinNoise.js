@@ -1,23 +1,19 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Simply 2D-Perlin noise.
- * Recommended ratio of {w} to {gridW}: 5:1.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
-
-
-const CLS_whiteNoise = require("lovec/cls/math/noise/CLS_whiteNoise");
-
-
-const MATH_interp = require("lovec/math/MATH_interp");
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * 2D-Perlin noise.
+ * Recommended ratio of `w` to `gridW` is 5:1.
+ * @class
+ * @extends CLS_whiteNoise
+ * @param {number|unset} [w]
+ * @param {number|unset} [h]
+ * @param {number|unset} [gridW]
+ * @param {number|unset} [gridH]
+ */
 const CLS_perlinNoise = newClass().extendClass(CLS_whiteNoise).initClass();
 
 
@@ -50,7 +46,12 @@ const tmpDstVecs = [
 var ptp = CLS_perlinNoise.prototype;
 
 
-// @INHERITED
+/**
+ * Sets up vector data.
+ * @override
+ * @param {number|unset} [seed]
+ * @return {void}
+ */
 ptp.setVecData = function(seed) {
   if(seed == null) seed = -1.0;
 
@@ -63,7 +64,14 @@ ptp.setVecData = function(seed) {
 };
 
 
-// @INHERITED
+/**
+ * Sets up noise data.
+ * @override
+ * @param {number|unset} [base]
+ * @param {number|unset} [cap]
+ * @param {number|unset} [seed]
+ * @return {Array<Array<number>>}
+ */
 ptp.buildNoise = function(base, cap, seed) {
   if(this.isBuilt) return this.noiseData;
   if(base == null) base = 0.0;
@@ -119,6 +127,10 @@ ptp.buildNoise = function(base, cap, seed) {
 };
 
 
+/**
+ * @param {number} frac
+ * @return {number}
+ */
 ptp.hermiteInterp = function(frac) {
   return (((6.0 * frac) - 15.0) * frac + 10.0) * Math.pow(frac, 3);
 };

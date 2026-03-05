@@ -27,7 +27,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_recipeFactory");
-  const EFF = require("lovec/glb/GLB_eff");
 
 
   /* <---------- auxiliary ----------> */
@@ -69,7 +68,7 @@
 
     // Block
     newClass().extendClass(PARENT[0], "BLK_multiBlockLibRecipeFactory").initClass()
-    .setParent(MultiBlockGenericCrafter)
+    .setParent(MOD_multiBlockLib.CLASSES.MultiBlockGenericCrafter)
     .setTags("blk-fac")
     .setParam({})
     .setMethod({}),
@@ -77,7 +76,7 @@
 
     // Building
     newClass().extendClass(PARENT[1], "BLK_multiBlockLibRecipeFactory").initClass()
-    .setParent(MultiBlockGenericCrafter.MultiBlockCrafterBuild)
+    .setParent(MOD_multiBlockLib.CLASSES.MultiBlockGenericCrafter.MultiBlockCrafterBuild)
     .setParam({})
     .setMethod({
 

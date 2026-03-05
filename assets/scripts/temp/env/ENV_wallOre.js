@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * A separate template for wall ores.
    * ---------------------------------------- */
 
@@ -24,11 +24,6 @@
 
 
   const PARENT = require("lovec/temp/env/ENV_baseOverlay");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_text = require("lovec/mdl/MDL_text");
 
 
   /* <---------- component ----------> */

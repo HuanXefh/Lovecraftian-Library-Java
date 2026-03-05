@@ -25,11 +25,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/cls/util/CLS_contentTemplate");
-  const PARAM = require("lovec/glb/GLB_param");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
+  const PARENT = CLS_contentTemplate;
 
 
   /* <---------- component ----------> */

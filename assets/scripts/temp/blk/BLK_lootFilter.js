@@ -29,11 +29,6 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_contentSelector");
 
 
-  const MDL_call = require("lovec/mdl/MDL_call");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 
@@ -85,8 +80,8 @@
   function comp_ex_lootCall(b, loots, amt) {
     let loot = loots.find(loot => loot.item() === b.ctTg);
     if(loot != null) {
-      MDL_effect.showBetween_itemTransfer(loot.x, loot.y, b);
-      MDL_effect.showBetween_itemTransfer(b.x, b.y, b.lootDumpVec2);
+      MDL_effect._e_itemTransfer(loot.x, loot.y, b);
+      MDL_effect._e_itemTransfer(b.x, b.y, b.lootDumpVec2);
       if(loot.stack.amount <= amt) {
         loot.x = b.lootDumpVec2.x;
         loot.y = b.lootDumpVec2.y;

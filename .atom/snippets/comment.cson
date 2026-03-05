@@ -10,16 +10,6 @@
     */
     '''
 
-  'note comment':
-    prefix: 'lc_note'
-    body: '''
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * ${1:description}
-     * ---------------------------------------- */
-    '''
-
   'splitter comment':
     prefix: 'lc_split'
     body: '/* <---------- ${1:name} ----------> */'

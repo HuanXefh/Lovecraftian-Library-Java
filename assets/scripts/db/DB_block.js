@@ -1,8 +1,6 @@
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Database of block properties. Does not include environmental blocks.
- * ---------------------------------------- */
+ */
 
 
 const db = {
@@ -14,19 +12,23 @@ const db = {
   param: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * @DYNAMIC: b => {...}
-     * Core energy points provided/used by a block.
-     * Core block provides 5 points by default.
-     * ---------------------------------------- */
     cep: {
 
 
+      /**
+       * Core energy points provided by a block.
+       * Core block provides 5 points by default.
+       * <br> <ROW>: blk, cepProv.
+       * <br> <DYNAMIC>: b => cepProv.
+       */
       prov: [],
 
 
+      /**
+       * Core energy points used by a block.
+       * <br> <ROW>: blk, cepUse.
+       * <br> <DYNAMIC>: b => cepUse.
+       */
       use: [],
 
 
@@ -42,21 +44,19 @@ const db = {
   map: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * The only faction a block belongs to.
-     * ---------------------------------------- */
+     * <br> <ROW>: blk, faction.
+     */
     faction: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Factory family map. Factories included in the same processes belong to the same family.
-     * For instance, jaw crusher and hammer crusher both can be classified as rock crusher.
+     * For instance, both jaw crusher and hammer crusher can be classified as rock crusher.
      * A factory can be included in multiple families.
-     * ---------------------------------------- */
+     * <br> <ROW>: blk, fami.
+     */
     facFami: [],
 
 
@@ -69,29 +69,30 @@ const db = {
   group: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * When building recipe dictionary, these blocks will be ignored to allow customized modification.
-     * Useful cauz it's JavaScript, no new classes.
-     * ---------------------------------------- */
     noRcDict: {
 
 
+      /**
+       * Consumption of these blocks won't be parsed for recipe dictionary.
+       * <br> <ROW>: blk.
+       */
       cons: [],
 
 
+      /**
+       * Production of these blocks won't be parsed for recipe dictionary.
+       * <br> <ROW>: blk.
+       */
       prod: [],
 
 
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Material groups, used mainly for corrosion.
-     * ---------------------------------------- */
+     * <br> <ROW-xxx>: blk.
+     */
     material: {
 
 
@@ -128,54 +129,48 @@ const db = {
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * These blocks will trigger item reaction.
      * Only works for item blocks.
-     * ---------------------------------------- */
+     * <br> <ROW>: blk.
+     */
     exposed: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Theses blocks will get damaged if containing viscous fluids.
-     * ---------------------------------------- */
+    /**
+     * These blocks will get damaged if containing viscous fluids.
+     * <br> <ROW>: blk.
+     */
     cloggable: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Theses blocks can short-circuit if soaked in water.
-     * ---------------------------------------- */
+    /**
+     * These blocks can short-circuit if soaked in water.
+     * <br> <ROW>: blk.
+     */
     shortCircuit: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * These blocks won't get involved in reaction at all.
      * No need to put core blocks here.
-     * ---------------------------------------- */
+     * <br> <ROW>: blk.
+     */
     noReac: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * These blocks won't drop loot when destroyed.
-     * ---------------------------------------- */
+     * <br> <ROW>: blk.
+     */
     noLoot: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * These blocks won't create remains upon destruction.
      * No need for 1-block sized blocks and core blocks.
-     * ---------------------------------------- */
+     * <br> <ROW>: blk.
+     */
     noRemains: [
 
       "multi-block-lib-link-entity-1",
@@ -194,11 +189,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * If a mod has customized building debris, don't create extra remains.
-     * ---------------------------------------- */
+    /**
+     * If a mod has customized building debris, don't create remains.
+     * <br> <ROW>: nmMod.
+     */
     noRemainsMod: [
 
       "aquarion",
@@ -215,11 +209,10 @@ const db = {
   grpParam: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Color used for faction-related texts.
-     * ---------------------------------------- */
+     * <br> <ROW>: faction, color.
+     */
     factionColor: [
 
       "none", "999999",
@@ -236,11 +229,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Base pressure resistance for each material group.
-     * ---------------------------------------- */
+     * <br> <ROW>: matGrp, presRes.
+     */
     presRes: [
 
       "wood", 1.0,
@@ -257,11 +249,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Base vacuum resistance for each material group.
-     * ---------------------------------------- */
+     * <br> <ROW>: matGrp, vacRes.
+     */
     vacRes: [
 
       "wood", 0.0,
@@ -278,11 +269,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Base corrosion resistance for each material group.
-     * ---------------------------------------- */
+     * <br> <ROW>: matGrp, corRes.
+     */
     corRes: [
 
       "wood", 1.0,
@@ -299,11 +289,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Base heat resistance for each material group.
-     * ---------------------------------------- */
+     * <br> <ROW>: matGrp, heatRes.
+     */
     heatRes: [
 
       "wood", 60.0,
@@ -320,11 +309,10 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Maps a wire material to texture region name.
-     * ---------------------------------------- */
+     * <br> <ROW>: wireMat, regStr.
+     */
     wireMatReg: [
 
       "copper", "lovec-ast-wire-copper",
@@ -344,11 +332,11 @@ const db = {
     map: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Used to read shield amount.
-       * ---------------------------------------- */
+       * <br> <ROW>: javaCls, shieldGetter.
+       * <br> <ARGS>: b, isSelfShield.
+       */
       shield: [
 
         ShieldWall, (b, isSelfShield) => b.shield,
@@ -358,11 +346,11 @@ const db = {
       ],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Used to read drill speed for display.
-       * ---------------------------------------- */
+       * <br> <ROW>: javaCls, drillSpdGetter.
+       * <br> <ARGS>: blk, boosted.
+       */
       drillSpd: [
 
         Drill, (blk, boosted) => Math.pow(blk.size, 2) / blk.drillTime * 60.0 * (boosted ? Math.pow(blk.liquidBoostIntensity, 2) : 1.0),
@@ -371,12 +359,12 @@ const db = {
       ],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Used to read generalized craft time for blocks.
        * This affects calculation of consumption/production rates.
-       * ---------------------------------------- */
+       * <br> <ROW>: javaCls, craftTimeGetter.
+       * <br> <ARGS>: blk, isDrillTime, ct.
+       */
       craftTime: [
 
         Drill, (blk, isDrillTime, ct) => blk.drillTime,
@@ -413,19 +401,17 @@ const db = {
       reload: {
 
 
-        /* ----------------------------------------
-         * NOTE:
-         *
+        /**
          * These blocks have reload in (0.0, 1.0).
-         * ---------------------------------------- */
+         * <br> <ROW>: javaCls.
+         */
         frac: [],
 
 
-        /* ----------------------------------------
-         * NOTE:
-         *
+        /**
          * These blocks have reversed reload calculation (decreasing).
-         * ---------------------------------------- */
+         * <br> <ROW>: javaCls.
+         */
         rev: [
 
           LaserTurret,
@@ -433,11 +419,10 @@ const db = {
         ],
 
 
-        /* ----------------------------------------
-         * NOTE:
-         *
-         * Combination.
-         * ---------------------------------------- */
+        /**
+         * Combination of `frac` and `rev`.
+         * <br> <ROW>: javaCls.
+         */
         revFrac: [
 
           MassDriver,
@@ -448,11 +433,10 @@ const db = {
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * Maps a class to its payload key name.
-       * ---------------------------------------- */
+       * <br> <ROW>: javaCls, key.
+       */
       payloadKey: [
 
         PayloadBlock, "payload",
@@ -461,14 +445,16 @@ const db = {
       ],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
+      /**
        * These blocks will be treated as payload I/O sites.
-       * ---------------------------------------- */
+       */
       payloadSite: {
 
 
+        /**
+         * Payload sites with fixed direction.
+         * <br> <ROW>: javaCls.
+         */
         fixed: [
 
           PayloadConveyor,
@@ -476,6 +462,10 @@ const db = {
         ],
 
 
+        /**
+         * Payload sites with dynamic direction.
+         * <br> <ROW>: javaCls.
+         */
         dynamic: [
 
           PayloadRouter,

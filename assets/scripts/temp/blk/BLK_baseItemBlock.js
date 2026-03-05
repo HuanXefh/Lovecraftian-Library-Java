@@ -23,11 +23,7 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseBlock");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_reaction = require("lovec/mdl/MDL_reaction");
-
+  
 
   /* <---------- component ----------> */
 

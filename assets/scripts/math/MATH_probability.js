@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods used to calculate chance and probability distribution.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -29,18 +27,22 @@
   const randSeed = new Rand();
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Prints a distribution array to console.
-   * ---------------------------------------- */
+   * @param {DistributionArray} disArr
+   * @param {number|unset} lineAmt
+   * @param {number|unset} astAmt - Amount of asterisks used for max value.
+   * @param {number|unset} deciAmt1 - Amount of digits for start of range.
+   * @param {number|unset} deciAmt2 - Amount of digits for end of range.
+   * @return {void}
+   */
   const printDis = function thisFun(disArr, lineAmt, astAmt, deciAmt1, deciAmt2) {
-    if(disArr == null || disArr.length === 0) return;
+    if(disArr.length === 0) return;
 
     if(lineAmt == null) lineAmt = 15;
     if(astAmt == null) astAmt = 50;
     if(deciAmt1 == null) deciAmt1 = 2;
-    if(deciAmt2 == null) deciAmt2 = 2;
+    if(deciAmt2 == null) deciAmt2 = deciAmt1;
 
     let base = Math.min.apply(null, disArr).roundFixed(deciAmt1);
     let cap = Math.max.apply(null, disArr).roundFixed(deciAmt1);
@@ -49,7 +51,7 @@
 
     thisFun.tmpArr.clear();
     thisFun.tmpArr1.clear();
-    var i = 0;
+    let i = 0;
     while(i < lineAmt) {
       let numStart = (base + intv * i).roundFixed(deciAmt1);
       let numEnd = (base + intv * (i + 1)).roundFixed(deciAmt2);
@@ -59,7 +61,7 @@
     };
     let minP = Math.min.apply(null, thisFun.tmpArr1);
     let maxP = Math.max.apply(null, thisFun.tmpArr1);
-    var i = 0;
+    i = 0;
     while(i < lineAmt) {
       let numStart = (base + intv * i).roundFixed(deciAmt1);
       let numEnd = (base + intv * (i + 1)).roundFixed(deciAmt2);
@@ -70,7 +72,7 @@
       i++;
     };
 
-    var str_fi = "[Lovec] Data distribution:\n";
+    let str_fi = "[Lovec] Data distribution:\n";
     thisFun.tmpArr.forEachFast(str => str_fi += "\n" + str);
     Log.info(str_fi);
   }
@@ -81,11 +83,14 @@
   exports.printDis = printDis;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Generates a list of points that follow random distribution.
-   * ---------------------------------------- */
+  /**
+   * Generates random distribution.
+   * @param {number|unset} size
+   * @param {number|unset} base
+   * @param {number|unset} cap
+   * @param {number|unset} seed
+   * @return {DistributionArray}
+   */
   const _dis_rand = function(size, base, cap, seed) {
     const arr = [];
 
@@ -112,15 +117,14 @@
   exports._dis_rand = _dis_rand;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Generates a list of points that follow normal distribution.
-   * ----------------------------------------
-   * REFERENCE:
-   *
-   * <Marsaglia polar method>
-   * ---------------------------------------- */
+  /**
+   * Generates normal distribution.
+   * <br> <REFERENCE>: Marsaglia polar method.
+   * @param {number|unset} size
+   * @param {number|unset} mu
+   * @param {number|unset} sigma
+   * @return {DistributionArray}
+   */
   const _dis_norm = function thisFun(size, mu, sigma) {
     const arr = [];
 
@@ -128,8 +132,7 @@
     if(mu == null) mu = 0.0;
     if(sigma == null) sigma = 1.0;
 
-    let i = 0;
-    let x, y, s, tmp;
+    let i = 0, x = 0.0, y = 0.0, s = 0.0, tmp;
     while(i < size) {
       if(thisFun.tmpVal != null) {
         arr.push(thisFun.tmpVal * sigma + mu);

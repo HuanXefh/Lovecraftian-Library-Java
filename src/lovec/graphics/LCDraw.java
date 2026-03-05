@@ -8,6 +8,7 @@ import arc.util.Align;
 import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.pooling.Pools;
+import lovec.utils.LCFormat;
 import mindustry.gen.Building;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
@@ -21,7 +22,7 @@ import mindustry.world.Tile;
 public class LCDraw {
 
 
-    static final Color[] tmpColors = new Color[]{new Color()};
+    static final Color[] tmpColors = {new Color()};
 
 
     /* <-------------------- line --------------------> */
@@ -52,7 +53,7 @@ public class LCDraw {
      * Draws rectangle with colored lines.
      */
     public static void rect(float x, float y, float r, float size, boolean isDashed) {
-        var hw = (size * 0.5f + r) * Vars.tilesize;
+        var hw = LCFormat.calcRectHW(r, size);
         var amtSeg = (int)(!isDashed ? 0 : (size + r * 2) * 2);
 
         if(isDashed) {
@@ -275,7 +276,7 @@ public class LCDraw {
 
         var zPrev = Draw.z();
         if(shaReg.found()) {
-            Draw.z(z - 0.01f);
+            Draw.z(z - 0.001f);
             Draw.rect(shaReg, t.worldx() + offSha, t.worldy() + offSha, Mathf.randomSeed(t.pos(), 0f, 360f));
         }
         if(!shouldCheckDst) {

@@ -23,19 +23,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-  const FRAG_faci = require("lovec/frag/FRAG_faci");
-
-
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- component ----------> */
 
 

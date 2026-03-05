@@ -23,12 +23,6 @@
 
 
   const PARENT = require("lovec/temp/rs/RS_baseResource");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_fuel = require("lovec/mdl/MDL_fuel");
-  const MDL_table = require("lovec/mdl/MDL_table");
 
 
   /* <---------- component ----------> */
@@ -68,7 +62,7 @@
     let oreBlks = MDL_content._oreBlks(itm);
     if(oreBlks.length > 0) itm.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
       tb.row();
-      MDL_table.setDisplay_ctLi(tb, oreBlks, 48.0);
+      MDL_table._l_ctLi(tb, oreBlks, 48.0);
     }));
   };
 

@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * A special directional unloader that always unloads items from the nearest core.
    * ---------------------------------------- */
 
@@ -24,7 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_directionalUnloader");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
 
 
   /* <---------- component ----------> */

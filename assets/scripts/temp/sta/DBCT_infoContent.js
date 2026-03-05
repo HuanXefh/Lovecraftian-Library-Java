@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * A content used to display information, but not written in the description.
    * ---------------------------------------- */
 
@@ -24,13 +24,6 @@
 
 
   const PARENT = require("lovec/temp/sta/DBCT_databaseContent");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_table = require("lovec/mdl/MDL_table");
-  const MDL_ui = require("lovec/mdl/MDL_ui");
 
 
   /* <---------- component ----------> */

@@ -23,12 +23,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-
-
-  const MDL_attr = require("lovec/mdl/MDL_attr");
-
-
   /* <---------- component ----------> */
 
 
@@ -37,7 +31,7 @@
     if(t == null) return;
 
     if(Array.someMismatch(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = MDL_attr._sum_rect(t, blk.attrR, blk.size, blk.ex_getAttrTg(), blk.delegee.attrMode);
+      thisFun.tmpTup[3] = MDL_attr._sumRect(t, blk.attrR, blk.size, blk.ex_getAttrTg(), blk.delegee.attrMode);
     };
 
     return thisFun.tmpTup[3];
@@ -69,7 +63,7 @@
       __PARAM_OBJ_SETTER__: () => ({
         // @PARAM: Range for attribute calculation.
         attrR: 5,
-        // @PARAM: Selection mode of attribute. See {MDL_attr._sum_ts}.
+        // @PARAM: Selection mode of attribute. See {MDL_attr._sumTs}.
         attrMode: "floor",
       }),
 

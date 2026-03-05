@@ -1,25 +1,15 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Container of a special table that can be dragged, closed and minimized.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
-
-
-const PARAM = require("lovec/glb/GLB_param");
-
-
-const MDL_bundle = require("lovec/mdl/MDL_bundle");
-const MDL_event = require("lovec/mdl/MDL_event");
-const MDL_table = require("lovec/mdl/MDL_table");
-const MDL_ui = require("lovec/mdl/MDL_ui");
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Container of a special table that can be dragged.
+ * @class
+ * @param {string|unset} [title]
+ * @param {function(Table): void} [tableF]
+ */
 const CLS_window = newClass().initClass();
 
 
@@ -27,7 +17,7 @@ CLS_window.prototype.init = function(title, tableF) {
   this.title = tryVal(title, "").plain();
   this.tableF = tryVal(tableF, Function.air);
 
-  this.initParams();
+  this.initParam();
 
   this.root = CLS_window.getRootTable(this);
   this.base = CLS_window.getBaseTable(this);
@@ -52,11 +42,6 @@ let selectedWins = [];
 var cls = CLS_window;
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Modified button styles used for window.
- * ---------------------------------------- */
 MDL_event._c_onLoad(() => {
   cls.btnStyles = {
     close: extend(TextButton.TextButtonStyle, {
@@ -87,6 +72,11 @@ MDL_event._c_onLoad(() => {
 });
 
 
+/**
+ * Gets a new root table for some window.
+ * @param {CLS_window} win
+ * @return {Table}
+ */
 cls.getRootTable = function(win) {
   const tb = new Table();
   tb.tapped(() => {
@@ -105,6 +95,11 @@ cls.getRootTable = function(win) {
 };
 
 
+/**
+ * Gets a new base table for some window.
+ * @param {CLS_window} win
+ * @return {Table}
+ */
 cls.getBaseTable = function(win) {
   const tb = new Table(Tex.whiteui);
   win.root.top().add(tb).growX();
@@ -121,15 +116,21 @@ var ptp = CLS_window.prototype;
 /* modification */
 
 
-ptp.initParams = function() {
+/**
+ * Initializes some parameters of this window.
+ * @return {this}
+ */
+ptp.initParam = function() {
   this.added = false;
   this.isHidden = false;
   this.prefW = 0.0;
   this.prefH = 0.0;
   this.prefWCont = 0.0;
 
-  this.minW = 320.0, this.maxW = 840.0;
-  this.minH = 40.0, this.maxH = 420.0;
+  this.minW = 320.0;
+  this.maxW = 840.0;
+  this.minH = 40.0;
+  this.maxH = 420.0;
   this.titleColor = Color.darkGray;
   this.contColor = Pal.darkestGray;
 
@@ -137,11 +138,12 @@ ptp.initParams = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Sets the colors used for the window.
- * ---------------------------------------- */
+/**
+ * Sets colors used for the window.
+ * @param {Color|unset} [titleColor]
+ * @param {Color|unset} [contColor]
+ * @return {this}
+ */
 ptp.setColor = function(titleColor, contColor) {
   if(titleColor != null) this.titleColor = titleColor;
   if(contColor != null) this.contColor = contColor;
@@ -150,11 +152,14 @@ ptp.setColor = function(titleColor, contColor) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Sets the range for width and height.
- * ---------------------------------------- */
+/**
+ * Sets range for window width and height.
+ * @param {number|unset} [minW]
+ * @param {number|unset} [maxW]
+ * @param {number|unset} [minH]
+ * @param {number|unset} [maxH]
+ * @return {this}
+ */
 ptp.setSizeRange = function(minW, maxW, minH, maxH) {
   if(minW != null) this.minW = minW;
   if(maxW != null) this.maxW = maxW;
@@ -165,14 +170,10 @@ ptp.setSizeRange = function(minW, maxW, minH, maxH) {
 };
 
 
-/* util */
-
-
-/* ----------------------------------------
- * NOTE:
- *
- * Rebuild {base} table of the window.
- * ---------------------------------------- */
+/**
+ * Rebuilds the entire window.
+ * @return {void}
+ */
 ptp.rebuild = function() {
   const thisIns = this;
   const base = this.base;
@@ -184,12 +185,12 @@ ptp.rebuild = function() {
 
   let addPlaceholder = () => base.table(Styles.none, tb => {}).width(2.0).height(2.0);
   // Row 1
-  (3)._it(1, addPlaceholder);
+  (3)._it(addPlaceholder);
   base.row();
   // Row 2 (contents)
   addPlaceholder();
   base.table(Styles.none, tb => {
-    // @TABLE: title
+    // <TABLE>: title
     let titleCell = tb.table(Tex.whiteui, tb1 => {
       tb1.left().setColor(thisIns.titleColor);
       tb1.dragged((dx, dy) => {
@@ -198,7 +199,7 @@ ptp.rebuild = function() {
           win.root.translation.y += mouseMoveY;
         });
       });
-      // @TABLE: title base
+      // <TABLE>: title base
       tb1.table(Styles.none, tb2 => {
         tb2.left();
         MDL_table.__margin(tb2, 0.25);
@@ -219,7 +220,7 @@ ptp.rebuild = function() {
       });
     }).growX();
     tb.row();
-    // @TABLE: contents
+    // <TABLE>: contents
     if(!this.isHidden) tb.table(Tex.whiteui, tb1 => {
       tb1.left().setColor(thisIns.contColor);
       MDL_table.__margin(tb1);
@@ -235,18 +236,17 @@ ptp.rebuild = function() {
   addPlaceholder();
   base.row();
   // Row 3
-  (3)._it(1, addPlaceholder);
+  (3)._it(addPlaceholder);
 
   // Move the window table to center position
   this.root.setPosition(MDL_ui._centerX(), MDL_ui._centerY() + this.root.getPrefHeight() * 0.5, Align.center);
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Adds the window to scene.
- * ---------------------------------------- */
+ * @return {void}
+ */
 ptp.add = function() {
   if(Core.scene == null || this.added) return;
   if(Core.app.isMobile()) {
@@ -260,11 +260,10 @@ ptp.add = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Removes the window from scene.
- * ---------------------------------------- */
+ * @return {void}
+ */
 ptp.close = function() {
   if(!this.added) return;
 
@@ -276,26 +275,23 @@ ptp.close = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Minimizes the window, or restores it if already hidden.
- * Currently disabled for mobile ends, due to some weird bugs.
- * ---------------------------------------- */
+ * @return {void}
+ */
 ptp.minimize = function() {
-  if(!this.added || Core.app.isMobile()) return;
+  if(!this.added) return;
 
   this.isHidden = !this.isHidden;
   this.rebuild();
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Puts the window on top of others.
- * This technically creates a new table.
- * ---------------------------------------- */
+ * This method technically creates a new table.
+ * @return {void}
+ */
 ptp.top = function() {
   if(!this.added) return;
 
@@ -304,7 +300,7 @@ ptp.top = function() {
     tmpMinW = this.minW, tmpMaxW = this.maxW,
     tmpMinH = this.minH, tmpMaxH = this.maxH;
   this.close();
-  this.initParams();
+  this.init();
   this.root = CLS_window.getRootTable(this);
   this.base = CLS_window.getBaseTable(this);
   this.setSizeRange(tmpMinW, tmpMaxW, tmpMinH, tmpMaxH);

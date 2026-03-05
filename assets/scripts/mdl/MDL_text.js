@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods to process texts.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,38 +20,29 @@
   /* <---------- import ----------> */
 
 
-  const LIB_pinyin = require("lovec/lib/LIB_pinyin");
-
-
-  const DB_misc = require("lovec/db/DB_misc");
-
-
   /* <---------- text ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets a space character or empty string, based on current locale.
-   * ---------------------------------------- */
-  const _space = function thisFun() {
-    return thisFun.noSpaceLocales.includes(global.lovecUtil.prop.locale) ? "" : " ";
-  }
-  .setProp({
-    noSpaceLocales: [
-      "zh_CN", "zh_TW",
-      "ja",
-      "ko",
-    ],
-  });
+   * @return {string}
+   */
+  const _space = function() {
+    switch(global.lovecUtil.prop.locale) {
+      case "zh_CN" : return "";
+      case "zh_TW" : return "";
+      case "ja" : return "";
+      case "ko" : return "";
+      default : return " ";
+    };
+  };
   exports._space = _space;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets a colon character based on current locale.
-   * ---------------------------------------- */
+   * @return {string}
+   */
   const _colon = function() {
     switch(global.lovecUtil.prop.locale) {
       case "zh_CN" : return "：";
@@ -69,15 +58,16 @@
   /* <---------- format (stat) ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns what you have seen a lot in the database, but in string.
-   * Mostly used in {addStats(tb)} in abilities. It kinda sucks to write the format every time.
-   *
-   * Example:
-   * _statText(Stat.range.localized(), 8, StatUnit.blocks.localized());    // Returns {"Range: 8 blocks"} with proper color
-   * ---------------------------------------- */
+  /**
+   * Constructs database stat string.
+   * Mostly used in `addStats(tb)` of abilities.
+   * @param {string|unset} [strStat]
+   * @param {string|unset} [strVal]
+   * @param {string|unset} [strUnit]
+   * @return {string}
+   * @example
+   * _statText(Stat.range.localized(), 8, StatUnit.blocks.localized());                // Returns "Range: 8 blocks" with proper colors
+   */
   const _statText = function(strStat, strVal, strUnit) {
     let
       str1 = (strStat == null) ? "" : ("[lightgray]" + strStat + ": []"),
@@ -89,13 +79,13 @@
   exports._statText = _statText;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used for multipliers with color.
-   * By default, it's red for less than 100%, green for the other case.
-   * Use {isRev} to invert that.
-   * ---------------------------------------- */
+  /**
+   * Constructs multiplier stat string with dynamic color.
+   * By default, it's red for less than 100%, green for more than 100%, white for exactly 100%.
+   * @param {string} strStat
+   * @param {number} mtp
+   * @param {boolean|unset} [isRev] - If true, it's red for more than 100% and vice versa.
+   */
   const _statText_mtp = function(strStat, mtp, isRev) {
     return _statText(
       strStat,
@@ -108,6 +98,12 @@
   /* <---------- format ----------> */
 
 
+  /**
+   * Gets generic damage text.
+   * @param {number|unset} [dmg]
+   * @param {number|unset} [dmgPerc]
+   * @return {string}
+   */
   const _dmgText = function(dmg, dmgPerc) {
     let
       str1 = dmg == null || dmg < 0.0001 ? null : String(dmg.roundFixed(2)).color(Pal.remove),
@@ -124,6 +120,12 @@
   exports._dmgText = _dmgText;
 
 
+  /**
+   * Gets generic heal amount text.
+   * @param {number|unset} [healAmt]
+   * @param {number|unset} [healPerc]
+   * @return {string}
+   */
   const _healText = function(healAmt, healPerc) {
     let
       str1 = healAmt == null || healAmt < 0.0001 ? null : String(healAmt.roundFixed(2)).color(Pal.heal),
@@ -140,14 +142,13 @@
   exports._healText = _healText;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a list of strings to a tag string.
-   *
-   * Example:
-   * _tagText(["chloric", "fluoric", "oxidative"]);    // Returns {"chloric; fluoric; oxidative; "}
-   * ---------------------------------------- */
+  /**
+   * Gets tag string from a list of tags.
+   * @param {Array<string>} strs - Tags as string, should be translated beforehand.
+   * @param {boolean|unset} [ignoreEmpty] - If true, returns empty string when no tags.
+   * @example
+   * _tagText(["chloric", "fluoric", "oxidative"]);                // Returns "chloric; fluoric; oxidative"
+   */
   const _tagText = function(strs, ignoreEmpty) {
     let str_fi = "";
     strs.forEachFast(str => str_fi += str + "; ");
@@ -157,11 +158,12 @@
   exports._tagText = _tagText;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Converts a tag text back to an array of tags.
-   * ---------------------------------------- */
+  /**
+   * Converts tag text back to a list of tags.
+   * @param {string} text
+   * @param {Array|unset} [contArr]
+   * @return {Array<string>}
+   */
   const tagTextToArr = function(text, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
     if(text === "" || text === "!NOTAG") return arr;
@@ -189,11 +191,13 @@
   /* <---------- search ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list of keywords for search.
-   * ---------------------------------------- */
+  /**
+   * Finds keywords in given string for search.
+   * @param {string} str
+   * @return {Array<string>}
+   * @example
+   * _keywords("copper;lead;graphite");                // Returns ["copper", "lead", "graphite"]
+   */
   const _keywords = function thisFun(str) {
     const arr = [];
 
@@ -222,12 +226,11 @@
   exports._keywords = _keywords;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list of content filter functions from the keywords.
-   * Tags can be defined in {DB_misc.db["search"]["tag"]}.
-   * ---------------------------------------- */
+  /**
+   * Gets a list of filters from given keywords, see {@link DB_misc} for tag definition.
+   * @param {Array<string>} keywords
+   * @return {(function(UnlockableContent): boolean)[]}
+   */
   const _searchBoolFs = function(keywords) {
     const arr = [];
     const li = DB_misc.db["search"]["tag"];
@@ -264,11 +267,12 @@
   exports._searchBoolFs = _searchBoolFs;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether this content matches the search formula.
-   * ---------------------------------------- */
+  /**
+   * Whether some content matches given search string.
+   * @param {UnlockableContent} ct
+   * @param {string} str
+   * @return {boolean}
+   */
   const _searchValid = function(ct, str) {
     return _searchBoolFs(_keywords(str)).every(boolF => boolF(ct));
   };

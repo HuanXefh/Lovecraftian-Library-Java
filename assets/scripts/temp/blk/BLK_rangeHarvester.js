@@ -28,13 +28,6 @@
   const INTF_B = require("lovec/temp/intf/INTF_BLK_lootProducer");
 
 
-  const MDL_attr = require("lovec/mdl/MDL_attr");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_table = require("lovec/mdl/MDL_table");
-
-
   /* <---------- component ----------> */
 
 
@@ -64,7 +57,7 @@
     blk.stats.remove(Stat.affinities);
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table.setDisplay_attr(tb, blk.attribute);
+      MDL_table._d_attr(tb, blk.attribute);
     }));
   };
 
@@ -74,7 +67,7 @@
     if(t == null) return;
 
     if(Array.someMismatch(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = MDL_pos._tsRect(t, blk.attrR, blk.size).filter(ot => MDL_attr._sum_ts([ot], blk.attribute, blk.attrMode) > 0.0);
+      thisFun.tmpTup[3] = MDL_pos._tsRect(t, blk.attrR, blk.size).filter(ot => MDL_attr._sumTs([ot], blk.attribute, blk.attrMode) > 0.0);
     };
 
     thisFun.tmpTup[3].forEachFast(ot => {

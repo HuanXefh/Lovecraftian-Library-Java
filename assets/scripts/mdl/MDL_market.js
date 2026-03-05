@@ -5,12 +5,10 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Handles bit, a currency provided by Lovec.
    * Bit data is saved for each map.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -23,17 +21,14 @@
   /* <---------- import ----------> */
 
 
-  const SAVE = require("lovec/glb/GLB_save");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the hash value for the current amount of bits.
-   * ---------------------------------------- */
+  /**
+   * Gets the hash value for current amount of bits.
+   * @param {number} amt
+   * @return {number}
+   */
   const _bitHash = function(amt) {
     return String(amt + amt % 2 + amt % 3 + amt % 5 + amt % 7 + amt % 11).toHash() % 1000000.0;
   }
@@ -41,11 +36,11 @@
   exports._bitHash = _bitHash;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets current amount of bits for a team.
-   * ---------------------------------------- */
+   * @param {Team|unset} [team]
+   * @return {number}
+   */
   const _bitAmt = function(team) {
     if(team == null) return 0.0;
 
@@ -67,13 +62,13 @@
   exports._bitAmt = _bitAmt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Sets amount of bits for a team.
-   * ---------------------------------------- */
+   * @param {Team} team
+   * @param {number} amt
+   * @return {number}
+   */
   const __bitAmt = function(team, amt) {
-    if(team == null || amt == null) return;
     if(amt < 0.0) amt = 0.0;
 
     let arr1 = SAVE.get("bits").cpy().write(team.toString(), String(amt));
@@ -93,13 +88,13 @@
   exports.__bitAmt = __bitAmt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Adds or removes some bits for a team.
-   * ---------------------------------------- */
+  /**
+   * Adds or removes bits for a team.
+   * @param {Team} team
+   * @param {number} amtTrans
+   * @return {number}
+   */
   const addBit = function(team, amtTrans) {
-    if(team == null || amtTrans == null) return;
     if(amtTrans.fEqual(0.0)) return;
 
     return __bitAmt(team, _bitAmt(team) + amtTrans);

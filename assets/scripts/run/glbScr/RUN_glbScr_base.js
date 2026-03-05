@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Fundamental global methods in Lovec.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,21 +20,15 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- type ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Whether {obj} is a native object.
-   * ---------------------------------------- */
+  /**
+   * Whether this object is a native JS object.
+   * @global
+   * @param {Object} obj
+   * @return {boolean}
+   */
   isNativeObject = function(obj) {
     return typeof obj === "object" && !(obj instanceof java.lang.Object);
   };
@@ -45,43 +37,49 @@
   /* <---------- modification ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets a fixed property for {obj}.
-   * ---------------------------------------- */
+  /**
+   * Sets a fixed property for some object.
+   * @global
+   * @param {Object} obj
+   * @param {string} nmProp
+   * @param {any} val
+   * @return {void}
+   */
   setFinalProp = function(obj, nmProp, val) {
     Object.defineProperty(obj, nmProp, {value: val, writable: false, enumerable: true, configurable: false});
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets a hidden property for {obj}.
-   * ---------------------------------------- */
+  /**
+   * Sets a hidden property for some object.
+   * @global
+   * @param {Object} obj
+   * @param {string} nmProp
+   * @param {any} val
+   * @return {void}
+   */
   setHiddenProp = function(obj, nmProp, val) {
     Object.defineProperty(obj, nmProp, {value: val, writable: true, enumerable: false, configurable: true});
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: obj1, obj2, obj3, ...
-   * {Object.mergeObj}.
-   * ---------------------------------------- */
+  /**
+   * See {@link Object.mergeObj}.
+   * <br> <ARGS>: obj1, obj2, obj3, ...
+   * @global
+   * @return {Object}
+   */
   mergeObj = function() {
     return Object.mergeObj.apply(this, arguments);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: obj1, obj2, obj3, ...
-   * {Object.mergeObjMixin}.
-   * ---------------------------------------- */
+  /**
+   * See {@link Object.mergeObjMixin}.
+   * <br> <ARGS>: obj1, obj2, obj3, ...
+   * @global
+   * @return {Object}
+   */
   mergeObjMixin = function() {
     return Object.mergeObjMixin.apply(this, arguments);
   };
@@ -90,18 +88,21 @@
   /* <---------- struct ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used for function overloading (definition of one function with different sets of arguments).
-   * Mostly for class or instance methods, as {obj} is required.
-   * If {tps} is used the method also checks types.
-   * ---------------------------------------- */
-  addMethod = function(obj, nmFun, tps, fun) {
+  /**
+   * Adds a method to some object.
+   * If the name has been used before, function overloading happens.
+   * @global
+   * @param {any} obj
+   * @param {string} nmFun
+   * @param {Array<ArgumentType>|unset} types - If set, the method added also checks argument types.
+   * @param {Function} fun
+   * @return {void}
+   */
+  addMethod = function(obj, nmFun, types, fun) {
     let lastFun = obj[nmFun];
 
     obj[nmFun] = function() {
-      if(fun.length === arguments.length && (tps == null ? true : checkArgType(arguments, tps))) {
+      if(fun.length === arguments.length && (types == null ? true : checkArgType(arguments, types))) {
         return fun.apply(this, arguments);
       } else if(typeof lastFun === "function") {
         return lastFun.apply(this, arguments);
@@ -110,31 +111,26 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: fun1, fun2, fun3, ...
-   * @ARGS: tps1, fun1, tps2, fun2, tps3, fun3, ...
-   * Used to define a function that behaves differently for varied argument length or types of arguments.
-   * This is betrayal to the Lord of JavaScript, be careful.
-   *
-   * Example:
+  /**
+   * Defines an overloaded function, see {@link addMethod}.
+   * <br> <ARGS>: fun1, fun2, fun3, ...
+   * <br> <ARGS>: types1, fun1, types2, fun2, types3, fun3, ...
+   * @global
+   * @return {Function}
+   * @example
    * let fun = newMultiFunction(
    *   ["number"], num => print("number"),
    *   ["string"], str => print("string"),
    *   ["boolean"], bool => print("boolean"),
    *   [Array], arr => print("array"),
-   *   ["number", "number"], (num1, num2) => print("number & number"),
-   *   ["number", Array], (num, arr) => print("number & array"),
+   *   ["number", "number"], (num1, num2) => print("number, number"),
    * );
-   *
-   * fun(1.0)          // Prints "number"
-   * fun("ohno")          // Prints "string"
-   * fun(true)          // Prints "boolean"
-   * fun([])          // Prints "array"
-   * fun(0.0, 0.0)          // Prints "number & number"
-   * fun(0.0, [])          // Prints "number & array"
-   * ---------------------------------------- */
+   * fun(2);                // Prints "number"
+   * fun("ohno");                // Prints "string"
+   * fun(true);                // Prints "boolean"
+   * fun([0]);                // Prints "array"
+   * fun(1, 2);                // Prints "number, number"
+   */
   newMultiFunction = function() {
     let fun = function() {
       return fun.__OVERLOADING_CONTAINER__[""].apply(this, arguments);
@@ -158,24 +154,24 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * For argument type check.
-   * For JavaScript data types, use string instead (e.g. "number" for {Number}).
-   * Definitely not TypeScript reference.
-   * ---------------------------------------- */
-  checkArgType = function(args, tps) {
+  /**
+   * Whether given arguments match given types.
+   * @global
+   * @param {Arguments} args
+   * @param {Array<ArgumentType>} types
+   * @return {boolean}
+   */
+  checkArgType = function(args, types) {
     if(!(args instanceof Array)) args = Array.from(args);
 
     let i = 0, iCap = args.iCap();
     while(i < iCap) {
-      if(tps[i] == null || args[i] == null) {
+      if(types[i] == null || args[i] == null) {
         // Do nothing
-      } else if(typeof tps[i] !== "string") {
-        if(!(args[i] instanceof tps[i])) return false;
+      } else if(typeof types[i] !== "string") {
+        if(!(args[i] instanceof types[i])) return false;
       } else {
-        if(typeof args[i] !== tps[i]) return false;
+        if(typeof args[i] !== types[i]) return false;
       };
       i++;
     };
@@ -184,77 +180,22 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
+  /**
+   * Creates a new Lovec function class.
+   * `cls.prototype.init` is required to create instance.
+   * @global
+   * @return {function(): void}
+   * @example
+   * // How to make a class
+   * let cls1 = newClass().initClass();
    *
-   * @ARGS: fun1, fun2, fun3, ...
-   * Used to defined a generator (as object).
-   * {this} in the argument methods is always the generator, you can use it to define an infinite loop.
+   * // How to extend some class
+   * let cls2 = newClass().extendClass(cls1).initClass();
    *
-   * Example:
-   * let gen = newGenerator(
-   *   function() {
-   *     return 0;
-   *   },
-   *   function() {
-   *     return 1;
-   *   },
-   *   function() {
-   *     this.__STEP__ = 0;
-   *     return 2;
-   *   },
-   * );
-   *
-   * let arr = [];
-   * for(let i = 0; i < 10; i++) {
-   *   arr.push(gen.next());
-   * };
-   * print(arr);                // Prints 0, 1, 2, 0, 1, 2, 0, 1, 2
-   * ---------------------------------------- */
-  newGenerator = function() {
-    let genObj = {
-
-
-      __STEP__: 0,
-      __FUNS__: Array.from(arguments).filter(arg => typeof arg === "function"),
-
-
-      next() {
-        let obj = {};
-        if(genObj.__STEP__ < genObj.__FUNS__.length) {
-          obj.value = genObj.__FUNS__[genObj.__STEP__].apply(genObj, arguments);
-        };
-        obj.done = genObj.__STEP__ >= (genObj.__FUNS__.length - 1);
-        genObj.__STEP__++;
-
-        return obj;
-      },
-
-
-      return(val) {
-        genObj.__STEP__ = Math.max(genObj.__STEP__, genObj.__FUNS__.length - 1);
-
-        return {value: val, done: true};
-      },
-
-
-    };
-
-    return genObj;
-  };
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used for function class definition.
-   * {initClass} is required to complete the class.
-   * {init} on the prototype is required, or it throws an error when creating an instance.
-   *
-   * Example:
-   * const CLS_myClass = newClass().extendClass(CLS_someClass).initClass();
-   * CLS_myClass.prototype.init = function() {...};
-   * ---------------------------------------- */
+   * // How to implement some interface
+   * let intf = new CLS_interface();
+   * let cls3 = newClass().extendClass(cls1).implement(intf).initClass();
+   */
   newClass = function() {
     return function() {
       this.init != null ?
@@ -267,23 +208,27 @@
   /* <---------- null check ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * If {val} is {null}, returns default value.
-   * Don't use {return val | def}, you know, double equality.
-   * ---------------------------------------- */
+  /**
+   * If `val` is null, this method will return `def` instead.
+   * <br> <IMPORTANT>: Do not use `return val | def` which uses double equality.
+   * @global
+   * @param {any} val
+   * @param {any} [def]
+   * @return {any}
+   */
   tryVal = function(val, def) {
     return val == null ? def : val;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A variant of {tryVal} where default value is given by a {Prov}.
-   * Used when {def} is very costy to get.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link tryVal} where default value is obtained from a {@link Prov}.
+   * Used when `def` is very costy to get.
+   * @global
+   * @param {any} val
+   * @param {Prov} defProv
+   * @return {any}
+   */
   tryValProv = function(val, defProv) {
     if(!(defProv instanceof Prov)) ERROR_HANDLER.throw("notProv", defProv);
 
@@ -291,13 +236,16 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: fun, def, caller, arg1, arg2, arg3, ...
-   * Tries to call a function, returns the default value if not found or not function.
-   * Don't use {try} & {catch}, it's costy.
-   * ---------------------------------------- */
+  /**
+   * Tries to call a function, returns `def` if not found or not function.
+   * Used to replace `try{} catch(err) {}` which is costy.
+   * <br> <ARGS> fun, def, caller, arg1, arg2, arg3, ...
+   * @global
+   * @param {any} fun
+   * @param {any} caller
+   * @param {any} [def]
+   * @return {any}
+   */
   tryFun = function(fun, caller, def) {
     if(fun == null || typeof fun !== "function") return def;
 
@@ -307,12 +255,21 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
+  /**
+   * Used when a property and a method have the same name.
+   * @global
+   * @param {any} prop0fun
+   * @param {any} caller
+   * @return {any}
+   * @example
+   * // This will lead to crash, since a variable can only be either a property or a method in JS
+   * // Unfortunately, in Mindustry warmup of a building is not always property/method
+   * print(b.warmup);
+   * print(b.warmup());
    *
-   * Used when there's a field and another method bearing the same name.
-   * {b.warmup} and {b.warmup()}, in Java it's fine, in JavaScript it's crash.
-   * ---------------------------------------- */
+   * // However, it's avoidable by using `tryProp`
+   * print(tryProp(b.warmup, b));
+   */
   tryProp = function(prop0fun, caller) {
     if(prop0fun == null || typeof prop0fun !== "function") return prop0fun;
 
@@ -320,11 +277,14 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Tries to get a JS property from {obj} (usually defined in Java adaptor).
-   * ---------------------------------------- */
+  /**
+   * Tries to get a JS property from some object created with {@link JavaAdapter}.
+   * @global
+   * @param {any} obj
+   * @param {string} nmProp
+   * @param {any} [def]
+   * @return {any}
+   */
   tryJsProp = function(obj, nmProp, def) {
     return obj.delegee == null || obj.delegee[nmProp] === undefined ?
       def :
@@ -332,21 +292,28 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {tryVal} but used for parameter objects.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link tryVal} used to read parameter objects.
+   * @global
+   * @param {Object|unset} paramObj
+   * @param {string} nmProp
+   * @param {any} [def]
+   * @return {any}
+   */
   readParam = function(paramObj, nmProp, def) {
     return (paramObj == null || paramObj[nmProp] == null) ? def : paramObj[nmProp];
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {readParam} but the value returned is immediately used if found.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link readParam} but the result is immediately used if found.
+   * @global
+   * @param {Object|unset} paramObj
+   * @param {string} nmProp
+   * @param {function(any): void} scr
+   * @param {any} [def]
+   * @return {void}
+   */
   readParamAndCall = function(paramObj, nmProp, scr, def) {
     let val = readParam(paramObj, nmProp);
     if(val !== undefined) {
@@ -360,12 +327,15 @@
   /* <---------- call ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used when setting up a lot of properties.
-   * Don't use arrow function here!
-   * ---------------------------------------- */
+  /**
+   * Used to set up a lot of properties.
+   * <br> <IMPORTANT>: Do not use arrow function here!
+   * <br> <ARGS>: thisVal, fun, arg1, arg2, arg3, ...
+   * @global
+   * @param {any} thisVal
+   * @param {Function} fun
+   * @return {any}
+   */
   batchCall = function(thisVal, fun) {
     return fun.apply(thisVal, Array.from(arguments).splice(2));
   };
@@ -374,46 +344,45 @@
   /* <---------- debug ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {print} used for printing multiple arguments.
-   *
-   * These will print {1, 2, 1, 2}:
-   * printAll(1, 2, 1, 2)
-   * printAll([1, 2, 1, 2])
-   * printAll(1, [2], [1, 2])
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link print} to print multiple arguments.
+   * Arrays will be flattened.
+   * @global
+   * @return {void}
+   */
   printAll = function() {
     print(Array.from(arguments).flatten());
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {print} that prints all possible keys of the object.
-   * ---------------------------------------- */
+  /**
+   * See {@link Object.printKeys}.
+   * @global
+   * @param {any} obj
+   * @return {void}
+   */
   printKeys = function(obj) {
     Object.printKeys(obj);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {print} that prints the entire object.
-   * ---------------------------------------- */
+  /**
+   * See {@link Object.printObj}.
+   * @global
+   * @return {void}
+   */
   printObj = function(obj) {
     Object.printObj(obj);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Prints {obj} and returns it.
-   * ---------------------------------------- */
+  /**
+   * Prints something and returns it.
+   * Used for debugging.
+   * @global
+   * @param {any} obj
+   * @return {any}
+   */
   printReturn = function(obj) {
     print(obj);
     return obj;

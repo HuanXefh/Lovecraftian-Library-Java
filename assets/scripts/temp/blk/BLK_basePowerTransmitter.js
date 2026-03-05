@@ -24,16 +24,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_basePowerBlock");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_draw = require("lovec/mdl/MDL_draw");
 
 
   /* <---------- component ----------> */

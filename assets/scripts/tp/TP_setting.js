@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers new settings (and setting categories).
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -20,9 +18,6 @@
 
 
   /* <---------- import ----------> */
-
-
-  const CLS_settingTerm = require("lovec/cls/util/CLS_settingTerm");
 
 
   /* <---------- category ----------> */

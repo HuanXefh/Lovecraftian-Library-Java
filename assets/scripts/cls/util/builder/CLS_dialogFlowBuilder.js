@@ -1,26 +1,17 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Utility class to generate raw data (as array) for {newDialogFlow} method. See {TP_dialFlow}.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
-
-
-const MDL_bundle = require("lovec/mdl/MDL_bundle");
-const MDL_color = require("lovec/mdl/MDL_color");
-const MDL_ui = require("lovec/mdl/MDL_ui");
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * Utility class to generate raw data (as array) for {@link newDialogFlow}.
+ */
 const CLS_dialogFlowBuilder = newClass().initClass();
 
 
 CLS_dialogFlowBuilder.prototype.init = function() {
-  this.dialFlowArr = [];
+  this.dialFlowData = [];
   this.offInd = 0;
   this.hasBackground = false;
   this.hasMusic = false;
@@ -37,22 +28,21 @@ CLS_dialogFlowBuilder.prototype.init = function() {
 var ptp = CLS_dialogFlowBuilder.prototype;
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Completes a row.
- * ---------------------------------------- */
-ptp.fixArrFormat = function() {
-  let remainder = this.dialFlowArr.length % 4;
+ * @return {this}
+ */
+ptp.completeRow = function() {
+  let remainder = this.dialFlowData.length % 4;
   if(remainder === 0) return this;
   if(remainder <= 3) {
-    this.dialFlowArr.push(null);
+    this.dialFlowData.push(null);
   };
   if(remainder <= 2) {
-    this.dialFlowArr.push(null);
+    this.dialFlowData.push(null);
   };
   if(remainder <= 1) {
-    this.dialFlowArr.push(null);
+    this.dialFlowData.push(null);
   };
   this.offInd = 0;
 
@@ -60,40 +50,43 @@ ptp.fixArrFormat = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Call this to ensure {paramObj} in a row is not {null}.
- * ---------------------------------------- */
+/**
+ * Ensures `paramObj` in current row is not null.
+ * Returns `paramObj`.
+ * @return {Object}
+ */
 ptp.fixParamObj = function() {
-  let paramObj = this.dialFlowArr[this.dialFlowArr.length - 2];
+  let paramObj = this.dialFlowData[this.dialFlowData.length - 2];
   if(paramObj == null) {
-    this.dialFlowArr[this.dialFlowArr.length - 2] = {};
-    paramObj = this.dialFlowArr[this.dialFlowArr.length - 2];
+    this.dialFlowData[this.dialFlowData.length - 2] = {};
+    paramObj = this.dialFlowData[this.dialFlowData.length - 2];
   };
 
   return paramObj;
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes a color transition row, by default black fade.
- * ---------------------------------------- */
-ptp.setColorTransition = function(color_gn, inTimeS, outTimeS, susTimeS) {
+/**
+ * Adds a row for color transition, by default black fade.
+ * @param {Color|unset} [color]
+ * @param {number|unset} [inTimeS]
+ * @param {number|unset} [outTimeS]
+ * @param {number|unset} [susTimeS]
+ * @return {this}
+ */
+ptp.setColorTransition = function(color, inTimeS, outTimeS, susTimeS) {
+  if(color == null) color = Color.black;
   if(inTimeS == null) inTimeS = 1.0;
   if(outTimeS == null) outTimeS = inTimeS;
   if(susTimeS == null) susTimeS = 0.5;
-  let color = MDL_color._color(tryVal(color_gn, Color.black));
 
-  this.fixArrFormat();
+  this.completeRow();
 
-  this.dialFlowArr.push(
+  this.dialFlowData.push(
     null, null,
     {
       haltTimeS: inTimeS + outTimeS + susTimeS,
-      scr: () => global.lovec.mdl_ui._d_fade(0.0, color, inTimeS, outTimeS, susTimeS),
+      scr: () => MDL_ui._d_fade(0.0, color, inTimeS, outTimeS, susTimeS),
     },
   );
   this.offInd = 3;
@@ -102,21 +95,21 @@ ptp.setColorTransition = function(color_gn, inTimeS, outTimeS, susTimeS) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes a background change row.
- * ---------------------------------------- */
+/**
+ * Adds a row for background start.
+ * @param {string} nmBg
+ * @return {this}
+ */
 ptp.setBackgroundStart = function(nmBg) {
-  this.fixArrFormat();
+  this.completeRow();
 
-  this.dialFlowArr.push(
+  this.dialFlowData.push(
     null, null,
     {
       haltTimeS: 0.0,
       scr: () => {
         TRIGGER_BACKGROUND = true;
-        global.lovec.mdl_ui._d_bg(0.0, nmBg, () => !TRIGGER_BACKGROUND);
+        MDL_ui._d_bg(0.0, nmBg, () => !TRIGGER_BACKGROUND);
       },
     },
   );
@@ -127,16 +120,14 @@ ptp.setBackgroundStart = function(nmBg) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes a background end row.
- * This is required if background has been changed.
- * ---------------------------------------- */
+/**
+ * Adds a row for background end.
+ * @return {this}
+ */
 ptp.setBackgroundEnd = function() {
-  this.fixArrFormat();
+  this.completeRow();
 
-  this.dialFlowArr.push(
+  this.dialFlowData.push(
     null, null,
     {
       haltTimeS: 0.0,
@@ -150,21 +141,21 @@ ptp.setBackgroundEnd = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes a BGM change row.
- * ---------------------------------------- */
-ptp.setBgmStart = function(mus) {
-  this.fixArrFormat();
+/**
+ * Adds a row for BGM start.
+ * @param {MusicGn} mus_gn
+ * @return {this}
+ */
+ptp.setBgmStart = function(mus_gn) {
+  this.completeRow();
 
-  this.dialFlowArr.push(
+  this.dialFlowData.push(
     null, null,
     {
       haltTimeS: 0.0,
       scr: () => {
         TRIGGER_MUSIC = true;
-        global.lovec.mdl_ui._d_bgm(0.0, mus, () => !TRIGGER_MUSIC);
+        MDL_ui._d_bgm(0.0, mus_gn, () => !TRIGGER_MUSIC);
       },
     },
   );
@@ -175,16 +166,14 @@ ptp.setBgmStart = function(mus) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes a BGM end row.
- * This is required if BGM has been changed.
- * ---------------------------------------- */
+/**
+ * Adds a row for BGM end.
+ * @return {this}
+ */
 ptp.setBgmEnd = function() {
-  this.fixArrFormat();
+  this.completeRow();
 
-  this.dialFlowArr.push(
+  this.dialFlowData.push(
     null, null,
     {
       haltTimeS: 0.0,
@@ -198,74 +187,77 @@ ptp.setBgmEnd = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes dialog text data.
- * ---------------------------------------- */
+/**
+ * Adds dialog text to current row.
+ * @param {string} nmMod
+ * @param {string} nmDial
+ * @param {number|string} ind
+ * @return {this}
+ */
 ptp.setText = function(nmMod, nmDial, ind) {
-  this.fixArrFormat();
+  this.completeRow();
 
-  this.dialFlowArr.push([nmMod, nmDial, ind]);
+  this.dialFlowData.push([nmMod, nmDial, ind]);
   this.offInd = 1;
 
   return this;
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes dialog speaker data.
- * Just after {setText}.
- * ---------------------------------------- */
+/**
+ * Adds speaker text to current row.
+ * Should be called after {@link CLS_dialogFlowBuilder#setText}.
+ * @param {string} nmMod
+ * @param {string} nmChara
+ * @return {this}
+ */
 ptp.setSpeaker = function(nmMod, nmChara) {
   if(this.offInd !== 1) ERROR_HANDLER.throw("dialogFlowGenerateFail");
 
-  this.dialFlowArr.push([nmMod, nmChara]);
+  this.dialFlowData.push([nmMod, nmChara]);
   this.offInd = 2;
 
   return this;
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes parameter object data.
- * Should be called before pushing characters.
- * ---------------------------------------- */
+/**
+ * Adds `paramObj` to current row.
+ * Should be called before {@link CLS_dialogFlowBuilder#setChara}.
+ * @param {Object} obj
+ * @return {this}
+ */
 ptp.setParamObj = function(obj) {
   if(this.offInd === 0) {
-    this.dialFlowArr.push(null, null);
+    this.dialFlowData.push(null, null);
   } else if(this.offInd === 1) {
-    this.dialFlowArr.push(null);
+    this.dialFlowData.push(null);
   } else if(this.offInd !== 2) {
     ERROR_HANDLER.throw("dialogFlowGenerateFail");
   };
 
-  this.dialFlowArr.push(obj);
+  this.dialFlowData.push(obj);
   this.offInd = 3;
 
   return this;
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes character data.
- * This always ends the row.
- * ---------------------------------------- */
+/**
+ * Adds character arts to current row.
+ * This method always completes the row.
+ * @param {Object|Array<Object>} charaObjs_p
+ * @return {this}
+ */
 ptp.setChara = function(charaObjs_p) {
   const arr = [];
 
   if(this.offInd === 0) {
-    this.dialFlowArr.push(null, null, null);
+    this.dialFlowData.push(null, null, null);
   } else if(this.offInd === 1) {
-    this.dialFlowArr.push(null, null);
+    this.dialFlowData.push(null, null);
   } else if(this.offInd === 2) {
-    this.dialFlowArr.push(null);
+    this.dialFlowData.push(null);
   };
 
   let charaObjs = charaObjs_p instanceof Array ? charaObjs_p : [charaObjs_p];
@@ -282,32 +274,33 @@ ptp.setChara = function(charaObjs_p) {
     ]);
   });
 
-  this.dialFlowArr.push(arr);
+  this.dialFlowData.push(arr);
   this.offInd = 0;
 
   return this;
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Pushes selections that don't affect how things go, usually used to display words spoken by the main character.
- * This always ends the row.
- *
- * Format for {selTextParamArr}: {nmMod, nmDial, selInd}.
- * ---------------------------------------- */
+/**
+ * Adds useless selections to current row.
+ * This method always completes the row.
+ * @param {Array} selTextParamArr - <ROW>: nmMod, nmDial, selInd.
+ * @param {number|unset} [w]
+ * @param {number|unset} [h]
+ * @param {number|unset} [waitTimeS]
+ * @return {this}
+ */
 ptp.setUselessSelections = function(selTextParamArr, w, h, waitTimeS) {
-  if(waitTimeS == null) waitTimeS = 1.25;
+  if(waitTimeS == null) waitTimeS = 1.0;
 
   const texts = [];
   selTextParamArr.forEachRow(3, (nmMod, nmDial, selInd) => texts.push(MDL_bundle._dialSelText(nmMod, nmDial, selInd)));
 
-  this.fixArrFormat();
+  this.completeRow();
   let paramObj = this.fixParamObj();
-  let callFlow = () => MDL_ui._d_flow.callNext(this.dialFlowArr);
+  let callFlow = () => MDL_ui._d_flow.callNext(this.dialFlowData);
   let textScrArr = [];
-  (texts.length)._it(1, i => {
+  (texts.length)._it(i => {
     textScrArr.push(texts[i], callFlow);
   });
 
@@ -317,11 +310,10 @@ ptp.setUselessSelections = function(selTextParamArr, w, h, waitTimeS) {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Completes and returns the dialog flow data array.
- * ---------------------------------------- */
+/**
+ * Completes the builder and returns the dialog flow data.
+ * @return {DialogFlowData}
+ */
 ptp.build = function() {
   if(this.isBuilt) ERROR_HANDLER.throw("dialogFlowDoubleBuild");
   if(this.hasBackground) ERROR_HANDLER.throw("dialogFlowMissingBackgroundEnd");
@@ -329,10 +321,10 @@ ptp.build = function() {
   this.isBuilt = true;
 
   // Set up the final row
-  this.dialFlowArr[this.dialFlowArr.length - 2] = tryVal(this.dialFlowArr[this.dialFlowArr.length - 2], {});
-  this.dialFlowArr[this.dialFlowArr.length - 2].isTail = true;
+  this.dialFlowData[this.dialFlowData.length - 2] = tryVal(this.dialFlowData[this.dialFlowData.length - 2], {});
+  this.dialFlowData[this.dialFlowData.length - 2].isTail = true;
 
-  return this.dialFlowArr;
+  return this.dialFlowData;
 };
 
 

@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods related to attribute and dynamic attribute calculation.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,26 +20,16 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const PARAM = require("lovec/glb/GLB_param");
-
-
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Attributes are used mostly as names.
-   * ---------------------------------------- */
+  /**
+   * Converts generalized attribute to string.
+   * @param {AttrGn} attr_gn
+   * @return {string|null}
+   */
   const _attr = function(attr_gn) {
     let nmAttr = null;
-
     if(attr_gn instanceof Attribute) nmAttr = attr_gn.toString();
     if(typeof attr_gn === "string") nmAttr = attr_gn;
 
@@ -50,16 +38,14 @@
   exports._attr = _attr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the name of an attribute from the bundle.
-   * Format: {attr.*attribute name*.name}.
-   * You should put mod name in attribute name like {lovec-attr0env-heat}, since it's not automatically added.
-   * See {TP_attr} for examples.
-   * ---------------------------------------- */
+  /**
+   * <BUNDLE>: "attr.<attr_gn>.name" or "attr.<attr_gn>.description".
+   * @param {AttrGn} attr_gn
+   * @param {boolean|unset} [isDes]
+   * @return {string}
+   */
   const _attrB = function(attr_gn, isDes) {
-    return Vars.headless ? "" : Core.bundle.get("attr." + _attr(attr_gn) + (isDes ? ".description" : ".name"));
+    return MDL_bundle._base("attr." + _attr(attr_gn) + (!isDes ? ".name" : ".description"));
   };
   exports._attrB = _attrB;
 
@@ -67,17 +53,14 @@
   /* <---------- map ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a 3-array containing blocks that are related to the inputted attributes.
-   * Blocks with negative efficiency are also included.
-   * Optionally uses {boolF} to filter out valid blocks.
-   * Format: {blk, attrVal, attr}.
-   * ---------------------------------------- */
-  const _blkAttrMap = function(attrs_gn_p, boolF) {
+  /**
+   * Gets a 3-array containing blocks that have some of the given attributes.
+   * @param {AttrGn|Array<AttrGn>} attrs_gn_p
+   * @param {(function(Block): boolean)|unset} [boolF] - Used to filter out valid blocks.
+   * @return {Array} <ROW>: blk, attrVal, attr.
+   */
+  const _blkAttrArr = function(attrs_gn_p, boolF) {
     if(boolF == null) boolF = Function.airTrue;
-
     let attrs_gn = (attrs_gn_p instanceof Array) ? attrs_gn_p : [attrs_gn_p];
     let map = [];
 
@@ -93,44 +76,45 @@
 
     return map;
   };
-  exports._blkAttrMap = _blkAttrMap;
+  exports._blkAttrArr = _blkAttrArr;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a list of attributes that is present in an attribute-resource map.
-   * {attrRsMap} is usually defined in DB files, which is used for dynamic attribute crafters.
-   * ---------------------------------------- */
-  const _attrs_attrRsMap = function(attrRsMap) {
-    return attrRsMap.readCol(2, 0);
+  /**
+   * Gets attributes that are present in an attribute-resource array.
+   * @param {Array} attrRsArr - See {@link DB_item}. <br> <ROW>: attr, rs.
+   * @return {Array<string>}
+   */
+  const _attrs_attrRsArr = function(attrRsArr) {
+    return attrRsArr.readCol(2, 0);
   };
-  exports._attrs_attrRsMap = _attrs_attrRsMap;
+  exports._attrs_attrRsArr = _attrs_attrRsArr;
 
 
   /* <---------- sum ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The vanilla way to calculate {attrSum}.
-   * ---------------------------------------- */
+  /**
+   * Vanilla way to calculate attribute sum.
+   * @param {Block} blk
+   * @param {Tile} t
+   * @param {AttrGn} attr_gn
+   * @return {number}
+   */
   const _sum = function(blk, t, attr_gn) {
     return blk.sumAttribute(Attribute.get(_attr(attr_gn)), t.x, t.y);
   };
   exports._sum = _sum;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Calculate {attrSum} from a list of tiles.
-   * If mode is {"block"} attributes from buildings will get involved... if you want for some reason.
-   * ---------------------------------------- */
-  const _sum_ts = function thisFun(ts, attr_gn, mode) {
+  /**
+   * Variant of {@link _sum} that uses a list of tiles.
+   * @param {Array<Tile>} ts
+   * @param {AttrGn} attr_gn
+   * @param {string|unset} [mode] - Determines what blocks will be involved for attribute calculation.
+   * @return {number}
+   */
+  const _sumTs = function thisFun(ts, attr_gn, mode) {
     let attrSum = 0.0;
-
     if(mode == null) mode = "floor";
     if(!mode.equalsAny(thisFun.modes)) return attrSum;
 
@@ -159,30 +143,54 @@
   .setProp({
     modes: ["floor", "block", "overlay", "all"],
   });
-  exports._sum_ts = _sum_ts;
+  exports._sumTs = _sumTs;
 
 
-  const _sum_rect = function thisFun(t, r, size, attr_gn, mode) {
-    return _sum_ts(MDL_pos._tsRect(t, r, size, thisFun.tmpTs), attr_gn, mode);
+  /**
+   * Variant of {@link _sumTs} that uses a rectangular range.
+   * @param {Tile|null} t
+   * @param {number|unset} r
+   * @param {number|unset} size
+   * @param {AttrGn} attr_gn
+   * @param {string|unset} [mode] - See {@link _sumTs}.
+   * @return {number}
+   */
+  const _sumRect = function thisFun(t, r, size, attr_gn, mode) {
+    return _sumTs(MDL_pos._tsRect(t, r, size, thisFun.tmpTs), attr_gn, mode);
   }
   .setProp({
     tmpTs: [],
   });
-  exports._sum_rect = _sum_rect;
+  exports._sumRect = _sumRect;
 
 
-  const _sum_circle = function thisFun(t, r, size, attr_gn, mode) {
-    return _sum_ts(MDL_pos._tsCircle(t, r, size, thisFun.tmpTs), attr_gn, mode);
+  /**
+   * Variant of {@link _sumTs} that uses a circular range.
+   * @param {Tile|null} t
+   * @param {number|unset} r
+   * @param {number|unset} size
+   * @param {AttrGn} attr_gn
+   * @param {string|unset} [mode] - See {@link _sumTs}.
+   * @return {number}
+   */
+  const _sumCircle = function thisFun(t, r, size, attr_gn, mode) {
+    return _sumTs(MDL_pos._tsCircle(t, r, size, thisFun.tmpTs), attr_gn, mode);
   }
   .setProp({
     tmpTs: [],
   });
-  exports._sum_circle = _sum_circle;
+  exports._sumCircle = _sumCircle;
 
 
   /* <---------- limit ----------> */
 
 
+  /**
+   * Calculates required attribute value.
+   * @param {number} size
+   * @param {number|unset} [avLimit] - Attribute value required per tile.
+   * @return {number}
+   */
   const _limit = function(size, avLimit) {
     if(avLimit == null) avLimit = 1.0;
 
@@ -194,17 +202,18 @@
   /* <---------- dynamic ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the target resource of a block that contains dynamic attributes.
-   * ---------------------------------------- */
-  const _dynaAttrRs = function(attrRsMap, blk) {
+  /**
+   * Gets target resource of a block that contains dynamic attributes.
+   * @param {Array} attrRsArr
+   * @param {Block} blk
+   * @return {Resource|null}
+   */
+  const _dynaAttrRs = function(attrRsArr, blk) {
     let tmpNmRs = null;
     let tmpVal = 0.0;
 
     let val = 0.0;
-    attrRsMap.forEachRow(2, (nmAttr, nmRs) => {
+    attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
       val = blk.attributes.get(Attribute.get(nmAttr));
       if(val > tmpVal) {
         tmpNmRs = nmRs;
@@ -217,27 +226,29 @@
   exports._dynaAttrRs = _dynaAttrRs;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the currently highest attribute value and returns a 3-tuple, from a list of tiles.
-   * Format: {attr, attrSum, rs}.
-   * ---------------------------------------- */
-  const _dynaAttrTup = function(attrRsMap, ts, mode) {
+  /**
+   * Gets currently preferred dynamic attribute and the target resource from a list of tiles.
+   * See {@link _sumTs}.
+   * @param {Array} attrRsArr
+   * @param {Array<Tile>} ts
+   * @param {string|unset} [mode] - See {@link _sumTs}.
+   * @return {[string, number, Resource]} <TUP>: attr, attrSum, rs.
+   */
+  const _dynaAttrTup = function(attrRsArr, ts, mode) {
     let nmAttr = null;
     let attrSum = 0.0;
     let rs = null;
 
-    let iCap = attrRsMap.iCap();
+    let iCap = attrRsArr.iCap();
     let tmpNmAttr, tmpAttrSum;
     if(iCap > 0) {
       for(let i = 0; i < iCap; i += 2) {
-        tmpNmAttr = attrRsMap[i];
-        tmpAttrSum = _sum_ts(ts, tmpNmAttr, mode);
+        tmpNmAttr = attrRsArr[i];
+        tmpAttrSum = _sumTs(ts, tmpNmAttr, mode);
         if(tmpAttrSum > attrSum) {
           nmAttr = tmpNmAttr;
           attrSum = tmpAttrSum;
-          rs = MDL_content._ct(attrRsMap[i + 1], "rs");
+          rs = MDL_content._ct(attrRsArr[i + 1], "rs");
         };
       };
     };
@@ -253,11 +264,10 @@
   /* rain */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Returns current liquid of rain weather, can be null if not found.
-   * ---------------------------------------- */
+  /**
+   * Gets current liquid of rain weather, null if not found.
+   * @return {Liquid|null}
+   */
   const _rainLiq = function() {
     if(!Vars.state.isGame()) return null;
 
@@ -275,14 +285,13 @@
   const windVec = new Vec2();
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Calculate current value of wind attribute.
-   *
-   * To set wind force for your planet, see {DB_env.db["param"]["pla"]["wind"]}.
-   * For a specific map, see {DB_env.db["param"]["map"]["wind"]}, which has higher priority than planet.
-   * ---------------------------------------- */
+  /**
+   * Gets current value of wind attribute at some tile.
+   * Wind force is set in {@link DB_env}.
+   * @param {Tile} t
+   * @param {number|unset} [mtp] - Multiplier on final value.
+   * @return {number}
+   */
   const _sumWind = function thisFun(t, mtp) {
     if(mtp == null) mtp = 1.0;
 
@@ -309,22 +318,20 @@
   exports._sumWind = _sumWind;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets currently used global wind vector.
-   * ---------------------------------------- */
+  /**
+   * Gets currently used global wind vector (not the one used in {@link Weather}).
+   * @return {Vec2}
+   */
   const _windVec = function() {
     return windVec;
   };
   exports._windVec = _windVec;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets angle of the global wind vector.
-   * ---------------------------------------- */
+  /**
+   * Gets current angle of global wind vector.
+   * @return {number}
+   */
   const _windAng = function() {
     return Math.atan(windVec.y / windVec.x) * Mathf.radDeg;
   };

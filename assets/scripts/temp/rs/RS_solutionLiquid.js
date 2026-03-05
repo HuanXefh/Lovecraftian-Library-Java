@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Intermediate: solution.
    * Any fluid with solubles.
    * ---------------------------------------- */
@@ -27,17 +27,13 @@
   const PARENT = require("lovec/temp/rs/RS_intermediateFluid");
 
 
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
   /* <---------- component ----------> */
 
 
   function comp_init(liq) {
     if(!liq.skipReactionAssign && liq.intmdParent != null) {
       MDL_event._c_onLoad(() => {
-        let obj = global.lovec.db_reaction.db["solvationTarget"];
+        let obj = DB_reaction.db["solvationTarget"];
         if(obj[liq.solvent] === undefined) obj[liq.solvent] = [];
         obj[liq.solvent].push(liq.intmdParent.name, liq.name);
       });

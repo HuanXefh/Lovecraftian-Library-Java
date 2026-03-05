@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Just random methods for random purpose.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,23 +20,6 @@
   /* <---------- import ----------> */
 
 
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-  const PARAM = require("lovec/glb/GLB_param");
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const MDL_color = require("lovec/mdl/MDL_color");
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
-  const DB_block = require("lovec/db/DB_block");
-  const DB_env = require("lovec/db/DB_env");
-  const DB_unit = require("lovec/db/DB_unit");
-
-
   /* <---------- core energy ----------> */
 
 
@@ -48,11 +29,11 @@
   const cepEffcMap = new ObjectMap();
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets amount of CEPs provided by some block.
-   * ---------------------------------------- */
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _cepProv = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
     return blk == null ?
@@ -63,11 +44,11 @@
   exports._cepProv = _cepProv;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets amount of CEPs used by some block.
-   * ---------------------------------------- */
+   * @param {BlockGn} blk_gn
+   * @return {number}
+   */
   const _cepUse = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
     return blk == null ?
@@ -78,44 +59,44 @@
   exports._cepUse = _cepUse;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets current amount of CEPs provided.
-   * ---------------------------------------- */
+  /**
+   * Gets current amount of CEPs provided for some team.
+   * @param {Team} team
+   * @return {number}
+   */
   const _cepCapCur = function(team) {
     return cepCapMap.get(team, 0.0);
   };
   exports._cepCapCur = _cepCapCur;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets current amount of CEPs used.
-   * ---------------------------------------- */
+  /**
+   * Gets current amount of CEPs used for some team.
+   * @param {Team} team
+   * @return {number}
+   */
   const _cepUseCur = function(team) {
     return cepUseMap.get(team, 0.0);
   };
   exports._cepUseCur = _cepUseCur;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets current fraction of CEPs used.
-   * ---------------------------------------- */
+  /**
+   * Gets current fraction of CEPs used for some team.
+   * @param {Team} team
+   * @return {number}
+   */
   const _cepFracCur = function(team) {
     return cepFracMap.get(team, 0.0);
   };
   exports._cepFracCur = _cepFracCur;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets current efficiency of core energy.
-   * ---------------------------------------- */
+  /**
+   * Gets current efficiency of core energy for some team.
+   * @param {Team} team
+   * @return {number}
+   */
   const _cepEffcCur = function(team) {
     return cepEffcMap.get(team, 1.0);
   };
@@ -125,23 +106,23 @@
   /* <---------- mining ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the drill speed for {blk}.
-   * ---------------------------------------- */
+  /**
+   * Gets the drill speed for some block.
+   * @param {Block} blk
+   * @param {boolean|unset} [boosted]
+   * @return {number}
+   */
   const _drillSpd = function(blk, boosted) {
     return readClassFunMap(DB_block.db["class"]["map"]["drillSpd"], blk, Function.airZero)(blk, tryVal(boosted, false)) / tryJsProp(blk, "drillAmtMtp", 1.0);
   };
   exports._drillSpd = _drillSpd;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets resource level of a tree (or mushroom).
-   * See {DB_env.db["grpParam"]["tree"]}.
-   * ---------------------------------------- */
+  /**
+   * Gets resource level of a tree.
+   * @param {Block} blk
+   * @return {number}
+   */
   const _treeRsLvl = function(blk) {
     if(!MDL_cond._isTreeBlock(blk)) return 0.0;
 
@@ -162,6 +143,11 @@
   /* <---------- turret ----------> */
 
 
+  /**
+   * Sets up outline parameters for a content.
+   * @param {UnlockableContent} ct
+   * @return {void}
+   */
   const setupOutline = function(ct) {
     let tup = DB_unit.db["grpParam"]["outline"].read(MDL_content._mod(ct));
     if(tup == null) return;

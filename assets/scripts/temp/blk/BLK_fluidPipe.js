@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @SINGLESIZE
+   * <SINGLESIZE>
    * Equivalent of vanilla liquid conduit, or not.
    * ---------------------------------------- */
 
@@ -25,17 +25,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseFluidDistributor");
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureBlock");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-
-
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pollution = require("lovec/mdl/MDL_pollution");
-  const MDL_reaction = require("lovec/mdl/MDL_reaction");
 
 
   /* <---------- component ----------> */

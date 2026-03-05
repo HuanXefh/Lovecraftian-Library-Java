@@ -1,29 +1,14 @@
-/* ----------------------------------------
- * NOTE:
- *
- * A draggable group of buttons.
- * You can register new buttons in {DB_misc.db["mod"]["dragButton"]}.
- * ---------------------------------------- */
-
-
 /* <---------- import ----------> */
-
-
-const TRIGGER = require("lovec/glb/BOX_trigger");
-const PARAM = require("lovec/glb/GLB_param");
-
-
-const MDL_event = require("lovec/mdl/MDL_event");
-const MDL_table = require("lovec/mdl/MDL_table");
-const MDL_ui = require("lovec/mdl/MDL_ui");
-
-
-const DB_misc = require("lovec/db/DB_misc");
 
 
 /* <---------- meta ----------> */
 
 
+/**
+ * A draggable group of buttons.
+ * New buttons are registered in {@link DB_misc}.
+ * @class
+ */
 const CLS_dragButton = newClass().initClass();
 
 
@@ -86,14 +71,10 @@ let addedGrps = [];
 var ptp = CLS_dragButton.prototype;
 
 
-/* util */
-
-
-/* ----------------------------------------
- * NOTE:
- *
- * Tries loading defined buttons.
- * ---------------------------------------- */
+/**
+ * Loads data for the group.
+ * @return {void}
+ */
 ptp.load = function() {
   if(Vars.headless || this.isLoaded) return;
 
@@ -119,11 +100,10 @@ ptp.load = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Rebuilds the table of all buttons.
- * ---------------------------------------- */
+/**
+ * Rebuilds the group.
+ * @return {void}
+ */
 ptp.rebuild = function() {
   this.root.clearChildren();
   const btns = this.root.table(Styles.black3, tb => tb.left()).left().get();
@@ -181,11 +161,10 @@ ptp.rebuild = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
- * Updates some parameters.
- * ---------------------------------------- */
+/**
+ * Updates the group.
+ * @return {void}
+ */
 ptp.update = function() {
   // Forced to 1.0x when multi-player
   if(Groups.player.size() > 1) {
@@ -194,11 +173,12 @@ ptp.update = function() {
 };
 
 
-/* ----------------------------------------
- * NOTE:
- *
+/**
  * Adds the group to scene.
- * ---------------------------------------- */
+ * @param {number|unset} [x]
+ * @param {number|unset} [y]
+ * @return {void}
+ */
 ptp.add = function(x, y) {
   if(Core.scene == null) return;
   if(x == null) x = MDL_ui._centerX() * 1.2;

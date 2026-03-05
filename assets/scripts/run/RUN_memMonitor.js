@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Memory monitor for testing purpose.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -20,16 +18,6 @@
 
 
   /* <---------- import ----------> */
-
-
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const MATH_statistics = require("lovec/math/MATH_statistics");
-
-
-  const MDL_event = require("lovec/mdl/MDL_event");
 
 
   /* <---------- base ----------> */
@@ -43,36 +31,30 @@
   let memMonitorInit = false;
 
 
-  const _memUse = function() {
+  function _memUse() {
     return Math.round(Core.app.getJavaHeap() / 1048576);
   };
-  exports._memUse = _memUse;
 
 
-  const _memUseMax = function() {
+  function _memUseMax() {
     return memUseMax;
   };
-  exports._memUseMax = _memUseMax;
 
 
-  const _memUseMean = function() {
+  function _memUseMean() {
     return memUseData.mean();
   };
-  exports._memUseMean = _memUseMean;
 
 
-  const _memIncSlp = function() {
-    return MATH_statistics.linearReg(memUseMeanData, null)[0];
+  function _memIncSlp() {
+    return MATH_statistics.linearReg(null, memUseMeanData)[0];
   };
-  exports._memIncSlp = _memIncSlp;
 
 
-  const _memLeakSig = function() {
+  function _memLeakSig() {
     let memUseMeanMean = memUseMeanData.mean();
-
-    return (memUseMeanMean - MATH_statistics.linearReg(memUseMeanData, null)[1]) / memUseMeanMean;
+    return (memUseMeanMean - MATH_statistics.linearReg(null, memUseMeanData)[1]) / memUseMeanMean;
   };
-  exports._memLeakSig = _memLeakSig;
 
 
   function initMemMonitor() {
@@ -126,6 +108,7 @@
 
 
   MDL_event._c_onUpdate(() => {
+
     if(PARAM.enableMemoryMonitor) {
       if(Vars.state.isGame()) {
         if(!memMonitorInit) initMemMonitor();
@@ -151,4 +134,5 @@
         memMonitorInit = false;
       };
     };
+    
   }, 75912248);

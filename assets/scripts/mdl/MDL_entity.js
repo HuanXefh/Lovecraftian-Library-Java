@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Methods for building, unit and bullet entities.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,94 +20,70 @@
   /* <---------- import ----------> */
 
 
-  const VAR = require("lovec/glb/GLB_var");
-  const VARGEN = require("lovec/glb/GLB_varGen");
-
-
-  const DB_block = require("lovec/db/DB_block");
-  const DB_unit = require("lovec/db/DB_unit");
-
-
   /* <---------- generic ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the size of some entity (or its type) in blocks.
-   * ---------------------------------------- */
-  const _size = newMultiFunction(
-    [Building], b => b.hitSize() / Vars.tilesize,
-    [Block], blk => blk.size,
-    [Unit], unit => unit.hitSize / Vars.tilesize,
-    [UnitType], utp => utp.hitSize / Vars.tilesize,
-    [Bullet], bul => bul.hitSize / Vars.tilesize,
-    [BulletType], btp => btp.hitSize / Vars.tilesize,
-  );
+  /**
+   * Gets size of some entity or its type (in block units).
+   * @param {any} e
+   * @return {number}
+   */
+  const _size = function(e) {
+    return LCGeneralizer.getSize(e);
+  };
   exports._size = _size;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the size of some entity (or its type) in world units.
-   * ---------------------------------------- */
-  const _hitSize = newMultiFunction(
-    [Building], b => b.hitSize(),
-    [Block], blk => blk.size * Vars.tilesize,
-    [Unit], unit => unit.hitSize,
-    [UnitType], utp => utp.hitSize,
-    [Bullet], bul => bul.hitSize,
-    [BulletType], btp => btp.hitSize,
-  );
+  /**
+   * Gets hit size of some entity or its type.
+   * @param {any} e
+   * @return {number}
+   */
+  const _hitSize = function(e) {
+    return LCGeneralizer.getHitSize(e);
+  };
   exports._hitSize = _hitSize;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the clipping size of some entity (or its type).
-   * ---------------------------------------- */
-  const _clipSize = newMultiFunction(
-    [Building], b => b.block.clipSize,
-    [Block], blk => blk.clipSize,
-    [Unit], unit => unit.clipSize(),
-    [UnitType], utp => utp.clipSize,
-    [Bullet], bul => bul.type.drawSize,
-    [BulletType], btp => btp.drawSize,
-  );
+  /**
+   * Gets clip size of some entity or its type.
+   * @param {any} e
+   * @return {number}
+   */
+  const _clipSize = function(e) {
+    return LCGeneralizer.getClipSize(e);
+  };
   exports._clipSize = _clipSize;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the health fraction of some entity.
-   * ---------------------------------------- */
-  const _healthFrac = newMultiFunction(
-    [Healthc], e => e.healthf(),
-    [Bullet], bul => bul.damage / bul.type.damage,
-  );
+  /**
+   * Gets health fraction of some entity.
+   * @param {any} e
+   * @return {number}
+   */
+  const _healthFrac = function(e) {
+    return LCGeneralizer.getHealthFrac(e);
+  };
   exports._healthFrac = _healthFrac;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the armor of some entity.
-   * ---------------------------------------- */
-  const _armor = newMultiFunction(
-    [Building], b => b.block.armor,
-    [Unit], unit => unit.armorOverride < 0.0 ? unit.armor : unit.armorOverride,
-  );
+  /**
+   * Gets armor of some entity.
+   * @param {any} e
+   * @return {number}
+   */
+  const _armor = function(e) {
+    return LCGeneralizer.getArmor(e);
+  };
   exports._armor = _armor;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the reload fraction of some entity.
-   * ---------------------------------------- */
+  /**
+   * Gets reload fraction of some entity.
+   * @param {any} e
+   * @param {Array<number>|unset} [mtIds]
+   * @return {number}
+   */
   const _reloadFrac = function(e, mtIds) {
     if(e == null) return 0.0;
 
@@ -126,7 +100,7 @@
 
       return frac;
     } else if(e instanceof Unit) {
-      if(mtIds == null || e == null) return 0.0;
+      if(mtIds == null) return 0.0;
 
       let mt, isAltWp = false;
       mtIds.forEachFast(id => {
@@ -149,33 +123,39 @@
   exports._reloadFrac = _reloadFrac;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the payload fraction of some unit.
-   * ---------------------------------------- */
+  /**
+   * Gets payload fraction of some unit.
+   * @param {Unit} unit
+   * @param {boolean|unset} [nearCap]
+   * @return {number}
+   */
   const _payFrac = function(unit, nearCap) {
     return Mathf.clamp(tryFun(unit.payloadUsed, unit, 0.0) / Math.max(unit.type.payloadCapacity, 1.0), 0.0, nearCap ? 0.999 : 1.0);
   };
   exports._payFrac = _payFrac;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the damage that {e} should be dealt to {e_t} (before it takes).
-   * ---------------------------------------- */
+  /**
+   * Gets damage that should be dealt to some entity, before it takes.
+   * @param {Building|Unit} e - The one that deals damage.
+   * @param {Building|Unit} e_t - The one that receives damage.
+   * @param {number} dmg
+   * @param {number|unset} [bDmgMtp]
+   * @return {number}
+   */
   const _dmgDeal = function(e, e_t, dmg, bDmgMtp) {
-    return dmg * e.damageMultiplier * (e_t instanceof Building ? tryVal(bDmgMtp, 1.0) : 1.0);
+    return dmg * tryProp(e.damageMultiplier, e) * (e_t instanceof Building ? tryVal(bDmgMtp, 1.0) : 1.0);
   };
   exports._dmgDeal = _dmgDeal;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the damage that {e} should take.
-   * ---------------------------------------- */
+  /**
+   * Gets damage that some entity should actually take.
+   * @param {Building|Unit} e
+   * @param {number} dmg
+   * @param {number|unset} [armorMtp]
+   * @return {number}
+   */
   const _dmgTake = function(e, dmg, armorMtp) {
     return Damage.applyArmor(dmg, _armor(e) * tryVal(armorMtp, 1.0));
   };
@@ -185,44 +165,48 @@
   /* <---------- building ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the amount of some block built for a team.
-   * ---------------------------------------- */
+  /**
+   * Gets amount of some block built for a team.
+   * @param {Block} blk
+   * @param {Team} team
+   * @return {number}
+   */
   const _bCount = function(blk, team) {
     return team.data().buildingTypes.get(blk, ARC_AIR.seq).size;
   };
   exports._bCount = _bCount;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Iterates through buildings of the same block in a team.
-   * ---------------------------------------- */
+  /**
+   * Iterates through buildings of the same type in a team.
+   * @param {Block} blk
+   * @param {Team} team
+   * @param {function(Building): void} scr
+   * @return {void}
+   */
   const _it_someBlk = function(blk, team, scr) {
     team.data().buildingTypes.get(blk, ARC_AIR.seq).each(scr);
   };
   exports._it_someBlk = _it_someBlk;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the warmup of {e}.
-   * ---------------------------------------- */
+  /**
+   * Gets warmup of some building.
+   * @param {Building} b
+   * @return {number}
+   */
   const _warmup = function(b) {
     return tryFun(b.ex_getWarmupFrac, b, Mathf.maxZero(tryProp(b.warmup, b)));
   };
   exports._warmup = _warmup;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the warmup fraction of some building.
-   * ---------------------------------------- */
+  /**
+   * Gets warmup fraction of some building.
+   * @param {Building} b
+   * @param {boolean|unset} [nearCap]
+   * @return {number}
+   */
   const _warmupFrac = function(b, nearCap) {
     return Math.min(
       tryVal(b.block.linearWarmup, false) ? _warmup(b) : Interp.pow3In.apply(_warmup(b)),
@@ -232,22 +216,23 @@
   exports._warmupFrac = _warmupFrac;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the total progress of some building.
-   * ---------------------------------------- */
+  /**
+   * Gets total progress of some building.
+   * @param {Building} b
+   * @return {number}
+   */
   const _tProg = function(b) {
     return tryFun(b.ex_getTProg, b, tryProp(b.totalProgress, b));
   };
   exports._tProg = _tProg;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the shield amount of some building.
-   * ---------------------------------------- */
+  /**
+   * Gets shield amount of some building.
+   * @param {Building} b
+   * @param {boolean|unset} [isSelfShield]
+   * @return {number}
+   */
   const _bShield = function(b, isSelfShield) {
     if(b.power != null && b.power.status < 0.0001) return 0.0;
 
@@ -256,11 +241,11 @@
   exports._bShield = _bShield;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the running speed of some building.
-   * ---------------------------------------- */
+  /**
+   * Gets running speed of some building.
+   * @param {Building} b
+   * @return {number}
+   */
   const _bSpd = function(b) {
     return b.efficiency * tryProp(b.timeScale, b);
   };
@@ -270,55 +255,58 @@
   /* <---------- unit ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the amount of some unit in a team.
-   * ---------------------------------------- */
+  /**
+   * Gets amount of some unit in a team.
+   * @param {UnitType} utp
+   * @param {Team} team
+   * @return {number}
+   */
   const _unitCount = function(utp, team) {
     return tryVal(team.data().unitsByType[utp.id], Array.air).length;
   };
   exports._unitCount = _unitCount;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Iterates through units of the same type in a team.
-   * ---------------------------------------- */
+   * @param {UnitType} utp
+   * @param {Team} team
+   * @param {function(Unit): void} scr
+   * @return {void}
+   */
   const _it_someUtp = function(utp, team, scr) {
-    return tryVal(team.data().unitsByType[utp.id], Array.air).forEachFast(scr);
+    tryVal(team.data().unitsByType[utp.id], Array.air).forEachFast(scr);
   };
   exports._it_someUtp = _it_someUtp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the flash fraction of some unit.
-   * ---------------------------------------- */
+  /**
+   * Gets flash fraction of some unit.
+   * @param {Unit} unit
+   * @return {number}
+   */
   const _flashFrac = function(unit) {
     return Mathf.clamp(unit.hitTime);
   };
   exports._flashFrac = _flashFrac;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the elevation of some unit.
-   * ---------------------------------------- */
+  /**
+   * Gets elevation of some unit.
+   * @param {Unit} unit
+   * @return {number}
+   */
   const _elev = function(unit) {
     return Mathf.clamp(unit.elevation, unit.type.shadowElevation, 1.0) * unit.type.shadowElevationScl * (1.0 - unit.drownTime);
   };
   exports._elev = _elev;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the layer of some unit.
-   * ---------------------------------------- */
+  /**
+   * Gets layer of some unit.
+   * @param {Unit} unit
+   * @return {number}
+   */
   const _lay = function(unit) {
     return unit.elevation > 0.5 || (unit.type.flying && unit.dead) ?
       unit.type.flyingLayer :
@@ -327,35 +315,35 @@
   exports._lay = _lay;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the layer of some unit.
-   * ---------------------------------------- */
+  /**
+   * Gets reload multiplier of some unit.
+   * @param {Unit} unit
+   * @param {boolean} isClamped
+   * @return {number}
+   */
   const _reloadMtp = function(unit, isClamped) {
     let mtp = unit.reloadMultiplier * (unit.disarmed ? 0.0 : 1.0);
-
     return !isClamped ? mtp : Mathf.clamp(mtp);
   };
   exports._reloadMtp = _reloadMtp;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the controller of some unit.
-   * ---------------------------------------- */
+  /**
+   * Gets controller of some unit.
+   * @param {Unit} unit
+   * @return {AIController|null}
+   */
   const _ctrl = function(unit) {
-    return tryProp(unit.controller, unit);
+    return unit.isPlayer() ? null : tryProp(unit.controller, unit);
   };
   exports._ctrl = _ctrl;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the stack status that should be shown for some unit.
-   * ---------------------------------------- */
+  /**
+   * Gets stack status that should be shown for some unit.
+   * @param {Unit} unit
+   * @return {StatusEffect|null}
+   */
   const _stackStaFirst = function(unit) {
     let i = 0, iCap = VARGEN.stackStas.iCap();
     while(i < iCap) {
@@ -371,29 +359,29 @@
   /* <---------- bullet ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the bullet damage for damage display.
-   * ---------------------------------------- */
+  /**
+   * Gets bullet damage for damage display.
+   * @param {Bullet} bul
+   * @param {Building|Unit} e - The entity to hit.
+   * @return {number}
+   */
   const _bulDmg = function(bul, e) {
     let
       dmg = bul.damage,
       sDmg = bul.type.splashDamage,
       sDmgRad = bul.type.splashDamageRadius,
       dmg_fi = 0.0,
+      dst = Mathf.dst(bul.x, bul.y, e.x, e.y),
       isRemote = DB_unit.db["class"]["btp"]["remote"].hasIns(bul.type),
-      isRemoteCur = (dst > (bul.hitSize + hitSize) * 0.7499);
+      isRemoteCur = (dst > (bul.hitSize + _hitSize(e)) * 0.7499);
     if(e instanceof Unit && tryJsProp(bul.type, "typeMtpArr") != null) {
-      dmg *= global.lovec.frag_attack._dmgMtp_typeMtpArr(e, bul.type.delegee.typeMtpArr);
+      dmg *= FRAG_attack._dmgMtp_typeMtpArr(e, bul.type.delegee.typeMtpArr);
     };
     let
       mtp = e instanceof Unit ?
         (1.0 / e.healthMultiplier * (e.shield > dmg ? 1.0 : bul.type.shieldDamageMultiplier)) :
         (bul.type.buildingDamageMultiplier * (_bShield(e, true) > dmg ? 1.0 : bul.type.shieldDamageMultiplier)),
-      dst = Mathf.dst(bul.x, bul.y, e.x, e.y),
-      armor = _armor(e),
-      hitSize = _hitSize(e);
+      armor = _armor(e);
 
     if(bul.type.pierceArmor) {
       dmg_fi += (!isRemote && isRemoteCur) ? 0.0 : dmg;
@@ -410,12 +398,11 @@
   /* <---------- wave ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Gets a 4-array of wave information.
-   * Format: {utp, amtUnit, shield, sta}.
-   * ---------------------------------------- */
+   * @param {number|unset} [countWave]
+   * @return {Array} <ROW>: utp, amtUnit, shield, sta.
+   */
   const _waveArr = function(countWave) {
     if(countWave == null) countWave = Vars.state.wave;
 

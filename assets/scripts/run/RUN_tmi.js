@@ -8,13 +8,6 @@
   /* <---------- import ----------> */
 
 
-  const MDL_cond = require("lovec/mdl/MDL_cond");
-  const MDL_event = require("lovec/mdl/MDL_event");
-
-
-  const MOD_tmi = require("lovec/mod/MOD_tmi");
-
-
 /*
   ========================================
   Section: Application
@@ -30,17 +23,13 @@
     if(!MOD_tmi.ENABLED) return;
 
 
+    // I don't know how but adding `excludes` here will cause crash now
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Fixes unparsed deposit mining.
-     * ---------------------------------------- */
+    // Fix unparsed deposit mining
     MOD_tmi.regisParser({
 
 
-      excludes: new Seq(),
       oreGrpMap: new ObjectMap(),
 
 
@@ -77,19 +66,10 @@
 
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Removes empty recipes.
-     * ---------------------------------------- */
+    // Removes empty recipe
     MOD_tmi.regisParser({
 
 
-      excludes: Seq.with(
-        MOD_tmi.AttributeCrafterParser,
-        MOD_tmi.GenericCrafterParser,
-        MOD_tmi.WallCrafterParser,
-      ),
       temps: [
         "BLK_depthPump",
         "BLK_dynamicWallHarvester",
@@ -97,6 +77,13 @@
         "BLK_incinerator",
         "BLK_rainCollector",
       ],
+
+
+      exclude(parser) {
+        return parser instanceof MOD_tmi.CLASSES.AttributeCrafterParser
+          || parser instanceof MOD_tmi.CLASSES.GenericCrafterParser
+          || parser instanceof MOD_tmi.CLASSES.WallCrafterParser;
+      },
 
 
       isTarget(blk) {
@@ -114,7 +101,7 @@
 
 
 
-    Log.info("[LOVEC] Registered recipe parsers to TMI.")
+    Log.info("[LOVEC] Registered recipe parsers for TMI.")
 
 
   }, 16208888);

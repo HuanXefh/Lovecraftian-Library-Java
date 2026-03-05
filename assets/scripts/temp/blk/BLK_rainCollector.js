@@ -23,19 +23,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseFactory");
-  const PARAM = require("lovec/glb/GLB_param");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const FRAG_fluid = require("lovec/frag/FRAG_fluid");
-
-
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_pos = require("lovec/mdl/MDL_pos");
-  const MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
-
-
-  const MOD_tmi = require("lovec/mod/MOD_tmi");
 
 
   /* <---------- component ----------> */

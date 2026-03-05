@@ -23,19 +23,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/cls/util/CLS_contentTemplate");
-  const PARAM = require("lovec/glb/GLB_param");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_color = require("lovec/mdl/MDL_color");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_event = require("lovec/mdl/MDL_event");
-  const MDL_text = require("lovec/mdl/MDL_text");
-  const MDL_texture = require("lovec/mdl/MDL_texture");
-
-
-  const DB_item = require("lovec/db/DB_item");
+  const PARENT = CLS_contentTemplate;
 
 
   /* <---------- component ----------> */
@@ -67,7 +55,7 @@
 
     // Set up icon tag-based sprites
     let regs = [Core.atlas.find(rs.name + "-t0")], regInd;
-    iCap._it(1, i => {
+    iCap._it(i => {
       regs.push(Core.atlas.find(rs.name + "-t" + (i + 1)));
     });
     MDL_event._c_onUpdate(() => {
@@ -261,7 +249,7 @@
      * ---------------------------------------- */
     ex_getIntmdTags: function() {
       if(this.intmdTags == null) {
-        this.intmdTags = MDL_content._intmdTags(this);
+        this.intmdTags = this.tempTags.filter(tag => DB_item.db["intmd"]["tag"].includes(tag));
         DB_item.db["intmd"]["tagCheck"].forEachRow(2, (tag, boolF) => {
           if(boolF(this)) this.intmdTags.pushUnique(tag);
         });

@@ -8,7 +8,7 @@
   /* ----------------------------------------
    * NOTE:
    *
-   * @NAMEGEN
+   * <NAMEGEN>
    * Mineable tall blocks.
    * {blk.itemDrop} is required.
    * ---------------------------------------- */
@@ -25,11 +25,6 @@
 
 
   const PARENT = require("lovec/temp/env/ENV_baseProp");
-
-
-  const MDL_bundle = require("lovec/mdl/MDL_bundle");
-  const MDL_content = require("lovec/mdl/MDL_content");
-  const MDL_text = require("lovec/mdl/MDL_text");
 
 
   /* <---------- component ----------> */

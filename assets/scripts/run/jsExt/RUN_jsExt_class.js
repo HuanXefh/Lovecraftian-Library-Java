@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * More methods for JavaScript constructor function to make it more like a class.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -20,13 +18,6 @@
 
 
   /* <---------- import ----------> */
-
-
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
 
 
   /* <---------- function ----------> */
@@ -41,51 +32,41 @@
   ptp.__IS_CONTENT_TEMPLATE__ = false;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the super class. If not a function class, returns {null}.
-   * ---------------------------------------- */
+  /**
+   * Gets super class.
+   * If this function is not a class, returns null instead.
+   * @return {Function|null}
+   */
   ptp.getSuper = function() {
     return this.__SUPER_CLASS__;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets up generic methods for function class and its instances.
+  /**
+   * Sets up the function class.
    * This is required for a class to function properly.
-   * ---------------------------------------- */
+   * @return {this}
+   */
   ptp.initClass = function() {
     let cls = this;
     let ins = this.prototype;
 
-    // Root class of all function class is {Function}
+    // Root class of all function class is `Function`
     if(cls.getSuper() == null) cls.__SUPER_CLASS__ = Function;
 
     cls.__IS_CLASS__ = true;
     ins.getClass = () => cls;
 
-    ins.setProp = obj => {
-      for(let key in obj) {
-        ins[key] = obj[key];
-      };
-    };
-
     return this;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Sets up an abstract class to be extended.
-   * Creating new instance of this class directly is not allowed.
-   * Don't call super in child classes, that's dumb idea.
-   *
-   * There's nothing called abstract method here, just set it empty.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link Function#initClass} for abstract class.
+   * Creating new instance of this class will not be allowed.
+   * For abstract methods, see {@link Function#setAbstr}.
+   * @return {this}
+   */
   ptp.initAbstrClass = function() {
     this.initClass();
 
@@ -98,13 +79,14 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a function class extend another function class.
-   * Should be called before {initClass}.
-   * You can use {this.super(nmFun, ...args)} to call super methods later.
-   * ---------------------------------------- */
+  /**
+   * Lets a class extend another class.
+   * Should be called before {@link Function#initClass}.
+   * Super methods can be called with `this.super(nmFun, arg1, arg2, arg3, ...)` later.
+   * @param {Function} cls
+   * @param {string|unset} [nm] - Name of the new class.
+   * @return {this}
+   */
   ptp.extendClass = function(cls, nm) {
     if(typeof cls !== "function" || !cls.__IS_CLASS__) ERROR_HANDLER.throw("notClass", cls);
 
@@ -116,7 +98,7 @@
     });
 
     this.__SUPER_CLASS__ = cls;
-    // A second abstract class??? {initAbstrClass} again
+    // A second abstract class??? `initAbstrClass` again
     this.__IS_ABSTRACT_CLASS__ = false;
 
     this.super = function(nmFun) {

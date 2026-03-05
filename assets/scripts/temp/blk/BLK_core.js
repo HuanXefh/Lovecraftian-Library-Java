@@ -24,11 +24,6 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseStorageBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_powerProducer");
-  const EFF = require("lovec/glb/GLB_eff");
-  const TIMER = require("lovec/glb/GLB_timer");
-
-
-  const FRAG_faci = require("lovec/frag/FRAG_faci");
 
 
   /* <---------- component ----------> */

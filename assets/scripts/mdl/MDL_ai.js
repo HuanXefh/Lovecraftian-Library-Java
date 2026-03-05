@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Handles unit AI.
-   * ---------------------------------------- */
+   */
 
 
 /*
@@ -22,24 +20,15 @@
   /* <---------- import ----------> */
 
 
-  const PARAM = require("lovec/glb/GLB_param");
-
-
-  const FRAG_item = require("lovec/frag/FRAG_faci");
-
-
-  const MDL_entity = require("lovec/mdl/MDL_entity");
-
-
   /* <---------- base ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets the {target} field of the AI controller.
-   * It's private and no class allowed in JS, I have to do this.
-   * ---------------------------------------- */
+  /**
+   * Gets the "target" field of an AI controller by reflection.
+   * In JS this field cannot be directly accessed.
+   * @param {AIController} ctrl
+   * @return {TeamcGn|null}
+   */
   const _tg = function(ctrl) {
     return ctrl == null ?
       null :
@@ -51,11 +40,15 @@
   /* <---------- action ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a unit move to some position straightly.
-   * ---------------------------------------- */
+   * @param {Unit} unit
+   * @param {PosGn} posIns
+   * @param {number|unset} [dst] - Distance to stop moving.
+   * @param {number|unset} [smooth] - Extra distance to slow down.
+   * @param {boolean|unset} [keepDst] - Whether to move outwards to keep distance.
+   * @return {void}
+   */
   const moveTo = function(unit, posIns, dst, smooth, keepDst) {
     if(unit.isPlayer()) return;
 
@@ -70,11 +63,17 @@
   exports.moveTo = moveTo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a unit move to some position by pathfinding.
-   * ---------------------------------------- */
+  /**
+   * Similar to {@link moveTo} but uses pathfinding.
+   * @param {Unit} unit
+   * @param {Vec2} vecDest - Destination position as a vector.
+   * @param {Vec2} vecOut - Container vector for next position to move to.
+   * @param {Array<boolean>|unset} [blockedTup] - Container of a boolean that whether path is blocked.
+   * @param {number|unset} [dst]
+   * @param {number|unset} [smooth]
+   * @param {boolean|unset} [keepDst]
+   * @return {void}
+   */
   const pathfindTo = function(unit, vecDest, vecOut, blockedTup, dst, smooth, keepDst) {
     if(unit.isPlayer()) return;
     if(unit.isFlying() && !PARAM.isCaveMap) {
@@ -91,11 +90,13 @@
   exports.pathfindTo = pathfindTo;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a unit circle some position.
-   * ---------------------------------------- */
+  /**
+   * Lets a unit circle (move around) some position.
+   * @param {Unit} unit
+   * @param {PosGn} posIns
+   * @param {number|unset} [dst] - Radius of the circle, leave empty to calculate based on range.
+   * @return {void}
+   */
   const circle = function(unit, posIns, dst) {
     if(unit.isPlayer()) return;
 
@@ -104,11 +105,14 @@
   exports.circle = circle;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a unit look at some position.
-   * ---------------------------------------- */
+  /**
+   * Lets a unit look at some position, no movement.
+   * @param {Unit} unit
+   * @param {number} x
+   * @param {number} y
+   * @param {boolean|unset} [noAim] - Whether weapon mounts of the unit should not rotate to the position.
+   * @return {void}
+   */
   const lookAt = function(unit, x, y, noAim) {
     if(unit.isPlayer()) return;
 
@@ -119,33 +123,39 @@
   exports.lookAt = lookAt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Lets a unit shoot at some position.
-   * ---------------------------------------- */
-  const shootAt = function(unit, x, y, bool) {
+   * @param {Unit} unit
+   * @param {number} x
+   * @param {number} y
+   * @param {boolean|unset} [shouldFire] - Used to control weapon status.
+   * @return {void}
+   */
+  const shootAt = function(unit, x, y, shouldFire) {
     if(unit.isPlayer()) return;
 
-    if(!bool) {
+    if(!shouldFire) {
       unit.controlWeapons(false);
     } else {
       unit.type.faceTarget ?
         unit.aimLook(x, y) :
         unit.aim(x, y);
+      unit.controlWeapons(true);
     };
   };
   exports.shootAt = shootAt;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lets a unit approach some position, and shoot if in range.
-   * ---------------------------------------- */
+  /**
+   * Lets a unit approach some position and shoot if in range.
+   * @param {Unit} unit
+   * @param {PoscGn} tg
+   * @param {boolean|unset} [keepDst]
+   * @return {void}
+   */
   const moveShoot = function(unit, tg, keepDst) {
     if(unit.isPlayer()) return;
-    if(tg == null || (tg.added != null && !tg.added)) {
+    if(tg == null || !tg.added) {
       unit.controlWeapons(false);
       return;
     };
@@ -156,14 +166,18 @@
   exports.moveShoot = moveShoot;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Like {moveShoot} but using pathfinding.
-   * ---------------------------------------- */
+  /**
+   * Similar to {@link moveShoot} but uses pathfinding.
+   * @param {Unit} unit
+   * @param {PoscGn} tg
+   * @param {Vec2} vecOut
+   * @param {Array<boolean>|unset} [blockedTup]
+   * @param {boolean|unset} [keepDst]
+   * @return {void}
+   */
   const pathfindShoot = function thisFun(unit, tg, vecOut, blockedTup, keepDst) {
     if(unit.isPlayer()) return;
-    if(tg == null || (tg.added != null && !tg.added)) {
+    if(tg == null || !tg.added) {
       unit.controlWeapons(false);
       return;
     };
@@ -177,24 +191,26 @@
   exports.pathfindShoot = pathfindShoot;
 
 
-  /* <---------- component ----------> */
+  /* <---------- decision ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {updateMovement} here may return boolean, which means whether the movement is active.
-   * Used for decision.
-   * ---------------------------------------- */
+  /**
+   * Methods here may return boolean, which means whether the movement is active.
+   * It's meant for decision-making.
+   */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Moves to the current target if armed.
-   * If a center position is given, the unit won't go far from it.
-   * ---------------------------------------- */
-  const comp_updateMovement_attack = function thisFun(ctrl, unit, cx, cy, maxDst) {
+  /**
+   * Moves to target if armed.
+   * If given a position, the unit won't leave too far.
+   * @param {AIController} ctrl
+   * @param {Unit} unit
+   * @param {number} cx
+   * @param {number} cy
+   * @param {number|unset} [maxDst]
+   * @return {boolean}
+   */
+  const _d_attack = function thisFun(ctrl, unit, cx, cy, maxDst) {
     if(!unit.hasWeapons()) return false;
     let tg = _tg(ctrl);
     if(tg == null) return false;
@@ -214,16 +230,18 @@
     tmpVec: new Vec2(),
     tmpVec1: new Vec2(),
   });
-  exports.comp_updateMovement_attack = comp_updateMovement_attack;
+  exports._d_attack = _d_attack;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Follows an assigned target.
-   * ---------------------------------------- */
-  const comp_updateMovement_follow = function thisFun(ctrl, unit, followTg) {
-    if(followTg == null || (followTg.added != null && !followTg.added)) return false;
+  /**
+   * Follows a given target.
+   * @param {AIController} ctrl
+   * @param {Unit} unit
+   * @param {PoscGn|unset} [followTg]
+   * @return {boolean}
+   */
+  const _d_follow = function thisFun(ctrl, unit, followTg) {
+    if(followTg == null || !followTg.added) return false;
 
     thisFun.blockedTup[0] = false;
     pathfindTo(
@@ -238,17 +256,18 @@
     tmpVec1: new Vec2(),
     blockedTup: [],
   });
-  exports.comp_updateMovement_follow = comp_updateMovement_follow;
+  exports._d_follow = _d_follow;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @FIELD:
-   *   ctrl.timerUnload
+  /**
    * Unloads items into some building.
-   * ---------------------------------------- */
-  const comp_updateMovement_unload = function thisFun(ctrl, unit, b) {
+   * @param {AIController} ctrl
+   * @param {Interval} ctrl.timerUnload - Timer for item unloading.
+   * @param {Unit} unit
+   * @param {Building|unset} [b]
+   * @return {boolean}
+   */
+  const _d_unload = function thisFun(ctrl, unit, b) {
     if(!unit.hasItem() || b == null || !b.added || !b.acceptItem(unit.item()) || b.isPayload()) return false;
 
     thisFun.blockedTup[0] = false;
@@ -264,26 +283,29 @@
     tmpVec1: new Vec2(),
     blockedTup: [],
   });
-  exports.comp_updateMovement_unload = comp_updateMovement_unload;
+  exports._d_unload = _d_unload;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @FIELD:
-   *   ctrl.timerOreFind
-   *   ctrl.isMining
-   *   ctrl.oreT
-   * Miner AI where {b} is the building bound to.
-   * This works for ground units too.
-   * ---------------------------------------- */
-  const comp_updateMovement_mine = function thisFun(ctrl, unit, b, itm, rad) {
+  /**
+   * Similar to {@link MinerAI} but the unit is bound to an arbitary building.
+   * This also works for ground units with pathfinding.
+   * @param {AIController} ctrl
+   * @param {Interval} ctrl.timerOreFind - Timer for ore tile update.
+   * @param {boolean} ctrl.isMining - Whether the unit is mining something.
+   * @param {Tile} ctrl.oreT - Tile to mine.
+   * @param {Unit} unit
+   * @param {Building} b
+   * @param {Item} itm - Item to mine.
+   * @param {number|unset} [rad] - Maximum distance to go.
+   * @return {boolean}
+   */
+  const _d_mine = function thisFun(ctrl, unit, b, itm, rad) {
     if(!unit.canMine()) return false;
     if(rad == null) rad = Infinity;
 
     if(!unit.validMine(unit.mineTile)) unit.mineTile = null;
 
-    this.blockedTup[0] = false;
+    thisFun.blockedTup[0] = false;
     if(!ctrl.isMining) {
       unit.mineTile = null;
       // Ready to mine or not
@@ -299,7 +321,7 @@
       };
       // Move to {b}
       !unit.within(b, Vars.logicItemTransferRange * 0.8) ?
-        pathfindTo(unit, thisFun.tmpVec.set(b), thisFun.tmpVec1, this.blockedTup, Vars.logicItemTransferRange * 0.6) :
+        pathfindTo(unit, thisFun.tmpVec.set(b), thisFun.tmpVec1, thisFun.blockedTup, Vars.logicItemTransferRange * 0.6) :
         circle(unit, b, Vars.logicItemTransferRange * 0.6);
     } else {
       // Do nothing if {b} is full
@@ -317,7 +339,7 @@
           ctrl.oreT = null;
           if(unit.type.mineFloor) ctrl.oreT = Vars.indexer.findClosestOre(b.x, b.y, itm);
           if(ctrl.oreT == null && unit.type.mineWalls) ctrl.oreT = Vars.indexer.findClosestWallOre(b.x, b.y, itm);
-          if(Mathf.dst(b.x, b.y, ctrl.oreT.worldx(), ctrl.oreT.worldy()) > rad) ctrl.oreT = null;
+          if(ctrl.oreT != null && Mathf.dst(b.x, b.y, ctrl.oreT.worldx(), ctrl.oreT.worldy()) > rad) ctrl.oreT = null;
         };
         // Move to ore
         if(ctrl.oreT != null) {
@@ -337,19 +359,20 @@
     tmpVec1: new Vec2(),
     blockedTup: [],
   });
-  exports.comp_updateMovement_mine = comp_updateMovement_mine;
+  exports._d_mine = _d_mine;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @FIELD:
-   *   ctrl.timerRepairFind
-   *   ctrl.repairTg
-   * Repair AI.
-   * No pathfinding for this one, cauz that it easily gets stuck.
-   * ---------------------------------------- */
-  const comp_updateMovement_repair = function(ctrl, unit, b) {
+  /**
+   * Similar to {@link RepairAI} but the unit will return to a building when idle.
+   * This one does not have pathfinding, cauz it will easily get stuck.
+   * @param {AIController} ctrl
+   * @param {Interval} ctrl.timerRepairFind - Timer for repair target update.
+   * @param {HealthcGn} ctrl.repairTg - Repair target.
+   * @param {Unit} unit
+   * @param {Building|unset} [b] - Building to return to when idle, leave empty for closest core.
+   * @return {boolean}
+   */
+  const _d_repair = function(ctrl, unit, b) {
     if(!unit.type.canHeal) return false;
 
     if(ctrl.timerRepairFind.get(15.0)) {
@@ -369,4 +392,4 @@
 
     return true;
   };
-  exports.comp_updateMovement_repair = comp_updateMovement_repair;
+  exports._d_repair = _d_repair;

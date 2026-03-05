@@ -25,13 +25,6 @@
 
 
   const PARENT = require("lovec/temp/env/ENV_baseFloor");
-  const VAR = require("lovec/glb/GLB_var");
-
-
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-
-
-  const DB_env = require("lovec/db/DB_env");
 
 
   /* <---------- component ----------> */

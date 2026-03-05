@@ -22,17 +22,6 @@
   /* <---------- import ----------> */
 
 
-  const CLS_interface = require("lovec/cls/struct/CLS_interface");
-  const TRIGGER = require("lovec/glb/BOX_trigger");
-
-
-  const FRAG_attack = require("lovec/frag/FRAG_attack");
-
-
-  const MDL_draw = require("lovec/mdl/MDL_draw");
-  const MDL_effect = require("lovec/mdl/MDL_effect");
-
-
   /* <---------- component ----------> */
 
 
@@ -76,8 +65,8 @@
       b.block.ex_calcImpactMinRad(b),
       b.block.ex_calcImpactShake(b),
     );
-    MDL_effect.showAt_dust(b.x, b.y, FRAG_attack._impactDustRad(b.block.size), Math.pow(b.block.size, 2));
-    MDL_effect.showAt_colorDust(b.x, b.y, FRAG_attack._impactDustRad(b.block.size) * 1.5, b.tile);
+    MDL_effect._e_dust(b.x, b.y, FRAG_attack._impactDustRad(b.block.size), Math.pow(b.block.size, 2));
+    MDL_effect._e_colorDust(b.x, b.y, FRAG_attack._impactDustRad(b.block.size) * 1.5, b.tile.getFloorColor());
   };
 
 

@@ -5,11 +5,9 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lovec version of {Events.on} and {Events.run}.
-   * ---------------------------------------- */
+  /**
+   * Lovec version of {@link Events.on} and {@link Events.run}.
+   */
 
 
 /*
@@ -25,19 +23,12 @@
   /* <---------- trigger ----------> */
 
 
-  /* ----------------------------------------
-   * IMPORTANT:
-   *
-   * When required by several mods, {Event.on} and {Events.run} in a module can be called several times where bugs may occur.
-   * It's avoidable by using methods below and setting the {id} argument.
-   * ---------------------------------------- */
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Called just after script is loaded.
-   * ---------------------------------------- */
+   * @param {function(): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onPostRun = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -52,11 +43,12 @@
   exports._c_onPostRun = _c_onPostRun;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called on after all contents are initialized (after {postInit}).
-   * ---------------------------------------- */
+  /**
+   * Called after all contents are initialized (after `postInit`).
+   * @param {function(): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onInit = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -71,11 +63,12 @@
   exports._c_onInit = _c_onInit;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called on client load.
-   * ---------------------------------------- */
+  /**
+   * Called on CLIENT LOAD.
+   * @param {function(): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onLoad = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -90,12 +83,12 @@
   exports._c_onLoad = _c_onLoad;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called when starting loading a world.
-   * It's known to be called before {drawBase}.
-   * ---------------------------------------- */
+  /**
+   * Called when starting loading a world, before `drawBase`.
+   * @param {function(): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onWorldLoadStart = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -110,11 +103,12 @@
   exports._c_onWorldLoadStart = _c_onWorldLoadStart;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Called when finishing loading a world.
-   * ---------------------------------------- */
+   * @param {function(): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onWorldLoad = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -129,11 +123,12 @@
   exports._c_onWorldLoad = _c_onWorldLoad;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Called when saving a world.
-   * ---------------------------------------- */
+   * @param {function(): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onWorldSave = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -148,11 +143,12 @@
   exports._c_onWorldSave = _c_onWorldSave;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Called every frame when the game is not paused.
-   * ---------------------------------------- */
+   * @param {function(): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onUpdate = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -167,11 +163,12 @@
   exports._c_onUpdate = _c_onUpdate;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called in the draw.
-   * ---------------------------------------- */
+  /**
+   * Called every frame when drawing something.
+   * @param {function(): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onDraw = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -186,12 +183,12 @@
   exports._c_onDraw = _c_onDraw;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called whenever a tile is tapped by local player.
-   * The tile is never {null}.
-   * ---------------------------------------- */
+  /**
+   * Called whenever a tile is tapped by local player, the tile is never null.
+   * @param {function(Tile): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onTileTap = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -206,11 +203,12 @@
   exports._c_onTileTap = _c_onTileTap;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called whenever a building gets damaged.
-   * ---------------------------------------- */
+  /**
+   * Called whenever a building receives damage.
+   * @param {function(Building, Bullet): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onBDamage = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -225,12 +223,13 @@
   exports._c_onBDamage = _c_onBDamage;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Called whenever a building is destroyed.
-   * This really returns a {Tile} this time, WTF.
-   * ---------------------------------------- */
+   * The building has already been removed!
+   * @param {function(Tile): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onBDestroy = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -245,11 +244,12 @@
   exports._c_onBDestroy = _c_onBDestroy;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called whenever a unit gets damaged.
-   * ---------------------------------------- */
+  /**
+   * Called whenever a unit receives damage.
+   * @param {function(Unit, Bullet): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onUnitDamage = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -264,11 +264,12 @@
   exports._c_onUnitDamage = _c_onUnitDamage;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Called whenever a unit is destroyed.
-   * ---------------------------------------- */
+   * @param {function(Unit): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onUnitDestroy = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -283,11 +284,12 @@
   exports._c_onUnitDestroy = _c_onUnitDestroy;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Called whenever a unit drowns.
-   * ---------------------------------------- */
+   * @param {function(Unit): void} scr
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onUnitDrown = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
@@ -302,95 +304,16 @@
   exports._c_onUnitDrown = _c_onUnitDrown;
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called when a tile is changed.
-   * ---------------------------------------- */
-  const _c_onTileChange = function thisFun(scr, id) {
-    if(id != null && thisFun.ids.includes(id)) return;
-    if(id != null) thisFun.ids.push(id);
-
-    Events.on(TileChangeEvent, ev => {
-      scr(ev.tile);
-    });
-  }
-  .setProp({
-    ids: [],
-  });
-  exports._c_onTileChange = _c_onTileChange;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called before a tile is changed.
-   * ---------------------------------------- */
-  const _c_onTilePreChange = function thisFun(scr, id) {
-    if(id != null && thisFun.ids.includes(id)) return;
-    if(id != null) thisFun.ids.push(id);
-
-    Events.on(TilePreChangeEvent, ev => {
-      scr(ev.tile);
-    });
-  }
-  .setProp({
-    ids: [],
-  });
-  exports._c_onTilePreChange = _c_onTilePreChange;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called when the floor block of a tile is changed.
-   * ---------------------------------------- */
-  const _c_onTileFloorChange = function thisFun(scr, id) {
-    if(id != null && thisFun.ids.includes(id)) return;
-    if(id != null) thisFun.ids.push(id);
-
-    Events.on(TileFloorChangeEvent, ev => {
-      scr(ev.tile, ev.previous, ev.floor);
-    });
-  }
-  .setProp({
-    ids: [],
-  });
-  exports._c_onTileFloorChange = _c_onTileFloorChange;
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called when the overlay block of a tile is changed.
-   * ---------------------------------------- */
-  const _c_onTileOverlayChange = function thisFun(scr, id) {
-    if(id != null && thisFun.ids.includes(id)) return;
-    if(id != null) thisFun.ids.push(id);
-
-    Events.on(TileOverlayChangeEvent, ev => {
-      scr(ev.tile, ev.previous, ev.overlay);
-    });
-  }
-  .setProp({
-    ids: [],
-  });
-  exports._c_onTileOverlayChange = _c_onTileOverlayChange;
-
-
   /* custom */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Called when LMB is pressed.
-   * Format for script: {(dx, dy, x_f, x_t) => {...}}.
-   * ----------------------------------------
-   * DEDICATION:
-   *
-   * Inspired by Extended-UI.
-   * ---------------------------------------- */
+  /**
+   * Called when left mouse button is pressed.
+   * <br> <DEDICATION>: Extended-UI.
+   * @param {function(number, number, number, number): void} scr - <ARGS>: dx, dy, x_f, y_f.
+   * @param {number|string} id
+   * @return {void}
+   */
   const _c_onDrag = function thisFun(scr, id) {
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);

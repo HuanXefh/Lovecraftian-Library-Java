@@ -1,12 +1,6 @@
-/* ----------------------------------------
- * NOTE:
- *
- * Database of item properties.
- * ---------------------------------------- */
-
-
-const MDL_bundle = require("lovec/mdl/MDL_bundle");
-const MDL_event = require("lovec/mdl/MDL_event");
+/**
+ * Database of item properties and recipe data.
+ */
 
 
 const db = {
@@ -18,16 +12,13 @@ const db = {
   param: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Fuel parameters for a fuel.
-     * Format (item): {nm, [fuelPon, fuelLvl]}.
-     * Format (fluid): {nm, [consRate, fuelLvl]}.
-     * ---------------------------------------- */
     fuel: {
 
 
+      /**
+       * Fuel parameters for an item.
+       * <br> <ROW>: itm, [fuelPon, fuelLvl].
+       */
       item: [
 
         "coal", [8.0, 8.0],
@@ -35,6 +26,10 @@ const db = {
       ],
 
 
+      /**
+       * Fuel parameters for a fluid.
+       * <br> <ROW>: liq, [consRate, fuelLvl].
+       */
       fluid: [],
 
 
@@ -50,52 +45,35 @@ const db = {
   map: {
 
 
+    /**
+     * Maps an attribute to some resource, mostly for dynamic attribute output.
+     * <br> <ROW-xxx>: attr, rs.
+     */
     attr: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Maps an attribute to some resource obtained by a bush harvester.
-       * ---------------------------------------- */
       bush: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Maps an attribute to some resource obtained by a depth liquid pump.
-       * ---------------------------------------- */
       dpliq: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Maps an attribute to some resource obtained by a quarry.
-       * ---------------------------------------- */
       rock: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Maps an attribute to some resource obtained by a tree tap.
-       * ---------------------------------------- */
       tree: [],
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Maps an attribute to some resource obtained by a vent collector.
-       * ---------------------------------------- */
       vent: [],
 
 
     },
 
 
+    /**
+     * Collection of recipe data used in {@link TP_recipeGen}.
+     * Row format is determined by each generator.
+     */
     recipe: {
 
 
@@ -162,68 +140,59 @@ const db = {
   group: {
 
 
+    /**
+     * Fuel groups used for blacklists/whitelists.
+     * <br> <ROW-xxx>: rs.
+     */
     fuel: {
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Biotic fuels like timber.
-       * ---------------------------------------- */
       biotic: [],
 
 
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Items here are not mineable by regular drills by default, a sand miner is required.
-     * ---------------------------------------- */
+     * <br> <ROW>: itm.
+     */
     sand: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Items here can be crushed for aggregate.
      * Used for recipe generation.
-     * Format: {nmItm, reqAmtMtp}.
-     * ---------------------------------------- */
+     * <br> <ROW>: itm, reqAmtMtp.
+     */
     aggregate: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Items considered acidic.
-     * ---------------------------------------- */
+     * <br> <ROW>: itm.
+     */
     acidic: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Items considered basic.
-     * ---------------------------------------- */
+     * <br> <ROW>: itm.
+     */
     basic: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Items like sodium, which react with water and explode.
-     * ---------------------------------------- */
+     * <br> <ROW>: itm.
+     */
     sodium: [],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * "GROUP: xxx" in recipe I/O arrays.
-     * Format: {grp, [nmRs, paramObj]}.
-     * ---------------------------------------- */
+     * <br> <ROW>: grpStr, [nmRs, paramObj].
+     */
     rcGroup: [],
 
 
@@ -236,13 +205,12 @@ const db = {
   intmd: {
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Intermediate tags, which are written in {rs.tempTags}.
-     * Items and fluids with these tags will be categorized in {VARGEN.intmds}.
-     * If tag sprite is found, it will be used for icon tag generation.
-     * ---------------------------------------- */
+    /**
+     * Intermediate tags, which are written in `rs.tempTags`.
+     * Items and fluids with these tags will be categorized in `VARGEN.intmds`.
+     * If tag sprite ("rs0tag-<tag>") is found, it will be used for icon tag generation.
+     * <br> <ROW>: tag.
+     */
     tag: [
 
       /* coupled */
@@ -282,11 +250,11 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Some intermediate tags are added automatically if some conditions are met.
-     * ---------------------------------------- */
+     * <br> <ROW>: tag, boolF.
+     * <br> <ARGS>: rs.
+     */
     tagCheck: [
 
       "rs-wet", function(rs) {
@@ -297,12 +265,11 @@ const db = {
     ],
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
+    /**
      * Maps intermediate tags to their localized names for name insertion.
-     * Used for some tags that don't have separate templates.
-     * ---------------------------------------- */
+     * Used for some tags that don't have separate content templates.
+     * <br> <ROW>: tag, nm.
+     */
     insertName: [
 
       "rs-clean", MDL_bundle._term("common", "intmd-clean"),

@@ -5,16 +5,13 @@
 */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Adds global methods that are used to modify contents.
-   * Does not provide methods to create contents like block, unit type, etc. See {RUN_glbScr_extend} instead.
-   *
-   * {newXxx} is used to create and register some content.
-   * {fetchXxx} is used to get the content created by {newXxx}.
-   * {setXxx} is used to modify existing contents, where {fetchXxx} is frequently called.
-   * ---------------------------------------- */
+   * Does not provide methods to create blocks, items, liquids, etc. See {@link RUN_glbScr_extend} instead.
+   * `newXxx` is used to add and register new contents.
+   * `fetchXxx` is used to get registered contents.
+   * `setXxx` is used to modify existing contents.
+   */
 
 
 /*
@@ -27,21 +24,16 @@
   /* <---------- import ----------> */
 
 
-/*
-  ========================================
-  Section: Definition
-  ========================================
-*/
-
-
   /* <---------- set ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to overwrite block flags.
-   * ---------------------------------------- */
+  /**
+   * Resets block flag.
+   * @global
+   * @param {Block} blk
+   * @param {Array<BlockFlag>|unset} [flags]
+   * @return {void}
+   */
   resetBlockFlag = function(blk, flags) {
     blk.flags = EnumSet.of.apply(null, flags != null ? flags : []);
     if(blk.fogRadius > 0) blk.flags.with(BlockFlag.hasFogRadius);
@@ -49,13 +41,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * This content will be only unlockable by calling {ct.unlock()}.
-   * Mostly used for contents that has a tech tree node but cannot be researched.
-   * Should be called on INIT.
-   * ---------------------------------------- */
+  /**
+   * Makes a tech node unable to be researched, only unlockable by calling `ct.unlock()`.
+   * Used for contents that should be unlocked in a special way.
+   * @global
+   * @param {UnlockableContent} ct
+   * @return {void}
+   */
   lockTechNode = function(ct) {
     if(ct.techNode == null) return;
     ct.techNode.objectives.add(extend(Objectives.Objective, {
@@ -69,12 +61,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to set weapons for some unit in JS.
-   * Format for {getter}: {wpsOld => wpsNew}.
-   * ---------------------------------------- */
+  /**
+   * Sets weapons for some unit type.
+   * @global
+   * @param {UnitType} utp
+   * @param {function(Array<Weapon>): Array<Weapon>} getter
+   * @return {void}
+   */
   setWeapon = function(utp, getter) {
     Events.run(ContentInitEvent, () => {
       let wps = utp.weapons.toArray();
@@ -87,12 +80,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to set abilities of some unit in JS.
-   * Format for {getter}: {abisOld => abisNew}.
-   * ---------------------------------------- */
+  /**
+   * Sets abilities of some unit type.
+   * @global
+   * @param {UnitType} utp
+   * @param {function(Array<Ability>): Array<Ability>} getter
+   * @return {void}
+   */
   setAbility = function(utp, getter) {
     Events.run(ClientLoadEvent, () => {
       let abis = utp.abilities.toArray();
@@ -105,12 +99,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to set AI controller of some unit in JS.
-   * Format for {getter}: {unit => ai}.
-   * ---------------------------------------- */
+  /**
+   * Sets AI controller of some unit type.
+   * @global
+   * @param {UnitType} utp
+   * @param {function(Unit): AIController} getter
+   * @return {void}
+   */
   setAi = function(utp, getter) {
     Events.run(ClientLoadEvent, () => {
       try{
@@ -122,15 +117,16 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to set drawers of some block in JS.
-   * Format for {getter}: {drawersOld => drawersNew}.
-   * ---------------------------------------- */
+  /**
+   * Sets drawer of some block.
+   * @global
+   * @param {Block} blk
+   * @param {function(Array<DrawBlock>): Array<DrawBlock>} getter
+   * @return {void}
+   */
   setDrawer = function(blk, getter) {
     Events.run(ClientLoadEvent, () => {
-      if(blk.drawer == null && blk.delegee != null && blk.delegee.drawer == null) {
+      if(blk.drawer == null && (blk.delegee != null ? blk.delegee.drawer == null : true)) {
         Log.warn("[LOVEC] Can't find field [$1] in [$2]!".format("drawer".color(Pal.accent), blk.name.color(Pal.accent)));
         return;
       };
@@ -152,12 +148,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to set consumers of some block in JS, can be called in {blk.init}.
-   * Format for {getter}: {conssOld => conssNew}.
-   * ---------------------------------------- */
+  /**
+   * Sets consumer of some block.
+   * @global
+   * @param {Block} blk
+   * @param {function(Array<Consume>): Array<Consume>} getter
+   * @return {void}
+   */
   setConsumer = function(blk, getter) {
     Events.run(ClientLoadEvent, () => {
       let
@@ -178,11 +175,13 @@
   /* <---------- fetch ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a mod by name, by default it should be a loaded one.
-   * ---------------------------------------- */
+  /**
+   * Gets a mod by name.
+   * @global
+   * @param {string} nmMod
+   * @param {boolean|unset} [ignoreEnabled]
+   * @return {Mod|null}
+   */
   fetchMod = function(nmMod, ignoreEnabled) {
     return nmMod === "vanilla" ?
       null :
@@ -192,27 +191,33 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used to load texture region.
-   * ---------------------------------------- */
+   * @global
+   * @param {ContentGn} ct_gn
+   * @param {string|unset} [suffix]
+   * @param {string|unset} [suffixFallback]
+   * @return {TextureRegion}
+   */
   fetchRegion = function(ct_gn, suffix, suffixFallback) {
     let nm = ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn;
     if(suffix == null) suffix = "";
     if(suffixFallback == null) suffixFallback = "";
 
     return Vars.headless ?
-      null :
+      ARC_AIR.reg :
       Core.atlas.find(nm + suffix, Core.atlas.find(nm + suffixFallback));
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {fetchRegion} that returns {null} if texture region is not found.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link fetchRegion} that returns null if texture region is not found.
+   * @global
+   * @param {ContentGn} ct_gn
+   * @param {string|unset} [suffix]
+   * @param {string|unset} [suffixFallback]
+   * @return {TextureRegion|null}
+   */
   fetchRegionOrNull = function(ct_gn, suffix, suffixFallback) {
     if(Vars.headless) return null;
     let nm = ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn;
@@ -224,15 +229,19 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {fetchRegion} that loads a series of texture regions as an array.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link fetchRegion} that loads a series of texture regions.
+   * @global
+   * @param {ContentGn} ct_gn
+   * @param {string|unset} [suffix]
+   * @param {number|unset} [len1]
+   * @param {number|unset} [len2]
+   * @param {number|unset} [len3]
+   * @return {TextureRegion[]}
+   */
   fetchRegions = function(ct_gn, suffix, len1, len2, len3) {
     const regs = [];
-
-    if(Vars.headless) return regs;
+    if(Vars.headless || ct_gn == null || ct_gn === "null") return regs;
     let nm = ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn;
     if(suffix == null) suffix = "";
     if(len1 == null) return regs.pushAll(fetchRegion(nm, suffix));
@@ -281,27 +290,35 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used to load sound.
-   * ---------------------------------------- */
+   * It's also possible to use "SOUNDS: xxx" for `Sounds.xxx`.
+   * @global
+   * @param {SoundGn} se_gn
+   * @param {boolean|unset} [returnUnset] - If true, returns `Sounds.unset` instead when sound not found.
+   * @return {Sound}
+   */
   fetchSound = function(se_gn, returnUnset) {
     return se_gn instanceof Sound ?
       se_gn :
       typeof se_gn === "string" ?
-        Vars.tree.loadSound(se_gn) :
+        (
+          !se_gn.startsWith("SOUND: ") ?
+            Vars.tree.loadSound(se_gn) :
+            Sounds[se_gn.replace(/"SOUNDS: "/g, "")]
+        ) :
         returnUnset ?
           Sounds.unset :
           Sounds.none;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Used to load music.
-   * ---------------------------------------- */
+   * @global
+   * @param {MusicGn} mus_gn
+   * @return {Music}
+   */
   fetchMusic = function(mus_gn) {
     return mus_gn instanceof Music ?
       mus_gn :
@@ -311,11 +328,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a stat by name from registered ones.
-   * ---------------------------------------- */
+  /**
+   * Gets a stat by name.
+   * @global
+   * @param {string} nmMod
+   * @param {string} nm
+   * @return {Stat}
+   */
   fetchStat = function(nmMod, nm) {
     let stat = global.lovecUtil.db.stat[nmMod][nm];
     if(stat == null) ERROR_HANDLER.throw("unregisteredContent", nmMod + "-" + nm);
@@ -323,11 +342,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a stat unit by name from registered ones.
-   * ---------------------------------------- */
+  /**
+   * Gets a stat unit by name.
+   * @global
+   * @param {string} nmMod
+   * @param {string} nm
+   * @return {StatUnit}
+   */
   fetchStatUnit = function(nmMod, nm) {
     let statUnit = global.lovecUtil.db.statUnit[nmMod][nm];
     if(statUnit == null) ERROR_HANDLER.throw("unregisteredContent", nmMod + "-" + nm);
@@ -335,11 +356,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a stat category unit by name from registered ones.
-   * ---------------------------------------- */
+  /**
+   * Gets a stat category by name.
+   * @global
+   * @param {string} nmMod
+   * @param {string} nm
+   * @return {StatCat}
+   */
   fetchStatCategory = function(nmMod, nm) {
     let statCateg = global.lovecUtil.db.statCategory[nmMod][nm];
     if(statCateg == null) ERROR_HANDLER.throw("unregisteredContent", nmMod + "-" + nm);
@@ -347,24 +370,27 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a shader by name from registered ones.
-   * Note that this can return {null} if errored.
-   * ---------------------------------------- */
+  /**
+   * Gets a shader by name.
+   * This can return null if it fails to compile the shader.
+   * @global
+   * @param {string} nm
+   * @return {Shader|null}
+   */
   fetchShader = function(nm) {
     let shader = global.lovecUtil.db.shader[nm];
-    if(shader == null) ERROR_HANDLER.throw("unregisteredContent", nm);
+    // Shader is nullable
+    if(shader === undefined) ERROR_HANDLER.throw("unregisteredContent", nm);
     return shader;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a cache layer by name from registered ones.
-   * ---------------------------------------- */
+  /**
+   * Gets a cache layer by name.
+   * @global
+   * @param {string} nm
+   * @return {CacheLayer}
+   */
   fetchCacheLayer = function(nm) {
     let cacheLay = global.lovecUtil.db.cacheLayer[nm];
     if(cacheLay == null) ERROR_HANDLER.throw("unregisteredContent", nm);
@@ -372,11 +398,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a weapon built from some registered weapon template.
-   * ---------------------------------------- */
+  /**
+   * Gets a weapon template by name and build it with `paramObj`.
+   * @global
+   * @param {string} nm
+   * @param {Object|unset} [paramObj]
+   * @return {Weapon}
+   */
   fetchWeapon = function(nm, paramObj) {
     let temp = global.lovecUtil.db.weaponTemplate.read(nm);
     if(temp == null) ERROR_HANDLER.throw("noTemplateFound", nm);
@@ -384,11 +412,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a bullet type built from some registered bullet template.
-   * ---------------------------------------- */
+  /**
+   * Gets a bullet type template by name and build it with `paramObj`.
+   * @global
+   * @param {string} nm
+   * @param {Object|unset} [paramObj]
+   * @return {BulletType}
+   */
   fetchBullet = function(nm, paramObj) {
     let temp = global.lovecUtil.db.bulletTemplate.read(nm);
     if(temp == null) ERROR_HANDLER.throw("noTemplateFound", nm);
@@ -396,11 +426,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a part built from some registered part template.
-   * ---------------------------------------- */
+  /**
+   * Gets a part template by name and build it with `paramObj`.
+   * @global
+   * @param {string} nm
+   * @param {Object|unset} [paramObj]
+   * @return {DrawPart}
+   */
   fetchPart = function(nm, paramObj) {
     let temp = global.lovecUtil.db.partTemplate.read(nm);
     if(temp == null) ERROR_HANDLER.throw("noTemplateFound", nm);
@@ -408,71 +440,84 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets an ability from registered ability getter functions.
-   * ---------------------------------------- */
+  /**
+   * Gets an ability by name.
+   * @global
+   * @param {string} nm
+   * @param {Object|unset} [paramObj]
+   * @return {Ability|null}
+   */
   fetchAbility = function(nm, paramObj) {
     return global.lovecUtil.db.ability.read(nm, Function.airNull)(paramObj);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets an AI from registered AI getter functions.
-   * ---------------------------------------- */
+  /**
+   * Gets an AI controller by name.
+   * @global
+   * @param {string} nm
+   * @param {Object|unset} [paramObj]
+   * @return {AIController|null}
+   */
   fetchAi = function(nm, paramObj) {
     return global.lovecUtil.db.ai.read(nm, Function.airNull)(paramObj);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a drawer from registered drawer getter functions.
-   * ---------------------------------------- */
+  /**
+   * Gets a drawer by name.
+   * @global
+   * @param {string} nm
+   * @param {Object|unset} [paramObj]
+   * @return {DrawBlock|null}
+   */
   fetchDrawer = function(nm, paramObj) {
     return global.lovecUtil.db.drawer.read(nm, Function.airNull)(paramObj);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a consumer from registered consumer getter functions.
-   * ---------------------------------------- */
+  /**
+   * Gets a consumer by name.
+   * @global
+   * @param {string} nm
+   * @param {Object|unset} [paramObj]
+   * @return {Consume|null}
+   */
   fetchConsumer = function(nm, paramObj) {
     return global.lovecUtil.db.consumer.read(nm, Function.airNull)(paramObj);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a dialog by name from registered ones.
-   * ---------------------------------------- */
+  /**
+   * Gets a dialog by name.
+   * @global
+   * @param {string} nm
+   * @return {Dialog}
+   */
   fetchDialog = function(nm) {
     return global.lovecUtil.db.dialog.read(nm, global.lovecUtil.db.dialog.read("def"));
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a dialog flow by name from registered ones.
-   * ---------------------------------------- */
+  /**
+   * Gets a dialog flow by name (as data array).
+   * @global
+   * @param {string} nm
+   * @return {Array}
+   */
   fetchDialogFlow = function(nm) {
     return global.lovecUtil.db.dialFlow.read(nm, Array.air);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Gets a setting value (must be registered through {CLS_settingTerm}).
-   * ---------------------------------------- */
+  /**
+   * Gets a setting value by name.
+   * The setting must be registered through {@link CLS_settingTerm}.
+   * @global
+   * @param {string} nm
+   * @param {boolean|unset} [useScl] - If true, the result will be scaled.
+   * @return {any}
+   */
   fetchSetting = function(nm, useScl) {
     return global.lovecUtil.db.settingTerm.read(nm, Function.airNull)(useScl);
   };
@@ -481,34 +526,41 @@
   /* <---------- register ----------> */
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used for stat value, where JavaScript arrow functions won't work.
-   * ---------------------------------------- */
+  /**
+   * Used for stat value, where arrow function doesn't work.
+   * @global
+   * @param {function(Table): void} tableF
+   * @return {StatValue}
+   */
   newStatValue = function(tableF) {
-    return new StatValue() {display(tb) {
+    return extend(StatValue, {display(tb) {
       tableF(tb);
-    }};
+    }});
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a new stat.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nmMod
+   * @param {string} nm
+   * @param {StatCat|unset} [statCateg]
+   * @return {void}
+   */
   newStat = function(nmMod, nm, statCateg) {
     if(global.lovecUtil.db.stat[nmMod] === undefined) global.lovecUtil.db.stat[nmMod] = {};
     global.lovecUtil.db.stat[nmMod][nm] = new Stat(nmMod + "-stat-" + nm, tryVal(statCateg, StatCat.function));
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a new stat unit.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nmMod
+   * @param {string} nm
+   * @param {any} param
+   * @return {void}
+   */
   newStatUnit = function(nmMod, nm, param) {
     if(global.lovecUtil.db.statUnit[nmMod] === undefined) global.lovecUtil.db.statUnit[nmMod] = {};
     global.lovecUtil.db.statUnit[nmMod][nm] = param == null ?
@@ -517,11 +569,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a new stat category.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nmMod
+   * @param {string} nm
+   * @return {void}
+   */
   newStatCategory = function(nmMod, nm) {
     if(global.lovecUtil.db.statCategory[nmMod] === undefined) global.lovecUtil.db.statCategory[nmMod] = {};
     global.lovecUtil.db.statCategory[nmMod][nm] = extend(StatCat, nmMod + "-" + nm, {
@@ -544,11 +598,12 @@
 
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Registers a surface shader, mostly used for floor rendering as cache floor.
-     * ---------------------------------------- */
+    /**
+     * Registers a surface shader.
+     * @global
+     * @param {string} nmFrag
+     * @return {void}
+     */
     newSurfaceShader = function(nmFrag) {
       let shader;
       try {
@@ -563,11 +618,12 @@
     };
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Registers a region shader for texture region rendering.
-     * ---------------------------------------- */
+    /**
+     * Registers a texture region shader.
+     * @global
+     * @param {string} nmFrag
+     * @return {void}
+     */
     newRegionShader = function(nmFrag) {
       let shader;
       try {
@@ -617,61 +673,67 @@
   })();
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a shader-based cache layer.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {Shader|null} shader
+   * @param {CacheLayer|unset} [cacheLayFallback]
+   * @return {void}
+   */
   newCacheLayer = function(nm, shader, cacheLayFallback) {
-    if(shader == null) return tryVal(cacheLayFallback, CacheLayer.normal);
-    let cacheLay = new CacheLayer.ShaderLayer(shader);
+    let cacheLay = shader == null ? tryVal(cacheLayFallback, CacheLayer.normal) : new CacheLayer.ShaderLayer(shader);
     CacheLayer.add(cacheLay);
     global.lovecUtil.db.cacheLayer[nm] = cacheLay;
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a weapon template.
-   * Format for {tempGetter}: {() => temp}.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {function(): Function} tempGetter
+   * @return {void}
+   */
   newWeaponTemplate = function(nm, tempGetter) {
     if(global.lovecUtil.db.weaponTemplate.includes(nm)) return;
     global.lovecUtil.db.weaponTemplate.push(nm, tempGetter());
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a bullet template.
-   * Format for {tempGetter}: {() => temp}.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {function(): Function} tempGetter
+   * @return {void}
+   */
   newBulletTemplate = function(nm, tempGetter) {
     if(global.lovecUtil.db.bulletTemplate.includes(nm)) return;
     global.lovecUtil.db.bulletTemplate.push(nm, tempGetter());
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a part template.
-   * Format for {tempGetter}: {() => temp}.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {function(): Function} tempGetter
+   * @return {void}
+   */
   newPartTemplate = function(nm, tempGetter) {
     if(global.lovecUtil.db.partTemplate.includes(nm)) return;
     global.lovecUtil.db.partTemplate.push(nm, tempGetter());
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Registers an ability setter.
-   * Format for {getter}: {paramObj => abi}.
-   * ---------------------------------------- */
+  /**
+   * Registers an ability.
+   * @global
+   * @param {string} nm
+   * @param {function(Object|unset) => Ability} getter
+   * @return {void}
+   */
   newAbility = function(nm, getter) {
     Events.on(ContentInitEvent, () => {
       if(global.lovecUtil.db.ability.includes(nm)) return;
@@ -680,12 +742,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Registers an AI controller setter.
-   * Format for {getter}: {paramObj => ctrl}.
-   * ---------------------------------------- */
+  /**
+   * Registers an AI controller.
+   * @global
+   * @param {string} nm
+   * @param {function(Object|unset) => AIController} getter
+   * @return {void}
+   */
   newAi = function(nm, getter) {
     Events.on(ContentInitEvent, () => {
       if(global.lovecUtil.db.ai.includes(nm)) return;
@@ -694,12 +757,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Registers a new target sorting function.
-   * Format for {costGetter}: {(unit, x, y) => cost}.
-   * ---------------------------------------- */
+  /**
+   * Registers a target sorting function.
+   * @global
+   * @param {string} nm
+   * @param {function(Unit, number, number) => number} costGetter
+   * @return {void}
+   */
   newSortF = function(nm, costGetter) {
     global.lovecUtil.db.sortF[nm] = extend(Units.Sortf, {cost(unit, x, y) {
       return costGetter(unit, x, y);
@@ -707,23 +771,26 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {newSortF} that uses a property for cost calculation.
-   * Larger value means less priority.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link newSortF} that uses a property for cost calculation.
+   * Largers value means less priority.
+   * @global
+   * @param {string} nm
+   * @param {function(Unit, number, number) => number} propGetter
+   * @return {void}
+   */
   newPropSortF = function(nm, propGetter) {
     newSortF(nm, (unit, x, y) => propGetter(unit, x, y) + Mathf.dst2(unit.x, unit.y, x, y) / 6400.0);
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * @ARGS: nm, sortF1, sortF2, sortF3, ...
-   * Variant of {newSortF} that mixes a series of sorting functions.
-   * ---------------------------------------- */
+  /**
+   * Variant of {@link newSortF} that mixes a series of sorting functions.
+   * <br> <ARGS>: nm, sortF1, sortF2, sortF3, ...
+   * @global
+   * @param {string} nm
+   * @return {void}
+   */
   newMixSortF = function(nm) {
     let sortFs = Array.from(arguments).splice(1);
     global.lovecUtil.db.sortF[nm] = extend(Units.Sortf, {cost(unit, x, y) {
@@ -732,12 +799,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a drawer.
-   * Format for {getter}: {paramObj => drawer}.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {function(Object|unset): DrawBlock} getter
+   * @return {void}
+   */
   newDrawer = function(nm, getter) {
     Events.on(ContentInitEvent, () => {
       if(global.lovecUtil.db.drawer.includes(nm)) return;
@@ -746,12 +814,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a consumer.
-   * Format for {getter}: {paramObj => cons}.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {function(Object|unset): Consume} getter
+   * @return {void}
+   */
   newConsumer = function(nm, getter) {
     Events.on(ContentInitEvent, () => {
       if(global.lovecUtil.db.consumer.includes(nm)) return;
@@ -760,12 +829,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a dialog.
-   * Format for {getter}: {() => dial}.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {function(): Dialog} getter
+   * @return {void}
+   */
   newDialog = function(nm, getter) {
     Events.run(ClientLoadEvent, () => {
       if(global.lovecUtil.db.dialog.includes(nm)) return;
@@ -774,17 +844,20 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a key binding.
-   * Format for {scr}: {unit_pl => {...}}.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {KeyCode} keyCodeDef - The default key.
+   * @param {string} categ
+   * @param {function(Unit, Tile|null): void} scr - <ARGS>: unitPlayer, tMouse.
+   * @return {void}
+   */
   newKeyBind = function(nm, keyCodeDef, categ, scr) {
     Events.run(ClientLoadEvent, () => {
       Core.app.post(() => {
-        global.lovec.varGen.addKeyBind(nm, keyCodeDef, categ);
-        let keyBind = global.lovec.varGen.bindings[nm];
+        VARGEN.addKeyBind(nm, keyCodeDef, categ);
+        let keyBind = VARGEN.bindings[nm];
         if(global.lovecUtil.db.keyBindListener.includes(keyBind)) return;
         global.lovecUtil.db.keyBindListener.push(keyBind, scr);
       });
@@ -792,11 +865,13 @@
   };
 
 
-  /* ----------------------------------------
-   * NOTE:
-   *
+  /**
    * Registers a dialog flow.
-   * ---------------------------------------- */
+   * @global
+   * @param {string} nm
+   * @param {Array} dialFlowArr - See {@link CLS_dialogFlowBuilder}.
+   * @return {void}
+   */
   newDialogFlow = function(nm, dialFlowArr) {
     Events.run(ContentInitEvent, () => {
       if(global.lovecUtil.db.dialFlow.includes(nm)) return;
