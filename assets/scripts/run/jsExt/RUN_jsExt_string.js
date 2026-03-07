@@ -23,14 +23,11 @@
   /* <---------- string ----------> */
 
 
-  var ptp = String.prototype;
-
-
   /**
    * Gets hash value that is unique to this string.
    * @return {number}
    */
-  ptp.toHash = function() {
+  String.prototype.toHash = function() {
     let hash = 0;
     if(this.length === 0) return hash;
     let i = 0, iCap = this.iCap();
@@ -48,7 +45,7 @@
    * Encodes this string to hexadecimal numbers.
    * @return {string}
    */
-  ptp.encodeHex = function() {
+  String.prototype.encodeHex = function() {
     let str = "";
     let l, i = 0, iCap = this.iCap();
     while(i < iCap) {
@@ -65,7 +62,7 @@
    * Decodes this string from hexadecimal numbers.
    * @return {string}
    */
-  ptp.decodeHex = function() {
+  String.prototype.decodeHex = function() {
     let str = "";
     let l, i = 0, iCap = this.iCap();
     while(i < iCap) {
@@ -82,7 +79,7 @@
    * Encodes this string with {@link Base64Coder}.
    * @return {string}
    */
-  ptp.encode64 = function() {
+  String.prototype.encode64 = function() {
     return Base64Coder.encodeString(this);
   };
 
@@ -91,7 +88,7 @@
    * Decodes this string with {@link Base64Coder}.
    * @return {string}
    */
-  ptp.decode64 = function() {
+  String.prototype.decode64 = function() {
     return Base64Coder.decodeString(this);
   };
 
@@ -102,7 +99,7 @@
    * <br> <ARGS>: str1, str2, str3, ...
    * @return {boolean}
    */
-  ptp.includesAny = function() {
+  String.prototype.includesAny = function() {
     const thisStr = this;
 
     return arguments[0] instanceof Array ?
@@ -117,7 +114,7 @@
    * <br> <ARGS>: str1, str2, str3, ...
    * @return {boolean}
    */
-  ptp.includesAll = function() {
+  String.prototype.includesAll = function() {
     const thisStr = this;
 
     return arguments[0] instanceof Array ?
@@ -133,7 +130,7 @@
    * <br> <ARGS>: str1, str2, str3, ...
    * @return {boolean}
    */
-  ptp.equalsAny = function() {
+  String.prototype.equalsAny = function() {
     const thisStr = this;
 
     return arguments[0] instanceof Array ?

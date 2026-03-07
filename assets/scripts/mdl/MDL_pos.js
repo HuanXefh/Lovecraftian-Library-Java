@@ -199,6 +199,22 @@
 
 
   /**
+   * Variant of {@link _rayCheck_solid} for blocks that are solid to leg units.
+   * @param {number} x1
+   * @param {number} x2
+   * @param {number} y1
+   * @param {number} y2
+   * @return {boolean}
+   */
+  const _rayCheck_legSolid = function(x1, y1, x2, y2) {
+    return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) => {
+      return EntityCollisions.legsSolid(tx, ty);
+    });
+  };
+  exports._rayCheck_legSolid = _rayCheck_legSolid;
+
+
+  /**
    * Whether the ray passes liquid or empty floor.
    * @param {number} x1
    * @param {number} y1
@@ -281,6 +297,26 @@
     });
   };
   exports._rayFind_solid = _rayFind_solid;
+
+
+  /**
+   * Gets first tile that is solid to leg units on the way.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @return {Tile|null}
+   */
+  const _rayFind_legSolid = function(x1, y1, x2, y2) {
+    let ot;
+    return LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) => {
+      ot = Vars.world.tile(tx, ty);
+      return ot == null || !EntityCollisions.legsSolid(tx, ty) ?
+        null :
+        ot;
+    });
+  };
+  exports._rayFind_legSolid = _rayFind_legSolid;
 
 
   /**

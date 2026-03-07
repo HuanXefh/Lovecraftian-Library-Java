@@ -194,7 +194,7 @@
           // Liquid source gives 100.0 RPM, for test
           val += 100.0;
         } else {
-          val += FRAG_fluid.addLiquid(ob, b, VARGEN.auxTor, -amt, true, true) * amt * 60.0;
+          val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true) * amt * 60.0;
         };
         i += 2;
       };

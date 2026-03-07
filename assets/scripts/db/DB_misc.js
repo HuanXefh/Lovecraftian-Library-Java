@@ -634,6 +634,32 @@ const db = {
     ],
 
 
+    /**
+     * Properties that are saved in a PLSAV.
+     * <br> <ROW>: header, def, arrMode.
+     */
+    pHeader: [
+
+      "save-map", "!UNDEF", null,
+
+      "global-bits", [], "string",
+      "global-bit-hash", [], "string",
+
+    ],
+
+
+    /**
+     * Safe properties in PLSAV.
+     * <br> <ROW>: header.
+     */
+    pSafe: [
+
+      "global-bits",
+      "global-bit-hash",
+
+    ],
+
+
   },
 
 

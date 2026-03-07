@@ -106,7 +106,7 @@
 
 
   /**
-   * Gets all headers foudn in some recipe module.
+   * Gets all headers found in some recipe module.
    * @param {RecipeModule} rcMdl
    * @return {Array<string>}
    */

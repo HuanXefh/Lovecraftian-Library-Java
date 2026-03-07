@@ -23,58 +23,49 @@
   /* <---------- object ----------> */
 
 
-  var cls = Object;
-
-
-  cls.air = {};
+  Object.air = {};
 
 
   /* <---------- function ----------> */
 
 
-  var cls = Function;
-
-
   /** @type {function(): void} */
-  cls.air = function() {};
+  Function.air = function() {};
   /**
    * @template T
    * @type {function(T): T}
    */
-  cls.airSelf = function(val) {return val};
+  Function.airSelf = function(val) {return val};
   /** @type {function(): number} */
-  cls.airZero = function() {return 0.0};
+  Function.airZero = function() {return 0.0};
   /** @type {function(): number} */
-  cls.airOne = function() {return 1.0};
+  Function.airOne = function() {return 1.0};
   /** @type {function(): number} */
-  cls.airOneMinus = function() {return -1.0};
+  Function.airOneMinus = function() {return -1.0};
   /** @type {function(): number} */
-  cls.airInfinity = function() {return Infinity};
+  Function.airInfinity = function() {return Infinity};
   /** @type {function(): boolean} */
-  cls.airFalse = function() {return false};
+  Function.airFalse = function() {return false};
   /** @type {function(): boolean} */
-  cls.airTrue = function() {return true};
+  Function.airTrue = function() {return true};
   /** @type {function(boolean): boolean} */
-  cls.airBoolInv = function(bool) {return !bool};
+  Function.airBoolInv = function(bool) {return !bool};
   /** @type {function(): string} */
-  cls.airStrEmpty = function() {return ""};
+  Function.airStrEmpty = function() {return ""};
   /** @type {function(): Array} */
-  cls.airArr = function() {return Array.air};
+  Function.airArr = function() {return Array.air};
   /** @type {function(): Object} */
-  cls.airObj = function() {return Object.air};
+  Function.airObj = function() {return Object.air};
   /** @type {function(): null} */
-  cls.airNull = function() {return null};
+  Function.airNull = function() {return null};
   /** @type {function(): Color} */
-  cls.airWhite = function() {return Color.white};
+  Function.airWhite = function() {return Color.white};
   /** @type {function(): Color} */
-  cls.airBlack = function() {return Color.black};
+  Function.airBlack = function() {return Color.black};
 
 
   /* <---------- array ----------> */
 
 
-  var cls = Array;
-
-
-  cls.air = [];
-  cls.airZero = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+  Array.air = [];
+  Array.airZero = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];

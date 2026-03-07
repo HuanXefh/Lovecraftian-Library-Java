@@ -19,7 +19,6 @@ const float params[4 * 3] = float[](
 
 
 float getTester(vec2 pos, float time) {
-
 	float tester = (
 		texture2D(u_noise, pos / DSCALE + vec2(time) * vec2(-0.9, 0.8)).r
 		+ texture2D(u_noise, pos / DSCALE + vec2(time * 1.2) * vec2(0.8, -1.0)).r
@@ -27,21 +26,17 @@ float getTester(vec2 pos, float time) {
 	tester = abs(tester - 0.5) * 7.5 + 0.2;
 
 	return tester;
-
 }
 
 
 void setColor(inout vec3 colorMod, float tester) {
-
   for(int i = 0; i < params.length(); i += 3) {
     if(tester > params[i] && tester < params[i + 1]) colorMod *= params[i + 2];
   };
-
 }
 
 
 void main() {
-
   float time1 = u_time / 16000.0;
 	float time2 = u_time / 10000.0;
 
@@ -58,5 +53,4 @@ void main() {
   setColor(colorMod, tester);
 
   gl_FragColor = vec4(max(colorMod.rgb, color.rgb * 0.85), min(color.a * 100.0, 1.0));
-
 }

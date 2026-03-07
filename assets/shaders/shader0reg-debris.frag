@@ -16,7 +16,6 @@ const float thr = 120.0;
 
 
 float getTester(vec2 pos) {
-
 	return mod((
 	  (pos.x + u_off * u_offCap / 22.5 + pos.y * 1.8 + sin(pos.x / 5.0 - pos.y / 100.0 + u_off) * 3.0)
 		+ sin(pos.y / 3.0 + u_off) * 10.0
@@ -26,12 +25,10 @@ float getTester(vec2 pos) {
 		+ 25.0
 		+ sin(pos.x / 4.0 - u_off) * 6.0), scl + u_off * u_offCap / 225.0
 	);
-
 }
 
 
 void main() {
-
   vec2 vecScl = vec2(1.0 / u_texsize.x, 1.0 / u_texsize.y);
 	vec2 pos = (v_texCoords - u_uv) / vecScl;
 	vec4 color = texture2D(u_texture, v_texCoords.xy);
@@ -50,5 +47,4 @@ void main() {
 	} else {
 		gl_FragColor = vec4(0.0);
 	};
-
 }

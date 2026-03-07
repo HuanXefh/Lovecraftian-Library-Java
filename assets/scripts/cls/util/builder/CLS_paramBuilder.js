@@ -18,14 +18,11 @@ const CLS_paramBuilder = newClass().initAbstrClass();
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_paramBuilder.prototype;
-
-
 /**
  * Builds the final object.
  * @return {Object}
  */
-ptp.build = function() {
+CLS_paramBuilder.prototype.build = function() {
   return tryVal(this.builderObj, Object.air);
 };
 

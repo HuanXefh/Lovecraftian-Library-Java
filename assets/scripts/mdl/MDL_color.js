@@ -116,7 +116,7 @@
       x++;
     };
     // Cursed color comparison
-    arr.sort((rgba1, rgba2) => RGB.calcLightness(thisFun.tmpColors[0].set(rgba1)) - RGB.calcLightness(thisFun.tmpColors[1].set(rgba2)));
+    arr.sort((rgba1, rgba2) => LCRgb.calcLightness(thisFun.tmpColors[0].set(rgba1)) - LCRgb.calcLightness(thisFun.tmpColors[1].set(rgba2)));
 
     return !useArcColor ?
       arr :

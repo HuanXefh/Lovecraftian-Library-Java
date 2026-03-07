@@ -116,6 +116,15 @@
       }),
 
 
+      acceptItem: function(b_f, itm) {
+        return false;
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
+      }),
+
+
       ex_updateLootTs: function() {
         comp_ex_updateLootTs(this);
       }

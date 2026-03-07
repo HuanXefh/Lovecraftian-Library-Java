@@ -23,13 +23,10 @@
   /* <---------- function ----------> */
 
 
-  var ptp = Function.prototype;
-
-
-  ptp.__SUPER_CLASS__ = null;
-  ptp.__IS_CLASS__ = false;
-  ptp.__IS_ABSTRACT_CLASS__ = false;
-  ptp.__IS_CONTENT_TEMPLATE__ = false;
+  Function.prototype.__SUPER_CLASS__ = null;
+  Function.prototype.__IS_CLASS__ = false;
+  Function.prototype.__IS_ABSTRACT_CLASS__ = false;
+  Function.prototype.__IS_CONTENT_TEMPLATE__ = false;
 
 
   /**
@@ -37,7 +34,7 @@
    * If this function is not a class, returns null instead.
    * @return {Function|null}
    */
-  ptp.getSuper = function() {
+  Function.prototype.getSuper = function() {
     return this.__SUPER_CLASS__;
   };
 
@@ -47,7 +44,7 @@
    * This is required for a class to function properly.
    * @return {this}
    */
-  ptp.initClass = function() {
+  Function.prototype.initClass = function() {
     let cls = this;
     let ins = this.prototype;
 
@@ -67,7 +64,7 @@
    * For abstract methods, see {@link Function#setAbstr}.
    * @return {this}
    */
-  ptp.initAbstrClass = function() {
+  Function.prototype.initAbstrClass = function() {
     this.initClass();
 
     this.__IS_ABSTRACT_CLASS__ = true;
@@ -80,6 +77,14 @@
 
 
   /**
+   * Calls super method from the parent class.
+   * Will throw error if no super method found.
+   * <br> <ARGS>: nmFun, arg1, arg2, arg3, ...
+   * @typedef {function(string, ...args): any} Function#super
+   */
+
+
+  /**
    * Lets a class extend another class.
    * Should be called before {@link Function#initClass}.
    * Super methods can be called with `this.super(nmFun, arg1, arg2, arg3, ...)` later.
@@ -87,7 +92,7 @@
    * @param {string|unset} [nm] - Name of the new class.
    * @return {this}
    */
-  ptp.extendClass = function(cls, nm) {
+  Function.prototype.extendClass = function(cls, nm) {
     if(typeof cls !== "function" || !cls.__IS_CLASS__) ERROR_HANDLER.throw("notClass", cls);
 
     Object.assign(this, cls);

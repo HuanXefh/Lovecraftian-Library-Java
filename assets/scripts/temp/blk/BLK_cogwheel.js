@@ -120,6 +120,7 @@
     let ob = ot.build;
     if(
       ob == null
+        || ob === b
         || (ob.tileX() !== b.tileX() && ob.tileY() !== b.tileY())
         || !b.ex_checkCogTransValid(ob)
     ) {

@@ -18,26 +18,21 @@ const float params[4 * 3] = float[](
 
 
 float getTester(vec2 pos, float time) {
-
   return (
     texture2D(u_noise, (pos) / NSCALE + vec2(time) * vec2(-0.9, 0.8)).r
     + texture2D(u_noise, (pos) / NSCALE + vec2(time * 1.1) * vec2(-0.8, -1.0)).r
   ) * 0.5;
-
 }
 
 
 void setColor(inout vec3 colorMod, float tester) {
-
   for(int i = 0; i < params.length(); i += 3) {
     if(tester > params[i] && tester < params[i + 1]) colorMod *= params[i + 2];
   };
-
 }
 
 
 void main() {
-
   float time = u_time / 12000.0;
 
   vec2 posRaw = v_texCoords.xy;
@@ -49,5 +44,4 @@ void main() {
   setColor(colorMod, tester);
 
   gl_FragColor = vec4(colorMod.rgb, min(color.a * 100.0, 1.0));
-
 }

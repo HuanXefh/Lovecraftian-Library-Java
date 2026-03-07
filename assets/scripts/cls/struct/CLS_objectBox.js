@@ -36,14 +36,11 @@ CLS_objectBox.prototype.init = function(obj) {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_objectBox.prototype;
-
-
 /**
  * Gets size of the box.
  * @return {number}
  */
-ptp.getSize = function() {
+CLS_objectBox.prototype.getSize = function() {
   return this.size;
 };
 
@@ -52,7 +49,7 @@ ptp.getSize = function() {
  * Gets available keys of the box.
  * @return {Array<string>}
  */
-ptp.getKeys = function() {
+CLS_objectBox.prototype.getKeys = function() {
   return this.keys;
 };
 

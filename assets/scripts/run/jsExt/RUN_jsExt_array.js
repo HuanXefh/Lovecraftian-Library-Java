@@ -23,15 +23,12 @@
   /* <---------- array ----------> */
 
 
-  var cls = Array;
-
-
   /**
    * Whether `ele` is found in any of these arrays.
    * <br> <ARGS>: ele, arr1, arr2, arr3, ...
    * @return {boolean}
    */
-  cls.someIncludes = function() {
+  Array.someIncludes = function() {
     let i = 1, iCap = arguments.length;
     while(i < iCap) {
       if(arguments[i].includes(arguments[0])) return true;
@@ -47,7 +44,7 @@
    * <br> <ARGS>: ele, arr1, arr2, arr3, ...
    * @return {boolean}
    */
-  cls.everyIncludes = function() {
+  Array.everyIncludes = function() {
     let i = 2, iCap = arguments.length;
     while(i < iCap) {
       if(!arguments[i].includes(arguments[0])) return false;
@@ -64,7 +61,7 @@
    * <br> <ARGS>: arr, shouldUpdateArr, ele1, ele2, ele3, ...
    * @return {boolean}
    */
-  cls.someMismatch = function() {
+  Array.someMismatch = function() {
     let arr = arguments[0];
     if(arr.length === 0) return true;
 
@@ -93,7 +90,7 @@
    * If `isStatistical`, the array will start at 1 instead of 0.
    * @return {Array<number>}
    */
-  cls.getIndArr = function(len, isStatistical) {
+  Array.getIndArr = function(len, isStatistical) {
     const arr = [];
 
     let i = 0;
@@ -106,14 +103,11 @@
   };
 
 
-  var ptp = Array.prototype;
-
-
   /**
    * Gets first element, null if not found.
    * @return {any}
    */
-  ptp.first = function() {
+  Array.prototype.first = function() {
     return this[0] == null ? null : this[0];
   };
 
@@ -122,7 +116,7 @@
    * Gets last element, null if not found.
    * @return {any}
    */
-  ptp.last = function() {
+  Array.prototype.last = function() {
     return this.length === 0 ? null : this[this.length - 1];
   };
 
@@ -131,7 +125,7 @@
    * Gets index of the last element, 0 if empty array.
    * @return {number}
    */
-  ptp.lastInd = function() {
+  Array.prototype.lastInd = function() {
     return this.length === 0 ? 0 : this.length - 1;
   };
 
@@ -142,7 +136,7 @@
    * @param {Array|unset} [arr]
    * @return {this}
    */
-  ptp.cpy = newMultiFunction(
+  Array.prototype.cpy = newMultiFunction(
     [], function() {
       return this.slice();
     },
@@ -159,7 +153,7 @@
    * @param {boolean|unset} [returnNull] - If true, this method will return null instead of 0.0 if element not in the array.
    * @return {number|null}
    */
-  ptp.getIndFrac = function(ele, useInd, returnNull) {
+  Array.prototype.getIndFrac = function(ele, useInd, returnNull) {
     let ind = useInd ? ele : this.indexOf(ele);
     return ind < 0 ?
       (returnNull ? null : 0.0) :
@@ -172,7 +166,7 @@
    * @param {any} ele
    * @return {this}
    */
-  ptp.pushUnique = function(ele) {
+  Array.prototype.pushUnique = function(ele) {
     let cond = true;
     if(this.includes(ele)) cond = false;
     if(ele instanceof Array && this.some(ele0 => ele0 instanceof Array && ele0.equals(ele))) cond = false;
@@ -187,7 +181,7 @@
    * @param {any} ele
    * @return {this}
    */
-  ptp.pushNonNull = function(ele) {
+  Array.prototype.pushNonNull = function(ele) {
     if(ele == null) return this;
 
     this.push(ele);
@@ -202,7 +196,7 @@
    * @param {any} eles_p
    * @return {this}
    */
-  ptp.pushAll = function(eles_p) {
+  Array.prototype.pushAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.push(eles_p) :
       eles_p.forEachFast(ele => this.push(ele));
@@ -217,7 +211,7 @@
    * @param {number} ind
    * @return {number} Array length.
    */
-  ptp.insert = function(ele, ind) {
+  Array.prototype.insert = function(ele, ind) {
     let i = this.iCap();
     while(i > ind) {
       this[i] = this[i - 1];
@@ -236,7 +230,7 @@
    * @param {number} ind
    * @return {this}
    */
-  ptp.insertAll = function(eles_p, ind) {
+  Array.prototype.insertAll = function(eles_p, ind) {
     let eles = eles_p instanceof Array ? eles_p : [eles_p];
     let i = this.iCap(), j = 0, jCap = eles.iCap();
     while(i > ind) {
@@ -258,7 +252,7 @@
    * @param {any} ele
    * @return {any} The element removed or null if not found.
    */
-  ptp.remove = function(ele) {
+  Array.prototype.remove = function(ele) {
     let ind = this.indexOf(ele);
     if(ind > -1) {
       return this.splice(ind, 1)[0];
@@ -274,7 +268,7 @@
    * @param {any} eles_p
    * @return {this}
    */
-  ptp.removeAll = function(eles_p) {
+  Array.prototype.removeAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.remove(eles_p) :
       eles_p.forEachFast(ele => this.remove(ele));
@@ -290,7 +284,7 @@
    * @param {number|unset} [rowInd]
    * @return {this}
    */
-  ptp.removeRow = function(ord, rowInd) {
+  Array.prototype.removeRow = function(ord, rowInd) {
     if(ord == null) ord = 1;
     if(rowInd == null) rowInd = 0;
     // Don't remove anything if index is negative
@@ -307,7 +301,7 @@
    * @param {any} ele
    * @return {number} Array length.
    */
-  ptp.pull = function(ele) {
+  Array.prototype.pull = function(ele) {
     while(this.includes(ele)) {
       this.remove(ele);
     };
@@ -321,7 +315,7 @@
    * @param {any} eles_p
    * @return {this}
    */
-  ptp.pullAll = function(eles_p) {
+  Array.prototype.pullAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.pull(eles_p) :
       eles_p.forEachFast(ele => this.pull(ele));
@@ -336,7 +330,7 @@
    * @param {boolean|unset} [forResult] - If true, returns removed elements instead of this array.
    * @return {Array}
    */
-  ptp.shiftAll = function(amt, forResult) {
+  Array.prototype.shiftAll = function(amt, forResult) {
     if(amt == null) amt = 1;
 
     let i = 0;
@@ -346,14 +340,14 @@
         i++;
       };
       return this;
-    } else {
-      let arr = [];
-      while(i < amt) {
-        arr.push(this.shift());
-        i++;
-      };
-      return arr;
     };
+
+    let arr = [];
+    while(i < amt) {
+      arr.push(this.shift());
+      i++;
+    };
+    return arr;
   };
 
 
@@ -362,7 +356,7 @@
    * @param {any} eles_p
    * @return {this}
    */
-  ptp.unshiftAll = function(eles_p) {
+  Array.prototype.unshiftAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.unshift(eles_p) :
       eles_p.reverse().forEachFast(ele => this.unshift(ele));
@@ -377,7 +371,7 @@
    * @param {any} ele2
    * @return {this}
    */
-  ptp.swap = function(ele1, ele2) {
+  Array.prototype.swap = function(ele1, ele2) {
     return this.swapByInd(
       this.indexOf(ele1),
       this.indexOf(ele2),
@@ -391,7 +385,7 @@
    * @param {number} ind2
    * @return {this}
    */
-  ptp.swapByInd = function(ind1, ind2) {
+  Array.prototype.swapByInd = function(ind1, ind2) {
     if(ind1 < 0 || ind2 < 0) return this;
 
     let tmp = this[ind2];
@@ -407,7 +401,7 @@
    * @param {function(any): any} mapF
    * @return {this}
    */
-  ptp.inSituMap = function(mapF) {
+  Array.prototype.inSituMap = function(mapF) {
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
       this[i] = mapF(this[i]);
@@ -423,7 +417,7 @@
    * @param {function(any): boolean} boolF
    * @return {this}
    */
-  ptp.inSituFilter = function(boolF) {
+  Array.prototype.inSituFilter = function(boolF) {
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
       if(!boolF(this[i])) this[i] = "!PENDING";
@@ -441,7 +435,7 @@
    * @param {boolean|unset} [rev] - If true, the order is reversed (larger to smaller).
    * @return {this}
    */
-  ptp.numSort = function(rev) {
+  Array.prototype.numSort = function(rev) {
     return this.sort((a, b) => rev ? (b - a) : (a - b));
   };
 
@@ -450,7 +444,7 @@
    * Variant of {@link Array#sort} for mixed-type array.
    * @return {this}
    */
-  ptp.mixSort = function thisFun() {
+  Array.prototype.mixSort = function thisFun() {
     return this.sort((a, b) => {
       // Sort different types
       if(typeof a !== typeof b) return thisFun.ordList.indexOf(typeof a) - thisFun.ordList.indexOf(typeof b);
@@ -471,7 +465,7 @@
    * @param {number|unset} [ord]
    * @return {this}
    */
-  ptp.randomize = function(ord) {
+  Array.prototype.randomize = function(ord) {
     if(ord == null) ord = 1;
 
     let iCap = this.iCap();
@@ -498,7 +492,7 @@
    * @param {number|unset} [off]
    * @return {this}
    */
-  ptp.substitute = function(mapF, ord, off) {
+  Array.prototype.substitute = function(mapF, ord, off) {
     if(ord == null) ord = 1;
     if(off == null) off = 0;
 
@@ -517,7 +511,7 @@
    * <br> <ARGS>: ele1, ele2, ele3, ...
    * @return {boolean}
    */
-  ptp.includesAny = function() {
+  Array.prototype.includesAny = function() {
     let i = 0, iCap = arguments.length;
     while(i < iCap) {
       if(this.includes(arguments[i])) return true;
@@ -533,7 +527,7 @@
    * <br> <ARGS>: ele1, ele2, ele3, ...
    * @return {boolean}
    */
-  ptp.includesAll = function() {
+  Array.prototype.includesAll = function() {
     let i = 0, iCap = arguments.length;
     while(i < iCap) {
       if(!this.includes(arguments[i])) return false;
@@ -550,7 +544,7 @@
    * @param {(function(any): boolean)|unset} [mapF]
    * @return {boolean}
    */
-  ptp.equals = function(arr, mapF) {
+  Array.prototype.equals = function(arr, mapF) {
     let i = 0, iCap = this.iCap();
     if(iCap !== arr.length) return false;
 
@@ -576,11 +570,11 @@
    * @param {Array} arr
    * @return {boolean}
    */
-  ptp.looseEquals = function(arr) {
+  Array.prototype.looseEquals = function(arr) {
     return Array.prototype.looseEquals.tmpArr1.cpy(this).mixSort().equals(Array.prototype.looseEquals.tmpArr2.cpy(arr).mixSort());
   };
-  ptp.looseEquals.tmpArr1 = [];
-  ptp.looseEquals.tmpArr2 = [];
+  Array.prototype.looseEquals.tmpArr1 = [];
+  Array.prototype.looseEquals.tmpArr2 = [];
 
 
   /**
@@ -588,7 +582,7 @@
    * @param {Array} arr
    * @return {boolean}
    */
-  ptp.looseIncludes = function(arr) {
+  Array.prototype.looseIncludes = function(arr) {
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
       if(!(this[i] instanceof Array)) ERROR_HANDLER.throw("not3dArray");
@@ -607,7 +601,7 @@
    * @param {number|unset} [off]
    * @return {boolean}
    */
-  ptp.colIncludes = function(ele, ord, off) {
+  Array.prototype.colIncludes = function(ele, ord, off) {
     if(ord == null) ord = 1;
     if(off == null) off = 0;
 
@@ -626,7 +620,7 @@
    * @param {Array} arr
    * @return {boolean}
    */
-  ptp.subsetOf = function(arr) {
+  Array.prototype.subsetOf = function(arr) {
     const countArr = this.toCountArr();
 
     let i = 0, iCap = countArr.iCap();
@@ -649,7 +643,7 @@
    * @param {number|unset} [off]
    * @return {number}
    */
-  ptp.count = function(ele, mapF, ord, off) {
+  Array.prototype.count = function(ele, mapF, ord, off) {
     let count = 0;
     if(ord == null) ord = 1;
     if(off == null) off = 0;
@@ -677,7 +671,7 @@
    * @param {(function(any): any)|unset} [mapF]
    * @return {Array}
    */
-  ptp.unique = function(mapF) {
+  Array.prototype.unique = function(mapF) {
     const arr = [];
 
     let i = 0, iCap = this.iCap();
@@ -708,7 +702,7 @@
    * @param {number|unset} [amt]
    * @return {Array}
    */
-  ptp.sample = function(amt) {
+  Array.prototype.sample = function(amt) {
     const arr = Array.prototype.sample.tmpArr.cpy(this).randomize();
     if(amt == null) amt = this.iCap();
 
@@ -716,7 +710,7 @@
       arr.slice() :
       arr.slice(0, amt);
   };
-  ptp.sample.tmpArr = [];
+  Array.prototype.sample.tmpArr = [];
 
 
   /**
@@ -726,7 +720,7 @@
    * @param {(function(any): any)|unset} [mapF]
    * @return {Array}
    */
-  ptp.intersect = function(eles_p, mapF) {
+  Array.prototype.intersect = function(eles_p, mapF) {
     const arr = [];
 
     let i = 0, iCap = this.iCap();
@@ -760,7 +754,7 @@
    * @param {(function(any): any)|unset} [mapF]
    * @return {Array}
    */
-  ptp.differ = function(eles_p, mapF) {
+  Array.prototype.differ = function(eles_p, mapF) {
     const arr = [];
 
     let i = 0, iCap = this.iCap();
@@ -794,7 +788,7 @@
    * @param {number|unset} [def] - If set, incomplete rows will be filled with `def`.
    * @return {Array}
    */
-  ptp.chunk = function(ord, def) {
+  Array.prototype.chunk = function(ord, def) {
     const arr = [];
     if(ord == null) ord = 1;
 
@@ -823,7 +817,7 @@
    * {@link Array#flat}, which doesn't exist in Rhino.
    * @return {Array}
    */
-  ptp.flatten = function() {
+  Array.prototype.flatten = function() {
     const arr = [];
 
     let i = 0, iCap = this.iCap();
@@ -845,7 +839,7 @@
    * @param {number|unset} [maxTry]
    * @return {Array}
    */
-  ptp.flattenAll = function(maxTry) {
+  Array.prototype.flattenAll = function(maxTry) {
     let i = 0, iCap = tryVal(maxTry, 500), arr = this.flatten();
     while(i < iCap && arr.some(ele => ele instanceof Array)) {
       arr = arr.flatten();
@@ -863,7 +857,7 @@
    * @param {number|unset} [off]
    * @return {Array} <ROW>: ele, count.
    */
-  ptp.toCountArr = function(ord, off) {
+  Array.prototype.toCountArr = function(ord, off) {
     const arr = [];
     if(ord == null) ord = 1;
     if(off == null) off = 0;
@@ -886,7 +880,7 @@
    * @param {function(any): string|null} categGetter - Determines which category an element is in. If this returns null, the element will be skipped.
    * @return {Object}
    */
-  ptp.categorize = function(categGetter) {
+  Array.prototype.categorize = function(categGetter) {
     let key;
     return this.reduce((obj, ele) => {
       key = categGetter(ele);
@@ -903,7 +897,7 @@
    * @param {number|unset} [ord]
    * @return {number}
    */
-  ptp.rowAmt = function(ord) {
+  Array.prototype.rowAmt = function(ord) {
     if(this.length === 0) return 0;
     if(ord == null) ord = 1;
 
@@ -920,14 +914,14 @@
         i++;
       };
       return true;
-    } else {
-      let tmpArr = [];
-      while(i < iCap) {
-        tmpArr.push(arr[rowInd + i]);
-        i++;
-      };
-      return nms.looseEquals(tmpArr);
     };
+
+    let tmpArr = [];
+    while(i < iCap) {
+      tmpArr.push(arr[rowInd + i]);
+      i++;
+    };
+    return nms.looseEquals(tmpArr);
   };
 
 
@@ -945,7 +939,7 @@
    *   "a", "c", 2,
    * ].read(["b", "c"]);                // Returns 1
    */
-  ptp.read = function(nms_p, def, isUnordered) {
+  Array.prototype.read = function(nms_p, def, isUnordered) {
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];
     let jCap = nms.iCap();
@@ -965,7 +959,7 @@
    * @param {boolean|unset} [isUnordered]
    * @return {number}
    */
-  ptp.readRowInd = function(nms_p, isUnordered) {
+  Array.prototype.readRowInd = function(nms_p, isUnordered) {
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];
     let jCap = nms.iCap();
@@ -984,7 +978,7 @@
    * @param {number|unset} [off]
    * @return {Array}
    */
-  ptp.readCol = function(ord, off) {
+  Array.prototype.readCol = function(ord, off) {
     const arr = [];
     if(ord == null) ord = 1;
     if(off == null) off = 0;
@@ -1007,7 +1001,7 @@
    * @param {any} [def]
    * @return {any}
    */
-  ptp.readRand = function(ord, off, def) {
+  Array.prototype.readRand = function(ord, off, def) {
     if(this.length === 0) return null;
 
     if(ord == null) ord = 1;
@@ -1025,7 +1019,7 @@
    * @param {boolean|unset} [isUnordered]
    * @return {Array}
    */
-  ptp.readList = function(nms_p, isUnordered) {
+  Array.prototype.readList = function(nms_p, isUnordered) {
     const arr = [];
 
     let i = 0, iCap = this.iCap();
@@ -1047,7 +1041,7 @@
    * @param {boolean|unset} [isUnordered]
    * @return {this}
    */
-  ptp.write = function(nms_p, val, isUnordered) {
+  Array.prototype.write = function(nms_p, val, isUnordered) {
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];
     let jCap = nms.iCap();
@@ -1072,7 +1066,7 @@
    * @param {boolean|unset} [isUnordered]
    * @return {this}
    */
-  ptp.removeFormatRow = function(nms_p, isUnordered) {
+  Array.prototype.removeFormatRow = function(nms_p, isUnordered) {
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];
     let jCap = nms.iCap();

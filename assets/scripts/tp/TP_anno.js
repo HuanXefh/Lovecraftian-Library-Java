@@ -90,10 +90,7 @@
    * Method is only available on server or in single player game.
    */
   new CLS_annotation("server", function() {
-    if(Vars.net.server()) return false;
-    if(!Vars.net.server() && !Vars.net.client()) return false;
-
-    return true;
+    return !Vars.net.server() && Vars.net.client();
   });
 
 
@@ -101,9 +98,7 @@
    * Method is only available on client.
    */
   new CLS_annotation("client", function() {
-    if(!Vars.net.server() && Vars.net.client()) return false;
-
-    return true;
+    return !(Vars.net.server() || !Vars.net.client());
   });
 
 

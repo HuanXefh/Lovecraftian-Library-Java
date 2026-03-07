@@ -27,9 +27,6 @@ CLS_valueNoise.prototype.init = function(w, h, gridW, gridH) {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_valueNoise.prototype;
-
-
 /**
  * Sets up vector data.
  * @override
@@ -38,7 +35,7 @@ var ptp = CLS_valueNoise.prototype;
  * @param {number|unset} [seed]
  * @return {void}
  */
-ptp.setVecData = function(base, cap, seed) {
+CLS_valueNoise.prototype.setVecData = function(base, cap, seed) {
   if(base == null) base = 0.0;
   if(cap == null) cap = 1.0;
   if(seed == null) seed = -1.0;
@@ -60,7 +57,7 @@ ptp.setVecData = function(base, cap, seed) {
  * @param {number|unset} [seed]
  * @return {Array<Array<number>>}
  */
-ptp.buildNoise = function(base, cap, seed) {
+CLS_valueNoise.prototype.buildNoise = function(base, cap, seed) {
   if(this.isBuilt) return this.noiseData;
   if(base == null) base = 0.0;
   if(cap == null) cap = 1.0;

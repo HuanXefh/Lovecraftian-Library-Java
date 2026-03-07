@@ -30,15 +30,12 @@ const nameModeMap = new ObjectMap();
 /* <---------- static method ----------> */
 
 
-var cls = CLS_damageTextMode;
-
-
 /**
  * Gets mode by name.
  * @param {string} nm
  * @return {CLS_damageTextMode}
  */
-cls.get = function(nm) {
+CLS_damageTextMode.get = function(nm) {
   return nameModeMap.get(nm);
 };
 
@@ -46,15 +43,12 @@ cls.get = function(nm) {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_damageTextMode.prototype;
-
-
 /**
  * Gets color of damage text.
  * @param {Team} team
  * @return {Color}
  */
-ptp.getColor = function(team) {
+CLS_damageTextMode.prototype.getColor = function(team) {
   return this.colorGetter(team);
 };
 
@@ -64,7 +58,7 @@ ptp.getColor = function(team) {
  * @param {string} str
  * @return {string}
  */
-ptp.getText = function(str) {
+CLS_damageTextMode.prototype.getText = function(str) {
   return this.strGetter(str);
 };
 

@@ -40,14 +40,11 @@ const insNms = [];
 /* <---------- static method ----------> */
 
 
-var cls = CLS_achievement;
-
-
 /**
  * Clears all completed achievements.
  * @return {void}
  */
-cls.clear = function() {
+CLS_achievement.clear = function() {
   if(Vars.headless) return;
 
   VARGEN.achievements.forEachFast(achievement => {
@@ -62,14 +59,11 @@ cls.clear = function() {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_achievement.prototype;
-
-
 /**
  * Gets mod of this achievement.
  * @return {Mod}
  */
-ptp.getMod = function() {
+CLS_achievement.prototype.getMod = function() {
   return fetchMod(this.mod);
 };
 
@@ -78,7 +72,7 @@ ptp.getMod = function() {
  * Gets header of this achievement.
  * @return {string}
  */
-ptp.getHeader = function() {
+CLS_achievement.prototype.getHeader = function() {
   return this.name;
 };
 
@@ -87,7 +81,7 @@ ptp.getHeader = function() {
  * Gets icon used by this achievement.
  * @return {TextureRegionDrawable}
  */
-ptp.getIcon = function() {
+CLS_achievement.prototype.getIcon = function() {
   return this.icon;
 };
 
@@ -97,7 +91,7 @@ ptp.getIcon = function() {
  * <br> <BUNDLE>: "info.common-info-achieve-<nmMod>-<nm>".
  * @return {string}
  */
-ptp.getText = function() {
+CLS_achievement.prototype.getText = function() {
   return MDL_bundle._info("common", "achieve-" + this.name);
 };
 
@@ -106,7 +100,7 @@ ptp.getText = function() {
  * Whether this achievement has been completed.
  * @return {boolean}
  */
-ptp.isCompleted = function() {
+CLS_achievement.prototype.isCompleted = function() {
   return Vars.headless ?
     false :
     Core.settings.getBool(this.getHeader(), false);
@@ -117,7 +111,7 @@ ptp.isCompleted = function() {
  * Completes this achievement.
  * @return {void}
  */
-ptp.complete = function() {
+CLS_achievement.prototype.complete = function() {
   if(Vars.headless || this.isCompleted()) return;
 
   Core.settings.put(this.getHeader(), true);

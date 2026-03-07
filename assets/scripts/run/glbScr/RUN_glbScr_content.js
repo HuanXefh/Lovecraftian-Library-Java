@@ -519,7 +519,10 @@
    * @return {any}
    */
   fetchSetting = function(nm, useScl) {
-    return global.lovecUtil.db.settingTerm.read(nm, Function.airNull)(useScl);
+    let setting = global.lovecUtil.db.settingTerm.read(nm);
+    if(setting == null) return null;
+
+    return setting.get(useScl);
   };
 
 
@@ -596,6 +599,26 @@
       Log.warn("[LOVEC] Failed to load shader " + nm.color(Pal.accent) + ":\n" + err);
     };
 
+
+    /**
+     * Registers a shader.
+     * @global
+     * @param {string} nm
+     * @param {function(): Shader} shaderGetter
+     * @return {void}
+     */
+    newShader = function(nm, shaderGetter) {
+      let shader;
+      try {
+        throwDebugError();
+        shader = shaderGetter();
+      } catch(err) {
+        shader = null;
+        warnShaderLoadFail(nm, err);
+      };
+
+      global.lovecUtil.db.shader[nm] = shader;
+    };
 
 
     /**
@@ -731,7 +754,7 @@
    * Registers an ability.
    * @global
    * @param {string} nm
-   * @param {function(Object|unset) => Ability} getter
+   * @param {function(Object|unset): Ability} getter
    * @return {void}
    */
   newAbility = function(nm, getter) {
@@ -746,7 +769,7 @@
    * Registers an AI controller.
    * @global
    * @param {string} nm
-   * @param {function(Object|unset) => AIController} getter
+   * @param {function(Object|unset): AIController} getter
    * @return {void}
    */
   newAi = function(nm, getter) {
@@ -761,7 +784,7 @@
    * Registers a target sorting function.
    * @global
    * @param {string} nm
-   * @param {function(Unit, number, number) => number} costGetter
+   * @param {function(Unit, number, number): number} costGetter
    * @return {void}
    */
   newSortF = function(nm, costGetter) {
@@ -773,10 +796,10 @@
 
   /**
    * Variant of {@link newSortF} that uses a property for cost calculation.
-   * Largers value means less priority.
+   * Larger value means less priority.
    * @global
    * @param {string} nm
-   * @param {function(Unit, number, number) => number} propGetter
+   * @param {function(Unit, number, number): number} propGetter
    * @return {void}
    */
   newPropSortF = function(nm, propGetter) {

@@ -23,15 +23,12 @@
   /* <---------- function ----------> */
 
 
-  var ptp = Function.prototype;
-
-
   /**
    * Lets a function class implements an interface.
    * @param {CLS_interface} intf
    * @return {this}
    */
-  ptp.implement = function(intf) {
+  Function.prototype.implement = function(intf) {
     const thisCls = this;
 
     if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);

@@ -29,15 +29,12 @@ CLS_interface.prototype.init = function(obj) {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_interface.prototype;
-
-
 /**
  * Makes a new interface by merging two interfaces.
  * @param {CLS_interface} intf
  * @return {CLS_interface}
  */
-ptp.extendInterface = function(intf) {
+CLS_interface.prototype.extendInterface = function(intf) {
   if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
 
   return new CLS_interface(mergeObjMixin(intf.interfaceObj, this.interfaceObj));
@@ -49,7 +46,7 @@ ptp.extendInterface = function(intf) {
  * @param {Function} cls
  * @return {boolean}
  */
-ptp.isImplementedBy = function(cls) {
+CLS_interface.prototype.isImplementedBy = function(cls) {
   return this.children.includes(cls);
 };
 

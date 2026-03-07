@@ -180,7 +180,7 @@
         str += "\n" + arr1[i];
       };
       str += "\n----------------------------------------------------";
-      str += "\n\nThe mod may not have full contents.\n[]"
+      str += "\n\nThe mod may not have full contents.\n[]";
       Events.run(ClientLoadEvent, () => Vars.ui.showErrorMessage(str));
     };
   };
@@ -343,9 +343,8 @@
 
       if(arguments.length === 1) {
         throw new Error(str);
-      } else {
-        throw new Error(str.format(Array.from(arguments).splice(1)));
       };
+      throw new Error(str.format(Array.from(arguments).splice(1)));
     },
 
 

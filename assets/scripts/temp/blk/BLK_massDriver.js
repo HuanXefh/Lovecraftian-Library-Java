@@ -58,6 +58,24 @@
   };
 
 
+  function comp_drawSelect(b) {
+    let ob = Vars.world.build(b.link);
+    if(ob == null) return;
+
+    MDL_draw._d_lineFlick(
+      b.x, b.y, ob.x, ob.y,
+      1.0, 0.5,
+      !b.block.delegee.bulCollidesTerrain ?
+        Pal.accent :
+        b.block.delegee.bulCollidesTerrainCaveOnly && !PARAM.isCaveMap ?
+          Pal.accent :
+          !MDL_pos._rayCheck_legSolid(b.x, b.y, ob.x, ob.y) ?
+            Pal.accent :
+            Pal.remove,
+    );
+  };
+
+
 /*
   ========================================
   Section: Application
@@ -169,6 +187,11 @@
 
       updateTile: function() {
         comp_updateTile(this);
+      },
+
+
+      drawSelect: function() {
+        comp_drawSelect(this);
       },
 
 

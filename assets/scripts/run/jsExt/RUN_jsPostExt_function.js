@@ -23,9 +23,6 @@
   /* <---------- function ----------> */
 
 
-  var ptp = Function.prototype;
-
-
   /**
    * Modifies the method with annotation.
    * <br> <IMPORTANT>: Should be applied last after any decorator!
@@ -34,7 +31,7 @@
    * @param {any} [skipVal] - Value returned if the original method is skipped.
    * @return {this}
    */
-  ptp.setAnno = function(nmAnno, args_p, skipVal) {
+  Function.prototype.setAnno = function(nmAnno, args_p, skipVal) {
     const thisFun = this;
 
     let anno = LCAnno[nmAnno];
@@ -63,7 +60,7 @@
    *
    * @return {Array<CLS_annotation>}
    */
-  ptp.getAnnos = function() {
+  Function.prototype.getAnnos = function() {
     if(this.annos == null) {
       this.annos = [];
     };

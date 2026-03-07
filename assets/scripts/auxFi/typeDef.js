@@ -98,19 +98,19 @@
    */
   /**
    * @global
-   * @typedef {Function} TemplateFunction
-   * @prop {boolean|unset} noSuper - If true, `this.super$xxx` won't be called.
-   * @prop {boolean|unset} override - If true, the previous method will be ignored.
-   * @prop {boolean|unset} final - If true, this method is fixed and won't be mixed later.
-   * @prop {string|unset} boolMode - For boolean operation with the previous method. <br> <VALS>: "none", "and", "or".
-   * @prop {string|unset} superBoolMode - Like `boolMode` but for `this.super$xxx`.
-   * @prop {string|unset} mergeMode - Handles mixing of returned values. <br> <VALS>: "object", "array", any function.
-   * @prop {number|unset} argLen - Expected argument length in final Java method, required if there's any argument.
-   * @prop {Function|unset} funPrev - Previous method before mixing. Do not set.
-   * @prop {Function|unset} funCur - Current method before mixing. Do not set.
+   * @typedef {Function<any>} TemplateFunction
+   * @prop {boolean|unset} [noSuper] - If true, `this.super$xxx` won't be called.
+   * @prop {boolean|unset} [override] - If true, the previous method will be ignored.
+   * @prop {boolean|unset} [final] - If true, this method is fixed and won't be mixed later.
+   * @prop {string|unset} [boolMode] - For boolean operation with the previous method. <br> <VALS>: "none", "and", "or".
+   * @prop {string|unset} [superBoolMode] - Like `boolMode` but for `this.super$xxx`.
+   * @prop {string|unset} [mergeMode] - Handles mixing of returned values. <br> <VALS>: "object", "array", any function.
+   * @prop {number|unset} [argLen] - Expected argument length in final Java method, required if there's any argument.
+   * @prop {Function|unset} [funPrev] - Previous method before mixing. Do not set.
+   * @prop {Function|unset} [funCur] - Current method before mixing. Do not set.
    */
   /**
-   * An ordered array of coorinates of n-dimensional points (flattened).
+   * An ordered array of coordinates of n-dimensional points (flattened).
    * @global
    * @typedef {Array<number>} PathData
    * @example
@@ -150,68 +150,68 @@
   /**
    * @global
    * @typedef {Object} RecipeBase
-   * @prop {string|unset} baseAttr
-   * @prop {number|unset} baseAttrMin
-   * @prop {number|unset} baseAttrMax
-   * @prop {number|unset} baseAttrBoostScl
-   * @prop {number|unset} baseAttrBoostCap
-   * @prop {Array|unset} baseCi
-   * @prop {Array|unset} baseBi
-   * @prop {Array|unset} baseAux
-   * @prop {Array|unset} baseOpt
-   * @prop {Array|unset} basePayi
-   * @prop {Array|unset} baseCo
-   * @prop {Array|unset} baseBo
-   * @prop {Array|unset} baseFo
-   * @prop {Array|unset} basePayo
-   * @prop {(function(Building): void)|unset} baseUpdateScr
-   * @prop {(function(Building): void)|unset} baseRunScr
-   * @prop {(function(Building): void)|unset} baseCraftScr
-   * @prop {(function(Building): void)|unset} baseStopScr
+   * @prop {string|unset} [baseAttr]
+   * @prop {number|unset} [baseAttrMin]
+   * @prop {number|unset} [baseAttrMax]
+   * @prop {number|unset} [baseAttrBoostScl]
+   * @prop {number|unset} [baseAttrBoostCap]
+   * @prop {Array|unset} [baseCi]
+   * @prop {Array|unset} [baseBi]
+   * @prop {Array|unset} [baseAux]
+   * @prop {Array|unset} [baseOpt]
+   * @prop {Array|unset} [basePayi]
+   * @prop {Array|unset} [baseCo]
+   * @prop {Array|unset} [baseBo]
+   * @prop {Array|unset} [baseFo]
+   * @prop {Array|unset} [basePayo]
+   * @prop {(function(Building): void)|unset} [baseUpdateScr]
+   * @prop {(function(Building): void)|unset} [baseRunScr]
+   * @prop {(function(Building): void)|unset} [baseCraftScr]
+   * @prop {(function(Building): void)|unset} [baseStopScr]
    */
   /**
    * @global
    * @typedef {Object} RecipeObject
-   * @prop {string|unset} icon - Content icon used for this recipe, should be unique.
-   * @prop {string|unset} categ - Category this recipe is in.
-   * @prop {boolean|unset} isGenerated - Whether this recipe is created by recipe generators. Do not set this manually!
-   * @prop {(function(): boolean)|unset} validGetter - A function to check whether recipe is allowed now.
-   * @prop {Array<string>|unset} lockedBy - Recipe will be unavailable until all these contents are unlocked.
-   * @prop {number|unset} timeScl - Scaling on crafting time.
-   * @prop {number|unset} pollution - Overwrites block pollution.
-   * @prop {boolean|unset} ignoreItemFullness - If true, the crafter consumes even when full of output items.
-   * @prop {string|unset} attr - Attribute required for this recipe.
-   * @prop {number|unset} attrMin - Attribute value for 0.0 efficiency (no block size included).
-   * @prop {number|unset} attrMax - Attribute value for 1.0 efficiency (no block size included).
-   * @prop {number|unset} attrBoostScl - Scaling on attribute boost.
-   * @prop {number|unset} attrBoostCap - Maximum efficiency can be reached with attribute boost.
-   * @prop {string|unset} tooltip - Bundle piece used for recipe tooltip.
-   * @prop {number|unset} powProdMtp - Multiplier on power produced. For {@link BLK_generatorRecipeFactory}.
-   * @prop {number|unset} tempReq - Temperature required. For {@link BLK_furnaceRecipeFactory}.
-   * @prop {number|unset} tempAllowed - Temperature allowed. For {@link BLK_furnaceRecipeFactory}.
-   * @prop {number|unset} durabDecMtp - Multiplier on durability decrease rate. For {@link BLK_durabilityRecipeFactory}.
-   * @prop {Array|unset} ci - Continuous input.
-   * @prop {Array|unset} bi - Batch input.
-   * @prop {Array|unset} aux - Auxiliary input.
-   * @prop {boolean|unset} reqOpt - Whether at least one optional input should be met.
-   * @prop {Array|unset} opt - Optional input.
-   * @prop {Array|unset} payi - Payload input.
-   * @prop {Array|unset} co - Continuous output.
-   * @prop {Array|unset} bo - Batch output.
-   * @prop {number|unset} failP - Chance to fail this recipe.
-   * @prop {Array|unset} fo - Failed output.
-   * @prop {Array|unset} payo - Payload output.
-   * @prop {(function(Building): void)|unset} updateScr - Called whenever the building updates.
-   * @prop {(function(Building): void)|unset} runScr - Called when the building is active.
-   * @prop {(function(Building): void)|unset} craftScr - Called when the building crafts.
-   * @prop {(function(Building): void)|unset} stopScr - Called when the building is no longer active.
+   * @prop {string|unset} [icon] - Content icon used for this recipe, should be unique.
+   * @prop {string|unset} [categ] - Category this recipe is in.
+   * @prop {boolean|unset} [isGenerated] - Whether this recipe is created by recipe generators. Do not set this manually!
+   * @prop {(function(): boolean)|unset} [validGetter] - A function to check whether recipe is allowed now.
+   * @prop {Array<string>|unset} [lockedBy] - Recipe will be unavailable until all these contents are unlocked.
+   * @prop {number|unset} [timeScl] - Scaling on crafting time.
+   * @prop {number|unset} [pollution] - Overwrites block pollution.
+   * @prop {boolean|unset} [ignoreItemFullness] - If true, the crafter consumes even when full of output items.
+   * @prop {string|unset} [attr] - Attribute required for this recipe.
+   * @prop {number|unset} [attrMin] - Attribute value for 0.0 efficiency (no block size included).
+   * @prop {number|unset} [attrMax] - Attribute value for 1.0 efficiency (no block size included).
+   * @prop {number|unset} [attrBoostScl] - Scaling on attribute boost.
+   * @prop {number|unset} [attrBoostCap] - Maximum efficiency can be reached with attribute boost.
+   * @prop {string|unset} [tooltip] - Bundle piece used for recipe tooltip.
+   * @prop {number|unset} [powProdMtp] - Multiplier on power produced. For {@link BLK_generatorRecipeFactory}.
+   * @prop {number|unset} [tempReq] - Temperature required. For {@link BLK_furnaceRecipeFactory}.
+   * @prop {number|unset} [tempAllowed] - Temperature allowed. For {@link BLK_furnaceRecipeFactory}.
+   * @prop {number|unset} [durabDecMtp] - Multiplier on durability decrease rate. For {@link BLK_durabilityRecipeFactory}.
+   * @prop {Array|unset} [ci] - Continuous input.
+   * @prop {Array|unset} [bi] - Batch input.
+   * @prop {Array|unset} [aux] - Auxiliary input.
+   * @prop {boolean|unset} [reqOpt] - Whether at least one optional input should be met.
+   * @prop {Array|unset} [opt] - Optional input.
+   * @prop {Array|unset} [payi] - Payload input.
+   * @prop {Array|unset} [co] - Continuous output.
+   * @prop {Array|unset} [bo] - Batch output.
+   * @prop {number|unset} [failP] - Chance to fail this recipe.
+   * @prop {Array|unset} [fo] - Failed output.
+   * @prop {Array|unset} [payo] - Payload output.
+   * @prop {(function(Building): void)|unset} [updateScr] - Called whenever the building updates.
+   * @prop {(function(Building): void)|unset} [runScr] - Called when the building is active.
+   * @prop {(function(Building): void)|unset} [craftScr] - Called when the building crafts.
+   * @prop {(function(Building): void)|unset} [stopScr] - Called when the building is no longer active.
    */
   /**
    * @global
    * @typedef {Object} RecipeDictionaryData
-   * @prop {string|unset} icon - Texture region used.
-   * @prop {string|unset} ct - Content icon button used.
-   * @prop {number|unset} time - Overwrites crafting time.
+   * @prop {string|unset} [icon] - Texture region used.
+   * @prop {string|unset} [ct] - Content icon button used.
+   * @prop {number|unset} [time] - Overwrites crafting time.
    */
 
 
@@ -219,7 +219,7 @@
 
 
   /** @global */
-  java = {}
+  java = {};
   java.lang = {};
   /** java.lang.Integer */
   java.lang.Integer = class {};

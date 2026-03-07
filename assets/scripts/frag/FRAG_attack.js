@@ -195,11 +195,32 @@
 
 
   /**
+   * Creates a shockwave, visual only.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} rad
+   * @param {number|unset} [scl]
+   */
+  const _a_shockwave = function thisFun(x, y, rad, scl) {
+    if(thisFun.shader == null) return;
+
+    thisFun.shader.add(x, y, rad, thisFun.calcLifetime(rad) * tryVal(scl, 1.0));
+  }
+  .setProp({
+    shader: fetchShader("shockwave"),
+    calcLifetime: function(rad) {
+      return 0.2708 * rad + 14.9;
+    },
+  });
+  exports._a_shockwave = _a_shockwave;
+
+
+  /**
    * Creates a basic explosion.
    * @param {number} x
    * @param {number} y
    * @param {number} dmg
-   * @param {number|unset} [rad]
+   * @param {number|unset} rad
    * @param {number|unset} [shake]
    * @param {string|unset} [se_gn]
    * @return {void}
@@ -210,13 +231,13 @@
   ) {
     if(!Vars.state.rules.reactorExplosions) return;
     if(dmg < 0.0001) return;
-    if(rad == null) rad = 40.0;
     if(rad < 0.0001) return;
     if(shake == null) shake = 0.0;
 
     Damage.damage(x, y, rad, dmg);
     MDL_effect.showAt(x, y, rad < 16.0 ? EFF.explosionSmall : EFF.explosion, 0.0);
     MDL_effect._e_shake(x, y, shake);
+    _a_shockwave(x, y, rad * 1.7, 3.0);
     MDL_effect.playAt(x, y, tryVal(se_gn, "se-shot-explosion"), 1.0, 1.0, 0.1);
   };
   exports._a_explosion = _a_explosion;
@@ -227,7 +248,7 @@
    * @param {number} x
    * @param {number} y
    * @param {number} dmg
-   * @param {number|unset} [rad]
+   * @param {number|unset} rad
    * @param {number|unset} [shake]
    * @param {string|unset} [se_gn]
    * @return {void}
@@ -259,8 +280,8 @@
    * @param {number} x
    * @param {number} y
    * @param {number} dmg
-   * @param {number|unset} [staDur]
-   * @param {number|unset} [rad]
+   * @param {number|unset} staDur
+   * @param {number|unset} rad
    * @param {number|unset} [minRad]
    * @param {number|unset} [shake]
    * @param {Unit|unset} [caller] - This single unit won't be affected by impact wave.
@@ -271,7 +292,6 @@
     staDur, rad, minRad, shake, caller
   ) {
     if(staDur == null) staDur = 120.0;
-    if(rad == null) rad = 40.0;
     if(rad < 0.0001) return;
     if(minRad == null) minRad = 0.0;
     if(shake == null) shake = 0.0;

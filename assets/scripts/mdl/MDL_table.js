@@ -286,7 +286,6 @@
    * @return {Cell}
    */
   const __blkEffc = function(tb, blk, mtp, nmAttr, w, dialToHide, ctDial) {
-    if(blk == null) return;
     if(w == null) w = 64.0;
     let str = (Math.abs(mtp) < 0.0001) ? "" : ((mtp < 0.0 ? "-" : "") + Strings.autoFixed(mtp * 100.0, 2) + "%");
 
@@ -1369,7 +1368,7 @@
           });
 
           j++;
-          if((j - 1) % colAmt == colAmt - 1) {
+          if((j - 1) % colAmt === colAmt - 1) {
             chunk.row();
             j = 0;
           };

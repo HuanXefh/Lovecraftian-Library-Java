@@ -20,7 +20,7 @@
   /* <---------- import ----------> */
 
 
-  /* <---------- auxiliay ----------> */
+  /* <---------- auxiliary ----------> */
 
 
   function comp_addStats(abi, tb, tableF) {

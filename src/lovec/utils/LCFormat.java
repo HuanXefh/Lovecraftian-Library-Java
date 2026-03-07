@@ -13,7 +13,7 @@ public class LCFormat {
      */
     public static int toIntCoord(float x) {
         return Math.round(x / Vars.tilesize);
-    }
+    };
 
 
     /**
@@ -21,11 +21,11 @@ public class LCFormat {
      */
     public static float toFCoord(int tx, int size) {
         return tx * Vars.tilesize + (size % 2 == 0 ? (Vars.tilesize * 0.5f) : 0f);
-    }
+    };
     // Overloading
     public static float toFCoord(int tx) {
         return toFCoord(tx, 1);
-    }
+    };
 
 
     /* <-------------------- width --------------------> */
@@ -36,7 +36,7 @@ public class LCFormat {
      */
     public static float calcRectW(float r, float size) {
         return (r * 2f + size) * Vars.tilesize;
-    }
+    };
 
 
     /**
@@ -44,7 +44,7 @@ public class LCFormat {
      */
     public static float calcRectHW(float r, float size) {
         return (r + size * 0.5f) * Vars.tilesize;
-    }
+    };
 
 
-}
+};

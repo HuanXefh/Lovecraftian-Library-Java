@@ -23,15 +23,12 @@
   /* <---------- object ----------> */
 
 
-  var cls = Object;
-
-
   /**
    * Prints accessible keys of some object.
    * @param {Object} obj
    * @return {void}
    */
-  cls.printKeys = function(obj) {
+  Object.printKeys = function(obj) {
     if(typeof obj !== "object" && typeof obj !== "function") return;
     Object.keys(obj).printEach();
   };
@@ -42,7 +39,7 @@
    * @param {Object} obj
    * @return {void}
    */
-  cls.printObj = function(obj) {
+  Object.printObj = function(obj) {
     if(typeof obj !== "object" && typeof obj !== "function") return;
     Object._it(obj, (key, val) => {
       print([key, val]);
@@ -53,14 +50,11 @@
   /* <---------- function ----------> */
 
 
-  var ptp = Function.prototype;
-
-
   /**
    * Variant of {@link print} called on a function.
    * @return {void}
    */
-  ptp.print = function() {
+  Function.prototype.print = function() {
     print(this);
   };
 
@@ -68,14 +62,11 @@
   /* <---------- array ----------> */
 
 
-  var ptp = Array.prototype;
-
-
   /**
    * Variant of {@link print} called on an array.
    * @return {void}
    */
-  ptp.print = function() {
+  Array.prototype.print = function() {
     print(this);
   };
 
@@ -84,7 +75,7 @@
    * Multiline version of {@link Array#print}.
    * @return {void}
    */
-  ptp.printEach = function() {
+  Array.prototype.printEach = function() {
     this.forEachFast(i => print(i));
   };
 
@@ -94,7 +85,7 @@
    * @param {number|unset} [ord]
    * @return {void}
    */
-  ptp.printFormat = function(ord) {
+  Array.prototype.printFormat = function(ord) {
     this.forEachRow(tryVal(ord, 1), () => {
       print(Array.from(arguments));
     });

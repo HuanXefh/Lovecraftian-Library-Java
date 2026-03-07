@@ -98,7 +98,7 @@
       b.kill();
     };
 
-    b.boilerInstabProg += b.boilerInstab * 6.0;
+    b.boilerInstabProg += b.boilerInstab * 3.0;
   };
 
 

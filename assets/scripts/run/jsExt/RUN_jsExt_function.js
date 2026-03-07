@@ -21,10 +21,7 @@
 
 
   /* <---------- function ----------> */
-
-
-  var ptp = Function.prototype;
-
+  
 
   /**
    * Wraps `Function#length`, mostly for {@link JavaAdapter}.
@@ -32,7 +29,7 @@
    * @param {number|unset} [len]
    * @return {Function}
    */
-  ptp.wrapLen = function(len) {
+  Function.prototype.wrapLen = function(len) {
     const thisFun = this;
 
     let len_fi = len < 0 || len == null ? -1 : Math.max(Math.round(len), 0);
@@ -65,7 +62,7 @@
    * Marks a method as abstract method.
    * @return {Function}
    */
-  ptp.setAbstr = function() {
+  Function.prototype.setAbstr = function() {
     return function() {
       throw new Error("Abstract method should be overrided before being called!");
     };
@@ -79,7 +76,7 @@
    * @param {(function(): number)|unset} [stateGetter] - If set, cache will be cleared when state is changed.
    * @return {Function}
    */
-  ptp.setCache = function thisDecor(objMap, stateGetter) {
+  Function.prototype.setCache = function thisDecor(objMap, stateGetter) {
     const thisFun = this;
 
     let cacheMap = objMap != null ? objMap : new ObjectMap();
@@ -121,7 +118,7 @@
    * @param {number|unset} [dataAmt] - How many data to collect before printing the average.
    * @return {Function}
    */
-  ptp.setTimeTest = function(dataAmt) {
+  Function.prototype.setTimeTest = function(dataAmt) {
     const thisFun = this;
 
     let meanWin = new WindowedMean(tryVal(dataAmt, 60));
@@ -146,7 +143,7 @@
    * For test only. Monitors various behaviors of this method.
    * @return {Function}
    */
-  ptp.setSpy = function thisDecor() {
+  Function.prototype.setSpy = function thisDecor() {
     const thisFun = this;
 
     let fun = function() {

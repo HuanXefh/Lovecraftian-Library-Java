@@ -23,6 +23,9 @@
   /* <---------- base ----------> */
 
 
+  newShader("shockwave", () => new Shaders.ShockwaveShader());
+
+
   newSurfaceShader("shader0surf-flr0liq-lava");
   newSurfaceShader("shader0surf-flr0liq-puddle");
   newSurfaceShader("shader0surf-flr0liq-river");

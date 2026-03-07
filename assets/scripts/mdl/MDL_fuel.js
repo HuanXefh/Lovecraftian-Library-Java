@@ -113,15 +113,15 @@
       case "item" : return VARGEN.fuelItms.includes(rs);
       case "liquid" : return VARGEN.fuelLiqs.includes(rs);
       case "gas" : return VARGEN.fuelGases.includes(rs);
-      default : return VARGEN.fuelItms.includes(rs) || VARGEN.fuelLiqs.includes(rs) || VARGEN.fuelGases.includes(rs);
     };
+    return VARGEN.fuelItms.includes(rs) || VARGEN.fuelLiqs.includes(rs) || VARGEN.fuelGases.includes(rs);
   }
   .setCache();
   exports._hasFuelInput = _hasFuelInput;
 
 
   /**
-   * Gets prefered fuel tuple for some building, which should be a furnace.
+   * Gets preferred fuel tuple for some building, which should be a furnace.
    * @param {Building} b
    * @return {[Resource, number, number]|null} <TUP>: fuel, fuelPon, fuelLvl.
    */

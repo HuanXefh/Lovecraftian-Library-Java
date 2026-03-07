@@ -24,15 +24,12 @@ CLS_recipeBuilder.prototype.init = function() {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_recipeBuilder.prototype;
-
-
 /**
  * Sets CI field.
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__ci = function(arr) {
+CLS_recipeBuilder.prototype.__ci = function(arr) {
   this.builderObj["ci"] = tryVal(arr, Array.air);
 
   return this;
@@ -44,7 +41,7 @@ ptp.__ci = function(arr) {
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__bi = function(arr) {
+CLS_recipeBuilder.prototype.__bi = function(arr) {
   this.builderObj["bi"] = tryVal(arr, Array.air);
 
   return this;
@@ -56,7 +53,7 @@ ptp.__bi = function(arr) {
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__aux = function(arr) {
+CLS_recipeBuilder.prototype.__aux = function(arr) {
   this.builderObj["aux"] = tryVal(arr, Array.air);
 
   return this;
@@ -68,7 +65,7 @@ ptp.__aux = function(arr) {
  * @param {boolean|unset} [bool]
  * @return {this}
  */
-ptp.__reqOpt = function(bool) {
+CLS_recipeBuilder.prototype.__reqOpt = function(bool) {
   this.builderObj["reqOpt"] = tryVal(bool, false);
 
   return this;
@@ -80,7 +77,7 @@ ptp.__reqOpt = function(bool) {
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__opt = function(arr) {
+CLS_recipeBuilder.prototype.__opt = function(arr) {
   this.builderObj["opt"] = tryVal(arr, Array.air);
 
   return this;
@@ -92,7 +89,7 @@ ptp.__opt = function(arr) {
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__payi = function(arr) {
+CLS_recipeBuilder.prototype.__payi = function(arr) {
   this.builderObj["payi"] = tryVal(arr, Array.air);
 
   return this;
@@ -104,7 +101,7 @@ ptp.__payi = function(arr) {
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__co = function(arr) {
+CLS_recipeBuilder.prototype.__co = function(arr) {
   this.builderObj["co"] = tryVal(arr, Array.air);
 
   return this;
@@ -116,7 +113,7 @@ ptp.__co = function(arr) {
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__bo = function(arr) {
+CLS_recipeBuilder.prototype.__bo = function(arr) {
   this.builderObj["bo"] = tryVal(arr, Array.air);
 
   return this;
@@ -128,7 +125,7 @@ ptp.__bo = function(arr) {
  * @param {number|unset} [frac]
  * @return {this}
  */
-ptp.__failP = function(frac) {
+CLS_recipeBuilder.prototype.__failP = function(frac) {
   this.builderObj["failP"] = tryVal(frac, 0.0);
 
   return this;
@@ -140,7 +137,7 @@ ptp.__failP = function(frac) {
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__fo = function(arr) {
+CLS_recipeBuilder.prototype.__fo = function(arr) {
   this.builderObj["fo"] = tryVal(arr, Array.air);
 
   return this;
@@ -152,7 +149,7 @@ ptp.__fo = function(arr) {
  * @param {Array|unset} [arr]
  * @return {this}
  */
-ptp.__payo = function(arr) {
+CLS_recipeBuilder.prototype.__payo = function(arr) {
   this.builderObj["payo"] = tryVal(arr, Array.air);
 
   return this;

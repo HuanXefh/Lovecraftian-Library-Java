@@ -226,7 +226,7 @@
 
   /**
    * Gets current LSAV file.
-   * @param {boolean|unset} [isBackup] - If true, return {@link Fi} of the backup.
+   * @param {boolean|unset} [isBackup]
    * @return {Fi|null}
    */
   const _lsav = function(isBackup) {
@@ -237,6 +237,25 @@
     return lovecData.child("saves").child(saveSlotCur.file.nameWithoutExtension() + (!isBackup ? "" : "_bak") + ".lsav");
   };
   exports._lsav = _lsav;
+
+
+  /**
+   * Gets current PLSAV file.
+   * @param {boolean|unset} [isBackup]
+   * @return {Fi|null}
+   */
+  const _plsav = function(isBackup) {
+    let nmPla = global.lovecUtil.fun._plaCur();
+    let fi = nmPla === "" ? null : lovecData.child("saves").child(nmPla + (!isBackup ? "" : "_bak") + ".plsav");
+    // In debug mode, PLSAV is accessible from outside of campaign
+    if(global.lovecUtil.prop.debug || Vars.state.isCampaign()) return fi;
+
+    let fi1 = _lsav(isBackup);
+    return fi1 == null ?
+      null :
+      fi1.parent().child(fi1.nameWithoutExtension() + ".plsav");
+  };
+  exports._plsav = _plsav;
 
 
   /* <---------- read & write ----------> */

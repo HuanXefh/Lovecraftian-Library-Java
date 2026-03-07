@@ -64,6 +64,7 @@
 
 
   function comp_createExplosion(b) {
+    FRAG_attack._a_shockwave(b.x, b.y, b.block.explosionRadius);
     FRAG_attack._a_impact(b.x, b.y, b.block.explosionDamage * 0.5, 480.0, b.block.explosionRadius * Vars.tilesize, 0.0, 0.0);
   };
 

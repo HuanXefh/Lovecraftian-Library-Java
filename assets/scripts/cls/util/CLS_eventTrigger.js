@@ -41,9 +41,6 @@ const insNms = [];
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_eventTrigger.prototype;
-
-
 /**
  * Adds a listener to the trigger.
  * These listeners will be cleared on map change.
@@ -52,7 +49,7 @@ var ptp = CLS_eventTrigger.prototype;
  * @param {boolean|unset} [shouldOverwrite]
  * @return {this}
  */
-ptp.addListener = function(listener, id, shouldOverwrite) {
+CLS_eventTrigger.prototype.addListener = function(listener, id, shouldOverwrite) {
   if(id == null) {
     this.listeners.push(listener);
   } else {
@@ -77,7 +74,7 @@ ptp.addListener = function(listener, id, shouldOverwrite) {
  * @param {Function} listener
  * @return {this}
  */
-ptp.addGlobalListener = function(listener) {
+CLS_eventTrigger.prototype.addGlobalListener = function(listener) {
   this.glbListeners.push(listener);
 
   return this;
@@ -89,7 +86,7 @@ ptp.addGlobalListener = function(listener) {
  * @param {Function} listener
  * @return {this}
  */
-ptp.addOnceListener = function(listener) {
+CLS_eventTrigger.prototype.addOnceListener = function(listener) {
   this.onceListeners.push(listener);
 
   return this;
@@ -102,7 +99,7 @@ ptp.addOnceListener = function(listener) {
  * @param {number|string} id
  * @return {this}
  */
-ptp.removeListener = function(id) {
+CLS_eventTrigger.prototype.removeListener = function(id) {
   this.listeners.remove(this.idListenerMap.remove(id));
 
   return this;
@@ -113,7 +110,7 @@ ptp.removeListener = function(id) {
  * Removes all regular listeners from the trigger.
  * @return {this}
  */
-ptp.clearListener = function() {
+CLS_eventTrigger.prototype.clearListener = function() {
   this.listeners.clear();
   this.idListenerMap.clear();
 
@@ -125,7 +122,7 @@ ptp.clearListener = function() {
  * Removes all one-time listeners from the trigger.
  * @return {this}
  */
-ptp.clearOnceListener = function() {
+CLS_eventTrigger.prototype.clearOnceListener = function() {
   this.onceListeners.clear();
 
   return this;
@@ -136,7 +133,7 @@ ptp.clearOnceListener = function() {
  * Calls all listeners of the trigger with the arguments passed down.
  * @return {void}
  */
-ptp.fire = function() {
+CLS_eventTrigger.prototype.fire = function() {
   this.listeners.forEachFast(listener =>listener.apply(null, arguments));
   this.glbListeners.forEachFast(listener => listener.apply(null, arguments));
   this.onceListeners.forEachFast(listener => listener.apply(null, arguments));

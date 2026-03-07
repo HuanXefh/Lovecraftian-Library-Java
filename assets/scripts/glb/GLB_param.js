@@ -50,7 +50,6 @@
 
 
   // Parameters populated on load
-  exports.debug = global.lovecUtil.prop.debug;
   exports.modded = (function() {
     let cond1 = Core.settings.getBool("load-force-modded", false);
     let cond2 = DB_misc.db["mod"]["lovecMod"].some(nmMod => fetchMod(nmMod) != null);

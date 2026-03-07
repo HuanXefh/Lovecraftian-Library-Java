@@ -58,8 +58,8 @@ MDL_event._c_onUpdate(() => {
 }, 64221902);
 
 
-let btnSize = 42.0;
-let addedGrps = [];
+const btnSize = 42.0;
+const addedGrps = [];
 
 
 /* <---------- static method ----------> */
@@ -68,14 +68,11 @@ let addedGrps = [];
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_dragButton.prototype;
-
-
 /**
  * Loads data for the group.
  * @return {void}
  */
-ptp.load = function() {
+CLS_dragButton.prototype.load = function() {
   if(Vars.headless || this.isLoaded) return;
 
   (function() {
@@ -104,7 +101,7 @@ ptp.load = function() {
  * Rebuilds the group.
  * @return {void}
  */
-ptp.rebuild = function() {
+CLS_dragButton.prototype.rebuild = function() {
   this.root.clearChildren();
   const btns = this.root.table(Styles.black3, tb => tb.left()).left().get();
   this.root.left().top().row();
@@ -165,7 +162,7 @@ ptp.rebuild = function() {
  * Updates the group.
  * @return {void}
  */
-ptp.update = function() {
+CLS_dragButton.prototype.update = function() {
   // Forced to 1.0x when multi-player
   if(Groups.player.size() > 1) {
     Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0);
@@ -179,7 +176,7 @@ ptp.update = function() {
  * @param {number|unset} [y]
  * @return {void}
  */
-ptp.add = function(x, y) {
+CLS_dragButton.prototype.add = function(x, y) {
   if(Core.scene == null) return;
   if(x == null) x = MDL_ui._centerX() * 1.2;
   if(y == null) y = MDL_ui._centerY() * 0.4;

@@ -2,6 +2,7 @@ package lovec.utils;
 
 import arc.Core;
 import arc.math.Mathf;
+import arc.math.geom.Polygon;
 import arc.util.Nullable;
 import arc.util.Tmp;
 import mindustry.Vars;
@@ -12,7 +13,49 @@ import mindustry.world.blocks.environment.EmptyFloor;
 public class LCCheck {
 
 
+    static Polygon tmpTriangle;
+    static float[] tmpTriangleVertices = new float[6];
+    static Polygon tmpHexagon;
+    static float[] tmpHexagonVertices = new float[12];
+
+
     /* <-------------------- position --------------------> */
+
+
+    /**
+     * Whether (x, y) is in a triangular range.
+     */
+    public static boolean checkPosInTriangle(float x, float y, float cx, float cy, float rad, float ang) {
+        for(int i = 0; i < 3; i++) {
+            tmpTriangleVertices[2 * i] = rad * Mathf.cosDeg(i * 120f - 30f + ang);
+            tmpTriangleVertices[2 * i + 1] = rad * Mathf.sinDeg(i * 120f - 30f + ang);
+        };
+        tmpTriangle.setVertices(tmpTriangleVertices);
+        tmpTriangle.setPosition(cx, cy);
+        return tmpTriangle.contains(x, y);
+    };
+    // Overloading
+    public static boolean checkPosInTriangle(float x, float y, float cx, float cy, float rad) {
+        return checkPosInTriangle(x, y, cx, cy, rad, 0f);
+    };
+
+
+    /**
+     * Whether (x, y) is in a hexagonal range.
+     */
+    public static boolean checkPosInHexagon(float x, float y, float cx, float cy, float rad, float ang) {
+        for(int i = 0; i < 6; i++) {
+            tmpHexagonVertices[2 * i] = rad * Mathf.cosDeg(i * 60f + ang);
+            tmpHexagonVertices[2 * i + 1] = rad * Mathf.sinDeg(i * 60f + ang);
+        };
+        tmpHexagon.setVertices(tmpHexagonVertices);
+        tmpHexagon.setPosition(cx, cy);
+        return tmpHexagon.contains(x, y);
+    };
+    // Overloading
+    public static boolean checkPosInHexagon(float x, float y, float cx, float cy, float rad) {
+        return checkPosInHexagon(x, y, cx, cy, rad, 0f);
+    };
 
 
     /**
@@ -20,11 +63,11 @@ public class LCCheck {
      */
     public static boolean checkPosVisible(float x, float y, float clipSize) {
         return Core.camera.bounds(Tmp.r1).overlaps(Tmp.r2.setCentered(x, y, clipSize));
-    }
+    };
     // Overloading
     public static boolean checkPosVisible(float x, float y) {
         return checkPosVisible(x, y, 0.0001f);
-    }
+    };
 
 
     /**
@@ -32,7 +75,7 @@ public class LCCheck {
      */
     public static boolean checkPosHovered(float x, float y, float rad) {
         return Mathf.dst(x, y, Core.input.mouseWorldX(), Core.input.mouseWorldY()) < rad;
-    }
+    };
 
 
     /**
@@ -41,11 +84,11 @@ public class LCCheck {
     public static boolean checkPosHoveredRect(float x, float y, float r, float size) {
         var hw = LCFormat.calcRectHW(r, size);
         return Math.abs(x - Core.input.mouseWorldX()) < hw && Math.abs(y - Core.input.mouseWorldY()) < hw;
-    }
+    };
     // Overloading
     public static boolean checkPosHoveredRect(float x, float y) {
         return checkPosHoveredRect(x, y, 0f, 1f);
-    }
+    };
 
 
     /**
@@ -54,7 +97,7 @@ public class LCCheck {
     public static boolean checkPosCanShadow(float x, float y) {
         var flr = Vars.world.floorWorld(x, y);
         return flr != null && flr.canShadow && !(flr instanceof EmptyFloor);
-    }
+    };
 
 
     /* <-------------------- entity --------------------> */
@@ -70,9 +113,9 @@ public class LCCheck {
             return !unit.inFogTo(Vars.player.team()) && checkPosVisible(unit.x, unit.y, LCGeneralizer.getClipSize(unit));
         } else if(obj instanceof Bullet bul) {
             return checkPosVisible(bul.x, bul.y, LCGeneralizer.getClipSize(bul));
-        }
+        };
         return true;
-    }
+    };
 
 
     /**
@@ -80,7 +123,7 @@ public class LCCheck {
      */
     public static boolean checkHostile(Teamc e, @Nullable Team team) {
         return e.team() != Team.derelict && (team == null || e.team() != team);
-    }
+    };
 
 
     /**
@@ -88,7 +131,7 @@ public class LCCheck {
      */
     public static boolean checkHealable(Healthc e, @Nullable Team team) {
         return e.damaged() && (team == null || (!(e instanceof Teamc e1) || e1.team() == team)) && (!(e instanceof Building b) || !b.isHealSuppressed());
-    }
+    };
 
 
-}
+};

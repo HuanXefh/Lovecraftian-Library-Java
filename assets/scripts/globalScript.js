@@ -208,6 +208,12 @@
   /** @global */
   LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
   /** @global */
+  LCRgb = fetchClass("lovec.graphics.LCRgb");
+  /** @global */
+  LCLerp = fetchClass("lovec.math.LCLerp");
+  /** @global */
+  LCMathFunc = fetchClass("lovec.math.LCMathFunc");
+  /** @global */
   LCRaycast = fetchClass("lovec.math.LCRaycast");
   /** @global */
   LCCheck = fetchClass("lovec.utils.LCCheck");
@@ -254,10 +260,6 @@
 
 
   Events.run(ClientLoadEvent, () => Core.app.post(() => {
-
-
-    /** @global */
-    lovecUtil = global.lovecUtil;
 
 
     /* <---------- debug ----------> */

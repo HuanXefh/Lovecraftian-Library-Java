@@ -66,7 +66,7 @@
   const _bsPayInput = function(b, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let obj = DB_block.db["class"]["group"]["payloadSite"]
+    let obj = DB_block.db["class"]["group"]["payloadSite"];
     b.proximity.each(
       ob => obj["dynamic"].hasIns(ob.block) ?
         true :
@@ -88,7 +88,7 @@
   const _bsPayOutput = function(b, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let obj = DB_block.db["class"]["group"]["payloadSite"]
+    let obj = DB_block.db["class"]["group"]["payloadSite"];
     b.proximity.each(
       ob => obj["dynamic"].hasIns(ob.block) ?
         true :

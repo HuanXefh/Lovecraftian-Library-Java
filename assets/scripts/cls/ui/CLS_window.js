@@ -39,11 +39,8 @@ let selectedWins = [];
 /* <---------- static method ----------> */
 
 
-var cls = CLS_window;
-
-
 MDL_event._c_onLoad(() => {
-  cls.btnStyles = {
+  CLS_window.btnStyles = {
     close: extend(TextButton.TextButtonStyle, {
       font: Fonts.outline,
       fontColor: Pal.remove,
@@ -77,7 +74,7 @@ MDL_event._c_onLoad(() => {
  * @param {CLS_window} win
  * @return {Table}
  */
-cls.getRootTable = function(win) {
+CLS_window.getRootTable = function(win) {
   const tb = new Table();
   tb.tapped(() => {
     if(!Core.input.keyDown(KeyCode.controlLeft) && !Core.input.keyDown(KeyCode.controlRight)) selectedWins.clear();
@@ -100,7 +97,7 @@ cls.getRootTable = function(win) {
  * @param {CLS_window} win
  * @return {Table}
  */
-cls.getBaseTable = function(win) {
+CLS_window.getBaseTable = function(win) {
   const tb = new Table(Tex.whiteui);
   win.root.top().add(tb).growX();
   return tb;
@@ -110,17 +107,11 @@ cls.getBaseTable = function(win) {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_window.prototype;
-
-
-/* modification */
-
-
 /**
  * Initializes some parameters of this window.
  * @return {this}
  */
-ptp.initParam = function() {
+CLS_window.prototype.initParam = function() {
   this.added = false;
   this.isHidden = false;
   this.prefW = 0.0;
@@ -144,7 +135,7 @@ ptp.initParam = function() {
  * @param {Color|unset} [contColor]
  * @return {this}
  */
-ptp.setColor = function(titleColor, contColor) {
+CLS_window.prototype.setColor = function(titleColor, contColor) {
   if(titleColor != null) this.titleColor = titleColor;
   if(contColor != null) this.contColor = contColor;
 
@@ -160,7 +151,7 @@ ptp.setColor = function(titleColor, contColor) {
  * @param {number|unset} [maxH]
  * @return {this}
  */
-ptp.setSizeRange = function(minW, maxW, minH, maxH) {
+CLS_window.prototype.setSizeRange = function(minW, maxW, minH, maxH) {
   if(minW != null) this.minW = minW;
   if(maxW != null) this.maxW = maxW;
   if(minH != null) this.minH = minH;
@@ -174,7 +165,7 @@ ptp.setSizeRange = function(minW, maxW, minH, maxH) {
  * Rebuilds the entire window.
  * @return {void}
  */
-ptp.rebuild = function() {
+CLS_window.prototype.rebuild = function() {
   const thisIns = this;
   const base = this.base;
 
@@ -247,7 +238,7 @@ ptp.rebuild = function() {
  * Adds the window to scene.
  * @return {void}
  */
-ptp.add = function() {
+CLS_window.prototype.add = function() {
   if(Core.scene == null || this.added) return;
   if(Core.app.isMobile()) {
     MDL_ui.show_fadeInfo("lovec", "non-mobile");
@@ -264,7 +255,7 @@ ptp.add = function() {
  * Removes the window from scene.
  * @return {void}
  */
-ptp.close = function() {
+CLS_window.prototype.close = function() {
   if(!this.added) return;
 
   this.root.actions(Actions.remove());
@@ -279,7 +270,7 @@ ptp.close = function() {
  * Minimizes the window, or restores it if already hidden.
  * @return {void}
  */
-ptp.minimize = function() {
+CLS_window.prototype.minimize = function() {
   if(!this.added) return;
 
   this.isHidden = !this.isHidden;
@@ -292,7 +283,7 @@ ptp.minimize = function() {
  * This method technically creates a new table.
  * @return {void}
  */
-ptp.top = function() {
+CLS_window.prototype.top = function() {
   if(!this.added) return;
 
   let

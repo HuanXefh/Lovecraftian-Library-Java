@@ -33,8 +33,8 @@
       case "zh_TW" : return "";
       case "ja" : return "";
       case "ko" : return "";
-      default : return " ";
     };
+    return " ";
   };
   exports._space = _space;
 
@@ -49,8 +49,8 @@
       case "zh_TW" : return "：";
       case "ja" : return "：";
       case "ko" : return "：";
-      default : return ": ";
     };
+    return ": ";
   };
   exports._colon = _colon;
 
@@ -109,13 +109,11 @@
       str1 = dmg == null || dmg < 0.0001 ? null : String(dmg.roundFixed(2)).color(Pal.remove),
       str2 = dmgPerc == null || dmgPerc < 0.0001 ? null : dmgPerc.perc().color(Pal.remove);
 
-    if(str1 == null && str2 == null) {
-      return "!ERR";
-    } else {
-      if(str1 == null) return str2;
-      if(str2 == null) return str1;
-      return str1 + " + ".color(Pal.remove) + str2;
-    };
+    if(str1 == null && str2 == null) return "!ERR";
+    if(str1 == null) return str2;
+    if(str2 == null) return str1;
+
+    return str1 + " + ".color(Pal.remove) + str2;
   };
   exports._dmgText = _dmgText;
 
@@ -131,13 +129,10 @@
       str1 = healAmt == null || healAmt < 0.0001 ? null : String(healAmt.roundFixed(2)).color(Pal.heal),
       str2 = healPerc == null || healPerc < 0.0001 ? null : healPerc.perc().color(Pal.heal);
 
-    if(str1 == null && str2 == null) {
-      return "!ERR";
-    } else {
-      if(str1 == null) return str2;
-      if(str2 == null) return str1;
-      return str1 + " + ".color(Pal.heal) + str2;
-    };
+    if(str1 == null && str2 == null) return "!ERR";
+    if(str1 == null) return str2;
+    if(str2 == null) return str1;
+    return str1 + " + ".color(Pal.heal) + str2;
   };
   exports._healText = _healText;
 

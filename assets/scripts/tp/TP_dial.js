@@ -210,7 +210,9 @@
             Object._it(tmpObj, (nmMod, arr) => {
               pn.add(fetchMod(nmMod, true).meta.displayName).left().fontScale(1.1).color(Pal.accent).row();
               pn.table(Styles.none, tb => {
-                i = 0, iCap = arr.iCap(), j = 0;
+                i = 0;
+                iCap = arr.iCap();
+                j = 0;
                 while(i < iCap) {
                   (function(i) {
                     thisDial.ex_buildBox(tb, arr[i]);

@@ -14,7 +14,7 @@ public class LCRaycast {
 
 
     static Object rayFindObj;
-    static Seq rayFindObjSeq = new Seq();
+    static final Seq rayFindObjSeq = new Seq();
 
 
     /* <-------------------- check --------------------> */
@@ -25,7 +25,7 @@ public class LCRaycast {
      */
     public static boolean rayCheck(float x1, float y1, float x2, float y2, Boolf2 boolF) {
         return World.raycast(LCFormat.toIntCoord(x1), LCFormat.toIntCoord(y1), LCFormat.toIntCoord(x2), LCFormat.toIntCoord(y2), boolF::get);
-    }
+    };
 
 
     /* <-------------------- find --------------------> */
@@ -39,7 +39,7 @@ public class LCRaycast {
             rayFindObj = func.get(tx, ty);
             return rayFindObj != null;
         }) ? rayFindObj : null;
-    }
+    };
 
 
     /* <-------------------- find all --------------------> */
@@ -48,17 +48,17 @@ public class LCRaycast {
     /**
      * Base method for raycast methods that return all matching objects.
      */
-    public static Seq rayFindAll(float x1, float y1, float x2, float y2, Func2 func) {
+    public static Seq<Object> rayFindAll(float x1, float y1, float x2, float y2, Func2 func) {
         rayFindObjSeq.clear();
         World.raycast(LCFormat.toIntCoord(x1), LCFormat.toIntCoord(y1), LCFormat.toIntCoord(x2), LCFormat.toIntCoord(y2), (tx, ty) -> {
             rayFindObj = func.get(tx, ty);
             if(rayFindObj != null) {
                 rayFindObjSeq.add(rayFindObj);
-            }
+            };
             return false;
         });
         return rayFindObjSeq;
-    }
+    };
 
 
-}
+};

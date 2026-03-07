@@ -23,9 +23,6 @@ CLS_recipeGenerator.prototype.init = function(setter) {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_recipeGenerator.prototype;
-
-
 /**
  * Gets standard generated header for some recipe.
  * @param {string} nmCt
@@ -36,7 +33,7 @@ var ptp = CLS_recipeGenerator.prototype;
  * rcGen.getHeaderName("copper")                // Returns "UNCATEGORIZED: copper"
  * rcGen.getHeaderName("lead", "smelting", "early game");                // Returns "SMELTING: lead (early game)"
  */
-ptp.getHeaderName = function(nmCt, categ, tag) {
+CLS_recipeGenerator.prototype.getHeaderName = function(nmCt, categ, tag) {
   return tryVal(categ, "uncategorized").toUpperCase() + ": <[$1][$2]>".format(nmCt, tag == null ? "" : " ([$1])".format(tag));
 };
 
@@ -52,7 +49,7 @@ ptp.getHeaderName = function(nmCt, categ, tag) {
  * @param {Object|unset} [rcBuilderObj] - Expected to be built with {@link CLS_recipeBuilder}.
  * @return {void}
  */
-ptp.addRc = function(rc, nmCt, categ, tag, objF, rcBuilderObj) {
+CLS_recipeGenerator.prototype.addRc = function(rc, nmCt, categ, tag, objF, rcBuilderObj) {
   let rcObj = {
     icon: nmCt,
     category: categ,
@@ -75,7 +72,7 @@ ptp.addRc = function(rc, nmCt, categ, tag, objF, rcBuilderObj) {
  * @param {Object|unset} [paramObj]
  * @return {void}
  */
-ptp.setBaseParam = function(rcObj, paramObj) {
+CLS_recipeGenerator.prototype.setBaseParam = function(rcObj, paramObj) {
   readParamAndCall(paramObj, "validGetter", val => rcObj.validGetter = val);
   readParamAndCall(paramObj, "lockedBy", val => rcObj.lockedBy = val);
   readParamAndCall(paramObj, "timeScl", val => rcObj.timeScl = val);
@@ -99,7 +96,7 @@ ptp.setBaseParam = function(rcObj, paramObj) {
  * @param {Object|unset} [paramObj]
  * @return {[string, number]} <TUP>: nmCt, amt.
  */
-ptp.processCi = function(ct_gn, amtI, paramObj) {
+CLS_recipeGenerator.prototype.processCi = function(ct_gn, amtI, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
     readParam(paramObj, "amtI", amtI * readParam(paramObj, "amtIScl", 1.0)),
@@ -115,7 +112,7 @@ ptp.processCi = function(ct_gn, amtI, paramObj) {
  * @param {Object|unset} [paramObj]
  * @return {[string, number, number]} <TUP>: nmCt, amt, p.
  */
-ptp.processBi = function(ct_gn, amtI, pI, paramObj) {
+CLS_recipeGenerator.prototype.processBi = function(ct_gn, amtI, pI, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
     readParam(paramObj, "amtI", Math.round(amtI * readParam(paramObj, "amtIScl", 1.0))),
@@ -131,7 +128,7 @@ ptp.processBi = function(ct_gn, amtI, pI, paramObj) {
  * @param {Object|unset} [paramObj]
  * @return {[string, number]} <TUP>: nmCt, amt.
  */
-ptp.processPayi = function(ct_gn, payAmtI, paramObj) {
+CLS_recipeGenerator.prototype.processPayi = function(ct_gn, payAmtI, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
     readParam(paramObj, "payAmtI", Math.round(payAmtI * readParam(paramObj, "amtIScl", 1.0))),
@@ -146,7 +143,7 @@ ptp.processPayi = function(ct_gn, payAmtI, paramObj) {
  * @param {Object|unset} [paramObj]
  * @return {[string, number]} <TUP>: nmCt, amt.
  */
-ptp.processCo = function(ct_gn, amtO, paramObj) {
+CLS_recipeGenerator.prototype.processCo = function(ct_gn, amtO, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
     readParam(paramObj, "amtO", amtO * readParam(paramObj, "amtOScl", 1.0)),
@@ -162,7 +159,7 @@ ptp.processCo = function(ct_gn, amtO, paramObj) {
  * @param {Object|unset} [paramObj]
  * @return {[string, number, number]} <TUP>: nmCt, amt, p.
  */
-ptp.processBo = function(ct_gn, amtO, pO, paramObj) {
+CLS_recipeGenerator.prototype.processBo = function(ct_gn, amtO, pO, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
     readParam(paramObj, "amtO", Math.round(amtO * readParam(paramObj, "amtOScl", 1.0))),
@@ -178,7 +175,7 @@ ptp.processBo = function(ct_gn, amtO, pO, paramObj) {
  * @param {Object|unset} [paramObj]
  * @return {[string, number]} <TUP>: nmCt, amt.
  */
-ptp.processPayo = function(ct_gn, payAmtO, paramObj) {
+CLS_recipeGenerator.prototype.processPayo = function(ct_gn, payAmtO, paramObj) {
   return [
     ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
     readParam(paramObj, "payAmtO", Math.round(payAmtO * readParam(paramObj, "amtOScl", 1.0))),
@@ -193,7 +190,7 @@ ptp.processPayo = function(ct_gn, payAmtO, paramObj) {
  * @param {boolean|unset} [isContinuous]
  * @return {Array}
  */
-ptp.parseRawIo = function thisFun(raw, baseAmt, isContinuous) {
+CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous) {
   const arr = [];
 
   let tmpArr = raw.cpy();
@@ -230,7 +227,7 @@ ptp.parseRawIo = function thisFun(raw, baseAmt, isContinuous) {
  * @param {number} amtO
  * @return {Array}
  */
-ptp.parseRawCi = function(rawCi, amtO) {
+CLS_recipeGenerator.prototype.parseRawCi = function(rawCi, amtO) {
   return this.parseRawIo(rawCi, amtO, true);
 };
 
@@ -242,7 +239,7 @@ ptp.parseRawCi = function(rawCi, amtO) {
  * @param {number} pO
  * @return {Array}
  */
-ptp.parseRawBi = function(rawBi, amtO, pO) {
+CLS_recipeGenerator.prototype.parseRawBi = function(rawBi, amtO, pO) {
   return this.parseRawIo(rawBi, amtO * pO, false);
 };
 
@@ -253,7 +250,7 @@ ptp.parseRawBi = function(rawBi, amtO, pO) {
  * @param {number} payAmtO
  * @return {Array}
  */
-ptp.parseRawPayi = function(rawPayi, payAmtO) {
+CLS_recipeGenerator.prototype.parseRawPayi = function(rawPayi, payAmtO) {
   return this.parseRawIo(rawPayi, payAmtO, true);
 };
 
@@ -264,7 +261,7 @@ ptp.parseRawPayi = function(rawPayi, payAmtO) {
  * @param {number} amtI
  * @return {Array}
  */
-ptp.parseRawCo = function(rawCo, amtI) {
+CLS_recipeGenerator.prototype.parseRawCo = function(rawCo, amtI) {
   return this.parseRawIo(rawCo, amtI, true);
 };
 
@@ -276,7 +273,7 @@ ptp.parseRawCo = function(rawCo, amtI) {
  * @param {number} pI
  * @return {Array}
  */
-ptp.parseRawBo = function(rawBo, amtI, pI) {
+CLS_recipeGenerator.prototype.parseRawBo = function(rawBo, amtI, pI) {
   return this.parseRawIo(rawBo, amtI * pI, false);
 };
 
@@ -287,7 +284,7 @@ ptp.parseRawBo = function(rawBo, amtI, pI) {
  * @param {number} payAmtI
  * @return {Array}
  */
-ptp.parseRawPayo = function(rawPayo, payAmtI) {
+CLS_recipeGenerator.prototype.parseRawPayo = function(rawPayo, payAmtI) {
   return this.parseRawIo(rawPayo, payAmtI, true);
 };
 
@@ -298,7 +295,7 @@ ptp.parseRawPayo = function(rawPayo, payAmtI) {
  * @param {Object|unset} [paramObj]
  * @return {void}
  */
-ptp.run = function(rc, paramObj) {
+CLS_recipeGenerator.prototype.run = function(rc, paramObj) {
   MDL_event._c_onLoad(() => {
     this.setter(rc, paramObj);
   });

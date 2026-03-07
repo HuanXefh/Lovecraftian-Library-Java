@@ -83,13 +83,16 @@
    * @param {string} flag
    * @return {boolean}
    */
-  const addLsavFlag = function(flag) {
+  const addLsavFlag = function thisFun(flag) {
     if(_hasLsavFlag(flag)) return false;
 
-    SAVE.set("flags", SAVE.get("flags").pushAll(flag));
+    SAVE.set("flags", thisFun.tmpArr.cpy(SAVE.get("flags")).pushAll(flag));
 
     return true;
-  };
+  }
+  .setProp({
+    tmpArr: [],
+  });
   exports.addLsavFlag = addLsavFlag;
 
 
@@ -98,11 +101,14 @@
    * @param {string} flag
    * @return {boolean}
    */
-  const removeLsavFlag = function(flag) {
+  const removeLsavFlag = function thisFun(flag) {
     if(!_hasLsavFlag(flag)) return false;
 
-    SAVE.set("flags", SAVE.get("flags").removeAll(flag));
+    SAVE.set("flags", thisFun.tmpArr.cpy(SAVE.get("flags")).removeAll(flag));
 
     return true;
-  };
+  }
+  .setProp({
+    tmpArr: [],
+  });
   exports.removeLsavFlag = removeLsavFlag;

@@ -23,9 +23,6 @@
   /* <---------- object ----------> */
 
 
-  var cls = Object;
-
-
   /**
    * Gets last child object found in `obj` when searching with given keys.
    * @param {Object} obj
@@ -33,7 +30,7 @@
    * @param {any} [def] - If given, returns `def` if not found.
    * @return {any}
    */
-  cls.findByKeys = function(obj, keys, def) {
+  Object.findByKeys = function(obj, keys, def) {
     let tg = obj;
     let tmp = null;
 
@@ -59,7 +56,7 @@
    * @param {T} obj
    * @return {T}
    */
-  cls.clear = function(obj) {
+  Object.clear = function(obj) {
     for(let key in obj) {
       delete obj[key];
     };
@@ -75,7 +72,7 @@
    * @param {boolean|unset} [forceIns] - If true, methods in `obj` will be ignored.
    * @return {void}
    */
-  cls._it = function(obj, scr, forceIns) {
+  Object._it = function(obj, scr, forceIns) {
     if(!forceIns) {
       for(let key in obj) {
         scr(key, obj[key]);
@@ -96,7 +93,7 @@
    * @param {T} obj
    * @return {T}
    */
-  cls.setProp = function(obj) {
+  Object.setProp = function(obj) {
     if(arguments.length === 2) {
       for(let key in arguments[1]) {
         obj[key] = arguments[1][key];
@@ -120,16 +117,13 @@
    * @param {Object} objOld
    * @return {T}
    */
-  cls.cloneProp = function(objNew, objOld) {
+  Object.cloneProp = function(objNew, objOld) {
     Object._it(objOld, (key, prop) => {
       objNew[key] = prop;
     });
 
     return objNew;
   };
-
-
-  var ptp = Object.prototype;
 
 
   /**
@@ -139,7 +133,7 @@
    * @param {boolean|unset} [forceIns]
    * @return {void}
    */
-  setHiddenProp(ptp, "_it", function(scr, forceIns) {
+  setHiddenProp(Object.prototype, "_it", function(scr, forceIns) {
     Object._it(this, scr, forceIns);
   });
 
@@ -151,7 +145,7 @@
    * @func Object#setProp
    * @return {this}
    */
-  setHiddenProp(ptp, "setProp", function() {
+  setHiddenProp(Object.prototype, "setProp", function() {
     let args = Array.from(arguments);
     args.unshift(this);
     return Object.setProp.apply(this, args);
@@ -164,7 +158,7 @@
    * @param {Object} objOld
    * @return {this}
    */
-  setHiddenProp(ptp, "cloneProp", function(objOld) {
+  setHiddenProp(Object.prototype, "cloneProp", function(objOld) {
     return Object.cloneProp(this, objOld);
   });
 
@@ -172,18 +166,15 @@
   /* <---------- number ----------> */
 
 
-  var ptp =  Number.prototype;
-
-
   /**
-   * Interation using this number (rounded) as cap.
+   * Iteration using this number (rounded) as cap.
    * @override
    * @param {function(number): void} scr
    * @param {number|unset} [gap]
    * @param {number|unset} [base]
    * @return {void}
    */
-  ptp._it = function(scr, gap, base) {
+  Number.prototype._it = function(scr, gap, base) {
     if(gap == null) gap = 1;
     if(base == null) base = 0;
 
@@ -204,7 +195,7 @@
    * Gets next integer.
    * @return {number}
    */
-  ptp.next = function() {
+  Number.prototype.next = function() {
     return Math.round(this) + 1;
   };
 
@@ -212,14 +203,11 @@
   /* <---------- string ----------> */
 
 
-  var ptp = String.prototype;
-
-
   /**
    * Gets cap for iteration.
    * @return {number}
    */
-  ptp.iCap = function() {
+  String.prototype.iCap = function() {
     return this.length;
   };
 
@@ -227,17 +215,14 @@
   /* <---------- array ----------> */
 
 
-  var cls = Array;
-
-
   /**
-   * Interates through each element pair in `arr1` and `arr2`.
+   * Iterates through each element pair in `arr1` and `arr2`.
    * @param {Array} arr1
    * @param {Array} arr2
    * @param {function(any, any): void} scr
    * @return {void}
    */
-  cls.forEachPair = function(arr1, arr2, scr) {
+  Array.forEachPair = function(arr1, arr2, scr) {
     let i = 0, j, iCap = arr1.iCap(), jCap = arr2.iCap();
     while(i < iCap) {
       j = 0;
@@ -250,14 +235,11 @@
   };
 
 
-  var ptp = Array.prototype;
-
-
   /**
    * Gets cap for iteration.
    * @return {number}
    */
-  ptp.iCap = function() {
+  Array.prototype.iCap = function() {
     return this.length;
   };
 
@@ -268,7 +250,7 @@
    * @param {function(any): void} scr
    * @return {void}
    */
-  ptp.forEachFast = function(scr) {
+  Array.prototype.forEachFast = function(scr) {
     let iCap = this.iCap();
     if(iCap === 0) return;
     for(let i = 0; i < iCap; i++) {
@@ -283,7 +265,7 @@
    * @param {function(any): void} scr
    * @return {void}
    */
-  ptp.forEachCond = function(boolF, scr) {
+  Array.prototype.forEachCond = function(boolF, scr) {
     if(boolF == null) boolF = Function.airTrue;
 
     let iCap = this.iCap();
@@ -300,10 +282,10 @@
    * @param {function(any, number, Array): void} scr
    * @return {void}
    */
-  ptp.forEachAll = function(scr) {
+  Array.prototype.forEachAll = function(scr) {
     Array.prototype.forEachAll.callIt.apply(this, [scr]);
   };
-  ptp.forEachAll.callIt = function(scr) {
+  Array.prototype.forEachAll.callIt = function(scr) {
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
       this[i] instanceof Array ?
@@ -320,7 +302,7 @@
    * @param {function(...any): void} scr - Arguments here will be elements in each row.
    * @return {void}
    */
-  ptp.forEachRow = function(ord, scr) {
+  Array.prototype.forEachRow = function(ord, scr) {
     if(ord == null) ord = 1;
 
     let iCap = this.iCap();
@@ -342,7 +324,7 @@
    * Empties this array.
    * @return {this}
    */
-  ptp.clear = function() {
+  Array.prototype.clear = function() {
     this.length = 0;
 
     return this;
@@ -355,7 +337,7 @@
    * @param {number|unset} [len]
    * @return {this}
    */
-  ptp.setVal = function(val0valGetter, len) {
+  Array.prototype.setVal = function(val0valGetter, len) {
     if(len == null) len = this.length;
 
     this.clear();

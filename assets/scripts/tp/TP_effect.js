@@ -1123,7 +1123,7 @@
       color = MDL_color._color(readParam(paramObj, "color", "null"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
-    const eff = new Effect(20.0 * scl, eff => {
+    return new Effect(20.0 * scl, eff => {
       let rad = tryVal(r, eff.rotation) * Vars.tilesize * Interp.pow2Out.apply(eff.fin());
 
       Draw.color(tryVal(color, eff.color));
@@ -1134,8 +1134,6 @@
       Lines.line(eff.x - rad, eff.y + rad, eff.x - rad, eff.y - rad);
       Draw.reset();
     });
-
-    return eff;
   };
   exports._rectWave = _rectWave;
 
@@ -1152,14 +1150,12 @@
       color = MDL_color._color(readParam(paramObj, "color", "null"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
-    const eff = new Effect(20.0 * scl, eff => {
+    return new Effect(20.0 * scl, eff => {
       Draw.color(tryVal(color, eff.color));
       Lines.stroke(size_f - eff.fin() * (size_f - size_t));
       Lines.circle(eff.x, eff.y, tryVal(rad, eff.rotation) * Interp.pow2Out.apply(eff.fin()));
       Draw.reset();
     });
-
-    return eff;
   };
   exports._circleWave = _circleWave;
 
@@ -1177,14 +1173,12 @@
       color = MDL_color._color(readParam(paramObj, "color", "null"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
-    const eff = new Effect(40.0 * scl, eff => {
+    return new Effect(40.0 * scl, eff => {
       Draw.color(tryVal(color, eff.color));
       Draw.alpha(eff.fout());
       Fill.square(eff.x, eff.y, r * Vars.tilesize);
       Draw.reset();
     });
-
-    return eff;
   };
   exports._squareFade = _squareFade;
 

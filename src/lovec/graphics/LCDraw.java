@@ -22,7 +22,10 @@ import mindustry.world.Tile;
 public class LCDraw {
 
 
-    static final Color[] tmpColors = {new Color()};
+    static final Color[] tmpColors = {
+        new Color(), new Color(), new Color(), new Color(), new Color(),
+        new Color(), new Color(), new Color(), new Color(), new Color()
+    };
 
 
     /* <-------------------- line --------------------> */
@@ -38,12 +41,12 @@ public class LCDraw {
             Lines.dashLine(x1, y1, x2, y2, amtSeg);
         } else {
             Lines.line(x1, y1, x2, y2);
-        }
-    }
+        };
+    };
     // Overloading
     public static void line(float x1, float y1, float x2, float y2) {
         line(x1, y1, x2, y2, false);
-    }
+    };
 
 
     /* <-------------------- rectangle --------------------> */
@@ -66,12 +69,12 @@ public class LCDraw {
             Lines.line(x + hw, y - hw, x + hw, y + hw);
             Lines.line(x + hw, y + hw, x - hw, y + hw);
             Lines.line(x - hw, y + hw, x - hw, y - hw);
-        }
-    }
+        };
+    };
     // Overloading
     public static void rect(float x, float y, float r, float size) {
         rect(x, y, r, size, true);
-    }
+    };
 
 
     /**
@@ -79,7 +82,7 @@ public class LCDraw {
      */
     public static void area(float x, float y, float size) {
         Fill.rect(x, y, size * Vars.tilesize, size * Vars.tilesize);
-    }
+    };
 
 
     /* <-------------------- circle --------------------> */
@@ -93,12 +96,12 @@ public class LCDraw {
             Lines.dashCircle(x, y, rad);
         } else {
             Lines.circle(x, y, rad);
-        }
-    }
+        };
+    };
     // Overloading
     public static void circle(float x, float y, float rad) {
         circle(x, y, rad, true);
-    }
+    };
 
 
     /**
@@ -113,27 +116,27 @@ public class LCDraw {
         for (int i = 0; i < iCap; i++) {
             ang_i = angSide * i + ang;
             Fill.quad(
-                    x + radIn * Mathf.cosDeg(ang_i),
-                    y + radIn * Mathf.sinDeg(ang_i),
-                    x + radIn * Mathf.cosDeg(ang_i + angSide),
-                    y + radIn * Mathf.sinDeg(ang_i + angSide),
-                    x + radOut * Mathf.cosDeg(ang_i + angSide),
-                    y + radOut * Mathf.sinDeg(ang_i + angSide),
-                    x + radOut * Mathf.cosDeg(ang_i),
-                    y + radOut * Mathf.sinDeg(ang_i)
+                x + radIn * Mathf.cosDeg(ang_i),
+                y + radIn * Mathf.sinDeg(ang_i),
+                x + radIn * Mathf.cosDeg(ang_i + angSide),
+                y + radIn * Mathf.sinDeg(ang_i + angSide),
+                x + radOut * Mathf.cosDeg(ang_i + angSide),
+                y + radOut * Mathf.sinDeg(ang_i + angSide),
+                x + radOut * Mathf.cosDeg(ang_i),
+                y + radOut * Mathf.sinDeg(ang_i)
             );
-        }
-    }
+        };
+    };
     // Overloading
     public static void ring(float x, float y, float radIn, float radOut, float ang, float frac) {
         ring(x, y, radIn, radOut, ang, frac, false);
-    }
+    };
     public static void ring(float x, float y, float radIn, float radOut, float ang) {
         ring(x, y, radIn, radOut, ang, 1f);
-    }
+    };
     public static void ring(float x, float y, float radIn, float radOut) {
         ring(x, y, radIn, radOut, 0f);
-    }
+    };
 
 
     /**
@@ -141,7 +144,7 @@ public class LCDraw {
      */
     public static void disk(float x, float y, float rad) {
         Fill.circle(x, y, rad);
-    }
+    };
 
 
     /**
@@ -149,7 +152,7 @@ public class LCDraw {
      */
     public static void shieldCircle(float x, float y, float rad, Color color, float a) {
         Fill.light(x, y, Lines.circleVertices(rad), rad, Color.clear, tmpColors[0].set(color).a(a * 0.7f));
-    }
+    };
     // Overloading
     public static void shieldCircle(float x, float y, float rad, Color color) {
         shieldCircle(x, y, rad, color, color.a);
@@ -164,20 +167,20 @@ public class LCDraw {
      */
     public static void regionIcon(float x, float y, TextureRegion reg, float size) {
         float
-                x_fi = x - Vars.tilesize * size * 0.5f,
-                y_fi = y + Vars.tilesize * size * 0.5f,
-                w = reg.width > reg.height ? 8f : ((reg.width * 8f) / reg.height),
-                h = reg.height > reg.width ? 8f : ((reg.height * 8f) / reg.width);
+            x_fi = x - Vars.tilesize * size * 0.5f,
+            y_fi = y + Vars.tilesize * size * 0.5f,
+            w = reg.width > reg.height ? 8f : ((reg.width * 8f) / reg.height),
+            h = reg.height > reg.width ? 8f : ((reg.height * 8f) / reg.width);
 
         Draw.mixcol(Color.darkGray, 1f);
         Draw.rect(reg, x_fi, y_fi - 1f, w, h);
         Draw.mixcol();
         Draw.rect(reg, x_fi, y_fi, w, h);
-    }
+    };
     // Overloading
     public static void regionIcon(float x, float y, TextureRegion reg) {
         regionIcon(x, y, reg, 1);
-    }
+    };
 
 
     /**
@@ -190,11 +193,11 @@ public class LCDraw {
         var h = size * Vars.tilesize * (ct.uiIcon.height > ct.uiIcon.width ? 1f : (float)(ct.uiIcon.height / ct.uiIcon.width));
 
         Draw.rect(ct.uiIcon, x, y, w, h);
-    }
+    };
     // Overloading
     public static void content(float x, float y, @Nullable UnlockableContent ct) {
         content(x, y, ct, 1);
-    }
+    };
 
 
     /**
@@ -204,11 +207,11 @@ public class LCDraw {
         if(ct == null) return;
 
         regionIcon(x, y, ct.uiIcon, size);
-    }
+    };
     // Overloading
     public static void contentIcon(float x, float y, @Nullable UnlockableContent ct) {
         regionIcon(x, y, ct.uiIcon);
-    }
+    };
 
 
     /* <-------------------- text --------------------> */
@@ -218,8 +221,8 @@ public class LCDraw {
      * Draws text.
      */
     public static void text(
-            float x, float y, @Nullable String str, Font font,
-            float sizeScl, Color color, int align, float offX, float offY, float offZ
+        float x, float y, @Nullable String str, Font font,
+        float sizeScl, Color color, int align, float offX, float offY, float offZ
     ) {
         if(str == null || str.isEmpty()) return;
 
@@ -239,26 +242,26 @@ public class LCDraw {
         font.getData().setScale(1f);
         font.setColor(Color.white);
         font.setUseIntegerPositions(useInt);
-    }
+    };
     // Overloading
     public static void text(
-            float x, float y, @Nullable String str, Font font,
-            float sizeScl, Color color, int align, float offX, float offY
+        float x, float y, @Nullable String str, Font font,
+        float sizeScl, Color color, int align, float offX, float offY
     ) {
         text(x, y, str, font, sizeScl, color, align, offX, offY, 0f);
-    }
+    };
     public static void text(
-            float x, float y, @Nullable String str, Font font,
-            float sizeScl, Color color, int align
+        float x, float y, @Nullable String str, Font font,
+        float sizeScl, Color color, int align
     ) {
         text(x, y, str, font, sizeScl, color, align, 0f, 0f);
-    }
+    };
     public static void text(
-            float x, float y, @Nullable String str, Font font,
-            float sizeScl, Color color
+        float x, float y, @Nullable String str, Font font,
+        float sizeScl, Color color
     ) {
         text(x, y, str, font, sizeScl, color, Align.center);
-    }
+    };
 
 
     /* <-------------------- specific --------------------> */
@@ -268,9 +271,9 @@ public class LCDraw {
      * Generic method to draw a tree.
      */
     public static void tree(
-            TextureRegion reg, TextureRegion shaReg,
-            Tile t, float offSha, float scl, float mag, float wob, float a, float z,
-            boolean shouldDrawWobble, boolean shouldCheckDst
+        TextureRegion reg, TextureRegion shaReg,
+        Tile t, float offSha, float scl, float mag, float wob, float a, float z,
+        boolean shouldDrawWobble, boolean shouldCheckDst
     ) {
         if(a < 0.01) return;
 
@@ -278,45 +281,45 @@ public class LCDraw {
         if(shaReg.found()) {
             Draw.z(z - 0.001f);
             Draw.rect(shaReg, t.worldx() + offSha, t.worldy() + offSha, Mathf.randomSeed(t.pos(), 0f, 360f));
-        }
+        };
         if(!shouldCheckDst) {
             Draw.alpha(a);
         } else {
             var unitPl = Vars.player.unit();
             var dst = unitPl == null ? 99999999f : Mathf.dst(t.worldx(), t.worldy(), unitPl.x, unitPl.y);
             Draw.alpha(a * dst < reg.width * 0.15f ? 0.37f : 1f);
-        }
+        };
         Draw.z(z);
         if(!shouldDrawWobble) {
             Draw.rect(reg, t.worldx(), t.worldy(), Mathf.randomSeed(t.pos(), 0f, 360f));
         } else {
             Draw.rectv(
-                    reg, t.worldx(), t.worldy(),
-                    reg.width * reg.scl(), reg.height * reg.scl(),
-                    Mathf.randomSeed(t.pos(), 0f, 360f) + Mathf.sin(Time.time + t.worldx(), 50f, 0.5f) + Mathf.sin(Time.time - t.worldy(), 65f, 0.9f) + Mathf.sin(Time.time + t.worldy() - t.worldx(), 85f, 0.9f),
-                    vec2 -> vec2.add(
-                            (Mathf.sin(vec2.y * 3f + Time.time, 60f * scl, 0.5f * mag) + Mathf.sin(vec2.x * 3f - Time.time, 70f * scl, 0.8f * mag)) * 1.5f * wob,
-                            (Mathf.sin(vec2.x * 3f + Time.time + 8f, 66f * scl, 0.55f * mag) + Mathf.sin(vec2.y * 3f - Time.time, 50f * scl, 0.2f * mag)) * 1.5f * wob
-                    )
+                reg, t.worldx(), t.worldy(),
+                reg.width * reg.scl(), reg.height * reg.scl(),
+                Mathf.randomSeed(t.pos(), 0f, 360f) + Mathf.sin(Time.time + t.worldx(), 50f, 0.5f) + Mathf.sin(Time.time - t.worldy(), 65f, 0.9f) + Mathf.sin(Time.time + t.worldy() - t.worldx(), 85f, 0.9f),
+                vec2 -> vec2.add(
+                     (Mathf.sin(vec2.y * 3f + Time.time, 60f * scl, 0.5f * mag) + Mathf.sin(vec2.x * 3f - Time.time, 70f * scl, 0.8f * mag)) * 1.5f * wob,
+                     (Mathf.sin(vec2.x * 3f + Time.time + 8f, 66f * scl, 0.55f * mag) + Mathf.sin(vec2.y * 3f - Time.time, 50f * scl, 0.2f * mag)) * 1.5f * wob
+                )
             );
-        }
+        };
         Draw.color();
         Draw.z(zPrev);
-    }
+    };
     // Overloading
     public static void tree(
-            TextureRegion reg, TextureRegion shaReg,
-            Tile t, float offSha, float scl, float mag, float wob, float a, float z,
-            boolean shouldDrawWobble
+        TextureRegion reg, TextureRegion shaReg,
+        Tile t, float offSha, float scl, float mag, float wob, float a, float z,
+        boolean shouldDrawWobble
     ) {
         tree(reg, shaReg, t, offSha, scl, mag, wob, a, z, shouldDrawWobble, false);
-    }
+    };
     public static void tree(
-            TextureRegion reg, TextureRegion shaReg,
-            Tile t, float offSha, float scl, float mag, float wob, float a, float z
+        TextureRegion reg, TextureRegion shaReg,
+        Tile t, float offSha, float scl, float mag, float wob, float a, float z
     ) {
         tree(reg, shaReg, t, offSha, scl, mag, wob, a, z, true);
-    }
+    };
 
 
-}
+};

@@ -18,7 +18,7 @@ CLS_settingTerm.prototype.init = function(nm, valGetter) {
   this.valGetter = valGetter;
   this.dialSetter = null;
 
-  global.lovecUtil.db.settingTerm.push(nm, valGetter);
+  global.lovecUtil.db.settingTerm.push(nm, this);
 };
 
 
@@ -30,24 +30,18 @@ const categSetterDebugArr = [];
 MDL_event._c_onLoad(() => {
   function buildCateg(nmMod, nmCateg, terms) {
     Vars.ui.settings.addCategory(MDL_bundle._term(nmMod, "settings-" + nmCateg), tb => {
-      terms.forEachFast(term => {
-        if(term.dialSetter == null) return;
-        term.dialSetter(tb);
-      });
+      terms.forEachCond(term => term.dialSetter != null, term => term.dialSetter(tb));
     });
   };
 
   categSetterArr.forEachRow(3, (nmMod, nmCateg, terms) => buildCateg(nmMod, nmCateg, terms));
-  if(PARAM.debug) {
+  if(global.lovecUtil.prop.debug) {
     categSetterDebugArr.forEachRow(3, (nmMod, nmCateg, terms) => buildCateg(nmMod, nmCateg, terms));
   };
 }, 19880207);
 
 
 /* <---------- static method ----------> */
-
-
-var cls = CLS_settingTerm;
 
 
 /**
@@ -58,7 +52,7 @@ var cls = CLS_settingTerm;
  * @param {boolean|unset} [isDebugCateg] - If true, this category is shown only in debug mode.
  * @return {void}
  */
-cls.registerCategory = function(nmMod, nmCateg, isDebugCateg) {
+CLS_settingTerm.registerCategory = function(nmMod, nmCateg, isDebugCateg) {
   (isDebugCateg ? categSetterDebugArr : categSetterArr).write([nmMod, nmCateg], []);
 };
 
@@ -66,7 +60,14 @@ cls.registerCategory = function(nmMod, nmCateg, isDebugCateg) {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_settingTerm.prototype;
+/**
+ * Gets value of this setting.
+ * @param {boolean|unset} [useScl] - Whether the result should be scaled.
+ * @return {any}
+ */
+CLS_settingTerm.prototype.get = function(useScl) {
+  return this.valGetter(useScl);
+};
 
 
 /**
@@ -77,7 +78,7 @@ var ptp = CLS_settingTerm.prototype;
  * @param {function(Table): void} tableF
  * @return {this}
  */
-ptp.setDialSetter = function thisFun(nmMod, nmCateg, tableF) {
+CLS_settingTerm.prototype.setDialSetter = function thisFun(nmMod, nmCateg, tableF) {
   thisFun.tmpTup.clear().push(nmMod, nmCateg);
 
   let terms = categSetterDebugArr.read(thisFun.tmpTup, categSetterArr.read(thisFun.tmpTup));

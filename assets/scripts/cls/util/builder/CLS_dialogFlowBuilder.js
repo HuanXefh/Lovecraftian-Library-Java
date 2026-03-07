@@ -25,14 +25,11 @@ CLS_dialogFlowBuilder.prototype.init = function() {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_dialogFlowBuilder.prototype;
-
-
 /**
  * Completes a row.
  * @return {this}
  */
-ptp.completeRow = function() {
+CLS_dialogFlowBuilder.prototype.completeRow = function() {
   let remainder = this.dialFlowData.length % 4;
   if(remainder === 0) return this;
   if(remainder <= 3) {
@@ -55,7 +52,7 @@ ptp.completeRow = function() {
  * Returns `paramObj`.
  * @return {Object}
  */
-ptp.fixParamObj = function() {
+CLS_dialogFlowBuilder.prototype.fixParamObj = function() {
   let paramObj = this.dialFlowData[this.dialFlowData.length - 2];
   if(paramObj == null) {
     this.dialFlowData[this.dialFlowData.length - 2] = {};
@@ -74,7 +71,7 @@ ptp.fixParamObj = function() {
  * @param {number|unset} [susTimeS]
  * @return {this}
  */
-ptp.setColorTransition = function(color, inTimeS, outTimeS, susTimeS) {
+CLS_dialogFlowBuilder.prototype.setColorTransition = function(color, inTimeS, outTimeS, susTimeS) {
   if(color == null) color = Color.black;
   if(inTimeS == null) inTimeS = 1.0;
   if(outTimeS == null) outTimeS = inTimeS;
@@ -100,7 +97,7 @@ ptp.setColorTransition = function(color, inTimeS, outTimeS, susTimeS) {
  * @param {string} nmBg
  * @return {this}
  */
-ptp.setBackgroundStart = function(nmBg) {
+CLS_dialogFlowBuilder.prototype.setBackgroundStart = function(nmBg) {
   this.completeRow();
 
   this.dialFlowData.push(
@@ -124,7 +121,7 @@ ptp.setBackgroundStart = function(nmBg) {
  * Adds a row for background end.
  * @return {this}
  */
-ptp.setBackgroundEnd = function() {
+CLS_dialogFlowBuilder.prototype.setBackgroundEnd = function() {
   this.completeRow();
 
   this.dialFlowData.push(
@@ -146,7 +143,7 @@ ptp.setBackgroundEnd = function() {
  * @param {MusicGn} mus_gn
  * @return {this}
  */
-ptp.setBgmStart = function(mus_gn) {
+CLS_dialogFlowBuilder.prototype.setBgmStart = function(mus_gn) {
   this.completeRow();
 
   this.dialFlowData.push(
@@ -170,7 +167,7 @@ ptp.setBgmStart = function(mus_gn) {
  * Adds a row for BGM end.
  * @return {this}
  */
-ptp.setBgmEnd = function() {
+CLS_dialogFlowBuilder.prototype.setBgmEnd = function() {
   this.completeRow();
 
   this.dialFlowData.push(
@@ -194,7 +191,7 @@ ptp.setBgmEnd = function() {
  * @param {number|string} ind
  * @return {this}
  */
-ptp.setText = function(nmMod, nmDial, ind) {
+CLS_dialogFlowBuilder.prototype.setText = function(nmMod, nmDial, ind) {
   this.completeRow();
 
   this.dialFlowData.push([nmMod, nmDial, ind]);
@@ -211,7 +208,7 @@ ptp.setText = function(nmMod, nmDial, ind) {
  * @param {string} nmChara
  * @return {this}
  */
-ptp.setSpeaker = function(nmMod, nmChara) {
+CLS_dialogFlowBuilder.prototype.setSpeaker = function(nmMod, nmChara) {
   if(this.offInd !== 1) ERROR_HANDLER.throw("dialogFlowGenerateFail");
 
   this.dialFlowData.push([nmMod, nmChara]);
@@ -227,7 +224,7 @@ ptp.setSpeaker = function(nmMod, nmChara) {
  * @param {Object} obj
  * @return {this}
  */
-ptp.setParamObj = function(obj) {
+CLS_dialogFlowBuilder.prototype.setParamObj = function(obj) {
   if(this.offInd === 0) {
     this.dialFlowData.push(null, null);
   } else if(this.offInd === 1) {
@@ -249,7 +246,7 @@ ptp.setParamObj = function(obj) {
  * @param {Object|Array<Object>} charaObjs_p
  * @return {this}
  */
-ptp.setChara = function(charaObjs_p) {
+CLS_dialogFlowBuilder.prototype.setChara = function(charaObjs_p) {
   const arr = [];
 
   if(this.offInd === 0) {
@@ -290,7 +287,7 @@ ptp.setChara = function(charaObjs_p) {
  * @param {number|unset} [waitTimeS]
  * @return {this}
  */
-ptp.setUselessSelections = function(selTextParamArr, w, h, waitTimeS) {
+CLS_dialogFlowBuilder.prototype.setUselessSelections = function(selTextParamArr, w, h, waitTimeS) {
   if(waitTimeS == null) waitTimeS = 1.0;
 
   const texts = [];
@@ -314,7 +311,7 @@ ptp.setUselessSelections = function(selTextParamArr, w, h, waitTimeS) {
  * Completes the builder and returns the dialog flow data.
  * @return {DialogFlowData}
  */
-ptp.build = function() {
+CLS_dialogFlowBuilder.prototype.build = function() {
   if(this.isBuilt) ERROR_HANDLER.throw("dialogFlowDoubleBuild");
   if(this.hasBackground) ERROR_HANDLER.throw("dialogFlowMissingBackgroundEnd");
   if(this.hasMusic) ERROR_HANDLER.throw("dialogFlowMissingMusicEnd");

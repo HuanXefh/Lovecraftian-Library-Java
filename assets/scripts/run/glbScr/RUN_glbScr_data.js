@@ -42,17 +42,14 @@
    * @return {number}
    */
   processRevision = function(wr0rd, nmMod) {
-    if(wr0rd instanceof Writes) {
-      let revi = nmMod == null ?
-        LOVEC_REVISION :
-        MOD_REVISION[nmMod];
-      wr0rd.s(revi);
-      return revi;
-    } else {
-      return require("lovec/glb/GLB_param").secret_revisionFix ?
-        0 :
-        wr0rd.s();
+    if(wr0rd instanceof Reads) {
+      return PARAM.secret_revisionFix ? 0 : wr0rd.s();
     };
+
+    let revi = nmMod == null ? LOVEC_REVISION : MOD_REVISION[nmMod];
+    wr0rd.s(revi);
+
+    return revi;
   };
 
 

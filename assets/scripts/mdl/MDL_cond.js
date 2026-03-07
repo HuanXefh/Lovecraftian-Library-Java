@@ -326,7 +326,7 @@
    * @return {boolean}
    */
   const _isCoreBlock = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk")
+    let blk = MDL_content._ct(blk_gn, "blk");
     return blk != null && (blk instanceof CoreBlock || MDL_content._hasTag(blk, "blk-core"));
   };
   exports._isCoreBlock = _isCoreBlock;

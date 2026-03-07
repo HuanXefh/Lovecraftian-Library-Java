@@ -23,16 +23,13 @@
   /* <---------- object ----------> */
 
 
-  var cls = Object;
-
-
   /**
    * Sums all numbers in a mapper object.
    * @param {Object<string: number>} obj
    * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
    * @return {number}
    */
-  cls.mapSum = function(obj, mapF) {
+  Object.mapSum = function(obj, mapF) {
     let val = 0.0;
     Object._it(obj, (key, val1) => {
       if(typeof val1 === "number") {
@@ -52,7 +49,7 @@
    * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
    * @return {number}
    */
-  cls.mapMax = function(obj, mapF) {
+  Object.mapMax = function(obj, mapF) {
     let val = 0.0;
     Object._it(obj, (key, val1) => {
       if(
@@ -74,7 +71,7 @@
    * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
    * @return {number}
    */
-  cls.mapMin = function(obj, mapF) {
+  Object.mapMin = function(obj, mapF) {
     let val = Number.n8;
     Object._it(obj, (key, val1) => {
       if(
@@ -98,7 +95,7 @@
    * <br> <ARGS>: obj1, valGetter, includeEqual.
    * @return {boolean}
    */
-  cls.mapSomeLargerThan = newMultiFunction(
+  Object.mapSomeLargerThan = newMultiFunction(
     ["object", "object", "boolean"], function(obj1, obj2, includeEqual) {
       for(let key in obj1) {
         if(includeEqual ? tryVal(obj1[key], 0.0) >= tryVal(obj2[key], 0.0) : tryVal(obj1[key], 0.0) > tryVal(obj2[key], 0.0)) return true;
@@ -138,7 +135,7 @@
    * <br> <ARGS>: obj1, valGetter, includeEqual.
    * @return {boolean}
    */
-  cls.mapAllLargerThan = function(obj, arg, includeEqual) {
+  Object.mapAllLargerThan = function(obj, arg, includeEqual) {
     return !Object.mapSomeSmallerThan(obj, arg, !includeEqual);
   };
 
@@ -151,7 +148,7 @@
    * <br> <ARGS>: obj1, valGetter, includeEqual.
    * @return {boolean}
    */
-  cls.mapSomeSmallerThan = newMultiFunction(
+  Object.mapSomeSmallerThan = newMultiFunction(
     ["object", "object", "boolean"], function(obj1, obj2, includeEqual) {
       let i = 0;
       for(let key in obj1) {
@@ -199,7 +196,7 @@
    * <br> <ARGS>: obj1, valGetter, includeEqual.
    * @return {boolean}
    */
-  cls.mapAllSmallerThan = function(obj1, obj2, includeEqual) {
+  Object.mapAllSmallerThan = function(obj1, obj2, includeEqual) {
     return !Object.mapSomeLargerThan(obj1, obj2, !includeEqual);
   };
 
@@ -207,20 +204,14 @@
   /* <---------- number ----------> */
 
 
-  var cls = Number;
-
-
-  cls.intMax = java.lang.Integer.MAX_VALUE;
-  cls.intMin = java.lang.Integer.MIN_VALUE;
-  cls.fMax = java.lang.Float.MAX_VALUE;
-  cls.fMin = java.lang.Float.MIN_VALUE;
-  cls.n4 = 9999.0;
-  cls.n6 = 999999.0;
-  cls.n8 = 99999999.0;
-  cls.n12 = 999999999999.0;
-
-
-  var ptp = Number.prototype;
+  Number.intMax = java.lang.Integer.MAX_VALUE;
+  Number.intMin = java.lang.Integer.MIN_VALUE;
+  Number.fMax = java.lang.Float.MAX_VALUE;
+  Number.fMin = java.lang.Float.MIN_VALUE;
+  Number.n4 = 9999.0;
+  Number.n6 = 999999.0;
+  Number.n8 = 99999999.0;
+  Number.n12 = 999999999999.0;
 
 
   /**
@@ -229,7 +220,7 @@
    * @param {number|unset} [tol]
    * @return {boolean}
    */
-  ptp.fEqual = function(num, tol) {
+  Number.prototype.fEqual = function(num, tol) {
     return Math.abs(this - num) < tryVal(tol, 0.0001);
   };
 
@@ -238,21 +229,12 @@
    * Gets factorial of this number (rounded).
    * @return {number}
    */
-  ptp.fac = function() {
-    let iCap = Math.round(this) + 1;
-    // 0! is 1
-    if(iCap === 1) return 1;
+  Number.prototype.fac = function() {
+    let num = Math.round(this);
     // No negative value
-    if(iCap < 1) return NaN;
+    if(num < 0) return NaN;
 
-    let val = 1.0;
-    let i = 1;
-    while(i < iCap) {
-      val *= i;
-      i++;
-    };
-
-    return val;
+    return LCMathFunc.factorial(num);
   };
 
 
@@ -261,7 +243,7 @@
    * @param {number|unset} [deciAmt]
    * @return {number}
    */
-  ptp.roundFixed = function(deciAmt) {
+  Number.prototype.roundFixed = function(deciAmt) {
     let mtp = Math.pow(10.0, tryVal(deciAmt, 2));
 
     return Math.round(this * mtp) / mtp;
@@ -273,7 +255,7 @@
    * @param {number|unset} [base]
    * @return {number}
    */
-  ptp.randInt = function(base) {
+  Number.prototype.randInt = function(base) {
     let cap = Math.floor(this);
     if(base == null) base = 0;
 
@@ -286,7 +268,7 @@
    * @param {number} p
    * @return {number}
    */
-  ptp.randFreq = function(p) {
+  Number.prototype.randFreq = function(p) {
     let freq = 0;
 
     let iCap = Math.floor(this);
@@ -303,15 +285,12 @@
   /* <---------- array ----------> */
 
 
-  var ptp = Array.prototype;
-
-
   /**
    * Gets sum of numbers in this array.
    * @param {(function(any): number)|unset} [mapF]
    * @return {number}
    */
-  ptp.sum = function(mapF) {
+  Array.prototype.sum = function(mapF) {
     let val = 0.0;
 
     let i = 0, iCap = this.iCap();
@@ -336,7 +315,7 @@
    * @param {(function(any): number)|unset} [mapF]
    * @return {number}
    */
-  ptp.prod = function(mapF) {
+  Array.prototype.prod = function(mapF) {
     let val = 0.0;
 
     let i = 0, iCap = this.iCap();
@@ -361,7 +340,7 @@
    * @param {(function(any): number)|unset} [mapF]
    * @return {number}
    */
-  ptp.mean = function(mapF) {
+  Array.prototype.mean = function(mapF) {
     return this.sum(mapF) / this.length;
   };
 
@@ -371,7 +350,7 @@
    * @param {number} pow
    * @return {number}
    */
-  ptp.meanPow = function(pow) {
+  Array.prototype.meanPow = function(pow) {
     return Math.pow(this.mean(num => Math.pow(num, pow)), 1.0 / pow);
   };
 
@@ -383,7 +362,7 @@
    * @param {function(any, any): any} scr
    * @return {this}
    */
-  ptp.operWith = function(arr, scr) {
+  Array.prototype.operWith = function(arr, scr) {
     let iCap = this.iCap();
     if(iCap !== arr.length) ERROR_HANDLER.throw("arrayLengthMismatch");
 
@@ -402,7 +381,7 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  ptp.addWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 + num2)};
+  Array.prototype.addWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 + num2)};
 
 
   /**
@@ -410,7 +389,7 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  ptp.subWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 - num2)};
+  Array.prototype.subWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 - num2)};
 
 
   /**
@@ -418,7 +397,7 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  ptp.mulWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 * num2)};
+  Array.prototype.mulWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 * num2)};
 
 
   /**
@@ -426,7 +405,7 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  ptp.divWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 / num2)};
+  Array.prototype.divWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 / num2)};
 
 
   /**
@@ -434,7 +413,7 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  ptp.modWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 % num2)};
+  Array.prototype.modWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 % num2)};
 
 
   /**
@@ -442,7 +421,7 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  ptp.powWith = function(arr) {return this.operWith(arr, (num1, num2) => Math.pow(num1, num2))};
+  Array.prototype.powWith = function(arr) {return this.operWith(arr, (num1, num2) => Math.pow(num1, num2))};
 
 
   /**
@@ -451,7 +430,7 @@
    * @param {function(number, any): number} scr - <ARGS>: result, valCur.
    * @return {Array<number>}
    */
-  ptp.cumOper = function(scr) {
+  Array.prototype.cumOper = function(scr) {
     const arr = [];
 
     let tmp = 0.0;
@@ -471,14 +450,14 @@
    * Performs cumulative sum on this array.
    * @return {Array<number>}
    */
-  ptp.cumSum = function() {return this.cumOper((valLast, val) => valLast + val)};
+  Array.prototype.cumSum = function() {return this.cumOper((valLast, val) => valLast + val)};
 
 
   /**
    * Performs cumulative multiplication on this array.
    * @return {Array<number>}
    */
-  ptp.cumProd = function() {return this.cumOper((valLast, val) => valLast * val)};
+  Array.prototype.cumProd = function() {return this.cumOper((valLast, val) => valLast * val)};
 
 
   /**
@@ -489,7 +468,7 @@
    * [0, 5, 12, 18, 12].diff();                // Returns [5, 7, 5, -6]
    * [0, 5, 12, 18, 12].diff(2);                // Returns [2, -2, 11]
    */
-  ptp.diff = function thisFun(repeat) {
+  Array.prototype.diff = function thisFun(repeat) {
     if(repeat == null) repeat = 1;
 
     let arr0 = this;
@@ -519,15 +498,12 @@
   /* <---------- math ----------> */
 
 
-  var cls = Math;
-
-
   /**
    * Get mean of given numbers.
    * <br> <ARGS>: num1, num2, num3, ...
    * @return {number}
    */
-  cls.mean = function() {
+  Math.mean = function() {
     return Array.from(arguments).mean();
   };
 
@@ -538,7 +514,7 @@
    * @param {number} pow
    * @return {number}
    */
-  cls.meanPow = function(pow) {
+  Math.meanPow = function(pow) {
     return Array.from(arguments).splice(1).meanPow(pow);
   };
 
@@ -549,7 +525,7 @@
    * @param {number} amt
    * @return {number}
    */
-  cls.permutation = function(cap, amt) {
+  Math.permutation = function(cap, amt) {
     return cap.fac() / (cap - amt).fac();
   };
 
@@ -560,7 +536,7 @@
    * @param {number} amt
    * @return {number}
    */
-  cls.combination = function(cap, amt) {
+  Math.combination = function(cap, amt) {
     return cap.fac() / ((cap - amt).fac() * amt.fac());
   };
 
@@ -571,7 +547,7 @@
    * @param {number} b
    * @return {number}
    */
-  cls.gcd = function(a, b) {
+  Math.gcd = function(a, b) {
     return b === 0 ? a : Math.gcd(b, a % b);
   };
 
@@ -582,6 +558,6 @@
    * @param {number} b
    * @return {number}
    */
-  cls.lcm = function(a, b) {
+  Math.lcm = function(a, b) {
     return a * b / Math.gcd(a, b);
   };

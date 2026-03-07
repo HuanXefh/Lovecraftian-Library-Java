@@ -158,7 +158,7 @@
 
 
   /**
-   * {@link DrawFrame}.
+   * {@link DrawFrames}.
    * @param {number} x
    * @param {number} y
    * @param {Array<TextureRegion>} regs
@@ -219,7 +219,7 @@
 
 
   /**
-   * Draws something like {@link Icon.power}.
+   * Draws something like `Icon.power`.
    * @param {number} x
    * @param {number} y
    * @param {TextureRegionDrawable|null} icon
@@ -349,7 +349,7 @@
 
     _reg_fade(
       x, y, reg,
-      ang, regScl, 0.2, color_gn,
+      ang, regScl, 0.3, color_gn,
       1.0 - Math.pow(Mathf.clamp(frac) - 1.0, 2),
       z,
     );
@@ -358,7 +358,7 @@
 
 
   /**
-   * Variant of {@link _reg_fade} where progress is controlled by `fadeProg` instead of {@link Time.globalTime}.
+   * Variant of {@link _reg_fade} where progress is controlled by `fadeProg` instead of `Time.globalTime`.
    * Used for accelerating flashers.
    * @param {number} x
    * @param {number} y
@@ -410,7 +410,7 @@
     if(ang == null) ang = 0.0;
     if(regScl == null) regScl = 1.0;
     if(rate == null) spd = 6.0;
-    if(sideAmt == null) side = 4;
+    if(sideAmt == null) sideAmt = 4;
     if(a == null) a = 1.0;
 
     let
@@ -573,7 +573,7 @@
       frac_i = 1.0 - i / 3.0;
       a_i = Mathf.lerp(a, a * 0.4, frac_i);
       len_i = Mathf.lerp(len_f, len_t, frac_i);
-      w_i = Mathf.lerp(w_f, w_t, frac_i)
+      w_i = Mathf.lerp(w_f, w_t, frac_i);
       Draw.color(Tmp.c2.set(color2).lerp(color1, frac_i));
       Draw.alpha(a_i);
       Drawf.flame(x_fi, y_fi, 12, ang, len_i * lenScl, w_i, 0.2);
@@ -988,19 +988,20 @@
     Lines.stroke(6.0 * strokeScl);
     Lines.line(wireReg, x1 + dx, y1 + dy, x2 - dx, y2 - dy, false);
     // Shadow
-    TMP_Z_A = Draw.z();
-    Draw.z(Layer.block + 0.1);
+    processZ(Layer.block + 0.1, 1);
     Lines.stroke(20.0 * strokeScl);
     Draw.alpha(0.3);
     Lines.line(VARGEN.wireRegs.shaReg, x1 + dx, y1 + dy, x2 - dx, y2 - dy, false);
+    processZ(null, 1);
     // Glow
-    Draw.z(TMP_Z_A + 0.01);
+    processZ(Layer.block + 0.11, 1);
     Lines.stroke(8.0 * strokeScl);
     Draw.alpha(glowA * (0.4 + Mathf.absin(15.0, 0.6)) * 0.25);
     Draw.blend(Blending.additive);
     Lines.line(VARGEN.wireRegs.glowReg, x1 + dx, y1 + dy, x2 - dx, y2 - dy, false);
     Draw.blend();
     Draw.reset();
+    processZ(null, 1);
 
     processZ();
   };

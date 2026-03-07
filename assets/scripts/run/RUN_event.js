@@ -182,7 +182,7 @@
 
       if(b.team !== Vars.player.team()) return;
 
-      // Draw bridge tranportation
+      // Draw bridge transportation
       if(b.block instanceof ItemBridge || b.block instanceof DirectionBridge) {
         MDL_draw.drawBridgeLine(b);
       };
@@ -208,13 +208,17 @@
       );
       if(PARAM.drawUnitReload) {
         let hasReload = b.ex_getReloadFrac != null || DB_HANDLER.read("blk-reload", b.block.name, false);
-        if(hasReload) MDL_draw._d_reload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.r_offBuildStat, MDL_entity._reloadFrac(b));
+        if(hasReload) {
+          MDL_draw._d_reload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.r_offBuildStat, MDL_entity._reloadFrac(b));
+        };
         MDL_draw._d_reload(b, null, Pal.accent, 1.0, -16.0, (hasReload ? -0.25 : -1.25) + VAR.r_offBuildStat, MDL_entity._warmupFrac(b, true));
       };
+      processZ(VAR.lay_debugTop - 0.02);
       Lines.stroke(1.0);
-      Draw.color(Pal.accent, 0.5);
+      Draw.color(Pal.accent, 0.3);
       LCDraw.rect(b.x, b.y, VAR.r_offBuildStat, b.block.size, false);
       Draw.reset();
+      processZ();
     },
   });
 

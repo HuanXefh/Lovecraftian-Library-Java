@@ -23,15 +23,12 @@
   /* <---------- object ----------> */
 
 
-  var cls = Object;
-
-
   /**
    * Gets a random key in `obj`.
    * @param {Object} obj
    * @return {string}
    */
-  cls.randKey = function(obj) {
+  Object.randKey = function(obj) {
     return Object.keys(obj).readRand();
   };
 
@@ -41,7 +38,7 @@
    * @param {Arguments} arr
    * @return {Object}
    */
-  cls.arrToObj = function(arr) {
+  Object.arrToObj = function(arr) {
     const obj = {};
 
     let i = 0, iCap = arr.iCap();
@@ -59,7 +56,7 @@
    * @param {Object} obj
    * @return {Array}
    */
-  cls.objToArr = function(obj) {
+  Object.objToArr = function(obj) {
     const arr = [];
 
     let i = 0;
@@ -77,7 +74,7 @@
    * @param {Object} obj
    * @return {Array}
    */
-  cls.objTo2Arr = function(obj) {
+  Object.objTo2Arr = function(obj) {
     const arr = [];
     if(obj == null) return arr;
 
@@ -98,7 +95,7 @@
    * <br> <ARGS>: obj1, obj2, obj3, ...
    * @return {Object}
    */
-  cls.mergeObj = function() {
+  Object.mergeObj = function() {
     const obj0 = {};
 
     for(let obj of arguments) {
@@ -117,7 +114,7 @@
    * <br> <ARGS>: obj1, obj2, obj3, ...
    * @return {Object}
    */
-  cls.mergeObjMixin = function() {
+  Object.mergeObjMixin = function() {
     const obj0 = {};
 
     for(let obj of arguments) {
@@ -213,7 +210,7 @@
    * @param {Object} obj
    * @return {Object}
    */
-  cls.mergeObjDB = function thisFun(obj0, obj) {
+  Object.mergeObjDB = function thisFun(obj0, obj) {
     Object._it(obj0, (key1, val1) => {
       // Depth: 0
       val1 instanceof Array ?
@@ -261,7 +258,7 @@
    * @param {string|unset} [nmModCur]
    * @return {void}
    */
-  cls.mergeDB = function(dbObj, nmFi, nmModCur) {
+  Object.mergeDB = function(dbObj, nmFi, nmModCur) {
     if(nmModCur == null) nmModCur = "lovec";
 
     let i = 0;
@@ -292,15 +289,12 @@
   /* <---------- number ----------> */
 
 
-  var ptp = Number.prototype;
-
-
   /**
    * Converts a tile coordinate to world coordinate.
    * @param {number|unset} [size]
    * @return {number}
    */
-  ptp.toFCoord = function(size) {
+  Number.prototype.toFCoord = function(size) {
     return size == null ?
       LCFormat.toFCoord(this) :
       LCFormat.toFCoord(this, size);
@@ -311,7 +305,7 @@
    * Converts a world coordinate to tile coordinate.
    * @return {number}
    */
-  ptp.toIntCoord = function() {
+  Number.prototype.toIntCoord = function() {
     return LCFormat.toIntCoord(this);
   };
 
@@ -321,7 +315,7 @@
    * @param {number} size
    * @return {number}
    */
-  ptp.toRectW = function(size) {
+  Number.prototype.toRectW = function(size) {
     return LCFormat.calcRectW(this, size);
   };
 
@@ -331,7 +325,7 @@
    * @param {number} size
    * @return {number}
    */
-  ptp.toRectHW = function(size) {
+  Number.prototype.toRectHW = function(size) {
     return LCFormat.calcRectHW(this, size);
   };
 
@@ -339,14 +333,11 @@
   /* <---------- array ----------> */
 
 
-  var ptp = Array.prototype;
-
-
   /**
    * Whether `obj` is instance of any class from this array.
    * @param {Object} obj
    * @return {boolean}
    */
-  ptp.hasIns = function(obj) {
+  Array.prototype.hasIns = function(obj) {
     return this.some(cls => obj instanceof cls);
   };

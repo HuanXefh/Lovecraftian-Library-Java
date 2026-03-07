@@ -41,16 +41,13 @@ CLS_whiteNoise.prototype.init = function(w, h, gridW, gridH) {
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_whiteNoise.prototype;
-
-
 /**
  * Prints `noiseData` as colored zeros.
  * @param {number|unset} [base]
  * @param {number|unset} [cap]
  * @return {void}
  */
-ptp.print = function(base, cap) {
+CLS_whiteNoise.prototype.print = function(base, cap) {
   if(base == null) base = 0.0;
   if(cap == null) cap = 1.0;
 
@@ -74,7 +71,7 @@ ptp.print = function(base, cap) {
  * @param {boolean|unset} [isGrid]
  * @return {number}
  */
-ptp.getOffsetCoord = function(coord, off, isY, isGrid) {
+CLS_whiteNoise.prototype.getOffsetCoord = function(coord, off, isY, isGrid) {
   let tmpCoord = coord + tryVal(off, 0);
   let w = isY ? (isGrid ? this.gridHeight : this.height) : (isGrid ? this.gridWidth : this.width);
   while(tmpCoord < 0) {
@@ -94,7 +91,7 @@ ptp.getOffsetCoord = function(coord, off, isY, isGrid) {
  * @param {boolean|unset} [isY]
  * @return {number}
  */
-ptp.toGridCoord = function(coord, isY) {
+CLS_whiteNoise.prototype.toGridCoord = function(coord, isY) {
   return Math.floor(coord / (isY ? this.height : this.width) * (isY ? this.gridHeight : this.gridWidth));
 };
 
@@ -105,7 +102,7 @@ ptp.toGridCoord = function(coord, isY) {
  * @param {boolean|unset} [isY]
  * @return {number}
  */
-ptp.toPonCoord = function(gCoord, isY) {
+CLS_whiteNoise.prototype.toPonCoord = function(gCoord, isY) {
   return Math.round(gCoord * (isY ? this.height / this.gridHeight : this.width / this.gridWidth));
 };
 
@@ -118,7 +115,7 @@ ptp.toPonCoord = function(gCoord, isY) {
  * @param {number|unset} [offY]
  * @return {number}
  */
-ptp.getZ = function(x, y, offX, offY) {
+CLS_whiteNoise.prototype.getZ = function(x, y, offX, offY) {
   return this.noiseData[this.getOffsetCoord(y, offY, true)][this.getOffsetCoord(x, offX, false)];
 };
 
@@ -131,7 +128,7 @@ ptp.getZ = function(x, y, offX, offY) {
  * @param {number|unset} [offGy]
  * @return {Vec2}
  */
-ptp.getVec = function(gx, gy, offGx, offGy) {
+CLS_whiteNoise.prototype.getVec = function(gx, gy, offGx, offGy) {
   return this.vecData[this.getOffsetCoord(gy, offGy, true, true)][this.getOffsetCoord(gx, offGx, false, true)];
 };
 
@@ -141,7 +138,7 @@ ptp.getVec = function(gx, gy, offGx, offGy) {
  * @param {function(Number, Number): void} scr - <ARGS>: x, y.
  * @return {void}
  */
-ptp.forEachPon = function(scr) {
+CLS_whiteNoise.prototype.forEachPon = function(scr) {
   this.height._it(j => {
     this.width._it(i => {
       scr(i, j);
@@ -155,7 +152,7 @@ ptp.forEachPon = function(scr) {
  * @param {function(): void} scr
  * @return {void}
  */
-ptp.forEachVert = function(scr) {
+CLS_whiteNoise.prototype.forEachVert = function(scr) {
   this.gridHeight._it(j => {
     this.gridWidth._it(i => {
       scr(i, j);
@@ -169,7 +166,7 @@ ptp.forEachVert = function(scr) {
  * <br> <LATER>
  * @return {void}
  */
-ptp.setVecData = function() {
+CLS_whiteNoise.prototype.setVecData = function() {
 
 };
 
@@ -180,9 +177,9 @@ ptp.setVecData = function() {
  * @param {number|unset} [base]
  * @param {number|unset} [cap]
  * @param {number|unset} [seed]
- * @return {Array<number>}
+ * @return {Array<Array<number>>}
  */
-ptp.buildNoise = function(base, cap, seed) {
+CLS_whiteNoise.prototype.buildNoise = function(base, cap, seed) {
   if(this.isBuilt) return this.noiseData;
   if(base == null) base = 0.0;
   if(cap == null) cap = 1.0;
@@ -196,7 +193,7 @@ ptp.buildNoise = function(base, cap, seed) {
   this.isBuilt = true;
 
   return this.noiseData;
-},
+};
 
 
 module.exports = CLS_whiteNoise;

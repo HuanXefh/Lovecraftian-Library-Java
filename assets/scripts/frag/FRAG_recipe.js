@@ -407,6 +407,8 @@
    */
   const _dumpTup = function(b, contTup, bo, fo) {
     const tup = contTup != null ? contTup : [[], []];
+    tup[0].clear();
+    tup[1].clear();
 
     let i, iCap;
 

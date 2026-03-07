@@ -23,15 +23,12 @@
   /* <---------- number ----------> */
 
 
-  var ptp = Number.prototype;
-
-
   /**
    * To percentage string.
    * @param {number|unset} [deciAmt]
    * @return {string}
    */
-  ptp.perc = function(deciAmt) {
+  Number.prototype.perc = function(deciAmt) {
     return Strings.fixed((this * 100.0).roundFixed(tryVal(deciAmt, 2)), tryVal(deciAmt, 2)) + "%";
   };
 
@@ -42,7 +39,7 @@
    * @param {number|unset} [deciAmt]
    * @return {string}
    */
-  ptp.color = function(color, deciAmt) {
+  Number.prototype.color = function(color, deciAmt) {
     return String(this.roundFixed(deciAmt)).color(color);
   };
 
@@ -56,7 +53,7 @@
    * @param {number|unset} midTol
    * @return {string}
    */
-  ptp.percColor = function(deciAmt, overColor, lessColor, midColor, midTol) {
+  Number.prototype.percColor = function(deciAmt, overColor, lessColor, midColor, midTol) {
     return this.perc(deciAmt).color(
       this.fEqual(1.0, tryVal(midTol, 0.025)) ?
         tryVal(midColor, Pal.accent) :
@@ -73,7 +70,7 @@
    * @param {number|unset} [deciAmt]
    * @return {string}
    */
-  ptp.sci = function(pow, deciAmt) {
+  Number.prototype.sci = function(pow, deciAmt) {
     return Strings.fixed(this * Math.pow(10, -pow), tryVal(deciAmt, 2)) + " × 10^" + pow;
   };
 
@@ -82,7 +79,7 @@
    * To UI format.
    * @return {string}
    */
-  ptp.ui = function() {
+  Number.prototype.ui = function() {
     let intNum = Math.round(this);
     let abs = Math.abs(Math.round(this));
 
@@ -105,15 +102,12 @@
   /* <---------- string ----------> */
 
 
-  var cls = String;
-
-
   /**
    * Builds a multiline string with given strings, null will be ignored and array will be flattened.
    * <br> <ARGS> str1, str2, str3, ...
    * @return {string}
    */
-  cls.multiline = function() {
+  String.multiline = function() {
     let str_fi = "";
     let args = Array.from(arguments).flatten().filter(tmp => tmp != null);
     let i = 0, iCap = args.length;
@@ -127,15 +121,12 @@
   };
 
 
-  var ptp = String.prototype;
-
-
   /**
    * Replaces `"[$1]"` in the string with `str1`, and so on.
    * <br> <ARGS>: str1, str2, str3, ...
    * @return {string}
    */
-  ptp.format = function() {
+  String.prototype.format = function() {
     let str = this, strTg;
     let i = 0, iCap = arguments.length;
     while(i < iCap) {
@@ -152,7 +143,7 @@
    * Removes color markup.
    * @return {string}
    */
-  ptp.plain = function() {
+  String.prototype.plain = function() {
     // WTF why should it be strictly Java string
     return Strings.stripColors(new java.lang.String(this));
   };
@@ -163,9 +154,12 @@
    * @param {Color} color
    * @return {string}
    */
-  ptp.color = function(color) {
+  String.prototype.color = function(color) {
     return "[#" + color.toString() + "]" + this + "[]";
   };
+
+
+  const defRainbowColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.cyan, Color.blue, Color.purple];
 
 
   /**
@@ -175,9 +169,9 @@
    * @param {number|unset} [off]
    * @return {string}
    */
-  ptp.rainbow = function(colors, scl, off) {
+  String.prototype.rainbow = function(colors, scl, off) {
     let str = "";
-    if(colors == null) colors = String.prototype.rainbow.defColors;
+    if(colors == null) colors = defRainbowColors;
     if(scl == null) scl = 1.0;
     if(off == null) off = 0.0;
 
@@ -200,14 +194,13 @@
 
     return str;
   };
-  ptp.rainbow.defColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.cyan, Color.blue, Color.purple];
 
 
   /**
    * Makes first letter capitalized.
    * @return {string}
    */
-  ptp.firstUpperCase = function() {
+  String.prototype.firstUpperCase = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
   };
 
@@ -216,7 +209,7 @@
    * Converts this string to camel case.
    * @return {string}
    */
-  ptp.toCamelCase = function() {
+  String.prototype.toCamelCase = function() {
     return this.replace(/^\w|[A-Z]|\b\w/g, (l, ind) => ind === 0 ? l.toLowerCase() : l.toUpperCase()).replace(/\s+/g, "").replace(/-/g, "");
   };
 
@@ -225,7 +218,7 @@
    * Converts this string to kebab case.
    * @return {string}
    */
-  ptp.toKebabCase = function() {
+  String.prototype.toKebabCase = function() {
     return this.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/[\s+_]/g, "-").toLowerCase();
   };
 
@@ -234,6 +227,6 @@
    * Converts this string to snake case.
    * @return {string}
    */
-  ptp.toSnakeCase = function() {
+  String.prototype.toSnakeCase = function() {
     return this.replace(/([a-zA-Z])(?=[A-Z])/g, "$1_").replace(/-/g, "_").toLowerCase();
   };

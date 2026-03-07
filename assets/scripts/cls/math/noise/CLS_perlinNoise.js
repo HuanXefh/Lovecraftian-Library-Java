@@ -43,16 +43,13 @@ const tmpDstVecs = [
 /* <---------- instance method ----------> */
 
 
-var ptp = CLS_perlinNoise.prototype;
-
-
 /**
  * Sets up vector data.
  * @override
  * @param {number|unset} [seed]
  * @return {void}
  */
-ptp.setVecData = function(seed) {
+CLS_perlinNoise.prototype.setVecData = function(seed) {
   if(seed == null) seed = -1.0;
 
   this.forEachVert((i, j) => {
@@ -72,7 +69,7 @@ ptp.setVecData = function(seed) {
  * @param {number|unset} [seed]
  * @return {Array<Array<number>>}
  */
-ptp.buildNoise = function(base, cap, seed) {
+CLS_perlinNoise.prototype.buildNoise = function(base, cap, seed) {
   if(this.isBuilt) return this.noiseData;
   if(base == null) base = 0.0;
   if(cap == null) cap = 1.0;
@@ -131,7 +128,7 @@ ptp.buildNoise = function(base, cap, seed) {
  * @param {number} frac
  * @return {number}
  */
-ptp.hermiteInterp = function(frac) {
+CLS_perlinNoise.prototype.hermiteInterp = function(frac) {
   return (((6.0 * frac) - 15.0) * frac + 10.0) * Math.pow(frac, 3);
 };
 

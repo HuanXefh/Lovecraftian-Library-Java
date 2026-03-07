@@ -17,7 +17,7 @@ public class LCGeneralizer {
      */
     public static float getSize(Object obj) {
         return getHitSize(obj) / Vars.tilesize;
-    }
+    };
 
 
     /**
@@ -36,9 +36,9 @@ public class LCGeneralizer {
             return bul.hitSize;
         } else if(obj instanceof BulletType btp) {
             return btp.hitSize;
-        }
+        };
         return 0f;
-    }
+    };
 
 
     /**
@@ -57,9 +57,9 @@ public class LCGeneralizer {
             return bul.type.drawSize;
         } else if(obj instanceof BulletType btp) {
             return btp.drawSize;
-        }
+        };
         return 0.0001f;
-    }
+    };
 
 
     /**
@@ -70,9 +70,9 @@ public class LCGeneralizer {
             return e.healthf();
         } else if(obj instanceof Bullet bul) {
             return bul.damage / bul.type.damage;
-        }
+        };
         return 1f;
-    }
+    };
 
 
     /**
@@ -83,9 +83,9 @@ public class LCGeneralizer {
             return b.block.armor;
         } else if(obj instanceof Unit unit) {
             return unit.armorOverride() < 0.0 ? unit.armor : unit.armorOverride();
-        }
+        };
         return 0f;
-    }
+    };
 
 
-}
+};

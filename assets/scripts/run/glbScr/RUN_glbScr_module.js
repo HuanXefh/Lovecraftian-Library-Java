@@ -47,8 +47,6 @@
   /** @global */
   TP_attr = require("lovec/tp/TP_attr");
   /** @global */
-  MATH_function = require("lovec/math/MATH_function");
-  /** @global */
   MATH_geometry = require("lovec/math/MATH_geometry");
   /** @global */
   MATH_interp = require("lovec/math/MATH_interp");

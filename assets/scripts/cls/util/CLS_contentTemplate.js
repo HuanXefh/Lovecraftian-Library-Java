@@ -18,35 +18,43 @@ CLS_contentTemplate.prototype.init = function() {
 };
 
 
-/* <---------- static method ----------> */
+/* <---------- static property ----------> */
 
 
-var cls = CLS_contentTemplate;
+CLS_contentTemplate.__IS_CONTENT_TEMPLATE__ = true;
+CLS_contentTemplate.nm = "!UNDEF";
 
 
-cls.__IS_CONTENT_TEMPLATE__ = true;
-cls.nm = "!UNDEF";
 /**
  * @type {Object}
  */
-cls.paramObj = {
+CLS_contentTemplate.paramObj = {
   tempParent: null,
   tempTags: [],
 };
+
+
 /**
  * <ROW>: nmPropNew, nmPropOld, def.
  * @type {Array}
  */
-cls.paramAliasArr = [];
+CLS_contentTemplate.paramAliasArr = [];
+
+
 /**
  * <ROW>: nmProp, valGetter.
  * @type {Array}
  */
-cls.paramParserArr = [];
+CLS_contentTemplate.paramParserArr = [];
+
+
 /**
  * @type {Object}
  */
-cls.funObj = {};
+CLS_contentTemplate.funObj = {};
+
+
+/* <---------- static method ----------> */
 
 
 /**
@@ -54,7 +62,7 @@ cls.funObj = {};
  * @param {Object} obj
  * @return {this}
  */
-cls.setParam = function(obj) {
+CLS_contentTemplate.setParam = function(obj) {
   this.paramObj = mergeObj(this.paramObj, obj);
 
   return this;
@@ -66,7 +74,7 @@ cls.setParam = function(obj) {
  * @param {Array} arr - <ROW>: nmPropNew, nmPropOld, def.
  * @return {this}
  */
-cls.setParamAlias = function(arr) {
+CLS_contentTemplate.setParamAlias = function(arr) {
   let i = 0, iCap = arr.iCap();
   while(i < iCap) {
     if(arr[i] !== arr[i + 1]) {
@@ -91,7 +99,7 @@ cls.setParamAlias = function(arr) {
  *   "file", function(path) {return require(path)};
  * ]);
  */
-cls.setParamParser = function(arr) {
+CLS_contentTemplate.setParamParser = function(arr) {
   let i = 0, iCap = arr.iCap();
   while(i < iCap) {
     this.paramParserArr.write(arr[i], arr[i + 1]);
@@ -107,7 +115,7 @@ cls.setParamParser = function(arr) {
  * @param {Function} javaCls
  * @return {this}
  */
-cls.setParent = function(javaCls) {
+CLS_contentTemplate.setParent = function(javaCls) {
   this.paramObj.tempParent = javaCls;
 
   return this;
@@ -119,7 +127,7 @@ cls.setParent = function(javaCls) {
  * <br> <ARGS>: tag1, tag2, tag3, ...
  * @return {this}
  */
-cls.setTags = function() {
+CLS_contentTemplate.setTags = function() {
   this.paramObj.tempTags = Array.from(arguments);
 
   return this;
@@ -136,7 +144,7 @@ cls.setTags = function() {
  * @param {boolean|unset} [isFromIntf] - Do not set this!
  * @return {this}
  */
-cls.setMethod = function(nmFunObj, isFromIntf) {
+CLS_contentTemplate.setMethod = function(nmFunObj, isFromIntf) {
   const thisCls = this;
 
   Object._it(nmFunObj, (nm, fun) => {
@@ -243,7 +251,7 @@ cls.setMethod = function(nmFunObj, isFromIntf) {
  * Gets the Java class used in `extend`.
  * @return {Function}
  */
-cls.getParent = function() {
+CLS_contentTemplate.getParent = function() {
   return this.paramObj.tempParent;
 };
 
@@ -253,7 +261,7 @@ cls.getParent = function() {
  * @param {Object} paramObj - Sets values of properties in a template. Only properties defined with content template can be set.
  * @return {Object}
  */
-cls.build = function(paramObj) {
+CLS_contentTemplate.build = function(paramObj) {
   const obj = {};
   const thisFun = this;
 

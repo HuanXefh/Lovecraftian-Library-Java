@@ -50,21 +50,17 @@
 
     Draw.rect(b.block.delegee.botReg, b.x, b.y);
 
-    TMP_Z_A = Draw.z();
-
-    Draw.z(Layer.block + 1.0);
+    processZ(Layer.block + 1.0, 1);
     b.ex_drawCog();
     Draw.rect(b.block.delegee.topReg, b.x, b.y);
     if(b.isInv) {
       Draw.rect(b.block.delegee.topInvReg, b.x, b.y);
     };
-
-    Draw.z(TMP_Z_A);
+    processZ(null, 1);
   };
 
 
   function comp_ex_updateTorTransTgs(b) {
-    b.torTransTgs.clear();
     b.proximity.each(
       ob => MDL_cond._isTransmissionRod(ob.block) ?
         ob.front() === b :

@@ -25,7 +25,7 @@
 
 
   /**
-   * A list of terrain types polulated on CLIENT LOAD.
+   * A list of terrain types populated on CLIENT LOAD.
    * See {@link ENV_materialFloor} and {@link ENV_liquidMaterialFloor}.
    * @type {Array<string>}
    */

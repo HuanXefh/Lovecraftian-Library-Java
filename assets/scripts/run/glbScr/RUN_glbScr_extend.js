@@ -141,7 +141,7 @@
   /**
    * Variant of {@link extendBase} for blocks.
    * @global
-   * @param {Function} temp
+   * @param {Array} temp
    * @param {string} nmBlk
    * @param {Object|unset} [objBlk]
    * @param {Object|unset} [objB]
@@ -166,6 +166,7 @@
         this.drawer.getRegionsToOutline(this, regSeqOut);
       };
     };
+    /** @type {Block} blk */
     let blk = extend(temp[0].getParent(), nmBlk, obj);
     blk.buildType = () => {
       processClassLoader();
@@ -183,6 +184,7 @@
             this.block.delegee.drawer.drawLight(this);
         };
       };
+      /** @type {Building} b */
       let b = extend(temp[1].getParent(), blk, obj1);
       temp[1].initBuild(b);
       processClassLoader();

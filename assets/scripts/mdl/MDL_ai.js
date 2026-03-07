@@ -287,7 +287,7 @@
 
 
   /**
-   * Similar to {@link MinerAI} but the unit is bound to an arbitary building.
+   * Similar to {@link MinerAI} but the unit is bound to an arbitrary building.
    * This also works for ground units with pathfinding.
    * @param {AIController} ctrl
    * @param {Interval} ctrl.timerOreFind - Timer for ore tile update.
