@@ -82,14 +82,17 @@
         MDL_json.write(MDL_file._lsav(true), lsav);
         initLsav("lsav");
       };
-      // If outside of campaign, check map name for PLASV
-      if(!Vars.state.isCampaign() && plsav["save-map"] !== "!UNDEF" && plsav["save-map"] !== mapCur) {
+      // If outside of campaign, check map name for PLASV too
+      if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && plsav["save-map"] !== "!UNDEF" && plsav["save-map"] !== mapCur) {
         MDL_json.write(MDL_file._plsav(true), plsav);
         initLsav("plsav");
       };
 
       set("save-map", mapCur);
       set("save-map", mapCur, true);
+      set("save-revision", LOVEC_REVISION);
+
+      TRIGGER.lsavLoad.fire();
     });
   };
 

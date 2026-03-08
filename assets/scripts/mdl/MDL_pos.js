@@ -954,7 +954,7 @@
   const _it_units = function(x, y, rad, team, boolF, scr) {
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return;
-    if(team == null) team = null;                // undefined will cause an error here
+    if(team == null) team = null;
     if(boolF == null) boolF = Function.airTrue;
 
     Units.nearby(team, x, y, rad, unit => {

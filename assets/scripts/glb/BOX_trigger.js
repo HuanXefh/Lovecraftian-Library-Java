@@ -37,6 +37,12 @@ const BOX_trigger = new CLS_objectBox({
 
 
   /**
+   * Triggered when LSAV is loaded.
+   */
+  lsavLoad: new CLS_eventTrigger("lovec-lsav-load"),
+
+
+  /**
    * Triggered for very costy updates.
    */
   majorIter: {

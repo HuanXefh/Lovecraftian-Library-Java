@@ -46,6 +46,16 @@
      */
     '''
 
+  'jsdoc cef template internal':
+    prefix: 'jdti'
+    body: '''
+    /**
+     * <INTERNAL>: ${1:}
+     * @memberof ${2:}
+     * @instance
+     */
+    '''
+
   'jsdoc def template function':
     prefix: 'jdtf'
     body: '''

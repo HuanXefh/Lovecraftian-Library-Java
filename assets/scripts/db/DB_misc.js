@@ -613,6 +613,7 @@ const db = {
 
       "useless-field", "ohno", null,
       "save-map", "!UNDEF", null,
+      "save-revision", -1, null,
 
       "dynamic-pollution", 0.0, null,
       "bits", [], "string",

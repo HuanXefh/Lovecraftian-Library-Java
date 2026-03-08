@@ -25,8 +25,13 @@
 
   /** @global */
   LOVEC_REVISION = 5;
-  /** @global */
-  MOD_REVISION = {};                // For other mods if you don't define another global variable
+  /**
+   * For other mods, if you don't define another global variable.
+   * @global
+   * @example
+   * MOD_REVISION["test-mod"] = 1;
+   */
+  MOD_REVISION = {};
   /** @global */
   LOVEC_JSON_PARSER = new Json();
 

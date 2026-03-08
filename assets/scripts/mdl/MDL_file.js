@@ -248,7 +248,7 @@
     let nmPla = global.lovecUtil.fun._plaCur();
     let fi = nmPla === "" ? null : lovecData.child("saves").child(nmPla + (!isBackup ? "" : "_bak") + ".plsav");
     // In debug mode, PLSAV is accessible from outside of campaign
-    if(global.lovecUtil.prop.debug || Vars.state.isCampaign()) return fi;
+    if(Vars.state.isCampaign() || global.lovecUtil.prop.debug) return fi;
 
     let fi1 = _lsav(isBackup);
     return fi1 == null ?

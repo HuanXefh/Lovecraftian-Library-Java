@@ -64,21 +64,60 @@ CLS_matrix.getUnitMat = function(n, def) {
 
 
 /**
- * Converts `arr` into a vector (as matrix).
- * The result is by default a column vector.
- * @param {Array<number>} arr
- * @param {boolean|unset} [isRowVec]
+ * Gets a 2D-rotation matrix.
+ * @param {number} ang
  * @return {CLS_matrix}
  */
-CLS_matrix.getVec = function(arr, isRowVec) {
-  const matArr = [];
-  if(isRowVec) {
-    matArr.push(arr.cpy());
-  } else {
-    arr.forEachFast(num => matArr.push([num]));
-  };
+CLS_matrix.getRotMat2d = function(ang) {
+  return new CLS_matrix([
+    [Mathf.cosDeg(ang), -Mathf.sinDeg(ang)],
+    [Mathf.sinDeg(ang), Mathf.cosDeg(ang)],
+  ]);
+};
 
-  return new CLS_matrix(matArr);
+
+/**
+ * Gets a 3D-rotation matrix.
+ * @param {number} ang
+ * @param {mode|unset} [mode] - <VALS>: "x", "y", "z".
+ * @return {CLS_matrix}
+ */
+CLS_matrix.getRotMat3d = function(ang, mode) {
+  if(mode == null) mode = "z";
+
+  return mode === "x" ?
+    new CLS_matrix([
+      [1.0, 0.0, 0.0],
+      [0.0, Mathf.cosDeg(ang), -Mathf.sinDeg(ang)],
+      [0.0, Mathf.sinDeg(ang), Mathf.cosDeg(ang)],
+    ]) :
+    mode === "y" ?
+      new CLS_matrix([
+        [Mathf.cosDeg(ang), 0.0, Mathf.sinDeg(ang)],
+        [0.0, 1.0, 0.0],
+        [-Mathf.sinDeg(ang), 0.0, Mathf.cosDeg(ang)],
+      ]) :
+      new CLS_matrix([
+        [Mathf.cosDeg(ang), -Mathf.sinDeg(ang), 0.0],
+        [Mathf.sinDeg(ang), Mathf.cosDeg(ang), 0.0],
+        [0.0, 0.0, 1.0],
+      ]);
+};
+
+
+/**
+ * Variant of {@link CLS_matrix.getRotMat3d} using three angles.
+ * @param {number} angZ
+ * @param {number} angY
+ * @param {number} angX
+ * @return {CLS_matrix}
+ */
+CLS_matrix.getRotMat3d_mix = function(angZ, angY, angX) {
+  return new CLS_matrix([
+    [Mathf.cosDeg(angZ) * Mathf.cosDeg(angY), Mathf.cosDeg(angZ) * Mathf.sinDeg(angY) * Mathf.sinDeg(angX) - Mathf.sinDeg(angZ) * Mathf.cosDeg(angX), Mathf.cosDeg(angZ) * Mathf.sinDeg(angY) * Mathf.cosDeg(angX) + Mathf.sinDeg(angZ) * Mathf.sinDeg(angX)],
+    [Mathf.sinDeg(angZ) * Mathf.cosDeg(angY), Mathf.sinDeg(angZ) * Mathf.sinDeg(angY) * Mathf.sinDeg(angX) + Mathf.cosDeg(angZ) * Mathf.cosDeg(angX), Mathf.sinDeg(angZ) * Mathf.sinDeg(angY) * Mathf.cosDeg(angX) - Mathf.cosDeg(angZ) * Mathf.sinDeg(angX)],
+    [-Mathf.sinDeg(angY), Mathf.cosDeg(angY) * Mathf.sinDeg(angX), Mathf.cosDeg(angY) * Mathf.cosDeg(angX)],
+  ]);
 };
 
 
@@ -128,40 +167,6 @@ CLS_matrix.write = function(wr, mat) {
 CLS_matrix.read = function(rd) {
   let matPack = MDL_io._rd_fs(rd, []);
   return CLS_matrix.unpack(matPack);
-};
-
-
-/**
- * Converts an Arc vector into matrix vector.
- * @param {Vec2|Vec3} arcVec
- * @param {boolean|unset} isRowVec
- * @return {CLS_matrix}
- */
-CLS_matrix.fromArcVec = function(arcVec, isRowVec) {
-  if(arcVec instanceof Vec2) {
-    return CLS_matrix.getVec([arcVec.x, arcVec.y], isRowVec);
-  } else if(arcVec instanceof Vec3) {
-    return CLS_matrix.getVec([arcVec.x, arcVec.y, arcVec.z], isRowVec);
-  };
-
-  ERROR_HANDLER.throw("arcVectorConversionFail");
-};
-
-
-/**
- * Converts a matrix vector into Arc vector.
- * @param {CLS_matrix} vec
- * @return {Vec2|Vec3}
- */
-CLS_matrix.toArcVec = function(vec) {
-  if(!vec.isVec()) ERROR_HANDLER.throw("notVector", vec);
-
-  let arr = vec.toArray().flatten();
-  switch(arr.length) {
-    case 2 : return new Vec2(arr[0], arr[1]);
-    case 3 : return new Vec3(arr[0], arr[1], arr[2]);
-    default : ERROR_HANDLER.throw("arcVectorConversionFail");
-  };
 };
 
 
@@ -237,10 +242,10 @@ CLS_matrix.prototype.cpy = function() {
  * @return {void}
  */
 CLS_matrix.prototype.forEach = function(scr) {
-  let iCap = this.getRowAmt(), jCap = this.getColAmt();
-  for(let i = 0; i < iCap; i++) {
-    for(let j = 0; j < jCap; j++) {
-      scr(this.matArr[i][j]);
+  let iCap = this.getColAmt(), jCap = this.getRowAmt();
+  for(let j = 0; j < jCap; i++) {
+    for(let i = 0; i < iCap; j++) {
+      scr(this.matArr[j][i]);
     };
   };
 };
@@ -290,22 +295,17 @@ CLS_matrix.prototype.set = function(colInd, rowInd, ele) {
 
 
 /**
- * Normalizes this vector.
- * @param {number|unset} [def] - Length of final vector.
+ * Sets each element in this matrix.
+ * @param {function(number, number, number): number} getter - <ARGS>: colInd, rowInd, valPrev.
  * @return {this}
  */
-CLS_matrix.prototype.nor = function(def) {
-  if(!this.isVec()) ERROR_HANDLER.throw("notVector", this);
-  if(def == null) def = 1.0;
-
-  let len = this.len();
-  if(def.fEqual(0.0)) return this;                // Does nothing for zero vector
-  let i = 0, iCap = this.dimension();
-  while(i < iCap) {
-    (this.isRowVec() ? this.matArr[0][i] /= len * def : this.matArr[i][0] /= len * def);
-    i++;
+CLS_matrix.prototype.eachSet = function(getter) {
+  let iCap = this.getColAmt(), jCap = this.getRowAmt();
+  for(let j = 0; j < jCap; j++) {
+    for(let i = 0; i < iCap; i++) {
+      this.matArr[j][i] = getter(i + 1, j + 1, this.matArr[j][i]);
+    };
   };
-
   return this;
 };
 
@@ -345,33 +345,6 @@ CLS_matrix.prototype.canMul = function(mat) {
  */
 CLS_matrix.prototype.isScl = function() {
   return this.isColVec() && this.isRowVec();
-};
-
-
-/**
- * Whether this is a column or row vector.
- * @return {boolean}
- */
-CLS_matrix.prototype.isVec = function() {
-  return this.isColVec() || this.isRowVec();
-};
-
-
-/**
- * Whether this is a column vector.
- * @return {boolean}
- */
-CLS_matrix.prototype.isColVec = function() {
-  return this.colAmt === 1;
-};
-
-
-/**
- * Whether this is a row vector.
- * @return {boolean}
- */
-CLS_matrix.prototype.isRowVec = function() {
-  return this.rowAmt === 1;
 };
 
 
@@ -591,6 +564,114 @@ CLS_matrix.prototype.trace = function() {
   });
 
   return sum;
+};
+
+
+/* <---------- static method (vector) ----------> */
+
+
+/**
+ * Converts `arr` into a vector (as matrix).
+ * The result is by default a column vector.
+ * @param {Array<number>} arr
+ * @param {boolean|unset} [isRowVec]
+ * @return {CLS_matrix}
+ */
+CLS_matrix.getVec = function(arr, isRowVec) {
+  const matArr = [];
+  if(isRowVec) {
+    matArr.push(arr.cpy());
+  } else {
+    arr.forEachFast(num => matArr.push([num]));
+  };
+
+  return new CLS_matrix(matArr);
+};
+
+
+/**
+ * Converts an Arc vector into matrix vector.
+ * @param {Vec2|Vec3} arcVec
+ * @param {boolean|unset} isRowVec
+ * @return {CLS_matrix}
+ */
+CLS_matrix.fromArcVec = function(arcVec, isRowVec) {
+  if(arcVec instanceof Vec2) {
+    return CLS_matrix.getVec([arcVec.x, arcVec.y], isRowVec);
+  } else if(arcVec instanceof Vec3) {
+    return CLS_matrix.getVec([arcVec.x, arcVec.y, arcVec.z], isRowVec);
+  };
+
+  ERROR_HANDLER.throw("arcVectorConversionFail");
+};
+
+
+/**
+ * Converts a matrix vector into Arc vector.
+ * @param {CLS_matrix} vec
+ * @return {Vec2|Vec3}
+ */
+CLS_matrix.toArcVec = function(vec) {
+  if(!vec.isVec()) ERROR_HANDLER.throw("notVector", vec);
+
+  let arr = vec.toArray().flatten();
+  switch(arr.length) {
+    case 2 : return new Vec2(arr[0], arr[1]);
+    case 3 : return new Vec3(arr[0], arr[1], arr[2]);
+    default : ERROR_HANDLER.throw("arcVectorConversionFail");
+  };
+};
+
+
+/* <---------- instance method (vector) ----------> */
+
+
+/**
+ * Normalizes this vector.
+ * @param {number|unset} [def] - Length of final vector.
+ * @return {this}
+ */
+CLS_matrix.prototype.nor = function(def) {
+  if(!this.isVec()) ERROR_HANDLER.throw("notVector", this);
+  if(def == null) def = 1.0;
+
+  let len = this.len();
+  // Do nothing for zero vector
+  if(def.fEqual(0.0)) return this;
+  let i = 0, iCap = this.dimension();
+  while(i < iCap) {
+    (this.isRowVec() ? this.matArr[0][i] /= len * def : this.matArr[i][0] /= len * def);
+    i++;
+  };
+
+  return this;
+};
+
+
+/**
+ * Whether this is a column or row vector.
+ * @return {boolean}
+ */
+CLS_matrix.prototype.isVec = function() {
+  return this.isColVec() || this.isRowVec();
+};
+
+
+/**
+ * Whether this is a column vector.
+ * @return {boolean}
+ */
+CLS_matrix.prototype.isColVec = function() {
+  return this.colAmt === 1;
+};
+
+
+/**
+ * Whether this is a row vector.
+ * @return {boolean}
+ */
+CLS_matrix.prototype.isRowVec = function() {
+  return this.rowAmt === 1;
 };
 
 
