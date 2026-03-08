@@ -75,6 +75,13 @@
         },
 
 
+        ex_setTmiRc(blk, rawRc, boostEffc) {
+          this.effcMap.each((nmLiq, effc) => {
+            MOD_tmi.addCons(rawRc, nmLiq, this.amount, true);
+          });
+        },
+
+
     }),
   );
 

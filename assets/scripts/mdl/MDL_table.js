@@ -189,6 +189,28 @@
 
 
   /**
+   * Adds a button that is only clickable when some condition is met.
+   * @param {Table} tb
+   * @param {string} text
+   * @param {string} textInvalid
+   * @param {function(): boolean} boolF - If true, the button is clickable.
+   * @param {function(): void} scr
+   * @param {number|unset} [w]
+   * @param {number|unset} [h]
+   * @return {Cell}
+   */
+  const __btnCond = function(tb, text, textInvalid, boolF, scr, w, h) {
+    let cond;
+    return __btn(tb, textInvalid, scr, w, h).update(btn => {
+      cond = boolF();
+      btn.setText(cond ? text : textInvalid);
+      btn.setDisabled(!cond);
+    });
+  };
+  exports.__btnCond = __btnCond;
+
+
+  /**
    * Adds a small config button for a table.
    * @param {Table} tb
    * @param {Building} b

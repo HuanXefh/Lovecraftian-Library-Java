@@ -1351,6 +1351,8 @@
   class Recipe {};
   /** @global tmi.recipe.RecipeType */
   class RecipeType {};
+  /** @global tmi.recipe.RecipeParser */
+  class RecipeParser {};
   /** @global tmi.recipe.types.RecipeItem */
   class RecipeItem {};
   /** @global tmi.recipe.types.RecipeItemType */

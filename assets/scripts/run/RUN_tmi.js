@@ -26,8 +26,10 @@
     // I don't know how but adding `excludes` here will cause crash now
 
 
-    // Fix unparsed deposit mining
-    MOD_tmi.regisParser({
+    /**
+     * Fixes unparsed deposit mining recipes.
+     */
+    const _p_depositMining = MOD_tmi.regisParser({
 
 
       oreGrpMap: new ObjectMap(),
@@ -39,7 +41,7 @@
 
 
       parse(blk) {
-        let seq = new Seq();
+        const seq = new Seq();
 
         Vars.content.blocks().each(
           oblk => MDL_cond._isOreDepo(oblk) && oblk.itemDrop != null,
@@ -66,11 +68,65 @@
 
 
 
-    // Removes empty recipe
-    MOD_tmi.regisParser({
+    /**
+     * Default parser for most Lovec producers.
+     */
+    const _p_defProd = MOD_tmi.regisParser({
 
 
-      temps: [
+      parserBlacklist: [
+        MOD_tmi.CLASSES.AttributeCrafterParser,
+        MOD_tmi.CLASSES.GenericCrafterParser,
+      ],
+      tempTypeMap: ObjectMap.of(),
+      tempBlacklist: [
+        "BLK_rainCollector",
+      ],
+
+
+      exclude(parser) {
+        return this.parserBlacklist.hasIns(parser);
+      },
+
+
+      isTarget(blk) {
+        return (MDL_cond._isFactory(blk) && !MDL_cond._isRecipeFactory(blk) && (blk.ex_getTempNm == null ? true : !this.tempBlacklist.includes(blk.ex_getTempNm()))) || (blk.ex_getTempNm != null && this.tempTypeMap.containsKey(blk.ex_getTempNm()));
+      },
+
+
+      parse(blk) {
+        let rawRc = MOD_tmi._rawRc(
+          this.tempTypeMap.get(blk.ex_getTempNm(), "factory"),
+          blk,
+          MDL_content._craftTime(blk),
+        );
+        // Delayed, since consumers added by `setConsumer` are not actually added yet
+        MDL_event._c_onLoad(() => {
+          MOD_tmi.baseParse(blk, rawRc);
+        });
+
+        rawRc.complete();
+        return new Seq([rawRc]);
+      },
+
+
+    });
+
+
+
+
+    /**
+     * Used to remove empty recipes for some templates.
+     */
+    const _p_emptyRcFix = MOD_tmi.regisParser({
+
+
+      parserBlacklist: [
+        MOD_tmi.CLASSES.AttributeCrafterParser,
+        MOD_tmi.CLASSES.GenericCrafterParser,
+        MOD_tmi.CLASSES.WallCrafterParser,
+      ],
+      tempWhitelist: [
         "BLK_depthPump",
         "BLK_dynamicWallHarvester",
         "BLK_fuelLight",
@@ -80,14 +136,12 @@
 
 
       exclude(parser) {
-        return parser instanceof MOD_tmi.CLASSES.AttributeCrafterParser
-          || parser instanceof MOD_tmi.CLASSES.GenericCrafterParser
-          || parser instanceof MOD_tmi.CLASSES.WallCrafterParser;
+        return this.parserBlacklist.hasIns(parser);
       },
 
 
       isTarget(blk) {
-        return MDL_cond._isRecipeFactory(blk) || (blk.ex_getTempNm != null && this.temps.includes(blk.ex_getTempNm()));
+        return MDL_cond._isRecipeFactory(blk) || (blk.ex_getTempNm != null && this.tempWhitelist.includes(blk.ex_getTempNm()));
       },
 
 

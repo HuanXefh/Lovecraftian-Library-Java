@@ -91,6 +91,7 @@
   exports.time_extraInfoCooldown = 50.0;
   exports.time_lootProtection = 240.0;
   exports.time_lootLifetime = 7200.0;
+  exports.time_noLinkDespawnTime = 30.0;
 
 
   /* <---------- chance ----------> */

@@ -69,22 +69,27 @@
         case "heat" : return CLASSES.HeatMark.INSTANCE;
       };
     };
+    let ct = MDL_content._ct(ct_gn, null, true);
+    if(ct == null) {
+      printObj(ct_gn);
+      throw new Error("Cannot resolve content for TMI: " + ct_gn);
+    };
 
-    return CLASSES.TooManyItems.itemsManager.getItem(MDL_content._ct(ct_gn, null, true));
+    return CLASSES.TooManyItems.itemsManager.getItem(ct);
   };
   exports._tmiCT = _tmiCT;
 
 
   /**
    * Creates a new empty recipe to be registered later.
-   * @param {string} tpStr
+   * @param {string} typeStr
    * @param {ContentGn} ct_gn
    * @param {number|unset} [time]
    * @param {boolean|unset} [reqBooster]
    * @return {Recipe}
    */
-  const _rawRc = function(tpStr, ct_gn, time, reqBooster) {
-    let rawRc = new CLASSES.Recipe(_tmiRcType(tpStr), _tmiCT(ct_gn), tryVal(time, 0.0));
+  const _rawRc = function(typeStr, ct_gn, time, reqBooster) {
+    let rawRc = new CLASSES.Recipe(_tmiRcType(typeStr), _tmiCT(ct_gn), tryVal(time, 0.0));
     if(reqBooster) {
       rawRc.setBaseEff(0.0);
     };
@@ -109,14 +114,15 @@
   /**
    * Adds a recipe parser to TMI recipe manager, which is created in {@link extend} from `obj`.
    * @param {Object} obj
-   * @return {void}
+   * @return {RecipeParser}
    */
   const regisParser = function(obj) {
     processClassLoader();
     let rcParser = extend(CLASSES.RecipeParser, obj);
     processClassLoader();
-
     CLASSES.TooManyItems.recipesManager.registerParser(rcParser);
+
+    return rcParser;
   };
   exports.regisParser = regisParser;
 
@@ -359,10 +365,10 @@
     blk.consumers.forEachFast(cons => {
       switch(cons.getClass()) {
         case ConsumePower :
-          addCons(rawRc, "power", cons.usage, true);
+          addConsPow(rawRc, cons.usage);
           break;
         case ConsumeItems :
-          for(let itmStack in cons.items) {
+          for(let itmStack of cons.items) {
             addCons(rawRc, itmStack.item, itmStack.amount);
           };
           break;
@@ -372,17 +378,20 @@
             addCons(rawRc, cons.liquid, cons.amount, true);
           break;
         case ConsumeLiquids :
-          for(let liqStack in cons.liquids) {
+          for(let liqStack of cons.liquids) {
             addCons(rawRc, liqStack.liquid, liqStack.amount, true);
           };
           break;
       };
+      if(cons.ex_setTmiRc != null) {
+        cons.ex_setTmiRc(blk, rawRc, boostEffc);
+      };
     });
 
-    if(blk.outputItems != null) for(let itmStack in blk.outputItems) {
+    if(blk.outputItems != null) for(let itmStack of blk.outputItems) {
       addProd(rawRc, itmStack.item, itmStack.amount);
     };
-    if(blk.outputLiquids != null) for(let liqStack in blk.outputLiquids) {
+    if(blk.outputLiquids != null) for(let liqStack of blk.outputLiquids) {
       addProd(rawRc, liqStack.liquid, liqStack.amount);
     };
   };
