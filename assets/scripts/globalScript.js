@@ -228,6 +228,10 @@
   LCAnno = {};
   /** @global */
   LCTemp = {};
+  /** @global */
+  LCTempParentMap = ObjectMap.of(
+    "CLS_contentTemplate", [],
+  );
 
 
   [

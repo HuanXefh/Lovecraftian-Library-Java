@@ -344,7 +344,9 @@
       if(arguments.length === 1) {
         throw new Error(str);
       };
-      throw new Error(str.format(Array.from(arguments).splice(1)));
+      let args = Array.from(arguments).splice(1);
+      args.forEachFast(arg => printObj(arg));
+      throw new Error(str.format(args));
     },
 
 

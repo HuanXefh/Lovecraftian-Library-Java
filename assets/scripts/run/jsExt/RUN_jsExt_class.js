@@ -94,6 +94,7 @@
    */
   Function.prototype.extendClass = function(cls, nm) {
     if(typeof cls !== "function" || !cls.__IS_CLASS__) ERROR_HANDLER.throw("notClass", cls);
+    if(this.__IS_CONTENT_TEMPLATE__ && !cls.__IS_CONTENT_TEMPLATE__) ERROR_HANDLER.throw("notContentTemplate", cls);
 
     Object.assign(this, cls);
     // Clone all native objects/arrays to prevent modification of the super one
@@ -133,6 +134,7 @@
       this.nm = nm;
       if(this.__IS_CONTENT_TEMPLATE__) {
         LCTemp[nm] = this;
+        LCTempParentMap.put(nm, LCTempParentMap.get(cls.nm).cpy().pushAll(cls.nm));
       };
     };
 

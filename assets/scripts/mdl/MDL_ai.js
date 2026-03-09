@@ -37,6 +37,20 @@
   exports._tg = _tg;
 
 
+  /* <---------- condition ----------> */
+
+
+  /**
+   * Whether this unit should hold its position.
+   * @param {Unit} unit
+   * @return {boolean}
+   */
+  const _c_holdPos = function(unit) {
+    return unit.isPlayer() || !global.lovecUtil.prop.hasHoldStance ? false : MDL_entity._ctrl(unit).hasStance(UnitStance.holdPosition);
+  };
+  exports._c_holdPos = _c_holdPos;
+
+
   /* <---------- action ----------> */
 
 
@@ -218,6 +232,7 @@
     if(cx != null && cy != null && maxDst > 0.0 && Mathf.dst(unit.x, unit.y, cx, cy) > maxDst) return false;
 
     lookAt(unit, tg.x, tg.y);
+    if(_c_holdPos(unit)) return true;
     if(!tg.within(unit, unit.range() * 0.8)) {
       pathfindTo(unit, thisFun.tmpVec.set(tg), thisFun.tmpVec1(), null, unit.range() * 0.8);
     } else {
@@ -242,6 +257,7 @@
    */
   const _d_follow = function thisFun(ctrl, unit, followTg) {
     if(followTg == null || !followTg.added) return false;
+    if(_c_holdPos(unit)) return false;
 
     thisFun.blockedTup[0] = false;
     pathfindTo(
@@ -271,7 +287,9 @@
     if(!unit.hasItem() || b == null || !b.added || !b.acceptItem(unit.item()) || b.isPayload()) return false;
 
     thisFun.blockedTup[0] = false;
-    pathfindTo(unit, thisFun.tmpVec.set(b), thisFun.tmpVec1, thisFun.blockedTup, Vars.logicItemTransferRange * 0.8);
+    if(!_c_holdPos(unit)) {
+      pathfindTo(unit, thisFun.tmpVec.set(b), thisFun.tmpVec1, thisFun.blockedTup, Vars.logicItemTransferRange * 0.8);
+    };
     if(unit.within(b, Vars.logicItemTransferRange) && ctrl.timerUnload.get(90.0)) {
       FRAG_item.dropBuildItem(unit, b);
     };
@@ -313,18 +331,20 @@
         ctrl.isMining = true;
         return true;
       };
-      // Drop item to {b}
+      // Drop item to `b`
       if(unit.within(b, Vars.logicItemTransferRange)) {
         if(b.acceptStack(unit.item(), unit.stack.amount, unit) > 0) FRAG_item.dropBuildItem(unit, b);
         unit.clearItem();
         ctrl.isMining = true;
       };
-      // Move to {b}
-      !unit.within(b, Vars.logicItemTransferRange * 0.8) ?
-        pathfindTo(unit, thisFun.tmpVec.set(b), thisFun.tmpVec1, thisFun.blockedTup, Vars.logicItemTransferRange * 0.6) :
-        circle(unit, b, Vars.logicItemTransferRange * 0.6);
+      // Move to `b`
+      if(!_c_holdPos(unit)) {
+        !unit.within(b, Vars.logicItemTransferRange * 0.8) ?
+          pathfindTo(unit, thisFun.tmpVec.set(b), thisFun.tmpVec1, thisFun.blockedTup, Vars.logicItemTransferRange * 0.6) :
+          circle(unit, b, Vars.logicItemTransferRange * 0.6);
+      };
     } else {
-      // Do nothing if {b} is full
+      // Do nothing if `b` is full
       if(b.acceptStack(itm, 1, unit) === 0) {
         unit.clearItem();
         unit.mineTile = null;
@@ -344,7 +364,9 @@
         // Move to ore
         if(ctrl.oreT != null) {
           if(!unit.within(ctrl.oreT, unit.type.mineRange)) {
-            pathfindTo(unit, thisFun.tmpVec.set(ctrl.oreT), thisFun.tmpVec1, thisFun.blockedTup, unit.type.mineRange * 0.5);
+            if(!_c_holdPos(unit)) {
+              pathfindTo(unit, thisFun.tmpVec.set(ctrl.oreT), thisFun.tmpVec1, thisFun.blockedTup, unit.type.mineRange * 0.5);
+            };
           } else {
             if(unit.validMine(ctrl.oreT)) unit.mineTile = ctrl.oreT;
           };
@@ -383,7 +405,7 @@
 
     if(ctrl.repairTg == null) {
       let bTg = (b != null && !b.added) ? b : unit.closestCore();
-      if(bTg != null && !unit.within(bTg, 48.0)) {
+      if(bTg != null && !unit.within(bTg, 48.0) && !_c_holdPos(unit)) {
         moveTo(unit, bTg, 48.0);
       } else return false;
     } else {

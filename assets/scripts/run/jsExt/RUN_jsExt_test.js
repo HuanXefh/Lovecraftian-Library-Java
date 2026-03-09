@@ -40,7 +40,13 @@
    * @return {void}
    */
   Object.printObj = function(obj) {
-    if(typeof obj !== "object" && typeof obj !== "function") return;
+    if(typeof obj !== "object" && typeof obj !== "function") {
+      print(obj);
+      return;
+    };
+    if(typeof obj === "function") {
+      print(obj);
+    };
     Object._it(obj, (key, val) => {
       print([key, val]);
     });

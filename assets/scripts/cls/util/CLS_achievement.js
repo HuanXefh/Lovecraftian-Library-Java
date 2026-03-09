@@ -20,7 +20,6 @@ const CLS_achievement = newClass().initClass();
 
 CLS_achievement.prototype.init = function(nmMod, nm, icon, trigger, listener) {
   const thisIns = this;
-
   if(fetchMod(nmMod, true) == null) ERROR_HANDLER.throw("noModFound", nmMod);
   this.name = nmMod + "-" + registerUniqueName(nm, insNms, "achievement");
   this.mod = nmMod;

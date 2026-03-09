@@ -46,7 +46,7 @@
      */
     '''
 
-  'jsdoc cef template internal':
+  'jsdoc def template internal':
     prefix: 'jdti'
     body: '''
     /**

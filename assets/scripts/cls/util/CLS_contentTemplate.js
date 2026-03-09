@@ -22,7 +22,7 @@ CLS_contentTemplate.prototype.init = function() {
 
 
 CLS_contentTemplate.__IS_CONTENT_TEMPLATE__ = true;
-CLS_contentTemplate.nm = "!UNDEF";
+CLS_contentTemplate.nm = "CLS_contentTemplate";
 
 
 /**
@@ -55,6 +55,17 @@ CLS_contentTemplate.funObj = {};
 
 
 /* <---------- static method ----------> */
+
+
+/**
+ * Whether this template extends some template or implements some interface.
+ * For condition check, use tags whenever possible for flexibility!
+ * @param {string} nm
+ * @return {boolean}
+ */
+CLS_contentTemplate.isSubTempOf = function(nm) {
+  return this.nm === nm || LCTempParentMap.get(this.nm).includes(nm);
+};
 
 
 /**
@@ -149,6 +160,9 @@ CLS_contentTemplate.setMethod = function(nmFunObj, isFromIntf) {
 
   Object._it(nmFunObj, (nm, fun) => {
     // Internal methods used in interfaces
+    if(nm === "__PROTO__") {
+      throw new Error("Do not set prototype properties for content template interface!");
+    };
     if(nm === "__PARAM_OBJ_SETTER__") {
       thisCls.setParam(fun());
       return;
@@ -264,7 +278,6 @@ CLS_contentTemplate.getParent = function() {
 CLS_contentTemplate.build = function(paramObj) {
   const obj = {};
   const thisFun = this;
-
   if(this.getParent() == null) ERROR_HANDLER.throw("contentTemplateNoParentJavaClass");
 
   Object._it(this.paramObj, (nm, def) => {
@@ -332,12 +345,15 @@ CLS_contentTemplate.build = function(paramObj) {
     obj[nm].argLen = fun.argLen;
   });
 
-  // Make sure the template is accessible afterward, mostly for test
+  // Utility methods on the content created
   obj.ex_getTemp = function() {
     return thisFun;
   };
   obj.ex_getTempNm = function() {
     return thisFun.nm;
+  };
+  obj.ex_isSubInsOf = function(nm) {
+    return obj.ex_getTemp().isSubTempOf(nm);
   };
 
   return obj;

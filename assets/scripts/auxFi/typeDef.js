@@ -612,6 +612,12 @@
   class Vars {};
 
 
+  /** @global mindustry.ai.UnitCommand */
+  class UnitCommand extends MappableContent {};
+  /** @global mindustry.ai.UnitStance */
+  class UnitStance extends MappableContent {};
+  /** @global mindustry.ai.UnitGroup */
+  class UnitGroup {};
   /** @global mindustry.entities.units.AIController */
   class AIController {};
   /** @global mindustry.ai.types.AssemblerAI */

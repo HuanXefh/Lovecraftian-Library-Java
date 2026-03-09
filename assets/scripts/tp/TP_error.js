@@ -51,6 +51,7 @@
     this.add("duplicateInterface", "Do not implement the same interface twice!");
     this.add("nonFunctionInInterface", "Interface should only contain functions! Exception: [$1]");
     this.add("interfaceMethodNameConflict", "Cannot implement interface on a class due to name conflict ([$1])!");
+    this.add("notContentTemplate", "Argument [$1] is not a content template!");
     this.add("contentTemplateInstance", "Do not create instance of a content template!");
     this.add("contentTemplateNoParentJavaClass", "Cannot build the object when parent Java class is not assigned!");
 

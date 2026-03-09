@@ -42,6 +42,11 @@
 
       locale: Core.settings.getString("locale"),
       useRecolorSpr: Core.settings.getBool("lovec-load-gen-recolor", true),
+      hasHoldStance: (function() {
+        let stance;
+        try {stance = UnitStance.holdPosition} catch(err) {stance = null};
+        return stance != null;
+      })(),
 
 
     },
