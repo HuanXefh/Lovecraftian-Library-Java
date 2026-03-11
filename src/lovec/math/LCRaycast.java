@@ -48,7 +48,7 @@ public class LCRaycast {
     /**
      * Base method for raycast methods that return all matching objects.
      */
-    public static Seq<Object> rayFindAll(float x1, float y1, float x2, float y2, Func2 func) {
+    public static Seq rayFindAll(float x1, float y1, float x2, float y2, Func2 func) {
         rayFindObjSeq.clear();
         World.raycast(LCFormat.toIntCoord(x1), LCFormat.toIntCoord(y1), LCFormat.toIntCoord(x2), LCFormat.toIntCoord(y2), (tx, ty) -> {
             rayFindObj = func.get(tx, ty);

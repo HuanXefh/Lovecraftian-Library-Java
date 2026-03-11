@@ -367,8 +367,8 @@ const db = {
        */
       craftTime: [
 
-        Drill, (blk, isDrillTime, ct) => blk.drillTime,
-        BeamDrill, (blk, isDrillTime, ct) => blk.drillTime,
+        Drill, (blk, isDrillTime, ct) => isDrillTime ? blk.drillTime : tryJsProp(blk, "drillCraftTime", blk.drillTime),
+        BeamDrill, (blk, isDrillTime, ct) => isDrillTime ? blk.drillTime : tryJsProp(blk, "drillCraftTime", blk.drillTime),
         WallCrafter, (blk, isDrillTime, ct) => isDrillTime ? blk.drillTime : blk.boostItemUseTime,
 
         Pump, (blk, isDrillTime, ct) => blk.consumeTime,
