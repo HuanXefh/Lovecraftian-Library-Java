@@ -8,25 +8,27 @@ import arc.util.Nullable;
 public class MathGraph {
 
 
-    private int vertices;
-    private final boolean isDirectional;
-    private Seq<Seq<MathGraphEdge>> adjSeq;
-    private Seq dataSeq;
-    private final StringBuilder strBuilder = new StringBuilder();
+    protected static final StringBuilder strBuilder = new StringBuilder();
+
+
+    protected int vertices;
+    protected final boolean isDirectional;
+    protected Seq<Seq<MathGraphEdge>> adjSeq;
+    protected Seq dataSeq;
 
 
     public static class MathGraphEdge {
-        private int vert_f;
-        private int vert_t;
-        private float dst;
+        protected int vert_f;
+        protected int vert_t;
+        protected float dst;
 
-        MathGraphEdge(int vert_f, int vert_t, float dst) {
+        public MathGraphEdge(int vert_f, int vert_t, float dst) {
             this.vert_f = vert_f;
             this.vert_t = vert_t;
             this.dst = dst;
         };
         // Overloading
-        MathGraphEdge(int vert_f, int vert_t) {
+        public MathGraphEdge(int vert_f, int vert_t) {
             this(vert_f, vert_t, 1f);
         };
     };
@@ -48,74 +50,18 @@ public class MathGraph {
     };
 
 
-    /* <-------------------- structure --------------------> */
+    /*
+      ========================================
+      Section: Definition (Static)
+      ========================================
+    */
 
 
-    /**
-     * Adds a new vertex to the graph.
-     */
-    public MathGraph addVertex(@Nullable Object data) {
-        vertices++;
-        adjSeq.add(new Seq<MathGraphEdge>());
-        dataSeq.add(data);
-        return this;
-    };
-
-
-    /**
-     * Adds a new vertex that is linked by/to some vertices.
-     */
-    public MathGraph appendVertex(int[] overts, @Nullable Object data, float dst, boolean revDir) throws IllegalArgumentException {
-        addVertex(data);
-        int vert = vertices - 1;
-        for(int overt : overts) {
-            if(overt >= vertices) throw new IllegalArgumentException("Vertex not used: " + overt);
-            if(revDir) {
-                addEdge(vert, overt, dst);
-            } else {
-                addEdge(overt, vert, dst);
-            };
-        };
-        return this;
-    };
-    // Overloading
-    public MathGraph appendVertex(int[] overts, @Nullable Object data, float dst) {
-        return appendVertex(overts, data, dst, false);
-    };
-    public MathGraph appendVertex(int[] overts, @Nullable Object data, boolean revDir) {
-        return appendVertex(overts, data, 1f, revDir);
-    };
-    public MathGraph appendVertex(int[] overts, @Nullable Object data) {
-        return appendVertex(overts, data, 1f);
-    };
-    public MathGraph appendVertex(int overt, @Nullable Object data, float dst, boolean revDir) {
-        return appendVertex(new int[]{overt}, data, dst, revDir);
-    };
-    public MathGraph appendVertex(int overt, @Nullable Object data, float dst) {
-        return appendVertex(overt, data, dst, false);
-    };
-    public MathGraph appendVertex(int overt, @Nullable Object data, boolean revDir) {
-        return appendVertex(overt, data, 1f, revDir);
-    };
-    public MathGraph appendVertex(int overt, @Nullable Object data) {
-        return appendVertex(overt, data, 1f);
-    };
-
-
-    /**
-     * Adds an edge to the graph.
-     */
-    public MathGraph addEdge(int vert_f, int vert_t, float dst) {
-        adjSeq.get(vert_f).add(new MathGraphEdge(vert_f, vert_t, dst));
-        if(!isDirectional) {
-            adjSeq.get(vert_t).add(new MathGraphEdge(vert_t, vert_f, dst));
-        };
-        return this;
-    };
-    // Overloading
-    public MathGraph addEdge(int vert_f, int vert_t) {
-        return addEdge(vert_f, vert_t, 1f);
-    };
+    /*
+      ========================================
+      Section: Definition (Instance)
+      ========================================
+    */
 
 
     /* <-------------------- property --------------------> */
@@ -207,13 +153,82 @@ public class MathGraph {
     };
 
 
-    /* <-------------------- misc --------------------> */
+    /* <-------------------- modification --------------------> */
+
+
+    /**
+     * Adds a new vertex to the graph.
+     */
+    public MathGraph addVertex(@Nullable Object data) {
+        vertices++;
+        adjSeq.add(new Seq<MathGraphEdge>());
+        dataSeq.add(data);
+        return this;
+    };
+
+
+    /**
+     * Adds a new vertex that is linked by/to some vertices.
+     */
+    public MathGraph appendVertex(int[] overts, @Nullable Object data, float dst, boolean revDir) throws IllegalArgumentException {
+        addVertex(data);
+        int vert = vertices - 1;
+        for(int overt : overts) {
+            if(overt >= vertices) throw new IllegalArgumentException("Vertex not used: " + overt);
+            if(revDir) {
+                addEdge(vert, overt, dst);
+            } else {
+                addEdge(overt, vert, dst);
+            };
+        };
+        return this;
+    };
+    // Overloading
+    public MathGraph appendVertex(int[] overts, @Nullable Object data, float dst) {
+        return appendVertex(overts, data, dst, false);
+    };
+    public MathGraph appendVertex(int[] overts, @Nullable Object data, boolean revDir) {
+        return appendVertex(overts, data, 1f, revDir);
+    };
+    public MathGraph appendVertex(int[] overts, @Nullable Object data) {
+        return appendVertex(overts, data, 1f);
+    };
+    public MathGraph appendVertex(int overt, @Nullable Object data, float dst, boolean revDir) {
+        return appendVertex(new int[]{overt}, data, dst, revDir);
+    };
+    public MathGraph appendVertex(int overt, @Nullable Object data, float dst) {
+        return appendVertex(overt, data, dst, false);
+    };
+    public MathGraph appendVertex(int overt, @Nullable Object data, boolean revDir) {
+        return appendVertex(overt, data, 1f, revDir);
+    };
+    public MathGraph appendVertex(int overt, @Nullable Object data) {
+        return appendVertex(overt, data, 1f);
+    };
+
+
+    /**
+     * Adds an edge to the graph.
+     */
+    public MathGraph addEdge(int vert_f, int vert_t, float dst) {
+        adjSeq.get(vert_f).add(new MathGraphEdge(vert_f, vert_t, dst));
+        if(!isDirectional) {
+            adjSeq.get(vert_t).add(new MathGraphEdge(vert_t, vert_f, dst));
+        };
+        return this;
+    };
+    // Overloading
+    public MathGraph addEdge(int vert_f, int vert_t) {
+        return addEdge(vert_f, vert_t, 1f);
+    };
+
+
+    /* <-------------------- util --------------------> */
 
 
     @Override
     public String toString() {
-        boolean anyVert = false;
-        boolean anyLinked = false;
+        boolean anyVert = false, anyLinked = false;
         strBuilder.setLength(0);
         strBuilder.append("{");
         for(int i = 0; i < vertices; i++) {

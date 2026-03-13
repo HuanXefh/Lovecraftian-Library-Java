@@ -480,7 +480,7 @@ const db = {
 
       Constructor, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
         Vars.content.blocks().each(
-          oblk => !(oblk instanceof CoreBlock) && oblk.size >= blk.minBlockSize && oblk.size <= blk.maxBlockSize && (blk.filter.size === 0 || blk.filter.contains(oblk)),
+          oblk => oblk.synthetic() && !(oblk instanceof CoreBlock) && oblk.size >= blk.minBlockSize && oblk.size <= blk.maxBlockSize && (blk.filter.size === 0 || blk.filter.contains(oblk)),
           oblk => dictProdBlk[oblk.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {time: oblk.buildTime / blk.buildSpeed}),
         );
       },

@@ -1,6 +1,6 @@
 package lovec.math;
 
-import arc.util.Nullable;
+import arc.func.Func;
 
 public class LCMathFunc {
 
@@ -108,12 +108,12 @@ public class LCMathFunc {
     /**
      * Derivative of some function at `x`.
      */
-    public static double derivative(double x, MathFunc mathFunc, double delta) {
-        return (mathFunc.get(x + delta) - mathFunc.get(x)) / delta;
+    public static double derivative(double x, Func<Double, Double> func, double delta) {
+        return (func.get(x + delta) - func.get(x)) / delta;
     };
     // Overloading
-    public static double derivative(double x, MathFunc mathFunc) {
-        return derivative(x, mathFunc, 0.00001);
+    public static double derivative(double x, Func<Double, Double> func) {
+        return derivative(x, func, 0.00001);
     };
 
 
@@ -121,17 +121,17 @@ public class LCMathFunc {
      * Riemann sum of some function over (base, cap).
      * This method uses midpoints for less error.
      */
-    public static double riemannSum(double base, double cap, MathFunc mathFunc, int segAmt) {
+    public static double riemannSum(double base, double cap, Func<Double, Double> func, int segAmt) {
         double val = 0;
         double dx = (cap - base) / segAmt;
         for (int i = 0; i < segAmt; i++) {
-            val += mathFunc.get(base + dx * (0.5 + i));
+            val += func.get(base + dx * (0.5 + i));
         };
         return val * dx;
     };
     // Overloading
-    public static double riemannSum(double base, double cap, MathFunc mathFunc) {
-        return riemannSum(base, cap, mathFunc, 1000);
+    public static double riemannSum(double base, double cap, Func<Double, Double> func) {
+        return riemannSum(base, cap, func, 1000);
     };
 
 

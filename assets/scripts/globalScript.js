@@ -203,23 +203,27 @@
 
 
   // Lovec Java
-  /** @global */
+  /** @global lovec.graphics.LCDraw */
   LCDraw = fetchClass("lovec.graphics.LCDraw");
-  /** @global */
+  /** @global lovec.graphics.LCDrawP3D */
   LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
-  /** @global */
+  /** @global lovec.graphics.LCRgb */
   LCRgb = fetchClass("lovec.graphics.LCRgb");
-  /** @global */
+  /** @global lovec.math.LCLerp */
   LCLerp = fetchClass("lovec.math.LCLerp");
-  /** @global */
+  /** @global lovec.math.LCMathFunc */
   LCMathFunc = fetchClass("lovec.math.LCMathFunc");
-  /** @global */
+  /** @global lovec.math.LCRaycast */
   LCRaycast = fetchClass("lovec.math.LCRaycast");
-  /** @global */
+  /** @global lovec.math.MathGraph */
+  MathGraph = fetchClass("lovec.math.MathGraph");
+  /** @global lovec.math.MathMatrix */
+  MathMatrix = fetchClass("lovec.math.MathMatrix");
+  /** @global lovec.utils.LCCheck */
   LCCheck = fetchClass("lovec.utils.LCCheck");
-  /** @global */
+  /** @global lovec.utils.LCFormat */
   LCFormat = fetchClass("lovec.utils.LCFormat");
-  /** @global */
+  /** @global lovec.utils.LCGeneralizer */
   LCGeneralizer = fetchClass("lovec.utils.LCGeneralizer");
 
 

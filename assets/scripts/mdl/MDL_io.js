@@ -167,7 +167,7 @@
   exports._rd_fs = _rd_fs;
 
 
-  /* <---------- arc ----------> */
+  /* <---------- Arc ----------> */
 
 
   /**
@@ -360,3 +360,32 @@
     return cts;
   };
   exports._rd_cts = _rd_cts;
+
+
+  /* <---------- Lovec ----------> */
+
+
+  /**
+   * Writes a Lovec math matrix.
+   * @param {Writes} wr
+   * @param {MathMatrix} mat
+   * @return {void}
+   */
+  const _wr_mat = function(wr, mat) {
+    let fs = mat.toArray().slice();
+    fs.unshift(mat.getColAmt());
+    _wr_fs(wr, fs);
+  };
+  exports._wr_mat = _wr_mat;
+
+
+  /**
+   * Reads a Lovec math matrix.
+   * @param {Reads} rd
+   * @return {MathMatrix}
+   */
+  const _rd_mat = function(rd) {
+    let fs = _rd_fs(rd, []);
+    return new MathMatrix(fs.chunk(fs.shift(), 0));
+  };
+  exports._rd_mat = _rd_mat;
