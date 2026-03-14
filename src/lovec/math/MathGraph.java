@@ -1,13 +1,16 @@
 package lovec.math;
 
 import arc.func.Boolf2;
+import arc.func.Cons2;
+import arc.struct.IntIntMap;
 import arc.struct.IntQueue;
 import arc.struct.Seq;
-import arc.util.Nullable;
+import arc.util.Log;
 
 public class MathGraph {
 
 
+    protected static final IntIntMap mergeVertMap = new IntIntMap();
     protected static final StringBuilder strBuilder = new StringBuilder();
 
 
@@ -34,7 +37,7 @@ public class MathGraph {
     };
 
 
-    public MathGraph(int vertices, @Nullable Object data, boolean isDirectional) {
+    public MathGraph(int vertices, Object data, boolean isDirectional) {
         this.vertices = vertices;
         this.adjSeq = new Seq(vertices);
         this.dataSeq = new Seq(vertices);
@@ -45,7 +48,7 @@ public class MathGraph {
         this.isDirectional = isDirectional;
     };
     // Overloading
-    public MathGraph(int vertices, @Nullable Object data) {
+    public MathGraph(int vertices, Object data) {
         this(vertices, data, false);
     };
 
@@ -68,6 +71,14 @@ public class MathGraph {
 
 
     /**
+     * Gets size of this graph.
+     */
+    public int getSize() {
+        return vertices;
+    };
+
+
+    /**
      * Gets degree of a vertex.
      */
     public int getDegree(int vert) {
@@ -75,10 +86,13 @@ public class MathGraph {
     };
 
 
+    /* <-------------------- data --------------------> */
+
+
     /**
      * Gets data of a vertex.
      */
-    public @Nullable Object getData(int vert) throws IllegalArgumentException {
+    public Object getData(int vert) throws IllegalArgumentException {
         if(vert >= vertices) throw new IllegalArgumentException("Vertex not used: " + vert);
         return dataSeq.get(vert);
     };
@@ -87,17 +101,65 @@ public class MathGraph {
     /**
      * Sets data of a vertex.
      */
-    public MathGraph setData(int vert, @Nullable Object data) throws IllegalArgumentException {
+    public MathGraph setData(int vert, Object data) throws IllegalArgumentException {
         if(vert >= vertices) throw new IllegalArgumentException("Vertex not used: " + vert);
         dataSeq.set(vert, data);
         return this;
     };
 
 
+    /**
+     * Gets a vertex by data.
+     */
+    public int getVertByData(Object data) {
+        if(data == null) return -1;
+        return dataSeq.indexOf(data);
+    };
+
+
+    /* <-------------------- condition --------------------> */
+
+
+    /**
+     * Whether an edge exists in this graph.
+     */
+    public boolean hasEdge(int vert_f, int vert_t) {
+        if(vert_f == vert_t) return true;
+        for(MathGraphEdge edge : adjSeq.get(vert_f)) {
+            if(edge.vert_t == vert_t) return true;
+        };
+        return false;
+    };
+
+
+    /**
+     * Whether some data exists in this graph.
+     */
+    public boolean hasData(Object data) {
+        return dataSeq.contains(data);
+    };
+
+
     /* <-------------------- iteration --------------------> */
 
 
-    private void stepDFS(int vert, boolean[] visited, int[] result, Boolf2 filter) {
+    /**
+     * Iterates through all vertices in this graph.
+     */
+    public void each(Boolf2<Object, Integer> filter, Cons2<Object, Integer> cons2) {
+        for(int i = 0; i < vertices; i++) {
+            if(filter.get(getData(i), i)) {
+                cons2.get(getData(i), i);
+            };
+        };
+    };
+    // Overloading
+    public void each(Cons2<Object, Integer> cons2) {
+        each((data, vert) -> true, cons2);
+    };
+
+
+    private void stepDFS(int vert, boolean[] visited, int[] result, Boolf2<Object, Integer> filter) {
         if(result[0] != -1) return;
         visited[vert] = true;
         if(filter.get(getData(vert), vert)) {
@@ -134,6 +196,9 @@ public class MathGraph {
         int[] result = {-1};
 
         visited[vert] = true;
+        if(filter.get(getData(vert), vert)) {
+            result[0] = vert;
+        };
         queue.addLast(vert);
         while(!queue.isEmpty() && result[0] == -1) {
             int vertCur = queue.removeFirst();
@@ -159,7 +224,11 @@ public class MathGraph {
     /**
      * Adds a new vertex to the graph.
      */
-    public MathGraph addVertex(@Nullable Object data) {
+    public MathGraph addVert(Object data) {
+        if(hasData(data)) {
+            Log.warn("[LOVEC] Data already in this graph:\n" + data);
+            return this;
+        };
         vertices++;
         adjSeq.add(new Seq<MathGraphEdge>());
         dataSeq.add(data);
@@ -170,8 +239,8 @@ public class MathGraph {
     /**
      * Adds a new vertex that is linked by/to some vertices.
      */
-    public MathGraph appendVertex(int[] overts, @Nullable Object data, float dst, boolean revDir) throws IllegalArgumentException {
-        addVertex(data);
+    public MathGraph appendVert(int[] overts, Object data, float dst, boolean revDir) throws IllegalArgumentException {
+        addVert(data);
         int vert = vertices - 1;
         for(int overt : overts) {
             if(overt >= vertices) throw new IllegalArgumentException("Vertex not used: " + overt);
@@ -184,26 +253,26 @@ public class MathGraph {
         return this;
     };
     // Overloading
-    public MathGraph appendVertex(int[] overts, @Nullable Object data, float dst) {
-        return appendVertex(overts, data, dst, false);
+    public MathGraph appendVert(int[] overts, Object data, float dst) {
+        return appendVert(overts, data, dst, false);
     };
-    public MathGraph appendVertex(int[] overts, @Nullable Object data, boolean revDir) {
-        return appendVertex(overts, data, 1f, revDir);
+    public MathGraph appendVert(int[] overts, Object data, boolean revDir) {
+        return appendVert(overts, data, 1f, revDir);
     };
-    public MathGraph appendVertex(int[] overts, @Nullable Object data) {
-        return appendVertex(overts, data, 1f);
+    public MathGraph appendVert(int[] overts, Object data) {
+        return appendVert(overts, data, 1f);
     };
-    public MathGraph appendVertex(int overt, @Nullable Object data, float dst, boolean revDir) {
-        return appendVertex(new int[]{overt}, data, dst, revDir);
+    public MathGraph appendVert(int overt, Object data, float dst, boolean revDir) {
+        return appendVert(new int[]{overt}, data, dst, revDir);
     };
-    public MathGraph appendVertex(int overt, @Nullable Object data, float dst) {
-        return appendVertex(overt, data, dst, false);
+    public MathGraph appendVert(int overt, Object data, float dst) {
+        return appendVert(overt, data, dst, false);
     };
-    public MathGraph appendVertex(int overt, @Nullable Object data, boolean revDir) {
-        return appendVertex(overt, data, 1f, revDir);
+    public MathGraph appendVert(int overt, Object data, boolean revDir) {
+        return appendVert(overt, data, 1f, revDir);
     };
-    public MathGraph appendVertex(int overt, @Nullable Object data) {
-        return appendVertex(overt, data, 1f);
+    public MathGraph appendVert(int overt, Object data) {
+        return appendVert(overt, data, 1f);
     };
 
 
@@ -211,6 +280,9 @@ public class MathGraph {
      * Adds an edge to the graph.
      */
     public MathGraph addEdge(int vert_f, int vert_t, float dst) {
+        if(hasEdge(vert_f, vert_t)) {
+            return this;
+        };
         adjSeq.get(vert_f).add(new MathGraphEdge(vert_f, vert_t, dst));
         if(!isDirectional) {
             adjSeq.get(vert_t).add(new MathGraphEdge(vert_t, vert_f, dst));
@@ -220,6 +292,33 @@ public class MathGraph {
     // Overloading
     public MathGraph addEdge(int vert_f, int vert_t) {
         return addEdge(vert_f, vert_t, 1f);
+    };
+
+
+    /**
+     * Merge another graph into this graph.
+     */
+    public MathGraph merge(MathGraph graph, Boolf2 equalCheck) {
+        mergeVertMap.clear();
+        for(int i = 0; i < graph.vertices; i++) {
+            int overt = i;
+            int vertMerge = applyBFS(0, (data, vert) -> equalCheck.get(data, graph.getData(overt)));
+            if(vertMerge == -1) {
+                addVert(graph.getData(overt));
+                vertMerge = vertices - 1;
+            };
+            mergeVertMap.put(overt, vertMerge);
+        };
+        for(int i = 0; i < graph.vertices; i++) {
+            for(MathGraphEdge edge : graph.adjSeq.get(i)) {
+                addEdge(mergeVertMap.get(edge.vert_f), mergeVertMap.get(edge.vert_t), edge.dst);
+            };
+        };
+        return this;
+    };
+    // Overloading
+    public MathGraph merge(MathGraph graph) {
+        return merge(graph, Object::equals);
     };
 
 

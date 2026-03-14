@@ -666,6 +666,29 @@
 
 
   /**
+   * Counts how many matching elements there are in this array.
+   * Can be used for a formatted array.
+   * @param {function(any): boolean} boolF
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @return {number}
+   */
+  Array.prototype.countBy = function(boolF, ord, off) {
+    let count = 0;
+    if(ord == null) ord = 1;
+    if(off == null) off = 0;
+
+    let i = 0, iCap = this.iCap();
+    while(i < iCap) {
+      if(boolF(this[i + off])) count++;
+      i += ord;
+    };
+
+    return count;
+  };
+
+
+  /**
    * Removes duplicate elements.
    * Result is returned as a new array.
    * @param {(function(any): any)|unset} [mapF]

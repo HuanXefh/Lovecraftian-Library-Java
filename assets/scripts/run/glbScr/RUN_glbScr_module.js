@@ -41,8 +41,6 @@
   /** @global */
   CLS_contentTemplate = require("lovec/cls/util/CLS_contentTemplate");
   /** @global */
-  CLS_matrix = require("lovec/cls/math/CLS_matrix");
-  /** @global */
   VAR = require("lovec/glb/GLB_var");
   /** @global */
   TP_attr = require("lovec/tp/TP_attr");
@@ -202,7 +200,6 @@
   require("lovec/tp/TP_sortF");
   require("lovec/tp/TP_stat");
   require("lovec/run/RUN_input");
-  require("lovec/run/RUN_memMonitor");
   require("lovec/run/RUN_event");
   require("lovec/run/RUN_render");
   require("lovec/run/RUN_rule");

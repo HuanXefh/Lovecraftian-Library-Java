@@ -30,10 +30,10 @@
   /**
    * Prints a distribution array to console.
    * @param {DistributionArray} disArr
-   * @param {number|unset} lineAmt
-   * @param {number|unset} astAmt - Amount of asterisks used for max value.
-   * @param {number|unset} deciAmt1 - Amount of digits for start of range.
-   * @param {number|unset} deciAmt2 - Amount of digits for end of range.
+   * @param {number|unset} [lineAmt]
+   * @param {number|unset} [astAmt] - Amount of asterisks used for max value.
+   * @param {number|unset} [deciAmt1] - Amount of digits for start of range.
+   * @param {number|unset} [deciAmt2] - Amount of digits for end of range.
    * @return {void}
    */
   const printDis = function thisFun(disArr, lineAmt, astAmt, deciAmt1, deciAmt2) {
@@ -84,17 +84,35 @@
 
 
   /**
+   * Generates distribution using values returned by `fun`.
+   * @param {number} size
+   * @param {function(): number} fun
+   * @return {DistributionArray}
+   */
+  const _dis_fun = function(size, fun) {
+    const arr = [];
+
+    let i = 0;
+    while(i < size) {
+      arr.push(fun());
+      i++;
+    };
+
+    return arr;
+  };
+  exports._dis_fun = _dis_fun;
+
+
+  /**
    * Generates random distribution.
-   * @param {number|unset} size
-   * @param {number|unset} base
-   * @param {number|unset} cap
-   * @param {number|unset} seed
+   * @param {number} size
+   * @param {number|unset} [base]
+   * @param {number|unset} [cap]
+   * @param {number|unset} [seed]
    * @return {DistributionArray}
    */
   const _dis_rand = function(size, base, cap, seed) {
     const arr = [];
-
-    if(size == null) size = 1;
     if(base == null) base = 0.0;
     if(cap == null) cap = 1.0;
 
@@ -120,15 +138,13 @@
   /**
    * Generates normal distribution.
    * <br> <REFERENCE>: Marsaglia polar method.
-   * @param {number|unset} size
-   * @param {number|unset} mu
-   * @param {number|unset} sigma
+   * @param {number} size
+   * @param {number|unset} [mu]
+   * @param {number|unset} [sigma]
    * @return {DistributionArray}
    */
   const _dis_norm = function thisFun(size, mu, sigma) {
     const arr = [];
-
-    if(size == null) size = 1;
     if(mu == null) mu = 0.0;
     if(sigma == null) sigma = 1.0;
 

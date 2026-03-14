@@ -6,7 +6,7 @@
 
 
   /**
-   * More methods for JavaScript function that should be called later.
+   * More methods for JavaScript function that should be defined later.
    */
 
 
@@ -27,7 +27,7 @@
    * Modifies the method with annotation.
    * <br> <IMPORTANT>: Should be applied last after any decorator!
    * @param {string} nmAnno
-   * @param {Arguments|unset} [args_p] - Arguments passed down to the annotation.
+   * @param {any} [args_p] - Arguments passed down to the annotation.
    * @param {any} [skipVal] - Value returned if the original method is skipped.
    * @return {this}
    */
@@ -57,7 +57,6 @@
 
   /**
    * Gets a list of annotations applied on this function.
-   *
    * @return {Array<CLS_annotation>}
    */
   Function.prototype.getAnnos = function() {
