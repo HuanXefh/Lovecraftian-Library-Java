@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles item selector.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -79,12 +65,27 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles content selection.
+     * @class INTF_BLK_contentSelector
+     */
+    new CLS_interface("INTF_BLK_contentSelector", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_contentSelector
+         * @instance
+         */
         selectionQueue: prov(() => []),
+
+
       }),
 
 
@@ -93,6 +94,12 @@
       },
 
 
+      /**
+       * Finds contents that can be selected for this block.
+       * @memberof INTF_BLK_contentSelector
+       * @instance
+       * @return {Array<UnlockableContent>}
+       */
       ex_findSelectionTgs: function() {
         return Vars.content.items().toArray();
       }
@@ -104,12 +111,26 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_contentSelector
+     */
+    new CLS_interface("INTF_B_contentSelector", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>: Selected content.
+         * @memberof INTF_B_contentSelector
+         * @instance
+         */
         ctTg: null,
+
+
       }),
 
 
@@ -129,6 +150,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_contentSelector
+       * @instance
+       * @param {Table} tb
+       * @return {void}
+       */
       ex_buildSelector: function(tb) {
         comp_ex_buildSelector(this, tb);
       }
@@ -137,7 +164,13 @@
       }),
 
 
-      // @LATER
+      /**
+       * Called when something is selected.
+       * <br> <LATER>
+       * @memberof INTF_B_contentSelector
+       * @instance
+       * @return {void}
+       */
       ex_onSelectorUpdate: function() {
 
       }
@@ -146,9 +179,15 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_contentSelector
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
 
           (wr, revi) => {
             MDL_io._wr_ct(wr, this.ctTg);
@@ -161,7 +200,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

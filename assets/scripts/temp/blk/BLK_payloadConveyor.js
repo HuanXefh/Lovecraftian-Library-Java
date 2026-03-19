@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Modified payload conveyors that are affected by efficiency.
-   * It's not possible to slow down the conveyor as it will break sync.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -70,7 +55,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Modified payload conveyors that are affected by efficiency.
+     * It's not possible to slow down the conveyor as it will break sync.
+     * @class BLK_payloadConveyor
+     * @extends BLK_basePayloadBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_payloadConveyor").initClass()
     .setParent(PayloadConveyor)
     .setTags()
@@ -86,8 +76,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_payloadConveyor").initClass()
+    /**
+     * @class B_payloadConveyor
+     * @extends B_basePayloadBlock
+     */
+    newClass().extendClass(PARENT[1], "B_payloadConveyor").initClass()
     .setParent(PayloadConveyor.PayloadConveyorBuild)
     .setParam({})
     .setMethod({
@@ -109,6 +102,11 @@
       }),
 
 
+      /**
+       * @memberof B_payloadConveyor
+       * @instance
+       * @return {boolean}
+       */
       ex_shouldOperate: function() {
         return comp_ex_shouldOperate(this);
       }

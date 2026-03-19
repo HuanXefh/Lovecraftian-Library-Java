@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A wall crafter that outputs something based on highest attribute.
-   * This can output fluids.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -85,15 +70,38 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A wall crafter that outputs something based on highest attribute.
+     * This one can output fluids.
+     * @class BLK_dynamicWallHarvester
+     * @extends BLK_baseHarvester
+     * @extends INTF_BLK_dynamicAttributeBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_dynamicWallHarvester").implement(INTF[0]).initClass()
     .setParent(WallCrafter)
     .setTags("blk-min", "blk-harv")
     .setParam({
-      // @PARAM: Liquid production rate (per frame), used if this block produces liquid.
+
+
+      /**
+       * <PARAM>: Liquid production rate, used only if this block produces liquid.
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       */
       liqProdRate: 0.1,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>: This is a wall crafter, it should only check wall attributes.
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       */
       attrMode: "block",
+
+
     })
     .setParamAlias([
       "updateEff", "updateEffect", Fx.none,
@@ -125,6 +133,16 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       * @param {Array|unset} contArr
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {Array<Tile>}
+       */
       ex_findDynaAttrTs: function(contArr, tx, ty, rot) {
         return MDL_pos._tsRot(Vars.world.tile(tx, ty), rot, this.size, contArr);
       }
@@ -135,6 +153,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       * @return {number}
+       */
       ex_getCraftTime: function() {
         return this.drillTime;
       }
@@ -144,6 +168,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       * @return {number}
+       */
       ex_getAttrLimit: function() {
         return this.size;
       }
@@ -153,6 +183,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       * @return {number}
+       */
       ex_getDynaAttrBaseAmt_itm: function() {
         return this.size;
       }
@@ -162,6 +198,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       * @return {number}
+       */
       ex_getDynaAttrBaseAmt_liq: function() {
         return this.liqProdRate;
       }
@@ -171,6 +213,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       * @return {string}
+       */
       ex_getDynaAttrProdTypeStr: function() {
         return "collecting";
       }
@@ -180,6 +228,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       * @return {boolean}
+       */
       ex_getDynaAttrProdIsWall: function() {
         return true;
       }
@@ -192,8 +246,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_dynamicWallHarvester").implement(INTF[1]).initClass()
+    /**
+     * @class B_dynamicWallHarvester
+     * @extends B_baseHarvester
+     * @extends INTF_B_dynamicAttributeBlock
+     */
+    newClass().extendClass(PARENT[1], "B_dynamicWallHarvester").implement(INTF[1]).initClass()
     .setParent(WallCrafter.WallCrafterBuild)
     .setParam({})
     .setMethod({
@@ -217,14 +275,14 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
+
+        this.ex_processData(rd);
       },
 
 

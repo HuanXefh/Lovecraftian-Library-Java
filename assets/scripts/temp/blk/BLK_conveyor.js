@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Conveyor, the most basic way of item transportation.
-   * I tried to change that item capacity of 3, but it's too hard-coded.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -75,16 +59,44 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Conveyor, the most basic way of item transportation.
+     * <br> I have tried to change that item capacity of 3, but it's too hard-coded.
+     * <br> <SINGLESIZE>
+     * @class BLK_conveyor
+     * @extends BLK_baseItemDistributor
+     */
     newClass().extendClass(PARENT[0], "BLK_conveyor").initClass()
     .setParent(Conveyor)
     .setTags("blk-dis", "blk-conv")
     .setParam({
-      // @PARAM: Whether side regions are not used.
+
+
+      /**
+       * <PARAM>: Whether side regions are NOT used for this conveyor.
+       * @memberof
+       * @instance
+       */
       noSideReg: false,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cable
+       * @instance
+       */
       sideReg1: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cable
+       * @instance
+       */
       sideReg2: null,
+
+
     })
     .setMethod({
 
@@ -94,6 +106,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_cable
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -106,12 +124,32 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_conveyor").initClass()
+    /**
+     * @class B_conveyor
+     * @extends B_baseItemDistributor
+     */
+    newClass().extendClass(PARENT[1], "B_conveyor").initClass()
     .setParent(Conveyor.ConveyorBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_cable
+       * @instance
+       */
       shouldDrawSide1: false,
+      /**
+       * <INTERNAL>
+       * @memberof B_cable
+       * @instance
+       */
       shouldDrawSide2: false,
+
+
     })
     .setMethod({
 

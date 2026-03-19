@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla {ConsumeGenerator} but has warmup like {ImpactReactor}.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -88,25 +74,60 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla {@link ConsumeGenerator} but has warmup like {@link ImpactReactor}.
+     * @class BLK_consumeGenerator
+     * @extends BLK_baseGenerator
+     */
     newClass().extendClass(PARENT[0], "BLK_consumeGenerator").initClass()
     .setParent(ConsumeGenerator)
     .setTags("blk-pow", "blk-pow0gen")
     .setParam({
-      // @PARAM: Warmup rate for power generation, just like impact reactor. Set this to negative value to disable warmup mechanics.
+
+
+      /**
+       * <PARAM>: Warmup rate for power generation. Set this to negative value to disable warmup mechanics.
+       * @memberof BLK_consumeGenerator
+       * @instance
+       */
       genWarmupRate: -1.0,
+
+
     })
     .setParamAlias([
       "consEff", "consumeEffect", Fx.none,
     ])
-    .setMethod({}),
+    .setMethod({
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_consumeGenerator").initClass()
+      setBars: function() {
+        comp_setBars(this);
+      },
+
+
+    }),
+
+
+    /**
+     * @class B_consumeGenerator
+     * @extends B_baseGenerator
+     */
+    newClass().extendClass(PARENT[1], "B_consumeGenerator").initClass()
     .setParent(ConsumeGenerator.ConsumeGeneratorBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_consumeGenerator
+       * @instance
+       */
       genWarmup: 0.0,
+
+
     })
     .setMethod({
 
@@ -140,20 +161,26 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
         wr.f(this.genWarmup);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
+
+        this.ex_processData(rd);
         this.genWarmup = rd.f();
       },
 
 
-      ex_processData: function(wr0rd, revi) {
+      /**
+       * @memberof B_consumeGenerator
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         // Do nothing
       }
       .setProp({

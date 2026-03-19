@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Any block related to power transmission or generation.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -43,7 +29,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Any block related to power transmission or generation.
+     * @class BLK_basePowerBlock
+     * @extends BLK_baseBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_basePowerBlock").initClass()
     .setParent(null)
     .setTags("blk-pow")
@@ -59,8 +49,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_basePowerBlock").initClass()
+    /**
+     * @class B_basePowerBlock
+     * @extends B_baseBlock
+     */
+    newClass().extendClass(PARENT[1], "B_basePowerBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

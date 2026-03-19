@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -293,6 +290,29 @@
     }).left().growX();
   };
   exports.__sliderCfg = __sliderCfg;
+
+
+  /**
+   * Adds a fixed scroll pane for a table.
+   * @param {Table} tb
+   * @param {function(Table): void} tableF
+   * @param {number|unset} [maxW]
+   * @param {number|unset} [maxH]
+   * @return {Cell}
+   */
+  const __pnFixed = function(tb, tableF, maxW, maxH) {
+    let pnCell = tb.pane(pn => {
+      tableF(pn);
+    });
+    if(maxW != null) pnCell.maxWidth(maxW);
+    if(maxH != null) pnCell.maxHeight(maxH);
+    let pn = pnCell.get();
+    pn.setScrollingDisabled(false, false);
+    pn.setOverscroll(false, false);
+
+    return pnCell;
+  };
+  exports.__pnFixed = __pnFixed;
 
 
   /**

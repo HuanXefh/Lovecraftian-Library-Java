@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Serpulo liquid bridge.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -43,7 +28,8 @@
       // Find pressure sources only if bridge is connected
       let rot_f = ot.build.relativeTo(b);
       for(let i = 0; i < 4; i++) {
-        if(i === 2) continue;                // Does not accept pressure from the facing side
+        // Do not accept pressure from the facing side
+        if(i === 2) continue;
         let ob = b.nearby((rot_f + i) % 4);
         if(
           ob != null
@@ -97,7 +83,13 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Serpulo liquid bridge.
+     * <br> <SINGLESIZE>
+     * @class BLK_fluidPipeBridge
+     * @extends BLK_baseFluidDistributor
+     * @extends INTF_BLK_pressureBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_fluidPipeBridge").implement(INTF[0]).initClass()
     .setParent(LiquidBridge)
     .setTags("blk-liq", "blk-brd")
@@ -105,6 +97,12 @@
     .setMethod({
 
 
+      /**
+       * @override
+       * @memberof BLK_fluidPipeBridge
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -117,8 +115,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fluidPipeBridge").implement(INTF[1]).initClass()
+    /**
+     * @class B_fluidPipeBridge
+     * @extends B_baseFluidDistributor
+     * @extends INTF_B_pressureBlock
+     */
+    newClass().extendClass(PARENT[1], "B_fluidPipeBridge").implement(INTF[1]).initClass()
     .setParent(LiquidBridge.LiquidBridgeBuild)
     .setParam({})
     .setMethod({
@@ -129,6 +131,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof B_fluidPipeBridge
+       * @instance
+       * @return {void}
+       */
       ex_updatePresFetchTgs: function() {
         comp_ex_updatePresFetchTgs(this);
       }
@@ -138,6 +146,11 @@
       }),
 
 
+      /**
+       * @memberof B_fluidPipeBridge
+       * @instance
+       * @return {void}
+       */
       ex_updatePresSupplyTgs: function() {
         comp_ex_updatePresSupplyTgs(this);
       }

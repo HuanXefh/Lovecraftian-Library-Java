@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla liquid router.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -91,13 +77,40 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla liquid router.
+     * @class BLK_fluidRouter
+     * @extends BLK_baseFluidDistributor
+     */
     newClass().extendClass(PARENT[0], "BLK_fluidRouter").initClass()
     .setParent(LiquidRouter)
     .setTags("blk-liq", "blk-fcont")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_fluidRouter
+       * @instance
+       */
       presExploRad: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_fluidRouter
+       * @instance
+       */
       presExploDmg: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_fluidRouter
+       * @instance
+       */
+      graphType: "pressure",
+
+
     })
     .setMethod({
 
@@ -120,8 +133,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fluidRouter").initClass()
+    /**
+     * @class B_fluidRouter
+     * @extends B_baseFluidDistributor
+     */
+    newClass().extendClass(PARENT[1], "B_fluidRouter").initClass()
     .setParent(LiquidRouter.LiquidRouterBuild)
     .setParam({})
     .setMethod({

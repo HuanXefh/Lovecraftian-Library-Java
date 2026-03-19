@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent template for all weathers.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,13 +21,30 @@
 */
 
 
+  /**
+   * Root for all weathers.
+   * @class WEA_baseWeather
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "WEA_baseWeather").initClass()
   .setParent(null)
-  .setTags("")
+  .setTags()
   .setParam({
-    // @PARAM: See {RS_baseResource}.
+
+
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof WEA_baseWeather
+     * @instance
+     */
     overwriteVanillaStat: true,
-    // @PARAM: See {RS_baseResource}.
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof WEA_baseWeather
+     * @instance
+     */
     overwriteVanillaProp: true,
+
+    
   })
   .setMethod({});

@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -319,6 +316,7 @@
     TRIGGER_MUSIC = false;
     TRIGGERS_IMAGE.setVal(false);
     MUSIC_HANDLER.stop();
+    VARGEN.dialFlowTextLog.clear();
     VARGEN.dialFlowBgPool.forEachFast(tb => removeActor(tb));
     VARGEN.dialFlowImgPool.forEachFast(tb => removeActor(tb));
     VARGEN.dialFlowCharaPool.forEachFast(tb => removeActor(tb));
@@ -610,6 +608,10 @@
     tb.center();
     textScrArr.forEachRow(2, (text, scr) => {
       tb.button(text, () => {
+        VARGEN.dialFlowTextLog.push({
+          chara: "SPEC: selection",
+          text: text,
+        });
         scr();
         shouldClose = true;
       }).center().size(w, h).row();
@@ -660,27 +662,29 @@
       isTail = readParam(paramObj, "isTail", false),
       selectionScr = readParam(paramObj, "selectionScr", null);
 
-    let shouldTriggerScrOnClick = haltTimeS < 0.0 && !autoClick && !isTail && selectionScr == null;
-    let actions_fi = haltTimeS >= 0.0 ?
-      [Actions.delay(haltTimeS), Actions.run(() => scr()), Actions.remove()] :
-      autoClick ?
-        [Actions.fadeIn(0.25), Actions.run(() => scr()), Actions.remove()] :
-        isTail ?
-          [Actions.fadeIn(0.25), Actions.run(() => scr()), Actions.fadeOut(0.25), Actions.remove()] :
-          null;
-    let delay_fi = haltTimeS != null ?
-      haltTimeS :
-      autoClick ?
-        0.25 :
-        null;
+    let
+      shouldTriggerScrOnClick = haltTimeS < 0.0 && !autoClick && !isTail && selectionScr == null,
+      actions_fi = haltTimeS >= 0.0 ?
+        [Actions.delay(haltTimeS), Actions.run(() => scr()), Actions.remove()] :
+        autoClick ?
+          [Actions.fadeIn(0.25), Actions.run(() => scr()), Actions.remove()] :
+          isTail ?
+            [Actions.fadeIn(0.25), Actions.run(() => scr()), Actions.fadeOut(0.25), Actions.remove()] :
+            null,
+      delay_fi = haltTimeS != null ?
+        haltTimeS :
+        autoClick ?
+          0.25 :
+          null,
+      color = charaTup == null ? Color.white : MDL_color._charaColor(charaTup[0], charaTup[1]),
+      dialChara = charaTup == null ? "" : MDL_bundle._chara(charaTup[0], charaTup[1]).color(color),
+      dialText = dialTup == null ? "" : MDL_bundle._dialText(dialTup[0], dialTup[1], dialTup[2]).color(color);
 
-    let color = Color.white;
     if(charaTup != null) {
-      color = MDL_color._charaColor(charaTup[0], charaTup[1]);
       // <TABLE>: character name
       tb.table(Tex.bar, tb1 => {
         tb1.top().marginLeft(36.0).marginRight(36.0).marginTop(16.0).marginBottom(16.0).setColor(Color.darkGray);
-        tb1.add(MDL_bundle._chara(charaTup[0], charaTup[1]).color(color)).center().fontScale(1.35).labelAlign(Align.left);
+        tb1.add(dialChara).center().fontScale(1.35).labelAlign(Align.left);
       }).left().row();
     };
     // <TABLE>: text box
@@ -694,7 +698,6 @@
         });
 
         tb2.left().marginLeft(48.0).marginRight(48.0).marginTop(28.0).marginBottom(28.0);
-        let dialText = dialTup == null ? "" : MDL_bundle._dialText(dialTup[0], dialTup[1], dialTup[2]).color(color);
         tb2.add(dialText).left().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.left).wrap().width(_uiW(90.0));
       }).left();
       // <TABLE>: spacing
@@ -705,6 +708,7 @@
           clearDialFlow();
           removeActor(tb);
         })).size(40.0).tooltip(MDL_bundle._info("lovec", "tt-skip-dial"), true).row();
+        tb2.button("L", () => fetchDialog("dialFlowLog").ex_show()).size(40.0).tooltip(MDL_bundle._info("lovec", "tt-dial-flow-log"), true).row();
       }).right();
     }).width(_screenW() * 0.6).height(160.0).row();
 
@@ -720,6 +724,11 @@
 
     if(selectionScr != null) paramObj.selectionScr();
     if(sound != null) MDL_effect.play(paramObj.sound);
+
+    VARGEN.dialFlowTextLog.push({
+      chara: dialChara,
+      text: dialText,
+    });
 
     return delay_fi != null ?
       delay_fi :
@@ -747,6 +756,8 @@
   .setProp({
     flowIndMap: new ObjectMap(),
     callFlow: function(dialFlowData) {
+      VARGEN.dialFlowCharaPool.forEachFast(tb => removeActor(tb));
+
       let ind = _d_flow.flowIndMap.get(dialFlowData, 0);
       let obj = tryVal(dialFlowData[ind * 4 + 2], Object.air);
       let args = dialFlowData[ind * 4 + 3];
@@ -762,7 +773,7 @@
         if(nextInd * 4 < dialFlowData.length) {
           _d_flow.callFlow(dialFlowData);
         } else {
-          _d_flow.tmpBools.clear();
+          clearDialFlow();
         };
       }, obj, () => _d_flow.tmpBools[ind]);
     },

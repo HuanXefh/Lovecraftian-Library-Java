@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Root of all bullet types.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -81,14 +67,28 @@
 */
 
 
+  /**
+   * Root of all bullet types.
+   * @class BUL_baseBullet
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "BUL_baseBullet").initClass()
   .setParent(null)
   .setTags()
   .setParam({
-    // @PARAM: Used to define type affinity (damage multiplier on specific units) for the bullet.
+
+
+    /**
+     * <PARAM>: Damage multiplier on specific type of units.
+     * @memberof BUL_baseBullet
+     * @instance
+     */
     typeMtpArr: prov(() => []),
 
-    // For convenience
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     hitSize: 4.0,
     drawSize: -1.0,
     lifetime: 40.0,
@@ -125,6 +125,8 @@
     weaveMag: 0.0,
     circleShooter: false,
     parts: prov(() => []),
+
+    
   })
   .setParamAlias([
     "z", "layer", Layer.bullet,

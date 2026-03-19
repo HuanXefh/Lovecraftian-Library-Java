@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods that most factories and generators should have.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -69,33 +55,84 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles explosion creation.
+     * @class INTF_BLK_explosionInducer
+     */
+    new CLS_interface("INTF_BLK_explosionInducer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Whether to create impact wave along with the explosion.
+
+
+        /**
+         * <PARAM>: Whether to create impact wave along with the explosion.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         hasImpactOnExplosion: true,
-        // @PARAM: Explosion damage.
+        /**
+         * <PARAM>: Explosion damage.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploDmg: 0.0,
-        // @PARAM: Explosion radius.
+        /**
+         * <PARAM>: Explosion radius.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploRad: 40.0,
-        // @PARAM: Explosion puddle liquid.
+        /**
+         * <PARAM>: Explosion puddle liquid.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploLiq: null,
-        // @PARAM: Amount of puddles created.
+        /**
+         * <PARAM>: Amount of puddles created.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploPuddleAmt: 10,
-        // @PARAM: Puddle spread radius.
+        /**
+         * <PARAM>: Puddle spread radius.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploPuddleRad: 20.0,
-        // @PARAM: Amount of liquid in each puddle.
+        /**
+         * <PARAM>: Amount of liquid in each puddle.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploPuddleLiqAmt: 100.0,
-        // @PARAM: Explosion shake power.
+        /**
+         * <PARAM>: Explosion shake power.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploShake: 0.0,
-        // @PARAM: Explosion shake duration.
+        /**
+         * <PARAM>: Explosion shake duration.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploShakeDur: 60.0,
-        // @PARAM: Explosion effect.
+        /**
+         * <PARAM>: Explosion effect.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploEff: EFF.explosion,
-        // @PARAM: Explosion sound.
+        /**
+         * <PARAM>: Explosion sound.
+         * @memberof INTF_BLK_explosionInducer
+         * @instance
+         */
         exploSe: fetchSound("se-shot-explosion"),
+
+
       }),
 
 
@@ -111,6 +148,12 @@
       },
 
 
+      /**
+       * @memberof INTF_BLK_explosionInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcExploDmg: function(b) {
         return this.exploDmg;
       }
@@ -120,6 +163,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_explosionInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcExploRad: function(b) {
         return this.exploRad;
       }
@@ -129,6 +178,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_explosionInducer
+       * @instance
+       * @param {Building} b
+       * @return {Liquid|null}
+       */
       ex_findExploLiq: function(b) {
         return this.exploLiq;
       }
@@ -138,6 +193,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_explosionInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcExploPuddleAmt: function(b) {
         return this.exploPuddleAmt;
       }
@@ -147,6 +208,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_explosionInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcExploPuddleRad: function(b) {
         return this.exploPuddleRad;
       }
@@ -156,6 +223,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_explosionInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcExploPuddleLiqAmt: function(b) {
         return this.exploPuddleLiqAmt;
       }
@@ -165,6 +238,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_explosionInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcExploShake: function(b) {
         return this.exploShake;
       }
@@ -174,6 +253,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_explosionInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcExploShakeDur: function(b) {
         return this.exploShakeDur;
       }
@@ -186,8 +271,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_explosionInducer
+     */
+    new CLS_interface("INTF_B_explosionInducer", {
 
 
       onDestroyed: function() {
@@ -202,7 +289,13 @@
       },
 
 
-      // @LATER
+      /**
+       * If true, explosion will be created when this building is destroyed.
+       * <br> <LATER>
+       * @memberof INTF_B_explosionInducer
+       * @instance
+       * @return {boolean}
+       */
       ex_shouldExplodeOnDestroyed: function() {
         return false;
       }
@@ -211,6 +304,12 @@
       }),
 
 
+      /**
+       * Call this method to create explosion.
+       * @memberof INTF_B_explosionInducer
+       * @instance
+       * @return {void}
+       */
       ex_createExplosion: function() {
         comp_ex_createExplosion(this);
       }

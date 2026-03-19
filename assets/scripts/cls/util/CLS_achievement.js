@@ -1,42 +1,50 @@
-/* <---------- import ----------> */
+/*
+  ========================================
+  Section: Definition
+  ========================================
+*/
 
 
-/* <---------- meta ----------> */
+  /* <---------- meta ----------> */
 
 
-/**
- * Lovec achievement.
- * Achievements should be created on CLIENT LOAD and not on headless end.
- * See {@link TP_achievement} in ProjReind for examples.
- * @class
- * @param {string} nmMod
- * @param {string} nm
- * @param {TextureRegionDrawable} icon
- * @param {CLS_eventTrigger} trigger - Trigger used to check state of the achievement.
- * @param {Function|unset} [listener] - Complete the achievement here. If not set, the achievement will be completed when trigger is fired.
- */
-const CLS_achievement = newClass().initClass();
+  /**
+   * Lovec achievement.
+   * Achievements should be created on CLIENT LOAD and not on headless end.
+   * See {@link TP_achievement} in ProjReind for examples.
+   * @class
+   * @param {string} nmMod
+   * @param {string} nm
+   * @param {TextureRegionDrawable} icon
+   * @param {CLS_eventTrigger} trigger - Trigger used to check state of the achievement.
+   * @param {Function|unset} [listener] - Complete the achievement here. If not set, the achievement will be completed when trigger is fired.
+   */
+  const CLS_achievement = newClass().initClass();
 
 
-CLS_achievement.prototype.init = function(nmMod, nm, icon, trigger, listener) {
-  const thisIns = this;
-  if(fetchMod(nmMod, true) == null) ERROR_HANDLER.throw("noModFound", nmMod);
-  this.name = nmMod + "-" + registerUniqueName(nm, insNms, "achievement");
-  this.mod = nmMod;
+  CLS_achievement.prototype.init = function(nmMod, nm, icon, trigger, listener) {
+    const thisIns = this;
+    if(fetchMod(nmMod, true) == null) ERROR_HANDLER.throw("noModFound", nmMod);
+    this.name = nmMod + "-" + registerUniqueName(nm, insNms, "achievement");
+    this.mod = nmMod;
 
-  this.icon = tryVal(icon, VARGEN.icons.ohno);
-  listener == null ?
-    trigger.addGlobalListener(() => this.complete()) :
-    trigger.addGlobalListener(function() {listener.apply(thisIns, arguments)});
+    this.icon = tryVal(icon, VARGEN.icons.ohno);
+    listener == null ?
+      trigger.addGlobalListener(() => this.complete()) :
+      trigger.addGlobalListener(function() {listener.apply(thisIns, arguments)});
 
-  VARGEN.achievements.push(this);
-};
-
-
-const insNms = [];
+    VARGEN.achievements.push(this);
+  };
 
 
-/* <---------- static method ----------> */
+  const insNms = [];
+
+
+/*
+  ========================================
+  Section: Definition (Static)
+  ========================================
+*/
 
 
 /**
@@ -50,73 +58,85 @@ CLS_achievement.clear = function() {
     Core.settings.put(achievement.getHeader(), false);
   });
   Core.settings.put("lovec-misc-secret-code-crashed", false);
-  Log.info("[LOVEC] Lovec achievement data has been [$1].".format("cleared".color(Pal.remove)));
+  Log.info("[LOVEC] Lovec achievement data has been ${1}.".format("cleared".color(Pal.remove)));
 }
 .setAnno("debug");
 
 
-/* <---------- instance method ----------> */
+/*
+  ========================================
+  Section: Definition (Instance)
+  ========================================
+*/
 
 
-/**
- * Gets mod of this achievement.
- * @return {Mod}
- */
-CLS_achievement.prototype.getMod = function() {
-  return fetchMod(this.mod);
-};
+  /* <------------------------------ property ------------------------------ */
 
 
-/**
- * Gets header of this achievement.
- * @return {string}
- */
-CLS_achievement.prototype.getHeader = function() {
-  return this.name;
-};
+  /**
+   * Gets mod of this achievement.
+   * @return {Mod}
+   */
+  CLS_achievement.prototype.getMod = function() {
+    return fetchMod(this.mod);
+  };
 
 
-/**
- * Gets icon used by this achievement.
- * @return {TextureRegionDrawable}
- */
-CLS_achievement.prototype.getIcon = function() {
-  return this.icon;
-};
+  /**
+   * Gets header of this achievement.
+   * @return {string}
+   */
+  CLS_achievement.prototype.getHeader = function() {
+    return this.name;
+  };
 
 
-/**
- * Gets text description of this achievement.
- * <br> <BUNDLE>: "info.common-info-achieve-<nmMod>-<nm>".
- * @return {string}
- */
-CLS_achievement.prototype.getText = function() {
-  return MDL_bundle._info("common", "achieve-" + this.name);
-};
+  /**
+   * Gets icon used by this achievement.
+   * @return {TextureRegionDrawable}
+   */
+  CLS_achievement.prototype.getIcon = function() {
+    return this.icon;
+  };
 
 
-/**
- * Whether this achievement has been completed.
- * @return {boolean}
- */
-CLS_achievement.prototype.isCompleted = function() {
-  return Vars.headless ?
-    false :
-    Core.settings.getBool(this.getHeader(), false);
-};
+  /**
+   * Gets text description of this achievement.
+   * <br> <BUNDLE>: "info.common-info-achieve-<nmMod>-<nm>".
+   * @return {string}
+   */
+  CLS_achievement.prototype.getText = function() {
+    return MDL_bundle._info("common", "achieve-" + this.name);
+  };
 
 
-/**
- * Completes this achievement.
- * @return {void}
- */
-CLS_achievement.prototype.complete = function() {
-  if(Vars.headless || this.isCompleted()) return;
+  /**
+   * Whether this achievement has been completed.
+   * @return {boolean}
+   */
+  CLS_achievement.prototype.isCompleted = function() {
+    return Vars.headless ?
+      false :
+      Core.settings.getBool(this.getHeader(), false);
+  };
 
-  Core.settings.put(this.getHeader(), true);
-  MDL_ui.show_toast("common", "achieve-" + this.name, this.icon, 80.0);
-}
-.setAnno("non-console");
+
+  /* <------------------------------ util ------------------------------ */
+
+
+  /**
+   * Completes this achievement.
+   * @return {void}
+   */
+  CLS_achievement.prototype.complete = function() {
+    if(Vars.headless || this.isCompleted()) return;
+
+    Core.settings.put(this.getHeader(), true);
+    MDL_ui.show_toast("common", "achieve-" + this.name, this.icon, 80.0);
+  }
+  .setAnno("non-console");
+
+
 
 
 module.exports = CLS_achievement;

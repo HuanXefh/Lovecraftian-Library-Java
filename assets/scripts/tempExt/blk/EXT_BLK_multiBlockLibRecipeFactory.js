@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Variant of {BLK_multiBlockLibRecipeFactory} for other mods.
-   * You should require MultiBlockLib as a dependency for your mod, or use {runWithDependency} method to optionally load related CT files.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,21 +24,56 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Variant of {@link BLK_multiBlockLibRecipeFactory} for other mods.
+     * You should require MultiBlockLib as a dependency for your mod, or use `runWithDependency` to optionally load related CT files.
+     * @class EXT_BLK_multiBlockLibRecipeFactory
+     * @extends BLK_multiBlockLibRecipeFactory
+     */
     newClass().extendClass(PARENT[0], "EXT_BLK_multiBlockLibRecipeFactory").initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof EXT_BLK_multiBlockLibRecipeFactory
+       * @instance
+       */
       skipOutlineSetup: true,
+      /**
+       * <INTERNAL>
+       * @memberof EXT_BLK_multiBlockLibRecipeFactory
+       * @instance
+       */
       noLoot: true,
+      /**
+       * <INTERNAL>
+       * @memberof EXT_BLK_multiBlockLibRecipeFactory
+       * @instance
+       */
       noReac: true,
+      /**
+       * <INTERNAL>
+       * @memberof EXT_BLK_multiBlockLibRecipeFactory
+       * @instance
+       */
       skipFacilityMethod: true,
+
+
     })
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "EXT_BLK_multiBlockLibRecipeFactory").initClass()
+    /**
+     * @class EXT_B_multiBlockLibRecipeFactory
+     * @extends B_multiBlockLibRecipeFactory
+     */
+    newClass().extendClass(PARENT[1], "EXT_B_multiBlockLibRecipeFactory").initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({}),

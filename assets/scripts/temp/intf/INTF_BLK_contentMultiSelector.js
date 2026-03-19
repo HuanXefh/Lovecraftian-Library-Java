@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles item multi-selector.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -95,12 +81,27 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles content multi-selection.
+     * @class INTF_BLK_contentMultiSelector
+     */
+    new CLS_interface("INTF_BLK_contentMultiSelector", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_contentMultiSelector
+         * @instance
+         */
         selectionQueue: prov(() => []),
+
+
       }),
 
 
@@ -109,6 +110,12 @@
       },
 
 
+      /**
+       * See {@link INTF_BLK_contentSelector}.
+       * @memberof INTF_BLK_contentMultiSelector
+       * @instance
+       * @return {Array<UnlockableContent>}
+       */
       ex_findSelectionTgs: function() {
         return Vars.content.items().toArray();
       }
@@ -120,12 +127,26 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_contentMultiSelector
+     */
+    new CLS_interface("INTF_B_contentMultiSelector", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>: Contents selected.
+         * @memberof INTF_B_contentMultiSelector
+         * @instance
+         */
         ctTgs: prov(() => []),
+
+
       }),
 
 
@@ -147,6 +168,14 @@
       }),
 
 
+      /**
+       * Use this method to add/remove a content from selected list.
+       * @memberof INTF_B_contentMultiSelector
+       * @instance
+       * @param {string|UnlockableContent} param
+       * @param {boolean} isAdd
+       * @return {Array<UnlockableContent>}
+       */
       ex_accCtTgs: function(param, isAdd) {
         switch(param) {
           case "read" :
@@ -154,17 +183,23 @@
           case "clear" :
             this.block.lastConfig = "clear";
             return this.ctTgs.clear();
-          default :
-            return isAdd ?
-              this.ctTgs.pushUnique(param) :
-              this.ctTgs.remove(param);
         };
+
+        return isAdd ?
+          this.ctTgs.pushUnique(param) :
+          this.ctTgs.removeAll(param);
       }
       .setProp({
         noSuper: true,
       }),
 
 
+      /**
+       * @memberof INTF_B_contentMultiSelector
+       * @instance
+       * @param {Table} tb
+       * @return {void}
+       */
       ex_buildSelector: function(tb) {
         comp_ex_buildSelector(this, tb);
       }
@@ -173,16 +208,30 @@
       }),
 
 
-      // @LATER
+      /**
+       * Called just after config from multi-selector is loaded.
+       * <br> <LATER>
+       * @memberof INTF_B_contentMultiSelector
+       * @instance
+       * @param {Array} cfgArr
+       * @return {void}
+       */
       ex_onSelectorConfigLoad: function(cfgArr) {
 
       }
       .setProp({
         noSuper: true,
+        argLen: 1,
       }),
 
 
-      // @LATER
+      /**
+       * See {@link INTF_B_contentSelector}.
+       * <br> <LATER>
+       * @memberof INTF_B_contentMultiSelector
+       * @instance
+       * @return {void}
+       */
       ex_onSelectorUpdate: function() {
 
       }
@@ -191,9 +240,15 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_contentMultiSelector
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
 
           (wr, revi) => {
             MDL_io._wr_cts(wr, this.ctTgs);
@@ -206,7 +261,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

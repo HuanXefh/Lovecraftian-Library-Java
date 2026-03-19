@@ -69,16 +69,22 @@
 
 
     // Initialize game window title
-    MDL_backend.setWinTitle(null, "[$1][$2]".format(fetchSetting("misc-title-name"), !fetchSetting("misc-title-map") ? "" : ": menu"));
+    MDL_backend.setWinTitle(null, "${1}${2}".format(fetchSetting("misc-title-name"), !fetchSetting("misc-title-map") ? "" : ": menu"));
 
 
     // Map reading fallback addition
     DB_misc.db["block"]["migration"].forEachRow(2, (nm_f, nm_t) => SaveVersion.fallback.put(nm_f, nm_t));
 
 
+    // Register graph update methods
+    DB_misc.db["block"]["graphUpdate"].forEachRow(2, (graphType, fun) => {
+      VARGEN.setGraphUpdate(graphType, fun);
+    });
+
+
     // Set up ore dictionary, EXPERIMENTAL!
     if(PARAM.modded && fetchSetting("load-ore-dict")) (function() {
-      Log.info("[LOVEC] " + "Ore dictionary".color(Pal.accent) + " is enabled.");
+      Log.info("[LOVEC] Loading " + "ore dictionary".color(Pal.accent) + " settings...");
       if(!fetchSetting("load-ore-dict-def")) Log.info("[LOVEC] Skipped default lists for ore dictionary.");
 
       let dir = MDL_file.sharedData.child("ore-dict").child("default");

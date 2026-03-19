@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles fluid corrosion damage, including clogging damage.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -82,14 +68,39 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles fluid corrosion damage, including clogging damage.
+     * @class INTF_BLK_corrosionAcceptor
+     */
+    new CLS_interface("INTF_BLK_corrosionAcceptor", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_corrosionAcceptor
+         * @instance
+         */
         matGrp: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_corrosionAcceptor
+         * @instance
+         */
         corRes: 1.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_corrosionAcceptor
+         * @instance
+         */
         cloggable: false,
+
+
       }),
 
 
@@ -106,8 +117,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_corrosionAcceptor
+     */
+    new CLS_interface("INTF_B_corrosionAcceptor", {
 
 
       updateTile: function() {
@@ -115,6 +128,13 @@
       },
 
 
+      /**
+       * @memberof INTF_B_corrosionAcceptor
+       * @instance
+       * @param {Liquid} liq
+       * @param {number} amt
+       * @return {void}
+       */
       ex_updateCorrosion: function(liq, amt) {
         comp_ex_updateCorrosion(this, liq, amt);
       }
@@ -124,6 +144,13 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_corrosionAcceptor
+       * @instance
+       * @param {Liquid} liq
+       * @param {number} amt
+       * @return {void}
+       */
       ex_updateClogging: function(liq, amt) {
         comp_ex_updateClogging(this, liq, amt);
       }

@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent of all floors with a specific material.
-   * Random overlay is supported.
-   * Unlike {ENV_liquidMaterialFloor} there's no name generation, it's intended to avoid bugs.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -78,18 +62,45 @@
 */
 
 
+  /**
+   * Parent of all floors with a specific material.
+   * Random overlay is supported.
+   * Unlike {@link ENV_liquidMaterialFloor} there's no name generation, it's intended to avoid bugs.
+   * @class ENV_materialFloor
+   * @extends ENV_baseFloor
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_materialFloor").initClass()
   .setParent(Floor)
   .setTags("blk-env", "blk-mat0flr")
   .setParam({
-    // @PARAM: Material of the floor.
+
+
+    /**
+     * <PARAM>: Material of the floor.
+     * @memberof ENV_materialFloor
+     * @instance
+     */
     matGrp: "none",
-    // @PARAM: A list of random overlay tags, see {DB_env.db["map"]["randRegTag"]}. Will be replaced with regions on INIT.
+    /**
+     * <PARAM>: A list of random overlay tags, will be replaced with texture regions on INIT. See {@link DB_env}.
+     * @memberof ENV_materialFloor
+     * @instance
+     */
     randRegs: [],
-    // @PARAM: Larger denominator leads to less overlay drawn.
+    /**
+     * <PARAM>: Larger value leads to fewer overlays drawn.
+     * @memberof ENV_materialFloor
+     * @instance
+     */
     randRegDenom: 80,
-    // @PARAM: A 2-tuple of offset parameters used for random overlay.
+    /**
+     * <PARAM>: Random overlay offsets as a 2-tuple.
+     * @memberof ENV_materialFloor
+     * @instance
+     */
     randRegOffs: [0, 0],
+
+
   })
   .setMethod({
 

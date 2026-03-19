@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Air units that flies only when moving.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -60,6 +46,11 @@
 */
 
 
+  /**
+   * An air unit that only flies when moving.
+   * @class ENTITY_jet
+   * @extends ENTITY_baseAirUnit
+   */
   module.exports = newClass().extendClass(PARENT, "ENTITY_jet").initClass()
   .setParent(UnitEntity)
   .setParam({})

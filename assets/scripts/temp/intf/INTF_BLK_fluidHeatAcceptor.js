@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods for fluid heat.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -97,18 +83,47 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles methods for fluid heat.
+     * @class INTF_BLK_fluidHeatAcceptor
+     */
+    new CLS_interface("INTF_BLK_fluidHeatAcceptor", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Rate at which the fluid heat approaches target temperature.
+
+
+        /**
+         * <PARAM>: Rate at which fluid heat approaches target temperature.
+         * @memberof INTF_BLK_fluidHeatAcceptor
+         * @instance
+         */
         fHeatWarmupRate: 0.004,
-        // @PARAM: Whether the fluid heat region should be rotated.
+        /**
+         * <PARAM>: Whether fluid heat region is rotatable.
+         * @memberof INTF_BLK_fluidHeatAcceptor
+         * @instance
+         */
         shouldRotFHeatReg: false,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_fluidHeatAcceptor
+         * @instance
+         */
         heatRes: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_fluidHeatAcceptor
+         * @instance
+         */
         fHeatReg: null,
+
+
       }),
 
 
@@ -135,13 +150,32 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_fluidHeatAcceptor
+     */
+    new CLS_interface("INTF_B_fluidHeatAcceptor", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_fluidHeatAcceptor
+         * @instance
+         */
         fHeatCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_fluidHeatAcceptor
+         * @instance
+         */
         fHeatTg: 0.0,
+
+
       }),
 
 
@@ -160,30 +194,28 @@
       },
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_fluidHeatAcceptor
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
 
           (wr, revi) => {
             wr.f(this.fHeatCur);
           },
 
           (rd, revi) => {
-            if(revi < 1) {
-              let pres = rd.f();
-              this.presTg = pres;
-              this.presTmp = pres;
-              this.fHeatCur = rd.f();
-              return;
-            };
-
             this.fHeatCur = rd.f();
           },
         );
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

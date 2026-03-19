@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods that most factories and generators should have.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -36,7 +22,7 @@
 
 
   const comp_updateTile = function thisFun(b) {
-    if(PARAM.updateSuppressed || b.block.delegee.skipFacilityMethod) return;
+    if(PARAM.updateSuppressed) return;
 
     let liqCur = b.liquids == null ? null : b.liquids.current();
 
@@ -53,6 +39,8 @@
         };
       });
     };
+
+    if(b.block.delegee.skipFacilityMethod) return;
 
     // Explode if near fire
     if(Vars.state.rules.reactorExplosions && b.block.delegee.canFireExplode) {
@@ -99,22 +87,59 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles methods that most factories and generators should have.
+     * @class INTF_BLK_facilityBlock
+     */
+    new CLS_interface("INTF_BLK_facilityBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Whether auxiliary fluids in this block should be capped.
+
+
+        /**
+         * <PARAM>: Whether auxiliary fluids in this block should be capped.
+         * @memberof INTF_BLK_facilityBlock
+         * @instance
+         */
         shouldCapAux: true,
-        // @PARAM: Whether auxiliary fluid should not be stored.
+        /**
+         * <PARAM>: Whether auxiliary fluids should not be stored in this block.
+         * @memberof INTF_BLK_facilityBlock
+         * @instance
+         */
         shouldClearAuxOnStop: true,
-        // @PARAM: Whether to skip facility block update.
+        /**
+         * <PARAM>: Whether to skip facility block update.
+         * @memberof INTF_BLK_facilityBlock
+         * @instance
+         */
         skipFacilityMethod: false,
-        // @PARAM: Time before the building explodes due to nearby fire.
+        /**
+         * <PARAM>: Time before explosion due to nearby fire.
+         * @memberof INTF_BLK_facilityBlock
+         * @instance
+         */
         fireExplodeCooldown: 360.0,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_facilityBlock
+         * @instance
+         */
         canHandleAux: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_facilityBlock
+         * @instance
+         */
         canFireExplode: false,
+
+
       }),
 
 
@@ -123,6 +148,11 @@
       },
 
 
+      /**
+       * @memberof INTF_BLK_facilityBlock
+       * @instance
+       * @return {boolean}
+       */
       ex_checkHandleAuxPossible: function() {
         return MDL_recipeDict._hasAnyIo(VARGEN.auxs, this);
       }
@@ -131,6 +161,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_facilityBlock
+       * @instance
+       * @return {boolean}
+       */
       ex_checkFireExplodePossible: function() {
         return MDL_recipeDict._hasAnyIo(VARGEN.exploItms, this) || MDL_recipeDict._hasAnyIo(VARGEN.exploFlds, this);
       }
@@ -142,13 +177,32 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_facilityBlock
+     */
+    new CLS_interface("INTF_B_facilityBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_facilityBlock
+         * @instance
+         */
         fireExplodeReady: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_facilityBlock
+         * @instance
+         */
         fireExplodeCd: 0.0,
+
+
       }),
 
 

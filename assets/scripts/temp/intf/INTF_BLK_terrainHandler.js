@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods that check terrain type for valid placement..
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -38,7 +24,7 @@
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(t == null) return false;
 
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, team, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
       thisFun.tmpTup[4] = MDL_terrain._ter(t, blk.size, blk.ex_getTerrainCheckR());
       thisFun.tmpTup[5] = MDL_terrain._terB(thisFun.tmpTup[4]);
     };
@@ -73,17 +59,36 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles methods that check terrain type for valid placement.
+     * @class INTF_BLK_terrainHandler
+     */
+    new CLS_interface("INTF_BLK_terrainHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Terrain types involved.
+
+
+        /**
+         * <PARAM>: Terrain types involved.
+         * @memberof INTF_BLK_terrainHandler
+         * @instance
+         */
         ters: prov(() => []),
-        // @PARAM: "enable" for requirement, "disable" for restriction.
+        /**
+         * <PARAM>: "enable" for requirement, "disable" for restriction.
+         * @memberof INTF_BLK_terrainHandler
+         * @instance
+         */
         terMode: "enable",
-        // @PARAM: Integer offset of the terrain text in {blk.drawPlace}.
+        /**
+         * <PARAM>: Integer offset of the terrain text in `blk.drawPlace`.
+         * @memberof INTF_BLK_terrainHandler
+         * @instance
+         */
         terTextOffTy: 0,
+
+
       }),
 
 
@@ -100,12 +105,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Range used for terrain calculation.
-       * Do not set it dynamic or too large!
-       * ---------------------------------------- */
+      /**
+       * Range used for terrain check.
+       * Do not set this too large!
+       * @memberof INTF_BLK_terrainHandler
+       * @instance
+       * @return {number}
+       */
       ex_getTerrainCheckR: function() {
         return 5;
       }
@@ -117,8 +123,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({}),
+    /**
+     * @class INTF_B_terrainHandler
+     */
+    new CLS_interface("INTF_B_terrainHandler", {}),
 
 
   ];

@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods related to loot unit.
-   * Stats not included.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -56,29 +41,69 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles methods for blocks related to loot.
+     * Stats not included.
+     * @class INTF_BLK_lootHandler
+     */
+    new CLS_interface("INTF_BLK_lootHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Craft time of this loot block. Loot call is ignored if this is less than 1.0.
+
+
+        /**
+         * <PARAM>: Craft time of this loot block. Loot call is ignored if this is less than 1.0.
+         * @memberof INTF_BLK_lootHandler
+         * @instance
+         */
         lootCallIntv: 0.0,
-        // @PARAM: Amount parameter of this loot block.
+        /**
+         * <PARAM>: Amount parameter of this loot block used in loot call.
+         * @memberof INTF_BLK_lootHandler
+         * @instance
+         */
         lootCallAmt: 0,
+
+
       }),
 
 
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_lootHandler
+     */
+    new CLS_interface("INTF_B_lootHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_lootHandler
+         * @instance
+         */
         lootTs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_lootHandler
+         * @instance
+         */
         lootQueue: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_lootHandler
+         * @instance
+         */
         timerLootCall: prov(() => new Interval(1)),
+
+
       }),
 
 
@@ -97,12 +122,12 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Push target tiles to {b.lootTs} here.
-       * ---------------------------------------- */
+      /**
+       * <LATER>
+       * @memberof INTF_B_lootHandler
+       * @instance
+       * @return {void}
+       */
       ex_updateLootTs: function() {
 
       }
@@ -111,11 +136,11 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Pushes target loots to {b.LootQueue}.
-       * ---------------------------------------- */
+      /**
+       * @memberof INTF_B_lootHandler
+       * @instance
+       * @return {void}
+       */
       ex_updateLootQueue: function() {
         MDL_pos._lootsTs(this.lootTs, this.lootQueue);
       }
@@ -124,12 +149,15 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Called occasionally, process loots here.
-       * ---------------------------------------- */
+      /**
+       * Override this method to process found loots.
+       * <br> <LATER>
+       * @memberof INTF_B_lootHandler
+       * @instance
+       * @param {Array<Unit>} loots
+       * @param {number} amtCall
+       * @return {void}
+       */
       ex_lootCall: function(loots, amtCall) {
 
       }

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles pressure production methods.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -49,7 +35,7 @@
 
   function comp_updateTile(b) {
     if(PARAM.updateSuppressed) return;
-    let presProd = b.block.delegee.presProd;
+    let presProd = b.ex_calcPresDumpRate();
     if(presProd.fEqual(0.0)) return;
     let aux = presProd > 0.0 ? VARGEN.auxPres : VARGEN.auxVac;
 
@@ -98,15 +84,30 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles pressure production methods.
+     * @class INTF_BLK_pressureProducer
+     */
+    new CLS_interface("INTF_BLK_pressureProducer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Pressure produced by this block per frame, can be negative for vacuum production.
+
+
+        /**
+         * <PARAM>: Pressure produced by this block per frame, negative for vacuum.
+         * @memberof INTF_BLK_pressureProducer
+         * @instance
+         */
         presProd: 0.0,
-        // @PARAM: Fluid type restriction for pressure dumping. See (INTF_BLK_fluidTypeFilter).
+        /**
+         * <PARAM>: Fluid type restriction for pressure dumping. See {@link INTF_BLK_fluidTypeFilter}.
+         * @memberof
+         * @instance
+         */
         presFldType: "any",
+
+
       }),
 
 
@@ -123,13 +124,32 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_pressureProducer
+     */
+    new CLS_interface("INTF_B_pressureProducer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_pressureProducer
+         * @instance
+         */
         presDumpTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_pressureProducer
+         * @instance
+         */
         presDumpIncre: 0,
+
+
       }),
 
 
@@ -148,6 +168,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_pressureProducer
+       * @instance
+       * @return {void}
+       */
       ex_updatePresDumpTgs: function() {
         comp_ex_updatePresDumpTgs(this);
       }
@@ -156,12 +181,35 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_pressureProducer
+       * @instance
+       * @param {number} rate
+       * @param {boolean} isVac
+       * @return {void}
+       */
       ex_dumpPres: function(rate, isVac) {
         comp_ex_dumpPres(this, rate, isVac);
       }
       .setProp({
         noSuper: true,
         argLen: 2,
+      }),
+
+
+      /**
+       * Override this method for dynamic dump rate.
+       * Efficiency should not be involved!
+       * <br> <LATER>
+       * @memberof INTF_B_pressureProducer
+       * @instance
+       * @return {number}
+       */
+      ex_calcPresDumpRate: function() {
+        return this.block.delegee.presProd;
+      }
+      .setProp({
+        noSuper: true,
       }),
 
 

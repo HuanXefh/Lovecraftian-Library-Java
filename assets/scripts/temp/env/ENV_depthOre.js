@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Underground ore that is only mineable by certain drills, and requires scanning.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -48,6 +33,13 @@
 */
 
 
+  /**
+   * Underground ore that is only mineable by certain drills, and requires scanning.
+   * <br> <NAMEGEN>
+   * @class ENV_depthOre
+   * @extends ENV_baseOverlay
+   * @extends INTF_ENV_depthOverlay
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_depthOre").implement(INTF).initClass()
   .setParent(OverlayFloor)
   .setTags("blk-env", "blk-dpore")

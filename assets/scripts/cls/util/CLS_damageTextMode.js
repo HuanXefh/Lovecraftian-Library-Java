@@ -1,66 +1,86 @@
-/* <---------- import ----------> */
+/*
+  ========================================
+  Section: Definition
+  ========================================
+*/
 
 
-/* <---------- meta ----------> */
+  /* <---------- meta ----------> */
 
 
-/**
- * Handles formatting of text used in damage display.
- * @class
- * @param {string} nm
- * @param {function(Team): Color} colorGetter
- * @param {function(string): string} strGetter
- */
-const CLS_damageTextMode = newClass().initClass();
+  /**
+   * Handles formatting of text used in damage display.
+   * @class
+   * @param {string} nm
+   * @param {function(Team): Color} colorGetter
+   * @param {function(string): string} strGetter
+   */
+  const CLS_damageTextMode = newClass().initClass();
 
 
-CLS_damageTextMode.prototype.init = function(nm, colorGetter, strGetter) {
-  this.name = registerUniqueName(nm, insNms, "damage text mode");
-  this.colorGetter = tryVal(colorGetter, Function.airWhite);
-  this.strGetter = tryVal(strGetter, Function.airSelf);
+  CLS_damageTextMode.prototype.init = function(nm, colorGetter, strGetter) {
+    this.name = registerUniqueName(nm, insNms, "damage text mode");
+    this.colorGetter = tryVal(colorGetter, Function.airWhite);
+    this.strGetter = tryVal(strGetter, Function.airSelf);
 
-  nameModeMap.put(this.name, this);
-};
-
-
-const insNms = [];
-const nameModeMap = new ObjectMap();
+    nameModeMap.put(this.name, this);
+  };
 
 
-/* <---------- static method ----------> */
+  const insNms = [];
+  const nameModeMap = new ObjectMap();
 
 
-/**
- * Gets mode by name.
- * @param {string} nm
- * @return {CLS_damageTextMode}
- */
-CLS_damageTextMode.get = function(nm) {
-  return nameModeMap.get(nm);
-};
+/*
+  ========================================
+  Section: Definition (Static)
+  ========================================
+*/
 
 
-/* <---------- instance method ----------> */
+  /* <------------------------------ util ------------------------------ */
 
 
-/**
- * Gets color of damage text.
- * @param {Team} team
- * @return {Color}
- */
-CLS_damageTextMode.prototype.getColor = function(team) {
-  return this.colorGetter(team);
-};
+  /**
+   * Gets mode by name.
+   * @param {string} nm
+   * @return {CLS_damageTextMode}
+   */
+  CLS_damageTextMode.get = function(nm) {
+    return nameModeMap.get(nm);
+  };
 
 
-/**
- * Gets final text of damage text.
- * @param {string} str
- * @return {string}
- */
-CLS_damageTextMode.prototype.getText = function(str) {
-  return this.strGetter(str);
-};
+/*
+  ========================================
+  Section: Definition (Instance)
+  ========================================
+*/
+
+
+  /* <------------------------------ property ------------------------------ */
+
+
+  /**
+   * Gets color of damage text.
+   * @param {Team} team
+   * @return {Color}
+   */
+  CLS_damageTextMode.prototype.getColor = function(team) {
+    return this.colorGetter(team);
+  };
+
+
+  /**
+   * Gets final text of damage text.
+   * @param {string} str
+   * @return {string}
+   */
+  CLS_damageTextMode.prototype.getText = function(str) {
+    return this.strGetter(str);
+  };
+
+
 
 
 module.exports = CLS_damageTextMode;

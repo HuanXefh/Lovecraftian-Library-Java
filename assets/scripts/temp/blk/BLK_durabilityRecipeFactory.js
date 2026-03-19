@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Recipe factories with durability.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,7 +30,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Recipe factories with durability.
+     * @class BLK_durabilityRecipeFactory
+     * @extends BLK_recipeFactory
+     * @extends INTF_BLK_durabilityBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_durabilityRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-rc0fac")
@@ -52,8 +43,12 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_durabilityRecipeFactory").implement(INTF[1]).initClass()
+    /**
+     * @class B_durabilityRecipeFactory
+     * @extends B_recipeFactory
+     * @extends INTF_B_durabilityBlock
+     */
+    newClass().extendClass(PARENT[1], "B_durabilityRecipeFactory").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({
@@ -67,6 +62,13 @@
       }),
 
 
+      /**
+       * @memberof B_durabilityRecipeFactory
+       * @instance
+       * @param {RecipeModule} rcMdl
+       * @param {string} rcHeader
+       * @return {void}
+       */
       ex_loadRcParam: function(rcMdl, rcHeader) {
         comp_ex_loadRcParam(this, rcMdl, rcHeader);
       }

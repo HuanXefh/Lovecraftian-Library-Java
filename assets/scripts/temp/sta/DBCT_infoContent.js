@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * A content used to display information, but not written in the description.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -66,12 +51,29 @@
 */
 
 
+  /**
+   * Used to display text information in database.
+   * The text can be viewed only when this content is unlocked.
+   * <br> <NAMEGEN>
+   * @class DBCT_infoContent
+   * @extends DBCT_databaseContent
+   */
   module.exports = newClass().extendClass(PARENT, "DBCT_infoContent").initClass()
   .setParent(StatusEffect)
   .setTags()
   .setParam({
-    // @PARAM: Name for information used, the info text will be {info.*your mod*-info-content-*nmInfo*.description} in the bundle (.name for the title). Yep don't include mod name here.
+
+
+    /**
+     * <PARAM>: Name for information, don't include mod name here. The title will be used as content name.
+     * <br> <BUNDLE-title>: "info.<nmMod>-info-content-<nmInfo>.name".
+     * <br> <BUNDLE-text>: "info.<nmMod>-info-content-<nmInfo>.description".
+     * @memberof DBCT_infoContent
+     * @instance
+     */
     nmInfo: null,
+
+    
   })
   .setMethod({
 

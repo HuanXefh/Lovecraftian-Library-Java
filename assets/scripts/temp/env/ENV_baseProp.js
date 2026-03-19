@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Base template for walls, trees and boulders.
-   * Yep another useless template.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -36,6 +21,11 @@
 */
 
 
+  /**
+   * Featureless prop.
+   * @class ENV_baseProp
+   * @extends ENV_baseEnvBlock
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_baseProp").initClass()
   .setParent(null)
   .setTags("blk-env")

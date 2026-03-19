@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Source of Lovec heat, with a slider to adjust the temperature.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -54,7 +40,7 @@
     tb.table(Styles.black3, tb1 => {
       tb1.left();
       MDL_table.__margin(tb1);
-      MDL_table.__sliderCfg(tb1, b, () => "[$1]: [$2]".format(MDL_bundle._term("lovec", "temperature"), b.tempSet + " " + fetchStatUnit("lovec", "heatunits").localized()), b.block.delegee.tempMin, b.block.delegee.tempMax, 50.0, b.tempSet);
+      MDL_table.__sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle._term("lovec", "temperature"), b.tempSet + " " + fetchStatUnit("lovec", "heatunits").localized()), b.block.delegee.tempMin, b.block.delegee.tempMax, 50.0, b.tempSet);
     }).left().growX();
   };
 
@@ -77,21 +63,69 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Source of Lovec heat, with a slider to adjust the temperature.
+     * @class BLK_heatSource
+     * @extends BLK_baseHeatBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_heatSource").initClass()
     .setParent(Wall)
     .setTags()
     .setParam({
-      // @PARAM: Minimum temperature.
-      tempMin: 0.0,
-      // @PARAM: Maximum temperature.
-      tempMax: 3000.0,
 
+
+      /**
+       * <PARAM>: Minimum temperature.
+       * @memberof BLK_heatSource
+       * @instance
+       */
+      tempMin: 0.0,
+      /**
+       * <PARAM>: Maximum temperature.
+       * @memberof BLK_heatSource
+       * @instance
+       */
+      tempMax: 3000.0,
+      /**
+       * <PARAM>
+       * @override
+       * @memberof BLK_heatSource
+       * @instance
+       */
       heatTransRate: 0.008,
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @override
+       * @memberof BLK_heatSource
+       * @instance
+       */
       skipHeatFetch: true,
+      /**
+       * <INTERNAL>
+       * @override
+       * @memberof BLK_heatSource
+       * @instance
+       */
       skipHeatTrans: true,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_heatSource
+       * @instance
+       */
       sideReg1: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_heatSource
+       * @instance
+       */
       sideReg2: null,
+
+
     })
     .setMethod({
 
@@ -109,11 +143,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_heatSource").initClass()
+    /**
+     * @class B_heatSource
+     * @extends B_baseHeatBlock
+     */
+    newClass().extendClass(PARENT[1], "B_heatSource").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>: Target temperature.
+       * @memberof B_heatSource
+       * @instance
+       */
       tempSet: 0.0,
+
+
     })
     .setMethod({
 
@@ -142,6 +191,24 @@
       }),
 
 
+      write: function(wr) {
+        wr.f(this.tempSet);
+      },
+
+
+      read: function(rd, revi) {
+        if(this.LCRevi === 5) rd.s();
+        
+        this.tempSet = rd.f();
+      },
+
+
+      /**
+       * @override
+       * @memberof B_heatSource
+       * @instance
+       * @return {number}
+       */
       ex_calcTempTg: function() {
         return this.tempSet;
       }
@@ -151,6 +218,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_heatSource
+       * @instance
+       * @return {number}
+       */
       ex_getHeatSupplied: function() {
         return this.tempCur;
       }
@@ -158,18 +231,6 @@
         noSuper: true,
         override: true,
       }),
-
-
-      write: function(wr) {
-        let LCRevi = processRevision(wr);
-        wr.f(this.tempSet);
-      },
-
-
-      read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.tempSet = rd.f();
-      },
 
 
     }),

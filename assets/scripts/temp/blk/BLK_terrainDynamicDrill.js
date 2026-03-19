@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Drill that outputs variants of some item based on current terrain type.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -62,8 +48,8 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return VARGEN.iconRegs.ohno;
 
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, itm)) {
-      if(blk.ex_isMiningDpore(tx, ty, itm) && !blk.ex_anyDeporeRevealed(tx, ty, itm)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, itm)) {
+      if(blk.ex_isMiningDpore(tx, ty, itm) && !blk.ex_anyDporeRevealed(tx, ty, itm)) {
         thisFun.tmpTup[3] = VARGEN.iconRegs.questionMark;
       } else {
         let ter = MDL_terrain._ter(t, blk.size);
@@ -151,13 +137,25 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Drill that outputs variants of some item based on current terrain type.
+     * @class BLK_terrainDynamicDrill
+     * @extends BLK_baseGroundDrill
+     */
     newClass().extendClass(PARENT[0], "BLK_terrainDynamicDrill").initClass()
     .setParent(Drill)
     .setTags("blk-min", "blk-drl")
     .setParam({
-      // @PARAM: Maps some item (as string) to an object map that maps terrain type to final output.
+
+
+      /**
+       * <PARAM>: Maps some item (as string) to an object map that maps terrain type to final output.
+       * @memberof BLK_terrainDynamicDrill
+       * @instance
+       */
       terItmMapMap: prov(() => new ObjectMap()),
+
+
     })
     .setMethod({
 
@@ -180,6 +178,15 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_terrainDynamicDrill
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {Item} itm
+       * @return {TextureRegion}
+       */
       ex_findPlaceRsIcon: function(tx, ty, itm) {
         return comp_ex_findPlaceRsIcon(this, tx, ty, itm);
       }
@@ -190,6 +197,12 @@
       }),
 
 
+      /**
+       * @memberof BLK_terrainDynamicDrill
+       * @instance
+       * @param {Table} tb
+       * @return {void}
+       */
       ex_buildTerrainDynamicOutput: function(tb) {
         comp_ex_buildTerrainDynamicOutput(this, tb);
       }
@@ -202,8 +215,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_terrainDynamicDrill").initClass()
+    /**
+     * @class B_terrainDynamicDrill
+     * @extends B_baseGroundDrill
+     */
+    newClass().extendClass(PARENT[1], "B_terrainDynamicDrill").initClass()
     .setParent(Drill.DrillBuild)
     .setParam({
       terCur: null,

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {BLK_furnaceRecipeFactory} that consumes power instead of fuel.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -62,7 +48,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * {@link BLK_furnaceRecipeFactory} that consumes power instead of fuel.
+     * @class BLK_electricFurnaceRecipeFactory
+     * @extends BLK_recipeFactory
+     * @extends INTF_BLK_electricFurnaceBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_electricFurnaceRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-rc0fac", "blk-furn")
@@ -78,12 +69,33 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_electricFurnaceRecipeFactory").implement(INTF[1]).initClass()
+    /**
+     * @class B_electricFurnaceRecipeFactory
+     * @extends B_recipeFactory
+     * @extends INTF_B_electricFurnaceBlock
+     */
+    newClass().extendClass(PARENT[1], "B_electricFurnaceRecipeFactory").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_electricFurnaceRecipeFactory
+       * @instance
+       */
       tempReq: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_electricFurnaceRecipeFactory
+       * @instance
+       */
       tempAllowed: Infinity,
+
+
     })
     .setMethod({
 
@@ -116,6 +128,13 @@
       }),
 
 
+      /**
+       * @memberof B_electricFurnaceRecipeFactory
+       * @instance
+       * @param {RecipeModule} rcMdl
+       * @param {string} rcHeader
+       * @return {void}
+       */
       ex_loadRcParam: function(rcMdl, rcHeader) {
         comp_ex_loadRcParam(this, rcMdl, rcHeader);
       }
@@ -124,6 +143,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_electricFurnaceRecipeFactory
+       * @instance
+       * @return {number}
+       */
       ex_getHeatTg: function() {
         return this.tempReq;
       }
@@ -133,6 +158,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_electricFurnaceRecipeFactory
+       * @instance
+       * @return {number}
+       */
       ex_getHeatAllowed: function() {
         return this.tempAllowed;
       }
@@ -142,6 +173,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_electricFurnaceRecipeFactory
+       * @instance
+       * @return {number}
+       */
       ex_calcFailP: function thisFun() {
         return comp_ex_calcFailP(this) * thisFun.funPrev.call(this);
       }

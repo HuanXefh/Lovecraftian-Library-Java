@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles core energy consumption and efficiency.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -47,7 +33,7 @@
 
     blk.addBar("lovec-cep", b => new Bar(
       prov(() => Core.bundle.format("bar.lovec-bar-cep-amt", FRAG_faci._cepUseCur(b.team) + "/" + FRAG_faci._cepCapCur(b.team))),
-      prov(() => FRAG_faci._cepFracCur(b.team) <= 1.0 ? Pal.accent : Tmp.c1.set(Color.scarlet).lerp(Color.clear, Math.abs(Math.sin(Time.globalTime * 0.03)))),
+      prov(() => FRAG_faci._cepFracCur(b.team) < 1.0 ? Pal.accent : Tmp.c1.set(Color.scarlet).lerp(Color.clear, Math.abs(Math.sin(Time.globalTime * 0.03)))),
       () => FRAG_faci._cepFracCur(b.team) > 1.0 ? 1.0 : Mathf.clamp(1.0 - FRAG_faci._cepFracCur(b.team)),
     ));
   };
@@ -87,12 +73,25 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles core energy consumption and efficiency.
+     * CEP parameters are set in {@link DB_block}.
+     * @class INTF_BLK_coreEnergyConsumer
+     */
+    new CLS_interface("INTF_BLK_coreEnergyConsumer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /**
+         * <INTERNAL>: Whether this block consumes or produces CEP.
+         * @memberof INTF_BLK_coreEnergyConsumer
+         * @instance
+         */
         useCep: false,
+
+
       }),
 
 
@@ -114,12 +113,23 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_coreEnergyConsumer
+     */
+    new CLS_interface("INTF_B_coreEnergyConsumer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /**
+         * <INTERNAL>: CEP efficiency.
+         * @memberof INTF_B_coreEnergyConsumer
+         * @instance
+         */
         cepEffc: 1.0,
+
+
       }),
 
 
@@ -133,6 +143,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_coreEnergyConsumer
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
         comp_ex_postUpdateEfficiencyMultiplier(this);
       }

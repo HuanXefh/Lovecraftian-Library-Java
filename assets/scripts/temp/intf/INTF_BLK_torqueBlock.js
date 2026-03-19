@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods related to torque and RPM.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -88,14 +74,16 @@
     // Update current torque, which is capped by transported RPM
     let ob, rateAddNet = 0.0, amtTransTg, i, iCap;
     if(!b.block.delegee.skipTorFetch) {
-      i = 0, iCap = b.torFetchTgs.iCap();
+      i = 0;
+      iCap = b.torFetchTgs.iCap();
       while(i < iCap) {
         rateAddNet += b.torFetchTgs[i].efficiency * b.torFetchTgs[i + 1];
         i += 2;
       };
     };
     if(!b.block.delegee.skipTorSupply) {
-      i = 0, iCap = b.torSupplyTgs.iCap();
+      i = 0;
+      iCap = b.torSupplyTgs.iCap();
       while(i < iCap) {
         rateAddNet -= b.torSupplyTgs[i].efficiency * b.torSupplyTgs[i + 1];
         i += 2;
@@ -104,7 +92,8 @@
     b.torCur = Mathf.clamp(b.torCur + rateAddNet * Time.delta, 0.0, b.ex_calcRpmTrans(b));
 
     // Transport torque
-    i = 0, iCap = b.torTransTgs.iCap();
+    i = 0;
+    iCap = b.torTransTgs.iCap();
     while(i < iCap) {
       ob = b.torTransTgs[i];
       if(b.ex_checkTorTransValid(ob)) {
@@ -168,7 +157,7 @@
 
 
   function comp_ex_updateTorSupplyTgs(b) {
-    if(b.block.delegee.skipTorSupply);
+    if(b.block.delegee.skipTorSupply) return;
 
     b.torSupplyTgs.clear();
     b.proximity.each(ob => {
@@ -186,25 +175,29 @@
     let ob, amt, i, iCap;
 
     if(!b.block.delegee.skipTorFetch) {
-      i = 0, iCap = b.torFetchTgs.iCap();
+      i = 0;
+      iCap = b.torFetchTgs.iCap();
       while(i < iCap) {
         ob = b.torFetchTgs[i];
-        amt = b.torFetchTgs[i + 1];
-        if(ob.block instanceof LiquidSource && ob.source === VARGEN.auxTor) {
-          // Liquid source gives 100.0 RPM, for test
-          val += 100.0;
-        } else {
-          val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true) * amt * 60.0;
+        if(ob.added && ob.enabled && !ob.isPayload()) {
+          amt = b.torFetchTgs[i + 1];
+          if(ob.block instanceof LiquidSource && ob.source === VARGEN.auxTor) {
+            // Liquid source gives 100.0 RPM, for test
+            val += 100.0;
+          } else {
+            val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true) * amt * 60.0;
+          };
         };
         i += 2;
       };
     };
 
     if(val < 0.0001) {
-      i = 0, iCap = b.torTransTgs.iCap();
+      i = 0;
+      iCap = b.torTransTgs.iCap();
       while(i < iCap) {
         ob = b.torTransTgs[i];
-        if(ob.ex_calcRpmTrans != null && b.ex_checkTorTransValid(ob)) {
+        if(ob.added && ob.enabled && !ob.isPayload() && ob.ex_calcRpmTrans != null && b.ex_checkTorTransValid(ob)) {
           val = Math.max(val, ob.ex_calcRpmTrans(b) * b.ex_calcRpmTransScl(ob));
         };
         i++;
@@ -225,15 +218,30 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles methods related to torque and RPM.
+     * @class INTF_BLK_torqueBlock
+     */
+    new CLS_interface("INTF_BLK_torqueBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Whether not to gain torque and RPM from producers (focus on transport).
+
+
+        /**
+         * <PARAM>: If true, this block cannot gain torque and RPM from producers.
+         * @memberof INTF_BLK_torqueBlock
+         * @instance
+         */
         skipTorFetch: false,
-        // @PARAM: Whether not to supply torque and RPM.
+        /**
+         * <PARAM>: If true, this block cannot supply torque and RPM for consumers.
+         * @memberof INTF_BLK_torqueBlock
+         * @instance
+         */
         skipTorSupply: false,
+
+
       }),
 
 
@@ -245,17 +253,56 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_torqueBlock
+     */
+    new CLS_interface("INTF_B_torqueBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_torqueBlock
+         * @instance
+         */
         torProg: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_torqueBlock
+         * @instance
+         */
         torCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_torqueBlock
+         * @instance
+         */
         rpmCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_torqueBlock
+         * @instance
+         */
         torFetchTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_torqueBlock
+         * @instance
+         */
         torSupplyTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_torqueBlock
+         * @instance
+         */
         torTransTgs: prov(() => []),
+
+
       }),
 
 
@@ -279,6 +326,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @return {void}
+       */
       ex_updateTor: function() {
         comp_ex_updateTor(this);
       }
@@ -287,6 +339,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @return {void}
+       */
       ex_supplyTor: function() {
         comp_ex_supplyTor(this);
       }
@@ -295,6 +352,14 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @param {Building} ob
+       * @param {number} rateAdd
+       * @param {number} rateCons
+       * @return {void}
+       */
       ex_updateRpmDmg: function(ob, rateAdd, rateCons) {
         comp_ex_updateRpmDmg(this, ob, rateAdd, rateCons);
       }.setProp({
@@ -303,6 +368,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @return {void}
+       */
       ex_updateTorFetchTgs: function() {
         comp_ex_updateTorFetchTgs(this);
       }
@@ -311,6 +381,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @return {void}
+       */
       ex_updateTorSupplyTgs: function() {
         comp_ex_updateTorSupplyTgs(this);
       }
@@ -319,12 +394,12 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Used for torque transport blocks.
-       * ---------------------------------------- */
+      /**
+       * <LATER>
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @return {void}
+       */
       ex_updateTorTransTgs: function() {
 
       }
@@ -333,11 +408,11 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * RPM that this building should have now.
-       * ---------------------------------------- */
+      /**
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @return {number}
+       */
       ex_calcRpmTg: function() {
         return comp_ex_calcRpmTg(this);
       }
@@ -346,13 +421,14 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Gets the RPM value used for transportation.
-       * For instance, a coghweel's transported RPM should be affected by block size.
-       * ---------------------------------------- */
+      /**
+       * A cogwheel's transported RPM should be affected by block size, so this value should be dynamic.
+       * <br> <LATER>
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @param {Building} b_t
+       * @return {number}
+       */
       ex_calcRpmTrans: function(b_t) {
         return this.rpmCur;
       }
@@ -362,12 +438,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
+      /**
        * Extra multiplier on torque transported to this building.
-       * ---------------------------------------- */
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @return {Building} b_f
+       * @return {number}
+       */
       ex_calcRpmTransScl: function(b_f) {
         return 1.0;
       }
@@ -377,12 +454,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Whether this building is allowed to transport torque from {ob}.
-       * ---------------------------------------- */
+      /**
+       * <LATER>
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
       ex_checkTorTransValid: function(ob) {
         return true;
       }
@@ -392,9 +470,15 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_torqueBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             wr.f(this.rpmCur);
             wr.f(this.torCur);
@@ -408,7 +492,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

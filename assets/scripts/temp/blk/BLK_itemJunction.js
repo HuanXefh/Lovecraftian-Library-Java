@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Vanilla item junction.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,7 +24,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla item junction.
+     * <br> <SINGLESIZE>
+     * @class BLK_itemJunction
+     * @extends BLK_baseItemGate
+     */
     newClass().extendClass(PARENT[0], "BLK_itemJunction").initClass()
     .setParent(Junction)
     .setTags("blk-dis", "blk-gate")
@@ -47,8 +37,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_itemJunction").initClass()
+    /**
+     * @class B_itemJunction
+     * @extends B_baseItemGate
+     */
+    newClass().extendClass(PARENT[1], "B_itemJunction").initClass()
     .setParent(Junction.JunctionBuild)
     .setParam({})
     .setMethod({}),

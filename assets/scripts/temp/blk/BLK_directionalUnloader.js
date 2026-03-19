@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Erekir unloader.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -57,7 +42,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Erekir unloader.
+     * <br> <SINGLESIZE>
+     * @class BLK_directionalUnloader
+     * @extends BLK_baseItemGate
+     */
     newClass().extendClass(PARENT[0], "BLK_directionalUnloader").initClass()
     .setParent(DirectionalUnloader)
     .setTags("blk-dis", "blk-gate")
@@ -73,8 +63,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_directionalUnloader").initClass()
+    /**
+     * @class B_directionalUnloader
+     * @extends B_baseItemGate
+     */
+    newClass().extendClass(PARENT[1], "B_directionalUnloader").initClass()
     .setParent(DirectionalUnloader.DirectionalUnloaderBuild)
     .setParam({})
     .setMethod({

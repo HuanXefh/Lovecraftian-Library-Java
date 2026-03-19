@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Any block that can repair blocks and/or units.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -38,7 +24,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Any block that can repair blocks and/or units.
+     * @class BLK_baseMender
+     * @extends BLK_baseProjector
+     */
     newClass().extendClass(PARENT[0], "BLK_baseMender").initClass()
     .setParent(null)
     .setTags("blk-proj", "blk-mend")
@@ -46,8 +36,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseMender").initClass()
+    /**
+     * @class B_baseMender
+     * @extends B_baseProjector
+     */
+    newClass().extendClass(PARENT[1], "B_baseMender").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

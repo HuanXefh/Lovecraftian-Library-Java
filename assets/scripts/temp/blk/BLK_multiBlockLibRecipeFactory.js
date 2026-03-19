@@ -1,23 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Recipe factories using MultiBlockLib.
-   * ----------------------------------------
-   * DEDICATION:
-   *
-   * Supported by MultiBlockLib.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -27,12 +9,6 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_recipeFactory");
-
-
-  /* <---------- auxiliary ----------> */
-
-
-  const MultiBlockGenericCrafter = fetchClass("multiblock.extend.multiblock.MultiBlockGenericCrafter");
 
 
   /* <---------- component ----------> */
@@ -66,7 +42,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Recipe factories using MultiBlockLib.
+     * <br> <DEDICATION>: Supported by MultiBlockLib.
+     * @class BLK_multiBlockLibRecipeFactory
+     * @extends BLK_recipeFactory
+     */
     newClass().extendClass(PARENT[0], "BLK_multiBlockLibRecipeFactory").initClass()
     .setParent(MOD_multiBlockLib.CLASSES.MultiBlockGenericCrafter)
     .setTags("blk-fac")
@@ -74,8 +55,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_multiBlockLibRecipeFactory").initClass()
+    /**
+     * @class B_multiBlockLibRecipeFactory
+     * @extends B_recipeFactory
+     */
+    newClass().extendClass(PARENT[1], "B_multiBlockLibRecipeFactory").initClass()
     .setParent(MOD_multiBlockLib.CLASSES.MultiBlockGenericCrafter.MultiBlockCrafterBuild)
     .setParam({})
     .setMethod({
@@ -89,6 +73,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_multiBlockLibRecipeFactory
+       * @instance
+       * @return {void}
+       */
       ex_showRcChangeEff: function() {
         this.linkEntities.each(ob => EFF.squareFadePack[ob.block.size].at(ob));
       }

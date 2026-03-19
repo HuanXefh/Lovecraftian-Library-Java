@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles dynamic vent size.
-   * Copys some properties of the parent.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,7 +24,7 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0env-ventsize"), "[$1]x[$1]".format(blk.ventSize));
+    blk.stats.add(fetchStat("lovec", "blk0env-ventsize"), "${1}x${1}".format(blk.ventSize));
   };
 
 
@@ -96,16 +81,48 @@
 */
 
 
-  module.exports = new CLS_interface({
+  /**
+   * Handles dynamic vent size.
+   * This will copy some properties from `parent`.
+   * @class INTF_ENV_dynamicSizeVent
+   */
+  module.exports = new CLS_interface("INTF_ENV_dynamicSizeVent", {
 
 
     __PARAM_OBJ_SETTER__: () => ({
-      // @PARAM: Size of the vent.
+
+
+      /**
+       * <PARAM>: Size of this vent block.
+       * @memberof INTF_ENV_dynamicSizeVent
+       * @instance
+       */
       ventSize: 3,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof INTF_ENV_dynamicSizeVent
+       * @instance
+       */
       offPon2s: null,
+      /**
+       * <INTERNAL>
+       * @memberof INTF_ENV_dynamicSizeVent
+       * @instance
+       */
       offDraw: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof INTF_ENV_dynamicSizeVent
+       * @instance
+       */
       matGrp: "SPEC: use parent",
+
+
     }),
 
 
@@ -152,12 +169,15 @@
     }),
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * @LATER
-     * Called every frame for the vent (center tile only).
-     * ---------------------------------------- */
+    /**
+     * Called every frame (vent center only).
+     * <br> <LATER>
+     * @memberof INTF_ENV_dynamicSizeVent
+     * @instance
+     * @param {Tile} t
+     * @param {boolean} isBlocked - Whether this vent is blocked by some block over it.
+     * @return {void}
+     */
     ex_onVentUpdate: function(t, isBlocked) {
 
     }

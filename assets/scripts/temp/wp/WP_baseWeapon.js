@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Root of all weapons.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,16 +21,34 @@
 */
 
 
+  /**
+   * Root of all weapons.
+   * @class WP_baseWeapon
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "WP_baseWeapon").initClass()
   .setParent(null)
   .setTags()
   .setParam({
-    // @PARAM: See {RS_baseResource}.
+
+
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof WP_baseWeapon
+     * @instance
+     */
     overwriteVanillaStat: true,
-    // @PARAM: See {RS_baseResource}.
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof WP_baseWeapon
+     * @instance
+     */
     overwriteVanillaProp: true,
 
-    // For convenience
+
+    /* <------------------------------ internal ------------------------------ */
+
+
     shootX: 0.0,
     shootY: 0.0,
     mirror: false,
@@ -68,9 +72,11 @@
     useAttackRange: true,
     shootOnDeath: false,
     parts: prov(() => []),
+
+
   })
   .setParamAlias([
-    "nm", "name", null
+    "nm", "name", null,
     "btp", "bullet", Bullets.placeholder,
     "isTop", "top", false,
     "shaRad", "shadow", -1.0,

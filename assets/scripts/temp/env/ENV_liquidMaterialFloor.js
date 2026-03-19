@@ -1,22 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Similar to {ENV_materialFloor} but for liquid floors.
-   * Set {blk.shallow}.
-   * Name will be generated from {blk.liquidDrop} if not set in bundle.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -94,18 +77,52 @@
 */
 
 
+  /**
+   * Similar to {@link ENV_materialFloor} but for liquid floors.
+   * `blk.shallow` is used.
+   * Name will be generated from `blk.liquidDrop` if not set in bundle.
+   * <br> <NAMEGEN>
+   * @class ENV_liquidMaterialFloor
+   * @extends ENV_baseFloor
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_liquidMaterialFloor").initClass()
   .setParent(Floor)
   .setTags("blk-env", "blk-mat0flr")
   .setParam({
-    // @PARAM: Similar to the one used in {ENV_materialFloor}.
+
+
+    /**
+     * <PARAM>: See {@link ENV_materialFloor}.
+     * @memberof ENV_liquidMaterialFloor
+     * @instance
+     */
     matGrp: "none",
-    // @PARAM: Effect shown when updating the floor.
+    /**
+     * <PARAM>: Effect shown when updating the floor.
+     * @memberof ENV_liquidMaterialFloor
+     * @instance
+     */
     updateEff: Fx.none,
-    // @PARAM: Chance to create the effect.
+    /**
+     * <PARAM>: Chance for update effect.
+     * @memberof ENV_liquidMaterialFloor
+     * @instance
+     */
     updateEffP: 0.02,
-    // @PARAM: Large threshold makes less tiles able to create the effect.
+    /**
+     * <PARAM>: Affects intensity of update effect, larger value leads to fewer tiles being able to create the effect.
+     * @memberof ENV_liquidMaterialFloor
+     * @instance
+     */
     updateEffThr: 0.4,
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    shallow: false,
+
+
   })
   .setMethod({
 

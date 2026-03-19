@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Mostly internal units that you cannot control.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,15 +21,48 @@
 */
 
 
+  /**
+   * Mostly internal units that you cannot control.
+   * @class UNIT_technicalUnit
+   * @extends UNIT_baseUnit
+   */
   module.exports = newClass().extendClass(PARENT, "UNIT_technicalUnit").initClass()
   .setParent(UnitType)
   .setTags()
   .setParam({
+
+
+    /**
+     * <PARAM>
+     * @override
+     * @memberof UNIT_technicalUnit
+     * @instance
+     */
     useLovecDamagePenalty: false,
+    /**
+     * <PARAM>
+     * @override
+     * @memberof UNIT_technicalUnit
+     * @instance
+     */
     useConicalLight: false,
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @override
+     * @memberof UNIT_technicalUnit
+     * @instance
+     */
     entityName: "base",
 
-    // For convenience
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     envEnabled: Env.any,
     envDisabled: Env.none,
     fogRadius: 0,
@@ -53,7 +72,8 @@
     fallEffect: Fx.none,
     fallEngineEffect: Fx.none,
     deathExplosionEffect: Fx.none,
-    deathSound: Sounds.none,                // Don't use {Sounds.unset} here
+    // Don't use `Sounds.unset` here
+    deathSound: Sounds.none,
     hoverable: false,
     drawMiniMap: false,
     isEnemy: false,
@@ -70,5 +90,7 @@
     logicControllable: false,
     speed: 0.0,
     rotateSpeed: 0.0,
+
+
   })
   .setMethod({});

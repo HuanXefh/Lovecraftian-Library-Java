@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to trigger a dialog flow in game.
-   * For example, if you have a trigger with "lovec-test" as the dialog flow name, you can trigger it by adding flag named "dialFlow: lovec-test".
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -84,12 +69,29 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Used to trigger a dialog flow in game.
+     * For example, if you have a trigger with "lovec-test" as the dialog flow name, you can trigger it by adding flag named "dialFlow: lovec-test".
+     * @class MAP_dialFlowTrigger
+     * @extends MAP_flagTrigger
+     */
     newClass().extendClass(PARENT[0], "MAP_dialFlowTrigger").initClass()
     .setParent(Wall)
     .setTags("blk-log")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof MAP_dialFlowTrigger
+       * @instance
+       */
       triggerOnlyOnce: true,
+
+
     })
     .setMethod({
 
@@ -99,6 +101,13 @@
       },
 
 
+      /**
+       * @override
+       * @memberof MAP_dialFlowTrigger
+       * @instance
+       * @param {Building} b
+       * @return {string}
+       */
       ex_getFlagStr: function(b) {
         return "dialFlow: " + b.delegee.nmDialFlow;
       }
@@ -111,11 +120,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "MAP_dialFlowTrigger").initClass()
+    /**
+     * @class B_dialFlowTrigger
+     * @extends B_flagTrigger
+     */
+    newClass().extendClass(PARENT[1], "B_dialFlowTrigger").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_dialFlowTrigger
+       * @instance
+       */
       nmDialFlow: "lovec-test",
+
+
     })
     .setMethod({
 
@@ -142,17 +166,23 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
         wr.str(this.nmDialFlow);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
+        if(this.LCRevi === 5) rd.s();
+
         this.nmDialFlow = rd.str();
       },
 
 
+      /**
+       * @override
+       * @memberof B_dialFlowTrigger
+       * @instance
+       * @return {void}
+       */
       ex_onFlagTriggered: function() {
         comp_ex_onFlagTriggered(this);
       }

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Item incinerator that is actually a crafter.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -89,13 +75,26 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Item incinerator that is actually a crafter.
+     * @class BLK_incinerator
+     * @extends BLK_baseItemBlock
+     * @extends INTF_BLK_contentMultiSelector
+     */
     newClass().extendClass(PARENT[0], "BLK_incinerator").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags()
     .setParam({
-      // @PARAM: See {BLK_baseFactory}.
+
+
+      /**
+       * <PARAM>: See {@link BLK_baseFactory}.
+       * @memberof BLK_incinerator
+       * @instance
+       */
       craftSe: Sounds.unset,
+
+
     })
     .setParamAlias([
       "craftEff", "craftEffect", Fx.none,
@@ -131,8 +130,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_incinerator").implement(INTF[1]).initClass()
+    /**
+     * @class B_incinerator
+     * @extends B_baseItemBlock
+     * @extends INTF_B_contentMultiSelector
+     */
+    newClass().extendClass(PARENT[1], "B_incinerator").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({
@@ -161,14 +164,14 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
+
+        this.ex_processData(rd);
       },
 
 

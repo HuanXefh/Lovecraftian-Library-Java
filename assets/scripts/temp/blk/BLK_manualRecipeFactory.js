@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Multi-crafters that break your finger.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -52,18 +38,39 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Multi-crafters that break your finger.
+     * @class BLK_manualRecipeFactory
+     * @extends BLK_recipeFactory
+     * @extends INTF_BLK_manualClickBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_manualRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-rc0fac")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_manualRecipeFactory
+       * @instance
+       */
       skipTapConfig: true,
+
+
     })
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_manualRecipeFactory").implement(INTF[1]).initClass()
+    /**
+     * @class B_manualRecipeFactory
+     * @extends B_recipeFactory
+     * @extends INTF_B_manualClickBlock
+     */
+    newClass().extendClass(PARENT[1], "B_manualRecipeFactory").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({
@@ -85,6 +92,13 @@
       }),
 
 
+      /**
+       * Manual factories should update their efficiency more frequently.
+       * @override
+       * @memberof B_manualRecipeFactory
+       * @instance
+       * @return {boolean}
+       */
       ex_getTimerEffcState: function() {
         return true;
       }

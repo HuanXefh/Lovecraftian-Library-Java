@@ -56,7 +56,7 @@
    */
   globalRequire = function(nmMod, fiGetter) {
     let fi = fiGetter(Vars.mods.locateMod(nmMod).root);
-    if(fi == null || !fi.exists() || fi.extension() !== "js") throw new Error("Failed to require a script in global script for [$1]! [$2] is not a valid .js file.".format(nmMod, fi));
+    if(fi == null || !fi.exists() || fi.extension() !== "js") throw new Error("Failed to require a script in global script for ${1}! ${2} is not a valid .js file.".format(nmMod, fi));
 
     Vars.mods.scripts.context.evaluateString(SCOPE, fi.readString(), fi.name(), 0);
   };
@@ -161,7 +161,10 @@
     },
 
 
-    // `SomeClass[]` will be created for these classes as "someClass_arr"
+    /**
+     * `SomeClass[]` will be created for these classes as "someClass_arr".
+     * For example, you can use `JAVA.point2_arr` to access `Point2[]`.
+     */
     clsTgs: [
       Boolc, Boolf, Boolf2, Boolf3, Boolp, Cons, Cons2, Cons3, Cons4, ConsT, FloatFloatf, Floatc, Floatc2, Floatc4, Floatf, Floatp, Func, Func2, Func3, IntIntf, Intc, Intc4, Intf, Intp, Longf, Prov,
       ArrayMap, BinaryHeap, Bits, BoolSeq, ByteSeq, ComparableTimSort, DelayedRemovalSeq, EnumSet, FloatSeq, GridBits, GridMap, IntFloatMap, IntIntMap, IntMap, IntQueue, IntSeq, IntSeq, LongMap, LongQueue, LongSeq, ObjectFloatMap, ObjectIntMap, ObjectMap, ObjectSet, OrderedMap, OrderedSet, PQueue, Queue, Seq, ShortSeq, SnapshotSeq, Sort, StringMap, TimSort,
@@ -278,9 +281,20 @@
      * @global
      */
     DRAW_TEST = {
-      enabled: false, safe: false,
-      xGetter: Function.airZero, yGetter: Function.airZero, radGetter: Function.airZero, colorGetter: Function.airWhite,
+
+
+      enabled: false,
+      safe: false,
+      xGetter: Function.airZero,
+      yGetter: Function.airZero,
+      radGetter: Function.airZero,
+      colorGetter: Function.airWhite,
       drawF: Function.air,
+
+
+      /**
+       * @return {void}
+       */
       reset() {
         DRAW_TEST.enabled = false;
         DRAW_TEST.safe = false;
@@ -290,6 +304,12 @@
         DRAW_TEST.colorGetter = Function.airWhite;
         DRAW_TEST.drawF = Function.air;
       },
+
+
+      /**
+       * @param {boolean|unset} [bool]
+       * @return {void}
+       */
       toggle(bool) {
         if(bool == null) {
           DRAW_TEST.enabled = !DRAW_TEST.enabled;
@@ -297,6 +317,15 @@
           DRAW_TEST.enabled = Boolean(bool);
         };
       },
+
+
+      /**
+       * @param {(function(): number)|unset} [xGetter]
+       * @param {(function(): number)|unset} [yGetter]
+       * @param {(function(): number)|unset} [radGetter]
+       * @param {(function(): Color)|unset} [colorGetter]
+       * @return {void}
+       */
       setGetter(xGetter, yGetter, radGetter, colorGetter) {
         DRAW_TEST.safe = false;
         if(xGetter != null && typeof xGetter === "function") DRAW_TEST.xGetter = xGetter;
@@ -304,7 +333,14 @@
         if(radGetter != null && typeof radGetter === "function") DRAW_TEST.radGetter = radGetter;
         if(colorGetter != null && typeof colorGetter === "function") DRAW_TEST.colorGetter = colorGetter;
       },
-      setGetter_playerPos(radGetter, colorGetter) {
+
+
+      /**
+       * @param {(function(): number)|unset} [radGetter]
+       * @param {(function(): Color)|unset} [colorGetter]
+       * @return {void}
+       */
+      setGetter_player(radGetter, colorGetter) {
         DRAW_TEST.setGetter(
           () => Vars.player.unit() == null ? -9999.0 : Vars.player.unit().x,
           () => Vars.player.unit() == null ? -9999.0 : Vars.player.unit().y,
@@ -312,16 +348,27 @@
           colorGetter,
         );
       },
+
+
+      /**
+       * @param {(function(number, number, number, color): void)|unset} [drawF] - <ARGS>: x, y, rad, color.
+       * @return {void}
+       */
       setDrawF(drawF) {
         if(drawF == null || typeof drawF !== "function") return;
         DRAW_TEST.safe = false;
         DRAW_TEST.drawF = drawF;
       },
+
+
+      /**
+       * @return {void}
+       */
       draw() {
         if(DRAW_TEST.safe) {
           DRAW_TEST.drawF(DRAW_TEST.xGetter(), DRAW_TEST.yGetter(), DRAW_TEST.radGetter(), DRAW_TEST.colorGetter());
         } else {
-          // Try only once to save memory used
+          // Try only once to save memory
           try {
             DRAW_TEST.drawF(DRAW_TEST.xGetter(), DRAW_TEST.yGetter(), DRAW_TEST.radGetter(), DRAW_TEST.colorGetter());
           } catch(err) {
@@ -332,6 +379,8 @@
           DRAW_TEST.safe = true;
         };
       },
+
+
     };
 
 
@@ -363,11 +412,28 @@
         if(!CHEAT.checkCheatState()) return;
         let unit = lovec.mdl_pos._unitPlNm(nm);
         if(unit == null) {
-          Log.info("[LOVEC] No player found with name [$1].".format(nm));
+          Log.err("[LOVEC] No player found with name ${1}!".format(nm));
           return;
         };
 
         Call.unitDestroy(unit.id);
+      },
+
+
+      /**
+       * Sets item amount in building at (tx, ty).
+       */
+      setItem: function(tx, ty, itm_gn, amt) {
+        if(!CHEAT.checkCheatState()) return;
+        let b = Vars.world.build(tx, ty);
+        if(b == null) {
+          Log.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
+          return;
+        };
+        let itm = MDL_content._ct(itm_gn, "rs");
+        if(itm == null) return;
+
+        FRAG_item.setItem(b, itm, amt);
       },
 
 

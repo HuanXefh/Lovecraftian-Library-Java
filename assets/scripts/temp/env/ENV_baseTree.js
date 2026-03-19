@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Base template for most vegetation.
-   * No variants!
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -26,7 +11,7 @@
   const PARENT = require("lovec/temp/env/ENV_baseProp");
 
 
-  /* <---------- auxiliay ----------> */
+  /* <---------- auxiliary ----------> */
 
 
   const treeParams = DB_env.db["grpParam"]["tree"];
@@ -60,7 +45,7 @@
 
 
   function comp_drawBase(blk, t) {
-    LCDraw.tree(blk.region, blk.shadow, t, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], PARAM.treeAlpha, blk.drawTup[0], PARAM.drawWobble, PARAM.checkTreeDst);
+    LCDraw.tree(blk.region, blk.shadow, t, blk.radTree, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], PARAM.treeAlpha, blk.drawTup[0], PARAM.drawWobble, PARAM.checkTreeDst);
   };
 
 
@@ -71,17 +56,55 @@
 */
 
 
+  /**
+   * Base template for most vegetation.
+   * No variants!
+   * @class ENV_baseTree
+   * @extends ENV_baseProp
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_baseTree").initClass()
   .setParent(null)
   .setTags("blk-env", "blk-tree")
   .setParam({
-    // @PARAM: Z-value of the tree.
+
+
+    /**
+     * <PARAM>: Z-value of the tree.
+     * @memberof ENV_baseTree
+     * @instance
+     */
     layTree: 76.0,
-    // @PARAM: Whether this tree can hide units.
+    /**
+     * <PARAM>: Radius for transparentization and more.
+     * @memberof ENV_baseTree
+     * @instance
+     */
+    radTree: 0.0,
+    /**
+     * <PARAM>: Whether this tree can hide units.
+     * @memberof ENV_baseTree
+     * @instance
+     */
     hidable: false,
 
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof ENV_baseTree
+     * @instance
+     */
     treeGrp: "none",
+    /**
+     * <INTERNAL>
+     * @memberof ENV_baseTree
+     * @instance
+     */
     drawTup: null,
+
+
   })
   .setMethod({
 

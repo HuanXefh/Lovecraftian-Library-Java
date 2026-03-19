@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Simply cogwheels.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -162,16 +148,52 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Simply cogwheels.
+     * @class BLK_cogwheel
+     * @extends BLK_baseTorqueBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_cogwheel").initClass()
     .setParent(Wall)
     .setTags("blk-cog")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheel
+       * @instance
+       */
       skipTorFetch: true,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheel
+       * @instance
+       */
       skipTorSupply: true,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheel
+       * @instance
+       */
       invReg: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheel
+       * @instance
+       */
       cogDrawW: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheel
+       * @instance
+       */
       cogInvOffAng: 0.0,
+
+
     })
     .setMethod({
 
@@ -189,11 +211,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_cogwheel").initClass()
+    /**
+     * @class B_cogwheel
+     * @extends B_baseTorqueBlock
+     */
+    newClass().extendClass(PARENT[1], "B_cogwheel").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
-      isInv: false
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_cogwheel
+       * @instance
+       */
+      isInv: false,
+
+
     })
     .setMethod({
 
@@ -227,6 +264,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_cogwheel
+       * @instance
+       * @return {void}
+       */
       ex_updateTorTransTgs: function() {
         comp_ex_updateTorTransTgs(this);
       }
@@ -236,6 +279,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_cogwheel
+       * @instance
+       * @param {Building} b_t
+       * @return {number}
+       */
       ex_calcRpmTrans: function(b_t) {
         return this.rpmCur * this.block.size;
       }
@@ -246,6 +296,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_cogwheel
+       * @instance
+       * @param {Building} b_f
+       * @return {number}
+       */
       ex_calcRpmTransScl: function(b_f) {
         return 1.0 / this.block.size;
       }
@@ -256,6 +313,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_cogwheel
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
       ex_checkTorTransValid: function(ob) {
         return tryJsProp(ob, "isInv", false) !== this.isInv;
       }
@@ -266,6 +330,12 @@
       }),
 
 
+      /**
+       * @memberof B_cogwheel
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
       ex_checkCogTransValid: function(ob) {
         return MDL_cond._isCogwheel(ob.block);
       }
@@ -275,6 +345,13 @@
       }),
 
 
+      /**
+       * @memberof B_cogwheel
+       * @instance
+       * @param {number} size
+       * @param {number} rot
+       * @return {Building|null}
+       */
       ex_findCog: function(size, rot) {
         return comp_ex_findCog(this, size, rot);
       }
@@ -284,6 +361,11 @@
       }),
 
 
+      /**
+       * @memberof B_cogwheel
+       * @instance
+       * @return {void}
+       */
       ex_drawCog: function() {
         comp_ex_drawCog(this);
       }
@@ -292,18 +374,20 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof B_cogwheel
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             wr.bool(this.isInv);
           },
 
           (rd, revi) => {
-            if(revi < 1) {
-              rd.s();
-            };
-
             this.isInv = rd.bool();
           },
         );

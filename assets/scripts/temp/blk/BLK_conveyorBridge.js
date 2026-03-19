@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Simply item bridge.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -68,7 +53,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Simply item bridge.
+     * <br> <SINGLESIZE>
+     * @class BLK_conveyorBridge
+     * @extends BLK_baseItemDistributor
+     */
     newClass().extendClass(PARENT[0], "BLK_conveyorBridge").initClass()
     .setParent(ItemBridge)
     .setTags("blk-dis", "blk-brd")
@@ -86,6 +76,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_conveyorBridge
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -98,11 +94,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_conveyorBridge").initClass()
+    /**
+     * @class B_conveyorBridge
+     * @extends B_baseItemDistributor
+     */
+    newClass().extendClass(PARENT[1], "B_conveyorBridge").initClass()
     .setParent(ItemBridge.ItemBridgeBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_conveyorBridge
+       * @instance
+       */
       lastRs: null,
+
+
     })
     .setMethod({
 

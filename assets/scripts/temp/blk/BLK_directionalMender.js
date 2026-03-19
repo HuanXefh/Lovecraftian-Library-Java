@@ -1,23 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * A tiny mender that repairs the building in front of it.
-   * No optional input since I don't need it.
-   *
-   * This can heal enemy blocks, I'm not fixing that cauz it's fun :D
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -125,18 +107,51 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A tiny mender that repairs the building in front of it.
+     * No optional input since I don't need it.
+     * <br> Can heal enemy blocks, just for fun :D
+     * <br> <SINGLESIZE>
+     * @class BLK_directionalMender
+     * @extends BLK_baseMender
+     */
     newClass().extendClass(PARENT[0], "BLK_directionalMender").initClass()
     .setParent(MendProjector)
     .setTags("blk-proj", "blk-mend")
     .setParam({
-      // @PARAM: See {BLK_radiusMender}.
+
+
+      /**
+       * <PARAM>: See {@link BLK_radiusMender}.
+       * @memberof BLK_directionalMender
+       * @instance
+       */
       bHealAmt: 0.0,
-      // @PARAM: See {BLK_radiusMender}.
+      /**
+       * <PARAM>: See {@link BLK_radiusMender}.
+       * @memberof BLK_directionalMender
+       * @instance
+       */
       bHealPerc: 0.0,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_directionalMender
+       * @instance
+       */
       sideReg1: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_directionalMender
+       * @instance
+       */
       sideReg2: null,
+
+      
     })
     .setMethod({
 
@@ -164,6 +179,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_directionalMender
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -176,8 +197,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_directionalMender").initClass()
+    /**
+     * @class B_directionalMender
+     * @extends B_baseMender
+     */
+    newClass().extendClass(PARENT[1], "B_directionalMender").initClass()
     .setParent(MendProjector.MendBuild)
     .setParam({})
     .setMethod({

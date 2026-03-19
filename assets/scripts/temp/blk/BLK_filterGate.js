@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Vanilla sorter but two modes in one block.
-   * {blk.invert} is useless for this.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -68,7 +52,7 @@
   function comp_getTileTarget(b, itm, b_f, isFlip) {
     let rot = b_f.relativeTo(b);
     let b_t = b.nearby(rot);
-    let tg;
+    let tg = b;
 
     if((b.block.delegee.filterScrTup[0](b, b_f, itm) !== b.isInv) === b.enabled) {
       if(b.isSame(b_f) && b.isSame(b_t)) return tg;
@@ -111,7 +95,9 @@
 
 
   function comp_draw(b) {
-    if(b.isInv) Draw.rect(b.block.delegee.invReg, b.x, b.y);
+    if(b.isInv) {
+      Draw.rect(b.block.delegee.invReg, b.x, b.y);
+    };
   };
 
 
@@ -125,18 +111,44 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Sorter with `blk.invert` being useless.
+     * <br> <SINGLESIZE>
+     * @class BLK_filterGate
+     * @extends BLK_baseItemGate
+     */
     newClass().extendClass(PARENT[0], "BLK_filterGate").initClass()
     .setParent(Sorter)
     .setTags("blk-dis", "blk-gate")
     .setParam({
-      // @PARAM: Item is selected when this returns {true}.
-      // <ARGS>: b, b_f, itm
+
+
+      /**
+       * <PARAM>: Item is selected when this returns true.
+       * <ARGS>: b, b_f, itm.
+       * @memberof BLK_filterGate
+       * @instance
+       */
       filterScrTup: prov(() => [(b, b_f, itm) => itm === b.sortItem]),
-      // @PARAM: Set this to {true} if item selection is not used.
+      /**
+       * <PARAM>: If true, item selector will be hidden.
+       * @memberof BLK_filterGate
+       * @instance
+       */
       hideSelection: false,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_filterGate
+       * @instance
+       */
       invReg: null,
+
+
     })
     .setMethod({
 
@@ -159,11 +171,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_filterGate").initClass()
+    /**
+     * @class B_filterGate
+     * @extends B_baseItemGate
+     */
+    newClass().extendClass(PARENT[1], "B_filterGate").initClass()
     .setParent(Sorter.SorterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_filterGate
+       * @instance
+       */
       isInv: false,
+
+
     })
     .setMethod({
 
@@ -202,14 +229,14 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
         MDL_io._wr_ct(wr, this.sortItem);
         wr.bool(this.isInv);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
+        if(this.LCRevi === 5) rd.s();
+        
         this.sortItem = MDL_io._rd_ct(rd);
         this.isInv = rd.bool();
       },

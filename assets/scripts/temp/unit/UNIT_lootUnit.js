@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Dropped item as a special unit.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -108,7 +94,7 @@
       )),
     );
     Draw.rect(utp.softShadowRegion, unit.x, unit.y, shaW, shaW, 0.0);
-    // Cicle, if used
+    // Circle, if used
     if(!PARAM.drawStaticLoot) {
       unit.lastDrownFloor == null ?
         Draw.color(Pal.accent) :
@@ -149,14 +135,37 @@
 */
 
 
+  /**
+   * Dropped item as a special unit.
+   * @class UNIT_lootUnit
+   * @extends UNIT_technicalUnit
+   */
   module.exports = newClass().extendClass(PARENT, "UNIT_lootUnit").initClass()
   .setParent(UnitType)
   .setTags()
   .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @override
+     * @memberof UNIT_lootUnit
+     * @instance
+     */
     entityName: "missile",
 
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     itemCapacity: 99999,
-    lifetime: VAR.time_lootLifetime * 2.0,                // Doubled to avoid killing the unit somehow, which shakes the screen
+    // Doubled to avoid killing the unit somehow
+    lifetime: VAR.time_lootLifetime * 2.0,
+
+
   })
   .setMethod({
 
@@ -182,6 +191,11 @@
     }),
 
 
+    /**
+     * @memberof UNIT_lootUnit
+     * @instance
+     * @return {void}
+     */
     ex_resetLifetime: function(unit) {
       unit.time = 0.0;
     }

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Very normal floor.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,6 +21,11 @@
 */
 
 
+  /**
+   * Featureless floor.
+   * @class ENV_baseFloor
+   * @extends ENV_baseEnvBlock
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_baseFloor").initClass()
   .setParent(Floor)
   .setTags("blk-env")

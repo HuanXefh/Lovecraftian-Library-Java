@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The base template for blocks that store items.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -38,7 +24,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Base template for blocks that store items.
+     * @class BLK_baseStorageBlock
+     * @extends BLK_baseItemBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseStorageBlock").initClass()
     .setParent(null)
     .setTags()
@@ -46,8 +36,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseStorageBlock").initClass()
+    /**
+     * @class B_baseStorageBlock
+     * @extends B_baseItemBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseStorageBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

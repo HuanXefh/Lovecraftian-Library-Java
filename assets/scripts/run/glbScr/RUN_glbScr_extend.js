@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -75,7 +72,7 @@
     let ct = ctType == null ?
       CONTENT_HANDLER.fetch(nmCt) :
       CONTENT_HANDLER.fetch(nmCt, ctType);
-    if(ct == null) throw new Error("Content [$1] is not registered through template!".format(nmCt));
+    if(ct == null) throw new Error("Content ${1} is not registered through template!".format(nmCt));
 
     return ct;
   };

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Base template for all fluid blocks.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -48,13 +34,25 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Base template for all fluid blocks.
+     * @class BLK_baseFluidBlock
+     * @extends BLK_baseBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseFluidBlock").initClass()
     .setParent(null)
     .setTags()
     .setParam({
-      // @PARAM: Whether abstract fluid is allowed in this fluid block. Do not try this unless you know what you are doing.
+
+
+      /**
+       * <PARAM>: Whether abstract fluid is allowed in this block.
+       * @memberof BLK_baseFluidBlock
+       * @instance
+       */
       allowAux: false,
+
+
     })
     .setMethod({
 
@@ -67,8 +65,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseFluidBlock").initClass()
+    /**
+     * @class B_baseFluidBlock
+     * @extends B_baseBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseFluidBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({

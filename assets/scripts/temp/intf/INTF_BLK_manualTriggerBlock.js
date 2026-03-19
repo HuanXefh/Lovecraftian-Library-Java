@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * This block is expected to be clicked to trigger something.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -38,7 +24,7 @@
 
 
   function comp_setStats(blk) {
-    if(blk.manualTriggerCooldown > 0.0) blk.stats.add(fetchStat("lovec", "blk-cd"), blk.manualTriggerCooldown * 60.0, StatUnit.seconds)
+    if(blk.manualTriggerCooldown > 0.0) blk.stats.add(fetchStat("lovec", "blk-cd"), blk.manualTriggerCooldown * 60.0, StatUnit.seconds);
     if(blk.manualTriggerCooldownInitial > 0.0) blk.stats.add(fetchStat("lovec", "blk-cdinit"), blk.manualTriggerCooldownInitial * 60.0, StatUnit.seconds)
   };
 
@@ -94,19 +80,42 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * This block is expected to be clicked to trigger something.
+     * @class INTF_BLK_manualTriggerBlock
+     */
+    new CLS_interface("INTF_BLK_manualTriggerBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Anything that can be drawn in a button.
+
+
+        /**
+         * <PARAM>: Anything that can be drawn in a button.
+         * @memberof INTF_BLK_manualTriggerBlock
+         * @instance
+         */
         manualTriggerIcon: "?",
-        // @PARAM: Size of the button used.
+        /**
+         * <PARAM>: Size of the button.
+         * @memberof INTF_BLK_manualTriggerBlock
+         * @instance
+         */
         manualTriggerButtonSize: 72.0,
-        // @PARAM: Cooldown between each trigger.
+        /**
+         * <PARAM>: Trigger Cooldown.
+         * @memberof INTF_BLK_manualTriggerBlock
+         * @instance
+         */
         manualTriggerCooldown: 0.0,
-        // @PARAM: Cooldown set when the building has just been placed.
+        /**
+         * <PARAM>: Cooldown set when the building has just been placed.
+         * @memberof INTF_BLK_manualTriggerBlock
+         * @instance
+         */
         manualTriggerCooldownInitial: 0.0,
+
+
       }),
 
 
@@ -128,12 +137,26 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_manualTriggerBlock
+     */
+    new CLS_interface("INTF_B_manualTriggerBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_manualTriggerBlock
+         * @instance
+         */
         manualTriggerCd: 0.0,
+
+
       }),
 
 
@@ -155,12 +178,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * What happens when the button is clicked.
-       * ---------------------------------------- */
+      /**
+       * Called when the button is clicked.
+       * <br> <LATER>
+       * @memberof INTF_B_manualTriggerBlock
+       * @instance
+       * @return {void}
+       */
       ex_manualTriggerCall: function() {
 
       }
@@ -169,12 +193,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Extra condition to trigger this.
-       * ---------------------------------------- */
+      /**
+       * Extra condition for a valid trigger.
+       * <br> <LATER>
+       * @memberof INTF_B_manualTriggerBlock
+       * @instance
+       * @return {boolean}
+       */
       ex_checkManualTriggerValid: function() {
         return true;
       }
@@ -183,6 +208,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_manualTriggerBlock
+       * @instance
+       * @return {number}
+       */
       ex_getManualTriggerCdFrac: function() {
         return 1.0 - Mathf.clamp(Mathf.maxZero(this.manualTriggerCd) / this.block.delegee.manualTriggerCooldown);
       }
@@ -191,6 +221,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_manualTriggerBlock
+       * @instance
+       * @param {Table} tb
+       * @return {void}
+       */
       ex_buildManualTriggerButton: function(tb) {
         comp_ex_buildManualTriggerButton(this, tb);
       }
@@ -199,9 +235,15 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_manualTriggerBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             wr.f(this.manualTriggerCd);
           },
@@ -213,7 +255,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

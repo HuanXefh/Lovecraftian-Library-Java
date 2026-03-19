@@ -12,15 +12,61 @@
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (String)
   ========================================
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ condition ------------------------------ */
 
 
-  /* <---------- string ----------> */
+  /**
+   * Whether the string contains any piece from `strs`.
+   * <br> <ARGS>: strs.
+   * <br> <ARGS>: str1, str2, str3, ...
+   * @return {boolean}
+   */
+  String.prototype.includesAny = function() {
+    const thisStr = this;
+
+    return arguments[0] instanceof Array ?
+      arguments[0].some(str => thisStr.includes(str)) :
+      Array.from(arguments).some(str => thisStr.includes(str));
+  };
+
+
+  /**
+   * Whether the string contains all the pieces from `strs`.
+   * <br> <ARGS>: strs.
+   * <br> <ARGS>: str1, str2, str3, ...
+   * @return {boolean}
+   */
+  String.prototype.includesAll = function() {
+    const thisStr = this;
+
+    return arguments[0] instanceof Array ?
+      arguments[0].every(str => thisStr.includes(str)) :
+      Array.from(arguments).every(str => thisStr.includes(str));
+  };
+
+
+  /**
+   * Whether the string equals any string from `strs`.
+   * No triple equality here!
+   * <br> <ARGS>: strs.
+   * <br> <ARGS>: str1, str2, str3, ...
+   * @return {boolean}
+   */
+  String.prototype.equalsAny = function() {
+    const thisStr = this;
+
+    return arguments[0] instanceof Array ?
+      arguments[0].some(str => thisStr == str) :
+      Array.from(arguments).some(str => thisStr == str);
+  };
+
+
+  /* <------------------------------ util ------------------------------ */
 
 
   /**
@@ -90,50 +136,4 @@
    */
   String.prototype.decode64 = function() {
     return Base64Coder.decodeString(this);
-  };
-
-
-  /**
-   * Whether the string contains any piece from `strs`.
-   * <br> <ARGS>: strs.
-   * <br> <ARGS>: str1, str2, str3, ...
-   * @return {boolean}
-   */
-  String.prototype.includesAny = function() {
-    const thisStr = this;
-
-    return arguments[0] instanceof Array ?
-      arguments[0].some(str => thisStr.includes(str)) :
-      Array.from(arguments).some(str => thisStr.includes(str));
-  };
-
-
-  /**
-   * Whether the string contains all the pieces from `strs`.
-   * <br> <ARGS>: strs.
-   * <br> <ARGS>: str1, str2, str3, ...
-   * @return {boolean}
-   */
-  String.prototype.includesAll = function() {
-    const thisStr = this;
-
-    return arguments[0] instanceof Array ?
-      arguments[0].every(str => thisStr.includes(str)) :
-      Array.from(arguments).every(str => thisStr.includes(str));
-  };
-
-
-  /**
-   * Whether the string equals any string from `strs`.
-   * No triple equality here!
-   * <br> <ARGS>: strs.
-   * <br> <ARGS>: str1, str2, str3, ...
-   * @return {boolean}
-   */
-  String.prototype.equalsAny = function() {
-    const thisStr = this;
-
-    return arguments[0] instanceof Array ?
-      arguments[0].some(str => thisStr == str) :
-      Array.from(arguments).some(str => thisStr == str);
   };

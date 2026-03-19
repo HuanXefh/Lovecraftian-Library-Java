@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Just vanilla overlay floor.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,6 +21,11 @@
 */
 
 
+  /**
+   * Featureless overlay floor.
+   * @class ENV_baseOverlay
+   * @extends ENV_baseEnvBlock
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_baseOverlay").initClass()
   .setParent(OverlayFloor)
   .setTags("blk-env")

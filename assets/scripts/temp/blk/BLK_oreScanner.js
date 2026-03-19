@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A block that reveals depth ores in range.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -32,6 +18,7 @@
   function comp_init(blk) {
     resetBlockFlag(blk, []);
 
+    blk.clipSize += blk.blkRad;
     blk.configurable = true;
     // I'm lazy to do more for this
     blk.canPickup = false;
@@ -55,7 +42,7 @@
     blk.stats.add(Stat.range, blk.blkRad / Vars.tilesize, StatUnit.blocks);
     blk.stats.add(
       fetchStat("lovec", "blk0min-scantier"),
-      "[$1] ([$2])".format(
+      "${1} (${2})".format(
         blk.scanTier,
         MDL_bundle._term.apply(null, DB_misc.db["block"]["depthName"].read(blk.scanTier, ["lovec", "unknown"]))
       ),
@@ -86,6 +73,7 @@
     if(b.team !== Vars.player.team()) return;
 
     b.ex_setRevealed(false);
+    // Update other scanners in range
     MDL_pos._it_bs(b.x, b.y, b.block.delegee.blkRad * 2.2, b.team, ob => MDL_cond._isOreScanner(ob.block), ob => ob.ex_setRevealed(true));
   };
 
@@ -149,23 +137,55 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A block that reveals depth ores in range.
+     * @class BLK_oreScanner
+     * @extends BLK_baseMiner
+     * @extends INTF_BLK_radiusDisplay
+     */
     newClass().extendClass(PARENT[0], "BLK_oreScanner").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-min", "blk-scan")
     .setParam({
-      // @PARAM: How deep the scanner is possible to scan.
-      scanTier: 0,
-      // @PARAM: Color used for scan effects.
-      scanColor: Pal.techBlue,
-      // @PARAM: Sound played when the scanner scans (crafts).
-      craftSe: Sounds.unset,
 
+
+      /**
+       * <PARAM>: How deep the scanner is possible to scan. See {@link INTF_ENV_depthOverlay}.
+       * @memberof BLK_oreScanner
+       * @instance
+       */
+      scanTier: 0,
+      /**
+       * <PARAM>: Color used for scan effect.
+       * @memberof BLK_oreScanner
+       * @instance
+       */
+      scanColor: Pal.techBlue,
+      /**
+       * <PARAM>: Sounds played when this scanner crafts.
+       * @memberof BLK_oreScanner
+       * @instance
+       */
+      craftSe: Sounds.unset,
+      /**
+       * <PARAM>
+       * @override
+       * @memberof BLK_oreScanner
+       * @instance
+       */
       useP3dRange: true,
+
+
     })
     .setParamAlias([
-      // @PARAM: Radius parameter of the scanner.
+      /**
+       * <PARAM>: Radius parameter of the scanner.
+       * @type {number} scanRad
+       * @memberof BLK_oreScanner
+       * @instance
+       */
       "scanRad", "blkRad", 40.0,
+
 
       "craftEff", "craftEffect", Fx.none,
       "updateEff", "updateEffect", Fx.none,
@@ -201,14 +221,45 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_oreScanner").implement(INTF[1]).initClass()
+    /**
+     * @class B_oreScanner
+     * @extends B_baseMiner
+     * @extends INTF_B_radiusDisplay
+     */
+    newClass().extendClass(PARENT[1], "B_oreScanner").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_oreScanner
+       * @instance
+       */
       offConeAng: 0.0,
+      /**
+       * <INTERNAL>: All ores to be revealed.
+       * @memberof B_oreScanner
+       * @instance
+       */
       revealTgs: prov(() => []),
+      /**
+       * <INTERNAL>: Ores that are not revealed yet.
+       * @memberof B_oreScanner
+       * @instance
+       */
       revealQueue: prov(() => []),
+      /**
+       * <INTERNAL>: Ores revealed as integers of position.
+       * @memberof B_oreScanner
+       * @instance
+       */
       revealedInts: prov(() => []),
+
+
     })
     .setMethod({
 
@@ -242,17 +293,22 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
         MDL_io._wr_ints(wr, this.revealedInts);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
+        if(this.LCRevi === 5) rd.s();
+        
         MDL_io._rd_ints(rd, this.revealedInts);
       },
 
 
+      /**
+       * @memberof B_oreScanner
+       * @instance
+       * @return {number}
+       */
       ex_getReloadFrac: function() {
         return this.progress;
       }
@@ -261,6 +317,11 @@
       }),
 
 
+      /**
+       * @memberof B_oreScanner
+       * @instance
+       * @return {number}
+       */
       ex_getWarmupFrac: function() {
         return this.ex_getScanFrac();
       }
@@ -269,6 +330,14 @@
       }),
 
 
+      /**
+       * Set revealed status of all ores in range.
+       * Update of other scanners in range is required!
+       * @memberof B_oreScanner
+       * @instance
+       * @param {boolean} bool
+       * @return {void}
+       */
       ex_setRevealed: function(bool) {
         comp_ex_setRevealed(this, bool);
       }
@@ -277,6 +346,11 @@
       }),
 
 
+      /**
+       * @memberof B_oreScanner
+       * @instance
+       * @return {number}
+       */
       ex_getScanFrac: function() {
         return comp_ex_getScanFrac(this);
       }

@@ -1,22 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles multi-block structure.
-   *
-   * Format for {multiBlockData}:
-   * {nmBlk, offTx, offTy, rot}
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -139,15 +122,37 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles multi-block structure.
+     * Unlike MultiBlockLib, the whole structure is not linked.
+     * @class INTF_BLK_multiBlockHandler
+     */
+    new CLS_interface("INTF_BLK_multiBlockHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Used to define a multi-block structure.
+
+
+        /**
+         * <PARAM>: Used to define a multi-block structure.
+         * <br> <ROWS>: nmBlk, offTx, offTy, rot.
+         * @memberof
+         * @instance
+         */
         multiBlockData: null,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_multiBlockHandler
+         * @instance
+         */
         multiBlockParsedData: null,
+
+
       }),
 
 
@@ -161,6 +166,15 @@
       },
 
 
+      /**
+       * @memberof INTF_BLK_multiBlockHandler
+       * @instance
+       * @param {Team} team
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {void}
+       */
       ex_drawMultiBlockPlan: function(team, tx, ty, rot) {
         comp_ex_drawMultiBlockPlan(this, team, tx, ty, rot);
       }
@@ -172,13 +186,32 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_multiBlockHandler
+     */
+    new CLS_interface("INTF_B_multiBlockHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_multiBlockHandler
+         * @instance
+         */
         multiBlockCompleted: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_multiBlockHandler
+         * @instance
+         */
         multiBlockLinks: prov(() => []),
+
+
       }),
 
 
@@ -207,6 +240,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_multiBlockHandler
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
         comp_ex_postUpdateEfficiencyMultiplier(this);
       }

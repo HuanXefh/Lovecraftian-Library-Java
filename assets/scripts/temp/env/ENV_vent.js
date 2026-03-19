@@ -1,26 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Steam vents with varied size.
-   * Will load parameters from {blk.parent}.
-   * Vents should always be loaded after the parent floors!
-   *
-   * Special values for {blk.ventRs}:
-   * "none" - This vent is only for decoration.
-   * "fire" - Turns the vent into a fire vent.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -84,14 +63,42 @@
 */
 
 
+  /**
+   * Steam vents with varied size, will load parameters from `blk.parent`.
+   * Vents should always be loaded after the parent floors!
+   * <br> Special values for {@link ENV_vent#ventRs}:
+   * <br> "none" - This vent is only for decoration.
+   * <br> "fire" - Turns the vent into a fire vent.
+   * <br> <NAMEGEN>
+   * @class ENV_vent
+   * @extends ENV_materialFloor
+   * @extends INTF_ENV_dynamicSizeVent
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_vent").implement(INTF).initClass()
   .setParent(SteamVent)
   .setTags("blk-env", "blk-vent")
   .setParam({
-    // @PARAM: Resource of the vent, usually a gas. Has special values.
+
+
+    /**
+     * <PARAM>: Resource (?) produced from the vent, usually a gas. Has special values.
+     * @memberof ENV_vent
+     * @instance
+     */
     ventRs: "none",
 
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof ENV_vent
+     * @instance
+     */
     rsDrop: null,
+
+
   })
   .setMethod({
 
@@ -101,6 +108,13 @@
     },
 
 
+    /**
+     * @memberof ENV_vent
+     * @instance
+     * @param {Tile} t
+     * @param {boolean} isBlocked
+     * @return {void}
+     */
     ex_onVentUpdate: function(t, isBlocked) {
       comp_onVentUpdate(this, t, isBlocked);
     }
@@ -109,6 +123,11 @@
     }),
 
 
+    /**
+     * @memberof ENV_vent
+     * @instance
+     * @return {Liquid|null}
+     */
     ex_getRsDrop: function() {
       return this.rsDrop;
     }

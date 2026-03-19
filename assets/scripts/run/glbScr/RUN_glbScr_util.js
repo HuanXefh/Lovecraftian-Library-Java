@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- internal ----------> */
 
 
@@ -346,14 +343,77 @@
       };
       let args = Array.from(arguments).splice(1);
       args.forEachFast(arg => printObj(arg));
-      throw new Error(str.format(args));
+      throw new Error(str.format.apply(str, args));
     },
 
 
   };
 
 
+  /* <---------- content template ----------> */
+
+
+  /**
+   * Gets method from some content template.
+   * @param {string} nmTemp
+   * @param {string} nmFun
+   * @param {any} [def]
+   * @return {Function}
+   */
+  fetchTempMethod = function(nmTemp, nmFun, def) {
+    if(def == null) def = Function.air;
+
+    let temp = LCTemp[nmTemp];
+    return temp == null ?
+      def :
+      temp[nmFun] == null ?
+        def :
+        temp[nmFun];
+  };
+
+
+  /**
+   * Gets all parent templates and implemented inferfaces of some template as string.
+   * @param {string} nmTemp
+   * @return {Array<string>}
+   */
+  fetchTempParents = function(nmTemp) {
+    return LCTemp[nmTemp] == null ?
+      [] :
+      LCTempParentMap.get(nmTemp).slice();
+  };
+
+
   /* <---------- game ----------> */
+
+
+  /**
+   * Whether given elements don't match the ones found in given tuple.
+   * <br> <ARGS>: tup, shouldUpdateTup, ele1, ele2, ele3, ...
+   * @global
+   * @return {boolean}
+   */
+  checkTupChange = function() {
+    const tup = arguments[0];
+    if(tup.length === 0) return true;
+
+    let i = 2, iCap = arguments.length;
+    while(i < iCap) {
+      if(arguments[i] !== tup[i - 2]) {
+        if(arguments[1]) {
+          let j = 2;
+          while(j < iCap) {
+            tup[j - 2] = arguments[j];
+            j++;
+          };
+        };
+        return true;
+      };
+      i++;
+    };
+
+    return false;
+  };
 
 
   /**

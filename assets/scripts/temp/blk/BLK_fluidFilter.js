@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Unlike item filter gate, fluid filter has no side output since it's meant for blocks with multiple fluid outputs.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -68,12 +53,31 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Fluid junction that only allows selected fluid to go through.
+     * Unlike item filter gate, this has no side output since no need.
+     * <br> <SINGLESIZE>
+     * @class BLK_fluidFilter
+     * @extends BLK_fluidJunction
+     * @extends INTF_BLK_contentSelector
+     */
     newClass().extendClass(PARENT[0], "BLK_fluidFilter").implement(INTF[0]).initClass()
     .setParent(LiquidJunction)
     .setTags("blk-liq", "blk-gate")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_fluidFilter
+       * @instance
+       */
       topReg: null,
+
+
     })
     .setMethod({
 
@@ -83,6 +87,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_fluidFilter
+       * @instance
+       * @return {Array<Liquid>}
+       */
       ex_findSelectionTgs: function() {
         return Vars.content.liquids().select(liq => !MDL_cond._isAuxiliaryFluid(liq)).toArray();
       }
@@ -95,8 +105,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fluidFilter").implement(INTF[1]).initClass()
+    /**
+     * @class B_fluidFilter
+     * @extends B_fluidJunction
+     * @extends INTF_B_contentSelector
+     */
+    newClass().extendClass(PARENT[1], "B_fluidFilter").implement(INTF[1]).initClass()
     .setParent(LiquidJunction.LiquidJunctionBuild)
     .setParam({})
     .setMethod({
@@ -133,8 +147,7 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
         MDL_io._wr_ct(wr, this.ctTg);
       }
       .setProp({
@@ -143,8 +156,9 @@
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
+
+        this.ex_processData(rd);
         this.ctTg = MDL_io._rd_ct(rd);
       }
       .setProp({

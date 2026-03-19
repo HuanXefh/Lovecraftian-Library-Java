@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Intermediate: concentrate.
-   * Produced by sintering purified dust items.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,11 +28,30 @@
 */
 
 
+  /**
+   * Items produced by sintering purified dust items.
+   * <br> <NAMEGEN>
+   * @class RS_concentrateItem
+   * @extends RS_intermediateItem
+   */
   module.exports = newClass().extendClass(PARENT, "RS_concentrateItem").initClass()
   .setParent(Item)
   .setTags("rs-intmd", "rs-ore0conc")
   .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @override
+     * @memberof RS_concentrateItem
+     * @instance
+     */
     recolorRegStr: "lovec-gen-concentrate-item",
+
+
   })
   .setMethod({
 
@@ -58,6 +61,12 @@
     },
 
 
+    /**
+     * @override
+     * @memberof RS_concentrateItem
+     * @instance
+     * @return {string}
+     */
     ex_getLocalizedMainName: function() {
       return MDL_bundle._term("common", "intmd-concentrate");
     }

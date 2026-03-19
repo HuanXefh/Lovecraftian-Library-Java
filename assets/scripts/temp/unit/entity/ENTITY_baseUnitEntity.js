@@ -1,22 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Base template for all unit entities.
-   * Unlike blocks, the entity of a unit type is defined as a separate template for more flexibility.
-   *
-   * Entity templates don't support arguments on build.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -59,6 +42,12 @@
 */
 
 
+  /**
+   * Base template for all unit entities.
+   * Unlike blocks, the entity of a unit type is defined as a separate template for more flexibility.
+   * @class ENTITY_baseUnitEntity
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "ENTITY_baseUnitEntity").initClass()
   .setParent(null)
   .setParam({})

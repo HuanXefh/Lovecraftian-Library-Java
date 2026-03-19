@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -154,7 +151,6 @@
       exports.secret_legacySound = secretCode.includesAny("<legacy>");
       exports.secret_fireInTheHole = secretCode.includesAny("<fire-in-the-hole>", "<fire-in-da-hole>", "<fith>");
       exports.secret_steelPipe = secretCode.includesAny("<steel-pipe>", "<metal-pipe>");
-      exports.secret_revisionFix = secretCode.includesAny("<revision-fix>");
 
 
     };
@@ -167,8 +163,6 @@
 
   MDL_event._c_onWorldLoad(() => {
 
-
     updateSuppressCd = updateSuppressCooldown;
-
 
   }, 52647992);

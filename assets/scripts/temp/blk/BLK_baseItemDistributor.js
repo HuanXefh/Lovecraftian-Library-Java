@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent of all item distribution blocks.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,7 +30,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Parent of all item distribution blocks.
+     * @class BLK_baseItemDistributor
+     * @extends BLK_baseItemBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseItemDistributor").initClass()
     .setParent(null)
     .setTags("blk-dis")
@@ -60,8 +50,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseItemDistributor").initClass()
+    /**
+     * @class B_baseItemDistributor
+     * @extends B_baseItemBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseItemDistributor").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

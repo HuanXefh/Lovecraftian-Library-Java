@@ -18,9 +18,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -859,7 +856,7 @@
    * @return {void}
    */
   const _e_laser = function thisFun(x, y, e_f, e_t, color, strokeScl, hasLight) {
-    if(Vars.state.isPaused() || e == null) return;
+    if(Vars.state.isPaused() || e_t == null) return;
     if(color == null) color = Pal.accent;
 
     showAt(x, y, thisFun.eff, tryVal(strokeScl, 1.0), color, [e_f, e_t, tryVal(hasLight, false)]);

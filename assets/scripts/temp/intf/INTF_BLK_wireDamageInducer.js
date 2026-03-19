@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles wire damage.
-   * This does not draw wire.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -64,17 +49,37 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles wire damage.
+     * Does not draw wire.
+     * @class INTF_BLK_wireDamageInducer
+     */
+    new CLS_interface("INTF_BLK_wireDamageInducer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Wire material. See {DB_block.db["grpParam"]["wireMatReg"]}.
+
+
+        /**
+         * <PARAM>: Wire material. See {@link DB_block}.
+         * @memberof INTF_BLK_wireDamageInducer
+         * @instance
+         */
         wireMat: "copper",
-        // @PARAM: Damage dealt when a boosting unit touches the wire.
+        /**
+         * <PARAM>: Damage dealt when a boosting unit touches the wire.
+         * @memberof INTF_BLK_wireDamageInducer
+         * @instance
+         */
         wireTouchDmg: 0.0,
-        // @PARAM: Color of the lightning created.
+        /**
+         * <PARAM>: Lightning color.
+         * @memberof INTF_BLK_wireDamageInducer
+         * @instance
+         */
         wireArcColor: Pal.accent,
+
+
       }),
 
 
@@ -83,6 +88,15 @@
       },
 
 
+      /**
+       * @memberof INTF_BLK_wireDamageInducer
+       * @instance
+       * @param {number} x1
+       * @param {number} y1
+       * @param {number} x2
+       * @param {number} y2
+       * @return {number}
+       */
       ex_getWireGlowAlpha: function(x1, y1, x2, y2) {
         return comp_ex_getWireGlowAlpha(this, x1, y1, x2, y2);
       }
@@ -94,8 +108,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_wireDamageInducer
+     */
+    new CLS_interface("INTF_B_wireDamageInducer", {
 
 
       updateTile: function() {
@@ -103,13 +119,14 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
+      /**
        * Finds a random target building to check whether a boosting unit is on the way.
        * Normally a target building is a building connected to this wire block.
-       * ---------------------------------------- */
+       * <br> <LATER>
+       * @memberof INTF_B_wireDamageInducer
+       * @instance
+       * @return {Building|null}
+       */
       ex_findWireTarget: function() {
         return null;
       }

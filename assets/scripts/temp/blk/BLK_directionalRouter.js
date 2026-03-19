@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Nothing different from vanilla directional router.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,7 +24,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla directional router.
+     * <br> <SINGLESIZE>
+     * @class BLK_directionalRouter
+     * @extends BLK_baseItemGate
+     */
     newClass().extendClass(PARENT[0], "BLK_directionalRouter").initClass()
     .setParent(DuctRouter)
     .setTags("blk-dis", "blk-gate")
@@ -47,8 +37,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_directionalRouter").initClass()
+    /**
+     * @class B_directionalRouter
+     * @extends B_baseItemGate
+     */
+    newClass().extendClass(PARENT[1], "B_directionalRouter").initClass()
     .setParent(DuctRouter.DuctRouterBuild)
     .setParam({})
     .setMethod({}),

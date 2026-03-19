@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Beam drill but usually with range of 1.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,7 +30,7 @@
 
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(t == null) return;
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, team, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
       thisFun.tmpTup[4] = thisFun.tmpBoolF(blk, t, team, rot);
     };
 
@@ -90,7 +76,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Beam drill but usually with range of 1.
+     * @class BLK_wallDrill
+     * @extends BLK_baseDrill
+     */
     newClass().extendClass(PARENT[0], "BLK_wallDrill").initClass()
     .setParent(BeamDrill)
     .setTags("blk-min", "blk-drl")
@@ -117,8 +107,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_wallDrill").initClass()
+    /**
+     * @class B_wallDrill
+     * @extends B_baseDrill
+     */
+    newClass().extendClass(PARENT[1], "B_wallDrill").initClass()
     .setParent(BeamDrill.BeamDrillBuild)
     .setParam({})
     .setMethod({}),

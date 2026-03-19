@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla {BasicBulletType} I guess.
-   * Supports drawing shadow for the bullet.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -56,24 +41,53 @@
 */
 
 
+  /**
+   * {@link BasicBulletType} that supports shadow.
+   * @class BUL_spriteBullet
+   * @extends BUL_baseBullet
+   */
   module.exports = newClass().extendClass(PARENT, "BUL_spriteBullet").initClass()
   .setParent(BasicBulletType)
   .setTags()
   .setParam({
-    // @PARAM: Whether shadow of this bullet should be drawn.
+
+
+    /**
+     * <PARAM>: Whether to draw shadow for this bullet.
+     * @memberof BUL_spriteBullet
+     * @instance
+     */
     shouldDrawShadow: true,
-    // @PARAM: Position offset for drawing shadow, if it's used.
+    /**
+     * <PARAM>: Shadow offset.
+     * @memberof BUL_spriteBullet
+     * @instance
+     */
     offSha: -4.0,
 
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof BUL_spriteBullet
+     * @instance
+     */
     shaReg: null,
 
-    // For convenience
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     frontColor: Pal.bulletYellow,
     backColor: Pal.bulletYellowBack,
     shrinkX: 0.0,
     shrinkY: 0.5,
     shrinkInterp: Interp.linear,
     spin: 0.0,
+
+    
   })
   .setParamAlias([
     "w", "width", 5.0,

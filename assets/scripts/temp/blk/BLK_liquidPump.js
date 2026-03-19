@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lovec version of pump that is capable of producing pressure.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -71,12 +57,32 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Lovec version of pump that is capable of producing pressure.
+     * @class BLK_liquidPump
+     * @extends BLK_baseFluidBlock
+     * @extends INTF_BLK_corrosionAcceptor
+     * @extends INTF_BLK_fluidHeatAcceptor
+     * @extends INTF_BLK_pressureProducer
+     * @extends INTF_BLK_facilityBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_liquidPump").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).implement(INTF_C[0]).initClass()
     .setParent(Pump)
     .setTags("blk-pump")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>: Pressure and vacuum are abstract fluids, this field must be true.
+       * @memberof BLK_liquidPump
+       * @instance
+       */
       allowAux: true,
+
+
     })
     .setMethod({
 
@@ -89,8 +95,15 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_liquidPump").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).implement(INTF_C[1]).initClass()
+    /**
+     * @class B_liquidPump
+     * @extends B_baseFluidBlock
+     * @extends INTF_B_corrosionAcceptor
+     * @extends INTF_B_fluidHeatAcceptor
+     * @extends INTF_B_pressureProducer
+     * @extends INTF_B_facilityBlock
+     */
+    newClass().extendClass(PARENT[1], "B_liquidPump").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).implement(INTF_C[1]).initClass()
     .setParent(Pump.PumpBuild)
     .setParam({})
     .setMethod({
@@ -118,21 +131,22 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
 
-        if(LCRevi < 1) {
-          rd.s();
-        };
+        this.ex_processData(rd);
       },
 
 
+      /**
+       * @memberof B_liquidPump
+       * @instance
+       * @return {Liquid|null}
+       */
       ex_getRsTg: function() {
         return tryVal(this.liquidDrop, null);
       }

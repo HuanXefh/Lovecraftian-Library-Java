@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Items that can be obtained through mining.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -46,14 +32,32 @@
 */
 
 
+  /**
+   * Items that can be obtained through mining.
+   * @class RS_oreItem
+   * @extends RS_baseItem
+   */
   module.exports = newClass().extendClass(PARENT, "RS_oreItem").initClass()
   .setParent(Item)
   .setTags("rs-ore")
   .setParam({
-    // @PARAM: Sintering temperature, has DB entry.
+
+
+    /**
+     * <PARAM>: Sintering temperature.
+     * <br> <DB>: itm-sint-temp.
+     * @memberof RS_oreItem
+     * @instance
+     */
     sintTemp: -1.0,
 
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     databaseTag: "lovec-ore",
+
+    
   })
   .setMethod({
 

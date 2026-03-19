@@ -272,7 +272,7 @@ public class LCDraw {
      */
     public static void tree(
         TextureRegion reg, TextureRegion shaReg,
-        Tile t, float offSha, float scl, float mag, float wob, float a, float z,
+        Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z,
         boolean shouldDrawWobble, boolean shouldCheckDst
     ) {
         if(a < 0.01) return;
@@ -287,7 +287,7 @@ public class LCDraw {
         } else {
             var unitPl = Vars.player.unit();
             var dst = unitPl == null ? 99999999f : Mathf.dst(t.worldx(), t.worldy(), unitPl.x, unitPl.y);
-            Draw.alpha(a * dst < reg.width * 0.15f ? 0.37f : 1f);
+            Draw.alpha(a * dst < rad ? 0.37f : 1f);
         };
         Draw.z(z);
         if(!shouldDrawWobble) {
@@ -309,16 +309,16 @@ public class LCDraw {
     // Overloading
     public static void tree(
         TextureRegion reg, TextureRegion shaReg,
-        Tile t, float offSha, float scl, float mag, float wob, float a, float z,
+        Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z,
         boolean shouldDrawWobble
     ) {
-        tree(reg, shaReg, t, offSha, scl, mag, wob, a, z, shouldDrawWobble, false);
+        tree(reg, shaReg, t, rad, offSha, scl, mag, wob, a, z, shouldDrawWobble, false);
     };
     public static void tree(
         TextureRegion reg, TextureRegion shaReg,
-        Tile t, float offSha, float scl, float mag, float wob, float a, float z
+        Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z
     ) {
-        tree(reg, shaReg, t, offSha, scl, mag, wob, a, z, true);
+        tree(reg, shaReg, t, rad, offSha, scl, mag, wob, a, z, true);
     };
 
 

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The easiest lifeform to make in Mindustry.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,10 +21,27 @@
 */
 
 
+  /**
+   * The easiest lifeform to make in Mindustry.
+   * @class ENV_tree
+   * @extends ENV_baseTree
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_tree").initClass()
   .setParent(TreeBlock)
   .setTags("blk-env", "blk-tree")
   .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof ENV_tree
+     * @instance
+     */
     treeGrp: "tree",
+
+
   })
   .setMethod({});

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Collects loot on top of the block.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -75,7 +61,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Collects loot on top of the block.
+     * @class BLK_lootHopper
+     * @extends BLK_baseLootBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_lootHopper").initClass()
     .setParent(StorageBlock)
     .setTags()
@@ -96,8 +86,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_lootHopper").initClass()
+    /**
+     * @class B_lootHopper
+     * @extends B_baseLootBlock
+     */
+    newClass().extendClass(PARENT[1], "B_lootHopper").initClass()
     .setParent(StorageBlock.StorageBuild)
     .setParam({})
     .setMethod({
@@ -125,6 +118,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_baseLootBlock
+       * @instance
+       * @return {void}
+       */
       ex_updateLootTs: function() {
         comp_ex_updateLootTs(this);
       }
@@ -134,6 +133,13 @@
       }),
 
 
+      /**
+       * @memberof B_baseLootBlock
+       * @instance
+       * @param {Array<Unit>} loots
+       * @param {number} amt
+       * @return {void}
+       */
       ex_lootCall: function(loots, amt) {
         comp_ex_lootCall(this, loots, amt);
       }

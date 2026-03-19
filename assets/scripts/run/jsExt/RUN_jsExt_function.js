@@ -12,16 +12,10 @@
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (Function)
   ========================================
 */
 
-
-  /* <---------- import ----------> */
-
-
-  /* <---------- function ----------> */
-  
 
   /**
    * Wraps `Function#length`, mostly for {@link JavaAdapter}.
@@ -127,7 +121,7 @@
       let returnVal = thisFun.apply(this, arguments);
       meanWin.add(Time.elapsed());
       if(meanWin.hasEnoughData()) {
-        Log.info("[LOVEC] Method cost: [$1] ms.".format(meanWin.mean()));
+        Log.info("[LOVEC] Method cost: ${1} ms.".format(meanWin.mean()));
         meanWin.clear();
       };
 

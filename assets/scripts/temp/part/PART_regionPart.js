@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla region parts.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,11 +21,20 @@
 */
 
 
+  /**
+   * Vanilla region parts.
+   * @class PART_regionPart
+   * @extends PART_basePart
+   */
   module.exports = newClass().extendClass(PARENT, "PART_regionPart").initClass()
   .setParent(RegionPart)
   .setTags()
   .setParam({
-    // For convenience
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     suffix: "",
     mirror: false,
     outline: true,
@@ -59,6 +54,8 @@
     heatProgress: DrawPart.PartProgress.heat,
     children: prov(() => []),
     moves: prov(() => []),
+
+
   })
   .setParamAlias([
     "nm", "name", null,

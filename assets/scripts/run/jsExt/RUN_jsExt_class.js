@@ -12,15 +12,9 @@
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (Function)
   ========================================
 */
-
-
-  /* <---------- import ----------> */
-
-
-  /* <---------- function ----------> */
 
 
   Function.prototype.__SUPER_CLASS__ = null;

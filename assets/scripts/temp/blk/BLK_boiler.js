@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A crafter that explodes if dry-heated or full of steam.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -22,9 +8,8 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseFactory");
+  const PARENT = require("lovec/temp/blk/BLK_furnaceFactory");
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureProducer");
-  const INTF_A = require("lovec/temp/intf/INTF_BLK_furnaceBlock");
 
 
   /* <---------- component ----------> */
@@ -44,7 +29,6 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0heat-tempreq"), blk.heatReq, fetchStatUnit("lovec", "heatunits"));
     blk.stats.add(fetchStat("lovec", "blk-canexplode"), true);
     blk.stats.add(fetchStat("lovec", "blk-explor"), blk.exploRad / Vars.tilesize, StatUnit.blocks);
     blk.stats.add(fetchStat("lovec", "blk-explodmg"), blk.exploDmg);
@@ -124,36 +108,105 @@
   module.exports = [
 
 
-    // Block
-    newClass().extendClass(PARENT[0], "BLK_boiler").implement(INTF[0]).implement(INTF_A[0]).initClass()
+    /**
+     * A crafter that explodes if dry-heated or full of steam.
+     * @class BLK_boiler
+     * @extends BLK_furnaceFactory
+     * @extends INTF_BLK_pressureProducer
+     */
+    newClass().extendClass(PARENT[0], "BLK_boiler").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac")
     .setParam({
-      // @PARAM: Heat required.
-      heatReq: 150.0,
-      // @PARAM: Explosion radius.
-      exploRad: 40.0,
-      // @PARAM: Explosion damage. Set this to 0.0 to disable explosion.
-      exploDmg: 3000.0,
-      // @PARAM: Explosion shake.
-      exploShake: 12.0,
-      // @PARAM: Minimum instability required for this boiler to explode when destroyed.
-      hitExploMinInstab: 0.3,
-      // @PARAM: Fluid that causes explosion if full, can be {null} to disable it.
-      exploFldTg: "loveclab-gas0int-steam-hp",
-      // @PARAM: Fluid that causes explosion if the boiler is being dry heated, can be {null} to disable it.
-      dryHeatFldTg: "loveclab-liq0ore-water",
-      // @PARAM: Temperature above which dry-heating can happen.
-      dryHeatThr: 100.0,
-      // @PARAM: Temperature below which the boiler exits dry-heated state, half of {dryHeatThr} by default.
-      dryHeatCancelThr: -1.0,
-      // @PARAM: Rate of instability increase (and decrease).
-      boilerInstabIncRate: 0.001,
 
-      presFldType: "gas",
+
+      /**
+       * <PARAM>: Explosion radius.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      exploRad: 40.0,
+      /**
+       * <PARAM>: Explosion damage. Use 0.0 to disable explosion.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      exploDmg: 3000.0,
+      /**
+       * <PARAM>: Explosion shake.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      exploShake: 12.0,
+      /**
+       * <PARAM>: Minimum instability required for this boiler to explode when destroyed.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      hitExploMinInstab: 0.3,
+      /**
+       * <PARAM>: Fluid that causes explosion if full, nullable.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      exploFldTg: "loveclab-gas0int-steam-hp",
+      /**
+       * <PARAM>: Fluid that causes explosion if the boiler is dry-heated, nullable.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      dryHeatFldTg: "loveclab-liq0ore-water",
+      /**
+       * <PARAM>: Temperature above which dry-heating can happen.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      dryHeatThr: 100.0,
+      /**
+       * <PARAM>: Temperature below which the boiler exits dry-heated state, half of {@link BLK_boiler#dryHeatThr} by default.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      dryHeatCancelThr: -1.0,
+      /**
+       * <PARAM>: Instability increase/decrease rate.
+       * @memberof BLK_boiler
+       * @instance
+       */
+      boilerInstabIncRate: 0.001,
+      /**
+       * <PARAM>: Most boilers only accept external heat. Set this to false if the boiler burns fuel items.
+       * @override
+       * @memberof BLK_boiler
+       * @instance
+       */
       noFuelInput: true,
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @override
+       * @memberof BLK_boiler
+       * @instance
+       */
+      presFldType: "gas",
+      /**
+       * <INTERNAL>
+       * @memberof BLK_boiler
+       * @instance
+       */
       shouldClearAuxOnStop: false,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_boiler
+       * @instance
+       */
       flashReg: null,
+
+
     })
     .setMethod({
 
@@ -186,13 +239,39 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_boiler").implement(INTF[1]).implement(INTF_A[1]).initClass()
+    /**
+     * @class B_boiler
+     * @extends B_furnaceFactory
+     * @extends INTF_B_pressureProducer
+     */
+    newClass().extendClass(PARENT[1], "B_boiler").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_boiler
+       * @instance
+       */
       boilerInstab: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_boiler
+       * @instance
+       */
       boilerInstabProg: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_boiler
+       * @instance
+       */
       dryHeated: false,
+
+
     })
     .setMethod({
 
@@ -218,28 +297,15 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
         wr.f(this.boilerInstab);
         wr.bool(this.dryHeated);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
         this.boilerInstab = rd.f();
         this.dryHeated = rd.bool();
       },
-
-
-      ex_getHeatTg: function() {
-        return this.block.delegee.heatReq;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
 
 
     }),

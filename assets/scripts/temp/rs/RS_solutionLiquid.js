@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Intermediate: solution.
-   * Any fluid with solubles.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -48,14 +32,39 @@
 */
 
 
+  /**
+   * Fluids with solubles.
+   * <br> <NAMEGEN>
+   * @class RS_solutionLiquid
+   * @extends RS_intermediateFluid
+   */
   module.exports = newClass().extendClass(PARENT, "RS_solutionLiquid").initClass()
   .setParent(Liquid)
   .setTags("rs-intmd", "rs-sol")
   .setParam({
-    // @PARAM: Solvent used for this solution. Also see {DB_reaction.db["solvationTarget"]}.
+
+
+    /**
+     * <PARAM>: Solvent used for this solution.
+     * <br> <DB>: liq-solvent.
+     * @memberof RS_solutionLiquid
+     * @instance
+     */
     solvent: "water",
 
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @override
+     * @memberof RS_solutionLiquid
+     * @instance
+     */
     recolorRegStr: "lovec-gen-solution-liquid",
+
+
   })
   .setMethod({
 
@@ -65,6 +74,12 @@
     },
 
 
+    /**
+     * @override
+     * @memberof RS_solutionLiquid
+     * @instance
+     * @return {string}
+     */
     ex_getLocalizedMainName: function() {
       return MDL_bundle._term("common", "intmd-solution" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
     }

@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -133,9 +130,9 @@
         ob == null && oblk !== Blocks.air && MDL_cond._isCoverable(unit, true)
           && (
             MDL_cond._isTreeBlock(oblk) ?
-              oblk.delegee.hidable && dst < oblk.region.width * VAR.rad_treeScl :
+              oblk.delegee.hidable && dst < oblk.delegee.radTree :
               MDL_cond._isTallGrassBlock(oblk) ?
-                oblk.delegee.hidable && dst < oblk.size * Vars.tilesize * VAR.rad_tallGrassScl :
+                oblk.delegee.hidable && dst < oblk.size * Vars.tilesize * 0.5 :
                 false
           )
       ) {

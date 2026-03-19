@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Attribute crafter with a rectangular range.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -66,7 +52,7 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
 
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
       thisFun.tmpTup[3] = MDL_pos._tsRect(t, blk.attrR, blk.size).filter(ot => MDL_attr._sumTs([ot], blk.attribute, blk.attrMode) > 0.0);
     };
 
@@ -94,15 +80,34 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Attribute crafter with a rectangular range.
+     * @class BLK_rangeHarvester
+     * @extends BLK_baseHarvester
+     * @extends INTF_BLK_rangeAttributeBlock
+     * @extends INTF_BLK_rangeDisplay
+     * @extends INTF_BLK_lootProducer
+     */
     newClass().extendClass(PARENT[0], "BLK_rangeHarvester").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
     .setParent(AttributeCrafter)
     .setTags("blk-min", "blk-harv")
     .setParam({
-      // @PARAM: See {BLK_wallHarvester}.
+
+
+      /**
+       * <PARAM>: See {@link BLK_wallHarvester}.
+       * @memberof BLK_rangeHarvester
+       * @instance
+       */
       shouldDropLoot: true,
-      // @PARAM: See {BLK_baseFactory}.
+      /**
+       * <PARAM>: See {@link BLK_baseFactory}.
+       * @memberof BLK_rangeHarvester
+       * @instance
+       */
       craftSe: Sounds.unset,
+
+
     })
     .setParamAlias([
       "craftEff", "craftEffect", Fx.none,
@@ -132,6 +137,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_rangeHarvester
+       * @instance
+       * @return {number}
+       */
       ex_getCraftTime: function() {
         return this.craftTime;
       }
@@ -144,8 +155,14 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_rangeHarvester").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
+    /**
+     * @class B_rangeHarvester
+     * @extends B_baseHarvester
+     * @extends INTF_B_rangeAttributeBlock
+     * @extends INTF_B_rangeDisplay
+     * @extends INTF_B_lootProducer
+     */
+    newClass().extendClass(PARENT[1], "B_rangeHarvester").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
     .setParent(AttributeCrafter.AttributeCrafterBuild)
     .setParam({})
     .setMethod({
@@ -156,18 +173,20 @@
       },
 
 
-      write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
-      },
-
-
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) {
+          rd.s();
+          this.lootCharge = rd.i();
+        };
       },
 
 
+      /**
+       * @override
+       * @memberof B_rangeHarvester
+       * @instance
+       * @return {boolean}
+       */
       ex_shouldDropLoot: function() {
         return this.block.delegee.shouldDropLoot;
       }
@@ -177,6 +196,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_rangeHarvester
+       * @instance
+       * @return {number}
+       */
       ex_getCraftTimeCur: function() {
         return this.progress * this.block.craftTime;
       }

@@ -12,15 +12,9 @@
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (Number)
   ========================================
 */
-
-
-  /* <---------- import ----------> */
-
-
-  /* <---------- number ----------> */
 
 
   /**
@@ -90,7 +84,11 @@
   };
 
 
-  /* <---------- string ----------> */
+/*
+  ========================================
+  Section: Definition (String)
+  ========================================
+*/
 
 
   /**
@@ -112,7 +110,113 @@
   };
 
 
-  /* <---------- array ----------> */
+/*
+  ========================================
+  Section: Definition (Array)
+  ========================================
+*/
+
+
+  /**
+   * Creates a new Java array with given capacity.
+   * @template T
+   * @param {Class<T>} javaCls
+   * @param {number|unset} [cap]
+   * @return {JavaArray<T>}
+   */
+  Array.newJavaArr = function(javaCls, cap) {
+    return java.lang.reflect.Array.newInstance(javaCls, tryVal(cap, 0));
+  };
+
+
+  /**
+   * Creates a integer array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Integer>}
+   */
+  Array.newIntArr = function(cap) {
+    return Array.newJavaArr(JAVA.int, cap);
+  };
+
+
+  /**
+   * Creates a byte array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Byte>}
+   */
+  Array.newByteArr = function(cap) {
+    return Array.newJavaArr(JAVA.byte, cap);
+  };
+
+
+  /**
+   * Creates a short array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Short>}
+   */
+  Array.newShortArr = function(cap) {
+    return Array.newJavaArr(JAVA.short, cap);
+  };
+
+
+  /**
+   * Creates a long array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Long>}
+   */
+  Array.newLongArr = function(cap) {
+    return Array.newJavaArr(JAVA.long, cap);
+  };
+
+
+  /**
+   * Creates a float array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Float>}
+   */
+  Array.newFArr = function(cap) {
+    return Array.newJavaArr(JAVA.float, cap);
+  };
+
+
+  /**
+   * Creates a double array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Double>}
+   */
+  Array.newDoubleArr = function(cap) {
+    return Array.newJavaArr(JAVA.double, cap);
+  };
+
+
+  /**
+   * Creates a boolean array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Boolean>}
+   */
+  Array.newBoolArr = function(cap) {
+    return Array.newJavaArr(JAVA.boolean, cap);
+  };
+
+
+  /**
+   * Creates a string array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.String>}
+   */
+  Array.newStrArr = function(cap) {
+    return Array.newJavaArr(JAVA.string, cap);
+  };
+
+
+  /**
+   * Creates a object array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Object>}
+   */
+  Array.newObjArr = function(cap) {
+    return Array.newJavaArr(JAVA.Object, cap);
+  };
 
 
   /**

@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Better than cogwheel for remote torque transfer.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -24,7 +9,7 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseTorqueBlock");
-  
+
 
   /* <---------- component ----------> */
 
@@ -96,18 +81,56 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Better than cogwheel for remote torque transfer.
+     * Transport torque axially.
+     * <br> <SINGLESIZE>
+     * @class BLK_transmissionRod
+     * @extends BLK_baseTorqueBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_transmissionRod").initClass()
     .setParent(Wall)
     .setTags("blk-trans0rod")
     .setParam({
-      // @PARAM: Amount of frames for the rod sprite.
+
+
+      /**
+       * <PARAM>: Amount if frames for the rod sprite.
+       * @memberof BLK_transmissionRod
+       * @instance
+       */
       rodFrameAmt: 8,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_transmissionRod
+       * @instance
+       */
       skipTorFetch: true,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_transmissionRod
+       * @instance
+       */
       skipTorSupply: true,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_transmissionRod
+       * @instance
+       */
       rodRegs: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_transmissionRod
+       * @instance
+       */
       dirReg: null,
+
+
     })
     .setMethod({
 
@@ -122,6 +145,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_transmissionRod
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -134,12 +163,32 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_transmissionRod").initClass()
+    /**
+     * @class B_transmissionRod
+     * @extends B_baseTorqueBlock
+     */
+    newClass().extendClass(PARENT[1], "B_transmissionRod").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_transmissionRod
+       * @instance
+       */
       rotProg: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_transmissionRod
+       * @instance
+       */
       isVerticalRod: false,
+
+
     })
     .setMethod({
 
@@ -162,6 +211,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_transmissionRod
+       * @instance
+       * @return {void}
+       */
       ex_updateTorTransTgs: function() {
         comp_ex_updateTorTransTgs(this);
       }

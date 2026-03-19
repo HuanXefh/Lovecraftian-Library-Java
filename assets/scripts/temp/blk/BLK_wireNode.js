@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A greatly nerfed power node with minimum range.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -48,10 +34,7 @@
 
 
   function comp_linkValid(blk, b, b_t) {
-    if(Mathf.dst(b.x, b.y, b_t.x, b_t.y) < blk.laserRange * Vars.tilesize * blk.minRadFrac) return false;
-    if(!blk.linkFilterTup[0](b, b_t)) return false;
-
-    return true;
+    return Mathf.dst(b.x, b.y, b_t.x, b_t.y) >= blk.laserRange * Vars.tilesize * blk.minRadFrac && blk.linkFilterTup[0](b, b_t);
   };
 
 
@@ -113,17 +96,43 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A greatly nerfed power node with minimum range.
+     * @class BLK_wireNode
+     * @extends BLK_basePowerTransmitter
+     * @extends INTF_BLK_wireDamageInducer
+     */
     newClass().extendClass(PARENT[0], "BLK_wireNode").implement(INTF[0]).initClass()
     .setParent(PowerNode)
     .setTags("blk-pow", "blk-pow0trans", "blk-node")
     .setParam({
-      // @PARAM: Filter used for valid targets. See {DB_misc.db["block"]["nodeLinkFilter"]}.
+
+
+      /**
+       * <PARAM>: Determines filter for valid targets. See {@link DB_misc}.
+       * @memberof BLK_wireNode
+       * @instance
+       */
       linkMode: "any",
-      // @PARAM: Minimum radius as fraction of maximum radius.
+      /**
+       * <PARAM>: Minimum radius as fraction of maximum radius.
+       * @memberof
+       * @instance
+       */
       minRadFrac: 0.0,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_wireNode
+       * @instance
+       */
       linkFilterTup: null,
+
+
     })
     .setMethod({
 
@@ -162,8 +171,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_wireNode").implement(INTF[1]).initClass()
+    /**
+     * @class B_wireNode
+     * @extends B_basePowerTransmitter
+     * @extends INTF_B_wireDamageInducer
+     */
+    newClass().extendClass(PARENT[1], "B_wireNode").implement(INTF[1]).initClass()
     .setParent(PowerNode.PowerNodeBuild)
     .setParam({})
     .setMethod({
@@ -179,6 +192,12 @@
       },
 
 
+      /**
+       * See {@link B_wireRelay#ex_findWireTarget}.
+       * @memberof B_wireNode
+       * @instance
+       * @return {Building|null}
+       */
       ex_findWireTarget: function() {
         return comp_ex_findWireTarget(this);
       }

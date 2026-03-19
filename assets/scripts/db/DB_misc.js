@@ -70,6 +70,20 @@ const db = {
 
 
     /**
+     * Maps graph type to an update method.
+     * See {@Link INTF_BLK_graphBlock}.
+     * <br> <ROW>: graphType, fun.
+     */
+    graphUpdate: [
+
+      "test", graph => {
+        if(TIMER.secTwo) print(graph);
+      },
+
+    ],
+
+
+    /**
      * Maps depth level to a term.
      * See {@link INTF_ENV_depthOverlay}.
      * <br> <ROW>: lvl, [nmMod, tag].
@@ -343,7 +357,7 @@ const db = {
       },
 
       ConsumeItems, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
-        cons.items.forEachFast(itmStack => dictConsItm[itmStack.item.id].push(blk, itmStack.amount, {icon: cons.optional ? "lovec-icon-optional" : null}));
+        cons.items.forEachFast(itmStack => dictConsItm[itmStack.item.id].push(blk, itmStack.amount, {icon: cons.optional ? "lovec-icon-boost" : null}));
       },
 
       ConsumeItemFlammable, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
@@ -379,12 +393,12 @@ const db = {
           // Why is it not another consumer class...
           dictConsFld[blk.consumeLiquid.id].push(blk, blk.consumeLiquidAmount / blk.cooldownTime, {});
         } else {
-          dictConsFld[cons.liquid.id].push(blk, cons.amount, {icon: cons.optional ? "lovec-icon-optional" : null});
+          dictConsFld[cons.liquid.id].push(blk, cons.amount, {icon: cons.optional ? "lovec-icon-boost" : null});
         };
       },
 
       ConsumeLiquids, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
-        cons.liquids.forEachFast(liqStack => dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, {icon: cons.optional ? "lovec-icon-optional" : null}));
+        cons.liquids.forEachFast(liqStack => dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, {icon: cons.optional ? "lovec-icon-boost" : null}));
       },
 
       ConsumeCoolant, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
@@ -678,6 +692,7 @@ const db = {
 
       "ohno", "error",
 
+      "boost", "lovec-icon-boost",
       "check", "lovec-icon-check",
       "cross", "lovec-icon-cross",
       "harvest", "lovec-icon-harvest",

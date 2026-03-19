@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles retangular range display.
-   * No stat is added.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -59,15 +44,31 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles rectangular range display.
+     * No stat is added.
+     * @class INTF_BLK_rangeDisplay
+     */
+    new CLS_interface("INTF_BLK_rangeDisplay", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Range (in blocks) to show.
+
+
+        /**
+         * <PARAM>: Range (in blocks) to show.
+         * @memberof INTF_BLK_rangeDisplay
+         * @instance
+         */
         blkR: 5,
-        // @PARAM: See {INTF_BLK_radiusDisplay}.
+        /**
+         * <PARAM>: See {@link INTF_BLK_radiusDisplay}.
+         * @memberof INTF_BLK_rangeDisplay
+         * @instance
+         */
         useP3dRange: true,
+
+
       }),
 
 
@@ -76,7 +77,13 @@
       },
 
 
-      // @LATER
+      /**
+       * <LATER>
+       * @memberof INTF_BLK_rangeDisplay
+       * @instance
+       * @param {boolean} valid
+       * @return {Color}
+       */
       ex_getBlkRColor: function(valid) {
         return Pal.accent;
       }
@@ -89,8 +96,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_rangeDisplay
+     */
+    new CLS_interface("INTF_B_rangeDisplay", {
 
 
       draw: function() {

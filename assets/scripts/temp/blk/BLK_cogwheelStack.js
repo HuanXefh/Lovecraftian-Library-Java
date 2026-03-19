@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Stacked cogwheels.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -137,21 +123,66 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Stacked cogwheels.
+     * @class BLK_cogwheelStack
+     * @extends BLK_cogwheel
+     */
     newClass().extendClass(PARENT[0], "BLK_cogwheelStack").initClass()
     .setParent(Wall)
     .setTags("blk-cog", "blk-cog0stack")
     .setParam({
-      // @PARAM: The over coghweel block.
+
+
+      /**
+       * <PARAM>: Top cogwheel.
+       * @memberof BLK_cogwheelStack
+       * @instance
+       */
       ovCog: null,
-      // @PARAM: The under cogwheel block.
+      /**
+       * <PARAM>: Bottom cogwheel.
+       * @memberof BLK_cogwheelStack
+       * @instance
+       */
       undCog: null,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheelStack
+       * @instance
+       */
       ovReg: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheelStack
+       * @instance
+       */
       ovInvReg: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheelStack
+       * @instance
+       */
       ovShaReg: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheelStack
+       * @instance
+       */
       cogOvDrawW: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_cogwheelStack
+       * @instance
+       */
       cogOvInvOffAng: 0.0,
+
+
     })
     .setMethod({
 
@@ -169,13 +200,22 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_cogwheelStack").initClass()
+    /**
+     * @class B_cogwheelStack
+     * @extends B_cogwheel
+     */
+    newClass().extendClass(PARENT[1], "B_cogwheelStack").initClass()
     .setParent(Wall.WallBuild)
     .setParam({})
     .setMethod({
 
 
+      /**
+       * @override
+       * @memberof B_cogwheelStack
+       * @instance
+       * @return {void}
+       */
       ex_updateTorTransTgs: function() {
         comp_ex_updateTorTransTgs(this);
       }
@@ -185,6 +225,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_cogwheelStack
+       * @instance
+       * @param {Building} b_t
+       * @return {number}
+       */
       ex_calcRpmTrans: function(b_t) {
         return !MDL_cond._isCogwheelStack(b_t.block) ? (this.rpmCur * this.block.size) : (this.rpmCur * this.block.delegee.ovCog.size);
       }
@@ -195,6 +242,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_cogwheelStack
+       * @instance
+       * @param {Building} b_f
+       * @return {number}
+       */
       ex_calcRpmTransScl: function(b_f) {
         return !MDL_cond._isCogwheelStack(b_f.block) ? (1.0 / this.block.size) : (1.0 / this.block.delegee.ovCog.size);
       }
@@ -205,6 +259,15 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_cogwheelStack
+       * @instance
+       * @param {number} size
+       * @param {number} rot
+       * @param {boolean} isOv
+       * @return {Building|null}
+       */
       ex_findCog: function thisFun(size, rot, isOv) {
         let ob = thisFun.funPrev.apply(this, [size, rot]);
         return ob == null ?
@@ -222,31 +285,18 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_cogwheelStack
+       * @instance
+       * @return {void}
+       */
       ex_drawCog: function() {
         comp_ex_drawCog(this);
       }
       .setProp({
         noSuper: true,
         override: true,
-      }),
-
-
-      ex_processData: function(wr0rd, LCRevi) {
-        processData(
-          wr0rd, LCRevi,
-          (wr, revi) => {
-            // Do nothing
-          },
-
-          (rd, revi) => {
-            if(revi < 1) {
-              rd.s();
-            };
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
       }),
 
 

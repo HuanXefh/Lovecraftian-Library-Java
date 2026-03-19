@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- type ----------> */
 
 
@@ -31,6 +28,20 @@
    */
   isNativeObject = function(obj) {
     return typeof obj === "object" && !(obj instanceof java.lang.Object);
+  };
+
+
+  /**
+   * Whether some object is instance of any of given classes.
+   * <br> <ARGS>: obj, cls1, cls2, cls3, ...
+   * @return {boolean}
+   */
+  instanceOfAny = function() {
+    if(arguments.length < 2) return false;
+    for(let i = 1; i < arguments.length; i++) {
+      if(arguments[0] instanceof arguments[i]) return true;
+    };
+    return false;
   };
 
 
@@ -187,14 +198,14 @@
    * @return {function(): void}
    * @example
    * // How to make a class
-   * let cls1 = newClass().initClass();
+   * let CLS1 = newClass().initClass();
    *
    * // How to extend some class
-   * let cls2 = newClass().extendClass(cls1).initClass();
+   * let CLS2 = newClass().extendClass(CLS1).initClass();
    *
    * // How to implement some interface
-   * let intf = new CLS_interface();
-   * let cls3 = newClass().extendClass(cls1).implement(intf).initClass();
+   * let INTF = new CLS_interface(null, {});
+   * let CLS3 = newClass().extendClass(CLS1).implement(INTF).initClass();
    */
   newClass = function() {
     return function() {

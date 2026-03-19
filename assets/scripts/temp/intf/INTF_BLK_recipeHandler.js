@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles basic multi-crafter methods, should be implemented after a recipe selector.
-   * Does not affect stats and recipe selection.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,7 +29,8 @@
 
 
   function comp_setBars(blk) {
-    blk.removeBar("liquid");                // Flashing liquid bar bug in Multi-Crafter Lib
+    // Flashing liquid bar bug in Multi-Crafter Lib
+    blk.removeBar("liquid");
 
     blk.addBar("lovec-prog", b => new Bar(
       prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
@@ -52,7 +38,7 @@
       () => Mathf.clamp(b.progress, 0.0, 1.0),
     ));
 
-    // Liquid bars are defined in {b.displayBars} for dynamic amount of bars
+    // Liquid bars are defined in `b.displayBars` for dynamic amount of bars
   };
 
 
@@ -173,7 +159,8 @@
     let i, iCap, j, jCap;
 
     // BI
-    i = 0, iCap = b.bi.iCap();
+    i = 0;
+    iCap = b.bi.iCap();
     while(i < iCap) {
       let tmp = b.bi[i];
       if(!(tmp instanceof Array)) {
@@ -181,7 +168,8 @@
         MDL_table.__reqRs(tb, b, tmp, amt);
       } else {
         thisFun.tmpArr.clear();
-        j = 0, jCap = tmp.iCap();
+        j = 0;
+        jCap = tmp.iCap();
         while(j < jCap) {
           let tmp1 = tmp[j];
           thisFun.tmpArr.push(tmp1);
@@ -193,7 +181,8 @@
     };
 
     // CI
-    i = 0, iCap = b.ci.iCap();
+    i = 0;
+    iCap = b.ci.iCap();
     while(i < iCap) {
       let tmp = b.ci[i];
       MDL_table.__reqRs(tb, b, tmp);
@@ -201,7 +190,8 @@
     };
 
     // AUX
-    i = 0, iCap = b.aux.iCap();
+    i = 0;
+    iCap = b.aux.iCap();
     while(i < iCap) {
       let tmp = b.aux[i];
       MDL_table.__reqRs(tb, b, tmp);
@@ -211,7 +201,8 @@
     // OPT
     if(b.reqOpt) {
       thisFun.tmpArr.clear();
-      i = 0, iCap = b.opt.iCap();
+      i = 0;
+      iCap = b.opt.iCap();
       while(i < iCap) {
         let tmp = b.opt[i];
         thisFun.tmpArr.push(tmp);
@@ -222,7 +213,8 @@
 
     // PAYI
     if(b.hasPayInput) {
-      i = 0, iCap = b.payi.iCap();
+      i = 0;
+      iCap = b.payi.iCap();
       while(i < iCap) {
         let tmp = MDL_content._ct(b.payi[i], null, true);
         let amt = b.payi[i + 1];
@@ -348,7 +340,7 @@
 
 
   function comp_ex_calcProgInc(b, time) {
-    let inc = 1.0;
+    let inc;
     if(b.block.ignoreLiquidFullness) {
       inc = b.edelta() / time / b.rcTimeScl;
     } else {
@@ -390,17 +382,38 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Handles basic multi-crafter methods, should be implemented after a recipe selector.
+     * Does not affect stats and recipe selection.
+     * @class INTF_BLK_recipeHandler
+     * @extends INTF_BLK_payloadBlock
+     */
     new CLS_interface({
 
 
       __PARAM_OBJ_SETTER__: (() => ({
-        // @PARAM: Recipe module for this block (as string), usually the block name without mod name prefix.
+
+
+        /**
+         * <PARAM>: Recipe module for this block (as string), usually the block name without mod name.
+         * @memberof INTF_BLK_recipeHandler
+         * @instance
+         */
         rcMdl: null,
-        // @PARAM: Mod to search module from (as string).
+        /**
+         * <PARAM>: Mod (as string) to search module from.
+         * @memberof INTF_BLK_recipeHandler
+         * @instance
+         */
         rcSourceMod: null,
-        // @PARAM: Whether this recipe block cannot actively dump resources.
+        /**
+         * <PARAM>: Whether this block does not actively dump resources.
+         * @memberof INTF_BLK_recipeHandler
+         * @instance
+         */
         disableDump: false,
+
+
       }))
       .setProp({
         mergeMode: "object",
@@ -457,47 +470,222 @@
       .setCache(),
 
 
-    }).extendInterface(INTF[0]),
+    }).extendInterface(INTF[0], "INTF_BLK_recipeHandler"),
 
 
-    // Building
+    /**
+     * @class INTF_B_recipeHandler
+     * @extends INTF_B_payloadBlock
+     */
     new CLS_interface({
 
 
       __PARAM_OBJ_SETTER__: (() => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>: Recipe selected.
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         rcHeader: "",
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         ci: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         bi: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         aux: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         reqOpt: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         opt: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         payi: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         co: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         bo: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         failP: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         fo: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         payo: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         rcIconNm: "error",
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         rcTimeScl: 1.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         rcPol: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         ignoreItemFullness: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         attr: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         attrMin: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         attrMax: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         attrBoostScl: 1.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         attrBoostCap: 1.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         validTup: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         scrTup: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         dumpTup: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         rcEffc: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         attrEffc: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         lastProgInc: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         lastLiqProgInc: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         lastCanAdd: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         itmAcceptCacheMap: prov(() => new ObjectMap()),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         liqAcceptCacheMap: prov(() => new ObjectMap()),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         hasRun: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         hasStopped: false,
+
+
       }))
       .setProp({
         mergeMode: "object",
@@ -588,11 +776,13 @@
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * Called frequently but not every frame, updates some universal parameters.
-      * ---------------------------------------- */
+      /**
+       * Called every several frames to update some universal parameters.
+       * To update additional parameters, override {@link INTF_B_recipeHandler#ex_updateRcParam} instead.
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
       ex_onRcParamUpdate: function() {
         comp_ex_onRcParamUpdate(this);
       }
@@ -601,45 +791,70 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
       ex_onRcUpdate: function() {
         if(this.scrTup != null) this.scrTup[0](this);
       }
       .setProp({
         noSuper: true,
+        final: true,
       }),
 
 
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
       ex_onRcRun: function() {
         if(this.scrTup != null) this.scrTup[1](this);
       }
       .setProp({
         noSuper: true,
+        final: true,
       }),
 
 
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
       ex_onRcStoppedRun: function() {
         if(this.scrTup != null) this.scrTup[3](this);
       }
       .setProp({
         noSuper: true,
+        final: true,
       }),
 
 
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
       ex_onRcCraft: function() {
         if(this.scrTup != null) this.scrTup[2](this);
       }
       .setProp({
         noSuper: true,
+        final: true,
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * @LATER
-      * Multi-crafter efficiency should be updated here to work properly, as it's been reset in this interface.
-      * {b.updateEfficiencyMultiplier} is final now and cannot be mixed.
-      * ---------------------------------------- */
+      /**
+       * Multi-crafter efficiency should be updated here, as it's been reset.
+       * `b.updateEfficiencyMultiplier` is final now and cannot be mixed.
+       * <br> <LATER>
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
 
       }
@@ -648,11 +863,15 @@
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * Container of all parameter update methods.
-      * ---------------------------------------- */
+      /**
+       * Updates parameters related to a specific recipe.
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {RecipeModule} rcMdl
+       * @param {string} rcHeader
+       * @param {boolean} forceLoad - If true, some parameters will be loaded even if header is not changed.
+       * @return {void}
+       */
       ex_updateRcParam: function(rcMdl, rcHeader, forceLoad) {
         comp_ex_updateRcParam(this, rcMdl, rcHeader, forceLoad);
       }
@@ -662,11 +881,12 @@
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * Called whenever recipe is changed.
-      * ---------------------------------------- */
+      /**
+       * Called whenever recipe is changed.
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
       ex_resetRcParam: function() {
         comp_ex_resetRcParam(this);
       }
@@ -675,11 +895,14 @@
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * Loads some recipe-specific parameters when recipe is changed.
-      * ---------------------------------------- */
+      /**
+       * When recipe is changed, this method will be called to load some recipe-specific parameters.
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {RecipeModule} rcMdl
+       * @param {string} header
+       * @return {void}
+       */
       ex_loadRcParam: function(rcMdl, rcHeader) {
         comp_ex_loadRcParam(this, rcMdl, rcHeader);
       }
@@ -689,6 +912,12 @@
       }),
 
 
+      /**
+       * Creates effect when recipe is changed.
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
       ex_showRcChangeEff: function() {
         EFF.squareFadePack[this.block.size].at(this);
       }
@@ -697,6 +926,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {string} nmCt
+       * @return {number}
+       */
       ex_getPayConsAmt: function(nmCt) {
         return this.payi.read(nmCt, 0);
       }
@@ -707,6 +943,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {string} nmCt
+       * @return {number}
+       */
       ex_getPayProdAmt: function(nmCt) {
         return this.payo.read(nmCt, 0);
       }
@@ -717,6 +960,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {number} time
+       * @return {number}
+       */
       ex_calcProgInc: function(time) {
         return comp_ex_calcProgInc(this, time);
       }
@@ -725,11 +974,11 @@
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * Returns the base efficiency, not called every frame since it's costy.
-      * ---------------------------------------- */
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {number}
+       */
       ex_calcRcEffcTg: function() {
         return comp_ex_calcRcEffcTg(this);
       }
@@ -738,12 +987,12 @@
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * The final probability of failure.
-      * Change this for dynamic chance to fail.
-      * ---------------------------------------- */
+      /**
+       * Override this method for dynamic chance to fail.
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {number}
+       */
       ex_calcFailP: function() {
         return this.failP;
       }
@@ -752,11 +1001,11 @@
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * Some parameters will be updated when this returns {true}.
-      * ---------------------------------------- */
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {boolean}
+       */
       ex_getTimerEffcState: function() {
         return TIMER.effc;
       }
@@ -765,6 +1014,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {number}
+       */
       ex_getBlkPol: function() {
         return MDL_pollution._blkPol(this.block) + this.rcPol;
       }
@@ -773,9 +1027,15 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             wr.str(this.rcHeader);
             wr.bool(this.hasStopped);
@@ -784,21 +1044,16 @@
           (rd, revi) => {
             this.rcHeader = rd.str();
             this.hasStopped = rd.bool();
-
-            if(revi >= 2 && revi <= 4) {
-              MDL_io._rd_objStrNum(rd, this.payReqObj);
-              MDL_io._rd_objStrNum(rd, this.payStockObj);
-            };
           },
         );
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 
-    }).extendInterface(INTF[1]),
+    }).extendInterface(INTF[1], "INTF_B_recipeHandler"),
 
 
   ];

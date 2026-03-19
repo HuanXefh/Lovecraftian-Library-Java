@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * For blocks that are only used for map making.
-   * Templates implementing this should be name like {MAP_xxx} for distinction.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -33,7 +18,6 @@
       blk.targetable = false;
       blk.breakable = false;
       blk.privileged = true;
-      blk.forceDark = true;
     };
   };
 
@@ -48,13 +32,25 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * For blocks that are only used for map making.
+     * Templates implementing this should be name like "MAP_xxx".
+     * @class INTF_BLK_mapBlock
+     */
+    new CLS_interface("INTF_BLK_mapBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Whether this is a block like world processor.
+
+
+        /**
+         * <PARAM>: Whether this is a block like world processor.
+         * @memberof INTF_BLK_mapBlock
+         * @instance
+         */
         isWorldBlock: false,
+
+
       }),
 
 
@@ -66,8 +62,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_mapBlock
+     */
+    new CLS_interface("INTF_B_mapBlock", {
 
 
       damage: function() {

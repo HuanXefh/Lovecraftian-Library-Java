@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Status effects that trigger something when the unit is dead.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,12 +21,25 @@
 */
 
 
+  /**
+   * A status effect that triggers something when the unit is killed.
+   * @class STA_deathStatus
+   * @extends STA_baseStatus
+   */
   module.exports = newClass().extendClass(PARENT, "STA_deathStatus").initClass()
   .setParent(StatusEffect)
   .setTags("sta-death")
   .setParam({
-    // @PARAM: Script called when the unit is destroyed.
-    // <ARGS>: unit
+
+
+    /**
+     * <PARAM>: Script called when the unit is killed.
+     * <br> <ARGS>: unit.
+     * @memberof STA_deathStatus
+     * @instance
+     */
     killedScrTup: null,
+
+    
   })
   .setMethod({});

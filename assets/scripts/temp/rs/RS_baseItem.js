@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The most basic items that have no features.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -74,6 +60,11 @@
 */
 
 
+  /**
+   * The most basic items with no features.
+   * @class RS_baseItem
+   * @extends RS_baseResource
+   */
   module.exports = newClass().extendClass(PARENT, "RS_baseItem").initClass()
   .setParent(Item)
   .setTags()

@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles attribute calculation in a rectangular range.
-   * Does not affect stats or range display.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -30,7 +15,7 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
 
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
       thisFun.tmpTup[3] = MDL_attr._sumRect(t, blk.attrR, blk.size, blk.ex_getAttrTg(), blk.delegee.attrMode);
     };
 
@@ -56,15 +41,31 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles attribute calculation in a rectangular range.
+     * Does not affect stats or range display.
+     * @class INTF_BLK_rangeAttributeBlock
+     */
+    new CLS_interface("INTF_BLK_rangeAttributeBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Range for attribute calculation.
+
+
+        /**
+         * <PARAM>: Range in blocks for attribute calculation.
+         * @memberof INTF_BLK_rangeAttributeBlock
+         * @instance
+         */
         attrR: 5,
-        // @PARAM: Selection mode of attribute. See {MDL_attr._sumTs}.
+        /**
+         * <PARAM>: Selections mode of attribute.
+         * @memberof INTF_BLK_rangeAttributeBlock
+         * @instance
+         */
         attrMode: "floor",
+
+
       }),
 
 
@@ -76,6 +77,14 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_rangeAttributeBlock
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {number}
+       */
       ex_getAttrSum: function(tx, ty, rot) {
         return comp_ex_getAttrSum(this, tx, ty, rot);
       }
@@ -85,6 +94,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_rangeAttributeBlock
+       * @instance
+       * @return {number}
+       */
       ex_getAttrLimit: function() {
         return comp_ex_getAttrLimit(this);
       }
@@ -94,12 +108,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * The actual attribute used by this block.
-       * ---------------------------------------- */
+      /**
+       * Gets actual attribute used by this block.
+       * <br> <LATER>
+       * @memberof INTF_BLK_rangeAttributeBlock
+       * @instance
+       * @return {Attribute}
+       */
       ex_getAttrTg: function() {
         return this.attribute;
       }
@@ -112,8 +127,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({}),
+    /**
+     * @class INTF_B_rangeAttributeBlock
+     */
+    new CLS_interface("INTF_B_rangeAttributeBlock", {}),
 
 
   ];

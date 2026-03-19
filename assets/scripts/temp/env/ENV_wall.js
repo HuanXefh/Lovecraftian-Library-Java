@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Most common terrain walls.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -48,12 +33,26 @@
 */
 
 
+  /**
+   * Most common terrain walls.
+   * <br> <NAMEGEN>
+   * @class ENV_wall
+   * @extends ENV_baseProp
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_wall").initClass()
   .setParent(StaticWall)
   .setTags("blk-env")
   .setParam({
-    // @PARAM: Parent floor of the wall.
+
+
+    /**
+     * <PARAM>: Parent floor of this wall.
+     * @memberof ENV_wall
+     * @instance
+     */
     flrParent: null,
+
+
   })
   .setMethod({
 

@@ -1045,6 +1045,7 @@
   class SectorPreset extends UnlockableContent {};
   /** @global mindustry.type.Weather */
   class Weather extends UnlockableContent {};
+  Weather.WeatherEntry = class {};
   /** @global mindustry.type.weather.MagneticStorm */
   class MagneticStorm extends Weather {};
   /** @global mindustry.type.weather.ParticleWeather */

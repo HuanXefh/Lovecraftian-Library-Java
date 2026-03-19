@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Overflow gate with {blk.invert} being useless.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -85,7 +70,9 @@
 
 
   function comp_draw(b) {
-    if(b.isInv) Draw.rect(b.block.delegee.invReg, b.x, b.y);
+    if(b.isInv) {
+      Draw.rect(b.block.delegee.invReg, b.x, b.y);
+    };
   };
 
 
@@ -99,12 +86,29 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Overflow gate with `blk.invert` being useless.
+     * <br> <SINGLESIZE>
+     * @class BLK_overflowGate
+     * @extends BLK_baseItemGate
+     */
     newClass().extendClass(PARENT[0], "BLK_overflowGate").initClass()
     .setParent(OverflowGate)
     .setTags("blk-dis", "blk-gate")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_overflowGate
+       * @instance
+       */
       invReg: null,
+
+
     })
     .setMethod({
 
@@ -122,11 +126,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_overflowGate").initClass()
+    /**
+     * @class B_overflowGate
+     * @extends B_baseItemGate
+     */
+    newClass().extendClass(PARENT[1], "B_overflowGate").initClass()
     .setParent(OverflowGate.OverflowGateBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_overflowGate
+       * @instance
+       */
       isInv: false,
+
+
     })
     .setMethod({
 
@@ -161,13 +180,13 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
         wr.bool(this.isInv);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
+        if(this.LCRevi === 5) rd.s();
+        
         this.isInv = rd.bool();
       },
 

@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Vanilla ore overlay, only for ground ores.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -49,11 +34,23 @@
 */
 
 
+  /**
+   * Vanilla ore overlay, only for ground ores.
+   * <br> <NAMEGEN>
+   * @class ENV_ore
+   * @extends ENV_baseOverlay
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_ore").initClass()
   .setParent(OreBlock)
   .setTags("blk-env", "blk-ore")
   .setParam({})
   .setParamAlias([
+    /**
+     * <PARAM>: If true, the ore will be displayed on minimap.
+     * @type {boolean} showOreOnMinimap
+     * @memberof ENV_ore
+     * @instance
+     */
     "showOreOnMinimap", "useColor", false,
   ])
   .setMethod({

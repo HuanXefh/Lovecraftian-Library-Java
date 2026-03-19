@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Most common air units.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,6 +21,11 @@
 */
 
 
+  /**
+   * Basic air units.
+   * @class ENTITY_baseAirUnit
+   * @extends ENTITY_baseUnitEntity
+   */
   module.exports = newClass().extendClass(PARENT, "ENTITY_baseAirUnit").initClass()
   .setParent(UnitEntity)
   .setParam({})

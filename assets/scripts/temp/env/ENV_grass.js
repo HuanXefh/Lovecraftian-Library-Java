@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Unbreakable sea bush.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -22,7 +8,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseEnvBlock");
+  const PARENT = require("lovec/temp/env/ENV_baseProp");
 
 
   /* <---------- component ----------> */
@@ -62,11 +48,22 @@
 */
 
 
+  /**
+   * Unbreakable sea bush.
+   * @class ENV_grass
+   * @extends ENV_baseProp
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_grass").initClass()
   .setParent(SeaBush)
   .setTags("blk-env")
   .setParam({})
   .setParamAlias([
+    /**
+     * <PARAM>: Z-layer of the grass.
+     * @type {number} layGrass
+     * @memberof ENV_grass
+     * @instance
+     */
     "layGrass", "layer", Layer.groundUnit - 1.2,
   ])
   .setMethod({

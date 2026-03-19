@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles utility methods related to depth ore.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -26,7 +12,7 @@
 
 
   function comp_ex_findPlaceRsIcon(blk, tx, ty, rs) {
-    return blk.ex_isMiningDpore(tx, ty, rs) && !blk.ex_anyDeporeRevealed(tx, ty, rs) ?
+    return blk.ex_isMiningDpore(tx, ty, rs) && !blk.ex_anyDporeRevealed(tx, ty, rs) ?
       VARGEN.iconRegs.questionMark :
       rs.uiIcon;
   };
@@ -57,12 +43,12 @@
   };
 
 
-  function comp_ex_isMiningDepore(blk, tx, ty, rs) {
+  function comp_ex_isMiningDpore(blk, tx, ty, rs) {
     return blk.ex_findDporesInLinkedTiles(tx, ty, rs).size > 0;
   };
 
 
-  function comp_ex_anyDeporeRevealed(blk, tx, ty, rs) {
+  function comp_ex_anyDporeRevealed(blk, tx, ty, rs) {
     return blk.ex_findDporesInLinkedTiles(tx, ty, rs).find(ot => tryFun(ot.overlay().ex_accRevealed, ot.overlay(), true, ot, "read")) != null;
   };
 
@@ -77,16 +63,35 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles utility methods related to depth ore.
+     * @class INTF_BLK_depthOreHandler
+     */
+    new CLS_interface("INTF_BLK_depthOreHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Whether to skip methods here.
+
+
+        /**
+         * <PARAM>: Whether to skip methods here.
+         * @memberof INTF_BLK_depthOreHandler
+         * @instance
+         */
         skipDepthOreMethod: false,
+
+
       }),
 
 
+      /**
+       * @memberof INTF_BLK_depthOreHandler
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {Resource} rs
+       * @return {TextureRegion}
+       */
       ex_findPlaceRsIcon: function(tx, ty, rs) {
         return comp_ex_findPlaceRsIcon(this, tx, ty, rs);
       }
@@ -96,6 +101,14 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_depthOreHandler
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {Resource} rs
+       * @return {Array<Tile>}
+       */
       ex_findDporesInLinkedTiles: function(tx, ty, rs) {
         return comp_ex_findDporesInLinkedTiles(this, tx, ty, rs);
       }
@@ -105,6 +118,14 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_depthOreHandler
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {Resource} rs
+       * @return {number}
+       */
       ex_calcDpLvlReq: function(tx, ty, rs) {
         return comp_ex_calcDpLvlReq(this, tx, ty, rs);
       }
@@ -114,8 +135,16 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_depthOreHandler
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {Resource} rs
+       * @return {boolean}
+       */
       ex_isMiningDpore: function(tx, ty, rs) {
-        return comp_ex_isMiningDepore(this, tx, ty, rs);
+        return comp_ex_isMiningDpore(this, tx, ty, rs);
       }
       .setProp({
         noSuper: true,
@@ -123,8 +152,16 @@
       }),
 
 
-      ex_anyDeporeRevealed: function(tx, ty, rs) {
-        return comp_ex_anyDeporeRevealed(this, tx, ty, rs);
+      /**
+       * @memberof INTF_BLK_depthOreHandler
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {Resource} rs
+       * @return {boolean}
+       */
+      ex_anyDporeRevealed: function(tx, ty, rs) {
+        return comp_ex_anyDporeRevealed(this, tx, ty, rs);
       }
       .setProp({
         noSuper: true,
@@ -135,8 +172,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({}),
+    /**
+     * @class INTF_B_depthOreHandler
+     */
+    new CLS_interface("INTF_B_depthOreHandler", {}),
 
 
   ];

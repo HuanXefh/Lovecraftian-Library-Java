@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A loot hopper that actively pulls nearby loots to it.
-   * Nah I won't do regular radius loot collector.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -90,22 +75,58 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Loot hopper that actively pulls nearby loots towards it.
+     * <br> Nah I won't do regular radius loot collector.
+     * @class BLK_lootPullerHopper
+     * @extends BLK_lootHopper
+     * @extends INTF_BLK_radiusDisplay
+     */
     newClass().extendClass(PARENT[0], "BLK_lootPullerHopper").implement(INTF[0]).initClass()
     .setParent(StorageBlock)
     .setTags()
     .setParam({
-      // @PARAM: Pull power.
+
+
+      /**
+       * <PARAM>: Pull power.
+       * @memberof BLK_lootPullerHopper
+       * @instance
+       */
       powPull: 8.0,
-      // @PARAM: Duration of each pull.
+      /**
+       * <PARAM>: Duration of each pull.
+       * @memberof BLK_lootPullerHopper
+       * @instance
+       */
       durPull: 240.0,
-      // @PARAM: Interval between each pull.
+      /**
+       * <PARAM>: Duration between each pull.
+       * @memberof BLK_lootPullerHopper
+       * @instance
+       */
       intvPull: 240.0,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_lootPullerHopper
+       * @instance
+       */
       glowReg: null,
+
+
     })
     .setParamAlias([
-      // @PARAM: Maximum radius to pull nearby loots.
+      /**
+       * <PARAM>: Maximum radius to pull.
+       * @type {number} pullRad
+       * @memberof BLK_lootPullerHopper
+       * @instance
+       */
       "pullRad", "blkRad", 5 * 8.0,
     ])
     .setMethod({
@@ -129,15 +150,51 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_lootPullerHopper").implement(INTF[1]).initClass()
+    /**
+     * @class B_lootPullerHopper
+     * @extends B_lootHopper
+     * @extends INTF_B_radiusDisplay
+     */
+    newClass().extendClass(PARENT[1], "B_lootPullerHopper").implement(INTF[1]).initClass()
     .setParent(StorageBlock.StorageBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_lootPullerHopper
+       * @instance
+       */
       isPulling: false,
+      /**
+       * <INTERNAL>
+       * @memberof B_lootPullerHopper
+       * @instance
+       */
       pullTgs: prov(() => []),
+      /**
+       * <INTERNAL>
+       * @memberof B_lootPullerHopper
+       * @instance
+       */
       progPull: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_lootPullerHopper
+       * @instance
+       */
       progWait: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_lootPullerHopper
+       * @instance
+       */
       glowHeat: 0.0,
+
+
     })
     .setMethod({
 

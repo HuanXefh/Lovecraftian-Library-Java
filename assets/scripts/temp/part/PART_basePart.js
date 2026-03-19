@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Root of all parts.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,11 +21,22 @@
 */
 
 
+  /**
+   * Root of all parts.
+   * @class PART_basePart
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "PART_basePart").initClass()
   .setParent(null)
   .setTags()
   .setParam({
-    // For convenience
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     under: false,
+
+
   })
   .setMethod({});

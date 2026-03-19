@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla asteroid.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -42,7 +28,7 @@
       let color = pla.blkTint.mapColor.cpy();
       color.a = 1.0 - pla.blkTint.mapColor.a;
       return color;
-    })()
+    })();
     meshes.push(new NoiseMesh(
       pla, pla.astSeed, 2, pla.radius, 2, 0.55, 0.45, 14.0,
       colorBase, colorTint, 3, 0.6, 0.38, pla.tintThr,
@@ -68,28 +54,80 @@
 */
 
 
+  /**
+   * Vanilla asteroid.
+   * @class PLA_asteroid
+   * @extends PLA_basePlanet
+   */
   module.exports = newClass().extendClass(PARENT, "PLA_asteroid").initClass()
   .setParent(Planet)
   .setTags("pla-ast")
   .setParam({
-    // @PARAM: The wall used for base color.
+
+
+    /**
+     * <PARAM>: Wall used for base color.
+     * @memberof PLA_asteroid
+     * @instance
+     */
     blkBase: Blocks.stoneWall,
-    // @PARAM: The wall used for tint color.
+    /**
+     * <PARAM>: Wall used for tint color.
+     * @memberof PLA_asteroid
+     * @instance
+     */
     blkTint: Blocks.iceWall,
-    // @PARAM: Random generation seed.
+    /**
+     * <PARAM>: Random generation seed.
+     * @memberof PLA_asteroid
+     * @instance
+     */
     astSeed: -1,
-    // @PARAM: Tint threshold.
+    /**
+     * <PARAM>: Tint threshold.
+     * @memberof PLA_asteroid
+     * @instance
+     */
     tintThr: 0.5,
-    // @PARAM: Amount of asteroids.
+    /**
+     * <PARAM>: Amount of asteroids.
+     * @memberof PLA_asteroid
+     * @instance
+     */
     astAmt: 12,
-    // @PARAM: Scaling of the asteroid.
+    /**
+     * <PARAM>: Scaling of the asteroid.
+     * @memberof PLA_asteroid
+     * @instance
+     */
     astScl: 1.0,
 
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof PLA_asteroid
+     * @instance
+     */
     skipMeshParse: true,
+    /**
+     * <INTERNAL>
+     * @memberof PLA_asteroid
+     * @instance
+     */
     skipCloudMeshParse: true,
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     drawOrbit: false,
     hasAtmosphere: false,
     updateLighting: false,
+
+
   })
   .setMethod({
 
@@ -99,6 +137,12 @@
     },
 
 
+    /**
+     * @override
+     * @memberof PLA_asteroid
+     * @instance
+     * @return {GenericMesh|null}
+     */
     ex_getMesh: function() {
       return comp_ex_getMesh(this);
     }

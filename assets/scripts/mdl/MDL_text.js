@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- text ----------> */
 
 
@@ -187,6 +184,24 @@
 
 
   /**
+   * Parses logical operators in a string, splits the string into a 2D-array of strings for further processing.
+   * In the result array, the first layer is for "OR", and the second layer is for "AND".
+   * @param {string} str
+   * @return {Array<Array<string>>}
+   */
+  const parseLogicOp = function(str) {
+    const matArr = [];
+
+    str.split(/\s*((or)|(OR)|(\|)|(\|\|))\s*/).forEachFast(str1 => {
+      matArr.push(str1.split(/\s*((and)|(AND)|&|(&&))\s*/));
+    });
+
+    return matArr;
+  };
+  exports.parseLogicOp = parseLogicOp;
+
+
+  /**
    * Finds keywords in given string for search.
    * @param {string} str
    * @return {Array<string>}
@@ -269,6 +284,6 @@
    * @return {boolean}
    */
   const _searchValid = function(ct, str) {
-    return _searchBoolFs(_keywords(str)).every(boolF => boolF(ct));
+    return parseLogicOp(str).some(strs => strs.every(str1 => _searchBoolFs(_keywords(str1)).every(boolF => boolF(ct))));
   };
   exports._searchValid = _searchValid;

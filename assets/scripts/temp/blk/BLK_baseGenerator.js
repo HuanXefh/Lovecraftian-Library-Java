@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Blocks that produce power.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -92,18 +78,32 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Blocks that produce power.
+     * @class BLK_baseGenerator
+     * @extends BLK_basePowerBlock
+     * @extends INTF_BLK_facilityBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseGenerator").implement(INTF[0]).initClass()
     .setParent(null)
     .setTags("blk-pow", "blk-pow0gen")
     .setParam({
-      // @PARAM: Whether to overwrite explosion-related parameters with generated ones. Set this to {false} if the generator should not explode.
+
+
+      /**
+       * <PARAM>: Whether to overwrite explosion-related parameters with generated ones. Set this to false if the generator should not explode.
+       * @memberof BLK_baseGenerator
+       * @instance
+       */
       overwriteExploParam: true,
+
+      
     })
     .setParamAlias([
       "genEff", "generateEffect", Fx.none,
       "genEffP", "effectChance", 0.02,
-      "genEffRad", "generateEffectRange", 3.0,                // Only used for {ConsumeGenerator}, I don't know why
+      // Only used for `ConsumeGenerator`, I don't know why
+      "genEffRad", "generateEffectRange", 3.0,
       "exploEff", "explodeEffect", Fx.none,
     ])
     .setMethod({
@@ -127,8 +127,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseGenerator").implement(INTF[1]).initClass()
+    /**
+     * @class B_baseGenerator
+     * @extends B_basePowerBlock
+     * @extends INTF_B_facilityBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseGenerator").implement(INTF[1]).initClass()
     .setParent(null)
     .setParam({})
     .setMethod({

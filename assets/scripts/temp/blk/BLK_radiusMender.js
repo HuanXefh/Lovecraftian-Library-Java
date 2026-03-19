@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla mender, but heal numbers are shown.
-   * Also capable of healing units.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -93,22 +78,61 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla mender, but heal numbers are shown.
+     * Capable of healing units also.
+     * @class BLK_radiusMender
+     * @extends BLK_baseMender
+     */
     newClass().extendClass(PARENT[0], "BLK_radiusMender").initClass()
     .setParent(MendProjector)
     .setTags("blk-proj", "blk-mend")
     .setParam({
-      // @PARAM: Heal amount for buildings.
+
+
+      /**
+       * <PARAM>: Heal amount for buildings.
+       * @memberof BLK_radiusMender
+       * @instance
+       */
       bHealAmt: 0.0,
-      // @PARAM: Heal percentage for buildings.
+      /**
+       * <PARAM>: Heal percentage for buildings.
+       * @memberof BLK_radiusMender
+       * @instance
+       */
       bHealPerc: 0.0,
-      // @PARAM: Heal amount for units.
+      /**
+       * <PARAM>: Heal amount for units.
+       * @memberof BLK_radiusMender
+       * @instance
+       */
       unitHealAmt: 0.0,
-      // @PARAM: Heal percentage for units.
+      /**
+       * <PARAM>: Heal percentage for units.
+       * @memberof BLK_radiusMender
+       * @instance
+       */
       unitHealPerc: 0.0,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_radiusMender
+       * @instance
+       */
       healsBuilding: false,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_radiusMender
+       * @instance
+       */
       healsUnit: false,
+
+
     })
     .setMethod({
 
@@ -126,8 +150,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_radiusMender").initClass()
+    /**
+     * @class B_radiusMender
+     * @extends B_baseMender
+     */
+    newClass().extendClass(PARENT[1], "B_radiusMender").initClass()
     .setParent(MendProjector.MendBuild)
     .setParam({})
     .setMethod({

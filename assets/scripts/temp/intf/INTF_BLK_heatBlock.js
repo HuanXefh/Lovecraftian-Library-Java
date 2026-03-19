@@ -1,26 +1,12 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Blocks that handle Lovec heat, not Erekir one.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
 
 
   /* <---------- import ----------> */
-  
+
 
   /* <---------- component ----------> */
 
@@ -116,14 +102,14 @@
 
     b.heatTransTgs.clear();
     b.proximity.each(
-      ob => ob.ex_getHeatTransfered != null && (
+      ob => ob.ex_getHeatTransferred != null && (
         !ob.block.rotate ?
           true :
           ob.relativeTo(b) === ob.rotation && (
             !b.block.rotate ?
               true :
               (function(b_f) {
-                return b_f == null || b_f.ex_getHeatTransfered == null;
+                return b_f == null || b_f.ex_getHeatTransferred == null;
               })(b.nearby(Mathf.mod(b.rotation + 2, 4)))
           )
       ) && (
@@ -154,6 +140,7 @@
 
     if(!b.block.delegee.skipHeatFetch) {
       b.heatFetchTgs.forEachRow(2, (ob, sideFrac) => {
+        if(!ob.added || !ob.enabled || ob.isPayload()) return;
         heat = ob.ex_getHeatProd != null ?
           (ob.ex_getHeatProd() * sideFrac) :
           (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict._prodAmt(VARGEN.auxHeat, ob.block) * sideFrac, true, true) * MDL_recipeDict._prodAmt(VARGEN.auxHeat, ob.block) * sideFrac);
@@ -164,7 +151,8 @@
 
     if(!b.block.delegee.skipHeatTrans) {
       b.heatTransTgs.forEachFast(ob => {
-        heatTg += ob.ex_getHeatTransfered();
+        if(!ob.added || !ob.enabled || ob.isPayload()) return;
+        heatTg += ob.ex_getHeatTransferred();
         b.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.maxHeaterProd);
       });
     };
@@ -183,22 +171,59 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Blocks that handle Lovec heat, not Erekir one.
+     * @class INTF_BLK_heatBlock
+     */
+    new CLS_interface("INTF_BLK_heatBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: How fast the heat block warms up.
+
+
+        /**
+         * <PARAM>: How fast this heat block warms up.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
         heatTransRate: 0.0008,
-        // @PARAM: Whether this block should not gain heat from producers.
+        /**
+         * <PARAM>: If true, this block cannot gain heat from producers.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
         skipHeatFetch: false,
-        // @PARAM: Whether this block should not transfer heat from other heat blocks.
+        /**
+         * <PARAM>: If true, this block cannot gain heat from other heat blocks.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
         skipHeatTrans: false,
-        // @PARAM: Whether this block should not supply heat for consumers.
+        /**
+         * <PARAM>: If true, this block cannot supply heat for consumers.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
         skipHeatSupply: false,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
         heatBlkMeltTemp: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
         heatReg: null,
+
+
       }),
 
 
@@ -225,18 +250,62 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_heatBlock
+     */
+    new CLS_interface("INTF_B_heatBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
         tempCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
         tempRiseTg: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
         maxHeaterProd: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
         heatFetchTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
         heatTransTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
         heatSupplyTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
         heatSupplyIncre: 0,
+
+
       }),
 
 
@@ -265,6 +334,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {void}
+       */
       ex_updateHeatFetchTgs: function() {
         comp_ex_updateHeatFetchTgs(this);
       }
@@ -273,6 +347,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {void}
+       */
       ex_updateHeatTransTgs: function() {
         comp_ex_updateHeatTransTgs(this);
       }
@@ -281,6 +360,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {void}
+       */
       ex_updateHeatSupplyTgs: function() {
         comp_ex_updateHeatSupplyTgs(this);
       }
@@ -289,6 +373,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {number}
+       */
       ex_calcTempTg: function() {
         return comp_ex_calcTempTg(this);
       }
@@ -297,6 +386,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeat: function() {
         return this.tempCur;
       }
@@ -305,6 +399,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeatFrac: function() {
         return Mathf.clamp(this.tempCur / this.block.delegee.heatBlkMeltTemp);
       }
@@ -313,7 +412,12 @@
       }),
 
 
-      ex_getHeatTransfered: function() {
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {number}
+       */
+      ex_getHeatTransferred: function() {
         return this.tempCur;
       }
       .setProp({
@@ -321,8 +425,13 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeatSupplied: function() {
-        // Single heater with larger output rate => more efficienct heat transfer
+        // Single heater with larger output rate => more efficient heat transfer
         return b.tempCur <= b.maxHeaterProd ?
           b.tempCur :
           (Math.sqrt(Math.pow(b.maxHeaterProd, 2) * 4.0 + b.tempCur * b.maxHeaterProd * 4.0) - b.maxHeaterProd * (Math.sqrt(2) * 2.0 - 1.0));
@@ -332,9 +441,15 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
 
           (wr, revi) => {
             wr.f(this.tempCur);
@@ -349,7 +464,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

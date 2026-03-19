@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Blocks that transport fluids.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -46,7 +32,14 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Blocks that transport fluids.
+     * @class BLK_baseFluidDistributor
+     * @extends BLK_baseFluidBlock
+     * @extends INTF_BLK_fluidTypeFilter
+     * @extends INTF_BLK_corrosionAcceptor
+     * @extends INTF_BLK_fluidHeatAcceptor
+     */
     newClass().extendClass(PARENT[0], "BLK_baseFluidDistributor").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
     .setParent(null)
     .setTags("blk-liq")
@@ -62,26 +55,28 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseFluidDistributor").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
+    /**
+     * @class B_baseFluidDistributor
+     * @extends B_baseFluidBlock
+     * @extends INTF_B_fluidTypeFilter
+     * @extends INTF_B_corrosionAcceptor
+     * @extends INTF_B_fluidHeatAcceptor
+     */
+    newClass().extendClass(PARENT[1], "B_baseFluidDistributor").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
     .setParent(null)
     .setParam({})
     .setMethod({
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
 
-        if(LCRevi < 1) {
-          rd.s();
-        };
+        this.ex_processData(rd);
       },
 
 

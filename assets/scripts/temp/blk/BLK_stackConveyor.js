@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Vanilla stack conveyor I guess.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -52,13 +37,26 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla stack conveyor I guess.
+     * <br> <SINGLESIZE>
+     * @class BLK_stackConveyor
+     * @extends BLK_baseItemDistributor
+     */
     newClass().extendClass(PARENT[0], "BLK_stackConveyor").initClass()
     .setParent(StackConveyor)
     .setTags("blk-dis", "blk-conv")
     .setParam({
-      // @PARAM: Whether this conveyor only accepts inputs from other item distributors (intended for main line).
+
+
+      /**
+       * <PARAM>: Whether this conveyor only accepts inputs from other item distributors (intended for main bus).
+       * @memberof BLK_stackConveyor
+       * @instance
+       */
       disInputOnly: true,
+
+
     })
     .setParamAlias([
       "loadEff", "loadEffect", Fx.conveyorPoof,
@@ -72,6 +70,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_stackConveyor
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -84,8 +88,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_stackConveyor").initClass()
+    /**
+     * @class B_stackConveyor
+     * @extends B_baseItemDistributor
+     */
+    newClass().extendClass(PARENT[1], "B_stackConveyor").initClass()
     .setParent(StackConveyor.StackConveyorBuild)
     .setParam({})
     .setMethod({

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Miners that obtain resource mostly based on attributes.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -43,8 +29,12 @@
   module.exports = [
 
 
-    // Block
-    newClass().extendClass(PARENT[0], "BLK_baseHarvestor").initClass()
+    /**
+     * Miners that obtain resource mostly based on attributes.
+     * @class BLK_baseHarvester
+     * @extends BLK_baseMiner
+     */
+    newClass().extendClass(PARENT[0], "BLK_baseHarvester").initClass()
     .setParent(null)
     .setTags("blk-min", "blk-harv")
     .setParam({})
@@ -59,8 +49,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseHarvestor").initClass()
+    /**
+     * @class B_baseHarvester
+     * @extends B_baseMiner
+     */
+    newClass().extendClass(PARENT[1], "B_baseHarvester").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

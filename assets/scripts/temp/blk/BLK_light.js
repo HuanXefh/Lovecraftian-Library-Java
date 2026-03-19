@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Light block but actually a factory.
-   * The range and lightness are determined by efficiency.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -76,15 +61,32 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Light block but actually a factory.
+     * The range and lightness are determined by efficiency.
+     * @class BLK_light
+     * @extends BLK_baseFactory
+     */
     newClass().extendClass(PARENT[0], "BLK_light").initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-li")
     .setParam({
-      // @PARAM: Light radius of this block at efficiency of 1.0.
+
+
+      /**
+       * <PARAM>: Light radius of this block at efficiency of 1.0.
+       * @memberof BLK_light
+       * @instance
+       */
       lightRad: 200.0,
-      // @PARAM: Lightness of this block.
+      /**
+       * <PARAM>: Lightness of this block.
+       * @memberof BLK_light
+       * @instance
+       */
       lightA: 0.65,
+
+
     })
     .setParamParser([
       "lightRad", function(val) {
@@ -113,11 +115,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_light").initClass()
+    /**
+     * @class B_light
+     * @extends B_baseFactory
+     */
+    newClass().extendClass(PARENT[1], "B_light").initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_light
+       * @instance
+       */
       lightProg: 0.0,
+
+
     })
     .setMethod({
 
@@ -141,25 +158,31 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
         wr.f(this.lightProg);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
+
+        this.ex_processData(rd);
         this.lightProg = rd.f();
       },
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof B_light
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         // Do nothing
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

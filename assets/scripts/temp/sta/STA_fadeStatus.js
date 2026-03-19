@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A status effect with fading sprite.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -51,14 +37,36 @@
 */
 
 
+  /**
+   * A status effect with fading sprite.
+   * @class STA_fadeStatus
+   * @extends STA_baseStatus
+   */
   module.exports = newClass().extendClass(PARENT, "STA_fadeStatus").initClass()
   .setParent(StatusEffect)
   .setTags("sta-fade")
   .setParam({
-    // @PARAM: Color used for {sta.fadeReg}.
+
+
+    /**
+     * <PARAM>: Color used for the fading region.
+     * @memberof STA_fadeStatus
+     * @instance
+     */
     fadeColor: Color.white,
 
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof STA_fadeStatus
+     * @instance
+     */
     fadeReg: null,
+
+
   })
   .setMethod({
 

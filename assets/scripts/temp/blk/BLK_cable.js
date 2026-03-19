@@ -1,24 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * A block that conducts power.
-   * ----------------------------------------
-   * DEDICATION:
-   *
-   * Inspried by Asthosus.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -59,7 +40,7 @@
   const comp_blends = newMultiFunction(
     function(blk, t, rot, dir) {
       let ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));
-      return ob != null && ob.team == t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
+      return ob != null && ob.team === t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
     },
     function(blk, t, rot, bPlan, dir, shouldCheckWorld) {
       if(bPlan != null) {
@@ -93,7 +74,13 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A block that conducts power.
+     * <br> <SINGLESIZE>
+     * <br> <DEDICATION>: Inspired by Asthosus.
+     * @class BLK_cable
+     * @extends BLK_basePowerTransmitter
+     */
     newClass().extendClass(PARENT[0], "BLK_cable").initClass()
     .setParent(ArmoredConveyor)
     .setTags("blk-pow", "blk-pow0trans", "blk-cable")
@@ -132,6 +119,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_cable
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -144,8 +137,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_cable").initClass()
+    /**
+     * @class B_cable
+     * @extends B_basePowerTransmitter
+     */
+    newClass().extendClass(PARENT[1], "B_cable").initClass()
     .setParent(ArmoredConveyor.ArmoredConveyorBuild)
     .setParam({})
     .setMethod({

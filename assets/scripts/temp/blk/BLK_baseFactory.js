@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent for all factories.
-   * This template also serves as the Lovec version of generic crafter.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -60,13 +45,27 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Parent for all factories.
+     * This template also serves as the Lovec version of {@link GenericCrafter}.
+     * @class BLK_baseFactory
+     * @extends BLK_baseBlock
+     * @extends INTF_BLK_facilityBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac")
     .setParam({
-      // @PARAM: Sound played when this building crafts.
+
+
+      /**
+       * <PARAM>: Sound played when this building crafts.
+       * @memberof BLK_baseFactory
+       * @instance
+       */
       craftSe: Sounds.unset,
+
+
     })
     .setParamAlias([
       "craftEff", "craftEffect", Fx.none,
@@ -89,8 +88,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseFactory").implement(INTF[1]).initClass()
+    /**
+     * @class B_baseFactory
+     * @extends B_baseBlock
+     * @extends INTF_B_facilityBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseFactory").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({

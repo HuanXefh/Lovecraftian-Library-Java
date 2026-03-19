@@ -17,14 +17,11 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- internal ----------> */
 
 
   /** @global */
-  LOVEC_REVISION = 5;
+  LOVEC_REVISION = 6;
   /**
    * For other mods, if you don't define another global variable.
    * @global
@@ -47,9 +44,7 @@
    * @return {number}
    */
   processRevision = function(wr0rd, nmMod) {
-    if(wr0rd instanceof Reads) {
-      return PARAM.secret_revisionFix ? 0 : wr0rd.s();
-    };
+    if(wr0rd instanceof Reads) return wr0rd.s();
 
     let revi = nmMod == null ? LOVEC_REVISION : MOD_REVISION[nmMod];
     wr0rd.s(revi);
@@ -192,7 +187,7 @@
      */
     read(key) {
       let tup = DB_HANDLER.__KEY_TUP_MAP__.get(key);
-      if(tup == null) throw new Error("Database key [$1] is not registered!".format(key));
+      if(tup == null) throw new Error("Database key ${1} is not registered!".format(key));
 
       let args = DB_HANDLER.__TMP_ARGS__.clear();
       args.push(tup[0]);

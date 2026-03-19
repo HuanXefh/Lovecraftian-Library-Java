@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Weathers that only play a sound loop.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,6 +21,11 @@
 */
 
 
+  /**
+   * Weathers for ambient sound loop only.
+   * @class WEA_ambientWeather
+   * @extends WEA_baseWeather
+   */
   module.exports = newClass().extendClass(PARENT, "WEA_ambientWeather").initClass()
   .setParent(Weather)
   .setTags("wea-amb")

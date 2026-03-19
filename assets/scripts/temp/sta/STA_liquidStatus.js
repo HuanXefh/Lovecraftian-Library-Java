@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A burst status related to liquid floor and puddle.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -51,6 +37,12 @@
 */
 
 
+  /**
+   * Variant of {@link STA_burstStatus} related to liquid floor and puddle.
+   * @class STA_liquidStatus
+   * @extends STA_baseStatus
+   * @extends INTF_STA_burstStatus
+   */
   module.exports = newClass().extendClass(PARENT, "STA_liquidStatus").implement(INTF).initClass()
   .setParent(StatusEffect)
   .setTags()

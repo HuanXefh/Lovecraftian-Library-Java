@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Regular terrestrial planet.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,8 +21,13 @@
 */
 
 
-  module.exports = newClass().extendClass(PARENT, "PLA_solidPlanet").initClass()
+  /**
+   * Regular planet.
+   * @class PLA_planet
+   * @extends PLA_basePlanet
+   */
+  module.exports = newClass().extendClass(PARENT, "PLA_planet").initClass()
   .setParent(Planet)
-  .setTags("pla-sol")
+  .setTags("pla-pla")
   .setParam({})
   .setMethod({});

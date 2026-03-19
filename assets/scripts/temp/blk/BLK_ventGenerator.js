@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Generators built on vents. It checks vent size now since it's not strictly 3x3.
-   * Consumers are supported.
-   * You don't need to divide production amount by squared block size.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -79,17 +63,6 @@
   };
 
 
-  function comp_warmup(b) {
-    // Warmup can be over 1.0 in vanilla {ThermalGenerator}, which is bad
-    return b.lastWarmup;
-  };
-
-
-  function comp_totalProgress(b) {
-    return b.tProg;
-  };
-
-
 /*
   ========================================
   Section: Application
@@ -100,7 +73,13 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Generators built on vents. It checks vent size now since vents are not strictly 3x3 in Lovec.
+     * Supports consumers.
+     * No need to divide production amount by squared block size, it's handled automatically here.
+     * @class BLK_ventGenerator
+     * @extends BLK_baseGenerator
+     */
     newClass().extendClass(PARENT[0], "BLK_ventGenerator").initClass()
     .setParent(ThermalGenerator)
     .setTags("blk-pow", "blk-pow0gen")
@@ -126,6 +105,11 @@
       }),
 
 
+      /**
+       * @memberof BLK_ventGenerator
+       * @instance
+       * @return {number}
+       */
       ex_getRcDictOutputScl: function() {
         return 1.0 / Math.pow(this.size, 2);
       }
@@ -137,13 +121,38 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_ventGenerator").initClass()
+    /**
+     * @class B_ventGenerator
+     * @extends B_baseGenerator
+     */
+    newClass().extendClass(PARENT[1], "B_ventGenerator").initClass()
     .setParent(ThermalGenerator.ThermalGeneratorBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_ventGenerator
+       * @instance
+       */
       lastEffc: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_ventGenerator
+       * @instance
+       */
       lastWarmup: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_ventGenerator
+       * @instance
+       */
       tProg: 0.0,
+
+
     })
     .setMethod({
 
@@ -157,7 +166,8 @@
 
 
       warmup: function() {
-        return comp_warmup(this);
+        // In vanilla case warmup can be over 1.0, which breaks drawers
+        return this.lastWarmup;
       }
       .setProp({
         noSuper: true,
@@ -165,7 +175,7 @@
 
 
       totalProgress: function() {
-        return comp_totalProgress(this);
+        return this.tProg;
       }
       .setProp({
         noSuper: true,

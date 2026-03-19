@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles fluid type restriction.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -29,8 +15,9 @@
     switch(b.block.delegee.fldType) {
       case "liquid" : return !liq.gas && !liq.willBoil();
       case "gas" : return liq.gas || liq.willBoil();
-      default : return true;
     };
+
+    return true;
   };
 
 
@@ -44,21 +31,35 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles fluid type restriction.
+     * @class INTF_BLK_fluidTypeFilter
+     */
+    new CLS_interface("INTF_BLK_fluidTypeFilter", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Fluid type this block accepts. Possible values: "any", "liquid", "gas".
+
+
+        /**
+         * <PARAM>: Type of fluid that this block accepts.
+         * <br> <VALS>: "liquid", "gas", "any".
+         * @memberof INTF_BLK_fluidTypeFilter
+         * @instance
+         */
         fldType: "any",
+
+
       }),
 
 
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_fluidTypeFilter
+     */
+    new CLS_interface("INTF_B_fluidTypeFilter", {
 
 
       acceptLiquid: function(b_f, liq) {

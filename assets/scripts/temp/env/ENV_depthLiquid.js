@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Similar to {ENV_depthOre}, but for liquid.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -53,11 +38,30 @@
 */
 
 
+  /**
+   * Similar to {@link ENV_depthOre}, but for liquid.
+   * <br> <NAMEGEN>
+   * @class ENV_depthLiquid
+   * @extends ENV_baseOverlay
+   * @extends INTF_ENV_depthOverlay
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_depthLiquid").implement(INTF).initClass()
   .setParent(OverlayFloor)
   .setTags("blk-env", "blk-dpliq")
   .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof ENV_depthLiquid
+     * @instance
+     */
     rsDrop: null,
+
+
   })
   .setMethod({
 
@@ -67,6 +71,11 @@
     },
 
 
+    /**
+     * @memberof ENV_depthLiquid
+     * @instance
+     * @return {Liquid}
+     */
     ex_getRsDrop: function() {
       return this.rsDrop;
     }

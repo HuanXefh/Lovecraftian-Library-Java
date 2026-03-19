@@ -1,25 +1,8 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Transports matching loots to the back side.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
-
-
-  // TODO: Test.
 
 
   /* <---------- import ----------> */
@@ -104,12 +87,29 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Transports matching loots to the back side.
+     * @class BLK_lootFilter
+     * @extends BLK_baseLootBlock
+     * @extends INTF_BLK_contentSelector
+     */
     newClass().extendClass(PARENT[0], "BLK_lootFilter").implement(INTF[0]).initClass()
     .setParent(Wall)
     .setTags()
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_lootFilter
+       * @instance
+       */
       itemReg: null,
+
+
     })
     .setMethod({
 
@@ -132,11 +132,27 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_lootFilter").implement(INTF[1]).initClass()
+    /**
+     * @class B_lootFilter
+     * @extends B_baseLootBlock
+     * @extends INTF_B_contentSelector
+     */
+    newClass().extendClass(PARENT[1], "B_lootFilter").implement(INTF[1]).initClass()
     .setParent(WallBlock.WallBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_lootFilter
+       * @instance
+       */
       lootDumpVec2: prov(() => new Vec2()),
+
+
     })
     .setMethod({
 
@@ -157,17 +173,21 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        this.ex_processData(rd);
       },
 
 
+      /**
+       * @override
+       * @memberof B_lootFilter
+       * @instance
+       * @return {void}
+       */
       ex_updateLootTs: function() {
         comp_ex_updateLootTs(this);
       }
@@ -177,6 +197,13 @@
       }),
 
 
+      /**
+       * @memberof B_lootFilter
+       * @instance
+       * @param {Array<Unit>} loots
+       * @param {number} amt
+       * @return {void}
+       */
       ex_lootCall: function(loots, amt) {
         comp_ex_lootCall(this, loots, amt);
       }

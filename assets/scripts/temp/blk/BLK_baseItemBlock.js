@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * These blocks are related to item distribution and storage.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -23,7 +9,7 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseBlock");
-  
+
 
   /* <---------- component ----------> */
 
@@ -61,12 +47,28 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Blocks related to item distribution and storage.
+     * @class BLK_baseItemBlock
+     * @extends BLK_baseBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseItemBlock").initClass()
     .setParent(null)
     .setTags()
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_baseItemBlock
+       * @instance
+       */
       isExposed: false,
+
+
     })
     .setMethod({
 
@@ -84,8 +86,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseItemBlock").initClass()
+    /**
+     * @class B_baseItemBlock
+     * @extends B_baseBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseItemBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({

@@ -18,10 +18,10 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
   exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
+
+
+  exports.lovecReviOff = 96;
 
 
   /* <---------- layer ----------> */
@@ -122,10 +122,6 @@
 
 
   exports.r_offBuildStat = 2.25;
-
-
-  exports.rad_treeScl = 0.15;
-  exports.rad_tallGrassScl = 0.5;
 
 
   /* <---------- length ----------> */

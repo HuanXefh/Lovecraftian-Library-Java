@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Toggable liquid junction.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -72,12 +57,29 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Togglable liquid junction.
+     * <br> <SINGLESIZE>
+     * @class BLK_fluidValve
+     * @extends BLK_fluidJunction
+     */
     newClass().extendClass(PARENT[0], "BLK_fluidValve").initClass()
     .setParent(LiquidJunction)
     .setTags("blk-liq", "blk-gate")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_fluidValve
+       * @instance
+       */
       onReg: null,
+
+
     })
     .setMethod({
 
@@ -95,11 +97,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fluidValve").initClass()
+    /**
+     * @class B_fluidValve
+     * @extends B_fluidJunction
+     */
+    newClass().extendClass(PARENT[1], "B_fluidValve").initClass()
     .setParent(LiquidJunction.LiquidJunctionBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_fluidValve
+       * @instance
+       */
       isOn: false,
+
+
     })
     .setMethod({
 
@@ -126,13 +143,13 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
         wr.bool(this.isOn);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
+        if(this.LCRevi === 5) rd.s();
+        
         this.isOn = rd.bool();
       },
 

@@ -1,36 +1,8 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used to construct a larger building from existing buildings.
-   *
-   * {constructionData} is where the plan is defined.
-   * Example data:
-   * [
-   *   [["router", -1], ["router", -1], ["router", -1], ["router", -1]],
-   *   [["router", -1], ["air", -1], ["air", -1], ["router", -1]],
-   *   [["router", -1], ["distributor", -1], ["air", -1], ["router", -1]],
-   *   [["router-core", -1], ["router", -1], ["router", -1], ["router", -1]],
-   * ]
-   * As seen above, blocks with size larger than 1 are treated as 1-sized block with tiles except the center taken by air.
-   * The -1 is for rotation, where -1 means arbitrary rotation. For {RotBlock} the value is forced to be -1!
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
-
-
-  // TODO: Test.
 
 
   /* <---------- import ----------> */
@@ -44,8 +16,8 @@
 
   function comp_init(blk) {
     blk.ex_parseConstructionData();
-    if(blk.placeDataX < 0) blk.placeDataX = blk.centerPon2.x;
-    if(blk.placeDataY < 0) blk.placeDataY = blk.centerPon2.y;
+    if(blk.placeDataX == null) blk.placeDataX = blk.centerPon2.x;
+    if(blk.placeDataY == null) blk.placeDataY = blk.centerPon2.y;
 
     blk.placeBlk = MDL_content._ct(blk.placeBlk, "blk");
     if(blk.placeBlk == null) ERROR_HANDLER.throw("nullArgument", "placeBlk");
@@ -130,7 +102,7 @@
 
 
   const comp_drawPlace = function thisFun(blk, tx, ty, rot, valid) {
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, tx, ty, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, tx, ty, rot)) {
       blk.ex_findPlan(blk.constructionTmpPlan, tx, ty, rot);
     };
 
@@ -142,7 +114,7 @@
 
 
   function comp_ex_parseConstructionData(blk) {
-    let i, icap = blk.constructionData[0].iCap(), j = 0, jCap = blk.constructionData.iCap();
+    let i, iCap = blk.constructionData[0].iCap(), j = 0, jCap = blk.constructionData.iCap();
     while(j < jCap) {
       blk.constructionParsedData[j] = [];
       i = 0;
@@ -192,7 +164,7 @@
       while(i < iCap) {
         let ot = blk.ex_getPlanT(tx, ty, rot, i, j);
         if(ot == null) {
-          // Near map boundry? Just throw an empty array back
+          // Near map boundary? Just throw an empty array back
           arr.clear();
           return arr;
         } else if(blk.constructionParsedData[j][i].blk !== Blocks.air) {
@@ -381,37 +353,129 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Used to construct a larger building from existing buildings.
+     * {@link BLK_constructionCore#constructionData} is where the plan is defined.
+     * @class BLK_constructionCore
+     * @extends BLK_materialBlock
+     * @example
+     * // Blocks larger than 1 block unit are treated as 1-sized blocks, with tiles except the center taken by air
+     * // -1 for rotation means arbitrary rotation
+     * let exampleData = [
+     *   [["router", -1], ["router", -1], ["router", -1], ["router", -1]],
+     *   [["router", -1], ["air", -1], ["air", -1], ["router", -1]],
+     *   [["router", -1], ["distributor", -1], ["air", -1], ["router", -1]],
+     *   [["router-core", -1], ["router", -1], ["router", -1], ["router", -1]],
+     * ];
+     */
     newClass().extendClass(PARENT[0], "BLK_constructionCore").initClass()
     .setParent(Wall)
     .setTags()
     .setParam({
-      // @PARAM: Used to define the buildings required and their position.
+
+
+      /**
+       * <PARAM>: Definition of structure.
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       constructionData: prov(() => [[]]),
-      // @PARAM: The target block built upon completion.
+      /**
+       * <PARAM>: Target block that is built upon structure completion.
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       placeBlk: null,
-      // @PARAM: Determines where the target block is placed upon completion. Use negative values for automatic calculation.
-      placeDataX: -1, placeDataY: -1,
-      // @PARAM: Offset on the rotation of target block placed upon completion.
+      /**
+       * <PARAM>: X offset of the target block placement position.
+       * @memberof BLK_constructionCore
+       * @instance
+       */
+      placeDataX: null,
+      /**
+       * <PARAM>: Y offset of the target block placement position.
+       * @memberof BLK_constructionCore
+       * @instance
+       */
+      placeDataY: null,
+      /**
+       * <PARAM>: Rotation offset of the target block placement position.
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       placeOffRot: 0,
-      // @PARAM: Time required to complete the construction.
+      /**
+       * <PARAM>: Timer required to complete the construction.
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       constructionTimeReq: 3600.0,
-      // @PARAM: If {true}, this block won't modify target block in {init}.
+      /**
+       * <PARAM>: If true, this block won't modify target block on INIT.
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       skipTargetSetup: false,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       constructionParsedData: prov(() => []),
+      /**
+       * <INTERNAL>
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       centerPon2: prov(() => new Point2()),
+      /**
+       * <INTERNAL>
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       corePon2: prov(() => new Point2()),
+      /**
+       * <INTERNAL>
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       planSize: 1,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       constructionTmpPlan: prov(() => []),
+      /**
+       * <INTERNAL>
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       constructionBlksReq: prov(() => []),
+      /**
+       * <INTERNAL>
+       * @memberof BLK_constructionCore
+       * @instance
+       */
       constructionItmsReq: prov(() => ({})),
+
+
     })
     .setMethod({
 
 
       init: function() {
         comp_init(this);
+      },
+
+
+      setStats: function() {
+        comp_setStats(this);
       },
 
 
@@ -425,6 +489,11 @@
       },
 
 
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @return {void}
+       */
       ex_parseConstructionData: function() {
         comp_ex_parseConstructionData(this);
       }
@@ -433,6 +502,16 @@
       }),
 
 
+      /**
+       * Places target block at (tx, ty) with given rotation.
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Team} team
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {void}
+       */
       ex_placePlanTg: function(team, tx, ty, rot) {
         comp_ex_placePlanTg(this, team, tx, ty, rot);
       }
@@ -442,6 +521,13 @@
       }),
 
 
+      /**
+       * Removes all existing buildings for the plan.
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Array<Array>} plan
+       * @return {void}
+       */
       ex_removePlanBlks: function(plan) {
         comp_ex_removePlanBlks(this, plan);
       }
@@ -451,6 +537,16 @@
       }),
 
 
+      /**
+       * Gets transformed plan at (tx, ty) with given rotation.
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Array<Array>|unset} contPlan
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {Array<Array>}
+       */
       ex_findPlan: function(contPlan, tx, ty, rot) {
         return comp_ex_findPlan(this, contPlan, tx, ty, rot);
       }
@@ -460,6 +556,12 @@
       }),
 
 
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Array|unset} contArr
+       * @return {Array} <ROWS>: blk, amt.
+       */
       ex_calcBlksReq: function(contArr) {
         return comp_ex_calcBlksReq(this, contArr);
       }
@@ -469,6 +571,13 @@
       }),
 
 
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Object|unset} contObj
+       * @param {Array} blksReq
+       * @return {Object}
+       */
       ex_calcItmsReq: function(contObj, blksReq) {
         return comp_ex_calcItmsReq(this, contObj, blksReq);
       }
@@ -478,6 +587,16 @@
       }),
 
 
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @param {number} dataX
+       * @param {number} dataY
+       * @return {Tile|null}
+       */
       ex_getPlanT: function(tx, ty, rot, dataX, dataY) {
         return comp_ex_getPlanT(this, tx, ty, rot, dataX, dataY);
       }
@@ -487,6 +606,14 @@
       }),
 
 
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {number} rot
+       * @param {number} dataX
+       * @param {number} dataY
+       * @return {number}
+       */
       ex_getPlanRot: function(rot, dataX, dataY) {
         return comp_ex_getPlanRot(this, rot, dataX, dataY);
       }
@@ -496,6 +623,13 @@
       }),
 
 
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Team} team
+       * @param {Array<Array>} plan
+       * @return {boolean}
+       */
       ex_checkPlanComplete: function(team, plan) {
         return comp_ex_checkPlanComplete(this, team, plan);
       }
@@ -505,6 +639,15 @@
       }),
 
 
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Tile} t
+       * @param {Block} oblk
+       * @param {number} rot
+       * @param {Team} team
+       * @return {boolean}
+       */
       ex_checkPlanTileComplete: function(t, oblk, rot, team) {
         return comp_ex_checkPlanTileComplete(this, t, oblk, rot, team);
       }
@@ -514,6 +657,13 @@
       }),
 
 
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Team} team
+       * @param {Array<Array>} plan
+       * @return {void}
+       */
       ex_drawPlan: function(team, plan) {
         comp_ex_drawPlan(this, team, plan);
       }
@@ -526,15 +676,50 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_constructionCore").initClass()
+    /**
+     * @class B_constructionCore
+     * @extends B_materialBlock
+     */
+    newClass().extendClass(PARENT[1], "B_constructionCore").initClass()
     .setParent(Wall.WallBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_constructionCore
+       * @instance
+       */
       lastRot: -1,
+      /**
+       * <INTERNAL>
+       * @memberof B_constructionCore
+       * @instance
+       */
       constructionPlan: prov(() => []),
+      /**
+       * <INTERNAL>
+       * @memberof B_constructionCore
+       * @instance
+       */
       shouldDrawConstructionPlan: false,
+      /**
+       * <INTERNAL>
+       * @memberof B_constructionCore
+       * @instance
+       */
       underConstruction: false,
+      /**
+       * <INTERNAL>
+       * @memberof B_constructionCore
+       * @instance
+       */
       constructionTimeCur: 0.0,
+
+
     })
     .setMethod({
 
@@ -561,25 +746,36 @@
       }),
 
 
+      buildConfiguration: function(tb) {
+        comp_buildConfiguration(this, tb);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
       draw: function() {
         comp_draw(this);
       },
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
         wr.bool(this.underConstruction);
         wr.f(this.constructionTimeCur);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
         this.underConstruction = rd.bool();
         this.constructionTimeCur = rd.f();
       },
 
 
+      /**
+       * @memberof B_constructionCore
+       * @instance
+       * @return {void}
+       */
       ex_stopConstruction: function() {
         comp_ex_stopConstruction(this);
       }
@@ -588,6 +784,11 @@
       }),
 
 
+      /**
+       * @memberof B_constructionCore
+       * @instance
+       * @return {number}
+       */
       ex_getConstructionFrac: function() {
         return Mathf.clamp(this.constructionTimeCur / this.block.delegee.constructionTimeReq);
       }

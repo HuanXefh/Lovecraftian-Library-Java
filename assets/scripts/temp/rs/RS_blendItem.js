@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Intermediate: blend.
-   * Produced from a mixer or ball mill.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -37,15 +21,40 @@
 */
 
 
+  /**
+   * Items produced by mixers or ball mills.
+   * <br> <NAMEGEN>
+   * @class RS_blendItem
+   * @extends RS_intermediateItem
+   */
   module.exports = newClass().extendClass(PARENT, "RS_blendItem").initClass()
   .setParent(Item)
   .setTags("rs-intmd", "rs-blend")
   .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @override
+     * @memberof RS_blendItem
+     * @instance
+     */
     recolorRegStr: "lovec-gen-blend-item",
+
+
   })
   .setMethod({
 
 
+    /**
+     * @override
+     * @memberof RS_blendItem
+     * @instance
+     * @return {string}
+     */
     ex_getLocalizedMainName: function() {
       return MDL_bundle._term("common", "intmd-blend");
     }

@@ -12,15 +12,57 @@
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (Array)
   ========================================
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ property ------------------------------ */
 
 
-  /* <---------- array ----------> */
+  /**
+   * Gets first element, null if not found.
+   * @return {any}
+   */
+  Array.prototype.first = function() {
+    return this[0] == null ? null : this[0];
+  };
+
+
+  /**
+   * Gets last element, null if not found.
+   * @return {any}
+   */
+  Array.prototype.last = function() {
+    return this.length === 0 ? null : this[this.length - 1];
+  };
+
+
+  /**
+   * Gets index of the last element, 0 if empty array.
+   * @return {number}
+   */
+  Array.prototype.lastInd = function() {
+    return this.length === 0 ? 0 : this.length - 1;
+  };
+
+
+  /**
+   * Gets fraction of index of some element by array length.
+   * @param {any} ele
+   * @param {boolean|unset} [useInd] - If true, `ele` will be treated as index directly.
+   * @param {boolean|unset} [returnNull] - If true, this method will return null instead of 0.0 if element not in the array.
+   * @return {number|null}
+   */
+  Array.prototype.getIndFrac = function(ele, useInd, returnNull) {
+    let ind = useInd ? ele : this.indexOf(ele);
+    return ind < 0 ?
+      (returnNull ? null : 0.0) :
+      ((ind + 1) / this.length);
+  };
+
+
+  /* <------------------------------ condition ------------------------------ */
 
 
   /**
@@ -56,28 +98,14 @@
 
 
   /**
-   * Whether given elements don't match the ones found in given array.
-   * If `shouldUpdateArr`, this array will be updated with given elements.
-   * <br> <ARGS>: arr, shouldUpdateArr, ele1, ele2, ele3, ...
+   * Whether any of the given elements is found in this array.
+   * <br> <ARGS>: ele1, ele2, ele3, ...
    * @return {boolean}
    */
-  Array.someMismatch = function() {
-    let arr = arguments[0];
-    if(arr.length === 0) return true;
-
-    let i = 2, j, iCap = arguments.length, jCap;
+  Array.prototype.includesAny = function() {
+    let i = 0, iCap = arguments.length;
     while(i < iCap) {
-      if(arguments[i] !== arr[i - 2]) {
-        if(arguments[1]) {
-          j = 2;
-          jCap = iCap;
-          while(j < jCap) {
-            arr[j - 2] = arguments[j];
-            j++;
-          };
-        };
-        return true;
-      };
+      if(this.includes(arguments[i])) return true;
       i++;
     };
 
@@ -86,79 +114,119 @@
 
 
   /**
-   * Gets an index array.
-   * If `isStatistical`, the array will start at 1 instead of 0.
-   * @return {Array<number>}
+   * Whether all the given elements are found in this array.
+   * <br> <ARGS>: ele1, ele2, ele3, ...
+   * @return {boolean}
    */
-  Array.getIndArr = function(len, isStatistical) {
-    const arr = [];
-
-    let i = 0;
-    while(i < len) {
-      arr.push(isStatistical ? (i + 1) : i);
+  Array.prototype.includesAll = function() {
+    let i = 0, iCap = arguments.length;
+    while(i < iCap) {
+      if(!this.includes(arguments[i])) return false;
       i++;
     };
 
-    return arr;
+    return true;
   };
 
 
   /**
-   * Gets first element, null if not found.
-   * @return {any}
+   * Whether this array equals the given array.
+   * @param {Array} arr
+   * @param {(function(any): boolean)|unset} [mapF]
+   * @return {boolean}
    */
-  Array.prototype.first = function() {
-    return this[0] == null ? null : this[0];
+  Array.prototype.equals = function(arr, mapF) {
+    let i = 0, iCap = this.iCap();
+    if(iCap !== arr.length) return false;
+
+    if(mapF == null) {
+      while(i < iCap) {
+        if(this[i] !== arr[i]) return false;
+        i++;
+      };
+    } else {
+      while(i < iCap) {
+        if(mapF(this[i]) !== mapF(arr[i])) return false;
+        i++;
+      };
+    };
+
+
+    return true;
   };
 
 
   /**
-   * Gets last element, null if not found.
-   * @return {any}
+   * Variant of {@link Array#equals} that ignores order of elements.
+   * @param {Array} arr
+   * @return {boolean}
    */
-  Array.prototype.last = function() {
-    return this.length === 0 ? null : this[this.length - 1];
+  Array.prototype.looseEquals = function(arr) {
+    return Array.prototype.looseEquals.tmpArr1.cpy(this).mixSort().equals(Array.prototype.looseEquals.tmpArr2.cpy(arr).mixSort());
+  };
+  Array.prototype.looseEquals.tmpArr1 = [];
+  Array.prototype.looseEquals.tmpArr2 = [];
+
+
+  /**
+   * Whether this array contains another array (loose equality).
+   * Used for 2D-array.
+   * @param {Array} arr
+   * @return {boolean}
+   */
+  Array.prototype.looseIncludes = function(arr) {
+    let i = 0, iCap = this.iCap();
+    while(i < iCap) {
+      if(!(this[i] instanceof Array)) ERROR_HANDLER.throw("not2dArray");
+      if(this[i].looseEquals(arr)) return true;
+      i++;
+    };
+
+    return false;
   };
 
 
   /**
-   * Gets index of the last element, 0 if empty array.
-   * @return {number}
-   */
-  Array.prototype.lastInd = function() {
-    return this.length === 0 ? 0 : this.length - 1;
-  };
-
-
-  /**
-   * 1. Gets a copy of this array.
-   * <br> 2. Copies elements from given array.
-   * @param {Array|unset} [arr]
-   * @return {this}
-   */
-  Array.prototype.cpy = newMultiFunction(
-    [], function() {
-      return this.slice();
-    },
-    [Array], function(arr) {
-      return this.clear().pushAll(arr);
-    },
-  );
-
-
-  /**
-   * Gets fraction of index of some element by array length.
+   * Variant of {@link Array#includes} used for formatted arrays.
    * @param {any} ele
-   * @param {boolean|unset} [useInd] - If true, `ele` will be treated as index directly.
-   * @param {boolean|unset} [returnNull] - If true, this method will return null instead of 0.0 if element not in the array.
-   * @return {number|null}
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @return {boolean}
    */
-  Array.prototype.getIndFrac = function(ele, useInd, returnNull) {
-    let ind = useInd ? ele : this.indexOf(ele);
-    return ind < 0 ?
-      (returnNull ? null : 0.0) :
-      ((ind + 1) / this.length);
+  Array.prototype.colIncludes = function(ele, ord, off) {
+    if(ord == null) ord = 1;
+    if(off == null) off = 0;
+
+    let i = off, iCap = this.iCap();
+    while(i < iCap) {
+      if(this[i] === ele) return true;
+      i += ord;
+    };
+
+    return false;
   };
+
+
+  /**
+   * Whether this array is a subset of another array.
+   * @param {Array} arr
+   * @return {boolean}
+   */
+  Array.prototype.subsetOf = function(arr) {
+    const countArr = this.toCountArr();
+
+    let i = 0, iCap = countArr.iCap();
+    while(i < iCap) {
+      if(arr.count(countArr[i]) < countArr[i + 1]) return false;
+      i += 2;
+    };
+    countArr.clear();
+
+    return true;
+  };
+
+
+  /* <------------------------------ modification ------------------------------ */
 
 
   /**
@@ -506,131 +574,24 @@
   };
 
 
+  /* <------------------------------ operation ------------------------------ */
+
+
   /**
-   * Whether any of the given elements is found in this array.
-   * <br> <ARGS>: ele1, ele2, ele3, ...
-   * @return {boolean}
+   * Gets an index array.
+   * If `isStatistical`, the array will start at 1 instead of 0.
+   * @return {Array<number>}
    */
-  Array.prototype.includesAny = function() {
-    let i = 0, iCap = arguments.length;
-    while(i < iCap) {
-      if(this.includes(arguments[i])) return true;
+  Array.getIndArr = function(len, isStatistical) {
+    const arr = [];
+
+    let i = 0;
+    while(i < len) {
+      arr.push(isStatistical ? (i + 1) : i);
       i++;
     };
 
-    return false;
-  };
-
-
-  /**
-   * Whether all the given elements are found in this array.
-   * <br> <ARGS>: ele1, ele2, ele3, ...
-   * @return {boolean}
-   */
-  Array.prototype.includesAll = function() {
-    let i = 0, iCap = arguments.length;
-    while(i < iCap) {
-      if(!this.includes(arguments[i])) return false;
-      i++;
-    };
-
-    return true;
-  };
-
-
-  /**
-   * Whether this array equals the given array.
-   * @param {Array} arr
-   * @param {(function(any): boolean)|unset} [mapF]
-   * @return {boolean}
-   */
-  Array.prototype.equals = function(arr, mapF) {
-    let i = 0, iCap = this.iCap();
-    if(iCap !== arr.length) return false;
-
-    if(mapF == null) {
-      while(i < iCap) {
-        if(this[i] !== arr[i]) return false;
-        i++;
-      };
-    } else {
-      while(i < iCap) {
-        if(mapF(this[i]) !== mapF(arr[i])) return false;
-        i++;
-      };
-    };
-
-
-    return true;
-  };
-
-
-  /**
-   * Variant of {@link Array#equals} that ignores order of elements.
-   * @param {Array} arr
-   * @return {boolean}
-   */
-  Array.prototype.looseEquals = function(arr) {
-    return Array.prototype.looseEquals.tmpArr1.cpy(this).mixSort().equals(Array.prototype.looseEquals.tmpArr2.cpy(arr).mixSort());
-  };
-  Array.prototype.looseEquals.tmpArr1 = [];
-  Array.prototype.looseEquals.tmpArr2 = [];
-
-
-  /**
-   * Whether this array contains another array (loose equality).
-   * @param {Array} arr
-   * @return {boolean}
-   */
-  Array.prototype.looseIncludes = function(arr) {
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      if(!(this[i] instanceof Array)) ERROR_HANDLER.throw("not3dArray");
-      if(this[i].looseEquals(arr)) return true;
-      i++;
-    };
-
-    return false;
-  };
-
-
-  /**
-   * Variant of {@link Array#includes} used for formatted arrays.
-   * @param {any} ele
-   * @param {number|unset} [ord]
-   * @param {number|unset} [off]
-   * @return {boolean}
-   */
-  Array.prototype.colIncludes = function(ele, ord, off) {
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-
-    let i = off, iCap = this.iCap();
-    while(i < iCap) {
-      if(this[i] === ele) return true;
-      i += ord;
-    };
-
-    return false;
-  };
-
-
-  /**
-   * Whether this array is a subset of another array.
-   * @param {Array} arr
-   * @return {boolean}
-   */
-  Array.prototype.subsetOf = function(arr) {
-    const countArr = this.toCountArr();
-
-    let i = 0, iCap = countArr.iCap();
-    while(i < iCap) {
-      if(arr.count(countArr[i]) < countArr[i + 1]) return false;
-      i += 2;
-    };
-    countArr.clear();
-
-    return true;
+    return arr;
   };
 
 
@@ -718,22 +679,6 @@
 
     return arr;
   };
-
-
-  /**
-   * Picks random elements from this array, returns the result as a new array.
-   * @param {number|unset} [amt]
-   * @return {Array}
-   */
-  Array.prototype.sample = function(amt) {
-    const arr = Array.prototype.sample.tmpArr.cpy(this).randomize();
-    if(amt == null) amt = this.iCap();
-
-    return amt >= arr.length ?
-      arr.slice() :
-      arr.slice(0, amt);
-  };
-  Array.prototype.sample.tmpArr = [];
 
 
   /**
@@ -871,6 +816,41 @@
 
     return arr;
   };
+
+
+  /* <------------------------------ util ------------------------------ */
+
+
+  /**
+   * 1. Gets a copy of this array.
+   * <br> 2. Copies elements from given array.
+   * @param {Array|unset} [arr]
+   * @return {this}
+   */
+  Array.prototype.cpy = newMultiFunction(
+    [], function() {
+      return this.slice();
+    },
+    [Array], function(arr) {
+      return this.clear().pushAll(arr);
+    },
+  );
+
+
+  /**
+   * Picks random elements from this array, returns the result as a new array.
+   * @param {number|unset} [amt]
+   * @return {Array}
+   */
+  Array.prototype.sample = function(amt) {
+    const arr = Array.prototype.sample.tmpArr.cpy(this).randomize();
+    if(amt == null) amt = this.iCap();
+
+    return amt >= arr.length ?
+      arr.slice() :
+      arr.slice(0, amt);
+  };
+  Array.prototype.sample.tmpArr = [];
 
 
   /**

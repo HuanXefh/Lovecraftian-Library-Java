@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods for fuel consumption.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -55,7 +41,7 @@
     if(!blk.noFuelInput) {
       blk.stats.add(fetchStat("lovec", "blk0fac-fuel"), newStatValue(tb => {
         tb.row();
-        tb.table(Styles.none, tb1 => {
+        MDL_table.__pnFixed(tb, pn => {
           let matArr = [[
             "",
             fetchStat("lovec", "rs0fuel-point").localized(),
@@ -68,8 +54,8 @@
               (MDL_fuel._fuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
             ]);
           });
-          MDL_table._l_table(tb1, matArr);
-        }).left().padLeft(28.0);
+          MDL_table._l_table(pn, matArr);
+        }, null, 300.0).left().padLeft(28.0);
       }));
 
       if(!blk.fuelConsMtp.fEqual(1.0)) blk.stats.add(fetchStat("lovec", "blk0fac-fuelconsmtp"), blk.fuelConsMtp.perc());
@@ -127,7 +113,7 @@
     };
 
     // Occasionally update fuel consumption status
-    if(TIMER.heat && b.fuelTup != null && b.fuelTup != null && b.fuelTup[0] != null) {
+    if(TIMER.heat && b.fuelTup != null && b.fuelTup[0] != null) {
       b.ex_updateFuelConsumption(b.fuelTup[0], b.fuelTup[1]);
     };
 
@@ -203,7 +189,7 @@
 
 
   function comp_ex_handleExtHeat(b, amt) {
-    b.tempExt = amt * b.block.delegee.tempExtMtp;
+    b.tempExt = Math.max(b.tempExt, amt * b.block.delegee.tempExtMtp);
     b.extHeatCd = 300.0;
   };
 
@@ -242,38 +228,108 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles methods for fuel consumption.
+     * @class INTF_BLK_furnaceBlock
+     */
+    new CLS_interface("INTF_BLK_furnaceBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: If {true}, this furnace cannot warmup on its own.
+
+
+        /**
+         * <PARAM>: If true, this furnace cannot warm up on its own.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         noFuelInput: false,
-        // @PARAM: Multiplier on external heat accepted.
+        /**
+         * <PARAM>: Multiplier on external heat accepted.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         tempExtMtp: 1.0,
-        // @PARAM: Type of fuel to consume. Possible values: "item", "liquid", "gas", "any".
+        /**
+         * <PARAM>: Type of fuel to consume.
+         * <br> <VALS>: "item", "liquid", "gas", "any".
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         fuelType: "item",
-        // @PARAM: List of resources that cannot be consumed as fuel.
+        /**
+         * <PARAM>: List of resources that annot be consumed as fuel.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         blockedFuels: prov(() => []),
-        // @PARAM: If not {null}, this furnace can only consume these fuels.
+        /**
+         * <PARAM>: If not null, this furnace can only consume these fuels.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         allowedFuels: null,
-        // @PARAM: Multiplier on fuel consumption.
+        /**
+         * <PARAM>: Multiplier on fuel consumption.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         fuelConsMtp: 1.0,
-        // @PARAM: Multiplier on fuel level.
+        /**
+         * <PARAM>: Multiplier on fuel level.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         fuelLvlMtp: 1.0,
-        // @PARAM: How fast the furnace reaches target temperature.
+        /**
+         * <PARAM>: How fast the furnace reaches target temperature.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         fuelWarmupRate: 0.0001,
-        // @PARAM: Alpha of heat region.
+        /**
+         * <PARAM>: Alpha of heat region.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         furnHeatA: 1.0,
-        // @PARAM: Whether the furnace emits light.
+        /**
+         * <PARAM>: Whether the furnace emits light.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         shouldDrawFurnLight: true,
-        // @PARAM: Maximum furnace light radius.
+        /**
+         * <PARAM>: Maximum furnace light radius.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         furnLightRad: 40.0,
-        // @PARAM: Temperature at which maximum light radius is achieved.
+        /**
+         * <PARAM>: Temperature at which maximum light radius is achieved.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         furnLightTempReq: 1000.0,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         fuelTempRes: Infinity,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
         fuelHeatReg: null,
+
+
       }),
 
 
@@ -316,23 +372,92 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_furnaceBlock
+     */
+    new CLS_interface("INTF_B_furnaceBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         tempCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         tempExt: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         tempFuel: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         tempRiseTg: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         heatFrac: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         extHeatCd: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         fuelPonCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         fuelSel: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         fuelTup: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         fuelEffc: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         furnEffc: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_furnaceBlock
+         * @instance
+         */
         fuelPolProd: 0.0,
+
+
       }),
 
 
@@ -380,6 +505,13 @@
       },
 
 
+      /**
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @param {Resource} fuel
+       * @param {number} pon
+       * @return {void}
+       */
       ex_updateFuelConsumption: function(fuel, pon) {
         comp_ex_updateFuelConsumption(this, fuel, pon);
       }
@@ -389,6 +521,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
         comp_ex_postUpdateEfficiencyMultiplier(this);
       }
@@ -397,11 +534,14 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Call this to input external heat, should be called in {updateTile} of other blocks.
-       * ---------------------------------------- */
+      /**
+       * Call this method to input external heat.
+       * Should be called in `updateTile`.
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @param {number} amt
+       * @return {void}
+       */
       ex_handleExtHeat: function(amt) {
         comp_ex_handleExtHeat(this, amt);
       }
@@ -411,6 +551,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @return {number}
+       */
       ex_calcTempTgFrac: function() {
         return comp_ex_calcTempTgFrac(this);
       }
@@ -419,6 +564,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeat: function() {
         return this.tempCur;
       }
@@ -427,12 +577,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Returns the target temperature that this furnace is expected to have, based on the building status.
-       * ---------------------------------------- */
+      /**
+       * Expected target temperature of this building.
+       * <br> <LATER>
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeatTg: function() {
         return PARAM.glbHeat;
       }
@@ -441,12 +592,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Returns the maximum heat allowed for the recipe, based on the building status.
-       * ---------------------------------------- */
+      /**
+       * Expected maximum temperature allowed for current recipe.
+       * <br> <LATER>
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeatAllowed: function() {
         return Infinity;
       }
@@ -455,6 +607,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @return {boolean}
+       */
       ex_checkFurnProdValid: function() {
         return this.tempRiseTg - PARAM.glbHeat >= 10.0;
       }
@@ -463,6 +620,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @param {Table} tb
+       * @return {void}
+       */
       ex_buildFuelSelector: function(tb) {
         comp_ex_buildFuelSelector(this, tb);
       }
@@ -471,9 +634,15 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_furnaceBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
 
           (wr, revi) => {
             wr.f(this.tempCur);
@@ -481,21 +650,14 @@
           },
 
           (rd, revi) => {
-            if(revi < 1) {
-              rd.s();
-            };
-
             this.tempCur = rd.f();
-
-            if(revi > 3) {
-              this.fuelSel = MDL_io._rd_ct(rd);
-            };
+            this.fuelSel = MDL_io._rd_ct(rd);
           },
         );
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

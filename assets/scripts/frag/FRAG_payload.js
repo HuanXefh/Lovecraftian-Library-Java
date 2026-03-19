@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -120,7 +117,7 @@
     pay = b.getPayload();
     let key = readClassFunMap(DB_block.db["class"]["group"]["payloadKey"], b.block, Function.air);
     if(key == null) {
-      throw new Error("Payload key is not defined for [$1]???".format(b.block.name));
+      throw new Error("Payload key is not defined for ${1}???".format(b.block.name));
     } else {
       b[key] = null;
     };

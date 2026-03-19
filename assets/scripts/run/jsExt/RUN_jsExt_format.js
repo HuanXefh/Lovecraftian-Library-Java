@@ -12,15 +12,9 @@
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (Number)
   ========================================
 */
-
-
-  /* <---------- import ----------> */
-
-
-  /* <---------- number ----------> */
 
 
   /**
@@ -99,7 +93,11 @@
   };
 
 
-  /* <---------- string ----------> */
+/*
+  ========================================
+  Section: Definition (String)
+  ========================================
+*/
 
 
   /**
@@ -122,7 +120,7 @@
 
 
   /**
-   * Replaces `"[$1]"` in the string with `str1`, and so on.
+   * Replaces `"${1}"` or `"${1:someName}"` in the string with `str1`, and so on.
    * <br> <ARGS>: str1, str2, str3, ...
    * @return {string}
    */
@@ -130,7 +128,7 @@
     let str = this, strTg;
     let i = 0, iCap = arguments.length;
     while(i < iCap) {
-      strTg = "\\[\\$" + (i + 1) + "\\]";
+      strTg = "\\$\\{" + (i + 1) +"(\\:(\\w|\\d|\\s)+|)\\}";
       str = str.replace(new RegExp(strTg, "g"), arguments[i]);
       i++;
     };
@@ -159,11 +157,8 @@
   };
 
 
-  const defRainbowColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.cyan, Color.blue, Color.purple];
-
-
   /**
-   * Colorful string.
+   * Colorful string made with markup abuse.
    * @param {Array<Color>|unset} [colors]
    * @param {number|unset} [scl]
    * @param {number|unset} [off]
@@ -171,7 +166,7 @@
    */
   String.prototype.rainbow = function(colors, scl, off) {
     let str = "";
-    if(colors == null) colors = defRainbowColors;
+    if(colors == null) colors = String.prototype.rainbow.defColors;
     if(scl == null) scl = 1.0;
     if(off == null) off = 0.0;
 
@@ -187,13 +182,15 @@
       color_f = colors[indBase];
       color_t = colors[indCap >= jCap ? 0 : indCap];
 
-      color = Tmp.c1.set(color_f).lerp(color_t, frac * jCap - indBase);
+      color = String.prototype.rainbow.tmpColor.set(color_f).lerp(color_t, frac * jCap - indBase);
       str += this[i].color(color);
       i++;
     };
 
     return str;
   };
+  String.prototype.rainbow.tmpColor = new Color();
+  String.prototype.rainbow.defColors = [Color.red, Color.orange, Color.yellow, Color.green, Color.cyan, Color.blue, Color.purple];
 
 
   /**

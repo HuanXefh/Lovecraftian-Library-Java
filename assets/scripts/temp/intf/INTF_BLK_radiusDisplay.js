@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Like {INTF_BLK_rangeDisplay} but for circular range.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -58,15 +44,31 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles circular range display.
+     * No stat is added.
+     * @class INTF_BLK_radiusDisplay
+     */
+    new CLS_interface("INTF_BLK_radiusDisplay", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Radius to show.
+
+
+        /**
+         * <PARAM>: Range (in world units) to show.
+         * @memberof INTF_BLK_radiusDisplay
+         * @instance
+         */
         blkRad: 40.0,
-        // @PARAM: Whether to draw pseudo-3D range instead of vanilla dashed circle.
+        /**
+         * <PARAM>: Whether to draw pseudo-3D range instead of vanilla dashed circle.
+         * @memberof INTF_BLK_radiusDisplay
+         * @instance
+         */
         useP3dRange: true,
+
+
       }),
 
 
@@ -75,7 +77,13 @@
       },
 
 
-      // @LATER
+      /**
+       * <LATER>
+       * @memberof INTF_BLK_rangeDisplay
+       * @instance
+       * @param {boolean} valid
+       * @return {Color}
+       */
       ex_getBlkRadColor: function(valid) {
         return Pal.accent;
       }
@@ -88,8 +96,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_radiusDisplay
+     */
+    new CLS_interface("INTF_B_radiusDisplay", {
 
 
       draw: function() {

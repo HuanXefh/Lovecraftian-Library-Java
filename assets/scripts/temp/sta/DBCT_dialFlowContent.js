@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * A content used to replay dialog flow after it's unlocked.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -71,12 +56,28 @@
 */
 
 
+  /**
+   * Used to play a dialog flow in database.
+   * This content can only be unlocked by playing the dialog flow in campaign, it's meaningless to set objectives for it.
+   * <br> <NAMEGEN>
+   * @class DBCT_dialFlowContent
+   * @extends DBCT_databaseContent
+   */
   module.exports = newClass().extendClass(PARENT, "DBCT_dialFlowContent").initClass()
   .setParent(StatusEffect)
   .setTags()
   .setParam({
-    // @PARAM: Name for dialog flow used.
+
+
+    /**
+     * <PARAM>: Name of the dialog flow used, see {@link newDialogFlow}.
+     * <br> <BUNDLE-name>: "dial.<nmDialFlow>".
+     * @memberof DBCT_dialFlowContent
+     * @instance
+     */
     nmDialFlow: null,
+
+    
   })
   .setMethod({
 

@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Enables or disables the valid building in front of it.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -111,12 +96,29 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Enables or disables the valid building in front of it.
+     * <br> <SINGLESIZE>
+     * @class BLK_directionalSwitch
+     * @extends BLK_baseLogicBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_directionalSwitch").initClass()
     .setParent(SwitchBlock)
     .setTags("blk-log", "blk-switch")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_directionalSwitch
+       * @instance
+       */
       dirReg: null,
+
+
     })
     .setMethod({
 
@@ -131,6 +133,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_directionalSwitch
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -140,6 +148,12 @@
       }),
 
 
+      /**
+       * @memberof BLK_directionalSwitch
+       * @instance
+       * @param {Block} oblk
+       * @return {boolean}
+       */
       ex_isValidTg: function(oblk) {
         return comp_ex_isValidTg(this, oblk);
       }
@@ -151,8 +165,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_directionalSwitch").initClass()
+    /**
+     * @class B_directionalSwitch
+     * @extends B_baseLogicBlock
+     */
+    newClass().extendClass(PARENT[1], "B_directionalSwitch").initClass()
     .setParent(SwitchBlock.SwitchBuild)
     .setParam({})
     .setMethod({
@@ -194,6 +211,12 @@
       }),
 
 
+      /**
+       * @memberof B_directionalSwitch
+       * @instance
+       * @param {Building|null} ob
+       * @return {void}
+       */
       ex_toggle: function(ob) {
         comp_ex_toggle(this, ob);
       }

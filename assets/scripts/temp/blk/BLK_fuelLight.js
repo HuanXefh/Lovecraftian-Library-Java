@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Light block that consumes fuels, essentially a furnace.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -58,16 +44,45 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Light blocks that consume fuels, essentially a furnace.
+     * @class BLK_fuelLight
+     * @extends BLK_light
+     * @extends INTF_BLK_furnaceBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_fuelLight").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-li")
     .setParam({
-      // @PARAM: The temperature at which light radius is maximized.
-      maxLightTemp: 1000.0,
 
-      tempExtMtp: 0.0,                // Have you ever seen an externally heated light???
+
+      /**
+       * <PARAM>: Temperature at which light radius is maximized.
+       * @memberof BLK_fuelLight
+       * @instance
+       */
+      maxLightTemp: 1000.0,
+      /**
+       * <PARAM>
+       * @override
+       * @memberof BLK_fuelLight
+       * @instance
+       */
       shouldDrawFurnLight: false,
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>: Have you ever seen an externally heated light?
+       * @override
+       * @memberof BLK_fuelLight
+       * @instance
+       */
+      tempExtMtp: 0.0,
+
+
     })
     .setMethod({
 
@@ -80,8 +95,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fuelLight").implement(INTF[1]).initClass()
+    /**
+     * @class B_fuelLight
+     * @extends B_light
+     * @extends INTF_B_furnaceBlock
+     */
+    newClass().extendClass(PARENT[1], "B_fuelLight").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({
@@ -121,6 +140,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_fuelLight
+       * @instance
+       * @return {number}
+       */
       ex_getHeatTg: function() {
         return this.block.delegee.maxLightTemp;
       }

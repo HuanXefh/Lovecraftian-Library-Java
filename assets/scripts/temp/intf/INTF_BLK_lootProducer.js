@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Makes a block drop loot instead of outputting items.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -92,8 +78,11 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Makes a block possible to output loot instead of items.
+     * @class INTF_BLK_lootProducer
+     */
+    new CLS_interface("INTF_BLK_lootProducer", {
 
 
       init: function() {
@@ -106,12 +95,13 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Returns time required for the recipe.
-       * ---------------------------------------- */
+      /**
+       * Expected craft time of this block.
+       * <br> <LATER>
+       * @memberof INTF_BLK_lootProducer
+       * @instance
+       * @return {number}
+       */
       ex_getCraftTime: function() {
         return Number.n8;
       }
@@ -123,14 +113,38 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_lootProducer
+     */
+    new CLS_interface("INTF_B_lootProducer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_lootProducer
+         * @instance
+         */
         lootDumpX: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_lootProducer
+         * @instance
+         */
         lootDumpY: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_lootProducer
+         * @instance
+         */
         lootCharge: 0,
+
+
       }),
 
 
@@ -152,12 +166,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * If {true}, this building will output loot instead of items.
-       * Change this if you are making mixed output.
-       * ---------------------------------------- */
+      /**
+       * If true, this building outputs loot instead of items.
+       * Override this method if you're making mixed output.
+       * @memberof INTF_B_lootProducer
+       * @instance
+       * @return {boolean}
+       */
       ex_shouldDropLoot: function() {
         return true;
       }
@@ -166,6 +181,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_lootProducer
+       * @instance
+       * @return {number}
+       */
       ex_getProg: function() {
         return comp_ex_getProg(this);
       }
@@ -174,12 +194,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Returns current time of the recipe.
-       * ---------------------------------------- */
+      /**
+       * Expected time spent on current recipe.
+       * <br> <LATER>
+       * @memberof INTF_B_lootProducer
+       * @instance
+       * @return {number}
+       */
       ex_getCraftTimeCur: function() {
         return 0.0;
       }
@@ -188,11 +209,12 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Amount of items to dump.
-       * ---------------------------------------- */
+      /**
+       * Expected amount of items to dump for each loot.
+       * @memberof INTF_B_lootProducer
+       * @instance
+       * @return {number}
+       */
       ex_getDumpAmt: function() {
         return this.block.itemCapacity;
       }
@@ -201,21 +223,31 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_lootProducer
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             wr.i(this.lootCharge);
           },
 
           (rd, revi) => {
+            if(revi === 5) {
+              return;
+            };
+            
             this.lootCharge = rd.i();
           },
         );
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

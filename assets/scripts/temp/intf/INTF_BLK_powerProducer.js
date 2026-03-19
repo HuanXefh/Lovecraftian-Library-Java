@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles power production methods for non-generator blocks.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -42,13 +28,13 @@
   function comp_setBars(blk) {
     if(!blk.hasPower) return;
 
-    if(blk.showPowProdStat) blk.addBar("poweroutput", b => new Bar(
+    if(blk.showPowProdBar) blk.addBar("poweroutput", b => new Bar(
       prov(() => Core.bundle.format("bar.poweroutput", Strings.fixed(b.getPowerProduction() * 60.0 * tryProp(b.timeScale, b), 1))),
       prov(() => Pal.powerBar),
       () => b.delegee.powProdEff,
     ));
 
-    if(blk.showPowBalanceStat) blk.addBar("power", b => new Bar(
+    if(blk.showPowBalanceBar) blk.addBar("power", b => new Bar(
       prov(() => Core.bundle.format("bar.powerbalance", (b.power.graph.getPowerBalance() >= 0.0 ? "+" : "") + (!isFinite(b.power.graph.getPowerBalance()) ? "-∞" : UI.formatAmount(b.power.graph.getPowerBalance() * 60.0)))),
       prov(() => Pal.powerBar),
       () => Mathf.clamp(b.power.graph.getLastPowerProduced() / b.power.graph.getLastPowerNeeded()),
@@ -78,17 +64,36 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Handles power production methods for non-generator blocks.
+     * @class INTF_BLK_powerProducer
+     */
     new CLS_interface({
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Base power produced by this block.
+
+
+        /**
+         * <PARAM>: Base power production.
+         * @memberof INTF_BLK_powerProducer
+         * @instance
+         */
         powProd: 0.0,
-        // @PARAM: Whether to add power output stat.
-        showPowProdStat: true,
-        // @PARAM: Whether to add power balance stat.
-        showPowBalanceStat: false,
+        /**
+         * <PARAM>: Whether to add power output bar.
+         * @memberof INTF_BLK_powerProducer
+         * @instance
+         */
+        showPowProdBar: true,
+        /**
+         * <PARAM>: Whether to add power balance bar.
+         * @memberof INTF_BLK_powerProducer
+         * @instance
+         */
+        showPowBalanceBar: false,
+
+
       }),
 
 
@@ -107,6 +112,14 @@
       },
 
 
+      /**
+       * Override this method for dynamic power production.
+       * <br> <LATER>
+       * @memberof INTF_BLK_powerProducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcPowProd: function(b) {
         return this.powProd;
       }
@@ -119,12 +132,26 @@
     }),
 
 
-    // Building
+    /**
+     * @class INTF_B_powerProducer
+     */
     new CLS_interface({
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>: Power production efficiency, affects output.
+         * @memberof INTF_B_powerProducer
+         * @instance
+         */
         powProdEff: 0.0,
+
+
       }),
 
 

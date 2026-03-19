@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A block that displays icon of the selected resource.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -24,7 +10,7 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseLogicBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_contentSelector");
-  
+
 
   /* <---------- component ----------> */
 
@@ -67,15 +53,37 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A block that displays icon of the selected resource.
+     * @class BLK_resourceDisplay
+     * @extends BLK_baseLogicBlock
+     * @extends INTF_BLK_contentSelector
+     */
     newClass().extendClass(PARENT[0], "BLK_resourceDisplay").implement(INTF[0]).initClass()
     .setParent(Wall)
     .setTags("blk-log")
     .setParam({
-      // @PARAM: Space between resource icon and the edge.
+
+
+      /**
+       * <PARAM>: Padding between resource icon and the edge region.
+       * @memberof BLK_resourceDisplay
+       * @instance
+       */
       rsRegPad: 2.0,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_resourceDisplay
+       * @instance
+       */
       topReg: null,
+
+
     })
     .setMethod({
 
@@ -90,6 +98,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_resourceDisplay
+       * @instance
+       * @return {Array<Resource>}
+       */
       ex_findSelectionTgs: function() {
         return Vars.content.items().toArray().concat(Vars.content.liquids().toArray());
       }
@@ -102,8 +116,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_resourceDisplay").implement(INTF[1]).initClass()
+    /**
+     * @class B_resourceDisplay
+     * @extends B_baseLogicBlock
+     * @extends INTF_B_contentSelector
+     */
+    newClass().extendClass(PARENT[1], "B_resourceDisplay").implement(INTF[1]).initClass()
     .setParent(Wall.WallBuild)
     .setParam({})
     .setMethod({
@@ -118,14 +136,14 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
+
+        this.ex_processData(rd);
       },
 
 

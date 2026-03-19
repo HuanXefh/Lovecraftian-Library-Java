@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Mineable tall blocks.
-   * {blk.itemDrop} is required.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -51,6 +35,13 @@
 */
 
 
+  /**
+   * Mineable tall blocks.
+   * `blk.itemDrop` is required.
+   * <br> <NAMEGEN>
+   * @class ENV_deposit
+   * @extends ENV_baseProp
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_deposit").initClass()
   .setParent(TallBlock)
   .setTags("blk-env", "blk-depo")

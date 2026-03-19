@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla attribute crafter.
-   * To be honest I don't like this as a pure factory.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,7 +24,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla attribute crafter.
+     * To be honest I don't like this as a pure factory.
+     * @class BLK_attributeFactory
+     * @extends BLK_baseFactory
+     */
     newClass().extendClass(PARENT[0], "BLK_attributeFactory").initClass()
     .setParent(AttributeCrafter)
     .setTags("blk-fac")
@@ -47,8 +37,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_attributeFactory").initClass()
+    /**
+     * @class B_attributeFactory
+     * @extends B_baseFactory
+     */
+    newClass().extendClass(PARENT[1], "B_attributeFactory").initClass()
     .setParent(AttributeCrafter.AttributeCrafterBuild)
     .setParam({})
     .setMethod({}),

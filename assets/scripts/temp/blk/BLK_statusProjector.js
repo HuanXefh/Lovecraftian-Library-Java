@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A block that perodically applys status effect on units in range.
-   * No optional item input!
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -89,18 +74,40 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A block that periodically applies status effect on units in range.
+     * No optional item input!
+     * @class BLK_statusProjector
+     * @extends BLK_baseProjector
+     * @extends INTF_BLK_radiusDisplay
+     */
     newClass().extendClass(PARENT[0], "BLK_statusProjector").implement(INTF[0]).initClass()
     .setParent(MendProjector)
     .setTags("blk-proj", "blk-mend")
     .setParam({
-      // @PARAM: Status effect to apply.
+
+
+      /**
+       * <PARAM>: Status effect to apply.
+       * @memberof BLK_statusProjector
+       * @instance
+       */
       staTg: StatusEffects.none,
-      // @PARAM: Duration of the status effect.
+      /**
+       * <PARAM>: Duration of the applied status effect.
+       * @memberof BLK_statusProjector
+       * @instance
+       */
       staDur: 0.0,
-      // @PARAM: Filter script used to select target units.
-      // <ARGS>: b, ounit
+      /**
+       * <PARAM>: Filter for target units. You can create effects here.
+       * <ARGS>: b, ounit.
+       * @memberof BLK_statusProjector
+       * @instance
+       */
       filterScrTup: prov(() => [Function.airTrue]),
+
+
     })
     .setMethod({
 
@@ -123,6 +130,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_statusProjector
+       * @instance
+       * @param {boolean} valid
+       * @return {Color}
+       */
       ex_getBlkRadColor: function(valid) {
         return this.baseColor;
       }
@@ -136,8 +150,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_statusProjector").implement(INTF[1]).initClass()
+    /**
+     * @class B_statusProjector
+     * @extends B_baseProjector
+     * @extends INTF_B_radiusDisplay
+     */
+    newClass().extendClass(PARENT[1], "B_statusProjector").implement(INTF[1]).initClass()
     .setParent(MendProjector.MendBuild)
     .setParam({})
     .setMethod({

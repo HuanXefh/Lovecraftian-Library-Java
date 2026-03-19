@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Blocks that are mostly treated as payloads.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,13 +30,24 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Blocks that are mostly treated as payloads.
+     * @class BLK_partsBlock
+     * @extends BLK_materialBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_partsBlock").initClass()
     .setParent(Wall)
     .setTags()
     .setParam({
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
       databaseCategory: "lovec-material",
       databaseTag: "default",
+
+      
     })
     .setMethod({
 
@@ -74,8 +71,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_partsBlock").initClass()
+    /**
+     * @class B_partsBlock
+     * @extends B_materialBlock
+     */
+    newClass().extendClass(PARENT[1], "B_partsBlock").initClass()
     .setParent(Wall.WallBuild)
     .setParam({})
     .setMethod({}),

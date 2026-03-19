@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Used for blocks that outputs resource dynamically based on attribute.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -129,7 +115,7 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return 0.0;
 
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
       let tup = MDL_attr._dynaAttrTup(blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
       thisFun.tmpTup[3] = tup == null ? 0.0 : tup[1];
     };
@@ -225,25 +211,71 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Used for blocks that outputs resource dynamically based on attribute.
+     * @class INTF_BLK_dynamicAttributeBlock
+     */
+    new CLS_interface("INTF_BLK_dynamicAttributeBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: See {MDL_attr._sumTs}.
+
+
+        /**
+         * <PARAM>: Determines type of blocks to check attribute. See {@link MDL_attr}.
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
         attrMode: "floor",
-        // @PARAM: The attribute-resource map used for this block. See {DB_item.db["map"]["attr"]}.
+        /**
+         * <PARAM>: Attribute-resource map used to determine output. See {@link DB_item}.
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
         attrRsArr: null,
-        // @PARAM: Used to add efficiency multipliers on specific resources.
+        /**
+         * <PARAM>: Used to add efficiency multipliers for specific outputs.
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
         dynaAttrRsEffcMap: prov(() => new ObjectMap()),
-        // @PARAM: Whether the efficiency should be drawn in {blk.drawPlace}.
+        /**
+         * <PARAM>: Whether efficiency text should be shown in `drawPlace`.
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
         shouldDrawDynaAttrText: true,
-        // @PARAM: Text offset in {blk.drawPlace} for efficiency.
+        /**
+         * <PARAM>: Integer offset of the efficiency text in `blk.drawPlace`.
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
         dynaAttrTextOffTy: 0,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
         hasDynaAttrItm: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
         hasDynaAttrLiq: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
         dynaAttrTmpTs: prov(() => []),
+
+
       }),
 
 
@@ -276,12 +308,17 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Returns a list of tiles for attribute calculation.
-       * ---------------------------------------- */
+      /**
+       * Expected list of tiles for attribute calculation.
+       * <br> <LATER>
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @param {Array|unset} contArr
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {Array<Tile>}
+       */
       ex_findDynaAttrTs: function(contArr, tx, ty, rot) {
         return contArr.clear();
       }
@@ -291,12 +328,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Returns time required for the recipe.
-       * ---------------------------------------- */
+      /**
+       * Expected craft time of this block.
+       * <br> <LATER>
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @return {number}
+       */
       ex_getCraftTime: function() {
         return Number.n8;
       }
@@ -305,6 +343,14 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {number}
+       */
       ex_getAttrSum: function(tx, ty, rot) {
         return comp_ex_getAttrSum(this, tx, ty, rot);
       }
@@ -314,14 +360,15 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Total attribute value at which the efficiency is 1.0.
-       * ---------------------------------------- */
+      /**
+       * Expected attribute sum at which efficiency reaches 1.0.
+       * <br> <LATER>
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @return {number}
+       */
       ex_getAttrLimit: function() {
-        return MDL_attr._limit(this.size, 1.0);
+        return MDL_attr._limit(this.size, 1.0, this.ex_getDynaAttrProdIsWall());
       }
       .setProp({
         noSuper: true,
@@ -329,6 +376,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @param {Resource|null} rs
+       * @return {number}
+       */
       ex_getDynaAttrProdAmt: function(rs) {
         return rs == null ?
           0.0 :
@@ -342,6 +395,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @param {Resource|null} rs
+       * @return {number}
+       */
       ex_getDynaAttrProdSpd: function(rs) {
         return rs == null ?
           0.0 :
@@ -357,12 +416,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Base production amount for items.
-       * ---------------------------------------- */
+      /**
+       * Expected base production amount for items.
+       * <br> <LATER>
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @return {number}
+       */
       ex_getDynaAttrBaseAmt_itm: function() {
         return 0;
       }
@@ -371,12 +431,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Base production rate for liquids.
-       * ---------------------------------------- */
+      /**
+       * Expected base production rate for liquids.
+       * <br> <LATER>
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @return {number}
+       */
       ex_getDynaAttrBaseAmt_liq: function() {
         return 0.0;
       }
@@ -385,7 +446,13 @@
       }),
 
 
-      // @LATER
+      /**
+       * Expected production type used in TMI.
+       * <br> <LATER>
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @return {string|null}
+       */
       ex_getDynaAttrProdTypeStr: function() {
         return null;
       }
@@ -394,7 +461,12 @@
       }),
 
 
-      // @LATER
+      /**
+       * Whether this block is something like a wall crafter.
+       * @memberof INTF_BLK_dynamicAttributeBlock
+       * @instance
+       * @return {boolean}
+       */
       ex_getDynaAttrProdIsWall: function() {
         return false;
       }
@@ -406,15 +478,44 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_dynamicAttributeBlock
+     */
+    new CLS_interface("INTF_B_dynamicAttributeBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_dynamicAttributeBlock
+         * @instance
+         */
         dynaAttrRs: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_dynamicAttributeBlock
+         * @instance
+         */
         dynaAttrSum: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_dynamicAttributeBlock
+         * @instance
+         */
         dynaAttrEffc: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_dynamicAttributeBlock
+         * @instance
+         */
         dynaAttrTs: prov(() => []),
+
+
       }),
 
 
@@ -471,40 +572,17 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Call this if the block crafts.
-       * ---------------------------------------- */
+      /**
+       * Call this method if the building crafts!
+       * @memberof INTF_B_dynamicAttributeBlock
+       * @instance
+       * @return {void}
+       */
       ex_dynaAttrCraft: function() {
         comp_ex_dynaAttrCraft(this);
       }
       .setProp({
         noSuper: true,
-      }),
-
-
-      ex_processData: function(wr0rd, LCRevi) {
-        processData(
-          wr0rd, LCRevi,
-          (wr, revi) => {
-            // Do nothing
-          },
-
-          (rd, revi) => {
-            if(revi < 1) {
-              // I know this is weird
-              if(!MDL_cond._isPump(this.block)) {
-                rd.s();
-                rd.f();
-              };
-            };
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 2,
       }),
 
 

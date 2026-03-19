@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Not a typical junction, controls pressure/vacuum.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -63,7 +48,7 @@
     tb.table(Styles.black3, tb1 => {
       tb1.left();
       MDL_table.__margin(tb1);
-      MDL_table.__sliderCfg(tb1, b, () => "[$1]: [$2]".format(MDL_bundle._term("lovec", b.presTmp < 0.0 ? "vacuum" : "pressure"), b.presAllowFrac.perc(0)), 0.0, 1.0, 0.05, b.presAllowFrac);
+      MDL_table.__sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle._term("lovec", b.presTmp < 0.0 ? "vacuum" : "pressure"), b.presAllowFrac.perc(0)), 0.0, 1.0, 0.05, b.presAllowFrac);
     }).left().growX();
   };
 
@@ -86,12 +71,30 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A fluid junction that controls pressure/vacuum.
+     * <br> <SINGLESIZE>
+     * @class BLK_fluidPressureValve
+     * @extends BLK_fluidJunction
+     * @extends INTF_BLK_pressureBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_fluidPressureValve").implement(INTF[0]).initClass()
     .setParent(LiquidJunction)
     .setTags("blk-liq", "blk-gate")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_fluidPressureValve
+       * @instance
+       */
       dirReg: null,
+
+
     })
     .setMethod({
 
@@ -109,11 +112,27 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fluidPressureValve").implement(INTF[1]).initClass()
+    /**
+     * @class B_fluidPressureValve
+     * @extends B_fluidJunction
+     * @extends INTF_B_pressureBlock
+     */
+    newClass().extendClass(PARENT[1], "B_fluidPressureValve").implement(INTF[1]).initClass()
     .setParent(LiquidJunction.LiquidJunctionBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_fluidPressureValve
+       * @instance
+       */
       presAllowFrac: 1.0,
+
+
     })
     .setMethod({
 
@@ -157,19 +176,26 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
         wr.f(this.presAllowFrac);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
+
+        this.ex_processData(rd);
         this.presAllowFrac = rd.f();
       },
 
 
+      /**
+       * @override
+       * @memberof B_fluidPressureValve
+       * @instance
+       * @param {Building} b_t
+       * @return {number}
+       */
       ex_getPresTransScl: function(b_t) {
         return this.presAllowFrac;
       }

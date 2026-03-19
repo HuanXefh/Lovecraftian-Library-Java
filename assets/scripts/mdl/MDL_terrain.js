@@ -18,9 +18,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -181,7 +178,7 @@
   const comp_drawPlace_ter = function thisFun(blk, tx, ty, rot, valid, offTy) {
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
       thisFun.tmpTup[3] = _terB(_ter(t, blk.size, tryFun(blk.ex_getTerrainCheckR, blk, 5)));
     };
 

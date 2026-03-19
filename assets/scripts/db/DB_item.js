@@ -22,6 +22,8 @@ const db = {
       item: [
 
         "coal", [8.0, 8.0],
+        "spore-pod", [4.0, 10.0],
+        "pyratite", [8.0, 13.25],
 
       ],
 
@@ -147,7 +149,11 @@ const db = {
     fuel: {
 
 
-      biotic: [],
+      biotic: [
+
+        "spore-pod",
+
+      ],
 
 
     },
@@ -157,7 +163,11 @@ const db = {
      * Items here are not mineable by regular drills by default, a sand miner is required.
      * <br> <ROW>: itm.
      */
-    sand: [],
+    sand: [
+
+      "sand",
+
+    ],
 
 
     /**

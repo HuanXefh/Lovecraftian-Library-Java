@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Items and liquids are both resource.
-   * Resource in Lovec does not support animated sprite by default to allow icon tags.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -70,7 +55,7 @@
 
 
   function comp_createIcons(rs, packer) {
-    // {rs.intmdParent} is still a string at this moment
+    // `rs.intmdParent` is still a string at this moment
     let parent = !rs.useParentReg ? null : tryVal(rs.intmdParent, null);
     // Set resource color based on sprite color
     if(!rs.skipColorAssign) {
@@ -145,28 +130,97 @@
 */
 
 
+  /**
+   * Items and liquids are both resource.
+   * Resource in Lovec does not support animated sprite by default to allow icon tags.
+   * @class RS_baseResource
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "RS_baseResource").initClass()
   .setParent(null)
   .setTags()
   .setParam({
-    // @PARAM: Whether to skip color assignment based on sprite.
+
+
+    /**
+     * <PARAM>: Whether to skip color assignment based on sprite.
+     * @memberof RS_baseResource
+     * @instance
+     */
     skipColorAssign: false,
-    // @PARAM: Whether to skip icon tag generation, to allow vanilla animated sprite.
+    /**
+     * <PARAM>: Whether to skip icon tag generation to allow vanilla animated sprite.
+     * @memberof RS_baseResource
+     * @instance
+     */
     skipIconTagGen: false,
-    // @PARAM: Whether to skip automatic reaction assignment.
+    /**
+     * <PARAM>: Whether to skip automatic reaction assignment.
+     * @memberof RS_baseResource
+     * @instance
+     */
     skipReactionAssign: false,
-    // @PARAM: Whether to clear unnecessary vanilla stats for the resource (e.g. flammability will be shown only when larger than 0.0).
+    /**
+     * <PARAM>: Whether to clear unnecessary vanilla stats for the resource (e.g. flammability will be shown only when larger than 0.0).
+     * @memberof RS_baseResource
+     * @instance
+     */
     overwriteVanillaStat: true,
-    // @PARAM: Whether to automatically set values of some vanilla properties.
+    /**
+     * <PARAM>: Whether to automatically set values of some vanilla properties.
+     * @memberof RS_baseResource
+     * @instance
+     */
     overwriteVanillaProp: true,
 
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>: Amount of sprites generated for icon tag.
+     * @memberof RS_baseResource
+     * @instance
+     */
     alts: 0,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseResource
+     * @instance
+     */
     shortName: null,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseResource
+     * @instance
+     */
     intmdParent: null,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseResource
+     * @instance
+     */
     intmdTags: null,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseResource
+     * @instance
+     */
     extraIntmdParents: prov(() => []),
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseResource
+     * @instance
+     */
     useParentReg: false,
+    /**
+     * <INTERNAL>: Sprite used for recolored sprite.
+     * @memberof RS_baseResource
+     * @instance
+     */
     recolorRegStr: null,
+
+
   })
   .setMethod({
 
@@ -186,15 +240,15 @@
     },
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Use this to get shortened name for this resource.
-     * Examples:
-     * Sodium Hydroxide -> NaOH
-     * Slaked Lime -> Ca(OH)2
-     * Dimethyl Formamide -> DMF
-     * ---------------------------------------- */
+    /**
+     * Gets shortened name for this resource.
+     * For example, "NaOH" for sodium hydroxide.
+     * <br> <DB>: rs-short-name.
+     * <br> <DB>: rs-formula.
+     * @memberof RS_baseResource
+     * @instance
+     * @return {string}
+     */
     ex_getShortName: function() {
       if(this.shortName == null) {
         this.shortName = DB_HANDLER.read("rs-short-name", this, DB_HANDLER.read("rs-formula", this, this.localizedName));
@@ -206,18 +260,19 @@
     }),
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Used in intermediate resource for name generation.
-     * ---------------------------------------- */
+    /**
+     * Used for intermediate name generation.
+     * @memberof RS_baseResource
+     * @instance
+     * @return {void}
+     */
     ex_generateIntmdName: function() {
       if(Vars.headless || this.intmdParent == null || this.intmdTags.length === 0) return;
 
       let str;
       if(this.intmdTags.length === 1 && DB_item.db["intmd"]["insertName"].colIncludes(this.intmdTags[0], 2)) {
         // For a single name to insert, use "main (type)" format
-        str = this.intmdParent.localizedName + MDL_text._space() + "([$1])".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], "!ERR"));
+        str = this.intmdParent.localizedName + MDL_text._space() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], "!ERR"));
       } else {
         // For regular intermediate, use "type (insert/main/sub)" format
         str = String(this.ex_getLocalizedIntmdName());
@@ -242,11 +297,12 @@
     }),
 
 
-    /* ----------------------------------------
-     * NOTE:
-     *
-     * Use this to fetch intermediate tags of the resource.
-     * ---------------------------------------- */
+    /**
+     * Gets intermediate tags of this resource.
+     * @memberof RS_baseResource
+     * @instance
+     * @return {Array<string>}
+     */
     ex_getIntmdTags: function() {
       if(this.intmdTags == null) {
         this.intmdTags = this.tempTags.filter(tag => DB_item.db["intmd"]["tag"].includes(tag));
@@ -263,15 +319,27 @@
     }),
 
 
+    /**
+     * Standard way to get localized name for intermediates.
+     * @memberof RS_baseResource
+     * @instance
+     * @return {string}
+     */
     ex_getLocalizedIntmdName: function() {
-      return this.ex_getLocalizedMainName() + MDL_text._space() + "([$1])".format(this.ex_getLocalizedSubName());
+      return this.ex_getLocalizedMainName() + MDL_text._space() + "(${1})".format(this.ex_getLocalizedSubName());
     }
     .setProp({
       noSuper: true,
     }),
 
 
-    // @LATER
+    /**
+     * Gets main name for name generation of intermediates.
+     * <br> <LATER>
+     * @memberof RS_baseResource
+     * @instance
+     * @return {string}
+     */
     ex_getLocalizedMainName: function() {
       return MDL_bundle._term("common", "intmd-mixture");
     }
@@ -280,6 +348,13 @@
     }),
 
 
+    /**
+     * Gets subsidiary name for name generation of intermediates.
+     * Will try short name if possible.
+     * @memberof RS_baseResource
+     * @instance
+     * @return {string}
+     */
     ex_getLocalizedSubName: function() {
       let str = tryFun(this.intmdParent.ex_getShortName, this.intmdParent, this.intmdParent.localizedName);
       this.extraIntmdParents.forEachFast(rs => str += " / " + tryFun(rs.ex_getShortName, rs, rs.localizedName));

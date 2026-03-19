@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Greatly nerfed mass driver.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -86,29 +72,76 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Greatly nerfed mass driver.
+     * @class BLK_massDriver
+     * @extends BLK_configTurret
+     * @extends INTF_BLK_impactInducer
+     */
     newClass().extendClass(PARENT[0], "BLK_massDriver").implement(INTF[0]).initClass()
     .setParent(MassDriver)
     .setTags("blk-tur", "blk-dis")
     .setParam({
-      // @PARAM: Damage of the mass driver bolt.
+
+
+      /**
+       * <PARAM>: Damage dealt by the mass driver bolt.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulDmg: 40.0,
-      // @PARAM: If {true}, the bullet will collide with terrain wall.
+      /**
+       * <PARAM>: If true, the bullet will collide with terrain wall.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulCollidesTerrain: true,
-      // @PARAM: If {true}, the bullet only collides with terrain wall in a cave map.
+      /**
+       * <PARAM>: If true, the bullet only collides with terrain wall in a cave map.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulCollidesTerrainCaveOnly: false,
-      // @PARAM: Whether the bullet collides with ground units.
+      /**
+       * <PARAM>: Whether the bullet collides with ground units.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulCollidesGround: true,
-      // @PARAM: Whether the bullet collides with air units.
+      /**
+       * <PARAM>: Whether the bullet collides with air units.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulCollidesAir: false,
-      // @PARAM: {sprite} of the bullet.
+      /**
+       * <PARAM>: `sprite` of the bullet.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulSpr: "shell",
-      // @PARAM: {width} of the bullet.
+      /**
+       * <PARAM>: `width` of the bullet.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulW: 9.0,
-      // @PARAM: {height} of the bullet.
+      /**
+       * <PARAM>: `height` of the bullet.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulH: 12.0,
-      // @PARAM: {shrinkY} of the bullet.
+      /**
+       * <PARAM>: `shrinkY` of the bullet.
+       * @memberof BLK_massDriver
+       * @instance
+       */
       bulShrinkY: 0.0,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
 
       bullet: prov(() => extend(MassDriverBolt, {
 
@@ -134,6 +167,8 @@
 
 
       })),
+
+      
     })
     .setParamAlias([
       "shootEff", "shootEffect", Fx.shootBig2,
@@ -153,6 +188,13 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_massDriver
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactIntv: function(b) {
         return this.reload;
       }
@@ -163,6 +205,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_massDriver
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactShake: function(b) {
         return this.shake;
       }
@@ -176,11 +225,27 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_massDriver").implement(INTF[1]).initClass()
+    /**
+     * @class B_massDriver
+     * @extends B_configTurret
+     * @extends INTF_B_impactInducer
+     */
+    newClass().extendClass(PARENT[1], "B_massDriver").implement(INTF[1]).initClass()
     .setParent(MassDriver.MassDriverBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_massDriver
+       * @instance
+       */
       justCrafted: false,
+
+
     })
     .setMethod({
 
@@ -195,6 +260,11 @@
       },
 
 
+      /**
+       * @memberof B_massDriver
+       * @instance
+       * @return {void}
+       */
       ex_onCraft: function() {
         this.ex_createImpactWave();
         MDL_effect._e_impactWave(this.x, this.y, this.block.ex_calcImpactRad(this));

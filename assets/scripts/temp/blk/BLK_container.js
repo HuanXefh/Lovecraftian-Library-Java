@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Unlike vanilla container, Lovec container can dump items when there are selected targets.
-   * The output speed is controlled by {blk.dumpTime}.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -24,35 +9,9 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseStorageBlock");
-  const INTF = require("lovec/temp/intf/INTF_BLK_contentMultiSelector");
 
 
   /* <---------- component ----------> */
-
-
-  function comp_init(blk) {
-    blk.update = true;
-  };
-
-
-  function comp_setStats(blk) {
-    blk.stats.add(Stat.itemsMoved, 60.0 / blk.dumpTime, StatUnit.itemsSecond);
-  };
-
-
-  function comp_updateTile(b) {
-    if(b.ctTgs.length === 0) return;
-
-    let bSpd = MDL_entity._bSpd(b);
-    if(bSpd > 0.0 && b.timerDump.get(b.block.dumpTime / bSpd)) {
-      b.dump(b.ctTgs.readRand());
-    };
-  };
-
-
-  function comp_acceptItem(b, b_f, itm) {
-    return b_f == null || !MDL_cond._isContainer(b_f.block);
-  };
 
 
   function comp_warmup(b) {
@@ -78,47 +37,41 @@
   module.exports = [
 
 
-    // Block
-    newClass().extendClass(PARENT[0], "BLK_container").implement(INTF[0]).initClass()
+    /**
+     * Vanilla container.
+     * @class BLK_container
+     * @extends BLK_baseStorageBlock
+     */
+    newClass().extendClass(PARENT[0], "BLK_container").initClass()
     .setParent(StorageBlock)
     .setTags("blk-cont")
     .setParam({})
     .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
-
-
-      setStats: function() {
-        comp_setStats(this);
-      },
+      minimapColor: function(t) {
+        // Derelict containers should not appear on minimap
+        let b = t.build;
+        return b == null || b.team !== Team.derelict ?
+          this.super$minimapColor(t) :
+          t.getFloorColor().rgba();
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_container").implement(INTF[1]).initClass()
+    /**
+     * @class B_container
+     * @extends B_baseStorageBlock
+     */
+    newClass().extendClass(PARENT[1], "B_container").initClass()
     .setParent(StorageBlock.StorageBuild)
-    .setParam({
-      timerDump: prov(() => new Interval(1)),
-    })
+    .setParam({})
     .setMethod({
-
-
-      updateTile: function() {
-        comp_updateTile(this);
-      },
-
-
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
 
 
       warmup: function() {
@@ -127,18 +80,6 @@
       .setProp({
         noSuper: true,
       }),
-
-
-      write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
-      },
-
-
-      read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
-      },
 
 
     }),

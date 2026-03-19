@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla burst drill.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -50,12 +36,27 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla burst drill rebalanced.
+     * @class BLK_impactDrill
+     * @extends BLK_baseGroundDrill
+     * @extends INTF_BLK_impactInducer
+     */
     newClass().extendClass(PARENT[0], "BLK_impactDrill").implement(INTF[0]).initClass()
     .setParent(BurstDrill)
     .setTags("blk-min", "blk-drl")
     .setParam({
+
+
+      /**
+       * <PARAM>: Impact drills are designed to mine depth ore by default.
+       * @override
+       * @memberof BLK_impactDrill
+       * @instance
+       */
       canMineDepthOre: true,
+
+
     })
     .setMethod({
 
@@ -68,6 +69,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_impactDrill
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactIntv: function(b) {
         return this.drillTime;
       }
@@ -78,6 +86,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_impactDrill
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactShake: function(b) {
         return this.shake;
       }
@@ -91,11 +106,27 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_impactDrill").implement(INTF[1]).initClass()
+    /**
+     * @class B_impactDrill
+     * @extends B_baseGroundDrill
+     * @extends INTF_B_impactInducer
+     */
+    newClass().extendClass(PARENT[1], "B_impactDrill").implement(INTF[1]).initClass()
     .setParent(BurstDrill.BurstDrillBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_impactDrill
+       * @instance
+       */
       justCrafted: false,
+
+
     })
     .setMethod({
 
@@ -113,6 +144,11 @@
       }),
 
 
+      /**
+       * @memberof B_impactDrill
+       * @instance
+       * @return {void}
+       */
       ex_onCraft: function() {
         this.ex_createImpactWave();
       }

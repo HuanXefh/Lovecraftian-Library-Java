@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The root of all units.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -88,31 +74,90 @@
 */
 
 
+  /**
+   * Root of all units.
+   * @class UNIT_baseUnit
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "UNIT_baseUnit").initClass()
   .setParent(null)
   .setTags()
   .setParam({
-    // @PARAM: See {RS_baseResource}.
+
+
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     overwriteVanillaStat: true,
-    // @PARAM: See {RS_baseResource}.
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     overwriteVanillaProp: true,
-    // @PARA<: See {BLK_baseBlock}.
+    /**
+     * <PARAM>: See {@link BLK_baseBlock}.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     skipOutlineSetup: false,
-    // @PARAM: Whether to enable health-based status effects.
+    /**
+     * <PARAM>: Whether to enable health-based status effects.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     useLovecDamagePenalty: true,
-    // @PARAM: If larger than 0.0, the shield will always be drawn.
+    /**
+     * <PARAM>: If larger than 0.0, shield will always be drawn.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     baseShieldA: 0.0,
-    // @PARAM: Multiplier on shield radius.
+    /**
+     * <PARAM>: Shield radius scaling.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     shieldRadScl: 1.0,
-    // @PARAM: Increase of shield radius when shield it hit (or regenerated).
+    /**
+     * <PARAM>: Increase of shield radius when hit or regenerated.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     shieldRadHitInc: 0.75,
-    // @PARAM: Whether to use conical unit light instead of vanilla circular one.
+    /**
+     * <PARAM>: Whether to use conical light instead of vanilla circular light.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     useConicalLight: true,
-    // @PARAM: Affects cone angle of the light.
+    /**
+     * <PARAM>: Affects cone angle of the light. Requires {@link UNIT_baseUnit#useConicalLight} to be true.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     lightConeScl: 0.4,
 
-    entityName: "flying",                // Entity used by the type, do not change unless you know it well
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>: Entity used by this type, do not change unless you know how it works.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
+    entityName: "flying",
+    /**
+     * <INTERNAL> The content template used for unit entity.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
     entityTemplate: null,
+
+
   })
   .setMethod({
 
@@ -153,6 +198,12 @@
     }),
 
 
+    /**
+     * @memberof UNIT_baseUnit
+     * @instance
+     * @param {Unit} unit
+     * @return {Color}
+     */
     ex_getShieldColor: function(unit) {
       return Tmp.c2.set(tryVal(this.shieldColor, unit.team.color)).lerp(Color.white, Mathf.clamp(unit.hitTime / 2.0));
     }
@@ -161,6 +212,12 @@
     }),
 
 
+    /**
+     * @memberof UNIT_baseUnit
+     * @instance
+     * @param {Unit} unit
+     * @return {void}
+     */
     ex_drawShield: function(unit) {
       comp_ex_drawShield(this, unit);
     }
@@ -171,21 +228,27 @@
 
   });
 
-  // Resolves entity mapping for the unit type
+
+  /**
+   * @memberof UNIT_baseUnit
+   * @param {UnitType} utp
+   * @return {void}
+   */
   module.exports.initUnit = function(utp) {
+    // Resolve entity mapping
     let entityVal = DB_unit.db["map"]["entity"]["type"].read(utp.delegee.entityName, UnitEntity);
     if(typeof entityVal !== "number") {
       utp.constructor = () => extend(entityVal, {});
     } else {
       if(EntityMapping.idMap[entityVal] == null) {
         let templateGetter = DB_unit.db["map"]["entity"]["entityDef"].read(entityVal);
-        if(templateGetter == null) throw new Error("Entity ([$1]) is not defined yet!".format(entityVal));
+        if(templateGetter == null) throw new Error("Entity (${1}) is not defined yet!".format(entityVal));
         utp.delegee.entityTemplate = templateGetter();
 
-        let entityProv = prov(() => {
+        EntityMapping.idMap[entityVal] = prov(() => {
           processClassLoader();
           let unit = extend(utp.delegee.entityTemplate.getParent(), mergeObj(utp.delegee.entityTemplate.build(), {
-            classId: function() {
+            classId: function () {
               return entityVal;
             },
           }));
@@ -193,12 +256,12 @@
 
           return unit;
         });
-        EntityMapping.idMap[entityVal] = entityProv;
       };
       EntityMapping.nameMap.put(utp.delegee.entityName, EntityMapping.idMap[entityVal]);
       utp.constructor = EntityMapping.map(utp.delegee.entityName);
     };
 
+    // Resolve type affinity for damage
     let dmgType = MDL_content._unitDmgType(utp);
     if(dmgType != null) {
       utp.databaseTag = "lovec-dmg0type-" + dmgType;

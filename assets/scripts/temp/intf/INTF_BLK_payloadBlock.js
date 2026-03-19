@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Lovec payload block that stores payload as abstract data.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -128,13 +114,24 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Lovec payload block that stores payload as abstract data.
+     * @class INTF_BLK_payloadBlock
+     */
+    new CLS_interface("INTF_BLK_payloadBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: How many payloads of each type this block can hold. A 2-sized block takes 2 payload amount units.
+
+
+        /**
+         * <PARAM>: Payload capacity. A 2-block large payload takes 2 units, NOT SQUARED.
+         * @memberof INTF_BLK_payloadBlock
+         * @instance
+         */
         payAmtCap: -1.0,
+
+
       }),
 
 
@@ -151,21 +148,80 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_payloadBlock
+     */
+    new CLS_interface("INTF_B_payloadBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         hasPayInput: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         hasPayOutput: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         payAmtTotal: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         payAmtTotalAfterProd: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         payReqObj: prov(() => ({})),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         payStockObj: prov(() => ({})),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         payInputBs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         payOutputBs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         lastDumpPay: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         payDumpIncre: 0,
+
+
       }),
 
 
@@ -203,6 +259,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_payloadBlock
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
         comp_ex_postUpdateEfficiencyMultiplier(this);
       }
@@ -211,6 +272,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_payloadBlock
+       * @instance
+       * @return {void}
+       */
       ex_updatePaySite: function() {
         comp_ex_updatePaySite(this);
       }
@@ -219,7 +285,14 @@
       }),
 
 
-      // @LATER
+      /**
+       * Expected consumption amount of some content, for crafters only.
+       * <br> <LATER>
+       * @memberof INTF_B_payloadBlock
+       * @instance
+       * @param {string} nmCt
+       * @return {number}
+       */
       ex_getPayConsAmt: function(nmCt) {
         return 0;
       }
@@ -229,7 +302,14 @@
       }),
 
 
-      // @LATER
+      /**
+       * Expected production amount of some content, for crafters only.
+       * <br> <LATER>
+       * @memberof INTF_B_payloadBlock
+       * @instance
+       * @param {string} nmCt
+       * @return {number}
+       */
       ex_getPayProdAmt: function(nmCt) {
         return 1;
       }
@@ -239,6 +319,13 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_payloadBlock
+       * @instance
+       * @param {Building} b_f
+       * @param {Payload} pay
+       * @return {boolean}
+       */
       ex_acceptPay: function(b_f, pay) {
         return pay != null && this.ex_getPayConsAmt(pay.content().name) / tryVal(this.payReqObj[pay.content().name], 0.0001) > 0.5;
       }
@@ -248,25 +335,29 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_payloadBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             MDL_io._wr_objStrNum(wr, this.payReqObj);
             MDL_io._wr_objStrNum(wr, this.payStockObj);
           },
 
           (rd, revi) => {
-            if(revi >= 5) {
-              MDL_io._rd_objStrNum(rd, this.payReqObj);
-              MDL_io._rd_objStrNum(rd, this.payStockObj);
-            };
+            MDL_io._rd_objStrNum(rd, this.payReqObj);
+            MDL_io._rd_objStrNum(rd, this.payStockObj);
           },
         );
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

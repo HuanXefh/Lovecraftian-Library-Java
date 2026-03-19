@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Any fluid that is unwanted.
-   * Technically an intermediate, but categorized as waste.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -42,12 +27,36 @@
 */
 
 
+  /**
+   * Unwanted fluids.
+   * Technically intermediates, but categorized as waste.
+   * @class RS_wasteFluid
+   * @extends RS_intermediateFluid
+   */
   module.exports = newClass().extendClass(PARENT, "RS_wasteFluid").initClass()
   .setParent(Liquid)
   .setTags("rs-waste")
   .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @override
+     * @memberof RS_wasteFluid
+     * @instance
+     */
     useParentReg: false,
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     databaseTag: null,
+
+    
   })
   .setMethod({
 

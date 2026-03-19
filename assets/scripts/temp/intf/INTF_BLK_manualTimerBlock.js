@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The block will be charged when player clicks it.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -118,19 +104,42 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * This block will be charged when player clicks it.
+     * @class INTF_BLK_manualTimerBlock
+     */
+    new CLS_interface("INTF_BLK_manualTimerBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Type of parameter used for config.
+
+
+        /**
+         * <PARAM>: See {@link INTF_BLK_manualClickBlock}.
+         * @memberof INTF_BLK_manualTimerBlock
+         * @instance
+         */
         manualTimerCfgTp: "boolean",
-        // @PARAM: Maximum of the timer in frames.
+        /**
+         * <PARAM>: Maximum time charged in frames.
+         * @memberof INTF_BLK_manualTimerBlock
+         * @instance
+         */
         manualTimerCap: Number.n8,
-        // @PARAM: Time increased by on single click in frames.
+        /**
+         * <PARAM>: Time charged by on single click.
+         * @memberof INTF_BLK_manualTimerBlock
+         * @instance
+         */
         manualTimerClickInc: 60.0,
-        // @PARAM: Change this if you have a button to click.
+        /**
+         * <PARAM>: See {@link INTF_BLK_manualClickBlock}.
+         * @memberof INTF_BLK_manualTimerBlock
+         * @instance
+         */
         skipTapConfig: false,
+
+
       }),
 
 
@@ -152,12 +161,26 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_manualTimerBlock
+     */
+    new CLS_interface("INTF_B_manualTimerBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_manualTimerBlock
+         * @instance
+         */
         timeClickCur: 0.0,
+
+
       }),
 
 
@@ -183,12 +206,14 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Called whenever this building is configured.
-       * ---------------------------------------- */
+      /**
+       * See {@link INTF_B_manualClickBlock}.
+       * <br> <LATER>
+       * @memberof INTF_B_manualTimerBlock
+       * @instance
+       * @param {any} val
+       * @return {void}
+       */
       ex_onManualTimerConfigured: function(val) {
 
       }
@@ -198,11 +223,12 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Call this to apply one click.
-       * ---------------------------------------- */
+      /**
+       * See {@link INTF_B_manualClickBlock}.
+       * @memberof INTF_B_manualTimerBlock
+       * @instance
+       * @return {void}
+       */
       ex_configureClick: function() {
         comp_ex_configureClick(this);
       }
@@ -211,25 +237,27 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_manualTimerBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             wr.f(this.timeClickCur);
           },
 
           (rd, revi) => {
-            if(revi < 1) {
-              rd.s();
-            };
-
             this.timeClickCur = rd.f();
           },
         );
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

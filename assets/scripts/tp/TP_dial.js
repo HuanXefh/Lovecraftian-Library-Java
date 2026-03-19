@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- auxiliary ----------> */
 
 
@@ -105,6 +102,55 @@
 
 
   /**
+   * A dialog to show viewed texts in a dialog flow.
+   */
+  newDialog(
+    "dialFlowLog",
+    () => extend(BaseDialog, MDL_bundle._info("lovec", "dial-dial-flow-log"), {
+
+
+      ex_show() {
+        if(VARGEN.dialFlowTextLog.length === 0) {
+          Log.warn("[LOVEC] Cannot show log when no dialog flow is being played!");
+          return;
+        };
+        resetDial(this);
+
+        // <TABLE>: text
+        this.cont.pane(pn => {
+          MDL_table.__margin(pn);
+          VARGEN.dialFlowTextLog.forEachFast(obj => {
+            // <TABLE>: text cell
+            pn.table(Styles.none, tb => {
+              if(obj.chara === "SPEC: selection") {
+                tb.center();
+                MDL_table.__wrapLine(tb, "<${1}>".format(obj.text), Align.center, 1);
+              } else {
+                tb.left();
+                if(obj.chara !== "") {
+                  tb.add(obj.chara).left().row();
+                };
+                tb.add("").row();
+                MDL_table.__wrapLine(tb, obj.text, Align.left, 1, 48.0);
+              };
+            }).growX().row();
+            MDL_table.__break(pn, 3);
+          });
+        }).width(MDL_ui._uiW()).row();
+
+        // <TABLE>: buttons
+        MDL_table.__break(this.cont);
+        MDL_table.__btnClose(this.buttons, this);
+
+        this.show();
+      },
+
+
+    }),
+  );
+
+
+  /**
    * A dialog for wave enemy display.
    */
   newDialog(
@@ -116,14 +162,9 @@
 
 
       ex_show(countWave) {
-        resetDial(this);
-
         if(countWave == null) countWave = Vars.state.wave;
-
-        // <TABLE>: title
-        this.title.setText((MDL_bundle._info("lovec", "dial-wave-enemies") + " (" + countWave + ")").color(Pal.accent));
-        this.title.getStyle().fontColor = Color.white;
         this.tmpCount = countWave;
+        resetDial(this, MDL_bundle._info("lovec", "dial-wave-enemies") + " (" + countWave + ")");
 
         // <TABLE>: list
         this.cont.pane(pn => {

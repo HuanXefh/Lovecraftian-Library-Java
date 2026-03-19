@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * This block can only be placed near some blocks.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -42,7 +28,7 @@
 
 
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, team, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
       thisFun.tmpTup[4] = blk.ex_checkValidExtension(t, team, rot);
     };
 
@@ -64,7 +50,7 @@
 
 
   function comp_ex_checkValidExtension(blk, t, team, rot) {
-    return blk.ex_findExtensionTs(blk, blk.extensionTmpTs, t.x, t.y, rot).some(ot => ot.build != null && ot.build.team === team && blk.filterScrTup[0](blk, ot.build.block));
+    return t == null ? false : blk.ex_findExtensionTs(blk, blk.extensionTmpTs, t.x, t.y, rot).some(ot => ot.build != null && ot.build.team === team && blk.filterScrTup[0](blk, ot.build.block));
   };
 
 
@@ -95,19 +81,48 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * This block can only be placed adjacent to some blocks.
+     * @class INTF_BLK_extensionBlock
+     */
+    new CLS_interface("INTF_BLK_extensionBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Condition for valid extension. By default, this checks if a block is found in {blkTgs}.
-        // <ARGS>: blk, oblk
+
+
+        /**
+         * <PARAM>: Used to filter out valid extension. By default, this checks if a block is found in {@link INTF_BLK_extensionBlock#blkTgs}.
+         * <br> <ARGS>: blk, oblk.
+         * @memberof INTF_BLK_extensionBlock
+         * @instance
+         */
         filterScrTup: prov(() => [(blk, oblk) => blk.delegee.blkTgs.includes(oblk)]),
-        // @PARAM: Blocks seen as extension targets.
+        /**
+         * <PARAM>: Extension targets.
+         * @memberof INTF_BLK_extensionBlock
+         * @instance
+         */
         blkTgs: prov(() => []),
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_extensionBlock
+         * @instance
+         */
         extensionTmpBlks: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_extensionBlock
+         * @instance
+         */
         extensionTmpTs: prov(() => []),
+
+
       }),
 
 
@@ -129,6 +144,15 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_extensionBlock
+       * @instance
+       * @param {Array|unset} contArr
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {Array<Tile>}
+       */
       ex_findExtensionTs: function(contArr, tx, ty, rot) {
         return comp_ex_findExtensionTs(this, contArr, tx, ty, rot);
       }
@@ -137,6 +161,14 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_extensionBlock
+       * @instance
+       * @param {Tile|null} t
+       * @param {Team} team
+       * @param {number} rot
+       * @return {boolean}
+       */
       ex_checkValidExtension: function(t, team, rot) {
         return comp_ex_checkValidExtension(this, t, team, rot);
       }
@@ -148,17 +180,31 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_extensionBlock
+     */
+    new CLS_interface("INTF_B_extensionBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_extensionBlock
+         * @instance
+         */
         extensionValid: false,
+
+
       }),
 
 
       updateTile: function() {
-        extensionValid(this);
+        comp_updateTile(this);
       },
 
 
@@ -167,6 +213,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_extensionBlock
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
         comp_ex_postUpdateEfficiencyMultiplier(this);
       }

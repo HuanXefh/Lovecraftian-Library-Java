@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Cable but no side conductivity.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -32,7 +17,7 @@
   const comp_blends = newMultiFunction(
     function(blk, t, rot, dir) {
       let ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));
-      return ob != null && ob.team == t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
+      return ob != null && ob.team === t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
     },
     function(blk, t, rot, bPlan, dir, shouldCheckWorld) {
       if(bPlan != null) {
@@ -71,7 +56,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Cable but no side conductivity.
+     * <br> <SINGLESIZE>
+     * @class BLK_armoredCable
+     * @extends BLK_cable
+     */
     newClass().extendClass(PARENT[0], "BLK_armoredCable").initClass()
     .setParent(ArmoredConveyor)
     .setTags("blk-pow", "blk-pow0trans", "blk-cable", "blk-arm0cable")
@@ -99,8 +89,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_armoredCable").initClass()
+    /**
+     * @class B_armoredCable
+     * @extends B_cable
+     */
+    newClass().extendClass(PARENT[1], "B_armoredCable").initClass()
     .setParent(ArmoredConveyor.ArmoredConveyorBuild)
     .setParam({})
     .setMethod({

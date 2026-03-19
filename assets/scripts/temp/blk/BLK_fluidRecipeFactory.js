@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Recipe factories with fluid block mechanics.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -40,7 +26,13 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Recipe factories with fluid block mechanics.
+     * @class BLK_fluidRecipeFactory
+     * @extends BLK_recipeFactory
+     * @extends INTF_BLK_corrosionAcceptor
+     * @extends INTF_BLK_fluidHeatAcceptor
+     */
     newClass().extendClass(PARENT[0], "BLK_fluidRecipeFactory").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-rc0fac")
@@ -48,8 +40,13 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fluidRecipeFactory").implement(INTF[1]).implement(INTF_A[1]).initClass()
+    /**
+     * @class B_fluidRecipeFactory
+     * @extends B_recipeFactory
+     * @extends INTF_B_corrosionAcceptor
+     * @extends INTF_B_fluidHeatAcceptor
+     */
+    newClass().extendClass(PARENT[1], "B_fluidRecipeFactory").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({

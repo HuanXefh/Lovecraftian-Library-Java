@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Dynamically outputs liquid based on current weather.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -99,13 +85,25 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Dynamically outputs liquid based on current rain weather.
+     * @class BLK_rainCollector
+     * @extends BLK_baseFactory
+     */
     newClass().extendClass(PARENT[0], "BLK_rainCollector").initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac")
     .setParam({
-      // @PARAM: Production rate for weather liquid output.
+
+
+      /**
+       * <PARAM>: Production rate for weather liquid output.
+       * @memberof BLK_rainCollector
+       * @instance
+       */
       liqProdRate: 0.1,
+
+
     })
     .setMethod({
 
@@ -120,6 +118,12 @@
       },
 
 
+      /**
+       * Gets liquid to produce.
+       * @memberof BLK_rainCollector
+       * @instance
+       * @return {Liquid|null}
+       */
       ex_findWeatherLiquid: function() {
         return comp_ex_findWeatherLiquid(this);
       }
@@ -131,11 +135,26 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_rainCollector").initClass()
+    /**
+     * @class B_rainCollector
+     * @extends B_baseFactory
+     */
+    newClass().extendClass(PARENT[1], "B_rainCollector").initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_rainCollector
+       * @instance
+       */
       rsTg: null,
+
+
     })
     .setMethod({
 

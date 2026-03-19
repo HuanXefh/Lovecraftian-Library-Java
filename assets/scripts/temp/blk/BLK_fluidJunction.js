@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Just vanilla liquid junction.
-   * Does not transport auxiliary fluid.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -55,7 +39,13 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Just vanilla liquid junction.
+     * Does not transport auxiliary fluid.
+     * <br> <SINGLESIZE>
+     * @class BLK_fluidJunction
+     * @extends BLK_baseFluidDistributor
+     */
     newClass().extendClass(PARENT[0], "BLK_fluidJunction").initClass()
     .setParent(LiquidJunction)
     .setTags("blk-liq", "blk-gate")
@@ -68,6 +58,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_fluidJunction
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -80,8 +76,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fluidJunction").initClass()
+    /**
+     * @class B_fluidJunction
+     * @extends B_baseFluidDistributor
+     */
+    newClass().extendClass(PARENT[1], "B_fluidJunction").initClass()
     .setParent(LiquidJunction.LiquidJunctionBuild)
     .setParam({})
     .setMethod({
@@ -111,13 +110,20 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @override
+       * @memberof B_fluidJunction
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         // Do nothing
       }
       .setProp({
         noSuper: true,
         override: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

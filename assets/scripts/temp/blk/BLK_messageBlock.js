@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Simply vanilla message block.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -38,7 +24,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla message block.
+     * @class BLK_messageBlock
+     * @extends BLK_baseLogicBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_messageBlock").initClass()
     .setParent(MessageBlock)
     .setTags("blk-log")
@@ -46,8 +36,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_messageBlock").initClass()
+    /**
+     * @class B_messageBlock
+     * @extends B_baseLogicBlock
+     */
+    newClass().extendClass(PARENT[1], "B_messageBlock").initClass()
     .setParent(MessageBlock.MessageBuild)
     .setParam({})
     .setMethod({}),

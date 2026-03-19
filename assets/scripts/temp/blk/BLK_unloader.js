@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Serpulo unloader.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -56,7 +41,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Serpulo unloader.
+     * <br> <SINGLESIZE>
+     * @class BLK_unloader
+     * @extends BLK_baseItemGate
+     */
     newClass().extendClass(PARENT[0], "BLK_unloader").initClass()
     .setParent(Unloader)
     .setTags("blk-dis", "blk-gate")
@@ -72,8 +62,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_unloader").initClass()
+    /**
+     * @class B_unloader
+     * @extends B_baseItemGate
+     */
+    newClass().extendClass(PARENT[1], "B_unloader").initClass()
     .setParent(Unloader.UnloaderBuild)
     .setParam({})
     .setMethod({

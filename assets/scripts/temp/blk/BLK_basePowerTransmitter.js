@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Any block that transmits power to other blocks.
-   * Not placeable on conductive floor if vulnerable to short circuit by default.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -46,7 +31,7 @@
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(blk.ignoreShortCircuitPlacement) return true;
 
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, team, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
       thisFun.tmpTup[4] = tryJsProp(blk, "canShortCircuit", false)
         && t.floor().liquidDrop != null
         && MDL_cond._isConductiveLiquid(t.floor().liquidDrop);
@@ -55,9 +40,9 @@
     if(thisFun.tmpTup[4]) {
       MDL_draw._d_textPlace(blk, t.x, t.y, MDL_bundle._info("lovec", "text-short-circuit"), false);
       return false;
-    } else {
-      return true;
     };
+
+    return true;
   }
   .setProp({
     tmpTup: [],
@@ -74,13 +59,26 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Any block that transmits power to other blocks.
+     * Not placeable on conductive floor if vulnerable to short circuit by default.
+     * @class BLK_basePowerTransmitter
+     * @extends BLK_basePowerBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_basePowerTransmitter").initClass()
     .setParent(null)
     .setTags("blk-pow", "blk-pow0trans")
     .setParam({
-      // @PARAM: If {true}, placement won't be affected by short circuit.
+
+
+      /**
+       * <PARAM>: If true, placement won't be affected by short circuit.
+       * @memberof BLK_basePowerTransmitter
+       * @instance
+       */
       ignoreShortCircuitPlacement: false,
+
+
     })
     .setMethod({
 
@@ -106,8 +104,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_basePowerTransmitter").initClass()
+    /**
+     * @class B_basePowerTransmitter
+     * @extends B_basePowerBlock
+     */
+    newClass().extendClass(PARENT[1], "B_basePowerTransmitter").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

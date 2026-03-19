@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The base of all status effects with no features.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -50,14 +36,32 @@
 */
 
 
+  /**
+   * Most basic status effects with no features.
+   * Affinities and opposites are defined in {@link DB_status}, do not call `sta.init` anymore!
+   * @class STA_baseStatus
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "STA_baseStatus").initClass()
   .setParent(StatusEffect)
   .setTags()
   .setParam({
-    // @PARAM: See {RS_baseResource}.
+
+
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof STA_baseStatus
+     * @instance
+     */
     overwriteVanillaStat: true,
-    // @PARAM: See {RS_baseResource}.
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof STA_baseStatus
+     * @instance
+     */
     overwriteVanillaProp: true,
+
+    
   })
   .setParamAlias([
     "eff", "effect", Fx.none,

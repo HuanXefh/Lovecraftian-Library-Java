@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Items that are considered waste.
-   * Unlike fluid, waste item has no relation with intermediate.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -41,6 +26,12 @@
 */
 
 
+  /**
+   * Unwanted items.
+   * Unlike fluids, waste items have no relation to intermediates.
+   * @class RS_wasteItem
+   * @extends RS_baseItem
+   */
   module.exports = newClass().extendClass(PARENT, "RS_wasteItem").initClass()
   .setParent(Item)
   .setTags("rs-was")

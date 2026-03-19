@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- update ----------> */
 
 
@@ -177,7 +174,7 @@
     };
 
     // Draw mouse building if not player
-    if(b != null && !b.block.privileged && (!PARAM.drawPlayerStat || b !== b_pl)) {
+    if(b != null && !b.block.privileged && !b.team === Team.derelict && (!PARAM.drawPlayerStat || b !== b_pl)) {
       thisFun.drawBaseBuildStats(b);
 
       if(b.team !== Vars.player.team()) return;

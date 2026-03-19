@@ -21,9 +21,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- set ----------> */
 
 
@@ -74,7 +71,7 @@
       try{
         utp.weapons = getter(wps).pullAll(null).flatten().toSeq();
       } catch(err) {
-        Log.err("[LOVEC] Failed to set weapons for [$1]\n".format(utp.name.color(Pal.accent)) + err);
+        Log.err("[LOVEC] Failed to set weapons for ${1}\n".format(utp.name.color(Pal.accent)) + err);
       };
     });
   };
@@ -93,7 +90,7 @@
       try{
         utp.abilities = getter(abis).pullAll(null).flatten().toSeq();
       } catch(err) {
-        Log.err("[LOVEC] Failed to set abilities for [$1]:\n".format(utp.name.color(Pal.accent)) + err);
+        Log.err("[LOVEC] Failed to set abilities for ${1}:\n".format(utp.name.color(Pal.accent)) + err);
       };
     });
   };
@@ -111,7 +108,7 @@
       try{
         utp.controller = func(getter);
       } catch(err) {
-        Log.err("[LOVEC] Failed to set AI controller for [$1]:\n".format(utp.name.color(Pal.accent)) + err);
+        Log.err("[LOVEC] Failed to set AI controller for ${1}:\n".format(utp.name.color(Pal.accent)) + err);
       };
     });
   };
@@ -127,7 +124,7 @@
   setDrawer = function(blk, getter) {
     Events.run(ClientLoadEvent, () => {
       if(blk.drawer == null && (blk.delegee != null ? blk.delegee.drawer == null : true)) {
-        Log.warn("[LOVEC] Can't find field [$1] in [$2]!".format("drawer".color(Pal.accent), blk.name.color(Pal.accent)));
+        Log.warn("[LOVEC] Can't find field ${1} in ${2}!".format("drawer".color(Pal.accent), blk.name.color(Pal.accent)));
         return;
       };
 
@@ -142,7 +139,7 @@
           drawerNew.load(blk);
         };
       } catch(err) {
-        Log.err("[LOVEC] Failed to set drawers for [$1]:\n".format(blk.name.color(Pal.accent)) + err);
+        Log.err("[LOVEC] Failed to set drawers for ${1}:\n".format(blk.name.color(Pal.accent)) + err);
       };
     });
   };
@@ -159,13 +156,15 @@
     Events.run(ClientLoadEvent, () => {
       let
         conss = getter(blk.consumers).pullAll(null).flatten(),
-        conssNew = conss.cpy().pullAll(blk.consumers);
+        conssNew = conss.cpy().pullAll(blk.consumers),
+        consPow = conss.find(blkCons => blkCons instanceof ConsumePower);
 
       blk.consumers = conss;
       blk.optionalConsumers = conss.filter(consX => consX.optional && !consX.ignore());
       blk.nonOptionalConsumers = conss.filter(consX => !consX.optional && !consX.ignore());
       blk.updateConsumers = conss.filter(consX => consX.update && !consX.ignore());
       blk.hasConsumers = conss.length > 0;
+      blk.consPower = consPow == null ? null : consPow;
 
       conssNew.forEachFast(consX => consX.apply(blk));
     });
@@ -287,6 +286,20 @@
     };
 
     return regs;
+  };
+
+
+  /**
+   * Gets a texture region by name, returns empty region if on headless end.
+   * @param {string|TextureRegion} reg0regStr
+   * @return {TextureRegion}
+   */
+  findRegion = function(reg0regStr) {
+    return reg0regStr instanceof TextureRegion ?
+      reg0regStr :
+      Vars.headless ?
+        ARC_AIR.reg :
+        Core.atlas.find(reg0regStr);
   };
 
 
@@ -880,7 +893,7 @@
     Events.run(ClientLoadEvent, () => {
       Core.app.post(() => {
         VARGEN.addKeyBind(nm, keyCodeDef, categ);
-        let keyBind = VARGEN.bindings[nm];
+        let keyBind = VARGEN._keyBind(nm);
         if(global.lovecUtil.db.keyBindListener.includes(keyBind)) return;
         global.lovecUtil.db.keyBindListener.push(keyBind, scr);
       });

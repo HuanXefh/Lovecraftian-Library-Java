@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -189,12 +186,13 @@
    * Calculates required attribute value.
    * @param {number} size
    * @param {number|unset} [avLimit] - Attribute value required per tile.
+   * @param {boolean|unset} [isWall] - For blocks like wall crafter.
    * @return {number}
    */
-  const _limit = function(size, avLimit) {
+  const _limit = function(size, avLimit, isWall) {
     if(avLimit == null) avLimit = 1.0;
 
-    return Math.pow(size, 2) * avLimit;
+    return Math.pow(size, isWall ? 1 : 2) * avLimit;
   };
   exports._limit = _limit;
 

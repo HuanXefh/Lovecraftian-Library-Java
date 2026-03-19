@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla particle weather.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -35,6 +21,11 @@
 */
 
 
+  /**
+   * {@link RainWeather}.
+   * @class WEA_rainWeather
+   * @extends WEA_decoWeather
+   */
   module.exports = newClass().extendClass(PARENT, "WEA_rainWeather").initClass()
   .setParent(RainWeather)
   .setTags("wea-deco")

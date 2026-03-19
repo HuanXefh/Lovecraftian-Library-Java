@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent template of all turrets.
-   *
-   * Since "-full" sprite of turrets are used when parts exist, you should use "-icon" for full icon instead.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -60,7 +44,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Parent template of all turrets.
+     * <br> <IMPORTANT>: "-icon" is used for ui icon of turrets instead of "-full", since "-full" is used when parts exist.
+     * @class BLK_baseTurret
+     * @extends BLK_baseBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseTurret").initClass()
     .setParent(null)
     .setTags("blk-tur")
@@ -85,7 +74,10 @@
     }),
 
 
-    // Building
+    /**
+     * @class B_baseTurret
+     * @extends B_baseBlock
+     */
     newClass().extendClass(PARENT[1], "BLK_baseTurret").initClass()
     .setParent(null)
     .setParam({})

@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The basic template for environmental blocks.
-   * This template does not change anything.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -41,7 +26,7 @@
 
 
   function comp_setStats(blk) {
-    if(blk.itemDrop != null) blk.stats.add(fetchStat("lovec", "rs-hardness"), blk.dropHardness * blk.dropHardnessMtp);
+    if(blk.itemDrop != null) blk.stats.add(fetchStat("lovec", "rs-hardness"), blk.dropHardness);
   };
 
 
@@ -52,18 +37,37 @@
 */
 
 
+  /**
+   * Root for all environmental blocks.
+   * @class ENV_baseEnvBlock
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_baseEnvBlock").initClass()
   .setParent(null)
   .setTags("blk-env")
   .setParam({
-    // @PARAM: See {RS_baseResource}.
+
+
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof ENV_baseEnvBlock
+     * @instance
+     */
     overwriteVanillaStat: true,
-    // @PARAM: See {RS_baseResource}.
+    /**
+     * <PARAM>: See {@link RS_baseResource}.
+     * @memberof ENV_baseEnvBlock
+     * @instance
+     */
     overwriteVanillaProp: true,
-    // @PARAM: If not negative, this will be used as hardness of the item drop. Only affects placement, does not affect drill time!
+    /**
+     * <PARAM>: If not negative, this will be used as hardness of the item drop. Only affects placement, does not affect real drill time!
+     * @memberof ENV_baseEnvBlock
+     * @instance
+     */
     dropHardness: -1.0,
-    // @PARAM: Multiplier on hardness of the item drop.
-    dropHardnessMtp: 1.0,
+
+
   })
   .setMethod({
 

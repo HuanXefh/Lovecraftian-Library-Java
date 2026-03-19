@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Heap blocks that can hide some units.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -37,7 +22,7 @@
 
 
   function comp_drawBase(blk, t) {
-    LCDraw.tree(blk.region, blk.customShadowRegion, t, blk.shadowOffset, 0.6, 0.6, 0.6, PARAM.treeAlpha, blk.layGrass + Mathf.randomSeed(t.pos(), 0.0, 0.015), PARAM.drawWobble, PARAM.checkTreeDst);
+    LCDraw.tree(blk.region, blk.customShadowRegion, t, blk.size * Vars.tilesize * 0.5, blk.shadowOffset, 0.6, 0.6, 0.6, PARAM.treeAlpha, blk.layGrass + Mathf.randomSeed(t.pos(), 0.0, 0.015), PARAM.drawWobble, PARAM.checkTreeDst);
   };
 
 
@@ -48,14 +33,32 @@
 */
 
 
+  /**
+   * Heap blocks that can hide some units.
+   * <br> <NAMEGEN>
+   * @class ENV_grassHeap
+   * @extends ENV_heap
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_grassHeap").initClass()
   .setParent(TallBlock)
   .setTags("blk-env", "blk-tall0grass")
   .setParam({
-    // @PARAM: See {ENV_baseTree}.
+
+
+    /**
+     * <PARAM>: See {@link ENV_baseTree}.
+     * @memberof ENV_grassHeap
+     * @instance
+     */
     layGrass: 76.0,
-    // @PARAM: See {ENV_baseTree}.
+    /**
+     * <PARAM>: See {@link ENV_baseTree}.
+     * @memberof ENV_grassHeap
+     * @instance
+     */
     hidable: false,
+
+
   })
   .setMethod({
 

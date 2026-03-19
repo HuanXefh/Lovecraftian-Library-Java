@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Just beam node.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -93,7 +79,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Just beam node.
+     * @class BLK_wireRelay
+     * @extends BLK_basePowerTransmitter
+     * @extends INTF_BLK_wireDamageInducer
+     */
     newClass().extendClass(PARENT[0], "BLK_wireRelay").implement(INTF[0]).initClass()
     .setParent(BeamNode)
     .setTags("blk-pow", "blk-pow0trans", "blk-relay")
@@ -117,8 +108,12 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_wireRelay").implement(INTF[1]).initClass()
+    /**
+     * @class B_wireRelay
+     * @extends B_basePowerTransmitter
+     * @extends INTF_B_wireDamageInducer
+     */
+    newClass().extendClass(PARENT[1], "B_wireRelay").implement(INTF[1]).initClass()
     .setParent(BeamNode.BeamNodeBuild)
     .setParam({})
     .setMethod({
@@ -132,6 +127,12 @@
       }),
 
 
+      /**
+       * Gets a random linked building.
+       * @memberof B_wireRelay
+       * @instance
+       * @return {Building|null}
+       */
       ex_findWireTarget: function() {
         return comp_ex_findWireTarget(this);
       }

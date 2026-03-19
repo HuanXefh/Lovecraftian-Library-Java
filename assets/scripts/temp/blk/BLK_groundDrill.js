@@ -1,23 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The most common drill type.
-   * ----------------------------------------
-   * DEDICATION:
-   *
-   * Inspired by Psammos.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -59,22 +41,50 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * The most common drill type.
+     * <br> <DEDICATION>: Inspired by Psammos.
+     * @class BLK_groundDrill
+     * @extends BLK_baseGroundDrill
+     */
     newClass().extendClass(PARENT[0], "BLK_groundDrill").initClass()
     .setParent(Drill)
     .setTags("blk-min", "blk-drl")
     .setParam({
-      // @PARAM: Whether the drill rotator gradually accelerates before finishing a round.
+
+
+      /**
+       * <PARAM>: If true, the drill rotator will gradually accelerate before finishing a round.
+       * @memberof BLK_groundDrill
+       * @instance
+       */
       useAccel: true,
+
+
     })
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_groundDrill").initClass()
+    /**
+     * @class B_groundDrill
+     * @extends B_baseGroundDrill
+     */
+    newClass().extendClass(PARENT[1], "B_groundDrill").initClass()
     .setParent(Drill.DrillBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_groundDrill
+       * @instance
+       */
       timeDrilledInc: 0.0,
+
+
     })
     .setMethod({
 

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * The bridge between fluid torque and data torque, cogwheel and transmission rod.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -50,13 +36,13 @@
 
     Draw.rect(b.block.delegee.botReg, b.x, b.y);
 
-    processZ(Layer.block + 1.0, 1);
+    processZ(Layer.block + 1.0, 2);
     b.ex_drawCog();
     Draw.rect(b.block.delegee.topReg, b.x, b.y);
     if(b.isInv) {
       Draw.rect(b.block.delegee.topInvReg, b.x, b.y);
     };
-    processZ(null, 1);
+    processZ(null, 2);
   };
 
 
@@ -80,16 +66,52 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * The bridge between fluid torque and data torque, cogwheel and transmission rod.
+     * @class BLK_gearBox
+     * @extends BLK_cogwheel
+     */
     newClass().extendClass(PARENT[0], "BLK_gearBox").initClass()
     .setParent(Wall)
     .setTags("blk-cog", "blk-cog0box")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_gearBox
+       * @instance
+       */
       skipTorFetch: false,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_gearBox
+       * @instance
+       */
       skipTorSupply: false,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_gearBox
+       * @instance
+       */
       topReg: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_gearBox
+       * @instance
+       */
       topInvReg: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_gearBox
+       * @instance
+       */
       botReg: null,
+
+
     })
     .setMethod({
 
@@ -107,8 +129,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_gearBox").initClass()
+    /**
+     * @class B_gearBox
+     * @extends B_cogwheel
+     */
+    newClass().extendClass(PARENT[1], "B_gearBox").initClass()
     .setParent(Wall.WallBuild)
     .setParam({})
     .setMethod({
@@ -132,6 +157,11 @@
       }),
 
 
+      /**
+       * @memberof B_gearBox
+       * @instance
+       * @return {void}
+       */
       ex_updateTorTransTgs: function() {
         comp_ex_updateTorTransTgs(this);
       }

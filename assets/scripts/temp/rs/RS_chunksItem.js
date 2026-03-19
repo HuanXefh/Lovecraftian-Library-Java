@@ -1,21 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * Intermediate: chunks.
-   * Produced from a crusher.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -45,11 +29,30 @@
 */
 
 
+  /**
+   * Items produced by rock crushers.
+   * <br> <NAMEGEN>
+   * @class RS_chunksItem
+   * @extends RS_intermediateItem
+   */
   module.exports = newClass().extendClass(PARENT, "RS_chunksItem").initClass()
   .setParent(Item)
   .setTags("rs-intmd", "rs-chunks")
   .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @override
+     * @memberof RS_chunksItem
+     * @instance
+     */
     recolorRegStr: "lovec-gen-chunks-item",
+
+    
   })
   .setMethod({
 
@@ -59,6 +62,12 @@
     },
 
 
+    /**
+     * @override
+     * @memberof RS_chunksItem
+     * @instance
+     * @return {string}
+     */
     ex_getLocalizedMainName: function() {
       return MDL_bundle._term("common", "intmd-chunks");
     }

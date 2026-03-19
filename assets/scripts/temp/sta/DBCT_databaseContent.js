@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A special type of content that is only shown in database.
-   * Technically a status effect, do not apply it!
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -51,11 +36,24 @@
 */
 
 
+  /**
+   * A special type of content that is only displayed in database.
+   * Technically a status effect (like that in most mods), do not apply it on units!
+   * @class DBCT_databaseContent
+   * @extends CLS_contentTemplate
+   */
   module.exports = newClass().extendClass(PARENT, "DBCT_databaseContent").initClass()
   .setParent(null)
   .setTags()
   .setParam({
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     allDatabaseTabs: false,
+
+    
   })
   .setMethod({
 
@@ -81,6 +79,12 @@
     }),
 
 
+    /**
+     * Whether this content should be seen as unlocked (player can interact with this content).
+     * @memberof DBCT_databaseContent
+     * @instance
+     * @return {boolean}
+     */
     ex_checkDbctUnlocked: function() {
       return this.unlocked || global.lovecUtil.prop.debug;
     }

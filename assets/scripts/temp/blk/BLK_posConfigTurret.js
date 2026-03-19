@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Turrets that has their target position as config.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,7 +25,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Turrets that has their target position as config.
+     * @class BLK_posConfigTurret
+     * @extends BLK_configTurret
+     * @extends INTF_BLK_posConfigBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_posConfigTurret").implement(INTF[0]).initClass()
     .setParent(null)
     .setTags("blk-tur")
@@ -47,8 +38,12 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_posConfigTurret").implement(INTF[1]).initClass()
+    /**
+     * @class B_posConfigTurret
+     * @extends B_configTurret
+     * @extends INTF_B_posConfigBlock
+     */
+    newClass().extendClass(PARENT[1], "B_posConfigTurret").implement(INTF[1]).initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

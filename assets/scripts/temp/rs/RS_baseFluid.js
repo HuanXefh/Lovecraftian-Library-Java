@@ -1,22 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fluid without any feature.
-   * You should set {liq.gas} in their .json files.
-   * No {RS_oreFluid} since every fluid can be ore in some way.
-   * Fluid groups and some universal properties are assigned in {DB_fluid}.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -161,17 +144,66 @@
 */
 
 
+  /**
+   * Fluids without any feature. Most properties are set in {@link DB_fluid}.
+   * For gases, set `liq.gas` in their .json files.
+   * Unlike items, there's no `RS_oreFluid` since every fluid can be ore in some way.
+   * @class RS_baseFluid
+   * @extends RS_baseResource
+   */
   module.exports = newClass().extendClass(PARENT, "RS_baseFluid").initClass()
   .setParent(Liquid)
   .setTags()
   .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseFluid
+     * @instance
+     */
     isConductive: false,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseFluid
+     * @instance
+     */
     shouldFume: false,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseFluid
+     * @instance
+     */
     dens: 1.0,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseFluid
+     * @instance
+     */
     fHeat: 26.0,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseFluid
+     * @instance
+     */
     eleGrp: null,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseFluid
+     * @instance
+     */
     fTags: Array.air,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseFluid
+     * @instance
+     */
     corPow: 0.0,
+
+    
   })
   .setMethod({
 

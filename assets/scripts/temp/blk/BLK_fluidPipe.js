@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Equivalent of vanilla liquid conduit, or not.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -114,13 +99,26 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Equivalent of vanilla liquid conduit but with more mechanics.
+     * @class BLK_fluidPipe
+     * @extends BLK_baseFluidDistributor
+     * @extends INTF_BLK_pressureBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_fluidPipe").implement(INTF[0]).initClass()
     .setParent(Conduit)
     .setTags("blk-liq", "blk-fcond")
     .setParam({
-      // @PARAM: Whether this pipe short-circuits if powered and containing conduitive fluid. {true} for most metallic pipes.
+
+
+      /**
+       * <PARAM>: Whether this pipe short-circuits if powered and containing conductive fluid. Used mostly for metallic pipes.
+       * @memberof BLK_fluidPipe
+       * @instance
+       */
       isShortCircuitPipe: false,
+
+
     })
     .setMethod({
 
@@ -130,6 +128,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_fluidPipe
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -142,11 +146,27 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_fluidPipe").implement(INTF[1]).initClass()
+    /**
+     * @class B_fluidPipe
+     * @extends B_baseFluidDistributor
+     * @extends INTF_B_pressureBlock
+     */
+    newClass().extendClass(PARENT[1], "B_fluidPipe").implement(INTF[1]).initClass()
     .setParent(Conduit.ConduitBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_fluidPipe
+       * @instance
+       */
       isLeak: false,
+
+
     })
     .setMethod({
 

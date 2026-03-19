@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A pump used specifically for depth liquid deposits.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -49,8 +35,8 @@
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(t == null) return false;
 
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, team, rot)) {
-      thisFun.tmpTup[4] = blk.ex_anyDeporeRevealed(t.x, t.y, "liquid");
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
+      thisFun.tmpTup[4] = blk.ex_anyDporeRevealed(t.x, t.y, "liquid");
     };
 
     return thisFun.tmpTup[4];
@@ -82,18 +68,57 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A pump used specifically for depth liquid deposits.
+     * @class BLK_depthPump
+     * @extends BLK_liquidPump
+     * @extends INTF_BLK_dynamicAttributeBlock
+     * @extends INTF_BLK_depthOreHandler
+     * @extends INTF_BLK_oreScannerHandler
+     */
     newClass().extendClass(PARENT[0], "BLK_depthPump").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
     .setParent(AttributeCrafter)
     .setTags("blk-pump")
     .setParam({
-      // @PARAM: Pump rate (per frame).
+
+
+      /**
+       * <PARAM>: Pump rate.
+       * @memberof BLK_depthPump
+       * @instance
+       */
       liqProdRate: 0.0,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_depthPump
+       * @instance
+       */
       liqReg: null,
+      /**
+       * <INTERNAL>
+       * @memberof  BLK_depthPump
+       * @instance
+       */
       attrMode: "overlay",
+      /**
+       * <INTERNAL>
+       * @memberof  BLK_depthPump
+       * @instance
+       */
       attrRsArr: DB_item.db["map"]["attr"]["dpliq"],
+      /**
+       * <INTERNAL>
+       * @memberof  BLK_depthPump
+       * @instance
+       */
       shouldDrawDynaAttrText: false,
+
+
     })
     .setMethod({
 
@@ -157,8 +182,14 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_depthPump").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
+    /**
+     * @class B_depthPump
+     * @extends B_liquidPump
+     * @extends INTF_B_dynamicAttributeBlock
+     * @extends INTF_B_depthOreHandler
+     * @extends INTF_B_oreScannerHandler
+     */
+    newClass().extendClass(PARENT[1], "B_depthPump").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
     .setParent(AttributeCrafter.AttributeCrafterBuild)
     .setParam({})
     .setMethod({
@@ -183,25 +214,8 @@
       },
 
 
-      write: function thisFun(wr) {
-        // I have to write revision twice
-        let LCRevi = processRevision(wr);
-        thisFun.funPrev.apply(this, [wr]);
-      }
-      .setProp({
-        override: true,
-      }),
-
-
       read: function thisFun(rd, revi) {
-        // This hell is for backwards compatibility, I can't understand it either
-        let LCRevi = processRevision(rd);
-        if(LCRevi < 1) {
-          rd.f();
-          thisFun.funPrev.apply(this, [rd, revi]);
-          rd.s();
-          return;
-        };
+        if(this.LCRevi === 5) rd.s();
 
         thisFun.funPrev.apply(this, [rd, revi]);
       }

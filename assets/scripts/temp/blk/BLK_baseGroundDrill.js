@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent for all ground drills.
-   * Ore scanner is required when a drill is mining depth ore.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -137,17 +122,40 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Parent for all ground drills.
+     * Ore scanner is required when a drill is mining depth ore.
+     * @class BLK_baseGroundDrill
+     * @extends BLK_baseDrill
+     * @extends INTF_BLK_depthOreHandler
+     * @extends INTF_BLK_oreScannerHandler
+     */
     newClass().extendClass(PARENT[0], "BLK_baseGroundDrill").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(null)
     .setTags("blk-min", "blk-drl")
     .setParam({
-      // @PARAM: Multiplier on how many items outputted each round.
+
+
+      /**
+       * <PARAM>: Multiplier on amount of items outputted each round.
+       * @memberof BLK_baseGroundDrill
+       * @instance
+       */
       drillAmtMtp: 1.0,
-      // @PARAM: Whether this drill can mine depth ore.
+      /**
+       * <PARAM>: Whether this drill is capable of mining depth ore.
+       * @memberof BLK_baseGroundDrill
+       * @instance
+       */
       canMineDepthOre: false,
-      // @PARAM: Multiplier on drill tier when mining depth ore.
+      /**
+       * <PARAM>: Multiplier on drill tier when mining depth ore.
+       * @memberof BLK_baseGroundDrill
+       * @instance
+       */
       depthTierMtp: 0.5,
+
+
     })
     .setParamAlias([
       "drillEff", "drillEffect", Fx.none,
@@ -185,6 +193,11 @@
       }),
 
 
+      /**
+       * @memberof BLK_baseGroundDrill
+       * @instance
+       * @return {number}
+       */
       ex_getRcDictOutputScl: function() {
         return this.drillAmtMtp;
       }
@@ -196,8 +209,13 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseGroundDrill").implement(INTF[1]).implement(INTF_A[1]).initClass()
+    /**
+     * @class B_baseGroundDrill
+     * @extends B_baseDrill
+     * @extends INTF_B_depthOreHandler
+     * @extends INTF_B_oreScannerHandler
+     */
+    newClass().extendClass(PARENT[1], "B_baseGroundDrill").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(null)
     .setParam({})
     .setMethod({

@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Parent of all item transportation gates.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,7 +29,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Parent of all item transportation gates.
+     * <br> <SINGLESIZE>
+     * @class BLK_baseItemGate
+     * @extends BLK_baseItemDistributor
+     */
     newClass().extendClass(PARENT[0], "BLK_baseItemGate").initClass()
     .setParent(null)
     .setTags("blk-dis", "blk-gate")
@@ -57,6 +47,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_baseItemGate
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return true;
       }
@@ -69,8 +65,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseItemGate").initClass()
+    /**
+     * @class B_baseItemGate
+     * @extends B_baseItemDistributor
+     */
+    newClass().extendClass(PARENT[1], "B_baseItemGate").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A type of multi-crafter with temperature mechanics.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -62,7 +48,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A type of multi-crafter with temperature mechanics.
+     * @class BLK_furnaceRecipeFactory
+     * @extends BLK_recipeFactory
+     * @extends INTF_BLK_furnaceBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_furnaceRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac", "blk-rc0fac", "blk-furn")
@@ -96,12 +87,33 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_furnaceRecipeFactory").implement(INTF[1]).initClass()
+    /**
+     * @class B_furnaceRecipeFactory
+     * @extends B_recipeFactory
+     * @extends INTF_B_furnaceBlock
+     */
+    newClass().extendClass(PARENT[1], "B_furnaceRecipeFactory").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_furnaceRecipeFactory
+       * @instance
+       */
       tempReq: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_furnaceRecipeFactory
+       * @instance
+       */
       tempAllowed: Infinity,
+
+
     })
     .setMethod({
 
@@ -144,6 +156,13 @@
       }),
 
 
+      /**
+       * @memberof B_furnaceRecipeFactory
+       * @instance
+       * @param {RecipeModule} rcMdl
+       * @param {string} rcHeader
+       * @return {void}
+       */
       ex_loadRcParam: function(rcMdl, rcHeader) {
         comp_ex_loadRcParam(this, rcMdl, rcHeader);
       }
@@ -152,6 +171,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_furnaceRecipeFactory
+       * @instance
+       * @return {number}
+       */
       ex_getHeatTg: function() {
         return this.tempReq;
       }
@@ -161,6 +186,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_furnaceRecipeFactory
+       * @instance
+       * @return {number}
+       */
       ex_getHeatAllowed: function() {
         return this.tempAllowed;
       }
@@ -170,6 +201,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_furnaceRecipeFactory
+       * @instance
+       * @return {number}
+       */
       ex_calcFailP: function thisFun() {
         return comp_ex_calcFailP(this) * thisFun.funPrev.call(this);
       }
@@ -179,6 +216,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_furnaceRecipeFactory
+       * @instance
+       * @param {string} str
+       * @return {void}
+       */
       ex_handleConfigStrDef: function thisFun(str) {
         if(str.startsWith("FUEL: ")) {
           this.delegee.fuelSel = MDL_content._ct(str.replace("FUEL: ", ""), "rs");
@@ -192,6 +236,11 @@
       }),
 
 
+      /**
+       * @memberof B_furnaceRecipeFactory
+       * @instance
+       * @return {Array<function(Table): void>}
+       */
       ex_getSelectorExtraBtnSetters: function() {
         return this.block.delegee.noFuelInput ?
           [] :

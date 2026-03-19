@@ -12,15 +12,9 @@
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (Object)
   ========================================
 */
-
-
-  /* <---------- import ----------> */
-
-
-  /* <---------- object ----------> */
 
 
   /**
@@ -272,7 +266,7 @@
       } catch(err) {
         dbMdl = null;
         if(!err.message.startsWith("Module ")) {
-          Log.warn("[LOVEC] Error loading DB file from [$1]:\n".format(mod.name.color(Pal.accent)) + err);
+          Log.warn("[LOVEC] Error loading DB file from ${1}:\n".format(mod.name.color(Pal.accent)) + err);
         };
       };
 
@@ -282,11 +276,15 @@
       };
     });
 
-    Log.info("[LOVEC] Merged [$1] DB file(s) for [$2] in [$3] from other mods.".format(i, nmFi, nmModCur.color(Pal.accent)));
+    Log.info("[LOVEC] Merged ${1} DB file(s) for ${2} in ${3} from other mods.".format(i, nmFi, nmModCur.color(Pal.accent)));
   };
 
 
-  /* <---------- number ----------> */
+/*
+  ========================================
+  Section: Definition (Number)
+  ========================================
+*/
 
 
   /**
@@ -330,7 +328,11 @@
   };
 
 
-  /* <---------- array ----------> */
+/*
+  ========================================
+  Section: Definition (Array)
+  ========================================
+*/
 
 
   /**

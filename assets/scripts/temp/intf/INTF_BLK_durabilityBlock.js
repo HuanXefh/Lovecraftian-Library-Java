@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * This block will gain damage if run out of durability.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,6 +25,8 @@
 
 
   function comp_setBars(blk) {
+    if(!isFinite(blk.durabCap)) return;
+    
     blk.addBar("lovec-durability", b => new Bar(
       prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", b.delegee.durabFrac.perc(0))),
       prov(() => Pal.sap),
@@ -53,15 +41,15 @@
 
 
   function comp_updateTile(b) {
+    if(!isFinite(b.block.delegee.durabCap)) return;
+
     if(b.durabMode === "dec") {
-      b.durabFrac -= (!isFinite(b.block.delegee.durabCap) || b.block.delegee.durabCap < 0.0001) ?
-        0.0 :
-        (1.0 / b.block.delegee.durabCap * b.edelta());
+      b.durabFrac -= 1.0 / b.block.delegee.durabCap * b.edelta();
       // Enter increase mode (need repairing) when run out of durability
       if(b.durabFrac < 0.0) {
         b.durabFrac = 0.0;
         b.durabMode = "inc";
-        FRAG_attack.damage(b, b.maxHealth * b.block.delegee.durabDmgFrac, 0.0);
+        FRAG_attack.damage(b, Math.min(b.maxHealth * b.block.delegee.durabDmgFrac, !b.block.delegee.noDurabDmgKill ? Infinity : b.health - 1.0), 0.0);
       };
     } else {
       // Exit increase mode when fully repaired
@@ -100,23 +88,60 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * This block will gain damage and halt if run out of durability.
+     * @class INTF_BLK_durabilityBlock
+     */
+    new CLS_interface("INTF_BLK_durabilityBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: The default maximum durability in frames.
+
+
+        /**
+         * <PARAM>: Default maximum durability in frames. If infinity, durability mechanics is disabled.
+         * @memberof INTF_BLK_durabilityBlock
+         * @instance
+         */
         durabCap: Infinity,
-        // @PARAM: Multiplier on durability decrease rate. Note that this is an internal property in {BLK_durabilityRecipeFactory}.
+        /**
+         * <PARAM>: Multiplier on durability decrease rate.
+         * @memberof INTF_BLK_durabilityBlock
+         * @instance
+         */
         durabDecMtp: 1.0,
-        // @PARAM: Damage as fraction of maximum health, applied when run out of durability.
+        /**
+         * <PARAM>: Damage dealt as fraction of maximum health when run out of durability.
+         * @memberof INTF_BLK_durabilityBlock
+         * @instance
+         */
         durabDmgFrac: 0.75,
-        // @PARAM: Minimum fraction of durability cap, that is regenerated upon being repaired.
+        /**
+         * <PARAM>: If true, damage dealt by durability outage won't kill the building.
+         * @memberof INTF_BLK_durabilityBlock
+         * @instance
+         */
+        noDurabDmgKill: true,
+        /**
+         * <PARAM>: Minimum fraction of durability cap restored upon being repaired.
+         * @memberof INTF_BLK_durabilityBlock
+         * @instance
+         */
         durabRegenFracMin: 0.5,
-        // @PARAM: Maximum fraction of durability cap, that is regenerated upon being repaired.
+        /**
+         * <PARAM>: Maximum fraction of durability cap restored upon being repaired.
+         * @memberof INTF_BLK_durabilityBlock
+         * @instance
+         */
         durabRegenFracMax: 1.0,
-        // @PARAM: Integer offset of the need-repairing text in {b.drawSelect}.
+        /**
+         * <PARAM>: Integer offset of the need-repairing text in `b.drawSelect`.
+         * @memberof INTF_BLK_durabilityBlock
+         * @instance
+         */
         durabTextOffTy: 0,
+
+
       }),
 
 
@@ -138,14 +163,38 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_durabilityBlock
+     */
+    new CLS_interface("INTF_B_durabilityBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_durabilityBlock
+         * @instance
+         */
         durabFrac: 1.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_durabilityBlock
+         * @instance
+         */
         durabMode: "dec",
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_durabilityBlock
+         * @instance
+         */
         durabDecMtp: 1.0,
+
+
       }),
 
 
@@ -169,6 +218,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_durabilityBlock
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
         comp_ex_postUpdateEfficiencyMultiplier(this);
       }
@@ -177,17 +231,23 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_durabilityBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             wr.f(this.durabFrac);
             wr.str(this.durabMode);
           },
 
           (rd, revi) => {
-            if(revi < 1) {
-              rd.s();
+            if(revi === 5 && this.block.ex_isSubInsOf("BLK_baseMiner")) {
+              return;
             };
 
             this.durabFrac = rd.f();
@@ -197,7 +257,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

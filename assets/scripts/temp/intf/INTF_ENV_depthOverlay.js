@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles visibility of depth ore.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -100,14 +86,35 @@
 */
 
 
-  module.exports = new CLS_interface({
+  /**
+   * Handles visibility of depth ore.
+   * @class INTF_ENV_depthOverlay
+   */
+  module.exports = new CLS_interface("INTF_ENV_depthOverlay", {
 
 
     __PARAM_OBJ_SETTER__: () => ({
-      // @PARAM: How deep the overlay is, related to scanner tier.
+
+
+      /**
+       * <PARAM>: How deep the overlay is, related to scanner tier.
+       * @memberof INTF_ENV_depthOverlay
+       * @instance
+       */
       depthLvl: 0,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof INTF_ENV_depthOverlay
+       * @instance
+       */
       drawnMap: prov(() => new ObjectMap()),
+
+
     }),
 
 
@@ -146,6 +153,11 @@
     }),
 
 
+    /**
+     * @memberof INTF_ENV_depthOverlay
+     * @instance
+     * @return {string}
+     */
     ex_getDepthName: function() {
       return comp_ex_getDepthName(this);
     }
@@ -154,6 +166,13 @@
     }),
 
 
+    /**
+     * @memberof INTF_ENV_depthOverlay
+     * @instance
+     * @param {Tile} t
+     * @param {string|boolean} param
+     * @return {boolean}
+     */
     ex_accRevealed: function(t, param) {
       return comp_ex_accRevealed(this, t, param);
     }

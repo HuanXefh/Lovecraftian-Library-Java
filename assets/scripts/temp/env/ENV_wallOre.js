@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <NAMEGEN>
-   * A separate template for wall ores.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -50,11 +35,22 @@
 */
 
 
+  /**
+   * Vanilla ore overlay, only for wall ores.
+   * @class ENV_wallOre
+   * @extends ENV_baseOverlay
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_wallOre").initClass()
   .setParent(OreBlock)
   .setTags("blk-env", "blk-wore")
   .setParam({})
   .setParamAlias([
+    /**
+     * <PARAM>: See {@link ENV_ore}.
+     * @type {boolean} showOreOnMinimap
+     * @memberof ENV_wallOre
+     * @instance
+     */
     "showOreOnMinimap", "useColor", false,
   ])
   .setMethod({

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent template for all logic-related blocks.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -38,7 +24,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Parent template for all logic-related blocks.
+     * @class BLK_baseLogicBlock
+     * @extendsd BLK_baseBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseLogicBlock").initClass()
     .setParent(null)
     .setTags("blk-log")
@@ -46,8 +36,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseLogicBlock").initClass()
+    /**
+     * @class B_baseLogicBlock
+     * @extends B_baseBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseLogicBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

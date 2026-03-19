@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Like {BLK_filterGate} but for multi-item selection.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -87,7 +72,7 @@
   function comp_getTileTarget(b, itm, b_f, isFlip) {
     let rot = b_f.relativeTo(b);
     let b_t = b.nearby(rot);
-    let tg;
+    let tg = b;
 
     if((b.block.delegee.filterScrTup[0](b, b_f, itm, b.rsTgs) !== b.isInv) === b.enabled) {
       if(b.isSame(b_f) && b.isSame(b_t)) return tg;
@@ -149,15 +134,38 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Like {@link BLK_filterGate} but for multi-item selection.
+     * <br> <SINGLESIZE>
+     * @class BLK_multiFilterGate
+     * @extends BLK_baseItemGate
+     */
     newClass().extendClass(PARENT[0], "BLK_multiFilterGate").initClass()
     .setParent(Sorter)
     .setTags("blk-dis", "blk-gate")
     .setParam({
-      // @PARAM: See {BLK_filterGate}.
+
+
+      /**
+       * <PARAM>: See {@link BLK_filterGate}.
+       * <br> <ARGS>: b, b_f, itm, rsTgs.
+       * @memberof BLK_multiFilterGate
+       * @instance
+       */
       filterScrTup: prov(() => [(b, b_f, itm, rsTgs) => rsTgs.includes(itm)]),
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_multiFilterGate
+       * @instance
+       */
       invReg: null,
+
+
     })
     .setMethod({
 
@@ -180,12 +188,32 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_multiFilterGate").initClass()
+    /**
+     * @class B_multiFilterGate
+     * @extends B_baseItemGate
+     */
+    newClass().extendClass(PARENT[1], "B_multiFilterGate").initClass()
     .setParent(Sorter.SorterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_multiFilterGate
+       * @instance
+       */
       isInv: false,
+      /**
+       * <INTERNAL>
+       * @memberof B_multiFilterGate
+       * @instance
+       */
       rsTgs: prov(() => []),
+
+
     })
     .setMethod({
 
@@ -222,20 +250,27 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
         MDL_io._wr_cts(wr, this.rsTgs);
         wr.bool(this.isInv);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
+        if(this.LCRevi === 5) rd.s();
+        
         MDL_io._rd_cts(rd, this.rsTgs);
         this.sortItem = this.rsTgs.first();
         this.isInv = rd.bool();
       },
 
 
+      /**
+       * @memberof B_multiFilterGate
+       * @instance
+       * @param {string|Item} param
+       * @param {boolean} isAdd
+       * @return {Array<Item>}
+       */
       ex_accRsTgs: function(param, isAdd) {
         switch(param) {
           case "read" :
@@ -243,11 +278,11 @@
           case "clear" :
             this.block.lastConfig = "clear";
             return this.rsTgs.clear();
-          default :
-            return isAdd ?
-              this.rsTgs.pushUnique(param) :
-              this.rsTgs.remove(param);
         };
+
+        return isAdd ?
+          this.rsTgs.pushUnique(param) :
+          this.rsTgs.remove(param);
       }
       .setProp({
         noSuper: true,

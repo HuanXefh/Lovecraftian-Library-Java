@@ -1,24 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fake fluids that cannot be transfered and stored by regular pipes, like heat.
-   * These fluids are abbreviated as "AUX" (auxiliary fluid).
-   * You have to put {gas: true} in the .json file by the way.
-   *
-   * The basic auxiliary fluid are named "aux0aux-xxx" instead of "aux-xxx", since "aux" is not allowed for folder name on Windows.
-   * Holy fuk.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -43,7 +24,8 @@
       aux.coolant = false;
       aux.capPuddles = true;
 
-      aux.lightColor = aux.gasColor = Color.black;
+      aux.lightColor = Color.black.cpy();
+      aux.gasColor = Color.black.cpy();
       aux.vaporEffect = Fx.none;
     };
   };
@@ -67,11 +49,25 @@
 */
 
 
+  /**
+   * Fake fluids that cannot be transferred and stored by regular pipes, like heat.
+   * Also known as auxiliary fluid (abbr. aux).
+   * <br> These fluids are named like "aux0aux-xxx" instead of "aux-xxx", because "aux" is not allowed for folder name, WTF.
+   * @class RS_abstractFluid
+   * @extends RS_baseResource
+   */
   module.exports = newClass().extendClass(PARENT, "RS_abstractFluid").initClass()
   .setParent(Liquid)
   .setTags("rs-aux")
   .setParam({
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     gas: true,
+
+
   })
   .setMethod({
 

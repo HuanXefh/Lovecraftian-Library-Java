@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * {INTF_BLK_furnaceBlock} but instead of consuming fuel, this will consume power dynamically.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -135,7 +121,7 @@
 
 
   function comp_ex_handleExtHeat(b, amt) {
-    b.tempExt = amt * b.block.delegee.tempExtMtp;
+    b.tempExt = Math.max(b.tempExt, amt * b.block.delegee.tempExtMtp);
     b.extHeatCd = 300.0;
   };
 
@@ -144,7 +130,7 @@
     tb.table(Styles.black3, tb1 => {
       tb1.left();
       MDL_table.__margin(tb1);
-      MDL_table.__sliderCfg(tb1, b, () => "[$1]: [$2]".format(MDL_bundle._term("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.block.delegee.fuelTempRes * b.block.delegee.maxOverheatScl, 50.0, b.tempSet);
+      MDL_table.__sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle._term("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.block.delegee.fuelTempRes * b.block.delegee.maxOverheatScl, 50.0, b.tempSet);
     }).left().growX();
   };
 
@@ -159,32 +145,89 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * {@link INTF_BLK_furnaceBlock} but instead of consuming fuel, this will consume power dynamically.
+     * @class INTF_BLK_electricFurnaceBlock
+     */
+    new CLS_interface("INTF_BLK_electricFurnaceBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: See {INTF_BLK_furnaceBlock}.
+
+
+        /**
+         * <PARAM>: See {@link INTF_BLK_furnaceBlock}.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         tempExtMtp: 1.0,
-        // @PARAM: Base power consumption, regardless of temperature.
+        /**
+         * <PARAM>: Base power consumption regardless of temperature.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         powConsBase: 1.0,
-        // @PARAM: Power consumption added for each 100 HU.
+        /**
+         * <PARAM>: Power consumption added for each 100 HU.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         powConsPerFuelLvl: 1.0,
-        // @PARAM: Affects the maximum temperature allowed to reach. The furnace will get damaged when overheated.
+        /**
+         * <PARAM>: Affects maximum temperature allowed to reach. The furnace will get damaged when overheated.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         maxOverheatScl: 1.5,
-        // @PARAM: See {INTF_BLK_furnaceBlock}.
+        /**
+         * <PARAM>: See {@link INTF_BLK_furnaceBlock}.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         fuelWarmupRate: 0.0001,
-        // @PARAM: See {INTF_BLK_furnaceBlock}.
+        /**
+         * <PARAM>: See {@link INTF_BLK_furnaceBlock}.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         furnHeatA: 1.0,
-        // @PARAM: See {INTF_BLK_furnaceBlock}.
+        /**
+         * <PARAM>: See {@link INTF_BLK_furnaceBlock}.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         shouldDrawFurnLight: true,
-        // @PARAM: See {INTF_BLK_furnaceBlock}.
+        /**
+         * <PARAM>: See {@link INTF_BLK_furnaceBlock}.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         furnLightRad: 40.0,
-        // @PARAM: See {INTF_BLK_furnaceBlock}.
+        /**
+         * <PARAM>: See {@link INTF_BLK_furnaceBlock}.
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         furnLightTempReq: 1000.0,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         fuelTempRes: Infinity,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_electricFurnaceBlock
+         * @instance
+         */
         fuelHeatReg: null,
+
+
       }),
 
 
@@ -211,18 +254,62 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_electricFurnaceBlock
+     */
+    new CLS_interface("INTF_B_electricFurnaceBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_electricFurnaceBlock
+         * @instance
+         */
         tempCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_electricFurnaceBlock
+         * @instance
+         */
         tempExt: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_electricFurnaceBlock
+         * @instance
+         */
         tempSet: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_electricFurnaceBlock
+         * @instance
+         */
         tempRiseTg: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_electricFurnaceBlock
+         * @instance
+         */
         heatFrac: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_electricFurnaceBlock
+         * @instance
+         */
         extHeatCd: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_electricFurnaceBlock
+         * @instance
+         */
         furnEffc: 0.0,
+
+
       }),
 
 
@@ -259,6 +346,11 @@
       },
 
 
+      /**
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
         comp_ex_postUpdateEfficiencyMultiplier(this);
       }
@@ -267,11 +359,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * See {INTF_BLK_furnaceBlock}.
-       * ---------------------------------------- */
+      /**
+       * See {@link INTF_B_furnaceBlock}.
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @param {number} amt
+       * @return {void}
+       */
       ex_handleExtHeat: function(amt) {
         comp_ex_handleExtHeat(this, amt);
       }
@@ -281,6 +375,12 @@
       }),
 
 
+      /**
+       * Calculated current power usage.
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @return {number}
+       */
       ex_calcFurnPowCons: function() {
         return Mathf.maxZero(this.tempSet - Math.max(this.tempExt, PARAM.glbHeat)) / 100.0 * this.block.delegee.powConsPerFuelLvl + this.block.delegee.powConsBase;
       }
@@ -289,6 +389,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeat: function() {
         return this.tempCur;
       }
@@ -297,11 +402,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * ---------------------------------------- */
+      /**
+       * See {@link INTF_B_furnaceBlock}.
+       * <br> <LATER>
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeatTg: function() {
         return PARAM.glbHeat;
       }
@@ -310,11 +417,13 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * ---------------------------------------- */
+      /**
+       * See {@link INTF_B_furnaceBlock}.
+       * <br> <LATER>
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @return {number}
+       */
       ex_getHeatAllowed: function() {
         return Infinity;
       }
@@ -323,6 +432,12 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @param {Table} tb
+       * @return {void}
+       */
       ex_buildTempSlider: function(tb) {
         comp_ex_buildTempSlider(this, tb);
       }
@@ -332,9 +447,15 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
 
           (wr, revi) => {
             wr.f(this.tempCur);
@@ -349,7 +470,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

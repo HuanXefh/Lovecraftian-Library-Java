@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Click this block fast enough to activate it!
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -127,19 +113,42 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Click this block fast enough to activate it!
+     * @class INTF_BLK_manualStartBlock
+     */
+    new CLS_interface("INTF_BLK_manualStartBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Type of parameter used for config.
+
+
+        /**
+         * <PARAM>: See {@link INTF_BLK_manualClickBlock}.
+         * @memberof INTF_BLK_manualStartBlock
+         * @instance
+         */
         manualStartCfgTp: "boolean",
-        // @PARAM: Rate at which the warmup increases.
+        /**
+         * <PARAM>: Warmup increase rate.
+         * @memberof INTF_BLK_manualStartBlock
+         * @instance
+         */
         manualStartIncRate: 0.001,
-        // @PARAM: Rate at which the warmup decreases.
+        /**
+         * <PARAM>: Warmup decrease rate.
+         * @memberof INTF_BLK_manualStartBlock
+         * @instance
+         */
         manualStartDecRate: 0.008,
-        // @PARAM: Change this if you have a button to click.
+        /**
+         * <PARAM>: See {@link INTF_BLK_manualClickBlock}.
+         * @memberof INTF_BLK_manualStartBlock
+         * @instance
+         */
         skipTapConfig: false,
+
+
       }),
 
 
@@ -156,12 +165,26 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_manualStartBlock
+     */
+    new CLS_interface("INTF_B_manualStartBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_manualStartBlock
+         * @instance
+         */
         manualStartWarmup: 0.0,
+
+
       }),
 
 
@@ -184,12 +207,14 @@
       }),
 
 
-      /* ----------------------------------------
-      * NOTE:
-      *
-      * @LATER
-      * Called whenever this building is configured.
-      * ---------------------------------------- */
+      /**
+       * See {@link INTF_B_manualClickBlock}.
+       * <br> <LATER>
+       * @memberof INTF_B_manualStartBlock
+       * @instance
+       * @param {any} val
+       * @return {void}
+       */
       ex_onManualStartConfigured: function(val) {
 
       }
@@ -199,6 +224,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_manualStartBlock
+       * @instance
+       * @return {void}
+       */
       ex_postUpdateEfficiencyMultiplier: function() {
         comp_ex_postUpdateEfficiencyMultiplier(this);
       }
@@ -207,6 +237,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_manualStartBlock
+       * @instance
+       * @return {number}
+       */
       ex_getManualStartFrac: function() {
         return Mathf.clamp(this.manualStartWarmup - 0.2);
       }
@@ -215,11 +250,12 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Call this to apply one click.
-       * ---------------------------------------- */
+      /**
+       * See {@link INTF_B_manualClickBlock}.
+       * @memberof INTF_B_manualStartBlock
+       * @instance
+       * @return {void}
+       */
       ex_configureClick: function() {
         comp_ex_configureClick(this);
       }
@@ -228,25 +264,27 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_B_manualStartBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
           (wr, revi) => {
             wr.f(this.manualStartWarmup);
           },
 
           (rd, revi) => {
-            if(revi < 1) {
-              rd.s();
-            };
-
             this.manualStartWarmup = rd.f();
           },
         );
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

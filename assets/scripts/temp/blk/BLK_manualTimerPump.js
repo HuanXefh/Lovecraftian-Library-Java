@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * A pump that charges when you clicks it.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,18 +25,39 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A pump that charges when you click it.
+     * @class BLK_manualTimerPump
+     * @extends BLK_liquidPump
+     * @extends INTF_BLK_manualTimerBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_manualTimerPump").implement(INTF[0]).initClass()
     .setParent(Pump)
     .setTags("blk-pump")
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_manualTimerPump
+       * @instance
+       */
       manualTimerCfgTp: "string",
+
+
     })
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_manualTimerPump").implement(INTF[1]).initClass()
+    /**
+     * @class B_manualTimerPump
+     * @extends B_liquidPump
+     * @extends INTF_B_manualTimerBlock
+     */
+    newClass().extendClass(PARENT[1], "B_manualTimerPump").implement(INTF[1]).initClass()
     .setParent(Pump.PumpBuild)
     .setParam({})
     .setMethod({

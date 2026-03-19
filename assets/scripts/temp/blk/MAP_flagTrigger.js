@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Will be triggered when a specific flag is set.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -49,30 +35,55 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * This block will be triggered when a specific flag is set.
+     * @class MAP_flagTrigger
+     * @extends BLK_baseLogicBlock
+     * @extends INTF_BLK_mapBlock
+     */
     newClass().extendClass(PARENT[0], "MAP_flagTrigger").implement(INTF[0]).initClass()
     .setParent(null)
     .setTags("blk-log")
     .setParam({
-      // @PARAM: If {true}, this block will be triggered only once and become dormant forever.
+
+
+      /**
+       * <PARAM>: If true, this block will be triggered only once and become dormant forever.
+       * @memberof MAP_flagTrigger
+       * @instance
+       */
       triggerOnlyOnce: false,
 
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof MAP_flagTrigger
+       * @instance
+       */
       isWorldBlock: true,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      forceDark: true,
+
+
     })
     .setMethod({
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * This string will be used in {Vars.state.rules.objectiveFlags}.
-       * ----------------------------------------
-       * IMPORTANT:
-       *
-       * The returned value is an object, NOT a string.
-       * You have to convert it sometimes.
-       * ---------------------------------------- */
+      /**
+       * If the string returned is found in map flags, this block will be triggered.
+       * <br> <LATER>
+       * @memberof MAP_flagTrigger
+       * @instance
+       * @param {Building} b
+       * @return {string}
+       */
       ex_getFlagStr: function(b) {
         return "";
       }
@@ -84,11 +95,27 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "MAP_flagTrigger").implement(INTF[1]).initClass()
+    /**
+     * @class B_flagTrigger
+     * @extends B_baseLogicBlock
+     * @extends INTF_B_mapBlock
+     */
+    newClass().extendClass(PARENT[1], "B_flagTrigger").implement(INTF[1]).initClass()
     .setParent(null)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_flagTrigger
+       * @instance
+       */
       isDormant: false,
+
+
     })
     .setMethod({
 
@@ -99,24 +126,25 @@
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
         wr.bool(this.isDormant);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
+        if(this.LCRevi === 5) rd.s();
+
         this.isDormant = rd.bool();
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Will be called every frame when a flag is set.
+      /**
+       * Called every frame when a flag returned by {@link MAP_flagTrigger#ex_getFlagStr} is set.
        * If the block triggers only once, this method is also called only once.
-       * ---------------------------------------- */
+       * <br> <LATER>
+       * @memberof B_flagTrigger
+       * @instance
+       * @return {void}
+       */
       ex_onFlagTriggered: function() {
 
       }

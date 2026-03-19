@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods for pressure.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -99,14 +85,14 @@
       !PARAM.updateDeepSuppressed && TIMER.secQuarter && Mathf.chance(0.25)
         && (
           (b.presTmp + b.presExtra) > 0.0 ?
-            (b.presTmp + b.presExtra) > b.block.delegee.presRes + 0.5 :
-            (b.presTmp + b.presExtra) < b.block.delegee.vacRes - 0.5
+            ((b.presTmp + b.presExtra) > (b.block.delegee.presRes + 0.5)) :
+            ((b.presTmp + b.presExtra) < (b.block.delegee.vacRes - 0.5))
         )
     ) {
       b.damagePierce((b.maxHealth * VAR.blk_presDmgFrac + VAR.blk_presDmgMin) * (
         b.presTmp > 0.0 ?
-          b.presTmp / Math.max(b.block.delegee.presRes, 0.0001) :
-          -b.presTmp / Math.max(-b.block.delegee.vacRes, 0.0001)
+          (b.presTmp / Math.max(b.block.delegee.presRes, 0.0001)) :
+          (-b.presTmp / Math.max(-b.block.delegee.vacRes, 0.0001))
       ));
     };
 
@@ -121,10 +107,20 @@
         let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
         FRAG_fluid.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt * VAR.time_liqIntv, false, false, true);
         if(addAmt > (MDL_recipeDict._consAmt(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t.block) + 5.5 / 60.0)) {
-          b_t.damagePierce(b_t.maxHealth * VAR.blk_presDmgFrac + VAR.blk_presDmgMin) / 5.0;
+          b_t.damagePierce((b_t.maxHealth * VAR.blk_presDmgFrac + VAR.blk_presDmgMin) / 5.0);
         };
       };
     };
+  };
+
+
+  function comp_acceptItem(b, b_f, itm) {
+    let presThr = b.block.delegee.presThr;
+    if(presThr.fEqual(0.0)) return true;
+
+    return presThr > 0.0 ?
+      b.presTmp >= presThr - 0.15 :
+      b.presTmp <= presThr + 0.15;
   };
 
 
@@ -133,8 +129,8 @@
     if(presThr.fEqual(0.0)) return true;
 
     return presThr > 0.0 ?
-      b.presTmp >= presThr - 0.1 :
-      b.presTmp <= presThr + 0.1;
+      b.presTmp >= presThr - 0.15 :
+      b.presTmp <= presThr + 0.15;
   };
 
 
@@ -146,7 +142,7 @@
         && (!ob.block.rotate ? true : ob.relativeTo(b) === ob.rotation)
         && (
           !b.block.rotate ?
-            true :
+            false :
             MDL_cond._isNoSideBlock(b.block) ?
               b.relativeTo(ob) !== b.rotation :
               (ob.relativeTo(b) === b.rotation || (MDL_cond._isFluidConduit(b.block) ? MDL_cond._isFluidConduit(ob.block) : false))
@@ -175,7 +171,7 @@
   function comp_ex_updatePresTg(b) {
     b.presTg = b.presBase;
     b.presFetchTgs.forEachFast(ob => {
-      if(!ob.added || ob.isPayload()) return;
+      if(!ob.added || !ob.enabled || ob.isPayload()) return;
       b.presTg += tryFun(ob.ex_getPres, ob, 0.0) * tryFun(ob.ex_getPresTransScl, ob, 1.0, b);
     });
   };
@@ -191,18 +187,48 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles methods for pressure.
+     * Only used for rotatable blocks for now, due to how pressure is transferred.
+     * @class INTF_BLK_pressureBlock
+     */
+    new CLS_interface("INTF_BLK_pressureBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Pressure required for this block to operate, can be negative for vacuum requirement.
+
+
+        /**
+         * <PARAM>: Pressure required for this block to operate, negative for vacuum.
+         * @memberof INTF_BLK_pressureBlock
+         * @instance
+         */
         presThr: 0.0,
-        // @PARAM: Whether this block should not supply pressure/vacuum for consumers.
+        /**
+         * <PARAM>: If true, this block does not supply pressure/vacuum for nearby consumers.
+         * @memberof INTF_BLK_pressureBlock
+         * @instance
+         */
         skipPresSupply: false,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_pressureBlock
+         * @instance
+         */
         presRes: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_pressureBlock
+         * @instance
+         */
         vacRes: 0.0,
+
+
       }),
 
 
@@ -224,18 +250,62 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_pressureBlock
+     */
+    new CLS_interface("INTF_B_pressureBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL> Gained from other buildings that actively dump pressure. See {@link INTF_BLK_pressureProducer}.
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
         presBase: 0.0,
+        /**
+         * <INTERNAL> Current real amount of pressure.
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
         presTmp: 0.0,
+        /**
+         * <INTERNAL> Target pressure, very volatile. Sum of base pressure and transferred pressure.
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
         presTg: 0.0,
+        /**
+         * <INTERNAL>: Will be added for bars and pressure damage check, has no effect on pressure transferred.
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
         presExtra: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
         presFetchTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
         presSupplyTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
         presSupplyIncre: 0,
+
+
       }),
 
 
@@ -267,6 +337,14 @@
       },
 
 
+      acceptItem: function(b_f, itm) {
+        return comp_acceptItem(this, b_f, itm);
+      }
+      .setProp({
+        boolMode: "and",
+      }),
+
+
       acceptLiquid: function(b_f, liq) {
         return comp_acceptLiquid(this, b_f, liq);
       }
@@ -275,6 +353,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_pressureBlock
+       * @instance
+       * @return {void}
+       */
       ex_updatePresFetchTgs: function() {
         comp_ex_updatePresFetchTgs(this);
       }
@@ -283,6 +366,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_pressureBlock
+       * @instance
+       * @return {void}
+       */
       ex_updatePresSupplyTgs: function() {
         comp_ex_updatePresSupplyTgs(this);
       }
@@ -291,6 +379,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_pressureBlock
+       * @instance
+       * @return {void}
+       */
       ex_updatePresTg: function() {
         comp_ex_updatePresTg(this);
       }
@@ -299,6 +392,11 @@
       }),
 
 
+      /**
+       * @memberof INTF_B_pressureBlock
+       * @instance
+       * @return {number}
+       */
       ex_getPres: function() {
         return this.presTmp;
       }
@@ -307,13 +405,15 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Extra multiplier on the pressure transfered to another pressure block.
+      /**
+       * Extra multiplier on pressure transferred to another pressure block.
        * Rarely used.
-       * ---------------------------------------- */
+       * <br> <LATER>
+       * @memberof INTF_B_pressureBlock
+       * @instance
+       * @param {Building} b_t
+       * @return {number}
+       */
       ex_getPresTransScl: function(b_t) {
         return 1.0;
       }
@@ -323,19 +423,21 @@
       }),
 
 
-      ex_processData: function(wr0rd, LCRevi) {
+      /**
+       * @memberof INTF_BLK_pressureBlock
+       * @instance
+       * @param {Writes|Reads} wr0rd
+       * @return {void}
+       */
+      ex_processData: function(wr0rd) {
         processData(
-          wr0rd, LCRevi,
+          wr0rd, this.LCRevi,
 
           (wr, revi) => {
             wr.f(this.presTmp);
           },
 
           (rd, revi) => {
-            if(revi < 1) {
-              return;
-            };
-
             let pres = rd.f();
             this.presTmp = pres;
             this.presTg = pres;
@@ -344,7 +446,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 2,
+        argLen: 1,
       }),
 
 

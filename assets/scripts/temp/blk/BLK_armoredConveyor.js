@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * Similar to vanilla armored conveyor.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,7 +24,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Similar to vanilla armored conveyor.
+     * <br> <SINGLESIZE>
+     * @class BLK_armoredConveyor
+     * @extends BLK_conveyor
+     */
     newClass().extendClass(PARENT[0], "BLK_armoredConveyor").initClass()
     .setParent(ArmoredConveyor)
     .setTags("blk-dis", "blk-conv")
@@ -47,8 +37,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_armoredConveyor").initClass()
+    /**
+     * @class B_armoredConveyor
+     * @extends B_conveyor
+     */
+    newClass().extendClass(PARENT[1], "B_armoredConveyor").initClass()
     .setParent(ArmoredConveyor.ArmoredConveyorBuild)
     .setParam({})
     .setMethod({}),

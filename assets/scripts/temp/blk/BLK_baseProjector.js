@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent for all generalized projector blocks.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,7 +30,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Parent for all generalized projector blocks.
+     * @class BLK_baseProjector
+     * @extends BLK_baseBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseProjector").initClass()
     .setParent(null)
     .setTags("blk-proj")
@@ -60,8 +50,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseProjector").initClass()
+    /**
+     * @class B_baseProjector
+     * @extends B_baseBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseProjector").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

@@ -1,26 +1,8 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * This block cannot be placed when any block of the same type exists in range.
-   * Does not draw the range.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
-
-
-  // TODO: Test.
 
 
   /* <---------- import ----------> */
@@ -30,7 +12,7 @@
 
 
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, team, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
       blk.ex_findPlaceRestrictTs(blk.placeRestrictTmpTs, t, rot);
       thisFun.tmpTup[4] = !MDL_pos._bsTs(blk.placeRestrictTmpTs, blk.placeRestrictTmpBs).some(ob => ob.block === blk);
     };
@@ -61,18 +43,48 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * This block cannot be placed when any block of the same type exists in range.
+     * Does not draw the range.
+     * @class INTF_BLK_sameBlockRestrictionHandler
+     */
+    new CLS_interface("INTF_BLK_sameBlockRestrictionHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Range in blocks for placement restriction.
+
+
+        /**
+         * <PARAM>: Range in blocks for placement restriction.
+         * @memberof INTF_BLK_sameBlockRestrictionHandler
+         * @instance
+         */
         placeRestrictR: 5,
-        // @PARAM: If {true}, the restriction area is a disk. Rotation will be ignored then.
+        /**
+         * <PARAM>: If true, the restriction area is a disk.
+         * @memberof INTF_BLK_sameBlockRestrictionHandler
+         * @instance
+         */
         useCircularPlaceRestrict: false,
 
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_sameBlockRestrictionHandler
+         * @instance
+         */
         placeRestrictTmpTs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_sameBlockRestrictionHandler
+         * @instance
+         */
         placeRestrictTmpBs: prov(() => []),
+
+
       }),
 
 
@@ -84,6 +96,14 @@
       }),
 
 
+      /**
+       * @memberof INTF_BLK_sameBlockRestrictionHandler
+       * @instance
+       * @param {Array|unset} contArr
+       * @param {Tile|null} t
+       * @param {number} rotation
+       * @return {Array<Tile>}
+       */
       ex_findPlaceRestrictTs: function(contArr, t, rot) {
         return comp_ex_findPlaceRestrictTs(this, contArr, t, rot);
       }
@@ -96,8 +116,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({}),
+    /**
+     * @class INTF_B_sameBlockRestrictionHandler
+     */
+    new CLS_interface("INTF_B_sameBlockRestrictionHandler", {}),
 
 
   ];

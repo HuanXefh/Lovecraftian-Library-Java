@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * <SINGLESIZE>
-   * A special directional unloader that always unloads items from the nearest core.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -48,7 +33,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * A special directional unloader that always unloads items from the nearest core.
+     * <br> <SINGLESIZE>
+     * @class BLK_remoteCoreUnloader
+     * @extends BLK_directionalUnloader
+     */
     newClass().extendClass(PARENT[0], "BLK_remoteCoreUnloader").initClass()
     .setParent(DirectionalUnloader)
     .setTags("blk-dis", "blk-gate")
@@ -56,8 +46,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_remoteCoreUnloader").initClass()
+    /**
+     * @class B_remoteCoreUnloader
+     * @extends B_directionalUnloader
+     */
+    newClass().extendClass(PARENT[1], "B_remoteCoreUnloader").initClass()
     .setParent(DirectionalUnloader.DirectionalUnloaderBuild)
     .setParam({})
     .setMethod({

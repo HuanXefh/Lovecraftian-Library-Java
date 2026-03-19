@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Router.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -73,7 +59,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Router.
+     * @class BLK_router
+     * @extends BLK_baseItemGate
+     */
     newClass().extendClass(PARENT[0], "BLK_router").initClass()
     .setParent(Router)
     .setTags("blk-dis", "blk-gate", "blk-router")
@@ -81,6 +71,12 @@
     .setMethod({
 
 
+      /**
+       * @override
+       * @memberof BLK_router
+       * @instance
+       * @return {boolean}
+       */
       ex_isSingleSized: function() {
         return false;
       }
@@ -93,12 +89,32 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_router").initClass()
+    /**
+     * @class B_router
+     * @extends B_baseItemGate
+     */
+    newClass().extendClass(PARENT[1], "B_router").initClass()
     .setParent(Router.RouterBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_router
+       * @instance
+       */
       lastRs: null,
+      /**
+       * <INTERNAL>
+       * @memberof B_router
+       * @instance
+       */
       nextToRouter: false,
+
+
     })
     .setMethod({
 

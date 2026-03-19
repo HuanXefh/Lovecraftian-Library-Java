@@ -6,21 +6,15 @@
 
 
   /**
-   * More methods for function class that should be called later.
+   * More methods for function class that should be defined later.
    */
 
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (Function)
   ========================================
 */
-
-
-  /* <---------- import ----------> */
-
-
-  /* <---------- function ----------> */
 
 
   /**
@@ -30,28 +24,31 @@
    * @return {this}
    */
   Function.prototype.implement = function(intf, shouldOverride) {
-    const thisCls = this;
     if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
     if(intf.children.includes(this)) ERROR_HANDLER.throw("duplicateInterface");
 
-    if(!thisCls.__IS_CONTENT_TEMPLATE__) {
+    if(!this.__IS_CONTENT_TEMPLATE__) {
       Object._it(intf.interfaceObj, (nm, fun) => {
         if(nm === "__PROTO__") {
-          thisCls.prototype[nm] !== undefined && !shouldOverride ?
+          this.prototype[nm] !== undefined && !shouldOverride ?
             ERROR_HANDLER.throw("interfaceMethodNameConflict", nm) :
-            thisCls.prototype[nm] = fun;
+            this.prototype[nm] = fun;
         } else {
-          thisCls[nm] !== undefined && !shouldOverride ?
+          this[nm] !== undefined && !shouldOverride ?
             ERROR_HANDLER.throw("interfaceMethodNameConflict", nm) :
-            thisCls[nm] = fun;
+            this[nm] = fun;
         };
       });
     } else {
-      if(thisCls.nm === "CLS_contentTemplate") throw new Error("Are you trying to implement interface on the root template?");
-      let arr = LCTempParentMap.get(thisCls.nm);
-      arr.push(intf.nm);
+      if(this.nm === "CLS_contentTemplate") throw new Error("Are you trying to implement interface on the root template?");
+      let arr = LCTempParentMap.get(this.nm);
+      if(intf.nm === "") {
+        Log.warn("[LOVEC] Content template ${1} is implementing an anonymous interface!".format(this.nm));
+      } else {
+        arr.push(intf.nm);
+      };
       intf.parentIntfs.forEachCond(ointf => ointf.nm !== "", ointf => arr.push(ointf.nm));
-      thisCls.setMethod(intf.interfaceObj, true);
+      this.setMethod(intf.interfaceObj, true);
     };
     intf.children.push(this);
 

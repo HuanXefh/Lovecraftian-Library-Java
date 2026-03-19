@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Fluids as intermediates.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -52,20 +38,53 @@
 */
 
 
+  /**
+   * Fluids as intermediates.
+   * @class RS_intermediateFluid
+   * @extends RS_baseFluid
+   */
   module.exports = newClass().extendClass(PARENT, "RS_intermediateFluid").initClass()
   .setParent(Liquid)
   .setTags("rs-intmd")
   .setParam({
-    // @PARAM: See {RS_intermediateItem}.
+
+
+    /**
+     * <PARAM>: See {@link RS_intermediateItem}.
+     * @override
+     * @memberof RS_intermediateFluid
+     * @instance
+     */
     intmdParent: null,
-    // @PARAM: See {RS_intermediateItem}.
+    /**
+     * <PARAM>: See {@link RS_intermediateItem}.
+     * @override
+     * @memberof RS_intermediateFluid
+     * @instance
+     */
     extraIntmdParents: prov(() => []),
-    // @PARAM: See {RS_intermediateItem}.
+    /**
+     * <PARAM>: See {@link RS_intermediateItem}.
+     * @override
+     * @memberof RS_intermediateFluid
+     * @instance
+     */
     useParentReg: true,
-    // @PARAM: See {RS_intermediateItem}.
+    /**
+     * <PARAM>: See {@link RS_intermediateItem}.
+     * @override
+     * @memberof RS_intermediateFluid
+     * @instance
+     */
     recolorRegStr: null,
 
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
     databaseTag: "lovec-intermediate",
+
+
   })
   .setMethod({
 

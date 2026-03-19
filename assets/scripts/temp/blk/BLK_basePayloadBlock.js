@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Parent for all payload-related blocks.
-   * The block itself does not need to interact with payload though.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,7 +24,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Parent for all payload-related blocks.
+     * The block itself does not need to interact with payload though, it's just a category for templates.
+     * @class BLK_basePayloadBlock
+     * @extends BLK_baseBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_basePayloadBlock").initClass()
     .setParent(null)
     .setTags()
@@ -47,8 +37,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_basePayloadBlock").initClass()
+    /**
+     * @class B_basePayloadBlock
+     * @extends B_baseBlock
+     */
+    newClass().extendClass(PARENT[1], "B_basePayloadBlock").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

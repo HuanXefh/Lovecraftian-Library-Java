@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Unbreakable props.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -50,6 +36,11 @@
 */
 
 
+  /**
+   * Unbreakable props.
+   * @class ENV_obstacle
+   * @extends ENV_baseProp
+   */
   module.exports = newClass().extendClass(PARENT, "ENV_obstacle").initClass()
   .setParent(Prop)
   .setTags("blk-env")

@@ -1,25 +1,8 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods that most factories and generators should have.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
-
-
-  // TODO: Test.
 
 
   /* <---------- import ----------> */
@@ -59,8 +42,11 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles position config that can be set by tapping somewhere.
+     * @class INTF_BLK_posConfigBlock
+     */
+    new CLS_interface("INTF_BLK_posConfigBlock", {
 
 
       init: function() {
@@ -71,14 +57,38 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_posConfigBlock
+     */
+    new CLS_interface("INTF_B_posConfigBlock", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>: Vector for config position.
+         * @memberof INTF_B_posConfigBlock
+         * @instance
+         */
         posConfigVec2: prov(() => new Vec2()),
+        /**
+         * <INTERNAL>: Tile for config position.
+         * @memberof INTF_B_posConfigBlock
+         * @instance
+         */
         posConfigT: null,
+        /**
+         * <INTERNAL>: Building for config position.
+         * @memberof INTF_B_posConfigBlock
+         * @instance
+         */
         posConfigB: null,
+
+
       }),
 
 
@@ -87,7 +97,13 @@
       },
 
 
-      // @LATER
+      /**
+       * Position selection radius.
+       * <br> <LATER>
+       * @memberof INTF_B_posConfigBlock
+       * @instance
+       * @return {number}
+       */
       ex_getPosConfigRad: function() {
         return 0.0;
       }
@@ -96,7 +112,15 @@
       }),
 
 
-      // @LATER
+      /**
+       * Used to check whether a position is valid to be used.
+       * <br> <LATER>
+       * @memberof INTF_B_posConfigBlock
+       * @instance
+       * @param {number} x
+       * @param {number} y
+       * @return {boolean}
+       */
       ex_checkPosConfigValid: function(x, y) {
         return true;
       }

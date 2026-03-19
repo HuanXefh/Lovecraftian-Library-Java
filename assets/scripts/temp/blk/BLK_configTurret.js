@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Turrets that target based on their config.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -38,7 +24,11 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Turrets that target based on their config.
+     * @class BLK_configTurret
+     * @extends BLK_baseTurret
+     */
     newClass().extendClass(PARENT[0], "BLK_configTurret").initClass()
     .setParent(null)
     .setTags("blk-tur")
@@ -46,8 +36,11 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_configTurret").initClass()
+    /**
+     * @class B_configTurret
+     * @extends B_baseTurret
+     */
+    newClass().extendClass(PARENT[1], "B_configTurret").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

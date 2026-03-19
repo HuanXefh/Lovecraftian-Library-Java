@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -657,7 +654,7 @@
    * @return {void}
    */
   const initRc = function thisFun(rcMdl, blkInit) {
-    if(thisFun.blks.includes(blkInit)) throw new Error("Block [$1] has its recipe initialized more than once???".format(blkInit.name));
+    if(thisFun.blks.includes(blkInit)) throw new Error("Block ${1} has its recipe initialized more than once???".format(blkInit.name));
 
     _rcHeaders(rcMdl).forEachFast(rcHeader => {
       let timeScl = _timeScl(rcMdl, rcHeader);
@@ -748,7 +745,7 @@
                   outArr.push(tmpArr, -1.0, -1.0)
               );
         } else {
-          Log.warn("[LOVEC] No content found under [$1]!".format(tg.color(Pal.accent)));
+          Log.warn("[LOVEC] No content found under ${1}!".format(tg.color(Pal.accent)));
         };
       } else {
         let ct = MDL_content._ct(tg, null, true);
@@ -886,7 +883,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addItmConsTerm(
           blkInit, ct, amt, p,
-          {ct: _iconNm(rcMdl, rcHeader), icon: "lovec-icon-optional"},
+          {ct: _iconNm(rcMdl, rcHeader), icon: "lovec-icon-boost"},
         );
       });
       i += 4;

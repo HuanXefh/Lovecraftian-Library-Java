@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Any block related to Lovec heat, except heaters.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -39,7 +25,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Any block related to Lovec heat, except heaters.
+     * @class BLK_baseHeatBlock
+     * @extends BLK_baseBlock
+     * @extends INTF_BLK_heatBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_baseHeatBlock").implement(INTF[0]).initClass()
     .setParent(null)
     .setTags()
@@ -47,22 +38,26 @@
     .setMethod({}),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_baseHeatBlock").implement(INTF[1]).initClass()
+    /**
+     * @class B_baseHeatBlock
+     * @extends B_baseBlock
+     * @extends INTF_B_heatBlock
+     */
+    newClass().extendClass(PARENT[1], "B_baseHeatBlock").implement(INTF[1]).initClass()
     .setParent(null)
     .setParam({})
     .setMethod({
 
 
       write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
+        this.ex_processData(wr);
       },
 
 
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) rd.s();
+
+        this.ex_processData(rd);
       },
 
 

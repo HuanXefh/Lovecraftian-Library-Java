@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Not a wall for defense but technically a wall.
-   * Used as building material.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -45,7 +30,12 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Not a wall for defense but technically a wall.
+     * Used as building material.
+     * @class BLK_materialBlock
+     * @extends BLK_baseBlock
+     */
     newClass().extendClass(PARENT[0], "BLK_materialBlock").initClass()
     .setParent(Wall)
     .setTags()
@@ -61,8 +51,11 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_materialBlock").initClass()
+    /**
+     * @class B_materialBlock
+     * @extends B_baseBlock
+     */
+    newClass().extendClass(PARENT[1], "B_materialBlock").initClass()
     .setParent(Wall.WallBuild)
     .setParam({})
     .setMethod({}),

@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles recipe selection, should be implemented before {INTF_BLK_recipeHandler}.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -64,12 +50,27 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles recipe selection, must be implemented before {@link INTF_BLK_recipeHandler}.
+     * @class INTF_BLK_recipeSelector
+     */
+    new CLS_interface("INTF_BLK_recipeSelector", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>
+         * @memberof INTF_BLK_recipeSelector
+         * @instance
+         */
         useConfigStr: true,
+
+
       }),
 
 
@@ -81,8 +82,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_recipeSelector
+     */
+    new CLS_interface("INTF_B_recipeSelector", {
 
 
       buildConfiguration: function(tb) {
@@ -101,6 +104,13 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof INTF_B_recipeSelector
+       * @instance
+       * @param {string} str
+       * @return {void}
+       */
       ex_handleConfigStrDef: function(str) {
         this.ex_updateRcParam(this.block.delegee.rcMdl, str, true);
         this.ex_resetRcParam();
@@ -113,17 +123,18 @@
       }),
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Used to add extra buttons to the recipe selector table.
-       *
-       * Example:
+      /**
+       * Used to add extra buttons to recipe selector table (tiny buttons over selection menu).
+       * @memberof INTF_B_recipeSelector
+       * @instance
+       * @return {Array<function(Table): void>}
+       * @example
+       * // Adds two buttons ("A" and "B") to print something to console
        * return [
        *   tb => tb.button("A", () => print("ohno")),
        *   tb => tb.button("B", () => print("ohyes")),
        * ];
-       * ---------------------------------------- */
+       */
       ex_getSelectorExtraBtnSetters: function() {
         return [];
       }

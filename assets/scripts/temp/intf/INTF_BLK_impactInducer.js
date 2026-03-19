@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles impact wave creation.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -80,13 +66,24 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles impact wave creation.
+     * @class INTF_BLK_impactInducer
+     */
+    new CLS_interface("INTF_BLK_impactInducer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Impact wave radius.
+
+
+        /**
+         * <PARAM>: Base impact wave radius.
+         * @memberof INTF_BLK_impactInducer
+         * @instance
+         */
         impactRad: 40.0,
+
+
       }),
 
 
@@ -100,13 +97,15 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * @LATER
-       * Returns expected interval between each impact wave.
+      /**
+       * Calculates expected interval between each impact wave.
        * This affects things like impact damage by default.
-       * ---------------------------------------- */
+       * <br> <LATER>
+       * @memberof INTF_BLK_impactInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactIntv: function(b) {
         return 60.0;
       }
@@ -116,6 +115,13 @@
       }),
 
 
+      /**
+       * Calculates impact wave damage.
+       * @memberof INTF_BLK_impactInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactDmg: function(b) {
         return comp_ex_calcImpactDmg(this, b);
       }
@@ -125,6 +131,13 @@
       }),
 
 
+      /**
+       * Calculates impact wave duration.
+       * @memberof INTF_BLK_impactInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactDur: function(b) {
         return comp_ex_calcImpactDur(this, b);
       }
@@ -134,6 +147,13 @@
       }),
 
 
+      /**
+       * Calculates impact wave radius.
+       * @memberof INTF_BLK_impactInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactRad: function(b) {
         return this.impactRad;
       }
@@ -143,6 +163,13 @@
       }),
 
 
+      /**
+       * Calculates minimum radius that impact wave can be absorbed by mobile floor like water.
+       * @memberof INTF_BLK_impactInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactMinRad: function(b) {
         return comp_ex_calcImpactMinRad(this, b);
       }
@@ -152,6 +179,13 @@
       }),
 
 
+      /**
+       * Calculates impact wave shake.
+       * @memberof INTF_BLK_impactInducer
+       * @instance
+       * @param {Building} b
+       * @return {number}
+       */
       ex_calcImpactShake: function(b) {
         return 1.0;
       }
@@ -164,8 +198,10 @@
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_impactInducer
+     */
+    new CLS_interface("INTF_B_impactInducer", {
 
 
       drawSelect: function() {
@@ -173,11 +209,12 @@
       },
 
 
-      /* ----------------------------------------
-       * NOTE:
-       *
-       * Use this method to create a impact wave.
-       * ---------------------------------------- */
+      /**
+       * Call this method to create impact wave.
+       * @memberof INTF_B_impactInducer
+       * @instance
+       * @return {void}
+       */
       ex_createImpactWave: function() {
         comp_createImpactWave(this);
       }

@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles the burst of stackable status effect.
-   * Methods of time extension should be defined in classes.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -50,23 +35,56 @@
 */
 
 
-  module.exports = new CLS_interface({
+  /**
+   * Handles burst of stackable status effects.
+   * Does not handle how duration is extended, which should be done in templates.
+   * @class INTF_STA_burstStatus
+   */
+  module.exports = new CLS_interface("INTF_STA_burstStatus", {
 
 
     __PARAM_OBJ_SETTER__: () => ({
-      // @PARAM: Duration above which the status effect bursts.
+
+
+      /**
+       * <PARAM>: Duration above which this status effect bursts.
+       * @memberof INTF_STA_burstStatus
+       * @instance
+       */
       burstTime: 0.0,
-      // @PARAM: Damage applied when the status effect bursts.
+      /**
+       * <PARAM>: Damage dealt when this status effect bursts.
+       * @memberof INTF_STA_burstStatus
+       * @instance
+       */
       burstDamage: 0.0,
-      // @PARAM: Damage as fraction of health.
+      /**
+       * <PARAM>: Damage as fraction of maximum health.
+       * @memberof INTF_STA_burstStatus
+       * @instance
+       */
       burstDamagePerc: 0.0,
-      // @PARAM: Effect shown when the status effect bursts.
+      /**
+       * <PARAM>: Effect shown when this status effect bursts.
+       * @memberof INTF_STA_burstStatus
+       * @instance
+       */
       burstEff: Fx.none,
-      // @PARAM: Color of the effect.
+      /**
+       * <PARAM>: Color of burst effect.
+       * @memberof INTF_STA_burstStatus
+       * @instance
+       */
       burstEffColor: Color.white,
-      // @PARAM: Script called when the status effect bursts.
-      // <ARGS>: unit
+      /**
+       * <PARAM>: Called when this status effect bursts.
+       * <br> <ARGS>: unit.
+       * @memberof INTF_STA_burstStatus
+       * @instance
+       */
       burstScrTup: null,
+
+
     }),
 
 
@@ -80,6 +98,12 @@
     },
 
 
+    /**
+     * Whether this status effect is actually a burst status effect.
+     * @memberof INTF_STA_burstStatus
+     * @instance
+     * @return {boolean}
+     */
     ex_isStackSta: function() {
       return this.burstTime > 0.0;
     }

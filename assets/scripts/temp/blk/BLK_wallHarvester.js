@@ -1,19 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Vanilla wall crafter, but enhanced.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -44,7 +30,7 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
 
-    if(Array.someMismatch(thisFun.tmpTup, true, blk, t, rot)) {
+    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
       thisFun.tmpTup[3] = MDL_pos._tsRect(t, 5, blk.size, thisFun.tmpTup[3]);
     };
 
@@ -68,13 +54,26 @@
   module.exports = [
 
 
-    // Block
+    /**
+     * Vanilla wall crafter, but enhanced.
+     * @class BLK_wallHarvester
+     * @extends BLK_baseHarvester
+     * @extends INTF_BLK_lootProducer
+     */
     newClass().extendClass(PARENT[0], "BLK_wallHarvester").implement(INTF[0]).initClass()
     .setParent(WallCrafter)
     .setTags("blk-min", "blk-harv")
     .setParam({
-      // @PARAM: Whether this harvester outputs loot instead of items.
+
+
+      /**
+       * <PARAM>: Whether this harvester outputs loot instead of items.
+       * @memberof BLK_wallHarvester
+       * @instance
+       */
       shouldDropLoot: true,
+
+
     })
     .setParamAlias([
       "updateEff", "updateEffect", Fx.none,
@@ -93,6 +92,12 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_wallHarvester
+       * @instance
+       * @return {number}
+       */
       ex_getCraftTime: function() {
         return this.drillTime;
       }
@@ -105,25 +110,31 @@
     }),
 
 
-    // Building
-    newClass().extendClass(PARENT[1], "BLK_wallHarvester").implement(INTF[1]).initClass()
+    /**
+     * @class B_wallHarvester
+     * @extends B_baseHarvester
+     * @extends INTF_B_lootProducer
+     */
+    newClass().extendClass(PARENT[1], "B_wallHarvester").implement(INTF[1]).initClass()
     .setParent(WallCrafter.WallCrafterBuild)
     .setParam({})
     .setMethod({
 
 
-      write: function(wr) {
-        let LCRevi = processRevision(wr);
-        this.ex_processData(wr, LCRevi);
-      },
-
-
       read: function(rd, revi) {
-        let LCRevi = processRevision(rd);
-        this.ex_processData(rd, LCRevi);
+        if(this.LCRevi === 5) {
+          rd.s();
+          this.lootCharge = rd.i();
+        };
       },
 
 
+      /**
+       * @override
+       * @memberof B_wallHarvester
+       * @instance
+       * @return {boolean}
+       */
       ex_shouldDropLoot: function() {
         return this.block.delegee.shouldDropLoot;
       }
@@ -133,6 +144,12 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof B_wallHarvester
+       * @instance
+       * @return {number}
+       */
       ex_getCraftTimeCur: function() {
         return this.time;
       }

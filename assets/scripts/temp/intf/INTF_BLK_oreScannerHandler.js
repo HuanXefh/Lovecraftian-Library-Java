@@ -1,20 +1,5 @@
 /*
   ========================================
-  Section: Introduction
-  ========================================
-*/
-
-
-  /* ----------------------------------------
-   * NOTE:
-   *
-   * Handles methods related to ore scanner check.
-   * To make a building check nearby scanners, simply set {b.requiresScanner} to {true}.
-   * ---------------------------------------- */
-
-
-/*
-  ========================================
   Section: Definition
   ========================================
 */
@@ -62,28 +47,63 @@
   module.exports = [
 
 
-    // Block
-    new CLS_interface({
+    /**
+     * Handles methods related to ore scanner check.
+     * To make a building check nearby scanners, simply set `b.requiresScanner` to true.
+     * @class INTF_BLK_oreScannerHandler
+     */
+    new CLS_interface("INTF_BLK_oreScannerHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
-        // @PARAM: Currently required minimum depth tier of ore scanner. Should be updated in templates.
+
+
+        /**
+         * <PARAM>: Currently required minimum depth tier of ore scanner. Should be updated else where.
+         * @memberof INTF_BLK_oreScannerHandler
+         * @instance
+         */
         dpLvlReqCur: 0,
-        // @PARAM: Offset for the text displayed when no scanner is found.
+        /**
+         * <PARAM>: Integer offset of the no-scanner-found text.
+         * @memberof INTF_BLK_oreScannerHandler
+         * @instance
+         */
         noScannerTextOffTy: 0,
+
+
       }),
 
 
     }),
 
 
-    // Building
-    new CLS_interface({
+    /**
+     * @class INTF_B_oreScannerHandler
+     */
+    new CLS_interface("INTF_B_oreScannerHandler", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>: If this value is true, ore scanner check is enabled.
+         * @memberof INTF_B_oreScannerHandler
+         * @instance
+         */
         requiresScanner: false,
+        /**
+         * <INTERNAL>: Currently linked scanner.
+         * @memberof INTF_B_oreScannerHandler
+         * @instance
+         */
         scannerCur: null,
+
+
       }),
 
 

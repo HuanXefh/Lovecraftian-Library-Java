@@ -19,9 +19,6 @@
 */
 
 
-  /* <---------- import ----------> */
-
-
   /* <---------- base ----------> */
 
 
@@ -155,7 +152,7 @@
       } else if(obj[header] === undefined) {
         Log.warn("[LOVEC] The LSAV field " + header.color(Pal.accent) + " is " + "undefined".color(Pal.remove) + "!");
       } else if(typeof val !== typeof obj[header]) {
-        Log.warn("[LOVEC] LSAV value for [$1] changed to a different type!".format(header.color(Pal.accent)));
+        Log.warn("[LOVEC] LSAV value for ${1} changed to a different type!".format(header.color(Pal.accent)));
       } else {
         cond = true;
       };
