@@ -21,6 +21,36 @@
 
 
   /**
+   * Whether `str` is an empty string.
+   * Also works for string object.
+   * @param {string} str
+   * @return {boolean}
+   */
+  String.isEmpty = function(str) {
+    return typeof str === "string" ?
+      str === "" :
+      typeof str === "object" ?
+        String(str) === "" :
+          false;
+  };
+
+
+  /**
+   * Whether `str` contains empty string only.
+   * @param {string} str
+   * @return {boolean}
+   */
+  String.isBlank = function(str) {
+    let str1 = String(str);
+    if(str1 === "") return true;
+    for(let l of str1) {
+      if(l !== " ") return false;
+    };
+    return true;
+  };
+
+
+  /**
    * Whether the string contains any piece from `strs`.
    * <br> <ARGS>: strs.
    * <br> <ARGS>: str1, str2, str3, ...

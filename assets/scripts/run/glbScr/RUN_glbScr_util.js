@@ -52,23 +52,8 @@
    * verStrToInts("1.12.1");                // Returns [1, 12, 1]
    */
   verStrToInts = function(verStr) {
-    const arr = [];
-
     let tmp = "", l, i, iCap;
-
-    i = 0;
-    iCap = verStr.length;
-    while(i < iCap) {
-      l = verStr[i];
-      if(l === ".") {
-        arr.push(String(tmp));
-        tmp = "";
-      } else {
-        tmp += l;
-      };
-      i++;
-    };
-    arr.push(tmp);
+    let arr = verStr.split(".");
 
     i = 0;
     iCap = arr.length;

@@ -129,49 +129,47 @@
     pla.parent = thisFun.locate(ContentType.planet, jsonVal.getString("parent", ""));
     jsonVal.remove("parent");
 
-    if(jsonVal.has("mesh")) {
-      if(!pla.skipMeshParse) {
-        let mesh = jsonVal.get("mesh");
-        if(!mesh.isObject() && !mesh.isArray()) ERROR_HANDLER.throw("planetMeshLoadFail", "base", pla.name);
-        jsonVal.remove("mesh");
-        pla.meshLoader = prov(() => {
-          let mesh_fi;
-          try {
-            mesh_fi = thisFun.parseMesh(pla, mesh);
-          } catch(err) {
-            Log.err(err);
-            mesh_fi = new ShaderSphereMesh(pla, Shaders.unlit, 2);
-          };
-          return mesh_fi;
-        });
-      } else {
-        jsonVal.remove("mesh");
-        pla.meshLoader = prov(() => pla.ex_getMesh());
-      };
+    if(jsonVal.has("mesh") && !pla.skipMeshParse) {
+      let mesh = jsonVal.get("mesh");
+      if(!mesh.isObject() && !mesh.isArray()) ERROR_HANDLER.throw("planetMeshLoadFail", "base", pla.name);
+      jsonVal.remove("mesh");
+      pla.meshLoader = prov(() => {
+        let mesh_fi;
+        try {
+          mesh_fi = thisFun.parseMesh(pla, mesh);
+        } catch(err) {
+          Log.err(err);
+          mesh_fi = new ShaderSphereMesh(pla, Shaders.unlit, 2);
+        };
+        return mesh_fi;
+      });
+    } else {
+      jsonVal.remove("mesh");
+      pla.meshLoader = prov(() => pla.ex_getMesh());
     };
 
-    if(jsonVal.has("cloudMesh")) {
-      if(!pla.skipCloudMeshParse) {
-        let mesh = jsonVal.get("cloudMesh");
-        if(!mesh.isObject() && !mesh.isArray()) ERROR_HANDLER.throw("planetMeshLoadFail", "cloud", pla.name);
-        jsonVal.remove("cloudMesh");
-        pla.cloudMeshLoader = prov(() => {
-          let mesh_fi;
-          try {
-            mesh_fi = thisFun.parseMesh(pla, mesh);
-          } catch(err) {
-            Log.err(err);
-            mesh_fi = null;
-          };
-          return mesh_fi;
-        });
-      } else {
-        jsonVal.remove("cloudMesh");
-        pla.cloudMeshLoader = prov(() => pla.ex_getCloudMesh());
-      };
+    if(jsonVal.has("cloudMesh") && !pla.skipCloudMeshParse) {
+      let mesh = jsonVal.get("cloudMesh");
+      if(!mesh.isObject() && !mesh.isArray()) ERROR_HANDLER.throw("planetMeshLoadFail", "cloud", pla.name);
+      jsonVal.remove("cloudMesh");
+      pla.cloudMeshLoader = prov(() => {
+        let mesh_fi;
+        try {
+          mesh_fi = thisFun.parseMesh(pla, mesh);
+        } catch(err) {
+          Log.err(err);
+          mesh_fi = null;
+        };
+        return mesh_fi;
+      });
+    } else {
+      jsonVal.remove("cloudMesh");
+      pla.cloudMeshLoader = prov(() => pla.ex_getCloudMesh());
     };
 
-    if(pla.skipGeneratorParse && jsonVal.has("generator")) {
+    if(jsonVal.has("generator") && !pla.skipGeneratorParse) {
+      // TODO: Generator things, maybe for years.
+    } else {
       jsonVal.remove("generator");
     };
 

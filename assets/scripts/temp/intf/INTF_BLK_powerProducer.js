@@ -68,7 +68,7 @@
      * Handles power production methods for non-generator blocks.
      * @class INTF_BLK_powerProducer
      */
-    new CLS_interface({
+    new CLS_interface("INTF_BLK_powerProducer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({
@@ -135,7 +135,7 @@
     /**
      * @class INTF_B_powerProducer
      */
-    new CLS_interface({
+    new CLS_interface("INTF_B_powerProducer", {
 
 
       __PARAM_OBJ_SETTER__: () => ({

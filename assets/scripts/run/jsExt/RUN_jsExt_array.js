@@ -393,6 +393,17 @@
 
 
   /**
+   * Pulls out all `null` and `undefined` in this array.
+   * @return {this}
+   */
+  Array.prototype.compact = function() {
+    this.pull(null);
+    this.pull(undefined);
+    return this;
+  };
+
+
+  /**
    * Variant of {@link Array#shift} that removes multiple elements at one time.
    * @param {number|unset} [amt]
    * @param {boolean|unset} [forResult] - If true, returns removed elements instead of this array.

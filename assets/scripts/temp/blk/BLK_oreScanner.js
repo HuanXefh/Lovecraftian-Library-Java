@@ -209,6 +209,14 @@
       },
 
 
+      /**
+       * @memberof BLK_oreScanner
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {number} rot
+       * @return {Array<Tile>}
+       */
       ex_getRevealTgs: function(tx, ty, rot) {
         return comp_ex_getRevealTgs(this, tx, ty, rot);
       }
@@ -299,7 +307,7 @@
 
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
-        
+
         MDL_io._rd_ints(rd, this.revealedInts);
       },
 

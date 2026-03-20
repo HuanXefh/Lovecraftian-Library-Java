@@ -69,7 +69,7 @@
     Events.run(ContentInitEvent, () => {
       let wps = utp.weapons.toArray();
       try{
-        utp.weapons = getter(wps).pullAll(null).flatten().toSeq();
+        utp.weapons = getter(wps).compact().flatten().toSeq();
       } catch(err) {
         Log.err("[LOVEC] Failed to set weapons for ${1}\n".format(utp.name.color(Pal.accent)) + err);
       };
@@ -88,7 +88,7 @@
     Events.run(ClientLoadEvent, () => {
       let abis = utp.abilities.toArray();
       try{
-        utp.abilities = getter(abis).pullAll(null).flatten().toSeq();
+        utp.abilities = getter(abis).compact().flatten().toSeq();
       } catch(err) {
         Log.err("[LOVEC] Failed to set abilities for ${1}:\n".format(utp.name.color(Pal.accent)) + err);
       };
@@ -131,7 +131,7 @@
       let drawer = blk.drawer != null ? blk.drawer : blk.delegee.drawer;
       let drawers = drawer instanceof DrawMulti ? drawer.drawers.cpy() : [drawer];
       try {
-        let drawerNew = new DrawMulti(getter(drawers).pullAll(null).flatten().toSeq());
+        let drawerNew = new DrawMulti(getter(drawers).compact().flatten().toSeq());
         blk.drawer != null ?
           blk.drawer = drawerNew :
           blk.delegee.drawer = drawerNew;
@@ -155,7 +155,7 @@
   setConsumer = function(blk, getter) {
     Events.run(ClientLoadEvent, () => {
       let
-        conss = getter(blk.consumers).pullAll(null).flatten(),
+        conss = getter(blk.consumers).compact().flatten(),
         conssNew = conss.cpy().pullAll(blk.consumers),
         consPow = conss.find(blkCons => blkCons instanceof ConsumePower);
 
@@ -667,15 +667,10 @@
         shader = extend(Shaders.LoadShader, nmFrag, "default", {
 
 
-          // @PARAM: Texture region to draw.
           region: new TextureRegion(),
-          // @PARAM: Color to multiply.
           mulColor: new Color(),
-          // @PARAM: Alpha value.
           a: 1.0,
-          // @PARAM: Offset of rendering.
           off: 0.0,
-          // @PARAM: Affects scaling of randomness.
           offCap: 1.0,
 
 

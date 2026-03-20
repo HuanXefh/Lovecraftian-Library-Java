@@ -79,7 +79,7 @@
       null,
       "${1}${2}".format(
         fetchSetting("misc-title-name"),
-        !fetchSetting("misc-title-map") ? "" : ": ${1}".format(nmMap === "" ? "menu" : nmMap),
+        !fetchSetting("misc-title-map") ? "" : ": ${1}".format(String.isEmpty(nmMap) ? "menu" : nmMap),
       ),
     );
 

@@ -127,7 +127,7 @@
                 MDL_table.__wrapLine(tb, "<${1}>".format(obj.text), Align.center, 1);
               } else {
                 tb.left();
-                if(obj.chara !== "") {
+                if(!String.isEmpty(obj.chara)) {
                   tb.add(obj.chara).left().row();
                 };
                 tb.add("").row();

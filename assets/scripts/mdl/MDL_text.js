@@ -145,7 +145,7 @@
     let str_fi = "";
     strs.forEachFast(str => str_fi += str + "; ");
 
-    return (str_fi === "" && !ignoreEmpty) ? "!NOTAG" : str_fi;
+    return (String.isEmpty(str_fi) && !ignoreEmpty) ? "!NOTAG" : str_fi;
   };
   exports._tagText = _tagText;
 
@@ -158,7 +158,7 @@
    */
   const tagTextToArr = function(text, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
-    if(text === "" || text === "!NOTAG") return arr;
+    if(String.isEmpty(text) || text === "!NOTAG") return arr;
 
     let tmp = "", l;
     let i = 0, iCap = text.iCap();
@@ -256,7 +256,7 @@
           // This keyword is treated as a tag
           isTag = true;
           tmpStr = str.replace(tmpTag, "").trim();
-          if(tmpStr !== "") arr.push(ct => li[i + 1](ct, tmpStr));
+          if(!String.isEmpty(tmpStr)) arr.push(ct => li[i + 1](ct, tmpStr));
           break;
         };
         i += 2;

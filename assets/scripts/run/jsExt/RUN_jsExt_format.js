@@ -120,6 +120,23 @@
 
 
   /**
+   * Truncates this string if its length is larger than `len`.
+   * @param {number} len
+   * @param {string|unset} [suffix]
+   * @return {string}
+   * @example
+   * // Returns "A test sentence..."
+   * "A test sentence with six words.".truncate(15);
+   */
+  String.prototype.truncate = function(len, suffix) {
+    let str = this.trim();
+    return len >= str.length ?
+      str :
+      str.slice(0, len) + tryVal(suffix, "...");
+  };
+
+
+  /**
    * Replaces `"${1}"` or `"${1:someName}"` in the string with `str1`, and so on.
    * <br> <ARGS>: str1, str2, str3, ...
    * @return {string}

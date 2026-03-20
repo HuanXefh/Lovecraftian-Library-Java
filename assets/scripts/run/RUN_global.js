@@ -88,7 +88,7 @@
        */
       _glbHeat() {
         let nmPla = global.lovecUtil.fun._plaCur();
-        if(nmPla === "") return 26.0;
+        if(String.isEmpty(nmPla)) return 26.0;
         let nmMap = Vars.state.map.plainName();
 
         return DB_env.db["param"]["map"]["heat"].read(

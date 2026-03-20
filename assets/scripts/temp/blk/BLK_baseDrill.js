@@ -24,7 +24,7 @@
       });
     };
 
-    blk.itmWhitelist = blk.itmWhitelist.map(nmItm => MDL_content._ct(nmItm, "rs")).pull(null);
+    blk.itmWhitelist = blk.itmWhitelist.map(nmItm => MDL_content._ct(nmItm, "rs")).compact();
 
     MDL_event._c_onLoad(() => {
       Core.app.post(() => {

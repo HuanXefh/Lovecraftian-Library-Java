@@ -17,6 +17,9 @@
 */
 
 
+  /* <------------------------------ modification ------------------------------ */
+
+
   /**
    * Wraps `Function#length`, mostly for {@link JavaAdapter}.
    * It's ridiculous.
@@ -61,6 +64,37 @@
       throw new Error("Abstract method should be overrided before being called!");
     };
   };
+
+
+  /* <------------------------------ util ------------------------------ */
+
+
+  /**
+   * Calls a method after some miliseconds.
+   * No returned value.
+   * @param {number} delay
+   * @param {Arguments|unset} [args]
+   * @param {any} [thisVal]
+   * @return {void}
+   */
+  Function.prototype.delay = function(delay, args, thisVal) {
+    Time.run(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
+  };
+
+
+  /**
+   * Calls a method after everything else has been called.
+   * No returned value.
+   * @param {Arguments|unset} [args]
+   * @param {any} [thisVal]
+   * @return {void}
+   */
+  Function.prototype.post = function(args, thisVal) {
+    Core.app.post(args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
+  };
+
+
+  /* <------------------------------ decorator ------------------------------ */
 
 
   /**

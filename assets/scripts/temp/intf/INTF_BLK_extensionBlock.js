@@ -12,7 +12,7 @@
 
 
   function comp_init(blk) {
-    blk.blkTgs.inSituMap(nmBlk => MDL_content._ct(nmBlk, "blk")).pullAll(null);
+    blk.blkTgs.inSituMap(nmBlk => MDL_content._ct(nmBlk, "blk")).compact();
     if(blk.blkTgs.length === 0) {
       Vars.content.blocks().each(oblk => blk.filterScrTup[0](blk, oblk), oblk => blk.extensionTmpBlks.push(oblk));
     };

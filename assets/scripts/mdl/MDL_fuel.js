@@ -64,7 +64,7 @@
 
     let allowedFuels = tryJsProp(blk, "allowedFuels");
     if(allowedFuels != null) {
-      return allowedFuels.map(nmRs => MDL_content._ct(nmRs, "rs")).pullAll(null);
+      return allowedFuels.map(nmRs => MDL_content._ct(nmRs, "rs")).compact();
     };
 
     switch(tryJsProp(blk, "fuelType", "item")) {
