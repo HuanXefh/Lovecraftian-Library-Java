@@ -189,7 +189,7 @@
 
 
   function comp_ex_handleExtHeat(b, amt) {
-    b.tempExt = Math.max(b.tempExt, amt * b.block.delegee.tempExtMtp);
+    b.tempExt = (b.tempExt + amt * b.block.delegee.tempExtMtp) * 0.5;
     b.extHeatCd = 300.0;
   };
 

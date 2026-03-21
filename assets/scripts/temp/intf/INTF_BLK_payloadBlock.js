@@ -50,8 +50,8 @@
         ob => b.ex_acceptPay(ob, ob.getPayload()),
         ob => {
           let pay = FRAG_payload.takeAt(ob);
-          b.payReqObj[pay.content().name] = tryVal(b.payReqObj[pay.content().name], 0) + 1;
           MDL_effect._e_payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content());
+          Object.mapIncre(b.payReqObj, pay.content().name);
         },
       );
     };
@@ -68,7 +68,7 @@
         b.payDumpIncre++;
         if(b_t.added && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
           MDL_effect._e_payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content());
-          b.payStockObj[b.lastDumpPay.content().name] = tryVal(b.payStockObj[b.lastDumpPay.content().name], 0) - 1;
+          Object.mapIncre(b.payStockObj, b.lastDumpPay.content().name, -1);
           b.lastDumpPay = null;
         };
       };
@@ -246,10 +246,9 @@
 
 
       shouldConsume: function() {
-        return this.enabled && (!this.hasPayOutput ? true : this.payAmtTotalAfterProd <= this.block.delegee.payAmtCap);
+        return !this.hasPayOutput ? true : this.payAmtTotalAfterProd <= this.block.delegee.payAmtCap;
       }
       .setProp({
-        noSuper: true,
         boolMode: "and",
       }),
 
@@ -350,6 +349,8 @@
           },
 
           (rd, revi) => {
+            if(this.LCReviSub === 0 && this.block.ex_isSubInsOf("BLK_baseDrill")) return;
+
             MDL_io._rd_objStrNum(rd, this.payReqObj);
             MDL_io._rd_objStrNum(rd, this.payStockObj);
           },

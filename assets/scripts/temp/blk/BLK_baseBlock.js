@@ -403,7 +403,7 @@
 
       writeAll: function(wr) {
         this.writeBase(wr);
-        wr.s(this.LCReviSub);
+        wr.s(this.ex_subRevi());
         this.write(wr);
       }
       .setProp({
@@ -480,6 +480,21 @@
        */
       ex_handleConfigStrDef: function(str) {
 
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * Revision used for this content template.
+       * <br> <LATER>
+       * @memberof B_baseBlock
+       * @instance
+       * @return {number}
+       */
+      ex_subRevi: function() {
+        return 0;
       }
       .setProp({
         noSuper: true,

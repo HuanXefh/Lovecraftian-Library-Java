@@ -9,6 +9,7 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseMiner");
+  const INTF = require("lovec/temp/intf/INTF_BLK_payloadBlock");
 
 
   /* <---------- component ----------> */
@@ -37,8 +38,6 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.timePeriod = blk.drillCraftTime;
-
     if(blk.overwriteVanillaStat) {
       blk.stats.remove(Stat.drillTier);
       blk.stats.remove(Stat.drillSpeed);
@@ -61,17 +60,56 @@
         MDL_table._l_ctLi(tb, blk.itmWhitelist);
       }));
     };
+
+    if(!blk.shouldDropPay) blk.stats.remove(fetchStat("lovec", "blk0fac-payroom"));
   };
 
 
-  function comp_updateTile(b) {
-    b.drillCraftProg += b.edelta();
-    if(b.drillCraftProg >= b.block.delegee.drillCraftTime) {
-      b.drillCraftProg %= b.block.delegee.drillCraftTime;
-      // No you still can't use item consumers for drills, since they don't have separate item storage (hard-coded)
-      // This is meant for `cons.trigger()` only
-      b.consume();
+  function comp_setBars(blk) {
+    if(!blk.shouldDropPay) return;
+
+    blk.addBar("lovec-pay-mine-prog", b => new Bar(
+      prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.delegee.payChargeFrac.perc(0))),
+      prov(() => Pal.ammo),
+      () => b.delegee.payChargeFrac,
+    ));
+  };
+
+
+  function comp_ex_canMine(blk, oblk, itm, tierMtp) {
+    if(blk.blockedItems != null && blk.blockedItems.size > 0) {
+      if(blk.blockedItems.contains(itm)) return false;
+    } else {
+      if(blk.itmWhitelist.length > 0 && !blk.itmWhitelist.includes(itm)) return false;
     };
+
+    if(blk.shouldDropPay) {
+      if(DB_HANDLER.read("itm-pay-blk", itm.name, null) == null) return false;
+    };
+
+    return blk.ex_calcDropHardness(oblk, itm) <= blk.tier * tierMtp;
+  };
+
+
+  function comp_created(b) {
+    if(b.block.delegee.shouldDropPay) b.hasPayOutput = true;
+  };
+
+
+  function comp_offload(b, itm) {
+    if(!b.block.delegee.shouldDropPay) {
+      b.super$offload(itm);
+      return;
+    };
+
+    let blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+    if(blkTg == null) return;
+    Object.mapIncre(b.payChargeObj, itm.name);
+    if(b.payChargeObj[itm.name] >= blkTg.requirements[0].amount) {
+      b.payChargeObj[itm.name] %= blkTg.requirements[0].amount;
+      Object.mapIncre(b.payStockObj, blkTg.name);
+    };
+    b.payChargeFrac = b.payChargeObj[itm.name] / blkTg.requirements[0].amount;
   };
 
 
@@ -89,19 +127,20 @@
      * Parent of ground drills and wall drills.
      * @class BLK_baseDrill
      * @extends BLK_baseMiner
+     * @extends INTF_BLK_payloadBlock
      */
-    newClass().extendClass(PARENT[0], "BLK_baseDrill").initClass()
+    newClass().extendClass(PARENT[0], "BLK_baseDrill").implement(INTF[0]).initClass()
     .setParent(null)
     .setTags("blk-min", "blk-drl")
     .setParam({
 
 
       /**
-       * <PARAM>: Another `drillTime` used to trigger consumers. Do not use item consumers!
+       * <PARAM>: Multiplier on amount of items outputted each round.
        * @memberof BLK_baseDrill
        * @instance
        */
-      drillCraftTime: 60.0,
+      drillAmtMtp: 1.0,
       /**
        * <PARAM>: Whether this drill cannot mine sand.
        * @memberof BLK_baseDrill
@@ -114,6 +153,12 @@
        * @instance
        */
       itmWhitelist: prov(() => []),
+      /**
+       * <PARAM>: If true, this drill outputs payload instead of item. Only ores that have payload form can be mined.
+       * @memberof BLK_baseDrill
+       * @instance
+       */
+      shouldDropPay: false,
 
 
     })
@@ -127,6 +172,11 @@
 
       setStats: function() {
         comp_setStats(this);
+      },
+
+
+      setBars: function() {
+        comp_setBars(this);
       },
 
 
@@ -147,14 +197,68 @@
       }),
 
 
+      /**
+       * Whether this drill can obtain `itm` from `oblk`.
+       * <br> WTF why is there no `canMine` for `BeamDrill`???
+       * @memberof BLK_baseDrill
+       * @instance
+       * @param {Block} oblk
+       * @param {Item} itm
+       * @param {number} tierMtp
+       * @return {boolean}
+       */
+      ex_canMine: function(oblk, itm, tierMtp) {
+        return comp_ex_canMine(this, oblk, itm, tierMtp);
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 3,
+      }),
+
+
+      /**
+       * Calculates expected amount of items outputted each round when all tiles have valid ore.
+       * @memberof BLK_baseDrill
+       * @instance
+       * @param {boolean} noAmtMtp
+       * @return {number}
+       */
+      ex_getEachRoundOutputAmt: function(noAmtMtp) {
+        let amt = this instanceof BurstDrill ?
+          Math.pow(this.size, 2) :
+          this instanceof BeamDrill ?
+            this.size :
+            1;
+        return noAmtMtp ? Math.round(amt * this.drillAmtMtp) : amt;
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 1,
+      }),
+
+
+      /**
+       * @memberof BLK_baseDrill
+       * @instance
+       * @return {number}
+       */
+      ex_getRcDictOutputScl: function() {
+        return this.ex_getEachRoundOutputAmt(false) / this.ex_getEachRoundOutputAmt(true);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
     }),
 
 
     /**
      * @class B_baseDrill
      * @extends B_baseMiner
+     * @extends INTF_B_payloadBlock
      */
-    newClass().extendClass(PARENT[1], "B_baseDrill").initClass()
+    newClass().extendClass(PARENT[1], "B_baseDrill").implement(INTF[1]).initClass()
     .setParent(null)
     .setParam({
 
@@ -167,7 +271,13 @@
        * @memberof B_baseDrill
        * @instance
        */
-      drillCraftProg: 0.0,
+      payChargeObj: prov(() => ({})),
+      /**
+       * <INTERNAL>
+       * @memberof B_baseDrill
+       * @instance
+       */
+      payChargeFrac: 0.0,
 
 
     })
@@ -175,13 +285,42 @@
 
 
       created: function() {
-        this.drillCraftProg = Mathf.random(this.block.delegee.drillCraftTime);
+        comp_created(this);
       },
 
 
-      updateTile: function() {
-        comp_updateTile(this);
+      offload: function(itm) {
+        comp_offload(this, itm);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      write: function(wr) {
+        MDL_io._wr_objStrNum(wr, this.payChargeObj);
       },
+
+
+      read: function(rd, revi) {
+        if(this.LCReviSub === 0) return;
+
+        MDL_io._rd_objStrNum(rd, this.payChargeObj);
+      },
+
+
+      /**
+       * @override
+       * @memberof B_baseDrill
+       * @instance
+       * @return {number}
+       */
+      ex_subRevi: function() {
+        return 1;
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
     }),

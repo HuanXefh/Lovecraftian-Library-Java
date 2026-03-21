@@ -1063,6 +1063,12 @@
         <mxCell id="PyMcuf8kJOXFe5BmaANB-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="rEOpDPn2K5u2WDtIeGj--1" target="PyMcuf8kJOXFe5BmaANB-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="JmGW9eDrsFLWT8hh7bbZ-1" value="BLK_rawOreBlock" style="label;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacingLeft=8;spacingBottom=0;imageAlign=right;imageVerticalAlign=top;image=data:image/png,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACi0lEQVR42tWba27DMAyDffTerEfr0AEpsi6WRIpMHAP5VSMSPz8ky+kYovbatSFur2J7Pp//nnFGO3JmBfGnQIicWkH8+5EMSGTIAUEpvj0gFYNKCA7xNATEsAKCUzwMgXGgY1glPvOjBEHlCOKU2iYNYVXxDru3Eu+wfzvxaj9uKV7pj0384/E4fND3ZCBn/arvGm+nVhZfhcCG6rE5x4g/6ucQ31lS2bvG3klW/Nac4h0Qftf/t7PdbGs18TM9n92/O2IRhFXEf0P4E/sR8bPfFRunQjyV+SHio34uCMwUh3J/VDwKoRNaKyF69i4ZgNnO7oYQRSc2UoUAZoIiAC4IR3ZUdYEQAAOhKj77rWJLVRcIASAQEPGVPtls2yBIT4HI1O6Kz/pWAMiLIaixrvgOBEf4HAxx1UghEFz5w0DFVPqrITiTqHQZ7J1AxKsguDPJdDNUPB1H3el0GhKvhuA+UKWJ0dUQ3KfKND0+E0I347sFgGpoZS5BTwMQNQYCm/Yqki8YQKUhECq/d+4KpACQplomRzPGWiSJHEKbYo/o+AADqDjkhpBtjrYZoCh6zJxQRgfLHuAoe6kOUOhshKNAJ3mpjoBqD8hmI1Ua62ZvbJGzkyMc+YBmgnDWV3kxU1pHl0DUrwqATnvZHJx9f/XWGRmodt7vApAtLYWPUNan/NihK75zztj7UAag/txFGWY7uQQFALkcZSGoSueZXRoAstGoP57qQPj+Dd4DmFDDQFDeH0QPfPZ3hz3XJYoMgGPH79joQph+Ha5y0FktVkAI/x/QdZKt9Ki/TKPEX1UNVkGQiHdDqM4cFIJUvBOCet9or/kVICwr/gwIy4tfFeBtxF8BYazaVhb/A+J9HefShCn6AAAAAElFTkSuQmCC;arcSize=0;fontFamily=Times New Roman;fontStyle=0;flipH=0;spacing=8;spacingTop=0;imageWidth=32;imageHeight=32;points=[[0,0.5,0,0,0],[1,0.5,0,0,0]];fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="1440" y="10795.25" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JmGW9eDrsFLWT8hh7bbZ-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="nj8xZBTC1EM6YmWAH8ZK-1" target="JmGW9eDrsFLWT8hh7bbZ-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

@@ -137,14 +137,14 @@
     if(b.hasPayInput) {
       let i = 0, iCap = b.payi.iCap();
       while(i < iCap) {
-        b.payReqObj[b.payi[i]] = tryVal(b.payReqObj[b.payi[i]], 0) - b.payi[i + 1];
+        Object.mapIncre(b.payReqObj, b.payi[i], -b.payi[i + 1]);
         i += 2;
       };
     };
     if(b.hasPayOutput) {
       let i = 0, iCap = b.payo.iCap();
       while(i < iCap) {
-        b.payStockObj[b.payo[i]] = tryVal(b.payStockObj[b.payo[i]], 0) + b.payo[i + 1];
+        Object.mapIncre(b.payStockObj, b.payo[i], b.payo[i + 1]);
         i += 2;
       };
     };

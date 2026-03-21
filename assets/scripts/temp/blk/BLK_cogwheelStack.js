@@ -14,6 +14,11 @@
   /* <---------- component ----------> */
 
 
+  function comp_loadIcon(blk) {
+    blk.fullIcon = blk.uiIcon = fetchRegion(blk, "-full-gen");
+  };
+
+
   function comp_createIcons(blk, packer) {
     MDL_texture._ip_ctTg(blk, packer, "-full-gen", blk.undCog, blk.ovCog);
   };
@@ -29,7 +34,7 @@
 
     blk.size = blk.undCog.size;
 
-    // I have to put this in {blk.init} to prevent crash
+    // I have to put this in `blk.init` to prevent crash
     MDL_event._c_onLoad(() => {
       blk.region = blk.undCog.region;
       blk.invReg = blk.undCog.delegee.invReg;
@@ -41,7 +46,6 @@
       blk.cogOvDrawW = blk.ovReg.width * 2.0 * 1.06 / Vars.tilesize;
       blk.cogInvOffAng = 22.5 / (blk.undCog.size + 1) * 2.0;
       blk.cogOvInvOffAng = 22.5 / (blk.ovCog.size + 1) * 2.0;
-      blk.fullIcon = blk.uiIcon = fetchRegion(blk, "-full-gen");
     });
   };
 
@@ -185,6 +189,11 @@
 
     })
     .setMethod({
+
+
+      loadIcon: function() {
+        comp_loadIcon(this);
+      },
 
 
       createIcons: function(packer) {

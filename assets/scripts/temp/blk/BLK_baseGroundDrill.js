@@ -39,20 +39,9 @@
     };
     if(itm == null) return false;
 
-    if(blk.blockedItems != null && blk.blockedItems.size > 0) {
-      if(blk.blockedItems.contains(itm)) return false;
-    } else {
-      if(blk.itmWhitelist.length > 0 && !blk.itmWhitelist.includes(itm)) return false;
-    };
-
-    let isDpore = isFloorDrop ? false : MDL_cond._isDepthOre(t.overlay());
-    if(isDpore) {
-      if(!blk.canMineDepthOre || blk.ex_calcDropHardness(t.overlay(), itm) > blk.tier * blk.depthTierMtp) return false;
-    } else {
-      if(blk.ex_calcDropHardness(isFloorDrop ? t.floor() : t.overlay(), itm) > blk.tier) return false;
-    };
-
-    return true;
+    return (isFloorDrop ? false : MDL_cond._isDepthOre(t.overlay())) ?
+      blk.canMineDepthOre && blk.ex_canMine(t.overlay(), itm, blk.depthTierMtp) :
+      blk.ex_canMine(isFloorDrop ? t.floor() : t.overlay(), itm, 1.0);
   };
 
 
@@ -137,12 +126,6 @@
 
 
       /**
-       * <PARAM>: Multiplier on amount of items outputted each round.
-       * @memberof BLK_baseGroundDrill
-       * @instance
-       */
-      drillAmtMtp: 1.0,
-      /**
        * <PARAM>: Whether this drill is capable of mining depth ore.
        * @memberof BLK_baseGroundDrill
        * @instance
@@ -187,19 +170,6 @@
 
       drawPlace: function(tx, ty, rot, valid) {
         comp_drawPlace(this, tx, ty, rot, valid);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof BLK_baseGroundDrill
-       * @instance
-       * @return {number}
-       */
-      ex_getRcDictOutputScl: function() {
-        return this.drillAmtMtp;
       }
       .setProp({
         noSuper: true,

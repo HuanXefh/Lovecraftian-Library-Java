@@ -51,10 +51,7 @@
               itm = ot.block().itemDrop;
               isBlockDrop = true;
             };
-            if(itm != null && blk.ex_calcDropHardness(isBlockDrop ? ot.block() : ot.overlay(), itm) <= blk.tier && !(
-              (blk.blockedItems != null && blk.blockedItems.contains(itm))
-                || ((blk.blockedItems == null || blk.blockedItems.size === 0) && blk.itmWhitelist.length > 0 && !blk.itmWhitelist.includes(itm))
-            )) return true;
+            if(itm != null && blk.ex_canMine(isBlockDrop ? ot.block() : ot.overlay(), itm, 1.0)) return true;
             isBlockDrop = false;
             break;
           };

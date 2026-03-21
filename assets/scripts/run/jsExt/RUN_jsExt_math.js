@@ -18,7 +18,21 @@
 
 
   /**
-   * Sums all numbers in a mapper object.
+   * Increases some number in a number mapper object.
+   * @param {Object<string: number>} obj
+   * @param {string} key
+   * @param {number|unset} [num]
+   * @return {number}
+   */
+  Object.mapIncre = function(obj, key, num) {
+    if(typeof obj[key] !== "number") obj[key] = 0.0;
+    obj[key] += tryVal(num, 1.0);
+    return obj[key];
+  };
+
+
+  /**
+   * Sums all numbers in a number mapper object.
    * @param {Object<string: number>} obj
    * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
    * @return {number}
@@ -38,7 +52,7 @@
 
 
   /**
-   * Finds largest value in a mapper object.
+   * Finds largest value in a number mapper object.
    * @param {Object<string: number>} obj
    * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
    * @return {number}
@@ -60,7 +74,7 @@
 
 
   /**
-   * Finds smallest value in a mapper object.
+   * Finds smallest value in a number mapper object.
    * @param {Object<string: number>} obj
    * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
    * @return {number}
@@ -82,7 +96,7 @@
 
 
   /**
-   * Mapper object comparison.
+   * Number mapper object comparison.
    * <br> <ARGS>: obj1, obj2, includeEqual.
    * <br> <ARGS>: obj1, num, includeEqual.
    * <br> <ARGS>: obj1, arr, includeEqual.
@@ -122,7 +136,7 @@
 
 
   /**
-   * Mapper object comparison.
+   * Number mapper object comparison.
    * <br> <ARGS>: obj1, obj2, includeEqual.
    * <br> <ARGS>: obj1, num, includeEqual.
    * <br> <ARGS>: obj1, arr, includeEqual.
@@ -135,7 +149,7 @@
 
 
   /**
-   * Mapper object comparison.
+   * Number mapper object comparison.
    * <br> <ARGS>: obj1, obj2, includeEqual.
    * <br> <ARGS>: obj1, num, includeEqual.
    * <br> <ARGS>: obj1, arr, includeEqual.
@@ -183,7 +197,7 @@
 
 
   /**
-   * Mapper object comparison.
+   * Number mapper object comparison.
    * <br> <ARGS>: obj1, obj2, includeEqual.
    * <br> <ARGS>: obj1, num, includeEqual.
    * <br> <ARGS>: obj1, arr, includeEqual.

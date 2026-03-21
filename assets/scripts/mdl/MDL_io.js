@@ -48,7 +48,8 @@
   const _rd_objStrNum = function(rd, obj) {
     let i = 0, iCap = rd.i();
     while(i < iCap) {
-      obj[rd.str()] = rd.f();
+      let key = rd.str();
+      obj[key] = rd.f();
       i++;
     };
 
@@ -85,7 +86,8 @@
   const _rd_objStrStr = function(rd, obj) {
     let i = 0, iCap = rd.i();
     while(i < iCap) {
-      obj[rd.str()] = rd.str();
+      let key = rd.str();
+      obj[key] = rd.str();
       i++;
     };
 

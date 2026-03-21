@@ -159,6 +159,20 @@
 
 
     /**
+     * Gets the data object built from all "<key>.json".
+     * Do not modify this object!
+     * @param {string} key
+     * @return {Object}
+     */
+    getDataObj(key) {
+      let tup = DB_HANDLER.__KEY_TUP_MAP__.get(key);
+      return tup == null ?
+        Object.air :
+        tup[0];
+    },
+
+
+    /**
      * Adds a reader for "<key>.json", see {@link readAuxJsonData}.
      * @param {string} key
      * @param {Function} fun - Arguments of this function will be passed down from {@link DB_HANDLER.read}.

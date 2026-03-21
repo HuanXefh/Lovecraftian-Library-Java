@@ -18,6 +18,23 @@
 
 
   /**
+   * Gets key by reading values in `obj`.
+   * @param {Object} obj
+   * @param {any} val
+   * @param {any} [def]
+   * @return {any}
+   */
+  Object.findKeyByVal = function(obj, val, def) {
+    let key_fi = def;
+    for(let key in obj) {
+      if(obj[key] !== val) continue;
+      key_fi = key;
+    };
+    return key_fi;
+  };
+
+
+  /**
    * Gets last child object found in `obj` when searching with given keys.
    * @param {Object} obj
    * @param {Array<string>} keys
