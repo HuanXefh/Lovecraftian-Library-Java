@@ -66,6 +66,11 @@
   const addedGrps = [];
 
 
+  function checkCanControlTime() {
+    return Vars.state.isGame() && Groups.player.size() === 1 && !Vars.state.getPlanet().campaignRules.pauseDisabled;
+  };
+
+
 /*
   ========================================
   Section: Definition (Static)
@@ -165,7 +170,8 @@
         tb.add("").get().setText(prov(() => Strings.fixed(this.timeScl, 2) + "x"));
         tb.row();
         MDL_table.__slider(tb, val => {
-          if(Groups.player.size() === 1) Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0 * val);
+          val = checkCanControlTime() ? val : 1.0;
+          Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0 * val);
           this.timeScl = val;
         }, 0.25, 3.0, 0.25, this.timeScl, this.prefW);
       }).left().row();
@@ -178,8 +184,7 @@
    * @return {void}
    */
   CLS_dragButton.prototype.update = function() {
-    // Forced to 1.0x when multi-player
-    if(Groups.player.size() > 1) {
+    if(!checkCanControlTime()) {
       Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0);
     };
   };

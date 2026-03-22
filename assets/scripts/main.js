@@ -234,6 +234,7 @@
                 blk.destroySound = fetchSound("legacy-boom");
               };
             });
+            Sounds.loopBuild = fetchSound("legacy-build");
           } catch(err) {
             Log.err("[LOVEC] Failed to load legacy sounds:\n" + err);
           };

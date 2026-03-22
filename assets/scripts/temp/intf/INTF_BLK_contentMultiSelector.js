@@ -24,7 +24,7 @@
 
     blk.config(JAVA.string, (b, str) => {
       b.ex_accCtTgs(str, false);
-      EFF.squareFadePack[b.block.size].at(b);
+      EFF.placeFadePack[b.block.size].at(b);
       b.ex_onSelectorUpdate();
     });
 
@@ -37,13 +37,13 @@
             if(ct != null) b.ex_accCtTgs(ct, true);
             i++;
           };
-          EFF.squareFadePack[b.block.size].at(b);
+          EFF.placeFadePack[b.block.size].at(b);
           b.ex_onSelectorConfigLoad(cfgArr);
           break;
 
         case "selector" :
           b.ex_accCtTgs(cfgArr[1], cfgArr[2]);
-          EFF.squareFadePack[b.block.size].at(b);
+          EFF.placeFadePack[b.block.size].at(b);
           b.ex_onSelectorUpdate();
           break;
       };

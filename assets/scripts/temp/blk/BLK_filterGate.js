@@ -22,7 +22,7 @@
     blk.config(JAVA.boolean, (b, bool) => {
       if(bool !== b.delegee.isInv) {
         b.delegee.isInv = bool;
-        EFF.squareFadePack[b.block.size].at(b);
+        EFF.placeFadePack[b.block.size].at(b);
         TRIGGER.invertSelection.fire();
       };
     });
@@ -32,7 +32,7 @@
         case "selectorBlock" :
           b.sortItem = MDL_content._ct(cfgArr[1], "rs");
           b.delegee.isInv = cfgArr[2];
-          EFF.squareFadePack[b.block.size].at(b);
+          EFF.placeFadePack[b.block.size].at(b);
           break;
       };
     });

@@ -919,7 +919,7 @@
        * @return {void}
        */
       ex_showRcChangeEff: function() {
-        EFF.squareFadePack[this.block.size].at(this);
+        EFF.placeFadePack[this.block.size].at(this);
       }
       .setProp({
         noSuper: true,

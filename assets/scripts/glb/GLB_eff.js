@@ -143,12 +143,24 @@
   /* <---------- area ----------> */
 
 
-  exports.squareFadePack = (function() {
+  exports.placeFadePack = (function() {
     let arr = [];
     (10)._it(size => {
       arr.push(size === 0 ? Fx.none : TP_effect._squareFade({
         r: size * 0.5,
         color: Pal.accent,
+      }));
+    });
+    return arr;
+  })();
+
+
+  exports.removeFadePack = (function() {
+    let arr = [];
+    (10)._it(size => {
+      arr.push(size === 0 ? Fx.none : TP_effect._squareFade({
+        r: size * 0.5,
+        color: Pal.remove,
       }));
     });
     return arr;

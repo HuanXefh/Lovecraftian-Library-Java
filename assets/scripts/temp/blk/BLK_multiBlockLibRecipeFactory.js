@@ -80,7 +80,7 @@
        * @return {void}
        */
       ex_showRcChangeEff: function() {
-        this.linkEntities.each(ob => EFF.squareFadePack[ob.block.size].at(ob));
+        this.linkEntities.each(ob => EFF.placeFadePack[ob.block.size].at(ob));
       }
       .setProp({
         noSuper: true,

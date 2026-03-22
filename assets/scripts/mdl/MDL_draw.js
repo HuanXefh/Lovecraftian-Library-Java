@@ -262,6 +262,31 @@
 
 
   /**
+   * Draws construction.
+   * @param {number} x
+   * @param {number} y
+   * @param {TextureRegion|null} reg
+   * @param {number} frac
+   * @param {number|unset} [ang]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {number|unset} [z]
+   */
+  const _reg_construct = function(x, y, reg, frac, ang, color_gn, z) {
+    Draw.draw(tryVal(z, Layer.blockBuilding), () => {
+      Shaders.blockbuild.region = reg;
+      Shaders.blockbuild.time = Time.time;
+      Shaders.blockbuild.progress = frac;
+      Draw.color(MDL_color._color(tryVal(color_gn, Pal.accent)));
+      Draw.rect(reg, x, y, tryVal(ang, 0.0));
+      Draw.color();
+
+      Draw.flush();
+    });
+  };
+  exports._reg_construct = _reg_construct;
+
+
+  /**
    * Draws block status.
    * Rarely used unless something about consumer is screwed.
    * @param {number} x
@@ -664,7 +689,7 @@
     if(a == null) a = 1.0;
 
     let
-      regScl_fi = regScl * (0.825 + Math.sin(Time.globalTime * 0.65) * 0.075),
+      regScl_fi = regScl * (0.825 + Math.sin(Time.globalTime * 0.065) * 0.075),
       w = reg.width * reg.scl() * regScl_fi,
       h = reg.height * reg.scl() * regScl_fi;
 
@@ -672,7 +697,7 @@
 
     Draw.color(MDL_color._color(tryVal(color_gn, Color.white)));
     Draw.alpha(0.75 * a);
-    Draw.rect(reg, x, y, ang, w, h);
+    Draw.rect(reg, x, y, w, h, ang);
     Draw.reset();
 
     processZ();
@@ -687,10 +712,10 @@
    * @param {ColorGn|unset} [color_gn]
    * @return {void}
    */
-  const _reg_planPlace = function(blk, t, color_gn) {
+  const _reg_planPlace = function(blk, t, ang, color_gn) {
     if(blk == null || t == null) return;
 
-    _reg_plan(t.x.toFCoord(blk.size), t.y.toFCoord(blk.size), MDL_texture._regBlk(blk), color_gn);
+    _reg_plan(t.x.toFCoord(blk.size), t.y.toFCoord(blk.size), MDL_texture._regBlk(blk), ang, null, color_gn);
   };
   exports._reg_planPlace = _reg_planPlace;
 

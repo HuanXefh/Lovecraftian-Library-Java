@@ -15,6 +15,8 @@
 
 
   function comp_init(blk) {
+    blk.update = true;
+
     blk.ex_parseConstructionData();
     if(blk.placeDataX == null) blk.placeDataX = blk.centerPon2.x;
     if(blk.placeDataY == null) blk.placeDataY = blk.centerPon2.y;
@@ -27,13 +29,22 @@
       Core.app.post(() => {
         batchCall(blk.placeBlk, function() {
           this.buildVisibility = BuildVisibility.sandboxOnly;
+          blk.techNodes.each(node => {
+            node.children.add(TechTree.node(this, [], () => {}));
+          });
+          this.envRequired = blk.envRequired;
+          this.envDisabled = blk.envDisabled;
           let itmStacks = [];
-          Object._it(blk.constructionItmsReq, (itm, amt) => {
-            itmStacks.push(new ItemStack(itm, amt));
+          Object._it(blk.constructionItmsReq, (nmItm, amt) => {
+            itmStacks.push(new ItemStack(Vars.content.item(nmItm), amt));
           });
           this.requirements = itmStacks;
-          // This completely prevents you from building it directly outside of sandbox (e.g. using a schematic)
-          this.buildTime = Number.fMax;
+
+          MDL_event._c_onLoad(() => {
+            // This completely prevents player from building it directly outside of sandbox (e.g. using a schematic)
+            this.buildTime = Number.fMax;
+            this.stats.remove(Stat.buildTime);
+          });
         });
       });
     };
@@ -65,12 +76,17 @@
               blk.ex_placePlanTg(b.team, b.tileX(), b.tileY(), b.rotation);
             });
             let ot = blk.ex_getPlanT(b.tileX(), b.tileY(), b.rotation, blk.centerPon2.x, blk.centerPon2.y);
-            EFF.squareFadePack[blk.planSize].at(ot.worldx() + blk.planSize % 2 === 0 ? 4.0 : 0.0, ot.worldy() + blk.planSize % 2 === 0 ? 4.0 : 0.0);
+            EFF.placeFadePack[blk.planSize].at(ot.worldx() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), ot.worldy() + (blk.planSize % 2 === 0 ? 4.0 : 0.0));
             blk.ex_removePlanBlks(b.delegee.constructionPlan);
           };
           break;
       };
     });
+
+    MDL_content.rename(
+      blk,
+      blk.placeBlk.localizedName + "(" + MDL_bundle._term("lovec", "construction-core") + ")",
+    );
   };
 
 
@@ -114,15 +130,16 @@
 
 
   function comp_ex_parseConstructionData(blk) {
-    let i, iCap = blk.constructionData[0].iCap(), j = 0, jCap = blk.constructionData.iCap();
+    let i, iCap = blk.constructionData[0].iCap(), j = 0, jCap = blk.constructionData.iCap(), tup;
     while(j < jCap) {
       blk.constructionParsedData[j] = [];
       i = 0;
       while(i < iCap) {
-        let blkTg = tryVal(MDL_content._ct(blk.constructionData[j][i][0], "blk"), Blocks.air);
+        tup = blk.constructionData[j][i] instanceof Array ? blk.constructionData[j][i] : [blk.constructionData[j][i], -1];
+        let blkTg = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content._ct(tup[0], "blk"), Blocks.air);
         blk.constructionParsedData[j].push({
           blk: blkTg,
-          rot: blkTg instanceof RotBlock ? -1 : tryVal(blk.constructionData[j][i][1], -1),
+          rot: blkTg instanceof RotBlock ? -1 : tryVal(tup[1], -1),
         });
         if(blkTg === blk) blk.corePon2.set(i, j);
         i++;
@@ -221,8 +238,8 @@
     blksReq = tryVal(blksReq, blk.ex_calcBlksReq(null));
     blksReq.forEachRow(2, (oblk, count) => {
       oblk.requirements.forEachFast(itmStack => {
-        if(obj[itmStack.item] === undefined) obj[itmStack.item] = 0;
-        obj[itmStack.item] += itmStack.amount * count;
+        if(obj[itmStack.item.name] === undefined) obj[itmStack.item.name] = 0;
+        obj[itmStack.item.name] += itmStack.amount * count;
       });
     });
 
@@ -231,10 +248,8 @@
 
 
   function comp_ex_getPlanT(blk, tx, ty, rot, dataX, dataY) {
-    thisFun.tmpTup.clear();
-
-    MDL_pos._tCenterRot(
-      Vars.world.tile(tx - corePon2.x + dataX, ty + corePon2.y - dataY),
+    return MDL_pos._tCenterRot(
+      Vars.world.tile(tx - blk.corePon2.x + dataX, ty + blk.corePon2.y - dataY),
       Vars.world.tile(tx, ty),
       rot,
       blk.constructionParsedData[dataY][dataX].blk.size,
@@ -275,10 +290,11 @@
   function comp_ex_drawPlan(blk, team, plan) {
     let i = 0, iCap = plan.iCap();
     while(i < iCap) {
-      if(plan[i] !== blk && !blk.ex_checkPlanTileComplete(plan[i + 1], plan[i], plan[i + 2], tean)) {
+      if(plan[i] !== blk && !blk.ex_checkPlanTileComplete(plan[i + 1], plan[i], plan[i + 2], team)) {
         MDL_draw._reg_planPlace(
           plan[i], plan[i + 1],
-          plan[i].getLinkedTilesAs(plan[i], Reflect.get(Block, "tempTiles")).find(ot => ot.solid() || ot.build != null) == null ?
+          plan[i + 2] < 0 ? 0.0 : (plan[i + 2] * 90.0),
+          plan[i + 1].getLinkedTilesAs(plan[i], Reflect.get(Block, "tempTiles")).find(ot => ot.solid() || ot.build != null) == null ?
             Color.white :
             Pal.remove,
         );
@@ -302,6 +318,9 @@
         b.configure("SPEC: complete");
       };
       b.constructionTimeCur += Time.delta;
+      if(!Vars.headless) {
+        Vars.control.sound.loop(Sounds.loopBuild, b, 1.3);
+      };
 
       if(!Vars.net.client() && TIMER.secFive) {
         // Destruction during construction?
@@ -312,8 +331,13 @@
 
 
   function comp_draw(b) {
-    if(b.shouldDrawConstructionPlan && Vars.player.team() === b.team) {
-      b.block.ex_drawPlan(b.team, b.constructionPlan);
+    if(b.underConstruction) {
+      MDL_draw._reg_construct(b.x, b.y, MDL_texture._regBlk(b.block), 1.0 - b.ex_getConstructionFrac(), b.drawrot());
+    } else {
+      b.super$draw();
+      if(b.shouldDrawConstructionPlan && Vars.player.team() === b.team) {
+        b.block.ex_drawPlan(b.team, b.constructionPlan);
+      };
     };
   };
 
@@ -340,6 +364,7 @@
   function comp_ex_stopConstruction(b) {
     b.underConstruction = false;
     b.constructionTimeCur = 0.0;
+    EFF.removeFadePack[b.block.size].at(b);
   };
 
 
@@ -356,16 +381,18 @@
     /**
      * Used to construct a larger building from existing buildings.
      * {@link BLK_constructionCore#constructionData} is where the plan is defined.
+     * <br> <NAMEGEN>
      * @class BLK_constructionCore
      * @extends BLK_materialBlock
      * @example
-     * // Blocks larger than 1 block unit are treated as 1-sized blocks, with tiles except the center taken by air
+     * // Blocks larger than 1 block unit are treated as 1-sized blocks, with tiles except the center taken by air (can be null)
+     * // "SPEC: this" represents the core
      * // -1 for rotation means arbitrary rotation
      * let exampleData = [
      *   [["router", -1], ["router", -1], ["router", -1], ["router", -1]],
      *   [["router", -1], ["air", -1], ["air", -1], ["router", -1]],
      *   [["router", -1], ["distributor", -1], ["air", -1], ["router", -1]],
-     *   [["router-core", -1], ["router", -1], ["router", -1], ["router", -1]],
+     *   [["SPEC: this", -1], ["router", -1], ["router", -1], ["router", -1]],
      * ];
      */
     newClass().extendClass(PARENT[0], "BLK_constructionCore").initClass()
@@ -635,7 +662,7 @@
       }
       .setProp({
         noSuper: true,
-        argLen: 1,
+        argLen: 2,
       }),
 
 
@@ -756,7 +783,10 @@
 
       draw: function() {
         comp_draw(this);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       write: function(wr) {
