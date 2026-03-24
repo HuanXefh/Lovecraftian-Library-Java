@@ -19,9 +19,10 @@
     blk.group = BlockGroup.drills;
 
     if(blk.noSandOutput) {
-      MDL_event._c_onLoad(() => {
-        if(blk.blockedItems == null) blk.blockedItems = new Seq();
-        blk.blockedItems.addAll(VARGEN.sandItms);
+      if(blk.blockedItems == null) blk.blockedItems = new Seq();
+      DB_item.db["group"]["sand"].forEachFast(nm => {
+        let itm = MDL_content._ct(nm, "rs");
+        if(itm != null) blk.blockedItems.add(itm);
       });
     };
 

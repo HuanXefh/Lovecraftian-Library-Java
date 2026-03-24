@@ -24,7 +24,7 @@
     let runGlbScr = mod => {
       let fi = findGlbScr(mod);
       if(fi == null) {
-        Log.info("[LOVEC] No globalScript.js found for " + mod.meta.name + ", skipped loading.");
+        Log.info("[LOVEC] No globalScript.js found for " + mod.meta.name.color(Pal.accent) + ", skipped loading.");
         return;
       };
       // Don't use `try` for loading global scripts, which makes debugging impossible

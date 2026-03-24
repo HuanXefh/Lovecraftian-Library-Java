@@ -51,6 +51,15 @@
 
 
       /**
+       * Whether it's sandbox game currently.
+       * @return {boolean}
+       */
+      _isSandBox() {
+        return Vars.state == null || Vars.state.rules.infiniteResources;
+      },
+
+
+      /**
        * Gets current planet as string.
        * @return {string}
        */

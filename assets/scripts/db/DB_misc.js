@@ -695,6 +695,7 @@ const db = {
       "boost", "lovec-icon-boost",
       "check", "lovec-icon-check",
       "cross", "lovec-icon-cross",
+      "dot", "lovec-icon-dot",
       "harvest", "lovec-icon-harvest",
       "play", "lovec-icon-play",
       "questionMark", "lovec-icon-question-mark",

@@ -33,7 +33,10 @@
     CLASSES.RecipeType = fetchClass("tmi.recipe.RecipeType");
     CLASSES.AttributeCrafterParser = fetchClass("tmi.recipe.parser.AttributeCrafterParser");
     CLASSES.BeamDrillParser = fetchClass("tmi.recipe.parser.BeamDrillParser");
+    CLASSES.DrillParser = fetchClass("tmi.recipe.parser.DrillParser");
     CLASSES.GenericCrafterParser = fetchClass("tmi.recipe.parser.GenericCrafterParser");
+    CLASSES.PumpParser = fetchClass("tmi.recipe.parser.PumpParser");
+    CLASSES.ThermalGeneratorParser = fetchClass("tmi.recipe.parser.ThermalGeneratorParser");
     CLASSES.WallCrafterParser = fetchClass("tmi.recipe.parser.WallCrafterParser");
     CLASSES.HeatMark = fetchClass("tmi.recipe.types.HeatMark");
     CLASSES.PowerMark = fetchClass("tmi.recipe.types.PowerMark");
@@ -354,6 +357,7 @@
 
   /**
    * Generic parse method for most factory blocks.
+   * Should be called on CLIENT LOAD, or consumers added by `setConsumer` won't be parsed.
    * @param {Block} blk
    * @param {Recipe} rawRc
    * @param {number|unset} [boostEffc]
@@ -389,7 +393,13 @@
       addProd(rawRc, itmStack.item, itmStack.amount);
     };
     if(blk.outputLiquids != null) for(let liqStack of blk.outputLiquids) {
-      addProd(rawRc, liqStack.liquid, liqStack.amount);
+      addProd(rawRc, liqStack.liquid, liqStack.amount, true);
+    };
+
+    if(blk.ex_isSubInsOf != null) {
+      if(blk.ex_isSubInsOf("INTF_BLK_pressureProducer") && !blk.delegee.presProd.fEqual(0.0)) {
+        addProd(rawRc, blk.delegee.presProd > 0.0 ? "loveclab-aux0aux-pressure" : "loveclab-aux0aux-vacuum", Math.abs(blk.delegee.presProd), true);
+      };
     };
   };
   exports.baseParse = baseParse;
@@ -481,7 +491,34 @@
 
 
   /**
-   * Registers liquid output for rain collector.
+   * Registers building recipe for {@link BLK_constructionCore}.
+   * @param {Block} blk
+   * @return {void}
+   */
+  const _r_constructionCore = function(blk) {
+    if(!ENABLED) return;
+
+    MDL_event._c_onLoad(() => {
+      let blksReq = blk.ex_calcBlksReq([]);
+      let rawRc = _rawRc("building", blk.delegee.placeBlk, blk.constructionTimeReq);
+
+      blksReq.forEachRow(2, (oblk, amt) => {
+        addCons(rawRc, oblk, amt);
+      });
+      addSubInfo(rawRc, tb => {
+        tb.row();
+        blk.ex_buildConstructionPlan(tb);
+      });
+
+      rawRc.complete();
+      regisRc(rawRc);
+    });
+  };
+  exports._r_constructionCore = _r_constructionCore;
+
+
+  /**
+   * Registers liquid output for {@link BLK_rainCollector}.
    * @param {Block} blk
    * @return {void}
    */

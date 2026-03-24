@@ -42,6 +42,23 @@
 
 
   /**
+   * Gets part of a block region in a tile.
+   * Offsets increase when from top left to bottom right.
+   * @param {BlockGn} blk_gn
+   * @param {number} offTx
+   * @param {number} offTy
+   * @return {TextureRegion}
+   */
+  const _regBlkTileCut = function(blk_gn, offTx, offTy) {
+    let reg = _regBlk(blk_gn);
+    if(reg === ARC_AIR.reg) return reg;
+    return new TextureRegion(reg, offTx * 32.0, offTy * 32.0, 32.0, 32.0);
+  }
+  .setCache();
+  exports._regBlkTileCut = _regBlkTileCut;
+
+
+  /**
    * Gets heat region for a size, usually used as default heat region for blocks.
    * @param {number} size
    * @return {TextureRegion}

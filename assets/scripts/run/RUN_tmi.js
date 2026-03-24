@@ -17,37 +17,111 @@
 
 
     /**
-     * Fixes unparsed deposit mining recipes.
+     * Default parser for most Lovec drills.
      */
-    const _p_depositMining = MOD_tmi.regisParser({
+    const _p_defDrill = MOD_tmi.regisParser({
 
 
-      oreGrpMap: new ObjectMap(),
+      parserBlacklist: [
+        MOD_tmi.CLASSES.BeamDrillParser,
+        MOD_tmi.CLASSES.DrillParser,
+      ],
+      flrDropSet: new ObjectSet(),
+      wallDropSet: new ObjectSet(),
+
+
+      exclude(parser) {
+        return this.parserBlacklist.hasIns(parser);
+      },
 
 
       isTarget(blk) {
-        return blk instanceof BeamDrill;
+        return blk.ex_isSubInsOf != null && blk.ex_isSubInsOf("BLK_baseDrill");
+      },
+
+
+      init() {
+        let set;
+        Vars.content.blocks().each(blk => {
+          if(blk.itemDrop == null) return;
+          if(blk instanceof OverlayFloor) {
+            set = blk.wallOre ? this.wallDropSet : this.flrDropSet;
+          } else if(blk instanceof Floor) {
+            set = this.flrDropSet;
+          } else {
+            set = this.wallDropSet;
+          };
+          set.add(blk);
+        });
       },
 
 
       parse(blk) {
         const seq = new Seq();
 
-        Vars.content.blocks().each(
-          oblk => MDL_cond._isOreDepo(oblk) && oblk.itemDrop != null,
-          oblk => {
-            if(!this.oreGrpMap.containsKey(oblk.itemDrop)) this.oreGrpMap.put(oblk.itemDrop, new RecipeItemGroup());
+        let oreGrpMap = new ObjectMap();
+        if(blk instanceof BeamDrill) {
+          this.wallDropSet.each(
+            oblk => {
+              if(!blk.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
 
-            let rawRc = MOD_tmi._rawRc("collecting", blk, blk.drillTime, true);
+              let blkTg;
+              if(blk.shouldDropPay) {
+                blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
+                if(blkTg == null) return;
+              };
+              if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new RecipeItemGroup());
 
-            MOD_tmi.baseParse(blk, rawRc, blk.optionalBoostIntensity);
-            MOD_tmi.addMineTile(rawRc, this.oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size, true);
-            MOD_tmi.addProd(rawRc, oblk.itemDrop, blk.size, false);
+              let rawRc = !blk.shouldDropPay ?
+                MOD_tmi._rawRc("collecting", blk, blk.drillTime / blk.size, true) :
+                MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / blk.size, true);
+              MDL_event._c_onLoad(() => {
+                MOD_tmi.baseParse(blk, rawRc, blk.optionalBoostIntensity);
+              });
+              MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size, true);
+              !blk.shouldDropPay ?
+                MOD_tmi.addProd(rawRc, oblk.itemDrop, 1) :
+                MOD_tmi.addProd(rawRc, blkTg, 1);
 
-            rawRc.complete();
-            seq.add(rawRc);
-          },
-        );
+              rawRc.complete();
+              seq.add(rawRc);
+            },
+          );
+        } else {
+          this.flrDropSet.each(
+            oblk => {
+              if(!blk.ex_canMine(
+                oblk, oblk.itemDrop,
+                !MDL_cond._isDepthOre(oblk) ?
+                  1.0 :
+                  tryJsProp(blk, "canMineDepthOre", false) ?
+                    tryJsProp(blk, "depthTierMtp", 1.0) :
+                    -1.0
+              )) return;
+
+              let blkTg;
+              if(blk.shouldDropPay) {
+                blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
+                if(blkTg == null) return;
+              };
+              if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new RecipeItemGroup());
+
+              let rawRc = !blk.shouldDropPay ?
+                MOD_tmi._rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2), true) :
+                MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.size, 2), true);
+              MDL_event._c_onLoad(() => {
+                MOD_tmi.baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
+              });
+              MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size, false);
+              !blk.shouldDropPay ?
+                MOD_tmi.addProd(rawRc, oblk.itemDrop, 1) :
+                MOD_tmi.addProd(rawRc, blkTg, 1);
+
+              rawRc.complete();
+              seq.add(rawRc);
+            },
+          );
+        };
 
         return seq;
       },
@@ -90,9 +164,104 @@
           blk,
           MDL_content._craftTime(blk),
         );
-        // Delayed, since consumers added by `setConsumer` are not actually added yet
         MDL_event._c_onLoad(() => {
           MOD_tmi.baseParse(blk, rawRc);
+        });
+
+        rawRc.complete();
+        return new Seq([rawRc]);
+      },
+
+
+    });
+
+
+
+
+    /**
+     * Fixes parser for {@link BLK_liquidPump}.
+     */
+    const _p_pump = MOD_tmi.regisParser({
+
+
+      liqBlksMap: new ObjectMap(),
+
+
+      exclude(parser) {
+        return parser instanceof MOD_tmi.CLASSES.PumpParser;
+      },
+
+
+      isTarget(blk) {
+        return blk.ex_isSubInsOf != null && blk.ex_isSubInsOf("BLK_liquidPump");
+      },
+
+
+      init() {
+        Vars.content.blocks().each(oblk => {
+          if(oblk instanceof Floor && oblk.liquidDrop != null) {
+            if(!this.liqBlksMap.containsKey(oblk.liquidDrop)) this.liqBlksMap.put(oblk.liquidDrop, []);
+            this.liqBlksMap.get(oblk.liquidDrop).push(oblk);
+          };
+        });
+      },
+
+
+      parse(blk) {
+        const seq = new Seq();
+        if(blk.ex_isSubInsOf("BLK_depthPump")) return seq;
+
+        this.liqBlksMap.each((liq, blks) => {
+          let rawRc = MOD_tmi._rawRc("collecting", blk, blk.consumeTime, true);
+          let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
+
+          MDL_event._c_onLoad(() => {
+            MOD_tmi.baseParse(blk, rawRc);
+          });
+          blks.forEachFast(oblk => {
+            MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.liquidMultiplier, 1, true);
+          });
+          MOD_tmi.addProd(rawRc, liq, blk.pumpAmount * Math.pow(blk.size, 2), true);
+
+          rawRc.complete();
+          seq.add(rawRc);
+        });
+
+        return seq;
+      },
+
+
+    });
+
+
+
+
+    /**
+     * Fixes parser for {@link BLK_ventGenerator}.
+     */
+    const _p_ventGenerator = MOD_tmi.regisParser({
+
+
+      exclude(parser) {
+        return parser instanceof MOD_tmi.CLASSES.ThermalGeneratorParser;
+      },
+
+
+      isTarget(blk) {
+        return blk.ex_isSubInsOf != null && blk.ex_isSubInsOf("BLK_ventGenerator");
+      },
+
+
+      parse(blk) {
+        let rawRc = MOD_tmi._rawRc("generator", blk, 0.0, true);
+        let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
+
+        MDL_event._c_onLoad(() => {
+          MOD_tmi.baseParse(blk, rawRc);
+        });
+        MOD_tmi.addProdPow(rawRc, blk.powerProduction);
+        MDL_attr._blkAttrArr(blk.attribute, oblk => MDL_cond._isVentBlock(oblk) && oblk.delegee.ventSize === blk.size).forEachRow(3, (oblk, attrVal, attr) => {
+          MOD_tmi.addAttr(rawRc, rcGrp, oblk, attrVal, 1, true);
         });
 
         rawRc.complete();

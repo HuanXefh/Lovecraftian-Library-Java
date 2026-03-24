@@ -87,23 +87,33 @@
       blk,
       blk.placeBlk.localizedName + "(" + MDL_bundle._term("lovec", "construction-core") + ")",
     );
+
+    MOD_tmi._r_constructionCore(blk);
   };
 
 
   function comp_setStats(blk) {
     blk.stats.add(fetchStat("lovec", "blk0misc-blktg"), newStatValue(tb => {
       tb.row();
-      tb.table(Tex.whiteui, tb1 => {
-        tb1.left().setColor(Pal.darkestGray);
-        MDL_table.__margin(tb1);
-        MDL_table.__ct(tb1, blk.placeBlk, 48.0);
-        tb1.table(Styles.none, tb2 => {}).width(12.0);
-        MDL_table.__barV(tb1, Color.darkGray);
-        tb1.table(Styles.none, tb2 => {}).width(12.0);
-        tb1.table(Styles.none, tb2 => {
-          tb2.add(MDL_text._statText(MDL_bundle._term("lovec", "construction-time"), (blk.constructionTimeReq / 3600.0).roundFixed(2), StatUnit.minutes.localized())).left().row();
-        }).growX();
+      tb.table(Styles.none, tb1 => {
+        MDL_table.__break(tb1, 1);
+        tb1.table(Tex.whiteui, tb2 => {
+          tb2.left().setColor(Pal.darkestGray);
+          MDL_table.__margin(tb2);
+          MDL_table.__ct(tb2, blk.placeBlk, 48.0);
+          tb2.table(Styles.none, tb3 => {}).width(12.0);
+          MDL_table.__barV(tb2, Color.darkGray);
+          tb2.table(Styles.none, tb3 => {}).width(12.0);
+          tb2.table(Styles.none, tb3 => {
+            tb3.add(MDL_text._statText(MDL_bundle._term("lovec", "construction-time"), (blk.constructionTimeReq / 3600.0).roundFixed(2), StatUnit.minutes.localized())).left().row();
+          }).growX();
+        }).growX().row();
+        MDL_table.__break(tb1, 1);
       }).growX();
+    }));
+    blk.stats.add(fetchStat("lovec", "blk0misc-struct"), newStatValue(tb => {
+      tb.row();
+      blk.ex_buildConstructionPlan(tb);
     }));
   };
 
@@ -287,6 +297,65 @@
   };
 
 
+  function comp_ex_buildConstructionPlan(blk, tb) {
+    let i, iCap = blk.constructionParsedData[0].iCap(), j = 0, jCap = blk.constructionParsedData.iCap(), k, kCap, l, blkCur;
+    let matArr = [].setVal(() => [], jCap);
+    while(j < jCap) {
+      i = 0;
+      while(i < iCap) {
+        blkCur = blk.constructionParsedData[j][i].blk;
+        if(blkCur !== Blocks.air && blkCur.size === 1) {
+          matArr[j][i] = (function(blkCur) {
+            return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlk(blkCur)), Styles.clearNonei, 32.0, () => VAR.dial_ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
+          })(blkCur);
+        } else if(blkCur === Blocks.air) {
+          k = j;
+          while(k < jCap) {
+            blkCur = blk.constructionParsedData[k][i].blk;
+            if(blkCur !== Blocks.air && blkCur.size !== 1 && blkCur.size === k - j + 1) {
+              kCap = k - j;
+              k = kCap;
+              while(k >= 0) {
+                l = kCap;
+                while(l >= 0) {
+                  matArr[j + k][j + l] = (function(blkCur, k, l) {
+                    return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlkTileCut(blkCur, l, k)), Styles.clearNonei, 32.0, () => VAR.dial_ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
+                  })(blkCur, k, l);
+                  l--;
+                };
+                k--;
+              };
+              break;
+            };
+            k++
+          };
+        } else if(matArr[j][i] == null) {
+          matArr[j][i] = (function() {
+            return tb1 => tb1.button(VARGEN.icons.dot, Styles.clearNonei, 32.0, () => {});
+          })();
+        };
+        i++;
+      };
+      j++;
+    };
+
+    tb.table(Styles.none, tb1 => {
+      MDL_table.__break(tb1, 1);
+      j = 0;
+      while(j < jCap) {
+        i = 0;
+        while(i < iCap) {
+          matArr[j][i](tb1);
+          i++;
+        };
+        tb1.row();
+        j++;
+      };
+      MDL_table.__break(tb1, 1);
+    }).left().padLeft(28.0);
+  };
+
+
   function comp_ex_drawPlan(blk, team, plan) {
     let i = 0, iCap = plan.iCap();
     while(i < iCap) {
@@ -317,14 +386,14 @@
       if(!Vars.net.client() && b.constructionTimeCur >= b.block.delegee.constructionTimeReq) {
         b.configure("SPEC: complete");
       };
-      b.constructionTimeCur += Time.delta;
+      b.constructionTimeCur += !global.lovecUtil.fun._isSandBox() ? Time.delta : b.block.delegee.constructionTimeReq / 60.0;
       if(!Vars.headless) {
         Vars.control.sound.loop(Sounds.loopBuild, b, 1.3);
       };
 
       if(!Vars.net.client() && TIMER.secFive) {
         // Destruction during construction?
-        if(!b.block.ex_checkPlanComplete(b.team, b.constructionPlan)) b.configure("stop");
+        if(!b.block.ex_checkPlanComplete(b.team, b.constructionPlan)) b.configure("SPEC: stop");
       };
     };
   };
@@ -681,6 +750,21 @@
       .setProp({
         noSuper: true,
         argLen: 4,
+      }),
+
+
+      /**
+       * @memberof BLK_constructionCore
+       * @instance
+       * @param {Table} tb
+       * @return {void}
+       */
+      ex_buildConstructionPlan: function(tb) {
+        comp_ex_buildConstructionPlan(this, tb);
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 1,
       }),
 
 

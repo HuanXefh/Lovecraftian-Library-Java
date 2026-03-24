@@ -192,8 +192,8 @@
   const parseLogicOp = function(str) {
     const matArr = [];
 
-    str.split(/\s*((or)|(OR)|(\|)|(\|\|))\s*/).forEachFast(str1 => {
-      matArr.push(str1.split(/\s*((and)|(AND)|&|(&&))\s*/));
+    str.split(/\s*OR\s*/).forEachFast(str1 => {
+      matArr.push(str1.split(/\s*AND\s*/));
     });
 
     return matArr;
