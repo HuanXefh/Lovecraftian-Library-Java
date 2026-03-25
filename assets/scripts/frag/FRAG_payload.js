@@ -65,9 +65,11 @@
 
     let obj = DB_block.db["class"]["group"]["payloadSite"];
     b.proximity.each(
-      ob => obj["dynamic"].hasIns(ob.block) ?
-        true :
-        obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) === ob.rotation,
+      ob => MDL_pos._sideFrac(ob, b, true) >= 0.5 && (
+        obj["dynamic"].hasIns(ob.block) ?
+          true :
+          obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) === ob.rotation
+      ),
       ob => arr.push(ob),
     );
 
@@ -87,13 +89,15 @@
 
     let obj = DB_block.db["class"]["group"]["payloadSite"];
     b.proximity.each(
-      ob => obj["dynamic"].hasIns(ob.block) ?
-        true :
-        obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) !== ob.rotation && (
-          !b.block.rotate ?
-            true :
-            b.relativeTo(ob) === b.rotation
-        ),
+      ob => MDL_pos._sideFrac(b, ob, true) >= 0.5 && (
+        obj["dynamic"].hasIns(ob.block) ?
+          true :
+          obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) !== ob.rotation && (
+            !b.block.rotate ?
+              true :
+              b.relativeTo(ob) === b.rotation
+          )
+      ),
       ob => arr.push(ob),
     );
 

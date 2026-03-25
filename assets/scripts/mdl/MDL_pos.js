@@ -118,14 +118,13 @@
    * Gets fraction of sides in contact.
    * @param {Building} b_f
    * @param {Building} b_t
+   * @param {boolean|unset} [forceOneSide]
    * @return {number}
    */
-  const _sideFrac = function thisFun(b_f, b_t) {
-    return (
-      !b_f.block.rotate ?
-        _tsEdge(b_f.tile, b_f.block.size, false, thisFun.tmpTs) :
-        _tsRot(b_f.tile, b_f.rotation, b_f.block.size, thisFun.tmpTs)
-    ).count(b_t, t => t.build) / thisFun.tmpTs.length;
+  const _sideFrac = function thisFun(b_f, b_t, forceOneSide) {
+    return b_f.block.rotate ?
+      (_tsRot(b_f.tile, b_f.rotation, b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build) / thisFun.tmpTs.length) :
+      (_tsEdge(b_f.tile, b_f.block.size, false, thisFun.tmpTs).count(b_t, t => t.build) / thisFun.tmpTs.length * (forceOneSide ? 4.0 : 1.0));
   }
   .setProp({
     tmpTs: [],

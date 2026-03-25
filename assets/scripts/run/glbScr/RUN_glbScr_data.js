@@ -37,23 +37,6 @@
 
 
   /**
-   * Used for read & write.
-   * @global
-   * @param {Writes|Reads} wr0rd
-   * @param {string|unset} [nmMod]
-   * @return {number}
-   */
-  processRevision = function(wr0rd, nmMod) {
-    if(wr0rd instanceof Reads) return wr0rd.s();
-
-    let revi = nmMod == null ? LOVEC_REVISION : MOD_REVISION[nmMod];
-    wr0rd.s(revi);
-
-    return revi;
-  };
-
-
-  /**
    * For quick definition of `ex_processData`.
    * @global
    * @param {Writes|Reads} wr0rd

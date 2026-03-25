@@ -72,7 +72,7 @@
   function comp_getTileTarget(b, itm, b_f, isFlip) {
     let rot = b_f.relativeTo(b);
     let b_t = b.nearby(rot);
-    let tg = b;
+    let tg = null;
 
     if((b.block.delegee.filterScrTup[0](b, b_f, itm, b.rsTgs) !== b.isInv) === b.enabled) {
       if(b.isSame(b_f) && b.isSame(b_t)) return tg;
@@ -257,7 +257,7 @@
 
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
-        
+
         MDL_io._rd_cts(rd, this.rsTgs);
         this.sortItem = this.rsTgs.first();
         this.isInv = rd.bool();
