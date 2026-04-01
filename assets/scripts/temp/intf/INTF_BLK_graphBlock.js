@@ -12,6 +12,11 @@
 
 
   function comp_updateTile(b) {
+    b.ex_updateGraph();
+  };
+
+
+  function comp_ex_updateGraph(b) {
     VARGEN.queueGraphUpdate(b.graphCur);
     if(TIMER.secFive) b.ex_updateGraphState();
   };
@@ -25,6 +30,13 @@
         b.graphCur = ob.delegee.graphCur;
       },
     );
+    if(b.graphCur.graphData != null && !b.graphCur.graphData.justShrunk) {
+      b.graphCur.graphData.justShrunk = true;
+      Core.app.post(() => {
+        b.graphCur.shrink((ob, vert) => ob.added && !ob.dead && !ob.isPayload());
+        b.graphCur.graphData.justShrunk = false;
+      });
+    };
   };
 
 
@@ -43,7 +55,7 @@
     let vert_b = b.graphCur.getVertByData(b), vert_ob;
     b.graphProximity.each(ob => {
       vert_ob = b.graphCur.getVertByData(ob);
-      if(!b.block.rotate && !ob.block.rotate) {
+      if(b.block.delegee.isNoRotGraph || (!b.block.rotate && !ob.block.rotate)) {
         if(vert_ob === -1) {
           b.graphCur.addVert(ob);
           vert_ob = b.graphCur.getSize() - 1;
@@ -125,6 +137,12 @@
          * @instance
          */
         graphType: "test",
+        /**
+         * <PARAM>: If true, building rotation will be ignored when updating graph edges.
+         * @memberof INTF_BLK_graphBlock
+         * @instance
+         */
+        isNoRotGraph: false,
 
 
       }),
@@ -181,7 +199,6 @@
       created: function() {
         this.graphCur = new MathGraph(1, this, true);
         this.graphCur.graphTag = this.block.delegee.graphType;
-        this.graphCur.graphData = {};
       },
 
 
@@ -193,6 +210,19 @@
       updateTile: function() {
         comp_updateTile(this);
       },
+
+
+      /**
+       * @memberof INTF_B_graphBlock
+       * @instance
+       * @return {void}
+       */
+      ex_updateGraph: function() {
+        comp_ex_updateGraph(this);
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       /**
@@ -244,6 +274,7 @@
       }
       .setProp({
         noSuper: true,
+        argLen: 1,
       }),
 
 

@@ -11,11 +11,21 @@
   const PARENT = require("lovec/temp/blk/BLK_basePowerBlock");
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  const powProdScl = 1.1;
+
+
   /* <---------- component ----------> */
 
 
   function comp_init(blk) {
     blk.priority = VAR.prio_powTrans;
+
+    if(isFinite(blk.maxPowProdAllowed)) {
+      blk.maxPowProdAllowed *= powProdScl;
+    };
   };
 
 
@@ -25,6 +35,22 @@
       let powLoss = MDL_content._powConsAmt(blk);
       if(powLoss > 0.0) blk.stats.add(fetchStat("lovec", "blk0pow-powloss"), powLoss * 60.0, StatUnit.powerSecond);
     };
+
+    if(isFinite(blk.maxPowProdAllowed)) blk.stats.add(fetchStat("lovec", "blk0pow-safepowlvl"), (blk.maxPowProdAllowed / powProdScl * 60.0).roundFixed(2), StatUnit.powerSecond);
+  };
+
+
+  function comp_setBars(blk) {
+    if(!isFinite(blk.maxPowProdAllowed)) return;
+
+    // Should be displayed last
+    Core.app.post(() => {
+      blk.addBar("lovec-power-transmitter-overdrive", b => new Bar(
+        prov(() => Core.bundle.format("bar.lovec-bar-transmitter-overdrive-amt", b.ex_getTransmitterOverdriveFrac().perc())),
+        prov(() => Tmp.c1.set(Pal.heal).lerp(Pal.remove, b.ex_getTransmitterOverdriveFrac())),
+        () => 1.0,
+      ));
+    });
   };
 
 
@@ -47,6 +73,18 @@
   .setProp({
     tmpTup: [],
   });
+
+
+  function comp_updateTile(b) {
+    if(PARAM.updateDeepSuppressed || !isFinite(b.block.delegee.maxPowProdAllowed)) return;
+
+    let powProd = b.power.graph.getLastPowerProduced();
+    if(TIMER.secHalf) {
+      b.transmitterOverdriveFrac = Mathf.approach(b.transmitterOverdriveFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.block.delegee.maxPowProdAllowed), 0.2);
+    };
+    if(b.transmitterOverdriveFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
+    b.damagePierce(b.maxHealth * VAR.blk_shortCircuitDmgFrac / 30.0);
+  };
 
 
 /*
@@ -77,6 +115,12 @@
        * @instance
        */
       ignoreShortCircuitPlacement: false,
+      /**
+       * <PARAM>: If power produced in the power graph is larger than this, the transmitter will get damaged.
+       * @memberof BLK_basePowerTransmitter
+       * @instance
+       */
+      maxPowProdAllowed: Infinity,
 
 
     })
@@ -90,6 +134,11 @@
 
       setStats: function() {
         comp_setStats(this);
+      },
+
+
+      setBars: function() {
+        comp_setBars(this);
       },
 
 
@@ -110,8 +159,43 @@
      */
     newClass().extendClass(PARENT[1], "B_basePowerTransmitter").initClass()
     .setParent(null)
-    .setParam({})
-    .setMethod({}),
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_basePowerTransmitter
+       * @instance
+       */
+      transmitterOverdriveFrac: 0.0,
+
+
+    })
+    .setMethod({
+
+
+      updateTile: function() {
+        comp_updateTile(this);
+      },
+
+
+      /**
+       * @memberof B_basePowerTransmitter
+       * @instance
+       * @return {number}
+       */
+      ex_getTransmitterOverdriveFrac: function() {
+        return this.transmitterOverdriveFrac;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+    }),
 
 
   ];

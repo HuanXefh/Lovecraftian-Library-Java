@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
+    if(blk.overwriteVanillaProp && blk.range === 1) {
       blk.drawArrow = true;
       blk.laserWidth = 0.0;
       blk.sparks = 10;
@@ -63,6 +63,48 @@
   });
 
 
+  function comp_onProximityUpdate(b) {
+    b.mineRsTgs.clear();
+    Core.app.post(() => {
+      b.facing.forEachFast(ot => {
+        let itm = ot == null ? null : ot.wallDrop();
+        if(itm != null) {
+          b.mineRsTgs.pushUnique(itm);
+        };
+      });
+    });
+  };
+
+
+  function comp_updateTile(b) {
+    if(b.lasers[0] == null) Reflect.invoke(BeamDrill.BeamDrillBuild, b, "updateLasers", Array.air);
+    b.warmup = Mathf.approachDelta(b.warmup, Mathf.num(b.efficiency > 0.0), 0.01666667);
+    Reflect.invoke(BeamDrill.BeamDrillBuild, b, "updateFacing", Array.air);
+
+    let mtp = Mathf.lerp(1.0, b.block.optionalBoostIntensity, b.optionalEfficiency);
+    let drillTime = b.block.getDrillTime(b.lastItem);
+    b.boostWarmup = Mathf.lerpDelta(b.boostWarmup, b.optionalEfficiency, 0.1);
+    b.lastDrillSpeed = (b.facingAmount * mtp * b.timeScale) / drillTime * b.efficiency;
+    b.time += b.edelta() * mtp;
+
+    if(b.time >= drillTime) {
+      let itm;
+      b.facing.forEachFast(ot => {
+        itm = ot == null ? null : ot.wallDrop();
+        if(itm != null && b.items.get(itm) < b.block.itemCapacity) {
+          b.offload(itm);
+        };
+      });
+      b.time %= drillTime;
+      b.ex_onCraft();
+    };
+
+    if(b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+      b.dump();
+    };
+  };
+
+
 /*
   ========================================
   Section: Application
@@ -81,7 +123,21 @@
     newClass().extendClass(PARENT[0], "BLK_wallDrill").initClass()
     .setParent(BeamDrill)
     .setTags("blk-min", "blk-drl")
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>: Wall drills should not output payloads to the front side.
+       * @memberof BLK_wallDrill
+       * @instance
+       */
+      payOutputSideFracMode: "non-front",
+
+
+    })
     .setParamAlias([
       "mineR", "range", 1,
     ])
@@ -110,8 +166,56 @@
      */
     newClass().extendClass(PARENT[1], "B_wallDrill").initClass()
     .setParent(BeamDrill.BeamDrillBuild)
-    .setParam({})
-    .setMethod({}),
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_wallDrill
+       * @instance
+       */
+      mineRsTgs: prov(() => []),
+
+
+    })
+    .setMethod({
+
+
+      onProximityUpdate: function() {
+        comp_onProximityUpdate(this);
+      },
+
+
+      updateTile: function() {
+        comp_updateTile(this);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      shouldConsume: function() {
+        return this.enabled && this.mineRsTgs.length > 0 && this.mineRsTgs.every(itm => this.items.get(itm) < this.block.itemCapacity);
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
+      }),
+
+
+      canDump: function(b_t, itm) {
+        return !this.block.consumesItem(itm) || (this.mineRsTgs.includes(itm) && this.items.has(itm, 2));
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
+      }),
+
+
+    }),
 
 
   ];

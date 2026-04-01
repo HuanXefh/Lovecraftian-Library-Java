@@ -16,12 +16,36 @@
 
 
   function comp_updateTile(b) {
-    if(b.invertTime > 0.99 && !b.justCrafted) {
-      b.ex_onCraft();
-      b.justCrafted = true;
-    };
-    if(b.invertTime < 0.1) {
-      b.justCrafted = false;
+    if(b.dominantItem != null) {
+      if(b.invertTime > 0.0) b.invertTime -= b.delta() / b.block.invertedTime;
+
+      if(b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+        b.dump(b.items.has(b.dominantItem) ? b.dominantItem : null);
+      };
+
+      let drillTime = b.block.getDrillTime(b.dominantItem);
+      b.smoothProgress = Mathf.lerpDelta(b.smoothProgress, b.progress / (drillTime - 20.0), 0.1);
+      if(b.dominantItems > 0 && b.efficiency > 0.0 && b.items.get(b.dominantItem) <= b.block.itemCapacity - b.dominantItems) {
+        b.warmup = Mathf.approachDelta(b.warmup, b.progress / drillTime, b.block.warmupSpeed);
+        let spd = Mathf.lerp(1.0, b.block.liquidBoostIntensity, b.optionalEfficiency) * b.efficiency;
+        b.timeDrilled += b.block.speedCurve.apply(b.progress / drillTime) * spd;
+        b.lastDrillSpeed = 1.0 / drillTime * spd * b.dominantItems;
+        b.progress += b.delta() * spd;
+        if(b.progress >= drillTime) {
+          FRAG_item.offload(b, b, b.dominantItem, b.dominantItems);
+          b.invertTime = 1.0;
+          b.progress %= drillTime;
+
+          Effect.shake(b.block.shake, b.block.shake, b);
+          b.block.drillSound.at(b.x, b.y, 1.0 + Mathf.range(b.block.drillSoundPitchRand), b.block.drillSoundVolume);
+          b.block.drillEffect.at(b.x + Mathf.range(b.block.drillEffectRnd), b.y + Mathf.range(b.block.drillEffectRnd), b.dominantItem.color);
+
+          b.ex_onCraft();
+        };
+      } else {
+        b.warmup = Mathf.approachDelta(b.warmup, 0.0, 0.01);
+        b.lastDrillSpeed = 0.0;
+      };
     };
   };
 
@@ -113,27 +137,25 @@
      */
     newClass().extendClass(PARENT[1], "B_impactDrill").implement(INTF[1]).initClass()
     .setParent(BurstDrill.BurstDrillBuild)
-    .setParam({
-
-
-      /* <------------------------------ internal ------------------------------ */
-
-
-      /**
-       * <INTERNAL>
-       * @memberof B_impactDrill
-       * @instance
-       */
-      justCrafted: false,
-
-
-    })
+    .setParam({})
     .setMethod({
 
 
       updateTile: function() {
         comp_updateTile(this);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      shouldConsume: function() {
+        return this.enabled && this.dominantItem != null && this.items.get(this.dominantItem) <= this.block.itemCapacity - this.dominantItems;
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
+      }),
 
 
       drawSelect: function() {

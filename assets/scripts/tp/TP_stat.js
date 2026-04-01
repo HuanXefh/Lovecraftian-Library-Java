@@ -93,6 +93,7 @@
   newStat("lovec", "blk0pow-powmtp", StatCat.power);
   newStat("lovec", "blk0pow-powloss", StatCat.power);
   newStat("lovec", "blk0pow-powuseper100hu", StatCat.power);
+  newStat("lovec", "blk0pow-safepowlvl", StatCat.power);
 
 
   newStat("lovec", "blk0misc-maxdur");

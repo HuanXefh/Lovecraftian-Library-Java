@@ -9,6 +9,7 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_basePowerTransmitter");
+  const INTF = require("lovec/temp/intf/INTF_BLK_graphBlock");
 
 
   /* <---------- component ----------> */
@@ -56,6 +57,11 @@
   );
 
 
+  function comp_updateTile(b) {
+    b.ex_updateGraph();
+  };
+
+
   function comp_unitOn(b, unit) {
     if(b.power == null || b.power.status < 0.1 || !Mathf.chance(0.03) || !b.block.delegee.canShortCircuit || !MDL_cond._isWet(unit)) return;
 
@@ -80,11 +86,34 @@
      * <br> <DEDICATION>: Inspired by Asthosus.
      * @class BLK_cable
      * @extends BLK_basePowerTransmitter
+     * @extends INTF_BLK_graphBlock
      */
-    newClass().extendClass(PARENT[0], "BLK_cable").initClass()
+    newClass().extendClass(PARENT[0], "BLK_cable").implement(INTF[0]).initClass()
     .setParent(ArmoredConveyor)
     .setTags("blk-pow", "blk-pow0trans", "blk-cable")
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @override
+       * @memberof BLK_cable
+       * @instance
+       */
+      graphType: "cable",
+      /**
+       * <INTERNAL>
+       * @override
+       * @memberof BLK_cable
+       * @instance
+       */
+      isNoRotGraph: true,
+
+
+    })
     .setMethod({
 
 
@@ -140,11 +169,21 @@
     /**
      * @class B_cable
      * @extends B_basePowerTransmitter
+     * @extends INTF_B_graphBlock
      */
-    newClass().extendClass(PARENT[1], "B_cable").initClass()
+    newClass().extendClass(PARENT[1], "B_cable").implement(INTF[1]).initClass()
     .setParent(ArmoredConveyor.ArmoredConveyorBuild)
     .setParam({})
     .setMethod({
+
+
+      updateTile: function() {
+        comp_updateTile(this);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
 
 
       unitOn: function(unit) {
@@ -157,6 +196,37 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof B_cable
+       * @instance
+       * @return {number}
+       */
+      ex_getTransmitterOverdriveFrac: function() {
+        return this.graphCur.graphData.overdriveFrac;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
+       * @memberof B_cable
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_isSameGraphType: function(ob) {
+        return this.block === ob.block;
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
+        argLen: 1,
       }),
 
 

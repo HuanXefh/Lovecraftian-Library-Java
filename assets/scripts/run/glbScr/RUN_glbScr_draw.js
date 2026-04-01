@@ -20,19 +20,6 @@
   /* <---------- base ----------> */
 
 
-  /** @global */
-  TMPS_Z = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  /** @global */
-  TMPS_XSCL = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0];
-  /** @global */
-  TMPS_YSCL = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0];
-  /** @global */
-  TMPS_REG = [
-    new TextureRegion(), new TextureRegion(), new TextureRegion(), new TextureRegion(), new TextureRegion(),
-    new TextureRegion(), new TextureRegion(), new TextureRegion(), new TextureRegion(), new TextureRegion(),
-  ];
-
-
   /**
    * Used to control z-layer.
    * Should always be called twice!
@@ -44,18 +31,19 @@
   processZ = function(z, ind) {
     if(ind == null) ind = 0;
 
-    if(!processZ.isTail) {
-      TMPS_Z[ind] = Draw.z();
+    if(!processZ.isTailArr[ind]) {
+      processZ.zArr[ind] = Draw.z();
       if(z != null) {
         Draw.z(z);
       };
     } else {
-      Draw.z(TMPS_Z[ind]);
+      Draw.z(processZ.zArr[ind]);
     };
 
-    processZ.isTail = !processZ.isTail;
+    processZ.isTailArr[ind] = !processZ.isTailArr[ind];
   };
-  processZ.isTail = false;
+  processZ.zArr = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+  processZ.isTailArr = [false, false, false, false, false, false, false, false, false, false];
 
 
   /**
@@ -74,15 +62,17 @@
     if(indY == null) indY = indX;
 
     if(!processScl.isTail) {
-      TMPS_XSCL[indX] = Draw.xscl;
-      TMPS_YSCL[indY] = Draw.yscl;
+      processScl.xsclArr[indX] = Draw.xscl;
+      processScl.ysclArr[indY] = Draw.yscl;
       Draw.xscl = tryVal(xscl, 1.0);
       Draw.yscl = tryVal(yscl, tryVal(xscl, 1.0));
     } else {
-      Draw.xscl = TMPS_XSCL[indX];
-      Draw.yscl = TMPS_YSCL[indY];
+      Draw.xscl = processScl.xsclArr[indX];
+      Draw.yscl = processScl.ysclArr[indY];
     };
 
-    processScl.isTail = !processScl.isTail;
+    processScl.isTailArr[indY] = !processScl.isTailArr[indY];
   };
-  processScl.isTail = false;
+  processScl.xsclArr = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0];
+  processScl.ysclArr = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0];
+  processScl.isTailArr = [false, false, false, false, false, false, false, false, false, false];

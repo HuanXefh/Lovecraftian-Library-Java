@@ -83,6 +83,23 @@
 
 
   /**
+   * Calls a method repetitively.
+   * No returned value.
+   * @param {number} repeat
+   * @param {number|unset} [intv]
+   * @param {Arguments|unset} [args]
+   * @param {any} [thisVal]
+   * @return {void}
+   */
+  Function.prototype.repeat = function(repeat, intv, args, thisVal) {
+    let fun = args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args);
+    intv == null ?
+      Timer.schedule(fun, 0.0, 0.0, repeat) :
+      Timer.schedule(fun, 0.0, intv / 60.0, repeat);
+  };
+
+
+  /**
    * Calls a method after everything else has been called.
    * No returned value.
    * @param {Arguments|unset} [args]

@@ -66,20 +66,20 @@
               if(!blk.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
 
               let blkTg;
-              if(blk.shouldDropPay) {
+              if(blk.delegee.shouldDropPay) {
                 blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
                 if(blkTg == null) return;
               };
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new RecipeItemGroup());
 
-              let rawRc = !blk.shouldDropPay ?
+              let rawRc = !blk.delegee.shouldDropPay ?
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime / blk.size, true) :
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / blk.size, true);
               MDL_event._c_onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, blk.optionalBoostIntensity);
               });
               MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size, true);
-              !blk.shouldDropPay ?
+              !blk.delegee.shouldDropPay ?
                 MOD_tmi.addProd(rawRc, oblk.itemDrop, 1) :
                 MOD_tmi.addProd(rawRc, blkTg, 1);
 
@@ -100,20 +100,20 @@
               )) return;
 
               let blkTg;
-              if(blk.shouldDropPay) {
+              if(blk.delegee.shouldDropPay) {
                 blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
                 if(blkTg == null) return;
               };
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new RecipeItemGroup());
 
-              let rawRc = !blk.shouldDropPay ?
+              let rawRc = !blk.delegee.shouldDropPay ?
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2), true) :
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.size, 2), true);
               MDL_event._c_onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
               });
               MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size, false);
-              !blk.shouldDropPay ?
+              !blk.delegee.shouldDropPay ?
                 MOD_tmi.addProd(rawRc, oblk.itemDrop, 1) :
                 MOD_tmi.addProd(rawRc, blkTg, 1);
 

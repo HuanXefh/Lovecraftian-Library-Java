@@ -68,7 +68,7 @@
        * @memberof BLK_fuelLight
        * @instance
        */
-      shouldDrawFurnLight: false,
+      shouldDrawHeatLight: false,
 
 
       /* <------------------------------ internal ------------------------------ */

@@ -63,7 +63,7 @@
       ),
       unit => {
         // Unit range display
-        if(PARAM.drawUnitRange) {
+        if(PARAM.drawUnitRange && !unit.hasEffect(VARGEN.staHiddenWell)) {
           let z = Draw.z();
           Draw.z(VAR.lay_unitRange);
 
@@ -174,7 +174,7 @@
     };
 
     // Draw mouse building if not player
-    if(b != null && !b.block.privileged && !b.team === Team.derelict && (!PARAM.drawPlayerStat || b !== b_pl)) {
+    if(b != null && !b.block.privileged && b.team !== Team.derelict && (!PARAM.drawPlayerStat || b !== b_pl)) {
       thisFun.drawBaseBuildStats(b);
 
       if(b.team !== Vars.player.team()) return;

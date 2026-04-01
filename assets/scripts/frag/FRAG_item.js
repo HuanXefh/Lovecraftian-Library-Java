@@ -21,7 +21,7 @@
 
 
   /**
-   * More generic `offLoad`.
+   * More generic `offload`.
    * @param {Building} b
    * @param {Building} b_f
    * @param {Item} itm

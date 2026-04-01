@@ -333,7 +333,7 @@
         obj => {this.setBaseParam(obj, paramObj); objF(obj)},
         new CLS_recipeBuilder()
         .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.parseRawBo(rawBo, amtI, amtI))
+        .__bo(this.parseRawBo(rawBo, amtI, pI))
         .build(),
       );
     });
@@ -452,6 +452,41 @@
     });
   });
   exports._g_rockCrusherAggregate = _g_rockCrusherAggregate;
+
+
+  /**
+   * Recipe generator: rock crusher.
+   * Converts raw ore blocks into corresponding ore items.
+   * See {@link BLK_rawOreBlock}.
+   */
+  const _g_rockCrusherRawOreBlock = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      amtI = readParam(paramObj, "amtI", 1),
+      amtOScl = readParam(paramObj, "amtOScl", 1.0),
+      pO = readParam(paramObj, "pO", 1.0),
+      minHardness = readParam(paramObj, "minHardness", 0),
+      maxHardness = readParam(paramObj, "maxHardness", Infinity),
+      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
+
+    VARGEN.rawOreBlks.forEachFast(blk => {
+      let itm = MDL_content._ct(Object.findKeyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs");
+      if(itm == null) return;
+      let hardness = itm.hardness;
+      if(!boolF(itm) || hardness < minHardness || hardness > maxHardness) return;
+
+      this.addRc(
+        rc, blk.name, "rock-crushing", "raw-ore-block",
+        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
+        new CLS_recipeBuilder()
+        .__payi(this.processPayi(blk, amtI))
+        .__bo(this.processBo(itm, blk.requirements[0].amount * amtOScl, pO))
+        .build(),
+      );
+    });
+  });
+  exports._g_rockCrusherRawOreBlock = _g_rockCrusherRawOreBlock;
 
 
   /**

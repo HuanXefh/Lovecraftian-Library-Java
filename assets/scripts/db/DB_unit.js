@@ -173,22 +173,33 @@ const db = {
      */
     typeTagMap: [
 
-      // Highest priority
+      // Large and powerful units
       "experimental", "utp-exp",
-
+      // Non-robot units
       "biotic", "utp-bio",
+      // Small ground units
       "infantry", "utp-inf",
+      // Large mech units
       "titan", "utp-titan",
+      // Large leg units
       "behemoth", "utp-beh",
+      // Wheeled units
       "vehicle", "utp-veh",
-      "heavy-vehicle", "utp-hev0veh",
+      // Regular air units
       "aircraft", "utp-air",
+      // Balloon air units
       "airship", "utp-aship",
+      // Small rotor air units
       "drone", "utp-drone",
+      // Satellite units
+      "satellite", "utp-sat",
+      // Large space air units
       "spacecraft", "utp-spa",
+      // Small naval units
       "boat", "utp-boat",
+      // Regular naval units
       "ship", "utp-ship",
-      "heavy-ship", "utp-hev0ship",
+      // Submarine units
       "submarine", "utp-sub",
 
     ],

@@ -92,7 +92,7 @@
        * @memberof BLK_heatSource
        * @instance
        */
-      heatTransRate: 0.008,
+      heatWarmupRate: 0.008,
 
 
       /* <------------------------------ internal ------------------------------ */
@@ -198,7 +198,7 @@
 
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
-        
+
         this.tempSet = rd.f();
       },
 
@@ -211,6 +211,34 @@
        */
       ex_calcTempTg: function() {
         return this.tempSet;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
+       * @memberof B_heatSource
+       * @instance
+       * @return {number}
+       */
+      ex_getHeatProd: function() {
+        return this.tempCur;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof B_heatSource
+       * @instance
+       * @return {number}
+       */
+      ex_getHeatFrac: function() {
+        return this.tempSet < 0.0001 ? 0.0 : Mathf.clamp(this.tempCur / this.tempSet);
       }
       .setProp({
         noSuper: true,

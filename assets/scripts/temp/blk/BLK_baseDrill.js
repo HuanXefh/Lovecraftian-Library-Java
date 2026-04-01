@@ -28,10 +28,23 @@
 
     blk.itmWhitelist = blk.itmWhitelist.map(nmItm => MDL_content._ct(nmItm, "rs")).compact();
 
+    blk.hasItmCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
+    if(blk.drillItmDur < 0.0) {
+      blk.drillItmDur = blk.drillTime;
+    };
+
     MDL_event._c_onLoad(() => {
       Core.app.post(() => {
         if(blk.consumers.some(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter, ConsumeItemDynamic))) {
           throw new Error("Do not add item consumers to drills, they are not supported!");
+        };
+
+        if(blk.shouldDropPay) {
+          Vars.content.items().each(itm => {
+            let oblk = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+            if(oblk == null || !blk.ex_canMine(oblk, itm, 1.0)) return;
+            MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(itm)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
+          });
         };
       });
     });
@@ -97,6 +110,17 @@
   };
 
 
+  function comp_updateTile(b) {
+    if(!b.block.delegee.hasItmCons) return;
+
+    b.drillItmProg += b.edelta();
+    if(b.drillItmProg >= b.block.delegee.drillItmDur) {
+      b.consume();
+      b.drillItmProg %= b.block.delegee.drillItmDur;
+    };
+  };
+
+
   function comp_offload(b, itm) {
     if(!b.block.delegee.shouldDropPay) {
       b.super$offload(itm);
@@ -155,11 +179,35 @@
        */
       itmWhitelist: prov(() => []),
       /**
+       * <PARAM>: Item duration, `drillTime` by default.
+       * @memberof BLK_baseDrill
+       * @instance
+       */
+      drillItmDur: -1.0,
+      /**
        * <PARAM>: If true, this drill outputs payload instead of item. Only ores that have payload form can be mined.
        * @memberof BLK_baseDrill
        * @instance
        */
       shouldDropPay: false,
+      /**
+       * <PARAM>: By default, a payload drill can store 2 raw ore blocks.
+       * @override
+       * @memberof BLK_baseDrill
+       * @instance
+       */
+      payAmtCap: 4,
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_baseDrill
+       * @instance
+       */
+      hasItmCons: false,
 
 
     })
@@ -272,6 +320,12 @@
        * @memberof B_baseDrill
        * @instance
        */
+      drillItmProg: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_baseDrill
+       * @instance
+       */
       payChargeObj: prov(() => ({})),
       /**
        * <INTERNAL>
@@ -290,6 +344,11 @@
       },
 
 
+      updateTile: function() {
+        comp_updateTile(this);
+      },
+
+
       offload: function(itm) {
         comp_offload(this, itm);
       }
@@ -299,6 +358,7 @@
 
 
       write: function(wr) {
+        wr.f(this.drillItmProg);
         MDL_io._wr_objStrNum(wr, this.payChargeObj);
       },
 
@@ -306,8 +366,26 @@
       read: function(rd, revi) {
         if(this.LCReviSub === 0) return;
 
+        if(this.LCReviSub >= 2) {
+          this.drillItmProg = rd.f();
+        };
         MDL_io._rd_objStrNum(rd, this.payChargeObj);
       },
+
+
+      /**
+       * Called whenever this drill crafts.
+       * <br> <LATER>
+       * @memberof B_baseDrill
+       * @instance
+       * @return {void}
+       */
+      ex_onCraft: function() {
+
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       /**
@@ -317,7 +395,7 @@
        * @return {number}
        */
       ex_subRevi: function() {
-        return 1;
+        return 2;
       }
       .setProp({
         noSuper: true,

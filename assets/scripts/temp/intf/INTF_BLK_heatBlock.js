@@ -12,7 +12,12 @@
 
 
   function comp_init(blk) {
+    blk.clipSize += 140.0;
     blk.heatBlkMeltTemp = MDL_flow._heatRes(blk);
+    blk.heatLightTempReq = Math.max(blk.heatLightTempReq, 60.01);
+    if(blk.heatLightRad < 0.0) blk.heatLightRad = blk.size * Vars.tilesize * 0.7;
+
+    blk.ex_addLogicGetter(LAccess.heat, b => b.delegee.tempCur / 100.0);
   };
 
 
@@ -23,6 +28,7 @@
 
   function comp_setStats(blk) {
     if(isFinite(blk.heatBlkMeltTemp)) blk.stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.heatBlkMeltTemp, fetchStatUnit("lovec", "heatunits"));
+    if(!blk.tempExtMtp.fEqual(1.0)) blk.stats.add(fetchStat("lovec", "blk0fac-extheatmtp"), blk.tempExtMtp.perc());
   };
 
 
@@ -56,33 +62,52 @@
 
   function comp_updateTile(b) {
     // Update temperature and apply damage if overheated
-    if(!PARAM.updateSuppressed) {
+    if(!PARAM.updateSuppressed && TIMER.secHalf) {
       b.tempRiseTg = b.ex_calcTempTg();
-      b.tempCur = Mathf.lerpDelta(b.tempCur, Math.max(b.tempRiseTg, PARAM.glbHeat), b.block.delegee.heatTransRate);
-      if(TIMER.secHalf && b.tempCur > b.block.delegee.heatBlkMeltTemp) {
+      b.tempCur = Mathf.lerp(b.tempCur, Mathf.lerp(PARAM.glbHeat, b.tempRiseTg, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTgFrac()), b.block.delegee.heatWarmupRate * 30.0);
+      if(b.tempCur > b.block.delegee.heatBlkMeltTemp) {
         FRAG_attack.damage(b, (VAR.blk_corDmgMin + VAR.blk_corDmgFrac * b.maxHealth) * (b.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
       };
     };
 
+    // External heat control
+    if(b.block.delegee.tempExtMtp > 0.0) {
+      if(b.extHeatCd > 0.0) {
+        b.extHeatCd -= Time.delta;
+      } else {
+        b.tempExt = 0.0;
+      };
+    };
+
+    // Update heat fraction
+    if(TIMER.secQuarter) {
+      b.heatFrac = Mathf.clamp(b.tempCur / Math.max(b.ex_getHeatTg(), 100.0));
+    };
+
     // Occasionally supply abstract fluid, or output external heat
-    if(TIMER.liq && !b.block.delegee.skipHeatSupply && b.heatSupplyTgs.length > 0) {
+    if(!b.block.delegee.skipHeatSupply && b.heatSupplyTgs.length > 0) {
       b.heatSupplyIncre++;
       let b_t = b.heatSupplyTgs[b.heatSupplyIncre % b.heatSupplyTgs.length];
       if(b_t.added && !b_t.isPayload()) {
         b_t.ex_handleExtHeat != null ?
           b_t.ex_handleExtHeat(b.ex_getHeatSupplied()) :
-          FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, b.ex_getHeatSupplied() * VAR.time_liqIntv / 6000.0, false, false, true);
+          FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, b.ex_getHeatSupplied() / 6000.0, false, false, true);
       };
     };
   };
 
 
   function comp_draw(b) {
-    if(PARAM.drawFurnaceHeat) {
-      MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.7, b.block.delegee.heatReg, b.drawrot(), b.block.size);
+    if(b.isPayload()) return;
+
+    if(PARAM.drawFurnaceHeat && b.block.delegee.heatA > 0.0) {
+      MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.delegee.heatReg, b.drawrot(), b.block.size);
+      MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, VARGEN.blockHeatRegs[b.block.size + 2], b.drawrot(), b.block.size);
     };
 
-    MDL_draw._l_disk(b.x, b.y, b.ex_getHeatFrac(), b.block.size * Vars.tilesize * 0.7, b.block.size);
+    if(b.block.delegee.shouldDrawHeatLight) {
+      MDL_draw._l_disk(b.x, b.y, Mathf.clamp((b.tempCur - 60.0) / (b.block.delegee.heatLightTempReq - 60.0)), b.block.delegee.heatLightRad, b.block.size);
+    };
   };
 
 
@@ -128,9 +153,18 @@
     b.heatSupplyTgs.clear();
     b.proximity.each(
       ob => (!b.block.rotate ? true : b.relativeTo(ob) === b.rotation)
+        && !tryJsProp(ob.block, "skipHeatFetch", false)
         && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(VARGEN.auxHeat)),
       ob => b.heatSupplyTgs.push(ob),
     );
+  };
+
+
+  function comp_ex_handleExtHeat(b, amt) {
+    if(b.block.delegee.tempExtMtp.fEqual(0.0)) return;
+
+    b.tempExt = (b.tempExt + amt * b.block.delegee.tempExtMtp) * 0.5;
+    b.extHeatCd = 300.0;
   };
 
 
@@ -157,6 +191,12 @@
       });
     };
 
+    if(b.ex_getHeatProd != null) {
+      b.maxHeaterProd = Math.max(b.ex_getHeatProd(), b.maxHeaterProd);
+    };
+
+    if(b.tempExt > heatTg) heatTg = b.tempExt;
+
     return heatTg;
   };
 
@@ -182,11 +222,17 @@
 
 
         /**
-         * <PARAM>: How fast this heat block warms up.
+         * <PARAM>: How fast this heat block warms up by heat transfer.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
-        heatTransRate: 0.0008,
+        heatWarmupRate: 0.0008,
+        /**
+         * <PARAM>: Multiplier on external heat accepted.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
+        tempExtMtp: 1.0,
         /**
          * <PARAM>: If true, this block cannot gain heat from producers.
          * @memberof INTF_BLK_heatBlock
@@ -205,6 +251,30 @@
          * @instance
          */
         skipHeatSupply: false,
+        /**
+         * <PARAM>: Heat region alpha.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
+        heatA: 1.0,
+        /**
+        * <PARAM>: Whether this heat block emits light.
+        * @memberof INTF_BLK_heatBlock
+        * @instance
+        */
+        shouldDrawHeatLight: true,
+        /**
+         * <PARAM>: Temperature required to emit heat light.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
+        heatLightTempReq: 1000.0,
+        /**
+         * <PARAM>: Maximum heat light radius.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
+        heatLightRad: -1.0,
 
 
         /* <------------------------------ internal ------------------------------ */
@@ -279,7 +349,25 @@
          * @memberof INTF_B_heatBlock
          * @instance
          */
+        tempExt: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
+        extHeatCd: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
         maxHeaterProd: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
+        heatFrac: 0.0,
         /**
          * <INTERNAL>
          * @memberof INTF_B_heatBlock
@@ -374,12 +462,44 @@
 
 
       /**
+       * Call this method to input external heat.
+       * Should be called in `updateTile`.
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @param {number} amt
+       * @return {void}
+       */
+      ex_handleExtHeat: function(amt) {
+        comp_ex_handleExtHeat(this, amt);
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 1,
+      }),
+
+
+      /**
        * @memberof INTF_B_heatBlock
        * @instance
        * @return {number}
        */
       ex_calcTempTg: function() {
         return comp_ex_calcTempTg(this);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * Target temperature will be multiplied with this before use.
+       * <br> <LATER>
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {number}
+       */
+      ex_calcTempTgFrac: function() {
+        return 1.0;
       }
       .setProp({
         noSuper: true,
@@ -400,12 +520,27 @@
 
 
       /**
+       * Expected target heat.
+       * <br> <LATER>
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {number}
+       */
+      ex_getHeatTg: function() {
+        return this.block.delegee.heatBlkMeltTemp;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
        * @memberof INTF_B_heatBlock
        * @instance
        * @return {number}
        */
       ex_getHeatFrac: function() {
-        return Mathf.clamp(this.tempCur / this.block.delegee.heatBlkMeltTemp);
+        return this.heatFrac;
       }
       .setProp({
         noSuper: true,
@@ -432,9 +567,23 @@
        */
       ex_getHeatSupplied: function() {
         // Single heater with larger output rate => more efficient heat transfer
-        return b.tempCur <= b.maxHeaterProd ?
-          b.tempCur :
-          (Math.sqrt(Math.pow(b.maxHeaterProd, 2) * 4.0 + b.tempCur * b.maxHeaterProd * 4.0) - b.maxHeaterProd * (Math.sqrt(2) * 2.0 - 1.0));
+        return this.tempCur <= this.maxHeaterProd ?
+          this.tempCur :
+          (Math.sqrt(Math.pow(this.maxHeaterProd, 2) * 4.0 + this.tempCur * this.maxHeaterProd * 4.0) - this.maxHeaterProd * (Math.sqrt(2) * 2.0 - 1.0));
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * <br> <LATER>
+       * @memberof INTF_B_heatBlock
+       * @instance
+       * @return {boolean}
+       */
+      ex_checkHeatingValid: function() {
+        return true;
       }
       .setProp({
         noSuper: true,

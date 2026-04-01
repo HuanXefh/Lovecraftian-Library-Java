@@ -27,7 +27,7 @@
    * @extends UNIT_baseUnit
    */
   module.exports = newClass().extendClass(PARENT, "UNIT_technicalUnit").initClass()
-  .setParent(UnitType)
+  .setParent(null)
   .setTags()
   .setParam({
 
@@ -58,6 +58,13 @@
      * @instance
      */
     entityName: "base",
+    /**
+     * <INTERNAL>
+     * @override
+     * @memberof UNIT_technicalUnit
+     * @instance
+     */
+    hasUnitData: false,
 
 
     /* <------------------------------ vanilla ------------------------------ */

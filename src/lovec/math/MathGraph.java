@@ -7,11 +7,13 @@ import arc.util.Log;
 import arc.util.Nullable;
 
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class MathGraph {
+public class MathGraph implements Iterable<Integer> {
 
 
-    protected  static final PQueue<Integer> pQueue = new PQueue<>();
+    protected static final PQueue<Integer> pQueue = new PQueue<>();
     protected static final IntIntMap mergeVertMap = new IntIntMap();
     protected static final StringBuilder strBuilder = new StringBuilder();
 
@@ -21,6 +23,7 @@ public class MathGraph {
     protected Seq<Seq<MathGraphEdge>> adjSeq;
     protected Seq dataSeq;
     protected FloatSeq weightSeq;
+    private @Nullable MathGraphIterator iterator;
 
 
     public String graphTag = "";
@@ -44,7 +47,7 @@ public class MathGraph {
     };
 
 
-    public MathGraph(int vertices, Object data, boolean isDirectional) {
+    public MathGraph(int vertices, Object data, float weight, boolean isDirectional) {
         this.vertices = vertices;
         this.adjSeq = new Seq(vertices);
         this.dataSeq = new Seq(vertices);
@@ -52,19 +55,29 @@ public class MathGraph {
         for(int i = 0; i < vertices; i++) {
             this.adjSeq.add(new Seq<MathGraphEdge>());
             this.dataSeq.add(data);
+            this.weightSeq.add(weight);
         };
         this.isDirectional = isDirectional;
     };
     // Overloading
+    public MathGraph(int vertices, Object data, float weight) {
+        this(vertices, data, weight, false);
+    };
+    public MathGraph(int vertices, Object data, boolean isDirectional) {
+        this(vertices, data, 0, isDirectional);
+    };
     public MathGraph(int vertices, Object data) {
-        this(vertices, data, false);
+        this(vertices, data, 0);
+    };
+    public MathGraph(boolean isDirectional) {
+        this.vertices = 0;
+        this.adjSeq = new Seq(0);
+        this.dataSeq = new Seq(0);
+        this.weightSeq = new FloatSeq(0);
+        this.isDirectional = isDirectional;
     };
     public MathGraph() {
-       this.vertices = 0;
-       this.adjSeq = new Seq(0);
-       this.dataSeq = new Seq(0);
-       this.weightSeq = new FloatSeq(0);
-       this.isDirectional = false;
+        this(false);
     };
 
 
@@ -134,7 +147,9 @@ public class MathGraph {
     /**
      * Whether an edge exists in this graph.
      */
-    public boolean hasEdge(int vert_f, int vert_t) {
+    public boolean hasEdge(int vert_f, int vert_t) throws IllegalArgumentException {
+        if(vert_f >= vertices) throw new IllegalArgumentException("Vertex not used: " + vert_f);
+        if(vert_t >= vertices) throw new IllegalArgumentException("Vertex not used: " + vert_t);
         if(vert_f == vert_t) return true;
         for(MathGraphEdge edge : adjSeq.get(vert_f)) {
             if(edge.vert_t == vert_t) return true;
@@ -422,7 +437,7 @@ public class MathGraph {
             int vertMerge = applyBFS(0, (data, vert) -> equalCheck.get(data, graph.getData(overt)));
             // If no matching vertex found, add a new one to current graph
             if(vertMerge == -1) {
-                addVert(graph.getData(overt), graph.getWeight(i));
+                addVert(graph.getData(overt), graph.getWeight(overt));
                 vertMerge = vertices - 1;
             };
             mergeVertMap.put(overt, vertMerge);
@@ -449,17 +464,19 @@ public class MathGraph {
 
     /**
      * Removes unnecessary vertices.
-     * Result is returned as a new graph.
      */
     public MathGraph shrink(Boolf2<Object, Integer> filter) {
         mergeVertMap.clear();
         // Set up migration map
-        for(int i = 0; i < vertices; i++) {
+        for(int i = 0, j = 0; i < vertices; i++) {
             if(filter.get(getData(i), i)) {
-                mergeVertMap.put(mergeVertMap.size, i);
+                mergeVertMap.put(j, i);
+                j++;
             };
         };
-        var graph = new MathGraph();
+        if(mergeVertMap.size == vertices) return this;
+
+        var graph = new MathGraph(isDirectional);
         // Set up vertices
         for(int i = 0; i < mergeVertMap.size; i++) {
             graph.addVert(getData(mergeVertMap.get(i)), getWeight(mergeVertMap.get(i)));
@@ -468,13 +485,15 @@ public class MathGraph {
         for(int i = 0; i < mergeVertMap.size; i++) {
             for(MathGraphEdge edge : adjSeq.get(mergeVertMap.get(i))) {
                 if(mergeVertMap.containsKey(edge.vert_f) && mergeVertMap.containsKey(edge.vert_t)) {
-                    addEdge(mergeVertMap.get(edge.vert_f), mergeVertMap.get(edge.vert_t), edge.dst);
+                    graph.addEdge(mergeVertMap.findKey(edge.vert_f, 0), mergeVertMap.findKey(edge.vert_t, 0), edge.dst);
                 };
             };
         };
-        graph.graphTag = graphTag;
-        graph.graphData = graphData;
-        return graph;
+        vertices = graph.vertices;
+        adjSeq = graph.adjSeq;
+        dataSeq = graph.dataSeq;
+        weightSeq = graph.weightSeq;
+        return this;
     };
 
 
@@ -504,6 +523,40 @@ public class MathGraph {
         };
         strBuilder.append("}");
         return strBuilder.toString();
+    };
+
+
+    /* <-------------------- iterator --------------------> */
+
+
+    @Override
+    public Iterator<Integer> iterator() {
+        if(iterator == null) iterator = new MathGraphIterator();
+        return iterator;
+    };
+
+
+    private class MathGraphIterator implements Iterator<Integer> {
+
+
+        int ind;
+        boolean done = true;
+
+
+        @Override
+        public boolean hasNext() {
+            if(ind >= vertices) done = true;
+            return ind < vertices;
+        };
+
+
+        @Override
+        public Integer next() {
+            if(ind >= vertices) throw new NoSuchElementException(String.valueOf(ind));
+            return ind++;
+        };
+
+
     };
 
 

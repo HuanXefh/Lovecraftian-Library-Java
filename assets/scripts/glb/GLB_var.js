@@ -176,6 +176,7 @@
   exports.blk_rpmDmgFrac = 0.15;
   exports.blk_lightningDmg = 20.0;
   exports.blk_shortCircuitDmgFrac = 0.12;
+  exports.blk_powSourceStdProd = 8000.0;
   exports.blk_ovCogA1 = 0.315;
   exports.blk_ovCogA2 = 0.7;
 

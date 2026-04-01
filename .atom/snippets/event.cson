@@ -9,11 +9,19 @@
     '''
 
   'Time.run':
-    prefix: 'lc_timed'
+    prefix: 'lc_time'
     body: '''
     Time.run(${1:delay}, () => {
       ${2:}
     });
+    '''
+
+  'Timer.schedule':
+    prefix: 'lc_schedule'
+    body: '''
+    Timer.schedule(() => {
+      ${4:}
+    }, ${1:delay}, ${2:intvTimeS}, ${3:repeat})
     '''
 
   'on init':
@@ -43,7 +51,7 @@
     '''
 
   'on load delay':
-    prefix: 'lc_onloadtimed'
+    prefix: 'lc_onloadtime'
     body: '''
     MDL_event._c_onLoad(() => {
       Time.run(${1:delay}, () => {

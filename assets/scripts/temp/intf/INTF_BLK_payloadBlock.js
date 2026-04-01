@@ -99,8 +99,8 @@
 
 
   function comp_ex_updatePaySite(b) {
-    FRAG_payload._bsPayInput(b, b.payInputBs);
-    FRAG_payload._bsPayOutput(b, b.payOutputBs);
+    FRAG_payload._bsPayInput(b, b.block.delegee.payInputSideFracMode, b.payInputBs);
+    FRAG_payload._bsPayOutput(b, b.block.delegee.payOutputSideFracMode, b.payOutputBs);
   };
 
 
@@ -130,6 +130,18 @@
          * @instance
          */
         payAmtCap: -1.0,
+        /**
+         * <PARAM>: Determines which sides can be used for input.
+         * @memberof INTF_BLK_payloadBlock
+         * @instance
+         */
+        payInputSideFracMode: "non-front",
+        /**
+         * <PARAM>: Determines which sides can be used for output.
+         * @memberof INTF_BLK_payloadBlock
+         * @instance
+         */
+        payOutputSideFracMode: "front",
 
 
       }),

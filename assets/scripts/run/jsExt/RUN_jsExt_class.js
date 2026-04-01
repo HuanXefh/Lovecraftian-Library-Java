@@ -134,3 +134,18 @@
 
     return this;
   };
+
+
+  /**
+   * Defines iterator for a class, so that instances of this class can be used in for-of loop.
+   * Iterator must have "next" method that returns `{value: any, done: boolean}`.
+   * @param {Object} iteratorObj
+   * @return {void}
+   */
+  Function.prototype.setIterator = function(iteratorObj) {
+    if(typeof iteratorObj.next !== "function") throw new Error('Iterator must have "next" method!');
+
+    this.prototype[Symbol.iterator] = function() {
+      return iteratorObj;
+    };
+  };

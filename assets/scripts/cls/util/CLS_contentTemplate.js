@@ -207,8 +207,8 @@
         superBoolMode: tryVal(fun.superBoolMode, fun.boolMode),
         mergeMode: tryVal(fun.mergeMode, "none"),
         argLen: tryVal(fun.argLen, -1),
-        funPrev: null,
-        funCur: null,
+        funPrev: !isFromIntf ? null : tryVal(fun.funPrev, null),
+        funCur: !isFromIntf ? null : tryVal(fun.funCur, null),
       });
 
       if(fun.override) {

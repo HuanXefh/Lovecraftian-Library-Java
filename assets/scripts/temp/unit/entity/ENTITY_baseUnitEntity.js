@@ -50,7 +50,21 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENTITY_baseUnitEntity").initClass()
   .setParent(null)
-  .setParam({})
+  .setParam({
+
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof ENTITY_baseUnitEntity
+     * @instance
+     */
+    unitDurabUsed: 0.0,
+
+
+  })
   .setMethod({
 
 

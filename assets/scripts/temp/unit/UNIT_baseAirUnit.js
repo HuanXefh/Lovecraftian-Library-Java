@@ -8,7 +8,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/temp/unit/UNIT_baseGroundUnit");
+  const PARENT = require("lovec/temp/unit/UNIT_baseUnit");
 
 
   /* <---------- component ----------> */
@@ -22,13 +22,13 @@
 
 
   /**
-   * Mech unit.
-   * @class UNIT_mech
-   * @extends UNIT_baseGroundUnit
+   * Parent of all ground units.
+   * @class UNIT_baseGroundUnit
+   * @extends UNIT_baseUnit
    */
-  module.exports = newClass().extendClass(PARENT, "UNIT_mech").initClass()
+  module.exports = newClass().extendClass(PARENT, "UNIT_baseAirUnit").initClass()
   .setParent(UnitType)
-  .setTags("utp-inf")
+  .setTags()
   .setParam({
 
 
@@ -38,10 +38,10 @@
     /**
      * <INTERNAL>
      * @override
-     * @memberof UNIT_mech
+     * @memberof UNIT_baseAirUnit
      * @instance
      */
-    entityName: "lovec-mech",
+    entityName: "lovec-air",
 
 
   })

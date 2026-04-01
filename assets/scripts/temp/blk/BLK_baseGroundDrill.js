@@ -201,6 +201,16 @@
       },
 
 
+      canDump: function(b_t, itm) {
+        // Yep this line is borrowed from Carpe Diem
+        return !this.block.consumesItem(itm) || (this.dominantItem === itm && this.items.has(itm, 2));
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
+      }),
+
+
       drawSelect: function() {
         comp_drawSelect(this);
       }

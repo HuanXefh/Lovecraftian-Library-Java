@@ -17,6 +17,10 @@
 */
 
 
+  /* <---------- graph ----------> */
+
+
+  const initGraphMethodMap = new ObjectMap();
   const updateGraphMethodMap = new ObjectMap();
   const updateGraphQueue = [];
 
@@ -29,6 +33,18 @@
     updateGraphQueue.pushUnique(graph);
   };
   exports.queueGraphUpdate = queueGraphUpdate;
+
+
+  /**
+   * Sets init method of a graph type.
+   * @param {string} graphType - See {@link INTF_BLK_graphBlock}.
+   * @param {function(MathGraph): void} fun - <ARGS>: graph
+   * @return {void}
+   */
+  const setGraphInit = function(graphType, fun) {
+    initGraphMethodMap.put(graphType, fun);
+  };
+  exports.setGraphInit = setGraphInit;
 
 
   /**
@@ -46,8 +62,11 @@
   MDL_event._c_onUpdate(() => {
 
     updateGraphQueue.forEachFast(graph => {
-      if(TIMER.secFive) {
-        graph.shrink((ob, vert) => !ob.added || ob.isPayload());
+      if(graph.graphData == null) {
+        graph.graphData = {
+          justShrunk: false,
+        };
+        initGraphMethodMap.get(graph.graphTag, Function.air)(graph);
       };
       updateGraphMethodMap.get(graph.graphTag, Function.air)(graph);
     });
@@ -107,6 +126,29 @@
 
 
   exports.achievements = [];
+
+
+  /* <---------- unit data ----------> */
+
+
+  const expiredUnits = [];
+
+
+  const unitDataMap = new ObjectMap();
+  exports.unitDataMap = unitDataMap;
+
+
+  MDL_event._c_onLoad(() => {
+
+    TRIGGER.majorIter.start.addGlobalListener(() => {
+      expiredUnits.clear();
+      unitDataMap.each((unit, dataObj) => {
+        if(!unit.added) expiredUnits.push(unit);
+      });
+      expiredUnits.forEachFast(unit => unitDataMap.remove(unit));
+    });
+
+  }, 16200057);
 
 
 /*
@@ -420,6 +462,13 @@
      * @type {Array<Block>}
      */
     exports.nonEnvBlks = Vars.content.blocks().select(blk => blk.synthetic()).toArray();
+
+
+    /**
+     * See {@link BLK_rawOreBlock}.
+     * @type {Array<Block>}
+     */
+    exports.rawOreBlks = Vars.content.blocks().select(blk => blk.ex_isSubInsOf != null && blk.ex_isSubInsOf("BLK_rawOreBlock")).toArray();
 
 
     Time.run(1.0, () => {

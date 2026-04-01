@@ -119,9 +119,8 @@
 
   function comp_ex_drawCog(b) {
     let ang = Mathf.mod(b.torProg, 90.0);
-    let z = Layer.block + b.block.size * 0.001 + 0.72;
 
-    processZ(z);
+    processZ(Layer.block + b.block.size * 0.001 + 0.72, 1);
 
     if(b.isInv) {
       Draw.rect(b.block.delegee.invReg, b.x, b.y, b.block.delegee.cogDrawW, b.block.delegee.cogDrawW, -ang + 90.0 + b.block.delegee.cogInvOffAng);
@@ -134,7 +133,7 @@
     };
     Draw.color();
 
-    processZ();
+    processZ(null, 1);
   };
 
 

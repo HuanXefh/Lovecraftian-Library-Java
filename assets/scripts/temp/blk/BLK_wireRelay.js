@@ -52,7 +52,7 @@
     for(let i = 0; i < 4; i++) {
       ot = b.dests[i];
       ob = b.links[i];
-      if(ot == null || !ob.wasVisible) continue;
+      if(ot == null) continue;
       if(ob.block instanceof BeamNode) {
         if(ob.tileX() !== b.tileX() && ob.tileY() !== b.tileY()) continue;
         if(ob.id > b.id && b.block.range < ob.block.range) continue;

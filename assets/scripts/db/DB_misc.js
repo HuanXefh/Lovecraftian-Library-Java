@@ -69,18 +69,53 @@ const db = {
     ],
 
 
-    /**
-     * Maps graph type to an update method.
-     * See {@Link INTF_BLK_graphBlock}.
-     * <br> <ROW>: graphType, fun.
-     */
-    graphUpdate: [
+    graph: {
 
-      "test", graph => {
-        if(TIMER.secTwo) print(graph);
-      },
 
-    ],
+      /**
+       * Maps graph type to its init method.
+       * See {@Link INTF_BLK_graphBlock}.
+       * <br> <ROW>: graphType, fun.
+       */
+      init: [
+
+        "cable", graph => {
+          graph.graphData.overdriveFrac = 0.0;
+          graph.graphData.maxPowProdAllowed = graph.getData(0).block.delegee.maxPowProdAllowed;
+        },
+
+      ],
+
+
+      /**
+       * Maps graph type to its update method.
+       * See {@Link INTF_BLK_graphBlock}.
+       * <br> <ROW>: graphType, fun.
+       */
+      update: [
+
+        "test", graph => {
+          if(TIMER.secTwo) print(graph);
+        },
+
+        "cable", graph => {
+          if(PARAM.updateDeepSuppressed || !isFinite(graph.graphData.maxPowProdAllowed) || graph.getSize() === 0) return;
+
+          let powProd = graph.getData(0).power.graph.getLastPowerProduced();
+          if(TIMER.secHalf) {
+            graph.graphData.overdriveFrac = Mathf.approach(graph.graphData.overdriveFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).block.delegee.maxPowProdAllowed), 0.2);
+          };
+          if(graph.graphData.overdriveFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
+          graph.each(
+            (ob, vert) => ob.added,
+            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.blk_shortCircuitDmgFrac / 30.0),
+          );
+        },
+
+      ],
+
+
+    },
 
 
     /**
@@ -460,10 +495,12 @@ const db = {
     produceReader: [
 
       Drill, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        if(tryJsProp(blk, "shouldDropPay", false)) return;
         Vars.content.items().each(itm => itm.hardness <= blk.tier && !((blk.blockedItems != null && blk.blockedItems.contains(itm)) || ((blk.blockedItems == null || blk.blockedItems.size === 0) && tryJsProp(blk, "itmWhiteList") != null && !tryJsProp(blk, "itmWhiteList").includes(itm))) && Vars.content.blocks().toArray().some(oblk => ((oblk instanceof Floor && !(oblk instanceof OverlayFloor)) || (oblk instanceof OverlayFloor && !oblk.wallOre)) && oblk.itemDrop === itm), itm => dictProdItm[itm.id].push(blk, Math.pow(blk.size, 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(itm)) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-mining"}));
       },
 
       BeamDrill, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        if(tryJsProp(blk, "shouldDropPay", false)) return;
         Vars.content.items().each(itm => itm.hardness <= blk.tier && !((blk.blockedItems != null && blk.blockedItems.contains(itm)) || ((blk.blockedItems == null || blk.blockedItems.size === 0) && tryJsProp(blk, "itmWhiteList") != null && !tryJsProp(blk, "itmWhiteList").includes(itm))) && Vars.content.blocks().toArray().some(oblk => (oblk instanceof Prop || oblk instanceof TallBlock || (oblk instanceof OverlayFloor && oblk.wallOre)) && oblk.itemDrop === itm), itm => dictProdItm[itm.id].push(blk, blk.size * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-mining"}));
       },
 

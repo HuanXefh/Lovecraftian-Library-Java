@@ -410,7 +410,7 @@
        */
       kill: function(nm) {
         if(!CHEAT.checkCheatState()) return;
-        let unit = lovec.mdl_pos._unitPlNm(nm);
+        let unit = MDL_pos._unitPlNm(nm);
         if(unit == null) {
           Log.err("[LOVEC] No player found with name ${1}!".format(nm));
           return;
@@ -524,9 +524,9 @@
         let unit = Vars.player.unit();
         if(unit == null) return;
         if(typeof utp_gn === "string" && utp_gn.equalsAny(thisFun.blacklist)) return;
-        let utp = lovec.mdl_content._ct(utp_gn, "utp");
+        let utp = MDL_content._ct(utp_gn, "utp");
 
-        lovec.mdl_call.spawnUnit_server(unit.x, unit.y, utp, unit.team);
+        MDL_call.spawnUnit_server(unit.x, unit.y, utp, unit.team);
       }
       .setProp({
         blacklist: [],

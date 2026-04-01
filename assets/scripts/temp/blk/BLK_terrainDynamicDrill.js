@@ -8,7 +8,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseGroundDrill");
+  const PARENT = require("lovec/temp/blk/BLK_groundDrill");
 
 
   /* <---------- component ----------> */
@@ -140,7 +140,7 @@
     /**
      * Drill that outputs variants of some item based on current terrain type.
      * @class BLK_terrainDynamicDrill
-     * @extends BLK_baseGroundDrill
+     * @extends BLK_groundDrill
      */
     newClass().extendClass(PARENT[0], "BLK_terrainDynamicDrill").initClass()
     .setParent(Drill)
@@ -217,12 +217,24 @@
 
     /**
      * @class B_terrainDynamicDrill
-     * @extends B_baseGroundDrill
+     * @extends B_groundDrill
      */
     newClass().extendClass(PARENT[1], "B_terrainDynamicDrill").initClass()
     .setParent(Drill.DrillBuild)
     .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof B_terrainDynamicDrill
+       * @instance
+       */
       terCur: null,
+
+
     })
     .setMethod({
 

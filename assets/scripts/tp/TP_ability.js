@@ -17,7 +17,7 @@
 */
 
 
-  /* <---------- auxiliary ----------> */
+  /* <------------------------------ auxiliary ------------------------------ */
 
 
   function comp_addStats(abi, tb, tableF) {
@@ -32,7 +32,7 @@
   };
 
 
-  /* <---------- attack ----------> */
+  /* <------------------------------ attack ------------------------------ */
 
 
   /**
@@ -85,7 +85,7 @@
   );
 
 
-  /* <---------- support ----------> */
+  /* <------------------------------ support ------------------------------ */
 
 
   /**
@@ -238,6 +238,46 @@
 
         FRAG_attack.heal(b, b.maxHealth * this.healPerc + this.healAmt);
         MDL_effect._e_laser(unit.x, unit.y, unit, b, Pal.heal, this.strokeScl);
+      },
+
+
+      localized() {
+        return comp_localized(this);
+      },
+
+
+    }),
+  );
+
+
+  /* <------------------------------ internal ------------------------------ */
+
+
+  /**
+   * Displays unit durability.
+   */
+  newAbility(
+    "unit-durability",
+    (paramObj) => extend(Ability, {
+
+
+      nm: "unit-durability",
+      durabCap: readParam(paramObj, "durabCap", Number.n12),
+
+
+      addStats(tb) {
+        comp_addStats(this, tb, tb => {
+          tb.add(MDL_text._statText(Core.bundle.get("stat.lovec-stat-blk0fac-durabtime"), Strings.autoFixed(this.durabCap / 60.0, 2), StatUnit.seconds.localized()));
+        });
+      },
+
+
+      displayBars(unit, tb) {
+        tb.add(new Bar(
+          prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", (1.0 - Mathf.clamp(tryJsProp(unit, "unitDurabUsed", 0.0) / this.durabCap)).perc())),
+          prov(() => Pal.sap),
+          () => 1.0 - Mathf.clamp(tryJsProp(unit, "unitDurabUsed", 0.0) / this.durabCap),
+        ));
       },
 
 

@@ -22,6 +22,15 @@
         };
       });
     };
+
+    if(utp.unitDurabCap > 0.0) {
+      setAbility(utp, abis => [
+        abis,
+        fetchAbility("unit-ability", {
+          durabCap: utp.unitDurabCap,
+        }),
+      ]);
+    };
   };
 
 
@@ -36,8 +45,27 @@
   };
 
 
+  function comp_killed(utp, unit) {
+    VARGEN.unitDataMap.remove(unit);
+  };
+
+
   function comp_update(utp, unit) {
     if(utp.useLovecDamagePenalty) FRAG_unit.comp_update_damaged(utp, unit);
+
+    if(utp.hasUnitData && unit.delegee != null && TIMER.secHalf) {
+      if(!VARGEN.unitDataMap.containsKey(unit)) VARGEN.unitDataMap.put(unit, {});
+      utp.ex_writeUnitData(unit, VARGEN.unitDataMap.get(unit));
+    };
+
+    if(utp.unitDurabCap > 0.0 && unit.delegee != null && unit.delegee.unitDurabUsed != null) {
+      if(unit.delegee.unitDurabUsed >= utp.unitDurabCap) {
+        utp.ex_onDurabOutage(unit);
+      } else {
+        unit.delegee.unitDurabUsed += Time.delta;
+        utp.ex_onDurabDec(unit);
+      };
+    };
   };
 
 
@@ -139,6 +167,12 @@
      * @instance
      */
     lightConeScl: 0.4,
+    /**
+     * <PARAM>: Durability in frames, the unit will be destroyed if run out of durability. Use negative value to disable this mechanics.
+     * @memberof
+     * @instance
+     */
+    unitDurabCap: -1.0,
 
 
     /* <------------------------------ internal ------------------------------ */
@@ -156,6 +190,12 @@
      * @instance
      */
     entityTemplate: null,
+    /**
+     * <INTERNAL>
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
+    hasUnitData: true,
 
 
   })
@@ -169,6 +209,11 @@
 
     setStats: function() {
       comp_setStats(this);
+    },
+
+
+    killed: function(unit) {
+      comp_killed(this, unit);
     },
 
 
@@ -223,6 +268,73 @@
     }
     .setProp({
       noSuper: true,
+    }),
+
+
+    /**
+     * Called when this unit is out of durability.
+     * By default, this unit will be destroyed.
+     * <br> <LATER>
+     * @memberof UNIT_baseUnit
+     * @instance
+     * @param {Unit} unit
+     * @return {void}
+     */
+    ex_onDurabOutage: function(unit) {
+      unit.kill();
+    }
+    .setProp({
+      noSuper: true,
+      argLen: 1,
+    }),
+
+
+    /**
+     * Called when this unit's durability decreases.
+     * <br> <LATER>
+     * @memberof UNIT_baseUnit
+     * @instance
+     * @param {Unit} unit
+     * @return {void}
+     */
+    ex_onDurabDec: function(unit) {
+
+    }
+    .setProp({
+      noSuper: true,
+      argLen: 1,
+    }),
+
+
+    /**
+     * @memberof UNIT_baseUnit
+     * @instance
+     * @param {Unit} unit
+     * @param {Object} dataObj
+     * @return {void}
+     */
+    ex_writeUnitData: function(unit, dataObj) {
+      dataObj.unitDurabUsed = unit.delegee.unitDurabUsed;
+    }
+    .setProp({
+      noSuper: true,
+      argLen: 2,
+    }),
+
+
+    /**
+     * @memberof UNIT_baseUnit
+     * @instance
+     * @param {Unit} unit
+     * @param {Object} dataObj
+     * @return {void}
+     */
+    ex_readUnitData: function(unit, dataObj) {
+      unit.delegee.unitDurabUsed = Number(dataObj.unitDurabUsed);
+    }
+    .setProp({
+      noSuper: true,
+      argLen: 2,
     }),
 
 

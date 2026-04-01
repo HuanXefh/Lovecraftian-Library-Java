@@ -6,10 +6,12 @@ import arc.func.Func2;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
-import arc.util.Log;
 import arc.util.Nullable;
 
-public class MathMatrix {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class MathMatrix implements Iterable<Double> {
 
 
     protected static final StringBuilder strBuilder = new StringBuilder();
@@ -18,6 +20,7 @@ public class MathMatrix {
     protected double[][] data;
     protected final int rowAmt;
     protected final int colAmt;
+    private @Nullable MathMatrixIterator iterator;
 
 
     public MathMatrix(int m, int n) {
@@ -97,9 +100,10 @@ public class MathMatrix {
 
     /**
      * Gets the element at (x, y).
+     * For a 3x3 matrix, (3, 1) is same as (0, 1).
      */
     public double get(int x, int y) {
-        return data[y][x];
+        return data[Mathf.mod(y, rowAmt)][Mathf.mod(x, colAmt)];
     };
 
 
@@ -315,6 +319,24 @@ public class MathMatrix {
 
 
     /* <-------------------- calculation --------------------> */
+
+
+    /**
+     * Gets diagonals from this matrix.
+     * Positive offset -> shifting right.
+     */
+    public double[] diagonal(int off) throws IllegalArgumentException {
+        if(!isSquare()) throw new IllegalArgumentException("Cannot get diagonals for a non-square matrix!");
+        var arr = new double[colAmt];
+        for(int i = 0; i < colAmt; i++) {
+            arr[i] = get(i + off, i);
+        };
+        return arr;
+    };
+    // Overloading
+    public double[] diagonal() throws IllegalArgumentException {
+        return diagonal(0);
+    };
 
 
     /**
@@ -598,6 +620,10 @@ public class MathMatrix {
         };
         return this;
     };
+    // Overloading
+    public MathMatrix nor() throws IllegalArgumentException {
+        return nor(1);
+    };
 
 
     /* <-------------------- operation --------------------> */
@@ -645,6 +671,50 @@ public class MathMatrix {
      */
     public @Nullable Object toArcVec() throws IllegalArgumentException {
         return toArcVec(this);
+    };
+
+
+    /* <-------------------- iterator --------------------> */
+
+
+    @Override
+    public Iterator<Double> iterator() {
+        if(iterator == null) iterator = new MathMatrixIterator();
+        return iterator;
+    };
+
+
+    private class MathMatrixIterator implements Iterator<Double> {
+
+
+        int ind = -1;
+        boolean done = true;
+
+
+        public int getRowInd() {
+            return ind / rowAmt;
+        };
+
+
+        public int getColInd() {
+            return ind % colAmt;
+        };
+
+
+        @Override
+        public boolean hasNext() {
+            if(ind >= rowAmt * colAmt - 1) done = true;
+            return ind < rowAmt * colAmt - 1;
+        };
+
+
+        @Override
+        public Double next() {
+            ind++;
+            if(ind >= rowAmt * colAmt) throw new NoSuchElementException(String.valueOf(ind));
+            return get(getColInd(), getRowInd());
+        };
+
     };
 
 

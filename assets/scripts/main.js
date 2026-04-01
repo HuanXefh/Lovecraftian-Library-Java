@@ -76,8 +76,62 @@
     DB_misc.db["block"]["migration"].forEachRow(2, (nm_f, nm_t) => SaveVersion.fallback.put(nm_f, nm_t));
 
 
-    // Register graph update methods
-    DB_misc.db["block"]["graphUpdate"].forEachRow(2, (graphType, fun) => {
+    // Register custom W/R chunk
+    SaveVersion.addCustomChunk("lovec-ext", extend(SaveFileReader.CustomChunk, {
+
+
+      LCRevi: 0,
+      tmpArr: [],
+
+
+      write(stream) {
+        stream.writeShort(this.LCRevi);
+
+        // Unit data
+        stream.writeInt(VARGEN.unitDataMap.size);
+        VARGEN.unitDataMap.each((unit, dataObj) => {
+          stream.writeFloat(unit.x);
+          stream.writeFloat(unit.y);
+          stream.writeUTF(unit.type.name);
+          stream.writeUTF(JSON.stringify(dataObj))
+        });
+        VARGEN.unitDataMap.clear();
+      },
+
+
+      read(stream) {
+        this.LCRevi = stream.readShort();
+
+        let i, iCap;
+
+        // Unit data
+        i = 0;
+        iCap = stream.readInt();
+        while(i < iCap) {
+          let x = stream.readFloat();
+          let y = stream.readFloat();
+          let str = stream.readUTF();
+          let json = stream.readUTF();
+          i++;
+
+          Time.run(1.0, () => {
+            let unit = MDL_pos._units(x, y, 2.0, this.tmpArr).inSituFilter(ounit => ounit.type.name == str).first();
+            if(unit != null && unit.delegee != null && unit.type.ex_isSubInsOf != null && unit.type.ex_isSubInsOf("UNIT_baseUnit")) {
+              unit.type.ex_readUnitData(unit, JSON.parse(json));
+            };
+          });
+        };
+      },
+
+
+    }));
+
+
+    // Register graph methods
+    DB_misc.db["block"]["graph"]["init"].forEachRow(2, (graphType, fun) => {
+      VARGEN.setGraphInit(graphType, fun);
+    });
+    DB_misc.db["block"]["graph"]["update"].forEachRow(2, (graphType, fun) => {
       VARGEN.setGraphUpdate(graphType, fun);
     });
 
