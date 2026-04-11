@@ -24,7 +24,7 @@
     this.initParam();
 
     this.root = CLS_window.getRootTable(this);
-    this.base = CLS_window.getBaseTable(this);
+    this.base = null;
   };
 
 
@@ -59,12 +59,6 @@
         downFontColor: Pal.accent,
         overFontColor: Color.white,
       }),
-      top: extend(TextButton.TextButtonStyle, {
-        font: Fonts.outline,
-        fontColor: Pal.techBlue,
-        downFontColor: Pal.techBlue,
-        overFontColor: Color.white,
-      }),
     });
   });
 
@@ -85,10 +79,12 @@
    * @return {Table}
    */
   CLS_window.getRootTable = function(win) {
-    const tb = new Table();
+    const tb = new Table().top();
     tb.tapped(() => {
       if(!Core.input.keyDown(KeyCode.controlLeft) && !Core.input.keyDown(KeyCode.controlRight)) selectedWins.clear();
       selectedWins.pushUnique(win);
+      Core.scene.root.getChildren().remove(tb);
+      Core.scene.root.getChildren().add(tb);
     });
     tb.update(() => {
       if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
@@ -108,9 +104,7 @@
    * @return {Table}
    */
   CLS_window.getBaseTable = function(win) {
-    const tb = new Table(Tex.whiteui);
-    win.root.top().add(tb).growX();
-    return tb;
+    return new Table(Tex.whiteui);
   };
 
 
@@ -169,6 +163,7 @@
     this.prefW = 0.0;
     this.prefH = 0.0;
     this.prefWCont = 0.0;
+    this.prefHCont = 0.0;
 
     this.minW = 320.0;
     this.maxW = 840.0;
@@ -185,25 +180,27 @@
    * Rebuilds the entire window.
    * @return {void}
    */
-  CLS_window.prototype.rebuild = function() {
-    const thisIns = this;
-    const base = this.base;
+  CLS_window.prototype.rebuild = function thisFun() {
+    const root = this.root;
+    root.clearChildren();
+    const base = CLS_window.getBaseTable(this);
+    this.base = base;
+    root.add(base).top().growX();
 
-    base.clearChildren();
     base.update(() => {
-      base.setColor(selectedWins.includes(thisIns) ? Pal.accent : Color.white);
+      base.setColor(selectedWins.includes(this) ? Pal.accent : Color.white);
     });
+    base.top();
 
-    let addPlaceholder = () => base.table(Styles.none, tb => {}).width(2.0).height(2.0);
     // Row 1
-    (3)._it(addPlaceholder);
+    (3)._it(() => thisFun.addPlaceholder(base));
     base.row();
     // Row 2 (contents)
-    addPlaceholder();
+    thisFun.addPlaceholder(base);
     base.table(Styles.none, tb => {
       // <TABLE>: title
       let titleCell = tb.table(Tex.whiteui, tb1 => {
-        tb1.left().setColor(thisIns.titleColor);
+        tb1.left().setColor(this.titleColor);
         tb1.dragged((dx, dy) => {
           selectedWins.forEachFast(win => {
             win.root.translation.x += mouseMoveX;
@@ -220,38 +217,47 @@
           tb2.button("X", btnStyles.close, () => selectedWins.forEachFast(win => win.close())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._term("lovec", "win-close"), true);
           // Minimize & restore
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button(thisIns.isHidden ? "L" : "S", btnStyles[thisIns.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._term("lovec", thisIns.isHidden ? "win-restore" : "win-minimize"), true);
-          // Top
-          tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button("T", btnStyles.top, () => selectedWins.forEachFast(win => win.top())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._term("lovec", "win-top"), true);
+          tb2.button(this.isHidden ? "L" : "S", btnStyles[this.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._term("lovec", this.isHidden ? "win-restore" : "win-minimize"), true);
           // Text
           tb2.table(Styles.none, tb3 => {}).width(16.0);
-          tb2.table(Styles.none, tb3 => tb3.add(thisIns.title));
+          tb2.table(Styles.none, tb3 => tb3.add(this.title));
           tb2.table(Styles.none, tb3 => {}).width(16.0);
         });
       }).growX();
       tb.row();
       // <TABLE>: contents
-      if(!this.isHidden) tb.table(Tex.whiteui, tb1 => {
-        tb1.left().setColor(thisIns.contColor);
-        MDL_table.__margin(tb1);
-        tb1.pane(pn => {
-          thisIns.tableF(pn);
-          thisIns.prefW = Mathf.clamp(pn.prefWidth, thisIns.minW, thisIns.maxW);
-          thisIns.prefH = Mathf.clamp(pn.prefHeight, thisIns.minH, thisIns.maxH);
-        }).width(thisIns.prefW).height(thisIns.prefH);
-        thisIns.prefWCont = tb1.prefWidth;
-      }).grow().row();
-      titleCell.width(thisIns.prefWCont);
+      if(!this.isHidden) {
+        tb.table(Tex.whiteui, tb1 => {
+          tb1.left().setColor(this.contColor);
+          MDL_table.__margin(tb1);
+          tb1.pane(pn => {
+            this.tableF(pn);
+            this.prefW = Mathf.clamp(pn.prefWidth, this.minW, this.maxW);
+            this.prefH = Mathf.clamp(pn.prefHeight, this.minH, this.maxH);
+          }).width(this.prefW).height(this.prefH);
+          this.prefWCont = tb1.prefWidth;
+          this.prefHCont = tb1.prefHeight;
+        }).grow().row();
+      };
+      titleCell.width(this.prefWCont);
     });
-    addPlaceholder();
+    thisFun.addPlaceholder(base);
     base.row();
     // Row 3
-    (3)._it(addPlaceholder);
+    (3)._it(() => thisFun.addPlaceholder(base));
+
+    if(this.isHidden) {
+      root.table(Styles.none, tb1 => {}).height(this.prefHCont);
+    };
 
     // Move the window table to center position
-    this.root.setPosition(MDL_ui._centerX(), MDL_ui._centerY() + this.root.getPrefHeight() * 0.5, Align.center);
-  };
+    root.setPosition(MDL_ui._centerX(), MDL_ui._centerY() + this.prefH * 0.5, Align.center);
+  }
+  .setProp({
+    addPlaceholder: function(tb) {
+      tb.table(Styles.none, tb1 => {}).width(2.0).height(2.0);
+    },
+  });
 
 
   /**
@@ -266,6 +272,7 @@
     };
 
     this.rebuild();
+    this.root.setPosition(MDL_ui._centerX(), MDL_ui._centerY() + this.prefH * 0.5, Align.center);
     Core.scene.add(this.root);
     this.added = true;
   };
@@ -295,30 +302,6 @@
 
     this.isHidden = !this.isHidden;
     this.rebuild();
-  };
-
-
-  /**
-   * Puts the window on top of others.
-   * This method technically creates a new table.
-   * @return {void}
-   */
-  CLS_window.prototype.top = function() {
-    if(!this.added) return;
-
-    let
-      tmpX = this.root.translation.x, tmpY = this.root.translation.y,
-      tmpMinW = this.minW, tmpMaxW = this.maxW,
-      tmpMinH = this.minH, tmpMaxH = this.maxH;
-    this.close();
-    this.init();
-    this.root = CLS_window.getRootTable(this);
-    this.base = CLS_window.getBaseTable(this);
-    this.setSizeRange(tmpMinW, tmpMaxW, tmpMinH, tmpMaxH);
-    this.add();
-    Time.run(1.0, () => {
-      this.root.translation.set(tmpX, tmpY);
-    });
   };
 
 

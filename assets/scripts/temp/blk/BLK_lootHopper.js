@@ -27,7 +27,7 @@
 
 
   function comp_setStats(blk) {
-    if(blk.lootCallIntv >= 1.0) blk.stats.add(Stat.itemsMoved, blk.lootCallAmt / blk.lootCallIntv * 60.0, StatUnit.itemsSecond);
+    if(blk.lootCallCooldown > 0.0) blk.stats.add(Stat.itemsMoved, blk.lootCallAmt / blk.lootCallCooldown * 60.0, StatUnit.itemsSecond);
   };
 
 

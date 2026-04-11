@@ -7,6 +7,7 @@
 
   /**
    * Methods related to objective flags and LSAV flags.
+   * @module lovec/mdl/MDL_flag
    */
 
 

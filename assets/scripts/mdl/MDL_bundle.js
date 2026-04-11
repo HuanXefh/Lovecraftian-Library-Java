@@ -7,6 +7,7 @@
 
   /**
    * Methods to read the bundle.
+   * @module lovec/mdl/MDL_bundle
    */
 
 

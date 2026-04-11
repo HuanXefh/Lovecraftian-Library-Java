@@ -8,6 +8,7 @@
   /**
    * Methods mostly related to spawning.
    * Well I don't know what this is for.
+   * @module lovec/mdl/MDL_call
    */
 
 

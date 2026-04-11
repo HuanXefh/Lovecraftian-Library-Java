@@ -35,7 +35,7 @@
 
   function comp_blendsArmored(blk, t, rot, otx, oty, orot, oblk) {
     // WTF is going on here
-    return Point2.equals(t.x + Geometry.d4[rot].x, t.y + Geometry.d4[rot].y, otx, oty) || ((!oblk.rotatedOutput(otx, oty, t) && Edges.getFacingEdge(oblk, otx, oty, t) != null && Edges.getFacingEdge(oblk, otx, oty, t).relativeTo(t) === rot) || (MDL_cond._isCable(oblk) && oblk.rotatedOutput(otx, oty, t) && Point2.equals(otx + Geometry.d4[orot].x, oty + Geometry.d4[orot].y, t.x, t.y)));
+    return Point2.equals(t.x + Geometry.d4[rot].x, t.y + Geometry.d4[rot].y, otx, oty) || ((!oblk.rotatedOutput(otx, oty, t) && Edges.getFacingEdge(oblk, otx, oty, t) != null && Edges.getFacingEdge(oblk, otx, oty, t).relativeTo(t) === rot) || (MDL_cond._isArmoredCable(oblk) && oblk.rotatedOutput(otx, oty, t) && Point2.equals(otx + Geometry.d4[orot].x, oty + Geometry.d4[orot].y, t.x, t.y)));
   };
 
 

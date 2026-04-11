@@ -17,7 +17,7 @@
 
 
   function comp_init(blk) {
-    MOD_tmi._r_recipe(blk, blk.rcMdl);
+    MOD_tmi._r_recipeFactory(blk, blk.rcMdl);
   };
 
 

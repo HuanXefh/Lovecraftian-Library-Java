@@ -7,6 +7,7 @@
 
   /**
    * Methods to get coorinates, tiles and entities.
+   * @module lovec/mdl/MDL_pos
    */
 
 

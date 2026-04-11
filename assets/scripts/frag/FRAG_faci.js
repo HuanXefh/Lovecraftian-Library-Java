@@ -7,6 +7,7 @@
 
   /**
    * Just random methods for random purpose.
+   * @module lovec/frag/FRAG_faci
    */
 
 

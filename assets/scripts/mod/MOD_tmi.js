@@ -7,6 +7,7 @@
 
   /**
    * Mainly used for recipe registration to TMI.
+   * @module lovec/mod/MOD_tmi
    */
 
 
@@ -465,7 +466,7 @@
    * @param {boolean|unset} [isWallEffc]
    * @return {void}
    */
-  const _r_dynaAttr = function(blk, attrRsArr, typeStr_ow, isWallEffc) {
+  const _r_dynamicAttributeBlock = function(blk, attrRsArr, typeStr_ow, isWallEffc) {
     if(!ENABLED) return;
 
     MDL_event._c_onLoad(() => {
@@ -487,7 +488,44 @@
       });
     });
   };
-  exports._r_dynaAttr = _r_dynaAttr;
+  exports._r_dynamicAttributeBlock = _r_dynamicAttributeBlock;
+
+
+  /**
+   * Registers extra recipes for {@link BLK_terrainDynamicDrill}.
+   * @param {Block} blk
+   * @param {ObjectMap} terItmMapMap
+   * @return {void}
+   */
+  const _r_terrainDynamicDrill = function(blk, terItmMapMap) {
+    if(!ENABLED) return;
+
+    MDL_event._c_onLoad(() => {
+      terItmMapMap.each((nmItm, terItmMap) => {
+        let itm = MDL_content._ct(nmItm, "rs");
+        if(itm == null) return;
+        let oreGrpMap = new ObjectMap();
+        terItmMap.each((ter, nmRs) => {
+          let rs = MDL_content._ct(nmRs, "rs");
+          if(rs == null) return;
+          if(!oreGrpMap.containsKey(rs)) oreGrpMap.put(rs, new CLASSES.RecipeItemGroup());
+
+          let rawRc = _rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2), true);
+          baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
+          Vars.content.blocks().each(
+            oblk => oblk.itemDrop === itm && ((oblk instanceof OverlayFloor) ? !oblk.wallOre : (oblk instanceof Floor)),
+            oblk => addMineTile(rawRc, oreGrpMap.get(rs), oblk, blk.drillTime / blk.getDrillTime(itm), blk.size, false),
+          );
+          addProd(rawRc, rs, 1);
+          addSubInfo(rawRc, MDL_text._statText(fetchStat("lovec", "blk-terreq").localized(), MDL_terrain._terB(ter)));
+
+          rawRc.complete();
+          regisRc(rawRc);
+        });
+      });
+    });
+  };
+  exports._r_terrainDynamicDrill = _r_terrainDynamicDrill;
 
 
   /**
@@ -549,7 +587,7 @@
    * @param {RecipeModule} rcMdl
    * @return {void}
    */
-  const _r_recipe = function thisFun(blk, rcMdl) {
+  const _r_recipeFactory = function thisFun(blk, rcMdl) {
     if(!ENABLED) return;
 
     if(thisFun.tmpSeq.size === 0) {
@@ -690,4 +728,4 @@
   .setProp({
     tmpSeq: new Seq(),
   });
-  exports._r_recipe = _r_recipe;
+  exports._r_recipeFactory = _r_recipeFactory;

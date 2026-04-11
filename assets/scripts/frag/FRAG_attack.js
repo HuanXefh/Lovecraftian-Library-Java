@@ -7,6 +7,7 @@
 
   /**
    * Methods to deal damage, heal, and create events that deal damage.
+   * @module lovec/frag/FRAG_attack
    */
 
 

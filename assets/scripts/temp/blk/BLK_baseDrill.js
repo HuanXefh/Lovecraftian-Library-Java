@@ -98,7 +98,8 @@
     };
 
     if(blk.shouldDropPay) {
-      if(DB_HANDLER.read("itm-pay-blk", itm.name, null) == null) return false;
+      let payBlk = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+      if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
     };
 
     return blk.ex_calcDropHardness(oblk, itm) <= blk.tier * tierMtp;

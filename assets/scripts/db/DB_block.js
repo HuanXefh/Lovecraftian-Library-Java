@@ -1,5 +1,6 @@
 /**
  * Database of block properties. Does not include environmental blocks.
+ * @module lovec/db/DB_block
  */
 
 

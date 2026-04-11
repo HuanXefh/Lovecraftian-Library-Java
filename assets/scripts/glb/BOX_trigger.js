@@ -1,5 +1,6 @@
 /**
  * A collection of event triggers.
+ * @module lovec/glb/BOX_trigger
  */
 
 

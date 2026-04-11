@@ -1,5 +1,6 @@
 /**
  * Database of item properties and recipe data.
+ * @module lovec/db/DB_item
  */
 
 
@@ -94,6 +95,9 @@ const db = {
       mixing: [],
 
 
+      ballMillMixing: [],
+
+
       mixingLiquid: [],
 
 
@@ -103,7 +107,7 @@ const db = {
       filtrationLiquid: [],
 
 
-      ballMillMixing: [],
+      pulverization: [],
 
 
       purificationI: [],

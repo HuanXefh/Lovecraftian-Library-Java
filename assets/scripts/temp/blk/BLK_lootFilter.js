@@ -26,12 +26,14 @@
 
 
   function comp_load(blk) {
+    blk.sideReg1 = fetchRegion(blk, "-side1", "-side");
+    blk.sideReg2 = fetchRegion(blk, "-side2", "-side");
     blk.itemReg = fetchRegion(blk, "-item");
   };
 
 
   function comp_setStats(blk) {
-    if(blk.lootCallIntv >= 1.0) blk.stats.add(Stat.itemsMoved, blk.lootCallAmt / blk.lootCallIntv * 60.0, StatUnit.itemsSecond);
+    if(blk.lootCallCooldown > 0.0) blk.stats.add(Stat.itemsMoved, blk.lootCallAmt / blk.lootCallCooldown * 60.0, StatUnit.itemsSecond);
   };
 
 
@@ -47,6 +49,10 @@
 
 
   function comp_draw(b) {
+    b.drawTeamTop();
+
+    Draw.rect(b.block.region, b.x, b.y);
+    MDL_draw._reg_side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
     if(b.ctTg != null) {
       Draw.color(b.ctTg.color);
       Draw.rect(b.block.delegee.itemReg, b.x, b.y, b.drawrot());
@@ -68,7 +74,7 @@
       if(loot.stack.amount <= amt) {
         loot.x = b.lootDumpVec2.x;
         loot.y = b.lootDumpVec2.y;
-        loot.ex_resetLifetime();
+        loot.type.ex_resetLifetime(loot);
       } else {
         MDL_call.spawnLoot_server(b.lootDumpVec2.x, b.lootDumpVec2.y, loot.item(), amt, 0.0);
         loot.stack.amount -= amt;
@@ -107,6 +113,18 @@
        * @memberof BLK_lootFilter
        * @instance
        */
+      sideReg1: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_lootFilter
+       * @instance
+       */
+      sideReg2: null,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_lootFilter
+       * @instance
+       */
       itemReg: null,
 
 
@@ -138,7 +156,7 @@
      * @extends INTF_B_contentSelector
      */
     newClass().extendClass(PARENT[1], "B_lootFilter").implement(INTF[1]).initClass()
-    .setParent(WallBlock.WallBuild)
+    .setParent(Wall.WallBuild)
     .setParam({
 
 
@@ -169,7 +187,10 @@
 
       draw: function() {
         comp_draw(this);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       write: function(wr) {

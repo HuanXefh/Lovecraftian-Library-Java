@@ -125,7 +125,9 @@
       };
       if(ob.acceptLiquid(b, VARGEN.auxRpm)) {
         ob.handleLiquid(b, VARGEN.auxRpm, rate2 * b.edelta());
-        if(TIMER.secFive) b.ex_updateRpmDmg(ob, rate2, MDL_recipeDict._consAmt(VARGEN.auxRpm, ob.block));
+      };
+      if(TIMER.secFive && ob.block.consumesLiquid(VARGEN.auxRpm)) {
+        b.ex_updateRpmDmg(ob, rate2, MDL_recipeDict._consAmt(VARGEN.auxRpm, ob.block));
       };
 
       i += 2;
@@ -136,7 +138,11 @@
   function comp_ex_updateRpmDmg(b, ob, rateAdd, rateCons) {
     if(rateCons < 0.0001 || rateAdd <= rateCons * 3.0) return;
 
-    FRAG_attack.damage(ob, ob.maxHealth * (VAR.blk_rpmDmgFrac + (rateAdd - rateCons * 3.0) / rateCons), 0.0);
+    Core.app.post(() => {
+      // I have to delay this or crash happens somehow, idk why
+      ob.damagePierce(ob.maxHealth * (VAR.blk_rpmDmgFrac + (rateAdd - rateCons * 3.0) / rateCons));
+    });
+    MDL_effect._e_textFade(ob.x, ob.y, MDL_bundle._info("lovec", "rpm-overdrive"), Pal.remove, ob.block.size * 0.5);
   };
 
 
@@ -162,7 +168,7 @@
     b.torSupplyTgs.clear();
     b.proximity.each(ob => {
       if(ob.block instanceof LiquidVoid) {
-        b.torSupplyTgs.push(ob, 100.0 / 60.0)
+        b.torSupplyTgs.push(ob, 100.0 / 60.0);
       } else if(ob.block.consumesLiquid(VARGEN.auxTor) || ob.block.consumesLiquid(VARGEN.auxRpm)) {
         b.torSupplyTgs.push(ob, MDL_recipeDict._consAmt(VARGEN.auxTor, ob.block));
       };

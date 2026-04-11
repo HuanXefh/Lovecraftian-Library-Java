@@ -8,6 +8,7 @@
   /**
    * Static effects used widely.
    * This module is simply used to prevent duplication of effects, which renders .json files a mess.
+   * @module lovec/glb/GLB_eff
    */
 
 

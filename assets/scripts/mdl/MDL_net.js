@@ -7,6 +7,7 @@
 
   /**
    * Methods related to network.
+   * @module lovec/mdl/MDL_net
    */
 
 

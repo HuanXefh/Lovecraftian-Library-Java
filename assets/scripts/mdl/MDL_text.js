@@ -7,6 +7,7 @@
 
   /**
    * Methods to process texts.
+   * @module lovec/mdl/MDL_text
    */
 
 

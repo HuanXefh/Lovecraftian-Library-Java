@@ -7,6 +7,7 @@
 
   /**
    * The bedrock for multi-crafters.
+   * @module lovec/mdl/MDL_recipe
    */
 
 
@@ -326,12 +327,12 @@
    */
   const _icon = function(rcMdl, rcHeader, notContent) {
     let iconNm = _iconNm(rcMdl, rcHeader);
-    if(notContent) return new TextureRegionDrawable(Core.atlas.find(iconNm));
+    if(notContent) return new TextureRegionDrawable(Core.atlas.find(iconNm)).tint(_rcVal(rcMdl, rcHeader, "tint", Color.white));
     let ct = MDL_content._ct(iconNm, null, true);
 
     return ct == null ?
       Icon.cancel :
-      new TextureRegionDrawable(ct.uiIcon);
+      new TextureRegionDrawable(ct.uiIcon).tint(_rcVal(rcMdl, rcHeader, "tint", Color.white));
   };
   exports._icon = _icon;
 
@@ -777,7 +778,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addFldConsTerm(
           blkInit, ct, amt,
-          {ct: _iconNm(rcMdl, rcHeader)},
+          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
         );
       });
       i += 2;
@@ -808,11 +809,11 @@
         ct instanceof Item ?
           MDL_recipeDict.addItmConsTerm(
             blkInit, ct, amt / tryVal(timeSclInit, 1.0), p,
-            {ct: _iconNm(rcMdl, rcHeader)},
+            {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
           ) :
           MDL_recipeDict.addFldConsTerm(
             blkInit, ct, amt / blkInit.craftTime / tryVal(timeSclInit, 1.0),
-            {ct: _iconNm(rcMdl, rcHeader)},
+            {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
           );
       });
       i += 3;
@@ -841,7 +842,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addFldConsTerm(
           blkInit, ct, amt,
-          {ct: _iconNm(rcMdl, rcHeader)},
+          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
         );
       });
       i += 2;
@@ -859,7 +860,7 @@
    * @return {boolean}
    */
   const _reqOpt = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "reqOpt", false);
+    return _rcVal(rcMdl, rcHeader, "reqOpt", _rcBaseVal(rcMdl, "baseReqOpt", false));
   };
   exports._reqOpt = _reqOpt;
 
@@ -883,7 +884,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addItmConsTerm(
           blkInit, ct, amt, p,
-          {ct: _iconNm(rcMdl, rcHeader), icon: "lovec-icon-boost"},
+          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true), icon: "lovec-icon-boost"},
         );
       });
       i += 4;
@@ -912,7 +913,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addPayConsTerm(
           blkInit, ct, amt,
-          {ct: _iconNm(rcMdl, rcHeader)},
+          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
         );
       });
       i += 2;
@@ -941,7 +942,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addFldProdTerm(
           blkInit, ct, amt,
-          {ct: _iconNm(rcMdl, rcHeader)},
+          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
         );
       });
       i += 2;
@@ -972,7 +973,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addItmProdTerm(
           blkInit, ct, amt / tryVal(timeSclInit, 1.0), p * (failPInit == null ? 1.0 : (1.0 - failPInit)),
-          {ct: _iconNm(rcMdl, rcHeader)},
+          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
         );
       });
       i += 3;
@@ -1015,7 +1016,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addItmProdTerm(
           blkInit, ct, amt / tryVal(timeSclInit, 1.0), p * (failPInit == null ? 0.0 : failPInit),
-          {ct: _iconNm(rcMdl, rcHeader)},
+          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
         );
       });
       i += 3;
@@ -1045,7 +1046,7 @@
         if(blkInit == null) return;
         MDL_recipeDict.addPayProdTerm(
           blkInit, ct, amt / tryVal(timeSclInit, 1.0),
-          {ct: _iconNm(rcMdl, rcHeader)},
+          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
         );
       });
       i += 2;

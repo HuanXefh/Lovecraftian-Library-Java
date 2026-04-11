@@ -7,6 +7,7 @@
 
   /**
    * Collection of recipe generators.
+   * @module lovec/tp/TP_recipeGen
    */
 
 
@@ -505,7 +506,26 @@
       maxHardness = readParam(paramObj, "maxHardness", Infinity),
       abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
 
-    VARGEN.intmds["rs-dust"].forEachCond(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2"), itm => {
+    DB_item.db["map"]["recipe"]["pulverization"].forEachRow(2, (nmItm, paramObj) => {
+      let
+        hardness = readParam(paramObj, "hardness", 0),
+        rawBi = readParam(paramObj, "bi", Array.air);
+
+      let itm = MDL_content._ct(nmItm, "rs");
+      if(itm == null) return;
+      if(!boolF(itm)) return;
+
+      this.addRc(
+        rc, itm.name, "pulverization", "specific",
+        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 1.5 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
+        new CLS_recipeBuilder()
+        .__bi(this.parseRawBi(rawBi, amtO, pO))
+        .__bo(this.processBo(itm, amtO, pO, paramObj))
+        .build(),
+      );
+    });
+
+    VARGEN.intmds["rs-dust"].forEachCond(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitm => itm.delegee.intmdParent === oitm.delegee.intmdParent), itm => {
       let itmParent = itm.delegee.intmdParent;
       if(itmParent == null) return;
       let hardness = itmParent.hardness;
@@ -555,8 +575,8 @@
         rc, itm.name, "roasting", null,
         obj => {this.setBaseParam(obj, paramObj); objF(obj)},
         new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI))
-        .__bo(this.processBo(itmTg, amtO, pO))
+        .__bi(this.processBi(itm, amtI, pI, paramObj))
+        .__bo(this.processBo(itmTg, amtO, pO, paramObj))
         .build(),
       );
     });
@@ -578,19 +598,20 @@
       amtO = readParam(paramObj, "amtO", 1),
       pO = readParam(paramObj, "pO", 1.0),
       maxTemp = readParam(paramObj, "maxTemp", Infinity),
-      maxFlam = readParam(paramObj, "maxFlam", Infinity);
+      maxFlam = readParam(paramObj, "maxFlam", Infinity),
+      ignoreSintTemp = readParam(paramObj, "ignoreSintTemp", false);
 
     if(!isConcentrate) {
       VARGEN.intmds["rs-dust"].forEachCond(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2"), itm => {
         let itmParent = itm.delegee.intmdParent;
         if(itmParent == null) return;
-        let tempReq = DB_HANDLER.read("itm-sint-temp", itmParent);
+        let tempReq = ignoreSintTemp ? Infinity : DB_HANDLER.read("itm-sint-temp", itmParent, -1.0);
         if(tempReq < 0.0) return;
-        if(!boolF(itm, itmParent) || tempReq > maxTemp || itm.flammability > maxFlam || itmParent.flammability > maxFlam) return;
+        if(!boolF(itm, itmParent) || (!ignoreSintTemp && tempReq > maxTemp) || itm.flammability > maxFlam || itmParent.flammability > maxFlam) return;
 
         this.addRc(
           rc, itm.name, "sintering", null,
-          obj => {obj.tempReq = tempReq; objF(obj)},
+          obj => {if(!ignoreSintTemp) {obj.tempReq = tempReq}; objF(obj)},
           new CLS_recipeBuilder()
           .__bi(this.processBi(itm, amtI, pI))
           .__bo(this.processBo(itmParent, amtO, pO))
@@ -598,18 +619,18 @@
         );
       });
     } else {
-      VARGEN.intmds["rs-chunks"].concat(VARGEN.intmds["rs-dust"]).filter(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")).forEachFast(itm => {
+      VARGEN.intmds["rs-chunks"].concat(VARGEN.intmds["rs-dust"]).filter(itm => itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")).forEachFast(itm => {
         let itmParent = itm.delegee.intmdParent;
         if(itmParent == null) return;
         let itmTg = MDL_content._intmd(itm, "rs-ore0conc");
         if(itmTg == null) return;
-        let tempReq = DB_HANDLER.read("itm-sint-temp", itmParent);
+        let tempReq = ignoreSintTemp ? Infinity : DB_HANDLER.read("itm-sint-temp", itmParent, -1.0);
         if(tempReq < 0.0) return;
-        if(!boolF(itm, itmParent, itmTg) || tempReq > maxTemp || itm.flammability > maxFlam || itmParent.flammability > maxFlam || itmTg.flammability > maxFlam) return;
+        if(!boolF(itm, itmParent, itmTg) || (!ignoreSintTemp && tempReq > maxTemp) || itm.flammability > maxFlam || itmParent.flammability > maxFlam || itmTg.flammability > maxFlam) return;
 
         this.addRc(
           rc, itmTg.name, "concentrate-sintering", null,
-          obj => {obj.tempReq = tempReq; objF(obj)},
+          obj => {if(!ignoreSintTemp) {obj.tempReq = tempReq}; objF(obj)},
           new CLS_recipeBuilder()
           .__bi(this.processBi(itm, amtI, pI))
           .__bo(this.processBo(itmTg, amtO, pO))
@@ -647,7 +668,7 @@
         rc, itm.name, "smelting", null,
         obj => {this.setBaseParam(obj, paramObj); objF(obj)},
         new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI))
+        .__bi(this.processBi(itm, amtI, pI, paramObj))
         .__bo(this.parseRawBo(rawBo, amtI, pI))
         .build(),
       );

@@ -7,6 +7,7 @@
 
   /**
    * A nightmare of tables, that's all.
+   * @module lovec/mdl/MDL_table
    */
 
 
@@ -503,7 +504,7 @@
           tb3.add(str).left().fontScale(0.85).style(Styles.outlineLabel);
         });
       }).padRight(6.0);
-    }).left().padRight(12.0).padTop(4.0).padBottom(4.0);
+    }).left().padRight(9.0).padTop(4.0).padBottom(4.0);
   };
   exports.__rcCt = __rcCt;
 
@@ -1084,28 +1085,40 @@
         let payo = MDL_recipe._payo(rcMdl, rcHeader);
 
         // <TABLE>: recipe root
-        rcRoot.table(Tex.whiteui, tb1 => {
-          tb1.left().setColor(Pal.darkestGray);
-
-          buildOrder(tb1, i);
+        let rcTb = new Table(Tex.whiteui);
+        rcTb.left().setColor(Pal.darkestGray);
+        buildOrder(rcTb, i, tb1 => {
           tb1.table(Styles.none, tb2 => {}).left().width(36.0).growY();
           buildInput(tb1, ci, bi, aux, opt, payi);
           tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
           buildOutput(tb1, co, bo, fo, payo);
           buildRcStats(tb1, rcMdl, rcHeader);
-        }).left().growX().row();
+        });
+        rcTb.table(Styles.none, tb1 => {}).left().width(36.0).growY();
+        buildInput(rcTb, ci, bi, aux, opt, payi);
+        rcTb.table(Styles.none, tb1 => {}).left().width(48.0).growX().growY();
+        buildOutput(rcTb, co, bo, fo, payo);
+        buildRcStats(rcTb, rcMdl, rcHeader);
+        rcRoot.add(rcTb).left().growX().row();
         __bar(rcRoot, Color.valueOf("303030"), null, 1.0);
 
         i++;
       });
     };
 
-    const buildOrder = (tb, i) => {
+    const buildOrder = (tb, i, winTableF) => {
       tb.table(Styles.none, tb1 => {
         tb1.left();
         tb1.table(Styles.none, tb2 => {
           tb2.center();
-          tb2.add("[" + Strings.fixed(i, 0) + "]").color(Pal.accent);
+          tb2.add("[" + Strings.fixed(i, 0) + "]").color(Pal.accent).row();
+          tb2.add("").row();
+          tb2.button(VARGEN.icons.window, Styles.clearNonei, 28.0, () => {
+            new CLS_window(
+              "${1} (${2})".format(MDL_bundle._term("lovec", "recipe"), blk.localizedName + " [${1}]".format(i)),
+              tb1 => winTableF(tb1),
+            ).add();
+          }).tooltip(MDL_bundle._term("lovec", "new-window"), true);
         }).width(72.0);
         __barV(tb1, Pal.accent);
       }).left().growY();
@@ -1119,7 +1132,7 @@
         if(aux.length > 0) buildAux(tb1, aux);
         if(opt.length > 0) buildOpt(tb1, opt);
         if(payi.length > 0) buildPayi(tb1, payi);
-        tb1.table(Styles.none, tb2 => {}).left().width(24.0).growX().growY();
+        tb1.table(Styles.none, tb2 => {}).left().width(18.0).growX().growY();
       }).left().growY();
     };
 
@@ -1330,7 +1343,7 @@
                 });
               })).row();
             };
-          }).height(120.0).growX();
+          }).height(100.0).padTop(20.0).padBottom(20.0).growX();
         }).left().width(360.0).growX();
         tb1.table(Styles.none, tb2 => {}).width(20.0);
       }).growY();

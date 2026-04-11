@@ -7,6 +7,7 @@
 
   /**
    * Handles liquid puddle.
+   * @module lovec/frag/FRAG_puddle
    */
 
 

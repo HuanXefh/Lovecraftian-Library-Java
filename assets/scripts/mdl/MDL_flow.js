@@ -7,6 +7,7 @@
 
   /**
    * Methods related to fluids and abstract fluids.
+   * @module lovec/mdl/MDL_flow
    */
 
 

@@ -9,6 +9,7 @@
    * Lovec creates .lsav files for each save in "Mindustry/saves/mods/data/Lovec/saves".
    * Similarly, .plsav files are created for saves of the same planet (in campaign).
    * LSAV fields are registered in {@link DB_misc}.
+   * @module lovec/glb/GLB_save
    */
 
 

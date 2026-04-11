@@ -70,7 +70,7 @@
                 blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
                 if(blkTg == null) return;
               };
-              if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new RecipeItemGroup());
+              if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
 
               let rawRc = !blk.delegee.shouldDropPay ?
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime / blk.size, true) :
@@ -104,7 +104,7 @@
                 blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
                 if(blkTg == null) return;
               };
-              if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new RecipeItemGroup());
+              if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
 
               let rawRc = !blk.delegee.shouldDropPay ?
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2), true) :
@@ -142,7 +142,9 @@
         MOD_tmi.CLASSES.AttributeCrafterParser,
         MOD_tmi.CLASSES.GenericCrafterParser,
       ],
-      tempTypeMap: ObjectMap.of(),
+      tempTypeMap: ObjectMap.of(
+        "BLK_oreScanner", "factory",
+      ),
       tempBlacklist: [
         "BLK_rainCollector",
       ],

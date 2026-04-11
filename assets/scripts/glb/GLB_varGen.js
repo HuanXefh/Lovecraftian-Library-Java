@@ -7,6 +7,7 @@
 
   /**
    * Most generated parameters, some are only populated after CLIENT LOAD.
+   * @module lovec/glb/GLB_varGen
    */
 
 
@@ -126,6 +127,25 @@
 
 
   exports.achievements = [];
+
+
+  /* <---------- remains ----------> */
+
+
+  const blkRemainsMap = new ObjectMap();
+  exports.blkRemainsMap = blkRemainsMap;
+  const unitRemainsArr = [];
+  exports.unitRemainsArr = unitRemainsArr;
+
+
+  MDL_event._c_onLoad(() => {
+
+    TRIGGER.mapChange.addGlobalListener(() => {
+      blkRemainsMap.clear();
+      unitRemainsArr.clear();
+    });
+
+  });
 
 
   /* <---------- unit data ----------> */

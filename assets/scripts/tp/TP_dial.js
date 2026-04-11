@@ -7,6 +7,7 @@
 
   /**
    * Registers new dialogs.
+   * @module lovec/tp/TP_dial
    */
 
 
@@ -450,8 +451,8 @@
                 let btn = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
                   this.hide();
                   Vars.ui.content.show(oct);
-                }).left().get();
-                btn.getStyle().imageUp = new TextureRegionDrawable(oct.uiIcon);
+                }).left().tooltip(tryVal(data.ctText, oct.localizedName), true).get();
+                btn.getStyle().imageUp = new TextureRegionDrawable(oct.uiIcon).tint(tryVal(data.ctTint, Color.white));
               };
               // <TABLE>: tag icon
               if(data.icon != null) {

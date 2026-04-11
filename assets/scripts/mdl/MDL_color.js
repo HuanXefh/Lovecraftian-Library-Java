@@ -7,6 +7,7 @@
 
   /**
    * Handles color, mostly Arc color.
+   * @module lovec/mdl/MDL_color
    */
 
 

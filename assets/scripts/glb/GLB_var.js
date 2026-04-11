@@ -8,6 +8,7 @@
   /**
    * Most basic static parameters, just like {@link Vars} in Mindustry.
    * Do not import anything here!
+   * @module lovec/glb/GLB_var
    */
 
 

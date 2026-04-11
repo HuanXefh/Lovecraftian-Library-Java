@@ -7,6 +7,7 @@
 
   /**
    * Methods related to fuels, used mostly for {@link INTF_BLK_furnaceBlock}.
+   * @module lovec/mdl/MDL_fuel
    */
 
 

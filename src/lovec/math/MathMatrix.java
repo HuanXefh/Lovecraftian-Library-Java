@@ -64,6 +64,29 @@ public class MathMatrix implements Iterable<Double> {
 
 
     /**
+     * Gets arbitrary rotation matrix.
+     */
+    public static MathMatrix getRotMat(int n, int p, int q, float ang) throws IllegalArgumentException {
+        if(p == q) throw new IllegalArgumentException("`p` and `q` cannot be equal in a rotation matrix!");
+        double[][] matArr = new double[n][n];
+        for(int j = 0; j < n; j++) {
+            for(int i = 0; i < n; i++) {
+                if((i == p && j == p) || (i == q && j == q)) {
+                    matArr[j][i] = Mathf.cosDeg(ang);
+                } else if(i == p && j == q) {
+                    matArr[j][i] = Mathf.sinDeg(ang);
+                } else if(i == q && j == p) {
+                    matArr[j][i] = -Mathf.sinDeg(ang);
+                } else {
+                    matArr[j][i] = i == j ? 1 : 0;
+                };
+            };
+        };
+        return new MathMatrix(matArr);
+    };
+
+
+    /**
      * Gets a 2D-rotation matrix.
      */
     public static MathMatrix getRotMat2d(float ang) {
@@ -155,7 +178,7 @@ public class MathMatrix implements Iterable<Double> {
 
 
     /**
-     * Whether this matrix can multiply with `mat`.
+     * Whether this matrix can multiply with {@code mat}.
      */
     public boolean canMultiply(MathMatrix mat) {
         return canMultiply(mat.data);
@@ -438,6 +461,32 @@ public class MathMatrix implements Iterable<Double> {
     };
 
 
+    /**
+     * Converts length index into row index of this matrix.
+     */
+    public int indToRowInd(int ind) throws ArrayIndexOutOfBoundsException {
+        if(ind >= rowAmt * colAmt) throw new ArrayIndexOutOfBoundsException(ind);
+        return ind / rowAmt;
+    };
+
+
+    /**
+     * Converts length index into column index of this matrix.
+     */
+    public int indToColInd(int ind) throws ArrayIndexOutOfBoundsException {
+        if(ind >= rowAmt * colAmt) throw new ArrayIndexOutOfBoundsException(ind);
+        return ind % colAmt;
+    };
+
+
+    /**
+     * Converts matrix indexes back into length index.
+     */
+    public int matIndToInd(int colInd, int rowInd) {
+        return rowInd * rowAmt + colInd % colAmt;
+    };
+
+
     public double[] toArray() {
         var arr = new double[rowAmt * colAmt];
         for(int j = 0; j < rowAmt; j++) {
@@ -691,16 +740,6 @@ public class MathMatrix implements Iterable<Double> {
         boolean done = true;
 
 
-        public int getRowInd() {
-            return ind / rowAmt;
-        };
-
-
-        public int getColInd() {
-            return ind % colAmt;
-        };
-
-
         @Override
         public boolean hasNext() {
             if(ind >= rowAmt * colAmt - 1) done = true;
@@ -712,7 +751,7 @@ public class MathMatrix implements Iterable<Double> {
         public Double next() {
             ind++;
             if(ind >= rowAmt * colAmt) throw new NoSuchElementException(String.valueOf(ind));
-            return get(getColInd(), getRowInd());
+            return get(indToColInd(ind), indToRowInd(ind));
         };
 
     };

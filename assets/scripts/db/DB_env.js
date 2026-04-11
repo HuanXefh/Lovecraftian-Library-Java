@@ -1,5 +1,6 @@
 /**
  * Database of environmental blocks, planets and maps, basically everything related to a map.
+ * @module lovec/db/DB_env
  */
 
 

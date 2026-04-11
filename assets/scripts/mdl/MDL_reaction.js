@@ -7,6 +7,7 @@
 
   /**
    * Methods to process reactions (mostly chemical) between resource.
+   * @module lovec/mdl/MDL_reaction
    */
 
 

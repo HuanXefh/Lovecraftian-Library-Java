@@ -7,6 +7,7 @@
 
   /**
    * Methods to check conditions.
+   * @module lovec/mdl/MDL_cond
    */
 
 

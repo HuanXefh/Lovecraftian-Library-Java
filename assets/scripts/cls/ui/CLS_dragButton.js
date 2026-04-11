@@ -19,6 +19,10 @@
   CLS_dragButton.prototype.init = function() {
     this.isHidden = false;
     this.isLoaded = false;
+    /**
+     * <TUP>: nm, icon, isToggle, clickScr, updateScr
+     * @type {Array<Array<[string|null, BaseDrawable, boolean, Function, Function]>>}
+     */
     this.btnData = [
       [], [], [], [], [],
       [], [], [], [], [],
@@ -149,11 +153,17 @@
       while(i < iCap) {
         this.btnData[i].forEachFast(tup => {
           this.colCounts[i + 1]++;
-          btnCell = btns.button(tup[1], tup[2] ? Styles.clearTogglei : Styles.cleari, tup[3]).size(btnSize);
-          if(tup[0] != null) btnCell.tooltip(tup[0], true);
-          if(tup[4] != null) {
+          let nm = tup[0];
+          let icon = tup[1];
+          let isToggle = tup[2];
+          let clickScr = tup[3];
+          let updateScr = tup[4];
+
+          btnCell = btns.button(icon, isToggle ? Styles.clearTogglei : Styles.cleari, clickScr).size(btnSize);
+          if(nm != null) btnCell.tooltip(nm, true);
+          if(updateScr != null) {
             let btn = btnCell.get();
-            btnCell.update(() => tup[4].call(btn));
+            btnCell.update(() => updateScr.call(btn));
           };
         });
         btns.row();

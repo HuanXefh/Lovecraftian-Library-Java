@@ -7,6 +7,7 @@
 
   /**
    * Methods specifically used by {@link BLK_recipeFactory}.
+   * @module lovec/frag/FRAG_recipe
    */
 
 

@@ -9,6 +9,7 @@
    * Methods related to Arc {@link Fi} class.
    * Also provides methods to read/write files.
    * For JSON-related methods, see {@link MDL_json}.
+   * @module lovec/mdl/MDL_file
    */
 
 

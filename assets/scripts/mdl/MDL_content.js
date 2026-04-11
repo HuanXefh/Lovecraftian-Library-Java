@@ -7,6 +7,7 @@
 
   /**
    * Methods to read contents and their properties.
+   * @module lovec/mdl/MDL_content
    */
 
 

@@ -8,6 +8,7 @@
   /**
    * Handles bit, a currency provided by Lovec.
    * Bit data is saved for each map.
+   * @module lovec/mdl/MDL_market
    */
 
 

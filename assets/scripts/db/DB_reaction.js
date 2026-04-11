@@ -1,5 +1,6 @@
 /**
  * Database of reaction properties used in {@link MDL_reaction}.
+ * @module lovec/db/DB_reaction
  */
 
 

@@ -7,6 +7,7 @@
 
   /**
    * Methods related to attribute and dynamic attribute calculation.
+   * @module lovec/mdl/MDL_attr
    */
 
 

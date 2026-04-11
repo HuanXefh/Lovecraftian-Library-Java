@@ -258,7 +258,9 @@
       scl: readParam(paramObj, "scl", 30.0),
       recur: readParam(paramObj, "recur", 6.0),
       isFilled: readParam(paramObj, "isFilled", false),
+      noLiqCheck: readParam(paramObj, "noLiqCheck", true),
       rand: new Rand(),
+      noLiqCdMap: new ObjectMap(),
 
 
       load(blk) {
@@ -269,6 +271,18 @@
       draw(b) {
         let warmup = tryProp(b.warmup, b);
         if(warmup < 0.01) return;
+        if(this.noLiqCheck) {
+          if(!this.noLiqCdMap.containsKey(b)) this.noLiqCdMap.put(b, 0.0);
+          let cd = this.noLiqCdMap.get(b);
+          if(b.liquids.currentAmount() < 0.01 || MDL_cond._isAuxiliaryFluid(b.liquids.current())) {
+            cd = Math.min(cd + 1.0, 20.0);
+            this.noLiqCdMap.put(b, cd);
+          } else {
+            cd = Mathf.maxZero(cd - 1.0);
+            this.noLiqCdMap.put(b, cd);
+          };
+          if(cd >= 20.0) return;
+        };
 
         Draw.color(this.color, this.color.a * warmup);
         this.rand.setSeed(b.id);

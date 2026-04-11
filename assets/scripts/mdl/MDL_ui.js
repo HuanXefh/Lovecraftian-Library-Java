@@ -7,6 +7,7 @@
 
   /**
    * A mess of UI and dialog flow methods.
+   * @module lovec/mdl/MDL_ui
    */
 
 

@@ -7,6 +7,7 @@
 
   /**
    * Collection of attributes.
+   * @module lovec/tp/TP_attr
    */
 
 

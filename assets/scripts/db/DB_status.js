@@ -1,5 +1,6 @@
 /**
  * Database of status effect properties.
+ * @module lovec/db/DB_status
  */
 
 

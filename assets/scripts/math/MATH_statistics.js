@@ -7,6 +7,7 @@
 
   /**
    * Methods for statistical calculation.
+   * @module lovec/math/MATH_statistics
    */
 
 
@@ -55,6 +56,34 @@
     return Math.sqrt(_diffVari(xs, ys, notSample));
   };
   exports._diffStdDev = _diffStdDev;
+
+
+  /**
+   * Calculates z-score of each number in `xs`.
+   * @param {Array<number>} xs
+   * @param {boolean|unset} [notSample]
+   * @return {Array<number>}
+   */
+  const _zScore = function(xs, notSample) {
+    let mean = xs.mean();
+    let stdDev = _stdDev(xs, notSample);
+    return xs.map(x => (x - mean) / stdDev);
+  };
+  exports._zScore = _zScore;
+
+
+  /**
+   * Variant of {@link _zScore} with assigned mean value and standard deviation.
+   * @param {Array<number>} xs
+   * @param {number} mean
+   * @param {number} stdDev
+   * @param {boolean|unset} [notSample]
+   * @return {Array<number>}
+   */
+  const _tScore = function(xs, mean, stdDev, notSample) {
+    return _zScore(xs, notSample).inSituMap(x => x * stdDev + mean);
+  };
+  exports._tScore = _tScore;
 
 
   /**
@@ -125,6 +154,31 @@
     return val;
   };
   exports._cov = _cov;
+
+
+  /* <---------- multi-dimensional ----------> */
+
+
+  /**
+   * Gets covariation matrix of `xss`.
+   * @param {Array<Array<number>>} xss
+   * @param {boolean|unset} [notSample]
+   * @return {MathMatrix}
+   */
+  const _covMat = function(xss, notSample) {
+    const matArr = [];
+
+    for(let j = 0; j < xss.length; j++) {
+      let rowArr = [];
+      for(let i = 0; i < xss.length; i++) {
+        rowArr.push(_cov(xss[j], xss[i], notSample));
+      };
+      matArr.push(rowArr);
+    };
+
+    return new MathMatrix(matArr);
+  };
+  exports._covMat = _covMat;
 
 
   /* <---------- regression ----------> */

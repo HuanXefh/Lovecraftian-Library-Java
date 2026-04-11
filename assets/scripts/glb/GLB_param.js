@@ -7,6 +7,7 @@
 
   /**
    * Some universal parameters (for settings mostly), only updated every several seconds.
+   * @module lovec/glb/GLB_param
    */
 
 

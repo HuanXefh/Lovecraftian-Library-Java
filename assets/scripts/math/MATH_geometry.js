@@ -8,6 +8,7 @@
   /**
    * Handles geometrical calculation.
    * Some of these are really costy!
+   * @module lovec/math/MATH_geometry
    */
 
 

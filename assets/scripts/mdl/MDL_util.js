@@ -7,6 +7,7 @@
 
   /**
    * Anything that I'm too lazy to make a MDL file for.
+   * @module lovec/mdl/MDL_util
    */
 
 

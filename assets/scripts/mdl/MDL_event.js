@@ -7,6 +7,7 @@
 
   /**
    * Lovec version of {@link Events.on} and {@link Events.run}.
+   * @module lovec/mdl/MDL_event
    */
 
 

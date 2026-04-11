@@ -221,12 +221,26 @@
        * @return {boolean}
        */
       ex_isSameGraphType: function(ob) {
-        return this.block === ob.block;
+        return ob.ex_getMaxPowProdAllowed != null && this.ex_getMaxPowProdAllowed().fEqual(ob.ex_getMaxPowProdAllowed());
       }
       .setProp({
         noSuper: true,
         boolMode: "and",
         argLen: 1,
+      }),
+
+
+      /**
+       * @memberof B_cable
+       * @instance
+       * @return {boolean}
+       */
+      ex_isExpiredVert: function() {
+        return !this.ex_getMaxPowProdAllowed().fEqual(this.graphCur.graphData.maxPowProdAllowed);
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
       }),
 
 

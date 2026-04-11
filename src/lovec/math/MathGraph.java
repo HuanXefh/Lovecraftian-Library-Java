@@ -202,7 +202,7 @@ public class MathGraph implements Iterable<Integer> {
 
     /**
      * Performs Depth-First Search on this graph.
-     * Returns vertex of the target found with `filter`, -1 if no target found.
+     * Returns vertex of the target found using {@code filter}, -1 if no target found.
      */
     public int applyDFS(int vert, Boolf2 filter) {
         boolean[] visited = new boolean[vertices];
@@ -214,7 +214,7 @@ public class MathGraph implements Iterable<Integer> {
 
     /**
      * Performs Breadth-First Search on this graph.
-     * Returns vertex of the target found with `filter`, -1 if no target found.
+     * Returns vertex of the target found using {@code filter}, -1 if no target found.
      */
     public int applyBFS(int vert, Boolf2 filter) {
         boolean[] visited = new boolean[vertices];

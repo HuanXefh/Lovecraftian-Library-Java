@@ -7,6 +7,7 @@
 
   /**
    * Timers used everywhere.
+   * @module lovec/glb/GLB_timer
    */
 
 

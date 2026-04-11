@@ -7,6 +7,7 @@
 
   /**
    * Methods related to interpolation.
+   * @module lovec/math/MATH_interp
    */
 
 

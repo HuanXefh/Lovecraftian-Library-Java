@@ -26,6 +26,8 @@
         });
       });
     });
+
+    MOD_tmi._r_terrainDynamicDrill(blk, blk.terItmMapMap);
   };
 
 

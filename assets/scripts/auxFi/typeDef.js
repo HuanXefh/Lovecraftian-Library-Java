@@ -211,6 +211,8 @@
    * @typedef {Object} RecipeDictionaryData
    * @prop {string|unset} [icon] - Texture region used.
    * @prop {string|unset} [ct] - Content icon button used.
+   * @prop {Color|unset} [ctTint] - Tint color of content icon.
+   * @prop {string|unset} [ctText] - Tooltip text used for content icon.
    * @prop {number|unset} [time] - Overwrites crafting time.
    */
 

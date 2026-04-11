@@ -7,6 +7,7 @@
 
   /**
    * Methods related to sprites and pixmaps (or pixmap regions sometimes).
+   * @module lovec/mdl/MDL_texture
    */
 
 

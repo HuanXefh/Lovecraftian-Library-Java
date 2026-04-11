@@ -7,6 +7,7 @@
 
   /**
    * Collection of effect getter functions.
+   * @module lovec/tp/TP_effect
    */
 
 

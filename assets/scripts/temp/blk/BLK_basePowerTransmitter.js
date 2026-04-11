@@ -76,14 +76,14 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.updateDeepSuppressed || !isFinite(b.block.delegee.maxPowProdAllowed)) return;
+    if(PARAM.updateDeepSuppressed || !isFinite(b.ex_getMaxPowProdAllowed())) return;
 
     let powProd = b.power.graph.getLastPowerProduced();
     if(TIMER.secHalf) {
-      b.transmitterOverdriveFrac = Mathf.approach(b.transmitterOverdriveFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.block.delegee.maxPowProdAllowed), 0.2);
+      b.transmitterOverdriveFrac = Mathf.approach(b.transmitterOverdriveFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.ex_getMaxPowProdAllowed()), 0.2);
     };
     if(b.transmitterOverdriveFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
-    b.damagePierce(b.maxHealth * VAR.blk_shortCircuitDmgFrac / 30.0);
+    b.damagePierce(b.maxHealth * VAR.blk_shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverdriveDmgScl);
   };
 
 
@@ -121,6 +121,12 @@
        * @instance
        */
       maxPowProdAllowed: Infinity,
+      /**
+       * <PARAM>: Multiplier on transmitter overdrive damage.
+       * @memberof BLK_basePowerTransmitter
+       * @instance
+       */
+      transmitterOverdriveDmgScl: 1.0,
 
 
     })
@@ -180,6 +186,19 @@
       updateTile: function() {
         comp_updateTile(this);
       },
+
+
+      /**
+       * @memberof B_basePowerTransmitter
+       * @instance
+       * @return {number}
+       */
+      ex_getMaxPowProdAllowed: function() {
+        return this.block.delegee.maxPowProdAllowed;
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       /**

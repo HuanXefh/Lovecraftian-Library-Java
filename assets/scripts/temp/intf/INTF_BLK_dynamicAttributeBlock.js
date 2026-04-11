@@ -45,7 +45,7 @@
       });
     });
 
-    MOD_tmi._r_dynaAttr(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr(), blk.ex_getDynaAttrProdIsWall());
+    MOD_tmi._r_dynamicAttributeBlock(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr(), blk.ex_getDynaAttrProdIsWall());
   };
 
 

@@ -7,6 +7,7 @@
 
   /**
    * Handles JSON read/write.
+   * @module lovec/mdl/MDL_json
    */
 
 

@@ -1,6 +1,7 @@
 /**
  * Database of unit properties (sometimes for bullets).
  * Entity id mapping is done here.
+ * @module lovec/db/DB_unit
  */
 
 

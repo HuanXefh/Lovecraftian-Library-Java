@@ -8,6 +8,7 @@
   /**
    * Methods related to terrain calculation.
    * The proper name should be "biome", but it's too late for me too.
+   * @module lovec/mdl/MDL_terrain
    */
 
 

@@ -7,6 +7,7 @@
 
   /**
    * Handles read/write for some objects.
+   * @module lovec/mdl/MDL_io
    */
 
 

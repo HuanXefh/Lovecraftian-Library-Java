@@ -1,5 +1,6 @@
 /**
  * Database of miscellaneous uncategorized data.
+ * @module lovec/db/DB_misc
  */
 
 
@@ -81,7 +82,7 @@ const db = {
 
         "cable", graph => {
           graph.graphData.overdriveFrac = 0.0;
-          graph.graphData.maxPowProdAllowed = graph.getData(0).block.delegee.maxPowProdAllowed;
+          graph.graphData.maxPowProdAllowed = graph.getData(0).ex_getMaxPowProdAllowed();
         },
 
       ],
@@ -103,12 +104,12 @@ const db = {
 
           let powProd = graph.getData(0).power.graph.getLastPowerProduced();
           if(TIMER.secHalf) {
-            graph.graphData.overdriveFrac = Mathf.approach(graph.graphData.overdriveFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).block.delegee.maxPowProdAllowed), 0.2);
+            graph.graphData.overdriveFrac = Mathf.approach(graph.graphData.overdriveFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
           };
           if(graph.graphData.overdriveFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
           graph.each(
             (ob, vert) => ob.added,
-            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.blk_shortCircuitDmgFrac / 30.0),
+            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.blk_shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverdriveDmgScl),
           );
         },
 
@@ -737,6 +738,7 @@ const db = {
       "play", "lovec-icon-play",
       "questionMark", "lovec-icon-question-mark",
       "swap", "lovec-icon-swap",
+      "window", "lovec-icon-window",
 
     ],
 

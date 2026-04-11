@@ -33,6 +33,7 @@
     if(b.graphCur.graphData != null && !b.graphCur.graphData.justShrunk) {
       b.graphCur.graphData.justShrunk = true;
       Core.app.post(() => {
+        b.graphCur.shrink((ob, vert) => !ob.ex_isExpiredVert());
         b.graphCur.shrink((ob, vert) => ob.added && !ob.dead && !ob.isPayload());
         b.graphCur.graphData.justShrunk = false;
       });
@@ -275,6 +276,20 @@
       .setProp({
         noSuper: true,
         argLen: 1,
+      }),
+
+
+      /**
+       * If true, this building will be removed from graph.
+       * @memberof INTF_B_graphBlock
+       * @instance
+       * @return {boolean}
+       */
+      ex_isExpiredVert: function() {
+        return !this.added || this.dead || this.isPayload();
+      }
+      .setProp({
+        noSuper: true,
       }),
 
 

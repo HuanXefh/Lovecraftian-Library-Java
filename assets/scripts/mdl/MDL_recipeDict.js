@@ -7,6 +7,7 @@
 
   /**
    * Methods related to recipe dictionary.
+   * @module lovec/mdl/MDL_recipeDict
    */
 
 

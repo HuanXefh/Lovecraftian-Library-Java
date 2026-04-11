@@ -7,6 +7,7 @@
 
   /**
    * Methods related to draw.
+   * @module lovec/mdl/MDL_draw
    */
 
 

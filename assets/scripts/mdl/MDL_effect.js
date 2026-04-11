@@ -8,6 +8,7 @@
   /**
    * Methods to create effects.
    * Unlike {@link TP_effect} which provides effects, this module is only meant to spawn pre-defined effects.
+   * @module lovec/mdl/MDL_effect
    */
 
 
@@ -554,7 +555,7 @@
 
       lifetime: isPermanent ? Number.n8 : PARAM.unitRemainsLifetime,
       offTime: Mathf.random(1200.0),
-      x: x, y: y,
+      x: x, y: y, tile: t,
       hitSize: MDL_entity._hitSize(etp),
       rotation: etp instanceof Block ? (Mathf.random(90.0) - 45.0) : Mathf.random(360.0),
       team: team,
@@ -570,6 +571,14 @@
       shouldFloat: shouldFloat,
       isHot: forceHot ? true : MDL_cond._isHot(e, t),
       shouldFadeHeat: forceHot ? false : (!MDL_cond._isHotStatus(t.floor().status) || !inLiq),
+
+
+      remove() {
+        this.softShadowRegion == null ?
+          VARGEN.blkRemainsMap.remove(this.tile) :
+          VARGEN.unitRemainsArr.remove(this);
+        this.super$remove();
+      },
 
 
       draw() {
@@ -626,7 +635,17 @@
 
 
     });
+
     remains.add();
+    if(etp instanceof Block) {
+      let remainsPrev = VARGEN.blkRemainsMap.get(t);
+      if(remainsPrev != null) {
+        remainsPrev.remove();
+      };
+      VARGEN.blkRemainsMap.put(t, remains);
+    } else {
+      VARGEN.unitRemainsArr.push(remains);
+    };
   }
   .setProp({
     shader: fetchShader("shader0reg-debris"),
@@ -736,6 +755,33 @@
   })
   .setAnno("non-headless");
   exports._e_dmg = _e_dmg;
+
+
+  /**
+   * Text that fades out.
+   * @param {number} x
+   * @param {number} y
+   * @param {string} text
+   * @param {Color|unset} [color]
+   * @param {number|unset} [offTy]
+   * @return {void}
+   */
+  const _e_textFade = function thisFun(x, y, text, color, offTy) {
+    if(Vars.state.isPaused()) return;
+    if(color == null) color = Color.white;
+
+    showAt(x, y + (tryVal(offTy, 0) + 0.5) * Vars.tilesize, thisFun.eff, 0.0, color.cpy(), String(text));
+  }
+  .setProp({
+    eff: new Effect(80.0, eff => {
+      eff.color.a = 1.0 - Interp.pow2In.apply(eff.fin());
+      LCDraw.text(
+        eff.x, eff.y + 2.0 * eff.fin(), eff.data, Fonts.outline,
+        0.85, eff.color,
+      );
+    }),
+  });
+  exports._e_textFade = _e_textFade;
 
 
   /**

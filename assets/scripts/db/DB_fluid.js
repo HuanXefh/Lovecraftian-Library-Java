@@ -1,5 +1,6 @@
 /**
  * Database of fluid properties.
+ * @module lovec/db/DB_fluid
  */
 
 

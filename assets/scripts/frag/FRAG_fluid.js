@@ -7,6 +7,7 @@
 
   /**
    * Methods for liquid module.
+   * @module lovec/frag/FRAG_fluid
    */
 
 

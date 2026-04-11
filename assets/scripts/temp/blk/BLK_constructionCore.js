@@ -43,7 +43,6 @@
           MDL_event._c_onLoad(() => {
             // This completely prevents player from building it directly outside of sandbox (e.g. using a schematic)
             this.buildTime = Number.fMax;
-            this.stats.remove(Stat.buildTime);
           });
         });
       });
@@ -169,6 +168,7 @@
     let ot = blk.ex_getPlanT(tx, ty, rot, blk.placeDataX, blk.placeDataY);
     if(ot != null) {
       ot.setBlock(blk.placeBlk, team, Mathf.mod(rot + blk.placeOffRot, 4));
+      MDL_effect._e_textFade(ot.worldx() + blk.placeBlk.offset, ot.worldy() + blk.placeBlk.offset, MDL_bundle._info("lovec", "construction-complete"), Pal.accent, blk.placeBlk.size * 0.5);
     };
   };
 

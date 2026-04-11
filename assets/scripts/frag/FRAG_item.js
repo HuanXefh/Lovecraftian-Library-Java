@@ -7,6 +7,7 @@
 
   /**
    * Methods for item module, unit item stack and loot units.
+   * @module lovec/frag/FRAG_item
    */
 
 

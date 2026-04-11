@@ -7,6 +7,7 @@
 
   /**
    * {@link https://www.jb51.net/article/33851.htm}.
+   * @module lovec/lib/LIB_pinyin
    */
 
 

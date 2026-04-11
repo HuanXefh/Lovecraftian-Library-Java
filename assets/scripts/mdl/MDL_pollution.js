@@ -7,6 +7,7 @@
 
   /**
    * Methods related to the Lovec pollution mechanics.
+   * @module lovec/mdl/MDL_pollution
    */
 
 

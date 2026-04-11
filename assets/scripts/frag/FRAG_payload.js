@@ -7,6 +7,7 @@
 
   /**
    * Methods for payload.
+   * @module lovec/frag/FRAG_payload
    */
 
 

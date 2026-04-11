@@ -7,6 +7,7 @@
 
   /**
    * Utility methods for Multi Block Lib.
+   * @module lovec/mod/MOD_multiBlockLib
    */
 
 

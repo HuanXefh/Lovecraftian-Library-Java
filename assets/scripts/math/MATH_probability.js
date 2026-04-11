@@ -7,6 +7,7 @@
 
   /**
    * Methods used to calculate chance and probability distribution.
+   * @module lovec/math/MATH_probability
    */
 
 

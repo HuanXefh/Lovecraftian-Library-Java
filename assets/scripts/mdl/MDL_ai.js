@@ -7,6 +7,7 @@
 
   /**
    * Handles unit AI.
+   * @module lovec/mdl/MDL_ai
    */
 
 

@@ -7,6 +7,7 @@
 
   /**
    * Methods related to units.
+   * @module lovec/frag/FRAG_unit
    */
 
 
