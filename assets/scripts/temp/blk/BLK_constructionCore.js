@@ -304,6 +304,10 @@
       i = 0;
       while(i < iCap) {
         blkCur = blk.constructionParsedData[j][i].blk;
+        if(matArr[j][i] != null) {
+          i++;
+          continue;
+        };
         if(blkCur !== Blocks.air && blkCur.size === 1) {
           matArr[j][i] = (function(blkCur) {
             return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlk(blkCur)), Styles.clearNonei, 32.0, () => VAR.dial_ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
@@ -318,7 +322,7 @@
               while(k >= 0) {
                 l = kCap;
                 while(l >= 0) {
-                  matArr[j + k][j + l] = (function(blkCur, k, l) {
+                  matArr[j + k][i + l] = (function(blkCur, k, l) {
                     return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlkTileCut(blkCur, l, k)), Styles.clearNonei, 32.0, () => VAR.dial_ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
                   })(blkCur, k, l);
                   l--;
@@ -327,12 +331,8 @@
               };
               break;
             };
-            k++
+            k++;
           };
-        } else if(matArr[j][i] == null) {
-          matArr[j][i] = (function() {
-            return tb1 => tb1.button(VARGEN.icons.dot, Styles.clearNonei, 32.0, () => {});
-          })();
         };
         i++;
       };
@@ -345,7 +345,11 @@
       while(j < jCap) {
         i = 0;
         while(i < iCap) {
-          matArr[j][i](tb1);
+          if(matArr[j][i] != null) {
+            matArr[j][i](tb1);
+          } else {
+            tb1.button(VARGEN.icons.dot, Styles.clearNonei, 32.0, () => {});
+          };
           i++;
         };
         tb1.row();
@@ -377,6 +381,11 @@
     if(b.lastRot !== b.rotation) {
       b.lastRot = b.rotation;
       b.block.ex_findPlan(b.constructionPlan, b.tileX(), b.tileY(), b.rotation);
+      let ot = b.block.ex_getPlanT(b.tileX(), b.tileY(), b.rotation, b.block.delegee.placeDataX, b.block.delegee.placeDataY);
+      if(ot != null) {
+        b.constructionPlanCx = ot.worldx() + b.block.delegee.placeBlk.offset;
+        b.constructionPlanCy = ot.worldy() + b.block.delegee.placeBlk.offset;
+      };
     };
   };
 
@@ -392,7 +401,7 @@
       };
 
       if(!Vars.net.client() && TIMER.secFive) {
-        // Destruction during construction?
+        // Deconstruction during construction?
         if(!b.block.ex_checkPlanComplete(b.team, b.constructionPlan)) b.configure("SPEC: stop");
       };
     };
@@ -401,9 +410,8 @@
 
   function comp_draw(b) {
     if(b.underConstruction) {
-      MDL_draw._reg_construct(b.x, b.y, MDL_texture._regBlk(b.block), 1.0 - b.ex_getConstructionFrac(), b.drawrot());
+      MDL_draw._reg_construct(b.constructionPlanCx, b.constructionPlanCy, MDL_texture._regBlk(b.block.delegee.placeBlk), b.ex_getConstructionFrac(), b.drawrot());
     } else {
-      b.super$draw();
       if(b.shouldDrawConstructionPlan && Vars.player.team() === b.team) {
         b.block.ex_drawPlan(b.team, b.constructionPlan);
       };
@@ -816,6 +824,18 @@
        * @memberof B_constructionCore
        * @instance
        */
+      constructionPlanCx: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_constructionCore
+       * @instance
+       */
+      constructionPlanCy: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_constructionCore
+       * @instance
+       */
       shouldDrawConstructionPlan: false,
       /**
        * <INTERNAL>
@@ -867,10 +887,7 @@
 
       draw: function() {
         comp_draw(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+      },
 
 
       write: function(wr) {

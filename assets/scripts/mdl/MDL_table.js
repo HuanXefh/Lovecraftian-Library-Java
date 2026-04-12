@@ -302,8 +302,8 @@
    * @return {Cell}
    */
   const __pnFixed = function(tb, tableF, maxW, maxH) {
-    let pnCell = tb.pane(pn => {
-      tableF(pn);
+    let pnCell = tb.pane(pnTb => {
+      tableF(pnTb);
     });
     if(maxW != null) pnCell.maxWidth(maxW);
     if(maxH != null) pnCell.maxHeight(maxH);
@@ -1158,11 +1158,12 @@
             } else {
               tb2.table(Tex.whiteui, tb3 => {
                 tb3.left().setColor(Pal.darkerGray);
-                tb3.pane(pn => {
+                let pn = tb3.pane(pnTb => {
                   tmp.forEachRow(3, (tmp1, amt, p) => {
-                    __rcCt(pn, tmp1, amt, p, true, null, VAR.dial_ct1).row();
+                    __rcCt(pnTb, tmp1, amt, p, true, null, VAR.dial_ct1).row();
                   });
-                });
+                }).get();
+                pn.setOverscroll(false, false);
               }).padRight(16.0).maxHeight(82.0);
             };
           });
@@ -1182,11 +1183,12 @@
             } else {
               tb2.table(Tex.whiteui, tb3 => {
                 tb3.left().setColor(Pal.darkerGray);
-                tb3.pane(pn => {
+                let pn = tb3.pane(pnTb => {
                   tmp.forEachRow(2, (tmp1, amt) => {
-                    __rcCt(pn, tmp1, amt, null, false, null, VAR.dial_ct1).row();
+                    __rcCt(pnTb, tmp1, amt, null, false, null, VAR.dial_ct1).row();
                   });
-                });
+                }).get();
+                pn.setOverscroll(false, false);
               }).padRight(16.0).maxHeight(82.0);
             };
           });
@@ -1303,20 +1305,20 @@
         __barV(tb1, Pal.accent);
         tb1.table(Styles.none, tb2 => {}).width(24.0);
         tb1.table(Styles.none, tb2 => {
-          tb2.pane(pn => {
+          tb2.pane(pnTb => {
             let addStat = newMultiFunction(
               function(cond, str) {
-                if(cond) pn.add(str).left().row();
+                if(cond) pnTb.add(str).left().row();
               },
               function(cond, titleStr, valStr) {
-                if(cond) pn.add(MDL_text._statText(titleStr, valStr)).left().row();
+                if(cond) pnTb.add(MDL_text._statText(titleStr, valStr)).left().row();
               },
               function(cond, titleStr, valStr, unitStr) {
-                if(cond) pn.add(MDL_text._statText(titleStr, valStr, unitStr)).left().row();
+                if(cond) pnTb.add(MDL_text._statText(titleStr, valStr, unitStr)).left().row();
               },
             );
 
-            pn.left();
+            pnTb.left();
 
             // Stats
             addStat(isGen, MDL_bundle._term("lovec", "generated-recipe").color(Pal.gray));
@@ -1329,14 +1331,14 @@
             addStat(tempAllowed < Infinity, MDL_bundle._term("lovec", "temperature-allowed"), Strings.fixed(tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized());
             addStat(!durabDecMtp.fEqual(1.0), MDL_bundle._term("lovec", "abrasion-multiplier"), durabDecMtp.perc());
             if(lockedByCts.length > 0) {
-              pn.table(Styles.none, tb3 => {
+              pnTb.table(Styles.none, tb3 => {
                 tb3.left();
                 tb3.add(MDL_text._statText(MDL_bundle._term("lovec", "require-unlocking"), "")).left();
                 lockedByCts.forEachFast(ct => __ct(tb3, ct, 28.0, 0.0, null, VAR.dial_ct2));
               }).left().row();
             };
             if(attr != null) {
-              pn.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left().tooltip(cons(tb => {
+              pnTb.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left().tooltip(cons(tb => {
                 tb.table(Styles.black6, tb1 => {
                   __margin(tb1);
                   _d_attr(tb1, attr, null, attrBoostScl, 40.0, 5);

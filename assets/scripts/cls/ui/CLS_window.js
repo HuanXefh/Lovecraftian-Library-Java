@@ -230,10 +230,10 @@
         tb.table(Tex.whiteui, tb1 => {
           tb1.left().setColor(this.contColor);
           MDL_table.__margin(tb1);
-          tb1.pane(pn => {
-            this.tableF(pn);
-            this.prefW = Mathf.clamp(pn.prefWidth, this.minW, this.maxW);
-            this.prefH = Mathf.clamp(pn.prefHeight, this.minH, this.maxH);
+          tb1.pane(pnTb => {
+            this.tableF(pnTb);
+            this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW);
+            this.prefH = Mathf.clamp(pnTb.prefHeight, this.minH, this.maxH);
           }).width(this.prefW).height(this.prefH);
           this.prefWCont = tb1.prefWidth;
           this.prefHCont = tb1.prefHeight;

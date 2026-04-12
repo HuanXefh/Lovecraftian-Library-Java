@@ -85,9 +85,9 @@
         resetDial(this, MDL_bundle._info(nmMod, "content-" + nmInfo));
 
         // <TABLE>: text
-        this.cont.pane(pn => {
-          MDL_table.__margin(pn);
-          MDL_table.__wrapLine(pn, MDL_bundle._info(nmMod, "content-" + nmInfo, true), Align.left, 1);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
+          MDL_table.__wrapLine(pnTb, MDL_bundle._info(nmMod, "content-" + nmInfo, true), Align.left, 1);
         }).width(MDL_ui._uiW()).row();
 
         // <TABLE>: buttons
@@ -118,11 +118,11 @@
         resetDial(this);
 
         // <TABLE>: text
-        this.cont.pane(pn => {
-          MDL_table.__margin(pn);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
           VARGEN.dialFlowTextLog.forEachFast(obj => {
             // <TABLE>: text cell
-            pn.table(Styles.none, tb => {
+            pnTb.table(Styles.none, tb => {
               if(obj.chara === "SPEC: selection") {
                 tb.center();
                 MDL_table.__wrapLine(tb, "<${1}>".format(obj.text), Align.center, 1);
@@ -135,7 +135,7 @@
                 MDL_table.__wrapLine(tb, obj.text, Align.left, 1, 48.0);
               };
             }).growX().row();
-            MDL_table.__break(pn, 3);
+            MDL_table.__break(pnTb, 3);
           });
         }).width(MDL_ui._uiW()).row();
 
@@ -168,10 +168,10 @@
         resetDial(this, MDL_bundle._info("lovec", "dial-wave-enemies") + " (" + countWave + ")");
 
         // <TABLE>: list
-        this.cont.pane(pn => {
-          MDL_table.__margin(pn);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
           if(countWave < 1) {
-            MDL_table.__textNothing(pn);
+            MDL_table.__textNothing(pnTb);
           } else {
             let matArr = [[
               "",
@@ -194,8 +194,8 @@
               ]);
             });
             matArr.length === 1 ?
-              MDL_table.__textNothing(pn) :
-              MDL_table._l_table(pn, matArr);
+              MDL_table.__textNothing(pnTb) :
+              MDL_table._l_table(pnTb, matArr);
           };
         }).width(MDL_ui._uiW()).row();
 
@@ -237,10 +237,10 @@
         const thisDial = this;
 
         // <TABLE>: list
-        this.cont.pane(pn => {
-          MDL_table.__margin(pn);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
           if(VARGEN.achievements.length === 0) {
-            MDL_table.__textNothing(pn);
+            MDL_table.__textNothing(pnTb);
           } else {
             let tmpObj = {};
             let i, iCap, j, colAmt = 10;
@@ -250,8 +250,8 @@
               tmpObj[nmMod].push(achievement);
             });
             Object._it(tmpObj, (nmMod, arr) => {
-              pn.add(fetchMod(nmMod, true).meta.displayName).left().fontScale(1.1).color(Pal.accent).row();
-              pn.table(Styles.none, tb => {
+              pnTb.add(fetchMod(nmMod, true).meta.displayName).left().fontScale(1.1).color(Pal.accent).row();
+              pnTb.table(Styles.none, tb => {
                 i = 0;
                 iCap = arr.iCap();
                 j = 0;
@@ -297,18 +297,18 @@
 
         // <TABLE>: content
         MDL_table.__break(this.cont);
-        this.cont.pane(pn => {
-          MDL_table.__margin(pn);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
           let iCap = cts_gn.iCap();
           if(iCap === 0) {
-            MDL_table.__textNothing(pn);
+            MDL_table.__textNothing(pnTb);
           } else {
             let colAmt = MDL_ui._colAmt(32.0, 4.0, 2);
             for(let i = 0, j = 0; i < iCap; i++) {
               (function(i) {
-                MDL_table.__ct(pn, MDL_content._ct(cts_gn[i], null, true), null, null, !isAfterCt ? null : thisDial);
+                MDL_table.__ct(pnTb, MDL_content._ct(cts_gn[i], null, true), null, null, !isAfterCt ? null : thisDial);
               })(i);
-              if(j % colAmt === colAmt - 1) pn.row();
+              if(j % colAmt === colAmt - 1) pnTb.row();
               j++;
             };
           };
@@ -339,8 +339,8 @@
 
         // <TABLE>: content
         MDL_table.__break(this.cont);
-        this.cont.pane(pn => {
-          MDL_table._l_ctRow(pn, cts_gn, true);
+        this.cont.pane(pnTb => {
+          MDL_table._l_ctRow(pnTb, cts_gn, true);
         }).width(MDL_ui._uiW()).row();
 
         // <TABLE>: buttons
@@ -379,24 +379,24 @@
 
         // <TABLE>: content
         MDL_table.__break(this.cont);
-        this.cont.pane(pn => {
-          MDL_table.__margin(pn);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
           let iCap = opt.iCap();
           if(iCap === 0) {
-            MDL_table.__textNothing(pn);
+            MDL_table.__textNothing(pnTb);
           } else {
             for(let i = 0; i < iCap; i += 4) {
               let tmp = opt[i];
               let amt = opt[i + 1];
               let p = opt[i + 2];
               let mtp = opt[i + 3];
-              pn.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
-              MDL_table.__rcCt(pn, tmp, amt, p, null, null, this).padRight(72.0);
-              pn.add(MDL_text._statText(
+              pnTb.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
+              MDL_table.__rcCt(pnTb, tmp, amt, p, null, null, this).padRight(72.0);
+              pnTb.add(MDL_text._statText(
                 MDL_bundle._term("lovec", "efficiency-multiplier"),
                 mtp.perc(0),
               )).center().padRight(6.0);
-              pn.row();
+              pnTb.row();
             };
           };
         }).width(MDL_ui._uiW()).row();
@@ -474,8 +474,8 @@
 
         // <TABLE>: content
         MDL_table.__break(this.cont);
-        this.cont.pane(pn => {
-          MDL_table.__margin(pn);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
           let cont = new Table();
 
           // <TABLE>: icon
@@ -483,7 +483,7 @@
             this.hide();
             Vars.ui.content.show(ct);
           }).left().row();
-          pn.add(cont).growX();
+          pnTb.add(cont).growX();
 
           // <TABLE>: producer
           let prodArr = MDL_recipeDict._producers(ct, true);

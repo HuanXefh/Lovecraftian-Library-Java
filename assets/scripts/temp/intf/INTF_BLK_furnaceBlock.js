@@ -33,7 +33,7 @@
     if(!blk.noFuelInput) {
       blk.stats.add(fetchStat("lovec", "blk0fac-fuel"), newStatValue(tb => {
         tb.row();
-        MDL_table.__pnFixed(tb, pn => {
+        MDL_table.__pnFixed(tb, pnTb => {
           let matArr = [[
             "",
             fetchStat("lovec", "rs0fuel-point").localized(),
@@ -46,7 +46,7 @@
               (MDL_fuel._fuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
             ]);
           });
-          MDL_table._l_table(pn, matArr);
+          MDL_table._l_table(pnTb, matArr);
         }, null, 300.0).left().padLeft(28.0);
       }));
 
