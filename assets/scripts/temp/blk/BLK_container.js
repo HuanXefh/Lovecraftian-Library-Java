@@ -38,7 +38,8 @@
 
 
     /**
-     * Vanilla container.
+     * Vanilla container for item storage.
+     * Won't be shown on minimap if in derelict team (for hidden treasure in map).
      * @class BLK_container
      * @extends BLK_baseStorageBlock
      */

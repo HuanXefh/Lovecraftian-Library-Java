@@ -154,6 +154,13 @@
        * <PARAM>: Maps some item (as string) to an object map that maps terrain type to final output.
        * @memberof BLK_terrainDynamicDrill
        * @instance
+       * @example
+       * ObjectMap.of(
+       *   "sand", ObjectMap.of(
+       *     "dirt", "copper",
+       *     "rock", "lead",
+       *   ),
+       * );
        */
       terItmMapMap: prov(() => new ObjectMap()),
 

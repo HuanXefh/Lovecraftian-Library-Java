@@ -31,7 +31,7 @@
 
 
     /**
-     * Parent for all generalized projector blocks.
+     * Parent for all generalized projector blocks (that do something on buildings/units in range).
      * @class BLK_baseProjector
      * @extends BLK_baseBlock
      */

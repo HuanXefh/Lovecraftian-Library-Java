@@ -55,6 +55,7 @@
     /**
      * Lovec version of multi-crafter, the bedrock of Reindustrialization.
      * Only `ConsumePower` can be used, do not add any other consumers.
+     * Recipe data should be set in {@link INTF_BLK_recipeHandler#rcMdl}.
      * @class BLK_recipeFactory
      * @extends BLK_baseFactory
      * @extends INTF_BLK_recipeSelector

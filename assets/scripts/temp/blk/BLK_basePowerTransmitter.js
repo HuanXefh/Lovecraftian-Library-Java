@@ -14,6 +14,10 @@
   /* <---------- auxiliary ----------> */
 
 
+  /**
+   * Affects real threshold for overload.
+   * The threshold must be raised since `lastPowerProduced` fluctuates.
+   */
   const powProdScl = 1.1;
 
 
@@ -45,9 +49,9 @@
 
     // Should be displayed last
     Core.app.post(() => {
-      blk.addBar("lovec-power-transmitter-overdrive", b => new Bar(
-        prov(() => Core.bundle.format("bar.lovec-bar-transmitter-overdrive-amt", b.ex_getTransmitterOverdriveFrac().perc())),
-        prov(() => Tmp.c1.set(Pal.heal).lerp(Pal.remove, b.ex_getTransmitterOverdriveFrac())),
+      blk.addBar("lovec-power-transmitter-overload", b => new Bar(
+        prov(() => Core.bundle.format("bar.lovec-bar-transmitter-overload-amt", b.ex_getTransmitterOverloadFrac().perc())),
+        prov(() => Tmp.c1.set(Pal.heal).lerp(Pal.remove, b.ex_getTransmitterOverloadFrac())),
         () => 1.0,
       ));
     });
@@ -80,10 +84,10 @@
 
     let powProd = b.power.graph.getLastPowerProduced();
     if(TIMER.secHalf) {
-      b.transmitterOverdriveFrac = Mathf.approach(b.transmitterOverdriveFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.ex_getMaxPowProdAllowed()), 0.2);
+      b.transmitterOverloadFrac = Mathf.approach(b.transmitterOverloadFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.ex_getMaxPowProdAllowed()), 0.2);
     };
-    if(b.transmitterOverdriveFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
-    b.damagePierce(b.maxHealth * VAR.blk_shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverdriveDmgScl);
+    if(b.transmitterOverloadFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
+    b.damagePierce(b.maxHealth * VAR.blk_shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverloadDmgScl);
   };
 
 
@@ -99,6 +103,7 @@
 
     /**
      * Any block that transmits power to other blocks.
+     * Transmitters can overload and gain damage if the net power produced is too high.
      * Not placeable on conductive floor if vulnerable to short circuit by default.
      * @class BLK_basePowerTransmitter
      * @extends BLK_basePowerBlock
@@ -122,11 +127,11 @@
        */
       maxPowProdAllowed: Infinity,
       /**
-       * <PARAM>: Multiplier on transmitter overdrive damage.
+       * <PARAM>: Multiplier on transmitter overload damage.
        * @memberof BLK_basePowerTransmitter
        * @instance
        */
-      transmitterOverdriveDmgScl: 1.0,
+      transmitterOverloadDmgScl: 1.0,
 
 
     })
@@ -176,7 +181,7 @@
        * @memberof B_basePowerTransmitter
        * @instance
        */
-      transmitterOverdriveFrac: 0.0,
+      transmitterOverloadFrac: 0.0,
 
 
     })
@@ -206,8 +211,8 @@
        * @instance
        * @return {number}
        */
-      ex_getTransmitterOverdriveFrac: function() {
-        return this.transmitterOverdriveFrac;
+      ex_getTransmitterOverloadFrac: function() {
+        return this.transmitterOverloadFrac;
       }
       .setProp({
         noSuper: true,

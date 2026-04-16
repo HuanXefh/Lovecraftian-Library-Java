@@ -9,8 +9,8 @@
 
 
   /**
-   * A container formed from an object that cannot be modified afterward.
-   * Object boxes are named like "BOX_xxx".
+   * A container formed from an object that is not expected to be modified afterward.
+   * Object boxes are usually named like "BOX_xxx".
    * @class
    * @param {Object} obj
    */
@@ -21,13 +21,10 @@
     if(obj == null) obj = {};
 
     let args = [this, true];
-    let count = 0;
     Object._it(obj, (key, val) => {
       args.push(key, val);
-      count++;
     });
     Object.setProp.apply(null, args);
-    this.size = count;
     this.keys = Object.keys(obj);
 
     Object.seal(this);
@@ -49,15 +46,6 @@
 
 
   /* <------------------------------ property ------------------------------ */
-
-
-  /**
-   * Gets size of the box.
-   * @return {number}
-   */
-  CLS_objectBox.prototype.getSize = function() {
-    return this.size;
-  };
 
 
   /**

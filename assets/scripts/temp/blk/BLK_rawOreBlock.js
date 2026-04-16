@@ -62,6 +62,7 @@
 
     /**
      * Ore as payload block, usually produced by a drill.
+     * See {@link BLK_baseDrill#shouldDropPay}.
      * <br> <NAMEGEN>
      * @class BLK_rawOreBlock
      * @extends BLK_partsBlock

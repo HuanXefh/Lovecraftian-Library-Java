@@ -45,7 +45,7 @@
 
 
     /**
-     * Cable with dynamic safe power level, thus able to become member of other cable graphs.
+     * {@link BLK_cable} with dynamic safe power level, thus able to become member of other cable graphs.
      * <br> <SINGLESIZE>
      * @class BLK_auxiliaryCable
      * @extends BLK_cable

@@ -182,6 +182,38 @@
 
 
   /**
+   * Recipe generator: condenser.
+   * Converts evaporized liquid into liquid.
+   */
+  const _g_condenser = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      time = readParam(paramObj, "time", 1.0),
+      amtI = readParam(paramObj, "amtO", 1);
+
+    DB_item.db["map"]["recipe"]["condensation"].forEachRow(2, (nmLiq, paramObj) => {
+      let
+        rawCo = readParam(paramObj, "co", Array.air);
+
+      let liq = MDL_content._ct(nmLiq, "rs");
+      if(liq == null) return;
+      if(!boolF(liq)) return;
+
+      this.addRc(
+        rc, liq.name, "condensation", null,
+        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
+        new CLS_recipeBuilder()
+        .__ci(this.processCi(liq, amtI * 6.0 / time, paramObj))
+        .__co(this.parseRawCo(rawCo, amtI * 6.0 / time))
+        .build(),
+      );
+    });
+  });
+  exports._g_condenser = _g_condenser;
+
+
+  /**
    * Recipe generator: mixer.
    * Mixes materials into blend.
    */

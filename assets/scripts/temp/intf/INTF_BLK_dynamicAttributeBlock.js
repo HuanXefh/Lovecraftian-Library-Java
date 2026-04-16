@@ -226,7 +226,7 @@
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
-        attrMode: "floor",
+        attrMode: MDL_attr.AttrModes.FLOOR,
         /**
          * <PARAM>: Attribute-resource map used to determine output. See {@link DB_item}.
          * @memberof INTF_BLK_dynamicAttributeBlock

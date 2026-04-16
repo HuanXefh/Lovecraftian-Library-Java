@@ -9,6 +9,8 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseFactory");
+  const INTF = require("lovec/temp/intf/INTF_BLK_corrosionAcceptor");
+  const INTF_A = require("lovec/temp/intf/INTF_BLK_fluidHeatAcceptor");
 
 
   /* <---------- component ----------> */
@@ -89,8 +91,10 @@
      * Dynamically outputs liquid based on current rain weather.
      * @class BLK_rainCollector
      * @extends BLK_baseFactory
+     * @extends INTF_BLK_corrosionAcceptor
+     * @extends INTF_BLK_fluidHeatAcceptor
      */
-    newClass().extendClass(PARENT[0], "BLK_rainCollector").initClass()
+    newClass().extendClass(PARENT[0], "BLK_rainCollector").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac")
     .setParam({
@@ -138,8 +142,10 @@
     /**
      * @class B_rainCollector
      * @extends B_baseFactory
+     * @extends INTF_B_corrosionAcceptor
+     * @extends INTF_B_fluidHeatAcceptor
      */
-    newClass().extendClass(PARENT[1], "B_rainCollector").initClass()
+    newClass().extendClass(PARENT[1], "B_rainCollector").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({
 
@@ -167,6 +173,20 @@
       displayBars: function(tb) {
         comp_displayBars(this, tb);
       },
+
+
+      /**
+       * @override
+       * @memberof B_rainCollector
+       * @instance
+       * @return {number}
+       */
+      ex_subRevi: function() {
+        return 1;
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
     }),

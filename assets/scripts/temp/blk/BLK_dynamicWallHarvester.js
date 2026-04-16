@@ -72,7 +72,7 @@
 
     /**
      * A wall crafter that outputs something based on highest attribute.
-     * This one can output fluids.
+     * Can output fluids.
      * @class BLK_dynamicWallHarvester
      * @extends BLK_baseHarvester
      * @extends INTF_BLK_dynamicAttributeBlock
@@ -99,7 +99,7 @@
        * @memberof BLK_dynamicWallHarvester
        * @instance
        */
-      attrMode: "block",
+      attrMode: MDL_attr.AttrModes.BLOCK,
 
 
     })

@@ -128,7 +128,7 @@
 
 
     /**
-     * Stacked cogwheels.
+     * Stacked cogwheels for change of RPM.
      * @class BLK_cogwheelStack
      * @extends BLK_cogwheel
      */

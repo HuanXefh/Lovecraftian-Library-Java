@@ -30,7 +30,7 @@
 
 
     /**
-     * Miners that obtain resource mostly based on attributes.
+     * Miners that obtain resource mostly based on attributes instead of `itemDrop`.
      * @class BLK_baseHarvester
      * @extends BLK_baseMiner
      */

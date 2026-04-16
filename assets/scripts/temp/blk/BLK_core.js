@@ -37,6 +37,7 @@
 
     /**
      * Vanilla core block with core energy mechanics.
+     * Capable of producing power.
      * @class BLK_core
      * @extends BLK_baseStorageBlock
      * @extends INTF_BLK_powerProducer

@@ -148,7 +148,7 @@
 
 
     /**
-     * Simply cogwheels.
+     * A torque transmitter.
      * @class BLK_cogwheel
      * @extends BLK_baseTorqueBlock
      */

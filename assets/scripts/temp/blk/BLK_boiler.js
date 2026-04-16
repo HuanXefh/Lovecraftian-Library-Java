@@ -109,7 +109,7 @@
 
 
     /**
-     * A crafter that explodes if dry-heated or full of steam.
+     * A crafter (reactor???) that explodes if dry-heated or full of steam.
      * @class BLK_boiler
      * @extends BLK_furnaceFactory
      * @extends INTF_BLK_pressureProducer

@@ -57,7 +57,8 @@
 
     /**
      * Modified payload conveyors that are affected by efficiency.
-     * It's not possible to slow down the conveyor as it will break sync.
+     * Conducts power, why not?
+     * <br> It's not possible to slow down the conveyor as it will break sync.
      * @class BLK_payloadConveyor
      * @extends BLK_basePayloadBlock
      */

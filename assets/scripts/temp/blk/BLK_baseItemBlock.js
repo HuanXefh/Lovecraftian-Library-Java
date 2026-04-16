@@ -49,6 +49,7 @@
 
     /**
      * Blocks related to item distribution and storage.
+     * Item reaction will happen in these blocks.
      * @class BLK_baseItemBlock
      * @extends BLK_baseBlock
      */

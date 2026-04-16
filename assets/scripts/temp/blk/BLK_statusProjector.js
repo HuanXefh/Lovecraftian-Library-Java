@@ -75,7 +75,7 @@
 
 
     /**
-     * A block that periodically applies status effect on units in range.
+     * A block that periodically applies some status effect on units in range.
      * No optional item input!
      * @class BLK_statusProjector
      * @extends BLK_baseProjector

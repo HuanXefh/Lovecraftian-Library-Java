@@ -458,11 +458,13 @@
     /**
      * Used to construct a larger building from existing buildings.
      * {@link BLK_constructionCore#constructionData} is where the plan is defined.
+     * Rotation is supported.
      * <br> <NAMEGEN>
      * @class BLK_constructionCore
      * @extends BLK_materialBlock
      * @example
-     * // Blocks larger than 1 block unit are treated as 1-sized blocks, with tiles except the center taken by air (can be null)
+     * // Blocks larger than 1 block unit are treated as 1-sized blocks, with tiles except the center taken by air blocks
+     * // You can replace "air" with null
      * // "SPEC: this" represents the core
      * // -1 for rotation means arbitrary rotation
      * let exampleData = [
@@ -470,6 +472,14 @@
      *   [["router", -1], ["air", -1], ["air", -1], ["router", -1]],
      *   [["router", -1], ["distributor", -1], ["air", -1], ["router", -1]],
      *   [["SPEC: this", -1], ["router", -1], ["router", -1], ["router", -1]],
+     * ];
+     *
+     * // You can replace the tuples with block names if rotation is not used
+     * let exampleDataNoRot = [
+     *   ["router", "router", "router", "router"],
+     *   ["router", null, null, "router"],
+     *   ["router", "distributor", null, "router"],
+     *   ["SPEC: this", "router", "router", "router"],
      * ];
      */
     newClass().extendClass(PARENT[0], "BLK_constructionCore").initClass()
@@ -491,13 +501,13 @@
        */
       placeBlk: null,
       /**
-       * <PARAM>: X offset of the target block placement position.
+       * <PARAM>: X offset of the target block placement position. Set automatically if null.
        * @memberof BLK_constructionCore
        * @instance
        */
       placeDataX: null,
       /**
-       * <PARAM>: Y offset of the target block placement position.
+       * <PARAM>: Y offset of the target block placement position. Set automatically if null.
        * @memberof BLK_constructionCore
        * @instance
        */

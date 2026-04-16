@@ -225,7 +225,7 @@
                       // Depth: 4
                       val5 instanceof Array ?
                         thisFun.applyMerge(key5, Object.findByKeys(obj, [key1, key2, key3, key4], Object.air), val5) :
-                        Log.warn("[LOVEC] Cannot fully merge an object due to " + "too many layers".color(Pal.remove) + ".");
+                        Log.err("[LOVEC] Cannot fully merge an object due to " + "too many layers".color(Pal.remove) + ".");
                     });
                 });
             });
@@ -266,7 +266,7 @@
       } catch(err) {
         dbMdl = null;
         if(!err.message.startsWith("Module ")) {
-          Log.warn("[LOVEC] Error loading DB file from ${1}:\n".format(mod.name.color(Pal.accent)) + err);
+          Log.err("[LOVEC] Error loading DB file from ${1}:\n".format(mod.name.color(Pal.accent)) + err);
         };
       };
 

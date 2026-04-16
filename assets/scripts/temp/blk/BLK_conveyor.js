@@ -61,6 +61,7 @@
 
     /**
      * Conveyor, the most basic way of item transportation.
+     * Has side regions to mark the start and end.
      * <br> I have tried to change that item capacity of 3, but it's too hard-coded.
      * <br> <SINGLESIZE>
      * @class BLK_conveyor

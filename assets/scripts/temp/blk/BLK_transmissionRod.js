@@ -82,8 +82,8 @@
 
 
     /**
+     * An axial torque transmitter.
      * Better than cogwheel for remote torque transfer.
-     * Transport torque axially.
      * <br> <SINGLESIZE>
      * @class BLK_transmissionRod
      * @extends BLK_baseTorqueBlock

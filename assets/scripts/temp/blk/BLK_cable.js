@@ -82,6 +82,7 @@
 
     /**
      * A block that conducts power.
+     * Cables with equivalent safe power levels will be grouped in the same graph, thus updating only once per frame.
      * <br> <SINGLESIZE>
      * <br> <DEDICATION>: Inspired by Asthosus.
      * @class BLK_cable
@@ -183,6 +184,7 @@
       .setProp({
         noSuper: true,
         override: true,
+        final: true,
       }),
 
 
@@ -205,8 +207,8 @@
        * @instance
        * @return {number}
        */
-      ex_getTransmitterOverdriveFrac: function() {
-        return this.graphCur.graphData.overdriveFrac;
+      ex_getTransmitterOverloadFrac: function() {
+        return this.graphCur.graphData.overloadFrac;
       }
       .setProp({
         noSuper: true,

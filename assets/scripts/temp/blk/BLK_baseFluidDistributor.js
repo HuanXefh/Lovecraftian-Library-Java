@@ -34,6 +34,7 @@
 
     /**
      * Blocks that transport fluids.
+     * These blocks will be affected by most fluid-related mechanics, like corrosion.
      * @class BLK_baseFluidDistributor
      * @extends BLK_baseFluidBlock
      * @extends INTF_BLK_fluidTypeFilter

@@ -207,6 +207,15 @@
 
 
   /**
+   * Gets last integer.
+   * @return {number}
+   */
+  Number.prototype.last = function() {
+    return Math.round(this) - 1;
+  };
+
+
+  /**
    * Gets next integer.
    * @return {number}
    */

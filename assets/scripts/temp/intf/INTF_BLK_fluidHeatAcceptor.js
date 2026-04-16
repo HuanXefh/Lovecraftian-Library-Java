@@ -209,6 +209,8 @@
           },
 
           (rd, revi) => {
+            if(this.LCReviSub === 0 && this.block.ex_isSubInsOf("BLK_rainCollector")) return;
+
             this.fHeatCur = rd.f();
           },
         );

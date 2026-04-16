@@ -35,6 +35,8 @@
   /** @global */
   CLS_paramBuilder = require("lovec/cls/util/builder/CLS_paramBuilder");
   /** @global */
+  CLS_enum = require("lovec/cls/struct/CLS_enum");
+  /** @global */
   CLS_objectBox = require("lovec/cls/struct/CLS_objectBox");
   /** @global */
   CLS_damageTextMode = require("lovec/cls/util/CLS_damageTextMode");

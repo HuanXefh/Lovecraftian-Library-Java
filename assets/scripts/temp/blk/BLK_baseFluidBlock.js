@@ -36,6 +36,7 @@
 
     /**
      * Base template for all fluid blocks.
+     * Fluid blocks won't accept abstract fluids by default.
      * @class BLK_baseFluidBlock
      * @extends BLK_baseBlock
      */

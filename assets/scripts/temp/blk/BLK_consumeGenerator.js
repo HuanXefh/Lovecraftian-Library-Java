@@ -75,7 +75,7 @@
 
 
     /**
-     * Vanilla {@link ConsumeGenerator} but has warmup like {@link ImpactReactor}.
+     * Vanilla {@link ConsumeGenerator} but has warmup just like {@link ImpactReactor}.
      * @class BLK_consumeGenerator
      * @extends BLK_baseGenerator
      */

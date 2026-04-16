@@ -81,7 +81,7 @@ const db = {
       init: [
 
         "cable", graph => {
-          graph.graphData.overdriveFrac = 0.0;
+          graph.graphData.overloadFrac = 0.0;
           graph.graphData.maxPowProdAllowed = graph.getData(0).ex_getMaxPowProdAllowed();
         },
 
@@ -104,12 +104,12 @@ const db = {
 
           let powProd = graph.getData(0).power.graph.getLastPowerProduced();
           if(TIMER.secHalf) {
-            graph.graphData.overdriveFrac = Mathf.approach(graph.graphData.overdriveFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
+            graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
           };
-          if(graph.graphData.overdriveFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
+          if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
           graph.each(
             (ob, vert) => ob.added,
-            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.blk_shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverdriveDmgScl),
+            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.blk_shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
           );
         },
 

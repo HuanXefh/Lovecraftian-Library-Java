@@ -334,7 +334,7 @@
       b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
       b.attrEffc = b.attr == null ?
         1.0 :
-        Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, "floor"), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
+        Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, MDL_attr.AttrModes.FLOOR), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
     });
   };
 
@@ -383,7 +383,7 @@
 
 
     /**
-     * Handles basic multi-crafter methods, should be implemented after a recipe selector.
+     * Handles basic multi-crafter methods, should be implemented after {@link INTF_BLK_recipeSelector}.
      * Does not affect stats and recipe selection.
      * @class INTF_BLK_recipeHandler
      * @extends INTF_BLK_payloadBlock
@@ -395,7 +395,7 @@
 
 
         /**
-         * <PARAM>: Recipe module for this block (as string), usually the block name without mod name.
+         * <PARAM>: Recipe module (.js file) for this block (as string), usually the block name without mod name. The file should be located at "scripts/auxFi/rc".
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */

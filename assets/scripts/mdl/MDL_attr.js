@@ -21,6 +21,15 @@
   /* <---------- base ----------> */
 
 
+  const AttrModes = new CLS_enum({
+    ALL: 0xff,
+    FLOOR: 1 << 0,
+    BLOCK: 1 << 1,
+    OVERLAY: 1 << 2,
+  });
+  exports.AttrModes = AttrModes;
+
+
   /**
    * Converts generalized attribute to string.
    * @param {AttrGn} attr_gn
@@ -108,39 +117,22 @@
    * Variant of {@link _sum} that uses a list of tiles.
    * @param {Array<Tile>} ts
    * @param {AttrGn} attr_gn
-   * @param {string|unset} [mode] - Determines what blocks will be involved for attribute calculation.
+   * @param {number|unset} [mode] - Determines what blocks will be involved for attribute calculation. See {@link AttrModes}
    * @return {number}
    */
   const _sumTs = function thisFun(ts, attr_gn, mode) {
     let attrSum = 0.0;
-    if(mode == null) mode = "floor";
-    if(!mode.equalsAny(thisFun.modes)) return attrSum;
+    if(mode == null) mode = AttrModes.FLOOR;
 
     let nmAttr = _attr(attr_gn);
-    switch(mode) {
-      case "floor" :
-        ts.forEachFast(ot => attrSum += ot.floor().attributes.get(Attribute.get(nmAttr)));
-        break;
-      case "block" :
-        ts.forEachFast(ot => attrSum += ot.block().attributes.get(Attribute.get(nmAttr)));
-        break;
-      case "overlay" :
-        ts.forEachFast(ot => attrSum += ot.overlay().attributes.get(Attribute.get(nmAttr)));
-        break;
-      case "all" :
-        ts.forEachFast(ot => {
-          attrSum += ot.floor().attributes.get(Attribute.get(nmAttr));
-          attrSum += ot.block().attributes.get(Attribute.get(nmAttr));
-          attrSum += ot.overlay().attributes.get(Attribute.get(nmAttr));
-        });
-        break;
-    };
+    ts.forEachFast(ot => {
+      if((mode & AttrModes.FLOOR) !== 0) attrSum += ot.floor().attributes.get(Attribute.get(nmAttr));
+      if((mode & AttrModes.BLOCK) !== 0) attrSum += ot.block().attributes.get(Attribute.get(nmAttr));
+      if((mode & AttrModes.OVERLAY) !== 0) attrSum += ot.overlay().attributes.get(Attribute.get(nmAttr));
+    });
 
     return attrSum;
-  }
-  .setProp({
-    modes: ["floor", "block", "overlay", "all"],
-  });
+  };
   exports._sumTs = _sumTs;
 
 
@@ -150,7 +142,7 @@
    * @param {number|unset} r
    * @param {number|unset} size
    * @param {AttrGn} attr_gn
-   * @param {string|unset} [mode] - See {@link _sumTs}.
+   * @param {number|unset} [mode] - See {@link AttrModes}.
    * @return {number}
    */
   const _sumRect = function thisFun(t, r, size, attr_gn, mode) {
@@ -168,7 +160,7 @@
    * @param {number|unset} r
    * @param {number|unset} size
    * @param {AttrGn} attr_gn
-   * @param {string|unset} [mode] - See {@link _sumTs}.
+   * @param {number|unset} [mode] - See {@link AttrModes}.
    * @return {number}
    */
   const _sumCircle = function thisFun(t, r, size, attr_gn, mode) {
@@ -230,7 +222,7 @@
    * See {@link _sumTs}.
    * @param {Array} attrRsArr
    * @param {Array<Tile>} ts
-   * @param {string|unset} [mode] - See {@link _sumTs}.
+   * @param {number|unset} [mode] - See {@link AttrModes}.
    * @return {[string, number, Resource]} <TUP>: attr, attrSum, rs.
    */
   const _dynaAttrTup = function(attrRsArr, ts, mode) {

@@ -63,7 +63,7 @@
          * @memberof INTF_BLK_rangeAttributeBlock
          * @instance
          */
-        attrMode: "floor",
+        attrMode: MDL_attr.AttrModes.FLOOR,
 
 
       }),

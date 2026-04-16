@@ -380,24 +380,27 @@
    */
   checkTupChange = function() {
     const tup = arguments[0];
-    if(tup.length === 0) return true;
 
+    let cond = false;
+    if(tup.length === 0) cond = true;
     let i = 2, iCap = arguments.length;
     while(i < iCap) {
       if(arguments[i] !== tup[i - 2]) {
-        if(arguments[1]) {
-          let j = 2;
-          while(j < iCap) {
-            tup[j - 2] = arguments[j];
-            j++;
-          };
-        };
-        return true;
+        cond = true;
+        break;
       };
       i++;
     };
 
-    return false;
+    if(cond && arguments[1]) {
+      i = 0;
+      while(i < iCap) {
+        tup[i - 2] = arguments[i];
+        i++;
+      };
+    };
+
+    return cond;
   };
 
 

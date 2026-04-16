@@ -57,7 +57,7 @@
 
 
     /**
-     * Cable but no side conductivity.
+     * {@link BLK_cable} but no side conductivity.
      * <br> <SINGLESIZE>
      * @class BLK_armoredCable
      * @extends BLK_cable

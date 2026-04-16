@@ -26,7 +26,8 @@
 
 
     /**
-     * Any block related to Lovec heat, except heaters.
+     * Any block related to Lovec heat.
+     * Heaters are not included, since every factory type can be a heater in Lovec.
      * @class BLK_baseHeatBlock
      * @extends BLK_baseBlock
      * @extends INTF_BLK_heatBlock
