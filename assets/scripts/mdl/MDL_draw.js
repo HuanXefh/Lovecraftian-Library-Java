@@ -149,7 +149,7 @@
     _reg_normal(
       t.worldx(), t.worldy(),
       regs[Math.floor(Mathf.randomSeed(t.pos() + 114514 + off2, 0, regs.length))],
-      0.0, 1.0, Color.white, 1.0, VAR.lay_randOv,
+      0.0, 1.0, Color.white, 1.0, VAR.layer.randOv,
     );
   };
   exports._reg_randOv = _reg_randOv;
@@ -573,7 +573,7 @@
     if(size == null) size = 0;
     if(ang == null) ang = 0.0;
     if(a == null) a = 1.0;
-    if(z == null) z = VAR.lay_bulFlame;
+    if(z == null) z = VAR.layer.bulFlame;
 
     let
       color1 = MDL_color._color(tryVal(color1_gn, Pal.accent), Tmp.c2),
@@ -811,7 +811,7 @@
   ) {
     if(a == null) a = 1.0;
     if(isDashed == null) isDashed = false;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     processZ(z);
 
@@ -848,7 +848,7 @@
     if(stroke == null) stroke = 1.5;
     if(scl == null) scl = 1.0;
     if(isDashed == null) isDashed = false;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     processZ(z);
 
@@ -881,7 +881,7 @@
     strokeScl, color1_gn, color2_gn, a, hasLight, z
   ) {
     if(strokeScl == null) strokeScl = 1.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     let strokeScl_fi = (1.0 + Math.sin(Time.globalTime * 0.065) * 0.2) * strokeScl;
 
@@ -946,7 +946,7 @@
   ) {
     if(strokeScl == null) strokeScl = 1.0;
     if(a == null) a = 1.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     let
       frac1 = Time.globalTime / tryVal(scl, 1.0) % 100.0 / 100.0,
@@ -1054,7 +1054,7 @@
     if(size == null) size = 1;
     if(a == null) a = 1.0;
     if(isDashed == null) isDashed = false;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     processZ(z);
 
@@ -1123,7 +1123,7 @@
     if(rad < 0.0001) return;
     if(a == null) a = 1.0;
     if(isDashed == null) isDashed = false;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     processZ(z);
 
@@ -1189,7 +1189,7 @@
   ) {
     if(size == null) size = 1;
     if(a == null) a = 1.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     processZ(z);
 
@@ -1244,7 +1244,7 @@
   ) {
     if(pad == null) pad = 0.0;
     if(a == null) a = 1.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     processZ(z);
 
@@ -1279,7 +1279,7 @@
     if(rad < 0.0001) return;
     if(scl == null) scl = 1.0;
     if(a == null) a = 1.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     let frac = Time.globalTime % (90.0 * scl) / (90.0 * scl);
 
@@ -1314,7 +1314,7 @@
     if(rad < 0.0001) return;
     if(scl == null) scl = 1.0;
     if(a == null) a = 1.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     processZ(z);
 
@@ -1352,7 +1352,7 @@
     if(rad < 0.0001) return;
     if(scl == null) scl = 1.0;
     if(a == null) a = 1.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     let
       stroke_f = rad * 0.25,
@@ -1403,7 +1403,7 @@
     if(scl == null) scl = 1.0;
     if(color_gn == null) color_gn = Pal.accent;
     if(a == null) a = 1.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     let
       scl_fi = scl * 150.0,
@@ -1541,7 +1541,7 @@
     if(a < 0.0001) return;
     if(offW == null) offW = 0.0;
     if(offTy == null) offTy = 0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     let
       w = (size + 1) * Vars.tilesize + offW,
@@ -1588,7 +1588,7 @@
     if(ang == null) ang = 0.0;
     if(a == null) a = 1.0;
     if(a < 0.0001) return;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
     let color = MDL_color._color(tryVal(color_gn, Pal.accent));
 
@@ -1707,27 +1707,27 @@
     let zPrev = Draw.z();
     Draw.z(z);
 
-    if(PARAM.unitStatStyle === 3) {
+    if(PARAM.UNIT_STAT_STYLE === 3) {
       offY -= 4.0;
     };
 
     // Health bar
-    if(PARAM.unitStatStyle === 2 || PARAM.unitStatStyle === 3) {
-      Lines.stroke(PARAM.unitStatStyle === 3 ? 3.5 : 5.0, Pal.gray);
+    if(PARAM.UNIT_STAT_STYLE === 2 || PARAM.UNIT_STAT_STYLE === 3) {
+      Lines.stroke(PARAM.UNIT_STAT_STYLE === 3 ? 3.5 : 5.0, Pal.gray);
       Draw.alpha(a_fi);
       Lines.line(x - w * 0.5, y + offY, x + w * 0.5, y + offY);
-    } else if(PARAM.unitStatStyle === 1) {
+    } else if(PARAM.UNIT_STAT_STYLE === 1) {
       Lines.stroke(10.0, Pal.gray);
       Draw.alpha(a_fi);
       Lines.line(x - w * 0.5 + 2.5, y + offY + 2.5, x + w * 0.5 - 2.5, y + offY + 2.5);
     };
-    Lines.stroke(PARAM.unitStatStyle === 3 ? 2.5 : 3.0, color_fi);
+    Lines.stroke(PARAM.UNIT_STAT_STYLE === 3 ? 2.5 : 3.0, color_fi);
     Draw.alpha(a_fi * 0.3);
     Lines.line(x - w * 0.5, y + offY, x + w * 0.5, y + offY);
     Draw.alpha(a_fi);
     Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y + offY);
     // Health bar segments
-    if(PARAM.unitStatStyle === 1 || PARAM.unitStatStyle === 2) {
+    if(PARAM.UNIT_STAT_STYLE === 1 || PARAM.UNIT_STAT_STYLE === 2) {
       Lines.stroke(1.0, Pal.gray);
       Draw.alpha(a_fi);
       let x_i, y1_i, y2_i;
@@ -1741,13 +1741,13 @@
     };
     Draw.reset();
     // Stats
-    if(PARAM.unitStatStyle === 1 || PARAM.unitStatStyle === 2) {
+    if(PARAM.UNIT_STAT_STYLE === 1 || PARAM.UNIT_STAT_STYLE === 2) {
       if(armor != null) {
         LCDraw.text(
           e.x, e.y, Strings.autoFixed(armor, 0), Fonts.def,
           1.2, Color.gray, Align.right,
           -w * 0.5 - 4.0,
-          offY + (PARAM.unitStatStyle === 2 ? 2.5 : 4.5),
+          offY + (PARAM.UNIT_STAT_STYLE === 2 ? 2.5 : 4.5),
         );
       };
       if(shield != null && shield > 0.0) {
@@ -1755,11 +1755,11 @@
           e.x, e.y, Strings.autoFixed(shield, 0), Fonts.def,
           1.2, Pal.techBlue, Align.left,
           w * 0.5 + 4.0,
-          offY + (PARAM.unitStatStyle === 2 ? 2.75 : 4.5),
+          offY + (PARAM.UNIT_STAT_STYLE === 2 ? 2.75 : 4.5),
         );
       };
     };
-    if(PARAM.unitStatStyle === 1) {
+    if(PARAM.UNIT_STAT_STYLE === 1) {
       LCDraw.text(
         e.x, e.y, Strings.autoFixed(e.maxHealth, 0), Fonts.def,
         0.8, color_fi, Align.center,
@@ -1824,7 +1824,7 @@
     if(a < 0.0001) return;
     if(offW == null) offW = 0.0;
     if(offTy == null) offTy = 0.0;
-    if(z == null) z = Layer.effect + VAR.lay_offDraw + 1.0;
+    if(z == null) z = Layer.effect + VAR.layer.offDraw + 1.0;
 
     let frac;
     if(frac_ow != null) {
@@ -1907,7 +1907,7 @@
       thisFun.tmpCd--;
     } else {
       thisFun.tmpT = t;
-      thisFun.tmpCd = VAR.time_extraInfoCooldown;
+      thisFun.tmpCd = VAR.time.extraInfoCooldown;
       thisFun.tmpStr = null;
     };
     if(thisFun.tmpCd > 0.0) return;
@@ -1924,8 +1924,8 @@
     };
 
     LCDraw.text(
-      (t.build == null ? t.worldx() : t.build.x) + (!PARAM.drawBuildStat || t.build == null ? 0.0 : ((VAR.r_offBuildStat + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
-      (t.build == null ? t.worldy() : t.build.y) + (-(!PARAM.drawBuildStat || t.build == null ? 10.0 : ((VAR.r_offBuildStat + t.build.block.size * 0.5) * Vars.tilesize + 2.0))),
+      (t.build == null ? t.worldx() : t.build.x) + (!PARAM.SHOULD_DRAW_BUILD_STAT || t.build == null ? 0.0 : ((VAR.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
+      (t.build == null ? t.worldy() : t.build.y) + (-(!PARAM.SHOULD_DRAW_BUILD_STAT || t.build == null ? 10.0 : ((VAR.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize + 2.0))),
       thisFun.tmpStr, Fonts.def,
       0.8, Color.white, Align.left, 0.0, 0.0, 10.0,
     );
@@ -1943,7 +1943,7 @@
    * @return {void}
    */
   const drawBridgeLine = function thisFun(b) {
-    if(!PARAM.drawBridgeTransportLine) return;
+    if(!PARAM.SHOULD_DRAW_BRIDGE_LINE) return;
 
     let tmpB = b, tmpOb, isFirst = true;
     if(b.block instanceof DirectionBridge) {

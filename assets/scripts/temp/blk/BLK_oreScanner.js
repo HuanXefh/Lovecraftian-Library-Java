@@ -103,7 +103,7 @@
 
   function comp_draw(b) {
     let z = Draw.z();
-    Draw.z(VAR.lay_effFlr + 0.01);
+    Draw.z(VAR.layer.effFlr + 0.01);
     Draw.color(Pal.accent, b.warmup * 0.2);
     Fill.arc(b.x, b.y, b.block.delegee.blkRad, 0.125, b.offConeAng + b.totalProgress * 2.0);
     Draw.color();

@@ -64,7 +64,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.updateSuppressed) return;
+    if(PARAM.UPDATE_SUPPRESSED) return;
 
     if(TIMER.secQuarter) {
       b.ex_updatePresTg();
@@ -82,14 +82,14 @@
 
     // Apply damage if over limit
     if(
-      !PARAM.updateDeepSuppressed && TIMER.secQuarter && Mathf.chance(0.25)
+      !PARAM.UPDATE_DEEP_SUPPRESSED && TIMER.secQuarter && Mathf.chance(0.25)
         && (
           (b.presTmp + b.presExtra) > 0.0 ?
             ((b.presTmp + b.presExtra) > (b.block.delegee.presRes + 0.5)) :
             ((b.presTmp + b.presExtra) < (b.block.delegee.vacRes - 0.5))
         )
     ) {
-      b.damagePierce((b.maxHealth * VAR.blk_presDmgFrac + VAR.blk_presDmgMin) * (
+      b.damagePierce((b.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) * (
         b.presTmp > 0.0 ?
           (b.presTmp / Math.max(b.block.delegee.presRes, 0.0001)) :
           (-b.presTmp / Math.max(-b.block.delegee.vacRes, 0.0001))
@@ -105,9 +105,9 @@
       let b_t = b.presSupplyTgs[b.presSupplyIncre % b.presSupplyTgs.length];
       if(b_t.added && !b_t.isPayload()) {
         let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
-        FRAG_fluid.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt * VAR.time_liqIntv, false, false, true);
+        FRAG_fluid.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt * VAR.time.liqIntv, false, false, true);
         if(addAmt > (MDL_recipeDict._consAmt(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t.block) + 5.5 / 60.0)) {
-          b_t.damagePierce((b_t.maxHealth * VAR.blk_presDmgFrac + VAR.blk_presDmgMin) / 5.0);
+          b_t.damagePierce((b_t.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) / 5.0);
         };
       };
     };

@@ -94,11 +94,11 @@
     let tmpTer;
     ter = null;
     thisFun.terGetters.forEachFast(getter => {
-      tmpTer = getter(thisFun.countMap, count, VAR.blk_terFlrThr);
+      tmpTer = getter(thisFun.countMap, count, VAR.param.terFlrThr);
       if(tmpTer !== "!PENDING") ter = tmpTer;
     });
     thisFun.complexTerGetters.forEachFast(getter => {
-      tmpTer = getter(thisFun.countMap, count, VAR.blk_terFlrThr);
+      tmpTer = getter(thisFun.countMap, count, VAR.param.terFlrThr);
       if(tmpTer !== "!PENDING") ter = tmpTer;
     });
 

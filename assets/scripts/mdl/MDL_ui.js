@@ -130,7 +130,7 @@
    * @return {number}
    */
   const _uiScl = function() {
-    return Math.min(_screenW() / VAR.len_bgW, _screenH() / VAR.len_bgH);
+    return Math.min(_screenW() / VAR.length.bgW, _screenH() / VAR.length.bgH);
   };
   exports._uiScl = _uiScl;
 
@@ -147,7 +147,7 @@
     if(pad == null) pad = 4.0;
     if(ord == null) ord = 1;
 
-    return Math.max(Math.floor(_uiW(null, null, ord * VAR.rad_ordRad, 0.0) / (w + pad)), 7);
+    return Math.max(Math.floor(_uiW(null, null, ord * VAR.length.ordW, 0.0) / (w + pad)), 7);
   };
   exports._colAmt = _colAmt;
 
@@ -397,8 +397,8 @@
     VARGEN.dialFlowBgPool.push(tb);
 
     tb.table(new TextureRegionDrawable(Core.atlas.find(nmBg)), tb1 => {})
-    .width(VAR.len_bgW * _uiScl())
-    .height(VAR.len_bgH * _uiScl())
+    .width(VAR.length.bgW * _uiScl())
+    .height(VAR.length.bgH * _uiScl())
     .row();
 
     setActor_pos(tb);
@@ -474,11 +474,11 @@
       if(isDark0color instanceof Color) {
         tb1.setColor(isDark0color);
       } else if(isDark0color) {
-        tb1.setColor(VAR.color_darkMix);
+        tb1.setColor(VAR.color.darkMix);
       };
     })
-    .width(VAR.len_charaW * _uiScl())
-    .height(VAR.len_charaH * _uiScl())
+    .width(VAR.length.charaW * _uiScl())
+    .height(VAR.length.charaH * _uiScl())
     .row();
 
     let done = false;

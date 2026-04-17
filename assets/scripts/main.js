@@ -137,7 +137,7 @@
 
 
     // Set up ore dictionary, EXPERIMENTAL!
-    if(PARAM.modded && fetchSetting("load-ore-dict")) (function() {
+    if(PARAM.MODDED && fetchSetting("load-ore-dict")) (function() {
       Log.info("[LOVEC] Loading " + "ore dictionary".color(Pal.accent) + " settings...");
       if(!fetchSetting("load-ore-dict-def")) Log.info("[LOVEC] Skipped default lists for ore dictionary.");
 
@@ -251,7 +251,7 @@
 
 
     // Something
-    if(!Vars.headless && PARAM.modded && !fetchSetting("load-vanilla-flyer")) {
+    if(!Vars.headless && PARAM.MODDED && !fetchSetting("load-vanilla-flyer")) {
       try {
         Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", Vars.content.unit(DB_misc.db["mod"]["menuFlyer"].readRand()));
       } catch(err) {
@@ -264,7 +264,7 @@
     if(!Vars.headless) {
       DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr));
       Time.run(3.0, () => {
-        if(PARAM.secret_legacySound) {
+        if(PARAM.SECRET_LEGACY_SOUND) {
           try {
             Vars.content.units().each(utp => {
               if(utp.deathSound === Sounds.unitExplode1 || utp.deathSound === Sounds.unitExplode2 || utp.deathSound === Sounds.unitExplode3) {
@@ -293,7 +293,7 @@
             Log.err("[LOVEC] Failed to load legacy sounds:\n" + err);
           };
         };
-        if(PARAM.secret_fireInTheHole) {
+        if(PARAM.SECRET_FITH) {
           let pitchBase;
           let fireInTheHole = wp => {
             wp.shootSound = fetchSound("se-meme-fith");
@@ -312,7 +312,7 @@
             };
           });
         };
-        Core.settings.put("lovec-misc-fire-in-the-hole", PARAM.secret_fireInTheHole);
+        Core.settings.put("lovec-misc-fire-in-the-hole", PARAM.SECRET_FITH);
       });
     };
 
@@ -334,7 +334,7 @@
           let tmp = (rs.color.r + rs.color.g + rs.color.b) / 3.0;
           return tmp < 0.1 ?
             Tmp.c1.set(Color.white) :
-            Tmp.c1.set(rs.color).mul(tmp < 0.45 ? VAR.ct_colorMtpHigh : VAR.ct_colorMtp);
+            Tmp.c1.set(rs.color).mul(tmp < 0.45 ? VAR.param.ctNmColorMtpHigh : VAR.param.ctNmColorMtp);
         };
 
         VARGEN.rss.forEachFast(rs => rs.localizedName = rs.localizedName.color(fetchColor(rs)));
@@ -430,8 +430,8 @@
 
 
     // Screw it
-    if(!PARAM.modded && fetchMod("projreind") != null) {
-      throw new Error("PARAM.modded is broken again, WTF D:");
+    if(!PARAM.MODDED && fetchMod("projreind") != null) {
+      throw new Error("PARAM.MODDED is broken again, WTF D:");
     };
 
 

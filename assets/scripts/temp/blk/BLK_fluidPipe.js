@@ -32,7 +32,7 @@
 
 
   function comp_onDestroyed(b) {
-    if(PARAM.secret_steelPipe && String(b.block.delegee.matGrp).equalsAny([
+    if(PARAM.SECRET_METAL_PIPE && String(b.block.delegee.matGrp).equalsAny([
       "iron", "steel", "galvanized-steel", "stainless-steel",
     ])) {
       MDL_effect.playAt(b.x, b.y, "se-meme-steel-pipe");

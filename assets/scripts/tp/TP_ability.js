@@ -183,7 +183,7 @@
 
 
       draw(unit) {
-        if(!PARAM.drawUnitReload) return;
+        if(!PARAM.SHOULD_DRAW_UNIT_RELOAD) return;
 
         MDL_draw._d_reload(
           unit, null,

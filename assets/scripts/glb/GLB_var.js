@@ -25,168 +25,143 @@
   exports.lovecReviOff = 96;
 
 
-  /* <---------- layer ----------> */
+  exports.layer = {
+    offDraw: 6.11,
+    offDrawOver: 26.11,
+    effFlr: 14.11,
+    effBase: 69.11,
+    effHigh: 116.41,
+    effSmog: 86.11,
+    effSmogHigh: 116.01,
+    effBloom: 109.61,
+    p3dRange: 34.52,
+    unitRange: 115.03,
+    overText: 219.81,
+    debugFlr: 2.21,
+    debugTop: 118.91,
+
+    vent: 0.61,
+    randOv: 1.07,
+    onConveyor: 29.76,
+    buildRemainsDrown: 22.05,
+    buildRemains: 27.07,
+    unitRemainsDrown: 22.07,
+    unitRemains: 58.11,
+    dporeRevealed: 107.21,
+
+    bulBase: 74.11,
+    bulHigh: 86.01,
+    bulFlame: 108.51,
+  };
 
 
-  exports.lay_offDraw = 6.11;
-  exports.lay_offDrawOver = 26.11;
+  exports.priority = {
+    powTrans: 0.1,
+    min: 0.2,
+    fac: 0.5,
+    powGen: 1.4,
+    proj: 1.2,
+  };
 
 
-  exports.lay_effFlr = 14.11;
-  exports.lay_effBase = 69.11;
-  exports.lay_effSmog = 86.11;
-  exports.lay_effBloom = 109.61;
-  exports.lay_effSmogHigh = 116.01;
-  exports.lay_effHigh = 116.41;
-  exports.lay_overText = 219.81;
+  exports.time = {
+    liqIntv: 4.0,
+    heatIntv: 20.0,
+    paramIntv: 90.0,
+    paramGlobalIntv: 110.0,
+    paramLargeIntv: 600.0,
+    lightningIntv: 40.0,
+    unitIntv: 20.0,
+
+    drownDef: 200.0,
+    flrStaDef: 40.0,
+    liqStaDef: 150.0,
+    unitStaDef: 120.0,
+    stackStaExtDef: 120.0,
+
+    extraInfoCooldown: 50.0,
+    lootProtection: 240.0,
+    lootLifetime: 7200.0,
+    noLinkDespawnTime: 30.0,
+  };
 
 
-  exports.lay_vent = 0.61;
-  exports.lay_randOv = 1.07;
-  exports.lay_debugFlr = 2.21;
-  exports.lay_buildingRemainsDrown = 22.05;
-  exports.lay_buildingRemains = 27.07;
-  exports.lay_onConveyor = 29.76;
-  exports.lay_p3dRange = 34.52;
-  exports.lay_unitRemainsDrown = 22.07;
-  exports.lay_unitRemains = 58.11;
-  exports.lay_dporeRevealed = 107.21;
-  exports.lay_debugTop = 118.91;
+  exports.chance = {
+    effPCap: 0.08,
+
+    unitUpdateP: 0.6,
+    polUpdateP: 0.2,
+  };
 
 
-  exports.lay_bulBase = 74.11;
-  exports.lay_bulHigh = 86.01;
-  exports.lay_bulFlame = 108.51;
-  exports.lay_unitRange = 115.03;
+  exports.range = {
+    mouseRad: 28.0,
+    treeHideMaxRad: 28.0,
+    presExploRad: 34.4,
+    lootRad: 80.0,
+    lootPickRad: 10.0,
+    lootMergeRad: 4.0,
+    unitLootRad: 18.0,
+
+    offBuildStatR: 2.25,
+    unitSurR: 4,
+  };
 
 
-  /* <---------- priority ----------> */
+  exports.length = {
+    ordW: 120.0,
+    charBtnW: 42.0,
+    bgW: 1920.0,
+    bgH: 1080.0,
+    charaW: 450.0,
+    charaH: 900.0,
+  };
 
 
-  exports.prio_powTrans = 0.1;
-  exports.prio_min = 0.2;
-  exports.prio_fac = 0.5;
-  exports.prio_powGen = 1.4;
-  exports.prio_proj = 1.2;
+  exports.color = {
+    whiteClear: Color.valueOf("ffffff00"),
+    darkMix: Color.valueOf("606060"),
+    heatMix: Color.valueOf("ff3838"),
+    smogWhite: Color.valueOf("ffffff40"),
+    smogWhiteThick: Color.valueOf("ffffff60"),
+    smogWhiteThickest: Color.valueOf("ffffffc0"),
+    rotorWhite: Color.valueOf("ffffff30"),
+  };
 
 
-  /* <---------- time ----------> */
+  exports.param = {
+    presExploDmg: 1800.0,
+    presDmgFrac: 0.015,
+    presDmgMin: 3.0,
+    corDmgFrac: 0.0135,
+    corDmgMin: 2.0,
+    clogViscThr: 0.7,
+    clogDmgMin: 3.0,
+    impactDmgMin: 40.0,
+    lightningDmg: 20.0,
+    shortCircuitDmgFrac: 0.12,
+    rpmDmgFrac: 0.15,
+    heatDmgMax: 100.0,
+    overheatedConversionDmg: 150.0,
 
+    auxCap: 1.0,
+    auxHeatTempFrac: 0.01666667,
+    terFlrThr: 0.75,
+    buildActiveEffcThr: 0.96,
+    powSourceStdProd: 8000.0,
 
-  exports.time_liqIntv = 4.0;
-  exports.time_heatIntv = 20.0;
-  exports.time_paramIntv = 90.0;
-  exports.time_paramGlobalIntv = 110.0;
-  exports.time_paramLargeIntv = 600.0;
-  exports.time_lightningIntv = 40.0;
-  exports.time_unitIntv = 20.0;
-
-
-  exports.time_drownDef = 200.0;
-  exports.time_flrStaDef = 40.0;
-  exports.time_liqStaDef = 150.0;
-  exports.time_unitStaDef = 120.0;
-  exports.time_stackStaExtDef = 120.0;
-
-
-  exports.time_extraInfoCooldown = 50.0;
-  exports.time_lootProtection = 240.0;
-  exports.time_lootLifetime = 7200.0;
-  exports.time_noLinkDespawnTime = 30.0;
-
-
-  /* <---------- chance ----------> */
-
-
-  exports.p_effPCap = 0.08;
-
-
-  exports.p_unitUpdateP = 0.6;
-  exports.p_polUpdateP = 0.2;
-
-
-  /* <---------- radius ----------> */
-
-
-  exports.rad_ordRad = 120.0;
-  exports.rad_mouseRad = 28.0;
-  exports.rad_charBtnRad = 42.0;
-  exports.rad_treeHideMaxRad = 28.0;
-  exports.rad_presExploRad = 34.4;
-  exports.rad_lootRad = 80.0;
-  exports.rad_lootPickRad = 10.0;
-  exports.rad_lootMergeRad = 4.0;
-  exports.rad_unitLootRad = 18.0;
-
-
-  exports.r_unitSurRange = 4;
-
-
-  exports.r_offBuildStat = 2.25;
-
-
-  /* <---------- length ----------> */
-
-
-  exports.len_bgW = 1920.0;
-  exports.len_bgH = 1080.0;
-  exports.len_charaW = 450.0;
-  exports.len_charaH = 900.0;
-
-
-  /* <---------- color ----------> */
-
-
-  exports.color_whiteClear = Color.valueOf("ffffff00");
-  exports.color_darkMix = Color.valueOf("606060");
-  exports.color_heatMix = Color.valueOf("ff3838");
-  exports.color_smogWhite = Color.valueOf("ffffff40");
-  exports.color_smogWhiteThick = Color.valueOf("ffffff60");
-  exports.color_smogWhiteThickest = Color.valueOf("ffffffc0");
-  exports.color_rotorWhite = Color.valueOf("ffffff30");
-
-
-  /* <---------- damage ----------> */
-
-
-  exports.dmg_presExploDmg = 1800.0;
-  exports.dmg_impactMinDmg = 40.0;
-  exports.dmg_heatMaxDmg = 100.0;
-  exports.dmg_overheatedConversionDmg = 150.0;
-
-
-  /* <---------- param ----------> */
-
-
-  exports.ct_colorMtp = 1.15;
-  exports.ct_colorMtpHigh = 1.5;
-  exports.ct_auxCap = 1.0;
-
-
-  exports.blk_remainsOffCap = 90.0;
-  exports.blk_updateEffcThr = 0.96;
-  exports.blk_terFlrThr = 0.75;
-  exports.blk_presDmgFrac = 0.015;
-  exports.blk_presDmgMin = 3.0;
-  exports.blk_corDmgFrac = 0.0135;
-  exports.blk_corDmgMin = 2.0;
-  exports.blk_clogViscThr = 0.75;
-  exports.blk_clogDmgFrac = 0.02;
-  exports.blk_clogDmgMin = 3.0;
-  exports.blk_auxHeatTempFrac = 0.16666667;
-  exports.blk_rpmDmgFrac = 0.15;
-  exports.blk_lightningDmg = 20.0;
-  exports.blk_shortCircuitDmgFrac = 0.12;
-  exports.blk_powSourceStdProd = 8000.0;
-  exports.blk_ovCogA1 = 0.315;
-  exports.blk_ovCogA2 = 0.7;
-
-
-  /* <---------- dialog ----------> */
+    ctNmColorMtp: 1.15,
+    ctNmColorMtpHigh: 1.5,
+    buildRemainsOffCap: 90.0,
+    ovCogA1: 0.315,
+    ovCogA2: 0.7,
+  };
 
 
   MDL_event._c_onLoad(() => {
-    exports.dial_ct1 = Vars.headless ? null : new ContentInfoDialog();
-    exports.dial_ct2 = Vars.headless ? null : new ContentInfoDialog();
-    exports.dial_ct3 = Vars.headless ? null : new ContentInfoDialog();
+    exports.dialog = {
+      ct1: Vars.headless ? null : new ContentInfoDialog(),
+      ct2: Vars.headless ? null : new ContentInfoDialog(),
+      ct3: Vars.headless ? null : new ContentInfoDialog(),
+    };
   });

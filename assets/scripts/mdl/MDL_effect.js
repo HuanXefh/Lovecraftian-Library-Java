@@ -29,7 +29,7 @@
    * @return {number}
    */
   const _p_frac = function(p, frac) {
-    return Math.min(p * frac, VAR.p_effPCap);
+    return Math.min(p * frac, VAR.chance.effPCap);
   };
   exports._p_frac = _p_frac;
 
@@ -321,7 +321,7 @@
           Fill.circle(eff.x + x * frac1, eff.y + y * frac1, frac2 * 2.5);
         });
       });
-      tmp.layer = VAR.lay_effFlr - 0.1;
+      tmp.layer = VAR.layer.effFlr - 0.1;
 
       return tmp;
     })(),
@@ -454,12 +454,12 @@
         Lines.circle(eff.x, eff.y, eff.rotation * eff.fin());
         Draw.reset();
       });
-      tmp.layer = VAR.lay_effFlr;
+      tmp.layer = VAR.layer.effFlr;
 
       return tmp;
     })(),
-    effColor1: VAR.color_rotorWhite,
-    effColor2: VAR.color_whiteClear,
+    effColor1: VAR.color.rotorWhite,
+    effColor2: VAR.color.whiteClear,
   })
   .setAnno("non-headless");
   exports._e_rotorWave = _e_rotorWave;
@@ -483,7 +483,7 @@
   }
   .setProp({
     eff: new Effect(120.0, eff => {
-      Draw.z(VAR.lay_effBase);
+      Draw.z(VAR.layer.effBase);
       Draw.color(eff.color);
       !eff.data ?
         Fill.circle(eff.x, eff.y, 0.8 * Interp.pow5Out.apply(1.0 - eff.fin())) :
@@ -522,8 +522,8 @@
       tint = null,
       a = 1.0,
       z = etp instanceof Block ?
-        VAR.lay_buildingRemains :
-        VAR.lay_unitRemains,
+        VAR.layer.buildRemains :
+        VAR.layer.unitRemains,
       inLiq = false,
       shouldFloat = false;
     if((function () {
@@ -546,25 +546,25 @@
           tint = t.getFloorColor();
         };
         a = 0.5;
-        z = etp instanceof Block ? VAR.lay_buildingRemainsDrown : VAR.lay_unitRemainsDrown;
+        z = etp instanceof Block ? VAR.layer.buildRemainsDrown : VAR.layer.unitRemainsDrown;
       };
     };
 
     const remains = extend(Decal, {
 
 
-      lifetime: isPermanent ? Number.n8 : PARAM.unitRemainsLifetime,
+      lifetime: isPermanent ? Number.n8 : PARAM.UNIT_REMAINS_LIFETIME,
       offTime: Mathf.random(1200.0),
       x: x, y: y, tile: t,
       hitSize: MDL_entity._hitSize(etp),
       rotation: etp instanceof Block ? (Mathf.random(90.0) - 45.0) : Mathf.random(360.0),
       team: team,
-      color: VAR.color_darkMix,
+      color: VAR.color.darkMix,
       tint: tint,
       a: a,
       aSha: etp instanceof Block ? 0.3 : 0.5,
       z: z,
-      off: Mathf.random(VAR.blk_remainsOffCap),
+      off: Mathf.random(VAR.param.buildRemainsOffCap),
       region: etp instanceof Block ? MDL_texture._regBlk(etp) : Core.atlas.find(etp.name + "-full", Core.atlas.find(etp.name + "-icon", etp.region)),
       cellRegion: etp instanceof Block ? null : Core.atlas.find(etp.name + "-cell-full", etp.cellRegion),
       softShadowRegion: etp instanceof Block ? null : etp.softShadowRegion,
@@ -601,7 +601,7 @@
             thisFun.shader.delegee.mulColor.set(this.color);
             thisFun.shader.delegee.a = this.a - Mathf.curve(this.fin(), 0.98) * this.a;
             thisFun.shader.delegee.off = this.off;
-            thisFun.shader.delegee.offCap = VAR.blk_remainsOffCap;
+            thisFun.shader.delegee.offCap = VAR.param.buildRemainsOffCap;
             Draw.shader(thisFun.shader);
             Draw.rect(this.region, x, y, this.rotation);
             Draw.shader();
@@ -622,7 +622,7 @@
           Draw.color();
           if(this.isHot) {
             Draw.blend(Blending.additive);
-            Draw.mixcol(VAR.color_heatMix, 1.0);
+            Draw.mixcol(VAR.color.heatMix, 1.0);
             Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * !this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.5 - Mathf.curve(this.fin(), 0.98) * 0.5) : (0.5 - Interp.pow2Out.apply(this.fin()) * 0.5));
             Draw.rect(this.region, x, y, this.rotation);
             Draw.blend();
@@ -684,7 +684,7 @@
         eff.data[1].x, eff.data[1].y,
         eff.data[0], eff.data[1].drawrot(), 1.0, eff.color,
         eff.color.a * eff.fout(),
-        Layer.effect + VAR.lay_offDrawOver,
+        Layer.effect + VAR.layer.offDrawOver,
         1.0,
       );
     }),
@@ -714,7 +714,7 @@
       eff.lifetime = 40.0 * eff.rotation;
 
       eff.data instanceof TextureRegion ?
-        MDL_draw._reg_normal(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a, Layer.effect + VAR.lay_offDrawOver) :
+        MDL_draw._reg_normal(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a, Layer.effect + VAR.layer.offDrawOver) :
         MDL_draw._reg_icon(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a);
     }),
   })
@@ -732,7 +732,7 @@
    * @return {void}
    */
   const _e_dmg = function thisFun(x, y, dmg, team, mode) {
-    if(!PARAM.displayDamage || dmg < 0.0001 || dmg < PARAM.damageDisplayThreshold) return;
+    if(!PARAM.ENABLE_DAMAGE_DISPLAY || dmg < 0.0001 || dmg < PARAM.DAMAGE_DISPLAY_THRESHOLD) return;
     if(mode == null) mode = "health";
     if(team == null) team = Team.derelict;
     let dmgTextMode = CLS_damageTextMode.get(mode);

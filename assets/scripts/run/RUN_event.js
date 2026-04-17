@@ -27,7 +27,7 @@
 
   function updateUnit() {
     Groups.unit.each(unit => {
-      if(PARAM.modded && !MDL_cond._isIrregularUnit(unit)) {
+      if(PARAM.MODDED && !MDL_cond._isIrregularUnit(unit)) {
         FRAG_unit.comp_update_surrounding(unit.type, unit);
         FRAG_unit.comp_update_heat(unit.type, unit);
       };
@@ -39,11 +39,11 @@
 
 
   const testDraw = function thisFun() {
-    if(!PARAM.testDraw) return;
+    if(!PARAM.ENABLE_TEST_DRAW) return;
 
     let unitPlayer = Vars.player.unit();
     if(unitPlayer != null) {
-      MDL_pos._tsDstManh(unitPlayer.tileOn(), VAR.r_unitSurRange, thisFun.tmpTs).forEachFast(ot => MDL_draw._d_areaShrink(ot, 1, Pal.accent, 0.5, VAR.lay_debugFlr));
+      MDL_pos._tsDstManh(unitPlayer.tileOn(), VAR.range.unitSurR, thisFun.tmpTs).forEachFast(ot => MDL_draw._d_areaShrink(ot, 1, Pal.accent, 0.5, VAR.layer.debugFlr));
     };
   }
   .setProp({
@@ -57,15 +57,15 @@
     Groups.unit.each(
       unit => !(
         (!LCCheck.checkEntityVisible(unit) || MDL_cond._isIrregularUnit(unit))
-          || ((!unit.isPlayer() || !PARAM.drawPlayerStat) && !unit.isMissile() && PARAM.drawUnitNearMouse && Mathf.dst(Core.input.mouseWorldX(), Core.input.mouseWorldY(), unit.x, unit.y) > VAR.rad_mouseRad + unit.hitSize * 0.5)
-          || (unit.isMissile() && !PARAM.drawMissileStat)
+          || ((!unit.isPlayer() || !PARAM.SHOULD_DRAW_PLAYER_STAT) && !unit.isMissile() && PARAM.SHOULD_DRAW_UNIT_STAT_NEAR_MOUSE && Mathf.dst(Core.input.mouseWorldX(), Core.input.mouseWorldY(), unit.x, unit.y) > VAR.range.mouseRad + unit.hitSize * 0.5)
+          || (unit.isMissile() && !PARAM.SHOULD_DRAW_MISSILE_STAT)
           || (!unit.type.logicControllable && !unit.type.playerControllable && unit.type.hidden && !unit.type.drawCell && !unit.isMissile())
       ),
       unit => {
         // Unit range display
-        if(PARAM.drawUnitRange && !unit.hasEffect(VARGEN.staHiddenWell)) {
+        if(PARAM.SHOULD_DRAW_UNIT_RANGE && !unit.hasEffect(VARGEN.staHiddenWell)) {
           let z = Draw.z();
-          Draw.z(VAR.lay_unitRange);
+          Draw.z(VAR.layer.unitRange);
 
           let wp, rot = unit.rotation - 90.0, mtX, mtY, hasAnyMountShown = false;
           unit.mounts.forEachFast(mt => {
@@ -85,7 +85,7 @@
                     wp.noAttack ?
                       Color.white :
                       unit.team.color,
-                PARAM.unitRangeAlpha,
+                PARAM.UNIT_RANGE_ALPHA,
               );
               Fill.arc(mtX, mtY, wp.range(), wp.shootCone / 180.0, rot + mt.rotation + 90.0 - wp.shootCone);
             } else if(
@@ -98,13 +98,13 @@
               Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0);
               Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0 + 180.0);
               Lines.stroke(1.0);
-              Draw.color(Pal.accent, PARAM.unitRangeAlpha);
+              Draw.color(Pal.accent, PARAM.UNIT_RANGE_ALPHA);
               LCDraw.circle(unit.x, unit.y, wp.bullet.splashDamageRadius, false);
             };
           });
           if(!hasAnyMountShown) {
             Lines.stroke(1.0);
-            Draw.color(Pal.accent, PARAM.unitRangeAlpha);
+            Draw.color(Pal.accent, PARAM.UNIT_RANGE_ALPHA);
             LCDraw.circle(unit.x, unit.y, unit.range(), false);
           };
           Draw.reset();
@@ -112,7 +112,7 @@
           Draw.z(z);
         };
 
-        if(!PARAM.drawUnitStat) return;
+        if(!PARAM.SHOULD_DRAW_UNIT_STAT) return;
 
         // Unit stat display
         MDL_draw._d_unitStat(
@@ -122,7 +122,7 @@
         );
 
         // Unit reload display
-        if(PARAM.drawUnitReload) {
+        if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
           let mtIds;
           for(let i = 0; i < 3; i++) {
             mtIds = DB_HANDLER.read("utp-reload-ind-" + i, unit.type.name, null);
@@ -132,13 +132,13 @@
         };
 
         // Payload placement display
-        if(PARAM.drawUnitRange && unit.payloads != null) {
+        if(PARAM.SHOULD_DRAW_UNIT_RANGE && unit.payloads != null) {
           let pay = unit.payloads.size === 0 ? null : unit.payloads.peek();
           if(pay != null && pay instanceof BuildPayload) {
             let ot = Vars.world.tileWorld(unit.x - pay.block().offset, unit.y - pay.block().offset);
             if(ot != null) {
               let z = Draw.z();
-              Draw.z(VAR.lay_effHigh + 1.5);
+              Draw.z(VAR.layer.effHigh + 1.5);
 
               Draw.color(
                 Build.validPlace(pay.block(), unit.team, ot.x, ot.y, pay.build.rotation, false) ?
@@ -169,12 +169,12 @@
     let b_pl = (unitPlayer == null || !(unitPlayer instanceof BlockUnitc)) ? null : unitPlayer.tile();
 
     // Draw player building
-    if(b_pl != null && PARAM.drawPlayerStat) {
+    if(b_pl != null && PARAM.SHOULD_DRAW_PLAYER_STAT) {
       thisFun.drawBaseBuildStats(b_pl);
     };
 
     // Draw mouse building if not player
-    if(b != null && !b.block.privileged && b.team !== Team.derelict && (!PARAM.drawPlayerStat || b !== b_pl)) {
+    if(b != null && !b.block.privileged && b.team !== Team.derelict && (!PARAM.SHOULD_DRAW_PLAYER_STAT || b !== b_pl)) {
       thisFun.drawBaseBuildStats(b);
 
       if(b.team !== Vars.player.team()) return;
@@ -187,33 +187,33 @@
   }
   .setProp({
     drawBaseBuildStats: b => {
-      if(PARAM.drawUnitRange && b.block instanceof Turret && b.block.shootCone > 0.0 && b.block.shootCone < 179.99) {
+      if(PARAM.SHOULD_DRAW_UNIT_RANGE && b.block instanceof Turret && b.block.shootCone > 0.0 && b.block.shootCone < 179.99) {
         let z = Draw.z();
-        Draw.color(b.team.color, PARAM.unitRangeAlpha);
-        Draw.z(VAR.lay_unitRange);
+        Draw.color(b.team.color, PARAM.UNIT_RANGE_ALPHA);
+        Draw.z(VAR.layer.unitRange);
         Fill.arc(b.x, b.y, b.range() + b.block.shootY, b.block.shootCone / 180.0, b.rotation - b.block.shootCone);
         Draw.reset();
         Draw.z(z);
       };
 
-      if(!PARAM.drawUnitStat || !PARAM.drawBuildStat) return;
+      if(!PARAM.SHOULD_DRAW_UNIT_STAT || !PARAM.SHOULD_DRAW_BUILD_STAT) return;
 
       MDL_draw._d_unitStat(
         b, b.health / b.maxHealth, b.block.size, b.team.color,
-        1.0, 0.0, -1 + VAR.r_offBuildStat, 1.0, b.block.armor,
+        1.0, 0.0, -1 + VAR.range.offBuildStatR, 1.0, b.block.armor,
         MDL_entity._bShield(b), MDL_entity._bSpd(b), null,
       );
-      if(PARAM.drawUnitReload) {
+      if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
         let hasReload = b.ex_getReloadFrac != null || DB_HANDLER.read("blk-reload", b.block.name, false);
         if(hasReload) {
-          MDL_draw._d_reload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.r_offBuildStat, MDL_entity._reloadFrac(b));
+          MDL_draw._d_reload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.range.offBuildStatR, MDL_entity._reloadFrac(b));
         };
-        MDL_draw._d_reload(b, null, Pal.accent, 1.0, -16.0, (hasReload ? -0.25 : -1.25) + VAR.r_offBuildStat, MDL_entity._warmupFrac(b, true));
+        MDL_draw._d_reload(b, null, Pal.accent, 1.0, -16.0, (hasReload ? -0.25 : -1.25) + VAR.range.offBuildStatR, MDL_entity._warmupFrac(b, true));
       };
-      processZ(VAR.lay_debugTop - 0.02);
+      processZ(VAR.layer.debugTop - 0.02);
       Lines.stroke(1.0);
       Draw.color(Pal.accent, 0.3);
-      LCDraw.rect(b.x, b.y, VAR.r_offBuildStat, b.block.size, false);
+      LCDraw.rect(b.x, b.y, VAR.range.offBuildStatR, b.block.size, false);
       Draw.reset();
       processZ();
     },
@@ -221,7 +221,7 @@
 
 
   function drawExtraInfo() {
-    if(!PARAM.showExtraInfo || !Vars.ui.hudfrag.shown) return;
+    if(!PARAM.SHOULD_SHOW_EXTRA_INFO || !Vars.ui.hudfrag.shown) return;
 
     MDL_draw.drawExtraInfo(MDL_pos._tMouse());
   };
@@ -231,11 +231,11 @@
 
 
   function createBuildDamageDisplay(b, bul) {
-    if(!PARAM.displayDamage) return;
+    if(!PARAM.ENABLE_DAMAGE_DISPLAY) return;
     if(b == null || bul == null) return;
 
     let dmg = MDL_entity._bulDmg(bul, b);
-    if(dmg < PARAM.damageDisplayThreshold) return;
+    if(dmg < PARAM.DAMAGE_DISPLAY_THRESHOLD) return;
 
     MDL_effect._e_dmg(
       b.x, b.y, dmg, bul.team,
@@ -250,7 +250,7 @@
 
 
   function createBuildRemains(b) {
-    if(!PARAM.createBuildingRemains || b == null || b.block instanceof ConstructBlock || b.block.size < 2) return;
+    if(!PARAM.SHOULD_CREATE_BUILD_REMAINS || b == null || b.block instanceof ConstructBlock || b.block.size < 2) return;
     if(MDL_cond._hasNoRemains(b.block)) return;
 
     MDL_effect._e_remains(b.x, b.y, b, b.team);
@@ -261,12 +261,12 @@
 
 
   function createUnitDamageDisplay(unit, bul) {
-    if(!PARAM.displayDamage) return;
+    if(!PARAM.ENABLE_DAMAGE_DISPLAY) return;
     if(unit == null || bul == null) return;
-    if(unit.isMissile() && !PARAM.drawMissileStat) return;
+    if(unit.isMissile() && !PARAM.SHOULD_DRAW_MISSILE_STAT) return;
 
     let dmg = MDL_entity._bulDmg(bul, unit);
-    if(dmg < PARAM.damageDisplayThreshold) return;
+    if(dmg < PARAM.DAMAGE_DISPLAY_THRESHOLD) return;
 
     MDL_effect._e_dmg(
       unit.x, unit.y, dmg, bul.team,
@@ -284,7 +284,7 @@
     if(MDL_cond._hasNoRemains(unit.type)) return;
 
     MDL_effect._e_remains(unit.x, unit.y, unit, unit.team);
-    if(PARAM.secret_steelPipe) MDL_effect.playAt(unit.x, unit.y, "se-meme-steel-pipe");
+    if(PARAM.SECRET_METAL_PIPE) MDL_effect.playAt(unit.x, unit.y, "se-meme-steel-pipe");
   };
 
 

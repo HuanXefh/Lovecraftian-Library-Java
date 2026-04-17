@@ -93,7 +93,7 @@
         if(Core.input.keyDown(KeyCode.a)) selectedWins.forEachCond(win => win.isHidden, win => win.minimize());
       };
     });
-    tb.visibility = () => Vars.ui.hudfrag.shown && PARAM.showWindow;
+    tb.visibility = () => Vars.ui.hudfrag.shown && PARAM.SHOULD_SHOW_WINDOW;
     return tb;
   };
 

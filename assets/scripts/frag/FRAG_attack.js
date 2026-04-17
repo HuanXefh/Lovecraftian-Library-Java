@@ -29,7 +29,7 @@
   const _presExploRad = function(size) {
     if(size == null) size = 1;
 
-    return VAR.rad_presExploRad + size * 0.8 * Vars.tilesize;
+    return VAR.range.presExploRad + size * 0.8 * Vars.tilesize;
   };
   exports._presExploRad = _presExploRad;
 
@@ -42,7 +42,7 @@
   const _presExploDmg = function(size) {
     if(size == null) size = 1;
 
-    return VAR.dmg_presExploDmg * size * 0.3;
+    return VAR.param.presExploDmg * size * 0.3;
   };
   exports._presExploDmg = _presExploDmg;
 
@@ -299,7 +299,7 @@
       if(FRAG_unit.checkCaller(unit, caller) || !MDL_cond._isOnFloor(unit) || MDL_pos._rayCheck_mobileFlr(x, y, unit.x, unit.y, minRad)) return;
       dst = Mathf.dst(x, y, unit.x, unit.y);
       frac = 1.0 - dst / rad;
-      dmg_fi = dmg * (Mathf.random(0.6) + 0.7) * Math.max(frac, 0.1) + VAR.dmg_impactMinDmg;
+      dmg_fi = dmg * (Mathf.random(0.6) + 0.7) * Math.max(frac, 0.1) + VAR.param.impactDmgMin;
 
       if(unit === Vars.player.unit()) {
         Time.run(2.0, () => {
@@ -346,7 +346,7 @@
     r, offR, color_gn, hitMode, se_gn
   ) {
     if(team == null) team = Team.derelict;
-    if(dmg == null) dmg = VAR.blk_lightningDmg;
+    if(dmg == null) dmg = VAR.param.lightningDmg;
     if(amt == null) amt = 1;
     if(amt < 1) return;
     if(r == null) r = 5;

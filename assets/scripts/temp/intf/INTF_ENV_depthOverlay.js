@@ -23,9 +23,9 @@
     });
 
     MDL_event._c_onDraw(() => {
-      if(!Vars.state.isGame() || (!Vars.state.isEditor() && !PARAM.drawScannerResult)) return;
+      if(!Vars.state.isGame() || (!Vars.state.isEditor() && !PARAM.SHOULD_DRAW_SCANNER_RESULT)) return;
 
-      processZ(VAR.lay_dporeRevealed);
+      processZ(VAR.layer.deporeRevealed);
 
       Draw.alpha(0.65);
       blk.drawnMap.each((t, cond) => {

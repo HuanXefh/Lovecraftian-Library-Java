@@ -34,7 +34,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.updateSuppressed) return;
+    if(PARAM.UPDATE_SUPPRESSED) return;
     let presProd = b.ex_calcPresDumpRate();
     if(presProd.fEqual(0.0)) return;
     let aux = presProd > 0.0 ? VARGEN.auxPres : VARGEN.auxVac;

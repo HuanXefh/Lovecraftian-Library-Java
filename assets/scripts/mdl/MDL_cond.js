@@ -825,7 +825,7 @@
    * @return {boolean}
    */
   const _isLootProtected = function(loot) {
-    return loot.fin() * 2.0 < VAR.time_lootProtection / loot.type.lifetime;
+    return loot.fin() * 2.0 < VAR.time.lootProtection / loot.type.lifetime;
   };
   exports._isLootProtected = _isLootProtected;
 
@@ -848,7 +848,7 @@
    * @return {boolean}
    */
   const _isCoverable = function(unit, includeSize) {
-    return !unit.flying && unit.type.groundLayer < 76.0 && (!includeSize ? true : unit.hitSize <= VAR.rad_treeHideMaxRad);
+    return !unit.flying && unit.type.groundLayer < 76.0 && (!includeSize ? true : unit.hitSize <= VAR.range.treeHideMaxRad);
   };
   exports._isCoverable = _isCoverable;
 

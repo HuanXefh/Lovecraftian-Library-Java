@@ -98,13 +98,13 @@
     };
 
     // Cause short circuit if possible
-    if(!PARAM.updateSuppressed && !liq.gas && liq.isConductive && Mathf.chanceDelta(0.1)) {
+    if(!PARAM.UPDATE_SUPPRESSED && !liq.gas && liq.isConductive && Mathf.chanceDelta(0.1)) {
       FRAG_puddle.spreadPuddle(puddle, 0.5, ot => {
         ob = ot.build;
         return ob != null && ob.power != null && ob.power.status > 0.0 && tryJsProp(ob.block, "canShortCircuit", false);
       }, ot => {
         ob = ot.build;
-        dmg = ob.maxHealth * VAR.blk_shortCircuitDmgFrac / 60.0;
+        dmg = ob.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0;
         ob.damagePierce(dmg);
         if(Mathf.chance(0.15)) MDL_effect.showAt(ob.x, ob.y, EFF.heatSmog);
         if(Mathf.chance(0.05)) FRAG_attack._a_lightning(ob.x, ob.y, null, null, null, 6, 4, null, "ground");
@@ -133,7 +133,7 @@
 
 
   function comp_willBoil(liq) {
-    return liq.gas || liq.boilPoint * 50.0 < PARAM.glbHeat;
+    return liq.gas || liq.boilPoint * 50.0 < PARAM.GLOBAL_HEAT;
   };
 
 

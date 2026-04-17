@@ -443,7 +443,7 @@
    * @return {number}
    */
   const _fHeat_b = function(b, forceCalc) {
-    let def = PARAM.glbHeat;
+    let def = PARAM.GLOBAL_HEAT;
     if(!forceCalc) {
       if(tryJsProp(b, "fHeatCur") != null) return b.delegee.fHeatCur;
     };
@@ -471,8 +471,8 @@
 
     // Heat from building and global heat
     let rHeat = t.build == null ?
-      PARAM.glbHeat :
-      (_heat_b(t.build) * 0.25 + _fHeat_b(t.build) * 0.5 + PARAM.glbHeat);
+      PARAM.GLOBAL_HEAT :
+      (_heat_b(t.build) * 0.25 + _fHeat_b(t.build) * 0.5 + PARAM.GLOBAL_HEAT);
     // Heat from attribute
     rHeat += t.floor().attributes.get(Attribute.get("lovec-attr0env-heat")) * 100.0;
     // Heat from nearby buildings

@@ -38,7 +38,7 @@
 
 
   function comp_created(b) {
-    b.fHeatCur = PARAM.glbHeat;
+    b.fHeatCur = PARAM.GLOBAL_HEAT;
     b.fHeatTg = MDL_flow._fHeat_b(b, true);
   };
 
@@ -47,7 +47,7 @@
     if(TIMER.heat && Mathf.chance(0.33)) b.fHeatTg = MDL_flow._fHeat_b(b, true);
     if(TIMER.liq) b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTg, b.block.delegee.fHeatWarmupRate);
 
-    if(PARAM.updateSuppressed || !TIMER.secQuarter || !Mathf.chance(0.25)) return;
+    if(PARAM.UPDATE_SUPPRESSED || !TIMER.secQuarter || !Mathf.chance(0.25)) return;
 
     let heatRes = b.block.delegee.featRes;
     if(!isFinite(heatRes) || b.fHeatCur - heatRes < 0.0001) return;
@@ -58,7 +58,7 @@
 
 
   function comp_draw(b) {
-    if(!PARAM.drawFluidHeat || !VARGEN.hotFlds.includes(b.liquids.current())) return;
+    if(!PARAM.SHOULD_DRAW_FLUID_HEAT || !VARGEN.hotFlds.includes(b.liquids.current())) return;
 
     let heatRes = b.block.delegee.heatRes;
     if(!isFinite(heatRes)) return;

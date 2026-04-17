@@ -63,7 +63,7 @@
    * @return {void}
    */
   const sendPacket = function (mode, header, payload, isReliable, useConnection) {
-    if(!PARAM.modded || payload == null) return;
+    if(!PARAM.MODDED || payload == null) return;
     if(mode == null) mode = PacketModes.SERVER;
     if(!PacketModes.has(mode)) return;
 

@@ -16,7 +16,7 @@
 
   function comp_init(blk) {
     blk.group = BlockGroup.projectors;
-    blk.priority = VAR.prio_proj;
+    blk.priority = VAR.priority.proj;
   };
 
 

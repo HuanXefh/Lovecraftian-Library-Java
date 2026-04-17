@@ -41,7 +41,7 @@
 
 
   function comp_ex_shouldOperate(b) {
-    return b.efficiency >= VAR.blk_updateEffcThr;
+    return b.efficiency >= VAR.param.buildActiveEffcThr;
   };
 
 

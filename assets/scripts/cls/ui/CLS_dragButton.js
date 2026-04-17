@@ -101,7 +101,7 @@
 
     (function() {
       let obj = DB_misc.db["mod"]["dragButton"];
-      return !PARAM.modded ?
+      return !PARAM.MODDED ?
         obj["base"] :
         obj["base"].concat(obj["modded"]);
     })()

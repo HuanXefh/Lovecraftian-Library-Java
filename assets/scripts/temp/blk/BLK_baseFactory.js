@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    blk.priority = VAR.prio_fac;
+    blk.priority = VAR.priority.fac;
     if(blk.overwriteVanillaProp) {
       if(blk.liquidOutputDirections != null) {
         blk.drawArrow = blk.liquidOutputDirections.length === 1 && blk.liquidOutputDirections[0] === -1;

@@ -53,7 +53,7 @@
       1.0, 0.5,
       !b.block.delegee.bulCollidesTerrain ?
         Pal.accent :
-        b.block.delegee.bulCollidesTerrainCaveOnly && !PARAM.isCaveMap ?
+        b.block.delegee.bulCollidesTerrainCaveOnly && !PARAM.IS_CAVE_MAP ?
           Pal.accent :
           !MDL_pos._rayCheck_legSolid(b.x, b.y, ob.x, ob.y) ?
             Pal.accent :
@@ -152,7 +152,7 @@
               && tryJsProp(bul.shooter.block, "bulCollidesTerrain", false)
               && (
                 tryJsProp(bul.shooter.block, "bulCollidesTerrainCaveOnly", false) ?
-                  PARAM.isCaveMap :
+                  PARAM.IS_CAVE_MAP :
                   true
               )
               && EntityCollisions.legsSolid(bul.tileX(), bul.tileY())

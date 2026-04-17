@@ -50,7 +50,7 @@
   /* <---------- modded ----------> */
 
 
-  if(PARAM.modded) {
+  if(PARAM.MODDED) {
 
 
     newKeyBind(

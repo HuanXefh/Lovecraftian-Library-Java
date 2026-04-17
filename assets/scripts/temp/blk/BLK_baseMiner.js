@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    blk.priority = VAR.prio_min;
+    blk.priority = VAR.priority.min;
   };
 
 

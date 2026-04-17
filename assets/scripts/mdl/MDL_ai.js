@@ -44,7 +44,7 @@
    * @return {boolean}
    */
   const _c_holdPos = function(unit) {
-    return unit.isPlayer() || !global.lovecUtil.prop.hasHoldStance ? false : MDL_entity._ctrl(unit).hasStance(UnitStance.holdPosition);
+    return unit.isPlayer() || MDL_entity._ctrl(unit).hasStance(UnitStance.holdPosition);
   };
   exports._c_holdPos = _c_holdPos;
 
@@ -88,7 +88,7 @@
    */
   const pathfindTo = function(unit, vecDest, vecOut, blockedTup, dst, smooth, keepDst) {
     if(unit.isPlayer()) return;
-    if(unit.isFlying() && !PARAM.isCaveMap) {
+    if(unit.isFlying() && !PARAM.IS_CAVE_MAP) {
       moveTo(unit, vecDest, dst, smooth, keepDst);
       return;
     };

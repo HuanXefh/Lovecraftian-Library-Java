@@ -58,13 +58,20 @@ public class LCMathFunc {
      * This method is an approximation, for integers use {@link #factorial} instead for accurate results.
      */
     public static double gamma(double x) throws IllegalArgumentException {
-        if(x <= 0 && Math.floor(x) == x) {
-            throw new IllegalArgumentException("Undefined result at non-positive integers!");
-        };
+        if(x <= 0 && Math.floor(x) == x) throw new IllegalArgumentException("Undefined result at non-positive integers!");
         if(x < 0) {
             return Math.PI / Math.sin(Math.PI * x) * gamma(1 - x);
         };
         return Math.exp(logGamma(x));
+    };
+
+
+    /**
+     * Beta function.
+     */
+    public static double beta(double a, double b) throws IllegalArgumentException {
+        if(a <= 0 || b <= 0) throw new IllegalArgumentException("Undefined result at non-positive numbers!");
+        return gamma(a) * gamma(b) / gamma(a + b);
     };
 
 
@@ -113,25 +120,54 @@ public class LCMathFunc {
     };
     // Overloading
     public static double derivative(double x, Func<Double, Double> func) {
-        return derivative(x, func, 0.00001);
+        return derivative(x, func, 1e-5);
     };
 
 
     /**
-     * Riemann sum of some function over (base, cap).
-     * This method uses midpoints for less error.
+     * Variant of {@link LCMathFunc#derivative} using central difference method for better precision.
      */
-    public static double riemannSum(double base, double cap, Func<Double, Double> func, int segAmt) {
-        double val = 0;
-        double dx = (cap - base) / segAmt;
-        for (int i = 0; i < segAmt; i++) {
-            val += func.get(base + dx * (0.5 + i));
-        };
-        return val * dx;
+    public static double derivativePrecise(double x, Func<Double, Double> func, double delta) {
+        return (func.get(x + delta) - func.get(x - delta)) / (delta * 2);
     };
     // Overloading
-    public static double riemannSum(double base, double cap, Func<Double, Double> func) {
-        return riemannSum(base, cap, func, 1000);
+    public static double derivativePrecise(double x, Func<Double, Double> func) {
+        return derivativePrecise(x, func, 1e-10);
+    };
+
+
+    /**
+     * Integral of some function over (base, cap), using trapezoidal rule.
+     */
+    public static double integral(double base, double cap, Func<Double, Double> func, int segAmt) {
+        double val = (func.get(cap) + func.get(base)) * 0.5;
+        double dx = (cap - base) / segAmt;
+        for(int i = 1; i < segAmt; i++) {
+            val += func.get(base + dx * i);
+        };
+        return val;
+    };
+    // Overloading
+    public static double integral(double base, double cap, Func<Double, Double> func) {
+        return integral(base, cap, func, 1000);
+    };
+
+
+    /**
+     * Variant of {@link LCMathFunc#integral} using Simpson's rule for better precision.
+     */
+    public static double integralPrecise(double base, double cap, Func<Double, Double> func, int segAmt) {
+        if(segAmt % 2 != 0) segAmt++;
+        double val = func.get(base) + func.get(cap);
+        double dx = (func.get(cap) - func.get(base)) / segAmt;
+        for(int i = 1; i < segAmt; i++) {
+            val += (i % 2 == 0 ? 2 : 4) * func.get(base + i * dx);
+        };
+        return val * dx / 3;
+    };
+    // Overloading
+    public static double integralPrecise(double base, double cap, Func<Double, Double> func) {
+        return integralPrecise(base, cap, func, 1000);
     };
 
 

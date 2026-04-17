@@ -22,7 +22,7 @@
 
 
   const comp_updateTile = function thisFun(b) {
-    if(PARAM.updateSuppressed) return;
+    if(PARAM.UPDATE_SUPPRESSED) return;
 
     let liqCur = b.liquids == null ? null : b.liquids.current();
 
@@ -34,8 +34,8 @@
           b.liquids.set(liq, 0.0);
           return;
         };
-        if(b.block.delegee.shouldCapAux && !MDL_cond._isNoCapAuxiliaryFluid(liq) && b.liquids.get(liq) > VAR.ct_auxCap) {
-          b.liquids.set(liq, VAR.ct_auxCap);
+        if(b.block.delegee.shouldCapAux && !MDL_cond._isNoCapAuxiliaryFluid(liq) && b.liquids.get(liq) > VAR.param.auxCap) {
+          b.liquids.set(liq, VAR.param.auxCap);
         };
       });
     };

@@ -310,7 +310,7 @@
         };
         if(blkCur !== Blocks.air && blkCur.size === 1) {
           matArr[j][i] = (function(blkCur) {
-            return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlk(blkCur)), Styles.clearNonei, 32.0, () => VAR.dial_ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
+            return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlk(blkCur)), Styles.clearNonei, 32.0, () => VAR.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
           })(blkCur);
         } else if(blkCur === Blocks.air) {
           k = j;
@@ -323,7 +323,7 @@
                 l = kCap;
                 while(l >= 0) {
                   matArr[j + k][i + l] = (function(blkCur, k, l) {
-                    return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlkTileCut(blkCur, l, k)), Styles.clearNonei, 32.0, () => VAR.dial_ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
+                    return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlkTileCut(blkCur, l, k)), Styles.clearNonei, 32.0, () => VAR.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
                   })(blkCur, k, l);
                   l--;
                 };
@@ -391,7 +391,7 @@
 
 
   function comp_updateTile(b) {
-    if(!PARAM.updateSuppressed && b.underConstruction) {
+    if(!PARAM.UPDATE_SUPPRESSED && b.underConstruction) {
       if(!Vars.net.client() && b.constructionTimeCur >= b.block.delegee.constructionTimeReq) {
         b.configure("SPEC: complete");
       };

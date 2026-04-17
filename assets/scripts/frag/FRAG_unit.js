@@ -21,7 +21,7 @@
   /* <---------- base ----------> */
 
 
-  const STA_DUR = VAR.time_unitStaDef;
+  const STA_DUR = VAR.time.unitStaDef;
 
 
   /**
@@ -61,7 +61,7 @@
    * @return {void}
    */
   const comp_update_damaged = function(utp, unit) {
-    if(!TIMER.unit || !Mathf.chance(VAR.p_unitUpdateP)) return;
+    if(!TIMER.unit || !Mathf.chance(VAR.chance.unitUpdateP)) return;
 
     let healthFrac = Mathf.clamp(unit.health / unit.maxHealth);
 
@@ -107,11 +107,11 @@
    * @return {void}
    */
   const comp_update_surrounding = function thisFun(utp, unit) {
-    if(!TIMER.unit || !Mathf.chance(VAR.p_unitUpdateP)) return;
+    if(!TIMER.unit || !Mathf.chance(VAR.chance.unitUpdateP)) return;
 
     let t = unit.tileOn();
     if(t == null) return;
-    let ts = MDL_pos._tsDstManh(t, VAR.r_unitSurRange, thisFun.tmpTs);
+    let ts = MDL_pos._tsDstManh(t, VAR.range.unitSurR, thisFun.tmpTs);
 
     // Floor
     if(MDL_cond._isOnFloor(unit)) {
@@ -155,15 +155,15 @@
    * @return {void}
    */
   const comp_update_heat = function(utp, unit) {
-    if(!TIMER.unit || !Mathf.chance(VAR.p_unitUpdateP * 0.3)) return;
+    if(!TIMER.unit || !Mathf.chance(VAR.chance.unitUpdateP * 0.3)) return;
     if(!MDL_cond._isHeatDamageable(unit)) return;
 
     let rHeat = MDL_flow._rHeat(unit.tileOn());
     let rHeatRes = MDL_flow._rHeatRes(utp);
     let dmg = Mathf.maxZero(rHeat - rHeatRes) * 0.65;
     if(dmg < 0.0001) return;
-    let dmg_fi = Math.min(dmg, VAR.dmg_heatMaxDmg);
-    let staStackAmt = Math.round((dmg - dmg_fi) / VAR.dmg_overheatedConversionDmg);
+    let dmg_fi = Math.min(dmg, VAR.param.heatDmgMax);
+    let staStackAmt = Math.round((dmg - dmg_fi) / VAR.param.overheatedConversionDmg);
 
     FRAG_attack.damage(unit, dmg_fi, 0.0, "heat");
     let i = 0;

@@ -36,7 +36,7 @@
 
 
   function comp_draw(b) {
-    if(PARAM.drawRouterHeresy && b.nextToRouter) {
+    if(PARAM.SHOULD_DRAW_ROUTER_HERESY && b.nextToRouter) {
       b.proximity.each(ob => {
         if(MDL_cond._isRouter(ob.block)) MDL_draw._d_areaShrink(ob.tile, ob.block.size, false);
       });

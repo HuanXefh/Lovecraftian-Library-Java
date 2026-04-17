@@ -35,8 +35,8 @@
           Interp.linear, 0.5, 1.0,
         );
       };
-      if(blk.drownTime.fEqual(0.0)) blk.drownTime = blk.shallow ? 0.0 : VAR.time_drownDef;
-      if(blk.status !== StatusEffects.none) blk.statusDuration = VAR.time_liqStaDef * (blk.shallow ? 1.0 : 2.0);
+      if(blk.drownTime.fEqual(0.0)) blk.drownTime = blk.shallow ? 0.0 : VAR.time.drownDef;
+      if(blk.status !== StatusEffects.none) blk.statusDuration = VAR.time.liqStaDef * (blk.shallow ? 1.0 : 2.0);
       blk.supportsOverlay = true;
 
       if(blk.cacheLayer === CacheLayer.normal) {

@@ -61,24 +61,24 @@
     exports.rsCur = timer_effc.get(1, 180.0);
 
     // Timer for liquid calculation update
-    exports.liq = timer_effc.get(2, VAR.time_liqIntv);
+    exports.liq = timer_effc.get(2, VAR.time.liqIntv);
 
     // Timer for heat calculation update
-    exports.heat = timer_effc.get(3, VAR.time_heatIntv);
+    exports.heat = timer_effc.get(3, VAR.time.heatIntv);
 
     // Timer for parameter update
-    exports.param = timer_param.get(0, VAR.time_paramIntv);
-    exports.paramGlobal = timer_param.get(1, VAR.time_paramGlobalIntv);
-    exports.paramLarge = timer_param.get(2, VAR.time_paramLargeIntv);
+    exports.param = timer_param.get(0, VAR.time.paramIntv);
+    exports.paramGlobal = timer_param.get(1, VAR.time.paramGlobalIntv);
+    exports.paramLarge = timer_param.get(2, VAR.time.paramLargeIntv);
 
     // Timer for some visual effects
-    exports.lightning = timer_eff.get(0, VAR.time_lightningIntv);
+    exports.lightning = timer_eff.get(0, VAR.time.lightningIntv);
     exports.coreSignal = timer_eff.get(1, 25.0);
 
     // Timer for generic unit update
-    exports.unit = timer_unit.get(VAR.time_unitIntv);
+    exports.unit = timer_unit.get(VAR.time.unitIntv);
 
     // Timer for stack status effect update
-    exports.stackSta = timer_stackSta.get(VAR.time_stackStaExtDef * 0.5);
+    exports.stackSta = timer_stackSta.get(VAR.time.stackStaExtDef * 0.5);
 
   }, 17885422);

@@ -28,7 +28,7 @@
         blk.walkSoundPitchMax = 1.05;
       };
       if(blk.status !== StatusEffects.none) {
-        blk.statusDuration = VAR.time_flrStaDef;
+        blk.statusDuration = VAR.time.flrStaDef;
       };
 
       if(blk.speedMultiplier.fEqual(1.0)) blk.speedMultiplier = DB_env.db["grpParam"]["floor"]["speed"].read(blk.matGrp, 1.0);

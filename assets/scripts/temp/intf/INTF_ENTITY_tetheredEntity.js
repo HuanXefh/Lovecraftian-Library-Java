@@ -17,7 +17,7 @@
     } else {
       unit.noLinkTimeCur = Mathf.maxZero(unit.noLinkTimeCur - Time.delta);
     };
-    if(unit.noLinkTimeCur >= VAR.time_noLinkDespawnTime) {
+    if(unit.noLinkTimeCur >= VAR.time.noLinkDespawnTime) {
       MDL_call.despawnUnit(unit);
     };
   };

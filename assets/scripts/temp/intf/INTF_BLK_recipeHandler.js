@@ -60,7 +60,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.updateSuppressed) return;
+    if(PARAM.UPDATE_SUPPRESSED) return;
 
     b.ex_updateRcParam(b.block.delegee.rcMdl, b.rcHeader, false);
     if(b.scrTup != null) b.ex_onRcUpdate();
@@ -251,7 +251,7 @@
       tb.add(new Bar(
         liq.localizedName,
         tryVal(liq.barColor, liq.color),
-        () => MDL_cond._isAuxiliaryFluid(liq) && !MDL_cond._isNoCapAuxiliaryFluid(liq) ? Mathf.clamp(b.liquids.get(liq) / VAR.ct_auxCap) : (b.liquids.get(liq) / b.block.liquidCapacity),
+        () => MDL_cond._isAuxiliaryFluid(liq) && !MDL_cond._isNoCapAuxiliaryFluid(liq) ? Mathf.clamp(b.liquids.get(liq) / VAR.param.auxCap) : (b.liquids.get(liq) / b.block.liquidCapacity),
       )).growX();
       tb.row();
     },
@@ -293,7 +293,7 @@
     b.liqAcceptCacheMap.clear();
     HUD_HANDLER.forceUpdateBlockFrag();
 
-    if(!PARAM.updateSuppressed) {
+    if(!PARAM.UPDATE_SUPPRESSED) {
       b.progress = 0.0;
       if(b.liquids != null) b.liquids.clear();
     };

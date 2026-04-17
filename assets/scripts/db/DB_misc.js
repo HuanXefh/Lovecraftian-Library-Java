@@ -100,16 +100,16 @@ const db = {
         },
 
         "cable", graph => {
-          if(PARAM.updateDeepSuppressed || !isFinite(graph.graphData.maxPowProdAllowed) || graph.getSize() === 0) return;
+          if(PARAM.UPDATE_DEEP_SUPPRESSED || !isFinite(graph.graphData.maxPowProdAllowed) || graph.getSize() === 0) return;
 
           let powProd = graph.getData(0).power.graph.getLastPowerProduced();
           if(TIMER.secHalf) {
-            graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
+            graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > VAR.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
           };
-          if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
+          if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) return;
           graph.each(
             (ob, vert) => ob.added,
-            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.blk_shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
+            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
           );
         },
 
@@ -171,7 +171,7 @@ const db = {
 
     /**
      * List of names of Lovec-based mods.
-     * {@link PARAM.modded} will be true if any of these exists, which enables extra mechanics.
+     * {@link PARAM.MODDED} will be true if any of these exists, which enables extra mechanics.
      * You don't need to put your mod name here, just use write `dependencies` or `softDependencies` in your mod.json.
      * <br> <CONTENTGEN>
      * <br> <ROW>: nmMod.
@@ -261,7 +261,7 @@ const db = {
 
 
       /**
-       * Buttons defined here will only be added if `PARAM.modded`.
+       * Buttons defined here will only be added if `PARAM.MODDED`.
        * <br> <ROW>: nm, {rowInd, icon, isToggle, clickScr, updateScr}.
        */
       modded: [
@@ -272,7 +272,7 @@ const db = {
           clickScr: function() {
             let unit = Vars.player.unit();
             if(unit == null) return;
-            let loot = Units.closest(null, unit.x, unit.y, VAR.rad_lootPickRad, ounit => MDL_cond._isLoot(ounit));
+            let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond._isLoot(ounit));
             if(loot == null) return;
             if(FRAG_item.takeUnitLoot_global(unit, loot)) {
               MDL_effect._e_itemTransfer(loot.x, loot.y, unit, null, null, true);
@@ -301,7 +301,7 @@ const db = {
           clickScr: function() {
             let unit = Vars.player.unit();
             if(unit == null) return;
-            let loot = Units.closest(null, unit.x, unit.y, VAR.rad_lootPickRad, ounit => MDL_cond._isLoot(ounit));
+            let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond._isLoot(ounit));
             if(loot == null) return;
             FRAG_item.destroyLoot_global(loot);
           },
@@ -331,7 +331,9 @@ const db = {
 
       "no:", (ct, str) => !ct.name.toLowerCase().includes(str) && !Strings.stripColors(ct.localizedName).toLowerCase().includes(str) && (Core.settings.getString("locale") !== "zh_CN" || !LIB_pinyin.fetchPinyin(Strings.stripColors(ct.localizedName)).toLowerCase().includes(str)),
 
-      "mod:", (ct, str) => ct.minfo.mod !== null && ct.minfo.mod.name === str,
+      "mod:", (ct, str) => str.equalsAny("none", "vanilla", "mindustry") ? ct.minfo.mod == null : (ct.minfo.mod !== null && ct.minfo.mod.name === str),
+
+      "type:", (ct, str) => ct.getContentType().toString() === str,
 
       "hardness:", (ct, str) => ct instanceof Item && ct.hardness == str,
 
@@ -352,7 +354,7 @@ const db = {
       "explosive", ct => ct.explosiveness != null && ct.explosiveness > 0.0,
       "charged", ct => ct.charge != null && ct.charge > 0.0,
       "radioactive", ct => ct.radioactivity != null && ct.radioactivity > 0.0,
-      "viscous", ct => ct.viscosity != null && ct.viscosity > 0.5,
+      "viscous", ct => ct.viscosity != null && ct.viscosity > VAR.param.clogViscThr,
       "coolant", ct => ct.coolanet != null && ct.coolant && ct.temperature != null && ct.temperature <= 0.5 && ct.flammability != null && ct.flammability < 0.1,
 
       "intermediate", ct => MDL_cond._isIntermediate(ct),

@@ -140,7 +140,7 @@
 
     Core.app.post(() => {
       // I have to delay this or crash happens somehow, idk why
-      ob.damagePierce(ob.maxHealth * (VAR.blk_rpmDmgFrac + (rateAdd - rateCons * 3.0) / rateCons));
+      ob.damagePierce(ob.maxHealth * (VAR.param.rpmDmgFrac + (rateAdd - rateCons * 3.0) / rateCons));
     });
     MDL_effect._e_textFade(ob.x, ob.y, MDL_bundle._info("lovec", "rpm-overload"), Pal.remove, ob.block.size * 0.5);
   };

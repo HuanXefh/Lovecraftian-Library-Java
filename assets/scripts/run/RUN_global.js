@@ -30,13 +30,8 @@
     prop: {
 
 
-      locale: Core.settings.getString("locale"),
+      locale: Vars.headless ? "en" : Reflect.get(I18NBundle, Core.bundle, "locale").toString(),
       useRecolorSpr: Core.settings.getBool("lovec-load-gen-recolor", true),
-      hasHoldStance: (function() {
-        let stance;
-        try {stance = UnitStance.holdPosition} catch(err) {stance = null};
-        return stance != null;
-      })(),
 
 
     },

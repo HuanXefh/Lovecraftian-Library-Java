@@ -17,7 +17,7 @@
   function comp_solidity(unit) {
     return extend(EntityCollisions.SolidPred, {
       solid(tx, ty) {
-        return (unit.super$solidity() == null ? false : unit.super$solidity().solid(tx, ty)) || (PARAM.isCaveMap && EntityCollisions.legsSolid(tx, ty));
+        return (unit.super$solidity() == null ? false : unit.super$solidity().solid(tx, ty)) || (PARAM.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty));
       },
     });
   };

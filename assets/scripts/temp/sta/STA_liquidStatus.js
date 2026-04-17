@@ -23,9 +23,9 @@
     let flr = t.floor();
     let puddle = Puddles.get(t);
     if(puddle != null && puddle.liquid.effect === sta) {
-      unit.apply(sta, staEn.time + VAR.time_stackStaExtDef);
+      unit.apply(sta, staEn.time + VAR.time.stackStaExtDef);
     } else if(flr.status === sta && flr.statusDuration > 0.0) {
-      unit.apply(sta, staEn.time + VAR.time_stackStaExtDef * (flr.shallow ? 1.0 : 2.0));
+      unit.apply(sta, staEn.time + VAR.time.stackStaExtDef * (flr.shallow ? 1.0 : 2.0));
     };
   };
 

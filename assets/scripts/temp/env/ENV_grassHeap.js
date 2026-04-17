@@ -22,7 +22,7 @@
 
 
   function comp_drawBase(blk, t) {
-    LCDraw.tree(blk.region, blk.customShadowRegion, t, blk.size * Vars.tilesize * 1.2, blk.shadowOffset, 0.6, 0.6, 0.6, PARAM.treeAlpha, blk.layGrass + Mathf.randomSeed(t.pos(), 0.0, 0.015), PARAM.drawWobble, PARAM.checkTreeDst);
+    LCDraw.tree(blk.region, blk.customShadowRegion, t, blk.size * Vars.tilesize * 1.2, blk.shadowOffset, 0.6, 0.6, 0.6, PARAM.TREE_ALPHA, blk.layGrass + Mathf.randomSeed(t.pos(), 0.0, 0.015), PARAM.SHOULD_DRAW_WOBBLE, PARAM.SHOULD_CHECK_TREE_DISTANCE);
   };
 
 

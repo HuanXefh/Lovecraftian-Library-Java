@@ -25,7 +25,7 @@
 
 
   function comp_init(blk) {
-    blk.priority = VAR.prio_powTrans;
+    blk.priority = VAR.priority.powTrans;
 
     if(isFinite(blk.maxPowProdAllowed)) {
       blk.maxPowProdAllowed *= powProdScl;
@@ -80,14 +80,14 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.updateDeepSuppressed || !isFinite(b.ex_getMaxPowProdAllowed())) return;
+    if(PARAM.UPDATE_DEEP_SUPPRESSED || !isFinite(b.ex_getMaxPowProdAllowed())) return;
 
     let powProd = b.power.graph.getLastPowerProduced();
     if(TIMER.secHalf) {
-      b.transmitterOverloadFrac = Mathf.approach(b.transmitterOverloadFrac, powProd > VAR.blk_powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.ex_getMaxPowProdAllowed()), 0.2);
+      b.transmitterOverloadFrac = Mathf.approach(b.transmitterOverloadFrac, powProd > VAR.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.ex_getMaxPowProdAllowed()), 0.2);
     };
-    if(b.transmitterOverloadFrac < 1.0 || powProd > VAR.blk_powSourceStdProd) return;
-    b.damagePierce(b.maxHealth * VAR.blk_shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverloadDmgScl);
+    if(b.transmitterOverloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) return;
+    b.damagePierce(b.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverloadDmgScl);
   };
 
 

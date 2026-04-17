@@ -127,9 +127,9 @@
     if(fuel instanceof Item) {
       if(b.fuelPonCur < 1.0 && pon > 0.0 && FRAG_item.consumeItem(b, fuel, 1)) b.fuelPonCur += pon;
       if(b.fuelPonCur < 1.0) b.fuelEffc = 0.0;
-      b.fuelPonCur = Mathf.maxZero(b.fuelPonCur - VAR.time_heatIntv / 60.0 * b.block.delegee.fuelConsMtp);
+      b.fuelPonCur = Mathf.maxZero(b.fuelPonCur - VAR.time.heatIntv / 60.0 * b.block.delegee.fuelConsMtp);
     } else {
-      b.fuelPonCur = FRAG_fluid.addLiquid(b, b, fuel, pon * b.block.delegee.fuelConsMtp * VAR.time_heatIntv, false, false, true);
+      b.fuelPonCur = FRAG_fluid.addLiquid(b, b, fuel, pon * b.block.delegee.fuelConsMtp * VAR.time.heatIntv, false, false, true);
       b.fuelEffc = Math.min(b.fuelPonCur, 1.0);
     };
   };
@@ -459,7 +459,7 @@
        * @return {number}
        */
       ex_getHeatTg: function() {
-        return PARAM.glbHeat;
+        return PARAM.GLOBAL_HEAT;
       }
       .setProp({
         noSuper: true,
@@ -489,7 +489,7 @@
        * @return {boolean}
        */
       ex_checkHeatingValid: function() {
-        return this.tempRiseTg - PARAM.glbHeat >= 10.0;
+        return this.tempRiseTg - PARAM.GLOBAL_HEAT >= 10.0;
       }
       .setProp({
         noSuper: true,

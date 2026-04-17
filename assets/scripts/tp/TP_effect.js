@@ -44,7 +44,7 @@
       /* visual */
 
       region: "lovec-efr-flare",
-      layer: VAR.lay_effBloom,
+      layer: VAR.layer.effBloom,
       particles: 1,
       followParent: true,
       rotWithParent: false,
@@ -106,7 +106,7 @@
       /* visual */
 
       region: spr,
-      layer: VAR.lay_effBase,
+      layer: VAR.layer.effBase,
       particles: 1,
       followParent: false,
       rotWithParent: true,
@@ -172,7 +172,7 @@
       /* visual */
 
       region: spr,
-      layer: hasBloom ? VAR.lay_effBloom : VAR.lay_effBase,
+      layer: hasBloom ? VAR.layer.effBloom : VAR.layer.effBase,
       particles: amt,
       followParent: true,
       rotWithParent: false,
@@ -237,7 +237,7 @@
       /* visual */
 
       region: spr,
-      layer: hasBloom ? VAR.lay_effBloom : VAR.lay_effBase,
+      layer: hasBloom ? VAR.layer.effBloom : VAR.layer.effBase,
       particles: 1,
       followParent: true,
       rotWithParent: false,
@@ -318,7 +318,7 @@
       /* visual */
 
       region: spr,
-      layer: VAR.lay_effBase,
+      layer: VAR.layer.effBase,
       particles: 2,
       followParent: true,
       rotWithParent: false,
@@ -381,7 +381,7 @@
       /* visual */
 
       region: spr,
-      layer: VAR.lay_effBase,
+      layer: VAR.layer.effBase,
       particles: amt,
       followParent: true,
       rotWithParent: false,
@@ -442,7 +442,7 @@
       /* visual */
 
       region: spr,
-      layer: VAR.lay_effBase,
+      layer: VAR.layer.effBase,
       particles: amt,
       followParent: true,
       rotWithParent: false,
@@ -502,7 +502,7 @@
       /* visual */
 
       region: spr,
-      layer: VAR.lay_effBase,
+      layer: VAR.layer.effBase,
       particles: amt,
       followParent: true,
       rotWithParent: false,
@@ -562,7 +562,7 @@
       /* visual */
 
       region: spr,
-      layer: VAR.lay_effBase,
+      layer: VAR.layer.effBase,
       particles: amt,
       followParent: true,
       rotWithParent: false,
@@ -623,7 +623,7 @@
       /* visual */
 
       region: spr,
-      layer: VAR.lay_effBase,
+      layer: VAR.layer.effBase,
       particles: amt,
       followParent: true,
       rotWithParent: false,
@@ -735,13 +735,13 @@
       /* visual */
 
       region: isBlack ? "lovec-efr-shadow" : "lovec-efr-shadow-white",
-      layer: isHigh ? VAR.lay_effSmogHigh : VAR.lay_effSmog,
+      layer: isHigh ? VAR.layer.effSmogHigh : VAR.layer.effSmog,
       particles: amt,
       followParent: true,
       rotWithParent: false,
       useRotation: true,
-      colorFrom: VAR.color_smogWhite,
-      colorTo: VAR.color_whiteClear,
+      colorFrom: VAR.color.smogWhite,
+      colorTo: VAR.color.whiteClear,
       lightScl: 2.0,
       lightOpacity: 0.0,
 
@@ -798,13 +798,13 @@
       /* visual */
 
       region: isBlack ? "lovec-efr-shadow" : "lovec-efr-shadow-white",
-      layer: isHigh ? VAR.lay_effSmogHigh : VAR.lay_effSmog,
+      layer: isHigh ? VAR.layer.effSmogHigh : VAR.layer.effSmog,
       particles: amt,
       followParent: true,
       rotWithParent: false,
       useRotation: true,
-      colorFrom: VAR.color_smogWhite,
-      colorTo: VAR.color_whiteClear,
+      colorFrom: VAR.color.smogWhite,
+      colorTo: VAR.color.whiteClear,
       lightScl: 2.0,
       lightOpacity: 0.0,
 
@@ -860,13 +860,13 @@
       /* visual */
 
       region: isBlack ? "lovec-efr-shadow" : "lovec-efr-shadow-white",
-      layer: isHigh ? VAR.lay_effSmogHigh : VAR.lay_effSmog,
+      layer: isHigh ? VAR.layer.effSmogHigh : VAR.layer.effSmog,
       particles: amt,
       followParent: false,
       rotWithParent: false,
       useRotation: true,
-      colorFrom: VAR.color_smogWhiteThick,
-      colorTo: VAR.color_whiteClear,
+      colorFrom: VAR.color.smogWhiteThick,
+      colorTo: VAR.color.whiteClear,
       lightScl: 2.0,
       lightOpacity: 0.0,
 
@@ -920,13 +920,13 @@
       /* visual */
 
       region: isBlack ? "lovec-efr-shadow" : "lovec-efr-shadow-white",
-      layer: isHigh ? VAR.lay_effSmogHigh : VAR.lay_effSmog,
+      layer: isHigh ? VAR.layer.effSmogHigh : VAR.layer.effSmog,
       particles: amt,
       followParent: true,
       rotWithParent: false,
       useRotation: true,
-      colorFrom: VAR.color_smogWhiteThickest,
-      colorTo: VAR.color_whiteClear,
+      colorFrom: VAR.color.smogWhiteThickest,
+      colorTo: VAR.color.whiteClear,
       lightScl: 2.0,
       lightOpacity: 0.0,
 
@@ -980,13 +980,13 @@
       /* visual */
 
       region: isBlack ? "lovec-efr-shadow" : "lovec-efr-shadow-white",
-      layer: isHigh ? VAR.lay_effSmogHigh : VAR.lay_effSmog,
+      layer: isHigh ? VAR.layer.effSmogHigh : VAR.layer.effSmog,
       particles: amt,
       followParent: true,
       rotWithParent: false,
       useRotation: true,
-      colorFrom: VAR.color_smogWhite,
-      colorTo: VAR.color_whiteClear,
+      colorFrom: VAR.color.smogWhite,
+      colorTo: VAR.color.whiteClear,
       lightScl: 2.0,
       lightOpacity: 0.0,
 
@@ -1044,7 +1044,7 @@
       /* visual */
 
       region: "lovec-efr-shadow-white",
-      layer: VAR.lay_effSmog,
+      layer: VAR.layer.effSmog,
       particles: amt,
       followParent: true,
       rotWithParent: false,
@@ -1102,7 +1102,7 @@
       Lines.circle(eff.x, eff.y, tryVal(rad, eff.rotation) * Interp.pow2Out.apply(eff.fin()));
       Draw.reset();
     });
-    eff.layer = VAR.lay_effFlr;
+    eff.layer = VAR.layer.effFlr;
 
     return eff;
   };
@@ -1207,7 +1207,7 @@
         /* visual */
 
         region: "lovec-efr-shadow-white",
-        layer: VAR.lay_effHigh,
+        layer: VAR.layer.effHigh,
         particles: 1,
         followParent: true,
         rotWithParent: false,
@@ -1250,13 +1250,13 @@
         /* visual */
 
         region: "lovec-efr-shadow-white",
-        layer: VAR.lay_effHigh + 0.0001,
+        layer: VAR.layer.effHigh + 0.0001,
         particles: 1,
         followParent: true,
         rotWithParent: false,
         useRotation: true,
         colorFrom: Color.white,
-        colorTo: VAR.color_whiteClear,
+        colorTo: VAR.color.whiteClear,
         lightScl: 2.0,
         lightOpacity: 0.65,
 

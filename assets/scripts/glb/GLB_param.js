@@ -47,20 +47,14 @@
 
 
 
-  // Parameters populated on load
-  exports.modded = (function() {
+  exports.MODDED = (function() {
     let cond1 = Core.settings.getBool("load-force-modded", false);
     let cond2 = DB_misc.db["mod"]["lovecMod"].some(nmMod => fetchMod(nmMod) != null);
     if(cond1 && !cond2) LOG_HANDLER.log("forceModded");
 
     return cond1 || cond2;
   })();
-
-
-
-
-  // Settings that cannot be {undefined} when loading
-  exports.unitRemainsLifetime = 0.0;
+  exports.UNIT_REMAINS_LIFETIME = 0.0;
 
 
 
@@ -78,8 +72,8 @@
 
 
     updateSuppressCd--;
-    exports.updateSuppressed = updateSuppressCd > 0;
-    exports.updateDeepSuppressed = updateSuppressCd > -updateSuppressCooldown;
+    exports.UPDATE_SUPPRESSED = updateSuppressCd > 0;
+    exports.UPDATE_DEEP_SUPPRESSED = updateSuppressCd > -updateSuppressCooldown;
 
 
     if(TIMER.paramGlobal || shouldLoadParam) {
@@ -94,54 +88,53 @@
       /* <---------- param ----------> */
 
 
-      exports.plaCur = global.lovecUtil.fun._plaCur();
-      exports.mapCur = global.lovecUtil.fun._mapCur();
-      exports.isCaveMap = DB_env.db["group"]["map"]["cave"].includes(module.exports.mapCur);
-      exports.glbHeat = global.lovecUtil.fun._glbHeat();
+      exports.PLANET_CURRENT = global.lovecUtil.fun._plaCur();
+      exports.MAP_CURRENT = global.lovecUtil.fun._mapCur();
+      exports.IS_CAVE_MAP = DB_env.db["group"]["map"]["cave"].includes(module.exports.mapCur);
+      exports.GLOBAL_HEAT = global.lovecUtil.fun._glbHeat();
 
 
       /* <---------- setting ----------> */
 
 
-      exports.testDraw = fetchSetting("test-draw");
-      exports.enableMemoryMonitor = fetchSetting("test-memory");
+      exports.ENABLE_TEST_DRAW = fetchSetting("test-draw");
 
 
-      exports.drawWobble = fetchSetting("draw-wobble");
-      exports.drawStaticLoot = fetchSetting("draw0loot-static");
-      exports.drawLootAmount = fetchSetting("draw0loot-amount");
-      exports.treeAlpha = (Groups.player.size() > 1) ? 1.0 : fetchSetting("draw0tree-alpha", true);
-      exports.checkTreeDst = fetchSetting("draw0tree-player") && unitPlayer != null && MDL_cond._isCoverable(unitPlayer);
-      exports.showExtraInfo = fetchSetting("draw0aux-extra-info");
-      exports.drawBridgeTransportLine = fetchSetting("draw0aux-bridge");
-      exports.drawRouterHeresy = fetchSetting("draw0aux-router");
-      exports.drawScannerResult = fetchSetting("draw0aux-scanner");
-      exports.drawFluidHeat = fetchSetting("draw0aux-fluid-heat");
-      exports.drawFurnaceHeat = fetchSetting("draw0aux-furnace-heat");
+      exports.SHOULD_DRAW_WOBBLE = fetchSetting("draw-wobble");
+      exports.SHOULD_DRAW_STATIC_LOOT = fetchSetting("draw0loot-static");
+      exports.SHOULD_DRAW_LOOT_AMOUNT = fetchSetting("draw0loot-amount");
+      exports.TREE_ALPHA = (Groups.player.size() > 1) ? 1.0 : fetchSetting("draw0tree-alpha", true);
+      exports.SHOULD_CHECK_TREE_DISTANCE = fetchSetting("draw0tree-player") && unitPlayer != null && MDL_cond._isCoverable(unitPlayer);
+      exports.SHOULD_SHOW_EXTRA_INFO = fetchSetting("draw0aux-extra-info");
+      exports.SHOULD_DRAW_BRIDGE_LINE = fetchSetting("draw0aux-bridge");
+      exports.SHOULD_DRAW_ROUTER_HERESY = fetchSetting("draw0aux-router");
+      exports.SHOULD_DRAW_SCANNER_RESULT = fetchSetting("draw0aux-scanner");
+      exports.SHOULD_DRAW_FLUID_HEAT = fetchSetting("draw0aux-fluid-heat");
+      exports.SHOULD_DRAW_FURNACE_HEAT = fetchSetting("draw0aux-furnace-heat");
 
 
-      exports.flickerIconTag = fetchSetting("icontag-flicker");
-      exports.iconTagIntv = fetchSetting("icontag-interval", true);
+      exports.SHOULD_SHOW_FLIKERING_ICON_TAG = fetchSetting("icontag-flicker");
+      exports.ICON_TAG_FLICKERING_INTERVAL = fetchSetting("icontag-interval", true);
 
 
-      exports.drawUnitStat = fetchSetting("unit0stat-show");
-      exports.drawUnitRange = fetchSetting("unit0stat-range");
-      exports.unitRangeAlpha = fetchSetting("unit0stat-range-alpha", true);
-      exports.drawPlayerStat = fetchSetting("unit0stat-player");
-      exports.drawUnitReload = fetchSetting("unit0stat-reload");
-      exports.drawMissileStat = fetchSetting("unit0stat-missile");
-      exports.drawBuildStat = fetchSetting("unit0stat-build");
-      exports.drawUnitNearMouse = fetchSetting("unit0stat-mouse");
-      exports.unitStatStyle = fetchSetting("unit0stat-style");
-      exports.unitRemainsLifetime = fetchSetting("unit0remains-lifetime", true);
-      exports.createBuildingRemains = fetchSetting("unit0remains-build");
+      exports.SHOULD_DRAW_UNIT_STAT = fetchSetting("unit0stat-show");
+      exports.SHOULD_DRAW_UNIT_RANGE = fetchSetting("unit0stat-range");
+      exports.UNIT_RANGE_ALPHA = fetchSetting("unit0stat-range-alpha", true);
+      exports.SHOULD_DRAW_PLAYER_STAT = fetchSetting("unit0stat-player");
+      exports.SHOULD_DRAW_UNIT_RELOAD = fetchSetting("unit0stat-reload");
+      exports.SHOULD_DRAW_MISSILE_STAT = fetchSetting("unit0stat-missile");
+      exports.SHOULD_DRAW_BUILD_STAT = fetchSetting("unit0stat-build");
+      exports.SHOULD_DRAW_UNIT_STAT_NEAR_MOUSE = fetchSetting("unit0stat-mouse");
+      exports.UNIT_STAT_STYLE = fetchSetting("unit0stat-style");
+      exports.UNIT_REMAINS_LIFETIME = fetchSetting("unit0remains-lifetime", true);
+      exports.SHOULD_CREATE_BUILD_REMAINS = fetchSetting("unit0remains-build");
 
 
-      exports.displayDamage = fetchSetting("damagedisplay-show");
-      exports.damageDisplayThreshold = fetchSetting("damagedisplay-min", true);
+      exports.ENABLE_DAMAGE_DISPLAY = fetchSetting("damagedisplay-show");
+      exports.DAMAGE_DISPLAY_THRESHOLD = fetchSetting("damagedisplay-min", true);
 
 
-      exports.showWindow = fetchSetting("window-show");
+      exports.SHOULD_SHOW_WINDOW = fetchSetting("window-show");
 
 
       if(secretCode.includes("<crash>")) {
@@ -149,9 +142,9 @@
         Core.settings.put("lovec-misc-secret-code-crashed", true);
         throw new Error("You definitely know what <crash> means don't you?");
       };
-      exports.secret_legacySound = secretCode.includesAny("<legacy>");
-      exports.secret_fireInTheHole = secretCode.includesAny("<fire-in-the-hole>", "<fire-in-da-hole>", "<fith>");
-      exports.secret_steelPipe = secretCode.includesAny("<steel-pipe>", "<metal-pipe>");
+      exports.SECRET_LEGACY_SOUND = secretCode.includesAny("<legacy>");
+      exports.SECRET_FITH = secretCode.includesAny("<fire-in-the-hole>", "<fire-in-da-hole>", "<fith>");
+      exports.SECRET_METAL_PIPE = secretCode.includesAny("<steel-pipe>", "<metal-pipe>");
 
 
     };

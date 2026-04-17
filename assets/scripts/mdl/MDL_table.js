@@ -101,7 +101,7 @@
     .center()
     .labelAlign(tryVal(align, Align.left))
     .wrap()
-    .width(MDL_ui._uiW(null, null, tryVal(ord, 0) * VAR.rad_ordRad))
+    .width(MDL_ui._uiW(null, null, tryVal(ord, 0) * VAR.length.ordW))
     .padLeft(tryVal(padLeft, 0.0))
     .row();
   };
@@ -583,7 +583,7 @@
           if(tmp instanceof TextureRegion) {
             tbCell.image(tmp).width(imgW).height(imgW);
           } else if(tmp instanceof UnlockableContent) {
-            __ct(tbCell, tmp, imgW, null, null, VAR.dial_ct1);
+            __ct(tbCell, tmp, imgW, null, null, VAR.dialog.ct1);
           } else if(typeof tmp === "function") {
             tmp(tbCell);
           } else if(typeof tmp === "string") {
@@ -672,7 +672,7 @@
       // <TABLE>: "?" button
       tb.table(Styles.none, tb1 => {
         tb1.left();
-        tb1.button("?", () => Vars.ui.content.show(ct)).size(VAR.rad_charBtnRad);
+        tb1.button("?", () => Vars.ui.content.show(ct)).size(VAR.length.charBtnW);
       });
     },
   });
@@ -919,7 +919,7 @@
 
       while(i < iCap) {
         (function(i) {
-          __blkEffc(tb1, arr[i], arr[i + 1] * scl, arr[i + 2], iconW, dialToHide, tryVal(ctDial, VAR.dial_ct2));
+          __blkEffc(tb1, arr[i], arr[i + 1] * scl, arr[i + 2], iconW, dialToHide, tryVal(ctDial, VAR.dialog.ct2));
         })(i);
         if(j % colAmt === colAmt - 1) {
           tb1.row();
@@ -1154,13 +1154,13 @@
         tb1.table(Styles.none, tb2 => {
           bi.forEachRow(3, (tmp, amt, p) => {
             if(!(tmp instanceof Array)) {
-              __rcCt(tb2, tmp, amt, p, true, null, VAR.dial_ct1);
+              __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
             } else {
               tb2.table(Tex.whiteui, tb3 => {
                 tb3.left().setColor(Pal.darkerGray);
                 let pn = tb3.pane(pnTb => {
                   tmp.forEachRow(3, (tmp1, amt, p) => {
-                    __rcCt(pnTb, tmp1, amt, p, true, null, VAR.dial_ct1).row();
+                    __rcCt(pnTb, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
                   });
                 }).get();
                 pn.setOverscroll(false, false);
@@ -1179,13 +1179,13 @@
         tb1.table(Styles.none, tb2 => {
           ci.forEachRow(2, (tmp, amt) => {
             if(!(tmp instanceof Array)) {
-              __rcCt(tb2, tmp, amt, null, false, null, VAR.dial_ct1);
+              __rcCt(tb2, tmp, amt, null, false, null, VAR.dialog.ct1);
             } else {
               tb2.table(Tex.whiteui, tb3 => {
                 tb3.left().setColor(Pal.darkerGray);
                 let pn = tb3.pane(pnTb => {
                   tmp.forEachRow(2, (tmp1, amt) => {
-                    __rcCt(pnTb, tmp1, amt, null, false, null, VAR.dial_ct1).row();
+                    __rcCt(pnTb, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
                   });
                 }).get();
                 pn.setOverscroll(false, false);
@@ -1203,7 +1203,7 @@
         tb1.add("AUX:").left().tooltip(MDL_bundle._term("lovec", "aux"), true).row();
         tb1.table(Styles.none, tb2 => {
           aux.forEachRow(2, (tmp, amt) => {
-            __rcCt(tb2, tmp, amt, null, false, null, VAR.dial_ct1);
+            __rcCt(tb2, tmp, amt, null, false, null, VAR.dialog.ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1225,7 +1225,7 @@
         tb1.add("PAYI:").left().tooltip(MDL_bundle._term("lovec", "payi"), true).row();
         tb1.table(Styles.none, tb2 => {
           payi.forEachRow(2, (nm, amt) => {
-            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dial_ct1);
+            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1238,7 +1238,7 @@
         tb1.add("BO:").left().tooltip(MDL_bundle._term("lovec", "bo"), true).row();
         tb1.table(Styles.none, tb2 => {
           bo.forEachRow(3, (tmp, amt, p) => {
-            __rcCt(tb2, tmp, amt, p, true, null, VAR.dial_ct1);
+            __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1251,7 +1251,7 @@
         tb1.add("CO:").left().tooltip(MDL_bundle._term("lovec", "co"), true).row();
         tb1.table(Styles.none, tb2 => {
           co.forEachRow(2, (tmp, amt) => {
-            __rcCt(tb2, tmp, amt, null, false, null, VAR.dial_ct1);
+            __rcCt(tb2, tmp, amt, null, false, null, VAR.dialog.ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1264,7 +1264,7 @@
         tb1.add("FO:").left().tooltip(MDL_bundle._term("lovec", "fo"), true).row();
         tb1.table(Styles.none, tb2 => {
           bo.forEachRow(3, (tmp, amt, p) => {
-            __rcCt(tb2, tmp, amt, p, true, null, VAR.dial_ct1);
+            __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1277,7 +1277,7 @@
         tb1.add("PAYO:").left().tooltip(MDL_bundle._term("lovec", "payo"), true).row();
         tb1.table(Styles.none, tb2 => {
           payo.forEachRow(2, (nm, amt) => {
-            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dial_ct1);
+            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
           });
         });
       }).left().marginRight(24.0);
@@ -1334,7 +1334,7 @@
               pnTb.table(Styles.none, tb3 => {
                 tb3.left();
                 tb3.add(MDL_text._statText(MDL_bundle._term("lovec", "require-unlocking"), "")).left();
-                lockedByCts.forEachFast(ct => __ct(tb3, ct, 28.0, 0.0, null, VAR.dial_ct2));
+                lockedByCts.forEachFast(ct => __ct(tb3, ct, 28.0, 0.0, null, VAR.dialog.ct2));
               }).left().row();
             };
             if(attr != null) {

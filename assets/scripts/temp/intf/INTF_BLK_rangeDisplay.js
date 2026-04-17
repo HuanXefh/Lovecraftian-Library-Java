@@ -20,7 +20,7 @@
 
   function comp_draw(b) {
     if(!b.isPayload() && b.block.delegee.useP3dRange && LCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
-      processZ(VAR.lay_p3dRange);
+      processZ(VAR.layer.p3dRange);
       LCDrawP3D.roomFade(b.x, b.y, 1.0, b.block.delegee.blkR.toRectW(b.block.size), b.block.delegee.blkR.toRectW(b.block.size), b.block.ex_getBlkRColor(true));
       processZ();
     };

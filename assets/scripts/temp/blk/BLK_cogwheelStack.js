@@ -81,7 +81,7 @@
       ang = Mathf.mod(b.torProg, 90.0),
       z1 = Layer.block + b.block.size * 0.001 + 0.72,
       z2 = Layer.power - 1.6 + b.block.delegee.ovCog.size * 0.001,
-      ovA = b.block.delegee.ovCog.size > b.block.size ? VAR.blk_ovCogA1 : VAR.blk_ovCogA2;
+      ovA = b.block.delegee.ovCog.size > b.block.size ? VAR.param.ovCogA1 : VAR.param.ovCogA2;
 
     processZ(z1);
 

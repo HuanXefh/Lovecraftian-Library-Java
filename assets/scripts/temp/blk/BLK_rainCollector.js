@@ -37,7 +37,7 @@
 
   function comp_ex_findWeatherLiquid(blk) {
     let liq = null;
-    if(PARAM.isCaveMap) return liq;
+    if(PARAM.IS_CAVE_MAP) return liq;
 
     Groups.weather.each(weaSta => weaSta.weather instanceof RainWeather, weaSta => liq = weaSta.weather.liquid);
 

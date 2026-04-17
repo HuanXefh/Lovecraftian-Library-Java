@@ -254,7 +254,7 @@
        * @return {number}
        */
       ex_calcFurnPowCons: function() {
-        return Mathf.maxZero(this.tempSet - Math.max(this.tempExt, PARAM.glbHeat)) / 100.0 * this.block.delegee.powConsPerFuelLvl + this.block.delegee.powConsBase;
+        return Mathf.maxZero(this.tempSet - Math.max(this.tempExt, PARAM.GLOBAL_HEAT)) / 100.0 * this.block.delegee.powConsPerFuelLvl + this.block.delegee.powConsBase;
       }
       .setProp({
         noSuper: true,
@@ -299,7 +299,7 @@
        * @return {number}
        */
       ex_getHeatTg: function() {
-        return PARAM.glbHeat;
+        return PARAM.GLOBAL_HEAT;
       }
       .setProp({
         noSuper: true,

@@ -42,7 +42,7 @@
 
 
   function comp_created(b) {
-    b.tempCur = PARAM.glbHeat;
+    b.tempCur = PARAM.GLOBAL_HEAT;
   };
 
 
@@ -62,11 +62,11 @@
 
   function comp_updateTile(b) {
     // Update temperature and apply damage if overheated
-    if(!PARAM.updateSuppressed && TIMER.secHalf) {
+    if(!PARAM.UPDATE_SUPPRESSED && TIMER.secHalf) {
       b.tempRiseTg = b.ex_calcTempTg();
-      b.tempCur = Mathf.lerp(b.tempCur, Mathf.lerp(PARAM.glbHeat, b.tempRiseTg, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTgFrac()), b.block.delegee.heatWarmupRate * 30.0);
+      b.tempCur = Mathf.lerp(b.tempCur, Mathf.lerp(PARAM.GLOBAL_HEAT, b.tempRiseTg, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTgFrac()), b.block.delegee.heatWarmupRate * 30.0);
       if(b.tempCur > b.block.delegee.heatBlkMeltTemp) {
-        FRAG_attack.damage(b, (VAR.blk_corDmgMin + VAR.blk_corDmgFrac * b.maxHealth) * (b.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
+        FRAG_attack.damage(b, (VAR.param.corDmgMin + VAR.param.corDmgFrac * b.maxHealth) * (b.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
       };
     };
 
@@ -100,7 +100,7 @@
   function comp_draw(b) {
     if(b.isPayload()) return;
 
-    if(PARAM.drawFurnaceHeat && b.block.delegee.heatA > 0.0) {
+    if(PARAM.SHOULD_DRAW_FURNACE_HEAT && b.block.delegee.heatA > 0.0) {
       MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.delegee.heatReg, b.drawrot(), b.block.size);
       MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, VARGEN.blockHeatRegs[b.block.size + 2], b.drawrot(), b.block.size);
     };

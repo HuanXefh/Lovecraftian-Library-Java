@@ -130,14 +130,14 @@ MDL_event._c_onLoad(() => {
     basePol = 0.0;
   });
   TRIGGER.majorIter.building.addGlobalListener((b, isActive) => {
-    if(isActive && Mathf.chance(VAR.p_polUpdateP)) {
+    if(isActive && Mathf.chance(VAR.chance.polUpdateP)) {
       basePol += b.ex_getBlkPol != null ?
         b.ex_getBlkPol() :
         _blkPol(b.block);
     };
   });
   TRIGGER.majorIter.end.addGlobalListener(() => {
-    basePol /= VAR.p_polUpdateP;
+    basePol /= VAR.chance.polUpdateP;
   });
 
 }, 42067771);
@@ -149,8 +149,8 @@ MDL_event._c_onWorldLoad(() => {
 
   Time.run(25.0, () => {
     mapPol = DB_env.db["param"]["map"]["pol"].read(
-      PARAM.mapCur,
-      DB_env.db["param"]["pla"]["pol"].read(PARAM.plaCur, 0.0),
+      PARAM.MAP_CURRENT,
+      DB_env.db["param"]["pla"]["pol"].read(PARAM.PLANET_CURRENT, 0.0),
     );
     dynaPol = SAVE.get("dynamic-pollution");
   });
@@ -162,7 +162,7 @@ MDL_event._c_onWorldLoad(() => {
 
 MDL_event._c_onUpdate(() => {
 
-  if(PARAM.modded) {
+  if(PARAM.MODDED) {
     if(!Vars.state.isGame()) {
       dynaPol = 0.0;
     } else {

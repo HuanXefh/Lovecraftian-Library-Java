@@ -26,7 +26,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.updateSuppressed || b.liquids == null || !TIMER.secQuarter || !Mathf.chance(0.25)) return;
+    if(PARAM.UPDATE_SUPPRESSED || b.liquids == null || !TIMER.secQuarter || !Mathf.chance(0.25)) return;
     let liqCur = b.liquids.current();
     let amt = b.liquids.get(liqCur);
     if(amt < 0.05) return;
@@ -45,15 +45,15 @@
     if(corPow < 0.01) return;
     let corRes = tryJsProp(b.block, "corRes", 1.0);
 
-    b.damagePierce((b.maxHealth * VAR.blk_corDmgFrac + VAR.blk_corDmgMin) * corPow * corMtp / corRes);
+    b.damagePierce((b.maxHealth * VAR.param.corDmgFrac + VAR.param.corDmgMin) * corPow * corMtp / corRes);
     if(Mathf.chance(0.5)) MDL_effect._e_corrosion(b.x, b.y, b.block.size, liq.color);
   };
 
 
   function comp_ex_updateClogging(b, liq, amt) {
-    if(liq.viscosity < VAR.blk_clogViscThr) return;
+    if(liq.viscosity < VAR.param.clogViscThr) return;
 
-    b.damagePierce((b.maxHealth * VAR.blk_clogDmgFrac + VAR.blk_clogDmgMin) * Mathf.lerp(0.5, 1.0, amt / b.block.liquidCapacity) * Mathf.lerp(0.5, 1.0, liq.viscosity / VAR.blk_clogViscThr * 4.0));
+    b.damagePierce((b.maxHealth * VAR.param.clogDmgFrac + VAR.param.clogDmgMin) * Mathf.lerp(0.5, 1.0, amt / b.block.liquidCapacity) * Mathf.lerp(0.5, 1.0, liq.viscosity / VAR.param.clogViscThr * 4.0));
     if(Mathf.chance(0.5)) MDL_effect._e_corrosion(b.x, b.y, b.block.size, liq.color, true);
   };
 

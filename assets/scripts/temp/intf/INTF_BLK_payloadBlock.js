@@ -38,7 +38,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.updateSuppressed) return;
+    if(PARAM.UPDATE_SUPPRESSED) return;
 
     if(b.hasPayOutput && TIMER.effc) {
       b.payAmtTotal = Object.mapSum(b.payStockObj, (nmCt, amt) => FRAG_payload._paySize(nmCt) * amt);

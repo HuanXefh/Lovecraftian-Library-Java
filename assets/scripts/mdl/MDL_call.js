@@ -187,12 +187,12 @@
    * @return {void}
    */
   const spawnLoot_server = function(x, y, itm_gn, amt, rad, repeat) {
-    if(!PARAM.modded) return;
+    if(!PARAM.MODDED) return;
     let itm = MDL_content._ct(itm_gn, "rs");
     if(itm == null) return;
     if(amt == null) amt = 0;
     if(amt < 1) return;
-    if(rad == null) rad = VAR.rad_unitLootRad;
+    if(rad == null) rad = VAR.range.unitLootRad;
     if(repeat == null) repeat = 1;
 
     spawnUnit_server(x, y, Vars.content.unit("loveclab-unit0misc-loot"), Vars.player.team(), rad, null, repeat, false, unit => {
@@ -217,7 +217,7 @@
    * @return {void}
    */
   const spawnLoot_client = function(x, y, itm_gn, amt, rad, repeat) {
-    if(!PARAM.modded) return;
+    if(!PARAM.MODDED) return;
     let itm = MDL_content._ct(itm_gn, "rs");
     if(itm == null) return;
 

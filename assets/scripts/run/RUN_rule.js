@@ -44,7 +44,7 @@
 
     hasWea = true;
     Time.run(60.0, () => {
-      let nmWeas = DB_env.db["param"]["map"]["weaEn"].read(PARAM.mapCur, Array.air);
+      let nmWeas = DB_env.db["param"]["map"]["weaEn"].read(PARAM.MAP_CURRENT, Array.air);
       if(nmWeas.length > 0) {
         Groups.weather.clear();
 

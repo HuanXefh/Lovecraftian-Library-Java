@@ -53,7 +53,7 @@
 
     // Merge loot units randomly
     if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {
-      let ounit = MDL_pos._lootOther(unit.x, unit.y, VAR.rad_lootMergeRad, unit);
+      let ounit = MDL_pos._lootOther(unit.x, unit.y, VAR.range.lootMergeRad, unit);
       if(ounit != null && ounit.item() === unit.item()) {
         unit.stack.amount += ounit.stack.amount;
         ounit.remove();
@@ -76,11 +76,11 @@
   function comp_draw(utp, unit) {
     if(unit.stack.amount === 0) return;
 
-    let regScl = PARAM.drawStaticLoot ? 1.0 : (1.0 + Math.sin(Time.globalTime * 0.065) * 0.15);
+    let regScl = PARAM.SHOULD_DRAW_STATIC_LOOT ? 1.0 : (1.0 + Math.sin(Time.globalTime * 0.065) * 0.15);
     let sizeScl = Math.log(unit.stack.amount + 1.0) * 0.4;
     let shaW = regScl * sizeScl * 10.0;
     let regW = shaW * 0.5;
-    let z = VAR.lay_unitRemains + 0.2 + sizeScl / 100.0;
+    let z = VAR.layer.unitRemains + 0.2 + sizeScl / 100.0;
 
     processZ(z);
 
@@ -95,7 +95,7 @@
     );
     Draw.rect(utp.softShadowRegion, unit.x, unit.y, shaW, shaW, 0.0);
     // Circle, if used
-    if(!PARAM.drawStaticLoot) {
+    if(!PARAM.SHOULD_DRAW_STATIC_LOOT) {
       unit.lastDrownFloor == null ?
         Draw.color(Pal.accent) :
         Draw.color(Pal.accent, Tmp.c2.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
@@ -112,7 +112,7 @@
     // Heat
     if(MDL_cond._isHot(unit)) {
       Draw.blend(Blending.additive);
-      Draw.mixcol(VAR.color_heatMix, 1.0);
+      Draw.mixcol(VAR.color.heatMix, 1.0);
       Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * 0.75);
       Draw.rect(unit.item().uiIcon, unit.x, unit.y, regW, regW, unit.rotation);
       Draw.blend();
@@ -122,7 +122,7 @@
     processZ();
 
     // Amount text
-    if(PARAM.drawLootAmount && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
+    if(PARAM.SHOULD_DRAW_LOOT_AMOUNT && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
       LCDraw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
     };
   };
@@ -163,7 +163,7 @@
 
     itemCapacity: 99999,
     // Doubled to avoid killing the unit somehow
-    lifetime: VAR.time_lootLifetime * 2.0,
+    lifetime: VAR.time.lootLifetime * 2.0,
 
 
   })
