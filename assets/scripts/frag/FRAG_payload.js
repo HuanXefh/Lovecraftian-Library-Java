@@ -58,7 +58,7 @@
   /**
    * Gets a list of payload input sites around `b`.
    * @param {Building} b
-   * @param {string|unset} [mode] - See {@link MDL_pos}.
+   * @param {number|unset} [mode] - See {@link MDL_pos}.
    * @param {Array|unset} [contArr]
    * @return {Array<Building>}
    */
@@ -67,7 +67,7 @@
 
     let obj = DB_block.db["class"]["group"]["payloadSite"];
     b.proximity.each(
-      ob => MDL_pos._sideFrac(ob, b, true, mode) >= 0.5 && (
+      ob => MDL_pos._sideFrac(ob, b, mode, true, true) >= 0.5 && (
         obj["dynamic"].hasIns(ob.block) ?
           true :
           obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) === ob.rotation
@@ -83,7 +83,7 @@
   /**
    * Gets a list of payload output sites around `b`.
    * @param {Building} b
-   * @param {string|unset} [mode] - See {@link MDL_pos}.
+   * @param {number|unset} [mode] - See {@link MDL_pos}.
    * @param {Array|unset} [contArr]
    * @return {Array<Building>}
    */
@@ -92,7 +92,7 @@
 
     let obj = DB_block.db["class"]["group"]["payloadSite"];
     b.proximity.each(
-      ob => MDL_pos._sideFrac(b, ob, true, mode) >= 0.5 && (
+      ob => MDL_pos._sideFrac(b, ob, mode, true, true) >= 0.5 && (
         obj["dynamic"].hasIns(ob.block) ?
           true :
           obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) !== ob.rotation

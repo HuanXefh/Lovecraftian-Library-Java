@@ -405,6 +405,101 @@
 
 
   /**
+   * Used to check relative rotation for buildings.
+   * @global
+   */
+  GEOMETRY_HANDLER = {
+
+
+    /**
+     * @param {Building} b_f
+     * @param {Building} b_t
+     * @return {boolean}
+     */
+    acceptLine(b_f, b_t) {
+      return b_f.relativeTo(b_t) === b_f.rotation && (!b_t.block.rotate ? true : b_t.relativeTo(b_f) !== b_t.rotation);
+    },
+
+
+    /**
+     * @param {Building} b_f
+     * @param {Building} b_t
+     * @param {boolean} canSideBlend
+     * @return {boolean}
+     */
+    acceptLineNoSide(b_f, b_t, canSideBlend) {
+      return canSideBlend ?
+        GEOMETRY_HANDLER.acceptLine(b_f, b_t) :
+        b_f.relativeTo(b_t) === b_f.rotation && (!b_t.block.rotate ? true : b_f.relativeTo(b_t) === b_t.rotation);
+    },
+
+
+    /**
+     * @param {Building} b_f
+     * @param {Building} b_t
+     * @return {boolean}
+     */
+    acceptRouter(b_f, b_t) {
+      return b_f.relativeTo(b_t) !== Mathf.mod(b_f.rotation + 2, 4) && (!b_t.block.rotate ? true : b_t.relativeTo(b_f) !== b_t.rotation);
+    },
+
+
+    /**
+     * @param {Building} b_f
+     * @param {Building} b_t
+     * @param {boolean} canSideBlend
+     * @return {boolean}
+     */
+    acceptRouterNoSide(b_f, b_t, canSideBlend) {
+      return canSideBlend ?
+        GEOMETRY_HANDLER.acceptRouter(b_f, b_t) :
+        b_f.relativeTo(b_t) !== Mathf.mod(b_f.rotation + 2, 4) && (!b_t.block.rotate ? true : b_f.relativeTo(b_t) === b_t.rotation);
+    },
+
+
+    /**
+     * @param {Building} b_f
+     * @param {Building} b_t
+     * @return {boolean}
+     */
+    acceptBlock(b_f, b_t) {
+      return !b_t.block.rotate ? true : b_t.relativeTo(b_f) !== b_t.rotation;
+    },
+
+
+    /**
+     * @param {Building} b_f
+     * @param {Building} b_t
+     * @param {boolean} canSideBlend
+     * @return {boolean}
+     */
+    acceptBlockNoSide(b_f, b_t, canSideBlend) {
+      return canSideBlend ?
+        GEOMETRY_HANDLER.acceptBlock(b_f, b_t) :
+        !b_t.block.rotate ? true : b_f.relativeTo(b_t) === b_t.rotation;
+    },
+
+
+    /**
+     * @param {Building} b_f
+     * @param {Building} b_t
+     * @param {boolean} isFromRouter
+     * @param {boolean} canSideBlend
+     * @return {boolean}
+     */
+    accept(b_f, b_t, isFromRouter, canSideBlend) {
+      return !b_f.block.rotate ?
+        GEOMETRY_HANDLER.acceptBlockNoSide(b_f, b_t, canSideBlend) :
+        !isFromRouter ?
+          GEOMETRY_HANDLER.acceptLineNoSide(b_f, b_t, canSideBlend) :
+          GEOMETRY_HANDLER.acceptRouterNoSide(b_f, b_t, canSideBlend);
+    },
+
+
+  };
+
+
+  /**
    * Collection of methods that control in-game HUD.
    * @global
    */

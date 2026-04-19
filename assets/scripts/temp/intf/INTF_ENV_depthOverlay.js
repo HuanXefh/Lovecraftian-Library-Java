@@ -25,7 +25,7 @@
     MDL_event._c_onDraw(() => {
       if(!Vars.state.isGame() || (!Vars.state.isEditor() && !PARAM.SHOULD_DRAW_SCANNER_RESULT)) return;
 
-      processZ(VAR.layer.deporeRevealed);
+      processZ(VAR.layer.deporeRevealed, 4);
 
       Draw.alpha(0.65);
       blk.drawnMap.each((t, cond) => {

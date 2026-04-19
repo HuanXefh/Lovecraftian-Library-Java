@@ -22,7 +22,8 @@
       };
     };
 
-    if(blk.fldType !== "liquid") {
+    if(blk.fldType === "liquid") blk.noPresExplode = true;
+    if(!blk.noPresExplode) {
       blk.presExploRad = FRAG_attack._presExploRad(blk.size);
       blk.presExploDmg = FRAG_attack._presExploDmg(blk.size);
     };
@@ -30,7 +31,7 @@
 
 
   function comp_setStats(blk) {
-    if(blk.fldType !== "liquid") {
+    if(!blk.noPresExplode) {
       blk.stats.add(fetchStat("lovec", "blk-canexplode"), true);
       blk.stats.add(fetchStat("lovec", "blk-explor"), blk.presExploRad / Vars.tilesize, StatUnit.blocks);
       blk.stats.add(fetchStat("lovec", "blk-explodmg"), blk.presExploDmg);
@@ -39,13 +40,14 @@
 
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
-    if(blk.delegee.fldType !== "liquid") {
+    if(!blk.noPresExplode) {
       MDL_draw._d_diskWarning(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.presExploRad);
     };
   };
 
 
   function comp_onDestroyed(b) {
+    if(b.block.delegee.noPresExplode) return;
     let liqCur = b.liquids.current();
     if(MDL_cond._isAuxiliaryFluid(liqCur) || (!liqCur.gas && !liqCur.willBoil())) return;
     let frac = b.liquids.get(liqCur) / b.block.liquidCapacity;
@@ -61,7 +63,7 @@
 
 
   function comp_drawSelect(b) {
-    if(b.block.delegee.fldType !== "liquid") {
+    if(!b.block.delegee.noPresExplode) {
       MDL_draw._d_diskWarning(b.x, b.y, b.block.delegee.presExploRad);
     };
   };
@@ -88,6 +90,14 @@
     .setParam({
 
 
+      /**
+       * <PARAM>: If true, pressure explosion will be disabled.
+       * @memberof BLK_fluidRouter
+       * @instance
+       */
+      noPresExplode: false,
+
+
       /* <------------------------------ internal ------------------------------ */
 
 
@@ -103,12 +113,6 @@
        * @instance
        */
       presExploDmg: 0.0,
-      /**
-       * <INTERNAL>
-       * @memberof BLK_fluidRouter
-       * @instance
-       */
-      graphType: "pressure",
 
 
     })

@@ -103,10 +103,11 @@
     if(TIMER.liq && !b.block.delegee.skipPresSupply && b.presSupplyTgs.length > 0 && Math.abs(b.presTmp) > 0.0) {
       b.presSupplyIncre++;
       let b_t = b.presSupplyTgs[b.presSupplyIncre % b.presSupplyTgs.length];
-      if(b_t.added && !b_t.isPayload()) {
+      if(b_t.added && b_t.enabled && !b_t.isPayload()) {
         let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
+        let consAmt = MDL_recipeDict._consAmt(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t.block);
         FRAG_fluid.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt * VAR.time.liqIntv, false, false, true);
-        if(addAmt > (MDL_recipeDict._consAmt(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t.block) + 5.5 / 60.0)) {
+        if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
           b_t.damagePierce((b_t.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) / 5.0);
         };
       };
@@ -136,34 +137,25 @@
 
   function comp_ex_updatePresFetchTgs(b) {
     b.presFetchTgs.clear();
+    b.presTransCount = 0;
     // Find all possible pressure sources
-    b.proximity.each(
-      ob => ob.ex_getPres != null
-        && (!ob.block.rotate ? true : ob.relativeTo(b) === ob.rotation)
-        && (
-          !b.block.rotate ?
-            false :
-            MDL_cond._isNoSideBlock(b.block) ?
-              b.relativeTo(ob) !== b.rotation :
-              (ob.relativeTo(b) === b.rotation || (MDL_cond._isFluidConduit(b.block) ? MDL_cond._isFluidConduit(ob.block) : false))
-        ),
-      ob => b.presFetchTgs.push(ob),
-    );
+    b.proximity.each(ob => {
+      if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b)) {
+        b.presTransCount++;
+      };
+      if(ob.ex_getPres == null || !b.ex_checkPresFetchValid(ob) || (ob.ex_checkPresSupplyValid != null && !ob.ex_checkPresSupplyValid(b))) return;
+      b.presFetchTgs.push(ob);
+    });
   };
 
 
   function comp_ex_updatePresSupplyTgs(b) {
-    let aux = b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac;
     b.presSupplyTgs.clear();
     // Find all possible pressure consumers
     b.proximity.each(ob => {
-      ob = ob.getLiquidDestination(b, aux);
-      if(
-        (!b.block.rotate ? true : (b.relativeTo(ob) === b.rotation))
-          && ob.acceptLiquid(b, aux)
-      ) {
-        b.presSupplyTgs.push(ob);
-      };
+      ob = ob.getLiquidDestination(b, VARGEN.auxPres);
+      if((!ob.acceptLiquid(b, VARGEN.auxPres) && !ob.acceptLiquid(b, VARGEN.auxVac)) || !b.ex_checkPresSupplyValid(ob)) return;
+      b.presSupplyTgs.push(ob);
     });
   };
 
@@ -210,6 +202,12 @@
          * @instance
          */
         skipPresSupply: false,
+        /**
+         * <PARAM>: If true, pressure will be transferred in three directions.
+         * @memberof INTF_BLK_pressureBlock
+         * @instance
+         */
+        isPresRouter: false,
 
 
         /* <------------------------------ internal ------------------------------ */
@@ -292,6 +290,12 @@
          * @instance
          */
         presFetchTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
+        presTransCount: 0,
         /**
          * <INTERNAL>
          * @memberof INTF_B_pressureBlock
@@ -395,6 +399,43 @@
       /**
        * @memberof INTF_B_pressureBlock
        * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_checkPresFetchValid: function(ob) {
+        return GEOMETRY_HANDLER.accept(
+          ob, this, ob.block.delegee.isPresRouter,
+          this.block.delegee.isPresRouter ?
+            false :
+            !MDL_cond._isNoSideBlock(this.block) ?
+              true :
+              (MDL_cond._isFluidConduit(this.block) && MDL_cond._isFluidConduit(ob.block))
+        );
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 1,
+      }),
+
+
+      /**
+       * @memberof INTF_B_pressureBlock
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_checkPresSupplyValid: function(ob) {
+        return GEOMETRY_HANDLER.accept(this, ob, this.block.delegee.isPresRouter, true);
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 1,
+      }),
+
+
+      /**
+       * @memberof INTF_B_pressureBlock
+       * @instance
        * @return {number}
        */
       ex_getPres: function() {
@@ -407,15 +448,13 @@
 
       /**
        * Extra multiplier on pressure transferred to another pressure block.
-       * Rarely used.
-       * <br> <LATER>
        * @memberof INTF_B_pressureBlock
        * @instance
        * @param {Building} b_t
        * @return {number}
        */
       ex_getPresTransScl: function(b_t) {
-        return 1.0;
+        return !this.block.delegee.isPresRouter || this.presTransCount === 0 ? 1.0 : (1.0 / this.presTransCount);
       }
       .setProp({
         noSuper: true,

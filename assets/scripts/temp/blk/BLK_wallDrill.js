@@ -134,7 +134,7 @@
        * @memberof BLK_wallDrill
        * @instance
        */
-      payOutputSideFracMode: "non-front",
+      payOutputSideFracMode: MDL_pos.SideFracModes.nonFront,
 
 
     })

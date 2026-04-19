@@ -49,7 +49,7 @@
 
     if(PARAM.UPDATE_SUPPRESSED || !TIMER.secQuarter || !Mathf.chance(0.25)) return;
 
-    let heatRes = b.block.delegee.featRes;
+    let heatRes = b.block.delegee.heatRes;
     if(!isFinite(heatRes) || b.fHeatCur - heatRes < 0.0001) return;
 
     b.damagePierce(2.0 * b.fHeatCur / heatRes);

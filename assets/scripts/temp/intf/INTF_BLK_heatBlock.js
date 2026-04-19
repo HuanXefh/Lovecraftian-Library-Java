@@ -126,24 +126,10 @@
     if(b.block.delegee.skipHeatTrans) return;
 
     b.heatTransTgs.clear();
-    b.proximity.each(
-      ob => ob.ex_getHeatTransferred != null && (
-        !ob.block.rotate ?
-          true :
-          ob.relativeTo(b) === ob.rotation && (
-            !b.block.rotate ?
-              true :
-              (function(b_f) {
-                return b_f == null || b_f.ex_getHeatTransferred == null;
-              })(b.nearby(Mathf.mod(b.rotation + 2, 4)))
-          )
-      ) && (
-        !b.block.rotate ?
-          true :
-          b.relativeTo(ob) !== b.rotation
-      ),
-      ob => b.heatTransTgs.push(ob),
-    );
+    b.proximity.each(ob => {
+      if(ob.ex_getHeatTransferred == null || !GEOMETRY_HANDLER.accept(this, ob, this.block.delegee.isHeatRouter, !ob.block.delegee.isHeatRouter)) return;
+      b.heatTransTgs.push(ob);
+    });
   };
 
 
@@ -251,6 +237,12 @@
          * @instance
          */
         skipHeatSupply: false,
+        /**
+         * <PARAM>: If true, heat will be transferred in three directions.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
+        isHeatRouter: false,
         /**
          * <PARAM>: Heat region alpha.
          * @memberof INTF_BLK_heatBlock
@@ -380,6 +372,12 @@
          * @instance
          */
         heatTransTgs: prov(() => []),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
+        heatTransCount: 0,
         /**
          * <INTERNAL>
          * @memberof INTF_B_heatBlock

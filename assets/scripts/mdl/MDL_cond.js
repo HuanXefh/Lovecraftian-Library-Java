@@ -363,6 +363,17 @@
   exports._isFluidContainer = _isFluidContainer;
 
 
+   /**
+    * Whether this block is a fluid router (directional container).
+    * @param {BlockGn} blk_gn
+    * @return {boolean}
+    */
+  const _isFluidRouter = function(blk_gn) {
+    return matchTag(blk_gn, "blk-frouter", "blk");
+  };
+  exports._isFluidRouter = _isFluidRouter;
+
+
   /**
    * Whether this block is a cloggable fluid block.
    * @param {BlockGn} blk_gn
