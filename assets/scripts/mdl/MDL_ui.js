@@ -693,13 +693,18 @@
       tb1.top().setColor(Pal.darkestGray);
       // <TABLE>: text container
       tb1.table(Styles.none, tb2 => {
+        let flab = new FLabel(MDL_text._space() === "" ? "{slower}" : "{normal}" + dialText);
         if(shouldTriggerScrOnClick) tb2.clicked(() => {
-          scr();
-          tb.actions(Actions.remove());
+          if(!flab.hasEnded()) {
+            flab.skipToTheEnd();
+          } else {
+            scr();
+            tb.actions(Actions.remove());
+          };
         });
 
         tb2.left().marginLeft(48.0).marginRight(48.0).marginTop(28.0).marginBottom(28.0);
-        tb2.add(dialText).left().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.left).wrap().width(_uiW(90.0));
+        tb2.add(flab).left().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.left).wrap().width(_uiW(90.0));
       }).left();
       // <TABLE>: spacing
       tb1.table(Styles.none, tb2 => {}).growX();
