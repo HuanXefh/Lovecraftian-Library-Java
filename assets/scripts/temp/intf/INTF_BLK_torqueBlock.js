@@ -52,6 +52,8 @@
 
 
   function comp_updateTile(b) {
+    if(PARAM.UPDATE_SUPPRESSED) return;
+
     // Reset progress occasionally so that the animation syncs
     if(TIMER.minTwo) b.torProg = 0.0;
 
@@ -62,7 +64,7 @@
     };
 
     // RPM spontaneously drops
-    b.rpmCur = Mathf.maxZero(b.rpmCur - b.rpmCur * 0.002 * Time.delta / b.block.size);
+    b.rpmCur = Mathf.maxZero(b.rpmCur - b.rpmCur * b.block.delegee.rpmDropRate * Time.delta / b.block.size);
     // Infinite RPM kill
     if(b.rpmCur > Number.n8) {
       b.kill();
@@ -246,6 +248,12 @@
          * @instance
          */
         skipTorSupply: false,
+        /**
+         * <PARAM>: How fast RPM drops to zero spontaneously.
+         * @memberof INTF_BLK_torqueBlock
+         * @instance
+         */
+        rpmDropRate: 0.002,
 
 
       }),

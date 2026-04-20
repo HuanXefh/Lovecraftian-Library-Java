@@ -138,6 +138,7 @@
 
   /**
    * Defines iterator for a class, so that instances of this class can be used in for-of loop.
+   * `__PARENT__` in the iterator refers to the instance.
    * Iterator must have "next" method that returns `{value: any, done: boolean}`.
    * @param {Object} iteratorObj
    * @return {void}
@@ -146,6 +147,8 @@
     if(typeof iteratorObj.next !== "function") throw new Error('Iterator must have "next" method!');
 
     this.prototype[Symbol.iterator] = function() {
-      return iteratorObj;
+      let obj = Object.assign({}, iteratorObj);
+      obj.__PARENT__ = this;
+      return obj;
     };
   };
