@@ -12,9 +12,18 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered when map is changed.
-   * <br> <ARGS>: nmMod.
+   * Can be fired more than once!
+   * <br> <ARGS>: nmMap.
    */
   mapChange: new CLS_eventTrigger("lovec-map-change"),
+
+
+  /**
+   * Triggered when exiting some map.
+   * Can be fired more than once!
+   * <br> <ARGS>: nmMap.
+   */
+  mapExit: new CLS_eventTrigger("lovec-map-exit"),
 
 
   /**

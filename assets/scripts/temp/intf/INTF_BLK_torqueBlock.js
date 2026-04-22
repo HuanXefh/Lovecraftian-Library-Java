@@ -187,7 +187,7 @@
       iCap = b.torFetchTgs.iCap();
       while(i < iCap) {
         ob = b.torFetchTgs[i];
-        if(ob.added && ob.enabled && !ob.isPayload()) {
+        if(ob.isAdded() && ob.enabled && !ob.isPayload()) {
           amt = b.torFetchTgs[i + 1];
           if(ob.block instanceof LiquidSource && ob.source === VARGEN.auxTor) {
             // Liquid source gives 100.0 RPM, for test
@@ -205,7 +205,7 @@
       iCap = b.torTransTgs.iCap();
       while(i < iCap) {
         ob = b.torTransTgs[i];
-        if(ob.added && ob.enabled && !ob.isPayload() && ob.ex_calcRpmTrans != null && b.ex_checkTorTransValid(ob)) {
+        if(ob.isAdded() && ob.enabled && !ob.isPayload() && ob.ex_calcRpmTrans != null && b.ex_checkTorTransValid(ob)) {
           val = Math.max(val, ob.ex_calcRpmTrans(b) * b.ex_calcRpmTransScl(ob));
         };
         i++;

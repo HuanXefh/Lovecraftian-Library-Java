@@ -300,10 +300,8 @@
     sumScl: null,
   })
   .setAnno("init", function() {
-    const thisFun = this;
-
     TRIGGER.mapChange.addGlobalListener(() => {
-      thisFun.sumScl = null;
+      this.sumScl = null;
     });
   });
   exports._sumWind = _sumWind;

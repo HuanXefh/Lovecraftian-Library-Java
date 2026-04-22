@@ -64,7 +64,7 @@
     if(b.presDumpTgs.length === 0) return false;
     let b_t = b.presDumpTgs[b.presDumpIncre % b.presDumpTgs.length];
     b.presDumpIncre++;
-    if(!b_t.added || b_t.isPayload()) return false;
+    if(!b_t.isAdded() || b_t.isPayload()) return false;
     let amtTrans = FRAG_fluid.addLiquid(b, b, !isVac ? VARGEN.auxPres : VARGEN.auxVac, -rate);
     if(amtTrans < 0.0001) return false;
 

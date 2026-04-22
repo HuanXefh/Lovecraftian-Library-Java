@@ -88,7 +88,7 @@
     if(!b.block.delegee.skipHeatSupply && b.heatSupplyTgs.length > 0) {
       b.heatSupplyIncre++;
       let b_t = b.heatSupplyTgs[b.heatSupplyIncre % b.heatSupplyTgs.length];
-      if(b_t.added && !b_t.isPayload()) {
+      if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
         b_t.ex_handleExtHeat != null ?
           b_t.ex_handleExtHeat(b.ex_getHeatSupplied()) :
           FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, b.ex_getHeatSupplied() / 6000.0, false, false, true);
@@ -160,7 +160,7 @@
 
     if(!b.block.delegee.skipHeatFetch) {
       b.heatFetchTgs.forEachRow(2, (ob, sideFrac) => {
-        if(!ob.added || !ob.enabled || ob.isPayload()) return;
+        if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
         heat = ob.ex_getHeatProd != null ?
           (ob.ex_getHeatProd() * sideFrac) :
           (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict._prodAmt(VARGEN.auxHeat, ob.block) * sideFrac, true, true) * MDL_recipeDict._prodAmt(VARGEN.auxHeat, ob.block) * sideFrac);
@@ -171,7 +171,7 @@
 
     if(!b.block.delegee.skipHeatTrans) {
       b.heatTransTgs.forEachFast(ob => {
-        if(!ob.added || !ob.enabled || ob.isPayload()) return;
+        if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
         heatTg += ob.ex_getHeatTransferred();
         b.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.maxHeaterProd);
       });

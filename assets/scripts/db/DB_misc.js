@@ -108,7 +108,7 @@ const db = {
           };
           if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) return;
           graph.each(
-            (ob, vert) => ob.added,
+            (ob, vert) => ob.isAdded(),
             (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
           );
         },

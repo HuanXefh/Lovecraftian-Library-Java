@@ -66,7 +66,7 @@
       } else {
         let b_t = b.payOutputBs[b.payDumpIncre % b.payOutputBs.length];
         b.payDumpIncre++;
-        if(b_t.added && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
+        if(b_t.isAdded() && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
           MDL_effect._e_payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content());
           Object.mapIncre(b.payStockObj, b.lastDumpPay.content().name, -1);
           b.lastDumpPay = null;

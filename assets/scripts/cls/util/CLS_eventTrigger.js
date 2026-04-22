@@ -23,14 +23,19 @@
     this.onceListeners = [];
     this.idListenerMap = new ObjectMap();
 
-    this.tmpMap = "";
+    this.mapLast = "";
+    this.mapCur = "";
 
     MDL_event._c_onUpdate(() => {
-      if(this.tmpMap !== global.lovecUtil.fun._mapCur()) {
-        this.tmpMap = global.lovecUtil.fun._mapCur();
+      this.mapCur = global.lovecUtil.fun._mapCur();
+      if(this.mapLast !== this.mapCur) {
         this.clearListener();
         this.clearOnceListener();
-        TRIGGER.mapChange.fire(this.tmpMap);
+        if(String.isEmpty(this.mapCur) || !String.isEmpty(this.mapLast)) {
+          TRIGGER.mapExit.fire(this.mapLast);
+        };
+        TRIGGER.mapChange.fire(this.mapCur);
+        this.mapLast = this.mapCur;
       };
     }, "eventTrigger: ${1}".format(nm));
   };

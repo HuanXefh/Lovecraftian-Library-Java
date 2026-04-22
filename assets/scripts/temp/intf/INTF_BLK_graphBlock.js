@@ -34,7 +34,7 @@
       b.graphCur.graphData.justShrunk = true;
       Core.app.post(() => {
         b.graphCur.shrink((ob, vert) => !ob.ex_isExpiredVert());
-        b.graphCur.shrink((ob, vert) => ob.added && !ob.dead && !ob.isPayload());
+        b.graphCur.shrink((ob, vert) => ob.isAdded() && !ob.isPayload());
         b.graphCur.graphData.justShrunk = false;
       });
     };
@@ -286,7 +286,7 @@
        * @return {boolean}
        */
       ex_isExpiredVert: function() {
-        return !this.added || this.dead || this.isPayload();
+        return !this.isAdded() || this.isPayload();
       }
       .setProp({
         noSuper: true,

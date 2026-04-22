@@ -167,7 +167,7 @@
    */
   const moveShoot = function(unit, tg, keepDst) {
     if(unit.isPlayer()) return;
-    if(tg == null || !tg.added) {
+    if(tg == null || !tg.isAdded()) {
       unit.controlWeapons(false);
       return;
     };
@@ -189,7 +189,7 @@
    */
   const pathfindShoot = function thisFun(unit, tg, vecOut, blockedTup, keepDst) {
     if(unit.isPlayer()) return;
-    if(tg == null || !tg.added) {
+    if(tg == null || !tg.isAdded()) {
       unit.controlWeapons(false);
       return;
     };
@@ -254,7 +254,7 @@
    * @return {boolean}
    */
   const _d_follow = function thisFun(ctrl, unit, followTg) {
-    if(followTg == null || !followTg.added) return false;
+    if(followTg == null || !followTg.isAdded()) return false;
     if(_c_holdPos(unit)) return false;
 
     thisFun.blockedTup[0] = false;
@@ -282,7 +282,7 @@
    * @return {boolean}
    */
   const _d_unload = function thisFun(ctrl, unit, b) {
-    if(!unit.hasItem() || b == null || !b.added || !b.acceptItem(unit.item()) || b.isPayload()) return false;
+    if(!unit.hasItem() || b == null || !b.isAdded() || !b.acceptItem(unit.item()) || b.isPayload()) return false;
 
     thisFun.blockedTup[0] = false;
     if(!_c_holdPos(unit)) {
@@ -402,7 +402,7 @@
     };
 
     if(ctrl.repairTg == null) {
-      let bTg = (b != null && !b.added) ? b : unit.closestCore();
+      let bTg = (b != null && !b.isAdded()) ? b : unit.closestCore();
       if(bTg != null && !unit.within(bTg, 48.0) && !_c_holdPos(unit)) {
         moveTo(unit, bTg, 48.0);
       } else return false;

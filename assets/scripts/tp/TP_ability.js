@@ -103,6 +103,13 @@
       timerMap: new ObjectMap(),
 
 
+      init(utp) {
+        TRIGGER.mapExit.addGlobalListener(() => {
+          this.timerMap.clear();
+        });
+      },
+
+
       addStats(tb) {
         comp_addStats(this, tb, tb => {
           tb.add(MDL_text._statText(Stat.shieldHealth.localized(), Strings.autoFixed(this.maxShield, 2)));
@@ -112,8 +119,18 @@
       },
 
 
+      created(unit) {
+        this.timerMap.put(unit, new Interval(1));
+      },
+
+
+      death(unit) {
+        this.timerMap.remove(unit);
+      },
+
+
       update(unit) {
-        if(!this.timerMap.containsKey(unit)) this.timerMap.put(unit, new Interval(1));
+        if(!this.timerMap.containsKey(unit)) return;
         if(unit.shield >= this.maxShield || !this.timerMap.get(unit).get(this.regenIntv)) return;
 
         unit.shield = Math.min(unit.shield + this.regenAmt, this.maxShield);
@@ -149,6 +166,14 @@
       inCdMap: new ObjectMap(),
 
 
+      init(utp) {
+        TRIGGER.mapExit.addGlobalListener(() => {
+          this.progMap.clear();
+          this.inCdMap.clear();
+        });
+      },
+
+
       addStats(tb) {
         comp_addStats(this, tb, tb => {
           tb.add(MDL_text._statText(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
@@ -160,10 +185,21 @@
       },
 
 
+      created(unit) {
+        this.progMap.put(unit, this.chargeCap);
+        this.inCdMap.put(unit, false);
+      },
+
+
+      death(unit) {
+        this.progMap.remove(unit);
+        this.inCdMap.remove(unit);
+      },
+
+
       update(unit) {
         if(!Mathf.chance(0.2)) return;
-        if(!this.progMap.containsKey(unit)) this.progMap.put(unit, this.chargeCap);
-        if(!this.inCdMap.containsKey(unit)) this.inCdMap.put(unit, false);
+        if(!this.progMap.containsKey(unit) || !this.inCdMap.containsKey(unit)) return;
 
         let prog = Math.min(this.progMap.get(unit, 0.0) + Time.delta * 5.0 * this.chargeMtp * MDL_entity._reloadMtp(unit), this.chargeCap);
         let inCd = this.inCdMap.get(unit, false);
@@ -219,6 +255,13 @@
       timerMap: new ObjectMap(),
 
 
+      init(utp) {
+        TRIGGER.mapExit.addGlobalListener(() => {
+          this.timerMap.clear();
+        });
+      },
+
+
       addStats(tb) {
         comp_addStats(this, tb, tb => {
           tb.add(MDL_text._statText(Core.bundle.get("stat.lovec-stat-blk0misc-repairamt"), MDL_text._healText(this.healAmt, this.healPerc)));
@@ -230,8 +273,18 @@
       },
 
 
+      created(unit) {
+        this.timerMap.put(unit, new Interval(1));
+      },
+
+
+      death(unit) {
+        this.timerMap.remove(unit);
+      },
+
+
       update(unit) {
-        if(!this.timerMap.containsKey(unit)) this.timerMap.put(unit, new Interval(1));
+        if(!this.timerMap.containsKey(unit)) return;
         if(!this.timerMap.get(unit).get(this.intv)) return;
         let b = MDL_pos._b_base(unit.x, unit.y, unit.team, this.rad, b => MDL_cond._canHeal(b));
         if(b == null) return;

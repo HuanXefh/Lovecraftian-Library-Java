@@ -140,7 +140,7 @@
 
   MDL_event._c_onLoad(() => {
 
-    TRIGGER.mapChange.addGlobalListener(() => {
+    TRIGGER.mapExit.addGlobalListener(() => {
       blkRemainsMap.clear();
       unitRemainsArr.clear();
     });
@@ -163,7 +163,7 @@
     TRIGGER.majorIter.start.addGlobalListener(() => {
       expiredUnits.clear();
       unitDataMap.each((unit, dataObj) => {
-        if(!unit.added) expiredUnits.push(unit);
+        if(!unit.isAdded()) expiredUnits.push(unit);
       });
       expiredUnits.forEachFast(unit => unitDataMap.remove(unit));
     });
