@@ -136,7 +136,7 @@
         /**
          * <PARAM>: Used to define a multi-block structure.
          * <br> <ROWS>: nmBlk, offTx, offTy, rot.
-         * @memberof
+         * @memberof INTF_BLK_multiBlockHandler
          * @instance
          */
         multiBlockData: null,

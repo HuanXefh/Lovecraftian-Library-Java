@@ -102,7 +102,7 @@
         presProd: 0.0,
         /**
          * <PARAM>: Fluid type restriction for pressure dumping. See {@link INTF_BLK_fluidTypeFilter}.
-         * @memberof
+         * @memberof INTF_BLK_pressureProducer
          * @instance
          */
         presFldType: "any",

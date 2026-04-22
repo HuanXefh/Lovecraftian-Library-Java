@@ -169,7 +169,7 @@
     lightConeScl: 0.4,
     /**
      * <PARAM>: Durability in frames, the unit will be destroyed if run out of durability. Use negative value to disable this mechanics.
-     * @memberof
+     * @memberof UNIT_baseUnit
      * @instance
      */
     unitDurabCap: -1.0,

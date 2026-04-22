@@ -9,44 +9,10 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemDistributor");
+  const INTF = require("lovec/temp/intf/INTF_BLK_transportBlockSideDisplay");
 
 
   /* <---------- component ----------> */
-
-
-  function comp_load(blk) {
-    blk.sideReg1 = fetchRegionOrNull(blk, "-side1", "-side");
-    blk.sideReg2 = fetchRegionOrNull(blk, "-side2", "-side");
-  };
-
-
-  function comp_onProximityUpdate(b) {
-    let b_t = b.nearby(b.rotation);
-    let b_f = b.nearby((b.rotation + 2) % 4);
-    let b_s1 = b.nearby((b.rotation + 1) % 4);
-    let b_s2 = b.nearby((b.rotation + 3) % 4);
-
-    b.shouldDrawSide1 = !(
-      (b_f != null && b_f.team === b.team && (b_f.block.outputsItems() || b_f.block instanceof Conveyor) && !MDL_cond._isCable(b_f.block))
-        || (b_s1 != null && b_s1.block instanceof Conveyor && b_s1.team === b.team && b_s1.nearby(b_s1.rotation) === b)
-        || (b_s2 != null && b_s2.block instanceof Conveyor && b_s2.team === b.team && b_s2.nearby(b_s2.rotation) === b)
-    );
-    b.shouldDrawSide2 = !(b_t != null && b_t.team === b.team && b_t.items != null && !MDL_cond._isCable(b_t.block));
-  };
-
-
-  function comp_pickedUp(b) {
-    // Is it even possible to see the payload???
-    b.shouldDrawSide1 = b.shouldDrawSide2 = true;
-  };
-
-
-  function comp_draw(b) {
-    if(b.block.delegee.noSideReg) return;
-
-    if(b.shouldDrawSide1) MDL_draw._reg_side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg1, b.rotation, null, null, Layer.block - 0.19);
-    if(b.shouldDrawSide2) MDL_draw._reg_side(b.x, b.y, b.block.delegee.sideReg2, b.block.delegee.sideReg2, (b.rotation + 2) % 4, null, null, Layer.block - 0.19);
-  };
 
 
 /*
@@ -66,19 +32,12 @@
      * <br> <SINGLESIZE>
      * @class BLK_conveyor
      * @extends BLK_baseItemDistributor
+     * @extends INTF_BLK_transportBlockSideDisplay
      */
-    newClass().extendClass(PARENT[0], "BLK_conveyor").initClass()
+    newClass().extendClass(PARENT[0], "BLK_conveyor").implement(INTF[0]).initClass()
     .setParent(Conveyor)
     .setTags("blk-dis", "blk-conv")
     .setParam({
-
-
-      /**
-       * <PARAM>: Whether side regions are NOT used for this conveyor.
-       * @memberof
-       * @instance
-       */
-      noSideReg: false,
 
 
       /* <------------------------------ internal ------------------------------ */
@@ -86,30 +45,20 @@
 
       /**
        * <INTERNAL>
-       * @memberof BLK_cable
+       * @override
+       * @memberof BLK_conveyor
        * @instance
        */
-      sideReg1: null,
-      /**
-       * <INTERNAL>
-       * @memberof BLK_cable
-       * @instance
-       */
-      sideReg2: null,
+      sideRegZ: Layer.block - 0.19,
 
 
     })
     .setMethod({
 
 
-      load: function() {
-        comp_load(this);
-      },
-
-
       /**
        * @override
-       * @memberof BLK_cable
+       * @memberof BLK_conveyor
        * @instance
        * @return {boolean}
        */
@@ -122,55 +71,69 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_conveyor
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_shouldBlendBackSide: function(ob) {
+        return (ob.block.outputsItems() || ob.block instanceof Conveyor) && !MDL_cond._isCable(ob.block);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+        argLen: 1,
+      }),
+
+
+      /**
+       * @override
+       * @memberof BLK_conveyor
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_shouldBlendFlankSide: function(ob) {
+        return ob.block instanceof Conveyor && !MDL_cond._isCable(ob.block);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+        argLen: 1,
+      }),
+
+
+      /**
+       * @override
+       * @memberof BLK_conveyor
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_shouldBlendFrontSide: function(ob) {
+        return ob.items != null && !MDL_cond._isCable(ob.block);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+        argLen: 1,
+      }),
+
+
     }),
 
 
     /**
      * @class B_conveyor
      * @extends B_baseItemDistributor
+     * @extends INTF_BLK_transportBlockSideDisplay
      */
-    newClass().extendClass(PARENT[1], "B_conveyor").initClass()
+    newClass().extendClass(PARENT[1], "B_conveyor").implement(INTF[1]).initClass()
     .setParent(Conveyor.ConveyorBuild)
-    .setParam({
-
-
-      /* <------------------------------ internal ------------------------------ */
-
-
-      /**
-       * <INTERNAL>
-       * @memberof B_cable
-       * @instance
-       */
-      shouldDrawSide1: false,
-      /**
-       * <INTERNAL>
-       * @memberof B_cable
-       * @instance
-       */
-      shouldDrawSide2: false,
-
-
-    })
-    .setMethod({
-
-
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
-
-
-      pickedUp: function() {
-        comp_pickedUp(this);
-      },
-
-
-      draw: function() {
-        comp_draw(this);
-      },
-
-
-    }),
+    .setParam({})
+    .setMethod({}),
 
 
   ];

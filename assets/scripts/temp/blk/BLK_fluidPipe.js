@@ -10,6 +10,7 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseFluidDistributor");
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureBlock");
+  const INTF_A = require("lovec/temp/intf/INTF_BLK_transportBlockSideDisplay");
 
 
   /* <---------- component ----------> */
@@ -104,8 +105,9 @@
      * @class BLK_fluidPipe
      * @extends BLK_baseFluidDistributor
      * @extends INTF_BLK_pressureBlock
+     * @extends INTF_BLK_transportBlockSideDisplay
      */
-    newClass().extendClass(PARENT[0], "BLK_fluidPipe").implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_fluidPipe").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(Conduit)
     .setTags("blk-liq", "blk-fcond")
     .setParam({
@@ -143,6 +145,57 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_fluidPipe
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_shouldBlendBackSide: function(ob) {
+        return ob.block.outputsLiquid || ob.block instanceof Conduit;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+        argLen: 1,
+      }),
+
+
+      /**
+       * @override
+       * @memberof BLK_fluidPipe
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_shouldBlendFlankSide: function(ob) {
+        return ob.block instanceof Conduit;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+        argLen: 1,
+      }),
+
+
+      /**
+       * @override
+       * @memberof BLK_fluidPipe
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_shouldBlendFrontSide: function(ob) {
+        return ob.liquids != null;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+        argLen: 1,
+      }),
+
+
     }),
 
 
@@ -150,8 +203,9 @@
      * @class B_fluidPipe
      * @extends B_baseFluidDistributor
      * @extends INTF_B_pressureBlock
+     * @extends INTF_B_transportBlockSideDisplay
      */
-    newClass().extendClass(PARENT[1], "B_fluidPipe").implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "B_fluidPipe").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(Conduit.ConduitBuild)
     .setParam({
 

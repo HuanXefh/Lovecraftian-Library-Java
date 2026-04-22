@@ -116,7 +116,7 @@
       linkMode: "any",
       /**
        * <PARAM>: Minimum radius as fraction of maximum radius.
-       * @memberof
+       * @memberof BLK_wireNode
        * @instance
        */
       minRadFrac: 0.0,
