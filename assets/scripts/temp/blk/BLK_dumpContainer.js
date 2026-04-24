@@ -74,6 +74,14 @@
       },
 
 
+      outputsItems: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
     }),
 
 

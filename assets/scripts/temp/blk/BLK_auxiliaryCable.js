@@ -56,11 +56,9 @@
     .setParam({
 
 
-      /* <------------------------------ internal ------------------------------ */
-
-
       /**
-       * <INTERNAL>
+       * <PARAM>: Safe power level used when only this cable exists in the graph.
+       * @override
        * @memberof BLK_auxiliaryCable
        * @instance
        */

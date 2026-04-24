@@ -38,8 +38,8 @@
 
 
   function comp_onProximityUpdate(b) {
-    let coords = MDL_pos._coordsBack(b.x, b.y, b.block.size, b.rotation);
-    b.lootDumpVec2.set(coords[0], coords[1]);
+    let vec2 = MDL_pos._coordsBack(b.x, b.y, b.block.size, b.rotation);
+    b.lootDumpVec2.set(vec2.x, vec2.y);
   };
 
 
@@ -49,8 +49,6 @@
 
 
   function comp_draw(b) {
-    b.drawTeamTop();
-
     Draw.rect(b.block.region, b.x, b.y);
     MDL_draw._reg_side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
     if(b.ctTg != null) {

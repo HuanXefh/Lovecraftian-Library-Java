@@ -28,8 +28,6 @@
 
 
   function comp_draw(b) {
-    b.drawTeamTop();
-
     Draw.rect(b.block.region, b.x, b.y);
     if(b.ctTg != null) {
       LiquidBlock.drawTiledFrames(b.block.size, b.x, b.y, 1.0, 1.0, 1.0, 1.0, b.ctTg, 1.0);

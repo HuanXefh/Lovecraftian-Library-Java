@@ -84,7 +84,7 @@
     let mtp = Mathf.lerp(1.0, b.block.optionalBoostIntensity, b.optionalEfficiency);
     let drillTime = b.block.getDrillTime(b.lastItem);
     b.boostWarmup = Mathf.lerpDelta(b.boostWarmup, b.optionalEfficiency, 0.1);
-    b.lastDrillSpeed = (b.facingAmount * mtp * b.timeScale) / drillTime * b.efficiency;
+    b.lastDrillSpeed = b.facingAmount * mtp * b.timeScale / drillTime * b.efficiency;
     b.time += b.edelta() * mtp;
 
     if(b.time >= drillTime) {

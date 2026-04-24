@@ -3,6 +3,7 @@ package lovec.graphics;
 import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.Mathf;
+import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Nullable;
@@ -234,7 +235,7 @@ public class LCDraw {
         font.getData().setScale(0.25f / Scl.scl(1f) * sizeScl);
         layout.setText(font, str);
         font.setColor(color);
-        font.draw(str, x + offX, y + offY, 0, align, false);
+        font.draw(str, x + offX, y + offY, 0f, align, false);
         Draw.reset();
         Draw.z(zPrev);
 
@@ -265,6 +266,18 @@ public class LCDraw {
 
 
     /* <-------------------- specific --------------------> */
+
+
+    /**
+     * Calculates position for random walk in a square (width of 1).
+     */
+    public static Vec2 getRandWalkVec(Vec2 out, float time) {
+        float time_fi = time / 60f;
+        return out.set(
+            0.7f * Mathf.cos(time_fi) * Mathf.sin(0.5f * time_fi) - 0.3f * Mathf.cos(time_fi),
+            0.3f * Mathf.sin(time_fi) + 0.6f * Mathf.cos(0.5f * time_fi) * Mathf.sin(time_fi) + 0.1f * Mathf.cos(time_fi + 2.5f)
+        );
+    };
 
 
     /**

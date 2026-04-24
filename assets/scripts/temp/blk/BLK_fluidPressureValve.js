@@ -54,8 +54,6 @@
 
 
   function comp_draw(b) {
-    b.drawTeamTop();
-
     Draw.rect(b.block.region, b.x, b.y);
     Draw.rect(b.block.delegee.dirReg, b.x, b.y, b.drawrot());
   };

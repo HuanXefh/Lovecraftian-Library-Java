@@ -59,6 +59,7 @@
     this.add("noItemDrop", "${1} has no item drop!");
     this.add("noLiquidDrop", "${1} has no liquid drop!");
     this.add("notSingleSized", "${1} is expected to have size of 1!");
+    this.add("invalidRotation", "Rotation should fall in 0~3! Exception: ${1}");
     this.add("evenSizedCogwheel", "Cogwheel size cannot be even! Exception: ${1}");
     this.add("planetMeshLoadFail", "Failed to load mesh (${1}) for ${2}.");
 

@@ -231,6 +231,24 @@
 
 
       /**
+       * Not used in BLK_wallDrill!
+       * @memberof BLK_baseDrill
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {Resource} rs
+       * @return {TextureRegion}
+       */
+      ex_findPlaceRsIcon: function(tx, ty, rs) {
+        return rs.fullIcon;
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 3,
+      }),
+
+
+      /**
        * Gets final hardness of some item drop from some block.
        * @memberof BLK_baseDrill
        * @instance
@@ -297,6 +315,35 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @memberof BLK_baseDrill
+       * @instance
+       * @param {number} tx
+       * @param {number} ty
+       * @param {boolean} valid
+       * @param {number} rate
+       * @param {Resource|TextureRegion} rs0reg
+       * @return {void}
+       */
+      ex_drawDrillText: function(tx, ty, valid, rate, rs0reg) {
+        let w = this.drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", rate, 2), tx, ty, valid);
+        if(rs0reg != null) {
+          let dx = tx * Vars.tilesize + this.offset - w * 0.5 - 4.0;
+          let dy = ty * Vars.tilesize + this.offset + this.size * Vars.tilesize * 0.5 + 5.0;
+          let size = Vars.iconSmall / 4.0;
+
+          Draw.mixcol(Color.darkGray, 1.0);
+          Draw.rect(rs0reg instanceof TextureRegion ? rs0reg : rs0reg.fullIcon, dx, dy - 1.0, size, size);
+          Draw.reset();
+          Draw.rect(rs0reg instanceof TextureRegion ? rs0reg : rs0reg.fullIcon, dx, dy, size, size);
+        };
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 5,
       }),
 
 

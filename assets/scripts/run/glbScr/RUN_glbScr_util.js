@@ -188,9 +188,9 @@
 
 
   /**
-   * Used to read 2-arrays that map classes to functions.
+   * Used to read 2-arrays that map classes (or template names) to functions.
    * @global
-   * @param {Array} arr - <ROW>: cls, fun.
+   * @param {Array} arr - <ROW>: cls0tempNm, fun.
    * @param {Object} ins
    * @param {any} [def]
    * @return {Function}
@@ -199,7 +199,12 @@
     let fun = tryVal(def, Function.air);
     let i = 0, iCap = arr.iCap();
     while(i < iCap) {
-      if(ins instanceof arr[i]) fun = arr[i + 1];
+      if(
+        (typeof arr[i] === "function" && ins instanceof arr[i])
+          || (typeof arr[i] === "string" && checkCreatedByTemp(ins) && ins.ex_isSubInsOf(arr[i]))
+      ) {
+        fun = arr[i + 1]
+      };
       i += 2;
     };
 
@@ -339,7 +344,19 @@
 
 
   /**
+   * Whether this content is created with {@link CLS_contentTemplate}.
+   * @global
+   * @param {UnlockableContent} ct
+   * @return {boolean}
+   */
+  checkCreatedByTemp = function(ct) {
+    return ct.ex_isSubInsOf != null;
+  };
+
+
+  /**
    * Gets method from some content template.
+   * @global
    * @param {string} nmTemp
    * @param {string} nmFun
    * @param {any} [def]
@@ -359,6 +376,7 @@
 
   /**
    * Gets all parent templates and implemented inferfaces of some template as string.
+   * @global
    * @param {string} nmTemp
    * @return {Array<string>}
    */

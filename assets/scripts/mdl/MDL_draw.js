@@ -883,7 +883,7 @@
     if(strokeScl == null) strokeScl = 1.0;
     if(z == null) z = Layer.effect + VAR.layer.offDraw;
 
-    let strokeScl_fi = (1.0 + Math.sin(Time.globalTime * 0.065) * 0.2) * strokeScl;
+    let strokeScl_fi = (1.0 + Math.sin(Time.time * 0.065) * 0.2) * strokeScl;
 
     processZ(z);
 
@@ -906,6 +906,66 @@
     if(hasLight) Drawf.light(x1, y1, x2, y2);
   };
   exports._d_laser = _d_laser;
+
+
+  /**
+   * Draws laser that randomly walks in a rectangular range.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} cx
+   * @param {number} cy
+   * @param {number} rad
+   * @param {number|unset} [offTime]
+   * @param {number|unset} [rotDir]
+   * @param {number|unset} [strokeScl]
+   * @param {ColorGn|unset} [color1_gn]
+   * @param {ColorGn|unset} [color2_gn]
+   * @param {number|unset} [a]
+   * @param {boolean|unset} [hasLight]
+   * @param {number|unset} [z]
+   * @return {Vec2}
+   */
+  const _d_laserRandWalk = function(
+    x, y, cx, cy, rad, offTime, rotDir,
+    strokeScl, color1_gn, color2_gn, a, hasLight, z
+  ) {
+    let vec2 = LCDraw.getRandWalkVec(Tmp.v1, Time.time + tryVal(offTime, 0.0)).rotate90(tryVal(rotDir, 0));
+    _d_laser(x, y, cx + vec2.x * rad, cy + vec2.y * rad, strokeScl, color1_gn, color2_gn, a, hasLight, z);
+
+    return vec2;
+  };
+  exports._d_laserRandWalk = _d_laserRandWalk;
+
+
+  /**
+   * Variant of {@link _d_laserRandWalk} for mining beam.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} cx
+   * @param {number} cy
+   * @param {number} rad
+   * @param {number|unset} [offTime]
+   * @param {number|unset} [rotDir]
+   * @param {number|unset} [strokeScl]
+   * @param {ColorGn|unset} [color1_gn]
+   * @param {ColorGn|unset} [color2_gn]
+   * @param {number|unset} [a]
+   * @param {boolean|unset} [hasLight]
+   * @param {number|unset} [z]
+   * @return {Vec2}
+   */
+  const _d_laserRandMine = function(
+    x, y, cx, cy, rad, offTime, rotDir,
+    strokeScl, color1_gn, color2_gn, a, hasLight, z
+  ) {
+    if(z == null) z = VAR.layer.mineBeam;
+
+    let vec2 = _d_laserRandWalk(x, y, cx + Math.cos(Time.time * 0.025) * 4.0, cy + Math.sin(Time.time * 0.025) * 4.0, rad, offTime, rotDir, strokeScl, color1_gn, color2_gn, a, hasLight, z);
+    if(!Vars.state.isPaused() && Mathf.chanceDelta(0.05)) {
+      Fx.mineSmall.at(cx + vec2.x * rad, cy + vec2.y * rad);
+    };
+  };
+  exports._d_laserRandMine = _d_laserRandMine;
 
 
   /**
@@ -1088,6 +1148,24 @@
 
 
   /**
+   * Variant of {@link _d_rectPlace} for rotated range.
+   * @param {Block} blk
+   * @param {number} tx
+   * @param {number} ty
+   * @param {number|unset} [r]
+   * @param {number|unset} [rot]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {boolean|unset} [isDashed]
+   * @return {void}
+   */
+  const _d_rectPlaceRot = function(blk, tx, ty, r, rot, color_gn, isDashed) {
+    let vec2 = MDL_pos._coordsRectRotCenter(tx.toFCoord(blk.size), ty.toFCoord(blk.size), r, rot, blk.size);
+    _d_rect(vec2.x, vec2.y, r, 0, color_gn, 1.0, isDashed);
+  };
+  exports._d_rectPlaceRot = _d_rectPlaceRot;
+
+
+  /**
    * Variant of {@link _d_rect} for building selection.
    * @param {Building} b
    * @param {number|unset} [r]
@@ -1099,6 +1177,21 @@
     _d_rect(b.x, b.y, r, b.block.size, color_gn, 1.0, isDashed);
   };
   exports._d_rectSelect = _d_rectSelect;
+
+
+  /**
+   * Variant of {@link _d_rectSelect} for rotated range.
+   * @param {Building} b
+   * @param {number|unset} [r]
+   * @param {number|unset} [rot]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {boolean|unset} [isDashed]
+   * @return {void}
+   */
+  const _d_rectSelectRot = function(b, r, rot, color_gn, isDashed) {
+    _d_rectPlaceRot(b.block, b.tileX(), b.tileY(), r, rot, color_gn, isDashed);
+  };
+  exports._d_rectSelectRot = _d_rectSelectRot;
 
 
   /* <---------- circle ----------> */
@@ -1890,8 +1983,6 @@
     b.block.variant === 0 || b.block.variantRegions == null ?
       Draw.rect(b.block.region, b.x, b.y, b.drawrot()) :
       Draw.rect(b.block.variantRegions[Mathf.randomSeed(b.tile.pos(), 0, Mathf.maxZero(b.block.variantRegions.length - 1))], b.x, b.y, b.drawrot());
-
-    b.drawTeamTop();
   };
   exports.comp_draw_baseBuilding = comp_draw_baseBuilding;
 
@@ -1926,7 +2017,7 @@
     LCDraw.text(
       (t.build == null ? t.worldx() : t.build.x) + (!PARAM.SHOULD_DRAW_BUILD_STAT || t.build == null ? 0.0 : ((VAR.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
       (t.build == null ? t.worldy() : t.build.y) + (-(!PARAM.SHOULD_DRAW_BUILD_STAT || t.build == null ? 10.0 : ((VAR.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize + 2.0))),
-      thisFun.tmpStr, Fonts.def,
+      thisFun.tmpStr, Fonts.outline,
       0.8, Color.white, Align.left, 0.0, 0.0, 10.0,
     );
   }.setProp({

@@ -119,18 +119,15 @@
       },
 
 
-      created(unit) {
-        this.timerMap.put(unit, new Interval(1));
-      },
-
-
       death(unit) {
         this.timerMap.remove(unit);
       },
 
 
       update(unit) {
-        if(!this.timerMap.containsKey(unit)) return;
+        if(!this.timerMap.containsKey(unit)) {
+          this.timerMap.put(unit, new Interval(1));
+        };
         if(unit.shield >= this.maxShield || !this.timerMap.get(unit).get(this.regenIntv)) return;
 
         unit.shield = Math.min(unit.shield + this.regenAmt, this.maxShield);
@@ -185,12 +182,6 @@
       },
 
 
-      created(unit) {
-        this.progMap.put(unit, this.chargeCap);
-        this.inCdMap.put(unit, false);
-      },
-
-
       death(unit) {
         this.progMap.remove(unit);
         this.inCdMap.remove(unit);
@@ -199,7 +190,10 @@
 
       update(unit) {
         if(!Mathf.chance(0.2)) return;
-        if(!this.progMap.containsKey(unit) || !this.inCdMap.containsKey(unit)) return;
+        if(!this.progMap.containsKey(unit)) {
+          this.progMap.put(unit, this.chargeCap);
+          this.inCdMap.put(unit, false);
+        };
 
         let prog = Math.min(this.progMap.get(unit, 0.0) + Time.delta * 5.0 * this.chargeMtp * MDL_entity._reloadMtp(unit), this.chargeCap);
         let inCd = this.inCdMap.get(unit, false);
@@ -273,18 +267,15 @@
       },
 
 
-      created(unit) {
-        this.timerMap.put(unit, new Interval(1));
-      },
-
-
       death(unit) {
         this.timerMap.remove(unit);
       },
 
 
       update(unit) {
-        if(!this.timerMap.containsKey(unit)) return;
+        if(!this.timerMap.containsKey(unit)) {
+          this.timerMap.put(unit, new Interval(1));
+        };
         if(!this.timerMap.get(unit).get(this.intv)) return;
         let b = MDL_pos._b_base(unit.x, unit.y, unit.team, this.rad, b => MDL_cond._canHeal(b));
         if(b == null) return;

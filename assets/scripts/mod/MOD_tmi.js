@@ -307,15 +307,14 @@
    * @param {RecipeItemGroup} rcGrp
    * @param {BlockGn} blk_gn
    * @param {number} realEffc
-   * @param {number} size
-   * @param {boolean|unset} [isWallEffc]
+   * @param {number} amt
    * @return {Recipe}
    */
-  const addMineTile = function(rawRc, rcGrp, blk_gn, realEffc, size, isWallEffc) {
+  const addMineTile = function(rawRc, rcGrp, blk_gn, realEffc, amt) {
     let blk = MDL_content._ct(blk_gn, "blk");
     if(blk == null || blk.itemDrop == null) return rawRc;
 
-    rawRc.addMaterial(_tmiCT(blk), isWallEffc ? size : Math.pow(size, 2))
+    rawRc.addMaterial(_tmiCT(blk), amt)
     .setType(CLASSES.RecipeItemType.ATTRIBUTE)
     .setEff(realEffc)
     .emptyFormat()
@@ -397,7 +396,7 @@
       addProd(rawRc, liqStack.liquid, liqStack.amount, true);
     };
 
-    if(blk.ex_isSubInsOf != null) {
+    if(checkCreatedByTemp(blk)) {
       if(blk.ex_isSubInsOf("INTF_BLK_pressureProducer") && !blk.delegee.presProd.fEqual(0.0)) {
         addProd(rawRc, blk.delegee.presProd > 0.0 ? "loveclab-aux0aux-pressure" : "loveclab-aux0aux-vacuum", Math.abs(blk.delegee.presProd), true);
       };
@@ -514,7 +513,7 @@
           baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
           Vars.content.blocks().each(
             oblk => oblk.itemDrop === itm && ((oblk instanceof OverlayFloor) ? !oblk.wallOre : (oblk instanceof Floor)),
-            oblk => addMineTile(rawRc, oreGrpMap.get(rs), oblk, blk.drillTime / blk.getDrillTime(itm), blk.size, false),
+            oblk => addMineTile(rawRc, oreGrpMap.get(rs), oblk, blk.drillTime / blk.getDrillTime(itm), blk.size),
           );
           addProd(rawRc, rs, 1);
           addSubInfo(rawRc, MDL_text._statText(fetchStat("lovec", "blk-terreq").localized(), MDL_terrain._terB(ter)));
@@ -526,6 +525,54 @@
     });
   };
   exports._r_terrainDynamicDrill = _r_terrainDynamicDrill;
+
+
+  /**
+   * Registers recipes fpr {@link BLK_rangeWallDrill}.
+   * @param {Block} blk
+   * @return {void}
+   */
+  const _r_rangeWallDrill = function thisFun(blk) {
+    if(!ENABLED) return;
+
+    MDL_event._c_onLoad(() => {
+      let oreGrpMap = new ObjectMap();
+      thisFun.modeBlksMap[blk.mineMode].forEachFast(oblk => {
+        if(!blk.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
+
+        let blkTg;
+        if(blk.shouldDropPay) {
+          blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
+          if(blkTg == null) return;
+        };
+        if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new CLASSES.RecipeItemGroup());
+
+        let rawRc = !blk.shouldDropPay ?
+          _rawRc("collecting", blk, blk.drillTime, true) :
+          _rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.range, 2), true);
+        baseParse(blk, rawRc, blk.optionalBoostIntensity);
+        addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), Math.pow(blk.range, 2));
+        !blk.shouldDropPay ?
+          addProd(rawRc, oblk.itemDrop, Math.pow(blk.range, 2)) :
+          addProd(rawRc, blkTg, 1);
+
+        rawRc.complete();
+        regisRc(rawRc);
+      });
+    });
+  }
+  .setProp({
+    modeBlksMap: (function() {
+      const obj = {};
+      MDL_event._c_onInit(() => {
+        obj.floor = Vars.content.blocks().select(blk => blk.itemDrop != null && blk instanceof Floor && !blk.wallOre).toArray();
+        obj.wall = Vars.content.blocks().select(blk => blk.itemDrop != null && (blk.solid || (blk instanceof Floor && blk.wallOre))).toArray();
+        obj.both = obj.floor.concat(obj.wall);
+      });
+      return obj;
+    })(),
+  });
+  exports._r_rangeWallDrill = _r_rangeWallDrill;
 
 
   /**

@@ -67,8 +67,6 @@
 
 
   function comp_draw(b) {
-    b.drawTeamTop();
-
     Draw.rect(b.block.region, b.x, b.y);
     // Drawn only when disabled... since it's meant to disable some buildings
     if(b.enabled) Draw.rect(b.block.onRegion, b.x, b.y);

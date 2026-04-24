@@ -379,12 +379,12 @@
 
 
   /**
-   * Gets the back side position as a 2-tuple.
+   * Gets the back side position.
    * @param {number} x
    * @param {number} y
    * @param {number|unset} size
    * @param {number} rot
-   * @return {[number, number]} <TUP>: tgX, tgY.
+   * @return {Vec2}
    */
   const _coordsBack = function thisFun(x, y, size, rot) {
     let
@@ -409,31 +409,64 @@
         tgY = y + off;
         break;
       default :
-        ERROR_HANDLER.throw("nullArgument", "rot");
+        ERROR_HANDLER.throw("invalidRotation", rot);
     };
-    thisFun.tmpTup.clear().push(tgX, tgY);
 
-    return thisFun.tmpTup;
+    return thisFun.tmpVec.set(tgX, tgY);
   }
   .setProp({
-    tmpTup: [],
+    tmpVec: new Vec2(),
   });
   exports._coordsBack = _coordsBack;
 
 
   /**
-   * Gets player position as a 2-tup.
-   * @return {[number, number]} <TUP>: x, y.
+   * Gets rotated rectangle center position.
+   * @param {number} x
+   * @param {number} y
+   * @param {number} r
+   * @param {number} rot
+   * @param {number|unset} [size]
+   * @return {Vec2}
+   */
+  const _coordsRectRotCenter = function thisFun(x, y, r, rot, size) {
+    if(size == null) size = 0;
+
+    let off = (size * 0.5 + r) * Vars.tilesize;
+    thisFun.tmpVec.x = x + thisFun.calcSign(rot, false) * off;
+    thisFun.tmpVec.y = y + thisFun.calcSign(rot, true) * off;
+
+    return thisFun.tmpVec;
+  }
+  .setProp({
+    tmpVec: new Vec2(),
+    calcSign: function(rot, isY) {
+      switch(rot) {
+        case 0 : return isY ? 0.0 : 1.0;
+        case 1 : return isY ? 1.0 : 0.0;
+        case 2 : return isY ? 0.0 : -1.0;
+        case 3 : return isY ? -1.0 : 0.0;
+      };
+      return 0.0;
+    },
+  });
+  exports._coordsRectRotCenter = _coordsRectRotCenter;
+
+
+  /**
+   * Gets player position.
+   * @return {Vec2}
    */
   const _coordsPlayer = function thisFun() {
     let unit = Vars.player.unit();
-    thisFun.tmpTup[0] = unit == null ? Number.n12 : unit.x;
-    thisFun.tmpTup[1] = unit == null ? Number.n12 : unit.y;
 
-    return thisFun.tmpTup;
+    return thisFun.tmpVec.set(
+      unit == null ? Number.n12 : unit.x,
+      unit == null ? Number.n12 : unit.y,
+    );
   }
   .setProp({
-    tmpTup: [],
+    tmpVec: new Vec2(),
   });
   exports._coordsPlayer = _coordsPlayer;
 
@@ -473,7 +506,7 @@
         Tmp.v2.set(Tmp.v1.y, -Tmp.v1.x);
         break;
       default:
-        ERROR_HANDLER.throw("nullArgument", "rot");
+        ERROR_HANDLER.throw("invalidRotation", rot);
     };
 
     return Vars.world.tile(tCenter.x + Tmp.v2.x - off + offCenter, tCenter.y + Tmp.v2.y - off + offCenter);
@@ -551,6 +584,8 @@
             px = i;
             py = size * -0.5;
             break;
+          default :
+            ERROR_HANDLER.throw("invalidRotation", rot);
         };
       } else {
         switch(rot) {
@@ -570,11 +605,12 @@
             px = i;
             py = (size + 1) * -0.5;
             break;
+          default :
+            ERROR_HANDLER.throw("invalidRotation", rot);
         };
       };
 
-      let ot = t.nearby(px, py);
-      if(ot != null) arr.push(ot);
+      arr.pushNonNull(t.nearby(px, py));
     };
 
     return arr;
@@ -595,11 +631,11 @@
     if(t == null) return arr;
     if(size == null) size = 1;
 
-    let iCap = size * 4;
     let pons2 = isInside ? Edges.getInsideEdges(size) : Edges.getEdges(size);
-    for(let i = 0; i < iCap; i++) {
-      let ot = t.nearby(pons2[i]);
-      if(ot != null) arr.push(ot);
+    let i = 0, iCap = size * 4;
+    while(i < iCap) {
+      arr.pushNonNull(t.nearby(pons2[i]));
+      i++;
     };
 
     return arr;
@@ -630,11 +666,14 @@
       iCap = -iBase + 1;
     };
 
-    for(let i = iBase; i < iCap; i++) {
-      for(let j = iBase; j < iCap; j++) {
-        let ot = t.nearby(i, j);
-        if(ot != null) arr.push(ot);
+    let i, j = iBase;
+    while(j < iCap) {
+      i = iBase;
+      while(i < iCap) {
+        arr.pushNonNull(t.nearby(i, j));
+        i++;
       };
+      j++;
     };
 
     return arr;
@@ -683,26 +722,24 @@
     if(r == null) r = 0;
     if(size == null) size = 1;
 
-    let px = 0, py = 0;
-    switch(rot) {
-      case 0 :
-        px = r + size;
-        break;
-      case 1 :
-        py = r + size;
-        break;
-      case 2 :
-        px = (size % 2 === 0) ? -(r + size) + 1 : -(r + size);
-        break;
-      case 3 :
-        py = (size % 2 === 0) ? -(r + size) + 1 : -(r + size);
-        break;
-      default :
-        ERROR_HANDLER.throw("nullArgument", "rot");
-    };
-    let ot = t.nearby(px, py);
+    let vec2 = _coordsRectRotCenter(t.x.toFCoord(size), t.y.toFCoord(size), r, rot, size)
+    .scl(1.0 / Vars.tilesize)
+    .sub(r, r)
+    .add(0.5, 0.5);
+    let tx_0 = vec2.x, ty_0 = vec2.y;
+    if(Vars.world.tile(tx_0, ty_0) == null) return arr;
 
-    return ot == null ? arr : _tsRect(ot, r, size, arr);
+    let i, iCap = Math.floor(r * 2.0), j = 0;
+    while(j < iCap) {
+      i = 0;
+      while(i < iCap) {
+        arr.pushNonNull(Vars.world.tile(tx_0 + i, ty_0 + j));
+        i++;
+      };
+      j++;
+    };
+
+    return arr;
   };
   exports._tsRectRot = _tsRectRot;
 
@@ -763,8 +800,7 @@
       jBase = -(r - Math.abs(i));
       jCap = -jBase + 1;
       for(let j = jBase; j < jCap; j++) {
-        let ot = t.nearby(i, j);
-        if(ot != null) arr.push(ot);
+        arr.pushNonNull(t.nearby(i, j));
       };
     };
 

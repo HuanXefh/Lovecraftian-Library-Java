@@ -18,7 +18,7 @@
    * Affects real threshold for overload.
    * The threshold must be raised since `lastPowerProduced` fluctuates.
    */
-  const powProdScl = 1.1;
+  const POW_PROD_SCL = 1.075;
 
 
   /* <---------- component ----------> */
@@ -28,7 +28,7 @@
     blk.priority = VAR.priority.powTrans;
 
     if(isFinite(blk.maxPowProdAllowed)) {
-      blk.maxPowProdAllowed *= powProdScl;
+      blk.maxPowProdAllowed *= POW_PROD_SCL;
     };
   };
 
@@ -40,7 +40,7 @@
       if(powLoss > 0.0) blk.stats.add(fetchStat("lovec", "blk0pow-powloss"), powLoss * 60.0, StatUnit.powerSecond);
     };
 
-    if(isFinite(blk.maxPowProdAllowed)) blk.stats.add(fetchStat("lovec", "blk0pow-safepowlvl"), (blk.maxPowProdAllowed / powProdScl * 60.0).roundFixed(2), StatUnit.powerSecond);
+    if(isFinite(blk.maxPowProdAllowed)) blk.stats.add(fetchStat("lovec", "blk0pow-safepowlvl"), (blk.maxPowProdAllowed / POW_PROD_SCL * 60.0).roundFixed(2), StatUnit.powerSecond);
   };
 
 
@@ -82,12 +82,18 @@
   function comp_updateTile(b) {
     if(PARAM.UPDATE_DEEP_SUPPRESSED || !isFinite(b.ex_getMaxPowProdAllowed())) return;
 
-    let powProd = b.power.graph.getLastPowerProduced();
+    let powProd = b.power.graph.getLastPowerProduced() / Time.delta;
     if(TIMER.secHalf) {
       b.transmitterOverloadFrac = Mathf.approach(b.transmitterOverloadFrac, powProd > VAR.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.ex_getMaxPowProdAllowed()), 0.2);
     };
-    if(b.transmitterOverloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) return;
-    b.damagePierce(b.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverloadDmgScl);
+    if(b.transmitterOverloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) {
+      b.transmitterOverloadTimeCur = 0.0;
+    } else {
+      b.transmitterOverloadTimeCur += Time.delta;
+    };
+    if(b.transmitterOverloadTimeCur > 120.0) {
+      b.damagePierce(b.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverloadDmgScl);
+    };
   };
 
 
@@ -182,6 +188,12 @@
        * @instance
        */
       transmitterOverloadFrac: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_basePowerTransmitter
+       * @instance
+       */
+      transmitterOverloadTimeCur: 0.0,
 
 
     })

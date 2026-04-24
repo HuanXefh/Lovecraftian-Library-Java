@@ -384,156 +384,181 @@
     };
 
 
+    /**
+     * Gets a building.
+     * <br> <ARGS>: .
+     * <br> <ARGS>: tx, ty.
+     * @global
+     * @return {Building|null}
+     */
+    _b = newMultiFunction(
+      function() {
+        let t = MDL_pos._tMouse();
+        return t == null ? null : t.build;
+      },
+      function(tx, ty) {
+        return Vars.world.build(tx, ty);
+      },
+    )
+    .setAnno("console");
+
+
+    /**
+     * Gets a unit.
+     * <br> <ARGS>: .
+     * <br> <ARGS>: tx, ty.
+     * @global
+     * @return {Unit|null}
+     */
+    _unit = newMultiFunction(
+      function() {
+        return Vars.player.unit();
+      },
+      function(tx, ty) {
+        return MDL_pos._unit(tx * Vars.tilesize, ty * Vars.tilesize);
+      },
+    )
+    .setAnno("console")
+
+
     /* <---------- cheat ----------> */
 
 
     /**
      * @global
+     * @return {boolean}
      */
-    CHEAT = {
+    __CHECK_CHEAT_STATE__ = function() {
+      return Vars.player.admin || (Groups.player.size() === 1 && !Vars.net.client());
+    },
 
 
-      /**
-       * Whether cheat is allowed now.
-       * I won't ban these for single player, you decide how to play.
-       * @return {boolean}
-       */
-      checkCheatState: function() {
-        return Groups.player.size() === 1 && !Vars.net.client();
+    /**
+     * Kills some unit.
+     * <br> <ARGS>: .
+     * <br> <ARGS>: nm.
+     * @global
+     * @return {void}
+     */
+    __k = newMultiFunction(
+      function() {
+        if(!__CHECK_CHEAT_STATE__()) return;
+        if(Vars.player.unit() != null) Call.unit.unitDestroy(Vars.player.unit().id);
       },
-
-
-      /**
-       * Kills your unit or someone's instead.
-       * @param {string|unset} [nm]
-       * @return {void}
-       */
-      kill: function(nm) {
-        if(!CHEAT.checkCheatState()) return;
+      function(nm) {
+        if(!__CHECK_CHEAT_STATE__()) return;
         let unit = MDL_pos._unitPlNm(nm);
         if(unit == null) {
-          Log.err("[LOVEC] No player found with name ${1}!".format(nm));
+          Log.err("[LOVEC] No player found with name ${1}!".format(String(nm).color(Pal.accent)));
           return;
         };
-
         Call.unitDestroy(unit.id);
       },
+    )
+    .setAnno("console");
 
 
-      /**
-       * Sets item amount in building at (tx, ty).
-       */
-      setItem: function(tx, ty, itm_gn, amt) {
-        if(!CHEAT.checkCheatState()) return;
-        let b = Vars.world.build(tx, ty);
-        if(b == null) {
-          Log.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
-          return;
+    /**
+     * Changes player team.
+     * @global
+     * @param {string|Team} team
+     * @return {void}
+     */
+    __team = function(team) {
+      if(!__CHECK_CHEAT_STATE__()) return;
+      if(typeof team === "string") {
+        try {
+          team = Team[team];
+        } catch(err) {
+          team = null;
         };
-        let itm = MDL_content._ct(itm_gn, "rs");
-        if(itm == null) return;
+      };
+      if(!(team instanceof Team)) return;
+      Vars.player.team(team);
+    }
+    .setAnno("console");
 
-        FRAG_item.setItem(b, itm, amt);
-      },
+
+    /**
+     * Sets item amount in some building.
+     * @global
+     * @param {number} tx
+     * @param {number} ty
+     * @param {ItemGn} itm_gn
+     * @param {number} amt
+     * @return {void}
+     */
+    __itm = function(tx, ty, itm_gn, amt) {
+      if(!__CHECK_CHEAT_STATE__()) return;
+      let b = Vars.world.build(tx, ty);
+      if(b == null) {
+        Log.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
+        return;
+      };
+      let itm = MDL_content._ct(itm_gn, "rs");
+      if(itm == null) return;
+      FRAG_item.setItem(b, itm, amt);
+    }
+    .setAnno("console");
 
 
-      /**
-       * Infinite resources for factories and so on.
-       * @return {void}
-       */
-      toggleCheatProduce: function() {
-        if(!CHEAT.checkCheatState()) return;
-        let unit = Vars.player.unit();
-        if(unit == null) return;
+    /**
+     * Toggles cheat production.
+     * @global
+     * @return {void}
+     */
+    __inf = function() {
+      if(!__CHECK_CHEAT_STATE__()) return;
+      let unit = Vars.player.unit();
+      if(unit == null) return;
+      Vars.state.rules.teams.get(unit.team).cheat = !Vars.state.rules.teams.get(unit.team).cheat;
+      Time.run(2.0, () => {
+        Log.info("[LOVEC] Cheat production: " + (Vars.state.rules.teams.get(unit.team).cheat ? "ON" : "OFF").color(Pal.accent));
+      });
+    }
+    .setAnno("console");
 
-        Vars.state.rules.teams.get(unit.team).cheat = !Vars.state.rules.teams.get(unit.team).cheat;
-        Time.run(2.0, () => {
-          Log.info("[LOVEC] Cheat production: " + (Vars.state.rules.teams.get(unit.team).cheat ? "ON" : "OFF").color(Pal.accent));
+
+    /**
+     * Toggles player invincibility.
+     * @global
+     * @return {void}
+     */
+    __pinv = function() {
+      if(!__CHECK_CHEAT_STATE__()) return;
+      let unit = Vars.player.unit();
+      if(unit == null) return;
+      unit.hasEffect(StatusEffects.invincible) ?
+        unit.unapply(StatusEffects.invincible) :
+        unit.apply(StatusEffects.invincible, Number.fMax);
+      Time.run(2.0, () => {
+        Log.info("[LOVEC] Player invincibility: " + (unit.hasEffect(StatusEffects.invincible) ? "ON" : "OFF").color(Pal.accent));
+      });
+    }
+    .setAnno("console");
+
+
+    /**
+     * Toggles core invincibility.
+     * @global
+     * @return {void}
+     */
+    __cinv = function thisFun() {
+      if(!__CHECK_CHEAT_STATE__()) return;
+      thisFun.isOn = !thisFun.isOn;
+      Time.run(2.0, () => {
+        Log.info("[LOVEC] Core invincibility: " + (thisFun.isOn ? "ON" : "OFF").color(Pal.accent));
+      });
+    }
+    .setProp({
+      isOn: (function() {
+        Events.run(Trigger.update, () => {
+          if(__cinv.isOn) Vars.player.team().data().cores.each(ob => ob.iframes = Math.max(ob.iframes, 60.0));
         });
-      },
-
-
-      /**
-       * Toggles invincibility of your unit.
-       * @return {void}
-       */
-      toggleInvincible: function() {
-        if(!CHEAT.checkCheatState()) return;
-        let unit = Vars.player.unit();
-        if(unit == null) return;
-
-        unit.hasEffect(StatusEffects.invincible) ?
-          unit.unapply(StatusEffects.invincible) :
-          unit.apply(StatusEffects.invincible, Number.fMax);
-        Time.run(2.0, () => {
-          Log.info("[LOVEC] Player invincibility: " + (unit.hasEffect(StatusEffects.invincible) ? "ON" : "OFF").color(Pal.accent));
-        });
-      },
-
-
-      /**
-       * Toggles invincibility of cores.
-       * @return {void}
-       */
-      toggleCoreInvincible: function thisFun() {
-        if(!CHEAT.checkCheatState()) return;
-
-        thisFun.isOn = !thisFun.isOn;
-        Time.run(2.0, () => {
-          Log.info("[LOVEC] Core invincibility: " + (thisFun.isOn ? "ON" : "OFF").color(Pal.accent));
-        });
-      }
-      .setProp({
-        isOn: (function() {
-          Events.run(Trigger.update, () => {
-            if(CHEAT.toggleCoreInvincible.isOn) Vars.player.team().data().cores.each(ob => ob.iframes = Math.max(ob.iframes, 60.0));
-          });
-          return false;
-        })(),
-      }),
-
-
-      /**
-       * Changes your team.
-       * @param {string|Team} team
-       * @return {void}
-       */
-      changeTeam: function(team) {
-        if(!CHEAT.checkCheatState()) return;
-        if(typeof team === "string") {
-          try {
-            team = Team[team];
-          } catch(err) {
-            team = null;
-          };
-        };
-        if(!(team instanceof Team)) return;
-
-        Vars.player.team(team);
-      },
-
-
-      /**
-       * Spawns some unit at your unit.
-       * Internal units are banned, which may lead to crash.
-       * @param {UnitTypeGn} utp_gn
-       * @return {void}
-       */
-      spawnUnit: function thisFun(utp_gn) {
-        if(!CHEAT.checkCheatState()) return;
-        let unit = Vars.player.unit();
-        if(unit == null) return;
-        if(typeof utp_gn === "string" && utp_gn.equalsAny(thisFun.blacklist)) return;
-        let utp = MDL_content._ct(utp_gn, "utp");
-
-        MDL_call.spawnUnit_server(unit.x, unit.y, utp, unit.team);
-      }
-      .setProp({
-        blacklist: [],
-      }),
-
-
-    };
+        return false;
+      })(),
+    })
+    .setAnno("console");
 
 
   }));

@@ -85,6 +85,7 @@
 
 
       /**
+       * @override
        * @memberof INTF_BLK_depthOreHandler
        * @instance
        * @param {number} tx
@@ -97,6 +98,7 @@
       }
       .setProp({
         noSuper: true,
+        override: true,
         argLen: 3,
       }),
 

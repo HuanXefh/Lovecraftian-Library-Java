@@ -120,7 +120,7 @@
 
 
   function comp_draw(b) {
-    if(b.isInv) Draw.rect(b.x, b.y, b.block.delegee.invReg);
+    if(b.isInv) Draw.rect(b.block.delegee.invReg, b.x, b.y);
   };
 
 

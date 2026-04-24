@@ -488,7 +488,7 @@
      * See {@link BLK_rawOreBlock}.
      * @type {Array<Block>}
      */
-    exports.rawOreBlks = Vars.content.blocks().select(blk => blk.ex_isSubInsOf != null && blk.ex_isSubInsOf("BLK_rawOreBlock")).toArray();
+    exports.rawOreBlks = Vars.content.blocks().select(blk => checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_rawOreBlock")).toArray();
 
 
     Time.run(1.0, () => {

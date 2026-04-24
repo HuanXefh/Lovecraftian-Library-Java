@@ -64,8 +64,6 @@
 
 
   function comp_draw(b) {
-    b.drawTeamTop();
-
     b.ex_drawCog();
   };
 

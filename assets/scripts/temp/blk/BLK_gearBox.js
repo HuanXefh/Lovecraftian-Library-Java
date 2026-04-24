@@ -32,8 +32,6 @@
 
 
   function comp_draw(b) {
-    b.drawTeamTop();
-
     Draw.rect(b.block.delegee.botReg, b.x, b.y);
 
     processZ(Layer.block + 1.0, 2);

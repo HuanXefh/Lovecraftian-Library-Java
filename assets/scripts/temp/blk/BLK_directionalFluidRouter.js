@@ -102,7 +102,7 @@
 
     /**
      * @class B_fluidRouter
-     * @extends B_baseFluidDistributor
+     * @extends B_fluidRouter
      */
     newClass().extendClass(PARENT[1], "B_directionalFluidRouter").implement(INTF[1]).initClass()
     .setParent(LiquidRouter.LiquidRouterBuild)

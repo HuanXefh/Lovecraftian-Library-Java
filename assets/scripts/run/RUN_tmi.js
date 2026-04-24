@@ -13,7 +13,8 @@
     if(!MOD_tmi.ENABLED) return;
 
 
-    // I don't know how but adding `excludes` here will cause crash now
+    // I don't know why but adding `excludes` here will cause crash now
+    // It did not happen in older versions of TMI
 
 
     /**
@@ -26,6 +27,9 @@
         MOD_tmi.CLASSES.BeamDrillParser,
         MOD_tmi.CLASSES.DrillParser,
       ],
+      tempBlacklist: [
+        "BLK_rangeWallDrill",
+      ],
       flrDropSet: new ObjectSet(),
       wallDropSet: new ObjectSet(),
 
@@ -36,7 +40,7 @@
 
 
       isTarget(blk) {
-        return blk.ex_isSubInsOf != null && blk.ex_isSubInsOf("BLK_baseDrill");
+        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_baseDrill") && !this.tempBlacklist.includes(blk.ex_getTempNm());
       },
 
 
@@ -78,7 +82,7 @@
               MDL_event._c_onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, blk.optionalBoostIntensity);
               });
-              MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size, true);
+              MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), Math.pow(blk.size, 2));
               !blk.delegee.shouldDropPay ?
                 MOD_tmi.addProd(rawRc, oblk.itemDrop, 1) :
                 MOD_tmi.addProd(rawRc, blkTg, 1);
@@ -112,7 +116,7 @@
               MDL_event._c_onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
               });
-              MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size, false);
+              MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size);
               !blk.delegee.shouldDropPay ?
                 MOD_tmi.addProd(rawRc, oblk.itemDrop, 1) :
                 MOD_tmi.addProd(rawRc, blkTg, 1);
@@ -156,7 +160,13 @@
 
 
       isTarget(blk) {
-        return (MDL_cond._isFactory(blk) && !MDL_cond._isRecipeFactory(blk) && (blk.ex_getTempNm == null ? true : !this.tempBlacklist.includes(blk.ex_getTempNm()))) || (blk.ex_getTempNm != null && this.tempTypeMap.containsKey(blk.ex_getTempNm()));
+        return (
+          MDL_cond._isFactory(blk)
+            && !MDL_cond._isRecipeFactory(blk)
+            && !(!checkCreatedByTemp(blk) || this.tempBlacklist.includes(blk.ex_getTempNm()))
+        ) || (
+          checkCreatedByTemp(blk) && this.tempTypeMap.containsKey(blk.ex_getTempNm())
+        );
       },
 
 
@@ -195,7 +205,7 @@
 
 
       isTarget(blk) {
-        return blk.ex_isSubInsOf != null && blk.ex_isSubInsOf("BLK_liquidPump");
+        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_liquidPump");
       },
 
 
@@ -250,7 +260,7 @@
 
 
       isTarget(blk) {
-        return blk.ex_isSubInsOf != null && blk.ex_isSubInsOf("BLK_ventGenerator");
+        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_ventGenerator");
       },
 
 
@@ -277,13 +287,15 @@
 
 
     /**
-     * Used to remove empty recipes for some templates.
+     * Used to remove invalid recipes for some templates.
      */
-    const _p_emptyRcFix = MOD_tmi.regisParser({
+    const _p_skipParse = MOD_tmi.regisParser({
 
 
       parserBlacklist: [
         MOD_tmi.CLASSES.AttributeCrafterParser,
+        MOD_tmi.CLASSES.BeamDrillParser,
+        MOD_tmi.CLASSES.DrillParser,
         MOD_tmi.CLASSES.GenericCrafterParser,
         MOD_tmi.CLASSES.WallCrafterParser,
       ],
@@ -293,6 +305,7 @@
         "BLK_fuelLight",
         "BLK_incinerator",
         "BLK_rainCollector",
+        "BLK_rangeWallDrill",
       ],
 
 
@@ -302,7 +315,7 @@
 
 
       isTarget(blk) {
-        return MDL_cond._isRecipeFactory(blk) || (blk.ex_getTempNm != null && this.tempWhitelist.includes(blk.ex_getTempNm()));
+        return MDL_cond._isRecipeFactory(blk) || (checkCreatedByTemp(blk) && this.tempWhitelist.includes(blk.ex_getTempNm()));
       },
 
 

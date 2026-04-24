@@ -170,10 +170,10 @@
       let obj1 = tryValProv(objB, prov(() => temp[1].build()));
       if(obj.forceUseDrawer) {
         obj1.draw = function() {
-          this.drawTeamTop();
           this.block.delegee == null ?
             this.block.drawer.draw(this) :
             this.block.delegee.drawer.draw(this);
+          this.drawTeamTop();
         };
         obj1.drawLight = function() {
           this.block.delegee == null ?

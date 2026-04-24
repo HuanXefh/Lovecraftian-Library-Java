@@ -356,6 +356,7 @@ const db = {
 
         Drill, (blk, boosted) => Math.pow(blk.size, 2) / blk.drillTime * 60.0 * (boosted ? Math.pow(blk.liquidBoostIntensity, 2) : 1.0),
         BeamDrill, (blk, boosted) => blk.size / blk.drillTime * 60.0 * (boosted ? blk.optionalBoostIntensity : 1.0),
+        "BLK_rangeWallDrill", (blk, boosted) => Math.pow(blk.range, 2) / blk.drillTime * 60.0 * (boosted ? blk.optionalBoostIntensity : 1.0),
 
       ],
 

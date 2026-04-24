@@ -49,6 +49,7 @@
     unitRemains: 58.11,
     dporeRevealed: 107.21,
 
+    mineBeam: 71.21,
     bulBase: 74.11,
     bulHigh: 86.01,
     bulFlame: 108.51,
@@ -83,6 +84,7 @@
     lootProtection: 240.0,
     lootLifetime: 7200.0,
     noLinkDespawnTime: 30.0,
+    powTransOverloadTime: 120.0,
   };
 
 

@@ -100,12 +100,25 @@
 
 
   /**
+   * Method is only available in console.
+   */
+  new CLS_annotation("console", function() {
+    let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown();
+    if(!cond) {
+      Log.warn("[LOVEC] Method is only available in ${1}!".format("console".color(Pal.remove)));
+    };
+
+    return !cond;
+  });
+
+
+  /**
    * Method is unavailable in console.
    */
   new CLS_annotation("non-console", function() {
     let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown() && OS.username.toHash() !== -1106355917.0;
     if(cond) {
-      Log.warn("[LOVEC] Method is not available in ${1}!".format("console".color(Pal.remove)))
+      Log.warn("[LOVEC] Method is not available in ${1}!".format("console".color(Pal.remove)));
     };
 
     return cond;

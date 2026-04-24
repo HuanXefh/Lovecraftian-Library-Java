@@ -67,6 +67,16 @@ const db = {
         );
       },
 
+      // Puddle info
+      (t, b) => {
+        let puddle = Puddles.get(t);
+        if(puddle == null) return;
+
+        return String.multiline(
+          MDL_bundle._term("lovec", "puddle") + MDL_text._colon() + puddle.liquid.localizedName.plain(),
+        );
+      },
+
     ],
 
 
@@ -82,6 +92,7 @@ const db = {
 
         "cable", graph => {
           graph.graphData.overloadFrac = 0.0;
+          graph.graphData.overloadTimeCur = 0.0;
           graph.graphData.maxPowProdAllowed = graph.getData(0).ex_getMaxPowProdAllowed();
         },
 
@@ -102,15 +113,21 @@ const db = {
         "cable", graph => {
           if(PARAM.UPDATE_DEEP_SUPPRESSED || !isFinite(graph.graphData.maxPowProdAllowed) || graph.getSize() === 0) return;
 
-          let powProd = graph.getData(0).power.graph.getLastPowerProduced();
+          let powProd = graph.getData(0).power.graph.getLastPowerProduced() / Time.delta;
           if(TIMER.secHalf) {
             graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > VAR.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
           };
-          if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) return;
-          graph.each(
-            (ob, vert) => ob.isAdded(),
-            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
-          );
+          if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) {
+            graph.graphData.overloadTimeCur = 0.0;
+          } else {
+            graph.graphData.overloadTimeCur += Time.delta;
+          };
+          if(graph.graphData.overloadTimeCur > VAR.time.powTransOverloadTime) {
+            graph.each(
+              (ob, vert) => ob.isAdded() && !ob.isPayload(),
+              (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
+            );
+          };
         },
 
       ],

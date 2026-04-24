@@ -45,8 +45,6 @@
 
 
   function comp_draw(b) {
-    b.drawTeamTop();
-
     MDL_draw._reg_frameFade(
       b.x, b.y,
       b.block.delegee.rodRegs[b.isVerticalRod ? 1 : 0],

@@ -34,9 +34,9 @@
       b.lootDumpX = b.x;
       b.lootDumpY = b.y;
     } else {
-      let coords = MDL_pos._coordsBack(b.x, b.y, b.block.size, b.rotation);
-      b.lootDumpX = coords[0];
-      b.lootDumpY = coords[1];
+      let vec2 = MDL_pos._coordsBack(b.x, b.y, b.block.size, b.rotation);
+      b.lootDumpX = vec2.x;
+      b.lootDumpY = vec2.y;
     };
   };
 
@@ -240,7 +240,7 @@
             if(revi === 5) {
               return;
             };
-            
+
             this.lootCharge = rd.i();
           },
         );

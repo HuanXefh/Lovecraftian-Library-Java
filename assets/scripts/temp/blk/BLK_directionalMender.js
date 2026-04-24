@@ -78,8 +78,6 @@
 
 
   function comp_draw(b) {
-    b.drawTeamTop();
-
     Draw.rect(b.block.region, b.x, b.y);
     Draw.rect(b.rotation < 2 ? b.block.delegee.sideReg1 : b.block.delegee.sideReg2, b.x, b.y, b.drawrot());
     Draw.color(b.block.baseColor);
@@ -151,7 +149,7 @@
        */
       sideReg2: null,
 
-      
+
     })
     .setMethod({
 
