@@ -1,5 +1,5 @@
 *.bkp
-~$
+~$*
 
 logs/
 /core/assets/mindustry-saves/
@@ -38,10 +38,9 @@ packr-out/
 config/
 
 version.properties
-
 .attach_*
-## Java
 
+## Java
 *.class
 *.war
 *.ear
@@ -76,7 +75,6 @@ www-test/
 com_crashlytics_export_strings.xml
 
 ## Eclipse
-
 .classpath
 .project
 .metadata/
@@ -96,7 +94,6 @@ com_crashlytics_export_strings.xml
 *.launch
 
 ## NetBeans
-
 /nbproject/private/
 /android/nbproject/private/
 /core/nbproject/private/
@@ -104,7 +101,6 @@ com_crashlytics_export_strings.xml
 /html/nbproject/private/
 /ios/nbproject/private/
 /ios-moe/nbproject/private/
-
 /build/
 /android/build/
 /core/build/
@@ -112,7 +108,6 @@ com_crashlytics_export_strings.xml
 /html/build/
 /ios/build/
 /ios-moe/build/
-
 /nbbuild/
 /android/nbbuild/
 /core/nbbuild/
@@ -120,7 +115,6 @@ com_crashlytics_export_strings.xml
 /html/nbbuild/
 /ios/nbbuild/
 /ios-moe/nbbuild/
-
 /dist/
 /android/dist/
 /core/dist/
@@ -128,7 +122,6 @@ com_crashlytics_export_strings.xml
 /html/dist/
 /ios/dist/
 /ios-moe/dist/
-
 /nbdist/
 /android/nbdist/
 /core/nbdist/
@@ -136,12 +129,10 @@ com_crashlytics_export_strings.xml
 /html/nbdist/
 /ios/nbdist/
 /ios-moe/nbdist/
-
 nbactions.xml
 nb-configuration.xml
 
 ## Gradle
-
 /local.properties
 .gradle/
 gradle-app.setting
