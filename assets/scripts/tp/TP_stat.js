@@ -17,14 +17,14 @@
 */
 
 
-  /* <---------- stat category ----------> */
+  /* <------------------------------ stat category ------------------------------ */
 
 
   newStatCategory("lovec", "pressure");
   newStatCategory("lovec", "heat");
 
 
-  /* <---------- stat ----------> */
+  /* <------------------------------ stat ------------------------------ */
 
 
   newStat("lovec", "blk-minr");
@@ -154,7 +154,7 @@
   newStat("lovec", "spec-dialflow");
 
 
-  /* <---------- stat unit ----------> */
+  /* <------------------------------ stat unit ------------------------------ */
 
 
   newStatUnit("lovec", "perblock", true);

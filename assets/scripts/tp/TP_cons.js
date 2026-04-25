@@ -17,7 +17,10 @@
 */
 
 
-  /* <---------- special ----------> */
+  /* <------------------------------ item ------------------------------ */
+
+
+  /* <------------------------------ liquid ------------------------------ */
 
 
   /**
@@ -25,7 +28,7 @@
    */
   newConsumer(
     "ConsumeLiquidEfficiencyMap",
-    (paramObj) => extend(
+    paramObj => extend(
       ConsumeLiquidFilter,
       (function() {
         let arr = readParam(paramObj, "liqEffcMap", Array.air).readCol(2, 0);
@@ -83,13 +86,19 @@
   );
 
 
+  /* <------------------------------ power ------------------------------ */
+
+
+  /* <------------------------------ special ------------------------------ */
+
+
   /**
    * A power consumer that releases lightning arcs, used by some metallic conduits.
    * Triggered manually.
    */
   newConsumer(
     "ConsumePowerShortCircuitPipe",
-    (paramObj) => extend(ConsumePower, {
+    paramObj => extend(ConsumePower, {
 
 
       usage: readParam(paramObj, "amt", 0.0),

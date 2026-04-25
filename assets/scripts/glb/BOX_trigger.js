@@ -4,10 +4,10 @@
  */
 
 
-/* <---------- meta ----------> */
-
-
 const BOX_trigger = new CLS_objectBox({
+
+
+  /* <------------------------------ state ------------------------------ */
 
 
   /**
@@ -47,6 +47,9 @@ const BOX_trigger = new CLS_objectBox({
    * Triggered when LSAV is loaded.
    */
   lsavLoad: new CLS_eventTrigger("lovec-lsav-load"),
+
+
+  /* <------------------------------ event ------------------------------ */
 
 
   /**
@@ -132,7 +135,7 @@ const BOX_trigger = new CLS_objectBox({
 
 
   /**
-   * Triggered whenever a unit touches powered wire.
+   * Triggered whenever a unit touches powered wire and get damaged.
    * <br> <ARGS>: b, unit.
    */
   wireTouch: new CLS_eventTrigger("lovec-wire-touch"),
@@ -159,7 +162,7 @@ const BOX_trigger = new CLS_objectBox({
   boilerExplosion: new CLS_eventTrigger("lovec-boiler-explosion"),
 
 
-  /* VERY SPECIAL ZONE */
+  /* <------------------------------ achievement ------------------------------ */
 
 
   /**

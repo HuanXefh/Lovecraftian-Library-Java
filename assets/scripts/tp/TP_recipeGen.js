@@ -18,9 +18,6 @@
 */
 
 
-  /* <---------- generator ----------> */
-
-
   /**
    * Recipe generator: alloy furnace.
    * Converts materials into alloy metal.

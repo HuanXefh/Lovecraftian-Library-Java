@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
   newShader("shockwave", () => new Shaders.ShockwaveShader());
 
 

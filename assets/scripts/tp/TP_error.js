@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
   batchCall(ERROR_HANDLER, function() {
 
     this.add("debug", "${1} sucks.");

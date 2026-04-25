@@ -150,10 +150,10 @@
     if(obj.forceUseDrawer) {
       let load = obj.load;
       obj.load = function() {
-        if(load != null) {
-          load.load();
-        };
         this.super$load();
+        if(load != null) {
+          load();
+        };
         this.drawer.load(this);
       };
       obj.drawPlanRegion = function(bPlan, bPlans) {
@@ -169,12 +169,14 @@
       processClassLoader();
       let obj1 = tryValProv(objB, prov(() => temp[1].build()));
       if(obj.forceUseDrawer) {
+        obj1.__BACKUP_DRAW__ = obj1.draw;
         obj1.draw = function() {
           this.block.delegee == null ?
             this.block.drawer.draw(this) :
             this.block.delegee.drawer.draw(this);
           this.drawTeamTop();
         };
+        obj1.__BACKUP_DRAWLIGHT__ = obj1.drawLight;
         obj1.drawLight = function() {
           this.block.delegee == null ?
             this.block.drawer.drawLight(this) :

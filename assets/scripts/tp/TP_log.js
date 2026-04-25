@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
   batchCall(LOG_HANDLER, function() {
 
     this.add("w", "invalidArguments", () => "[LOVEC] ${1}".format("Invalid arguments!".color(Pal.remove)));

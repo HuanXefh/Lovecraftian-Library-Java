@@ -18,13 +18,13 @@
 */
 
 
-  /* <---------- base ----------> */
+  /* <------------------------------ base ------------------------------ */
 
 
   exports.attr_placeholder = Attribute.add("lovec-attr-placeholder");
 
 
-  /* <---------- env ----------> */
+  /* <------------------------------ env ------------------------------ */
 
 
   exports.attr0env_growth = Attribute.add("lovec-attr0env-growth");
@@ -34,13 +34,13 @@
   exports.attr0env_tide = Attribute.add("lovec-attr0env-tide");
 
 
-  /* <---------- floor ----------> */
+  /* <------------------------------ floor ------------------------------ */
 
 
   exports.attrFlr_placer = Attribute.add("lovec-attr0flr-placer");
 
 
-  /* <---------- vent ----------> */
+  /* <------------------------------ vent ------------------------------ */
 
 
   exports.attr0vent_ammonia = Attribute.add("lovec-attr0vent-ammonia");
@@ -49,13 +49,10 @@
   exports.attr0vent_sulfurDioxide = Attribute.add("lovec-attr0vent-sulfur-dioxide");
 
 
-  /* underwater */
-
-
   exports.attr0vent0und_hydrogenSulfide = Attribute.add("lovec-attr0vent0und-hydrogen-sulfide");
 
 
-  /* <---------- block ----------> */
+  /* <------------------------------ block ------------------------------ */
 
 
   exports.attr0blk_tree = Attribute.add("lovec-attr0blk-tree");
@@ -64,10 +61,10 @@
   exports.attr0blk_hardFungi = Attribute.add("lovec-attr0blk-hard-fungi");
 
 
-  /* <---------- dynamic ----------> */
+  /* <------------------------------ dynamic ------------------------------ */
 
 
-  /* dpliq */
+  /* depth liquid */
 
 
   exports.attr0dpliq_water = Attribute.add("lovec-attr0dpliq-water");

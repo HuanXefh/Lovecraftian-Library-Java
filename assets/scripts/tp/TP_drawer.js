@@ -17,7 +17,7 @@
 */
 
 
-  /* <---------- region ----------> */
+  /* <------------------------------ region ------------------------------ */
 
 
   /**
@@ -25,7 +25,7 @@
    */
   newDrawer(
     "DrawRotator",
-    (paramObj) => extend(DrawBlock, {
+    paramObj => extend(DrawBlock, {
 
 
       suffix: readParam(paramObj, "suffix", "-rotator"),
@@ -80,7 +80,7 @@
    */
   newDrawer(
     "DrawContentIcon",
-    (paramObj) => extend(DrawBlock, {
+    paramObj => extend(DrawBlock, {
 
 
       ctGetterTup: readParam(paramObj, "ctGetterTup", null),
@@ -125,7 +125,7 @@
    */
   newDrawer(
     "DrawMixedLiquid",
-    (paramObj) => extend(DrawBlock, {
+    paramObj => extend(DrawBlock, {
 
 
       suffix: readParam(paramObj, "suffix", "-liquid"),
@@ -163,12 +163,15 @@
   );
 
 
+  /* <------------------------------ effect ------------------------------ */
+
+
   /**
    * A drawer that spawns effect.
    */
   newDrawer(
     "DrawEffect",
-    (paramObj) => extend(DrawBlock, {
+    paramObj => extend(DrawBlock, {
 
 
       eff: readParam(paramObj, "eff", Fx.none),
@@ -197,7 +200,7 @@
    */
   newDrawer(
     "DrawFire",
-    (paramObj) => extend(DrawBlock, {
+    paramObj => extend(DrawBlock, {
 
 
       regStr: readParam(paramObj, "regStr", "fire"),
@@ -245,7 +248,7 @@
    */
   newDrawer(
     "DrawRipple",
-    (paramObj) => extend(DrawBlock, {
+    paramObj => extend(DrawBlock, {
 
 
       offX: readParam(paramObj, "offX", 0.0),
@@ -302,6 +305,39 @@
           i++;
         };
         Draw.color();
+      },
+
+
+    }),
+  );
+
+
+  /* <------------------------------ special ------------------------------ */
+
+
+  /**
+   * Used to call original draw methods when {@link BLK_baseBlock#forceUseDrawer} is true.
+   */
+  newDrawer(
+    "DrawBackup",
+    paramObj => extend(DrawBlock, {
+
+
+      load(blk) {
+        MDL_event._c_onLoad(() => {
+          if(!checkCreatedByTemp(blk)) throw new Error("DrawBackup can only be used for blocks created with content templates! Exception: {$1}".format(blk.name));
+          if(!blk.delegee.forceUseDrawer) throw new Error("DrawBackup can only be used when `forceUseDrawer` is true! Exception: {$1}".format(blk.name));
+        });
+      },
+
+
+      draw(b) {
+        b.delegee.__BACKUP_DRAW__();
+      },
+
+
+      drawLight(b) {
+        b.delegee.__BACKUP_DRAWLIGHT__();
       },
 
 

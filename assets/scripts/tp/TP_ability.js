@@ -40,7 +40,7 @@
    */
   newAbility(
     "explosion",
-    (paramObj) => extend(Ability, {
+    paramObj => extend(Ability, {
 
 
       nm: "explosion",
@@ -93,7 +93,7 @@
    */
   newAbility(
     "shield-core",
-    (paramObj) => extend(Ability, {
+    paramObj => extend(Ability, {
 
 
       nm: "shield-core",
@@ -150,7 +150,7 @@
    */
   newAbility(
     "laser-defense",
-    (paramObj) => extend(Ability, {
+    paramObj => extend(Ability, {
 
 
       nm: "laser-defense",
@@ -237,7 +237,7 @@
    */
   newAbility(
     "building-repairer-module",
-    (paramObj) => extend(Ability, {
+    paramObj => extend(Ability, {
 
 
       nm: "building-repairer-module",
@@ -302,7 +302,7 @@
    */
   newAbility(
     "unit-durability",
-    (paramObj) => extend(Ability, {
+    paramObj => extend(Ability, {
 
 
       nm: "unit-durability",

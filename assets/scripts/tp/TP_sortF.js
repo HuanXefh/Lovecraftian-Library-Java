@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
   newPropSortF("smallest", (unit, x, y) => unit.hitSize);
   newPropSortF("largest", (unit, x, y) => -unit.hitSize);
   newPropSortF("slowest", (unit, x, y) => unit.speed());

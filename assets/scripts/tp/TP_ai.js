@@ -17,7 +17,7 @@
 */
 
 
-  /* <---------- attack ----------> */
+  /* <------------------------------ attack ------------------------------ */
 
 
   /**
@@ -25,7 +25,7 @@
    */
   newAi(
     "missile-interceptor",
-    (paramObj) => extend(MissileAI, {
+    paramObj => extend(MissileAI, {
 
 
       updateMovement() {
@@ -54,7 +54,7 @@
   );
 
 
-  /* <---------- support ----------> */
+  /* <------------------------------ support ------------------------------ */
 
 
   /**
@@ -63,7 +63,7 @@
    */
   newAi(
     "miner",
-    (paramObj) => extend(AIController, {
+    paramObj => extend(AIController, {
 
 
       maxAttackDst: readParam(paramObj, "maxAttackDst", -1.0),
