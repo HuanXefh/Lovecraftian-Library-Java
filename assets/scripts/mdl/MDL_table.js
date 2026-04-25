@@ -561,10 +561,11 @@
     const cont = contCell.get();
     if(rowAmt === 0 || colAmt === 0) return contCell;
 
+    let tbCol, tbRow;
     for(let i = 0; i < colAmt; i++) {
-      let tbCol = cont.table(Styles.none, tb1 => {}).grow().get();
+      tbCol = cont.table(Styles.none, tb1 => {}).grow().get();
       for(let j = 0; j < rowAmt; j++) {
-        let tbRow = tbCol.table(Tex.whiteui, tb1 => {
+        tbRow = tbCol.table(Tex.whiteui, tb1 => {
           tb1.left().setColor(colorLine);
         }).left().grow().get();
         tbCol.row();
@@ -700,10 +701,8 @@
 
       let i = 0, iCap = cts_gn.iCap(), j = 0;
       while(i < iCap) {
-        (function(i) {
-          let ct = MDL_content._ct(cts_gn[i], null, true);
-          if(ct != null) __ct(tb1, ct, iconW, null, dialToHide, ctDial);
-        })(i);
+        let ct = MDL_content._ct(cts_gn[i], null, true);
+        if(ct != null) __ct(tb1, ct, iconW, null, dialToHide, ctDial);
 
         if(j % colAmt === colAmt - 1) tb1.row();
         j++;
@@ -1354,6 +1353,7 @@
     /* END OF HELL */
 
     const categHeaderObj = MDL_recipe._categHeaderObj(rcMdl);
+    // Used above!
     let i = 1;
     for(let categ in categHeaderObj) {
       buildCateg(categ);

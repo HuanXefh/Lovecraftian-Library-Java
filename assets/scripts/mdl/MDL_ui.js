@@ -692,7 +692,7 @@
     tb.table(Tex.bar, tb1 => {
       tb1.top().setColor(Pal.darkestGray);
       // <TABLE>: text container
-      tb1.table(Styles.none, tb2 => {
+      textCont = tb1.table(Styles.none, tb2 => {
         let flab = new FLabel(MDL_text._space() === "" ? "{slower}" : "{normal}" + dialText);
         if(shouldTriggerScrOnClick) tb2.clicked(() => {
           if(!flab.hasEnded()) {
@@ -703,9 +703,9 @@
           };
         });
 
-        tb2.left().marginLeft(48.0).marginRight(48.0).marginTop(28.0).marginBottom(28.0);
-        tb2.add(flab).left().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.left).wrap().width(_uiW(90.0));
-      }).left();
+        tb2.left().top().marginLeft(48.0).marginRight(48.0).marginTop(28.0).marginBottom(28.0);
+        tb2.add(flab).left().top().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.left).wrap().growX();
+      }).left().top().width(_screenW() * 0.6 - 40.0).height(140.0);
       // <TABLE>: spacing
       tb1.table(Styles.none, tb2 => {}).growX();
       // <TABLE>: buttons

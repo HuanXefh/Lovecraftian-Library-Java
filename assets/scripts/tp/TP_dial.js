@@ -181,8 +181,9 @@
               MDL_bundle._term("lovec", "shield"),
               MDL_bundle._term("lovec", "status"),
             ]];
+            let amt_fi;
             MDL_entity._waveArr(countWave).forEachRow(4, (utp, amt, shield, sta) => {
-              let amt_fi = Math.round(amt / Vars.state.rules.unitCost(Vars.state.rules.waveTeam));
+              amt_fi = Math.round(amt / Vars.state.rules.unitCost(Vars.state.rules.waveTeam));
               if(amt_fi < 1) return;
               matArr.push([
                 utp,
@@ -234,7 +235,6 @@
 
       ex_show() {
         resetDial(this);
-        const thisDial = this;
 
         // <TABLE>: list
         this.cont.pane(pnTb => {
@@ -243,9 +243,9 @@
             MDL_table.__textNothing(pnTb);
           } else {
             let tmpObj = {};
-            let i, iCap, j, colAmt = 10;
+            let i, iCap, j, colAmt = 10, nmMod;
             VARGEN.achievements.forEachFast(achievement => {
-              let nmMod = achievement.getMod().name;
+              nmMod = achievement.getMod().name;
               if(tmpObj[nmMod] === undefined) tmpObj[nmMod] = [];
               tmpObj[nmMod].push(achievement);
             });
@@ -256,9 +256,7 @@
                 iCap = arr.iCap();
                 j = 0;
                 while(i < iCap) {
-                  (function(i) {
-                    thisDial.ex_buildBox(tb, arr[i]);
-                  })(i);
+                  this.ex_buildBox(tb, arr[i]);
                   if(j % colAmt === colAmt - 1) tb.row();
                   j++;
                   i++;
@@ -293,7 +291,6 @@
 
       ex_show(title, cts_gn, isAfterCt) {
         resetDial(this, title);
-        const thisDial = this;
 
         // <TABLE>: content
         MDL_table.__break(this.cont);
@@ -305,9 +302,7 @@
           } else {
             let colAmt = MDL_ui._colAmt(32.0, 4.0, 2);
             for(let i = 0, j = 0; i < iCap; i++) {
-              (function(i) {
-                MDL_table.__ct(pnTb, MDL_content._ct(cts_gn[i], null, true), null, null, !isAfterCt ? null : thisDial);
-              })(i);
+              MDL_table.__ct(pnTb, MDL_content._ct(cts_gn[i], null, true), null, null, !isAfterCt ? null : this);
               if(j % colAmt === colAmt - 1) pnTb.row();
               j++;
             };
@@ -385,11 +380,12 @@
           if(iCap === 0) {
             MDL_table.__textNothing(pnTb);
           } else {
+            let tmp, amt, p, mtp;
             for(let i = 0; i < iCap; i += 4) {
-              let tmp = opt[i];
-              let amt = opt[i + 1];
-              let p = opt[i + 2];
-              let mtp = opt[i + 3];
+              tmp = opt[i];
+              amt = opt[i + 1];
+              p = opt[i + 2];
+              mtp = opt[i + 3];
               pnTb.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
               MDL_table.__rcCt(pnTb, tmp, amt, p, null, null, this).padRight(72.0);
               pnTb.add(MDL_text._statText(
@@ -430,10 +426,11 @@
             MDL_table.__ct(tb1, rcDictArr[i], 48.0, 8.0, this);
           });
           // <TABLE>: recipe text
+          let data, craftTime, craftRate, btn;
           rcCont.table(Styles.none, tb1 => {
-            let data = rcDictArr[i + 2];
-            let craftTime = data.time != null ? data.time : MDL_content._craftTime(rcDictArr[i], data.icon === "lovec-icon-mining", ct);
-            let craftRate = (!isFinite(craftTime) && !(ct instanceof Liquid)) ? null : (!(ct instanceof Liquid) ? (rcDictArr[i + 1] / craftTime * 60.0) : (rcDictArr[i + 1] * 60.0));
+            data = rcDictArr[i + 2];
+            craftTime = data.time != null ? data.time : MDL_content._craftTime(rcDictArr[i], data.icon === "lovec-icon-mining", ct);
+            craftRate = (!isFinite(craftTime) && !(ct instanceof Liquid)) ? null : (!(ct instanceof Liquid) ? (rcDictArr[i + 1] / craftTime * 60.0) : (rcDictArr[i + 1] * 60.0));
             // <TABLE>: rate text
             tb1.add(MDL_text._statText(
               MDL_bundle._term("lovec", "rate"),
@@ -448,7 +445,7 @@
               // <TABLE>: content icon
               let oct = MDL_content._ct(data.ct, null, true);
               if(oct != null) {
-                let btn = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
+                btn = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
                   this.hide();
                   Vars.ui.content.show(oct);
                 }).left().tooltip(tryVal(data.ctText, oct.localizedName), true).get();

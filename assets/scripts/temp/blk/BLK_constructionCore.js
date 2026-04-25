@@ -139,13 +139,13 @@
 
 
   function comp_ex_parseConstructionData(blk) {
-    let i, iCap = blk.constructionData[0].iCap(), j = 0, jCap = blk.constructionData.iCap(), tup;
+    let i, iCap = blk.constructionData[0].iCap(), j = 0, jCap = blk.constructionData.iCap(), tup, blkTg;
     while(j < jCap) {
       blk.constructionParsedData[j] = [];
       i = 0;
       while(i < iCap) {
         tup = blk.constructionData[j][i] instanceof Array ? blk.constructionData[j][i] : [blk.constructionData[j][i], -1];
-        let blkTg = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content._ct(tup[0], "blk"), Blocks.air);
+        blkTg = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content._ct(tup[0], "blk"), Blocks.air);
         blk.constructionParsedData[j].push({
           blk: blkTg,
           rot: blkTg instanceof RotBlock ? -1 : tryVal(tup[1], -1),
@@ -185,11 +185,11 @@
   function comp_ex_findPlan(blk, contPlan, tx, ty, rot) {
     const arr = contPlan != null ? contPlan.clear() : [];
 
-    let i, iCap = blk.constructionParsedData[0].iCap(), j = 0, jCap = blk.constructionParsedData.iCap();
+    let i, iCap = blk.constructionParsedData[0].iCap(), j = 0, jCap = blk.constructionParsedData.iCap(), ot;
     while(j < jCap) {
       i = 0;
       while(i < iCap) {
-        let ot = blk.ex_getPlanT(tx, ty, rot, i, j);
+        ot = blk.ex_getPlanT(tx, ty, rot, i, j);
         if(ot == null) {
           // Near map boundary? Just throw an empty array back
           arr.clear();
@@ -220,8 +220,9 @@
       };
       j++;
     };
+    let count;
     thisFun.tmpArr.inSituFilter(oblk => oblk !== Blocks.air).forEachFast(oblk => {
-      let count = 0;
+      count = 0;
       j = 0;
       while(j < jCap) {
         i = 0;

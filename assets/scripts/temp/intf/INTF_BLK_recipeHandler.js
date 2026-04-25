@@ -156,22 +156,22 @@
   const comp_displayConsumption = function thisFun(b, tb) {
     tb.left();
 
-    let i, iCap, j, jCap;
+    let i, iCap, j, jCap, tmp, tmp1, amt;
 
     // BI
     i = 0;
     iCap = b.bi.iCap();
     while(i < iCap) {
-      let tmp = b.bi[i];
+      tmp = b.bi[i];
       if(!(tmp instanceof Array)) {
-        let amt = b.bi[i + 1];
+        amt = b.bi[i + 1];
         MDL_table.__reqRs(tb, b, tmp, amt);
       } else {
         thisFun.tmpArr.clear();
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
-          let tmp1 = tmp[j];
+          tmp1 = tmp[j];
           thisFun.tmpArr.push(tmp1);
           j += 3;
         };
@@ -184,8 +184,20 @@
     i = 0;
     iCap = b.ci.iCap();
     while(i < iCap) {
-      let tmp = b.ci[i];
-      MDL_table.__reqRs(tb, b, tmp);
+      tmp = b.ci[i];
+      if(!(tmp instanceof Array)) {
+        MDL_table.__reqRs(tb, b, tmp);
+      } else {
+        thisFun.tmpArr.clear();
+        j = 0;
+        jCap = tmp.iCap();
+        while(j < jCap) {
+          tmp1 = tmp[j];
+          thisFun.tmpArr.push(tmp1);
+          j += 2;
+        };
+        MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
+      };
       i += 2;
     };
 
@@ -193,7 +205,7 @@
     i = 0;
     iCap = b.aux.iCap();
     while(i < iCap) {
-      let tmp = b.aux[i];
+      tmp = b.aux[i];
       MDL_table.__reqRs(tb, b, tmp);
       i += 2;
     };
@@ -204,7 +216,7 @@
       i = 0;
       iCap = b.opt.iCap();
       while(i < iCap) {
-        let tmp = b.opt[i];
+        tmp = b.opt[i];
         thisFun.tmpArr.push(tmp);
         i += 4;
       };
@@ -216,9 +228,10 @@
       i = 0;
       iCap = b.payi.iCap();
       while(i < iCap) {
-        let tmp = MDL_content._ct(b.payi[i], null, true);
-        let amt = b.payi[i + 1];
-        MDL_table.__reqCt(tb, tmp, amt, () => tryVal(b.payReqObj[tmp.name], 0));
+        tmp = MDL_content._ct(b.payi[i], null, true);
+        amt = b.payi[i + 1];
+        let nm = tmp.name;
+        MDL_table.__reqCt(tb, tmp, amt, () => tryVal(b.payReqObj[nm], 0));
         i += 2;
       };
     };

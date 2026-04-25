@@ -86,10 +86,10 @@ const db = {
       brickBaking: [],
 
 
+      carbonization: [],
+
+
       casting: [],
-
-
-      forging: [],
 
 
       condensation: [],
@@ -108,6 +108,9 @@ const db = {
 
 
       filtrationLiquid: [],
+
+
+      forging: [],
 
 
       pulverization: [],
@@ -183,6 +186,14 @@ const db = {
      * <br> <ROW>: itm, reqAmtMtp.
      */
     aggregate: [],
+
+
+    /**
+     * Items here can be crushed for biomass powder.
+     * Used for recipe generation.
+     * <br> <ROW>: itm, reqAmtMtp.
+     */
+    biomass: [],
 
 
     /**
@@ -290,6 +301,7 @@ const db = {
     insertName: [
 
       "rs-clean", MDL_bundle._term("common", "intmd-clean"),
+      "rs-pure", MDL_bundle._term("common", "intmd-pure"),
       "rs-high0pres", MDL_bundle._term("common", "intmd-high-pres"),
       "rs-med0pres", MDL_bundle._term("common", "intmd-med-pres"),
       "rs-low0pres", MDL_bundle._term("common", "intmd-low-pres"),

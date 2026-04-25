@@ -242,13 +242,13 @@
    */
   const _inputLiqs = function(contArr, ci, bi, aux) {
     const arr = contArr != null ? contArr.clear() : [];
-    let i, iCap, j, jCap;
+    let i, iCap, j, jCap, tmp, tmp1;
 
     // CI
     i = 0;
     iCap = ci.iCap();
     while(i < iCap) {
-      let tmp = ci[i];
+      tmp = ci[i];
       if(!(tmp instanceof Array)) {
         arr.pushUnique(tmp);
       } else {
@@ -266,14 +266,14 @@
     i = 0;
     iCap = bi.iCap();
     while(i < iCap) {
-      let tmp = bi[i];
+      tmp = bi[i];
       if(!(tmp instanceof Array)) {
         if(tmp instanceof Liquid) arr.pushUnique(tmp);
       } else {
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
-          let tmp1 = tmp[j];
+          tmp1 = tmp[j];
           if(tmp1 instanceof Liquid) arr.pushUnique(tmp1);
           j += 3;
         };
@@ -303,7 +303,7 @@
    */
   const _outputLiqs = function(contArr, co, bo) {
     const arr = contArr != null ? contArr.clear() : [];
-    let i, iCap;
+    let i, iCap, tmp;
 
     // CO
     i = 0;
@@ -317,7 +317,7 @@
     i = 0;
     iCap = bo.iCap();
     while(i < iCap) {
-      let tmp = bo[i];
+      tmp = bo[i];
       if(tmp instanceof Liquid) arr.pushUnique(tmp);
       i += 3;
     };
@@ -408,13 +408,13 @@
     tup[0].clear();
     tup[1].clear();
 
-    let i, iCap;
+    let i, iCap, tmp;
 
     // BO
     i = 0;
     iCap = bo.iCap();
     while(i < iCap) {
-      let tmp = bo[i];
+      tmp = bo[i];
       if(b.items != null && tmp instanceof Item) tup[0].pushUnique(tmp);
       if(b.liquids != null && tmp instanceof Liquid) tup[1].pushUnique(tmp);
       i += 3;
@@ -425,7 +425,7 @@
       i = 0;
       iCap = fo.iCap();
       while(i < iCap) {
-        let tmp = fo[i];
+        tmp = fo[i];
         tup[0].pushUnique(tmp);
         i += 3;
       };
@@ -448,15 +448,15 @@
 
     let tup = [];
     let tmpMtp = 0.0;
-    let i, iCap;
+    let i, iCap, tmp, amt, p, mtp;
 
     i = 0;
     iCap = opt.iCap();
     while(i < iCap) {
-      let tmp = opt[i];
-      let amt = opt[i + 1];
-      let p = opt[i + 2];
-      let mtp = opt[i + 3];
+      tmp = opt[i];
+      amt = opt[i + 1];
+      p = opt[i + 2];
+      mtp = opt[i + 3];
       if(b.items.get(tmp) >= amt && mtp >= tmpMtp) {
         tmpMtp = mtp;
         tup.clear().push(tmp, amt, p, mtp);

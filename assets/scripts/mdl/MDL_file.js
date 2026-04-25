@@ -179,7 +179,7 @@
       if(l === "." && tmp === "") {
         thisFun.tmpStrs.push(".");
       } else if(l === "/") {
-        thisFun.tmpStrs.push(String(tmp));
+        thisFun.tmpStrs.push(tmp);
         tmp = "";
       } else {
         tmp += l;
@@ -305,7 +305,7 @@
     while(i < iCap) {
       l = str[i];
       if(l === ",") {
-        arr.push(String(tmp));
+        arr.push(tmp);
         tmp = "";
       } else if(l === " ") {
         j = 0;
@@ -330,7 +330,7 @@
       } else if(l.charCodeAt(0) === 13) {
         ol = str[i + 1];
         if(ol.charCodeAt(0) === 10 && tmp !== "") {
-          arr.push(String(tmp));
+          arr.push(tmp);
           tmp = "";
         };
       } else if(l.charCodeAt(0) === 10) {

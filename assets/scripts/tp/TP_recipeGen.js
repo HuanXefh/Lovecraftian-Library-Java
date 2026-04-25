@@ -35,8 +35,8 @@
 
     DB_item.db["map"]["recipe"]["alloying"].forEachRow(2, (nmItm, paramObj) => {
       let
-        tempReq = readParam(paramObj, "tempReq", 0.0),
-        rawBi = readParam(paramObj, "bi", Array.air);
+        rawBi = readParam(paramObj, "bi", Array.air),
+        tempReq = readParam(paramObj, "tempReq", 0.0);
 
       let itm = MDL_content._ct(nmItm, "rs");
       if(itm == null) return;
@@ -71,8 +71,8 @@
 
     DB_item.db["map"]["recipe"]["brickBaking"].forEachRow(2, (nmItm, paramObj) => {
       let
-        tempReq = readParam(paramObj, "tempReq", 0.0),
-        nmItmTg = readParam(paramObj, "itmTg", null);
+        nmItmTg = readParam(paramObj, "itmTg", null),
+        tempReq = readParam(paramObj, "tempReq", 0.0);
 
       let itm = MDL_content._ct(nmItm, "rs");
       if(itm == null) return;
@@ -94,6 +94,40 @@
 
 
   /**
+   * Recipe generator: carbonization furnace.
+   * Handles recipes for charcoal, active carbon, etc.
+   */
+  const _g_carbonizationFurnace = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      amtI = readParam(paramObj, "amtI", 1),
+      pI = readParam(paramObj, "pI", 1.0),
+      maxTemp = readParam(paramObj, "maxTemp", Infinity);
+
+    DB_item.db["map"]["recipe"]["carbonization"].forEachRow(2, (nmItm, paramObj) => {
+      let
+        rawBo = readParam(paramObj, "bo", Array.air),
+        tempReq = readParam(paramObj, "tempReq", 0.0);
+
+      let itm = MDL_content._ct(nmItm, "rs");
+      if(itm == null) return;
+      if(!boolF(itm) || tempReq > maxTemp) return;
+
+      this.addRc(
+        rc, itm.name, "carbonization", null,
+        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
+        new CLS_recipeBuilder()
+        .__bi(this.processBi(itm, amtI, pI, paramObj))
+        .__bo(this.parseRawBo(rawBo, amtI, pI))
+        .build(),
+      );
+    });
+  });
+  exports._g_carbonizationFurnace = _g_carbonizationFurnace;
+
+
+  /**
    * Recipe generator: caster.
    * Converts materials into casting target items.
    */
@@ -110,9 +144,9 @@
     DB_item.db["map"]["recipe"]["casting"].forEachRow(2, (nmCt, paramObj) => {
       let
         isPayTg = readParam(paramObj, "isPayTg", false),
-        tempReq = readParam(paramObj, "tempReq", 0.0),
         rawBi = readParam(paramObj, "bi", Array.air),
-        rawPayi = readParam(paramObj, "payi", Array.air);
+        rawPayi = readParam(paramObj, "payi", Array.air),
+        tempReq = readParam(paramObj, "tempReq", 0.0);
 
       let ct = MDL_content._ct(nmCt, null, true);
       if(ct == null) return;
@@ -138,6 +172,131 @@
 
 
   /**
+   * Recipe generator: condenser.
+   * Converts evaporized liquid into liquid.
+   */
+  const _g_condenser = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      time = readParam(paramObj, "time", 1.0),
+      amtI = readParam(paramObj, "amtI", 1);
+
+    // Steam condensation recipe on top of everything
+    const STEAM_REFUND_FRAC = 0.75;
+    this.addRc(
+      rc, "loveclab-gas0misc-steam", "condensation", null,
+      objF,
+      new CLS_recipeBuilder()
+      .__ci(["GROUP: steam", amtI * 6.0 / time])
+      .__co(["loveclab-liq0ore-water", amtI * 6.0 / time * STEAM_REFUND_FRAC])
+      .build(),
+    );
+
+    DB_item.db["map"]["recipe"]["condensation"].forEachRow(2, (nmLiq, paramObj) => {
+      let
+        rawCo = readParam(paramObj, "co", Array.air);
+
+      let liq = MDL_content._ct(nmLiq, "rs");
+      if(liq == null) return;
+      if(!boolF(liq)) return;
+
+      this.addRc(
+        rc, liq.name, "condensation", null,
+        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
+        new CLS_recipeBuilder()
+        .__ci(this.processCi(liq, amtI * 6.0 / time, paramObj))
+        .__co(this.parseRawCo(rawCo, amtI * 6.0 / time))
+        .build(),
+      );
+    });
+  });
+  exports._g_condenser = _g_condenser;
+
+
+  /**
+   * Recipe generator: crusher.
+   * Crushes biotic materials into biomass powder.
+   */
+  const _g_crusherBiomass = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      amtI = readParam(paramObj, "amtI", 1),
+      pI = readParam(paramObj, "pI", 1.0),
+      amtO = readParam(paramObj, "amtO", 1),
+      pO = readParam(paramObj, "pO", 1.0),
+      tg = readParam(paramObj, "tg", "loveclab-item0bio-biomass-powder"),
+      noSawdustRc = readParam(paramObj, "noSawdustRc", false);
+
+    // Sawdust recipe on top of everything
+    if(!noSawdustRc) {
+      this.addRc(
+        rc, "loveclab-item0bio-log", "crushing", "sawdust",
+        obj => {obj.tint = Pal.heal; objF(obj)},
+        new CLS_recipeBuilder()
+        .__bi(this.processBi("loveclab-item0bio-log", amtI, pI))
+        .__bo(this.processBo("loveclab-item0bio-sawdust", amtO, pO))
+        .build(),
+      );
+    };
+
+    DB_item.db["group"]["biomass"].forEachRow(2, (nmItm, mtp) => {
+      let itm = MDL_content._ct(nmItm, "rs");
+      if(itm == null) return;
+      if(!boolF(itm)) return;
+
+      this.addRc(
+        rc, itm.name, "crushing", null,
+        objF,
+        new CLS_recipeBuilder()
+        .__bi(this.processBi(itm, Math.round(amtI * mtp), pI * mtp))
+        .__bo(this.processBo(tg, amtO, pO))
+        .build(),
+      );
+    });
+  });
+  exports._g_crusherBiomass = _g_crusherBiomass;
+
+
+  /**
+   * Recipe generator: filter.
+   * Separates items from slurry, or liquids from morbid solution.
+   */
+  const _g_filter = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      isItemFilter = readParam(paramObj, "isItemFilter", false),
+      amtI = readParam(paramObj, "amtI", 1),
+      pI = readParam(paramObj, "pI", 1.0),
+      amtO = readParam(paramObj, "amtO", 1),
+      pO = readParam(paramObj, "pO", 1.0);
+
+    DB_item.db["map"]["recipe"][isItemFilter ? "filtration" : "filtrationLiquid"].forEachRow(2, (nmItm, paramObj) => {
+      let
+        nmItmTg = readParam(paramObj, "itmTg", null);
+
+      let itm = MDL_content._ct(nmItm, "rs");
+      if(itm == null) return;
+      let itmTg = MDL_content._ct(nmItmTg, "rs");
+      if(itmTg == null) return;
+      if(!boolF(itm, itmTg)) return;
+
+      this.addRc(
+        rc, itm.name, "filtration", null,
+        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
+        new CLS_recipeBuilder()
+        .__bi(this.processBi(itm, amtI, pI, paramObj))
+        .__bo(this.processBo(itmTg, amtO, pO, paramObj))
+        .build(),
+      );
+    });
+  });
+  exports._g_filter = _g_filter;
+
+
+  /**
    * Recipe generator: forge.
    * Converts materials into forging target items.
    */
@@ -154,9 +313,9 @@
     DB_item.db["map"]["recipe"]["forging"].forEachRow(2, (nmCt, paramObj) => {
       let
         isPayTg = readParam(paramObj, "isPayTg", false),
-        tempReq = readParam(paramObj, "tempReq", 0.0),
         rawBi = readParam(paramObj, "bi", Array.air),
-        rawPayi = readParam(paramObj, "payi", Array.air);
+        rawPayi = readParam(paramObj, "payi", Array.air),
+        tempReq = readParam(paramObj, "tempReq", 0.0);
 
       let ct = MDL_content._ct(nmCt, null, true);
       if(ct == null) return;
@@ -179,38 +338,6 @@
     });
   });
   exports._g_forge = _g_forge;
-
-
-  /**
-   * Recipe generator: condenser.
-   * Converts evaporized liquid into liquid.
-   */
-  const _g_condenser = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      time = readParam(paramObj, "time", 1.0),
-      amtI = readParam(paramObj, "amtO", 1);
-
-    DB_item.db["map"]["recipe"]["condensation"].forEachRow(2, (nmLiq, paramObj) => {
-      let
-        rawCo = readParam(paramObj, "co", Array.air);
-
-      let liq = MDL_content._ct(nmLiq, "rs");
-      if(liq == null) return;
-      if(!boolF(liq)) return;
-
-      this.addRc(
-        rc, liq.name, "condensation", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__ci(this.processCi(liq, amtI * 6.0 / time, paramObj))
-        .__co(this.parseRawCo(rawCo, amtI * 6.0 / time))
-        .build(),
-      );
-    });
-  });
-  exports._g_condenser = _g_condenser;
 
 
   /**
@@ -305,43 +432,6 @@
 
 
   /**
-   * Recipe generator: filter.
-   * Separates items from slurry, or liquids from morbid solution.
-   */
-  const _g_filter = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      isItemFilter = readParam(paramObj, "isItemFilter", false),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0);
-
-    DB_item.db["map"]["recipe"][isItemFilter ? "filtration" : "filtrationLiquid"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        nmItmTg = readParam(paramObj, "itmTg", null);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      let itmTg = MDL_content._ct(nmItmTg, "rs");
-      if(itmTg == null) return;
-      if(!boolF(itm, itmTg)) return;
-
-      this.addRc(
-        rc, itm.name, "filtration", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.processBo(itmTg, amtO, pO, paramObj))
-        .build(),
-      );
-    });
-  });
-  exports._g_filter = _g_filter;
-
-
-  /**
    * Recipe generator: purifier.
    * Purifies ore chunks/dusts.
    */
@@ -407,122 +497,6 @@
 
 
   /**
-   * Recipe generator: rock crusher.
-   * Converts ore items into chunks.
-   */
-  const _g_rockCrusher = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      minHardness = readParam(paramObj, "minHardness", 0),
-      maxHardness = readParam(paramObj, "maxHardness", Infinity),
-      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
-
-    VARGEN.intmds["rs-chunks"].forEachCond(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2"), itm => {
-      let itmParent = itm.delegee.intmdParent;
-      if(itmParent == null) return;
-      let hardness = itmParent.hardness;
-      if(!boolF(itm, itmParent) || hardness < minHardness || hardness > maxHardness) return;
-
-      this.addRc(
-        rc, itm.name, "rock-crushing", null,
-        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itmParent, amtI, pI))
-        .__bo(this.processBo(itm, amtO, pO))
-        .build(),
-      );
-    });
-  });
-  exports._g_rockCrusher = _g_rockCrusher;
-
-
-  /**
-   * Recipe generator: rock crusher.
-   * Converts some rocks into aggregate.
-   * See {@link DB_item}.
-   */
-  const _g_rockCrusherAggregate = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      minHardness = readParam(paramObj, "minHardness", 0),
-      maxHardness = readParam(paramObj, "maxHardness", Infinity),
-      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
-
-    // Coarse aggregate to fine aggregate on top of everything
-    this.addRc(
-      rc, "loveclab-item0buil-coarse-aggregate", "aggregate-crushing", null,
-      objF,
-      new CLS_recipeBuilder()
-      .__bi(this.processBi("loveclab-item0buil-coarse-aggregate", amtI, pI))
-      .__bo(this.processBo("loveclab-item0buil-fine-aggregate", amtO, pO))
-      .build(),
-    );
-
-    DB_item.db["group"]["aggregate"].forEachRow(2, (nmItm, mtp) => {
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      let hardness = itm.hardness;
-      if(!boolF(itm) || hardness < minHardness || hardness > maxHardness) return;
-
-      this.addRc(
-        rc, itm.name, "aggregate-crushing", null,
-        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, Math.round(amtI * Math.max(mtp, 1.0)), pI * Math.min(mtp, 1.0)))
-        .__bo(this.processBo("loveclab-item0buil-coarse-aggregate", amtO, pO))
-        .build(),
-      );
-    });
-  });
-  exports._g_rockCrusherAggregate = _g_rockCrusherAggregate;
-
-
-  /**
-   * Recipe generator: rock crusher.
-   * Converts raw ore blocks into corresponding ore items.
-   * See {@link BLK_rawOreBlock}.
-   */
-  const _g_rockCrusherRawOreBlock = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      amtOScl = readParam(paramObj, "amtOScl", 1.0),
-      pO = readParam(paramObj, "pO", 1.0),
-      minHardness = readParam(paramObj, "minHardness", 0),
-      maxHardness = readParam(paramObj, "maxHardness", Infinity),
-      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
-
-    VARGEN.rawOreBlks.forEachFast(blk => {
-      let itm = MDL_content._ct(Object.findKeyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs");
-      if(itm == null) return;
-      let hardness = itm.hardness;
-      if(!boolF(itm) || hardness < minHardness || hardness > maxHardness) return;
-
-      this.addRc(
-        rc, blk.name, "rock-crushing", "raw-ore-block",
-        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
-        new CLS_recipeBuilder()
-        .__payi(this.processPayi(blk, amtI))
-        .__bo(this.processBo(itm, blk.requirements[0].amount * amtOScl, pO))
-        .build(),
-      );
-    });
-  });
-  exports._g_rockCrusherRawOreBlock = _g_rockCrusherRawOreBlock;
-
-
-  /**
    * Recipe generator: pulverizer.
    * Converts ore items into dust.
    */
@@ -540,8 +514,8 @@
 
     DB_item.db["map"]["recipe"]["pulverization"].forEachRow(2, (nmItm, paramObj) => {
       let
-        hardness = readParam(paramObj, "hardness", 0),
-        rawBi = readParam(paramObj, "bi", Array.air);
+        rawBi = readParam(paramObj, "bi", Array.air),
+        hardness = readParam(paramObj, "hardness", 0);
 
       let itm = MDL_content._ct(nmItm, "rs");
       if(itm == null) return;
@@ -594,8 +568,8 @@
 
     DB_item.db["map"]["recipe"][!isConcentrate ? "roasting" : "concentrateRoasting"].forEachRow(2, (nmItm, paramObj) => {
       let
-        tempReq = readParam(paramObj, "tempReq", 0.0),
-        nmItmTg = readParam(paramObj, "itmTg", null);
+        nmItmTg = readParam(paramObj, "itmTg", null),
+        tempReq = readParam(paramObj, "tempReq", 0.0);
 
       let itm = MDL_content._ct(nmItm, "rs");
       if(itm == null) return;
@@ -614,6 +588,126 @@
     });
   });
   exports._g_roastingFurnace = _g_roastingFurnace;
+
+
+  /**
+   * Recipe generator: rock crusher.
+   * Converts ore items into chunks.
+   */
+  const _g_rockCrusher = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      amtI = readParam(paramObj, "amtI", 1),
+      pI = readParam(paramObj, "pI", 1.0),
+      amtO = readParam(paramObj, "amtO", 1),
+      pO = readParam(paramObj, "pO", 1.0),
+      minHardness = readParam(paramObj, "minHardness", 0),
+      maxHardness = readParam(paramObj, "maxHardness", Infinity),
+      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
+
+    VARGEN.intmds["rs-chunks"].forEachCond(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2"), itm => {
+      let itmParent = itm.delegee.intmdParent;
+      if(itmParent == null) return;
+      let hardness = itmParent.hardness;
+      if(!boolF(itm, itmParent) || hardness < minHardness || hardness > maxHardness) return;
+
+      this.addRc(
+        rc, itm.name, "rock-crushing", null,
+        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
+        new CLS_recipeBuilder()
+        .__bi(this.processBi(itmParent, amtI, pI))
+        .__bo(this.processBo(itm, amtO, pO))
+        .build(),
+      );
+    });
+  });
+  exports._g_rockCrusher = _g_rockCrusher;
+
+
+  /**
+   * Recipe generator: rock crusher.
+   * Converts some rocks into aggregate.
+   * See {@link DB_item}.
+   */
+  const _g_rockCrusherAggregate = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      amtI = readParam(paramObj, "amtI", 1),
+      pI = readParam(paramObj, "pI", 1.0),
+      amtO = readParam(paramObj, "amtO", 1),
+      pO = readParam(paramObj, "pO", 1.0),
+      tg = readParam(paramObj, "tg", "loveclab-item0buil-coarse-aggregate"),
+      noAggregateConvert = readParam(paramObj, "noAggregateConvert", false),
+      minHardness = readParam(paramObj, "minHardness", 0),
+      maxHardness = readParam(paramObj, "maxHardness", Infinity),
+      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
+
+    // Coarse aggregate to fine aggregate on top of everything
+    if(!noAggregateConvert) {
+      this.addRc(
+        rc, "loveclab-item0buil-coarse-aggregate", "aggregate-crushing", null,
+        objF,
+        new CLS_recipeBuilder()
+        .__bi(this.processBi("loveclab-item0buil-coarse-aggregate", amtI, pI))
+        .__bo(this.processBo("loveclab-item0buil-fine-aggregate", amtO, pO))
+        .build(),
+      );
+    };
+
+    DB_item.db["group"]["aggregate"].forEachRow(2, (nmItm, mtp) => {
+      let itm = MDL_content._ct(nmItm, "rs");
+      if(itm == null) return;
+      let hardness = itm.hardness;
+      if(!boolF(itm) || hardness < minHardness || hardness > maxHardness) return;
+
+      this.addRc(
+        rc, itm.name, "aggregate-crushing", null,
+        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
+        new CLS_recipeBuilder()
+        .__bi(this.processBi(itm, amtI * mtp, pI * mtp))
+        .__bo(this.processBo(tg, amtO, pO))
+        .build(),
+      );
+    });
+  });
+  exports._g_rockCrusherAggregate = _g_rockCrusherAggregate;
+
+
+  /**
+   * Recipe generator: rock crusher.
+   * Converts raw ore blocks into corresponding ore items.
+   * See {@link BLK_rawOreBlock}.
+   */
+  const _g_rockCrusherRawOreBlock = new CLS_recipeGenerator(function(rc, paramObj) {
+    let
+      objF = readParam(paramObj, "objF", Function.air),
+      boolF = readParam(paramObj, "boolF", Function.airTrue),
+      amtI = readParam(paramObj, "amtI", 1),
+      amtOScl = readParam(paramObj, "amtOScl", 1.0),
+      pO = readParam(paramObj, "pO", 1.0),
+      minHardness = readParam(paramObj, "minHardness", 0),
+      maxHardness = readParam(paramObj, "maxHardness", Infinity),
+      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
+
+    VARGEN.rawOreBlks.forEachFast(blk => {
+      let itm = MDL_content._ct(Object.findKeyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs");
+      if(itm == null) return;
+      let hardness = itm.hardness;
+      if(!boolF(itm) || hardness < minHardness || hardness > maxHardness) return;
+
+      this.addRc(
+        rc, blk.name, "rock-crushing", "raw-ore-block",
+        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
+        new CLS_recipeBuilder()
+        .__payi(this.processPayi(blk, amtI))
+        .__bo(this.processBo(itm, blk.requirements[0].amount * amtOScl, pO))
+        .build(),
+      );
+    });
+  });
+  exports._g_rockCrusherRawOreBlock = _g_rockCrusherRawOreBlock;
 
 
   /**

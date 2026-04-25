@@ -1,4 +1,5 @@
 *.bkp
+~$
 
 logs/
 /core/assets/mindustry-saves/

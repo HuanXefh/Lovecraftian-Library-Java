@@ -110,7 +110,7 @@
    */
   const comp_setStats_pol = function(blk) {
     let pol = _blkPol(blk);
-    if(!pol.fEqual(0.0)) blk.stats.add(pol > 0.0 ? fetchStat("lovec", "blk-pol") : fetchStat("lovec", "blk-polred"), Math.abs(pol), fetchStatUnit("lovec", "polunits"));
+    if(!pol.fEqual(0.0)) blk.stats.add(pol > 0.0 ? fetchStat("lovec", "blk-pol") : fetchStat("lovec", "blk-polred"), (Math.abs(pol).roundFixed(2) + " " + fetchStatUnit("lovec", "polunits").localized()).color(pol > 0.0 ? Pal.remove : Pal.heal));
   };
   exports.comp_setStats_pol = comp_setStats_pol;
 

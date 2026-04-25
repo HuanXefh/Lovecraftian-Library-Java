@@ -15,13 +15,18 @@ set TARGET2=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-lovecraftian-lab
 @rem Target path of ProjReind.
 set TARGET3=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-project-reindustrialization
 
+echo.
 echo Skip updating mod files?
 choice /c YN
+echo.
 if errorlevel 2 goto :Build
 if errorlevel 1 goto :Launch
 
 :Build
+python bundleGen.py
+echo Updated bundle files
 call gradlew jar
+echo.
 rd %TARGET2% /s /q
 rd %TARGET3% /s /q
 xcopy %LOCAL1% %TARGET1%* /Y /s /e /i /q
@@ -29,4 +34,7 @@ xcopy %LOCAL2% %TARGET2% /s /e /i /q
 xcopy %LOCAL3% %TARGET3% /s /e /i /q
 
 :Launch
+echo.
+echo Launching Mindustry...
+echo.
 %launcher%
