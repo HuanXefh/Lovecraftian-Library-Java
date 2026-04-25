@@ -12,11 +12,7 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.needsSurface = false;
-      if(blk.overlayAlpha.fEqual(1.0)) blk.overlayAlpha = 0.5;
-      blk.useColor = false;
-    };
+    blk.useColor = false;
 
     MDL_event._c_onWorldLoadStart(() => {
       blk.drawnMap.clear();
@@ -113,6 +109,13 @@
        * @instance
        */
       drawnMap: prov(() => new ObjectMap()),
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      needsSurface: false,
+      overlayAlpha: 0.5,
 
 
     }),

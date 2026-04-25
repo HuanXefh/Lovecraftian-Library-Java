@@ -14,14 +14,6 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.solid = false;
-      blk.underBullets = true;
-    };
-  };
-
-
   function comp_getLiquidDestination(b, b_f, liq) {
     return !b.enabled || MDL_cond._isAuxiliaryFluid(liq) ?
       b :
@@ -49,13 +41,18 @@
     newClass().extendClass(PARENT[0], "BLK_fluidJunction").initClass()
     .setParent(LiquidJunction)
     .setTags("blk-liq", "blk-gate")
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      solid: false,
+      underBullets: true,
+
+
+    })
     .setMethod({
-
-
-      init: function() {
-        comp_init(this);
-      },
 
 
       /**

@@ -15,14 +15,12 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp && blk.range === 1) {
+    if(blk.range === 1) {
       blk.drawArrow = true;
       blk.laserWidth = 0.0;
-      blk.sparks = 10;
+    };
+    if(blk.overwriteVanillaProp) {
       blk.sparkRange = blk.size * Vars.tilesize * 0.5;
-      blk.sparkLife = 20.0;
-      blk.sparkRecurrence = 2.0;
-      blk.sparkSpread = 50.0;
       blk.sparkSize = 0.5 + blk.size * 0.5;
     };
   };
@@ -137,6 +135,15 @@
       payOutputSideFracMode: MDL_pos.SideFracModes.nonFront,
 
 
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      sparks: 10,
+      sparkLife: 20.0,
+      sparkRecurrence: 2.0,
+      sparkSpread: 50.0,
+
+
     })
     .setParamAlias([
       "mineR", "range", 1,
@@ -154,6 +161,7 @@
       }
       .setProp({
         noSuper: true,
+        boolMode: "and",
       }),
 
 

@@ -15,10 +15,6 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.lightRadius = 24.0;
-    };
-
     blk.rotate = true;
 
     blk.ex_addLogicGetter(LAccess.range, b => 1);
@@ -148,6 +144,12 @@
        * @instance
        */
       sideReg2: null,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      lightRadius: 24.0,
 
 
     })

@@ -16,10 +16,10 @@
 
 
   function comp_init(blk) {
+    blk.consumesPower = true;
+    blk.conductivePower = false;
+    blk.connectedPower = true;
     if(blk.overwriteVanillaProp) {
-      blk.consumesPower = true;
-      blk.conductivePower = false;
-      blk.connectedPower = true;
       blk.underBullets = blk.size === 1;
     };
   };

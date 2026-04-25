@@ -34,6 +34,8 @@
   function comp_init(blk) {
     if(blk.ex_isSingleSized() && blk.size > 1) ERROR_HANDLER.throw("notSingleSized", blk.name);
 
+    if(blk.isWaterborne) blk.floating = true;
+
     blk.noLoot = blk.noLoot || DB_block.db["group"]["noLoot"].includes(blk.name);
     blk.noReac = blk.noReac || blk instanceof CoreBlock || DB_block.db["group"]["noReac"].includes(blk.name);
     blk.canShortCircuit = blk.canShortCircuit || DB_block.db["group"]["shortCircuit"].includes(blk.name);
@@ -105,6 +107,14 @@
       Core.atlas.has(blk.name + "-icon") ?
         [Core.atlas.find(blk.name + "-icon")] :
         blk.super$icons();
+  };
+
+
+  function comp_canPlaceOn(blk, t, team, rot) {
+    if(t == null) return false;
+    if(blk.isWaterborne && !t.floor().liquid) return false;
+
+    return true;
   };
 
 
@@ -209,6 +219,12 @@
        */
       useConfigStr: false,
       /**
+       * <PARAM>: If true, this block can only be placed on liquid floors. I have to do this because `blk.requiresWater` is so hard-coded.
+       * @memberof BLK_baseBlock
+       * @instance
+       */
+      isWaterborne: false,
+      /**
        * <PARAM>: Whether to skip loot spawning when building of this block is destroyed. Recommended to be set in {@link DB_block}.
        * @memberof BLK_baseBlock
        * @instance
@@ -263,6 +279,12 @@
       isMultiBlockComponent: false,
 
 
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      selectionColumns: 10,
+
+
     })
     .setMethod({
 
@@ -282,6 +304,14 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      canPlaceOn: function(t, team, rot) {
+        return comp_canPlaceOn(this, t, team, rot);
+      }
+      .setProp({
+        boolMode: "and",
       }),
 
 

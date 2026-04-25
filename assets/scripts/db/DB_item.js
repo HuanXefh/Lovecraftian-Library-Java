@@ -267,6 +267,7 @@ const db = {
       /* dynamic */
 
       "rs-clean",
+      "rs-pure",
       "rs-high0pres",
       "rs-med0pres",
       "rs-low0pres",

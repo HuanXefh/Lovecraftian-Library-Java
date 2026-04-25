@@ -14,14 +14,6 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.solid = true;
-      blk.underBullets = false;
-    };
-  };
-
-
   function comp_load(blk) {
     blk.topReg = fetchRegion(blk, "-top");
     blk.topInvReg = fetchRegion(blk, "-top-inv");
@@ -110,13 +102,15 @@
       botReg: null,
 
 
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      solid: false,
+      underBullets: true,
+
+
     })
     .setMethod({
-
-
-      init: function() {
-        comp_init(this);
-      },
 
 
       load: function() {

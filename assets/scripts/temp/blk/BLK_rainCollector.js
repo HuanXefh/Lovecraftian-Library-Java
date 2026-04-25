@@ -17,6 +17,8 @@
 
 
   function comp_init(blk) {
+    blk.outputsLiquid = true;
+
     MDL_event._c_onLoad(() => {
       Core.app.post(() => {
         Vars.content.weathers().each(

@@ -14,14 +14,6 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.unloadable = true;
-      blk.allowConfigInventory = true;
-    };
-  };
-
-
   function comp_setStats(blk) {
     blk.stats.add(Stat.range, blk.range, StatUnit.blocks);
   };
@@ -62,13 +54,18 @@
     newClass().extendClass(PARENT[0], "BLK_conveyorBridge").initClass()
     .setParent(ItemBridge)
     .setTags("blk-dis", "blk-brd")
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      unloadable: true,
+      allowConfigInventory: true,
+
+
+    })
     .setMethod({
-
-
-      init: function() {
-        comp_init(this);
-      },
 
 
       setStats: function() {

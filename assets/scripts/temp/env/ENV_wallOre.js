@@ -17,10 +17,6 @@
   function comp_init(blk) {
     blk.wallOre = true;
 
-    if(blk.overwriteVanillaProp) {
-      blk.needsSurface = false;
-    };
-
     MDL_content.rename(
       blk,
       blk.itemDrop.localizedName + MDL_text._space() + "(" + MDL_bundle._term("lovec", "wall-ore") + ")",
@@ -43,7 +39,16 @@
   module.exports = newClass().extendClass(PARENT, "ENV_wallOre").initClass()
   .setParent(OreBlock)
   .setTags("blk-env", "blk-wore")
-  .setParam({})
+  .setParam({
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    needsSurface: false,
+
+
+  })
   .setParamAlias([
     /**
      * <PARAM>: See {@link ENV_ore}.

@@ -19,10 +19,6 @@
     blk.priority = TargetPriority.transport;
     blk.update = true;
     blk.drawDisabled = true;
-
-    if(blk.overwriteVanillaProp) {
-      blk.underBullets = true;
-    };
   };
 
 
@@ -127,6 +123,12 @@
        * @instance
        */
       dirReg: null,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      underBullets: true,
 
 
     })

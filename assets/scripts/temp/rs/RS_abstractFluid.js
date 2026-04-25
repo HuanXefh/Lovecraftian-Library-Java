@@ -18,16 +18,6 @@
     if(!aux.gas) ERROR_HANDLER.throw("auxNotGas", aux.name);
 
     aux.databaseCategory = "lovec-aux";
-
-    if(aux.overwriteVanillaProp) {
-      aux.incinerable = false;
-      aux.coolant = false;
-      aux.capPuddles = true;
-
-      aux.lightColor = Color.black.cpy();
-      aux.gasColor = Color.black.cpy();
-      aux.vaporEffect = Fx.none;
-    };
   };
 
 
@@ -66,6 +56,12 @@
 
 
     gas: true,
+    incinerable: false,
+    coolant: false,
+    capPuddles: true,
+    lightColor: prov(() => Color.black.cpy()),
+    gasColor: prov(() => Color.black.cpy()),
+    vaporEffect: Fx.none,
 
 
   })

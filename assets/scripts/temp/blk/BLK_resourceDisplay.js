@@ -18,10 +18,6 @@
   function comp_init(blk) {
     blk.group = BlockGroup.none;
     blk.priority = TargetPriority.base;
-    if(blk.overwriteVanillaProp) {
-      blk.solid = false;
-      blk.underBullets = true;
-    };
 
     blk.ex_addLogicGetter(LAccess.config, b => b.delegee.ctTg);
     blk.ex_addLogicControl(LAccess.config, (b, param1) => {
@@ -82,6 +78,13 @@
        * @instance
        */
       topReg: null,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      solid: false,
+      underBullets: true,
 
 
     })

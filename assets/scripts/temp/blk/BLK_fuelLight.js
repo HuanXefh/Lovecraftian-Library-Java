@@ -16,10 +16,6 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.selectionColumns = 10;
-    };
-
     blk.config(JAVA.string, (b, str) => {
       if(str.startsWith("FUEL: ")) {
         b.delegee.fuelSel = MDL_content._ct(str.replace("FUEL: ", ""), "rs");

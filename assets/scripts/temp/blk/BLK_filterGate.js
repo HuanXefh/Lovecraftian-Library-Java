@@ -15,10 +15,6 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.selectionColumns = 10;
-    };
-
     blk.config(JAVA.boolean, (b, bool) => {
       if(bool !== b.delegee.isInv) {
         b.delegee.isInv = bool;

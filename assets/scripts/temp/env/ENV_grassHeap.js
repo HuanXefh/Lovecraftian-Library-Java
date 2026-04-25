@@ -15,9 +15,7 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.solid = false;
-    };
+    blk.solid = false;
   };
 
 
@@ -57,6 +55,12 @@
      * @instance
      */
     hidable: false,
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    rotationRand: 30.0,
 
 
   })

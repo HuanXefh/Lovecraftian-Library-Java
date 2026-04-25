@@ -20,10 +20,7 @@
   function comp_init(blk) {
     resetBlockFlag(blk, []);
 
-    if(blk.overwriteVanillaProp) {
-      blk.baseEfficiency = 0.0;
-      blk.maxBoost = Number.n8;
-    };
+    blk.baseEfficiency = 0.0;
 
     blk.blkR = blk.attrR;
 
@@ -106,6 +103,12 @@
        * @instance
        */
       craftSe: Sounds.unset,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      maxBoost: Number.n8
 
 
     })

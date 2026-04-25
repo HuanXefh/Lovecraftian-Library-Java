@@ -17,11 +17,6 @@
   function comp_init(blk) {
     resetBlockFlag(blk, []);
 
-    if(blk.overwriteVanillaProp) {
-      blk.solid = false;
-      blk.underBullets = true;
-    };
-
     blk.update = true;
   };
 
@@ -69,7 +64,17 @@
     newClass().extendClass(PARENT[0], "BLK_lootHopper").initClass()
     .setParent(StorageBlock)
     .setTags()
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      solid: false,
+      underBullets: true,
+
+
+    })
     .setMethod({
 
 

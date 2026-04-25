@@ -11,7 +11,7 @@
   /* <---------- component ----------> */
 
 
-  function comp_updateTile(b) {
+  function comp_update(b) {
     b.ex_updateGraph();
   };
 
@@ -54,6 +54,7 @@
 
   function comp_ex_updateGraphEdge(b) {
     let vert_b = b.graphCur.getVertByData(b), vert_ob;
+    if(vert_b === -1) return;
     b.graphProximity.each(ob => {
       vert_ob = b.graphCur.getVertByData(ob);
       if(b.block.delegee.isNoRotGraph || (!b.block.rotate && !ob.block.rotate)) {
@@ -208,8 +209,8 @@
       },
 
 
-      updateTile: function() {
-        comp_updateTile(this);
+      update: function() {
+        comp_update(this);
       },
 
 

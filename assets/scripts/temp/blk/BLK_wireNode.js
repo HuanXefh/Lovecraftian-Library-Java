@@ -16,11 +16,10 @@
 
 
   function comp_init(blk) {
+    blk.consumesPower = true;
+    blk.conductivePower = true;
+    blk.connectedPower = true;
     if(blk.overwriteVanillaProp) {
-      blk.consumesPower = true;
-      blk.conductivePower = true;
-      blk.connectedPower = true;
-      blk.autolink = false;
       blk.underBullets = blk.size === 1;
     };
 
@@ -131,6 +130,12 @@
        * @instance
        */
       linkFilterTup: null,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      autolink: false,
 
 
     })

@@ -23,11 +23,6 @@
     blk.configurable = true;
     blk.drawDisabled = true;
 
-    if(blk.overwriteVanillaProp) {
-      blk.solid = false;
-      blk.underBullets = true;
-    };
-
     blk.config(JAVA.boolean, (b, bool) => {
       b.onProximityUpdate();
       b.delegee.isInv = bool;
@@ -189,6 +184,13 @@
        * @instance
        */
       cogInvOffAng: 0.0,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      solid: false,
+      underBullets: true,
 
 
     })

@@ -16,12 +16,9 @@
 
   function comp_init(blk) {
     let sizeSqr = Math.pow(blk.size, 2);
-
-    if(blk.overwriteVanillaProp) {
-      blk.displayEfficiency = false;
-      blk.displayEfficiencyScale = 1.0;
-      blk.minEfficiency = sizeSqr - 0.0001;
-    };
+    blk.displayEfficiency = false;
+    blk.displayEfficiencyScale = 1.0;
+    blk.minEfficiency = sizeSqr - 0.0001;
   };
 
 

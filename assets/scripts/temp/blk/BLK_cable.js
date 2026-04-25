@@ -16,14 +16,9 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.conductivePower = true;
-      blk.connectedPower = false;
-      blk.enableDrawStatus = false;
-      blk.pushUnits = false;
-      blk.junctionReplacement = null;
-      blk.bridgeReplacement = null;
-    };
+    blk.conductivePower = true;
+    blk.connectedPower = false;
+    blk.pushUnits = false;
   };
 
 
@@ -112,6 +107,14 @@
        * @instance
        */
       isNoRotGraph: true,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      enableDrawStatus: false,
+      junctionReplacement: null,
+      bridgeReplacement: null,
 
 
     })
@@ -208,7 +211,7 @@
        * @return {number}
        */
       ex_getTransmitterOverloadFrac: function() {
-        return this.graphCur.graphData.overloadFrac;
+        return Vars.state.isEditor() ? 0.0 : this.graphCur.graphData.overloadFrac;
       }
       .setProp({
         noSuper: true,

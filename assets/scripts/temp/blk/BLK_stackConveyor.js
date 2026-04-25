@@ -20,9 +20,6 @@
         blk.conductivePower = true;
         blk.connectedPower = false;
       };
-      blk.unloadable = true;
-      // Because it looks like a mess
-      blk.enableDrawStatus = false;
     };
   };
 
@@ -55,6 +52,13 @@
        * @instance
        */
       disInputOnly: true,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      unloadable: true,
+      enableDrawStatus: false,
 
 
     })

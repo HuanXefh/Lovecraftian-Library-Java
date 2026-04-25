@@ -32,9 +32,9 @@ rd %TARGET3% /s /q
 xcopy %LOCAL1% %TARGET1%* /Y /s /e /i /q
 xcopy %LOCAL2% %TARGET2% /s /e /i /q
 xcopy %LOCAL3% %TARGET3% /s /e /i /q
+echo.
 
 :Launch
-echo.
 echo Launching Mindustry...
 echo.
 %launcher%

@@ -12,10 +12,6 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.selectionColumns = 10;
-    };
-
     blk.configurable = true;
     blk.saveConfig = true;
     blk.clearOnDoubleTap = false;

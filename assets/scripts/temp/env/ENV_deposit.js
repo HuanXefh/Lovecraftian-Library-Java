@@ -15,10 +15,8 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.floating = true;
-      blk.placeableLiquid = true;
-    };
+    blk.floating = true;
+    blk.placeableLiquid = true;
 
     if(blk.itemDrop == null) ERROR_HANDLER.throw("noItemDrop", blk.name);
     MDL_content.rename(
@@ -45,7 +43,17 @@
   module.exports = newClass().extendClass(PARENT, "ENV_deposit").initClass()
   .setParent(TallBlock)
   .setTags("blk-env", "blk-depo")
-  .setParam({})
+  .setParam({
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    rotationRand: 40.0,
+    playerUnmineable: true,
+
+
+  })
   .setMethod({
 
 

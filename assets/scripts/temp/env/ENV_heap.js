@@ -15,10 +15,8 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.floating = true;
-      blk.placeableLiquid = true;
-    };
+    blk.floating = true;
+    blk.placeableLiquid = true;
 
     blk.flrParent = MDL_content._ct(blk.flrParent, "blk");
     if(blk.flrParent != null) {
@@ -56,6 +54,12 @@
      * @instance
      */
     flrParent: null,
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    rotationRand: 60.0,
 
 
   })

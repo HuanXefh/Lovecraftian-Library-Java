@@ -12,10 +12,6 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.selectionColumns = 10;
-    };
-
     blk.selectionQueue.pushAll(blk.ex_findSelectionTgs());
 
     blk.configurable = true;

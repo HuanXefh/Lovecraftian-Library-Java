@@ -271,7 +271,7 @@
 
 
       canPlaceOn: function(t, team, rot) {
-        return comp_canPlaceOn(this, t, team, rot);
+        return comp_canPlaceOn(this, t, team, rot) && thisFun.funPrev.funPrev.canPlaceOn.apply(this, arguments);
       }
       .setProp({
         noSuper: true,

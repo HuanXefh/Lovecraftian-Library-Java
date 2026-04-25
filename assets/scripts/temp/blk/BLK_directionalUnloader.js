@@ -14,15 +14,6 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.selectionColumns = 10;
-      blk.isDuct = false;
-      blk.regionRotated1 = 1;
-    };
-  };
-
-
   function comp_buildConfiguration(b, tb) {
     MDL_table._s_ct(
       tb, b.block, Vars.content.items().toArray(),
@@ -51,16 +42,18 @@
     newClass().extendClass(PARENT[0], "BLK_directionalUnloader").initClass()
     .setParent(DirectionalUnloader)
     .setTags("blk-dis", "blk-gate")
-    .setParam({})
-    .setMethod({
+    .setParam({
 
 
-      init: function() {
-        comp_init(this);
-      },
+      /* <------------------------------ vanilla ------------------------------ */
 
 
-    }),
+      isDuct: false,
+      regionRotated1: 1,
+
+
+    })
+    .setMethod({}),
 
 
     /**

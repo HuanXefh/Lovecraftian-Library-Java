@@ -15,10 +15,7 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.selectionColumns = 10;
-      blk.group = BlockGroup.transportation;
-    };
+    blk.group = BlockGroup.transportation;
   };
 
 

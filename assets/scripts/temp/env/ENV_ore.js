@@ -15,11 +15,6 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.needsSurface = false;
-      if(blk.overlayAlpha.fEqual(1.0)) blk.overlayAlpha = 0.5;
-    };
-
     MDL_content.rename(
       blk,
       blk.itemDrop.localizedName + MDL_text._space() + "(" + MDL_bundle._term("lovec", "ground-ore") + ")",
@@ -43,7 +38,17 @@
   module.exports = newClass().extendClass(PARENT, "ENV_ore").initClass()
   .setParent(OreBlock)
   .setTags("blk-env", "blk-ore")
-  .setParam({})
+  .setParam({
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    needsSurface: false,
+    overlayAlpha: 0.5,
+
+
+  })
   .setParamAlias([
     /**
      * <PARAM>: If true, the ore will be displayed on minimap.

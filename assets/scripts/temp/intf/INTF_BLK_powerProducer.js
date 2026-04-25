@@ -12,11 +12,9 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.consumesPower = false;
-      blk.outputsPower = true;
-      blk.conductivePower = true;
-    };
+    blk.consumesPower = false;
+    blk.outputsPower = true;
+    blk.conductivePower = true;
   };
 
 

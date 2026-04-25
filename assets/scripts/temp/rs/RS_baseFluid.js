@@ -16,10 +16,6 @@
 
   function comp_init(liq) {
     if(liq.overwriteVanillaProp) {
-      liq.incinerable = false;
-      liq.coolant = false;
-      liq.capPuddles = true;
-
       if(liq.temperature.fEqual(0.5)) liq.temperature = MDL_flow._tempWrap(liq);
       if(liq.viscosity.fEqual(0.5)) liq.viscosity = MDL_flow._viscWrap(liq);
 
@@ -202,6 +198,14 @@
      * @instance
      */
     corPow: 0.0,
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    incinerable: false,
+    coolant: false,
+    capPuddles: true,
 
 
   })

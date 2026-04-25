@@ -14,14 +14,6 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
-      blk.flashHit = true;
-      blk.flashColor = Color.white;
-    };
-  };
-
-
 /*
   ========================================
   Section: Application
@@ -40,16 +32,18 @@
     newClass().extendClass(PARENT[0], "BLK_defenseWall").initClass()
     .setParent(Wall)
     .setTags("blk-wall")
-    .setParam({})
-    .setMethod({
+    .setParam({
 
 
-      init: function() {
-        comp_init(this);
-      },
+      /* <------------------------------ vanilla ------------------------------ */
 
 
-    }),
+      flashHit: true,
+      flashColor: Color.white,
+
+
+    })
+    .setMethod({}),
 
 
     /**
