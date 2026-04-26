@@ -330,23 +330,19 @@
   /**
    * Whether the multi-crafter can add resource anymore.
    * @param {Building} b
-   * @param {boolean} ignoreItemFullness
-   * @param {Array} co
-   * @param {Array} bo
-   * @param {Array} fo
    * @return {boolean}
    */
-  const _canAdd = function(b, ignoreItemFullness, co, bo, fo) {
+  const _canAdd = function(b) {
     let i, iCap, tmp, amt, p;
 
     // CO
     if(b.liquids != null) {
       let allFull = true;
       i = 0;
-      iCap = co.iCap();
+      iCap = b.delegee.co.iCap();
       while(i < iCap) {
-        tmp = co[i];
-        amt = co[i + 1];
+        tmp = b.delegee.co[i];
+        amt = b.delegee.co[i + 1];
         if(b.liquids.get(tmp) < b.block.liquidCapacity) {
           allFull = false;
         } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid) {
@@ -354,18 +350,18 @@
         };
         i += 2;
       };
-      if(allFull && _hasOutput_liq(true, co, bo) && !b.block.ignoreLiquidFullness) return false;
+      if(allFull && _hasOutput_liq(true, b.delegee.co, b.delegee.bo) && !b.block.ignoreLiquidFullness) return false;
     };
 
     // BO
     i = 0;
-    iCap = bo.iCap();
+    iCap = b.delegee.bo.iCap();
     while(i < iCap) {
-      tmp = bo[i];
-      amt = bo[i + 1];
-      p = bo[i + 2];
+      tmp = b.delegee.bo[i];
+      amt = b.delegee.bo[i + 1];
+      p = b.delegee.bo[i + 2];
       if(b.items != null && tmp instanceof Item) {
-        if(!ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
+        if(!b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
       };
       if(b.liquids != null && tmp instanceof Liquid) {
         if(!b.block.ignoreLiquidFullness && b.liquids.get(tmp) / b.block.liquidCapacity > 0.98) return false;
@@ -376,12 +372,12 @@
     // FO
     if(b.items != null) {
       i = 0;
-      iCap = fo.iCap();
+      iCap = b.delegee.fo.iCap();
       while(i < iCap) {
-        tmp = fo[i];
-        amt = fo[i + 1];
+        tmp = b.delegee.fo[i];
+        amt = b.delegee.fo[i + 1];
         // No probability for failed output
-        if(!ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
+        if(!b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
         i += 3;
       };
     };
@@ -399,11 +395,9 @@
    * `co` is not used here due to liquid output directions.
    * @param {Building} b
    * @param {Array|unset} contTup
-   * @param {Array} bo
-   * @param {Array} fo
    * @return {[Array<Item>, Array<Liquid>]}
    */
-  const _dumpTup = function(b, contTup, bo, fo) {
+  const _dumpTup = function(b, contTup) {
     const tup = contTup != null ? contTup : [[], []];
     tup[0].clear();
     tup[1].clear();
@@ -412,9 +406,9 @@
 
     // BO
     i = 0;
-    iCap = bo.iCap();
+    iCap = b.delegee.bo.iCap();
     while(i < iCap) {
-      tmp = bo[i];
+      tmp = b.delegee.bo[i];
       if(b.items != null && tmp instanceof Item) tup[0].pushUnique(tmp);
       if(b.liquids != null && tmp instanceof Liquid) tup[1].pushUnique(tmp);
       i += 3;
@@ -423,9 +417,9 @@
     // FO
     if(b.items != null) {
       i = 0;
-      iCap = fo.iCap();
+      iCap = b.delegee.fo.iCap();
       while(i < iCap) {
-        tmp = fo[i];
+        tmp = b.delegee.fo[i];
         tup[0].pushUnique(tmp);
         i += 3;
       };
@@ -440,10 +434,9 @@
    * Gets a 4-tuple of preferred optional input.
    * Returns null if no optional input.
    * @param {Building} b
-   * @param {Array} opt
    * @return {[Item, number, number, number]|null} <TUP>: item, amt, p, mtp.
    */
-  const _optTup = function(b, opt) {
+  const _optTup = function(b) {
     if(b.items == null) return null;
 
     let tup = [];
@@ -451,12 +444,12 @@
     let i, iCap, tmp, amt, p, mtp;
 
     i = 0;
-    iCap = opt.iCap();
+    iCap = b.delegee.opt.iCap();
     while(i < iCap) {
-      tmp = opt[i];
-      amt = opt[i + 1];
-      p = opt[i + 2];
-      mtp = opt[i + 3];
+      tmp = b.delegee.opt[i];
+      amt = b.delegee.opt[i + 1];
+      p = b.delegee.opt[i + 2];
+      mtp = b.delegee.opt[i + 3];
       if(b.items.get(tmp) >= amt && mtp >= tmpMtp) {
         tmpMtp = mtp;
         tup.clear().push(tmp, amt, p, mtp);
@@ -472,32 +465,41 @@
   /**
    * Calculates current efficiency of the multi-crafter.
    * @param {Building} b
-   * @param {Array} ci
-   * @param {Array} bi
-   * @param {Array} aux
-   * @param {boolean} reqOpt
-   * @param {Array} opt
    * @return {number}
    */
-  const _effc = function(b, ci, bi, aux, reqOpt, opt) {
+  const _effc = function(b) {
     if(b.cheating()) return 1.0;
 
     let effc = 1.0, mtp = 1.0;
     if(b.power != null && !b.block.outputsPower) effc *= b.power.status;
     let i, iCap, j, jCap, tmp, tmp1, amt, allAbsent;
 
+    // OPT
+    if(effc > 0.0 && b.delegee.opt.length > 0) {
+      let optTup = _optTup(b);
+      if(b.delegee.reqOpt && optTup == null) {
+        b.delegee.lastOptEffc = 0.0;
+        return 0.0;
+      };
+      if(optTup != null) {
+        effc *= optTup[3];
+        b.delegee.lastOptEffc = optTup[3];
+        optTup.clear();
+      };
+    };
+
     // CI
     if(b.liquids != null) {
       i = 0;
-      iCap = ci.iCap();
+      iCap = b.delegee.ci.iCap();
       while(i < iCap) {
         if(effc < 0.0001) return 0.0;
-        tmp = ci[i];
+        tmp = b.delegee.ci[i];
         if(!(tmp instanceof Array)) {
-          amt = ci[i + 1];
-          mtp = b.efficiencyScale() < 0.0001 ?
+          amt = b.delegee.ci[i + 1];
+          mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
             0.0 :
-            Math.min(b.liquids.get(tmp) / amt * b.delta() * b.efficiencyScale(), 1.0);
+            Math.min(b.liquids.get(tmp) / amt / b.delegee.lastOptEffc * b.delta() * b.efficiencyScale(), 1.0);
         } else {
           j = 0;
           jCap = tmp.iCap();
@@ -505,9 +507,9 @@
           while(j < jCap) {
             if(b.liquids.get(tmp[j]) > 0.01) {
               amt = tmp[j + 1];
-              mtp = b.efficiencyScale() < 0.0001 ?
+              mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
                 0.0 :
-                Math.min(b.liquids.get(tmp[j]) / amt * b.delta() * b.efficiencyScale(), 1.0);
+                Math.min(b.liquids.get(tmp[j]) / amt / b.delegee.lastOptEffc * b.delta() * b.efficiencyScale(), 1.0);
               allAbsent = false;
               break;
             };
@@ -523,12 +525,12 @@
     // BI
     if(b.items != null || b.liquids != null) {
       i = 0;
-      iCap = bi.iCap();
+      iCap = b.delegee.bi.iCap();
       while(i < iCap) {
         if(effc < 0.0001) return 0.0;
-        tmp = bi[i];
+        tmp = b.delegee.bi[i];
         if(!(tmp instanceof Array)) {
-          amt = bi[i + 1];
+          amt = b.delegee.bi[i + 1];
           if(b.items != null && tmp instanceof Item) {
             if(b.items.get(tmp) < amt) return 0.0;
           };
@@ -559,26 +561,16 @@
     // AUX
     if(b.liquids != null) {
       i = 0;
-      iCap = aux.iCap();
+      iCap = b.delegee.aux.iCap();
       while(i < iCap) {
         if(effc < 0.0001) return 0.0;
-        tmp = aux[i];
-        amt = aux[i + 1];
+        tmp = b.delegee.aux[i];
+        amt = b.delegee.aux[i + 1];
         mtp = b.efficiencyScale() < 0.0001 ?
           0.0 :
           Math.min(b.liquids.get(tmp) / amt * b.delta() * b.efficiencyScale(), 1.0);
         effc *= mtp;
         i += 2;
-      };
-    };
-
-    // OPT
-    if(effc > 0.0) {
-      let optTup = _optTup(b, opt);
-      if(reqOpt && optTup == null) return 0.0;
-      if(optTup != null) {
-        effc *= optTup[3];
-        optTup.clear();
       };
     };
 
@@ -593,23 +585,21 @@
   /**
    * Lets a multi-crafter consume items.
    * @param {Building} b
-   * @param {Array} bi
-   * @param {Array} opt
    * @return {void}
    */
-  const consume_itm = function(b, bi, opt) {
+  const consume_itm = function(b) {
     if((b.items == null || !b.items.any()) && b.liquids == null) return;
 
     let i, iCap, j, jCap, tmp, tmp1, amt, p;
 
     // BI
     i = 0;
-    iCap = bi.iCap();
+    iCap = b.delegee.bi.iCap();
     while(i < iCap) {
-      tmp = bi[i];
+      tmp = b.delegee.bi[i];
       if(!(tmp instanceof Array)) {
-        amt = bi[i + 1];
-        p = bi[i + 2];
+        amt = b.delegee.bi[i + 1];
+        p = b.delegee.bi[i + 2];
         if(b.items != null && tmp instanceof Item) {
           FRAG_item.consumeItem(b, tmp, amt, p);
         };
@@ -636,7 +626,7 @@
     };
 
     // OPT
-    let optTup = _optTup(b, opt);
+    let optTup = _optTup(b);
     if(optTup != null) {
       FRAG_item.consumeItem(b, optTup[0], optTup[1], optTup[2]);
       optTup.clear();
@@ -650,30 +640,28 @@
    * @param {Building} b
    * @param {number} progIncLiq
    * @param {number} timeScl
-   * @param {Array} ci
-   * @param {Array} aux
    * @return {void}
    */
-  const consume_liq = function(b, progIncLiq, timeScl, ci, aux) {
+  const consume_liq = function(b, progIncLiq, timeScl) {
     if(b.liquids == null) return;
 
     let i, iCap, j, jCap, tmp, amt;
 
     // CI
     i = 0;
-    iCap = ci.iCap();
+    iCap = b.delegee.ci.iCap();
     while(i < iCap) {
-      tmp = ci[i];
+      tmp = b.delegee.ci[i];
       if(!(tmp instanceof Array)) {
-        amt = ci[i + 1];
-        b.liquids.remove(tmp, Math.min(amt * progIncLiq, timeScl, b.liquids.get(tmp)));
+        amt = b.delegee.ci[i + 1];
+        b.liquids.remove(tmp, Math.min(amt * progIncLiq * timeScl, b.liquids.get(tmp)));
       } else {
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
           if(b.liquids.get(tmp[j]) > 0.01) {
             amt = tmp[j + 1];
-            b.liquids.remove(tmp[j], Math.min(amt * progIncLiq, timeScl, b.liquids.get(tmp[j])));
+            b.liquids.remove(tmp[j], Math.min(amt * progIncLiq * timeScl, b.liquids.get(tmp[j])));
             break;
           };
           j += 2;
@@ -684,10 +672,10 @@
 
     // AUX
     i = 0;
-    iCap = aux.iCap();
+    iCap = b.delegee.aux.iCap();
     while(i < iCap) {
-      tmp = aux[i];
-      amt = aux[i + 1];
+      tmp = b.delegee.aux[i];
+      amt = b.delegee.aux[i + 1];
       b.liquids.remove(tmp, Math.min(amt * progIncLiq, timeScl, b.liquids.get(tmp)));
       i += 2;
     };
@@ -698,12 +686,10 @@
   /**
    * Lets a multi-crafter produce items.
    * @param {Building} b
-   * @param {Array} bo
    * @param {number} failP
-   * @param {Array} fo
    * @return {void}
    */
-  const produce_itm = function(b, bo, failP, fo) {
+  const produce_itm = function(b, failP) {
     let failed = Mathf.chance(failP);
 
     let i, iCap, tmp, amt, p;
@@ -711,11 +697,11 @@
     // BO
     if(!failed) {
       i = 0;
-      iCap = bo.iCap();
+      iCap = b.delegee.bo.iCap();
       while(i < iCap) {
-        tmp = bo[i];
-        amt = bo[i + 1];
-        p = bo[i + 2];
+        tmp = b.delegee.bo[i];
+        amt = b.delegee.bo[i + 1];
+        p = b.delegee.bo[i + 2];
         if(b.items != null && tmp instanceof Item && b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
           FRAG_item.produceItem(b, tmp, amt, p);
         };
@@ -729,12 +715,12 @@
     // FO
     if(b.items != null && failed) {
       i = 0;
-      iCap = fo.iCap();
+      iCap = b.delegee.fo.iCap();
       for(let j = 0; j < 3; j++) {EFF.blackSmog.at(b)};
       while(i < iCap) {
-        tmp = fo[i];
-        amt = fo[i + 1];
-        p = fo[i + 2];
+        tmp = b.delegee.fo[i];
+        amt = b.delegee.fo[i + 1];
+        p = b.delegee.fo[i + 2];
         if(b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
           FRAG_item.produceItem(b, tmp, amt, p);
         };
@@ -750,20 +736,19 @@
    * @param {Building} b
    * @param {number} progIncLiq
    * @param {number} timeScl
-   * @param {Array} co
    * @return {void}
    */
-  const produce_liq = function(b, progIncLiq, timeScl, co) {
+  const produce_liq = function(b, progIncLiq, timeScl) {
     if(b.liquids == null) return;
 
     let i, iCap, tmp, amt;
 
     // CO
     i = 0;
-    iCap = co.iCap();
+    iCap = b.delegee.co.iCap();
     while(i < iCap) {
-      tmp = co[i];
-      amt = co[i + 1];
+      tmp = b.delegee.co[i];
+      amt = b.delegee.co[i + 1];
       b.handleLiquid(b, tmp, Math.min(amt * progIncLiq * timeScl, b.block.liquidCapacity - b.liquids.get(tmp)));
       i += 2;
     };
@@ -774,26 +759,39 @@
   /**
    * Lets a multi-crafter dump resource in it.
    * @param {Building} b
-   * @param {Array} co
    * @param {[Array<Item>, Array<Liquid>]} dumpTup
    * @return {void}
    */
-  const dump = function(b, co, dumpTup) {
+  const dump = function(b, dumpTup) {
     if(dumpTup == null) return;
 
+    let i, iCap;
+
     if(b.liquids != null) {
-      let i = 0, iCap = co.iCap(), tmp, dir;
+      let tmp, dir;
+      i = 0;
+      iCap = b.delegee.co.iCap();
       while(i < iCap) {
-        tmp = co[i];
+        tmp = b.delegee.co[i];
         dir = (b.block.liquidOutputDirections.length > i / 2) ? b.block.liquidOutputDirections[i / 2] : -1;
         b.dumpLiquid(tmp, 2.0, dir);
         i += 2;
       };
 
-      dumpTup[1].forEachFast(liq => b.dumpLiquid(liq, 2.0));
+      i = 0;
+      iCap = dumpTup[1].iCap();
+      while(i < iCap) {
+        b.dumpLiquid(dumpTup[1][i], 2.0);
+        i++;
+      };
     };
-    if(b.items != null && b.items.any()) {
-      dumpTup[0].forEachFast(itm => b.dump(itm));
+    if(b.items != null && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+      i = 0;
+      iCap = dumpTup[0].iCap();
+      while(i < iCap) {
+        b.dump(dumpTup[0][i]);
+        i++;
+      };
     };
   };
   exports.dump = dump;

@@ -130,7 +130,7 @@
    * @example
    * // The property "file" is a path string that needs to be converted
    * temp.setParamParser([
-   *   "file", function(path) {return require(path)};
+   *   "file", function(path) {return require(path)},
    * ]);
    */
   CLS_contentTemplate.setParamParser = function(arr) {
@@ -150,6 +150,8 @@
    * @return {this}
    */
   CLS_contentTemplate.setParent = function(javaCls) {
+    if(javaCls != null && (typeof javaCls !== "function" || javaCls.__javaObject__ == null)) throw new Error("Cannot set parent of ${1} to a non-Java class!".format(this.nm));
+
     this.paramObj.tempParent = javaCls;
 
     return this;
@@ -271,7 +273,7 @@
           str += fun;
         });
         Log.warn(String.multiline(
-          "[LOVEC] Found a ex_xxx method without {noSuper = true} in ${1}:".format(this.nm.color(Pal.accent)),
+          '[LOVEC] Found an "ex_xxx" method without `noSuper = true` in ${1}:'.format(this.nm.color(Pal.accent)),
           nm,
           thisCls.funObj[nm],
           "Full object:",
@@ -294,7 +296,7 @@
    */
   CLS_contentTemplate.build = function(paramObj) {
     const obj = {};
-    const thisFun = this;
+    const thisTemp = this;
     if(this.getParent() == null) ERROR_HANDLER.throw("contentTemplateNoParentJavaClass");
 
     Object._it(this.paramObj, (nm, def) => {
@@ -302,11 +304,11 @@
       if(nm === "tempParent") return;
       // Copy template tags to avoid modification on the template
       if(nm === "tempTags") {
-        obj[nm] = (paramObj == null || paramObj[nm] === undefined) ? def.cpy() : paramObj[nm];
+        obj[nm] = paramObj == null || paramObj[nm] === undefined ? def.cpy() : paramObj[nm];
         return;
       };
 
-      obj[nm] = (paramObj == null || paramObj[nm] === undefined) ? def : paramObj[nm];
+      obj[nm] = paramObj == null || paramObj[nm] === undefined ? def : paramObj[nm];
     });
     this.paramAliasArr.forEachRow(3, (nmPropNew, nmPropOld, def) => {
       // Migrate alias properties to real ones
@@ -324,9 +326,9 @@
       obj[nmProp] = parser.apply(obj, [obj[nmProp]]);
     });
     Object._it(obj, (nm, prop) => {
-      // When the property is a {Prov}, use the content instead
+      // When the property is a `Prov`, use the content instead
       if(prop instanceof Prov) obj[nm] = prop.get();
-      // When the property is a {Cons}, pass the object to it
+      // When the property is a `Cons`, pass the object to it
       if(prop instanceof Cons) obj[nm] = prop.get(obj);
     });
     Object._it(this.funObj, (nm, fun) => {
@@ -364,10 +366,10 @@
 
     // Utility methods on the content created
     obj.ex_getTemp = function() {
-      return thisFun;
+      return thisTemp;
     };
     obj.ex_getTempNm = function() {
-      return thisFun.nm;
+      return thisTemp.nm;
     };
     obj.ex_isSubInsOf = function(nm) {
       return obj.ex_getTemp().isSubTempOf(nm);

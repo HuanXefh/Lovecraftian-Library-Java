@@ -104,7 +104,7 @@
 
       draw(b) {
         if(this.ctGetterTup == null || this.ctGetterTup[0](b) == null) return;
-        let reg = this.ctGetterTup[0](b).uiIcon;
+        let reg = this.ctGetterTup[0](b).fullIcon;
 
         if(this.colorGetterTup == null) {
           Draw.rect(reg, b.x + this.offX, b.y + this.offY, reg.width * 2.0 * this.regScl / Vars.tilesize, reg.height * 2.0 * this.regScl / Vars.tilesize);

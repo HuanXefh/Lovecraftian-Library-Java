@@ -277,7 +277,7 @@
      */
     log(nm) {
       let tup = this.find(nm);
-      if(tup == null) throw new Error("Unregistered log name: " + nm);
+      if(tup == null) Log.err("[LOVEC] Unregistered log name: " + nm);
       let str = tup[1].apply(null, Array.from(arguments).splice(1));
       if(str == null) return;
 

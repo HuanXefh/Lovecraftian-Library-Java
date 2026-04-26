@@ -80,8 +80,8 @@
         b.craft();
       };
 
-      FRAG_recipe.produce_liq(b, b.lastLiqProgInc, b.rcTimeScl, b.co);
-      FRAG_recipe.consume_liq(b, b.lastLiqProgInc, b.rcTimeScl, b.ci, b.aux);
+      FRAG_recipe.produce_liq(b, b.lastLiqProgInc, b.rcTimeScl);
+      FRAG_recipe.consume_liq(b, b.lastLiqProgInc, b.rcTimeScl);
       if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup)) {
         MDL_effect.showAround(b.x, b.y, b.block.updateEffect, b.block.size * 0.5 * Vars.tilesize, 0.0);
       };
@@ -93,7 +93,7 @@
 
     b.totalProgress += b.warmup * b.edelta();
     if(!b.block.delegee.disableDump) {
-      FRAG_recipe.dump(b, b.co, b.dumpTup);
+      FRAG_recipe.dump(b, b.dumpTup);
     };
   };
 
@@ -130,8 +130,8 @@
 
 
   function comp_craft(b) {
-    FRAG_recipe.produce_itm(b, b.bo, b.ex_calcFailP(), b.fo);
-    FRAG_recipe.consume_itm(b, b.bi, b.opt);
+    FRAG_recipe.produce_itm(b, b.ex_calcFailP());
+    FRAG_recipe.consume_itm(b);
     MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);
 
     if(b.hasPayInput) {
@@ -286,8 +286,8 @@
     b.rcEffc = b.ex_calcRcEffcTg();
     b.lastProgInc = b.ex_calcProgInc(b.block.craftTime);
     b.lastLiqProgInc = b.ex_calcProgInc(1.0);
-    b.lastCanAdd = FRAG_recipe._canAdd(b, b.ignoreItemFullness, b.co, b.bo, b.fo);
-    b.dumpTup = FRAG_recipe._dumpTup(b, b.dumpTup, b.bo, b.fo);
+    b.lastCanAdd = FRAG_recipe._canAdd(b);
+    b.dumpTup = FRAG_recipe._dumpTup(b, b.dumpTup);
   };
 
 
@@ -311,6 +311,7 @@
       if(b.liquids != null) b.liquids.clear();
     };
     b.efficiency = 0.0;
+    b.lastOptEffc = 1.0;
 
     b.proximity.each(ob => {
       ob.onProximityUpdate();
@@ -381,7 +382,8 @@
 
 
   function comp_ex_calcRcEffcTg(b) {
-    return FRAG_recipe._effc(b, b.ci, b.bi, b.aux, b.reqOpt, b.opt) * b.attrEffc;
+    b.rcEffcWinMean.add(FRAG_recipe._effc(b));
+    return (b.rcEffcWinMean.hasEnoughData() ? b.rcEffcWinMean.mean() : b.rcEffcWinMean.latest()) * b.attrEffc;
   };
 
 
@@ -654,6 +656,12 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
+        rcEffcWinMean: prov(() => new WindowedMean(5)),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         attrEffc: 0.0,
         /**
          * <INTERNAL>
@@ -673,6 +681,12 @@
          * @instance
          */
         lastCanAdd: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        lastOptEffc: 1.0,
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler

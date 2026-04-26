@@ -68,7 +68,18 @@
   module.exports = newClass().extendClass(PARENT, "RS_baseItem").initClass()
   .setParent(Item)
   .setTags()
-  .setParam({})
+  .setParam({
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    lowPriority: false,
+    buildable: false,
+    cost: 1.0,
+
+
+  })
   .setMethod({
 
 

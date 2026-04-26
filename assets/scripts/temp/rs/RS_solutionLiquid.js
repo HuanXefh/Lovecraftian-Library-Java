@@ -15,8 +15,19 @@
 
 
   function comp_init(liq) {
+    let liqSolv = MDL_content._ct(DB_HANDLER.read("liq-solvent", liq.solvent, null), "rs", true);
+
+    if(liqSolv != null && liq.overwriteVanillaProp) {
+      liq.flammability = liqSolv.flammability;
+      liq.explosiveness = liqSolv.explosiveness;
+      liq.viscosity = liqSolv.viscosity;
+      if(liq.coolant) liq.heatCapacity = liqSolv.heatCapacity;
+    };
+
     if(!liq.skipReactionAssign && liq.intmdParent != null) {
       MDL_event._c_onLoad(() => {
+        // The parent item will react with the solvent liquid
+        if(!(liq.intmdParent instanceof Item)) return;
         let obj = DB_reaction.db["solvationTarget"];
         if(obj[liq.solvent] === undefined) obj[liq.solvent] = [];
         obj[liq.solvent].push(liq.intmdParent.name, liq.name);

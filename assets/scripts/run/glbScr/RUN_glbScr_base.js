@@ -32,6 +32,17 @@
 
 
   /**
+   * Whether this function is a native JS function.
+   * @global
+   * @param {Function} fun
+   * @return {boolean}
+   */
+  isNativeFunction = function(fun) {
+    return typeof fun === "function" && fun.toString().charCodeAt(0) === 10;
+  };
+
+
+  /**
    * Whether some object is instance of any of given classes.
    * <br> <ARGS>: obj, cls1, cls2, cls3, ...
    * @return {boolean}
@@ -282,9 +293,9 @@
    * print(tryProp(b.warmup, b));
    */
   tryProp = function(prop0fun, caller) {
-    if(prop0fun == null || typeof prop0fun !== "function") return prop0fun;
-
-    return prop0fun.call(caller);
+    return prop0fun == null || typeof prop0fun !== "function" ?
+      prop0fun :
+      prop0fun.call(caller);
   };
 
 

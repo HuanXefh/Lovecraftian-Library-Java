@@ -14,7 +14,7 @@
   function comp_ex_findPlaceRsIcon(blk, tx, ty, rs) {
     return blk.ex_isMiningDpore(tx, ty, rs) && !blk.ex_anyDporeRevealed(tx, ty, rs) ?
       VARGEN.iconRegs.questionMark :
-      rs.uiIcon;
+      rs.fullIcon;
   };
 
 

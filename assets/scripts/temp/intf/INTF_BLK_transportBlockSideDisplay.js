@@ -73,7 +73,7 @@
 
 
         /**
-         * <PARAM>: Whether side regions are NOT used for this conveyor.
+         * <PARAM>: Whether side regions are NOT used.
          * @memberof INTF_BLK_transportBlockSideDisplay
          * @instance
          */

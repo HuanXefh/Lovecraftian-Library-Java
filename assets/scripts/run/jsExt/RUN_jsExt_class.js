@@ -130,6 +130,8 @@
         LCTemp[nm] = this;
         LCTempParentMap.put(nm, LCTempParentMap.get(cls.nm).cpy().pushAll(cls.nm));
       };
+    } else {
+      this.nm = "";
     };
 
     return this;

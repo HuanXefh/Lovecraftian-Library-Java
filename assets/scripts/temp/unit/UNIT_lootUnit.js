@@ -108,13 +108,13 @@
       Draw.color(Color.white) :
       Draw.color(Color.white, Tmp.c3.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
     Draw.alpha(1.0 - Interp.pow10In.apply(unit.fin() * 2.0) - (unit.lastDrownFloor == null ? 0.0 : Interp.pow2In.apply(unit.drownTime)));
-    Draw.rect(unit.item().uiIcon, unit.x, unit.y, regW, regW, unit.rotation);
+    Draw.rect(unit.item().fullIcon, unit.x, unit.y, regW, regW, unit.rotation);
     // Heat
     if(MDL_cond._isHot(unit)) {
       Draw.blend(Blending.additive);
       Draw.mixcol(VAR.color.heatMix, 1.0);
       Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * 0.75);
-      Draw.rect(unit.item().uiIcon, unit.x, unit.y, regW, regW, unit.rotation);
+      Draw.rect(unit.item().fullIcon, unit.x, unit.y, regW, regW, unit.rotation);
       Draw.blend();
     };
     Draw.reset();

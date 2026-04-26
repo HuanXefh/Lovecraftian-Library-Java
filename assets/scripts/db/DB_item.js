@@ -275,6 +275,7 @@ const db = {
       "rs-dry",
       "rs-hot",
       "rs-cold",
+      "rs-inact",
 
     ],
 
@@ -311,6 +312,7 @@ const db = {
       "rs-wet", MDL_bundle._term("common", "intmd-wet"),
       "rs-hot", MDL_bundle._term("common", "intmd-hot"),
       "rs-cold", MDL_bundle._term("common", "intmd-cold"),
+      "rs-inact", MDL_bundle._term("common", "intmd-inact"),
 
     ],
 

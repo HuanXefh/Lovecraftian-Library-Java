@@ -80,6 +80,7 @@
     if(Vars.headless) return color;
     let ct = findContent(ct_gn);
     if(ct == null) return color;
+    if(ct.fullIcon == null) throw new Error("Null `fullIcon` for ${1}???".format(ct.name));
     let colors = _pixColors(Core.atlas.getPixmap(ct.fullIcon));
     if(colorInd == null) colorInd = colors.length >= 3 ? 1 : 0;
     if(colorInd >= colors.length) ERROR_HANDLER.throw("indexOutOfBound", colorInd, colors.length);

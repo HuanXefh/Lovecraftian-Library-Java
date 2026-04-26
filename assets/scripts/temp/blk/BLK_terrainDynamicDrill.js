@@ -57,12 +57,12 @@
         let ter = MDL_terrain._ter(t, blk.size);
         let terItmMap = blk.terItmMapMap.get(itm == null ? "null" : itm.name);
         if(terItmMap == null) {
-          thisFun.tmpTup[3] = itm.uiIcon;
+          thisFun.tmpTup[3] = itm.fullIcon;
         } else {
           let rs = MDL_content._ct(terItmMap.get(tryVal(ter, "transition")), "rs");
           thisFun.tmpTup[3] = rs == null ?
-            itm.uiIcon :
-            rs.uiIcon;
+            itm.fullIcon :
+            rs.fullIcon;
         };
       };
     };

@@ -51,7 +51,8 @@
       if(liq.explosiveness > 0.0) liq.stats.addPercent(Stat.explosiveness, liq.explosiveness);
       if(liq.flammability > 0.0) liq.stats.addPercent(Stat.flammability, liq.flammability);
       if(!liq.temperature.fEqual(0.5)) liq.stats.add(Stat.temperature, liq.temperature.perc());
-      if(!liq.heatCapacity.fEqual(0.5)) liq.stats.add(Stat.viscosity, liq.viscosity.perc());
+      if(liq.heatCapacity > 0.0) liq.stats.addPercent(Stat.heatCapacity, liq.heatCapacity);
+      if(!liq.gas && !liq.viscosity.fEqual(0.5)) liq.stats.add(Stat.viscosity, liq.viscosity.perc());
     };
 
     if(liq.effect !== StatusEffects.none) liq.stats.add(fetchStat("lovec", "rs-fluidstatus"), StatValues.content([liq.effect].toSeq()));
@@ -203,6 +204,7 @@
     /* <------------------------------ vanilla ------------------------------ */
 
 
+    heatCapacity: 0.0,
     incinerable: false,
     coolant: false,
     capPuddles: true,

@@ -49,11 +49,6 @@
   .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
-
-
     /**
      * @override
      * @memberof RS_crudeItem

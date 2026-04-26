@@ -185,15 +185,15 @@ public class LCDraw {
 
 
     /**
-     * Draws content UI icon.
+     * Draws content icon.
      */
     public static void content(float x, float y, @Nullable UnlockableContent ct, float size) {
         if(ct == null) return;
 
-        var w = size * Vars.tilesize * (ct.uiIcon.width > ct.uiIcon.height ? 1f : (float)(ct.uiIcon.width / ct.uiIcon.height));
-        var h = size * Vars.tilesize * (ct.uiIcon.height > ct.uiIcon.width ? 1f : (float)(ct.uiIcon.height / ct.uiIcon.width));
+        var w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : (float)(ct.fullIcon.width / ct.fullIcon.height));
+        var h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : (float)(ct.fullIcon.height / ct.fullIcon.width));
 
-        Draw.rect(ct.uiIcon, x, y, w, h);
+        Draw.rect(ct.fullIcon, x, y, w, h);
     };
     // Overloading
     public static void content(float x, float y, @Nullable UnlockableContent ct) {
@@ -207,11 +207,11 @@ public class LCDraw {
     public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size) {
         if(ct == null) return;
 
-        regionIcon(x, y, ct.uiIcon, size);
+        regionIcon(x, y, ct.fullIcon, size);
     };
     // Overloading
     public static void contentIcon(float x, float y, @Nullable UnlockableContent ct) {
-        regionIcon(x, y, ct.uiIcon);
+        regionIcon(x, y, ct.fullIcon);
     };
 
 

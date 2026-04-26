@@ -1885,7 +1885,7 @@
           Mathf.clamp(1.0 - e.getDuration(stackSta) / stackSta.delegee.burstTime),
           2.25, 2.75, 90.0, Color.white, 1.0, true, z,
         );
-        Draw.rect(stackSta.uiIcon, x, y_sta, 4.0, 4.0);
+        Draw.rect(stackSta.fullIcon, x, y_sta, 4.0, 4.0);
       };
     };
 

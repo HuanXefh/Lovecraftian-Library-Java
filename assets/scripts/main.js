@@ -322,7 +322,7 @@
       Vars.content.sectors().each(sec => {
         let reg = Core.atlas.find(sec.name + "-full", Core.atlas.find(sec.name + "-icon", Core.atlas.find(sec.name)));
         if(!reg.found()) return;
-        sec.uiIcon = sec.fullIcon = reg;
+        sec.fullIcon = sec.uiIcon = reg;
       });
     };
 
