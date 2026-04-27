@@ -11,7 +11,7 @@
   /* <---------- component ----------> */
 
 
-  function comp_update(b) {
+  function comp_updateTile(b) {
     b.ex_updateGraph();
   };
 
@@ -209,8 +209,8 @@
       },
 
 
-      update: function() {
-        comp_update(this);
+      updateTile: function() {
+        comp_updateTile(this);
       },
 
 

@@ -270,8 +270,8 @@
       },
 
 
-      canPlaceOn: function(t, team, rot) {
-        return comp_canPlaceOn(this, t, team, rot) && thisFun.funPrev.funPrev.canPlaceOn.apply(this, arguments);
+      canPlaceOn: function thisFun(t, team, rot) {
+        return comp_canPlaceOn(this, t, team, rot) && thisFun.funPrev.funPrev.apply(this, arguments);
       }
       .setProp({
         noSuper: true,

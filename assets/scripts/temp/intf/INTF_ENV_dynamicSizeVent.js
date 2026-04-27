@@ -12,14 +12,19 @@
 
 
   function comp_init(blk) {
+    blk.blendGroup = blk.parent;
     if(blk.overwriteVanillaProp) {
-      blk.blendGroup = blk.parent;
       blk.speedMultiplier = blk.parent.speedMultiplier;
     };
 
     blk.ventSize = Math.round(Mathf.clamp(blk.ventSize, 1, 6));
     blk.offPon2s = MDL_pos.sizeOffsetPon2s[blk.ventSize];
     blk.offDraw = blk.ventSize % 2 === 0 ? 4.0 : 0.0;
+
+    if(blk.parent !== Blocks.air) {
+      // Set vent color to darkened version of floor color
+      blk.mapColor = blk.parent.mapColor.cpy().lerp(Color.black, VAR.param.ventColorDarkLerpA);
+    };
   };
 
 

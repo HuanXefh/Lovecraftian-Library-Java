@@ -14,7 +14,7 @@
   /* <---------- auxiliary ----------> */
 
 
-  const treeParams = DB_env.db["grpParam"]["tree"];
+  const TREE_PARAMS = DB_env.db["grpParam"]["tree"];
 
 
   /* <---------- component ----------> */
@@ -24,9 +24,9 @@
     let treeGrp = blk.treeGrp;
     blk.drawTup = [
       Mathf.clamp(blk.layTree, 76.0, 80.0),
-      readParam(treeParams.read(treeGrp), "scl", 1.0),
-      readParam(treeParams.read(treeGrp), "mag", 1.0),
-      readParam(treeParams.read(treeGrp), "wob", 1.0),
+      readParam(TREE_PARAMS.read(treeGrp), "scl", 1.0),
+      readParam(TREE_PARAMS.read(treeGrp), "mag", 1.0),
+      readParam(TREE_PARAMS.read(treeGrp), "wob", 1.0),
     ];
 
     MDL_event._c_onLoad(() => {

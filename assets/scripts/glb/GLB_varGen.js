@@ -29,8 +29,11 @@
   /**
    * Adds a graph to the update queue.
    * If the graph is already added, this method does nothing.
+   * @param {MathGraph|null} graph
+   * @return {void}
    */
   const queueGraphUpdate = function(graph) {
+    if(graph == null) return;
     updateGraphQueue.pushUnique(graph);
   };
   exports.queueGraphUpdate = queueGraphUpdate;
