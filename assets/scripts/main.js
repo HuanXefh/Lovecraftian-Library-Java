@@ -330,11 +330,17 @@
     // Set up name colors
     if(!Vars.headless && fetchSetting("load-colored-name")) {
       Core.app.post(() => {
-        let fetchColor = rs => {
-          let tmp = (rs.color.r + rs.color.g + rs.color.b) / 3.0;
-          return tmp < 0.1 ?
+        function fetchColor(rs) {
+          let lightness = LCRgb.calcLightness(rs.color);
+          return lightness < 0.1 ?
             Tmp.c1.set(Color.white) :
-            Tmp.c1.set(rs.color).mul(tmp < 0.45 ? VAR.param.ctNmColorMtpHigh : VAR.param.ctNmColorMtp);
+            Tmp.c1.set(rs.color).mul(
+              lightness > 0.75 ?
+                1.0 :
+                lightness > 0.45 ?
+                  VAR.param.ctNmColorMtp :
+                  VAR.param.ctNmColorMtpHigh
+            );
         };
 
         VARGEN.rss.forEachFast(rs => rs.localizedName = rs.localizedName.color(fetchColor(rs)));

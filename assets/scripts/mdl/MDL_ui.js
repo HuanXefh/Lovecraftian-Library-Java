@@ -704,8 +704,8 @@
         });
 
         tb2.left().top().marginLeft(48.0).marginRight(48.0).marginTop(28.0).marginBottom(28.0);
-        tb2.add(flab).left().top().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.left).wrap();
-      }).left().top().width(_screenW() * 0.6 - 40.0).height(140.0);
+        tb2.add(flab).left().top().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.topLeft).wrap().width(_screenW() * 0.6 - 120.0).height(140.0);
+      }).left().top();
       // <TABLE>: spacing
       tb1.table(Styles.none, tb2 => {}).growX();
       // <TABLE>: buttons

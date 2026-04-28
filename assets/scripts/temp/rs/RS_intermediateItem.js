@@ -19,6 +19,10 @@
     itm.extraIntmdParents.inSituMap(nmRs => MDL_content._ct(nmRs, "rs")).compact();
 
     itm.ex_generateIntmdName();
+
+    if(itm.intmdParent != null && itm.hardness === 0) {
+      itm.hardness = itm.intmdParent.hardness;
+    };
   };
 
 

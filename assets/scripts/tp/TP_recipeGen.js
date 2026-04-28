@@ -22,32 +22,14 @@
    * Recipe generator: alloy furnace.
    * Converts materials into alloy metal.
    */
-  const _g_alloyFurnace = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      maxTemp = readParam(paramObj, "maxTemp", Infinity);
-
-    DB_item.db["map"]["recipe"]["alloying"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        rawBi = readParam(paramObj, "bi", Array.air),
-        tempReq = readParam(paramObj, "tempReq", 0.0);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      if(!boolF(itm) || tempReq > maxTemp) return;
-
-      this.addRc(
-        rc, itm.name, "alloying", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.parseRawBi(rawBi, amtO, pO))
-        .__bo(this.processBo(itm, amtO, pO, paramObj))
-        .build(),
-      );
-    });
+  const _g_alloyFurnace = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("alloying");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["alloying"],
+      null,
+      metaObj,
+    );
   });
   exports._g_alloyFurnace = _g_alloyFurnace;
 
@@ -56,36 +38,14 @@
    * Recipe generator: brick kiln.
    * Converts brick blend to brick.
    */
-  const _g_brickKiln = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      maxTemp = readParam(paramObj, "maxTemp", Infinity);
-
-    DB_item.db["map"]["recipe"]["brickBaking"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        nmItmTg = readParam(paramObj, "itmTg", null),
-        tempReq = readParam(paramObj, "tempReq", 0.0);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      let itmTg = MDL_content._ct(nmItmTg, "rs");
-      if(itmTg == null) return;
-      if(!boolF(itm, itmTg) || tempReq > maxTemp) return;
-
-      this.addRc(
-        rc, itm.name, "brick-baking", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.processBo(itmTg, amtO, pO, paramObj))
-        .build(),
-      );
-    });
+  const _g_brickKiln = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("brick-baking");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["brickBaking"],
+      null,
+      metaObj,
+    );
   });
   exports._g_brickKiln = _g_brickKiln;
 
@@ -94,32 +54,14 @@
    * Recipe generator: carbonization furnace.
    * Handles recipes for charcoal, active carbon, etc.
    */
-  const _g_carbonizationFurnace = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      maxTemp = readParam(paramObj, "maxTemp", Infinity);
-
-    DB_item.db["map"]["recipe"]["carbonization"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        rawBo = readParam(paramObj, "bo", Array.air),
-        tempReq = readParam(paramObj, "tempReq", 0.0);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      if(!boolF(itm) || tempReq > maxTemp) return;
-
-      this.addRc(
-        rc, itm.name, "carbonization", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.parseRawBo(rawBo, amtI, pI))
-        .build(),
-      );
-    });
+  const _g_carbonizationFurnace = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("carbonization");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["carbonization"],
+      null,
+      metaObj,
+    );
   });
   exports._g_carbonizationFurnace = _g_carbonizationFurnace;
 
@@ -128,42 +70,14 @@
    * Recipe generator: caster.
    * Converts materials into casting target items.
    */
-  const _g_caster = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      payAmtO = readParam(paramObj, "payAmtO", amtO),
-      maxTemp = readParam(paramObj, "maxTemp", Infinity),
-      sizeCap = readParam(paramObj, "sizeCap", Infinity);
-
-    DB_item.db["map"]["recipe"]["casting"].forEachRow(2, (nmCt, paramObj) => {
-      let
-        isPayTg = readParam(paramObj, "isPayTg", false),
-        rawBi = readParam(paramObj, "bi", Array.air),
-        rawPayi = readParam(paramObj, "payi", Array.air),
-        tempReq = readParam(paramObj, "tempReq", 0.0);
-
-      let ct = MDL_content._ct(nmCt, null, true);
-      if(ct == null) return;
-      if(!boolF(ct) || MDL_entity._size(ct) > sizeCap || tempReq > maxTemp) return;
-
-      let rcBuilder = new CLS_recipeBuilder();
-      !isPayTg ?
-        rcBuilder.__bi(this.parseRawBi(rawBi, amtO, pO)) :
-        rcBuilder.__bi(this.parseRawBi(rawBi, payAmtO, 1.0));
-      rcBuilder.__payi(this.parseRawPayi(rawPayi, payAmtO));
-      !isPayTg ?
-        rcBuilder.__bo(this.processBo(ct, amtO, pO, paramObj)) :
-        rcBuilder.__payo(this.processPayo(ct, payAmtO, paramObj));
-
-      this.addRc(
-        rc, ct.name, "casting", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        rcBuilder.build(),
-      );
-    });
+  const _g_caster = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("casting");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["casting"],
+      null,
+      metaObj,
+    );
   });
   exports._g_caster = _g_caster;
 
@@ -172,41 +86,28 @@
    * Recipe generator: condenser.
    * Converts evaporized liquid into liquid.
    */
-  const _g_condenser = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      time = readParam(paramObj, "time", 1.0),
-      amtI = readParam(paramObj, "amtI", 1);
+  const _g_condenser = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("condensation");
 
     // Steam condensation recipe on top of everything
     const STEAM_REFUND_FRAC = 0.75;
-    this.addRc(
-      rc, "loveclab-gas0misc-steam", "condensation", null,
-      objF,
-      new CLS_recipeBuilder()
-      .__ci(["GROUP: steam", amtI * 6.0 / time])
-      .__co(["loveclab-liq0ore-water", amtI * 6.0 / time * STEAM_REFUND_FRAC])
-      .build(),
+    this.handleSingle(
+      rc,
+      "loveclab-gas0misc-steam",
+      metaObj,
+      {
+        liqI: "GROUP: steam",
+        liqO: "loveclab-liq0ore-water",
+        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * STEAM_REFUND_FRAC,
+      },
     );
 
-    DB_item.db["map"]["recipe"]["condensation"].forEachRow(2, (nmLiq, paramObj) => {
-      let
-        rawCo = readParam(paramObj, "co", Array.air);
-
-      let liq = MDL_content._ct(nmLiq, "rs");
-      if(liq == null) return;
-      if(!boolF(liq)) return;
-
-      this.addRc(
-        rc, liq.name, "condensation", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__ci(this.processCi(liq, amtI * 6.0 / time, paramObj))
-        .__co(this.parseRawCo(rawCo, amtI * 6.0 / time))
-        .build(),
-      );
-    });
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["condensation"],
+      null,
+      metaObj,
+    );
   });
   exports._g_condenser = _g_condenser;
 
@@ -215,43 +116,41 @@
    * Recipe generator: crusher.
    * Crushes biotic materials into biomass powder.
    */
-  const _g_crusherBiomass = new CLS_recipeGenerator(function(rc, paramObj) {
+  const _g_crusherBiomass = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      tg = readParam(paramObj, "tg", "loveclab-item0bio-biomass-powder"),
-      noSawdustRc = readParam(paramObj, "noSawdustRc", false);
+      tg = readParam(metaObj, "tg", "loveclab-item0bio-biomass-powder"),
+      noSawdust = readParam(metaObj, "noSawdust", false);
 
-    // Sawdust recipe on top of everything
-    if(!noSawdustRc) {
-      this.addRc(
-        rc, "loveclab-item0bio-log", "crushing", "sawdust",
-        obj => {obj.tint = Pal.heal; objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi("loveclab-item0bio-log", amtI, pI))
-        .__bo(this.processBo("loveclab-item0bio-sawdust", amtO, pO))
-        .build(),
+    this.setCateg("crushing");
+
+    if(!noSawdust) {
+      this.setTag("sawdust");
+      this.handleSingle(
+        rc,
+        "loveclab-item0bio-log",
+        metaObj,
+        {
+          tint: Pal.heal,
+          itmI: "loveclab-item0bio-log",
+          itmO: "loveclab-item0bio-sawdust",
+        },
       );
+      this.setTag();
     };
 
-    DB_item.db["group"]["biomass"].forEachRow(2, (nmItm, mtp) => {
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      if(!boolF(itm)) return;
-
-      this.addRc(
-        rc, itm.name, "crushing", null,
-        objF,
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, Math.round(amtI * mtp), pI * mtp))
-        .__bo(this.processBo(tg, amtO, pO))
-        .build(),
-      );
-    });
+    this.handleNmNumArr(
+      rc,
+      DB_item.db["group"]["biomass"],
+      null,
+      (mtp, paramObj) => {
+        paramObj.amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * mtp;
+      },
+      metaObj,
+      (itm, metaObj) => ({
+        itmI: itm,
+        itmO: tg,
+      }),
+    );
   });
   exports._g_crusherBiomass = _g_crusherBiomass;
 
@@ -260,35 +159,17 @@
    * Recipe generator: filter.
    * Separates items from slurry, or liquids from morbid solution.
    */
-  const _g_filter = new CLS_recipeGenerator(function(rc, paramObj) {
+  const _g_filter = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      isItemFilter = readParam(paramObj, "isItemFilter", false),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0);
+      isItemFilter = readParam(metaObj, "isItemFilter", false);
 
-    DB_item.db["map"]["recipe"][isItemFilter ? "filtration" : "filtrationLiquid"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        nmItmTg = readParam(paramObj, "itmTg", null);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      let itmTg = MDL_content._ct(nmItmTg, "rs");
-      if(itmTg == null) return;
-      if(!boolF(itm, itmTg)) return;
-
-      this.addRc(
-        rc, itm.name, "filtration", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.processBo(itmTg, amtO, pO, paramObj))
-        .build(),
-      );
-    });
+    this.setCateg("filtration");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"][isItemFilter ? "filtration" : "filtrationLiquid"],
+      null,
+      metaObj,
+    );
   });
   exports._g_filter = _g_filter;
 
@@ -297,42 +178,14 @@
    * Recipe generator: forge.
    * Converts materials into forging target items.
    */
-  const _g_forge = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      payAmtO = readParam(paramObj, "payAmtO", amtO),
-      maxTemp = readParam(paramObj, "maxTemp", Infinity),
-      sizeCap = readParam(paramObj, "sizeCap", Infinity);
-
-    DB_item.db["map"]["recipe"]["forging"].forEachRow(2, (nmCt, paramObj) => {
-      let
-        isPayTg = readParam(paramObj, "isPayTg", false),
-        rawBi = readParam(paramObj, "bi", Array.air),
-        rawPayi = readParam(paramObj, "payi", Array.air),
-        tempReq = readParam(paramObj, "tempReq", 0.0);
-
-      let ct = MDL_content._ct(nmCt, null, true);
-      if(ct == null) return;
-      if(!boolF(ct) || MDL_entity._size(ct) > sizeCap || tempReq > maxTemp) return;
-
-      let rcBuilder = new CLS_recipeBuilder();
-      !isPayTg ?
-        rcBuilder.__bi(this.parseRawBi(rawBi, amtO, pO)) :
-        rcBuilder.__bi(this.parseRawBi(rawBi, payAmtO, 1.0));
-      rcBuilder.__payi(this.parseRawPayi(rawPayi, payAmtO));
-      !isPayTg ?
-        rcBuilder.__bo(this.processBo(ct, amtO, pO, paramObj)) :
-        rcBuilder.__payo(this.processPayo(ct, payAmtO, paramObj));
-
-      this.addRc(
-        rc, ct.name, "forging", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        rcBuilder.build(),
-      );
-    });
+  const _g_forge = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("forging");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["forging"],
+      null,
+      metaObj,
+    );
   });
   exports._g_forge = _g_forge;
 
@@ -341,37 +194,18 @@
    * Recipe generator: mixer.
    * Mixes materials into blend.
    */
-  const _g_mixer = new CLS_recipeGenerator(function(rc, paramObj) {
+  const _g_mixer = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      isBallMill = readParam(paramObj, "isBallMill", false),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      minHardness = readParam(paramObj, "minHardness", 0),
-      maxHardness = readParam(paramObj, "maxHardness", Infinity),
-      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
+      isBallMill = readParam(metaObj, "isBallMill", false);
 
-    DB_item.db["map"]["recipe"][isBallMill ? "ballMillMixing" : "mixing"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        rawBi = readParam(paramObj, "bi", Array.air);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      if(!boolF(itm) || itm.hardness < minHardness || itm.hardness > maxHardness) return;
-
-      let bi = this.parseRawBi(rawBi, amtO, pO);
-      let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nmRs => MDL_content._ct(nmRs, "rs").hardness).pullAll(undefined).unshiftAll(0.0));
-
-      this.addRc(
-        rc, itm.name, isBallMill ? "ball-mill-mixing" : "mixing", null,
-        obj => {if(isBallMill) obj.durabDecMtp = Mathf.lerp(1.0, 1.5 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(bi)
-        .__bo(this.processBo(itm, amtO, pO, paramObj))
-        .build(),
-      );
-    });
+    metaObj.useCalculatedHardness = isBallMill;
+    this.setCateg(isBallMill ? "ball-mill-mixing" : "mixing");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"][isBallMill ? "ballMillMixing" : "mixing"],
+      null,
+      metaObj,
+    );
   });
   exports._g_mixer = _g_mixer;
 
@@ -380,83 +214,79 @@
    * Recipe generator: liquid mixer.
    * Mixes items and liquids to produce a solution.
    */
-  const _g_liquidMixer = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      time = readParam(paramObj, "time", 1.0),
-      amtO = readParam(paramObj, "amtO", 1);
-
-    DB_item.db["map"]["recipe"]["mixingLiquid"].forEachRow(2, (nmLiq, paramObj) => {
-      let
-        rawCi = readParam(paramObj, "ci", Array.air),
-        rawBi = readParam(paramObj, "bi", Array.air);
-
-      let liq = MDL_content._ct(nmLiq, "rs");
-      if(liq == null) return;
-      if(!boolF(liq)) return;
-
-      this.addRc(
-        rc, liq.name, "liquid-mixing", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__ci(this.parseRawCi(rawCi, amtO * 6.0 / time))
-        .__bi(this.parseRawBi(rawBi, amtO, 1.0))
-        .__co(this.processCo(liq, amtO * 6.0 / time, paramObj))
-        .build(),
-      );
-    });
-
-    VARGEN.intmds["rs-sol"].forEachFast(liq => {
-      let parent = liq.delegee.intmdParent;
-      if(parent == null) return;
-      let liqSolv = DB_HANDLER.read("liq-solvent", liq.delegee.solvent, null);
-      if(liqSolv == null) return;
-      if(!boolF(parent, liqSolv)) return;
-
-      this.addRc(
-        rc, parent.name, "liquid-mixing", liqSolv.name,
-        obj => {objF(obj)},
-        new CLS_recipeBuilder()
-        .__ci(this.processCi(liqSolv, amtO * 6.0 / time))
-        .__bi(this.processBi(parent, amtO, 1.0))
-        .__co(this.processCo(liq, amtO * 6.0 / time))
-        .build(),
-      );
-    });
+  const _g_liquidMixer = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("liquid-mixing");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["mixingLiquid"],
+      null,
+      metaObj,
+    );
+    this.handleCtLi(
+      rc,
+      VARGEN.intmds["rs-sol"].filter(liq => liq.delegee.intmdParent != null && DB_HANDLER.read("liq-solvent", liq.delegee.solvent) != null),
+      null,
+      metaObj,
+      (liq, metaObj) => {
+        let liqSolv = DB_HANDLER.read("liq-solvent", liq.delegee.solvent);
+        return {
+          tag: liqSolv.name,
+          liqI: liqSolv,
+          itmI: liq.delegee.intmdParent,
+          liqO: liq,
+        };
+      },
+      liq => liq.delegee.intmdParent.name,
+    );
   });
   exports._g_liquidMixer = _g_liquidMixer;
+
+
+  /**
+   * Recipe generator: pulverizer.
+   * Converts ore items into dust.
+   */
+  const _g_pulverizer = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("pulverization");
+
+    this.setTag("specific");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["pulverization"],
+      null,
+      metaObj,
+    );
+    this.setTag();
+
+    this.handleCtLi(
+      rc,
+      VARGEN.intmds["rs-dust"].filter(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitm => itm.delegee.intmdParent === oitm.delegee.intmdParent)),
+      null,
+      metaObj,
+      (itm, metaObj) => ({
+        itmI: itm.delegee.intmdParent,
+        itmO: itm,
+      }),
+    );
+  });
+  exports._g_pulverizer = _g_pulverizer;
 
 
   /**
    * Recipe generator: purifier.
    * Purifies ore chunks/dusts.
    */
-  const _g_purifier = new CLS_recipeGenerator(function(rc, paramObj) {
+  const _g_purifier = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      tier = readParam(paramObj, "tier", 1),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0);
+      tier = readParam(metaObj, "tier", 1);
 
-    DB_item.db["map"]["recipe"][tier === 2 ? "purificationII" : "purificationI"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        rawBo = readParam(paramObj, "bo", Array.air);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      if(!boolF(itm)) return;
-
-      this.addRc(
-        rc, itm.name, "purification", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.parseRawBo(rawBo, amtI, pI))
-        .build(),
-      );
-    });
+    this.setCateg("purification");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"][tier === 2 ? "purificationII" : "purificationI"],
+      null,
+      metaObj,
+    );
   });
   exports._g_purifier = _g_purifier;
 
@@ -465,124 +295,33 @@
    * Recipe generator: purifier.
    * Purifies ore chunks/dusts. Specially designed for magnetic separators.
    */
-  const _g_purifierMagnetic = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0);
-
-    DB_item.db["map"]["recipe"]["purificationMagnetic"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        rawBo = readParam(paramObj, "bo", Array.air);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      if(!boolF(itm)) return;
-
-      this.addRc(
-        rc, itm.name, "purification", null,
-        objF,
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.parseRawBo(rawBo, amtI, pI))
-        .build(),
-      );
-    });
+  const _g_purifierMagnetic = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("purification");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["purificationMagnetic"],
+      null,
+      metaObj,
+    );
   });
   exports._g_purifierMagnetic = _g_purifierMagnetic;
-
-
-  /**
-   * Recipe generator: pulverizer.
-   * Converts ore items into dust.
-   */
-  const _g_pulverizer = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      minHardness = readParam(paramObj, "minHardness", 0),
-      maxHardness = readParam(paramObj, "maxHardness", Infinity),
-      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
-
-    DB_item.db["map"]["recipe"]["pulverization"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        rawBi = readParam(paramObj, "bi", Array.air),
-        hardness = readParam(paramObj, "hardness", 0);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      if(!boolF(itm)) return;
-
-      this.addRc(
-        rc, itm.name, "pulverization", "specific",
-        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 1.5 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.parseRawBi(rawBi, amtO, pO))
-        .__bo(this.processBo(itm, amtO, pO, paramObj))
-        .build(),
-      );
-    });
-
-    VARGEN.intmds["rs-dust"].forEachCond(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitm => itm.delegee.intmdParent === oitm.delegee.intmdParent), itm => {
-      let itmParent = itm.delegee.intmdParent;
-      if(itmParent == null) return;
-      let hardness = itmParent.hardness;
-      if(!boolF(itm, itmParent) || hardness < minHardness || hardness > maxHardness) return;
-
-      this.addRc(
-        rc, itm.name, "pulverization", null,
-        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 1.5 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itmParent, amtI, pI))
-        .__bo(this.processBo(itm, amtO, pO))
-        .build(),
-      );
-    });
-  });
-  exports._g_pulverizer = _g_pulverizer;
 
 
   /**
    * Recipe generator: roasting furnace.
    * Converts items to their roasted form.
    */
-  const _g_roastingFurnace = new CLS_recipeGenerator(function(rc, paramObj) {
+  const _g_roastingFurnace = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      isConcentrate = readParam(paramObj, "isConcentrate", false),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      maxTemp = readParam(paramObj, "maxTemp", Infinity),
-      maxFlam = readParam(paramObj, "maxFlam", Infinity);
+      isConcentrate = readParam(metaObj, "isConcentrate", false);
 
-    DB_item.db["map"]["recipe"][!isConcentrate ? "roasting" : "concentrateRoasting"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        nmItmTg = readParam(paramObj, "itmTg", null),
-        tempReq = readParam(paramObj, "tempReq", 0.0);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      let itmTg = MDL_content._ct(nmItmTg, "rs");
-      if(itmTg == null) return;
-      if(!boolF(itm, itmTg) || tempReq > maxTemp || itm.flammability > maxFlam || itmTg.flammability > maxFlam) return;
-
-      this.addRc(
-        rc, itm.name, "roasting", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.processBo(itmTg, amtO, pO, paramObj))
-        .build(),
-      );
-    });
+    this.setCateg("roasting");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"][!isConcentrate ? "roasting" : "concentrateRoasting"],
+      null,
+      metaObj,
+    );
   });
   exports._g_roastingFurnace = _g_roastingFurnace;
 
@@ -591,33 +330,18 @@
    * Recipe generator: rock crusher.
    * Converts ore items into chunks.
    */
-  const _g_rockCrusher = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      minHardness = readParam(paramObj, "minHardness", 0),
-      maxHardness = readParam(paramObj, "maxHardness", Infinity),
-      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
-
-    VARGEN.intmds["rs-chunks"].forEachCond(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2"), itm => {
-      let itmParent = itm.delegee.intmdParent;
-      if(itmParent == null) return;
-      let hardness = itmParent.hardness;
-      if(!boolF(itm, itmParent) || hardness < minHardness || hardness > maxHardness) return;
-
-      this.addRc(
-        rc, itm.name, "rock-crushing", null,
-        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itmParent, amtI, pI))
-        .__bo(this.processBo(itm, amtO, pO))
-        .build(),
-      );
-    });
+  const _g_rockCrusher = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("rock-crushing");
+    this.handleCtLi(
+      rc,
+      VARGEN.intmds["rs-chunks"].filter(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+      null,
+      metaObj,
+      (itm, metaObj) => ({
+        itmI: itm.delegee.intmdParent,
+        itmO: itm,
+      }),
+    );
   });
   exports._g_rockCrusher = _g_rockCrusher;
 
@@ -627,47 +351,38 @@
    * Converts some rocks into aggregate.
    * See {@link DB_item}.
    */
-  const _g_rockCrusherAggregate = new CLS_recipeGenerator(function(rc, paramObj) {
+  const _g_rockCrusherAggregate = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      tg = readParam(paramObj, "tg", "loveclab-item0buil-coarse-aggregate"),
-      noAggregateConvert = readParam(paramObj, "noAggregateConvert", false),
-      minHardness = readParam(paramObj, "minHardness", 0),
-      maxHardness = readParam(paramObj, "maxHardness", Infinity),
-      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
+      tg = readParam(metaObj, "tg", "loveclab-item0buil-coarse-aggregate"),
+      noAggregateConvert = readParam(metaObj, "noAggregateConvert", false);
 
-    // Coarse aggregate to fine aggregate on top of everything
+    this.setCateg("aggregate-crushing");
+
     if(!noAggregateConvert) {
-      this.addRc(
-        rc, "loveclab-item0buil-coarse-aggregate", "aggregate-crushing", null,
-        objF,
-        new CLS_recipeBuilder()
-        .__bi(this.processBi("loveclab-item0buil-coarse-aggregate", amtI, pI))
-        .__bo(this.processBo("loveclab-item0buil-fine-aggregate", amtO, pO))
-        .build(),
+      this.handleSingle(
+        rc,
+        "loveclab-item0buil-coarse-aggregate",
+        metaObj,
+        {
+          itmI: "loveclab-item0buil-coarse-aggregate",
+          itmO: "loveclab-item0buil-fine-aggregate",
+        },
       );
     };
 
-    DB_item.db["group"]["aggregate"].forEachRow(2, (nmItm, mtp) => {
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      let hardness = itm.hardness;
-      if(!boolF(itm) || hardness < minHardness || hardness > maxHardness) return;
-
-      this.addRc(
-        rc, itm.name, "aggregate-crushing", null,
-        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI * mtp, pI * mtp))
-        .__bo(this.processBo(tg, amtO, pO))
-        .build(),
-      );
-    });
+    this.handleNmNumArr(
+      rc,
+      DB_item.db["group"]["aggregate"],
+      null,
+      (mtp, paramObj) => {
+        paramObj.amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * mtp;
+      },
+      metaObj,
+      (itm, metaObj) => ({
+        itmI: itm,
+        itmO: tg,
+      }),
+    );
   });
   exports._g_rockCrusherAggregate = _g_rockCrusherAggregate;
 
@@ -677,32 +392,20 @@
    * Converts raw ore blocks into corresponding ore items.
    * See {@link BLK_rawOreBlock}.
    */
-  const _g_rockCrusherRawOreBlock = new CLS_recipeGenerator(function(rc, paramObj) {
-    let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      amtI = readParam(paramObj, "amtI", 1),
-      amtOScl = readParam(paramObj, "amtOScl", 1.0),
-      pO = readParam(paramObj, "pO", 1.0),
-      minHardness = readParam(paramObj, "minHardness", 0),
-      maxHardness = readParam(paramObj, "maxHardness", Infinity),
-      abrasionFactor = readParam(paramObj, "abrasionFactor", 1.0);
-
-    VARGEN.rawOreBlks.forEachFast(blk => {
-      let itm = MDL_content._ct(Object.findKeyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs");
-      if(itm == null) return;
-      let hardness = itm.hardness;
-      if(!boolF(itm) || hardness < minHardness || hardness > maxHardness) return;
-
-      this.addRc(
-        rc, blk.name, "rock-crushing", "raw-ore-block",
-        obj => {obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * abrasionFactor, Mathf.maxZero(hardness - minHardness) / 10.0); objF(obj)},
-        new CLS_recipeBuilder()
-        .__payi(this.processPayi(blk, amtI))
-        .__bo(this.processBo(itm, blk.requirements[0].amount * amtOScl, pO))
-        .build(),
-      );
-    });
+  const _g_rockCrusherRawOreBlock = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("rock-crushing");
+    this.setTag("raw ore block");
+    this.handleCtLi(
+      rc,
+      VARGEN.rawOreBlks,
+      blk => MDL_content._ct(Object.findKeyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs"),
+      metaObj,
+      (itm, metaObj) => ({
+        payI: DB_HANDLER.read("itm-pay-blk", itm.name),
+        itmO: itm,
+        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * DB_HANDLER.read("itm-pay-blk", itm.name).requirements[0].amount,
+      }),
+    );
   });
   exports._g_rockCrusherRawOreBlock = _g_rockCrusherRawOreBlock;
 
@@ -711,55 +414,37 @@
    * Recipe generator: sintering furnace.
    * Converts dust items back into their parent items (the ore at most time).
    */
-  const _g_sinteringFurnace = new CLS_recipeGenerator(function(rc, paramObj) {
+  const _g_sinteringFurnace = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      isConcentrate = readParam(paramObj, "isConcentrate", false),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      amtO = readParam(paramObj, "amtO", 1),
-      pO = readParam(paramObj, "pO", 1.0),
-      maxTemp = readParam(paramObj, "maxTemp", Infinity),
-      maxFlam = readParam(paramObj, "maxFlam", Infinity),
-      ignoreSintTemp = readParam(paramObj, "ignoreSintTemp", false);
+      isConcentrate = readParam(metaObj, "isConcentrate", false);
 
     if(!isConcentrate) {
-      VARGEN.intmds["rs-dust"].forEachCond(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2"), itm => {
-        let itmParent = itm.delegee.intmdParent;
-        if(itmParent == null) return;
-        let tempReq = ignoreSintTemp ? Infinity : DB_HANDLER.read("itm-sint-temp", itmParent, -1.0);
-        if(tempReq < 0.0) return;
-        if(!boolF(itm, itmParent) || (!ignoreSintTemp && tempReq > maxTemp) || itm.flammability > maxFlam || itmParent.flammability > maxFlam) return;
-
-        this.addRc(
-          rc, itm.name, "sintering", null,
-          obj => {if(!ignoreSintTemp) {obj.tempReq = tempReq}; objF(obj)},
-          new CLS_recipeBuilder()
-          .__bi(this.processBi(itm, amtI, pI))
-          .__bo(this.processBo(itmParent, amtO, pO))
-          .build(),
-        );
-      });
+      this.setCateg("sintering");
+      this.handleCtLi(
+        rc,
+        VARGEN.intmds["rs-dust"].filter(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+        null,
+        metaObj,
+        (itm, metaObj) => ({
+          tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
+          itmI: itm,
+          itmO: itm.delegee.intmdParent,
+        }),
+      );
     } else {
-      VARGEN.intmds["rs-chunks"].concat(VARGEN.intmds["rs-dust"]).filter(itm => itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")).forEachFast(itm => {
-        let itmParent = itm.delegee.intmdParent;
-        if(itmParent == null) return;
-        let itmTg = MDL_content._intmd(itm, "rs-ore0conc");
-        if(itmTg == null) return;
-        let tempReq = ignoreSintTemp ? Infinity : DB_HANDLER.read("itm-sint-temp", itmParent, -1.0);
-        if(tempReq < 0.0) return;
-        if(!boolF(itm, itmParent, itmTg) || (!ignoreSintTemp && tempReq > maxTemp) || itm.flammability > maxFlam || itmParent.flammability > maxFlam || itmTg.flammability > maxFlam) return;
-
-        this.addRc(
-          rc, itmTg.name, "concentrate-sintering", null,
-          obj => {if(!ignoreSintTemp) {obj.tempReq = tempReq}; objF(obj)},
-          new CLS_recipeBuilder()
-          .__bi(this.processBi(itm, amtI, pI))
-          .__bo(this.processBo(itmTg, amtO, pO))
-          .build(),
-        );
-      });
+      this.setCateg("concentrate-sintering");
+      this.handleCtLi(
+        rc,
+        VARGEN.intmds["rs-chunks"].concat(VARGEN.intmds["rs-dust"]).filter(itm => itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+        null,
+        metaObj,
+        (itm, metaObj) => ({
+          tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
+          itmI: itm,
+          itmO: itm.delegee.intmdParent,
+        }),
+        itm => itm.delegee.intmdParent.name,
+      );
     };
   });
   exports._g_sinteringFurnace = _g_sinteringFurnace;
@@ -769,32 +454,16 @@
    * Recipe generator: smelter.
    * Converts ore items (or concentrate items) to their refined form.
    */
-  const _g_smelter = new CLS_recipeGenerator(function(rc, paramObj) {
+  const _g_smelter = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      objF = readParam(paramObj, "objF", Function.air),
-      boolF = readParam(paramObj, "boolF", Function.airTrue),
-      isConcentrate = readParam(paramObj, "isConcentrate", false),
-      amtI = readParam(paramObj, "amtI", 1),
-      pI = readParam(paramObj, "pI", 1.0),
-      maxTemp = readParam(paramObj, "maxTemp", Infinity);
+      isConcentrate = readParam(metaObj, "isConcentrate", false);
 
-    DB_item.db["map"]["recipe"][!isConcentrate ? "smelting" : "concentrateSmelting"].forEachRow(2, (nmItm, paramObj) => {
-      let
-        rawBo = readParam(paramObj, "bo", Array.air),
-        tempReq = readParam(paramObj, "tempReq", 0.0);
-
-      let itm = MDL_content._ct(nmItm, "rs");
-      if(itm == null) return;
-      if(!boolF(itm) || tempReq > maxTemp) return;
-
-      this.addRc(
-        rc, itm.name, "smelting", null,
-        obj => {this.setBaseParam(obj, paramObj); objF(obj)},
-        new CLS_recipeBuilder()
-        .__bi(this.processBi(itm, amtI, pI, paramObj))
-        .__bo(this.parseRawBo(rawBo, amtI, pI))
-        .build(),
-      );
-    });
+    this.setCateg("smelting");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"][!isConcentrate ? "smelting" : "concentrateSmelting"],
+      null,
+      metaObj,
+    );
   });
   exports._g_smelter = _g_smelter;

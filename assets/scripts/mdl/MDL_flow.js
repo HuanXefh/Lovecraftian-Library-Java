@@ -156,7 +156,7 @@
 
     dens = DB_HANDLER.read("liq-dens", liq);
     if(dens == null) {
-      let dens_def = liq.gas ? 0.00121 : 1.0;
+      let dens_def = liq.gas ? 0.00129 : 1.0;
       let eleGrp = _eleGrp(liq);
       dens = eleGrp == null ? dens_def : DB_fluid.db["grpParam"]["dens"].read(eleGrp, dens_def);
     };

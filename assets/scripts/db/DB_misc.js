@@ -578,6 +578,83 @@ const db = {
 
 
     /**
+     * Used to check if recipe should be created for some content.
+     * <br> <ROW>: boolF.
+     * <br> <ARGS>: ct, metaObj, paramObj.
+     */
+    rcGenValidCheck: [
+
+      // Check filter in `paramObj`
+      function(ct, metaObj, paramObj) {
+        return readParam(metaObj, "boolF", Function.airTrue)(ct) && readParam(paramObj, "boolF", Function.airTrue)(ct);
+      },
+
+      // Check hardness
+      function(ct, metaObj, paramObj) {
+        let minHardness = readParam(metaObj, "minHardness");
+        let maxHardness = readParam(metaObj, "maxHardness");
+        let hardness = readParam(paramObj, "hardness");
+        return minHardness == null && maxHardness == null ?
+          true :
+          hardness == null ?
+            true :
+            (hardness >= tryVal(minHardness, 0) && hardness <= tryVal(maxHardness, Infinity));
+      },
+
+      // Check temperature requirement
+      function(ct, metaObj, paramObj) {
+        if(!(ct instanceof Item)) return true;
+        let tempReq = readParam(metaObj, "ignoreTempReq", false) ? Infinity : readParam(paramObj, "tempReq");
+        if(tempReq == null) return true;
+        if(tempReq < 0.0) return false;
+        return tempReq <= readParam(metaObj, "maxTemp", Infinity) && ct.flammability <= readParam(metaObj, "maxFlam", Infinity);
+      },
+
+      // Check payload size
+      function(ct, metaObj, paramObj) {
+        if(!instanceOfAny(ct, Block, UnitType)) return true;
+        return MDL_entity._size(ct) <= readParam(metaObj, "sizeCap", Infinity);
+      },
+
+    ],
+
+
+    /**
+     * Used to modify final recipe object.
+     * <br> <ROW>: boolF, objF.
+     * <br> <ARGS-boolF>: ct, metaObj, paramObj.
+     * <br> <ARGS-objF>: obj, metaObj, paramObj.
+     */
+    rcGenObjF: [
+
+      function(ct, metaObj, paramObj) {
+        return readParam(metaObj, "abrasionFactor") != null;
+      }, function(obj, metaObj, paramObj) {
+        let hardness = readParam(paramObj, "hardness");
+        if(hardness == null) return;
+        obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * readParam(metaObj, "abrasionFactor"), Mathf.maxZero(hardness - readParam(metaObj, "minHardness", 0)) / 10.0);
+      },
+
+      function(ct, metaObj, paramObj) {
+        return readParam(metaObj, "ignoreTempReq", false);
+      }, function(obj, metaObj, paramObj) {
+        delete obj.tempReq;
+        delete obj.tempAllowed;
+      },
+
+      function(ct, metaObj, paramObj) {
+        return readParam(metaObj, "abrasionFactor") != null && readParam(metaObj, "useCalculatedHardness", false);
+      }, function(obj, metaObj, paramObj) {
+        let bi = this.parseRawBi(readParam(paramObj, "bi", Array.air), 1, 1.0);
+        if(bi.length === 0) return;
+        let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nmRs => MDL_content._ct(nmRs, "rs").hardness).compact().unshiftAll(0.0));
+        obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * readParam(metaObj, "abrasionFactor"), Mathf.maxZero(hardness - readParam(metaObj, "minHardness", 0)) / 10.0);
+      },
+
+    ],
+
+
+    /**
      * Used to generate default files for ore dictionary.
      * For other mods, simply put .csv files in "Mindustry/saves/mods/data/sharedData/ore-dict".
      * DO NOT MODIFY THIS!
@@ -606,10 +683,17 @@ const db = {
       "titanium", [],
       "tungsten", [],
 
+      "arkycite", [],
       "cryofluid", [],
+      "neoplasm", [],
       "oil", ["loveclab-liq0ore-crude-oil"],
       "slag", [],
       "water", ["loveclab-liq0ore-water"],
+
+      "cyanogen", [],
+      "hydrogen", ["loveclab-gas0chem-hydrogen"],
+      "nitrogen", ["loveclab-gas0chem-nitrogen"],
+      "ozone", ["loveclab-gas0chem-ozone"],
 
     ],
 

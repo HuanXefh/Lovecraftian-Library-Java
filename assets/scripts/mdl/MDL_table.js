@@ -1086,7 +1086,7 @@
         // <TABLE>: recipe root
         let rcTb = new Table(Tex.whiteui);
         rcTb.left().setColor(Pal.darkestGray);
-        buildOrder(rcTb, i, tb1 => {
+        buildOrder(rcTb, i, rcHeader, tb1 => {
           tb1.table(Styles.none, tb2 => {}).left().width(36.0).growY();
           buildInput(tb1, ci, bi, aux, opt, payi);
           tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
@@ -1105,12 +1105,12 @@
       });
     };
 
-    const buildOrder = (tb, i, winTableF) => {
+    const buildOrder = (tb, i, rcHeader, winTableF) => {
       tb.table(Styles.none, tb1 => {
         tb1.left();
         tb1.table(Styles.none, tb2 => {
           tb2.center();
-          tb2.add("[" + Strings.fixed(i, 0) + "]").color(Pal.accent).row();
+          tb2.add("[" + Strings.fixed(i, 0) + "]").color(Pal.accent).tooltip(rcHeader, true).row();
           tb2.add("").row();
           tb2.button(VARGEN.icons.window, Styles.clearNonei, 28.0, () => {
             new CLS_window(

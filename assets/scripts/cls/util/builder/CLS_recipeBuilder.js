@@ -40,38 +40,53 @@
 
 
   /**
+   * @param {CLS_recipeBuilder} builder
+   * @param {string} nmProp
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
+   * @return {CLS_recipeBuilder}
+   */
+  function setIoData(builder, nmProp, arr, shouldMerge) {
+    if(builder.builderObj[nmProp] === undefined || !shouldMerge) {
+      builder.builderObj[nmProp] = arr;
+    } else {
+      builder.builderObj[nmProp] = builder.builderObj[nmProp].concat(arr);
+    };
+
+    return builder;
+  };
+
+
+  /**
    * Sets CI field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__ci = function(arr) {
-    this.builderObj["ci"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__ci = function(arr, shouldMerge) {
+    return setIoData(this, "ci", arr, shouldMerge);
   };
 
 
   /**
    * Sets BI field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__bi = function(arr) {
-    this.builderObj["bi"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__bi = function(arr, shouldMerge) {
+    return setIoData(this, "bi", arr, shouldMerge);
   };
 
 
   /**
    * Sets AUX field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__aux = function(arr) {
-    this.builderObj["aux"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__aux = function(arr, shouldMerge) {
+    return setIoData(this, "aux", arr, shouldMerge);
   };
 
 
@@ -89,49 +104,45 @@
 
   /**
    * Sets OPT field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__opt = function(arr) {
-    this.builderObj["opt"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__opt = function(arr, shouldMerge) {
+    return setIoData(this, "opt", arr, shouldMerge);
   };
 
 
   /**
    * Sets PAYI field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__payi = function(arr) {
-    this.builderObj["payi"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__payi = function(arr, shouldMerge) {
+    return setIoData(this, "payi", arr, shouldMerge);
   };
 
 
   /**
    * Sets CO field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__co = function(arr) {
-    this.builderObj["co"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__co = function(arr, shouldMerge) {
+    return setIoData(this, "co", arr, shouldMerge);
   };
 
 
   /**
    * Sets BO field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__bo = function(arr) {
-    this.builderObj["bo"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__bo = function(arr, shouldMerge) {
+    return setIoData(this, "bo", arr, shouldMerge);
   };
 
 
@@ -149,25 +160,23 @@
 
   /**
    * Sets FO field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__fo = function(arr) {
-    this.builderObj["fo"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__fo = function(arr, shouldMerge) {
+    return setIoData(this, "fo", arr, shouldMerge);
   };
 
 
   /**
    * Sets PAYO field.
-   * @param {Array|unset} [arr]
+   * @param {Array} arr
+   * @param {boolean|unset} [shouldMerge]
    * @return {this}
    */
-  CLS_recipeBuilder.prototype.__payo = function(arr) {
-    this.builderObj["payo"] = tryVal(arr, Array.air);
-
-    return this;
+  CLS_recipeBuilder.prototype.__payo = function(arr, shouldMerge) {
+    return setIoData(this, "payo", arr, shouldMerge);
   };
 
 
