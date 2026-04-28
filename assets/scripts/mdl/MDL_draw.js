@@ -128,7 +128,7 @@
 
 
   /**
-   * Draw random overlay, see {@link BLK_materialFloor}.
+   * Draw random overlay, see {@link ENV_materialFloor}.
    * @param {Tile|null} t
    * @param {Array<TextureRegion>} regs
    * @param {number|unset} [denom] - Larger value means sparser distribution.
@@ -710,6 +710,7 @@
    * Variant of {@link _reg_plan} for block placement.
    * @param {Block|null} blk
    * @param {Tile|null} t
+   * @param {number} ang
    * @param {ColorGn|unset} [color_gn]
    * @return {void}
    */

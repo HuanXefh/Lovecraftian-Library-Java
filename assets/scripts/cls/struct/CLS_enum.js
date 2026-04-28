@@ -10,7 +10,7 @@
 
   /**
    * Used to store fixed values.
-   * Very similiar to {@link CLS_objectBox}.
+   * Very similar to {@link CLS_objectBox}.
    * @class
    * @param {Object} obj
    */
