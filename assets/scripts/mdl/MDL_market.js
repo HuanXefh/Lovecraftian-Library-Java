@@ -48,7 +48,7 @@
     if(_bitHash(amt) === hash) {
       return amt;
     };
-    Log.warn("[LOVEC] Bit amount does not match the hash value???");
+    console.warn("[LOVEC] Bit amount does not match the hash value???");
     __bitAmt(team, 0.0, isGlobal);
     return 0.0;
   }

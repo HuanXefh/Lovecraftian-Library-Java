@@ -54,7 +54,7 @@
     };
 
     thisFun.tmpTup[3].forEachFast(ot => {
-      MDL_draw._d_areaShrink(ot, (blk.attrMode & MDL_attr.AttrModes.BLOCK) !== 0 ? ot.block().size : 1, valid);
+      MDL_draw._d_areaShrink(ot, (blk.attrMode & AttrModes.BLOCK) !== 0 ? ot.block().size : 1, valid);
     });
   }
   .setProp({

@@ -367,6 +367,98 @@
 
 
   /**
+   * The console object with some debugging methods.
+   * @global
+   */
+  console = {
+
+
+    /**
+     * Logs some text.
+     * @param {string} text
+     * @param {number|unset} [mode]
+     * @return {void}
+     */
+    log: function(text, mode) {
+      if(mode == null) mode = 0;
+      switch(mode) {
+        case 0 :
+          Log.info(text);
+          break;
+        case 1 :
+          Log.warn(text);
+          break;
+        case 2 :
+          Log.err(text);
+          break;
+        case 3 :
+          Log.debug(text);
+          break;
+      };
+    },
+
+
+    /**
+     * Logs some text as warning.
+     * @param {string} text
+     * @return {void}
+     */
+    warn: function(text) {
+      Log.log(text, 1);
+    },
+
+
+    /**
+     * Logs some text as error.
+     * @param {string} text
+     * @return {void}
+     */
+    err: function(text) {
+      Log.log(text, 2);
+    },
+
+
+    /**
+     * Logs some text as debugging info.
+     * @param {string} text
+     * @return {void}
+     */
+    debug: function(text) {
+      Log.log(text, 3);
+    },
+
+
+    /**
+     * Logs some text if given `bool` is false.
+     * @param {boolean} bool
+     * @param {string} text
+     * @param {number|unset} [mode]
+     * @return {void}
+     */
+    assert: function(bool, text, mode) {
+      if(mode == null) mode = 2;
+      if(!bool) console.log(text, mode);
+    },
+
+
+    __COUNT_OBJ__: {},
+
+
+    /**
+     * Counts how many times this method is called.
+     * @param {string|unset} [tag]
+     * @return {void}
+     */
+    count: function(tag) {
+      if(tag == null) tag = "default";
+      console.log("Count for " + tag + ": " + Object.mapIncre(console.__COUNT_OBJ__, tag));
+    },
+
+
+  };
+
+
+  /**
    * Variant of {@link print} to print multiple arguments.
    * Arrays will be flattened.
    * @global

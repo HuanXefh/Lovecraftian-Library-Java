@@ -45,7 +45,7 @@
     };
     if(this.type == null) {
       this.type = "undefined";
-      Log.warn("[LOVEC] Annotation ${1} has undefined type!".format(nm.color(Pal.accent)));
+      console.warn("[LOVEC] Annotation ${1} has undefined type!".format(nm.color(Pal.accent)));
     };
 
     LCAnno[this.name] = this;

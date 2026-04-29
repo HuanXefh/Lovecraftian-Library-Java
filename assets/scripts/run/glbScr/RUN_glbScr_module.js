@@ -25,19 +25,19 @@
   CLS_annotation = require("lovec/cls/struct/CLS_annotation");
   /** @global */
   CLS_interface = require("lovec/cls/struct/CLS_interface");
-  require("lovec/run/RUN_methodPostExt");
-  /** @global */
-  MDL_event = require("lovec/mdl/MDL_event");
-  require("lovec/tp/TP_anno");
-  require("lovec/run/RUN_global");
-  require("lovec/tp/TP_shader");
-  require("lovec/tp/TP_cacheLayer");
-  /** @global */
-  CLS_paramBuilder = require("lovec/cls/util/builder/CLS_paramBuilder");
   /** @global */
   CLS_enum = require("lovec/cls/struct/CLS_enum");
   /** @global */
   CLS_objectBox = require("lovec/cls/struct/CLS_objectBox");
+  require("lovec/run/RUN_methodPostExt");
+  /** @global */
+  MDL_event = require("lovec/mdl/MDL_event");
+  /** @global */
+  CLS_paramBuilder = require("lovec/cls/util/builder/CLS_paramBuilder");
+  require("lovec/tp/TP_anno");
+  require("lovec/run/RUN_global");
+  require("lovec/tp/TP_shader");
+  require("lovec/tp/TP_cacheLayer");
   /** @global */
   CLS_damageTextMode = require("lovec/cls/util/CLS_damageTextMode");
   /** @global */

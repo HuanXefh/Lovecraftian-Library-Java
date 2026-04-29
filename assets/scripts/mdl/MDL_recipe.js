@@ -746,7 +746,7 @@
                   outArr.push(tmpArr, -1.0, -1.0)
               );
         } else {
-          Log.warn("[LOVEC] No content found under ${1}!".format(tg.color(Pal.accent)));
+          console.warn("[LOVEC] No content found under ${1}!".format(tg.color(Pal.accent)));
         };
       } else {
         let ct = MDL_content._ct(tg, null, true);

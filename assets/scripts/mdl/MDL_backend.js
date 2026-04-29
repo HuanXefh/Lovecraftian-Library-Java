@@ -22,12 +22,6 @@
 
 
   const SHOULD_USE_SDL3 = typeof SDLVideo.SDL_SetWindowTitle === "function";
-  const WindowModes = new CLS_enum({
-    INFO: 0,
-    WARN: 1,
-    ERR: 2,
-  });
-  exports.WindowModes = WindowModes;
 
 
   /**
@@ -108,13 +102,13 @@
    * @return {void}
    */
   const showMessage = function thisFun(mode, title, str) {
-    if(mode == null) mode = WindowModes.INFO;
-    if(!WindowModes.has(mode)) return;
+    if(mode == null) mode = LogModes.INFO;
+    if(!LogModes.has(mode)) return;
 
     (SHOULD_USE_SDL3 ? SDLVideo : SDL).SDL_ShowSimpleMessageBox(
-      mode === WindowModes.INFO ?
+      mode === LogModes.INFO ?
         0x00000040 :
-        WindowModes.WARN ?
+        LogModes.WARN ?
           0x00000020 :
           0x00000010,
       tryVal(title, ""),

@@ -752,7 +752,7 @@
   const _d_flow = function thisFun(nmDialFlow) {
     let dialFlowData = fetchDialogFlow(nmDialFlow);
     if(dialFlowData.length === 0) {
-      Log.warn("[LOVEC] Cannot find dialog flow for " + nmDialFlow + "!");
+      console.warn("[LOVEC] Cannot find dialog flow for " + nmDialFlow + "!");
       return;
     };
 

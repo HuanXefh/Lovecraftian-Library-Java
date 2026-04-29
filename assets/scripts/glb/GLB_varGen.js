@@ -105,7 +105,7 @@
    */
   const addKeyBind = function(nm, keyCodeDef, categ) {
     if(bindings[nm] !== undefined) {
-      Log.warn("[LOVEC] Key binding ${1} has already been registered!".format(nm.color(Pal.accent)));
+      console.warn("[LOVEC] Key binding ${1} has already been registered!".format(nm.color(Pal.accent)));
       return false;
     };
     bindings[nm] = KeyBind.add(nm, keyCodeDef, categ);
@@ -287,7 +287,7 @@
           obj[nm].setFilter(Texture.TextureFilter.linear);
           obj[nm].setWrap(Texture.TextureWrap.repeat);
         } catch(err) {
-          Log.warn("[LOVEC] Cannot load noise texture for: " + path);
+          console.warn("[LOVEC] Cannot load noise texture for: " + path);
         };
       });
       return obj;

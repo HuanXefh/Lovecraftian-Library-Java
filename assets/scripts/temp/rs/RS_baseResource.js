@@ -58,7 +58,7 @@
     // `rs.intmdParent` is still a string at this moment
     let parent = !rs.useParentReg ? null : tryVal(rs.intmdParent, null);
     if(parent != null && !Core.atlas.has(parent)) {
-      Log.warn("[LOVEC] Can't find parent texture region:" + parent);
+      console.warn("[LOVEC] Can't find parent texture region:" + parent);
     };
     // Set resource color based on sprite color
     if(!rs.skipColorAssign) {

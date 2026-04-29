@@ -112,7 +112,7 @@
 
       ex_show() {
         if(VARGEN.dialFlowTextLog.length === 0) {
-          Log.warn("[LOVEC] Cannot show log when no dialog flow is being played!");
+          console.warn("[LOVEC] Cannot show log when no dialog flow is being played!");
           return;
         };
         resetDial(this);

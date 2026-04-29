@@ -60,7 +60,7 @@
         lsavJsonVal = MDL_json.parse(MDL_file._lsav());
         plsavJsonVal = MDL_json.parse(MDL_file._plsav());
       } catch(err) {
-        Log.err("[LOVEC] Failed to load LSAV!" + "\n" + err);
+        console.err("[LOVEC] Failed to load LSAV!" + "\n" + err);
         lsavJsonVal = null;
         plsavJsonVal = null;
       };
@@ -149,11 +149,11 @@
       cond = true;
     } else {
       if(val === undefined) {
-        Log.warn("[LOVEC] Passing " + "undefined".color(Pal.remove) + " as LSAV value to " + header.color(Pal.accent) + "!");
+        console.warn("[LOVEC] Passing " + "undefined".color(Pal.remove) + " as LSAV value to " + header.color(Pal.accent) + "!");
       } else if(obj[header] === undefined) {
-        Log.warn("[LOVEC] The LSAV field " + header.color(Pal.accent) + " is " + "undefined".color(Pal.remove) + "!");
+        console.warn("[LOVEC] The LSAV field " + header.color(Pal.accent) + " is " + "undefined".color(Pal.remove) + "!");
       } else if(typeof val !== typeof obj[header]) {
-        Log.warn("[LOVEC] LSAV value for ${1} changed to a different type!".format(header.color(Pal.accent)));
+        console.warn("[LOVEC] LSAV value for ${1} changed to a different type!".format(header.color(Pal.accent)));
       } else {
         cond = true;
       };

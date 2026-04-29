@@ -21,13 +21,14 @@
   /* <---------- base ----------> */
 
 
+  /** @global */
   const AttrModes = new CLS_enum({
     ALL: 0xff,
     FLOOR: 1 << 0,
     BLOCK: 1 << 1,
     OVERLAY: 1 << 2,
-  });
-  exports.AttrModes = AttrModes;
+  })
+  .globalize("AttrModes");
 
 
   /**

@@ -115,14 +115,15 @@
   exports._rotBs = _rotBs;
 
 
+  /** @global */
   const SideFracModes = new CLS_enum({
     front: 0,
     back: 1,
     side: 2,
     nonFront: 3,
     nonBack: 4,
-  });
-  exports.SideFracModes = SideFracModes;
+  })
+  .globalize("SideFracModes");
 
 
   /**

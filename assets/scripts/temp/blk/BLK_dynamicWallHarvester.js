@@ -99,7 +99,7 @@
        * @memberof BLK_dynamicWallHarvester
        * @instance
        */
-      attrMode: MDL_attr.AttrModes.BLOCK,
+      attrMode: AttrModes.BLOCK,
 
 
     })

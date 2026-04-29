@@ -138,8 +138,8 @@
 
     // Set up ore dictionary, EXPERIMENTAL!
     if(PARAM.MODDED && fetchSetting("load-ore-dict")) (function() {
-      Log.info("[LOVEC] Loading " + "ore dictionary".color(Pal.accent) + " settings...");
-      if(!fetchSetting("load-ore-dict-def")) Log.info("[LOVEC] Skipped default lists for ore dictionary.");
+      console.log("[LOVEC] Loading " + "ore dictionary".color(Pal.accent) + " settings...");
+      if(!fetchSetting("load-ore-dict-def")) console.log("[LOVEC] Skipped default lists for ore dictionary.");
 
       let dir = MDL_file.sharedData.child("ore-dict").child("default");
       let verCur = fetchMod("lovec").meta.version;
@@ -255,7 +255,7 @@
       try {
         Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", Vars.content.unit(DB_misc.db["mod"]["menuFlyer"].readRand()));
       } catch(err) {
-        Log.err("[LOVEC] Failed to modify the menu scene:\n" + err);
+        console.err("[LOVEC] Failed to modify the menu scene:\n" + err);
       };
     };
 
@@ -290,7 +290,7 @@
             });
             Sounds.loopBuild = fetchSound("legacy-build");
           } catch(err) {
-            Log.err("[LOVEC] Failed to load legacy sounds:\n" + err);
+            console.err("[LOVEC] Failed to load legacy sounds:\n" + err);
           };
         };
         if(PARAM.SECRET_FITH) {

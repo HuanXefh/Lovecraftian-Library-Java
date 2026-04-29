@@ -138,7 +138,7 @@
         try {
           mesh_fi = thisFun.parseMesh(pla, mesh);
         } catch(err) {
-          Log.err(err);
+          console.err(err);
           mesh_fi = new ShaderSphereMesh(pla, Shaders.unlit, 2);
         };
         return mesh_fi;
@@ -157,7 +157,7 @@
         try {
           mesh_fi = thisFun.parseMesh(pla, mesh);
         } catch(err) {
-          Log.err(err);
+          console.err(err);
           mesh_fi = null;
         };
         return mesh_fi;

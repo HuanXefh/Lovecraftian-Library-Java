@@ -172,7 +172,7 @@
       let returnVal = thisFun.apply(this, arguments);
       meanWin.add(Time.elapsed());
       if(meanWin.hasEnoughData()) {
-        Log.info("[LOVEC] Method cost: ${1} ms.".format(meanWin.mean()));
+        console.log("[LOVEC] Method cost: ${1} ms.".format(meanWin.mean()));
         meanWin.clear();
       };
 

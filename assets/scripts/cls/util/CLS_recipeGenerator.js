@@ -31,7 +31,7 @@
 
   MDL_event._c_onLoad(() => {
     Time.run(60.0, () => {
-      Log.info("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(runCount, rcCount));
+      console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(runCount, rcCount));
     });
   });
 

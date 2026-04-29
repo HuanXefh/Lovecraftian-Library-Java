@@ -58,7 +58,7 @@ CLS_achievement.clear = function() {
     Core.settings.put(achievement.getHeader(), false);
   });
   Core.settings.put("lovec-misc-secret-code-crashed", false);
-  Log.info("[LOVEC] Lovec achievement data has been ${1}.".format("cleared".color(Pal.remove)));
+  console.log("[LOVEC] Lovec achievement data has been ${1}.".format("cleared".color(Pal.remove)));
 }
 .setAnno("debug");
 

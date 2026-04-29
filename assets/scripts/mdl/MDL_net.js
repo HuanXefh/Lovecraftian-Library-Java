@@ -21,12 +21,13 @@
   /* <---------- packet ----------> */
 
 
+  /** @global */
   const PacketModes = new CLS_enum({
     BOTH: 0,
     CLIENT: -1,
     SERVER: 1,
-  });
-  exports.PacketModes = PacketModes;
+  })
+  .globalize("PacketModes");
 
 
   /**

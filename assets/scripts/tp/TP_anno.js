@@ -32,7 +32,7 @@
    * Used to inform method deprecation.
    */
   new CLS_annotation("deprecated", function(nmFun) {
-    Log.warn(
+    console.warn(
       "[LOVEC] A method called (${1}) has been ${2} and will be removed in future updates!".format(nmFun.color(Pal.accent), "deprecated".color(Pal.remove())),
     );
   });
@@ -105,7 +105,7 @@
   new CLS_annotation("console", function() {
     let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown();
     if(!cond) {
-      Log.warn("[LOVEC] Method is only available in ${1}!".format("console".color(Pal.remove)));
+      console.warn("[LOVEC] Method is only available in ${1}!".format("console".color(Pal.remove)));
     };
 
     return !cond;
@@ -118,7 +118,7 @@
   new CLS_annotation("non-console", function() {
     let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown() && OS.username.toHash() !== -1106355917.0;
     if(cond) {
-      Log.warn("[LOVEC] Method is not available in ${1}!".format("console".color(Pal.remove)));
+      console.warn("[LOVEC] Method is not available in ${1}!".format("console".color(Pal.remove)));
     };
 
     return cond;

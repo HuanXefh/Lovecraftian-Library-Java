@@ -104,7 +104,7 @@
        * @memberof  BLK_depthPump
        * @instance
        */
-      attrMode: MDL_attr.AttrModes.OVERLAY,
+      attrMode: AttrModes.OVERLAY,
       /**
        * <INTERNAL>
        * @memberof  BLK_depthPump

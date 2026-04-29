@@ -220,8 +220,8 @@
       } else {
         let superFun = thisCls.funObj[nm];
         if(superFun != null) {
-          if((fetchSetting("test-intf-nosuper-warning") ? true : !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) Log.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(nm.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.nm.color(Pal.accent)));
-          if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) Log.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(nm.color(Pal.accent), fun.argLen, this.nm.color(Pal.accent)));
+          if((fetchSetting("test-intf-nosuper-warning") ? true : !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(nm.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.nm.color(Pal.accent)));
+          if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(nm.color(Pal.accent), fun.argLen, this.nm.color(Pal.accent)));
         };
         // Call super method if defined
         thisCls.funObj[nm] = superFun == null ?
@@ -272,7 +272,7 @@
           str += "> " + nm + "\n";
           str += fun;
         });
-        Log.warn(String.multiline(
+        console.warn(String.multiline(
           '[LOVEC] Found an "ex_xxx" method without `noSuper = true` in ${1}:'.format(this.nm.color(Pal.accent)),
           nm,
           thisCls.funObj[nm],

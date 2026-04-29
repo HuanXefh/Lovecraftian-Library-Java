@@ -38,11 +38,16 @@
    * Evaluates the given string in global scope.
    * @global
    * @param {string} scrStr
+   * @param {string|unset} [nmFi]
    * @return {void}
    */
-  globalEval = function(scrStr) {
-    Vars.mods.scripts.context.evaluateString(SCOPE, scrStr, "globalEval_" + globalEval.ind + ".js", 0);
-    globalEval.ind++;
+  globalEval = function(scrStr, nmFi) {
+    if(typeof nmFi === "string") {
+      Vars.mods.scripts.context.evaluateString(SCOPE, scrStr, nmFi + ".js", 0);
+    } else {
+      Vars.mods.scripts.context.evaluateString(SCOPE, scrStr, "globalEval_" + globalEval.ind + ".js", 0);
+      globalEval.ind++;
+    };
   };
   globalEval.ind = 0;
 
@@ -86,7 +91,7 @@
       );
     } catch(err) {
       cls = null;
-      if(!suppressWarning) Log.warn("[LOVEC] Failed to fetch class:\n" + err);
+      if(!suppressWarning) console.warn("[LOVEC] Failed to fetch class:\n" + err);
     };
 
     return cls;
@@ -373,7 +378,7 @@
             DRAW_TEST.drawF(DRAW_TEST.xGetter(), DRAW_TEST.yGetter(), DRAW_TEST.radGetter(), DRAW_TEST.colorGetter());
           } catch(err) {
             DRAW_TEST.reset();
-            Log.err("[LOVEC] Failed to implement the draw function: \n" + err);
+            console.err("[LOVEC] Failed to implement the draw function: \n" + err);
             return;
           };
           DRAW_TEST.safe = true;
@@ -449,7 +454,7 @@
         if(!__CHECK_CHEAT_STATE__()) return;
         let unit = MDL_pos._unitPlNm(nm);
         if(unit == null) {
-          Log.err("[LOVEC] No player found with name ${1}!".format(String(nm).color(Pal.accent)));
+          console.err("[LOVEC] No player found with name ${1}!".format(String(nm).color(Pal.accent)));
           return;
         };
         Call.unitDestroy(unit.id);
@@ -492,7 +497,7 @@
       if(!__CHECK_CHEAT_STATE__()) return;
       let b = Vars.world.build(tx, ty);
       if(b == null) {
-        Log.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
+        console.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
         return;
       };
       let itm = MDL_content._ct(itm_gn, "rs");
@@ -513,7 +518,7 @@
       if(unit == null) return;
       Vars.state.rules.teams.get(unit.team).cheat = !Vars.state.rules.teams.get(unit.team).cheat;
       Time.run(2.0, () => {
-        Log.info("[LOVEC] Cheat production: " + (Vars.state.rules.teams.get(unit.team).cheat ? "ON" : "OFF").color(Pal.accent));
+        console.log("[LOVEC] Cheat production: " + (Vars.state.rules.teams.get(unit.team).cheat ? "ON" : "OFF").color(Pal.accent));
       });
     }
     .setAnno("console");
@@ -532,7 +537,7 @@
         unit.unapply(StatusEffects.invincible) :
         unit.apply(StatusEffects.invincible, Number.fMax);
       Time.run(2.0, () => {
-        Log.info("[LOVEC] Player invincibility: " + (unit.hasEffect(StatusEffects.invincible) ? "ON" : "OFF").color(Pal.accent));
+        console.log("[LOVEC] Player invincibility: " + (unit.hasEffect(StatusEffects.invincible) ? "ON" : "OFF").color(Pal.accent));
       });
     }
     .setAnno("console");
@@ -547,7 +552,7 @@
       if(!__CHECK_CHEAT_STATE__()) return;
       thisFun.isOn = !thisFun.isOn;
       Time.run(2.0, () => {
-        Log.info("[LOVEC] Core invincibility: " + (thisFun.isOn ? "ON" : "OFF").color(Pal.accent));
+        console.log("[LOVEC] Core invincibility: " + (thisFun.isOn ? "ON" : "OFF").color(Pal.accent));
       });
     }
     .setProp({

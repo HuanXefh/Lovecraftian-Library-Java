@@ -225,28 +225,32 @@
     __INFO_MAP__: new ObjectMap(),
     __WARN_MAP__: new ObjectMap(),
     __ERR_MAP__: new ObjectMap(),
+    __DEBUG_MAP__: new ObjectMap(),
 
 
     /**
      * Registers a new log type.
-     * @param {string} type - <VALS>: "i", "w", "e".
+     * @param {numbers} mode - See {@link LogModes}.
      * @param {string} nm
      * @param {function(): string} strGetter
      * @return {void}
      */
-    add(type, nm, strGetter) {
-      switch(type) {
-        case "i" :
+    add(mode, nm, strGetter) {
+      switch(mode) {
+        case 0 :
           this.__INFO_MAP__.put(nm, strGetter);
           break;
-        case "w" :
+        case 1 :
           this.__WARN_MAP__.put(nm, strGetter);
           break;
-        case "e" :
+        case 2 :
           this.__ERR_MAP__.put(nm, strGetter);
           break;
+        case 3 :
+          this.__DEBUG_MAP__.put(nm, strGetter);
+          break;
         default :
-          throw new Error("Unknown log type: " + type);
+          throw new Error("Unknown log type: " + mode);
       };
     },
 
@@ -254,18 +258,20 @@
     /**
      * Finds log type and string getter for given name.
      * @param {string} nm
-     * @return {[string, function(): string]}
+     * @return {[number, function(): string]|null}
      */
     find(nm) {
       let strGetter;
       strGetter = this.__INFO_MAP__.get(nm);
-      if(strGetter != null) return ["i", strGetter];
+      if(strGetter != null) return [LogModes.I, strGetter];
       strGetter = this.__WARN_MAP__.get(nm);
-      if(strGetter != null) return ["w", strGetter];
+      if(strGetter != null) return [LogModes.W, strGetter];
       strGetter = this.__ERR_MAP__.get(nm);
-      if(strGetter != null) return ["e", strGetter];
+      if(strGetter != null) return [LogModes.E, strGetter];
+      strGetter = this.__DEBUG_MAP__.get(nm);
+      if(strGetter != null) return [LogModes.D, strGetter];
 
-      return strGetter;
+      return null;
     },
 
 
@@ -277,21 +283,11 @@
      */
     log(nm) {
       let tup = this.find(nm);
-      if(tup == null) Log.err("[LOVEC] Unregistered log name: " + nm);
-      let str = tup[1].apply(null, Array.from(arguments).splice(1));
-      if(str == null) return;
+      if(tup == null) console.err("[LOVEC] Unregistered log name: " + nm);
+      let text = tup[1].apply(null, Array.from(arguments).splice(1));
+      if(text == null) return;
 
-      switch(tup[0]) {
-        case "i" :
-          Log.info(str);
-          break;
-        case "w" :
-          Log.warn(str);
-          break;
-        case "e" :
-          Log.err(str);
-          break;
-      };
+      console.log(text, tup[0]);
     },
 
 

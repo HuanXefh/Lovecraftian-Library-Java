@@ -72,7 +72,7 @@
 
     let str_fi = "[Lovec] Data distribution:\n";
     thisFun.tmpArr.forEachFast(str => str_fi += "\n" + str);
-    Log.info(str_fi);
+    console.log(str_fi);
   }
   .setProp({
     tmpArr: [],

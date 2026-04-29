@@ -7,6 +7,7 @@
 
   /**
    * Registers new logs to {@link LOG_HANDLER}.
+   * <br> <IMPORTANT>: {@link LogModes} has not been defined yet, do not use it here!
    */
 
 
@@ -19,20 +20,20 @@
 
   batchCall(LOG_HANDLER, function() {
 
-    this.add("w", "invalidArguments", () => "[LOVEC] ${1}".format("Invalid arguments!".color(Pal.remove)));
-    this.add("w", "notInGame", () => "[LOVEC] ${1}".format("Method is unavailable outside of game!".color(Pal.remove)));
-    this.add("w", "noBuildingFound", (tx, ty) => "[LOVEC] ${1}".format("No building found at (${1}, ${2})!".format(tx, ty).color(Pal.remove)));
+    this.add(1, "invalidArguments", () => "[LOVEC] ${1}".format("Invalid arguments!".color(Pal.remove)));
+    this.add(1, "notInGame", () => "[LOVEC] ${1}".format("Method is unavailable outside of game!".color(Pal.remove)));
+    this.add(1, "noBuildingFound", (tx, ty) => "[LOVEC] ${1}".format("No building found at (${1}, ${2})!".format(tx, ty).color(Pal.remove)));
 
-    this.add("w", "forceModded", () => "[LOVEC] Lovec has been force to ${1}, but no mod requires Lovec to load.".format("MODDED MODE".color(Pal.remove)));
-    this.add("w", "noContentFound", nmCt => "[LOVEC] Content ${1} is not found!".format(nmCt.color(Pal.accent)));
-    this.add("w", "costyContentSearch", nmCt => "[LOVEC] Performing costy search for ${1}!".format(nmCt.color(Pal.accent)));
-    this.add("w", "noCustomShadowRegionFound", nmCt => "[LOVEC] Cannot find custom shadow region for ${1}!".format(nmCt.color(Pal.accent)));
+    this.add(1, "forceModded", () => "[LOVEC] Lovec has been force to ${1}, but no mod requires Lovec to load.".format("MODDED MODE".color(Pal.remove)));
+    this.add(1, "noContentFound", nmCt => "[LOVEC] Content ${1} is not found!".format(nmCt.color(Pal.accent)));
+    this.add(1, "costyContentSearch", nmCt => "[LOVEC] Performing costy search for ${1}!".format(nmCt.color(Pal.accent)));
+    this.add(1, "noCustomShadowRegionFound", nmCt => "[LOVEC] Cannot find custom shadow region for ${1}!".format(nmCt.color(Pal.accent)));
 
 
     /* <------------------------------ debug info ------------------------------ */
 
 
-    this.add("i", "liquidInfo", (tx, ty) => {
+    this.add(0, "liquidInfo", (tx, ty) => {
       if(!Vars.state.isGame()) {
         LOG_HANDLER.log("notInGame");
         return;
@@ -66,7 +67,7 @@
     });
 
 
-    this.add("i", "cepInfo", team => {
+    this.add(0, "cepInfo", team => {
       if(!Vars.state.isGame()) {
         LOG_HANDLER.log("notInGame");
         return;

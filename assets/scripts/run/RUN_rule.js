@@ -52,7 +52,7 @@
         nmWeas.forEachFast(nmWea => {
           let weaEn = VARGEN.weaEns[nmWea];
           weaEn == null ?
-            Log.warn("[LOVEC] Invalid weather name: " + nmWea.color(Pal.remove)) :
+            console.warn("[LOVEC] Invalid weather name: " + nmWea.color(Pal.remove)) :
             weaEnSeq.add(weaEn);
         });
         rules.weather = weaEnSeq;

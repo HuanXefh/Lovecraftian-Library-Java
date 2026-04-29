@@ -348,7 +348,7 @@
       b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
       b.attrEffc = b.attr == null ?
         1.0 :
-        Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, MDL_attr.AttrModes.FLOOR), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
+        Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
     });
   };
 

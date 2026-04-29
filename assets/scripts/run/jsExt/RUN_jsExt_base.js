@@ -138,6 +138,34 @@
 
 
   /**
+   * Creates a global reference to some object.
+   * @template T
+   * @param {T} obj
+   * @param {string} nm
+   * @return {T}
+   */
+  Object.globalize = function(obj, nm) {
+    if(typeof nm !== "string") throw new Error("You must provide a name for global reference! Exception:\n" + nm);
+    registerUniqueName(nm, Object.globalize.nms, "globalize");
+    globalEval(
+      'let cond = false; try {cond = ' + nm + ' !== undefined} catch(err) {cond = false}; if(cond) throw new Error("Cannot globalize an object due to reference conflict! Exception: ' + nm + '")',
+      "globalizeCheck_" + Object.globalize.ind,
+    );
+    Object.globalize.tmp = obj;
+    globalEval(
+      nm + " = Object.globalize.tmp",
+      "globalize_" + Object.globalize.ind,
+    );
+    Object.globalize.ind++;
+
+    return obj;
+  };
+  Object.globalize.ind = 0;
+  Object.globalize.tmp = null;
+  Object.globalize.nms = [];
+
+
+  /**
    * Variant of {@link Object._it} for instance.
    * @func Object#_it
    * @param {function(string, any): void} scr
@@ -171,6 +199,17 @@
    */
   setHiddenProp(Object.prototype, "cloneProp", function(objOld) {
     return Object.cloneProp(this, objOld);
+  });
+
+
+  /**
+   * Variant of {@link Object.globalize} for instance.
+   * @func Object#globalize
+   * @param {string} nm
+   * @return {this}
+   */
+  setHiddenProp(Object.prototype, "globalize", function(nm) {
+    return Object.globalize(this, nm);
   });
 
 
