@@ -585,6 +585,19 @@
 
 
   /**
+   * Gets effect used when recipe is failed.
+   * Nullable for default effect.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
+  const _failEff = function(rcMdl, rcHeader) {
+    return _rcVal(rcMdl, rcHeader, "failEff", _rcBaseVal(rcMdl, "baseFailEff", null));
+  };
+  exports._failEff = _failEff;
+
+
+  /**
    * Gets tooltip bundle piece of this recipe.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
@@ -1061,15 +1074,14 @@
    * Gets script called whenever the building updates.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @return {[function(Building): void, function(Building): void]}
+   * @return {function(Building): void}
    */
   const _updateScr = function(rcMdl, rcHeader) {
     return b => {
       _rcVal(rcMdl, rcHeader, "updateScr", Function.air)(b);
       _rcBaseVal(rcMdl, "baseUpdateScr", Function.air)(b);
     };
-  }
-  .setCache();
+  };
   exports._updateScr = _updateScr;
 
 
@@ -1077,15 +1089,14 @@
    * Gets script called every frame when the building is running.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @return {[function(Building): void, function(Building): void]}
+   * @return {function(Building): void}
    */
   const _runScr = function(rcMdl, rcHeader) {
     return b => {
       _rcVal(rcMdl, rcHeader, "runScr", Function.air)(b);
       _rcBaseVal(rcMdl, "baseRunScr", Function.air)(b);
     };
-  }
-  .setCache();
+  };
   exports._runScr = _runScr;
 
 
@@ -1093,15 +1104,14 @@
    * Gets script called when the building finishes crafting.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @return {[function(Building): void, function(Building): void]}
+   * @return {function(Building): void}
    */
   const _craftScr = function(rcMdl, rcHeader) {
     return b => {
       _rcVal(rcMdl, rcHeader, "craftScr", Function.air)(b);
       _rcBaseVal(rcMdl, "baseCraftScr", Function.air)(b);
     };
-  }
-  .setCache();
+  };
   exports._craftScr = _craftScr;
 
 
@@ -1110,24 +1120,38 @@
    * Won't be called if the building has never been active.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @return {[function(Building): void, function(Building): void]}
+   * @return {function(Building): void}
    */
   const _stopScr = function(rcMdl, rcHeader) {
     return b => {
       _rcVal(rcMdl, rcHeader, "stopScr", Function.air)(b);
       _rcBaseVal(rcMdl, "baseStopScr", Function.air)(b);
     };
-  }
-  .setCache();
+  };
   exports._stopScr = _stopScr;
 
 
   /**
-   * Gets a 4-tuple of recipe scripts.
+   * Gets script called when the crafter fails its recipe.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {function(Building): void}
+   */
+  const _failScr = function(rcMdl, rcHeader) {
+    return b => {
+      _rcVal(rcMdl, rcHeader, "failScr", Function.air)(b);
+      _rcBaseVal(rcMdl, "baseFailScr", Function.air)(b);
+    };
+  };
+  exports._failScr = _failScr;
+
+
+  /**
+   * Gets a 5-tuple of recipe scripts.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @param {Array|unset} [contTup]
-   * @return {[function(Building): void, function(Building): void, function(Building): void, function(Building): void]}
+   * @return {Array<function(Building): void>} - <TUP>: updateScr, runScr, craftScr, stopScr, failScr.
    */
   const _scrTup = function(rcMdl, rcHeader, contTup) {
     const tup = contTup != null ? contTup.clear() : [];
@@ -1137,6 +1161,7 @@
       _runScr(rcMdl, rcHeader),
       _craftScr(rcMdl, rcHeader),
       _stopScr(rcMdl, rcHeader),
+      _failScr(rcMdl, rcHeader),
     );
 
     return tup;

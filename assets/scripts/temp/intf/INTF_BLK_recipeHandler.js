@@ -11,6 +11,12 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_payloadBlock");
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  const STOP_TIME = 360.0;
+
+
   /* <---------- component ----------> */
 
 
@@ -65,15 +71,27 @@
     b.ex_updateRcParam(b.block.delegee.rcMdl, b.rcHeader, false);
     if(b.scrTup != null) b.ex_onRcUpdate();
 
+    b.hasStopped = b.stopTimeCur > STOP_TIME;
+
     if(b.efficiency < 0.0001 || !b.shouldConsume()) {
       b.warmup = Mathf.approachDelta(b.warmup, 0.0, b.block.warmupSpeed);
-      if(b.warmup < 0.1 && b.hasRun) b.hasStopped = true;
+      if(b.hasRun) {
+        if(b.warmup < 0.1) {
+          b.stopTimeCur += Time.delta;
+        } else {
+          b.stopTimeCur = 0.0;
+        };
+      };
     } else {
       b.warmup = Mathf.approachDelta(b.warmup, b.warmupTarget(), b.block.warmupSpeed);
       b.progress += b.lastProgInc * b.warmup;
       if(b.warmup > 0.9) {
         b.hasRun = true;
-        b.hasStopped = b.efficiency < 0.4;
+        if(b.efficiency < 0.4) {
+          b.stopTimeCur += Time.delta;
+        } else {
+          b.stopTimeCur = 0.0;
+        };
       };
       if(b.progress >= 1.0) {
         b.progress %= 1.0;
@@ -99,7 +117,7 @@
 
 
   function comp_updateEfficiencyMultiplier(b) {
-    b.efficiency = b.rcEffc;
+    b.efficiency = b.shouldConsume() ? b.rcEffc : 0.0;
     b.ex_postUpdateEfficiencyMultiplier();
     if(b.validTup != null && !b.validTup[0](b)) b.efficiency = 0.0;
   };
@@ -272,7 +290,7 @@
 
 
   function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rcIconNm), b.block.size);
+    LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rcIconNm), b.block.size, 0.75);
   };
 
 
@@ -340,6 +358,7 @@
     b.attrMax = MDL_recipe._attrMax(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
     b.attrBoostScl = MDL_recipe._attrBoostScl(rcMdl, rcHeader);
     b.attrBoostCap = MDL_recipe._attrBoostCap(rcMdl, rcHeader);
+    b.failEff = MDL_recipe._failEff(rcMdl, rcHeader);
     b.validTup = MDL_recipe._validTup(rcMdl, rcHeader, b.validTup);
     b.scrTup = MDL_recipe._scrTup(rcMdl, rcHeader, b.scrTup);
 
@@ -427,6 +446,12 @@
          * @instance
          */
         disableDump: false,
+        /**
+         * <PARAM>: Effect used when this crafter fails its recipe.
+         * @memberof INTF_BLK_recipeHandler
+         * @instance
+         */
+        failEff: EFF.rcFailSmog,
 
 
       }))
@@ -711,6 +736,18 @@
          * @instance
          */
         hasStopped: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        stopTimeCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        failEff: null,
 
 
       }))
@@ -828,7 +865,6 @@
       }
       .setProp({
         noSuper: true,
-        final: true,
       }),
 
 
@@ -842,7 +878,6 @@
       }
       .setProp({
         noSuper: true,
-        final: true,
       }),
 
 
@@ -856,7 +891,6 @@
       }
       .setProp({
         noSuper: true,
-        final: true,
       }),
 
 
@@ -870,7 +904,19 @@
       }
       .setProp({
         noSuper: true,
-        final: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
+      ex_onRcFail: function() {
+        if(this.scrTup != null) this.scrTup[4](this);
+      }
+      .setProp({
+        noSuper: true,
       }),
 
 
@@ -1022,6 +1068,19 @@
        */
       ex_calcFailP: function() {
         return this.failP;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {Effect}
+       */
+      ex_getFailEff: function() {
+        return tryVal(this.failEff, this.block.delegee.failEff);
       }
       .setProp({
         noSuper: true,

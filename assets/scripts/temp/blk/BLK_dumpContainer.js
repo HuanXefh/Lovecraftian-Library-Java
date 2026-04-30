@@ -40,6 +40,11 @@
   };
 
 
+  function comp_drawSelect(b) {
+    b.ex_drawSelected();
+  };
+
+
 /*
   ========================================
   Section: Application
@@ -121,6 +126,11 @@
       .setProp({
         boolMode: "and",
       }),
+
+
+      drawSelect: function() {
+        comp_drawSelect(this);
+      },
 
 
       write: function(wr) {

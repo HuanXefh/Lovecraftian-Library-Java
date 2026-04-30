@@ -59,6 +59,11 @@
   };
 
 
+  function comp_drawSelect(b) {
+    b.ex_drawSelected();
+  };
+
+
   function comp_ex_updateLootTs(b) {
     MDL_pos._tsRot(b.tile, b.rotation, b.block.size, b.lootTs);
   };
@@ -189,6 +194,11 @@
       .setProp({
         noSuper: true,
       }),
+
+
+      drawSelect: function() {
+        comp_drawSelect(this);
+      },
 
 
       write: function(wr) {

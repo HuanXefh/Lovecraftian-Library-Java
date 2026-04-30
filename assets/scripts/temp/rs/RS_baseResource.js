@@ -46,7 +46,7 @@
     MDL_event._c_onUpdate(() => {
       regInd = !PARAM.SHOULD_SHOW_FLIKERING_ICON_TAG ?
         1 :
-        (Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % regs.length));
+        Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % regs.length);
 
       rs.fullIcon.set(regs[regInd]);
       rs.uiIcon.set(regs[regInd]);

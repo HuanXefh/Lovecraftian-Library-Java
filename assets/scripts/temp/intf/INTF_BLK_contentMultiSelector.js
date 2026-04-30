@@ -47,6 +47,11 @@
   };
 
 
+  function comp_updateTile(b) {
+    b.ex_updateDisplayedCtTg();
+  };
+
+
   function comp_buildConfiguration(b, tb) {
     b.ex_buildSelector(tb);
 
@@ -55,6 +60,15 @@
       b.configure("clear");
       b.deselect();
     }, VARGEN.icons.cross).tooltip(MDL_bundle._info("lovec", "tt-clear-selection"), true)
+  };
+
+
+  function comp_ex_updateDisplayedCtTg(b) {
+    if(Vars.headless) return;
+
+    b.displayedCtTg = b.ctTgs.length === 0 ?
+      null :
+      b.ctTgs[Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % b.ctTgs.length)];
   };
 
 
@@ -141,9 +155,20 @@
          * @instance
          */
         ctTgs: prov(() => []),
+        /**
+         * <INTERNAL>: Content displayed in {@link INTF_B_contentMultiSelector#ex_drawSelected}.
+         * @memberof INTF_B_contentMultiSelector
+         * @instance
+         */
+        displayedCtTg: null,
 
 
       }),
+
+
+      updateTile: function() {
+        comp_updateTile(this);
+      },
 
 
       buildConfiguration: function(tb) {
@@ -230,6 +255,32 @@
        */
       ex_onSelectorUpdate: function() {
 
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_contentMultiSelector
+       * @instance
+       * @return {void}
+       */
+      ex_updateDisplayedCtTg: function() {
+        comp_ex_updateDisplayedCtTg(this);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_contentMultiSelector
+       * @instance
+       * @return {void}
+       */
+      ex_drawSelected: function() {
+        LCDraw.contentIcon(this.x, this.y, this.displayedCtTg, this.block.size, 0.75);
       }
       .setProp({
         noSuper: true,

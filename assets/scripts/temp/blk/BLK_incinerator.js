@@ -65,6 +65,11 @@
   };
 
 
+  function comp_drawSelect(b) {
+    b.ex_drawSelected();
+  };
+
+
 /*
   ========================================
   Section: Application
@@ -161,6 +166,11 @@
       .setProp({
         noSuper: true,
       }),
+
+
+      drawSelect: function() {
+        comp_drawSelect(this);
+      },
 
 
       write: function(wr) {

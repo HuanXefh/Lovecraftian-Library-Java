@@ -88,6 +88,11 @@
     scl: 1.5,
     isBlack: true,
   });
+  exports.rcFailSmog = new MultiEffect(
+    module.exports.blackSmog,
+    module.exports.blackSmog,
+    module.exports.blackSmog,
+  );
   exports.unitDamagedSmog = TP_effect._releaseSmog({
     amt: 1,
     rad: 12.0,

@@ -178,6 +178,19 @@
       /**
        * @memberof INTF_B_contentSelector
        * @instance
+       * @return {void}
+       */
+      ex_drawSelected: function() {
+        LCDraw.contentIcon(this.x, this.y, this.ctTg, this.block.size, 0.75);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_contentSelector
+       * @instance
        * @param {Writes|Reads} wr0rd
        * @return {void}
        */

@@ -716,7 +716,7 @@
     if(b.items != null && failed) {
       i = 0;
       iCap = b.delegee.fo.iCap();
-      for(let j = 0; j < 3; j++) {EFF.blackSmog.at(b)};
+      b.ex_getFailEff().at(b);
       while(i < iCap) {
         tmp = b.delegee.fo[i];
         amt = b.delegee.fo[i + 1];
@@ -726,6 +726,7 @@
         };
         i += 3;
       };
+      b.ex_onRcFail();
     };
   };
   exports.produce_itm = produce_itm;

@@ -166,12 +166,12 @@ public class LCDraw {
     /**
      * Variant of {@link #contentIcon} that uses a drawable texture region instead of unlockable content.
      */
-    public static void regionIcon(float x, float y, TextureRegion reg, float size) {
+    public static void regionIcon(float x, float y, TextureRegion reg, float size, float wScl) {
         float
             x_fi = x - Vars.tilesize * size * 0.5f,
             y_fi = y + Vars.tilesize * size * 0.5f,
-            w = reg.width > reg.height ? 8f : ((reg.width * 8f) / reg.height),
-            h = reg.height > reg.width ? 8f : ((reg.height * 8f) / reg.width);
+            w = (reg.width > reg.height ? 8f : ((reg.width * 8f) / reg.height)) * wScl,
+            h = (reg.height > reg.width ? 8f : ((reg.height * 8f) / reg.width)) * wScl;
 
         Draw.mixcol(Color.darkGray, 1f);
         Draw.rect(reg, x_fi, y_fi - 1f, w, h);
@@ -179,6 +179,9 @@ public class LCDraw {
         Draw.rect(reg, x_fi, y_fi, w, h);
     };
     // Overloading
+    public static void regionIcon(float x, float y, TextureRegion reg, float size) {
+        regionIcon(x, y, reg, size, 1f);
+    };
     public static void regionIcon(float x, float y, TextureRegion reg) {
         regionIcon(x, y, reg, 1);
     };
@@ -204,13 +207,17 @@ public class LCDraw {
     /**
      * Variant of {@link #content} that usually used for {@link Building#drawSelect}, like in drills.
      */
-    public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size) {
+    public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size, float wScl) {
         if(ct == null) return;
-
-        regionIcon(x, y, ct.fullIcon, size);
+        regionIcon(x, y, ct.fullIcon, size, wScl);
     };
     // Overloading
+    public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size) {
+        if(ct == null) return;
+        regionIcon(x, y, ct.fullIcon, size);
+    };
     public static void contentIcon(float x, float y, @Nullable UnlockableContent ct) {
+        if(ct == null) return;
         regionIcon(x, y, ct.fullIcon);
     };
 

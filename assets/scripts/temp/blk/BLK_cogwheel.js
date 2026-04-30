@@ -239,6 +239,24 @@
       },
 
 
+      shouldAmbientSound: function() {
+        return this.rpmCur > 0.0;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      ambientVolume: function() {
+        return Math.min(this.rpmCur / 50.0, 1.0);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
       configTapped: function() {
         return comp_configTapped(this);
       }
