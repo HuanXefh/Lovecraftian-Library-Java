@@ -53,7 +53,11 @@
       -Math.min(-rate * delta, b.liquids.get(liq));
     b.handleLiquid(tryVal(b_f, b), liq, amtTrans);
 
-    return returnFrac ? Math.abs(amtTrans / rate) : Math.abs(amtTrans);
+    return !returnFrac ?
+      Math.abs(amtTrans) :
+      Math.abs(rate) < 0.0001 ?
+        0.0 :
+        Math.abs(amtTrans / rate);
   };
   exports.addLiquid = addLiquid;
 

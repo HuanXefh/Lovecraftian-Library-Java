@@ -189,9 +189,9 @@
         ob = b.torFetchTgs[i];
         if(ob.isAdded() && ob.enabled && !ob.isPayload()) {
           amt = b.torFetchTgs[i + 1];
-          if(ob.block instanceof LiquidSource && ob.source === VARGEN.auxTor) {
+          if(ob.block instanceof LiquidSource) {
             // Liquid source gives 100.0 RPM, for test
-            val += 100.0;
+            if(ob.source === VARGEN.auxTor) val += 100.0;
           } else {
             val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true, true) * amt * 60.0;
           };
