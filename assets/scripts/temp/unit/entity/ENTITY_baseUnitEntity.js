@@ -23,6 +23,11 @@
   };
 
 
+  function comp_acceptsItem(unit, itm) {
+    return !unit.type.delegee.itmBlacklist.includes(itm.name);
+  };
+
+
   function comp_validMine(unit, t, checkDst) {
     return t != null
       && !MDL_content._hasTag(t.overlay(), "blk-dpore")
@@ -73,6 +78,14 @@
     }
     .setProp({
       noSuper: true,
+    }),
+
+
+    acceptsItem: function(itm) {
+      return comp_acceptsItem(this, itm);
+    }
+    .setProp({
+      boolMode: "and",
     }),
 
 

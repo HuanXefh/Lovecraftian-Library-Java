@@ -135,13 +135,13 @@
          * @memberof INTF_BLK_payloadBlock
          * @instance
          */
-        payInputSideFracMode: SideFracModes.nonFront,
+        payInputSideFracMode: SideFracModes.FRONT,
         /**
          * <PARAM>: Determines which sides can be used for output.
          * @memberof INTF_BLK_payloadBlock
          * @instance
          */
-        payOutputSideFracMode: SideFracModes.front,
+        payOutputSideFracMode: SideFracModes.FRONT,
 
 
       }),

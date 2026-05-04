@@ -19,6 +19,40 @@
 
 
   /**
+   * Recipe generator: auxiliary fluid producer.
+   * Produces auxiliary fluid base on temperature.
+   */
+  const _g_auxTemp = new CLS_recipeGenerator(function(rc, metaObj) {
+    let
+      tg = readParam(metaObj, "tg"),
+      maxTemp = readParam(metaObj, "maxTemp"),
+      tempGap = readParam(metaObj, "tempGap", 300.0);
+
+    if(tg == null) ERROR_HANDLER.throw("nullArgument", "tg");
+    if(maxTemp == null) ERROR_HANDLER.throw("nullArgument", "maxTemp");
+
+    this.setCateg("aux");
+    let i = 1, tempCur = tempGap;
+    while(tempCur <= maxTemp) {
+      this.handleSingle(
+        rc,
+        tg,
+        metaObj,
+        {
+          tag: i,
+          tempReq: tempCur,
+          liqO: tg,
+          amtO: i / 6.0,
+        },
+      );
+      i++;
+      tempCur += tempGap;
+    };
+  });
+  exports._g_auxTemp = _g_auxTemp;
+
+
+  /**
    * Recipe generator: alloy furnace.
    * Converts materials into alloy metal.
    */
@@ -191,6 +225,38 @@
 
 
   /**
+   * Recipe generator: heat exchanger.
+   * Produces heat from hot fluids.
+   */
+  const _g_heaterExchange = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("heating");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["heatingExchange"],
+      null,
+      metaObj,
+    );
+  });
+  exports._g_heaterExchange = _g_heaterExchange;
+
+
+  /**
+   * Recipe generator: gas heater.
+   * Heats up some gases.
+   */
+  const _g_heaterGas = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("heating");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["heatingGas"],
+      null,
+      metaObj,
+    );
+  });
+  exports._g_heaterGas = _g_heaterGas;
+
+
+  /**
    * Recipe generator: mixer.
    * Mixes materials into blend.
    */
@@ -260,7 +326,7 @@
 
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-dust"].filter(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitm => itm.delegee.intmdParent === oitm.delegee.intmdParent)),
+      VARGEN.intmds["rs-dust"].filter(itm => !DB_item.db["map"]["recipe"]["pulverization"].colIncludes(itm.name, 2, 0) && !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitm => itm.delegee.intmdParent === oitm.delegee.intmdParent)),
       null,
       metaObj,
       (itm, metaObj) => ({
@@ -281,12 +347,31 @@
       tier = readParam(metaObj, "tier", 1);
 
     this.setCateg("purification");
-    this.handle2Arr(
-      rc,
-      DB_item.db["map"]["recipe"][tier === 2 ? "purificationII" : "purificationI"],
-      null,
-      metaObj,
-    );
+    if(tier !== 0) {
+      this.handle2Arr(
+        rc,
+        DB_item.db["map"]["recipe"][tier === 2 ? "purificationII" : "purificationI"],
+        null,
+        metaObj,
+      );
+    } else {
+      metaObj.paramObjF = paramObj => {
+        if(MDL_cond._isWaste(paramObj.bo[0])) {
+          // No purification target
+          paramObj.shouldSkip = true;
+          return;
+        };
+        // Discard byproducts, double waste output amount
+        paramObj.bo = paramObj.bo.slice(0, 6);
+        paramObj.bo[4] *= 2.0;
+      };
+      this.handle2Arr(
+        rc,
+        DB_item.db["map"]["recipe"]["purificationI"],
+        null,
+        metaObj,
+      );
+    };
   });
   exports._g_purifier = _g_purifier;
 
@@ -305,6 +390,41 @@
     );
   });
   exports._g_purifierMagnetic = _g_purifierMagnetic;
+
+
+  /**
+   * Recipe generator: mixing reactor.
+   * Handles regular chemical reactions.
+   */
+  const _g_reactorMixing = new CLS_recipeGenerator(function(rc, metaObj) {
+    let
+      isGas = readParam(metaObj, "isGas", false);
+
+    this.setCateg(isGas ? "gas-reaction" : "liquid-reaction");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"][isGas ? "reactionGas" : "reactionLiquid"],
+      null,
+      metaObj,
+    );
+  });
+  exports._g_reactorMixing = _g_reactorMixing;
+
+
+  /**
+   * Recipe generator: furnace reactor.
+   * Handles reactions under high temperature.
+   */
+  const _g_reactorMelt = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("melt-reaction");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["reactionMelt"],
+      null,
+      metaObj,
+    );
+  });
+  exports._g_reactorMelt = _g_reactorMelt;
 
 
   /**
@@ -332,9 +452,19 @@
    */
   const _g_rockCrusher = new CLS_recipeGenerator(function(rc, metaObj) {
     this.setCateg("rock-crushing");
+
+    this.setTag("specific");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["rockCrushing"],
+      null,
+      metaObj,
+    );
+    this.setTag();
+
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-chunks"].filter(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+      VARGEN.intmds["rs-chunks"].filter(itm => !DB_item.db["map"]["recipe"]["rockCrushing"].colIncludes(itm.name, 2, 0) && !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
       null,
       metaObj,
       (itm, metaObj) => ({
@@ -393,8 +523,7 @@
    * See {@link BLK_rawOreBlock}.
    */
   const _g_rockCrusherRawOreBlock = new CLS_recipeGenerator(function(rc, metaObj) {
-    this.setCateg("rock-crushing");
-    this.setTag("raw ore block");
+    this.setCateg("raw-ore-block-crushing");
     this.handleCtLi(
       rc,
       VARGEN.rawOreBlks,
@@ -403,7 +532,7 @@
       (itm, metaObj) => ({
         payI: DB_HANDLER.read("itm-pay-blk", itm.name),
         itmO: itm,
-        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * DB_HANDLER.read("itm-pay-blk", itm.name).requirements[0].amount,
+        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name), "blk").requirements[0].amount,
       }),
     );
   });
@@ -441,7 +570,7 @@
         (itm, metaObj) => ({
           tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
           itmI: itm,
-          itmO: itm.delegee.intmdParent,
+          itmO: MDL_content._intmd(itm.delegee.intmdParent, "rs-ore0conc"),
         }),
         itm => itm.delegee.intmdParent.name,
       );

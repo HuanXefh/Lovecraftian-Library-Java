@@ -1070,12 +1070,6 @@
   class PointDefenseWeapon extends Weapon {};
   /** @global mindustry.type.weapons.RepairBeamWeapon */
   class RepairBeamWeapon extends Weapon {};
-  /** @global mindustry.type.AmmoType */
-  class AmmoType {};
-  /** @global mindustry.type.ammo.ItemAmmoType */
-  class ItemAmmoType extends AmmoType {};
-  /** @global mindustry.type.ammo.PowerAmmoType */
-  class PowerAmmoType extends AmmoType {};
   /** @global mindustry.type.Sector */
   class Sector {};
   /** @global mindustry.type.MapLocales */

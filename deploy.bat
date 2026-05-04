@@ -1,7 +1,7 @@
 @echo off
 
 @rem Version of game to launch.
-set launcher=H:\Dropbox\_gm_mdt\Mindustry\Mindustry-BE-Desktop-26996.jar
+set launcher=H:\Dropbox\_gm_mdt\Mindustry\Mindustry-BE-Desktop-27062.jar
 @rem Project path of Lovec (.jar built).
 set LOCAL1=H:\Dropbox\_gm_mdt\lovec\mabo-lovecraftian-library\build\libs\mabo-lovecraftian-libraryDesktop.jar
 @rem Project path of LovecLab.

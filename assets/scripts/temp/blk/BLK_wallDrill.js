@@ -132,7 +132,7 @@
        * @memberof BLK_wallDrill
        * @instance
        */
-      payOutputSideFracMode: SideFracModes.nonFront,
+      payOutputSideFracMode: SideFracModes.NON_FRONT,
 
 
       /* <------------------------------ vanilla ------------------------------ */

@@ -138,6 +138,12 @@
      */
     useLovecDamagePenalty: true,
     /**
+     * <PARAM>: Items (as name) that this unit cannot take.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
+    itmBlacklist: prov(() => []),
+    /**
      * <PARAM>: If larger than 0.0, shield will always be drawn.
      * @memberof UNIT_baseUnit
      * @instance

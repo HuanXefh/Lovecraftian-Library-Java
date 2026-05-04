@@ -49,7 +49,7 @@
 
 
   function comp_created(b) {
-    Time.run(1.0, () => {
+    Time.run(0.0, () => {
       let rcMdl = b.block.delegee.rcMdl;
       if(MDL_recipe._hasHeader(rcMdl, b.rcHeader)) {
         b.ex_updateRcParam(rcMdl, b.rcHeader, true);
@@ -330,6 +330,7 @@
     };
     b.efficiency = 0.0;
     b.lastOptEffc = 1.0;
+    b.rcEffcWinMean.clear();
 
     b.proximity.each(ob => {
       ob.onProximityUpdate();
@@ -362,12 +363,15 @@
     b.validTup = MDL_recipe._validTup(rcMdl, rcHeader, b.validTup);
     b.scrTup = MDL_recipe._scrTup(rcMdl, rcHeader, b.scrTup);
 
-    Time.run(1.0, () => {
+    Time.run(0.0, () => {
       b.hasPayInput = FRAG_recipe._hasInput_pay(b.payi);
       b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
       b.attrEffc = b.attr == null ?
         1.0 :
         Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
+
+      Object.clear(b.consTmpObj);
+      Object.clear(b.prodTmpObj);
     });
   };
 
@@ -387,7 +391,9 @@
           amt = b.co[i + 1];
           tmpVal = (b.block.liquidCapacity - b.liquids.get(liq)) / (amt * b.edelta());
           val = Math.max(val, tmpVal);
-          scl = Math.min(scl, tmpVal);
+          if(!MDL_cond._isAuxiliaryFluid(liq)) {
+            scl = Math.min(scl, tmpVal);
+          };
           hasLiquidOutput = true;
           i += 2;
         };
@@ -396,7 +402,9 @@
       inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rcTimeScl;
     };
 
-    return inc;
+    return isNaN(inc) ?
+      0.0 :
+      inc;
   };
 
 
@@ -724,6 +732,18 @@
          * @instance
          */
         liqAcceptCacheMap: prov(() => new ObjectMap()),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        consTmpObj: prov(() => ({})),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        prodTmpObj: prov(() => ({})),
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
@@ -1107,6 +1127,34 @@
        */
       ex_getBlkPol: function() {
         return MDL_pollution._blkPol(this.block) + this.rcPol;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {UnlockableContent|null} ct
+       * @return {number}
+       */
+      ex_getConsAmt: function(ct) {
+        return ct == null ? 0.0 : tryVal(this.consTmpObj[ct.name], 0.0);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {UnlockableContent|null} ct
+       * @return {number}
+       */
+      ex_getProdAmt: function(ct) {
+        return ct == null ? 0.0 : tryVal(this.prodTmpObj[ct.name], 0.0);
       }
       .setProp({
         noSuper: true,

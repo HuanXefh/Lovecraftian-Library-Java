@@ -30,7 +30,7 @@
 
 
   function comp_created(b) {
-    Time.run(1.0, () => {
+    Time.run(0.0, () => {
       let ob = b.nearby(b.rotation);
       b.ex_toggle(ob);
     });

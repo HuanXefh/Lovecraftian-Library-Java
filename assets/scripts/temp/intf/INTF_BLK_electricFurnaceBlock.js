@@ -283,7 +283,9 @@
        * @return {number}
        */
       ex_calcTempTgFrac: function() {
-        return Math.max(Mathf.clamp(this.tempExt / this.tempSet), this.power.status);
+        return this.tempSet < 0.0001 ?
+          0.0 :
+          Math.max(Mathf.clamp(this.tempExt / this.tempSet), this.power.status);
       }
       .setProp({
         noSuper: true,

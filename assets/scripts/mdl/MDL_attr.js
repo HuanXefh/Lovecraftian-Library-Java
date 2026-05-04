@@ -253,6 +253,22 @@
   /* <---------- special ----------> */
 
 
+  /* light */
+
+
+  let lightVal = 1.0;
+
+
+  /**
+   * Gets current value of light attribute.
+   * @return {number}
+   */
+  const _sumLight = function() {
+    return lightVal;
+  };
+  exports._sumLight = _sumLight;
+
+
   /* rain */
 
 
@@ -335,10 +351,27 @@
 */
 
 
-  MDL_event._c_onWorldLoad(() => {
 
+
+  MDL_event._c_onWorldLoad(() => {
 
     windVec.setToRandomDirection();
 
-
   }, 16225779);
+
+
+
+
+  MDL_event._c_onUpdate(() => {
+
+    lightVal = !Vars.state.isGame() ?
+      1.0 :
+      (
+        Attribute.light.env() + (
+          !Vars.state.rules.lighting ?
+            1.0 :
+            (1.0 - Vars.state.rules.ambientLight.a)
+        )
+      );
+
+  }, 81972173);

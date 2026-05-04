@@ -584,6 +584,11 @@ const db = {
      */
     rcGenValidCheck: [
 
+      // Check `shouldSkip`
+      function(ct, metaObj, paramObj) {
+        return !readParam(paramObj, "shouldSkip", false);
+      },
+
       // Check filter in `paramObj`
       function(ct, metaObj, paramObj) {
         return readParam(metaObj, "boolF", Function.airTrue)(ct) && readParam(paramObj, "boolF", Function.airTrue)(ct);

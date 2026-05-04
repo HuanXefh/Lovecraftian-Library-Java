@@ -58,7 +58,7 @@
   function comp_created(b) {
     b.offConeAng = Mathf.range(180.0);
     b.revealTgs.clear().pushAll(b.block.ex_getRevealTgs(b.tileX(), b.tileY(), b.rotation));
-    Time.run(1.0, () => {
+    Time.run(0.0, () => {
       b.revealQueue.clear().pushAll(b.revealTgs);
       b.revealedInts.forEachFast(int => {
         let ot = Vars.world.tile(int);

@@ -268,7 +268,7 @@
    * @return {this}
    */
   CLS_recipeGenerator.prototype.setCateg = function(categ) {
-    this.__CATEG__ = categ;
+    this.__CATEG__ = tryVal(categ, null);
     return this;
   };
 
@@ -279,7 +279,7 @@
    * @return {this}
    */
   CLS_recipeGenerator.prototype.setTag = function(tag) {
-    this.__TAG__ = tag;
+    this.__TAG__ = tryVal(tag, null);
     return this;
   };
 
@@ -320,12 +320,24 @@
       objF(rcObj);
     };
 
-    let tag = readParam(paramObj, "tag"), lastTag = null;
+    let
+      categ = readParam(paramObj, ["categ", "category"]),
+      lastCateg = null,
+      tag = readParam(paramObj, "tag"),
+      lastTag = null;
+
+    if(categ != null) {
+      lastCateg = this.__CATEG__;
+      this.setCateg(categ);
+    };
     if(tag != null) {
       lastTag = this.__TAG__;
       this.setTag(tag);
     };
     rc["recipe"].write(this.getHeaderName(nmCt), rcObj);
+    if(lastCateg != null) {
+      this.setCateg(lastCateg);
+    };
     if(lastTag != null) {
       this.setTag(lastTag);
     };
@@ -449,18 +461,22 @@
       this.processPayo(tg, payAmtO, metaObj, paramObj);
     });
 
-    readParamAndCall(paramObj, "ci", val => builder.__ci(this.parseRawCi(val, amtO * 6.0 / time), true));
-    readParamAndCall(paramObj, "payCi", val => builder.__ci(this.parseRawCi(val, payAmtO * 6.0 / time), true));
-    readParamAndCall(paramObj, "bi", val => builder.__bi(this.parseRawBi(val, amtO, pO), true));
-    readParamAndCall(paramObj, "liqBi", val => builder.__bi(this.parseRawBi(val, amtO * 6.0, pO), true));
-    readParamAndCall(paramObj, "payBi", val => builder.__bi(this.parseRawBi(val, payAmtO, 1.0), true));
-    readParamAndCall(paramObj, "payi", val => builder.__payi(this.parseRawPayi(val, payAmtO)));
-    readParamAndCall(paramObj, "co", val => builder.__co(this.parseRawCo(val, amtI * 6.0 / time), true));
-    readParamAndCall(paramObj, "payCo", val => builder.__co(this.parseRawCo(val, payAmtI * 6.0 / time), true));
-    readParamAndCall(paramObj, "bo", val => builder.__bo(this.parseRawBo(val, amtI, pI), true));
-    readParamAndCall(paramObj, "liqBo", val => builder.__bo(this.parseRawBo(val, amtI * 6.0, pI), true));
-    readParamAndCall(paramObj, "payBo", val => builder.__bo(this.parseRawBo(val, payAmtI, 1.0), true));
-    readParamAndCall(paramObj, "payo", val => builder.__payo(this.parseRawPayo(val, payAmtI)));
+    readParamAndCall(paramObj, "ci", val => builder.__ci(this.parseRawCi(val, amtO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
+    readParamAndCall(paramObj, "payCi", val => builder.__ci(this.parseRawCi(val, payAmtO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
+    readParamAndCall(paramObj, "bi", val => builder.__bi(this.parseRawBi(val, amtO * readParam(paramObj, "amtOScl", 1.0), pO), true));
+    readParamAndCall(paramObj, "liqBi", val => builder.__bi(this.parseRawBi(val, amtO * 6.0 * readParam(paramObj, "amtOScl", 1.0), pO), true));
+    readParamAndCall(paramObj, "payBi", val => builder.__bi(this.parseRawBi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0), 1.0), true));
+    readParamAndCall(paramObj, "aux", val => builder.__aux(this.parseRawCi(val, amtO / time * readParam(paramObj, "amtOScl", 1.0)), true));
+    readParamAndCall(paramObj, "payAux", val => builder.__aux(this.parseRawCi(val, payAmtO / time * readParam(paramObj, "amtOScl", 1.0)), true));
+    readParamAndCall(paramObj, "payi", val => builder.__payi(this.parseRawPayi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0))));
+    readParamAndCall(paramObj, "co", val => builder.__co(this.parseRawCo(val, amtI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
+    readParamAndCall(paramObj, "payCo", val => builder.__co(this.parseRawCo(val, payAmtI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
+    readParamAndCall(paramObj, "bo", val => builder.__bo(this.parseRawBo(val, amtI * readParam(paramObj, "amtIScl", 1.0), pI), true));
+    readParamAndCall(paramObj, "liqBo", val => builder.__bo(this.parseRawBo(val, amtI * 6.0 * readParam(paramObj, "amtIScl", 1.0), pI), true));
+    readParamAndCall(paramObj, "payBo", val => builder.__bo(this.parseRawBo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0), 1.0), true));
+    readParamAndCall(paramObj, "payo", val => builder.__payo(this.parseRawPayo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0))));
+
+    readParamAndCall(paramObj, "heatO", val => builder.__co(this.processCo("loveclab-aux0aux-heat", val / 600.0 * readParam(metaObj, "heatOScl", 1.0), Object.air), true));
 
     return builder.build();
   };
@@ -523,11 +539,14 @@
     if(ctMapper == null) ctMapper = tmpCt => MDL_content._ct(tmpCt, null, true);
     if(nmCtGetter == null) nmCtGetter = ct => ct.name;
 
+    let paramObjF = readParam(metaObj, "paramObjF");
+
     let ct, paramObj;
     arr.forEachRow(2, (nmCt, tmpParamObj) => {
       ct = ctMapper(nmCt);
       if(ct == null) return;
       paramObj = convertParamObj(tmpParamObj, ct, metaObj);
+      if(paramObjF != null) paramObjF(paramObj);
       if(!this.checkCtValid(ct, metaObj, paramObj)) return;
 
       this.addRc(
@@ -611,6 +630,8 @@
    */
   CLS_recipeGenerator.prototype.run = function(rc, metaObj) {
     MDL_event._c_onLoad(() => {
+      this.setCateg();
+      this.setTag();
       this.setter(rc, metaObj);
     });
     runCount++;

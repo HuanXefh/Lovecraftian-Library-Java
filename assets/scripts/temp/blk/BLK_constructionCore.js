@@ -32,6 +32,7 @@
           blk.techNodes.each(node => {
             node.children.add(TechTree.node(this, [], () => {}));
           });
+          this.alwaysUnlocked = true;
           this.envRequired = blk.envRequired;
           this.envDisabled = blk.envDisabled;
           let itmStacks = [];
@@ -71,7 +72,7 @@
           if(!b.block.ex_checkPlanComplete(b.team, b.delegee.constructionPlan)) {
             b.ex_stopConstruction();
           } else {
-            Time.run(1.0, () => {
+            Time.run(0.0, () => {
               blk.ex_placePlanTg(b.team, b.tileX(), b.tileY(), b.rotation);
             });
             let ot = blk.ex_getPlanT(b.tileX(), b.tileY(), b.rotation, blk.centerPon2.x, blk.centerPon2.y);
@@ -84,7 +85,7 @@
 
     MDL_content.rename(
       blk,
-      blk.placeBlk.localizedName + "(" + MDL_bundle._term("lovec", "construction-core") + ")",
+      blk.placeBlk.localizedName + MDL_text._space() + "(" + MDL_bundle._term("lovec", "construction-core") + ")",
     );
 
     MOD_tmi._r_constructionCore(blk);
@@ -169,6 +170,9 @@
     if(ot != null) {
       ot.setBlock(blk.placeBlk, team, Mathf.mod(rot + blk.placeOffRot, 4));
       MDL_effect._e_textFade(ot.worldx() + blk.placeBlk.offset, ot.worldy() + blk.placeBlk.offset, MDL_bundle._info("lovec", "construction-complete"), Pal.accent, blk.placeBlk.size * 0.5);
+      Time.run(0.0, () => {
+        if(ot.build != null && ot.build.block === blk.placeBlk) TRIGGER.constructionComplete.fire(ot.build);
+      });
     };
   };
 

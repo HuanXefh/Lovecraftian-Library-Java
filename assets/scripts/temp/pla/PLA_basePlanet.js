@@ -177,7 +177,7 @@
     thisFun.read(run(() => thisFun.readFields(pla, jsonVal)));
 
     // I don't know why but `pla.orbitRadius` is not read in this frame
-    Time.run(1.0, () => {
+    Time.run(0.0, () => {
       pla.orbitTime = Mathf.pow(pla.orbitRadius, 1.5) * 1000.0;
       if(pla.parent != null) {
         pla.parent.children.add(pla);

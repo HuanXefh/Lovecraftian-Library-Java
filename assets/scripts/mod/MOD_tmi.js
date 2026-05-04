@@ -749,12 +749,15 @@
         if(isGen) addSubInfo(rawRc, MDL_bundle._term("lovec", "generated-recipe").color(Color.gray));
         if(failP > 0.0) addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), failP.perc(1)));
 
-        // BLK_furnaceRecipeFactory
+        // For furnaces
         if(MDL_cond._isFurnace(blk)) {
           // Specific
           let tempReq = MDL_recipe._tempReq(rcMdl, rcHeader);
           let tempAllowed = MDL_recipe._tempAllowed(rcMdl, rcHeader);
-          let fuelArr = MDL_fuel._fuelArr(blk);
+          let fuelArr = Array.air;
+          if(blk.ex_isSubInsOf("INTF_BLK_furnaceBlock")) {
+            fuelArr = MDL_fuel._fuelArr(blk);
+          };
 
           // Stat
           if(tempReq > 0.0) addSubInfo(rawRc, MDL_text._statText(fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(tempReq, 2), fetchStatUnit("lovec", "heatunits").localized()));

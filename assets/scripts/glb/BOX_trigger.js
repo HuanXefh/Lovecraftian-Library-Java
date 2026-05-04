@@ -100,6 +100,14 @@ const BOX_trigger = new CLS_objectBox({
 
 
   /**
+   * Triggered whenever a large building is built.
+   * See {@link BLK_constructionCore}.
+   * <br> <ARGS>: b.
+   */
+  constructionComplete: new CLS_eventTrigger("lovec-construction-complete"),
+
+
+  /**
    * Triggered whenever a loot is spawned.
    * <br> <ARGS>: loot.
    */
@@ -108,9 +116,16 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered whenever a loot is explicitly destroyed.
-   * <br> <ARGS>: unit.
+   * <br> <ARGS>: loot.
    */
   lootDestroy: new CLS_eventTrigger("lovec-loot-destroy"),
+
+
+  /**
+   * Triggered whenever a loot is drowned.
+   * <br> <ARGS>: loot.
+   */
+  lootDrown: new CLS_eventTrigger("lovec-loot-drown"),
 
 
   /**

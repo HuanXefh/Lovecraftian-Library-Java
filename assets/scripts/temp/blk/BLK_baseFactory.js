@@ -30,6 +30,14 @@
   };
 
 
+  function comp_created(b) {
+    Time.run(0.0, () => {
+      if(isNaN(b.warmup)) b.warmup = 0.0;
+      if(isNaN(b.progress)) b.progress = 0.0;
+    });
+  };
+
+
   function comp_craft(b) {
     MDL_effect.playAt(b.x, b.y, b.craftSe, Math.min(b.block.ambientSoundVolume * 2.0, 1.0), 1.0, 0.1);
   };
@@ -97,6 +105,11 @@
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({
+
+
+      created: function() {
+        comp_created(this);
+      },
 
 
       craft: function() {

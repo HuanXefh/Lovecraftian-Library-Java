@@ -32,7 +32,18 @@
     newClass().extendClass(PARENT[0], "BLK_baseStorageBlock").initClass()
     .setParent(null)
     .setTags()
-    .setParam({})
+    .setParam({
+
+
+      /**
+       * <PARAM>: If true, this storage block can only store one type of item.
+       * @memberof BLK_baseStorageBlock
+       * @instance
+       */
+      singleTypeOnly: false,
+
+
+    })
     .setMethod({}),
 
 
@@ -43,7 +54,22 @@
     newClass().extendClass(PARENT[1], "B_baseStorageBlock").initClass()
     .setParent(null)
     .setParam({})
-    .setMethod({}),
+    .setMethod({
+
+
+      acceptItem: function(b_f, itm) {
+        return !this.block.delegee.singleTypeOnly ?
+          true :
+          !this.items.any() ?
+            true :
+            this.items.total() === this.items.get(itm);
+      }
+      .setProp({
+        boolMode: "and",
+      }),
+
+
+    }),
 
 
   ];

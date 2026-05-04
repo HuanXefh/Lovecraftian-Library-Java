@@ -225,6 +225,19 @@
 
 
   /**
+   * Variant of {@link _consAmt} for buildings.
+   * @param {ContentGn} ct_gn
+   * @param {Building} b
+   * @return {number}
+   */
+  const _consAmt_b = function(ct_gn, b) {
+    let ct = MDL_content._ct(ct_gn, null, true);
+    return tryFun(b.ex_getConsAmt, b, _consAmt(ct, b.block), ct);
+  };
+  exports._consAmt_b = _consAmt_b;
+
+
+  /**
    * Gets production amount of `ct_gn` by `blk_gn`.
    * @param {ContentGn} ct_gn
    * @param {BlockGn} blk_gn
@@ -255,6 +268,19 @@
   }
   .setCache();
   exports._prodAmt = _prodAmt;
+
+
+  /**
+   * Variant of {@link _prodAmt} for buildings.
+   * @param {ContentGn} ct_gn
+   * @param {Building} b
+   * @return {number}
+   */
+  const _prodAmt_b = function(ct_gn, b) {
+    let ct = MDL_content._ct(ct_gn, null, true);
+    return tryFun(b.ex_getProdAmt, b, _prodAmt(ct, b.block), ct);
+  };
+  exports._prodAmt_b = _prodAmt_b;
 
 
   /**

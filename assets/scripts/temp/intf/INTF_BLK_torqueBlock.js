@@ -129,7 +129,7 @@
         ob.handleLiquid(b, VARGEN.auxRpm, rate2 * b.edelta());
       };
       if(TIMER.secFive && ob.block.consumesLiquid(VARGEN.auxRpm)) {
-        b.ex_updateRpmDmg(ob, rate2, MDL_recipeDict._consAmt(VARGEN.auxRpm, ob.block));
+        b.ex_updateRpmDmg(ob, rate2, MDL_recipeDict._consAmt_b(VARGEN.auxRpm, ob));
       };
 
       i += 2;
@@ -193,7 +193,7 @@
             // Liquid source gives 100.0 RPM, for test
             val += 100.0;
           } else {
-            val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true) * amt * 60.0;
+            val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true, true) * amt * 60.0;
           };
         };
         i += 2;

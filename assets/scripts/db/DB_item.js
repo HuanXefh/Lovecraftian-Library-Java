@@ -95,15 +95,6 @@ const db = {
       condensation: [],
 
 
-      mixing: [],
-
-
-      ballMillMixing: [],
-
-
-      mixingLiquid: [],
-
-
       filtration: [],
 
 
@@ -111,6 +102,21 @@ const db = {
 
 
       forging: [],
+
+
+      heatingExchange: [],
+
+
+      heatingGas: [],
+
+
+      mixing: [],
+
+
+      ballMillMixing: [],
+
+
+      mixingLiquid: [],
 
 
       pulverization: [],
@@ -128,7 +134,19 @@ const db = {
       purificationFloat: [],
 
 
+      reactionGas: [],
+
+
+      reactionLiquid: [],
+
+
+      reactionMelt: [],
+
+
       roasting: [],
+
+
+      rockCrushing: [],
 
 
       concentrateRoasting: [],

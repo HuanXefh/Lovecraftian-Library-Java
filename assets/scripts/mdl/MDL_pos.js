@@ -117,11 +117,11 @@
 
   /** @global */
   const SideFracModes = new CLS_enum({
-    front: 0,
-    back: 1,
-    side: 2,
-    nonFront: 3,
-    nonBack: 4,
+    FRONT: 0,
+    BACK: 1,
+    SIDE: 2,
+    NON_FRONT: 3,
+    NON_BACK: 4,
   })
   .globalize("SideFracModes");
 
@@ -136,7 +136,7 @@
    * @return {number}
    */
   const _sideFrac = function thisFun(b_f, b_t, mode, forceOneSide, useToAsParent) {
-    if(mode == null) mode = SideFracModes.front;
+    if(mode == null) mode = SideFracModes.FRONT;
     if(!SideFracModes.has(mode)) return 0.0;
 
     let frac = 0.0;
@@ -144,19 +144,19 @@
       frac = _tsEdge(b_f.tile, b_f.block.size, false, thisFun.tmpTs).count(b_t, t => t.build) / thisFun.tmpTs.length * (forceOneSide ? 4.0 : 1.0);
     } else {
       switch(mode) {
-        case SideFracModes.front :
+        case SideFracModes.FRONT :
           frac = _tsRot(b_f.tile, b_f.rotation, b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build) / thisFun.tmpTs.length;
           break;
-        case SideFracModes.back :
+        case SideFracModes.BACK :
           frac = _tsRot(b_f.tile, Mathf.mod(b_f.rotation + 2, 4), b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build) / thisFun.tmpTs.length;
           break;
-        case SideFracModes.side :
+        case SideFracModes.SIDE :
           frac = (_tsRot(b_f.tile, Mathf.mod(b_f.rotation + 1, 4), b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build) + _tsRot(b_f.tile, Mathf.mod(b_f.rotation - 1, 4), b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build)) / thisFun.tmpTs.length;
           break;
-        case SideFracModes.nonFront :
+        case SideFracModes.NON_FRONT :
           frac = _tsEdge(b_f.tile, b_f.block.size, false, thisFun.tmpTs).count(b_t, t => _rotTs(b_f.tile, t) === b_f.rotation ? null : t.build) * 4.0 / thisFun.tmpTs.length;
           break;
-        case SideFracModes.nonBack :
+        case SideFracModes.NON_BACK :
           frac = _tsEdge(b_f.tile, b_f.block.size, false, thisFun.tmpTs).count(b_t, t => _rotTs(b_f.tile, t) === Mathf.mod(b_f.rotation + 2, 4) ? null : t.build) * 4.0 / thisFun.tmpTs.length;
           break;
       };

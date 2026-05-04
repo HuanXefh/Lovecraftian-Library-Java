@@ -475,6 +475,11 @@
       (_heat_b(t.build) * 0.25 + _fHeat_b(t.build) * 0.5 + PARAM.GLOBAL_HEAT);
     // Heat from attribute
     rHeat += t.floor().attributes.get(Attribute.get("lovec-attr0env-heat")) * 100.0;
+    // Heat from puddle
+    let puddle = Puddles.get(t);
+    if(puddle != null) {
+      rHeat += _fHeat(puddle.liquid) * 0.75;
+    };
     // Heat from nearby buildings
     let rHeatSpare = 0.0, countSpare = 0, ot;
     (4)._it(ind => {

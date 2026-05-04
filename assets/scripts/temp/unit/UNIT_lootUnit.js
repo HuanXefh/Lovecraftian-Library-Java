@@ -49,7 +49,10 @@
     };
 
     // Don't drown this to death
-    if(unit.drownTime > 0.98) unit.remove();
+    if(unit.drownTime > 0.98) {
+      TRIGGER.lootDrown.fire(unit);
+      unit.remove();
+    };
 
     // Merge loot units randomly
     if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {

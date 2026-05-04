@@ -316,14 +316,25 @@
 
   /**
    * Variant of {@link tryVal} used to read parameter objects.
+   * Can accept a list of property names for fallback.
    * @global
    * @param {Object|unset} paramObj
-   * @param {string} nmProp
+   * @param {string|Array<string>} nmProps_p
    * @param {any} [def]
    * @return {any}
    */
-  readParam = function(paramObj, nmProp, def) {
-    return (paramObj == null || paramObj[nmProp] == null) ? def : paramObj[nmProp];
+  readParam = function(paramObj, nmProps_p, def) {
+    if(paramObj == null) return def;
+    if(!(nmProps_p instanceof Array)) {
+      return paramObj[nmProps_p] == null ? def : paramObj[nmProps_p];
+    } else {
+      let i = 0, iCap = nmProps_p.iCap();
+      while(i < iCap) {
+        if(paramObj[nmProps_p[i]] != null) return paramObj[nmProps_p[i]];
+        i++;
+      };
+      return def;
+    };
   };
 
 
@@ -331,13 +342,13 @@
    * Variant of {@link readParam} but the result is immediately used if found.
    * @global
    * @param {Object|unset} paramObj
-   * @param {string} nmProp
+   * @param {string|Array<string>} nmProps_p
    * @param {function(any): void} scr
    * @param {any} [def]
    * @return {void}
    */
-  readParamAndCall = function(paramObj, nmProp, scr, def) {
-    let val = readParam(paramObj, nmProp);
+  readParamAndCall = function(paramObj, nmProps_p, scr, def) {
+    let val = readParam(paramObj, nmProps_p);
     if(val !== undefined) {
       scr(val);
     } else if(def !== undefined) {

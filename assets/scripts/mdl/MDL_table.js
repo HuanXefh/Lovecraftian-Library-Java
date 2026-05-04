@@ -472,7 +472,7 @@
       "" :
       ct instanceof Liquid && !cancelLiq ?
         (Strings.autoFixed(amt * 60.0, 2) + "/s") :
-        Strings.autoFixed(amt, 0);
+        Strings.autoFixed(amt, 0) + "   ";
 
     return tb.table(Styles.none, tb1 => {
       tb1.left();
@@ -503,8 +503,8 @@
           // Amount (bottom right)
           tb3.add(str).left().fontScale(0.85).style(Styles.outlineLabel);
         });
-      }).padRight(6.0);
-    }).left().padRight(9.0).padTop(4.0).padBottom(4.0);
+      }).marginRight(6.0);
+    }).left().marginRight(9.0).padTop(4.0).padBottom(4.0);
   };
   exports.__rcCt = __rcCt;
 
@@ -1155,15 +1155,19 @@
             if(!(tmp instanceof Array)) {
               __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
             } else {
-              tb2.table(Tex.whiteui, tb3 => {
-                tb3.left().setColor(Pal.darkerGray);
+              tb2.table(Styles.none, tb3 => {
+                tb3.left();
                 let pn = tb3.pane(pnTb => {
+                  pnTb.setBackground(Tex.whiteui);
+                  pnTb.setColor(Pal.darkerGray);
+                  pnTb.left();
                   tmp.forEachRow(3, (tmp1, amt, p) => {
                     __rcCt(pnTb, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
                   });
-                }).get();
+                }).growX().get();
                 pn.setOverscroll(false, false);
-              }).padRight(16.0).maxHeight(82.0);
+                pn.setScrollBarPositions(true, false);
+              }).marginRight(16.0).maxHeight(82.0);
             };
           });
         }).left().marginRight(24.0);
@@ -1180,15 +1184,19 @@
             if(!(tmp instanceof Array)) {
               __rcCt(tb2, tmp, amt, null, false, null, VAR.dialog.ct1);
             } else {
-              tb2.table(Tex.whiteui, tb3 => {
-                tb3.left().setColor(Pal.darkerGray);
+              tb2.table(Styles.none, tb3 => {
+                tb3.left();
                 let pn = tb3.pane(pnTb => {
+                  pnTb.setBackground(Tex.whiteui);
+                  pnTb.setColor(Pal.darkerGray);
+                  pnTb.left();
                   tmp.forEachRow(2, (tmp1, amt) => {
                     __rcCt(pnTb, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
                   });
-                }).get();
+                }).growX().get();
                 pn.setOverscroll(false, false);
-              }).padRight(16.0).maxHeight(82.0);
+                pn.setScrollBarPositions(true, false);
+              }).marginRight(16.0).maxHeight(82.0);
             };
           });
         });

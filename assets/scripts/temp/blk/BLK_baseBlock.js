@@ -45,6 +45,14 @@
         b.ex_handleConfigStr(str);
       });
     };
+
+    if(blk.payBuiltOnly) {
+      blk.rebuildable = false;
+      blk.placeablePlayer = false;
+      MDL_event._c_onLoad(() => {
+        blk.buildTime = Number.fMax;
+      });
+    };
   };
 
 
@@ -112,7 +120,7 @@
 
   function comp_canPlaceOn(blk, t, team, rot) {
     if(t == null) return false;
-    if(blk.isWaterborne && !t.floor().liquid) return false;
+    if(blk.isWaterborne && t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).find(ot => !ot.floor().isLiquid) != null) return false;
 
     return true;
   };
@@ -224,6 +232,12 @@
        * @instance
        */
       isWaterborne: false,
+      /**
+       * <PARAM>: If true, this block cannot be built directly and is expected to be produced as payload.
+       * @memberof BLK_baseBlock
+       * @instance
+       */
+      payBuiltOnly: false,
       /**
        * <PARAM>: Whether to skip loot spawning when building of this block is destroyed. Recommended to be set in {@link DB_block}.
        * @memberof BLK_baseBlock

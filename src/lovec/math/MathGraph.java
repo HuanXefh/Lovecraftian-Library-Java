@@ -352,7 +352,6 @@ public class MathGraph implements Iterable<Integer> {
      */
     public MathGraph addVert(Object data, float weight) {
         if(hasData(data)) {
-            Log.warn("[LOVEC] Data already in this graph:\n" + data);
             return this;
         };
         vertices++;

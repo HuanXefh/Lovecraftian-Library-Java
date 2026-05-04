@@ -337,15 +337,15 @@
 
     // CO
     if(b.liquids != null) {
-      let allFull = true;
+      let allFull = true, isAux = false;
       i = 0;
       iCap = b.delegee.co.iCap();
       while(i < iCap) {
         tmp = b.delegee.co[i];
         amt = b.delegee.co[i + 1];
-        if(b.liquids.get(tmp) < b.block.liquidCapacity) {
+        if(b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
           allFull = false;
-        } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid) {
+        } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid && !MDL_cond._isAuxiliaryFluid(tmp)) {
           return false;
         };
         i += 2;
@@ -602,9 +602,11 @@
         p = b.delegee.bi[i + 2];
         if(b.items != null && tmp instanceof Item) {
           FRAG_item.consumeItem(b, tmp, amt, p);
+          b.delegee.consTmpObj[tmp.name] = amt * p;
         };
         if(b.liquids != null && tmp instanceof Liquid) {
           FRAG_fluid.addLiquidBatch(b, b, tmp, -amt);
+          b.delegee.consTmpObj[tmp.name] = amt;
         };
       } else {
         j = 0;
@@ -614,9 +616,11 @@
           amt = tmp[j + 1];
           p = tmp[j + 2];
           if(b.items != null && tmp1 instanceof Item && FRAG_item.consumeItem(b, tmp1, amt, p)) {
+            b.delegee.consTmpObj[tmp1.name] = amt * p;
             break;
           };
           if(b.liquids != null && tmp1 instanceof Liquid && FRAG_fluid.addLiquidBatch(b, b, tmp1, -amt) > 0.0) {
+            b.delegee.consTmpObj[tmp1.name] = amt;
             break;
           };
           j += 3;
@@ -629,6 +633,7 @@
     let optTup = _optTup(b);
     if(optTup != null) {
       FRAG_item.consumeItem(b, optTup[0], optTup[1], optTup[2]);
+      b.delegee.consTmpObj[optTup[0].name] = optTup[1] * optTup[2];
       optTup.clear();
     };
   };
@@ -655,6 +660,7 @@
       if(!(tmp instanceof Array)) {
         amt = b.delegee.ci[i + 1];
         b.liquids.remove(tmp, Math.min(amt * progIncLiq * timeScl, b.liquids.get(tmp)));
+        b.delegee.consTmpObj[tmp.name] = amt;
       } else {
         j = 0;
         jCap = tmp.iCap();
@@ -662,6 +668,7 @@
           if(b.liquids.get(tmp[j]) > 0.01) {
             amt = tmp[j + 1];
             b.liquids.remove(tmp[j], Math.min(amt * progIncLiq * timeScl, b.liquids.get(tmp[j])));
+            b.delegee.consTmpObj[tmp[j].name] = amt;
             break;
           };
           j += 2;
@@ -677,6 +684,7 @@
       tmp = b.delegee.aux[i];
       amt = b.delegee.aux[i + 1];
       b.liquids.remove(tmp, Math.min(amt * progIncLiq, timeScl, b.liquids.get(tmp)));
+      b.delegee.consTmpObj[tmp.name] = amt;
       i += 2;
     };
   };
@@ -704,9 +712,11 @@
         p = b.delegee.bo[i + 2];
         if(b.items != null && tmp instanceof Item && b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
           FRAG_item.produceItem(b, tmp, amt, p);
+          b.delegee.prodTmpObj[tmp.name] = amt * p;
         };
         if(b.liquids != null && tmp instanceof Liquid) {
           FRAG_fluid.addLiquidBatch(b, b, tmp, amt, true);
+          b.delegee.prodTmpObj[tmp.name] = amt;
         };
         i += 3;
       };
@@ -723,6 +733,7 @@
         p = b.delegee.fo[i + 2];
         if(b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
           FRAG_item.produceItem(b, tmp, amt, p);
+          b.delegee.prodTmpObj[tmp.name] = amt * p;
         };
         i += 3;
       };
@@ -751,6 +762,7 @@
       tmp = b.delegee.co[i];
       amt = b.delegee.co[i + 1];
       b.handleLiquid(b, tmp, Math.min(amt * progIncLiq * timeScl, b.block.liquidCapacity - b.liquids.get(tmp)));
+      b.delegee.prodTmpObj[tmp.name] = amt;
       i += 2;
     };
   };

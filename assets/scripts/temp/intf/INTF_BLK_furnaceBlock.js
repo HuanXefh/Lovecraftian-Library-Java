@@ -142,7 +142,7 @@
 
   function comp_ex_calcTempTgFrac(b) {
     // If external heat outruns fuel heat
-    if(b.tempExt > b.tempFuel) return 1.0;
+    if(b.tempExt > b.tempFuel || b.maxHeaterProd > b.tempFuel) return 1.0;
     // If no fuel supplied
     if(b.fuelTup == null || b.fuelTup[0] == null || b.fuelPonCur < 0.0001) return 0.0;
     if(b.fuelTup[0] instanceof Item) {
@@ -192,12 +192,11 @@
          */
         noFuelInput: false,
         /**
-         * <PARAM>: Type of fuel to consume.
-         * <br> <VALS>: "item", "liquid", "gas", "any".
+         * <PARAM>: Type of fuel to consume, see {@link MDL_fuel}.
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
-        fuelType: "item",
+        fuelType: FuelTypes.ITEM,
         /**
          * <PARAM>: List of resources that annot be consumed as fuel.
          * @memberof INTF_BLK_furnaceBlock

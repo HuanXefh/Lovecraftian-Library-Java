@@ -43,6 +43,9 @@
 
   function comp_created(b) {
     b.tempCur = PARAM.GLOBAL_HEAT;
+    Time.run(0.0, () => {
+      if(isNaN(b.tempCur)) b.tempCur = PARAM.GLOBAL_HEAT;
+    });
   };
 
 
@@ -163,7 +166,7 @@
         if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
         heat = ob.ex_getHeatProd != null ?
           (ob.ex_getHeatProd() * sideFrac) :
-          (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict._prodAmt(VARGEN.auxHeat, ob.block) * sideFrac, true, true) * MDL_recipeDict._prodAmt(VARGEN.auxHeat, ob.block) * sideFrac);
+          (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict._prodAmt_b(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict._prodAmt_b(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
         b.maxHeaterProd = Math.max(heat, b.maxHeaterProd);
         heatTg += heat;
       });

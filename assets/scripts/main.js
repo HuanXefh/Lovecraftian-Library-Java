@@ -114,7 +114,7 @@
           let json = stream.readUTF();
           i++;
 
-          Time.run(1.0, () => {
+          Time.run(0.0, () => {
             let unit = MDL_pos._units(x, y, 2.0, this.tmpArr).inSituFilter(ounit => ounit.type.name == str).first();
             if(unit != null && unit.delegee != null && checkCreatedByTemp(unit.type) && unit.type.ex_isSubInsOf("UNIT_baseUnit")) {
               unit.type.ex_readUnitData(unit, JSON.parse(json));
