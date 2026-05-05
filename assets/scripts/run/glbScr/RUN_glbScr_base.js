@@ -415,7 +415,7 @@
      * @return {void}
      */
     warn: function(text) {
-      Log.log(text, 1);
+      console.log(text, 1);
     },
 
 
@@ -425,7 +425,7 @@
      * @return {void}
      */
     err: function(text) {
-      Log.log(text, 2);
+      console.log(text, 2);
     },
 
 
@@ -435,7 +435,7 @@
      * @return {void}
      */
     debug: function(text) {
-      Log.log(text, 3);
+      console.log(text, 3);
     },
 
 

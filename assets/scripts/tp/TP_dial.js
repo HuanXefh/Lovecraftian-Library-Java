@@ -485,13 +485,13 @@
           // <TABLE>: producer
           let prodArr = MDL_recipeDict._producers(ct, true);
           if(prodArr.length > 0) {
-            // <TABLE>: consumer title
+            // <TABLE>: producer title
             cont.table(Tex.whiteui, tb => {
               tb.center().setColor(Color.darkGray);
               MDL_table.__margin(tb, 0.5);
               tb.add(MDL_bundle._term("lovec", "produced-in")).pad(4.0);
             }).left().growX().row();
-            // <TABLE>: consumer list
+            // <TABLE>: producer list
             cont.table(Tex.whiteui, tb => {
               tb.left().setColor(Pal.darkestGray);
               MDL_table.__margin(tb);
