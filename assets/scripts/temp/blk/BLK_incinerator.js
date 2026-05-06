@@ -12,6 +12,12 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_contentMultiSelector");
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  const EXPLO_FLAM_THR = 0.5;
+
+
   /* <---------- component ----------> */
 
 
@@ -44,7 +50,7 @@
       if(b.block.outputItems != null && b.block.outputItems.some(itmStack => itmStack.item === itm)) return;
 
       amt = b.items.get(itm);
-      flam += itm.flammability * amt * 3.0;
+      flam += (itm.flammability < EXPLO_FLAM_THR ? 0.0 : itm.flammability) * amt * 3.0;
       explo += itm.explosiveness * amt * 3.0;
       pow += itm.charge * amt * 3.0;
       b.items.set(itm, 0);

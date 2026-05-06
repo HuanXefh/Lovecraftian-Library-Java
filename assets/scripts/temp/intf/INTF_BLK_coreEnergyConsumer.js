@@ -32,7 +32,7 @@
     ) return;
 
     blk.addBar("lovec-cep", b => new Bar(
-      prov(() => Core.bundle.format("bar.lovec-bar-cep-amt", FRAG_faci._cepUseCur(b.team) + "/" + FRAG_faci._cepCapCur(b.team))),
+      prov(() => Core.bundle.format("bar.lovec-bar-cep-amt", (FRAG_faci._cepCapCur(b.team) - FRAG_faci._cepUseCur(b.team)) + "/" + FRAG_faci._cepCapCur(b.team))),
       prov(() => FRAG_faci._cepFracCur(b.team) < 1.0 ? Pal.accent : Tmp.c1.set(Color.scarlet).lerp(Color.clear, Math.abs(Math.sin(Time.globalTime * 0.03)))),
       () => FRAG_faci._cepFracCur(b.team) > 1.0 ? 1.0 : Mathf.clamp(1.0 - FRAG_faci._cepFracCur(b.team)),
     ));

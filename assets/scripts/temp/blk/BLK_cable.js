@@ -201,6 +201,18 @@
       }
       .setProp({
         noSuper: true,
+        override: true,
+        final: true,
+      }),
+
+
+      acceptStack: function(itm, amt, e_f) {
+        return 0;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+        final: true,
       }),
 
 

@@ -64,8 +64,8 @@
 
   function comp_renderUpdate(blk, renderState) {
     if(Mathf.chance(blk.updateEffP)) blk.updateEff.at(
-      renderState.tile.worldx() + Mathf.range(3.0),
-      renderState.tile.worldy() + Mathf.range(3.0),
+      renderState.tile.worldx() + Mathf.range(blk.updateEffSpread),
+      renderState.tile.worldy() + Mathf.range(blk.updateEffSpread),
     );
   };
 
@@ -109,6 +109,12 @@
      * @instance
      */
     updateEffP: 0.02,
+    /**
+     * <PARAM>: Spread radius of update effect.
+     * @memberof ENV_liquidMaterialFloor
+     * @instance
+     */
+    updateEffSpread: 3.0,
     /**
      * <PARAM>: Affects intensity of update effect, larger value leads to fewer tiles being able to create the effect.
      * @memberof ENV_liquidMaterialFloor
