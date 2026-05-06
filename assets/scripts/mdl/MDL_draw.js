@@ -1756,7 +1756,6 @@
   /**
    * Used to draw unit health bar and more.
    * Also used for buildings.
-   * @todo Make a class to configure the style.
    * @param {Building|Unit} e
    * @param {number} healthFrac
    * @param {number|unset} [size]
@@ -1789,110 +1788,42 @@
 
     let
       frac = Mathf.clamp(healthFrac),
-      color_fi = Tmp.c1.set(MDL_color._color(tryVal(color_gn, Pal.accent))).lerp(Color.white, MDL_entity._flashFrac(e)),
+      color = Tmp.c1.set(MDL_color._color(tryVal(color_gn, Pal.accent))).lerp(Color.white, MDL_entity._flashFrac(e)),
       x = e.x,
       y = e.y,
-      a_fi = a * 0.7,
       w = (size + 1) * Vars.tilesize + offW,
       offY = (offTy + size * 0.5 + 1.5) * Vars.tilesize,
       amtSeg = Math.ceil(w / 4.0 / segScl),
       segW = (w + 5.0) / (amtSeg + 1);
 
-    let zPrev = Draw.z();
-    Draw.z(z);
-
-    if(PARAM.UNIT_STAT_STYLE === 3) {
-      offY -= 4.0;
-    };
-
-    // Health bar
-    if(PARAM.UNIT_STAT_STYLE === 2 || PARAM.UNIT_STAT_STYLE === 3) {
-      Lines.stroke(PARAM.UNIT_STAT_STYLE === 3 ? 3.5 : 5.0, Pal.gray);
-      Draw.alpha(a_fi);
-      Lines.line(x - w * 0.5, y + offY, x + w * 0.5, y + offY);
-    } else if(PARAM.UNIT_STAT_STYLE === 1) {
-      Lines.stroke(10.0, Pal.gray);
-      Draw.alpha(a_fi);
-      Lines.line(x - w * 0.5 + 2.5, y + offY + 2.5, x + w * 0.5 - 2.5, y + offY + 2.5);
-    };
-    Lines.stroke(PARAM.UNIT_STAT_STYLE === 3 ? 2.5 : 3.0, color_fi);
-    Draw.alpha(a_fi * 0.3);
-    Lines.line(x - w * 0.5, y + offY, x + w * 0.5, y + offY);
-    Draw.alpha(a_fi);
-    Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y + offY);
-    // Health bar segments
-    if(PARAM.UNIT_STAT_STYLE === 1 || PARAM.UNIT_STAT_STYLE === 2) {
-      Lines.stroke(1.0, Pal.gray);
-      Draw.alpha(a_fi);
-      let x_i, y1_i, y2_i;
-      for(let i = 0; i < amtSeg; i++) {
-        x_i = x - w * 0.5 - 2.5 + segW * (i + 1);
-        y1_i = y + offY + 2.0;
-        y2_i = y + offY - 2.0;
-
-        Lines.line(x_i, y1_i, x_i, y2_i);
-      };
-    };
-    Draw.reset();
-    // Stats
-    if(PARAM.UNIT_STAT_STYLE === 1 || PARAM.UNIT_STAT_STYLE === 2) {
-      if(armor != null) {
-        LCDraw.text(
-          e.x, e.y, Strings.autoFixed(armor, 0), Fonts.def,
-          1.2, Color.gray, Align.right,
-          -w * 0.5 - 4.0,
-          offY + (PARAM.UNIT_STAT_STYLE === 2 ? 2.5 : 4.5),
-        );
-      };
-      if(shield != null && shield > 0.0) {
-        LCDraw.text(
-          e.x, e.y, Strings.autoFixed(shield, 0), Fonts.def,
-          1.2, Pal.techBlue, Align.left,
-          w * 0.5 + 4.0,
-          offY + (PARAM.UNIT_STAT_STYLE === 2 ? 2.75 : 4.5),
-        );
-      };
-    };
-    if(PARAM.UNIT_STAT_STYLE === 1) {
-      LCDraw.text(
-        e.x, e.y, Strings.autoFixed(e.maxHealth, 0), Fonts.def,
-        0.8, color_fi, Align.center,
-        0.0, offY + 6.0,
-      );
-      if(speedMtp != null && size >= 3.0) {
-        LCDraw.text(
-          e.x, e.y, "S: " + Strings.fixed(speedMtp, 2), Fonts.def,
-          0.6, Color.gray, Align.left,
-          -w * 0.5 - 2.5,
-          offY + 5.0,
-        );
-      };
-      if(dpsMtp != null && dpsMtp >= 3.0) {
-        LCDraw.text(
-          e.x, e.y, "D: " + Strings.fixed(dpsMtp, 2), Fonts.def,
-          0.6, Color.gray, Align.right,
-          w * 0.5 + 2.5,
-          offY + 5.0,
-        );
-      };
-    };
-    // Stack status
-    if(e instanceof Unit) {
-      let stackSta = MDL_entity._stackStaFirst(e);
-      if(stackSta != null) {
-        let y_sta = y - e.hitSize * 0.5 - 8.0;
-        _d_progRing(
-          x, y_sta,
-          Mathf.clamp(1.0 - e.getDuration(stackSta) / stackSta.delegee.burstTime),
-          2.25, 2.75, 90.0, Color.white, 1.0, true, z,
-        );
-        Draw.rect(stackSta.fullIcon, x, y_sta, 4.0, 4.0);
-      };
-    };
-
-    Draw.z(zPrev);
+    CLS_unitStatDisplayMode.getById(PARAM.UNIT_STAT_STYLE).draw(
+      e, x, y, frac,
+      color, a, w, offY, amtSeg,
+      armor, shield, speedMtp, dpsMtp,
+      z,
+    );
   };
   exports._d_unitStat = _d_unitStat;
+
+
+  /**
+   * Shows ring UI about {@link INTF_STA_burstStatus}.
+   * @param {Unit} unit
+   * @return {void}
+   */
+  const _d_stackSta = function(unit) {
+    let stackSta = MDL_entity._stackStaFirst(unit);
+    if(stackSta == null) return;
+
+    let x = unit.x, y = unit.y - unit.hitSize * 0.5 - 8.0;
+    _d_progRing(
+      x, y,
+      Mathf.clamp(1.0 - unit.getDuration(stackSta) / stackSta.delegee.burstTime),
+      2.25, 2.75, 90.0, Color.white, 1.0, true,
+    );
+    Draw.rect(stackSta.fullIcon, x, y, 4.0, 4.0);
+  };
+  exports._d_stackSta = _d_stackSta;
 
 
   /**
