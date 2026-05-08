@@ -85,9 +85,10 @@
   new CLS_settingTerm("unit0stat-missile", useScl => Core.settings.getBool("lovec-unit0stat-missile", false)).setDialSetter("lovec", "misc", tb => tb.checkPref("lovec-unit0stat-missile", false));
   new CLS_settingTerm("unit0stat-build", useScl => Core.settings.getBool("lovec-unit0stat-build", true)).setDialSetter("lovec", "misc", tb => tb.checkPref("lovec-unit0stat-build", true));
   new CLS_settingTerm("unit0stat-mouse", useScl => Core.settings.getBool("lovec-unit0stat-mouse", true)).setDialSetter("lovec", "misc", tb => tb.checkPref("lovec-unit0stat-mouse", true));
-  new CLS_settingTerm("unit0stat-style", useScl => Core.settings.getInt("lovec-unit0stat-style", 1)).setDialSetter("lovec", "misc", tb => tb.sliderPref("lovec-unit0stat-style", 1, 1, 3, val => Strings.fixed(val, 0)));
+  new CLS_settingTerm("unit0stat-style", useScl => Core.settings.getInt("lovec-unit0stat-style", 1)).setDialSetter("lovec", "misc", tb => tb.sliderPref("lovec-unit0stat-style", 1, 1, CLS_unitStatDisplayMode.getSize(), val => Strings.fixed(val, 0)));
   new CLS_settingTerm("unit0remains-lifetime", useScl => Core.settings.getInt("lovec-unit0remains-lifetime", 36) * (useScl ? 300.0 : 1.0)).setDialSetter("lovec", "misc", tb => tb.sliderPref("lovec-unit0remains-lifetime", 36, 0, 120, val => Strings.fixed(val * 5.0, 0) + "s"));
   new CLS_settingTerm("unit0remains-build", useScl => Core.settings.getBool("lovec-unit0remains-build", true)).setDialSetter("lovec", "misc", tb => tb.checkPref("lovec-unit0remains-build", true));
+  new CLS_settingTerm("misc-enable-window", useScl => Core.settings.getBool("lovec-misc-enable-window", !Core.app.isMobile())).setDialSetter("lovec", "misc", tb => tb.checkPref("lovec-misc-enable-window", !Core.app.isMobile()));
   new CLS_settingTerm("misc-title-name", useScl => Core.settings.getString("lovec-misc-title-name", Vars.appName)).setDialSetter("lovec", "misc", tb => tb.textPref("lovec-misc-title-name", Vars.appName));
   new CLS_settingTerm("misc-title-map", useScl => Core.settings.getBool("lovec-misc-title-map", true)).setDialSetter("lovec", "misc", tb => tb.checkPref("lovec-misc-title-map", true));
   new CLS_settingTerm("misc-secret-code", useScl => Core.settings.getString("lovec-misc-secret-code", "")).setDialSetter("lovec", "misc", tb => tb.areaTextPref("lovec-misc-secret-code", ""));

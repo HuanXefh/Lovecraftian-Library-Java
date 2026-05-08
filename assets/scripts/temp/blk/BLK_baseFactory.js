@@ -43,6 +43,27 @@
   };
 
 
+  function comp_acceptItem(b, b_f, itm) {
+    if(!b.block.rotate || b.block.delegee.inputDirs.length === 0) return true;
+
+    return b.block.delegee.inputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
+  };
+
+
+  function comp_acceptLiquid(b, b_f, liq) {
+    if(!b.block.rotate || b.block.delegee.fldInputDirs.length === 0 || MDL_cond._isAuxiliaryFluid(liq)) return true;
+
+    return b.block.delegee.fldInputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
+  };
+
+
+  function comp_canDump(b, b_t, itm) {
+    if(!b.block.rotate || b.block.delegee.outputDirs.length === 0) return true;
+
+    return b.block.delegee.outputDirs.some(offRot => b.relativeTo(b_t) === Mathf.mod(b.rotation + offRot, 4));
+  };
+
+
 /*
   ========================================
   Section: Application
@@ -66,6 +87,24 @@
     .setParam({
 
 
+      /**
+       * <PARAM>: Relative directions of item input sides.
+       * @memberof BLK_baseFactory
+       * @instance
+       */
+      inputDirs: prov(() => []),
+      /**
+       * <PARAM>: Relative directions of fluid input sides (not abstract fluid).
+       * @memberof BLK_baseFactory
+       * @instance
+       */
+      fldInputDirs: prov(() => []),
+      /**
+       * <PARAM>: Relative directions of item output sides.
+       * @memberof BLK_baseFactory
+       * @instance
+       */
+      outputDirs: prov(() => []),
       /**
        * <PARAM>: Sound played when this building crafts.
        * @memberof BLK_baseFactory
@@ -115,6 +154,30 @@
       craft: function() {
         comp_craft(this);
       },
+
+
+      acceptItem: function(b_f, itm) {
+        return comp_acceptItem(this, b_f, itm);
+      }
+      .setProp({
+        boolMode: "and",
+      }),
+
+
+      acceptLiquid: function(b_f, liq) {
+        return comp_acceptLiquid(this, b_f, liq);
+      }
+      .setProp({
+        boolMode: "and",
+      }),
+
+
+      canDump: function(b_t, itm) {
+        return comp_canDump(this, b_t, itm);
+      }
+      .setProp({
+        boolMode: "and",
+      }),
 
 
     }),

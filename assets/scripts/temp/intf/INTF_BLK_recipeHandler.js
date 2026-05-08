@@ -803,7 +803,7 @@
       }
       .setProp({
         noSuper: true,
-        override: true,
+        boolMode: "and",
       }),
 
 
@@ -812,7 +812,7 @@
       }
       .setProp({
         noSuper: true,
-        override: true,
+        boolMode: "and",
       }),
 
 

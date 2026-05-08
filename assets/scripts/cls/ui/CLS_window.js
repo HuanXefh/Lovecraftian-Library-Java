@@ -266,8 +266,8 @@
    */
   CLS_window.prototype.add = function() {
     if(Core.scene == null || this.added) return;
-    if(Core.app.isMobile()) {
-      MDL_ui.show_fadeInfo("lovec", "non-mobile");
+    if(!fetchSetting("misc-enable-window")) {
+      MDL_ui.show_fadeInfo("lovec", "window-disabled");
       return;
     };
 
