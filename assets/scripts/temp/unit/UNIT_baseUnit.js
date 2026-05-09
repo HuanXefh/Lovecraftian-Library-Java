@@ -348,11 +348,14 @@
 
 
   /**
+   * @override
    * @memberof UNIT_baseUnit
    * @param {UnitType} utp
    * @return {void}
    */
-  module.exports.initUnit = function(utp) {
+  module.exports.initContent = function(utp) {
+    this.super("initContent", utp);
+
     // Resolve entity mapping
     let entityVal = DB_unit.db["map"]["entity"]["type"].read(utp.delegee.entityName, UnitEntity);
     if(typeof entityVal !== "number") {

@@ -130,6 +130,7 @@
     let ct = extend(temp.getParent(), nmCt, tryValProv(obj, prov(() => temp.build())));
     CONTENT_HANDLER.add(ct);
     processClassLoader();
+    temp.initContent(ct);
 
     return ct;
   };
@@ -185,11 +186,11 @@
       };
       /** @type {Building} b */
       let b = extend(temp[1].getParent(), blk, obj1);
-      temp[1].initBuild(b);
+      temp[1].initContent(b);
       processClassLoader();
       return b;
     };
-    temp[0].initBlock(blk);
+    temp[0].initContent(blk);
     CONTENT_HANDLER.add(blk);
     processClassLoader();
 
@@ -208,7 +209,7 @@
   extendUnit = function(temp, nmUtp, objUtp) {
     processClassLoader();
     let utp = extend(temp.getParent(), nmUtp, tryValProv(objUtp, prov(() => temp.build())));
-    temp.initUnit(utp);
+    temp.initContent(utp);
     CONTENT_HANDLER.add(utp);
     processClassLoader();
 
@@ -228,7 +229,7 @@
   extendPlanet = function(temp, nmPla, sectorSize, objPla) {
     processClassLoader();
     let pla = extend(temp.getParent(), nmPla, null, 1.0, sectorSize, tryValProv(objPla, prov(() => temp.build())));
-    temp.initPlanet(pla);
+    temp.initContent(pla);
     CONTENT_HANDLER.add(pla);
     processClassLoader();
 

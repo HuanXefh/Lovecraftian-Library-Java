@@ -290,6 +290,17 @@
 
 
   /**
+   * Override this method to initialize some content just after `extend` is called.
+   * <br> <LATER>
+   * @param {UnlockableContent} ct
+   * @return {void}
+   */
+  CLS_contentTemplate.initContent = function(ct) {
+
+  };
+
+
+  /**
    * Builds the object used in `extend`.
    * @param {Object} paramObj - Sets values of properties in a template. Only properties defined with content template can be set.
    * @return {Object}

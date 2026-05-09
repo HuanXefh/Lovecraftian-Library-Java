@@ -552,20 +552,13 @@
 
 
   /**
+   * @override
    * @memberof BLK_baseBlock
    * @param {Block} blk
    * @return {void}
    */
-  module.exports[0].initBlock = function(blk) {
+  module.exports[0].initContent = function(blk) {
+    this.super("initContent", blk);
+
     if(!tryJsProp(blk, "skipOutlineSetup", false)) FRAG_faci.setupOutline(blk);
-  };
-
-
-  /**
-   * @memberof B_baseBlock
-   * @param {Building} b
-   * @return {void}
-   */
-  module.exports[1].initBuild = function(b) {
-
   };

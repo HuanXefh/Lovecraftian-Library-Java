@@ -33,6 +33,10 @@
     });
 
     VARGEN.dialFlowNmCtMap.put(sta.nmDialFlow, sta);
+  };
+
+
+  function comp_postInit(sta) {
     lockTechNode(sta);
   };
 
@@ -77,13 +81,18 @@
      */
     nmDialFlow: null,
 
-    
+
   })
   .setMethod({
 
 
     init: function() {
       comp_init(this);
+    },
+
+
+    postInit: function() {
+      comp_postInit(this);
     },
 
 

@@ -108,7 +108,9 @@
       let funParent = clsParent[nmFun];
       if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nmFun);
 
-      return funParent.apply(this, Array.from(arguments).splice(1));
+      return funParent === this[nmFun] ?
+        clsParent.super.apply(this, Array.from(arguments).splice(1)) :
+        funParent.apply(this, Array.from(arguments).splice(1));
     };
 
     this.prototype = Object.create(cls.prototype);
@@ -121,7 +123,9 @@
       let funParent = clsParent.prototype[nmFun];
       if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nmFun);
 
-      return funParent.apply(this, Array.from(arguments).splice(1));
+      return funParent === this[nmFun] ?
+        clsParent.prototype.super.apply(this, Array.from(arguments).splice(1)) :
+        funParent.apply(this, Array.from(arguments).splice(1));
     };
 
     if(nm != null && typeof nm === "string") {

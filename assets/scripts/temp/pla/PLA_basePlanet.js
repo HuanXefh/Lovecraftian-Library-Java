@@ -113,11 +113,14 @@
 
 
   /**
+   * @override
    * @memberof PLA_basePlanet
    * @param {Planet} pla
    * @return {void}
    */
-  module.exports.initPlanet = function thisFun(pla) {
+  module.exports.initContent = function thisFun(pla) {
+    this.super("initContent", pla);
+
     let dir = MDL_file._script(MDL_content._mod(pla)).child("auxFi").child("json").child("planets");
     let fi = (function() {
       let tmp = dir.child(MDL_content._nmCtNoPrefix(pla) + ".json");
