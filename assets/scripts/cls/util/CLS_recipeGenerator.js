@@ -308,18 +308,6 @@
    * @return {void}
    */
   CLS_recipeGenerator.prototype.addRc = function(rc, nmCt, objF, rcBuilderObj, paramObj) {
-    let rcObj = {
-      icon: nmCt,
-      category: this.__CATEG__,
-      isGenerated: true,
-    };
-    if(rcBuilderObj != null) {
-      Object.cloneProp(rcObj, rcBuilderObj);
-    };
-    if(objF != null) {
-      objF(rcObj);
-    };
-
     let
       categ = readParam(paramObj, ["categ", "category"]),
       lastCateg = null,
@@ -334,7 +322,20 @@
       lastTag = this.__TAG__;
       this.setTag(tag);
     };
+
+    let rcObj = {
+      icon: nmCt,
+      category: this.__CATEG__,
+      isGenerated: true,
+    };
+    if(rcBuilderObj != null) {
+      Object.cloneProp(rcObj, rcBuilderObj);
+    };
+    if(objF != null) {
+      objF(rcObj);
+    };
     rc["recipe"].write(this.getHeaderName(nmCt), rcObj);
+
     if(lastCateg != null) {
       this.setCateg(lastCateg);
     };
