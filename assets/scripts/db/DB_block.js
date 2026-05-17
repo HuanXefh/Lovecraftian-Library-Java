@@ -355,6 +355,7 @@ const db = {
       drillSpd: [
 
         Drill, (blk, boosted) => Math.pow(blk.size, 2) / blk.drillTime * 60.0 * (boosted ? Math.pow(blk.liquidBoostIntensity, 2) : 1.0),
+        BurstDrill, (blk, boosted) => Math.pow(blk.size, 2) / blk.drillTime * 60.0 * (boosted ? blk.liquidBoostIntensity : 1.0),
         BeamDrill, (blk, boosted) => blk.size / blk.drillTime * 60.0 * (boosted ? blk.optionalBoostIntensity : 1.0),
         "BLK_rangeWallDrill", (blk, boosted) => Math.pow(blk.range, 2) / blk.drillTime * 60.0 * (boosted ? blk.optionalBoostIntensity : 1.0),
 
@@ -401,6 +402,17 @@ const db = {
 
 
       reload: {
+
+
+        /**
+         * Reload bar will be shown for these blocks.
+         * <br> <ROW> javaCls.
+         */
+        class: [
+
+          MassDriver,
+
+        ],
 
 
         /**

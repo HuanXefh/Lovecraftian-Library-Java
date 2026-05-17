@@ -117,7 +117,7 @@
 
 
   function comp_updateEfficiencyMultiplier(b) {
-    b.efficiency = b.shouldConsume() ? b.rcEffc : 0.0;
+    b.efficiency = b.shouldConsume() && (b.block.consumesPower && b.power != null ? b.power.status > 0.01 : true) ? b.rcEffc : 0.0;
     b.ex_postUpdateEfficiencyMultiplier();
     if(b.validTup != null && !b.validTup[0](b)) b.efficiency = 0.0;
   };
@@ -306,6 +306,15 @@
     b.lastLiqProgInc = b.ex_calcProgInc(1.0);
     b.lastCanAdd = FRAG_recipe._canAdd(b);
     b.dumpTup = FRAG_recipe._dumpTup(b, b.dumpTup);
+
+    b.ex_updateAttrEffc();
+  };
+
+
+  function comp_ex_updateAttrEffc(b) {
+    b.attrEffc = b.attr == null ?
+      1.0 :
+      Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR) + b.attr.env(), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
   };
 
 
@@ -366,9 +375,7 @@
     Time.run(0.0, () => {
       b.hasPayInput = FRAG_recipe._hasInput_pay(b.payi);
       b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
-      b.attrEffc = b.attr == null ?
-        1.0 :
-        Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
+      b.ex_updateAttrEffc();
 
       Object.clear(b.consTmpObj);
       Object.clear(b.prodTmpObj);
@@ -950,6 +957,20 @@
        */
       ex_postUpdateEfficiencyMultiplier: function() {
 
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * Updates attribute efficiency.
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @return {void}
+       */
+      ex_updateAttrEffc: function() {
+        comp_ex_updateAttrEffc(this);
       }
       .setProp({
         noSuper: true,

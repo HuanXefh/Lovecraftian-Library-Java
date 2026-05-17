@@ -95,6 +95,30 @@ const db = {
       condensation: [],
 
 
+      dryingItem: [],
+
+
+      dryingLiquid: [],
+
+
+      dryingLiquidAcidic: [],
+
+
+      dryingLiquidBasic: [],
+
+
+      dryingGas: [],
+
+
+      dryingGasAcidic: [],
+
+
+      dryingGasBasic: [],
+
+
+      dryingFreeze: [],
+
+
       filtration: [],
 
 
@@ -141,6 +165,15 @@ const db = {
 
 
       reactionMelt: [],
+
+
+      reactionBurnGas: [],
+
+
+      reactionBurnLiquid: [],
+
+
+      reactionBurnSolid: [],
 
 
       roasting: [],

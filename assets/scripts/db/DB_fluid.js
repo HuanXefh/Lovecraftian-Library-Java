@@ -303,10 +303,10 @@ const db = {
 
       iron: [
 
-        "brine", 7.0,
-        "acidAq", 5.5,
+        "brine", 7.5,
+        "acidAq", 5.0,
         "baseAq", 4.0,
-        "acidGas", 7.0,
+        "acidGas", 5.5,
         "baseGas", 4.0,
         "acidSub", 5.5,
         "baseSub", 4.0,
@@ -400,6 +400,13 @@ const db = {
       lead: [
 
         "oxidative", 4.5,
+
+      ],
+
+
+      iron: [
+
+        "oxidative", 0.7,
 
       ],
 

@@ -21,6 +21,9 @@
 
 
   function comp_init(blk) {
+    blk.floating = true;
+    blk.placeableLiquid = true;
+
     let treeGrp = blk.treeGrp;
     blk.drawTup = [
       Mathf.clamp(blk.layTree, 76.0, 80.0),
@@ -57,7 +60,7 @@
 
 
   /**
-   * Base template for most vegetation.
+   * Base template for most tall vegetation.
    * No variants!
    * @class ENV_baseTree
    * @extends ENV_baseProp

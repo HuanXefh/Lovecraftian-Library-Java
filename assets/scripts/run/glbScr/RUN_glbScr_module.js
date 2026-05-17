@@ -33,6 +33,10 @@
   /** @global */
   MDL_event = require("lovec/mdl/MDL_event");
   /** @global */
+  LIB_fft = require("lovec/lib/LIB_fft");
+  /** @global */
+  LIB_pinyin = require("lovec/lib/LIB_pinyin");
+  /** @global */
   CLS_paramBuilder = require("lovec/cls/util/builder/CLS_paramBuilder");
   require("lovec/tp/TP_anno");
   require("lovec/run/RUN_global");
@@ -60,8 +64,6 @@
   CLS_valueNoise = require("lovec/cls/math/noise/CLS_valueNoise");
   /** @global */
   CLS_perlinNoise = require("lovec/cls/math/noise/CLS_perlinNoise");
-  /** @global */
-  LIB_pinyin = require("lovec/lib/LIB_pinyin");
   /** @global */
   MDL_bundle = require("lovec/mdl/MDL_bundle");
   /** @global */
@@ -205,7 +207,6 @@
   require("lovec/tp/TP_stat");
   require("lovec/tp/TP_unitStatDisplay");
   require("lovec/run/RUN_input");
-  require("lovec/run/RUN_event");
+  require("lovec/run/RUN_logic");
   require("lovec/run/RUN_render");
-  require("lovec/run/RUN_rule");
   require("lovec/run/RUN_mod");

@@ -16,7 +16,7 @@
     if(t == null) return;
 
     if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = MDL_attr._sumRect(t, blk.attrR, blk.size, blk.ex_getAttrTg(), blk.delegee.attrMode);
+      thisFun.tmpTup[3] = MDL_attr._sumRect(t, blk.attrR, blk.size, blk.ex_getAttrTg(), blk.delegee.attrMode) + blk.ex_getAttrTg().env();
     };
 
     return thisFun.tmpTup[3];

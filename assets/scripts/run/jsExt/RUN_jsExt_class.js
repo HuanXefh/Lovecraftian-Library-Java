@@ -109,7 +109,7 @@
       if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nmFun);
 
       return funParent === this[nmFun] ?
-        clsParent.super.apply(this, Array.from(arguments).splice(1)) :
+        clsParent.super.apply(clsParent, arguments) :
         funParent.apply(this, Array.from(arguments).splice(1));
     };
 
@@ -124,7 +124,7 @@
       if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nmFun);
 
       return funParent === this[nmFun] ?
-        clsParent.prototype.super.apply(this, Array.from(arguments).splice(1)) :
+        clsParent.prototype.super.apply(clsParent.prototype, arguments) :
         funParent.apply(this, Array.from(arguments).splice(1));
     };
 

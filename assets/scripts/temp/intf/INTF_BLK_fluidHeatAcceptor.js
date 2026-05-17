@@ -44,15 +44,13 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.heat && Mathf.chance(0.33)) b.fHeatTg = MDL_flow._fHeat_b(b, true);
-    if(TIMER.liq) b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTg, b.block.delegee.fHeatWarmupRate);
+    if(TIMER.heat && Mathf.chance(0.25)) b.fHeatTg = MDL_flow._fHeat_b(b, true);
+    if(TIMER.heat) b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTg, b.block.delegee.fHeatWarmupRate * VAR.time.heatIntv);
 
     if(PARAM.UPDATE_SUPPRESSED || !TIMER.secQuarter || !Mathf.chance(0.25)) return;
+    if(!isFinite(b.block.delegee.heatRes) || b.fHeatCur - b.block.delegee.heatRes < 0.0001) return;
 
-    let heatRes = b.block.delegee.heatRes;
-    if(!isFinite(heatRes) || b.fHeatCur - heatRes < 0.0001) return;
-
-    b.damagePierce(2.0 * b.fHeatCur / heatRes);
+    b.damagePierce(2.0 * b.fHeatCur / b.block.delegee.heatRes);
     MDL_effect.showAt(b.x, b.y, EFF.heatSmog, 0.0);
   };
 

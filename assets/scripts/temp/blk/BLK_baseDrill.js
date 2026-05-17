@@ -162,7 +162,7 @@
 
 
       /**
-       * <PARAM>: Multiplier on amount of items outputted each round.
+       * <PARAM>: Multiplier on amount of items outputted each round. Mostly used for {@link BurstDrill} to alter drill speed.
        * @memberof BLK_baseDrill
        * @instance
        */

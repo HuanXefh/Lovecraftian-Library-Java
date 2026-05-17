@@ -190,6 +190,22 @@
 
 
   /**
+   * Recipe generator: freeze dryer.
+   * Removes moisture through sublimation of ice.
+   */
+  const _g_dryerFreeze = new CLS_recipeGenerator(function(rc, metaObj) {
+    this.setCateg("drying");
+    this.handle2Arr(
+      rc,
+      DB_item.db["map"]["recipe"]["dryingFreeze"],
+      null,
+      metaObj,
+    );
+  });
+  exports._g_dryerFreeze = _g_dryerFreeze;
+
+
+  /**
    * Recipe generator: filter.
    * Separates items from slurry, or liquids from morbid solution.
    */
@@ -280,7 +296,7 @@
    * Recipe generator: liquid mixer.
    * Mixes items and liquids to produce a solution.
    */
-  const _g_liquidMixer = new CLS_recipeGenerator(function(rc, metaObj) {
+  const _g_mixerLiquid = new CLS_recipeGenerator(function(rc, metaObj) {
     this.setCateg("liquid-mixing");
     this.handle2Arr(
       rc,
@@ -305,7 +321,7 @@
       liq => liq.delegee.intmdParent.name,
     );
   });
-  exports._g_liquidMixer = _g_liquidMixer;
+  exports._g_mixerLiquid = _g_mixerLiquid;
 
 
   /**
@@ -425,6 +441,30 @@
     );
   });
   exports._g_reactorMelt = _g_reactorMelt;
+
+
+  /**
+   * Recipe generator: burner.
+   * Handles combustion reactions.
+   */
+  const _g_reactorBurn = new CLS_recipeGenerator(function(rc, metaObj) {
+    let
+      fuelType = readParam(metaObj, "fuelType", FuelTypes.ITEM);
+
+    const arr = [];
+    if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(DB_item.db["map"]["recipe"]["reactionBurnSolid"]);
+    if((fuelType & FuelTypes.LIQUID) !== 0) arr.pushAll(DB_item.db["map"]["recipe"]["reactionBurnLiquid"]);
+    if((fuelType & FuelTypes.GAS) !== 0) arr.pushAll(DB_item.db["map"]["recipe"]["reactionBurnGas"]);
+
+    this.setCateg("combustion");
+    this.handle2Arr(
+      rc,
+      arr,
+      null,
+      metaObj,
+    );
+  });
+  exports._g_reactorBurn = _g_reactorBurn;
 
 
   /**

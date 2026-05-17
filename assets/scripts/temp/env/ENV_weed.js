@@ -22,12 +22,12 @@
 
 
   /**
-   * Unbreakable sea bush.
-   * @class ENV_grass
+   * Unbreakable seaweed.
+   * @class ENV_weed
    * @extends ENV_baseGrass
    */
-  module.exports = newClass().extendClass(PARENT, "ENV_grass").initClass()
-  .setParent(SeaBush)
+  module.exports = newClass().extendClass(PARENT, "ENV_weed").initClass()
+  .setParent(Seaweed)
   .setTags("blk-env")
   .setParam({})
   .setMethod({});

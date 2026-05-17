@@ -34,14 +34,19 @@
   /**
    * Converts generalized attribute to string.
    * @param {AttrGn} attr_gn
-   * @return {string|null}
+   * @param {boolean|unset} [toAttr] - If true, the result will be attribute instead of string.
+   * @return {string|Attribute}
    */
-  const _attr = function(attr_gn) {
-    let nmAttr = null;
-    if(attr_gn instanceof Attribute) nmAttr = attr_gn.toString();
-    if(typeof attr_gn === "string") nmAttr = attr_gn;
-
-    return nmAttr;
+  const _attr = function(attr_gn, toAttr) {
+    if(toAttr) {
+      if(attr_gn instanceof Attribute) return attr_gn;
+      if(typeof attr_gn === "string" && Attribute.exists(attr_gn)) return Attribute.get(attr_gn);
+      return TP_attr.attr_placeholder;
+    } else {
+      if(attr_gn instanceof Attribute) return attr_gn.toString();
+      if(typeof attr_gn === "string" && Attribute.exists(attr_gn)) return attr_gn;
+      return "lovec-attr-placeholder";
+    };
   };
   exports._attr = _attr;
 
@@ -109,7 +114,7 @@
    * @return {number}
    */
   const _sum = function(blk, t, attr_gn) {
-    return blk.sumAttribute(Attribute.get(_attr(attr_gn)), t.x, t.y);
+    return blk.sumAttribute(_attr(attr_gn, true), t.x, t.y);
   };
   exports._sum = _sum;
 
@@ -125,11 +130,11 @@
     let attrSum = 0.0;
     if(mode == null) mode = AttrModes.FLOOR;
 
-    let nmAttr = _attr(attr_gn);
+    let attr = _attr(attr_gn, true);
     ts.forEachFast(ot => {
-      if((mode & AttrModes.FLOOR) !== 0) attrSum += ot.floor().attributes.get(Attribute.get(nmAttr));
-      if((mode & AttrModes.BLOCK) !== 0) attrSum += ot.block().attributes.get(Attribute.get(nmAttr));
-      if((mode & AttrModes.OVERLAY) !== 0) attrSum += ot.overlay().attributes.get(Attribute.get(nmAttr));
+      if((mode & AttrModes.FLOOR) !== 0) attrSum += ot.floor().attributes.get(attr);
+      if((mode & AttrModes.BLOCK) !== 0) attrSum += ot.block().attributes.get(attr);
+      if((mode & AttrModes.OVERLAY) !== 0) attrSum += ot.overlay().attributes.get(attr);
     });
 
     return attrSum;
@@ -224,49 +229,33 @@
    * @param {Array} attrRsArr
    * @param {Array<Tile>} ts
    * @param {number|unset} [mode] - See {@link AttrModes}.
-   * @return {[string, number, Resource]} <TUP>: attr, attrSum, rs.
+   * @return {[Attribute, number, Resource]} <TUP>: attr, attrSum, rs.
    */
   const _dynaAttrTup = function(attrRsArr, ts, mode) {
-    let nmAttr = null;
+    let attr = null;
     let attrSum = 0.0;
     let rs = null;
 
     let iCap = attrRsArr.iCap();
-    let tmpNmAttr, tmpAttrSum;
+    let tmpAttr, tmpAttrSum;
     if(iCap > 0) {
       for(let i = 0; i < iCap; i += 2) {
-        tmpNmAttr = attrRsArr[i];
-        tmpAttrSum = _sumTs(ts, tmpNmAttr, mode);
+        tmpAttr = _attr(attrRsArr[i], true);
+        tmpAttrSum = _sumTs(ts, tmpAttr, mode) + tmpAttr.env();
         if(tmpAttrSum > attrSum) {
-          nmAttr = tmpNmAttr;
+          attr = tmpAttr;
           attrSum = tmpAttrSum;
           rs = MDL_content._ct(attrRsArr[i + 1], "rs");
         };
       };
     };
 
-    return (rs == null) ? null : [nmAttr, attrSum, rs];
+    return (rs == null) ? null : [attr, attrSum, rs];
   };
   exports._dynaAttrTup = _dynaAttrTup;
 
 
   /* <---------- special ----------> */
-
-
-  /* light */
-
-
-  let lightVal = 1.0;
-
-
-  /**
-   * Gets current value of light attribute.
-   * @return {number}
-   */
-  const _sumLight = function() {
-    return lightVal;
-  };
-  exports._sumLight = _sumLight;
 
 
   /* rain */
@@ -322,56 +311,3 @@
     });
   });
   exports._sumWind = _sumWind;
-
-
-  /**
-   * Gets currently used global wind vector (not the one used in {@link Weather}).
-   * @return {Vec2}
-   */
-  const _windVec = function() {
-    return windVec;
-  };
-  exports._windVec = _windVec;
-
-
-  /**
-   * Gets current angle of global wind vector.
-   * @return {number}
-   */
-  const _windAng = function() {
-    return Math.atan(windVec.y / windVec.x) * Mathf.radDeg;
-  };
-  exports._windAng = _windAng;
-
-
-/*
-  ========================================
-  Section: Application
-  ========================================
-*/
-
-
-
-
-  MDL_event._c_onWorldLoad(() => {
-
-    windVec.setToRandomDirection();
-
-  }, 16225779);
-
-
-
-
-  MDL_event._c_onUpdate(() => {
-
-    lightVal = !Vars.state.isGame() ?
-      1.0 :
-      (
-        Attribute.light.env() + (
-          !Vars.state.rules.lighting ?
-            1.0 :
-            (1.0 - Vars.state.rules.ambientLight.a)
-        )
-      );
-
-  }, 81972173);

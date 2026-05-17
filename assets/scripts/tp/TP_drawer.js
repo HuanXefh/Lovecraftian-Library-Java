@@ -189,7 +189,7 @@
       suffix: readParam(paramObj, "suffix", "-liquid"),
       offX: readParam(paramObj, "offX", 0.0),
       offY: readParam(paramObj, "offY", 0.0),
-      canRot: readParam(paramObj, "canRot", false),
+      rotate: readParam(paramObj, "rotate", false),
       liqReg: null,
 
 
@@ -209,7 +209,7 @@
         b.liquids.each(liq => {
           if(liq.gas || MDL_cond._isAuxiliaryFluid(liq)) return;
           Draw.color(liq.color, b.liquids.get(liq) / b.block.liquidCapacity / cap);
-          this.canRot ?
+          this.rotate ?
             Draw.rect(this.liqReg, b.x + this.offX * Mathf.cosDeg(b.drawrot()), b.y + this.offY * Mathf.sinDeg(b.drawrot()), b.drawrot()) :
             Draw.rect(this.liqReg, b.x + this.offX, b.y + this.offY, 0.0);
         });
@@ -237,7 +237,7 @@
       offX: readParam(paramObj, "offX", 0.0),
       offY: readParam(paramObj, "offY", 0.0),
       rad: readParam(paramObj, "rad", 0.0),
-      canRot: readParam(paramObj, "canRot", false),
+      rotate: readParam(paramObj, "rotate", false),
       angGetterTup: readParam(paramObj, "angGetterTup", null),
       colorGetterTup: readParam(paramObj, "colorGetterTup", null),
       dataGetterTup: readParam(paramObj, "dataGetterTup", null),
@@ -267,8 +267,8 @@
 
         if(this.z != null) this.eff.layer = this.z;
         let
-          x = b.x + (this.offX + Mathf.range(this.rad)) * (!this.canRot ? 1.0 : Mathf.cosDeg(b.drawrot())),
-          y = b.y + (this.offY + Mathf.range(this.rad)) * (!this.canRot ? 1.0 : Mathf.sinDeg(b.drawrot()));
+          x = b.x + (this.offX + Mathf.range(this.rad)) * (!this.rotate ? 1.0 : Mathf.cosDeg(b.drawrot())),
+          y = b.y + (this.offY + Mathf.range(this.rad)) * (!this.rotate ? 1.0 : Mathf.sinDeg(b.drawrot()));
 
         this.eff.at(
           x, y,

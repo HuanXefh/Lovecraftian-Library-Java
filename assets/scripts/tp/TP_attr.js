@@ -30,6 +30,8 @@
   exports.attr0env_growth = Attribute.add("lovec-attr0env-growth");
   // Heat attribute will damage unit, 1 attr = 100 HU
   exports.attr0env_heat = Attribute.add("lovec-attr0env-heat");
+  // This one will be 1.0 at daytime instead
+  exports.attr0env_light = Attribute.add("lovec-attr0env-light");
   exports.attr0env_rain = Attribute.add("lovec-attr0env-rain");
   exports.attr0env_tide = Attribute.add("lovec-attr0env-tide");
 
@@ -59,6 +61,7 @@
   exports.attr0blk_hardTree = Attribute.add("lovec-attr0blk-hard-tree");
   exports.attr0blk_fungi = Attribute.add("lovec-attr0blk-fungi");
   exports.attr0blk_hardFungi = Attribute.add("lovec-attr0blk-hard-fungi");
+  exports.attr0blk_algae = Attribute.add("lovec-attr0blk-algae");
 
 
   /* <------------------------------ dynamic ------------------------------ */
