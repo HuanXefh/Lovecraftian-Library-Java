@@ -109,14 +109,14 @@
 
   function comp_acceptItem(b, b_f, itm) {
     return b.block.delegee.noFuelInput ?
-      false :
+      b.items != null :
       b.items != null && b.items.get(itm) < b.getMaximumAccepted(itm) && (b.fuelSel != null ? itm === b.fuelSel : MDL_fuel._hasFuelInput(b.block, itm));
   };
 
 
   function comp_acceptLiquid(b, b_f, liq) {
     return b.block.delegee.noFuelInput ?
-      false :
+      b.liquids != null :
       b.liquids != null && b.liquids.get(liq) < b.block.liquidCapacity && (b.fuelSel != null ? liq === b.fuelSel : MDL_fuel._hasFuelInput(b.block, liq));
   };
 
@@ -371,7 +371,11 @@
         return comp_acceptItem(this, b_f, itm);
       }
       .setProp({
-        boolMode: "or",
+        mergeMode: function(val, valPrev) {
+          return this.block.delegee.noFuelInput ?
+            val && valPrev :
+            val || valPrev;
+        },
       }),
 
 
@@ -379,7 +383,11 @@
         return comp_acceptLiquid(this, b_f, liq);
       }
       .setProp({
-        boolMode: "or",
+        mergeMode: function(val, valPrev) {
+          return this.block.delegee.noFuelInput ?
+            val && valPrev :
+            val || valPrev;
+        },
       }),
 
 

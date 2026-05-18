@@ -203,6 +203,7 @@
   require("lovec/tp/TP_drawer");
   require("lovec/tp/TP_keyBind");
   require("lovec/tp/TP_setting");
+  require("lovec/tp/TP_shoot");
   require("lovec/tp/TP_sortF");
   require("lovec/tp/TP_stat");
   require("lovec/tp/TP_unitStatDisplay");

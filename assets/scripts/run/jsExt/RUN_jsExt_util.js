@@ -17,6 +17,9 @@
 */
 
 
+  const TMP_TUP = [];
+
+
   /**
    * Gets a random key in `obj`.
    * @param {Object} obj
@@ -141,7 +144,8 @@
                         }.wrapLen(argLen) :
                         typeof funCur.mergeMode === "function" ?
                           function() {
-                            return funCur.mergeMode(funPrev.apply(this, arguments), funCur.apply(this, arguments));
+                            TMP_TUP.clear().push(funPrev.apply(this, arguments), funCur.apply(this, arguments));
+                            return funCur.mergeMode.apply(this, TMP_TUP);
                           }.wrapLen(argLen) :
                           function() {
                             funPrev.apply(this, arguments);
@@ -169,7 +173,8 @@
                         }.wrapLen(argLen) :
                         typeof funCur.mergeMode === "function" ?
                           function() {
-                            return funCur.mergeMode(this["super$" + key].apply(this, arguments), funCur.apply(this, arguments));
+                            TMP_TUP.clear().push(this["super$" + key].apply(this, arguments), funCur.apply(this, arguments));
+                            return funCur.mergeMode.apply(this, TMP_TUP);
                           }.wrapLen(argLen) :
                           function() {
                             this["super$" + key].apply(this, arguments);

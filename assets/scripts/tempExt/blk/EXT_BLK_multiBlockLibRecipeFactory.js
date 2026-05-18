@@ -9,6 +9,7 @@
 
 
   const PARENT = require("lovec/temp/blk/BLK_multiBlockLibRecipeFactory");
+  const INTF = require("lovec/temp/intf/INTF_BLK_vanillaLikeBlock");
 
 
   /* <---------- component ----------> */
@@ -29,51 +30,21 @@
      * You should require MultiBlockLib as a dependency for your mod, or use `runWithDependency` to optionally load related CT files.
      * @class EXT_BLK_multiBlockLibRecipeFactory
      * @extends BLK_multiBlockLibRecipeFactory
+     * @extends INTF_BLK_vanillaLikeBlock
      */
-    newClass().extendClass(PARENT[0], "EXT_BLK_multiBlockLibRecipeFactory").initClass()
+    newClass().extendClass(PARENT[0], "EXT_BLK_multiBlockLibRecipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-fac")
-    .setParam({
-
-
-      /* <------------------------------ internal ------------------------------ */
-
-
-      /**
-       * <INTERNAL>
-       * @memberof EXT_BLK_multiBlockLibRecipeFactory
-       * @instance
-       */
-      skipOutlineSetup: true,
-      /**
-       * <INTERNAL>
-       * @memberof EXT_BLK_multiBlockLibRecipeFactory
-       * @instance
-       */
-      noLoot: true,
-      /**
-       * <INTERNAL>
-       * @memberof EXT_BLK_multiBlockLibRecipeFactory
-       * @instance
-       */
-      noReac: true,
-      /**
-       * <INTERNAL>
-       * @memberof EXT_BLK_multiBlockLibRecipeFactory
-       * @instance
-       */
-      skipFacilityMethod: true,
-
-
-    })
+    .setParam({})
     .setMethod({}),
 
 
     /**
      * @class EXT_B_multiBlockLibRecipeFactory
      * @extends B_multiBlockLibRecipeFactory
+     * @extends INTF_B_vanillaLikeBlock
      */
-    newClass().extendClass(PARENT[1], "EXT_B_multiBlockLibRecipeFactory").initClass()
+    newClass().extendClass(PARENT[1], "EXT_B_multiBlockLibRecipeFactory").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({}),

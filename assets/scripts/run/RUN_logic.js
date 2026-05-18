@@ -140,7 +140,7 @@
       if(!PARAM.SHOULD_CREATE_BUILD_REMAINS || e.block instanceof ConstructBlock || e.block.size < 2 || MDL_cond._hasNoRemains(e.block)) return;
       MDL_effect._e_remains(e.x, e.y, e, e.team);
     } else {
-      if(MDL_cond._hasNoRemains(unit.type)) return;
+      if(MDL_cond._hasNoRemains(e.type)) return;
       MDL_effect._e_remains(e.x, e.y, e, e.team);
     };
   };

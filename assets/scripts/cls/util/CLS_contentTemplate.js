@@ -22,6 +22,9 @@
   };
 
 
+  const TMP_TUP = [];
+
+
   /* <---------- static property ----------> */
 
 
@@ -247,7 +250,8 @@
                       } :
                       typeof fun.mergeMode === "function" ?
                         function() {
-                          return fun.mergeMode(superFun.apply(this, arguments), fun.apply(this, arguments));
+                          TMP_TUP.clear().push(superFun.apply(this, arguments), fun.apply(this, arguments));
+                          return fun.mergeMode.apply(this, TMP_TUP);
                         } :
                         function() {
                           superFun.apply(this, arguments);
@@ -365,7 +369,8 @@
                   }.wrapLen(fun.argLen) :
                   typeof fun.mergeMode === "function" ?
                     function() {
-                      return fun.mergeMode(this["super$" + fun.nm].apply(this, arguments), fun.apply(this, arguments));
+                      TMP_TUP.clear().push(this["super$" + fun.nm].apply(this, arguments), fun.apply(this, arguments));
+                      return fun.mergeMode.apply(this, TMP_TUP);
                     }.wrapLen(fun.argLen) :
                     function() {
                       this["super$" + fun.nm].apply(this, arguments);

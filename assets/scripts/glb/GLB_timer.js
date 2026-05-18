@@ -21,11 +21,10 @@
   /* <---------- base ----------> */
 
 
-  const timer_mem = new Interval(3);
   const timer_gn = new Interval(8);
   const timer_effc = new Interval(4);
   const timer_param = new Interval(3);
-  const timer_eff = new Interval(2);
+  const timer_eff = new Interval(3);
   const timer_unit = new Interval(1);
   const timer_stackSta = new Interval(1);
 
@@ -38,11 +37,6 @@
 
 
   MDL_event._c_onUpdate(() => {
-
-    // Internal timer for memory monitor
-    exports.memUse = timer_mem.get(0, 50.0);
-    exports.memUseMean = timer_mem.get(1, 450.0);
-    exports.memPrint = timer_mem.get(2, 3600.0);
 
     // Generic timer
     exports.secQuarter = timer_gn.get(0, 15.0);
@@ -74,6 +68,7 @@
     // Timer for some visual effects
     exports.lightning = timer_eff.get(0, VAR.time.lightningIntv);
     exports.coreSignal = timer_eff.get(1, 25.0);
+    exports.trailCircle = timer_eff.get(1, 15.0);
 
     // Timer for generic unit update
     exports.unit = timer_unit.get(VAR.time.unitIntv);

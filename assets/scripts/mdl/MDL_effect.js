@@ -370,6 +370,32 @@
 
 
   /**
+   * Circle effect usually used as trail.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {Color|unset} [color]
+   * @return {void}
+   */
+  const _e_trailCircle = function thisFun(x, y, rad, color) {
+    if(Vars.state.isPaused() || !TIMER.trailCircle) return;
+    if(rad == null) rad = 4.0;
+    if(color == null) color = Pal.accent;
+
+    showAt(x, y, thisFun.eff, rad, color);
+  }
+  .setProp({
+    eff: new Effect(50.0, eff => {
+      Draw.color(eff.color);
+      Fill.circle(eff.x, eff.y, eff.fout() * eff.rotation);
+      Draw.color();
+    }),
+  })
+  .setAnno("non-headless");
+  exports._e_trailCircle = _e_trailCircle;
+
+
+  /**
    * Ripple effect on liquid floor.
    * @param {number} x
    * @param {number} y

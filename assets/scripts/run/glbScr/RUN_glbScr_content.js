@@ -481,6 +481,18 @@
 
 
   /**
+   * Gets a shoot pattern by name.
+   * @global
+   * @param {string} nm
+   * @param {Object|unset} [paramObj]
+   * @return {ShootPattern|null}
+   */
+  fetchShootPattern = function(nm, paramObj) {
+    return global.lovecUtil.db.shootPattern.read(nm, Function.airNull)(paramObj);
+  };
+
+
+  /**
    * Gets a drawer by name.
    * @global
    * @param {string} nm
@@ -787,6 +799,21 @@
     Events.on(ContentInitEvent, () => {
       if(global.lovecUtil.db.ai.includes(nm)) return;
       global.lovecUtil.db.ai.push(nm, getter);
+    });
+  };
+
+
+  /**
+   * Registers a shoot pattern.
+   * @global
+   * @param {string} nm
+   * @param {function(Object|unset): ShootPattern} getter
+   * @return {void}
+   */
+  newShootPattern = function(nm, getter) {
+    Events.on(ContentInitEvent, () => {
+      if(global.lovecUtil.db.shootPattern.includes(nm)) return;
+      global.lovecUtil.db.shootPattern.push(nm, getter);
     });
   };
 

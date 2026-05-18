@@ -955,17 +955,23 @@
    * @param {number|unset} [z]
    * @return {Vec2}
    */
-  const _d_laserRandMine = function(
+  const _d_laserRandMine = function thisFun(
     x, y, cx, cy, rad, offTime, rotDir,
     strokeScl, color1_gn, color2_gn, a, hasLight, z
   ) {
     if(z == null) z = VAR.layer.mineBeam;
 
-    let vec2 = _d_laserRandWalk(x, y, cx + Math.cos(Time.time * 0.025) * 4.0, cy + Math.sin(Time.time * 0.025) * 4.0, rad, offTime, rotDir, strokeScl, color1_gn, color2_gn, a, hasLight, z);
-    if(!Vars.state.isPaused() && Mathf.chanceDelta(0.05)) {
-      Fx.mineSmall.at(cx + vec2.x * rad, cy + vec2.y * rad);
+    thisFun.tmpVec.set(_d_laserRandWalk(x, y, cx + Math.cos(Time.time * 0.025) * 4.0, cy + Math.sin(Time.time * 0.025) * 4.0, rad, offTime, rotDir, strokeScl, color1_gn, color2_gn, a, hasLight, z));
+    if(!Vars.state.isPaused()) {
+      MDL_effect._e_trailCircle(cx + thisFun.tmpVec.x * rad, cy + thisFun.tmpVec.y * rad, strokeScl * 1.0, MDL_color._color(color1_gn));
+      if(Mathf.chanceDelta(0.05)) {
+        Fx.mineSmall.at(cx + thisFun.tmpVec.x * rad, cy + thisFun.tmpVec.y * rad);
+      };
     };
-  };
+  }
+  .setProp({
+    tmpVec: new Vec2(),
+  });
   exports._d_laserRandMine = _d_laserRandMine;
 
 

@@ -24,7 +24,7 @@
 
   /**
    * Variant of {@link ENV_vent} where vent size is the only thing to change.
-   * You can make 2x2 vents with this for example with `ventSize: 2`.
+   * You can make 2x2 vents with this template for example with `ventSize: 2`.
    * @class EXT_ENV_dynamicSizeVent
    * @extends ENV_baseFloor
    * @extends INTF_ENV_dynamicSizeVent

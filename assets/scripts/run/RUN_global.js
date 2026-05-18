@@ -139,6 +139,7 @@
 
       ability: [],
       ai: [],
+      shootPattern: [],
       sortF: {},
       drawer: [],
       consumer: [],
