@@ -55,7 +55,7 @@
     let returnItm = Reflect.get(Drill, blk, "returnItem");
     let returnAmt = Reflect.get(Drill, blk, "returnCount");
     if(returnItm != null) {
-      let w = blk.drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", 60.0 / blk.getDrillTime(returnItm) / blk.drillAmtMtp * returnAmt, 2), tx, ty, valid);
+      let w = blk.drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", 60.0 / blk.getDrillTime(returnItm) * blk.drillAmtMtp * returnAmt, 2), tx, ty, valid);
       let x = tx.toFCoord(blk.size) - w * 0.5 - 4.0;
       let y = ty.toFCoord(blk.size) + blk.size * Vars.tilesize * 0.5 + 5.0;
       let iconW = Vars.iconSmall * 0.25;

@@ -189,6 +189,37 @@
   exports._g_crusherBiomass = _g_crusherBiomass;
 
 
+  const _g_dryer = new CLS_recipeGenerator(function(rc, metaObj) {
+    let
+      includeItem = readParam(metaObj, "includeItem", true),
+      includeLiquid = readParam(metaObj, "includeLiquid", false),
+      includeGas = readParam(metaObj, "includeGas", false),
+      mode = readParam(metaObj, "neutral", false);
+
+    const arr = [];
+    if(includeItem) arr.pushAll(DB_item.db["map"]["recipe"]["dryingItem"]);
+    if(includeLiquid) {
+      arr.pushAll(DB_item.db["map"]["recipe"]["dryingLiquid"]);
+      if(mode === neutral || mode === "acidic") arr.pushAll(DB_item.db["map"]["recipe"]["dryingLiquidAcidic"]);
+      if(mode === neutral || mode === "basic") arr.pushAll(DB_item.db["map"]["recipe"]["dryingLiquidBasic"]);
+    };
+    if(includeGas) {
+      arr.pushAll(DB_item.db["map"]["recipe"]["dryingGas"]);
+      if(mode === neutral || mode === "acidic") arr.pushAll(DB_item.db["map"]["recipe"]["dryingGasAcidic"]);
+      if(mode === neutral || mode === "basic") arr.pushAll(DB_item.db["map"]["recipe"]["dryingGasBasic"]);
+    };
+
+    this.setCateg("drying");
+    this.handle2Arr(
+      rc,
+      arr,
+      null,
+      metaObj,
+    );
+  });
+  exports._g_dryer = _g_dryer;
+
+
   /**
    * Recipe generator: freeze dryer.
    * Removes moisture through sublimation of ice.

@@ -111,7 +111,7 @@
    * @return {number}
    */
   const _drillSpd = function(blk, boosted) {
-    return readClassFunMap(DB_block.db["class"]["map"]["drillSpd"], blk, Function.airZero)(blk, tryVal(boosted, false)) / tryJsProp(blk, "drillAmtMtp", 1.0);
+    return readClassFunMap(DB_block.db["class"]["map"]["drillSpd"], blk, Function.airZero)(blk, tryVal(boosted, false)) * tryJsProp(blk, "drillAmtMtp", 1.0);
   };
   exports._drillSpd = _drillSpd;
 

@@ -15,6 +15,8 @@
 
 
   function comp_init(blk) {
+    blk.update = true;
+
     blk.saveConfig = false;
     blk.clearOnDoubleTap = false;
 
@@ -62,6 +64,15 @@
 
   function comp_setBars(blk) {
     blk.removeBar("items");
+  };
+
+
+  function comp_updateTile(b) {
+    if(Vars.headless) return;
+
+    b.displayedRsTg = b.rsTgs.length === 0 ?
+      null :
+      b.rsTgs[Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % b.rsTgs.length)];
   };
 
 
@@ -117,6 +128,11 @@
 
   function comp_draw(b) {
     if(b.isInv) Draw.rect(b.block.delegee.invReg, b.x, b.y);
+  };
+
+
+  function comp_drawSelect(b) {
+    LCDraw.contentIcon(b.x, b.y, b.displayedRsTg, b.block.size, 0.75);
   };
 
 
@@ -208,10 +224,21 @@
        * @instance
        */
       rsTgs: prov(() => []),
+      /**
+       * <INTERNAL>
+       * @memberof B_multiFilterGate
+       * @instance
+       */
+      displayedRsTg: null,
 
 
     })
     .setMethod({
+
+
+      updateTile: function() {
+        comp_updateTile(this);
+      },
 
 
       getTileTarget: function(itm, b_f, isFlip) {
@@ -243,6 +270,14 @@
       draw: function() {
         comp_draw(this);
       },
+
+
+      drawSelect: function() {
+        comp_drawSelect(this);
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       write: function(wr) {

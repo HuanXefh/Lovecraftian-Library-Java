@@ -368,12 +368,19 @@
         if(warmup < 0.01) return;
         if(this.noLiqCheck) {
           if(!this.noLiqCdMap.containsKey(b)) this.noLiqCdMap.put(b, 0.0);
-          let cd = this.noLiqCdMap.get(b);
-          if(b.liquids.currentAmount() < 0.01 || b.liquids.current().gas || MDL_cond._isAuxiliaryFluid(b.liquids.current())) {
+          let cd = this.noLiqCdMap.get(b), amt, cond = true;
+          b.liquids.each(liq => {
+            if(!cond) return;
+            amt = b.liquids.get(liq);
+            if(amt > 0.01 && !liq.gas && !MDL_cond._isAuxiliaryFluid(liq)) {
+              cond = false;
+            };
+          });
+          if(cond) {
             cd = Math.min(cd + 1.0, 20.0);
             this.noLiqCdMap.put(b, cd);
           } else {
-            cd = Mathf.maxZero(cd - 1.0);
+            cd = 0.0;
             this.noLiqCdMap.put(b, cd);
           };
           if(cd >= 20.0) return;
