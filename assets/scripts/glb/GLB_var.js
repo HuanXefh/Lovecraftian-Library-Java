@@ -98,6 +98,7 @@
 
   exports.range = {
     mouseRad: 28.0,
+    sortCrowdRad: 28.0,
     treeHideMaxRad: 28.0,
     presExploRad: 34.4,
     lootRad: 80.0,
