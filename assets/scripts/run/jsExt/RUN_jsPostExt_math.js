@@ -17,6 +17,7 @@
 */
 
 
+  /** @global */
   const ConvolutionModes = new CLS_enum({
     FULL: 0,
     SAME: 1,

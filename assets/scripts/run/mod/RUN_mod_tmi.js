@@ -74,8 +74,8 @@
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
 
               let rawRc = !blk.delegee.shouldDropPay ?
-                MOD_tmi._rawRc("collecting", blk, blk.drillTime / blk.size, true) :
-                MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / blk.size, true);
+                MOD_tmi._rawRc("collecting", blk, blk.drillTime / blk.size / blk.delegee.drillAmtMtp, true) :
+                MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / blk.size / blk.delegee.drillAmtMtp, true);
               MDL_event._c_onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, blk.optionalBoostIntensity);
               });
@@ -108,8 +108,8 @@
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
 
               let rawRc = !blk.delegee.shouldDropPay ?
-                MOD_tmi._rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2), true) :
-                MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.size, 2), true);
+                MOD_tmi._rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2) / blk.delegee.drillAmtMtp, true) :
+                MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.size, 2) / blk.delegee.drillAmtMtp, true);
               MDL_event._c_onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
               });
@@ -131,51 +131,34 @@
     });
 
 
-
-
-    /**
-     * Default parser for most Lovec producers.
-     */
-    const _p_defProd = MOD_tmi.regisParser({
-
-
-      parserBlacklist: [
-        MOD_tmi.CLASSES.AttributeCrafterParser,
-        MOD_tmi.CLASSES.GenericCrafterParser,
-      ],
-      tempTypeMap: ObjectMap.of(
-        "BLK_oreScanner", "factory",
-      ),
-      tempBlacklist: [
-        "BLK_rainCollector",
-      ],
+    const _p_rangeHarvester = MOD_tmi.regisParser({
 
 
       exclude(parser) {
-        return this.parserBlacklist.hasIns(parser);
+        return parser instanceof MOD_tmi.CLASSES.AttributeCrafterParser;
       },
 
 
       isTarget(blk) {
-        return (
-          MDL_cond._isFactory(blk)
-            && !MDL_cond._isRecipeFactory(blk)
-            && !(!checkCreatedByTemp(blk) || this.tempBlacklist.includes(blk.ex_getTempNm()))
-        ) || (
-          checkCreatedByTemp(blk) && this.tempTypeMap.containsKey(blk.ex_getTempNm())
-        );
+        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("INTF_BLK_rangeAttributeBlock");
       },
 
 
       parse(blk) {
         let rawRc = MOD_tmi._rawRc(
-          this.tempTypeMap.get(blk.ex_getTempNm(), "factory"),
+          tryVal(blk.ex_getRangeAttrProdTypeStr(), "collecting"),
           blk,
           MDL_content._craftTime(blk),
+          true,
         );
         MDL_event._c_onLoad(() => {
           MOD_tmi.baseParse(blk, rawRc);
         });
+        let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
+        Vars.content.blocks().each(
+          oblk => !oblk.attributes.get(blk.ex_getAttrTg()).fEqual(0.0),
+          oblk => MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.attributes.get(blk.ex_getAttrTg()), blk.size, true, AttrRcTypes.PROP),
+        );
 
         rawRc.complete();
         return new Seq([rawRc]);
@@ -228,7 +211,7 @@
             MOD_tmi.baseParse(blk, rawRc);
           });
           blks.forEachFast(oblk => {
-            MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.liquidMultiplier, 1, true);
+            MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.liquidMultiplier, blk.size, true, AttrRcTypes.FLOOR);
           });
           MOD_tmi.addProd(rawRc, liq, blk.pumpAmount * Math.pow(blk.size, 2), true);
 
@@ -270,7 +253,64 @@
         });
         MOD_tmi.addProdPow(rawRc, blk.powerProduction);
         MDL_attr._blkAttrArr(blk.attribute, oblk => MDL_cond._isVentBlock(oblk) && oblk.delegee.ventSize === blk.size).forEachRow(3, (oblk, attrVal, attr) => {
-          MOD_tmi.addAttr(rawRc, rcGrp, oblk, attrVal, 1, true);
+          MOD_tmi.addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, AttrRcTypes.FLOOR);
+        });
+
+        rawRc.complete();
+        return new Seq([rawRc]);
+      },
+
+
+    });
+
+
+
+
+    /**
+     * Default parser for most Lovec producers.
+     */
+    const _p_defProd = MOD_tmi.regisParser({
+
+
+      parserBlacklist: [
+        MOD_tmi.CLASSES.AttributeCrafterParser,
+        MOD_tmi.CLASSES.GenericCrafterParser,
+      ],
+      parserConflicted: [
+        _p_rangeHarvester,
+      ],
+      tempTypeMap: ObjectMap.of(
+        "BLK_oreScanner", "factory",
+      ),
+      tempBlacklist: [
+        "BLK_rainCollector",
+      ],
+
+
+      exclude(parser) {
+        return this.parserBlacklist.hasIns(parser) || this.parserConflicted.includes(parser);
+      },
+
+
+      isTarget(blk) {
+        return (
+          MDL_cond._isFactory(blk)
+            && !MDL_cond._isRecipeFactory(blk)
+            && !(!checkCreatedByTemp(blk) || this.tempBlacklist.includes(blk.ex_getTempNm()))
+        ) || (
+          checkCreatedByTemp(blk) && this.tempTypeMap.containsKey(blk.ex_getTempNm())
+        );
+      },
+
+
+      parse(blk) {
+        let rawRc = MOD_tmi._rawRc(
+          this.tempTypeMap.get(blk.ex_getTempNm(), "factory"),
+          blk,
+          MDL_content._craftTime(blk),
+        );
+        MDL_event._c_onLoad(() => {
+          MOD_tmi.baseParse(blk, rawRc);
         });
 
         rawRc.complete();

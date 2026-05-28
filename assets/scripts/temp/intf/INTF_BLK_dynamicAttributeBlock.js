@@ -45,7 +45,7 @@
       });
     });
 
-    MOD_tmi._r_dynamicAttributeBlock(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr(), blk.ex_getDynaAttrProdIsWall());
+    MOD_tmi._r_dynamicAttributeBlock(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr());
   };
 
 
@@ -228,6 +228,12 @@
          */
         attrMode: AttrModes.FLOOR,
         /**
+         * <PARAM>: Determines how efficiency is calculated. See {@link MDL_attr}.
+         * @memberof INTF_BLK_dynamicAttributeBlock
+         * @instance
+         */
+        attrRcType: AttrRcTypes.FLOOR,
+        /**
          * <PARAM>: Attribute-resource map used to determine output. See {@link DB_item}.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
@@ -368,7 +374,7 @@
        * @return {number}
        */
       ex_getAttrLimit: function() {
-        return MDL_attr._limit(this.size, 1.0, this.ex_getDynaAttrProdIsWall());
+        return this.attrRcType === AttrRcTypes.PROP ? 1.0 : MDL_attr._limit(this.size, 1.0, this.attrRcType === AttrRcTypes.WALL);
       }
       .setProp({
         noSuper: true,
@@ -455,20 +461,6 @@
        */
       ex_getDynaAttrProdTypeStr: function() {
         return null;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Whether this block is something like a wall crafter.
-       * @memberof INTF_BLK_dynamicAttributeBlock
-       * @instance
-       * @return {boolean}
-       */
-      ex_getDynaAttrProdIsWall: function() {
-        return false;
       }
       .setProp({
         noSuper: true,

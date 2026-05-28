@@ -52,6 +52,7 @@
   exports._fuelLvl = _fuelLvl;
 
 
+  /** @global */
   const FuelTypes = new CLS_enum({
     ALL: 0xff,
     ITEM: 1 << 0,

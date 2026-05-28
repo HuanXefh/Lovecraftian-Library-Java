@@ -31,6 +31,15 @@
   .globalize("AttrModes");
 
 
+  /** @global */
+  const AttrRcTypes = new CLS_enum({
+    FLOOR: 0,
+    WALL: 1,
+    PROP: 2,
+  })
+  .globalize("AttrRcTypes");
+
+
   /**
    * Converts generalized attribute to string.
    * @param {AttrGn} attr_gn

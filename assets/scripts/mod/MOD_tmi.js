@@ -193,7 +193,7 @@
     rawRc.addMaterialPersec(_tmiCT(ct_gn), amt)
     .setType(CLASSES.RecipeItemType.BOOSTER)
     .setOptional()
-    .setEff(boostEffc)
+    .setEfficiency(boostEffc)
     .boostAndConsFormat(boostEffc);
 
     return rawRc;
@@ -285,15 +285,15 @@
    * @param {boolean|unset} [hideEffc]
    * @return {Recipe}
    */
-  const addAttr = function(rawRc, rcGrp, ct_gn, val, size, reqAttr, isWallEffc, hideEffc) {
-    let rcStack = rawRc.addMaterial(_tmiCT(ct_gn), isWallEffc ? size : Math.pow(size, 2))
+  const addAttr = function(rawRc, rcGrp, ct_gn, val, size, reqAttr, attrRcType, hideEffc) {
+    let rcStack = rawRc.addMaterial(_tmiCT(ct_gn), attrRcType === AttrRcTypes.PROP ? 1 : attrRcType === AttrRcTypes.WALL ? size : Math.pow(size, 2))
     .setType(CLASSES.RecipeItemType.ATTRIBUTE)
     .setOptional(tryVal(!reqAttr, true))
-    .setEff((isWallEffc ? size : Math.pow(size, 2)) * tryVal(val, 1.0))
+    .setEfficiency(tryVal(val, 1.0))
     .setGroup(rcGrp);
 
     if(!hideEffc) rcStack.setFormat({format(f) {
-      return ((reqAttr ? "" : "+") + val.perc(0)).color(val > 0.0 ? Pal.heal : Pal.remove);
+      return ((reqAttr ? "" : "+") + tryVal(val, 0.0).perc(0)).color(tryVal(val, 0.0) > 0.0 ? Pal.heal : Pal.remove);
     }});
 
     return rawRc;
@@ -316,7 +316,7 @@
 
     rawRc.addMaterial(_tmiCT(blk), amt)
     .setType(CLASSES.RecipeItemType.ATTRIBUTE)
-    .setEff(realEffc)
+    .setEfficiency(realEffc)
     .emptyFormat()
     .setGroup(rcGrp);
 
@@ -342,9 +342,9 @@
       rawRc.addMaterialPersec(_tmiCT(ct_gn), amt);
 
     rcStack
-    .setBooster(true)
+    .setType(CLASSES.RecipeItemType.BOOSTER)
     .setOptional(!reqOpt)
-    .setEff(mtp)
+    .setEfficiency(mtp)
     .setGroup(rcGrp)
     .setFormat({format(f) {
       return (!isContinuous ? amt.ui() : ((amt * 60.0).ui() + "/"  + StatUnit.seconds.localized())) + "\n" + ((reqOpt ? "" : "+") + mtp.perc(0)).color(mtp > 0.0 ? Pal.heal : Pal.remove);
@@ -462,10 +462,9 @@
    * @param {Block} blk
    * @param {Array} attrRsArr
    * @param {string|unset} [typeStr_ow]
-   * @param {boolean|unset} [isWallEffc]
    * @return {void}
    */
-  const _r_dynamicAttributeBlock = function(blk, attrRsArr, typeStr_ow, isWallEffc) {
+  const _r_dynamicAttributeBlock = function(blk, attrRsArr, typeStr_ow) {
     if(!ENABLED) return;
 
     MDL_event._c_onLoad(() => {
@@ -478,9 +477,9 @@
         baseParse(blk, rawRc);
 
         MDL_attr._blkAttrArr(nmAttr).forEachRow(3, (oblk, attrVal, nmAttr) => {
-          addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, isWallEffc);
+          addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, blk.delegee.attrRcType);
         });
-        addProd(rawRc, rs, blk.ex_getDynaAttrProdAmt(rs), rs instanceof Liquid);
+        addProd(rawRc, rs, blk.ex_getDynaAttrProdSpd(rs) / (rs instanceof Liquid ? 60.0 : (1.0 / blk.ex_getCraftTime())), rs instanceof Liquid);
 
         rawRc.complete();
         regisRc(rawRc);

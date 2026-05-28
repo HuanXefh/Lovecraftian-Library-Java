@@ -100,6 +100,12 @@
        * @instance
        */
       attrMode: AttrModes.BLOCK,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_dynamicWallHarvester
+       * @instance
+       */
+      attrRcType: "wall",
 
 
     })
@@ -221,21 +227,6 @@
        */
       ex_getDynaAttrProdTypeStr: function() {
         return "collecting";
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      /**
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       * @return {boolean}
-       */
-      ex_getDynaAttrProdIsWall: function() {
-        return true;
       }
       .setProp({
         noSuper: true,

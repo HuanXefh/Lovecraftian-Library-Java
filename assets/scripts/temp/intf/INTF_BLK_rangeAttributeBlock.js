@@ -26,11 +26,6 @@
   });
 
 
-  function comp_ex_getAttrLimit(blk) {
-    return Math.pow(blk.attrR * 2 + blk.size, 2);
-  };
-
-
 /*
   ========================================
   Section: Application
@@ -59,11 +54,17 @@
          */
         attrR: 5,
         /**
-         * <PARAM>: Selections mode of attribute.
+         * <PARAM>: See {@link INTF_BLK_dynamicAttributeBlock}.
          * @memberof INTF_BLK_rangeAttributeBlock
          * @instance
          */
         attrMode: AttrModes.FLOOR,
+        /**
+         * <PARAM>: See {@link INTF_BLK_dynamicAttributeBlock}.
+         * @memberof INTF_BLK_rangeAttributeBlock
+         * @instance
+         */
+        attrRcType: AttrRcTypes.FLOOR,
 
 
       }),
@@ -95,20 +96,6 @@
 
 
       /**
-       * @memberof INTF_BLK_rangeAttributeBlock
-       * @instance
-       * @return {number}
-       */
-      ex_getAttrLimit: function() {
-        return comp_ex_getAttrLimit(this);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      /**
        * Gets actual attribute used by this block.
        * <br> <LATER>
        * @memberof INTF_BLK_rangeAttributeBlock
@@ -121,6 +108,21 @@
       .setProp({
         noSuper: true,
         override: true,
+      }),
+
+
+      /**
+       * Expected production type used in TMI.
+       * <br> <LATER>
+       * @memberof INTF_BLK_rangeAttributeBlock
+       * @instance
+       * @return {string|null}
+       */
+      ex_getRangeAttrProdTypeStr: function() {
+        return null;
+      }
+      .setProp({
+        noSuper: true,
       }),
 
 
