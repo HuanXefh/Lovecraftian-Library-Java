@@ -101,9 +101,14 @@
       ob == null
         || ob === b
         || (ob.tileX() !== b.tileX() && ob.tileY() !== b.tileY())
+        || !MDL_pos._dstT(b.tile, ob.tile).fEqual((b.block.size + ob.block.size) * 0.5 * Vars.tilesize)
         || !b.ex_checkCogTransValid(ob)
     ) {
       return null;
+    };
+
+    if(PARAM.ENABLE_TEST_DRAW) {
+      Fx.placeBlock.at(ob);
     };
 
     return ob;

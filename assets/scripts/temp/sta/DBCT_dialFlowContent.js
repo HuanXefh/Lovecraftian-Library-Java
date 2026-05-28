@@ -36,11 +36,6 @@
   };
 
 
-  function comp_postInit(sta) {
-    lockTechNode(sta);
-  };
-
-
   function comp_setStats(sta) {
     sta.stats.add(fetchStat("lovec", "spec-dialflow"), newStatValue(tb => {
       tb.row();
@@ -62,7 +57,7 @@
 
   /**
    * Used to play a dialog flow in database.
-   * This content can only be unlocked by playing the dialog flow in campaign, it's meaningless to set objectives for it.
+   * This content is meant to be only unlockable by playing the dialog flow in campaign.
    * <br> <NAMEGEN>
    * @class DBCT_dialFlowContent
    * @extends DBCT_databaseContent
@@ -88,11 +83,6 @@
 
     init: function() {
       comp_init(this);
-    },
-
-
-    postInit: function() {
-      comp_postInit(this);
     },
 
 

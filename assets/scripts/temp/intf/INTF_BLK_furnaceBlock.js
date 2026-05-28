@@ -103,7 +103,7 @@
 
 
   function comp_updateEfficiencyMultiplier(b) {
-    b.efficiency *= b.furnEffc;
+    b.efficiency *= b.cheating() ? 1.0 : b.furnEffc;
   };
 
 
@@ -392,7 +392,7 @@
 
 
       warmupTarget: function() {
-        return this.heatFrac;
+        return this.cheating() ? 1.0 : this.heatFrac;
       }
       .setProp({
         noSuper: true,

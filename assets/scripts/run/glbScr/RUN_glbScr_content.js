@@ -39,26 +39,6 @@
 
 
   /**
-   * Makes a tech node unable to be researched, only unlockable by calling `ct.unlock()`.
-   * Used for contents that should be unlocked in a special way.
-   * @global
-   * @param {UnlockableContent} ct
-   * @return {void}
-   */
-  lockTechNode = function(ct) {
-    if(ct.techNode == null) return;
-    ct.techNode.objectives.add(extend(Objectives.Objective, {
-      complete() {
-        return false;
-      },
-      display() {
-        return Core.bundle.get("info.lovec-info-no-unlock.name");
-      },
-    }));
-  };
-
-
-  /**
    * Sets weapons for some unit type.
    * @global
    * @param {UnitType} utp

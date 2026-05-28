@@ -96,6 +96,25 @@
 
 
   /**
+   * Used to temporarily switch current mod to null.
+   * @global
+   * @return {void}
+   */
+  processModCur = function() {
+    if(!processModCur.isTail) {
+      processModCur.modPrev = Reflect.get(ContentLoader, Vars.content, "currentMod");
+      Reflect.set(ContentLoader, Vars.content, "currentMod", null);
+    } else {
+      Reflect.set(ContentLoader, Vars.content, "currentMod", processModCur.modPrev);
+    };
+
+    processModCur.isTail = !processModCur.isTail;
+  };
+  processModCur.isTail = false;
+  processModCur.modPrev = null;
+
+
+  /**
    * Temporarily changes class loader, so that {@link extend} can be applied on mod Java classes.
    * Should always be called twice!
    * @global

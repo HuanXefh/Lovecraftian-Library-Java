@@ -72,11 +72,13 @@
       b.dryHeated = false;
     };
 
-    b.boilerInstab = Mathf.clamp(b.boilerInstab + (
-      (b.dryHeated && amtWater > 0.1) || (amtSteam / cap > 0.9) ?
-        b.block.delegee.boilerInstabIncRate :
-        -b.block.delegee.boilerInstabIncRate
-    ) * Time.delta);
+    b.boilerInstab = b.cheating() ?
+      0.0 :
+      Mathf.clamp(b.boilerInstab + (
+        (b.dryHeated && amtWater > 0.1) || (amtSteam / cap > 0.9) ?
+          b.block.delegee.boilerInstabIncRate :
+          -b.block.delegee.boilerInstabIncRate
+      ) * Time.delta);
     if(b.boilerInstab > 0.9999) {
       TRIGGER.boilerExplosion.fire(b);
       b.kill();

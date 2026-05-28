@@ -322,7 +322,7 @@
     if(rcHeader !== b.rcHeader || forceLoad) {
       b.ex_loadRcParam(rcMdl, rcHeader);
     };
-    if(b.ex_getTimerEffcState()) {
+    if(b.ex_shouldUpdateRcParam()) {
       b.ex_onRcParamUpdate();
     };
   };
@@ -1077,6 +1077,19 @@
       /**
        * @memberof INTF_B_recipeHandler
        * @instance
+       * @return {boolean}
+       */
+      ex_shouldUpdateRcParam: function() {
+        return TIMER.effc;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_recipeHandler
+       * @instance
        * @param {number} time
        * @return {number}
        */
@@ -1122,19 +1135,6 @@
        */
       ex_getFailEff: function() {
         return tryVal(this.failEff, this.block.delegee.failEff);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {boolean}
-       */
-      ex_getTimerEffcState: function() {
-        return TIMER.effc;
       }
       .setProp({
         noSuper: true,

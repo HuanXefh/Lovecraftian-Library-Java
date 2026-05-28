@@ -616,7 +616,7 @@
 
         processZ(this.z - 1.0);
 
-        Draw.color(Color.black, this.aSha);
+        Draw.color(Color.black, this.aSha - Mathf.curve(this.fin(), 0.98) * this.aSha);
         this.softShadowRegion == null ?
           Draw.rect("square-shadow", x, y, this.hitSize * 2.1, this.hitSize * 2.1, this.rotation) :
           Draw.rect(this.softShadowRegion, x, y, this.region.width * 0.4, this.region.width * 0.4, this.rotation);
@@ -639,7 +639,8 @@
             Draw.tint(this.color, this.tint, 0.5) :
             !this.isHot ?
               Draw.color(this.color) :
-              Draw.color(Color.valueOf(Tmp.c1, "ea8878").lerp(this.color, Interp.pow2Out.apply(this.fin())), this.a - Mathf.curve(this.fin(), 0.98) * this.a);
+              Draw.color(Color.valueOf(Tmp.c1, "ea8878").lerp(this.color, Interp.pow2Out.apply(this.fin())));
+          Draw.alpha(this.a - Mathf.curve(this.fin(), 0.98) * this.a);
           Draw.rect(this.region, x, y, this.rotation);
           if(this.cellRegion != null) {
             Draw.color(Tmp.c2.set(this.color).mul(this.team.color), this.a - Mathf.curve(this.fin(), 0.98) * this.a);

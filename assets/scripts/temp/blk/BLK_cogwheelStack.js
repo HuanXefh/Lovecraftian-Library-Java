@@ -242,12 +242,23 @@
        * @return {number}
        */
       ex_calcRpmTrans: function(b_t) {
-        return !MDL_cond._isCogwheelStack(b_t.block) ? (this.rpmCur * this.block.size) : (this.rpmCur * this.block.delegee.ovCog.size);
+        // I don't know what happened, it just works
+        return b_t === this ?
+          (
+            this.block.size >= this.block.delegee.ovCog.size ?
+              (this.rpmCur * this.block.size) :
+              (this.rpmCur * this.block.delegee.ovCog.size * this.block.delegee.ovCog.size)
+          ) :
+          (
+            !MDL_cond._isCogwheelStack(b_t.block) ?
+              (this.rpmCur * this.block.size) :
+              (this.rpmCur * this.block.delegee.ovCog.size)
+          );
       }
       .setProp({
         noSuper: true,
         override: true,
-        argLen: 1.0,
+        argLen: 1,
       }),
 
 
@@ -264,7 +275,7 @@
       .setProp({
         noSuper: true,
         override: true,
-        argLen: 1.0,
+        argLen: 1,
       }),
 
 
@@ -283,9 +294,11 @@
           ob :
           !isOv ?
             ob :
-            MDL_cond._isCogwheelStack(ob.block) ?
-              ob :
-              null;
+            !MDL_cond._isCogwheelStack(ob.block) ?
+              null :
+              !MDL_pos._dstT(this.tile, ob.tile).fEqual((this.block.delegee.ovCog.size + this.block.delegee.ovCog.size) * 0.5 * Vars.tilesize) ?
+                null :
+                ob;
       }
       .setProp({
         noSuper: true,

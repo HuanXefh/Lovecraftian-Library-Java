@@ -448,7 +448,7 @@
     __k = newMultiFunction(
       function() {
         if(!__CHECK_CHEAT_STATE__()) return;
-        if(Vars.player.unit() != null) Call.unit.unitDestroy(Vars.player.unit().id);
+        if(Vars.player.unit() != null) Call.unitDestroy(Vars.player.unit().id);
       },
       function(nm) {
         if(!__CHECK_CHEAT_STATE__()) return;
