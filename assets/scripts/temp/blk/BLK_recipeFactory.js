@@ -13,6 +13,12 @@
   const INTF_A = require("lovec/temp/intf/INTF_BLK_recipeHandler");
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  const tmpIntfs = [];
+
+
   /* <---------- component ----------> */
 
 
@@ -105,7 +111,36 @@
       },
 
 
+      /**
+       * @override
+       * @memberof B_recipeFactory
+       * @instance
+       * @return {number}
+       */
+      ex_subRevi: function() {
+        return 1;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
     }),
 
 
   ];
+
+
+  /**
+   * @override
+   * @param {Object} obj
+   * @return {Array<Class>}
+   */
+  module.exports[1].getParentIntfs = function(obj) {
+    tmpIntfs.clear();
+    if(obj.blk$isErekirHeatConsumer) tmpIntfs.push(HeatConsumer);
+    if(obj.blk$isErekirHeatProducer) tmpIntfs.push(HeatBlock);
+
+    return tmpIntfs;
+  };

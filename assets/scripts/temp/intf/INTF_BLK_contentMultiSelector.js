@@ -295,13 +295,13 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
+          wr0rd,
 
-          (wr, revi) => {
+          wr => {
             MDL_io._wr_cts(wr, this.ctTgs);
           },
 
-          (rd, revi) => {
+          rd => {
             MDL_io._rd_cts(rd, this.ctTgs);
           },
         );

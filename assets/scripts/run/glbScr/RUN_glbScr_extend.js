@@ -146,12 +146,36 @@
    */
   extendBase = function(temp, nmCt, obj) {
     processClassLoader();
-    let ct = extend(temp.getParent(), nmCt, tryValProv(obj, prov(() => temp.build())));
+    obj = extendBase.setupObj(temp, obj);
+    let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj, nmCt));
+    extendBase.setupFields(ct, obj);
     CONTENT_HANDLER.add(ct);
     processClassLoader();
     temp.initContent(ct);
 
     return ct;
+  };
+  extendBase.setupObj = function(temp, obj) {
+    return obj != null ? obj : temp.build();
+  };
+  extendBase.setupArgs = function(temp, obj) {
+    let args = [temp.getParent()];
+    if(args[0] == null) throw new Error("${1} has no parent Java class!".format(temp.nm));
+    args.pushAll(temp.getParentIntfs(obj));
+    args.push(obj);
+
+    let restArgs = Array.from(arguments);
+    restArgs.splice(0, 2);
+    args.pushAll(restArgs);
+
+    return args;
+  };
+  extendBase.setupFields = function(ins, obj) {
+    for(let key in obj) {
+      if(typeof obj[key] === "function") continue;
+      ins[key] = obj[key];
+    };
+    return ins;
   };
 
 
@@ -166,7 +190,7 @@
    */
   extendBlock = function(temp, nmBlk, objBlk, objB) {
     processClassLoader();
-    let obj = tryValProv(objBlk, prov(() => temp[0].build()));
+    let obj = extendBase.setupObj(temp[0], objBlk);
     if(obj.forceUseDrawer) {
       let load = obj.load;
       obj.load = function() {
@@ -184,10 +208,11 @@
       };
     };
     /** @type {Block} blk */
-    let blk = extend(temp[0].getParent(), nmBlk, obj);
+    let blk = ctorCall(JavaAdapter, extendBase.setupArgs(temp[0], obj, nmBlk));
+    extendBase.setupFields(blk, obj);
     blk.buildType = () => {
       processClassLoader();
-      let obj1 = tryValProv(objB, prov(() => temp[1].build()));
+      let obj1 = extendBase.setupObj(temp[1], objB);
       if(obj.forceUseDrawer) {
         obj1.__BACKUP_DRAW__ = obj1.draw;
         obj1.draw = function() {
@@ -203,8 +228,13 @@
             this.block.delegee.drawer.drawLight(this);
         };
       };
+      Object._it(obj1, (key, val) => {
+        if(!key.startsWith("blk$")) return;
+        obj1[key] = obj[key.replace("blk$", "")];
+      });
       /** @type {Building} b */
-      let b = extend(temp[1].getParent(), blk, obj1);
+      let b = ctorCall(JavaAdapter, extendBase.setupArgs(temp[1], obj1, blk));
+      extendBase.setupFields(b, obj1);
       temp[1].initContent(b);
       processClassLoader();
       return b;
@@ -227,7 +257,9 @@
    */
   extendUnit = function(temp, nmUtp, objUtp) {
     processClassLoader();
-    let utp = extend(temp.getParent(), nmUtp, tryValProv(objUtp, prov(() => temp.build())));
+    objUtp = extendBase.setupObj(temp, objUtp);
+    let utp = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objUtp, nmUtp));
+    extendBase.setupFields(utp, objUtp);
     temp.initContent(utp);
     CONTENT_HANDLER.add(utp);
     processClassLoader();
@@ -247,7 +279,9 @@
    */
   extendPlanet = function(temp, nmPla, sectorSize, objPla) {
     processClassLoader();
-    let pla = extend(temp.getParent(), nmPla, null, 1.0, sectorSize, tryValProv(objPla, prov(() => temp.build())));
+    objPla = extendBase.setupObj(temp, objPla);
+    let pla = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objPla, nmPla, null, 1.0, sectorSize));
+    extendBase.setupFields(temp, objPla);
     temp.initContent(pla);
     CONTENT_HANDLER.add(pla);
     processClassLoader();

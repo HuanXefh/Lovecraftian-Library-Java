@@ -354,13 +354,14 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
-          (wr, revi) => {
+          wr0rd,
+
+          wr => {
             MDL_io._wr_objStrNum(wr, this.payReqObj);
             MDL_io._wr_objStrNum(wr, this.payStockObj);
           },
 
-          (rd, revi) => {
+          rd => {
             if(this.LCReviSub === 0 && this.block.ex_isSubInsOf("BLK_baseDrill")) return;
 
             MDL_io._rd_objStrNum(rd, this.payReqObj);

@@ -303,6 +303,28 @@
   exports._hasAnyOutput_pay = _hasAnyOutput_pay;
 
 
+  /**
+   * Whether there's Erekir heat input in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @return {boolean}
+   */
+  const _hasErekirHeatInput = function(rcMdl) {
+    return rcMdl.rc.base.baseErekirHeatReq > 0.0 || rcMdl.rc.recipe.some(tmp => typeof tmp === "object" && tmp.erekirHeatReq != null && tmp.erekirHeatReq > 0.0);
+  };
+  exports._hasErekirHeatInput = _hasErekirHeatInput;
+
+
+  /**
+   * Whether there's Erekir heat output in `rcMdl`.
+   * @param {RecipeModule} rcMdl
+   * @return {boolean}
+   */
+  const _hasErekirHeatOutput = function(rcMdl) {
+    return rcMdl.rc.base.baseErekirHeatProd > 0.0 || rcMdl.rc.recipe.some(tmp => typeof tmp === "object" && tmp.erekirHeatProd != null && tmp.erekirHeatProd > 0.0);
+  };
+  exports._hasErekirHeatOutput = _hasErekirHeatOutput;
+
+
   /* <---------- recipe fields ----------> */
 
 
@@ -525,6 +547,32 @@
 
 
   /**
+   * Gets requirement of Erekir heat.
+   * Not used in ProjReind.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
+  const _erekirHeatReq = function(rcMdl, rcHeader) {
+    return _rcVal(rcMdl, rcHeader, "erekirHeatReq", _rcBaseVal(rcMdl, "baseErekirHeatReq", 0.0));
+  };
+  exports._erekirHeatReq = _erekirHeatReq;
+
+
+  /**
+   * Gets output of Erekir heat.
+   * Not used in ProjReind.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {number}
+   */
+  const _erekirHeatProd = function(rcMdl, rcHeader) {
+    return _rcVal(rcMdl, rcHeader, "erekirHeatProd", _rcBaseVal(rcMdl, "baseErekirHeatProd", 0.0));
+  };
+  exports._erekirHeatProd = _erekirHeatProd;
+
+
+  /**
    * Gets attribute that affects efficiency of this recipe.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
@@ -628,6 +676,8 @@
           let str = String.multiline(
             "",
             !_isGen(rcMdl, rcHeader) ? null : MDL_bundle._term("lovec", "generated-recipe").color(Color.darkGray),
+            (function() {let heat = _erekirHeatReq(rcMdl, rcHeader); return heat <= 0.0 ? null : MDL_text._statText(fetchStat("lovec", "blk-erekirheatreq").localized(), heat, StatUnit.heatUnits.localized())})(),
+            (function() {let heat = _erekirHeatProd(rcMdl, rcHeader); return heat <= 0.0 ? null : MDL_text._statText(fetchStat("lovec", "blk-erekirheatprod").localized(), heat, StatUnit.heatUnits.localized())})(),
             (function() {let attr = _attr(rcMdl, rcHeader); return attr == null ? null : MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))})(),
             (function() {let pol = _pol(rcMdl, rcHeader); return pol.fEqual(0.0) ? null : MDL_text._statText(fetchStat("lovec", "blk-pol").localized(), (pol > 0.0 ? "+" : "=") + Math.abs(pol), fetchStatUnit("lovec", "polunits").localized())})(),
             (function() {let p = _failP(rcMdl, rcHeader); return p < 0.0001 ? null : MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), p.perc(1))})(),

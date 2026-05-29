@@ -45,10 +45,10 @@
    * @param {function(Reads, number): void} rdFun - <ARGS>: rd, revi.
    * @return {void}
    */
-  processData = function(wr0rd, revi, wrFun, rdFun) {
+  processData = function(wr0rd, wrFun, rdFun) {
     wr0rd instanceof Writes ?
-      wrFun(wr0rd, revi) :
-      rdFun(wr0rd, revi);
+      wrFun(wr0rd) :
+      rdFun(wr0rd);
   };
 
 

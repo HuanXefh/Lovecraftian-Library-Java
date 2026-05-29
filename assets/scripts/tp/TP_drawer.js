@@ -38,7 +38,7 @@
 
 
       load(blk) {
-        this.rotReg = fetchRegion(blk, this.suffix, "-rotator");
+        this.rotReg = fetchRegion(blk, this.suffix);
       },
 
 
@@ -195,7 +195,7 @@
 
       load(blk) {
         if(!blk.hasLiquids) ERROR_HANDLER.throw("noLiquidModule", blk.name);
-        this.liqReg = fetchRegion(blk, this.suffix, "-liquid");
+        this.liqReg = fetchRegion(blk, this.suffix);
       },
 
 
@@ -219,7 +219,7 @@
 
     }),
   );
-
+  
 
   /* <------------------------------ effect ------------------------------ */
 

@@ -196,13 +196,13 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
+          wr0rd,
 
-          (wr, revi) => {
+          wr => {
             MDL_io._wr_ct(wr, this.ctTg);
           },
 
-          (rd, revi) => {
+          rd => {
             this.ctTg = MDL_io._rd_ct(rd);
           },
         );

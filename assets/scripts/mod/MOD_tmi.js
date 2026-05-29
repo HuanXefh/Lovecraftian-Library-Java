@@ -665,6 +665,12 @@
           addConsPow(rawRc, blk.consPower.usage);
         };
 
+        // Erekir heat
+        let erekirHeatReq = MDL_recipe._erekirHeatReq(rcMdl, rcHeader);
+        if(erekirHeatReq > 0.0) addConsHeatErekir(rawRc, erekirHeatReq);
+        let erekirHeatProd = MDL_recipe._erekirHeatProd(rcMdl, rcHeader);
+        if(erekirHeatProd > 0.0) addProdHeatErekir(rawRc, erekirHeatProd);
+
         // Regular IO
         let ciAlterChecked = false, biAlterChecked = false;
         thisFun.tmpSeq.each(ct0 => {

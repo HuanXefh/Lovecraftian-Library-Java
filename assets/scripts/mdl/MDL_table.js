@@ -1297,6 +1297,8 @@
       // General
       let pol = MDL_recipe._pol(rcMdl, rcHeader);
       let lockedByCts = MDL_recipe._lockedBy(rcMdl, rcHeader, true);
+      let erekirHeatReq = MDL_recipe._erekirHeatReq(rcMdl, rcHeader);
+      let erekirHeatProd = MDL_recipe._erekirHeatProd(rcMdl, rcHeader);
       let attr = MDL_recipe._attr(rcMdl, rcHeader);
       let attrBoostScl = MDL_recipe._attrBoostScl(rcMdl, rcHeader);
       // Specific
@@ -1331,6 +1333,8 @@
             addStat(isGen, MDL_bundle._term("lovec", "generated-recipe").color(Pal.gray));
             addStat(!timeScl.fEqual(1.0), MDL_bundle._term("lovec", "time-required"), Strings.fixed(timeScl, 1) + "x (" + Strings.autoFixed(blk.craftTime * timeScl / 60.0, 2) + "s)");
             addStat(!pol.fEqual(0.0), fetchStat("lovec", "blk-pol").localized(), (pol > 0.0 ? "+" : "-") + Math.abs(pol), fetchStatUnit("lovec", "polunits").localized());
+            addStat(erekirHeatReq > 0.0, fetchStat("lovec", "blk-erekirheatreq").localized(), erekirHeatReq, StatUnit.heatUnits.localized());
+            addStat(erekirHeatProd > 0.0, fetchStat("lovec", "blk-erekirheatprod").localized(), erekirHeatProd, StatUnit.heatUnits.localized());
             addStat(reqOpt, MDL_bundle._term("lovec", "require-optional"), MDL_bundle._base("yes"));
             addStat(failP > 0.0, MDL_bundle._term("lovec", "chance-to-fail"), failP.perc(1));
             addStat(!powProdMtp.fEqual(1.0), fetchStat("lovec", "blk0pow-powmtp").localized(), powProdMtp.perc());

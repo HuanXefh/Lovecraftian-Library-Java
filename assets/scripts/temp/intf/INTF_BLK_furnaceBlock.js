@@ -396,6 +396,9 @@
       }
       .setProp({
         noSuper: true,
+        mergeMode: function(val, valPrev) {
+          return val * valPrev;
+        },
       }),
 
 
@@ -526,13 +529,13 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
+          wr0rd,
 
-          (wr, revi) => {
+          wr => {
             MDL_io._wr_ct(wr, this.fuelSel);
           },
 
-          (rd, revi) => {
+          rd => {
             this.fuelSel = MDL_io._rd_ct(rd);
           },
         );

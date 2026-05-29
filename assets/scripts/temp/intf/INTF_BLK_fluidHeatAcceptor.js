@@ -200,13 +200,13 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
+          wr0rd,
 
-          (wr, revi) => {
+          wr => {
             wr.f(this.fHeatCur);
           },
 
-          (rd, revi) => {
+          rd => {
             if(this.LCReviSub === 0 && this.block.ex_isSubInsOf("BLK_rainCollector")) return;
 
             this.fHeatCur = rd.f();

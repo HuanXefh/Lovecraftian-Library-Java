@@ -294,6 +294,17 @@
 
 
   /**
+   * Override this method to implement Java interfaces.
+   * <br> <LATER>
+   * @param {Object} obj - The object built for `extend`.
+   * @return {Array<Class>}
+   */
+  CLS_contentTemplate.getParentIntfs = function(obj) {
+    return Array.air;
+  };
+
+
+  /**
    * Override this method to initialize some content just after `extend` is called.
    * <br> <LATER>
    * @param {UnlockableContent} ct

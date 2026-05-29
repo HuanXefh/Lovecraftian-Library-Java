@@ -243,12 +243,13 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
-          (wr, revi) => {
+          wr0rd,
+
+          wr => {
             wr.f(this.manualTriggerCd);
           },
 
-          (rd, revi) => {
+          rd => {
             this.manualTriggerCd = rd.f();
           },
         );

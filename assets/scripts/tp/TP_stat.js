@@ -60,6 +60,8 @@
   newStat("lovec", "blk0min-scantier", StatCat.crafting);
 
 
+  newStat("lovec", "blk-erekirheatreq", StatCat.crafting);
+  newStat("lovec", "blk-erekirheatprod", StatCat.crafting);
   newStat("lovec", "blk0fac-payroom", StatCat.crafting);
   newStat("lovec", "blk0fac-prodspd", StatCat.crafting);
   newStat("lovec", "blk0fac-durabtime", StatCat.crafting);

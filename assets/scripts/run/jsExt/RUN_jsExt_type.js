@@ -135,7 +135,7 @@
    * @return {JavaArray<java.lang.Integer>}
    */
   Array.newIntArr = function(cap) {
-    return Array.newJavaArr(JAVA.int, cap);
+    return Array.newJavaArr(JAVA.int.TYPE, cap);
   };
 
 
@@ -145,7 +145,7 @@
    * @return {JavaArray<java.lang.Byte>}
    */
   Array.newByteArr = function(cap) {
-    return Array.newJavaArr(JAVA.byte, cap);
+    return Array.newJavaArr(JAVA.byte.TYPE, cap);
   };
 
 
@@ -155,7 +155,7 @@
    * @return {JavaArray<java.lang.Short>}
    */
   Array.newShortArr = function(cap) {
-    return Array.newJavaArr(JAVA.short, cap);
+    return Array.newJavaArr(JAVA.short.TYPE, cap);
   };
 
 
@@ -165,7 +165,7 @@
    * @return {JavaArray<java.lang.Long>}
    */
   Array.newLongArr = function(cap) {
-    return Array.newJavaArr(JAVA.long, cap);
+    return Array.newJavaArr(JAVA.long.TYPE, cap);
   };
 
 
@@ -175,7 +175,7 @@
    * @return {JavaArray<java.lang.Float>}
    */
   Array.newFArr = function(cap) {
-    return Array.newJavaArr(JAVA.float, cap);
+    return Array.newJavaArr(JAVA.float.TYPE, cap);
   };
 
 
@@ -185,7 +185,7 @@
    * @return {JavaArray<java.lang.Double>}
    */
   Array.newDoubleArr = function(cap) {
-    return Array.newJavaArr(JAVA.double, cap);
+    return Array.newJavaArr(JAVA.double.TYPE, cap);
   };
 
 
@@ -195,7 +195,17 @@
    * @return {JavaArray<java.lang.Boolean>}
    */
   Array.newBoolArr = function(cap) {
-    return Array.newJavaArr(JAVA.boolean, cap);
+    return Array.newJavaArr(JAVA.boolean.TYPE, cap);
+  };
+
+
+  /**
+   * Creates a character array.
+   * @param {number|unset} [cap]
+   * @return {JavaArray<java.lang.Character>}
+   */
+  Array.newCharArr = function(cap) {
+    return Array.newJavaArr(JAVA.char.TYPE, cap);
   };
 
 

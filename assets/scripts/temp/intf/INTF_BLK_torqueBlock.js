@@ -492,13 +492,14 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
-          (wr, revi) => {
+          wr0rd,
+
+          wr => {
             wr.f(this.rpmCur);
             wr.f(this.torCur);
           },
 
-          (rd, revi) => {
+          rd => {
             this.rpmCur = rd.f();
             this.torCur = rd.f();
           },

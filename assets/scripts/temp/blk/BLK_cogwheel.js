@@ -404,12 +404,13 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
-          (wr, revi) => {
+          wr0rd,
+          
+          wr => {
             wr.bool(this.isInv);
           },
 
-          (rd, revi) => {
+          rd => {
             this.isInv = rd.bool();
           },
         );

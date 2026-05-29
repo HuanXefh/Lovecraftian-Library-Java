@@ -29,6 +29,12 @@
       blk.outputsLiquid = MDL_recipe._hasAnyOutput_liq(blk.rcMdl, false);
       blk.hasConsumers = true;
 
+      blk.isErekirHeatConsumer = MDL_recipe._hasErekirHeatInput(blk.rcMdl);
+      blk.isErekirHeatProducer = MDL_recipe._hasErekirHeatOutput(blk.rcMdl);
+      if(blk.isErekirHeatConsumer && blk.isErekirHeatProducer) {
+        console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(Pal.accent)));
+      };
+
       Core.app.post(() => MDL_recipe.initRc(blk.rcMdl, blk));
     });
   };
@@ -72,6 +78,14 @@
     if(b.scrTup != null) b.ex_onRcUpdate();
 
     b.hasStopped = b.stopTimeCur > STOP_TIME;
+
+    if(b.erekirHeatReq > 0.0) {
+      b.erekirHeatI = b.calculateHeat(b.erekirSideHeats);
+      b.erekirHeatEffc = Mathf.clamp(b.erekirHeatI / b.erekirHeatReq)
+    };
+    if(b.erekirHeatProd > 0.0) {
+      b.erekirHeatO = Mathf.approachDelta(b.erekirHeatO, b.erekirHeatProd * b.efficiency, b.block.delegee.erekirHeatWarmupRate * b.delta());
+    };
 
     if(b.efficiency < 0.0001 || !b.shouldConsume()) {
       b.warmup = Mathf.approachDelta(b.warmup, 0.0, b.block.warmupSpeed);
@@ -118,6 +132,9 @@
 
   function comp_updateEfficiencyMultiplier(b) {
     b.efficiency = b.shouldConsume() && (b.block.consumesPower && b.power != null ? b.power.status > 0.01 : true) ? b.rcEffc : 0.0;
+    if(b.erekirHeatReq > 0.0) {
+      b.efficiency *= b.erekirHeatEffc;
+    };
     b.ex_postUpdateEfficiencyMultiplier();
     if(b.validTup != null && !b.validTup[0](b)) b.efficiency = 0.0;
   };
@@ -260,6 +277,23 @@
 
 
   const comp_displayBars = function thisFun(b, tb) {
+    if(b.erekirHeatReq > 0.0) {
+      tb.add(new Bar(
+        prov(() => Core.bundle.format("bar.heatpercent", (b.erekirHeatI + 0.01).roundFixed(1), (b.erekirHeatEffc * 100.0 + 0.01).roundFixed(1))),
+        prov(() => Pal.lightOrange),
+        () => Mathf.clamp(b.erekirHeatI / b.erekirHeatReq),
+      ));
+      tb.row();
+    };
+    if(b.erekirHeatProd > 0.0) {
+      tb.add(new Bar(
+        "bar.heat",
+        Pal.lightOrange,
+        () => Mathf.clamp(b.erekirHeatO / b.erekirHeatProd),
+      ));
+      tb.row();
+    };
+
     if(b.attr != null) {
       tb.add(new Bar(
         prov(() => Core.bundle.format("bar.efficiency", Math.round(b.attrEffc * 100.0))),
@@ -363,6 +397,8 @@
     b.rcTimeScl = MDL_recipe._timeScl(rcMdl, rcHeader);
     b.rcPol = MDL_recipe._pol(rcMdl, rcHeader);
     b.ignoreItemFullness = MDL_recipe._ignoreItemFullness(rcMdl, rcHeader);
+    b.erekirHeatReq = MDL_recipe._erekirHeatReq(rcMdl, rcHeader);
+    b.erekirHeatProd = MDL_recipe._erekirHeatProd(rcMdl, rcHeader);
     b.attr = (function(nmAttr) {return nmAttr == null ? null : Attribute.getOrNull(nmAttr)})(MDL_recipe._attr(rcMdl, rcHeader));
     b.attrMin = MDL_recipe._attrMin(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
     b.attrMax = MDL_recipe._attrMax(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
@@ -456,6 +492,12 @@
          */
         rcSourceMod: null,
         /**
+         * <PARAM>: Warmup rate of Erekir heat output.
+         * @memberof INTF_BLK_recipeHandler
+         * @instance
+         */
+        erekirHeatWarmupRate: 0.05,
+        /**
          * <PARAM>: Whether this block does not actively dump resources.
          * @memberof INTF_BLK_recipeHandler
          * @instance
@@ -467,6 +509,23 @@
          * @instance
          */
         failEff: EFF.rcFailSmog,
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * <INTERNAL>: Whether this block consumes Erekir heat.
+         * @memberof INTF_BLK_recipeHandler
+         * @instance
+         */
+        isErekirHeatConsumer: false,
+        /**
+         * <INTERNAL>: Whether this block produces Erekir heat.
+         * @memberof INTF_BLK_recipeHandler
+         * @instance
+         */
+        isErekirHeatProducer: false,
 
 
       }))
@@ -642,6 +701,18 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
+        erekirHeatReq: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        erekirHeatProd: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
         attr: null,
         /**
          * <INTERNAL>
@@ -697,6 +768,30 @@
          * @instance
          */
         rcEffcWinMean: prov(() => new WindowedMean(5)),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        erekirHeatI: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        erekirHeatO: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        erekirSideHeats: prov(() => Array.newFArr(4)),
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        erekirHeatEffc: 0.0,
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
@@ -775,6 +870,18 @@
          * @instance
          */
         failEff: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        blk$isErekirHeatConsumer: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        blk$isErekirHeatProducer: null,
 
 
       }))
@@ -824,7 +931,7 @@
 
 
       shouldConsume: function() {
-        return this.enabled && this.lastCanAdd;
+        return this.enabled && this.lastCanAdd && (this.erekirHeatReq <= 0.0 || this.erekirHeatI > 0.0);
       }
       .setProp({
         noSuper: true,
@@ -837,6 +944,55 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      warmupTarget: function() {
+        // `b.cheating()` should not be checked here because Anuke said no
+        // Yep, it's intentional that heat is required even when cheating
+        return this.erekirHeatReq <= 0.0 ? 1.0 : Mathf.clamp(this.erekirHeatI / this.erekirHeatReq);
+      }
+      .setProp({
+        noSuper: true,
+        mergeMode: function(val, valPrev) {
+          return val * valPrev;
+        },
+      }),
+
+
+      heatRequirement: function() {
+        return this.erekirHeatReq;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      heat: function() {
+        return this.erekirHeatO;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      sideHeat: function() {
+        return this.erekirSideHeats;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      heatFrac: function() {
+        return this.erekirHeatO / this.erekirHeatProd;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 
@@ -1190,15 +1346,21 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
-          (wr, revi) => {
+          wr0rd,
+
+          wr => {
             wr.str(this.rcHeader);
             wr.bool(this.hasStopped);
+            wr.f(this.erekirHeatO);
           },
 
-          (rd, revi) => {
+          rd => {
             this.rcHeader = rd.str();
             this.hasStopped = rd.bool();
+
+            if(this.LCReviSub >= 1) {
+              this.erekirHeatO = rd.f();
+            };
           },
         );
       }

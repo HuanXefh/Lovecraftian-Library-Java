@@ -599,13 +599,13 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
+          wr0rd,
 
-          (wr, revi) => {
+          wr => {
             wr.f(this.tempCur);
           },
 
-          (rd, revi) => {
+          rd => {
             let temp = rd.f();
             this.tempCur = temp;
             this.tempRiseTg = temp;

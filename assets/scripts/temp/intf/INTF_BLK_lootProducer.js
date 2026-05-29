@@ -231,13 +231,14 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
-          (wr, revi) => {
+          wr0rd,
+          
+          wr => {
             wr.i(this.lootCharge);
           },
 
-          (rd, revi) => {
-            if(revi === 5) {
+          rd => {
+            if(this.LCRevi === 5) {
               return;
             };
 

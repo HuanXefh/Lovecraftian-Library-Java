@@ -374,6 +374,23 @@
   };
 
 
+  /**
+   * Used to call constructor function with an argument array.
+   * @global
+   * @template T
+   * @param {T} ctor
+   * @param {Arguments} args
+   * @return {T}
+   */
+  ctorCall = function(ctor, args) {
+    function wrapper() {
+      return ctor.apply(this, args);
+    };
+    wrapper.prototype = ctor.prototype;
+    return new wrapper();
+  };
+
+
   /* <---------- debug ----------> */
 
 

@@ -26,7 +26,7 @@
 
   function comp_setBars(blk) {
     if(!isFinite(blk.durabCap)) return;
-    
+
     blk.addBar("lovec-durability", b => new Bar(
       prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", b.delegee.durabFrac.perc(0))),
       prov(() => Pal.sap),
@@ -239,14 +239,15 @@
        */
       ex_processData: function(wr0rd) {
         processData(
-          wr0rd, this.LCRevi,
-          (wr, revi) => {
+          wr0rd,
+          
+          wr => {
             wr.f(this.durabFrac);
             wr.str(this.durabMode);
           },
 
-          (rd, revi) => {
-            if(revi === 5 && this.block.ex_isSubInsOf("BLK_baseMiner")) {
+          rd => {
+            if(this.LCRevi === 5 && this.block.ex_isSubInsOf("BLK_baseMiner")) {
               return;
             };
 
