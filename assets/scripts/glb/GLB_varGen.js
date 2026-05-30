@@ -115,6 +115,12 @@
   exports.addKeyBind = addKeyBind;
 
 
+  /* <---------- content ----------> */
+
+
+  exports.nmModTempParserMap = new ObjectMap();
+
+
   /* <---------- dialog flow ----------> */
 
 

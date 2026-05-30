@@ -31,14 +31,14 @@
     paramObj => extend(
       ConsumeLiquidFilter,
       (function() {
-        let arr = readParam(paramObj, "liqEffcMap", Array.air).readCol(2, 0);
+        let arr = readParam(paramObj, "liqEffcArr", Array.air).readCol(2, 0);
         return liq => arr.includes(liq.name);
       })(),
       readParam(paramObj, "amt", 0.0),
       {
 
 
-        effcMap: readParam(paramObj, "liqEffcMap", Array.air).toObjMap(),
+        effcMap: readParam(paramObj, "liqEffcArr", Array.air).toObjMap(),
 
 
         display(stats) {

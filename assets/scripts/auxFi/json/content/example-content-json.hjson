@@ -1,0 +1,25 @@
+// JSON files under "scripts/auxFi/json/content" will be parsed to create contents using content templates
+// You still need regular JSON files to set most vanilla fields
+// To enable parsing for a mod, write `new CLS_contentTemplateParser(yourModName)` in your main.js or somewhere else
+
+
+// `template` is required, do not use template with null parent here
+// For buildings, set fields inside `build: {}`
+// For planets, `sectorSize` is required
+
+
+template: BLK_groundDrill
+
+canMineDepthOre: true
+drillAmtMtp: 2.0
+durabCap: 3600.0
+drillEff: {
+  type: EffectPreset
+  name: drillPulsePack
+  index: 3
+}
+updateEff: {
+  type: EffectPreset
+  name: drillCrack
+}
+updateEffP: 0.01
