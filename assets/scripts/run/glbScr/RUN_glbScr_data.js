@@ -98,6 +98,28 @@
 
 
   /**
+   * Convert JSON into JavaScript object using Arc JSON parser, which supports comment and HJSON.
+   * @global
+   * @param {Fi|string} fi0str
+   * @return {Object}
+   */
+  jsonToJsObj = function(fi0str) {
+    let str;
+    if(typeof fi0str === "string") {
+      str = fi0str;
+    } else {
+      str = fi0str.readString("UTF-8");
+      if(fi0str.extension() === "json") {
+        str = str.replace("#", "\\#");
+      };
+    };
+
+    // Dealing with Jval? No way
+    return JSON.parse(LOVEC_JSON_PARSER.fromJson(null, Jval.read(str).toString(Jval.Jformat.plain)).toJson(JsonWriter.OutputType.json));
+  };
+
+
+  /**
    * Reads "<nmMod>/scripts/auxFi/data/<nmFi>.json" of every enabled mod and writes values into `contObj`.
    * Also supports .hjson files.
    * @global
@@ -115,12 +137,7 @@
       };
       if(!fi.exists()) return;
 
-      str = fi.readString("UTF-8");
-      if(fi.extension() === "json") {
-        str = str.replace("#", "\\#");
-      };
-      // Dealing with Jval? No way
-      obj = JSON.parse(LOVEC_JSON_PARSER.fromJson(null, Jval.read(str).toString(Jval.Jformat.plain)).toJson(JsonWriter.OutputType.json));
+      obj = jsonToJsObj(fi);
       for(let key in obj) {
         contObj[key] = obj[key];
       };

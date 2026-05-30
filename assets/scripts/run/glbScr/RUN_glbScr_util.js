@@ -371,7 +371,7 @@
 
 
   /**
-   * Gets all parent templates and implemented inferfaces of some template as string.
+   * Gets all parent templates and implemented interfaces of some template as string.
    * @global
    * @param {string} nmTemp
    * @return {Array<string>}

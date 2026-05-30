@@ -250,7 +250,7 @@
                       } :
                       typeof fun.mergeMode === "function" ?
                         function() {
-                          TMP_TUP.clear().push(superFun.apply(this, arguments), fun.apply(this, arguments));
+                          TMP_TUP.with(superFun.apply(this, arguments), fun.apply(this, arguments));
                           return fun.mergeMode.apply(this, TMP_TUP);
                         } :
                         function() {
@@ -380,7 +380,7 @@
                   }.wrapLen(fun.argLen) :
                   typeof fun.mergeMode === "function" ?
                     function() {
-                      TMP_TUP.clear().push(this["super$" + fun.nm].apply(this, arguments), fun.apply(this, arguments));
+                      TMP_TUP.with(this["super$" + fun.nm].apply(this, arguments), fun.apply(this, arguments));
                       return fun.mergeMode.apply(this, TMP_TUP);
                     }.wrapLen(fun.argLen) :
                     function() {

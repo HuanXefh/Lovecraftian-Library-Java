@@ -315,6 +315,38 @@
 
 
   /**
+   * Clears this array and fill it with given arguments.
+   * <br> <ARGS>: ele1, ele2, ele3, ...
+   * @return {this}
+   */
+  Array.prototype.with = function() {
+    this.clear();
+    let i = 0, iCap = arguments.length;
+    while(i < iCap) {
+      this.push(arguments[i]);
+      i++;
+    };
+
+    return this;
+  };
+
+
+  /**
+   * Variant of {@link Array#with} for array.
+   */
+  Array.prototype.withAll = function(eles) {
+    this.clear();
+    let i = 0, iCap = eles.iCap();
+    while(i < iCap) {
+      this.push(eles[i]);
+      i++;
+    };
+
+    return this;
+  };
+
+
+  /**
    * Removes the first matching element in the array.
    * This method does not remove all matching elements, see {@link Array#pull} instead.
    * @param {any} ele
@@ -843,7 +875,7 @@
       return this.slice();
     },
     [Array], function(arr) {
-      return this.clear().pushAll(arr);
+      return this.withAll(arr);
     },
   );
 

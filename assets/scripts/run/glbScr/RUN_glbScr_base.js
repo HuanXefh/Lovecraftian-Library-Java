@@ -43,7 +43,7 @@
 
 
   /**
-   * Whether some object is instance of any of given classes.
+   * Whether some object is instance of anyone among given classes.
    * <br> <ARGS>: obj, cls1, cls2, cls3, ...
    * @return {boolean}
    */

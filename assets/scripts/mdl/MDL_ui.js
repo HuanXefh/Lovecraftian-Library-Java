@@ -136,7 +136,7 @@
 
 
   /**
-   * Gets prefered column amount.
+   * Gets preferred column amount.
    * @param {number|unset} [w]
    * @param {number|unset} [pad]
    * @param {number|unset} [ord]
@@ -274,7 +274,7 @@
 
 
   /**
-   * Applys a list of actions to some actor, then adds it to the scene.
+   * Applies a list of actions to some actor, then adds it to the scene.
    * @param {Table} tb
    * @param {number|unset} delay
    * @param {Array<Action>} acts
@@ -575,7 +575,7 @@
       // Do nothing
     } else {
       if(customActs != null) {
-        animTup[1].clear().pushAll(customActs);
+        animTup[1].withAll(customActs);
       };
       animTup[1].push(Actions.run(() => tb.update(() => {
         if(endGetter()) {

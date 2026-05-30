@@ -86,7 +86,7 @@
     let grps2 = _reacGrps(reac2, thisFun.grpsCaches[1]);
 
     Array.forEachPair(grps1, grps2, (grp1, grp2) => {
-      thisFun.tmpTup.clear().push(grp1, grp2);
+      thisFun.tmpTup.with(grp1, grp2);
       arr.pushNonNull(DB_reaction.db["fluid"].read(thisFun.tmpTup, null, true));
       arr.pushNonNull(DB_reaction.db["item"].read(thisFun.tmpTup, null, true));
     });

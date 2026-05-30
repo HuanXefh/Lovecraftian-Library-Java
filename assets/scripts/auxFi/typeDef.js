@@ -746,6 +746,38 @@
   class StatusEntry {};
   /** @global mindustry.entities.abilities.Ability */
   class Ability {};
+  /** @global mindustry.entities.abilities.EmptyDataAbility */
+  class EmptyDataAbility extends Ability {};
+  /** @global mindustry.entities.abilities.ArmorPlateAbility */
+  class ArmorPlateAbility extends Ability {};
+  /** @global mindustry.entities.abilities.RepairFieldAbility */
+  class RepairFieldAbility extends Ability {};
+  /** @global mindustry.entities.abilities.SuppressionFieldAbility */
+  class SuppressionFieldAbility extends Ability {};
+  /** @global mindustry.entities.abilities.ForceFieldAbility */
+  class ForceFieldAbility extends Ability {};
+  /** @global mindustry.entities.abilities.ShieldArcAbility */
+  class ShieldArcAbility extends Ability {};
+  /** @global mindustry.entities.abilities.ShieldRegenFieldAbility */
+  class ShieldRegenFieldAbility extends Ability {};
+  /** @global mindustry.entities.abilities.StatusFieldAbility */
+  class StatusFieldAbility extends Ability {};
+  /** @global mindustry.entities.abilities.EnergyFieldAbility */
+  class EnergyFieldAbility extends Ability {};
+  /** @global mindustry.entities.abilities.LiquidExplodeAbility */
+  class LiquidExplodeAbility extends Ability {};
+  /** @global mindustry.entities.abilities.SpawnDeathAbility */
+  class SpawnDeathAbility extends Ability {};
+  /** @global mindustry.entities.abilities.UnitSpawnAbility */
+  class UnitSpawnAbility extends Ability {};
+  /** @global mindustry.entities.abilities.RegenAbility */
+  class RegenAbility extends Ability {};
+  /** @global mindustry.entities.abilities.LiquidRegenAbility */
+  class LiquidRegenAbility extends Ability {};
+  /** @global mindustry.entities.abilities.MoveEffectAbility */
+  class MoveEffectAbility extends Ability {};
+  /** @global mindustry.entities.abilities.MoveLightningAbility */
+  class MoveLightningAbility extends Ability {};
   /** @global mindustry.entities.bullet.BulletType */
   class BulletType {};
   /** @global mindustry.entities.bullet.MultiBulletType */
@@ -1212,6 +1244,8 @@
   class DrawSoftParticles extends DrawBlock {};
   /** @global mindustry.world.draw.DrawSpikes */
   class DrawSpikes extends DrawBlock {};
+  /** @global mindustry.world.draw.DrawBlockParts */
+  class DrawBlockParts extends DrawBlock {};
   /** @global mindustry.world.consumers.Consume */
   class Consume {};
   /** @global mindustry.world.consumers.ConsumeItems */
@@ -1321,8 +1355,6 @@
   class RepairTurret extends Block {};
   /** @global mindustry.world.blocks.defense.OverdriveProjector */
   class OverdriveProjector extends Block {};
-  /** @global mindustry.world.blocks.defense.BaseShield */
-  class BaseShield extends Block {};
   /** @global mindustry.world.blocks.defense.BaseShield */
   class BaseShield extends Block {};
   /** @global mindustry.world.blocks.defense.ForceProjector */

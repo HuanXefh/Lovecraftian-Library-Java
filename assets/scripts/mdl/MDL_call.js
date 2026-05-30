@@ -54,7 +54,7 @@
    * @param {number} y
    * @param {UnitTypeGn} utp_gn
    * @param {Team|unset} [team]
-   * @param {number|unset} [rad] - Radius of spead.
+   * @param {number|unset} [rad] - Radius of spread.
    * @param {number|unset} [ang] - Rotation of spawned units, random by default.
    * @param {number|unset} [repeat] - Use this to spawn multiple times quickly.
    * @param {boolean|unset} [applyDefSta] - If true, default status effects will be applied like what wave spawners do.

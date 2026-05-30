@@ -141,7 +141,7 @@
    * @return {Color}
    */
   const _charaColor = function thisFun(nmMod, nmChara) {
-    thisFun.tmpArgs.clear().push(nmMod, nmChara);
+    thisFun.tmpArgs.with(nmMod, nmChara);
     return _color(DB_misc.db["drama"]["chara"]["color"].read(thisFun.tmpArgs));
   }
   .setProp({

@@ -1977,7 +1977,7 @@
     let tmpB = b, tmpOb, isFirst = true;
     if(b.block instanceof DirectionBridge) {
       tmpOb = b.findLink();
-      thisFun.tmpBs.clear().push(tmpB);
+      thisFun.tmpBs.with(tmpB);
       while(tmpOb != null) {
         if(!thisFun.tmpBs.includes(tmpOb)) {
           if(!isFirst) _d_conCircleArrow(tmpOb, tmpB);
@@ -1990,7 +1990,7 @@
     } else if(b.block instanceof ItemBridge) {
       let ot = Vars.world.tile(b.link);
       tmpOb = null;
-      thisFun.tmpBs.clear().push(tmpB);
+      thisFun.tmpBs.with(tmpB);
       while(ot != null) {
         tmpOb = ot.build;
         if(tmpOb != null && tmpOb.block === b.block && !thisFun.tmpBs.includes(tmpOb)) {

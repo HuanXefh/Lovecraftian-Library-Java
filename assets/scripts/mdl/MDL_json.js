@@ -92,7 +92,7 @@
           tmpVal = tmpJsonVal.asString();
           break;
         case "array" :
-          // I have to convert it to js array, or the game somehow converts it to object after saving 3 times, WTF
+          // I have to convert it to JS array, or the game somehow converts it to object after saving 3 times, WTF
           if(arrMode === "number") {
             tmpVal = tmpJsonVal.asDoubleArray().cpy();
           } else if(arrMode === "string") {

@@ -70,7 +70,7 @@
 
 
   /**
-   * Calls a method after some miliseconds.
+   * Calls a method after some milliseconds.
    * No returned value.
    * @param {number} delay
    * @param {Arguments|unset} [args]

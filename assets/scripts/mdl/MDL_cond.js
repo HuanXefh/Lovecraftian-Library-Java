@@ -110,7 +110,7 @@
 
 
   /**
-   * Whether this resource is an abstract fluid that is not capped in builings.
+   * Whether this resource is an abstract fluid that is not capped in buildings.
    * @param {LiquidGn} liq_gn
    * @return {boolean}
    */

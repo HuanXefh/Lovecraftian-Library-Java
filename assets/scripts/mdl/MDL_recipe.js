@@ -24,6 +24,7 @@
   /**
    * Gets recipe module for some block.
    * <br> <PATH>: "<nmMod>/scripts/auxFi/rc/<nmBlk>.js".
+   * <br> <PATH>: "<nmMod>/scripts/auxFi/json/rc/<nmBlk>.json".
    * @param {string} nmMod
    * @param {string} nmBlk
    * @return {RecipeModule}
@@ -33,12 +34,69 @@
     try {
       rcMdl = require(nmMod + "/auxFi/rc/" + nmBlk);
     } catch(err) {
-      throw new Error("Failed to load recipe for " + nmMod + "-" + nmBlk + ":\n" + err);
+      let obj = _rcMdlJson(nmMod, nmBlk);
+      if(obj != null) {
+        rcMdl = obj;
+      } else {
+        throw new Error("Failed to load recipe for " + nmMod + "-" + nmBlk + ":\n" + err);
+      };
     };
 
     return rcMdl;
   };
   exports._rcMdl = _rcMdl;
+
+
+  /**
+   * Gets recipe module from JSON file.
+   * Used in {@link _rcMdl}.
+   * @param {string} nmMod
+   * @param {string} nmBlk
+   * @return {RecipeModule}
+   */
+  const _rcMdlJson = function thisFun(nmMod, nmBlk) {
+    let mod = fetchMod(nmMod);
+    if(mod == null) return null;
+    let dir = mod.root.child("scripts").child("auxFi").child("json").child("rc");
+    if(!dir.exists()) return null;
+    let fiSeq = dir.findAll(fi => (fi.name() === nmBlk + ".json") || (fi.name() === nmBlk + ".hjson"));
+    if(fiSeq.size === 0) return null;
+
+    let obj = jsonToJsObj(fiSeq.get(0));
+    // Check if format is correct
+    if(typeof obj.base !== "object" || obj.base instanceof Array) throw new Error("Error parsing recipe. `base` must be an object!");
+    if(!(obj.recipe instanceof Array)) throw new Error("Error parsing recipe. `recipe` must be an array!");
+    let i = 0, iCap = obj.recipe.iCap(), rcObj;
+    while(i < iCap) {
+      if(typeof obj.recipe[i] !== "string") throw new Error("Error parsing recipe. Header must be a string!");
+      rcObj = obj.recipe[i + 1];
+      if(typeof rcObj.icon !== "string") throw new Error("Error parsing recipe. `icon` is required and must be a string!");
+      thisFun.ioOrdMap.each((nmIo, ord) => {
+        if(rcObj[nmIo] == null) return;
+        if(!(rcObj[nmIo] instanceof Array)) throw new Error("Error parsing recipe. `${1}` must be an array!".format(nmIo));
+        if(rcObj[nmIo].length % ord !== 0) throw new Error("Error parsing recipe. Length of `${1}` should be multiple of ${2}, length found: ${3}".format(nmIo, ord, rcObj[nmIo].length));
+      });
+      i += 2;
+    };
+    // A special tag, just in case
+    obj.isFromJson = true;
+
+    return {rc: obj};
+  }
+  .setProp({
+    ioOrdMap: ObjectMap.of(
+      "ci", 2,
+      "bi", 3,
+      "aux", 2,
+      "opt", 4,
+      "payi", 2,
+      "co", 2,
+      "bo", 3,
+      "fo", 3,
+      "payo", 2,
+    ),
+  });
+  exports._rcMdlJson = _rcMdlJson;
 
 
   /**
@@ -1054,7 +1112,7 @@
    * @return {number}
    */
   const _failP = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "failP", 0.0);
+    return _rcVal(rcMdl, rcHeader, "failP", _rcBaseVal(rcMdl, "baseFailP", 0.0));
   };
   exports._failP = _failP;
 

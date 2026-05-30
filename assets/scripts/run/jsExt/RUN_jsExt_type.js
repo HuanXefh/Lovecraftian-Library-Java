@@ -130,7 +130,7 @@
 
 
   /**
-   * Creates a integer array.
+   * Creates an integer array.
    * @param {number|unset} [cap]
    * @return {JavaArray<java.lang.Integer>}
    */
@@ -220,7 +220,7 @@
 
 
   /**
-   * Creates a object array.
+   * Creates an object array.
    * @param {number|unset} [cap]
    * @return {JavaArray<java.lang.Object>}
    */

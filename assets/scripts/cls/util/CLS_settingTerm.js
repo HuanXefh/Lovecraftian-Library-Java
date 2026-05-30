@@ -97,7 +97,7 @@
    * @return {this}
    */
   CLS_settingTerm.prototype.setDialSetter = function thisFun(nmMod, nmCateg, tableF) {
-    thisFun.tmpTup.clear().push(nmMod, nmCateg);
+    thisFun.tmpTup.with(nmMod, nmCateg);
 
     let terms = categSetterDebugArr.read(thisFun.tmpTup, categSetterArr.read(thisFun.tmpTup));
     if(terms == null) throw new Error("Cannot find setting category for ${1}-${2}!".format(nmMod, nmCateg));

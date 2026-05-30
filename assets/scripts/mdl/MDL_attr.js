@@ -43,7 +43,7 @@
   /**
    * Converts generalized attribute to string.
    * @param {AttrGn} attr_gn
-   * @param {boolean|unset} [toAttr] - If true, the result will be attribute instead of string.
+   * @param {boolean|unset} [toAttr] - If true, the result will be an attribute instead of string.
    * @return {string|Attribute}
    */
   const _attr = function(attr_gn, toAttr) {

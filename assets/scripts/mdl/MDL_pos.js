@@ -6,7 +6,7 @@
 
 
   /**
-   * Methods to get coorinates, tiles and entities.
+   * Methods to get coordinates, tiles and entities.
    * @module lovec/mdl/MDL_pos
    */
 

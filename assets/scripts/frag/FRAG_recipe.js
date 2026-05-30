@@ -452,7 +452,7 @@
       mtp = b.delegee.opt[i + 3];
       if(b.items.get(tmp) >= amt && mtp >= tmpMtp) {
         tmpMtp = mtp;
-        tup.clear().push(tmp, amt, p, mtp);
+        tup.with(tmp, amt, p, mtp);
       };
       i += 4;
     };

@@ -1,0 +1,258 @@
+// JSON recipe data should be under "scripts/auxFi/json/rc"
+// If not noted, fields here are optional
+// Script fields are not available here since you cannot write functions in JSON
+
+
+// Base values are used when not defined in a recipe
+// Note that `base` is required even if not used, just leave it empty
+base: {
+
+  baseErekirHeatReq: 0.0
+  baseErekirHeatProd: 0.0
+  baseAttr: heat
+  baseAttrMin: 0.0
+  baseAttrMax: 1.0
+  baseAttrBoostScl: 1.0
+  baseAttrBoostCap: 99999999.0
+  baseCi: [
+    water, 0.1
+  ]
+  baseBi: [
+    copper, 1, 1.0
+  ]
+  baseAux: [
+    loveclab-aux0aux-pressure, 0.01666667
+  ]
+  baseReqOpt: false
+  baseOpt: [
+    silicon, 1, 1.0, 1.0
+  ]
+  basePayi: [
+    dagger, 1
+  ]
+  baseCo: [
+    slag, 0.1
+  ]
+  baseBo: [
+    lead, 1, 1.0
+  ]
+  baseFailP: 0.1
+  baseFo: [
+    sand, 1, 1.0
+  ]
+  basePayo: [
+    flare, 1
+  ]
+
+}
+
+
+// List format: header, object.
+// If you'd like to put header and object in the same line, keep header quoted!
+recipe: [
+
+
+  test recipe
+  {
+
+    /*
+     * Displayed icon for this recipe, must be name of a content.
+     * REQUIRED.
+     */
+    icon: copper
+
+    /*
+     * Category of this recipe.
+     * Uses bundle "term.common-term-categ-<categ>".
+     */
+    category: uncategorized
+
+    /*
+     * This recipe will be unavailable until all of given contents are unlocked.
+     */
+    lockedBy: [
+      thorium
+    ]
+
+    /*
+     * Scaling on craft time.
+     */
+    timeScl: 1.0
+
+    /*
+     * Block pollution for this recipe.
+     * Overwrites that value of the block itself.
+     */
+    pollution: 0.0
+
+    /*
+     * Like `ignoreLiquidFullness` but for items.
+     */
+    ignoreItemFullness: false
+
+    /*
+     * Heat required for 100% efficiency.
+     */
+    erekirHeatReq: 0.0
+
+    /*
+     * Heat produced by this crafter.
+     * Note that heat consumption and production cannot coexist.
+     */
+    erekirHeatProd: 0.0
+
+    /*
+     * Attribute used by this crafter.
+     */
+    attr: heat
+
+    /*
+     * Attribute sum for 0% efficiency.
+     */
+    attrMin: 0.0
+
+    /*
+     * Attribute sum for 100% efficiency.
+     */
+    attrMax: 1.0
+
+    /*
+     * Extra scaling on the attribute boost.
+     */
+    attrBoostScl: 1.0
+
+    /*
+     * Maximum attribute boost.
+     */
+    attrBoostCap: 99999999.0
+
+    /*
+     * Temperature required for this recipe.
+     * For {@link BLK_furnaceRecipeFactory}.
+     */
+    tempReq: 0.0
+
+    /*
+     * Multiplier on power production.
+     * For {@link BLK_generatorRecipeFactory}.
+     */
+    powProdMtp: 1.0
+
+    /*
+     * Temperature above which efficiency drops.
+     * For {@link BLK_furnaceRecipeFactory}.
+     */
+    tempAllowed: 99999999.0
+
+    /*
+     * Multiplier on durability decrease rate.
+     * For {@link BLK_durabilityRecipeFactory}.
+     */
+    durabDecMtp: 1.0
+
+    /*
+     * Tooltip used in recipe selection UI.
+     * Uses bundle "info.common-tt-<tooltip>".
+     */
+    tooltip: test-recipe
+
+    /*
+     * Continuous input.
+     * List format: content, rate.
+     */
+    ci: [
+      water, 0.1
+      // Example for alternative input
+      [
+        oil, 0.1
+        cryofluid, 0.1
+      ], -1.0
+    ]
+
+    /*
+     * Batch input.
+     * Supports liquid input.
+     * List format: content, amount, chance.
+     */
+    bi: [
+      copper, 1, 1.0
+      // Example for alternative input
+      [
+        coal, 2, 1.0
+        graphite, 1, 1.0
+      ], -1.0, -1.0
+    ]
+
+    /*
+     * Auxiliary fluid input.
+     * Only used in ProjReind.
+     * List format: content, rate.
+     */
+    aux: [
+      loveclab-aux0aux-pressure, 0.01666667
+    ]
+
+    /*
+     * If true, this crafter will halt if optional input is absent.
+     */
+    reqOpt: false
+
+    /*
+     * Optional input.
+     * Only items here.
+     * List format: content, amount, chance, efficiency scaling.
+     */
+    opt: [
+      silicon, 1, 1.0, 1.0
+    ]
+
+    /*
+     * Payload input.
+     * List format: content, amount.
+     */
+    payi: [
+      dagger, 1
+    ]
+
+    /*
+     * Continuous output.
+     * List format: content, rate.
+     */
+    co: [
+      slag, 0.1
+    ]
+
+    /*
+     * Batch output.
+     * List format: content, amount, chance.
+     */
+    bo: [
+      lead, 1, 1.0
+    ]
+
+    /*
+     * Chance to fail the recipe.
+     * `fo` will be used instead of `bo` if failed.
+     */
+    failP: 0.1
+
+    /*
+     * Failed output.
+     * List format: content, amount, chance.
+     */
+    fo: [
+      sand, 1, 1.0
+    ]
+
+    /*
+     * Payload output.
+     * List format: content, amount.
+     */
+    payo: [
+      flare, 1
+    ]
+
+  }
+
+
+]

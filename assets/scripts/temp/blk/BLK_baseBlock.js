@@ -185,6 +185,7 @@
 
     /**
      * The root of all man-made blocks.
+     * <br> `blk$xxx` in the building template will copy value of `xxx` in the block template after object is built.
      * @class BLK_baseBlock
      * @extends CLS_contentTemplate
      * @extends INTF_BLK_coreEnergyConsumer
