@@ -1044,7 +1044,7 @@
 
     /* START OF HELL */
 
-    const buildCateg = (categ) => {
+    const buildCateg = categ => {
       let chunk = new Table();
       cont.left().add(chunk).growX().row();
 
@@ -1059,15 +1059,17 @@
       chunk.table(Tex.whiteui, tb1 => {
         tb1.center().setColor(Color.darkGray);
         __margin(tb1, 0.5);
-        tb1.table(Styles.none, tb2 => {
-          tb2.add(MDL_recipe._categB(categ)).pad(4.0);
-          tb2.button(isCollapsed ? Icon.downOpen : Icon.upOpen, Styles.emptyi, () => coll.toggle(true))
-          .update(btn => btn.getStyle().imageUp = !coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)
-          .size(10.0)
-          .padLeft(72.0)
-          .expandX();
-        });
-        tb1.row();
+        if(!uncategorizedOnly) {
+          tb1.table(Styles.none, tb2 => {
+            tb2.add(MDL_recipe._categB(categ)).pad(4.0);
+            tb2.button(isCollapsed ? Icon.downOpen : Icon.upOpen, Styles.emptyi, () => coll.toggle(true))
+            .update(btn => btn.getStyle().imageUp = !coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)
+            .size(10.0)
+            .padLeft(72.0)
+            .expandX();
+          });
+          tb1.row();
+        };
         tb1.add(coll).growX();
       }).left().growX().row();
       __break(chunk, 1);
@@ -1365,8 +1367,15 @@
     /* END OF HELL */
 
     const categHeaderObj = MDL_recipe._categHeaderObj(rcMdl);
+
     // Used above!
-    let i = 1;
+    let i = 1, uncategorizedOnly = false;
+
+    let categAmt = 0;
+    for(let categ in categHeaderObj) {
+      categAmt++;
+    };
+    uncategorizedOnly = categAmt === 1 && categHeaderObj.uncategorized != null;
     for(let categ in categHeaderObj) {
       buildCateg(categ);
     };
@@ -1412,19 +1421,29 @@
     // Method and field sharing the same name, great
     Reflect.set(Cell, contCell, "minWidth", (200.0).toF());
 
+    let categAmt = 0, uncategorizedOnly = false;
+
     const rebuildCont = () => {
       btnGrp.clear();
       cont.clearChildren();
 
+      categAmt = 0;
       for(let categ in categHeaderObj) {
-        cont.add(MDL_recipe._categB(categ)).left().pad(4.0).row();
+        categAmt++;
+      };
+      uncategorizedOnly = categAmt === 1 && categHeaderObj.uncategorized != null;
+
+      for(let categ in categHeaderObj) {
+        if(!uncategorizedOnly) {
+          cont.add(MDL_recipe._categB(categ)).left().pad(4.0).row();
+        };
 
         let j = 0;
         let chunk = new Table();
         categHeaderObj[categ].forEachFast(rcHeader => {
           let icon = MDL_recipe._icon(rcMdl, rcHeader);
           let validGetter = MDL_recipe._finalValidGetter(rcMdl, rcHeader);
-          let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validGetter(b));
+          let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validGetter(b), uncategorizedOnly);
 
           let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 40.0, () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ttStr, true).group(btnGrp).get();
           btn.changed(() => cfgCaller(rcHeader));

@@ -62,6 +62,14 @@ recipe: [
     icon: copper
 
     /*
+     * Tint color used on `icon`.
+     */
+    tint: {
+      type: ColorPreset
+      name: white
+    }
+
+    /*
      * Category of this recipe.
      * Uses bundle "term.common-term-categ-<categ>".
      */

@@ -63,6 +63,28 @@
   );
 
 
+  /**
+   * Converts raw data for some fields.
+   * @param {Object} obj
+   * @return {Object}
+   */
+  CLS_contentTemplateParser.convertType = function(obj) {
+    let raw, type, result;
+    for(let key in obj) {
+      raw = obj[key];
+      if(typeof raw !== "object" || raw instanceof Array || typeof raw.type !== "string") continue;
+      type = raw.type;
+      delete raw.type;
+      result = CLS_contentTemplateParser.rawParserMap.get(type, Function.air)(raw);
+      if(result !== undefined) {
+        obj[key] = result;
+      };
+    };
+
+    return obj;
+  };
+
+
 
 /*
   ========================================
@@ -107,7 +129,7 @@
           let tmpStr = obj.template, dir1 = null, dir2 = null;
           if(tmpStr.startsWith("EXT_")) {
             dir1 = "tempExt";
-            tmpStr.replace("EXT_", "");
+            tmpStr = tmpStr.replace("EXT_", "");
           } else {
             dir1 = "temp";
           };
@@ -127,9 +149,6 @@
             dir2 = "wea";
           };
           temp = dir2 == null ? null : require("lovec/" + dir1 + "/" + dir2 + "/" + (dir1 === "tempExt" ? "EXT_" : "") + tmpStr);
-          if(dir2 === "blk") {
-            temp = temp[0];
-          };
         } catch(err) {
           temp = null;
         };
@@ -143,24 +162,23 @@
 
     let nmCt = jsonFi.nameWithoutExtension();
     let ct;
-    if(temp.nm.startsWith("BLK_")) {
-      let tempB = LCTemp[temp.nm.replace("BLK_", "B_")];
+    if(temp instanceof Array) {
       let objB = obj.build;
       delete obj.build;
       this.convertType(obj);
       this.convertType(objB);
-      ct = extendBlock([temp, tempB], nmCt, obj, objB);
-    } else if(temp.nm.startsWith("UNIT_")) {
+      ct = extendBlock(temp, nmCt, temp[0].build(obj), temp[1].build(objB));
+    } else if(temp.nm.startsWithAny("UNIT_", "EXT_UNIT_")) {
       this.convertType(obj);
-      ct = extendUnit(temp, nmCt, obj);
-    } else if(temp.nm.startsWith("PLA_")) {
+      ct = extendUnit(temp, nmCt, temp.build(obj));
+    } else if(temp.nm.startsWithAny("PLA_", "EXT_PLA_")) {
       let sectorSize = obj.sectorSize;
       delete obj.sectorSize;
       this.convertType(obj);
-      ct = extendPlanet(temp, nmCt, sectorSize, obj);
+      ct = extendPlanet(temp, nmCt, sectorSize, temp.build(obj));
     } else {
       this.convertType(obj);
-      ct = extendBase(temp, nmCt, obj);
+      ct = extendBase(temp, nmCt, temp.build(obj));
     };
     this.parsedMap.put(nmCt, obj);
     this.parsedCts.push(ct);
@@ -170,22 +188,12 @@
 
 
   /**
-   * Converts raw data for some fields.
+   * Variant of {@link CLS_contentTemplateParser.convertType} for instance.
    * @param {Object} obj
    * @return {void}
    */
   CLS_contentTemplateParser.prototype.convertType = function(obj) {
-    let raw, type, result;
-    for(let key in obj) {
-      raw = obj[key];
-      if(typeof raw !== "object" || raw instanceof Array || typeof raw.type !== "string") continue;
-      type = raw.type;
-      delete raw.type;
-      result = CLS_contentTemplateParser.rawParserMap.get(type, Function.air)(raw);
-      if(result !== undefined) {
-        obj[key] = result;
-      };
-    };
+    return CLS_contentTemplateParser.convertType(obj);
   };
 
 

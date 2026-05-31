@@ -76,6 +76,7 @@
         if(!(rcObj[nmIo] instanceof Array)) throw new Error("Error parsing recipe. `${1}` must be an array!".format(nmIo));
         if(rcObj[nmIo].length % ord !== 0) throw new Error("Error parsing recipe. Length of `${1}` should be multiple of ${2}, length found: ${3}".format(nmIo, ord, rcObj[nmIo].length));
       });
+      CLS_contentTemplateParser.convertType(rcObj);
       i += 2;
     };
     // A special tag, just in case
@@ -441,7 +442,7 @@
     let rcLi = _rcLi(rcMdl);
     let i = 0, iCap = rcLi.iCap();
     while(i < iCap) {
-      let categ = rcLi[i + 1]["category"];
+      let categ = tryVal(rcLi[i + 1]["category"], "uncategorized");
       if(categ != null && !arr.includes(categ)) arr.push(categ);
       i += 2;
     };
@@ -720,15 +721,16 @@
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @param {boolean|unset} [valid]
+   * @param {boolean|unset} [uncategorizedOnly]
    * @return {string}
    */
-  const _ttStr = function(rcMdl, rcHeader, valid) {
+  const _ttStr = function(rcMdl, rcHeader, valid, uncategorizedOnly) {
     if(Vars.headless) return "";
 
     if(valid) {
       // Regular display
       return String.multiline(
-        ("<" + _categB(_categ(rcMdl, rcHeader)) + ">").color(Pal.accent),
+        uncategorizedOnly ? null : ("<" + _categB(_categ(rcMdl, rcHeader)) + ">").color(Pal.accent),
         (function() {let ct = MDL_content._ct(_iconNm(rcMdl, rcHeader), null, true); return ct == null ? "-" : ct.localizedName})(),
         (function() {
           let str = String.multiline(

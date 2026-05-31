@@ -51,17 +51,41 @@
 
 
   /**
+   * Whether the string starts with any piece from `strs`.
+   * <br> <ARGS>: strs.
+   * <br> <ARGS>: str1, str2, str3, ...
+   * @return {boolean}
+   */
+  String.prototype.startsWithAny = function() {
+    return arguments[0] instanceof Array ?
+      arguments[0].some(str => this.startsWith(str)) :
+      Array.from(arguments).some(str => this.startsWith(str));
+  };
+
+
+  /**
+   * Whether the string ends with any piece from `strs`.
+   * <br> <ARGS>: strs.
+   * <br> <ARGS>: str1, str2, str3, ...
+   * @return {boolean}
+   */
+  String.prototype.endsWithAny = function() {
+    return arguments[0] instanceof Array ?
+      arguments[0].some(str => this.endsWith(str)) :
+      Array.from(arguments).some(str => this.endsWith(str));
+  };
+
+
+  /**
    * Whether the string contains any piece from `strs`.
    * <br> <ARGS>: strs.
    * <br> <ARGS>: str1, str2, str3, ...
    * @return {boolean}
    */
   String.prototype.includesAny = function() {
-    const thisStr = this;
-
     return arguments[0] instanceof Array ?
-      arguments[0].some(str => thisStr.includes(str)) :
-      Array.from(arguments).some(str => thisStr.includes(str));
+      arguments[0].some(str => this.includes(str)) :
+      Array.from(arguments).some(str => this.includes(str));
   };
 
 
@@ -72,11 +96,9 @@
    * @return {boolean}
    */
   String.prototype.includesAll = function() {
-    const thisStr = this;
-
     return arguments[0] instanceof Array ?
-      arguments[0].every(str => thisStr.includes(str)) :
-      Array.from(arguments).every(str => thisStr.includes(str));
+      arguments[0].every(str => this.includes(str)) :
+      Array.from(arguments).every(str => this.includes(str));
   };
 
 
@@ -88,11 +110,9 @@
    * @return {boolean}
    */
   String.prototype.equalsAny = function() {
-    const thisStr = this;
-
     return arguments[0] instanceof Array ?
-      arguments[0].some(str => thisStr == str) :
-      Array.from(arguments).some(str => thisStr == str);
+      arguments[0].some(str => this == str) :
+      Array.from(arguments).some(str => this == str);
   };
 
 
