@@ -889,12 +889,13 @@
    * @param {string} rcHeader
    * @param {Array|unset} [contArr]
    * @param {Block|unset} [blkInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _ci = function(rcMdl, rcHeader, contArr, blkInit) {
+  const _ci = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "ci", Array.air).concat(_rcBaseVal(rcMdl, "baseCi", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "ci", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseCi", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
@@ -919,12 +920,13 @@
    * @param {Array|unset} [contArr]
    * @param {Block|unset} [blkInit]
    * @param {number|unset} [timeSclInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _bi = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit) {
+  const _bi = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "bi", Array.air).concat(_rcBaseVal(rcMdl, "baseBi", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "bi", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseBi", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
@@ -953,12 +955,13 @@
    * @param {string} rcHeader
    * @param {Array|unset} [contArr]
    * @param {Block|unset} [blkInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _aux = function(rcMdl, rcHeader, contArr, blkInit) {
+  const _aux = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "aux", Array.air).concat(_rcBaseVal(rcMdl, "baseAux", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "aux", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseAux", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
@@ -994,12 +997,13 @@
    * @param {string} rcHeader
    * @param {Array|unset} [contArr]
    * @param {Block|unset} [blkInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _opt = function(rcMdl, rcHeader, contArr, blkInit) {
+  const _opt = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "opt", Array.air).concat(_rcBaseVal(rcMdl, "baseOpt", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "opt", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseOpt", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
@@ -1024,12 +1028,13 @@
    * @param {string} rcHeader
    * @param {Array|unset} [contArr]
    * @param {Block|unset} [blkInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _payi = function(rcMdl, rcHeader, contArr, blkInit) {
+  const _payi = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "payi", Array.air).concat(_rcBaseVal(rcMdl, "basePayi", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "payi", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "basePayi", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
@@ -1053,12 +1058,13 @@
    * @param {string} rcHeader
    * @param {Array|unset} [contArr]
    * @param {Block|unset} [blkInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _co = function(rcMdl, rcHeader, contArr, blkInit) {
+  const _co = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "co", Array.air).concat(_rcBaseVal(rcMdl, "baseCo", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "co", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseCo", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
@@ -1084,12 +1090,13 @@
    * @param {Block|unset} [blkInit]
    * @param {number|unset} [timeSclInit]
    * @param {number|unset} [failPInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _bo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, failPInit) {
+  const _bo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, failPInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "bo", Array.air).concat(_rcBaseVal(rcMdl, "baseBo", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "bo", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseBo", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
@@ -1127,12 +1134,13 @@
    * @param {Block|unset} [blkInit]
    * @param {number|unset} [timeSclInit]
    * @param {number|unset} [failPInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _fo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, failPInit) {
+  const _fo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, failPInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "fo", Array.air).concat(_rcBaseVal(rcMdl, "baseFo", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "fo", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseFo", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
@@ -1157,12 +1165,13 @@
    * @param {Array|unset} [contArr]
    * @param {Block|unset} [blkInit]
    * @param {number|unset} [timeSclInit]
+   * @param {boolean|unset} [ignoreBase]
    * @return {Array}
    */
-  const _payo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit) {
+  const _payo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, ignoreBase) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "payo", Array.air).concat(_rcBaseVal(rcMdl, "basePayo", Array.air));
+    let raw = _rcVal(rcMdl, rcHeader, "payo", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "basePayo", Array.air));
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {

@@ -45,6 +45,20 @@
     "LayerPreset", raw => VAR.layer[raw.name] + tryVal(raw.offset, 0.0),
 
     "ColorHex", raw => Color.valueOf(raw.value),
+    "ColorPreset", raw => {
+      let color;
+      try {
+        color = Color[raw.name];
+      } catch(err) {
+        try {
+          color = Pal[raw.name];
+        } catch(err) {
+          console.warn("[LOVEC] Cannot find color preset for ${1}.".format(raw.name));
+          color = Color.white;
+        };
+      };
+      return color;
+    },
     "ColorPreset", raw => Color[raw.name],
 
     "EffectFx", raw => Fx[raw.name],

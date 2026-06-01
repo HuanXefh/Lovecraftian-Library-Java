@@ -1044,6 +1044,17 @@
 
     /* START OF HELL */
 
+    let
+      baseCi = MDL_recipe._ci(rcMdl, ""),
+      baseBi = MDL_recipe._bi(rcMdl, ""),
+      baseAux = MDL_recipe._aux(rcMdl, ""),
+      baseOpt = MDL_recipe._opt(rcMdl, ""),
+      basePayi = MDL_recipe._payi(rcMdl, ""),
+      baseCo = MDL_recipe._co(rcMdl, ""),
+      baseBo = MDL_recipe._bo(rcMdl, ""),
+      baseFo = MDL_recipe._fo(rcMdl, ""),
+      basePayo = MDL_recipe._payo(rcMdl, "");
+
     const buildCateg = categ => {
       let chunk = new Table();
       cont.left().add(chunk).growX().row();
@@ -1051,15 +1062,17 @@
       let rcRoot = new Table();
       let coll = new Collapser(rcRoot, false);
       coll.setDuration(0.3);
-      Core.app.post(() => {
-        coll.setCollapsed(tryVal(isCollapsed, false), false);
-      });
+      if(!uncategorizedOnly && categ !== "SPEC: base") {
+        Core.app.post(() => {
+          coll.setCollapsed(tryVal(isCollapsed, false), false);
+        });
+      };
 
       // <TABLE>: category title
       chunk.table(Tex.whiteui, tb1 => {
-        tb1.center().setColor(Color.darkGray);
+        tb1.center().setColor(categ !== "SPEC: base" ? Color.darkGray : Tmp.c1.set(Pal.accent).lerp(Color.black, 0.4));
         __margin(tb1, 0.5);
-        if(!uncategorizedOnly) {
+        if(!uncategorizedOnly && categ !== "SPEC: base") {
           tb1.table(Styles.none, tb2 => {
             tb2.add(MDL_recipe._categB(categ)).pad(4.0);
             tb2.button(isCollapsed ? Icon.downOpen : Icon.upOpen, Styles.emptyi, () => coll.toggle(true))
@@ -1074,16 +1087,28 @@
       }).left().growX().row();
       __break(chunk, 1);
 
+      if(categ === "SPEC: base") {
+        let rcTb = new Table(Tex.whiteui);
+        rcTb.left().setColor(Tmp.c1.set(Pal.accent).lerp(Color.black, 0.8));
+        buildInput(rcTb, baseCi, baseBi, baseAux, baseOpt, basePayi);
+        rcTb.table(Styles.none, tb1 => {}).left().width(48.0).growX().growY();
+        buildOutput(rcTb, baseCo, baseBo, baseFo, basePayo);
+        rcRoot.add(rcTb).left().growX().row();
+
+        return;
+      };
+
       categHeaderObj[categ].forEachFast(rcHeader => {
-        let ci = MDL_recipe._ci(rcMdl, rcHeader);
-        let bi = MDL_recipe._bi(rcMdl, rcHeader);
-        let aux = MDL_recipe._aux(rcMdl, rcHeader);
-        let opt = MDL_recipe._opt(rcMdl, rcHeader);
-        let payi = MDL_recipe._payi(rcMdl, rcHeader);
-        let co = MDL_recipe._co(rcMdl, rcHeader);
-        let bo = MDL_recipe._bo(rcMdl, rcHeader);
-        let fo = MDL_recipe._fo(rcMdl, rcHeader);
-        let payo = MDL_recipe._payo(rcMdl, rcHeader);
+        let
+          ci = MDL_recipe._ci(rcMdl, rcHeader, null, null, true),
+          bi = MDL_recipe._bi(rcMdl, rcHeader, null, null, null, true),
+          aux = MDL_recipe._aux(rcMdl, rcHeader, null, null, true),
+          opt = MDL_recipe._opt(rcMdl, rcHeader, null, null, true),
+          payi = MDL_recipe._payi(rcMdl, rcHeader, null, null, true),
+          co = MDL_recipe._co(rcMdl, rcHeader, null, null, true),
+          bo = MDL_recipe._bo(rcMdl, rcHeader, null, null, null, null, true),
+          fo = MDL_recipe._fo(rcMdl, rcHeader, null, null, null, null, true),
+          payo = MDL_recipe._payo(rcMdl, rcHeader, null, null, null, true);
 
         // <TABLE>: recipe root
         let rcTb = new Table(Tex.whiteui);
@@ -1101,7 +1126,7 @@
         buildOutput(rcTb, co, bo, fo, payo);
         buildRcStats(rcTb, rcMdl, rcHeader);
         rcRoot.add(rcTb).left().growX().row();
-        __bar(rcRoot, Color.valueOf("303030"), null, 1.0);
+        __bar(rcRoot, Color.valueOf(Tmp.c1, "303030"), null, 1.0);
 
         i++;
       });
@@ -1376,6 +1401,9 @@
       categAmt++;
     };
     uncategorizedOnly = categAmt === 1 && categHeaderObj.uncategorized != null;
+    if(baseCi.length > 0 || baseBi.length > 0 || baseAux.length > 0 || baseOpt.length > 0 || basePayi.length > 0 || baseCo.length > 0 || baseBo.length > 0 || baseFo.length > 0 || basePayo.length > 0) {
+      buildCateg("SPEC: base");
+    };
     for(let categ in categHeaderObj) {
       buildCateg(categ);
     };
