@@ -33,7 +33,7 @@
      */
     newClass().extendClass(PARENT[0], "EXT_BLK_recipeFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac")
+    .setTags("blk-fac", "blk-rc0fac")
     .setParam({})
     .setMethod({}),
 

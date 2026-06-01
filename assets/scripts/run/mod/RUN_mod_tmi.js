@@ -10,6 +10,19 @@
   MDL_event._c_onPostRun(() => {
 
 
+    function checkParser(parserCur, parserOther) {
+      return (parserCur.parserBlacklist == null || !parserCur.parserBlacklist.hasIns(parserOther))
+        && (parserCur.parserWhitelist == null || parserCur.parserWhitelist.hasIns(parserOther))
+        && (parserCur.parserConflicted == null || !parserCur.parserConflicted.includes(parserOther));
+    };
+
+
+    function checkTarget(parser, blk) {
+      return (parser.tempBlacklist == null || !checkCreatedByTemp(blk) || !parser.tempBlacklist.includes(blk.ex_getTempNm()))
+        && (parser.tempWhitelist == null || !checkCreatedByTemp(blk) || parser.tempWhitelist.includes(blk.ex_getTempNm()));
+    };
+
+
     // I don't know why but adding `excludes` here will cause crash now
     // It did not happen in older versions of TMI
 
@@ -32,12 +45,12 @@
 
 
       exclude(parser) {
-        return this.parserBlacklist.hasIns(parser);
+        return !checkParser(this, parser);
       },
 
 
       isTarget(blk) {
-        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_baseDrill") && !this.tempBlacklist.includes(blk.ex_getTempNm());
+        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_baseDrill") && checkTarget(this, blk);
       },
 
 
@@ -131,11 +144,19 @@
     });
 
 
+    /**
+     * Parses recipes for {@link INTF_BLK_rangeAttributeBlock}.
+     */
     const _p_rangeHarvester = MOD_tmi.regisParser({
 
 
+      parserBlacklist: [
+        MOD_tmi.CLASSES.AttributeCrafterParser,
+      ],
+
+
       exclude(parser) {
-        return parser instanceof MOD_tmi.CLASSES.AttributeCrafterParser;
+        return !checkParser(this, parser);
       },
 
 
@@ -176,11 +197,14 @@
     const _p_pump = MOD_tmi.regisParser({
 
 
+      parserBlacklist: [
+        MOD_tmi.CLASSES.PumpParser,
+      ],
       liqBlksMap: new ObjectMap(),
 
 
       exclude(parser) {
-        return parser instanceof MOD_tmi.CLASSES.PumpParser;
+        return !checkParser(this, parser);
       },
 
 
@@ -234,8 +258,13 @@
     const _p_ventGenerator = MOD_tmi.regisParser({
 
 
+      parserBlacklist: [
+        MOD_tmi.CLASSES.ThermalGeneratorParser,
+      ],
+
+
       exclude(parser) {
-        return parser instanceof MOD_tmi.CLASSES.ThermalGeneratorParser;
+        return !checkParser(this, parser);
       },
 
 
@@ -288,18 +317,13 @@
 
 
       exclude(parser) {
-        return this.parserBlacklist.hasIns(parser) || this.parserConflicted.includes(parser);
+        return !checkParser(this, parser);
       },
 
 
       isTarget(blk) {
-        return (
-          MDL_cond._isFactory(blk)
-            && !MDL_cond._isRecipeFactory(blk)
-            && !(!checkCreatedByTemp(blk) || this.tempBlacklist.includes(blk.ex_getTempNm()))
-        ) || (
-          checkCreatedByTemp(blk) && this.tempTypeMap.containsKey(blk.ex_getTempNm())
-        );
+        return (MDL_cond._isFactory(blk) && !MDL_cond._isRecipeFactory(blk) && checkTarget(this, blk))
+          || (checkCreatedByTemp(blk) && this.tempTypeMap.containsKey(blk.ex_getTempNm()));
       },
 
 
@@ -347,12 +371,12 @@
 
 
       exclude(parser) {
-        return this.parserBlacklist.hasIns(parser);
+        return !checkParser(this, parser);
       },
 
 
       isTarget(blk) {
-        return MDL_cond._isRecipeFactory(blk) || (checkCreatedByTemp(blk) && this.tempWhitelist.includes(blk.ex_getTempNm()));
+        return MDL_cond._isRecipeFactory(blk) || checkTarget(this, blk);
       },
 
 

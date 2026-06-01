@@ -84,7 +84,7 @@
 
     // Update heat fraction
     if(TIMER.secQuarter) {
-      b.heatFrac = Mathf.clamp(b.tempCur / Math.max(b.ex_getHeatTg(), 100.0));
+      b.heatBlkHeatFrac = Mathf.clamp(b.tempCur / Math.max(b.ex_getHeatTg(), 100.0));
     };
 
     // Occasionally supply abstract fluid, or output external heat
@@ -358,11 +358,11 @@
          */
         maxHeaterProd: 0.0,
         /**
-         * <INTERNAL>
+         * <INTERNAL>: I have to name this more complex because `heatFrac` has been taken by vanilla Mindustry.
          * @memberof INTF_B_heatBlock
          * @instance
          */
-        heatFrac: 0.0,
+        heatBlkHeatFrac: 0.0,
         /**
          * <INTERNAL>
          * @memberof INTF_B_heatBlock
@@ -541,7 +541,7 @@
        * @return {number}
        */
       ex_getHeatFrac: function() {
-        return this.heatFrac;
+        return this.heatBlkHeatFrac;
       }
       .setProp({
         noSuper: true,

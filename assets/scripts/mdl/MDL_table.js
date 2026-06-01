@@ -1030,6 +1030,7 @@
       return;
     };
 
+    const baseCont = new Table();
     const cont = new Table();
     const contPn = new ScrollPane(cont);
     contPn.setScrollingDisabled(false, false);
@@ -1037,9 +1038,10 @@
 
     tb.left();
     __break(tb, 1);
+    tb.add(baseCont).left().row();
     noInnerPane ?
       tb.add(cont).row() :
-      tb.add(contPn).maxHeight(720.0).row();
+      tb.add(contPn).maxHeight(640.0).row();
     __break(tb, 1);
 
     /* START OF HELL */
@@ -1053,11 +1055,12 @@
       baseCo = MDL_recipe._co(rcMdl, ""),
       baseBo = MDL_recipe._bo(rcMdl, ""),
       baseFo = MDL_recipe._fo(rcMdl, ""),
-      basePayo = MDL_recipe._payo(rcMdl, "");
+      basePayo = MDL_recipe._payo(rcMdl, ""),
+      hasBaseIo = baseCi.length > 0 || baseBi.length > 0 || baseAux.length > 0 || baseOpt.length > 0 || basePayi.length > 0 || baseCo.length > 0 || baseBo.length > 0 || baseFo.length > 0 || basePayo.length > 0;
 
     const buildCateg = categ => {
       let chunk = new Table();
-      cont.left().add(chunk).growX().row();
+      (categ !== "SPEC: base" ? cont : baseCont).left().add(chunk).growX().row();
 
       let rcRoot = new Table();
       let coll = new Collapser(rcRoot, false);
@@ -1087,14 +1090,17 @@
       }).left().growX().row();
       __break(chunk, 1);
 
-      if(categ === "SPEC: base") {
+      const buildBase = tb => {
         let rcTb = new Table(Tex.whiteui);
         rcTb.left().setColor(Tmp.c1.set(Pal.accent).lerp(Color.black, 0.8));
         buildInput(rcTb, baseCi, baseBi, baseAux, baseOpt, basePayi);
         rcTb.table(Styles.none, tb1 => {}).left().width(48.0).growX().growY();
         buildOutput(rcTb, baseCo, baseBo, baseFo, basePayo);
-        rcRoot.add(rcTb).left().growX().row();
-
+        rcTb.table(Styles.none, tb1 => {}).left().width(48.0).growX().growY();
+        tb.add(rcTb).left().growX().row();
+      };
+      if(categ === "SPEC: base") {
+        buildBase(rcRoot);
         return;
       };
 
@@ -1114,11 +1120,21 @@
         let rcTb = new Table(Tex.whiteui);
         rcTb.left().setColor(Pal.darkestGray);
         buildOrder(rcTb, i, rcHeader, tb1 => {
-          tb1.table(Styles.none, tb2 => {}).left().width(36.0).growY();
-          buildInput(tb1, ci, bi, aux, opt, payi);
-          tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
-          buildOutput(tb1, co, bo, fo, payo);
-          buildRcStats(tb1, rcMdl, rcHeader);
+          if(hasBaseIo) {
+            tb1.table(Tex.whiteui, tb2 => {
+              tb2.left().setColor(Tmp.c1.set(Pal.accent).lerp(Color.black, 0.4));
+              __margin(tb2, 0.5);
+              buildBase(tb2);
+            }).left().padLeft(28.0).row();
+            __break(tb1, 1);
+          };
+          tb1.table(Styles.none, tb2 => {
+            tb2.table(Styles.none, tb3 => {}).left().width(36.0).growY();
+            buildInput(tb2, ci, bi, aux, opt, payi);
+            tb2.table(Styles.none, tb3 => {}).left().width(48.0).growX().growY();
+            buildOutput(tb2, co, bo, fo, payo);
+            buildRcStats(tb2, rcMdl, rcHeader);
+          }).left();
         });
         rcTb.table(Styles.none, tb1 => {}).left().width(36.0).growY();
         buildInput(rcTb, ci, bi, aux, opt, payi);
@@ -1401,7 +1417,7 @@
       categAmt++;
     };
     uncategorizedOnly = categAmt === 1 && categHeaderObj.uncategorized != null;
-    if(baseCi.length > 0 || baseBi.length > 0 || baseAux.length > 0 || baseOpt.length > 0 || basePayi.length > 0 || baseCo.length > 0 || baseBo.length > 0 || baseFo.length > 0 || basePayo.length > 0) {
+    if(hasBaseIo) {
       buildCateg("SPEC: base");
     };
     for(let categ in categHeaderObj) {
