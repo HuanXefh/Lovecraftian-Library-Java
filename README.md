@@ -67,7 +67,7 @@ someEffectField3: {
 }
 ```
 
-Normally you don't need to change values for fields in a building template ("B_xxx" instead of "BLK_xxx"), but if you do need on rare occassions, you can use `build: {}` in your template JSON and write data inside the object.
+Normally you don't need to change values for fields in a building template ("B_xxx" instead of "BLK_xxx"), but if you do need on rare occasions, you can use `build: {}` in your template JSON and write data inside the object.
 
 <br>
 

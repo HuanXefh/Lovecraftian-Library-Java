@@ -13,6 +13,7 @@
 
   function comp_init(blk) {
     blk.clipSize += 140.0;
+    if(blk.heatCooldownRate < 0.0) blk.heatCooldownRate = blk.heatWarmupRate;
     blk.heatBlkMeltTemp = MDL_flow._heatRes(blk);
     blk.heatLightTempReq = Math.max(blk.heatLightTempReq, 60.01);
     if(blk.heatLightRad < 0.0) blk.heatLightRad = blk.size * Vars.tilesize * 0.7;
@@ -67,7 +68,7 @@
     // Update temperature and apply damage if overheated
     if(!PARAM.UPDATE_SUPPRESSED && TIMER.secHalf) {
       b.tempRiseTg = b.ex_calcTempTg();
-      b.tempCur = Mathf.lerp(b.tempCur, Mathf.lerp(PARAM.GLOBAL_HEAT, b.tempRiseTg, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTgFrac()), b.block.delegee.heatWarmupRate * 30.0);
+      b.tempCur = Math.max(Mathf.lerp(b.tempCur, Mathf.lerp(PARAM.GLOBAL_HEAT, b.tempRiseTg, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTgFrac()), (b.tempCur <= b.tempRiseTg ? b.block.delegee.heatWarmupRate : b.block.delegee.heatCooldownRate) * 30.0), PARAM.GLOBAL_HEAT);
       if(b.tempCur > b.block.delegee.heatBlkMeltTemp) {
         FRAG_attack.damage(b, (VAR.param.corDmgMin + VAR.param.corDmgFrac * b.maxHealth) * (b.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
       };
@@ -78,7 +79,7 @@
       if(b.extHeatCd > 0.0) {
         b.extHeatCd -= Time.delta;
       } else {
-        b.tempExt = 0.0;
+        b.tempExt = Mathf.lerpDelta(b.tempExt, 0.0, 0.02);
       };
     };
 
@@ -104,8 +105,12 @@
     if(b.isPayload()) return;
 
     if(PARAM.SHOULD_DRAW_FURNACE_HEAT && b.block.delegee.heatA > 0.0) {
-      MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.delegee.heatReg, b.drawrot(), b.block.size);
-      MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, VARGEN.blockHeatRegs[b.block.size + 2], b.drawrot(), b.block.size);
+      if(!b.block.delegee.shouldDrawDoubleHeat) {
+        MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.7 * b.block.delegee.heatA, b.block.delegee.heatReg, b.drawrot(), b.block.size);
+      } else {
+        MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.delegee.heatReg, b.drawrot(), b.block.size);
+        MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, VARGEN.blockHeatRegs[b.block.size + 2], b.drawrot(), b.block.size);
+      };
     };
 
     if(b.block.delegee.shouldDrawHeatLight) {
@@ -130,7 +135,7 @@
 
     b.heatTransTgs.clear();
     b.proximity.each(ob => {
-      if(ob.ex_getHeatTransferred == null || !GEOMETRY_HANDLER.accept(this, ob, this.block.delegee.isHeatRouter, !ob.block.delegee.isHeatRouter)) return;
+      if(ob.ex_getHeatTransferred == null || tryJsProp(ob.block, "skipHeatTrans", false) || !GEOMETRY_HANDLER.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) return;
       b.heatTransTgs.push(ob);
     });
   };
@@ -153,7 +158,7 @@
     if(b.block.delegee.tempExtMtp.fEqual(0.0)) return;
 
     b.tempExt = (b.tempExt + amt * b.block.delegee.tempExtMtp) * 0.5;
-    b.extHeatCd = 300.0;
+    b.extHeatCd = 60.0;
   };
 
 
@@ -186,7 +191,7 @@
 
     if(b.tempExt > heatTg) heatTg = b.tempExt;
 
-    return heatTg;
+    return Math.max(heatTg, PARAM.GLOBAL_HEAT);
   };
 
 
@@ -216,6 +221,12 @@
          * @instance
          */
         heatWarmupRate: 0.0008,
+        /**
+         * <PARAM>: How fast this heat block cools down when not heated, same as warmup rate by default.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
+        heatCooldownRate: -1.0,
         /**
          * <PARAM>: Multiplier on external heat accepted.
          * @memberof INTF_BLK_heatBlock
@@ -252,6 +263,12 @@
          * @instance
          */
         heatA: 1.0,
+        /**
+         * <PARAM>: If true, two heat regions are drawn to emphasize high temperature.
+         * @memberof INTF_BLK_heatBlock
+         * @instance
+         */
+        shouldDrawDoubleHeat: true,
         /**
         * <PARAM>: Whether this heat block emits light.
         * @memberof INTF_BLK_heatBlock
