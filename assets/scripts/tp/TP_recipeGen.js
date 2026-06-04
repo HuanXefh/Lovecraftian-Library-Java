@@ -60,7 +60,7 @@
     this.setCateg("alloying");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["alloying"],
+      DB_recipe.db["genData"]["alloying"],
       null,
       metaObj,
     );
@@ -76,7 +76,7 @@
     this.setCateg("brick-baking");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["brickBaking"],
+      DB_recipe.db["genData"]["brickBaking"],
       null,
       metaObj,
     );
@@ -92,7 +92,7 @@
     this.setCateg("carbonization");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["carbonization"],
+      DB_recipe.db["genData"]["carbonization"],
       null,
       metaObj,
     );
@@ -108,7 +108,7 @@
     this.setCateg("casting");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["casting"],
+      DB_recipe.db["genData"]["casting"],
       null,
       metaObj,
     );
@@ -138,7 +138,7 @@
 
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["condensation"],
+      DB_recipe.db["genData"]["condensation"],
       null,
       metaObj,
     );
@@ -197,16 +197,16 @@
       mode = readParam(metaObj, "neutral", false);
 
     const arr = [];
-    if(includeItem) arr.pushAll(DB_item.db["map"]["recipe"]["dryingItem"]);
+    if(includeItem) arr.pushAll(DB_recipe.db["genData"]["dryingItem"]);
     if(includeLiquid) {
-      arr.pushAll(DB_item.db["map"]["recipe"]["dryingLiquid"]);
-      if(mode === neutral || mode === "acidic") arr.pushAll(DB_item.db["map"]["recipe"]["dryingLiquidAcidic"]);
-      if(mode === neutral || mode === "basic") arr.pushAll(DB_item.db["map"]["recipe"]["dryingLiquidBasic"]);
+      arr.pushAll(DB_recipe.db["genData"]["dryingLiquid"]);
+      if(mode === neutral || mode === "acidic") arr.pushAll(DB_recipe.db["genData"]["dryingLiquidAcidic"]);
+      if(mode === neutral || mode === "basic") arr.pushAll(DB_recipe.db["genData"]["dryingLiquidBasic"]);
     };
     if(includeGas) {
-      arr.pushAll(DB_item.db["map"]["recipe"]["dryingGas"]);
-      if(mode === neutral || mode === "acidic") arr.pushAll(DB_item.db["map"]["recipe"]["dryingGasAcidic"]);
-      if(mode === neutral || mode === "basic") arr.pushAll(DB_item.db["map"]["recipe"]["dryingGasBasic"]);
+      arr.pushAll(DB_recipe.db["genData"]["dryingGas"]);
+      if(mode === neutral || mode === "acidic") arr.pushAll(DB_recipe.db["genData"]["dryingGasAcidic"]);
+      if(mode === neutral || mode === "basic") arr.pushAll(DB_recipe.db["genData"]["dryingGasBasic"]);
     };
 
     this.setCateg("drying");
@@ -228,7 +228,7 @@
     this.setCateg("drying");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["dryingFreeze"],
+      DB_recipe.db["genData"]["dryingFreeze"],
       null,
       metaObj,
     );
@@ -247,7 +247,7 @@
     this.setCateg("filtration");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"][isItemFilter ? "filtration" : "filtrationLiquid"],
+      DB_recipe.db["genData"][isItemFilter ? "filtration" : "filtrationLiquid"],
       null,
       metaObj,
     );
@@ -263,7 +263,7 @@
     this.setCateg("forging");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["forging"],
+      DB_recipe.db["genData"]["forging"],
       null,
       metaObj,
     );
@@ -279,7 +279,7 @@
     this.setCateg("heating");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["heatingExchange"],
+      DB_recipe.db["genData"]["heatingExchange"],
       null,
       metaObj,
     );
@@ -295,7 +295,7 @@
     this.setCateg("heating");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["heatingGas"],
+      DB_recipe.db["genData"]["heatingGas"],
       null,
       metaObj,
     );
@@ -315,7 +315,7 @@
     this.setCateg(isBallMill ? "ball-mill-mixing" : "mixing");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"][isBallMill ? "ballMillMixing" : "mixing"],
+      DB_recipe.db["genData"][isBallMill ? "ballMillMixing" : "mixing"],
       null,
       metaObj,
     );
@@ -331,7 +331,7 @@
     this.setCateg("liquid-mixing");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["mixingLiquid"],
+      DB_recipe.db["genData"]["mixingLiquid"],
       null,
       metaObj,
     );
@@ -365,7 +365,7 @@
     this.setTag("specific");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["pulverization"],
+      DB_recipe.db["genData"]["pulverization"],
       null,
       metaObj,
     );
@@ -373,7 +373,7 @@
 
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-dust"].filter(itm => !DB_item.db["map"]["recipe"]["pulverization"].colIncludes(itm.name, 2, 0) && !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitm => itm.delegee.intmdParent === oitm.delegee.intmdParent)),
+      VARGEN.intmds["rs-dust"].filter(itm => !DB_recipe.db["genData"]["pulverization"].colIncludes(itm.name, 2, 0) && !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitm => itm.delegee.intmdParent === oitm.delegee.intmdParent)),
       null,
       metaObj,
       (itm, metaObj) => ({
@@ -397,7 +397,7 @@
     if(tier !== 0) {
       this.handle2Arr(
         rc,
-        DB_item.db["map"]["recipe"][tier === 2 ? "purificationII" : "purificationI"],
+        DB_recipe.db["genData"][tier === 2 ? "purificationII" : "purificationI"],
         null,
         metaObj,
       );
@@ -414,7 +414,7 @@
       };
       this.handle2Arr(
         rc,
-        DB_item.db["map"]["recipe"]["purificationI"],
+        DB_recipe.db["genData"]["purificationI"],
         null,
         metaObj,
       );
@@ -431,7 +431,7 @@
     this.setCateg("purification");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["purificationMagnetic"],
+      DB_recipe.db["genData"]["purificationMagnetic"],
       null,
       metaObj,
     );
@@ -450,7 +450,7 @@
     this.setCateg(isGas ? "gas-reaction" : "liquid-reaction");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"][isGas ? "reactionGas" : "reactionLiquid"],
+      DB_recipe.db["genData"][isGas ? "reactionGas" : "reactionLiquid"],
       null,
       metaObj,
     );
@@ -466,7 +466,7 @@
     this.setCateg("melt-reaction");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["reactionMelt"],
+      DB_recipe.db["genData"]["reactionMelt"],
       null,
       metaObj,
     );
@@ -483,9 +483,9 @@
       fuelType = readParam(metaObj, "fuelType", FuelTypes.ITEM);
 
     const arr = [];
-    if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(DB_item.db["map"]["recipe"]["reactionBurnSolid"]);
-    if((fuelType & FuelTypes.LIQUID) !== 0) arr.pushAll(DB_item.db["map"]["recipe"]["reactionBurnLiquid"]);
-    if((fuelType & FuelTypes.GAS) !== 0) arr.pushAll(DB_item.db["map"]["recipe"]["reactionBurnGas"]);
+    if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnSolid"]);
+    if((fuelType & FuelTypes.LIQUID) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnLiquid"]);
+    if((fuelType & FuelTypes.GAS) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnGas"]);
 
     this.setCateg("combustion");
     this.handle2Arr(
@@ -509,7 +509,7 @@
     this.setCateg("roasting");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"][!isConcentrate ? "roasting" : "concentrateRoasting"],
+      DB_recipe.db["genData"][!isConcentrate ? "roasting" : "concentrateRoasting"],
       null,
       metaObj,
     );
@@ -527,7 +527,7 @@
     this.setTag("specific");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"]["rockCrushing"],
+      DB_recipe.db["genData"]["rockCrushing"],
       null,
       metaObj,
     );
@@ -535,7 +535,7 @@
 
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-chunks"].filter(itm => !DB_item.db["map"]["recipe"]["rockCrushing"].colIncludes(itm.name, 2, 0) && !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+      VARGEN.intmds["rs-chunks"].filter(itm => !DB_recipe.db["genData"]["rockCrushing"].colIncludes(itm.name, 2, 0) && !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
       null,
       metaObj,
       (itm, metaObj) => ({
@@ -661,7 +661,7 @@
     this.setCateg("smelting");
     this.handle2Arr(
       rc,
-      DB_item.db["map"]["recipe"][!isConcentrate ? "smelting" : "concentrateSmelting"],
+      DB_recipe.db["genData"][!isConcentrate ? "smelting" : "concentrateSmelting"],
       null,
       metaObj,
     );

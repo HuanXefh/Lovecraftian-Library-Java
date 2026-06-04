@@ -184,8 +184,10 @@ const db = {
       "titan", "utp-titan",
       // Large leg units
       "behemoth", "utp-beh",
-      // Wheeled units
+      // Non-tank wheeled units
       "vehicle", "utp-veh",
+      // Tank units
+      "tank", "utp-tank",
       // Regular air units
       "aircraft", "utp-air",
       // Balloon air units

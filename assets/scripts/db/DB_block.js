@@ -93,6 +93,7 @@ const db = {
     /**
      * Material groups, used mainly for corrosion.
      * <br> <ROW-xxx>: blk.
+     * <br> <EXTENSIBLE>
      */
     material: {
 
@@ -500,6 +501,10 @@ const db = {
 
 
 };
+
+
+LCModDbRegister
+.apply("blkMat", db["group"]["material"]);
 
 
 Object.mergeDB(db, "DB_block");

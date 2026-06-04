@@ -16,6 +16,7 @@ const db = {
     /**
      * The most basic fluid groups. Fluids in the same groups will share some parameters.
      * <br> <ROW-xxx>: liq.
+     * <br> <EXTENSIBLE>
      */
     elementary: {
 
@@ -80,6 +81,7 @@ const db = {
     /**
      * Fluid tag groups, used for corrosion affinities.
      * <br> <ROW-xxx>: liq.
+     * <br> <EXTENSIBLE>
      */
     fTag: {
 
@@ -279,6 +281,7 @@ const db = {
     /**
      * Corrosion scaling for a pair of fluid group and block material group.
      * <br> <ROW-xxx>: eleGrp, scl.
+     * <br> <EXTENSIBLE>
      */
     matEleScl: {
 
@@ -376,6 +379,7 @@ const db = {
     /**
      * Extra corrosion multiplier for a pair of fluid tag and block material group.
      * <br> <ROW-xxx>: fldTag, mtp.
+     * <br> <EXTENSIBLE>
      */
     matFTagScl: {
 
@@ -436,6 +440,13 @@ const db = {
 
 
 };
+
+
+LCModDbRegister
+.apply("eleFldGrp", db["group"]["elementary"])
+.apply("fTag", db["group"]["fTag"])
+.apply("matEleCorScl", db["grpParam"]["matEleScl"])
+.apply("matFTagCorScl", db["grpParam"]["matFTagScl"]);
 
 
 Object.mergeDB(db, "DB_fluid");

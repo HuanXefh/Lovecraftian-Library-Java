@@ -157,6 +157,7 @@ const db = {
    * Target liquid in a solvation reaction.
    * If null content of puddle won't be changed.
    * <br> <ROW-xxx>: itm, liq.
+   * <br> <EXTENSIBLE>
    */
   solvationTarget: {
 
@@ -171,6 +172,10 @@ const db = {
 
 
 };
+
+
+LCModDbRegister
+.apply("reacSolvTg", db["solvationTarget"]);
 
 
 Object.mergeDB(db, "DB_reaction");

@@ -846,7 +846,7 @@
     } else if(typeof tg === "string") {
       if(tg.startsWith("GROUP: ")) {
         let tmpArr = [];
-        DB_item.db["group"]["rcGroup"].readList(tg.replace("GROUP: ", "")).forEachFast(tup => {
+        DB_recipe.db["gen"]["group"].readList(tg.replace("GROUP: ", "")).forEachFast(tup => {
           parseRcIoRow(
             tmpArr, tup[0],
             amt * readParam(tup[1], "amtScl", 1.0),

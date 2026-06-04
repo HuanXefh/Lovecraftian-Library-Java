@@ -93,9 +93,12 @@
       b.heatSupplyIncre++;
       let b_t = b.heatSupplyTgs[b.heatSupplyIncre % b.heatSupplyTgs.length];
       if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
+        let heatAmt = !b.block.delegee.isHeatRouter ?
+          b.ex_getHeatSupplied() :
+          (b.ex_getHeatSupplied() / 3.0);
         b_t.ex_handleExtHeat != null ?
-          b_t.ex_handleExtHeat(b.ex_getHeatSupplied()) :
-          FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, b.ex_getHeatSupplied() / 6000.0, false, false, true);
+          b_t.ex_handleExtHeat(heatAmt) :
+          FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, heatAmt / 6000.0, false, false, true);
       };
     };
   };
@@ -180,7 +183,9 @@
     if(!b.block.delegee.skipHeatTrans) {
       b.heatTransTgs.forEachFast(ob => {
         if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
-        heatTg += ob.ex_getHeatTransferred();
+        heatTg += !ob.block.delegee.isHeatRouter ?
+          ob.ex_getHeatTransferred() :
+          (ob.ex_getHeatTransferred() / 3.0);
         b.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.maxHeaterProd);
       });
     };

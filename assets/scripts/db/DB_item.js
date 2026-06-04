@@ -51,6 +51,7 @@ const db = {
     /**
      * Maps an attribute to some resource, mostly for dynamic attribute output.
      * <br> <ROW-xxx>: attr, rs.
+     * <br> <EXTENSIBLE>
      */
     attr: {
 
@@ -68,127 +69,6 @@ const db = {
 
 
       vent: [],
-
-
-    },
-
-
-    /**
-     * Collection of recipe data used in {@link TP_recipeGen}.
-     * Row format is determined by each generator.
-     */
-    recipe: {
-
-
-      alloying: [],
-
-
-      brickBaking: [],
-
-
-      carbonization: [],
-
-
-      casting: [],
-
-
-      condensation: [],
-
-
-      dryingItem: [],
-
-
-      dryingLiquid: [],
-
-
-      dryingLiquidAcidic: [],
-
-
-      dryingLiquidBasic: [],
-
-
-      dryingGas: [],
-
-
-      dryingGasAcidic: [],
-
-
-      dryingGasBasic: [],
-
-
-      dryingFreeze: [],
-
-
-      filtration: [],
-
-
-      filtrationLiquid: [],
-
-
-      forging: [],
-
-
-      heatingExchange: [],
-
-
-      heatingGas: [],
-
-
-      mixing: [],
-
-
-      ballMillMixing: [],
-
-
-      mixingLiquid: [],
-
-
-      pulverization: [],
-
-
-      purificationI: [],
-
-
-      purificationII: [],
-
-
-      purificationMagnetic: [],
-
-
-      purificationFloat: [],
-
-
-      reactionGas: [],
-
-
-      reactionLiquid: [],
-
-
-      reactionMelt: [],
-
-
-      reactionBurnGas: [],
-
-
-      reactionBurnLiquid: [],
-
-
-      reactionBurnSolid: [],
-
-
-      roasting: [],
-
-
-      rockCrushing: [],
-
-
-      concentrateRoasting: [],
-
-
-      smelting: [],
-
-
-      concentrateSmelting: [],
 
 
     },
@@ -375,6 +255,10 @@ const db = {
 
 
 };
+
+
+LCModDbRegister
+.apply("attrRsMap", db["map"]["attr"]);
 
 
 Object.mergeDB(db, "DB_item");

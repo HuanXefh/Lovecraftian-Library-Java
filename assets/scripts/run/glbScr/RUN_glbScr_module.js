@@ -105,6 +105,8 @@
   /** @global */
   DB_env = require("lovec/db/DB_env");
   /** @global */
+  DB_recipe = require("lovec/db/DB_recipe");
+  /** @global */
   MDL_content = require("lovec/mdl/MDL_content");
   /** @global */
   MDL_cond = require("lovec/mdl/MDL_cond");

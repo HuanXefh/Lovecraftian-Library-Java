@@ -442,7 +442,7 @@
       let arr, cls, i, iCap;
 
       if(!DB_block.db["group"]["noRcDict"]["cons"].includes(blk.name)) {
-        arr = DB_misc.db["recipe"]["consumeReader"];
+        arr = DB_recipe.db["dict"]["reader"]["consume"];
         blk.consumers.forEachFast(cons => {
           if(cons.ex_setRcDict != null) {
             cons.ex_setRcDict(blk, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
@@ -476,7 +476,7 @@
       };
 
       if(!DB_block.db["group"]["noRcDict"]["prod"].includes(blk.name)) {
-        arr = DB_misc.db["recipe"]["produceReader"];
+        arr = DB_recipe.db["dict"]["reader"]["produce"];
         let dictCaller = null;
         i = 0;
         iCap = arr.iCap();

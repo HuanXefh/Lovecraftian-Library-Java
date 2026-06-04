@@ -244,6 +244,36 @@
   LCTempParentMap = ObjectMap.of(
     "CLS_contentTemplate", [],
   );
+  /**
+   * For other mods, push names here for new arrays in DB files.
+   * @global
+   */
+  LCModDbRegister = {
+    /** Target: {@link DB_item.db["map"]["attr"]}. */
+    attrRsMap: [],
+    /** Target: {@link DB_fluid.db["group"]["elementary"]}. */
+    eleFldGrp: [],
+    /** Target: {@link DB_fluid.db["group"]["fTag"]}. */
+    fTag: [],
+    /** Target: {@link DB_fluid.db["grpParam"]["matEleScl"]}. */
+    matEleCorScl: [],
+    /** Target: {@link DB_fluid.db["grpParam"]["matFTagScl"]}. */
+    matFTagCorScl: [],
+    /** Target: {@link DB_block.db["group"]["material"]}. */
+    blkMat: [],
+    /** Target: {@link DB_recipe.db["genData"]}. */
+    rcGenData: [],
+    /** Target: {@link DB_reaction.db["solvationTarget"]}. */
+    reacSolvTg: [],
+
+    apply(nm, obj) {
+      if(!(LCModDbRegister[nm] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended!".format(nm));
+      LCModDbRegister[nm].forEachFast(key => {
+        obj[key] = [];
+      });
+      return LCModDbRegister;
+    },
+  };
 
 
   [

@@ -152,7 +152,7 @@
 
         return MDL_json.fetch(jsonVal, "version") !== verCur;
       })()) {
-        DB_misc.db["recipe"]["oreDictDef"].forEachRow(2, (nmRs, arr) => {
+        DB_recipe.db["oreDict"]["def"].forEachRow(2, (nmRs, arr) => {
           let fi = dir.child(nmRs + ".csv");
           MDL_file._w_csv(fi, arr, 1);
         });
@@ -208,36 +208,40 @@
         if(blk.itemDrop != null) blk.itemDrop = oreDict.get(blk.itemDrop, blk.itemDrop);
         if(blk.liquidDrop != null) blk.liquidDrop = oreDict.get(blk.liquidDrop, blk.liquidDrop);
 
-        blk.consumers.forEachFast(cons => {
-          let arr = DB_misc.db["recipe"]["oreDictConsSetter"];
-          let dictCaller = null;
-          let i = 0, iCap = arr.iCap();
+        let arr, i, iCap, cls, dictCaller;
+
+        blk.consumers.forEachFast(blkCons => {
+          arr = DB_recipe.db["oreDict"]["setter"]["consume"];
+          dictCaller = null;
+          i = 0;
+          iCap = arr.iCap();
           while(i < iCap) {
-            let cls = arr[i];
-            if(cons instanceof cls) {
+            cls = arr[i];
+            if(blkCons instanceof cls) {
               dictCaller = arr[i + 1];
             };
             i += 2;
           };
           if(dictCaller != null) {
-            dictCaller(blk, cons, oreDict);
-            cons.apply(blk);
+            dictCaller(blk, blkCons, oreDict);
+            blkCons.apply(blk);
           };
         });
 
-        (function() {
-          let arr = DB_misc.db["recipe"]["oreDictProdSetter"];
-          let dictCaller = null;
-          let i = 0, iCap = arr.iCap();
-          while(i < iCap) {
-            let cls = arr[i];
-            if(blk instanceof cls) {
-              dictCaller = arr[i + 1];
-            };
-            i += 2;
+        arr = DB_recipe.db["oreDict"]["setter"]["produce"];
+        dictCaller = null;
+        i = 0;
+        iCap = arr.iCap();
+        while(i < iCap) {
+          cls = arr[i];
+          if(blk instanceof cls) {
+            dictCaller = arr[i + 1];
           };
-          if(dictCaller != null) dictCaller(blk, oreDict);
-        })();
+          i += 2;
+        };
+        if(dictCaller != null) {
+          dictCaller(blk, oreDict);
+        };
       });
     })();
 

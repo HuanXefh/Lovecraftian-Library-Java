@@ -379,7 +379,7 @@
    * @return {boolean}
    */
   CLS_recipeGenerator.prototype.checkCtValid = function(ct, metaObj, paramObj) {
-    return DB_misc.db["recipe"]["rcGenValidCheck"].every(boolF => boolF.apply(this, [ct, metaObj, paramObj]));
+    return DB_recipe.db["gen"]["validCheck"].every(boolF => boolF.apply(this, [ct, metaObj, paramObj]));
   };
 
 
@@ -393,7 +393,7 @@
   CLS_recipeGenerator.prototype.processObjF = function(ct, metaObj, paramObj) {
     return obj => {
       this.setBaseParam(obj, paramObj);
-      DB_misc.db["recipe"]["rcGenObjF"].forEachRow(2, (boolF, objF) => {
+      DB_recipe.db["gen"]["objF"].forEachRow(2, (boolF, objF) => {
         if(!boolF.apply(this, [ct, metaObj, paramObj])) return;
         objF.apply(this, [obj, metaObj, paramObj]);
       });
