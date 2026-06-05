@@ -64,7 +64,7 @@
       ),
       unit => {
         // Unit range display
-        if(PARAM.SHOULD_DRAW_UNIT_RANGE && !unit.hasEffect(VARGEN.staHiddenWell)) {
+        if(PARAM.SHOULD_DRAW_UNIT_RANGE && (VARGEN.staHiddenWell == null || !unit.hasEffect(VARGEN.staHiddenWell))) {
           let z = Draw.z();
           Draw.z(VAR.layer.unitRange);
 

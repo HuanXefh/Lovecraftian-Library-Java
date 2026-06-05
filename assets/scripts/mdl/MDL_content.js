@@ -240,7 +240,7 @@
     let cls;
     while(i < iCap) {
       cls = arr[i];
-      if(blk instanceof cls) valCaller = arr[i + 1];
+      if(cls != null && blk instanceof cls) valCaller = arr[i + 1];
       i += 2;
     };
     if(valCaller != null) val = valCaller(blk, isDrillTime, _ct(ct_gn, null, true));

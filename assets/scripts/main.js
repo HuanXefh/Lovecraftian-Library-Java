@@ -217,7 +217,7 @@
           iCap = arr.iCap();
           while(i < iCap) {
             cls = arr[i];
-            if(blkCons instanceof cls) {
+            if(cls != null && blkCons instanceof cls) {
               dictCaller = arr[i + 1];
             };
             i += 2;
@@ -234,7 +234,7 @@
         iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
-          if(blk instanceof cls) {
+          if(cls != null && blk instanceof cls) {
             dictCaller = arr[i + 1];
           };
           i += 2;
@@ -355,7 +355,7 @@
 
     // Set up recipe dictionary stat
     Time.run(5.0, () => {
-      VARGEN.rss.concat(VARGEN.payMatBlks).concat(VARGEN.buildaleUtps).forEachFast(ct => {
+      VARGEN.rss.concat(VARGEN.payMatBlks).concat(VARGEN.buildableUtps).forEachFast(ct => {
         ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
           tb.row();
           MDL_table.__btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct)).left().padLeft(28.0).row();

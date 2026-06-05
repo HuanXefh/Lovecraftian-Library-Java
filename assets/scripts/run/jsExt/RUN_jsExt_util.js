@@ -346,5 +346,5 @@
    * @return {boolean}
    */
   Array.prototype.hasIns = function(obj) {
-    return this.some(cls => obj instanceof cls);
+    return this.some(cls => cls != null && obj instanceof cls);
   };

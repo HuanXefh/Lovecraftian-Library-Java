@@ -512,11 +512,13 @@
     /* unit type */
 
 
-    /**
-     * Unit types that can be crafted.
-     * @type {Array<UnitType>}
-     */
-    exports.buildaleUtps = Vars.content.units().select(utp => !utp.internal && (TechTree.all.find(node => node.content === utp && node.requirements.length > 0) != null || tryVal(utp.getRequirements(null, null), Array.air).length > 0)).toArray();
+    Time.run(0.0, () => {
+      /**
+       * Unit types that can be crafted.
+       * @type {Array<UnitType>}
+       */
+      exports.buildableUtps = Vars.content.units().select(utp => !utp.internal && (MDL_recipeDict.rcDict.cons.unit[utp.id].length > 0 || MDL_recipeDict.rcDict.prod.unit[utp.id].length > 0)).toArray();
+    });
 
 
     /**

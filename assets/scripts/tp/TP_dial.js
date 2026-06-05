@@ -434,7 +434,15 @@
             // <TABLE>: rate text
             tb1.add(MDL_text._statText(
               MDL_bundle._term("lovec", "rate"),
-              craftRate == null ? "-" : ((craftRate < 0.01 ? "<0.01" : craftRate.roundFixed(2)) + "/s"),
+              craftRate == null ?
+                "-" :
+                craftRate > 0.01 ?
+                  (craftRate.roundFixed(2) + "/s") :
+                  craftRate * 60.0 > 0.01 ?
+                    ((craftRate * 60.0).roundFixed(2) + "/min") :
+                    craftRate * 3600.0 > 0.01 ?
+                      ((craftRate * 3600.0).roundFixed(2) + "/h") :
+                      "<0.01/s",
             ))
             .left()
             .tooltip(typeof craftRate !== "number" ? "-" : (craftRate.roundFixed(7) + "/s"), true)

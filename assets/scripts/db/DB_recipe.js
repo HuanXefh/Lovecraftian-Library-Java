@@ -124,6 +124,26 @@ const db = {
           });
         },
 
+        /* <---------- New Horizon ----------> */
+
+        fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+          blk.recipes.each(rc => {
+            rc.inputItem.each(itmStack => dictConsItm[itmStack.item.id].push(blk, itmStack.amount, {time: rc.craftTime}));
+            rc.inputLiquid.each(liqStack => dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, {time: rc.craftTime}));
+            rc.inputPayload.each(payStack => (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, {time: rc.craftTime}));
+          });
+        },
+
+        fetchClass("newhorizon.expand.block.special.JumpGate", true), (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+          let rc;
+          blk.recipeList.each(unitRc => {
+            rc = unitRc.recipe;
+            rc.inputItem.each(itmStack => dictConsItm[itmStack.item.id].push(blk, itmStack.amount, {time: unitRc.craftTime, ct: unitRc.unitType}));
+            rc.inputLiquid.each(liqStack => dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, {time: unitRc.craftTime, ct: unitRc.unitType}));
+            rc.inputPayload.each(payStack => (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, {time: unitRc.craftTime, ct: unitRc.unitType}));
+          });
+        },
+
       ],
 
 
@@ -191,6 +211,32 @@ const db = {
         Reconstructor, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
           blk.upgrades.each(arr => {
             dictProdUtp[arr[1].id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {ct: arr[0]});
+          });
+        },
+
+        /* <---------- New Horizon ----------> */
+
+        fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          blk.recipes.each(rc => {
+            rc.outputItem.each(itmStack => dictProdItm[itmStack.item.id].push(blk, itmStack.amount, {time: rc.craftTime}));
+            rc.outputLiquid.each(liqStack => dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, {time: rc.craftTime}));
+            rc.outputPayload.each(payStack => (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, {time: rc.craftTime}));
+          });
+        },
+
+        fetchClass("newhorizon.expand.block.production.factory.MultiBlockCrafter", true), (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          if(blk.outputItems != null) blk.outputItems.forEachFast(itmStack => dictProdItm[itmStack.item.id].push(blk, itmStack.amount, {}));
+          if(blk.outputLiquids != null) blk.outputLiquids.forEachFast(liqStack => dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, {}));
+        },
+
+        fetchClass("newhorizon.expand.block.special.JumpGate", true), (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          let rc;
+          blk.recipeList.each(unitRc => {
+            rc = unitRc.recipe;
+            rc.outputItem.each(itmStack => dictProdItm[itmStack.item.id].push(blk, itmStack.amount, {time: unitRc.craftTime, ct: unitRc.unitType}));
+            rc.outputLiquid.each(liqStack => dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, {time: unitRc.craftTime, ct: unitRc.unitType}));
+            rc.outputPayload.each(payStack => (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, {time: unitRc.craftTime, ct: unitRc.unitType}));
+            dictProdUtp[unitRc.unitType.id].push(blk, 1, {time: unitRc.craftTime, ct: unitRc.unitType});
           });
         },
 

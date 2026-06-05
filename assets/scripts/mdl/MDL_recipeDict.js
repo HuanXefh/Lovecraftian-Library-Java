@@ -454,7 +454,7 @@
           iCap = arr.iCap();
           while(i < iCap) {
             cls = arr[i];
-            if(cons instanceof cls) {
+            if(cls != null && cons instanceof cls) {
               dictCaller = arr[i + 1];
             };
             i += 2;
@@ -467,7 +467,7 @@
         iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
-          if(blk instanceof cls) {
+          if(cls != null && blk instanceof cls) {
             dictCaller = arr[i + 1];
           };
           i += 2;
@@ -482,7 +482,7 @@
         iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
-          if(blk instanceof cls) {
+          if(cls != null && blk instanceof cls) {
             dictCaller = arr[i + 1];
           };
           i += 2;

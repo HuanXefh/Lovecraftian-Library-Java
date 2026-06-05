@@ -393,6 +393,13 @@ const db = {
 
         LandingPad, (blk, isDrillTime, ct) => blk.cooldownTime,
 
+        /* <---------- New Horizon ----------> */
+
+        fetchClass("newhorizon.expand.block.power.HyperReactor", true), (blk, isDrillTime, ct) => blk.itemDuration,
+        fetchClass("newhorizon.expand.block.power.MultiBlockConsumeGenerator", true), (blk, isDrillTime, ct) => blk.itemDuration * blk.itemDurationMultipliers.get(ct, 1.0),
+
+        fetchClass("newhorizon.expand.block.production.factory.MultiBlockCrafter", true), (blk, isDrillTime, ct) => blk.craftTime,
+
       ],
 
 
