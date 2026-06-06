@@ -27,12 +27,12 @@ const db = {
 
         ConsumeItemFilter, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
           Vars.content.items().each(itm => {
-            if(blk.itemFilter[itm.id]) dictConsItm[itm.id].push(blk, 1, {});
+            if(blk.itemFilter[itm.id]) dictConsItm[itm.id].push(blk, 1, {icon: DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null});
           });
         },
 
         ConsumeItems, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
-          cons.items.forEachFast(itmStack => dictConsItm[itmStack.item.id].push(blk, itmStack.amount, {icon: cons.optional ? "lovec-icon-boost" : null}));
+          cons.items.forEachFast(itmStack => dictConsItm[itmStack.item.id].push(blk, itmStack.amount, {icon: cons.optional ? "lovec-icon-boost" : DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null}));
         },
 
         ConsumeItemFlammable, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
@@ -59,7 +59,7 @@ const db = {
 
         ConsumeLiquidFilter, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
           Vars.content.liquids().each(liq => {
-            if(blk.liquidFilter[liq.id]) dictConsFld[liq.id].push(blk, cons.amount, {});
+            if(blk.liquidFilter[liq.id]) dictConsFld[liq.id].push(blk, cons.amount, {icon: DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null});
           });
         },
 
@@ -68,12 +68,12 @@ const db = {
             // Why is it not another consumer class...
             dictConsFld[blk.consumeLiquid.id].push(blk, blk.consumeLiquidAmount / blk.cooldownTime, {});
           } else {
-            dictConsFld[cons.liquid.id].push(blk, cons.amount, {icon: cons.optional ? "lovec-icon-boost" : null});
+            dictConsFld[cons.liquid.id].push(blk, cons.amount, {icon: cons.optional ? "lovec-icon-boost" : DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null});
           };
         },
 
         ConsumeLiquids, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
-          cons.liquids.forEachFast(liqStack => dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, {icon: cons.optional ? "lovec-icon-boost" : null}));
+          cons.liquids.forEachFast(liqStack => dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, {icon: cons.optional ? "lovec-icon-boost" : DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null}));
         },
 
         ConsumeCoolant, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
@@ -90,7 +90,7 @@ const db = {
 
         ConsumePayloads, (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
           cons.payloads.each(payStack => {
-            (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, {});
+            (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, {icon: DB_block.db["class"]["group"]["turret"].hasIns(blk) ? "lovec-icon-ammo" : null});
           });
         },
 
@@ -127,10 +127,13 @@ const db = {
         /* <---------- New Horizon ----------> */
 
         fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), (blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+          let i = 0, ordText;
           blk.recipes.each(rc => {
-            rc.inputItem.each(itmStack => dictConsItm[itmStack.item.id].push(blk, itmStack.amount, {time: rc.craftTime}));
-            rc.inputLiquid.each(liqStack => dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, {time: rc.craftTime}));
-            rc.inputPayload.each(payStack => (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, {time: rc.craftTime}));
+            i++;
+            ordText = ("[" + i + "]").color(Pal.accent);
+            rc.inputItem.each(itmStack => dictConsItm[itmStack.item.id].push(blk, itmStack.amount, {time: rc.craftTime, iconText: ordText}));
+            rc.inputLiquid.each(liqStack => dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, {time: rc.craftTime, iconText: ordText}));
+            rc.inputPayload.each(payStack => (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, {time: rc.craftTime, iconText: ordText}));
           });
         },
 
@@ -156,24 +159,47 @@ const db = {
 
         Drill, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
           if(tryJsProp(blk, "shouldDropPay", false)) return;
-          Vars.content.items().each(itm => itm.hardness <= blk.tier && !((blk.blockedItems != null && blk.blockedItems.contains(itm)) || ((blk.blockedItems == null || blk.blockedItems.size === 0) && tryJsProp(blk, "itmWhiteList") != null && !tryJsProp(blk, "itmWhiteList").includes(itm))) && Vars.content.blocks().toArray().some(oblk => ((oblk instanceof Floor && !(oblk instanceof OverlayFloor)) || (oblk instanceof OverlayFloor && !oblk.wallOre)) && oblk.itemDrop === itm), itm => dictProdItm[itm.id].push(blk, Math.pow(blk.size, 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(itm)) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-mining"}));
+          Vars.content.items().each(itm => {
+            if(blk.blockedItems != null && blk.blockedItems.contains(itm)) return;
+            let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === itm && ((oblk instanceof Floor && !(oblk instanceof OverlayFloor)) || (oblk instanceof OverlayFloor && !oblk.wallOre)) && (blk.ex_canMine == null || blk.ex_canMine(oblk, itm, !MDL_cond._isDepthOre(oblk) ? 1.0 : tryJsProp(blk, "canMineDepthOre", true) ? tryJsProp(blk, "depthTierMtp", 1.0) : 0.0))).toArray();
+            if(oblks.length > 0) {
+              dictProdItm[itm.id].push(blk, Math.pow(blk.size, 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(itm)) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-mining", iconCts: oblks});
+            };
+          });
         },
 
         BeamDrill, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
           if(tryJsProp(blk, "shouldDropPay", false)) return;
-          Vars.content.items().each(itm => itm.hardness <= blk.tier && !((blk.blockedItems != null && blk.blockedItems.contains(itm)) || ((blk.blockedItems == null || blk.blockedItems.size === 0) && tryJsProp(blk, "itmWhiteList") != null && !tryJsProp(blk, "itmWhiteList").includes(itm))) && Vars.content.blocks().toArray().some(oblk => (oblk instanceof Prop || oblk instanceof TallBlock || (oblk instanceof OverlayFloor && oblk.wallOre)) && oblk.itemDrop === itm), itm => dictProdItm[itm.id].push(blk, blk.size * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-mining"}));
+          Vars.content.items().each(itm => {
+            if(blk.blockedItems != null && blk.blockedItems.contains(itm)) return;
+            let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === itm && (instanceOfAny(oblk, Prop, TallBlock) || (oblk instanceof OverlayFloor && oblk.wallOre)) && (blk.ex_canMine == null || blk.ex_canMine(oblk, itm, 1.0))).toArray();
+            if(oblks.length > 0) {
+              dictProdItm[itm.id].push(blk, blk.size * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-mining", iconCts: oblks});
+            };
+          });
         },
 
         WallCrafter, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
-          dictProdItm[blk.output.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-mining"});
+          let oblks = Vars.content.blocks().select(oblk => oblk.solid && !(oblk instanceof Floor) && oblk.attributes.get(blk.attribute) > 0.0).toArray();
+          if(oblks.length > 0) {
+            dictProdItm[blk.output.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-mining", iconCts: oblks});
+          };
         },
 
         Pump, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
-          Vars.content.liquids().each(liq => Vars.content.blocks().toArray().some(blk => blk instanceof Floor && blk.liquidDrop === liq), liq => dictProdFld[liq.id].push(blk, blk.pumpAmount * Math.pow(blk.size, 2) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-pumping"}));
+          Vars.content.liquids().each(liq => {
+            let oblks = Vars.content.blocks().select(oblk => oblk instanceof Floor && oblk.liquidDrop === liq).toArray();
+            if(oblks.length > 0) {
+              dictProdFld[liq.id].push(blk, blk.pumpAmount * Math.pow(blk.size, 2) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-pumping", iconCts: oblks});
+            };
+          });
         },
 
         SolidPump, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
-          dictProdFld[blk.result.id].push(blk, blk.pumpAmount * Math.pow(blk.size, 2) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-pumping"});
+          let oblks = Vars.content.blocks().select(oblk => oblk instanceof Floor && oblk.attributes.get(blk.attribute) > 0.0).toArray();
+          if(oblks.length > 0) {
+            dictProdFld[blk.result.id].push(blk, blk.pumpAmount * Math.pow(blk.size, 2) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), {icon: "lovec-icon-pumping", iconCts: oblks});
+          };
         },
 
         ConsumeGenerator, (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
@@ -216,17 +242,20 @@ const db = {
 
         /* <---------- New Horizon ----------> */
 
-        fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
-          blk.recipes.each(rc => {
-            rc.outputItem.each(itmStack => dictProdItm[itmStack.item.id].push(blk, itmStack.amount, {time: rc.craftTime}));
-            rc.outputLiquid.each(liqStack => dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, {time: rc.craftTime}));
-            rc.outputPayload.each(payStack => (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, {time: rc.craftTime}));
-          });
-        },
-
         fetchClass("newhorizon.expand.block.production.factory.MultiBlockCrafter", true), (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
           if(blk.outputItems != null) blk.outputItems.forEachFast(itmStack => dictProdItm[itmStack.item.id].push(blk, itmStack.amount, {}));
           if(blk.outputLiquids != null) blk.outputLiquids.forEachFast(liqStack => dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, {}));
+        },
+
+        fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          let i = 0, ordText;
+          blk.recipes.each(rc => {
+            i++;
+            ordText = ("[" + i + "]").color(Pal.accent);
+            rc.outputItem.each(itmStack => dictProdItm[itmStack.item.id].push(blk, itmStack.amount, {time: rc.craftTime, iconText: ordText}));
+            rc.outputLiquid.each(liqStack => dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, {time: rc.craftTime, iconText: ordText}));
+            rc.outputPayload.each(payStack => (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, {time: rc.craftTime, iconText: ordText}));
+          });
         },
 
         fetchClass("newhorizon.expand.block.special.JumpGate", true), (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
@@ -238,6 +267,46 @@ const db = {
             rc.outputPayload.each(payStack => (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, {time: unitRc.craftTime, ct: unitRc.unitType}));
             dictProdUtp[unitRc.unitType.id].push(blk, 1, {time: unitRc.craftTime, ct: unitRc.unitType});
           });
+        },
+
+      ],
+
+
+      /**
+       * Used to add consumption term for a particular block in recipe dictionary.
+       * <br> <ROW>: nmBlk, rcReader.
+       * <br> <ARGS>: blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp.
+       */
+      consumeSpec: [],
+
+
+      /**
+       * Used to add production term for a particular block in recipe dictionary.
+       * <br> <ROW>: nmBlk, rcReader.
+       * <br> <ARGS>: blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp.
+       */
+      produceSpec: [
+
+        /* <---------- New Horizon ----------> */
+
+        "new-horizon-photothermal-generator", (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, {time: 120.0});
+        },
+
+        "new-horizon-geological-photothermal-generator", (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, {time: 120.0});
+        },
+
+        "new-horizon-vector-condenser", (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 2, {time: 120.0});
+        },
+
+        "new-horizon-differential-reactor", (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, {time: 120.0});
+        },
+
+        "new-horizon-photon-panel", (blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+          dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, {time: 300.0});
         },
 
       ],

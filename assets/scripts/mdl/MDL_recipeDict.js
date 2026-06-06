@@ -438,9 +438,8 @@
     rcDict.hasInit = true;
 
 
+    let arr, cls, i, iCap, dictCaller;
     Core.app.post(() => Vars.content.blocks().each(blk => {
-      let arr, cls, i, iCap;
-
       if(!DB_block.db["group"]["noRcDict"]["cons"].includes(blk.name)) {
         arr = DB_recipe.db["dict"]["reader"]["consume"];
         blk.consumers.forEachFast(cons => {
@@ -449,7 +448,7 @@
             return;
           };
 
-          let dictCaller = null;
+          dictCaller = null;
           i = 0;
           iCap = arr.iCap();
           while(i < iCap) {
@@ -462,7 +461,7 @@
           if(dictCaller != null) dictCaller(blk, cons, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
         });
 
-        let dictCaller = null;
+        dictCaller = null;
         i = 0;
         iCap = arr.iCap();
         while(i < iCap) {
@@ -473,11 +472,24 @@
           i += 2;
         };
         if(dictCaller != null) dictCaller(blk, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
+
       };
+
+      arr = DB_recipe.db["dict"]["reader"]["consumeSpec"];
+      dictCaller = null;
+      i = 0;
+      iCap = arr.iCap();
+      while(i < iCap) {
+        if(blk.name === arr[i]) {
+          dictCaller = arr[i + 1];
+        };
+        i += 2;
+      };
+      if(dictCaller != null) dictCaller(blk, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
 
       if(!DB_block.db["group"]["noRcDict"]["prod"].includes(blk.name)) {
         arr = DB_recipe.db["dict"]["reader"]["produce"];
-        let dictCaller = null;
+        dictCaller = null;
         i = 0;
         iCap = arr.iCap();
         while(i < iCap) {
@@ -489,6 +501,18 @@
         };
         if(dictCaller != null) dictCaller(blk, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
       };
+
+      arr = DB_recipe.db["dict"]["reader"]["produceSpec"];
+      dictCaller = null;
+      i = 0;
+      iCap = arr.iCap();
+      while(i < iCap) {
+        if(blk.name === arr[i]) {
+          dictCaller = arr[i + 1];
+        };
+        i += 2;
+      };
+      if(dictCaller != null) dictCaller(blk, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
 
     }));
 

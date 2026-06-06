@@ -767,16 +767,16 @@
     if(etp == null) return false;
 
     if(etp instanceof Block) {
-      return DB_block.db["group"]["noRemainsMod"].includes(MDL_content._mod(etp))
-        || DB_block.db["group"]["noRemains"].includes(etp.name)
+      return !etp.createRubble
+        || etp.instantDeconstruct
         || _isCoreBlock(etp)
-        || !etp.createRubble;
+        || DB_block.db["group"]["noRemainsMod"].includes(MDL_content._mod(etp))
+        || DB_block.db["group"]["noRemains"].includes(etp.name);
     };
-    return DB_unit.db["group"]["noRemainsMod"].includes(MDL_content._mod(etp))
-      || DB_unit.db["group"]["noRemains"].includes(etp.name)
-      || _isNonRobot(etp)
+    return !etp.createScorch
       || etp instanceof MissileUnitType
-      || !etp.createScorch;
+      || DB_unit.db["group"]["noRemainsMod"].includes(MDL_content._mod(etp))
+      || DB_unit.db["group"]["noRemains"].includes(etp.name);
   };
   exports._hasNoRemains = _hasNoRemains;
 

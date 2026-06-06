@@ -395,7 +395,7 @@ const db = {
 
         /* <---------- New Horizon ----------> */
 
-        fetchClass("newhorizon.expand.block.power.HyperReactor", true), (blk, isDrillTime, ct) => blk.itemDuration,
+        fetchClass("newhorizon.expand.block.special.HyperReactor", true), (blk, isDrillTime, ct) => blk.itemDuration,
         fetchClass("newhorizon.expand.block.power.MultiBlockConsumeGenerator", true), (blk, isDrillTime, ct) => blk.itemDuration * blk.itemDurationMultipliers.get(ct, 1.0),
 
         fetchClass("newhorizon.expand.block.production.factory.MultiBlockCrafter", true), (blk, isDrillTime, ct) => blk.craftTime,
@@ -455,44 +455,73 @@ const db = {
       },
 
 
-      /**
-       * Maps a class to its payload key name.
-       * <br> <ROW>: javaCls, key.
-       */
-      payloadKey: [
-
-        PayloadBlock, "payload",
-        PayloadConveyor, "item",
-
-      ],
-
-
-      /**
-       * These blocks will be treated as payload I/O sites.
-       */
-      payloadSite: {
+      turret: {
 
 
         /**
-         * Payload sites with fixed direction.
-         * <br> <ROW>: javaCls.
+         * Seen as turrets, mostly used in recipe dictionary.
+         * <br> <ROW> javaCls.
          */
-        fixed: [
+        class: [
 
-          PayloadConveyor,
+          BaseTurret,
+
+          /* <---------- New Horizon ----------> */
+
+          fetchClass("newhorizon.expand.block.defence.FireExtinguisher", true),
+          fetchClass("newhorizon.expand.block.defence.ShockwaveGenerator", true),
+          fetchClass("newhorizon.expand.block.commandable.CommandableAttackerBlock", true),
+
+        ],
+
+
+      },
+
+
+      payload: {
+
+
+        /**
+         * Maps a class to its payload key name.
+         * <br> <ROW>: javaCls, key.
+         */
+        key: [
+
+          PayloadBlock, "payload",
+          PayloadConveyor, "item",
 
         ],
 
 
         /**
-         * Payload sites with dynamic direction.
-         * <br> <ROW>: javaCls.
+         * These blocks will be treated as payload I/O sites.
          */
-        dynamic: [
+        site: {
 
-          PayloadRouter,
 
-        ],
+          /**
+           * Payload sites with fixed direction.
+           * <br> <ROW>: javaCls.
+           */
+          fixed: [
+
+            PayloadConveyor,
+
+          ],
+
+
+          /**
+           * Payload sites with dynamic direction.
+           * <br> <ROW>: javaCls.
+           */
+          dynamic: [
+
+            PayloadRouter,
+
+          ],
+
+
+        },
 
 
       },

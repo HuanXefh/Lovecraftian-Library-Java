@@ -417,6 +417,19 @@
     () => extend(BaseDialog, "", {
 
 
+      ex_getRateStr(rate, deciAmt) {
+        return typeof rate !== "number" ?
+          "-" :
+          rate > 0.01 ?
+            (rate.roundFixed(deciAmt) + "/s") :
+            rate * 60.0 > 0.01 ?
+              ((rate * 60.0).roundFixed(deciAmt) + "/min") :
+              rate * 3600.0 > 0.01 ?
+                ((rate * 3600.0).roundFixed(deciAmt) + "/h") :
+                "<0.01/s";
+      },
+
+
       ex_buildList(tb, ct, rcDictArr) {
         let i = 0, iCap = rcDictArr.iCap(), j = 0;
         while(i < iCap) {
@@ -434,18 +447,10 @@
             // <TABLE>: rate text
             tb1.add(MDL_text._statText(
               MDL_bundle._term("lovec", "rate"),
-              craftRate == null ?
-                "-" :
-                craftRate > 0.01 ?
-                  (craftRate.roundFixed(2) + "/s") :
-                  craftRate * 60.0 > 0.01 ?
-                    ((craftRate * 60.0).roundFixed(2) + "/min") :
-                    craftRate * 3600.0 > 0.01 ?
-                      ((craftRate * 3600.0).roundFixed(2) + "/h") :
-                      "<0.01/s",
+              this.ex_getRateStr(craftRate, 2),
             ))
             .left()
-            .tooltip(typeof craftRate !== "number" ? "-" : (craftRate.roundFixed(7) + "/s"), true)
+            .tooltip(this.ex_getRateStr(craftRate, 7), true)
             .row();
             // <TABLE>: extra icon
             tb1.table(Styles.none, tb2 => {
@@ -461,7 +466,16 @@
               };
               // <TABLE>: tag icon
               if(data.icon != null) {
-                tb2.image(Core.atlas.find(data.icon)).left().width(26.0).height(26.0);
+                let iconCell = tb2.image(Core.atlas.find(data.icon)).left().width(26.0).height(26.0);
+                if(data.iconCts != null) {
+                  iconCell.tooltip(cons(ttTb => {
+                    MDL_table._l_ctLi(ttTb, data.iconCts, 40.0, 4);
+                  }));
+                };
+              };
+              // <TABLE>: text icon
+              if(data.iconText != null) {
+                tb2.add(data.iconText).left().fontScale(0.75).padLeft(2.0).padRight(2.0);
               };
             }).left().height(30.0).row();
           });

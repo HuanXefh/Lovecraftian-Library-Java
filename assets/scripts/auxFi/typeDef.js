@@ -210,6 +210,8 @@
    * @global
    * @typedef {Object} RecipeDictionaryData
    * @prop {string|unset} [icon] - Texture region used.
+   * @prop {Array<ContentGn>|unset} [iconCts] - List of contents displayed in icon tooltip.
+   * @prop {string|unset} [iconText] - Text shown after icon.
    * @prop {string|unset} [ct] - Content icon button used.
    * @prop {Color|unset} [ctTint] - Tint color of content icon.
    * @prop {string|unset} [ctText] - Tooltip text used for content icon.

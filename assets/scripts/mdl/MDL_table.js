@@ -373,7 +373,7 @@
   const __ct = function(tb, ct, w, pad, dialToHide, ctDial) {
     if(ct == null) return;
     if(w == null) w = 32.0;
-    if(pad == null) pad = 4.0;
+    if(pad == null) pad = w / 8.0;
 
     let btnCell = tb.button(new TextureRegionDrawable(ct.uiIcon), w, () => {
       tryVal(ctDial, Vars.ui.content).show(ct);

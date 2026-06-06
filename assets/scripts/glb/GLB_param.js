@@ -90,7 +90,8 @@
 
       exports.PLANET_CURRENT = global.lovecUtil.fun._plaCur();
       exports.MAP_CURRENT = global.lovecUtil.fun._mapCur();
-      exports.IS_CAVE_MAP = DB_env.db["group"]["map"]["cave"].includes(module.exports.mapCur);
+      exports.IS_CAVE_MAP = DB_env.db["group"]["map"]["cave"].includes(module.exports.MAP_CURRENT);
+      exports.IS_NO_BUILD_MAP = DB_env.db["group"]["map"]["noBuild"].includes(module.exports.MAP_CURRENT);
       exports.GLOBAL_HEAT = global.lovecUtil.fun._glbHeat();
 
 

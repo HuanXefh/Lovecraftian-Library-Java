@@ -16,6 +16,10 @@
 
   function comp_init(blk) {
     blk.emitLight = true;
+    blk.canPickup = false;
+    if(blk.fogRadFrac > 0.0) {
+      blk.flags.with(BlockFlag.hasFogRadius)
+    };
 
     blk.ex_addLogicGetter(LAccess.range, b => blk.lightRad * b.delegee.lightProg / Vars.tilesize);
   };
@@ -33,6 +37,13 @@
 
   function comp_updateTile(b) {
     b.lightProg = Mathf.approachDelta(b.lightProg, Mathf.clamp(b.efficiency), 0.004);
+    if(TIMER.secQuarter && b.block.delegee.fogRadFrac > 0.0) {
+      b.fogRad = b.block.delegee.lightRad * b.block.delegee.fogRadFrac * b.lightProg / Vars.tilesize;
+      if(!b.lastFogRad.fEqual(b.fogRad, 0.5)) {
+        Vars.fogControl.forceUpdate(b.team, b);
+        b.lastFogRad = b.fogRad;
+      };
+    };
   };
 
 
@@ -85,6 +96,12 @@
        * @instance
        */
       lightA: 0.65,
+      /**
+       * <PARAM>: Fraction of light radius as fog radius. Uses static fog radius if not set.
+       * @memberof BLK_light
+       * @instance
+       */
+      fogRadFrac: 0.0,
 
 
     })
@@ -133,6 +150,18 @@
        * @instance
        */
       lightProg: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_light
+       * @instance
+       */
+      fogRad: 0.0,
+      /**
+       * <INTERNAL>
+       * @memberof B_light
+       * @instance
+       */
+      lastFogRad: 0.0,
 
 
     })
@@ -142,6 +171,24 @@
       updateTile: function() {
         comp_updateTile(this);
       },
+
+
+      warmup: function() {
+        return this.lightProg;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      fogRadius: function() {
+        return this.block.delegee.fogRadFrac < 0.0001 ?
+          this.block.fogRadius :
+          this.fogRad;
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       drawSelect: function() {

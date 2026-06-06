@@ -143,6 +143,13 @@ const db = {
       cave: [],
 
 
+      /**
+       * Impossible to build anything when playing these maps.
+       * <br> <ROW>: nmMap.
+       */
+      noBuild: [],
+
+
     },
 
 

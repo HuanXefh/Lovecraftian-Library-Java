@@ -17,6 +17,8 @@
 
   function comp_init(blk) {
     if(blk.attrRsArr == null) ERROR_HANDLER.throw("nullArgument", "attrRsArr");
+
+    blk.attribute = TP_attr.attr_placeholder;
   };
 
 

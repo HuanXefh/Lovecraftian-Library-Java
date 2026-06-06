@@ -65,7 +65,7 @@
   const _bsPayInput = function(b, mode, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let obj = DB_block.db["class"]["group"]["payloadSite"];
+    let obj = DB_block.db["class"]["group"]["payload"]["site"];
     b.proximity.each(
       ob => MDL_pos._sideFrac(ob, b, mode, true, true) >= 0.5 && (
         obj["dynamic"].hasIns(ob.block) ?
@@ -118,7 +118,7 @@
     if(b.getPayload() == null) return pay;
 
     pay = b.getPayload();
-    let key = readClassFunMap(DB_block.db["class"]["group"]["payloadKey"], b.block, Function.air);
+    let key = readClassFunMap(DB_block.db["class"]["group"]["payload"]["key"], b.block, Function.air);
     if(key == null) {
       throw new Error("Payload key is not defined for ${1}???".format(b.block.name));
     } else {

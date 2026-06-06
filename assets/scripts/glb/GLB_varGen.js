@@ -617,6 +617,7 @@
     exports.auxRpm = Vars.content.liquid("loveclab-aux0aux-rpm");
 
 
+    exports.staNoConstruction = Vars.content.statusEffect("loveclab-sta-no-construction");
     exports.staHiddenWell = Vars.content.statusEffect("loveclab-sta-hidden-well");
     exports.staStunned = Vars.content.statusEffect("loveclab-sta-stunned");
     exports.staSlightlyInjured = Vars.content.statusEffect("loveclab-sta-slightly-injured");

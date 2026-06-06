@@ -38,6 +38,10 @@
     Groups.unit.each(unit => {
       if(MDL_cond._isIrregularUnit(unit)) return;
 
+      if(PARAM.IS_NO_BUILD_MAP && VARGEN.staNoConstruction != null) {
+        unit.apply(VARGEN.staNoConstruction, 60.0);
+      };
+
       FRAG_unit.comp_update_surrounding(unit.type, unit);
       FRAG_unit.comp_update_heat(unit.type, unit);
     });
