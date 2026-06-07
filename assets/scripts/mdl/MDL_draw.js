@@ -962,7 +962,7 @@
     if(z == null) z = VAR.layer.mineBeam;
 
     thisFun.tmpVec.set(_d_laserRandWalk(x, y, cx + Math.cos(Time.time * 0.025) * 4.0, cy + Math.sin(Time.time * 0.025) * 4.0, rad, offTime, rotDir, strokeScl, color1_gn, color2_gn, a, hasLight, z));
-    if(!Vars.state.isPaused()) {
+    if(!Vars.state.isPaused() && TIMER.trailCircle) {
       MDL_effect._e_trailCircle(cx + thisFun.tmpVec.x * rad, cy + thisFun.tmpVec.y * rad, strokeScl * 1.0, MDL_color._color(color1_gn));
       if(Mathf.chanceDelta(0.05)) {
         Fx.mineSmall.at(cx + thisFun.tmpVec.x * rad, cy + thisFun.tmpVec.y * rad);

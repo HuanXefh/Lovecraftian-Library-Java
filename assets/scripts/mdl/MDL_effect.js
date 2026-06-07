@@ -378,7 +378,7 @@
    * @return {void}
    */
   const _e_trailCircle = function thisFun(x, y, rad, color) {
-    if(Vars.state.isPaused() || !TIMER.trailCircle) return;
+    if(Vars.state.isPaused()) return;
     if(rad == null) rad = 4.0;
     if(color == null) color = Pal.accent;
 
@@ -489,6 +489,41 @@
   })
   .setAnno("non-headless");
   exports._e_rotorWave = _e_rotorWave;
+
+
+  /**
+   * Jet trail effect for some units.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @return {void}
+   */
+  const _e_jetTrail = function thisFun(x, y, unit) {
+    if(Vars.state.isPaused()) return;
+
+    showAt(x, y, thisFun.eff, unit.rotation - 90.0, null, unit);
+  }
+  .setProp({
+    eff: (function() {
+      const tmp = new Effect(50.0, eff => {
+        Draw.alpha(Interp.pow2In.apply(eff.fout()) * 0.1);
+        Draw.rect(
+          "lovec-efr-jet-trail",
+          eff.data.x - Mathf.cosDeg(eff.rotation + 90.0) * eff.data.hitSize * 6.0 * eff.fin(),
+          eff.data.y - Mathf.sinDeg(eff.rotation + 90.0) * eff.data.hitSize * 6.0 * eff.fin(),
+          eff.data.hitSize * (8.0 + eff.fin() * 8.0),
+          eff.data.hitSize * (4.0 + eff.fin() * 4.0),
+          eff.rotation,
+        );
+        Draw.color();
+      });
+      tmp.layer = VAR.layer.effSmogHigh;
+
+      return tmp;
+    })(),
+  })
+  .setAnno("non-headless");
+  exports._e_jetTrail = _e_jetTrail;
 
 
   /**

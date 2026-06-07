@@ -24,7 +24,7 @@
   const timer_gn = new Interval(8);
   const timer_effc = new Interval(4);
   const timer_param = new Interval(3);
-  const timer_eff = new Interval(3);
+  const timer_eff = new Interval(4);
   const timer_unit = new Interval(1);
   const timer_stackSta = new Interval(1);
 
@@ -68,7 +68,8 @@
     // Timer for some visual effects
     exports.lightning = timer_eff.get(0, VAR.time.lightningIntv);
     exports.coreSignal = timer_eff.get(1, 25.0);
-    exports.trailCircle = timer_eff.get(1, 15.0);
+    exports.trailCircle = timer_eff.get(2, 15.0);
+    exports.jetTrail = timer_eff.get(3, 3.0);
 
     // Timer for generic unit update
     exports.unit = timer_unit.get(VAR.time.unitIntv);

@@ -90,7 +90,7 @@
   const _bsPayOutput = function(b, mode, contArr) {
     const arr = contArr != null ? contArr.clear() : [];
 
-    let obj = DB_block.db["class"]["group"]["payloadSite"];
+    let obj = DB_block.db["class"]["group"]["payload"]["site"];
     b.proximity.each(
       ob => MDL_pos._sideFrac(b, ob, mode, true, true) >= 0.5 && (
         obj["dynamic"].hasIns(ob.block) ?

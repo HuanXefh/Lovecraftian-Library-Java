@@ -8,6 +8,13 @@
   /* <---------- import ----------> */
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  const HEAT_MERGE_FRAC_BI = 0.85;
+  const HEAT_MERGE_FRAC_TRI = HEAT_MERGE_FRAC_BI * 0.66666667;
+
+
   /* <---------- component ----------> */
 
 
@@ -39,6 +46,14 @@
       prov(() => Pal.lightOrange),
       () => b.ex_getHeatFrac(),
     ));
+
+    if(!blk.skipHeatSupply) {
+      blk.addBar("lovec-heat-supplied", b => new Bar(
+        prov(() => Core.bundle.format("bar.lovec-bar-heat-supplied-amt", Strings.fixed(b.delegee.heatSupplied, 2) + " " + fetchStatUnit("lovec", "heatunits").localized())),
+        prov(() => Pal.lightOrange),
+        () => Mathf.clamp(b.delegee.heatSupplied / Math.max(b.delegee.tempCur, 0.01)),
+      ));
+    };
   };
 
 
@@ -86,6 +101,7 @@
     // Update heat fraction
     if(TIMER.secQuarter) {
       b.heatBlkHeatFrac = Mathf.clamp(b.tempCur / Math.max(b.ex_getHeatTg(), 100.0));
+      b.heatSupplied = b.ex_calcHeatSupplied();
     };
 
     // Occasionally supply abstract fluid, or output external heat
@@ -94,8 +110,8 @@
       let b_t = b.heatSupplyTgs[b.heatSupplyIncre % b.heatSupplyTgs.length];
       if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
         let heatAmt = !b.block.delegee.isHeatRouter ?
-          b.ex_getHeatSupplied() :
-          (b.ex_getHeatSupplied() / 3.0);
+          b.heatSupplied :
+          (b.heatSupplied / 3.0);
         b_t.ex_handleExtHeat != null ?
           b_t.ex_handleExtHeat(heatAmt) :
           FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, heatAmt / 6000.0, false, false, true);
@@ -181,13 +197,21 @@
     };
 
     if(!b.block.delegee.skipHeatTrans) {
+      heat = 0.0;
+      b.heatTransCount = 0;
       b.heatTransTgs.forEachFast(ob => {
         if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
-        heatTg += !ob.block.delegee.isHeatRouter ?
+        heat += !ob.block.delegee.isHeatRouter ?
           ob.ex_getHeatTransferred() :
           (ob.ex_getHeatTransferred() / 3.0);
         b.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.maxHeaterProd);
+        b.heatTransCount++;
       });
+      heatTg += b.heatTransCount < 2 ?
+        heat :
+        b.heatTransCount === 2 ?
+          (heat * HEAT_MERGE_FRAC_BI) :
+          (heat * HEAT_MERGE_FRAC_TRI);
     };
 
     if(b.ex_getHeatProd != null) {
@@ -380,6 +404,12 @@
          */
         maxHeaterProd: 0.0,
         /**
+         * <INTERNAL>
+         * @memberof INTF_B_heatBlock
+         * @instance
+         */
+        heatSupplied: 0.0,
+        /**
          * <INTERNAL>: I have to name this more complex because `heatFrac` has been taken by vanilla Mindustry.
          * @memberof INTF_B_heatBlock
          * @instance
@@ -530,6 +560,22 @@
 
 
       /**
+      * @memberof INTF_B_heatBlock
+      * @instance
+      * @return {number}
+      */
+      ex_calcHeatSupplied: function() {
+        // Single heater with larger output rate => more efficient heat transfer
+        return this.tempCur <= this.maxHeaterProd ?
+        this.tempCur :
+        (Math.sqrt(Math.pow(this.maxHeaterProd, 2) * 4.0 + this.tempCur * this.maxHeaterProd * 4.0) - this.maxHeaterProd * (Math.sqrt(2) * 2.0 - 1.0));
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
        * @memberof INTF_B_heatBlock
        * @instance
        * @return {number}
@@ -588,11 +634,8 @@
        * @instance
        * @return {number}
        */
-      ex_getHeatSupplied: function() {
-        // Single heater with larger output rate => more efficient heat transfer
-        return this.tempCur <= this.maxHeaterProd ?
-          this.tempCur :
-          (Math.sqrt(Math.pow(this.maxHeaterProd, 2) * 4.0 + this.tempCur * this.maxHeaterProd * 4.0) - this.maxHeaterProd * (Math.sqrt(2) * 2.0 - 1.0));
+      ex_getMaxHeaterProd: function() {
+        return this.maxHeaterProd;
       }
       .setProp({
         noSuper: true,

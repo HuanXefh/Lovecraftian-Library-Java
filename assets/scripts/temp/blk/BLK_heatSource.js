@@ -250,7 +250,7 @@
        * @instance
        * @return {number}
        */
-      ex_getHeatSupplied: function() {
+      ex_calcHeatSupplied: function() {
         return this.tempCur;
       }
       .setProp({

@@ -14,6 +14,13 @@
   /* <---------- component ----------> */
 
 
+  function comp_update(utp, unit) {
+    if(TIMER.jetTrail && utp.jetTrailVelThr > 0.0 && unit.elevation > 0.73 && unit.vel.len() > utp.jetTrailVelThr) {
+      MDL_effect._e_jetTrail(unit.x, unit.y, unit);
+    };
+  };
+
+
 /*
   ========================================
   Section: Application
@@ -32,6 +39,14 @@
   .setParam({
 
 
+    /**
+     * <PARAM>: Velocity threshold for jet trail.
+     * @memberof UNIT_mech
+     * @instance
+     */
+    jetTrailVelThr: 0.0,
+
+
     /* <------------------------------ internal ------------------------------ */
 
 
@@ -45,4 +60,12 @@
 
 
   })
-  .setMethod({});
+  .setMethod({
+
+
+    update: function(unit) {
+      comp_update(this, unit);
+    },
+
+
+  });

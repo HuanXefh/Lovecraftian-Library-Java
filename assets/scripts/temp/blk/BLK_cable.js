@@ -46,8 +46,8 @@
       return shouldCheckWorld && blk.blends(t, rot, dir);
     },
     function(blk, t, rot, otx, oty, orot, oblk) {
-      return ((oblk.consPower != null || oblk.outputsPower) && !MDL_cond._isArmoredCable(oblk))
-        || (blk.lookingAt(t, rot, otx, oty, oblk) && oblk.hasPower);
+      return ((oblk.consPower != null || oblk.outputsPower) && !MDL_cond._isFluidConduit(oblk) && !MDL_cond._isArmoredCable(oblk))
+        || (blk.lookingAt(t, rot, otx, oty, oblk) && oblk.hasPower && !MDL_cond._isFluidConduit(oblk));
     },
   );
 
