@@ -96,6 +96,7 @@
     const obj0 = {};
 
     for(let obj of arguments) {
+      if(typeof obj !== "object") continue;
       for(let key in obj) {
         obj0[key] = obj[key];
       };
@@ -115,6 +116,7 @@
     const obj0 = {};
 
     for(let obj of arguments) {
+      if(typeof obj !== "object") continue;
       for(let key in obj) {
         if(typeof obj[key] !== "function" || typeof obj0[key] !== "function") {
           obj0[key] = obj[key];

@@ -458,7 +458,7 @@
             };
             i += 2;
           };
-          if(dictCaller != null) dictCaller(blk, cons, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
+          if(dictCaller != null) dictCaller(blk, cons, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
         });
 
         dictCaller = null;
@@ -471,7 +471,7 @@
           };
           i += 2;
         };
-        if(dictCaller != null) dictCaller(blk, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
+        if(dictCaller != null) dictCaller(blk, null, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
 
       };
 
@@ -485,7 +485,7 @@
         };
         i += 2;
       };
-      if(dictCaller != null) dictCaller(blk, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
+      if(dictCaller != null) dictCaller(blk, null, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
 
       if(!DB_block.db["group"]["noRcDict"]["prod"].includes(blk.name)) {
         arr = DB_recipe.db["dict"]["reader"]["produce"];
@@ -499,7 +499,7 @@
           };
           i += 2;
         };
-        if(dictCaller != null) dictCaller(blk, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
+        if(dictCaller != null) dictCaller(blk, null, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
       };
 
       arr = DB_recipe.db["dict"]["reader"]["produceSpec"];
@@ -512,7 +512,7 @@
         };
         i += 2;
       };
-      if(dictCaller != null) dictCaller(blk, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
+      if(dictCaller != null) dictCaller(blk, null, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
 
     }));
 

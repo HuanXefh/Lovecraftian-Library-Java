@@ -11,6 +11,11 @@ titan: true
 afflict: true
 scathe: true
 
+aquarion-truncate: true
+aquarion-vector: true
+aquarion-thrash: true
+aquarion-flagellate: true
+
 new-horizon-hive: true
 new-horizon-ancient-artillery: true
 new-horizon-prism: true
@@ -25,11 +30,6 @@ new-horizon-thermo-turret: true
 new-horizon-pulse: true
 new-horizon-bombard: true
 new-horizon-electro: true
-
-aquarion-truncate: true
-aquarion-vector: true
-aquarion-thrash: true
-aquarion-flagellate: true
 
 sfire-mod-gaosi: true
 sfire-mod-liebao: true

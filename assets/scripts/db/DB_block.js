@@ -393,6 +393,12 @@ const db = {
 
         LandingPad, (blk, isDrillTime, ct) => blk.cooldownTime,
 
+        /* <---------- Carpe Diem ----------> */
+
+        fetchClass("carpediem.world.blocks.power.ThermalConsumeGenerator", true), (blk, isDrillTime, ct) => blk.itemDuration,
+
+        fetchClass("carpediem.world.blocks.payloads.PayloadBurner", true), (blk, isDrillTime, ct) => blk.burnDuration,
+
         /* <---------- New Horizon ----------> */
 
         fetchClass("newhorizon.expand.block.special.HyperReactor", true), (blk, isDrillTime, ct) => blk.itemDuration,
