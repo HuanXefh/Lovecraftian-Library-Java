@@ -468,7 +468,7 @@
     if(amt == null) amt = -1;
     if(p == null) p = 1.0;
     if(w == null) w = 32.0;
-    let str = amt < 0 ?
+    let str = amt < 0.0001 ?
       "" :
       ct instanceof Liquid && !cancelLiq ?
         (Strings.autoFixed(amt * 60.0, 2) + "/s") :

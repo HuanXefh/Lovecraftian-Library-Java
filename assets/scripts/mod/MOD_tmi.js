@@ -281,7 +281,7 @@
    * @param {number} val
    * @param {number} size
    * @param {boolean|unset} [reqAttr]
-   * @param {boolean|unset} [isWallEffc]
+   * @param {number|unset} [attrRcType]
    * @param {boolean|unset} [hideEffc]
    * @return {Recipe}
    */

@@ -2,7 +2,7 @@ Files here are meant for Atom, a code editor I use a lot which has been archived
 
 How to import files in this folder:
 
-1. Find your Atom data folder, usually under "C:/Users/*user name*/.atom".
+1. Find your Atom data folder, usually under "C:/Users/*username*/.atom".
 
 2. Copy everything here.
 

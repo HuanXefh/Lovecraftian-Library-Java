@@ -1799,8 +1799,7 @@
       y = e.y,
       w = (size + 1) * Vars.tilesize + offW,
       offY = (offTy + size * 0.5 + 1.5) * Vars.tilesize,
-      amtSeg = Math.ceil(w / 4.0 / segScl),
-      segW = (w + 5.0) / (amtSeg + 1);
+      amtSeg = Math.ceil(w / 4.0 / segScl);
 
     CLS_unitStatDisplayMode.getById(PARAM.UNIT_STAT_STYLE).draw(
       e, x, y, frac,

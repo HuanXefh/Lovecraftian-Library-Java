@@ -692,7 +692,7 @@
     tb.table(Tex.bar, tb1 => {
       tb1.top().setColor(Pal.darkestGray);
       // <TABLE>: text container
-      textCont = tb1.table(Styles.none, tb2 => {
+      tb1.table(Styles.none, tb2 => {
         let flab = new FLabel((MDL_text._space() === "" ? "{slower}" : "{normal}") + dialText);
         if(shouldTriggerScrOnClick) tb2.clicked(() => {
           if(!flab.hasEnded()) {

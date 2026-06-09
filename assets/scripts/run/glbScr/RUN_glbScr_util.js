@@ -52,7 +52,7 @@
    * verStrToInts("1.12.1");                // Returns [1, 12, 1]
    */
   verStrToInts = function(verStr) {
-    let tmp = "", l, i, iCap;
+    let i, iCap;
     let arr = verStr.split(".");
 
     i = 0;
@@ -199,12 +199,7 @@
     let fun = tryVal(def, Function.air);
     let i = 0, iCap = arr.iCap();
     while(i < iCap) {
-      if(
-        (typeof arr[i] === "function" && ins instanceof arr[i])
-          || (typeof arr[i] === "string" && checkCreatedByTemp(ins) && ins.ex_isSubInsOf(arr[i]))
-      ) {
-        fun = arr[i + 1]
-      };
+      if(checkInstance(ins, arr[i])) fun = arr[i + 1];
       i += 2;
     };
 
@@ -347,6 +342,27 @@
    */
   checkCreatedByTemp = function(ct) {
     return ct.ex_isSubInsOf != null;
+  };
+
+
+  /**
+   * Whether 'ins' is an instance of a class or content template.
+   * Returns false if `cls0tempNm` is null.
+   * @global
+   * @param {Object} ins
+   * @param {string|Function|null} cls0tempNm
+   * @return {boolean}
+   */
+  checkInstance = function(ins, cls0tempNm) {
+    if(cls0tempNm == null) {
+      return false;
+    } else if(typeof cls0tempNm === "function") {
+      return ins instanceof cls0tempNm;
+    } else if(typeof cls0tempNm === "string") {
+      return checkCreatedByTemp(ins) && ins.ex_isSubInsOf(cls0tempNm);
+    };
+
+    return false;
   };
 
 

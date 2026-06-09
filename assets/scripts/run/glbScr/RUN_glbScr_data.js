@@ -40,7 +40,6 @@
    * For quick definition of `ex_processData`.
    * @global
    * @param {Writes|Reads} wr0rd
-   * @param {number} revi
    * @param {function(Writes, number): void} wrFun - <ARGS>: wr, revi.
    * @param {function(Reads, number): void} rdFun - <ARGS>: rd, revi.
    * @return {void}
@@ -128,7 +127,7 @@
    * @return {Object}
    */
   readAuxJsonData = function(contObj, nmFi) {
-    let dir, fi, str, obj;
+    let dir, fi, obj;
     Vars.mods.eachEnabled(mod => {
       dir = mod.root.child("scripts").child("auxFi").child("json").child("data");
       fi = dir.child(nmFi + ".json");

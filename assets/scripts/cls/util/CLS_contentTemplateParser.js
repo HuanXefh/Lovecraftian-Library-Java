@@ -140,7 +140,7 @@
         // Templates from other mods won't be considered here
         // If someone can write their own template, they shouldn't use JSON for contents anyway
         try {
-          let tmpStr = obj.template, dir1 = null, dir2 = null;
+          let tmpStr = obj.template, dir1, dir2 = null;
           if(tmpStr.startsWith("EXT_")) {
             dir1 = "tempExt";
             tmpStr = tmpStr.replace("EXT_", "");

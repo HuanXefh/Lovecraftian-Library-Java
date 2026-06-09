@@ -343,10 +343,10 @@
 
 
   /**
-   * Whether `obj` is instance of any class from this array.
-   * @param {Object} obj
+   * Whether `ins` is instance of any class (or content template) from this array.
+   * @param {Object} ins
    * @return {boolean}
    */
-  Array.prototype.hasIns = function(obj) {
-    return this.some(cls => cls != null && obj instanceof cls);
+  Array.prototype.hasIns = function(ins) {
+    return this.some(cls => checkInstance(ins, cls));
   };

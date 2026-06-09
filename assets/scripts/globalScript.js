@@ -453,7 +453,7 @@
         return MDL_pos._unit(tx * Vars.tilesize, ty * Vars.tilesize);
       },
     )
-    .setAnno("console")
+    .setAnno("console");
 
 
     /* <---------- cheat ----------> */
@@ -465,7 +465,7 @@
      */
     __CHECK_CHEAT_STATE__ = function() {
       return Vars.player.admin || (Groups.player.size() === 1 && !Vars.net.client());
-    },
+    };
 
 
     /**

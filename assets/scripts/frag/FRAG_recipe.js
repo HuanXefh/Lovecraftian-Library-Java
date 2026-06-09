@@ -250,12 +250,12 @@
     while(i < iCap) {
       tmp = ci[i];
       if(!(tmp instanceof Array)) {
-        arr.pushUnique(tmp);
+        if(ci[i + 1] > 0.0) arr.pushUnique(tmp);
       } else {
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
-          arr.pushUnique(tmp[j]);
+          if(tmp[j + 1] > 0.0) arr.pushUnique(tmp[j]);
           j += 2;
         };
       };
@@ -268,13 +268,13 @@
     while(i < iCap) {
       tmp = bi[i];
       if(!(tmp instanceof Array)) {
-        if(tmp instanceof Liquid) arr.pushUnique(tmp);
+        if(tmp instanceof Liquid && bi[i + 1] > 0.0) arr.pushUnique(tmp);
       } else {
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
           tmp1 = tmp[j];
-          if(tmp1 instanceof Liquid) arr.pushUnique(tmp1);
+          if(tmp1 instanceof Liquid && tmp[j + 1] > 0.0) arr.pushUnique(tmp1);
           j += 3;
         };
       };
@@ -285,7 +285,7 @@
     i = 0;
     iCap = aux.iCap();
     while(i < iCap) {
-      arr.pushUnique(aux[i]);
+      if(aux[i + 1] > 0.0) arr.pushUnique(aux[i]);
       i += 2;
     };
 
@@ -309,7 +309,7 @@
     i = 0;
     iCap = co.iCap();
     while(i < iCap) {
-      arr.pushUnique(co[i]);
+      if(co[i + 1] > 0.0) arr.pushUnique(co[i]);
       i += 2;
     };
 
@@ -318,7 +318,7 @@
     iCap = bo.iCap();
     while(i < iCap) {
       tmp = bo[i];
-      if(tmp instanceof Liquid) arr.pushUnique(tmp);
+      if(tmp instanceof Liquid && bo[i + 1] > 0.0) arr.pushUnique(tmp);
       i += 3;
     };
 
@@ -337,7 +337,7 @@
 
     // CO
     if(b.liquids != null) {
-      let allFull = true, isAux = false;
+      let allFull = true;
       i = 0;
       iCap = b.delegee.co.iCap();
       while(i < iCap) {
@@ -499,12 +499,15 @@
           amt = b.delegee.ci[i + 1];
           mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
             0.0 :
-            Math.min(b.liquids.get(tmp) / amt / b.delegee.lastOptEffc * b.delta() * b.efficiencyScale(), 1.0);
+            amt < 0.0001 ?
+              1.0 :
+              Math.min(b.liquids.get(tmp) / amt / b.delegee.lastOptEffc * b.delta() * b.efficiencyScale(), 1.0);
         } else {
           j = 0;
           jCap = tmp.iCap();
           allAbsent = true;
           while(j < jCap) {
+            // No zero amount check here, why put that in an alternative input list?
             if(b.liquids.get(tmp[j]) > 0.01) {
               amt = tmp[j + 1];
               mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
@@ -568,7 +571,9 @@
         amt = b.delegee.aux[i + 1];
         mtp = b.efficiencyScale() < 0.0001 ?
           0.0 :
-          Math.min(b.liquids.get(tmp) / amt * b.delta() * b.efficiencyScale(), 1.0);
+          amt < 0.0001 ?
+            1.0 :
+            Math.min(b.liquids.get(tmp) / amt * b.delta() * b.efficiencyScale(), 1.0);
         effc *= mtp;
         i += 2;
       };

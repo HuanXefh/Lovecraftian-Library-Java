@@ -47,15 +47,21 @@
    * @return {string|Attribute}
    */
   const _attr = function(attr_gn, toAttr) {
-    if(toAttr) {
-      if(attr_gn instanceof Attribute) return attr_gn;
-      if(typeof attr_gn === "string" && Attribute.exists(attr_gn)) return Attribute.get(attr_gn);
-      return TP_attr.attr_placeholder;
-    } else {
-      if(attr_gn instanceof Attribute) return attr_gn.toString();
-      if(typeof attr_gn === "string" && Attribute.exists(attr_gn)) return attr_gn;
-      return "lovec-attr-placeholder";
-    };
+    return toAttr ?
+      (
+        attr_gn instanceof Attribute ?
+          attr_gn :
+          typeof attr_gn === "string" && Attribute.exists(attr_gn) ?
+            Attribute.get(attr_gn) :
+            TP_attr.attr_placeholder
+      ) :
+      (
+        attr_gn instanceof Attribute ?
+          attr_gn.toString() :
+          typeof attr_gn === "string" && Attribute.exists(attr_gn) ?
+            attr_gn :
+            "lovec-attr-placeholder"
+      );
   };
   exports._attr = _attr;
 
@@ -286,9 +292,6 @@
 
 
   /* wind */
-
-
-  const windVec = new Vec2();
 
 
   /**

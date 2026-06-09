@@ -200,7 +200,7 @@
       tmp = b.bi[i];
       if(!(tmp instanceof Array)) {
         amt = b.bi[i + 1];
-        MDL_table.__reqRs(tb, b, tmp, amt);
+        if(amt > 0) MDL_table.__reqRs(tb, b, tmp, amt);
       } else {
         thisFun.tmpArr.clear();
         j = 0;
@@ -210,7 +210,7 @@
           thisFun.tmpArr.push(tmp1);
           j += 3;
         };
-        MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
+        if(tmp[j + 1] > 0) MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
       };
       i += 3;
     };
@@ -221,7 +221,7 @@
     while(i < iCap) {
       tmp = b.ci[i];
       if(!(tmp instanceof Array)) {
-        MDL_table.__reqRs(tb, b, tmp);
+        if(b.ci[i + 1] > 0.0) MDL_table.__reqRs(tb, b, tmp);
       } else {
         thisFun.tmpArr.clear();
         j = 0;
@@ -231,7 +231,7 @@
           thisFun.tmpArr.push(tmp1);
           j += 2;
         };
-        MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
+        if(tmp[j + 1] > 0.0) MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
       };
       i += 2;
     };
@@ -241,7 +241,7 @@
     iCap = b.aux.iCap();
     while(i < iCap) {
       tmp = b.aux[i];
-      MDL_table.__reqRs(tb, b, tmp);
+      if(b.aux[i + 1] > 0.0) MDL_table.__reqRs(tb, b, tmp);
       i += 2;
     };
 
@@ -255,7 +255,7 @@
         thisFun.tmpArr.push(tmp);
         i += 4;
       };
-      MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
+      if(b.opt[i + 1] > 0) MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
     };
 
     // PAYI
@@ -266,7 +266,7 @@
         tmp = MDL_content._ct(b.payi[i], null, true);
         amt = b.payi[i + 1];
         let nm = tmp.name;
-        MDL_table.__reqCt(tb, tmp, amt, () => tryVal(b.payReqObj[nm], 0));
+        if(amt > 0) MDL_table.__reqCt(tb, tmp, amt, () => tryVal(b.payReqObj[nm], 0));
         i += 2;
       };
     };
@@ -306,12 +306,22 @@
     FRAG_recipe._inputLiqs(thisFun.tmpArr, b.ci, b.bi, b.aux);
     FRAG_recipe._outputLiqs(thisFun.tmpArr1, b.co, b.bo);
 
-    thisFun.tmpArr.forEachFast(liq => thisFun.addLiqBar(tb, b, liq));
-    thisFun.tmpArr1.forEachFast(liq => thisFun.addLiqBar(tb, b, liq));
+    thisFun.addedLiqs.clear();
+    thisFun.tmpArr.forEachFast(liq => {
+      if(thisFun.addedLiqs.includes(liq)) return;
+      thisFun.addLiqBar(tb, b, liq);
+      thisFun.addedLiqs.push(liq);
+    });
+    thisFun.tmpArr1.forEachFast(liq => {
+      if(thisFun.addedLiqs.includes(liq)) return;
+      thisFun.addLiqBar(tb, b, liq);
+      thisFun.addedLiqs.push(liq);
+    });
   }
   .setProp({
     tmpArr: [],
     tmpArr1: [],
+    addedLiqs: [],
     addLiqBar: (tb, b, liq) => {
       tb.add(new Bar(
         liq.localizedName,

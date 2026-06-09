@@ -899,7 +899,7 @@
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null) return;
+        if(blkInit == null || amt < 0.0001) return;
         MDL_recipeDict.addFldConsTerm(
           blkInit, ct, amt,
           {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
@@ -930,7 +930,7 @@
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
-        if(blkInit == null) return;
+        if(blkInit == null || amt <= 0) return;
         ct instanceof Item ?
           MDL_recipeDict.addItmConsTerm(
             blkInit, ct, amt / tryVal(timeSclInit, 1.0), p,
@@ -965,7 +965,7 @@
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null) return;
+        if(blkInit == null || amt < 0.0001) return;
         MDL_recipeDict.addFldConsTerm(
           blkInit, ct, amt,
           {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
@@ -1008,7 +1008,7 @@
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
         arr.push(Number(raw[i + 3]));
-        if(blkInit == null) return;
+        if(blkInit == null || amt <= 0) return;
         MDL_recipeDict.addItmConsTerm(
           blkInit, ct, amt, p,
           {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true), icon: "lovec-icon-boost"},
@@ -1038,7 +1038,7 @@
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null) return;
+        if(blkInit == null || amt <= 0) return;
         MDL_recipeDict.addPayConsTerm(
           blkInit, ct, amt,
           {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
@@ -1068,7 +1068,7 @@
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null) return;
+        if(blkInit == null || amt < 0.0001) return;
         MDL_recipeDict.addFldProdTerm(
           blkInit, ct, amt,
           {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
@@ -1100,7 +1100,7 @@
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
-        if(blkInit == null) return;
+        if(blkInit == null || amt <= 0) return;
         MDL_recipeDict.addItmProdTerm(
           blkInit, ct, amt / tryVal(timeSclInit, 1.0), p * (failPInit == null ? 1.0 : (1.0 - failPInit)),
           {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
@@ -1144,7 +1144,7 @@
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
-        if(blkInit == null) return;
+        if(blkInit == null || amt <= 0) return;
         MDL_recipeDict.addItmProdTerm(
           blkInit, ct, amt / tryVal(timeSclInit, 1.0), p * (failPInit == null ? 0.0 : failPInit),
           {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
@@ -1175,7 +1175,7 @@
     let i = 0, iCap = raw.iCap();
     while(i < iCap) {
       parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null) return;
+        if(blkInit == null || amt <= 0) return;
         MDL_recipeDict.addPayProdTerm(
           blkInit, ct, amt / tryVal(timeSclInit, 1.0),
           {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},

@@ -44,13 +44,14 @@
 
   /**
    * Whether some object is instance of anyone among given classes.
+   * Note that this method uses more generic `checkInstance`.
    * <br> <ARGS>: obj, cls1, cls2, cls3, ...
    * @return {boolean}
    */
   instanceOfAny = function() {
     if(arguments.length < 2) return false;
     for(let i = 1; i < arguments.length; i++) {
-      if(arguments[0] instanceof arguments[i]) return true;
+      if(checkInstance(arguments[0], arguments[i])) return true;
     };
     return false;
   };
@@ -327,14 +328,15 @@
     if(paramObj == null) return def;
     if(!(nmProps_p instanceof Array)) {
       return paramObj[nmProps_p] == null ? def : paramObj[nmProps_p];
-    } else {
-      let i = 0, iCap = nmProps_p.iCap();
-      while(i < iCap) {
-        if(paramObj[nmProps_p[i]] != null) return paramObj[nmProps_p[i]];
-        i++;
-      };
-      return def;
     };
+
+    let i = 0, iCap = nmProps_p.iCap();
+    while(i < iCap) {
+      if(paramObj[nmProps_p[i]] != null) return paramObj[nmProps_p[i]];
+      i++;
+    };
+
+    return def;
   };
 
 
