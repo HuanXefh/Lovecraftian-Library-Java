@@ -78,7 +78,7 @@
      * @class B_baseTurret
      * @extends B_baseBlock
      */
-    newClass().extendClass(PARENT[1], "BLK_baseTurret").initClass()
+    newClass().extendClass(PARENT[1], "B_baseTurret").initClass()
     .setParent(null)
     .setParam({})
     .setMethod({}),

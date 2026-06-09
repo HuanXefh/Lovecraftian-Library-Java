@@ -131,6 +131,7 @@
     if(nm != null && typeof nm === "string") {
       this.nm = nm;
       if(this.__IS_CONTENT_TEMPLATE__) {
+        if(LCTemp[nm] != null) throw new Error("Template name ${1} has already been used???".format(nm));
         LCTemp[nm] = this;
         LCTempParentMap.put(nm, LCTempParentMap.get(cls.nm).cpy().pushAll(cls.nm));
       };

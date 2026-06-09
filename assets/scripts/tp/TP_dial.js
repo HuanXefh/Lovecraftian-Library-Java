@@ -420,13 +420,13 @@
       ex_getRateStr(rate, deciAmt) {
         return typeof rate !== "number" ?
           "-" :
-          rate > 0.01 ?
+          rate > 0.0167 ?
             (rate.roundFixed(deciAmt) + "/s") :
-            rate * 60.0 > 0.01 ?
+            rate * 60.0 > 0.0167 ?
               ((rate * 60.0).roundFixed(deciAmt) + "/min") :
-              rate * 3600.0 > 0.01 ?
+              rate * 3600.0 > 0.0167 ?
                 ((rate * 3600.0).roundFixed(deciAmt) + "/h") :
-                "<0.01/s";
+                "~0.0/s";
       },
 
 
