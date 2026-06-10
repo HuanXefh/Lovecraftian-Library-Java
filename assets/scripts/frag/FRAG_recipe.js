@@ -343,7 +343,7 @@
       while(i < iCap) {
         tmp = b.delegee.co[i];
         amt = b.delegee.co[i + 1];
-        if(b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
+        if(amt < 0.0001 || b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
           allFull = false;
         } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid && !MDL_cond._isAuxiliaryFluid(tmp)) {
           return false;
@@ -361,10 +361,10 @@
       amt = b.delegee.bo[i + 1];
       p = b.delegee.bo[i + 2];
       if(b.items != null && tmp instanceof Item) {
-        if(!b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
+        if(amt > 0 && !b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
       };
       if(b.liquids != null && tmp instanceof Liquid) {
-        if(!b.block.ignoreLiquidFullness && b.liquids.get(tmp) / b.block.liquidCapacity > 0.98) return false;
+        if(amt > 0.0 && !b.block.ignoreLiquidFullness && b.liquids.get(tmp) / b.block.liquidCapacity > 0.98) return false;
       };
       i += 3;
     };
@@ -377,7 +377,7 @@
         tmp = b.delegee.fo[i];
         amt = b.delegee.fo[i + 1];
         // No probability for failed output
-        if(!b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
+        if(amt > 0 && !b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
         i += 3;
       };
     };

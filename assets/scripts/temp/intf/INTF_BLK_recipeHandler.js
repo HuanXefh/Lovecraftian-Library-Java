@@ -442,7 +442,7 @@
         while(i < iCap) {
           liq = b.co[i];
           amt = b.co[i + 1];
-          tmpVal = (b.block.liquidCapacity - b.liquids.get(liq)) / (amt * b.edelta());
+          tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(liq)) / (amt * b.edelta());
           val = Math.max(val, tmpVal);
           if(!MDL_cond._isAuxiliaryFluid(liq)) {
             scl = Math.min(scl, tmpVal);
