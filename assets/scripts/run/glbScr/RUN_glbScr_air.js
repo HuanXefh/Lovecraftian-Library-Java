@@ -27,6 +27,7 @@
   ARC_AIR = {
 
     seq: new Seq(),
+    objMap: new ObjectMap(),
 
     pon2: new Point2(),
     pon3: new Point3(),

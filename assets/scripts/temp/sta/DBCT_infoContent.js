@@ -39,7 +39,10 @@
         !sta.ex_checkDbctUnlocked() ?
           MDL_ui.show_fadeInfo("lovec", "info-locked") :
           fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.nmInfo);
-      }).left().padLeft(28.0).tooltip(MDL_bundle._term("lovec", "display"), true);
+      })
+      .left()
+      .padLeft(28.0)
+      .tooltip(MDL_bundle._term("lovec", "display"), true);
     }));
   };
 

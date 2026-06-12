@@ -161,17 +161,11 @@ const db = {
     nodeLinkFilter: [
 
       "any", (b, b_t) => true,
-
       "cons", (b, b_t) => MDL_cond._isPowerTransmitter(b.block) && !MDL_cond._isPowerTransmitter(b_t.block),
-
       "trans", (b, b_t) => MDL_cond._isPowerTransmitter(b.block) && MDL_cond._isPowerTransmitter(b_t.block),
-
       "self", (b, b_t) => b.block === b_t.block,
-
       "node", (b, b_t) => MDL_cond._isPowerNode(b.block) && MDL_cond._isPowerNode(b_t.block),
-
       "relay", (b, b_t) => MDL_cond._isPowerRelay(b_t.block),
-
       "remote-node", (b, b_t) => MDL_cond._isPowerRelay(b_t.block) || b.block === b_t.block,
 
     ],
@@ -266,13 +260,21 @@ const db = {
           },
         },
 
-        "lovec-info-achievement", {
+        "lovec-info-info-list", {
+          rowInd: 0,
+          icon: "lovec-icon-info-panel",
+          clickScr: function() {
+            CLS_dragButtonInfoList.show();
+          },
+        },
+
+        /*"lovec-info-achievement", {
           rowInd: 0,
           icon: "lovec-icon-trophy",
           clickScr: function() {
             fetchDialog("achievement").ex_show();
           },
-        },
+        },*/
 
       ],
 

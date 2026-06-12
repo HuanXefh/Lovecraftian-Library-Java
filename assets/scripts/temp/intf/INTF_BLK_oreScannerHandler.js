@@ -13,7 +13,7 @@
 
   function comp_updateTile(b) {
     if(b.requiresScanner && TIMER.effc) {
-      b.scannerCur = MDL_pos._b_scan(b.x, b.y, b.team, null, b.delegee.dpLvlReqCur);
+      b.scannerCur = MDL_pos._b_scan(b.x, b.y, b.team, null, b.delegee.depthLvlReqCur);
     };
   };
 
@@ -63,7 +63,7 @@
          * @memberof INTF_BLK_oreScannerHandler
          * @instance
          */
-        dpLvlReqCur: 0,
+        depthLvlReqCur: 0,
         /**
          * <PARAM>: Integer offset of the no-scanner-found text.
          * @memberof INTF_BLK_oreScannerHandler

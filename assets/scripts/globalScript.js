@@ -169,6 +169,7 @@
     /**
      * `SomeClass[]` will be created for these classes as "someClass_arr".
      * For example, you can use `JAVA.point2_arr` to access `Point2[]`.
+     * @type {Array<Class>}
      */
     clsTgs: [
       Boolc, Boolf, Boolf2, Boolf3, Boolp, Cons, Cons2, Cons3, Cons4, ConsT, FloatFloatf, Floatc, Floatc2, Floatc4, Floatf, Floatp, Func, Func2, Func3, IntIntf, Intc, Intc4, Intf, Intp, Longf, Prov,
@@ -235,7 +236,7 @@
   LCGeneralizer = fetchClass("lovec.utils.LCGeneralizer");
 
 
-  // Lovec internal
+  // Lovec internal data
   /** @global */
   LCAnno = {};
   /** @global */
@@ -244,6 +245,8 @@
   LCTempParentMap = ObjectMap.of(
     "CLS_contentTemplate", [],
   );
+
+
   /**
    * For other mods, push names here for new arrays in DB files.
    * @global
@@ -263,9 +266,17 @@
     blkMat: [],
     /** Target: {@link DB_recipe.db["genData"]}. */
     rcGenData: [],
+    /** Target: {@link DB_recipe.db["genData"]["assembly"]}. */
+    rcGenAssemblyData: [],
     /** Target: {@link DB_reaction.db["solvationTarget"]}. */
     reacSolvTg: [],
 
+    /**
+     * Creates new arrays for an object in DB objects.
+     * @param {string} nm - Determines the name array to be used.
+     * @param {Object} obj
+     * @return {this}
+     */
     apply(nm, obj) {
       if(!(LCModDbRegister[nm] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended!".format(nm));
       LCModDbRegister[nm].forEachFast(key => {
@@ -276,6 +287,7 @@
   };
 
 
+  // Run other global script fragments
   [
     "RUN_glbScr_air",
     "RUN_glbScr_base",

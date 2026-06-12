@@ -95,7 +95,7 @@ const db = {
        * <br> <ROW>: nmPla, ruleSetter.
        * <br> <ARGS>: rule.
        */
-      campaignRule: [],
+      campaign: [],
 
 
       /**
@@ -104,7 +104,7 @@ const db = {
        * <br> <ROW>: nmPla, ruleSetter.
        * <br> <ARGS>: rule.
        */
-      planetRule: [],
+      planet: [],
 
 
     },
@@ -268,9 +268,7 @@ const db = {
         scl: 0.5,
         mag: 1.5,
         wob: 0.7,
-        attrsGetter: () => [
-          // TODO: Add bush dynamic attributes.
-        ],
+        attrsGetter: () => DB_item.db["map"]["attr"]["bush"].readCol(2, 0),
       },
 
       "fungi", {

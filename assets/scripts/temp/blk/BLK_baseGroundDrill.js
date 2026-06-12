@@ -24,6 +24,7 @@
   function comp_setStats(blk) {
     if(blk.canMineDepthOre) {
       blk.stats.add(fetchStat("lovec", "blk0min-depthmtp"), blk.depthTierMtp.perc(2));
+      blk.stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci._depthLvlB(blk.maxDepthLvl));
     };
   };
 
@@ -40,7 +41,7 @@
     if(itm == null) return false;
 
     return (isFloorDrop ? false : MDL_cond._isDepthOre(t.overlay())) ?
-      blk.canMineDepthOre && blk.ex_canMine(t.overlay(), itm, blk.depthTierMtp) :
+      blk.canMineDepthOre && blk.ex_canMine(t.overlay(), itm, blk.depthTierMtp) && blk.ex_calcDpLvlReq(t.x, t.y, itm) <= blk.maxDepthLvl :
       blk.ex_canMine(isFloorDrop ? t.floor() : t.overlay(), itm, 1.0);
   };
 
@@ -58,12 +59,9 @@
       let w = blk.drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", 60.0 / blk.getDrillTime(returnItm) * blk.drillAmtMtp * returnAmt, 2), tx, ty, valid);
       let x = tx.toFCoord(blk.size) - w * 0.5 - 4.0;
       let y = ty.toFCoord(blk.size) + blk.size * Vars.tilesize * 0.5 + 5.0;
-      let iconW = Vars.iconSmall * 0.25;
 
-      Draw.mixcol(Color.darkGray, 1.0);
-      Draw.rect(blk.ex_findPlaceRsIcon(tx, ty, returnItm), x, y - 1.0, iconW, iconW);
-      Draw.reset();
-      Draw.rect(blk.ex_findPlaceRsIcon(tx, ty, returnItm), x, y, iconW, iconW);
+      LCDraw.regionIcon(x, y, blk.ex_findPlaceRsIcon(tx, ty, returnItm), 0, 0.75);
+
       if(blk.drawMineItem) {
         Draw.color(returnItm.color);
         Draw.rect(blk.itemRegion, tx.toFCoord(blk.size), ty.toFCoord(blk.size));
@@ -85,7 +83,7 @@
   function comp_onProximityUpdate(b) {
     b.dominantItems = Math.round(b.dominantItems * b.block.delegee.drillAmtMtp);
     b.requiresScanner = b.block.ex_isMiningDpore(b.tileX(), b.tileY(), b.dominantItem);
-    b.dpLvlReqCur = b.block.ex_calcDpLvlReq(b.tileX(), b.tileY(), b.dominantItem);
+    b.depthLvlReqCur = b.block.ex_calcDpLvlReq(b.tileX(), b.tileY(), b.dominantItem);
   };
 
 
@@ -94,10 +92,15 @@
   };
 
 
+  function comp_updateEfficiencyMultiplier(b) {
+    if(b.maxDepthLvl < b.depthLvlReqCur) b.efficiency = 0.0;
+  };
+
+
   function comp_drawSelect(b) {
     if(b.dominantItem == null) return;
 
-    LCDraw.regionIcon(b.x, b.y, b.block.ex_findPlaceRsIcon(b.tileX(), b.tileY(), b.dominantItem), b.block.size);
+    LCDraw.regionIcon(b.x, b.y, b.block.ex_findPlaceRsIcon(b.tileX(), b.tileY(), b.dominantItem), b.block.size, 0.75);
   };
 
 
@@ -137,6 +140,12 @@
        * @instance
        */
       depthTierMtp: 0.5,
+      /**
+       * <PARAM>: Maximum depth level of depth ores that this drill can mine.
+       * @memberof BLK_baseGroundDrill
+       * @instance
+       */
+      maxDepthLvl: 0,
 
 
     })
@@ -198,6 +207,11 @@
 
       pickedUp: function() {
         comp_pickedUp(this);
+      },
+
+
+      updateEfficiencyMultiplier: function() {
+        comp_updateEfficiencyMultiplier(this);
       },
 
 

@@ -674,6 +674,27 @@ const db = {
   genData: {
 
 
+    /**
+     * <EXTENSIBLE>
+     */
+    assembly: {
+
+
+      ammunition: [],
+
+
+      electrode: [],
+
+
+      membrane: [],
+      
+
+      brickBlock: [],
+
+
+    },
+
+
     alloying: [],
 
 
@@ -792,7 +813,8 @@ const db = {
 
 
 LCModDbRegister
-.apply("rcGenData", db["genData"]);
+.apply("rcGenData", db["genData"])
+.apply("rcGenAssemblyData", db["genData"]["assembly"]);
 
 
 Object.mergeDB(db, "DB_recipe");

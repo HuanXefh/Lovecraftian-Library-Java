@@ -69,7 +69,7 @@
     exports.lightning = timer_eff.get(0, VAR.time.lightningIntv);
     exports.coreSignal = timer_eff.get(1, 25.0);
     exports.trailCircle = timer_eff.get(2, 15.0);
-    exports.jetTrail = timer_eff.get(3, 3.0);
+    exports.jetTrail = timer_eff.get(3, 2.0);
 
     // Timer for generic unit update
     exports.unit = timer_unit.get(VAR.time.unitIntv);

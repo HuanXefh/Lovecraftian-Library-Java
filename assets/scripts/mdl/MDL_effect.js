@@ -506,7 +506,7 @@
   .setProp({
     eff: (function() {
       const tmp = new Effect(50.0, eff => {
-        Draw.alpha(Interp.pow2In.apply(eff.fout()) * 0.1);
+        Draw.alpha(Interp.pow2In.apply(eff.fout()) * 0.08);
         Draw.rect(
           "lovec-efr-jet-trail",
           eff.data.x - Mathf.cosDeg(eff.rotation + 90.0) * eff.data.hitSize * 6.0 * eff.fin(),

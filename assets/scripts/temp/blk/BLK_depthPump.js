@@ -22,6 +22,11 @@
   };
 
 
+  function comp_setStats(blk) {
+    blk.stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci._depthLvlB(blk.maxDepthLvl));
+  };
+
+
   function comp_setBars(blk) {
     blk.removeBar("liquid");
     blk.addBar("liquid", b => new Bar(
@@ -48,6 +53,11 @@
 
   function comp_created(b) {
     b.requiresScanner = true;
+  };
+
+
+  function comp_updateEfficiencyMultiplier(b) {
+    if(b.maxDepthLvl < b.depthLvlReqCur) b.efficiency = 0.0;
   };
 
 
@@ -88,6 +98,7 @@
        * @instance
        */
       liqProdRate: 0.0,
+      maxDepthLvl: 0,
 
 
       /* <------------------------------ internal ------------------------------ */
@@ -125,6 +136,11 @@
 
       load: function() {
         comp_load(this);
+      },
+
+
+      setStats: function() {
+        comp_setStats(this);
       },
 
 
@@ -197,6 +213,11 @@
 
       created: function() {
         comp_created(this);
+      },
+
+
+      updateEfficiencyMultiplier: function() {
+        comp_updateEfficiencyMultiplier(this);
       },
 
 

@@ -1,0 +1,148 @@
+/*
+  ========================================
+  Section: Definition
+  ========================================
+*/
+
+
+  /* <---------- meta ----------> */
+
+
+  /**
+   * Stores a list of info dialogs, which can be shown through a button in {@link CLS_dragButton}.
+   * @class
+   */
+  const CLS_dragButtonInfoList = newClass().initClass();
+
+
+  CLS_dragButtonInfoList.prototype.init = function() {
+
+  };
+
+
+  const infoListData = ObjectMap.of(
+    "uncategorized", ObjectMap.of("uncategorized", new ObjectMap()),
+  );
+  const moddedNms = [];
+
+
+/*
+  ========================================
+  Section: Definition (Static)
+  ========================================
+*/
+
+
+  /* <------------------------------ modification ------------------------------ */
+
+
+  /**
+   * Adds a new info dialog.
+   * @param {string} nm
+   * @param {function(): void} scr
+   * @param {string|unset} [categ]
+   * @param {string|unset} [subCateg]
+   * @return {this}
+   */
+  CLS_dragButtonInfoList.add = function(nm, scr, categ, subCateg) {
+    CLS_dragButtonInfoList.findMap(categ, subCateg).put(nm, scr);
+
+    return CLS_dragButtonInfoList;
+  };
+
+
+  /**
+   * Marks an info name as for modded situation only.
+   * @param {string|unset} [nm]
+   * @param {string|unset} [categ]
+   * @param {string|unset} [subCateg]
+   * @return {this}
+   */
+  CLS_dragButtonInfoList.markModded = function(nm, categ, subCateg) {
+    moddedNms.pushUnique(CLS_dragButtonInfoList.getInfoString(nm, categ, subCateg));
+
+    return CLS_dragButtonInfoList;
+  };
+
+
+  /* <------------------------------ util ------------------------------ */
+
+
+  /**
+   * Gets unique string for a info name.
+   * @param {string|unset} [nm]
+   * @param {string|unset} [categ]
+   * @param {string|unset} [subCateg]
+   * @return {string}
+   */
+  CLS_dragButtonInfoList.getInfoString = function(nm, categ, subCateg) {
+    return tryVal(categ, "uncategorized") + "/" + tryVal(subCateg, "uncategorized") + "/" + tryVal(nm, "unknown");
+  };
+
+
+  /**
+   * Gets the object map under given category and sub-category.
+   * @param {string|unset} [categ]
+   * @param {string|unset} [subCateg]
+   * @param {boolean|unset} [noRegister] - If true, an error is thrown if map not found.
+   */
+  CLS_dragButtonInfoList.findMap = function(categ, subCateg, noRegister) {
+    if(noRegister) {
+      let map = infoListData.get(categ, ARC_AIR.objMap).get(subCateg, ARC_AIR.objMap);
+      if(map === ARC_AIR.objMap) throw new Error("Cannot find info list under ${1}/${2}!".format(categ, subCateg));
+      return map;
+    };
+
+    if(categ == null) categ = "uncategorized";
+    if(!infoListData.containsKey(categ)) {
+      infoListData.add(categ, new ObjectMap());
+    };
+    if(subCateg == null) subCateg = "uncategorized";
+    let map = infoListData.get(categ);
+    if(!map.containsKey(subCateg)) {
+      map.add(subCateg, new ObjectMap());
+    };
+
+    return map.get(subCateg);
+  };
+
+
+  /**
+   * Gets text for an info dialog.
+   * @param {string|unset} [nm]
+   * @return {string}
+   */
+  CLS_dragButtonInfoList.getLocalizedInfoName = function(nm) {
+    return MDL_bundle._term("common", "infolist-info-" + tryVal(nm, "unknown"));
+  };
+
+
+  /**
+   * Gets text for a category or sub-category.
+   * @param {string|unset} [categ]
+   * @return {string}
+   */
+  CLS_dragButtonInfoList.getLocalizedCategName = function(categ) {
+    return MDL_bundle._term("common", "infolist-categ-" + tryVal(categ, "uncategorized"));
+  };
+
+
+  /**
+   * Call this method to show the info list dialog.
+   * @return {void}
+   */
+  CLS_dragButtonInfoList.show = function() {
+    fetchDialog("infoListMain").ex_show(infoListData, moddedNms);
+  },
+
+
+/*
+  ========================================
+  Section: Definition (Instance)
+  ========================================
+*/
+
+
+
+
+module.exports = CLS_dragButtonInfoList;

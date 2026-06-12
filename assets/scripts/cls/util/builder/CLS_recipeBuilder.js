@@ -96,7 +96,7 @@
    * @return {this}
    */
   CLS_recipeBuilder.prototype.__reqOpt = function(bool) {
-    this.builderObj["reqOpt"] = tryVal(bool, false);
+    this.builderObj.reqOpt = tryVal(bool, false);
 
     return this;
   };
@@ -152,7 +152,7 @@
    * @return {this}
    */
   CLS_recipeBuilder.prototype.__failP = function(frac) {
-    this.builderObj["failP"] = tryVal(frac, 0.0);
+    this.builderObj.failP = tryVal(frac, 0.0);
 
     return this;
   };

@@ -53,6 +53,25 @@
 
 
   /**
+   * Recipe generator: assembler.
+   * Crafts various items, and payloads sometimes.
+   */
+  const _g_assembler = new CLS_recipeGenerator(function(rc, metaObj) {
+    let
+      mode = readParam(metaObj, "mode", Array.air);
+
+    this.setCateg("assembly");
+    this.handle2Arr(
+      rc,
+      DB_recipe.db["genData"]["assembly"][mode],
+      null,
+      metaObj,
+    );
+  });
+  exports._g_assembler = _g_assembler;
+
+
+  /**
    * Recipe generator: alloy furnace.
    * Converts materials into alloy metal.
    */

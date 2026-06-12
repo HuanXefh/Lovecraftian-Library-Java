@@ -29,6 +29,9 @@
   let rcCount = 0;
 
 
+  const TMP_TUP = [];
+
+
   MDL_event._c_onLoad(() => {
     Time.run(60.0, () => {
       console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(runCount, rcCount));
@@ -309,7 +312,7 @@
    */
   CLS_recipeGenerator.prototype.addRc = function(rc, nmCt, objF, rcBuilderObj, paramObj) {
     let
-      categ = readParam(paramObj, ["categ", "category"]),
+      categ = readParam(paramObj, TMP_TUP.with("categ", "category")),
       lastCateg = null,
       tag = readParam(paramObj, "tag"),
       lastTag = null;
@@ -334,7 +337,7 @@
     if(objF != null) {
       objF(rcObj);
     };
-    rc["recipe"].write(this.getHeaderName(nmCt), rcObj);
+    rc.recipe.write(this.getHeaderName(nmCt), rcObj);
 
     if(lastCateg != null) {
       this.setCateg(lastCateg);

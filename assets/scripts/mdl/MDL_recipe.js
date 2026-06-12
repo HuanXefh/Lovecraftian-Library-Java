@@ -108,7 +108,7 @@
   const _rcBase = function(rcMdl) {
     return rcMdl == null ?
       Object.air :
-      tryVal(rcMdl.rc["base"], Object.air);
+      tryVal(rcMdl.rc.base, Object.air);
   };
   exports._rcBase = _rcBase;
 
@@ -134,7 +134,7 @@
   const _rcLi = function(rcMdl) {
     return rcMdl == null ?
       Array.air :
-      tryVal(rcMdl.rc["recipe"], Array.air);
+      tryVal(rcMdl.rc.recipe, Array.air);
   };
   exports._rcLi = _rcLi;
 
@@ -151,13 +151,27 @@
 
 
   /**
+   * Converts given header to final header used for reading data.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {string}
+   */
+  const convertHeader = function(rcMdl, rcHeader) {
+    return rcMdl.rc.hearderMigration == null ?
+      rcHeader :
+      tryVal(rcMdl.rc.hearderMigration[rcHeader], rcHeader);
+  };
+  exports.convertHeader = convertHeader;
+
+
+  /**
    * Gets a recipe object by header in `rcMdl`.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {RecipeObject|null}
    */
   const _rcObj = function(rcMdl, rcHeader) {
-    return _rcLi(rcMdl).read(rcHeader, null);
+    return _rcLi(rcMdl).read(convertHeader(rcMdl, rcHeader), null);
   };
   exports._rcObj = _rcObj;
 
@@ -191,6 +205,7 @@
    * @return {boolean}
    */
   const _hasHeader = function(rcMdl, rcHeader) {
+    rcHeader = convertHeader(rcMdl, rcHeader);
     let rcLi = _rcLi(rcMdl), tmpHeader;
     let i = 0, iCap = rcLi.iCap();
     while(i < iCap) {

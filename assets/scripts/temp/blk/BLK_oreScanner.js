@@ -40,13 +40,7 @@
 
   function comp_setStats(blk) {
     blk.stats.add(Stat.range, blk.blkRad / Vars.tilesize, StatUnit.blocks);
-    blk.stats.add(
-      fetchStat("lovec", "blk0min-scantier"),
-      "${1} (${2})".format(
-        blk.scanTier,
-        MDL_bundle._term.apply(null, DB_misc.db["block"]["depthName"].read(blk.scanTier, ["lovec", "unknown"]))
-      ),
-    );
+    blk.stats.add(fetchStat("lovec", "blk0min-scantier"), FRAG_faci._depthLvlB(blk.scanTier));
   };
 
 

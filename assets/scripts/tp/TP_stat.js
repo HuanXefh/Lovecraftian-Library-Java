@@ -22,6 +22,7 @@
 
   newStatCategory("lovec", "pressure");
   newStatCategory("lovec", "heat");
+  newStatCategory("lovec", "debug");
 
 
   /* <------------------------------ stat ------------------------------ */
@@ -55,6 +56,7 @@
   newStat("lovec", "blk0min-boosteddrillspd", StatCat.crafting);
   newStat("lovec", "blk0min-drilltier", StatCat.crafting);
   newStat("lovec", "blk0min-depthmtp", StatCat.crafting);
+  newStat("lovec", "blk0min-maxdepthlvl", StatCat.crafting);
   newStat("lovec", "blk0min-blockeditms", StatCat.crafting);
   newStat("lovec", "blk0min-alloweditms", StatCat.crafting);
   newStat("lovec", "blk0min-scantier", StatCat.crafting);
@@ -154,6 +156,9 @@
   newStat("lovec", "spec-fromto");
   newStat("lovec", "spec-info");
   newStat("lovec", "spec-dialflow");
+
+
+  newStat("lovec", "debug-copyname", fetchStatCategory("lovec", "debug"));
 
 
   /* <------------------------------ stat unit ------------------------------ */

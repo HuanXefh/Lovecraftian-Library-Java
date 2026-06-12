@@ -88,7 +88,9 @@
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
           MDL_table.__wrapLine(pnTb, MDL_bundle._info(nmMod, "content-" + nmInfo, true), Align.left, 1);
-        }).width(MDL_ui._uiW()).row();
+        })
+        .width(MDL_ui._uiW())
+        .row();
 
         // <TABLE>: buttons
         MDL_table.__break(this.cont);
@@ -137,7 +139,9 @@
             }).growX().row();
             MDL_table.__break(pnTb, 3);
           });
-        }).width(MDL_ui._uiW()).row();
+        })
+        .width(MDL_ui._uiW())
+        .row();
 
         // <TABLE>: buttons
         MDL_table.__break(this.cont);
@@ -198,13 +202,117 @@
               MDL_table.__textNothing(pnTb) :
               MDL_table._l_table(pnTb, matArr);
           };
-        }).width(MDL_ui._uiW()).row();
+        })
+        .width(MDL_ui._uiW())
+        .row();
 
         // <TABLE>: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
         MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "last-wave"), () => this.ex_show(Math.max(this.tmpCount - 1, 1)));
         MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "next-wave"), () => this.ex_show(this.tmpCount + 1));
+
+        this.show();
+      },
+
+
+    }),
+  );
+
+
+  /**
+   * A dialog to show a list of information. See {@link CLS_dragButtonInfoList}.
+   */
+  newDialog(
+    "infoListMain",
+    () => extend(BaseDialog, MDL_bundle._term("lovec", "info-list"), {
+
+
+      ex_show(infoListData, moddedNms) {
+        resetDial(this);
+
+        // <TABLE>: list
+        MDL_table.__break(this.cont);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
+
+          infoListData.each((categ, map) => {
+            MDL_table.__btn(
+              pnTb,
+              CLS_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ),
+              () => fetchDialog("infoListSub").ex_show(categ, map, moddedNms),
+              500.0,
+            ).row();
+          });
+        })
+        .width(MDL_ui._uiW() * 1.25)
+        .row();
+
+        // <TABLE>: buttons
+        MDL_table.__break(this.cont);
+        MDL_table.__btnClose(this.buttons, this);
+
+        this.show();
+      },
+
+
+    }),
+  );
+
+
+  /**
+   * A dialog to show a list of information. See {@link CLS_dragButtonInfoList}.
+   */
+  newDialog(
+    "infoListSub",
+    () => extend(BaseDialog, "", {
+
+
+      hasAnyNm: false,
+      lastInfoString: "",
+
+
+      ex_show(categ, map, moddedNms) {
+        resetDial(this, CLS_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ));
+
+        // <TABLE>: list
+        MDL_table.__break(this.cont);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
+
+          map.each((subCateg, subMap) => {
+            this.hasAnyNm = false;
+            subMap.each((nm, scr) => {
+              if(this.hasAnyNm) return;
+              this.lastInfoString = CLS_dragButtonInfoList.getInfoString(nm, categ, subCateg);
+              this.hasAnyNm = PARAM.MODDED || !moddedNms.includes(this.lastInfoString);
+            });
+
+            if(this.hasAnyNm) {
+              if(subCateg !== "uncategorized") {
+                MDL_table.__break(pnTb);
+                pnTb.add(CLS_dragButtonInfoList.getLocalizedCategName(subCateg)).color(Color.lightGray).row();
+              };
+
+              subMap.each((nm, scr) => {
+                this.lastInfoString = CLS_dragButtonInfoList.getInfoString(nm, categ, subCateg);
+                if(!PARAM.MODDED && moddedNms.includes(this.lastInfoString)) return;
+                MDL_table.__btn(
+                  pnTb,
+                  CLS_dragButtonInfoList.getLocalizedInfoName(nm),
+                  scr,
+                  500.0,
+                ).row();
+              });
+            };
+          });
+        })
+        .width(MDL_ui._uiW() * 1.25)
+        .row();
+
+        // <TABLE>: buttons
+        MDL_table.__break(this.cont);
+        MDL_table.__btnClose(this.buttons, this);
 
         this.show();
       },
@@ -228,7 +336,9 @@
           tb1.table(Tex.whiteui, tb2 => {
             tb2.center().setColor(achievement.isCompleted() ? Color.darkGray : Pal.darkestGray);
             tb2.imageDraw(() => achievement.getIcon()).width(64.0).height(64.0).color(!achievement.isCompleted() ? Color.darkGray : Color.white).tooltip(!achievement.isCompleted() ? "???" : achievement.getText(), true);
-          }).width(72.0).height(72.0);
+          })
+          .width(72.0)
+          .height(72.0);
         });
       },
 
@@ -237,6 +347,7 @@
         resetDial(this);
 
         // <TABLE>: list
+        MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
           if(VARGEN.achievements.length === 0) {
@@ -264,7 +375,9 @@
               }).left().row();
             });
           };
-        }).width(MDL_ui._uiW() * 1.25).row();
+        })
+        .width(MDL_ui._uiW() * 1.25)
+        .row();
 
         // <TABLE>: buttons
         MDL_table.__break(this.cont);
@@ -307,7 +420,9 @@
               j++;
             };
           };
-        }).width(MDL_ui._uiW()).row();
+        })
+        .width(MDL_ui._uiW())
+        .row();
 
         // <TABLE>: buttons
         MDL_table.__break(this.cont);
@@ -336,7 +451,9 @@
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table._l_ctRow(pnTb, cts_gn, true);
-        }).width(MDL_ui._uiW()).row();
+        })
+        .width(MDL_ui._uiW())
+        .row();
 
         // <TABLE>: buttons
         MDL_table.__break(this.cont);
@@ -395,7 +512,9 @@
               pnTb.row();
             };
           };
-        }).width(MDL_ui._uiW()).row();
+        })
+        .width(MDL_ui._uiW())
+        .row();
 
         // <TABLE>: buttons
         MDL_table.__break(this.cont);
@@ -461,7 +580,10 @@
                 btn = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
                   this.hide();
                   Vars.ui.content.show(oct);
-                }).left().tooltip(tryVal(data.ctText, oct.localizedName), true).get();
+                })
+                .left()
+                .tooltip(tryVal(data.ctText, oct.localizedName), true)
+                .get();
                 btn.getStyle().imageUp = new TextureRegionDrawable(oct.uiIcon).tint(tryVal(data.ctTint, Color.white));
               };
               // <TABLE>: tag icon
@@ -477,7 +599,10 @@
               if(data.iconText != null) {
                 tb2.add(data.iconText).left().fontScale(0.75).padLeft(2.0).padRight(2.0);
               };
-            }).left().height(30.0).row();
+            })
+            .left()
+            .height(30.0)
+            .row();
           });
           i += 3;
           if(j % 3 === 2) tb.row();
@@ -547,12 +672,18 @@
                 tb.center().setColor(Color.darkGray);
                 MDL_table.__margin(tb, 0.5);
                 tb.add(MDL_bundle._term("lovec", "building")).pad(4.0);
-              }).left().growX().row();
+              })
+              .left()
+              .growX()
+              .row();
               // <TABLE>: building list
               cont.table(Tex.whiteui, tb => {
                 tb.center().setColor(Pal.darkestGray);
                 MDL_table._l_ctLi(tb, reqBlks, 48.0, null, this);
-              }).left().growX().row();
+              })
+              .left()
+              .growX()
+              .row();
             };
           };
         }).row();

@@ -65,6 +65,13 @@
 
 
 
+  // Register global category for {@link CLS_dragButtonInfoList}
+  CLS_dragButtonInfoList
+  .add("achievement", () => fetchDialog("achievement").ex_show());
+
+
+
+
   MDL_event._c_onInit(() => {
 
 
@@ -409,14 +416,14 @@
 
 
     // Set up planet rules
-    DB_env.db["map"]["rule"]["campaignRule"].forEachRow(2, (nmPla, ruleSetter) => {
+    DB_env.db["map"]["rule"]["campaign"].forEachRow(2, (nmPla, ruleSetter) => {
       let pla = MDL_content._ct(nmPla, "pla");
       if(pla == null) return;
       let campaignRules = new CampaignRules();
       ruleSetter(campaignRules);
       pla.campaignRules = campaignRules;
     });
-    DB_env.db["map"]["rule"]["planetRule"].forEachRow(2, (nmPla, ruleSetter) => {
+    DB_env.db["map"]["rule"]["planet"].forEachRow(2, (nmPla, ruleSetter) => {
       let pla = MDL_content._ct(nmPla, "pla");
       if(pla == null) return;
       pla.ruleSetter = cons(ruleSetter);
@@ -437,6 +444,33 @@
       // Draggable button
       if(!Vars.headless) new CLS_dragButton().add();
     })();
+
+
+    // Set up debug stats
+    if(global.lovecUtil.prop.debug) {
+      [
+        Vars.content.items(),
+        Vars.content.liquids(),
+        Vars.content.blocks(),
+        Vars.content.units(),
+        Vars.content.statusEffects(),
+        Vars.content.weathers(),
+        Vars.content.sectors(),
+      ]
+      .forEachFast(seq => {
+        seq.each(ct => {
+          ct.stats.add(fetchStat("lovec", "debug-copyname"), newStatValue(tb => {
+            tb.row();
+            MDL_table.__btnSmall(tb, "C", () => {
+              MDL_backend.accClipboard(ct.name);
+              MDL_ui.show_fadeInfo("lovec", "copy-name");
+            })
+            .left()
+            .padLeft(28.0);
+          }));
+        });
+      });
+    };
 
 
     // Screw it

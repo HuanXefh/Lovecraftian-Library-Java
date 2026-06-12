@@ -43,7 +43,7 @@
   require("lovec/tp/TP_shader");
   require("lovec/tp/TP_cacheLayer");
   /** @global */
-  CLS_damageTextMode = require("lovec/cls/util/CLS_damageTextMode");
+  CLS_damageTextMode = require("lovec/cls/ui/CLS_damageTextMode");
   /** @global */
   CLS_contentTemplate = require("lovec/cls/util/CLS_contentTemplate");
   /** @global */
@@ -129,7 +129,7 @@
   /** @global */
   CLS_settingTerm = require("lovec/cls/util/CLS_settingTerm");
   /** @global */
-  CLS_unitStatDisplayMode = require("lovec/cls/util/CLS_unitStatDisplayMode");
+  CLS_unitStatDisplayMode = require("lovec/cls/ui/CLS_unitStatDisplayMode");
   /** @global */
   MDL_attr = require("lovec/mdl/MDL_attr");
   /** @global */
@@ -196,6 +196,8 @@
   MOD_tmi = require("lovec/mod/MOD_tmi");
   /** @global */
   MOD_multiBlockLib = require("lovec/mod/MOD_multiBlockLib");
+  /** @global */
+  CLS_dragButtonInfoList = require("lovec/cls/ui/CLS_dragButtonInfoList");
   /** @global */
   CLS_dragButton = require("lovec/cls/ui/CLS_dragButton");
   require("lovec/tp/TP_ability");

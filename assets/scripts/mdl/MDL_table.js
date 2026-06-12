@@ -356,7 +356,9 @@
           tb3.add(str).fontScale(0.85).left().style(Styles.outlineLabel).color(mtp < 0.0 ? Pal.remove : Pal.accent);
         });
       }).padRight(4.0);
-    }).left().padRight(8.0).padTop(4.0).padBottom(4.0);
+    })
+    .left()
+    .padRight(8.0).padTop(4.0).padBottom(4.0);
   };
   exports.__blkEffc = __blkEffc;
 
@@ -499,7 +501,12 @@
             Math.abs(p - 1.0) < 0.0001 ?
               "" :
               (Strings.autoFixed(p * 100.0, 2) + "%")
-          ).left().fontScale(0.85).style(Styles.outlineLabel).color(Color.gray).row();
+          )
+          .left()
+          .fontScale(0.85)
+          .style(Styles.outlineLabel)
+          .color(Color.gray)
+          .row();
           // Amount (bottom right)
           tb3.add(str).left().fontScale(0.85).style(Styles.outlineLabel);
         });
@@ -525,7 +532,8 @@
       tb1.center().setColor(Pal.darkestGray);
       __margin(tb1, 1.5);
       __wrapLine(tb1, text.color(Color.gray), Align.left, tryVal(ord, 1), padLeft);
-    }).padTop(8.0).padBottom(8.0);
+    })
+    .padTop(8.0).padBottom(8.0);
     noteCell.row();
 
     return noteCell;
@@ -594,7 +602,9 @@
           } else {
             tbCell.add("!ERR");
           };
-        }).growX().height(j === 0 ? 24.0 : (imgW + 8.0));
+        })
+        .growX()
+        .height(j === 0 ? 24.0 : (imgW + 8.0));
         tbRow.table(Styles.none, tb => {}).width(stroke).height(stroke);
         tbRow.row();
 
@@ -927,7 +937,9 @@
         j++;
         i += 3;
       };
-    }).left().row();
+    })
+    .left()
+    .row();
   };
   exports._d_attr = _d_attr;
 
@@ -999,13 +1011,19 @@
         tb1.center().setColor(Color.darkGray);
         __margin(tb1, 0.5);
         tb1.add(MDL_content._facFamiB(fami)).pad(4.0);
-      }).left().growX().row();
+      })
+      .left()
+      .growX()
+      .row();
       // <TABLE>: contents
       cont.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(Pal.darkestGray);
         __margin(tb1, 0.5);
         _l_ctLi(tb1, VARGEN.facFamis[fami], 48.0);
-      }).left().growX().row();
+      })
+      .left()
+      .growX()
+      .row();
     });
   };
   exports._d_facFami = _d_facFami;
@@ -1125,7 +1143,10 @@
               tb2.left().setColor(Tmp.c1.set(Pal.accent).lerp(Color.black, 0.4));
               __margin(tb2, 0.5);
               buildBase(tb2);
-            }).left().padLeft(28.0).row();
+            })
+            .left()
+            .padLeft(28.0)
+            .row();
             __break(tb1, 1);
           };
           tb1.table(Styles.none, tb2 => {
@@ -1160,7 +1181,8 @@
               "${1} (${2})".format(MDL_bundle._term("lovec", "recipe"), blk.localizedName + " [${1}]".format(i)),
               tb1 => winTableF(tb1),
             ).add();
-          }).tooltip(MDL_bundle._term("lovec", "new-window"), true);
+          })
+          .tooltip(MDL_bundle._term("lovec", "new-window"), true);
         }).width(72.0);
         __barV(tb1, Pal.accent);
       }).left().growY();
@@ -1207,13 +1229,19 @@
                   tmp.forEachRow(3, (tmp1, amt, p) => {
                     __rcCt(pnTb, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
                   });
-                }).growX().get();
+                })
+                .growX()
+                .get();
                 pn.setOverscroll(false, false);
                 pn.setScrollBarPositions(true, false);
-              }).marginRight(16.0).maxHeight(82.0);
+              })
+              .marginRight(16.0)
+              .maxHeight(82.0);
             };
           });
-        }).left().marginRight(24.0);
+        })
+        .left()
+        .marginRight(24.0);
       });
     };
 
@@ -1236,14 +1264,20 @@
                   tmp.forEachRow(2, (tmp1, amt) => {
                     __rcCt(pnTb, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
                   });
-                }).growX().get();
+                })
+                .growX()
+                .get();
                 pn.setOverscroll(false, false);
                 pn.setScrollBarPositions(true, false);
-              }).marginRight(16.0).maxHeight(82.0);
+              })
+              .marginRight(16.0)
+              .maxHeight(82.0);
             };
           });
         });
-      }).left().marginRight(24.0);
+      })
+      .left()
+      .marginRight(24.0);
     };
 
     const buildAux = (tb, aux) => {
@@ -1265,7 +1299,9 @@
         __margin(tb1);
         tb1.add("OPT:").left().tooltip(MDL_bundle._term("lovec", "opt"), true).row();
         tb1.button("?", () => fetchDialog("rcOpt").ex_show(MDL_bundle._term("lovec", "opt"), opt)).size(34.0).pad(3.0);
-      }).left().marginRight(24.0);
+      })
+      .left()
+      .marginRight(24.0);
     };
 
     const buildPayi = (tb, payi) => {
@@ -1278,7 +1314,9 @@
             __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
           });
         });
-      }).left().marginRight(24.0);
+      })
+      .left()
+      .marginRight(24.0);
     };
 
     const buildBo = (tb, bo) => {
@@ -1291,7 +1329,9 @@
             __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
           });
         });
-      }).left().marginRight(24.0);
+      })
+      .left()
+      .marginRight(24.0);
     };
 
     const buildCo = (tb, co) => {
@@ -1304,7 +1344,9 @@
             __rcCt(tb2, tmp, amt, null, false, null, VAR.dialog.ct1);
           });
         });
-      }).left().marginRight(24.0);
+      })
+      .left()
+      .marginRight(24.0);
     };
 
     const buildFo = (tb, fo) => {
@@ -1317,7 +1359,9 @@
             __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
           });
         });
-      }).left().marginRight(24.0);
+      })
+      .left()
+      .marginRight(24.0);
     };
 
     const buildPayo = (tb, payo) => {
@@ -1330,7 +1374,9 @@
             __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
           });
         });
-      }).left().marginRight(24.0);
+      })
+      .left()
+      .marginRight(24.0);
     };
 
     const buildRcStats = (tb, rcMdl, rcHeader) => {
@@ -1389,7 +1435,9 @@
                 tb3.left();
                 tb3.add(MDL_text._statText(MDL_bundle._term("lovec", "require-unlocking"), "")).left();
                 lockedByCts.forEachFast(ct => __ct(tb3, ct, 28.0, 0.0, null, VAR.dialog.ct2));
-              }).left().row();
+              })
+              .left()
+              .row();
             };
             if(attr != null) {
               pnTb.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left().tooltip(cons(tb => {
@@ -1399,8 +1447,14 @@
                 });
               })).row();
             };
-          }).height(100.0).padTop(20.0).padBottom(20.0).growX();
-        }).left().width(360.0).growX();
+          })
+          .height(100.0)
+          .padTop(20.0).padBottom(20.0)
+          .growX();
+        })
+        .left()
+        .width(360.0)
+        .growX();
         tb1.table(Styles.none, tb2 => {}).width(20.0);
       }).growY();
     };

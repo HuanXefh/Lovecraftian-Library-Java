@@ -384,7 +384,7 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {LAccess} sensor
-       * @param {function(Building): void} scr - <ARGS>: b.
+       * @param {function(Building): void} scr - <ARGS>: b, param1, param2, param3, param4.
        * @return {void}
        */
       ex_addLogicControl: function(sensor, scr) {

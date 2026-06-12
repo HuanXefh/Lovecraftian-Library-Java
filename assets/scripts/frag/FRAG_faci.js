@@ -117,6 +117,23 @@
 
 
   /**
+   * Gets text for given depth level from bundle.
+   * @param {number} depthLvl
+   * @return {string}
+   */
+  const _depthLvlB = function thisFun(depthLvl) {
+    return "${1} (${2})".format(
+      depthLvl,
+      MDL_bundle._term.apply(null, DB_misc.db["block"]["depthName"].read(depthLvl, thisFun.tmpTup.with("lovec", "unknown"))),
+    );
+  }
+  .setProp({
+    tmpTup: [],
+  });
+  exports._depthLvlB = _depthLvlB;
+
+
+  /**
    * Gets resource level of a tree.
    * @param {Block} blk
    * @return {number}
