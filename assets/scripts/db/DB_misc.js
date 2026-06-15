@@ -268,13 +268,17 @@ const db = {
           },
         },
 
-        /*"lovec-info-achievement", {
+        "lovec-player-dump-item-to-core", {
           rowInd: 0,
-          icon: "lovec-icon-trophy",
+          icon: "lovec-icon-to-core",
           clickScr: function() {
-            fetchDialog("achievement").ex_show();
+            let unit = Vars.player.unit();
+            if(unit == null) return;
+            let b = unit.closestCore();
+            if(b == null || !b.within(unit, unit.range())) return;
+            FRAG_item.dropBuildItem(unit, b);
           },
-        },*/
+        },
 
       ],
 

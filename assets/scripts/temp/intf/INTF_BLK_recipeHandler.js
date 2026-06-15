@@ -17,6 +17,16 @@
   const STOP_TIME = 360.0;
 
 
+  function checkSelectedUnloader(b) {
+    // Unloaders must be configured, otherwise auto-selection will break
+    return b.block instanceof Unloader ?
+      b.sortItem != null :
+        b.block instanceof DirectionalUnloader ?
+          b.unloadItem != null :
+          true;
+  };
+
+
   /* <---------- component ----------> */
 
 
@@ -55,6 +65,8 @@
 
 
   function comp_created(b) {
+    b.useAutoSelection = b.block.delegee.useAutoSelection;
+
     Time.run(0.0, () => {
       let rcMdl = b.block.delegee.rcMdl;
       if(MDL_recipe._hasHeader(rcMdl, b.rcHeader)) {
@@ -73,6 +85,14 @@
 
   function comp_updateTile(b) {
     if(PARAM.UPDATE_SUPPRESSED) return;
+
+    if(b.useAutoSelection && b.keyRs != null && b.lastKeyRs !== b.keyRs) {
+      b.lastKeyRs = b.keyRs;
+      let headerTg = (b.keyRs instanceof Liquid ? b.keyFldHeaderMap : b.keyItmHeaderMap).get(b.keyRs);
+      if(headerTg != null) {
+        b.configure(headerTg);
+      };
+    };
 
     b.ex_updateRcParam(b.block.delegee.rcMdl, b.rcHeader, false);
     if(b.scrTup != null) b.ex_onRcUpdate();
@@ -143,6 +163,9 @@
   function comp_acceptItem(b, b_f, itm) {
     if(b.items == null) return false;
     if(b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
+    if(b.useAutoSelection && itm !== b.keyRs && checkSelectedUnloader(b_f) && b.keyItmHeaderMap.containsKey(itm)) {
+      b.keyRs = itm;
+    };
     if(b.itmAcceptCacheMap.containsKey(itm)) return b.itmAcceptCacheMap.get(itm);
 
     let cond = FRAG_recipe._hasInput(itm, b.ci, b.bi, b.aux, b.opt);
@@ -155,6 +178,9 @@
   function comp_acceptLiquid(b, b_f, liq) {
     if(b.liquids == null) return false;
     if(b.liquids.get(liq) >= b.block.liquidCapacity) return false;
+    if(b.useAutoSelection && liq !== b.keyRs && checkSelectedUnloader(b_f) && b.keyFldHeaderMap.containsKey(liq)) {
+      b.keyRs = liq;
+    };
     if(b.liqAcceptCacheMap.containsKey(liq)) return b.liqAcceptCacheMap.get(liq);
 
     let cond = FRAG_recipe._hasInput(liq, b.ci, b.bi, b.aux, b.opt);
@@ -418,6 +444,11 @@
     b.validTup = MDL_recipe._validTup(rcMdl, rcHeader, b.validTup);
     b.scrTup = MDL_recipe._scrTup(rcMdl, rcHeader, b.scrTup);
 
+    if(b.useAutoSelection) {
+      b.keyItmHeaderMap = MDL_recipe._keyRsHeaderMap(b.keyItmHeaderMap, rcMdl, false);
+      b.keyFldHeaderMap = MDL_recipe._keyRsHeaderMap(b.keyFldHeaderMap, rcMdl, true);
+    };
+
     Time.run(0.0, () => {
       b.hasPayInput = FRAG_recipe._hasInput_pay(b.payi);
       b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
@@ -507,6 +538,12 @@
          * @instance
          */
         erekirHeatWarmupRate: 0.05,
+        /**
+         * <PARAM>: If true, this crafter will select recipe automatically.
+         * @memberof INTF_BLK_recipeHandler
+         * @instance
+         */
+        useAutoSelection: false,
         /**
          * <PARAM>: Whether this block does not actively dump resources.
          * @memberof INTF_BLK_recipeHandler
@@ -832,6 +869,36 @@
          * @instance
          */
         lastOptEffc: 1.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        useAutoSelection: false,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        keyItmHeaderMap: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        keyFldHeaderMap: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        keyRs: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        lastKeyRs: null,
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler

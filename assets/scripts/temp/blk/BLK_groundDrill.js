@@ -25,9 +25,9 @@
       let drillTime = b.block.getDrillTime(b.dominantItem);
       if(b.dominantItems > 0 && b.efficiency > 0.0 && b.items.get(b.dominantItem) < b.block.itemCapacity) {
         let spd = Mathf.lerp(1.0, b.block.liquidBoostIntensity, b.optionalEfficiency) * b.efficiency;
-        b.lastDrillSpeed = spd * b.dominantItems * b.warmup / drillTime;
+        b.lastDrillSpeed = spd * b.dominantItems / drillTime;
         b.warmup = Mathf.approachDelta(b.warmup, spd, b.block.warmupSpeed);
-        b.progress += b.delta() * b.dominantItems * spd * b.warmup;
+        b.progress += b.delta() * b.dominantItems * spd;
         if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup)) {
           b.block.updateEffect.at(b.x + Mathf.range(b.block.size * 2.0), b.y + Mathf.range(b.block.size * 2.0));
         };

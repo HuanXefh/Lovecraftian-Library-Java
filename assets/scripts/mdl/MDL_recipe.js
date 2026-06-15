@@ -399,6 +399,44 @@
   exports._hasErekirHeatOutput = _hasErekirHeatOutput;
 
 
+  /**
+   * Gets resource-header map for auto-selection.
+   * @param {ObjectMap|unset} contArr
+   * @param {RecipeModule} rcMdl
+   * @param {boolean|unset} [isFld]
+   * @return {ObjectMap}
+   */
+  const _keyRsHeaderMap = function(contMap, rcMdl, isFld) {
+    let map;
+    if(contMap == null) {
+      map = new ObjectMap();
+    } else {
+      map = contMap;
+      map.clear();
+    };
+
+    let ct;
+    rcMdl.rc.recipe.forEachRow(2, (rcHeader, rcObj) => {
+      if(!(rcObj.keyRs instanceof Array)) {
+        ct = MDL_content._ct(tryVal(rcObj.keyRs, rcObj.icon), "rs");
+        if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
+          map.put(ct, rcHeader);
+        };
+      } else {
+        rcObj.keyRs.forEachFast(nm => {
+          ct = MDL_content._ct(nm, "rs");
+          if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
+            map.put(ct, rcHeader);
+          };
+        });
+      };
+    });
+
+    return map;
+  };
+  exports._keyRsHeaderMap = _keyRsHeaderMap;
+
+
   /* <---------- recipe fields ----------> */
 
 

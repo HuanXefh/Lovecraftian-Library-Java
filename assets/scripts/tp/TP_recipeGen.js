@@ -200,6 +200,7 @@
       },
       metaObj,
       (itm, metaObj) => ({
+        keyRs: itm.name,
         itmI: itm,
         itmO: tg,
       }),
@@ -423,7 +424,7 @@
     } else {
       metaObj.paramObjF = paramObj => {
         if(MDL_cond._isWaste(paramObj.bo[0])) {
-          // No purification target
+          // No purification target in the recipe
           paramObj.shouldSkip = true;
           return;
         };
@@ -558,6 +559,7 @@
       null,
       metaObj,
       (itm, metaObj) => ({
+        keyRs: itm.delegee.intmdParent.name,
         itmI: itm.delegee.intmdParent,
         itmO: itm,
       }),
@@ -584,6 +586,7 @@
         "loveclab-item0buil-coarse-aggregate",
         metaObj,
         {
+          keyRs: "loveclab-item0buil-coarse-aggregate",
           itmI: "loveclab-item0buil-coarse-aggregate",
           itmO: "loveclab-item0buil-fine-aggregate",
         },
@@ -599,6 +602,7 @@
       },
       metaObj,
       (itm, metaObj) => ({
+        keyRs: itm.name,
         itmI: itm,
         itmO: tg,
       }),
@@ -645,6 +649,7 @@
         null,
         metaObj,
         (itm, metaObj) => ({
+          keyRs: itm.name,
           tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
           itmI: itm,
           itmO: itm.delegee.intmdParent,
@@ -658,6 +663,7 @@
         null,
         metaObj,
         (itm, metaObj) => ({
+          keyRs: itm.name,
           tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
           itmI: itm,
           itmO: MDL_content._intmd(itm.delegee.intmdParent, "rs-ore0conc"),

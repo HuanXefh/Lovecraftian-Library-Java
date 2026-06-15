@@ -20,6 +20,78 @@
   /* <------------------------------ item ------------------------------ */
 
 
+  newConsumer(
+    "ConsumeItemEfficiencyMap",
+    paramObj => extend(
+      ConsumeItemFilter,
+      (function() {
+        let arr = readParam(paramObj, "itmEffcArr", Array.air).readCol(2, 0);
+        return itm => arr.includes(itm.name);
+      })(),
+      {
+
+
+        effcMap: readParam(paramObj, "itmEffcArr", Array.air).toObjMap(),
+
+
+        display(stats) {
+          stats.add(this.booster ? Stat.booster : Stat.input, newStatValue(tb => {
+            tb.row();
+            tb.table(Styles.none, tb1 => {
+              let matArr = [
+                [
+                  "",
+                  MDL_bundle._term("lovec", "resource"),
+                  MDL_bundle._term("lovec", "efficiency-multiplier"),
+                ],
+              ];
+
+              this.effcMap.each((nmItm, effc) => {
+                let itm = Vars.content.item(nmItm);
+                if(itm == null) return;
+                matArr.push([
+                  tb2 => MDL_table.__rcCt(tb2, itm, -1),
+                  itm.localizedName,
+                  effc.perc(0),
+                ]);
+              });
+
+              MDL_table._l_table(tb, matArr).padLeft(48.0);
+            }).growX();
+          }));
+        },
+
+
+        efficiency(b) {
+          let itm = this.getConsumed(b);
+          return !b.consumeTriggerValid() || itm == null ?
+            0.0 :
+            (this.super$efficiency(b) * this.effcMap.get(itm.name, 0.0));
+        },
+
+
+        ex_setRcDict(blk, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
+          let itm;
+          this.effcMap.each((nmItm, effc) => {
+            itm = Vars.content.item(nmItm);
+            if(itm == null) return;
+            dictConsItm[itm.id].push(blk, effc, {});
+          });
+        },
+
+
+        ex_setTmiRc(blk, rawRc, boostEffc) {
+          this.effcMap.each((nmItm, effc) => {
+            MOD_tmi.addCons(rawRc, nmItm, effc);
+          });
+        },
+
+
+      },
+    ),
+  );
+
+
   /* <------------------------------ liquid ------------------------------ */
 
 
@@ -43,16 +115,28 @@
 
         display(stats) {
           stats.add(this.booster ? Stat.booster : Stat.input, newStatValue(tb => {
-            this.effcMap.each((nmLiq, effc) => {
-              let liq = Vars.content.liquid(nmLiq);
-              if(liq == null) return;
-              tb.row();
-              tb.table(Styles.none, tb1 => {
-                tb1.left();
-                MDL_table.__rcCt(tb1, liq, this.amount).left().marginLeft(24.0);
-                tb1.add(effc.perc(0)).color(Color.gray).left().padLeft(72.0);
-              }).left();
-            });
+            tb.row();
+            tb.table(Styles.none, tb1 => {
+              let matArr = [
+                [
+                  "",
+                  MDL_bundle._term("lovec", "resource"),
+                  MDL_bundle._term("lovec", "efficiency-multiplier"),
+                ],
+              ];
+
+              this.effcMap.each((nmLiq, effc) => {
+                let liq = Vars.content.liquid(nmLiq);
+                if(liq == null) return;
+                matArr.push([
+                  tb2 => MDL_table.__rcCt(tb2, liq, this.amount),
+                  liq.localizedName,
+                  effc.perc(0),
+                ]);
+              });
+
+              MDL_table._l_table(tb, matArr).padLeft(48.0);
+            }).growX();
           }));
         },
 

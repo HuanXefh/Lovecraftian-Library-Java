@@ -28,15 +28,11 @@
 
     blk.itmWhitelist = blk.itmWhitelist.map(nmItm => MDL_content._ct(nmItm, "rs")).compact();
 
-    blk.hasItmCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
-    if(blk.drillItmDur < 0.0) {
-      blk.drillItmDur = blk.drillTime;
-    };
-
     MDL_event._c_onLoad(() => {
       Core.app.post(() => {
-        if(blk.consumers.some(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter, ConsumeItemDynamic))) {
-          throw new Error("Do not add item consumers to drills, they are not supported!");
+        blk.hasItmCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
+        if(blk.drillItmDur < 0.0) {
+          blk.drillItmDur = blk.drillTime;
         };
 
         if(blk.shouldDropPay) {
@@ -74,6 +70,8 @@
         MDL_table._l_ctLi(tb, blk.itmWhitelist);
       }));
     };
+
+    if(blk.hasItmCons) blk.stats.add(Stat.productionTime, blk.drillItmDur / 60.0, StatUnit.seconds);
 
     if(!blk.shouldDropPay) blk.stats.remove(fetchStat("lovec", "blk0fac-payroom"));
   };
@@ -402,6 +400,24 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      consumeTriggerValid: function() {
+        return this.block.delegee.drillItmDur > 0.0;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      canDump: function(b_t, itm) {
+        // Yep this line is borrowed from Carpe Diem
+        return !this.block.consumesItem(itm) || (this.dominantItem === itm && this.items.has(itm, this.block.itemCapacity * 0.5));
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
       }),
 
 

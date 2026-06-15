@@ -70,6 +70,12 @@ recipe: [
     }
 
     /*
+     * Used when recipe auto-selection is enabled, this recipe is chosen when this item/fluid is inputted.
+     * Can be an array.
+     */
+    keyRs: copper
+
+    /*
      * Category of this recipe.
      * Uses bundle "term.common-term-categ-<categ>".
      */

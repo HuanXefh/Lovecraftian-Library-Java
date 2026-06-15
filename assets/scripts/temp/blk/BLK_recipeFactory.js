@@ -33,6 +33,13 @@
     blk.stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
     blk.stats.add(fetchStat("lovec", "blk0fac-recipes"), newStatValue(tb => {
       tb.row();
+
+      if(blk.useAutoSelection) {
+        MDL_table.__break(tb, 1);
+        tb.add(MDL_bundle._info("lovec", "recipe-auto-selection")).left().padLeft(32.0).color(Pal.remove).row();
+        MDL_table.__break(tb, 1);
+      };
+
       MDL_table._d_rc(tb, blk.rcMdl, blk);
       MDL_table.__btn(tb, MDL_bundle._term("lovec", "new-window"), () => {
         new CLS_window(

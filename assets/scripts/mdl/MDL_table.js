@@ -1488,11 +1488,12 @@
    * @param {function(): string} headerGetter
    * @param {function(string): void} cfgCaller
    * @param {Array<function(Table): void>|unset} [extraBtnSetters]
+   * @param {boolean|unset} [useAutoSelection]
    * @param {boolean|unset} [closeSelect]
    * @param {number|unset} [colAmt]
    * @return {void}
    */
-  const _s_rc = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, closeSelect, colAmt) {
+  const _s_rc = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, useAutoSelection, closeSelect, colAmt) {
     if(closeSelect == null) closeSelect = true;
     if(colAmt == null) colAmt = 4;
 
@@ -1525,6 +1526,13 @@
       btnGrp.clear();
       cont.clearChildren();
 
+      if(useAutoSelection) {
+        cont.table(Styles.none, tb1 => {
+          tb1.add(MDL_bundle._info("lovec", "recipe-auto-selection")).color(Pal.remove).row();
+          tb1.add("").row();
+        }).left().row();
+      };
+
       categAmt = 0;
       for(let categ in categHeaderObj) {
         categAmt++;
@@ -1533,7 +1541,7 @@
 
       for(let categ in categHeaderObj) {
         if(!uncategorizedOnly) {
-          cont.add(MDL_recipe._categB(categ)).left().pad(4.0).row();
+          cont.add(MDL_recipe._categB(categ)).left().pad(4.0).color(!useAutoSelection ? Color.white : Color.gray).row();
         };
 
         let j = 0;
@@ -1546,7 +1554,9 @@
           let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 40.0, () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ttStr, true).group(btnGrp).get();
           btn.changed(() => cfgCaller(rcHeader));
           btn.getStyle().imageUp = validGetter(b) ? icon : Icon.lock;
+          btn.getStyle().imageDisabledColor = Color.gray;
           btn.update(() => {
+            btn.setDisabled(useAutoSelection);
             btn.setChecked(headerGetter() == rcHeader);
             if(TIMER.secHalf) {
               btn.getStyle().imageUp = validGetter(b) ? icon : Icon.lock;

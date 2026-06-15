@@ -358,11 +358,14 @@
    */
   CLS_recipeGenerator.prototype.setBaseParam = function(rcObj, paramObj) {
     readParamAndCall(paramObj, "tint", val => rcObj.tint = val);
+    readParamAndCall(paramObj, "keyRs", val => rcObj.keyRs = val);
     readParamAndCall(paramObj, "validGetter", val => rcObj.validGetter = val);
     readParamAndCall(paramObj, "lockedBy", val => rcObj.lockedBy = val);
     readParamAndCall(paramObj, "timeScl", val => rcObj.timeScl = val);
     readParamAndCall(paramObj, "pollution", val => rcObj.pollution = val);
     readParamAndCall(paramObj, "ignoreItemFullness", val => rcObj.ignoreItemFullness = val);
+    readParamAndCall(paramObj, "erekirHeatI", val => rcObj.erekirHeatI = val);
+    readParamAndCall(paramObj, "erekirHeatO", val => rcObj.erekirHeatO = val);
     readParamAndCall(paramObj, "attr", val => rcObj.attr = val);
     readParamAndCall(paramObj, "attrMin", val => rcObj.attrMin = val);
     readParamAndCall(paramObj, "attrMax", val => rcObj.attrMax = val);
