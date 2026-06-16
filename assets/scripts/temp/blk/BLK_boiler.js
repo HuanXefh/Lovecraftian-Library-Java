@@ -190,23 +190,24 @@
 
       /**
        * <INTERNAL>
-       * @override
-       * @memberof BLK_boiler
-       * @instance
-       */
-      presFldType: "gas",
-      /**
-       * <INTERNAL>
-       * @memberof BLK_boiler
-       * @instance
-       */
-      shouldClearAuxOnStop: false,
-      /**
-       * <INTERNAL>
        * @memberof BLK_boiler
        * @instance
        */
       flashReg: null,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_boiler
+      * @instance
+      */
+      shouldClearAuxOnStop: false,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_boiler
+      * @instance
+      */
+      presFldType: "gas",
 
 
     })

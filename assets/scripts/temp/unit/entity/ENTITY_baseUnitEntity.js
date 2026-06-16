@@ -9,6 +9,8 @@
 
 
   const PARENT = CLS_contentTemplate;
+  const INTF = require("lovec/temp/intf/INTF_ENTITY_unitDurabilityHandler");
+  const INTF_A = require("lovec/temp/intf/INTF_ENTITY_tetheredEntity");
 
 
   /* <---------- component ----------> */
@@ -52,24 +54,12 @@
    * Unlike blocks, the entity of a unit type is defined as a separate template for more flexibility.
    * @class ENTITY_baseUnitEntity
    * @extends CLS_contentTemplate
+   * @extends INTF_ENTITY_unitDurabilityHandler
+   * @extends INTF_ENTITY_tetheredEntity
    */
-  module.exports = newClass().extendClass(PARENT, "ENTITY_baseUnitEntity").initClass()
+  module.exports = newClass().extendClass(PARENT, "ENTITY_baseUnitEntity").implement(INTF).implement(INTF_A).initClass()
   .setParent(null)
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------ */
-
-
-    /**
-     * <INTERNAL>
-     * @memberof ENTITY_baseUnitEntity
-     * @instance
-     */
-    unitDurabUsed: 0.0,
-
-
-  })
+  .setParam({})
   .setMethod({
 
 
@@ -94,6 +84,36 @@
     }
     .setProp({
       noSuper: true,
+    }),
+
+
+    /**
+     * @memberof ENTITY_baseUnitEntity
+     * @instance
+     * @param {Object} dataObj
+     * @return {void}
+     */
+    ex_writeUnitData: function(dataObj) {
+
+    }
+    .setProp({
+      noSuper: true,
+      argLen: 1,
+    }),
+
+
+    /**
+     * @memberof ENTITY_baseUnitEntity
+     * @instance
+     * @param {Object} dataObj
+     * @return {void}
+     */
+    ex_readUnitData: function(dataObj) {
+
+    }
+    .setProp({
+      noSuper: true,
+      argLen: 1,
     }),
 
 

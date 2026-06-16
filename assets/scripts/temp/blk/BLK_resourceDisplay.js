@@ -18,6 +18,8 @@
   function comp_init(blk) {
     blk.group = BlockGroup.none;
     blk.priority = TargetPriority.base;
+    blk.drawCached = false;
+    blk.drawDynamic = true;
 
     blk.ex_addLogicGetter(LAccess.config, b => b.delegee.ctTg);
     blk.ex_addLogicControl(LAccess.config, (b, param1) => {

@@ -28,7 +28,7 @@
    * @type {Array<string>}
    */
   const ters = (function() {
-    const arr = [];
+    let arr = [];
 
     MDL_event._c_onLoad(() => {
       Vars.content.blocks().each(

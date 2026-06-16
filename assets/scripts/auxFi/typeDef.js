@@ -1607,6 +1607,8 @@
   class RuneOverlay extends OverlayFloor {};
   /** @global mindustry.world.blocks.environment.Prop */
   class Prop extends Block {};
+  /** @global mindustry.world.blocks.environment.StaticProp */
+  class StaticProp extends Prop {};
   /** @global mindustry.world.blocks.environment.RemoveWall */
   class RemoveWall extends Block {};
   /** @global mindustry.world.blocks.environment.StaticWall */

@@ -93,10 +93,30 @@ const BOX_trigger = new CLS_objectBox({
 
 
   /**
+   * Triggered whenever a content is unlocked.
+   * <br> <ARGS>: ct.
+   */
+  contentUnlock: (function() {
+    Events.on(UnlockEvent, ev => {
+      BOX_trigger.contentUnlock.fire(ev.content);
+    });
+
+    return new CLS_eventTrigger("lovec-content-unlock");
+  })(),
+
+
+  /**
    * Triggered whenever an item is produced in some Lovec factory.
    * <br> <ARGS>: b, itm, amt.
    */
   itemProduce: new CLS_eventTrigger("lovec-item-produce"),
+
+
+  /**
+   * Triggered every two seconds whenever a fluid is produced in some Lovec factory.
+   * <br> <ARGS>: b, liq.
+   */
+  fluidProduce: new CLS_eventTrigger("lovec-fluid-produce"),
 
 
   /**

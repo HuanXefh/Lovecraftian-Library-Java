@@ -241,13 +241,21 @@
 
 
         /**
+         * <INTERNAL>: Toggle this if `acceptXxx` from this interface is the last template method to be mixed.
+         * @memberof INTF_BLK_furnaceBlock
+         * @instance
+         */
+        useAndOperForAccept: false,
+        /**
          * <INTERNAL>
+         * @override
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         skipHeatTrans: true,
         /**
          * <INTERNAL>
+         * @override
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
@@ -371,8 +379,8 @@
         return comp_acceptItem(this, b_f, itm);
       }
       .setProp({
-        mergeMode: function(val, valPrev) {
-          return this.block.delegee.noFuelInput ?
+        mergeMode: function(valPrev, val) {
+          return this.block.delegee.noFuelInput || this.block.delegee.useAndOperForAccept ?
             val && valPrev :
             val || valPrev;
         },
@@ -383,8 +391,8 @@
         return comp_acceptLiquid(this, b_f, liq);
       }
       .setProp({
-        mergeMode: function(val, valPrev) {
-          return this.block.delegee.noFuelInput ?
+        mergeMode: function(valPrev, val) {
+          return this.block.delegee.noFuelInput || this.block.delegee.useAndOperForAccept ?
             val && valPrev :
             val || valPrev;
         },
@@ -396,7 +404,7 @@
       }
       .setProp({
         noSuper: true,
-        mergeMode: function(val, valPrev) {
+        mergeMode: function(valPrev, val) {
           return val * valPrev;
         },
       }),

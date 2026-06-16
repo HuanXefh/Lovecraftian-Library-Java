@@ -127,7 +127,7 @@
    */
   const _randRegsGetter = function(nm) {
     return function() {
-      const arr = [];
+      let arr = [];
       if(Vars.headless) return arr;
 
       let i = 0;

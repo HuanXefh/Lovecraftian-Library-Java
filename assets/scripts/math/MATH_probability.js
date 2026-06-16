@@ -88,7 +88,7 @@
    * @return {DistributionArray}
    */
   const _dis_fun = function(size, fun) {
-    const arr = [];
+    let arr = [];
 
     let i = 0;
     while(i < size) {
@@ -110,7 +110,7 @@
    * @return {DistributionArray}
    */
   const _dis_rand = function(size, base, cap, seed) {
-    const arr = [];
+    let arr = [];
     if(base == null) base = 0.0;
     if(cap == null) cap = 1.0;
 
@@ -142,7 +142,7 @@
    * @return {DistributionArray}
    */
   const _dis_norm = function thisFun(size, mu, sigma) {
-    const arr = [];
+    let arr = [];
     if(mu == null) mu = 0.0;
     if(sigma == null) sigma = 1.0;
 

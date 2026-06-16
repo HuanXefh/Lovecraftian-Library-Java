@@ -8,6 +8,13 @@
   /* <---------- import ----------> */
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  let
+    cond;
+
+
   /* <---------- component ----------> */
 
 
@@ -22,12 +29,10 @@
 
 
   const comp_updateTile = function thisFun(b) {
-    if(PARAM.UPDATE_SUPPRESSED) return;
-
-    let liqCur = b.liquids == null ? null : b.liquids.current();
+    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipFacilityUpdate) return;
 
     // Handle auxiliary liquids
-    if(b.liquids != null && TIMER.sec && b.block.delegee.canHandleAux) {
+    if(b.liquids != null && TIMER.secTwo && b.block.delegee.canHandleAux) {
       b.liquids.each(liq => {
         if(!MDL_cond._isAuxiliaryFluid(liq)) return;
         if(b.efficiency < 0.0001 && b.block.delegee.shouldClearAuxOnStop) {
@@ -43,11 +48,12 @@
     if(b.block.delegee.skipFacilityMethod) return;
 
     // Explode if near fire
-    if(Vars.state.rules.reactorExplosions && b.block.delegee.canFireExplode) {
+    if(!Vars.net.client() && Vars.state.rules.reactorExplosions && b.block.delegee.canFireExplode) {
       if(Mathf.chanceDelta(0.005)) {
+        // Fire group is not spatial, I can't enhance this
         b.fireExplodeReady = !Vars.net.client()
-          && (thisFun.checkExplosiveLiquid(b, liqCur) || thisFun.checkExplosiveItem(b))
-          && MDL_pos._tsEdge(b.tile, b.block.size, false, thisFun.tmpTs).some(ot => Fires.get(ot.x, ot.y) != null);
+          && Groups.fire.size() > 0 && MDL_pos._tsEdge(b.tile, b.block.size, false, thisFun.tmpTs).some(ot => Fires.get(ot) != null)
+          && (thisFun.checkExplosiveLiquid(b) || thisFun.checkExplosiveItem(b));
       };
       if(b.fireExplodeReady) {
         b.fireExplodeCd += Time.delta;
@@ -68,8 +74,14 @@
   }
   .setProp({
     tmpTs: [],
-    checkExplosiveLiquid: function(b, liqCur) {
-      return b.liquids != null && VARGEN.exploFlds.includes(liqCur);
+    checkExplosiveLiquid: function(b) {
+      if(b.liquids == null) return false;
+      cond = false;
+      b.liquids.each(liq => {
+        if(cond) return;
+        cond = VARGEN.exploFlds.includes(liq);
+      });
+      return cond;
     },
     checkExplosiveItem: function(b) {
       return b.items == null ? false : VARGEN.exploItms.some(itm => b.items.has(itm));

@@ -179,7 +179,7 @@ Object.mergeDB(db, "DB_status");
 
 
 db["map"]["affinity"].pushAll((function() {
-  const arr = [];
+  let arr = [];
   db["group"]["acidic"].forEachFast(nmSta => {
     arr.push(nmSta, ["melting", function(unit, staEn, time) {staEn.set(this, time + 240.0)}]);
   });
@@ -189,7 +189,7 @@ db["map"]["affinity"].pushAll((function() {
   return arr;
 })());
 db["map"]["opposite"].pushAll((function() {
-  const arr = [];
+  let arr = [];
   db["group"]["acidic"].forEachFast(nmSta => {
     arr.push(nmSta, () => db["group"]["basic"]);
   });

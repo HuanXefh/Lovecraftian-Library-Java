@@ -338,7 +338,9 @@
       }
       .setProp({
         noSuper: true,
-        mergeMode: (valPrev, val) => valPrev * val,
+        mergeMode: function(valPrev, val) {
+          return valPrev * val;
+        },
       }),
 
 

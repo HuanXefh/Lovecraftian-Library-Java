@@ -75,18 +75,6 @@
        * @memberof BLK_gearBox
        * @instance
        */
-      skipTorFetch: false,
-      /**
-       * <INTERNAL>
-       * @memberof BLK_gearBox
-       * @instance
-       */
-      skipTorSupply: false,
-      /**
-       * <INTERNAL>
-       * @memberof BLK_gearBox
-       * @instance
-       */
       topReg: null,
       /**
        * <INTERNAL>
@@ -100,6 +88,20 @@
        * @instance
        */
       botReg: null,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_gearBox
+      * @instance
+      */
+      skipTorFetch: false,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_gearBox
+      * @instance
+      */
+      skipTorSupply: false,
 
 
       /* <------------------------------ vanilla ------------------------------ */

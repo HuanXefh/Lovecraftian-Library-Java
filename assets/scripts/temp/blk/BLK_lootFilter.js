@@ -196,6 +196,15 @@
       }),
 
 
+      drawCached: function() {
+        this.draw();
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
       drawSelect: function() {
         comp_drawSelect(this);
       },

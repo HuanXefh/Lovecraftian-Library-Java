@@ -321,8 +321,8 @@
    * @return {Object}
    */
   CLS_contentTemplate.build = function(paramObj) {
-    const obj = {};
     const thisTemp = this;
+    let obj = {};
     if(this.getParent() == null) ERROR_HANDLER.throw("contentTemplateNoParentJavaClass");
 
     Object._it(this.paramObj, (nm, def) => {

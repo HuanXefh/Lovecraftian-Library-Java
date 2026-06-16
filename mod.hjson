@@ -10,7 +10,7 @@ main: lovec.Lovec
 
 author: MaboroshiX
 repo: HuanXefh/Lovecraftian-Library-Java
-minGameVersion: 158
+minGameVersion: 159
 dependencies: []
 softDependencies: [
   tmi
@@ -24,4 +24,4 @@ A JavaScript library for my other mods, with codes for multi-crafters, recipe di
 Well, not 100% JavaScript.
 '''
 
-version: 101.3.26061501
+version: 101.3.26061601

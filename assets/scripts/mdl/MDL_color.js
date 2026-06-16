@@ -98,7 +98,7 @@
    */
   const _pixColors = function thisFun(pix, useArcColor) {
     // No need for temporary array, there are always new color objects anyway
-    const arr = [];
+    let arr = [];
 
     let
       w = pix.width, h = pix.height,

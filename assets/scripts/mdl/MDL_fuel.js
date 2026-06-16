@@ -68,7 +68,7 @@
    * @return {Resource[]}
    */
   const _fuelArr = function(blk_gn) {
-    const arr = [];
+    let arr = [];
 
     let blk = MDL_content._ct(blk_gn, "blk");
     if(blk == null || tryJsProp(blk, "noFuelInput", false)) return arr;

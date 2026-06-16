@@ -60,7 +60,7 @@
    * @return {Array<string>}
    */
   const _reacGrps = function(reac, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
 
     !(reac instanceof UnlockableContent) ?
       arr.push(reac) :
@@ -80,7 +80,7 @@
    * @return {Array} <ROW>: reacType, paramObj.
    */
   const _reactions = function thisFun(reac1, reac2) {
-    const arr = [];
+    let arr = [];
 
     let grps1 = _reacGrps(reac1, thisFun.grpsCaches[0]);
     let grps2 = _reacGrps(reac2, thisFun.grpsCaches[1]);

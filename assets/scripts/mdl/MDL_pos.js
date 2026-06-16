@@ -552,7 +552,7 @@
    * @return {Array<Tile>}
    */
   const _tsRot = function(t, rot, size, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(size == null) size = 1;
 
@@ -628,7 +628,7 @@
    * @return {Array<Tile>}
    */
   const _tsEdge = function(t, size, isInside, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(size == null) size = 1;
 
@@ -653,7 +653,7 @@
    * @return {Array<Tile>}
    */
   const _tsRect = function(t, r, size, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(r == null) r = 0;
     if(size == null) size = 1;
@@ -718,7 +718,7 @@
    * @return {Array<Tile>}
    */
   const _tsRectRot = function(t, r, rot, size, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(r == null) r = 0;
     if(size == null) size = 1;
@@ -754,7 +754,7 @@
    * @return {Array<Tile>}
    */
   const _tsCircle = function(t, r, size, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(r == null) r = 0;
     if(size == null) size = 1;
@@ -792,7 +792,7 @@
    * @return {Array<Tile>}
    */
   const _tsDstManh = function(t, r, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(r == null) r = 0;
 
@@ -817,7 +817,7 @@
    * @return {Array<Tile>}
    */
   const _tsLinked = function(t, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
 
     t.getLinkedTiles(ot => arr.push(ot));
@@ -853,7 +853,7 @@
    * @return {Building[]}
    */
   const _bs = function(x, y, rad, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return arr;
 
@@ -871,7 +871,7 @@
    * @return {Building[]}
    */
   const _bsTs = function(ts, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
 
     ts.forEachFast(ot => {
       if(ot.build != null && !arr.includes(ot.build)) arr.push(ot.build);
@@ -1000,7 +1000,7 @@
    * @return {Units[]}
    */
   const _units = function(x, y, rad, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return arr;
 
@@ -1046,7 +1046,7 @@
    * @return {Units[]}
    */
   const _unitsRect = function(x, y, r, size, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(r == null) r = 0;
     if(size == null) size = 1;
     let hw = (r + size * 0.5) * Vars.tilesize;
@@ -1172,7 +1172,7 @@
    * @return {Units[]}
    */
   const _loots = function(x, y, rad, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return arr;
 
@@ -1206,7 +1206,7 @@
    * @return {Units[]}
    */
   const _lootsTs = function thisFun(ts, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(ts == null) return arr;
 
     ts.forEachFast(ot => {
@@ -1258,7 +1258,7 @@
    * @return {HealthcGn[]}
    */
   const _esTg = function(x, y, team, rad, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
 
     if(team == null) return arr;
     if(rad == null) rad = Number.n8;
@@ -1285,7 +1285,7 @@
    * @return {HealthcGn[]}
    */
   const _esTgChain = function thisFun(x, y, team, rad, chainRad, chainCap, chainRayCheck, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
 
     if(team == null) return arr;
     if(rad == null) rad = Number.n8;
@@ -1335,7 +1335,7 @@
    * @return {Bullet[]}
    */
   const _buls = function thisFun(x, y, rad, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
 
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return arr;

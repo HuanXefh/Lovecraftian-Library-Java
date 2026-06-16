@@ -77,6 +77,13 @@
        * @instance
        */
       tempExtMtp: 0.0,
+      /**
+       * <INTERNAL>
+       * @override
+       * @memberof BLK_fuelLight
+       * @instance
+       */
+      useAndOperForAccept: true,
 
 
     })

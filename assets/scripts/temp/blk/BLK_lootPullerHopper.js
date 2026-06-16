@@ -16,6 +16,9 @@
 
 
   function comp_init(blk) {
+    blk.drawCached = false;
+    blk.drawDynamic = true;
+
     blk.ex_addLogicGetter(LAccess.range, b => blk.blkRad / Vars.tilesize);
   };
 

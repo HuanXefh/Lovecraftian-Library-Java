@@ -162,13 +162,12 @@
 
       /**
        * Called when something is selected.
-       * <br> <LATER>
        * @memberof INTF_B_contentSelector
        * @instance
        * @return {void}
        */
       ex_onSelectorUpdate: function() {
-
+        if(!Vars.headless && this.block.drawCached) this.recache();
       }
       .setProp({
         noSuper: true,

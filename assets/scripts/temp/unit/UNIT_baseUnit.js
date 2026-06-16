@@ -57,15 +57,6 @@
       if(!VARGEN.unitDataMap.containsKey(unit)) VARGEN.unitDataMap.put(unit, {});
       utp.ex_writeUnitData(unit, VARGEN.unitDataMap.get(unit));
     };
-
-    if(utp.unitDurabCap > 0.0 && unit.delegee != null && unit.delegee.unitDurabUsed != null) {
-      if(unit.delegee.unitDurabUsed >= utp.unitDurabCap) {
-        utp.ex_onDurabOutage(unit);
-      } else {
-        unit.delegee.unitDurabUsed += Time.delta;
-        utp.ex_onDurabDec(unit);
-      };
-    };
   };
 
 
@@ -179,6 +170,18 @@
      * @instance
      */
     unitDurabCap: -1.0,
+    /**
+     * <PARAM>: If true, this unit will despawn when not bound to a building for too long.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
+    isTetheredUnit: false,
+    /**
+     * <PARAM>: Time required without bound building for this tethered unit to despawn. Use negative value for never despawning.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
+    noTetherDespawnTime: 180.0,
 
 
     /* <------------------------------ internal ------------------------------ */
@@ -280,7 +283,6 @@
     /**
      * Called when this unit is out of durability.
      * By default, this unit will be destroyed.
-     * <br> <LATER>
      * @memberof UNIT_baseUnit
      * @instance
      * @param {Unit} unit
@@ -320,7 +322,7 @@
      * @return {void}
      */
     ex_writeUnitData: function(unit, dataObj) {
-      dataObj.unitDurabUsed = unit.delegee.unitDurabUsed;
+      if(unit.ex_writeUnitData != null) unit.ex_writeUnitData(dataObj);
     }
     .setProp({
       noSuper: true,
@@ -336,7 +338,7 @@
      * @return {void}
      */
     ex_readUnitData: function(unit, dataObj) {
-      unit.delegee.unitDurabUsed = Number(dataObj.unitDurabUsed);
+      if(unit.ex_readUnitData != null) unit.ex_readUnitData(dataObj);
     }
     .setProp({
       noSuper: true,
@@ -368,11 +370,18 @@
 
         EntityMapping.idMap[entityVal] = prov(() => {
           processClassLoader();
-          let unit = extend(utp.delegee.entityTemplate.getParent(), mergeObj(utp.delegee.entityTemplate.build(), {
-            classId: function () {
-              return entityVal;
+          let obj = mergeObj(
+            utp.delegee.entityTemplate.build(),
+            {
+              classId: function() {return entityVal},
             },
-          }));
+          );
+          Object._it(obj, (key, val) => {
+            if(!key.startsWith("utp$")) return;
+            obj[key] = tryJsProp(utp, key.replace("utp$", ""), undefined);
+          });
+          let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
+          utp.delegee.entityTemplate.initContent(unit);
           processClassLoader();
 
           return unit;

@@ -198,7 +198,7 @@
      * @type {Object<string, TextureRegion>}
      */
     exports.iconRegs = (function() {
-      const obj = {};
+      let obj = {};
       DB_misc.db["texture"]["icon"].forEachRow(2, (nm, nmReg) => {
         obj[nm] = findRegion(nmReg);
       });
@@ -211,7 +211,7 @@
      * @type {Object<string, TextureRegionDrawable>}
      */
     exports.icons = (function() {
-      const obj = {};
+      let obj = {};
       Object._it(module.exports.iconRegs, (nm, reg) => {
         obj[nm] = new TextureRegionDrawable(reg);
       });
@@ -252,7 +252,7 @@
      * @prop {TextureRegion} shaReg - Wire shadow region.
      */
     exports.wireRegs = (function() {
-      const obj = {};
+      let obj = {};
       obj.regMap = new ObjectMap();
       obj.endRegMap = new ObjectMap();
       DB_block.db["grpParam"]["wireMatReg"].forEachRow(2, (wireMat, nmReg) => {
@@ -281,7 +281,7 @@
      * @type {Object<string, Texture>}
      */
     exports.noiseTexs = (function() {
-      const obj = {};
+      let obj = {};
       let load = path => {
         if(Vars.headless) return new Texture();
         Core.assets.load(path, Texture);
@@ -328,7 +328,7 @@
      * @type {Object<string, Array<UnlockableContent>>}
      */
     exports.factions = (function() {
-      const obj = {};
+      let obj = {};
       DB_block.db["grpParam"]["factionColor"].forEachRow(2, (faction, colorStr) => {
         if(faction === "none") return;
         obj[faction] = MDL_content._factionCts(faction);
@@ -342,7 +342,7 @@
      * @type {Object<string, Array<Block>>}
      */
     exports.facFamis = (function() {
-      const obj = {};
+      let obj = {};
       MDL_content._facFamisDefined().forEachFast(fami => obj[fami] = MDL_content._facFamiBlks(fami));
       return obj;
     })();
@@ -370,7 +370,7 @@
      * @type {Array<Item>}
      */
     exports.sandItms = (function() {
-      const arr = [];
+      let arr = [];
       DB_item.db["group"]["sand"].forEachFast(nm => {
         let itm = MDL_content._ct(nm, "rs");
         if(itm != null) arr.push(itm);
@@ -384,7 +384,7 @@
      * @type {Array<Liquid>}
      */
     exports.hotFlds = (function() {
-      const arr = [];
+      let arr = [];
       Vars.content.liquids().each(
         liq => DB_HANDLER.read("liq-fheat", liq, 0.0) >= 50.0,
         liq => arr.push(liq),
@@ -398,7 +398,7 @@
      * @type {Array<Item>}
      */
     exports.fuelItms = (function() {
-      const arr = [];
+      let arr = [];
       DB_item.db["param"]["fuel"]["item"].forEachRow(2, (nm, params) => {
         let itm = MDL_content._ct(nm, "rs");
         if(itm != null) arr.push(itm);
@@ -412,7 +412,7 @@
      * @type {Array<Liquid>}
      */
     exports.fuelLiqs = (function() {
-      const arr = [];
+      let arr = [];
       DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (nm, params) => {
         let liq = MDL_content._ct(nm, "rs");
         if(liq != null && !liq.gas) arr.push(liq);
@@ -426,7 +426,7 @@
      * @type {Array<Liquid>}
      */
     exports.fuelGases = (function() {
-      const arr = [];
+      let arr = [];
       DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (nm, params) => {
         let liq = MDL_content._ct(nm, "rs");
         if(liq != null && liq.gas) arr.push(liq);
@@ -440,7 +440,7 @@
      * @type {Object<string, Array<Resource>>}
      */
     exports.intmds = (function() {
-      const obj = {};
+      let obj = {};
       DB_item.db["intmd"]["tag"].forEachFast(tag => obj[tag] = []);
       Vars.content.items().each(itm => tryFun(itm.ex_getIntmdTags, itm, Array.air).forEachFast(tag => obj[tag].push(itm)));
       Vars.content.liquids().each(liq => tryFun(liq.ex_getIntmdTags, liq, Array.air).forEachFast(tag => obj[tag].push(liq)));
@@ -591,7 +591,7 @@
      * @type {Array<Weather.WeatherEntry>}
      */
     exports.weaEns = (function() {
-      const obj = {};
+      let obj = {};
       Vars.content.weathers().each(wea => {
         let weaEn = new Weather.WeatherEntry(wea);
         weaEn.always = true;

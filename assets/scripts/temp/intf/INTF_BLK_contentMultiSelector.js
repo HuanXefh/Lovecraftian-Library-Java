@@ -248,13 +248,12 @@
 
       /**
        * See {@link INTF_B_contentSelector}.
-       * <br> <LATER>
        * @memberof INTF_B_contentMultiSelector
        * @instance
        * @return {void}
        */
       ex_onSelectorUpdate: function() {
-
+        if(!Vars.headless && this.block.drawCached) this.recache();
       }
       .setProp({
         noSuper: true,

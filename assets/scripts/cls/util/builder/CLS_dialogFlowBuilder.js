@@ -262,7 +262,7 @@
    * @return {this}
    */
   CLS_dialogFlowBuilder.prototype.setChara = function(charaObjs_p) {
-    const arr = [];
+    let arr = [];
 
     if(this.offInd === 0) {
       this.dialFlowData.push(null, null, null);

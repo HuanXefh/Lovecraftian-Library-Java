@@ -47,6 +47,7 @@
 
     /**
      * Gets a content from the storage.
+     * Usually {@link fetchContent} is used instead.
      * @param {string} nmCt
      * @param {ContentType|unset} [ctType]
      * @return {UnlockableContent|null}
@@ -97,6 +98,7 @@
 
   /**
    * Used to temporarily switch current mod to null.
+   * Should always be called twice!
    * @global
    * @return {void}
    */
@@ -115,7 +117,7 @@
 
 
   /**
-   * Temporarily changes class loader, so that {@link extend} can be applied on mod Java classes.
+   * Temporarily changes class loader, so that {@link extendBase} can be applied on mod Java classes.
    * Should always be called twice!
    * @global
    * @param {java.lang.ClassLoader|unset} [clsLoader]
@@ -137,7 +139,8 @@
 
 
   /**
-   * Lovec version of {@extend} using content templates.
+   * Lovec version of {@link extend} using content templates.
+   * Significantly simplifies content codes.
    * @global
    * @param {Function} temp
    * @param {string} nmCt
@@ -147,18 +150,22 @@
   extendBase = function(temp, nmCt, obj) {
     processClassLoader();
     obj = extendBase.setupObj(temp, obj);
+    // Can't implement interfaces with `extend`, that's why `new JavaAdapter(...)` is used
+    // You cannot pass an array as arguments to a constructor function directly, here it's wrapped in `ctorCall`
     let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj, nmCt));
     extendBase.setupFields(ct, obj);
+    temp.initContent(ct);
     CONTENT_HANDLER.add(ct);
     processClassLoader();
-    temp.initContent(ct);
 
     return ct;
   };
   extendBase.setupObj = function(temp, obj) {
+    // If `obj` not given, build it from template with default values
     return obj != null ? obj : temp.build();
   };
   extendBase.setupArgs = function(temp, obj) {
+    // <ARGS>: javaCls, javaIntf1, javaIntf2, javaIntf3, ..., obj, arg1, arg2, arg3, ...
     let args = [temp.getParent()];
     if(args[0] == null) throw new Error("${1} has no parent Java class!".format(temp.nm));
     args.pushAll(temp.getParentIntfs(obj));
@@ -171,6 +178,7 @@
     return args;
   };
   extendBase.setupFields = function(ins, obj) {
+    // Java adapter only copies methods, I almost forgot this
     for(let key in obj) {
       if(typeof obj[key] === "function") continue;
       ins[key] = obj[key];
@@ -191,6 +199,7 @@
   extendBlock = function(temp, nmBlk, objBlk, objB) {
     processClassLoader();
     let obj = extendBase.setupObj(temp[0], objBlk);
+
     if(obj.forceUseDrawer) {
       let load = obj.load;
       obj.load = function() {
@@ -207,12 +216,14 @@
         this.drawer.getRegionsToOutline(this, regSeqOut);
       };
     };
+
     /** @type {Block} blk */
     let blk = ctorCall(JavaAdapter, extendBase.setupArgs(temp[0], obj, nmBlk));
     extendBase.setupFields(blk, obj);
     blk.buildType = () => {
       processClassLoader();
       let obj1 = extendBase.setupObj(temp[1], objB);
+
       if(obj.forceUseDrawer) {
         obj1.__BACKUP_DRAW__ = obj1.draw;
         obj1.draw = function() {
@@ -228,10 +239,13 @@
             this.block.delegee.drawer.drawLight(this);
         };
       };
+
+      // Building field "blk$xxx" will copy value from block field "xxx" before being used, for edge cases
       Object._it(obj1, (key, val) => {
         if(!key.startsWith("blk$")) return;
         obj1[key] = obj[key.replace("blk$", "")];
       });
+
       /** @type {Building} b */
       let b = ctorCall(JavaAdapter, extendBase.setupArgs(temp[1], obj1, blk));
       extendBase.setupFields(b, obj1);

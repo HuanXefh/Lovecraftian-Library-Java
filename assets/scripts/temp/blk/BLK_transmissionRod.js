@@ -19,6 +19,8 @@
     blk.priority = TargetPriority.transport;
     blk.update = true;
     blk.drawDisabled = true;
+    blk.drawCached = false;
+    blk.drawDynamic = true;
   };
 
 
@@ -104,18 +106,6 @@
        * @memberof BLK_transmissionRod
        * @instance
        */
-      skipTorFetch: true,
-      /**
-       * <INTERNAL>
-       * @memberof BLK_transmissionRod
-       * @instance
-       */
-      skipTorSupply: true,
-      /**
-       * <INTERNAL>
-       * @memberof BLK_transmissionRod
-       * @instance
-       */
       rodRegs: null,
       /**
        * <INTERNAL>
@@ -123,6 +113,20 @@
        * @instance
        */
       dirReg: null,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_transmissionRod
+      * @instance
+      */
+      skipTorFetch: true,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_transmissionRod
+      * @instance
+      */
+      skipTorSupply: true,
 
 
       /* <------------------------------ vanilla ------------------------------ */

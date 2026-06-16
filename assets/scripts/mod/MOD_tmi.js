@@ -562,7 +562,7 @@
   }
   .setProp({
     modeBlksMap: (function() {
-      const obj = {};
+      let obj = {};
       MDL_event._c_onInit(() => {
         obj.floor = Vars.content.blocks().select(blk => blk.itemDrop != null && blk instanceof Floor && !blk.wallOre).toArray();
         obj.wall = Vars.content.blocks().select(blk => blk.itemDrop != null && (blk.solid || (blk instanceof Floor && blk.wallOre))).toArray();

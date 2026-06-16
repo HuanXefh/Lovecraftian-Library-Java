@@ -164,7 +164,7 @@
    * @return {Array}
    */
   CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous) {
-    const arr = [];
+    let arr = [];
 
     let tmpArr = raw.cpy();
     thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous]);

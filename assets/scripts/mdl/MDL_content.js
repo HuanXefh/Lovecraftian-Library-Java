@@ -156,7 +156,7 @@
    * @return {Array<Block>|Array}
    */
   const _reqBlks = function(itm_gn, appendAmt) {
-    const arr = [];
+    let arr = [];
     let itm = _ct(itm_gn, "rs");
     if(itm == null || !(itm instanceof Item)) return arr;
 
@@ -181,7 +181,7 @@
    * @return {Array<Block>}
    */
   const _oreBlks = function(rs_gn) {
-    const arr = [];
+    let arr = [];
     let rs = _ct(rs_gn, "rs");
     if(rs == null) return arr;
 
@@ -230,7 +230,7 @@
    * @return {number}
    */
   const _craftTime = function(blk_gn, isDrillTime, ct_gn) {
-    const arr = DB_block.db["class"]["map"]["craftTime"];
+    let arr = DB_block.db["class"]["map"]["craftTime"];
     let val = Infinity;
     let blk = _ct(blk_gn, "blk");
     if(blk == null) return val;
@@ -278,7 +278,7 @@
     let utp = _ct(utp_gn, "utp");
     if(utp == null) return null;
 
-    const arr = DB_unit.db["grpParam"]["typeTagMap"];
+    let arr = DB_unit.db["grpParam"]["typeTagMap"];
 
     let i = 0, iCap = arr.iCap();
     while(i < iCap) {
@@ -347,7 +347,7 @@
    * @return {Array<UnlockableContent>}
    */
   const _factionCts = function(faction) {
-    const arr = [];
+    let arr = [];
     const li1 = DB_block.db["map"]["faction"];
     const li2 = DB_unit.db["map"]["faction"];
     let i = 0, iCap1 = li1.iCap(), iCap2 = li2.iCap();
@@ -413,8 +413,8 @@
    * @return {Array<Block>}
    */
   const _facFamiBlks = function(facFami) {
-    const arr = [];
-    const arr1 = DB_block.db["map"]["facFami"];
+    let arr = [];
+    let arr1 = DB_block.db["map"]["facFami"];
     let i = 0, iCap = arr1.iCap();
     while(i < iCap) {
       if(arr1[i + 1] === facFami) {

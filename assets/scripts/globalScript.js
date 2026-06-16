@@ -304,6 +304,19 @@
   });
 
 
+  DEBUG = {
+
+    skipFacilityUpdate: false,
+
+    skipRcUpdate: false,
+    skipRcEffcCalc: false,
+    skipRcLiqCons: false,
+    skipRcLiqProd: false,
+    skipRcDump: false,
+
+  },
+
+
 /*
   ========================================
   Section: Client Load

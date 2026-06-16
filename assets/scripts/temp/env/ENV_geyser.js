@@ -193,24 +193,28 @@
 
     /**
      * <INTERNAL>: Will be set later, do not use this.
+     * @override
      * @memberof ENV_geyser
      * @instance
      */
     updateEff: Fx.none,
     /**
      * <INTERNAL>
+     * @override
      * @memberof ENV_geyser
      * @instance
      */
     updateEffP: 0.0035,
     /**
      * <INTERNAL>
+     * @override
      * @memberof ENV_geyser
      * @instance
      */
     updateEffSpread: 0.0,
     /**
      * <INTERNAL>
+     * @override
      * @memberof ENV_geyser
      * @instance
      */

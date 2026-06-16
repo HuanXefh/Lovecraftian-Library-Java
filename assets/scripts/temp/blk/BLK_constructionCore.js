@@ -16,6 +16,8 @@
 
   function comp_init(blk) {
     blk.update = true;
+    blk.drawCached = false;
+    blk.drawDynamic = true;
 
     blk.ex_parseConstructionData();
     if(blk.placeDataX == null) blk.placeDataX = blk.centerPon2.x;
@@ -187,7 +189,7 @@
 
 
   function comp_ex_findPlan(blk, contPlan, tx, ty, rot) {
-    const arr = contPlan != null ? contPlan.clear() : [];
+    let arr = contPlan != null ? contPlan.clear() : [];
 
     let i, iCap = blk.constructionParsedData[0].iCap(), j = 0, jCap = blk.constructionParsedData.iCap(), ot;
     while(j < jCap) {
@@ -212,7 +214,7 @@
 
 
   const comp_ex_calcBlksReq = function thisFun(blk, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
 
     thisFun.tmpArr.clear();
     let i, iCap = blk.constructionParsedData[0].iCap(), j = 0, jCap = blk.constructionParsedData.iCap();
@@ -248,7 +250,7 @@
 
   function comp_ex_calcItmsReq(blk, contObj, blksReq) {
     // I'm using an object cauz adding numbers is torturous when using a formatted array
-    const obj = contObj != null ? Object.clear(contObj) : {};
+    let obj = contObj != null ? Object.clear(contObj) : {};
 
     blksReq = tryVal(blksReq, blk.ex_calcBlksReq(null));
     blksReq.forEachRow(2, (oblk, count) => {

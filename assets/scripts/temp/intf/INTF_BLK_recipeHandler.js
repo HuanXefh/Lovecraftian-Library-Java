@@ -17,6 +17,24 @@
   const STOP_TIME = 360.0;
 
 
+  let
+    i,
+    iCap,
+    j,
+    jCap,
+    tmp,
+    tmp1,
+    amt,
+    p,
+    cond,
+    val,
+    tmpVal,
+    scl,
+    inc,
+    rcMdl,
+    header;
+
+
   function checkSelectedUnloader(b) {
     // Unloaders must be configured, otherwise auto-selection will break
     return b.block instanceof Unloader ?
@@ -68,13 +86,13 @@
     b.useAutoSelection = b.block.delegee.useAutoSelection;
 
     Time.run(0.0, () => {
-      let rcMdl = b.block.delegee.rcMdl;
+      rcMdl = b.block.delegee.rcMdl;
       if(MDL_recipe._hasHeader(rcMdl, b.rcHeader)) {
         b.ex_updateRcParam(rcMdl, b.rcHeader, true);
       } else {
-        let tmpHeader = MDL_recipe._firstHeader(rcMdl);
-        b.ex_updateRcParam(rcMdl, tmpHeader, true);
-        b.rcHeader = tmpHeader;
+        header = MDL_recipe._firstHeader(rcMdl);
+        b.ex_updateRcParam(rcMdl, header, true);
+        b.rcHeader = header;
       };
 
       // Without this consumption is bugged
@@ -84,13 +102,13 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED) return;
+    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
 
     if(b.useAutoSelection && b.keyRs != null && b.lastKeyRs !== b.keyRs) {
       b.lastKeyRs = b.keyRs;
-      let headerTg = (b.keyRs instanceof Liquid ? b.keyFldHeaderMap : b.keyItmHeaderMap).get(b.keyRs);
-      if(headerTg != null) {
-        b.configure(headerTg);
+      header = (b.keyRs instanceof Liquid ? b.keyFldHeaderMap : b.keyItmHeaderMap).get(b.keyRs);
+      if(header != null) {
+        b.configure(header);
       };
     };
 
@@ -161,32 +179,30 @@
 
 
   function comp_acceptItem(b, b_f, itm) {
-    if(b.items == null) return false;
-    if(b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
-    if(b.useAutoSelection && itm !== b.keyRs && checkSelectedUnloader(b_f) && b.keyItmHeaderMap.containsKey(itm)) {
+    if(b.items == null || b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
+    if(b.useAutoSelection && b.keyItmHeaderMap != null && itm !== b.keyRs && checkSelectedUnloader(b_f) && b.keyItmHeaderMap.containsKey(itm)) {
       b.keyRs = itm;
     };
-    if(b.itmAcceptCacheMap.containsKey(itm)) return b.itmAcceptCacheMap.get(itm);
 
-    let cond = FRAG_recipe._hasInput(itm, b.ci, b.bi, b.aux, b.opt);
-    b.itmAcceptCacheMap.put(itm, cond);
+    if(b.itmAcceptCacheArr[itm.id] == null) {
+      b.itmAcceptCacheArr[itm.id] = FRAG_recipe._hasInput(itm, b.ci, b.bi, b.aux, b.opt);
+    };
 
-    return cond;
+    return b.itmAcceptCacheArr[itm.id];
   };
 
 
   function comp_acceptLiquid(b, b_f, liq) {
-    if(b.liquids == null) return false;
-    if(b.liquids.get(liq) >= b.block.liquidCapacity) return false;
-    if(b.useAutoSelection && liq !== b.keyRs && checkSelectedUnloader(b_f) && b.keyFldHeaderMap.containsKey(liq)) {
+    if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
+    if(b.useAutoSelection && b.keyFldHeaderMap != null && liq !== b.keyRs && checkSelectedUnloader(b_f) && b.keyFldHeaderMap.containsKey(liq)) {
       b.keyRs = liq;
     };
-    if(b.liqAcceptCacheMap.containsKey(liq)) return b.liqAcceptCacheMap.get(liq);
 
-    let cond = FRAG_recipe._hasInput(liq, b.ci, b.bi, b.aux, b.opt);
-    b.liqAcceptCacheMap.put(liq, cond);
+    if(b.liqAcceptCacheArr[liq.id] == null) {
+      b.liqAcceptCacheArr[liq.id] = FRAG_recipe._hasInput(liq, b.ci, b.bi, b.aux, b.opt);
+    };
 
-    return cond;
+    return b.liqAcceptCacheArr[liq.id];
   };
 
 
@@ -196,14 +212,16 @@
     MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);
 
     if(b.hasPayInput) {
-      let i = 0, iCap = b.payi.iCap();
+      i = 0;
+      iCap = b.payi.iCap();
       while(i < iCap) {
         Object.mapIncre(b.payReqObj, b.payi[i], -b.payi[i + 1]);
         i += 2;
       };
     };
     if(b.hasPayOutput) {
-      let i = 0, iCap = b.payo.iCap();
+      i = 0;
+      iCap = b.payo.iCap();
       while(i < iCap) {
         Object.mapIncre(b.payStockObj, b.payo[i], b.payo[i + 1]);
         i += 2;
@@ -216,8 +234,6 @@
 
   const comp_displayConsumption = function thisFun(b, tb) {
     tb.left();
-
-    let i, iCap, j, jCap, tmp, tmp1, amt;
 
     // BI
     i = 0;
@@ -291,8 +307,7 @@
       while(i < iCap) {
         tmp = MDL_content._ct(b.payi[i], null, true);
         amt = b.payi[i + 1];
-        let nm = tmp.name;
-        if(amt > 0) MDL_table.__reqCt(tb, tmp, amt, () => tryVal(b.payReqObj[nm], 0));
+        if(amt > 0) MDL_table.__reqCt(tb, tmp, amt, () => tryVal(b.payReqObj[tmp.name], 0));
         i += 2;
       };
     };
@@ -399,8 +414,8 @@
 
 
   function comp_ex_resetRcParam(b) {
-    b.itmAcceptCacheMap.clear();
-    b.liqAcceptCacheMap.clear();
+    b.itmAcceptCacheArr.clear();
+    b.liqAcceptCacheArr.clear();
     HUD_HANDLER.forceUpdateBlockFrag();
 
     if(!PARAM.UPDATE_SUPPRESSED) {
@@ -461,28 +476,29 @@
 
 
   function comp_ex_calcProgInc(b, time) {
-    let inc;
     if(b.block.ignoreLiquidFullness) {
       inc = b.edelta() / time / b.rcTimeScl;
     } else {
-      let val = 1.0, scl = 1.0, hasLiquidOutput = false;
-      let iCap = b.co.iCap();
+      val = 1.0;
+      scl = 1.0;
+      cond = false;
+      iCap = b.co.iCap();
       if(b.liquids != null && iCap > 0) {
         val = 0.0;
-        let i = 0, liq, amt, tmpVal;
+        i = 0;
         while(i < iCap) {
-          liq = b.co[i];
+          tmp = b.co[i];
           amt = b.co[i + 1];
-          tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(liq)) / (amt * b.edelta());
+          tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(tmp)) / (amt * b.edelta());
           val = Math.max(val, tmpVal);
-          if(!MDL_cond._isAuxiliaryFluid(liq)) {
+          if(!MDL_cond._isAuxiliaryFluid(tmp)) {
             scl = Math.min(scl, tmpVal);
           };
-          hasLiquidOutput = true;
+          cond = true;
           i += 2;
         };
       };
-      if(!hasLiquidOutput) val = 1.0;
+      if(!cond) val = 1.0;
       inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rcTimeScl;
     };
 
@@ -904,13 +920,13 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        itmAcceptCacheMap: prov(() => new ObjectMap()),
+        itmAcceptCacheArr: prov(() => []),
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        liqAcceptCacheMap: prov(() => new ObjectMap()),
+        liqAcceptCacheArr: prov(() => []),
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
@@ -952,13 +968,13 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        blk$isErekirHeatConsumer: null,
+        blk$isErekirHeatConsumer: "!REPLACE",
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        blk$isErekirHeatProducer: null,
+        blk$isErekirHeatProducer: "!REPLACE",
 
 
       }))
@@ -1031,7 +1047,7 @@
       }
       .setProp({
         noSuper: true,
-        mergeMode: function(val, valPrev) {
+        mergeMode: function(valPrev, val) {
           return val * valPrev;
         },
       }),

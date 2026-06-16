@@ -63,7 +63,7 @@
    * @return {Array<Building>}
    */
   const _bsPayInput = function(b, mode, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
 
     let obj = DB_block.db["class"]["group"]["payload"]["site"];
     b.proximity.each(
@@ -88,7 +88,7 @@
    * @return {Array<Building>}
    */
   const _bsPayOutput = function(b, mode, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
 
     let obj = DB_block.db["class"]["group"]["payload"]["site"];
     b.proximity.each(

@@ -11,6 +11,7 @@
   const PARENT = CLS_contentTemplate;
   const INTF = require("lovec/temp/intf/INTF_BLK_coreEnergyConsumer");
   const INTF_A = require("lovec/temp/intf/INTF_BLK_multiBlockHandler");
+  const INTF_B = require("lovec/temp/intf/INTF_BLK_buildingRecacheHandler");
 
 
   /* <---------- auxiliary ----------> */
@@ -48,7 +49,7 @@
 
     if(blk.payBuiltOnly) {
       blk.rebuildable = false;
-      blk.placeablePlayer = false;
+      blk.buildVisibility = BuildVisibility.sandboxOnly;
       MDL_event._c_onLoad(() => {
         blk.buildTime = Number.fMax;
       });
@@ -190,8 +191,9 @@
      * @extends CLS_contentTemplate
      * @extends INTF_BLK_coreEnergyConsumer
      * @extends INTF_BLK_multiBlockHandler
+     * @extends INTF_BLK_buildingRecacheHandler
      */
-    newClass().extendClass(PARENT, "BLK_baseBlock").implement(INTF[0]).implement(INTF_A[0]).initClass()
+    newClass().extendClass(PARENT, "BLK_baseBlock").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
     .setParent(null)
     .setTags()
     .setParam({
@@ -404,8 +406,9 @@
      * @extends CLS_contentTemplate
      * @extends INTF_B_coreEnergyConsumer
      * @extends INTF_B_multiBlockHandler
+     * @extends INTF_B_buildingRecacheHandler
      */
-    newClass().extendClass(PARENT, "B_baseBlock").implement(INTF[1]).implement(INTF_A[1]).initClass()
+    newClass().extendClass(PARENT, "B_baseBlock").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
     .setParent(null)
     .setParam({
 

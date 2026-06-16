@@ -20,6 +20,8 @@
     blk.group = BlockGroup.none;
     blk.priority = TargetPriority.base;
     blk.buildVisibility = BuildVisibility.sandboxOnly;
+    blk.drawCached = false;
+    blk.drawDynamic = true;
 
     blk.configurable = true;
 
@@ -98,20 +100,6 @@
 
       /**
        * <INTERNAL>
-       * @override
-       * @memberof BLK_heatSource
-       * @instance
-       */
-      skipHeatFetch: true,
-      /**
-       * <INTERNAL>
-       * @override
-       * @memberof BLK_heatSource
-       * @instance
-       */
-      skipHeatTrans: true,
-      /**
-       * <INTERNAL>
        * @memberof BLK_heatSource
        * @instance
        */
@@ -122,6 +110,20 @@
        * @instance
        */
       sideReg2: null,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_heatSource
+      * @instance
+      */
+      skipHeatFetch: true,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_heatSource
+      * @instance
+      */
+      skipHeatTrans: true,
 
 
     })

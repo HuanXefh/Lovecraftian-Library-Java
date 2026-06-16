@@ -112,18 +112,21 @@
       liqReg: null,
       /**
        * <INTERNAL>
+       * @override
        * @memberof  BLK_depthPump
        * @instance
        */
       attrMode: AttrModes.OVERLAY,
       /**
        * <INTERNAL>
+       * @override
        * @memberof  BLK_depthPump
        * @instance
        */
       attrRsArr: DB_item.db["map"]["attr"]["dpliq"],
       /**
        * <INTERNAL>
+       * @override
        * @memberof  BLK_depthPump
        * @instance
        */

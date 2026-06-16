@@ -46,7 +46,7 @@
       return String.multiline(
         "[LOVEC] Liquid info for ${1} at (${2}, ${3}):".format(b.block.localizedName.plain().color(b.team.color), tx, ty),
         (function() {
-          const arr = [];
+          let arr = [];
           if(b.liquids == null) {
             arr.push("- No liquid module!");
             return arr;

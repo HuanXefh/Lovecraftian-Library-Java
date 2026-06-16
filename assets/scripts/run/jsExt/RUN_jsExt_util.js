@@ -36,7 +36,7 @@
    * @return {Object}
    */
   Object.arrToObj = function(arr) {
-    const obj = {};
+    let obj = {};
 
     let i = 0, iCap = arr.iCap();
     while(i < iCap) {
@@ -54,7 +54,7 @@
    * @return {Array}
    */
   Object.objToArr = function(obj) {
-    const arr = [];
+    let arr = [];
 
     let i = 0;
     for(let key in obj) {
@@ -72,7 +72,7 @@
    * @return {Array}
    */
   Object.objTo2Arr = function(obj) {
-    const arr = [];
+    let arr = [];
     if(obj == null) return arr;
 
     let i = 0;
@@ -93,7 +93,7 @@
    * @return {Object}
    */
   Object.mergeObj = function() {
-    const obj0 = {};
+    let obj0 = {};
 
     for(let obj of arguments) {
       if(typeof obj !== "object") continue;
@@ -113,7 +113,7 @@
    * @return {Object}
    */
   Object.mergeObjMixin = function() {
-    const obj0 = {};
+    let obj0 = {};
 
     for(let obj of arguments) {
       if(typeof obj !== "object") continue;

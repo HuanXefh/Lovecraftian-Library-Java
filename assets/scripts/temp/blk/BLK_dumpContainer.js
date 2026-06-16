@@ -29,7 +29,7 @@
     if(b.ctTgs.length === 0) return;
 
     let bSpd = MDL_entity._bSpd(b);
-    if(bSpd > 0.0 && b.timerDump.get(b.block.dumpTime / Math.max(bSpd, 0.0001))) {
+    if(bSpd > 0.0 && b.timer.get(b.block.timerDump, b.block.dumpTime / Math.max(bSpd, 0.0001))) {
       b.dump(b.ctTgs.readRand());
     };
   };
@@ -97,21 +97,7 @@
      */
     newClass().extendClass(PARENT[1], "B_dumpContainer").implement(INTF[1]).initClass()
     .setParent(StorageBlock.StorageBuild)
-    .setParam({
-
-
-      /* <------------------------------ internal ------------------------------ */
-
-
-      /**
-       * <INTERNAL>
-       * @memberof B_dumpContainer
-       * @instance
-       */
-      timerDump: prov(() => new Interval(1)),
-
-
-    })
+    .setParam({})
     .setMethod({
 
 

@@ -83,7 +83,6 @@
     extraInfoCooldown: 50.0,
     lootProtection: 240.0,
     lootLifetime: 7200.0,
-    noLinkDespawnTime: 30.0,
     powTransOverloadTime: 120.0,
   };
 

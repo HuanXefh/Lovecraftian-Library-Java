@@ -18,6 +18,24 @@
 */
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  let
+    i,
+    iCap,
+    j,
+    jCap,
+    tmp,
+    tmp1,
+    p,
+    mtp,
+    effc,
+    dir,
+    allAbsent,
+    failed;
+
+
   /* <---------- condition ----------> */
 
 
@@ -33,7 +51,6 @@
   const _hasInput = function(rs_gn, ci, bi, aux, opt) {
     let rs = MDL_content._ct(rs_gn, "rs");
     if(rs == null) return false;
-    let i, iCap, j, jCap, tmp, tmp1;
 
     // CI
     i = 0;
@@ -118,7 +135,6 @@
   const _hasOutput = function(rs_gn, co, bo, fo) {
     let rs = MDL_content._ct(rs_gn, "rs");
     if(rs == null) return false;
-    let i, iCap, tmp;
 
     // CO
     i = 0;
@@ -159,8 +175,6 @@
    * @return {boolean}
    */
   const _hasOutput_itm = function(bo, fo) {
-    let i, iCap;
-
     // FO
     // At the top for less calculation
     if(fo.length > 0) return true;
@@ -186,8 +200,6 @@
    * @return {boolean}
    */
   const _hasOutput_liq = function(includeAux, co, bo) {
-    let i, iCap, tmp;
-
     // CO
     i = 0;
     iCap = co.iCap();
@@ -241,8 +253,7 @@
    * @return {Array<Liquid>}
    */
   const _inputLiqs = function(contArr, ci, bi, aux) {
-    const arr = contArr != null ? contArr.clear() : [];
-    let i, iCap, j, jCap, tmp, tmp1;
+    let arr = contArr != null ? contArr.clear() : [];
 
     // CI
     i = 0;
@@ -302,8 +313,7 @@
    * @return {Array<Liquid>}
    */
   const _outputLiqs = function(contArr, co, bo) {
-    const arr = contArr != null ? contArr.clear() : [];
-    let i, iCap, tmp;
+    let arr = contArr != null ? contArr.clear() : [];
 
     // CO
     i = 0;
@@ -333,8 +343,6 @@
    * @return {boolean}
    */
   const _canAdd = function(b) {
-    let i, iCap, tmp, amt, p;
-
     // CO
     if(b.liquids != null) {
       let allFull = true;
@@ -398,11 +406,9 @@
    * @return {[Array<Item>, Array<Liquid>]}
    */
   const _dumpTup = function(b, contTup) {
-    const tup = contTup != null ? contTup : [[], []];
+    let tup = contTup != null ? contTup : [[], []];
     tup[0].clear();
     tup[1].clear();
-
-    let i, iCap, tmp;
 
     // BO
     i = 0;
@@ -441,7 +447,6 @@
 
     let tup = [];
     let tmpMtp = 0.0;
-    let i, iCap, tmp, amt, p, mtp;
 
     i = 0;
     iCap = b.delegee.opt.iCap();
@@ -468,11 +473,11 @@
    * @return {number}
    */
   const _effc = function(b) {
-    if(b.cheating()) return 1.0;
+    if(b.cheating() || DEBUG.skipRcEffcCalc) return 1.0;
 
-    let effc = 1.0, mtp = 1.0;
+    effc = 1.0;
+    mtp = 1.0;
     if(b.power != null && !b.block.outputsPower) effc *= b.power.status;
-    let i, iCap, j, jCap, tmp, tmp1, amt, allAbsent;
 
     // OPT
     if(effc > 0.0 && b.delegee.opt.length > 0) {
@@ -595,8 +600,6 @@
   const consume_itm = function(b) {
     if((b.items == null || !b.items.any()) && b.liquids == null) return;
 
-    let i, iCap, j, jCap, tmp, tmp1, amt, p;
-
     // BI
     i = 0;
     iCap = b.delegee.bi.iCap();
@@ -653,9 +656,7 @@
    * @return {void}
    */
   const consume_liq = function(b, progIncLiq, timeScl) {
-    if(b.liquids == null) return;
-
-    let i, iCap, j, jCap, tmp, amt;
+    if(b.liquids == null || DEBUG.skipRcLiqCons) return;
 
     // CI
     i = 0;
@@ -703,9 +704,7 @@
    * @return {void}
    */
   const produce_itm = function(b, failP) {
-    let failed = Mathf.chance(failP);
-
-    let i, iCap, tmp, amt, p;
+    failed = Mathf.chance(failP);
 
     // BO
     if(!failed) {
@@ -756,9 +755,7 @@
    * @return {void}
    */
   const produce_liq = function(b, progIncLiq, timeScl) {
-    if(b.liquids == null) return;
-
-    let i, iCap, tmp, amt;
+    if(b.liquids == null || DEBUG.skipRcLiqProd) return;
 
     // CO
     i = 0;
@@ -766,6 +763,9 @@
     while(i < iCap) {
       tmp = b.delegee.co[i];
       amt = b.delegee.co[i + 1];
+      if(TIMER.secTwo && amt > 0.0) {
+        TRIGGER.fluidProduce.fire(b, tmp);
+      };
       b.handleLiquid(b, tmp, Math.min(amt * progIncLiq * timeScl, b.block.liquidCapacity - b.liquids.get(tmp)));
       b.delegee.prodTmpObj[tmp.name] = amt;
       i += 2;
@@ -781,12 +781,9 @@
    * @return {void}
    */
   const dump = function(b, dumpTup) {
-    if(dumpTup == null) return;
-
-    let i, iCap;
+    if(dumpTup == null || DEBUG.skipRcDump) return;
 
     if(b.liquids != null) {
-      let tmp, dir;
       i = 0;
       iCap = b.delegee.co.iCap();
       while(i < iCap) {

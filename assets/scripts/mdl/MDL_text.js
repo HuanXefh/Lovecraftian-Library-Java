@@ -158,7 +158,7 @@
    * @return {Array<string>}
    */
   const tagTextToArr = function(text, contArr) {
-    const arr = contArr != null ? contArr.clear() : [];
+    let arr = contArr != null ? contArr.clear() : [];
     if(String.isEmpty(text) || text === "!NOTAG") return arr;
 
     let tmp = "", l;
@@ -210,7 +210,7 @@
    * _keywords("copper;lead;graphite");                // Returns ["copper", "lead", "graphite"]
    */
   const _keywords = function thisFun(str) {
-    const arr = [];
+    let arr = [];
 
     let tmp = "", l;
     let i = 0, iCap = str.iCap();
@@ -243,7 +243,7 @@
    * @return {(function(UnlockableContent): boolean)[]}
    */
   const _searchBoolFs = function(keywords) {
-    const arr = [];
+    let arr = [];
     const li = DB_misc.db["search"]["tag"];
 
     let isTag = false, tmpTag, tmpStr, i, iCap = li.iCap();

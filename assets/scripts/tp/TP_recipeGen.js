@@ -216,7 +216,7 @@
       includeGas = readParam(metaObj, "includeGas", false),
       mode = readParam(metaObj, "neutral", false);
 
-    const arr = [];
+    let arr = [];
     if(includeItem) arr.pushAll(DB_recipe.db["genData"]["dryingItem"]);
     if(includeLiquid) {
       arr.pushAll(DB_recipe.db["genData"]["dryingLiquid"]);
@@ -502,7 +502,7 @@
     let
       fuelType = readParam(metaObj, "fuelType", FuelTypes.ITEM);
 
-    const arr = [];
+    let arr = [];
     if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnSolid"]);
     if((fuelType & FuelTypes.LIQUID) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnLiquid"]);
     if((fuelType & FuelTypes.GAS) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnGas"]);

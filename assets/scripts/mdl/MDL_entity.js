@@ -404,7 +404,7 @@
   const _waveArr = function(countWave) {
     if(countWave == null) countWave = Vars.state.wave;
 
-    const arr = [];
+    let arr = [];
     Vars.state.rules.spawns.each(spawnGrp => spawnGrp.team == null || spawnGrp.team === Vars.state.rules.waveTeam, spawnGrp => {
       let amt = spawnGrp.getSpawned(countWave);
       if(amt > 0) arr.push(spawnGrp.type, amt, spawnGrp.getShield(countWave), spawnGrp.effect);

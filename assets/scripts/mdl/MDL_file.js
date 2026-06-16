@@ -296,7 +296,7 @@
    * @return {Array}
    */
   const _r_csv = function(fi, bypassExt) {
-    const arr = [];
+    let arr = [];
 
     if(fi == null || (!bypassExt && fi.extension() !== "csv")) return arr;
 

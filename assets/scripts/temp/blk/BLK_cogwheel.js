@@ -22,6 +22,8 @@
     blk.update = true;
     blk.configurable = true;
     blk.drawDisabled = true;
+    blk.drawDynamic = true;
+    blk.drawCached = false;
 
     blk.config(JAVA.boolean, (b, bool) => {
       b.onProximityUpdate();
@@ -164,18 +166,6 @@
        * @memberof BLK_cogwheel
        * @instance
        */
-      skipTorFetch: true,
-      /**
-       * <INTERNAL>
-       * @memberof BLK_cogwheel
-       * @instance
-       */
-      skipTorSupply: true,
-      /**
-       * <INTERNAL>
-       * @memberof BLK_cogwheel
-       * @instance
-       */
       invReg: null,
       /**
        * <INTERNAL>
@@ -189,6 +179,20 @@
        * @instance
        */
       cogInvOffAng: 0.0,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_cogwheel
+      * @instance
+      */
+      skipTorFetch: true,
+      /**
+      * <INTERNAL>
+      * @override
+      * @memberof BLK_cogwheel
+      * @instance
+      */
+      skipTorSupply: true,
 
 
       /* <------------------------------ vanilla ------------------------------ */
@@ -405,7 +409,7 @@
       ex_processData: function(wr0rd) {
         processData(
           wr0rd,
-          
+
           wr => {
             wr.bool(this.isInv);
           },

@@ -17,6 +17,29 @@
 */
 
 
+  /* <------------------------------ auxiliary ------------------------------ */
+
+
+  let
+    x,
+    y,
+    offX,
+    offY,
+    reg,
+    ang,
+    life,
+    scl,
+    i,
+    iCap,
+    j,
+    jCap,
+    amt,
+    cond,
+    cap,
+    warmup,
+    cd;
+
+
   /* <------------------------------ region ------------------------------ */
 
 
@@ -53,18 +76,18 @@
 
 
       draw(b) {
-        let ang_fi = Mathf.mod(MDL_entity._tProg(b) * this.spd + this.ang, 90.0);
+        ang = Mathf.mod(MDL_entity._tProg(b) * this.spd + this.ang, 90.0);
         if(!this.shouldFade) {
-          Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, ang_fi);
+          Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, ang);
         } else {
           if(this.spd < 0.0) {
-            Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, -ang_fi + 90.0);
+            Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, -ang + 90.0);
             Draw.alpha(1.0 - ang_fi / 90.0);
-            Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, -ang_fi);
+            Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, -ang);
           } else {
-            Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, ang_fi);
+            Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, ang);
             Draw.alpha(ang_fi / 90.0);
-            Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, ang_fi - 90.0);
+            Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, ang - 90.0);
           };
           Draw.reset();
         };
@@ -87,7 +110,7 @@
       colorGetterTup: readParam(paramObj, "colorGetterTup", null),
       offX: readParam(paramObj, "offX", 0.0),
       offY: readParam(paramObj, "offY", 0.0),
-      regScl: readParam(paramObj, "regScl", 1.0),
+      regScl: readParam(paramObj, "regScl", 1.0) * 2.0 / Vars.tilesize,
 
 
       load(blk) {
@@ -104,13 +127,13 @@
 
       draw(b) {
         if(this.ctGetterTup == null || this.ctGetterTup[0](b) == null) return;
-        let reg = this.ctGetterTup[0](b).fullIcon;
+        reg = this.ctGetterTup[0](b).fullIcon;
 
         if(this.colorGetterTup == null) {
-          Draw.rect(reg, b.x + this.offX, b.y + this.offY, reg.width * 2.0 * this.regScl / Vars.tilesize, reg.height * 2.0 * this.regScl / Vars.tilesize);
+          Draw.rect(reg, b.x + this.offX, b.y + this.offY, reg.width * this.regScl, reg.height * this.regScl);
         } else {
           Draw.color(MDL_color._color(this.colorGetterTup[0](b)));
-          Draw.rect(reg, b.x + this.offX, b.y + this.offY, reg.width * 2.0 * this.regScl / Vars.tilesize, reg.height * 2.0 * this.regScl / Vars.tilesize);
+          Draw.rect(reg, b.x + this.offX, b.y + this.offY, reg.width * this.regScl, reg.height * this.regScl);
           Draw.color();
         };
       },
@@ -200,7 +223,7 @@
 
 
       draw(b) {
-        let cap = 0;
+        cap = 0;
         b.liquids.each(liq => {
           if(!liq.gas && !MDL_cond._isAuxiliaryFluid(liq)) cap++;
         });
@@ -219,7 +242,7 @@
 
     }),
   );
-  
+
 
   /* <------------------------------ effect ------------------------------ */
 
@@ -266,9 +289,8 @@
         if(Vars.state.isPaused() || !Mathf.chanceDelta(this.effP * b.efficiency)) return;
 
         if(this.z != null) this.eff.layer = this.z;
-        let
-          x = b.x + (this.offX + Mathf.range(this.rad)) * (!this.rotate ? 1.0 : Mathf.cosDeg(b.drawrot())),
-          y = b.y + (this.offY + Mathf.range(this.rad)) * (!this.rotate ? 1.0 : Mathf.sinDeg(b.drawrot()));
+        x = b.x + (this.offX + Mathf.range(this.rad)) * (!this.rotate ? 1.0 : Mathf.cosDeg(b.drawrot()));
+        y = b.y + (this.offY + Mathf.range(this.rad)) * (!this.rotate ? 1.0 : Mathf.sinDeg(b.drawrot()));
 
         this.eff.at(
           x, y,
@@ -302,7 +324,7 @@
 
       load(blk) {
         this.regs = [];
-        let i = 0;
+        i = 0;
         while(i < this.frameCap) {
           this.regs[i] = Core.atlas.find(this.regStr + i);
           i++;
@@ -318,7 +340,7 @@
             this.frameCur %= this.frameCap;
           };
         };
-        let warmup = tryProp(b.warmup, b);
+        warmup = tryProp(b.warmup, b);
         Draw.color(Color.white, warmup > 0.0 ? 1.0 : 0.0);
         processScl(warmup);
         Draw.rect(this.regs[Math.floor(this.frameCur)], b.x + this.offX, b.y + this.offY);
@@ -349,7 +371,7 @@
       scl: readParam(paramObj, "scl", 30.0),
       recur: readParam(paramObj, "recur", 6.0),
       isFilled: readParam(paramObj, "isFilled", false),
-      noLiqCheck: readParam(paramObj, "noLiqCheck", true),
+      noLiqCheck: readParam(paramObj, "noLiqCheck", false),
       rand: new Rand(),
       noLiqCdMap: new ObjectMap(),
 
@@ -364,11 +386,11 @@
 
 
       draw(b) {
-        let warmup = tryProp(b.warmup, b);
+        warmup = tryProp(b.warmup, b);
         if(warmup < 0.01) return;
         if(this.noLiqCheck) {
-          if(!this.noLiqCdMap.containsKey(b)) this.noLiqCdMap.put(b, 0.0);
-          let cd = this.noLiqCdMap.get(b), amt, cond = true;
+          cd = this.noLiqCdMap.get(b, 0.0);
+          cond = true;
           b.liquids.each(liq => {
             if(!cond) return;
             amt = b.liquids.get(liq);
@@ -388,7 +410,7 @@
 
         Draw.color(this.color, this.color.a * warmup);
         this.rand.setSeed(b.id);
-        let i = 0, offX, offY, life;
+        i = 0;
         while(i < this.amt) {
           offX = this.rand.range(this.rad);
           offY = this.rand.range(this.rad);
@@ -431,12 +453,12 @@
 
 
       draw(b) {
-        b.delegee.__BACKUP_DRAW__();
+        b.delegee.__BACKUP_DRAW__.call(b);
       },
 
 
       drawLight(b) {
-        b.delegee.__BACKUP_DRAWLIGHT__();
+        b.delegee.__BACKUP_DRAWLIGHT__.call(b);
       },
 
 

@@ -50,7 +50,7 @@
                 let itm = Vars.content.item(nmItm);
                 if(itm == null) return;
                 matArr.push([
-                  tb2 => MDL_table.__rcCt(tb2, itm, -1),
+                  itm,
                   itm.localizedName,
                   effc.perc(0),
                 ]);
@@ -75,14 +75,15 @@
           this.effcMap.each((nmItm, effc) => {
             itm = Vars.content.item(nmItm);
             if(itm == null) return;
-            dictConsItm[itm.id].push(blk, effc, {});
+            dictConsItm[itm.id].push(blk, 1, {});
           });
         },
 
 
         ex_setTmiRc(blk, rawRc, boostEffc) {
+          let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
           this.effcMap.each((nmItm, effc) => {
-            MOD_tmi.addCons(rawRc, nmItm, effc);
+            MOD_tmi.addOpt(rawRc, rcGrp, nmItm, 1, effc, false, true);
           });
         },
 
@@ -168,8 +169,9 @@
 
 
         ex_setTmiRc(blk, rawRc, boostEffc) {
+          let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
           this.effcMap.each((nmLiq, effc) => {
-            MOD_tmi.addCons(rawRc, nmLiq, this.amount, true);
+            MOD_tmi.addOpt(rawRc, rcGrp, nmLiq, this.amount, effc, true, true);
           });
         },
 

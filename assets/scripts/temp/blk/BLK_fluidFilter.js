@@ -15,6 +15,12 @@
   /* <---------- component ----------> */
 
 
+  function comp_init(blk) {
+    blk.drawCached = false;
+    blk.drawDynamic = true;
+  };
+
+
   function comp_load(blk) {
     blk.topReg = fetchRegion(blk, "-top");
   };
@@ -78,6 +84,11 @@
 
     })
     .setMethod({
+
+
+      init: function() {
+        comp_init(this);
+      },
 
 
       load: function() {

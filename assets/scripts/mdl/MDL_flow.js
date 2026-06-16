@@ -110,7 +110,7 @@
    * @return {Array<string>}
    */
   const _fTags = function(liq_gn) {
-    const arr0 = [];
+    let arr0 = [];
 
     let liq = MDL_content._ct(liq_gn, "rs");
     if(liq == null) return arr0;

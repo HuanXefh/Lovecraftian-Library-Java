@@ -19,6 +19,8 @@
     blk.update = true;
     blk.group = BlockGroup.none;
     blk.priority = TargetPriority.base;
+    blk.drawCached = false;
+    blk.drawDynamic = true;
 
     blk.heatLightTempReq = blk.fullHeatThr;
   };

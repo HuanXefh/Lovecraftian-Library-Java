@@ -447,7 +447,7 @@
    * @return {Array<number>}
    */
   Array.prototype.cumOper = function(scr) {
-    const arr = [];
+    let arr = [];
 
     let tmp = 0.0;
     let i = 0, iCap = this.iCap();
@@ -498,7 +498,7 @@
   }
   .setProp({
     applyDiff: arr => {
-      const arr0 = [];
+      let arr0 = [];
 
       let i = 0, iCap = arr.iCap() - 1;
       while(i < iCap) {

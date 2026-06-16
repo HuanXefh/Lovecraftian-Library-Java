@@ -119,7 +119,7 @@
    * @return {Array<number>}
    */
   const _pathSegLens = function(pathData, dim) {
-    const arr = [];
+    let arr = [];
 
     if(dim == null) dim = 2;
 

@@ -626,7 +626,7 @@
    * @return {Array<number>}
    */
   Array.getIndArr = function(len, isStatistical) {
-    const arr = [];
+    let arr = [];
 
     let i = 0;
     while(i < len) {
@@ -699,7 +699,7 @@
    * @return {Array}
    */
   Array.prototype.unique = function(mapF) {
-    const arr = [];
+    let arr = [];
 
     let i = 0, iCap = this.iCap();
     if(mapF == null) {
@@ -732,7 +732,7 @@
    * @return {Array}
    */
   Array.prototype.intersect = function(eles_p, mapF) {
-    const arr = [];
+    let arr = [];
 
     let i = 0, iCap = this.iCap();
     if(mapF == null) {
@@ -766,7 +766,7 @@
    * @return {Array}
    */
   Array.prototype.differ = function(eles_p, mapF) {
-    const arr = [];
+    let arr = [];
 
     let i = 0, iCap = this.iCap();
     if(mapF == null) {
@@ -800,7 +800,7 @@
    * @return {Array}
    */
   Array.prototype.chunk = function(ord, def) {
-    const arr = [];
+    let arr = [];
     if(ord == null) ord = 1;
 
     let i = 0, j, iCap = Math.ceil(this.length / ord);
@@ -829,7 +829,7 @@
    * @return {Array}
    */
   Array.prototype.flatten = function() {
-    const arr = [];
+    let arr = [];
 
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
@@ -886,7 +886,7 @@
    * @return {Array}
    */
   Array.prototype.sample = function(amt) {
-    const arr = Array.prototype.sample.tmpArr.cpy(this).randomize();
+    let arr = Array.prototype.sample.tmpArr.cpy(this).randomize();
     if(amt == null) amt = this.iCap();
 
     return amt >= arr.length ?
@@ -904,7 +904,7 @@
    * @return {Array} <ROW>: ele, count.
    */
   Array.prototype.toCountArr = function(ord, off) {
-    const arr = [];
+    let arr = [];
     if(ord == null) ord = 1;
     if(off == null) off = 0;
 
@@ -1025,7 +1025,7 @@
    * @return {Array}
    */
   Array.prototype.readCol = function(ord, off) {
-    const arr = [];
+    let arr = [];
     if(ord == null) ord = 1;
     if(off == null) off = 0;
 
@@ -1066,7 +1066,7 @@
    * @return {Array}
    */
   Array.prototype.readList = function(nms_p, isUnordered) {
-    const arr = [];
+    let arr = [];
 
     let i = 0, iCap = this.iCap();
     let nms = nms_p instanceof Array ? nms_p : [nms_p];

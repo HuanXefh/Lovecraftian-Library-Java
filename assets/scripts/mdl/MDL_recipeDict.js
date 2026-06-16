@@ -203,7 +203,7 @@
     let blk = MDL_content._ct(blk_gn, "blk");
     if(ct == null || blk == null) return val;
 
-    const arr = rcDict.cons[
+    let arr = rcDict.cons[
       ct instanceof Item ?
         "item" :
         ct instanceof Liquid ?
@@ -249,7 +249,7 @@
     let blk = MDL_content._ct(blk_gn, "blk");
     if(ct == null || blk == null) return val;
 
-    const arr = rcDict.prod[
+    let arr = rcDict.prod[
       ct instanceof Item ?
         "item" :
         ct instanceof Liquid ?
@@ -327,12 +327,12 @@
    * @return {Array}
    */
   const _consumers = function(ct_gn, appendData) {
-    const arr = [];
+    let arr = [];
 
     let ct = MDL_content._ct(ct_gn, null, true);
     if(ct == null) return arr;
 
-    const arr1 = rcDict.cons[
+    let arr1 = rcDict.cons[
       ct instanceof Item ?
         "item" :
         ct instanceof Liquid ?
@@ -367,12 +367,12 @@
    * @return {Array}
    */
   const _producers = function(ct_gn, appendData) {
-    const arr = [];
+    let arr = [];
 
     let ct = MDL_content._ct(ct_gn, null, true);
     if(ct == null) return arr;
 
-    const arr1 = rcDict.prod[
+    let arr1 = rcDict.prod[
       ct instanceof Item ?
         "item" :
         ct instanceof Liquid ?
