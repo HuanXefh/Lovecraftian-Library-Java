@@ -99,8 +99,8 @@
 
 
   function comp_ex_updatePaySite(b) {
-    FRAG_payload._bsPayInput(b, b.block.delegee.payInputSideFracMode, b.payInputBs);
-    FRAG_payload._bsPayOutput(b, b.block.delegee.payOutputSideFracMode, b.payOutputBs);
+    FRAG_payload._bsPayInput(b.payInputBs, b, b.block.delegee.payInputSideFracMode);
+    FRAG_payload._bsPayOutput(b.payOutputBs, b, b.block.delegee.payOutputSideFracMode);
   };
 
 

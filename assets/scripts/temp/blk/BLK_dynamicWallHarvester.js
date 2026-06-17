@@ -154,7 +154,7 @@
        * @return {Array<Tile>}
        */
       ex_findDynaAttrTs: function(contArr, tx, ty, rot) {
-        return MDL_pos._tsRot(Vars.world.tile(tx, ty), rot, this.size, contArr);
+        return MDL_pos._tsRot(contArr, Vars.world.tile(tx, ty), rot, this.size);
       }
       .setProp({
         noSuper: true,

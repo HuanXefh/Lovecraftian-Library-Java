@@ -35,33 +35,32 @@ The file should be named as "your-block.json" or "your-block.hjson" based on the
 
 Note that the content template JSON file only calls JavaScript codes to create a content, **you still need to modify it with JSON file in "content" folder** like what JSON mods do. Since content template JSON creates content, **do not use `type` in regular JSON**.
 
-Objects like color and effects are treated differently in a template JSON:
+Objects like color and effects are parsed differently in a template JSON, see [DB_parser](https://github.com/HuanXefh/Lovecraftian-Library-Java/blob/master/assets/scripts/db/DB_parser.js):
 
 ```
-someColorField1: {
-  type: ColorHex
-  value: ffffff
-}
-
-someColorField2: {
-  type: ColorPreset
+someColor1: {
+  type: class.Color
   name: white
 }
 
-someEffectField1: {
-  type: EffectFx
-  name: blockPlace
+someColor2: {
+  type: method.Hex
+  name: "ffc999"
 }
 
-someEffectField2: {
-  type: EffectPreset
-  name: furnaceCrack
+someEffect1: {
+  type: class.Fx
+  name: smeltsmoke
 }
 
-someEffectField3: {
-  type: EffectTP
+someEffect2: {
+  type: module.TP_effect
   name: _flare
   param: {
+    color: {
+      type: class.Pal
+      name: accent
+    }
     scl: 2.0
   }
 }

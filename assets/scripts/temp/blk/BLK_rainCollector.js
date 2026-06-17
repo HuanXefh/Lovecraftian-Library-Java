@@ -50,11 +50,11 @@
   const comp_updateTile = function thisFun(b) {
     if(TIMER.secFive) b.rsTg = b.block.ex_findWeatherLiquid();
 
-    if(b.rsTg !== null) {
+    if(b.rsTg !== null && !Vars.net.client()) {
       FRAG_fluid.addLiquid(b, b, b.rsTg, b.block.delegee.liqProdRate, true);
       // Spill liquid if full
       if(b.efficiency > 0.0 && Mathf.chanceDelta(0.04) && b.liquids.get(b.rsTg) > b.block.liquidCapacity * 0.98) {
-        MDL_pos._tsEdge(b.tile, b.block.size, true, thisFun.tmpTs).forEachFast(ot => {
+        MDL_pos._tsEdge(thisFun.tmpTs, b.tile, b.block.size, true).forEachFast(ot => {
           if(Mathf.chance(0.5)) Puddles.deposit(ot, b.rsTg, 4.0);
         });
       };

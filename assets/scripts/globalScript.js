@@ -507,7 +507,7 @@
       },
       function(nm) {
         if(!__CHECK_CHEAT_STATE__()) return;
-        let unit = MDL_pos._unitPlNm(nm);
+        let unit = MDL_pos._unitPlayerByNm(nm);
         if(unit == null) {
           console.err("[LOVEC] No player found with name ${1}!".format(String(nm).color(Pal.accent)));
           return;

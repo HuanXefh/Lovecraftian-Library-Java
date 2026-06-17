@@ -28,12 +28,12 @@
 
   /**
    * Performs convolution between two arrays.
+   * @param {Array<number>|unset} contArr
    * @param {Array<number>} arr
-   * @param {number|unset} [mode]
-   * @param {Array<number>|unset} [contArr]
+   * @param {number|unset} [mode] - See {@link ConvolutionModes}.
    * @return {Array<number>}
    */
-  Array.prototype.convol = function(arr, mode, contArr) {
+  Array.prototype.convol = function(contArr, arr, mode) {
     if(this.length === 0 || arr.length === 0) throw new Error("Cannot perform convolution on empty array!");
     if(mode == null) mode = ConvolutionModes.FULL;
 

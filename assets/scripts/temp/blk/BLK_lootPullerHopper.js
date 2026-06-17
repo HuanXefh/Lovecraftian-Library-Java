@@ -38,7 +38,7 @@
       b.progWait += b.edelta();
       if(b.progWait > b.block.delegee.intvPull) {
         b.progWait %= b.block.delegee.intvPull;
-        MDL_pos._loots(b.x, b.y, b.block.delegee.blkRad, b.pullTgs).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
+        MDL_pos._loots(b.pullTgs, b.x, b.y, b.block.delegee.blkRad).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
         b.isPulling = b.pullTgs.length > 0;
       };
     } else {

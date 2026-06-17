@@ -47,6 +47,8 @@
   /** @global */
   CLS_contentTemplate = require("lovec/cls/util/CLS_contentTemplate");
   /** @global */
+  DB_parser = require("lovec/db/DB_parser");
+  /** @global */
   CLS_contentTemplateParser = require("lovec/cls/util/CLS_contentTemplateParser");
   /** @global */
   VAR = require("lovec/glb/GLB_var");

@@ -141,23 +141,23 @@
 
     let frac = 0.0;
     if(!b_f.block.rotate) {
-      frac = _tsEdge(b_f.tile, b_f.block.size, false, thisFun.tmpTs).count(b_t, t => t.build) / thisFun.tmpTs.length * (forceOneSide ? 4.0 : 1.0);
+      frac = _tsEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => t.build) / thisFun.tmpTs.length * (forceOneSide ? 4.0 : 1.0);
     } else {
       switch(mode) {
         case SideFracModes.FRONT :
-          frac = _tsRot(b_f.tile, b_f.rotation, b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build) / thisFun.tmpTs.length;
+          frac = _tsRot(thisFun.tmpTs, b_f.tile, b_f.rotation, b_f.block.size).count(b_t, t => t.build) / thisFun.tmpTs.length;
           break;
         case SideFracModes.BACK :
-          frac = _tsRot(b_f.tile, Mathf.mod(b_f.rotation + 2, 4), b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build) / thisFun.tmpTs.length;
+          frac = _tsRot(thisFun.tmpTs, b_f.tile, Mathf.mod(b_f.rotation + 2, 4), b_f.block.size).count(b_t, t => t.build) / thisFun.tmpTs.length;
           break;
         case SideFracModes.SIDE :
-          frac = (_tsRot(b_f.tile, Mathf.mod(b_f.rotation + 1, 4), b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build) + _tsRot(b_f.tile, Mathf.mod(b_f.rotation - 1, 4), b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build)) / thisFun.tmpTs.length;
+          frac = (_tsRot(thisFun.tmpTs, b_f.tile, Mathf.mod(b_f.rotation + 1, 4), b_f.block.size).count(b_t, t => t.build) + _tsRot(b_f.tile, Mathf.mod(b_f.rotation - 1, 4), b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build)) / thisFun.tmpTs.length;
           break;
         case SideFracModes.NON_FRONT :
-          frac = _tsEdge(b_f.tile, b_f.block.size, false, thisFun.tmpTs).count(b_t, t => _rotTs(b_f.tile, t) === b_f.rotation ? null : t.build) * 4.0 / thisFun.tmpTs.length;
+          frac = _tsEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => _rotTs(b_f.tile, t) === b_f.rotation ? null : t.build) * 4.0 / thisFun.tmpTs.length;
           break;
         case SideFracModes.NON_BACK :
-          frac = _tsEdge(b_f.tile, b_f.block.size, false, thisFun.tmpTs).count(b_t, t => _rotTs(b_f.tile, t) === Mathf.mod(b_f.rotation + 2, 4) ? null : t.build) * 4.0 / thisFun.tmpTs.length;
+          frac = _tsEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => _rotTs(b_f.tile, t) === Mathf.mod(b_f.rotation + 2, 4) ? null : t.build) * 4.0 / thisFun.tmpTs.length;
           break;
       };
     };
@@ -545,13 +545,13 @@
 
   /**
    * Gets tiles on a specific edge, like what's done in {@link WallCrafter}.
+   * @param {Array|unset} contArr
    * @param {Tile|null} t
    * @param {number} rot
    * @param {number|unset} [size]
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsRot = function(t, rot, size, contArr) {
+  const _tsRot = function(contArr, t, rot, size) {
     let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(size == null) size = 1;
@@ -621,13 +621,13 @@
 
   /**
    * Gets all tiles on the four edges.
+   * @param {Array|unset} contArr
    * @param {Tile|null} t
    * @param {number|unset} [size]
    * @param {boolean|unset} [isInside] - If true, this method will use inner edges instead.
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsEdge = function(t, size, isInside, contArr) {
+  const _tsEdge = function(contArr, t, size, isInside) {
     let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(size == null) size = 1;
@@ -646,13 +646,13 @@
 
   /**
    * Gets tiles in a rectangular range.
+   * @param {Array|unset} contArr
    * @param {Tile|null} t
    * @param {number|unset} [r]
    * @param {number|unset} [size]
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsRect = function(t, r, size, contArr) {
+  const _tsRect = function(contArr, t, r, size) {
     let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(r == null) r = 0;
@@ -684,40 +684,40 @@
 
   /**
    * Gets tiles that some block will occupy.
+   * @param {Array|unset} contArr
    * @param {Block} blk
    * @param {number} tx
    * @param {number} ty
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsBlock = function(blk, tx, ty, contArr) {
-    return _tsRect(Vars.world.tile(tx, ty), 0, blk.size, contArr);
+  const _tsBlock = function(contArr, blk, tx, ty) {
+    return _tsRect(contArr, Vars.world.tile(tx, ty), 0, blk.size);
   };
   exports._tsBlock = _tsBlock;
 
 
   /**
    * Gets tiles that some building occupies.
+   * @param {Array|unset} contArr
    * @param {Building} b
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsBuild = function(b, contArr) {
-    return _tsRect(b.tile, 0, b.block.size, contArr);
+  const _tsBuild = function(contArr, b) {
+    return _tsRect(contArr, b.tile, 0, b.block.size);
   };
   exports._tsBuild = _tsBuild;
 
 
   /**
    * Variant of {@link _tsRect} that uses rotation, like what's done in {@link UnitAssembler}.
+   * @param {Array|unset} contArr
    * @param {Tile|null} t
    * @param {number|unset} r
    * @param {number} rot
    * @param {number|unset} [size]
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsRectRot = function(t, r, rot, size, contArr) {
+  const _tsRectRot = function(contArr, t, r, rot, size) {
     let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(r == null) r = 0;
@@ -747,13 +747,13 @@
 
   /**
    * Gets tiles in a circular range.
+   * @param {Array|unset} contArr
    * @param {Tile|null} t
    * @param {number|unset} [r]
    * @param {number|unset} [size]
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsCircle = function(t, r, size, contArr) {
+  const _tsCircle = function(contArr, t, r, size) {
     let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(r == null) r = 0;
@@ -786,12 +786,12 @@
 
   /**
    * Gets tiles in range using Manhattan distance.
+   * @param {Array|unset} contArr
    * @param {Tile|null} t
    * @param {number|unset} [r]
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsDstManh = function(t, r, contArr) {
+  const _tsDstManh = function(contArr, t, r) {
     let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
     if(r == null) r = 0;
@@ -812,11 +812,11 @@
 
   /**
    * Gets linked tiles of some tile.
+   * @param {Array|unset} contArr
    * @param {Tile|null} t
-   * @param {Array|unset} [contArr]
    * @return {Array<Tile>}
    */
-  const _tsLinked = function(t, contArr) {
+  const _tsLinked = function(contArr, t) {
     let arr = contArr != null ? contArr.clear() : [];
     if(t == null) return arr;
 
@@ -846,13 +846,13 @@
 
   /**
    * Gets buildings in a circular range.
+   * @param {Array|unset} contArr
    * @param {number} x
    * @param {number} y
    * @param {number|unset} [rad]
-   * @param {Array|unset} [contArr]
-   * @return {Building[]}
+   * @return {Array<Building>}
    */
-  const _bs = function(x, y, rad, contArr) {
+  const _bs = function(contArr, x, y, rad) {
     let arr = contArr != null ? contArr.clear() : [];
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return arr;
@@ -866,11 +866,11 @@
 
   /**
    * Gets building in given tiles, no duplicates.
+   * @param {Array|unset} contArr
    * @param {Array<Tile>} ts
-   * @param {Array|unset} [contArr]
-   * @return {Building[]}
+   * @return {Array<Building>}
    */
-  const _bsTs = function(ts, contArr) {
+  const _bsByTs = function(contArr, ts) {
     let arr = contArr != null ? contArr.clear() : [];
 
     ts.forEachFast(ot => {
@@ -879,7 +879,7 @@
 
     return arr;
   };
-  exports._bsTs = _bsTs;
+  exports._bsByTs = _bsByTs;
 
 
   /**
@@ -969,7 +969,7 @@
    * @return {Unit|null}
    */
   const _unit = function thisFun(x, y, rad) {
-    return _units(x, y, tryVal(rad, 6.0), thisFun.tmpUnits).readRand();
+    return _units(thisFun.tmpUnits, x, y, tryVal(rad, 6.0)).readRand();
   }
   .setProp({
     tmpUnits: [],
@@ -986,20 +986,20 @@
    * @return {Unit|null}
    */
   const _unitOther = function thisFun(x, y, rad, unit) {
-    return _units(x, y, tryVal(rad, 6.0), thisFun.tmpUnits).pullAll(unit).readRand();
+    return _units(thisFun.tmpUnits, x, y, tryVal(rad, 6.0)).pullAll(unit).readRand();
   };
   exports._unitOther = _unitOther;
 
 
   /**
    * Gets non-loot units in a circular range.
+   * @param {Array|unset} contArr
    * @param {number} x
    * @param {number} y
    * @param {number|unset} [rad]
-   * @param {Array|unset} [contArr]
-   * @return {Units[]}
+   * @return {Array<Unit>}
    */
-  const _units = function(x, y, rad, contArr) {
+  const _units = function(contArr, x, y, rad) {
     let arr = contArr != null ? contArr.clear() : [];
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return arr;
@@ -1038,14 +1038,14 @@
 
   /**
    * Variant of {@link _units} for rectangular range.
+   * @param {Array|unset} contArr
    * @param {number} x
    * @param {number} y
    * @param {number|unset} [r]
    * @param {number|unset} [size]
-   * @param {Array|unset} [contArr]
-   * @return {Units[]}
+   * @return {Array<Unit>}
    */
-  const _unitsRect = function(x, y, r, size, contArr) {
+  const _unitsRect = function(contArr, x, y, r, size) {
     let arr = contArr != null ? contArr.clear() : [];
     if(r == null) r = 0;
     if(size == null) size = 1;
@@ -1092,15 +1092,15 @@
    * @param {number|unset} [rad]
    * @return {Unit|null}
    */
-  const _unitPl = function(x, y, team, rad) {
+  const _unitPlayer = function(x, y, team, rad) {
     let unitPlayer = null;
     if(rad == null) rad = Number.n8;
     if(rad < 0.0001) return unitPlayer;
 
     let tmpRad = rad;
     let unit, dst;
-    Groups.player.each(pl => {
-      unit = pl.unit();
+    Groups.player.each(player => {
+      unit = player.unit();
       if(unit != null && (team == null || unit.team === team)) {
         dst = Mathf.dst(x, y, unit.x, unit.y);
         if(dst < tmpRad) {
@@ -1112,7 +1112,7 @@
 
     return unitPlayer;
   };
-  exports._unitPl = _unitPl;
+  exports._unitPlayer = _unitPlayer;
 
 
   /**
@@ -1120,12 +1120,12 @@
    * @param {string|unset} [nm] - Leave empty to return yourself.
    * @return {Unit|null}
    */
-  const _unitPlNm = function(nm) {
+  const _unitPlayerByNm = function(nm) {
     if(nm == null) return Vars.player.unit();
-    let pl = Groups.player.find(tmp => tmp.name === nm);
-    return pl == null ? null : pl.unit();
+    let player = Groups.player.find(tmp => tmp.name === nm);
+    return player == null ? null : player.unit();
   };
-  exports._unitPlNm = _unitPlNm;
+  exports._unitPlayerByNm = _unitPlayerByNm;
 
 
   /* loot unit */
@@ -1138,7 +1138,7 @@
    * @param {number|unset} [rad]
    */
   const _loot = function thisFun(x, y, rad) {
-    return _loots(x, y, tryVal(rad, 6.0), thisFun.tmpLoots).readRand();
+    return _loots(thisFun.tmpLoots, x, y, tryVal(rad, 6.0)).readRand();
   }
   .setProp({
     tmpLoots: [],
@@ -1155,7 +1155,7 @@
    * @return {Unit|null}
    */
   const _lootOther = function thisFun(x, y, rad, loot) {
-    return _loots(x, y, rad, thisFun.tmpLoots).pullAll(loot).readRand();
+    return _loots(thisFun.tmpLoots, x, y, rad).pullAll(loot).readRand();
   }
   .setProp({
     tmpLoots: [],
@@ -1165,13 +1165,13 @@
 
   /**
    * Gets loots in a circular range.
+   * @param {Array|unset} contArr
    * @param {number} x
    * @param {number} y
    * @param {number|unset} [rad]
-   * @param {Array|unset} [contArr]
-   * @return {Units[]}
+   * @return {Array<Unit>}
    */
-  const _loots = function(x, y, rad, contArr) {
+  const _loots = function(contArr, x, y, rad) {
     let arr = contArr != null ? contArr.clear() : [];
     if(rad == null) rad = 0.0;
     if(rad < 0.0001) return arr;
@@ -1190,27 +1190,27 @@
    * @param {Array<Tile>} ts
    * @return {Unit|null}
    */
-  const _lootTs = function thisFun(ts) {
-    return _lootsTs(ts, thisFun.tmpLoots).readRand();
+  const _lootByTs = function thisFun(ts) {
+    return _lootsByTs(thisFun.tmpLoots, ts).readRand();
   }
   .setProp({
     tmpLoots: [],
   });
-  exports._lootTs = _lootTs;
+  exports._lootByTs = _lootByTs;
 
 
   /**
    * Variant of {@link _loots} that uses tile list instead.
+   * @param {Array|unset} contArr
    * @param {Array<Tile>} ts
-   * @param {Array|unset} [contArr]
-   * @return {Units[]}
+   * @return {Array<Unit>}
    */
-  const _lootsTs = function thisFun(ts, contArr) {
+  const _lootsByTs = function thisFun(contArr, ts) {
     let arr = contArr != null ? contArr.clear() : [];
     if(ts == null) return arr;
 
     ts.forEachFast(ot => {
-      _loots(ot.worldx(), ot.worldy(), 6.0, thisFun.tmpUnits).forEachFast(loot => arr.pushUnique(loot));
+      _loots(thisFun.tmpUnits, ot.worldx(), ot.worldy(), 6.0).forEachFast(loot => arr.pushUnique(loot));
     });
 
     return arr;
@@ -1218,7 +1218,7 @@
   .setProp({
     tmpUnits: [],
   });
-  exports._lootsTs = _lootsTs;
+  exports._lootsByTs = _lootsByTs;
 
 
   /* entity */
@@ -1250,14 +1250,14 @@
 
   /**
    * Gets all valid target entities.
+   * @param {Array|unset} contArr
    * @param {number} x
    * @param {number} y
    * @param {Team|unset} [team]
    * @param {number|unset} [rad]
-   * @param {Array|unset} [contArr]
-   * @return {HealthcGn[]}
+   * @return {Array<HealthcGn>}
    */
-  const _esTg = function(x, y, team, rad, contArr) {
+  const _esTg = function(contArr, x, y, team, rad) {
     let arr = contArr != null ? contArr.clear() : [];
 
     if(team == null) return arr;
@@ -1274,6 +1274,7 @@
 
   /**
    * Gets targets in a chain like chained lightning.
+   * @param {Array|unset} contArr
    * @param {number} x
    * @param {number} y
    * @param {Team|unset} [team]
@@ -1281,10 +1282,9 @@
    * @param {number|unset} [chainRad] - Maximum distance between targets in the chain.
    * @param {number|unset} [chainCap] - Maximum targets in the chain.
    * @param {(function(TeamcGn): boolean)|unset} [chainRayCheck] - Determines whether the chain is blocked.
-   * @param {Array|unset} [contArr]
-   * @return {HealthcGn[]}
+   * @return {Array<HealthcGn>}
    */
-  const _esTgChain = function thisFun(x, y, team, rad, chainRad, chainCap, chainRayCheck, contArr) {
+  const _esTgChain = function thisFun(contArr, x, y, team, rad, chainRad, chainCap, chainRayCheck) {
     let arr = contArr != null ? contArr.clear() : [];
 
     if(team == null) return arr;
@@ -1294,7 +1294,7 @@
     if(chainCap == null) chainCap = -1;
     if(chainRayCheck == null) chainRayCheck = Function.airFalse;
 
-    let es = _esTg(x, y, team, rad * 2.0, thisFun.tmpEs);
+    let es = _esTg(thisFun.tmpEs, x, y, team, rad * 2.0);
     let tmpTg;
     let tmpX = x;
     let tmpY = y;
@@ -1328,13 +1328,13 @@
 
   /**
    * Gets bullets in a circular range.
+   * @param {Array|unset} contArr
    * @param {number} x
    * @param {number} y
    * @param {number|unset} [rad]
-   * @param {Array|unset} [contArr]
    * @return {Bullet[]}
    */
-  const _buls = function thisFun(x, y, rad, contArr) {
+  const _buls = function thisFun(contArr, x, y, rad) {
     let arr = contArr != null ? contArr.clear() : [];
 
     if(rad == null) rad = 0.0;

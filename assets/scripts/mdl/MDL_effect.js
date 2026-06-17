@@ -588,7 +588,7 @@
       inLiq = false,
       shouldFloat = false;
     if((function () {
-      if(MDL_pos._tsRect(t, 1, 1, thisFun.tmpTs).some(ot => !ot.floor().isLiquid)) return false;
+      if(MDL_pos._tsRect(thisFun.tmpTs, t, 1, 1).some(ot => !ot.floor().isLiquid)) return false;
       if(etp instanceof Block) {
         return true;
       } else {

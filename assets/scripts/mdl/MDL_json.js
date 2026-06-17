@@ -18,7 +18,7 @@
 */
 
 
-  /* <---------- base ----------> */
+  /* <---------- file ----------> */
 
 
   /**
@@ -116,8 +116,8 @@
    * @param {ContentGn} ct_gn
    * @return {JsonValue|null}
    */
-  const _jsonVal_ct = function(ct_gn) {
+  const _jsonValByCt = function(ct_gn) {
     let fi = MDL_file._json_ct(ct_gn);
     return fi == null ? null : parse(fi);
   };
-  exports._jsonVal_ct = _jsonVal_ct;
+  exports._jsonValByCt = _jsonValByCt;

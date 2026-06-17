@@ -172,14 +172,18 @@
   /**
    * @global
    * @typedef {Object} RecipeObject
-   * @prop {string|unset} [icon] - Content icon used for this recipe, should be unique.
+   * @prop {string|unset} [icon] - Content icon used for this recipe.
+   * @prop {Color|unset} [tint] - Tint color of icon.
+   * @prop {ContentGn|unset} [keyRs] - Key item/fluid of this recipe, used in recipe auto-selection.
    * @prop {string|unset} [categ] - Category this recipe is in.
    * @prop {boolean|unset} [isGenerated] - Whether this recipe is created by recipe generators. Do not set this manually!
-   * @prop {(function(): boolean)|unset} [validGetter] - A function to check whether recipe is allowed now.
+   * @prop {(function(): boolean)|unset} [validCheck] - A function to check whether recipe is allowed now.
    * @prop {Array<string>|unset} [lockedBy] - Recipe will be unavailable until all these contents are unlocked.
    * @prop {number|unset} [timeScl] - Scaling on crafting time.
    * @prop {number|unset} [pollution] - Overwrites block pollution.
    * @prop {boolean|unset} [ignoreItemFullness] - If true, the crafter consumes even when full of output items.
+   * @prop {number|unset} [erekirHeatReq] - Requirement of Erekir heat, not compatible with `erekirHeatProd`.
+   * @prop {number|unset} [erekirHeatProd] - Production amount of Erekir heat, not compatible with `erekirHeatReq`.
    * @prop {string|unset} [attr] - Attribute required for this recipe.
    * @prop {number|unset} [attrMin] - Attribute value for 0.0 efficiency (no block size included).
    * @prop {number|unset} [attrMax] - Attribute value for 1.0 efficiency (no block size included).
@@ -201,10 +205,12 @@
    * @prop {number|unset} [failP] - Chance to fail this recipe.
    * @prop {Array|unset} [fo] - Failed output.
    * @prop {Array|unset} [payo] - Payload output.
-   * @prop {(function(Building): void)|unset} [updateScr] - Called whenever the building updates.
-   * @prop {(function(Building): void)|unset} [runScr] - Called when the building is active.
-   * @prop {(function(Building): void)|unset} [craftScr] - Called when the building crafts.
-   * @prop {(function(Building): void)|unset} [stopScr] - Called when the building is no longer active.
+   * @prop {(function(Building): void)|unset} [updateScr] - Called whenever this building updates.
+   * @prop {(function(Building): void)|unset} [runScr] - Called when this building is active.
+   * @prop {(function(Building): void)|unset} [craftScr] - Called when this building crafts.
+   * @prop {(function(Building): void)|unset} [stopScr] - Called when this building is no longer active.
+   * @prop {(function(Building): void)|unset} [failScr] - Called when this building fails current recipe.
+   * @prop {DrawBlock|unset} [drawer] - The particular drawer used for this recipe in "DrawRecipe", see {@link TP_drawer}.
    */
   /**
    * @global

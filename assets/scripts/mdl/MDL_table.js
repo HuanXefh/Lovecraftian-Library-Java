@@ -1548,18 +1548,18 @@
         let chunk = new Table();
         categHeaderObj[categ].forEachFast(rcHeader => {
           let icon = MDL_recipe._icon(rcMdl, rcHeader);
-          let validGetter = MDL_recipe._finalValidGetter(rcMdl, rcHeader);
-          let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validGetter(b), uncategorizedOnly);
+          let validCheck = MDL_recipe._finalValidCheck(rcMdl, rcHeader);
+          let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validCheck(b), uncategorizedOnly);
 
           let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 40.0, () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ttStr, true).group(btnGrp).get();
           btn.changed(() => cfgCaller(rcHeader));
-          btn.getStyle().imageUp = validGetter(b) ? icon : Icon.lock;
+          btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
           btn.getStyle().imageDisabledColor = Color.gray;
           btn.update(() => {
             btn.setDisabled(useAutoSelection);
             btn.setChecked(headerGetter() == rcHeader);
             if(TIMER.secHalf) {
-              btn.getStyle().imageUp = validGetter(b) ? icon : Icon.lock;
+              btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
             };
           });
 

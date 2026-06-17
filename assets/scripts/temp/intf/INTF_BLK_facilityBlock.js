@@ -52,7 +52,7 @@
       if(Mathf.chanceDelta(0.005)) {
         // Fire group is not spatial, I can't enhance this
         b.fireExplodeReady = !Vars.net.client()
-          && Groups.fire.size() > 0 && MDL_pos._tsEdge(b.tile, b.block.size, false, thisFun.tmpTs).some(ot => Fires.get(ot) != null)
+          && Groups.fire.size() > 0 && MDL_pos._tsEdge(thisFun.tmpTs, b.tile, b.block.size, false).some(ot => Fires.get(ot) != null)
           && (thisFun.checkExplosiveLiquid(b) || thisFun.checkExplosiveItem(b));
       };
       if(b.fireExplodeReady) {

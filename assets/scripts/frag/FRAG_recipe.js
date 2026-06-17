@@ -401,11 +401,11 @@
   /**
    * Gets a 2-tuptle of items and fluids to dump.
    * `co` is not used here due to liquid output directions.
-   * @param {Building} b
    * @param {Array|unset} contTup
+   * @param {Building} b
    * @return {[Array<Item>, Array<Liquid>]}
    */
-  const _dumpTup = function(b, contTup) {
+  const _dumpTup = function(contTup, b) {
     let tup = contTup != null ? contTup : [[], []];
     tup[0].clear();
     tup[1].clear();

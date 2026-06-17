@@ -295,7 +295,7 @@
     if(shake == null) shake = 0.0;
 
     let dst, frac, dmg_fi;
-    MDL_pos._units(x, y, rad, thisFun.tmpUnits).forEachFast(unit => {
+    MDL_pos._units(thisFun.tmpUnits, x, y, rad).forEachFast(unit => {
       if(FRAG_unit.checkCaller(unit, caller) || !MDL_cond._isOnFloor(unit) || MDL_pos._rayCheck_mobileFlr(x, y, unit.x, unit.y, minRad)) return;
       dst = Mathf.dst(x, y, unit.x, unit.y);
       frac = 1.0 - dst / rad;

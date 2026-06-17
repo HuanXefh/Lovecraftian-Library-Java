@@ -122,7 +122,7 @@
           i++;
 
           Time.run(0.0, () => {
-            unit = MDL_pos._units(x, y, 8.0, this.tmpArr).inSituFilter(ounit => ounit.type.name == str).first();
+            unit = MDL_pos._units(this.tmpArr, x, y, 8.0).inSituFilter(ounit => ounit.type.name == str).first();
             if(unit != null && unit.delegee != null && checkCreatedByTemp(unit.type) && unit.type.ex_isSubInsOf("UNIT_baseUnit")) {
               unit.type.ex_readUnitData(unit, JSON.parse(json));
             };

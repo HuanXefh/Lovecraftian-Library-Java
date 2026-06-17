@@ -390,7 +390,7 @@
     b.lastProgInc = b.ex_calcProgInc(b.block.craftTime);
     b.lastLiqProgInc = b.ex_calcProgInc(1.0);
     b.lastCanAdd = FRAG_recipe._canAdd(b);
-    b.dumpTup = FRAG_recipe._dumpTup(b, b.dumpTup);
+    b.dumpTup = FRAG_recipe._dumpTup(b.dumpTup, b);
 
     b.ex_updateAttrEffc();
   };
@@ -456,8 +456,9 @@
     b.attrBoostScl = MDL_recipe._attrBoostScl(rcMdl, rcHeader);
     b.attrBoostCap = MDL_recipe._attrBoostCap(rcMdl, rcHeader);
     b.failEff = MDL_recipe._failEff(rcMdl, rcHeader);
-    b.validTup = MDL_recipe._validTup(rcMdl, rcHeader, b.validTup);
-    b.scrTup = MDL_recipe._scrTup(rcMdl, rcHeader, b.scrTup);
+    b.validTup = MDL_recipe._validTup(b.validTup, rcMdl, rcHeader);
+    b.scrTup = MDL_recipe._scrTup(b.scrTup, rcMdl, rcHeader);
+    b.rcDrawer = MDL_recipe._drawer(rcMdl, rcHeader);
 
     if(b.useAutoSelection) {
       b.keyItmHeaderMap = MDL_recipe._keyRsHeaderMap(b.keyItmHeaderMap, rcMdl, false);
@@ -801,6 +802,12 @@
          * @instance
          */
         attrBoostCap: 1.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        rcDrawer: null,
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler

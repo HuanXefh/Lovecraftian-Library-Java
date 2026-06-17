@@ -141,7 +141,7 @@
    * @param {number|unset} [mode] - Determines what blocks will be involved for attribute calculation. See {@link AttrModes}
    * @return {number}
    */
-  const _sumTs = function thisFun(ts, attr_gn, mode) {
+  const _sumByTs = function thisFun(ts, attr_gn, mode) {
     let attrSum = 0.0;
     if(mode == null) mode = AttrModes.FLOOR;
 
@@ -154,11 +154,11 @@
 
     return attrSum;
   };
-  exports._sumTs = _sumTs;
+  exports._sumByTs = _sumByTs;
 
 
   /**
-   * Variant of {@link _sumTs} that uses a rectangular range.
+   * Variant of {@link _sumByTs} that uses a rectangular range.
    * @param {Tile|null} t
    * @param {number|unset} r
    * @param {number|unset} size
@@ -167,7 +167,7 @@
    * @return {number}
    */
   const _sumRect = function thisFun(t, r, size, attr_gn, mode) {
-    return _sumTs(MDL_pos._tsRect(t, r, size, thisFun.tmpTs), attr_gn, mode);
+    return _sumByTs(MDL_pos._tsRect(thisFun.tmpTs, t, r, size), attr_gn, mode);
   }
   .setProp({
     tmpTs: [],
@@ -176,7 +176,7 @@
 
 
   /**
-   * Variant of {@link _sumTs} that uses a circular range.
+   * Variant of {@link _sumByTs} that uses a circular range.
    * @param {Tile|null} t
    * @param {number|unset} r
    * @param {number|unset} size
@@ -185,7 +185,7 @@
    * @return {number}
    */
   const _sumCircle = function thisFun(t, r, size, attr_gn, mode) {
-    return _sumTs(MDL_pos._tsCircle(t, r, size, thisFun.tmpTs), attr_gn, mode);
+    return _sumByTs(MDL_pos._tsCircle(thisFun.tmpTs, t, r, size), attr_gn, mode);
   }
   .setProp({
     tmpTs: [],
@@ -240,7 +240,7 @@
 
   /**
    * Gets currently preferred dynamic attribute and the target resource from a list of tiles.
-   * See {@link _sumTs}.
+   * See {@link _sumByTs}.
    * @param {Array} attrRsArr
    * @param {Array<Tile>} ts
    * @param {number|unset} [mode] - See {@link AttrModes}.
@@ -256,7 +256,7 @@
     if(iCap > 0) {
       for(let i = 0; i < iCap; i += 2) {
         tmpAttr = _attr(attrRsArr[i], true);
-        tmpAttrSum = _sumTs(ts, tmpAttr, mode) + tmpAttr.env();
+        tmpAttrSum = _sumByTs(ts, tmpAttr, mode) + tmpAttr.env();
         if(tmpAttrSum > attrSum) {
           attr = tmpAttr;
           attrSum = tmpAttrSum;

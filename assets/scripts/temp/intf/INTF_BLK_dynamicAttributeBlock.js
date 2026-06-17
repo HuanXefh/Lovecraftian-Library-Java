@@ -222,13 +222,13 @@
 
 
         /**
-         * <PARAM>: Determines type of blocks to check attribute. See {@link MDL_attr}.
+         * <PARAM>: Determines type of blocks to check attribute. See {@link AttrModes}.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
         attrMode: AttrModes.FLOOR,
         /**
-         * <PARAM>: Determines how efficiency is calculated. See {@link MDL_attr}.
+         * <PARAM>: Determines how efficiency is calculated. See {@link AttrRcTypes}.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */

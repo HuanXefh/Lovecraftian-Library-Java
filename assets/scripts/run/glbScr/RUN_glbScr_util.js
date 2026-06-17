@@ -409,7 +409,7 @@
    * @return {boolean}
    */
   checkTupChange = function() {
-    const tup = arguments[0];
+    let tup = arguments[0];
 
     let cond = false;
     if(tup.length === 0) cond = true;

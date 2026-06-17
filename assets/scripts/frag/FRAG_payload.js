@@ -57,12 +57,12 @@
 
   /**
    * Gets a list of payload input sites around `b`.
+   * @param {Array|unset} contArr
    * @param {Building} b
-   * @param {number|unset} [mode] - See {@link MDL_pos}.
-   * @param {Array|unset} [contArr]
+   * @param {number|unset} [mode] - See {@link SideFracModes}.
    * @return {Array<Building>}
    */
-  const _bsPayInput = function(b, mode, contArr) {
+  const _bsPayInput = function(contArr, b, mode) {
     let arr = contArr != null ? contArr.clear() : [];
 
     let obj = DB_block.db["class"]["group"]["payload"]["site"];
@@ -82,12 +82,12 @@
 
   /**
    * Gets a list of payload output sites around `b`.
+   * @param {Array|unset} contArr
    * @param {Building} b
-   * @param {number|unset} [mode] - See {@link MDL_pos}.
-   * @param {Array|unset} [contArr]
+   * @param {number|unset} [mode] - See {@link SideFracModes}.
    * @return {Array<Building>}
    */
-  const _bsPayOutput = function(b, mode, contArr) {
+  const _bsPayOutput = function(contArr, b, mode) {
     let arr = contArr != null ? contArr.clear() : [];
 
     let obj = DB_block.db["class"]["group"]["payload"]["site"];

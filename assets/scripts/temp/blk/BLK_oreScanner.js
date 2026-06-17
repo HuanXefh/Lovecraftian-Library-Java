@@ -45,7 +45,7 @@
 
 
   function comp_ex_getRevealTgs(blk, tx, ty, rot) {
-    return MDL_pos._tsCircle(Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond._isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
+    return MDL_pos._tsCircle(blk.tmpRevealedTgs, Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond._isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
   };
 
 
@@ -168,6 +168,17 @@
        * @instance
        */
       useP3dRange: true,
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * <INTERNAL>
+       * @memberof BLK_oreScanner
+       * @instance
+       */
+      tmpRevealedTgs: prov(() => []),
 
 
     })

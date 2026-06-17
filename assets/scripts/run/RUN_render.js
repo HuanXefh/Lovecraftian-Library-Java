@@ -34,7 +34,7 @@
 
     if(unitPlayer != null) {
       // Draw surrounding range
-      MDL_pos._tsDstManh(unitPlayer.tileOn(), VAR.range.unitSurR, thisFun.tmpTs).forEachFast(ot => MDL_draw._d_areaShrink(ot, 1, Pal.accent, 0.5, VAR.layer.debugFlr));
+      MDL_pos._tsDstManh(thisFun.tmpTs, unitPlayer.tileOn(), VAR.range.unitSurR).forEachFast(ot => MDL_draw._d_areaShrink(ot, 1, Pal.accent, 0.5, VAR.layer.debugFlr));
     };
   }
   .setProp({

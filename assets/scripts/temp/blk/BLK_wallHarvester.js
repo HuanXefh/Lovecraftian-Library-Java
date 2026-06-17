@@ -31,7 +31,7 @@
     if(t == null) return;
 
     if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = MDL_pos._tsRect(t, 5, blk.size, thisFun.tmpTup[3]);
+      thisFun.tmpTup[3] = MDL_pos._tsRect(thisFun.tmpTup[3], t, 5, blk.size);
     };
 
     thisFun.tmpTup[3].forEachFast(ot => {

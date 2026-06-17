@@ -38,61 +38,29 @@
 
 
   /**
-   * Stores parser functions that map raw data to result.
+   * Parses a raw field value.
+   * @param {any} raw
+   * @return {any}
    */
-  CLS_contentTemplateParser.rawParserMap = ObjectMap.of(
-
-    "LayerPreset", raw => VAR.layer[raw.name] + tryVal(raw.offset, 0.0),
-
-    "ColorHex", raw => Color.valueOf(raw.value),
-    "ColorPreset", raw => {
-      let color;
-      try {
-        color = Color[raw.name];
-      } catch(err) {
-        try {
-          color = Pal[raw.name];
-        } catch(err) {
-          console.warn("[LOVEC] Cannot find color preset for ${1}.".format(raw.name));
-          color = Color.white;
-        };
-      };
-      return color;
-    },
-    "ColorPreset", raw => Color[raw.name],
-
-    "EffectFx", raw => Fx[raw.name],
-    "EffectPreset", raw => typeof raw.index !== "number" ? EFF[raw.name] : EFF[raw.name][raw.index],
-    "EffectTP", raw => TP_effect[raw.name](raw.param),
-
-    "Seq", raw => new Seq(raw.array),
-    "ObjectMap", raw => {
-      let map = new ObjectMap();
-      Object._it(raw.object, (key, val) => {
-        map.put(key, val);
-      });
-      return map;
-    },
-
-  );
+  CLS_contentTemplateParser.parseField = function(raw) {
+    if(typeof raw !== "object" || raw instanceof Array || typeof raw.type !== "string") return raw;
+    let type = raw.type;
+    delete raw.type;
+    let parser = DB_parser.db["template"].read(type);
+    if(parser == null) throw new Error("Cannot find parser for type: ${1}".format(type));
+    return parser(raw);
+  };
 
 
   /**
-   * Converts raw data for some fields.
+   * Parses raw fields values in `obj`.
+   * Modifies the original object.
    * @param {Object} obj
    * @return {Object}
    */
-  CLS_contentTemplateParser.convertType = function(obj) {
-    let raw, type, result;
+  CLS_contentTemplateParser.parseFields = function(obj) {
     for(let key in obj) {
-      raw = obj[key];
-      if(typeof raw !== "object" || raw instanceof Array || typeof raw.type !== "string") continue;
-      type = raw.type;
-      delete raw.type;
-      result = CLS_contentTemplateParser.rawParserMap.get(type, Function.air)(raw);
-      if(result !== undefined) {
-        obj[key] = result;
-      };
+      obj[key] = CLS_contentTemplateParser.parseField(obj[key]);
     };
 
     return obj;
@@ -147,6 +115,7 @@
           } else {
             dir1 = "temp";
           };
+          // It's fine to hard-code this I guess
           if(tmpStr.startsWith("BLK_")) {
             dir2 = "blk";
           } else if(tmpStr.startsWith("ENV_")) {
@@ -179,19 +148,19 @@
     if(temp instanceof Array) {
       let objB = obj.build;
       delete obj.build;
-      this.convertType(obj);
-      this.convertType(objB);
+      this.parseFields(obj);
+      this.parseFields(objB);
       ct = extendBlock(temp, nmCt, temp[0].build(obj), temp[1].build(objB));
     } else if(temp.nm.startsWithAny("UNIT_", "EXT_UNIT_")) {
-      this.convertType(obj);
+      this.parseFields(obj);
       ct = extendUnit(temp, nmCt, temp.build(obj));
     } else if(temp.nm.startsWithAny("PLA_", "EXT_PLA_")) {
       let sectorSize = obj.sectorSize;
       delete obj.sectorSize;
-      this.convertType(obj);
+      this.parseFields(obj);
       ct = extendPlanet(temp, nmCt, sectorSize, temp.build(obj));
     } else {
-      this.convertType(obj);
+      this.parseFields(obj);
       ct = extendBase(temp, nmCt, temp.build(obj));
     };
     this.parsedMap.put(nmCt, obj);
@@ -202,12 +171,12 @@
 
 
   /**
-   * Variant of {@link CLS_contentTemplateParser.convertType} for instance.
+   * Variant of {@link CLS_contentTemplateParser.parseFields} for instance.
    * @param {Object} obj
    * @return {void}
    */
-  CLS_contentTemplateParser.prototype.convertType = function(obj) {
-    return CLS_contentTemplateParser.convertType(obj);
+  CLS_contentTemplateParser.prototype.parseFields = function(obj) {
+    return CLS_contentTemplateParser.parseFields(obj);
   };
 
 

@@ -42,8 +42,8 @@
   function comp_ex_findExtensionTs(blk, contArr, tx, ty, rot) {
     contArr.clear();
     !blk.rotate ?
-      MDL_pos._tsEdge(Vars.world.tile(tx, ty), blk.size, false, contArr) :
-      MDL_pos._tsRot(Vars.world.tile(tx, ty), rot, blk.size, contArr);
+      MDL_pos._tsEdge(contArr, Vars.world.tile(tx, ty), blk.size, false) :
+      MDL_pos._tsRot(contArr, Vars.world.tile(tx, ty), rot, blk.size);
 
     return contArr;
   };

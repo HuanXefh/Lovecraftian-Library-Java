@@ -76,7 +76,7 @@
         if(!(rcObj[nmIo] instanceof Array)) throw new Error("Error parsing recipe. `${1}` must be an array!".format(nmIo));
         if(rcObj[nmIo].length % ord !== 0) throw new Error("Error parsing recipe. Length of `${1}` should be multiple of ${2}, length found: ${3}".format(nmIo, ord, rcObj[nmIo].length));
       });
-      CLS_contentTemplateParser.convertType(rcObj);
+      CLS_contentTemplateParser.parseFields(rcObj);
       i += 2;
     };
     // A special tag, just in case
@@ -493,9 +493,9 @@
     let arr = [];
 
     let rcLi = _rcLi(rcMdl);
-    let i = 0, iCap = rcLi.iCap();
+    let i = 0, iCap = rcLi.iCap(), categ;
     while(i < iCap) {
-      let categ = tryVal(rcLi[i + 1]["category"], "uncategorized");
+      categ = tryVal(rcLi[i + 1]["category"], "uncategorized");
       if(categ != null && !arr.includes(categ)) arr.push(categ);
       i += 2;
     };
@@ -562,10 +562,10 @@
    * @param {string} rcHeader
    * @return {function(Building): boolean}
    */
-  const _validGetter = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "validGetter", Function.airTrue);
+  const _validCheck = function(rcMdl, rcHeader) {
+    return _rcVal(rcMdl, rcHeader, "validCheck", Function.airTrue);
   };
-  exports._validGetter = _validGetter;
+  exports._validCheck = _validCheck;
 
 
   /**
@@ -579,9 +579,9 @@
     let arr = _rcVal(rcMdl, rcHeader, "lockedBy", Array.air);
     if(!toCts) return arr;
 
-    const cts = [];
+    let cts = [], ct;
     arr.forEachFast(nmCt => {
-      let ct = MDL_content._ct(nmCt, null, true);
+      ct = MDL_content._ct(nmCt, null, true);
       if(ct != null) cts.pushUnique(ct);
     });
 
@@ -591,31 +591,39 @@
 
 
   /**
-   * Gets the final `validGetter` used in multi-crafters.
+   * Gets the final `validCheck` used in multi-crafters.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {function(Building): boolean}
    */
-  const _finalValidGetter = function(rcMdl, rcHeader) {
-    let validGetter = _validGetter(rcMdl, rcHeader);
+  const _finalValidCheck = function(rcMdl, rcHeader) {
+    let validCheck = _validCheck(rcMdl, rcHeader);
     let cts = _lockedBy(rcMdl, rcHeader, true);
 
-    return b => validGetter(b) && cts.every(ct => ct.unlockedNow());
+    return cts.length === 0 ?
+      validCheck :
+      validCheck === Function.airTrue ?
+        function(b) {
+          return cts.every(ct => ct.unlockedNow());
+        } :
+        function(b) {
+          return validCheck(b) && ct.every(ct => ct.unlockedNow());
+        };
   };
-  exports._finalValidGetter = _finalValidGetter;
+  exports._finalValidCheck = _finalValidCheck;
 
 
   /**
-   * Variant of {@link _finalValidGetter} for tuple.
+   * Variant of {@link _finalValidCheck} for tuple.
+   * @param {Array|unset} contTup
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contTup]
    * @return {[function(): boolean]}
    */
-  const _validTup = function(rcMdl, rcHeader, contTup) {
-    const tup = contTup != null ? contTup.clear() : [];
+  const _validTup = function(contTup, rcMdl, rcHeader) {
+    let tup = contTup != null ? contTup.clear() : [];
 
-    tup.push(_finalValidGetter(rcMdl, rcHeader));
+    tup.push(_finalValidCheck(rcMdl, rcHeader));
 
     return tup;
   };
@@ -1242,91 +1250,94 @@
   exports._payo = _payo;
 
 
+  function processRcScr(rcMdl, rcHeader, nm) {
+    let
+      scr = _rcVal(rcMdl, rcHeader, nm, null),
+      baseScr = _rcBaseVal(rcMdl, "base" + nm.firstUpperCase, null);
+
+    return scr == null && baseScr == null ?
+      Function.air :
+      scr != null ?
+        scr :
+        baseScr != null ?
+          baseScr :
+          function(b) {
+            baseScr(b);
+            scr(b);
+          };
+  };
+
+
   /**
-   * Gets script called whenever the building updates.
+   * Gets script called whenever this building updates.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
   const _updateScr = function(rcMdl, rcHeader) {
-    return b => {
-      _rcVal(rcMdl, rcHeader, "updateScr", Function.air)(b);
-      _rcBaseVal(rcMdl, "baseUpdateScr", Function.air)(b);
-    };
+    return processRcScr(rcMdl, rcHeader, "updateScr");
   };
   exports._updateScr = _updateScr;
 
 
   /**
-   * Gets script called every frame when the building is running.
+   * Gets script called every frame this the building is running.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
   const _runScr = function(rcMdl, rcHeader) {
-    return b => {
-      _rcVal(rcMdl, rcHeader, "runScr", Function.air)(b);
-      _rcBaseVal(rcMdl, "baseRunScr", Function.air)(b);
-    };
+    return processRcScr(rcMdl, rcHeader, "runScr");
   };
   exports._runScr = _runScr;
 
 
   /**
-   * Gets script called when the building finishes crafting.
+   * Gets script called when this building finishes crafting.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
   const _craftScr = function(rcMdl, rcHeader) {
-    return b => {
-      _rcVal(rcMdl, rcHeader, "craftScr", Function.air)(b);
-      _rcBaseVal(rcMdl, "baseCraftScr", Function.air)(b);
-    };
+    return processRcScr(rcMdl, rcHeader, "craftScr");
   };
   exports._craftScr = _craftScr;
 
 
   /**
-   * Gets script called when the building is no longer running.
+   * Gets script called when this building is no longer running.
    * Won't be called if the building has never been active.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
   const _stopScr = function(rcMdl, rcHeader) {
-    return b => {
-      _rcVal(rcMdl, rcHeader, "stopScr", Function.air)(b);
-      _rcBaseVal(rcMdl, "baseStopScr", Function.air)(b);
-    };
+    return processRcScr(rcMdl, rcHeader, "stopScr");
   };
   exports._stopScr = _stopScr;
 
 
   /**
-   * Gets script called when the crafter fails its recipe.
+   * Gets script called when this crafter fails its recipe.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
   const _failScr = function(rcMdl, rcHeader) {
-    return b => {
-      _rcVal(rcMdl, rcHeader, "failScr", Function.air)(b);
-      _rcBaseVal(rcMdl, "baseFailScr", Function.air)(b);
-    };
+    return processRcScr(rcMdl, rcHeader, "failScr");
   };
   exports._failScr = _failScr;
 
 
   /**
    * Gets a 5-tuple of recipe scripts.
+   * @param {Array|unset} contTup
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contTup]
    * @return {Array<function(Building): void>} - <TUP>: updateScr, runScr, craftScr, stopScr, failScr.
    */
-  const _scrTup = function(rcMdl, rcHeader, contTup) {
-    const tup = contTup != null ? contTup.clear() : [];
+  const _scrTup = function(contTup, rcMdl, rcHeader) {
+    let tup = contTup != null ? contTup.clear() : [];
 
     tup.push(
       _updateScr(rcMdl, rcHeader),
@@ -1339,6 +1350,18 @@
     return tup;
   };
   exports._scrTup = _scrTup;
+
+
+  /**
+   * Gets drawer of this recipe, see "DrawRecipe" in {@link TP_drawer}.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {DrawBlock|null}
+   */
+  const _drawer = function(rcMdl, rcHeader) {
+    return _rcVal(rcMdl, rcHeader, "drawer", null);
+  };
+  exports._drawer = _drawer;
 
 
   /* <---------- specific ----------> */

@@ -111,7 +111,7 @@
    * @return {Array<number>} Result is returned as n-dimensional point.
    */
   const pathLerp = function(pathData, dim, param, param_f, param_t) {
-    const tup = [];
+    let tup = [];
     if(dim == null) dim = 2;
     if(param_f == null) param_f = 0.0;
     if(param_t == null) param_t = 1.0;

@@ -153,11 +153,11 @@
 
   /**
    * Converts tag text back to a list of tags.
+   * @param {Array|unset} contArr
    * @param {string} text
-   * @param {Array|unset} [contArr]
    * @return {Array<string>}
    */
-  const tagTextToArr = function(text, contArr) {
+  const tagTextToArr = function(contArr, text) {
     let arr = contArr != null ? contArr.clear() : [];
     if(String.isEmpty(text) || text === "!NOTAG") return arr;
 

@@ -55,11 +55,11 @@
 
   /**
    * Gets a list of reaction groups for some reactant.
+   * @param {Array|unset} contArr
    * @param {string|UnlockableContent} reac
-   * @param {Array|unset} [contArr]
    * @return {Array<string>}
    */
-  const _reacGrps = function(reac, contArr) {
+  const _reacGrps = function(contArr, reac) {
     let arr = contArr != null ? contArr.clear() : [];
 
     !(reac instanceof UnlockableContent) ?
@@ -82,8 +82,8 @@
   const _reactions = function thisFun(reac1, reac2) {
     let arr = [];
 
-    let grps1 = _reacGrps(reac1, thisFun.grpsCaches[0]);
-    let grps2 = _reacGrps(reac2, thisFun.grpsCaches[1]);
+    let grps1 = _reacGrps(thisFun.grpsCaches[0], reac1);
+    let grps2 = _reacGrps(thisFun.grpsCaches[1], reac2);
 
     Array.forEachPair(grps1, grps2, (grp1, grp2) => {
       thisFun.tmpTup.with(grp1, grp2);

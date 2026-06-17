@@ -80,7 +80,7 @@
   const _ter = function thisFun(t, size, checkR) {
     if(t == null) return null;
 
-    let ts = MDL_pos._tsRect(t, tryVal(checkR, 5), tryVal(size, 1), thisFun.tmpTs);
+    let ts = MDL_pos._tsRect(thisFun.tmpTs, t, tryVal(checkR, 5), tryVal(size, 1));
     let count = ts.iCap();
     if(count === 0) return null;
 

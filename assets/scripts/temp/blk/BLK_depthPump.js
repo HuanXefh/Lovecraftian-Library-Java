@@ -162,7 +162,7 @@
 
 
       ex_findDynaAttrTs: function(contArr, tx, ty, rot) {
-        return MDL_pos._tsBlock(this, tx, ty, contArr);
+        return MDL_pos._tsBlock(contArr, this, tx, ty);
       }
       .setProp({
         noSuper: true,
