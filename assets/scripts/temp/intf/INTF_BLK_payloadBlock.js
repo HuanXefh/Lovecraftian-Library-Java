@@ -45,9 +45,9 @@
       b.payAmtTotalAfterProd = Object.mapSum(b.payStockObj, (nmCt, amt) => FRAG_payload._paySize(nmCt) * (amt + b.ex_getPayProdAmt(nmCt)));
     };
 
-    if(b.hasPayInput && TIMER.secHalf) {
+    if(TIMER.secHalf) {
       b.payInputBs.forEachCond(
-        ob => b.ex_acceptPay(ob, ob.getPayload()),
+        ob => b.ex_acceptPay(ob, ob.getPayload()) && b.hasPayInput,
         ob => {
           let pay = FRAG_payload.takeAt(ob);
           MDL_effect._e_payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content());

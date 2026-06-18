@@ -174,7 +174,7 @@
    * @typedef {Object} RecipeObject
    * @prop {string|unset} [icon] - Content icon used for this recipe.
    * @prop {Color|unset} [tint] - Tint color of icon.
-   * @prop {ContentGn|unset} [keyRs] - Key item/fluid of this recipe, used in recipe auto-selection.
+   * @prop {ContentGn|unset} [keyCt] - Key item/fluid of this recipe, used in recipe auto-selection.
    * @prop {string|unset} [categ] - Category this recipe is in.
    * @prop {boolean|unset} [isGenerated] - Whether this recipe is created by recipe generators. Do not set this manually!
    * @prop {(function(): boolean)|unset} [validCheck] - A function to check whether recipe is allowed now.

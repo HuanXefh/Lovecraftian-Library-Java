@@ -399,14 +399,22 @@
   exports._hasErekirHeatOutput = _hasErekirHeatOutput;
 
 
+  const RecipeKeyResourceModes = new CLS_enum({
+    ITEM: 0,
+    FLUID: 1,
+    PAYLOAD: 2,
+  })
+  .globalize("RecipeKeyResourceModes");
+
+
   /**
    * Gets resource-header map for auto-selection.
    * @param {ObjectMap|unset} contArr
    * @param {RecipeModule} rcMdl
-   * @param {boolean|unset} [isFld]
+   * @param {number|unset} [mode] - See {@link RecipeKeyResourceModes}.
    * @return {ObjectMap}
    */
-  const _keyRsHeaderMap = function thisFun(contMap, rcMdl, isFld) {
+  const _keyCtHeaderMap = function thisFun(contMap, rcMdl, mode) {
     let map;
     if(contMap == null) {
       map = new ObjectMap();
@@ -414,37 +422,30 @@
       map = contMap;
       map.clear();
     };
+    if(mode == null) mode = RecipeKeyResourceModes.ITEM;
 
-    let ct, keyRs;
+    let ct, keyCt;
     rcMdl.rc.recipe.forEachRow(2, (rcHeader, rcObj) => {
-      keyRs = tryVal(rcObj.keyRs, rcObj.icon);
-      if(typeof keyRs === "string") {
-        if(keyRs.startsWith("GROUP: ")) {
+      keyCt = tryVal(rcObj.keyCt, rcObj.icon);
+      if(typeof keyCt === "string") {
+        if(keyCt.startsWith("GROUP: ")) {
           // Process "GROUP: xxx"
-          keyRs = keyRs.replace("GROUP: ", "");
-          DB_recipe.db["gen"]["group"].readList(keyRs).forEachFast(tup => {
+          keyCt = keyCt.replace("GROUP: ", "");
+          DB_recipe.db["gen"]["group"].readList(keyCt).forEachFast(tup => {
+            // Group is used for items and fluids only
             ct = MDL_content._ct(tup[0], "rs");
-            if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
-              thisFun.warnDuplicate(map, ct, rcHeader);
-              map.put(ct, rcHeader);
-            };
+            thisFun.handleCt(map, ct, rcHeader, mode);
           });
         } else {
           // Process name
-          ct = MDL_content._ct(keyRs, "rs");
-          if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
-            thisFun.warnDuplicate(map, ct, rcHeader);
-            map.put(ct, rcHeader);
-          };
+          ct = MDL_content._ct(keyCt, null, true);
+          thisFun.handleCt(map, ct, rcHeader, mode);
         };
-      } else if(keyRs instanceof Array) {
+      } else if(keyCt instanceof Array) {
         // Process array of names
-        keyRs.forEachFast(nm => {
-          ct = MDL_content._ct(nm, "rs");
-          if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
-            thisFun.warnDuplicate(map, ct, rcHeader);
-            map.put(ct, rcHeader);
-          };
+        keyCt.forEachFast(nm => {
+          ct = MDL_content._ct(nm, null, true);
+          thisFun.handleCt(map, ct, rcHeader, mode);
         });
       };
     });
@@ -452,13 +453,30 @@
     return map;
   }
   .setProp({
-    warnDuplicate: function(map, ct, rcHeader) {
+    handleCt: function(map, ct, rcHeader, mode) {
+      if(ct == null) return;
       if(map.containsKey(ct)) {
-        console.warn('[LOVEC] Key resource ${1} under header "${2}" occurs more than once!'.format(ct.name, rcHeader));
+        console.warn('[LOVEC] Key content ${1} under header "${2}" occurs more than once!'.format(ct.name, rcHeader));
       };
+      let cond = false;
+      switch(mode) {
+        case RecipeKeyResourceModes.ITEM :
+          cond = ct instanceof Item;
+          break;
+        case RecipeKeyResourceModes.FLUID :
+          cond = ct instanceof Liquid;
+          break;
+        case RecipeKeyResourceModes.PAYLOAD :
+          cond = instanceOfAny(ct, Block, UnitType);
+          break;
+        default :
+          throw new Error("${1} cannot be a key content!".format(ct.name));
+      };
+      if(!cond) return;
+      map.put(ct, rcHeader);
     },
   });
-  exports._keyRsHeaderMap = _keyRsHeaderMap;
+  exports._keyCtHeaderMap = _keyCtHeaderMap;
 
 
   /* <---------- recipe fields ----------> */

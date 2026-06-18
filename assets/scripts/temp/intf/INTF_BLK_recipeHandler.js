@@ -104,9 +104,15 @@
   function comp_updateTile(b) {
     if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
 
-    if(b.useAutoSelection && b.keyRs != null && b.lastKeyRs !== b.keyRs) {
-      b.lastKeyRs = b.keyRs;
-      header = (b.keyRs instanceof Liquid ? b.keyFldHeaderMap : b.keyItmHeaderMap).get(b.keyRs);
+    if(b.useAutoSelection && b.keyCt != null && b.lastKeyCt !== b.keyCt) {
+      b.lastKeyCt = b.keyCt;
+      header = (
+        b.keyCt instanceof Item ?
+          b.keyItmHeaderMap :
+          b.keyCt instanceof Liquid ?
+            b.keyFldHeaderMap :
+            b.keyPayHeaderMap
+      ).get(b.keyCt);
       if(header != null) {
         b.configure(header);
       };
@@ -180,8 +186,8 @@
 
   function comp_acceptItem(b, b_f, itm) {
     if(b.items == null || b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
-    if(b.useAutoSelection && b.keyItmHeaderMap != null && itm !== b.keyRs && checkSelectedUnloader(b_f) && b.keyItmHeaderMap.containsKey(itm)) {
-      b.keyRs = itm;
+    if(b.useAutoSelection && b.keyItmHeaderMap != null && itm !== b.keyCt && checkSelectedUnloader(b_f) && b.keyItmHeaderMap.containsKey(itm)) {
+      b.keyCt = itm;
     };
 
     if(b.itmAcceptCacheArr[itm.id] == null) {
@@ -194,8 +200,8 @@
 
   function comp_acceptLiquid(b, b_f, liq) {
     if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
-    if(b.useAutoSelection && b.keyFldHeaderMap != null && liq !== b.keyRs && checkSelectedUnloader(b_f) && b.keyFldHeaderMap.containsKey(liq)) {
-      b.keyRs = liq;
+    if(b.useAutoSelection && b.keyFldHeaderMap != null && liq !== b.keyCt && b.keyFldHeaderMap.containsKey(liq)) {
+      b.keyCt = liq;
     };
 
     if(b.liqAcceptCacheArr[liq.id] == null) {
@@ -244,15 +250,22 @@
         amt = b.bi[i + 1];
         if(amt > 0) MDL_table.__reqRs(tb, b, tmp, amt);
       } else {
-        thisFun.tmpArr.clear();
+        thisFun.tmpCts.clear();
+        thisFun.tmpAmts.clear();
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
           tmp1 = tmp[j];
-          thisFun.tmpArr.push(tmp1);
+          amt = tmp[j + 1];
+          if(amt > 0) {
+            thisFun.tmpCts.push(tmp1);
+            thisFun.tmpAmts.push(amt);
+          };
           j += 3;
         };
-        if(tmp[j + 1] > 0) MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
+        if(thisFun.tmpCts.length > 0) {
+          MDL_table.__reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
+        };
       };
       i += 3;
     };
@@ -265,15 +278,19 @@
       if(!(tmp instanceof Array)) {
         if(b.ci[i + 1] > 0.0) MDL_table.__reqRs(tb, b, tmp);
       } else {
-        thisFun.tmpArr.clear();
+        thisFun.tmpCts.clear();
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
           tmp1 = tmp[j];
-          thisFun.tmpArr.push(tmp1);
+          if(tmp[j + 1] > 0.0) {
+            thisFun.tmpCts.push(tmp1);
+          };
           j += 2;
         };
-        if(tmp[j + 1] > 0.0) MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
+        if(thisFun.tmpCts.length > 0) {
+          MDL_table.__reqMultiCt(tb, b, thisFun.tmpCts);
+        };
       };
       i += 2;
     };
@@ -283,21 +300,30 @@
     iCap = b.aux.iCap();
     while(i < iCap) {
       tmp = b.aux[i];
-      if(b.aux[i + 1] > 0.0) MDL_table.__reqRs(tb, b, tmp);
+      if(b.aux[i + 1] > 0.0) {
+        MDL_table.__reqRs(tb, b, tmp);
+      };
       i += 2;
     };
 
     // OPT
     if(b.reqOpt) {
-      thisFun.tmpArr.clear();
+      thisFun.tmpCts.clear();
+      thisFun.tmpAmts.clear();
       i = 0;
       iCap = b.opt.iCap();
       while(i < iCap) {
         tmp = b.opt[i];
-        thisFun.tmpArr.push(tmp);
+        amt = b.opt[i + 1];
+        if(amt > 0) {
+          thisFun.tmpCts.push(tmp);
+          thisFun.tmpAmts.push(amt);
+        };
         i += 4;
       };
-      if(b.opt[i + 1] > 0) MDL_table.__reqMultiRs(tb, b, thisFun.tmpArr);
+      if(thisFun.tmpCts.length > 0) {
+        MDL_table.__reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
+      };
     };
 
     // PAYI
@@ -307,13 +333,16 @@
       while(i < iCap) {
         tmp = MDL_content._ct(b.payi[i], null, true);
         amt = b.payi[i + 1];
-        if(amt > 0) MDL_table.__reqCt(tb, tmp, amt, () => tryVal(b.payReqObj[tmp.name], 0));
+        if(amt > 0) {
+          MDL_table.__reqCt(tb, tmp, amt, ct => tryVal(b.payReqObj[ct.name], 0))
+        };
         i += 2;
       };
     };
   }
   .setProp({
-    tmpArr: [],
+    tmpCts: [],
+    tmpAmts: [],
   });
 
 
@@ -461,8 +490,9 @@
     b.rcDrawer = MDL_recipe._drawer(rcMdl, rcHeader);
 
     if(b.useAutoSelection) {
-      b.keyItmHeaderMap = MDL_recipe._keyRsHeaderMap(b.keyItmHeaderMap, rcMdl, false);
-      b.keyFldHeaderMap = MDL_recipe._keyRsHeaderMap(b.keyFldHeaderMap, rcMdl, true);
+      b.keyItmHeaderMap = MDL_recipe._keyCtHeaderMap(b.keyItmHeaderMap, rcMdl, RecipeKeyResourceModes.ITEM);
+      b.keyFldHeaderMap = MDL_recipe._keyCtHeaderMap(b.keyFldHeaderMap, rcMdl, RecipeKeyResourceModes.FLUID);
+      b.keyPayHeaderMap = MDL_recipe._keyCtHeaderMap(b.keyPayHeaderMap, rcMdl, RecipeKeyResourceModes.PAYLOAD);
     };
 
     Time.run(0.0, () => {
@@ -915,13 +945,19 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        keyRs: null,
+        keyPayHeaderMap: null,
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        lastKeyRs: null,
+        keyCt: null,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        lastKeyCt: null,
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
@@ -1293,6 +1329,30 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof INTF_B_recipeHandler
+       * @instance
+       * @param {Building} b_f
+       * @param {Payload} pay
+       * @return {boolean}
+       */
+      ex_acceptPay: function thisFun(b_f, pay) {
+        if(pay == null) return false;
+        let ct = pay.content();
+        if(this.useAutoSelection && this.keyPayHeaderMap != null && ct !== this.keyCt && this.keyPayHeaderMap.containsKey(ct)) {
+          this.keyCt = ct;
+        };
+
+        return thisFun.funPrev.apply(this, arguments);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+        argLen: 2,
       }),
 
 

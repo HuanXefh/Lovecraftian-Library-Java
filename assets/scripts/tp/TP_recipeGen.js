@@ -149,7 +149,7 @@
       "loveclab-gas0misc-steam",
       metaObj,
       {
-        keyRs: "GROUP: steam",
+        keyCt: "GROUP: steam",
         liqI: "GROUP: steam",
         liqO: "loveclab-liq0ore-water",
         amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * STEAM_REFUND_FRAC,
@@ -201,7 +201,7 @@
       },
       metaObj,
       (itm, metaObj) => ({
-        keyRs: itm.name,
+        keyCt: itm.name,
         itmI: itm,
         itmO: tg,
       }),
@@ -560,7 +560,7 @@
       null,
       metaObj,
       (itm, metaObj) => ({
-        keyRs: itm.delegee.intmdParent.name,
+        keyCt: itm.delegee.intmdParent.name,
         itmI: itm.delegee.intmdParent,
         itmO: itm,
       }),
@@ -587,7 +587,7 @@
         "loveclab-item0buil-coarse-aggregate",
         metaObj,
         {
-          keyRs: "loveclab-item0buil-coarse-aggregate",
+          keyCt: "loveclab-item0buil-coarse-aggregate",
           itmI: "loveclab-item0buil-coarse-aggregate",
           itmO: "loveclab-item0buil-fine-aggregate",
         },
@@ -603,7 +603,7 @@
       },
       metaObj,
       (itm, metaObj) => ({
-        keyRs: itm.name,
+        keyCt: itm.name,
         itmI: itm,
         itmO: tg,
       }),
@@ -625,6 +625,7 @@
       blk => MDL_content._ct(Object.findKeyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs"),
       metaObj,
       (itm, metaObj) => ({
+        keyCt: DB_HANDLER.read("itm-pay-blk", itm.name),
         payI: DB_HANDLER.read("itm-pay-blk", itm.name),
         itmO: itm,
         amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name), "blk").requirements[0].amount,
@@ -650,7 +651,7 @@
         null,
         metaObj,
         (itm, metaObj) => ({
-          keyRs: itm.name,
+          keyCt: itm.name,
           tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
           itmI: itm,
           itmO: itm.delegee.intmdParent,
@@ -664,7 +665,7 @@
         null,
         metaObj,
         (itm, metaObj) => ({
-          keyRs: itm.name,
+          keyCt: itm.name,
           tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
           itmI: itm,
           itmO: MDL_content._intmd(itm.delegee.intmdParent, "rs-ore0conc"),

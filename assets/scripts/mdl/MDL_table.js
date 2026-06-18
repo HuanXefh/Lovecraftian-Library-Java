@@ -400,13 +400,13 @@
    * @param {Table} tb
    * @param {UnlockableContent} ct
    * @param {number} amt
-   * @param {function(): number} amtGetter
+   * @param {function(UnlockableContent): number} amtGetter
    * @return {Cell}
    */
   const __reqCt = function(tb, ct, amt, amtGetter) {
     let reqImg = new ReqImage(
       StatValues.stack(ct, amt),
-      () => amtGetter() >= amt,
+      () => (amtGetter(ct) >= amt),
     );
 
     return tb.add(reqImg).size(32.0);
@@ -419,13 +419,23 @@
    * @param {Table} tb
    * @param {Building} b
    * @param {Resource} rs
-   * @param {number} amt
+   * @param {number|unset} [amt]
    * @return {Cell}
    */
   const __reqRs = function(tb, b, rs, amt) {
     let reqImg = new ReqImage(
-      rs instanceof Item ? StatValues.stack(rs, amt) : rs.uiIcon,
-      rs instanceof Item ? () => b.items.get(rs) >= amt : () => b.liquids.get(rs) > 0.0,
+      amt == null ? rs.uiIcon : StatValues.stack(rs, amt),
+      amt == null ?
+        (
+          rs instanceof Item ?
+            () => b.items.get(rs) > 0 :
+            () => b.liquids.get(rs) > 0.0
+        ) :
+        (
+          rs instanceof Item ?
+            () => b.items.get(rs) >= amt :
+            () => b.liquids.get(rs) >= amt
+        ),
     );
 
     return tb.add(reqImg).size(32.0);
@@ -434,24 +444,48 @@
 
 
   /**
-   * Adds a multiple resource requirement display for a table.
+   * Adds a multiple content requirement display for a table.
    * @param {Table} tb
    * @param {Building} b
-   * @param {Array<Resource>} rss
+   * @param {Array<UnlockableContent>} cts
+   * @param {Array<number>|unset} [amts]
+   * @param {(function(UnlockableContent): number)|unset} [amtGetter]
    * @return {Cell}
    */
-  const __reqMultiRs = function(tb, b, rss) {
+  const __reqMultiCt = function(tb, b, cts, amts, amtGetter) {
     let multiReqImg = new MultiReqImage();
-    rss.forEachFast(rs => {
-      if(rs.unlockedNow()) multiReqImg.add(new ReqImage(
-        rs.uiIcon,
-        rs instanceof Item ? () => b.items.has(rs) : () => b.liquids.get(rs) > 0.0,
+    let i = 0;
+    if(amts != null) {
+      // Copy this array to fix values
+      amts = amts.cpy();
+    };
+
+    cts.forEachFast(ct => {
+      if(ct.unlockedNow()) multiReqImg.add(new ReqImage(
+        amts == null || amts[i] == null ? ct.uiIcon : StatValues.stack(ct, amts[i]),
+        (function(i) {
+          if(ct instanceof Item) {
+            return amts == null || amts[i] == null ?
+              () => b.items.has(ct) :
+              () => b.items.get(ct) >= amts[i];
+          } else if(ct instanceof Liquid) {
+            return amts == null || amts[i] == null ?
+              () => b.liquids.get(ct) > 0.0 :
+              () => b.liquids.get(ct) >= amts[i];
+          };
+
+          if(amtGetter == null) throw new Error("Hey WTF did you do to the recipe data?");
+          return amts == null || amts[i] == null ?
+            () => amtGetter(ct) > 0.0 :
+            () => amtGetter(ct) > amts[i];
+        })(i),
       ));
+      i++;
     });
 
     return tb.add(multiReqImg).size(32.0);
   };
-  exports.__reqMultiRs = __reqMultiRs;
+  exports.__reqMultiCt = __reqMultiCt;
 
 
   /**

@@ -358,7 +358,7 @@
    */
   CLS_recipeGenerator.prototype.setBaseParam = function(rcObj, paramObj) {
     readParamAndCall(paramObj, "tint", val => rcObj.tint = val);
-    readParamAndCall(paramObj, "keyRs", val => rcObj.keyRs = val);
+    readParamAndCall(paramObj, "keyCt", val => rcObj.keyCt = val);
     readParamAndCall(paramObj, "validCheck", val => rcObj.validCheck = val);
     readParamAndCall(paramObj, "lockedBy", val => rcObj.lockedBy = val);
     readParamAndCall(paramObj, "timeScl", val => rcObj.timeScl = val);
