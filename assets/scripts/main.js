@@ -443,6 +443,31 @@
 
       // Draggable button
       if(!Vars.headless) new CLS_dragButton().add();
+
+      // Terrain types
+      batchCall(MDL_terrain, function() {
+        this.newTerGetter("dirt", ["dirt", "grass"]);
+        this.newTerGetter("rock", ["gravel", "rock"]);
+        this.newTerGetter("salt", ["salt"]);
+        this.newTerGetter("sand", ["gravel", "sand"]);
+        this.newTerGetter("snow", ["grass", "ice", "snow"]);
+        this.newTerGetter("lava", ["lava"]);
+        this.newTerGetter("puddle", ["puddle"]);
+        this.newTerGetter("river", ["river"]);
+        this.newTerGetter("sea", ["sea"]);
+
+        this.newBankTerGetter("bank", "river");
+        this.setBankTerMatGrps("bank", [
+          "dirt", "grass",
+          "sand", "gravel", "rock", "salt",
+          "ice", "snow",
+        ]);
+        this.newBankTerGetter("beach", "sea");
+        this.setBankTerMatGrps("beach", [
+          "sand", "gravel", "rock", "salt",
+          "ice", "snow",
+        ]);
+      });
     })();
 
 

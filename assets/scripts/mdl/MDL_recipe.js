@@ -406,7 +406,7 @@
    * @param {boolean|unset} [isFld]
    * @return {ObjectMap}
    */
-  const _keyRsHeaderMap = function(contMap, rcMdl, isFld) {
+  const _keyRsHeaderMap = function thisFun(contMap, rcMdl, isFld) {
     let map;
     if(contMap == null) {
       map = new ObjectMap();
@@ -415,17 +415,34 @@
       map.clear();
     };
 
-    let ct;
+    let ct, keyRs;
     rcMdl.rc.recipe.forEachRow(2, (rcHeader, rcObj) => {
-      if(!(rcObj.keyRs instanceof Array)) {
-        ct = MDL_content._ct(tryVal(rcObj.keyRs, rcObj.icon), "rs");
-        if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
-          map.put(ct, rcHeader);
+      keyRs = tryVal(rcObj.keyRs, rcObj.icon);
+      if(typeof keyRs === "string") {
+        if(keyRs.startsWith("GROUP: ")) {
+          // Process "GROUP: xxx"
+          keyRs = keyRs.replace("GROUP: ", "");
+          DB_recipe.db["gen"]["group"].readList(keyRs).forEachFast(tup => {
+            ct = MDL_content._ct(tup[0], "rs");
+            if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
+              thisFun.warnDuplicate(map, ct, rcHeader);
+              map.put(ct, rcHeader);
+            };
+          });
+        } else {
+          // Process name
+          ct = MDL_content._ct(keyRs, "rs");
+          if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
+            thisFun.warnDuplicate(map, ct, rcHeader);
+            map.put(ct, rcHeader);
+          };
         };
-      } else {
-        rcObj.keyRs.forEachFast(nm => {
+      } else if(keyRs instanceof Array) {
+        // Process array of names
+        keyRs.forEachFast(nm => {
           ct = MDL_content._ct(nm, "rs");
           if(ct != null && ct instanceof (isFld ? Liquid : Item)) {
+            thisFun.warnDuplicate(map, ct, rcHeader);
             map.put(ct, rcHeader);
           };
         });
@@ -433,7 +450,14 @@
     });
 
     return map;
-  };
+  }
+  .setProp({
+    warnDuplicate: function(map, ct, rcHeader) {
+      if(map.containsKey(ct)) {
+        console.warn('[LOVEC] Key resource ${1} under header "${2}" occurs more than once!'.format(ct.name, rcHeader));
+      };
+    },
+  });
   exports._keyRsHeaderMap = _keyRsHeaderMap;
 
 

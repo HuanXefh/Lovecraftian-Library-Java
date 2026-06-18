@@ -687,7 +687,7 @@ const db = {
 
 
       membrane: [],
-      
+
 
       brickBlock: [],
 
@@ -698,6 +698,9 @@ const db = {
     alloying: [],
 
 
+    /**
+     * <AUTORC>
+     */
     brickBaking: [],
 
 
@@ -707,45 +710,84 @@ const db = {
     casting: [],
 
 
+    /**
+     * <AUTORC>
+     */
     condensation: [],
 
 
+    /**
+     * <AUTORC>
+     */
     dryingItem: [],
 
 
+    /**
+     * <AUTORC>
+     */
     dryingLiquid: [],
 
 
+    /**
+     * <AUTORC>
+     */
     dryingLiquidAcidic: [],
 
 
+    /**
+     * <AUTORC>
+     */
     dryingLiquidBasic: [],
 
 
+    /**
+     * <AUTORC>
+     */
     dryingGas: [],
 
 
+    /**
+     * <AUTORC>
+     */
     dryingGasAcidic: [],
 
 
+    /**
+     * <AUTORC>
+     */
     dryingGasBasic: [],
 
 
+    /**
+     * <AUTORC>
+     */
     dryingFreeze: [],
 
 
+    /**
+     * <AUTORC>
+     */
     filtration: [],
 
 
+    /**
+     * <AUTORC>
+     */
     filtrationLiquid: [],
 
 
     forging: [],
 
 
+    /**
+     * <AUTORC>
+     */
     heatingExchange: [],
 
 
+    /**
+     * <AUTORC>
+     */
     heatingGas: [],
 
 
@@ -758,15 +800,27 @@ const db = {
     mixingLiquid: [],
 
 
+    /**
+     * <AUTORC>
+     */
     pulverization: [],
 
 
+    /**
+     * <AUTORC>
+     */
     purificationI: [],
 
 
+    /**
+     * <AUTORC>
+     */
     purificationII: [],
 
 
+    /**
+     * <AUTORC>
+     */
     purificationMagnetic: [],
 
 
@@ -791,18 +845,33 @@ const db = {
     reactionBurnSolid: [],
 
 
+    /**
+     * <AUTORC>
+     */
     roasting: [],
 
 
+    /**
+     * <AUTORC>
+     */
     rockCrushing: [],
 
 
+    /**
+     * <AUTORC>
+     */
     concentrateRoasting: [],
 
 
+    /**
+     * <AUTORC>
+     */
     smelting: [],
 
 
+    /**
+     * <AUTORC>
+     */
     concentrateSmelting: [],
 
 

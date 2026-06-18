@@ -149,6 +149,7 @@
       "loveclab-gas0misc-steam",
       metaObj,
       {
+        keyRs: "GROUP: steam",
         liqI: "GROUP: steam",
         liqO: "loveclab-liq0ore-water",
         amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * STEAM_REFUND_FRAC,

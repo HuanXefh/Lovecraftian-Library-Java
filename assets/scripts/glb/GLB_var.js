@@ -149,6 +149,8 @@
     auxCap: 1.0,
     auxHeatTempFrac: 0.01666667,
     terFlrThr: 0.75,
+    terBankLiqFrac: 0.55,
+    terBankGroundFrac: 0.45,
     buildActiveEffcThr: 0.96,
     powSourceStdProd: 8000.0,
 

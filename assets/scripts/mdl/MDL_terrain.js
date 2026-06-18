@@ -6,7 +6,7 @@
 
 
   /**
-   * Methods related to terrain calculation.
+   * Methods related to terrain type calculation.
    * The proper name should be "biome", but it's too late for me too.
    * @module lovec/mdl/MDL_terrain
    */
@@ -19,85 +19,143 @@
 */
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  const usedMatGrps = (function() {
+    let arr = [];
+    MDL_event._c_onInit(() => {
+      Vars.content.blocks().each(
+        blk => tryJsProp(blk, "tempTags", Array.air).includes("blk-mat0flr"),
+        blk => usedMatGrps.pushUnique(tryJsProp(blk, "matGrp", "none")),
+      );
+      usedMatGrps.pull("none");
+    });
+    return arr;
+  })();
+  const warnedMatGrps = [];
+
+
+  const terGetters = [];
+  const bankTerGetters = [];
+  const bankTerMatGrps = {};
+
+
+  function warnUnusedMatGrp(matGrp) {
+    if(!warnedMatGrps.includes(matGrp) && !usedMatGrps.includes(matGrp)) {
+      console.warn("[LOVEC] Material group ${1} is not used by any block!".format(matGrp.color(Pal.accent)));
+      warnedMatGrps.push(matGrp);
+    };
+  };
+
+
+  /**
+   * <ARGS>: countMap, ters.
+   * <br> <ARGS>: countMap, ter1, ter2, ter3, ...
+   */
+  function sumCountTers(countMap) {
+    let count = 0;
+    if(arguments[1] instanceof Array) {
+      arguments[1].forEachFast(ter => {
+        count += countMap.get(ter, 0);
+      });
+    } else {
+      let i = 1, iCap = arguments.length;
+      while(i < iCap) {
+        count += countMap.get(arguments[i], 0);
+        i++;
+      };
+    };
+    return count;
+  };
+
+
   /* <---------- base ----------> */
 
 
   /**
-   * A list of terrain types populated on CLIENT LOAD.
-   * See {@link ENV_materialFloor} and {@link ENV_liquidMaterialFloor}.
-   * @type {Array<string>}
+   * Registers a new terrain type composed of given material groups.
+   * @param {string} ter
+   * @param {Array<string>} matGrps
+   * @return {void}
    */
-  const ters = (function() {
-    let arr = [];
-
-    MDL_event._c_onLoad(() => {
-      Vars.content.blocks().each(
-        blk => tryJsProp(blk, "tempTags", Array.air).includes("blk-mat0flr"),
-        blk => ters.pushUnique(tryJsProp(blk, "matGrp", "none")),
-      );
-      ters.pull("none");
-    });
-
-    return arr;
-  })();
-  exports.ters = ters;
-
-
-  /** Parameters used to check bank terrain type. */
-  const bankLiqParams = {
-    liqFrac: 0.55,
-    groundFrac: 0.45,
-    /** These solid terrain types will be used for "river". */
-    bankGroundTers: [
-      "dirt",
-      "grass",
-      "gravel",
-      "ice",
-      "rock",
-      "sand",
-      "snow",
-    ],
-    /** These solid terrain types will be used for "beach". */
-    beachGroundTers: [
-      "gravel",
-      "ice",
-      "rock",
-      "sand",
-      "snow",
-    ],
+  const newTerGetter = function(ter, matGrps) {
+    terGetters.push((map, count, thr) => sumCountTers(map, matGrps) / count < thr ? "!PENDING" : ter);
   };
-  exports.bankLiqParams = bankLiqParams;
+  exports.newTerGetter = newTerGetter;
+
+
+  /**
+   * Registers a new bank terrain type with given material group as the liquid part.
+   * @param {string} ter
+   * @param {string} liqMatGrp
+   * @return {void}
+   */
+  const newBankTerGetter = function(ter, liqMatGrp) {
+    bankTerGetters.push((map, count, thr) => map.get(liqMatGrp, 0) / count < thr * VAR.param.terBankLiqFrac || sumCountTers(map, tryVal(bankTerMatGrps[ter], Array.air)) / count < thr * VAR.param.terBankGroundFrac ? "!PENDING" : ter);
+  };
+  exports.newBankTerGetter = newBankTerGetter;
+
+
+  /**
+  * Sets ground part for a bank terrain type with given material groups.
+  * Does not remove previously added ones.
+  * @param {string} nm
+  * @param {Array<string>} matGrps
+  * @return {void}
+  */
+  const setBankTerMatGrps = function(nm, matGrps) {
+    if(bankTerMatGrps[nm] == null) {
+      bankTerMatGrps[nm] = [];
+    };
+    matGrps.forEachFast(matGrp => {
+      warnUnusedMatGrp(matGrp);
+      bankTerMatGrps[nm].pushUnique(matGrp);
+    });
+  };
+  exports.setBankTerMatGrps = setBankTerMatGrps;
 
 
   /**
    * Gets terrain type at some tile.
-   * You can register new terrain types by pushing more getters into this function.
    * @param {Tile} t
    * @param {number|unset} [size]
    * @param {number|unset} [checkR]
-   * @return {string|null} - Transition is null.
+   * @return {string|null} - Terrain type "transition" is null.
    */
   const _ter = function thisFun(t, size, checkR) {
     if(t == null) return null;
+    if(size == null) size = 1;
+    if(checkR == null) checkR = 5;
 
-    let ts = MDL_pos._tsRect(thisFun.tmpTs, t, tryVal(checkR, 5), tryVal(size, 1));
-    let count = ts.iCap();
-    if(count === 0) return null;
+    let ts = MDL_pos._tsRect(thisFun.tmpTs, t, checkR, size);
+    if(ts.length === 0) return null;
+    let count = Math.pow(checkR * 2 + size, 2);
+    while(ts.length < count) {
+      ts.push(null);
+    };
 
     thisFun.countMap.clear();
     let ter;
     ts.forEachFast(ot => {
-      ter = tryJsProp(ot.floor(), "matGrp", null);
-      if(ter != null) thisFun.countMap.put(ter, thisFun.countMap.get(ter, 0) + 1);
+      if(PARAM.ENABLE_TEST_DRAW && ot != null) {
+        Fx.placeBlock.at(ot);
+      };
+      ter = ot == null ?
+        null :
+        tryJsProp(ot.floor(), "matGrp", null);
+      if(ter != null) {
+        thisFun.countMap.put(ter, thisFun.countMap.get(ter, 0) + 1);
+      };
     });
 
     let tmpTer;
     ter = null;
-    thisFun.terGetters.forEachFast(getter => {
+    terGetters.forEachFast(getter => {
       tmpTer = getter(thisFun.countMap, count, VAR.param.terFlrThr);
       if(tmpTer !== "!PENDING") ter = tmpTer;
     });
-    thisFun.complexTerGetters.forEachFast(getter => {
+    bankTerGetters.forEachFast(getter => {
       tmpTer = getter(thisFun.countMap, count, VAR.param.terFlrThr);
       if(tmpTer !== "!PENDING") ter = tmpTer;
     });
@@ -107,21 +165,6 @@
   .setProp({
     tmpTs: [],
     countMap: new ObjectMap(),
-    terGetters: [
-      (map, count, thr) => sumCountTers(map, "dirt", "grass") / count < thr ? "!PENDING" : "dirt",
-      (map, count, thr) => sumCountTers(map, "lava") / count < thr ? "!PENDING" : "lava",
-      (map, count, thr) => sumCountTers(map, "puddle") / count < thr ? "!PENDING" : "puddle",
-      (map, count, thr) => sumCountTers(map, "river") / count < thr ? "!PENDING" : "river",
-      (map, count, thr) => sumCountTers(map, "gravel", "rock") / count < thr ? "!PENDING" : "rock",
-      (map, count, thr) => sumCountTers(map, "salt") / count < thr ? "!PENDING" : "salt",
-      (map, count, thr) => sumCountTers(map, "gravel", "sand") / count < thr ? "!PENDING" : "sand",
-      (map, count, thr) => sumCountTers(map, "sea") / count < thr ? "!PENDING" : "sea",
-      (map, count, thr) => sumCountTers(map, "grass", "ice", "snow") / count < thr ? "!PENDING" : "snow",
-    ],
-    complexTerGetters: [
-      (map, count, thr) => map.get("river", 0) / count < thr * bankLiqParams.liqFrac || sumCountTers(map, bankLiqParams.bankGroundTers) / count < thr * bankLiqParams.groundFrac ? "!PENDING" : "bank",
-      (map, count, thr) => map.get("beach", 0) / count < thr * bankLiqParams.liqFrac || sumCountTers(map, bankLiqParams.beachGroundTers) / count < thr * bankLiqParams.groundFrac ? "!PENDING" : "beach",
-    ],
   });
   exports._ter = _ter;
 
@@ -135,32 +178,6 @@
     return Vars.headless ? "" : MDL_bundle._term("common", "ter-" + (tryVal(ter, "transition")));
   };
   exports._terB = _terB;
-
-
-  /**
-   * Used to count floor blocks matching some terrain type(s).
-   * <br> <ARGS>: countMap, ters.
-   * <br> <ARGS>: countMap, ter1, ter2, ter3, ...
-   * @param {ObjectMap} countMap
-   * @return {number}
-   */
-  const sumCountTers = function(countMap) {
-    let count = 0;
-    if(arguments[1] instanceof Array) {
-      arguments[1].forEachFast(ter => {
-        count += countMap.get(ter, 0);
-      });
-    } else {
-      let i = 1, iCap = arguments.length;
-      while(i < iCap) {
-        count += countMap.get(arguments[i], 0);
-        i++;
-      };
-    };
-
-    return count;
-  };
-  exports.sumCountTers = sumCountTers;
 
 
   /* <---------- component ----------> */
