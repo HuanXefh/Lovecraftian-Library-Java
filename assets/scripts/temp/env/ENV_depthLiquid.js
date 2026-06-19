@@ -47,7 +47,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_depthLiquid").implement(INTF).initClass()
   .setParent(OverlayFloor)
-  .setTags("blk-env", "blk-dpliq")
+  .setTags("env-dpliq")
   .setParam({
 
 

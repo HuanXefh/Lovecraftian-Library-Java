@@ -36,7 +36,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_conveyor").implement(INTF[0]).initClass()
     .setParent(Conveyor)
-    .setTags("blk-dis", "blk-conv")
+    .setTags()
     .setParam({
 
 

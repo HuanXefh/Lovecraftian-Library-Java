@@ -39,7 +39,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_grassHeap").initClass()
   .setParent(TallBlock)
-  .setTags("blk-env", "blk-tall0grass")
+  .setTags("env-grass-tall")
   .setParam({
 
 

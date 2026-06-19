@@ -755,7 +755,7 @@
         if(failP > 0.0) addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), failP.perc(1)));
 
         // For furnaces
-        if(MDL_cond._isFurnace(blk)) {
+        if(blk.ex_isSubInsOf("BLK_furnaceRecipeFactory") || blk.ex_isSubInsOf("BLK_electricFurnaceRecipeFactory")) {
           // Specific
           let tempReq = MDL_recipe._tempReq(rcMdl, rcHeader);
           let tempAllowed = MDL_recipe._tempAllowed(rcMdl, rcHeader);

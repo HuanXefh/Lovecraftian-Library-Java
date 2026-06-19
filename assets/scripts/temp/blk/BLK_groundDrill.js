@@ -80,7 +80,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_groundDrill").initClass()
     .setParent(Drill)
-    .setTags("blk-min", "blk-drl")
+    .setTags()
     .setParam({
 
 

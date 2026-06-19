@@ -98,7 +98,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_rainCollector").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac")
+    .setTags()
     .setParam({
 
 

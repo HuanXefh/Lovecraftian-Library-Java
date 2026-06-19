@@ -63,7 +63,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_liquidPump").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).implement(INTF_C[0]).initClass()
     .setParent(Pump)
-    .setTags("blk-pump")
+    .setTags()
     .setParam({
 
 

@@ -203,7 +203,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_rangeWallDrill").initClass()
     .setParent(BeamDrill)
-    .setTags("blk-min", "blk-drl")
+    .setTags()
     .setParam({
 
 

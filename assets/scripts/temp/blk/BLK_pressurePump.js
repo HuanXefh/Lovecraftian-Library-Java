@@ -40,7 +40,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_pressurePump").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac", "blk-pump")
+    .setTags("blk-non-fac")
     .setParam({})
     .setMethod({
 

@@ -48,7 +48,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_directionalFluidRouter").implement(INTF[0]).initClass()
     .setParent(LiquidRouter)
-    .setTags("blk-liq", "blk-frouter")
+    .setTags()
     .setParam({
 
 

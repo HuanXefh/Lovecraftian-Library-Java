@@ -43,7 +43,7 @@
      */
     newClass().extendClass(PARENT[0], "MAP_flagTrigger").implement(INTF[0]).initClass()
     .setParent(null)
-    .setTags("blk-log")
+    .setTags()
     .setParam({
 
 

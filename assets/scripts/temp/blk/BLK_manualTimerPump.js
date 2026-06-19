@@ -33,7 +33,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_manualTimerPump").implement(INTF[0]).initClass()
     .setParent(Pump)
-    .setTags("blk-pump")
+    .setTags()
     .setParam({
 
 

@@ -76,7 +76,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_vent").implement(INTF).initClass()
   .setParent(SteamVent)
-  .setTags("blk-env", "blk-vent")
+  .setTags()
   .setParam({
 
 

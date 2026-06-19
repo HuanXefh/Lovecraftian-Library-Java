@@ -44,7 +44,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_baseEnvBlock").initClass()
   .setParent(null)
-  .setTags("blk-env")
+  .setTags()
   .setParam({
 
 

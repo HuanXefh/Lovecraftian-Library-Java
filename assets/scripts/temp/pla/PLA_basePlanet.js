@@ -29,7 +29,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "PLA_basePlanet").initClass()
   .setParent(null)
-  .setTags("")
+  .setTags()
   .setParam({
 
 

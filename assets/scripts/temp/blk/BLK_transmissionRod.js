@@ -86,7 +86,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_transmissionRod").initClass()
     .setParent(Wall)
-    .setTags("blk-trans0rod")
+    .setTags("blk-tor-rod", "blk-non-wall")
     .setParam({
 
 

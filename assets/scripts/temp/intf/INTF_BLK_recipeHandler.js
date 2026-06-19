@@ -186,7 +186,7 @@
 
   function comp_acceptItem(b, b_f, itm) {
     if(b.items == null || b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
-    if(b.useAutoSelection && b.keyItmHeaderMap != null && itm !== b.keyCt && checkSelectedUnloader(b_f) && b.keyItmHeaderMap.containsKey(itm)) {
+    if(b.useAutoSelection && b.keyItmHeaderMap != null && itm !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.keyItmHeaderMap.containsKey(itm) && !FRAG_recipe._hasOutput(itm, b.co, b.bo, b.fo)) {
       b.keyCt = itm;
     };
 
@@ -200,7 +200,7 @@
 
   function comp_acceptLiquid(b, b_f, liq) {
     if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
-    if(b.useAutoSelection && b.keyFldHeaderMap != null && liq !== b.keyCt && b.keyFldHeaderMap.containsKey(liq)) {
+    if(b.useAutoSelection && b.keyFldHeaderMap != null && liq !== b.keyCt && b_f !== b && b.keyFldHeaderMap.containsKey(liq) && !FRAG_recipe._hasOutput(liq, b.co, b.bo, b.fo)) {
       b.keyCt = liq;
     };
 
@@ -1343,7 +1343,7 @@
       ex_acceptPay: function thisFun(b_f, pay) {
         if(pay == null) return false;
         let ct = pay.content();
-        if(this.useAutoSelection && this.keyPayHeaderMap != null && ct !== this.keyCt && this.keyPayHeaderMap.containsKey(ct)) {
+        if(this.useAutoSelection && this.keyPayHeaderMap != null && ct !== this.keyCt && b_f !== this && this.keyPayHeaderMap.containsKey(ct)) {
           this.keyCt = ct;
         };
 

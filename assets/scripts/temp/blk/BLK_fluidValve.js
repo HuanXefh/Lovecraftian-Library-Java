@@ -65,7 +65,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_fluidValve").initClass()
     .setParent(LiquidJunction)
-    .setTags("blk-liq", "blk-gate")
+    .setTags()
     .setParam({
 
 
@@ -149,7 +149,7 @@
 
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
-        
+
         this.isOn = rd.bool();
       },
 

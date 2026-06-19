@@ -52,7 +52,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_auxiliaryCable").initClass()
     .setParent(ArmoredConveyor)
-    .setTags("blk-pow", "blk-pow0trans", "blk-cable")
+    .setTags()
     .setParam({
 
 

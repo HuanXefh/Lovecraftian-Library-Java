@@ -86,7 +86,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_fluidRouter").initClass()
     .setParent(LiquidRouter)
-    .setTags("blk-liq", "blk-fcont")
+    .setTags()
     .setParam({
 
 

@@ -36,7 +36,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_basePowerBlock").initClass()
     .setParent(null)
-    .setTags("blk-pow")
+    .setTags()
     .setParam({})
     .setMethod({
 

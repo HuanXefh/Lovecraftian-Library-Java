@@ -59,7 +59,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_resourceDisplay").implement(INTF[0]).initClass()
     .setParent(Wall)
-    .setTags("blk-log")
+    .setTags("blk-non-wall")
     .setParam({
 
 

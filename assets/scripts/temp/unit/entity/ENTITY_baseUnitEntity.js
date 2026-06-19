@@ -32,7 +32,7 @@
 
   function comp_validMine(unit, t, checkDst) {
     return t != null
-      && !MDL_content._hasTag(t.overlay(), "blk-dpore")
+      && !checkTempTag(t.overlay(), "env-dpore")
       && (
         !unit.isPlayer() ?
           true :

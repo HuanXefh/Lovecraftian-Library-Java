@@ -64,7 +64,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_dumpContainer").implement(INTF[0]).initClass()
     .setParent(StorageBlock)
-    .setTags("blk-cont")
+    .setTags()
     .setParam({})
     .setMethod({
 

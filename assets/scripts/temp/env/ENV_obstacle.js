@@ -42,8 +42,8 @@
    * @extends ENV_baseProp
    */
   module.exports = newClass().extendClass(PARENT, "ENV_obstacle").initClass()
-  .setParent(Prop)
-  .setTags("blk-env")
+  .setParent(StaticProp)
+  .setTags()
   .setParam({})
   .setMethod({
 

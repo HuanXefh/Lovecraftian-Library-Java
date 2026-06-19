@@ -86,7 +86,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_radiusMender").initClass()
     .setParent(MendProjector)
-    .setTags("blk-proj", "blk-mend")
+    .setTags()
     .setParam({
 
 

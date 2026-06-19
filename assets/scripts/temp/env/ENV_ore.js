@@ -37,7 +37,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_ore").initClass()
   .setParent(OreBlock)
-  .setTags("blk-env", "blk-ore")
+  .setTags()
   .setParam({
 
 

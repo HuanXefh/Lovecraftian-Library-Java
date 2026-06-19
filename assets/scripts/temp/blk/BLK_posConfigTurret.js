@@ -33,7 +33,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_posConfigTurret").implement(INTF[0]).initClass()
     .setParent(null)
-    .setTags("blk-tur")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

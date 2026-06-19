@@ -28,6 +28,6 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_grass").initClass()
   .setParent(SeaBush)
-  .setTags("blk-env")
+  .setTags()
   .setParam({})
   .setMethod({});

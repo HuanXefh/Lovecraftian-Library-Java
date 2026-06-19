@@ -162,7 +162,7 @@
    */
   const _dmgMtp_type = function(unit, type, mtp) {
     let tag = DB_unit.db["grpParam"]["typeTagMap"].read(type);
-    return tag == null || !MDL_content._hasTag(unit.type, tag) ?
+    return tag == null || !checkTempTag(unit.type, tag) ?
       1.0 :
       mtp;
   };

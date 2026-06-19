@@ -62,7 +62,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_wallHarvester").implement(INTF[0]).initClass()
     .setParent(WallCrafter)
-    .setTags("blk-min", "blk-harv")
+    .setTags()
     .setParam({
 
 

@@ -67,7 +67,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_baseTree").initClass()
   .setParent(null)
-  .setTags("blk-env", "blk-tree")
+  .setTags("env-tree")
   .setParam({
 
 

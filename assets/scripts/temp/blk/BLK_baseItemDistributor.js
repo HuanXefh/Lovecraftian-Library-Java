@@ -37,7 +37,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseItemDistributor").initClass()
     .setParent(null)
-    .setTags("blk-dis")
+    .setTags()
     .setParam({})
     .setMethod({
 

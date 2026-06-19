@@ -314,6 +314,13 @@
     skipRcLiqProd: false,
     skipRcDump: false,
 
+    bft(filter) {
+      Vars.content.blocks().each(
+        filter,
+        oblk => print(oblk),
+      );
+    },
+
   },
 
 

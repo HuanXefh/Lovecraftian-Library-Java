@@ -86,7 +86,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_cable").implement(INTF[0]).initClass()
     .setParent(ArmoredConveyor)
-    .setTags("blk-pow", "blk-pow0trans", "blk-cable")
+    .setTags()
     .setParam({
 
 
@@ -223,7 +223,7 @@
        * @return {number}
        */
       ex_getTransmitterOverloadFrac: function() {
-        return Vars.state.isEditor() ? 0.0 : this.graphCur.graphData.overloadFrac;
+        return Vars.state.isEditor() || this.graphCur.graphData == null ? 0.0 : this.graphCur.graphData.overloadFrac;
       }
       .setProp({
         noSuper: true,
@@ -253,7 +253,7 @@
        * @return {boolean}
        */
       ex_isExpiredVert: function() {
-        return !this.ex_getMaxPowProdAllowed().fEqual(this.graphCur.graphData.maxPowProdAllowed);
+        return this.graphCur.graphData != null && !this.ex_getMaxPowProdAllowed().fEqual(this.graphCur.graphData.maxPowProdAllowed);
       }
       .setProp({
         noSuper: true,

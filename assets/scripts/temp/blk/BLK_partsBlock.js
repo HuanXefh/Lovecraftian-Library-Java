@@ -39,7 +39,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_partsBlock").initClass()
     .setParent(Wall)
-    .setTags()
+    .setTags("blk-non-wall")
     .setParam({
 
 
@@ -49,7 +49,7 @@
       databaseCategory: "lovec-material",
       databaseTag: "default",
 
-      
+
     })
     .setMethod({
 

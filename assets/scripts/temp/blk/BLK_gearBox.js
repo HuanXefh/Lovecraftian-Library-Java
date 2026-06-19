@@ -63,7 +63,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_gearBox").initClass()
     .setParent(Wall)
-    .setTags("blk-cog", "blk-cog0box")
+    .setTags("blk-cog", "blk-cog-box", "blk-non-wall")
     .setParam({
 
 

@@ -87,7 +87,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_liquidMaterialFloor").initClass()
   .setParent(Floor)
-  .setTags("blk-env", "blk-mat0flr")
+  .setTags("env-mat-flr")
   .setParam({
 
 

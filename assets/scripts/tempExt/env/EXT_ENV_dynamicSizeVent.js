@@ -31,6 +31,5 @@
    */
   module.exports = newClass().extendClass(PARENT, "EXT_ENV_dynamicSizeVent").implement(INTF).initClass()
   .setParent(SteamVent)
-  .setTags("blk-env", "blk-vent")
   .setParam({})
   .setMethod({});

@@ -31,7 +31,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_messageBlock").initClass()
     .setParent(MessageBlock)
-    .setTags("blk-log")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

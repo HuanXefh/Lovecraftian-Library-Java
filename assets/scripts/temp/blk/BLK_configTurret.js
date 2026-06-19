@@ -31,7 +31,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_configTurret").initClass()
     .setParent(null)
-    .setTags("blk-tur")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

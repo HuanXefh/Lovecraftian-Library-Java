@@ -154,7 +154,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_multiFilterGate").initClass()
     .setParent(Sorter)
-    .setTags("blk-dis", "blk-gate")
+    .setTags()
     .setParam({
 
 

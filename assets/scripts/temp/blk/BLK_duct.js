@@ -34,7 +34,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_duct").implement(INTF[0]).initClass()
     .setParent(Duct)
-    .setTags("blk-dis", "blk-duct")
+    .setTags()
     .setParam({})
     .setMethod({
 

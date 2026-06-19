@@ -1539,15 +1539,22 @@
 
     // Buttons
     if(extraBtnSetters == null) extraBtnSetters = [];
+    if(useAutoSelection) {
+      extraBtnSetters.unshift(
+        tb => tb.button("A", () => {useAutoSelection = false}).tooltip(MDL_bundle._info("lovec", "tt-disable-auto-selection"), true),
+      );
+    };
     extraBtnSetters.unshift(
       tb => tb.button("?", () => Vars.ui.content.show(b.block)).tooltip(fetchStat("lovec", "spec-info").localized(), true),
     );
     tb.table(Styles.none, tb1 => {
-      tb.left();
+      tb1.left().clicked(() => rebuildCont());
       extraBtnSetters.forEachFast(setter => {
         setter(tb1).left().size(42.0);
       });
-    }).left().row();
+    })
+    .left()
+    .row();
 
     const cont = new Table().background(Styles.black3).left();
     cont.margin(4.0);
@@ -1565,7 +1572,9 @@
         cont.table(Styles.none, tb1 => {
           tb1.add(MDL_bundle._info("lovec", "recipe-auto-selection")).color(Pal.remove).row();
           tb1.add("").row();
-        }).left().row();
+        })
+        .left()
+        .row();
       };
 
       categAmt = 0;

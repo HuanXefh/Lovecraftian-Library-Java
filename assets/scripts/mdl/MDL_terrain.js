@@ -26,7 +26,7 @@
     let arr = [];
     MDL_event._c_onInit(() => {
       Vars.content.blocks().each(
-        blk => tryJsProp(blk, "tempTags", Array.air).includes("blk-mat0flr"),
+        blk => tryJsProp(blk, "tempTags", Array.air).includes("env-mat-flr"),
         blk => usedMatGrps.pushUnique(tryJsProp(blk, "matGrp", "none")),
       );
       usedMatGrps.pull("none");

@@ -176,7 +176,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_geyser").initClass()
   .setParent(Floor)
-  .setTags("blk-env", "blk-mat0flr")
+  .setTags("env-mat-flr")
   .setParam({
 
 

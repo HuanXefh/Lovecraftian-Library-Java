@@ -25,7 +25,7 @@
 
 
   function comp_ex_isValidTg(blk, oblk) {
-    return MDL_cond._isMiner(oblk) || MDL_cond._isPump(oblk) || MDL_cond._isFactory(oblk) || MDL_cond._isProjector(oblk);
+    return MDL_cond._isMiner(oblk) || MDL_cond._isPump(oblk) || MDL_cond._isFactory(oblk) || MDL_cond._isAssistanceBlock(oblk) || MDL_cond._isTurret(oblk);
   };
 
 
@@ -102,7 +102,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_directionalSwitch").initClass()
     .setParent(SwitchBlock)
-    .setTags("blk-log", "blk-switch")
+    .setTags()
     .setParam({
 
 

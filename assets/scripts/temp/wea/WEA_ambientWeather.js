@@ -28,6 +28,6 @@
    */
   module.exports = newClass().extendClass(PARENT, "WEA_ambientWeather").initClass()
   .setParent(Weather)
-  .setTags("wea-amb")
+  .setTags()
   .setParam({})
   .setMethod({});

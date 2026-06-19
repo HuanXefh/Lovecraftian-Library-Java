@@ -37,7 +37,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_turbineFactory").initClass()
     .setParent(GenericCrafter)
-    .setTags()
+    .setTags("blk-non-fac")
     .setParam({})
     .setMethod({
 

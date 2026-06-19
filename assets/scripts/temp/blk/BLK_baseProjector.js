@@ -37,7 +37,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseProjector").initClass()
     .setParent(null)
-    .setTags("blk-proj")
+    .setTags()
     .setParam({})
     .setMethod({
 

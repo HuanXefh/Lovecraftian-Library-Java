@@ -80,7 +80,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_massDriver").implement(INTF[0]).initClass()
     .setParent(MassDriver)
-    .setTags("blk-tur", "blk-dis")
+    .setTags()
     .setParam({
 
 
@@ -168,7 +168,7 @@
 
       })),
 
-      
+
     })
     .setParamAlias([
       "shootEff", "shootEffect", Fx.shootBig2,

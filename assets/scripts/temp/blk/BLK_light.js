@@ -80,7 +80,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_light").initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac", "blk-li")
+    .setTags("blk-non-fac")
     .setParam({
 
 

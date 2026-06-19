@@ -42,7 +42,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_depthOre").implement(INTF).initClass()
   .setParent(OverlayFloor)
-  .setTags("blk-env", "blk-dpore")
+  .setTags("env-dpore")
   .setParam({})
   .setMethod({
 

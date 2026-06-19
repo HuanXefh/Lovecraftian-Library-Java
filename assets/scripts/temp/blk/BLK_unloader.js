@@ -46,7 +46,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_unloader").initClass()
     .setParent(Unloader)
-    .setTags("blk-dis", "blk-gate")
+    .setTags()
     .setParam({})
     .setMethod({
 

@@ -40,7 +40,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_fluidJunction").initClass()
     .setParent(LiquidJunction)
-    .setTags("blk-liq", "blk-gate")
+    .setTags()
     .setParam({
 
 

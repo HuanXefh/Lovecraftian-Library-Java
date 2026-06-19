@@ -118,7 +118,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_boiler").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac")
+    .setTags()
     .setParam({
 
 

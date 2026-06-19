@@ -22,7 +22,13 @@
 
 
   function matchTag(ct_gn, tag, mode, suppressWarning) {
-    return MDL_content._hasTag(MDL_content._ct(ct_gn, mode, suppressWarning), tag);
+    return checkTempTag(MDL_content._ct(ct_gn, mode, suppressWarning), tag);
+  };
+
+
+  function matchCond(ct_gn, key, mode, suppressWarning) {
+    let ct = MDL_content._ct(ct_gn, mode, suppressWarning);
+    return ct == null ? false : DB_block.db["class"]["group"]["condition"][key].hasIns(ct);
   };
 
 
@@ -115,7 +121,7 @@
    * @return {boolean}
    */
   const _isNoCapAuxiliaryFluid = function(liq_gn) {
-    return matchTag(liq_gn, "rs-nocap0aux", "rs");
+    return matchTag(liq_gn, "rs-aux-nocap", "rs");
   };
   exports._isNoCapAuxiliaryFluid = _isNoCapAuxiliaryFluid;
 
@@ -153,7 +159,7 @@
    * @return {boolean}
    */
   const _isMiner = function(blk_gn) {
-    return matchTag(blk_gn, "blk-min", "blk");
+    return _isDrill(blk_gn) || _isHarvester(blk_gn);
   };
   exports._isMiner = _isMiner;
 
@@ -164,7 +170,7 @@
    * @return {boolean}
    */
   const _isDrill = function(blk_gn) {
-    return matchTag(blk_gn, "blk-drl", "blk");
+    return matchCond(blk_gn, "drill", "blk");
   };
   exports._isDrill = _isDrill;
 
@@ -175,7 +181,7 @@
    * @return {boolean}
    */
   const _isHarvester = function(blk_gn) {
-    return matchTag(blk_gn, "blk-harv", "blk");
+    return matchCond(blk_gn, "harvester", "blk");
   };
   exports._isHarvester = _isHarvester;
 
@@ -203,39 +209,13 @@
 
 
   /**
-   * Whether this block transports items.
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isItemDistributor = function(blk_gn) {
-    return matchTag(blk_gn, "blk-dis", "blk");
-  };
-  exports._isItemDistributor = _isItemDistributor;
-
-
-  /**
-   * Whether this block transports fluids.
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isFluidDistributor = function(blk_gn) {
-    return matchTag(blk_gn, "blk-liq", "blk");
-  };
-  exports._isFluidDistributor = _isFluidDistributor;
-
-
-  /**
    * Whether this block does not accept side inputs.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
   const _isNoSideBlock = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
-    return blk != null && (
-      blk instanceof ArmoredConveyor
-        || blk instanceof ArmoredConduit
-        || (blk instanceof Duct && blk.armored)
-    );
+    return blk != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => blk instanceof tup[0] && tup[1](blk));
   };
   exports._isNoSideBlock = _isNoSideBlock;
 
@@ -246,7 +226,7 @@
    * @return {boolean}
    */
   const _isConveyor = function(blk_gn) {
-    return matchTag(blk_gn, "blk-conv", "blk");
+    return matchCond(blk_gn, "conveyor", "blk") && !_isCable(blk_gn);
   };
   exports._isConveyor = _isConveyor;
 
@@ -257,7 +237,7 @@
    * @return {boolean}
    */
   const _isDuct = function(blk_gn) {
-    return matchTag(blk_gn, "blk-duct", "blk");
+    return matchCond(blk_gn, "duct", "blk");
   };
   exports._isDuct = _isDuct;
 
@@ -268,7 +248,7 @@
    * @return {boolean}
    */
   const _isBridge = function(blk_gn) {
-    return matchTag(blk_gn, "blk-brd", "blk");
+    return matchCond(blk_gn, "bridge", "blk");
   };
   exports._isBridge = _isBridge;
 
@@ -279,18 +259,18 @@
    * @return {boolean}
    */
   const _isGate = function(blk_gn) {
-    return matchTag(blk_gn, "blk-gate", "blk");
+    return matchCond(blk_gn, "gate", "blk");
   };
   exports._isGate = _isGate;
 
 
   /**
-   * Whether this block is a router.
+   * Whether this block is a classic router.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
   const _isRouter = function(blk_gn) {
-    return matchTag(blk_gn, "blk-router", "blk");
+    return matchCond(blk_gn, "router", "blk");
   };
   exports._isRouter = _isRouter;
 
@@ -313,7 +293,7 @@
    * @return {boolean}
    */
   const _isContainer = function(blk_gn) {
-    return matchTag(blk_gn, "blk-cont", "blk");
+    return matchCond(blk_gn, "container", "blk") && !_isCoreBlock(blk_gn) && !matchTag(blk_gn, "blk-non-cont", "blk");
   };
   exports._isContainer = _isContainer;
 
@@ -324,21 +304,32 @@
    * @return {boolean}
    */
   const _isCoreBlock = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
-    return blk != null && (blk instanceof CoreBlock || MDL_content._hasTag(blk, "blk-core"));
+    return matchCond(blk_gn, "core", "blk");
   };
   exports._isCoreBlock = _isCoreBlock;
 
 
   /**
-   * Whether this block is a pump.
+   * Whether this block is a pump that outputs liquid.
+   * Not pressure pump!
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
   const _isPump = function(blk_gn) {
-    return matchTag(blk_gn, "blk-pump", "blk");
+    return matchCond(blk_gn, "pump", "blk");
   };
   exports._isPump = _isPump;
+
+
+  /**
+   * Whether this block is a pressure pump.
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
+  const _isPressurePump = function(blk_gn) {
+    return matchCond(blk_gn, "pressurePump", "blk");
+  };
+  exports._isPressurePump = _isPressurePump;
 
 
   /**
@@ -347,7 +338,7 @@
    * @return {boolean}
    */
   const _isFluidConduit = function(blk_gn) {
-    return matchTag(blk_gn, "blk-fcond", "blk");
+    return matchCond(blk_gn, "conduit", "blk");
   };
   exports._isFluidConduit = _isFluidConduit;
 
@@ -358,18 +349,19 @@
     * @return {boolean}
     */
   const _isFluidContainer = function(blk_gn) {
-    return matchTag(blk_gn, "blk-fcont", "blk");
+    return matchCond(blk_gn, "fluidContainer", "blk") && !_isFluidRouter(blk_gn);
   };
   exports._isFluidContainer = _isFluidContainer;
 
 
    /**
     * Whether this block is a fluid router (directional container).
+    * I know the name is a bit puzzling.
     * @param {BlockGn} blk_gn
     * @return {boolean}
     */
   const _isFluidRouter = function(blk_gn) {
-    return matchTag(blk_gn, "blk-frouter", "blk");
+    return matchCond(blk_gn, "fluidRouter", "blk");
   };
   exports._isFluidRouter = _isFluidRouter;
 
@@ -384,17 +376,6 @@
     return blk != null && DB_block.db["group"]["cloggable"].includes(blk.name);
   };
   exports._isCloggableBlock = _isCloggableBlock;
-
-
-  /**
-   * Whether this block is a heat conduit.
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isHeatConduit = function(blk_gn) {
-    return matchTag(blk_gn, "blk-hcond", "blk");
-  };
-  exports._isHeatConduit = _isHeatConduit;
 
 
   /**
@@ -414,7 +395,7 @@
    * @return {boolean}
    */
   const _isCogwheelStack = function(blk_gn) {
-    return matchTag(blk_gn, "blk-cog0stack", "blk");
+    return matchTag(blk_gn, "blk-cog-stack", "blk");
   };
   exports._isCogwheelStack = _isCogwheelStack;
 
@@ -425,7 +406,7 @@
    * @return {boolean}
    */
   const _isGearBox = function(blk_gn) {
-    return matchTag(blk_gn, "blk-cog0box", "blk");
+    return matchTag(blk_gn, "blk-cog-box", "blk");
   };
   exports._isGearBox = _isGearBox;
 
@@ -436,7 +417,7 @@
    * @return {boolean}
    */
   const _isTransmissionRod = function(blk_gn) {
-    return matchTag(blk_gn, "blk-trans0rod", "blk");
+    return matchTag(blk_gn, "blk-tor-rod", "blk");
   };
   exports._isTransmissionRod = _isTransmissionRod;
 
@@ -447,7 +428,7 @@
    * @return {boolean}
    */
   const _isPowerBlock = function(blk_gn) {
-    return matchTag(blk_gn, "blk-pow", "blk");
+    return _isPowerGenerator(blk_gn) || _isPowerTransmitter(blk_gn);
   };
   exports._isPowerBlock = _isPowerBlock;
 
@@ -458,7 +439,7 @@
    * @return {boolean}
    */
   const _isPowerGenerator = function(blk_gn) {
-    return matchTag(blk_gn, "blk-pow0gen", "blk");
+    return matchCond(blk_gn, "generator", "blk");
   };
   exports._isPowerGenerator = _isPowerGenerator;
 
@@ -469,7 +450,7 @@
    * @return {boolean}
    */
   const _isPowerTransmitter = function(blk_gn) {
-    return matchTag(blk_gn, "blk-pow0trans", "blk");
+    return matchCond(blk_gn, "transmitter", "blk") || _isCable(blk_gn);
   };
   exports._isPowerTransmitter = _isPowerTransmitter;
 
@@ -480,7 +461,7 @@
    * @return {boolean}
    */
   const _isCable = function(blk_gn) {
-    return matchTag(blk_gn, "blk-cable", "blk");
+    return matchCond(blk_gn, "cable", "blk");
   };
   exports._isCable = _isCable;
 
@@ -491,7 +472,7 @@
    * @return {boolean}
    */
   const _isArmoredCable = function(blk_gn) {
-    return matchTag(blk_gn, "blk-arm0cable", "blk");
+    return matchCond(blk_gn, "armoredCable", "blk");
   };
   exports._isArmoredCable = _isArmoredCable;
 
@@ -502,7 +483,7 @@
    * @return {boolean}
    */
   const _isPowerRelay = function(blk_gn) {
-    return matchTag(blk_gn, "blk-relay", "blk");
+    return matchTag(blk_gn, "blk-pow-relay", "blk");
   };
   exports._isPowerRelay = _isPowerRelay;
 
@@ -513,7 +494,7 @@
    * @return {boolean}
    */
   const _isPowerNode = function(blk_gn) {
-    return matchTag(blk_gn, "blk-node", "blk");
+    return matchCond(blk_gn, "transmitter", "blk") && !_isPowerRelay(blk_gn);
   };
   exports._isPowerNode = _isPowerNode;
 
@@ -524,42 +505,20 @@
    * @return {boolean}
    */
   const _isFactory = function(blk_gn) {
-    return matchTag(blk_gn, "blk-fac", "blk");
+    return (matchCond(blk_gn, "factory", "blk") || _isMultiCrafter(blk_gn)) && !matchTag(blk_gn, "blk-non-fac", "blk");
   };
   exports._isFactory = _isFactory;
 
 
   /**
-   * Whether this block is a recipe factory (multi-crafter).
+   * Whether this block is a multi-crafter.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isRecipeFactory = function(blk_gn) {
-    return matchTag(blk_gn, "blk-rc0fac", "blk");
+  const _isMultiCrafter = function(blk_gn) {
+    return matchCond(blk_gn, "multiCrafter", "blk");
   };
-  exports._isRecipeFactory = _isRecipeFactory;
-
-
-  /**
-   * Whether this block is a furnace.
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isFurnace = function(blk_gn) {
-    return matchTag(blk_gn, "blk-furn", "blk");
-  };
-  exports._isFurnace = _isFurnace;
-
-
-  /**
-   * Whether this block is a chemical reactor.
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isChemicalReactor = function(blk_gn) {
-    return matchTag(blk_gn, "blk-chem0reac", "blk");
-  };
-  exports._isChemicalReactor = _isChemicalReactor;
+  exports._isMultiCrafter = _isMultiCrafter;
 
 
   /**
@@ -568,29 +527,29 @@
    * @return {boolean}
    */
   const _isLight = function(blk_gn) {
-    return matchTag(blk_gn, "blk-li", "blk");
+    return matchCond(blk_gn, "light", "blk");
   };
   exports._isLight = _isLight;
 
 
   /**
-   * Whether this block is a wall for defense.
+   * Whether this block is an assistance block.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isDefenseWall = function(blk_gn) {
-    return matchTag(blk_gn, "blk-wall", "blk");
+  const _isAssistanceBlock = function(blk_gn) {
+    return _isProjector(blk_gn) || _isProjector(blk_gn) || _isRepairer(blk_gn);
   };
-  exports._isDefenseWall = _isDefenseWall;
+  exports._isAssistanceBlock = _isAssistanceBlock;
 
 
   /**
-   * Whether this block is a generic projector.
+   * Whether is block is a projector (not mender).
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
   const _isProjector = function(blk_gn) {
-    return matchTag(blk_gn, "blk-proj", "blk");
+    return matchCond(blk_gn, "projector", "blk");
   };
   exports._isProjector = _isProjector;
 
@@ -601,31 +560,31 @@
    * @return {boolean}
    */
   const _isRepairer = function(blk_gn) {
-    return matchTag(blk_gn, "blk-mend", "blk");
+    return matchCond(blk_gn, "repairer", "blk") && !matchTag(blk_gn, "blk-non-mend", "blk");
   };
   exports._isRepairer = _isRepairer;
 
 
   /**
-   * Whether this block is related to logic.
+   * Whether this block is a shield block.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isLogicBlock = function(blk_gn) {
-    return matchTag(blk_gn, "blk-log", "blk");
+  const _isShield = function(blk_gn) {
+    return matchCond(blk_gn, "shield", "blk");
   };
-  exports._isLogicBlock = _isLogicBlock;
+  exports._isShield = _isShield;
 
 
   /**
-   * Whether this block is a switch.
+   * Whether this block is a defense wall.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isSwitch = function(blk_gn) {
-    return matchTag(blk_gn, "blk-switch", "blk");
+  const _isDefenseWall = function(blk_gn) {
+    return matchCond(blk_gn, "wall", "blk") && !matchTag(blk_gn, "blk-non-wall", "blk");
   };
-  exports._isSwitch = _isSwitch;
+  exports._isDefenseWall = _isDefenseWall;
 
 
   /**
@@ -634,7 +593,7 @@
    * @return {boolean}
    */
   const _isTurret = function(blk_gn) {
-    return matchTag(blk_gn, "blk-tur", "blk");
+    return matchCond(blk_gn, "turret", "blk");
   };
   exports._isTurret = _isTurret;
 
@@ -643,45 +602,12 @@
 
 
   /**
-   * Whether this block is an environmental block.
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isEnvBlock = function(blk_gn) {
-    return matchTag(blk_gn, "blk-env", "blk");
-  };
-  exports._isEnvBlock = _isEnvBlock;
-
-
-  /**
-   * Whether this block is a vent.
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isVentBlock = function(blk_gn) {
-    return matchTag(blk_gn, "blk-vent", "blk");
-  };
-  exports._isVentBlock = _isVentBlock;
-
-
-  /**
-   * Whether this block is a deposit (tall block ore).
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isOreDepo = function(blk_gn) {
-    return matchTag(blk_gn, "blk-depo", "blk");
-  };
-  exports._isOreDepo = _isOreDepo;
-
-
-  /**
    * Whether this block is a large tree (or mushroom).
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
   const _isTreeBlock = function(blk_gn) {
-    return matchTag(blk_gn, "blk-tree", "blk");
+    return matchTag(blk_gn, "env-tree", "blk");
   };
   exports._isTreeBlock = _isTreeBlock;
 
@@ -692,7 +618,7 @@
    * @return {boolean}
    */
   const _isTallGrassBlock = function(blk_gn) {
-    return matchTag(blk_gn, "blk-tall0grass", "blk");
+    return matchTag(blk_gn, "env-grass-tall", "blk");
   };
   exports._isTallGrassBlock = _isTallGrassBlock;
 
@@ -703,7 +629,7 @@
    * @return {boolean}
    */
   const _isDepthOre = function(blk_gn) {
-    return matchTag(blk_gn, "blk-dpore", "blk");
+    return matchTag(blk_gn, "env-dpore", "blk");
   };
   exports._isDepthOre = _isDepthOre;
 
@@ -714,13 +640,13 @@
    * @return {boolean}
    */
   const _isDepthLiquid = function(blk_gn) {
-    return matchTag(blk_gn, "blk-dpliq", "blk");
+    return matchTag(blk_gn, "env-dpliq", "blk");
   };
   exports._isDepthLiquid = _isDepthLiquid;
 
 
   /**
-   * Whether this block is affected by ore scanners.
+   * Whether this block can be revealed by ore scanners.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
@@ -731,18 +657,6 @@
 
 
   /* <---------- unit type ----------> */
-
-
-  /**
-   * Whether this unit type is related to core.
-   * @param {UnitTypeGn} utp_gn
-   * @return {boolean}
-   */
-  const _isCoreUnit = function(utp_gn) {
-    let utp = MDL_content._ct(utp_gn, "utp");
-    return utp != null && DB_unit.db["group"]["coreUnit"].includes(utp.name);
-  };
-  exports._isCoreUnit = _isCoreUnit;
 
 
   /**
@@ -825,7 +739,7 @@
    * @return {boolean}
    */
   const _isLoot = function(unit) {
-    return unit.type.name.includes("unit0misc-loot");
+    return checkCreatedByTemp(unit.type) && unit.type.ex_isSubInsOf("UNIT_lootUnit");
   };
   exports._isLoot = _isLoot;
 
@@ -909,12 +823,12 @@
 
 
   /**
-   * It flies high.
+   * It flies high enough.
    * @param {Unit} unit
    * @return {boolean}
    */
   const _isHighAir = function(unit) {
-    return unit.flying && !unit.type.lowAltitude;
+    return unit.flying && unit.elevation > 0.5;
   };
   exports._isHighAir = _isHighAir;
 

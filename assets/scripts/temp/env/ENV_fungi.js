@@ -28,7 +28,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_fungi").initClass()
   .setParent(TreeBlock)
-  .setTags("blk-env", "blk-tree")
+  .setTags("env-tree")
   .setParam({
 
 

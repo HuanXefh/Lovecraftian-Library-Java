@@ -66,7 +66,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_router").initClass()
     .setParent(Router)
-    .setTags("blk-dis", "blk-gate", "blk-router")
+    .setTags()
     .setParam({})
     .setMethod({
 

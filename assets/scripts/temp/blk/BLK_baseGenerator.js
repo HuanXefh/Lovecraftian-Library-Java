@@ -86,7 +86,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseGenerator").implement(INTF[0]).initClass()
     .setParent(null)
-    .setTags("blk-pow", "blk-pow0gen")
+    .setTags()
     .setParam({
 
 
@@ -97,7 +97,7 @@
        */
       overwriteExploParam: true,
 
-      
+
     })
     .setParamAlias([
       "genEff", "generateEffect", Fx.none,

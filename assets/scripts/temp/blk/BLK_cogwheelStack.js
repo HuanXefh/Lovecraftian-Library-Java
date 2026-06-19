@@ -134,7 +134,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_cogwheelStack").initClass()
     .setParent(Wall)
-    .setTags("blk-cog", "blk-cog0stack")
+    .setTags("blk-cog", "blk-cog-stack", "blk-non-wall")
     .setParam({
 
 

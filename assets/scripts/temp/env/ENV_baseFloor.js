@@ -28,7 +28,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_baseFloor").initClass()
   .setParent(Floor)
-  .setTags("blk-env")
+  .setTags()
   .setParam({})
   .setParamAlias([
     "cacheLay", "cacheLayer", CacheLayer.normal,

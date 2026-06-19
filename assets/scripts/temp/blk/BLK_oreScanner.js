@@ -139,7 +139,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_oreScanner").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-min", "blk-scan")
+    .setTags("blk-scan", "blk-non-fac")
     .setParam({
 
 

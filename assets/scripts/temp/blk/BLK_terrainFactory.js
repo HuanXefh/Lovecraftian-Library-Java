@@ -35,7 +35,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_terrainFactory").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

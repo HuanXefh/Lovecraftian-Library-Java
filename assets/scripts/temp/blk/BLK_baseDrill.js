@@ -155,7 +155,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseDrill").implement(INTF[0]).initClass()
     .setParent(null)
-    .setTags("blk-min", "blk-drl")
+    .setTags()
     .setParam({
 
 

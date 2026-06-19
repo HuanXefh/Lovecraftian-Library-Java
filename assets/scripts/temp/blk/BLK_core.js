@@ -44,7 +44,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_core").implement(INTF[0]).initClass()
     .setParent(CoreBlock)
-    .setTags("blk-core")
+    .setTags()
     .setParam({
 
 

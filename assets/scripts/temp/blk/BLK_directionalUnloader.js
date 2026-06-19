@@ -41,7 +41,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_directionalUnloader").initClass()
     .setParent(DirectionalUnloader)
-    .setTags("blk-dis", "blk-gate")
+    .setTags()
     .setParam({
 
 

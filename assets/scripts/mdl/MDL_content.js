@@ -132,20 +132,6 @@
   exports._nmCtNoPrefix = _nmCtNoPrefix;
 
 
-  /**
-   * Whether this content has some content template tag.
-   * @param {UnlockableContent} ct
-   * @param {string} tag
-   * @return {boolean}
-   */
-  const _hasTag = function(ct, tag) {
-    return ct == null ?
-      false :
-      tryJsProp(ct, "tempTags", Array.air).includes(tag);
-  };
-  exports._hasTag = _hasTag;
-
-
   /* <---------- resource ----------> */
 
 
@@ -285,7 +271,7 @@
 
     let i = 0, iCap = arr.iCap();
     while(i < iCap) {
-      if(_hasTag(utp, arr[i + 1])) return arr[i];
+      if(checkTempTag(utp, arr[i + 1])) return arr[i];
       i += 2;
     };
 

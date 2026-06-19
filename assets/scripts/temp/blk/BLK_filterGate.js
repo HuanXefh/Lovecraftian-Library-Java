@@ -115,7 +115,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_filterGate").initClass()
     .setParent(Sorter)
-    .setTags("blk-dis", "blk-gate")
+    .setTags()
     .setParam({
 
 

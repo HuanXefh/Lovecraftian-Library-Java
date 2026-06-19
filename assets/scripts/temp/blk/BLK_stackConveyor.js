@@ -42,16 +42,16 @@
      */
     newClass().extendClass(PARENT[0], "BLK_stackConveyor").initClass()
     .setParent(StackConveyor)
-    .setTags("blk-dis", "blk-conv")
+    .setTags()
     .setParam({
 
 
       /**
-       * <PARAM>: Whether this conveyor only accepts inputs from other item distributors (intended for main bus).
+       * <PARAM>: Whether this conveyor only accepts inputs from conveyors and ducts (intended for main bus).
        * @memberof BLK_stackConveyor
        * @instance
        */
-      disInputOnly: true,
+      convInputOnly: true,
 
 
       /* <------------------------------ vanilla ------------------------------ */
@@ -103,9 +103,9 @@
 
 
       acceptItem: function(b_f, itm) {
-        return !this.block.delegee.disInputOnly ?
+        return !this.block.delegee.convInputOnly ?
           true :
-          MDL_cond._isItemDistributor(b_f.block);
+          MDL_cond._isConveyor(b_f.block) || MDL_cond._isDuct(b_f.block);
       }
       .setProp({
         boolMode: "and",

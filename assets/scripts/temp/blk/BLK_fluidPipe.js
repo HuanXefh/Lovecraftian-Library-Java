@@ -109,7 +109,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_fluidPipe").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(Conduit)
-    .setTags("blk-liq", "blk-fcond")
+    .setTags()
     .setParam({
 
 

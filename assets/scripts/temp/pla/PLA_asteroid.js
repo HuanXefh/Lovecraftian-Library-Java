@@ -61,7 +61,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "PLA_asteroid").initClass()
   .setParent(Planet)
-  .setTags("pla-ast")
+  .setTags()
   .setParam({
 
 

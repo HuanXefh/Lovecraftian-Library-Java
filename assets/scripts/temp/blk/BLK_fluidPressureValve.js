@@ -78,7 +78,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_fluidPressureValve").implement(INTF[0]).initClass()
     .setParent(LiquidJunction)
-    .setTags("blk-liq", "blk-gate")
+    .setTags()
     .setParam({
 
 

@@ -77,7 +77,7 @@
      */
     newClass().extendClass(PARENT[0], "MAP_dialFlowTrigger").initClass()
     .setParent(Wall)
-    .setTags("blk-log")
+    .setTags("blk-non-wall")
     .setParam({
 
 

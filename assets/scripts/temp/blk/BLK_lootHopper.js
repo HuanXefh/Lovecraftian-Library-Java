@@ -63,7 +63,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_lootHopper").initClass()
     .setParent(StorageBlock)
-    .setTags()
+    .setTags("blk-non-cont")
     .setParam({
 
 

@@ -28,6 +28,6 @@
    */
   module.exports = newClass().extendClass(PARENT, "WEA_particleWeather").initClass()
   .setParent(ParticleWeather)
-  .setTags("wea-deco")
+  .setTags()
   .setParam({})
   .setMethod({});

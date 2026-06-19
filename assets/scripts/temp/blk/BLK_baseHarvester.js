@@ -36,7 +36,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseHarvester").initClass()
     .setParent(null)
-    .setTags("blk-min", "blk-harv")
+    .setTags()
     .setParam({})
     .setMethod({
 

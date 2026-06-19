@@ -45,7 +45,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_container").initClass()
     .setParent(StorageBlock)
-    .setTags("blk-cont")
+    .setTags()
     .setParam({})
     .setMethod({
 

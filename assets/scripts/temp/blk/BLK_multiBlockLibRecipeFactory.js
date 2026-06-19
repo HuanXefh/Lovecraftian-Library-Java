@@ -50,7 +50,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_multiBlockLibRecipeFactory").initClass()
     .setParent(MOD_multiBlockLib.CLASSES.MultiBlockGenericCrafter)
-    .setTags("blk-fac")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

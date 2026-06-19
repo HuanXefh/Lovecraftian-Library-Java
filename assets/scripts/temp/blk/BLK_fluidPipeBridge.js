@@ -92,7 +92,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_fluidPipeBridge").implement(INTF[0]).initClass()
     .setParent(LiquidBridge)
-    .setTags("blk-liq", "blk-brd")
+    .setTags()
     .setParam({})
     .setMethod({
 

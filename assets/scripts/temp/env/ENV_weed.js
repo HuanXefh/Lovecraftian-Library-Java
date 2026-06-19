@@ -28,6 +28,6 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_weed").initClass()
   .setParent(Seaweed)
-  .setTags("blk-env")
+  .setTags()
   .setParam({})
   .setMethod({});

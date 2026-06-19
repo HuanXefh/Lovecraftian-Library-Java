@@ -43,7 +43,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseFluidDistributor").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
     .setParent(null)
-    .setTags("blk-liq")
+    .setTags()
     .setParam({})
     .setMethod({
 

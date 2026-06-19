@@ -94,7 +94,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_incinerator").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags()
+    .setTags("blk-non-fac")
     .setParam({
 
 

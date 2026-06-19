@@ -38,7 +38,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_wallOre").initClass()
   .setParent(OreBlock)
-  .setTags("blk-env", "blk-wore")
+  .setTags()
   .setParam({
 
 

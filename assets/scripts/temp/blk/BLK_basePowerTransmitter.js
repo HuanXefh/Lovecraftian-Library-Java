@@ -116,7 +116,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_basePowerTransmitter").initClass()
     .setParent(null)
-    .setTags("blk-pow", "blk-pow0trans")
+    .setTags()
     .setParam({
 
 

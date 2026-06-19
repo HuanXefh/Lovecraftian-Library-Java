@@ -111,7 +111,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_directionalMender").initClass()
     .setParent(MendProjector)
-    .setTags("blk-proj", "blk-mend")
+    .setTags()
     .setParam({
 
 

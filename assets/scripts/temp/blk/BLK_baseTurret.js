@@ -52,7 +52,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseTurret").initClass()
     .setParent(null)
-    .setTags("blk-tur")
+    .setTags()
     .setParam({})
     .setMethod({
 

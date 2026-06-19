@@ -348,6 +348,7 @@
   /**
    * Whether 'ins' is an instance of a class or content template.
    * Returns false if `cls0tempNm` is null.
+   * Returns true if `cls0tempNm` is exactly `ins`.
    * @global
    * @param {Object} ins
    * @param {string|Function|null} cls0tempNm
@@ -356,6 +357,8 @@
   checkInstance = function(ins, cls0tempNm) {
     if(cls0tempNm == null) {
       return false;
+    } else if(ins === cls0tempNm) {
+      return true;
     } else if(typeof cls0tempNm === "function") {
       return ins instanceof cls0tempNm;
     } else if(typeof cls0tempNm === "string") {
@@ -363,6 +366,21 @@
     };
 
     return false;
+  };
+
+
+  /**
+   * Whether `ct_gn` is created by content template, and has matching tag.
+   * @global
+   * @param {ContentGn} ct_gn
+   * @param {string} tag
+   * @return {boolean}
+   */
+  checkTempTag = function(ct_gn, tag) {
+    let ct = MDL_content._ct(ct_gn, null, true);
+    return ct == null || !checkCreatedByTemp(ct) ?
+      false :
+      ct.delegee.tempTags.includes(tag);
   };
 
 

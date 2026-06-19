@@ -28,6 +28,6 @@
    */
   module.exports = newClass().extendClass(PARENT, "PLA_planet").initClass()
   .setParent(Planet)
-  .setTags("pla-pla")
+  .setTags()
   .setParam({})
   .setMethod({});

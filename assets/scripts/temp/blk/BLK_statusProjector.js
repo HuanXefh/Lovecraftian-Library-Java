@@ -83,7 +83,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_statusProjector").implement(INTF[0]).initClass()
     .setParent(MendProjector)
-    .setTags("blk-proj", "blk-mend")
+    .setTags("blk-non-mend")
     .setParam({
 
 

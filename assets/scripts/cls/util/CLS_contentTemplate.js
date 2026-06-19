@@ -25,6 +25,9 @@
   const TMP_TUP = [];
 
 
+  const registeredTags = [];
+
+
   /* <---------- static property ----------> */
 
 
@@ -88,6 +91,21 @@
    */
   CLS_contentTemplate.isSubTempOf = function(nm) {
     return this.nm === nm || LCTempParentMap.get(this.nm).includes(nm);
+  };
+
+
+  /* <------------------------------ template tag ------------------------------ */
+
+
+  /**
+   * Call this method to register new template tags.
+   * @param {string} tag
+   * @return {this}
+   */
+  CLS_contentTemplate.registerTag = function(tag) {
+    registerUniqueName(tag, registeredTags, "content template tag");
+
+    return this;
   };
 
 
@@ -168,6 +186,11 @@
    */
   CLS_contentTemplate.setTags = function() {
     this.paramObj.tempTags = Array.from(arguments);
+    MDL_event._c_onLoad(() => {
+      this.paramObj.tempTags.forEachFast(tag => {
+        if(!registeredTags.includes(tag) && !DB_item.db["intmd"]["tag"].includes(tag)) console.warn("[LOVEC] Template tag ${1} has not been registered yet!".format(tag.color(Pal.accent)));
+      });
+    });
 
     return this;
   };

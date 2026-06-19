@@ -68,7 +68,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_impactDrill").implement(INTF[0]).initClass()
     .setParent(BurstDrill)
-    .setTags("blk-min", "blk-drl")
+    .setTags()
     .setParam({
 
 

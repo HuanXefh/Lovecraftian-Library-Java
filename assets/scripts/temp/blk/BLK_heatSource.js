@@ -70,7 +70,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_heatSource").initClass()
     .setParent(Wall)
-    .setTags()
+    .setTags("blk-non-wall")
     .setParam({
 
 

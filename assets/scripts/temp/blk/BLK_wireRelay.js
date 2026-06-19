@@ -87,7 +87,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_wireRelay").implement(INTF[0]).initClass()
     .setParent(BeamNode)
-    .setTags("blk-pow", "blk-pow0trans", "blk-relay")
+    .setTags("blk-pow-relay")
     .setParam({})
     .setMethod({
 

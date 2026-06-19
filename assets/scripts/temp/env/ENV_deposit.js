@@ -42,7 +42,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_deposit").initClass()
   .setParent(TallBlock)
-  .setTags("blk-env", "blk-depo")
+  .setTags()
   .setParam({
 
 

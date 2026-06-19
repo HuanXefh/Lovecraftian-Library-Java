@@ -31,7 +31,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_defenseWall").initClass()
     .setParent(Wall)
-    .setTags("blk-wall")
+    .setTags()
     .setParam({
 
 

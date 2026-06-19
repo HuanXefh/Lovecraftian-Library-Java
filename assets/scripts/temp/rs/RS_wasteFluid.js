@@ -35,7 +35,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_wasteFluid").initClass()
   .setParent(Liquid)
-  .setTags("rs-waste")
+  .setTags("rs-was")
   .setParam({
 
 
@@ -56,7 +56,7 @@
 
     databaseTag: null,
 
-    
+
   })
   .setMethod({
 

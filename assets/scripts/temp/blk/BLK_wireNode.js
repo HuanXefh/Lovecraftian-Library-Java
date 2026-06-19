@@ -103,7 +103,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_wireNode").implement(INTF[0]).initClass()
     .setParent(PowerNode)
-    .setTags("blk-pow", "blk-pow0trans", "blk-node")
+    .setTags()
     .setParam({
 
 

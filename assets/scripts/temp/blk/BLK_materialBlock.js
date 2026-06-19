@@ -38,7 +38,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_materialBlock").initClass()
     .setParent(Wall)
-    .setTags()
+    .setTags("blk-non-wall")
     .setParam({})
     .setMethod({
 

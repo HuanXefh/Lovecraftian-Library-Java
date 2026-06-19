@@ -48,7 +48,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_fuelLight").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac", "blk-li")
+    .setTags("blk-non-fac")
     .setParam({
 
 

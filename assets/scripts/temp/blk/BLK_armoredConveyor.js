@@ -32,7 +32,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_armoredConveyor").initClass()
     .setParent(ArmoredConveyor)
-    .setTags("blk-dis", "blk-conv")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

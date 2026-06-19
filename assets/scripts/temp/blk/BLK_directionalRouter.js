@@ -32,7 +32,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_directionalRouter").initClass()
     .setParent(DuctRouter)
-    .setTags("blk-dis", "blk-gate")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

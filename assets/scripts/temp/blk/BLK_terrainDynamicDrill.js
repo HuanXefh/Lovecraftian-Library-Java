@@ -146,7 +146,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_terrainDynamicDrill").initClass()
     .setParent(Drill)
-    .setTags("blk-min", "blk-drl")
+    .setTags()
     .setParam({
 
 

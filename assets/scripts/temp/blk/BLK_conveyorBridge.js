@@ -53,7 +53,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_conveyorBridge").initClass()
     .setParent(ItemBridge)
-    .setTags("blk-dis", "blk-brd")
+    .setTags()
     .setParam({
 
 

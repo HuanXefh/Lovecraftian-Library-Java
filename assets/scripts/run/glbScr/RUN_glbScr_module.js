@@ -97,6 +97,8 @@
   /** @global */
   DB_unit = require("lovec/db/DB_unit");
   /** @global */
+  TP_tempTag = require("lovec/tp/TP_tempTag");
+  /** @global */
   MDL_color = require("lovec/mdl/MDL_color");
   /** @global */
   MDL_texture = require("lovec/mdl/MDL_texture");

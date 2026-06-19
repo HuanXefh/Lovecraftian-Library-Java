@@ -55,7 +55,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_heatConductor").initClass()
     .setParent(Wall)
-    .setTags()
+    .setTags("blk-non-wall")
     .setParam({
 
 

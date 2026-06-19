@@ -94,7 +94,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_overflowGate").initClass()
     .setParent(OverflowGate)
-    .setTags("blk-dis", "blk-gate")
+    .setTags()
     .setParam({
 
 
@@ -186,7 +186,7 @@
 
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
-        
+
         this.isInv = rd.bool();
       },
 

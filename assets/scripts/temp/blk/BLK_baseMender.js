@@ -31,7 +31,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseMender").initClass()
     .setParent(null)
-    .setTags("blk-proj", "blk-mend")
+    .setTags()
     .setParam({
 
 

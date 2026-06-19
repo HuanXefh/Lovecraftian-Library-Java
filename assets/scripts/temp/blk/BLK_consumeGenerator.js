@@ -81,7 +81,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_consumeGenerator").initClass()
     .setParent(ConsumeGenerator)
-    .setTags("blk-pow", "blk-pow0gen")
+    .setTags()
     .setParam({
 
 

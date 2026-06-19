@@ -33,7 +33,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_manualTurbine").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags()
+    .setTags("blk-non-fac")
     .setParam({})
     .setMethod({}),
 

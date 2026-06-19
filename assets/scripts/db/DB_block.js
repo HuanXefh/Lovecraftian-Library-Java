@@ -438,7 +438,7 @@ const db = {
 
 
         /**
-         * Reload bar will be shown for these blocks.
+         * Reload bar will be shown for blocks of these classes.
          * <br> <ROW> javaCls.
          */
         class: [
@@ -449,14 +449,14 @@ const db = {
 
 
         /**
-         * These blocks have reload in (0.0, 1.0).
+         * Blocks of these classes have reload in (0.0, 1.0).
          * <br> <ROW>: javaCls.
          */
         frac: [],
 
 
         /**
-         * These blocks have reversed reload calculation (decreasing).
+         * Blocks of these classes have reversed reload calculation (decreasing).
          * <br> <ROW>: javaCls.
          */
         rev: [
@@ -473,29 +473,6 @@ const db = {
         revFrac: [
 
           MassDriver,
-
-        ],
-
-
-      },
-
-
-      turret: {
-
-
-        /**
-         * Seen as turrets, mostly used in recipe dictionary.
-         * <br> <ROW> javaCls.
-         */
-        class: [
-
-          BaseTurret,
-
-          /* <---------- New Horizon ----------> */
-
-          fetchClass("newhorizon.expand.block.defence.FireExtinguisher", true),
-          fetchClass("newhorizon.expand.block.defence.ShockwaveGenerator", true),
-          fetchClass("newhorizon.expand.block.commandable.CommandableAttackerBlock", true),
 
         ],
 
@@ -566,6 +543,241 @@ const db = {
 
 
         },
+
+
+      },
+
+
+      condition: {
+
+
+        drill: [
+
+          Drill,
+          BeamDrill,
+
+          "BLK_baseDrill",
+
+        ],
+
+
+        harvester: [
+
+          "BLK_baseHarvester",
+
+        ],
+
+
+        noSide: [
+
+          [ArmoredConveyor, blk => true],
+          [ArmoredConduit, blk => true],
+          [Duct, blk => blk.armored],
+
+        ],
+
+
+        conveyor: [
+
+          Conveyor,
+          StackConveyor,
+
+        ],
+
+
+        duct: [
+
+          Duct,
+
+        ],
+
+
+        bridge: [
+
+          ItemBridge,
+          DirectionBridge,
+
+        ],
+
+
+        gate: [
+
+          Junction,
+          DuctJunction,
+          Router,
+          DuctRouter,
+          Sorter,
+          OverflowGate,
+          OverflowDuct,
+          Unloader,
+          DirectionalUnloader,
+
+        ],
+
+
+        router: [
+
+          Router,
+
+        ],
+
+
+        container: [
+
+          StorageBlock,
+
+        ],
+
+
+        core: [
+
+          CoreBlock,
+
+        ],
+
+
+        pump: [
+
+          Pump,
+
+        ],
+
+
+        pressurePump: [
+
+          "BLK_pressurePump",
+
+        ],
+
+
+        conduit: [
+
+          Conduit,
+
+        ],
+
+
+        fluidContainer: [
+
+          LiquidRouter,
+
+        ],
+
+
+        fluidRouter: [
+
+          "BLK_fluidRouter",
+
+        ],
+
+
+        generator: [
+
+          PowerGenerator,
+
+          "BLK_generatorRecipeFactory",
+
+        ],
+
+
+        transmitter: [
+
+          PowerNode,
+          BeamNode,
+
+        ],
+
+
+        cable: [
+
+          "BLK_cable",
+
+        ],
+
+
+        armoredCable: [
+
+          "BLK_armoredCable",
+
+        ],
+
+
+        factory: [
+
+          GenericCrafter,
+          Separator,
+
+        ],
+
+
+        multiCrafter: [
+
+          "BLK_recipeFactory",
+
+          /* <---------- Carpe Diem ----------> */
+
+          fetchClass("carpediem.world.blocks.crafting.RecipeCrafter", true),
+
+          /* <---------- MultiCrafter ----------> */
+
+          fetchClass("dev.jojofr.multicrafter.MultiCrafterBlock", true),
+
+        ],
+
+
+        light: [
+
+          LightBlock,
+
+          "BLK_light",
+
+        ],
+
+
+        projector: [
+
+          OverdriveProjector,
+
+          "BLK_statusProjector",
+
+        ],
+
+
+        repairer: [
+
+          MendProjector,
+          RegenProjector,
+          RepairTurret,
+          RepairTower,
+
+        ],
+
+
+        shield: [
+
+          ForceProjector,
+
+        ],
+
+
+        wall: [
+
+          Wall,
+
+        ],
+
+
+        turret: [
+
+          BaseTurret,
+
+          /* <---------- New Horizon ----------> */
+
+          fetchClass("newhorizon.expand.block.defence.FireExtinguisher", true),
+          fetchClass("newhorizon.expand.block.defence.ShockwaveGenerator", true),
+          fetchClass("newhorizon.expand.block.commandable.CommandableAttackerBlock", true),
+
+        ],
 
 
       },

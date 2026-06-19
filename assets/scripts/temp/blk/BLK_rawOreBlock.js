@@ -69,7 +69,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_rawOreBlock").initClass()
     .setParent(Wall)
-    .setTags()
+    .setTags("blk-non-wall")
     .setParam({
 
 

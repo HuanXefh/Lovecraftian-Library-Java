@@ -31,13 +31,14 @@
     blk.stats.remove(Stat.affinities);
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table._d_attr(tb, blk.attribute, oblk => MDL_cond._isVentBlock(oblk) && oblk.delegee.ventSize === blk.size);
+      MDL_table._d_attr(tb, blk.attribute, oblk => checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size);
     }));
   };
 
 
   function comp_canPlaceOn(blk, t, team, rot) {
-    return MDL_cond._isVentBlock(t.floor()) && t.floor().delegee.ventSize === blk.size;
+    let flr = t.floor();
+    return checkCreatedByTemp(flr) && flr.ex_isSubInsOf("INTF_ENV_dynamicSizeVent") && flr.delegee.ventSize === blk.size;
   };
 
 
@@ -79,7 +80,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_ventGenerator").initClass()
     .setParent(ThermalGenerator)
-    .setTags("blk-pow", "blk-pow0gen")
+    .setTags()
     .setParam({})
     .setMethod({
 

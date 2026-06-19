@@ -32,7 +32,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_attributeFactory").initClass()
     .setParent(AttributeCrafter)
-    .setTags("blk-fac")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

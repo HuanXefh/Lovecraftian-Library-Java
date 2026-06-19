@@ -43,7 +43,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_infoFactory").initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-fac")
+    .setTags()
     .setParam({
 
 

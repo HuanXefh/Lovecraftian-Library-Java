@@ -37,7 +37,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseMiner").implement(INTF[0]).initClass()
     .setParent(null)
-    .setTags("blk-min")
+    .setTags()
     .setParam({})
     .setMethod({
 

@@ -281,7 +281,7 @@
           MOD_tmi.baseParse(blk, rawRc);
         });
         MOD_tmi.addProdPow(rawRc, blk.powerProduction);
-        MDL_attr._blkAttrArr(blk.attribute, oblk => MDL_cond._isVentBlock(oblk) && oblk.delegee.ventSize === blk.size).forEachRow(3, (oblk, attrVal, attr) => {
+        MDL_attr._blkAttrArr(blk.attribute, oblk => checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size).forEachRow(3, (oblk, attrVal, attr) => {
           MOD_tmi.addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, AttrRcTypes.FLOOR);
         });
 
@@ -322,8 +322,10 @@
 
 
       isTarget(blk) {
-        return (MDL_cond._isFactory(blk) && !MDL_cond._isRecipeFactory(blk) && checkTarget(this, blk))
-          || (checkCreatedByTemp(blk) && this.tempTypeMap.containsKey(blk.ex_getTempNm()));
+        return checkCreatedByTemp(blk) && (
+          (MDL_cond._isFactory(blk) && !blk.ex_isSubInsOf("BLK_recipeFactory") && checkTarget(this, blk))
+            || this.tempTypeMap.containsKey(blk.ex_getTempNm())
+        );
       },
 
 
@@ -376,7 +378,7 @@
 
 
       isTarget(blk) {
-        return MDL_cond._isRecipeFactory(blk) || checkTarget(this, blk);
+        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_recipeFactory") || checkTarget(this, blk);
       },
 
 

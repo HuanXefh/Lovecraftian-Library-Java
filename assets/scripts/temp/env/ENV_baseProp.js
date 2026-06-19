@@ -28,6 +28,6 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_baseProp").initClass()
   .setParent(null)
-  .setTags("blk-env")
+  .setTags()
   .setParam({})
   .setMethod({});

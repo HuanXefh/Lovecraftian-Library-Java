@@ -88,7 +88,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_depthPump").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
     .setParent(AttributeCrafter)
-    .setTags("blk-pump")
+    .setTags("blk-non-fac")
     .setParam({
 
 

@@ -16,8 +16,13 @@
 
   function appendChildren(cts, node) {
     node.children.each(onode => {
-      // Don't append contents under other nodes
+      // Don't append contents under other nodes (including the other nodes)
       if(checkCreatedByTemp(onode.content) && onode.content.ex_isSubInsOf("DBCT_techNodeContent")) return;
+      // Don't append hidden contents
+      if(
+        (instanceOfAny(onode.content, Item, Liquid, UnitType) && onode.content.hidden)
+          || (onode.content instanceof Block && DB_block.db["class"]["group"]["visibility"]["hidden"].includes(onode.content.buildVisibility))
+      ) return;
 
       cts.pushUnique(onode.content);
       appendChildren(cts, onode);

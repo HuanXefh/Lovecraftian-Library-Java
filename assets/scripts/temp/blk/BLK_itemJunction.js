@@ -32,7 +32,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_itemJunction").initClass()
     .setParent(Junction)
-    .setTags("blk-dis", "blk-gate")
+    .setTags()
     .setParam({})
     .setMethod({}),
 

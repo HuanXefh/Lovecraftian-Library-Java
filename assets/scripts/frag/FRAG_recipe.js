@@ -796,7 +796,9 @@
       i = 0;
       iCap = dumpTup[1].iCap();
       while(i < iCap) {
-        b.dumpLiquid(dumpTup[1][i], 2.0);
+        if(dumpTup[1][i] != null) {
+          b.dumpLiquid(dumpTup[1][i], 2.0);
+        };
         i++;
       };
     };
@@ -804,7 +806,9 @@
       i = 0;
       iCap = dumpTup[0].iCap();
       while(i < iCap) {
-        b.dump(dumpTup[0][i]);
+        if(dumpTup[0][i] != null) {
+          b.dump(dumpTup[0][i]);
+        };
         i++;
       };
     };

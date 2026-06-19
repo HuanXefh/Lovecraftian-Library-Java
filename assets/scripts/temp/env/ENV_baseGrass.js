@@ -63,7 +63,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "ENV_baseGrass").initClass()
   .setParent(null)
-  .setTags("blk-env")
+  .setTags()
   .setParam({})
   .setParamAlias([
     /**

@@ -104,7 +104,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_lootFilter").implement(INTF[0]).initClass()
     .setParent(Wall)
-    .setTags()
+    .setTags("blk-non-wall")
     .setParam({
 
 

@@ -37,7 +37,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_baseItemGate").initClass()
     .setParent(null)
-    .setTags("blk-dis", "blk-gate")
+    .setTags()
     .setParam({})
     .setMethod({
 

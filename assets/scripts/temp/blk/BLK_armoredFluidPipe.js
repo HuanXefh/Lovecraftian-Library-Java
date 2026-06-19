@@ -32,7 +32,7 @@
      */
     newClass().extendClass(PARENT[0], "BLK_armoredFluidPipe").initClass()
     .setParent(ArmoredConduit)
-    .setTags("blk-liq", "blk-fcond")
+    .setTags()
     .setParam({})
     .setMethod({}),
 
