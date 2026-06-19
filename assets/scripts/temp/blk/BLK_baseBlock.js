@@ -136,7 +136,11 @@
         amt = !(b.block instanceof CoreBlock) ?
           b.items.get(itm) :
           (b.items.get(itm) / Math.max(b.team.cores().size, 1));
-        if(amt >= 20) MDL_call.spawnLoot_server(b.x, b.y, itm, amt.randFreq(0.3), b.block.size * Vars.tilesize * 0.7);
+        if(amt >= 20) {
+          amt = amt.randFreq(0.3);
+          b.items.remove(itm, amt);
+          MDL_call.spawnLoot_server(b.x, b.y, itm, amt, b.block.size * Vars.tilesize * 0.7);
+        };
       });
     };
   };

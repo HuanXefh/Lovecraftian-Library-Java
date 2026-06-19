@@ -1367,8 +1367,6 @@
   class BaseShield extends Block {};
   /** @global mindustry.world.blocks.defense.ForceProjector */
   class ForceProjector extends Block {};
-  /** @global mindustry.world.blocks.defense.DirectionalForceProjector */
-  class DirectionalForceProjector extends Block {};
   /** @global mindustry.world.blocks.defense.Radar */
   class Radar extends Block {};
   /** @global mindustry.world.blocks.defense.ShockMine */

@@ -20,8 +20,8 @@ softDependencies: [
 
 description:
 '''
-A JavaScript library for my other mods, with codes for multi-crafters, recipe dictionary, damage display, etc.
+A JavaScript library for my other mods, with codes for class structure, multi-crafters, recipe dictionary, damage display, etc.
 Well, not 100% JavaScript.
 '''
 
-version: 101.3.26061802
+version: 101.3.26061901

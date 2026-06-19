@@ -160,11 +160,14 @@
     let itm = _ct(itm_gn, "rs");
     if(itm == null || !(itm instanceof Item)) return arr;
 
-    Vars.content.blocks().each(blk => blk.placeablePlayer, blk => {
-      blk.requirements.forEachFast(itmStack => {
-        if(itmStack.item === itm && itmStack.amount > 0) !appendAmt ? arr.push(blk) : arr.push(blk, itmStack.amount);
-      });
-    });
+    Vars.content.blocks().each(
+      oblk => oblk.placeablePlayer && !DB_block.db["class"]["group"]["visibility"]["hidden"].includes(oblk.buildVisibility),
+      oblk => {
+        oblk.requirements.forEachFast(itmStack => {
+          if(itmStack.item === itm && itmStack.amount > 0) !appendAmt ? arr.push(oblk) : arr.push(oblk, itmStack.amount);
+        });
+      },
+    );
     if(arr.length > 0 && !itm.buildable) {
       console.warn("[LOVEC] Item ${1} is marked as not buildable, but actually used for ${2} blocks!".format(itm.name.color(Pal.accent), arr.length));
     };

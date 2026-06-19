@@ -12,6 +12,20 @@ const db = {
   dict: {
 
 
+    /**
+     * Used to register new custom fields in recipe dictionary.
+     * <br> <ROW>: nm, obj.
+     */
+    customField: [
+
+      "power", {icon: "lovec-icon-power", isContinuous: true},
+      "heat", {icon: "lovec-icon-erekir-heat", isStatic: true},
+
+      "cd-pressure", {mod: "carpe-diem", icon: "lovec-icon-cd-pressure", isStatic: true},
+
+    ],
+
+
     reader: {
 
 
@@ -25,49 +39,49 @@ const db = {
 
         /* <---------- item ----------> */
 
-        ConsumeItemFilter, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeItemFilter, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           Vars.content.items().each(itm => {
             if(blk.itemFilter[itm.id]) dictConsItm[itm.id].push(blk, 1, mergeObj({icon: DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
-        ConsumeItems, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeItems, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           cons.items.forEachFast(itmStack => {
             if(itmStack.amount <= 0) return;
             dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
-        ConsumeItemFlammable, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeItemFlammable, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           Vars.content.items().each(itm => itm.flammability >= cons.minFlammability, itm => dictConsItm[itm.id].push(blk, 1, mergeObj(data)));
         },
 
-        ConsumeItemExplosive, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeItemExplosive, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           Vars.content.items().each(itm => itm.explosiveness >= cons.minExplosiveness && !(consFlam != null && itm.flammability >= consFlam.minFlammability), itm => dictConsItm[itm.id].push(blk, 1, mergeObj(data)));
         },
 
-        ConsumeItemRadioactive, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeItemRadioactive, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           Vars.content.items().each(itm => itm.radioactivity >= cons.minRadioactivity, itm => dictConsItm[itm.id].push(blk, 1, mergeObj(data)));
         },
 
-        ConsumeItemCharged, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeItemCharged, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           Vars.content.items().each(itm => itm.charge >= cons.minCharge, itm => dictConsItm[itm.id].push(blk, 1, mergeObj(data)));
         },
 
-        ConsumeItemExplode, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeItemExplode, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           // Do nothing
         },
 
         /* <---------- liquid ----------> */
 
-        ConsumeLiquidFilter, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeLiquidFilter, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           Vars.content.liquids().each(liq => {
             if(cons.amount < 0.0001) return;
             if(blk.liquidFilter[liq.id]) dictConsFld[liq.id].push(blk, cons.amount, mergeObj({icon: DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
-        ConsumeLiquid, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeLiquid, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           if(blk instanceof LandingPad) {
             // Why is it not another consumer class...
             dictConsFld[blk.consumeLiquid.id].push(blk, blk.consumeLiquidAmount / blk.cooldownTime, {});
@@ -77,28 +91,35 @@ const db = {
           };
         },
 
-        ConsumeLiquids, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeLiquids, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           cons.liquids.forEachFast(liqStack => {
             if(liqStack.amount < 0.0001) return;
             dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
-        ConsumeCoolant, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeCoolant, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           if(cons.amount < 0.0001) return;
           Vars.content.liquids().each(liq => liq.coolant && (!liq.gas && cons.allowLiquid || liq.gas && cons.allowGas) && liq.temperature <= cons.maxTemp && liq.flammability < cons.maxFlammability, liq => {
             dictConsFld[liq.id].push(blk, cons.amount, mergeObj({icon: "lovec-icon-coolant"}, data));
           });
         },
 
-        ConsumeLiquidFlammable, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumeLiquidFlammable, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           if(cons.amount < 0.0001) return;
           Vars.content.liquids().each(liq => liq.flammability >= cons.minFlammability, liq => dictConsFld[liq.id].push(blk, cons.amount, mergeObj(data)));
         },
 
+        /* <---------- power ----------> */
+
+        ConsumePower, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
+          if(cons.usage < 0.0001 || cons.buffered || blk instanceof PowerVoid) return;
+          MDL_recipeDict.addCustomConsTerm(blk, "power", cons.usage, mergeObj(data));
+        },
+
         /* <---------- payload ----------> */
 
-        ConsumePayloads, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        ConsumePayloads, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           cons.payloads.each(payStack => {
             if(payStack.amount <= 0) return;
             (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({icon: DB_block.db["class"]["group"]["turret"].hasIns(blk) ? "lovec-icon-ammo" : null}, data));
@@ -107,7 +128,12 @@ const db = {
 
         /* <---------- block ----------> */
 
-        UnitFactory, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        HeatCrafter, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
+          if(blk.heatRequirement < 0.0001) return;
+          MDL_recipeDict.addCustomConsTerm(blk, "heat", blk.heatRequirement, mergeObj(data));
+        },
+
+        UnitFactory, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           blk.plans.each(uPlan => {
             uPlan.requirements.forEachFast(itmStack => {
               if(itmStack.amount <= 0) return;
@@ -116,7 +142,7 @@ const db = {
           });
         },
 
-        UnitAssembler, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        UnitAssembler, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           blk.plans.each(uPlan => {
             if(uPlan.itemReq != null) uPlan.itemReq.forEachFast(itmStack => {
               if(itmStack.amount <= 0) return;
@@ -133,7 +159,7 @@ const db = {
           });
         },
 
-        Reconstructor, (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        Reconstructor, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           blk.upgrades.each(arr => {
             dictConsUtp[arr[0].id].push(blk, 1, mergeObj({ct: arr[1]}, data));
           });
@@ -141,20 +167,25 @@ const db = {
 
         /* <---------- Carpe Diem (consumer) ----------> */
 
-        fetchClass("carpediem.world.consumers.ConsumeItemsUses", true), (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        fetchClass("carpediem.world.consumers.ConsumeItemsUses", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           cons.items.forEachFast(itmStack => {
             if(itmStack.amount <= 0) return;
             dictConsItm[itmStack.item.id].push(blk, itmStack.amount / cons.uses, mergeObj({icon: cons.optional ? "lovec-icon-boost" : DB_block.db["class"]["group"]["turret"]["class"].hasIns(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
-        /* <---------- Carpe Diem ----------> */
-
-        fetchClass("carpediem.world.blocks.storage.LandingPod", true), (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
-          db["dict"]["reader"]["consume"].read(fetchClass("carpediem.world.blocks.crafting.RecipeCrafter"), Function.air)(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp);
+        fetchClass("carpediem.world.consumers.ConsumePressure", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
+          if(cons.usage < 0.0001) return;
+          MDL_recipeDict.addCustomConsTerm(blk, "cd-pressure", cons.usage, mergeObj({icon: cons.optional ? "lovec-icon-boost" : null}, data));
         },
 
-        fetchClass("carpediem.world.blocks.crafting.RecipeCrafter", true), (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        /* <---------- Carpe Diem ----------> */
+
+        fetchClass("carpediem.world.blocks.storage.LandingPod", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
+          db["dict"]["reader"]["consume"].read(fetchClass("carpediem.world.blocks.crafting.RecipeCrafter"), Function.air).apply(this, arguments);
+        },
+
+        fetchClass("carpediem.world.blocks.crafting.RecipeCrafter", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           let dictCaller;
           blk.recipes.each(rc => {
             rc.consumes.each(rcI => {
@@ -166,11 +197,11 @@ const db = {
           });
         },
 
-        fetchClass("carpediem.world.blocks.payloads.PayloadBurner", true), (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        fetchClass("carpediem.world.blocks.payloads.PayloadBurner", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           dictConsBlk[blk.consumedBlock.id].push(blk, 1, mergeObj(data));
         },
 
-        fetchClass("carpediem.world.blocks.payloads.FanBlock", true), (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        fetchClass("carpediem.world.blocks.payloads.FanBlock", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           let ProcessableBlock = fetchClass("carpediem.world.blocks.payloads.ProcessableBlock");
           Vars.content.blocks().each(
             oblk => oblk instanceof ProcessableBlock,
@@ -178,9 +209,37 @@ const db = {
           );
         },
 
+        /* <---------- MultiCrafter ----------> */
+
+        fetchClass("dev.jojofr.multicrafter.MultiCrafterBlock", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
+          let i = 0, ordText;
+          blk.recipes.each(rc => {
+            i++;
+            ordText = ("[" + i + "]").color(Pal.accent);
+            rc.input.items.forEachFast(itmStack => {
+              if(itmStack.amount <= 0) return;
+              dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+            });
+            rc.input.liquids.forEachFast(liqStack => {
+              if(liqStack.amount < 0.0001) return;
+              dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+            });
+            rc.input.payloads.forEachFast(payStack => {
+              if(payStack.amount <= 0) return;
+              (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+            });
+            if(rc.intput.power > 0.0) {
+              MDL_recipeDict.addCustomConsTerm(blk, "power", rc.input.power, mergeObj({time: rc.craftTime, iconText: ordText}, data))
+            };
+            if(rc.input.heat > 0.0) {
+              MDL_recipeDict.addCustomConsTerm(blk, "heat", rc.input.heat, mergeObj({time: rc.craftTime, iconText: ordText}, data))
+            };
+          });
+        },
+
         /* <---------- New Horizon ----------> */
 
-        fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           let i = 0, ordText;
           blk.recipes.each(rc => {
             i++;
@@ -200,7 +259,7 @@ const db = {
           });
         },
 
-        fetchClass("newhorizon.expand.block.special.JumpGate", true), (blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) => {
+        fetchClass("newhorizon.expand.block.special.JumpGate", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           let rc;
           blk.recipeList.each(unitRc => {
             rc = unitRc.recipe;
@@ -229,7 +288,7 @@ const db = {
        */
       produce: [
 
-        Drill, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        Drill, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           if(tryJsProp(blk, "shouldDropPay", false)) return;
           Vars.content.items().each(itm => {
             if(blk.blockedItems != null && blk.blockedItems.contains(itm)) return;
@@ -240,25 +299,25 @@ const db = {
           });
         },
 
-        BeamDrill, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        BeamDrill, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           if(tryJsProp(blk, "shouldDropPay", false)) return;
           Vars.content.items().each(itm => {
             if(blk.blockedItems != null && blk.blockedItems.contains(itm)) return;
-            let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === itm && (instanceOfAny(oblk, Prop, TallBlock) || (oblk instanceof OverlayFloor && oblk.wallOre)) && (blk.ex_canMine == null || blk.ex_canMine(oblk, itm, 1.0))).toArray();
+            let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === itm && (DB_block.db["class"]["group"]["ore"]["wall"].hasIns(oblk) || (oblk instanceof OverlayFloor && oblk.wallOre)) && (blk.ex_canMine == null || blk.ex_canMine(oblk, itm, 1.0))).toArray();
             if(oblks.length > 0) {
               dictProdItm[itm.id].push(blk, blk.size * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({icon: "lovec-icon-mining", iconCts: oblks}, data));
             };
           });
         },
 
-        WallCrafter, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        WallCrafter, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           let oblks = Vars.content.blocks().select(oblk => oblk.solid && !(oblk instanceof Floor) && oblk.attributes.get(blk.attribute) > 0.0).toArray();
           if(oblks.length > 0) {
             dictProdItm[blk.output.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({icon: "lovec-icon-mining", iconCts: oblks}, data));
           };
         },
 
-        Pump, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        Pump, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           Vars.content.liquids().each(liq => {
             let oblks = Vars.content.blocks().select(oblk => oblk instanceof Floor && oblk.liquidDrop === liq).toArray();
             if(oblks.length > 0) {
@@ -267,22 +326,31 @@ const db = {
           });
         },
 
-        SolidPump, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        SolidPump, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           let oblks = Vars.content.blocks().select(oblk => oblk instanceof Floor && oblk.attributes.get(blk.attribute) > 0.0).toArray();
           if(oblks.length > 0) {
             dictProdFld[blk.result.id].push(blk, blk.pumpAmount * Math.pow(blk.size, 2) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({icon: "lovec-icon-pumping", iconCts: oblks}, data));
           };
         },
 
-        ConsumeGenerator, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        PowerGenerator, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
+          if(blk.powerProduction < 0.0001) return;
+          MDL_recipeDict.addCustomProdTerm(blk, "power", blk.powerProduction, mergeObj(data));
+        },
+
+        ConsumeGenerator, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
+          db["dict"]["reader"]["produce"].read(PowerGenerator).apply(this, arguments);
           if(blk.outputLiquid != null) dictProdFld[blk.outputLiquid.liquid.id].push(blk, blk.outputLiquid.amount * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj(data));
         },
 
-        ThermalGenerator, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        ThermalGenerator, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
+          if(blk.powerProduction > 0.0) {
+            MDL_recipeDict.addCustomProdTerm(blk, "power", blk.powerProduction / blk.displayEfficiencyScale, mergeObj(data));
+          };
           if(blk.outputLiquid != null) dictProdFld[blk.outputLiquid.liquid.id].push(blk, blk.outputLiquid.amount * Math.pow(blk.size, 2) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj(data));
         },
 
-        GenericCrafter, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        GenericCrafter, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           let amt;
           if(blk.outputItems != null) blk.outputItems.forEachFast(itmStack => {
             amt = itmStack.amount * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0);
@@ -296,26 +364,33 @@ const db = {
           });
         },
 
-        Constructor, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        HeatProducer, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
+          db["dict"]["reader"]["produce"].read(GenericCrafter).apply(this, arguments);
+          if(blk.heatOutput > 0.0 && blk.heatOutput < 1000.0) {
+            MDL_recipeDict.addCustomProdTerm(blk, "heat", blk.heatOutput, mergeObj(data));
+          };
+        },
+
+        Constructor, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           Vars.content.blocks().each(
-            oblk => oblk.synthetic() && !(oblk instanceof CoreBlock) && oblk.size >= blk.minBlockSize && oblk.size <= blk.maxBlockSize && (blk.filter.size === 0 || blk.filter.contains(oblk)),
+            oblk => oblk.synthetic() && !(oblk instanceof CoreBlock) && oblk.size >= blk.minBlockSize && oblk.size <= blk.maxBlockSize && !DB_block.db["class"]["group"]["visibility"]["hidden"].includes(oblk.buildVisibility) && (blk.filter.size === 0 || blk.filter.contains(oblk)),
             oblk => dictProdBlk[oblk.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({time: oblk.buildTime / blk.buildSpeed}, data)),
           );
         },
 
-        UnitFactory, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        UnitFactory, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           blk.plans.each(uPlan => {
             dictProdUtp[uPlan.unit.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({time: uPlan.time}, data));
           });
         },
 
-        UnitAssembler, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        UnitAssembler, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           blk.plans.each(uPlan => {
             dictProdUtp[uPlan.unit.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({time: uPlan.time}, data));
           });
         },
 
-        Reconstructor, (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        Reconstructor, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           blk.upgrades.each(arr => {
             dictProdUtp[arr[1].id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({ct: arr[0]}, data));
           });
@@ -323,11 +398,18 @@ const db = {
 
         /* <---------- Carpe Diem ----------> */
 
-        fetchClass("carpediem.world.blocks.storage.LandingPod", true), (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
-          db["dict"]["reader"]["produce"].read(fetchClass("carpediem.world.blocks.crafting.RecipeCrafter"), Function.air)(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp);
+        fetchClass("carpediem.world.blocks.storage.LandingPod", true), function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
+          db["dict"]["reader"]["produce"].read(fetchClass("carpediem.world.blocks.crafting.RecipeCrafter"), Function.air).apply(this, arguments);
         },
 
-        fetchClass("carpediem.world.blocks.crafting.RecipeCrafter", true), (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        fetchClass("carpediem.world.blocks.crafting.PressureCrafter", true), function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
+          db["dict"]["reader"]["produce"].read(GenericCrafter).apply(this, arguments);
+          if(blk.pressureProduction) {
+            MDL_recipeDict.addCustomProdTerm(blk, "cd-pressure", blk.pressureProduction, mergeObj(data));
+          };
+        },
+
+        fetchClass("carpediem.world.blocks.crafting.RecipeCrafter", true), function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           blk.recipes.each(rc => {
             rc.outputs.each(rcO => {
               if(instanceOfAny(rcO, fetchClass("carpediem.world.outputs.OutputItems", true))) {
@@ -345,7 +427,7 @@ const db = {
           });
         },
 
-        fetchClass("carpediem.world.blocks.payloads.FanBlock", true), (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        fetchClass("carpediem.world.blocks.payloads.FanBlock", true), function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           let ProcessableBlock = fetchClass("carpediem.world.blocks.payloads.ProcessableBlock");
           Vars.content.blocks().each(
             oblk => oblk instanceof ProcessableBlock,
@@ -353,13 +435,41 @@ const db = {
           );
         },
 
+        /* <---------- MultiCrafter ----------> */
+
+        fetchClass("dev.jojofr.multicrafter.MultiCrafterBlock", true), function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
+          let i = 0, ordText;
+          blk.recipes.each(rc => {
+            i++;
+            ordText = ("[" + i + "]").color(Pal.accent);
+            rc.output.items.forEachFast(itmStack => {
+              if(itmStack.amount <= 0) return;
+              dictProdItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+            });
+            rc.output.liquids.forEachFast(liqStack => {
+              if(liqStack.amount < 0.0001) return;
+              dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+            });
+            rc.output.payloads.forEachFast(payStack => {
+              if(payStack.amount <= 0) return;
+              (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+            });
+            if(rc.output.power > 0.0) {
+              MDL_recipeDict.addCustomProdTerm(blk, "power", rc.output.power, mergeObj({time: rc.craftTime, iconText: ordText}, data))
+            };
+            if(rc.output.heat > 0.0) {
+              MDL_recipeDict.addCustomProdTerm(blk, "heat", rc.output.heat, mergeObj({time: rc.craftTime, iconText: ordText}, data))
+            };
+          });
+        },
+
         /* <---------- New Horizon ----------> */
 
-        fetchClass("newhorizon.expand.block.production.factory.MultiBlockCrafter", true), (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        fetchClass("newhorizon.expand.block.production.factory.MultiBlockCrafter", true), function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           db["dict"]["reader"]["produce"].read(GenericCrafter, Function.air)(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp);
         },
 
-        fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           let i = 0, ordText;
           blk.recipes.each(rc => {
             i++;
@@ -379,7 +489,7 @@ const db = {
           });
         },
 
-        fetchClass("newhorizon.expand.block.special.JumpGate", true), (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        fetchClass("newhorizon.expand.block.special.JumpGate", true), function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           let rc;
           blk.recipeList.each(unitRc => {
             rc = unitRc.recipe;
@@ -419,23 +529,23 @@ const db = {
 
         /* <---------- New Horizon ----------> */
 
-        "new-horizon-photothermal-generator", (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        "new-horizon-photothermal-generator", function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, mergeObj({time: 120.0}, data));
         },
 
-        "new-horizon-geological-photothermal-generator", (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        "new-horizon-geological-photothermal-generator", function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, mergeObj({time: 120.0}, data));
         },
 
-        "new-horizon-vector-condenser", (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        "new-horizon-vector-condenser", function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 2, mergeObj({time: 120.0}, data));
         },
 
-        "new-horizon-differential-reactor", (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        "new-horizon-differential-reactor", function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, mergeObj({time: 120.0}, data));
         },
 
-        "new-horizon-photon-panel", (blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) => {
+        "new-horizon-photon-panel", function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           dictProdItm[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, mergeObj({time: 300.0}, data));
         },
 

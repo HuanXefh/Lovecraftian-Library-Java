@@ -156,6 +156,7 @@
   newStat("lovec", "spec-fromto");
   newStat("lovec", "spec-info");
   newStat("lovec", "spec-dialflow");
+  newStat("lovec", "spec-nodects");
 
 
   newStat("lovec", "debug-copyname", fetchStatCategory("lovec", "debug"));

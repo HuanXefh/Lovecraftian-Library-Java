@@ -23,10 +23,44 @@
 
   const rcDict = {
     hasInit: false,
+    customFieldMap: new ObjectMap(),
+    continuousCutomFields: [],
     cons: {},
     prod: {},
   };
   exports.rcDict = rcDict;
+
+
+  /**
+   * Registers a new custom field.
+   * @param {string} nm
+   * @param {Object} obj
+   * @param {Drawable} obj.icon
+   * @param {string|unset} [obj.mod] - Mod required for this custom field.
+   * @param {boolean|unset} [obj.isContinuous] - Whether consumed/produced per frame.
+   * @param {boolean|unset} [obj.isStatic] - Whether irrelative to craft time.
+   * @return {void}
+   */
+  const newCustomField = function(nm, obj) {
+    if(obj.mod != null && Vars.mods.locateMod(obj.mod) == null) return;
+
+    rcDict.customFieldMap.put(nm, obj);
+    MDL_event._c_onLoad(() => {
+      obj.icon = findRegionDrawable(obj.icon);
+    });
+  };
+  exports.newCustomField = newCustomField;
+
+
+  /**
+   * <BUNDLE>: "term.common-term-rcdict-custom-<nm>.name".
+   * @param {string} nm
+   * @return {string}
+   */
+  const _customFieldB = function(nm) {
+    return MDL_bundle._term("common", "rcdict-custom-" + nm);
+  };
+  exports._customFieldB = _customFieldB;
 
 
   /**
@@ -111,6 +145,31 @@
 
 
   /**
+   * Adds a custom consumption term.
+   * Should be called strictly after CLIENT LOAD.
+   * @param {BlockGn} blk_gn
+   * @param {string} nm
+   * @param {number} amt
+   * @param {RecipeDictionaryData|unset} [data]
+   * @return {void}
+   */
+  const addCustomConsTerm = function(blk_gn, nm, amt, data) {
+    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
+    if(rcDict.cons[nm] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", nm);
+
+    let blk = MDL_content._ct(blk_gn, "blk");
+    if(blk == null) return;
+
+    rcDict.cons[nm].push(
+      blk,
+      amt,
+      tryVal(data, Object.air),
+    );
+  };
+  exports.addCustomConsTerm = addCustomConsTerm;
+
+
+  /**
    * Adds an item production term.
    * Should be called strictly after CLIENT LOAD.
    * @param {BlockGn} blk_gn
@@ -192,26 +251,54 @@
 
 
   /**
+   * Adds a custom production term.
+   * Should be called strictly after CLIENT LOAD.
+   * @param {BlockGn} blk_gn
+   * @param {string} nm
+   * @param {number} amt
+   * @param {RecipeDictionaryData|unset} [data]
+   * @return {void}
+   */
+  const addCustomProdTerm = function(blk_gn, nm, amt, data) {
+    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
+    if(rcDict.prod[nm] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", nm);
+
+    let blk = MDL_content._ct(blk_gn, "blk");
+    if(blk == null) return;
+
+    rcDict.prod[nm].push(
+      blk,
+      amt,
+      tryVal(data, Object.air),
+    );
+  };
+  exports.addCustomProdTerm = addCustomProdTerm;
+
+
+  /**
    * Gets consumption amount of `ct_gn` by `blk_gn`.
-   * @param {ContentGn} ct_gn
+   * @param {ContentGn} ct_gn - Can be a custom field name.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
   const _consAmt = function(ct_gn, blk_gn) {
     let val = 0.0;
-    let ct = MDL_content._ct(ct_gn, null, true);
+    if(ct_gn == null) return val;
+    let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
+      "!CUSTOM" :
+      MDL_content._ct(ct_gn, null, true);
     let blk = MDL_content._ct(blk_gn, "blk");
     if(ct == null || blk == null) return val;
 
-    let arr = rcDict.cons[
+    let arr = ct === "!CUSTOM" ?
+      rcDict.cons[ct_gn] :
       ct instanceof Item ?
-        "item" :
+        rcDict.cons.item[ct.id] :
         ct instanceof Liquid ?
-          "fluid" :
+          rcDict.cons.fluid[ct.id] :
           ct instanceof UnitType ?
-            "unit" :
-            "block"
-    ][ct.id];
+            rcDict.cons.unit[ct.id] :
+            rcDict.cons.block[ct.id];
     let i = 0, iCap = arr.iCap();
     while(i < iCap) {
       if(arr[i] === blk) val = Math.max(arr[i + 1], val);
@@ -239,25 +326,28 @@
 
   /**
    * Gets production amount of `ct_gn` by `blk_gn`.
-   * @param {ContentGn} ct_gn
+   * @param {ContentGn} ct_gn - Can be a custom field name.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
   const _prodAmt = function(ct_gn, blk_gn) {
     let val = 0.0;
-    let ct = MDL_content._ct(ct_gn, null, true);
+    if(ct_gn == null) return val;
+    let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
+      "!CUSTOM" :
+      MDL_content._ct(ct_gn, null, true);
     let blk = MDL_content._ct(blk_gn, "blk");
     if(ct == null || blk == null) return val;
 
-    let arr = rcDict.prod[
+    let arr = ct === "!CUSTOM" ?
+      rcDict.prod[ct_gn] :
       ct instanceof Item ?
-        "item" :
+        rcDict.prod.item[ct.id] :
         ct instanceof Liquid ?
-          "fluid" :
+          rcDict.prod.fluid[ct.id] :
           ct instanceof UnitType ?
-            "unit" :
-            "block"
-    ][ct.id];
+            rcDict.prod.unit[ct.id] :
+            rcDict.prod.block[ct.id];
     let i = 0, iCap = arr.iCap();
     while(i < iCap) {
       if(arr[i] === blk) val = Math.max(arr[i + 1], val);
@@ -285,7 +375,7 @@
 
   /**
    * Whether `blk_gn` consumes or produces `ct_gn`.
-   * @param {ContentGn} ct_gn
+   * @param {ContentGn} ct_gn - Can be a custom field name.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
@@ -298,7 +388,7 @@
 
   /**
    * Whether `blk_gn` consumes or produces anyone in `cts_gn`.
-   * @param {Array<ContentGn>} cts_gn
+   * @param {Array<ContentGn>} cts_gn - Can include custom field names.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
@@ -310,7 +400,7 @@
 
   /**
    * Whether `blk_gn` consumes or produces everyone in `cts_gn`.
-   * @param {Array<ContentGn>} cts_gn
+   * @param {Array<ContentGn>} cts_gn - Can include custom field names.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
@@ -322,33 +412,36 @@
 
   /**
    * Finds all blocks that consume `ct_gn`.
-   * @param {ContentGn} ct_gn
+   * @param {ContentGn} ct_gn - Can be a custom field name.
    * @param {boolean|unset} [appendData] - If true, this method will return a 3-array instead. <br> <ROW>: blk, amt, data.
    * @return {Array}
    */
   const _consumers = function(ct_gn, appendData) {
     let arr = [];
 
-    let ct = MDL_content._ct(ct_gn, null, true);
+    if(ct_gn == null) return arr;
+    let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
+      "!CUSTOM" :
+      MDL_content._ct(ct_gn, null, true);
     if(ct == null) return arr;
 
-    let arr1 = rcDict.cons[
+    let arr1 = ct === "!CUSTOM" ?
+      rcDict.cons[ct_gn] :
       ct instanceof Item ?
-        "item" :
+        rcDict.cons.item[ct.id] :
         ct instanceof Liquid ?
-          "fluid" :
+          rcDict.cons.fluid[ct.id] :
           ct instanceof UnitType ?
-            "unit" :
-            "block"
-    ][ct.id];
-    let i = 0, iCap = arr1.iCap();
+            rcDict.cons.unit[ct.id] :
+            rcDict.cons.block[ct.id];
+    let i = 0, iCap = arr1.iCap(), blk, amt, data;
     while(i < iCap) {
-      let blk = arr1[i];
+      blk = arr1[i];
       if(!appendData) {
         arr.push(blk);
       } else {
-        let amt = arr1[i + 1];
-        let data = arr1[i + 2];
+        amt = arr1[i + 1];
+        data = arr1[i + 2];
         arr.push(blk, amt, data);
       };
       i += 3;
@@ -362,33 +455,36 @@
 
   /**
    * Variant of {@link _consumers} that finds producers instead.
-   * @param {ContentGn} ct_gn
+   * @param {ContentGn} ct_gn - Can be a custom field name.
    * @param {boolean|unset} [appendData]
    * @return {Array}
    */
   const _producers = function(ct_gn, appendData) {
     let arr = [];
 
-    let ct = MDL_content._ct(ct_gn, null, true);
+    if(ct_gn == null) return arr;
+    let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
+      "!CUSTOM" :
+      MDL_content._ct(ct_gn, null, true);
     if(ct == null) return arr;
 
-    let arr1 = rcDict.prod[
+    let arr1 = ct === "!CUSTOM" ?
+      rcDict.prod[ct_gn] :
       ct instanceof Item ?
-        "item" :
+        rcDict.prod.item[ct.id] :
         ct instanceof Liquid ?
-          "fluid" :
+          rcDict.prod.fluid[ct.id] :
           ct instanceof UnitType ?
-            "unit" :
-            "block"
-    ][ct.id];
-    let i = 0, iCap = arr1.iCap();
+            rcDict.prod.unit[ct.id] :
+            rcDict.prod.block[ct.id];
+    let i = 0, iCap = arr1.iCap(), blk, amt, data;
     while(i < iCap) {
-      let blk = arr1[i];
+      blk = arr1[i];
       if(!appendData) {
         arr.push(blk);
       } else {
-        let amt = arr1[i + 1];
-        let data = arr1[i + 2];
+        amt = arr1[i + 1];
+        data = arr1[i + 2];
         arr.push(blk, amt, data);
       };
       i += 3;
@@ -419,6 +515,10 @@
     rcDict.prod.fluid = {};
     rcDict.prod.block = {};
     rcDict.prod.unit = {};
+    rcDict.customFieldMap.each((nm, obj) => {
+      rcDict.cons[nm] = [];
+      rcDict.prod[nm] = [];
+    });
     Vars.content.items().each(itm => {
       rcDict.cons.item[itm.id] = [];
       rcDict.prod.item[itm.id] = [];

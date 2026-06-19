@@ -343,7 +343,6 @@ const db = {
 
         ShieldWall, (b, isSelfShield) => b.shield,
         ForceProjector, (b, isSelfShield) => isSelfShield ? 0.0 : (b.block.shieldHealth + b.block.phaseShieldBoost * b.phaseHeat - b.buildup),
-        DirectionalForceProjector, (b, isSelfShield) => isSelfShield ? 0.0 : (b.block.shieldHealth - b.buildup),
 
       ],
 
@@ -415,6 +414,26 @@ const db = {
     group: {
 
 
+      visibility: {
+
+
+        /**
+         * These visibilities will be treated as hidden.
+         */
+        hidden: [
+
+          BuildVisibility.hidden,
+          BuildVisibility.debugOnly,
+          BuildVisibility.editorOnly,
+          BuildVisibility.worldProcessorOnly,
+          BuildVisibility.sandboxOnly,
+
+        ],
+
+
+      },
+
+
       reload: {
 
 
@@ -477,6 +496,25 @@ const db = {
           fetchClass("newhorizon.expand.block.defence.FireExtinguisher", true),
           fetchClass("newhorizon.expand.block.defence.ShockwaveGenerator", true),
           fetchClass("newhorizon.expand.block.commandable.CommandableAttackerBlock", true),
+
+        ],
+
+
+      },
+
+
+      ore: {
+
+
+        /**
+         * Block classes listed here can be a wall ore on its own.
+         * <br> <ROW>: javaCls.
+         */
+        wall: [
+
+          StaticWall,
+          TallBlock,
+          TreeBlock,
 
         ],
 

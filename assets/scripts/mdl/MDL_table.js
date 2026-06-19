@@ -673,9 +673,10 @@
     const cont = contCell.get();
     contCell.row();
 
+    let ct;
     __break(cont, 1);
     cts_gn.forEachFast(ct_gn => {
-      let ct = MDL_content._ct(ct_gn, null, true);
+      ct = MDL_content._ct(ct_gn, null, true);
       if(ct == null) return;
 
       cont.table(Tex.whiteui, tb1 => {
@@ -743,9 +744,9 @@
       tb1.left().setColor(Pal.darkestGray);
       __margin(tb1, 0.5);
 
-      let i = 0, iCap = cts_gn.iCap(), j = 0;
+      let i = 0, iCap = cts_gn.iCap(), j = 0, ct;
       while(i < iCap) {
-        let ct = MDL_content._ct(cts_gn[i], null, true);
+        ct = MDL_content._ct(cts_gn[i], null, true);
         if(ct != null) __ct(tb1, ct, iconW, null, dialToHide, ctDial);
 
         if(j % colAmt === colAmt - 1) tb1.row();

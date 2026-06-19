@@ -65,9 +65,22 @@
 
 
 
-  // Register global category for {@link CLS_dragButtonInfoList}
-  CLS_dragButtonInfoList
-  .add("achievement", () => fetchDialog("achievement").ex_show());
+  (function() {
+
+
+    // Register global category for {@link CLS_dragButtonInfoList}
+    CLS_dragButtonInfoList
+    .add("achievement", () => fetchDialog("achievement").ex_show())
+    .add("recipe-dictionary", () => fetchDialog("rcDictDatabase").ex_show());
+
+
+    // Register custom fields for recipe dictionary
+    DB_recipe.db["dict"]["customField"].forEachRow(2, (nm, obj) => {
+      MDL_recipeDict.newCustomField(nm, obj);
+    });
+
+
+  })();
 
 
 

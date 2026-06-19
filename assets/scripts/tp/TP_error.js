@@ -61,6 +61,7 @@
     this.add("planetMeshLoadFail", "Failed to load mesh (${1}) for ${2}.");
 
     this.add("recipeDictionaryNotInitialized", "Recipe dictionary has not been initialized yet! Do not modify it before or just on CLIENT LOAD!");
+    this.add("recipeDictionaryCustomFieldNotFound", "The requsted cutoms field ${1} has not been registered yet!");
     this.add("dialogFlowGenerateFail", "Failed to generate dialog flow. Make sure the structure is correct!");
     this.add("dialogFlowDoubleBuild", "Don't build the same dialog flow twice!");
     this.add("dialogFlowMissingBackgroundEnd", "The dialog flow has a background that never ends!");

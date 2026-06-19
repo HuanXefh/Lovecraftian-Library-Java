@@ -335,7 +335,7 @@
           MDL_table.__margin(tb1, 0.5);
           tb1.table(Tex.whiteui, tb2 => {
             tb2.center().setColor(achievement.isCompleted() ? Color.darkGray : Pal.darkestGray);
-            tb2.imageDraw(() => achievement.getIcon()).width(64.0).height(64.0).color(!achievement.isCompleted() ? Color.darkGray : Color.white).tooltip(!achievement.isCompleted() ? "???" : achievement.getText(), true);
+            tb2.imageDraw(() => achievement.getIcon()).width(64.0).height(64.0).color(!achievement.isCompleted() ? Color.darkGray : Color.white).tooltip(!achievement.isCompleted() && !global.lovecUtil.prop.debug ? "???" : achievement.getText(), true);
           })
           .width(72.0)
           .height(72.0);
@@ -528,6 +528,91 @@
   );
 
 
+  newDialog(
+    "rcDictDatabase",
+    () => extend(BaseDialog, MDL_bundle._info("lovec", "dial-rcdict-database"), {
+
+
+      w: 32.0,
+      pad: 4.0,
+
+
+      ex_buildCtBtn(tb, ct, isCustomField) {
+        let icon = isCustomField ?
+          MDL_recipeDict.rcDict.customFieldMap.get(ct).icon :
+          new TextureRegionDrawable(ct.uiIcon);
+        let btn = tb.button(icon, this.w, () => {
+          fetchDialog("rcDict").ex_show(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName, ct);
+        })
+        .left()
+        .pad(this.pad)
+        .tooltip(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName)
+        .get();
+        btn.margin(0.0);
+        let btnStyle = btn.getStyle();
+        btnStyle.up = Styles.none;
+        btnStyle.down = Styles.none;
+        btnStyle.over = Styles.flatOver;
+      },
+
+
+      ex_show() {
+        resetDial(this);
+
+        // <TABLE>: list
+        MDL_table.__break(this.cont);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb);
+
+          let i = 0, j = 0, colAmt = MDL_ui._colAmt(this.w, 0.0, 2), lastCt = null;
+          pnTb.table(Tex.whiteui, tb => {
+            tb.left().setColor(Pal.darkestGray);
+            MDL_table.__margin(tb, 0.5);
+
+            MDL_recipeDict.rcDict.customFieldMap.each((nm, obj) => {
+              this.ex_buildCtBtn(tb, nm, true);
+
+              if(j % colAmt === colAmt - 1) tb.row();
+              i++;
+              j++;
+            });
+            j = -1;
+            tb.row();
+            MDL_table.__break(tb);
+
+            VARGEN.rcDictCts.forEachFast(ct => {
+              if(lastCt != null && ct.getContentType() !== lastCt.getContentType()) {
+                j = -1;
+                tb.row();
+                MDL_table.__break(tb);
+              } else if(j % colAmt === colAmt - 1) {
+                j = -1;
+                tb.row();
+              };
+
+              this.ex_buildCtBtn(tb, ct, false);
+
+              i++;
+              j++;
+              lastCt = ct;
+            });
+          });
+        })
+        .width(MDL_ui._uiW())
+        .row();
+
+        // <TABLE>: buttons
+        MDL_table.__break(this.cont);
+        MDL_table.__btnClose(this.buttons, this);
+
+        this.show();
+      },
+
+
+    }),
+  );
+
+
   /**
    * A dialog used for recipe dictionary display.
    */
@@ -536,55 +621,83 @@
     () => extend(BaseDialog, "", {
 
 
-      ex_getRateStr(rate, deciAmt) {
+      ex_getRateStr(rate, deciAmt, isStatic) {
         return typeof rate !== "number" ?
           "-" :
-          rate > 0.0167 ?
-            (rate.roundFixed(deciAmt) + "/s") :
-            rate * 60.0 > 0.0167 ?
-              ((rate * 60.0).roundFixed(deciAmt) + "/min") :
-              rate * 3600.0 > 0.0167 ?
-                ((rate * 3600.0).roundFixed(deciAmt) + "/h") :
-                "~0.0/s";
+          isStatic ?
+            String(rate) :
+            rate > 0.0167 ?
+              (rate.roundFixed(deciAmt) + "/s") :
+              rate * 60.0 > 0.0167 ?
+                ((rate * 60.0).roundFixed(deciAmt) + "/min") :
+                rate * 3600.0 > 0.0167 ?
+                  ((rate * 3600.0).roundFixed(deciAmt) + "/h") :
+                  "~0.0/s";
       },
 
 
-      ex_buildList(tb, ct, rcDictArr) {
+      ex_buildList(tb, ct, rcDictArr, isCustomField) {
         let i = 0, iCap = rcDictArr.iCap(), j = 0;
+        let rcCont;
         while(i < iCap) {
-          let rcCont = tb.table(Styles.none, tb1 => tb1.left()).left().width(240.0).height(60.0).get();
+          rcCont = tb.table(Styles.none, tb1 => tb1.left()).left().width(240.0).height(60.0).get();
           // <TABLE>: small icon
           rcCont.table(Styles.none, tb1 => {
             MDL_table.__ct(tb1, rcDictArr[i], 48.0, 8.0, this);
           });
           // <TABLE>: recipe text
           let data, craftTime, craftRate, btn;
+          let isContinuous = isCustomField ?
+            MDL_recipeDict.rcDict.customFieldMap.get(ct).isContinuous :
+            ct instanceof Liquid;
+          // `Boolean(any)` is required here, otherwise undefined will be treated as true in `ex_getRateStr`, WTF???
+          let isStatic = isCustomField ?
+            Boolean(MDL_recipeDict.rcDict.customFieldMap.get(ct).isStatic) :
+            false;
           rcCont.table(Styles.none, tb1 => {
             data = rcDictArr[i + 2];
-            craftTime = data.time != null ? data.time : MDL_content._craftTime(rcDictArr[i], data.icon === "lovec-icon-mining", ct);
-            craftRate = (!isFinite(craftTime) && !(ct instanceof Liquid)) ? null : (!(ct instanceof Liquid) ? (rcDictArr[i + 1] / craftTime * 60.0) : (rcDictArr[i + 1] * 60.0));
+            craftTime = data.time != null ?
+              data.time :
+              MDL_content._craftTime(rcDictArr[i], data.icon === "lovec-icon-mining", isCustomField ? null : ct);
+            craftRate = !isFinite(craftTime) && !isContinuous && !isStatic ?
+              null :
+              isContinuous ?
+                (rcDictArr[i + 1] * 60.0) :
+                isStatic ?
+                  rcDictArr[i + 1] :
+                  (rcDictArr[i + 1] / craftTime * 60.0);
             // <TABLE>: rate text
             tb1.add(MDL_text._statText(
-              MDL_bundle._term("lovec", "rate"),
-              this.ex_getRateStr(craftRate, 2),
+              MDL_bundle._term("lovec", isStatic ? "amount" : "rate"),
+              this.ex_getRateStr(craftRate, 2, isStatic),
             ))
             .left()
-            .tooltip(this.ex_getRateStr(craftRate, 7), true)
+            .tooltip(this.ex_getRateStr(craftRate, 7, isStatic), true)
             .row();
             // <TABLE>: extra icon
             tb1.table(Styles.none, tb2 => {
               tb2.left();
               // <TABLE>: content icon
-              let oct = MDL_content._ct(data.ct, null, true);
-              if(oct != null) {
-                btn = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
-                  this.hide();
-                  Vars.ui.content.show(oct);
-                })
-                .left()
-                .tooltip(tryVal(data.ctText, oct.localizedName), true)
-                .get();
-                btn.getStyle().imageUp = new TextureRegionDrawable(oct.uiIcon).tint(tryVal(data.ctTint, Color.white));
+              if(data.ct != null) {
+                let oct, isOtherCustomField = false;
+                if(MDL_recipeDict.rcDict.customFieldMap.containsKey(data.ct)) {
+                  isOtherCustomField = true;
+                  oct = data.ct;
+                } else {
+                  oct = MDL_content._ct(data.ct, null, true);
+                };
+                if(oct != null) {
+                  btn = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
+                    this.hide();
+                    isOtherCustomField ?
+                      this.ex_show(MDL_recipeDict._customFieldB(oct), oct) :
+                      Vars.ui.content.show(oct);
+                  })
+                  .left()
+                  .tooltip(tryVal(data.ctText, isOtherCustomField ? MDL_recipeDict._customFieldB(oct) : oct.localizedName), true)
+                  .get();
+                  btn.getStyle().imageUp = (isOtherCustomField ? MDL_recipeDict.rcDict.customFieldMap.get(oct).icon : new TextureRegionDrawable(oct.uiIcon)).tint(tryVal(data.ctTint, Color.white));
+                };
               };
               // <TABLE>: tag icon
               if(data.icon != null) {
@@ -613,8 +726,19 @@
 
       ex_show(title, ct_gn) {
         resetDial(this, title);
-        let ct = MDL_content._ct(ct_gn, null, true);
+
+        if(ct_gn == null) return;
+        let ct, isCustomField = false;
+        if(MDL_recipeDict.rcDict.customFieldMap.containsKey(ct_gn)) {
+          isCustomField = true;
+          ct = ct_gn;
+        } else {
+          ct = MDL_content._ct(ct_gn, null, true);
+        };
         if(ct == null) return;
+        let ctIcon = isCustomField ?
+          MDL_recipeDict.rcDict.customFieldMap.get(ct).icon :
+          new TextureRegionDrawable(ct.uiIcon);
 
         // <TABLE>: content
         MDL_table.__break(this.cont);
@@ -623,9 +747,11 @@
           let cont = new Table();
 
           // <TABLE>: icon
-          cont.button(new TextureRegionDrawable(ct.uiIcon), 48.0, () => {
+          cont.button(ctIcon, 48.0, () => {
             this.hide();
-            Vars.ui.content.show(ct);
+            isCustomField ?
+              this.ex_show(MDL_recipeDict._customFieldB(ct), ct) :
+              Vars.ui.content.show(ct);
           }).left().row();
           pnTb.add(cont).growX();
 
@@ -642,7 +768,7 @@
             cont.table(Tex.whiteui, tb => {
               tb.left().setColor(Pal.darkestGray);
               MDL_table.__margin(tb);
-              this.ex_buildList(tb, ct, prodArr);
+              this.ex_buildList(tb, ct, prodArr, isCustomField);
             }).left().growX().row();
           };
 
@@ -659,7 +785,7 @@
             cont.table(Tex.whiteui, tb => {
               tb.left().setColor(Pal.darkestGray);
               MDL_table.__margin(tb);
-              this.ex_buildList(tb, ct, consArr);
+              this.ex_buildList(tb, ct, consArr, isCustomField);
             }).left().growX().row();
           };
 
@@ -693,13 +819,18 @@
         MDL_table.__btnClose(this.buttons, this);
         MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "new-window"), () => {
           this.hide();
-          new CLS_window(ct.localizedName, tb => {
+          new CLS_window(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName, tb => {
             tb.center();
             let tmpCt = ct;
-            tb.button(new TextureRegionDrawable(tmpCt.uiIcon), 48.0, () => {
-              rcDict.ex_show(tmpCt.localizedName, tmpCt);
+            let tmpIsCustomField = isCustomField;
+            tb.button(ctIcon, 48.0, () => {
+              rcDict.ex_show(tmpIsCustomField ? MDL_recipeDict._customFieldB(tmpCt) : tmpCt.localizedName, tmpCt);
             }).center();
           }).add();
+        });
+        MDL_table.__btn(this.buttons, MDL_bundle._info("lovec", "dial-rcdict-database"), () => {
+          this.hide();
+          fetchDialog("rcDictDatabase").ex_show();
         });
 
         this.show();

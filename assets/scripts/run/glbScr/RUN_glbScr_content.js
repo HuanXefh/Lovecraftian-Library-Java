@@ -274,6 +274,7 @@
 
   /**
    * Gets a texture region by name, returns empty region if on headless end.
+   * @global
    * @param {string|TextureRegion} reg0regStr
    * @return {TextureRegion}
    */
@@ -283,6 +284,17 @@
       Vars.headless ?
         ARC_AIR.reg :
         Core.atlas.find(reg0regStr);
+  };
+
+
+  /**
+   * Variant of {@link findRegion} that returns a drawable instead.
+   * @global
+   * @param {string|TextureRegion} reg0regStr
+   * @return {TextureRegionDrawable}
+   */
+  findRegionDrawable = function(reg0regStr) {
+    return new TextureRegionDrawable(findRegion(reg0regStr));
   };
 
 
