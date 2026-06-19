@@ -84,7 +84,12 @@
 
       dump: function(itm) {
         if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItm) this.recache();
-      },
+      }
+      .setProp({
+        mergeMode: function(valPrev, val) {
+          return valPrev;
+        },
+      }),
 
 
       moveForward: function(itm) {
