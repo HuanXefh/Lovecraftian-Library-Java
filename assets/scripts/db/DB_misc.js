@@ -38,10 +38,20 @@ const db = {
       (t, b) => {
         let itm = t.wallDrop() || t.drop();
         if(itm == null) return;
+        let blk;
+        if(t.overlay().itemDrop === itm && t.overlay().wallOre) {
+          blk = t.overlay();
+        } else if(t.block().itemDrop === itm) {
+          blk = t.block();
+        } else if(t.overlay().itemDrop === itm) {
+          blk = t.overlay();
+        } else {
+          blk = t.floor();
+        };
 
         return String.multiline(
           MDL_cond._isDepthOre(t.overlay()) ? null : (MDL_bundle._term("lovec", "ore") + MDL_text._colon() + itm.localizedName.plain()),
-          MDL_bundle._term("lovec", "ore-hardness") + MDL_text._colon() + itm.hardness,
+          MDL_bundle._term("lovec", "ore-hardness") + MDL_text._colon() + tryJsProp(blk, "dropHardness", itm.hardness),
         );
       },
 

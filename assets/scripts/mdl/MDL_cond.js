@@ -828,7 +828,7 @@
    * @return {boolean}
    */
   const _isHighAir = function(unit) {
-    return unit.flying && unit.elevation > 0.5;
+    return unit.flying && unit.elevation >= VAR.param.highAirElev;
   };
   exports._isHighAir = _isHighAir;
 

@@ -297,11 +297,11 @@
           wr0rd,
 
           wr => {
-            MDL_io._wr_cts(wr, this.ctTgs);
+            MDL_io.__cts(wr, this.ctTgs);
           },
 
           rd => {
-            MDL_io._rd_cts(rd, this.ctTgs);
+            MDL_io.__cts(rd, this.ctTgs);
           },
         );
       }

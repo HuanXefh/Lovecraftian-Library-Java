@@ -142,20 +142,30 @@
    * @return {number}
    */
   const _dmgDeal = function(e, e_t, dmg, bDmgMtp) {
-    return dmg * tryProp(e.damageMultiplier, e) * (e_t instanceof Building ? tryVal(bDmgMtp, 1.0) : 1.0);
+    return dmg * tryProp(e.damageMultiplier, e) * (e instanceof Building ? Vars.state.rules.blockDamage(e.team) : Vars.state.rules.unitDamage(e.team)) * (e_t instanceof Building ? tryVal(bDmgMtp, 1.0) : 1.0);
   };
   exports._dmgDeal = _dmgDeal;
 
 
   /**
    * Gets damage that some entity should actually take.
+   * Somewhat inaccurate, I don't know why actual damage is random with even same multipliers.
    * @param {Building|Unit} e
    * @param {number} dmg
    * @param {number|unset} [armorMtp]
+   * @param {boolean|unset} [useHealthMtps]
    * @return {number}
    */
-  const _dmgTake = function(e, dmg, armorMtp) {
-    return Damage.applyArmor(dmg, _armor(e) * tryVal(armorMtp, 1.0));
+  const _dmgTake = function(e, dmg, armorMtp, useHealthMtps) {
+    return Damage.applyArmor(dmg, _armor(e) * tryVal(armorMtp, 1.0)) / (
+      !useHealthMtps ?
+        1.0 :
+        (
+          e instanceof Building ?
+            Vars.state.rules.blockHealth(e.team) :
+            (Vars.state.rules.unitHealth(e.team) * e.healthMultiplier)
+        )
+    );
   };
   exports._dmgTake = _dmgTake;
 

@@ -16,10 +16,20 @@
   /* <---------- component ----------> */
 
 
+  function comp_collisionLayer(unit) {
+    return unit.type.allowLegStep && unit.type.legPhysicsLayer ?
+      PhysicsProcess.layerLegs :
+      !unit.isFlying() ?
+        PhysicsProcess.layerGround :
+        PhysicsProcess.layerFlying;
+  };
+
+
   function comp_solidity(unit) {
     return extend(EntityCollisions.SolidPred, {
       solid(tx, ty) {
-        return (unit.super$solidity() == null ? false : unit.super$solidity().solid(tx, ty)) || (PARAM.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty));
+        return (unit.super$solidity() != null && unit.super$solidity().solid(tx, ty))
+          || (PARAM.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty))
       },
     });
   };
@@ -61,6 +71,30 @@
   .setParent(null)
   .setParam({})
   .setMethod({
+
+
+    collisionLayer: function() {
+      return comp_collisionLayer(this);
+    }
+    .setProp({
+      noSuper: true,
+    }),
+
+
+    isGrounded: function() {
+      return this.elevation < VAR.param.groundElev;
+    }
+    .setProp({
+      noSuper: true,
+    }),
+
+
+    isFlying: function() {
+      return this.elevation >= VAR.param.airElev;
+    }
+    .setProp({
+      noSuper: true,
+    }),
 
 
     solidity: function() {

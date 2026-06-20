@@ -1460,7 +1460,7 @@
             addStat(erekirHeatReq > 0.0, fetchStat("lovec", "blk-erekirheatreq").localized(), erekirHeatReq, StatUnit.heatUnits.localized());
             addStat(erekirHeatProd > 0.0, fetchStat("lovec", "blk-erekirheatprod").localized(), erekirHeatProd, StatUnit.heatUnits.localized());
             addStat(reqOpt, MDL_bundle._term("lovec", "require-optional"), MDL_bundle._base("yes"));
-            addStat(failP > 0.0, MDL_bundle._term("lovec", "chance-to-fail"), failP.perc(1));
+            addStat(failP > 0.0, MDL_bundle._term("lovec", "chance-to-fail"), failP.perc(1).color(failP > 0.25 ? Pal.remove : Pal.accent));
             addStat(!powProdMtp.fEqual(1.0), fetchStat("lovec", "blk0pow-powmtp").localized(), powProdMtp.perc());
             addStat(tempReq > 0.0, fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(tempReq, 2), fetchStatUnit("lovec", "heatunits").localized());
             addStat(tempAllowed < Infinity, MDL_bundle._term("lovec", "temperature-allowed"), Strings.fixed(tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized());

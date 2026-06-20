@@ -540,11 +540,11 @@
           wr0rd,
 
           wr => {
-            MDL_io._wr_ct(wr, this.fuelSel);
+            MDL_io.__ct(wr, this.fuelSel);
           },
 
           rd => {
-            this.fuelSel = MDL_io._rd_ct(rd);
+            this.fuelSel = MDL_io.__ct(rd);
           },
         );
       }

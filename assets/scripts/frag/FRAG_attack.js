@@ -109,20 +109,31 @@
    * @param {Building|Unit} e
    * @param {number} dmg
    * @param {number|unset} [armorMtp]
-   * @param {string|unset} [mode_ow]
+   * @param {string|unset} [mode_ow] - See {@link CLS_damageTextMode}.
+   * @param {boolean|unset} [ignoreShield] - Has no effect on buildings.
    * @return {boolean}
    */
-  const damage = function(e, dmg, armorMtp, mode_ow) {
+  const damage = function(e, dmg, armorMtp, mode_ow, ignoreShield) {
     if(dmg < 0.0001) return false;
 
-    let dmg_fi = MDL_entity._dmgTake(e, dmg, armorMtp);
+    dmg = MDL_entity._dmgTake(e, dmg, armorMtp, false);
+    let dmgShow = MDL_entity._dmgTake(e, dmg, armorMtp, true);
+    let shield = 0.0;
     if(e instanceof Building) {
-      MDL_effect._e_dmg(e.x, e.y, dmg_fi, null, tryVal(mode_ow, MDL_entity._bShield(e, true) > dmg_fi ? "shield" : "health"));
+      MDL_effect._e_dmg(e.x, e.y, dmgShow, null, tryVal(mode_ow, MDL_entity._bShield(e, true) > dmgShow ? "shield" : "health"));
       MDL_effect._e_flash(e);
+      e.damagePierce(dmg, true);
     } else {
-      MDL_effect._e_dmg(e.x, e.y, dmg_fi, null, tryVal(mode_ow, e.shield > dmg_fi ? "shield" : "health"));
+      shield = e.shield;
+      MDL_effect._e_dmg(e.x, e.y, dmgShow, null, tryVal(mode_ow, !ignoreShield && e.shield > dmgShow ? "shield" : "health"));
+      if(!ignoreShield) {
+        e.damagePierce(dmg, true);
+      } else {
+        dmg += shield;
+        e.damagePierce(dmg, true);
+        e.shield = shield;
+      };
     };
-    e.damagePierce(dmg_fi, true);
 
     return true;
   };

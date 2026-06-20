@@ -154,6 +154,10 @@
     buildActiveEffcThr: 0.96,
     powSourceStdProd: 8000.0,
 
+    groundElev: 0.35,
+    airElev: 0.5,
+    highAirElev: 0.75,
+
     ctNmColorMtp: 1.15,
     ctNmColorMtpHigh: 1.5,
     wallColorDarkLerpA: 0.35,

@@ -157,7 +157,7 @@
 
       write: function(wr) {
         this.ex_processData(wr);
-        MDL_io._wr_ct(wr, this.ctTg);
+        MDL_io.__ct(wr, this.ctTg);
       }
       .setProp({
         override: true,
@@ -168,7 +168,7 @@
         if(this.LCRevi === 5) rd.s();
 
         this.ex_processData(rd);
-        this.ctTg = MDL_io._rd_ct(rd);
+        this.ctTg = MDL_io.__ct(rd);
       }
       .setProp({
         override: true,

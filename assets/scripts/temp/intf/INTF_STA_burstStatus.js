@@ -21,7 +21,7 @@
     if(sta.burstTime < 0.0001 || staEn.time <= sta.burstTime) return;
 
     let dmg = sta.burstDamage + unit.maxHealth * sta.burstDamagePerc;
-    FRAG_attack.damage(unit, dmg, 0.0, MDL_cond._isHotStatus(sta) ? "heat" : null);
+    FRAG_attack.damage(unit, dmg, 0.0, MDL_cond._isHotStatus(sta) ? "heat" : null, sta.burstDamageIgnoreShield);
     if(sta.burstScrTup != null) sta.burstScrTup[0](unit);
     sta.burstEff.at(unit.x, unit.y, unit.hitSize * 1.1, sta.burstEffColor);
     staEn.time = 15.0;
@@ -64,6 +64,12 @@
        * @instance
        */
       burstDamagePerc: 0.0,
+      /**
+       * <PARAM>: If true, damage from this status will ignore unit's shield.
+       * @memberof INTF_STA_burstStatus
+       * @instance
+       */
+      burstDamageIgnoreShield: true,
       /**
        * <PARAM>: Effect shown when this status effect bursts.
        * @memberof INTF_STA_burstStatus

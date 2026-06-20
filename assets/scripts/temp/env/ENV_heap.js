@@ -60,6 +60,7 @@
 
 
     rotationRand: 60.0,
+    allowRectanglePlacement: true,
 
 
   })

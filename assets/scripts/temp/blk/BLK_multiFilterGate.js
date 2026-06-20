@@ -281,7 +281,7 @@
 
 
       write: function(wr) {
-        MDL_io._wr_cts(wr, this.rsTgs);
+        MDL_io.__cts(wr, this.rsTgs);
         wr.bool(this.isInv);
       },
 
@@ -289,7 +289,7 @@
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
 
-        MDL_io._rd_cts(rd, this.rsTgs);
+        MDL_io.__cts(rd, this.rsTgs);
         this.sortItem = this.rsTgs.first();
         this.isInv = rd.bool();
       },

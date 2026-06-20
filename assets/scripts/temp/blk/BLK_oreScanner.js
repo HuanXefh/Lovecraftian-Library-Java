@@ -306,14 +306,14 @@
 
 
       write: function(wr) {
-        MDL_io._wr_ints(wr, this.revealedInts);
+        MDL_io.__ints(wr, this.revealedInts);
       },
 
 
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
 
-        MDL_io._rd_ints(rd, this.revealedInts);
+        MDL_io.__ints(rd, this.revealedInts);
       },
 
 

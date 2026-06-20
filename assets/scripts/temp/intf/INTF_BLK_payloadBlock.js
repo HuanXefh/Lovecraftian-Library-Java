@@ -357,15 +357,15 @@
           wr0rd,
 
           wr => {
-            MDL_io._wr_objStrNum(wr, this.payReqObj);
-            MDL_io._wr_objStrNum(wr, this.payStockObj);
+            MDL_io.__objStrNum(wr, this.payReqObj);
+            MDL_io.__objStrNum(wr, this.payStockObj);
           },
 
           rd => {
             if(this.LCReviSub === 0 && this.block.ex_isSubInsOf("BLK_baseDrill")) return;
 
-            MDL_io._rd_objStrNum(rd, this.payReqObj);
-            MDL_io._rd_objStrNum(rd, this.payStockObj);
+            MDL_io.__objStrNum(rd, this.payReqObj);
+            MDL_io.__objStrNum(rd, this.payStockObj);
           },
         );
       }

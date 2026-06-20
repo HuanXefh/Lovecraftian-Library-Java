@@ -225,7 +225,7 @@
 
 
       write: function(wr) {
-        MDL_io._wr_ct(wr, this.sortItem);
+        MDL_io.__ct(wr, this.sortItem);
         wr.bool(this.isInv);
       },
 
@@ -233,7 +233,7 @@
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
 
-        this.sortItem = MDL_io._rd_ct(rd);
+        this.sortItem = MDL_io.__ct(rd);
         this.isInv = rd.bool();
       },
 

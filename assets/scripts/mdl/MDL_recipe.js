@@ -843,7 +843,7 @@
             (function() {let heat = _erekirHeatProd(rcMdl, rcHeader); return heat <= 0.0 ? null : MDL_text._statText(fetchStat("lovec", "blk-erekirheatprod").localized(), heat, StatUnit.heatUnits.localized())})(),
             (function() {let attr = _attr(rcMdl, rcHeader); return attr == null ? null : MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))})(),
             (function() {let pol = _pol(rcMdl, rcHeader); return pol.fEqual(0.0) ? null : MDL_text._statText(fetchStat("lovec", "blk-pol").localized(), (pol > 0.0 ? "+" : "=") + Math.abs(pol), fetchStatUnit("lovec", "polunits").localized())})(),
-            (function() {let p = _failP(rcMdl, rcHeader); return p < 0.0001 ? null : MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), p.perc(1))})(),
+            (function() {let p = _failP(rcMdl, rcHeader); return p < 0.0001 ? null : MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), p.perc(1).color(p > 0.25 ? Pal.remove : Pal.accent))})(),
             (function() {let mtp = _powProdMtp(rcMdl, rcHeader); return mtp.fEqual(1.0) ? null : MDL_text._statText(fetchStat("lovec", "blk0pow-powmtp").localized(), mtp.perc())})(),
             (function() {let temp = _tempReq(rcMdl, rcHeader); return temp < 0.0001 ? null : MDL_text._statText(fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(temp, 2), fetchStatUnit("lovec", "heatunits").localized())})(),
             (function() {let temp = _tempAllowed(rcMdl, rcHeader); return !isFinite(temp) ? null : MDL_text._statText(MDL_bundle._term("lovec", "temperature-allowed"), Strings.fixed(temp, 2), fetchStatUnit("lovec", "heatunits").localized())})(),

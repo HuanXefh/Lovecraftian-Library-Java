@@ -51,6 +51,7 @@
 
     rotationRand: 40.0,
     playerUnmineable: true,
+    allowRectanglePlacement: true,
 
 
   })

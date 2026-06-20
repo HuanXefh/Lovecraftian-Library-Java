@@ -34,11 +34,11 @@
    * @global
    * @param {Writes|Reads} wr0rd
    * @param {function(Writes, number): void} wrFun - <ARGS>: wr, revi.
-   * @param {function(Reads, number): void} rdFun - <ARGS>: rd, revi.
-   * @return {void}
+   * @param {function(Reads, number): any} rdFun - <ARGS>: rd, revi.
+   * @return {any}
    */
   processData = function(wr0rd, wrFun, rdFun) {
-    wr0rd instanceof Writes ?
+    return wr0rd instanceof Writes ?
       wrFun(wr0rd) :
       rdFun(wr0rd);
   };

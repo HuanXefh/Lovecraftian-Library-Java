@@ -423,7 +423,7 @@
 
       write: function(wr) {
         wr.f(this.drillItmProg);
-        MDL_io._wr_objStrNum(wr, this.payChargeObj);
+        MDL_io.__objStrNum(wr, this.payChargeObj);
       },
 
 
@@ -433,7 +433,7 @@
         if(this.LCReviSub >= 2) {
           this.drillItmProg = rd.f();
         };
-        MDL_io._rd_objStrNum(rd, this.payChargeObj);
+        MDL_io.__objStrNum(rd, this.payChargeObj);
       },
 
 

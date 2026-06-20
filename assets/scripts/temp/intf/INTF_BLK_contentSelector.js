@@ -198,11 +198,11 @@
           wr0rd,
 
           wr => {
-            MDL_io._wr_ct(wr, this.ctTg);
+            MDL_io.__ct(wr, this.ctTg);
           },
 
           rd => {
-            this.ctTg = MDL_io._rd_ct(rd);
+            this.ctTg = MDL_io.__ct(rd);
           },
         );
       }
