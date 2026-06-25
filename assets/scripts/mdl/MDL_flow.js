@@ -127,7 +127,7 @@
 
   /**
    * Gets fluid tag text of the given fluid.
-   * <BR> <BUNDLE>: "term.common-grp-<fldTag>.name".
+   * <br> <BUNDLE>: "term.common-grp-<fldTag>.name".
    * @param {LiquidGn} liq_gn
    * @return {string}
    */

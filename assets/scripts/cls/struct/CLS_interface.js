@@ -46,7 +46,7 @@
     });
 
     this.nm = nm == null ? "" : registerUniqueName(nm, insNms, "interface");
-    this.interfaceObj = obj;
+    this.intfObj = obj;
     this.parentIntfs = [];
     this.children = [];
   };
@@ -81,7 +81,7 @@
   CLS_interface.prototype.extendInterface = function(intf, nm) {
     if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
 
-    let ointf = new CLS_interface(nm, mergeObjMixin(intf.interfaceObj, this.interfaceObj));
+    let ointf = new CLS_interface(nm, mergeObjMixin(intf.intfObj, this.intfObj));
     ointf.parentIntfs = intf.parentIntfs.cpy().pushAll(this.parentIntfs).pushAll(this).unique();
 
     return ointf;

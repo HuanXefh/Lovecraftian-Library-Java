@@ -6,6 +6,7 @@ BUNDLE_PATH_LOVEC = "H:\\Dropbox\\_gm_mdt\\lovec\\mabo-lovecraftian-library\\ass
 BUNDLE_PATH_LOVECLAB = "H:\\Dropbox\\_gm_mdt\\lovec\\mabo-lovecraftian-laboratory\\bundles\\"
 BUNDLE_PATH_PROJREIND = "H:\\Dropbox\\_gm_mdt\\lovec\\mabo-project-reindustrialization\\bundles\\"
 BUNDLE_PATH_SERP2 = "H:\\Dropbox\\_gm_mdt\\lovec\\mabo-serpulo-squared\\bundles\\"
+BUNDLE_PATH_FCELL = "H:\\Dropbox\\_gm_mdt\\lovec\\mabo-fluid-cells\\bundles\\"
 BUNDLE_FILE_NAME = "lovec-bundle-gen.xlsx"
 LANG_SUFFIX_DICT = {
     "EN": "",
@@ -32,3 +33,5 @@ build("projreind", BUNDLE_PATH_PROJREIND, "EN")
 build("projreind", BUNDLE_PATH_PROJREIND, "CN")
 build("serp2", BUNDLE_PATH_SERP2, "EN")
 build("serp2", BUNDLE_PATH_SERP2, "CN")
+build("fcell", BUNDLE_PATH_FCELL, "EN")
+build("fcell", BUNDLE_PATH_FCELL, "CN")

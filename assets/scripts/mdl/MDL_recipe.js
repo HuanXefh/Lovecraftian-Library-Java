@@ -685,7 +685,7 @@
 
 
   /**
-   * Gets block pollution of a recipe.
+   * Gets extra block pollution of a recipe.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {number}

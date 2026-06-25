@@ -226,9 +226,20 @@
    * @return {boolean}
    */
   const _isConveyor = function(blk_gn) {
-    return matchCond(blk_gn, "conveyor", "blk") && !_isCable(blk_gn);
+    return (matchCond(blk_gn, "conveyor", "blk") && !_isCable(blk_gn)) || _isStackConveyor(blk_gn);
   };
   exports._isConveyor = _isConveyor;
+
+
+  /**
+   * Whether this block is a stack conveyor.
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
+  const _isStackConveyor = function(blk_gn) {
+    return matchCond(blk_gn, "stackConveyor", "blk");
+  };
+  exports._isStackConveyor = _isStackConveyor;
 
 
   /**

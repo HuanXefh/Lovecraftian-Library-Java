@@ -21,6 +21,7 @@
 
     this.add("debug", "${1} sucks.");
     this.add("nullArgument", "Argument ${1} cannot be null!");
+    this.add("typeMismatch", "Argument ${1} does not match type {$2}!");
     this.add("notProv", "Argument ${1} is not a Prov!");
     this.add("notAnno", "Argument ${1} is not an annotation!");
     this.add("headerConflict", "Header name ${1} has already been used!");

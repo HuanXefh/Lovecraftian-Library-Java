@@ -21,9 +21,12 @@
   /* <---------- base ----------> */
 
 
-  let basePol = 0.0;
-  let mapPol = 0.0;
-  let dynaPol = 0.0;
+  let
+    basePol = 0.0,
+    mapPol = 0.0,
+    dynaPol = 0.0,
+    lingerPol = 0.0,
+    glbPolMeanArr = new CLS_meanArray(8);
 
 
   /**
@@ -66,11 +69,41 @@
 
 
   /**
+   * Gets block pollution of current save.
+   * @return {number}
+   */
+  const _basePol = function() {
+    return basePol;
+  };
+  exports._basePol = _basePol;
+
+
+  /**
+   * Gets dynamic pollution of current save.
+   * @return {number}
+   */
+  const _dynaPol = function() {
+    return dynaPol;
+  };
+  exports._dynaPol = _dynaPol;
+
+
+  /**
+   * Gets lingering pollution of current save.
+   * @return {number}
+   */
+  const _lingerPol = function() {
+    return lingerPol;
+  };
+  exports._lingerPol = _lingerPol;
+
+
+  /**
    * Gets total pollution of current save.
    * @return {number}
    */
   const _glbPol = function() {
-    return basePol + mapPol + dynaPol * 0.25;
+    return glbPolMeanArr.getMean();
   };
   exports._glbPol = _glbPol;
 
@@ -86,7 +119,7 @@
     let ct = MDL_content._ct(ct_gn, null, true);
     if(ct == null) return 500.0;
 
-    return DB_HANDLER.read(ct instanceof UnitType ? "utp-pol-tol" : "blk-pol-tol", ct, 500.0);
+    return DB_HANDLER.read(ct instanceof UnitType ? "utp-pol-tol" : "blk-pol-tol", ct, -1.0);
   }
   .setCache();
   exports._polTol = _polTol;
@@ -98,9 +131,22 @@
    * @return {number}
    */
   const addDynaPol = function(amt) {
-    return dynaPol += amt;
+    dynaPol = Mathf.maxZero(dynaPol + amt);
+    return dynaPol;
   };
   exports.addDynaPol = addDynaPol;
+
+
+  /**
+   * Increases lingering pollution.
+   * @param {number} amt
+   * @return {number}
+   */
+  const addLingerPol = function(amt) {
+    lingerPol = Mathf.maxZero(lingerPol + amt);
+    return lingerPol;
+  };
+  exports.addLingerPol = addLingerPol;
 
 
   /**
@@ -153,6 +199,7 @@ MDL_event._c_onWorldLoad(() => {
       DB_env.db["param"]["pla"]["pol"].read(PARAM.PLANET_CURRENT, 0.0),
     );
     dynaPol = SAVE.get("dynamic-pollution");
+    lingerPol = SAVE.get("lingering-pollution");
   });
 
 }, 45200137);
@@ -165,10 +212,20 @@ MDL_event._c_onUpdate(() => {
   if(PARAM.MODDED) {
     if(!Vars.state.isGame()) {
       dynaPol = 0.0;
+      glbPol = 0.0;
     } else {
-      if(TIMER.sec) dynaPol *= 0.984;
-      if(TIMER.paramLarge) SAVE.set("dynamic-pollution", dynaPol);
+      if(TIMER.sec) {
+        dynaPol *= 0.984;
+        lingerPol = Mathf.maxZero(lingerPol - 0.05);
+      };
+      if(TIMER.paramLarge) {
+        SAVE.set("dynamic-pollution", dynaPol);
+        SAVE.set("lingering-pollution", lingerPol);
+        glbPolMeanArr.push(basePol + mapPol + dynaPol * 0.25 + lingerPol);
+      };
     };
+
+
   };
 
 }, 28199720);

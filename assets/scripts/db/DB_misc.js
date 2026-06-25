@@ -423,6 +423,7 @@ const db = {
       "save-revision", -1, null,
 
       "dynamic-pollution", 0.0, null,
+      "lingering-pollution", 0.0, null,
       "bits", [], "string",
       "bit-hash", [], "string",
       "flags", [], "string",

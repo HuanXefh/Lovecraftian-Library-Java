@@ -416,6 +416,7 @@
 
 
   function comp_draw(b) {
+    Draw.rect(b.block.region, b.x, b.y);
     if(b.underConstruction) {
       MDL_draw._reg_construct(b.constructionPlanCx, b.constructionPlanCy, MDL_texture._regBlk(b.block.delegee.placeBlk), b.ex_getConstructionFrac(), b.drawrot());
     } else {
@@ -904,7 +905,10 @@
 
       draw: function() {
         comp_draw(this);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       write: function(wr) {

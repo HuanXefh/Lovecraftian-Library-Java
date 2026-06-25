@@ -116,13 +116,13 @@
          */
         shouldCapAux: true,
         /**
-         * <PARAM>: Whether auxiliary fluids should not be stored in this block.
+         * <PARAM>: Whether auxiliary fluids should not be stored in this block when it's inactive.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
         shouldClearAuxOnStop: true,
         /**
-         * <PARAM>: Whether to skip facility block update.
+         * <PARAM>: Whether to skip facility block update entirely.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
@@ -139,13 +139,13 @@
 
 
         /**
-         * <INTERNAL>
+         * <INTERNAL>: Whether this block is possible to obtain auxiliary fluids.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
         canHandleAux: false,
         /**
-         * <INTERNAL>
+         * <INTERNAL>: Whether this block is possible to obtain flammable/explosive fluids.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
@@ -161,6 +161,7 @@
 
 
       /**
+       * Sets up {@link INTF_BLK_facilityBlock#canHandleAux}.
        * @memberof INTF_BLK_facilityBlock
        * @instance
        * @return {boolean}
@@ -174,6 +175,7 @@
 
 
       /**
+       * Sets up {@link INTF_BLK_facilityBlock#canFireExplode}.
        * @memberof INTF_BLK_facilityBlock
        * @instance
        * @return {boolean}

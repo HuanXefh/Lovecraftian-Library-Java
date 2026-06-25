@@ -580,6 +580,12 @@ const db = {
         conveyor: [
 
           Conveyor,
+
+        ],
+
+
+        stackConveyor: [
+
           StackConveyor,
 
         ],

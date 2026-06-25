@@ -15,13 +15,7 @@
 
 
   function comp_init(utp) {
-    if(!Vars.headless && !utp.skipOutlineSetup) {
-      MDL_event._c_onLoad(() => {
-        if(Core.atlas.has(utp.name + "-icon")) {
-          utp.fullIcon = utp.uiIcon = Core.atlas.find(utp.name + "-icon");
-        };
-      });
-    };
+    utp.polTol = MDL_pollution._polTol(utp);
 
     if(utp.unitDurabCap > 0.0) {
       setAbility(utp, abis => [
@@ -34,14 +28,21 @@
   };
 
 
+  function comp_load(utp) {
+    // Use "-icon" sprite whenever possible
+    if(!utp.skipOutlineSetup && Core.atlas.has(utp.name + "-icon")) {
+      utp.fullIcon = utp.uiIcon = Core.atlas.find(utp.name + "-icon");
+    };
+  };
+
+
   function comp_setStats(utp) {
     if(utp.overwriteVanillaStat) {
       utp.stats.remove(Stat.mineTier);
     };
 
     if(MDL_cond._isNonRobot(utp)) utp.stats.add(fetchStat("lovec", "utp-notrobot"), true);
-    let polTol = MDL_pollution._polTol(utp);
-    if(!polTol.fEqual(500.0)) utp.stats.add(fetchStat("lovec", "blk-poltol"), polTol, fetchStatUnit("lovec", "polunits"));
+    if(utp.polTol > 0.0) utp.stats.add(fetchStat("lovec", "blk-poltol"), utp.polTol, fetchStatUnit("lovec", "polunits"));
   };
 
 
@@ -205,6 +206,12 @@
      * @instance
      */
     hasUnitData: true,
+    /**
+     * <INTERNAL>: Pollution tolerance.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
+    polTol: -1.0,
 
 
   })
@@ -213,6 +220,11 @@
 
     init: function() {
       comp_init(this);
+    },
+
+
+    load: function() {
+      comp_load(this);
     },
 
 

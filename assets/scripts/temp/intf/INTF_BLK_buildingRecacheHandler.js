@@ -22,7 +22,7 @@
 
 
     /**
-     * Handles recaching of buildings.
+     * Handles recaching of buildings when `blk.drawCached` is true.
      * @class INTF_BLK_buildingRecacheHandler
      */
     new CLS_interface("INTF_BLK_buildingRecacheHandler", {

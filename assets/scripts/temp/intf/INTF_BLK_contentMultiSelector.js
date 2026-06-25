@@ -274,6 +274,7 @@
 
 
       /**
+       * Use this method to draw icon of selected contents alternately.
        * @memberof INTF_B_contentMultiSelector
        * @instance
        * @return {void}

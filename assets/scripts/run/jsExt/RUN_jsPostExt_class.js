@@ -28,7 +28,7 @@
     if(intf.children.includes(this)) ERROR_HANDLER.throw("duplicateInterface");
 
     if(!this.__IS_CONTENT_TEMPLATE__) {
-      Object._it(intf.interfaceObj, (nm, fun) => {
+      Object._it(intf.intfObj, (nm, fun) => {
         if(nm === "__PROTO__") {
           this.prototype[nm] !== undefined && !shouldOverride ?
             ERROR_HANDLER.throw("interfaceMethodNameConflict", nm) :
@@ -48,7 +48,7 @@
         arr.push(intf.nm);
       };
       intf.parentIntfs.forEachCond(ointf => !String.isEmpty(ointf.nm), ointf => arr.push(ointf.nm));
-      this.setMethod(intf.interfaceObj, true);
+      this.setMethod(intf.intfObj, true);
     };
     intf.children.push(this);
 

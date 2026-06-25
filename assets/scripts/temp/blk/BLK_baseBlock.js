@@ -10,7 +10,7 @@
 
   const PARENT = CLS_contentTemplate;
   const INTF = require("lovec/temp/intf/INTF_BLK_coreEnergyConsumer");
-  const INTF_A = require("lovec/temp/intf/INTF_BLK_multiBlockHandler");
+  const INTF_A = require("lovec/temp/intf/INTF_BLK_pollutionHandler");
   const INTF_B = require("lovec/temp/intf/INTF_BLK_buildingRecacheHandler");
 
 
@@ -127,6 +127,20 @@
   };
 
 
+  function comp_onRemoved(b) {
+    if(b.liquids != null) {
+      let amt, liqPol;
+      b.liquids.each(liq => {
+        amt = b.liquids.get(liq);
+        liqPol = MDL_pollution._rsPol(liq);
+        if(liqPol > 0.0) {
+          MDL_pollution.addLingerPol(liqPol * amt / 150.0);
+        };
+      });
+    };
+  };
+
+
   function comp_onDestroyed(b) {
     if(b.block.delegee.noLoot) return;
 
@@ -194,7 +208,6 @@
      * @class BLK_baseBlock
      * @extends CLS_contentTemplate
      * @extends INTF_BLK_coreEnergyConsumer
-     * @extends INTF_BLK_multiBlockHandler
      * @extends INTF_BLK_buildingRecacheHandler
      */
     newClass().extendClass(PARENT, "BLK_baseBlock").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
@@ -216,7 +229,7 @@
        */
       overwriteVanillaProp: true,
       /**
-       * <PARAM>: If true, `blk.drawer` will always be used even if the Java class does not support drawer. Can lead to bugs.
+       * <PARAM>: If true, `blk.drawer` will always be used even if the Java class does not support drawer. Can lead to bugs, use with care.
        * @memberof BLK_baseBlock
        * @instance
        */
@@ -269,7 +282,7 @@
 
 
       /**
-       * <INTERNAL>
+       * <INTERNAL>: Used as fallback if {@link BLK_baseBlock#forceUseDrawer} is true.
        * @memberof BLK_baseBlock
        * @instance
        */
@@ -292,12 +305,6 @@
        * @instance
        */
       logicSensorControlMap: prov(() => new ObjectMap()),
-      /**
-       * <INTERNAL>: If true, this block triggers multi-block update.
-       * @memberof BLK_baseBlock
-       * @instance
-       */
-      isMultiBlockComponent: false,
 
 
       /* <------------------------------ vanilla ------------------------------ */
@@ -436,6 +443,11 @@
 
     })
     .setMethod({
+
+
+      onRemoved: function() {
+        comp_onRemoved(this);
+      },
 
 
       onDestroyed: function() {

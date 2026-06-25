@@ -20,6 +20,7 @@
     blk.config(JAVA.boolean, (b, bool) => {
       b.delegee.isOn = bool;
       Sounds.click.at(b);
+      b.recache();
     });
   };
 

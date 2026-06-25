@@ -76,7 +76,7 @@
    * @return {Color}
    */
   const _iconColor = function(ct_gn, colorInd, colorCont) {
-    const color = colorCont != null ? colorCont.set(0, 0, 0, 1) : new Color(0, 0, 0, 1);
+    let color = colorCont != null ? colorCont.set(0, 0, 0, 1) : new Color(0, 0, 0, 1);
     if(Vars.headless) return color;
     let ct = findContent(ct_gn);
     if(ct == null) return color;
@@ -114,6 +114,8 @@
       };
       x++;
     };
+    if(arr.length === 0) return arr;
+
     // Cursed color comparison
     arr.sort((rgba1, rgba2) => LCRgb.calcLightness(thisFun.tmpColors[0].set(rgba1)) - LCRgb.calcLightness(thisFun.tmpColors[1].set(rgba2)));
 

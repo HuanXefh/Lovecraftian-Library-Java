@@ -63,6 +63,8 @@
   /** @global */
   MATH_statistics = require("lovec/math/MATH_statistics");
   /** @global */
+  CLS_meanArray = require("lovec/cls/math/CLS_meanArray");
+  /** @global */
   CLS_whiteNoise = require("lovec/cls/math/noise/CLS_whiteNoise");
   /** @global */
   CLS_valueNoise = require("lovec/cls/math/noise/CLS_valueNoise");

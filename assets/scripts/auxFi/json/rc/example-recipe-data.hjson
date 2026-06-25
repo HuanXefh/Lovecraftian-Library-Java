@@ -94,8 +94,7 @@ recipe: [
     timeScl: 1.0
 
     /*
-     * Block pollution for this recipe.
-     * Overwrites that value of the block itself.
+     * Extra block pollution for this recipe.
      */
     pollution: 0.0
 

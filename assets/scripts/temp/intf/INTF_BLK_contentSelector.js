@@ -175,6 +175,7 @@
 
 
       /**
+       * Use this method to draw icon of selected content.
        * @memberof INTF_B_contentSelector
        * @instance
        * @return {void}

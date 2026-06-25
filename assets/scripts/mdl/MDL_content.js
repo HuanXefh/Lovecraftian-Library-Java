@@ -323,8 +323,7 @@
    * @return {Color}
    */
   const _factionColor = function(faction, colorCont) {
-    const color = colorCont != null ? colorCont : new Color();
-
+    let color = colorCont != null ? colorCont : new Color();
     return Color.valueOf(color, DB_block.db["grpParam"]["factionColor"].read(faction, "ffffff"));
   };
   exports._factionColor = _factionColor;

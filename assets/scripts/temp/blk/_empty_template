@@ -1,0 +1,48 @@
+/*
+  ========================================
+  Section: Definition
+  ========================================
+*/
+
+
+  /* <---------- import ----------> */
+
+
+  const PARENT = require("lovec/temp/blk/BLK_xxx");
+
+
+  /* <---------- component ----------> */
+
+
+/*
+  ========================================
+  Section: Application
+  ========================================
+*/
+
+
+  module.exports = [
+
+
+    /**
+     * @class BLK_yyy
+     * @extends BLK_xxx
+     */
+    newClass().extendClass(PARENT[0], "BLK_yyy").initClass()
+    .setParent(null)
+    .setTags()
+    .setParam({})
+    .setMethod({}),
+
+
+    /**
+     * @class B_yyy
+     * @extends B_xxx
+     */
+    newClass().extendClass(PARENT[1], "B_yyy").initClass()
+    .setParent(null)
+    .setParam({})
+    .setMethod({}),
+
+
+  ];

@@ -1,0 +1,32 @@
+/*
+  ========================================
+  Section: Definition
+  ========================================
+*/
+
+
+  /* <---------- import ----------> */
+
+
+  const PARENT = require("lovec/temp/unit/UNIT_xxx");
+
+
+  /* <---------- component ----------> */
+
+
+/*
+  ========================================
+  Section: Application
+  ========================================
+*/
+
+
+  /**
+   * @class UNIT_yyy
+   * @extends UNIT_xxx
+   */
+  module.exports = newClass().extendClass(PARENT, "UNIT_yyy").initClass()
+  .setParent(null)
+  .setTags()
+  .setParam({})
+  .setMethod({});

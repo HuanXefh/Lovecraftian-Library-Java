@@ -1,0 +1,32 @@
+/*
+  ========================================
+  Section: Definition
+  ========================================
+*/
+
+
+  /* <---------- import ----------> */
+
+
+  const PARENT = require("lovec/temp/env/ENV_xxx");;
+
+
+  /* <---------- component ----------> */
+
+
+/*
+  ========================================
+  Section: Application
+  ========================================
+*/
+
+
+  /**
+   * @class ENV_yyy
+   * @extends ENV_xxx
+   */
+  module.exports = newClass().extendClass(PARENT, "ENV_yyy").initClass()
+  .setParent(null)
+  .setTags()
+  .setParam({})
+  .setMethod({});

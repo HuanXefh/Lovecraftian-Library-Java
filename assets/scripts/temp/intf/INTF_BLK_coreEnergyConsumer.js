@@ -84,8 +84,11 @@
       __PARAM_OBJ_SETTER__: () => ({
 
 
+        /* <------------------------------ internal ------------------------------ */
+
+
         /**
-         * <INTERNAL>: Whether this block consumes or produces CEP.
+         * <INTERNAL>: Whether this block consumes or produces CEP. Data should be set up in {@link DB_block}.
          * @memberof INTF_BLK_coreEnergyConsumer
          * @instance
          */

@@ -144,6 +144,17 @@
 
 
   /**
+   * Alias of {@link Function#extendClass}.
+   * @param {Function} cls
+   * @param {string|unset} [nm]
+   * @return {this}
+   */
+  Function.prototype.extend = function(cls, nm) {
+    return this.extendClass(cls, nm);
+  };
+
+
+  /**
    * Defines iterator for a class, so that instances of this class can be used in for-of loop.
    * `__PARENT__` in the iterator refers to the instance.
    * Iterator must have "next" method that returns `{value: any, done: boolean}`.

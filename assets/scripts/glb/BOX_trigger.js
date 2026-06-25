@@ -66,12 +66,6 @@ const BOX_trigger = new CLS_objectBox({
 
 
   /**
-   * Triggered when a multi-block component's proximity is updated.
-   */
-  multiBlockUpdate: new CLS_eventTrigger("lovec-multi-block-update"),
-
-
-  /**
    * Triggered whenever a unit (not loot or anything internal) is destroyed.
    * <br> <ARGS>: unit.
    */
