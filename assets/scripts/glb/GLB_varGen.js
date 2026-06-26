@@ -33,7 +33,7 @@
    * @return {void}
    */
   const queueGraphUpdate = function(graph) {
-    if(graph == null) return;
+    if(Vars.state.isPaused() || graph == null) return;
     updateGraphQueue.pushUnique(graph);
   };
   exports.queueGraphUpdate = queueGraphUpdate;
@@ -64,6 +64,8 @@
 
 
   MDL_event._c_onUpdate(() => {
+
+    if(Vars.state.isPaused()) return;
 
     updateGraphQueue.forEachFast(graph => {
       if(graph.graphData == null) {

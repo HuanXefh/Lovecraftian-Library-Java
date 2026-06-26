@@ -32,6 +32,14 @@
   .globalize("LogModes");
 
 
+  /** @global */
+  const MethodMixModes = new CLS_enum({
+    NORMAL: 0,
+    BUILD: 1,
+  })
+  .globalize("MethodMixModes");
+
+
   require("lovec/run/jsExt/RUN_jsPostExt_function");
   require("lovec/run/jsExt/RUN_jsPostExt_class");
   require("lovec/run/jsExt/RUN_jsPostExt_math");

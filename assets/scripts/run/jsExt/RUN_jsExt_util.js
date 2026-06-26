@@ -108,95 +108,33 @@
 
   /**
    * Variant of {@link Object.mergeObj} that mixes methods.
-   * Instead of `noSuper`, `addSuper` is used to call `super$xxx`.
+   * `addSuper` is used to call `super$xxx` if `override` is true.
    * <br> <ARGS>: obj1, obj2, obj3, ...
    * @return {Object}
    */
   Object.mergeObjMixin = function() {
     let obj0 = {};
 
+    let superFun, fun;
     for(let obj of arguments) {
       if(typeof obj !== "object") continue;
       for(let key in obj) {
         if(typeof obj[key] !== "function" || typeof obj0[key] !== "function") {
           obj0[key] = obj[key];
         } else {
-          let funPrev = obj0[key];
-          let funCur = obj[key];
-          let argLen = Math.max(tryVal(funPrev.argLen, -1), tryVal(funCur.argLen, -1));
-          let fun = !funCur.override ?
-            (
-              funPrev.final ?
-                funPrev :
-                funCur.boolMode === "and" ?
-                  function() {
-                    return funPrev.apply(this, arguments) && funCur.apply(this, arguments);
-                  }.wrapLen(argLen) :
-                  funCur.boolMode === "or" ?
-                    function() {
-                      return funPrev.apply(this, arguments) || funCur.apply(this, arguments);
-                    }.wrapLen(argLen) :
-                    funCur.mergeMode === "object" ?
-                      function() {
-                        return Object.mergeObj(funPrev.apply(this, arguments), funCur.apply(this, arguments));
-                      }.wrapLen(argLen) :
-                      funCur.mergeMode === "array" ?
-                        function() {
-                          return funPrev.apply(this, arguments).pushAll(funCur.apply(this, arguments));
-                        }.wrapLen(argLen) :
-                        typeof funCur.mergeMode === "function" ?
-                          function() {
-                            TMP_TUP.with(funPrev.apply(this, arguments), funCur.apply(this, arguments));
-                            return funCur.mergeMode.apply(this, TMP_TUP);
-                          }.wrapLen(argLen) :
-                          function() {
-                            funPrev.apply(this, arguments);
-                            return funCur.apply(this, arguments);
-                          }.wrapLen(argLen)
-            ) :
-            !funCur.addSuper ?
-              funCur.wrapLen(argLen) :
-              (
-                tryVal(funCur.superBoolMode, funCur.boolMode) === "and" ?
-                  function() {
-                    return this["super$" + key].apply(this, arguments) && funCur.apply(this, arguments);
-                  }.wrapLen(argLen) :
-                  tryVal(funCur.superBoolMode, funCur.boolMode) === "or" ?
-                    function() {
-                      return this["super$" + key].apply(this, arguments) || funCur.apply(this, arguments);
-                    }.wrapLen(argLen) :
-                    funCur.mergeMode === "object" ?
-                      function() {
-                        return Object.mergeObj(this["super$" + key].apply(this, arguments), funCur.apply(this, arguments));
-                      }.wrapLen(argLen) :
-                      funCur.mergeMode === "array" ?
-                        function() {
-                          return this["super$" + key].apply(this, arguments).pushAll(funCur.apply(this, arguments));
-                        }.wrapLen(argLen) :
-                        typeof funCur.mergeMode === "function" ?
-                          function() {
-                            TMP_TUP.with(this["super$" + key].apply(this, arguments), funCur.apply(this, arguments));
-                            return funCur.mergeMode.apply(this, TMP_TUP);
-                          }.wrapLen(argLen) :
-                          function() {
-                            this["super$" + key].apply(this, arguments);
-                            return funCur.apply(this, arguments);
-                          }.wrapLen(argLen)
-              );
-          fun.setProp({
-            noSuper: tryVal(funCur.noSuper, false),
-            addSuper: tryVal(funCur.addSuper, false),
+          superFun = obj0[key];
+          fun = obj[key];
+          fun.argLen = Math.max(tryVal(superFun.argLen, -1), tryVal(fun.argLen, -1));
+          obj0[key] = !fun.override ?
+            mixTempMethods(superFun, fun, MethodMixModes.NORMAL).wrapLen(fun.argLen) :
+            !fun.addSuper ?
+              fun.wrapLen(fun.argLen) :
+              mixTempMethods(null, fun, MethodMixModes.BUILD, key);
+          initTempMethod(obj0[key]).setProp({
             override: false,
-            final: tryVal(funCur.final, false),
-            boolMode: tryVal(funCur.boolMode, "none"),
-            superBoolMode: tryVal(funCur.superBoolMode, tryVal(funCur.boolMode, "none")),
-            mergeMode: tryVal(funCur.mergeMode, "none"),
-            argLen: Math.max(tryVal(funPrev.argLen, -1), tryVal(funCur.argLen, -1)),
-            funPrev: funPrev,
-            funCur: funCur,
+            funPrev: superFun,
+            funCur: fun,
           });
-          // I know it's very unsightreadable so darn it
-          obj0[key] = fun;
         };
       };
     };

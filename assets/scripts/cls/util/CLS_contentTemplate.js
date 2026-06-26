@@ -23,44 +23,19 @@
 
 
   const TMP_TUP = [];
-
-
   const registeredTags = [];
-
-
-  /* <---------- static property ----------> */
 
 
   CLS_contentTemplate.__IS_CONTENT_TEMPLATE__ = true;
   CLS_contentTemplate.nm = "CLS_contentTemplate";
-
-
-  /**
-   * @type {Object}
-   */
   CLS_contentTemplate.paramObj = {
     tempParent: null,
     tempTags: [],
   };
-
-
-  /**
-   * <ROW>: nmPropNew, nmPropOld, def.
-   * @type {Array}
-   */
+  /** <ROW>: nmPropNew, nmPropOld, def. */
   CLS_contentTemplate.paramAliasArr = [];
-
-
-  /**
-   * <ROW>: nmProp, valGetter.
-   * @type {Array}
-   */
+  /** <ROW>: nmProp, valGetter. */
   CLS_contentTemplate.paramParserArr = [];
-
-
-  /**
-   * @type {Object}
-   */
   CLS_contentTemplate.funObj = {};
 
 
@@ -172,7 +147,6 @@
    */
   CLS_contentTemplate.setParent = function(javaCls) {
     if(javaCls != null && (typeof javaCls !== "function" || javaCls.__javaObject__ == null)) throw new Error("Cannot set parent of ${1} to a non-Java class!".format(this.nm));
-
     this.paramObj.tempParent = javaCls;
 
     return this;
@@ -227,17 +201,7 @@
         return;
       };
 
-      fun.setProp({
-        noSuper: tryVal(fun.noSuper, false),
-        override: tryVal(fun.override, false),
-        final: tryVal(fun.final, false),
-        boolMode: tryVal(fun.boolMode, "none"),
-        superBoolMode: tryVal(fun.superBoolMode, fun.boolMode),
-        mergeMode: tryVal(fun.mergeMode, "none"),
-        argLen: tryVal(fun.argLen, -1),
-        funPrev: !isFromIntf ? null : tryVal(fun.funPrev, null),
-        funCur: !isFromIntf ? null : tryVal(fun.funCur, null),
-      });
+      initTempMethod(fun, isFromIntf);
 
       if(fun.override) {
         // Override the previous method
@@ -249,48 +213,7 @@
           if((fetchSetting("test-intf-nosuper-warning") ? true : !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(nm.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.nm.color(Pal.accent)));
           if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(nm.color(Pal.accent), fun.argLen, this.nm.color(Pal.accent)));
         };
-        // Call super method if defined
-        thisCls.funObj[nm] = superFun == null ?
-          fun :
-          superFun.final ?
-            superFun :
-            (
-              fun.boolMode === "and" ?
-                function() {
-                  return superFun.apply(this, arguments) && fun.apply(this, arguments);
-                } :
-                fun.boolMode === "or" ?
-                  function() {
-                    return superFun.apply(this, arguments) || fun.apply(this, arguments);
-                  } :
-                  fun.mergeMode === "object" ?
-                    function() {
-                      return Object.mergeObj(superFun.apply(this, arguments), fun.apply(this, arguments));
-                    } :
-                    fun.mergeMode === "array" ?
-                      function() {
-                        return superFun.apply(this, arguments).pushAll(fun.apply(this, arguments));
-                      } :
-                      typeof fun.mergeMode === "function" ?
-                        function() {
-                          TMP_TUP.with(superFun.apply(this, arguments), fun.apply(this, arguments));
-                          return fun.mergeMode.apply(this, TMP_TUP);
-                        } :
-                        function() {
-                          superFun.apply(this, arguments);
-                          return fun.apply(this, arguments);
-                        }
-            ).setProp({
-              noSuper: fun.noSuper,
-              override: false,
-              final: fun.final,
-              boolMode: fun.boolMode,
-              superBoolMode: fun.superBoolMode,
-              mergeMode: fun.mergeMode,
-              argLen: Math.max(superFun.argLen, fun.argLen),
-              funPrev: superFun,
-              funCur: fun,
-            });
+        thisCls.funObj[nm] = mixTempMethods(superFun, fun, MethodMixModes.NORMAL);
       };
       thisCls.funObj[nm].nm = nm;
       if(!thisCls.funObj[nm].noSuper && nm.startsWith("ex_")) {
@@ -382,7 +305,8 @@
     });
     Object._it(this.funObj, (nm, fun) => {
       // Get the final method and wrap its length
-      obj[nm] = fun.noSuper ?
+      obj[nm] = mixTempMethods(null, fun, MethodMixModes.BUILD, nm);
+      /*obj[nm] = fun.noSuper ?
         fun.wrapLen(fun.argLen) :
         (
           fun.superBoolMode === "and" ?
@@ -411,7 +335,7 @@
                       return fun.apply(this, arguments);
                     }.wrapLen(fun.argLen)
         );
-      obj[nm].argLen = fun.argLen;
+      obj[nm].argLen = fun.argLen;*/
     });
 
     // Utility methods on the content created

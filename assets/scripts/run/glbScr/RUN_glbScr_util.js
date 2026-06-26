@@ -417,6 +417,177 @@
   };
 
 
+  /**
+   * Sets up default values in a content template method.
+   * @global
+   * @param {Function} fun
+   * @param {boolean|unset} [isFromIntf]
+   * @return {Function}
+   */
+  initTempMethod = function(fun, isFromIntf) {
+    return fun.setProp({
+      noSuper: tryVal(fun.noSuper, false),
+      override: tryVal(fun.override, false),
+      final: tryVal(fun.final, false),
+      boolMode: tryVal(fun.boolMode, null),
+      superBoolMode: tryVal(fun.superBoolMode, fun.boolMode),
+      mergeMode: tryVal(fun.mergeMode, null),
+      argLen: tryVal(fun.argLen, -1),
+      funPrev: !isFromIntf ? null : tryVal(fun.funPrev, null),
+      funCur: !isFromIntf ? null : tryVal(fun.funCur, null),
+    });
+  };
+
+
+  /**
+   * Mixes methods, used mostly in content templates.
+   * @global
+   * @param {Function|null} superFun
+   * @param {Function} fun
+   * @param {number|unset} [mode] - See {@link MethodMixModes}.
+   * @param {string|unset} [nmFun] - Required if used in mode BUILD.
+   * @return {Function}
+   */
+  mixTempMethods = function(superFun, fun, mode, nmFun) {
+    if(mode == null) mode = MethodMixModes.NORMAL;
+    if(mode === MethodMixModes.BUILD) {
+      if(fun.noSuper) return fun.wrapLen(fun.argLen);
+      superFun = null;
+    } else {
+      if(superFun == null) return fun;
+      if(superFun.final) return superFun;
+    };
+
+    let fun_fi;
+    switch(mode) {
+
+      case MethodMixModes.NORMAL :
+        if(fun.boolMode != null) {
+          if(fun.boolMode === "and") {
+            fun_fi = function() {
+              return superFun.apply(this, arguments) && fun.apply(this, arguments);
+            };
+          } else if(fun.boolMode === "or") {
+            fun_fi = function() {
+              return superFun.apply(this, arguments) || fun.apply(this, arguments);
+            };
+          };
+        } else if(fun.mergeMode != null) {
+          if(fun.mergeMode === "object") {
+            fun_fi = function() {
+              return Object.mergeObj(superFun.apply(this, arguments), fun.apply(this, arguments));
+            };
+          } else if(fun.mergeMode === "array") {
+            fun_fi = function() {
+              return superFun.apply(this, arguments).pushAll(fun.apply(this, arguments));
+            };
+          } else if(fun.mergeMode === "add") {
+            fun_fi = function() {
+              return superFun.apply(this, arguments) + fun.apply(this, arguments);
+            };
+          } else if(fun.mergeMode === "sub") {
+            fun_fi = function() {
+              return superFun.apply(this, arguments) - fun.apply(this, arguments);
+            };
+          } else if(fun.mergeMode === "mul") {
+            fun_fi = function() {
+              return superFun.apply(this, arguments) * fun.apply(this, arguments);
+            };
+          } else if(fun.mergeMode === "div") {
+            fun_fi = function() {
+              return superFun.apply(this, arguments) / fun.apply(this, arguments);
+            };
+          } else if(typeof fun.mergeMode === "function") {
+            fun_fi = function() {
+              mixTempMethods.tmpArgs.with(superFun.apply(this, arguments), fun.apply(this, arguments));
+              return fun.mergeMode.apply(this, mixTempMethods.tmpArgs);
+            };
+          };
+        } else {
+          fun_fi = function() {
+            superFun.apply(this, arguments);
+            return fun.apply(this, arguments);
+          };
+        };
+        break;
+
+      case MethodMixModes.BUILD :
+        let nmSuperFun = "super$" + nmFun;
+        if(fun.superBoolMode != null) {
+          if(fun.superBoolMode === "and") {
+            fun_fi = function() {
+              return this[nmSuperFun].apply(this, arguments) && fun.apply(this, arguments);
+            };
+          } else if(fun.superBoolMode === "or") {
+            fun_fi = function() {
+              return this[nmSuperFun].apply(this, arguments) || fun.apply(this, arguments);
+            };
+          };
+        } else if(fun.mergeMode != null) {
+          if(fun.mergeMode === "object") {
+            fun_fi = function() {
+              return Object.mergeObj(this[nmSuperFun].apply(this, arguments), fun.apply(this, arguments));
+            };
+          } else if(fun.mergeMode === "array") {
+            fun_fi = function() {
+              return this[nmSuperFun].apply(this, arguments).pushAll(fun.apply(this, arguments));
+            };
+          } else if(fun.mergeMode === "add") {
+            fun_fi = function() {
+              return this[nmSuperFun].apply(this, arguments) + fun.apply(this, arguments);
+            };
+          } else if(fun.mergeMode === "sub") {
+            fun_fi = function() {
+              return this[nmSuperFun].apply(this, arguments) - fun.apply(this, arguments);
+            };
+          } else if(fun.mergeMode === "mul") {
+            fun_fi = function() {
+              return this[nmSuperFun].apply(this, arguments) * fun.apply(this, arguments);
+            };
+          } else if(fun.mergeMode === "div") {
+            fun_fi = function() {
+              return this[nmSuperFun].apply(this, arguments) / fun.apply(this, arguments);
+            };
+          } else if(typeof fun.mergeMode === "function") {
+            fun_fi = function() {
+              mixTempMethods.tmpArgs.with(this[nmSuperFun].apply(this, arguments), fun.apply(this, arguments));
+              return fun.mergeMode.apply(this, mixTempMethods.tmpArgs);
+            };
+          };
+        } else {
+          fun_fi = function() {
+            this[nmSuperFun].apply(this, arguments);
+            return fun.apply(this, arguments);
+          };
+        };
+        break;
+
+    };
+
+    if(typeof fun_fi !== "function") {
+      printAll(superFun, fun, mode, fun_fi);
+      throw new Error("Error mixing methods!");
+    };
+    if(mode === MethodMixModes.BUILD) {
+      fun_fi = fun_fi.wrapLen(fun.argLen);
+    };
+    fun_fi.setProp({
+      noSuper: fun.noSuper,
+      override: false,
+      final: fun.final,
+      boolMode: fun.boolMode,
+      superBoolMode: fun.superBoolMode,
+      mergeMode: fun.mergeMode,
+      argLen: superFun == null ? fun.argLen : Math.max(superFun.argLen, fun.argLen),
+      funPrev: superFun == null ? "!JAVASUPER" : superFun,
+      funCur: fun,
+    });
+
+    return fun_fi;
+  };
+  mixTempMethods.tmpArgs = [];
+
+
   /* <---------- game ----------> */
 
 

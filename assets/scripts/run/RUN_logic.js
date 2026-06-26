@@ -184,6 +184,8 @@
 
   MDL_event._c_onUpdate(() => {
 
+    if(Vars.state.isPaused()) return;
+
     updateRules();
     updateWeather();
     updateAttr();
