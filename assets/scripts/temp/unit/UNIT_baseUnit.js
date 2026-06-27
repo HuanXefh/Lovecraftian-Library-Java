@@ -214,6 +214,14 @@
     polTol: -1.0,
 
 
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    envRequired: 0,
+    envEnabled: Env.any,
+    envDisabled: 0,
+
+
   })
   .setMethod({
 

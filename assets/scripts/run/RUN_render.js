@@ -226,6 +226,21 @@
   };
 
 
+  function drawUi() {
+    processZ(Layer.max - 0.1, 1);
+
+    let
+      unitPlayer = Vars.player.unit(),
+      vecMouse = Core.input.mouseWorld();
+
+    if(PARAM.IS_TELEPORTING && unitPlayer != null) {
+      Drawf.target(vecMouse.x, vecMouse.y, 6.0, 1.0, unitPlayer.canPass(vecMouse.x.toIntCoord(), vecMouse.y.toIntCoord()) ? Pal.accent : Pal.remove);
+    };
+
+    processZ(null, 1);
+  };
+
+
   /* <------------------------------ noise ------------------------------ */
 
 
@@ -288,5 +303,7 @@
     if(DRAW_TEST != null && DRAW_TEST.enabled) {
       DRAW_TEST.draw();
     };
+
+    drawUi();
 
   }, 7792273);

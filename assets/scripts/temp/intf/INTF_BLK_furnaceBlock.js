@@ -91,12 +91,10 @@
     // Update furnace efficiency
     b.furnEffc = b.cheating() ?
       1.0 :
-      !b.ex_checkHeatingValid() ?
-        0.0 :
-        Mathf.clamp(Math.min(
-          Math.pow(b.tempCur / b.ex_getHeatTg(), 1.5),
-          !isFinite(b.ex_getHeatAllowed()) ? Infinity : ((b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0),
-        ));
+      Mathf.clamp(Math.min(
+        Math.pow(b.tempCur / b.ex_getHeatTg(), 1.5),
+        !isFinite(b.ex_getHeatAllowed()) ? Infinity : ((b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0),
+      ));
     if(b.furnEffc < 0.15) b.furnEffc = 0.0;
     if(b.tempExt <= b.tempFuel && b.maxHeaterProd <= b.tempFuel) b.furnEffc *= b.fuelEffc;
   };

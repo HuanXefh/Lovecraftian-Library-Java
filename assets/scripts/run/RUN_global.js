@@ -50,7 +50,7 @@
        * @return {boolean}
        */
       _isSandBox() {
-        return Vars.state == null || Vars.state.rules.infiniteResources;
+        return Vars.state != null && Vars.state.rules.infiniteResources;
       },
 
 

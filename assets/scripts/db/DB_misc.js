@@ -279,7 +279,7 @@ const db = {
         },
 
         "lovec-player-dump-item-to-core", {
-          rowInd: 0,
+          rowInd: 1,
           icon: "lovec-icon-to-core",
           clickScr: function() {
             let unit = Vars.player.unit();
@@ -287,6 +287,36 @@ const db = {
             let b = unit.closestCore();
             if(b == null || !b.within(unit, unit.range())) return;
             FRAG_item.dropBuildItem(unit, b);
+          },
+        },
+
+        "lovec-player-teleport", {
+          rowInd: 1,
+          icon: "lovec-icon-teleport",
+          isToggle: true,
+          updateScr: function() {
+            if(!this.isChecked()) return;
+            if(!global.lovecUtil.fun._isSandBox()) {
+              this.setChecked(false);
+              PARAM.IS_TELEPORTING = false;
+              MDL_ui.show_fadeInfo("lovec", "sandbox-only");
+            };
+
+            PARAM.IS_TELEPORTING = true;
+            if(Core.input.keyTap(KeyCode.mouseLeft)) {
+              let unit = Vars.player.unit();
+              let vec = Core.input.mouseWorld();
+              if(unit != null && unit.canPass(vec.x.toIntCoord(), vec.y.toIntCoord())) {
+                let vecPrev = new Vec2(unit.x, unit.y);
+                unit.set(vec);
+                MDL_effect._e_line(unit.x, unit.y, null, vecPrev, Pal.accent, 1.5);
+              };
+              this.setChecked(false);
+              PARAM.IS_TELEPORTING = false;
+            } else if(Core.input.keyTap(KeyCode.mouseRight)) {
+              this.setChecked(false);
+              PARAM.IS_TELEPORTING = false;
+            };
           },
         },
 
@@ -300,7 +330,7 @@ const db = {
       modded: [
 
         "lovec-player-take-loot", {
-          rowInd: 0,
+          rowInd: 1,
           icon: "lovec-icon-take-loot",
           clickScr: function() {
             let unit = Vars.player.unit();
@@ -314,7 +344,7 @@ const db = {
         },
 
         "lovec-player-drop-loot", {
-          rowInd: 0,
+          rowInd: 1,
           icon: "lovec-icon-drop-loot",
           clickScr: function() {
             let unit = Vars.player.unit();
@@ -329,7 +359,7 @@ const db = {
         },
 
         "lovec-player-destroy-loot", {
-          rowInd: 0,
+          rowInd: 1,
           icon: "lovec-icon-destroy-loot",
           clickScr: function() {
             let unit = Vars.player.unit();

@@ -54,6 +54,7 @@
 
     return cond1 || cond2;
   })();
+  exports.IS_TELEPORTING = false;
   exports.UNIT_REMAINS_LIFETIME = 0.0;
 
 
@@ -90,6 +91,7 @@
 
       exports.PLANET_CURRENT = global.lovecUtil.fun._plaCur();
       exports.MAP_CURRENT = global.lovecUtil.fun._mapCur();
+      exports.IS_SPACE_MAP = (Vars.state.rules.env & Env.space) !== 0;
       exports.IS_CAVE_MAP = DB_env.db["group"]["map"]["cave"].includes(module.exports.MAP_CURRENT);
       exports.IS_NO_BUILD_MAP = DB_env.db["group"]["map"]["noBuild"].includes(module.exports.MAP_CURRENT);
       exports.GLOBAL_HEAT = global.lovecUtil.fun._glbHeat();

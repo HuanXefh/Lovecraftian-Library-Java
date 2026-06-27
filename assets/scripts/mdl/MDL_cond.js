@@ -63,7 +63,8 @@
   const _isVanilla = function(ct_gn) {
     let ct = MDL_content._ct(ct_gn, null, true);
     return ct != null && ct.minfo.mod == null;
-  };
+  }
+  .setCache();
   exports._isVanilla = _isVanilla;
 
 
@@ -89,7 +90,8 @@
    */
   const _isIntermediate = function(rs_gn) {
     return matchTag(rs_gn, "rs-intmd", "rs");
-  };
+  }
+  .setCache();
   exports._isIntermediate = _isIntermediate;
 
 
@@ -100,7 +102,8 @@
    */
   const _isWaste = function(rs_gn) {
     return matchTag(rs_gn, "rs-was", "rs");
-  };
+  }
+  .setCache();
   exports._isWaste = _isWaste;
 
 
@@ -111,7 +114,8 @@
    */
   const _isAuxiliaryFluid = function(liq_gn) {
     return matchTag(liq_gn, "rs-aux", "rs");
-  };
+  }
+  .setCache();
   exports._isAuxiliaryFluid = _isAuxiliaryFluid;
 
 
@@ -122,7 +126,8 @@
    */
   const _isNoCapAuxiliaryFluid = function(liq_gn) {
     return matchTag(liq_gn, "rs-aux-nocap", "rs");
-  };
+  }
+  .setCache();
   exports._isNoCapAuxiliaryFluid = _isNoCapAuxiliaryFluid;
 
 
@@ -134,7 +139,8 @@
   const _isAqueousLiquid = function(liq_gn) {
     let liq = MDL_content._ct(liq_gn, "rs");
     return liq != null && DB_fluid.db["group"]["aqueous"].includes(liq.name);
-  };
+  }
+  .setCache();
   exports._isAqueousLiquid = _isAqueousLiquid;
 
 
@@ -146,7 +152,8 @@
   const _isConductiveLiquid = function(liq_gn) {
     let liq = MDL_content._ct(liq_gn, "rs");
     return liq != null && DB_fluid.db["group"]["conductive"].includes(liq.name);
-  };
+  }
+  .setCache();
   exports._isConductiveLiquid = _isConductiveLiquid;
 
 
@@ -160,7 +167,8 @@
    */
   const _isMiner = function(blk_gn) {
     return _isDrill(blk_gn) || _isHarvester(blk_gn);
-  };
+  }
+  .setCache();
   exports._isMiner = _isMiner;
 
 
@@ -171,7 +179,8 @@
    */
   const _isDrill = function(blk_gn) {
     return matchCond(blk_gn, "drill", "blk");
-  };
+  }
+  .setCache();
   exports._isDrill = _isDrill;
 
 
@@ -182,7 +191,8 @@
    */
   const _isHarvester = function(blk_gn) {
     return matchCond(blk_gn, "harvester", "blk");
-  };
+  }
+  .setCache();
   exports._isHarvester = _isHarvester;
 
 
@@ -193,7 +203,8 @@
    */
   const _isOreScanner = function(blk_gn) {
     return matchTag(blk_gn, "blk-scan", "blk");
-  };
+  }
+  .setCache();
   exports._isOreScanner = _isOreScanner;
 
 
@@ -204,7 +215,8 @@
    */
   const _isCrop = function(blk_gn) {
     return matchTag(blk_gn, "blk-crop", "blk");
-  };
+  }
+  .setCache();
   exports._isCrop = _isCrop;
 
 
@@ -216,7 +228,8 @@
   const _isNoSideBlock = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
     return blk != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => blk instanceof tup[0] && tup[1](blk));
-  };
+  }
+  .setCache();
   exports._isNoSideBlock = _isNoSideBlock;
 
 
@@ -227,7 +240,8 @@
    */
   const _isConveyor = function(blk_gn) {
     return (matchCond(blk_gn, "conveyor", "blk") && !_isCable(blk_gn)) || _isStackConveyor(blk_gn);
-  };
+  }
+  .setCache();
   exports._isConveyor = _isConveyor;
 
 
@@ -238,7 +252,8 @@
    */
   const _isStackConveyor = function(blk_gn) {
     return matchCond(blk_gn, "stackConveyor", "blk");
-  };
+  }
+  .setCache();
   exports._isStackConveyor = _isStackConveyor;
 
 
@@ -249,7 +264,8 @@
    */
   const _isDuct = function(blk_gn) {
     return matchCond(blk_gn, "duct", "blk");
-  };
+  }
+  .setCache();
   exports._isDuct = _isDuct;
 
 
@@ -260,7 +276,8 @@
    */
   const _isBridge = function(blk_gn) {
     return matchCond(blk_gn, "bridge", "blk");
-  };
+  }
+  .setCache();
   exports._isBridge = _isBridge;
 
 
@@ -271,7 +288,8 @@
    */
   const _isGate = function(blk_gn) {
     return matchCond(blk_gn, "gate", "blk");
-  };
+  }
+  .setCache();
   exports._isGate = _isGate;
 
 
@@ -282,7 +300,8 @@
    */
   const _isRouter = function(blk_gn) {
     return matchCond(blk_gn, "router", "blk");
-  };
+  }
+  .setCache();
   exports._isRouter = _isRouter;
 
 
@@ -294,7 +313,8 @@
   const _isExposedBlock = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
     return blk != null && DB_block.db["group"]["exposed"].includes(blk.name);
-  };
+  }
+  .setCache();
   exports._isExposedBlock = _isExposedBlock;
 
 
@@ -305,7 +325,8 @@
    */
   const _isContainer = function(blk_gn) {
     return matchCond(blk_gn, "container", "blk") && !_isCoreBlock(blk_gn) && !matchTag(blk_gn, "blk-non-cont", "blk");
-  };
+  }
+  .setCache();
   exports._isContainer = _isContainer;
 
 
@@ -316,7 +337,8 @@
    */
   const _isCoreBlock = function(blk_gn) {
     return matchCond(blk_gn, "core", "blk");
-  };
+  }
+  .setCache();
   exports._isCoreBlock = _isCoreBlock;
 
 
@@ -328,7 +350,8 @@
    */
   const _isPump = function(blk_gn) {
     return matchCond(blk_gn, "pump", "blk");
-  };
+  }
+  .setCache();
   exports._isPump = _isPump;
 
 
@@ -339,7 +362,8 @@
    */
   const _isPressurePump = function(blk_gn) {
     return matchCond(blk_gn, "pressurePump", "blk");
-  };
+  }
+  .setCache();
   exports._isPressurePump = _isPressurePump;
 
 
@@ -350,7 +374,8 @@
    */
   const _isFluidConduit = function(blk_gn) {
     return matchCond(blk_gn, "conduit", "blk");
-  };
+  }
+  .setCache();
   exports._isFluidConduit = _isFluidConduit;
 
 
@@ -361,7 +386,8 @@
     */
   const _isFluidContainer = function(blk_gn) {
     return matchCond(blk_gn, "fluidContainer", "blk") && !_isFluidRouter(blk_gn);
-  };
+  }
+  .setCache();
   exports._isFluidContainer = _isFluidContainer;
 
 
@@ -373,7 +399,8 @@
     */
   const _isFluidRouter = function(blk_gn) {
     return matchCond(blk_gn, "fluidRouter", "blk");
-  };
+  }
+  .setCache();
   exports._isFluidRouter = _isFluidRouter;
 
 
@@ -385,7 +412,8 @@
   const _isCloggableBlock = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
     return blk != null && DB_block.db["group"]["cloggable"].includes(blk.name);
-  };
+  }
+  .setCache();
   exports._isCloggableBlock = _isCloggableBlock;
 
 
@@ -396,7 +424,8 @@
    */
   const _isCogwheel = function(blk_gn) {
     return matchTag(blk_gn, "blk-cog", "blk");
-  };
+  }
+  .setCache();
   exports._isCogwheel = _isCogwheel;
 
 
@@ -407,7 +436,8 @@
    */
   const _isCogwheelStack = function(blk_gn) {
     return matchTag(blk_gn, "blk-cog-stack", "blk");
-  };
+  }
+  .setCache();
   exports._isCogwheelStack = _isCogwheelStack;
 
 
@@ -418,7 +448,8 @@
    */
   const _isGearBox = function(blk_gn) {
     return matchTag(blk_gn, "blk-cog-box", "blk");
-  };
+  }
+  .setCache();
   exports._isGearBox = _isGearBox;
 
 
@@ -429,7 +460,8 @@
    */
   const _isTransmissionRod = function(blk_gn) {
     return matchTag(blk_gn, "blk-tor-rod", "blk");
-  };
+  }
+  .setCache();
   exports._isTransmissionRod = _isTransmissionRod;
 
 
@@ -440,7 +472,8 @@
    */
   const _isPowerBlock = function(blk_gn) {
     return _isPowerGenerator(blk_gn) || _isPowerTransmitter(blk_gn);
-  };
+  }
+  .setCache();
   exports._isPowerBlock = _isPowerBlock;
 
 
@@ -451,7 +484,8 @@
    */
   const _isPowerGenerator = function(blk_gn) {
     return matchCond(blk_gn, "generator", "blk");
-  };
+  }
+  .setCache();
   exports._isPowerGenerator = _isPowerGenerator;
 
 
@@ -462,7 +496,8 @@
    */
   const _isPowerTransmitter = function(blk_gn) {
     return matchCond(blk_gn, "transmitter", "blk") || _isCable(blk_gn);
-  };
+  }
+  .setCache();
   exports._isPowerTransmitter = _isPowerTransmitter;
 
 
@@ -473,7 +508,8 @@
    */
   const _isCable = function(blk_gn) {
     return matchCond(blk_gn, "cable", "blk");
-  };
+  }
+  .setCache();
   exports._isCable = _isCable;
 
 
@@ -484,7 +520,8 @@
    */
   const _isArmoredCable = function(blk_gn) {
     return matchCond(blk_gn, "armoredCable", "blk");
-  };
+  }
+  .setCache();
   exports._isArmoredCable = _isArmoredCable;
 
 
@@ -495,7 +532,8 @@
    */
   const _isPowerRelay = function(blk_gn) {
     return matchTag(blk_gn, "blk-pow-relay", "blk");
-  };
+  }
+  .setCache();
   exports._isPowerRelay = _isPowerRelay;
 
 
@@ -505,8 +543,9 @@
    * @return {boolean}
    */
   const _isPowerNode = function(blk_gn) {
-    return matchCond(blk_gn, "transmitter", "blk") && !_isPowerRelay(blk_gn);
-  };
+    return matchCond(blk_gn, "transmitter", "blk") && !_isPowerRelay(blk_gn) && !_isCable(blk_gn);
+  }
+  .setCache();
   exports._isPowerNode = _isPowerNode;
 
 
@@ -517,7 +556,8 @@
    */
   const _isFactory = function(blk_gn) {
     return (matchCond(blk_gn, "factory", "blk") || _isMultiCrafter(blk_gn)) && !matchTag(blk_gn, "blk-non-fac", "blk");
-  };
+  }
+  .setCache();
   exports._isFactory = _isFactory;
 
 
@@ -528,7 +568,8 @@
    */
   const _isMultiCrafter = function(blk_gn) {
     return matchCond(blk_gn, "multiCrafter", "blk");
-  };
+  }
+  .setCache();
   exports._isMultiCrafter = _isMultiCrafter;
 
 
@@ -539,7 +580,8 @@
    */
   const _isLight = function(blk_gn) {
     return matchCond(blk_gn, "light", "blk");
-  };
+  }
+  .setCache();
   exports._isLight = _isLight;
 
 
@@ -550,7 +592,8 @@
    */
   const _isAssistanceBlock = function(blk_gn) {
     return _isProjector(blk_gn) || _isProjector(blk_gn) || _isRepairer(blk_gn);
-  };
+  }
+  .setCache();
   exports._isAssistanceBlock = _isAssistanceBlock;
 
 
@@ -561,7 +604,8 @@
    */
   const _isProjector = function(blk_gn) {
     return matchCond(blk_gn, "projector", "blk");
-  };
+  }
+  .setCache();
   exports._isProjector = _isProjector;
 
 
@@ -572,7 +616,8 @@
    */
   const _isRepairer = function(blk_gn) {
     return matchCond(blk_gn, "repairer", "blk") && !matchTag(blk_gn, "blk-non-mend", "blk");
-  };
+  }
+  .setCache();
   exports._isRepairer = _isRepairer;
 
 
@@ -583,7 +628,8 @@
    */
   const _isShield = function(blk_gn) {
     return matchCond(blk_gn, "shield", "blk");
-  };
+  }
+  .setCache();
   exports._isShield = _isShield;
 
 
@@ -594,7 +640,8 @@
    */
   const _isDefenseWall = function(blk_gn) {
     return matchCond(blk_gn, "wall", "blk") && !matchTag(blk_gn, "blk-non-wall", "blk");
-  };
+  }
+  .setCache();
   exports._isDefenseWall = _isDefenseWall;
 
 
@@ -605,7 +652,8 @@
    */
   const _isTurret = function(blk_gn) {
     return matchCond(blk_gn, "turret", "blk");
-  };
+  }
+  .setCache();
   exports._isTurret = _isTurret;
 
 
@@ -619,7 +667,8 @@
    */
   const _isTreeBlock = function(blk_gn) {
     return matchTag(blk_gn, "env-tree", "blk");
-  };
+  }
+  .setCache();
   exports._isTreeBlock = _isTreeBlock;
 
 
@@ -630,7 +679,8 @@
    */
   const _isTallGrassBlock = function(blk_gn) {
     return matchTag(blk_gn, "env-grass-tall", "blk");
-  };
+  }
+  .setCache();
   exports._isTallGrassBlock = _isTallGrassBlock;
 
 
@@ -641,7 +691,8 @@
    */
   const _isDepthOre = function(blk_gn) {
     return matchTag(blk_gn, "env-dpore", "blk");
-  };
+  }
+  .setCache();
   exports._isDepthOre = _isDepthOre;
 
 
@@ -652,7 +703,8 @@
    */
   const _isDepthLiquid = function(blk_gn) {
     return matchTag(blk_gn, "env-dpliq", "blk");
-  };
+  }
+  .setCache();
   exports._isDepthLiquid = _isDepthLiquid;
 
 
@@ -663,7 +715,8 @@
    */
   const _isScannerTarget = function(blk_gn) {
     return _isDepthOre(blk_gn) || _isDepthLiquid(blk_gn)
-  };
+  }
+  .setCache();
   exports._isScannerTarget = _isScannerTarget;
 
 
@@ -678,7 +731,8 @@
   const _isNonRobot = function(utp_gn) {
     let utp = MDL_content._ct(utp_gn, "utp");
     return utp != null && DB_unit.db["group"]["nonRobot"].includes(utp.name);
-  };
+  }
+  .setCache();
   exports._isNonRobot = _isNonRobot;
 
 
@@ -702,7 +756,8 @@
       || etp instanceof MissileUnitType
       || DB_unit.db["group"]["noRemainsMod"].includes(MDL_content._mod(etp))
       || DB_unit.db["group"]["noRemains"].includes(etp.name);
-  };
+  }
+  .setCache();
   exports._hasNoRemains = _hasNoRemains;
 
 
@@ -977,7 +1032,8 @@
   const _isHotStatus = function(sta_gn) {
     let sta = MDL_content._ct(sta_gn, "sta");
     return sta != null && DB_status.db["group"]["hot"].includes(sta.name);
-  };
+  }
+  .setCache();
   exports._isHotStatus = _isHotStatus;
 
 
@@ -989,7 +1045,8 @@
   const _isWetStatus = function(sta_gn) {
     let sta = MDL_content._ct(sta_gn, "sta");
     return sta != null && DB_status.db["group"]["wet"].includes(sta.name);
-  };
+  }
+  .setCache();
   exports._isWetStatus = _isWetStatus;
 
 
@@ -1000,7 +1057,8 @@
    */
   const _isFadeStatus = function(sta_gn) {
     return matchTag(sta_gn, "sta-fade", "sta");
-  };
+  }
+  .setCache();
   exports._isFadeStatus = _isFadeStatus;
 
 
@@ -1011,7 +1069,8 @@
    */
   const _isDeathStatus = function(sta_gn) {
     return matchTag(sta_gn, "sta-death", "sta");
-  };
+  }
+  .setCache();
   exports._isDeathStatus = _isDeathStatus;
 
 
@@ -1023,5 +1082,6 @@
   const _isStackStatus = function(sta_gn) {
     let sta = MDL_content._ct(sta_gn, "sta");
     return sta != null && tryFun(sta.ex_isStackSta, sta, false);
-  };
+  }
+  .setCache();
   exports._isStackStatus = _isStackStatus;

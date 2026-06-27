@@ -14,7 +14,7 @@
   /* <---------- auxiliary ----------> */
 
 
-  const STOP_TIME = 360.0;
+  const STOP_TIME = 300.0;
 
 
   let
@@ -104,6 +104,7 @@
   function comp_updateTile(b) {
     if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
 
+    // Change recipe for auto-selection if key content is changed
     if(b.useAutoSelection && b.keyCt != null && b.lastKeyCt !== b.keyCt) {
       b.lastKeyCt = b.keyCt;
       header = (
@@ -120,9 +121,9 @@
 
     b.ex_updateRcParam(b.block.delegee.rcMdl, b.rcHeader, false);
     if(b.scrTup != null) b.ex_onRcUpdate();
-
     b.hasStopped = b.stopTimeCur > STOP_TIME;
 
+    // Update Erekir heat
     if(b.erekirHeatReq > 0.0) {
       b.erekirHeatI = b.calculateHeat(b.erekirSideHeats);
       b.erekirHeatEffc = Mathf.clamp(b.erekirHeatI / b.erekirHeatReq)
@@ -132,24 +133,22 @@
     };
 
     if(b.efficiency < 0.0001 || !b.shouldConsume()) {
+      // Crafter is inactive
       b.warmup = Mathf.approachDelta(b.warmup, 0.0, b.block.warmupSpeed);
       if(b.hasRun) {
-        if(b.warmup < 0.1) {
-          b.stopTimeCur += Time.delta;
-        } else {
-          b.stopTimeCur = 0.0;
-        };
+        b.stopTimeCur = b.warmup < 0.1 ?
+          (b.stopTimeCur + Time.delta) :
+          0.0;
       };
     } else {
+      // Crafter is active
       b.warmup = Mathf.approachDelta(b.warmup, b.warmupTarget(), b.block.warmupSpeed);
       b.progress += b.lastProgInc * b.warmup;
       if(b.warmup > 0.9) {
         b.hasRun = true;
-        if(b.efficiency < 0.4) {
-          b.stopTimeCur += Time.delta;
-        } else {
-          b.stopTimeCur = 0.0;
-        };
+        b.stopTimeCur = b.efficiency < 0.3 ?
+          (b.stopTimeCur + Time.delta) :
+          0.0;
       };
       if(b.progress >= 1.0) {
         b.progress %= 1.0;
@@ -175,10 +174,12 @@
 
 
   function comp_updateEfficiencyMultiplier(b) {
-    b.efficiency = b.shouldConsume() && (b.block.consumesPower && b.power != null ? b.power.status > 0.01 : true) ? b.rcEffc : 0.0;
-    if(b.erekirHeatReq > 0.0) {
-      b.efficiency *= b.erekirHeatEffc;
-    };
+    // Efficiency is overwritten
+    b.efficiency = b.shouldConsume() && (b.block.consumesPower && b.power != null ? b.power.status > 0.01 : true) ?
+      b.rcEffc :
+      0.0;
+
+    if(b.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
     b.ex_postUpdateEfficiencyMultiplier();
     if(b.validTup != null && !b.validTup[0](b)) b.efficiency = 0.0;
   };
@@ -428,7 +429,17 @@
   function comp_ex_updateAttrEffc(b) {
     b.attrEffc = b.attr == null ?
       1.0 :
-      Mathf.clamp(MATH_interp.lerp(0.0, 1.0, MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR) + b.attr.env(), b.attrMin, b.attrMax) * b.attrBoostScl, 0.0, b.attrBoostCap);
+      Mathf.clamp(
+        MATH_interp.lerp(
+          0.0,
+          1.0,
+          b.attrSum + b.attr.env(),
+          b.attrMin,
+          b.attrMax,
+        ) * b.attrBoostScl,
+        0.0,
+        b.attrBoostCap,
+      );
   };
 
 
@@ -479,7 +490,12 @@
     b.ignoreItemFullness = MDL_recipe._ignoreItemFullness(rcMdl, rcHeader);
     b.erekirHeatReq = MDL_recipe._erekirHeatReq(rcMdl, rcHeader);
     b.erekirHeatProd = MDL_recipe._erekirHeatProd(rcMdl, rcHeader);
-    b.attr = (function(nmAttr) {return nmAttr == null ? null : Attribute.getOrNull(nmAttr)})(MDL_recipe._attr(rcMdl, rcHeader));
+
+    let nmAttr = MDL_recipe._attr(rcMdl, rcHeader);
+    b.attr = nmAttr == null ?
+      null :
+      Attribute.getOrNull(nmAttr);
+
     b.attrMin = MDL_recipe._attrMin(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
     b.attrMax = MDL_recipe._attrMax(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
     b.attrBoostScl = MDL_recipe._attrBoostScl(rcMdl, rcHeader);
@@ -498,6 +514,7 @@
     Time.run(0.0, () => {
       b.hasPayInput = FRAG_recipe._hasInput_pay(b.payi);
       b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
+      b.attrSum = MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR);
       b.ex_updateAttrEffc();
 
       Object.clear(b.consTmpObj);
@@ -892,6 +909,12 @@
          * @instance
          */
         erekirHeatEffc: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_recipeHandler
+         * @instance
+         */
+        attrSum: 0.0,
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler

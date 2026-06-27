@@ -311,6 +311,9 @@
 
 
       selectionColumns: 10,
+      envRequired: 0,
+      envEnabled: Env.any,
+      envDisabled: 0,
 
 
     })
