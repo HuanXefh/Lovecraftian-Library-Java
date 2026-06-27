@@ -191,6 +191,16 @@ const BOX_trigger = new CLS_objectBox({
   boilerExplosion: new CLS_eventTrigger("lovec-boiler-explosion"),
 
 
+  /* <------------------------------ util ------------------------------ */
+
+
+  /**
+   * Triggered when block is placed: {@link INTF_BLK_torqueBlock}.
+   * <br> <ARGS>: b.
+   */
+  torqueBlockPlace: new CLS_eventTrigger("lovec-torque-block-place"),
+
+
   /* <------------------------------ achievement ------------------------------ */
 
 

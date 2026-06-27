@@ -42,11 +42,12 @@
             itmStacks.push(new ItemStack(Vars.content.item(nmItm), amt));
           });
           this.requirements = itmStacks;
-
           MDL_event._c_onLoad(() => {
-            // This completely prevents player from building it directly outside of sandbox (e.g. using a schematic)
-            this.buildTime = Number.fMax;
+            this.buildTime = blk.constructionTimeReq * 0.5;
           });
+          if(this.delegee != null) {
+            this.delegee.hiddenNonPlaceable = true;
+          };
         });
       });
     };
@@ -287,7 +288,7 @@
     let i = 0, iCap = plan.iCap();
     if(iCap === 0) return false;
     while(i < iCap) {
-      if(!blk.ex_checkPlanTileComplete(plan[i + 1], plan[i], plan[i + 2], team)) return false;
+      if(!blk.ex_checkPlanTileComplete(plan[i + 1], plan[i], plan[i + 2], team, false)) return false;
       i += 3;
     };
 
@@ -295,8 +296,14 @@
   };
 
 
-  function comp_ex_checkPlanTileComplete(blk, t, oblk, rot, team) {
-    return t.build != null && t.build.block === oblk && t.build.team === team && (
+  function comp_ex_checkPlanTileComplete(blk, t, oblk, rot, team, includeConstruct) {
+    if(t.build == null || t.build.team !== team) return false;
+
+    return (
+      t.build.block instanceof ConstructBlock && includeConstruct ?
+        t.build.current === oblk :
+        t.build.block === oblk
+    ) && (
       rot < 0 ?
         true :
         t.build.rotation === rot
@@ -370,7 +377,7 @@
   function comp_ex_drawPlan(blk, team, plan) {
     let i = 0, iCap = plan.iCap();
     while(i < iCap) {
-      if(plan[i] !== blk && !blk.ex_checkPlanTileComplete(plan[i + 1], plan[i], plan[i + 2], team)) {
+      if(plan[i] !== blk && !blk.ex_checkPlanTileComplete(plan[i + 1], plan[i], plan[i + 2], team, true)) {
         MDL_draw._reg_planPlace(
           plan[i], plan[i + 1],
           plan[i + 2] < 0 ? 0.0 : (plan[i + 2] * 90.0),
@@ -768,14 +775,15 @@
        * @param {Block} oblk
        * @param {number} rot
        * @param {Team} team
+       * @param {boolean} includeConstruct - If true, {@link ConstuctBlock} will be handled.
        * @return {boolean}
        */
-      ex_checkPlanTileComplete: function(t, oblk, rot, team) {
-        return comp_ex_checkPlanTileComplete(this, t, oblk, rot, team);
+      ex_checkPlanTileComplete: function(t, oblk, rot, team, includeConstruct) {
+        return comp_ex_checkPlanTileComplete(this, t, oblk, rot, team, includeConstruct);
       }
       .setProp({
         noSuper: true,
-        argLen: 4,
+        argLen: 5,
       }),
 
 

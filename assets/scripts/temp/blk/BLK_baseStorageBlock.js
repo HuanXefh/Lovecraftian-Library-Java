@@ -14,6 +14,14 @@
   /* <---------- component ----------> */
 
 
+  function comp_acceptItem(b, b_f, itm) {
+    if(!b.block.separateItemCapacity) return b.items.total() < b.block.itemCapacity;
+    if(b.block.delegee.singleTypeOnly) return !b.items.any() || b.items.total() === b.items.get(itm);
+
+    return true;
+  };
+
+
 /*
   ========================================
   Section: Application
@@ -58,11 +66,7 @@
 
 
       acceptItem: function(b_f, itm) {
-        return !this.block.delegee.singleTypeOnly ?
-          true :
-          !this.items.any() ?
-            true :
-            this.items.total() === this.items.get(itm);
+        return comp_acceptItem(this, b_f, itm);
       }
       .setProp({
         boolMode: "and",

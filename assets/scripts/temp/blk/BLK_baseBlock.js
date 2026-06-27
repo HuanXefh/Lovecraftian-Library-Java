@@ -50,9 +50,7 @@
     if(blk.payBuiltOnly) {
       blk.rebuildable = false;
       blk.buildVisibility = BuildVisibility.sandboxOnly;
-      MDL_event._c_onLoad(() => {
-        blk.buildTime = Number.fMax;
-      });
+      blk.hiddenNonPlaceable = true;
     };
   };
 
@@ -121,6 +119,7 @@
 
   function comp_canPlaceOn(blk, t, team, rot) {
     if(t == null) return false;
+    if(blk.hiddenNonPlaceable && !blk.isVisible()) return false;
     if(blk.isWaterborne && t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).find(ot => !ot.floor().isLiquid) != null) return false;
 
     return true;
@@ -287,6 +286,12 @@
        * @instance
        */
       drawer: prov(() => new DrawDefault()),
+      /**
+       * <INTERNAL>: If true, this block cannot be placed by player when hidden.
+       * @memberof
+       * @instance
+       */
+      hiddenNonPlaceable: false,
       /**
        * <INTERNAL>
        * @memberof BLK_baseBlock

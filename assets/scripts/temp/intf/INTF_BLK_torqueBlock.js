@@ -26,6 +26,11 @@
 
 
   function comp_created(b) {
+    TRIGGER.torqueBlockPlace.fire(b);
+    Time.run(0.0, () => {
+      TRIGGER.torqueBlockPlace.addListener(ob => b.torProg = 0.0);
+    });
+
     // Just in case
     Time.run(5.0, () => {
       if(isNaN(b.torCur)) b.torCur = 0.0;
@@ -53,9 +58,6 @@
 
   function comp_updateTile(b) {
     if(PARAM.UPDATE_SUPPRESSED) return;
-
-    // Reset progress occasionally so that the animation syncs
-    if(TIMER.minTwo) b.torProg = 0.0;
 
     b.torProg += b.rpmCur / 6.0 * Time.delta;
     b.ex_updateTor();

@@ -542,6 +542,7 @@
           MDL_recipeDict.rcDict.customFieldMap.get(ct).icon :
           new TextureRegionDrawable(ct.uiIcon);
         let btn = tb.button(icon, this.w, () => {
+          this.hide();
           fetchDialog("rcDict").ex_show(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName, ct);
         })
         .left()

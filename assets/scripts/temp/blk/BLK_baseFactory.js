@@ -10,6 +10,7 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_facilityBlock");
+  const INTF_A = require("lovec/temp/intf/INTF_BLK_terrainHandler");
 
 
   /* <---------- component ----------> */
@@ -80,8 +81,9 @@
      * @class BLK_baseFactory
      * @extends BLK_baseBlock
      * @extends INTF_BLK_facilityBlock
+     * @extends INTF_BLK_terrainHandler
      */
-    newClass().extendClass(PARENT[0], "BLK_baseFactory").implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_baseFactory").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(GenericCrafter)
     .setTags()
     .setParam({
@@ -139,8 +141,9 @@
      * @class B_baseFactory
      * @extends B_baseBlock
      * @extends INTF_B_facilityBlock
+     * @extends INTF_B_terrainHandler
      */
-    newClass().extendClass(PARENT[1], "B_baseFactory").implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "B_baseFactory").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({

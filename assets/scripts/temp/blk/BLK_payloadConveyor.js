@@ -103,6 +103,14 @@
       }),
 
 
+      time: function() {
+        return this.ex_shouldOperate() ? Time.time : 0.0;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
       /**
        * @memberof B_payloadConveyor
        * @instance

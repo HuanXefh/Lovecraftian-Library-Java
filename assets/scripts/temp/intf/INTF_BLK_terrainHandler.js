@@ -23,6 +23,7 @@
 
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(t == null) return false;
+    if(blk.ters.length === 0) return true;
 
     if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
       thisFun.tmpTup[4] = MDL_terrain._ter(t, blk.size, blk.ex_getTerrainCheckR());
