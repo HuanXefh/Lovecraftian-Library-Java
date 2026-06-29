@@ -34,7 +34,20 @@
     .setParent(ArmoredConduit)
     .setTags()
     .setParam({})
-    .setMethod({}),
+    .setMethod({
+
+
+      blends: function() {
+        // No need to modify this for armored conduit, use vanilla method only
+        return true;
+      }
+      .setProp({
+        override: true,
+        boolMode: "and",
+      }),
+
+
+    }),
 
 
     /**

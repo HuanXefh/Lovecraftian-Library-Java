@@ -22,6 +22,8 @@ const db = {
 
       "lovec-unit0misc-loot", "loveclab-unit0misc-loot",
 
+      "projreind-bliq0stor-pressure-router", "projreind-bliq0aux-pressure-router",
+
     ],
 
 

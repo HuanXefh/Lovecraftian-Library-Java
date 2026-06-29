@@ -114,14 +114,7 @@ const db = {
      * Maps a random overlay region tag to a region array getter function.
      * <br> <ROW>: tag, regsGetter.
      */
-    randRegTag: [
-
-      "rock", MDL_texture._randRegsGetter("lovec-ov0rand-rock"),
-      "rock-sand", MDL_texture._randRegsGetter("lovec-ov0rand-rock-sand"),
-      "rock-sand-dark", MDL_texture._randRegsGetter("lovec-ov0rand-rock-sand-dark"),
-      "rock-sand-red", MDL_texture._randRegsGetter("lovec-ov0rand-rock-sand-red"),
-
-    ],
+    randRegTag: [],
 
 
   },

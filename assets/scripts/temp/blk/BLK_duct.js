@@ -62,7 +62,7 @@
        * @return {boolean}
        */
       ex_shouldBlendBackSide: function(ob) {
-        return ob.block.outputsItems() || ob.block instanceof Duct;
+        return ob.block.outputsItems();
       }
       .setProp({
         noSuper: true,
@@ -79,7 +79,7 @@
        * @return {boolean}
        */
       ex_shouldBlendFlankSide: function(ob) {
-        return ob.block instanceof Duct;
+        return ob.block.outputsItems();
       }
       .setProp({
         noSuper: true,

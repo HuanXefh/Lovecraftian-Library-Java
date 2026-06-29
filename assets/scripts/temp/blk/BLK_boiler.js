@@ -75,7 +75,7 @@
     b.boilerInstab = b.cheating() ?
       0.0 :
       Mathf.clamp(b.boilerInstab + (
-        (b.dryHeated && amtWater > 0.1) || (amtSteam / cap > 0.9) ?
+        (b.dryHeated && amtWater > 0.1) || (amtSteam / cap > 0.95) ?
           b.block.delegee.boilerInstabIncRate :
           -b.block.delegee.boilerInstabIncRate
       ) * Time.delta);

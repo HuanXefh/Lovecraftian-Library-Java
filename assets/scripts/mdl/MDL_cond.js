@@ -227,10 +227,25 @@
    */
   const _isNoSideBlock = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
-    return blk != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => blk instanceof tup[0] && tup[1](blk));
+    return blk != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => checkInstance(blk, tup[0]) && tup[1](blk));
   }
   .setCache();
   exports._isNoSideBlock = _isNoSideBlock;
+
+
+  /**
+   * Whether two blocks belong to the same type of no-side block.
+   * @param {BlockGn} blk1_gn
+   * @param {BlockGn} blk2_gn
+   * @return {boolean}
+   */
+  const _isSameNoSideBlock = function(blk1_gn, blk2_gn) {
+    let blk1 = MDL_content._ct(blk1_gn, "blk");
+    let blk2 = MDL_content._ct(blk2_gn, "blk");
+    return blk1 != null && blk2 != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => checkInstance(blk1, tup[0]) && checkInstance(blk2, tup[0]) && tup[1](blk1) && tup[1](blk2));
+  }
+  .setCache();
+  exports._isSameNoSideBlock = _isSameNoSideBlock;
 
 
   /**
@@ -294,7 +309,7 @@
 
 
   /**
-   * Whether this block is a classic router.
+   * Whether this block is a classic item router.
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
@@ -303,6 +318,19 @@
   }
   .setCache();
   exports._isRouter = _isRouter;
+
+
+  /**
+   * Whether this block is a rotatable router.
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
+  const _isGenericRouter = function(blk_gn) {
+    let blk = MDL_content._ct(blk_gn, "blk");
+    return (blk.rotate && _isGate(blk_gn)) || _isFluidRouter(blk_gn);
+  }
+  .setCache();
+  exports._isGenericRouter = _isGenericRouter;
 
 
   /**
