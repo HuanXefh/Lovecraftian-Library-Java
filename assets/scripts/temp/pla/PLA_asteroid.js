@@ -15,6 +15,10 @@
 
 
   function comp_init(pla) {
+    pla.drawOrbit = false;
+    pla.hasAtmosphere = false;
+    pla.updateLighting = false;
+
     pla.camRadius = pla.radius * 5.6;
     pla.clipRadius = pla.radius * 16.6;
   };
@@ -118,14 +122,6 @@
      * @instance
      */
     skipCloudMeshParse: true,
-
-
-    /* <------------------------------ vanilla ------------------------------ */
-
-
-    drawOrbit: false,
-    hasAtmosphere: false,
-    updateLighting: false,
 
 
   })

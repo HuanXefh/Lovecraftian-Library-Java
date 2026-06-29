@@ -24,8 +24,8 @@
   /** @global */
   const PacketModes = new CLS_enum({
     BOTH: 0,
-    CLIENT: -1,
-    SERVER: 1,
+    CLIENT: 1,
+    SERVER: 2,
   })
   .globalize("PacketModes");
 
@@ -85,21 +85,63 @@
 
 
   /**
+   * Performs an HTTP GET request, stores the response in a cache file.
+   * <br> <ARGS>: path, url, callback, errCallback, header1, header2, header3, ...
+   * @param {string} path - Relative path to common cache directory.
+   * @param {string} url
+   * @param {(function(Fi): void)|unset} [callback]
+   * @param {(function(Error): void)|unset} [errCallback]
+   * @return {void}
+   */
+  const fetchCache = function(path, url, callback, errCallback) {
+    DEBUG.lastHttpUrl = url;
+    let req = Http.get(url);
+    if(arguments.length > 4) {
+      req.header.apply(req, Array.from(arguments).splice(4));
+    };
+    req.error(err => {
+      if(errCallback != null) {
+        errCallback(err);
+        return;
+      };
+      console.err("[LOVEC] Failed to fetch cache:\n" + err);
+    });
+    req.submit((res, exc) => {
+      DEBUG.lastHttpRes = res;
+      DEBUG.lastHttpExc = exc;
+      if(exc != null) {
+        if(errCallback != null) {
+          errCallback(exc);
+          return;
+        };
+        console.err("[LOVEC] Failed to fetch cache:\n" + err);
+        return;
+      };
+      let fi = writeResponse(res, MDL_file.parsePath(MDL_file.commonCache, path, true), false);
+      if(callback != null) {
+        callback(fi);
+      };
+    });
+  };
+  exports.fetchCache = fetchCache;
+
+
+  /**
    * Gets latest version (tag) of a repository on GitHub.
    * If errored the result will be null.
    * @param {string} owner
    * @param {string} repo
-   * @param {function(any): void} callback
+   * @param {function(string|unset): void} callback
    * @return {void}
    */
   const fetchLatestVer = function(owner, repo, callback) {
-    let val = null;
-    Http.get("https://api.github.com/repos/" + owner + "/" + repo + "/releases/latest")
-    .header("X-GitHub-Api-Version", "2022-11-28")
-    .error(err => callback(val))
-    .submit((res, exc) => {
-      if(exc == null) val = parseResponse(res).tag_name;
-      callback(val);
-    });
+    fetchCache(
+      "temp/lastVerFetch.log",
+      "https://api.github.com/repos/" + owner + "/" + repo + "/releases/latest",
+      fi => {
+        callback(parseResponse(fi).tag_name);
+      },
+      err => callback(null),
+    );
   };
   exports.fetchLatestVer = fetchLatestVer;

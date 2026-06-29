@@ -54,6 +54,8 @@
           b.coreCur.handleStack(itm, amt, b);
           MDL_effect._e_line(b.x, b.y, null, b.coreCur, itm.color, 1.5);
           MDL_effect._e_line(b.coreCur.x, b.coreCur.y, null, b, itm.color, 1.5);
+          Fx.dynamicWave.at(b.x, b.y, b.block.size * Vars.tilesize * 0.75, itm.color);
+          Fx.dynamicWave.at(b.coreCur.x, b.coreCur.y, b.coreCur.block.size * Vars.tilesize * 0.75, itm.color);
         };
         b.items.remove(itm, amt);
       });

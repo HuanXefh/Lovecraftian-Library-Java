@@ -65,16 +65,6 @@
     skipGeneratorParse: false,
 
 
-    /* <------------------------------ vanilla ------------------------------ */
-
-
-    tidalLock: false,
-    drawOrbit: true,
-    hasAtmosphere: true,
-    bloom: false,
-    updateLighting: true,
-
-
   })
   .setMethod({
 
@@ -187,8 +177,6 @@
         pla.parent.updateTotalRadius();
       };
     });
-
-    if(pla.sectors.size === 0) pla.sectors.add(new Sector(pla, PlanetGrid.Ptile.empty));
   }
   .setProp({
     locate: (ctType, nm) => Reflect.invoke(ContentParser, VAR.ctParser, "locate", [ctType, nm], [ContentType, JAVA.string]),

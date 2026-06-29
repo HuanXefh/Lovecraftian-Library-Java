@@ -76,10 +76,11 @@
 
 
   /**
-   * Method is only available on Windows or similar OS.
+   * Method is only available on Windows.
+   * I have to do this, I can't test on other OS.
    */
   new CLS_annotation("windows-only", function() {
-    return Core.app.isMobile() || OS.isMac;
+    return !OS.isWindows;
   });
 
 

@@ -14,6 +14,13 @@
   /* <---------- component ----------> */
 
 
+  function comp_init(pla) {
+    pla.drawOrbit = false;
+    pla.bloom = true;
+    pla.updateLighting = false;
+  };
+
+
 /*
   ========================================
   Section: Application
@@ -29,17 +36,13 @@
   module.exports = newClass().extendClass(PARENT, "PLA_sun").initClass()
   .setParent(Planet)
   .setTags()
-  .setParam({
+  .setParam({})
+  .setMethod({
 
 
-    /* <------------------------------ vanilla ------------------------------ */
+    init: function() {
+      comp_init(this);
+    },
 
 
-    tidalLock: true,
-    drawOrbit: false,
-    bloom: true,
-    updateLighting: false,
-
-
-  })
-  .setMethod({});
+  });

@@ -49,11 +49,17 @@
   /**
    * Parses an HTTP response to JSON object.
    * @global
-   * @param {Http.HttpResponse} res
+   * @param {Http.HttpResponse|Fi|string} res
    * @return {Object}
    */
   parseResponse = function(res) {
-    return JSON.parse(res.getResultAsString());
+    return typeof res === "string" ?
+      JSON.parse(res) :
+      res instanceof Fi ?
+        JSON.parse(res.readString()) :
+        res instanceof Http.HttpResponse ?
+          JSON.parse(res.getResultAsString()) :
+          {};
   };
 
 

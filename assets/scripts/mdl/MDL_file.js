@@ -73,10 +73,10 @@
 
 
   /**
-   * <PATH>: "Mindustry/cache/lovec" or "io.anuke.mindustry/cache/lovec".
+   * <PATH>: "Mindustry/save/cache/common" or "io.anuke.mindustry/files/cache/common".
    */
-  const lovecCache = Core.files.cache("lovec");
-  exports.lovecCache = lovecCache;
+  const commonCache = save.child("cache").child("common");
+  exports.commonCache = commonCache;
 
 
   /**

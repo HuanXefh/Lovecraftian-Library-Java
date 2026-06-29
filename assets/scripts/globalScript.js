@@ -321,6 +321,10 @@
       );
     },
 
+    lastHttpUrl: null,
+    lastHttpRes: null,
+    lastHttpExc: null,
+
   },
 
 

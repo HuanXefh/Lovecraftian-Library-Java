@@ -300,6 +300,7 @@ const db = {
               this.setChecked(false);
               PARAM.IS_TELEPORTING = false;
               MDL_ui.show_fadeInfo("lovec", "sandbox-only");
+              return;
             };
 
             PARAM.IS_TELEPORTING = true;

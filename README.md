@@ -18,6 +18,14 @@ Mod forum on Discord [here](https://discord.com/channels/391020510269669376/1346
 
 <br>
 
+## Mod compatibility
+
+This lib is compatible with most mods.
+
+However, due to heavy modification of JavaScript environment, this lib is unlikely to be compatible with other JS lib mods that also bring major changes (I can't find such mods though).
+
+<br>
+
 ## For JavaScript modding learners
 
 It's not a good start to learn modding by looking at codes here, since there are major changes in modding structure and common methods. For beginners, I personally recommend [Sapphirium](https://github.com/3Snake3/Sapphirium) and [More Defences](https://github.com/coaldeficit/MoreDefences).

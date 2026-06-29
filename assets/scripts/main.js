@@ -486,6 +486,9 @@
 
     // Set up debug stats
     if(global.lovecUtil.prop.debug) {
+      PlanetDialog.debugSelect = true;
+      PlanetDialog.debugShowNumbers = true;
+
       [
         Vars.content.items(),
         Vars.content.liquids(),
