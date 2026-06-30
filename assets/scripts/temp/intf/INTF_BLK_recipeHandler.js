@@ -514,6 +514,14 @@
     Time.run(0.0, () => {
       b.hasPayInput = FRAG_recipe._hasInput_pay(b.payi);
       b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
+      if(b.hasPayInput) {
+        b.payi.forEachRow(2, (tmp, amt) => {
+          if(amt > 0 && b.payReqObj[tmp] == null) {
+            b.payReqObj[tmp] = 0;
+          };
+        });
+      };
+
       b.attrSum = MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR);
       b.ex_updateAttrEffc();
 

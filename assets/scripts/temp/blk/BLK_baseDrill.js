@@ -428,12 +428,12 @@
 
 
       read: function(rd, revi) {
-        if(this.LCReviSub === 0) return;
-
         if(this.LCReviSub >= 2) {
           this.drillItmProg = rd.f();
         };
-        MDL_io.__objStrNum(rd, this.payChargeObj);
+        if(this.LCReviSub >= 1) {
+          MDL_io.__objStrNum(rd, this.payChargeObj);
+        };
       },
 
 

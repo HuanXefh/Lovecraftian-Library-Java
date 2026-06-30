@@ -88,6 +88,13 @@
       recolorRegStr: "lovec-gen-raw-ore-1",
 
 
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      placeSound: fetchSound("se-place-rock"),
+      breakSound: Sounds.rockBreak,
+
+
     })
     .setMethod({
 

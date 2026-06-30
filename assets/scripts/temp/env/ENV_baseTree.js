@@ -122,6 +122,22 @@
     },
 
 
+    canReplace: function(oblk) {
+      if(oblk.alwaysReplace) return true;
+      if(oblk.privileged) return false;
+      
+      return oblk.size === this.size && (
+        oblk instanceof StaticWall
+          || oblk instanceof TallBlock
+          || (checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("ENV_baseTree"))
+      );
+    }
+    .setProp({
+      noSuper: true,
+      override: true,
+    }),
+
+
     drawBase: function(t) {
       comp_drawBase(this, t);
     }

@@ -336,6 +336,11 @@
             };
           });
         };
+        if(PARAM.SECRET_METAL_PIPE) {
+          Vars.content.blocks().each(blk => {
+            if(blk.placeSound == fetchSound("se-place-metal-pipe")) blk.placeSound = fetchSound("se-meme-steel-pipe");
+          });
+        };
         Core.settings.put("lovec-misc-fire-in-the-hole", PARAM.SECRET_FITH);
       });
     };

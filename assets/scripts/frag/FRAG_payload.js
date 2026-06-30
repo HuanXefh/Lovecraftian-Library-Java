@@ -137,15 +137,25 @@
    * @param {number|unset} [delay] - Used for effect.
    * @return {boolean}
    */
-  const produceAt = function(b, pay, delay) {
-    if(pay == null || !b.acceptPayload(b, pay)) return false;
+  const produceAt = function thisFun(b, pay, delay) {
+    if(pay == null || !b.acceptPayload(b, pay) || thisFun.queueMap.get(b, false)) return false;
 
-    Time.run(tryVal(delay, 25.0), () => {
+    thisFun.queueMap.put(b, true);
+    Time.run(tryVal(delay, 30.0), () => {
       b.handlePayload(b, pay);
-      Fx.placeBlock.at(b, pay.size() / Vars.tilesize);
+      thisFun.queueMap.put(b, false);
       MDL_effect._s_payloadDrop(b.x, b.y, pay.content());
+      MDL_effect._e_dust(b.x, b.y, pay.size(), 3);
     });
 
     return true;
-  };
+  }
+  .setProp({
+    queueMap: new ObjectMap(),
+  })
+  .setAnno("init", function() {
+    TRIGGER.mapChange.addGlobalListener(nmMap => {
+      this.queueMap.clear();
+    });
+  });
   exports.produceAt = produceAt;

@@ -211,31 +211,6 @@
   /* <---------- load ----------> */
 
 
-  // Lovec Java
-  /** @global lovec.graphics.LCDraw */
-  LCDraw = fetchClass("lovec.graphics.LCDraw");
-  /** @global lovec.graphics.LCDrawP3D */
-  LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
-  /** @global lovec.graphics.LCRgb */
-  LCRgb = fetchClass("lovec.graphics.LCRgb");
-  /** @global lovec.math.LCLerp */
-  LCLerp = fetchClass("lovec.math.LCLerp");
-  /** @global lovec.math.LCMathFunc */
-  LCMathFunc = fetchClass("lovec.math.LCMathFunc");
-  /** @global lovec.math.LCRaycast */
-  LCRaycast = fetchClass("lovec.math.LCRaycast");
-  /** @global lovec.math.MathGraph */
-  MathGraph = fetchClass("lovec.math.MathGraph");
-  /** @global lovec.math.MathMatrix */
-  MathMatrix = fetchClass("lovec.math.MathMatrix");
-  /** @global lovec.utils.LCCheck */
-  LCCheck = fetchClass("lovec.utils.LCCheck");
-  /** @global lovec.utils.LCFormat */
-  LCFormat = fetchClass("lovec.utils.LCFormat");
-  /** @global lovec.utils.LCGeneralizer */
-  LCGeneralizer = fetchClass("lovec.utils.LCGeneralizer");
-
-
   // Lovec internal data
   /** @global */
   LCAnno = {};
@@ -289,6 +264,7 @@
 
   // Run other global script fragments
   [
+    "RUN_glbScr_lovecJava",
     "RUN_glbScr_air",
     "RUN_glbScr_base",
     "RUN_glbScr_data",

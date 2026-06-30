@@ -1033,13 +1033,32 @@
    * @param {number} x2
    * @param {number} y2
    * @param {ContentGn} ct_gn
+   * @param {boolean|unset} [isOut]
    * @return {void}
    */
-  const _e_payloadDeposit = function(x1, y1, x2, y2, ct_gn) {
+  const _e_payloadDeposit = function thisFun(x1, y1, x2, y2, ct_gn, isOut) {
     let ct = MDL_content._ct(ct_gn, null, true);
     if(ct == null) return;
 
-    Fx.payloadDeposit.at(x1, y1, Angles.angle(x1, y1, x2, y2), new UnitAssembler.YeetData(new Vec2(x2, y2), ct));
+    showAt(x1, y1, thisFun.eff, Angles.angle(x1, y1, x2, y2), null, [x2, y2, ct, Boolean(isOut)]);
   }
+  .setProp({
+    eff: (function() {
+      const tmp = new Effect(30.0, eff => {
+        Tmp.v1.set(eff.x, eff.y).lerp(Tmp.v2.set(eff.data[0], eff.data[1]), eff.fin(eff.data[3] ? Interp.pow5In : Interp.linear));
+        processScl((eff.data[3] ? eff.fin() : eff.fout(Interp.pow3Out)) * 1.05);
+        eff.data[2] instanceof Block ?
+          Drawf.squareShadow(Tmp.v1.x, Tmp.v1.y, eff.data[2].size * Vars.tilesize * 1.85, 1.0) :
+          eff.data[2] instanceof UnitType ?
+            eff.data[2].drawSoftShadow(Tmp.v1.x, Tmp.v2.y, eff.data[2].rotation, 1.0) :
+            Drawf.shadow(Tmp.v1.x, Tmp.v1.y, 18.0, 1.0);
+        Draw.rect(eff.data[2].fullIcon, Tmp.v1.x, Tmp.v1.y, eff.data[2] instanceof UnitType ? (eff.data[2].rotation - 90.0) : 0.0);
+        processScl();
+      });
+      tmp.layer = Layer.flyingUnitLow - 5.0;
+
+      return tmp;
+    })(),
+  })
   .setAnno("non-headless");
   exports._e_payloadDeposit = _e_payloadDeposit;

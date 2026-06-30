@@ -207,9 +207,9 @@
           },
 
           rd => {
-            if(this.LCReviSub === 0 && this.block.ex_isSubInsOf("BLK_rainCollector")) return;
-
-            this.fHeatCur = rd.f();
+            if(this.LCReviSub >= 0 || !this.block.ex_isSubInsOf("BLK_rainCollector")) {
+              this.fHeatCur = rd.f();
+            };
           },
         );
       }

@@ -255,8 +255,33 @@
       },
 
 
+      currentShooter: function() {
+        return this.reloadCounter > 0.0 ?
+          null :
+          this.super$currentShooter();
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
       drawSelect: function() {
         comp_drawSelect(this);
+      },
+
+
+      write: function(wr) {
+        wr.f(this.reloadCounter);
+        wr.bool(this.justCrafted);
+      },
+
+
+      read: function(rd, revi) {
+        if(this.LCReviSub >= 1) {
+          this.reloadCounter = rd.f();
+          this.justCrafted = rd.bool();
+        };
       },
 
 
@@ -271,6 +296,21 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof B_massDriver
+       * @instance
+       * @return {number}
+       */
+      ex_subRevi: function() {
+        return 1;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 
