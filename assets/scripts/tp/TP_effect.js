@@ -1026,7 +1026,8 @@
       size = readParam(paramObj, "size", 10.0),
       rad = readParam(paramObj, "rad", 20.0),
       color = MDL_color._color(readParam(paramObj, "color", "7898ba")),
-      scl = readParam(paramObj, "scl", 1.0);
+      scl = readParam(paramObj, "scl", 1.0),
+      isBlack = readParam(paramObj, "isBlack", false);
 
     let color_f = color.cpy();
     color_f.a = 0.3;
@@ -1043,7 +1044,7 @@
 
       /* visual */
 
-      region: "lovec-efr-shadow-white",
+      region: isBlack ? "lovec-efr-shadow" : "lovec-efr-shadow-white",
       layer: VAR.layer.effSmog,
       particles: amt,
       followParent: true,
@@ -1299,7 +1300,8 @@
       size = readParam(paramObj, "size", 7.0),
       rad = readParam(paramObj, "rad", 30.0),
       color = readParam(paramObj, "color", Color.white),
-      scl = readParam(paramObj, "scl", 1.0);
+      scl = readParam(paramObj, "scl", 1.0),
+      isBlack = readParam(paramObj, "isBlack", false);
 
     return new MultiEffect(
       _ventSmog({
@@ -1307,18 +1309,21 @@
         rad: rad,
         color: MDL_color._color(color).cpy(),
         scl: scl * 1.1,
+        isBlack: isBlack,
       }),
       _ventSmog({
         size: size * 0.85,
         rad: rad,
         color: MDL_color._color(color).lerp(Color.white, 0.4).cpy(),
         scl: scl * 0.85,
+        isBlack: isBlack,
       }),
       _ventSmog({
         size: size * 0.7,
         rad: rad,
         color: MDL_color._color(color).lerp(Color.white, 0.7).cpy(),
         scl: scl * 0.7,
+        isBlack: isBlack,
       }),
     );
   };

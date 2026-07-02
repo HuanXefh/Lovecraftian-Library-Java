@@ -21,6 +21,19 @@
   /* <---------- base ----------> */
 
 
+  const IO_ORDER_MAP = ObjectMap.of(
+    "ci", 2,
+    "bi", 3,
+    "aux", 2,
+    "opt", 4,
+    "payi", 2,
+    "co", 2,
+    "bo", 3,
+    "fo", 3,
+    "payo", 2,
+  );
+
+
   /**
    * Gets recipe module for some block.
    * <br> <PATH>: "<nmMod>/scripts/auxFi/rc/<nmBlk>.js".
@@ -54,7 +67,7 @@
    * @param {string} nmBlk
    * @return {RecipeModule}
    */
-  const _rcMdlJson = function thisFun(nmMod, nmBlk) {
+  const _rcMdlJson = function(nmMod, nmBlk) {
     let mod = fetchMod(nmMod);
     if(mod == null) return null;
     let dir = mod.root.child("scripts").child("auxFi").child("json").child("rc");
@@ -71,7 +84,7 @@
       if(typeof obj.recipe[i] !== "string") throw new Error("Error parsing recipe. Header must be a string!");
       rcObj = obj.recipe[i + 1];
       if(typeof rcObj.icon !== "string") throw new Error("Error parsing recipe. `icon` is required and must be a string!");
-      thisFun.ioOrdMap.each((nmIo, ord) => {
+      IO_ORDER_MAP.each((nmIo, ord) => {
         if(rcObj[nmIo] == null) return;
         if(!(rcObj[nmIo] instanceof Array)) throw new Error("Error parsing recipe. `${1}` must be an array!".format(nmIo));
         if(rcObj[nmIo].length % ord !== 0) throw new Error("Error parsing recipe. Length of `${1}` should be multiple of ${2}, length found: ${3}".format(nmIo, ord, rcObj[nmIo].length));
@@ -83,20 +96,7 @@
     obj.isFromJson = true;
 
     return {rc: obj};
-  }
-  .setProp({
-    ioOrdMap: ObjectMap.of(
-      "ci", 2,
-      "bi", 3,
-      "aux", 2,
-      "opt", 4,
-      "payi", 2,
-      "co", 2,
-      "bo", 3,
-      "fo", 3,
-      "payo", 2,
-    ),
-  });
+  };
   exports._rcMdlJson = _rcMdlJson;
 
 
@@ -256,10 +256,10 @@
   const _hasInput = function thisFun(rs_gn, rcMdl) {
     let ci, bi, aux, opt;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      ci = _ci(rcMdl, rcHeader, thisFun.tmpArr);
-      bi = _bi(rcMdl, rcHeader, thisFun.tmpArr1);
-      aux = _aux(rcMdl, rcHeader, thisFun.tmpArr2);
-      opt = _opt(rcMdl, rcHeader, thisFun.tmpArr3);
+      ci = _ci(thisFun.tmpArr, rcMdl, rcHeader);
+      bi = _bi(thisFun.tmpArr1, rcMdl, rcHeader);
+      aux = _aux(thisFun.tmpArr2, rcMdl, rcHeader);
+      opt = _opt(thisFun.tmpArr3, rcMdl, rcHeader);
 
       return FRAG_recipe._hasInput(rs_gn, ci, bi, aux, opt);
     });
@@ -281,7 +281,7 @@
   const _hasAnyInput_pay = function thisFun(rcMdl) {
     let payi;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      payi = _payi(rcMdl, rcHeader, thisFun.tmpArr);
+      payi = _payi(thisFun.tmpArr, rcMdl, rcHeader);
 
       return FRAG_recipe._hasInput_pay(payi);
     });
@@ -301,9 +301,9 @@
   const _hasOutput = function thisFun(rs_gn, rcMdl) {
     let co, bo, fo;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      co = _co(rcMdl, rcHeader, thisFun.tmpArr);
-      bo = _bo(rcMdl, rcHeader, thisFun.tmpArr1);
-      fo = _fo(rcMdl, rcHeader, thisFun.tmpArr2);
+      co = _co(thisFun.tmpArr, rcMdl, rcHeader);
+      bo = _bo(thisFun.tmpArr1, rcMdl, rcHeader);
+      fo = _fo(thisFun.tmpArr2, rcMdl, rcHeader);
 
       return FRAG_recipe._hasOutput(rs_gn, co, bo, fo);
     });
@@ -324,8 +324,8 @@
   const _hasAnyOutput_itm = function thisFun(rcMdl) {
     let bo, fo;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      bo = _bo(rcMdl, rcHeader, thisFun.tmpArr);
-      fo = _fo(rcMdl, rcHeader, thisFun.tmpArr1);
+      bo = _bo(thisFun.tmpArr, rcMdl, rcHeader);
+      fo = _fo(thisFun.tmpArr1, rcMdl, rcHeader);
 
       return FRAG_recipe._hasOutput_itm(bo, fo);
     });
@@ -345,8 +345,8 @@
   const _hasAnyOutput_liq = function thisFun(rcMdl, includeAux) {
     let co, bo;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      co = _co(rcMdl, rcHeader, thisFun.tmpArr);
-      bo = _bo(rcMdl, rcHeader, thisFun.tmpArr1);
+      co = _co(thisFun.tmpArr, rcMdl, rcHeader);
+      bo = _bo(thisFun.tmpArr1, rcMdl, rcHeader);
 
       return FRAG_recipe._hasOutput_liq(includeAux, co, bo);
     });
@@ -366,7 +366,7 @@
   const _hasAnyOutput_pay = function thisFun(rcMdl) {
     let payo;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      payo = _payo(rcMdl, rcHeader, thisFun.tmpArr);
+      payo = _payo(thisFun.tmpArr, rcMdl, rcHeader);
 
       return FRAG_recipe._hasOutput_pay(payo);
     });
@@ -883,18 +883,22 @@
   const initRc = function thisFun(rcMdl, blkInit) {
     if(thisFun.blks.includes(blkInit)) throw new Error("Block ${1} has its recipe initialized more than once???".format(blkInit.name));
 
+    let initParamObj;
     _rcHeaders(rcMdl).forEachFast(rcHeader => {
-      let timeScl = _timeScl(rcMdl, rcHeader);
-      _ci(rcMdl, rcHeader, null, blkInit);
-      _bi(rcMdl, rcHeader, null, blkInit, timeScl);
-      _aux(rcMdl, rcHeader, null, blkInit);
-      _opt(rcMdl, rcHeader, null, blkInit);
-      _payi(rcMdl, rcHeader, null, blkInit);
-      let failP = _failP(rcMdl, rcHeader);
-      _co(rcMdl, rcHeader, null, blkInit);
-      _bo(rcMdl, rcHeader, null, blkInit, timeScl, failP);
-      _fo(rcMdl, rcHeader, null, blkInit, timeScl, failP);
-      _payo(rcMdl, rcHeader, null, blkInit, timeScl);
+      initParamObj = {
+        blk: blkInit,
+        timeScl: _timeScl(rcMdl, rcHeader),
+        failP: _failP(rcMdl, rcHeader),
+      };
+      _ci(null, rcMdl, rcHeader, false, initParamObj);
+      _bi(null, rcMdl, rcHeader, false, initParamObj);
+      _aux(null, rcMdl, rcHeader, false, initParamObj);
+      _opt(null, rcMdl, rcHeader, false, initParamObj);
+      _payi(null, rcMdl, rcHeader, false, initParamObj);
+      _co(null, rcMdl, rcHeader, false, initParamObj);
+      _bo(null, rcMdl, rcHeader, false, initParamObj);
+      _fo(null, rcMdl, rcHeader, false, initParamObj);
+      _payo(null, rcMdl, rcHeader, false, initParamObj);
     });
   }
   .setProp({
@@ -918,6 +922,7 @@
     let isContinuous = p == null;
 
     if(tg instanceof Array) {
+      // Alternative input
       let i = 0, iCap = tg.iCap(), tmpArr = [];
       while(i < iCap) {
         parseRcIoRow(tmpArr, tg[i], tg[i + 1], isContinuous ? null : tg[i + 2], ctCaller, true);
@@ -938,16 +943,13 @@
                 outArr.push(tmpArr, -1.0, -1.0)
             );
       };
-    } else if(tg instanceof UnlockableContent) {
-      if(isContinuous) {
-        outArr.push(tg, amt);
-        ctCaller(tg, amt, null);
-      } else {
-        outArr.push(tg, Math.round(amt), p);
-        ctCaller(tg, Math.round(amt), p);
-      };
     } else if(typeof tg === "string") {
-      if(tg.startsWith("GROUP: ")) {
+      if(!tg.startsWith("GROUP: ")) {
+        // Content name
+        let ct = MDL_content._ct(tg, null, true);
+        if(ct != null) parseRcIoRow(outArr, ct, amt, p, ctCaller);
+      } else {
+        // GROUP: xxx
         let tmpArr = [];
         DB_recipe.db["gen"]["group"].readList(tg.replace("GROUP: ", "")).forEachFast(tup => {
           parseRcIoRow(
@@ -974,9 +976,15 @@
         } else {
           console.warn("[LOVEC] No content found under ${1}!".format(tg.color(Pal.accent)));
         };
+      };
+    } else if(tg instanceof UnlockableContent) {
+      // Content
+      if(isContinuous) {
+        outArr.push(tg, amt);
+        ctCaller(tg, amt, null);
       } else {
-        let ct = MDL_content._ct(tg, null, true);
-        if(ct != null) parseRcIoRow(outArr, ct, amt, p, ctCaller);
+        outArr.push(tg, Math.round(amt), p);
+        ctCaller(tg, Math.round(amt), p);
       };
     } else {
       printObj(tg);
@@ -987,97 +995,257 @@
 
 
   /**
-   * Gets parsed CI data.
+   * Parses given I/O data.
+   * @param {Array|unset} contArr
+   * @param {string} nm
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
-   * @param {boolean|unset} [ignoreBase]
+   * @param {boolean|unset} [ignoreBase] - If true, "baseXxx" is not included.
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _ci = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
+  const parseRcIo = function thisFun(contArr, nm, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    if(!IO_ORDER_MAP.containsKey(nm)) throw new Error("`${1}` is not a valid IO name!".format(nm));
+
     let arr = contArr != null ? contArr.clear() : [];
 
-    let raw = _rcVal(rcMdl, rcHeader, "ci", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseCi", Array.air));
-    let i = 0, iCap = raw.iCap();
+    let baseNm = "base" + nm.firstUpperCase();
+    let raw = ignoreBase ?
+      _rcVal(rcMdl, rcHeader, nm, Array.air) :
+      _rcBaseVal(rcMdl, baseNm, Array.air).concat(_rcVal(rcMdl, rcHeader, nm, Array.air));
+
+    let
+      i = 0,
+      iCap = raw.iCap(),
+      ord = IO_ORDER_MAP.get(nm)
+      ctCaller = null;
+
+    // It's OK to hard code this I guess
+    switch(nm) {
+
+      case "ci" :
+        ctCaller = function(ct, amt) {
+          if(initParamObj == null || amt < 0.0001) return;
+          MDL_recipeDict.addFldConsTerm(
+            readParam(initParamObj, "blk"),
+            ct,
+            amt,
+            {
+              ct: _iconNm(rcMdl, rcHeader),
+              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ctText: _ttStr(rcMdl, rcHeader, true),
+            },
+          );
+        };
+        break;
+
+      case "bi" :
+        ctCaller = function(ct, amt, p) {
+          if(initParamObj == null || amt <= 0) return;
+          ct instanceof Item ?
+            MDL_recipeDict.addItmConsTerm(
+              readParam(initParamObj, "blk"),
+              ct,
+              amt / readParam(initParamObj, "timeScl", 1.0),
+              p,
+              {
+                ct: _iconNm(rcMdl, rcHeader),
+                ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+                ctText: _ttStr(rcMdl, rcHeader, true),
+              },
+            ) :
+            MDL_recipeDict.addFldConsTerm(
+              readParam(initParamObj, "blk", null),
+              ct,
+              amt / readParam(initParamObj, "blk").craftTime / readParam(initParamObj, "timeScl", 1.0),
+              {
+                ct: _iconNm(rcMdl, rcHeader),
+                ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+                ctText: _ttStr(rcMdl, rcHeader, true),
+              },
+            );
+        };
+        break;
+
+      case "aux" :
+        ctCaller = function(ct, amt) {
+          if(initParamObj == null || amt < 0.0001) return;
+          MDL_recipeDict.addFldConsTerm(
+            readParam(initParamObj, "blk"),
+            ct,
+            amt,
+            {
+              ct: _iconNm(rcMdl, rcHeader),
+              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ctText: _ttStr(rcMdl, rcHeader, true),
+            },
+          );
+        };
+        break;
+
+      case "opt" :
+        ctCaller = function(ct, amt, p) {
+          if(initParamObj == null || amt <= 0) return;
+          MDL_recipeDict.addItmConsTerm(
+            readParam(initParamObj, "blk"),
+            ct,
+            amt / readParam(initParamObj, "timeScl", 1.0),
+            p,
+            {
+              ct: _iconNm(rcMdl, rcHeader),
+              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ctText: _ttStr(rcMdl, rcHeader, true),
+              icon: "lovec-icon-boost",
+            },
+          );
+        };
+        break;
+
+      case "payi" :
+        ctCaller = function(ct, amt) {
+          if(initParamObj == null || amt <= 0) return;
+          MDL_recipeDict.addPayConsTerm(
+            readParam(initParamObj, "blk"),
+            ct,
+            amt / readParam(initParamObj, "timeScl", 1.0),
+            {
+              ct: _iconNm(rcMdl, rcHeader),
+              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ctText: _ttStr(rcMdl, rcHeader, true),
+            },
+          );
+        };
+        break;
+
+      case "co" :
+        ctCaller = function(ct, amt) {
+          if(initParamObj == null || amt < 0.0001) return;
+          MDL_recipeDict.addFldProdTerm(
+            readParam(initParamObj, "blk"),
+            ct,
+            amt,
+            {
+              ct: _iconNm(rcMdl, rcHeader),
+              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ctText: _ttStr(rcMdl, rcHeader, true),
+            },
+          );
+        };
+        break;
+
+      case "bo" :
+        ctCaller = function(ct, amt, p) {
+          if(initParamObj == null || amt <= 0) return;
+          MDL_recipeDict.addItmProdTerm(
+            readParam(initParamObj, "blk"),
+            ct,
+            amt / readParam(initParamObj, "timeScl", 1.0),
+            p * (readParam(initParamObj, "failP") == null ? 1.0 : (1.0 - readParam(initParamObj, "failP"))),
+            {
+              ct: _iconNm(rcMdl, rcHeader),
+              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ctText: _ttStr(rcMdl, rcHeader, true),
+            },
+          );
+        };
+        break;
+
+      case "fo" :
+        ctCaller = function(ct, amt, p) {
+          if(initParamObj == null || amt <= 0) return;
+          MDL_recipeDict.addItmProdTerm(
+            readParam(initParamObj, "blk"),
+            ct,
+            amt / readParam(initParamObj, "timeScl", 1.0),
+            p * (readParam(initParamObj, "failP") == null ? 0.0 : readParam(initParamObj, "failP")),
+            {
+              ct: _iconNm(rcMdl, rcHeader),
+              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ctText: _ttStr(rcMdl, rcHeader, true),
+            },
+          );
+        };
+        break;
+
+      case "payo" :
+        ctCaller = function(ct, amt) {
+          if(initParamObj == null || amt <= 0) return;
+          MDL_recipeDict.addPayProdTerm(
+            readParam(initParamObj, "blk"),
+            ct,
+            amt / readParam(initParamObj, "timeScl", 1.0),
+            {
+              ct: _iconNm(rcMdl, rcHeader),
+              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ctText: _ttStr(rcMdl, rcHeader, true),
+            },
+          );
+        };
+        break;
+
+    };
+
     while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null || amt < 0.0001) return;
-        MDL_recipeDict.addFldConsTerm(
-          blkInit, ct, amt,
-          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-        );
-      });
-      i += 2;
+      parseRcIoRow(
+        arr, raw[i], raw[i + 1],
+        ord === 2 ? null : raw[i + 2],
+        ctCaller,
+      );
+
+      if(nm === "opt") {
+        arr.push(Number(raw[i + 3]));
+      };
+
+      i += ord;
     };
 
     return arr;
+  };
+  exports.parseRcIo = parseRcIo;
+
+
+
+  /**
+   * Gets parsed CI data.
+   * @param {Array|unset} contArr
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
+   * @return {Array}
+   */
+  const _ci = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "ci", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
   exports._ci = _ci;
 
 
   /**
    * Gets parsed BI data.
+   * @param {Array|unset} contArr
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
-   * @param {number|unset} [timeSclInit]
    * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _bi = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, ignoreBase) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let raw = _rcVal(rcMdl, rcHeader, "bi", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseBi", Array.air));
-    let i = 0, iCap = raw.iCap();
-    while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
-        if(blkInit == null || amt <= 0) return;
-        ct instanceof Item ?
-          MDL_recipeDict.addItmConsTerm(
-            blkInit, ct, amt / tryVal(timeSclInit, 1.0), p,
-            {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-          ) :
-          MDL_recipeDict.addFldConsTerm(
-            blkInit, ct, amt / blkInit.craftTime / tryVal(timeSclInit, 1.0),
-            {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-          );
-      });
-      i += 3;
-    };
-
-    return arr;
+  const _bi = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "bi", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
   exports._bi = _bi;
 
 
   /**
    * Gets parsed AUX data.
+   * @param {Array|unset} contArr
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
    * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _aux = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let raw = _rcVal(rcMdl, rcHeader, "aux", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseAux", Array.air));
-    let i = 0, iCap = raw.iCap();
-    while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null || amt < 0.0001) return;
-        MDL_recipeDict.addFldConsTerm(
-          blkInit, ct, amt,
-          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-        );
-      });
-      i += 2;
-    };
-
-    return arr;
+  const _aux = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "aux", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
   exports._aux = _aux;
 
@@ -1096,123 +1264,60 @@
 
   /**
    * Gets parsed OPT data.
+   * @param {Array|unset} contArr
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
    * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _opt = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let raw = _rcVal(rcMdl, rcHeader, "opt", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseOpt", Array.air));
-    let i = 0, iCap = raw.iCap();
-    while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
-        arr.push(Number(raw[i + 3]));
-        if(blkInit == null || amt <= 0) return;
-        MDL_recipeDict.addItmConsTerm(
-          blkInit, ct, amt, p,
-          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true), icon: "lovec-icon-boost"},
-        );
-      });
-      i += 4;
-    };
-
-    return arr;
+  const _opt = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "opt", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
   exports._opt = _opt;
 
 
   /**
    * Gets parsed PAYI data.
+   * @param {Array|unset} contArr
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
    * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _payi = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let raw = _rcVal(rcMdl, rcHeader, "payi", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "basePayi", Array.air));
-    let i = 0, iCap = raw.iCap();
-    while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null || amt <= 0) return;
-        MDL_recipeDict.addPayConsTerm(
-          blkInit, ct, amt,
-          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-        );
-      });
-      i += 2;
-    };
-
-    return arr.inSituMap(ele => ele instanceof UnlockableContent ? ele.name : ele);
+  const _payi = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "payi", rcMdl, rcHeader, ignoreBase, initParamObj).inSituMap(ele => ele instanceof UnlockableContent ? ele.name : ele);
   };
   exports._payi = _payi;
 
 
   /**
    * Gets parsed CO data.
+   * @param {Array|unset} contArr
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
    * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _co = function(rcMdl, rcHeader, contArr, blkInit, ignoreBase) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let raw = _rcVal(rcMdl, rcHeader, "co", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseCo", Array.air));
-    let i = 0, iCap = raw.iCap();
-    while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null || amt < 0.0001) return;
-        MDL_recipeDict.addFldProdTerm(
-          blkInit, ct, amt,
-          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-        );
-      });
-      i += 2;
-    };
-
-    return arr;
+  const _co = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "co", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
   exports._co = _co;
 
 
   /**
    * Gets parsed BO data.
+   * @param {Array|unset} contArr
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
-   * @param {number|unset} [timeSclInit]
-   * @param {number|unset} [failPInit]
    * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _bo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, failPInit, ignoreBase) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let raw = _rcVal(rcMdl, rcHeader, "bo", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseBo", Array.air));
-    let i = 0, iCap = raw.iCap();
-    while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
-        if(blkInit == null || amt <= 0) return;
-        MDL_recipeDict.addItmProdTerm(
-          blkInit, ct, amt / tryVal(timeSclInit, 1.0), p * (failPInit == null ? 1.0 : (1.0 - failPInit)),
-          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-        );
-      });
-      i += 3;
-    };
-
-    return arr;
+  const _bo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "bo", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
   exports._bo = _bo;
 
@@ -1231,68 +1336,42 @@
 
   /**
    * Gets parsed FO data.
+   * @param {Array|unset} contArr
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
-   * @param {number|unset} [timeSclInit]
-   * @param {number|unset} [failPInit]
    * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _fo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, failPInit, ignoreBase) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let raw = _rcVal(rcMdl, rcHeader, "fo", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "baseFo", Array.air));
-    let i = 0, iCap = raw.iCap();
-    while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], raw[i + 2], (ct, amt, p) => {
-        if(blkInit == null || amt <= 0) return;
-        MDL_recipeDict.addItmProdTerm(
-          blkInit, ct, amt / tryVal(timeSclInit, 1.0), p * (failPInit == null ? 0.0 : failPInit),
-          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-        );
-      });
-      i += 3;
-    };
-
-    return arr;
+  const _fo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "fo", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
   exports._fo = _fo;
 
 
   /**
    * Gets parsed PAYO data.
+   * @param {Array|unset} contArr
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {Array|unset} [contArr]
-   * @param {Block|unset} [blkInit]
-   * @param {number|unset} [timeSclInit]
    * @param {boolean|unset} [ignoreBase]
+   * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _payo = function(rcMdl, rcHeader, contArr, blkInit, timeSclInit, ignoreBase) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let raw = _rcVal(rcMdl, rcHeader, "payo", Array.air).concat(_rcBaseVal(rcMdl, ignoreBase ? "" : "basePayo", Array.air));
-    let i = 0, iCap = raw.iCap();
-    while(i < iCap) {
-      parseRcIoRow(arr, raw[i], raw[i + 1], null, (ct, amt) => {
-        if(blkInit == null || amt <= 0) return;
-        MDL_recipeDict.addPayProdTerm(
-          blkInit, ct, amt / tryVal(timeSclInit, 1.0),
-          {ct: _iconNm(rcMdl, rcHeader), ctTint: _rcVal(rcMdl, rcHeader, "tint"), ctText: _ttStr(rcMdl, rcHeader, true)},
-        );
-      });
-      i += 2;
-    };
-
-    return arr.inSituMap(ele => ele instanceof UnlockableContent ? ele.name : ele);
+  const _payo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    return parseRcIo(contArr, "payo", rcMdl, rcHeader, ignoreBase, initParamObj).inSituMap(ele => ele instanceof UnlockableContent ? ele.name : ele);
   };
   exports._payo = _payo;
 
 
-  function processRcScr(rcMdl, rcHeader, nm) {
+  /**
+   * Gets a recipe script.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @param {string} nm
+   * @return {function(Building): void}
+   */
+  const processRcScr = function(rcMdl, rcHeader, nm) {
     let
       scr = _rcVal(rcMdl, rcHeader, nm, null),
       baseScr = _rcBaseVal(rcMdl, "base" + nm.firstUpperCase, null);
@@ -1308,6 +1387,7 @@
             scr(b);
           };
   };
+  exports.processRcScr = processRcScr;
 
 
   /**

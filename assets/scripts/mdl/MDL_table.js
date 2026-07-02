@@ -1100,15 +1100,15 @@
     /* START OF HELL */
 
     let
-      baseCi = MDL_recipe._ci(rcMdl, ""),
-      baseBi = MDL_recipe._bi(rcMdl, ""),
-      baseAux = MDL_recipe._aux(rcMdl, ""),
-      baseOpt = MDL_recipe._opt(rcMdl, ""),
-      basePayi = MDL_recipe._payi(rcMdl, ""),
-      baseCo = MDL_recipe._co(rcMdl, ""),
-      baseBo = MDL_recipe._bo(rcMdl, ""),
-      baseFo = MDL_recipe._fo(rcMdl, ""),
-      basePayo = MDL_recipe._payo(rcMdl, ""),
+      baseCi = MDL_recipe._ci(null, rcMdl, ""),
+      baseBi = MDL_recipe._bi(null, rcMdl, ""),
+      baseAux = MDL_recipe._aux(null, rcMdl, ""),
+      baseOpt = MDL_recipe._opt(null, rcMdl, ""),
+      basePayi = MDL_recipe._payi(null, rcMdl, ""),
+      baseCo = MDL_recipe._co(null, rcMdl, ""),
+      baseBo = MDL_recipe._bo(null, rcMdl, ""),
+      baseFo = MDL_recipe._fo(null, rcMdl, ""),
+      basePayo = MDL_recipe._payo(null, rcMdl, ""),
       hasBaseIo = baseCi.length > 0 || baseBi.length > 0 || baseAux.length > 0 || baseOpt.length > 0 || basePayi.length > 0 || baseCo.length > 0 || baseBo.length > 0 || baseFo.length > 0 || basePayo.length > 0;
 
     const buildCateg = categ => {
@@ -1159,15 +1159,15 @@
 
       categHeaderObj[categ].forEachFast(rcHeader => {
         let
-          ci = MDL_recipe._ci(rcMdl, rcHeader, null, null, true),
-          bi = MDL_recipe._bi(rcMdl, rcHeader, null, null, null, true),
-          aux = MDL_recipe._aux(rcMdl, rcHeader, null, null, true),
-          opt = MDL_recipe._opt(rcMdl, rcHeader, null, null, true),
-          payi = MDL_recipe._payi(rcMdl, rcHeader, null, null, true),
-          co = MDL_recipe._co(rcMdl, rcHeader, null, null, true),
-          bo = MDL_recipe._bo(rcMdl, rcHeader, null, null, null, null, true),
-          fo = MDL_recipe._fo(rcMdl, rcHeader, null, null, null, null, true),
-          payo = MDL_recipe._payo(rcMdl, rcHeader, null, null, null, true);
+          ci = MDL_recipe._ci(null, rcMdl, rcHeader, true),
+          bi = MDL_recipe._bi(null, rcMdl, rcHeader, true),
+          aux = MDL_recipe._aux(null, rcMdl, rcHeader, true),
+          opt = MDL_recipe._opt(null, rcMdl, rcHeader, true),
+          payi = MDL_recipe._payi(null, rcMdl, rcHeader, true),
+          co = MDL_recipe._co(null, rcMdl, rcHeader, true),
+          bo = MDL_recipe._bo(null, rcMdl, rcHeader, true),
+          fo = MDL_recipe._fo(null, rcMdl, rcHeader, true),
+          payo = MDL_recipe._payo(null, rcMdl, rcHeader, true);
 
         // <TABLE>: recipe root
         let rcTb = new Table(Tex.whiteui);

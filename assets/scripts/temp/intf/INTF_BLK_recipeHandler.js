@@ -473,17 +473,17 @@
 
 
   function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-    b.ci = MDL_recipe._ci(rcMdl, rcHeader, b.ci);
-    b.bi = MDL_recipe._bi(rcMdl, rcHeader, b.bi);
-    b.aux = MDL_recipe._aux(rcMdl, rcHeader, b.aux);
+    b.ci = MDL_recipe._ci(b.ci, rcMdl, rcHeader);
+    b.bi = MDL_recipe._bi(b.bi, rcMdl, rcHeader);
+    b.aux = MDL_recipe._aux(b.aux, rcMdl, rcHeader);
     b.reqOpt = MDL_recipe._reqOpt(rcMdl, rcHeader);
-    b.opt = MDL_recipe._opt(rcMdl, rcHeader, b.opt);
-    b.payi = MDL_recipe._payi(rcMdl, rcHeader, b.payi);
-    b.co = MDL_recipe._co(rcMdl, rcHeader, b.co);
-    b.bo = MDL_recipe._bo(rcMdl, rcHeader, b.bo);
+    b.opt = MDL_recipe._opt(b.opt, rcMdl, rcHeader);
+    b.payi = MDL_recipe._payi(b.payi, rcMdl, rcHeader);
+    b.co = MDL_recipe._co(b.co, rcMdl, rcHeader);
+    b.bo = MDL_recipe._bo(b.bo, rcMdl, rcHeader);
     b.failP = MDL_recipe._failP(rcMdl, rcHeader);
-    b.fo = MDL_recipe._fo(rcMdl, rcHeader, b.fo);
-    b.payo = MDL_recipe._payo(rcMdl, rcHeader, b.payo);
+    b.fo = MDL_recipe._fo(b.fo, rcMdl, rcHeader);
+    b.payo = MDL_recipe._payo(b.payo, rcMdl, rcHeader);
     b.rcIconNm = MDL_recipe._iconNm(rcMdl, rcHeader);
     b.rcTimeScl = MDL_recipe._timeScl(rcMdl, rcHeader);
     b.rcPol = MDL_recipe._pol(rcMdl, rcHeader);

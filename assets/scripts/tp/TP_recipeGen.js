@@ -665,6 +665,7 @@
         null,
         metaObj,
         (itm, metaObj) => ({
+          icon: MDL_content._intmd(itm.delegee.intmdParent, "rs-ore0conc"),
           keyCt: itm.name,
           tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
           itmI: itm,
