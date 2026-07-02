@@ -502,6 +502,6 @@
    * @return {number}
    */
   const _rHeatRes = function(utp) {
-    return Math.sqrt(utp.health) * utp.hitSize * 0.75;
+    return Math.sqrt(utp.health) * utp.hitSize * 0.7;
   };
   exports._rHeatRes = _rHeatRes;

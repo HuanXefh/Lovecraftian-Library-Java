@@ -12,7 +12,11 @@
 
 
   function comp_init(blk) {
-    blk.selectionQueue.pushAll(blk.ex_findSelectionTgs());
+    MDL_event._c_onLoad(() => {
+      Core.app.post(() => {
+        blk.selectionQueue.pushAll(blk.ex_findSelectionTgs());
+      });
+    });
 
     blk.configurable = true;
     blk.saveConfig = true;
@@ -175,7 +179,7 @@
 
 
       /**
-       * Use this method to draw icon of selected content.
+       * Call this method to draw icon of selected content.
        * @memberof INTF_B_contentSelector
        * @instance
        * @return {void}

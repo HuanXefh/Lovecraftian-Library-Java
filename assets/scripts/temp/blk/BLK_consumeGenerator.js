@@ -39,16 +39,16 @@
     b.totalTime += b.delegee.warmup.call(b) * b.edelta();
 
     if(b.efficiency > 0.0 && Mathf.chanceDelta(b.block.effectChance * b.efficiency)) {
-      b.block.generateEffect.at(b.x + Mathf.range(b.block.generateEffectRange), b.y + Mathf.range(b.block.generateEffectRange));
+      MDL_effect.showAround(b.x, b.y, b.block.generateEffect, b.block.generateEffectRange, 0.0);
     };
 
     if(b.block.filterItem != null && b.efficiency > 0.0 && b.block.itemDurationMultipliers.size > 0 && b.block.filterItem.getConsumed(b) != null) {
       b.itemDurationMultiplier = b.block.itemDurationMultipliers.get(b.block.filterItem.getConsumed(b), 1.0);
     };
     if(b.items != null && b.efficiency > 0.0 && b.generateTime <= 0.0) {
-      b.consume();
-      b.block.consumeEffect.at(b.x + Mathf.range(b.block.generateEffectRange), b.y + Mathf.range(b.block.generateEffectRange));
       b.generateTime = 1.0;
+      b.consume();
+      MDL_effect.showAt(b.x, b.y, b.block.consumeEffect, 0.0);
     };
     if(b.block.outputLiquid != null) {
       let amt = Math.min(b.productionEfficiency * b.delta() * b.block.outputLiquid.amount, b.block.liquidCapacity - b.liquids.get(b.block.outputLiquid.liquid));

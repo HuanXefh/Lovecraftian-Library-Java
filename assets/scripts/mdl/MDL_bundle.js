@@ -97,16 +97,3 @@
     return _base("dial." + nmMod + "-" + nmDial + "-" + ind);
   };
   exports._dialText = _dialText;
-
-
-  /**
-   * <BUNDLE>: "dial.<nmMod>-<nmDial>-s<ind>".
-   * @param {string} nmMod
-   * @param {string} nmDial
-   * @param {number} selInd
-   * @return string
-   */
-  const _dialSelText = function(nmMod, nmDial, selInd) {
-    return _base("dial." + nmMod + "-" + nmDial + "-s" + selInd);
-  };
-  exports._dialSelText = _dialSelText;

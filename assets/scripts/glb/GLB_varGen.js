@@ -235,13 +235,13 @@
       MDL_texture._regHeat(6),
       MDL_texture._regHeat(7),
       MDL_texture._regHeat(8),
-      MDL_texture._regHeat(9),
-      MDL_texture._regHeat(10),
-      MDL_texture._regHeat(11),
-      MDL_texture._regHeat(12),
-      MDL_texture._regHeat(13),
-      MDL_texture._regHeat(14),
-      MDL_texture._regHeat(15),
+      findRegion("error"),
+      findRegion("error"),
+      findRegion("error"),
+      findRegion("error"),
+      findRegion("error"),
+      findRegion("error"),
+      findRegion("error"),
     ];
 
 
@@ -483,6 +483,13 @@
      * @type {Array<Liquid>}
      */
     exports.auxs = Vars.content.liquids().select(liq => MDL_cond._isAuxiliaryFluid(liq)).toArray();
+
+
+    /**
+     * All non-abstract fluids.
+     * @type {Array<Liquid>}
+     */
+    exports.nonAuxs = Vars.content.liquids().select(liq => !MDL_cond._isAuxiliaryFluid(liq)).toArray();
 
 
     /* <------------------------------ block ------------------------------ */

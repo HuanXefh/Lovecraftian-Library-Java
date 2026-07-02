@@ -98,7 +98,7 @@
   const transLiquid = function(b, b_t, liq, rate, isActiveTrans) {
     let amtTrans = 0.0;
     if(b_t == null) return amtTrans;
-    if(b.liquids == null || b_t.liquids == null || !b_t.acceptLiquid(b, liq)) return amtTrans;
+    if(b.liquids == null || b_t.liquids == null || (!isActiveTrans && !b_t.acceptLiquid(b, liq))) return amtTrans;
     if(Math.abs(rate) < 0.0001) return amtTrans;
 
     let amtCur = b.liquids.get(liq);

@@ -257,11 +257,13 @@
    * New texture regions will be named as "<nmCt>-<suffix>".
    * @param {UnlockableContent} ct
    * @param {MultiPacker} packer
-   * @param {string} suffix
+   * @param {string|unset} suffix
    * @param {function(): Pixmap} pixGetter
    * @param {MultiPacker.PageType|unset} [pageType]
    */
   const _ip_base = function(ct, packer, suffix, pixGetter, pageType) {
+    if(suffix == null) suffix = "";
+
     let pix = pixGetter();
     packer.add(tryVal(pageType, MultiPacker.PageType.main), ct.name + suffix, pix);
     pix.dispose();
@@ -273,7 +275,7 @@
    * Creates a content icon tag sprite for some content.
    * @param {UnlockableContent} ct
    * @param {MultiPacker} packer
-   * @param {string} suffix
+   * @param {string|unset} suffix
    * @param {ContentGn} ctUnd_gn
    * @param {ContentGn} ctOv_gn
    */

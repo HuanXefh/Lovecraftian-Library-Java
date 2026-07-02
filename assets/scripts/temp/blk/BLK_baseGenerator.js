@@ -102,7 +102,6 @@
     .setParamAlias([
       "genEff", "generateEffect", Fx.none,
       "genEffP", "effectChance", 0.02,
-      // Only used for `ConsumeGenerator`, I don't know why
       "genEffRad", "generateEffectRange", 3.0,
       "exploEff", "explodeEffect", Fx.none,
     ])

@@ -302,11 +302,11 @@
    * @param {number|unset} [waitTimeS]
    * @return {this}
    */
-  CLS_dialogFlowBuilder.prototype.setUselessSelections = function(selTextParamArr, w, h, waitTimeS) {
+  CLS_dialogFlowBuilder.prototype.setUselessSelections = function(ind, selTextParamArr, w, h, waitTimeS) {
     if(waitTimeS == null) waitTimeS = 1.0;
 
     const texts = [];
-    selTextParamArr.forEachRow(3, (nmMod, nmDial, selInd) => texts.push(MDL_bundle._dialSelText(nmMod, nmDial, selInd)));
+    selTextParamArr.forEachRow(3, (nmMod, nmDial, selInd) => texts.push(MDL_bundle._dialText(nmMod, nmDial, ind + "-s-" + selInd)));
 
     this.completeRow();
     let paramObj = this.fixParamObj();

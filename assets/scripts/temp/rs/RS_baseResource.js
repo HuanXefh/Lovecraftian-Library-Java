@@ -39,7 +39,7 @@
     if(iCap === 0) return;
 
     // Set up icon tag-based sprites
-    let regs = [Core.atlas.find(rs.name + "-t0")], regInd;
+    let regs = [!String.isEmpty(rs.parentRegStr) ? Core.atlas.find(rs.parentRegStr) : Core.atlas.find(rs.name)], regInd;
     iCap._it(i => {
       regs.push(Core.atlas.find(rs.name + "-t" + (i + 1)));
     });
@@ -84,11 +84,20 @@
     let tags = rs.ex_getIntmdTags();
     if(tags.length === 0) return;
 
+
     // Generate icon tag-based sprites
-    let pixOri = MDL_texture._pix_stack(pixBase);
-    packer.add(MultiPacker.PageType.main, rs.name + "-t0", pixOri);
-    pixOri.dispose();
     let alts = 0, pixCombine;
+
+    if(parent != null) {
+      if(rs.recolorRegStr == null) {
+        // No base sprite used for this intermediate, free unused space in atlas
+        packer.add(MultiPacker.PageType.main, rs.name, ARC_AIR.pix);
+        rs.parentRegStr = parent;
+      } else {
+        // The base sprite is a recolored version
+        rs.parentRegStr = rs.name + "-recolor";
+      };
+    };
 
     if(rs.recolorRegStr != null && parent != null) {
       // For recolored sprites, always use parent as the icon tag
@@ -186,6 +195,12 @@
      * @instance
      */
     alts: 0,
+    /**
+     * <INTERNAL>
+     * @memberof RS_baseResource
+     * @instance
+     */
+    parentRegStr: "",
     /**
      * <INTERNAL>
      * @memberof RS_baseResource

@@ -114,8 +114,9 @@
 
     b.drillItmProg += b.edelta();
     if(b.drillItmProg >= b.block.delegee.drillItmDur) {
-      b.consume();
       b.drillItmProg %= b.block.delegee.drillItmDur;
+      b.consume();
+      MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
     };
   };
 
@@ -196,6 +197,12 @@
        * @instance
        */
       payAmtCap: 4,
+      /**
+       * <PARAM>: Effect created when item is consumed.
+       * @memberof BLK_baseDrill
+       * @instance
+       */
+      consEff: Fx.none,
 
 
       /* <------------------------------ internal ------------------------------ */

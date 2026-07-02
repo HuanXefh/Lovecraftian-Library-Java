@@ -35,5 +35,6 @@
     vec3: new Vec3(),
 
     reg: new TextureRegion(),
+    pix: new Pixmap(0, 0),
 
   };
