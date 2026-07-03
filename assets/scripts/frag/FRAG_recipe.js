@@ -351,7 +351,7 @@
       while(i < iCap) {
         tmp = b.delegee.co[i];
         amt = b.delegee.co[i + 1];
-        if(amt < 0.0001 || b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
+        if(b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
           allFull = false;
         } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid && !MDL_cond._isAuxiliaryFluid(tmp)) {
           return false;

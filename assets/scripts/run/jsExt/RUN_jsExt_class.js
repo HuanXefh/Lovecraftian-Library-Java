@@ -94,7 +94,7 @@
     // Clone all native objects/arrays to prevent modification of the super one
     Object._it(this, (key, val) => {
       if(isNativeObject(val)) this[key] = Object.assign({}, val);
-      if(val instanceof Array) this[key] = val.cpy();
+      if(val instanceof Array) this[key] = val.cpyAll();
     });
 
     this.__SUPER_CLASS__ = cls;

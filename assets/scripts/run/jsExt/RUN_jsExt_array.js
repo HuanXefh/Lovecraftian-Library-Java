@@ -868,7 +868,7 @@
    * 1. Gets a copy of this array.
    * <br> 2. Copies elements from given array.
    * @param {Array|unset} [arr]
-   * @return {this}
+   * @return {Array}
    */
   Array.prototype.cpy = newMultiFunction(
     [], function() {
@@ -878,6 +878,25 @@
       return this.withAll(arr);
     },
   );
+
+
+  /**
+   * Variant of {@link Array#cpy} for nested arrays.
+   * @return {Array}
+   */
+  Array.prototype.cpyAll = function() {
+    let arr = [];
+
+    let i = 0, iCap = this.iCap();
+    while(i < iCap) {
+      this[i] instanceof Array ?
+        arr.push(this[i].cpyAll()) :
+        arr.push(this[i]);
+      i++;
+    };
+
+    return arr;
+  };
 
 
   /**

@@ -429,7 +429,7 @@
       keyCt = tryVal(rcObj.keyCt, rcObj.icon);
       if(typeof keyCt === "string") {
         if(keyCt.startsWith("GROUP: ")) {
-          // Process "GROUP: xxx"
+          // "GROUP: xxx"
           keyCt = keyCt.replace("GROUP: ", "");
           DB_recipe.db["gen"]["group"].readList(keyCt).forEachFast(tup => {
             // Group is used for items and fluids only
@@ -437,12 +437,15 @@
             thisFun.handleCt(map, ct, rcHeader, mode);
           });
         } else {
-          // Process name
+          // Content name
           ct = MDL_content._ct(keyCt, null, true);
           thisFun.handleCt(map, ct, rcHeader, mode);
         };
+      } else if(keyCt instanceof UnlockableContent) {
+        // Content
+        thisFun.handleCt(map, keyCt, rcHeader, mode);
       } else if(keyCt instanceof Array) {
-        // Process array of names
+        // Array of contents or content names
         keyCt.forEachFast(nm => {
           ct = MDL_content._ct(nm, null, true);
           thisFun.handleCt(map, ct, rcHeader, mode);
@@ -915,17 +918,19 @@
    * @param {number|unset} [p]
    * @param {function(UnlockableContent, number, number|null): void} [ctCaller] - <ARGS>: ct, amt, p.
    * @param {boolean|unset} [isSecondary] - Do not set this.
+   * @param {number|unset} [pTg]
    * @return {void}
    */
-  const parseRcIoRow = function(outArr, tg, amt, p, ctCaller, isSecondary) {
+  const parseRcIoRow = function(outArr, tg, amt, p, ctCaller, isSecondary, pTg) {
     if(ctCaller == null) ctCaller = Function.air;
+    if(pTg == null) pTg = 1.0;
     let isContinuous = p == null;
 
     if(tg instanceof Array) {
       // Alternative input
       let i = 0, iCap = tg.iCap(), tmpArr = [];
       while(i < iCap) {
-        parseRcIoRow(tmpArr, tg[i], tg[i + 1], isContinuous ? null : tg[i + 2], ctCaller, true);
+        parseRcIoRow(tmpArr, tg[i], tg[i + 1], isContinuous ? null : tg[i + 2], ctCaller, true, pTg);
         i += isContinuous ? 2 : 3;
       };
       if(tmpArr.length > 0) {
@@ -947,7 +952,7 @@
       if(!tg.startsWith("GROUP: ")) {
         // Content name
         let ct = MDL_content._ct(tg, null, true);
-        if(ct != null) parseRcIoRow(outArr, ct, amt, p, ctCaller);
+        if(ct != null) parseRcIoRow(outArr, ct, amt, p, ctCaller, false, pTg);
       } else {
         // GROUP: xxx
         let tmpArr = [];
@@ -956,7 +961,7 @@
             tmpArr, tup[0],
             amt * readParam(tup[1], "amtScl", 1.0),
             isContinuous ? null : (p * readParam(tup[1], "pScl", 1.0)),
-            ctCaller, true,
+            ctCaller, true, pTg,
           );
         });
         if(tmpArr.length > 0) {
@@ -983,8 +988,8 @@
         outArr.push(tg, amt);
         ctCaller(tg, amt, null);
       } else {
-        outArr.push(tg, Math.round(amt), p);
-        ctCaller(tg, Math.round(amt), p);
+        outArr.push(tg, Math.round(amt / pTg), p * pTg);
+        ctCaller(tg, Math.round(amt / pTg), p * pTg);
       };
     } else {
       printObj(tg);

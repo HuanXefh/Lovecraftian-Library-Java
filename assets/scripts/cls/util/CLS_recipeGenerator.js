@@ -161,15 +161,16 @@
    * @param {Array} raw
    * @param {number} baseAmt
    * @param {boolean|unset} [isContinuous]
+   * @param {number|unset} [pTg]
    * @return {Array}
    */
-  CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous) {
+  CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous, pTg) {
     let arr = [];
 
-    let tmpArr = raw.cpy();
-    thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous]);
+    let tmpArr = raw.cpyAll();
+    thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous, pTg]);
     tmpArr.forEachRow(isContinuous ? 2 : 3, (tg, amt, p) => {
-      MDL_recipe.parseRcIoRow(arr, tg, amt, isContinuous ? null : p, null);
+      MDL_recipe.parseRcIoRow(arr, tg, amt, isContinuous ? null : p, null, false, pTg);
     });
     arr.forEachAll((ele, ind, arr1) => {
       if(ele instanceof UnlockableContent) arr1[ind] = ele.name;
@@ -182,11 +183,11 @@
       let i = 0, iCap = arr.iCap();
       while(i < iCap) {
         if(arr[i] instanceof Array) {
-          this.parseRawIo.convertFrac(arr[i], baseAmt, isContinuous);
+          this.parseRawIo.convertFrac.apply(this, [arr[i], baseAmt, isContinuous]);
         } else {
           arr[i + 1] = isContinuous ?
             (baseAmt * arr[i + 1]) :
-            Math.round(baseAmt * arr[i + 1] * (1.0 / arr[i + 2]));
+            (baseAmt * arr[i + 1] * (1.0 / arr[i + 2]));
         };
         i += isContinuous ? 2 : 3;
       };
@@ -210,10 +211,11 @@
    * @param {Array} rawBi
    * @param {number} amtO
    * @param {number} pO
+   * @param {number|unset} [pTg]
    * @return {Array}
    */
-  CLS_recipeGenerator.prototype.parseRawBi = function(rawBi, amtO, pO) {
-    return this.parseRawIo(rawBi, amtO * pO, false);
+  CLS_recipeGenerator.prototype.parseRawBi = function(rawBi, amtO, pO, pTg) {
+    return this.parseRawIo(rawBi, amtO * pO, false, pTg);
   };
 
 
@@ -244,10 +246,11 @@
    * @param {Array} rawBo
    * @param {number} amtI
    * @param {number} pI
+   * @param {number|unset} [pTg]
    * @return {Array}
    */
-  CLS_recipeGenerator.prototype.parseRawBo = function(rawBo, amtI, pI) {
-    return this.parseRawIo(rawBo, amtI * pI, false);
+  CLS_recipeGenerator.prototype.parseRawBo = function(rawBo, amtI, pI, pTg) {
+    return this.parseRawIo(rawBo, amtI * pI, false, pTg);
   };
 
 
@@ -417,7 +420,7 @@
    * @return {Object}
    */
   CLS_recipeGenerator.prototype.buildRcObj = function(ct, metaObj, paramObj) {
-    let builder = new CLS_recipeBuilder;
+    let builder = new CLS_recipeBuilder();
     let
       amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)),
       payAmtI = readParam(metaObj, "payAmtI", readParam(metaObj, "payAmt", 1)),
@@ -425,7 +428,9 @@
       amtO = readParam(metaObj, "amtO", readParam(metaObj, "amt", 1)),
       payAmtO = readParam(metaObj, "payAmtO", readParam(metaObj, "payAmt", 1)),
       pO = readParam(metaObj, "pO", readParam(metaObj, "p", 1.0)),
-      time = readParam(metaObj, "time", 60.0);
+      time = readParam(metaObj, "time", 60.0),
+      pINullable = readParam(metaObj, "pI", readParam(metaObj, "p", null)),
+      pONullable = readParam(metaObj, "pO", readParam(metaObj, "p", null));
 
     // No time here, which is handled in `processXxx`
     readParamAndCall(paramObj, "liqI", val => builder.__ci(this.processCi(val, amtI, metaObj, paramObj)));
@@ -471,16 +476,16 @@
 
     readParamAndCall(paramObj, "ci", val => builder.__ci(this.parseRawCi(val, amtO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
     readParamAndCall(paramObj, "payCi", val => builder.__ci(this.parseRawCi(val, payAmtO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
-    readParamAndCall(paramObj, "bi", val => builder.__bi(this.parseRawBi(val, amtO * readParam(paramObj, "amtOScl", 1.0), pO), true));
-    readParamAndCall(paramObj, "liqBi", val => builder.__bi(this.parseRawBi(val, amtO * 6.0 * readParam(paramObj, "amtOScl", 1.0), pO), true));
+    readParamAndCall(paramObj, "bi", val => builder.__bi(this.parseRawBi(val, amtO * readParam(paramObj, "amtOScl", 1.0), pO, pINullable), true));
+    readParamAndCall(paramObj, "liqBi", val => builder.__bi(this.parseRawBi(val, amtO * 6.0 * readParam(paramObj, "amtOScl", 1.0), pO, pINullable), true));
     readParamAndCall(paramObj, "payBi", val => builder.__bi(this.parseRawBi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0), 1.0), true));
     readParamAndCall(paramObj, "aux", val => builder.__aux(this.parseRawCi(val, amtO / time * readParam(paramObj, "amtOScl", 1.0)), true));
     readParamAndCall(paramObj, "payAux", val => builder.__aux(this.parseRawCi(val, payAmtO / time * readParam(paramObj, "amtOScl", 1.0)), true));
     readParamAndCall(paramObj, "payi", val => builder.__payi(this.parseRawPayi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0))));
     readParamAndCall(paramObj, "co", val => builder.__co(this.parseRawCo(val, amtI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
     readParamAndCall(paramObj, "payCo", val => builder.__co(this.parseRawCo(val, payAmtI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
-    readParamAndCall(paramObj, "bo", val => builder.__bo(this.parseRawBo(val, amtI * readParam(paramObj, "amtIScl", 1.0), pI), true));
-    readParamAndCall(paramObj, "liqBo", val => builder.__bo(this.parseRawBo(val, amtI * 6.0 * readParam(paramObj, "amtIScl", 1.0), pI), true));
+    readParamAndCall(paramObj, "bo", val => builder.__bo(this.parseRawBo(val, amtI * readParam(paramObj, "amtIScl", 1.0), pI, pONullable), true));
+    readParamAndCall(paramObj, "liqBo", val => builder.__bo(this.parseRawBo(val, amtI * 6.0 * readParam(paramObj, "amtIScl", 1.0), pI, pONullable), true));
     readParamAndCall(paramObj, "payBo", val => builder.__bo(this.parseRawBo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0), 1.0), true));
     readParamAndCall(paramObj, "payo", val => builder.__payo(this.parseRawPayo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0))));
 
@@ -502,6 +507,7 @@
       paramObj_d != null ?
         Object.assign({}, paramObj_d) :
         {};
+
     if(obj.hardness == null && ct instanceof Item) {
       obj.hardness = ct.hardness;
     };

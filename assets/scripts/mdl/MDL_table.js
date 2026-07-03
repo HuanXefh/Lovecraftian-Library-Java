@@ -1595,7 +1595,7 @@
           let validCheck = MDL_recipe._finalValidCheck(rcMdl, rcHeader);
           let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validCheck(b), uncategorizedOnly);
 
-          let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 40.0, () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ttStr, true).group(btnGrp).get();
+          let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {if(closeSelect) Vars.control.input.config.hideConfig()}).margin(3.0).tooltip(ttStr, true).group(btnGrp).get();
           btn.changed(() => cfgCaller(rcHeader));
           btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
           btn.getStyle().imageDisabledColor = Color.gray;
