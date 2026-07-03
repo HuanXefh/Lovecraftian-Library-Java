@@ -79,7 +79,8 @@
               blk.ex_placePlanTg(b.team, b.tileX(), b.tileY(), b.rotation);
             });
             let ot = blk.ex_getPlanT(b.tileX(), b.tileY(), b.rotation, blk.centerPon2.x, blk.centerPon2.y);
-            EFF.placeFadePack[blk.planSize].at(ot.worldx() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), ot.worldy() + (blk.planSize % 2 === 0 ? 4.0 : 0.0));
+            MDL_effect.showAt(ot.worldx() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), ot.worldy() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), EFF.placeFadePack[blk.planSize], 0.0);
+            MDL_effect.playAt(ot.worldx(), ot.worldy(), blk.placeBlk.placeSound);
             blk.ex_removePlanBlks(b.delegee.constructionPlan);
           };
           break;

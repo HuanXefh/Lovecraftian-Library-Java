@@ -30,8 +30,8 @@
     // This is nightmare
     b.shouldDrawSide1 = !(
       (b_f != null && b_f.team === b.team && b.block.ex_shouldBlendBackSide(b_f))
-        || (b_s1 != null && b_s1.team === b.team && GEOMETRY_HANDLER.accept(b_s1, b, MDL_cond._isGenericRouter(b_s1.block), !MDL_cond._isNoSideBlock(b.block) || MDL_cond._isSameNoSideBlock(b_s1.block, b.block)) && b.block.ex_shouldBlendFlankSide(b_s1))
-        || (b_s2 != null && b_s2.team === b.team && GEOMETRY_HANDLER.accept(b_s2, b, MDL_cond._isGenericRouter(b_s2.block), !MDL_cond._isNoSideBlock(b.block) || MDL_cond._isSameNoSideBlock(b_s2.block, b.block)) && b.block.ex_shouldBlendFlankSide(b_s2))
+        || (b_s1 != null && b_s1.team === b.team && GEOMETRY_HANDLER.accept(b_s1, b, MDL_cond._isGenericRouter(b_s1.block), !MDL_cond._isNoSideBlock(b.block) || !MDL_cond._isNoSideBlock(b_s1.block) || MDL_cond._isSameNoSideBlock(b_s1.block, b.block)) && b.block.ex_shouldBlendFlankSide(b_s1))
+        || (b_s2 != null && b_s2.team === b.team && GEOMETRY_HANDLER.accept(b_s2, b, MDL_cond._isGenericRouter(b_s2.block), !MDL_cond._isNoSideBlock(b.block) || !MDL_cond._isNoSideBlock(b_s2.block) || MDL_cond._isSameNoSideBlock(b_s2.block, b.block)) && b.block.ex_shouldBlendFlankSide(b_s2))
     );
     b.shouldDrawSide2 = !(b_t != null && b_t.team === b.team && b.block.ex_shouldBlendFrontSide(b_t));
   };

@@ -271,7 +271,7 @@ const db = {
       "baseOil", 0.6,
       "melt", 0.0,
       "sMelt", 0.0,
-      "slurry", 0.1,
+      "slurry", 0.0,
       "acidSlurry", 1.3,
       "baseSlurry", 1.3,
 

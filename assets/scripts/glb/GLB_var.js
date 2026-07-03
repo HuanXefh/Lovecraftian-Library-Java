@@ -138,6 +138,7 @@
     corDmgFrac: 0.0135,
     corDmgMin: 2.0,
     clogViscThr: 0.7,
+    clogDmgFrac: 0.0135,
     clogDmgMin: 3.0,
     impactDmgMin: 40.0,
     lightningDmg: 20.0,

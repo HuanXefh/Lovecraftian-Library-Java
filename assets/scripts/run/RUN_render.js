@@ -17,6 +17,30 @@
 */
 
 
+  /* <------------------------------ auxiliary ------------------------------ */
+
+
+  let
+    i,
+    iCap,
+    x,
+    y,
+    z,
+    vec,
+    rot,
+    cond,
+    t,
+    ot,
+    b,
+    bPlayer,
+    unitPlayer,
+    pay,
+    wp,
+    mtIds,
+    noiseArgs = null,
+    tex;
+
+
   /* <------------------------------ base ------------------------------ */
 
 
@@ -30,7 +54,7 @@
   const drawDebug = function thisFun() {
     if(!PARAM.ENABLE_TEST_DRAW) return;
 
-    let unitPlayer = Vars.player.unit();
+    unitPlayer = Vars.player.unit();
 
     if(unitPlayer != null) {
       // Draw surrounding range
@@ -65,19 +89,20 @@
       unit => {
         // Unit range display
         if(PARAM.SHOULD_DRAW_UNIT_RANGE && (VARGEN.staHiddenWell == null || !unit.hasEffect(VARGEN.staHiddenWell))) {
-          let z = Draw.z();
+          z = Draw.z();
           Draw.z(VAR.layer.unitRange);
 
-          let wp, rot = unit.rotation - 90.0, mtX, mtY, hasAnyMountShown = false;
+          rot = unit.rotation - 90.0;
+          cond = false;
           unit.mounts.forEachFast(mt => {
             wp = mt.weapon;
             // Probably not a weapon
             if(wp.alwaysShooting) return;
             if(wp.shootCone > 0.0 && wp.shootCone < 179.99) {
               // Regular weapon
-              hasAnyMountShown = true;
-              mtX = unit.x + Angles.trnsx(rot, wp.x, wp.y);
-              mtY = unit.y + Angles.trnsy(rot, wp.x, wp.y);
+              cond = true;
+              x = unit.x + Angles.trnsx(rot, wp.x, wp.y);
+              y = unit.y + Angles.trnsy(rot, wp.x, wp.y);
               Draw.color(
                 wp instanceof RepairBeamWeapon ?
                   Pal.heal :
@@ -88,13 +113,13 @@
                       unit.team.color,
                 PARAM.UNIT_RANGE_ALPHA,
               );
-              Fill.arc(mtX, mtY, wp.range(), wp.shootCone / 180.0, rot + mt.rotation + 90.0 - wp.shootCone);
+              Fill.arc(x, y, wp.range(), wp.shootCone / 180.0, rot + mt.rotation + 90.0 - wp.shootCone);
             } else if(
               wp.bullet instanceof BombBulletType
                 || (wp.bullet.speed < 2.0 && !wp.bullet.collides && wp.bullet.splashDamage > 0.0)
             ) {
               // Bomb weapon
-              hasAnyMountShown = true;
+              cond = true;
               Draw.color(unit.team.color, 0.1);
               Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0);
               Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0 + 180.0);
@@ -103,7 +128,7 @@
               LCDraw.circle(unit.x, unit.y, wp.bullet.splashDamageRadius, false);
             };
           });
-          if(!hasAnyMountShown) {
+          if(!cond) {
             Lines.stroke(1.0);
             Draw.color(Pal.accent, PARAM.UNIT_RANGE_ALPHA);
             LCDraw.circle(unit.x, unit.y, unit.range(), false);
@@ -124,7 +149,6 @@
 
         // Unit reload display
         if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
-          let mtIds;
           for(let i = 0; i < 3; i++) {
             mtIds = DB_HANDLER.read("utp-reload-ind-" + i, unit.type.name, null);
             if(mtIds == null) continue;
@@ -134,11 +158,11 @@
 
         // Payload placement display
         if(PARAM.SHOULD_DRAW_UNIT_RANGE && unit.payloads != null) {
-          let pay = unit.payloads.size === 0 ? null : unit.payloads.peek();
+          pay = unit.payloads.size === 0 ? null : unit.payloads.peek();
           if(pay != null && pay instanceof BuildPayload) {
-            let ot = Vars.world.tileWorld(unit.x - pay.block().offset, unit.y - pay.block().offset);
+            ot = Vars.world.tileWorld(unit.x - pay.block().offset, unit.y - pay.block().offset);
             if(ot != null) {
-              let z = Draw.z();
+              z = Draw.z();
               Draw.z(VAR.layer.effHigh + 1.5);
 
               Draw.color(
@@ -162,34 +186,39 @@
 
 
   const drawBuildStat = function thisFun() {
-    let t = MDL_pos._tMouse();
-    let b = t == null ? null : t.build;
-    let unitPlayer = Vars.player.unit();
-    let b_pl = (unitPlayer == null || !(unitPlayer instanceof BlockUnitc)) ? null : unitPlayer.tile();
+    t = MDL_pos._tMouse();
+    b = t == null ? null : t.build;
+    unitPlayer = Vars.player.unit();
+    bPlayer = (unitPlayer == null || !(unitPlayer instanceof BlockUnitc)) ? null : unitPlayer.tile();
 
     // Draw player building
-    if(b_pl != null && PARAM.SHOULD_DRAW_PLAYER_STAT) {
-      thisFun.drawBaseBuildStats(b_pl);
+    if(bPlayer != null && PARAM.SHOULD_DRAW_PLAYER_STAT) {
+      thisFun.drawBaseBuildStats(bPlayer);
     };
 
     // Draw mouse building if not player
-    if(b != null && !b.block.privileged && b.team !== Team.derelict && (!PARAM.SHOULD_DRAW_PLAYER_STAT || b !== b_pl)) {
+    if(b != null && !b.block.privileged && b.team !== Team.derelict && (!PARAM.SHOULD_DRAW_PLAYER_STAT || b !== bPlayer)) {
       thisFun.drawBaseBuildStats(b);
 
       if(b.team !== Vars.player.team()) return;
+
+      z = Draw.z();
+      Draw.z(Layer.overlayUI);
 
       // Draw bridge transportation
       if(b.block instanceof ItemBridge || b.block instanceof DirectionBridge) {
         MDL_draw.drawBridgeLine(b);
       };
+
+      Draw.z(z);
     };
   }
   .setProp({
     drawBaseBuildStats: b => {
       if(PARAM.SHOULD_DRAW_UNIT_RANGE && b.block instanceof Turret && b.block.shootCone > 0.0 && b.block.shootCone < 179.99) {
-        let z = Draw.z();
-        Draw.color(b.team.color, PARAM.UNIT_RANGE_ALPHA);
+        z = Draw.z();
         Draw.z(VAR.layer.unitRange);
+        Draw.color(b.team.color, PARAM.UNIT_RANGE_ALPHA);
         Fill.arc(b.x, b.y, b.range() + b.block.shootY, b.block.shootCone / 180.0, b.rotation - b.block.shootCone);
         Draw.reset();
         Draw.z(z);
@@ -203,18 +232,18 @@
         MDL_entity._bShield(b), MDL_entity._bSpd(b), null,
       );
       if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
-        let hasReload = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || DB_HANDLER.read("blk-reload", b.block.name, false);
-        if(hasReload) {
+        cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || DB_HANDLER.read("blk-reload", b.block.name, false);
+        if(cond) {
           MDL_draw._d_reload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.range.offBuildStatR, MDL_entity._reloadFrac(b));
         };
-        MDL_draw._d_reload(b, null, Pal.accent, 1.0, -16.0, (hasReload ? -0.25 : -1.25) + VAR.range.offBuildStatR, MDL_entity._warmupFrac(b, true));
+        MDL_draw._d_reload(b, null, Pal.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + VAR.range.offBuildStatR, MDL_entity._warmupFrac(b, true));
       };
-      processZ(VAR.layer.debugTop - 0.02);
+      processZ(VAR.layer.debugTop - 0.02, 2);
       Lines.stroke(1.0);
       Draw.color(Pal.accent, 0.3);
       LCDraw.rect(b.x, b.y, VAR.range.offBuildStatR, b.block.size, false);
       Draw.reset();
-      processZ();
+      processZ(null, 2);
     },
   });
 
@@ -227,24 +256,20 @@
 
 
   function drawUi() {
-    processZ(Layer.max - 0.1, 1);
+    processZ(Layer.max - 0.1, 2);
 
-    let
-      unitPlayer = Vars.player.unit(),
-      vecMouse = Core.input.mouseWorld();
+    unitPlayer = Vars.player.unit();
+    vec = Core.input.mouseWorld();
 
     if(PARAM.IS_TELEPORTING && unitPlayer != null) {
-      Drawf.target(vecMouse.x, vecMouse.y, 6.0, 1.0, unitPlayer.canPass(vecMouse.x.toIntCoord(), vecMouse.y.toIntCoord()) ? Pal.accent : Pal.remove);
+      Drawf.target(vec.x, vec.y, 6.0, 1.0, unitPlayer.canPass(vec.x.toIntCoord(), vec.y.toIntCoord()) ? Pal.accent : Pal.remove);
     };
 
-    processZ(null, 1);
+    processZ(null, 2);
   };
 
 
   /* <------------------------------ noise ------------------------------ */
-
-
-  let noiseArgs = null;
 
 
   function updateNoiseArgs() {
@@ -256,19 +281,20 @@
 
   function drawNoise() {
     if(Vars.state.isMenu() || Vars.state.isEditor() || noiseArgs == null || !Core.settings.getBool("showweather", true)) return;
-    let tex = VARGEN.noiseTexs[noiseArgs[0]];
+    tex = VARGEN.noiseTexs[noiseArgs[0]];
     if(tex == null) return;
 
-    processZ(Layer.weather - 0.9);
+    processZ(Layer.weather - 0.9, 3);
 
-    let i = 0, iCap = noiseArgs.iCap();
+    i = 0;
+    iCap = noiseArgs.iCap();
     while(i < iCap) {
       Weather.drawNoise(tex, noiseArgs[i + 1], noiseArgs[i + 2], noiseArgs[i + 3], noiseArgs[i + 4], noiseArgs[i + 5], noiseArgs[i + 6], noiseArgs[i + 7], noiseArgs[i + 8]);
       i += 9;
     };
     Draw.reset();
 
-    processZ();
+    processZ(null, 3);
   };
 
 
