@@ -472,6 +472,38 @@
   exports._coordsPlayer = _coordsPlayer;
 
 
+  /**
+   * Iterates through positions on a line.
+   * @param {number} x1
+   * @param {number} y1
+   * @param {number} x2
+   * @param {number} y2
+   * @param {number|unset} segScl
+   * @param {function(number, number, number): void} scr - <ARGS>: x, y, ang.
+   * @param {boolean|unset} [noStart]
+   * @param {boolean|unset} [noEnd]
+   */
+  const _it_lineRot = function(x1, y1, x2, y2, segScl, scr, noStart, noEnd) {
+    let segAmt = Math.ceil(Mathf.dst(x1, y1, x2, y2) / tryVal(segScl, 1.0) / 48.0);
+
+    let
+      i = noStart ? 1 : 0,
+      iCap = noEnd ? segAmt : (segAmt + 1),
+      ang = Mathf.angle(x2 - x1, y2 - y1),
+      frac;
+    while(i < iCap) {
+      frac = i / segAmt;
+      scr(
+        x1 + (x2 - x1) * frac,
+        y1 + (y2 - y1) * frac,
+        ang,
+      );
+      i++;
+    };
+  };
+  exports._it_lineRot = _it_lineRot;
+
+
   /* <---------- tile ----------> */
 
 

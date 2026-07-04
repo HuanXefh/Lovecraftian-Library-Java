@@ -334,6 +334,18 @@
 
 
   /**
+   * Whether this block is a mass driver.
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
+  const _isMassDriver = function(blk_gn) {
+    return matchCond(blk_gn, "massDriver", "blk");
+  }
+  .setCache();
+  exports._isMassDriver = _isMassDriver;
+
+
+  /**
    * Whether this block is exposed to air (can trigger some reactions).
    * @param {BlockGn} blk_gn
    * @return {boolean}
@@ -515,6 +527,31 @@
   }
   .setCache();
   exports._isPowerGenerator = _isPowerGenerator;
+
+
+  /**
+   * Whether this block is not a reactor-type generator.
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
+  const _isNonReactorGenerator = function(blk_gn) {
+    return _isPowerGenerator(blk_gn) && !_isReactorGenerator(blk_gn);
+  }
+  .setCache();
+  exports._isNonReactorGenerator = _isNonReactorGenerator;
+
+
+  /**
+   * Whether this block is a reactor-type generator.
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
+  const _isReactorGenerator = function(blk_gn) {
+    let blk = MDL_content._ct(blk_gn, "blk");
+    return blk != null && DB_block.db["class"]["group"]["condition"]["powerReactor"].some(tup => checkInstance(blk, tup[0]) && tup[1](blk));
+  }
+  .setCache();
+  exports._isReactorGenerator = _isReactorGenerator;
 
 
   /**

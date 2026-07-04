@@ -47,6 +47,21 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_turbineFactory
+       * @instance
+       * @return {boolean}
+       */
+      ex_isSwitchDisableTg: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
     }),
 
 

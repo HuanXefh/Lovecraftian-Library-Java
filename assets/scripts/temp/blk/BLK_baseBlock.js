@@ -366,6 +366,35 @@
 
 
       /**
+       * If true, this block can be disabled by {@link BLK_directionalSwitch}.
+       * Note that some blocks can be disabled even when this returns false.
+       * @memberof BLK_baseBlock
+       * @instance
+       * @return {boolean}
+       */
+      ex_isSwitchDisableTg: function() {
+        return false;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * If false, this block cannot be disabled by {@link BLK_directionalSwitch}.
+       * @memberof BLK_baseBlock
+       * @instance
+       * @return {boolean}
+       */
+      ex_canSwitchDisable: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
        * Adds a caller function for some config object key.
        * Requires {@link BLK_baseBlock#useConfigStr} to be true.
        * @memberof BLK_baseBlock

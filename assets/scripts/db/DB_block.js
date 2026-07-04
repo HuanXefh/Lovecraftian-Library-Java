@@ -618,12 +618,21 @@ const db = {
           Unloader,
           DirectionalUnloader,
 
+          "BLK_baseFluidDistributor",
+
         ],
 
 
         router: [
 
           Router,
+
+        ],
+
+
+        massDriver: [
+
+          MassDriver,
 
         ],
 
@@ -683,6 +692,16 @@ const db = {
           PowerGenerator,
 
           "BLK_generatorRecipeFactory",
+
+        ],
+
+
+        powerReactor: [
+
+          [ConsumeGenerator, blk => blk.explodeOnFull && blk.outputLiquid != null],
+          [NuclearReactor, blk => true],
+          [ImpactReactor, blk => true],
+          [VariableReactor, blk => true],
 
         ],
 

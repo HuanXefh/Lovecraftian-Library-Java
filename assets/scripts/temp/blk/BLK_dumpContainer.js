@@ -87,6 +87,21 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_dumpContainer
+       * @instance
+       * @return {boolean}
+       */
+      ex_isSwitchDisableTg: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
     }),
 
 

@@ -239,6 +239,22 @@
       },
 
 
+      /**
+       * You shall not prevent the explosion by disabling it.
+       * @override
+       * @memberof BLK_boiler
+       * @instance
+       * @return {boolean}
+       */
+      ex_canSwitchDisable: function() {
+        return false;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
     }),
 
 

@@ -854,19 +854,34 @@
    * @param {PoscGn|null} e_t
    * @param {Color|unset} [color]
    * @param {number|unset} [strokeScl]
+   * @param {boolean|unset} [shouldDrawSpike]
+   * @param {boolean|unset} [shouldInvertSpike]
    * @return {void}
    */
-  const _e_line = function thisFun(x, y, e_f, e_t, color, strokeScl) {
+  const _e_line = function thisFun(x, y, e_f, e_t, color, strokeScl, shouldDrawSpike, shouldInvertSpike) {
     if(Vars.state.isPaused() || e_t == null) return;
     if(color == null) color = Color.white;
     if(strokeScl == null) strokeScl = 1.0;
 
-    showAt(x, y, thisFun.eff, strokeScl, color, [e_f, e_t]);
+    showAt(x, y, thisFun.eff, strokeScl, color, [e_f, e_t, Boolean(shouldDrawSpike), Boolean(shouldInvertSpike)]);
   }
   .setProp({
     eff: new Effect(40.0, eff => {
-      Lines.stroke(2.0 * eff.rotation, eff.color);
-      Draw.alpha(Interp.pow2In.apply(eff.fout()) * eff.color.a);
+      Lines.stroke(2.0 * eff.rotation * eff.fout(eff.data[2] ? Interp.pow10Out : Interp.linear), eff.color);
+      Draw.alpha(eff.color.a);
+      if(eff.data[2]) {
+        MDL_pos._it_lineRot(
+          eff.data[0] == null ? eff.x : eff.data[0].x,
+          eff.data[0] == null ? eff.y : eff.data[0].y,
+          eff.data[1].x, eff.data[1].y, 1.5,
+          (x, y, ang) => {
+            Drawf.tri(x, y, 6.0 * eff.fout() * eff.rotation, 12.0 * eff.rotation, !eff.data[3] ? (ang + 145.0) : (ang + 35.0));
+            Drawf.tri(x, y, 8.0 * eff.fout() * eff.rotation, 18.0 * eff.rotation, !eff.data[3] ? (ang + 215.0) : (ang - 35.0));
+          },
+          !eff.data[3],
+          eff.data[3],
+        );
+      };
       Lines.line(
         eff.data[0] == null ? eff.x : eff.data[0].x,
         eff.data[0] == null ? eff.y : eff.data[0].y,

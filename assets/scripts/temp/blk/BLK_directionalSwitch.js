@@ -16,6 +16,7 @@
 
   function comp_init(blk) {
     blk.rotate = true;
+    blk.quickRotate = false;
   };
 
 
@@ -25,7 +26,16 @@
 
 
   function comp_ex_isValidTg(blk, oblk) {
-    return MDL_cond._isMiner(oblk) || MDL_cond._isPump(oblk) || MDL_cond._isFactory(oblk) || MDL_cond._isAssistanceBlock(oblk) || MDL_cond._isTurret(oblk);
+    return tryFun(oblk.ex_canSwitchDisable, oblk, true) && (
+      tryFun(oblk.ex_isSwitchDisableTg, oblk, false)
+        || MDL_cond._isMiner(oblk)
+        || MDL_cond._isMassDriver(oblk)
+        || MDL_cond._isPump(oblk)
+        || MDL_cond._isNonReactorGenerator(oblk)
+        || MDL_cond._isFactory(oblk)
+        || MDL_cond._isAssistanceBlock(oblk)
+        || MDL_cond._isTurret(oblk)
+    );
   };
 
 

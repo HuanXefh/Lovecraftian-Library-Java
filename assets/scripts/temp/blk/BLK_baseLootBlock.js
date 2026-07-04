@@ -35,7 +35,25 @@
     .setParent(null)
     .setTags()
     .setParam({})
-    .setMethod({}),
+    .setMethod({
+
+
+      /**
+       * @override
+       * @memberof BLK_baseLootBlock
+       * @instance
+       * @return {boolean}
+       */
+      ex_isSwitchDisableTg: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+    }),
 
 
     /**

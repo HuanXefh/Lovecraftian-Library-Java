@@ -744,6 +744,8 @@
   class WaveEffect extends Effect {};
   /** @global mindustry.entities.effect.WrapEffect */
   class WrapEffect extends Effect {};
+  /** @global mindustry.entities.effect.NoiseEffect */
+  class NoiseEffect extends Effect {};
   /** @global mindustry.entities.Mover */
   class Mover {};
   /** @global mindustry.entities.units.BuildPlan */
@@ -1112,6 +1114,8 @@
   class RepairBeamWeapon extends Weapon {};
   /** @global mindustry.type.Sector */
   class Sector {};
+  /** @global mindustry.type.SectorDifficulty */
+  class SectorDifficulty {};
   /** @global mindustry.type.MapLocales */
   class MapLocales {};
   /** @global mindustry.type.ItemStack */
