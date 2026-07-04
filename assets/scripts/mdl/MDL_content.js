@@ -261,11 +261,11 @@
   /**
    * Gets damage affinity type of some unit type.
    * @param {UnitTypeGn} utp_gn
-   * @return {string|null}
+   * @return {string}
    */
   const _unitDmgType = function(utp_gn) {
     let utp = _ct(utp_gn, "utp");
-    if(utp == null) return null;
+    if(utp == null) return "none";
 
     let arr = DB_unit.db["grpParam"]["typeTagMap"];
 

@@ -167,37 +167,36 @@
   /**
    * Gets multiplier on final damage based on type affinity.
    * @param {Unit} unit
-   * @param {string} type
+   * @param {string} nameType
    * @param {number} mtp - The multiplier returned if type matches.
    * @return {number}
    */
-  const _dmgMtp_type = function(unit, type, mtp) {
-    let tag = DB_unit.db["grpParam"]["typeTagMap"].read(type);
-    return tag == null || !checkTempTag(unit.type, tag) ?
+  const _dmgMtpByType = function(unit, nameType, mtp) {
+    return !checkTempTag(unit.type, CLS_unitDamageType.getTag(nameType)) ?
       1.0 :
       mtp;
   };
-  exports._dmgMtp_type = _dmgMtp_type;
+  exports._dmgMtpByType = _dmgMtpByType;
 
 
   /**
    * Calculates final damage multiplier with given type multipliers.
    * @param {Unit} unit
-   * @param {Array|null} typeMtpArr - <ROW>: type, mtp.
+   * @param {Array|null} typeMtpArr - <ROW>: nameType, mtp.
    * @return {number}
    */
-  const _dmgMtp_typeMtpArr = function(unit, typeMtpArr) {
+  const _dmgMtpByTypeMtpArr = function(unit, typeMtpArr) {
     if(typeMtpArr == null || typeMtpArr.length === 0) return 1.0;
 
     let i = 0, iCap = typeMtpArr.iCap(), mtp = 1.0;
     while(i < iCap) {
-      mtp *= _dmgMtp_type(unit, typeMtpArr[i], typeMtpArr[i + 1]);
+      mtp *= _dmgMtpByType(unit, typeMtpArr[i], typeMtpArr[i + 1]);
       i += 2;
     };
 
     return mtp;
   };
-  exports._dmgMtp_typeMtpArr = _dmgMtp_typeMtpArr;
+  exports._dmgMtpByTypeMtpArr = _dmgMtpByTypeMtpArr;
 
 
   /* <---------- event ----------> */

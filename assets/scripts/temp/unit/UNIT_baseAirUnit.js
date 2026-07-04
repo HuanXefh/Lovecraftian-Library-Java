@@ -28,7 +28,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "UNIT_baseAirUnit").initClass()
   .setParent(UnitType)
-  .setTags()
+  .setTags("dmg0type-air")
   .setParam({
 
 

@@ -19,7 +19,7 @@
 
     if(e instanceof Healthc) {
       let
-        dmg = bul.damage * FRAG_attack._dmgMtp_typeMtpArr(e, btp.typeMtpArr),
+        dmg = bul.damage * FRAG_attack._dmgMtpByTypeMtpArr(e, btp.typeMtpArr),
         shield = e instanceof Shieldc ? Math.max(e.shield, 0.0) : 0.0;
 
       if(btp.maxDamageFraction > 0.0) {

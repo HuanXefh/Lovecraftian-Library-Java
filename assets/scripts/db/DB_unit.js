@@ -85,13 +85,6 @@ const db = {
 
 
     /**
-     * These units are related to core in some way (not only spawned by core).
-     * <br> <ROW>: utp.
-     */
-    coreUnit: [],
-
-
-    /**
      * These units are not robots, and they don't create remains upon death.
      * <br> <ROW>: utp.
      */
@@ -155,7 +148,7 @@ const db = {
 
 
     /**
-     * Outline parameters used for units & turrets in some mod.
+     * Outline parameters used for units & turrets in some mods.
      * Note that only contents created with content template will be affected.
      * <br> <ROW>: nmMod, [stroke, color].
      */
@@ -163,47 +156,6 @@ const db = {
 
       "loveclab", [2, "373a4d"],
       "projreind", [2, "373a4d"],
-
-    ],
-
-
-    /**
-     * Maps a type to some template tag.
-     * The type used here can affect damage dealt by Lovec bullets.
-     * <br> <ROW>: type, tempTag.
-     */
-    typeTagMap: [
-
-      // Large and powerful units
-      "experimental", "utp-exp",
-      // Non-robot units
-      "biotic", "utp-bio",
-      // Small ground units
-      "infantry", "utp-inf",
-      // Large mech units
-      "titan", "utp-titan",
-      // Large leg units
-      "behemoth", "utp-beh",
-      // Non-tank wheeled units
-      "vehicle", "utp-veh",
-      // Tank units
-      "tank", "utp-tank",
-      // Regular air units
-      "aircraft", "utp-air",
-      // Balloon air units
-      "airship", "utp-aship",
-      // Small rotor air units
-      "drone", "utp-drone",
-      // Satellite units
-      "satellite", "utp-sat",
-      // Large space air units
-      "spacecraft", "utp-spa",
-      // Small naval units
-      "boat", "utp-boat",
-      // Regular naval units
-      "ship", "utp-ship",
-      // Submarine units
-      "submarine", "utp-sub",
 
     ],
 

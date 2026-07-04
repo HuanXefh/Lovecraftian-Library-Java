@@ -137,6 +137,8 @@
   /** @global */
   CLS_unitStatDisplayMode = require("lovec/cls/ui/CLS_unitStatDisplayMode");
   /** @global */
+  CLS_unitDamageType = require("lovec/cls/type/CLS_unitDamageType");
+  /** @global */
   MDL_attr = require("lovec/mdl/MDL_attr");
   /** @global */
   FRAG_faci = require("lovec/frag/FRAG_faci");
@@ -195,7 +197,7 @@
   /** @global */
   CLS_dialogFlowBuilder = require("lovec/cls/util/builder/CLS_dialogFlowBuilder");
   /** @global */
-  CLS_achievement = require("lovec/cls/util/CLS_achievement");
+  CLS_achievement = require("lovec/cls/type/CLS_achievement");
   /** @global */
   CLS_window = require("lovec/cls/ui/CLS_window");
   /** @global */
@@ -219,6 +221,7 @@
   require("lovec/tp/TP_sortF");
   require("lovec/tp/TP_stat");
   require("lovec/tp/TP_unitStatDisplay");
+  require("lovec/tp/TP_unitDamageType");
   require("lovec/run/RUN_input");
   require("lovec/run/RUN_logic");
   require("lovec/run/RUN_render");

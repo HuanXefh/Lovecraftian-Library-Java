@@ -411,10 +411,10 @@
       utp.constructor = EntityMapping.map(utp.delegee.entityName);
     };
 
-    // Resolve type affinity for damage
-    let dmgType = MDL_content._unitDmgType(utp);
-    if(dmgType != null) {
-      utp.databaseTag = "lovec-dmg0type-" + dmgType;
+    // Resolve unit damage type
+    let dmgType = CLS_unitDamageType.getTypeByUtp(utp);
+    if(dmgType !== CLS_unitDamageType.NONE) {
+      utp.databaseTag = "common-dmg0type-" + dmgType.getName();
     };
 
     if(!tryJsProp(utp, "skipOutlineSetup", false)) FRAG_faci.setupOutline(utp);

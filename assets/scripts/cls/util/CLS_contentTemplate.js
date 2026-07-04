@@ -160,11 +160,19 @@
    */
   CLS_contentTemplate.setTags = function() {
     this.paramObj.tempTags = Array.from(arguments);
-    MDL_event._c_onLoad(() => {
-      this.paramObj.tempTags.forEachFast(tag => {
-        if(!registeredTags.includes(tag) && !DB_item.db["intmd"]["tag"].includes(tag)) console.warn("[LOVEC] Template tag ${1} has not been registered yet!".format(tag.color(Pal.accent)));
+    if(this.paramObj.tempTags.length > 0) {
+      MDL_event._c_onLoad(() => {
+        this.paramObj.tempTags.forEachFast(tag => {
+          if(
+            !registeredTags.includes(tag)
+              && !tag.startsWith("dmg0type")
+              && !DB_item.db["intmd"]["tag"].includes(tag)
+          ) {
+            console.warn("[LOVEC] Template tag ${1} has not been registered yet!".format(tag.color(Pal.accent)));
+          };
+        });
       });
-    });
+    };
 
     return this;
   };
@@ -306,36 +314,6 @@
     Object._it(this.funObj, (nm, fun) => {
       // Get the final method and wrap its length
       obj[nm] = mixTempMethods(null, fun, MethodMixModes.BUILD, nm);
-      /*obj[nm] = fun.noSuper ?
-        fun.wrapLen(fun.argLen) :
-        (
-          fun.superBoolMode === "and" ?
-            function() {
-              return this["super$" + fun.nm].apply(this, arguments) && fun.apply(this, arguments);
-            }.wrapLen(fun.argLen) :
-            fun.superBoolMode === "or" ?
-              function() {
-                return this["super$" + fun.nm].apply(this, arguments) || fun.apply(this, arguments);
-              }.wrapLen(fun.argLen) :
-              fun.mergeMode === "object" ?
-                function() {
-                  return Object.mergeObj(this["super$" + fun.nm].apply(this, arguments), fun.apply(this, arguments));
-                }.wrapLen(fun.argLen) :
-                fun.mergeMode === "array" ?
-                  function() {
-                    return this["super$" + fun.nm].apply(this, arguments).pushAll(fun.apply(this, arguments));
-                  }.wrapLen(fun.argLen) :
-                  typeof fun.mergeMode === "function" ?
-                    function() {
-                      TMP_TUP.with(this["super$" + fun.nm].apply(this, arguments), fun.apply(this, arguments));
-                      return fun.mergeMode.apply(this, TMP_TUP);
-                    }.wrapLen(fun.argLen) :
-                    function() {
-                      this["super$" + fun.nm].apply(this, arguments);
-                      return fun.apply(this, arguments);
-                    }.wrapLen(fun.argLen)
-        );
-      obj[nm].argLen = fun.argLen;*/
     });
 
     // Utility methods on the content created

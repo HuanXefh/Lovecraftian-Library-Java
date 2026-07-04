@@ -383,7 +383,7 @@
       isRemote = DB_unit.db["class"]["btp"]["remote"].hasIns(bul.type),
       isRemoteCur = (dst > (bul.hitSize + _hitSize(e)) * 0.7499);
     if(e instanceof Unit && tryJsProp(bul.type, "typeMtpArr") != null) {
-      dmg *= FRAG_attack._dmgMtp_typeMtpArr(e, bul.type.delegee.typeMtpArr);
+      dmg *= FRAG_attack._dmgMtpByTypeMtpArr(e, bul.type.delegee.typeMtpArr);
     };
     let
       mtp = e instanceof Unit ?

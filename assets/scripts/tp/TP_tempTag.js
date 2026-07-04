@@ -74,15 +74,6 @@
     this.registerTag("env-dpliq");
 
 
-    /* <------------------------------ unit ------------------------------ */
-
-
-    // For bullet damage multiplier
-    DB_unit.db["grpParam"]["typeTagMap"].forEachRow(2, (type, tag) => {
-      this.registerTag(tag);
-    });
-
-
     /* <------------------------------ status effect ------------------------------ */
 
 
