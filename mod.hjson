@@ -20,8 +20,13 @@ softDependencies: [
 
 description:
 '''
-A JavaScript library for my other mods, with codes for class structure, multi-crafters, recipe dictionary, damage display, etc.
-Well, not 100% JavaScript.
+A JavaScript-based library for my other mods.
+
+Main features:
+- JS approach to class and interface.
+- Content template for method inheritance and mixing, along with more powerful `extend` methods.
+- Multi-crafters.
+- QOL functionalities like recipe dictionary, health bar and damage splash text.
 '''
 
 version: 101.3.26070404
