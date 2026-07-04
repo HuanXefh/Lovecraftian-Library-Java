@@ -101,7 +101,7 @@ const db = {
       dehydrative: [],
 
 
-      unstable: [],
+      acetylene: [],
 
 
     },
@@ -397,6 +397,7 @@ const db = {
 
         "ammoniacal", 8.0,
         "chloric", 6.0,
+        "acetylene", 1.0,
 
       ],
 

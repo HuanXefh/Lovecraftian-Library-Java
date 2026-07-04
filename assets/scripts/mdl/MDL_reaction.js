@@ -22,7 +22,12 @@
 
 
   function _isReac(reac) {
-    return typeof reac === "string" && (reac.startsWith("GROUP: ") || reac.startsWith("ITEMGROUP: ") || reac.startsWith("CONST: "));
+    return typeof reac === "string" && reac.startsWithAny(
+      "GROUP: ",
+      "ITEMGROUP: ",
+      "MATERIAL: ",
+      "CONST: ",
+    );
   };
 
 
@@ -82,14 +87,25 @@
   const _reactions = function thisFun(reac1, reac2) {
     let arr = [];
 
-    let grps1 = _reacGrps(thisFun.grpsCaches[0], reac1);
-    let grps2 = _reacGrps(thisFun.grpsCaches[1], reac2);
+    if(typeof reac1 === "string" && reac1.startsWith("MATERIAL: ")) {
+      // Material-type reaction
+      reac1 = reac1.replace("MATERIAL: ", "");
+      let grps = _reacGrps(thisFun.grpsCaches[1], reac2);
+      grps.forEachFast(grp => {
+        thisFun.tmpTup.with(reac1, grp);
+        arr.pushNonNull(DB_reaction.db["material"].read(thisFun.tmpTup, null, false));
+      });
+    } else {
+      // Regular reaction
+      let grps1 = _reacGrps(thisFun.grpsCaches[0], reac1);
+      let grps2 = _reacGrps(thisFun.grpsCaches[1], reac2);
 
-    Array.forEachPair(grps1, grps2, (grp1, grp2) => {
-      thisFun.tmpTup.with(grp1, grp2);
-      arr.pushNonNull(DB_reaction.db["fluid"].read(thisFun.tmpTup, null, true));
-      arr.pushNonNull(DB_reaction.db["item"].read(thisFun.tmpTup, null, true));
-    });
+      Array.forEachPair(grps1, grps2, (grp1, grp2) => {
+        thisFun.tmpTup.with(grp1, grp2);
+        arr.pushNonNull(DB_reaction.db["fluid"].read(thisFun.tmpTup, null, true));
+        arr.pushNonNull(DB_reaction.db["item"].read(thisFun.tmpTup, null, true));
+      });
+    };
 
     return arr;
   }

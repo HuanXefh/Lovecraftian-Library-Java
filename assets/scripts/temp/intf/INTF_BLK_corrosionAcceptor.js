@@ -35,6 +35,16 @@
     if(b.block.delegee.cloggable) {
       b.ex_updateClogging(liqCur, amt);
     };
+
+    if(
+      !Vars.net.client()
+        && b.block.delegee.matGrp != null
+        && Mathf.chanceDelta(0.1)
+        && !b.block.consumesLiquid(liqCur)
+        && b.liquids.get(liqCur) / b.block.liquidCapacity > 0.1
+    ) {
+      MDL_reaction.handleReaction("MATERIAL: " + b.block.delegee.matGrp, liqCur, 10.0, b);
+    };
   };
 
 

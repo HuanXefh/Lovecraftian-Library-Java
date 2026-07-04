@@ -4,6 +4,18 @@
  */
 
 
+function applyExplosion(x, y, rs, paramObj) {
+  let pow = readParam(paramObj, "pow", 1.0);
+
+  FRAG_attack._a_explosion_global(
+    x, y,
+    Mathf.lerp(40.0, 200.0, rs == null ? 1.0 : rs.explosiveness) * pow,
+    16.0 * pow,
+    2.0 + pow * 3.0,
+  );
+};
+
+
 const db = {
 
 
@@ -15,19 +27,17 @@ const db = {
    * Note that the script is called on server side only.
    * <br> <ROW>: reaction, [p, scr].
    * <br> <ARGS>: paramObj, x, y, e, rs.
-   * ---------------------------------------- */
+   */
   reaction: [
 
     // Create explosion
-    "explosion", [0.001, (paramObj, x, y, e, rs) => {
-      let pow = readParam(paramObj, "pow", 1.0);
+    "explosion", [0.006, (paramObj, x, y, e, rs) => {
+      applyExplosion(x, y, rs, paramObj);
+    }],
 
-      FRAG_attack._a_explosion_global(
-        x, y,
-        Mathf.lerp(40.0, 200.0, ct1.explosiveness) * pow,
-        16.0 * pow,
-        2.0 + pow * 3.0,
-      );
+    // Create explosion very quickly
+    "explosionFast", [0.04, (paramObj, x, y, e, rs) => {
+      applyExplosion(x, y, rs, paramObj);
     }],
 
     // Create fire
@@ -38,7 +48,7 @@ const db = {
     }],
 
     // Item changed to another item
-    "denaturing", [0.002, (paramObj, x, y, b, rs) => {
+    "denaturing", [0.01, (paramObj, x, y, b, rs) => {
       if(e == null || rs == null) return;
       if(e instanceof Building ? e.items == null : e.stack.amount < 1) return;
       let itm = MDL_content._ct(db["denaturingTarget"].read(rs.name), "rs");
@@ -94,23 +104,24 @@ const db = {
    */
   groupCond: [
 
-    "GROUP: air", (rs) => DB_fluid.db["group"]["air"].includes(rs.name),
-    "GROUP: water", (rs) => DB_fluid.db["group"]["aqueous"].includes(rs.name),
-    "GROUP: dehydrative", (rs) => DB_fluid.db["group"]["fTag"]["dehydrative"].includes(rs.name),
-    "GROUP: acidic", (rs) => DB_fluid.db["group"]["acidic"].includes(rs.name),
-    "GROUP: basic", (rs) => DB_fluid.db["group"]["basic"].includes(rs.name),
+    "GROUP: air", rs => DB_fluid.db["group"]["air"].includes(rs.name),
+    "GROUP: water", rs => DB_fluid.db["group"]["aqueous"].includes(rs.name),
+    "GROUP: dehydrative", rs => DB_fluid.db["group"]["fTag"]["dehydrative"].includes(rs.name),
+    "GROUP: acidic", rs => DB_fluid.db["group"]["acidic"].includes(rs.name),
+    "GROUP: basic", rs => DB_fluid.db["group"]["basic"].includes(rs.name),
+    "GROUP: acetylene", rs => DB_fluid.db["group"]["fTag"]["acetylene"].includes(rs.name),
 
-    "ITEMGROUP: denaturing", (rs) => db["denaturingTarget"].colIncludes(rs.name, 2, 0),
-    "ITEMGROUP: solvation", (rs) => {
+    "ITEMGROUP: denaturing", rs => db["denaturingTarget"].colIncludes(rs.name, 2, 0),
+    "ITEMGROUP: solvation", rs => {
       let obj = db["solvationTarget"];
       for(let key in obj) {
         if(obj[key].colIncludes(rs.name, 2, 0)) return true;
       };
       return false;
     },
-    "ITEMGROUP: acidic", (rs) => DB_item.db["group"]["acidic"].includes(rs.name),
-    "ITEMGROUP: basic", (rs) => DB_item.db["group"]["basic"].includes(rs.name),
-    "ITEMGROUP: sodium", (rs) => DB_item.db["group"]["sodium"].includes(rs.name),
+    "ITEMGROUP: acidic", rs => DB_item.db["group"]["acidic"].includes(rs.name),
+    "ITEMGROUP: basic", rs => DB_item.db["group"]["basic"].includes(rs.name),
+    "ITEMGROUP: sodium", rs => DB_item.db["group"]["sodium"].includes(rs.name),
 
   ],
 
@@ -137,10 +148,21 @@ const db = {
     "ITEMGROUP: denaturing", "GROUP: air", ["denaturing", {amt: 1}],
     "ITEMGROUP: solvation", "GROUP: water", ["solvation", {solvent: "water", puddleScl: 0.8}],
 
-    "ITEMGROUP: sodium", "GROUP: water", ["explosion", {pow: 1.0}],
+    "ITEMGROUP: sodium", "GROUP: water", ["explosionFast", {pow: 1.0}],
 
     "ITEMGROUP: acidic", "GROUP: basic", ["heat", {}],
     "ITEMGROUP: basic", "GROUP: acidic", ["heat", {}],
+
+  ],
+
+
+  /**
+   * List of block material group, fluid reactant and the event called.
+   * <br> <ROW>: matGrp, reac, [reaction, paramObj].
+   */
+  material: [
+
+    "copper", "GROUP: acetylene", ["explosion", {pow: 3.0}],
 
   ],
 
