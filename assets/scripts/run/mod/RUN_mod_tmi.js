@@ -18,8 +18,8 @@
 
 
     function checkTarget(parser, blk) {
-      return (parser.tempBlacklist == null || !checkCreatedByTemp(blk) || !parser.tempBlacklist.includes(blk.ex_getTempNm()))
-        && (parser.tempWhitelist == null || !checkCreatedByTemp(blk) || parser.tempWhitelist.includes(blk.ex_getTempNm()));
+      return (parser.tempBlacklist == null || !checkCreatedByTemp(blk) || !parser.tempBlacklist.includes(blk.ex_getTempName()))
+        && (parser.tempWhitelist == null || !checkCreatedByTemp(blk) || parser.tempWhitelist.includes(blk.ex_getTempName()));
     };
 
 
@@ -324,14 +324,14 @@
       isTarget(blk) {
         return checkCreatedByTemp(blk) && (
           (MDL_cond._isFactory(blk) && !blk.ex_isSubInsOf("BLK_recipeFactory") && checkTarget(this, blk))
-            || this.tempTypeMap.containsKey(blk.ex_getTempNm())
+            || this.tempTypeMap.containsKey(blk.ex_getTempName())
         );
       },
 
 
       parse(blk) {
         let rawRc = MOD_tmi._rawRc(
-          this.tempTypeMap.get(blk.ex_getTempNm(), "factory"),
+          this.tempTypeMap.get(blk.ex_getTempName(), "factory"),
           blk,
           MDL_content._craftTime(blk),
         );

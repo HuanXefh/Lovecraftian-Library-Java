@@ -16,7 +16,7 @@ const db = {
     /**
      * Maps a block/unit name before change to the changed name.
      * Used when internal name of some block is changed.
-     * <br> <ROW>: nmPrev, nmCur.
+     * <br> <ROW>: namePrev, nameCur.
      */
     migration: [
 
@@ -153,8 +153,8 @@ const db = {
     /**
      * Maps depth level to a term.
      * See {@link INTF_ENV_depthOverlay}.
-     * <br> <ROW>: lvl, [nmMod, tag].
-     * <br> <BUNDLE>: "term.<nmMod>-term-<tag>.name".
+     * <br> <ROW>: lvl, [nameMod, tag].
+     * <br> <BUNDLE>: "term.<nameMod>-term-<tag>.name".
      */
     depthName: [
 
@@ -199,7 +199,7 @@ const db = {
      * {@link PARAM.MODDED} will be true if any of these exists, which enables extra mechanics.
      * You don't need to put your mod name here, just use write `dependencies` or `softDependencies` in your mod.json.
      * <br> <CONTENTGEN>
-     * <br> <ROW>: nmMod.
+     * <br> <ROW>: nameMod.
      * ---------------------------------------- */
     lovecMod: [],
 
@@ -219,7 +219,7 @@ const db = {
 
     /**
      * Sounds listed here will be loaded beforehand, or it takes time to be loaded in game.
-     * <br> <ROW>: nmSe.
+     * <br> <ROW>: nameSe.
      */
     extraSound: [
 
@@ -231,7 +231,7 @@ const db = {
     /**
      * Used to set up draggable button group.
      * `this` in `updateScr` is the button.
-     * <br> <ROW>: nm, {rowInd, icon, isToggle, clickScr, updateScr}.
+     * <br> <ROW>: name, {rowInd, icon, isToggle, clickScr, updateScr}.
      */
     dragButton: {
 
@@ -330,7 +330,7 @@ const db = {
 
       /**
        * Buttons defined here will only be added if `PARAM.MODDED`.
-       * <br> <ROW>: nm, {rowInd, icon, isToggle, clickScr, updateScr}.
+       * <br> <ROW>: name, {rowInd, icon, isToggle, clickScr, updateScr}.
        */
       modded: [
 
@@ -515,7 +515,7 @@ const db = {
 
     /**
      * Icons populated in {@link VARGEN.icons}.
-     * <br> <ROW>: nm, regStr.
+     * <br> <ROW>: name, regStr.
      */
     icon: [
 
@@ -536,7 +536,7 @@ const db = {
 
     /**
      * Noise textures polulated in {@link VARGEN.noiseTexs}.
-     * <br> <ROW>: nm, path.
+     * <br> <ROW>: name, path.
      */
     noise: [
 
@@ -564,7 +564,7 @@ const db = {
 
       /**
        * The colors used for characters in dialog flow.
-       * <br> <ROW>: nmMod, nmChara, color.
+       * <br> <ROW>: nameMod, nameChara, color.
        */
       color: [
 

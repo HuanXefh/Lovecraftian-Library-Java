@@ -11,13 +11,13 @@
   /**
    * Lovec version of {@link EventType}.
    * @class
-   * @param {string} nm
+   * @param {string} name
    */
   const CLS_eventTrigger = newClass().initClass();
 
 
-  CLS_eventTrigger.prototype.init = function(nm) {
-    this.name = registerUniqueName(nm, insNms, "event trigger");
+  CLS_eventTrigger.prototype.init = function(name) {
+    this.name = registerUniqueName(name, insNames, "event trigger");
     this.listeners = [];
     this.glbListeners = [];
     this.onceListeners = [];
@@ -37,11 +37,11 @@
         TRIGGER.mapChange.fire(this.mapCur);
         this.mapLast = this.mapCur;
       };
-    }, "eventTrigger: ${1}".format(nm));
+    }, "eventTrigger: ${1}".format(this.name));
   };
 
 
-  const insNms = [];
+  const insNames = [];
 
 
 /*

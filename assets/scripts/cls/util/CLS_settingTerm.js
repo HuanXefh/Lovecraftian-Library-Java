@@ -11,36 +11,36 @@
   /**
    * Use to register settings, see {@link TP_setting}.
    * @class
-   * @param {string} nm
+   * @param {string} name
    * @param {function(boolean): void} valGetter - <ARGS>: useScl.
    */
   const CLS_settingTerm = newClass().initClass();
 
 
-  CLS_settingTerm.prototype.init = function(nm, valGetter) {
-    this.name = registerUniqueName(nm, insNms, "setting term");
+  CLS_settingTerm.prototype.init = function(name, valGetter) {
+    this.name = registerUniqueName(name, insNames, "setting term");
     this.valGetter = valGetter;
     this.dialSetter = null;
 
-    global.lovecUtil.db.settingTerm.push(nm, this);
+    global.lovecUtil.db.settingTerm.push(name, this);
   };
 
 
-  const insNms = [];
+  const insNames = [];
   const categSetterArr = [];
   const categSetterDebugArr = [];
 
 
   MDL_event._c_onLoad(() => {
-    function buildCateg(nmMod, nmCateg, terms) {
-      Vars.ui.settings.addCategory(MDL_bundle._term(nmMod, "settings-" + nmCateg), tb => {
+    function buildCateg(nameMod, nameCateg, terms) {
+      Vars.ui.settings.addCategory(MDL_bundle._term(nameMod, "settings-" + nameCateg), tb => {
         terms.forEachCond(term => term.dialSetter != null, term => term.dialSetter(tb));
       });
     };
 
-    categSetterArr.forEachRow(3, (nmMod, nmCateg, terms) => buildCateg(nmMod, nmCateg, terms));
+    categSetterArr.forEachRow(3, (nameMod, nameCateg, terms) => buildCateg(nameMod, nameCateg, terms));
     if(global.lovecUtil.prop.debug) {
-      categSetterDebugArr.forEachRow(3, (nmMod, nmCateg, terms) => buildCateg(nmMod, nmCateg, terms));
+      categSetterDebugArr.forEachRow(3, (nameMod, nameCateg, terms) => buildCateg(nameMod, nameCateg, terms));
     };
   }, 19880207);
 
@@ -57,14 +57,14 @@
 
   /**
    * Registers a new setting category, which will be displayed in setting dialog.
-   * <br> <BUNDLE>: "term.<nmMod>-term-settings-<nmCateg>.name".
-   * @param {string} nmMod
-   * @param {string} nmCateg
+   * <br> <BUNDLE>: "term.<nameMod>-term-settings-<nameCateg>.name".
+   * @param {string} nameMod
+   * @param {string} nameCateg
    * @param {boolean|unset} [isDebugCateg] - If true, this category is shown only in debug mode.
    * @return {void}
    */
-  CLS_settingTerm.registerCategory = function(nmMod, nmCateg, isDebugCateg) {
-    (isDebugCateg ? categSetterDebugArr : categSetterArr).write([nmMod, nmCateg], []);
+  CLS_settingTerm.registerCategory = function(nameMod, nameCateg, isDebugCateg) {
+    (isDebugCateg ? categSetterDebugArr : categSetterArr).write([nameMod, nameCateg], []);
   };
 
 
@@ -91,16 +91,16 @@
   /**
    * Used to set setting dialog.
    * If this method is not called, this setting won't show up there.
-   * @param {string} nmMod
-   * @param {string} nmCateg
+   * @param {string} nameMod
+   * @param {string} nameCateg
    * @param {function(Table): void} tableF
    * @return {this}
    */
-  CLS_settingTerm.prototype.setDialSetter = function thisFun(nmMod, nmCateg, tableF) {
-    thisFun.tmpTup.with(nmMod, nmCateg);
+  CLS_settingTerm.prototype.setDialSetter = function thisFun(nameMod, nameCateg, tableF) {
+    thisFun.tmpTup.with(nameMod, nameCateg);
 
     let terms = categSetterDebugArr.read(thisFun.tmpTup, categSetterArr.read(thisFun.tmpTup));
-    if(terms == null) throw new Error("Cannot find setting category for ${1}-${2}!".format(nmMod, nmCateg));
+    if(terms == null) throw new Error("Cannot find setting category for ${1}-${2}!".format(nameMod, nameCateg));
 
     this.dialSetter = tableF;
     terms.push(this);

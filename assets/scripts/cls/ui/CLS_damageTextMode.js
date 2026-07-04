@@ -11,15 +11,15 @@
   /**
    * Handles formatting of text used in damage display.
    * @class
-   * @param {string} nm
+   * @param {string} name
    * @param {function(Team): Color} colorGetter
    * @param {function(string): string} strGetter
    */
   const CLS_damageTextMode = newClass().initClass();
 
 
-  CLS_damageTextMode.prototype.init = function(nm, colorGetter, strGetter) {
-    this.name = registerUniqueName(nm, insNms, "damage text mode");
+  CLS_damageTextMode.prototype.init = function(name, colorGetter, strGetter) {
+    this.name = registerUniqueName(name, insNames, "damage text mode");
     this.colorGetter = tryVal(colorGetter, Function.airWhite);
     this.strGetter = tryVal(strGetter, Function.airSelf);
 
@@ -27,7 +27,7 @@
   };
 
 
-  const insNms = [];
+  const insNames = [];
   const nameModeMap = new ObjectMap();
 
 
@@ -43,11 +43,11 @@
 
   /**
    * Gets mode by name.
-   * @param {string} nm
+   * @param {string} name
    * @return {CLS_damageTextMode}
    */
-  CLS_damageTextMode.get = function(nm) {
-    return nameModeMap.get(nm);
+  CLS_damageTextMode.get = function(name) {
+    return nameModeMap.get(name);
   };
 
 

@@ -192,7 +192,7 @@
       this.setTag();
     };
 
-    this.handleNmNumArr(
+    this.handleNameNumArr(
       rc,
       DB_item.db["group"]["biomass"],
       null,
@@ -595,7 +595,7 @@
       );
     };
 
-    this.handleNmNumArr(
+    this.handleNameNumArr(
       rc,
       DB_item.db["group"]["aggregate"],
       null,

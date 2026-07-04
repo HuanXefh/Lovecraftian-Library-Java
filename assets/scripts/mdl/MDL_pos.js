@@ -1149,15 +1149,15 @@
 
   /**
    * Gets a player unit by name.
-   * @param {string|unset} [nm] - Leave empty to return yourself.
+   * @param {string|unset} [name] - Leave empty to return yourself.
    * @return {Unit|null}
    */
-  const _unitPlayerByNm = function(nm) {
-    if(nm == null) return Vars.player.unit();
-    let player = Groups.player.find(tmp => tmp.name === nm);
+  const _unitPlayerByName = function(name) {
+    if(name == null) return Vars.player.unit();
+    let player = Groups.player.find(tmp => tmp.name === name);
     return player == null ? null : player.unit();
   };
-  exports._unitPlayerByNm = _unitPlayerByNm;
+  exports._unitPlayerByName = _unitPlayerByName;
 
 
   /* loot unit */

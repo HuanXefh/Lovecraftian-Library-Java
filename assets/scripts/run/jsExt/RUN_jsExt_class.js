@@ -73,7 +73,7 @@
   /**
    * Calls super method from the parent class.
    * Will throw error if no super method found.
-   * <br> <ARGS>: nmFun, arg1, arg2, arg3, ...
+   * <br> <ARGS>: nameFun, arg1, arg2, arg3, ...
    * @typedef {function(string, ...args): any} Function#super
    */
 
@@ -81,12 +81,12 @@
   /**
    * Lets a class extend another class.
    * Should be called before {@link Function#initClass}.
-   * Super methods can be called with `this.super(nmFun, arg1, arg2, arg3, ...)` later.
+   * Super methods can be called with `this.super(nameFun, arg1, arg2, arg3, ...)` later.
    * @param {Function} cls
-   * @param {string|unset} [nm] - Name of the new class.
+   * @param {string|unset} [name] - Name of the new class.
    * @return {this}
    */
-  Function.prototype.extendClass = function(cls, nm) {
+  Function.prototype.extendClass = function(cls, name) {
     if(typeof cls !== "function" || !cls.__IS_CLASS__) ERROR_HANDLER.throw("notClass", cls);
     if(this.__IS_CONTENT_TEMPLATE__ && !cls.__IS_CONTENT_TEMPLATE__) ERROR_HANDLER.throw("notContentTemplate", cls);
 
@@ -101,14 +101,14 @@
     // A second abstract class??? `initAbstrClass` again
     this.__IS_ABSTRACT_CLASS__ = false;
 
-    this.super = function(nmFun) {
+    this.super = function(nameFun) {
       let clsParent = this.getSuper();
       if(clsParent === Function) ERROR_HANDLER.throw("noSuperClass");
       if(clsParent.__IS_ABSTRACT_CLASS__) ERROR_HANDLER.throw("abstractSuper");
-      let funParent = clsParent[nmFun];
-      if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nmFun);
+      let funParent = clsParent[nameFun];
+      if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nameFun);
 
-      return funParent === this[nmFun] ?
+      return funParent === this[nameFun] ?
         clsParent.super.apply(clsParent, arguments) :
         funParent.apply(this, Array.from(arguments).splice(1));
     };
@@ -116,24 +116,24 @@
     this.prototype = Object.create(cls.prototype);
     this.prototype.constructor = this;
 
-    this.prototype.super = function(nmFun) {
+    this.prototype.super = function(nameFun) {
       let clsParent = this.getClass().getSuper();
       if(clsParent === Function) ERROR_HANDLER.throw("noSuperClass");
       if(clsParent.__IS_ABSTRACT_CLASS__) ERROR_HANDLER.throw("abstractSuper");
-      let funParent = clsParent.prototype[nmFun];
-      if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nmFun);
+      let funParent = clsParent.prototype[nameFun];
+      if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nameFun);
 
-      return funParent === this[nmFun] ?
+      return funParent === this[nameFun] ?
         clsParent.prototype.super.apply(clsParent.prototype, arguments) :
         funParent.apply(this, Array.from(arguments).splice(1));
     };
 
-    if(nm != null && typeof nm === "string") {
-      this.nm = nm;
+    if(name != null && typeof name === "string") {
+      this.nm = name;
       if(this.__IS_CONTENT_TEMPLATE__) {
-        if(LCTemp[nm] != null) throw new Error("Template name ${1} has already been used???".format(nm));
-        LCTemp[nm] = this;
-        LCTempParentMap.put(nm, LCTempParentMap.get(cls.nm).cpy().pushAll(cls.nm));
+        if(LCTemp[name] != null) throw new Error("Template name ${1} has already been used???".format(name));
+        LCTemp[name] = this;
+        LCTempParentMap.put(name, LCTempParentMap.get(cls.nm).cpy().pushAll(cls.nm));
       };
     } else {
       this.nm = "";
@@ -146,11 +146,11 @@
   /**
    * Alias of {@link Function#extendClass}.
    * @param {Function} cls
-   * @param {string|unset} [nm]
+   * @param {string|unset} [name]
    * @return {this}
    */
-  Function.prototype.extend = function(cls, nm) {
-    return this.extendClass(cls, nm);
+  Function.prototype.extend = function(cls, name) {
+    return this.extendClass(cls, name);
   };
 
 

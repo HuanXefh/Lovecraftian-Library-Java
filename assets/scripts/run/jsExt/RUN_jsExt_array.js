@@ -971,11 +971,11 @@
 
 
   // Condition checking for read & write methods
-  function checkArrayRow(nms, arr, rowInd, isUnordered) {
-    let i = 0, iCap = nms.iCap();
+  function checkArrayRow(names, arr, rowInd, isUnordered) {
+    let i = 0, iCap = names.iCap();
     if(!isUnordered) {
       while(i < iCap) {
-        if(arr[rowInd + i] !== nms[i]) return false;
+        if(arr[rowInd + i] !== names[i]) return false;
         i++;
       };
       return true;
@@ -986,14 +986,14 @@
       tmpArr.push(arr[rowInd + i]);
       i++;
     };
-    return nms.looseEquals(tmpArr);
+    return names.looseEquals(tmpArr);
   };
 
 
   /**
    * Reads data from a formatted array.
    * For arrays containing multiple matching results, see {@link Array#readList}.
-   * @param {string|Array<string>} nms_p
+   * @param {string|Array<string>} names_p
    * @param {any} [def]
    * @param {boolean|unset} [isUnordered]
    * @return {any}
@@ -1004,12 +1004,12 @@
    *   "a", "c", 2,
    * ].read(["b", "c"]);                // Returns 1
    */
-  Array.prototype.read = function(nms_p, def, isUnordered) {
+  Array.prototype.read = function(names_p, def, isUnordered) {
     let i = 0, iCap = this.iCap();
-    let nms = nms_p instanceof Array ? nms_p : [nms_p];
-    let jCap = nms.iCap();
+    let names = names_p instanceof Array ? names_p : [names_p];
+    let jCap = names.iCap();
     while(i < iCap) {
-      if(checkArrayRow(nms, this, i, isUnordered)) return this[i + jCap];
+      if(checkArrayRow(names, this, i, isUnordered)) return this[i + jCap];
       i += jCap + 1;
     };
 
@@ -1020,16 +1020,16 @@
   /**
    * Variant of {@link Array#read} that returns row index.
    * Will return -1 if not found.
-   * @param {string|Array<string>} nms_p
+   * @param {string|Array<string>} names_p
    * @param {boolean|unset} [isUnordered]
    * @return {number}
    */
-  Array.prototype.readRowInd = function(nms_p, isUnordered) {
+  Array.prototype.readRowInd = function(names_p, isUnordered) {
     let i = 0, iCap = this.iCap();
-    let nms = nms_p instanceof Array ? nms_p : [nms_p];
-    let jCap = nms.iCap();
+    let names = names_p instanceof Array ? names_p : [names_p];
+    let jCap = names.iCap();
     while(i < iCap) {
-      if(checkArrayRow(nms, this, i, isUnordered)) return Math.round(i / (jCap + 1));
+      if(checkArrayRow(names, this, i, isUnordered)) return Math.round(i / (jCap + 1));
       i += jCap + 1;
     };
 
@@ -1080,18 +1080,18 @@
 
   /**
    * Variant of {@link Array#read} that returns all found results as a new array.
-   * @param {string|Array<string>} nms_p
+   * @param {string|Array<string>} names_p
    * @param {boolean|unset} [isUnordered]
    * @return {Array}
    */
-  Array.prototype.readList = function(nms_p, isUnordered) {
+  Array.prototype.readList = function(names_p, isUnordered) {
     let arr = [];
 
     let i = 0, iCap = this.iCap();
-    let nms = nms_p instanceof Array ? nms_p : [nms_p];
-    let jCap = nms.iCap();
+    let names = names_p instanceof Array ? names_p : [names_p];
+    let jCap = names.iCap();
     while(i < iCap) {
-      if(checkArrayRow(nms, this, i, isUnordered)) arr.push(this[i + jCap]);
+      if(checkArrayRow(names, this, i, isUnordered)) arr.push(this[i + jCap]);
       i += jCap + 1;
     };
 
@@ -1101,24 +1101,24 @@
 
   /**
    * The other side of {@link Array#read}.
-   * @param {string|Array<string>} nms_p
+   * @param {string|Array<string>} names_p
    * @param {any} val
    * @param {boolean|unset} [isUnordered]
    * @return {this}
    */
-  Array.prototype.write = function(nms_p, val, isUnordered) {
+  Array.prototype.write = function(names_p, val, isUnordered) {
     let i = 0, iCap = this.iCap();
-    let nms = nms_p instanceof Array ? nms_p : [nms_p];
-    let jCap = nms.iCap();
+    let names = names_p instanceof Array ? names_p : [names_p];
+    let jCap = names.iCap();
     while(i < iCap) {
-      if(checkArrayRow(nms, this, i, isUnordered)) {
+      if(checkArrayRow(names, this, i, isUnordered)) {
         this[i + jCap] = val;
         return this;
       };
       i += jCap + 1;
     };
 
-    this.pushAll(nms);
+    this.pushAll(names);
     this.push(val);
 
     return this;
@@ -1127,17 +1127,17 @@
 
   /**
    * Removes first matching row in a formatted array.
-   * @param {string|Array<string>} nms_p
+   * @param {string|Array<string>} names_p
    * @param {boolean|unset} [isUnordered]
    * @return {this}
    */
-  Array.prototype.removeFormatRow = function(nms_p, isUnordered) {
+  Array.prototype.removeFormatRow = function(names_p, isUnordered) {
     let i = 0, iCap = this.iCap();
-    let nms = nms_p instanceof Array ? nms_p : [nms_p];
-    let jCap = nms.iCap();
+    let names = names_p instanceof Array ? names_p : [names_p];
+    let jCap = names.iCap();
     let ind = null;
     while(i < iCap) {
-      if(checkArrayRow(nms, this, i, isUnordered)) ind = i;
+      if(checkArrayRow(names, this, i, isUnordered)) ind = i;
       i += jCap + 1;
     };
 

@@ -35,6 +35,7 @@
     /* <------------------------------ vanilla ------------------------------ */
 
 
+    name: null,
     suffix: "",
     mirror: false,
     outline: true,
@@ -58,7 +59,6 @@
 
   })
   .setParamAlias([
-    "nm", "name", null,
     "offX", "x", 0.0,
     "offY", "y", 0.0,
     "oriX", "originX", 0.0,

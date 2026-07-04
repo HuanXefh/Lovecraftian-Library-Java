@@ -193,7 +193,7 @@ const db = {
 
     /**
      * If a mod has customized building debris, don't create remains.
-     * <br> <ROW>: nmMod.
+     * <br> <ROW>: nameMod.
      */
     noRemainsMod: [
 

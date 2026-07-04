@@ -110,12 +110,12 @@
     };
 
     // Use icon sprite as the icon tag if found, for each intermediate tag
-    let nmMod = MDL_content._mod(rs), pixTag;
-    if(nmMod != null) {
+    let nameMod = MDL_content._mod(rs), pixTag;
+    if(nameMod != null) {
       tags.forEachFast(tag => {
-        if(!Core.atlas.has(nmMod + "-rs0tag-" + tag)) return;
+        if(!Core.atlas.has(nameMod + "-rs0tag-" + tag)) return;
 
-        pixTag = Core.atlas.getPixmap(nmMod + "-rs0tag-" + tag);
+        pixTag = Core.atlas.getPixmap(nameMod + "-rs0tag-" + tag);
         pixCombine = MDL_texture._pix_stack(pixBase, pixTag);
         packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine);
         pixCombine.dispose();
@@ -124,8 +124,8 @@
     };
 
     // Extra resource sprites as icon tags, if used
-    rs.extraIntmdParents.forEachFast(nmRs => {
-      pixCombine = MDL_texture._pix_ctStack(pixBase, nmRs);
+    rs.extraIntmdParents.forEachFast(nameRs => {
+      pixCombine = MDL_texture._pix_ctStack(pixBase, nameRs);
       packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine);
       pixCombine.dispose();
       alts++;

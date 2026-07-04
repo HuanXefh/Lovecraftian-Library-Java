@@ -32,9 +32,9 @@
     tempParent: null,
     tempTags: [],
   };
-  /** <ROW>: nmPropNew, nmPropOld, def. */
+  /** <ROW>: namePropNew, namePropOld, def. */
   CLS_contentTemplate.paramAliasArr = [];
-  /** <ROW>: nmProp, valGetter. */
+  /** <ROW>: nameProp, valGetter. */
   CLS_contentTemplate.paramParserArr = [];
   CLS_contentTemplate.funObj = {};
 
@@ -61,11 +61,11 @@
   /**
    * Whether this template extends some template or implements some interface.
    * For condition check, use tags whenever possible for flexibility!
-   * @param {string} nm
+   * @param {string} name
    * @return {boolean}
    */
-  CLS_contentTemplate.isSubTempOf = function(nm) {
-    return this.nm === nm || LCTempParentMap.get(this.nm).includes(nm);
+  CLS_contentTemplate.isSubTempOf = function(name) {
+    return this.nm === name || LCTempParentMap.get(this.nm).includes(name);
   };
 
 
@@ -101,7 +101,7 @@
 
   /**
    * Sets aliases for properties.
-   * @param {Array} arr - <ROW>: nmPropNew, nmPropOld, def.
+   * @param {Array} arr - <ROW>: namePropNew, namePropOld, def.
    * @return {this}
    */
   CLS_contentTemplate.setParamAlias = function(arr) {
@@ -121,7 +121,7 @@
   /**
    * Sets parsers to change value of some property before building final object.
    * `this` in the parsers refers to the object being built.
-   * @param {Array} arr - <ROW>: nmProp, valGetter
+   * @param {Array} arr - <ROW>: nameProp, valGetter
    * @return {this}
    * @example
    * // The property "file" is a path string that needs to be converted
@@ -184,27 +184,27 @@
    * <br> "__PARAM_OBJ_SETTER__" - Result will be used in `setParam`.
    * <br> "__PARAM_ALIAS_SETTER__" - Result will be used in `setParamAlias`.
    * <br> "__PARAM_PARSER_SETTER__" - Result will be used in `setParamParser`.
-   * @param {Object<string, TemplateFunction>} nmFunObj
+   * @param {Object<string, TemplateFunction>} nameFunObj
    * @param {boolean|unset} [isFromIntf] - Do not set this!
    * @return {this}
    */
-  CLS_contentTemplate.setMethod = function(nmFunObj, isFromIntf) {
+  CLS_contentTemplate.setMethod = function(nameFunObj, isFromIntf) {
     const thisCls = this;
 
-    Object._it(nmFunObj, (nm, fun) => {
+    Object._it(nameFunObj, (name, fun) => {
       // Internal methods used in interfaces
-      if(nm === "__PROTO__") {
+      if(name === "__PROTO__") {
         throw new Error("Do not set prototype properties for content template interface!");
       };
-      if(nm === "__PARAM_OBJ_SETTER__") {
+      if(name === "__PARAM_OBJ_SETTER__") {
         thisCls.setParam(fun());
         return;
       };
-      if(nm === "__PARAM_ALIAS_SETTER__") {
+      if(name === "__PARAM_ALIAS_SETTER__") {
         thisCls.setParamAlias(fun());
         return;
       };
-      if(nm === "__PARAM_PARSER_SETTER__") {
+      if(name === "__PARAM_PARSER_SETTER__") {
         thisCls.setParamParser(fun());
         return;
       };
@@ -213,27 +213,27 @@
 
       if(fun.override) {
         // Override the previous method
-        fun.funPrev = thisCls.funObj[nm];
-        thisCls.funObj[nm] = fun;
+        fun.funPrev = thisCls.funObj[name];
+        thisCls.funObj[name] = fun;
       } else {
-        let superFun = thisCls.funObj[nm];
+        let superFun = thisCls.funObj[name];
         if(superFun != null) {
-          if((fetchSetting("test-intf-nosuper-warning") ? true : !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(nm.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.nm.color(Pal.accent)));
-          if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(nm.color(Pal.accent), fun.argLen, this.nm.color(Pal.accent)));
+          if((fetchSetting("test-intf-nosuper-warning") ? true : !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(name.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.nm.color(Pal.accent)));
+          if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(name.color(Pal.accent), fun.argLen, this.nm.color(Pal.accent)));
         };
-        thisCls.funObj[nm] = mixTempMethods(superFun, fun, MethodMixModes.NORMAL);
+        thisCls.funObj[name] = mixTempMethods(superFun, fun, MethodMixModes.NORMAL);
       };
-      thisCls.funObj[nm].nm = nm;
-      if(!thisCls.funObj[nm].noSuper && nm.startsWith("ex_")) {
+      thisCls.funObj[name].nm = name;
+      if(!thisCls.funObj[name].noSuper && name.startsWith("ex_")) {
         let str = "";
-        Object._it(nmFunObj, (nm, fun) => {
-          str += "> " + nm + "\n";
+        Object._it(nameFunObj, (nnamem, fun) => {
+          str += "> " + name + "\n";
           str += fun;
         });
         console.warn(String.multiline(
           '[LOVEC] Found an "ex_xxx" method without `noSuper = true` in ${1}:'.format(this.nm.color(Pal.accent)),
-          nm,
-          thisCls.funObj[nm],
+          name,
+          thisCls.funObj[name],
           "Full object:",
           str,
         ));
@@ -279,52 +279,52 @@
     let obj = {};
     if(this.getParent() == null) ERROR_HANDLER.throw("contentTemplateNoParentJavaClass");
 
-    Object._it(this.paramObj, (nm, def) => {
+    Object._it(this.paramObj, (name, def) => {
       // Skip template parent, or an error jumps out of nowhere
-      if(nm === "tempParent") return;
+      if(name === "tempParent") return;
       // Copy template tags to avoid modification on the template
-      if(nm === "tempTags") {
-        obj[nm] = paramObj == null || paramObj[nm] === undefined ? def.cpy() : paramObj[nm];
+      if(name === "tempTags") {
+        obj[name] = paramObj == null || paramObj[name] === undefined ? def.cpy() : paramObj[name];
         return;
       };
 
-      obj[nm] = paramObj == null || paramObj[nm] === undefined ? def : paramObj[nm];
+      obj[name] = paramObj == null || paramObj[name] === undefined ? def : paramObj[name];
     });
-    this.paramAliasArr.forEachRow(3, (nmPropNew, nmPropOld, def) => {
+    this.paramAliasArr.forEachRow(3, (namePropNew, namePropOld, def) => {
       // Migrate alias properties to real ones
-      if(obj[nmPropNew] === undefined) {
-        obj[nmPropOld] = def;
-      } else if(obj[nmPropNew] === "!ALIAS") {
-        obj[nmPropOld] = def;
-        delete obj[nmPropNew];
+      if(obj[namePropNew] === undefined) {
+        obj[namePropOld] = def;
+      } else if(obj[namePropNew] === "!ALIAS") {
+        obj[namePropOld] = def;
+        delete obj[namePropNew];
       } else {
-        obj[nmPropOld] = obj[nmPropNew];
-        delete obj[nmPropNew];
+        obj[namePropOld] = obj[namePropNew];
+        delete obj[namePropNew];
       };
     });
-    this.paramParserArr.forEachRow(2, (nmProp, parser) => {
-      obj[nmProp] = parser.apply(obj, [obj[nmProp]]);
+    this.paramParserArr.forEachRow(2, (nameProp, parser) => {
+      obj[nameProp] = parser.apply(obj, [obj[nameProp]]);
     });
-    Object._it(obj, (nm, prop) => {
+    Object._it(obj, (name, prop) => {
       // When the property is a `Prov`, use the content instead
-      if(prop instanceof Prov) obj[nm] = prop.get();
+      if(prop instanceof Prov) obj[name] = prop.get();
       // When the property is a `Cons`, pass the object to it
-      if(prop instanceof Cons) obj[nm] = prop.get(obj);
+      if(prop instanceof Cons) obj[name] = prop.get(obj);
     });
-    Object._it(this.funObj, (nm, fun) => {
+    Object._it(this.funObj, (name, fun) => {
       // Get the final method and wrap its length
-      obj[nm] = mixTempMethods(null, fun, MethodMixModes.BUILD, nm);
+      obj[name] = mixTempMethods(null, fun, MethodMixModes.BUILD, name);
     });
 
     // Utility methods on the content created
     obj.ex_getTemp = function() {
       return thisTemp;
     };
-    obj.ex_getTempNm = function() {
+    obj.ex_getTempName = function() {
       return thisTemp.nm;
     };
-    obj.ex_isSubInsOf = function(nm) {
-      return obj.ex_getTemp().isSubTempOf(nm);
+    obj.ex_isSubInsOf = function(name) {
+      return obj.ex_getTemp().isSubTempOf(name);
     };
 
     return obj;

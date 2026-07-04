@@ -15,8 +15,8 @@
 
 
   function comp_init(sta) {
-    DB_status.db["map"]["affinity"].read(sta.name, Array.air).forEachRow(2, (nmSta, scr) => {
-      let osta = MDL_content._ct(nmSta, "sta");
+    DB_status.db["map"]["affinity"].read(sta.name, Array.air).forEachRow(2, (nameSta, scr) => {
+      let osta = MDL_content._ct(nameSta, "sta");
       if(osta != null) sta.affinity(osta, scr);
     });
 

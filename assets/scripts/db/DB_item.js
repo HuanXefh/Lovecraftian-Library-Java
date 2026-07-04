@@ -150,7 +150,7 @@ const db = {
 
     /**
      * "GROUP: xxx" in recipe I/O arrays.
-     * <br> <ROW>: grpStr, [nmRs, paramObj].
+     * <br> <ROW>: grpStr, [nameRs, paramObj].
      */
     rcGroup: [],
 
@@ -229,7 +229,7 @@ const db = {
     /**
      * Maps intermediate tags to their localized names for name insertion.
      * Used for some tags that don't have separate content templates.
-     * <br> <ROW>: tag, nm.
+     * <br> <ROW>: tag, name.
      */
     insertName: [
 

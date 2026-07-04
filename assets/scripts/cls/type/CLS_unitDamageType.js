@@ -42,7 +42,7 @@
    * @param {string} name
    * @return {CLS_unitDamageType}
    */
-  CLS_unitDamageType.getType = function(name) {
+  CLS_unitDamageType.get = function(name) {
     let type = nameTypeMap.get(name);
     if(type == null) throw new Error("Unregistered unit damage type: " + name);
     return type;
@@ -55,7 +55,7 @@
    * @param {UnitTypeGn} utp_gn
    * @return {CLS_unitDamageType}
    */
-  CLS_unitDamageType.getTypeByUtp = function(utp_gn) {
+  CLS_unitDamageType.getByUtp = function(utp_gn) {
     let utp = MDL_content._ct(utp_gn, "utp");
     if(utp == null) return CLS_unitDamageType.NONE;
 
@@ -78,7 +78,7 @@
    * @return {string}
    */
   CLS_unitDamageType.getTag = function(name) {
-    return CLS_unitDamageType.getType(name).getTag();
+    return CLS_unitDamageType.get(name).getTag();
   };
 
 

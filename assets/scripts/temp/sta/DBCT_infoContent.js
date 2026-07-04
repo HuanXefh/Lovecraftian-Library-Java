@@ -15,13 +15,13 @@
 
 
   function comp_init(sta) {
-    if(sta.nmInfo == null) ERROR_HANDLER.throw("nullArgument", "nmInfo");
+    if(sta.nameInfo == null) ERROR_HANDLER.throw("nullArgument", "nameInfo");
 
     sta.databaseCategory = "lovec-information";
 
     MDL_content.rename(
       sta,
-      MDL_bundle._info(sta.minfo.mod.name, "content-" + sta.nmInfo),
+      MDL_bundle._info(sta.minfo.mod.name, "content-" + sta.nameInfo),
     );
 
     MDL_event._c_onLoad(() => {
@@ -38,7 +38,7 @@
       MDL_table.__btnSmall(tb, "I", () => {
         !sta.ex_checkDbctUnlocked() ?
           MDL_ui.show_fadeInfo("lovec", "info-locked") :
-          fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.nmInfo);
+          fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.nameInfo);
       })
       .left()
       .padLeft(28.0)
@@ -69,12 +69,12 @@
 
     /**
      * <PARAM>: Name for information, don't include mod name here. The title will be used as content name.
-     * <br> <BUNDLE-title>: "info.<nmMod>-info-content-<nmInfo>.name".
-     * <br> <BUNDLE-text>: "info.<nmMod>-info-content-<nmInfo>.description".
+     * <br> <BUNDLE-title>: "info.<nameMod>-info-content-<nameInfo>.name".
+     * <br> <BUNDLE-text>: "info.<nameMod>-info-content-<nameInfo>.description".
      * @memberof DBCT_infoContent
      * @instance
      */
-    nmInfo: null,
+    nameInfo: null,
 
 
   })

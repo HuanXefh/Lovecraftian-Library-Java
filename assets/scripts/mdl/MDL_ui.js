@@ -157,17 +157,17 @@
 
   /**
    * Displays information at screen center.
-   * @param {string|unset} [nmMod]
+   * @param {string|unset} [nameMod]
    * @param {string|unset} [bp]
    * @param {number|unset} [timeS]
    * @return {void}
    */
-  const show_announce = function(nmMod, bp, timeS) {
-    if(nmMod == null) nmMod = "lovec";
+  const show_announce = function(nameMod, bp, timeS) {
+    if(nameMod == null) nameMod = "lovec";
     if(bp == null) bp = "test";
     if(timeS == null) timeS = 3.0;
 
-    Vars.ui.announce(MDL_bundle._info(nmMod, bp), timeS);
+    Vars.ui.announce(MDL_bundle._info(nameMod, bp), timeS);
   }
   .setAnno("non-headless");
   exports.show_announce = show_announce;
@@ -175,17 +175,17 @@
 
   /**
    * Displays information that fades out at upper position.
-   * @param {string|unset} [nmMod]
+   * @param {string|unset} [nameMod]
    * @param {string|unset} [bp]
    * @param {number|unset} [timeS]
    * @return {void}
    */
-  const show_fadeInfo = function(nmMod, bp, timeS) {
-    if(nmMod == null) nmMod = "lovec";
+  const show_fadeInfo = function(nameMod, bp, timeS) {
+    if(nameMod == null) nameMod = "lovec";
     if(bp == null) bp = "test";
     if(timeS == null) timeS = 3.0;
 
-    Vars.ui.showInfoFade(MDL_bundle._info(nmMod, bp), timeS);
+    Vars.ui.showInfoFade(MDL_bundle._info(nameMod, bp), timeS);
   }
   .setAnno("non-headless");
   exports.show_fadeInfo = show_fadeInfo;
@@ -194,19 +194,19 @@
   /**
    * Content unlocked, sector captured...
    * Only possible to show in game.
-   * @param {string|unset} [nmMod]
+   * @param {string|unset} [nameMod]
    * @param {string|unset} [bp]
    * @param {TextureRegionDrawable|unset} [icon]
    * @param {number|unset} [w]
    * @return {void}
    */
-  const show_toast = function(nmMod, bp, icon, w) {
-    if(nmMod == null) nmMod = "lovec";
+  const show_toast = function(nameMod, bp, icon, w) {
+    if(nameMod == null) nameMod = "lovec";
     if(bp == null) bp = "test";
     if(icon == null) icon = VARGEN.icons.ohno;
     if(w == null) w = -1.0;
 
-    Vars.ui.hudfrag.showToast(icon, w, MDL_bundle._info(nmMod, bp));
+    Vars.ui.hudfrag.showToast(icon, w, MDL_bundle._info(nameMod, bp));
   }
   .setAnno("non-headless");
   exports.show_toast = show_toast;
@@ -216,17 +216,17 @@
    * Displays information at some world position.
    * @param {number} x
    * @param {number} y
-   * @param {string|unset} [nmMod]
+   * @param {string|unset} [nameMod]
    * @param {string|unset} [bp]
    * @param {number|unset} [timeS]
    * @return {void}
    */
-  const show_label = function(x, y, nmMod, bp, timeS) {
-    if(nmMod == null) nmMod = "lovec";
+  const show_label = function(x, y, nameMod, bp, timeS) {
+    if(nameMod == null) nameMod = "lovec";
     if(bp == null) bp = "test";
     if(timeS == null) timeS = 3.0;
 
-    Vars.ui.showLabel(MDL_bundle._info(nmMod, bp), timeS, x, y);
+    Vars.ui.showLabel(MDL_bundle._info(nameMod, bp), timeS, x, y);
   }
   .setAnno("non-headless");
   exports.show_label = show_label;
@@ -234,16 +234,16 @@
 
   /**
    * Displays an error dialog.
-   * @param {string|unset} [nmMod]
+   * @param {string|unset} [nameMod]
    * @param {string|unset} [bp]
    * @return {void}
    */
-  const show_error = function(nmMod, bp) {
-    if(nmMod == null) nmMod = "lovec";
+  const show_error = function(nameMod, bp) {
+    if(nameMod == null) nameMod = "lovec";
     if(bp == null) bp = "test";
 
     Core.app.post(() => {
-      Vars.ui.showErrorMessage(MDL_bundle._info(nmMod, bp));
+      Vars.ui.showErrorMessage(MDL_bundle._info(nameMod, bp));
     });
   }
   .setAnno("non-headless");
@@ -384,19 +384,19 @@
   /**
    * Shows a background image.
    * @param {number} delay
-   * @param {string} nmBg
+   * @param {string} nameBg
    * @param {function(): boolean} endGetter
    * @param {number|unset} [inTimeS]
    * @return {number}
    */
-  const _d_bg = function(delay, nmBg, endGetter, inTimeS) {
+  const _d_bg = function(delay, nameBg, endGetter, inTimeS) {
     if(inTimeS == null) inTimeS = 1.0;
 
     const tb = new Table();
     tb.touchable = Touchable.disabled;
     VARGEN.dialFlowBgPool.push(tb);
 
-    tb.table(new TextureRegionDrawable(Core.atlas.find(nmBg)), tb1 => {})
+    tb.table(new TextureRegionDrawable(Core.atlas.find(nameBg)), tb1 => {})
     .width(VAR.length.bgW * _uiScl())
     .height(VAR.length.bgH * _uiScl())
     .row();
@@ -446,10 +446,10 @@
 
   /**
    * Shows a character art.
-   * The sprite is named like "chara-<nmChara>".
+   * The sprite is named like "chara-<nameChara>".
    * @param {number} delay
-   * @param {string} nmMod
-   * @param {string} nmChara
+   * @param {string} nameMod
+   * @param {string} nameChara
    * @param {function(): boolean} endGetter
    * @param {number|unset} [fracX] - The initial x position of image as fraction.
    * @param {boolean|Color|unset} [isDark0color] - Determines color of the image. The character art will be darkened if this property is true.
@@ -460,7 +460,7 @@
    * @return {number}
    */
   const _d_chara = function(
-    delay, nmMod, nmChara, endGetter,
+    delay, nameMod, nameChara, endGetter,
     fracX, isDark0color, anim, animParamObj,
     customActs, customActTimeS
   ) {
@@ -470,7 +470,7 @@
     tb.touchable = Touchable.disabled;
     VARGEN.dialFlowCharaPool.push(tb);
 
-    tb.table(new TextureRegionDrawable(Core.atlas.find(nmMod + "-chara-" + nmChara, Core.atlas.find("lovec-chara-error"))), tb1 => {
+    tb.table(new TextureRegionDrawable(Core.atlas.find(nameMod + "-chara-" + nameChara, Core.atlas.find("lovec-chara-error"))), tb1 => {
       if(isDark0color instanceof Color) {
         tb1.setColor(isDark0color);
       } else if(isDark0color) {
@@ -571,7 +571,7 @@
 
     };
 
-    if(!fetchSetting("test-show-error-chara") && !Core.atlas.has(nmMod + "-chara-" + nmChara)) {
+    if(!fetchSetting("test-show-error-chara") && !Core.atlas.has(nameMod + "-chara-" + nameChara)) {
       // Do nothing
     } else {
       if(customActs != null) {
@@ -747,13 +747,13 @@
   /**
    * Creates a dialog flow, which should be defined with {@link newDialogFlow} beforehand.
    * See {@link DialogFlowData}.
-   * @param {string} nmDialFlow
+   * @param {string} nameDialFlow
    * @return {void}
    */
-  const _d_flow = function thisFun(nmDialFlow) {
-    let dialFlowData = fetchDialogFlow(nmDialFlow);
+  const _d_flow = function thisFun(nameDialFlow) {
+    let dialFlowData = fetchDialogFlow(nameDialFlow);
     if(dialFlowData.length === 0) {
-      console.warn("[LOVEC] Cannot find dialog flow for " + nmDialFlow + "!");
+      console.warn("[LOVEC] Cannot find dialog flow for " + nameDialFlow + "!");
       return;
     };
 

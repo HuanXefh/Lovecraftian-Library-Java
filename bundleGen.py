@@ -20,18 +20,18 @@ LANG_SUFFIX_DICT = {
 }
 
 
-def buildFile(nmMod="lovec", dirTg=BUNDLE_PATH_TEST, lang="EN"):
+def buildFile(nameMod="lovec", dirTg=BUNDLE_PATH_TEST, lang="EN"):
     path = dirTg + "bundle" + LANG_SUFFIX_DICT[lang] + ".properties"
     fi = open(path, mode="w", encoding="utf-8")
-    data = PANDAS.read_excel(BUNDLE_FILE_NAME, sheet_name=nmMod)
+    data = PANDAS.read_excel(BUNDLE_FILE_NAME, sheet_name=nameMod)
     fi.write(data["Output [" + lang + "]"].str.cat())
     fi.close()
 
 
 def build():
-    for nmMod, dirTg in BUNDLE_PATH_DICT.items():
+    for nameMod, dirTg in BUNDLE_PATH_DICT.items():
         for lang in LANG_SUFFIX_DICT:
-            buildFile(nmMod, dirTg, lang)
+            buildFile(nameMod, dirTg, lang)
 
 
 build()

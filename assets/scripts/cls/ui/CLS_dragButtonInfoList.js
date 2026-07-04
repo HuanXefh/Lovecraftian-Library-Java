@@ -23,7 +23,7 @@
   const infoListData = ObjectMap.of(
     "uncategorized", ObjectMap.of("uncategorized", new ObjectMap()),
   );
-  const moddedNms = [];
+  const moddedNames = [];
 
 
 /*
@@ -38,14 +38,14 @@
 
   /**
    * Adds a new info dialog.
-   * @param {string} nm
+   * @param {string} name
    * @param {function(): void} scr
    * @param {string|unset} [categ]
    * @param {string|unset} [subCateg]
    * @return {this}
    */
-  CLS_dragButtonInfoList.add = function(nm, scr, categ, subCateg) {
-    CLS_dragButtonInfoList.findMap(categ, subCateg).put(nm, scr);
+  CLS_dragButtonInfoList.add = function(name, scr, categ, subCateg) {
+    CLS_dragButtonInfoList.findMap(categ, subCateg).put(name, scr);
 
     return CLS_dragButtonInfoList;
   };
@@ -53,13 +53,13 @@
 
   /**
    * Marks an info name as for modded situation only.
-   * @param {string|unset} [nm]
+   * @param {string|unset} [name]
    * @param {string|unset} [categ]
    * @param {string|unset} [subCateg]
    * @return {this}
    */
-  CLS_dragButtonInfoList.markModded = function(nm, categ, subCateg) {
-    moddedNms.pushUnique(CLS_dragButtonInfoList.getInfoString(nm, categ, subCateg));
+  CLS_dragButtonInfoList.markModded = function(name, categ, subCateg) {
+    moddedNames.pushUnique(CLS_dragButtonInfoList.getInfoString(name, categ, subCateg));
 
     return CLS_dragButtonInfoList;
   };
@@ -70,13 +70,13 @@
 
   /**
    * Gets unique string for a info name.
-   * @param {string|unset} [nm]
+   * @param {string|unset} [name]
    * @param {string|unset} [categ]
    * @param {string|unset} [subCateg]
    * @return {string}
    */
-  CLS_dragButtonInfoList.getInfoString = function(nm, categ, subCateg) {
-    return tryVal(categ, "uncategorized") + "/" + tryVal(subCateg, "uncategorized") + "/" + tryVal(nm, "unknown");
+  CLS_dragButtonInfoList.getInfoString = function(name, categ, subCateg) {
+    return tryVal(categ, "uncategorized") + "/" + tryVal(subCateg, "uncategorized") + "/" + tryVal(name, "unknown");
   };
 
 
@@ -109,11 +109,11 @@
 
   /**
    * Gets text for an info dialog.
-   * @param {string|unset} [nm]
+   * @param {string|unset} [name]
    * @return {string}
    */
-  CLS_dragButtonInfoList.getLocalizedInfoName = function(nm) {
-    return MDL_bundle._term("common", "infolist-info-" + tryVal(nm, "unknown"));
+  CLS_dragButtonInfoList.getLocalizedInfoName = function(name) {
+    return MDL_bundle._term("common", "infolist-info-" + tryVal(name, "unknown"));
   };
 
 
@@ -132,7 +132,7 @@
    * @return {void}
    */
   CLS_dragButtonInfoList.show = function() {
-    fetchDialog("infoListMain").ex_show(infoListData, moddedNms);
+    fetchDialog("infoListMain").ex_show(infoListData, moddedNames);
   },
 
 

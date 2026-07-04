@@ -20,7 +20,7 @@
     this.isHidden = false;
     this.isLoaded = false;
     /**
-     * <TUP>: nm, icon, isToggle, clickScr, updateScr
+     * <TUP>: name, icon, isToggle, clickScr, updateScr
      * @type {Array<Array<[string|null, BaseDrawable, boolean, Function, Function]>>}
      */
     this.btnData = [
@@ -46,7 +46,7 @@
 
     this.load();
 
-    TRIGGER.mapChange.addGlobalListener(nmMap => {
+    TRIGGER.mapChange.addGlobalListener(nameMap => {
       this.timeScl = 1.0;
       Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0);
       this.rebuild();
@@ -105,12 +105,12 @@
         obj["base"] :
         obj["base"].concat(obj["modded"]);
     })()
-    .forEachRow(2, (nm, paramObj) => {
+    .forEachRow(2, (name, paramObj) => {
       let rowInd = readParam(paramObj, "rowInd", 0);
       if(rowInd >= this.btnData.length) ERROR_HANDLER.throw("indexOutOfBound", rowInd, this.btnData.length);
 
       this.btnData[rowInd].push([
-        !Core.bundle.has("drag." + nm) ? null : Core.bundle.get("drag." + nm),
+        !Core.bundle.has("drag." + name) ? null : Core.bundle.get("drag." + name),
         (function() {let icon, iconStr = readParam(paramObj, "icon", "error"); try {icon = Icon[iconStr]} catch(err) {icon = new TextureRegionDrawable(Core.atlas.find(iconStr))}; return icon})(),
         readParam(paramObj, "isToggle", false),
         readParam(paramObj, "clickScr", Function.air),
@@ -153,14 +153,15 @@
       while(i < iCap) {
         this.btnData[i].forEachFast(tup => {
           this.colCounts[i + 1]++;
-          let nm = tup[0];
-          let icon = tup[1];
-          let isToggle = tup[2];
-          let clickScr = tup[3];
-          let updateScr = tup[4];
+          let
+            name = tup[0],
+            icon = tup[1],
+            isToggle = tup[2],
+            clickScr = tup[3],
+            updateScr = tup[4];
 
           btnCell = btns.button(icon, isToggle ? Styles.clearTogglei : Styles.cleari, clickScr).size(btnSize);
-          if(nm != null) btnCell.tooltip(nm, true);
+          if(name != null) btnCell.tooltip(name, true);
           if(updateScr != null) {
             let btn = btnCell.get();
             btnCell.update(() => updateScr.call(btn));

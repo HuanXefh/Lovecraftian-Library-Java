@@ -15,7 +15,7 @@
    * Interfaces are usually named like "INTF_xxx".
    * <br> <IMPORTANT>: It's recommended to create anonymous interfaces by `new Interface(null, {})` instead of `new Interface({})`.
    * @class
-   * @param {string|unset} nm
+   * @param {string|unset} name
    * @param {Object} obj
    * @example
    * let INTF_test = new CLS_interface(null, {
@@ -34,25 +34,25 @@
   const CLS_interface = newClass().initClass();
 
 
-  CLS_interface.prototype.init = function(nm, obj) {
+  CLS_interface.prototype.init = function(name, obj) {
     // For anonymous interface using legacy constructor
-    if(typeof nm === "object" && obj === undefined) {
-      obj = nm;
-      nm = null;
+    if(typeof name === "object" && obj === undefined) {
+      obj = name;
+      name = null;
     };
 
     Object._it(obj, (key, val) => {
       if(typeof val !== "function") ERROR_HANDLER.throw("nonFunctionInInterface", key);
     });
 
-    this.nm = nm == null ? "" : registerUniqueName(nm, insNms, "interface");
+    this.name = name == null ? "" : registerUniqueName(name, insNames, "interface");
     this.intfObj = obj;
     this.parentIntfs = [];
     this.children = [];
   };
 
 
-  const insNms = [];
+  const insNames = [];
 
 
 /*
@@ -75,13 +75,13 @@
   /**
    * Makes a new interface by merging two interfaces.
    * @param {CLS_interface} intf
-   * @param {string|unset} [nm]
+   * @param {string|unset} [name]
    * @return {CLS_interface}
    */
-  CLS_interface.prototype.extendInterface = function(intf, nm) {
+  CLS_interface.prototype.extendInterface = function(intf, name) {
     if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
 
-    let ointf = new CLS_interface(nm, mergeObjMixin(intf.intfObj, this.intfObj));
+    let ointf = new CLS_interface(name, mergeObjMixin(intf.intfObj, this.intfObj));
     ointf.parentIntfs = intf.parentIntfs.cpy().pushAll(this.parentIntfs).pushAll(this).unique();
 
     return ointf;

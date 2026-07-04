@@ -59,12 +59,12 @@
        * @return {string}
        */
       _plaCur() {
-        let nm = "";
+        let name = "";
         if(!Vars.state.isMenu() && Vars.state.getPlanet() != null) {
-          nm = Vars.state.getPlanet().name;
+          name = Vars.state.getPlanet().name;
         };
 
-        return nm;
+        return name;
       },
 
 
@@ -73,16 +73,16 @@
        * @return {string}
        */
       _mapCur() {
-        let nm = "";
+        let name = "";
         if(!Vars.state.isMenu()) {
           if(Vars.state.sector != null && Vars.state.sector.preset != null) {
-            nm = Vars.state.sector.preset.name;
+            name = Vars.state.sector.preset.name;
           } else if(Vars.state.map != null) {
-            nm = Vars.state.map.plainName();
+            name = Vars.state.map.plainName();
           };
         };
 
-        return nm;
+        return name;
       },
 
 
@@ -91,13 +91,13 @@
        * @return {number}
        */
       _glbHeat() {
-        let nmPla = global.lovecUtil.fun._plaCur();
-        if(String.isEmpty(nmPla)) return 26.0;
-        let nmMap = Vars.state.map.plainName();
+        let namePla = global.lovecUtil.fun._plaCur();
+        if(String.isEmpty(namePla)) return 26.0;
+        let nameMap = Vars.state.map.plainName();
 
         return DB_env.db["param"]["map"]["heat"].read(
-          nmMap,
-          DB_env.db["param"]["pla"]["heat"].read(nmPla, 0.26)
+          nameMap,
+          DB_env.db["param"]["pla"]["heat"].read(namePla, 0.26)
         ) * 100.0;
       },
 

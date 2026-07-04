@@ -109,10 +109,10 @@
 
   /**
    * Adds a row for background start.
-   * @param {string} nmBg
+   * @param {string} nameBg
    * @return {this}
    */
-  CLS_dialogFlowBuilder.prototype.setBackgroundStart = function(nmBg) {
+  CLS_dialogFlowBuilder.prototype.setBackgroundStart = function(nameBg) {
     this.completeRow();
 
     this.dialFlowData.push(
@@ -121,7 +121,7 @@
         haltTimeS: 0.0,
         scr: () => {
           TRIGGER_BACKGROUND = true;
-          MDL_ui._d_bg(0.0, nmBg, () => !TRIGGER_BACKGROUND);
+          MDL_ui._d_bg(0.0, nameBg, () => !TRIGGER_BACKGROUND);
         },
       },
     );
@@ -201,15 +201,15 @@
 
   /**
    * Adds dialog text to current row.
-   * @param {string} nmMod
-   * @param {string} nmDial
+   * @param {string} nameMod
+   * @param {string} nameDial
    * @param {number|string} ind
    * @return {this}
    */
-  CLS_dialogFlowBuilder.prototype.setText = function(nmMod, nmDial, ind) {
+  CLS_dialogFlowBuilder.prototype.setText = function(nameMod, nameDial, ind) {
     this.completeRow();
 
-    this.dialFlowData.push([nmMod, nmDial, ind]);
+    this.dialFlowData.push([nameMod, nameDial, ind]);
     this.offInd = 1;
 
     return this;
@@ -219,14 +219,14 @@
   /**
    * Adds speaker text to current row.
    * Should be called after {@link CLS_dialogFlowBuilder#setText}.
-   * @param {string} nmMod
-   * @param {string} nmChara
+   * @param {string} nameMod
+   * @param {string} nameChara
    * @return {this}
    */
-  CLS_dialogFlowBuilder.prototype.setSpeaker = function(nmMod, nmChara) {
+  CLS_dialogFlowBuilder.prototype.setSpeaker = function(nameMod, nameChara) {
     if(this.offInd !== 1) ERROR_HANDLER.throw("dialogFlowGenerateFail");
 
-    this.dialFlowData.push([nmMod, nmChara]);
+    this.dialFlowData.push([nameMod, nameChara]);
     this.offInd = 2;
 
     return this;
@@ -276,8 +276,8 @@
     charaObjs.forEachFast(charaObj => {
       arr.push([
         0.0,
-        readParam(charaObj, "nmMod"),
-        readParam(charaObj, "nmChara"),
+        readParam(charaObj, "nameMod"),
+        readParam(charaObj, "nameChara"),
         readParam(charaObj, "fracX"),
         readParam(charaObj, "isDark", readParam(charaObj, "color")),
         readParam(charaObj, "anim"),
@@ -296,7 +296,7 @@
   /**
    * Adds useless selections to current row.
    * This method always completes the row.
-   * @param {Array} selTextParamArr - <ROW>: nmMod, nmDial, selInd.
+   * @param {Array} selTextParamArr - <ROW>: nameMod, nameDial, selInd.
    * @param {number|unset} [w]
    * @param {number|unset} [h]
    * @param {number|unset} [waitTimeS]
@@ -306,7 +306,7 @@
     if(waitTimeS == null) waitTimeS = 1.0;
 
     const texts = [];
-    selTextParamArr.forEachRow(3, (nmMod, nmDial, selInd) => texts.push(MDL_bundle._dialText(nmMod, nmDial, ind + "-s-" + selInd)));
+    selTextParamArr.forEachRow(3, (nameMod, nameDial, selInd) => texts.push(MDL_bundle._dialText(nameMod, nameDial, ind + "-s-" + selInd)));
 
     this.completeRow();
     let paramObj = this.fixParamObj();

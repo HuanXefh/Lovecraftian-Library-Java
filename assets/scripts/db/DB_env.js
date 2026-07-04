@@ -43,8 +43,8 @@ const db = {
 
       /**
        * Noise layer drawn for each map.
-       * <br> <ROW>: nmMap, args.
-       * <br> <ROW-args>: nmTex, color, noiseScl, opac, spd, intens, windX, windY, off.
+       * <br> <ROW>: nameMap, args.
+       * <br> <ROW-args>: nameTex, color, noiseScl, opac, spd, intens, windX, windY, off.
        */
       noise: [],
 
@@ -52,28 +52,28 @@ const db = {
       /**
        * Weather entries for a map (always permanent), used for campaign maps but works for any map.
        * No need to set weathers for those maps in editor.
-       * <br> <ROW>: nmMap, weas.
+       * <br> <ROW>: nameMap, weas.
        */
       weaEn: [],
 
 
       /**
        * Wind attribute multiplier for a map.
-       * <br> <ROW>: nmMap, mtp.
+       * <br> <ROW>: nameMap, mtp.
        */
       wind: [],
 
 
       /**
        * Global heat for a map.
-       * <br> <ROW>: nmMap, heat.
+       * <br> <ROW>: nameMap, heat.
        */
       heat: [],
 
 
       /**
        * Base pollution for a map.
-       * <br> <ROW>: nmMap, pol.
+       * <br> <ROW>: nameMap, pol.
        */
       pol: [],
 
@@ -92,7 +92,7 @@ const db = {
 
       /**
        * Default values for campaign rules of some planet.
-       * <br> <ROW>: nmPla, ruleSetter.
+       * <br> <ROW>: namePla, ruleSetter.
        * <br> <ARGS>: rule.
        */
       campaign: [],
@@ -101,7 +101,7 @@ const db = {
       /**
        * Maps a planet to a rule setter function, that sets planet rules.
        * Fog should be set in campaign rules, you should ask Anuke why.
-       * <br> <ROW>: nmPla, ruleSetter.
+       * <br> <ROW>: namePla, ruleSetter.
        * <br> <ARGS>: rule.
        */
       planet: [],
@@ -131,14 +131,14 @@ const db = {
 
       /**
        * These maps are considered as cave, where flying units cannot go over walls.
-       * <br> <ROW>: nmMap.
+       * <br> <ROW>: nameMap.
        */
       cave: [],
 
 
       /**
        * Impossible to build anything when playing these maps.
-       * <br> <ROW>: nmMap.
+       * <br> <ROW>: nameMap.
        */
       noBuild: [],
 
@@ -285,7 +285,7 @@ const db = {
 
   /**
    * Maps name of some root node to localized name of some content.
-   * <br> <ROW>: nmRoot, ct.
+   * <br> <ROW>: nameRoot, ct.
    */
   nodeRootNameMap: [],
 

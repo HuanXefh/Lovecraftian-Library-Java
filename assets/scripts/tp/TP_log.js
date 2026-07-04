@@ -25,9 +25,9 @@
     this.add(1, "noBuildingFound", (tx, ty) => "[LOVEC] ${1}".format("No building found at (${1}, ${2})!".format(tx, ty).color(Pal.remove)));
 
     this.add(1, "forceModded", () => "[LOVEC] Lovec has been force to ${1}, but no mod requires Lovec to load.".format("MODDED MODE".color(Pal.remove)));
-    this.add(1, "noContentFound", nmCt => "[LOVEC] Content ${1} is not found!".format(nmCt.color(Pal.accent)));
-    this.add(1, "costyContentSearch", nmCt => "[LOVEC] Performing costy search for ${1}!".format(nmCt.color(Pal.accent)));
-    this.add(1, "noCustomShadowRegionFound", nmCt => "[LOVEC] Cannot find custom shadow region for ${1}!".format(nmCt.color(Pal.accent)));
+    this.add(1, "noContentFound", nameCt => "[LOVEC] Content ${1} is not found!".format(nameCt.color(Pal.accent)));
+    this.add(1, "costyContentSearch", nameCt => "[LOVEC] Performing costy search for ${1}!".format(nameCt.color(Pal.accent)));
+    this.add(1, "noCustomShadowRegionFound", nameCt => "[LOVEC] Cannot find custom shadow region for ${1}!".format(nameCt.color(Pal.accent)));
 
 
     /* <------------------------------ debug info ------------------------------ */

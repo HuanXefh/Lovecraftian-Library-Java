@@ -113,8 +113,8 @@
 
     let dir = MDL_file._script(MDL_content._mod(pla)).child("auxFi").child("json").child("planets");
     let fi = (function() {
-      let tmp = dir.child(MDL_content._nmCtNoPrefix(pla) + ".json");
-      return tmp.exists() ? tmp : dir.child(MDL_content._nmCtNoPrefix(pla) + ".hjson");
+      let tmp = dir.child(MDL_content._nameCtNoPrefix(pla) + ".json");
+      return tmp.exists() ? tmp : dir.child(MDL_content._nameCtNoPrefix(pla) + ".hjson");
     })();
     let jsonVal = MDL_json.parse(fi);
     if(jsonVal == null || jsonVal.isString()) return;
@@ -179,7 +179,7 @@
     });
   }
   .setProp({
-    locate: (ctType, nm) => Reflect.invoke(ContentParser, VAR.ctParser, "locate", [ctType, nm], [ContentType, JAVA.string]),
+    locate: (ctType, name) => Reflect.invoke(ContentParser, VAR.ctParser, "locate", [ctType, name], [ContentType, JAVA.string]),
     read: runnable => Reflect.invoke(ContentParser, VAR.ctParser, "read", [runnable], [JAVA.runnable]),
     readFields: (obj, jVal) => Reflect.invoke(ContentParser, VAR.ctParser, "readFields", [obj, jVal], [JAVA.object, JsonValue]),
     parseMesh: (pla, jVal) => Reflect.invoke(ContentParser, VAR.ctParser, "parseMesh", [pla, jVal], [Planet, JsonValue]),

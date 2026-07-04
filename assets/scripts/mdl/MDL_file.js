@@ -81,24 +81,24 @@
 
   /**
    * Returns the root directory of a mod.
-   * @param {string} nmMod
+   * @param {string} nameMod
    * @param {boolean|unset} [returnZipRoot] - If true, this method will return directory of the file instead of extracted data. Handle this carefully!
    * @return {Fi|null}
    */
-  const _root = function(nmMod, returnZipRoot) {
-    let mod = fetchMod(nmMod, true);
+  const _root = function(nameMod, returnZipRoot) {
+    let mod = fetchMod(nameMod, true);
     return mod == null ? null : (returnZipRoot ? mod.file : mod.root);
   };
   exports._root = _root;
 
 
   /**
-   * <PATH>: "<nmMod>/content".
-   * @param {string} nmMod
+   * <PATH>: "<nameMod>/content".
+   * @param {string} nameMod
    * @return {Fi|null}
    */
-  const _content = function(nmMod) {
-    let dirRt = _root(nmMod);
+  const _content = function(nameMod) {
+    let dirRt = _root(nameMod);
     if(dirRt == null) return null;
     let dir = dirRt.child("content");
 
@@ -108,13 +108,13 @@
 
 
   /**
-   * <PATH>: "<nmMod>/content/xxx", based on given type.
-   * @param {string} nmMod
+   * <PATH>: "<nameMod>/content/xxx", based on given type.
+   * @param {string} nameMod
    * @param {ContentType} ctType
    * @return {Fi|null}
    */
-  const _subContent = function(nmMod, ctType) {
-    let dirCt = _content(nmMod);
+  const _subContent = function(nameMod, ctType) {
+    let dirCt = _content(nameMod);
     if(dirCt == null) return null;
     let str = ctType.name().toLowerCase();
     let dir = dirCt.child(str + (str.endsWith("s") ? "" : "s"));
@@ -125,12 +125,12 @@
 
 
   /**
-   * <PATH>: "<nmMod>/scripts".
-   * @param {string} nmMod
+   * <PATH>: "<nameMod>/scripts".
+   * @param {string} nameMod
    * @return {Fi|null}
    */
-  const _script = function(nmMod) {
-    let dirRt = _root(nmMod);
+  const _script = function(nameMod) {
+    let dirRt = _root(nameMod);
     if(dirRt == null) return null;
     let dir = dirRt.child("scripts");
 
@@ -140,12 +140,12 @@
 
 
   /**
-   * <PATH>: "<nmMod>/sprites".
-   * @param {string} nmMod
+   * <PATH>: "<nameMod>/sprites".
+   * @param {string} nameMod
    * @return {Fi|null}
    */
-  const _sprite = function(nmMod) {
-    let dirRt = _root(nmMod);
+  const _sprite = function(nameMod) {
+    let dirRt = _root(nameMod);
     if(dirRt == null) return null;
     let dir = dirRt.child("sprites");
 
@@ -188,10 +188,10 @@
     };
 
     let dir = dirCur;
-    thisFun.tmpStrs.forEachFast(nm => {
-      dir = nm === "." ?
+    thisFun.tmpStrs.forEachFast(name => {
+      dir = name === "." ?
         dir.parent() :
-        dir.child(nm);
+        dir.child(name);
     });
 
     return ignoreExist ? dir : (!dir.exists() ? null : dir);
@@ -211,11 +211,11 @@
   const _jsonCt = function(ct_gn) {
     let ct = findContent(ct_gn);
     if(ct == null || ct.minfo.mod == null) return null;
-    let nmMod = ct.minfo.mod.name;
-    let dirSubCt = _subContent(nmMod, ct.getContentType());
+    let nameMod = ct.minfo.mod.name;
+    let dirSubCt = _subContent(nameMod, ct.getContentType());
     if(dirSubCt == null) return null;
-    let nmCt = ct.name.replace(nmMod + "-", "");
-    let fiSeq = dirSubCt.findAll(fi => (fi.name() === nmCt + ".json") || (fi.name() === nmCt + ".hjson"));
+    let nameCt = ct.name.replace(nameMod + "-", "");
+    let fiSeq = dirSubCt.findAll(fi => (fi.name() === nameCt + ".json") || (fi.name() === nameCt + ".hjson"));
 
     return fiSeq.size === 0 ? null : fiSeq.get(0);
   };
@@ -243,8 +243,8 @@
    * @return {Fi|null}
    */
   const _plsav = function(isBackup) {
-    let nmPla = global.lovecUtil.fun._plaCur();
-    let fi = nmPla === "" ? null : lovecData.child("saves").child(nmPla + (!isBackup ? "" : "_bak") + ".plsav");
+    let namePla = global.lovecUtil.fun._plaCur();
+    let fi = namePla === "" ? null : lovecData.child("saves").child(namePla + (!isBackup ? "" : "_bak") + ".plsav");
     // In debug mode, PLSAV is accessible from outside of campaign
     if(Vars.state.isCampaign() || global.lovecUtil.prop.debug) return fi;
 

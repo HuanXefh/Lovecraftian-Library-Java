@@ -147,7 +147,7 @@
       attrs = readParam(DB_env.db["grpParam"]["tree"].read(treeGrp), "attrsGetter", Function.airArr)();
 
     if(attrs.length !== 0) {
-      rsLvl = Math.max.apply(null, attrs.map(nmAttr => blk.attributes.get(Attribute.get(nmAttr))));
+      rsLvl = Math.max.apply(null, attrs.map(nameAttr => blk.attributes.get(Attribute.get(nameAttr))));
     };
 
     return rsLvl;

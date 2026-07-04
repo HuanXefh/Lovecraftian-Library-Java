@@ -20,16 +20,16 @@
   /**
    * Modifies the method with annotation.
    * <br> <IMPORTANT>: Should be applied last after any decorator!
-   * @param {string} nmAnno
+   * @param {string} nameAnno
    * @param {any} [args_p] - Arguments passed down to the annotation.
    * @param {any} [skipVal] - Value returned if the original method is skipped.
    * @return {this}
    */
-  Function.prototype.setAnno = function(nmAnno, args_p, skipVal) {
+  Function.prototype.setAnno = function(nameAnno, args_p, skipVal) {
     const thisFun = this;
 
-    let anno = LCAnno[nmAnno];
-    if(anno == null || !(anno instanceof CLS_annotation)) ERROR_HANDLER.throw("notAnno", nmAnno);
+    let anno = LCAnno[nameAnno];
+    if(anno == null || !(anno instanceof CLS_annotation)) ERROR_HANDLER.throw("notAnno", nameAnno);
     if(args_p == null) args_p = [];
     let args = args_p instanceof Array ? args_p : [args_p];
 

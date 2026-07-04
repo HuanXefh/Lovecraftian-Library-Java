@@ -112,20 +112,20 @@
 
 
   /**
-   * Reads "<nmMod>/scripts/auxFi/data/<nmFi>.json" of every enabled mod and writes values into `contObj`.
+   * Reads "<nameMod>/scripts/auxFi/data/<nameFi>.json" of every enabled mod and writes values into `contObj`.
    * Also supports .hjson files.
    * @global
    * @param {Object} contObj
-   * @param {string} nmFi
+   * @param {string} nameFi
    * @return {Object}
    */
-  readAuxJsonData = function(contObj, nmFi) {
+  readAuxJsonData = function(contObj, nameFi) {
     let dir, fi, obj;
     Vars.mods.eachEnabled(mod => {
       dir = mod.root.child("scripts").child("auxFi").child("json").child("data");
-      fi = dir.child(nmFi + ".json");
+      fi = dir.child(nameFi + ".json");
       if(!fi.exists()) {
-        fi = dir.child(nmFi + ".hjson");
+        fi = dir.child(nameFi + ".hjson");
       };
       if(!fi.exists()) return;
 

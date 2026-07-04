@@ -20,7 +20,7 @@
     blk.configurable = true;
 
     blk.config(JAVA.string, (b, str) => {
-      b.delegee.nmDialFlow = str;
+      b.delegee.nameDialFlow = str;
     });
   };
 
@@ -30,7 +30,7 @@
       MDL_bundle._info("lovec", "dial-enter-dialog-flow-name"),
       MDL_bundle._info("lovec", "dial-enter-dialog-flow-name", true),
       255,
-      b.nmDialFlow,
+      b.nameDialFlow,
       false,
       str => {
         str !== "read" ?
@@ -47,14 +47,14 @@
   function comp_drawSelect(b) {
     if(!Vars.state.isEditor()) return;
 
-    MDL_draw._d_textSelect(b, b.nmDialFlow, true);
+    MDL_draw._d_textSelect(b, b.nameDialFlow, true);
   };
 
 
   function comp_ex_onFlagTriggered(b) {
-    MDL_ui._d_flow(b.nmDialFlow);
-    if(Vars.state.isCampaign() && VARGEN.dialFlowNmCtMap.containsKey(b.nmDialFlow)) {
-      VARGEN.dialFlowNmCtMap.get(b.nmDialFlow).unlock();
+    MDL_ui._d_flow(b.nameDialFlow);
+    if(Vars.state.isCampaign() && VARGEN.dialFlowNameCtMap.containsKey(b.nameDialFlow)) {
+      VARGEN.dialFlowNameCtMap.get(b.nameDialFlow).unlock();
     };
   };
 
@@ -110,7 +110,7 @@
        * @return {string}
        */
       ex_getFlagStr: function(b) {
-        return "dialFlow: " + b.delegee.nmDialFlow;
+        return "dialFlow: " + b.delegee.nameDialFlow;
       }
       .setProp({
         noSuper: true,
@@ -138,7 +138,7 @@
        * @memberof B_dialFlowTrigger
        * @instance
        */
-      nmDialFlow: "lovec-test",
+      nameDialFlow: "lovec-test",
 
 
     })
@@ -167,14 +167,14 @@
 
 
       write: function(wr) {
-        wr.str(this.nmDialFlow);
+        wr.str(this.nameDialFlow);
       },
 
 
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
 
-        this.nmDialFlow = rd.str();
+        this.nameDialFlow = rd.str();
       },
 
 

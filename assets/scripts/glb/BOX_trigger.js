@@ -13,7 +13,7 @@ const BOX_trigger = new CLS_objectBox({
   /**
    * Triggered when map is changed.
    * Can be fired more than once!
-   * <br> <ARGS>: nmMap.
+   * <br> <ARGS>: nameMap.
    */
   mapChange: new CLS_eventTrigger("lovec-map-change"),
 
@@ -21,7 +21,7 @@ const BOX_trigger = new CLS_objectBox({
   /**
    * Triggered when exiting some map.
    * Can be fired more than once!
-   * <br> <ARGS>: nmMap.
+   * <br> <ARGS>: nameMap.
    */
   mapExit: new CLS_eventTrigger("lovec-map-exit"),
 

@@ -138,12 +138,12 @@
   /**
    * Gets the color of some character.
    * Used mostly for dialog flow texts.
-   * @param {string} nmMod
-   * @param {string} nmChara
+   * @param {string} nameMod
+   * @param {string} nameChara
    * @return {Color}
    */
-  const _charaColor = function thisFun(nmMod, nmChara) {
-    thisFun.tmpArgs.with(nmMod, nmChara);
+  const _charaColor = function thisFun(nameMod, nameChara) {
+    thisFun.tmpArgs.with(nameMod, nameChara);
     return _color(DB_misc.db["drama"]["chara"]["color"].read(thisFun.tmpArgs));
   }
   .setProp({

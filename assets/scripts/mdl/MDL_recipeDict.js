@@ -33,7 +33,7 @@
 
   /**
    * Registers a new custom field.
-   * @param {string} nm
+   * @param {string} name
    * @param {Object} obj
    * @param {Drawable} obj.icon
    * @param {string|unset} [obj.mod] - Mod required for this custom field.
@@ -41,10 +41,10 @@
    * @param {boolean|unset} [obj.isStatic] - Whether irrelative to craft time.
    * @return {void}
    */
-  const newCustomField = function(nm, obj) {
+  const newCustomField = function(name, obj) {
     if(obj.mod != null && Vars.mods.locateMod(obj.mod) == null) return;
 
-    rcDict.customFieldMap.put(nm, obj);
+    rcDict.customFieldMap.put(name, obj);
     MDL_event._c_onLoad(() => {
       obj.icon = findRegionDrawable(obj.icon);
     });
@@ -53,12 +53,12 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-rcdict-custom-<nm>.name".
-   * @param {string} nm
+   * <BUNDLE>: "term.common-term-rcdict-custom-<name>.name".
+   * @param {string} name
    * @return {string}
    */
-  const _customFieldB = function(nm) {
-    return MDL_bundle._term("common", "rcdict-custom-" + nm);
+  const _customFieldB = function(name) {
+    return MDL_bundle._term("common", "rcdict-custom-" + name);
   };
   exports._customFieldB = _customFieldB;
 
@@ -148,19 +148,19 @@
    * Adds a custom consumption term.
    * Should be called strictly after CLIENT LOAD.
    * @param {BlockGn} blk_gn
-   * @param {string} nm
+   * @param {string} name
    * @param {number} amt
    * @param {RecipeDictionaryData|unset} [data]
    * @return {void}
    */
-  const addCustomConsTerm = function(blk_gn, nm, amt, data) {
+  const addCustomConsTerm = function(blk_gn, name, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
-    if(rcDict.cons[nm] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", nm);
+    if(rcDict.cons[name] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", name);
 
     let blk = MDL_content._ct(blk_gn, "blk");
     if(blk == null) return;
 
-    rcDict.cons[nm].push(
+    rcDict.cons[name].push(
       blk,
       amt,
       tryVal(data, Object.air),
@@ -254,19 +254,19 @@
    * Adds a custom production term.
    * Should be called strictly after CLIENT LOAD.
    * @param {BlockGn} blk_gn
-   * @param {string} nm
+   * @param {string} name
    * @param {number} amt
    * @param {RecipeDictionaryData|unset} [data]
    * @return {void}
    */
-  const addCustomProdTerm = function(blk_gn, nm, amt, data) {
+  const addCustomProdTerm = function(blk_gn, name, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
-    if(rcDict.prod[nm] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", nm);
+    if(rcDict.prod[name] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", name);
 
     let blk = MDL_content._ct(blk_gn, "blk");
     if(blk == null) return;
 
-    rcDict.prod[nm].push(
+    rcDict.prod[name].push(
       blk,
       amt,
       tryVal(data, Object.air),
@@ -515,9 +515,9 @@
     rcDict.prod.fluid = {};
     rcDict.prod.block = {};
     rcDict.prod.unit = {};
-    rcDict.customFieldMap.each((nm, obj) => {
-      rcDict.cons[nm] = [];
-      rcDict.prod[nm] = [];
+    rcDict.customFieldMap.each((name, obj) => {
+      rcDict.cons[name] = [];
+      rcDict.prod[name] = [];
     });
     Vars.content.items().each(itm => {
       rcDict.cons.item[itm.id] = [];

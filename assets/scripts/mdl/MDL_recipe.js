@@ -36,22 +36,22 @@
 
   /**
    * Gets recipe module for some block.
-   * <br> <PATH>: "<nmMod>/scripts/auxFi/rc/<nmBlk>.js".
-   * <br> <PATH>: "<nmMod>/scripts/auxFi/json/rc/<nmBlk>.json".
-   * @param {string} nmMod
-   * @param {string} nmBlk
+   * <br> <PATH>: "<nameMod>/scripts/auxFi/rc/<nameBlk>.js".
+   * <br> <PATH>: "<nameMod>/scripts/auxFi/json/rc/<nameBlk>.json".
+   * @param {string} nameMod
+   * @param {string} nameBlk
    * @return {RecipeModule}
    */
-  const _rcMdl = function(nmMod, nmBlk) {
+  const _rcMdl = function(nameMod, nameBlk) {
     let rcMdl;
     try {
-      rcMdl = require(nmMod + "/auxFi/rc/" + nmBlk);
+      rcMdl = require(nameMod + "/auxFi/rc/" + nameBlk);
     } catch(err) {
-      let obj = _rcMdlJson(nmMod, nmBlk);
+      let obj = _rcMdlJson(nameMod, nameBlk);
       if(obj != null) {
         rcMdl = obj;
       } else {
-        throw new Error("Failed to load recipe for " + nmMod + "-" + nmBlk + ":\n" + err);
+        throw new Error("Failed to load recipe for " + nameMod + "-" + nameBlk + ":\n" + err);
       };
     };
 
@@ -63,16 +63,16 @@
   /**
    * Gets recipe module from JSON file.
    * Used in {@link _rcMdl}.
-   * @param {string} nmMod
-   * @param {string} nmBlk
+   * @param {string} nameMod
+   * @param {string} nameBlk
    * @return {RecipeModule}
    */
-  const _rcMdlJson = function(nmMod, nmBlk) {
-    let mod = fetchMod(nmMod);
+  const _rcMdlJson = function(nameMod, nameBlk) {
+    let mod = fetchMod(nameMod);
     if(mod == null) return null;
     let dir = mod.root.child("scripts").child("auxFi").child("json").child("rc");
     if(!dir.exists()) return null;
-    let fiSeq = dir.findAll(fi => (fi.name() === nmBlk + ".json") || (fi.name() === nmBlk + ".hjson"));
+    let fiSeq = dir.findAll(fi => (fi.name() === nameBlk + ".json") || (fi.name() === nameBlk + ".hjson"));
     if(fiSeq.size === 0) return null;
 
     let obj = jsonToJsObj(fiSeq.get(0));
@@ -84,10 +84,10 @@
       if(typeof obj.recipe[i] !== "string") throw new Error("Error parsing recipe. Header must be a string!");
       rcObj = obj.recipe[i + 1];
       if(typeof rcObj.icon !== "string") throw new Error("Error parsing recipe. `icon` is required and must be a string!");
-      IO_ORDER_MAP.each((nmIo, ord) => {
-        if(rcObj[nmIo] == null) return;
-        if(!(rcObj[nmIo] instanceof Array)) throw new Error("Error parsing recipe. `${1}` must be an array!".format(nmIo));
-        if(rcObj[nmIo].length % ord !== 0) throw new Error("Error parsing recipe. Length of `${1}` should be multiple of ${2}, length found: ${3}".format(nmIo, ord, rcObj[nmIo].length));
+      IO_ORDER_MAP.each((nameIo, ord) => {
+        if(rcObj[nameIo] == null) return;
+        if(!(rcObj[nameIo] instanceof Array)) throw new Error("Error parsing recipe. `${1}` must be an array!".format(nameIo));
+        if(rcObj[nameIo].length % ord !== 0) throw new Error("Error parsing recipe. Length of `${1}` should be multiple of ${2}, length found: ${3}".format(nameIo, ord, rcObj[nameIo].length));
       });
       CLS_contentTemplateParser.parseFields(rcObj);
       i += 2;
@@ -446,8 +446,8 @@
         thisFun.handleCt(map, keyCt, rcHeader, mode);
       } else if(keyCt instanceof Array) {
         // Array of contents or content names
-        keyCt.forEachFast(nm => {
-          ct = MDL_content._ct(nm, null, true);
+        keyCt.forEachFast(name => {
+          ct = MDL_content._ct(name, null, true);
           thisFun.handleCt(map, ct, rcHeader, mode);
         });
       };
@@ -491,10 +491,10 @@
    * @param {string} rcHeader
    * @return {string}
    */
-  const _iconNm = function(rcMdl, rcHeader) {
+  const _iconName = function(rcMdl, rcHeader) {
     return _rcVal(rcMdl, rcHeader, "icon", "null");
   };
-  exports._iconNm = _iconNm;
+  exports._iconName = _iconName;
 
 
   /**
@@ -505,9 +505,9 @@
    * @return {TextureRegionDrawable}
    */
   const _icon = function(rcMdl, rcHeader, notContent) {
-    let iconNm = _iconNm(rcMdl, rcHeader);
-    if(notContent) return new TextureRegionDrawable(Core.atlas.find(iconNm)).tint(_rcVal(rcMdl, rcHeader, "tint", Color.white));
-    let ct = MDL_content._ct(iconNm, null, true);
+    let iconName = _iconName(rcMdl, rcHeader);
+    if(notContent) return new TextureRegionDrawable(Core.atlas.find(iconName)).tint(_rcVal(rcMdl, rcHeader, "tint", Color.white));
+    let ct = MDL_content._ct(iconName, null, true);
 
     return ct == null ?
       Icon.cancel :
@@ -625,8 +625,8 @@
     if(!toCts) return arr;
 
     let cts = [], ct;
-    arr.forEachFast(nmCt => {
-      ct = MDL_content._ct(nmCt, null, true);
+    arr.forEachFast(nameCt => {
+      ct = MDL_content._ct(nameCt, null, true);
       if(ct != null) cts.pushUnique(ct);
     });
 
@@ -837,7 +837,7 @@
       // Regular display
       return String.multiline(
         uncategorizedOnly ? null : ("<" + _categB(_categ(rcMdl, rcHeader)) + ">").color(Pal.accent),
-        (function() {let ct = MDL_content._ct(_iconNm(rcMdl, rcHeader), null, true); return ct == null ? "-" : ct.localizedName})(),
+        (function() {let ct = MDL_content._ct(_iconName(rcMdl, rcHeader), null, true); return ct == null ? "-" : ct.localizedName})(),
         (function() {
           let str = String.multiline(
             "",
@@ -1002,31 +1002,31 @@
   /**
    * Parses given I/O data.
    * @param {Array|unset} contArr
-   * @param {string} nm
+   * @param {string} name
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @param {boolean|unset} [ignoreBase] - If true, "baseXxx" is not included.
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const parseRcIo = function thisFun(contArr, nm, rcMdl, rcHeader, ignoreBase, initParamObj) {
-    if(!IO_ORDER_MAP.containsKey(nm)) throw new Error("`${1}` is not a valid IO name!".format(nm));
+  const parseRcIo = function thisFun(contArr, name, rcMdl, rcHeader, ignoreBase, initParamObj) {
+    if(!IO_ORDER_MAP.containsKey(name)) throw new Error("`${1}` is not a valid IO name!".format(name));
 
     let arr = contArr != null ? contArr.clear() : [];
 
-    let baseNm = "base" + nm.firstUpperCase();
+    let baseName = "base" + name.firstUpperCase();
     let raw = ignoreBase ?
-      _rcVal(rcMdl, rcHeader, nm, Array.air) :
-      _rcBaseVal(rcMdl, baseNm, Array.air).concat(_rcVal(rcMdl, rcHeader, nm, Array.air));
+      _rcVal(rcMdl, rcHeader, name, Array.air) :
+      _rcBaseVal(rcMdl, baseName, Array.air).concat(_rcVal(rcMdl, rcHeader, name, Array.air));
 
     let
       i = 0,
       iCap = raw.iCap(),
-      ord = IO_ORDER_MAP.get(nm)
+      ord = IO_ORDER_MAP.get(name)
       ctCaller = null;
 
     // It's OK to hard code this I guess
-    switch(nm) {
+    switch(name) {
 
       case "ci" :
         ctCaller = function(ct, amt) {
@@ -1036,7 +1036,7 @@
             ct,
             amt,
             {
-              ct: _iconNm(rcMdl, rcHeader),
+              ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
               ctText: _ttStr(rcMdl, rcHeader, true),
             },
@@ -1054,7 +1054,7 @@
               amt / readParam(initParamObj, "timeScl", 1.0),
               p,
               {
-                ct: _iconNm(rcMdl, rcHeader),
+                ct: _iconName(rcMdl, rcHeader),
                 ctTint: _rcVal(rcMdl, rcHeader, "tint"),
                 ctText: _ttStr(rcMdl, rcHeader, true),
               },
@@ -1064,7 +1064,7 @@
               ct,
               amt / readParam(initParamObj, "blk").craftTime / readParam(initParamObj, "timeScl", 1.0),
               {
-                ct: _iconNm(rcMdl, rcHeader),
+                ct: _iconName(rcMdl, rcHeader),
                 ctTint: _rcVal(rcMdl, rcHeader, "tint"),
                 ctText: _ttStr(rcMdl, rcHeader, true),
               },
@@ -1080,7 +1080,7 @@
             ct,
             amt,
             {
-              ct: _iconNm(rcMdl, rcHeader),
+              ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
               ctText: _ttStr(rcMdl, rcHeader, true),
             },
@@ -1097,7 +1097,7 @@
             amt / readParam(initParamObj, "timeScl", 1.0),
             p,
             {
-              ct: _iconNm(rcMdl, rcHeader),
+              ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
               ctText: _ttStr(rcMdl, rcHeader, true),
               icon: "lovec-icon-boost",
@@ -1114,7 +1114,7 @@
             ct,
             amt / readParam(initParamObj, "timeScl", 1.0),
             {
-              ct: _iconNm(rcMdl, rcHeader),
+              ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
               ctText: _ttStr(rcMdl, rcHeader, true),
             },
@@ -1130,7 +1130,7 @@
             ct,
             amt,
             {
-              ct: _iconNm(rcMdl, rcHeader),
+              ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
               ctText: _ttStr(rcMdl, rcHeader, true),
             },
@@ -1147,7 +1147,7 @@
             amt / readParam(initParamObj, "timeScl", 1.0),
             p * (readParam(initParamObj, "failP") == null ? 1.0 : (1.0 - readParam(initParamObj, "failP"))),
             {
-              ct: _iconNm(rcMdl, rcHeader),
+              ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
               ctText: _ttStr(rcMdl, rcHeader, true),
             },
@@ -1164,7 +1164,7 @@
             amt / readParam(initParamObj, "timeScl", 1.0),
             p * (readParam(initParamObj, "failP") == null ? 0.0 : readParam(initParamObj, "failP")),
             {
-              ct: _iconNm(rcMdl, rcHeader),
+              ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
               ctText: _ttStr(rcMdl, rcHeader, true),
             },
@@ -1180,7 +1180,7 @@
             ct,
             amt / readParam(initParamObj, "timeScl", 1.0),
             {
-              ct: _iconNm(rcMdl, rcHeader),
+              ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
               ctText: _ttStr(rcMdl, rcHeader, true),
             },
@@ -1197,7 +1197,7 @@
         ctCaller,
       );
 
-      if(nm === "opt") {
+      if(name === "opt") {
         arr.push(Number(raw[i + 3]));
       };
 
@@ -1373,13 +1373,13 @@
    * Gets a recipe script.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @param {string} nm
+   * @param {string} name
    * @return {function(Building): void}
    */
-  const processRcScr = function(rcMdl, rcHeader, nm) {
+  const processRcScr = function(rcMdl, rcHeader, name) {
     let
-      scr = _rcVal(rcMdl, rcHeader, nm, null),
-      baseScr = _rcBaseVal(rcMdl, "base" + nm.firstUpperCase, null);
+      scr = _rcVal(rcMdl, rcHeader, name, null),
+      baseScr = _rcBaseVal(rcMdl, "base" + name.firstUpperCase, null);
 
     return scr == null && baseScr == null ?
       Function.air :

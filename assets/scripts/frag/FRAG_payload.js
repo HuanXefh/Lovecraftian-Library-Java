@@ -154,7 +154,7 @@
     queueMap: new ObjectMap(),
   })
   .setAnno("init", function() {
-    TRIGGER.mapChange.addGlobalListener(nmMap => {
+    TRIGGER.mapChange.addGlobalListener(nameMap => {
       this.queueMap.clear();
     });
   });

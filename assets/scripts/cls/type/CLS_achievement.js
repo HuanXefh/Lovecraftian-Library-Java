@@ -13,8 +13,8 @@
    * Achievements should be created on CLIENT LOAD and not on headless end.
    * See {@link TP_achievement} in ProjReind for examples.
    * @class
-   * @param {string} nmMod
-   * @param {string} nm
+   * @param {string} nameMod
+   * @param {string} name
    * @param {TextureRegionDrawable} icon
    * @param {CLS_eventTrigger} trigger - Trigger used to check state of the achievement.
    * @param {Function|unset} [listener] - Complete the achievement here. If not set, the achievement will be completed when trigger is fired.
@@ -22,11 +22,11 @@
   const CLS_achievement = newClass().initClass();
 
 
-  CLS_achievement.prototype.init = function(nmMod, nm, icon, trigger, listener) {
+  CLS_achievement.prototype.init = function(nameMod, name, icon, trigger, listener) {
     const thisIns = this;
-    if(fetchMod(nmMod, true) == null) ERROR_HANDLER.throw("noModFound", nmMod);
-    this.name = nmMod + "-" + registerUniqueName(nm, insNms, "achievement");
-    this.mod = nmMod;
+    if(fetchMod(nameMod, true) == null) ERROR_HANDLER.throw("noModFound", nameMod);
+    this.name = nameMod + "-" + registerUniqueName(name, insNames, "achievement");
+    this.mod = nameMod;
 
     this.icon = tryVal(icon, VARGEN.icons.ohno);
     listener == null ?
@@ -37,7 +37,7 @@
   };
 
 
-  const insNms = [];
+  const insNames = [];
 
 
 /*
@@ -102,7 +102,7 @@ CLS_achievement.clear = function() {
 
   /**
    * Gets text description of this achievement.
-   * <br> <BUNDLE>: "info.common-info-achieve-<nmMod>-<nm>".
+   * <br> <BUNDLE>: "info.common-info-achieve-<nameMod>-<name>".
    * @return {string}
    */
   CLS_achievement.prototype.getText = function() {

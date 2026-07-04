@@ -75,8 +75,8 @@
 
 
     // Register custom fields for recipe dictionary
-    DB_recipe.db["dict"]["customField"].forEachRow(2, (nm, obj) => {
-      MDL_recipeDict.newCustomField(nm, obj);
+    DB_recipe.db["dict"]["customField"].forEachRow(2, (name, obj) => {
+      MDL_recipeDict.newCustomField(name, obj);
     });
 
 
@@ -93,7 +93,7 @@
 
 
     // Map reading fallback addition
-    DB_misc.db["block"]["migration"].forEachRow(2, (nm_f, nm_t) => SaveVersion.fallback.put(nm_f, nm_t));
+    DB_misc.db["block"]["migration"].forEachRow(2, (name_f, name_t) => SaveVersion.fallback.put(name_f, name_t));
 
 
     // Register custom W/R chunk
@@ -172,8 +172,8 @@
 
         return MDL_json.fetch(jsonVal, "version") !== verCur;
       })()) {
-        DB_recipe.db["oreDict"]["def"].forEachRow(2, (nmRs, arr) => {
-          let fi = dir.child(nmRs + ".csv");
+        DB_recipe.db["oreDict"]["def"].forEachRow(2, (nameRs, arr) => {
+          let fi = dir.child(nameRs + ".csv");
           MDL_file._w_csv(fi, arr, 1);
         });
         MDL_json.write(dir.child("meta.json"), {
@@ -187,8 +187,8 @@
         let ct = Vars.content.byName(fi.nameWithoutExtension());
         if(ct == null) return;
         let arr = MDL_file._r_csv(fi);
-        arr.forEachFast(nmRs => {
-          let rs = Vars.content.byName(nmRs);
+        arr.forEachFast(nameRs => {
+          let rs = Vars.content.byName(nameRs);
           if(rs == null) return;
           oreDict.put(rs, ct);
         });
@@ -367,8 +367,8 @@
               lightness > 0.75 ?
                 1.0 :
                 lightness > 0.45 ?
-                  VAR.param.ctNmColorMtp :
-                  VAR.param.ctNmColorMtpHigh
+                  VAR.param.ctNameColorMtp :
+                  VAR.param.ctNameColorMtpHigh
             );
         };
 
@@ -393,9 +393,9 @@
     // Set up node root names
     if(!Vars.headless) {
       TechTree.roots.each(rt => {
-        let nmCt = DB_env.db["nodeRootNameMap"].read(rt.name);
-        if(nmCt != null) {
-          let ct = MDL_content._ct(nmCt, null, true);
+        let nameCt = DB_env.db["nodeRootNameMap"].read(rt.name);
+        if(nameCt != null) {
+          let ct = MDL_content._ct(nameCt, null, true);
           if(ct != null) rt.name = ct.localizedName;
         };
       });
@@ -405,16 +405,16 @@
     // Set up status effects
     (function() {
       // Robot-only status
-      DB_status.db["group"]["robotOnly"].map(nmSta => MDL_content._ct(nmSta, "sta", true)).forEachCond(sta => sta != null, sta => {
+      DB_status.db["group"]["robotOnly"].map(nameSta => MDL_content._ct(nameSta, "sta", true)).forEachCond(sta => sta != null, sta => {
         sta.stats.add(fetchStat("lovec", "sta-robotonly"), true);
         VARGEN.bioticUtps.forEachFast(utp => utp.immunities.add(sta));
       });
       // Oceanic status
-      DB_status.db["group"]["oceanic"].map(nmSta => MDL_content._ct(nmSta, "sta", true)).forEachCond(sta => sta != null, sta => {
+      DB_status.db["group"]["oceanic"].map(nameSta => MDL_content._ct(nameSta, "sta", true)).forEachCond(sta => sta != null, sta => {
         VARGEN.navalUtps.forEachFast(utp => utp.immunities.add(sta));
       });
       // Missile immunities
-      DB_status.db["group"]["missileImmune"].map(nmSta => MDL_content._ct(nmSta, "sta", true)).concat(VARGEN.deathStas).forEachCond(sta => sta != null, sta => {
+      DB_status.db["group"]["missileImmune"].map(nameSta => MDL_content._ct(nameSta, "sta", true)).concat(VARGEN.deathStas).forEachCond(sta => sta != null, sta => {
         VARGEN.missileUtps.forEachFast(utp => utp.immunities.add(sta));
       });
     })();
@@ -434,15 +434,15 @@
 
 
     // Set up planet rules
-    DB_env.db["map"]["rule"]["campaign"].forEachRow(2, (nmPla, ruleSetter) => {
-      let pla = MDL_content._ct(nmPla, "pla");
+    DB_env.db["map"]["rule"]["campaign"].forEachRow(2, (namePla, ruleSetter) => {
+      let pla = MDL_content._ct(namePla, "pla");
       if(pla == null) return;
       let campaignRules = new CampaignRules();
       ruleSetter(campaignRules);
       pla.campaignRules = campaignRules;
     });
-    DB_env.db["map"]["rule"]["planet"].forEachRow(2, (nmPla, ruleSetter) => {
-      let pla = MDL_content._ct(nmPla, "pla");
+    DB_env.db["map"]["rule"]["planet"].forEachRow(2, (namePla, ruleSetter) => {
+      let pla = MDL_content._ct(namePla, "pla");
       if(pla == null) return;
       pla.ruleSetter = cons(ruleSetter);
     });

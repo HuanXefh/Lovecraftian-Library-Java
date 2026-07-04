@@ -322,13 +322,13 @@
    * @param {Table} tb
    * @param {Block} blk
    * @param {number} mtp
-   * @param {string} nmAttr
+   * @param {string} nameAttr
    * @param {number|unset} [w]
    * @param {Dialog|unset} [dialToHide]
    * @param {ContentInfoDialog|unset} [ctDial]
    * @return {Cell}
    */
-  const __blkEffc = function(tb, blk, mtp, nmAttr, w, dialToHide, ctDial) {
+  const __blkEffc = function(tb, blk, mtp, nameAttr, w, dialToHide, ctDial) {
     if(w == null) w = 64.0;
     let str = (Math.abs(mtp) < 0.0001) ? "" : ((mtp < 0.0 ? "-" : "") + Strings.autoFixed(mtp * 100.0, 2) + "%");
 
@@ -341,7 +341,7 @@
           tryVal(ctDial, Vars.ui.content).show(blk);
           if(dialToHide != null) dialToHide.hide();
         })
-        .tooltip(blk.localizedName + ((nmAttr == null) ? "" : ("\n\n[green]" + MDL_attr._attrB(nmAttr) + "[]")))
+        .tooltip(blk.localizedName + ((nameAttr == null) ? "" : ("\n\n[green]" + MDL_attr._attrB(nameAttr) + "[]")))
         .padRight(-18.0)
         .get();
         btn.margin(0.0);
@@ -1345,8 +1345,8 @@
         __margin(tb1);
         tb1.add("PAYI:").left().tooltip(MDL_bundle._term("lovec", "payi"), true).row();
         tb1.table(Styles.none, tb2 => {
-          payi.forEachRow(2, (nm, amt) => {
-            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
+          payi.forEachRow(2, (name, amt) => {
+            __rcCt(tb2, MDL_content._ct(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
           });
         });
       })
@@ -1405,8 +1405,8 @@
         __margin(tb1);
         tb1.add("PAYO:").left().tooltip(MDL_bundle._term("lovec", "payo"), true).row();
         tb1.table(Styles.none, tb2 => {
-          payo.forEachRow(2, (nm, amt) => {
-            __rcCt(tb2, MDL_content._ct(nm, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
+          payo.forEachRow(2, (name, amt) => {
+            __rcCt(tb2, MDL_content._ct(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
           });
         });
       })

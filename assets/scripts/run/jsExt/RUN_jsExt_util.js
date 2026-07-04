@@ -193,18 +193,18 @@
    * Merges all found DB files with the same name in "scripts/db" folder.
    * Cross-mod.
    * @param {Object} dbObj
-   * @param {string} nmFi
-   * @param {string|unset} [nmModCur]
+   * @param {string} nameFi
+   * @param {string|unset} [nameModCur]
    * @return {void}
    */
-  Object.mergeDB = function(dbObj, nmFi, nmModCur) {
-    if(nmModCur == null) nmModCur = "lovec";
+  Object.mergeDB = function(dbObj, nameFi, nameModCur) {
+    if(nameModCur == null) nameModCur = "lovec";
 
     let i = 0;
     Vars.mods.eachEnabled(mod => {
-      if(mod.name === nmModCur) return;
+      if(mod.name === nameModCur) return;
 
-      let path = mod.name + "/db/" + nmFi;
+      let path = mod.name + "/db/" + nameFi;
       let dbMdl;
       try {
         dbMdl = require(path);
@@ -221,7 +221,7 @@
       };
     });
 
-    console.log("[LOVEC] Merged ${1} DB file(s) for ${2} in ${3} from other mods.".format(i, nmFi, nmModCur.color(Pal.accent)));
+    console.log("[LOVEC] Merged ${1} DB file(s) for ${2} in ${3} from other mods.".format(i, nameFi, nameModCur.color(Pal.accent)));
   };
 
 

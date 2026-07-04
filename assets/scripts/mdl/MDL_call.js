@@ -39,7 +39,7 @@
   })
   .setAnno("init", function() {
     MDL_event._c_onLoad(() => {
-      TRIGGER.mapChange.addGlobalListener(nmMap => callOnce.idCurMap.clear());
+      TRIGGER.mapChange.addGlobalListener(nameMap => callOnce.idCurMap.clear());
     }, 10777892);
   });
   exports.callOnce = callOnce;

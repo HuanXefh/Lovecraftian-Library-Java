@@ -20,8 +20,8 @@
   /* <------------------------------ auxiliary ------------------------------ */
 
 
-  function toggleSetting(nmCfg) {
-    Core.settings.put("lovec-" + nmCfg, !fetchSetting(nmCfg));
+  function toggleSetting(nameCfg) {
+    Core.settings.put("lovec-" + nameCfg, !fetchSetting(nameCfg));
     PARAM.forceLoadParam();
   };
 

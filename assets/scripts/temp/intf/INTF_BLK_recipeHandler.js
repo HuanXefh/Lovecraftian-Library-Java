@@ -405,7 +405,7 @@
 
 
   function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rcIconNm), b.block.size, 0.75);
+    LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rcIconName), b.block.size, 0.75);
   };
 
 
@@ -484,17 +484,17 @@
     b.failP = MDL_recipe._failP(rcMdl, rcHeader);
     b.fo = MDL_recipe._fo(b.fo, rcMdl, rcHeader);
     b.payo = MDL_recipe._payo(b.payo, rcMdl, rcHeader);
-    b.rcIconNm = MDL_recipe._iconNm(rcMdl, rcHeader);
+    b.rcIconName = MDL_recipe._iconName(rcMdl, rcHeader);
     b.rcTimeScl = MDL_recipe._timeScl(rcMdl, rcHeader);
     b.rcPol = MDL_recipe._pol(rcMdl, rcHeader);
     b.ignoreItemFullness = MDL_recipe._ignoreItemFullness(rcMdl, rcHeader);
     b.erekirHeatReq = MDL_recipe._erekirHeatReq(rcMdl, rcHeader);
     b.erekirHeatProd = MDL_recipe._erekirHeatProd(rcMdl, rcHeader);
 
-    let nmAttr = MDL_recipe._attr(rcMdl, rcHeader);
-    b.attr = nmAttr == null ?
+    let nameAttr = MDL_recipe._attr(rcMdl, rcHeader);
+    b.attr = nameAttr == null ?
       null :
-      Attribute.getOrNull(nmAttr);
+      Attribute.getOrNull(nameAttr);
 
     b.attrMin = MDL_recipe._attrMin(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
     b.attrMax = MDL_recipe._attrMax(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
@@ -654,10 +654,10 @@
       __PARAM_PARSER_SETTER__: (() => [
         "rcMdl", function(val) {
           if(val == null) ERROR_HANDLER.throw("nullArgument", "rcMdl");
-          let nmMod = this.rcSourceMod;
-          if(nmMod == null) ERROR_HANDLER.throw("nullArgument", "rcSourceMod");
+          let nameMod = this.rcSourceMod;
+          if(nameMod == null) ERROR_HANDLER.throw("nullArgument", "rcSourceMod");
 
-          return MDL_recipe._rcMdl(nmMod, val);
+          return MDL_recipe._rcMdl(nameMod, val);
         },
       ])
       .setProp({
@@ -796,7 +796,7 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        rcIconNm: "error",
+        rcIconName: "error",
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
@@ -1391,11 +1391,11 @@
        * @override
        * @memberof INTF_B_recipeHandler
        * @instance
-       * @param {string} nmCt
+       * @param {string} nameCt
        * @return {number}
        */
-      ex_getPayConsAmt: function(nmCt) {
-        return this.payi.read(nmCt, 0);
+      ex_getPayConsAmt: function(nameCt) {
+        return this.payi.read(nameCt, 0);
       }
       .setProp({
         noSuper: true,
@@ -1408,11 +1408,11 @@
        * @override
        * @memberof INTF_B_recipeHandler
        * @instance
-       * @param {string} nmCt
+       * @param {string} nameCt
        * @return {number}
        */
-      ex_getPayProdAmt: function(nmCt) {
-        return this.payo.read(nmCt, 0);
+      ex_getPayProdAmt: function(nameCt) {
+        return this.payo.read(nameCt, 0);
       }
       .setProp({
         noSuper: true,

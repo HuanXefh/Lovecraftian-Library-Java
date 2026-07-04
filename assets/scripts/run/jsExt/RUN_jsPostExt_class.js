@@ -28,26 +28,26 @@
     if(intf.children.includes(this)) ERROR_HANDLER.throw("duplicateInterface");
 
     if(!this.__IS_CONTENT_TEMPLATE__) {
-      Object._it(intf.intfObj, (nm, fun) => {
-        if(nm === "__PROTO__") {
-          this.prototype[nm] !== undefined && !shouldOverride ?
-            ERROR_HANDLER.throw("interfaceMethodNameConflict", nm) :
-            this.prototype[nm] = fun;
+      Object._it(intf.intfObj, (name, fun) => {
+        if(name === "__PROTO__") {
+          this.prototype[name] !== undefined && !shouldOverride ?
+            ERROR_HANDLER.throw("interfaceMethodNameConflict", name) :
+            this.prototype[name] = fun;
         } else {
-          this[nm] !== undefined && !shouldOverride ?
-            ERROR_HANDLER.throw("interfaceMethodNameConflict", nm) :
-            this[nm] = fun;
+          this[name] !== undefined && !shouldOverride ?
+            ERROR_HANDLER.throw("interfaceMethodNameConflict", name) :
+            this[name] = fun;
         };
       });
     } else {
       if(this.nm === "CLS_contentTemplate") throw new Error("Are you trying to implement interface on the root template?");
       let arr = LCTempParentMap.get(this.nm);
-      if(String.isEmpty(intf.nm)) {
+      if(String.isEmpty(intf.name)) {
         console.warn("[LOVEC] Content template ${1} is implementing an anonymous interface!".format(this.nm));
       } else {
-        arr.push(intf.nm);
+        arr.push(intf.name);
       };
-      intf.parentIntfs.forEachCond(ointf => !String.isEmpty(ointf.nm), ointf => arr.push(ointf.nm));
+      intf.parentIntfs.forEachCond(ointf => !String.isEmpty(ointf.name), ointf => arr.push(ointf.name));
       this.setMethod(intf.intfObj, true);
     };
     intf.children.push(this);

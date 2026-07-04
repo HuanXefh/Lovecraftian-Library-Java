@@ -17,9 +17,9 @@
     };
 
     let cond1 = false, cond2 = false;
-    blk.attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
+    blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
       if(cond1 && cond2) return;
-      let rs = MDL_content._ct(nmRs, "rs");
+      let rs = MDL_content._ct(nameRs, "rs");
       if(rs == null) return;
       if(!cond1) cond1 = rs instanceof Item;
       if(!cond2) cond2 = rs instanceof Liquid;
@@ -34,8 +34,8 @@
 
     MDL_event._c_onLoad(() => {
       Core.app.post(() => {
-        blk.attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
-          let rs = MDL_content._ct(nmRs, "rs");
+        blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
+          let rs = MDL_content._ct(nameRs, "rs");
           if(rs == null) return;
 
           rs instanceof Item ?
@@ -73,10 +73,10 @@
           fetchStat("lovec", "blk-attrreq").localized(),
           MDL_bundle._term("lovec", "efficiency-multiplier"),
         ]];
-        blk.attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
-          let rs = MDL_content._ct(nmRs, "rs");
+        blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
+          let rs = MDL_content._ct(nameRs, "rs");
           if(rs == null) return;
-          matArr.push([rs, rs.localizedName, MDL_attr._attrB(nmAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
+          matArr.push([rs, rs.localizedName, MDL_attr._attrB(nameAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
         });
 
         return matArr;

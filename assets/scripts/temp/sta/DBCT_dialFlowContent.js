@@ -15,14 +15,14 @@
 
 
   function comp_init(sta) {
-    if(sta.nmDialFlow == null) ERROR_HANDLER.throw("nullArgument", "nmDialFlow");
+    if(sta.nameDialFlow == null) ERROR_HANDLER.throw("nullArgument", "nameDialFlow");
 
     sta.databaseCategory = "lovec-information";
 
     if(!Vars.headless) {
       MDL_content.rename(
         sta,
-        Core.bundle.get("dial." + sta.nmDialFlow),
+        Core.bundle.get("dial." + sta.nameDialFlow),
       );
     };
 
@@ -32,7 +32,7 @@
       };
     });
 
-    VARGEN.dialFlowNmCtMap.put(sta.nmDialFlow, sta);
+    VARGEN.dialFlowNameCtMap.put(sta.nameDialFlow, sta);
   };
 
 
@@ -42,7 +42,7 @@
       MDL_table.__btnSmall(tb, VARGEN.icons.play, () => {
         !sta.ex_checkDbctUnlocked() ?
           MDL_ui.show_fadeInfo("lovec", "info-locked") :
-          MDL_ui._d_flow(sta.nmDialFlow);
+          MDL_ui._d_flow(sta.nameDialFlow);
       }).left().padLeft(28.0).tooltip(MDL_bundle._term("lovec", "dialog-flow-play"), true);
     }));
   };
@@ -70,11 +70,11 @@
 
     /**
      * <PARAM>: Name of the dialog flow used, see {@link newDialogFlow}.
-     * <br> <BUNDLE-name>: "dial.<nmDialFlow>".
+     * <br> <BUNDLE-name>: "dial.<nameDialFlow>".
      * @memberof DBCT_dialFlowContent
      * @instance
      */
-    nmDialFlow: null,
+    nameDialFlow: null,
 
 
   })

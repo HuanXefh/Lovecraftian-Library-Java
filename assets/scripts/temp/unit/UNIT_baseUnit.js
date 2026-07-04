@@ -412,7 +412,7 @@
     };
 
     // Resolve unit damage type
-    let dmgType = CLS_unitDamageType.getTypeByUtp(utp);
+    let dmgType = CLS_unitDamageType.getByUtp(utp);
     if(dmgType !== CLS_unitDamageType.NONE) {
       utp.databaseTag = "common-dmg0type-" + dmgType.getName();
     };

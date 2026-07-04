@@ -46,9 +46,10 @@
     overwriteVanillaProp: true,
 
 
-    /* <------------------------------ internal ------------------------------ */
+    /* <------------------------------ vanilla ------------------------------ */
 
 
+    name: null,
     shootX: 0.0,
     shootY: 0.0,
     mirror: false,
@@ -76,7 +77,6 @@
 
   })
   .setParamAlias([
-    "nm", "name", null,
     "btp", "bullet", Bullets.placeholder,
     "isTop", "top", false,
     "shaRad", "shadow", -1.0,

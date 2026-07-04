@@ -16,7 +16,7 @@
 
     blk.ex_addLogicGetter(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
     blk.ex_addLogicGetter(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
-    blk.ex_addLogicGetter(LAccess.totalPayload, b => Object.mapSum(b.delegee.payStockObj, (nmCt, amt) => FRAG_payload._paySize(nmCt) * amt));
+    blk.ex_addLogicGetter(LAccess.totalPayload, b => Object.mapSum(b.delegee.payStockObj, (nameCt, amt) => FRAG_payload._paySize(nameCt) * amt));
     blk.ex_addLogicGetter(LAccess.payloadCapacity, b => blk.payAmtCap);
   };
 
@@ -41,8 +41,8 @@
     if(PARAM.UPDATE_SUPPRESSED) return;
 
     if(b.hasPayOutput && TIMER.effc) {
-      b.payAmtTotal = Object.mapSum(b.payStockObj, (nmCt, amt) => FRAG_payload._paySize(nmCt) * amt);
-      b.payAmtTotalAfterProd = Object.mapSum(b.payStockObj, (nmCt, amt) => FRAG_payload._paySize(nmCt) * (amt + b.ex_getPayProdAmt(nmCt)));
+      b.payAmtTotal = Object.mapSum(b.payStockObj, (nameCt, amt) => FRAG_payload._paySize(nameCt) * amt);
+      b.payAmtTotalAfterProd = Object.mapSum(b.payStockObj, (nameCt, amt) => FRAG_payload._paySize(nameCt) * (amt + b.ex_getPayProdAmt(nameCt)));
     };
 
     if(TIMER.secHalf) {
@@ -59,9 +59,9 @@
     // Payload dumping is not affected by {blk.disableDump}, because you cannot manually take payload out of the building
     if(b.hasPayOutput && TIMER.secHalf && b.payOutputBs.length > 0) {
       if(b.lastDumpPay == null) {
-        let nmCt = Object.randKey(b.payStockObj);
-        if(nmCt != null && b.payStockObj[nmCt] > 0) {
-          b.lastDumpPay = FRAG_payload._pay(nmCt, b.team);
+        let nameCt = Object.randKey(b.payStockObj);
+        if(nameCt != null && b.payStockObj[nameCt] > 0) {
+          b.lastDumpPay = FRAG_payload._pay(nameCt, b.team);
         };
       } else {
         let b_t = b.payOutputBs[b.payDumpIncre % b.payOutputBs.length];
@@ -77,7 +77,7 @@
 
 
   function comp_updateEfficiencyMultiplier(b) {
-    if(b.hasPayInput && Object.mapSomeSmallerThan(b.payReqObj, (nmCt, amt) => b.ex_getPayConsAmt(nmCt), false)) b.efficiency = 0.0;
+    if(b.hasPayInput && Object.mapSomeSmallerThan(b.payReqObj, (nameCt, amt) => b.ex_getPayConsAmt(nameCt), false)) b.efficiency = 0.0;
   };
 
 
@@ -301,10 +301,10 @@
        * <br> <LATER>
        * @memberof INTF_B_payloadBlock
        * @instance
-       * @param {string} nmCt
+       * @param {string} nameCt
        * @return {number}
        */
-      ex_getPayConsAmt: function(nmCt) {
+      ex_getPayConsAmt: function(nameCt) {
         return 0;
       }
       .setProp({
@@ -318,10 +318,10 @@
        * <br> <LATER>
        * @memberof INTF_B_payloadBlock
        * @instance
-       * @param {string} nmCt
+       * @param {string} nameCt
        * @return {number}
        */
-      ex_getPayProdAmt: function(nmCt) {
+      ex_getPayProdAmt: function(nameCt) {
         return 1;
       }
       .setProp({

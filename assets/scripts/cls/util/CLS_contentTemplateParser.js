@@ -11,15 +11,15 @@
   /**
    * Utility class for creating content template-based contents with JSON/HJSON.
    * @class
-   * @param {string} nmMod
+   * @param {string} nameMod
    */
   const CLS_contentTemplateParser = newClass().initClass();
 
 
-  CLS_contentTemplateParser.prototype.init = function(nmMod) {
-    this.mod = fetchMod(nmMod);
+  CLS_contentTemplateParser.prototype.init = function(nameMod) {
+    this.mod = fetchMod(nameMod);
     if(this.mod == null) return;
-    VARGEN.nmModTempParserMap.put(nmMod, this);
+    VARGEN.nameModTempParserMap.put(nameMod, this);
 
     this.dirCt = this.mod.root.child("scripts").child("auxFi").child("json").child("content");
     this.jsonFis = [];
@@ -143,27 +143,27 @@
     };
     delete obj.template;
 
-    let nmCt = jsonFi.nameWithoutExtension();
+    let nameCt = jsonFi.nameWithoutExtension();
     let ct;
     if(temp instanceof Array) {
       let objB = obj.build;
       delete obj.build;
       this.parseFields(obj);
       this.parseFields(objB);
-      ct = extendBlock(temp, nmCt, temp[0].build(obj), temp[1].build(objB));
+      ct = extendBlock(temp, nameCt, temp[0].build(obj), temp[1].build(objB));
     } else if(temp.nm.startsWithAny("UNIT_", "EXT_UNIT_")) {
       this.parseFields(obj);
-      ct = extendUnit(temp, nmCt, temp.build(obj));
+      ct = extendUnit(temp, nameCt, temp.build(obj));
     } else if(temp.nm.startsWithAny("PLA_", "EXT_PLA_")) {
       let sectorSize = obj.sectorSize;
       delete obj.sectorSize;
       this.parseFields(obj);
-      ct = extendPlanet(temp, nmCt, sectorSize, temp.build(obj));
+      ct = extendPlanet(temp, nameCt, sectorSize, temp.build(obj));
     } else {
       this.parseFields(obj);
-      ct = extendBase(temp, nmCt, temp.build(obj));
+      ct = extendBase(temp, nameCt, temp.build(obj));
     };
-    this.parsedMap.put(nmCt, obj);
+    this.parsedMap.put(nameCt, obj);
     this.parsedCts.push(ct);
 
     return ct;

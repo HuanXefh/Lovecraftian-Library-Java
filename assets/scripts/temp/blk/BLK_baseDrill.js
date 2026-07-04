@@ -20,13 +20,13 @@
 
     if(blk.noSandOutput) {
       if(blk.blockedItems == null) blk.blockedItems = new Seq();
-      DB_item.db["group"]["sand"].forEachFast(nm => {
-        let itm = MDL_content._ct(nm, "rs");
+      DB_item.db["group"]["sand"].forEachFast(name => {
+        let itm = MDL_content._ct(name, "rs");
         if(itm != null) blk.blockedItems.add(itm);
       });
     };
 
-    blk.itmWhitelist = blk.itmWhitelist.map(nmItm => MDL_content._ct(nmItm, "rs")).compact();
+    blk.itmWhitelist = blk.itmWhitelist.map(nameItm => MDL_content._ct(nameItm, "rs")).compact();
 
     MDL_event._c_onLoad(() => {
       Core.app.post(() => {

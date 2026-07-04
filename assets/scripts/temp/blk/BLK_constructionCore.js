@@ -38,8 +38,8 @@
           this.envRequired = blk.envRequired;
           this.envDisabled = blk.envDisabled;
           let itmStacks = [];
-          Object._it(blk.constructionItmsReq, (nmItm, amt) => {
-            itmStacks.push(new ItemStack(Vars.content.item(nmItm), amt));
+          Object._it(blk.constructionItmsReq, (nameItm, amt) => {
+            itmStacks.push(new ItemStack(Vars.content.item(nameItm), amt));
           });
           this.requirements = itmStacks;
           MDL_event._c_onLoad(() => {

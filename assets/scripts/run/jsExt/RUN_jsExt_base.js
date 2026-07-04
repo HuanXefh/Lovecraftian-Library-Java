@@ -99,7 +99,7 @@
   /**
    * Sets a lot of properties for `obj`.
    * <br> <ARGS>: obj, propObj
-   * <br> <ARGS>: obj, isFinal, nmProp1, val1, nmProp2, val2, nmProp3, val3, ...
+   * <br> <ARGS>: obj, isFinal, nameProp1, val1, nameProp2, val2, nameProp3, val3, ...
    * @template T
    * @param {T} obj
    * @return {T}
@@ -141,19 +141,19 @@
    * Creates a global reference to some object.
    * @template T
    * @param {T} obj
-   * @param {string} nm
+   * @param {string} name
    * @return {T}
    */
-  Object.globalize = function(obj, nm) {
-    if(typeof nm !== "string") throw new Error("You must provide a name for global reference! Exception:\n" + nm);
-    registerUniqueName(nm, Object.globalize.nms, "globalize");
+  Object.globalize = function(obj, name) {
+    if(typeof name !== "string") throw new Error("You must provide a name for global reference! Exception:\n" + name);
+    registerUniqueName(name, Object.globalize.names, "globalize");
     globalEval(
-      'let cond = false; try {cond = ' + nm + ' !== undefined} catch(err) {cond = false}; if(cond) throw new Error("Cannot globalize an object due to reference conflict! Exception: ' + nm + '")',
+      'let cond = false; try {cond = ' + name + ' !== undefined} catch(err) {cond = false}; if(cond) throw new Error("Cannot globalize an object due to reference conflict! Exception: ' + name + '")',
       "globalizeCheck_" + Object.globalize.ind,
     );
     Object.globalize.tmp = obj;
     globalEval(
-      nm + " = Object.globalize.tmp",
+      name + " = Object.globalize.tmp",
       "globalize_" + Object.globalize.ind,
     );
     Object.globalize.ind++;
@@ -162,7 +162,7 @@
   };
   Object.globalize.ind = 0;
   Object.globalize.tmp = null;
-  Object.globalize.nms = [];
+  Object.globalize.names = [];
 
 
   /**
@@ -180,7 +180,7 @@
   /**
    * Variant of {@link Object.setProp} for instance.
    * <br> <ARGS>: obj, propObj
-   * <br> <ARGS>: obj, isFinal, nmProp1, val1, nmProp2, val2, nmProp3, val3, ...
+   * <br> <ARGS>: obj, isFinal, nameProp1, val1, nameProp2, val2, nameProp3, val3, ...
    * @func Object#setProp
    * @return {this}
    */
@@ -205,11 +205,11 @@
   /**
    * Variant of {@link Object.globalize} for instance.
    * @func Object#globalize
-   * @param {string} nm
+   * @param {string} name
    * @return {this}
    */
-  setHiddenProp(Object.prototype, "globalize", function(nm) {
-    return Object.globalize(this, nm);
+  setHiddenProp(Object.prototype, "globalize", function(name) {
+    return Object.globalize(this, name);
   });
 
 

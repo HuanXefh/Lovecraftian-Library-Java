@@ -64,12 +64,12 @@
    * Sets a fixed property for some object.
    * @global
    * @param {Object} obj
-   * @param {string} nmProp
+   * @param {string} nameProp
    * @param {any} val
    * @return {void}
    */
-  setFinalProp = function(obj, nmProp, val) {
-    Object.defineProperty(obj, nmProp, {value: val, writable: false, enumerable: true, configurable: false});
+  setFinalProp = function(obj, nameProp, val) {
+    Object.defineProperty(obj, nameProp, {value: val, writable: false, enumerable: true, configurable: false});
   };
 
 
@@ -77,12 +77,12 @@
    * Sets a hidden property for some object.
    * @global
    * @param {Object} obj
-   * @param {string} nmProp
+   * @param {string} nameProp
    * @param {any} val
    * @return {void}
    */
-  setHiddenProp = function(obj, nmProp, val) {
-    Object.defineProperty(obj, nmProp, {value: val, writable: true, enumerable: false, configurable: true});
+  setHiddenProp = function(obj, nameProp, val) {
+    Object.defineProperty(obj, nameProp, {value: val, writable: true, enumerable: false, configurable: true});
   };
 
 
@@ -116,15 +116,15 @@
    * If the name has been used before, function overloading happens.
    * @global
    * @param {any} obj
-   * @param {string} nmFun
+   * @param {string} nameFun
    * @param {Array<ArgumentType>|unset} types - If set, the method added also checks argument types.
    * @param {Function} fun
    * @return {void}
    */
-  addMethod = function(obj, nmFun, types, fun) {
-    let lastFun = obj[nmFun];
+  addMethod = function(obj, nameFun, types, fun) {
+    let lastFun = obj[nameFun];
 
-    obj[nmFun] = function() {
+    obj[nameFun] = function() {
       if(fun.length === arguments.length && (types == null ? true : checkArgType(arguments, types))) {
         return fun.apply(this, arguments);
       } else if(typeof lastFun === "function") {
@@ -304,14 +304,14 @@
    * Tries to get a JS property from some object created with {@link JavaAdapter}.
    * @global
    * @param {any} obj
-   * @param {string} nmProp
+   * @param {string} nameProp
    * @param {any} [def]
    * @return {any}
    */
-  tryJsProp = function(obj, nmProp, def) {
-    return obj.delegee == null || obj.delegee[nmProp] === undefined ?
+  tryJsProp = function(obj, nameProp, def) {
+    return obj.delegee == null || obj.delegee[nameProp] === undefined ?
       def :
-      obj.delegee[nmProp];
+      obj.delegee[nameProp];
   };
 
 
@@ -320,19 +320,19 @@
    * Can accept a list of property names for fallback.
    * @global
    * @param {Object|unset} paramObj
-   * @param {string|Array<string>} nmProps_p
+   * @param {string|Array<string>} nameProps_p
    * @param {any} [def]
    * @return {any}
    */
-  readParam = function(paramObj, nmProps_p, def) {
+  readParam = function(paramObj, nameProps_p, def) {
     if(paramObj == null) return def;
-    if(!(nmProps_p instanceof Array)) {
-      return paramObj[nmProps_p] == null ? def : paramObj[nmProps_p];
+    if(!(nameProps_p instanceof Array)) {
+      return paramObj[nameProps_p] == null ? def : paramObj[nameProps_p];
     };
 
-    let i = 0, iCap = nmProps_p.iCap();
+    let i = 0, iCap = nameProps_p.iCap();
     while(i < iCap) {
-      if(paramObj[nmProps_p[i]] != null) return paramObj[nmProps_p[i]];
+      if(paramObj[nameProps_p[i]] != null) return paramObj[nameProps_p[i]];
       i++;
     };
 
@@ -344,13 +344,13 @@
    * Variant of {@link readParam} but the result is immediately used if found.
    * @global
    * @param {Object|unset} paramObj
-   * @param {string|Array<string>} nmProps_p
+   * @param {string|Array<string>} nameProps_p
    * @param {function(any): void} scr
    * @param {any} [def]
    * @return {void}
    */
-  readParamAndCall = function(paramObj, nmProps_p, scr, def) {
-    let val = readParam(paramObj, nmProps_p);
+  readParamAndCall = function(paramObj, nameProps_p, scr, def) {
+    let val = readParam(paramObj, nameProps_p);
     if(val !== undefined) {
       scr(val);
     } else if(def !== undefined) {

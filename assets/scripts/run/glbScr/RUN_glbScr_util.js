@@ -73,8 +73,8 @@
    * 1. Checks whether a version string is newer or equal to given version string.
    * <br> 2. Whether all version requirements are met.
    * <br> <ARGS>: verStrReq, verStrCur.
-   * <br> <ARGS>: nmMod, minVerArr
-   * <br> <ROW-minVerArr>: nmMod, verStrReq
+   * <br> <ARGS>: nameMod, minVerArr
+   * <br> <ROW-minVerArr>: nameMod, verStrReq
    * @return {boolean}
    * @example
    * // Check version requirement
@@ -101,24 +101,24 @@
 
       return true;
     },
-    ["string", Array], function(nmMod, minVerArr) {
-      let str = "[gray]Unmet dependency for [accent]" + nmMod + "[]!\n";
+    ["string", Array], function(nameMod, minVerArr) {
+      let str = "[gray]Unmet dependency for [accent]" + nameMod + "[]!\n";
       let errored = false;
 
       let i = 0, iCap = minVerArr.length;
-      let nmDepend, minVer, ver, mod;
+      let nameDepend, minVer, ver, mod;
       str += "\n----------------------------------------------------";
       while(i < iCap) {
-        nmDepend = minVerArr[i];
+        nameDepend = minVerArr[i];
         minVer = minVerArr[i + 1];
         ver = "!PENDING";
-        mod = Vars.mods.locateMod(nmDepend);
+        mod = Vars.mods.locateMod(nameDepend);
         if(mod != null) {
           ver = String(mod.meta.version);
         };
         if(ver === "!PENDING" || !checkVersion(minVer, ver)) {
           errored = true;
-          str += "\n" + nmDepend + "        " + minVer + "        " + (ver === "!PENDING" ? "!NOTFOUND" : "!OUTDATED");
+          str += "\n" + nameDepend + "        " + minVer + "        " + (ver === "!PENDING" ? "!NOTFOUND" : "!OUTDATED");
         };
         i += 2;
       };
@@ -142,20 +142,20 @@
    * Runs `scr` only when all required mods are found.
    * Used mostly to load something optionally.
    * @global
-   * @param {string} nmModCur
-   * @param {string|Array<string>} nmMods_p
+   * @param {string} nameModCur
+   * @param {string|Array<string>} nameMods_p
    * @param {function(): void} scr
    * @param {boolean|unset} [suppressWarning] - If true, error message about missing mods won't be shown.
    * @return {void}
    */
-  runWithDependency = function(nmModCur, nmMods_p, scr, suppressWarning) {
+  runWithDependency = function(nameModCur, nameMods_p, scr, suppressWarning) {
     let
-      arr1 = (nmMods_p instanceof Array ? nmMods_p : [nmMods_p]),
-      arr2 = arr1.map(nmMod => Vars.mods.locateMod(nmMod));
+      arr1 = (nameMods_p instanceof Array ? nameMods_p : [nameMods_p]),
+      arr2 = arr1.map(nameMod => Vars.mods.locateMod(nameMod));
     if(!arr2.includes(null)) {
       scr();
     } else if(!suppressWarning) {
-      let str = "[gray]Missing dependencies for [accent]" + nmModCur + "[]:\n";
+      let str = "[gray]Missing dependencies for [accent]" + nameModCur + "[]:\n";
       str += "\n----------------------------------------------------";
       for(let i = 0; i < arr1.length; i++) {
         if(arr2[i] != null) continue;
@@ -172,25 +172,25 @@
 
 
   /**
-   * Checks if the given name has already been registered in `nms`.
+   * Checks if the given name has already been registered in `names`.
    * @global
-   * @param {string} nm
-   * @param {Array<string>} nms
+   * @param {string} name
+   * @param {Array<string>} names
    * @param {string|unset} [tag]
    * @return {string}
    */
-  registerUniqueName = function(nm, nms, tag) {
-    if(nm == null || nms.includes(nm)) ERROR_HANDLER.throw("notUniqueName", nm, tryVal(tag, "unknown"));
-    nms.push(nm);
+  registerUniqueName = function(name, names, tag) {
+    if(name == null || names.includes(name)) ERROR_HANDLER.throw("notUniqueName", name, tryVal(tag, "unknown"));
+    names.push(name);
 
-    return nm;
+    return name;
   };
 
 
   /**
    * Used to read 2-arrays that map classes (or template names) to functions.
    * @global
-   * @param {Array} arr - <ROW>: cls0tempNm, fun.
+   * @param {Array} arr - <ROW>: cls0tempName, fun.
    * @param {Object} ins
    * @param {any} [def]
    * @return {Function}
@@ -226,23 +226,23 @@
     /**
      * Registers a new log type.
      * @param {numbers} mode - See {@link LogModes}.
-     * @param {string} nm
+     * @param {string} name
      * @param {function(): string} strGetter
      * @return {void}
      */
-    add(mode, nm, strGetter) {
+    add(mode, name, strGetter) {
       switch(mode) {
         case 0 :
-          this.__INFO_MAP__.put(nm, strGetter);
+          this.__INFO_MAP__.put(name, strGetter);
           break;
         case 1 :
-          this.__WARN_MAP__.put(nm, strGetter);
+          this.__WARN_MAP__.put(name, strGetter);
           break;
         case 2 :
-          this.__ERR_MAP__.put(nm, strGetter);
+          this.__ERR_MAP__.put(name, strGetter);
           break;
         case 3 :
-          this.__DEBUG_MAP__.put(nm, strGetter);
+          this.__DEBUG_MAP__.put(name, strGetter);
           break;
         default :
           throw new Error("Unknown log type: " + mode);
@@ -252,18 +252,18 @@
 
     /**
      * Finds log type and string getter for given name.
-     * @param {string} nm
+     * @param {string} name
      * @return {[number, function(): string]|null}
      */
-    find(nm) {
+    find(name) {
       let strGetter;
-      strGetter = this.__INFO_MAP__.get(nm);
+      strGetter = this.__INFO_MAP__.get(name);
       if(strGetter != null) return [LogModes.I, strGetter];
-      strGetter = this.__WARN_MAP__.get(nm);
+      strGetter = this.__WARN_MAP__.get(name);
       if(strGetter != null) return [LogModes.W, strGetter];
-      strGetter = this.__ERR_MAP__.get(nm);
+      strGetter = this.__ERR_MAP__.get(name);
       if(strGetter != null) return [LogModes.E, strGetter];
-      strGetter = this.__DEBUG_MAP__.get(nm);
+      strGetter = this.__DEBUG_MAP__.get(name);
       if(strGetter != null) return [LogModes.D, strGetter];
 
       return null;
@@ -272,13 +272,13 @@
 
     /**
      * Prints something in the console.
-     * <br> <ARGS>: nm, arg1, arg2, arg3, ...
-     * @param {string} nm
+     * <br> <ARGS>: name, arg1, arg2, arg3, ...
+     * @param {string} name
      * @return {void}
      */
-    log(nm) {
-      let tup = this.find(nm);
-      if(tup == null) console.err("[LOVEC] Unregistered log name: " + nm);
+    log(name) {
+      let tup = this.find(name);
+      if(tup == null) console.err("[LOVEC] Unregistered log name: " + name);
       let text = tup[1].apply(null, Array.from(arguments).splice(1));
       if(text == null) return;
 
@@ -301,22 +301,22 @@
 
     /**
      * Registers a new error.
-     * @param {string} nm
+     * @param {string} name
      * @param {string} str
      */
-    add(nm, str) {
-      this.__ERR_MAP__.put(nm, str);
+    add(name, str) {
+      this.__ERR_MAP__.put(name, str);
     },
 
 
     /**
      * Throws some error found by name.
-     * <br> <ARGS>: nm, arg1, arg2, arg3, ...
-     * @param {string} nm
+     * <br> <ARGS>: name, arg1, arg2, arg3, ...
+     * @param {string} name
      * @return {void}
      */
-    throw(nm) {
-      let str = this.__ERR_MAP__.get(nm);
+    throw(name) {
+      let str = this.__ERR_MAP__.get(name);
       if(str == null) return;
 
       if(arguments.length === 1) {
@@ -347,22 +347,22 @@
 
   /**
    * Whether 'ins' is an instance of a class or content template.
-   * Returns false if `cls0tempNm` is null.
-   * Returns true if `cls0tempNm` is exactly `ins`.
+   * Returns false if `cls0tempName` is null.
+   * Returns true if `cls0tempName` is exactly `ins`.
    * @global
    * @param {Object} ins
-   * @param {string|Function|null} cls0tempNm
+   * @param {string|Function|null} cls0tempName
    * @return {boolean}
    */
-  checkInstance = function(ins, cls0tempNm) {
-    if(cls0tempNm == null) {
+  checkInstance = function(ins, cls0tempName) {
+    if(cls0tempName == null) {
       return false;
-    } else if(ins === cls0tempNm) {
+    } else if(ins === cls0tempName) {
       return true;
-    } else if(typeof cls0tempNm === "function") {
-      return ins instanceof cls0tempNm;
-    } else if(typeof cls0tempNm === "string") {
-      return checkCreatedByTemp(ins) && ins.ex_isSubInsOf(cls0tempNm);
+    } else if(typeof cls0tempName === "function") {
+      return ins instanceof cls0tempName;
+    } else if(typeof cls0tempName === "string") {
+      return checkCreatedByTemp(ins) && ins.ex_isSubInsOf(cls0tempName);
     };
 
     return false;
@@ -387,33 +387,33 @@
   /**
    * Gets method from some content template.
    * @global
-   * @param {string} nmTemp
-   * @param {string} nmFun
+   * @param {string} nameTemp
+   * @param {string} nameFun
    * @param {any} [def]
    * @return {Function}
    */
-  fetchTempMethod = function(nmTemp, nmFun, def) {
+  fetchTempMethod = function(nameTemp, nameFun, def) {
     if(def == null) def = Function.air;
 
-    let temp = LCTemp[nmTemp];
+    let temp = LCTemp[nameTemp];
     return temp == null ?
       def :
-      temp[nmFun] == null ?
+      temp[nameFun] == null ?
         def :
-        temp[nmFun];
+        temp[nameFun];
   };
 
 
   /**
    * Gets all parent templates and implemented interfaces of some template as string.
    * @global
-   * @param {string} nmTemp
+   * @param {string} nameTemp
    * @return {Array<string>}
    */
-  fetchTempParents = function(nmTemp) {
-    return LCTemp[nmTemp] == null ?
+  fetchTempParents = function(nameTemp) {
+    return LCTemp[nameTemp] == null ?
       [] :
-      LCTempParentMap.get(nmTemp).slice();
+      LCTempParentMap.get(nameTemp).slice();
   };
 
 
@@ -445,10 +445,10 @@
    * @param {Function|null} superFun
    * @param {Function} fun
    * @param {number|unset} [mode] - See {@link MethodMixModes}.
-   * @param {string|unset} [nmFun] - Required if used in mode BUILD.
+   * @param {string|unset} [nameFun] - Required if used in mode BUILD.
    * @return {Function}
    */
-  mixTempMethods = function(superFun, fun, mode, nmFun) {
+  mixTempMethods = function(superFun, fun, mode, nameFun) {
     if(mode == null) mode = MethodMixModes.NORMAL;
     if(mode === MethodMixModes.BUILD) {
       if(fun.noSuper) return fun.wrapLen(fun.argLen);
@@ -512,51 +512,51 @@
         break;
 
       case MethodMixModes.BUILD :
-        let nmSuperFun = "super$" + nmFun;
+        let nameSuperFun = "super$" + nameFun;
         if(fun.superBoolMode != null) {
           if(fun.superBoolMode === "and") {
             fun_fi = function() {
-              return this[nmSuperFun].apply(this, arguments) && fun.apply(this, arguments);
+              return this[nameSuperFun].apply(this, arguments) && fun.apply(this, arguments);
             };
           } else if(fun.superBoolMode === "or") {
             fun_fi = function() {
-              return this[nmSuperFun].apply(this, arguments) || fun.apply(this, arguments);
+              return this[nameSuperFun].apply(this, arguments) || fun.apply(this, arguments);
             };
           };
         } else if(fun.mergeMode != null) {
           if(fun.mergeMode === "object") {
             fun_fi = function() {
-              return Object.mergeObj(this[nmSuperFun].apply(this, arguments), fun.apply(this, arguments));
+              return Object.mergeObj(this[nameSuperFun].apply(this, arguments), fun.apply(this, arguments));
             };
           } else if(fun.mergeMode === "array") {
             fun_fi = function() {
-              return this[nmSuperFun].apply(this, arguments).pushAll(fun.apply(this, arguments));
+              return this[nameSuperFun].apply(this, arguments).pushAll(fun.apply(this, arguments));
             };
           } else if(fun.mergeMode === "add") {
             fun_fi = function() {
-              return this[nmSuperFun].apply(this, arguments) + fun.apply(this, arguments);
+              return this[nameSuperFun].apply(this, arguments) + fun.apply(this, arguments);
             };
           } else if(fun.mergeMode === "sub") {
             fun_fi = function() {
-              return this[nmSuperFun].apply(this, arguments) - fun.apply(this, arguments);
+              return this[nameSuperFun].apply(this, arguments) - fun.apply(this, arguments);
             };
           } else if(fun.mergeMode === "mul") {
             fun_fi = function() {
-              return this[nmSuperFun].apply(this, arguments) * fun.apply(this, arguments);
+              return this[nameSuperFun].apply(this, arguments) * fun.apply(this, arguments);
             };
           } else if(fun.mergeMode === "div") {
             fun_fi = function() {
-              return this[nmSuperFun].apply(this, arguments) / fun.apply(this, arguments);
+              return this[nameSuperFun].apply(this, arguments) / fun.apply(this, arguments);
             };
           } else if(typeof fun.mergeMode === "function") {
             fun_fi = function() {
-              mixTempMethods.tmpArgs.with(this[nmSuperFun].apply(this, arguments), fun.apply(this, arguments));
+              mixTempMethods.tmpArgs.with(this[nameSuperFun].apply(this, arguments), fun.apply(this, arguments));
               return fun.mergeMode.apply(this, mixTempMethods.tmpArgs);
             };
           };
         } else {
           fun_fi = function() {
-            this[nmSuperFun].apply(this, arguments);
+            this[nameSuperFun].apply(this, arguments);
             return fun.apply(this, arguments);
           };
         };

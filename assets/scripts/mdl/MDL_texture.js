@@ -122,17 +122,17 @@
   /**
    * Converts texture name to random overlay region getter.
    * See {@link DB_env}.
-   * @param {string} nm
+   * @param {string} name
    * @return {function(): TextureRegion[]}
    */
-  const _randRegsGetter = function(nm) {
+  const _randRegsGetter = function(name) {
     return function() {
       let arr = [];
       if(Vars.headless) return arr;
 
       let i = 0;
-      while(Core.atlas.has(nm + (i + 1))) {
-        arr.push(Core.atlas.find(nm + (i + 1)));
+      while(Core.atlas.has(name + (i + 1))) {
+        arr.push(Core.atlas.find(name + (i + 1)));
         i++;
       };
 
@@ -254,7 +254,7 @@
 
   /**
    * Base for methods that packs new icon.
-   * New texture regions will be named as "<nmCt>-<suffix>".
+   * New texture regions will be named as "<nameCt>-<suffix>".
    * @param {UnlockableContent} ct
    * @param {MultiPacker} packer
    * @param {string|unset} suffix

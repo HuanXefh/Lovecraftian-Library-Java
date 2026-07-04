@@ -100,17 +100,17 @@
   /**
   * Sets ground part for a bank terrain type with given material groups.
   * Does not remove previously added ones.
-  * @param {string} nm
+  * @param {string} name
   * @param {Array<string>} matGrps
   * @return {void}
   */
-  const setBankTerMatGrps = function(nm, matGrps) {
-    if(bankTerMatGrps[nm] == null) {
-      bankTerMatGrps[nm] = [];
+  const setBankTerMatGrps = function(name, matGrps) {
+    if(bankTerMatGrps[name] == null) {
+      bankTerMatGrps[name] = [];
     };
     matGrps.forEachFast(matGrp => {
       warnUnusedMatGrp(matGrp);
-      bankTerMatGrps[nm].pushUnique(matGrp);
+      bankTerMatGrps[name].pushUnique(matGrp);
     });
   };
   exports.setBankTerMatGrps = setBankTerMatGrps;

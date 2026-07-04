@@ -129,7 +129,7 @@ const db = {
 
     /**
      * If a mod has customized unit debris, don't create extra remains.
-     * <br> <ROW>: nmMod.
+     * <br> <ROW>: nameMod.
      */
     noRemainsMod: [
 
@@ -150,7 +150,7 @@ const db = {
     /**
      * Outline parameters used for units & turrets in some mods.
      * Note that only contents created with content template will be affected.
-     * <br> <ROW>: nmMod, [stroke, color].
+     * <br> <ROW>: nameMod, [stroke, color].
      */
     outline: [
 

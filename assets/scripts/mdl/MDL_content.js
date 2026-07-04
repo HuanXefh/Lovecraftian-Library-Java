@@ -85,17 +85,17 @@
    * Renames this content if bundle name is not provided.
    * Should be called on INIT.
    * @param {ContentGn} ct_gn
-   * @param {string|(function(): string)} nm0nmGetter
+   * @param {string|(function(): string)} name0nameGetter
    * @return {void}
    */
-  const rename = function(ct_gn, nm0nmGetter) {
+  const rename = function(ct_gn, name0nameGetter) {
     let ct = _ct(ct_gn);
     if(ct == null || _hasBundle(ct)) return;
 
     Core.app.post(() => {
-      ct.localizedName = typeof nm0nmGetter === "function" ?
-        nm0nmGetter() :
-        nm0nmGetter;
+      ct.localizedName = typeof name0nameGetter === "function" ?
+        name0nameGetter() :
+        name0nameGetter;
     });
   }
   .setAnno("non-headless");
@@ -126,10 +126,10 @@
    * @param {UnlockableContent} ct
    * @return {string}
    */
-  const _nmCtNoPrefix = function(ct) {
+  const _nameCtNoPrefix = function(ct) {
     return ct.name.replace(_mod(ct) + "-", "");
   };
-  exports._nmCtNoPrefix = _nmCtNoPrefix;
+  exports._nameCtNoPrefix = _nameCtNoPrefix;
 
 
   /* <---------- resource ----------> */
@@ -306,7 +306,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-faction-<nmFaction>.name".
+   * <BUNDLE>: "term.common-term-faction-<nameFaction>.name".
    * @param {string} faction
    * @return {string}
    */
@@ -374,7 +374,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-fami-<nmFami>.name".
+   * <BUNDLE>: "term.common-term-fami-<nameFami>.name".
    * @param {string} facFami
    * @return {string}
    */

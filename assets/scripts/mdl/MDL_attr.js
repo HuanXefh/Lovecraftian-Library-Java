@@ -93,11 +93,11 @@
     let map = [];
 
     attrs_gn.forEachFast(attr_gn => {
-      let nmAttr = _attr(attr_gn);
+      let nameAttr = _attr(attr_gn);
       Vars.content.blocks().each(blk => boolF(blk), blk => {
-        let attrVal = blk.attributes.get(Attribute.get(nmAttr));
+        let attrVal = blk.attributes.get(Attribute.get(nameAttr));
         if(Math.abs(attrVal) > 0.0) {
-          map.push(blk, attrVal, nmAttr);
+          map.push(blk, attrVal, nameAttr);
         };
       });
     });
@@ -221,19 +221,19 @@
    * @return {Resource|null}
    */
   const _dynaAttrRs = function(attrRsArr, blk) {
-    let tmpNmRs = null;
+    let tmpNameRs = null;
     let tmpVal = 0.0;
 
     let val = 0.0;
-    attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
-      val = blk.attributes.get(Attribute.get(nmAttr));
+    attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
+      val = blk.attributes.get(Attribute.get(nameAttr));
       if(val > tmpVal) {
-        tmpNmRs = nmRs;
+        tmpNameRs = nameRs;
         tmpVal = val;
       };
     });
 
-    return MDL_content._ct(tmpNmRs, "rs");
+    return MDL_content._ct(tmpNameRs, "rs");
   };
   exports._dynaAttrRs = _dynaAttrRs;
 

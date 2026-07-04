@@ -128,18 +128,18 @@
    * @typedef {Array<number>} DistributionArray
    */
   /**
-   * <TUP>: nmMod, nmDial, ind.
+   * <TUP>: nameMod, nameDial, ind.
    * @global
    * @typedef {[string, string, number]} DialogTuple
    */
   /**
-   * <TUP>: nmMod, nmChara.
+   * <TUP>: nameMod, nameChara.
    * @global
    * @typedef {[string, string]} CharacterTuple
    */
   /**
    * <ROW>: dialTup, charaTup, paramObj, charaArgs.
-   * <br> <ROW-charaArgs>: delay, nmMod, nmChara, fracX, isDark0color, anim, animParamObj, customActs.
+   * <br> <ROW-charaArgs>: delay, nameMod, nameChara, fracX, isDark0color, anim, animParamObj, customActs.
    * @global
    * @typedef {Array} DialogFlowData
    */

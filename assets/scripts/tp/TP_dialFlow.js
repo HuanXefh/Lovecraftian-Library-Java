@@ -29,20 +29,20 @@
     new CLS_dialogFlowBuilder()
     .setBgmStart(Musics.boss1)
     .setText("lovec", "test", 0).setSpeaker("lovec", "earlan").setChara({
-      nmMod: "lovec", nmChara: "earlan",
+      nameMod: "lovec", nameChara: "earlan",
       fracX: 0.5, isDark: false,
       anim: "fade-in",
     })
     .setText("lovec", "test", 1).setChara({
-      nmMod: "lovec", nmChara: "earlan",
+      nameMod: "lovec", nameChara: "earlan",
       fracX: 0.5, isDark: true,
     })
     .setColorTransition().setChara({
-      nmMod: "lovec", nmChara: "earlan",
+      nameMod: "lovec", nameChara: "earlan",
       fracX: 0.5, isDark: true,
     })
     .setText("lovec", "test", 2).setChara({
-      nmMod: "lovec", nmChara: "earlan",
+      nameMod: "lovec", nameChara: "earlan",
       fracX: 0.5, isDark: true,
       anim: "move", animParamObj: {
         transTimeS: 1.0,
@@ -51,7 +51,7 @@
       },
     })
     .setBgmEnd().setChara({
-      nmMod: "lovec", nmChara: "earlan",
+      nameMod: "lovec", nameChara: "earlan",
       fracX: 0.33, isDark: true,
       anim: "fade-out",
     })

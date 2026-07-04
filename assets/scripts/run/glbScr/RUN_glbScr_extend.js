@@ -48,13 +48,13 @@
     /**
      * Gets a content from the storage.
      * Usually {@link fetchContent} is used instead.
-     * @param {string} nmCt
+     * @param {string} nameCt
      * @param {ContentType|unset} [ctType]
      * @return {UnlockableContent|null}
      */
     fetch: newMultiFunction(
-      function(nmCt) {return CONTENT_HANDLER.__NAME_MAP__.get(nmCt)},
-      function(nmCt, ctType) {return CONTENT_HANDLER.__TYPE_MAPS__[ctType].get(nmCt)},
+      function(nameCt) {return CONTENT_HANDLER.__NAME_MAP__.get(nameCt)},
+      function(nameCt, ctType) {return CONTENT_HANDLER.__TYPE_MAPS__[ctType].get(nameCt)},
     ),
 
 
@@ -65,15 +65,15 @@
    * Gets a content that is created with {@link extendBase} or its variants.
    * This method is meant to replace {@link require} for cross-mod compatibility, do not abuse this after INIT!
    * @global
-   * @param {string} nmCt
+   * @param {string} nameCt
    * @param {ContentType|unset} [ctType]
    * @return {UnlockableContent}
    */
-  fetchContent = function(nmCt, ctType) {
+  fetchContent = function(nameCt, ctType) {
     let ct = ctType == null ?
-      CONTENT_HANDLER.fetch(nmCt) :
-      CONTENT_HANDLER.fetch(nmCt, ctType);
-    if(ct == null) throw new Error("Content ${1} is not registered through template!".format(nmCt));
+      CONTENT_HANDLER.fetch(nameCt) :
+      CONTENT_HANDLER.fetch(nameCt, ctType);
+    if(ct == null) throw new Error("Content ${1} is not registered through template!".format(nameCt));
 
     return ct;
   };
@@ -143,16 +143,16 @@
    * Significantly simplifies content codes.
    * @global
    * @param {Function} temp
-   * @param {string} nmCt
+   * @param {string} nameCt
    * @param {Object|unset} [obj]
    * @return {UnlockableContent}
    */
-  extendBase = function(temp, nmCt, obj) {
+  extendBase = function(temp, nameCt, obj) {
     processClassLoader();
     obj = extendBase.setupObj(temp, obj);
     // Can't implement interfaces with `extend`, that's why `new JavaAdapter(...)` is used
     // You cannot pass an array as arguments to a constructor function directly, here it's wrapped in `ctorCall`
-    let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj, nmCt));
+    let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj, nameCt));
     extendBase.setupFields(ct, obj);
     temp.initContent(ct);
     CONTENT_HANDLER.add(ct);
@@ -191,12 +191,12 @@
    * Variant of {@link extendBase} for blocks.
    * @global
    * @param {Array} temp
-   * @param {string} nmBlk
+   * @param {string} nameBlk
    * @param {Object|unset} [objBlk]
    * @param {Object|unset} [objB]
    * @return {Block}
    */
-  extendBlock = function(temp, nmBlk, objBlk, objB) {
+  extendBlock = function(temp, nameBlk, objBlk, objB) {
     processClassLoader();
     let obj = extendBase.setupObj(temp[0], objBlk);
 
@@ -218,7 +218,7 @@
     };
 
     /** @type {Block} blk */
-    let blk = ctorCall(JavaAdapter, extendBase.setupArgs(temp[0], obj, nmBlk));
+    let blk = ctorCall(JavaAdapter, extendBase.setupArgs(temp[0], obj, nameBlk));
     extendBase.setupFields(blk, obj);
     blk.buildType = () => {
       processClassLoader();
@@ -265,14 +265,14 @@
    * Variant of {@link extendBase} for unit types.
    * @global
    * @param {Function} temp
-   * @param {string} nmUtp
+   * @param {string} nameUtp
    * @param {Object|unset} [objUtp]
    * @return {UnitType}
    */
-  extendUnit = function(temp, nmUtp, objUtp) {
+  extendUnit = function(temp, nameUtp, objUtp) {
     processClassLoader();
     objUtp = extendBase.setupObj(temp, objUtp);
-    let utp = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objUtp, nmUtp));
+    let utp = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objUtp, nameUtp));
     extendBase.setupFields(utp, objUtp);
     temp.initContent(utp);
     CONTENT_HANDLER.add(utp);
@@ -286,15 +286,15 @@
    * Variant of {@link extendBase} for planets.
    * @global
    * @param {CLS_contentTemplate} temp
-   * @param {string} nmPla
+   * @param {string} namePla
    * @param {number} sectorSize
    * @param {Object|unset} [objPla]
    * @return {Planet}
    */
-  extendPlanet = function(temp, nmPla, sectorSize, objPla) {
+  extendPlanet = function(temp, namePla, sectorSize, objPla) {
     processClassLoader();
     objPla = extendBase.setupObj(temp, objPla);
-    let pla = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objPla, nmPla, null, 1.0, sectorSize));
+    let pla = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objPla, namePla, null, 1.0, sectorSize));
     extendBase.setupFields(temp, objPla);
     temp.initContent(pla);
     CONTENT_HANDLER.add(pla);

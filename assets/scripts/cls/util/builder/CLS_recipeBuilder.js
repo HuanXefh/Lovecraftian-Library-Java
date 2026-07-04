@@ -41,16 +41,16 @@
 
   /**
    * @param {CLS_recipeBuilder} builder
-   * @param {string} nmProp
+   * @param {string} nameProp
    * @param {Array} arr
    * @param {boolean|unset} [shouldMerge]
    * @return {CLS_recipeBuilder}
    */
-  function setIoData(builder, nmProp, arr, shouldMerge) {
-    if(builder.builderObj[nmProp] === undefined || !shouldMerge) {
-      builder.builderObj[nmProp] = arr;
+  function setIoData(builder, nameProp, arr, shouldMerge) {
+    if(builder.builderObj[nameProp] === undefined || !shouldMerge) {
+      builder.builderObj[nameProp] = arr;
     } else {
-      builder.builderObj[nmProp] = builder.builderObj[nmProp].concat(arr);
+      builder.builderObj[nameProp] = builder.builderObj[nameProp].concat(arr);
     };
 
     return builder;

@@ -468,15 +468,15 @@
     if(!ENABLED) return;
 
     MDL_event._c_onLoad(() => {
-      attrRsArr.forEachRow(2, (nmAttr, nmRs) => {
-        let rs = MDL_content._ct(nmRs, "rs");
+      attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
+        let rs = MDL_content._ct(nameRs, "rs");
         if(rs == null) return;
 
         let rawRc = _rawRc(tryVal(typeStr_ow, "factory"), blk, blk.ex_getCraftTime(), true);
         let rcGrp = new CLASSES.RecipeItemGroup();
         baseParse(blk, rawRc);
 
-        MDL_attr._blkAttrArr(nmAttr).forEachRow(3, (oblk, attrVal, nmAttr) => {
+        MDL_attr._blkAttrArr(nameAttr).forEachRow(3, (oblk, attrVal, nameAttr) => {
           addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, blk.delegee.attrRcType);
         });
         addProd(rawRc, rs, blk.ex_getDynaAttrProdSpd(rs) / (rs instanceof Liquid ? 60.0 : (1.0 / blk.ex_getCraftTime())), rs instanceof Liquid);
@@ -499,12 +499,12 @@
     if(!ENABLED) return;
 
     MDL_event._c_onLoad(() => {
-      terItmMapMap.each((nmItm, terItmMap) => {
-        let itm = MDL_content._ct(nmItm, "rs");
+      terItmMapMap.each((nameItm, terItmMap) => {
+        let itm = MDL_content._ct(nameItm, "rs");
         if(itm == null) return;
         let oreGrpMap = new ObjectMap();
-        terItmMap.each((ter, nmRs) => {
-          let rs = MDL_content._ct(nmRs, "rs");
+        terItmMap.each((ter, nameRs) => {
+          let rs = MDL_content._ct(nameRs, "rs");
           if(rs == null) return;
           if(!oreGrpMap.containsKey(rs)) oreGrpMap.put(rs, new CLASSES.RecipeItemGroup());
 
@@ -711,8 +711,8 @@
           // OPT (skipped here)
 
           // PAYI
-          payi.forEachRow(2, (nmCt, amt) => {
-            addCons(rawRc, nmCt, amt, false);
+          payi.forEachRow(2, (nameCt, amt) => {
+            addCons(rawRc, nameCt, amt, false);
           });
 
           // CO
@@ -731,8 +731,8 @@
           });
 
           // PAYO
-          payo.forEachRow(2, (nmCt, amt) => {
-            addProd(rawRc, nmCt, amt, false);
+          payo.forEachRow(2, (nameCt, amt) => {
+            addProd(rawRc, nameCt, amt, false);
           });
 
           if(amtCi > 0.0) addCons(rawRc, ct0, amtCi, true);

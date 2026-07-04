@@ -89,28 +89,28 @@
 
   /**
    * Gets a key binding by name.
-   * @param {string} nm
+   * @param {string} name
    * @return {KeyBind|null}
    */
-  const _keyBind = function(nm) {
-    return tryVal(bindings[nm], null);
+  const _keyBind = function(name) {
+    return tryVal(bindings[name], null);
   };
   exports._keyBind = _keyBind;
 
 
   /**
    * Adds a new key binding.
-   * @param {string} nm
+   * @param {string} name
    * @param {KeyCode} keyCodeDef
    * @param {string} categ
    * @return {boolean}
    */
-  const addKeyBind = function(nm, keyCodeDef, categ) {
-    if(bindings[nm] !== undefined) {
-      console.warn("[LOVEC] Key binding ${1} has already been registered!".format(nm.color(Pal.accent)));
+  const addKeyBind = function(name, keyCodeDef, categ) {
+    if(bindings[name] !== undefined) {
+      console.warn("[LOVEC] Key binding ${1} has already been registered!".format(name.color(Pal.accent)));
       return false;
     };
-    bindings[nm] = KeyBind.add(nm, keyCodeDef, categ);
+    bindings[name] = KeyBind.add(name, keyCodeDef, categ);
 
     return true;
   };
@@ -120,13 +120,13 @@
   /* <---------- content ----------> */
 
 
-  exports.nmModTempParserMap = new ObjectMap();
+  exports.nameModTempParserMap = new ObjectMap();
 
 
   /* <---------- dialog flow ----------> */
 
 
-  exports.dialFlowNmCtMap = new ObjectMap();
+  exports.dialFlowNameCtMap = new ObjectMap();
   exports.dialFlowTextLog = [];
   exports.dialFlowBgPool = [];
   exports.dialFlowImgPool = [];
@@ -201,8 +201,8 @@
      */
     exports.iconRegs = (function() {
       let obj = {};
-      DB_misc.db["texture"]["icon"].forEachRow(2, (nm, nmReg) => {
-        obj[nm] = findRegion(nmReg);
+      DB_misc.db["texture"]["icon"].forEachRow(2, (name, nameReg) => {
+        obj[name] = findRegion(nameReg);
       });
       return obj;
     })();
@@ -214,8 +214,8 @@
      */
     exports.icons = (function() {
       let obj = {};
-      Object._it(module.exports.iconRegs, (nm, reg) => {
-        obj[nm] = new TextureRegionDrawable(reg);
+      Object._it(module.exports.iconRegs, (name, reg) => {
+        obj[name] = new TextureRegionDrawable(reg);
       });
       return obj;
     })();
@@ -257,9 +257,9 @@
       let obj = {};
       obj.regMap = new ObjectMap();
       obj.endRegMap = new ObjectMap();
-      DB_block.db["grpParam"]["wireMatReg"].forEachRow(2, (wireMat, nmReg) => {
-        obj.regMap.put(wireMat, findRegion(nmReg));
-        obj.endRegMap.put(wireMat, findRegion(nmReg + "-end"));
+      DB_block.db["grpParam"]["wireMatReg"].forEachRow(2, (wireMat, nameReg) => {
+        obj.regMap.put(wireMat, findRegion(nameReg));
+        obj.endRegMap.put(wireMat, findRegion(nameReg + "-end"));
       });
       obj.glowReg = findRegion("lovec-ast-wire-glow");
       obj.shaReg = findRegion("lovec-ast-wire-shadow");
@@ -289,11 +289,11 @@
         Core.assets.load(path, Texture);
         return Core.assets.get(path, Texture);
       };
-      DB_misc.db["texture"]["noise"].forEachRow(2, (nm, path) => {
+      DB_misc.db["texture"]["noise"].forEachRow(2, (name, path) => {
         try {
-          obj[nm] = load(path);
-          obj[nm].setFilter(Texture.TextureFilter.linear);
-          obj[nm].setWrap(Texture.TextureWrap.repeat);
+          obj[name] = load(path);
+          obj[name].setFilter(Texture.TextureFilter.linear);
+          obj[name].setWrap(Texture.TextureWrap.repeat);
         } catch(err) {
           console.warn("[LOVEC] Cannot load noise texture for: " + path);
         };
@@ -373,8 +373,8 @@
      */
     exports.sandItms = (function() {
       let arr = [];
-      DB_item.db["group"]["sand"].forEachFast(nm => {
-        let itm = MDL_content._ct(nm, "rs");
+      DB_item.db["group"]["sand"].forEachFast(name => {
+        let itm = MDL_content._ct(name, "rs");
         if(itm != null) arr.push(itm);
       });
       return arr;
@@ -401,8 +401,8 @@
      */
     exports.fuelItms = (function() {
       let arr = [];
-      DB_item.db["param"]["fuel"]["item"].forEachRow(2, (nm, params) => {
-        let itm = MDL_content._ct(nm, "rs");
+      DB_item.db["param"]["fuel"]["item"].forEachRow(2, (name, params) => {
+        let itm = MDL_content._ct(name, "rs");
         if(itm != null) arr.push(itm);
       });
       return arr;
@@ -415,8 +415,8 @@
      */
     exports.fuelLiqs = (function() {
       let arr = [];
-      DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (nm, params) => {
-        let liq = MDL_content._ct(nm, "rs");
+      DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (name, params) => {
+        let liq = MDL_content._ct(name, "rs");
         if(liq != null && !liq.gas) arr.push(liq);
       });
       return arr;
@@ -429,8 +429,8 @@
      */
     exports.fuelGases = (function() {
       let arr = [];
-      DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (nm, params) => {
-        let liq = MDL_content._ct(nm, "rs");
+      DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (name, params) => {
+        let liq = MDL_content._ct(name, "rs");
         if(liq != null && liq.gas) arr.push(liq);
       });
       return arr;

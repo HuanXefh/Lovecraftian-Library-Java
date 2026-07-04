@@ -38,12 +38,12 @@
    * Evaluates the given string in global scope.
    * @global
    * @param {string} scrStr
-   * @param {string|unset} [nmFi]
+   * @param {string|unset} [nameFi]
    * @return {void}
    */
-  globalEval = function(scrStr, nmFi) {
-    if(typeof nmFi === "string") {
-      Vars.mods.scripts.context.evaluateString(SCOPE, scrStr, nmFi + ".js", 0);
+  globalEval = function(scrStr, nameFi) {
+    if(typeof nameFi === "string") {
+      Vars.mods.scripts.context.evaluateString(SCOPE, scrStr, nameFi + ".js", 0);
     } else {
       Vars.mods.scripts.context.evaluateString(SCOPE, scrStr, "globalEval_" + globalEval.ind + ".js", 0);
       globalEval.ind++;
@@ -55,13 +55,13 @@
   /**
    * Requires a JS file (as {@link Fi}), which will be run in global scope.
    * @global
-   * @param {string} nmMod
+   * @param {string} nameMod
    * @param {function(Fi): Fi} fiGetter - <ARGS>: modRoot
    * @return {void}
    */
-  globalRequire = function(nmMod, fiGetter) {
-    let fi = fiGetter(Vars.mods.locateMod(nmMod).root);
-    if(fi == null || !fi.exists() || fi.extension() !== "js") throw new Error("Failed to require a script in global script for ${1}! ${2} is not a valid .js file.".format(nmMod, fi));
+  globalRequire = function(nameMod, fiGetter) {
+    let fi = fiGetter(Vars.mods.locateMod(nameMod).root);
+    if(fi == null || !fi.exists() || fi.extension() !== "js") throw new Error("Failed to require a script in global script for ${1}! ${2} is not a valid .js file.".format(nameMod, fi));
 
     Vars.mods.scripts.context.evaluateString(SCOPE, fi.readString(), fi.name(), 0);
   };
@@ -248,13 +248,13 @@
 
     /**
      * Creates new arrays for an object in DB objects.
-     * @param {string} nm - Determines the name array to be used.
+     * @param {string} name - Determines the name array to be used.
      * @param {Object} obj
      * @return {this}
      */
-    apply(nm, obj) {
-      if(!(LCModDbRegister[nm] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended!".format(nm));
-      LCModDbRegister[nm].forEachFast(key => {
+    apply(name, obj) {
+      if(!(LCModDbRegister[name] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended!".format(name));
+      LCModDbRegister[name].forEachFast(key => {
         obj[key] = [];
       });
       return LCModDbRegister;
@@ -275,8 +275,8 @@
     "RUN_glbScr_util",
     "RUN_glbScr_module",
   ]
-  .forEach(nm => {
-    globalRequire("lovec", dir => dir.child("scripts").child("run").child("glbScr").child(nm + ".js"));
+  .forEach(name => {
+    globalRequire("lovec", dir => dir.child("scripts").child("run").child("glbScr").child(name + ".js"));
   });
 
 
@@ -483,7 +483,7 @@
     /**
      * Kills some unit.
      * <br> <ARGS>: .
-     * <br> <ARGS>: nm.
+     * <br> <ARGS>: name.
      * @global
      * @return {void}
      */
@@ -492,11 +492,11 @@
         if(!__CHECK_CHEAT_STATE__()) return;
         if(Vars.player.unit() != null) Call.unitDestroy(Vars.player.unit().id);
       },
-      function(nm) {
+      function(name) {
         if(!__CHECK_CHEAT_STATE__()) return;
-        let unit = MDL_pos._unitPlayerByNm(nm);
+        let unit = MDL_pos._unitPlayerByName(name);
         if(unit == null) {
-          console.err("[LOVEC] No player found with name ${1}!".format(String(nm).color(Pal.accent)));
+          console.err("[LOVEC] No player found with name ${1}!".format(String(name).color(Pal.accent)));
           return;
         };
         Call.unitDestroy(unit.id);

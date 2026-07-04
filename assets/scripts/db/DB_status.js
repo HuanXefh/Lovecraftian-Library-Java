@@ -180,21 +180,21 @@ Object.mergeDB(db, "DB_status");
 
 db["map"]["affinity"].pushAll((function() {
   let arr = [];
-  db["group"]["acidic"].forEachFast(nmSta => {
-    arr.push(nmSta, ["melting", function(unit, staEn, time) {staEn.set(this, time + 240.0)}]);
+  db["group"]["acidic"].forEachFast(nameSta => {
+    arr.push(nameSta, ["melting", function(unit, staEn, time) {staEn.set(this, time + 240.0)}]);
   });
-  db["group"]["basic"].forEachFast(nmSta => {
-    arr.push(nmSta, ["melting", function(unit, staEn, time) {staEn.set(this, time + 240.0)}]);
+  db["group"]["basic"].forEachFast(nameSta => {
+    arr.push(nameSta, ["melting", function(unit, staEn, time) {staEn.set(this, time + 240.0)}]);
   });
   return arr;
 })());
 db["map"]["opposite"].pushAll((function() {
   let arr = [];
-  db["group"]["acidic"].forEachFast(nmSta => {
-    arr.push(nmSta, () => db["group"]["basic"]);
+  db["group"]["acidic"].forEachFast(nameSta => {
+    arr.push(nameSta, () => db["group"]["basic"]);
   });
-  db["group"]["basic"].forEachFast(nmSta => {
-    arr.push(nmSta, () => db["group"]["acidic"]);
+  db["group"]["basic"].forEachFast(nameSta => {
+    arr.push(nameSta, () => db["group"]["acidic"]);
   });
   return arr;
 })());

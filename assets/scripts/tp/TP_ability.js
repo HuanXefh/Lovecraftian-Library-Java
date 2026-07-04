@@ -21,14 +21,14 @@
 
 
   function comp_addStats(abi, tb, tableF) {
-    tb.add("\n\n[gray]" + Core.bundle.get("ability.lovec-abi-" + abi.nm + ".description") + "[]\n\n").wrap().width(350.0);
+    tb.add("\n\n[gray]" + Core.bundle.get("ability.lovec-abi-" + abi.name + ".description") + "[]\n\n").wrap().width(350.0);
     tb.row();
     tableF(tb);
   };
 
 
   function comp_localized(abi) {
-    return Core.bundle.get("ability.lovec-abi-" + abi.nm + ".name");
+    return Core.bundle.get("ability.lovec-abi-" + abi.name + ".name");
   };
 
 
@@ -43,7 +43,7 @@
     paramObj => extend(Ability, {
 
 
-      nm: "explosion",
+      name: "explosion",
       dmg: readParam(paramObj, "dmg", 160.0),
       rad: readParam(paramObj, "rad", 40.0),
       sta: readParam(paramObj, "sta", StatusEffects.blasted),
@@ -96,7 +96,7 @@
     paramObj => extend(Ability, {
 
 
-      nm: "shield-core",
+      name: "shield-core",
       maxShield: readParam(paramObj, "maxShield", 0.0),
       regenAmt: readParam(paramObj, "regenAmt", 0.0),
       regenIntv: readParam(paramObj, "regenIntv", 1.0),
@@ -153,7 +153,7 @@
     paramObj => extend(Ability, {
 
 
-      nm: "laser-defense",
+      name: "laser-defense",
       dmg: readParam(paramObj, "dmg", 60.0),
       chargeCap: readParam(paramObj, "chargeCap", 180.0),
       chargeMtp: readParam(paramObj, "chargeMtp", 1.0),
@@ -240,7 +240,7 @@
     paramObj => extend(Ability, {
 
 
-      nm: "building-repairer-module",
+      name: "building-repairer-module",
       healAmt: readParam(paramObj, "healAmt", 0.0),
       healPerc: readParam(paramObj, "healPerc", 0.0),
       intv: readParam(paramObj, "intv", 60.0),
@@ -305,7 +305,7 @@
     paramObj => extend(Ability, {
 
 
-      nm: "unit-durability",
+      name: "unit-durability",
       durabCap: readParam(paramObj, "durabCap", Number.n12),
 
 

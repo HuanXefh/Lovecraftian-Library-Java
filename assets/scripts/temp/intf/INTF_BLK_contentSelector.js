@@ -27,8 +27,8 @@
       b.delegee.ctTg = ct;
       b.ex_onSelectorUpdate();
     });
-    blk.config(JAVA.string, (b, nmCt) => {
-      let ct = MDL_content._ct(nmCt, null, true);
+    blk.config(JAVA.string, (b, nameCt) => {
+      let ct = MDL_content._ct(nameCt, null, true);
       if(!blk.selectionQueue.includes(ct)) return;
       b.delegee.ctTg = ct;
       b.ex_onSelectorUpdate();

@@ -43,16 +43,16 @@
 
   /**
    * Localizes mod stats.
-   * Put "info.<nmMod>-info-mod" in your bundle.
-   * @param {string} nmMod
+   * Put "info.<nameMod>-info-mod" in your bundle.
+   * @param {string} nameMod
    * @return {void}
    */
-  const localizeModMeta = function(nmMod) {
-    let mod = fetchMod(nmMod);
+  const localizeModMeta = function(nameMod) {
+    let mod = fetchMod(nameMod);
     if(mod == null) return;
 
-    mod.meta.displayName = MDL_bundle._info(nmMod, "mod");
-    mod.meta.description = MDL_bundle._info(nmMod, "mod", true);
+    mod.meta.displayName = MDL_bundle._info(nameMod, "mod");
+    mod.meta.description = MDL_bundle._info(nameMod, "mod", true);
   }
   .setAnno("non-headless");
   exports.localizeModMeta = localizeModMeta;
@@ -61,23 +61,23 @@
   /**
    * Locks all contents from some mod for testing purpose.
    * If `cts` is given, only these contents will be locked.
-   * @param {string} nmMod
+   * @param {string} nameMod
    * @param {Array<UnlockableContent>|unset} [cts]
    * @param {boolean|unset} [isUnlocking] - If true, this method will unlock contents instead.
    * @return {void}
    */
-  const lockModContents = function thisFun(nmMod, cts, isUnlocking) {
+  const lockModContents = function thisFun(nameMod, cts, isUnlocking) {
     if(cts != null) {
       cts.forEachFast(ct => {
-        if(thisFun.checkTg(ct, nmMod)) isUnlocking ? ct.unlock() : ct.clearUnlock();
+        if(thisFun.checkTg(ct, nameMod)) isUnlocking ? ct.unlock() : ct.clearUnlock();
       });
-      TechTree.all.each(node => cts.includes(node.content) && thisFun.checkTg(node.content, nmMod), node => node.reset());
+      TechTree.all.each(node => cts.includes(node.content) && thisFun.checkTg(node.content, nameMod), node => node.reset());
     } else {
       thisFun.defSeqs.forEachFast(seq => seq.each(
-        ct => thisFun.checkTg(ct, nmMod),
+        ct => thisFun.checkTg(ct, nameMod),
         ct => {isUnlocking ? ct.unlock() : ct.clearUnlock(); console.log("[LOVEC] Changed unlock state for " + ct.name.color(Pal.accent) + ".")},
       ));
-      TechTree.all.each(node => thisFun.checkTg(node.content, nmMod), node => node.reset());
+      TechTree.all.each(node => thisFun.checkTg(node.content, nameMod), node => node.reset());
     };
   }
   .setProp({
@@ -89,7 +89,7 @@
       Vars.content.statusEffects(),
       Vars.content.sectors(),
     ],
-    checkTg: (ct, nmMod) => ct.minfo.mod != null && ct.minfo.mod.name === nmMod,
+    checkTg: (ct, nameMod) => ct.minfo.mod != null && ct.minfo.mod.name === nameMod,
   })
   .setAnno("debug");
   exports.lockModContents = lockModContents;

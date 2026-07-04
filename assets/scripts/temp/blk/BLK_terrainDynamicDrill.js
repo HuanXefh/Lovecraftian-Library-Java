@@ -17,9 +17,9 @@
   function comp_init(blk) {
     MDL_event._c_onLoad(() => {
       Core.app.post(() => {
-        blk.terItmMapMap.each((nmItm, terItmMap) => {
-          terItmMap.each((ter, nmRs) => {
-            let rs = MDL_content._ct(nmRs, "rs");
+        blk.terItmMapMap.each((nameItm, terItmMap) => {
+          terItmMap.each((ter, nameRs) => {
+            let rs = MDL_content._ct(nameRs, "rs");
             if(rs == null) return;
             MDL_recipeDict.addItmProdTerm(blk, rs, Math.pow(blk.size, 2) * blk.drillTime / blk.getDrillTime(rs), 1.0, {icon: "lovec-icon-mining"});
           });
@@ -78,8 +78,8 @@
     const contCell = tb.table(Styles.none, tb1 => {}).growX();
     const cont = contCell.get();
 
-    blk.terItmMapMap.each((nmItm, terItmMap) => {
-      let itm = MDL_content._ct(nmItm, "rs");
+    blk.terItmMapMap.each((nameItm, terItmMap) => {
+      let itm = MDL_content._ct(nameItm, "rs");
       if(itm == null) return;
 
       let itmCell = cont.table(Styles.none, tb1 => {}).growX();
@@ -100,8 +100,8 @@
             "-",
           ],
         ];
-        terItmMap.each((ter, nmRs) => {
-          let rs = MDL_content._ct(nmRs, "rs");
+        terItmMap.each((ter, nameRs) => {
+          let rs = MDL_content._ct(nameRs, "rs");
           if(rs == null) return;
           matArr.push([rs, rs.localizedName, MDL_terrain._terB(ter)]);
         });

@@ -46,8 +46,8 @@
                 ],
               ];
 
-              this.effcMap.each((nmItm, effc) => {
-                let itm = Vars.content.item(nmItm);
+              this.effcMap.each((nameItm, effc) => {
+                let itm = Vars.content.item(nameItm);
                 if(itm == null) return;
                 matArr.push([
                   itm,
@@ -72,8 +72,8 @@
 
         ex_setRcDict(blk, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           let itm;
-          this.effcMap.each((nmItm, effc) => {
-            itm = Vars.content.item(nmItm);
+          this.effcMap.each((nameItm, effc) => {
+            itm = Vars.content.item(nameItm);
             if(itm == null) return;
             dictConsItm[itm.id].push(blk, 1, {});
           });
@@ -82,8 +82,8 @@
 
         ex_setTmiRc(blk, rawRc, boostEffc) {
           let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
-          this.effcMap.each((nmItm, effc) => {
-            MOD_tmi.addOpt(rawRc, rcGrp, nmItm, 1, effc, false, true);
+          this.effcMap.each((nameItm, effc) => {
+            MOD_tmi.addOpt(rawRc, rcGrp, nameItm, 1, effc, false, true);
           });
         },
 
@@ -126,8 +126,8 @@
                 ],
               ];
 
-              this.effcMap.each((nmLiq, effc) => {
-                let liq = Vars.content.liquid(nmLiq);
+              this.effcMap.each((nameLiq, effc) => {
+                let liq = Vars.content.liquid(nameLiq);
                 if(liq == null) return;
                 matArr.push([
                   tb2 => MDL_table.__rcCt(tb2, liq, this.amount),
@@ -160,8 +160,8 @@
 
         ex_setRcDict(blk, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           let liq;
-          this.effcMap.each((nmLiq, effc) => {
-            liq = Vars.content.liquid(nmLiq);
+          this.effcMap.each((nameLiq, effc) => {
+            liq = Vars.content.liquid(nameLiq);
             if(liq == null) return;
             dictConsFld[liq.id].push(blk, this.amount, {});
           });
@@ -170,8 +170,8 @@
 
         ex_setTmiRc(blk, rawRc, boostEffc) {
           let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
-          this.effcMap.each((nmLiq, effc) => {
-            MOD_tmi.addOpt(rawRc, rcGrp, nmLiq, this.amount, effc, true, true);
+          this.effcMap.each((nameLiq, effc) => {
+            MOD_tmi.addOpt(rawRc, rcGrp, nameLiq, this.amount, effc, true, true);
           });
         },
 

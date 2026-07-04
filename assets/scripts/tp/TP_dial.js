@@ -81,13 +81,13 @@
     () => extend(BaseDialog, "", {
 
 
-      ex_show(nmMod, nmInfo) {
-        resetDial(this, MDL_bundle._info(nmMod, "content-" + nmInfo));
+      ex_show(nameMod, nameInfo) {
+        resetDial(this, MDL_bundle._info(nameMod, "content-" + nameInfo));
 
         // <TABLE>: text
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
-          MDL_table.__wrapLine(pnTb, MDL_bundle._info(nmMod, "content-" + nmInfo, true), Align.left, 1);
+          MDL_table.__wrapLine(pnTb, MDL_bundle._info(nameMod, "content-" + nameInfo, true), Align.left, 1);
         })
         .width(MDL_ui._uiW())
         .row();
@@ -228,7 +228,7 @@
     () => extend(BaseDialog, MDL_bundle._term("lovec", "info-list"), {
 
 
-      ex_show(infoListData, moddedNms) {
+      ex_show(infoListData, moddedNames) {
         resetDial(this);
 
         // <TABLE>: list
@@ -240,7 +240,7 @@
             MDL_table.__btn(
               pnTb,
               CLS_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ),
-              () => fetchDialog("infoListSub").ex_show(categ, map, moddedNms),
+              () => fetchDialog("infoListSub").ex_show(categ, map, moddedNames),
               500.0,
             ).row();
           });
@@ -268,11 +268,11 @@
     () => extend(BaseDialog, "", {
 
 
-      hasAnyNm: false,
+      hasAnyName: false,
       lastInfoString: "",
 
 
-      ex_show(categ, map, moddedNms) {
+      ex_show(categ, map, moddedNames) {
         resetDial(this, CLS_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ));
 
         // <TABLE>: list
@@ -281,25 +281,25 @@
           MDL_table.__margin(pnTb);
 
           map.each((subCateg, subMap) => {
-            this.hasAnyNm = false;
-            subMap.each((nm, scr) => {
-              if(this.hasAnyNm) return;
-              this.lastInfoString = CLS_dragButtonInfoList.getInfoString(nm, categ, subCateg);
-              this.hasAnyNm = PARAM.MODDED || !moddedNms.includes(this.lastInfoString);
+            this.hasAnyName = false;
+            subMap.each((name, scr) => {
+              if(this.hasAnyName) return;
+              this.lastInfoString = CLS_dragButtonInfoList.getInfoString(name, categ, subCateg);
+              this.hasAnyName = PARAM.MODDED || !moddedNames.includes(this.lastInfoString);
             });
 
-            if(this.hasAnyNm) {
+            if(this.hasAnyName) {
               if(subCateg !== "uncategorized") {
                 MDL_table.__break(pnTb);
                 pnTb.add(CLS_dragButtonInfoList.getLocalizedCategName(subCateg)).color(Color.lightGray).row();
               };
 
-              subMap.each((nm, scr) => {
-                this.lastInfoString = CLS_dragButtonInfoList.getInfoString(nm, categ, subCateg);
-                if(!PARAM.MODDED && moddedNms.includes(this.lastInfoString)) return;
+              subMap.each((name, scr) => {
+                this.lastInfoString = CLS_dragButtonInfoList.getInfoString(name, categ, subCateg);
+                if(!PARAM.MODDED && moddedNames.includes(this.lastInfoString)) return;
                 MDL_table.__btn(
                   pnTb,
-                  CLS_dragButtonInfoList.getLocalizedInfoName(nm),
+                  CLS_dragButtonInfoList.getLocalizedInfoName(name),
                   scr,
                   500.0,
                 ).row();
@@ -354,14 +354,14 @@
             MDL_table.__textNothing(pnTb);
           } else {
             let tmpObj = {};
-            let i, iCap, j, colAmt = 10, nmMod;
+            let i, iCap, j, colAmt = 10, nameMod;
             VARGEN.achievements.forEachFast(achievement => {
-              nmMod = achievement.getMod().name;
-              if(tmpObj[nmMod] === undefined) tmpObj[nmMod] = [];
-              tmpObj[nmMod].push(achievement);
+              nameMod = achievement.getMod().name;
+              if(tmpObj[nameMod] === undefined) tmpObj[nameMod] = [];
+              tmpObj[nameMod].push(achievement);
             });
-            Object._it(tmpObj, (nmMod, arr) => {
-              pnTb.add(fetchMod(nmMod, true).meta.displayName).left().fontScale(1.1).color(Pal.accent).row();
+            Object._it(tmpObj, (nameMod, arr) => {
+              pnTb.add(fetchMod(nameMod, true).meta.displayName).left().fontScale(1.1).color(Pal.accent).row();
               pnTb.table(Styles.none, tb => {
                 i = 0;
                 iCap = arr.iCap();
@@ -570,8 +570,8 @@
             tb.left().setColor(Pal.darkestGray);
             MDL_table.__margin(tb, 0.5);
 
-            MDL_recipeDict.rcDict.customFieldMap.each((nm, obj) => {
-              this.ex_buildCtBtn(tb, nm, true);
+            MDL_recipeDict.rcDict.customFieldMap.each((name, obj) => {
+              this.ex_buildCtBtn(tb, name, true);
 
               if(j % colAmt === colAmt - 1) tb.row();
               i++;

@@ -14,7 +14,7 @@ const db = {
 
     /**
      * Used to register new custom fields in recipe dictionary.
-     * <br> <ROW>: nm, obj.
+     * <br> <ROW>: name, obj.
      */
     customField: [
 
@@ -514,7 +514,7 @@ const db = {
 
       /**
        * Used to add consumption term for a particular block in recipe dictionary.
-       * <br> <ROW>: nmBlk, rcReader.
+       * <br> <ROW>: nameBlk, rcReader.
        * <br> <ARGS>: blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp.
        */
       consumeSpec: [],
@@ -522,7 +522,7 @@ const db = {
 
       /**
        * Used to add production term for a particular block in recipe dictionary.
-       * <br> <ROW>: nmBlk, rcReader.
+       * <br> <ROW>: nameBlk, rcReader.
        * <br> <ARGS>: blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp.
        */
       produceSpec: [
@@ -757,7 +757,7 @@ const db = {
       function(obj, metaObj, paramObj) {
         let bi = this.parseRawBi(readParam(paramObj, "bi", Array.air), 1, 1.0);
         if(bi.length === 0) return;
-        let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nmRs => MDL_content._ct(nmRs, "rs").hardness).compact().unshiftAll(0.0));
+        let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nameRs => MDL_content._ct(nameRs, "rs").hardness).compact().unshiftAll(0.0));
         obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * readParam(metaObj, "abrasionFactor"), Mathf.maxZero(hardness - readParam(metaObj, "minHardness", 0)) / 10.0);
       },
 
@@ -766,7 +766,7 @@ const db = {
 
     /**
      * "GROUP: xxx" in recipe I/O arrays.
-     * <br> <ROW>: grpStr, [nmRs, paramObj].
+     * <br> <ROW>: grpStr, [nameRs, paramObj].
      */
     group: [],
 

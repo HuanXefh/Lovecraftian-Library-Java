@@ -21,12 +21,12 @@
 
 
   function updateTitle() {
-    let nmMap = global.lovecUtil.fun._mapCur();
+    let nameMap = global.lovecUtil.fun._mapCur();
     MDL_backend.setWinTitle(
       null,
       "${1}${2}".format(
         fetchSetting("misc-title-name"),
-        !fetchSetting("misc-title-map") ? "" : ": ${1}".format(String.isEmpty(nmMap) ? "menu" : nmMap),
+        !fetchSetting("misc-title-map") ? "" : ": ${1}".format(String.isEmpty(nameMap) ? "menu" : nameMap),
       ),
     );
   };
@@ -73,15 +73,15 @@
 
     shouldInitWea = false;
     Time.run(60.0, () => {
-      let nmWeas = DB_env.db["param"]["map"]["weaEn"].read(PARAM.MAP_CURRENT, Array.air);
-      if(nmWeas.length === 0) return;
+      let nameWeas = DB_env.db["param"]["map"]["weaEn"].read(PARAM.MAP_CURRENT, Array.air);
+      if(nameWeas.length === 0) return;
 
       Groups.weather.clear();
       let seq = new Seq(), weaEn;
-      nmWeas.forEachFast(nmWea => {
-        weaEn = VARGEN.weaEns[nmWea];
+      nameWeas.forEachFast(nameWea => {
+        weaEn = VARGEN.weaEns[nameWea];
         weaEn == null ?
-          console.warn("[LOVEC] Invalid weather name: " + nmWea.color(Pal.accent)) :
+          console.warn("[LOVEC] Invalid weather name: " + nameWea.color(Pal.accent)) :
           seq.add(weaEn);
       });
       Vars.state.rules.weather = seq;
@@ -172,7 +172,7 @@
 
 
 
-  TRIGGER.mapChange.addGlobalListener(nmMap => {
+  TRIGGER.mapChange.addGlobalListener(nameMap => {
 
     PARAM.forceLoadParam();
     shouldInitRules = true;

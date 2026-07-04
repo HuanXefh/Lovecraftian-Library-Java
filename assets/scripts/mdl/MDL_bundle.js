@@ -34,39 +34,39 @@
 
 
   /**
-   * <BUNDLE>: "info.<nmMod>-info-<bp>.name" or "info.<nmMod>-info-<bp>.description".
-   * @param {string} nmMod
+   * <BUNDLE>: "info.<nameMod>-info-<bp>.name" or "info.<nameMod>-info-<bp>.description".
+   * @param {string} nameMod
    * @param {string} bp
    * @param {boolean|unset} [isDes]
    * @return string
    */
-  const _info = function(nmMod, bp, isDes) {
-    return _base("info." + nmMod + "-info-" + bp + (isDes ? ".description" : ".name"));
+  const _info = function(nameMod, bp, isDes) {
+    return _base("info." + nameMod + "-info-" + bp + (isDes ? ".description" : ".name"));
   };
   exports._info = _info;
 
 
   /**
-   * <BUNDLE>: "info.<nmMod>-term-<bp>.name" or "info.<nmMod>-term-<bp>.description".
-   * @param {string} nmMod
+   * <BUNDLE>: "info.<nameMod>-term-<bp>.name" or "info.<nameMod>-term-<bp>.description".
+   * @param {string} nameMod
    * @param {string} bp
    * @param {boolean|unset} [isDes]
    * @return string
    */
-  const _term = function(nmMod, bp, isDes) {
-    return _base("term." + nmMod + "-term-" + bp + (isDes ? ".description" : ".name"));
+  const _term = function(nameMod, bp, isDes) {
+    return _base("term." + nameMod + "-term-" + bp + (isDes ? ".description" : ".name"));
   };
   exports._term = _term;
 
 
   /**
-   * <BUNDLE>: "stat.<nmMod>-stat-<bp>".
-   * @param {string} nmMod
+   * <BUNDLE>: "stat.<nameMod>-stat-<bp>".
+   * @param {string} nameMod
    * @param {string} bp
    * @return string
    */
-  const _stat = function(nmMod, bp) {
-    return _base("stat." + nmMod + "-stat-" + bp);
+  const _stat = function(nameMod, bp) {
+    return _base("stat." + nameMod + "-stat-" + bp);
   };
   exports._stat = _stat;
 
@@ -75,25 +75,25 @@
 
 
   /**
-   * <BUNDLE>: "chara.<nmMod>-<nmChara>".
-   * @param {string} nmMod
-   * @param {string} nmChara
+   * <BUNDLE>: "chara.<nameMod>-<nameChara>".
+   * @param {string} nameMod
+   * @param {string} nameChara
    * @return string
    */
-  const _chara = function(nmMod, nmChara) {
-    return _base("chara." + nmMod + "-" + nmChara);
+  const _chara = function(nameMod, nameChara) {
+    return _base("chara." + nameMod + "-" + nameChara);
   };
   exports._chara = _chara;
 
 
   /**
-   * <BUNDLE>: "dial.<nmMod>-<nmDial>-<ind>".
-   * @param {string} nmMod
-   * @param {string} nmDial
+   * <BUNDLE>: "dial.<nameMod>-<nameDial>-<ind>".
+   * @param {string} nameMod
+   * @param {string} nameDial
    * @param {number} ind
    * @return string
    */
-  const _dialText = function(nmMod, nmDial, ind) {
-    return _base("dial." + nmMod + "-" + nmDial + "-" + ind);
+  const _dialText = function(nameMod, nameDial, ind) {
+    return _base("dial." + nameMod + "-" + nameDial + "-" + ind);
   };
   exports._dialText = _dialText;

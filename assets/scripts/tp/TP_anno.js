@@ -31,9 +31,9 @@
   /**
    * Used to inform method deprecation.
    */
-  new CLS_annotation("deprecated", function(nmFun) {
+  new CLS_annotation("deprecated", function(nameFun) {
     console.warn(
-      "[LOVEC] A method called (${1}) has been ${2} and will be removed in future updates!".format(nmFun.color(Pal.accent), "deprecated".color(Pal.remove())),
+      "[LOVEC] A method called (${1}) has been ${2} and will be removed in future updates!".format(nameFun.color(Pal.accent), "deprecated".color(Pal.remove())),
     );
   });
 

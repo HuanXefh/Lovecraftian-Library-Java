@@ -11,14 +11,14 @@
   /**
    * Handles display of unit health bar.
    * @class
-   * @param {string} nm
+   * @param {string} name
    * @param {Function} drawF - <ARGS>: e, x, y, frac, color, a, w, offY, amtSeg, armor, shield, speedMtp, dpsMtp, z.
    */
   const CLS_unitStatDisplayMode = newClass().initClass();
 
 
-  CLS_unitStatDisplayMode.prototype.init = function(nm, drawF) {
-    this.name = registerUniqueName(nm, insNms, "unit stat display mode");
+  CLS_unitStatDisplayMode.prototype.init = function(name, drawF) {
+    this.name = registerUniqueName(name, insNames, "unit stat display mode");
     this.drawF = tryVal(drawF, Function.air);
 
     nameModeMap.put(this.name, this);
@@ -26,7 +26,7 @@
   };
 
 
-  const insNms = [];
+  const insNames = [];
   const nameModeMap = new ObjectMap();
   const modeArr = [];
 
@@ -55,11 +55,11 @@
 
   /**
    * Gets mode by name.
-   * @param {string} nm
+   * @param {string} name
    * @return {CLS_unitStatDisplayMode}
    */
-  CLS_unitStatDisplayMode.get = function(nm) {
-    return nameModeMap.get(nm);
+  CLS_unitStatDisplayMode.get = function(name) {
+    return nameModeMap.get(name);
   };
 
 
