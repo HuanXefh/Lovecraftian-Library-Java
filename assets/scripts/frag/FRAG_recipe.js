@@ -183,7 +183,7 @@
     i = 0;
     iCap = bo.iCap();
     while(i < iCap) {
-      if(bo[i] instanceof Item) return true;
+      if(bo[i] instanceof Item && bo[i + 1] > 0) return true;
       i += 3;
     };
 
@@ -206,9 +206,9 @@
     while(i < iCap) {
       tmp = co[i];
       if(!MDL_cond._isAuxiliaryFluid(tmp)) {
-        return true;
+        if(co[i + 1] > 0.0) return true;
       } else {
-        if(includeAux) return true;
+        if(includeAux && co[i + 1] > 0.0) return true;
       };
       i += 2;
     };
@@ -220,9 +220,9 @@
       tmp = bo[i];
       if(tmp instanceof Liquid) {
         if(!MDL_cond._isAuxiliaryFluid(tmp)) {
-          return true;
+          if(bo[i + 1] > 0.0) return true;
         } else {
-          if(includeAux) return true;
+          if(includeAux && bo[i + 1] > 0.0) return true;
         };
       };
       i += 3;
@@ -353,7 +353,7 @@
         amt = b.delegee.co[i + 1];
         if(b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
           allFull = false;
-        } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid && !MDL_cond._isAuxiliaryFluid(tmp)) {
+        } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid && amt > 0.0 && !MDL_cond._isAuxiliaryFluid(tmp)) {
           return false;
         };
         i += 2;
