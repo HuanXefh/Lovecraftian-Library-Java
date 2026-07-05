@@ -164,6 +164,7 @@
     wallColorDarkLerpA: 0.35,
     ventColorDarkLerpA: 0.2,
     buildRemainsOffCap: 90.0,
+    unitRemainsFloatThr: 17.5001,
     ovCogA1: 0.315,
     ovCogA2: 0.7,
   };

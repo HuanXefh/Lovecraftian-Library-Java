@@ -145,6 +145,12 @@
    */
   /**
    * @global
+   * @typedef {Object} DialogLogObject
+   * @prop {string|unset} [chara]
+   * @prop {string|unset} [text]
+   */
+  /**
+   * @global
    * @typedef {Object|null} RecipeModule
    */
   /**

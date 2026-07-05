@@ -60,10 +60,10 @@
     mouseMoveY = dy;
     mouseMoveStartX = x_f;
     mouseMoveStartY = y_f;
-  }, 24998751);
+  });
   MDL_event._c_onUpdate(() => {
     addedGrps.forEachFast(grp => grp.update());
-  }, 64221902);
+  });
 
 
   const btnSize = 42.0;

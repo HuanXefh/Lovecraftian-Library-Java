@@ -17,7 +17,7 @@
 
 
   function comp_ex_updateGraph(b) {
-    VARGEN.queueGraphUpdate(b.graphCur);
+    UTIL_graph.queueUpdate(b.graphCur);
     if(TIMER.secFive) b.ex_updateGraphState();
   };
 

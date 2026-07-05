@@ -29,7 +29,7 @@
     if(blk.showPowProdBar) blk.addBar("poweroutput", b => new Bar(
       prov(() => Core.bundle.format("bar.poweroutput", Strings.fixed(b.getPowerProduction() * 60.0 * tryProp(b.timeScale, b), 1))),
       prov(() => Pal.powerBar),
-      () => b.delegee.powProdEff,
+      () => b.delegee.powProdEffc,
     ));
 
     if(blk.showPowBalanceBar) blk.addBar("power", b => new Bar(
@@ -43,7 +43,7 @@
   function comp_getPowerProduction(b) {
     return !b.enabled || b.power == null ?
       0.0 :
-      b.block.ex_calcPowProd(b) * Math.max(b.powProdEff, 0.0);
+      b.block.ex_calcPowProd(b) * Math.max(b.powProdEffc, 0.0);
   };
 
 
@@ -143,11 +143,11 @@
 
 
         /**
-         * <INTERNAL>: Power production efficiency, affects output.
+         * <INTERNAL>: Power production efficiency, affects output. Should be set later.
          * @memberof INTF_B_powerProducer
          * @instance
          */
-        powProdEff: 0.0,
+        powProdEffc: 0.0,
 
 
       }),

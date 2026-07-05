@@ -41,6 +41,17 @@
 
 
   /**
+   * For debugging.
+   * @return {this}
+   */
+  CLS_dialogFlowBuilder.prototype.printLength = function() {
+    printAll(this.dialFlowData.length, this.offInd);
+
+    return this;
+  };
+
+
+  /**
    * Completes a row.
    * @return {this}
    */
@@ -331,6 +342,8 @@
     if(this.hasBackground) ERROR_HANDLER.throw("dialogFlowMissingBackgroundEnd");
     if(this.hasMusic) ERROR_HANDLER.throw("dialogFlowMissingMusicEnd");
     this.isBuilt = true;
+
+    this.completeRow();
 
     // Set up the final row
     this.dialFlowData[this.dialFlowData.length - 2] = tryVal(this.dialFlowData[this.dialFlowData.length - 2], {});

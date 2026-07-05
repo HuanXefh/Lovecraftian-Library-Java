@@ -186,7 +186,7 @@ MDL_event._c_onLoad(() => {
     basePol /= VAR.chance.polUpdateP;
   });
 
-}, 42067771);
+});
 
 
 
@@ -202,7 +202,7 @@ MDL_event._c_onWorldLoad(() => {
     lingerPol = SAVE.get("lingering-pollution");
   });
 
-}, 45200137);
+});
 
 
 
@@ -228,4 +228,4 @@ MDL_event._c_onUpdate(() => {
 
   };
 
-}, 28199720);
+});

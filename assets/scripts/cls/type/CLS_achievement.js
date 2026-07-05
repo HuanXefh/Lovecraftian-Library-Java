@@ -33,11 +33,12 @@
       trigger.addGlobalListener(() => this.complete()) :
       trigger.addGlobalListener(function() {listener.apply(thisIns, arguments)});
 
-    VARGEN.achievements.push(this);
+    allInss.push(this);
   };
 
 
   const insNames = [];
+  const allInss = [];
 
 
 /*
@@ -47,20 +48,29 @@
 */
 
 
-/**
- * Clears all completed achievements.
- * @return {void}
- */
-CLS_achievement.clear = function() {
-  if(Vars.headless) return;
+  /**
+   * Gets all achievements.
+   * @return {Array<CLS_achievement>}
+   */
+  CLS_achievement.getAll = function() {
+    return allInss;
+  };
 
-  VARGEN.achievements.forEachFast(achievement => {
-    Core.settings.put(achievement.getHeader(), false);
-  });
-  Core.settings.put("lovec-misc-secret-code-crashed", false);
-  console.log("[LOVEC] Lovec achievement data has been ${1}.".format("cleared".color(Pal.remove)));
-}
-.setAnno("debug");
+
+  /**
+   * Clears all completed achievements.
+   * @return {void}
+   */
+  CLS_achievement.clear = function() {
+    if(Vars.headless) return;
+
+    allInss.forEachFast(achievement => {
+      Core.settings.put(achievement.getHeader(), false);
+    });
+    Core.settings.put("lovec-misc-secret-code-crashed", false);
+    console.log("[LOVEC] Lovec achievement data has been ${1}.".format("cleared".color(Pal.remove)));
+  }
+  .setAnno("debug");
 
 
 /*

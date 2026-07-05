@@ -14,6 +14,9 @@
   function comp_update(unit) {
     if(!unit.type.delegee.isTetheredUnit) return;
 
+    if(isNaN(unit.noTetherDespawnTime)) {
+      unit.noTetherDespawnTime = 0.0;
+    };
     if(unit.type.delegee.noTetherDespawnTime >= 0.0 && (unit.bLink == null || !unit.bLink.isValid() || unit.bLink.team !== unit.team)) {
       unit.noTetherDespawnTimeCur += Time.delta;
     } else {

@@ -78,4 +78,4 @@
     // Timer for stack status effect update
     exports.stackSta = timer_stackSta.get(VAR.time.stackStaExtDef * 0.5);
 
-  }, 17885422);
+  });

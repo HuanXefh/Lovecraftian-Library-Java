@@ -901,7 +901,7 @@
    * Registers a key binding.
    * @global
    * @param {string} name
-   * @param {KeyCode} keyCodeDef - The default key.
+   * @param {KeyCode|unset} keyCodeDef
    * @param {string} categ
    * @param {function(Unit, Tile|null): void} scr - <ARGS>: unitPlayer, tMouse.
    * @return {void}
@@ -909,8 +909,8 @@
   newKeyBind = function(name, keyCodeDef, categ, scr) {
     Events.run(ClientLoadEvent, () => {
       Core.app.post(() => {
-        VARGEN.addKeyBind(name, keyCodeDef, categ);
-        let keyBind = VARGEN._keyBind(name);
+        UTIL_keyBind.add(name, keyCodeDef, categ);
+        let keyBind = UTIL_keyBind.get(name);
         if(global.lovecUtil.db.keyBindListener.includes(keyBind)) return;
         global.lovecUtil.db.keyBindListener.push(keyBind, scr);
       });

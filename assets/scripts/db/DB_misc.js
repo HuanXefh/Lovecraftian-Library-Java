@@ -278,7 +278,7 @@ const db = {
           rowInd: 0,
           icon: "lovec-icon-info-panel",
           clickScr: function() {
-            CLS_dragButtonInfoList.show();
+            UTIL_dragButtonInfoList.show();
           },
         },
 

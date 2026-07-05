@@ -42,7 +42,7 @@
     if(global.lovecUtil.prop.debug) {
       categSetterDebugArr.forEachRow(3, (nameMod, nameCateg, terms) => buildCateg(nameMod, nameCateg, terms));
     };
-  }, 19880207);
+  });
 
 
 /*

@@ -64,7 +64,7 @@
 
     Time.run(5.0, () => forceLoadParam());
 
-  }, 44492271);
+  });
 
 
 
@@ -153,7 +153,7 @@
     };
 
 
-  }, 12976533);
+  });
 
 
 
@@ -162,4 +162,4 @@
 
     updateSuppressCd = updateSuppressCooldown;
 
-  }, 52647992);
+  });

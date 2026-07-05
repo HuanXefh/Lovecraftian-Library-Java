@@ -34,7 +34,7 @@
     mouseMoveY = dy;
     mouseMoveStartX = x_f;
     mouseMoveStartY = y_f;
-  }, 19552700);
+  });
 
 
   const selectedWins = [];

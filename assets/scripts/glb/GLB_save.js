@@ -286,11 +286,11 @@
 
     loadLsav();
 
-  }, 75122009);
+  });
 
 
   MDL_event._c_onWorldSave(() => {
 
     saveLsav();
 
-  }, 45111187);
+  });

@@ -19,7 +19,7 @@
   CLS_contentTemplateParser.prototype.init = function(nameMod) {
     this.mod = fetchMod(nameMod);
     if(this.mod == null) return;
-    VARGEN.nameModTempParserMap.put(nameMod, this);
+    nameMod.nameModParserMap.put(nameMod, this);
 
     this.dirCt = this.mod.root.child("scripts").child("auxFi").child("json").child("content");
     this.jsonFis = [];
@@ -30,11 +30,24 @@
   };
 
 
+  const nameModParserMap = new ObjectMap();
+
+
 /*
   ========================================
   Section: Definition (Static)
   ========================================
 */
+
+
+  /**
+   * Gets a parser by mod name.
+   * @param {string} nameMod
+   * @return {CLS_contentTemplateParser|null}
+   */
+  CLS_contentTemplateParser.get = function(nameMod) {
+    return nameModParserMap.get(nameMod);
+  };
 
 
   /**

@@ -22,7 +22,7 @@
 
 
   function comp_updateTile(b) {
-    b.powProdEff = Mathf.approachDelta(b.powProdEff, b.efficiency, 0.02);
+    b.powProdEffc = Mathf.approachDelta(b.powProdEffc, b.efficiency, 0.02);
   };
 
 

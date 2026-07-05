@@ -17,9 +17,9 @@
 
   function comp_updateTile(b) {
     if(TIMER.secHalf) {
-      b.powProdEff = Mathf.clamp(1.0 - FRAG_faci._cepFracCur(b.team))
+      b.powProdEffc = Mathf.clamp(1.0 - FRAG_faci._cepFracCur(b.team))
     };
-    if(b.powProdEff < 0.0001 && Mathf.chanceDelta(b.block.delegee.cepOutageEffP)) {
+    if(b.powProdEffc < 0.0001 && Mathf.chanceDelta(b.block.delegee.cepOutageEffP)) {
       b.block.delegee.cepOutageEff.at(b);
     };
   };

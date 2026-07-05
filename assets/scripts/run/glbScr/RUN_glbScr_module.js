@@ -151,6 +151,14 @@
   /** @global */
   VARGEN = require("lovec/glb/GLB_varGen");
   /** @global */
+  UTIL_keyBind = require("lovec/cls/util/UTIL_keyBind");
+  /** @global */
+  UTIL_graph = require("lovec/cls/util/UTIL_graph");
+  /** @global */
+  UTIL_remains = require("lovec/cls/util/UTIL_remains");
+  /** @global */
+  UTIL_unitData = require("lovec/cls/util/UTIL_unitData");
+  /** @global */
   MDL_pollution = require("lovec/mdl/MDL_pollution");
   /** @global */
   MDL_fuel = require("lovec/mdl/MDL_fuel");
@@ -197,6 +205,8 @@
   /** @global */
   CLS_dialogFlowBuilder = require("lovec/cls/util/builder/CLS_dialogFlowBuilder");
   /** @global */
+  UTIL_dialogFlow = require("lovec/cls/util/UTIL_dialogFlow");
+  /** @global */
   CLS_achievement = require("lovec/cls/type/CLS_achievement");
   /** @global */
   CLS_window = require("lovec/cls/ui/CLS_window");
@@ -205,7 +215,7 @@
   /** @global */
   MOD_multiBlockLib = require("lovec/mod/MOD_multiBlockLib");
   /** @global */
-  CLS_dragButtonInfoList = require("lovec/cls/ui/CLS_dragButtonInfoList");
+  UTIL_dragButtonInfoList = require("lovec/cls/ui/UTIL_dragButtonInfoList");
   /** @global */
   CLS_dragButton = require("lovec/cls/ui/CLS_dragButton");
   require("lovec/tp/TP_ability");

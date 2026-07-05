@@ -113,7 +113,7 @@
 
 
       ex_show() {
-        if(VARGEN.dialFlowTextLog.length === 0) {
+        if(UTIL_dialogFlow.getLog().length === 0) {
           console.warn("[LOVEC] Cannot show log when no dialog flow is being played!");
           return;
         };
@@ -122,7 +122,7 @@
         // <TABLE>: text
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
-          VARGEN.dialFlowTextLog.forEachFast(obj => {
+          UTIL_dialogFlow.getLog().forEachFast(obj => {
             // <TABLE>: text cell
             pnTb.table(Styles.none, tb => {
               if(obj.chara === "SPEC: selection") {
@@ -221,7 +221,7 @@
 
 
   /**
-   * A dialog to show a list of information. See {@link CLS_dragButtonInfoList}.
+   * A dialog to show a list of information. See {@link UTIL_dragButtonInfoList}.
    */
   newDialog(
     "infoListMain",
@@ -239,7 +239,7 @@
           infoListData.each((categ, map) => {
             MDL_table.__btn(
               pnTb,
-              CLS_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ),
+              UTIL_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ),
               () => fetchDialog("infoListSub").ex_show(categ, map, moddedNames),
               500.0,
             ).row();
@@ -261,7 +261,7 @@
 
 
   /**
-   * A dialog to show a list of information. See {@link CLS_dragButtonInfoList}.
+   * A dialog to show a list of information. See {@link UTIL_dragButtonInfoList}.
    */
   newDialog(
     "infoListSub",
@@ -273,7 +273,7 @@
 
 
       ex_show(categ, map, moddedNames) {
-        resetDial(this, CLS_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ));
+        resetDial(this, UTIL_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ));
 
         // <TABLE>: list
         MDL_table.__break(this.cont);
@@ -284,22 +284,22 @@
             this.hasAnyName = false;
             subMap.each((name, scr) => {
               if(this.hasAnyName) return;
-              this.lastInfoString = CLS_dragButtonInfoList.getInfoString(name, categ, subCateg);
+              this.lastInfoString = UTIL_dragButtonInfoList.getInfoString(name, categ, subCateg);
               this.hasAnyName = PARAM.MODDED || !moddedNames.includes(this.lastInfoString);
             });
 
             if(this.hasAnyName) {
               if(subCateg !== "uncategorized") {
                 MDL_table.__break(pnTb);
-                pnTb.add(CLS_dragButtonInfoList.getLocalizedCategName(subCateg)).color(Color.lightGray).row();
+                pnTb.add(UTIL_dragButtonInfoList.getLocalizedCategName(subCateg)).color(Color.lightGray).row();
               };
 
               subMap.each((name, scr) => {
-                this.lastInfoString = CLS_dragButtonInfoList.getInfoString(name, categ, subCateg);
+                this.lastInfoString = UTIL_dragButtonInfoList.getInfoString(name, categ, subCateg);
                 if(!PARAM.MODDED && moddedNames.includes(this.lastInfoString)) return;
                 MDL_table.__btn(
                   pnTb,
-                  CLS_dragButtonInfoList.getLocalizedInfoName(name),
+                  UTIL_dragButtonInfoList.getLocalizedInfoName(name),
                   scr,
                   500.0,
                 ).row();
@@ -350,12 +350,12 @@
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
-          if(VARGEN.achievements.length === 0) {
+          if(CLS_achievement.getAll().length === 0) {
             MDL_table.__textNothing(pnTb);
           } else {
             let tmpObj = {};
             let i, iCap, j, colAmt = 10, nameMod;
-            VARGEN.achievements.forEachFast(achievement => {
+            CLS_achievement.getAll().forEachFast(achievement => {
               nameMod = achievement.getMod().name;
               if(tmpObj[nameMod] === undefined) tmpObj[nameMod] = [];
               tmpObj[nameMod].push(achievement);

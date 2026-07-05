@@ -138,15 +138,9 @@
 
 
   function createRemains(e) {
-    if(e == null) return;
+    if(e == null || !UTIL_remains.checkRemainsValid(e)) return;
 
-    if(e instanceof Building) {
-      if(!PARAM.SHOULD_CREATE_BUILD_REMAINS || e.block instanceof ConstructBlock || e.block.size < 2 || MDL_cond._hasNoRemains(e.block)) return;
-      MDL_effect._e_remains(e.x, e.y, e, e.team);
-    } else {
-      if(MDL_cond._hasNoRemains(e.type)) return;
-      MDL_effect._e_remains(e.x, e.y, e, e.team);
-    };
+    UTIL_remains.create(e.x, e.y, e, e.team, false, false);
   };
 
 
@@ -206,7 +200,7 @@
       TRIGGER.majorIter.end.fire();
     };
 
-  }, 45262222);
+  });
 
 
 
@@ -215,7 +209,7 @@
 
     createDamageDisplay(b, bul);
 
-  }, 45751111);
+  });
 
 
 
@@ -224,7 +218,7 @@
 
     createRemains(t.build);
 
-  }, 44932710);
+  });
 
 
 
@@ -233,7 +227,7 @@
 
     createDamageDisplay(unit, bul);
 
-  }, 76523545);
+  });
 
 
 
@@ -245,4 +239,4 @@
 
     if(PARAM.SECRET_METAL_PIPE) MDL_effect.playAt(unit.x, unit.y, "se-meme-steel-pipe");
 
-  }, 47596662);
+  });

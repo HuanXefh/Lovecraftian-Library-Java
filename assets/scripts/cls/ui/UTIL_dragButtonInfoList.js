@@ -12,12 +12,7 @@
    * Stores a list of info dialogs, which can be shown through a button in {@link CLS_dragButton}.
    * @class
    */
-  const CLS_dragButtonInfoList = newClass().initClass();
-
-
-  CLS_dragButtonInfoList.prototype.init = function() {
-
-  };
+  const UTIL_dragButtonInfoList = newClass().initClass();
 
 
   const infoListData = ObjectMap.of(
@@ -44,10 +39,10 @@
    * @param {string|unset} [subCateg]
    * @return {this}
    */
-  CLS_dragButtonInfoList.add = function(name, scr, categ, subCateg) {
-    CLS_dragButtonInfoList.findMap(categ, subCateg).put(name, scr);
+  UTIL_dragButtonInfoList.add = function(name, scr, categ, subCateg) {
+    UTIL_dragButtonInfoList.findMap(categ, subCateg).put(name, scr);
 
-    return CLS_dragButtonInfoList;
+    return UTIL_dragButtonInfoList;
   };
 
 
@@ -58,10 +53,10 @@
    * @param {string|unset} [subCateg]
    * @return {this}
    */
-  CLS_dragButtonInfoList.markModded = function(name, categ, subCateg) {
-    moddedNames.pushUnique(CLS_dragButtonInfoList.getInfoString(name, categ, subCateg));
+  UTIL_dragButtonInfoList.markModded = function(name, categ, subCateg) {
+    moddedNames.pushUnique(UTIL_dragButtonInfoList.getInfoString(name, categ, subCateg));
 
-    return CLS_dragButtonInfoList;
+    return UTIL_dragButtonInfoList;
   };
 
 
@@ -75,7 +70,7 @@
    * @param {string|unset} [subCateg]
    * @return {string}
    */
-  CLS_dragButtonInfoList.getInfoString = function(name, categ, subCateg) {
+  UTIL_dragButtonInfoList.getInfoString = function(name, categ, subCateg) {
     return tryVal(categ, "uncategorized") + "/" + tryVal(subCateg, "uncategorized") + "/" + tryVal(name, "unknown");
   };
 
@@ -86,7 +81,7 @@
    * @param {string|unset} [subCateg]
    * @param {boolean|unset} [noRegister] - If true, an error is thrown if map not found.
    */
-  CLS_dragButtonInfoList.findMap = function(categ, subCateg, noRegister) {
+  UTIL_dragButtonInfoList.findMap = function(categ, subCateg, noRegister) {
     if(noRegister) {
       let map = infoListData.get(categ, ARC_AIR.objMap).get(subCateg, ARC_AIR.objMap);
       if(map === ARC_AIR.objMap) throw new Error("Cannot find info list under ${1}/${2}!".format(categ, subCateg));
@@ -112,7 +107,7 @@
    * @param {string|unset} [name]
    * @return {string}
    */
-  CLS_dragButtonInfoList.getLocalizedInfoName = function(name) {
+  UTIL_dragButtonInfoList.getLocalizedInfoName = function(name) {
     return MDL_bundle._term("common", "infolist-info-" + tryVal(name, "unknown"));
   };
 
@@ -122,7 +117,7 @@
    * @param {string|unset} [categ]
    * @return {string}
    */
-  CLS_dragButtonInfoList.getLocalizedCategName = function(categ) {
+  UTIL_dragButtonInfoList.getLocalizedCategName = function(categ) {
     return MDL_bundle._term("common", "infolist-categ-" + tryVal(categ, "uncategorized"));
   };
 
@@ -131,7 +126,7 @@
    * Call this method to show the info list dialog.
    * @return {void}
    */
-  CLS_dragButtonInfoList.show = function() {
+  UTIL_dragButtonInfoList.show = function() {
     fetchDialog("infoListMain").ex_show(infoListData, moddedNames);
   },
 
@@ -145,4 +140,4 @@
 
 
 
-module.exports = CLS_dragButtonInfoList;
+module.exports = UTIL_dragButtonInfoList;

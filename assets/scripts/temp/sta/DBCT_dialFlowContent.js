@@ -32,7 +32,7 @@
       };
     });
 
-    VARGEN.dialFlowNameCtMap.put(sta.nameDialFlow, sta);
+    UTIL_dialogFlow.getNameCtMap().put(sta.nameDialFlow, sta);
   };
 
 

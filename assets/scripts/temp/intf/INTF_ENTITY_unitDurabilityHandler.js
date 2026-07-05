@@ -12,7 +12,7 @@
 
 
   function comp_update(unit) {
-    if(unit.type.delegee.unitDurabCap < 0.0) return;
+    if(PARAM.UPDATE_SUPPRESSED || unit.type.delegee.unitDurabCap < 0.0) return;
 
     unit.unitDurabUsed += Time.delta;
     if(unit.unitDurabUsed >= unit.type.unitDurabCap) {

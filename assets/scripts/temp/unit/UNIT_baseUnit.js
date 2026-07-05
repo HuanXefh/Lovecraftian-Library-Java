@@ -47,7 +47,7 @@
 
 
   function comp_killed(utp, unit) {
-    VARGEN.unitDataMap.remove(unit);
+    UTIL_unitData.remove(unit);
   };
 
 
@@ -55,8 +55,10 @@
     if(utp.useLovecDamagePenalty) FRAG_unit.comp_update_damaged(utp, unit);
 
     if(utp.hasUnitData && unit.delegee != null && TIMER.secHalf) {
-      if(!VARGEN.unitDataMap.containsKey(unit)) VARGEN.unitDataMap.put(unit, {});
-      utp.ex_writeUnitData(unit, VARGEN.unitDataMap.get(unit));
+      if(!UTIL_unitData.includes(unit)) {
+        UTIL_unitData.add(unit, {});
+      };
+      utp.ex_writeUnitData(unit, UTIL_unitData.get(unit));
     };
   };
 

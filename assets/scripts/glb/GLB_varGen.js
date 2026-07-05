@@ -13,177 +13,6 @@
 
 /*
   ========================================
-  Section: Definition (Util)
-  ========================================
-*/
-
-
-  /* <---------- graph ----------> */
-
-
-  const initGraphMethodMap = new ObjectMap();
-  const updateGraphMethodMap = new ObjectMap();
-  const updateGraphQueue = [];
-
-
-  /**
-   * Adds a graph to the update queue.
-   * If the graph is already added, this method does nothing.
-   * @param {MathGraph|null} graph
-   * @return {void}
-   */
-  const queueGraphUpdate = function(graph) {
-    if(Vars.state.isPaused() || graph == null) return;
-    updateGraphQueue.pushUnique(graph);
-  };
-  exports.queueGraphUpdate = queueGraphUpdate;
-
-
-  /**
-   * Sets init method of a graph type.
-   * @param {string} graphType - See {@link INTF_BLK_graphBlock}.
-   * @param {function(MathGraph): void} fun - <ARGS>: graph
-   * @return {void}
-   */
-  const setGraphInit = function(graphType, fun) {
-    initGraphMethodMap.put(graphType, fun);
-  };
-  exports.setGraphInit = setGraphInit;
-
-
-  /**
-   * Sets update method of a graph type.
-   * @param {string} graphType - See {@link INTF_BLK_graphBlock}.
-   * @param {function(MathGraph): void} fun - <ARGS>: graph
-   * @return {void}
-   */
-  const setGraphUpdate = function(graphType, fun) {
-    updateGraphMethodMap.put(graphType, fun);
-  };
-  exports.setGraphUpdate = setGraphUpdate;
-
-
-  MDL_event._c_onUpdate(() => {
-
-    if(Vars.state.isPaused()) return;
-
-    updateGraphQueue.forEachFast(graph => {
-      if(graph.graphData == null) {
-        graph.graphData = {
-          justShrunk: false,
-        };
-        initGraphMethodMap.get(graph.graphTag, Function.air)(graph);
-      };
-      updateGraphMethodMap.get(graph.graphTag, Function.air)(graph);
-    });
-    updateGraphQueue.clear();
-
-  }, 29151587);
-
-
-  /* <---------- key binding ----------> */
-
-
-  const bindings = {};
-
-
-  /**
-   * Gets a key binding by name.
-   * @param {string} name
-   * @return {KeyBind|null}
-   */
-  const _keyBind = function(name) {
-    return tryVal(bindings[name], null);
-  };
-  exports._keyBind = _keyBind;
-
-
-  /**
-   * Adds a new key binding.
-   * @param {string} name
-   * @param {KeyCode} keyCodeDef
-   * @param {string} categ
-   * @return {boolean}
-   */
-  const addKeyBind = function(name, keyCodeDef, categ) {
-    if(bindings[name] !== undefined) {
-      console.warn("[LOVEC] Key binding ${1} has already been registered!".format(name.color(Pal.accent)));
-      return false;
-    };
-    bindings[name] = KeyBind.add(name, keyCodeDef, categ);
-
-    return true;
-  };
-  exports.addKeyBind = addKeyBind;
-
-
-  /* <---------- content ----------> */
-
-
-  exports.nameModTempParserMap = new ObjectMap();
-
-
-  /* <---------- dialog flow ----------> */
-
-
-  exports.dialFlowNameCtMap = new ObjectMap();
-  exports.dialFlowTextLog = [];
-  exports.dialFlowBgPool = [];
-  exports.dialFlowImgPool = [];
-  exports.dialFlowCharaPool = [];
-  exports.dialFlowSelectionPool = [];
-
-
-  /* <---------- achievement ----------> */
-
-
-  exports.achievements = [];
-
-
-  /* <---------- remains ----------> */
-
-
-  const blkRemainsMap = new ObjectMap();
-  exports.blkRemainsMap = blkRemainsMap;
-  const unitRemainsArr = [];
-  exports.unitRemainsArr = unitRemainsArr;
-
-
-  MDL_event._c_onLoad(() => {
-
-    TRIGGER.mapExit.addGlobalListener(() => {
-      blkRemainsMap.clear();
-      unitRemainsArr.clear();
-    });
-
-  });
-
-
-  /* <---------- unit data ----------> */
-
-
-  const expiredUnits = [];
-
-
-  const unitDataMap = new ObjectMap();
-  exports.unitDataMap = unitDataMap;
-
-
-  MDL_event._c_onLoad(() => {
-
-    TRIGGER.majorIter.start.addGlobalListener(() => {
-      expiredUnits.clear();
-      unitDataMap.each((unit, dataObj) => {
-        if(!unit.isAdded()) expiredUnits.push(unit);
-      });
-      expiredUnits.forEachFast(unit => unitDataMap.remove(unit));
-    });
-
-  }, 16200057);
-
-
-/*
-  ========================================
   Section: Definition (Generic)
   ========================================
 */
@@ -302,7 +131,7 @@
     })();
 
 
-  }, 25777741);
+  });
 
 
   /* <---------- list ----------> */
@@ -610,7 +439,7 @@
     })();
 
 
-  }, 79532268);
+  });
 
 
   /* <---------- misc ----------> */
@@ -637,4 +466,4 @@
     exports.staOverheated = Vars.content.statusEffect("loveclab-sta0bur-overheated");
 
 
-  }, 54888119);
+  });

@@ -317,11 +317,8 @@
     TRIGGER_MUSIC = false;
     TRIGGERS_IMAGE.setVal(false);
     MUSIC_HANDLER.stop();
-    VARGEN.dialFlowTextLog.clear();
-    VARGEN.dialFlowBgPool.forEachFast(tb => removeActor(tb));
-    VARGEN.dialFlowImgPool.forEachFast(tb => removeActor(tb));
-    VARGEN.dialFlowCharaPool.forEachFast(tb => removeActor(tb));
-    VARGEN.dialFlowSelectionPool.forEachFast(tb => removeActor(tb));
+    UTIL_dialogFlow.clearLog();
+    UTIL_dialogFlow.clearPool();
     _d_flow.tmpBools.clear();
   };
   exports.clearDialFlow = clearDialFlow;
@@ -394,7 +391,7 @@
 
     const tb = new Table();
     tb.touchable = Touchable.disabled;
-    VARGEN.dialFlowBgPool.push(tb);
+    UTIL_dialogFlow.getPool("bg").push(tb);
 
     tb.table(new TextureRegionDrawable(Core.atlas.find(nameBg)), tb1 => {})
     .width(VAR.length.bgW * _uiScl())
@@ -406,7 +403,7 @@
       Actions.fadeIn(inTimeS),
       Actions.run(() => tb.update(() => {
         if(endGetter()) {
-          VARGEN.dialFlowBgPool.pull(tb);
+          UTIL_dialogFlow.getPool("bg").pull(tb);
           removeActor(tb);
         };
       })),
@@ -468,7 +465,7 @@
 
     const tb = new Table();
     tb.touchable = Touchable.disabled;
-    VARGEN.dialFlowCharaPool.push(tb);
+    UTIL_dialogFlow.getPool("chara").push(tb);
 
     tb.table(new TextureRegionDrawable(Core.atlas.find(nameMod + "-chara-" + nameChara, Core.atlas.find("lovec-chara-error"))), tb1 => {
       if(isDark0color instanceof Color) {
@@ -579,7 +576,7 @@
       };
       animTup[1].push(Actions.run(() => tb.update(() => {
         if(endGetter()) {
-          VARGEN.dialFlowCharaPool.pull(tb);
+          UTIL_dialogFlow.getPool("chara").pull(tb);
           removeActor(tb);
         };
       })));
@@ -609,7 +606,7 @@
     tb.center();
     textScrArr.forEachRow(2, (text, scr) => {
       tb.button(text, () => {
-        VARGEN.dialFlowTextLog.push({
+        UTIL_dialogFlow.addLog({
           chara: "SPEC: selection",
           text: text,
         });
@@ -618,7 +615,7 @@
       }).center().size(w, h).row();
       tb.add("").row();
     });
-    VARGEN.dialFlowSelectionPool.push(tb);
+    UTIL_dialogFlow.getPool("selection").push(tb);
 
     let shouldClose = false;
     setActor_pos(tb);
@@ -626,7 +623,7 @@
       Actions.fadeIn(inTimeS),
       Actions.run(() => tb.update(() => {
         if(shouldClose) {
-          VARGEN.dialFlowSelectionPool.pull(tb);
+          UTIL_dialogFlow.getPool("selection").pull(tb);
           removeActor(tb);
         };
       })),
@@ -732,7 +729,7 @@
     if(selectionScr != null) paramObj.selectionScr();
     if(sound != null) MDL_effect.play(paramObj.sound);
 
-    VARGEN.dialFlowTextLog.push({
+    UTIL_dialogFlow.addLog({
       chara: dialChara,
       text: dialText,
     });
@@ -763,7 +760,7 @@
   .setProp({
     flowIndMap: new ObjectMap(),
     callFlow: function(dialFlowData) {
-      VARGEN.dialFlowCharaPool.forEachFast(tb => removeActor(tb));
+      UTIL_dialogFlow.clearPool("chara");
 
       let ind = _d_flow.flowIndMap.get(dialFlowData, 0);
       let obj = tryVal(dialFlowData[ind * 4 + 2], Object.air);

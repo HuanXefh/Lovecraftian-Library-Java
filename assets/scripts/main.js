@@ -68,8 +68,8 @@
   (function() {
 
 
-    // Register global category for {@link CLS_dragButtonInfoList}
-    CLS_dragButtonInfoList
+    // Register global category for {@link UTIL_dragButtonInfoList}
+    UTIL_dragButtonInfoList
     .add("achievement", () => fetchDialog("achievement").ex_show())
     .add("recipe-dictionary", () => fetchDialog("rcDictDatabase").ex_show());
 
@@ -108,14 +108,14 @@
         stream.writeShort(this.LCRevi);
 
         // Unit data
-        stream.writeInt(VARGEN.unitDataMap.size);
-        VARGEN.unitDataMap.each((unit, dataObj) => {
+        stream.writeInt(UTIL_unitData.getUnitDataMap().size);
+        UTIL_unitData.getUnitDataMap().each((unit, dataObj) => {
           stream.writeFloat(unit.x);
           stream.writeFloat(unit.y);
           stream.writeUTF(unit.type.name);
           stream.writeUTF(JSON.stringify(dataObj))
         });
-        VARGEN.unitDataMap.clear();
+        UTIL_unitData.getUnitDataMap().clear();
       },
 
 
@@ -148,11 +148,11 @@
 
 
     // Register graph methods
-    DB_misc.db["block"]["graph"]["init"].forEachRow(2, (graphType, fun) => {
-      VARGEN.setGraphInit(graphType, fun);
+    DB_misc.db["block"]["graph"]["init"].forEachRow(2, (graphType, scr) => {
+      UTIL_graph.setInit(graphType, scr);
     });
-    DB_misc.db["block"]["graph"]["update"].forEachRow(2, (graphType, fun) => {
-      VARGEN.setGraphUpdate(graphType, fun);
+    DB_misc.db["block"]["graph"]["update"].forEachRow(2, (graphType, scr) => {
+      UTIL_graph.setUpdate(graphType, scr);
     });
 
 
@@ -266,7 +266,7 @@
     })();
 
 
-  }, 42110360);
+  });
 
 
 
@@ -525,7 +525,7 @@
     };
 
 
-  }, 12563333);
+  });
 
 
 
@@ -540,4 +540,4 @@
     });
 
 
-  }, 20119980);
+  });
