@@ -126,6 +126,8 @@
    * @return {void}
    */
   CLS_dragButton.prototype.rebuild = function() {
+    const thisIns = this;
+
     this.root.clearChildren();
     const btns = this.root.table(Styles.black3, tb => tb.left()).left().get();
     this.root.left().top().row();
@@ -133,11 +135,19 @@
     this.colCounts.setVal(0);
 
     // Drag button
+    let isDragged = false;
     this.colCounts[0]++;
-    btns.button(Icon.move, Styles.cleari, () => {}).size(btnSize).get().dragged((dx, dy) => {
-      this.root.translation.x += mouseMoveX;
-      this.root.translation.y += mouseMoveY;
+    let dragBtn = btns.button(Icon.move, Styles.cleari, () => {})
+    .size(btnSize)
+    .get();
+    dragBtn.update(() => {
+      if(isDragged) {
+        thisIns.root.translation.x += mouseMoveX;
+        thisIns.root.translation.y += mouseMoveY;
+      };
     });
+    dragBtn.tapped(() => isDragged = true)
+    dragBtn.released(() => isDragged = false);
 
     // Collapser button
     this.colCounts[0]++;

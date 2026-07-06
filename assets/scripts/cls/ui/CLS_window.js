@@ -63,6 +63,17 @@
   });
 
 
+  function selectWin(win) {
+    if(!Core.input.keyDown(KeyCode.controlLeft) && !Core.input.keyDown(KeyCode.controlRight)) {
+      selectedWins.clear();
+    };
+
+    selectedWins.pushUnique(win);
+    Core.scene.root.getChildren().remove(win.root);
+    Core.scene.root.getChildren().add(win.root);
+  };
+
+
 /*
   ========================================
   Section: Definition (Static)
@@ -80,19 +91,26 @@
    */
   CLS_window.getRootTable = function(win) {
     const tb = new Table().top();
-    tb.tapped(() => {
-      if(!Core.input.keyDown(KeyCode.controlLeft) && !Core.input.keyDown(KeyCode.controlRight)) selectedWins.clear();
-      selectedWins.pushUnique(win);
-      Core.scene.root.getChildren().remove(tb);
-      Core.scene.root.getChildren().add(tb);
-    });
     tb.update(() => {
       if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
         if(Core.input.keyDown(KeyCode.x)) selectedWins.forEachFast(win => win.close());
         if(Core.input.keyDown(KeyCode.s)) selectedWins.forEachCond(win => !win.isHidden, win => win.minimize());
         if(Core.input.keyDown(KeyCode.a)) selectedWins.forEachCond(win => win.isHidden, win => win.minimize());
       };
+      if(win.isDragged) {
+        selectedWins.forEachFast(win => {
+          win.root.translation.x += mouseMoveX;
+          win.root.translation.y += mouseMoveY;
+        });
+      };
     });
+    tb.tapped(() => {
+      selectWin(win);
+      if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
+        win.isDragged = true;
+      };
+    });
+    tb.released(() => win.isDragged = false);
     tb.visibility = () => Vars.ui.hudfrag.shown && PARAM.SHOULD_SHOW_WINDOW;
     return tb;
   };
@@ -160,6 +178,7 @@
   CLS_window.prototype.initParam = function() {
     this.added = false;
     this.isHidden = false;
+    this.isDragged = false;
     this.prefW = 0.0;
     this.prefH = 0.0;
     this.prefWCont = 0.0;
@@ -201,12 +220,11 @@
       // <TABLE>: title
       let titleCell = tb.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(this.titleColor);
-        tb1.dragged((dx, dy) => {
-          selectedWins.forEachFast(win => {
-            win.root.translation.x += mouseMoveX;
-            win.root.translation.y += mouseMoveY;
-          });
+        tb1.tapped(() => {
+          selectWin(this);
+          this.isDragged = true;
         });
+        tb1.released(() => this.isDragged = false);
         // <TABLE>: title base
         tb1.table(Styles.none, tb2 => {
           tb2.left();
@@ -232,11 +250,11 @@
           MDL_table.__margin(tb1);
           tb1.pane(pnTb => {
             this.tableF(pnTb);
-            this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW);
-            this.prefH = Mathf.clamp(pnTb.prefHeight, this.minH, this.maxH);
+            this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW) / global.lovecUtil.prop.uiScale;
+            this.prefH = Mathf.clamp(pnTb.prefHeight, this.minH, this.maxH) / global.lovecUtil.prop.uiScale;
           }).width(this.prefW).height(this.prefH);
-          this.prefWCont = tb1.prefWidth;
-          this.prefHCont = tb1.prefHeight;
+          this.prefWCont = tb1.prefWidth / global.lovecUtil.prop.uiScale;
+          this.prefHCont = tb1.prefHeight / global.lovecUtil.prop.uiScale;
         }).grow().row();
       };
       titleCell.width(this.prefWCont);

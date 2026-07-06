@@ -316,13 +316,22 @@
     if(id != null && thisFun.ids.includes(id)) return;
     if(id != null) thisFun.ids.push(id);
 
-    let isDragged = false;
-    let startX = null, startY = null, lastX = null, lastY = null;
-    let x = null, y = null;
+    let
+      x = null,
+      y = null,
+      startX = null,
+      startY = null,
+      lastX = null,
+      lastY = null,
+      isTapped = false,
+      isReleased = false,
+      isDragged = false,
+      pad = 8.0;
+
     Events.run(Trigger.update, () => {
 
-      let isTapped = Core.input.keyTap(KeyCode.mouseLeft);
-      let isReleased = Core.input.keyRelease(KeyCode.mouseLeft);
+      isTapped = Core.input.keyTap(KeyCode.mouseLeft);
+      isReleased = Core.input.keyRelease(KeyCode.mouseLeft);
 
       if(!isDragged && !isTapped && !isReleased) return;
 
@@ -343,6 +352,11 @@
         startY = null;
         lastX = null;
         lastY = null;
+      };
+
+      if(x < pad || x > MDL_ui._screenW() - pad || y < pad || y > MDL_ui._screenH() - pad) {
+        if(lastX != null && lastY != null) scr(0.0, 0.0, startX, startY);
+        return;
       };
 
       if(isDragged) {

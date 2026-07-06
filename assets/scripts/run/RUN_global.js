@@ -31,6 +31,7 @@
 
 
       locale: Vars.headless ? "en" : Reflect.get(I18NBundle, Core.bundle, "locale").toString(),
+      uiScale: Core.settings.getInt("uiscale") / 100.0,
       useRecolorSpr: Core.settings.getBool("lovec-load-gen-recolor", true),
 
 

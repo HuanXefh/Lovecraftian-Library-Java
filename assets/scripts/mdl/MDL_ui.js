@@ -103,7 +103,7 @@
     if(cap == null) cap = 760.0;
     if(offW == null) offW = 0.0;
 
-    return Math.max(Math.min(_screenW() - pad * 2.0, cap), 64.0) - offW;
+    return Math.max(Math.min(_screenW() / global.lovecUtil.prop.uiScale - pad * 2.0, cap), 64.0) - offW;
   };
   exports._uiW = _uiW;
 
@@ -120,7 +120,7 @@
     if(cap == null) cap = 760.0;
     if(offH == null) offH = 0.0;
 
-    return Math.max(Math.min(_screenH() - pad * 2.0, cap), 64.0) - offH;
+    return Math.max(Math.min(_screenH() / global.lovecUtil.prop.uiScale - pad * 2.0, cap), 64.0) - offH;
   };
   exports._uiH = _uiH;
 
@@ -347,8 +347,8 @@
       tb.table(Tex.whiteui, tb1 => {
         tb1.setColor(color);
       })
-      .width(_screenW() * 1.2)
-      .height(_screenH() * 1.2)
+      .width(_screenW() * 1.2 / global.lovecUtil.prop.uiScale)
+      .height(_screenH() * 1.2 / global.lovecUtil.prop.uiScale)
       .row();
 
       setActor_pos(tb);
@@ -474,8 +474,8 @@
         tb1.setColor(VAR.color.darkMix);
       };
     })
-    .width(VAR.length.charaW * _uiScl())
-    .height(VAR.length.charaH * _uiScl())
+    .width(VAR.length.charaW * _uiScl() / global.lovecUtil.prop.uiScale)
+    .height(VAR.length.charaH * _uiScl() / global.lovecUtil.prop.uiScale)
     .row();
 
     let done = false;
@@ -652,7 +652,7 @@
   const _d_text = function(delay, dialTup, charaTup, scr, paramObj, endGetter) {
     if(scr == null) scr = Function.air;
 
-    const tb = new Table();
+    let tb = new Table();
     let
       sound = readParam(paramObj, "sound", null),
       haltTimeS = readParam(paramObj, "haltTimeS", -1.0),
