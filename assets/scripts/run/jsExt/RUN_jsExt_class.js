@@ -12,7 +12,7 @@
 
 /*
   ========================================
-  Section: Definition (Function)
+  Section: Definition
   ========================================
 */
 
@@ -34,7 +34,7 @@
 
 
   /**
-   * Sets up the function class.
+   * Sets up the Lovec class.
    * This is required for a class to function properly.
    * @return {this}
    */
@@ -42,7 +42,7 @@
     let cls = this;
     let ins = this.prototype;
 
-    // Root class of all function class is `Function`
+    // Root class of all Lovec classes is `Function`
     if(cls.getSuper() == null) cls.__superClass__ = Function;
 
     cls.__isClass__ = true;

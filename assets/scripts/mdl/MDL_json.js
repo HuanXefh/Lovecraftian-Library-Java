@@ -33,7 +33,7 @@
     let jsonStr = fi0str instanceof Fi ? fi0str.readString("UTF-8") : fi0str;
     if(fi0str instanceof Fi && fi0str.extension() === "json") jsonStr = jsonStr.replace("#", "\\#");
 
-    return LOVEC_JSON_PARSER.fromJson(null, Jval.read(jsonStr).toString(Jval.Jformat.plain));
+    return VAR.jsonParser.fromJson(null, Jval.read(jsonStr).toString(Jval.Jformat.plain));
   };
   exports.parse = parse;
 

@@ -17,7 +17,7 @@
 */
 
 
-  /* <---------- package ----------> */
+  /* <------------------------------ packet ------------------------------ */
 
 
   /**
@@ -28,7 +28,7 @@
    * @return {string}
    */
   packPayload = function(arr) {
-    return JSON.stringify(Object.arrToObj(arr));
+    return JSON.stringify(Object.fromArr(arr));
   };
 
 
@@ -39,11 +39,11 @@
    * @return {Array}
    */
   unpackPayload = function(payload) {
-    return Object.objToArr(JSON.parse(payload));
+    return Object.toArr(JSON.parse(payload));
   };
 
 
-  /* <---------- http ----------> */
+  /* <------------------------------ HTTP ------------------------------ */
 
 
   /**

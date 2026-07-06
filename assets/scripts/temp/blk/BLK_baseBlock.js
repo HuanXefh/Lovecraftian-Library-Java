@@ -498,7 +498,7 @@
 
 
       version: function() {
-        return this.super$version() + VAR.lovecReviOff + LOVEC_REVISION;
+        return this.super$version() + VAR.lovecReviOff + VAR.lovecRevi;
       },
 
 
@@ -562,7 +562,9 @@
        */
       ex_handleConfigStr: function(str) {
         if(str.startsWith("CONFIG: ")) {
-          processConfig(this, str, this.block.delegee.configKeyCallerArr);
+          Object._it(unpackConfig(str), (key, val) => {
+            this.block.delegee.configKeyCallerArr.read(key, Function.air)(this, val);
+          });
         } else {
           this.ex_handleConfigStrDef(str);
         };

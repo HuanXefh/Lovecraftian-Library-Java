@@ -17,16 +17,7 @@
 */
 
 
-  /* <---------- internal ----------> */
-
-
-  /** @global */
-  LOVEC_REVISION = 6;
-  /** @global */
-  LOVEC_JSON_PARSER = new Json();
-
-
-  /* <---------- read & write ----------> */
+  /* <------------------------------ read & write ------------------------------ */
 
 
   /**
@@ -44,7 +35,7 @@
   };
 
 
-  /* <---------- config ----------> */
+  /* <------------------------------ config ------------------------------ */
 
 
   /**
@@ -69,24 +60,7 @@
   };
 
 
-  /**
-   * Handles a config object or its JSON string, see {@link BLK_baseBlock}.
-   * @global
-   * @param {Building} b
-   * @param {string|Object} cfgObj0cfgStr
-   * @param {Array} keyCallerArr - <ROW>: key, cfgCaller.
-   * @return {void}
-   */
-  processConfig = function(b, cfgObj0cfgStr, keyCallerArr) {
-    let obj = isNativeObject(cfgObj0cfgStr) ? cfgObj0cfgStr : unpackConfig(cfgObj0cfgStr);
-
-    Object._it(obj, (key, val) => {
-      keyCallerArr.read(key, Function.air)(b, val);
-    });
-  };
-
-
-  /* <---------- database ----------> */
+  /* <------------------------------ DB file ------------------------------ */
 
 
   /**
@@ -107,7 +81,7 @@
     };
 
     // Dealing with Jval? No way
-    return JSON.parse(LOVEC_JSON_PARSER.fromJson(null, Jval.read(str).toString(Jval.Jformat.plain)).toJson(JsonWriter.OutputType.json));
+    return JSON.parse(VAR.jsonParser.fromJson(null, Jval.read(str).toString(Jval.Jformat.plain)).toJson(JsonWriter.OutputType.json));
   };
 
 
@@ -140,7 +114,7 @@
 
 
   /**
-   * Handles DB objects.
+   * Handles DB file objects.
    * @global
    */
   DB_HANDLER = {

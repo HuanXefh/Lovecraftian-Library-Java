@@ -17,6 +17,10 @@
 */
 
 
+  /** @global */
+  MDL_event = require("lovec/mdl/MDL_event");
+  /** @global */
+  VAR = require("lovec/glb/GLB_var");
   require("lovec/tp/TP_error");
   require("lovec/tp/TP_log");
   require("lovec/tp/TP_db");
@@ -30,8 +34,6 @@
   /** @global */
   CLS_objectBox = require("lovec/cls/struct/CLS_objectBox");
   require("lovec/run/RUN_methodPostExt");
-  /** @global */
-  MDL_event = require("lovec/mdl/MDL_event");
   /** @global */
   LIB_fft = require("lovec/lib/LIB_fft");
   /** @global */
@@ -50,8 +52,6 @@
   DB_parser = require("lovec/db/DB_parser");
   /** @global */
   CLS_contentTemplateParser = require("lovec/cls/util/CLS_contentTemplateParser");
-  /** @global */
-  VAR = require("lovec/glb/GLB_var");
   /** @global */
   TP_attr = require("lovec/tp/TP_attr");
   /** @global */

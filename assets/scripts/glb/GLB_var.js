@@ -19,9 +19,11 @@
 */
 
 
+  exports.jsonParser = new Json();
   exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
 
 
+  exports.lovecRevi = 6;
   exports.lovecReviOff = 96;
 
 

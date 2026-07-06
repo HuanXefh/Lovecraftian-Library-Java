@@ -6,7 +6,7 @@
 
 
   /**
-   * More methods for function class that should be defined later.
+   * More methods for Lovec class that should be defined later.
    */
 
 
@@ -18,7 +18,7 @@
 
 
   /**
-   * Lets a function class implements an interface.
+   * Lets a Lovec class implements an interface.
    * @param {CLS_interface} intf
    * @param {boolean|unset} [shouldOverride] - If true, this method will override existing methods instead of throwing an error.
    * @return {this}

@@ -56,11 +56,11 @@
    * Requires a JS file (as {@link Fi}), which will be run in global scope.
    * @global
    * @param {string} nameMod
-   * @param {function(Fi): Fi} fiGetter - <ARGS>: modRoot
+   * @param {Fi|(function(Fi): Fi)} fi_fn - <ARGS>: modRootDir
    * @return {void}
    */
-  globalRequire = function(nameMod, fiGetter) {
-    let fi = fiGetter(Vars.mods.locateMod(nameMod).root);
+  globalRequire = function(nameMod, fi_fn) {
+    let fi = fi_fn instanceof Fi ? fi_fn : fi_fn(Vars.mods.locateMod(nameMod).root);
     if(fi == null || !fi.exists() || fi.extension() !== "js") throw new Error("Failed to require a script in global script for ${1}! ${2} is not a valid .js file.".format(nameMod, fi));
 
     Vars.mods.scripts.context.evaluateString(SCOPE, fi.readString(), fi.name(), 0);

@@ -32,7 +32,7 @@
     this.add("not2dArray", "Array argument is expected to be 2D!");
 
     this.add("functionLengthWrapFail", "Wrapped function length (${1}) is out of bound!");
-    this.add("notClass", "Argument ${1} is not a function class!");
+    this.add("notClass", "Argument ${1} is not a Lovec class!");
     this.add("noSuperClass", "No super class found!");
     this.add("noSuperMethod", "Method ${1} is not found in super class!");
     this.add("noInitForClassPrototype", "Cannot find {class.prototype.init}!");

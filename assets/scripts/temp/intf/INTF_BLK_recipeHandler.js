@@ -456,7 +456,7 @@
   function comp_ex_resetRcParam(b) {
     b.itmAcceptCacheArr.clear();
     b.liqAcceptCacheArr.clear();
-    HUD_HANDLER.forceUpdateBlockFrag();
+    forceUpdateBlockFrag();
 
     if(!PARAM.UPDATE_SUPPRESSED) {
       b.progress = 0.0;

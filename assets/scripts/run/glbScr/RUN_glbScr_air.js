@@ -17,9 +17,6 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
   /**
    * Collection of null objects from Arc.
    * @global

@@ -60,6 +60,8 @@
   Function.airWhite = function() {return Color.white};
   /** @type {function(): Color} */
   Function.airBlack = function() {return Color.black};
+  /** @type {function(): Color} */
+  Function.airClear = function() {return Color.clear};
 
 
 /*

@@ -88,7 +88,7 @@
 
       set("save-map", mapCur);
       set("save-map", mapCur, true);
-      set("save-revision", LOVEC_REVISION);
+      set("save-revision", VAR.lovecRevi);
 
       TRIGGER.lsavLoad.fire();
     });

@@ -17,29 +17,16 @@
 */
 
 
-  /* <---------- internal ----------> */
+  /* <------------------------------ auxiliary ------------------------------ */
 
 
   /** @global */
   TRIGGER_BACKGROUND = false;
   /** @global */
   TRIGGER_MUSIC = false;
-  /** @global */
-  TRIGGERS_IMAGE = [
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-    false, false, false, false, false, false, false, false, false, false,
-  ];
 
 
-  /* <---------- dependency ----------> */
+  /* <------------------------------ dependency ------------------------------ */
 
 
   /**
@@ -168,7 +155,7 @@
   };
 
 
-  /* <---------- format array ----------> */
+  /* <------------------------------ format array ------------------------------ */
 
 
   /**
@@ -207,131 +194,7 @@
   };
 
 
-  /* <---------- debug ----------> */
-
-
-  /**
-   * Collection of log types.
-   * @global
-   */
-  LOG_HANDLER = {
-
-
-    __infoMap__: new ObjectMap(),
-    __warnMap__: new ObjectMap(),
-    __errMap__: new ObjectMap(),
-    __debugMap__: new ObjectMap(),
-
-
-    /**
-     * Registers a new log type.
-     * @param {numbers} mode - See {@link LogModes}.
-     * @param {string} name
-     * @param {function(): string} strGetter
-     * @return {void}
-     */
-    add(mode, name, strGetter) {
-      switch(mode) {
-        case 0 :
-          this.__infoMap__.put(name, strGetter);
-          break;
-        case 1 :
-          this.__warnMap__.put(name, strGetter);
-          break;
-        case 2 :
-          this.__errMap__.put(name, strGetter);
-          break;
-        case 3 :
-          this.__debugMap__.put(name, strGetter);
-          break;
-        default :
-          throw new Error("Unknown log type: " + mode);
-      };
-    },
-
-
-    /**
-     * Finds log type and string getter for given name.
-     * @param {string} name
-     * @return {[number, function(): string]|null}
-     */
-    find(name) {
-      let strGetter;
-      strGetter = this.__infoMap__.get(name);
-      if(strGetter != null) return [LogModes.I, strGetter];
-      strGetter = this.__warnMap__.get(name);
-      if(strGetter != null) return [LogModes.W, strGetter];
-      strGetter = this.__errMap__.get(name);
-      if(strGetter != null) return [LogModes.E, strGetter];
-      strGetter = this.__debugMap__.get(name);
-      if(strGetter != null) return [LogModes.D, strGetter];
-
-      return null;
-    },
-
-
-    /**
-     * Prints something in the console.
-     * <br> <ARGS>: name, arg1, arg2, arg3, ...
-     * @param {string} name
-     * @return {void}
-     */
-    log(name) {
-      let tup = this.find(name);
-      if(tup == null) console.err("[LOVEC] Unregistered log name: " + name);
-      let text = tup[1].apply(null, Array.from(arguments).splice(1));
-      if(text == null) return;
-
-      console.log(text, tup[0]);
-    },
-
-
-  };
-
-
-  /**
-   * Collection of errors, see {@link TP_error}.
-   * @global
-   */
-  ERROR_HANDLER = {
-
-
-    __errMap__: new ObjectMap(),
-
-
-    /**
-     * Registers a new error.
-     * @param {string} name
-     * @param {string} str
-     */
-    add(name, str) {
-      this.__errMap__.put(name, str);
-    },
-
-
-    /**
-     * Throws some error found by name.
-     * <br> <ARGS>: name, arg1, arg2, arg3, ...
-     * @param {string} name
-     * @return {void}
-     */
-    throw(name) {
-      let str = this.__errMap__.get(name);
-      if(str == null) return;
-
-      if(arguments.length === 1) {
-        throw new Error(str);
-      };
-      let args = Array.from(arguments).splice(1);
-      args.forEachFast(arg => printObj(arg));
-      throw new Error(str.format.apply(str, args));
-    },
-
-
-  };
-
-
-  /* <---------- content template ----------> */
+  /* <------------------------------ content template ------------------------------ */
 
 
   /**
@@ -588,7 +451,7 @@
   mixTempMethods.tmpArgs = [];
 
 
-  /* <---------- game ----------> */
+  /* <------------------------------ game ------------------------------ */
 
 
   /**
@@ -719,22 +582,13 @@
 
 
   /**
-   * Collection of methods that control in-game HUD.
+   * Used for blocks with dynamic building info layout for their buildings, e.g. multi-crafters.
    * @global
+   * @return {void}
    */
-  HUD_HANDLER = {
-
-
-    /**
-     * Used for blocks with dynamic building info layout for their buildings, e.g. multi-crafters.
-     * @return {void}
-     */
-    forceUpdateBlockFrag() {
-      Reflect.set(PlacementFragment, Vars.ui.hudfrag.blockfrag, "lastDisplayState", null);
-    },
-
-
-  };
+  forceUpdateBlockFrag = function() {
+    Reflect.set(PlacementFragment, Vars.ui.hudfrag.blockfrag, "lastDisplayState", null);
+  },
 
 
   /**
@@ -814,6 +668,130 @@
       this.isActive = false;
       this.endGetter = null;
       this.pauseGetter = null;
+    },
+
+
+  };
+
+
+  /* <------------------------------ debug ------------------------------ */
+
+
+  /**
+   * Collection of log types.
+   * @global
+   */
+  LOG_HANDLER = {
+
+
+    __infoMap__: new ObjectMap(),
+    __warnMap__: new ObjectMap(),
+    __errMap__: new ObjectMap(),
+    __debugMap__: new ObjectMap(),
+
+
+    /**
+     * Registers a new log type.
+     * @param {numbers} mode - See {@link LogModes}.
+     * @param {string} name
+     * @param {function(): string} strGetter
+     * @return {void}
+     */
+    add(mode, name, strGetter) {
+      switch(mode) {
+        case 0 :
+          this.__infoMap__.put(name, strGetter);
+          break;
+        case 1 :
+          this.__warnMap__.put(name, strGetter);
+          break;
+        case 2 :
+          this.__errMap__.put(name, strGetter);
+          break;
+        case 3 :
+          this.__debugMap__.put(name, strGetter);
+          break;
+        default :
+          throw new Error("Unknown log type: " + mode);
+      };
+    },
+
+
+    /**
+     * Finds log type and string getter for given name.
+     * @param {string} name
+     * @return {[number, function(): string]|null}
+     */
+    find(name) {
+      let strGetter;
+      strGetter = this.__infoMap__.get(name);
+      if(strGetter != null) return [LogModes.I, strGetter];
+      strGetter = this.__warnMap__.get(name);
+      if(strGetter != null) return [LogModes.W, strGetter];
+      strGetter = this.__errMap__.get(name);
+      if(strGetter != null) return [LogModes.E, strGetter];
+      strGetter = this.__debugMap__.get(name);
+      if(strGetter != null) return [LogModes.D, strGetter];
+
+      return null;
+    },
+
+
+    /**
+     * Prints something in the console.
+     * <br> <ARGS>: name, arg1, arg2, arg3, ...
+     * @param {string} name
+     * @return {void}
+     */
+    log(name) {
+      let tup = this.find(name);
+      if(tup == null) console.err("[LOVEC] Unregistered log name: " + name);
+      let text = tup[1].apply(null, Array.from(arguments).splice(1));
+      if(text == null) return;
+
+      console.log(text, tup[0]);
+    },
+
+
+  };
+
+
+  /**
+   * Collection of errors, see {@link TP_error}.
+   * @global
+   */
+  ERROR_HANDLER = {
+
+
+    __errMap__: new ObjectMap(),
+
+
+    /**
+     * Registers a new error.
+     * @param {string} name
+     * @param {string} str
+     */
+    add(name, str) {
+      this.__errMap__.put(name, str);
+    },
+
+
+    /**
+     * Throws some error found by name.
+     * <br> <ARGS>: name, arg1, arg2, arg3, ...
+     * @param {string} name
+     * @return {void}
+     */
+    throw(name) {
+      let str = this.__errMap__.get(name);
+      if(str == null) return;
+
+      if(arguments.length === 1) {
+        throw new Error(str);
+      };
+      let args = Array.from(arguments).splice(1);
+      args.forEachFast(arg => printObj(arg));
+      throw new Error(str.format.apply(str, args));
     },
 
 

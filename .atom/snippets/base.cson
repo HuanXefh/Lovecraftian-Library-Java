@@ -26,15 +26,15 @@
     exports.${1:name} = ${1:name};
     '''
 
-  'function class':
+  'Lovec class':
     prefix: 'lc_cls'
     body: 'newClass().initClass()'
 
-  'function class extend':
+  'Lovec class extend':
     prefix: 'lc_clsext'
     body: 'newClass().extendClass(${1:class}).initClass()'
 
-  'function class extend implement':
+  'Lovec class extend implement':
     prefix: 'lc_clsextimp'
     body: 'newClass().extendClass(${1:class}).implement(${2:interface}).initClass()'
 

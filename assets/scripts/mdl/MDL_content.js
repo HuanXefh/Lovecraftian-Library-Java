@@ -85,17 +85,17 @@
    * Renames this content if bundle name is not provided.
    * Should be called on INIT.
    * @param {ContentGn} ct_gn
-   * @param {string|(function(): string)} name0nameGetter
+   * @param {string|(function(): string)} name_fn
    * @return {void}
    */
-  const rename = function(ct_gn, name0nameGetter) {
+  const rename = function(ct_gn, name_fn) {
     let ct = _ct(ct_gn);
     if(ct == null || _hasBundle(ct)) return;
 
     Core.app.post(() => {
-      ct.localizedName = typeof name0nameGetter === "function" ?
-        name0nameGetter() :
-        name0nameGetter;
+      ct.localizedName = typeof name_fn === "function" ?
+        name_fn() :
+        name_fn;
     });
   }
   .setAnno("non-headless");

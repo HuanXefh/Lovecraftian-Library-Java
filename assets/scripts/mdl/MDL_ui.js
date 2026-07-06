@@ -315,7 +315,6 @@
   const clearDialFlow = function() {
     TRIGGER_BACKGROUND = false;
     TRIGGER_MUSIC = false;
-    TRIGGERS_IMAGE.setVal(false);
     MUSIC_HANDLER.stop();
     UTIL_dialogFlow.clearLog();
     UTIL_dialogFlow.clearPool();

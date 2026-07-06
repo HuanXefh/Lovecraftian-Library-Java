@@ -17,7 +17,7 @@
 */
 
 
-  /* <---------- base ----------> */
+  /* <------------------------------ base ------------------------------ */
 
 
   /**
@@ -136,6 +136,9 @@
   };
   processClassLoader.isTail = false;
   processClassLoader.defLoader = CONTEXT.getApplicationClassLoader();
+
+
+  /* <------------------------------ extend ------------------------------ */
 
 
   /**

@@ -17,7 +17,7 @@
 */
 
 
-  /* <---------- lovec.graphics ----------> */
+  /* <------------------------------ lovec.graphics ------------------------------ */
 
 
   /** @global lovec.graphics.LCDraw */
@@ -28,7 +28,7 @@
   LCRgb = fetchClass("lovec.graphics.LCRgb");
 
 
-  /* <---------- lovec.math ----------> */
+  /* <------------------------------ lovec.math ------------------------------ */
 
 
   /** @global lovec.math.LCLerp */
@@ -43,7 +43,7 @@
   MathMatrix = fetchClass("lovec.math.MathMatrix");
 
 
-  /* <---------- lovec.utils ----------> */
+  /* <------------------------------ lovec.utils ------------------------------ */
 
 
   /** @global lovec.utils.LCCheck */

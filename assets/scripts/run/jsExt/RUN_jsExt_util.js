@@ -17,9 +17,6 @@
 */
 
 
-  const TMP_TUP = [];
-
-
   /**
    * Gets a random key in `obj`.
    * @param {Object} obj
@@ -31,11 +28,54 @@
 
 
   /**
+   * Gets key by reading through values in `obj`.
+   * @param {Object} obj
+   * @param {any} val
+   * @param {any} [def]
+   * @return {any}
+   */
+  Object.keyByVal = function(obj, val, def) {
+    let key_fi = def;
+    for(let key in obj) {
+      if(obj[key] !== val) continue;
+      key_fi = key;
+    };
+    return key_fi;
+  };
+
+
+  /**
+   * Gets last child object found in `obj` by searching with given keys.
+   * @param {Object} obj
+   * @param {Array<string>} keys
+   * @param {any} [def] - If given, returns `def` when not found.
+   * @return {any}
+   */
+  Object.searchByKeys = function(obj, keys, def) {
+    let tg = obj;
+    let tmp = null;
+
+    let i = 0, iCap = keys.iCap();
+    while(i < iCap) {
+      tmp = tg[keys[i]];
+      if(tmp != null) {
+        tg = tmp;
+      } else if(def !== undefined) {
+        return def;
+      } else break;
+      i++;
+    };
+
+    return tg;
+  };
+
+
+  /**
    * Converts an array or argument object to object.
    * @param {Arguments} arr
    * @return {Object}
    */
-  Object.arrToObj = function(arr) {
+  Object.fromArr = function(arr) {
     let obj = {};
 
     let i = 0, iCap = arr.iCap();
@@ -53,7 +93,7 @@
    * @param {Object} obj
    * @return {Array}
    */
-  Object.objToArr = function(obj) {
+  Object.toArr = function(obj) {
     let arr = [];
 
     let i = 0;
@@ -71,7 +111,7 @@
    * @param {Object} obj
    * @return {Array}
    */
-  Object.objTo2Arr = function(obj) {
+  Object.to2Arr = function(obj) {
     let arr = [];
     if(obj == null) return arr;
 
@@ -157,19 +197,19 @@
         Object._it(obj0[key1], (key2, val2) => {
           // Depth: 1
           val2 instanceof Array ?
-            thisFun.applyMerge(key2, Object.findByKeys(obj, [key1], Object.air), val2) :
+            thisFun.applyMerge(key2, Object.searchByKeys(obj, [key1], Object.air), val2) :
             Object._it(obj0[key1][key2], (key3, val3) => {
               // Depth: 2
               val3 instanceof Array ?
-                thisFun.applyMerge(key3, Object.findByKeys(obj, [key1, key2], Object.air), val3) :
+                thisFun.applyMerge(key3, Object.searchByKeys(obj, [key1, key2], Object.air), val3) :
                 Object._it(obj0[key1][key2][key3], (key4, val4) => {
                   // Depth: 3
                   val4 instanceof Array ?
-                    thisFun.applyMerge(key4, Object.findByKeys(obj, [key1, key2, key3], Object.air), val4) :
+                    thisFun.applyMerge(key4, Object.searchByKeys(obj, [key1, key2, key3], Object.air), val4) :
                     Object._it(obj0[key1][key2][key3][key4], (key5, val5) => {
                       // Depth: 4
                       val5 instanceof Array ?
-                        thisFun.applyMerge(key5, Object.findByKeys(obj, [key1, key2, key3, key4], Object.air), val5) :
+                        thisFun.applyMerge(key5, Object.searchByKeys(obj, [key1, key2, key3, key4], Object.air), val5) :
                         console.err("[LOVEC] Cannot fully merge an object due to " + "too many layers".color(Pal.remove) + ".");
                     });
                 });

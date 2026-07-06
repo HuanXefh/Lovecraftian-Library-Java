@@ -623,7 +623,7 @@
     this.handleCtLi(
       rc,
       VARGEN.rawOreBlks,
-      blk => MDL_content._ct(Object.findKeyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs"),
+      blk => MDL_content._ct(Object.keyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs"),
       metaObj,
       (itm, metaObj) => ({
         keyCt: DB_HANDLER.read("itm-pay-blk", itm.name),
