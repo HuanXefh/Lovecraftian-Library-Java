@@ -40,7 +40,7 @@ public class MathGraph implements Iterable<Integer> {
             this.vert_t = vert_t;
             this.dst = dst;
         };
-        // Overloading
+        // Overload
         public MathGraphEdge(int vert_f, int vert_t) {
             this(vert_f, vert_t, 1f);
         };
@@ -59,7 +59,7 @@ public class MathGraph implements Iterable<Integer> {
         };
         this.isDirectional = isDirectional;
     };
-    // Overloading
+    // Overload
     public MathGraph(int vertices, Object data, float weight) {
         this(vertices, data, weight, false);
     };
@@ -179,7 +179,7 @@ public class MathGraph implements Iterable<Integer> {
             };
         };
     };
-    // Overloading
+    // Overload
     public void each(Cons2<Object, Integer> cons2) {
         each((data, vert) -> true, cons2);
     };
@@ -268,7 +268,7 @@ public class MathGraph implements Iterable<Integer> {
 
         return dsts;
     };
-    // Overloading
+    // Overload
     public float[] applyDijkstra(int vert) {
         return applyDijkstra(vert, new float[vertices]);
     };
@@ -318,7 +318,7 @@ public class MathGraph implements Iterable<Integer> {
 
         return pathSeq;
     };
-    // Overloading
+    // Overload
     public IntSeq applyDijkstra(int vert_f, int vert_t) {
         return applyDijkstra(vert_f, vert_t, new IntSeq());
     };
@@ -360,7 +360,7 @@ public class MathGraph implements Iterable<Integer> {
         weightSeq.add(weight);
         return this;
     };
-    // Overloading
+    // Overload
     public MathGraph addVert(Object data) {
         return addVert(data, 0f);
     };
@@ -382,7 +382,7 @@ public class MathGraph implements Iterable<Integer> {
         };
         return this;
     };
-    // Overloading
+    // Overload
     public MathGraph appendVert(int[] overts, Object data, float weight, float dst) {
         return appendVert(overts, data, weight, dst, false);
     };
@@ -419,7 +419,7 @@ public class MathGraph implements Iterable<Integer> {
         };
         return this;
     };
-    // Overloading
+    // Overload
     public MathGraph addEdge(int vert_f, int vert_t) {
         return addEdge(vert_f, vert_t, 1f);
     };
@@ -455,7 +455,7 @@ public class MathGraph implements Iterable<Integer> {
         };
         return this;
     };
-    // Overloading
+    // Overload
     public MathGraph merge(MathGraph graph) {
         return merge(graph, Object::equals);
     };

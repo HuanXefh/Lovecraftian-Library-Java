@@ -26,7 +26,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED || b.liquids == null || !TIMER.secQuarter || !Mathf.chance(0.25)) return;
+    if(PARAM.UPDATE_SUPPRESSED || b.liquids == null || !TIMER.secQuarter || !LCRand.chance(UTIL_rand.get("corrosion"), 0.25)) return;
     let liqCur = b.liquids.current();
     let amt = b.liquids.get(liqCur);
     if(amt < 0.05) return;

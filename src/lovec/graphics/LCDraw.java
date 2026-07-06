@@ -44,7 +44,7 @@ public class LCDraw {
             Lines.line(x1, y1, x2, y2);
         };
     };
-    // Overloading
+    // Overload
     public static void line(float x1, float y1, float x2, float y2) {
         line(x1, y1, x2, y2, false);
     };
@@ -72,7 +72,7 @@ public class LCDraw {
             Lines.line(x - hw, y + hw, x - hw, y - hw);
         };
     };
-    // Overloading
+    // Overload
     public static void rect(float x, float y, float r, float size) {
         rect(x, y, r, size, true);
     };
@@ -99,7 +99,7 @@ public class LCDraw {
             Lines.circle(x, y, rad);
         };
     };
-    // Overloading
+    // Overload
     public static void circle(float x, float y, float rad) {
         circle(x, y, rad, true);
     };
@@ -128,7 +128,7 @@ public class LCDraw {
             );
         };
     };
-    // Overloading
+    // Overload
     public static void ring(float x, float y, float radIn, float radOut, float ang, float frac) {
         ring(x, y, radIn, radOut, ang, frac, false);
     };
@@ -154,7 +154,7 @@ public class LCDraw {
     public static void shieldCircle(float x, float y, float rad, Color color, float a) {
         Fill.light(x, y, Lines.circleVertices(rad), rad, Color.clear, tmpColors[0].set(color).a(a * 0.7f));
     };
-    // Overloading
+    // Overload
     public static void shieldCircle(float x, float y, float rad, Color color) {
         shieldCircle(x, y, rad, color, color.a);
     };
@@ -178,7 +178,7 @@ public class LCDraw {
         Draw.mixcol();
         Draw.rect(reg, x_fi, y_fi, w, h);
     };
-    // Overloading
+    // Overload
     public static void regionIcon(float x, float y, TextureRegion reg, float size) {
         regionIcon(x, y, reg, size, 1f);
     };
@@ -198,7 +198,7 @@ public class LCDraw {
 
         Draw.rect(ct.fullIcon, x, y, w, h);
     };
-    // Overloading
+    // Overload
     public static void content(float x, float y, @Nullable UnlockableContent ct) {
         content(x, y, ct, 1);
     };
@@ -211,7 +211,7 @@ public class LCDraw {
         if(ct == null) return;
         regionIcon(x, y, ct.fullIcon, size, wScl);
     };
-    // Overloading
+    // Overload
     public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size) {
         if(ct == null) return;
         regionIcon(x, y, ct.fullIcon, size);
@@ -251,7 +251,7 @@ public class LCDraw {
         font.setColor(Color.white);
         font.setUseIntegerPositions(useInt);
     };
-    // Overloading
+    // Overload
     public static void text(
         float x, float y, @Nullable String str, Font font,
         float sizeScl, Color color, int align, float offX, float offY
@@ -326,7 +326,7 @@ public class LCDraw {
         Draw.color();
         Draw.z(zPrev);
     };
-    // Overloading
+    // Overload
     public static void tree(
         TextureRegion reg, TextureRegion shaReg,
         Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z,

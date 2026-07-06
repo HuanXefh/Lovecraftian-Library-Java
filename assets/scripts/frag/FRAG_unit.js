@@ -18,10 +18,13 @@
 */
 
 
-  /* <---------- base ----------> */
+  /* <---------- auxiliary ----------> */
 
 
   const STA_DUR = VAR.time.unitStaDef;
+
+
+  /* <---------- base ----------> */
 
 
   /**
@@ -61,7 +64,7 @@
    * @return {void}
    */
   const comp_update_damaged = function(utp, unit) {
-    if(!TIMER.unit || !Mathf.chance(VAR.chance.unitUpdateP)) return;
+    if(!TIMER.unit || !LCRand.chance(UTIL_rand.get("unit"), VAR.chance.unitUpdateP)) return;
 
     let healthFrac = Mathf.clamp(unit.health / unit.maxHealth);
 
@@ -107,7 +110,7 @@
    * @return {void}
    */
   const comp_update_surrounding = function thisFun(utp, unit) {
-    if(!TIMER.unit || !Mathf.chance(VAR.chance.unitUpdateP)) return;
+    if(!TIMER.unit || !LCRand.chance(UTIL_rand.get("unit"), VAR.chance.unitUpdateP)) return;
 
     let t = unit.tileOn();
     if(t == null) return;
@@ -155,7 +158,7 @@
    * @return {void}
    */
   const comp_update_heat = function(utp, unit) {
-    if(!TIMER.unit || !Mathf.chance(VAR.chance.unitUpdateP * 0.3)) return;
+    if(!TIMER.unit || !LCRand.chance(UTIL_rand.get("unit"), VAR.chance.unitUpdateP * 0.3)) return;
     if(!MDL_cond._isHeatDamageable(unit)) return;
 
     let rHeat = MDL_flow._rHeat(unit.tileOn());

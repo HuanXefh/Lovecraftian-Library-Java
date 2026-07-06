@@ -82,7 +82,7 @@
 
     // Apply damage if over limit
     if(
-      !PARAM.UPDATE_DEEP_SUPPRESSED && TIMER.secQuarter && Mathf.chance(0.25)
+      !PARAM.UPDATE_DEEP_SUPPRESSED && TIMER.secQuarter && LCRand.chance(UTIL_rand.get("pressure"), 0.25)
         && (
           (b.presTmp + b.presExtra) > 0.0 ?
             ((b.presTmp + b.presExtra) > (b.block.delegee.presRes + 0.5)) :

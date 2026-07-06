@@ -99,7 +99,7 @@ public class LCDrawP3D {
             toP3dX(x1, z3d), toP3dY(y1, z3d), fBits2
         );
     };
-    // Overloading
+    // Overload
     public static void wall(
         float x1, float y1, float x2, float y2, float z3d,
         Color color
@@ -126,7 +126,7 @@ public class LCDrawP3D {
         wall(x + w * 0.5f, y - h * 0.5f, x + w * 0.5f, y + h * 0.5f, z3d, Tmp.c1.set(colorIn), Tmp.c2.set(colorOut));
         Draw.z(zCur);
     };
-    // Overloading
+    // Overload
     public static void room(
         float x, float y, float z3d,
         float w, float h, Color color
@@ -156,7 +156,7 @@ public class LCDrawP3D {
     ) {
         room(x, y, z3d, w, h, color, Tmp.c3.set(color).a(0f));
     };
-    // Overloading
+    // Overload
     public static void roomFade(
         float x, float y, float z3d,
         float w, Color color
@@ -186,7 +186,7 @@ public class LCDrawP3D {
             );
         };
     };
-    // Overloading
+    // Overload
     public static void cylinder(
         float x, float y, float z3d,
         float rad, Color color

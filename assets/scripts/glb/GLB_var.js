@@ -170,6 +170,18 @@
   };
 
 
+  exports.randInd = {
+    block: 0,
+    crafter: 1,
+    unit: 2,
+    ability: 3,
+    corrosion: 16,
+    pressure: 17,
+    fluidHeat: 18,
+    pollution: 19,
+  };
+
+
   MDL_event._c_onLoad(() => {
     exports.dialog = {
       ct1: Vars.headless ? null : new ContentInfoDialog(),

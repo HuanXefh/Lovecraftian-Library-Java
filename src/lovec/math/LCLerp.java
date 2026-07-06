@@ -17,7 +17,7 @@ public class LCLerp {
     public static float lerp(float val_f, float val_t, float param, float param_f, float param_t) {
         return val_f + (val_t - val_f) * calcParamFrac(param, param_f, param_t);
     };
-    // Overloading
+    // Overload
     public static float lerp(float val_f, float val_t, float param) {
         return lerp(val_f, val_t, param, 0f, 1f);
     };
@@ -34,7 +34,7 @@ public class LCLerp {
     public static float sLerp(float val_f, float val_t, float param, float param_f, float param_t) {
         return val_f + (val_t - val_f) * calcSmoothA(calcParamFrac(param, param_f, param_t));
     };
-    // Overloading
+    // Overload
     public static float sLerp(float val_f, float val_t, float param) {
         return sLerp(val_f, val_t, param, 0f, 1f);
     };
@@ -50,7 +50,7 @@ public class LCLerp {
             a
         );
     };
-    // Overloading
+    // Overload
     public static float biLerp(float val1_f, float val1_t, float val2_f, float val2_t, float param1, float param2, float a) {
         return biLerp(val1_f, val1_t, val2_f, val2_t, param1, param2, a, 0f, 1f, 0f, 1f);
     };
@@ -66,7 +66,7 @@ public class LCLerp {
             a
         );
     };
-    // Overloading
+    // Overload
     public static float sBiLerp(float val1_f, float val1_t, float val2_f, float val2_t, float param1, float param2, float a) {
         return sBiLerp(val1_f, val1_t, val2_f, val2_t, param1, param2, a, 0f, 1f, 0f, 1f);
     };
@@ -78,7 +78,7 @@ public class LCLerp {
     public static float applyInterp(float val_f, float val_t, float param, Interp interp, float param_f, float param_t) {
         return val_f + (val_f - val_t) * interp.apply(calcParamFrac(param, param_f, param_t));
     };
-    // Overloading
+    // Overload
     public static float applyInterp(float val_f, float val_t, float param, Interp interp) {
         return applyInterp(val_f, val_t, param, interp, 0f, 1f);
     };

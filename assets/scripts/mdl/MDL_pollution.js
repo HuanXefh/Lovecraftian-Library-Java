@@ -176,7 +176,7 @@ MDL_event._c_onLoad(() => {
     basePol = 0.0;
   });
   TRIGGER.majorIter.building.addGlobalListener((b, isActive) => {
-    if(isActive && Mathf.chance(VAR.chance.polUpdateP)) {
+    if(isActive && LCRand.chance(UTIL_rand.get("pollution"), VAR.chance.polUpdateP)) {
       basePol += b.ex_getBlkPol != null ?
         b.ex_getBlkPol() :
         _blkPol(b.block);

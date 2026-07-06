@@ -84,7 +84,7 @@ public class LCMathFunc {
     public static double dampCos(double x, double mag, double decay, double omega, double phi) {
         return mag * Math.exp(-decay * x) * Math.cos(omega * x - phi);
     };
-    // Overloading
+    // Overload
     public static double dampCos(double x, double mag, double decay, double omega) {
         return dampCos(x, mag, decay, omega, 0);
     };
@@ -118,7 +118,7 @@ public class LCMathFunc {
     public static double derivative(double x, Func<Double, Double> func, double delta) {
         return (func.get(x + delta) - func.get(x)) / delta;
     };
-    // Overloading
+    // Overload
     public static double derivative(double x, Func<Double, Double> func) {
         return derivative(x, func, 1e-5);
     };
@@ -130,7 +130,7 @@ public class LCMathFunc {
     public static double derivativePrecise(double x, Func<Double, Double> func, double delta) {
         return (func.get(x + delta) - func.get(x - delta)) / (delta * 2);
     };
-    // Overloading
+    // Overload
     public static double derivativePrecise(double x, Func<Double, Double> func) {
         return derivativePrecise(x, func, 1e-10);
     };
@@ -147,7 +147,7 @@ public class LCMathFunc {
         };
         return val;
     };
-    // Overloading
+    // Overload
     public static double integral(double base, double cap, Func<Double, Double> func) {
         return integral(base, cap, func, 1000);
     };
@@ -165,7 +165,7 @@ public class LCMathFunc {
         };
         return val * dx / 3;
     };
-    // Overloading
+    // Overload
     public static double integralPrecise(double base, double cap, Func<Double, Double> func) {
         return integralPrecise(base, cap, func, 1000);
     };

@@ -34,7 +34,7 @@ public class LCCheck {
         tmpTriangle.setPosition(cx, cy);
         return tmpTriangle.contains(x, y);
     };
-    // Overloading
+    // Overload
     public static boolean checkPosInTriangle(float x, float y, float cx, float cy, float rad) {
         return checkPosInTriangle(x, y, cx, cy, rad, 0f);
     };
@@ -52,7 +52,7 @@ public class LCCheck {
         tmpHexagon.setPosition(cx, cy);
         return tmpHexagon.contains(x, y);
     };
-    // Overloading
+    // Overload
     public static boolean checkPosInHexagon(float x, float y, float cx, float cy, float rad) {
         return checkPosInHexagon(x, y, cx, cy, rad, 0f);
     };
@@ -64,7 +64,7 @@ public class LCCheck {
     public static boolean checkPosVisible(float x, float y, float clipSize) {
         return Core.camera.bounds(Tmp.r1).overlaps(Tmp.r2.setCentered(x, y, clipSize));
     };
-    // Overloading
+    // Overload
     public static boolean checkPosVisible(float x, float y) {
         return checkPosVisible(x, y, 0.0001f);
     };
@@ -85,7 +85,7 @@ public class LCCheck {
         var hw = LCFormat.calcRectHW(r, size);
         return Math.abs(x - Core.input.mouseWorldX()) < hw && Math.abs(y - Core.input.mouseWorldY()) < hw;
     };
-    // Overloading
+    // Overload
     public static boolean checkPosHoveredRect(float x, float y) {
         return checkPosHoveredRect(x, y, 0f, 1f);
     };

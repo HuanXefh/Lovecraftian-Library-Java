@@ -202,21 +202,21 @@
    */
   const sync = function() {
     MDL_net.sendPacket(
-      "server", "lovec-server-lsav-sync",
+      PacketModes.SERVER, "lovec-server-lsav-sync",
       JSON.stringify(lsav),
       true,
     );
     MDL_net.sendPacket(
-      "server", "lovec-server-plsav-sync",
+      PacketModes.SERVER, "lovec-server-plsav-sync",
       JSON.stringify(plsav),
       true,
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler("client", "lovec-server-lsav-sync", payload => {
+    MDL_net.__packetHandler(PacketModes.CLIENT, "lovec-server-lsav-sync", payload => {
       __lsav(JSON.parse(payload));
     });
-    MDL_net.__packetHandler("client", "lovec-server-plsav-sync", payload => {
+    MDL_net.__packetHandler(PacketModes.CLIENT, "lovec-server-plsav-sync", payload => {
       __plsav(JSON.parse(payload));
     });
   })
@@ -230,13 +230,13 @@
    */
   const requestSync = function() {
     MDL_net.sendPacket(
-      "client", "lovec-client-lsav-sync-request",
+      PacketModes.CLIENT, "lovec-client-lsav-sync-request",
       "",
       true, true,
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler("server", "lovec-client-lsav-sync-request", payload => {
+    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-lsav-sync-request", payload => {
       sync();
     });
   })
@@ -255,7 +255,7 @@
    */
   const requestSet = function(header, val, isPSet) {
     MDL_net.sendPacket(
-      "client", "lovec-client-lsav-set-request",
+      PacketModes.CLIENT, "lovec-client-lsav-set-request",
       packPayload([
         header, val, isPSet,
       ]),
@@ -263,7 +263,7 @@
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler("server", "lovec-client-lsav-set-request", payload => {
+    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-lsav-set-request", payload => {
       setSafe.apply(this, unpackPayload(payload));
     });
   })

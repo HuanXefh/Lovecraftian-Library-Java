@@ -73,7 +73,7 @@
 
 
   function comp_updateTile(b) {
-    if(b.block.delegee.isShortCircuitPipe && Mathf.chance(0.008)) {
+    if(b.block.delegee.isShortCircuitPipe && LCRand.chance(UTIL_rand.get("block"), 0.008)) {
       b.block.consPower.trigger(b);
     };
 

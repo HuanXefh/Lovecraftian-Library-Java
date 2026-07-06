@@ -151,13 +151,15 @@
   /** @global */
   VARGEN = require("lovec/glb/GLB_varGen");
   /** @global */
-  UTIL_keyBind = require("lovec/cls/util/UTIL_keyBind");
+  UTIL_rand = require("lovec/cls/util/UTIL_rand");
   /** @global */
   UTIL_graph = require("lovec/cls/util/UTIL_graph");
   /** @global */
-  UTIL_remains = require("lovec/cls/util/UTIL_remains");
+  UTIL_keyBind = require("lovec/cls/util/UTIL_keyBind");
   /** @global */
   UTIL_unitData = require("lovec/cls/util/UTIL_unitData");
+  /** @global */
+  UTIL_remains = require("lovec/cls/util/UTIL_remains");
   /** @global */
   MDL_pollution = require("lovec/mdl/MDL_pollution");
   /** @global */

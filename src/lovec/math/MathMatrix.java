@@ -28,7 +28,7 @@ public class MathMatrix implements Iterable<Double> {
         this.colAmt = n;
         this.data = new double[m][n];
     };
-    // Overloading
+    // Overload
     public MathMatrix(int n) {
         this(n, n);
     };
@@ -57,7 +57,7 @@ public class MathMatrix implements Iterable<Double> {
     public static MathMatrix getUnitMat(int n, double def) {
         return new MathMatrix(n).setEach((i, j) -> i == j ? def : 0);
     };
-    // Overloading
+    // Overload
     public static MathMatrix getUnitMat(int n) {
         return getUnitMat(n, 1);
     };
@@ -171,7 +171,7 @@ public class MathMatrix implements Iterable<Double> {
     public boolean isSameSizeWith(MathMatrix mat) {
         return isSameSizeWith(mat.data);
     };
-    // Overloading
+    // Overload
     public boolean isSameSizeWith(double[][] matArr) {
         return rowAmt == matArr.length && colAmt == matArr[0].length;
     };
@@ -183,7 +183,7 @@ public class MathMatrix implements Iterable<Double> {
     public boolean canMultiply(MathMatrix mat) {
         return canMultiply(mat.data);
     };
-    // Overloading
+    // Overload
     public boolean canMultiply(double[][] matArr) {
         return colAmt == matArr.length;
     };
@@ -204,7 +204,7 @@ public class MathMatrix implements Iterable<Double> {
             };
         };
     };
-    // Overloading
+    // Overload
     public void each(Cons cons) {
         each(val -> true, cons);
     };
@@ -225,7 +225,7 @@ public class MathMatrix implements Iterable<Double> {
         };
         return this;
     };
-    // Overloading
+    // Overload
     public MathMatrix set(double num) {
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < colAmt; i++) {
@@ -267,7 +267,7 @@ public class MathMatrix implements Iterable<Double> {
     public MathMatrix add(MathMatrix mat) throws IllegalArgumentException {
         return add(mat.data);
     };
-    // Overloading
+    // Overload
     public MathMatrix add(double[][] matArr) throws IllegalArgumentException {
         if(!isSameSizeWith(matArr)) throw new IllegalArgumentException("Unmatched matrix size!");
         setEach((i, j) -> data[j][i] + matArr[j][i]);
@@ -281,7 +281,7 @@ public class MathMatrix implements Iterable<Double> {
     public MathMatrix sub(MathMatrix mat) throws IllegalArgumentException {
         return sub(mat.data);
     };
-    // Overloading
+    // Overload
     public MathMatrix sub(double[][] matArr) throws IllegalArgumentException {
         if(!isSameSizeWith(matArr)) throw new IllegalArgumentException("Unmatched matrix size!");
         return scl(-1).add(matArr).scl(-1);
@@ -295,7 +295,7 @@ public class MathMatrix implements Iterable<Double> {
         setEach((i, j) -> data[j][i] * num);
         return this;
     };
-    // Overloading
+    // Overload
     public MathMatrix scl(MathMatrix mat) throws IllegalArgumentException {
         if(mat.rowAmt != 1 || mat.colAmt != 1) throw new IllegalArgumentException("Given matrix is not 1x1!");
         return scl(mat.get(0, 0));
@@ -309,7 +309,7 @@ public class MathMatrix implements Iterable<Double> {
     public MathMatrix mul(MathMatrix mat) throws IllegalArgumentException {
         return mul(mat.data);
     };
-    // Overloading
+    // Overload
     public MathMatrix mul(double[][] matArr) throws IllegalArgumentException {
         if(!canMultiply(matArr)) throw new IllegalArgumentException("Unmatched matrix size!");
         var mat0 = new MathMatrix(rowAmt, matArr[0].length);
@@ -356,7 +356,7 @@ public class MathMatrix implements Iterable<Double> {
         };
         return arr;
     };
-    // Overloading
+    // Overload
     public double[] diagonal() throws IllegalArgumentException {
         return diagonal(0);
     };
@@ -541,7 +541,7 @@ public class MathMatrix implements Iterable<Double> {
         };
         return new MathMatrix(matArr);
     };
-    // Overloading
+    // Overload
     public static MathMatrix getVec(double[] arr) {
         return getVec(arr, false);
     };
@@ -561,7 +561,7 @@ public class MathMatrix implements Iterable<Double> {
 
         return null;
     };
-    // Overloading
+    // Overload
     public static @Nullable MathMatrix fromArcVec(Object arcVec) {
         return fromArcVec(arcVec, false);
     };
@@ -669,7 +669,7 @@ public class MathMatrix implements Iterable<Double> {
         };
         return this;
     };
-    // Overloading
+    // Overload
     public MathMatrix nor() throws IllegalArgumentException {
         return nor(1);
     };
@@ -686,7 +686,7 @@ public class MathMatrix implements Iterable<Double> {
         if(!vec.isVec()) throw new IllegalArgumentException("Argument is not a vector:\n" + vec);
         return dotMul(vec.toArray());
     };
-    // Overloading
+    // Overload
     public double dotMul(double[] arr) throws IllegalArgumentException {
         if(rowAmt != arr.length) throw new IllegalArgumentException("Unmatched vector dimension!");
         return mul(getVec(arr)).get(0, 0);
@@ -700,7 +700,7 @@ public class MathMatrix implements Iterable<Double> {
         var vec0 = isRowVec() ? this : this.transpose();
         return crossMul(vec.toArray());
     };
-    // Overloading
+    // Overload
     public MathMatrix crossMul(double[] arr) throws IllegalArgumentException {
         if(getDimension() != 3 || arr.length != 3) throw new IllegalArgumentException("Cross product is only for 3D-vectors!");
         double[][] matArr = {

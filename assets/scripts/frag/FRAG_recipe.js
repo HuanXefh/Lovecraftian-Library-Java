@@ -704,7 +704,7 @@
    * @return {void}
    */
   const produce_itm = function(b, failP) {
-    failed = Mathf.chance(failP);
+    failed = LCRand.chance(UTIL_rand.get("crafter"), failP);
 
     // BO
     if(!failed) {

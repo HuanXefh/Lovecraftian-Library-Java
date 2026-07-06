@@ -68,6 +68,15 @@
   (function() {
 
 
+    // Sync random number generator
+    Object._it(VAR.randInd, (name, ind) => {
+      let rand = new Rand();
+      TRIGGER.majorIter.start.addGlobalListener(() => {
+        UTIL_rand.sync(ind, Number(rand.nextLong()));
+      });
+    });
+
+
     // Register global category for {@link UTIL_dragButtonInfoList}
     UTIL_dragButtonInfoList
     .add("achievement", () => fetchDialog("achievement").ex_show())

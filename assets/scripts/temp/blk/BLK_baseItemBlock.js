@@ -28,7 +28,8 @@
 
   function comp_updateTile(b) {
     if(
-      b.block.delegee.isExposed
+      !Vars.net.client()
+        && b.block.delegee.isExposed
         && b.items != null && b.items.any() && !b.block.delegee.noReac
         && Mathf.chance(0.025)
     ) {

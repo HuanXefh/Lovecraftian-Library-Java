@@ -268,7 +268,7 @@
     if(!Vars.state.rules.reactorExplosions) return;
 
     MDL_net.sendPacket(
-      "both", "lovec-both-attack-explosion",
+      PacketModes.BOTH, "lovec-both-attack-explosion",
       packPayload([x, y, dmg, rad, shake, se_gn]),
       true, true,
     );
@@ -276,7 +276,7 @@
     _a_explosion(x, y, dmg, rad, shake, se_gn);
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler("both", "lovec-both-attack-explosion", payload => {
+    MDL_net.__packetHandler(PacketModes.BOTH, "lovec-both-attack-explosion", payload => {
       _a_explosion.apply(this, unpackPayload(payload));
     });
   });
@@ -326,7 +326,7 @@
 
       MDL_call.knockback(x, y, unit, dmg / 100.0, rad);
       damage(unit, dmg_fi, 0.0);
-      if(Mathf.chance(Math.max(frac, 0.2))) unit.apply(VARGEN.staStunned, staDur);
+      if(LCRand.chance(UTIL_rand.get("unit"), Math.max(frac, 0.2))) unit.apply(VARGEN.staStunned, staDur);
     });
 
     MDL_effect._e_shake(x, y, shake);

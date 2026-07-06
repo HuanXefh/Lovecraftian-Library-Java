@@ -22,7 +22,7 @@ public class LCFormat {
     public static float toFCoord(int tx, int size) {
         return tx * Vars.tilesize + (size % 2 == 0 ? (Vars.tilesize * 0.5f) : 0f);
     };
-    // Overloading
+    // Overload
     public static float toFCoord(int tx) {
         return toFCoord(tx, 1);
     };

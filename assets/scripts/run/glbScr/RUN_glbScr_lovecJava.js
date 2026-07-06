@@ -52,6 +52,8 @@
   LCFormat = fetchClass("lovec.utils.LCFormat");
   /** @global lovec.utils.LCGeneralizer */
   LCGeneralizer = fetchClass("lovec.utils.LCGeneralizer");
+  /** @global lovec.utils.LCRand */
+  LCRand = fetchClass("lovec.utils.LCRand");
   /** @global lovec.utils.pooling.PoolableVec2 */
   PoolableVec2 = fetchClass("lovec.utils.pooling.PoolableVec2");
   /** @global lovec.utils.pooling.PoolableVec3 */

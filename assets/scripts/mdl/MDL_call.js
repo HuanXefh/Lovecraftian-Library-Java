@@ -105,7 +105,7 @@
     if(team == null) team = Team.sharded;
 
     MDL_net.sendPacket(
-      "client", "lovec-client-unit-spawn",
+      PacketModes.CLIENT, "lovec-client-unit-spawn",
       packPayload([
         x, y, utp.name, team.id, rad, ang, repeat, applyDefSta,
       ]),
@@ -113,7 +113,7 @@
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler("client", "lovec-client-unit-spawn", payload => {
+    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-unit-spawn", payload => {
       let args = unpackPayload(payload);
       spawnUnit_server(args[0], args[1], args[2], Team.get(args[3]), args[4], args[5], args[6], args[7]);
     });
@@ -222,7 +222,7 @@
     if(itm == null) return;
 
     MDL_net.sendPacket(
-      "client", "lovec-client-loot-spawn",
+      PacketModes.CLIENT, "lovec-client-loot-spawn",
       packPayload([
         x, y, itm.name, amt, rad, repeat,
       ]),
@@ -230,7 +230,7 @@
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler("server", "lovec-client-loot-spawn", payload => {
+    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-loot-spawn", payload => {
       spawnLoot_server.apply(null, unpackPayload(payload));
     });
   })

@@ -23,7 +23,7 @@ public class LCRgb {
     public static float calcLuminance(float r, float g, float b, float a) {
         return (calcLinearParam(r) * 0.2126f + calcLinearParam(g) * 0.7152f + calcLinearParam(b) * 0.0722f) * a;
     };
-    // Overloading
+    // Overload
     public static float calcLuminance(float r, float g, float b) {
         return calcLuminance(r, g, b, 1f);
     };
@@ -39,7 +39,7 @@ public class LCRgb {
         var lumin = calcLuminance(r, g, b, a);
         return lumin < 0.008856f ? (lumin * 9.033f) : ((Mathf.pow(lumin, 0.33333333f) * 116f - 16f) * 0.01f);
     };
-    // Overloading
+    // Overload
     public static float calcLightness(float r, float g, float b) {
         return calcLightness(r, g, b, 1f);
     };
@@ -55,7 +55,7 @@ public class LCRgb {
         var val = r * 0.2126f + g * 0.7152f + b * 0.0722f;
         return tmpColors[0].set(val, val, val, a);
     };
-    // Overloading
+    // Overload
     public static Color grayscale(float r, float g, float b) {
         return grayscale(r, g, b, 1f);
     };
@@ -70,7 +70,7 @@ public class LCRgb {
     public static Color negative(float r, float g, float b, float a) {
         return tmpColors[1].set(1f - r, 1f - g, 1f - b, a);
     };
-    // Overloading
+    // Overload
     public static Color negative(float r, float g, float b) {
         return negative(r, g, b, 1f);
     };
