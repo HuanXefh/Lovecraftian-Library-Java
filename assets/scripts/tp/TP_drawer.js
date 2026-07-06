@@ -453,12 +453,12 @@
 
 
       draw(b) {
-        b.delegee.__BACKUP_DRAW__.call(b);
+        b.delegee.__backupDraw__.call(b);
       },
 
 
       drawLight(b) {
-        b.delegee.__BACKUP_DRAWLIGHT__.call(b);
+        b.delegee.__backupDrawLight__.call(b);
       },
 
 

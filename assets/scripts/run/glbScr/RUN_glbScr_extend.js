@@ -26,8 +26,8 @@
    */
   CONTENT_HANDLER = {
 
-    __NAME_MAP__: new ObjectMap(),
-    __TYPE_MAPS__: {},
+    __nameMap__: new ObjectMap(),
+    __typeMaps__: {},
 
 
     /**
@@ -36,11 +36,11 @@
      * @return {void}
      */
     add(ct) {
-      CONTENT_HANDLER.__NAME_MAP__.put(ct.name, ct);
-      if(CONTENT_HANDLER.__TYPE_MAPS__[ct.getContentType()] !== undefined) {
-        CONTENT_HANDLER.__TYPE_MAPS__[ct.getContentType()].put(ct.name, ct);
+      CONTENT_HANDLER.__nameMap__.put(ct.name, ct);
+      if(CONTENT_HANDLER.__typeMaps__[ct.getContentType()] !== undefined) {
+        CONTENT_HANDLER.__typeMaps__[ct.getContentType()].put(ct.name, ct);
       } else {
-        CONTENT_HANDLER.__TYPE_MAPS__[ct.getContentType()] = new ObjectMap();
+        CONTENT_HANDLER.__typeMaps__[ct.getContentType()] = new ObjectMap();
       };
     },
 
@@ -53,8 +53,8 @@
      * @return {UnlockableContent|null}
      */
     fetch: newMultiFunction(
-      function(nameCt) {return CONTENT_HANDLER.__NAME_MAP__.get(nameCt)},
-      function(nameCt, ctType) {return CONTENT_HANDLER.__TYPE_MAPS__[ctType].get(nameCt)},
+      function(nameCt) {return CONTENT_HANDLER.__nameMap__.get(nameCt)},
+      function(nameCt, ctType) {return CONTENT_HANDLER.__typeMaps__[ctType].get(nameCt)},
     ),
 
 
@@ -225,14 +225,14 @@
       let obj1 = extendBase.setupObj(temp[1], objB);
 
       if(obj.forceUseDrawer) {
-        obj1.__BACKUP_DRAW__ = obj1.draw;
+        obj1.__backupDraw__ = obj1.draw;
         obj1.draw = function() {
           this.block.delegee == null ?
             this.block.drawer.draw(this) :
             this.block.delegee.drawer.draw(this);
           this.drawTeamTop();
         };
-        obj1.__BACKUP_DRAWLIGHT__ = obj1.drawLight;
+        obj1.__backupDrawLight__ = obj1.drawLight;
         obj1.drawLight = function() {
           this.block.delegee == null ?
             this.block.drawer.drawLight(this) :

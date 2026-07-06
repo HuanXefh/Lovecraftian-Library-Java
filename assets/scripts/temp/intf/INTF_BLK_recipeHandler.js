@@ -589,7 +589,7 @@
     new CLS_interface({
 
 
-      __PARAM_OBJ_SETTER__: (() => ({
+      __paramObjSetter__: (() => ({
 
 
         /**
@@ -651,7 +651,7 @@
       .setProp({
         mergeMode: "object",
       }),
-      __PARAM_PARSER_SETTER__: (() => [
+      __paramParserSetter__: (() => [
         "rcMdl", function(val) {
           if(val == null) ERROR_HANDLER.throw("nullArgument", "rcMdl");
           let nameMod = this.rcSourceMod;
@@ -713,7 +713,7 @@
     new CLS_interface({
 
 
-      __PARAM_OBJ_SETTER__: (() => ({
+      __paramObjSetter__: (() => ({
 
 
         /* <------------------------------ internal ------------------------------ */

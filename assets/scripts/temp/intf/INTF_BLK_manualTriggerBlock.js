@@ -87,7 +87,7 @@
     new CLS_interface("INTF_BLK_manualTriggerBlock", {
 
 
-      __PARAM_OBJ_SETTER__: () => ({
+      __paramObjSetter__: () => ({
 
 
         /**
@@ -143,7 +143,7 @@
     new CLS_interface("INTF_B_manualTriggerBlock", {
 
 
-      __PARAM_OBJ_SETTER__: () => ({
+      __paramObjSetter__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

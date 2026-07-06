@@ -89,7 +89,7 @@
   module.exports = new CLS_interface("INTF_ENV_depthOverlay", {
 
 
-    __PARAM_OBJ_SETTER__: () => ({
+    __paramObjSetter__: () => ({
 
 
       /**

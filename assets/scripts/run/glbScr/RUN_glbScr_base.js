@@ -156,19 +156,19 @@
    */
   newMultiFunction = function() {
     let fun = function() {
-      return fun.__OVERLOADING_CONTAINER__[""].apply(this, arguments);
+      return fun.__overloadingContainer__[""].apply(this, arguments);
     };
-    fun.__OVERLOADING_CONTAINER__ = {};
+    fun.__overloadingContainer__ = {};
 
     let i = 0, iCap = arguments.length;
     if(arguments[0] instanceof Array && typeof arguments[1] === "function") {
       while(i < iCap) {
-        addMethod(fun.__OVERLOADING_CONTAINER__, "", arguments[i], arguments[i + 1]);
+        addMethod(fun.__overloadingContainer__, "", arguments[i], arguments[i + 1]);
         i += 2;
       };
     } else {
       while(i < iCap) {
-        addMethod(fun.__OVERLOADING_CONTAINER__, "", null, arguments[i]);
+        addMethod(fun.__overloadingContainer__, "", null, arguments[i]);
         i++;
       };
     };
@@ -471,7 +471,7 @@
     },
 
 
-    __COUNT_OBJ__: {},
+    __countObj__: {},
 
 
     /**
@@ -481,7 +481,7 @@
      */
     count: function(tag) {
       if(tag == null) tag = "default";
-      console.log("Count for " + tag + ": " + Object.mapIncre(console.__COUNT_OBJ__, tag));
+      console.log("Count for " + tag + ": " + Object.mapIncre(console.__countObj__, tag));
     },
 
 

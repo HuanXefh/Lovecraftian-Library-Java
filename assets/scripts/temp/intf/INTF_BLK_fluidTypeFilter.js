@@ -38,7 +38,7 @@
     new CLS_interface("INTF_BLK_fluidTypeFilter", {
 
 
-      __PARAM_OBJ_SETTER__: () => ({
+      __paramObjSetter__: () => ({
 
 
         /**

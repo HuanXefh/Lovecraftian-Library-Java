@@ -27,9 +27,9 @@
     if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
     if(intf.children.includes(this)) ERROR_HANDLER.throw("duplicateInterface");
 
-    if(!this.__IS_CONTENT_TEMPLATE__) {
+    if(!this.__isContentTemplate__) {
       Object._it(intf.intfObj, (name, fun) => {
-        if(name === "__PROTO__") {
+        if(name === "__proto__") {
           this.prototype[name] !== undefined && !shouldOverride ?
             ERROR_HANDLER.throw("interfaceMethodNameConflict", name) :
             this.prototype[name] = fun;

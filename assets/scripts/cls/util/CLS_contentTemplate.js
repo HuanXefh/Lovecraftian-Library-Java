@@ -26,7 +26,7 @@
   const registeredTags = [];
 
 
-  CLS_contentTemplate.__IS_CONTENT_TEMPLATE__ = true;
+  CLS_contentTemplate.__isContentTemplate__ = true;
   CLS_contentTemplate.nm = "CLS_contentTemplate";
   CLS_contentTemplate.paramObj = {
     tempParent: null,
@@ -181,9 +181,9 @@
   /**
    * Sets methods, which will be mixed with previous methods.
    * <br> Special method names:
-   * <br> "__PARAM_OBJ_SETTER__" - Result will be used in `setParam`.
-   * <br> "__PARAM_ALIAS_SETTER__" - Result will be used in `setParamAlias`.
-   * <br> "__PARAM_PARSER_SETTER__" - Result will be used in `setParamParser`.
+   * <br> "__paramObjSetter__" - Result will be used in `setParam`.
+   * <br> "__paramAliasSetter__" - Result will be used in `setParamAlias`.
+   * <br> "__paramParserSetter__" - Result will be used in `setParamParser`.
    * @param {Object<string, TemplateFunction>} nameFunObj
    * @param {boolean|unset} [isFromIntf] - Do not set this!
    * @return {this}
@@ -193,18 +193,18 @@
 
     Object._it(nameFunObj, (name, fun) => {
       // Internal methods used in interfaces
-      if(name === "__PROTO__") {
+      if(name === "__proto__") {
         throw new Error("Do not set prototype properties for content template interface!");
       };
-      if(name === "__PARAM_OBJ_SETTER__") {
+      if(name === "__paramObjSetter__") {
         thisCls.setParam(fun());
         return;
       };
-      if(name === "__PARAM_ALIAS_SETTER__") {
+      if(name === "__paramAliasSetter__") {
         thisCls.setParamAlias(fun());
         return;
       };
-      if(name === "__PARAM_PARSER_SETTER__") {
+      if(name === "__paramParserSetter__") {
         thisCls.setParamParser(fun());
         return;
       };

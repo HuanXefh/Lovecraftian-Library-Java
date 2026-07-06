@@ -475,7 +475,7 @@
      * @global
      * @return {boolean}
      */
-    __CHECK_CHEAT_STATE__ = function() {
+    __checkCheatState__ = function() {
       return Vars.player.admin || (Groups.player.size() === 1 && !Vars.net.client());
     };
 
@@ -489,11 +489,11 @@
      */
     __k = newMultiFunction(
       function() {
-        if(!__CHECK_CHEAT_STATE__()) return;
+        if(!__checkCheatState__()) return;
         if(Vars.player.unit() != null) Call.unitDestroy(Vars.player.unit().id);
       },
       function(name) {
-        if(!__CHECK_CHEAT_STATE__()) return;
+        if(!__checkCheatState__()) return;
         let unit = MDL_pos._unitPlayerByName(name);
         if(unit == null) {
           console.err("[LOVEC] No player found with name ${1}!".format(String(name).color(Pal.accent)));
@@ -512,7 +512,7 @@
      * @return {void}
      */
     __team = function(team) {
-      if(!__CHECK_CHEAT_STATE__()) return;
+      if(!__checkCheatState__()) return;
       if(typeof team === "string") {
         try {
           team = Team[team];
@@ -536,7 +536,7 @@
      * @return {void}
      */
     __itm = function(tx, ty, itm_gn, amt) {
-      if(!__CHECK_CHEAT_STATE__()) return;
+      if(!__checkCheatState__()) return;
       let b = Vars.world.build(tx, ty);
       if(b == null) {
         console.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
@@ -555,7 +555,7 @@
      * @return {void}
      */
     __inf = function() {
-      if(!__CHECK_CHEAT_STATE__()) return;
+      if(!__checkCheatState__()) return;
       let unit = Vars.player.unit();
       if(unit == null) return;
       Vars.state.rules.teams.get(unit.team).cheat = !Vars.state.rules.teams.get(unit.team).cheat;
@@ -572,7 +572,7 @@
      * @return {void}
      */
     __pinv = function() {
-      if(!__CHECK_CHEAT_STATE__()) return;
+      if(!__checkCheatState__()) return;
       let unit = Vars.player.unit();
       if(unit == null) return;
       unit.hasEffect(StatusEffects.invincible) ?
@@ -591,7 +591,7 @@
      * @return {void}
      */
     __cinv = function thisFun() {
-      if(!__CHECK_CHEAT_STATE__()) return;
+      if(!__checkCheatState__()) return;
       thisFun.isOn = !thisFun.isOn;
       Time.run(2.0, () => {
         console.log("[LOVEC] Core invincibility: " + (thisFun.isOn ? "ON" : "OFF").color(Pal.accent));

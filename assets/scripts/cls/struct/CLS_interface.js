@@ -11,7 +11,7 @@
   /**
    * Used to add properties to a class by `cls.implement(intf)`.
    * Not really interface but more like mixin, methods from the interface are not required to be explicitly implemented.
-   * `__PROTO__` in the object (as a getter function) is used to set up prototype of a class.
+   * `__proto__` in the object (as a getter function) is used to set up prototype of a class.
    * Interfaces are usually named like "INTF_xxx".
    * <br> <IMPORTANT>: It's recommended to create anonymous interfaces by `new Interface(null, {})` instead of `new Interface({})`.
    * @class
@@ -21,14 +21,14 @@
    * let INTF_test = new CLS_interface(null, {
    *   print: function() {print("ohno")},
    *   printAbstr: function() {}.setAbstr(),
-   *   __PROTO__: () => ({
+   *   __proto__: () => ({
    *     print: function() {print("ohyes")},
    *   }),
    * });
    * let CLS_test = newClass().implement(INTF_test).initClass();
    *
    * CLS_test.print();                // Prints "ohno", which is from the interface
-   * new CLS_test().print();                // Prints "ohyes", which is from `__PROTO__` of the interface
+   * new CLS_test().print();                // Prints "ohyes", which is from `__proto__` of the interface
    * CLS_test.printAbstr();                // Throws an error since the method becomes abstract method by calling `setAbstr`.
    */
   const CLS_interface = newClass().initClass();

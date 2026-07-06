@@ -43,13 +43,13 @@ A Lovec class can extend another class and implement interfaces, just like norma
 
 ```js
 // You need an object to define an interface
-// `__PROTO__` object inside is used for instance methods
+// `__proto__` object inside is used for instance methods
 const SomeInterface = new CLS_interface({
   oof() {
     print("class oof");
   },
 
-  __PROTO__: {
+  __proto__: {
     oof() {
       print("instance oof");
     },
@@ -87,4 +87,4 @@ You can call `extendClass()` only once, since only one super class is allowed fo
 
 You can get super class of a Lovec class with `getSuper()`. If the class has no super class, `Function` will be returned.
 
-You can't set properties with interfaces. The object used for `CLS_interface` must contain functions only (except `__PROTO__`), otherwise an error will be thrown.
+You can't set properties with interfaces. The object used for `CLS_interface` must contain functions only (except `__proto__`), otherwise an error will be thrown.

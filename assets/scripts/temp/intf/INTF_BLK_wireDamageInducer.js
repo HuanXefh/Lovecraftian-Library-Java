@@ -57,7 +57,7 @@
     new CLS_interface("INTF_BLK_wireDamageInducer", {
 
 
-      __PARAM_OBJ_SETTER__: () => ({
+      __paramObjSetter__: () => ({
 
 
         /**

@@ -17,10 +17,10 @@
 */
 
 
-  Function.prototype.__SUPER_CLASS__ = null;
-  Function.prototype.__IS_CLASS__ = false;
-  Function.prototype.__IS_ABSTRACT_CLASS__ = false;
-  Function.prototype.__IS_CONTENT_TEMPLATE__ = false;
+  Function.prototype.__superClass__ = null;
+  Function.prototype.__isClass__ = false;
+  Function.prototype.__isAbstractClass__ = false;
+  Function.prototype.__isContentTemplate__ = false;
 
 
   /**
@@ -29,7 +29,7 @@
    * @return {Function|null}
    */
   Function.prototype.getSuper = function() {
-    return this.__SUPER_CLASS__;
+    return this.__superClass__;
   };
 
 
@@ -43,9 +43,9 @@
     let ins = this.prototype;
 
     // Root class of all function class is `Function`
-    if(cls.getSuper() == null) cls.__SUPER_CLASS__ = Function;
+    if(cls.getSuper() == null) cls.__superClass__ = Function;
 
-    cls.__IS_CLASS__ = true;
+    cls.__isClass__ = true;
     ins.getClass = () => cls;
 
     return this;
@@ -61,7 +61,7 @@
   Function.prototype.initAbstrClass = function() {
     this.initClass();
 
-    this.__IS_ABSTRACT_CLASS__ = true;
+    this.__isAbstractClass__ = true;
     this.prototype.init = function() {
       ERROR_HANDLER.throw("abstractInstance");
     };
@@ -87,8 +87,8 @@
    * @return {this}
    */
   Function.prototype.extendClass = function(cls, name) {
-    if(typeof cls !== "function" || !cls.__IS_CLASS__) ERROR_HANDLER.throw("notClass", cls);
-    if(this.__IS_CONTENT_TEMPLATE__ && !cls.__IS_CONTENT_TEMPLATE__) ERROR_HANDLER.throw("notContentTemplate", cls);
+    if(typeof cls !== "function" || !cls.__isClass__) ERROR_HANDLER.throw("notClass", cls);
+    if(this.__isContentTemplate__ && !cls.__isContentTemplate__) ERROR_HANDLER.throw("notContentTemplate", cls);
 
     Object.assign(this, cls);
     // Clone all native objects/arrays to prevent modification of the super one
@@ -97,14 +97,14 @@
       if(val instanceof Array) this[key] = val.cpyAll();
     });
 
-    this.__SUPER_CLASS__ = cls;
+    this.__superClass__ = cls;
     // A second abstract class??? `initAbstrClass` again
-    this.__IS_ABSTRACT_CLASS__ = false;
+    this.__isAbstractClass__ = false;
 
     this.super = function(nameFun) {
       let clsParent = this.getSuper();
       if(clsParent === Function) ERROR_HANDLER.throw("noSuperClass");
-      if(clsParent.__IS_ABSTRACT_CLASS__) ERROR_HANDLER.throw("abstractSuper");
+      if(clsParent.__isAbstractClass__) ERROR_HANDLER.throw("abstractSuper");
       let funParent = clsParent[nameFun];
       if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nameFun);
 
@@ -119,7 +119,7 @@
     this.prototype.super = function(nameFun) {
       let clsParent = this.getClass().getSuper();
       if(clsParent === Function) ERROR_HANDLER.throw("noSuperClass");
-      if(clsParent.__IS_ABSTRACT_CLASS__) ERROR_HANDLER.throw("abstractSuper");
+      if(clsParent.__isAbstractClass__) ERROR_HANDLER.throw("abstractSuper");
       let funParent = clsParent.prototype[nameFun];
       if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nameFun);
 
@@ -130,7 +130,7 @@
 
     if(name != null && typeof name === "string") {
       this.nm = name;
-      if(this.__IS_CONTENT_TEMPLATE__) {
+      if(this.__isContentTemplate__) {
         if(LCTemp[name] != null) throw new Error("Template name ${1} has already been used???".format(name));
         LCTemp[name] = this;
         LCTempParentMap.put(name, LCTempParentMap.get(cls.nm).cpy().pushAll(cls.nm));
@@ -156,7 +156,7 @@
 
   /**
    * Defines iterator for a class, so that instances of this class can be used in for-of loop.
-   * `__PARENT__` in the iterator refers to the instance.
+   * `__parent__` in the iterator refers to the instance.
    * Iterator must have "next" method that returns `{value: any, done: boolean}`.
    * @param {Object} iteratorObj
    * @return {void}
@@ -166,7 +166,7 @@
 
     this.prototype[Symbol.iterator] = function() {
       let obj = Object.assign({}, iteratorObj);
-      obj.__PARENT__ = this;
+      obj.__parent__ = this;
       return obj;
     };
   };

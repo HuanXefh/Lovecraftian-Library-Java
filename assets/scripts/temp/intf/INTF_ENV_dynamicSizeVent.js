@@ -94,7 +94,7 @@
   module.exports = new CLS_interface("INTF_ENV_dynamicSizeVent", {
 
 
-    __PARAM_OBJ_SETTER__: () => ({
+    __paramObjSetter__: () => ({
 
 
       /**

@@ -37,7 +37,7 @@
   module.exports = new CLS_interface("INTF_ENTITY_unitDurabilityHandler", {
 
 
-    __PARAM_OBJ_SETTER__: () => ({
+    __paramObjSetter__: () => ({
 
 
       /* <------------------------------ internal ------------------------------ */

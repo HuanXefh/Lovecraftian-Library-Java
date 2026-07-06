@@ -20,8 +20,8 @@
   CLS_recipeGenerator.prototype.init = function(setter) {
     this.setter = tryVal(setter, Function.air);
 
-    this.__CATEG__ = null;
-    this.__TAG__ = null;
+    this.__categ__ = null;
+    this.__tag__ = null;
   };
 
 
@@ -274,7 +274,7 @@
    * @return {this}
    */
   CLS_recipeGenerator.prototype.setCateg = function(categ) {
-    this.__CATEG__ = tryVal(categ, null);
+    this.__categ__ = tryVal(categ, null);
     return this;
   };
 
@@ -285,7 +285,7 @@
    * @return {this}
    */
   CLS_recipeGenerator.prototype.setTag = function(tag) {
-    this.__TAG__ = tryVal(tag, null);
+    this.__tag__ = tryVal(tag, null);
     return this;
   };
 
@@ -299,7 +299,7 @@
    * @return {string}
    */
   CLS_recipeGenerator.prototype.getHeaderName = function(nameCt) {
-    return tryVal(this.__CATEG__, "uncategorized").toUpperCase() + ": <${1}${2}>".format(nameCt, this.__TAG__ == null ? "" : " (${1})".format(this.__TAG__));
+    return tryVal(this.__categ__, "uncategorized").toUpperCase() + ": <${1}${2}>".format(nameCt, this.__tag__ == null ? "" : " (${1})".format(this.__tag__));
   };
 
 
@@ -321,17 +321,17 @@
       lastTag = null;
 
     if(categ != null) {
-      lastCateg = this.__CATEG__;
+      lastCateg = this.__categ__;
       this.setCateg(categ);
     };
     if(tag != null) {
-      lastTag = this.__TAG__;
+      lastTag = this.__tag__;
       this.setTag(tag);
     };
 
     let rcObj = {
       icon: nameCt,
-      category: this.__CATEG__,
+      category: this.__categ__,
       isGenerated: true,
     };
     if(rcBuilderObj != null) {

@@ -51,7 +51,7 @@
     new CLS_interface("INTF_BLK_sameBlockRestrictionHandler", {
 
 
-      __PARAM_OBJ_SETTER__: () => ({
+      __paramObjSetter__: () => ({
 
 
         /**

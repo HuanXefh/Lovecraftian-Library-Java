@@ -241,7 +241,7 @@
     new CLS_interface("INTF_BLK_heatBlock", {
 
 
-      __PARAM_OBJ_SETTER__: () => ({
+      __paramObjSetter__: () => ({
 
 
         /**
@@ -367,7 +367,7 @@
     new CLS_interface("INTF_B_heatBlock", {
 
 
-      __PARAM_OBJ_SETTER__: () => ({
+      __paramObjSetter__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

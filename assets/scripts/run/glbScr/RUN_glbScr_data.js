@@ -146,8 +146,8 @@
   DB_HANDLER = {
 
 
-    __KEY_TUP_MAP__: new ObjectMap(),
-    __TMP_ARGS__: [],
+    __keyTupMap__: new ObjectMap(),
+    __tmpArgs__: [],
 
 
     /**
@@ -157,7 +157,7 @@
      * @return {Object}
      */
     getDataObj(key) {
-      let tup = DB_HANDLER.__KEY_TUP_MAP__.get(key);
+      let tup = DB_HANDLER.__keyTupMap__.get(key);
       return tup == null ?
         Object.air :
         tup[0];
@@ -171,7 +171,7 @@
      * @return {void}
      */
     addReader(key, fun) {
-      DB_HANDLER.__KEY_TUP_MAP__.put(key, [readAuxJsonData({}, key), fun]);
+      DB_HANDLER.__keyTupMap__.put(key, [readAuxJsonData({}, key), fun]);
     },
 
 
@@ -192,10 +192,10 @@
      * @return {any}
      */
     read(key) {
-      let tup = DB_HANDLER.__KEY_TUP_MAP__.get(key);
+      let tup = DB_HANDLER.__keyTupMap__.get(key);
       if(tup == null) throw new Error("Database key ${1} is not registered!".format(key));
 
-      let args = DB_HANDLER.__TMP_ARGS__.clear();
+      let args = DB_HANDLER.__tmpArgs__.clear();
       args.push(tup[0]);
       if(arguments.length > 1) {
         let i = 1, iCap = arguments.length;

@@ -217,10 +217,10 @@
   LOG_HANDLER = {
 
 
-    __INFO_MAP__: new ObjectMap(),
-    __WARN_MAP__: new ObjectMap(),
-    __ERR_MAP__: new ObjectMap(),
-    __DEBUG_MAP__: new ObjectMap(),
+    __infoMap__: new ObjectMap(),
+    __warnMap__: new ObjectMap(),
+    __errMap__: new ObjectMap(),
+    __debugMap__: new ObjectMap(),
 
 
     /**
@@ -233,16 +233,16 @@
     add(mode, name, strGetter) {
       switch(mode) {
         case 0 :
-          this.__INFO_MAP__.put(name, strGetter);
+          this.__infoMap__.put(name, strGetter);
           break;
         case 1 :
-          this.__WARN_MAP__.put(name, strGetter);
+          this.__warnMap__.put(name, strGetter);
           break;
         case 2 :
-          this.__ERR_MAP__.put(name, strGetter);
+          this.__errMap__.put(name, strGetter);
           break;
         case 3 :
-          this.__DEBUG_MAP__.put(name, strGetter);
+          this.__debugMap__.put(name, strGetter);
           break;
         default :
           throw new Error("Unknown log type: " + mode);
@@ -257,13 +257,13 @@
      */
     find(name) {
       let strGetter;
-      strGetter = this.__INFO_MAP__.get(name);
+      strGetter = this.__infoMap__.get(name);
       if(strGetter != null) return [LogModes.I, strGetter];
-      strGetter = this.__WARN_MAP__.get(name);
+      strGetter = this.__warnMap__.get(name);
       if(strGetter != null) return [LogModes.W, strGetter];
-      strGetter = this.__ERR_MAP__.get(name);
+      strGetter = this.__errMap__.get(name);
       if(strGetter != null) return [LogModes.E, strGetter];
-      strGetter = this.__DEBUG_MAP__.get(name);
+      strGetter = this.__debugMap__.get(name);
       if(strGetter != null) return [LogModes.D, strGetter];
 
       return null;
@@ -296,7 +296,7 @@
   ERROR_HANDLER = {
 
 
-    __ERR_MAP__: new ObjectMap(),
+    __errMap__: new ObjectMap(),
 
 
     /**
@@ -305,7 +305,7 @@
      * @param {string} str
      */
     add(name, str) {
-      this.__ERR_MAP__.put(name, str);
+      this.__errMap__.put(name, str);
     },
 
 
@@ -316,7 +316,7 @@
      * @return {void}
      */
     throw(name) {
-      let str = this.__ERR_MAP__.get(name);
+      let str = this.__errMap__.get(name);
       if(str == null) return;
 
       if(arguments.length === 1) {

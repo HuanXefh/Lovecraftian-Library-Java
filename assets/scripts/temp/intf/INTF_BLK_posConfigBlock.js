@@ -63,7 +63,7 @@
     new CLS_interface("INTF_B_posConfigBlock", {
 
 
-      __PARAM_OBJ_SETTER__: () => ({
+      __paramObjSetter__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

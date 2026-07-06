@@ -180,7 +180,7 @@
     new CLS_interface({
 
 
-      __PARAM_OBJ_SETTER__: (() => ({
+      __paramObjSetter__: (() => ({
 
 
         /**
@@ -307,7 +307,7 @@
     new CLS_interface({
 
 
-      __PARAM_OBJ_SETTER__: (() => ({
+      __paramObjSetter__: (() => ({
 
 
         /* <------------------------------ internal ------------------------------ */

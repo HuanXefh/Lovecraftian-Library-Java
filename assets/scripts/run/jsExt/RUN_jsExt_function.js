@@ -127,9 +127,9 @@
     let cacheMap = map != null ? map : new ObjectMap();
     let fun = function() {
       // Reset cache if state is changed
-      if(stateGetter != null && stateGetter.call(this) !== fun.__CACHED_STATE__) {
+      if(stateGetter != null && stateGetter.call(this) !== fun.__cachedState__) {
         cacheMap.clear();
-        fun.__CACHED_STATE__ = stateGetter();
+        fun.__cachedState__ = stateGetter();
       };
 
       let hash = thisDecor.calcHash.apply(this, arguments);
@@ -141,7 +141,7 @@
       return val;
     };
     fun.cloneProp(thisFun);
-    fun.__CACHED_STATE__ = -1;
+    fun.__cachedState__ = -1;
 
     return fun;
   }
@@ -193,19 +193,19 @@
     const thisFun = this;
 
     let fun = function() {
-      fun.__CALLED_COUNT__++;
-      fun.__CALLED_THIS__.push(this);
-      fun.__CALLED_ARGS__.push(Array.from(arguments));
+      fun.__calledCount__++;
+      fun.__calledThis__.push(this);
+      fun.__calledArgs__.push(Array.from(arguments));
       let returnVal = thisFun.apply(this, arguments);
-      fun.__RETURNED_VALS__.push(returnVal);
+      fun.__returnedVals__.push(returnVal);
 
       return returnVal;
     };
     fun.cloneProp(thisFun);
-    fun.__CALLED_COUNT__ = 0;
-    fun.__CALLED_THIS__ = [];
-    fun.__CALLED_ARGS__ = [];
-    fun.__RETURNED_VALS__ = [];
+    fun.__calledCount__ = 0;
+    fun.__calledThis__ = [];
+    fun.__calledArgs__ = [];
+    fun.__returnedVals__ = [];
 
     thisDecor.setMethods(fun);
 
@@ -216,52 +216,52 @@
 
 
       fun.getCallCount = function() {
-        return fun.__CALLED_COUNT__;
+        return fun.__calledCount__;
       };
 
 
       fun.getCallThis = function() {
-        return fun.__CALLED_THIS__.cpy();
+        return fun.__calledThis__.cpy();
       };
 
 
       fun.getLastThis = function() {
-        return fun.__CALLED_THIS__.cpy();
+        return fun.__calledThis__.cpy();
       };
 
 
       fun.hasCalledOn = function(obj) {
-        return fun.__CALLED_THIS__.includes(obj);
+        return fun.__calledThis__.includes(obj);
       };
 
 
       fun.getCallArgs = function() {
-        return fun.__CALLED_ARGS__.cpy();
+        return fun.__calledArgs__.cpy();
       };
 
 
       fun.getLastCallArg = function() {
-        return fun.__CALLED_ARGS__.last();
+        return fun.__calledArgs__.last();
       };
 
 
       fun.isArgCalled = function(args) {
-        return fun.__CALLED_ARGS__.some(args1 => args.equals(args1));
+        return fun.__calledArgs__.some(args1 => args.equals(args1));
       };
 
 
       fun.getReturnVals = function() {
-        return fun.__RETURNED_VALS__.cpy();
+        return fun.__returnedVals__.cpy();
       };
 
 
       fun.getLastReturnVal = function() {
-        return fun.__RETURNED_VALS__.last();
+        return fun.__returnedVals__.last();
       };
 
 
       fun.hasReturned = function(val) {
-        return fun.__RETURNED_VALS__.includes(val);
+        return fun.__returnedVals__.includes(val);
       };
 
 

@@ -107,9 +107,9 @@ CLS_enum.setIterator({
 
   next() {
     this.ind++;
-    return this.ind >= this.__PARENT__.vals.length ?
+    return this.ind >= this.__parent__.vals.length ?
       {done: true} :
-      {value: this.__PARENT__.vals[this.ind], done: false};
+      {value: this.__parent__.vals[this.ind], done: false};
   },
 
 
