@@ -9,7 +9,6 @@ uniform vec2 u_resolution;
 uniform float u_time;
 varying vec2 v_texCoords;
 
-
 const float params[4 * 3] = float[](
 	0.05, 5.0, 1.1,
 	0.35, 5.0, 1.1,
@@ -18,7 +17,9 @@ const float params[4 * 3] = float[](
 );
 
 
-float getTester(vec2 pos, float time) {
+
+
+float calcTester(vec2 pos, float time) {
 	float tester = (
 		texture2D(u_noise, pos / DSCALE + vec2(time) * vec2(-0.9, 0.8)).r
 		+ texture2D(u_noise, pos / DSCALE + vec2(time * 1.2) * vec2(0.8, -1.0)).r
@@ -29,9 +30,9 @@ float getTester(vec2 pos, float time) {
 }
 
 
-void setColor(inout vec3 colorMod, float tester) {
+void setColor(inout vec3 color, float tester) {
   for(int i = 0; i < params.length(); i += 3) {
-    if(tester > params[i] && tester < params[i + 1]) colorMod *= params[i + 2];
+    if(tester > params[i] && tester < params[i + 1]) color *= params[i + 2];
   };
 }
 
@@ -42,15 +43,15 @@ void main() {
 
   vec2 posRaw = v_texCoords.xy;
 	vec2 pos = vec2(posRaw * u_resolution) + u_campos;
-  vec4 color = texture2D(u_texture, posRaw);
+  vec4 sample = texture2D(u_texture, posRaw);
 	posRaw += (vec2(
 		texture2D(u_noise, pos / NSCALE + vec2(time2) * vec2(-0.9, 0.8)).r,
 		texture2D(u_noise, pos / NSCALE + vec2(time2 * 1.2) * vec2(0.8, -1.0)).r
 	) - vec2(0.5)) * 20.0 / u_resolution;
-	vec3 colorMod = texture2D(u_texture, posRaw).rgb * vec3(0.9, 0.9, 1.0);
+	vec3 color = texture2D(u_texture, posRaw).rgb * vec3(0.9, 0.9, 1.0);
 
-  float tester = getTester(pos, time1);
-  setColor(colorMod, tester);
+  float tester = calcTester(pos, time1);
+  setColor(color, tester);
 
-  gl_FragColor = vec4(max(colorMod.rgb, color.rgb * 0.85), min(color.a * 100.0, 1.0));
+	gl_FragColor = vec4(max(color.rgb, sample.rgb * 0.85), sample.a);
 }
