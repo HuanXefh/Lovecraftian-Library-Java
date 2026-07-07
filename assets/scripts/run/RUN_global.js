@@ -119,32 +119,8 @@
         hardness: readAuxJsonData({}, "hardness"),
         sintTemp: readAuxJsonData({}, "sintTemp"),
       },
-
-
-      stat: {},
-      statUnit: {},
-      statCategory: {},
-      shader: {},
-      cacheLayer: {},
-
-
-      keyBindListener: [],
-      dialFlow: [],
       settingTerm: [],
-
-
-      weaponTemplate: [],
-      bulletTemplate: [],
-      partTemplate: [],
-
-
-      ability: [],
-      ai: [],
-      shootPattern: [],
-      sortF: {},
-      drawer: [],
-      consumer: [],
-      dialog: [],
+      keyBindListener: [],
 
 
     },

@@ -6,8 +6,8 @@
 
 
   /**
-   * Adds global methods that are used to modify contents.
-   * Does not provide methods to create blocks, items, liquids, etc. See {@link RUN_glbScr_extend} instead.
+   * Adds global methods for modification of contents and access of extra contents.
+   * Does not provide methods to create unlockable contents like blocks, items, liquids, etc. See {@link RUN_glbScr_extend} instead.
    * `newXxx` is used to add and register new contents.
    * `fetchXxx` is used to get registered contents.
    * `setXxx` is used to modify existing contents.
@@ -19,6 +19,42 @@
   Section: Definition
   ========================================
 */
+
+
+  /* <------------------------------ auxiliary ------------------------------ */
+
+
+  /**
+   * Data container for extra contents.
+   * @global
+   */
+  __extraContentData__ = {
+
+    // Mod-specific
+    stat: {},
+    statUnit: {},
+    statCategory: {},
+
+    // Universal
+    shader: {},
+    cacheLayer: {},
+    sortF: {},
+    dialog: {},
+    dialogFlow: [],
+
+    // Template
+    weaponTemplate: [],
+    bulletTemplate: [],
+    partTemplate: [],
+
+    // Getter
+    ability: [],
+    ai: [],
+    shootPattern: [],
+    drawer: [],
+    consumer: [],
+
+  };
 
 
   /* <------------------------------ set ------------------------------ */
@@ -219,7 +255,7 @@
    * @param {number|unset} [len1]
    * @param {number|unset} [len2]
    * @param {number|unset} [len3]
-   * @return {TextureRegion[]}
+   * @return {Array<TextureRegion>|Array<Array<TextureRegion>>|Array<Array<Array<TextureRegion>>>}
    */
   fetchRegions = function(ct_gn, suffix, len1, len2, len3) {
     const regs = [];
@@ -337,200 +373,6 @@
 
 
   /**
-   * Gets a stat by name.
-   * @global
-   * @param {string} nameMod
-   * @param {string} name
-   * @return {Stat}
-   */
-  fetchStat = function(nameMod, name) {
-    let stat = global.lovecUtil.db.stat[nameMod][name];
-    if(stat == null) ERROR_HANDLER.throw("unregisteredContent", nameMod + "-" + name);
-    return stat;
-  };
-
-
-  /**
-   * Gets a stat unit by name.
-   * @global
-   * @param {string} nameMod
-   * @param {string} name
-   * @return {StatUnit}
-   */
-  fetchStatUnit = function(nameMod, name) {
-    let statUnit = global.lovecUtil.db.statUnit[nameMod][name];
-    if(statUnit == null) ERROR_HANDLER.throw("unregisteredContent", nameMod + "-" + name);
-    return statUnit;
-  };
-
-
-  /**
-   * Gets a stat category by name.
-   * @global
-   * @param {string} nameMod
-   * @param {string} name
-   * @return {StatCat}
-   */
-  fetchStatCategory = function(nameMod, name) {
-    let statCateg = global.lovecUtil.db.statCategory[nameMod][name];
-    if(statCateg == null) ERROR_HANDLER.throw("unregisteredContent", nameMod + "-" + name);
-    return statCateg;
-  };
-
-
-  /**
-   * Gets a shader by name.
-   * This can return null if it fails to compile the shader.
-   * @global
-   * @param {string} name
-   * @return {Shader|null}
-   */
-  fetchShader = function(name) {
-    let shader = global.lovecUtil.db.shader[name];
-    // Shader is nullable
-    if(shader === undefined) ERROR_HANDLER.throw("unregisteredContent", name);
-    return shader;
-  };
-
-
-  /**
-   * Gets a cache layer by name.
-   * @global
-   * @param {string} name
-   * @return {CacheLayer}
-   */
-  fetchCacheLayer = function(name) {
-    let cacheLay = global.lovecUtil.db.cacheLayer[name];
-    if(cacheLay == null) ERROR_HANDLER.throw("unregisteredContent", name);
-    return cacheLay;
-  };
-
-
-  /**
-   * Gets a weapon template by name and build it with `paramObj`.
-   * @global
-   * @param {string} name
-   * @param {Object|unset} [paramObj]
-   * @return {Weapon}
-   */
-  fetchWeapon = function(name, paramObj) {
-    let temp = global.lovecUtil.db.weaponTemplate.read(name);
-    if(temp == null) ERROR_HANDLER.throw("noTemplateFound", name);
-    return temp.build(paramObj);
-  };
-
-
-  /**
-   * Gets a bullet type template by name and build it with `paramObj`.
-   * @global
-   * @param {string} name
-   * @param {Object|unset} [paramObj]
-   * @return {BulletType}
-   */
-  fetchBullet = function(name, paramObj) {
-    let temp = global.lovecUtil.db.bulletTemplate.read(name);
-    if(temp == null) ERROR_HANDLER.throw("noTemplateFound", name);
-    return temp.build(paramObj);
-  };
-
-
-  /**
-   * Gets a part template by name and build it with `paramObj`.
-   * @global
-   * @param {string} name
-   * @param {Object|unset} [paramObj]
-   * @return {DrawPart}
-   */
-  fetchPart = function(name, paramObj) {
-    let temp = global.lovecUtil.db.partTemplate.read(name);
-    if(temp == null) ERROR_HANDLER.throw("noTemplateFound", name);
-    return temp.build(paramObj);
-  };
-
-
-  /**
-   * Gets an ability by name.
-   * @global
-   * @param {string} name
-   * @param {Object|unset} [paramObj]
-   * @return {Ability|null}
-   */
-  fetchAbility = function(name, paramObj) {
-    return global.lovecUtil.db.ability.read(name, Function.airNull)(paramObj);
-  };
-
-
-  /**
-   * Gets an AI controller by name.
-   * @global
-   * @param {string} name
-   * @param {Object|unset} [paramObj]
-   * @return {AIController|null}
-   */
-  fetchAi = function(name, paramObj) {
-    return global.lovecUtil.db.ai.read(name, Function.airNull)(paramObj);
-  };
-
-
-  /**
-   * Gets a shoot pattern by name.
-   * @global
-   * @param {string} name
-   * @param {Object|unset} [paramObj]
-   * @return {ShootPattern|null}
-   */
-  fetchShootPattern = function(name, paramObj) {
-    return global.lovecUtil.db.shootPattern.read(name, Function.airNull)(paramObj);
-  };
-
-
-  /**
-   * Gets a drawer by name.
-   * @global
-   * @param {string} name
-   * @param {Object|unset} [paramObj]
-   * @return {DrawBlock|null}
-   */
-  fetchDrawer = function(name, paramObj) {
-    return global.lovecUtil.db.drawer.read(name, Function.airNull)(paramObj);
-  };
-
-
-  /**
-   * Gets a consumer by name.
-   * @global
-   * @param {string} name
-   * @param {Object|unset} [paramObj]
-   * @return {Consume|null}
-   */
-  fetchConsumer = function(name, paramObj) {
-    return global.lovecUtil.db.consumer.read(name, Function.airNull)(paramObj);
-  };
-
-
-  /**
-   * Gets a dialog by name.
-   * @global
-   * @param {string} name
-   * @return {Dialog}
-   */
-  fetchDialog = function(name) {
-    return global.lovecUtil.db.dialog.read(name, global.lovecUtil.db.dialog.read("def"));
-  };
-
-
-  /**
-   * Gets a dialog flow by name (as data array).
-   * @global
-   * @param {string} name
-   * @return {Array}
-   */
-  fetchDialogFlow = function(name) {
-    return global.lovecUtil.db.dialFlow.read(name, Array.air);
-  };
-
-
-  /**
    * Gets a setting value by name.
    * The setting must be registered through {@link CLS_settingTerm}.
    * @global
@@ -544,6 +386,230 @@
 
     return setting.get(useScl);
   };
+
+
+  /**
+   * Internal method to create a `fetchXxx` method.
+   * @global
+   * @param {Array|Object} cont
+   * @param {number} mode
+   * @param {boolean|unset} [isNullable] - True by default for mode 3.
+   * @param {any} [def]
+   * @return {Function}
+   */
+  __createFetchXxx__ = function(cont, mode, isNullable, def) {
+    if(def instanceof Prov) def = def.get();
+
+    switch(mode) {
+
+      // Mod-specific content
+      case 0 :
+        return function(nameMod, name) {
+          let ct = cont[nameMod] instanceof Array ?
+            cont[nameMod].read(name) :
+            cont[nameMod][name];
+          if(ct == null && def !== undefined) ct = def;
+          if(isNullable ? ct === undefined : ct == null) ERROR_HANDLER.throw("unregisteredContent", nameMod + "-" + name);
+          return ct;
+        };
+
+      // Universal content
+      case 1 :
+        return function(name) {
+          let ct = cont instanceof Array ?
+            cont.read(name) :
+            cont[name];
+          if(ct == null && def !== undefined) ct = def;
+          if(isNullable ? ct === undefined : ct == null) ERROR_HANDLER.throw("unregisteredContent", name);
+          return ct;
+        };
+
+      // Template-built content
+      case 2 :
+        return function(name, paramObj) {
+          let temp = cont.read(name);
+          if(temp == null && def !== undefined) temp = def;
+          if(isNullable ? temp === undefined : temp == null) ERROR_HANDLER.throw("noTemplateFound", name);
+          return temp.build(paramObj);
+        };
+
+      // Getter-based content
+      case 3 :
+        if(isNullable == null) isNullable = true;
+        return function(name, paramObj) {
+          let getter = cont.read(name);
+          if(getter == null) {
+            getter = def === undefined ?
+              Function.airNull :
+              def;
+          };
+          let ct = getter(paramObj);
+          if(ct == null && !isNullable) ERROR_HANDLER.throw("unregisteredContent", name);
+          return ct;
+        };
+
+      default :
+        throw new Error("Unknown content mode: " + mode);
+
+    };
+  };
+
+
+  /**
+   * Gets a stat by name.
+   * @global
+   * @param {string} nameMod
+   * @param {string} name
+   * @return {Stat}
+   */
+  fetchStat = __createFetchXxx__(__extraContentData__.stat, 0);
+
+
+  /**
+   * Gets a stat unit by name.
+   * @global
+   * @param {string} nameMod
+   * @param {string} name
+   * @return {StatUnit}
+   */
+  fetchStatUnit = __createFetchXxx__(__extraContentData__.statUnit, 0);
+
+
+  /**
+   * Gets a stat category by name.
+   * @global
+   * @param {string} nameMod
+   * @param {string} name
+   * @return {StatCat}
+   */
+  fetchStatCategory = __createFetchXxx__(__extraContentData__.statCategory, 0);
+
+
+  /**
+   * Gets a shader by name.
+   * This can return null if it fails to compile the shader.
+   * @global
+   * @param {string} name
+   * @return {Shader|null}
+   */
+  fetchShader = __createFetchXxx__(__extraContentData__.shader, 1, true);
+
+
+  /**
+   * Gets a cache layer by name.
+   * @global
+   * @param {string} name
+   * @return {CacheLayer}
+   */
+  fetchCacheLayer = __createFetchXxx__(__extraContentData__.cacheLayer, 1);
+
+
+  /**
+   * Gets a weapon template by name and build it with `paramObj`.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {Weapon}
+   */
+  fetchWeapon = __createFetchXxx__(__extraContentData__.weaponTemplate, 2);
+
+
+  /**
+   * Gets a bullet type template by name and build it with `paramObj`.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {BulletType}
+   */
+  fetchBullet = __createFetchXxx__(__extraContentData__.bulletTemplate, 2);
+
+
+  /**
+   * Gets a part template by name and build it with `paramObj`.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {DrawPart}
+   */
+  fetchPart = __createFetchXxx__(__extraContentData__.partTemplate, 2);
+
+
+  /**
+   * Gets an ability by name.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {Ability|null}
+   */
+  fetchAbility = __createFetchXxx__(__extraContentData__.ability, 3);
+
+
+  /**
+   * Gets an AI controller by name.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {AIController|null}
+   */
+  fetchAi = __createFetchXxx__(__extraContentData__.ai, 3);
+
+
+  /**
+   * Gets a shoot pattern by name.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {ShootPattern|null}
+   */
+  fetchShootPattern = __createFetchXxx__(__extraContentData__.shootPattern, 3);
+
+
+  /**
+   * Gets a sorting function by name.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {Sortf}
+   */
+  fetchSortF = __createFetchXxx__(__extraContentData__.sortF, 1);
+
+
+  /**
+   * Gets a drawer by name.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {DrawBlock|null}
+   */
+  fetchDrawer = __createFetchXxx__(__extraContentData__.drawer, 3);
+
+
+  /**
+   * Gets a consumer by name.
+   * @global
+   * @param {string} name
+   * @param {Object|unset} [paramObj]
+   * @return {Consume|null}
+   */
+  fetchConsumer = __createFetchXxx__(__extraContentData__.consumer, 3);
+
+
+  /**
+   * Gets a dialog by name.
+   * @global
+   * @param {string} name
+   * @return {Dialog}
+   */
+  fetchDialog = __createFetchXxx__(__extraContentData__.dialog, 1, null, prov(() => __extraContentData__.dialog.def));
+
+
+  /**
+   * Gets a dialog flow by name (as data array).
+   * @global
+   * @param {string} name
+   * @return {Array}
+   */
+  fetchDialogFlow = __createFetchXxx__(__extraContentData__.dialogFlow, 1, null, Array.air);
 
 
   /* <------------------------------ register ------------------------------ */
@@ -563,6 +629,96 @@
 
 
   /**
+   * Registers a key binding.
+   * @global
+   * @param {string} name
+   * @param {KeyCode|unset} keyCodeDef
+   * @param {string} categ
+   * @param {function(Unit, Tile|null): void} scr - <ARGS>: unitPlayer, tMouse.
+   * @return {void}
+   */
+  newKeyBind = function(name, keyCodeDef, categ, scr) {
+    Events.run(ClientLoadEvent, () => {
+      Core.app.post(() => {
+        UTIL_keyBind.add(name, keyCodeDef, categ);
+        let keyBind = UTIL_keyBind.get(name);
+        if(global.lovecUtil.db.keyBindListener.includes(keyBind)) return;
+        global.lovecUtil.db.keyBindListener.push(keyBind, scr);
+      });
+    });
+  };
+
+
+  /**
+   * Internal method to create a `newXxx` method.
+   * @global
+   * @param {Array|Object} cont
+   * @param {number} mode
+   * @param {Function|unset} [getter] - Not used for mode 2.
+   * @param {number|unset} [phaseMode] - Determines when content is registered.
+   * @param {boolean|unset} [useFormatArray] - Useless for mode 2.
+   * @return {Function}
+   */
+  __createNewXxx__ = function thisFun(cont, mode, getter, phaseMode, useFormatArray) {
+    if(phaseMode == null) phaseMode = 0;
+
+    switch(mode) {
+
+      // Mod-specific content
+      case 0 :
+        return thisFun.wrapPhase(phaseMode, function(nameMod, name) {
+          if(cont[nameMod] === undefined) cont[nameMod] = {};
+          useFormatArray ?
+            cont[nameMod].push(name, getter.apply(this, arguments)) :
+            cont[nameMod][name] = getter.apply(this, arguments);
+        });
+
+      // Universal content
+      case 1 :
+        return thisFun.wrapPhase(phaseMode, function(name) {
+          useFormatArray ?
+            cont.push(name, getter.apply(this, arguments)) :
+            cont[name] = getter.apply(this, arguments);
+        });
+
+      // Getter
+      case 2 :
+        return thisFun.wrapPhase(phaseMode, function(name, argGetter) {
+          if(cont.includes(name)) return;
+          cont.push(name, argGetter);
+        });
+
+      default :
+        throw new Error("Unknown content mode: " + mode);
+
+    };
+  };
+  __createNewXxx__.wrapPhase = function(phaseMode, fun) {
+    return phaseMode === 0 ?
+      fun :
+      phaseMode === 1 ?
+        function() {
+          Events.on(ContentInitEvent, () => {
+            fun.apply(this, arguments);
+          });
+        } :
+        phaseMode === 2 ?
+          function() {
+            Events.run(ClientLoadEvent, () => {
+              fun.apply(this, arguments);
+            });
+          } :
+          function() {
+            Events.run(ClientLoadEvent, () => {
+              Core.app.post(() => {
+                fun.apply(this, arguments);
+              });
+            });
+          };
+  };
+
+
+  /**
    * Registers a new stat.
    * @global
    * @param {string} nameMod
@@ -570,10 +726,9 @@
    * @param {StatCat|unset} [statCateg]
    * @return {void}
    */
-  newStat = function(nameMod, name, statCateg) {
-    if(global.lovecUtil.db.stat[nameMod] === undefined) global.lovecUtil.db.stat[nameMod] = {};
-    global.lovecUtil.db.stat[nameMod][name] = new Stat(nameMod + "-stat-" + name, tryVal(statCateg, StatCat.function));
-  };
+  newStat = __createNewXxx__(__extraContentData__.stat, 0, function(nameMod, name, statCateg) {
+    return new Stat(nameMod + "-stat-" + name, tryVal(statCateg, StatCat.function));
+  });
 
 
   /**
@@ -584,12 +739,11 @@
    * @param {any} param
    * @return {void}
    */
-  newStatUnit = function(nameMod, name, param) {
-    if(global.lovecUtil.db.statUnit[nameMod] === undefined) global.lovecUtil.db.statUnit[nameMod] = {};
-    global.lovecUtil.db.statUnit[nameMod][name] = param == null ?
+  newStatUnit = __createNewXxx__(__extraContentData__.statUnit, 0, function(nameMod, name, param) {
+    return param == null ?
       new StatUnit(nameMod + "-stat0unit-" + name) :
       new StatUnit(nameMod + "-stat0unit-" + name, param);
-  };
+  });
 
 
   /**
@@ -599,14 +753,14 @@
    * @param {string} name
    * @return {void}
    */
-  newStatCategory = function(nameMod, name) {
-    if(global.lovecUtil.db.statCategory[nameMod] === undefined) global.lovecUtil.db.statCategory[nameMod] = {};
-    global.lovecUtil.db.statCategory[nameMod][name] = extend(StatCat, nameMod + "-" + name, {
+  newStatCategory = __createNewXxx__(__extraContentData__.statCategory, 0, function(nameMod, name) {
+    return extend(StatCat, nameMod + "-" + name, {
       compareTo(statCateg) {
+        // `StatCat.function` should appear last
         return statCateg === StatCat.function ? -1 : this.super$compareTo(statCateg);
       },
     });
-  };
+  });
 
 
   (function() {
@@ -627,7 +781,7 @@
      * @param {function(): Shader} shaderGetter
      * @return {void}
      */
-    newShader = function(name, shaderGetter) {
+    newShader = __createNewXxx__(__extraContentData__.shader, 1, function(name, shaderGetter) {
       let shader;
       try {
         throwDebugError();
@@ -636,42 +790,40 @@
         shader = null;
         warnShaderLoadFail(name, err);
       };
-
-      global.lovecUtil.db.shader[name] = shader;
-    };
+      return shader;
+    });
 
 
     /**
      * Registers a surface shader.
      * @global
-     * @param {string} nameFrag
+     * @param {string} name
      * @return {void}
      */
-    newSurfaceShader = function(nameFrag) {
+    newSurfaceShader = __createNewXxx__(__extraContentData__.shader, 1, function(name) {
       let shader;
       try {
         throwDebugError();
-        shader = new Shaders.SurfaceShader(nameFrag);
+        shader = new Shaders.SurfaceShader(name);
       } catch(err) {
         shader = null;
-        warnShaderLoadFail(nameFrag, err);
+        warnShaderLoadFail(name, err);
       };
-
-      global.lovecUtil.db.shader[nameFrag] = shader;
-    };
+      return shader;
+    });
 
 
     /**
      * Registers a texture region shader.
      * @global
-     * @param {string} nameFrag
+     * @param {string} name
      * @return {void}
      */
-    newRegionShader = function(nameFrag) {
+    newRegionShader = __createNewXxx__(__extraContentData__.shader, 1, function(name) {
       let shader;
       try {
         throwDebugError();
-        shader = extend(Shaders.LoadShader, nameFrag, "default", {
+        shader = extend(Shaders.LoadShader, name, "default", {
 
 
           region: new TextureRegion(),
@@ -701,11 +853,10 @@
         });
       } catch(err) {
         shader = null;
-        warnShaderLoadFail(nameFrag, err);
+        warnShaderLoadFail(name, err);
       };
-
-      global.lovecUtil.db.shader[nameFrag] = shader;
-    };
+      return shader;
+    });
 
 
   })();
@@ -719,11 +870,11 @@
    * @param {CacheLayer|unset} [cacheLayFallback]
    * @return {void}
    */
-  newCacheLayer = function(name, shader, cacheLayFallback) {
+  newCacheLayer = __createNewXxx__(__extraContentData__.cacheLayer, 1, function(name, shader, cacheLayFallback) {
     let cacheLay = shader == null ? tryVal(cacheLayFallback, CacheLayer.normal) : new CacheLayer.ShaderLayer(shader);
     CacheLayer.add(cacheLay);
-    global.lovecUtil.db.cacheLayer[name] = cacheLay;
-  };
+    return cacheLay;
+  });
 
 
   /**
@@ -733,10 +884,7 @@
    * @param {function(): Function} tempGetter
    * @return {void}
    */
-  newWeaponTemplate = function(name, tempGetter) {
-    if(global.lovecUtil.db.weaponTemplate.includes(name)) return;
-    global.lovecUtil.db.weaponTemplate.push(name, tempGetter());
-  };
+  newWeaponTemplate = __createNewXxx__(__extraContentData__.weaponTemplate, 2);
 
 
   /**
@@ -746,10 +894,7 @@
    * @param {function(): Function} tempGetter
    * @return {void}
    */
-  newBulletTemplate = function(name, tempGetter) {
-    if(global.lovecUtil.db.bulletTemplate.includes(name)) return;
-    global.lovecUtil.db.bulletTemplate.push(name, tempGetter());
-  };
+  newBulletTemplate = __createNewXxx__(__extraContentData__.bulletTemplate, 2);
 
 
   /**
@@ -759,10 +904,7 @@
    * @param {function(): Function} tempGetter
    * @return {void}
    */
-  newPartTemplate = function(name, tempGetter) {
-    if(global.lovecUtil.db.partTemplate.includes(name)) return;
-    global.lovecUtil.db.partTemplate.push(name, tempGetter());
-  };
+  newPartTemplate = __createNewXxx__(__extraContentData__.partTemplate, 2);
 
 
   /**
@@ -772,12 +914,7 @@
    * @param {function(Object|unset): Ability} getter
    * @return {void}
    */
-  newAbility = function(name, getter) {
-    Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.ability.includes(name)) return;
-      global.lovecUtil.db.ability.push(name, getter);
-    });
-  };
+  newAbility = __createNewXxx__(__extraContentData__.ability, 2, null, 1);
 
 
   /**
@@ -787,12 +924,7 @@
    * @param {function(Object|unset): AIController} getter
    * @return {void}
    */
-  newAi = function(name, getter) {
-    Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.ai.includes(name)) return;
-      global.lovecUtil.db.ai.push(name, getter);
-    });
-  };
+  newAi = __createNewXxx__(__extraContentData__.ai, 2, null, 1);
 
 
   /**
@@ -802,12 +934,7 @@
    * @param {function(Object|unset): ShootPattern} getter
    * @return {void}
    */
-  newShootPattern = function(name, getter) {
-    Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.shootPattern.includes(name)) return;
-      global.lovecUtil.db.shootPattern.push(name, getter);
-    });
-  };
+  newShootPattern = __createNewXxx__(__extraContentData__.shootPattern, 2, null, 1);
 
 
   /**
@@ -817,11 +944,11 @@
    * @param {function(Unit, number, number): number} costGetter
    * @return {void}
    */
-  newSortF = function(name, costGetter) {
-    global.lovecUtil.db.sortF[name] = extend(Units.Sortf, {cost(unit, x, y) {
+  newSortF = __createNewXxx__(__extraContentData__.sortF, 1, function(name, costGetter) {
+    return extend(Units.Sortf, {cost(unit, x, y) {
       return costGetter(unit, x, y);
     }});
-  };
+  });
 
 
   /**
@@ -844,12 +971,12 @@
    * @param {string} name
    * @return {void}
    */
-  newMixSortF = function(name) {
+  newMixSortF = __createNewXxx__(__extraContentData__.sortF, 1, function(name) {
     let sortFs = Array.from(arguments).splice(1);
-    global.lovecUtil.db.sortF[name] = extend(Units.Sortf, {cost(unit, x, y) {
+    return extend(Units.Sortf, {cost(unit, x, y) {
       return sortFs.sum(sortF => sortF.cost(unit, x, y));
     }});
-  };
+  });
 
 
   /**
@@ -859,12 +986,7 @@
    * @param {function(Object|unset): DrawBlock} getter
    * @return {void}
    */
-  newDrawer = function(name, getter) {
-    Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.drawer.includes(name)) return;
-      global.lovecUtil.db.drawer.push(name, getter);
-    });
-  };
+  newDrawer = __createNewXxx__(__extraContentData__.drawer, 2, null, 1);
 
 
   /**
@@ -874,12 +996,7 @@
    * @param {function(Object|unset): Consume} getter
    * @return {void}
    */
-  newConsumer = function(name, getter) {
-    Events.on(ContentInitEvent, () => {
-      if(global.lovecUtil.db.consumer.includes(name)) return;
-      global.lovecUtil.db.consumer.push(name, getter);
-    });
-  };
+  newConsumer = __createNewXxx__(__extraContentData__.consumer, 2, null, 1);
 
 
   /**
@@ -889,33 +1006,9 @@
    * @param {function(): Dialog} getter
    * @return {void}
    */
-  newDialog = function(name, getter) {
-    Events.run(ClientLoadEvent, () => {
-      if(global.lovecUtil.db.dialog.includes(name)) return;
-      global.lovecUtil.db.dialog.push(name, getter());
-    });
-  };
-
-
-  /**
-   * Registers a key binding.
-   * @global
-   * @param {string} name
-   * @param {KeyCode|unset} keyCodeDef
-   * @param {string} categ
-   * @param {function(Unit, Tile|null): void} scr - <ARGS>: unitPlayer, tMouse.
-   * @return {void}
-   */
-  newKeyBind = function(name, keyCodeDef, categ, scr) {
-    Events.run(ClientLoadEvent, () => {
-      Core.app.post(() => {
-        UTIL_keyBind.add(name, keyCodeDef, categ);
-        let keyBind = UTIL_keyBind.get(name);
-        if(global.lovecUtil.db.keyBindListener.includes(keyBind)) return;
-        global.lovecUtil.db.keyBindListener.push(keyBind, scr);
-      });
-    });
-  };
+  newDialog = __createNewXxx__(__extraContentData__.dialog, 1, function(name, getter) {
+    return getter();
+  }, 1);
 
 
   /**
@@ -925,9 +1018,6 @@
    * @param {Array} dialFlowArr - See {@link CLS_dialogFlowBuilder}.
    * @return {void}
    */
-  newDialogFlow = function(name, dialFlowArr) {
-    Events.run(ContentInitEvent, () => {
-      if(global.lovecUtil.db.dialFlow.includes(name)) return;
-      global.lovecUtil.db.dialFlow.push(name, dialFlowArr);
-    });
-  };
+  newDialogFlow = __createNewXxx__(__extraContentData__.dialogFlow, 1, function(name, dialFlowArr) {
+    return dialFlowArr;
+  }, 1, true);

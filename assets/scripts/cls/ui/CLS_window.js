@@ -59,6 +59,12 @@
         downFontColor: Pal.accent,
         overFontColor: Color.white,
       }),
+      help: extend(TextButton.TextButtonStyle, {
+        font: Fonts.outline,
+        fontColor: Pal.techBlue,
+        downFontColor: Pal.techBlue,
+        overFontColor: Color.white,
+      }),
     });
   });
 
@@ -236,6 +242,9 @@
           // Minimize & restore
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
           tb2.button(this.isHidden ? "L" : "S", btnStyles[this.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._term("lovec", this.isHidden ? "win-restore" : "win-minimize"), true);
+          // Help
+          tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
+          tb2.button("?", btnStyles.help, () => {}).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._info("lovec", "tt-win-help"), true);
           // Text
           tb2.table(Styles.none, tb3 => {}).width(16.0);
           tb2.table(Styles.none, tb3 => tb3.add(this.title));
