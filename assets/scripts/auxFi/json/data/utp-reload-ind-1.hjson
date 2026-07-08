@@ -1,8 +1,12 @@
-new-horizon-macrophage: [3]
+/* <---------- Aquarion ----------> */
 
 aquarion-reave: [1]
 
+/* <---------- Asthosus ----------> */
+
 asthosus-16p-05-expound: [4]
+
+/* <---------- Exogenesis (old) ----------> */
 
 exogenesis-T-atlas: [0]
 exogenesis-apotheosis: [10]
@@ -11,6 +15,12 @@ exogenesis-battle: [5]
 exogenesis-collapse: [0]
 exogenesis-magnapinna: [2, 3]
 exogenesis-xenoct: [6, 7]
+
+/* <---------- New Horizon ----------> */
+
+new-horizon-macrophage: [3]
+
+/* <---------- Sapphirium ----------> */
 
 sapphirium-snowstorm: [2]
 sapphirium-shriek: [0]

@@ -11,10 +11,14 @@ titan: true
 afflict: true
 scathe: true
 
+/* <---------- Aquarion ----------> */
+
 aquarion-truncate: true
 aquarion-vector: true
 aquarion-thrash: true
 aquarion-flagellate: true
+
+/* <---------- New Horizon ----------> */
 
 new-horizon-hive: true
 new-horizon-ancient-artillery: true
@@ -31,6 +35,8 @@ new-horizon-pulse: true
 new-horizon-bombard: true
 new-horizon-electro: true
 
+/* <---------- Saturation Firepower ----------> */
+
 sfire-mod-gaosi: true
 sfire-mod-liebao: true
 sfire-mod-longjuan: true
@@ -46,6 +52,8 @@ sfire-mod-zhulin: true
 sfire-mod-luolong: true
 sfire-mod-defense-platform-nuke: true
 sfire-mod-defense-platform-plasma: true
+
+/* <---------- Vanilla Expansion ----------> */
 
 ve-burst: true
 ve-halberd: true

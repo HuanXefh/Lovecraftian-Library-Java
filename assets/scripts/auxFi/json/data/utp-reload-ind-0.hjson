@@ -7,6 +7,8 @@ anthicus: [0, 1]
 collaris: [0, 1]
 obviate: [0]
 
+/* <---------- Aquarion ----------> */
+
 aquarion-cyprin: [0, 1]
 aquarion-bulwark: [0]
 aquarion-weld: [0]
@@ -23,6 +25,8 @@ aquarion-verglas: [0]
 aquarion-endure: [0, 1]
 aquarion-gerb-concussor: [0]
 
+/* <---------- Asthosus ----------> */
+
 asthosus-14n-01-shiv: [2]
 asthosus-14n-04-apex: [0, 1]
 asthosus-14n-05-crest: [2]
@@ -37,6 +41,8 @@ asthosus-16p-05-expound: [2, 3]
 asthosus-17q-06-clitelle: [0]
 asthosus-barite-elder: [0]
 asthosus-barite-stalker: [0]
+
+/* <---------- Exogenesis (old) ----------> */
 
 exogenesis-T-atlas: [1, 2]
 exogenesis-T-nemesis: [0, 1]
@@ -61,6 +67,8 @@ exogenesis-toxicity: [0]
 exogenesis-war: [0]
 exogenesis-xenoct: [4, 5]
 
+/* <---------- New Horizon ----------> */
+
 new-horizon-longinus: [0]
 new-horizon-hurricane: [7]
 new-horizon-saviour: [0]
@@ -70,6 +78,8 @@ new-horizon-restriction-enzyme: [0]
 new-horizon-macrophage: [0]
 new-horizon-laugra: [4]
 new-horizon-pester: [6]
+
+/* <---------- Sapphirium ----------> */
 
 sapphirium-snowstorm: [0, 1]
 sapphirium-cold-blood: [2]
@@ -90,6 +100,8 @@ sapphirium-ooze: [0, 1]
 sapphirium-gaze: [5, 6]
 sapphirium-epitaph: [0]
 sapphirium-fatum: [1]
+
+/* <---------- Saturation Firepower ----------> */
 
 sfire-mod-knocker: [0]
 sfire-mod-partiality-B: [0]
@@ -114,6 +126,8 @@ sfire-mod-thunder: [1]
 sfire-mod-banisher: [4]
 sfire-mod-hammer: [0]
 sfire-mod-UTV-Artillery: [0]
+
+/* <---------- Vanilla Expansion ----------> */
 
 ve-conscript: [0]
 ve-capture: [0, 1]

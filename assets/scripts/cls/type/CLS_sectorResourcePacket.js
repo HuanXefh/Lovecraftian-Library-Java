@@ -7,7 +7,7 @@
 
   /**
    * A packet of items sent to other sectors.
-   * @todo Unfinished: read & write in LSAV; dialog to show all packets in progress; pacekt accept effect at `b`.
+   * @todo Unfinished: read & write in PLSAV; dialog to show all packets in progress; pacekt accept effect at `b`.
    * @class
    * @param {string|unset} nameFrom
    * @param {string|unset} nameTo
