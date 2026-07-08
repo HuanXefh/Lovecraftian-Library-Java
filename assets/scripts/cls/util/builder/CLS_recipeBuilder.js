@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Used to build a recipe object.
    * Only contains fields related to I/O.

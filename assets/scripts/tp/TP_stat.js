@@ -90,6 +90,7 @@
   newStat("lovec", "blk0fac-fuel", fetchStatCategory("lovec", "heat"));
   newStat("lovec", "blk0fac-fuelconsmtp", fetchStatCategory("lovec", "heat"));
   newStat("lovec", "blk0fac-fuellvlmtp", fetchStatCategory("lovec", "heat"));
+  newStat("lovec", "blk0heat-heatprod", fetchStatCategory("lovec", "heat"));
   newStat("lovec", "blk0heat-tempreq", fetchStatCategory("lovec", "heat"));
   newStat("lovec", "blk0heat-heatres", fetchStatCategory("lovec", "heat"));
 

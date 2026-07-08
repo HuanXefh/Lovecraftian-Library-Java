@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Stores a list of info dialogs, which can be shown through a button in {@link CLS_dragButton}.
    * @class

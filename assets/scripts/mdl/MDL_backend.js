@@ -18,7 +18,7 @@
 */
 
 
-  /* <---------- base ----------> */
+  /* <------------------------------ base ------------------------------ */
 
 
   const SHOULD_USE_SDL3 = typeof SDLVideo.SDL_SetWindowTitle === "function";
@@ -42,7 +42,7 @@
   exports.accClipboard = accClipboard;
 
 
-  /* <---------- window ----------> */
+  /* <------------------------------ window ------------------------------ */
 
 
   /**

@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * 2D-Perlin noise.
    * Recommended ratio of `w` to `gridW` is 5:1.

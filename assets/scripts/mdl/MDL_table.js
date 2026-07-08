@@ -18,7 +18,7 @@
 */
 
 
-  /* <---------- base ----------> */
+  /* <------------------------------ base ------------------------------ */
 
 
   /**
@@ -550,7 +550,7 @@
   exports.__rcCt = __rcCt;
 
 
-  /* <---------- text ----------> */
+  /* <------------------------------ text ------------------------------ */
 
 
   /**
@@ -575,7 +575,7 @@
   exports._d_note = _d_note;
 
 
-  /* <---------- table ----------> */
+  /* <------------------------------ list ------------------------------ */
 
 
   /**
@@ -652,9 +652,6 @@
     return contCell;
   };
   exports._l_table = _l_table;
-
-
-  /* <---------- content ----------> */
 
 
   /**
@@ -759,6 +756,9 @@
     return contCell;
   };
   exports._l_ctLi = _l_ctLi;
+
+
+  /* <------------------------------ selector ------------------------------ */
 
 
   /**
@@ -935,7 +935,113 @@
   exports._s_ctMulti = _s_ctMulti;
 
 
-  /* <---------- misc stat ----------> */
+  /**
+   * Sets recipe selector for {@link BLK_recipeFactory}.
+   * @param {Table} tb
+   * @param {Building} b
+   * @param {function(): string} headerGetter
+   * @param {function(string): void} cfgCaller
+   * @param {Array<function(Table): void>|unset} [extraBtnSetters]
+   * @param {boolean|unset} [useAutoSelection]
+   * @param {boolean|unset} [closeSelect]
+   * @param {number|unset} [colAmt]
+   * @return {void}
+   */
+  const _s_rc = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, useAutoSelection, closeSelect, colAmt) {
+    if(closeSelect == null) closeSelect = true;
+    if(colAmt == null) colAmt = 4;
+
+    let
+      rcMdl = b.block.delegee.rcMdl,
+      categHeaderObj = MDL_recipe._categHeaderObj(rcMdl),
+      btnGrp = (function(btnGrp) {btnGrp.setMinCheckCount(0); btnGrp.setMaxCheckCount(1); return btnGrp})(new ButtonGroup());
+
+    // Buttons
+    if(extraBtnSetters == null) extraBtnSetters = [];
+    if(useAutoSelection) {
+      extraBtnSetters.unshift(
+        tb => tb.button("A", () => {useAutoSelection = false}).tooltip(MDL_bundle._info("lovec", "tt-disable-auto-selection"), true),
+      );
+    };
+    extraBtnSetters.unshift(
+      tb => tb.button("?", () => Vars.ui.content.show(b.block)).tooltip(fetchStat("lovec", "spec-info").localized(), true),
+    );
+    tb.table(Styles.none, tb1 => {
+      tb1.left().clicked(() => rebuildCont());
+      extraBtnSetters.forEachFast(setter => {
+        setter(tb1).left().size(42.0);
+      });
+    })
+    .left()
+    .row();
+
+    const cont = new Table().background(Styles.black3).left();
+    cont.margin(4.0);
+    const contCell = tb.top().add(cont).left().growX();
+    // Method and field sharing the same name, great
+    Reflect.set(Cell, contCell, "minWidth", (200.0).toF());
+
+    let categAmt = 0, uncategorizedOnly = false;
+
+    const rebuildCont = () => {
+      btnGrp.clear();
+      cont.clearChildren();
+
+      if(useAutoSelection) {
+        cont.table(Styles.none, tb1 => {
+          tb1.add(MDL_bundle._info("lovec", "recipe-auto-selection")).color(Pal.remove).row();
+          tb1.add("").row();
+        })
+        .left()
+        .row();
+      };
+
+      categAmt = 0;
+      for(let categ in categHeaderObj) {
+        categAmt++;
+      };
+      uncategorizedOnly = categAmt === 1 && categHeaderObj.uncategorized != null;
+
+      for(let categ in categHeaderObj) {
+        if(!uncategorizedOnly) {
+          cont.add(MDL_recipe._categB(categ)).left().pad(4.0).color(!useAutoSelection ? Color.white : Color.gray).row();
+        };
+
+        let j = 0;
+        let chunk = new Table();
+        categHeaderObj[categ].forEachFast(rcHeader => {
+          let icon = MDL_recipe._icon(rcMdl, rcHeader);
+          let validCheck = MDL_recipe._finalValidCheck(rcMdl, rcHeader);
+          let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validCheck(b), uncategorizedOnly);
+
+          let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {if(closeSelect) Vars.control.input.config.hideConfig()}).margin(3.0).tooltip(ttStr, true).group(btnGrp).get();
+          btn.changed(() => cfgCaller(rcHeader));
+          btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
+          btn.getStyle().imageDisabledColor = Color.gray;
+          btn.update(() => {
+            btn.setDisabled(useAutoSelection);
+            btn.setChecked(headerGetter() == rcHeader);
+            if(TIMER.secHalf) {
+              btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
+            };
+          });
+
+          j++;
+          if((j - 1) % colAmt === colAmt - 1) {
+            chunk.row();
+            j = 0;
+          };
+        });
+
+        cont.add(chunk).left().row();
+      };
+    };
+    rebuildCont();
+  };
+  exports._s_rc = _s_rc;
+
+
+  /* <------------------------------ database stat ------------------------------ */
 
 
   /**
@@ -1062,9 +1168,6 @@
     });
   };
   exports._d_facFami = _d_facFami;
-
-
-  /* <---------- recipe ----------> */
 
 
   /**
@@ -1514,109 +1617,3 @@
     };
   };
   exports._d_rc = _d_rc;
-
-
-  /**
-   * Sets recipe selector for {@link BLK_recipeFactory}.
-   * @param {Table} tb
-   * @param {Building} b
-   * @param {function(): string} headerGetter
-   * @param {function(string): void} cfgCaller
-   * @param {Array<function(Table): void>|unset} [extraBtnSetters]
-   * @param {boolean|unset} [useAutoSelection]
-   * @param {boolean|unset} [closeSelect]
-   * @param {number|unset} [colAmt]
-   * @return {void}
-   */
-  const _s_rc = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, useAutoSelection, closeSelect, colAmt) {
-    if(closeSelect == null) closeSelect = true;
-    if(colAmt == null) colAmt = 4;
-
-    let
-      rcMdl = b.block.delegee.rcMdl,
-      categHeaderObj = MDL_recipe._categHeaderObj(rcMdl),
-      btnGrp = (function(btnGrp) {btnGrp.setMinCheckCount(0); btnGrp.setMaxCheckCount(1); return btnGrp})(new ButtonGroup());
-
-    // Buttons
-    if(extraBtnSetters == null) extraBtnSetters = [];
-    if(useAutoSelection) {
-      extraBtnSetters.unshift(
-        tb => tb.button("A", () => {useAutoSelection = false}).tooltip(MDL_bundle._info("lovec", "tt-disable-auto-selection"), true),
-      );
-    };
-    extraBtnSetters.unshift(
-      tb => tb.button("?", () => Vars.ui.content.show(b.block)).tooltip(fetchStat("lovec", "spec-info").localized(), true),
-    );
-    tb.table(Styles.none, tb1 => {
-      tb1.left().clicked(() => rebuildCont());
-      extraBtnSetters.forEachFast(setter => {
-        setter(tb1).left().size(42.0);
-      });
-    })
-    .left()
-    .row();
-
-    const cont = new Table().background(Styles.black3).left();
-    cont.margin(4.0);
-    const contCell = tb.top().add(cont).left().growX();
-    // Method and field sharing the same name, great
-    Reflect.set(Cell, contCell, "minWidth", (200.0).toF());
-
-    let categAmt = 0, uncategorizedOnly = false;
-
-    const rebuildCont = () => {
-      btnGrp.clear();
-      cont.clearChildren();
-
-      if(useAutoSelection) {
-        cont.table(Styles.none, tb1 => {
-          tb1.add(MDL_bundle._info("lovec", "recipe-auto-selection")).color(Pal.remove).row();
-          tb1.add("").row();
-        })
-        .left()
-        .row();
-      };
-
-      categAmt = 0;
-      for(let categ in categHeaderObj) {
-        categAmt++;
-      };
-      uncategorizedOnly = categAmt === 1 && categHeaderObj.uncategorized != null;
-
-      for(let categ in categHeaderObj) {
-        if(!uncategorizedOnly) {
-          cont.add(MDL_recipe._categB(categ)).left().pad(4.0).color(!useAutoSelection ? Color.white : Color.gray).row();
-        };
-
-        let j = 0;
-        let chunk = new Table();
-        categHeaderObj[categ].forEachFast(rcHeader => {
-          let icon = MDL_recipe._icon(rcMdl, rcHeader);
-          let validCheck = MDL_recipe._finalValidCheck(rcMdl, rcHeader);
-          let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validCheck(b), uncategorizedOnly);
-
-          let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {if(closeSelect) Vars.control.input.config.hideConfig()}).margin(3.0).tooltip(ttStr, true).group(btnGrp).get();
-          btn.changed(() => cfgCaller(rcHeader));
-          btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
-          btn.getStyle().imageDisabledColor = Color.gray;
-          btn.update(() => {
-            btn.setDisabled(useAutoSelection);
-            btn.setChecked(headerGetter() == rcHeader);
-            if(TIMER.secHalf) {
-              btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
-            };
-          });
-
-          j++;
-          if((j - 1) % colAmt === colAmt - 1) {
-            chunk.row();
-            j = 0;
-          };
-        });
-
-        cont.add(chunk).left().row();
-      };
-    };
-    rebuildCont();
-  };
-  exports._s_rc = _s_rc;

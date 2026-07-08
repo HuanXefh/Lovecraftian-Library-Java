@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Utility class for handling extra data for Lovec units.
    * @class

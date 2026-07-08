@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Lovec version of {@link EventType}.
    * @class

@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Used to add properties to a class by `cls.implement(intf)`.
    * Not really interface but more like mixin, methods from the interface are not required to be explicitly implemented.

@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Utility class for creating content template-based contents with JSON/HJSON.
    * @class

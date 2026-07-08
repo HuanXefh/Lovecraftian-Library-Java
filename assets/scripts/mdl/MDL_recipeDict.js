@@ -18,9 +18,6 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
   const rcDict = {
     hasInit: false,
     customFieldMap: new ObjectMap(),

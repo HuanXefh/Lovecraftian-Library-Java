@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * A container formed from an object that is not expected to be modified afterward.
    * Object boxes are usually named like "BOX_xxx".

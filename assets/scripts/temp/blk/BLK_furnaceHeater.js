@@ -8,7 +8,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_light");
+  const PARENT = require("lovec/temp/blk/BLK_heatProducer");
   const INTF = require("lovec/temp/intf/INTF_BLK_furnaceBlock");
 
 
@@ -41,49 +41,46 @@
 
 
     /**
-     * Light blocks that consume fuels, essentially a furnace.
-     * @class BLK_fuelLight
-     * @extends BLK_light
-     * @extends INTF_BLK_furnaceBlock
+     * @class BLK_furnaceHeater
+     * @extends BLK_heatProducer
      */
-    newClass().extendClass(PARENT[0], "BLK_fuelLight").implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_furnaceHeater").implement(INTF[0]).initClass()
     .setParent(GenericCrafter)
-    .setTags("blk-non-fac")
+    .setTags()
     .setParam({
 
 
       /**
-       * <PARAM>: Temperature at which light radius is maximized.
-       * @memberof BLK_fuelLight
-       * @instance
-       */
-      maxLightTemp: 1000.0,
-      /**
-       * <PARAM>
-       * @override
-       * @memberof BLK_fuelLight
-       * @instance
-       */
-      shouldDrawHeatLight: false,
+      * <PARAM>: Maximum heat produced by this heater.
+      * @override
+      * @memberof BLK_furnaceHeater
+      * @instance
+      */
+      heatProd: 100.0,
 
 
       /* <------------------------------ internal ------------------------------ */
 
 
       /**
-       * <INTERNAL>: Have you ever seen an externally heated light?
-       * @override
-       * @memberof BLK_fuelLight
-       * @instance
-       */
-      tempExtMtp: 0.0,
-      /**
        * <INTERNAL>
        * @override
-       * @memberof BLK_fuelLight
+       * @memberof BLK_furnaceHeater
        * @instance
        */
       useAndOperForAccept: true,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_furnaceHeater
+       * @instance
+       */
+      skipHeatFetch: true,
+      /**
+       * <INTERNAL>
+       * @memberof BLK_furnaceHeater
+       * @instance
+       */
+      skipHeatSupply: false,
 
 
     })
@@ -99,11 +96,10 @@
 
 
     /**
-     * @class B_fuelLight
-     * @extends B_light
-     * @extends INTF_B_furnaceBlock
+     * @class B_furnaceHeater
+     * @extends B_heatProducer
      */
-    newClass().extendClass(PARENT[1], "B_fuelLight").implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "B_furnaceHeater").implement(INTF[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({
@@ -144,14 +140,54 @@
       }),
 
 
+      write: function(wr) {
+        this.ex_processData(wr);
+      },
+
+
+      read: function(rd, revi) {
+        this.ex_processData(rd);
+      },
+
+
       /**
        * @override
-       * @memberof B_fuelLight
+       * @memberof B_furnaceHeater
+       * @instance
+       * @return {number}
+       */
+      ex_calcHeatSupplied: function() {
+        return this.ex_getHeatProd();
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof B_furnaceHeater
        * @instance
        * @return {number}
        */
       ex_getHeatTg: function() {
-        return this.block.delegee.maxLightTemp;
+        return this.blk$heatProd;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof B_furnaceHeater
+       * @instance
+       * @return {number}
+       */
+      ex_getHeatProd: function() {
+        return Math.min(this.tempCur, this.blk$heatProd);
       }
       .setProp({
         noSuper: true,

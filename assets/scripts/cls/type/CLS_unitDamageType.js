@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Affects damage dealt by Lovec bullets.
    * @class

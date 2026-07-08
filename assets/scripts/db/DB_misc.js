@@ -25,6 +25,7 @@ const db = {
       "loveclab-env0tree0bush-rocky-furn", "loveclab-env0tree0bush-rocky-fern",
 
       "projreind-bliq0stor-pressure-router", "projreind-bliq0aux-pressure-router",
+      "projreind-pow0turb-primitive-steam-turbine", "projreind-pow0tor-primitive-steam-turbine",
 
     ],
 

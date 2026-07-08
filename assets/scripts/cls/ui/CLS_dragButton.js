@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * A draggable group of buttons.
    * New buttons are registered in {@link DB_misc}.

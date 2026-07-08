@@ -19,9 +19,6 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
   /**
    * Gets the hash value for current amount of bits.
    * @param {number} amt

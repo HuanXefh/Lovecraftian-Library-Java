@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * A wrapped number array used to calculate mean value.
    * @class

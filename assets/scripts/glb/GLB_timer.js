@@ -18,10 +18,7 @@
 */
 
 
-  /* <---------- base ----------> */
-
-
-  const timer_gn = new Interval(9);
+  const timer_gn = new Interval(10);
   const timer_effc = new Interval(4);
   const timer_param = new Interval(3);
   const timer_eff = new Interval(4);
@@ -45,9 +42,10 @@
     exports.secTwo = timer_gn.get(3, 120.0);
     exports.secThree = timer_gn.get(4, 180.0);
     exports.secFive = timer_gn.get(5, 300.0);
-    exports.minHalf = timer_gn.get(6, 1800.0);
-    exports.min = timer_gn.get(7, 3600.0);
-    exports.minTwo = timer_gn.get(8, 7200.0);
+    exports.secTen = timer_gn.get(6, 300.0);
+    exports.minHalf = timer_gn.get(7, 1800.0);
+    exports.min = timer_gn.get(8, 3600.0);
+    exports.minTwo = timer_gn.get(9, 7200.0);
 
     // Timer for building efficiency
     exports.effc = timer_effc.get(0, fetchSetting("interval-efficiency", true));

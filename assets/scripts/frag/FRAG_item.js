@@ -18,7 +18,7 @@
 */
 
 
-  /* <---------- item module ----------> */
+  /* <------------------------------ item module ------------------------------ */
 
 
   /**
@@ -214,6 +214,49 @@
 
 
   /**
+   * Whether a building can accept a list of items from `b_f`.
+   * @param {Building} b
+   * @param {Building} b_f
+   * @param {Array} itmAmtArr - <ROW>: itm_gn, amt.
+   * @return {boolean}
+   */
+  const acceptItmAmtArr = function(b, b_f, itmAmtArr) {
+    let i = 0, iCap = itmAmtArr.iCap(), itm;
+    while(i < iCap) {
+      itm = MDL_content._ct(itmAmtArr[i], "rs");
+      if(itm != null && b.acceptStack(itm, itmAmtArr[i + 1], b_f) < itmAmtArr[i + 1]) return false;
+      i += 2;
+    };
+
+    return true;
+  };
+  exports.acceptItmAmtArr = acceptItmAmtArr;
+
+
+  /**
+   * Adds a list of items to some building from `b_f`.
+   * @param {Building} b
+   * @param {Building} b_f
+   * @param {Array} itmAmtArr - <ROW>: itm_gn, amt.
+   * @return {boolean}
+   */
+  const addItmAmtArr = function(b, b_f, itmAmtArr) {
+    let i = 0, iCap = itmAmtArr.iCap(), itm, cond = false;
+    while(i < iCap) {
+      itm = MDL_content._ct(itmAmtArr[i], "rs");
+      if(itm != null) {
+        b.handleStack(itm, itmAmtArr[i + 1], b_f);
+        cond = true;
+      };
+      i += 2;
+    };
+
+    return true;
+  };
+  exports.addItmAmtArr = addItmAmtArr;
+
+
+  /**
    * Lets a building take a loot.
    * @param {Building} b
    * @param {Unit} loot
@@ -364,7 +407,7 @@
   exports.destroyLoot_global = destroyLoot_global;
 
 
-  /* <---------- unit item stack ----------> */
+  /* <------------------------------ unit item stack ------------------------------ */
 
 
   /**

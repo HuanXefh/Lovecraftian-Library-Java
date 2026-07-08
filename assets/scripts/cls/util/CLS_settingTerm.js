@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Use to register settings, see {@link TP_setting}.
    * @class

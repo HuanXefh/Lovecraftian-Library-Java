@@ -129,6 +129,7 @@
 
       /**
        * Gets a random linked building.
+       * @override
        * @memberof B_wireRelay
        * @instance
        * @return {Building|null}

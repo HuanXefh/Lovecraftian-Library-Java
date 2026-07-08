@@ -18,9 +18,6 @@
 */
 
 
-  /* <---------- file ----------> */
-
-
   /**
    * Returns JSON value of a .json or .hjson file.
    * @param {Fi|string|null} fi0str

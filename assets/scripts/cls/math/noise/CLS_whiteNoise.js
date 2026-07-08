@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * The simplest noise and parent of most noise generators.
    * @class

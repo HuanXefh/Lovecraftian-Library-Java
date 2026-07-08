@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Used to store fixed values.
    * Very similar to {@link CLS_objectBox}.

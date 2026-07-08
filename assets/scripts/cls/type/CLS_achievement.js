@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Lovec achievement.
    * Achievements should be created on CLIENT LOAD and not on headless end.

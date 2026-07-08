@@ -41,12 +41,6 @@
 
 
   function comp_setBars(blk) {
-    blk.addBar("lovec-temp", b => new Bar(
-      prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.ex_getHeatFrac().roundFixed(2) * 100.0)),
-      prov(() => Pal.lightOrange),
-      () => b.ex_getHeatFrac(),
-    ));
-
     if(!blk.skipHeatSupply) {
       blk.addBar("lovec-heat-supplied", b => new Bar(
         prov(() => Core.bundle.format("bar.lovec-bar-heat-supplied-amt", Strings.fixed(b.delegee.heatSupplied, 2) + " " + fetchStatUnit("lovec", "heatunits").localized())),
@@ -54,6 +48,12 @@
         () => Mathf.clamp(b.delegee.heatSupplied / Math.max(b.delegee.tempCur, 0.01)),
       ));
     };
+
+    blk.addBar("lovec-temp", b => new Bar(
+      prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.ex_getHeatFrac().roundFixed(2) * 100.0)),
+      prov(() => Pal.lightOrange),
+      () => b.ex_getHeatFrac(),
+    ));
   };
 
 
@@ -113,7 +113,7 @@
           b.heatSupplied :
           (b.heatSupplied / 3.0);
         b_t.ex_handleExtHeat != null ?
-          b_t.ex_handleExtHeat(heatAmt) :
+          b_t.ex_handleExtHeat(b, heatAmt) :
           FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, heatAmt / 6000.0, false, false, true);
       };
     };
@@ -173,8 +173,9 @@
   };
 
 
-  function comp_ex_handleExtHeat(b, amt) {
+  function comp_ex_handleExtHeat(b, b_f, amt) {
     if(b.block.delegee.tempExtMtp.fEqual(0.0)) return;
+    if(!b.block.delegee.skipHeatFetch && b.heatFetchTgs.includes(b_f)) return;
 
     b.tempExt = (b.tempExt + amt * b.block.delegee.tempExtMtp) * 0.5;
     b.extHeatCd = 60.0;
@@ -519,15 +520,16 @@
        * Should be called in `updateTile`.
        * @memberof INTF_B_heatBlock
        * @instance
+       * @param {Building} b_f
        * @param {number} amt
        * @return {void}
        */
-      ex_handleExtHeat: function(amt) {
-        comp_ex_handleExtHeat(this, amt);
+      ex_handleExtHeat: function(b_f, amt) {
+        comp_ex_handleExtHeat(this, b_f, amt);
       }
       .setProp({
         noSuper: true,
-        argLen: 1,
+        argLen: 2,
       }),
 
 
@@ -643,7 +645,7 @@
 
 
       /**
-       * <br> <LATER>
+       * <LATER>
        * @memberof INTF_B_heatBlock
        * @instance
        * @return {boolean}

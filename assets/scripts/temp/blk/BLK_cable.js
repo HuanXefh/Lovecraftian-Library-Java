@@ -149,7 +149,6 @@
       }
       .setProp({
         noSuper: true,
-        override: true,
       }),
 
 

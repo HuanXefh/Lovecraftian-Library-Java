@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Base class of all content templates, provides basic methods to define a template.
    * Content templates are used to build the object for `extend` and its Lovec variants.

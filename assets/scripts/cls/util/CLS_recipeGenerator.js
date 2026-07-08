@@ -5,9 +5,6 @@
 */
 
 
-  /* <---------- meta ----------> */
-
-
   /**
    * Utility class for automatic recipe generation.
    * See {@link TP_recipeGen} for examples.

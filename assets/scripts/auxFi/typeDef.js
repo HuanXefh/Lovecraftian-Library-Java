@@ -1034,6 +1034,7 @@
   class HexSkyMesh extends PlanetMesh {};
   /** @global mindustry.graphics.g3d.PlanetGrid */
   class PlanetGrid {};
+  PlanetGrid.PTile = class {};
   /** @global mindustry.graphics.g3d.MeshBuilder */
   class MeshBuilder {};
 

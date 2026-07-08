@@ -199,6 +199,7 @@
 
       /**
        * See {@link B_wireRelay#ex_findWireTarget}.
+       * @override
        * @memberof B_wireNode
        * @instance
        * @return {Building|null}

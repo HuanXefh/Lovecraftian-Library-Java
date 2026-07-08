@@ -149,6 +149,8 @@
   /** @global */
   MDL_market = require("lovec/mdl/MDL_market");
   /** @global */
+  MDL_planet = require("lovec/mdl/MDL_planet");
+  /** @global */
   VARGEN = require("lovec/glb/GLB_varGen");
   /** @global */
   UTIL_rand = require("lovec/cls/util/UTIL_rand");
@@ -208,6 +210,8 @@
   CLS_dialogFlowBuilder = require("lovec/cls/util/builder/CLS_dialogFlowBuilder");
   /** @global */
   UTIL_dialogFlow = require("lovec/cls/util/UTIL_dialogFlow");
+  /** @global */
+  CLS_sectorResourcePacket = require("lovec/cls/type/CLS_sectorResourcePacket");
   /** @global */
   CLS_achievement = require("lovec/cls/type/CLS_achievement");
   /** @global */

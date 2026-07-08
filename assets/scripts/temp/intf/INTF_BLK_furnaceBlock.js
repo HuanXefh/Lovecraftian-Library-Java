@@ -468,7 +468,7 @@
 
 
       /**
-       * <br> <LATER>
+       * <LATER>
        * @override
        * @memberof INTF_B_furnaceBlock
        * @instance
