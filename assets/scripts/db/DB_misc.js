@@ -79,6 +79,8 @@ const db = {
 
         return String.multiline(
           MDL_bundle._term("lovec", "item") + MDL_text._colon() + itm.localizedName.plain(),
+          !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text._colon() + MDL_fuel._fuelPon(itm)),
+          !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text._colon() + MDL_fuel._fuelLvl(itm)),
         );
       },
 
@@ -263,6 +265,15 @@ const db = {
           icon: "lovec-icon-range",
           clickScr: function() {
             Core.settings.put("lovec-unit0stat-range", !fetchSetting("unit0stat-range"));
+            PARAM.forceLoadParam();
+          },
+        },
+
+        "lovec-setting-extra-info", {
+          rowInd: 0,
+          icon: "lovec-icon-extra-info",
+          clickScr: function() {
+            Core.settings.put("lovec-draw0aux-extra-info", !fetchSetting("draw0aux-extra-info"));
             PARAM.forceLoadParam();
           },
         },

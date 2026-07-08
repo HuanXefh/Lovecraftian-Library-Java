@@ -1,7 +1,7 @@
 @echo off
 
 @rem Version of game to launch.
-set LAUNCHER=H:\Dropbox\_gm_mdt\Mindustry\Mindustry-BE-Desktop-27381.jar
+set LAUNCHER=H:\Dropbox\_gm_mdt\Mindustry\Mindustry-BE-Desktop-27401.jar
 @rem Project path of Lovec (.jar built).
 set LOCAL1=H:\Dropbox\_gm_mdt\lovec\mabo-lovecraftian-library\build\libs\mabo-lovecraftian-libraryDesktop.jar
 @rem Project path of LovecLab.
@@ -24,9 +24,15 @@ set TARGET4=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-serpulo-squared
 set TARGET5=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-fluid-cells
 
 echo.
-echo Skip updating mod files?
-choice /c YN
+echo Select deploy mode:
+echo L - Launch game directly.
+echo B - Build the lib only.
+echo C - Copy files only (Slower).
+echo A - Do everything (Slowest).
+choice /c LBCA
 echo.
+if errorlevel 4 goto :All
+if errorlevel 3 goto :Copy
 if errorlevel 2 goto :Build
 if errorlevel 1 goto :Launch
 
@@ -35,6 +41,16 @@ python bundleGen.py
 echo Updated bundle files
 call gradlew jar
 echo.
+xcopy %LOCAL1% %TARGET1%* /Y /s /e /i /q
+goto :Launch
+
+:All
+python bundleGen.py
+echo Updated bundle files
+call gradlew jar
+echo.
+
+:Copy
 rd %TARGET2% /s /q
 rd %TARGET3% /s /q
 rd %TARGET4% /s /q

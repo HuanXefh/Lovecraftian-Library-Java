@@ -53,13 +53,13 @@
 
       if(b.block.delegee.healsBuilding) {
         MDL_pos._it_bs(b.x, b.y, rad, b.team, ob => MDL_cond._canHeal(ob), ob => {
-          FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt) * (1.0 + b.phaseHeat * b.block.phaseBoost) * b.efficiency, true);
+          FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency, true);
         });
       };
 
       if(b.block.delegee.healsUnit) {
         MDL_pos._it_units(b.x, b.y, rad, b.team, ounit => MDL_cond._canHeal(ounit), ounit => {
-          if(FRAG_attack.heal(ounit, (ounit.maxHealth * b.block.delegee.unitHealPerc + b.block.delegee.unitHealAmt) * (1.0 + b.phaseHeat * b.block.phaseBoost) * b.efficiency)) {
+          if(FRAG_attack.heal(ounit, (ounit.maxHealth * b.block.delegee.unitHealPerc + b.block.delegee.unitHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency)) {
             MDL_effect._e_line(b.x, b.y, null, ounit, Pal.heal);
           };
         });
