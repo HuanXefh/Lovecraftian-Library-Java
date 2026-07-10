@@ -190,7 +190,7 @@ MDL_event._c_onLoad(() => {
 
 MDL_event._c_onWorldLoad(() => {
 
-  Time.run(25.0, () => {
+  Time.run(VAR.delay.worldLoad.loadPol, () => {
     mapPol = DB_env.db["param"]["map"]["pol"].read(
       PARAM.MAP_CURRENT,
       DB_env.db["param"]["pla"]["pol"].read(PARAM.PLANET_CURRENT, 0.0),

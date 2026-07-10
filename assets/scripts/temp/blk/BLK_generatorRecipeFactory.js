@@ -27,7 +27,7 @@
 
 
   function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-    b.rcPowProdMtp = MDL_recipe._powProdMtp(rcMdl, rcHeader);
+    b.rcPowProdMtp = b.rc.powProdMtp;
   };
 
 

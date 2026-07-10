@@ -32,16 +32,14 @@
       blk.outputsLiquid = true;
     };
 
-    MDL_event._c_onLoad(() => {
-      Core.app.post(() => {
-        blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
-          let rs = MDL_content._ct(nameRs, "rs");
-          if(rs == null) return;
+    MDL_event._c_onLoadPost(() => {
+      blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
+        let rs = MDL_content._ct(nameRs, "rs");
+        if(rs == null) return;
 
-          rs instanceof Item ?
-            MDL_recipeDict.addItmProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs), 1.0, {time: blk.ex_getCraftTime() / blk.dynaAttrRsEffcMap.get(rs.name, 1.0)}) :
-            MDL_recipeDict.addFldProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs) * blk.dynaAttrRsEffcMap.get(rs.name, 1.0));
-        });
+        rs instanceof Item ?
+        MDL_recipeDict.addItmProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs), 1.0, {time: blk.ex_getCraftTime() / blk.dynaAttrRsEffcMap.get(rs.name, 1.0)}) :
+        MDL_recipeDict.addFldProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs) * blk.dynaAttrRsEffcMap.get(rs.name, 1.0));
       });
     });
 

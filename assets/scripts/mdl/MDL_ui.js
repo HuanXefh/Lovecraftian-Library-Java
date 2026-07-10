@@ -340,7 +340,7 @@
 
     // Created last so it's on top of everything
     Core.app.post(() => {
-      const tb = new Table();
+      let tb = new Table();
       tb.touchable = Touchable.disabled;
 
       tb.table(Tex.whiteui, tb1 => {
@@ -388,7 +388,7 @@
   const _d_bg = function(delay, nameBg, endGetter, inTimeS) {
     if(inTimeS == null) inTimeS = 1.0;
 
-    const tb = new Table();
+    let tb = new Table();
     tb.touchable = Touchable.disabled;
     UTIL_dialogFlow.getPool("bg").push(tb);
 
@@ -421,7 +421,7 @@
    * @return {number}
    */
   const _d_bgm = function(delay, mus_gn, endGetter) {
-    const tb = new Table();
+    let tb = new Table();
 
     setActor_action(tb, delay, [
       Actions.run(() => {
@@ -462,7 +462,7 @@
   ) {
     if(customActTimeS == null) customActTimeS = 0.0;
 
-    const tb = new Table();
+    let tb = new Table();
     tb.touchable = Touchable.disabled;
     UTIL_dialogFlow.getPool("chara").push(tb);
 
@@ -601,7 +601,7 @@
     if(h == null) h = 50.0;
     if(inTimeS == null) inTimeS = 0.5;
 
-    const tb = new Table();
+    let tb = new Table();
     tb.center();
     textScrArr.forEachRow(2, (text, scr) => {
       tb.button(text, () => {

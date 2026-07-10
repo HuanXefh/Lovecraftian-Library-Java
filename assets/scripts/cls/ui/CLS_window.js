@@ -93,7 +93,7 @@
    * @return {Table}
    */
   CLS_window.getRootTable = function(win) {
-    const tb = new Table().top();
+    let tb = new Table().top();
     tb.update(() => {
       if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
         if(Core.input.keyDown(KeyCode.x)) selectedWins.forEachFast(win => win.close());
@@ -203,9 +203,9 @@
    * @return {void}
    */
   CLS_window.prototype.rebuild = function thisFun() {
-    const root = this.root;
+    let root = this.root;
     root.clearChildren();
-    const base = CLS_window.getBaseTable(this);
+    let base = CLS_window.getBaseTable(this);
     this.base = base;
     root.add(base).top().growX();
 

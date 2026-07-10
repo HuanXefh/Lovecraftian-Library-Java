@@ -62,7 +62,7 @@
 
   MDL_event._c_onWorldLoad(() => {
 
-    Time.run(5.0, () => forceLoadParam());
+    Time.run(VAR.delay.worldLoad.loadParam, () => forceLoadParam());
 
   });
 

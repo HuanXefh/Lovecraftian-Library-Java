@@ -31,7 +31,7 @@
       tb, b,
       () => b.rcHeader, val => b.configure(val),
       b.ex_getSelectorExtraBtnSetters(),
-      b.useAutoSelection,
+      b.blk$useAutoSelection,
       false, b.block.selectionColumns,
     );
   };
@@ -113,7 +113,7 @@
         this.ex_updateRcParam(this.block.delegee.rcMdl, str, true);
         this.ex_resetRcParam();
         this.rcHeader = str;
-        if(!this.useAutoSelection) {
+        if(!this.blk$useAutoSelection) {
           this.ex_showRcChangeEff();
         };
       }

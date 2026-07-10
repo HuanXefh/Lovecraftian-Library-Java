@@ -193,6 +193,8 @@
   /** @global */
   MDL_ai = require("lovec/mdl/MDL_ai");
   /** @global */
+  CLS_recipe = require("lovec/cls/type/CLS_recipe");
+  /** @global */
   FRAG_recipe = require("lovec/frag/FRAG_recipe");
   /** @global */
   MDL_recipe = require("lovec/mdl/MDL_recipe");

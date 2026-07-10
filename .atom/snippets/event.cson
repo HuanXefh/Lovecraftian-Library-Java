@@ -43,20 +43,16 @@
   'on load post':
     prefix: 'lc_onloadpost'
     body: '''
-    MDL_event._c_onLoad(() => {
-      Core.app.post(() => {
-        ${1:}
-      });
+    MDL_event._c_onLoadPost(() => {
+      ${1:}
     });
     '''
 
   'on load delay':
-    prefix: 'lc_onloadtime'
+    prefix: 'lc_onloaddelay'
     body: '''
-    MDL_event._c_onLoad(() => {
-      Time.run(${1:delay}, () => {
-        ${2:}
-      });
+    MDL_event._c_onLoadDelay(${1:delay}, () => {
+      ${2:}
     });
     '''
 

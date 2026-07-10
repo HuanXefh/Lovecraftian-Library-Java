@@ -240,7 +240,7 @@
       ex_processData: function(wr0rd) {
         processData(
           wr0rd,
-          
+
           wr => {
             wr.f(this.durabFrac);
             wr.str(this.durabMode);

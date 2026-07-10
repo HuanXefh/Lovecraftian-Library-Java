@@ -70,6 +70,45 @@
 
 
   /**
+   * Called just after CLIENT LOAD.
+   * @param {function(): void} scr
+   * @param {number|string|unset} [id]
+   * @return {void}
+   */
+  const _c_onLoadPost = function thisFun(scr, id) {
+    if(id != null && thisFun.ids.includes(id)) return;
+    if(id != null) thisFun.ids.push(id);
+
+    Events.run(ClientLoadEvent, () => {
+      Core.app.post(() => {
+        scr();
+      });
+    });
+  };
+  exports._c_onLoadPost = _c_onLoadPost;
+
+
+  /**
+   * Called several frames after CLIENT LOAD.
+   * @param {number} delay
+   * @param {function(): void} scr
+   * @param {number|string|unset} [id]
+   * @return {void}
+   */
+  const _c_onLoadDelay = function thisFun(delay, scr, id) {
+    if(id != null && thisFun.ids.includes(id)) return;
+    if(id != null) thisFun.ids.push(id);
+
+    Events.run(ClientLoadEvent, () => {
+      Time.run(delay, () => {
+        scr();
+      });
+    });
+  };
+  exports._c_onLoadDelay = _c_onLoadDelay;
+
+
+  /**
    * Called when starting loading a world, before `drawBase`.
    * @param {function(): void} scr
    * @param {number|string|unset} [id]

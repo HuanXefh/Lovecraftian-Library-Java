@@ -562,7 +562,7 @@
    * @return {Cell}
    */
   const _d_note = function(tb, text, ord, padLeft) {
-    const noteCell = tb.table(Tex.whiteui, tb1 => {
+    let noteCell = tb.table(Tex.whiteui, tb1 => {
       tb1.center().setColor(Pal.darkestGray);
       __margin(tb1, 1.5);
       __wrapLine(tb1, text.color(Color.gray), Align.left, tryVal(ord, 1), padLeft);
@@ -599,8 +599,8 @@
     let rowAmt = matArr.iCap();
     let colAmt = matArr[0].iCap();
 
-    const contCell = tb.table(Styles.none, tb1 => {});
-    const cont = contCell.get();
+    let contCell = tb.table(Styles.none, tb1 => {});
+    let cont = contCell.get();
     if(rowAmt === 0 || colAmt === 0) return contCell;
 
     let tbCol, tbRow;
@@ -666,8 +666,8 @@
     showOrd = showOrd && cts_gn.length > 0;
 
     let ordCur = 0;
-    const contCell = tb.table(Styles.none, tb1 => {});
-    const cont = contCell.get();
+    let contCell = tb.table(Styles.none, tb1 => {});
+    let cont = contCell.get();
     contCell.row();
 
     let ct;
@@ -737,7 +737,7 @@
     if(colAmt == null) colAmt = MDL_ui._colAmt(iconW, 0.0, 2);
     let cts_gn = cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p];
 
-    const contCell = tb.table(Tex.whiteui, tb1 => {
+    let contCell = tb.table(Tex.whiteui, tb1 => {
       tb1.left().setColor(Pal.darkestGray);
       __margin(tb1, 0.5);
 
@@ -786,9 +786,9 @@
       countRow = 0,
       i, iCap, j;
 
-    const cont = new Table().top();
+    let cont = new Table().top();
     cont.defaults().size(40.0);
-    const rebuildCont = () => {
+    let rebuildCont = () => {
       btnGrp.clear();
       cont.clearChildren();
 
@@ -820,7 +820,7 @@
     };
     rebuildCont();
 
-    const root = new Table().background(Styles.black6);
+    let root = new Table().background(Styles.black6);
     if(countRow > rowAmt * 1.5) {
       root.table(Styles.none, tb1 => {
         tb1.image(Icon.zoom).padLeft(4.0);
@@ -829,7 +829,7 @@
       }).growX().row();
     };
 
-    const pn = (function(pn) {
+    let pn = (function(pn) {
       pn.setScrollingDisabled(true, false);
       pn.exited(() => {if(pn.hasScroll()) Core.scene.setScrollFocus(null)});
       if(blk != null) {
@@ -874,9 +874,9 @@
       countRow = 0,
       i, iCap, j;
 
-    const cont = new Table().top();
+    let cont = new Table().top();
     cont.defaults().size(40.0);
-    const rebuildCont = () => {
+    let rebuildCont = () => {
       btnGrp.clear();
       cont.clearChildren();
 
@@ -908,7 +908,7 @@
     };
     rebuildCont();
 
-    const root = new Table().background(Styles.black6);
+    let root = new Table().background(Styles.black6);
     if(countRow > rowAmt * 1.5) {
       root.table(Styles.none, tb1 => {
         tb1.image(Icon.zoom).padLeft(4.0);
@@ -917,7 +917,7 @@
       }).growX().row();
     };
 
-    const pn = (function(pn) {
+    let pn = (function(pn) {
       pn.setScrollingDisabled(true, false);
       pn.exited(() => {if(pn.hasScroll()) Core.scene.setScrollFocus(null)});
       if(blk != null) {
@@ -975,15 +975,15 @@
     .left()
     .row();
 
-    const cont = new Table().background(Styles.black3).left();
+    let cont = new Table().background(Styles.black3).left();
     cont.margin(4.0);
-    const contCell = tb.top().add(cont).left().growX();
+    let contCell = tb.top().add(cont).left().growX();
     // Method and field sharing the same name, great
     Reflect.set(Cell, contCell, "minWidth", (200.0).toF());
 
     let categAmt = 0, uncategorizedOnly = false;
 
-    const rebuildCont = () => {
+    let rebuildCont = () => {
       btnGrp.clear();
       cont.clearChildren();
 
@@ -1139,7 +1139,7 @@
    * @return {void}
    */
   const _d_facFami = function(tb, blk) {
-    const root = new Table();
+    let root = new Table();
     __break(tb, 1);
     tb.left().add(root).row();
     __break(tb, 1);
@@ -1174,21 +1174,23 @@
    * Sets recipe display for {@link BLK_recipeFactory}.
    * Table hell ahead!
    * @param {Table} tb
-   * @param {RecipeModule} rcMdl
    * @param {Block} blk
    * @param {boolean|unset} [isCollapsed]
    * @param {boolean|unset} [noInnerPane]
    * @return {void}
    */
-  const _d_rc = function(tb, rcMdl, blk, isCollapsed, noInnerPane) {
-    if(MDL_recipe._rcSize(rcMdl) === 0) {
+  const _d_rc = function(tb, blk, isCollapsed, noInnerPane) {
+    let rcs = CLS_recipe.getBlkRcsMap().get(blk, Array.air);
+    if(rcs.length === 0) {
       __textNothing(tb);
       return;
     };
 
-    const baseCont = new Table();
-    const cont = new Table();
-    const contPn = new ScrollPane(cont);
+    let
+      baseCont = new Table(),
+      cont = new Table(),
+      contPn = new ScrollPane(cont);
+
     contPn.setScrollingDisabled(false, false);
     contPn.setOverscroll(false, false);
 
@@ -1200,21 +1202,7 @@
       tb.add(contPn).maxHeight(640.0).row();
     __break(tb, 1);
 
-    /* START OF HELL */
-
-    let
-      baseCi = MDL_recipe._ci(null, rcMdl, ""),
-      baseBi = MDL_recipe._bi(null, rcMdl, ""),
-      baseAux = MDL_recipe._aux(null, rcMdl, ""),
-      baseOpt = MDL_recipe._opt(null, rcMdl, ""),
-      basePayi = MDL_recipe._payi(null, rcMdl, ""),
-      baseCo = MDL_recipe._co(null, rcMdl, ""),
-      baseBo = MDL_recipe._bo(null, rcMdl, ""),
-      baseFo = MDL_recipe._fo(null, rcMdl, ""),
-      basePayo = MDL_recipe._payo(null, rcMdl, ""),
-      hasBaseIo = baseCi.length > 0 || baseBi.length > 0 || baseAux.length > 0 || baseOpt.length > 0 || basePayi.length > 0 || baseCo.length > 0 || baseBo.length > 0 || baseFo.length > 0 || basePayo.length > 0;
-
-    const buildCateg = categ => {
+    let buildCateg = categ => {
       let chunk = new Table();
       (categ !== "SPEC: base" ? cont : baseCont).left().add(chunk).growX().row();
 
@@ -1246,370 +1234,31 @@
       }).left().growX().row();
       __break(chunk, 1);
 
-      const buildBase = tb => {
-        let rcTb = new Table(Tex.whiteui);
-        rcTb.left().setColor(Tmp.c1.set(Pal.accent).lerp(Color.black, 0.8));
-        buildInput(rcTb, baseCi, baseBi, baseAux, baseOpt, basePayi);
-        rcTb.table(Styles.none, tb1 => {}).left().width(48.0).growX().growY();
-        buildOutput(rcTb, baseCo, baseBo, baseFo, basePayo);
-        rcTb.table(Styles.none, tb1 => {}).left().width(48.0).growX().growY();
-        tb.add(rcTb).left().growX().row();
-      };
       if(categ === "SPEC: base") {
-        buildBase(rcRoot);
+        rcs[0].displayBase(rcRoot);
         return;
       };
 
       categHeaderObj[categ].forEachFast(rcHeader => {
-        let
-          ci = MDL_recipe._ci(null, rcMdl, rcHeader, true),
-          bi = MDL_recipe._bi(null, rcMdl, rcHeader, true),
-          aux = MDL_recipe._aux(null, rcMdl, rcHeader, true),
-          opt = MDL_recipe._opt(null, rcMdl, rcHeader, true),
-          payi = MDL_recipe._payi(null, rcMdl, rcHeader, true),
-          co = MDL_recipe._co(null, rcMdl, rcHeader, true),
-          bo = MDL_recipe._bo(null, rcMdl, rcHeader, true),
-          fo = MDL_recipe._fo(null, rcMdl, rcHeader, true),
-          payo = MDL_recipe._payo(null, rcMdl, rcHeader, true);
-
-        // <TABLE>: recipe root
-        let rcTb = new Table(Tex.whiteui);
-        rcTb.left().setColor(Pal.darkestGray);
-        buildOrder(rcTb, i, rcHeader, tb1 => {
-          if(hasBaseIo) {
-            tb1.table(Tex.whiteui, tb2 => {
-              tb2.left().setColor(Tmp.c1.set(Pal.accent).lerp(Color.black, 0.4));
-              __margin(tb2, 0.5);
-              buildBase(tb2);
-            })
-            .left()
-            .padLeft(28.0)
-            .row();
-            __break(tb1, 1);
-          };
-          tb1.table(Styles.none, tb2 => {
-            tb2.table(Styles.none, tb3 => {}).left().width(36.0).growY();
-            buildInput(tb2, ci, bi, aux, opt, payi);
-            tb2.table(Styles.none, tb3 => {}).left().width(48.0).growX().growY();
-            buildOutput(tb2, co, bo, fo, payo);
-            buildRcStats(tb2, rcMdl, rcHeader);
-          }).left();
-        });
-        rcTb.table(Styles.none, tb1 => {}).left().width(36.0).growY();
-        buildInput(rcTb, ci, bi, aux, opt, payi);
-        rcTb.table(Styles.none, tb1 => {}).left().width(48.0).growX().growY();
-        buildOutput(rcTb, co, bo, fo, payo);
-        buildRcStats(rcTb, rcMdl, rcHeader);
-        rcRoot.add(rcTb).left().growX().row();
+        CLS_recipe.getByHeader(blk, rcHeader).display(rcRoot, i, true);
         __bar(rcRoot, Color.valueOf(Tmp.c1, "303030"), null, 1.0);
 
         i++;
       });
     };
 
-    const buildOrder = (tb, i, rcHeader, winTableF) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        tb1.table(Styles.none, tb2 => {
-          tb2.center();
-          tb2.add("[" + Strings.fixed(i, 0) + "]").color(Pal.accent).tooltip(rcHeader, true).row();
-          tb2.add("").row();
-          tb2.button(VARGEN.icons.window, Styles.clearNonei, 28.0, () => {
-            new CLS_window(
-              "${1} (${2})".format(MDL_bundle._term("lovec", "recipe"), blk.localizedName + " [${1}]".format(i)),
-              tb1 => winTableF(tb1),
-            ).add();
-          })
-          .tooltip(MDL_bundle._term("lovec", "new-window"), true);
-        }).width(72.0);
-        __barV(tb1, Pal.accent);
-      }).left().growY();
-    };
-
-    const buildInput = (tb, ci, bi, aux, opt, payi) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        if(bi.length > 0) buildBi(tb1, bi);
-        if(ci.length > 0) buildCi(tb1, ci);
-        if(aux.length > 0) buildAux(tb1, aux);
-        if(opt.length > 0) buildOpt(tb1, opt);
-        if(payi.length > 0) buildPayi(tb1, payi);
-        tb1.table(Styles.none, tb2 => {}).left().width(18.0).growX().growY();
-      }).left().growY();
-    };
-
-    const buildOutput = (tb, co, bo, fo, payo) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        if(bo.length > 0) buildBo(tb1, bo);
-        if(co.length > 0) buildCo(tb1, co);
-        if(fo.length > 0) buildFo(tb1, fo);
-        if(payo.length > 0) buildPayo(tb1, payo);
-      }).left().growY();
-    };
-
-    const buildBi = (tb, bi) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("BI:").left().tooltip(MDL_bundle._term("lovec", "bi"), true).row();
-        tb1.table(Styles.none, tb2 => {
-          bi.forEachRow(3, (tmp, amt, p) => {
-            if(!(tmp instanceof Array)) {
-              __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
-            } else {
-              tb2.table(Styles.none, tb3 => {
-                tb3.left();
-                let pn = tb3.pane(pnTb => {
-                  pnTb.setBackground(Tex.whiteui);
-                  pnTb.setColor(Pal.darkerGray);
-                  pnTb.left();
-                  tmp.forEachRow(3, (tmp1, amt, p) => {
-                    __rcCt(pnTb, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
-                  });
-                })
-                .growX()
-                .get();
-                pn.setOverscroll(false, false);
-                pn.setScrollBarPositions(true, false);
-              })
-              .marginRight(16.0)
-              .maxHeight(82.0);
-            };
-          });
-        })
-        .left()
-        .marginRight(24.0);
-      });
-    };
-
-    const buildCi = (tb, ci) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("CI:").left().tooltip(MDL_bundle._term("lovec", "ci"), true).row();
-        tb1.table(Styles.none, tb2 => {
-          ci.forEachRow(2, (tmp, amt) => {
-            if(!(tmp instanceof Array)) {
-              __rcCt(tb2, tmp, amt, null, false, null, VAR.dialog.ct1);
-            } else {
-              tb2.table(Styles.none, tb3 => {
-                tb3.left();
-                let pn = tb3.pane(pnTb => {
-                  pnTb.setBackground(Tex.whiteui);
-                  pnTb.setColor(Pal.darkerGray);
-                  pnTb.left();
-                  tmp.forEachRow(2, (tmp1, amt) => {
-                    __rcCt(pnTb, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
-                  });
-                })
-                .growX()
-                .get();
-                pn.setOverscroll(false, false);
-                pn.setScrollBarPositions(true, false);
-              })
-              .marginRight(16.0)
-              .maxHeight(82.0);
-            };
-          });
-        });
-      })
-      .left()
-      .marginRight(24.0);
-    };
-
-    const buildAux = (tb, aux) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("AUX:").left().tooltip(MDL_bundle._term("lovec", "aux"), true).row();
-        tb1.table(Styles.none, tb2 => {
-          aux.forEachRow(2, (tmp, amt) => {
-            __rcCt(tb2, tmp, amt, null, false, null, VAR.dialog.ct1);
-          });
-        });
-      }).left().marginRight(24.0);
-    };
-
-    const buildOpt = (tb, opt) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("OPT:").left().tooltip(MDL_bundle._term("lovec", "opt"), true).row();
-        tb1.button("?", () => fetchDialog("rcOpt").ex_show(MDL_bundle._term("lovec", "opt"), opt)).size(34.0).pad(3.0);
-      })
-      .left()
-      .marginRight(24.0);
-    };
-
-    const buildPayi = (tb, payi) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("PAYI:").left().tooltip(MDL_bundle._term("lovec", "payi"), true).row();
-        tb1.table(Styles.none, tb2 => {
-          payi.forEachRow(2, (name, amt) => {
-            __rcCt(tb2, MDL_content._ct(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
-          });
-        });
-      })
-      .left()
-      .marginRight(24.0);
-    };
-
-    const buildBo = (tb, bo) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("BO:").left().tooltip(MDL_bundle._term("lovec", "bo"), true).row();
-        tb1.table(Styles.none, tb2 => {
-          bo.forEachRow(3, (tmp, amt, p) => {
-            __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
-          });
-        });
-      })
-      .left()
-      .marginRight(24.0);
-    };
-
-    const buildCo = (tb, co) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("CO:").left().tooltip(MDL_bundle._term("lovec", "co"), true).row();
-        tb1.table(Styles.none, tb2 => {
-          co.forEachRow(2, (tmp, amt) => {
-            __rcCt(tb2, tmp, amt, null, false, null, VAR.dialog.ct1);
-          });
-        });
-      })
-      .left()
-      .marginRight(24.0);
-    };
-
-    const buildFo = (tb, fo) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("FO:").left().tooltip(MDL_bundle._term("lovec", "fo"), true).row();
-        tb1.table(Styles.none, tb2 => {
-          bo.forEachRow(3, (tmp, amt, p) => {
-            __rcCt(tb2, tmp, amt, p, true, null, VAR.dialog.ct1);
-          });
-        });
-      })
-      .left()
-      .marginRight(24.0);
-    };
-
-    const buildPayo = (tb, payo) => {
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        __margin(tb1);
-        tb1.add("PAYO:").left().tooltip(MDL_bundle._term("lovec", "payo"), true).row();
-        tb1.table(Styles.none, tb2 => {
-          payo.forEachRow(2, (name, amt) => {
-            __rcCt(tb2, MDL_content._ct(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
-          });
-        });
-      })
-      .left()
-      .marginRight(24.0);
-    };
-
-    const buildRcStats = (tb, rcMdl, rcHeader) => {
-      // Meta
-      let timeScl = MDL_recipe._timeScl(rcMdl, rcHeader);
-      let isGen = MDL_recipe._isGen(rcMdl, rcHeader);
-      // General
-      let pol = MDL_recipe._pol(rcMdl, rcHeader);
-      let lockedByCts = MDL_recipe._lockedBy(rcMdl, rcHeader, true);
-      let erekirHeatReq = MDL_recipe._erekirHeatReq(rcMdl, rcHeader);
-      let erekirHeatProd = MDL_recipe._erekirHeatProd(rcMdl, rcHeader);
-      let attr = MDL_recipe._attr(rcMdl, rcHeader);
-      let attrBoostScl = MDL_recipe._attrBoostScl(rcMdl, rcHeader);
-      // Specific
-      let powProdMtp = MDL_recipe._powProdMtp(rcMdl, rcHeader);
-      let tempReq = MDL_recipe._tempReq(rcMdl, rcHeader);
-      let tempAllowed = MDL_recipe._tempAllowed(rcMdl, rcHeader);
-      let durabDecMtp = MDL_recipe._durabDecMtp(rcMdl, rcHeader);
-      // I/O
-      let reqOpt = MDL_recipe._reqOpt(rcMdl, rcHeader);
-      let failP = MDL_recipe._failP(rcMdl, rcHeader);
-
-      tb.table(Styles.none, tb1 => {
-        __barV(tb1, Pal.accent);
-        tb1.table(Styles.none, tb2 => {}).width(24.0);
-        tb1.table(Styles.none, tb2 => {
-          tb2.pane(pnTb => {
-            let addStat = newMultiFunction(
-              function(cond, str) {
-                if(cond) pnTb.add(str).left().row();
-              },
-              function(cond, titleStr, valStr) {
-                if(cond) pnTb.add(MDL_text._statText(titleStr, valStr)).left().row();
-              },
-              function(cond, titleStr, valStr, unitStr) {
-                if(cond) pnTb.add(MDL_text._statText(titleStr, valStr, unitStr)).left().row();
-              },
-            );
-
-            pnTb.left();
-
-            // Stats
-            addStat(isGen, MDL_bundle._term("lovec", "generated-recipe").color(Pal.gray));
-            addStat(!timeScl.fEqual(1.0), MDL_bundle._term("lovec", "time-required"), Strings.fixed(timeScl, 1) + "x (" + Strings.autoFixed(blk.craftTime * timeScl / 60.0, 2) + "s)");
-            addStat(!pol.fEqual(0.0), fetchStat("lovec", "blk-pol").localized(), (pol > 0.0 ? "+" : "-") + Math.abs(pol), fetchStatUnit("lovec", "polunits").localized());
-            addStat(erekirHeatReq > 0.0, fetchStat("lovec", "blk-erekirheatreq").localized(), erekirHeatReq, StatUnit.heatUnits.localized());
-            addStat(erekirHeatProd > 0.0, fetchStat("lovec", "blk-erekirheatprod").localized(), erekirHeatProd, StatUnit.heatUnits.localized());
-            addStat(reqOpt, MDL_bundle._term("lovec", "require-optional"), MDL_bundle._base("yes"));
-            addStat(failP > 0.0, MDL_bundle._term("lovec", "chance-to-fail"), failP.perc(1).color(failP > 0.25 ? Pal.remove : Pal.accent));
-            addStat(!powProdMtp.fEqual(1.0), fetchStat("lovec", "blk0pow-powmtp").localized(), powProdMtp.perc());
-            addStat(tempReq > 0.0, fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(tempReq, 2), fetchStatUnit("lovec", "heatunits").localized());
-            addStat(tempAllowed < Infinity, MDL_bundle._term("lovec", "temperature-allowed"), Strings.fixed(tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized());
-            addStat(!durabDecMtp.fEqual(1.0), MDL_bundle._term("lovec", "abrasion-multiplier"), durabDecMtp.perc());
-            if(lockedByCts.length > 0) {
-              pnTb.table(Styles.none, tb3 => {
-                tb3.left();
-                tb3.add(MDL_text._statText(MDL_bundle._term("lovec", "require-unlocking"), "")).left();
-                lockedByCts.forEachFast(ct => __ct(tb3, ct, 28.0, 0.0, null, VAR.dialog.ct2));
-              })
-              .left()
-              .row();
-            };
-            if(attr != null) {
-              pnTb.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left().tooltip(cons(tb => {
-                tb.table(Styles.black6, tb1 => {
-                  __margin(tb1);
-                  _d_attr(tb1, attr, null, attrBoostScl, 40.0, 5);
-                });
-              })).row();
-            };
-          })
-          .height(100.0)
-          .padTop(20.0).padBottom(20.0)
-          .growX();
-        })
-        .left()
-        .width(360.0)
-        .growX();
-        tb1.table(Styles.none, tb2 => {}).width(20.0);
-      }).growY();
-    };
-
-    /* END OF HELL */
-
-    const categHeaderObj = MDL_recipe._categHeaderObj(rcMdl);
-
     // Used above!
-    let i = 1, uncategorizedOnly = false;
+    let
+      i = 1,
+      categHeaderObj = CLS_recipe.getBlkCategHeaderObjMap().get(blk),
+      categAmt = 0,
+      uncategorizedOnly = false;
 
-    let categAmt = 0;
     for(let categ in categHeaderObj) {
       categAmt++;
     };
     uncategorizedOnly = categAmt === 1 && categHeaderObj.uncategorized != null;
-    if(hasBaseIo) {
+    if(rcs[0].hasBaseIo) {
       buildCateg("SPEC: base");
     };
     for(let categ in categHeaderObj) {

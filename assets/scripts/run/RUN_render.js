@@ -311,7 +311,7 @@
 
     showFadeIn();
 
-    Time.run(30.0, () => {
+    Time.run(VAR.delay.gameLoad.setNoise, () => {
       updateNoiseArgs();
     });
 

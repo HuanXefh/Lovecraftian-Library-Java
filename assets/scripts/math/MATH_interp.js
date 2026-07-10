@@ -18,7 +18,7 @@
 */
 
 
-  /* <------------------------------ base ------------------------------ */
+  /* <------------------------------ lerp ------------------------------ */
 
 
   /**
@@ -103,6 +103,7 @@
 
   /**
    * Path version of {@link lerp}.
+   * @param {Array|unset} contTup
    * @param {PathData} pathData
    * @param {number|unset} dim
    * @param {number} param
@@ -110,17 +111,22 @@
    * @param {number|unset} [param_t]
    * @return {Array<number>} Result is returned as n-dimensional point.
    */
-  const pathLerp = function(pathData, dim, param, param_f, param_t) {
-    let tup = [];
+  const pathLerp = function thisFun(contTup, pathData, dim, param, param_f, param_t) {
+    let tup = contTup != null ? contTup.clear() : [];
     if(dim == null) dim = 2;
     if(param_f == null) param_f = 0.0;
     if(param_t == null) param_t = 1.0;
 
-    let paramFrac = LCLerp.calcParamFrac(param, param_f, param_t);
-    let pathLen = MATH_geometry._pathLen(pathData, dim);
-    let pathSegLens = MATH_geometry._pathSegLens(pathData, dim);
-    let i = 0, iCap = pathSegLens.iCap();
-    let tmpFrac1, tmpFrac2 = 0.0, tmpFrac3 = null;
+    let
+      i = 0,
+      iCap = pathSegLens.iCap(),
+      tmpFrac1,
+      tmpFrac2 = 0.0,
+      tmpFrac3 = null,
+      paramFrac = LCLerp.calcParamFrac(param, param_f, param_t),
+      pathLen = MATH_geometry._pathLen(pathData, dim),
+      pathSegLens = MATH_geometry._pathSegLens(thisFun.tmpArr, pathData, dim);
+
     while(i < iCap) {
       tmpFrac1 = tmpFrac2;
       tmpFrac2 += pathSegLens[i] / pathLen;
@@ -133,16 +139,19 @@
       };
       i++;
     };
-
     if(tmpFrac3 == null) dim._it(ind => tup.push(pathData[ind]));
 
     return tup;
-  };
+  }
+  .setProp({
+    tmpArr: [],
+  });
   exports.pathLerp = pathLerp;
 
 
   /**
    * Bilinear version of {@link pathLerp}.
+   * @param {Array|unset} contTup
    * @param {PathData} pathData1
    * @param {PathData} pathData2
    * @param {number|unset} dim
@@ -155,13 +164,25 @@
    * @param {number|unset} [param2_t]
    * @return {Array<number>}
    */
-  const pathBiLerp = function(pathData1, pathData2, dim, param1, param2, a, param1_f, param1_t, param2_f, param2_t) {
-    return pathLerp([
-      pathLerp(pathData1, dim, param1, param1_f, param1_t),
-      pathLerp(pathData2, dim, param2, param2_f, param2_t),
-    ].flatten(), dim, a);
-  };
+  const pathBiLerp = function thisFun(contTup, pathData1, pathData2, dim, param1, param2, a, param1_f, param1_t, param2_f, param2_t) {
+    thisFun.tmpArrs[0].clear();
+    thisFun.tmpArrs[1].clear();
+    thisFun.tmpArrs[2].clear();
+    pathLerp(thisFun.tmpArrs[0], pathData1, dim, param1, param1_f, param1_t);
+    pathLerp(thisFun.tmpArrs[1], pathData2, dim, param2, param2_f, param2_t);
+    thisFun.tmpArrs[2].pushAll(thisFun.tmpArrs[0]).pushAll(thisFun.tmpArrs[1]);
+
+    return pathLen(contTup, thisFun.tmpArrs[2], dim, a);
+  }
+  .setProp({
+    tmpArrs: [
+      [], [], [],
+    ],
+  });
   exports.pathBiLerp = pathBiLerp;
+
+
+  /* <------------------------------ interp ------------------------------ */
 
 
   /**
@@ -179,7 +200,7 @@
       (
         interp == null ?
           LCLerp.applyInterp(val_f, val_t, param) :
-          LCInterp.applyInterp(val_f, val_t, param, interp)
+          LCLerp.applyInterp(val_f, val_t, param, interp)
       ) :
       (
         interp == null ?

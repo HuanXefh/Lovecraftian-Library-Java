@@ -17,13 +17,11 @@
   function comp_init(blk) {
     if(!blk.noFuelInput) blk.configurable = true;
 
-    MDL_event._c_onLoad(() => {
-      Core.app.post(() => {
-        MDL_fuel._fuelArr(blk).forEachFast(rs => {
-          rs instanceof Item ?
-            MDL_recipeDict.addItmConsTerm(blk, rs, 1, 1.0, {icon: "lovec-icon-fuel", item: MDL_fuel._fuelPon(rs) * 60.0 / blk.fuelConsMtp}) :
-            MDL_recipeDict.addFldConsTerm(blk, rs, MDL_fuel._fuelPon(rs) * blk.fuelConsMtp, {icon: "lovec-icon-fuel"});
-        });
+    MDL_event._c_onLoadPost(() => {
+      MDL_fuel._fuelArr(blk).forEachFast(rs => {
+        rs instanceof Item ?
+        MDL_recipeDict.addItmConsTerm(blk, rs, 1, 1.0, {icon: "lovec-icon-fuel", item: MDL_fuel._fuelPon(rs) * 60.0 / blk.fuelConsMtp}) :
+        MDL_recipeDict.addFldConsTerm(blk, rs, MDL_fuel._fuelPon(rs) * blk.fuelConsMtp, {icon: "lovec-icon-fuel"});
       });
     });
   };

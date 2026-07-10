@@ -141,7 +141,7 @@
          * @memberof INTF_B_pollutionHandler
          * @instance
          */
-        blk$polTol: -1.0,
+        blk$polTol: "!REPLACE",
 
 
       }),

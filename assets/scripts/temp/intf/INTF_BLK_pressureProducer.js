@@ -14,11 +14,11 @@
   function comp_init(blk) {
     if(!blk.hasLiquids) ERROR_HANDLER.throw("noLiquidModule", blk.name);
 
-    if(!blk.presProd.fEqual(0.0)) MDL_event._c_onLoad(() => {
-      Core.app.post(() => {
+    if(!blk.presProd.fEqual(0.0)) {
+      MDL_event._c_onLoadPost(() => {
         MDL_recipeDict.addFldProdTerm(blk, blk.presProd > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, Math.abs(blk.presProd), null);
       });
-    });
+    };
   };
 
 

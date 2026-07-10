@@ -16,7 +16,7 @@
 
 
   function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-    b.durabDecMtp = MDL_recipe._durabDecMtp(rcMdl, rcHeader);
+    b.durabDecMtp = b.rc.durabDecMtp;
   };
 
 

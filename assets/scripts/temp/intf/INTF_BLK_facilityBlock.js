@@ -19,11 +19,9 @@
 
 
   function comp_init(blk) {
-    MDL_event._c_onLoad(() => {
-      Time.run(20.0, () => {
-        blk.canHandleAux = blk.ex_checkHandleAuxPossible();
-        blk.canFireExplode = blk.ex_checkFireExplodePossible();
-      });
+    MDL_event._c_onLoadDelay(VAR.delay.load.blkCheck, () => {
+      blk.canHandleAux = blk.ex_checkHandleAuxPossible();
+      blk.canFireExplode = blk.ex_checkFireExplodePossible();
     });
   };
 

@@ -126,7 +126,7 @@
     const thisIns = this;
 
     this.root.clearChildren();
-    const btns = this.root.table(Styles.black3, tb => tb.left()).left().get();
+    let btns = this.root.table(Styles.black3, tb => tb.left()).left().get();
     this.root.left().top().row();
 
     this.colCounts.setVal(0);

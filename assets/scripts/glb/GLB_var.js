@@ -89,6 +89,30 @@
   };
 
 
+  exports.delay = {
+    load: {
+      addStat: 3.0,
+      loadExtraSound: 3.0,
+      loadReacGrp: 5.0,
+      blkCheck: 10.0,
+      logRcGen: 280.0,
+      logRcRegis: 300.0,
+    },
+    worldLoad: {
+      loadParam: 5.0,
+      loadLsav: 6.0,
+      loadPol: 20.0,
+      triggerSecretCrash: 240.0,
+    },
+    mapChange: {
+      setWeather: 60.0,
+    },
+    gameLoad: {
+      setNoise: 30.0,
+    },
+  };
+
+
   exports.chance = {
     effPCap: 0.08,
 

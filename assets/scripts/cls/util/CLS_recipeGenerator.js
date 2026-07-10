@@ -29,10 +29,8 @@
   const TMP_TUP = [];
 
 
-  MDL_event._c_onLoad(() => {
-    Time.run(60.0, () => {
-      console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(String(runCount).color(Pal.accent), String(rcCount).color(Pal.accent)));
-    });
+  MDL_event._c_onLoadDelay(VAR.delay.load.logRcGen, () => {
+    console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(String(runCount).color(Pal.accent), String(rcCount).color(Pal.accent)));
   });
 
 

@@ -39,15 +39,13 @@
     const itmMap = new ObjectMap();
     const liqMap = new ObjectMap();
 
-    MDL_event._c_onLoad(() => {
-      Time.run(5.0, () => {
-        DB_reaction.db["groupCond"].forEachRow(2, (grp, boolF) => {
-          let itmBitset = new Bits(), liqBitset = new Bits();
-          Vars.content.items().each(boolF, rs => itmBitset.set(rs.id));
-          Vars.content.liquids().each(boolF, rs => liqBitset.set(rs.id));
-          itmMap.put(grp, itmBitset);
-          liqMap.put(grp, liqBitset);
-        });
+    MDL_event._c_onLoadDelay(VAR.delay.load.loadReacGrp, () => {
+      DB_reaction.db["groupCond"].forEachRow(2, (grp, boolF) => {
+        let itmBitset = new Bits(), liqBitset = new Bits();
+        Vars.content.items().each(boolF, rs => itmBitset.set(rs.id));
+        Vars.content.liquids().each(boolF, rs => liqBitset.set(rs.id));
+        itmMap.put(grp, itmBitset);
+        liqMap.put(grp, liqBitset);
       });
     });
 

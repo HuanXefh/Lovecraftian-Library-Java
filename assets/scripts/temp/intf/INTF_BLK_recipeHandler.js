@@ -53,6 +53,8 @@
     blk.outputItems = [];
     blk.outputLiquids = [];
 
+    CLS_recipe.register(blk, blk.rcMdl);
+
     MDL_event._c_onLoad(() => {
       blk.outputsLiquid = MDL_recipe._hasAnyOutput_liq(blk.rcMdl, false);
       blk.hasConsumers = true;
@@ -62,8 +64,6 @@
       if(blk.isErekirHeatConsumer && blk.isErekirHeatProducer) {
         console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(Pal.accent)));
       };
-
-      Core.app.post(() => MDL_recipe.initRc(blk.rcMdl, blk));
     });
   };
 
@@ -83,8 +83,6 @@
 
 
   function comp_created(b) {
-    b.useAutoSelection = b.block.delegee.useAutoSelection;
-
     Time.run(0.0, () => {
       rcMdl = b.block.delegee.rcMdl;
       if(MDL_recipe._hasHeader(rcMdl, b.rcHeader)) {
@@ -102,35 +100,15 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
+    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate || b.rc == null) return;
 
-    // Change recipe for auto-selection if key content is changed
-    if(b.useAutoSelection && b.keyCt != null && b.lastKeyCt !== b.keyCt) {
-      b.lastKeyCt = b.keyCt;
-      header = (
-        b.keyCt instanceof Item ?
-          b.keyItmHeaderMap :
-          b.keyCt instanceof Liquid ?
-            b.keyFldHeaderMap :
-            b.keyPayHeaderMap
-      ).get(b.keyCt);
-      if(header != null) {
-        b.configure(header);
-      };
-    };
+    b.rc.updateAutoSelection(b);
 
     b.ex_updateRcParam(b.block.delegee.rcMdl, b.rcHeader, false);
-    if(b.scrTup != null) b.ex_onRcUpdate();
+    b.ex_onRcUpdate();
     b.hasStopped = b.stopTimeCur > STOP_TIME;
 
-    // Update Erekir heat
-    if(b.erekirHeatReq > 0.0) {
-      b.erekirHeatI = b.calculateHeat(b.erekirSideHeats);
-      b.erekirHeatEffc = Mathf.clamp(b.erekirHeatI / b.erekirHeatReq)
-    };
-    if(b.erekirHeatProd > 0.0) {
-      b.erekirHeatO = Mathf.approachDelta(b.erekirHeatO, b.erekirHeatProd * b.efficiency, b.block.delegee.erekirHeatWarmupRate * b.delta());
-    };
+    b.rc.updateErekirHeat(b);
 
     if(b.efficiency < 0.0001 || !b.shouldConsume()) {
       // Crafter is inactive
@@ -155,8 +133,8 @@
         b.craft();
       };
 
-      FRAG_recipe.produce_liq(b, b.lastLiqProgInc, b.rcTimeScl);
-      FRAG_recipe.consume_liq(b, b.lastLiqProgInc, b.rcTimeScl);
+      FRAG_recipe.produce_liq(b, b.rc, b.lastLiqProgInc);
+      FRAG_recipe.consume_liq(b, b.rc, b.lastLiqProgInc);
       if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup)) {
         MDL_effect.showAround(b.x, b.y, b.block.updateEffect, b.block.size * 0.5 * Vars.tilesize, 0.0);
       };
@@ -168,7 +146,7 @@
 
     b.totalProgress += b.warmup * b.edelta();
     if(!b.block.delegee.disableDump) {
-      FRAG_recipe.dump(b, b.dumpTup);
+      FRAG_recipe.dump(b, b.rc);
     };
   };
 
@@ -179,20 +157,20 @@
       b.rcEffc :
       0.0;
 
-    if(b.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
+    if(b.rc != null && b.rc.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
     b.ex_postUpdateEfficiencyMultiplier();
-    if(b.validTup != null && !b.validTup[0](b)) b.efficiency = 0.0;
+    if(b.rc != null && b.rc.validTup != null && !b.rc.validTup[0](b)) b.efficiency = 0.0;
   };
 
 
   function comp_acceptItem(b, b_f, itm) {
     if(b.items == null || b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
-    if(b.useAutoSelection && b.keyItmHeaderMap != null && itm !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.keyItmHeaderMap.containsKey(itm) && !FRAG_recipe._hasOutput(itm, b.co, b.bo, b.fo)) {
+    if(b.blk$useAutoSelection && b.rc.keyItmHeaderMap != null && itm !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.rc.keyItmHeaderMap.containsKey(itm) && !FRAG_recipe._hasOutput(itm, b.rc)) {
       b.keyCt = itm;
     };
 
     if(b.itmAcceptCacheArr[itm.id] == null) {
-      b.itmAcceptCacheArr[itm.id] = FRAG_recipe._hasInput(itm, b.ci, b.bi, b.aux, b.opt);
+      b.itmAcceptCacheArr[itm.id] = FRAG_recipe._hasInput(itm, b.rc);
     };
 
     return b.itmAcceptCacheArr[itm.id];
@@ -201,12 +179,12 @@
 
   function comp_acceptLiquid(b, b_f, liq) {
     if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
-    if(b.useAutoSelection && b.keyFldHeaderMap != null && liq !== b.keyCt && b_f !== b && b.keyFldHeaderMap.containsKey(liq) && !FRAG_recipe._hasOutput(liq, b.co, b.bo, b.fo)) {
+    if(b.blk$useAutoSelection && b.rc.keyFldHeaderMap != null && liq !== b.keyCt && b_f !== b && b.rc.keyFldHeaderMap.containsKey(liq) && !FRAG_recipe._hasOutput(liq, b.rc)) {
       b.keyCt = liq;
     };
 
     if(b.liqAcceptCacheArr[liq.id] == null) {
-      b.liqAcceptCacheArr[liq.id] = FRAG_recipe._hasInput(liq, b.ci, b.bi, b.aux, b.opt);
+      b.liqAcceptCacheArr[liq.id] = FRAG_recipe._hasInput(liq, b.rc);
     };
 
     return b.liqAcceptCacheArr[liq.id];
@@ -214,26 +192,11 @@
 
 
   function comp_craft(b) {
-    FRAG_recipe.produce_itm(b, b.ex_calcFailP());
-    FRAG_recipe.consume_itm(b);
+    FRAG_recipe.produce_itm(b, b.rc, b.ex_calcFailP());
+    FRAG_recipe.consume_itm(b, b.rc);
     MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);
 
-    if(b.hasPayInput) {
-      i = 0;
-      iCap = b.payi.iCap();
-      while(i < iCap) {
-        Object.mapIncre(b.payReqObj, b.payi[i], -b.payi[i + 1]);
-        i += 2;
-      };
-    };
-    if(b.hasPayOutput) {
-      i = 0;
-      iCap = b.payo.iCap();
-      while(i < iCap) {
-        Object.mapIncre(b.payStockObj, b.payo[i], b.payo[i + 1]);
-        i += 2;
-      };
-    };
+    b.rc.craftPay(b);
 
     b.ex_onRcCraft();
   };
@@ -244,11 +207,11 @@
 
     // BI
     i = 0;
-    iCap = b.bi.iCap();
+    iCap = b.rc.bi.iCap();
     while(i < iCap) {
-      tmp = b.bi[i];
+      tmp = b.rc.bi[i];
       if(!(tmp instanceof Array)) {
-        amt = b.bi[i + 1];
+        amt = b.rc.bi[i + 1];
         if(amt > 0) MDL_table.__reqRs(tb, b, tmp, amt);
       } else {
         thisFun.tmpCts.clear();
@@ -273,11 +236,11 @@
 
     // CI
     i = 0;
-    iCap = b.ci.iCap();
+    iCap = b.rc.ci.iCap();
     while(i < iCap) {
-      tmp = b.ci[i];
+      tmp = b.rc.ci[i];
       if(!(tmp instanceof Array)) {
-        if(b.ci[i + 1] > 0.0) MDL_table.__reqRs(tb, b, tmp);
+        if(b.rc.ci[i + 1] > 0.0) MDL_table.__reqRs(tb, b, tmp);
       } else {
         thisFun.tmpCts.clear();
         j = 0;
@@ -298,10 +261,10 @@
 
     // AUX
     i = 0;
-    iCap = b.aux.iCap();
+    iCap = b.rc.aux.iCap();
     while(i < iCap) {
-      tmp = b.aux[i];
-      if(b.aux[i + 1] > 0.0) {
+      tmp = b.rc.aux[i];
+      if(b.rc.aux[i + 1] > 0.0) {
         MDL_table.__reqRs(tb, b, tmp);
       };
       i += 2;
@@ -312,10 +275,10 @@
       thisFun.tmpCts.clear();
       thisFun.tmpAmts.clear();
       i = 0;
-      iCap = b.opt.iCap();
+      iCap = b.rc.opt.iCap();
       while(i < iCap) {
-        tmp = b.opt[i];
-        amt = b.opt[i + 1];
+        tmp = b.rc.opt[i];
+        amt = b.rc.opt[i + 1];
         if(amt > 0) {
           thisFun.tmpCts.push(tmp);
           thisFun.tmpAmts.push(amt);
@@ -330,10 +293,10 @@
     // PAYI
     if(b.hasPayInput) {
       i = 0;
-      iCap = b.payi.iCap();
+      iCap = b.rc.payi.iCap();
       while(i < iCap) {
-        tmp = MDL_content._ct(b.payi[i], null, true);
-        amt = b.payi[i + 1];
+        tmp = MDL_content._ct(b.rc.payi[i], null, true);
+        amt = b.rc.payi[i + 1];
         if(amt > 0) {
           MDL_table.__reqCt(tb, tmp, amt, ct => tryVal(b.payReqObj[ct.name], 0))
         };
@@ -348,7 +311,7 @@
 
 
   const comp_displayBars = function thisFun(b, tb) {
-    if(b.erekirHeatReq > 0.0) {
+    if(b.rc.erekirHeatReq > 0.0) {
       tb.add(new Bar(
         prov(() => Core.bundle.format("bar.heatpercent", (b.erekirHeatI + 0.01).roundFixed(1), (b.erekirHeatEffc * 100.0 + 0.01).roundFixed(1))),
         prov(() => Pal.lightOrange),
@@ -356,7 +319,7 @@
       ));
       tb.row();
     };
-    if(b.erekirHeatProd > 0.0) {
+    if(b.rc.erekirHeatProd > 0.0) {
       tb.add(new Bar(
         "bar.heat",
         Pal.lightOrange,
@@ -365,7 +328,7 @@
       tb.row();
     };
 
-    if(b.attr != null) {
+    if(b.rc.attr != null) {
       tb.add(new Bar(
         prov(() => Core.bundle.format("bar.efficiency", Math.round(b.attrEffc * 100.0))),
         prov(() => Pal.lightOrange),
@@ -374,8 +337,8 @@
       tb.row();
     };
 
-    FRAG_recipe._inputLiqs(thisFun.tmpArr, b.ci, b.bi, b.aux);
-    FRAG_recipe._outputLiqs(thisFun.tmpArr1, b.co, b.bo);
+    FRAG_recipe._inputLiqs(thisFun.tmpArr, b.rc);
+    FRAG_recipe._outputLiqs(thisFun.tmpArr1, b.rc);
 
     thisFun.addedLiqs.clear();
     thisFun.tmpArr.forEachFast(liq => {
@@ -419,27 +382,14 @@
     b.rcEffc = b.ex_calcRcEffcTg();
     b.lastProgInc = b.ex_calcProgInc(b.block.craftTime);
     b.lastLiqProgInc = b.ex_calcProgInc(1.0);
-    b.lastCanAdd = FRAG_recipe._canAdd(b);
-    b.dumpTup = FRAG_recipe._dumpTup(b.dumpTup, b);
+    b.lastCanAdd = FRAG_recipe._canAdd(b, b.rc);
 
     b.ex_updateAttrEffc();
   };
 
 
   function comp_ex_updateAttrEffc(b) {
-    b.attrEffc = b.attr == null ?
-      1.0 :
-      Mathf.clamp(
-        MATH_interp.lerp(
-          0.0,
-          1.0,
-          b.attrSum + b.attr.env(),
-          b.attrMin,
-          b.attrMax,
-        ) * b.attrBoostScl,
-        0.0,
-        b.attrBoostCap,
-      );
+    b.attrEffc = b.rc.calcAttrEffc(b.attrSum);
   };
 
 
@@ -473,49 +423,13 @@
 
 
   function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-    b.ci = MDL_recipe._ci(b.ci, rcMdl, rcHeader);
-    b.bi = MDL_recipe._bi(b.bi, rcMdl, rcHeader);
-    b.aux = MDL_recipe._aux(b.aux, rcMdl, rcHeader);
-    b.reqOpt = MDL_recipe._reqOpt(rcMdl, rcHeader);
-    b.opt = MDL_recipe._opt(b.opt, rcMdl, rcHeader);
-    b.payi = MDL_recipe._payi(b.payi, rcMdl, rcHeader);
-    b.co = MDL_recipe._co(b.co, rcMdl, rcHeader);
-    b.bo = MDL_recipe._bo(b.bo, rcMdl, rcHeader);
-    b.failP = MDL_recipe._failP(rcMdl, rcHeader);
-    b.fo = MDL_recipe._fo(b.fo, rcMdl, rcHeader);
-    b.payo = MDL_recipe._payo(b.payo, rcMdl, rcHeader);
-    b.rcIconName = MDL_recipe._iconName(rcMdl, rcHeader);
-    b.rcTimeScl = MDL_recipe._timeScl(rcMdl, rcHeader);
-    b.rcPol = MDL_recipe._pol(rcMdl, rcHeader);
-    b.ignoreItemFullness = MDL_recipe._ignoreItemFullness(rcMdl, rcHeader);
-    b.erekirHeatReq = MDL_recipe._erekirHeatReq(rcMdl, rcHeader);
-    b.erekirHeatProd = MDL_recipe._erekirHeatProd(rcMdl, rcHeader);
-
-    let nameAttr = MDL_recipe._attr(rcMdl, rcHeader);
-    b.attr = nameAttr == null ?
-      null :
-      Attribute.getOrNull(nameAttr);
-
-    b.attrMin = MDL_recipe._attrMin(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
-    b.attrMax = MDL_recipe._attrMax(rcMdl, rcHeader) * Math.pow(b.block.size, 2);
-    b.attrBoostScl = MDL_recipe._attrBoostScl(rcMdl, rcHeader);
-    b.attrBoostCap = MDL_recipe._attrBoostCap(rcMdl, rcHeader);
-    b.failEff = MDL_recipe._failEff(rcMdl, rcHeader);
-    b.validTup = MDL_recipe._validTup(b.validTup, rcMdl, rcHeader);
-    b.scrTup = MDL_recipe._scrTup(b.scrTup, rcMdl, rcHeader);
-    b.rcDrawer = MDL_recipe._drawer(rcMdl, rcHeader);
-
-    if(b.useAutoSelection) {
-      b.keyItmHeaderMap = MDL_recipe._keyCtHeaderMap(b.keyItmHeaderMap, rcMdl, RecipeKeyResourceModes.ITEM);
-      b.keyFldHeaderMap = MDL_recipe._keyCtHeaderMap(b.keyFldHeaderMap, rcMdl, RecipeKeyResourceModes.FLUID);
-      b.keyPayHeaderMap = MDL_recipe._keyCtHeaderMap(b.keyPayHeaderMap, rcMdl, RecipeKeyResourceModes.PAYLOAD);
-    };
+    b.rc = CLS_recipe.getByHeader(b.block, rcHeader);
 
     Time.run(0.0, () => {
-      b.hasPayInput = FRAG_recipe._hasInput_pay(b.payi);
-      b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.payo);
+      b.hasPayInput = FRAG_recipe._hasInput_pay(b.rc);
+      b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.rc);
       if(b.hasPayInput) {
-        b.payi.forEachRow(2, (tmp, amt) => {
+        b.rc.payi.forEachRow(2, (tmp, amt) => {
           if(amt > 0 && b.payReqObj[tmp] == null) {
             b.payReqObj[tmp] = 0;
           };
@@ -533,18 +447,18 @@
 
   function comp_ex_calcProgInc(b, time) {
     if(b.block.ignoreLiquidFullness) {
-      inc = b.edelta() / time / b.rcTimeScl;
+      inc = b.edelta() / time / b.rc.rcTimeScl;
     } else {
       val = 1.0;
       scl = 1.0;
       cond = false;
-      iCap = b.co.iCap();
+      iCap = b.rc.co.iCap();
       if(b.liquids != null && iCap > 0) {
         val = 0.0;
         i = 0;
         while(i < iCap) {
-          tmp = b.co[i];
-          amt = b.co[i + 1];
+          tmp = b.rc.co[i];
+          amt = b.rc.co[i + 1];
           tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(tmp)) / (amt * b.edelta());
           val = Math.max(val, tmpVal);
           if(!MDL_cond._isAuxiliaryFluid(tmp)) {
@@ -555,7 +469,7 @@
         };
       };
       if(!cond) val = 1.0;
-      inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rcTimeScl;
+      inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rc.rcTimeScl;
     };
 
     return isNaN(inc) ?
@@ -565,7 +479,7 @@
 
 
   function comp_ex_calcRcEffcTg(b) {
-    b.rcEffcWinMean.add(FRAG_recipe._effc(b));
+    b.rcEffcWinMean.add(FRAG_recipe._effc(b, b.rc));
     return (b.rcEffcWinMean.hasEnoughData() ? b.rcEffcWinMean.mean() : b.rcEffcWinMean.latest()) * b.attrEffc;
   };
 
@@ -720,167 +634,17 @@
 
 
         /**
-         * <INTERNAL>: Recipe selected.
+         * <INTERNAL>: Recipe header selected.
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         rcHeader: "",
         /**
-         * <INTERNAL>
+         * <INTERNAL>: Recipe selected.
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        ci: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        bi: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        aux: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        reqOpt: false,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        opt: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        payi: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        co: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        bo: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        failP: 0.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        fo: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        payo: prov(() => []),
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        rcIconName: "error",
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        rcTimeScl: 1.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        rcPol: 0.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        ignoreItemFullness: false,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        erekirHeatReq: 0.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        erekirHeatProd: 0.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        attr: null,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        attrMin: 0.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        attrMax: 0.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        attrBoostScl: 1.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        attrBoostCap: 1.0,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        rcDrawer: null,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        validTup: null,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        scrTup: null,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        dumpTup: null,
+        rc: null,
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
@@ -958,30 +722,6 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        useAutoSelection: false,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        keyItmHeaderMap: null,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        keyFldHeaderMap: null,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        keyPayHeaderMap: null,
-        /**
-         * <INTERNAL>
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
         keyCt: null,
         /**
          * <INTERNAL>
@@ -1036,7 +776,7 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        failEff: null,
+        blk$useAutoSelection: "!REPLACE",
         /**
          * <INTERNAL>
          * @memberof INTF_B_recipeHandler
@@ -1098,7 +838,7 @@
 
 
       shouldConsume: function() {
-        return this.enabled && this.lastCanAdd && (this.erekirHeatReq <= 0.0 || this.erekirHeatI > 0.0);
+        return this.enabled && this.lastCanAdd && (this.rc.erekirHeatReq <= 0.0 || this.erekirHeatI > 0.0);
       }
       .setProp({
         noSuper: true,
@@ -1117,7 +857,7 @@
       warmupTarget: function() {
         // `b.cheating()` should not be checked here because Anuke said no
         // Yep, it's intentional that heat is required even when cheating
-        return this.erekirHeatReq <= 0.0 ? 1.0 : Mathf.clamp(this.erekirHeatI / this.erekirHeatReq);
+        return this.rc.erekirHeatReq <= 0.0 ? 1.0 : Mathf.clamp(this.erekirHeatI / this.rc.erekirHeatReq);
       }
       .setProp({
         noSuper: true,
@@ -1128,7 +868,7 @@
 
 
       heatRequirement: function() {
-        return this.erekirHeatReq;
+        return this.rc.erekirHeatReq;
       }
       .setProp({
         noSuper: true,
@@ -1155,7 +895,7 @@
 
 
       heatFrac: function() {
-        return this.erekirHeatO / this.erekirHeatProd;
+        return this.erekirHeatO / this.rc.erekirHeatProd;
       }
       .setProp({
         noSuper: true,
@@ -1211,7 +951,7 @@
        * @return {void}
        */
       ex_onRcUpdate: function() {
-        if(this.scrTup != null) this.scrTup[0](this);
+        if(this.rc.scrTup != null) this.rc.scrTup[0](this);
       }
       .setProp({
         noSuper: true,
@@ -1224,7 +964,7 @@
        * @return {void}
        */
       ex_onRcRun: function() {
-        if(this.scrTup != null) this.scrTup[1](this);
+        if(this.rc.scrTup != null) this.rc.scrTup[1](this);
       }
       .setProp({
         noSuper: true,
@@ -1237,7 +977,7 @@
        * @return {void}
        */
       ex_onRcStoppedRun: function() {
-        if(this.scrTup != null) this.scrTup[3](this);
+        if(this.rc.scrTup != null) this.rc.scrTup[3](this);
       }
       .setProp({
         noSuper: true,
@@ -1250,7 +990,7 @@
        * @return {void}
        */
       ex_onRcCraft: function() {
-        if(this.scrTup != null) this.scrTup[2](this);
+        if(this.rc.scrTup != null) this.rc.scrTup[2](this);
       }
       .setProp({
         noSuper: true,
@@ -1263,7 +1003,7 @@
        * @return {void}
        */
       ex_onRcFail: function() {
-        if(this.scrTup != null) this.scrTup[4](this);
+        if(this.rc.scrTup != null) this.rc.scrTup[4](this);
       }
       .setProp({
         noSuper: true,
@@ -1374,7 +1114,7 @@
       ex_acceptPay: function thisFun(b_f, pay) {
         if(pay == null) return false;
         let ct = pay.content();
-        if(this.useAutoSelection && this.keyPayHeaderMap != null && ct !== this.keyCt && b_f !== this && this.keyPayHeaderMap.containsKey(ct)) {
+        if(this.blk$useAutoSelection && this.rc.keyPayHeaderMap != null && ct !== this.keyCt && b_f !== this && this.rc.keyPayHeaderMap.containsKey(ct)) {
           this.keyCt = ct;
         };
 
@@ -1395,7 +1135,7 @@
        * @return {number}
        */
       ex_getPayConsAmt: function(nameCt) {
-        return this.payi.read(nameCt, 0);
+        return this.rc.payi.read(nameCt, 0);
       }
       .setProp({
         noSuper: true,
@@ -1412,7 +1152,7 @@
        * @return {number}
        */
       ex_getPayProdAmt: function(nameCt) {
-        return this.payo.read(nameCt, 0);
+        return this.rc.payo.read(nameCt, 0);
       }
       .setProp({
         noSuper: true,
@@ -1468,7 +1208,7 @@
        * @return {number}
        */
       ex_calcFailP: function() {
-        return this.failP;
+        return this.rc.failP;
       }
       .setProp({
         noSuper: true,
@@ -1481,7 +1221,7 @@
        * @return {Effect}
        */
       ex_getFailEff: function() {
-        return tryVal(this.failEff, this.block.delegee.failEff);
+        return tryVal(this.rc.failEff, this.block.delegee.failEff);
       }
       .setProp({
         noSuper: true,
@@ -1494,7 +1234,7 @@
        * @return {number}
        */
       ex_getBlkPol: function() {
-        return MDL_pollution._blkPol(this.block) + this.rcPol;
+        return MDL_pollution._blkPol(this.block) + this.rc.pol;
       }
       .setProp({
         noSuper: true,

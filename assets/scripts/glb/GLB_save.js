@@ -50,7 +50,7 @@
 
 
   function loadLsav() {
-    Time.run(6.0, () => {
+    Time.run(VAR.delay.worldLoad.loadLsav, () => {
       if(Vars.state.isEditor()) return;
       if(Vars.net.client()) {
         requestSync();

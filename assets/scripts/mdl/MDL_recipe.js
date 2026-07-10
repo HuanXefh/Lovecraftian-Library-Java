@@ -32,6 +32,7 @@
     "fo", 3,
     "payo", 2,
   );
+  exports.IO_ORDER_MAP = IO_ORDER_MAP;
 
 
   /**
@@ -254,21 +255,22 @@
    * @return {boolean}
    */
   const _hasInput = function thisFun(rs_gn, rcMdl) {
-    let ci, bi, aux, opt;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      ci = _ci(thisFun.tmpArr, rcMdl, rcHeader);
-      bi = _bi(thisFun.tmpArr1, rcMdl, rcHeader);
-      aux = _aux(thisFun.tmpArr2, rcMdl, rcHeader);
-      opt = _opt(thisFun.tmpArr3, rcMdl, rcHeader);
+      _ci(thisFun.fakeRc.ci, rcMdl, rcHeader);
+      _bi(thisFun.fakeRc.bi, rcMdl, rcHeader);
+      _aux(thisFun.fakeRc.aux, rcMdl, rcHeader);
+      _opt(thisFun.fakeRc.opt, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasInput(rs_gn, ci, bi, aux, opt);
+      return FRAG_recipe._hasInput(rs_gn, thisFun.fakeRc);
     });
   }
   .setProp({
-    tmpArr: [],
-    tmpArr1: [],
-    tmpArr2: [],
-    tmpArr3: [],
+    fakeRc: {
+      ci: [],
+      bi: [],
+      aux: [],
+      opt: [],
+    },
   });
   exports._hasInput = _hasInput;
 
@@ -279,15 +281,16 @@
    * @return {boolean}
    */
   const _hasAnyInput_pay = function thisFun(rcMdl) {
-    let payi;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      payi = _payi(thisFun.tmpArr, rcMdl, rcHeader);
+      _payi(thisFun.fakeRc.payi, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasInput_pay(payi);
+      return FRAG_recipe._hasInput_pay(thisFun.fakeRc);
     });
   }
   .setProp({
-    tmpArr: [],
+    fakeRc: {
+      payi: [],
+    },
   });
   exports._hasAnyInput_pay = _hasAnyInput_pay;
 
@@ -299,16 +302,20 @@
    * @return {boolean}
    */
   const _hasOutput = function thisFun(rs_gn, rcMdl) {
-    let co, bo, fo;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      co = _co(thisFun.tmpArr, rcMdl, rcHeader);
-      bo = _bo(thisFun.tmpArr1, rcMdl, rcHeader);
-      fo = _fo(thisFun.tmpArr2, rcMdl, rcHeader);
+      _co(thisFun.fakeRc.co, rcMdl, rcHeader);
+      _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
+      _fo(thisFun.fakeRc.fo, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasOutput(rs_gn, co, bo, fo);
+      return FRAG_recipe._hasOutput(rs_gn, thisFun.fakeRc);
     });
   }
   .setProp({
+    fakeRc: {
+      co: [],
+      bo: [],
+      fo: [],
+    },
     tmpArr: [],
     tmpArr1: [],
     tmpArr2: [],
@@ -322,17 +329,18 @@
    * @return {boolean}
    */
   const _hasAnyOutput_itm = function thisFun(rcMdl) {
-    let bo, fo;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      bo = _bo(thisFun.tmpArr, rcMdl, rcHeader);
-      fo = _fo(thisFun.tmpArr1, rcMdl, rcHeader);
+      _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
+      _fo(thisFun.fakeRc.fo, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasOutput_itm(bo, fo);
+      return FRAG_recipe._hasOutput_itm(thisFun.fakeRc);
     });
   }
   .setProp({
-    tmpArr: [],
-    tmpArr1: [],
+    fakeRc: {
+      bo: [],
+      fo: [],
+    },
   });
   exports._hasAnyOutput_itm = _hasAnyOutput_itm;
 
@@ -343,17 +351,18 @@
    * @return {boolean}
    */
   const _hasAnyOutput_liq = function thisFun(rcMdl, includeAux) {
-    let co, bo;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      co = _co(thisFun.tmpArr, rcMdl, rcHeader);
-      bo = _bo(thisFun.tmpArr1, rcMdl, rcHeader);
+      _co(thisFun.fakeRc.co, rcMdl, rcHeader);
+      _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasOutput_liq(includeAux, co, bo);
+      return FRAG_recipe._hasOutput_liq(includeAux, thisFun.fakeRc);
     });
   }
   .setProp({
-    tmpArr: [],
-    tmpArr1: [],
+    fakeRc: {
+      co: [],
+      bo: [],
+    },
   });
   exports._hasAnyOutput_liq = _hasAnyOutput_liq;
 
@@ -364,15 +373,16 @@
    * @return {boolean}
    */
   const _hasAnyOutput_pay = function thisFun(rcMdl) {
-    let payo;
     return _rcHeaders(rcMdl).some(rcHeader => {
-      payo = _payo(thisFun.tmpArr, rcMdl, rcHeader);
+      _payo(thisFun.fakeRc.payo, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasOutput_pay(payo);
+      return FRAG_recipe._hasOutput_pay(thisFun.fakeRc);
     });
   }
   .setProp({
-    tmpArr: [],
+    fakeRc: {
+      payo: [],
+    },
   });
   exports._hasAnyOutput_pay = _hasAnyOutput_pay;
 
@@ -798,19 +808,6 @@
 
 
   /**
-   * Gets effect used when recipe is failed.
-   * Nullable for default effect.
-   * @param {RecipeModule} rcMdl
-   * @param {string} rcHeader
-   * @return {number}
-   */
-  const _failEff = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "failEff", _rcBaseVal(rcMdl, "baseFailEff", null));
-  };
-  exports._failEff = _failEff;
-
-
-  /**
    * Gets tooltip bundle piece of this recipe.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
@@ -1022,7 +1019,7 @@
     let
       i = 0,
       iCap = raw.iCap(),
-      ord = IO_ORDER_MAP.get(name)
+      ord = IO_ORDER_MAP.get(name),
       ctCaller = null;
 
     // It's OK to hard code this I guess
@@ -1477,6 +1474,66 @@
     return tup;
   };
   exports._scrTup = _scrTup;
+
+
+  /**
+   * Gets a 2-tuple of items and fluids to dump.
+   * CO not included due to `liquidOutputDirections`.
+   * @param {Array|unset} contTup
+   * @param {Block} blk
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {[Array<Item>, Array<Liquid>]}
+   */
+  const _dumpTup = function thisFun(contTup, blk, rcMdl, rcHeader) {
+    let tup = contTup != null ? contTup : [[], []];
+    tup[0].clear();
+    tup[1].clear();
+
+    let i, iCap, tmp;
+
+    // BO
+    _bo(thisFun.tmpArr1, rcMdl, rcHeader);
+    i = 0;
+    iCap = thisFun.tmpArr1.iCap();
+    while(i < iCap) {
+      tmp = thisFun.tmpArr1[i];
+      if(blk.hasItems && tmp instanceof Item) tup[0].pushUnique(tmp);
+      if(blk.hasLiquids && tmp instanceof Liquid) tup[1].pushUnique(tmp);
+      i += 3;
+    };
+
+    // FO
+    if(blk.hasItems) {
+      _fo(thisFun.tmpArr2, rcMdl, rcHeader);
+      i = 0;
+      iCap = thisFun.tmpArr2.iCap();
+      while(i < iCap) {
+        tup[0].pushUnique(thisFun.tmpArr2[i]);
+        i += 3;
+      };
+    };
+
+    return tup;
+  }
+  .setProp({
+    tmpArr1: [],
+    tmpArr2: [],
+  });
+  exports._dumpTup = _dumpTup;
+
+
+  /**
+   * Gets effect used when recipe is failed.
+   * Nullable for default effect.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {Effect|null}
+   */
+  const _failEff = function(rcMdl, rcHeader) {
+    return _rcVal(rcMdl, rcHeader, "failEff", _rcBaseVal(rcMdl, "baseFailEff", null));
+  };
+  exports._failEff = _failEff;
 
 
   /**

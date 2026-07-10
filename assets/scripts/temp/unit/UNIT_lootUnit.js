@@ -20,12 +20,14 @@
       if(sta == null) return;
       utp.immunities.add(sta);
     });
-    MDL_event._c_onLoad(() => {
-      Core.app.post(() => {
-        VARGEN.deathStas.forEachFast(sta => utp.immunities.add(sta));
-      });
-      if(!Vars.headless) utp.fullIcon = utp.uiIcon = Core.atlas.find("lovec-icon-drop-loot");
+    MDL_event._c_onLoadPost(() => {
+      VARGEN.deathStas.forEachFast(sta => utp.immunities.add(sta));
     });
+  };
+
+
+  function comp_load(utp) {
+    utp.fullIcon = utp.uiIcon = Core.atlas.find("lovec-icon-drop-loot");
   };
 
 
@@ -175,6 +177,11 @@
 
     init: function() {
       comp_init(this);
+    },
+
+
+    load: function() {
+      comp_load(this);
     },
 
 

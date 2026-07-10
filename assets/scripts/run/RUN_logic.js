@@ -72,7 +72,7 @@
     if(!shouldInitWea || !Vars.state.isGame() || Vars.state.isEditor()) return;
 
     shouldInitWea = false;
-    Time.run(60.0, () => {
+    Time.run(VAR.delay.mapChange.setWeather, () => {
       let nameWeas = DB_env.db["param"]["map"]["weaEn"].read(PARAM.MAP_CURRENT, Array.air);
       if(nameWeas.length === 0) return;
 

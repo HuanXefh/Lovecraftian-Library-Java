@@ -633,7 +633,7 @@
    * @param {RecipeModule} rcMdl
    * @return {void}
    */
-  const _r_recipeFactory = function thisFun(blk, rcMdl) {
+  const _r_recipeFactory = function thisFun(blk) {
     if(!ENABLED) return;
 
     if(thisFun.tmpSeq.size === 0) {
@@ -641,25 +641,19 @@
       Vars.content.liquids().each(liq => thisFun.tmpSeq.add(liq));
     };
 
-    MDL_event._c_onLoad(() => {
-      MDL_recipe._rcHeaders(rcMdl).forEachFast(rcHeader => {
-        // IO
-        let
-          ci = MDL_recipe._ci(null, rcMdl, rcHeader),
-          bi = MDL_recipe._bi(null, rcMdl, rcHeader),
-          aux = MDL_recipe._aux(null, rcMdl, rcHeader),
-          reqOpt = MDL_recipe._reqOpt(rcMdl, rcHeader),
-          opt = MDL_recipe._opt(null, rcMdl, rcHeader),
-          payi = MDL_recipe._payi(null, rcMdl, rcHeader),
-          co = MDL_recipe._co(null, rcMdl, rcHeader),
-          bo = MDL_recipe._bo(null, rcMdl, rcHeader),
-          failP = MDL_recipe._failP(rcMdl, rcHeader),
-          fo = MDL_recipe._fo(null, rcMdl, rcHeader),
-          payo = MDL_recipe._payo(null, rcMdl, rcHeader);
-        // Specific
-        let isGen = MDL_recipe._isGen(rcMdl, rcHeader);
+    let
+      rawRc,
+      ciAlterChecked,
+      biAlterChecked,
+      amtCi,
+      amtBi,
+      amtCo,
+      amtBo,
+      rcGrp;
 
-        let rawRc = _rawRc("factory", blk, blk.craftTime * MDL_recipe._timeScl(rcMdl, rcHeader));
+    MDL_event._c_onLoadDelay(5.0, () => {
+      CLS_recipe.getBlkRcsMap().get(blk).forEachFast(rc => {
+        rawRc = _rawRc("factory", blk, blk.craftTime * rc.rcTimeScl);
 
         // Power
         if(blk.consPower != null) {
@@ -667,71 +661,73 @@
         };
 
         // Erekir heat
-        let erekirHeatReq = MDL_recipe._erekirHeatReq(rcMdl, rcHeader);
-        if(erekirHeatReq > 0.0) addConsHeatErekir(rawRc, erekirHeatReq);
-        let erekirHeatProd = MDL_recipe._erekirHeatProd(rcMdl, rcHeader);
-        if(erekirHeatProd > 0.0) addProdHeatErekir(rawRc, erekirHeatProd);
+        if(rc.erekirHeatReq > 0.0) addConsHeatErekir(rawRc, rc.erekirHeatReq);
+        if(rc.erekirHeatProd > 0.0) addProdHeatErekir(rawRc, rc.erekirHeatProd);
 
         // Regular IO
-        let ciAlterChecked = false, biAlterChecked = false;
+        ciAlterChecked = false;
+        biAlterChecked = false;
         thisFun.tmpSeq.each(ct0 => {
-          let amtCi = 0.0, amtBi = 0.0, amtCo = 0.0, amtBo = 0.0;
+          amtCi = 0.0;
+          amtBi = 0.0;
+          amtCo = 0.0;
+          amtBo = 0.0;
 
           // CI
-          ci.forEachRow(2, (tmp, amt) => {
+          rc.ci.forEachRow(2, (tmp, amt) => {
             if(!(tmp instanceof Array)) {
               if(tmp === ct0) amtCi += amt;
             } else if(!ciAlterChecked) {
-              let rcGrpCi = new CLASSES.RecipeItemGroup();
+              rcGrp = new CLASSES.RecipeItemGroup();
               tmp.forEachRow(2, (tmp1, amt1) => {
-                addConsAlter(rawRc, rcGrpCi, tmp1, amt1, true);
+                addConsAlter(rawRc, rcGrp, tmp1, amt1, true);
               });
               ciAlterChecked = true;
             };
           });
 
           // BI
-          bi.forEachRow(3, (tmp, amt, p) => {
+          rc.bi.forEachRow(3, (tmp, amt, p) => {
             if(!(tmp instanceof Array)) {
               if(tmp === ct0) amtBi += amt * p;
             } else if(!biAlterChecked) {
-              let rcGrpBi = new CLASSES.RecipeItemGroup();
+              rcGrp = new CLASSES.RecipeItemGroup();
               tmp.forEachRow(3, (tmp1, amt1, p1) => {
-                addConsAlter(rawRc, rcGrpBi, tmp1, amt1 * p1, false);
+                addConsAlter(rawRc, rcGrp, tmp1, amt1 * p1, false);
               });
               biAlterChecked = true;
             };
           });
 
           // AUX
-          aux.forEachRow(2, (ct, amt) => {
+          rc.aux.forEachRow(2, (ct, amt) => {
             if(ct === ct0) amtCi += amt;
           });
 
           // OPT (skipped here)
 
           // PAYI
-          payi.forEachRow(2, (nameCt, amt) => {
+          rc.payi.forEachRow(2, (nameCt, amt) => {
             addCons(rawRc, nameCt, amt, false);
           });
 
           // CO
-          co.forEachRow(2, (ct, amt) => {
+          rc.co.forEachRow(2, (ct, amt) => {
             if(ct === ct0) amtCo += amt;
           });
 
           // BO
-          bo.forEachRow(3, (ct, amt, p) => {
+          rc.bo.forEachRow(3, (ct, amt, p) => {
             if(ct === ct0) amtBo += amt * p * (1.0 - failP);
           });
 
           // FO
-          fo.forEachRow(3, (ct, amt, p) => {
+          rc.fo.forEachRow(3, (ct, amt, p) => {
             if(ct === ct0) amtBo += amt * p * failP;
           });
 
           // PAYO
-          payo.forEachRow(2, (nameCt, amt) => {
+          rc.payo.forEachRow(2, (nameCt, amt) => {
             addProd(rawRc, nameCt, amt, false);
           });
 
@@ -742,32 +738,30 @@
         });
 
         // OPT
-        let rcGrpOpt = new CLASSES.RecipeItemGroup();
-        opt.forEachRow(4, (ct, amt, p, mtp) => {
-          addOpt(rawRc, rcGrpOpt, ct, amt * p, mtp, false, reqOpt);
+        rcGrp = new CLASSES.RecipeItemGroup();
+        rc.opt.forEachRow(4, (ct, amt, p, mtp) => {
+          addOpt(rawRc, rcGrp, ct, amt * p, mtp, false, rc.reqOpt);
         });
-        if(reqOpt) {
+        if(rc.reqOpt) {
           addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "require-optional"), Core.bundle.get("yes")));
         };
-        addSubInfo_opt(rawRc, opt);
+        addSubInfo_opt(rawRc, rc.opt);
 
         // Stat
-        if(isGen) addSubInfo(rawRc, MDL_bundle._term("lovec", "generated-recipe").color(Color.gray));
-        if(failP > 0.0) addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), failP.perc(1)));
+        if(rc.isGen) addSubInfo(rawRc, MDL_bundle._term("lovec", "generated-recipe").color(Color.gray));
+        if(rc.failP > 0.0) addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), rc.failP.perc(1)));
 
         // For furnaces
         if(blk.ex_isSubInsOf("BLK_furnaceRecipeFactory") || blk.ex_isSubInsOf("BLK_electricFurnaceRecipeFactory")) {
           // Specific
-          let tempReq = MDL_recipe._tempReq(rcMdl, rcHeader);
-          let tempAllowed = MDL_recipe._tempAllowed(rcMdl, rcHeader);
           let fuelArr = Array.air;
           if(blk.ex_isSubInsOf("INTF_BLK_furnaceBlock")) {
             fuelArr = MDL_fuel._fuelArr(blk);
           };
 
           // Stat
-          if(tempReq > 0.0) addSubInfo(rawRc, MDL_text._statText(fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(tempReq, 2), fetchStatUnit("lovec", "heatunits").localized()));
-          if(isFinite(tempAllowed)) addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "temperature-allowed"), Strings.fixed(tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized()));
+          if(rc.tempReq > 0.0) addSubInfo(rawRc, MDL_text._statText(fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(rc.tempReq, 2), fetchStatUnit("lovec", "heatunits").localized()));
+          if(isFinite(rc.tempAllowed)) addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "temperature-allowed"), Strings.fixed(rc.tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized()));
           if(fuelArr.length > 0) addSubInfo(rawRc, tb => {
             tb.row();
             tb.add(MDL_text._statText(MDL_bundle._term("lovec", "fuel"))).left();

@@ -40,11 +40,11 @@
         MDL_table.__break(tb, 1);
       };
 
-      MDL_table._d_rc(tb, blk.rcMdl, blk);
+      MDL_table._d_rc(tb, blk);
       MDL_table.__btn(tb, MDL_bundle._term("lovec", "new-window"), () => {
         new CLS_window(
           "${1} (${2})".format(fetchStat("lovec", "blk0fac-recipes").localized(), blk.localizedName),
-          tb1 => MDL_table._d_rc(tb1, blk.rcMdl, blk, true, true),
+          tb1 => MDL_table._d_rc(tb1, blk, true, true),
         ).add();
       }).row();
     }));

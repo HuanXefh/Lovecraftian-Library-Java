@@ -19,13 +19,11 @@
   function comp_init(blk) {
     blk.outputsLiquid = true;
 
-    MDL_event._c_onLoad(() => {
-      Core.app.post(() => {
-        Vars.content.weathers().each(
-          wea => wea instanceof RainWeather,
-          wea => MDL_recipeDict.addFldProdTerm(blk, wea.liquid, blk.liqProdRate),
-        );
-      });
+    MDL_event._c_onLoadPost(() => {
+      Vars.content.weathers().each(
+        wea => wea instanceof RainWeather,
+        wea => MDL_recipeDict.addFldProdTerm(blk, wea.liquid, blk.liqProdRate),
+      );
     });
 
     MOD_tmi._r_rainCollector(blk);

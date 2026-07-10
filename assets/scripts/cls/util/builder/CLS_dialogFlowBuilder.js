@@ -313,7 +313,7 @@
   CLS_dialogFlowBuilder.prototype.setUselessSelections = function(ind, selTextParamArr, w, h, waitTimeS) {
     if(waitTimeS == null) waitTimeS = 1.0;
 
-    const texts = [];
+    let texts = [];
     selTextParamArr.forEachRow(3, (nameMod, nameDial, selInd) => texts.push(MDL_bundle._dialText(nameMod, nameDial, ind + "-s-" + selInd)));
 
     this.completeRow();

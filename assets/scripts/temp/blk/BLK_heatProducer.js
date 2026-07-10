@@ -76,7 +76,7 @@
        * @memberof B_heatProducer
        * @instance
        */
-      blk$heatProd: 0.0,
+      blk$heatProd: "!REPLACE",
 
 
     })

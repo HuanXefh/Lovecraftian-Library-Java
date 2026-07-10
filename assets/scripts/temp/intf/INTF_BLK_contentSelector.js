@@ -12,10 +12,8 @@
 
 
   function comp_init(blk) {
-    MDL_event._c_onLoad(() => {
-      Core.app.post(() => {
-        blk.selectionQueue.pushAll(blk.ex_findSelectionTgs());
-      });
+    MDL_event._c_onLoadPost(() => {
+      blk.selectionQueue.pushAll(blk.ex_findSelectionTgs());
     });
 
     blk.configurable = true;

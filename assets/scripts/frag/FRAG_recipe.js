@@ -33,7 +33,9 @@
     effc,
     dir,
     allAbsent,
-    failed;
+    failed,
+    optTup,
+    dumpTup;
 
 
   /* <------------------------------ condition ------------------------------ */
@@ -42,21 +44,18 @@
   /**
    * Whether `rs_gn` is an input in the multi-crafter.
    * @param {ResourceGn} rs_gn
-   * @param {Array} ci
-   * @param {Array} bi
-   * @param {Array} aux
-   * @param {Array} opt
+   * @param {CLS_recipe} rc
    * @return {boolean}
    */
-  const _hasInput = function(rs_gn, ci, bi, aux, opt) {
+  const _hasInput = function(rs_gn, rc) {
     let rs = MDL_content._ct(rs_gn, "rs");
     if(rs == null) return false;
 
     // CI
     i = 0;
-    iCap = ci.iCap();
+    iCap = rc.ci.iCap();
     while(i < iCap) {
-      tmp = ci[i];
+      tmp = rc.ci[i];
       if(tmp === rs) {
         return true;
       } else if(tmp instanceof Array) {
@@ -73,9 +72,9 @@
 
     // BI
     i = 0;
-    iCap = bi.iCap();
+    iCap = rc.bi.iCap();
     while(i < iCap) {
-      tmp = bi[i];
+      tmp = rc.bi[i];
       if(tmp === rs) {
         return true;
       } else if(tmp instanceof Array) {
@@ -92,18 +91,18 @@
 
     // AUX
     i = 0;
-    iCap = aux.iCap();
+    iCap = rc.aux.iCap();
     while(i < iCap) {
-      tmp = aux[i];
+      tmp = rc.aux[i];
       if(tmp === rs) return true;
       i += 2;
     };
 
     // OPT
     i = 0;
-    iCap = opt.iCap();
+    iCap = rc.opt.iCap();
     while(i < iCap) {
-      tmp = opt[i];
+      tmp = rc.opt[i];
       if(tmp === rs) return true;
       i += 4;
     };
@@ -115,11 +114,11 @@
 
   /**
    * Whether the multi-crafter has any payload input.
-   * @param {Array} payi
+   * @param {CLS_recipe} rc
    * @return {boolean}
    */
-  const _hasInput_pay = function(payi) {
-    return payi.length > 0;
+  const _hasInput_pay = function(rc) {
+    return rc.payi.length > 0;
   };
   exports._hasInput_pay = _hasInput_pay;
 
@@ -127,38 +126,36 @@
   /**
    * Whether `rs_gn` is an output in the multi-crafter.
    * @param {ResourceGn} rs_gn
-   * @param {Array} co
-   * @param {Array} bo
-   * @param {Array} fo
+   * @param {CLS_recipe} rc
    * @return {boolean}
    */
-  const _hasOutput = function(rs_gn, co, bo, fo) {
+  const _hasOutput = function(rs_gn, rc) {
     let rs = MDL_content._ct(rs_gn, "rs");
     if(rs == null) return false;
 
     // CO
     i = 0;
-    iCap = co.iCap();
+    iCap = rc.co.iCap();
     while(i < iCap) {
-      tmp = co[i];
+      tmp = rc.co[i];
       if(tmp === rs) return true;
       i += 2;
     };
 
     // BO
     i = 0;
-    iCap = bo.iCap();
+    iCap = rc.bo.iCap();
     while(i < iCap) {
-      tmp = bo[i];
+      tmp = rc.bo[i];
       if(tmp === rs) return true;
       i += 3;
     };
 
     // FO
     i = 0;
-    iCap = fo.iCap();
+    iCap = rc.fo.iCap();
     while(i < iCap) {
-      tmp = fo[i];
+      tmp = rc.fo[i];
       if(tmp === rs) return true;
       i += 3;
     };
@@ -170,20 +167,19 @@
 
   /**
    * Whether the multi-crafter has any item output.
-   * @param {Array} bo
-   * @param {Array} fo
+   * @param {CLS_recipe} rc
    * @return {boolean}
    */
-  const _hasOutput_itm = function(bo, fo) {
+  const _hasOutput_itm = function(rc) {
     // FO
     // At the top for less calculation
-    if(fo.length > 0) return true;
+    if(rc.fo.length > 0) return true;
 
     // BO
     i = 0;
-    iCap = bo.iCap();
+    iCap = rc.bo.iCap();
     while(i < iCap) {
-      if(bo[i] instanceof Item && bo[i + 1] > 0) return true;
+      if(rc.bo[i] instanceof Item && rc.bo[i + 1] > 0) return true;
       i += 3;
     };
 
@@ -195,34 +191,33 @@
   /**
    * Whether the multi-crafter has any fluid output.
    * @param {boolean} includeAux
-   * @param {Array} co
-   * @param {Array} bo
+   * @param {CLS_recipe} rc
    * @return {boolean}
    */
-  const _hasOutput_liq = function(includeAux, co, bo) {
+  const _hasOutput_liq = function(includeAux, rc) {
     // CO
     i = 0;
-    iCap = co.iCap();
+    iCap = rc.co.iCap();
     while(i < iCap) {
-      tmp = co[i];
+      tmp = rc.co[i];
       if(!MDL_cond._isAuxiliaryFluid(tmp)) {
-        if(co[i + 1] > 0.0) return true;
+        if(rc.co[i + 1] > 0.0) return true;
       } else {
-        if(includeAux && co[i + 1] > 0.0) return true;
+        if(includeAux && rc.co[i + 1] > 0.0) return true;
       };
       i += 2;
     };
 
     // BO
     i = 0;
-    iCap = bo.iCap();
+    iCap = rc.bo.iCap();
     while(i < iCap) {
-      tmp = bo[i];
+      tmp = rc.bo[i];
       if(tmp instanceof Liquid) {
         if(!MDL_cond._isAuxiliaryFluid(tmp)) {
-          if(bo[i + 1] > 0.0) return true;
+          if(rc.bo[i + 1] > 0.0) return true;
         } else {
-          if(includeAux && bo[i + 1] > 0.0) return true;
+          if(includeAux && rc.bo[i + 1] > 0.0) return true;
         };
       };
       i += 3;
@@ -235,11 +230,11 @@
 
   /**
    * Whether the multi-crafter has any payload output.
-   * @param {Array} payo
+   * @param {CLS_recipe} rc
    * @return {boolean}
    */
-  const _hasOutput_pay = function(payo) {
-    return payo.length > 0;
+  const _hasOutput_pay = function(rc) {
+    return rc.payo.length > 0;
   };
   exports._hasOutput_pay = _hasOutput_pay;
 
@@ -247,21 +242,19 @@
   /**
    * Gets all liquids found in outputs.
    * @param {Array|unset} contArr
-   * @param {Array} ci
-   * @param {Array} bi
-   * @param {Array} aux
+   * @param {CLS_recipe} rc
    * @return {Array<Liquid>}
    */
-  const _inputLiqs = function(contArr, ci, bi, aux) {
+  const _inputLiqs = function(contArr, rc) {
     let arr = contArr != null ? contArr.clear() : [];
 
     // CI
     i = 0;
-    iCap = ci.iCap();
+    iCap = rc.ci.iCap();
     while(i < iCap) {
-      tmp = ci[i];
+      tmp = rc.ci[i];
       if(!(tmp instanceof Array)) {
-        if(ci[i + 1] > 0.0) arr.pushUnique(tmp);
+        if(rc.ci[i + 1] > 0.0) arr.pushUnique(tmp);
       } else {
         j = 0;
         jCap = tmp.iCap();
@@ -275,11 +268,11 @@
 
     // BI
     i = 0;
-    iCap = bi.iCap();
+    iCap = rc.bi.iCap();
     while(i < iCap) {
-      tmp = bi[i];
+      tmp = rc.bi[i];
       if(!(tmp instanceof Array)) {
-        if(tmp instanceof Liquid && bi[i + 1] > 0.0) arr.pushUnique(tmp);
+        if(tmp instanceof Liquid && rc.bi[i + 1] > 0.0) arr.pushUnique(tmp);
       } else {
         j = 0;
         jCap = tmp.iCap();
@@ -294,9 +287,9 @@
 
     // AUX
     i = 0;
-    iCap = aux.iCap();
+    iCap = rc.aux.iCap();
     while(i < iCap) {
-      if(aux[i + 1] > 0.0) arr.pushUnique(aux[i]);
+      if(rc.aux[i + 1] > 0.0) arr.pushUnique(rc.aux[i]);
       i += 2;
     };
 
@@ -308,27 +301,26 @@
   /**
    * Gets all liquids found in outputs.
    * @param {Array|unset} contArr
-   * @param {Array} co
-   * @param {Array} bo
+   * @param {CLS_recipe} rc
    * @return {Array<Liquid>}
    */
-  const _outputLiqs = function(contArr, co, bo) {
+  const _outputLiqs = function(contArr, rc) {
     let arr = contArr != null ? contArr.clear() : [];
 
     // CO
     i = 0;
-    iCap = co.iCap();
+    iCap = rc.co.iCap();
     while(i < iCap) {
-      if(co[i + 1] > 0.0) arr.pushUnique(co[i]);
+      if(rc.co[i + 1] > 0.0) arr.pushUnique(rc.co[i]);
       i += 2;
     };
 
     // BO
     i = 0;
-    iCap = bo.iCap();
+    iCap = rc.bo.iCap();
     while(i < iCap) {
-      tmp = bo[i];
-      if(tmp instanceof Liquid && bo[i + 1] > 0.0) arr.pushUnique(tmp);
+      tmp = rc.bo[i];
+      if(tmp instanceof Liquid && rc.bo[i + 1] > 0.0) arr.pushUnique(tmp);
       i += 3;
     };
 
@@ -340,17 +332,18 @@
   /**
    * Whether the multi-crafter can add resource anymore.
    * @param {Building} b
+   * @param {CLS_recipe} rc
    * @return {boolean}
    */
-  const _canAdd = function(b) {
+  const _canAdd = function(b, rc) {
     // CO
     if(b.liquids != null) {
       let allFull = true;
       i = 0;
-      iCap = b.delegee.co.iCap();
+      iCap = rc.co.iCap();
       while(i < iCap) {
-        tmp = b.delegee.co[i];
-        amt = b.delegee.co[i + 1];
+        tmp = rc.co[i];
+        amt = rc.co[i + 1];
         if(b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
           allFull = false;
         } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid && amt > 0.0 && !MDL_cond._isAuxiliaryFluid(tmp)) {
@@ -358,16 +351,16 @@
         };
         i += 2;
       };
-      if(allFull && _hasOutput_liq(true, b.delegee.co, b.delegee.bo) && !b.block.ignoreLiquidFullness) return false;
+      if(allFull && _hasOutput_liq(true, rc) && !b.block.ignoreLiquidFullness) return false;
     };
 
     // BO
     i = 0;
-    iCap = b.delegee.bo.iCap();
+    iCap = rc.bo.iCap();
     while(i < iCap) {
-      tmp = b.delegee.bo[i];
-      amt = b.delegee.bo[i + 1];
-      p = b.delegee.bo[i + 2];
+      tmp = rc.bo[i];
+      amt = rc.bo[i + 1];
+      p = rc.bo[i + 2];
       if(b.items != null && tmp instanceof Item) {
         if(amt > 0 && !b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
       };
@@ -380,10 +373,10 @@
     // FO
     if(b.items != null) {
       i = 0;
-      iCap = b.delegee.fo.iCap();
+      iCap = rc.fo.iCap();
       while(i < iCap) {
-        tmp = b.delegee.fo[i];
-        amt = b.delegee.fo[i + 1];
+        tmp = rc.fo[i];
+        amt = rc.fo[i + 1];
         // No probability for failed output
         if(amt > 0 && !b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
         i += 3;
@@ -399,62 +392,25 @@
 
 
   /**
-   * Gets a 2-tuptle of items and fluids to dump.
-   * `co` is not used here due to liquid output directions.
-   * @param {Array|unset} contTup
-   * @param {Building} b
-   * @return {[Array<Item>, Array<Liquid>]}
-   */
-  const _dumpTup = function(contTup, b) {
-    let tup = contTup != null ? contTup : [[], []];
-    tup[0].clear();
-    tup[1].clear();
-
-    // BO
-    i = 0;
-    iCap = b.delegee.bo.iCap();
-    while(i < iCap) {
-      tmp = b.delegee.bo[i];
-      if(b.items != null && tmp instanceof Item) tup[0].pushUnique(tmp);
-      if(b.liquids != null && tmp instanceof Liquid) tup[1].pushUnique(tmp);
-      i += 3;
-    };
-
-    // FO
-    if(b.items != null) {
-      i = 0;
-      iCap = b.delegee.fo.iCap();
-      while(i < iCap) {
-        tmp = b.delegee.fo[i];
-        tup[0].pushUnique(tmp);
-        i += 3;
-      };
-    };
-
-    return tup;
-  };
-  exports._dumpTup = _dumpTup;
-
-
-  /**
    * Gets a 4-tuple of preferred optional input.
    * Returns null if no optional input.
    * @param {Building} b
+   * @param {CLS_recipe} rc
    * @return {[Item, number, number, number]|null} <TUP>: item, amt, p, mtp.
    */
-  const _optTup = function(b) {
+  const _optTup = function(b, rc) {
     if(b.items == null) return null;
 
     let tup = [];
     let tmpMtp = 0.0;
 
     i = 0;
-    iCap = b.delegee.opt.iCap();
+    iCap = rc.opt.iCap();
     while(i < iCap) {
-      tmp = b.delegee.opt[i];
-      amt = b.delegee.opt[i + 1];
-      p = b.delegee.opt[i + 2];
-      mtp = b.delegee.opt[i + 3];
+      tmp = rc.opt[i];
+      amt = rc.opt[i + 1];
+      p = rc.opt[i + 2];
+      mtp = rc.opt[i + 3];
       if(b.items.get(tmp) >= amt && mtp >= tmpMtp) {
         tmpMtp = mtp;
         tup.with(tmp, amt, p, mtp);
@@ -470,9 +426,10 @@
   /**
    * Calculates current efficiency of the multi-crafter.
    * @param {Building} b
+   * @param {CLS_recipe} rc
    * @return {number}
    */
-  const _effc = function(b) {
+  const _effc = function(b, rc) {
     if(b.cheating() || DEBUG.skipRcEffcCalc) return 1.0;
 
     effc = 1.0;
@@ -480,9 +437,9 @@
     if(b.power != null && !b.block.outputsPower) effc *= b.power.status;
 
     // OPT
-    if(effc > 0.0 && b.delegee.opt.length > 0) {
-      let optTup = _optTup(b);
-      if(b.delegee.reqOpt && optTup == null) {
+    if(effc > 0.0 && rc.opt.length > 0) {
+      optTup = _optTup(b, rc);
+      if(rc.reqOpt && optTup == null) {
         b.delegee.lastOptEffc = 0.0;
         return 0.0;
       };
@@ -496,12 +453,12 @@
     // CI
     if(b.liquids != null) {
       i = 0;
-      iCap = b.delegee.ci.iCap();
+      iCap = rc.ci.iCap();
       while(i < iCap) {
         if(effc < 0.0001) return 0.0;
-        tmp = b.delegee.ci[i];
+        tmp = rc.ci[i];
         if(!(tmp instanceof Array)) {
-          amt = b.delegee.ci[i + 1];
+          amt = rc.ci[i + 1];
           mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
             0.0 :
             amt < 0.0001 ?
@@ -533,12 +490,12 @@
     // BI
     if(b.items != null || b.liquids != null) {
       i = 0;
-      iCap = b.delegee.bi.iCap();
+      iCap = rc.bi.iCap();
       while(i < iCap) {
         if(effc < 0.0001) return 0.0;
-        tmp = b.delegee.bi[i];
+        tmp = rc.bi[i];
         if(!(tmp instanceof Array)) {
-          amt = b.delegee.bi[i + 1];
+          amt = rc.bi[i + 1];
           if(b.items != null && tmp instanceof Item) {
             if(b.items.get(tmp) < amt) return 0.0;
           };
@@ -569,11 +526,11 @@
     // AUX
     if(b.liquids != null) {
       i = 0;
-      iCap = b.delegee.aux.iCap();
+      iCap = rc.aux.iCap();
       while(i < iCap) {
         if(effc < 0.0001) return 0.0;
-        tmp = b.delegee.aux[i];
-        amt = b.delegee.aux[i + 1];
+        tmp = rc.aux[i];
+        amt = rc.aux[i + 1];
         mtp = b.efficiencyScale() < 0.0001 ?
           0.0 :
           amt < 0.0001 ?
@@ -595,19 +552,20 @@
   /**
    * Lets a multi-crafter consume items.
    * @param {Building} b
+   * @param {CLS_recipe} rc
    * @return {void}
    */
-  const consume_itm = function(b) {
+  const consume_itm = function(b, rc) {
     if((b.items == null || !b.items.any()) && b.liquids == null) return;
 
     // BI
     i = 0;
-    iCap = b.delegee.bi.iCap();
+    iCap = rc.bi.iCap();
     while(i < iCap) {
-      tmp = b.delegee.bi[i];
+      tmp = rc.bi[i];
       if(!(tmp instanceof Array)) {
-        amt = b.delegee.bi[i + 1];
-        p = b.delegee.bi[i + 2];
+        amt = rc.bi[i + 1];
+        p = rc.bi[i + 2];
         if(b.items != null && tmp instanceof Item) {
           FRAG_item.consumeItem(b, tmp, amt, p);
           b.delegee.consTmpObj[tmp.name] = amt * p;
@@ -638,7 +596,7 @@
     };
 
     // OPT
-    let optTup = _optTup(b);
+    optTup = _optTup(b, rc);
     if(optTup != null) {
       FRAG_item.consumeItem(b, optTup[0], optTup[1], optTup[2]);
       b.delegee.consTmpObj[optTup[0].name] = optTup[1] * optTup[2];
@@ -651,21 +609,21 @@
   /**
    * Lets a multi-crafter consume liquids.
    * @param {Building} b
+   * @param {CLS_recipe} rc
    * @param {number} progIncLiq
-   * @param {number} timeScl
    * @return {void}
    */
-  const consume_liq = function(b, progIncLiq, timeScl) {
+  const consume_liq = function(b, rc, progIncLiq) {
     if(b.liquids == null || DEBUG.skipRcLiqCons) return;
 
     // CI
     i = 0;
-    iCap = b.delegee.ci.iCap();
+    iCap = rc.ci.iCap();
     while(i < iCap) {
-      tmp = b.delegee.ci[i];
+      tmp = rc.ci[i];
       if(!(tmp instanceof Array)) {
-        amt = b.delegee.ci[i + 1];
-        b.liquids.remove(tmp, Math.min(amt * progIncLiq * timeScl, b.liquids.get(tmp)));
+        amt = rc.ci[i + 1];
+        b.liquids.remove(tmp, Math.min(amt * progIncLiq * rc.rcTimeScl, b.liquids.get(tmp)));
         b.delegee.consTmpObj[tmp.name] = amt;
       } else {
         j = 0;
@@ -673,7 +631,7 @@
         while(j < jCap) {
           if(b.liquids.get(tmp[j]) > 0.01) {
             amt = tmp[j + 1];
-            b.liquids.remove(tmp[j], Math.min(amt * progIncLiq * timeScl, b.liquids.get(tmp[j])));
+            b.liquids.remove(tmp[j], Math.min(amt * progIncLiq * rc.rcTimeScl, b.liquids.get(tmp[j])));
             b.delegee.consTmpObj[tmp[j].name] = amt;
             break;
           };
@@ -685,11 +643,11 @@
 
     // AUX
     i = 0;
-    iCap = b.delegee.aux.iCap();
+    iCap = rc.aux.iCap();
     while(i < iCap) {
-      tmp = b.delegee.aux[i];
-      amt = b.delegee.aux[i + 1];
-      b.liquids.remove(tmp, Math.min(amt * progIncLiq, timeScl, b.liquids.get(tmp)));
+      tmp = rc.aux[i];
+      amt = rc.aux[i + 1];
+      b.liquids.remove(tmp, Math.min(amt * progIncLiq, rc.rcTimeScl, b.liquids.get(tmp)));
       b.delegee.consTmpObj[tmp.name] = amt;
       i += 2;
     };
@@ -700,20 +658,21 @@
   /**
    * Lets a multi-crafter produce items.
    * @param {Building} b
+   * @param {CLS_recipe} rc
    * @param {number} failP
    * @return {void}
    */
-  const produce_itm = function(b, failP) {
+  const produce_itm = function(b, rc, failP) {
     failed = LCRand.chance(UTIL_rand.get("crafter"), failP);
 
     // BO
     if(!failed) {
       i = 0;
-      iCap = b.delegee.bo.iCap();
+      iCap = rc.bo.iCap();
       while(i < iCap) {
-        tmp = b.delegee.bo[i];
-        amt = b.delegee.bo[i + 1];
-        p = b.delegee.bo[i + 2];
+        tmp = rc.bo[i];
+        amt = rc.bo[i + 1];
+        p = rc.bo[i + 2];
         if(b.items != null && tmp instanceof Item && b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
           FRAG_item.produceItem(b, tmp, amt, p);
           b.delegee.prodTmpObj[tmp.name] = amt * p;
@@ -729,12 +688,12 @@
     // FO
     if(b.items != null && failed) {
       i = 0;
-      iCap = b.delegee.fo.iCap();
+      iCap = rc.fo.iCap();
       b.ex_getFailEff().at(b);
       while(i < iCap) {
-        tmp = b.delegee.fo[i];
-        amt = b.delegee.fo[i + 1];
-        p = b.delegee.fo[i + 2];
+        tmp = rc.fo[i];
+        amt = rc.fo[i + 1];
+        p = rc.fo[i + 2];
         if(b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
           FRAG_item.produceItem(b, tmp, amt, p);
           b.delegee.prodTmpObj[tmp.name] = amt * p;
@@ -750,23 +709,23 @@
   /**
    * Lets a multi-crafter produce liquids.
    * @param {Building} b
+   * @param {CLS_recipe} rc
    * @param {number} progIncLiq
-   * @param {number} timeScl
    * @return {void}
    */
-  const produce_liq = function(b, progIncLiq, timeScl) {
+  const produce_liq = function(b, rc, progIncLiq) {
     if(b.liquids == null || DEBUG.skipRcLiqProd) return;
 
     // CO
     i = 0;
-    iCap = b.delegee.co.iCap();
+    iCap = rc.co.iCap();
     while(i < iCap) {
-      tmp = b.delegee.co[i];
-      amt = b.delegee.co[i + 1];
+      tmp = rc.co[i];
+      amt = rc.co[i + 1];
       if(TIMER.secTwo && amt > 0.0) {
         TRIGGER.fluidProduce.fire(b, tmp);
       };
-      b.handleLiquid(b, tmp, Math.min(amt * progIncLiq * timeScl, b.block.liquidCapacity - b.liquids.get(tmp)));
+      b.handleLiquid(b, tmp, Math.min(amt * progIncLiq * rc.rcTimeScl, b.block.liquidCapacity - b.liquids.get(tmp)));
       b.delegee.prodTmpObj[tmp.name] = amt;
       i += 2;
     };
@@ -777,17 +736,18 @@
   /**
    * Lets a multi-crafter dump resource in it.
    * @param {Building} b
-   * @param {[Array<Item>, Array<Liquid>]} dumpTup
+   * @param {CLS_recipe} rc
    * @return {void}
    */
-  const dump = function(b, dumpTup) {
+  const dump = function(b, rc) {
+    dumpTup = rc.dumpTup;
     if(dumpTup == null || DEBUG.skipRcDump) return;
 
     if(b.liquids != null) {
       i = 0;
-      iCap = b.delegee.co.iCap();
+      iCap = rc.co.iCap();
       while(i < iCap) {
-        tmp = b.delegee.co[i];
+        tmp = rc.co[i];
         dir = (b.block.liquidOutputDirections.length > i / 2) ? b.block.liquidOutputDirections[i / 2] : -1;
         b.dumpLiquid(tmp, 2.0, dir);
         i += 2;

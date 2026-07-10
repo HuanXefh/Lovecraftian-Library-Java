@@ -15,14 +15,12 @@
 
 
   function comp_init(blk) {
-    MDL_event._c_onLoad(() => {
-      Core.app.post(() => {
-        blk.terItmMapMap.each((nameItm, terItmMap) => {
-          terItmMap.each((ter, nameRs) => {
-            let rs = MDL_content._ct(nameRs, "rs");
-            if(rs == null) return;
-            MDL_recipeDict.addItmProdTerm(blk, rs, Math.pow(blk.size, 2) * blk.drillTime / blk.getDrillTime(rs), 1.0, {icon: "lovec-icon-mining"});
-          });
+    MDL_event._c_onLoadPost(() => {
+      blk.terItmMapMap.each((nameItm, terItmMap) => {
+        terItmMap.each((ter, nameRs) => {
+          let rs = MDL_content._ct(nameRs, "rs");
+          if(rs == null) return;
+          MDL_recipeDict.addItmProdTerm(blk, rs, Math.pow(blk.size, 2) * blk.drillTime / blk.getDrillTime(rs), 1.0, {icon: "lovec-icon-mining"});
         });
       });
     });

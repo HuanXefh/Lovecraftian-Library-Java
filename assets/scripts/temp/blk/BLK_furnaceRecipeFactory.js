@@ -21,8 +21,8 @@
 
 
   function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-    b.tempReq = MDL_recipe._tempReq(rcMdl, rcHeader);
-    b.tempAllowed = MDL_recipe._tempAllowed(rcMdl, rcHeader);
+    b.tempReq = b.rc.tempReq;
+    b.tempAllowed = b.rc.tempAllowed;
   };
 
 

@@ -94,46 +94,52 @@
    * @param {number|unset} [dim]
    * @return {number}
    */
-  const _pathLen = function(pathData, dim) {
+  const _pathLen = function thisFun(pathData, dim) {
     if(dim == null) dim = 2;
 
     let len = 0.0;
     let i = 0, iCap = pathData.iCap();
-    let tmpArr = [];
+    thisFun.tmpArr.clear();
     while(i < iCap) {
       if(i === 0) continue;
-      fetchPathTwoPointArg(tmpArr, pathData, dim, i);
-      len += _dst.apply(null, tmpArr);
+      fetchPathTwoPointArg(thisFun.tmpArr, pathData, dim, i);
+      len += _dst.apply(null, thisFun.tmpArr);
       i += dim;
     };
 
     return len;
-  };
+  }
+  .setProp({
+    tmpArr: [],
+  });
   exports._pathLen = _pathLen;
 
 
   /**
    * Gets an array of distances between points on the path.
+   * @param {Array|unset} contArr
    * @param {PathData} pathData
    * @param {number|unset} [dim]
    * @return {Array<number>}
    */
-  const _pathSegLens = function(pathData, dim) {
-    let arr = [];
-
+  const _pathSegLens = function thisFun(contArr, pathData, dim) {
+    let arr = contArr != null ? contArr.clear() : [];
     if(dim == null) dim = 2;
 
     let i = 0, iCap = pathData.iCap();
-    let tmpArr = [];
+    thisFun.tmpArr.clear();
     while(i < iCap) {
       if(i === 0) continue;
-      fetchPathTwoPointArg(tmpArr, pathData, dim, i);
-      arr.push(_dst.apply(null, tmpArr));
+      fetchPathTwoPointArg(thisFun.tmpArr, pathData, dim, i);
+      arr.push(_dst.apply(null, thisFun.tmpArr));
       i += dim;
     };
 
     return arr;
-  };
+  }
+  .setProp({
+    tmpArr: [],
+  });
   exports._pathSegLens = _pathSegLens;
 
 
@@ -149,8 +155,15 @@
   const _area = function() {
     let iCap = arguments.length;
     if(iCap < 6) return 0.0;
-    let tmp1 = 0.0, tmp2 = 0.0;
-    let x_i, y_i, x_ii, y_ii;
+
+    let
+      x_i,
+      y_i,
+      x_ii,
+      y_ii,
+      tmp1 = 0.0,
+      tmp2 = 0.0;
+
     for(let i = 0; i < iCap; i += 2) {
       x_i = arguments[i];
       y_i = arguments[i + 1];
@@ -171,29 +184,37 @@
    * <br> <ARGS>: x, y, x1, y1, x2, y2, x3, y3, ...
    * @return {boolean}
    */
-  const _inPolygon = function() {
+  const _inPolygon = function thisFun() {
     let iCap = arguments.length;
     if(iCap < 8) return true;
 
     let x = arguments[0], y = arguments[1];
-    let coords = [];
+    thisFun.coords.clear();
     for(let i = 2; i < iCap; i++) {
-      coords.push(arguments[i]);
+      thisFun.coords.push(arguments[i]);
     };
-    const area = _area.apply(null, coords);
+    let area = _area.apply(null, thisFun.coords);
 
-    let iCap1 = coords.iCap();
-    let tmpArea = 0.0;
-    let x_i, y_i, x_ii, y_ii;
+    let
+      x_i,
+      y_i,
+      x_ii,
+      y_ii,
+      iCap1 = thisFun.coords.iCap(),
+      tmpArea = 0.0;
+
     for(let i = 0; i < iCap1; i += 2) {
-      x_i = coords[i];
-      y_i = coords[i + 1];
-      x_ii = (i + 2 > iCap1 - 1) ? coords[0] : coords[i + 2];
-      y_ii = (i + 3 > iCap1 - 1) ? coords[1] : coords[i + 3];
+      x_i = thisFun.coords[i];
+      y_i = thisFun.coords[i + 1];
+      x_ii = (i + 2 > iCap1 - 1) ? thisFun.coords[0] : thisFun.coords[i + 2];
+      y_ii = (i + 3 > iCap1 - 1) ? thisFun.coords[1] : thisFun.coords[i + 3];
 
       tmpArea += _area(x, y, x_i, y_i, x_ii, y_ii);
     };
 
     return Math.abs(area - tmpArea) < 0.0000001;
-  };
+  }
+  .setProp({
+    coords: [],
+  });
   exports._inPolygon = _inPolygon;

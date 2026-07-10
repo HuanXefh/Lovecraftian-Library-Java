@@ -296,7 +296,7 @@
     // Load extra sounds
     if(!Vars.headless) {
       DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr));
-      Time.run(3.0, () => {
+      Time.run(VAR.delay.load.loadExtraSound, () => {
         if(PARAM.SECRET_LEGACY_SOUND) {
           try {
             Vars.content.units().each(utp => {
@@ -388,7 +388,7 @@
 
 
     // Set up recipe dictionary stat
-    Time.run(5.0, () => {
+    Time.run(VAR.delay.load.addStat, () => {
       VARGEN.rss.concat(VARGEN.payMatBlks).concat(VARGEN.buildableUtps).forEachFast(ct => {
         ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
           tb.row();
@@ -542,7 +542,7 @@
   MDL_event._c_onWorldLoad(() => {
 
 
-    Time.run(240.0, () => {
+    Time.run(VAR.delay.worldLoad.triggerSecretCrash, () => {
       if(Core.settings.getBool("lovec-misc-secret-code-crashed", false)) {
         TRIGGER.secretCodeCrash.fire();
       };
