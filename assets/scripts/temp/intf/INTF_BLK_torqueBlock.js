@@ -93,7 +93,9 @@
         i += 2;
       };
     };
-    b.torCur = Mathf.clamp(b.torCur + rateAddNet * Time.delta, 0.0, b.ex_calcRpmTrans(b));
+    if(b.torCap >= 0.0) {
+      b.torCur = Mathf.clamp(b.torCur + rateAddNet * Time.delta, 0.0, b.torCap);
+    };
 
     // Transport torque
     i = 0;
@@ -184,6 +186,8 @@
     let val = 0.0;
     let ob, amt, i, iCap;
 
+    b.torCap = 0.0;
+
     if(!b.block.delegee.skipTorFetch) {
       i = 0;
       iCap = b.torFetchTgs.iCap();
@@ -193,9 +197,13 @@
           amt = b.torFetchTgs[i + 1];
           if(ob.block instanceof LiquidSource) {
             // Liquid source gives 100.0 RPM, for test
-            if(ob.source === VARGEN.auxTor) val += 100.0;
+            if(ob.source === VARGEN.auxTor) {
+              val += 100.0;
+              b.torCap = Math.max(100.0, b.torCap);
+            };
           } else {
             val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true, true) * amt * 60.0;
+            b.torCap = Math.max(amt * 60.0, b.torCap);
           };
         };
         i += 2;
@@ -208,7 +216,8 @@
       while(i < iCap) {
         ob = b.torTransTgs[i];
         if(ob.isAdded() && ob.enabled && !ob.isPayload() && ob.ex_calcRpmTrans != null && b.ex_checkTorTransValid(ob)) {
-          val = Math.max(val, ob.ex_calcRpmTrans(b) * b.ex_calcRpmTransScl(ob));
+          val = Math.max(val, ob.ex_calcRpmTrans(b) * b.ex_calcRpmAcceptScl(ob));
+          b.torCap = Math.max(ob.ex_calcRpmTrans(b), b.torCap);
         };
         i++;
       };
@@ -293,6 +302,12 @@
          * @instance
          */
         torCur: 0.0,
+        /**
+         * <INTERNAL>
+         * @memberof INTF_B_torqueBlock
+         * @instance
+         */
+        torCap: -1.0,
         /**
          * <INTERNAL>
          * @memberof INTF_B_torqueBlock
@@ -455,13 +470,13 @@
 
 
       /**
-       * Extra multiplier on torque transported to this building.
+       * Extra multiplier on RPM transported to this building.
        * @memberof INTF_B_torqueBlock
        * @instance
        * @return {Building} b_f
        * @return {number}
        */
-      ex_calcRpmTransScl: function(b_f) {
+      ex_calcRpmAcceptScl: function(b_f) {
         return 1.0;
       }
       .setProp({

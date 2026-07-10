@@ -77,12 +77,19 @@
       let
         ints1 = verStrToInts(verStrReq),
         ints2 = verStrToInts(verStrCur),
+        int1,
+        int2,
         i = 0,
         iCap = Math.max(ints1.length, ints2.length);
 
       while(i < iCap) {
-        if(ints1[i] == null && ints2[i] != null) return true;
-        if(ints1[i] > ints2[i]) return false;
+        int1 = tryVal(ints1[i], 0);
+        int2 = tryVal(ints2[i], 0);
+        if(int1 < int2) {
+          return true;
+        } else if(int1 > int2) {
+          return false;
+        };
         i++;
       };
 

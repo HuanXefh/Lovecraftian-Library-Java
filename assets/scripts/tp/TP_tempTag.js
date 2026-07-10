@@ -46,8 +46,6 @@
     this.registerTag("blk-non-cont");
     // Cogwheel
     this.registerTag("blk-cog");
-    // Stacked cogwheel
-    this.registerTag("blk-cog-stack");
     // Gear box
     this.registerTag("blk-cog-box");
     // Transmission rod

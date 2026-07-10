@@ -198,6 +198,7 @@
     TRIGGER.majorIter.building.addGlobalListener((b, isActive) => {
       if(!isActive) return;
       cepCapObj[b.team] += _cepProv(b.block);
+      if(b.cheating()) return;
       cepUseObj[b.team] += _cepUse(b.block);
     });
     TRIGGER.majorIter.end.addGlobalListener(() => {

@@ -331,7 +331,7 @@
        * @param {Building} b_f
        * @return {number}
        */
-      ex_calcRpmTransScl: function(b_f) {
+      ex_calcRpmAcceptScl: function(b_f) {
         return 1.0 / this.block.size;
       }
       .setProp({

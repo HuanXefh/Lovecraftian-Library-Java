@@ -193,7 +193,7 @@ const db = {
       "rs-morbid",
       "rs-slur",
       "rs-slur0dil",
-      "rs-hot0liq",
+      "rs-crdg",
 
       /* dynamic */
 

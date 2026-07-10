@@ -470,18 +470,6 @@
 
 
   /**
-   * Whether this block is a cogwheel stack.
-   * @param {BlockGn} blk_gn
-   * @return {boolean}
-   */
-  const _isCogwheelStack = function(blk_gn) {
-    return matchTag(blk_gn, "blk-cog-stack", "blk");
-  }
-  .setCache();
-  exports._isCogwheelStack = _isCogwheelStack;
-
-
-  /**
    * Whether this block is a gear box.
    * @param {BlockGn} blk_gn
    * @return {boolean}

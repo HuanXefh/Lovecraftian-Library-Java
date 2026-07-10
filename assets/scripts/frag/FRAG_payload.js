@@ -140,18 +140,27 @@
   const produceAt = function thisFun(b, pay, delay) {
     if(pay == null || !b.acceptPayload(b, pay) || thisFun.queueMap.get(b, false)) return false;
 
-    thisFun.queueMap.put(b, true);
-    Time.run(tryVal(delay, 30.0), () => {
-      b.handlePayload(b, pay);
-      thisFun.queueMap.put(b, false);
-      MDL_effect._s_payloadDrop(b.x, b.y, pay.content());
-      MDL_effect._e_dust(b.x, b.y, pay.size(), 3);
-    });
+    thisFun.addQueue(b, pay, delay);
 
     return true;
   }
   .setProp({
     queueMap: new ObjectMap(),
+    addQueue: function(b, pay, delay) {
+      produceAt.queueMap.put(b, true);
+      Time.run(tryVal(delay, 30.0), () => {
+        if(!b.acceptPayload(b, pay)) {
+          // Delay payload change again, otherwise existing payload will be removed
+          produceAt.addQueue(b, pay, 15.0);
+          return;
+        };
+
+        b.handlePayload(b, pay);
+        produceAt.queueMap.put(b, false);
+        MDL_effect._s_payloadDrop(b.x, b.y, pay.content());
+        MDL_effect._e_dust(b.x, b.y, pay.size(), 3);
+      });
+    },
   })
   .setAnno("init", function() {
     TRIGGER.mapChange.addGlobalListener(nameMap => {
