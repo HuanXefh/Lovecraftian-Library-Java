@@ -106,14 +106,6 @@
       },
 
 
-      shouldAmbientSound: function() {
-        return false;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
       acceptItem: function(b_f, itm) {
         return false;
       }

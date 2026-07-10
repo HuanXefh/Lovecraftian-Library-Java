@@ -1057,9 +1057,9 @@
 
       /* angle & length */
 
-      baseRotation: 15.0,
+      baseRotation: 55.0,
       offset: 0.0,
-      cone: 40.0,
+      cone: 22.5,
       spin: 0.0,
       randLength: true,
       length: rad,

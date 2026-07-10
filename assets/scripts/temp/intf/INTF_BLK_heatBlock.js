@@ -193,7 +193,7 @@
           (ob.ex_getHeatProd() * sideFrac) :
           (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict._prodAmt_b(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict._prodAmt_b(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
         b.maxHeaterProd = Math.max(heat, b.maxHeaterProd);
-        heatTg += heat;
+        heatTg += heat * b.block.delegee.tempExtMtp;
       });
     };
 

@@ -25,6 +25,8 @@
 
   function comp_load(blk) {
     blk.glowReg = fetchRegionOrNull(blk, "-glow");
+
+    blk.pullSe = fetchSound(blk.pullSe);
   };
 
 
@@ -50,6 +52,10 @@
         b.pullTgs.forEachFast(loot => {
           loot.impulse(Tmp.v2.set(loot).sub(b.x, b.y).nor().scl(-b.block.delegee.powPull * b.glowHeat));
         });
+      };
+
+      if(!Vars.headless) {
+        Vars.control.sound.loop(b.block.delegee.pullSe, b, 0.7);
       };
     };
 
@@ -109,6 +115,12 @@
        * @instance
        */
       intvPull: 240.0,
+      /**
+       * <PARAM>: Loop sound played when pulling loots.
+       * @memberof BLK_lootPullerHopper
+       * @instance
+       */
+      pullSe: Sounds.beamParallax,
 
 
       /* <------------------------------ internal ------------------------------ */
@@ -205,15 +217,6 @@
       updateTile: function() {
         comp_updateTile(this);
       },
-
-
-      shouldAmbientSound: function() {
-        return this.isPulling;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
 
 
       draw: function() {

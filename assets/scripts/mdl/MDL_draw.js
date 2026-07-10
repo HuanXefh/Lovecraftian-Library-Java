@@ -344,7 +344,7 @@
     _reg_normal(
       x, y, reg,
       ang, regScl, color_gn,
-      tryVal(a, 1.0) * Math.abs(Math.sin(Time.globalTime * 0.065 / tryVal(fadeScl, 1.0))),
+      tryVal(a, 1.0) * Math.abs(Math.sin(Time.time * 0.065 / tryVal(fadeScl, 1.0))),
       z,
     );
   };

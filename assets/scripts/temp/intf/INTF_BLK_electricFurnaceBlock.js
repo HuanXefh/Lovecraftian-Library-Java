@@ -77,7 +77,7 @@
     tb.table(Styles.black3, tb1 => {
       tb1.left();
       MDL_table.__margin(tb1);
-      MDL_table.__sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle._term("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.block.delegee.heatBlkMeltTemp * b.block.delegee.maxOverheatScl, 50.0, b.tempSet);
+      MDL_table.__sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle._term("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.ex_getTempSetMax(), 50.0, b.tempSet);
     }).left().growX();
   };
 
@@ -317,6 +317,20 @@
        */
       ex_getHeatAllowed: function() {
         return Infinity;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * Maximum target temperature allowed to set.
+       * @memberof INTF_B_electricFurnaceBlock
+       * @instance
+       * @return {number}
+       */
+      ex_getTempSetMax: function() {
+        return this.block.delegee.heatBlkMeltTemp * this.block.delegee.maxOverheatScl;
       }
       .setProp({
         noSuper: true,

@@ -16,7 +16,7 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0heat-tempreq"), blk.heatReq, fetchStatUnit("lovec", "heatunits"));
+    blk.stats.add(fetchStat("lovec", "blk0heat-tempreq"), blk.tempReq, fetchStatUnit("lovec", "heatunits"));
   };
 
 
@@ -43,11 +43,11 @@
 
 
       /**
-       * <PARAM>: Heat required.
-       * @memberof BLK_boiler
+       * <PARAM>: Temperature required.
+       * @memberof BLK_furnaceFactory
        * @instance
        */
-      heatReq: 150.0,
+      tempReq: 100.0,
 
 
     })
@@ -92,7 +92,7 @@
        * @return {number}
        */
       ex_getHeatTg: function() {
-        return this.block.delegee.heatReq;
+        return this.block.delegee.tempReq;
       }
       .setProp({
         noSuper: true,
