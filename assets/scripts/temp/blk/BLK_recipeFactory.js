@@ -49,7 +49,7 @@
       }).row();
     }));
 
-    if(!MDL_recipe._hasAnyOutput_pay(blk.rcMdl)) {
+    if(!MDL_recipe._hasAnyPayOutput(blk.rcMdl)) {
       blk.stats.remove(fetchStat("lovec", "blk0fac-payroom"));
     };
   };

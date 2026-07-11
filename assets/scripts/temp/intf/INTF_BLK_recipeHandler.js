@@ -56,7 +56,7 @@
     CLS_recipe.register(blk, blk.rcMdl);
 
     MDL_event._c_onLoad(() => {
-      blk.outputsLiquid = MDL_recipe._hasAnyOutput_liq(blk.rcMdl, false);
+      blk.outputsLiquid = MDL_recipe._hasAnyFldOutput(blk.rcMdl, false);
       blk.hasConsumers = true;
 
       blk.isErekirHeatConsumer = MDL_recipe._hasErekirHeatInput(blk.rcMdl);
@@ -133,8 +133,8 @@
         b.craft();
       };
 
-      FRAG_recipe.produce_liq(b, b.rc, b.lastLiqProgInc);
-      FRAG_recipe.consume_liq(b, b.rc, b.lastLiqProgInc);
+      b.rc.craftContinuous(b, b.lastLiqProgInc);
+      b.rc.consumeContinuous(b, b.lastLiqProgInc);
       if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup)) {
         MDL_effect.showAround(b.x, b.y, b.block.updateEffect, b.block.size * 0.5 * Vars.tilesize, 0.0);
       };
@@ -146,7 +146,7 @@
 
     b.totalProgress += b.warmup * b.edelta();
     if(!b.block.delegee.disableDump) {
-      FRAG_recipe.dump(b, b.rc);
+      b.rc.dump(b);
     };
   };
 
@@ -165,12 +165,12 @@
 
   function comp_acceptItem(b, b_f, itm) {
     if(b.items == null || b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
-    if(b.blk$useAutoSelection && b.rc.keyItmHeaderMap != null && itm !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.rc.keyItmHeaderMap.containsKey(itm) && !FRAG_recipe._hasOutput(itm, b.rc)) {
+    if(b.blk$useAutoSelection && b.rc.keyItmHeaderMap != null && itm !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.rc.keyItmHeaderMap.containsKey(itm) && !b.rc.checkOutput(itm)) {
       b.keyCt = itm;
     };
 
     if(b.itmAcceptCacheArr[itm.id] == null) {
-      b.itmAcceptCacheArr[itm.id] = FRAG_recipe._hasInput(itm, b.rc);
+      b.itmAcceptCacheArr[itm.id] = b.rc.checkInput(itm);
     };
 
     return b.itmAcceptCacheArr[itm.id];
@@ -179,12 +179,12 @@
 
   function comp_acceptLiquid(b, b_f, liq) {
     if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
-    if(b.blk$useAutoSelection && b.rc.keyFldHeaderMap != null && liq !== b.keyCt && b_f !== b && b.rc.keyFldHeaderMap.containsKey(liq) && !FRAG_recipe._hasOutput(liq, b.rc)) {
+    if(b.blk$useAutoSelection && b.rc.keyFldHeaderMap != null && liq !== b.keyCt && b_f !== b && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)) {
       b.keyCt = liq;
     };
 
     if(b.liqAcceptCacheArr[liq.id] == null) {
-      b.liqAcceptCacheArr[liq.id] = FRAG_recipe._hasInput(liq, b.rc);
+      b.liqAcceptCacheArr[liq.id] = b.rc.checkInput(liq);
     };
 
     return b.liqAcceptCacheArr[liq.id];
@@ -192,11 +192,9 @@
 
 
   function comp_craft(b) {
-    FRAG_recipe.produce_itm(b, b.rc, b.ex_calcFailP());
-    FRAG_recipe.consume_itm(b, b.rc);
-    MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);
-
+    b.rc.craftBatch(b, b.ex_calcFailP());
     b.rc.craftPay(b);
+    b.rc.consumeBatch(b);
 
     b.ex_onRcCraft();
   };
@@ -337,24 +335,19 @@
       tb.row();
     };
 
-    FRAG_recipe._inputLiqs(thisFun.tmpArr, b.rc);
-    FRAG_recipe._outputLiqs(thisFun.tmpArr1, b.rc);
-
     thisFun.addedLiqs.clear();
-    thisFun.tmpArr.forEachFast(liq => {
+    b.rc.inputFlds.forEachFast(liq => {
       if(thisFun.addedLiqs.includes(liq)) return;
       thisFun.addLiqBar(tb, b, liq);
       thisFun.addedLiqs.push(liq);
     });
-    thisFun.tmpArr1.forEachFast(liq => {
+    b.rc.outputFlds.forEachFast(liq => {
       if(thisFun.addedLiqs.includes(liq)) return;
       thisFun.addLiqBar(tb, b, liq);
       thisFun.addedLiqs.push(liq);
     });
   }
   .setProp({
-    tmpArr: [],
-    tmpArr1: [],
     addedLiqs: [],
     addLiqBar: (tb, b, liq) => {
       tb.add(new Bar(
@@ -382,7 +375,7 @@
     b.rcEffc = b.ex_calcRcEffcTg();
     b.lastProgInc = b.ex_calcProgInc(b.block.craftTime);
     b.lastLiqProgInc = b.ex_calcProgInc(1.0);
-    b.lastCanAdd = FRAG_recipe._canAdd(b, b.rc);
+    b.lastCanAdd = b.rc.checkCanAdd(b);
 
     b.ex_updateAttrEffc();
   };
@@ -426,8 +419,8 @@
     b.rc = CLS_recipe.getByHeader(b.block, rcHeader);
 
     Time.run(0.0, () => {
-      b.hasPayInput = FRAG_recipe._hasInput_pay(b.rc);
-      b.hasPayOutput = FRAG_recipe._hasOutput_pay(b.rc);
+      b.hasPayInput = b.rc.hasPayInput;
+      b.hasPayOutput = b.rc.hasPayOutput;
       if(b.hasPayInput) {
         b.rc.payi.forEachRow(2, (tmp, amt) => {
           if(amt > 0 && b.payReqObj[tmp] == null) {
@@ -479,7 +472,7 @@
 
 
   function comp_ex_calcRcEffcTg(b) {
-    b.rcEffcWinMean.add(FRAG_recipe._effc(b, b.rc));
+    b.rcEffcWinMean.add(b.rc.calcEffc(b));
     return (b.rcEffcWinMean.hasEnoughData() ? b.rcEffcWinMean.mean() : b.rcEffcWinMean.latest()) * b.attrEffc;
   };
 
@@ -608,7 +601,7 @@
 
 
       outputsItems: function() {
-        return MDL_recipe._hasAnyOutput_itm(this.rcMdl);
+        return MDL_recipe._hasAnyItmOutput(this.rcMdl);
       }
       .setProp({
         noSuper: true,

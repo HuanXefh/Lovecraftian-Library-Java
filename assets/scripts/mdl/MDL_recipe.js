@@ -261,7 +261,7 @@
       _aux(thisFun.fakeRc.aux, rcMdl, rcHeader);
       _opt(thisFun.fakeRc.opt, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasInput(rs_gn, thisFun.fakeRc);
+      return CLS_recipe.checkInput(thisFun.fakeRc, rs_gn);
     });
   }
   .setProp({
@@ -280,11 +280,11 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasAnyInput_pay = function thisFun(rcMdl) {
+  const _hasAnyPayInput = function thisFun(rcMdl) {
     return _rcHeaders(rcMdl).some(rcHeader => {
       _payi(thisFun.fakeRc.payi, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasInput_pay(thisFun.fakeRc);
+      return CLS_recipe.checkAnyPayInput(thisFun.fakeRc);
     });
   }
   .setProp({
@@ -292,7 +292,7 @@
       payi: [],
     },
   });
-  exports._hasAnyInput_pay = _hasAnyInput_pay;
+  exports._hasAnyPayInput = _hasAnyPayInput;
 
 
   /**
@@ -307,7 +307,7 @@
       _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
       _fo(thisFun.fakeRc.fo, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasOutput(rs_gn, thisFun.fakeRc);
+      return CLS_recipe.checkOutput(thisFun.fakeRc, rs_gn);
     });
   }
   .setProp({
@@ -316,9 +316,6 @@
       bo: [],
       fo: [],
     },
-    tmpArr: [],
-    tmpArr1: [],
-    tmpArr2: [],
   });
   exports._hasOutput = _hasOutput;
 
@@ -328,12 +325,12 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasAnyOutput_itm = function thisFun(rcMdl) {
+  const _hasAnyItmOutput = function thisFun(rcMdl) {
     return _rcHeaders(rcMdl).some(rcHeader => {
       _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
       _fo(thisFun.fakeRc.fo, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasOutput_itm(thisFun.fakeRc);
+      return CLS_recipe.checkAnyItmOutput(thisFun.fakeRc);
     });
   }
   .setProp({
@@ -342,7 +339,7 @@
       fo: [],
     },
   });
-  exports._hasAnyOutput_itm = _hasAnyOutput_itm;
+  exports._hasAnyItmOutput = _hasAnyItmOutput;
 
 
   /**
@@ -350,12 +347,12 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasAnyOutput_liq = function thisFun(rcMdl, includeAux) {
+  const _hasAnyFldOutput = function thisFun(rcMdl, includeAux) {
     return _rcHeaders(rcMdl).some(rcHeader => {
       _co(thisFun.fakeRc.co, rcMdl, rcHeader);
       _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasOutput_liq(includeAux, thisFun.fakeRc);
+      return CLS_recipe.checkAnyFldOutput(thisFun.fakeRc, includeAux);
     });
   }
   .setProp({
@@ -364,7 +361,7 @@
       bo: [],
     },
   });
-  exports._hasAnyOutput_liq = _hasAnyOutput_liq;
+  exports._hasAnyFldOutput = _hasAnyFldOutput;
 
 
   /**
@@ -372,11 +369,11 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasAnyOutput_pay = function thisFun(rcMdl) {
+  const _hasAnyPayOutput = function thisFun(rcMdl) {
     return _rcHeaders(rcMdl).some(rcHeader => {
       _payo(thisFun.fakeRc.payo, rcMdl, rcHeader);
 
-      return FRAG_recipe._hasOutput_pay(thisFun.fakeRc);
+      return CLS_recipe.checkAnyPayOutput(thisFun.fakeRc);
     });
   }
   .setProp({
@@ -384,7 +381,7 @@
       payo: [],
     },
   });
-  exports._hasAnyOutput_pay = _hasAnyOutput_pay;
+  exports._hasAnyPayOutput = _hasAnyPayOutput;
 
 
   /**

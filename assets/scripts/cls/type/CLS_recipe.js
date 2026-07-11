@@ -27,6 +27,8 @@
     this.useAutoSelection = Boolean(useAutoSelection);
 
     this.initData();
+    this.inputRsBoolMap = new ObjectMap();
+    this.outputRsBoolMap = new ObjectMap();
 
     nameRcMap.put(this.name, this);
     if(!blkRcsMap.containsKey(this.owner)) {
@@ -55,6 +57,9 @@
   Section: Definition (Static)
   ========================================
 */
+
+
+  /* <------------------------------ property ------------------------------ */
 
 
   /**
@@ -116,6 +121,366 @@
   };
 
 
+  /* <------------------------------ condition ------------------------------ */
+
+
+  /**
+   * Whether some resource is an input material in given recipe.
+   * @param {CLS_recipe} rc
+   * @param {ResourceGn} rs_gn
+   * @return {boolean}
+   */
+  CLS_recipe.checkInput = function(rc, rs_gn) {
+    let rs = MDL_content._ct(rs_gn, "rs");
+    if(rs == null) return false;
+
+    let
+      i,
+      iCap,
+      j,
+      jCap,
+      tmp,
+      tmp1;
+
+    // CI
+    i = 0;
+    iCap = rc.ci.iCap();
+    while(i < iCap) {
+      tmp = rc.ci[i];
+      if(tmp === rs) {
+        return true;
+      } else if(tmp instanceof Array) {
+        j = 0;
+        jCap = tmp.iCap();
+        while(j < jCap) {
+          tmp1 = tmp[j];
+          if(tmp1 === rs) return true;
+          j += 2;
+        };
+      };
+      i += 2;
+    };
+
+    // BI
+    i = 0;
+    iCap = rc.bi.iCap();
+    while(i < iCap) {
+      tmp = rc.bi[i];
+      if(tmp === rs) {
+        return true;
+      } else if(tmp instanceof Array) {
+        j = 0;
+        jCap = tmp.iCap();
+        while(j < jCap) {
+          tmp1 = tmp[j];
+          if(tmp1 === rs) return true;
+          j += 3;
+        };
+      };
+      i += 3;
+    };
+
+    // AUX
+    i = 0;
+    iCap = rc.aux.iCap();
+    while(i < iCap) {
+      tmp = rc.aux[i];
+      if(tmp === rs) return true;
+      i += 2;
+    };
+
+    // OPT
+    i = 0;
+    iCap = rc.opt.iCap();
+    while(i < iCap) {
+      tmp = rc.opt[i];
+      if(tmp === rs) return true;
+      i += 4;
+    };
+
+    return false;
+  };
+
+
+  /**
+   * Whether some resource is an output material in given recipe.
+   * @param {CLS_recipe} rc
+   * @param {ResourceGn} rs_gn
+   * @return {boolean}
+   */
+  CLS_recipe.checkOutput = function(rc, rs_gn) {
+    let rs = MDL_content._ct(rs_gn, "rs");
+    if(rs == null) return false;
+
+    let
+      i,
+      iCap,
+      tmp;
+
+    // CO
+    i = 0;
+    iCap = rc.co.iCap();
+    while(i < iCap) {
+      tmp = rc.co[i];
+      if(tmp === rs) return true;
+      i += 2;
+    };
+
+    // BO
+    i = 0;
+    iCap = rc.bo.iCap();
+    while(i < iCap) {
+      tmp = rc.bo[i];
+      if(tmp === rs) return true;
+      i += 3;
+    };
+
+    // FO
+    i = 0;
+    iCap = rc.fo.iCap();
+    while(i < iCap) {
+      tmp = rc.fo[i];
+      if(tmp === rs) return true;
+      i += 3;
+    };
+
+    return false;
+  };
+
+
+  /**
+   * Whether given recipe has any payload input.
+   * @param {CLS_recipe} rc
+   * @return {boolean}
+   */
+  CLS_recipe.checkAnyPayInput = function(rc) {
+    return rc.payi.length > 0;
+  };
+
+
+  /**
+   * Whether given recipe has any item output.
+   * @param {CLS_recipe} rc
+   * @return {boolean}
+   */
+  CLS_recipe.checkAnyItmOutput = function(rc) {
+    let
+      i,
+      iCap;
+
+    // FO
+    if(rc.fo.length > 0) return true;
+
+    // BO
+    i = 0;
+    iCap = rc.bo.iCap();
+    while(i < iCap) {
+      if(rc.bo[i] instanceof Item && rc.bo[i + 1] > 0) return true;
+      i += 3;
+    };
+
+    return false;
+  };
+
+
+  /**
+   * Whether given recipe has any liquid output.
+   * @param {CLS_recipe} rc
+   * @param {boolean|unset} [includeAux]
+   * @return {boolean}
+   */
+  CLS_recipe.checkAnyFldOutput = function(rc, includeAux) {
+    let
+      i,
+      iCap,
+      tmp;
+
+    // CO
+    i = 0;
+    iCap = rc.co.iCap();
+    while(i < iCap) {
+      tmp = rc.co[i];
+      if(!MDL_cond._isAuxiliaryFluid(tmp)) {
+        if(rc.co[i + 1] > 0.0) return true;
+      } else {
+        if(includeAux && rc.co[i + 1] > 0.0) return true;
+      };
+      i += 2;
+    };
+
+    // BO
+    i = 0;
+    iCap = rc.bo.iCap();
+    while(i < iCap) {
+      tmp = rc.bo[i];
+      if(tmp instanceof Liquid) {
+        if(!MDL_cond._isAuxiliaryFluid(tmp)) {
+          if(rc.bo[i + 1] > 0.0) return true;
+        } else {
+          if(includeAux && rc.bo[i + 1] > 0.0) return true;
+        };
+      };
+      i += 3;
+    };
+
+    return false;
+  };
+
+
+
+  /**
+   * Whether given recipe has any payload output.
+   * @param {CLS_recipe} rc
+   * @return {boolean}
+   */
+  CLS_recipe.checkAnyPayOutput = function(rc) {
+    return rc.payo.length > 0;
+  };
+
+
+  /* <------------------------------ util ------------------------------ */
+
+
+  /**
+   * Gets all fluids found in inputs.
+   * @param {Array|unset} contArr
+   * @param {CLS_recipe} rc
+   * @return {Array<Liquid>}
+   */
+  CLS_recipe.getInputFlds = function(contArr, rc) {
+    let arr = contArr != null ? contArr.clear() : [];
+    let
+      i,
+      iCap,
+      j,
+      jCap,
+      tmp,
+      tmp1;
+
+    // CI
+    i = 0;
+    iCap = rc.ci.iCap();
+    while(i < iCap) {
+      tmp = rc.ci[i];
+      if(!(tmp instanceof Array)) {
+        if(rc.ci[i + 1] > 0.0) arr.pushUnique(tmp);
+      } else {
+        j = 0;
+        jCap = tmp.iCap();
+        while(j < jCap) {
+          if(tmp[j + 1] > 0.0) arr.pushUnique(tmp[j]);
+          j += 2;
+        };
+      };
+      i += 2;
+    };
+
+    // BI
+    i = 0;
+    iCap = rc.bi.iCap();
+    while(i < iCap) {
+      tmp = rc.bi[i];
+      if(!(tmp instanceof Array)) {
+        if(tmp instanceof Liquid && rc.bi[i + 1] > 0.0) arr.pushUnique(tmp);
+      } else {
+        j = 0;
+        jCap = tmp.iCap();
+        while(j < jCap) {
+          tmp1 = tmp[j];
+          if(tmp1 instanceof Liquid && tmp[j + 1] > 0.0) arr.pushUnique(tmp1);
+          j += 3;
+        };
+      };
+      i += 3;
+    };
+
+    // AUX
+    i = 0;
+    iCap = rc.aux.iCap();
+    while(i < iCap) {
+      if(rc.aux[i + 1] > 0.0) arr.pushUnique(rc.aux[i]);
+      i += 2;
+    };
+
+    return arr;
+  };
+
+
+  /**
+   * Gets all fluids found in outputs.
+   * @param {Array|unset} contArr
+   * @param {CLS_recipe} rc
+   * @return {Array<Liquid>}
+   */
+  CLS_recipe.getOutputFlds = function(contArr, rc) {
+    let arr = contArr != null ? contArr.clear() : [];
+    let
+      i,
+      iCap,
+      tmp;
+
+    // CO
+    i = 0;
+    iCap = rc.co.iCap();
+    while(i < iCap) {
+      if(rc.co[i + 1] > 0.0) arr.pushUnique(rc.co[i]);
+      i += 2;
+    };
+
+    // BO
+    i = 0;
+    iCap = rc.bo.iCap();
+    while(i < iCap) {
+      tmp = rc.bo[i];
+      if(tmp instanceof Liquid && rc.bo[i + 1] > 0.0) arr.pushUnique(tmp);
+      i += 3;
+    };
+
+    return arr;
+  };
+
+
+  /**
+   * Gets a 2-tuple of items and fluids to dump.
+   * CO not included due to `liquidOutputDirections`.
+   * @param {Array|unset} contTup
+   * @param {CLS_recipe} rc
+   * @return {[Array<Item>, Array<Liquid>]}
+   */
+  CLS_recipe.getDumpTup = function(contTup, rc) {
+    let tup = contTup != null ? contTup : [[], []];
+    tup[0].clear();
+    tup[1].clear();
+
+    let
+      i,
+      iCap,
+      tmp;
+
+    // BO
+    i = 0;
+    iCap = rc.bo.iCap();
+    while(i < iCap) {
+      tmp = rc.bo[i];
+      if(rc.owner.hasItems && tmp instanceof Item) tup[0].pushUnique(tmp);
+      if(rc.owner.hasLiquids && tmp instanceof Liquid) tup[1].pushUnique(tmp);
+      i += 3;
+    };
+
+    // FO
+    if(rc.owner.hasItems) {
+      i = 0;
+      iCap = rc.fo.iCap();
+      while(i < iCap) {
+        tup[0].pushUnique(rc.fo[i]);
+        i += 3;
+      };
+    };
+
+    return tup;
+  };
+
+
   /**
    * Registers recipes in a multi-crafter block.
    * @param {Block} blk
@@ -141,18 +506,47 @@
 */
 
 
+  /* <------------------------------ condition ------------------------------ */
+
+
+  /**
+   * Variant of {@link CLS_recipe.checkInput} for instances, faster.
+   */
+  CLS_recipe.prototype.checkInput = function(rs_gn) {
+    let bool = this.inputRsBoolMap.get(rs_gn);
+    if(bool != null) return bool;
+
+    bool = CLS_recipe.checkInput(this, rs_gn);
+    this.inputRsBoolMap.put(rs_gn, bool);
+
+    return bool;
+  };
+
+
+  /**
+   * Variant of {@link CLS_recipe.checkOutput} for instances, faster.
+   */
+  CLS_recipe.prototype.checkOutput = function(rs_gn) {
+    let bool = this.outputRsBoolMap.get(rs_gn);
+    if(bool != null) return bool;
+
+    bool = CLS_recipe.checkOutput(this, rs_gn);
+    this.outputRsBoolMap.put(rs_gn, bool);
+
+    return bool;
+  };
+
+
   /* <------------------------------ modification ------------------------------ */
 
 
   /**
    * Initialize recipe data.
-   * @param {Block} blk
-   * @param {RecipeModule} rcMdl
-   * @param {string} rcHeader
    * @return {this}
    */
   CLS_recipe.prototype.initData = function() {
     this.isGen = MDL_recipe._isGen(this.rcMdl, this.rcHeader);
+    this.icon = MDL_recipe._icon(this.rcMdl, this.rcHeader);
 
     this.rcIconName = MDL_recipe._iconName(this.rcMdl, this.rcHeader);
     this.categ = MDL_recipe._categ(this.rcMdl, this.rcHeader);
@@ -204,7 +598,6 @@
 
     this.validTup = MDL_recipe._validTup(null, this.rcMdl, this.rcHeader);
     this.scrTup = MDL_recipe._scrTup(null, this.rcMdl, this.rcHeader);
-    this.dumpTup = MDL_recipe._dumpTup(null, this.owner, this.rcMdl, this.rcHeader);
     this.failEff = MDL_recipe._failEff(this.rcMdl, this.rcHeader);
     this.rcDrawer = MDL_recipe._drawer(this.rcMdl, this.rcHeader);
 
@@ -218,6 +611,15 @@
       this.keyFldHeaderMap = MDL_recipe._keyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.FLUID);
       this.keyPayHeaderMap = MDL_recipe._keyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.PAYLOAD);
     };
+
+    this.inputFlds = CLS_recipe.getInputFlds(null, this);
+    this.outputFlds = CLS_recipe.getOutputFlds(null, this);
+    this.hasAnyItmOutput = CLS_recipe.checkAnyItmOutput(this);
+    this.hasAnyFldOutput = CLS_recipe.checkAnyFldOutput(this, false);
+    this.hasAnyFldOutputIncludeAux = CLS_recipe.checkAnyFldOutput(this, true);
+    this.hasPayInput = CLS_recipe.checkAnyPayInput(this);
+    this.hasPayOutput = CLS_recipe.checkAnyPayOutput(this);
+    this.dumpTup = CLS_recipe.getDumpTup(null, this);
 
     this.hasBaseIo = false;
     MDL_recipe.IO_ORDER_MAP.each((name, ord) => {
@@ -324,23 +726,26 @@
       tb1.table(Styles.none, tb2 => {
         tb2.center();
         tb2.add("[" + Strings.fixed(ord, 0) + "]").color(Pal.accent).tooltip(this.rcHeader, true).row();
-        if(showWinBtn) {
-          MDL_table.__break(tb2, 1);
-          tb2.button(VARGEN.icons.window, Styles.clearNonei, 28.0, () => {
-            new CLS_window(
-              "${1} (${2})".format(MDL_bundle._term("lovec", "recipe"), this.owner.localizedName + " [${1}]".format(ord)),
-              tb3 => {
-                if(this.hasBaseIo) {
-                  this.displayBase(tb3, 28.0);
-                  MDL_table.__break(tb3, 1);
-                };
-                this.display(tb3, -1, false);
-              },
-            ).add();
-          })
-          .tooltip(MDL_bundle._term("lovec", "new-window"), true);
-        };
-      }).width(72.0);
+        MDL_table.__break(tb2, 1);
+        tb2.table(Styles.none, tb3 => {
+          tb3.button(this.icon, Styles.clearNonei, 28.0, () => {});
+          if(showWinBtn) {
+            tb3.button(VARGEN.icons.window, Styles.clearNonei, 28.0, () => {
+              new CLS_window(
+                "${1} (${2})".format(MDL_bundle._term("lovec", "recipe"), this.owner.localizedName + " [${1}]".format(ord)),
+                tb4 => {
+                  if(this.hasBaseIo) {
+                    this.displayBase(tb4, 28.0);
+                    MDL_table.__break(tb4, 1);
+                  };
+                  this.display(tb4, -1, false);
+                },
+              ).add();
+            })
+            .tooltip(MDL_bundle._term("lovec", "new-window"), true);
+          };
+        });
+      }).width(84.0);
       MDL_table.__barV(tb1, Pal.accent);
     })
     .left()
@@ -652,6 +1057,237 @@
 
 
   /**
+   * Whether a multi-crafter can add resource anymore.
+   * @param {Building} b
+   * @return {boolean}
+   */
+  CLS_recipe.prototype.checkCanAdd = function(b) {
+    let
+      i,
+      iCap,
+      tmp,
+      amt,
+      p;
+
+    // CO
+    if(b.liquids != null) {
+      let allFull = true;
+      i = 0;
+      iCap = this.co.iCap();
+      while(i < iCap) {
+        tmp = this.co[i];
+        amt = this.co[i + 1];
+        if(b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
+          allFull = false;
+        } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid && amt > 0.0 && !MDL_cond._isAuxiliaryFluid(tmp)) {
+          return false;
+        };
+        i += 2;
+      };
+      if(allFull && this.hasAnyFldOutputIncludeAux && !b.block.ignoreLiquidFullness) return false;
+    };
+
+    // BO
+    i = 0;
+    iCap = this.bo.iCap();
+    while(i < iCap) {
+      tmp = this.bo[i];
+      amt = this.bo[i + 1];
+      p = this.bo[i + 2];
+      if(b.items != null && tmp instanceof Item) {
+        if(amt > 0 && !b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
+      };
+      if(b.liquids != null && tmp instanceof Liquid) {
+        if(amt > 0.0 && !b.block.ignoreLiquidFullness && b.liquids.get(tmp) / b.block.liquidCapacity > 0.98) return false;
+      };
+      i += 3;
+    };
+
+    // FO
+    if(b.items != null) {
+      i = 0;
+      iCap = this.fo.iCap();
+      while(i < iCap) {
+        tmp = this.fo[i];
+        amt = this.fo[i + 1];
+        // No probability for failed output
+        if(amt > 0 && !b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
+        i += 3;
+      };
+    };
+
+    return true;
+  };
+
+
+  /**
+   * Gets a 4-tuple of preferred optional input.
+   * Returns null if no optional input.
+   * @param {Building} b
+   * @return {[Item, number, number, number]|null} <TUP>: item, amt, p, mtp.
+   */
+  CLS_recipe.prototype.getOptTup = function(b) {
+    if(b.items == null) return null;
+
+    let
+      tup = [],
+      i = 0,
+      iCap = this.opt.iCap(),
+      tmp,
+      amt,
+      p,
+      mtp,
+      tmpMtp = 0.0;
+
+    while(i < iCap) {
+      tmp = this.opt[i];
+      amt = this.opt[i + 1];
+      p = this.opt[i + 2];
+      mtp = this.opt[i + 3];
+      if(b.items.get(tmp) >= amt && mtp >= tmpMtp) {
+        tmpMtp = mtp;
+        tup.with(tmp, amt, p, mtp);
+      };
+      i += 4;
+    };
+
+    return tup.length === 0 ? null : tup;
+  };
+
+
+  /**
+   * Calculates current efficiency of a multi-crafter.
+   * @param {Building} b
+   * @return {number}
+   */
+  CLS_recipe.prototype.calcEffc = function(b) {
+    if(b.cheating() || DEBUG.skipRcEffcCalc) return 1.0;
+
+    let
+      i,
+      iCap,
+      j,
+      jCap,
+      tmp,
+      tmp1,
+      amt,
+      p,
+      allAbsent,
+      effc = 1.0,
+      mtp = 1.0;
+
+    if(b.power != null && !b.block.outputsPower) effc *= b.power.status;
+
+    // OPT
+    if(effc > 0.0 && this.opt.length > 0) {
+      let optTup = this.getOptTup(b);
+      if(this.reqOpt && optTup == null) {
+        b.delegee.lastOptEffc = 0.0;
+        return 0.0;
+      };
+      if(optTup != null) {
+        effc *= optTup[3];
+        b.delegee.lastOptEffc = optTup[3];
+        optTup.clear();
+      };
+    };
+
+    // CI
+    if(b.liquids != null) {
+      i = 0;
+      iCap = this.ci.iCap();
+      while(i < iCap) {
+        if(effc < 0.0001) return 0.0;
+        tmp = this.ci[i];
+        if(!(tmp instanceof Array)) {
+          amt = this.ci[i + 1];
+          mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
+            0.0 :
+            amt < 0.0001 ?
+              1.0 :
+              Math.min(b.liquids.get(tmp) / amt / b.delegee.lastOptEffc * b.delta() * b.efficiencyScale(), 1.0);
+        } else {
+          j = 0;
+          jCap = tmp.iCap();
+          allAbsent = true;
+          while(j < jCap) {
+            // No zero amount check here, why put that in an alternative input list?
+            if(b.liquids.get(tmp[j]) > 0.01) {
+              amt = tmp[j + 1];
+              mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
+                0.0 :
+                Math.min(b.liquids.get(tmp[j]) / amt / b.delegee.lastOptEffc * b.delta() * b.efficiencyScale(), 1.0);
+              allAbsent = false;
+              break;
+            };
+            j += 2;
+          };
+          if(allAbsent) mtp = 0.0;
+        };
+        effc *= mtp;
+        i += 2;
+      };
+    };
+
+    // BI
+    if(b.items != null || b.liquids != null) {
+      i = 0;
+      iCap = this.bi.iCap();
+      while(i < iCap) {
+        if(effc < 0.0001) return 0.0;
+        tmp = this.bi[i];
+        if(!(tmp instanceof Array)) {
+          amt = this.bi[i + 1];
+          if(b.items != null && tmp instanceof Item) {
+            if(b.items.get(tmp) < amt) return 0.0;
+          };
+          if(b.liquids != null && tmp instanceof Liquid) {
+            if(b.liquids.get(tmp) < amt) return 0.0;
+          };
+        } else {
+          allAbsent = true;
+          j = 0;
+          jCap = tmp.iCap();
+          while(j < jCap) {
+            tmp1 = tmp[j];
+            amt = tmp[j + 1];
+            if(b.items != null && tmp1 instanceof Item) {
+              if(b.items.get(tmp1) >= amt) allAbsent = false;
+            };
+            if(b.liquids != null && tmp1 instanceof Liquid) {
+              if(b.liquids.get(tmp1) > amt - 0.0001) allAbsent = false;
+            };
+            j += 3;
+          };
+          if(allAbsent) return 0.0;
+        };
+        i += 3;
+      };
+    };
+
+    // AUX
+    if(b.liquids != null) {
+      i = 0;
+      iCap = this.aux.iCap();
+      while(i < iCap) {
+        if(effc < 0.0001) return 0.0;
+        tmp = this.aux[i];
+        amt = this.aux[i + 1];
+        mtp = b.efficiencyScale() < 0.0001 ?
+          0.0 :
+          amt < 0.0001 ?
+            1.0 :
+            Math.min(b.liquids.get(tmp) / amt * b.delta() * b.efficiencyScale(), 1.0);
+        effc *= mtp;
+        i += 2;
+      };
+    };
+
+    return Mathf.maxZero(effc);
+  };
+
+
+  /**
    * Changes recipe of a multi-crafter if its key content has changed.
    * @param {Building} b
    * @return {void}
@@ -694,12 +1330,227 @@
 
 
   /**
+   * Lets a multi-crafter consume items.
+   * @param {Building} b
+   * @return {void}
+   */
+  CLS_recipe.prototype.consumeBatch = function(b) {
+    if((b.items == null || !b.items.any()) && b.liquids == null) return;
+
+    let
+      i,
+      iCap,
+      j,
+      jCap,
+      tmp,
+      tmp1,
+      amt,
+      p;
+
+    // BI
+    i = 0;
+    iCap = this.bi.iCap();
+    while(i < iCap) {
+      tmp = this.bi[i];
+      if(!(tmp instanceof Array)) {
+        amt = this.bi[i + 1];
+        p = this.bi[i + 2];
+        if(b.items != null && tmp instanceof Item) {
+          FRAG_item.consumeItem(b, tmp, amt, p);
+          b.delegee.consTmpObj[tmp.name] = amt * p;
+        };
+        if(b.liquids != null && tmp instanceof Liquid) {
+          FRAG_fluid.addLiquidBatch(b, b, tmp, -amt);
+          b.delegee.consTmpObj[tmp.name] = amt;
+        };
+      } else {
+        j = 0;
+        jCap = tmp.iCap();
+        while(j < jCap) {
+          tmp1 = tmp[j];
+          amt = tmp[j + 1];
+          p = tmp[j + 2];
+          if(b.items != null && tmp1 instanceof Item && FRAG_item.consumeItem(b, tmp1, amt, p)) {
+            b.delegee.consTmpObj[tmp1.name] = amt * p;
+            break;
+          };
+          if(b.liquids != null && tmp1 instanceof Liquid && FRAG_fluid.addLiquidBatch(b, b, tmp1, -amt) > 0.0) {
+            b.delegee.consTmpObj[tmp1.name] = amt;
+            break;
+          };
+          j += 3;
+        };
+      };
+      i += 3;
+    };
+
+    // OPT
+    if(this.opt.length > 0) {
+      let optTup = this.getOptTup(b);
+      if(optTup != null) {
+        FRAG_item.consumeItem(b, optTup[0], optTup[1], optTup[2]);
+        b.delegee.consTmpObj[optTup[0].name] = optTup[1] * optTup[2];
+        optTup.clear();
+      };
+    };
+  };
+
+
+  /**
+   * Lets a multi-crafter consume liquids.
+   * @param {Building} b
+   * @param {number} progIncLiq
+   * @return {void}
+   */
+  CLS_recipe.prototype.consumeContinuous = function(b, progIncLiq) {
+    if(b.liquids == null || DEBUG.skipRcLiqCons) return;
+
+    let
+     i,
+     iCap,
+     j,
+     jCap,
+     tmp,
+     tmp1,
+     amt;
+
+    // CI
+    i = 0;
+    iCap = this.ci.iCap();
+    while(i < iCap) {
+      tmp = this.ci[i];
+      if(!(tmp instanceof Array)) {
+        amt = this.ci[i + 1];
+        b.liquids.remove(tmp, Math.min(amt * progIncLiq * this.rcTimeScl, b.liquids.get(tmp)));
+        b.delegee.consTmpObj[tmp.name] = amt;
+      } else {
+        j = 0;
+        jCap = tmp.iCap();
+        while(j < jCap) {
+          tmp1 = tmp[j];
+          if(b.liquids.get(tmp1) > 0.01) {
+            amt = tmp[j + 1];
+            b.liquids.remove(tmp1, Math.min(amt * progIncLiq * this.rcTimeScl, b.liquids.get(tmp1)));
+            b.delegee.consTmpObj[tmp1.name] = amt;
+            break;
+          };
+          j += 2;
+        };
+      };
+      i += 2;
+    };
+
+    // AUX
+    i = 0;
+    iCap = this.aux.iCap();
+    while(i < iCap) {
+      tmp = this.aux[i];
+      amt = this.aux[i + 1];
+      b.liquids.remove(tmp, Math.min(amt * progIncLiq, this.rcTimeScl, b.liquids.get(tmp)));
+      b.delegee.consTmpObj[tmp.name] = amt;
+      i += 2;
+    };
+  };
+
+
+
+  /**
+   * Lets a multi-crafter produce items.
+   * @param {Building} b
+   * @param {number} failP
+   * @return {void}
+   */
+  CLS_recipe.prototype.craftBatch = function(b, failP) {
+    let
+      i,
+      iCap,
+      tmp,
+      amt,
+      p,
+      failed = LCRand.chance(UTIL_rand.get("crafter"), failP);
+
+    // BO
+    if(!failed) {
+      MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);
+      i = 0;
+      iCap = this.bo.iCap();
+      while(i < iCap) {
+        tmp = this.bo[i];
+        amt = this.bo[i + 1];
+        p = this.bo[i + 2];
+        if(b.items != null && tmp instanceof Item && b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
+          FRAG_item.produceItem(b, tmp, amt, p);
+          b.delegee.prodTmpObj[tmp.name] = amt * p;
+        };
+        if(b.liquids != null && tmp instanceof Liquid) {
+          FRAG_fluid.addLiquidBatch(b, b, tmp, amt, true);
+          b.delegee.prodTmpObj[tmp.name] = amt;
+        };
+        i += 3;
+      };
+    };
+
+    // FO
+    if(b.items != null && failed) {
+      MDL_effect.showAt(b.x, b.y, b.ex_getFailEff(), 0.0);
+      i = 0;
+      iCap = this.fo.iCap();
+      while(i < iCap) {
+        tmp = this.fo[i];
+        amt = this.fo[i + 1];
+        p = this.fo[i + 2];
+        if(b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
+          FRAG_item.produceItem(b, tmp, amt, p);
+          b.delegee.prodTmpObj[tmp.name] = amt * p;
+        };
+        i += 3;
+      };
+      b.ex_onRcFail();
+    };
+  };
+
+
+  /**
+   * Lets a multi-crafter produce liquids.
+   * @param {Building} b
+   * @param {number} progIncLiq
+   * @return {void}
+   */
+  CLS_recipe.prototype.craftContinuous = function(b, progIncLiq) {
+    if(b.liquids == null || DEBUG.skipRcLiqProd) return;
+
+    let
+      i,
+      iCap,
+      tmp,
+      amt;
+
+    // CO
+    i = 0;
+    iCap = this.co.iCap();
+    while(i < iCap) {
+      tmp = this.co[i];
+      amt = this.co[i + 1];
+      if(TIMER.secTwo && amt > 0.0) {
+        TRIGGER.fluidProduce.fire(b, tmp);
+      };
+      b.handleLiquid(b, tmp, Math.min(amt * progIncLiq * this.rcTimeScl, b.block.liquidCapacity - b.liquids.get(tmp)));
+      b.delegee.prodTmpObj[tmp.name] = amt;
+      i += 2;
+    };
+  };
+
+
+  /**
    * Consumes and produces payload in a multi-crafter.
    * @param {Building} b
    * @return {void}
    */
   CLS_recipe.prototype.craftPay = function(b) {
-    let i, iCap;
+    let
+      i,
+      iCap;
+
     if(b.delegee.hasPayInput) {
       i = 0;
       iCap = this.payi.iCap();
@@ -714,6 +1565,46 @@
       while(i < iCap) {
         Object.mapIncre(b.delegee.payStockObj, this.payo[i], this.payo[i + 1]);
         i += 2;
+      };
+    };
+  };
+
+
+  /**
+   * Lets a multi-crafter dump resource in it.
+   * @param {Building} b
+   * @return {void}
+   */
+  CLS_recipe.prototype.dump = function(b) {
+    if(DEBUG.skipRcDump) return;
+
+    if(b.liquids != null) {
+      i = 0;
+      iCap = this.co.iCap();
+      while(i < iCap) {
+        tmp = this.co[i];
+        dir = (b.block.liquidOutputDirections.length > i / 2) ? b.block.liquidOutputDirections[i / 2] : -1;
+        b.dumpLiquid(tmp, 2.0, dir);
+        i += 2;
+      };
+
+      i = 0;
+      iCap = this.dumpTup[1].iCap();
+      while(i < iCap) {
+        if(this.dumpTup[1][i] != null) {
+          b.dumpLiquid(this.dumpTup[1][i], 2.0);
+        };
+        i++;
+      };
+    };
+    if(b.items != null && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+      i = 0;
+      iCap = this.dumpTup[0].iCap();
+      while(i < iCap) {
+        if(this.dumpTup[0][i] != null) {
+          b.dump(this.dumpTup[0][i]);
+        };
+        i++;
       };
     };
   };
