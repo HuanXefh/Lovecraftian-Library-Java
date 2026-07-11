@@ -805,66 +805,19 @@
 
 
   /**
-   * Gets tooltip bundle piece of this recipe.
+   * Gets tooltip of this recipe, nullable.
+   * <br> <BUNDLE>: "info.common-info-tt-<tooltip>.name".
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {string|null}
    */
   const _tt = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "tooltip", null);
+    let tt = _rcVal(rcMdl, rcHeader, "tooltip", null);
+    return tt == null ?
+      null :
+      MDL_bundle._info("common", "tt-" + tt);
   };
   exports._tt = _tt;
-
-
-  /**
-   * Gets full text for recipe tooltip.
-   * @param {RecipeModule} rcMdl
-   * @param {string} rcHeader
-   * @param {boolean|unset} [valid]
-   * @param {boolean|unset} [uncategorizedOnly]
-   * @return {string}
-   */
-  const _ttStr = function(rcMdl, rcHeader, valid, uncategorizedOnly) {
-    if(Vars.headless) return "";
-
-    if(valid) {
-      // Regular display
-      return String.multiline(
-        uncategorizedOnly ? null : ("<" + _categB(_categ(rcMdl, rcHeader)) + ">").color(Pal.accent),
-        (function() {let ct = MDL_content._ct(_iconName(rcMdl, rcHeader), null, true); return ct == null ? "-" : ct.localizedName})(),
-        (function() {
-          let str = String.multiline(
-            "",
-            !_isGen(rcMdl, rcHeader) ? null : MDL_bundle._term("lovec", "generated-recipe").color(Color.darkGray),
-            (function() {let heat = _erekirHeatReq(rcMdl, rcHeader); return heat <= 0.0 ? null : MDL_text._statText(fetchStat("lovec", "blk-erekirheatreq").localized(), heat, StatUnit.heatUnits.localized())})(),
-            (function() {let heat = _erekirHeatProd(rcMdl, rcHeader); return heat <= 0.0 ? null : MDL_text._statText(fetchStat("lovec", "blk-erekirheatprod").localized(), heat, StatUnit.heatUnits.localized())})(),
-            (function() {let attr = _attr(rcMdl, rcHeader); return attr == null ? null : MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))})(),
-            (function() {let pol = _pol(rcMdl, rcHeader); return pol.fEqual(0.0) ? null : MDL_text._statText(fetchStat("lovec", "blk-pol").localized(), (pol > 0.0 ? "+" : "=") + Math.abs(pol), fetchStatUnit("lovec", "polunits").localized())})(),
-            (function() {let p = _failP(rcMdl, rcHeader); return p < 0.0001 ? null : MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), p.perc(1).color(p > 0.25 ? Pal.remove : Pal.accent))})(),
-            (function() {let mtp = _powProdMtp(rcMdl, rcHeader); return mtp.fEqual(1.0) ? null : MDL_text._statText(fetchStat("lovec", "blk0pow-powmtp").localized(), mtp.perc())})(),
-            (function() {let temp = _tempReq(rcMdl, rcHeader); return temp < 0.0001 ? null : MDL_text._statText(fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(temp, 2), fetchStatUnit("lovec", "heatunits").localized())})(),
-            (function() {let temp = _tempAllowed(rcMdl, rcHeader); return !isFinite(temp) ? null : MDL_text._statText(MDL_bundle._term("lovec", "temperature-allowed"), Strings.fixed(temp, 2), fetchStatUnit("lovec", "heatunits").localized())})(),
-            (function() {let mtp = _durabDecMtp(rcMdl, rcHeader); return mtp.fEqual(1.0) ? null : MDL_text._statText(MDL_bundle._term("lovec", "abrasion-multiplier"), mtp.perc())})(),
-            (function() {let tt = _tt(rcMdl, rcHeader); return tt == null ? null : MDL_bundle._info("common", "tt-" + tt)})(),
-          );
-          return str === "\n" ? null : str;
-        })(),
-      );
-    };
-
-    // When content is still locked
-    return String.multiline(
-      MDL_bundle._info("lovec", "recipe-unavailable"),
-      (function() {
-        let str = String.multiline(
-          "",
-          (function() {let cts = _lockedBy(rcMdl, rcHeader, true); let str1 = null; if(cts.length > 0) {str1 = MDL_text._statText(MDL_bundle._term("lovec", "locked"), ""); cts.forEachFast(ct => str1 += "\n- " + ct.localizedName.plain().color(Pal.remove))}; return str1})(),
-        );
-        return str === "\n" ? null : str;
-      })(),
-    );
-  };
-  exports._ttStr = _ttStr;
 
 
   /* <------------------------------ recipe I/O ------------------------------ */
@@ -1032,7 +985,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctText: _ttStr(rcMdl, rcHeader, true),
+              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1050,7 +1003,7 @@
               {
                 ct: _iconName(rcMdl, rcHeader),
                 ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-                ctText: _ttStr(rcMdl, rcHeader, true),
+                ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               },
             ) :
             MDL_recipeDict.addFldConsTerm(
@@ -1060,7 +1013,7 @@
               {
                 ct: _iconName(rcMdl, rcHeader),
                 ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-                ctText: _ttStr(rcMdl, rcHeader, true),
+                ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               },
             );
         };
@@ -1076,7 +1029,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctText: _ttStr(rcMdl, rcHeader, true),
+              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1093,7 +1046,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctText: _ttStr(rcMdl, rcHeader, true),
+              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               icon: "lovec-icon-boost",
             },
           );
@@ -1110,7 +1063,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctText: _ttStr(rcMdl, rcHeader, true),
+              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1126,7 +1079,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctText: _ttStr(rcMdl, rcHeader, true),
+              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1143,7 +1096,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctText: _ttStr(rcMdl, rcHeader, true),
+              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1160,7 +1113,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctText: _ttStr(rcMdl, rcHeader, true),
+              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1176,7 +1129,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctText: _ttStr(rcMdl, rcHeader, true),
+              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };

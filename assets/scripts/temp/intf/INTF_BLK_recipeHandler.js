@@ -100,7 +100,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate || b.rc == null) return;
+    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
 
     b.rc.updateAutoSelection(b);
 
@@ -157,9 +157,9 @@
       b.rcEffc :
       0.0;
 
-    if(b.rc != null && b.rc.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
+    if(b.rc.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
     b.ex_postUpdateEfficiencyMultiplier();
-    if(b.rc != null && b.rc.validTup != null && !b.rc.validTup[0](b)) b.efficiency = 0.0;
+    if(!b.rc.validTup[0](b)) b.efficiency = 0.0;
   };
 
 

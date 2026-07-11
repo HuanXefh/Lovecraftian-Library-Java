@@ -595,7 +595,7 @@
    */
   forceUpdateBlockFrag = function() {
     Reflect.set(PlacementFragment, Vars.ui.hudfrag.blockfrag, "lastDisplayState", null);
-  },
+  };
 
 
   /**
@@ -699,7 +699,7 @@
 
     /**
      * Registers a new log type.
-     * @param {numbers} mode - See {@link LogModes}.
+     * @param {number} mode - See {@link LogModes}.
      * @param {string} name
      * @param {function(): string} strGetter
      * @return {void}

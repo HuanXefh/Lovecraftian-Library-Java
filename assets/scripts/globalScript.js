@@ -301,7 +301,7 @@
     lastHttpRes: null,
     lastHttpExc: null,
 
-  },
+  };
 
 
 /*

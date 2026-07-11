@@ -88,6 +88,35 @@
 
 
   /**
+   * Adds a table with colored edge lines.
+   * @param {Table} tb
+   * @param {function(Table): void} tableF
+   * @param {Color|unset} [color]
+   * @param {number|unset} [stroke]
+   * @return {Cell}
+   */
+  const __edge = function(tb, tableF, color, stroke) {
+    if(color == null) color = Color.white;
+    if(stroke == null) stroke = 2.0;
+
+    return tb.table(Styles.none, tb1 => {
+      tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).height(stroke);
+      tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).height(stroke).growX();
+      tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).height(stroke);
+      tb1.row();
+      tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).growY();
+      tableF(tb1);
+      tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).growY();
+      tb1.row();
+      tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).height(stroke);
+      tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).height(stroke).growX();
+      tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).height(stroke);
+    });
+  };
+  exports.__edge = __edge;
+
+
+  /**
    * Adds a wrapped text line for a table.
    * @param {Table} tb
    * @param {string} str
@@ -508,7 +537,7 @@
       "" :
       ct instanceof Liquid && !cancelLiq ?
         (Strings.autoFixed(amt * 60.0, 2) + "/s") :
-        Strings.autoFixed(amt, 0) + "   ";
+        Strings.autoFixed(amt, 0) + "       ";
 
     return tb.table(Styles.none, tb1 => {
       tb1.left();
@@ -544,8 +573,8 @@
           // Amount (bottom right)
           tb3.add(str).left().fontScale(0.85).style(Styles.outlineLabel);
         });
-      }).marginRight(6.0);
-    }).left().marginRight(9.0).padTop(4.0).padBottom(4.0);
+      }).marginRight(4.0);
+    }).left().marginRight(8.0).padTop(4.0).padBottom(4.0);
   };
   exports.__rcCt = __rcCt;
 
@@ -948,16 +977,16 @@
    * @return {void}
    */
   const _s_rc = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, useAutoSelection, closeSelect, colAmt) {
+    if(extraBtnSetters == null) extraBtnSetters = [];
+    if(useAutoSelection == null) useAutoSelection = false;
     if(closeSelect == null) closeSelect = true;
     if(colAmt == null) colAmt = 4;
 
     let
-      rcMdl = b.block.delegee.rcMdl,
-      categHeaderObj = MDL_recipe._categHeaderObj(rcMdl),
+      categHeaderObj = CLS_recipe.getBlkCategHeaderObjMap().get(b.block),
       btnGrp = (function(btnGrp) {btnGrp.setMinCheckCount(0); btnGrp.setMaxCheckCount(1); return btnGrp})(new ButtonGroup());
 
     // Buttons
-    if(extraBtnSetters == null) extraBtnSetters = [];
     if(useAutoSelection) {
       extraBtnSetters.unshift(
         tb => tb.button("A", () => {useAutoSelection = false}).tooltip(MDL_bundle._info("lovec", "tt-disable-auto-selection"), true),
@@ -981,7 +1010,10 @@
     // Method and field sharing the same name, great
     Reflect.set(Cell, contCell, "minWidth", (200.0).toF());
 
-    let categAmt = 0, uncategorizedOnly = false;
+    let
+      j,
+      categAmt = 0,
+      uncategorizedOnly = false;
 
     let rebuildCont = () => {
       btnGrp.clear();
@@ -1007,22 +1039,26 @@
           cont.add(MDL_recipe._categB(categ)).left().pad(4.0).color(!useAutoSelection ? Color.white : Color.gray).row();
         };
 
-        let j = 0;
+        j = 0;
         let chunk = new Table();
         categHeaderObj[categ].forEachFast(rcHeader => {
-          let icon = MDL_recipe._icon(rcMdl, rcHeader);
-          let validCheck = MDL_recipe._finalValidCheck(rcMdl, rcHeader);
-          let ttStr = MDL_recipe._ttStr(rcMdl, rcHeader, validCheck(b), uncategorizedOnly);
-
-          let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {if(closeSelect) Vars.control.input.config.hideConfig()}).margin(3.0).tooltip(ttStr, true).group(btnGrp).get();
+          let rc = CLS_recipe.getByHeader(b.block, rcHeader);
+          let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {
+            if(closeSelect) Vars.control.input.config.hideConfig();
+          })
+          .margin(3.0)
+          .tooltip(cons(tb => rc.displayTooltip(tb, rc.validTup[0](b))))
+          .group(btnGrp)
+          .get();
           btn.changed(() => cfgCaller(rcHeader));
-          btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
+          btn.getStyle().imageUp = rc.validTup[0](b) ? rc.icon : Icon.lock;
           btn.getStyle().imageDisabledColor = Color.gray;
           btn.update(() => {
             btn.setDisabled(useAutoSelection);
+            // Double equality, string returned here is an object
             btn.setChecked(headerGetter() == rcHeader);
             if(TIMER.secHalf) {
-              btn.getStyle().imageUp = validCheck(b) ? icon : Icon.lock;
+              btn.getStyle().imageUp = rc.validTup[0](b) ? rc.icon : Icon.lock;
             };
           });
 
@@ -1240,7 +1276,7 @@
       };
 
       categHeaderObj[categ].forEachFast(rcHeader => {
-        CLS_recipe.getByHeader(blk, rcHeader).display(rcRoot, i, true);
+        CLS_recipe.getByHeader(blk, rcHeader).display(rcRoot, i, false, true);
         __bar(rcRoot, Color.valueOf(Tmp.c1, "303030"), null, 1.0);
 
         i++;

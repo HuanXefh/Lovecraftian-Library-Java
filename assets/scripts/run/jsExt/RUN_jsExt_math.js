@@ -19,7 +19,7 @@
 
   /**
    * Increases some number in a number mapper object.
-   * @param {Object<string: number>} obj
+   * @param {Object<string, number>} obj
    * @param {string} key
    * @param {number|unset} [num]
    * @return {number}

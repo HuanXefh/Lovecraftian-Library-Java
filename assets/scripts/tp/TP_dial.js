@@ -638,7 +638,11 @@
 
 
       ex_buildList(tb, ct, rcDictArr, isCustomField) {
-        let i = 0, iCap = rcDictArr.iCap(), j = 0;
+        let
+          i = 0,
+          iCap = rcDictArr.iCap(),
+          j = 0;
+
         let rcCont;
         while(i < iCap) {
           rcCont = tb.table(Styles.none, tb1 => tb1.left()).left().width(240.0).height(60.0).get();
@@ -647,7 +651,7 @@
             MDL_table.__ct(tb1, rcDictArr[i], 48.0, 8.0, this);
           });
           // <TABLE>: recipe text
-          let data, craftTime, craftRate, btn;
+          let data, craftTime, craftRate, btn, btnCell;
           let isContinuous = isCustomField ?
             MDL_recipeDict.rcDict.customFieldMap.get(ct).isContinuous :
             ct instanceof Liquid;
@@ -688,15 +692,23 @@
                   oct = MDL_content._ct(data.ct, null, true);
                 };
                 if(oct != null) {
-                  btn = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
+                  btnCell = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
                     this.hide();
                     isOtherCustomField ?
                       this.ex_show(MDL_recipeDict._customFieldB(oct), oct) :
                       Vars.ui.content.show(oct);
-                  })
-                  .left()
-                  .tooltip(tryVal(data.ctText, isOtherCustomField ? MDL_recipeDict._customFieldB(oct) : oct.localizedName), true)
-                  .get();
+                  }).left();
+                  if(data.ctTableF != null) {
+                    let blk = rcDictArr[i];
+                    btnCell.tooltip(cons(tb => data.ctTableF(tb, blk, ct)));
+                  } else if(data.ctText) {
+                    btnCell.tooltip(data.ctText, true);
+                  } else if(isOtherCustomField) {
+                    btnCell.tooltip(MDL_recipeDict._customFieldB(oct), true);
+                  } else {
+                    btnCell.tooltip(oct.localizedName, true);
+                  };
+                  btn = btnCell.get();
                   btn.getStyle().imageUp = (isOtherCustomField ? MDL_recipeDict.rcDict.customFieldMap.get(oct).icon : new TextureRegionDrawable(oct.uiIcon)).tint(tryVal(data.ctTint, Color.white));
                 };
               };

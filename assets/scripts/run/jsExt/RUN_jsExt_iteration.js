@@ -6,7 +6,7 @@
 
 
   /**
-   * Methods for interation on fundamental JavaScript types.
+   * Methods for iteration on fundamental JavaScript types.
    */
 
 
