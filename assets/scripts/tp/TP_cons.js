@@ -105,7 +105,7 @@
       ConsumeLiquidFilter,
       (function() {
         let arr = readParam(paramObj, "liqEffcArr", Array.air).readCol(2, 0);
-        return boolf(liq => arr.includes(liq.name));
+        return liq => arr.includes(liq.name);
       })(),
       readParam(paramObj, "amt", 0.0),
       {
@@ -143,13 +143,9 @@
 
 
         update(b) {
-          try {
-            let liq = this.getConsumed(b);
-            if(liq != null) {
-              b.liquids.remove(liq, this.amount * b.edelta() * this.multiplier.get(b) / this.effcMap.get(liq.name, 0.0001));
-            };
-          } catch(err) {
-            console.err(err);
+          let liq = this.getConsumed(b);
+          if(liq != null) {
+            b.liquids.remove(liq, this.amount * b.edelta() / this.effcMap.get(liq.name, 0.0001));
           };
         },
 
