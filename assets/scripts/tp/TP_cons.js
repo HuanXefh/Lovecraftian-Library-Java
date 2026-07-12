@@ -153,14 +153,13 @@
 
 
         efficiency(b) {
+          // The last one that can go wrong
           try {
-            // WTF
-            print(this.effcMap);
             let liq = this.getConsumed(b);
             if(liq != null) {
-              print(this.super$efficiency(b));
-              print(this.effcMap.get(liq.name));
-              print(this.effcMap.get(liq.name, 0.0001));
+              print(this.multiplier);
+              print(this.multiplier.get);
+              print(this.multiplier.get(b));
             };
           } catch(err) {
             console.err(err);

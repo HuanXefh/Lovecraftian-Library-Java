@@ -118,8 +118,7 @@
       spawnUnit_server(args[0], args[1], args[2], Team.get(args[3]), args[4], args[5], args[6], args[7]);
     });
   })
-  .setAnno("client")
-  .setAnno("non-console");
+  .setAnno("client");
   exports.spawnUnit_client = spawnUnit_client;
 
 
@@ -234,8 +233,7 @@
       spawnLoot_server.apply(null, unpackPayload(payload));
     });
   })
-  .setAnno("client")
-  .setAnno("non-console");
+  .setAnno("client");
   exports.spawnLoot_client = spawnLoot_client;
 
 

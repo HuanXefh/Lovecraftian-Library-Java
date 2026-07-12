@@ -105,8 +105,7 @@
     MDL_json.write(MDL_file._lsav(), lsav);
     MDL_json.write(MDL_file._plsav(), plsav);
   }
-  .setAnno("server")
-  .setAnno("non-console");
+  .setAnno("server");
   exports.saveLsav = saveLsav;
 
 
@@ -117,8 +116,7 @@
    */
   const __lsav = function(obj) {
     lsav = obj;
-  }
-  .setAnno("non-console");
+  };
   exports.__lsav = __lsav;
 
 
@@ -129,8 +127,7 @@
    */
   const __plsav = function(obj) {
     plsav = obj;
-  }
-  .setAnno("non-console");
+  };
   exports.__plsav = __plsav;
 
 
@@ -240,8 +237,7 @@
       sync();
     });
   })
-  .setAnno("client")
-  .setAnno("non-console");
+  .setAnno("client");
   exports.requestSync = requestSync;
 
 
@@ -267,8 +263,7 @@
       setSafe.apply(this, unpackPayload(payload));
     });
   })
-  .setAnno("client")
-  .setAnno("non-console");
+  .setAnno("client");
   exports.requestSet = requestSet;
 
 

@@ -174,8 +174,7 @@
       applyReaction(args[0], args[1], args[2], args[3], Vars.world.build(args[4]), args[5]);
     });
   })
-  .setAnno("client")
-  .setAnno("non-console");
+  .setAnno("client");
   exports.requestReaction = requestReaction;
 
 
@@ -221,6 +220,5 @@
         _isReac(reac1) ? null : reac1,
       );
     };
-  }
-  .setAnno("non-console");
+  };
   exports.handleReaction_global = handleReaction_global;
