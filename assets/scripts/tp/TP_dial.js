@@ -700,7 +700,7 @@
                   }).left();
                   if(data.ctTableF != null) {
                     let blk = rcDictArr[i];
-                    btnCell.tooltip(cons(tb => data.ctTableF(tb, blk, ct)));
+                    MDL_table.__tooltip(btnCell, tb => data.ctTableF(tb, blk, ct));
                   } else if(data.ctText) {
                     btnCell.tooltip(data.ctText, true);
                   } else if(isOtherCustomField) {
@@ -716,9 +716,7 @@
               if(data.icon != null) {
                 let iconCell = tb2.image(Core.atlas.find(data.icon)).left().width(26.0).height(26.0);
                 if(data.iconCts != null) {
-                  iconCell.tooltip(cons(ttTb => {
-                    MDL_table._l_ctLi(ttTb, data.iconCts, 40.0, 4);
-                  }));
+                  MDL_table.__tooltip(iconCell, ttTb => MDL_table._l_ctLi(ttTb, data.iconCts, 40.0, 4));
                 };
               };
               // <TABLE>: text icon

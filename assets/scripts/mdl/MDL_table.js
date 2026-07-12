@@ -117,6 +117,21 @@
 
 
   /**
+   * Adds a table into a cell.
+   * @param {Cell} cell
+   * @param {function(Table): void} tableF
+   * @return {Cell}
+   */
+  const __tooltip = function(cell, tableF) {
+    let tooltip = new Tooltip(cons(tableF));
+    tooltip.allowMobile = true;
+    Reflect.get(Cell, cell, "element").addListener(tooltip);
+    return cell;
+  };
+  exports.__tooltip = __tooltip;
+
+
+  /**
    * Adds a wrapped text line for a table.
    * @param {Table} tb
    * @param {string} str
@@ -1043,13 +1058,13 @@
         let chunk = new Table();
         categHeaderObj[categ].forEachFast(rcHeader => {
           let rc = CLS_recipe.get(b.block, rcHeader);
-          let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {
+          let btnCell = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {
             if(closeSelect) Vars.control.input.config.hideConfig();
           })
           .margin(3.0)
-          .tooltip(cons(tb => rc.displayTooltip(tb, rc.validTup[0](b))))
-          .group(btnGrp)
-          .get();
+          .group(btnGrp);
+          __tooltip(btnCell, tb => rc.displayTooltip(tb, rc.validTup[0](b)));
+          let btn = btnCell.get();
           btn.changed(() => cfgCaller(rcHeader));
           btn.getStyle().imageUp = rc.validTup[0](b) ? rc.icon : Icon.lock;
           btn.getStyle().imageDisabledColor = Color.gray;

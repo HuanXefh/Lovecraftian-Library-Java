@@ -1002,12 +1002,13 @@
             .row();
           };
           if(this.attr != null) {
-            tb3.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left().tooltip(cons(tb => {
+            let attrCell = tb3.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left();
+            MDL_table.__tooltip(attrCell, tb => {
               tb.table(Styles.black6, tb1 => {
                 MDL_table.__margin(tb1);
                 MDL_table._d_attr(tb1, this.attr, null, this.attrBoostScl, 40.0, 5);
               });
-            })).row();
+            }).row();
           };
 
         };
