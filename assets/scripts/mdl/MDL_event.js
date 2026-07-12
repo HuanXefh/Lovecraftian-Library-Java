@@ -109,6 +109,26 @@
 
 
   /**
+   * Variant of {@link _c_onLoadDelay} that cannot be canceled.
+   * @param {number} delay
+   * @param {function(): void} scr
+   * @param {number|string|unset} [id]
+   * @return {void}
+   */
+  const _c_onLoadDelayTask = function thisFun(delay, scr, id) {
+    if(id != null && thisFun.ids.includes(id)) return;
+    if(id != null) thisFun.ids.push(id);
+
+    Events.run(ClientLoadEvent, () => {
+      Time.runTask(delay, () => {
+        scr();
+      });
+    });
+  };
+  exports._c_onLoadDelayTask = _c_onLoadDelayTask;
+
+
+  /**
    * Called when starting loading a world, before `drawBase`.
    * @param {function(): void} scr
    * @param {number|string|unset} [id]

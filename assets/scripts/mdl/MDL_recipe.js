@@ -985,7 +985,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+              ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1003,7 +1003,7 @@
               {
                 ct: _iconName(rcMdl, rcHeader),
                 ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-                ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+                ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               },
             ) :
             MDL_recipeDict.addFldConsTerm(
@@ -1013,7 +1013,7 @@
               {
                 ct: _iconName(rcMdl, rcHeader),
                 ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-                ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+                ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               },
             );
         };
@@ -1029,7 +1029,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+              ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1046,7 +1046,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+              ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               icon: "lovec-icon-boost",
             },
           );
@@ -1063,7 +1063,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+              ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1079,7 +1079,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+              ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1096,7 +1096,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+              ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1113,7 +1113,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+              ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };
@@ -1129,7 +1129,7 @@
             {
               ct: _iconName(rcMdl, rcHeader),
               ctTint: _rcVal(rcMdl, rcHeader, "tint"),
-              ctTableF: (tb, blk, ct) => CLS_recipe.getByHeader(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
+              ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
         };

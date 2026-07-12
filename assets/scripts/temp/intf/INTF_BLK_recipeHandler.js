@@ -83,6 +83,9 @@
 
 
   function comp_created(b) {
+    // Use empty recipe to prevent null pointer
+    b.rc = CLS_recipe.get(b.block, "SPEC: empty");
+
     Time.run(0.0, () => {
       rcMdl = b.block.delegee.rcMdl;
       if(MDL_recipe._hasHeader(rcMdl, b.rcHeader)) {
@@ -157,8 +160,8 @@
       b.rcEffc :
       0.0;
 
-    if(b.rc.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
     b.ex_postUpdateEfficiencyMultiplier();
+    if(b.rc.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
     if(!b.rc.validTup[0](b)) b.efficiency = 0.0;
   };
 
@@ -416,7 +419,7 @@
 
 
   function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-    b.rc = CLS_recipe.getByHeader(b.block, rcHeader);
+    b.rc = CLS_recipe.get(b.block, rcHeader);
 
     Time.run(0.0, () => {
       b.hasPayInput = b.rc.hasPayInput;

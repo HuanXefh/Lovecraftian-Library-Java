@@ -296,7 +296,7 @@
     // Load extra sounds
     if(!Vars.headless) {
       DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr));
-      Time.run(VAR.delay.load.loadExtraSound, () => {
+      Time.runTask(VAR.delay.load.loadExtraSound, () => {
         if(PARAM.SECRET_LEGACY_SOUND) {
           try {
             Vars.content.units().each(utp => {
@@ -388,7 +388,7 @@
 
 
     // Set up recipe dictionary stat
-    Time.run(VAR.delay.load.addStat, () => {
+    Time.runTask(VAR.delay.load.addStat, () => {
       VARGEN.rss.concat(VARGEN.payMatBlks).concat(VARGEN.buildableUtps).forEachFast(ct => {
         ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
           tb.row();

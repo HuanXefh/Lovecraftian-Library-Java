@@ -651,7 +651,7 @@
       amtBo,
       rcGrp;
 
-    MDL_event._c_onLoadDelay(5.0, () => {
+    MDL_event._c_onLoadDelayTask(5.0, () => {
       CLS_recipe.getBlkRcsMap().get(blk).forEachFast(rc => {
         rawRc = _rawRc("factory", blk, blk.craftTime * rc.rcTimeScl);
 

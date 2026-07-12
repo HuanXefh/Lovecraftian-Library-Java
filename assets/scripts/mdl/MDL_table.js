@@ -1042,7 +1042,7 @@
         j = 0;
         let chunk = new Table();
         categHeaderObj[categ].forEachFast(rcHeader => {
-          let rc = CLS_recipe.getByHeader(b.block, rcHeader);
+          let rc = CLS_recipe.get(b.block, rcHeader);
           let btn = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {
             if(closeSelect) Vars.control.input.config.hideConfig();
           })
@@ -1276,7 +1276,7 @@
       };
 
       categHeaderObj[categ].forEachFast(rcHeader => {
-        CLS_recipe.getByHeader(blk, rcHeader).display(rcRoot, i, false, true);
+        CLS_recipe.get(blk, rcHeader).display(rcRoot, i, false, true);
         __bar(rcRoot, Color.valueOf(Tmp.c1, "303030"), null, 1.0);
 
         i++;

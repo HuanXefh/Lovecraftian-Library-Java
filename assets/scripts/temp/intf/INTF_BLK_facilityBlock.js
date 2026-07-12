@@ -19,7 +19,7 @@
 
 
   function comp_init(blk) {
-    MDL_event._c_onLoadDelay(VAR.delay.load.blkCheck, () => {
+    MDL_event._c_onLoadDelayTask(VAR.delay.load.blkCheck, () => {
       blk.canHandleAux = blk.ex_checkHandleAuxPossible();
       blk.canFireExplode = blk.ex_checkFireExplodePossible();
     });

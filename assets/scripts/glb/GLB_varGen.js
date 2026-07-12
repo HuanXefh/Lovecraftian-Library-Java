@@ -338,7 +338,7 @@
     exports.rawOreBlks = Vars.content.blocks().select(blk => checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_rawOreBlock")).toArray();
 
 
-    Time.run(0.0, () => {
+    Time.runTask(0.0, () => {
       /**
        * Blocks that can be payload input or output.
        * @type {Array<Block>}
@@ -350,7 +350,7 @@
     /* unit type */
 
 
-    Time.run(0.0, () => {
+    Time.runTask(0.0, () => {
       /**
        * Unit types that can be crafted.
        * @type {Array<UnitType>}

@@ -490,7 +490,7 @@
     __k = newMultiFunction(
       function() {
         if(!__checkCheatState__()) return;
-        if(Vars.player.unit() != null) Call.unitDestroy(Vars.player.unit().id);
+        if(Vars.player.unit() != null) Vars.player.unit().kill();
       },
       function(name) {
         if(!__checkCheatState__()) return;
@@ -499,7 +499,7 @@
           console.err("[LOVEC] No player found with name ${1}!".format(String(name).color(Pal.accent)));
           return;
         };
-        Call.unitDestroy(unit.id);
+        unit.kill();
       },
     )
     .setAnno("console");

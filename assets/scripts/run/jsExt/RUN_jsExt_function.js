@@ -70,7 +70,7 @@
 
 
   /**
-   * Calls a method after some milliseconds.
+   * Calls a method after some time (in frames).
    * No returned value.
    * @param {number} delay
    * @param {Arguments|unset} [args]
@@ -79,6 +79,18 @@
    */
   Function.prototype.delay = function(delay, args, thisVal) {
     Time.run(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
+  };
+
+
+  /**
+   * Variant of {@link Function#delay} that cannot be canceled.
+   * @param {number} delay
+   * @param {Arguments|unset} [args]
+   * @param {any} [thisVal]
+   * @return {void}
+   */
+  Function.prototype.delayTask = function(delay, args, thisVal) {
+    Time.runTask(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
   };
 
 

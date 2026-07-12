@@ -31,17 +31,17 @@
     this.inputRsBoolMap = new ObjectMap();
     this.outputRsBoolMap = new ObjectMap();
 
-    if(String.isEmpty(rcHeader)) {
+    if(this.rcHeader === "SPEC: empty") {
       this.__isEmptyRc__ = true;
       blkEmptyRcMap.put(this.owner, this);
-      return;
+    } else {
+      nameRcMap.put(this.name, this);
+      if(!blkRcsMap.containsKey(this.owner)) {
+        blkRcsMap.put(this.owner, []);
+      };
+      blkRcsMap.get(this.owner).push(this);
     };
 
-    nameRcMap.put(this.name, this);
-    if(!blkRcsMap.containsKey(this.owner)) {
-      blkRcsMap.put(this.owner, []);
-    };
-    blkRcsMap.get(this.owner).push(this);
     if(!blkCategHeaderObjMap.containsKey(this.owner)) {
       blkCategHeaderObjMap.put(this.owner, MDL_recipe._categHeaderObj(this.rcMdl));
     };
@@ -55,7 +55,7 @@
   let rcCount = 0;
 
 
-  MDL_event._c_onLoadDelay(VAR.delay.load.logRcRegis, () => {
+  MDL_event._c_onLoadDelayTask(VAR.delay.load.logRcRegis, () => {
     console.log("[LOVEC] Registered ${1} recipe(s) in total.".format(rcCount.color(Pal.accent)));
   });
 
@@ -69,26 +69,19 @@
 
   /* <------------------------------ property ------------------------------ */
 
-
-  /**
-   * Gets recipe by name, nullable.
-   * @param {string} name
-   * @param {CLS_recipe|unset} [fallBack]
-   * @return {CLS_recipe|unset}
-   */
-  CLS_recipe.get = function(name, fallBack) {
-    return nameRcMap.get(name);
-  };
-
-
   /**
    * Gets recipe by recipe header.
    * @param {Block} blk
    * @param {string} rcHeader
    * @return {CLS_recipe}
    */
-  CLS_recipe.getByHeader = function(blk, rcHeader) {
-    return CLS_recipe.get(CLS_recipe.getName(blk, rcHeader), CLS_recipe.getEmptyRc(blk));
+  CLS_recipe.get = function(blk, rcHeader) {
+    if(rcHeader === "SPEC: empty" || !MDL_recipe._hasHeader(blk.delegee.rcMdl, rcHeader)) {
+      return CLS_recipe.getEmptyRc(blk);
+    };
+    let rc = nameRcMap.get(CLS_recipe.getName(blk, rcHeader));
+    if(rc == null) throw new Error("Cannot find recipe with header ${1} in ${2}!".format(rcHeader, blk.name));
+    return rc;
   };
 
 
@@ -511,7 +504,7 @@
   CLS_recipe.register = function(blk, rcMdl) {
     MDL_event._c_onLoadPost(() => {
       MDL_recipe.initRc(blk.rcMdl, blk);
-      new CLS_recipe(blk, rcMdl, "");
+      new CLS_recipe(blk, rcMdl, "SPEC: empty");
       MDL_recipe._rcHeaders(rcMdl).forEachFast(rcHeader => {
         new CLS_recipe(blk, rcMdl, rcHeader, blk.delegee.useAutoSelection);
         rcCount++;
@@ -572,7 +565,7 @@
     this.icon = null;
     if(!Vars.headless) {
       // This have to be delayed, WTF
-      Time.run(180.0, () => this.icon = MDL_recipe._icon(this.rcMdl, this.rcHeader));
+      Time.runTask(180.0, () => this.icon = MDL_recipe._icon(this.rcMdl, this.rcHeader));
     };
 
     this.rcIconName = MDL_recipe._iconName(this.rcMdl, this.rcHeader);
@@ -665,21 +658,21 @@
    * Builds recipe I/O table for this recipe.
    * @param {Table} tb
    * @param {number} ord - Order of the recipe, use -1 to hide order box.
-   * @param {boolean|unset} [noAltPane] - If true, no {@link ScrollPane} used for alternative inputs.
+   * @param {boolean|unset} [noPane] - If true, no {@link ScrollPane} is used.
    * @param {boolean|unset} [showWinBtn] - If true, a button to create new window is added to order box.
    * @return {Cell}
    */
-  CLS_recipe.prototype.display = function(tb, ord, noAltPane, showWinBtn) {
+  CLS_recipe.prototype.display = function(tb, ord, noPane, showWinBtn) {
     return tb.table(Tex.whiteui, tb1 => {
       tb1.left().setColor(Pal.darkestGray);
       if(ord >= 0) {
         this.displayOrder(tb1, ord, showWinBtn);
       };
       tb1.table(Styles.none, tb2 => {}).left().width(36.0).growY();
-      this.displayInput(tb1, false, noAltPane);
+      this.displayInput(tb1, false, noPane);
       tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
       this.displayOutput(tb1, false);
-      this.displayStats(tb1);
+      this.displayStats(tb1, noPane);
     })
     .left()
     .growX()
@@ -690,14 +683,14 @@
   /**
   * Builds recipe base I/O table for this recipe.
   * @param {Table} tb
-  * @param {boolean|unset} [noAltPane]
+  * @param {boolean|unset} [noPane]
   * @param {number|unset} [pad]
   * @return {Cell}
   */
-  CLS_recipe.prototype.displayBase = function(tb, noAltPane, pad) {
+  CLS_recipe.prototype.displayBase = function(tb, noPane, pad) {
     return tb.table(Tex.whiteui, tb1 => {
       tb1.left().setColor(Tmp.c1.set(Pal.accent).lerp(Color.black, 0.8));
-      this.displayInput(tb1, true, noAltPane);
+      this.displayInput(tb1, true, noPane);
       tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
       this.displayOutput(tb1, true);
       tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
@@ -774,14 +767,14 @@
    * Builds the pane for alternative I/O fragment.
    * @param {Table} tb
    * @param {function(Table): void} tableF
-   * @param {boolean|unset} [noAltPane]
+   * @param {boolean|unset} [noPane]
    * @return {Cell}
    */
-  CLS_recipe.prototype.displayAltIoFrag = function(tb, tableF, noAltPane) {
+  CLS_recipe.prototype.displayAltIoFrag = function(tb, tableF, noPane) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
 
-      if(noAltPane) {
+      if(noPane) {
         tb1.table(Tex.whiteui, tb2 => {
           tb2.left().setColor(Pal.darkerGray);
           tableF(tb2);
@@ -851,14 +844,14 @@
    * Builds the entire input fragment.
    * @param {Table} tb
    * @param {boolean|unset} [isBase]
-   * @param {boolean|unset} [noAltPane]
+   * @param {boolean|unset} [noPane]
    * @return {Cell}
    */
-  CLS_recipe.prototype.displayInput = function(tb, isBase, noAltPane) {
+  CLS_recipe.prototype.displayInput = function(tb, isBase, noPane) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
-      if((isBase ? this.baseBi : this.biNoBase).length > 0) this.displayBi(tb1, isBase, noAltPane);
-      if((isBase ? this.baseCi : this.ciNoBase).length > 0) this.displayCi(tb1, isBase, noAltPane);
+      if((isBase ? this.baseBi : this.biNoBase).length > 0) this.displayBi(tb1, isBase, noPane);
+      if((isBase ? this.baseCi : this.ciNoBase).length > 0) this.displayCi(tb1, isBase, noPane);
       if((isBase ? this.baseAux : this.auxNoBase).length > 0) this.displayAux(tb1, isBase);
       if((isBase ? this.baseOpt : this.optNoBase).length > 0) this.displayOpt(tb1, isBase);
       if((isBase ? this.basePayi : this.payiNoBase).length > 0) this.displayPayi(tb1, isBase);
@@ -891,97 +884,111 @@
   /**
    * Builds the recipe stats fragment.
    * @param {Table} tb
+   * @param {boolean|unset} [noPane]
    * @return {Cell}
    */
-  CLS_recipe.prototype.displayStats = function thisFun(tb) {
+  CLS_recipe.prototype.displayStats = function thisFun(tb, noPane) {
     return tb.table(Styles.none, tb1 => {
       MDL_table.__barV(tb1, Pal.accent);
       tb1.table(Styles.none, tb2 => {}).width(24.0);
       tb1.table(Styles.none, tb2 => {
-        tb2.pane(pnTb => {
-          pnTb.left();
-
+        let build = tb3 => {
           // <TABLE>: Stats
           thisFun.addStat(
-            pnTb, this.isGen,
+            tb3, this.isGen,
             MDL_bundle._term("lovec", "generated-recipe").color(Pal.gray),
           );
           thisFun.addStat(
-            pnTb, true,
+            tb3, true,
             MDL_bundle._term("lovec", "time-required"),
             Strings.fixed(this.rcTimeScl, 1) + "x (" + Strings.autoFixed(this.owner.craftTime * this.rcTimeScl / 60.0, 2) + "s)",
           );
           thisFun.addStat(
-            pnTb, !this.pol.fEqual(0.0),
+            tb3, !this.pol.fEqual(0.0),
             fetchStat("lovec", "blk-pol").localized(),
             (this.pol > 0.0 ? "+" : "-") + Math.abs(this.pol),
             fetchStatUnit("lovec", "polunits").localized(),
           );
           thisFun.addStat(
-            pnTb, this.erekirHeatReq > 0.0,
+            tb3, this.erekirHeatReq > 0.0,
             fetchStat("lovec", "blk-erekirheatreq").localized(),
             this.erekirHeatReq,
             StatUnit.heatUnits.localized(),
           );
           thisFun.addStat(
-            pnTb, this.erekirHeatProd > 0.0,
+            tb3, this.erekirHeatProd > 0.0,
             fetchStat("lovec", "blk-erekirheatprod").localized(),
             this.erekirHeatProd,
             StatUnit.heatUnits.localized(),
           );
           thisFun.addStat(
-            pnTb, this.reqOpt,
+            tb3, this.reqOpt,
             MDL_bundle._term("lovec", "require-optional"),
             MDL_bundle._base("yes"),
           );
           thisFun.addStat(
-            pnTb, this.failP > 0.0,
+            tb3, this.failP > 0.0,
             MDL_bundle._term("lovec", "chance-to-fail"),
             this.failP.perc(1).color(this.failP > 0.25 ? Pal.remove : Pal.accent),
           );
           thisFun.addStat(
-            pnTb, !this.powProdMtp.fEqual(1.0),
+            tb3, !this.powProdMtp.fEqual(1.0),
             fetchStat("lovec", "blk0pow-powmtp").localized(),
             this.powProdMtp.perc().color(this.powProdMtp < 1.0 ? Pal.remove : Pal.heal),
           );
           thisFun.addStat(
-            pnTb, this.tempReq > 0.0,
+            tb3, this.tempReq > 0.0,
             fetchStat("lovec", "blk0heat-tempreq").localized(),
             Strings.fixed(this.tempReq, 2),
             fetchStatUnit("lovec", "heatunits").localized(),
           );
           thisFun.addStat(
-            pnTb, isFinite(this.tempAllowed),
+            tb3, isFinite(this.tempAllowed),
             MDL_bundle._term("lovec", "temperature-allowed"),
             Strings.fixed(this.tempAllowed, 2),
             fetchStatUnit("lovec", "heatunits").localized(),
           );
           thisFun.addStat(
-            pnTb, !this.durabDecMtp.fEqual(1.0),
+            tb3, !this.durabDecMtp.fEqual(1.0),
             MDL_bundle._term("lovec", "abrasion-multiplier"),
             this.durabDecMtp.perc(),
           );
           if(this.lockedByCts.length > 0) {
-            pnTb.table(Styles.none, tb3 => {
-              tb3.left();
-              tb3.add(MDL_text._statText(MDL_bundle._term("lovec", "require-unlocking"), "")).left();
-              this.lockedByCts.forEachFast(ct => MDL_table.__ct(tb3, ct, 28.0, 0.0, null, VAR.dialog.ct2));
+            tb3.table(Styles.none, tb4 => {
+              tb4.left();
+              tb4.add(MDL_text._statText(MDL_bundle._term("lovec", "require-unlocking"), "")).left();
+              this.lockedByCts.forEachFast(ct => MDL_table.__ct(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2));
             })
             .left()
             .row();
           };
           if(this.attr != null) {
-            pnTb.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left().tooltip(cons(tb => {
+            tb3.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left().tooltip(cons(tb => {
               tb.table(Styles.black6, tb1 => {
                 MDL_table.__margin(tb1);
                 MDL_table._d_attr(tb1, this.attr, null, this.attrBoostScl, 40.0, 5);
               });
             })).row();
           };
-        })
-        .height(90.0)
-        .padTop(20.0).padBottom(20.0)
-        .growX();
+
+        };
+
+        if(noPane) {
+          tb2.table(Styles.none, tb3 => {
+            tb3.left();
+            build(tb3);
+          })
+          .padTop(20.0).padBottom(20.0)
+          .growX();
+        } else {
+          tb2.pane(pnTb => {
+            pnTb.left();
+            build(pnTb);
+          })
+          .height(90.0)
+          .padTop(20.0).padBottom(20.0)
+          .growX();
+        };
       })
       .left()
       .width(320.0)
@@ -1008,10 +1015,10 @@
    * Builds BI fragment.
    * @param {Table} tb
    * @param {boolean|unset} [isBase]
-   * @param {boolean|unset} [noAltPane]
+   * @param {boolean|unset} [noPane]
    * @return {Cell}
    */
-  CLS_recipe.prototype.displayBi = function(tb, isBase, noAltPane) {
+  CLS_recipe.prototype.displayBi = function(tb, isBase, noPane) {
     return this.displayIoFrag(tb, "bi", tb1 => {
       (isBase ? this.baseBi : this.biNoBase).forEachRow(3, (tmp, amt, p) => {
         if(!(tmp instanceof Array)) {
@@ -1021,7 +1028,7 @@
             tmp.forEachRow(3, (tmp1, amt, p) => {
               MDL_table.__rcCt(tb2, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
             });
-          }, noAltPane);
+          }, noPane);
         };
       });
     });
@@ -1032,10 +1039,10 @@
    * Builds CI fragment.
    * @param {Table} tb
    * @param {boolean|unset} [isBase]
-   * @param {boolean|unset} [noAltPane]
+   * @param {boolean|unset} [noPane]
    * @return {Cell}
    */
-  CLS_recipe.prototype.displayCi = function(tb, isBase, noAltPane) {
+  CLS_recipe.prototype.displayCi = function(tb, isBase, noPane) {
     return this.displayIoFrag(tb, "ci", tb1 => {
       (isBase ? this.baseCi : this.ciNoBase).forEachRow(2, (tmp, amt) => {
         if(!(tmp instanceof Array)) {
@@ -1045,7 +1052,7 @@
             tmp.forEachRow(2, (tmp1, amt) => {
               MDL_table.__rcCt(tb2, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
             });
-          }, noAltPane);
+          }, noPane);
         };
       });
     });
@@ -1411,7 +1418,7 @@
     };
   }
   .setProp({
-    lastHeader: "",
+    lastHeader: null,
   });
 
 

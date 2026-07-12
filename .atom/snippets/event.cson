@@ -16,12 +16,12 @@
     });
     '''
 
-  'Timer.schedule':
-    prefix: 'lc_schedule'
+  'Time.runTask':
+    prefix: 'lc_task'
     body: '''
-    Timer.schedule(() => {
-      ${4:}
-    }, ${1:delay}, ${2:intvTimeS}, ${3:repeat})
+    Time.runTask(${1:delay}, () => {
+      ${2:}
+    });
     '''
 
   'on init':
@@ -52,6 +52,14 @@
     prefix: 'lc_onloaddelay'
     body: '''
     MDL_event._c_onLoadDelay(${1:delay}, () => {
+      ${2:}
+    });
+    '''
+
+  'on load delay task':
+    prefix: 'lc_onloaddelaytask'
+    body: '''
+    MDL_event._c_onLoadDelayTask(${1:delay}, () => {
       ${2:}
     });
     '''
