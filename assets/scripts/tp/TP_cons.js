@@ -154,8 +154,12 @@
           try {
             // WTF
             print(this.effcMap);
-            print(this.effcMap.get(liq.name));
-            print(this.effcMap.get(liq.name, 0.0001));
+            let liq = this.getConsumed(b);
+            if(liq != null) {
+              print(this.super$efficiency(b));
+              print(this.effcMap.get(liq.name));
+              print(this.effcMap.get(liq.name, 0.0001));
+            };
           } catch(err) {
             console.err(err);
           };
