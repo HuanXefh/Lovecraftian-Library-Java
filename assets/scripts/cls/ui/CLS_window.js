@@ -109,7 +109,7 @@
     });
     tb.tapped(() => {
       selectWin(win);
-      if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
+      if(Core.app.isMobile() || Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
         win.isDragged = true;
       };
     });
