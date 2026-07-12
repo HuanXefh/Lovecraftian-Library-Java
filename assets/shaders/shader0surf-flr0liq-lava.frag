@@ -43,7 +43,7 @@ void main() {
 
   vec2 posRaw = v_texCoords.xy;
 	vec2 pos = vec2(posRaw * u_resolution) + u_campos;
-  vec4 sample = texture2D(u_texture, posRaw);
+  vec4 sampled = texture2D(u_texture, posRaw);
 	posRaw += (vec2(
 		texture2D(u_noise, pos / NSCALE + vec2(time2) * vec2(-0.9, 0.8)).r,
 		texture2D(u_noise, pos / NSCALE + vec2(time2 * 1.2) * vec2(0.8, -1.0)).r
@@ -53,5 +53,5 @@ void main() {
   float tester = calcTester(pos, time1);
   setColor(color, tester);
 
-	gl_FragColor = vec4(max(color.rgb, sample.rgb * 0.85), sample.a);
+	gl_FragColor = vec4(max(color.rgb, sampled.rgb * 0.85), sampled.a);
 }

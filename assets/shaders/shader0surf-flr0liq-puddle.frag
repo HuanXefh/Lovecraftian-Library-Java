@@ -38,11 +38,11 @@ void main() {
 
   vec2 posRaw = v_texCoords.xy;
   vec2 pos = vec2(posRaw.x * u_resolution.x + u_campos.x, posRaw.y * u_resolution.y + u_campos.y);
-  vec4 sample = texture2D(u_texture, posRaw);
-  vec3 color = sample.rgb * vec3(0.9, 0.9, 1.0);
+  vec4 sampled = texture2D(u_texture, posRaw);
+  vec3 color = sampled.rgb * vec3(0.9, 0.9, 1.0);
 
   float tester = calcTester(pos, time);
   setColor(color, tester);
 
-  gl_FragColor = vec4(color.rgb, sample.a);
+  gl_FragColor = vec4(color.rgb, sampled.a);
 }

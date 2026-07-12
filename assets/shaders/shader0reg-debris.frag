@@ -43,12 +43,12 @@ float calcAMtp(float tester) {
 void main() {
   vec2 vecScl = vec2(1.0 / u_texsize.x, 1.0 / u_texsize.y);
 	vec2 pos = (v_texCoords - u_uv) / vecScl;
-	vec4 sample = texture2D(u_texture, v_texCoords.xy);
-	if(sample.a < 0.0001) {
+	vec4 sampled = texture2D(u_texture, v_texCoords);
+	if(sampled.a < 0.0001) {
 		gl_FragColor = vec4(0.0);
 		return;
 	};
-	vec3 color = sample.rgb * u_mulColor.rgb;
+	vec3 color = sampled.rgb * u_mulColor.rgb;
 	float tester = calcTester(pos);
 
 	gl_FragColor = vec4(color.rgb, u_a * calcAMtp(tester));
