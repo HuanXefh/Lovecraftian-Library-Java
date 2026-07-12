@@ -415,6 +415,8 @@
    * @return {Object}
    */
   CLS_recipeGenerator.prototype.buildRcObj = function(ct, metaObj, paramObj) {
+    Object.clear(CLS_recipeGenerator.RECIPE_OBJECT_TMP);
+
     let builder = new CLS_recipeBuilder();
     let
       amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)),
@@ -486,7 +488,10 @@
 
     readParamAndCall(paramObj, "heatO", val => builder.__co(this.processCo("loveclab-aux0aux-heat", val / 600.0 * readParam(metaObj, "heatOScl", 1.0), Object.air), true));
 
-    return builder.build();
+    let rcObj = builder.build();
+    rcObj.setProp(CLS_recipeGenerator.RECIPE_OBJECT_TMP);
+
+    return rcObj;
   };
 
 
@@ -647,6 +652,9 @@
   };
 
 
+
+
+CLS_recipeGenerator.RECIPE_OBJECT_TMP = {};
 
 
 module.exports = CLS_recipeGenerator;

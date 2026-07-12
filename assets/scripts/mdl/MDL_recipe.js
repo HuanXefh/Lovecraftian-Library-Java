@@ -609,6 +609,19 @@
 
 
   /**
+   * Whether some content has not been found in this recipe.
+   * Do not set this field.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {boolean}
+   */
+  const _isIncomplete = function(rcMdl, rcHeader) {
+    return _rcVal(rcMdl, rcHeader, "isIncomplete", false);
+  };
+  exports._isIncomplete = _isIncomplete;
+
+
+  /**
    * Gets the function used to check whether this recipe is allowed now.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
@@ -899,7 +912,13 @@
       if(!tg.startsWith("GROUP: ")) {
         // Content name
         let ct = MDL_content._ct(tg, null, true);
-        if(ct != null) parseRcIoRow(outArr, ct, amt, p, ctCaller, false, pTg);
+        if(ct == null) {
+          CLS_recipeGenerator.RECIPE_OBJECT_TMP.isIncomplete = true;
+          if(CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames == null) CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames = [];
+          CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames.pushUnique(tg);
+        } else {
+          parseRcIoRow(outArr, ct, amt, p, ctCaller, false, pTg);
+        };
       } else {
         // GROUP: xxx
         let tmpArr = [];

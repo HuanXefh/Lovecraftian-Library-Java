@@ -537,7 +537,7 @@
       "" :
       ct instanceof Liquid && !cancelLiq ?
         (Strings.autoFixed(amt * 60.0, 2) + "/s") :
-        Strings.autoFixed(amt, 0) + "       ";
+        Strings.autoFixed(amt, 0) + "     ";
 
     return tb.table(Styles.none, tb1 => {
       tb1.left();

@@ -52,11 +52,27 @@
   const blkRcsMap = new ObjectMap();
   const blkEmptyRcMap = new ObjectMap();
   const blkCategHeaderObjMap = new ObjectMap();
+  const incompleteRcs = [];
   let rcCount = 0;
+  let rcIncompleteCount = 0;
 
 
   MDL_event._c_onLoadDelayTask(VAR.delay.load.logRcRegis, () => {
     console.log("[LOVEC] Registered ${1} recipe(s) in total.".format(rcCount.color(Pal.accent)));
+    if(rcIncompleteCount > 0) {
+      console.log("[LOVEC] ${1} recipe(s) are incomplete!".format(rcIncompleteCount.color(Pal.accent)));
+    };
+
+    let str = new Date().toLocaleDateString();
+    incompleteRcs.forEachFast(rc => {
+      str += "\n\n\n";
+      str += rc.name;
+      str += "\n";
+      rc.erroredNames.forEachFast(name => {
+        str += "\n- " + name;
+      });
+    });
+    MDL_file.commonCache.child("temp").child("incompleteRecipes.log").writeString(str);
   });
 
 
@@ -132,6 +148,15 @@
    */
   CLS_recipe.getBlkCategHeaderObjMap = function() {
     return blkCategHeaderObjMap;
+  };
+
+
+  /**
+   * Gets all incomplete recipes.
+   * @return {Array<CLS_recipe>}
+   */
+  CLS_recipe.getIncompleteRcs = function() {
+    return incompleteRcs;
   };
 
 
@@ -560,6 +585,8 @@
    */
   CLS_recipe.prototype.initData = function() {
     this.isGen = MDL_recipe._isGen(this.rcMdl, this.rcHeader);
+    this.isIncomplete = MDL_recipe._isIncomplete(this.rcMdl, this.rcHeader);
+    this.erroredNames = MDL_recipe._rcVal(this.rcMdl, this.rcHeader, "erroredNames", Array.air);
     this.tt = MDL_recipe._tt(this.rcMdl, this.rcHeader);
 
     this.icon = null;
@@ -646,6 +673,11 @@
       if(this.hasBaseIo) return;
       if(this["base" + name.firstUpperCase()].length > 0) this.hasBaseIo = true;
     });
+
+    if(this.isIncomplete) {
+      incompleteRcs.push(this);
+      rcIncompleteCount++;
+    };
 
     return this;
   };
@@ -898,6 +930,13 @@
             tb3, this.isGen,
             MDL_bundle._term("lovec", "generated-recipe").color(Pal.gray),
           );
+          if(this.isIncomplete) {
+            let str = MDL_bundle._info("lovec", "tt-recipe-errored-names") + "\n";
+            this.erroredNames.forEachFast(name => {
+              str += ("\n- " + name).color(Pal.accent);
+            });
+            tb3.add(MDL_bundle._term("lovec", "incomplete-recipe").color(Pal.remove)).left().tooltip(str, true).row();
+          };
           thisFun.addStat(
             tb3, true,
             MDL_bundle._term("lovec", "time-required"),
