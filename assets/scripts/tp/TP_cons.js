@@ -145,20 +145,20 @@
         update(b) {
           let liq = this.getConsumed(b);
           if(liq != null) {
-            try {
-              // WTF
-              print(this.effcMap);
-              print(this.effcMap.get(liq.name));
-              print(this.effcMap.get(liq.name, 0.0001));
-            } catch(err) {
-              console.err(err);
-            };
             b.liquids.remove(liq, this.amount * b.edelta() * this.multiplier.get(b)/* / this.effcMap.get(liq.name, 0.0001)*/);
           };
         },
 
 
         efficiency(b) {
+          try {
+            // WTF
+            print(this.effcMap);
+            print(this.effcMap.get(liq.name));
+            print(this.effcMap.get(liq.name, 0.0001));
+          } catch(err) {
+            console.err(err);
+          };
           return 1.0;
           /*let liq = this.getConsumed(b);
           return liq == null ?
