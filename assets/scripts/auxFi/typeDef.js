@@ -12,12 +12,12 @@
 
 /*
   ========================================
-  Section: Definition
+  Section: Definition (meta)
   ========================================
 */
 
 
-  /* <------------------------------ meta ------------------------------ */
+  /* <------------------------------ global.js ------------------------------ */
 
 
   /**
@@ -84,6 +84,9 @@
   function extend(javaCls, ...args) {};
 
 
+  /* <------------------------------ JavaScript ------------------------------ */
+
+
   /**
    * @global
    * @typedef {null|undefined} unset
@@ -98,8 +101,22 @@
    */
   /**
    * @global
+   * @template T
+   * @typedef {T|Array<T>} Plural<T>
+   */
+
+
+  /* <------------------------------ Lovec ------------------------------ */
+
+
+  /* content template */
+
+
+  /**
+   * @global
    * @typedef {Function<any>} TemplateFunction
    * @prop {boolean|unset} [noSuper] - If true, `this.super$xxx` won't be called.
+   * @prop {boolean|unset} [addSuper] - If true, `this.super$xxx` will be called, used only in post-build modification.
    * @prop {boolean|unset} [override] - If true, the previous method will be ignored.
    * @prop {boolean|unset} [final] - If true, this method is fixed and won't be mixed later.
    * @prop {string|unset} [boolMode] - For boolean operation with the previous method. <br> <VALS>: "none", "and", "or".
@@ -109,6 +126,11 @@
    * @prop {Function|unset} [funPrev] - Previous method before mixing. Do not set.
    * @prop {Function|unset} [funCur] - Current method before mixing. Do not set.
    */
+
+
+  /* math */
+
+
   /**
    * An ordered array of coordinates of n-dimensional points (flattened).
    * @global
@@ -127,6 +149,11 @@
    * @global
    * @typedef {Array<number>} DistributionArray
    */
+
+
+  /* dialog flow */
+
+
   /**
    * <TUP>: nameMod, nameDial, ind.
    * @global
@@ -136,6 +163,19 @@
    * <TUP>: nameMod, nameChara.
    * @global
    * @typedef {[string, string]} CharacterTuple
+   */
+  /**
+   * @global
+   * @typedef {Object} CharacterData
+   * @prop {string} nameMod
+   * @prop {string} nameChara
+   * @prop {number|unset} [fracX] - Determines horizonal postion.
+   * @prop {boolean|unset} [isDark] - If true, character art is darkened.
+   * @prop {Color|unset} [color]
+   * @prop {string|unset} [anim]
+   * @prop {Object|unset} [animParam]
+   * @prop {Array<Action>|unset} [customActs]
+   * @prop {number|unset} [customActTimeS]
    */
   /**
    * <ROW>: dialTup, charaTup, paramObj, charaArgs.
@@ -149,6 +189,11 @@
    * @prop {string|unset} [chara]
    * @prop {string|unset} [text]
    */
+
+
+  /* recipe */
+
+
   /**
    * @global
    * @typedef {Object|null} RecipeModule
@@ -183,6 +228,8 @@
    * @prop {ContentGn|unset} [keyCt] - Key item/fluid of this recipe, used in recipe auto-selection.
    * @prop {string|unset} [categ] - Category this recipe is in.
    * @prop {boolean|unset} [isGenerated] - Whether this recipe is created by recipe generators. Do not set this manually!
+   * @prop {boolean|unset} [isIncomplete] - Whether this recipe has contents not found. Do not set this manually!
+   * @prop {Array<string>|unset} [erroredNames] - Content names not resolved. Do not set this manually!
    * @prop {(function(): boolean)|unset} [validCheck] - A function to check whether recipe is allowed now.
    * @prop {Array<string>|unset} [lockedBy] - Recipe will be unavailable until all these contents are unlocked.
    * @prop {number|unset} [timeScl] - Scaling on crafting time.
@@ -216,6 +263,7 @@
    * @prop {(function(Building): void)|unset} [craftScr] - Called when this building crafts.
    * @prop {(function(Building): void)|unset} [stopScr] - Called when this building is no longer active.
    * @prop {(function(Building): void)|unset} [failScr] - Called when this building fails current recipe.
+   * @prop {Effect|unset} [failEff] - Effect created if recipe is failed.
    * @prop {DrawBlock|unset} [drawer] - The particular drawer used for this recipe in "DrawRecipe", see {@link TP_drawer}.
    */
   /**
@@ -232,7 +280,11 @@
    */
 
 
-  /* <------------------------------ java ------------------------------ */
+/*
+  ========================================
+  Section: Definition (Java)
+  ========================================
+*/
 
 
   /** @global */
@@ -277,7 +329,11 @@
    */
 
 
-  /* <------------------------------ Arc ------------------------------ */
+/*
+  ========================================
+  Section: Definition (Arc)
+  ========================================
+*/
 
 
   /** @global arc.Core */
@@ -511,6 +567,13 @@
   /** @global arc.scene.event.Touchable */
   class Touchable {};
 
+
+  /**
+   * @global
+   * @typedef {string|(function(Table): void)} TooltipArgument
+   */
+
+
   /** @global arc.struct.Bits */
   class Bits {};
   /** @global arc.struct.GridBits */
@@ -615,14 +678,22 @@
   class Jval {};
 
 
-  /* <------------------------------ Rhino ------------------------------ */
+/*
+  ========================================
+  Section: Definition (Rhino)
+  ========================================
+*/
 
 
   /** @global */
   class JavaAdapter {};
 
 
-  /* <------------------------------ Mindustry ------------------------------ */
+/*
+  ========================================
+  Section: Definition (Mindustry)
+  ========================================
+*/
 
 
   /** @global mindustry.Vars */
@@ -1725,7 +1796,11 @@
    */
 
 
-  /* <------------------------------ TMI ------------------------------ */
+/*
+  ========================================
+  Section: Definition (TMI)
+  ========================================
+*/
 
 
   /** @global tmi.recipe.Recipe */

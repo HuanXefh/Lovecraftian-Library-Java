@@ -33,7 +33,36 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(sta) {
+  function comp_setStats(sta) {
+    if(sta.childCts.length > 0) {
+      sta.stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
+        tb.row();
+        tb.table(Styles.none, tb1 => {
+          MDL_table.__margin(tb1);
+          MDL_table._l_ctLi(tb, sta.childCts, 48.0, 7, null, VAR.dialog.ct1);
+        }).growX();
+      }));
+    };
+    if(sta.childRcs.length > 0) {
+      sta.stats.add(fetchStat("lovec", "spec-nodercs"), newStatValue(tb => {
+        tb.row();
+        tb.table(Styles.none, tb1 => {
+          MDL_table.__margin(tb1);
+          MDL_table._l_iconLi(
+            tb1,
+            sta.childRcs.map(rc => rc.altIcon),
+            sta.childRcs.map(rc => tb => rc.displayTooltip(tb, true, rc.owner.localizedName)),
+            sta.childRcs.map(rc => () => Vars.ui.content.show(rc.owner)),
+            64.0,
+            7,
+          );
+        });
+      }));
+    };
+  };
+
+
+  function comp_ex_init(sta) {
     MDL_event._c_onLoad(() => {
       if(sta.techNode == null) {
         console.warn("[LOVEC] Tech node ${1} has never been used in tech tree!".format(sta.name.color(Pal.accent)));
@@ -41,18 +70,10 @@
         appendChildren(sta.childCts, sta.techNode);
         sta.childCts.sort((ct1, ct2) => ct2.id - ct1.id);
       };
+      Time.runTask(VAR.delay.load.loadNodeRcs, () => {
+        sta.childRcs.pushAll(CLS_recipe.getNodeRcsMap().get(sta, Array.air));
+      });
     });
-  };
-
-
-  function comp_setStats(sta) {
-    sta.stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
-      tb.row();
-      tb.table(Styles.none, tb1 => {
-        MDL_table.__margin(tb1);
-        MDL_table._l_ctLi(tb, sta.childCts, 48.0, 7, null, VAR.dialog.ct1);
-      }).growX();
-    }));
   };
 
 
@@ -65,7 +86,7 @@
 
   /**
    * Used to categorize tech nodes.
-   * @class DBCT_infoContent
+   * @class DBCT_techNodeContent
    * @extends DBCT_databaseContent
    */
   module.exports = newClass().extendClass(PARENT, "DBCT_techNodeContent").initClass()
@@ -83,6 +104,12 @@
      * @instance
      */
     childCts: prov(() => []),
+    /**
+     * <INTERNAL>
+     * @memberof DBCT_techNodeContent
+     * @instance
+     */
+    childRcs: prov(() => []),
 
 
     /* <------------------------------ vanilla ------------------------------ */
@@ -96,11 +123,6 @@
   .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
-
-
     setStats: function() {
       comp_setStats(this);
     },
@@ -112,6 +134,19 @@
     .setProp({
       noSuper: true,
       override: true,
+    }),
+
+
+    /**
+     * @memberof DBCT_techNodeContent
+     * @instance
+     * @return {void}
+     */
+    ex_init: function() {
+      comp_ex_init(this);
+    }
+    .setProp({
+      noSuper: true,
     }),
 
 

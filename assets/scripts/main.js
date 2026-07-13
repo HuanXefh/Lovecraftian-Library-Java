@@ -528,6 +528,13 @@
     };
 
 
+    // Add database buttons
+    MDL_util.addDatabaseButton(
+      MDL_bundle._info("lovec", "dial-rc-database"),
+      () => fetchDialog("rcDatabase").ex_show(),
+    );
+
+
     // Screw it
     if(!PARAM.MODDED && fetchMod("projreind") != null) {
       throw new Error("PARAM.MODDED is broken again, WTF D:");

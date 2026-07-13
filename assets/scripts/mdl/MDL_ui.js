@@ -316,6 +316,7 @@
     TRIGGER_BACKGROUND = false;
     TRIGGER_MUSIC = false;
     MUSIC_HANDLER.stop();
+    UTIL_dialogFlow.removeTextCur();
     UTIL_dialogFlow.clearLog();
     UTIL_dialogFlow.clearPool();
     _d_flow.tmpBools.clear();
@@ -728,6 +729,7 @@
     if(selectionScr != null) paramObj.selectionScr();
     if(sound != null) MDL_effect.play(paramObj.sound);
 
+    UTIL_dialogFlow.setTextCur(tb);
     UTIL_dialogFlow.addLog({
       chara: dialChara,
       text: dialText,

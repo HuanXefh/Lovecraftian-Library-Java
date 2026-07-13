@@ -14,7 +14,7 @@
   function comp_init(blk) {
     blk.useColor = false;
 
-    MDL_event._c_onWorldLoadStart(() => {
+    TRIGGER.mapExit.addGlobalListener(() => {
       blk.drawnMap.clear();
     });
 

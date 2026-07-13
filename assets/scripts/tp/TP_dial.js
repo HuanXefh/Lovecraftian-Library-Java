@@ -528,6 +528,98 @@
   );
 
 
+  /**
+   * A dialog showing all recipes used in multi-crafters.
+   */
+  newDialog(
+    "rcDatabase",
+    () => extend(BaseDialog, MDL_bundle._info("lovec", "dial-rc-database"), {
+
+
+      map: CLS_recipe.getBlkRcsMap(),
+      modDataMap: new ObjectMap(),
+
+
+      ex_show() {
+        resetDial(this);
+
+        if(this.map.size > 0) {
+          let lastRc = null, data;
+          this.map.each((blk, rcs) => {
+            if(!this.modDataMap.containsKey(blk.minfo.mod)) {
+              this.modDataMap.put(blk.minfo.mod, {
+                rcs: [],
+                icons: [],
+                ttArgs: [],
+                scrs: [],
+                breakBools: [],
+              });
+            };
+            data = this.modDataMap.get(blk.minfo.mod);
+            rcs.forEachFast(rc => {
+              data.rcs.push(rc);
+              data.icons.push(rc.altIcon);
+              data.ttArgs.push(tb => rc.displayTooltip(tb, true, rc.owner.localizedName));
+              data.scrs.push(() => Vars.ui.content.show(rc.owner));
+              data.breakBools.push(lastRc != null && lastRc.owner !== rc.owner);
+              lastRc = rc;
+            });
+          });
+        };
+
+        // <TABLE>: content
+        MDL_table.__break(this.cont);
+        this.cont.pane(pnTb => {
+          MDL_table.__margin(pnTb, 0.5);
+          this.modDataMap.each((mod, data) => {
+            pnTb.table(Styles.none, modCont => {
+              let listTb = new Table();
+              let coll = new Collapser(listTb, true);
+              coll.setDuration(0.3);
+
+              modCont.table(Styles.none, tb => {
+                tb.left();
+                tb.add(mod.meta.displayName).color(Pal.accent).left();
+                tb.button(Icon.downOpen, Styles.emptyi, () => coll.toggle(true))
+                .left()
+                .update(btn => btn.getStyle().imageUp = !coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)
+                .size(10.0)
+                .padLeft(16.0)
+                .expandX()
+                .row();
+                MDL_table.__bar(tb, Pal.accent, null, 2.0);
+                MDL_table.__break(tb, 1);
+              })
+              .left()
+              .growX()
+              .row();
+
+              MDL_table._l_iconLi(listTb, data.icons, data.ttArgs, data.scrs, 40.0, MDL_ui._colAmt(40.0, 4.0), data.breakBools);
+              modCont.add(coll);
+            })
+            .growX()
+            .row();
+            MDL_table.__break(pnTb, 1);
+          });
+        })
+        .width(MDL_ui._uiW(0.0))
+        .row();
+
+        // <TABLE>: buttons
+        MDL_table.__break(this.cont);
+        MDL_table.__btnClose(this.buttons, this);
+
+        this.show();
+      },
+
+
+    }),
+  );
+
+
+  /**
+   * A dialog showing all contents registered in recipe dictionary.
+   */
   newDialog(
     "rcDictDatabase",
     () => extend(BaseDialog, MDL_bundle._info("lovec", "dial-rcdict-database"), {

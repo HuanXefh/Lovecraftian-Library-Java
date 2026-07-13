@@ -14,7 +14,22 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(sta) {
+  function comp_setStats(sta) {
+    sta.stats.add(fetchStat("lovec", "spec-info"), newStatValue(tb => {
+      tb.row();
+      MDL_table.__btnSmall(tb, "I", () => {
+        !sta.ex_checkDbctUnlocked() ?
+          MDL_ui.show_fadeInfo("lovec", "info-locked") :
+          fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.nameInfo);
+      })
+      .left()
+      .padLeft(28.0)
+      .tooltip(MDL_bundle._term("lovec", "display"), true);
+    }));
+  };
+
+
+  function comp_ex_init(sta) {
     if(sta.nameInfo == null) ERROR_HANDLER.throw("nullArgument", "nameInfo");
 
     sta.databaseCategory = "lovec-information";
@@ -29,21 +44,6 @@
         sta.fullIcon = sta.uiIcon = Core.atlas.find("lovec-icon-info-panel");
       };
     });
-  };
-
-
-  function comp_setStats(sta) {
-    sta.stats.add(fetchStat("lovec", "spec-info"), newStatValue(tb => {
-      tb.row();
-      MDL_table.__btnSmall(tb, "I", () => {
-        !sta.ex_checkDbctUnlocked() ?
-          MDL_ui.show_fadeInfo("lovec", "info-locked") :
-          fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.nameInfo);
-      })
-      .left()
-      .padLeft(28.0)
-      .tooltip(MDL_bundle._term("lovec", "display"), true);
-    }));
   };
 
 
@@ -81,14 +81,22 @@
   .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
-
-
     setStats: function() {
       comp_setStats(this);
     },
+
+
+    /**
+     * @memberof DBCT_infoContent
+     * @instance
+     * @return {void}
+     */
+    ex_init: function() {
+      comp_ex_init(this);
+    }
+    .setProp({
+      noSuper: true,
+    }),
 
 
   });

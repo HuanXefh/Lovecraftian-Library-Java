@@ -408,6 +408,40 @@
 
 
   /**
+   * Adds a clickable icon display for a table.
+   * @param {Table} tb
+   * @param {BaseDrawable} icon
+   * @param {TooltipArgument|unset} ttArg
+   * @param {function(): void} scr
+   * @param {number|unset} [w]
+   * @param {number|unset} [pad]
+   * @return {Cell}
+   */
+  const __clickIcon = function(tb, icon, ttArg, scr, w, pad) {
+    if(w == null) w = 32.0;
+    if(pad == null) pad = 4.0;
+
+    let btnCell = tb.button(icon, w, scr).pad(pad);
+    if(ttArg != null) {
+      if(typeof ttArg === "string") {
+        btnCell.tooltip(ttArg, true);
+      } else if(typeof ttArg === "function") {
+        __tooltip(btnCell, ttArg);
+      };
+    };
+    let btn = btnCell.get();
+    btn.margin(0.0);
+    let btnStyle = btn.getStyle();
+    btnStyle.up = Styles.none;
+    btnStyle.down = Styles.none;
+    btnStyle.over = Styles.flatOver;
+
+    return btnCell;
+  };
+  exports.__clickIcon = __clickIcon;
+
+
+  /**
    * Adds a content display for a table.
    * @param {Table} tb
    * @param {UnlockableContent} ct
@@ -417,24 +451,18 @@
    * @param {ContentInfoDialog|unset} [ctDial]
    */
   const __ct = function(tb, ct, w, pad, dialToHide, ctDial) {
-    if(ct == null) return;
-    if(w == null) w = 32.0;
-    if(pad == null) pad = w / 8.0;
-
-    let btnCell = tb.button(new TextureRegionDrawable(ct.uiIcon), w, () => {
-      tryVal(ctDial, Vars.ui.content).show(ct);
-      if(dialToHide != null) dialToHide.hide();
-    })
-    .pad(pad)
-    .tooltip(ct.localizedName, true);
-    let btn = btnCell.get();
-    btn.margin(0.0);
-    let btnStyle = btn.getStyle();
-    btnStyle.up = Styles.none;
-    btnStyle.down = Styles.none;
-    btnStyle.over = Styles.flatOver;
-
-    return btnCell;
+    return __clickIcon(
+      tb,
+      new TextureRegionDrawable(ct.uiIcon),
+      ct.localizedName,
+      () => {
+        tryVal(ctDial, Vars.ui.content).show(ct);
+        if(dialToHide != null) {
+          dialToHide.hide();
+        };
+      },
+      w, pad,
+    );
   };
   exports.__ct = __ct;
 
@@ -699,35 +727,36 @@
 
 
   /**
-   * Sets a list that shows contents in rows.
+   * Sets a list that shows icons in rows.
    * @param {Table} tb
-   * @param {ContentGn|Array<ContentGn>} cts_gn_p
+   * @param {Plural<BaseDrawable>} icons_p
+   * @param {Plural<string>} names_p
+   * @param {Plural<function(): void>} scrs_p
    * @param {boolean|unset} [showOrd]
    * @return {Cell}
    */
-  const _l_ctRow = function thisFun(tb, cts_gn_p, showOrd) {
-    let cts_gn = cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p];
-    showOrd = showOrd && cts_gn.length > 0;
+  const _l_iconRow = function thisFun(tb, icons_p, names_p, scrs_p, showOrd) {
+    let icons = icons_p instanceof Array ? icons_p : [icons_p];
+    let names = names_p instanceof Array ? names_p : [names_p];
+    let scrs = scrs_p instanceof Array ? scrs_p : [scrs_p];
+    showOrd = showOrd && icons.length > 0;
 
     let ordCur = 0;
     let contCell = tb.table(Styles.none, tb1 => {});
     let cont = contCell.get();
     contCell.row();
 
-    let ct;
     __break(cont, 1);
-    cts_gn.forEachFast(ct_gn => {
-      ct = MDL_content._ct(ct_gn, null, true);
-      if(ct == null) return;
-
+    icons.forEachFast(icon => {
       cont.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(Pal.darkestGray);
         __margin(tb1);
 
-        thisFun.buildOrder(tb1, ct, showOrd, ordCur);
-        thisFun.buildRowContent(tb1, ct);
-      }).growX().row();
-
+        thisFun.buildOrder(tb1, showOrd, ordCur);
+        thisFun.buildRowContent(tb1, icon, names[ordCur], scrs[ordCur]);
+      })
+      .growX()
+      .row();
       __break(cont, 1);
       ordCur++;
     });
@@ -735,7 +764,7 @@
     return contCell;
   }
   .setProp({
-    buildOrder: (tb, ct, showOrd, ordCur) => {
+    buildOrder: (tb, showOrd, ordCur) => {
       if(!showOrd) return;
 
       tb.table(Styles.none, tb1 => {
@@ -746,51 +775,99 @@
         }).width(48.0);
       }).marginRight(18.0).growY();
     },
-    buildRowContent: (tb, ct) => {
-      // <TABLE>: content icon
+    buildRowContent: (tb, icon, name, scr) => {
+      // <TABLE>: Icon
       tb.table(Styles.none, tb1 => {
         tb1.left();
-        tb1.image(ct.uiIcon).size(Vars.iconLarge).padRight(18.0);
+        tb1.image(icon).size(Vars.iconLarge).padRight(18.0);
         __barV(tb1).padRight(18.0);
-        tb1.add(ct.localizedName);
+        if(name != null) {
+          tb1.add(name);
+        };
       });
-      // <TABLE>: spacing
+      // <TABLE>: Spacing
       tb.table(Styles.none, tb1 => {}).width(80.0).growX().growY();
       // <TABLE>: "?" button
-      tb.table(Styles.none, tb1 => {
-        tb1.left();
-        tb1.button("?", () => Vars.ui.content.show(ct)).size(VAR.length.charBtnW);
-      });
+      if(scr != null) {
+        tb.table(Styles.none, tb1 => {
+          tb1.left();
+          tb1.button("?", () => scr).size(VAR.length.charBtnW);
+        });
+      };
     },
   });
+  exports._l_iconRow = _l_iconRow;
+
+
+  /**
+   * Variant of {@link _l_iconRow} that shows content icons.
+   * @param {Table} tb
+   * @param {Plural<ContentGn>} cts_gn_p
+   * @param {boolean|unset} [showOrd]
+   * @return {Cell}
+   */
+  const _l_ctRow = function thisFun(tb, cts_gn_p, showOrd) {
+    let cts = (cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p])
+    .map(ct_gn => MDL_content._ct(ct_gn, null, true))
+    .compact();
+
+    return _l_iconRow(
+      tb,
+      cts.map(ct => new TextureRegionDrawable(ct.uiIcon)),
+      cts.map(ct => ct.localizedName),
+      cts.map(ct => () => Vars.ui.content.show(ct)),
+      showOrd,
+    );
+  };
   exports._l_ctRow = _l_ctRow;
 
 
   /**
-   * Sets a list that shows content just like in the database.
+   * Sets a list that shows clickable icons just like in the database.
    * @param {Table} tb
-   * @param {ContentGn|Array<ContentGn>} cts_gn_p
+   * @param {Plural<BaseDrawable>} icons_p
+   * @param {Plural<TooltipArgument>} ttArgs_p
+   * @param {Plural<function(): void>} scrs_p
    * @param {number|unset} [iconW]
    * @param {number|unset} [colAmt]
-   * @param {Dialog|unset} [dialToHide]
-   * @param {ContentInfoDialog|unset} [ctDial]
+   * @param {Array<boolean>|unset} [breakBools]
    * @return {Cell}
    */
-  const _l_ctLi = function(tb, cts_gn_p, iconW, colAmt, dialToHide, ctDial) {
+  const _l_iconLi = function(tb, icons_p, ttArgs_p, scrs_p, iconW, colAmt, breakBools) {
     if(iconW == null) iconW = 32.0;
     if(colAmt == null) colAmt = MDL_ui._colAmt(iconW, 0.0, 2);
-    let cts_gn = cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p];
+    if(breakBools == null) breakBools = Array.air;
+    let icons = icons_p instanceof Array ? icons_p : [icons_p];
+    let ttArgs = ttArgs_p instanceof Array ? ttArgs_p : [ttArgs_p];
+    let scrs = scrs_p instanceof Array ? scrs_p : [scrs_p];
 
     let contCell = tb.table(Tex.whiteui, tb1 => {
       tb1.left().setColor(Pal.darkestGray);
       __margin(tb1, 0.5);
 
-      let i = 0, iCap = cts_gn.iCap(), j = 0, ct;
-      while(i < iCap) {
-        ct = MDL_content._ct(cts_gn[i], null, true);
-        if(ct != null) __ct(tb1, ct, iconW, null, dialToHide, ctDial);
+      let
+        i = 0,
+        iCap = icons.iCap(),
+        j = 0;
 
-        if(j % colAmt === colAmt - 1) tb1.row();
+      while(i < iCap) {
+        __clickIcon(
+          tb1,
+          icons[i],
+          ttArgs[i],
+          tryVal(scrs[i], Function.air),
+          iconW,
+          null,
+        );
+
+        if(i > 0 && breakBools[i + 1]) {
+          tb1.row();
+          __break(tb1, 1);
+          j = -1;
+        } else if(j % colAmt === colAmt - 1) {
+          tb1.row();
+          j = -1;
+        };
         j++;
         i++;
       };
@@ -798,6 +875,37 @@
     contCell.row();
 
     return contCell;
+  };
+  exports._l_iconLi = _l_iconLi;
+
+
+  /**
+   * Sets a list that shows content just like in the database.
+   * @param {Table} tb
+   * @param {Plural<ContentGn>} cts_gn_p
+   * @param {number|unset} [iconW]
+   * @param {number|unset} [colAmt]
+   * @param {Dialog|unset} [dialToHide]
+   * @param {ContentInfoDialog|unset} [ctDial]
+   * @return {Cell}
+   */
+  const _l_ctLi = function(tb, cts_gn_p, iconW, colAmt, dialToHide, ctDial) {
+    let cts = (cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p])
+    .map(ct_gn => MDL_content._ct(ct_gn, null, true))
+    .compact();
+
+    return _l_iconLi(
+      tb,
+      cts.map(ct => new TextureRegionDrawable(ct.uiIcon)),
+      cts.map(ct => ct.localizedName),
+      cts.map(ct => () => {
+        tryVal(ctDial, Vars.ui.content).show(ct);
+        if(dialToHide != null) {
+          dialToHide.hide();
+        };
+      }),
+      iconW, colAmt,
+    );
   };
   exports._l_ctLi = _l_ctLi;
 
@@ -1098,7 +1206,7 @@
   /**
    * Sets an attribute display that supports multiple attributes.
    * @param {Table} tb
-   * @param {AttrGn|Array<AttrGn>} attrs_gn_p
+   * @param {Plural<AttrGn>} attrs_gn_p
    * @param {(function(Block): boolean)|unset} [boolF]
    * @param {number|unset} [scl]
    * @param {number|unset} [iconW]

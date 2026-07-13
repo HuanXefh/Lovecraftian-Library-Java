@@ -26,6 +26,8 @@
   LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
   /** @global lovec.graphics.LCRgb */
   LCRgb = fetchClass("lovec.graphics.LCRgb");
+  /** @global lovec.graphics.StackDrawable */
+  StackDrawable = fetchClass("lovec.graphics.StackDrawable");
 
 
   /* <------------------------------ lovec.math ------------------------------ */

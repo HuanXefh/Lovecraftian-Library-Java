@@ -15,6 +15,14 @@
 
 
   function comp_init(sta) {
+    if(!sta.exInitCalled) {
+      sta.ex_init();
+      sta.exInitCalled = true;
+    };
+  };
+
+
+  function comp_ex_init(sta) {
     DB_status.db["map"]["affinity"].read(sta.name, Array.air).forEachRow(2, (nameSta, scr) => {
       let osta = MDL_content._ct(nameSta, "sta");
       if(osta != null) sta.affinity(osta, scr);
@@ -61,7 +69,18 @@
      */
     overwriteVanillaProp: true,
 
-    
+
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof STA_baseStatus
+     * @instance
+     */
+    exInitCalled: false,
+
+
   })
   .setParamAlias([
     "eff", "effect", Fx.none,
@@ -73,6 +92,20 @@
     init: function() {
       comp_init(this);
     },
+
+
+    /**
+     * `init` of status effects can be called twice! Use this method to avoid it.
+     * @memberof STA_baseStatus
+     * @instance
+     * @return {void}
+     */
+    ex_init: function() {
+      comp_ex_init(this);
+    }
+    .setProp({
+      noSuper: true,
+    }),
 
 
   });

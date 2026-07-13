@@ -137,7 +137,7 @@
    * Used mostly to load something optionally.
    * @global
    * @param {string} nameModCur
-   * @param {string|Array<string>} nameMods_p
+   * @param {Plural<string>} nameMods_p
    * @param {function(): void} scr
    * @param {boolean|unset} [suppressWarning] - If true, error message about missing mods won't be shown.
    * @return {void}

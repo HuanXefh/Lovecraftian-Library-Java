@@ -59,6 +59,20 @@
 
 
   /**
+   * Adds a button to database dialog.
+   * @param {string} text
+   * @param {Function} scr
+   * @return {void}
+   */
+  const addDatabaseButton = function(text, scr) {
+    let seq = Vars.ui.database.getChildren();
+    seq.get(seq.size - 1).button(text, scr).size(210.0, 64.0);
+  }
+  .setAnno("non-headless");
+  exports.addDatabaseButton = addDatabaseButton;
+
+
+  /**
    * Locks all contents from some mod for testing purpose.
    * If `cts` is given, only these contents will be locked.
    * @param {string} nameMod

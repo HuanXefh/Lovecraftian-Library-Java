@@ -993,7 +993,7 @@
   /**
    * Reads data from a formatted array.
    * For arrays containing multiple matching results, see {@link Array#readList}.
-   * @param {string|Array<string>} names_p
+   * @param {Plural<string>} names_p
    * @param {any} [def]
    * @param {boolean|unset} [isUnordered]
    * @return {any}
@@ -1020,7 +1020,7 @@
   /**
    * Variant of {@link Array#read} that returns row index.
    * Will return -1 if not found.
-   * @param {string|Array<string>} names_p
+   * @param {Plural<string>} names_p
    * @param {boolean|unset} [isUnordered]
    * @return {number}
    */
@@ -1080,7 +1080,7 @@
 
   /**
    * Variant of {@link Array#read} that returns all found results as a new array.
-   * @param {string|Array<string>} names_p
+   * @param {Plural<string>} names_p
    * @param {boolean|unset} [isUnordered]
    * @return {Array}
    */
@@ -1101,7 +1101,7 @@
 
   /**
    * The other side of {@link Array#read}.
-   * @param {string|Array<string>} names_p
+   * @param {Plural<string>} names_p
    * @param {any} val
    * @param {boolean|unset} [isUnordered]
    * @return {this}
@@ -1127,7 +1127,7 @@
 
   /**
    * Removes first matching row in a formatted array.
-   * @param {string|Array<string>} names_p
+   * @param {Plural<string>} names_p
    * @param {boolean|unset} [isUnordered]
    * @return {this}
    */

@@ -14,6 +14,14 @@
   /* <---------- component ----------> */
 
 
+  function comp_init(sta) {
+    if(!sta.exInitCalled) {
+      sta.ex_init();
+      sta.exInitCalled = true;
+    };
+  };
+
+
   function comp_setStats(sta) {
     sta.stats.remove(Stat.damageMultiplier);
     sta.stats.remove(Stat.healthMultiplier);
@@ -48,14 +56,30 @@
   .setParam({
 
 
+    /* <------------------------------ internal ------------------------------ */
+
+
+    /**
+     * <INTERNAL>
+     * @memberof DBCT_databaseContent
+     * @instance
+     */
+    exInitCalled: false,
+
+
     /* <------------------------------ vanilla ------------------------------ */
 
 
     allDatabaseTabs: false,
 
-    
+
   })
   .setMethod({
+
+
+    init: function() {
+      comp_init(this);
+    },
 
 
     setStats: function() {
@@ -73,6 +97,20 @@
 
     isHidden: function() {
       return !this.show;
+    }
+    .setProp({
+      noSuper: true,
+    }),
+
+
+    /**
+     * See {@link STA_baseStatus}.
+     * @memberof DBCT_databaseContent
+     * @instance
+     * @return {void}
+     */
+    ex_init: function() {
+
     }
     .setProp({
       noSuper: true,

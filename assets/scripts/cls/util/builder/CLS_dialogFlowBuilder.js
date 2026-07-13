@@ -266,10 +266,10 @@
   /**
    * Adds character arts to current row.
    * This method always completes the row.
-   * @param {Object|Array<Object>} charaObjs_p
+   * @param {Plural<CharacterData>} charaData_p
    * @return {this}
    */
-  CLS_dialogFlowBuilder.prototype.setChara = function(charaObjs_p) {
+  CLS_dialogFlowBuilder.prototype.setChara = function(charaData_p) {
     let arr = [];
 
     if(this.offInd === 0) {
@@ -280,7 +280,7 @@
       this.dialFlowData.push(null);
     };
 
-    let charaObjs = charaObjs_p instanceof Array ? charaObjs_p : [charaObjs_p];
+    let charaObjs = charaData_p instanceof Array ? charaData_p : [charaData_p];
     charaObjs.forEachFast(charaObj => {
       arr.push([
         0.0,
@@ -291,6 +291,7 @@
         readParam(charaObj, "anim"),
         readParam(charaObj, "animParam"),
         readParam(charaObj, "customActs"),
+        readParam(charaObj, "customActTimeS"),
       ]);
     });
 

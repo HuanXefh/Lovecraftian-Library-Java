@@ -57,7 +57,7 @@
 
     databaseTag: "lovec-ore",
 
-    
+
   })
   .setMethod({
 

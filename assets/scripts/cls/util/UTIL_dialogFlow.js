@@ -13,6 +13,7 @@
 
 
   const nameCtMap = new ObjectMap();
+  let textCur = null;
   const lastTextLogs = [];
   const pool = {
     bg: [],
@@ -35,6 +36,28 @@
    */
   UTIL_dialogFlow.getNameCtMap = function() {
     return nameCtMap;
+  };
+
+
+  /**
+   * Sets current text.
+   * @param {Table} textTb
+   * @return {void}
+   */
+  UTIL_dialogFlow.setTextCur = function(textTb) {
+    textCur = textTb;
+  };
+
+
+  /**
+   * Removes current text.
+   * @return {void}
+   */
+  UTIL_dialogFlow.removeTextCur = function() {
+    if(textCur != null) {
+      MDL_ui.removeActor(textCur);
+      textCur = null;
+    };
   };
 
 

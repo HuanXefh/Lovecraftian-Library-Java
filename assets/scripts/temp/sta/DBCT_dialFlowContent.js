@@ -14,7 +14,19 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(sta) {
+  function comp_setStats(sta) {
+    sta.stats.add(fetchStat("lovec", "spec-dialflow"), newStatValue(tb => {
+      tb.row();
+      MDL_table.__btnSmall(tb, VARGEN.icons.play, () => {
+        !sta.ex_checkDbctUnlocked() ?
+          MDL_ui.show_fadeInfo("lovec", "info-locked") :
+          MDL_ui._d_flow(sta.nameDialFlow);
+      }).left().padLeft(28.0).tooltip(MDL_bundle._term("lovec", "dialog-flow-play"), true);
+    }));
+  };
+
+
+  function comp_ex_init(sta) {
     if(sta.nameDialFlow == null) ERROR_HANDLER.throw("nullArgument", "nameDialFlow");
 
     sta.databaseCategory = "lovec-information";
@@ -33,18 +45,6 @@
     });
 
     UTIL_dialogFlow.getNameCtMap().put(sta.nameDialFlow, sta);
-  };
-
-
-  function comp_setStats(sta) {
-    sta.stats.add(fetchStat("lovec", "spec-dialflow"), newStatValue(tb => {
-      tb.row();
-      MDL_table.__btnSmall(tb, VARGEN.icons.play, () => {
-        !sta.ex_checkDbctUnlocked() ?
-          MDL_ui.show_fadeInfo("lovec", "info-locked") :
-          MDL_ui._d_flow(sta.nameDialFlow);
-      }).left().padLeft(28.0).tooltip(MDL_bundle._term("lovec", "dialog-flow-play"), true);
-    }));
   };
 
 
@@ -81,14 +81,22 @@
   .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
-
-
     setStats: function() {
       comp_setStats(this);
     },
+
+
+    /**
+     * @memberof DBCT_dialFlowContent
+     * @instance
+     * @return {void}
+     */
+    ex_init: function() {
+      comp_ex_init(this);
+    }
+    .setProp({
+      noSuper: true,
+    }),
 
 
   });

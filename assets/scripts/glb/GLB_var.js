@@ -95,6 +95,7 @@
       loadExtraSound: 3.0,
       loadReacGrp: 5.0,
       blkCheck: 10.0,
+      loadNodeRcs: 15.0,
       logRcGen: 280.0,
       logRcRegis: 300.0,
     },

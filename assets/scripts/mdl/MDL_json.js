@@ -53,7 +53,7 @@
   /**
    * Reads value from a JSON value, null if not found.
    * @param {JsonValue|null} jsonVal
-   * @param {string|Array<string>} keys_p - Object keys in order.
+   * @param {Plural<string>} keys_p - Object keys in order.
    * @param {boolean|unset} [noConvert] - If true, this method will return JSON value even if it's a final value.
    * @param {string|unset} [arrMode] - When final value is an array, this determines type of the result array.
    * @return {any}

@@ -26,6 +26,7 @@
     this.name = CLS_recipe.getName(this.owner, this.rcHeader);
     this.useAutoSelection = Boolean(useAutoSelection);
 
+    this.hasInit = false;
     this.initData();
     this.__isEmptyRc__ = false;
     this.inputRsBoolMap = new ObjectMap();
@@ -35,6 +36,9 @@
       this.__isEmptyRc__ = true;
       blkEmptyRcMap.put(this.owner, this);
     } else {
+      if(nameRcMap.containsKey(this.name)) {
+        console.warn("[LOVEC] Recipe name ${1} already used!".format(this.name.color(Pal.accent)));
+      };
       nameRcMap.put(this.name, this);
       if(!blkRcsMap.containsKey(this.owner)) {
         blkRcsMap.put(this.owner, []);
@@ -53,6 +57,8 @@
   const blkEmptyRcMap = new ObjectMap();
   const blkCategHeaderObjMap = new ObjectMap();
   const incompleteRcs = [];
+  const nodeLockedRcs = [];
+  const nodeRcsMap = new ObjectMap();
   let rcCount = 0;
   let rcIncompleteCount = 0;
 
@@ -157,6 +163,24 @@
    */
   CLS_recipe.getIncompleteRcs = function() {
     return incompleteRcs;
+  };
+
+
+  /**
+   * Gets all recipes locked by tech nodes. See {@link DBCT_techNodeContent}.
+   * @return {Array<CLS_recipe>}
+   */
+  CLS_recipe.getNodeLockedRcs = function() {
+    return nodeLockedRcs;
+  };
+
+
+  /**
+   * Gets the tech node-recipes map.
+   * @return {ObjectMap}
+   */
+  CLS_recipe.getNodeRcsMap = function() {
+    return nodeRcsMap;
   };
 
 
@@ -584,15 +608,26 @@
    * @return {this}
    */
   CLS_recipe.prototype.initData = function() {
+    if(this.hasInit) throw new Error("Double initialization!");
+    this.hasInit = true;
+
     this.isGen = MDL_recipe._isGen(this.rcMdl, this.rcHeader);
     this.isIncomplete = MDL_recipe._isIncomplete(this.rcMdl, this.rcHeader);
     this.erroredNames = MDL_recipe._rcVal(this.rcMdl, this.rcHeader, "erroredNames", Array.air);
     this.tt = MDL_recipe._tt(this.rcMdl, this.rcHeader);
 
     this.icon = null;
+    this.altIcon = null;
     if(!Vars.headless) {
       // This have to be delayed, WTF
-      Time.runTask(180.0, () => this.icon = MDL_recipe._icon(this.rcMdl, this.rcHeader));
+      Time.runTask(70.0, () => {
+        this.icon = MDL_recipe._icon(this.rcMdl, this.rcHeader);
+        this.altIcon = new StackDrawable(
+          [new TextureRegionDrawable(this.owner.uiIcon), MDL_recipe._icon(this.rcMdl, this.rcHeader)].toSeq(),
+          [new Vec2(0.0, 0.0), new Vec2(12.0, 12.0)].toSeq(),
+          [0.8, 0.5],
+        );
+      });
     };
 
     this.rcIconName = MDL_recipe._iconName(this.rcMdl, this.rcHeader);
@@ -677,6 +712,20 @@
     if(this.isIncomplete) {
       incompleteRcs.push(this);
       rcIncompleteCount++;
+    };
+
+    this.techNodes = [];
+    this.lockedByCts.forEachFast(ct => {
+      if(checkCreatedByTemp(ct) && ct.ex_isSubInsOf("DBCT_techNodeContent")) {
+        this.techNodes.pushUnique(ct);
+      };
+    });
+    if(this.techNodes.length > 0) {
+      nodeLockedRcs.push(this);
+      this.techNodes.forEachFast(node => {
+        if(!nodeRcsMap.containsKey(node)) nodeRcsMap.put(node, []);
+        nodeRcsMap.get(node).push(this);
+      });
     };
 
     return this;

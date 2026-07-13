@@ -320,7 +320,7 @@
    * Can accept a list of property names for fallback.
    * @global
    * @param {Object|unset} paramObj
-   * @param {string|Array<string>} nameProps_p
+   * @param {Plural<string>} nameProps_p
    * @param {any} [def]
    * @return {any}
    */
@@ -344,7 +344,7 @@
    * Variant of {@link readParam} but the result is immediately used if found.
    * @global
    * @param {Object|unset} paramObj
-   * @param {string|Array<string>} nameProps_p
+   * @param {Plural<string>} nameProps_p
    * @param {function(any): void} scr
    * @param {any} [def]
    * @return {void}

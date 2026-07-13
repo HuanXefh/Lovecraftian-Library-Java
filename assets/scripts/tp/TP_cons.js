@@ -143,6 +143,8 @@
 
 
         update(b) {
+          // Don't call `this.multiplier.get(b)` here, which causes `ClassCastException` on Android
+          // Rhino sucks
           let liq = this.getConsumed(b);
           if(liq != null) {
             b.liquids.remove(liq, this.amount * b.edelta() / this.effcMap.get(liq.name, 0.0001));

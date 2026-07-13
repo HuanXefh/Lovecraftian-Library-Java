@@ -83,7 +83,7 @@
 
   /**
    * Gets a 3-array containing blocks that have some of the given attributes.
-   * @param {AttrGn|Array<AttrGn>} attrs_gn_p
+   * @param {Plural<AttrGn>} attrs_gn_p
    * @param {(function(Block): boolean)|unset} [boolF] - Used to filter out valid blocks.
    * @return {Array} <ROW>: blk, attrVal, attr.
    */
