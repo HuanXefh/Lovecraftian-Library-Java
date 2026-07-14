@@ -348,7 +348,7 @@
         unit.mineTile = null;
         return false;
       };
-      if(unit.stack.amount >= unit.type.itemCapacity || !unit.acceptsItem(itm)) {
+      if(unit.stack.amount >= unit.itemCapacity() || !unit.acceptsItem(itm)) {
         // Full, end mining
         ctrl.isMining = false;
       } else {

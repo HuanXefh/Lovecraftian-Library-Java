@@ -123,7 +123,7 @@
     if(p == null) p = 1.0;
     let amtCur = b.items.get(itm);
     let amtCur_t = b_t.items.get(itm);
-    let amtTrans = Mathf.maxZero(Math.min(amt.randFreq(p), amtCur, b_t.block.itemCapacity - amtCur_t));
+    let amtTrans = Mathf.maxZero(Math.min(amt.randFreq(p), amtCur, b_t.getMaximumAccepted(itm) - amtCur_t));
     if(amtTrans < 1) return false;
 
     Call.setItem(b, itm, amtCur - amtTrans);
@@ -271,7 +271,7 @@
     let amt = loot.stack.amount;
     if(amt < 1) return false;
     if(max == null) max = Infinity;
-    let amtTrans = Mathf.maxZero(Math.min(amt, b.block.itemCapacity - b.items.get(itm), max));
+    let amtTrans = Mathf.maxZero(Math.min(amt, b.getMaximumAccepted(itm) - b.items.get(itm), max));
     if(amtTrans < 1) return false;
 
     addItem(b, b, itm, amtTrans, 1.0, true);
@@ -506,7 +506,7 @@
   const dropBuildItem = function(unit, b, max, alwaysClearStack) {
     if(b.items == null || !b.acceptItem(b, unit.item())) return false;
     if(max == null) max = Infinity;
-    let amtTrans = Mathf.maxZero(Math.min(unit.stack.amount, b.block.itemCapacity - b.items.get(unit.item()), max));
+    let amtTrans = Mathf.maxZero(Math.min(unit.stack.amount, b.getMaximumAccepted(unit.item()) - b.items.get(unit.item()), max));
     if(amtTrans < 1) return false;
 
     Call.transferItemTo(unit, unit.item(), amtTrans, unit.x, unit.y, b);

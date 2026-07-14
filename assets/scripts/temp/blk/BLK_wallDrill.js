@@ -89,7 +89,7 @@
       let itm;
       b.facing.forEachFast(ot => {
         itm = ot == null ? null : ot.wallDrop();
-        if(itm != null && b.items.get(itm) < b.block.itemCapacity) {
+        if(itm != null && b.items.get(itm) < b.getMaximumAccepted(itm)) {
           b.offload(itm);
         };
       });
@@ -207,7 +207,7 @@
 
 
       shouldConsume: function() {
-        return this.enabled && this.mineRsTgs.length > 0 && this.mineRsTgs.every(itm => this.items.get(itm) < this.block.itemCapacity);
+        return this.enabled && this.mineRsTgs.length > 0 && this.mineRsTgs.every(itm => this.items.get(itm) < this.getMaximumAccepted(itm));
       }
       .setProp({
         noSuper: true,

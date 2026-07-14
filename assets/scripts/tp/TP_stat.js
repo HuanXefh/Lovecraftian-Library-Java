@@ -157,6 +157,7 @@
   newStat("lovec", "spec-fromto");
   newStat("lovec", "spec-info");
   newStat("lovec", "spec-dialflow");
+  newStat("lovec", "spec-researchreq");
   newStat("lovec", "spec-nodects");
   newStat("lovec", "spec-nodercs");
 

@@ -34,6 +34,9 @@
 
 
   function comp_setStats(sta) {
+    if(sta.techNode != null) {
+      sta.stats.add(fetchStat("lovec", "spec-researchreq"), StatValues.items(false, sta.techNode.requirements));
+    };
     if(sta.childCts.length > 0) {
       sta.stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
         tb.row();

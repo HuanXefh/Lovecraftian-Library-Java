@@ -15,7 +15,7 @@
 
 
   function comp_acceptItem(b, b_f, itm) {
-    if(!b.block.separateItemCapacity) return b.items.total() < b.block.itemCapacity;
+    if(!b.block.separateItemCapacity) return b.items.total() < b.getMaximumAccepted(itm);
     if(b.block.delegee.singleTypeOnly) return !b.items.any() || b.items.total() === b.items.get(itm);
 
     return true;

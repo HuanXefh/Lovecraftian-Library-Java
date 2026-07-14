@@ -418,7 +418,7 @@
 
       canDump: function(b_t, itm) {
         // Yep this line is borrowed from Carpe Diem
-        return !this.block.consumesItem(itm) || (this.dominantItem === itm && this.items.has(itm, this.block.itemCapacity * 0.5));
+        return !this.block.consumesItem(itm) || (this.dominantItem === itm && this.items.has(itm, this.getMaximumAccepted(itm) * 0.5));
       }
       .setProp({
         noSuper: true,

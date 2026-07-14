@@ -25,7 +25,7 @@
 
       let drillTime = b.block.getDrillTime(b.dominantItem);
       b.smoothProgress = Mathf.lerpDelta(b.smoothProgress, b.progress / (drillTime - 20.0), 0.1);
-      if(b.dominantItems > 0 && b.efficiency > 0.0 && b.items.get(b.dominantItem) <= b.block.itemCapacity - b.dominantItems) {
+      if(b.dominantItems > 0 && b.efficiency > 0.0 && b.items.get(b.dominantItem) <= b.getMaximumAccepted(b.dominantItem) - b.dominantItems) {
         b.warmup = Mathf.approachDelta(b.warmup, b.progress / drillTime, b.block.warmupSpeed);
         let spd = Mathf.lerp(1.0, b.block.liquidBoostIntensity, b.optionalEfficiency) * b.efficiency;
         b.timeDrilled += b.block.speedCurve.apply(b.progress / drillTime) * spd;
@@ -150,7 +150,7 @@
 
 
       shouldConsume: function() {
-        return this.enabled && this.dominantItem != null && this.items.get(this.dominantItem) <= this.block.itemCapacity - this.dominantItems;
+        return this.enabled && this.dominantItem != null && this.items.get(this.dominantItem) <= this.getMaximumAccepted(this.dominantItem) - this.dominantItems;
       }
       .setProp({
         noSuper: true,

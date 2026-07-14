@@ -881,7 +881,7 @@
    * @param {number|unset} [pTg]
    * @return {void}
    */
-  const parseRcIoRow = function(outArr, tg, amt, p, ctCaller, isSecondary, pTg) {
+  const parseRcIoRow = function thisFun(outArr, tg, amt, p, ctCaller, isSecondary, pTg) {
     if(ctCaller == null) ctCaller = Function.air;
     if(pTg == null) pTg = 1.0;
     let isContinuous = p == null;
@@ -909,17 +909,7 @@
             );
       };
     } else if(typeof tg === "string") {
-      if(!tg.startsWith("GROUP: ")) {
-        // Content name
-        let ct = MDL_content._ct(tg, null, true);
-        if(ct == null) {
-          CLS_recipeGenerator.RECIPE_OBJECT_TMP.isIncomplete = true;
-          if(CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames == null) CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames = [];
-          CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames.pushUnique(tg);
-        } else {
-          parseRcIoRow(outArr, ct, amt, p, ctCaller, false, pTg);
-        };
-      } else {
+      if(tg.startsWith("GROUP: ")) {
         // GROUP: xxx
         let tmpArr = [];
         DB_recipe.db["gen"]["group"].readList(tg.replace("GROUP: ", "")).forEachFast(tup => {
@@ -932,20 +922,38 @@
         });
         if(tmpArr.length > 0) {
           isSecondary ?
-            outArr.pushAll(tmpArr) :
-            isContinuous ?
-              (
-                tmpArr.length === 2 ?
-                  outArr.push(tmpArr[0], tmpArr[1]) :
-                  outArr.push(tmpArr, -1.0)
-              ) :
-              (
-                tmpArr.length === 3 ?
-                  outArr.push(tmpArr[0], tmpArr[1], tmpArr[2]) :
-                  outArr.push(tmpArr, -1.0, -1.0)
-              );
+          outArr.pushAll(tmpArr) :
+          isContinuous ?
+          (
+            tmpArr.length === 2 ?
+            outArr.push(tmpArr[0], tmpArr[1]) :
+            outArr.push(tmpArr, -1.0)
+          ) :
+          (
+            tmpArr.length === 3 ?
+            outArr.push(tmpArr[0], tmpArr[1], tmpArr[2]) :
+            outArr.push(tmpArr, -1.0, -1.0)
+          );
         } else {
           console.warn("[LOVEC] No content found under ${1}!".format(tg.color(Pal.accent)));
+        };
+      } else if(tg.startsWith("COST: ")) {
+        // COST: xxx
+        let blk = MDL_content._ct(tg.replace("COST: ", ""), "blk");
+        if(blk == null) {
+          thisFun.reportIncompleteRc(tg);
+        } else {
+          blk.requirements.forEachFast(itmStack => {
+            parseRcIoRow(outArr, itmStack.item, itmStack.amount, 1.0, ctCaller, false, pTg);
+          });
+        };
+      } else {
+        // Content name
+        let ct = MDL_content._ct(tg, null, true);
+        if(ct == null) {
+          thisFun.reportIncompleteRc(tg);
+        } else {
+          parseRcIoRow(outArr, ct, amt, p, ctCaller, false, pTg);
         };
       };
     } else if(tg instanceof UnlockableContent) {
@@ -961,7 +969,14 @@
       printObj(tg);
       throw new Error("WTF did you put into the I/O array???");
     };
-  };
+  }
+  .setProp({
+    reportIncompleteRc: function(name) {
+      CLS_recipeGenerator.RECIPE_OBJECT_TMP.isIncomplete = true;
+      if(CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames == null) CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames = [];
+      CLS_recipeGenerator.RECIPE_OBJECT_TMP.erroredNames.pushUnique(name);
+    },
+  });
   exports.parseRcIoRow = parseRcIoRow;
 
 

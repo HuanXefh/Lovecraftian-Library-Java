@@ -23,7 +23,7 @@
       b.timeDrilled += b.warmup * b.delta();
 
       let drillTime = b.block.getDrillTime(b.dominantItem);
-      if(b.dominantItems > 0 && b.efficiency > 0.0 && b.items.get(b.dominantItem) < b.block.itemCapacity) {
+      if(b.dominantItems > 0 && b.efficiency > 0.0 && b.items.get(b.dominantItem) < b.getMaximumAccepted(b.dominantItem)) {
         let spd = Mathf.lerp(1.0, b.block.liquidBoostIntensity, b.optionalEfficiency) * b.efficiency;
         b.lastDrillSpeed = spd * b.dominantItems / drillTime;
         b.warmup = Mathf.approachDelta(b.warmup, spd, b.block.warmupSpeed);
@@ -129,7 +129,7 @@
 
 
       shouldConsume: function() {
-        return this.enabled && this.dominantItem != null && this.items.get(this.dominantItem) < this.block.itemCapacity;
+        return this.enabled && this.dominantItem != null && this.items.get(this.dominantItem) < this.getMaximumAccepted(this.dominantItem);
       }
       .setProp({
         noSuper: true,
