@@ -66,7 +66,7 @@
 
     // Timer for some visual effects
     exports.lightning = timer_eff.get(0, VAR.time.lightningIntv);
-    exports.coreSignal = timer_eff.get(1, 25.0);
+    exports.coreSignal = timer_eff.get(1, 32.0);
     exports.trailCircle = timer_eff.get(2, 15.0);
     exports.jetTrail = timer_eff.get(3, 2.0);
 

@@ -344,15 +344,15 @@
     let b = Vars.state.teams.closestCore(x, y, team);
     if(b == null) return;
     if(pad == null) pad = 0.0;
-    if(rad == null) rad = 120.0;
+    if(rad == null) rad = 40.0;
 
     showAt(x, y, thisFun.eff, rad, team.color, [b, pad, Math.random() > 0.5]);
   }
   .setProp({
-    eff: new Effect(280.0, eff => {
+    eff: new Effect(200.0, eff => {
       let
         ang = Mathf.angle(eff.data[0].x - eff.x, eff.data[0].y - eff.y),
-        size = 24.0 - 18.0 * Interp.pow2Out.apply(1.0 - eff.fout());
+        size = 18.0 - 14.0 * Interp.pow2Out.apply(1.0 - eff.fout());
 
       Draw.color(eff.color, Interp.pow2In.apply(1.0 - eff.fin()));
       Draw.rect(

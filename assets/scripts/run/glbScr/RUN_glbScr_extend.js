@@ -212,11 +212,14 @@
         };
         this.drawer.load(this);
       };
-      obj.drawPlanRegion = function(bPlan, bPlans) {
+      obj.drawPlan = function(bPlan, bPlans, valid, a) {
         this.drawer.drawPlan(this, bPlan, bPlans);
       };
       obj.getRegionsToOutline = function(regSeqOut) {
         this.drawer.getRegionsToOutline(this, regSeqOut);
+      };
+      obj.drawPlanConfig = function(bPlan, bPlans) {
+        // Do nothing
       };
     };
 
@@ -228,14 +231,12 @@
       let obj1 = extendBase.setupObj(temp[1], objB);
 
       if(obj.forceUseDrawer) {
-        obj1.__backupDraw__ = obj1.draw;
         obj1.draw = function() {
           this.block.delegee == null ?
             this.block.drawer.draw(this) :
             this.block.delegee.drawer.draw(this);
           this.drawTeamTop();
         };
-        obj1.__backupDrawLight__ = obj1.drawLight;
         obj1.drawLight = function() {
           this.block.delegee == null ?
             this.block.drawer.drawLight(this) :

@@ -8,6 +8,15 @@
   /* <---------- import ----------> */
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  /**
+   * Without this torque can be over-consumed.
+   */
+  const NO_SUPPLY_THRESHOLD = 1.0;
+
+
   /* <---------- component ----------> */
 
 
@@ -119,6 +128,8 @@
 
 
   function comp_ex_supplyTor(b) {
+    if(b.torCur < NO_SUPPLY_THRESHOLD) return;
+
     let ob, rate1, rate2;
     let i = 0, iCap = b.torSupplyTgs.iCap();
     while(i < iCap) {
@@ -199,11 +210,11 @@
             // Liquid source gives 100.0 RPM, for test
             if(ob.source === VARGEN.auxTor) {
               val += 100.0;
-              b.torCap = Math.max(100.0, b.torCap);
+              b.torCap += 100.0;
             };
           } else {
             val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true, true) * amt * 60.0;
-            b.torCap = Math.max(amt * 60.0, b.torCap);
+            b.torCap += amt * 60.0;
           };
         };
         i += 2;

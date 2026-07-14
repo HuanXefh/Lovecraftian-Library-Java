@@ -29,6 +29,7 @@
     ang,
     life,
     scl,
+    color,
     i,
     iCap,
     j,
@@ -41,6 +42,50 @@
 
 
   /* <------------------------------ region ------------------------------ */
+
+
+  /**
+   * Draws a region with dynamic color.
+   */
+  newDrawer(
+    "DrawColorRegion",
+    paramObj => extend(DrawBlock, {
+
+
+      suffix: readParam(paramObj, "suffix", "-color"),
+      offX: readParam(paramObj, "offX", 0.0),
+      offY: readParam(paramObj, "offY", 0.0),
+      rotate: readParam(paramObj, "rotate", false),
+      colorGetterTup: readParam(paramObj, "colorGetterTup", null),
+      colorReg: null,
+
+
+      load(blk) {
+        this.colorReg = fetchRegion(blk, this.suffix);
+
+        if(this.colorGetterTup instanceof Color) {
+          let color = this.colorGetterTup;
+          this.colorGetterTup = b => color;
+        };
+      },
+
+
+      draw(b) {
+        color = this.colorGetterTup == null ?
+          null :
+          this.colorGetterTup[0](b);
+        if(color == null) return;
+
+        x = b.x + this.offX * (!this.rotate ? 1.0 : Mathf.cosDeg(b.drawrot()));
+        y = b.y + this.offY * (!this.rotate ? 1.0 : Mathf.sinDeg(b.drawrot()));
+        Draw.color(color, color.a);
+        Draw.rect(this.colorReg, x, y, !this.rotate ? 0 : b.drawrot());
+        Draw.color();
+      },
+
+
+    }),
+  );
 
 
   /**
@@ -434,36 +479,6 @@
 
 
   /* <------------------------------ special ------------------------------ */
-
-
-  /**
-   * Used to call original draw methods when {@link BLK_baseBlock#forceUseDrawer} is true.
-   */
-  newDrawer(
-    "DrawBackup",
-    paramObj => extend(DrawBlock, {
-
-
-      load(blk) {
-        MDL_event._c_onLoad(() => {
-          if(!checkCreatedByTemp(blk)) throw new Error("DrawBackup can only be used for blocks created with content templates! Exception: {$1}".format(blk.name));
-          if(!blk.delegee.forceUseDrawer) throw new Error("DrawBackup can only be used when `forceUseDrawer` is true! Exception: {$1}".format(blk.name));
-        });
-      },
-
-
-      draw(b) {
-        b.delegee.__backupDraw__.call(b);
-      },
-
-
-      drawLight(b) {
-        b.delegee.__backupDrawLight__.call(b);
-      },
-
-
-    }),
-  );
 
 
   /**
