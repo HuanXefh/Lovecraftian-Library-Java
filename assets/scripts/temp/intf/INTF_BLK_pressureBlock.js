@@ -41,16 +41,6 @@
   };
 
 
-  function comp_remove(b) {
-    if(b.liquids.currentAmount() < 0.01) {
-      b.presBase = 0.0;
-      b.presTmp = 0.0;
-    };
-
-    b.super$remove();
-  };
-
-
   function comp_onProximityUpdate(b) {
     b.ex_updatePresFetchTgs();
     b.ex_updatePresSupplyTgs();
@@ -97,7 +87,7 @@
     };
 
     // Pressure drop
-    b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : b.presBase * 0.01666667 * Time.delta;
+    b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase * 0.01666667 * Time.delta);
 
     // Occasionally supply abstract fluid
     if(TIMER.liq && !b.block.delegee.skipPresSupply && b.presSupplyTgs.length > 0 && Math.abs(b.presTmp) > 0.0) {
@@ -318,14 +308,6 @@
       },
 
 
-      remove: function() {
-        comp_remove(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
       onProximityUpdate: function() {
         comp_onProximityUpdate(this);
       },
@@ -480,6 +462,7 @@
             let pres = rd.f();
             this.presTmp = pres;
             this.presTg = pres;
+            this.presBase = pres;
           },
         );
       }

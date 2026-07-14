@@ -282,6 +282,8 @@
 
   DEBUG = {
 
+    shouldLogDelta: false,
+
     skipFacilityUpdate: false,
 
     skipRcUpdate: false,

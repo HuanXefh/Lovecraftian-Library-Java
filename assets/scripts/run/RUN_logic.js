@@ -180,6 +180,10 @@
 
     if(Vars.state.isPaused()) return;
 
+    if(TIMER.secQuarter && DEBUG.shouldLogDelta) {
+      console.log("[LOVEC] Current delta: " + Time.delta);
+    };
+
     updateRules();
     updateWeather();
     updateAttr();
