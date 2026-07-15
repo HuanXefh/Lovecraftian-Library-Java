@@ -5,11 +5,7 @@ import arc.scene.style.BaseDrawable;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.style.TransformDrawable;
 import arc.struct.Seq;
-import arc.util.Log;
 import arc.util.Nullable;
-import jdk.dynalink.beans.StaticClass;
-
-import java.util.Stack;
 
 /**
  * Stacked version of {@link TextureRegionDrawable}.

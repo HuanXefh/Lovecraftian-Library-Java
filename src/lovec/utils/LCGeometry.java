@@ -1,11 +1,10 @@
 package lovec.utils;
 
-import arc.Core;
 import arc.math.Mathf;
 import mindustry.gen.Building;
 
-import static lovec.utils.LCJavaScript.MDL_cond;
-import static lovec.utils.LCJavaScript.invoke;
+import static lovec.utils.LCScript.MDL_cond;
+import static lovec.utils.LCScript.invoke;
 
 public class LCGeometry {
 
@@ -69,9 +68,9 @@ public class LCGeometry {
         Building b_s2 = b.nearby((b.rotation + 3) % 4);
 
         return !(
-            (b_f != null && b_f.team == b.team && (boolean)(LCJavaScript.instanceInvoke(b.block, "ex_shouldBlendBackSide", b_f)))
-                || (b_s1 != null && b_s1.team == b.team && accept(b_s1, b, backSideFromRouter(b_s1), backSideCanSideBlend(b, b_s1)) && (boolean)(LCJavaScript.instanceInvoke(b.block, "ex_shouldBlendFlankSide", b_s1)))
-                || (b_s2 != null && b_s2.team == b.team && accept(b_s2, b, backSideFromRouter(b_s2), backSideCanSideBlend(b, b_s2)) && (boolean)(LCJavaScript.instanceInvoke(b.block, "ex_shouldBlendFlankSide", b_s2)))
+            (b_f != null && b_f.team == b.team && (boolean)(LCScript.instanceInvoke(b.block, "ex_shouldBlendBackSide", b_f)))
+                || (b_s1 != null && b_s1.team == b.team && accept(b_s1, b, backSideFromRouter(b_s1), backSideCanSideBlend(b, b_s1)) && (boolean)(LCScript.instanceInvoke(b.block, "ex_shouldBlendFlankSide", b_s1)))
+                || (b_s2 != null && b_s2.team == b.team && accept(b_s2, b, backSideFromRouter(b_s2), backSideCanSideBlend(b, b_s2)) && (boolean)(LCScript.instanceInvoke(b.block, "ex_shouldBlendFlankSide", b_s2)))
         );
     };
 
@@ -82,7 +81,7 @@ public class LCGeometry {
      */
     public static boolean showFrontSide(Building b) {
         Building b_t = b.nearby(b.rotation);
-        return !(b_t != null && b_t.team == b.team && (boolean)(LCJavaScript.instanceInvoke(b.block, "ex_shouldBlendFrontSide", b_t)));
+        return !(b_t != null && b_t.team == b.team && (boolean)(LCScript.instanceInvoke(b.block, "ex_shouldBlendFrontSide", b_t)));
     };
 
 

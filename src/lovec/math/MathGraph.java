@@ -3,7 +3,6 @@ package lovec.math;
 import arc.func.Boolf2;
 import arc.func.Cons2;
 import arc.struct.*;
-import arc.util.Log;
 import arc.util.Nullable;
 
 import java.util.Arrays;

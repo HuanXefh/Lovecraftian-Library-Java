@@ -5,7 +5,7 @@ import arc.util.Reflect;
 import mindustry.Vars;
 import rhino.*;
 
-public class LCJavaScript {
+public class LCScript {
 
 
     public static NativeObject MDL_cond;
@@ -28,7 +28,7 @@ public class LCJavaScript {
 
     public static void init() {
         MDL_cond = (NativeObject)(get("MDL_cond"));
-        Log.info("[LOVEC] Initialized Lovec module references in LCJavaScript.");
+        Log.info("[LOVEC] Initialized Lovec module references in LCScript.");
     };
 
 
@@ -61,7 +61,7 @@ public class LCJavaScript {
 
 
     /**
-     * Variant of {@link LCJavaScript#invoke} with <code>this</code> passed.
+     * Variant of {@link LCScript#invoke} with <code>this</code> passed.
      */
     public static Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) {
         Function fun = (Function)(get(nameFun, scope));
