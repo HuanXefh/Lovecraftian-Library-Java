@@ -32,19 +32,7 @@
   function comp_onProximityUpdate(b) {
     if(b.block.delegee.noSideReg) return;
 
-    b_t = b.nearby(b.rotation);
-    b_f = b.nearby((b.rotation + 2) % 4);
-    b_s1 = b.nearby((b.rotation + 1) % 4);
-    b_s2 = b.nearby((b.rotation + 3) % 4);
-
-    // This is nightmare
-    b.shouldDrawSide1 = LCGeometry.showBackSide(
-      b,
-      b_s1 == null ? false : MDL_cond._isGenericRouter(b_s1.block),
-      b_s2 == null ? false : MDL_cond._isGenericRouter(b_s2.block),
-      b_s1 == null ? false : (!MDL_cond._isNoSideBlock(b.block) || !MDL_cond._isNoSideBlock(b_s1.block) || MDL_cond._isSameNoSideBlock(b_s1.block, b.block)),
-      b_s2 == null ? false : (!MDL_cond._isNoSideBlock(b.block) || !MDL_cond._isNoSideBlock(b_s2.block) || MDL_cond._isSameNoSideBlock(b_s2.block, b.block)),
-    );
+    b.shouldDrawSide1 = LCGeometry.showBackSide(b);
     b.shouldDrawSide2 = LCGeometry.showFrontSide(b);
   };
 

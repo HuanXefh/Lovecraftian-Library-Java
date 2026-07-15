@@ -53,7 +53,25 @@
 
 
     })
-    .setMethod({}),
+    .setMethod({
+
+
+      /**
+       * @override
+       * @memberof BLK_directionalUnloader
+       * @instance
+       * @return {boolean}
+       */
+      ex_noSideOutput: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+    }),
 
 
     /**

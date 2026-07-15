@@ -31,10 +31,10 @@
   const _ct = function thisFun(ct_gn, mode, suppressWarning) {
     if(ct_gn == null || ct_gn === "null") return null;
     if(ct_gn instanceof UnlockableContent) return global.lovecUtil.db.oreDict.get(ct_gn, ct_gn);
-    if(typeof ct_gn !== "string") {
+    /*if(typeof ct_gn !== "string") {
       printObj(ct_gn);
       throw new Error("What is this?\n" + ct_gn);
-    };
+    };*/
 
     let ct = null;
     if(mode != null) {

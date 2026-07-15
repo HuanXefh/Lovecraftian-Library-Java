@@ -296,7 +296,8 @@
     // Load extra sounds
     if(!Vars.headless) {
       DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr));
-      Time.runTask(VAR.delay.load.loadExtraSound, () => {
+      // This one cannot be `Time.runTask`, otherwise `PARAM.xxx` will be undefined!
+      Time.run(VAR.delay.load.loadExtraSound, () => {
         if(PARAM.SECRET_LEGACY_SOUND) {
           try {
             Vars.content.units().each(utp => {

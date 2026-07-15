@@ -1,6 +1,9 @@
 package lovec;
 
+import arc.Events;
 import arc.util.*;
+import lovec.utils.LCJavaScript;
+import mindustry.game.EventType;
 import mindustry.mod.*;
 
 public class Lovec extends Mod{
@@ -13,7 +16,7 @@ public class Lovec extends Mod{
 
     @Override
     public void init() {
-
+        LCJavaScript.init();
     };
 
 

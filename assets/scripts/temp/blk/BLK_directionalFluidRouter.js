@@ -97,6 +97,21 @@
       },
 
 
+      /**
+       * @override
+       * @memberof BLK_directionalFluidRouter
+       * @instance
+       * @return {boolean}
+       */
+      ex_isGateBlk: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
     }),
 
 

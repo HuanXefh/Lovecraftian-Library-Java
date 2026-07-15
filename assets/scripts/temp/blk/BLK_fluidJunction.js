@@ -70,6 +70,21 @@
       }),
 
 
+      /**
+       * @override
+       * @memberof BLK_fluidJunction
+       * @instance
+       * @return {boolean}
+       */
+      ex_isGateBlk: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
     }),
 
 

@@ -20,13 +20,12 @@
     };
 
     if(blk.overwriteVanillaProp) {
-      // TODO: Wait until Anuke decides to change this.
-      if(!Vars.headless && blk.matGrp !== "none" && (blk.walkSound === Sounds.none || blk.walkSound === Sounds.unset)) {
+      if(!Vars.headless && blk.matGrp !== "none" && blk.walkSound === Sounds.unset) {
         blk.walkSound = fetchSound("se-step-" + blk.matGrp);
-        blk.walkSoundVolume = 0.2;
-        blk.walkSoundPitchMin = 0.95;
-        blk.walkSoundPitchMax = 1.05;
       };
+      blk.walkSoundVolume = 0.2;
+      blk.walkSoundPitchMin = 0.8;
+      blk.walkSoundPitchMax = 1.1;
       if(blk.status !== StatusEffects.none) {
         blk.statusDuration = VAR.time.flrStaDef;
       };
@@ -99,6 +98,12 @@
      * @instance
      */
     randRegOffs: [0, 0],
+
+
+    /* <------------------------------ vanilla ------------------------------ */
+
+
+    walkSound: Sounds.unset,
 
 
   })

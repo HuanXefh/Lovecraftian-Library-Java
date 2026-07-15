@@ -92,7 +92,7 @@
   exports.delay = {
     load: {
       addStat: 3.0,
-      loadExtraSound: 3.0,
+      loadExtraSound: 9.0,
       loadReacGrp: 5.0,
       blkCheck: 10.0,
       loadNodeRcs: 15.0,
