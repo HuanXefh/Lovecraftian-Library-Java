@@ -36,7 +36,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof ENV_tree
      * @instance

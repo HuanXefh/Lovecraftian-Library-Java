@@ -36,7 +36,7 @@
 
     /**
      * Vanilla stack conveyor I guess.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_stackConveyor
      * @extends BLK_baseItemDistributor
      */
@@ -47,7 +47,7 @@
 
 
       /**
-       * <PARAM>: Whether this conveyor only accepts inputs from conveyors and ducts (intended for main bus).
+       * `PARAM`: Whether this conveyor only accepts inputs from conveyors and ducts (intended for main bus).
        * @memberof BLK_stackConveyor
        * @instance
        */

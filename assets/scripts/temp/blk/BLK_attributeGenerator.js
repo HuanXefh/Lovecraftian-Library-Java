@@ -88,26 +88,26 @@
 
 
       /**
-       * <PARAM>: How fast this generator warms up.
+       * `PARAM`: How fast this generator warms up.
        * @memberof BLK_attributeGenerator
        * @instance
        */
       warmupRate: 0.008,
       /**
-       * <PARAM>: Item duration.
+       * `PARAM`: Item duration.
        * @memberof BLK_attributeGenerator
        * @instance
        */
       attrGenItmDur: 120.0,
       /**
-       * <PARAM>: Used to filter out valid blocks with matching attribute.
-       * <br> <ARGS>: blk, oblk.
+       * `PARAM`: Used to filter out valid blocks with matching attribute.
+       * <br> `ARGS`: blk, oblk.
        * @memberof BLK_attributeGenerator
        * @instance
        */
       attrFilterTup: prov(() => [Function.airTrue]),
       /**
-       * <PARAM>: Effect created when item is consumed.
+       * `PARAM`: Effect created when item is consumed.
        * @memberof BLK_attributeGenerator
        * @instance
        */
@@ -174,25 +174,25 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_attributeGenerator
        * @instance
        */
       lastEffc: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_attributeGenerator
        * @instance
        */
       lastWarmup: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_attributeGenerator
        * @instance
        */
       attrGenItmProg: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_attributeGenerator
        * @instance
        */

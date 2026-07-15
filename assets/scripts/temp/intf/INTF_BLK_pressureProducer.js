@@ -101,13 +101,13 @@
 
 
         /**
-         * <PARAM>: Pressure produced by this block per frame, negative for vacuum.
+         * `PARAM`: Pressure produced by this block per frame, negative for vacuum.
          * @memberof INTF_BLK_pressureProducer
          * @instance
          */
         presProd: 0.0,
         /**
-         * <PARAM>: Fluid type restriction for pressure dumping. See {@link INTF_BLK_fluidTypeFilter}.
+         * `PARAM`: Fluid type restriction for pressure dumping. See {@link INTF_BLK_fluidTypeFilter}.
          * @memberof INTF_BLK_pressureProducer
          * @instance
          */
@@ -206,7 +206,7 @@
       /**
        * Override this method for dynamic dump rate.
        * Efficiency should not be involved!
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_pressureProducer
        * @instance
        * @return {number}

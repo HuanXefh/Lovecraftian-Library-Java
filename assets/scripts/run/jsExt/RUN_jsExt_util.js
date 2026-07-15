@@ -129,7 +129,7 @@
   /**
    * Merges a series of objects.
    * Properties defined later will overwrite the ones defined before.
-   * <br> <ARGS>: obj1, obj2, obj3, ...
+   * <br> `ARGS`: obj1, obj2, obj3, ...
    * @return {Object}
    */
   Object.mergeObj = function() {
@@ -149,7 +149,7 @@
   /**
    * Variant of {@link Object.mergeObj} that mixes methods.
    * `addSuper` is used to call `super$xxx` if `override` is true.
-   * <br> <ARGS>: obj1, obj2, obj3, ...
+   * <br> `ARGS`: obj1, obj2, obj3, ...
    * @return {Object}
    */
   Object.mergeObjMixin = function() {

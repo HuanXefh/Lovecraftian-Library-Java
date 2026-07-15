@@ -44,7 +44,7 @@
 
 
         /**
-         * <PARAM>: Whether this is a block like world processor.
+         * `PARAM`: Whether this is a block like world processor.
          * @memberof INTF_BLK_mapBlock
          * @instance
          */

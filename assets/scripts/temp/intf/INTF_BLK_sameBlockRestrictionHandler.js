@@ -55,13 +55,13 @@
 
 
         /**
-         * <PARAM>: Range in blocks for placement restriction.
+         * `PARAM`: Range in blocks for placement restriction.
          * @memberof INTF_BLK_sameBlockRestrictionHandler
          * @instance
          */
         placeRestrictR: 5,
         /**
-         * <PARAM>: If true, the restriction area is a disk.
+         * `PARAM`: If true, the restriction area is a disk.
          * @memberof INTF_BLK_sameBlockRestrictionHandler
          * @instance
          */

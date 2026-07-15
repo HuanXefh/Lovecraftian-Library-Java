@@ -75,19 +75,19 @@
 
 
       /**
-       * <PARAM>: Minimum temperature.
+       * `PARAM`: Minimum temperature.
        * @memberof BLK_heatSource
        * @instance
        */
       tempMin: 0.0,
       /**
-       * <PARAM>: Maximum temperature.
+       * `PARAM`: Maximum temperature.
        * @memberof BLK_heatSource
        * @instance
        */
       tempMax: 3000.0,
       /**
-       * <PARAM>
+       * `PARAM`
        * @override
        * @memberof BLK_heatSource
        * @instance

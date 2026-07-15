@@ -79,7 +79,7 @@
 
 
     /**
-     * <PARAM>: Damage multiplier on specific type of units.
+     * `PARAM`: Damage multiplier on specific type of units.
      * @memberof BUL_baseBullet
      * @instance
      */

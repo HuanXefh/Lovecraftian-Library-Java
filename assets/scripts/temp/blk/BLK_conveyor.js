@@ -29,7 +29,7 @@
      * Conveyor, the most basic way of item transportation.
      * Has side regions to mark the start and end.
      * <br> I have tried to change that item capacity of 3, but it's too hard-coded.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_conveyor
      * @extends BLK_baseItemDistributor
      * @extends INTF_BLK_transportBlockSideDisplay

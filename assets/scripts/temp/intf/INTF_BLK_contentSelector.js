@@ -77,7 +77,7 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_contentSelector
          * @instance
          */
@@ -122,7 +122,7 @@
 
 
         /**
-         * <INTERNAL>: Selected content.
+         * `INTERNAL`: Selected content.
          * @memberof INTF_B_contentSelector
          * @instance
          */

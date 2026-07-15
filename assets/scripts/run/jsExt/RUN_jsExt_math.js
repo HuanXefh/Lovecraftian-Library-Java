@@ -34,7 +34,7 @@
   /**
    * Sums all numbers in a number mapper object.
    * @param {Object<string: number>} obj
-   * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
+   * @param {(function(string, number): void)|unset} [mapF] - `ARGS`: key, val.
    * @return {number}
    */
   Object.mapSum = function(obj, mapF) {
@@ -54,7 +54,7 @@
   /**
    * Finds largest value in a number mapper object.
    * @param {Object<string: number>} obj
-   * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
+   * @param {(function(string, number): void)|unset} [mapF] - `ARGS`: key, val.
    * @return {number}
    */
   Object.mapMax = function(obj, mapF) {
@@ -76,7 +76,7 @@
   /**
    * Finds smallest value in a number mapper object.
    * @param {Object<string: number>} obj
-   * @param {(function(string, number): void)|unset} [mapF] - <ARGS>: key, val.
+   * @param {(function(string, number): void)|unset} [mapF] - `ARGS`: key, val.
    * @return {number}
    */
   Object.mapMin = function(obj, mapF) {
@@ -97,10 +97,10 @@
 
   /**
    * Number mapper object comparison.
-   * <br> <ARGS>: obj1, obj2, includeEqual.
-   * <br> <ARGS>: obj1, num, includeEqual.
-   * <br> <ARGS>: obj1, arr, includeEqual.
-   * <br> <ARGS>: obj1, valGetter, includeEqual.
+   * <br> `ARGS`: obj1, obj2, includeEqual.
+   * <br> `ARGS`: obj1, num, includeEqual.
+   * <br> `ARGS`: obj1, arr, includeEqual.
+   * <br> `ARGS`: obj1, valGetter, includeEqual.
    * @return {boolean}
    */
   Object.mapSomeLargerThan = newMultiFunction(
@@ -137,10 +137,10 @@
 
   /**
    * Number mapper object comparison.
-   * <br> <ARGS>: obj1, obj2, includeEqual.
-   * <br> <ARGS>: obj1, num, includeEqual.
-   * <br> <ARGS>: obj1, arr, includeEqual.
-   * <br> <ARGS>: obj1, valGetter, includeEqual.
+   * <br> `ARGS`: obj1, obj2, includeEqual.
+   * <br> `ARGS`: obj1, num, includeEqual.
+   * <br> `ARGS`: obj1, arr, includeEqual.
+   * <br> `ARGS`: obj1, valGetter, includeEqual.
    * @return {boolean}
    */
   Object.mapAllLargerThan = function(obj, arg, includeEqual) {
@@ -150,10 +150,10 @@
 
   /**
    * Number mapper object comparison.
-   * <br> <ARGS>: obj1, obj2, includeEqual.
-   * <br> <ARGS>: obj1, num, includeEqual.
-   * <br> <ARGS>: obj1, arr, includeEqual.
-   * <br> <ARGS>: obj1, valGetter, includeEqual.
+   * <br> `ARGS`: obj1, obj2, includeEqual.
+   * <br> `ARGS`: obj1, num, includeEqual.
+   * <br> `ARGS`: obj1, arr, includeEqual.
+   * <br> `ARGS`: obj1, valGetter, includeEqual.
    * @return {boolean}
    */
   Object.mapSomeSmallerThan = newMultiFunction(
@@ -198,10 +198,10 @@
 
   /**
    * Number mapper object comparison.
-   * <br> <ARGS>: obj1, obj2, includeEqual.
-   * <br> <ARGS>: obj1, num, includeEqual.
-   * <br> <ARGS>: obj1, arr, includeEqual.
-   * <br> <ARGS>: obj1, valGetter, includeEqual.
+   * <br> `ARGS`: obj1, obj2, includeEqual.
+   * <br> `ARGS`: obj1, num, includeEqual.
+   * <br> `ARGS`: obj1, arr, includeEqual.
+   * <br> `ARGS`: obj1, valGetter, includeEqual.
    * @return {boolean}
    */
   Object.mapAllSmallerThan = function(obj1, obj2, includeEqual) {
@@ -422,7 +422,7 @@
   /**
    * Performs cumulative operation on this array.
    * Result is returned as a new array.
-   * @param {function(number, any): number} scr - <ARGS>: result, valCur.
+   * @param {function(number, any): number} scr - `ARGS`: result, valCur.
    * @return {Array<number>}
    */
   Array.prototype.cumOper = function(scr) {
@@ -499,7 +499,7 @@
 
   /**
    * Get mean of given numbers.
-   * <br> <ARGS>: num1, num2, num3, ...
+   * <br> `ARGS`: num1, num2, num3, ...
    * @return {number}
    */
   Math.mean = function() {
@@ -509,7 +509,7 @@
 
   /**
    * Get power mean of given numbers.
-   * <br> <ARGS>: pow, num1, num2, num3, ...
+   * <br> `ARGS`: pow, num1, num2, num3, ...
    * @param {number} pow
    * @return {number}
    */

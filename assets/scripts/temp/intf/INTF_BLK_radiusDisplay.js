@@ -56,13 +56,13 @@
 
 
         /**
-         * <PARAM>: Range (in world units) to show.
+         * `PARAM`: Range (in world units) to show.
          * @memberof INTF_BLK_radiusDisplay
          * @instance
          */
         blkRad: 40.0,
         /**
-         * <PARAM>: Whether to draw pseudo-3D range instead of vanilla dashed circle.
+         * `PARAM`: Whether to draw pseudo-3D range instead of vanilla dashed circle.
          * @memberof INTF_BLK_radiusDisplay
          * @instance
          */
@@ -78,7 +78,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_BLK_rangeDisplay
        * @instance
        * @param {boolean} valid

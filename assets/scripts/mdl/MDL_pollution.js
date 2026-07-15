@@ -28,7 +28,7 @@
 
   /**
    * Gets pollution produced/reduced by some block.
-   * <br> <DB>: blk-pol.
+   * <br> `DB`: blk-pol.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -44,7 +44,7 @@
 
   /**
    * Gets pollution of some resource.
-   * <br> <DB>: rs-pol.
+   * <br> `DB`: rs-pol.
    * @param {ResourceGn} rs_gn
    * @return {number}
    */
@@ -107,8 +107,8 @@
 
   /**
    * Gets pollution tolerance of some block or unit type.
-   * <br> <DB>: blk-pol-tol.
-   * <br> <DB>: utp-pol-tol.
+   * <br> `DB`: blk-pol-tol.
+   * <br> `DB`: utp-pol-tol.
    * @param {string|Block|UnitType|null} ct_gn
    * @return {number}
    */

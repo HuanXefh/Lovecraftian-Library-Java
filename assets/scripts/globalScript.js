@@ -21,7 +21,7 @@
 
 
   /**
-   * <IMPORTANT>: {@link RUN_methodExt} has not been run yet!
+   * `IMPORTANT`: {@link RUN_methodExt} has not been run yet!
    */
 
 
@@ -56,7 +56,7 @@
    * Requires a JS file (as {@link Fi}), which will be run in global scope.
    * @global
    * @param {string} nameMod
-   * @param {Fi|(function(Fi): Fi)} fi_fn - <ARGS>: modRootDir
+   * @param {Fi|(function(Fi): Fi)} fi_fn - `ARGS`: modRootDir
    * @return {void}
    */
   globalRequire = function(nameMod, fi_fn) {
@@ -400,7 +400,7 @@
 
 
       /**
-       * @param {(function(number, number, number, color): void)|unset} [drawF] - <ARGS>: x, y, rad, color.
+       * @param {(function(number, number, number, color): void)|unset} [drawF] - `ARGS`: x, y, rad, color.
        * @return {void}
        */
       setDrawF(drawF) {
@@ -435,8 +435,8 @@
 
     /**
      * Gets a building.
-     * <br> <ARGS>: .
-     * <br> <ARGS>: tx, ty.
+     * <br> `ARGS`: .
+     * <br> `ARGS`: tx, ty.
      * @global
      * @return {Building|null}
      */
@@ -454,8 +454,8 @@
 
     /**
      * Gets a unit.
-     * <br> <ARGS>: .
-     * <br> <ARGS>: tx, ty.
+     * <br> `ARGS`: .
+     * <br> `ARGS`: tx, ty.
      * @global
      * @return {Unit|null}
      */
@@ -484,8 +484,8 @@
 
     /**
      * Kills some unit.
-     * <br> <ARGS>: .
-     * <br> <ARGS>: name.
+     * <br> `ARGS`: .
+     * <br> `ARGS`: name.
      * @global
      * @return {void}
      */

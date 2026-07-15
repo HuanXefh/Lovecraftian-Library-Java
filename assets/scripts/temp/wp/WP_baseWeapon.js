@@ -33,13 +33,13 @@
 
 
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof WP_baseWeapon
      * @instance
      */
     overwriteVanillaStat: true,
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof WP_baseWeapon
      * @instance
      */

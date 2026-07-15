@@ -71,19 +71,19 @@
 
 
         /**
-         * <PARAM>: Terrain types involved.
+         * `PARAM`: Terrain types involved.
          * @memberof INTF_BLK_terrainHandler
          * @instance
          */
         ters: prov(() => []),
         /**
-         * <PARAM>: "enable" for requirement, "disable" for restriction.
+         * `PARAM`: "enable" for requirement, "disable" for restriction.
          * @memberof INTF_BLK_terrainHandler
          * @instance
          */
         terMode: "enable",
         /**
-         * <PARAM>: Integer offset of the terrain text in `blk.drawPlace`.
+         * `PARAM`: Integer offset of the terrain text in `blk.drawPlace`.
          * @memberof INTF_BLK_terrainHandler
          * @instance
          */

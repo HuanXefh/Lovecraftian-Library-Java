@@ -45,7 +45,7 @@
   /**
    * Whether some object is instance of anyone among given classes.
    * Note that this method uses more generic `checkInstance`.
-   * <br> <ARGS>: obj, cls1, cls2, cls3, ...
+   * <br> `ARGS`: obj, cls1, cls2, cls3, ...
    * @return {boolean}
    */
   instanceOfAny = function() {
@@ -88,7 +88,7 @@
 
   /**
    * See {@link Object.mergeObj}.
-   * <br> <ARGS>: obj1, obj2, obj3, ...
+   * <br> `ARGS`: obj1, obj2, obj3, ...
    * @global
    * @return {Object}
    */
@@ -99,7 +99,7 @@
 
   /**
    * See {@link Object.mergeObjMixin}.
-   * <br> <ARGS>: obj1, obj2, obj3, ...
+   * <br> `ARGS`: obj1, obj2, obj3, ...
    * @global
    * @return {Object}
    */
@@ -136,8 +136,8 @@
 
   /**
    * Defines an overloaded function, see {@link addMethod}.
-   * <br> <ARGS>: fun1, fun2, fun3, ...
-   * <br> <ARGS>: types1, fun1, types2, fun2, types3, fun3, ...
+   * <br> `ARGS`: fun1, fun2, fun3, ...
+   * <br> `ARGS`: types1, fun1, types2, fun2, types3, fun3, ...
    * @global
    * @return {Function}
    * @example
@@ -233,7 +233,7 @@
 
   /**
    * If `val` is null, this method will return `def` instead.
-   * <br> <IMPORTANT>: Do not use `return val | def` which uses double equality.
+   * <br> `IMPORTANT`: Do not use `return val | def` which uses double equality.
    * @global
    * @param {any} val
    * @param {any} [def]
@@ -262,7 +262,7 @@
   /**
    * Tries to call a function, returns `def` if not found or not function.
    * Used to replace `try{} catch(err) {}` which is costy.
-   * <br> <ARGS> fun, def, caller, arg1, arg2, arg3, ...
+   * <br> `ARGS` fun, def, caller, arg1, arg2, arg3, ...
    * @global
    * @param {any} fun
    * @param {any} caller
@@ -364,8 +364,8 @@
 
   /**
    * Used to set up a lot of properties.
-   * <br> <IMPORTANT>: Do not use arrow function here!
-   * <br> <ARGS>: thisVal, fun, arg1, arg2, arg3, ...
+   * <br> `IMPORTANT`: Do not use arrow function here!
+   * <br> `ARGS`: thisVal, fun, arg1, arg2, arg3, ...
    * @global
    * @param {any} thisVal
    * @param {Function} fun

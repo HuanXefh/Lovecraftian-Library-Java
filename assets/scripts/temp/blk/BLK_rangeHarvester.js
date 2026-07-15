@@ -92,13 +92,13 @@
 
 
       /**
-       * <PARAM>: See {@link BLK_wallHarvester}.
+       * `PARAM`: See {@link BLK_wallHarvester}.
        * @memberof BLK_rangeHarvester
        * @instance
        */
       shouldDropLoot: true,
       /**
-       * <PARAM>: See {@link BLK_baseFactory}.
+       * `PARAM`: See {@link BLK_baseFactory}.
        * @memberof BLK_rangeHarvester
        * @instance
        */

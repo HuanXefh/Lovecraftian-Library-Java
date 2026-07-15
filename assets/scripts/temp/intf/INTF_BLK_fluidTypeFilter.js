@@ -42,8 +42,8 @@
 
 
         /**
-         * <PARAM>: Type of fluid that this block accepts.
-         * <br> <VALS>: "liquid", "gas", "any".
+         * `PARAM`: Type of fluid that this block accepts.
+         * <br> `VALS`: "liquid", "gas", "any".
          * @memberof INTF_BLK_fluidTypeFilter
          * @instance
          */

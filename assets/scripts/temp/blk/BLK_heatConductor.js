@@ -60,13 +60,13 @@
 
 
       /**
-       * <PARAM>: Temperature at which heat region is drawn with maximum alpha.
+       * `PARAM`: Temperature at which heat region is drawn with maximum alpha.
        * @memberof BLK_heatConductor
        * @instance
        */
       fullHeatThr: 100.0,
       /**
-       * <PARAM>: For heat conductors one heat region is just bright enough on most occasions.
+       * `PARAM`: For heat conductors one heat region is just bright enough on most occasions.
        * @override
        * @memberof BLK_heatConductor
        * @instance

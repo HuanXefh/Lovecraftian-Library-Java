@@ -154,7 +154,7 @@
 
     b.heatTransTgs.clear();
     b.proximity.each(ob => {
-      if(ob.ex_getHeatTransferred == null || tryJsProp(ob.block, "skipHeatTrans", false) || !GEOMETRY_HANDLER.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) return;
+      if(ob.ex_getHeatTransferred == null || tryJsProp(ob.block, "skipHeatTrans", false) || !LCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) return;
       b.heatTransTgs.push(ob);
     });
   };
@@ -246,73 +246,73 @@
 
 
         /**
-         * <PARAM>: How fast this heat block warms up by heat transfer.
+         * `PARAM`: How fast this heat block warms up by heat transfer.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         heatWarmupRate: 0.0008,
         /**
-         * <PARAM>: How fast this heat block cools down when not heated, same as warmup rate by default.
+         * `PARAM`: How fast this heat block cools down when not heated, same as warmup rate by default.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         heatCooldownRate: -1.0,
         /**
-         * <PARAM>: Multiplier on external heat accepted.
+         * `PARAM`: Multiplier on external heat accepted.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         tempExtMtp: 1.0,
         /**
-         * <PARAM>: If true, this block cannot gain heat from producers.
+         * `PARAM`: If true, this block cannot gain heat from producers.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         skipHeatFetch: false,
         /**
-         * <PARAM>: If true, this block cannot gain heat from other heat blocks.
+         * `PARAM`: If true, this block cannot gain heat from other heat blocks.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         skipHeatTrans: false,
         /**
-         * <PARAM>: If true, this block cannot supply heat for consumers.
+         * `PARAM`: If true, this block cannot supply heat for consumers.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         skipHeatSupply: false,
         /**
-         * <PARAM>: If true, heat will be transferred in three directions.
+         * `PARAM`: If true, heat will be transferred in three directions.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         isHeatRouter: false,
         /**
-         * <PARAM>: Heat region alpha.
+         * `PARAM`: Heat region alpha.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         heatA: 1.0,
         /**
-         * <PARAM>: If true, two heat regions are drawn to emphasize high temperature.
+         * `PARAM`: If true, two heat regions are drawn to emphasize high temperature.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         shouldDrawDoubleHeat: true,
         /**
-        * <PARAM>: Whether this heat block emits light.
+        * `PARAM`: Whether this heat block emits light.
         * @memberof INTF_BLK_heatBlock
         * @instance
         */
         shouldDrawHeatLight: true,
         /**
-         * <PARAM>: Temperature required to emit heat light.
+         * `PARAM`: Temperature required to emit heat light.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         heatLightTempReq: 1000.0,
         /**
-         * <PARAM>: Maximum heat light radius.
+         * `PARAM`: Maximum heat light radius.
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
@@ -323,13 +323,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
         heatBlkMeltTemp: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_heatBlock
          * @instance
          */
@@ -375,73 +375,73 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         tempCur: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         tempRiseTg: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         tempExt: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         extHeatCd: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         maxHeaterProd: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         heatSupplied: 0.0,
         /**
-         * <INTERNAL>: I have to name this more complex because `heatFrac` has been taken by vanilla Mindustry.
+         * `INTERNAL`: I have to name this more complex because `heatFrac` has been taken by vanilla Mindustry.
          * @memberof INTF_B_heatBlock
          * @instance
          */
         heatBlkHeatFrac: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         heatFetchTgs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         heatTransTgs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         heatTransCount: 0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
         heatSupplyTgs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
@@ -548,7 +548,7 @@
 
       /**
        * Target temperature will be multiplied with this before use.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_heatBlock
        * @instance
        * @return {number}
@@ -592,7 +592,7 @@
 
       /**
        * Expected target heat.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_heatBlock
        * @instance
        * @return {number}
@@ -645,7 +645,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_B_heatBlock
        * @instance
        * @return {boolean}

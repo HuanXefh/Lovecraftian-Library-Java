@@ -48,7 +48,7 @@
 
 
       /**
-       * <PARAM>: If true, this block will be triggered only once and become dormant forever.
+       * `PARAM`: If true, this block will be triggered only once and become dormant forever.
        * @memberof MAP_flagTrigger
        * @instance
        */
@@ -78,7 +78,7 @@
 
       /**
        * If the string returned is found in map flags, this block will be triggered.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof MAP_flagTrigger
        * @instance
        * @param {Building} b
@@ -140,7 +140,7 @@
       /**
        * Called every frame when a flag returned by {@link MAP_flagTrigger#ex_getFlagStr} is set.
        * If the block triggers only once, this method is also called only once.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof B_flagTrigger
        * @instance
        * @return {void}

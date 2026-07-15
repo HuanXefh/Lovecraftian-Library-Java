@@ -63,7 +63,7 @@
     /**
      * Ore as payload block, usually produced by a drill.
      * See {@link BLK_baseDrill#shouldDropPay}.
-     * <br> <NAMEGEN>
+     * <br> `NAMEGEN`
      * @class BLK_rawOreBlock
      * @extends BLK_partsBlock
      */
@@ -74,14 +74,14 @@
 
 
       /**
-       * <PARAM>: Ore item parent. If unset, this will be automatically set according to DB file.
-       * <br> <DB>: itm-pay-blk.
+       * `PARAM`: Ore item parent. If unset, this will be automatically set according to DB file.
+       * <br> `DB`: itm-pay-blk.
        * @memberof BLK_rawOreBlock
        * @instance
        */
       oreParent: null,
       /**
-       * <PARAM>: See {@link RS_baseResource}. Set this to null to disable sprite generation.
+       * `PARAM`: See {@link RS_baseResource}. Set this to null to disable sprite generation.
        * @memberof BLK_rawOreBlock
        * @instance
        */

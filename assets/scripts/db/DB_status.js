@@ -15,8 +15,8 @@ const db = {
 
     /**
      * Used to set up status affinities.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: sta, arr.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: sta, arr.
      * <br> <ROW-arr>: osta, scr.
      */
     affinity: [],
@@ -25,9 +25,9 @@ const db = {
     /**
      * Used to set up status opposites.
      * Acidic and basic status effects are by default opposite to each other.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: sta, ostas.
-     * <br> <DYNAMIC>: () => ostas.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: sta, ostas.
+     * <br> `DYNAMIC`: () => ostas.
      */
     opposite: [
 
@@ -47,7 +47,7 @@ const db = {
 
     /**
      * These status effects will react with (opposite to) basic status effects.
-     * <br> <ROW>: sta.
+     * <br> `ROW`: sta.
      */
     acidic: [
 
@@ -61,7 +61,7 @@ const db = {
 
     /**
      * These status effects will react with (opposite to) acidic status effects.
-     * <br> <ROW>: sta.
+     * <br> `ROW`: sta.
      */
     basic: [
 
@@ -75,7 +75,7 @@ const db = {
 
     /**
      * These status effects can't be applied on biotic units.
-     * <br> <ROW>: sta.
+     * <br> `ROW`: sta.
      */
     robotOnly: [
 
@@ -92,7 +92,7 @@ const db = {
 
     /**
      * These status effects are related to sea, naval units will gain immunity to these.
-     * <br> <ROW>: sta.
+     * <br> `ROW`: sta.
      */
     oceanic: [
 
@@ -107,7 +107,7 @@ const db = {
     /**
      * Missile units will be immune to these.
      * By default, missiles are always immune to death status effects.
-     * <br> <ROW>: sta.
+     * <br> `ROW`: sta.
      */
     missileImmune: [
 
@@ -119,8 +119,8 @@ const db = {
     /**
      * Loot unit should be immune to these status effects.
      * By default, loot units are always immune to robot-only and death status effects.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: sta.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: sta.
      */
     lootImmune: [
 
@@ -139,7 +139,7 @@ const db = {
 
     /**
      * These status effects are related to high temperature.
-     * <br> <ROW>: sta.
+     * <br> `ROW`: sta.
      */
     hot: [
 
@@ -153,7 +153,7 @@ const db = {
 
     /**
      * These status effects are related to being soaked in aqueous liquids.
-     * <br> <ROW>: sta.
+     * <br> `ROW`: sta.
      */
     wet: [
 

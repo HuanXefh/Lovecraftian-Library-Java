@@ -49,19 +49,19 @@
 
 
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof ENV_baseEnvBlock
      * @instance
      */
     overwriteVanillaStat: true,
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof ENV_baseEnvBlock
      * @instance
      */
     overwriteVanillaProp: true,
     /**
-     * <PARAM>: If not negative, this will be used as hardness of the item drop. Only affects placement, does not affect real drill time!
+     * `PARAM`: If not negative, this will be used as hardness of the item drop. Only affects placement, does not affect real drill time!
      * @memberof ENV_baseEnvBlock
      * @instance
      */

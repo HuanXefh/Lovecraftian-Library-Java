@@ -120,7 +120,7 @@
   /**
    * Gets preferred fuel tuple for some building, which should be a furnace.
    * @param {Building} b
-   * @return {[Resource, number, number]|null} <TUP>: fuel, fuelPon, fuelLvl.
+   * @return {[Resource, number, number]|null} `TUPLE`: fuel, fuelPon, fuelLvl.
    */
   const _fuelTup = function(b) {
     if(tryJsProp(b.block, "noFuelInput", false)) return null;

@@ -26,7 +26,7 @@
 
     /**
      * Vanilla directional router.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_directionalRouter
      * @extends BLK_baseItemGate
      */

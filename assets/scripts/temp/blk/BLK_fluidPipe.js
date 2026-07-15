@@ -134,7 +134,7 @@
 
 
       /**
-       * <PARAM>: Whether this pipe short-circuits if powered and containing conductive fluid. Used mostly for metallic pipes.
+       * `PARAM`: Whether this pipe short-circuits if powered and containing conductive fluid. Used mostly for metallic pipes.
        * @memberof BLK_fluidPipe
        * @instance
        */

@@ -14,7 +14,7 @@ const db = {
 
     /**
      * Used to register new custom fields in recipe dictionary.
-     * <br> <ROW>: name, obj.
+     * <br> `ROW`: name, obj.
      */
     customField: [
 
@@ -32,8 +32,8 @@ const db = {
       /**
        * Used to read a particular consumer for recipe dictionary.
        * The Java class can be a consumer class or block class.
-       * <br> <ROW>: javaCls, rcReader.
-       * <br> <ARGS>: blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp.
+       * <br> `ROW`: javaCls, rcReader.
+       * <br> `ARGS`: blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp.
        */
       consume: [
 
@@ -283,8 +283,8 @@ const db = {
 
       /**
        * Used to read a particular block class to get production list for recipe dictionary.
-       * <br> <ROW>: javaCls, rcReader.
-       * <br> <ARGS>: blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp.
+       * <br> `ROW`: javaCls, rcReader.
+       * <br> `ARGS`: blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp.
        */
       produce: [
 
@@ -514,16 +514,16 @@ const db = {
 
       /**
        * Used to add consumption term for a particular block in recipe dictionary.
-       * <br> <ROW>: nameBlk, rcReader.
-       * <br> <ARGS>: blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp.
+       * <br> `ROW`: nameBlk, rcReader.
+       * <br> `ARGS`: blk, cons, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp.
        */
       consumeSpec: [],
 
 
       /**
        * Used to add production term for a particular block in recipe dictionary.
-       * <br> <ROW>: nameBlk, rcReader.
-       * <br> <ARGS>: blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp.
+       * <br> `ROW`: nameBlk, rcReader.
+       * <br> `ARGS`: blk, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp.
        */
       produceSpec: [
 
@@ -568,7 +568,7 @@ const db = {
      * Used to generate default files for ore dictionary.
      * For other mods, simply put .csv files in "Mindustry/saves/mods/data/sharedData/ore-dict".
      * DO NOT MODIFY THIS IN OTHER MODS!
-     * <br> <ROW>: rsTg, rss.
+     * <br> `ROW`: rsTg, rss.
      */
     def: [
 
@@ -613,8 +613,8 @@ const db = {
 
       /**
        * Used to modify consumers for ore dictionary.
-       * <br> <ROW>: javaCls, setter.
-       * <br> <ARGS>: blk, cons, oreDict.
+       * <br> `ROW`: javaCls, setter.
+       * <br> `ARGS`: blk, cons, oreDict.
        */
       consume: [
 
@@ -635,8 +635,8 @@ const db = {
 
       /**
        * Used to modify producers for ore dictionary.
-       * <br> <ROW>: javaCls, setter.
-       * <br> <ARGS>: blk, oreDict.
+       * <br> `ROW`: javaCls, setter.
+       * <br> `ARGS`: blk, oreDict.
        */
       produce: [
 
@@ -678,8 +678,8 @@ const db = {
 
     /**
      * Used to check if recipe should be created for some content.
-     * <br> <ROW>: boolF.
-     * <br> <ARGS>: ct, metaObj, paramObj.
+     * <br> `ROW`: boolF.
+     * <br> `ARGS`: ct, metaObj, paramObj.
      */
     validCheck: [
 
@@ -725,7 +725,7 @@ const db = {
 
     /**
      * Used to modify final recipe object.
-     * <br> <ROW>: boolF, objF.
+     * <br> `ROW`: boolF, objF.
      * <br> <ARGS-boolF>: ct, metaObj, paramObj.
      * <br> <ARGS-objF>: obj, metaObj, paramObj.
      */
@@ -766,7 +766,7 @@ const db = {
 
     /**
      * "GROUP: xxx" in recipe I/O arrays.
-     * <br> <ROW>: grpStr, [nameRs, paramObj].
+     * <br> `ROW`: grpStr, [nameRs, paramObj].
      */
     group: [],
 
@@ -779,13 +779,13 @@ const db = {
 
   /**
    * Collection of raw recipe data used in {@link TP_recipeGen}.
-   * <br> <EXTENSIBLE>
+   * <br> `EXTENSIBLE`
    */
   genData: {
 
 
     /**
-     * <EXTENSIBLE>
+     * `EXTENSIBLE`
      */
     assembly: {
 
@@ -809,7 +809,7 @@ const db = {
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     brickBaking: [],
 
@@ -821,67 +821,67 @@ const db = {
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     condensation: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     dryingItem: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     dryingLiquid: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     dryingLiquidAcidic: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     dryingLiquidBasic: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     dryingGas: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     dryingGasAcidic: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     dryingGasBasic: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     dryingFreeze: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     filtration: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     filtrationLiquid: [],
 
@@ -890,13 +890,13 @@ const db = {
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     heatingExchange: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     heatingGas: [],
 
@@ -911,25 +911,25 @@ const db = {
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     pulverization: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     purificationI: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     purificationII: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     purificationMagnetic: [],
 
@@ -956,31 +956,31 @@ const db = {
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     roasting: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     rockCrushing: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     concentrateRoasting: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     smelting: [],
 
 
     /**
-     * <AUTORC>
+     * `AUTORC`
      */
     concentrateSmelting: [],
 

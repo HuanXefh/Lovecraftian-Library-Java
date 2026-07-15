@@ -44,7 +44,7 @@
 
     /**
      * Recipe factories using MultiBlockLib.
-     * <br> <DEDICATION>: Supported by MultiBlockLib.
+     * <br> `DEDICATION`: Supported by MultiBlockLib.
      * @class BLK_multiBlockLibRecipeFactory
      * @extends BLK_recipeFactory
      */

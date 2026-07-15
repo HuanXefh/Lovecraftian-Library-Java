@@ -101,7 +101,7 @@
 
 
       /**
-       * <PARAM>: Production rate for weather liquid output.
+       * `PARAM`: Production rate for weather liquid output.
        * @memberof BLK_rainCollector
        * @instance
        */

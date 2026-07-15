@@ -46,7 +46,7 @@
 
     /**
      * Parent template of all turrets.
-     * <br> <IMPORTANT>: "-icon" is used for ui icon of turrets instead of "-full", since "-full" is used when parts exist.
+     * <br> `IMPORTANT`: "-icon" is used for ui icon of turrets instead of "-full", since "-full" is used when parts exist.
      * @class BLK_baseTurret
      * @extends BLK_baseBlock
      */

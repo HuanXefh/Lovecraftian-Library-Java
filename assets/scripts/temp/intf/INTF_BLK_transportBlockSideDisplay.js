@@ -8,6 +8,16 @@
   /* <---------- import ----------> */
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  let
+    b_t,
+    b_f,
+    b_s1,
+    b_s2;
+
+
   /* <---------- component ----------> */
 
 
@@ -22,18 +32,20 @@
   function comp_onProximityUpdate(b) {
     if(b.block.delegee.noSideReg) return;
 
-    let b_t = b.nearby(b.rotation);
-    let b_f = b.nearby((b.rotation + 2) % 4);
-    let b_s1 = b.nearby((b.rotation + 1) % 4);
-    let b_s2 = b.nearby((b.rotation + 3) % 4);
+    b_t = b.nearby(b.rotation);
+    b_f = b.nearby((b.rotation + 2) % 4);
+    b_s1 = b.nearby((b.rotation + 1) % 4);
+    b_s2 = b.nearby((b.rotation + 3) % 4);
 
     // This is nightmare
-    b.shouldDrawSide1 = !(
-      (b_f != null && b_f.team === b.team && b.block.ex_shouldBlendBackSide(b_f))
-        || (b_s1 != null && b_s1.team === b.team && GEOMETRY_HANDLER.accept(b_s1, b, MDL_cond._isGenericRouter(b_s1.block), !MDL_cond._isNoSideBlock(b.block) || !MDL_cond._isNoSideBlock(b_s1.block) || MDL_cond._isSameNoSideBlock(b_s1.block, b.block)) && b.block.ex_shouldBlendFlankSide(b_s1))
-        || (b_s2 != null && b_s2.team === b.team && GEOMETRY_HANDLER.accept(b_s2, b, MDL_cond._isGenericRouter(b_s2.block), !MDL_cond._isNoSideBlock(b.block) || !MDL_cond._isNoSideBlock(b_s2.block) || MDL_cond._isSameNoSideBlock(b_s2.block, b.block)) && b.block.ex_shouldBlendFlankSide(b_s2))
+    b.shouldDrawSide1 = LCGeometry.showBackSide(
+      b,
+      b_s1 == null ? false : MDL_cond._isGenericRouter(b_s1.block),
+      b_s2 == null ? false : MDL_cond._isGenericRouter(b_s2.block),
+      b_s1 == null ? false : (!MDL_cond._isNoSideBlock(b.block) || !MDL_cond._isNoSideBlock(b_s1.block) || MDL_cond._isSameNoSideBlock(b_s1.block, b.block)),
+      b_s2 == null ? false : (!MDL_cond._isNoSideBlock(b.block) || !MDL_cond._isNoSideBlock(b_s2.block) || MDL_cond._isSameNoSideBlock(b_s2.block, b.block)),
     );
-    b.shouldDrawSide2 = !(b_t != null && b_t.team === b.team && b.block.ex_shouldBlendFrontSide(b_t));
+    b.shouldDrawSide2 = LCGeometry.showFrontSide(b);
   };
 
 
@@ -74,13 +86,13 @@
 
 
         /**
-         * <PARAM>: Whether side regions are NOT used.
+         * `PARAM`: Whether side regions are NOT used.
          * @memberof INTF_BLK_transportBlockSideDisplay
          * @instance
          */
         noSideReg: false,
         /**
-         * <PARAM>: Layer for side regions.
+         * `PARAM`: Layer for side regions.
          * @memberof INTF_BLK_transportBlockSideDisplay
          * @instance
          */
@@ -113,7 +125,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_BLK_transportBlockSideDisplay
        * @instance
        * @param {Building} ob
@@ -129,7 +141,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_BLK_transportBlockSideDisplay
        * @instance
        * @param {Building} ob
@@ -145,7 +157,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_BLK_transportBlockSideDisplay
        * @instance
        * @param {Building} ob

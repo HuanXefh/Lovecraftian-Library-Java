@@ -16,7 +16,7 @@ const db = {
     /**
      * Maps a block/unit name before change to the changed name.
      * Used when internal name of some block is changed.
-     * <br> <ROW>: namePrev, nameCur.
+     * <br> `ROW`: namePrev, nameCur.
      */
     migration: [
 
@@ -34,8 +34,8 @@ const db = {
      * Extra text information shown when mouse hovered over a tile, see {@link MDL_draw.drawExtraInfo}.
      * Put functions that return string here to build final string. Yep, string only.
      * Tile won't be null here, and it's safe to return undefined or null, result will be skipped.
-     * <br> <ROW>: strGetter.
-     * <br> <ARGS>: t, b.
+     * <br> `ROW`: strGetter.
+     * <br> `ARGS`: t, b.
      */
     extraInfo: [
 
@@ -103,7 +103,7 @@ const db = {
       /**
        * Maps graph type to its init method.
        * See {@Link INTF_BLK_graphBlock}.
-       * <br> <ROW>: graphType, fun.
+       * <br> `ROW`: graphType, fun.
        */
       init: [
 
@@ -119,7 +119,7 @@ const db = {
       /**
        * Maps graph type to its update method.
        * See {@Link INTF_BLK_graphBlock}.
-       * <br> <ROW>: graphType, fun.
+       * <br> `ROW`: graphType, fun.
        */
       update: [
 
@@ -156,8 +156,8 @@ const db = {
     /**
      * Maps depth level to a term.
      * See {@link INTF_ENV_depthOverlay}.
-     * <br> <ROW>: lvl, [nameMod, tag].
-     * <br> <BUNDLE>: "term.<nameMod>-term-<tag>.name".
+     * <br> `ROW`: lvl, [nameMod, tag].
+     * <br> `BUNDLE`: "term.<nameMod>-term-<tag>.name".
      */
     depthName: [
 
@@ -172,8 +172,8 @@ const db = {
 
     /**
      * Filters for {@link BLK_wireNode} that select valid links.
-     * <br> <ROW>: mode, boolF.
-     * <br> <ARGS>: b, b_t.
+     * <br> `ROW`: mode, boolF.
+     * <br> `ARGS`: b, b_t.
      */
     nodeLinkFilter: [
 
@@ -201,15 +201,15 @@ const db = {
      * List of names of Lovec-based mods.
      * {@link PARAM.MODDED} will be true if any of these exists, which enables extra mechanics.
      * You don't need to put your mod name here, just use write `dependencies` or `softDependencies` in your mod.json.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: nameMod.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: nameMod.
      * ---------------------------------------- */
     lovecMod: [],
 
 
     /**
      * Overwrites the vanilla list of menu flyers.
-     * <br> <ROW>: utp.
+     * <br> `ROW`: utp.
      */
     menuFlyer: [
 
@@ -222,7 +222,7 @@ const db = {
 
     /**
      * Sounds listed here will be loaded beforehand, or it takes time to be loaded in game.
-     * <br> <ROW>: nameSe.
+     * <br> `ROW`: nameSe.
      */
     extraSound: [
 
@@ -234,7 +234,7 @@ const db = {
     /**
      * Used to set up draggable button group.
      * `this` in `updateScr` is the button.
-     * <br> <ROW>: name, {rowInd, icon, isToggle, clickScr, updateScr}.
+     * <br> `ROW`: name, {rowInd, icon, isToggle, clickScr, updateScr}.
      */
     dragButton: {
 
@@ -342,7 +342,7 @@ const db = {
 
       /**
        * Buttons defined here will only be added if `PARAM.MODDED`.
-       * <br> <ROW>: name, {rowInd, icon, isToggle, clickScr, updateScr}.
+       * <br> `ROW`: name, {rowInd, icon, isToggle, clickScr, updateScr}.
        */
       modded: [
 
@@ -404,8 +404,8 @@ const db = {
 
     /**
      * Extra tags used for search.
-     * <br> <ROW>: prefix, boolF.
-     * <br> <ARGS>: ct, str.
+     * <br> `ROW`: prefix, boolF.
+     * <br> `ARGS`: ct, str.
      */
     tag: [
 
@@ -424,9 +424,9 @@ const db = {
 
     /**
      * Used for "group: xxx" tags.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: str, boolF.
-     * <br> <ARGS>: ct.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: str, boolF.
+     * <br> `ARGS`: ct.
      */
     group: [
 
@@ -461,7 +461,7 @@ const db = {
 
     /**
      * Properties that are saved in a LSAV.
-     * <br> <ROW>: header, def, arrMode.
+     * <br> `ROW`: header, def, arrMode.
      */
     header: [
 
@@ -480,7 +480,7 @@ const db = {
 
     /**
      * Properties here are safe (or required) to be set by client sides.
-     * <br> <ROW>: header.
+     * <br> `ROW`: header.
      */
     safe: [
 
@@ -492,7 +492,7 @@ const db = {
 
     /**
      * Properties that are saved in a PLSAV.
-     * <br> <ROW>: header, def, arrMode.
+     * <br> `ROW`: header, def, arrMode.
      */
     pHeader: [
 
@@ -506,7 +506,7 @@ const db = {
 
     /**
      * Safe properties in PLSAV.
-     * <br> <ROW>: header.
+     * <br> `ROW`: header.
      */
     pSafe: [
 
@@ -527,7 +527,7 @@ const db = {
 
     /**
      * Icons populated in {@link VARGEN.icons}.
-     * <br> <ROW>: name, regStr.
+     * <br> `ROW`: name, regStr.
      */
     icon: [
 
@@ -548,7 +548,7 @@ const db = {
 
     /**
      * Noise textures polulated in {@link VARGEN.noiseTexs}.
-     * <br> <ROW>: name, path.
+     * <br> `ROW`: name, path.
      */
     noise: [
 
@@ -576,7 +576,7 @@ const db = {
 
       /**
        * The colors used for characters in dialog flow.
-       * <br> <ROW>: nameMod, nameChara, color.
+       * <br> `ROW`: nameMod, nameChara, color.
        */
       color: [
 

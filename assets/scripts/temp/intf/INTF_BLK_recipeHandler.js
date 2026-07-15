@@ -503,37 +503,37 @@
 
 
         /**
-         * <PARAM>: Recipe module (.js file) for this block (as string), usually the block name without mod name. The file should be located at "scripts/auxFi/rc".
+         * `PARAM`: Recipe module (.js file) for this block (as string), usually the block name without mod name. The file should be located at "scripts/auxFi/rc".
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
         rcMdl: null,
         /**
-         * <PARAM>: Mod (as string) to search module from.
+         * `PARAM`: Mod (as string) to search module from.
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
         rcSourceMod: null,
         /**
-         * <PARAM>: Warmup rate of Erekir heat output.
+         * `PARAM`: Warmup rate of Erekir heat output.
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
         erekirHeatWarmupRate: 0.05,
         /**
-         * <PARAM>: If true, this crafter will select recipe automatically.
+         * `PARAM`: If true, this crafter will select recipe automatically.
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
         useAutoSelection: false,
         /**
-         * <PARAM>: Whether this block does not actively dump resources.
+         * `PARAM`: Whether this block does not actively dump resources.
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
         disableDump: false,
         /**
-         * <PARAM>: Effect used when this crafter fails its recipe.
+         * `PARAM`: Effect used when this crafter fails its recipe.
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
@@ -1009,7 +1009,7 @@
       /**
        * Multi-crafter efficiency should be updated here, as it's been reset.
        * `b.updateEfficiencyMultiplier` is final now and cannot be mixed.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_recipeHandler
        * @instance
        * @return {void}

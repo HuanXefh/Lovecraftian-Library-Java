@@ -67,7 +67,7 @@
   .setParam({})
   .setParamAlias([
     /**
-     * <PARAM>: Z-layer of the grass.
+     * `PARAM`: Z-layer of the grass.
      * @type {number} layGrass
      * @memberof ENV_baseGrass
      * @instance

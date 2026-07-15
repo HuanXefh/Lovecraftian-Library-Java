@@ -64,8 +64,8 @@
 
   /**
    * Calculates distance between tiles.
-   * <br> <ARGS>: tx1, ty1, tx2, ty2.
-   * <br> <ARGS>: t1, t2.
+   * <br> `ARGS`: tx1, ty1, tx2, ty2.
+   * <br> `ARGS`: t1, t2.
    * @return {number}
    */
   const _dstT = newMultiFunction(
@@ -479,7 +479,7 @@
    * @param {number} x2
    * @param {number} y2
    * @param {number|unset} segScl
-   * @param {function(number, number, number): void} scr - <ARGS>: x, y, ang.
+   * @param {function(number, number, number): void} scr - `ARGS`: x, y, ang.
    * @param {boolean|unset} [noStart]
    * @param {boolean|unset} [noEnd]
    */

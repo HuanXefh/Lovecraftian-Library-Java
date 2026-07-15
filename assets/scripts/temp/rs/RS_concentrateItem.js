@@ -30,7 +30,7 @@
 
   /**
    * Items produced by sintering purified dust items.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_concentrateItem
    * @extends RS_intermediateItem
    */
@@ -44,7 +44,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_concentrateItem
      * @instance

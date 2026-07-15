@@ -64,7 +64,7 @@
 
 
       /**
-       * <PARAM>: Padding between resource icon and the edge region.
+       * `PARAM`: Padding between resource icon and the edge region.
        * @memberof BLK_resourceDisplay
        * @instance
        */

@@ -169,8 +169,8 @@
 
   /**
    * Geyser as a special liquid floor.
-   * <br> <NAMEGEN>
-   * <br> <DEDICATION>: Inspired by Asthosus.
+   * <br> `NAMEGEN`
+   * <br> `DEDICATION`: Inspired by Asthosus.
    * @class ENV_geyser
    * @extends ENV_liquidMaterialFloor
    */
@@ -181,7 +181,7 @@
 
 
     /**
-     * <PARAM>: Parent floor block.
+     * `PARAM`: Parent floor block.
      * @memberof ENV_geyser
      * @instance
      */
@@ -192,28 +192,28 @@
 
 
     /**
-     * <INTERNAL>: Will be set later, do not use this.
+     * `INTERNAL`: Will be set later, do not use this.
      * @override
      * @memberof ENV_geyser
      * @instance
      */
     updateEff: Fx.none,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof ENV_geyser
      * @instance
      */
     updateEffP: 0.0035,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof ENV_geyser
      * @instance
      */
     updateEffSpread: 0.0,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof ENV_geyser
      * @instance

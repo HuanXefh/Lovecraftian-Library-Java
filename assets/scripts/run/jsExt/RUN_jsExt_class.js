@@ -73,7 +73,7 @@
   /**
    * Calls super method from the parent class.
    * Will throw error if no super method found.
-   * <br> <ARGS>: nameFun, arg1, arg2, arg3, ...
+   * <br> `ARGS`: nameFun, arg1, arg2, arg3, ...
    * @typedef {function(string, ...args): any} Function#super
    */
 

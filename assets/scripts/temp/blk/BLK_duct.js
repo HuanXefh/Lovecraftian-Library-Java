@@ -27,7 +27,7 @@
 
     /**
      * Erekir duct.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_duct
      * @extends BLK_baseItemDistributor
      * @extends INTF_BLK_transportBlockSideDisplay

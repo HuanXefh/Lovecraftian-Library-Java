@@ -72,19 +72,19 @@
 
 
     /**
-     * <PARAM>: Z-value of the tree.
+     * `PARAM`: Z-value of the tree.
      * @memberof ENV_baseTree
      * @instance
      */
     layTree: 76.0,
     /**
-     * <PARAM>: Radius for transparentization and more.
+     * `PARAM`: Radius for transparentization and more.
      * @memberof ENV_baseTree
      * @instance
      */
     radTree: 0.0,
     /**
-     * <PARAM>: Whether this tree can hide units.
+     * `PARAM`: Whether this tree can hide units.
      * @memberof ENV_baseTree
      * @instance
      */
@@ -95,13 +95,13 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof ENV_baseTree
      * @instance
      */
     treeGrp: "none",
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof ENV_baseTree
      * @instance
      */

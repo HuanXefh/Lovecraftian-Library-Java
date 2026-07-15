@@ -188,7 +188,7 @@
    * Linear regression.
    * @param {Array<number>} xs
    * @param {Array<number>} ys
-   * @return {[number, number]} <TUP>: slip, intc.
+   * @return {[number, number]} `TUPLE`: slip, intc.
    */
   const linearReg = function(xs, ys) {
     if(xs == null) xs = Array.getIndArr(ys.length, true);

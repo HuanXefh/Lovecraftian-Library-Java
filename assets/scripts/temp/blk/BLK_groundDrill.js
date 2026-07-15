@@ -74,7 +74,7 @@
 
     /**
      * The most common drill type.
-     * <br> <DEDICATION>: Inspired by Psammos.
+     * <br> `DEDICATION`: Inspired by Psammos.
      * @class BLK_groundDrill
      * @extends BLK_baseGroundDrill
      */
@@ -85,7 +85,7 @@
 
 
       /**
-       * <PARAM>: If true, the drill rotator will gradually accelerate before finishing a round.
+       * `PARAM`: If true, the drill rotator will gradually accelerate before finishing a round.
        * @memberof BLK_groundDrill
        * @instance
        */

@@ -40,7 +40,7 @@
     prefix: 'jdtp'
     body: '''
     /**
-     * <PARAM>: ${1:}
+     * `PARAM`: ${1:}
      * @memberof ${2:}
      * @instance
      */
@@ -50,7 +50,7 @@
     prefix: 'jdti'
     body: '''
     /**
-     * <INTERNAL>: ${1:}
+     * `INTERNAL`: ${1:}
      * @memberof ${2:}
      * @instance
      */

@@ -40,7 +40,7 @@
 
 
       /**
-       * <PARAM>
+       * `PARAM`
        * @override
        * @memberof BLK_chemicalReactor
        * @instance

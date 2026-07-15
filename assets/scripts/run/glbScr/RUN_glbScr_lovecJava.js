@@ -54,6 +54,10 @@
   LCFormat = fetchClass("lovec.utils.LCFormat");
   /** @global lovec.utils.LCGeneralizer */
   LCGeneralizer = fetchClass("lovec.utils.LCGeneralizer");
+  /** @global lovec.utils.LCGeometry */
+  LCGeometry = fetchClass("lovec.utils.LCGeometry");
+  /** @global lovec.utils.LCJavaScript */
+  LCJavaScript = fetchClass("lovec.utils.LCJavaScript");
   /** @global lovec.utils.LCRand */
   LCRand = fetchClass("lovec.utils.LCRand");
   /** @global lovec.utils.pooling.PoolableVec2 */

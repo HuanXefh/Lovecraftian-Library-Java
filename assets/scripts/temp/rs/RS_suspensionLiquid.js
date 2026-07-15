@@ -24,7 +24,7 @@
   /**
    * Fluids with insolubles as the products.
    * Similar to {@link RS_slurryLiquid} though, these are usually processed in different separators.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_suspensionLiquid
    * @extends RS_solutionLiquid
    */

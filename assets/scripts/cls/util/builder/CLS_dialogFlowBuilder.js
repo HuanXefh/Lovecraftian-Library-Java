@@ -305,7 +305,7 @@
   /**
    * Adds useless selections to current row.
    * This method always completes the row.
-   * @param {Array} selTextParamArr - <ROW>: nameMod, nameDial, selInd.
+   * @param {Array} selTextParamArr - `ROW`: nameMod, nameDial, selInd.
    * @param {number|unset} [w]
    * @param {number|unset} [h]
    * @param {number|unset} [waitTimeS]

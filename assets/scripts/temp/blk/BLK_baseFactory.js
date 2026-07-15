@@ -90,25 +90,25 @@
 
 
       /**
-       * <PARAM>: Relative directions of item input sides.
+       * `PARAM`: Relative directions of item input sides.
        * @memberof BLK_baseFactory
        * @instance
        */
       inputDirs: prov(() => []),
       /**
-       * <PARAM>: Relative directions of fluid input sides (not abstract fluid).
+       * `PARAM`: Relative directions of fluid input sides (not abstract fluid).
        * @memberof BLK_baseFactory
        * @instance
        */
       fldInputDirs: prov(() => []),
       /**
-       * <PARAM>: Relative directions of item output sides.
+       * `PARAM`: Relative directions of item output sides.
        * @memberof BLK_baseFactory
        * @instance
        */
       outputDirs: prov(() => []),
       /**
-       * <PARAM>: Sound played when this building crafts.
+       * `PARAM`: Sound played when this building crafts.
        * @memberof BLK_baseFactory
        * @instance
        */

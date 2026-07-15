@@ -24,56 +24,56 @@
 
 
   /**
-   * <PATH>: "Mindustry/saves/mods" or "io.anuke.mindustry/files/mods".
+   * `PATH`: "Mindustry/saves/mods" or "io.anuke.mindustry/files/mods".
    */
   const mod = (function() {return fetchMod("lovec").file.parent()})();
   exports.mod = mod;
 
 
   /**
-   * <PATH>: "Mindustry/saves" or "io.anuke.mindustry/files".
+   * `PATH`: "Mindustry/saves" or "io.anuke.mindustry/files".
    */
   const save = mod.parent();
   exports.save = save;
 
 
   /**
-   * <PATH>: "Mindustry/saves/maps" or "io.anuke.mindustry/files/maps".
+   * `PATH`: "Mindustry/saves/maps" or "io.anuke.mindustry/files/maps".
    */
   const map = mod.sibling("maps");
   exports.map = map;
 
 
   /**
-   * <PATH>: "Mindustry/saves/saves" or "io.anuke.mindustry/files/saves".
+   * `PATH`: "Mindustry/saves/saves" or "io.anuke.mindustry/files/saves".
    */
   const gameSave = mod.sibling("saves");
   exports.gameSave = gameSave;
 
 
   /**
-   * <PATH>: "Mindustry/saves/schematics" or "io.anuke.mindustry/files/schematics".
+   * `PATH`: "Mindustry/saves/schematics" or "io.anuke.mindustry/files/schematics".
    */
   const schematic = mod.sibling("schematics");
   exports.schematic = schematic;
 
 
   /**
-   * <PATH>: "Mindustry/saves/mods/data/sharedData" or "io.anuke.mindustry/files/mods/data/sharedData".
+   * `PATH`: "Mindustry/saves/mods/data/sharedData" or "io.anuke.mindustry/files/mods/data/sharedData".
    */
   const sharedData = mod.child("data").child("sharedData");
   exports.sharedData = sharedData;
 
 
   /**
-   * <PATH>: "Mindustry/saves/mods/data/lovec" or "io.anuke.mindustry/files/mods/data/lovec".
+   * `PATH`: "Mindustry/saves/mods/data/lovec" or "io.anuke.mindustry/files/mods/data/lovec".
    */
   const lovecData = mod.child("data").child("lovec");
   exports.lovecData = lovecData;
 
 
   /**
-   * <PATH>: "Mindustry/save/cache/common" or "io.anuke.mindustry/files/cache/common".
+   * `PATH`: "Mindustry/save/cache/common" or "io.anuke.mindustry/files/cache/common".
    */
   const commonCache = save.child("cache").child("common");
   exports.commonCache = commonCache;
@@ -93,7 +93,7 @@
 
 
   /**
-   * <PATH>: "<nameMod>/content".
+   * `PATH`: "<nameMod>/content".
    * @param {string} nameMod
    * @return {Fi|null}
    */
@@ -108,7 +108,7 @@
 
 
   /**
-   * <PATH>: "<nameMod>/content/xxx", based on given type.
+   * `PATH`: "<nameMod>/content/xxx", based on given type.
    * @param {string} nameMod
    * @param {ContentType} ctType
    * @return {Fi|null}
@@ -125,7 +125,7 @@
 
 
   /**
-   * <PATH>: "<nameMod>/scripts".
+   * `PATH`: "<nameMod>/scripts".
    * @param {string} nameMod
    * @return {Fi|null}
    */
@@ -140,7 +140,7 @@
 
 
   /**
-   * <PATH>: "<nameMod>/sprites".
+   * `PATH`: "<nameMod>/sprites".
    * @param {string} nameMod
    * @return {Fi|null}
    */

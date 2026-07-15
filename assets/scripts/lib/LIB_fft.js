@@ -239,7 +239,7 @@
   /**
    * Performs inverse FFT on given complex vector.
    * Modifies original arrays.
-   * <br> <IMPORTANT>: According to tested results, this method only works for vectors with length that is power of 2.
+   * <br> `IMPORTANT`: According to tested results, this method only works for vectors with length that is power of 2.
    * @param {Array<number>} xsReal
    * @param {Array<number>|unset} [xsImag]
    * @return {void}

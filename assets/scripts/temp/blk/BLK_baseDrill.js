@@ -159,44 +159,44 @@
 
 
       /**
-       * <PARAM>: Multiplier on amount of items outputted each round. Mostly used for {@link BurstDrill} to alter drill speed.
+       * `PARAM`: Multiplier on amount of items outputted each round. Mostly used for {@link BurstDrill} to alter drill speed.
        * @memberof BLK_baseDrill
        * @instance
        */
       drillAmtMtp: 1.0,
       /**
-       * <PARAM>: Whether this drill cannot mine sand.
+       * `PARAM`: Whether this drill cannot mine sand.
        * @memberof BLK_baseDrill
        * @instance
        */
       noSandOutput: true,
       /**
-       * <PARAM>: The only items that this drill can mine. Works only when `blockedItems` is not used.
+       * `PARAM`: The only items that this drill can mine. Works only when `blockedItems` is not used.
        * @memberof BLK_baseDrill
        * @instance
        */
       itmWhitelist: prov(() => []),
       /**
-       * <PARAM>: Item duration, `drillTime` by default.
+       * `PARAM`: Item duration, `drillTime` by default.
        * @memberof BLK_baseDrill
        * @instance
        */
       drillItmDur: -1.0,
       /**
-       * <PARAM>: If true, this drill outputs payload instead of item. Only ores that have payload form can be mined.
+       * `PARAM`: If true, this drill outputs payload instead of item. Only ores that have payload form can be mined.
        * @memberof BLK_baseDrill
        * @instance
        */
       shouldDropPay: false,
       /**
-       * <PARAM>: By default, a payload drill can store 2 raw ore blocks.
+       * `PARAM`: By default, a payload drill can store 2 raw ore blocks.
        * @override
        * @memberof BLK_baseDrill
        * @instance
        */
       payAmtCap: 4,
       /**
-       * <PARAM>: Effect created when item is consumed.
+       * `PARAM`: Effect created when item is consumed.
        * @memberof BLK_baseDrill
        * @instance
        */
@@ -207,7 +207,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_baseDrill
        * @instance
        */
@@ -367,19 +367,19 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_baseDrill
        * @instance
        */
       drillItmProg: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_baseDrill
        * @instance
        */
       payChargeObj: prov(() => ({})),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_baseDrill
        * @instance
        */
@@ -444,7 +444,7 @@
 
       /**
        * Called whenever this drill crafts.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof B_baseDrill
        * @instance
        * @return {void}

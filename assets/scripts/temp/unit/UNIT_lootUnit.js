@@ -155,7 +155,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof UNIT_lootUnit
      * @instance

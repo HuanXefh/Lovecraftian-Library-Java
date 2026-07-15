@@ -19,8 +19,8 @@
 
   /**
    * Sets a lot of properties for `obj`.
-   * <br> <ARGS>: obj, propObj
-   * <br> <ARGS>: obj, isFinal, nameProp1, val1, nameProp2, val2, nameProp3, val3, ...
+   * <br> `ARGS`: obj, propObj
+   * <br> `ARGS`: obj, isFinal, nameProp1, val1, nameProp2, val2, nameProp3, val3, ...
    * @template T
    * @param {T} obj
    * @return {T}
@@ -76,8 +76,8 @@
 
   /**
   * Variant of {@link Object.setProp} for instance.
-  * <br> <ARGS>: obj, propObj
-  * <br> <ARGS>: obj, isFinal, nameProp1, val1, nameProp2, val2, nameProp3, val3, ...
+  * <br> `ARGS`: obj, propObj
+  * <br> `ARGS`: obj, isFinal, nameProp1, val1, nameProp2, val2, nameProp3, val3, ...
   * @func Object#setProp
   * @return {this}
   */

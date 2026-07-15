@@ -48,19 +48,19 @@
 
 
         /**
-         * <PARAM>: Range in blocks for attribute calculation.
+         * `PARAM`: Range in blocks for attribute calculation.
          * @memberof INTF_BLK_rangeAttributeBlock
          * @instance
          */
         attrR: 5,
         /**
-         * <PARAM>: See {@link INTF_BLK_dynamicAttributeBlock}.
+         * `PARAM`: See {@link INTF_BLK_dynamicAttributeBlock}.
          * @memberof INTF_BLK_rangeAttributeBlock
          * @instance
          */
         attrMode: AttrModes.FLOOR,
         /**
-         * <PARAM>: See {@link INTF_BLK_dynamicAttributeBlock}.
+         * `PARAM`: See {@link INTF_BLK_dynamicAttributeBlock}.
          * @memberof INTF_BLK_rangeAttributeBlock
          * @instance
          */
@@ -97,7 +97,7 @@
 
       /**
        * Gets actual attribute used by this block.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_rangeAttributeBlock
        * @instance
        * @return {Attribute}
@@ -113,7 +113,7 @@
 
       /**
        * Expected production type used in TMI.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_rangeAttributeBlock
        * @instance
        * @return {string|null}

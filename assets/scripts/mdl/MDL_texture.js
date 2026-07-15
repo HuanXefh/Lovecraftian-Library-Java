@@ -146,7 +146,7 @@
 
 
   /**
-   * <IMPORTANT>: Do not use `each` method on {@link PixmapGn}!
+   * `IMPORTANT`: Do not use `each` method on {@link PixmapGn}!
    */
 
 

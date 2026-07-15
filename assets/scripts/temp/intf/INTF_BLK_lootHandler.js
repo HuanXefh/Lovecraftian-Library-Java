@@ -69,13 +69,13 @@
 
 
         /**
-         * <PARAM>: Craft time of this loot block. Loot call is ignored if this is negative.
+         * `PARAM`: Craft time of this loot block. Loot call is ignored if this is negative.
          * @memberof INTF_BLK_lootHandler
          * @instance
          */
         lootCallCooldown: 0.0,
         /**
-         * <PARAM>: Amount parameter of this loot block used in loot call.
+         * `PARAM`: Amount parameter of this loot block used in loot call.
          * @memberof INTF_BLK_lootHandler
          * @instance
          */
@@ -101,19 +101,19 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_lootHandler
          * @instance
          */
         lootTs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_lootHandler
          * @instance
          */
         lootQueue: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_lootHandler
          * @instance
          */
@@ -144,7 +144,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_B_lootHandler
        * @instance
        * @return {void}
@@ -172,7 +172,7 @@
 
       /**
        * Override this method to process found loots.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_lootHandler
        * @instance
        * @param {Array<Unit>} loots

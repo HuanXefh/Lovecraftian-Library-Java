@@ -106,7 +106,7 @@
 
     /**
      * Enables or disables the valid building in front of it.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_directionalSwitch
      * @extends BLK_baseLogicBlock
      */

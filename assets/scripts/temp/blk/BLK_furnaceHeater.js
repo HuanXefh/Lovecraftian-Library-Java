@@ -52,7 +52,7 @@
 
 
       /**
-      * <PARAM>: Maximum heat produced by this heater.
+      * `PARAM`: Maximum heat produced by this heater.
       * @override
       * @memberof BLK_furnaceHeater
       * @instance

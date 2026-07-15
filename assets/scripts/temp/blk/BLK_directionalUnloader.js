@@ -35,7 +35,7 @@
 
     /**
      * Erekir unloader.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_directionalUnloader
      * @extends BLK_baseItemGate
      */

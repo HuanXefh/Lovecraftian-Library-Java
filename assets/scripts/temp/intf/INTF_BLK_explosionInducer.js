@@ -66,67 +66,67 @@
 
 
         /**
-         * <PARAM>: Whether to create impact wave along with the explosion.
+         * `PARAM`: Whether to create impact wave along with the explosion.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         hasImpactOnExplosion: true,
         /**
-         * <PARAM>: Explosion damage.
+         * `PARAM`: Explosion damage.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploDmg: 0.0,
         /**
-         * <PARAM>: Explosion radius.
+         * `PARAM`: Explosion radius.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploRad: 40.0,
         /**
-         * <PARAM>: Explosion puddle liquid.
+         * `PARAM`: Explosion puddle liquid.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploLiq: null,
         /**
-         * <PARAM>: Amount of puddles created.
+         * `PARAM`: Amount of puddles created.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploPuddleAmt: 10,
         /**
-         * <PARAM>: Puddle spread radius.
+         * `PARAM`: Puddle spread radius.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploPuddleRad: 20.0,
         /**
-         * <PARAM>: Amount of liquid in each puddle.
+         * `PARAM`: Amount of liquid in each puddle.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploPuddleLiqAmt: 100.0,
         /**
-         * <PARAM>: Explosion shake power.
+         * `PARAM`: Explosion shake power.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploShake: 0.0,
         /**
-         * <PARAM>: Explosion shake duration.
+         * `PARAM`: Explosion shake duration.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploShakeDur: 60.0,
         /**
-         * <PARAM>: Explosion effect.
+         * `PARAM`: Explosion effect.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
         exploEff: EFF.explosion,
         /**
-         * <PARAM>: Explosion sound.
+         * `PARAM`: Explosion sound.
          * @memberof INTF_BLK_explosionInducer
          * @instance
          */
@@ -291,7 +291,7 @@
 
       /**
        * If true, explosion will be created when this building is destroyed.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_explosionInducer
        * @instance
        * @return {boolean}

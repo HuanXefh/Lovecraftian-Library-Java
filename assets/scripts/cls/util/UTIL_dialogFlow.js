@@ -64,7 +64,7 @@
   /**
    * Gets the pool array by name.
    * @param {string} name
-   * @return {Array<Table>}
+   * @return {Array`TABLE`}
    */
   UTIL_dialogFlow.getPool = function(name) {
     let arr = pool[name];

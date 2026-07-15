@@ -108,25 +108,25 @@
 
 
         /**
-         * <PARAM>: Whether auxiliary fluids in this block should be capped.
+         * `PARAM`: Whether auxiliary fluids in this block should be capped.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
         shouldCapAux: true,
         /**
-         * <PARAM>: Whether auxiliary fluids should not be stored in this block when it's inactive.
+         * `PARAM`: Whether auxiliary fluids should not be stored in this block when it's inactive.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
         shouldClearAuxOnStop: true,
         /**
-         * <PARAM>: Whether to skip facility block update entirely.
+         * `PARAM`: Whether to skip facility block update entirely.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
         skipFacilityMethod: false,
         /**
-         * <PARAM>: Time before explosion due to nearby fire.
+         * `PARAM`: Time before explosion due to nearby fire.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
@@ -137,13 +137,13 @@
 
 
         /**
-         * <INTERNAL>: Whether this block is possible to obtain auxiliary fluids.
+         * `INTERNAL`: Whether this block is possible to obtain auxiliary fluids.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
         canHandleAux: false,
         /**
-         * <INTERNAL>: Whether this block is possible to obtain flammable/explosive fluids.
+         * `INTERNAL`: Whether this block is possible to obtain flammable/explosive fluids.
          * @memberof INTF_BLK_facilityBlock
          * @instance
          */
@@ -202,13 +202,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_facilityBlock
          * @instance
          */
         fireExplodeReady: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_facilityBlock
          * @instance
          */

@@ -23,7 +23,7 @@
 
   /**
    * Slurry that should be thickened before being further processed.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_dilutedSlurryLiquid
    * @extends RS_slurryLiquid
    */
@@ -37,7 +37,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_slurryLiquid
      * @instance

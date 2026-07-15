@@ -18,7 +18,7 @@ const db = {
 
       /**
        * Fuel parameters for an item.
-       * <br> <ROW>: itm, [fuelPon, fuelLvl].
+       * <br> `ROW`: itm, [fuelPon, fuelLvl].
        */
       item: [
 
@@ -31,7 +31,7 @@ const db = {
 
       /**
        * Fuel parameters for a fluid.
-       * <br> <ROW>: liq, [consRate, fuelLvl].
+       * <br> `ROW`: liq, [consRate, fuelLvl].
        */
       fluid: [],
 
@@ -51,7 +51,7 @@ const db = {
     /**
      * Maps an attribute to some resource, mostly for dynamic attribute output.
      * <br> <ROW-xxx>: attr, rs.
-     * <br> <EXTENSIBLE>
+     * <br> `EXTENSIBLE`
      */
     attr: {
 
@@ -102,7 +102,7 @@ const db = {
 
     /**
      * Items here are not mineable by regular drills by default, a sand miner is required.
-     * <br> <ROW>: itm.
+     * <br> `ROW`: itm.
      */
     sand: [
 
@@ -114,7 +114,7 @@ const db = {
     /**
      * Items here can be crushed for aggregate.
      * Used for recipe generation.
-     * <br> <ROW>: itm, reqAmtMtp.
+     * <br> `ROW`: itm, reqAmtMtp.
      */
     aggregate: [],
 
@@ -122,35 +122,35 @@ const db = {
     /**
      * Items here can be crushed for biomass powder.
      * Used for recipe generation.
-     * <br> <ROW>: itm, reqAmtMtp.
+     * <br> `ROW`: itm, reqAmtMtp.
      */
     biomass: [],
 
 
     /**
      * Items considered acidic.
-     * <br> <ROW>: itm.
+     * <br> `ROW`: itm.
      */
     acidic: [],
 
 
     /**
      * Items considered basic.
-     * <br> <ROW>: itm.
+     * <br> `ROW`: itm.
      */
     basic: [],
 
 
     /**
      * Items like sodium, which react with water and explode.
-     * <br> <ROW>: itm.
+     * <br> `ROW`: itm.
      */
     sodium: [],
 
 
     /**
      * "GROUP: xxx" in recipe I/O arrays.
-     * <br> <ROW>: grpStr, [nameRs, paramObj].
+     * <br> `ROW`: grpStr, [nameRs, paramObj].
      */
     rcGroup: [],
 
@@ -168,7 +168,7 @@ const db = {
      * Intermediate tags, which are written in `rs.tempTags`.
      * Items and fluids with these tags will be categorized in `VARGEN.intmds`.
      * If tag sprite ("rs0tag-<tag>") is found, it will be used for icon tag generation.
-     * <br> <ROW>: tag.
+     * <br> `ROW`: tag.
      */
     tag: [
 
@@ -213,8 +213,8 @@ const db = {
 
     /**
      * Some intermediate tags are added automatically if some conditions are met.
-     * <br> <ROW>: tag, boolF.
-     * <br> <ARGS>: rs.
+     * <br> `ROW`: tag, boolF.
+     * <br> `ARGS`: rs.
      */
     tagCheck: [
 
@@ -229,7 +229,7 @@ const db = {
     /**
      * Maps intermediate tags to their localized names for name insertion.
      * Used for some tags that don't have separate content templates.
-     * <br> <ROW>: tag, name.
+     * <br> `ROW`: tag, name.
      */
     insertName: [
 

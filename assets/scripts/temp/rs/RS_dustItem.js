@@ -31,7 +31,7 @@
 
   /**
    * Items produced by pulverizers.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_dustItem
    * @extends RS_intermediateItem
    */
@@ -45,7 +45,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_dustItem
      * @instance

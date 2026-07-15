@@ -23,7 +23,7 @@
 
   /**
    * Items produced by chemical reactors or gathering, that need to be refined.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_crudeItem
    * @extends RS_intermediateItem
    */
@@ -37,7 +37,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_crudeItem
      * @instance

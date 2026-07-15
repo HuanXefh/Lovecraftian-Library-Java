@@ -15,7 +15,7 @@ const db = {
 
       /**
        * Wind attribute multiplier for a planet.
-       * <br> <ROW>: pla, mtp.
+       * <br> `ROW`: pla, mtp.
        */
       wind: [],
 
@@ -23,14 +23,14 @@ const db = {
       /**
        * Global heat for a planet.
        * 1.0 here equals 100.0 HU.
-       * <br> <ROW>: pla, heat.
+       * <br> `ROW`: pla, heat.
        */
       heat: [],
 
 
       /**
        * Base pollution for a planet.
-       * <br> <ROW>: pla, pol.
+       * <br> `ROW`: pla, pol.
        */
       pol: [],
 
@@ -43,7 +43,7 @@ const db = {
 
       /**
        * Noise layer drawn for each map.
-       * <br> <ROW>: nameMap, args.
+       * <br> `ROW`: nameMap, args.
        * <br> <ROW-args>: nameTex, color, noiseScl, opac, spd, intens, windX, windY, off.
        */
       noise: [],
@@ -52,28 +52,28 @@ const db = {
       /**
        * Weather entries for a map (always permanent), used for campaign maps but works for any map.
        * No need to set weathers for those maps in editor.
-       * <br> <ROW>: nameMap, weas.
+       * <br> `ROW`: nameMap, weas.
        */
       weaEn: [],
 
 
       /**
        * Wind attribute multiplier for a map.
-       * <br> <ROW>: nameMap, mtp.
+       * <br> `ROW`: nameMap, mtp.
        */
       wind: [],
 
 
       /**
        * Global heat for a map.
-       * <br> <ROW>: nameMap, heat.
+       * <br> `ROW`: nameMap, heat.
        */
       heat: [],
 
 
       /**
        * Base pollution for a map.
-       * <br> <ROW>: nameMap, pol.
+       * <br> `ROW`: nameMap, pol.
        */
       pol: [],
 
@@ -92,8 +92,8 @@ const db = {
 
       /**
        * Default values for campaign rules of some planet.
-       * <br> <ROW>: namePla, ruleSetter.
-       * <br> <ARGS>: rule.
+       * <br> `ROW`: namePla, ruleSetter.
+       * <br> `ARGS`: rule.
        */
       campaign: [],
 
@@ -101,8 +101,8 @@ const db = {
       /**
        * Maps a planet to a rule setter function, that sets planet rules.
        * Fog should be set in campaign rules, you should ask Anuke why.
-       * <br> <ROW>: namePla, ruleSetter.
-       * <br> <ARGS>: rule.
+       * <br> `ROW`: namePla, ruleSetter.
+       * <br> `ARGS`: rule.
        */
       planet: [],
 
@@ -112,7 +112,7 @@ const db = {
 
     /**
      * Maps a random overlay region tag to a region array getter function.
-     * <br> <ROW>: tag, regsGetter.
+     * <br> `ROW`: tag, regsGetter.
      */
     randRegTag: [],
 
@@ -131,14 +131,14 @@ const db = {
 
       /**
        * These maps are considered as cave, where flying units cannot go over walls.
-       * <br> <ROW>: nameMap.
+       * <br> `ROW`: nameMap.
        */
       cave: [],
 
 
       /**
        * Impossible to build anything when playing these maps.
-       * <br> <ROW>: nameMap.
+       * <br> `ROW`: nameMap.
        */
       noBuild: [],
 
@@ -161,7 +161,7 @@ const db = {
       /**
        * Used to set speed multiplier of floor blocks in the same material group.
        * See {@link ENV_materialFloor}.
-       * <br> <ROW>: matGrp, spdMtp.
+       * <br> `ROW`: matGrp, spdMtp.
        */
       speed: [
 
@@ -180,7 +180,7 @@ const db = {
 
       /**
        * Maps a liquid floor material to some cache layer.
-       * <br> <ROW>: matGrp, cacheLay.
+       * <br> `ROW`: matGrp, cacheLay.
        */
       cacheLayer: [
 
@@ -195,8 +195,8 @@ const db = {
 
       /**
        * Used to more deeply set properties of some floor material.
-       * <br> <ROW>: matGrp, propSetter.
-       * <br> <ARGS>: flr, overwriteVanillaProp.
+       * <br> `ROW`: matGrp, propSetter.
+       * <br> `ARGS`: flr, overwriteVanillaProp.
        */
       extraSetter: [
 
@@ -225,7 +225,7 @@ const db = {
       /**
        * These liquid floor materials have default `walkSound` (same as vanilla water).
        * Used when you don't feel like making a sound for the material.
-       * <br> <ROW>: matGrp.
+       * <br> `ROW`: matGrp.
        */
       splashMaterial: [
 
@@ -243,7 +243,7 @@ const db = {
     /**
      * Tree parameters used for tree types.
      * See {@link ENV_baseTree}.
-     * <br> <ROW>: treeGrp, {scl, mag, wob, attrsGetter}.
+     * <br> `ROW`: treeGrp, {scl, mag, wob, attrsGetter}.
      */
     tree: [
 
@@ -285,7 +285,7 @@ const db = {
 
   /**
    * Maps name of some root node to localized name of some content.
-   * <br> <ROW>: nameRoot, ct.
+   * <br> `ROW`: nameRoot, ct.
    */
   nodeRootNameMap: [],
 

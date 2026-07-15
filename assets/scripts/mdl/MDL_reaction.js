@@ -80,7 +80,7 @@
    * Reads possible reactions between `reac1` and `reac2`.
    * @param {string|UnlockableContent} reac1
    * @param {string|UnlockableContent} reac2
-   * @return {Array} <ROW>: reacType, paramObj.
+   * @return {Array} `ROW`: reacType, paramObj.
    */
   const _reactions = function thisFun(reac1, reac2) {
     let arr = [];

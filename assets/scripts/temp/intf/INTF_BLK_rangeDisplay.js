@@ -56,13 +56,13 @@
 
 
         /**
-         * <PARAM>: Range (in blocks) to show.
+         * `PARAM`: Range (in blocks) to show.
          * @memberof INTF_BLK_rangeDisplay
          * @instance
          */
         blkR: 5,
         /**
-         * <PARAM>: See {@link INTF_BLK_radiusDisplay}.
+         * `PARAM`: See {@link INTF_BLK_radiusDisplay}.
          * @memberof INTF_BLK_rangeDisplay
          * @instance
          */
@@ -78,7 +78,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_BLK_rangeDisplay
        * @instance
        * @param {boolean} valid

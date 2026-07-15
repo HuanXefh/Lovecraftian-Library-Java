@@ -57,7 +57,7 @@
   /**
    * Used to display text information in database.
    * The text can be viewed only when this content is unlocked.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class DBCT_infoContent
    * @extends DBCT_databaseContent
    */
@@ -68,7 +68,7 @@
 
 
     /**
-     * <PARAM>: Name for information, don't include mod name here. The title will be used as content name.
+     * `PARAM`: Name for information, don't include mod name here. The title will be used as content name.
      * <br> <BUNDLE-title>: "info.<nameMod>-info-content-<nameInfo>.name".
      * <br> <BUNDLE-text>: "info.<nameMod>-info-content-<nameInfo>.description".
      * @memberof DBCT_infoContent

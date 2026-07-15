@@ -380,7 +380,7 @@
       tb.left();
       tb1.table(Styles.none, tb2 => {
         tb2.left();
-        // <TABLE>: block icon
+        // `TABLE`: block icon
         let btn = tb2.button(new TextureRegionDrawable(blk.uiIcon), w, () => {
           tryVal(ctDial, Vars.ui.content).show(blk);
           if(dialToHide != null) dialToHide.hide();
@@ -393,7 +393,7 @@
         btnStyle.up = Styles.none;
         btnStyle.down = Styles.none;
         btnStyle.over = Styles.flatOver;
-        // <TABLE>: efficiency label
+        // `TABLE`: efficiency label
         tb2.table(Styles.none, tb3 => {
           tb3.left();
           __break(tb3);
@@ -586,7 +586,7 @@
       tb1.left();
       tb1.table(Styles.none, tb2 => {
         tb2.left();
-        // <TABLE>: content icon
+        // `TABLE`: content icon
         let btn = tb2.button(new TextureRegionDrawable(ct.uiIcon), w, () => {
           tryVal(ctDial, Vars.ui.content).show(ct);
           if(dialToHide != null) dialToHide.hide();
@@ -599,7 +599,7 @@
         btnStyle.up = Styles.none;
         btnStyle.down = Styles.none;
         btnStyle.over = Styles.flatOver;
-        // <TABLE>: content label
+        // `TABLE`: content label
         tb2.table(Styles.none, tb3 => {
           tb3.left();
           // Probability (top right)
@@ -776,7 +776,7 @@
       }).marginRight(18.0).growY();
     },
     buildRowContent: (tb, icon, name, scr) => {
-      // <TABLE>: Icon
+      // `TABLE`: Icon
       tb.table(Styles.none, tb1 => {
         tb1.left();
         tb1.image(icon).size(Vars.iconLarge).padRight(18.0);
@@ -785,9 +785,9 @@
           tb1.add(name);
         };
       });
-      // <TABLE>: Spacing
+      // `TABLE`: Spacing
       tb.table(Styles.none, tb1 => {}).width(80.0).growX().growY();
-      // <TABLE>: "?" button
+      // `TABLE`: "?" button
       if(scr != null) {
         tb.table(Styles.none, tb1 => {
           tb1.left();
@@ -1306,7 +1306,7 @@
     MDL_content._facFamis(blk).forEachFast(fami => {
       let cont = new Table();
       root.left().add(cont).width(420.0).growX().row();
-      // <TABLE>: title
+      // `TABLE`: title
       cont.table(Tex.whiteui, tb1 =>{
         tb1.center().setColor(Color.darkGray);
         __margin(tb1, 0.5);
@@ -1315,7 +1315,7 @@
       .left()
       .growX()
       .row();
-      // <TABLE>: contents
+      // `TABLE`: contents
       cont.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(Pal.darkestGray);
         __margin(tb1, 0.5);
@@ -1374,7 +1374,7 @@
         });
       };
 
-      // <TABLE>: category title
+      // `TABLE`: category title
       chunk.table(Tex.whiteui, tb1 => {
         tb1.center().setColor(categ !== "SPEC: base" ? Color.darkGray : Tmp.c1.set(Pal.accent).lerp(Color.black, 0.4));
         __margin(tb1, 0.5);

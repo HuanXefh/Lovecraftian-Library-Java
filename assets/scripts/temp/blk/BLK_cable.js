@@ -78,8 +78,8 @@
     /**
      * A block that conducts power.
      * Cables with equivalent safe power levels will be grouped in the same graph, thus updating only once per frame.
-     * <br> <SINGLESIZE>
-     * <br> <DEDICATION>: Inspired by Asthosus.
+     * <br> `SINGLESIZE`
+     * <br> `DEDICATION`: Inspired by Asthosus.
      * @class BLK_cable
      * @extends BLK_basePowerTransmitter
      * @extends INTF_BLK_graphBlock

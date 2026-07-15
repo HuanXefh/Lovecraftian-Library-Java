@@ -86,7 +86,7 @@
 
 
       /**
-       * <PARAM>: Warmup rate for power generation. Set this to negative value to disable warmup mechanics.
+       * `PARAM`: Warmup rate for power generation. Set this to negative value to disable warmup mechanics.
        * @memberof BLK_consumeGenerator
        * @instance
        */

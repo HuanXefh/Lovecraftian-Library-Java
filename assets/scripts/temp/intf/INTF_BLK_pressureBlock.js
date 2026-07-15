@@ -181,19 +181,19 @@
 
 
         /**
-         * <PARAM>: Pressure required for this block to operate, negative for vacuum.
+         * `PARAM`: Pressure required for this block to operate, negative for vacuum.
          * @memberof INTF_BLK_pressureBlock
          * @instance
          */
         presThr: 0.0,
         /**
-         * <PARAM>: If true, this block does not supply pressure/vacuum for nearby consumers.
+         * `PARAM`: If true, this block does not supply pressure/vacuum for nearby consumers.
          * @memberof INTF_BLK_pressureBlock
          * @instance
          */
         skipPresSupply: false,
         /**
-         * <PARAM>: If true, pressure will be transferred in three directions.
+         * `PARAM`: If true, pressure will be transferred in three directions.
          * @memberof INTF_BLK_pressureBlock
          * @instance
          */
@@ -385,7 +385,7 @@
        * @return {boolean}
        */
       ex_checkPresFetchValid: function(ob) {
-        return GEOMETRY_HANDLER.accept(
+        return LCGeometry.accept(
           ob, this, ob.block.delegee.isPresRouter,
           this.block.delegee.isPresRouter ?
             false :
@@ -407,7 +407,7 @@
        * @return {boolean}
        */
       ex_checkPresSupplyValid: function(ob) {
-        return GEOMETRY_HANDLER.accept(this, ob, this.block.delegee.isPresRouter, true);
+        return LCGeometry.accept(this, ob, this.block.delegee.isPresRouter, true);
       }
       .setProp({
         noSuper: true,

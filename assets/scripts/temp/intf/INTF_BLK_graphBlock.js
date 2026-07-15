@@ -134,13 +134,13 @@
 
 
         /**
-         * <PARAM>: Determines how the graph is built and updated.
+         * `PARAM`: Determines how the graph is built and updated.
          * @memberof INTF_BLK_graphBlock
          * @instance
          */
         graphType: "test",
         /**
-         * <PARAM>: If true, building rotation will be ignored when updating graph edges.
+         * `PARAM`: If true, building rotation will be ignored when updating graph edges.
          * @memberof INTF_BLK_graphBlock
          * @instance
          */
@@ -182,13 +182,13 @@
 
 
         /**
-         * <INTERNAL>: Current graph of this building.
+         * `INTERNAL`: Current graph of this building.
          * @memberof INTF_B_graphBlock
          * @instance
          */
         graphCur: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_graphBlock
          * @instance
          */

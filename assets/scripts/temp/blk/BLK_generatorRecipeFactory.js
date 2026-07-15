@@ -56,7 +56,7 @@
 
 
       /**
-       * <PARAM>: Minimum warmup required to create explosion when destroyed.
+       * `PARAM`: Minimum warmup required to create explosion when destroyed.
        * @memberof BLK_generatorRecipeFactory
        * @instance
        */

@@ -53,13 +53,13 @@
 
 
     /**
-     * <PARAM>: Whether to draw shadow for this bullet.
+     * `PARAM`: Whether to draw shadow for this bullet.
      * @memberof BUL_spriteBullet
      * @instance
      */
     shouldDrawShadow: true,
     /**
-     * <PARAM>: Shadow offset.
+     * `PARAM`: Shadow offset.
      * @memberof BUL_spriteBullet
      * @instance
      */
@@ -70,7 +70,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof BUL_spriteBullet
      * @instance
      */

@@ -220,7 +220,7 @@
     // Row 2 (contents)
     thisFun.addPlaceholder(base);
     base.table(Styles.none, tb => {
-      // <TABLE>: title
+      // `TABLE`: title
       let titleCell = tb.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(this.titleColor);
         tb1.tapped(() => {
@@ -228,7 +228,7 @@
           this.isDragged = true;
         });
         tb1.released(() => this.isDragged = false);
-        // <TABLE>: title base
+        // `TABLE`: title base
         tb1.table(Styles.none, tb2 => {
           tb2.left();
           MDL_table.__margin(tb2, 0.25);
@@ -249,7 +249,7 @@
         });
       }).growX();
       tb.row();
-      // <TABLE>: contents
+      // `TABLE`: contents
       if(!this.isHidden) {
         tb.table(Tex.whiteui, tb1 => {
           tb1.left().setColor(this.contColor);

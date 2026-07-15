@@ -57,13 +57,13 @@
 
 
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof STA_baseStatus
      * @instance
      */
     overwriteVanillaStat: true,
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof STA_baseStatus
      * @instance
      */
@@ -74,7 +74,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof STA_baseStatus
      * @instance
      */

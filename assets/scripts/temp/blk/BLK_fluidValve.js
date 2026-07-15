@@ -60,7 +60,7 @@
 
     /**
      * Togglable liquid junction.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_fluidValve
      * @extends BLK_fluidJunction
      */

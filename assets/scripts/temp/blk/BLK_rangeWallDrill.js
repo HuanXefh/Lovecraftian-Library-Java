@@ -197,7 +197,7 @@
 
     /**
      * A wall drill that mines all blocks in the frontal rectangular range.
-     * <br> <IMPORTANT>: `blk.range` is full width of the range, since that it must be an integer.
+     * <br> `IMPORTANT`: `blk.range` is full width of the range, since that it must be an integer.
      * @class BLK_rangeWallDrill
      * @extends BLK_wallDrill
      */
@@ -208,7 +208,7 @@
 
 
       /**
-       * <PARAM>: "wall" for blocks, "floor" for floors and overlay floors, "both" for any.
+       * `PARAM`: "wall" for blocks, "floor" for floors and overlay floors, "both" for any.
        * @memberof BLK_rangeWallDrill
        * @instance
        */
@@ -295,7 +295,7 @@
        * @memberof BLK_rangeWallDrill
        * @instance
        * @param {ObjectMap} contMap - Stores mineable ores and their amounts.
-       * @param {Array} contTup - Stores found ores. <br> <TUP>: mainItm, foundItms.
+       * @param {Array} contTup - Stores found ores. <br> `TUPLE`: mainItm, foundItms.
        * @param {Array<Tile>} contArr - Stores tiles in range temporarily.
        * @param {number} tx
        * @param {number} ty

@@ -23,7 +23,7 @@
 
   /**
    * Items produced by roasting blend items.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_clinkerItem
    * @extends RS_intermediateItem
    */
@@ -37,7 +37,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_clinkerItem
      * @instance

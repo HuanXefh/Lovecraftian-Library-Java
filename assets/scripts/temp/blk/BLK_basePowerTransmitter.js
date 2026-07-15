@@ -121,19 +121,19 @@
 
 
       /**
-       * <PARAM>: If true, placement won't be affected by short circuit.
+       * `PARAM`: If true, placement won't be affected by short circuit.
        * @memberof BLK_basePowerTransmitter
        * @instance
        */
       ignoreShortCircuitPlacement: false,
       /**
-       * <PARAM>: If power produced in the power graph is larger than this, the transmitter will get damaged.
+       * `PARAM`: If power produced in the power graph is larger than this, the transmitter will get damaged.
        * @memberof BLK_basePowerTransmitter
        * @instance
        */
       maxPowProdAllowed: Infinity,
       /**
-       * <PARAM>: Multiplier on transmitter overload damage.
+       * `PARAM`: Multiplier on transmitter overload damage.
        * @memberof BLK_basePowerTransmitter
        * @instance
        */

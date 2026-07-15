@@ -259,19 +259,19 @@
 
 
         /**
-         * <PARAM>: If true, this block cannot gain torque and RPM from producers.
+         * `PARAM`: If true, this block cannot gain torque and RPM from producers.
          * @memberof INTF_BLK_torqueBlock
          * @instance
          */
         skipTorFetch: false,
         /**
-         * <PARAM>: If true, this block cannot supply torque and RPM for consumers.
+         * `PARAM`: If true, this block cannot supply torque and RPM for consumers.
          * @memberof INTF_BLK_torqueBlock
          * @instance
          */
         skipTorSupply: false,
         /**
-         * <PARAM>: How fast RPM drops to zero spontaneously.
+         * `PARAM`: How fast RPM drops to zero spontaneously.
          * @memberof INTF_BLK_torqueBlock
          * @instance
          */
@@ -437,7 +437,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_B_torqueBlock
        * @instance
        * @return {void}
@@ -465,7 +465,7 @@
 
       /**
        * A cogwheel's transported RPM should be affected by block size, so this value should be dynamic.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_torqueBlock
        * @instance
        * @param {Building} b_t
@@ -497,7 +497,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @memberof INTF_B_torqueBlock
        * @instance
        * @param {Building} ob

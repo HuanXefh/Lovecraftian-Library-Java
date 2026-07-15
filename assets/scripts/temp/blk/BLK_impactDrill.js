@@ -73,7 +73,7 @@
 
 
       /**
-       * <PARAM>: Impact drills are designed to mine depth ore by default.
+       * `PARAM`: Impact drills are designed to mine depth ore by default.
        * @override
        * @memberof BLK_impactDrill
        * @instance

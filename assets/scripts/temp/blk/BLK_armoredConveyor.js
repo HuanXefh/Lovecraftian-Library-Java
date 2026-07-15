@@ -26,7 +26,7 @@
 
     /**
      * Similar to vanilla armored conveyor.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_armoredConveyor
      * @extends BLK_conveyor
      */

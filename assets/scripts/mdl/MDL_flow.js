@@ -54,7 +54,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-grp-<eleGrp>.name".
+   * `BUNDLE`: "term.common-term-grp-<eleGrp>.name".
    * @param {LiquidGn} liq_gn
    * @return {string}
    */
@@ -90,7 +90,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-grp-<matGrp>.name".
+   * `BUNDLE`: "term.common-term-grp-<matGrp>.name".
    * @param {BlockGn} blk_gn
    * @return {string}
    */
@@ -127,7 +127,7 @@
 
   /**
    * Gets fluid tag text of the given fluid.
-   * <br> <BUNDLE>: "term.common-grp-<fldTag>.name".
+   * <br> `BUNDLE`: "term.common-grp-<fldTag>.name".
    * @param {LiquidGn} liq_gn
    * @return {string}
    */
@@ -145,7 +145,7 @@
 
   /**
    * Gets density of a fluid.
-   * <br> <DB>: liq-dens.
+   * <br> `DB`: liq-dens.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -169,7 +169,7 @@
 
   /**
    * Gets boiling point of a fluid (in HU).
-   * <br> <DB>: liq-boil-pon.
+   * <br> `DB`: liq-boil-pon.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -199,7 +199,7 @@
 
   /**
    * Gets fluid heat of a fluid.
-   * <br> <DB>: liq-fheat.
+   * <br> `DB`: liq-fheat.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -230,7 +230,7 @@
 
   /**
    * Gets wrapped viscosity of a fluid.
-   * <br> <DB>: liq-visc.
+   * <br> `DB`: liq-visc.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -259,7 +259,7 @@
 
   /**
    * Gets maximum pressure allowed for a block.
-   * <br> <DB>: blk-pres-res.
+   * <br> `DB`: blk-pres-res.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -282,7 +282,7 @@
 
   /**
    * Gets maximum vacuum allowed for a block.
-   * <br> <DB>: blk-vac-res.
+   * <br> `DB`: blk-vac-res.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -322,7 +322,7 @@
 
   /**
    * Gets corrosion power of a fluid.
-   * <br> <DB>: liq-core-pow.
+   * <br> `DB`: liq-core-pow.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -375,7 +375,7 @@
 
   /**
    * Gets corrosion resistance of a block.
-   * <br> <DB>: blk-cor-res.
+   * <br> `DB`: blk-cor-res.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -401,7 +401,7 @@
 
   /**
    * Gets maximum heat allowed for a block.
-   * <br> <DB>: blk-heat-res.
+   * <br> `DB`: blk-heat-res.
    * @param {BlockGn} blk_gn
    * @return {number}
    */

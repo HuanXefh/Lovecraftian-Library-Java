@@ -40,7 +40,7 @@
 
 
       /**
-       * <PARAM>: Heat produced at 100% efficiency.
+       * `PARAM`: Heat produced at 100% efficiency.
        * @memberof BLK_heatProducer
        * @instance
        */

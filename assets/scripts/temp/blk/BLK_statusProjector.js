@@ -88,20 +88,20 @@
 
 
       /**
-       * <PARAM>: Status effect to apply.
+       * `PARAM`: Status effect to apply.
        * @memberof BLK_statusProjector
        * @instance
        */
       staTg: StatusEffects.none,
       /**
-       * <PARAM>: Duration of the applied status effect.
+       * `PARAM`: Duration of the applied status effect.
        * @memberof BLK_statusProjector
        * @instance
        */
       staDur: 0.0,
       /**
-       * <PARAM>: Filter for target units. You can create effects here.
-       * <ARGS>: b, ounit.
+       * `PARAM`: Filter for target units. You can create effects here.
+       * `ARGS`: b, ounit.
        * @memberof BLK_statusProjector
        * @instance
        */

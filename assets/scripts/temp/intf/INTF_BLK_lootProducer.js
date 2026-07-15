@@ -97,7 +97,7 @@
 
       /**
        * Expected craft time of this block.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_lootProducer
        * @instance
        * @return {number}
@@ -126,19 +126,19 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_lootProducer
          * @instance
          */
         lootDumpX: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_lootProducer
          * @instance
          */
         lootDumpY: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_lootProducer
          * @instance
          */
@@ -196,7 +196,7 @@
 
       /**
        * Expected time spent on current recipe.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_lootProducer
        * @instance
        * @return {number}

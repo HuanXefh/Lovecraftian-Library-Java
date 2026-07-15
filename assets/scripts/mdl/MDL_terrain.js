@@ -50,8 +50,8 @@
 
 
   /**
-   * <ARGS>: countMap, ters.
-   * <br> <ARGS>: countMap, ter1, ter2, ter3, ...
+   * `ARGS`: countMap, ters.
+   * <br> `ARGS`: countMap, ter1, ter2, ter3, ...
    */
   function sumCountTers(countMap) {
     let count = 0;
@@ -170,7 +170,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-ter-<ter>.name".
+   * `BUNDLE`: "term.common-term-ter-<ter>.name".
    * @param {string|unset} [ter]
    * @return {string}
    */

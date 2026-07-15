@@ -149,7 +149,7 @@
 
 
       /**
-       * <PARAM>: Maps some item (as string) to an object map that maps terrain type to final output.
+       * `PARAM`: Maps some item (as string) to an object map that maps terrain type to final output.
        * @memberof BLK_terrainDynamicDrill
        * @instance
        * @example

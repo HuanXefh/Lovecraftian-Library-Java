@@ -69,7 +69,7 @@
    * <br> Special values for {@link ENV_vent#ventRs}:
    * <br> "none" - This vent is only for decoration.
    * <br> "fire" - Turns the vent into a fire vent.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_vent
    * @extends ENV_materialFloor
    * @extends INTF_ENV_dynamicSizeVent
@@ -81,7 +81,7 @@
 
 
     /**
-     * <PARAM>: Resource (?) produced from the vent, usually a gas. Has special values.
+     * `PARAM`: Resource (?) produced from the vent, usually a gas. Has special values.
      * @memberof ENV_vent
      * @instance
      */

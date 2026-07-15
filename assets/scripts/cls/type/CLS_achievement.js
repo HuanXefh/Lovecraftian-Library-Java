@@ -109,7 +109,7 @@
 
   /**
    * Gets text description of this achievement.
-   * <br> <BUNDLE>: "info.common-info-achieve-<nameMod>-<name>".
+   * <br> `BUNDLE`: "info.common-info-achieve-<nameMod>-<name>".
    * @return {string}
    */
   CLS_achievement.prototype.getText = function() {

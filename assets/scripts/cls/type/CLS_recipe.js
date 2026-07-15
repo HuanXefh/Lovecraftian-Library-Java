@@ -834,9 +834,9 @@
     return tb.table(Styles.none, tb1 => {
       tb1.left();
       MDL_table.__margin(tb1);
-      // <TABLE>: Title
+      // `TABLE`: Title
       tb1.add("${1}:".format(name.toUpperCase())).left().tooltip(MDL_bundle._term("lovec", name), true).row();
-      // <TABLE>: I/O contents
+      // `TABLE`: I/O contents
       tb1.table(Styles.none, tableF);
     })
     .left()
@@ -974,7 +974,7 @@
       tb1.table(Styles.none, tb2 => {}).width(24.0);
       tb1.table(Styles.none, tb2 => {
         let build = tb3 => {
-          // <TABLE>: Stats
+          // `TABLE`: Stats
           thisFun.addStat(
             tb3, this.isGen,
             MDL_bundle._term("lovec", "generated-recipe").color(Pal.gray),
@@ -1322,7 +1322,7 @@
    * Gets a 4-tuple of preferred optional input.
    * Returns null if no optional input.
    * @param {Building} b
-   * @return {[Item, number, number, number]|null} <TUP>: item, amt, p, mtp.
+   * @return {[Item, number, number, number]|null} `TUPLE`: item, amt, p, mtp.
    */
   CLS_recipe.prototype.getOptTup = function(b) {
     if(b.items == null) return null;

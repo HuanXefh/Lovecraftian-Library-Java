@@ -44,7 +44,7 @@
 
 
       /**
-       * <PARAM>: If true, this storage block can only store one type of item.
+       * `PARAM`: If true, this storage block can only store one type of item.
        * @memberof BLK_baseStorageBlock
        * @instance
        */

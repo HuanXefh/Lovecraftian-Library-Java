@@ -38,7 +38,7 @@
   /**
    * Decorative tall blocks for walls.
    * Bullets won't collide with {@link TallBlock}, I can't do much with it.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_heap
    * @extends ENV_baseProp
    */
@@ -49,7 +49,7 @@
 
 
     /**
-     * <PARAM>: See {@link ENV_wall}.
+     * `PARAM`: See {@link ENV_wall}.
      * @memberof ENV_heap
      * @instance
      */

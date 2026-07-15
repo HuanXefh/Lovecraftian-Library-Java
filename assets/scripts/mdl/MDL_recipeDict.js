@@ -50,7 +50,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-rcdict-custom-<name>.name".
+   * `BUNDLE`: "term.common-term-rcdict-custom-<name>.name".
    * @param {string} name
    * @return {string}
    */
@@ -410,7 +410,7 @@
   /**
    * Finds all blocks that consume `ct_gn`.
    * @param {ContentGn} ct_gn - Can be a custom field name.
-   * @param {boolean|unset} [appendData] - If true, this method will return a 3-array instead. <br> <ROW>: blk, amt, data.
+   * @param {boolean|unset} [appendData] - If true, this method will return a 3-array instead. <br> `ROW`: blk, amt, data.
    * @return {Array}
    */
   const _consumers = function(ct_gn, appendData) {

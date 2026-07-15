@@ -105,7 +105,7 @@
      * A tiny mender that repairs the building in front of it.
      * No optional input since I don't need it.
      * <br> Can heal enemy blocks, just for fun :D
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_directionalMender
      * @extends BLK_baseMender
      */
@@ -116,13 +116,13 @@
 
 
       /**
-       * <PARAM>: See {@link BLK_radiusMender}.
+       * `PARAM`: See {@link BLK_radiusMender}.
        * @memberof BLK_directionalMender
        * @instance
        */
       bHealAmt: 0.0,
       /**
-       * <PARAM>: See {@link BLK_radiusMender}.
+       * `PARAM`: See {@link BLK_radiusMender}.
        * @memberof BLK_directionalMender
        * @instance
        */

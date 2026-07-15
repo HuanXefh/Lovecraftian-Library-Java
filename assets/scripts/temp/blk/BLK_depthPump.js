@@ -93,7 +93,7 @@
 
 
       /**
-       * <PARAM>: Pump rate.
+       * `PARAM`: Pump rate.
        * @memberof BLK_depthPump
        * @instance
        */

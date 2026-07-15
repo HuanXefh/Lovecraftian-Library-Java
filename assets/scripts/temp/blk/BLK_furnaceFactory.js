@@ -43,7 +43,7 @@
 
 
       /**
-       * <PARAM>: Temperature required.
+       * `PARAM`: Temperature required.
        * @memberof BLK_furnaceFactory
        * @instance
        */

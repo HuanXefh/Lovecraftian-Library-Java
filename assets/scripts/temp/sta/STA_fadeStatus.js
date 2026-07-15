@@ -49,7 +49,7 @@
 
 
     /**
-     * <PARAM>: Color used for the fading region.
+     * `PARAM`: Color used for the fading region.
      * @memberof STA_fadeStatus
      * @instance
      */
@@ -60,7 +60,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof STA_fadeStatus
      * @instance
      */

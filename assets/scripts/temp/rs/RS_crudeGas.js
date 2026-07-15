@@ -30,7 +30,7 @@
 
   /**
    * Impure gaseous chemicals.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_crudeGas
    * @extends RS_intermediateFluid
    */
@@ -44,7 +44,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_crudeGas
      * @instance

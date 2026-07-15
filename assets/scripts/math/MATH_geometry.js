@@ -24,7 +24,7 @@
 
   /**
    * Calculates distance between two n-dimensional points.
-   * <br> <ARGS>: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
+   * <br> `ARGS`: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
    * @return {number}
    */
   const _dst = function() {
@@ -42,7 +42,7 @@
 
   /**
    * Variant of {@link _dst} for Manhattan distance.
-   * <br> <ARGS>: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
+   * <br> `ARGS`: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
    * @return {number}
    */
   const _dstManh = function() {
@@ -60,7 +60,7 @@
 
   /**
    * Variant of {@link _dst} for Chebyshev distance.
-   * <br> <ARGS>: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
+   * <br> `ARGS`: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
    * @return {number}
    */
   const _dstCheb = function() {
@@ -148,8 +148,8 @@
 
   /**
    * Gets area of a 2D polygon.
-   * <br> <ARGS>: x1, y1, x2, y2, x3, y3, ...
-   * <br> <REFERENCE>: Shoelace theorem.
+   * <br> `ARGS`: x1, y1, x2, y2, x3, y3, ...
+   * <br> `REFERENCE`: Shoelace theorem.
    * @return {number}
    */
   const _area = function() {
@@ -181,7 +181,7 @@
 
   /**
    * Whether (x, y) is inside a 2D-polygon.
-   * <br> <ARGS>: x, y, x1, y1, x2, y2, x3, y3, ...
+   * <br> `ARGS`: x, y, x1, y1, x2, y2, x3, y3, ...
    * @return {boolean}
    */
   const _inPolygon = function thisFun() {

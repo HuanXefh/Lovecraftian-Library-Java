@@ -44,8 +44,8 @@
 
 
     /**
-     * <PARAM>: Gets time added when this effect is applied each time.
-     * <ARGS>: unit, time.
+     * `PARAM`: Gets time added when this effect is applied each time.
+     * `ARGS`: unit, time.
      * @memberof STA_burstStatus
      * @instance
      */
@@ -56,7 +56,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof STA_burstStatus
      * @instance
      */

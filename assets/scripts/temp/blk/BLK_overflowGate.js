@@ -88,7 +88,7 @@
 
     /**
      * Overflow gate with `blk.invert` being useless.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_overflowGate
      * @extends BLK_baseItemGate
      */

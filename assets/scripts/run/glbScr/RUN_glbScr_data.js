@@ -24,8 +24,8 @@
    * For quick definition of `ex_processData`.
    * @global
    * @param {Writes|Reads} wr0rd
-   * @param {function(Writes, number): void} wrFun - <ARGS>: wr, revi.
-   * @param {function(Reads, number): any} rdFun - <ARGS>: rd, revi.
+   * @param {function(Writes, number): void} wrFun - `ARGS`: wr, revi.
+   * @param {function(Reads, number): any} rdFun - `ARGS`: rd, revi.
    * @return {any}
    */
   processData = function(wr0rd, wrFun, rdFun) {
@@ -161,7 +161,7 @@
 
     /**
      * Reads a registered DB object.
-     * <br> <ARGS>: key, arg1, arg2, arg3, ...
+     * <br> `ARGS`: key, arg1, arg2, arg3, ...
      * @param {string} key
      * @return {any}
      */

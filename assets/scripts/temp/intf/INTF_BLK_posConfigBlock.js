@@ -99,7 +99,7 @@
 
       /**
        * Position selection radius.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_posConfigBlock
        * @instance
        * @return {number}
@@ -114,7 +114,7 @@
 
       /**
        * Used to check whether a position is valid to be used.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_posConfigBlock
        * @instance
        * @param {number} x

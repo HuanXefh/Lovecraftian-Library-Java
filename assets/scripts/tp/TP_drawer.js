@@ -190,7 +190,7 @@
 
   /**
    * Draws stacked items.
-   * <br> <DEDICATION>: Inspired by Psammos.
+   * <br> `DEDICATION`: Inspired by Psammos.
    */
   newDrawer(
     "DrawItemPile",

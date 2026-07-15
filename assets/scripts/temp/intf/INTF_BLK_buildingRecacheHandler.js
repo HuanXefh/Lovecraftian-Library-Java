@@ -32,13 +32,13 @@
 
 
         /**
-         * <PARAM>: Whether to recache when an item is added or removed.
+         * `PARAM`: Whether to recache when an item is added or removed.
          * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
          * @instance
          */
         recacheForItm: false,
         /**
-         * <PARAM>: Whether to recache when a fluid is added or removed.
+         * `PARAM`: Whether to recache when a fluid is added or removed.
          * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
          * @instance
          */

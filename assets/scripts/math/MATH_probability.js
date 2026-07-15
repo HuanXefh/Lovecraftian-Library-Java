@@ -135,7 +135,7 @@
 
   /**
    * Generates normal distribution.
-   * <br> <REFERENCE>: Marsaglia polar method.
+   * <br> `REFERENCE`: Marsaglia polar method.
    * @param {number} size
    * @param {number|unset} [mu]
    * @param {number|unset} [sigma]

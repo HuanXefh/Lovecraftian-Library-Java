@@ -23,7 +23,7 @@
 
   /**
    * Root of all planets.
-   * <br> <IMPORTANT>: Do not put .json files under "content/planets", content parser will create these planets and there's no way to modify them with JS. Put them under "scripts/auxFi/json/planets".
+   * <br> `IMPORTANT`: Do not put .json files under "content/planets", content parser will create these planets and there's no way to modify them with JS. Put them under "scripts/auxFi/json/planets".
    * @class PLA_basePlanet
    * @extends CLS_contentTemplate
    */
@@ -34,31 +34,31 @@
 
 
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof PLA_basePlanet
      * @instance
      */
     overwriteVanillaStat: true,
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof PLA_basePlanet
      * @instance
      */
     overwriteVanillaProp: true,
     /**
-     * <PARAM>: If true, mesh won't be parsed.
+     * `PARAM`: If true, mesh won't be parsed.
      * @memberof PLA_basePlanet
      * @instance
      */
     skipMeshParse: false,
     /**
-     * <PARAM>: If true, cloud mesh won't be parsed.
+     * `PARAM`: If true, cloud mesh won't be parsed.
      * @memberof PLA_basePlanet
      * @instance
      */
     skipCloudMeshParse: false,
     /**
-     * <PARAM>: If true, planet generator won't be parsed.
+     * `PARAM`: If true, planet generator won't be parsed.
      * @memberof PLA_basePlanet
      * @instance
      */
@@ -71,7 +71,7 @@
 
     /**
      * Mesh used when JSON for this is not parsed.
-     * <br> <LATER>
+     * <br> `LATER`
      * @memberof PLA_basePlanet
      * @instance
      * @return {GenericMesh|null}
@@ -86,7 +86,7 @@
 
     /**
      * Cloud mesh used when JSON for this is not parsed.
-     * <br> <LATER>
+     * <br> `LATER`
      * @memberof PLA_basePlanet
      * @instance
      * @return {GenericMesh|null}

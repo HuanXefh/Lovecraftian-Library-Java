@@ -52,13 +52,13 @@
       ex_show() {
         resetDial(this);
 
-        // <TABLE>: text
+        // `TABLE`: text
         this.cont.add("You're not supposed to see this.");
         this.cont.row();
         this.cont.add("If you do, something just went wrong :(");
         this.cont.row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -84,7 +84,7 @@
       ex_show(nameMod, nameInfo) {
         resetDial(this, MDL_bundle._info(nameMod, "content-" + nameInfo));
 
-        // <TABLE>: text
+        // `TABLE`: text
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
           MDL_table.__wrapLine(pnTb, MDL_bundle._info(nameMod, "content-" + nameInfo, true), Align.left, 1);
@@ -92,7 +92,7 @@
         .width(MDL_ui._uiW())
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -119,11 +119,11 @@
         };
         resetDial(this);
 
-        // <TABLE>: text
+        // `TABLE`: text
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
           UTIL_dialogFlow.getLog().forEachFast(obj => {
-            // <TABLE>: text cell
+            // `TABLE`: text cell
             pnTb.table(Styles.none, tb => {
               if(obj.chara === "SPEC: selection") {
                 tb.center();
@@ -143,7 +143,7 @@
         .width(MDL_ui._uiW())
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -171,7 +171,7 @@
         this.tmpCount = countWave;
         resetDial(this, MDL_bundle._info("lovec", "dial-wave-enemies") + " (" + countWave + ")");
 
-        // <TABLE>: list
+        // `TABLE`: list
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
           if(countWave < 1) {
@@ -206,7 +206,7 @@
         .width(MDL_ui._uiW())
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
         MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "last-wave"), () => this.ex_show(Math.max(this.tmpCount - 1, 1)));
@@ -231,7 +231,7 @@
       ex_show(infoListData, moddedNames) {
         resetDial(this);
 
-        // <TABLE>: list
+        // `TABLE`: list
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
@@ -248,7 +248,7 @@
         .width(MDL_ui._uiW() * 1.25)
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -275,7 +275,7 @@
       ex_show(categ, map, moddedNames) {
         resetDial(this, UTIL_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ));
 
-        // <TABLE>: list
+        // `TABLE`: list
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
@@ -310,7 +310,7 @@
         .width(MDL_ui._uiW() * 1.25)
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -346,7 +346,7 @@
       ex_show() {
         resetDial(this);
 
-        // <TABLE>: list
+        // `TABLE`: list
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
@@ -379,7 +379,7 @@
         .width(MDL_ui._uiW() * 1.25)
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -405,7 +405,7 @@
       ex_show(title, cts_gn, isAfterCt) {
         resetDial(this, title);
 
-        // <TABLE>: content
+        // `TABLE`: content
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
@@ -424,7 +424,7 @@
         .width(MDL_ui._uiW())
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -447,7 +447,7 @@
       ex_show(title, cts_gn) {
         resetDial(this, title);
 
-        // <TABLE>: content
+        // `TABLE`: content
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table._l_ctRow(pnTb, cts_gn, true);
@@ -455,7 +455,7 @@
         .width(MDL_ui._uiW())
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -481,15 +481,15 @@
       ex_show(title, opt) {
         resetDial(this, title);
 
-        // <TABLE>: info
+        // `TABLE`: info
         MDL_table.__break(this.cont);
         MDL_table._d_note(this.cont, MDL_bundle._info("lovec", "opt"));
 
-        // <TABLE>: bar
+        // `TABLE`: bar
         MDL_table.__break(this.cont);
         MDL_table.__bar(this.cont, null, MDL_ui._uiW());
 
-        // <TABLE>: content
+        // `TABLE`: content
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
@@ -516,7 +516,7 @@
         .width(MDL_ui._uiW())
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -567,7 +567,7 @@
           });
         };
 
-        // <TABLE>: content
+        // `TABLE`: content
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb, 0.5);
@@ -605,7 +605,7 @@
         .width(MDL_ui._uiW(0.0))
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -652,7 +652,7 @@
       ex_show() {
         resetDial(this);
 
-        // <TABLE>: list
+        // `TABLE`: list
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
@@ -694,7 +694,7 @@
         .width(MDL_ui._uiW())
         .row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
 
@@ -738,11 +738,11 @@
         let rcCont;
         while(i < iCap) {
           rcCont = tb.table(Styles.none, tb1 => tb1.left()).left().width(240.0).height(60.0).get();
-          // <TABLE>: small icon
+          // `TABLE`: small icon
           rcCont.table(Styles.none, tb1 => {
             MDL_table.__ct(tb1, rcDictArr[i], 48.0, 8.0, this);
           });
-          // <TABLE>: recipe text
+          // `TABLE`: recipe text
           let data, craftTime, craftRate, btn, btnCell;
           let isContinuous = isCustomField ?
             MDL_recipeDict.rcDict.customFieldMap.get(ct).isContinuous :
@@ -763,7 +763,7 @@
                 isStatic ?
                   rcDictArr[i + 1] :
                   (rcDictArr[i + 1] / craftTime * 60.0);
-            // <TABLE>: rate text
+            // `TABLE`: rate text
             tb1.add(MDL_text._statText(
               MDL_bundle._term("lovec", isStatic ? "amount" : "rate"),
               this.ex_getRateStr(craftRate, 2, isStatic),
@@ -771,10 +771,10 @@
             .left()
             .tooltip(this.ex_getRateStr(craftRate, 7, isStatic), true)
             .row();
-            // <TABLE>: extra icon
+            // `TABLE`: extra icon
             tb1.table(Styles.none, tb2 => {
               tb2.left();
-              // <TABLE>: content icon
+              // `TABLE`: content icon
               if(data.ct != null) {
                 let oct, isOtherCustomField = false;
                 if(MDL_recipeDict.rcDict.customFieldMap.containsKey(data.ct)) {
@@ -804,14 +804,14 @@
                   btn.getStyle().imageUp = (isOtherCustomField ? MDL_recipeDict.rcDict.customFieldMap.get(oct).icon : new TextureRegionDrawable(oct.uiIcon)).tint(tryVal(data.ctTint, Color.white));
                 };
               };
-              // <TABLE>: tag icon
+              // `TABLE`: tag icon
               if(data.icon != null) {
                 let iconCell = tb2.image(Core.atlas.find(data.icon)).left().width(26.0).height(26.0);
                 if(data.iconCts != null) {
                   MDL_table.__tooltip(iconCell, ttTb => MDL_table._l_ctLi(ttTb, data.iconCts, 40.0, 4));
                 };
               };
-              // <TABLE>: text icon
+              // `TABLE`: text icon
               if(data.iconText != null) {
                 tb2.add(data.iconText).left().fontScale(0.75).padLeft(2.0).padRight(2.0);
               };
@@ -843,13 +843,13 @@
           MDL_recipeDict.rcDict.customFieldMap.get(ct).icon :
           new TextureRegionDrawable(ct.uiIcon);
 
-        // <TABLE>: content
+        // `TABLE`: content
         MDL_table.__break(this.cont);
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
           let cont = new Table();
 
-          // <TABLE>: icon
+          // `TABLE`: icon
           cont.button(ctIcon, 48.0, () => {
             this.hide();
             isCustomField ?
@@ -858,16 +858,16 @@
           }).left().row();
           pnTb.add(cont).growX();
 
-          // <TABLE>: producer
+          // `TABLE`: producer
           let prodArr = MDL_recipeDict._producers(ct, true);
           if(prodArr.length > 0) {
-            // <TABLE>: producer title
+            // `TABLE`: producer title
             cont.table(Tex.whiteui, tb => {
               tb.center().setColor(Color.darkGray);
               MDL_table.__margin(tb, 0.5);
               tb.add(MDL_bundle._term("lovec", "produced-in")).pad(4.0);
             }).left().growX().row();
-            // <TABLE>: producer list
+            // `TABLE`: producer list
             cont.table(Tex.whiteui, tb => {
               tb.left().setColor(Pal.darkestGray);
               MDL_table.__margin(tb);
@@ -875,16 +875,16 @@
             }).left().growX().row();
           };
 
-          // <TABLE>: consumer
+          // `TABLE`: consumer
           let consArr = MDL_recipeDict._consumers(ct, true);
           if(consArr.length > 0) {
-            // <TABLE>: consumer title
+            // `TABLE`: consumer title
             cont.table(Tex.whiteui, tb => {
               tb.center().setColor(Color.darkGray);
               MDL_table.__margin(tb, 0.5);
               tb.add(MDL_bundle._term("lovec", "used-in")).pad(4.0);
             }).left().growX().row();
-            // <TABLE>: consumer list
+            // `TABLE`: consumer list
             cont.table(Tex.whiteui, tb => {
               tb.left().setColor(Pal.darkestGray);
               MDL_table.__margin(tb);
@@ -892,11 +892,11 @@
             }).left().growX().row();
           };
 
-          // <TABLE>: building
+          // `TABLE`: building
           if(ct instanceof Item) {
             let reqBlks = MDL_content._reqBlks(ct);
             if(reqBlks.length > 0) {
-              // <TABLE>: building title
+              // `TABLE`: building title
               cont.table(Tex.whiteui, tb => {
                 tb.center().setColor(Color.darkGray);
                 MDL_table.__margin(tb, 0.5);
@@ -905,7 +905,7 @@
               .left()
               .growX()
               .row();
-              // <TABLE>: building list
+              // `TABLE`: building list
               cont.table(Tex.whiteui, tb => {
                 tb.center().setColor(Pal.darkestGray);
                 MDL_table._l_ctLi(tb, reqBlks, 48.0, null, this);
@@ -917,7 +917,7 @@
           };
         }).row();
 
-        // <TABLE>: buttons
+        // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
         MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "new-window"), () => {

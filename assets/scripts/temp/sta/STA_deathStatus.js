@@ -33,8 +33,8 @@
 
 
     /**
-     * <PARAM>: Script called when the unit is killed.
-     * <br> <ARGS>: unit.
+     * `PARAM`: Script called when the unit is killed.
+     * <br> `ARGS`: unit.
      * @memberof STA_deathStatus
      * @instance
      */

@@ -33,13 +33,13 @@
 
 
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof WEA_baseWeather
      * @instance
      */
     overwriteVanillaStat: true,
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof WEA_baseWeather
      * @instance
      */

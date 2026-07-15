@@ -217,7 +217,7 @@
    * Whether a building can accept a list of items from `b_f`.
    * @param {Building} b
    * @param {Building} b_f
-   * @param {Array} itmAmtArr - <ROW>: itm_gn, amt.
+   * @param {Array} itmAmtArr - `ROW`: itm_gn, amt.
    * @return {boolean}
    */
   const acceptItmAmtArr = function(b, b_f, itmAmtArr) {
@@ -237,7 +237,7 @@
    * Adds a list of items to some building from `b_f`.
    * @param {Building} b
    * @param {Building} b_f
-   * @param {Array} itmAmtArr - <ROW>: itm_gn, amt.
+   * @param {Array} itmAmtArr - `ROW`: itm_gn, amt.
    * @return {boolean}
    */
   const addItmAmtArr = function(b, b_f, itmAmtArr) {

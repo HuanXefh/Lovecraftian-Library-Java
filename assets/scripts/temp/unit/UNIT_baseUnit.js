@@ -108,79 +108,79 @@
 
 
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof UNIT_baseUnit
      * @instance
      */
     overwriteVanillaStat: true,
     /**
-     * <PARAM>: See {@link RS_baseResource}.
+     * `PARAM`: See {@link RS_baseResource}.
      * @memberof UNIT_baseUnit
      * @instance
      */
     overwriteVanillaProp: true,
     /**
-     * <PARAM>: See {@link BLK_baseBlock}.
+     * `PARAM`: See {@link BLK_baseBlock}.
      * @memberof UNIT_baseUnit
      * @instance
      */
     skipOutlineSetup: false,
     /**
-     * <PARAM>: Whether to enable health-based status effects.
+     * `PARAM`: Whether to enable health-based status effects.
      * @memberof UNIT_baseUnit
      * @instance
      */
     useLovecDamagePenalty: true,
     /**
-     * <PARAM>: Items (as name) that this unit cannot take.
+     * `PARAM`: Items (as name) that this unit cannot take.
      * @memberof UNIT_baseUnit
      * @instance
      */
     itmBlacklist: prov(() => []),
     /**
-     * <PARAM>: If larger than 0.0, shield will always be drawn.
+     * `PARAM`: If larger than 0.0, shield will always be drawn.
      * @memberof UNIT_baseUnit
      * @instance
      */
     baseShieldA: 0.0,
     /**
-     * <PARAM>: Shield radius scaling.
+     * `PARAM`: Shield radius scaling.
      * @memberof UNIT_baseUnit
      * @instance
      */
     shieldRadScl: 1.0,
     /**
-     * <PARAM>: Increase of shield radius when hit or regenerated.
+     * `PARAM`: Increase of shield radius when hit or regenerated.
      * @memberof UNIT_baseUnit
      * @instance
      */
     shieldRadHitInc: 0.75,
     /**
-     * <PARAM>: Whether to use conical light instead of vanilla circular light.
+     * `PARAM`: Whether to use conical light instead of vanilla circular light.
      * @memberof UNIT_baseUnit
      * @instance
      */
     useConicalLight: true,
     /**
-     * <PARAM>: Affects cone angle of the light. Requires {@link UNIT_baseUnit#useConicalLight} to be true.
+     * `PARAM`: Affects cone angle of the light. Requires {@link UNIT_baseUnit#useConicalLight} to be true.
      * @memberof UNIT_baseUnit
      * @instance
      */
     lightConeScl: 0.4,
     /**
-     * <PARAM>: Durability in frames, the unit will be destroyed if run out of durability. Use negative value to disable this mechanics.
+     * `PARAM`: Durability in frames, the unit will be destroyed if run out of durability. Use negative value to disable this mechanics.
      * @memberof UNIT_baseUnit
      * @instance
      */
     unitDurabCap: -1.0,
     /**
-     * <PARAM>: If true, this unit will despawn when not bound to a building for too long.
+     * `PARAM`: If true, this unit will despawn when not bound to a building for too long.
      * @memberof UNIT_baseUnit
      * @instance
      */
     isTetheredUnit: false,
     /**
-     * <PARAM>: Time required without bound building for this tethered unit to despawn. Use negative value for never despawning.
+     * `PARAM`: Time required without bound building for this tethered unit to despawn. Use negative value for never despawning.
      * @memberof UNIT_baseUnit
      * @instance
      */
@@ -191,25 +191,25 @@
 
 
     /**
-     * <INTERNAL>: Entity used by this type, do not change unless you know how it works.
+     * `INTERNAL`: Entity used by this type, do not change unless you know how it works.
      * @memberof UNIT_baseUnit
      * @instance
      */
     entityName: "flying",
     /**
-     * <INTERNAL> The content template used for unit entity.
+     * `INTERNAL` The content template used for unit entity.
      * @memberof UNIT_baseUnit
      * @instance
      */
     entityTemplate: null,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof UNIT_baseUnit
      * @instance
      */
     hasUnitData: true,
     /**
-     * <INTERNAL>: Pollution tolerance.
+     * `INTERNAL`: Pollution tolerance.
      * @memberof UNIT_baseUnit
      * @instance
      */
@@ -321,7 +321,7 @@
 
     /**
      * Called when this unit's durability decreases.
-     * <br> <LATER>
+     * <br> `LATER`
      * @memberof UNIT_baseUnit
      * @instance
      * @param {Unit} unit

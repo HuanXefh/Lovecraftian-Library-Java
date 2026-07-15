@@ -182,50 +182,50 @@
 
 
         /**
-         * <PARAM>: If true, this furnace cannot warm up on its own.
+         * `PARAM`: If true, this furnace cannot warm up on its own.
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         noFuelInput: false,
         /**
-         * <PARAM>: Type of fuel to consume, see {@link MDL_fuel}.
+         * `PARAM`: Type of fuel to consume, see {@link MDL_fuel}.
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         fuelType: FuelTypes.ITEM,
         /**
-         * <PARAM>: List of resources that annot be consumed as fuel.
+         * `PARAM`: List of resources that annot be consumed as fuel.
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         blockedFuels: prov(() => []),
         /**
-         * <PARAM>: If not null, this furnace can only consume these fuels.
+         * `PARAM`: If not null, this furnace can only consume these fuels.
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         allowedFuels: null,
         /**
-         * <PARAM>: Multiplier on fuel consumption.
+         * `PARAM`: Multiplier on fuel consumption.
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         fuelConsMtp: 1.0,
         /**
-         * <PARAM>: Multiplier on fuel level.
+         * `PARAM`: Multiplier on fuel level.
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         fuelLvlMtp: 1.0,
         /**
-         * <PARAM>
+         * `PARAM`
          * @override
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         heatWarmupRate: 0.0001,
         /**
-         * <PARAM>
+         * `PARAM`
          * @override
          * @memberof INTF_BLK_furnaceBlock
          * @instance
@@ -237,20 +237,20 @@
 
 
         /**
-         * <INTERNAL>: Toggle this if `acceptXxx` from this interface is the last template method to be mixed.
+         * `INTERNAL`: Toggle this if `acceptXxx` from this interface is the last template method to be mixed.
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         useAndOperForAccept: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @override
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         skipHeatTrans: true,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @override
          * @memberof INTF_BLK_furnaceBlock
          * @instance
@@ -312,43 +312,43 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_furnaceBlock
          * @instance
          */
         tempFuel: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_furnaceBlock
          * @instance
          */
         fuelPonCur: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_furnaceBlock
          * @instance
          */
         fuelSel: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_furnaceBlock
          * @instance
          */
         fuelTup: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_furnaceBlock
          * @instance
          */
         fuelEffc: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_furnaceBlock
          * @instance
          */
         furnEffc: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_furnaceBlock
          * @instance
          */
@@ -466,7 +466,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @override
        * @memberof INTF_B_furnaceBlock
        * @instance
@@ -483,7 +483,7 @@
 
       /**
        * Expected maximum temperature allowed for current recipe.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_furnaceBlock
        * @instance
        * @return {number}

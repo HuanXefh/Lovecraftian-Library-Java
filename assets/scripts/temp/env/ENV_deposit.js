@@ -36,7 +36,7 @@
   /**
    * Mineable tall blocks.
    * `blk.itemDrop` is required.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_deposit
    * @extends ENV_baseProp
    */

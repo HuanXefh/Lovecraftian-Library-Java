@@ -74,7 +74,7 @@
 
 
         /**
-         * <PARAM>: Whether to skip methods here.
+         * `PARAM`: Whether to skip methods here.
          * @memberof INTF_BLK_depthOreHandler
          * @instance
          */

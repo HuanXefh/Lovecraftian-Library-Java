@@ -23,7 +23,7 @@
 
   /**
    * Dust items after T2 purification.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_p2DustItem
    * @extends RS_dustItem
    */
@@ -37,7 +37,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_p2DustItem
      * @instance

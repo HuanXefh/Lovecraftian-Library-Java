@@ -23,7 +23,7 @@
 
   /**
    * Fluids with insolubles as the products.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_slurryLiquid
    * @extends RS_solutionLiquid
    */
@@ -37,7 +37,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_slurryLiquid
      * @instance

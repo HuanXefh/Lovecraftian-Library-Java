@@ -591,7 +591,7 @@
   /**
    * Shows selection buttons for dialog flow.
    * @param {number} delay
-   * @param {Array} textScrArr - <ROW>: text, scr.
+   * @param {Array} textScrArr - `ROW`: text, scr.
    * @param {number|unset} [w]
    * @param {number|unset} [h]
    * @param {number|unset} [inTimeS]
@@ -679,16 +679,16 @@
       dialText = dialTup == null ? "" : MDL_bundle._dialText(dialTup[0], dialTup[1], dialTup[2]).color(color);
 
     if(charaTup != null) {
-      // <TABLE>: character name
+      // `TABLE`: character name
       tb.table(Tex.bar, tb1 => {
         tb1.top().marginLeft(36.0).marginRight(36.0).marginTop(16.0).marginBottom(16.0).setColor(Color.darkGray);
         tb1.add(dialChara).center().fontScale(1.35).labelAlign(Align.left);
       }).left().row();
     };
-    // <TABLE>: text box
+    // `TABLE`: text box
     tb.table(Tex.bar, tb1 => {
       tb1.top().setColor(Pal.darkestGray);
-      // <TABLE>: text container
+      // `TABLE`: text container
       tb1.table(Styles.none, tb2 => {
         let flab = new FLabel((MDL_text._space() === "" ? "{slower}" : "{normal}") + dialText);
         if(shouldTriggerScrOnClick) tb2.clicked(() => {
@@ -703,9 +703,9 @@
         tb2.left().top().marginLeft(48.0).marginRight(48.0).marginTop(28.0).marginBottom(28.0);
         tb2.add(flab).left().top().fontScale(1.35).style(Styles.outlineLabel).labelAlign(Align.topLeft).wrap().width(_screenW() * 0.6 - 150.0).height(140.0);
       }).left().top();
-      // <TABLE>: spacing
+      // `TABLE`: spacing
       tb1.table(Styles.none, tb2 => {}).growX();
-      // <TABLE>: buttons
+      // `TABLE`: buttons
       tb1.table(Styles.none, tb2 => {
         tb2.top();
         tb2.button("X", () => Vars.ui.showConfirm(MDL_bundle._info("lovec", "dial-skip-dial-confirm"), MDL_bundle._info("lovec", "dial-skip-dial-confirm", true), () => {

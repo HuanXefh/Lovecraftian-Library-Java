@@ -9,7 +9,7 @@
    * Use to register settings, see {@link TP_setting}.
    * @class
    * @param {string} name
-   * @param {function(boolean): void} valGetter - <ARGS>: useScl.
+   * @param {function(boolean): void} valGetter - `ARGS`: useScl.
    */
   const CLS_settingTerm = newClass().initClass();
 
@@ -54,7 +54,7 @@
 
   /**
    * Registers a new setting category, which will be displayed in setting dialog.
-   * <br> <BUNDLE>: "term.<nameMod>-term-settings-<nameCateg>.name".
+   * <br> `BUNDLE`: "term.<nameMod>-term-settings-<nameCateg>.name".
    * @param {string} nameMod
    * @param {string} nameCateg
    * @param {boolean|unset} [isDebugCateg] - If true, this category is shown only in debug mode.

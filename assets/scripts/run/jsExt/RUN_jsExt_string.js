@@ -52,8 +52,8 @@
 
   /**
    * Whether the string starts with any piece from `strs`.
-   * <br> <ARGS>: strs.
-   * <br> <ARGS>: str1, str2, str3, ...
+   * <br> `ARGS`: strs.
+   * <br> `ARGS`: str1, str2, str3, ...
    * @return {boolean}
    */
   String.prototype.startsWithAny = function() {
@@ -65,8 +65,8 @@
 
   /**
    * Whether the string ends with any piece from `strs`.
-   * <br> <ARGS>: strs.
-   * <br> <ARGS>: str1, str2, str3, ...
+   * <br> `ARGS`: strs.
+   * <br> `ARGS`: str1, str2, str3, ...
    * @return {boolean}
    */
   String.prototype.endsWithAny = function() {
@@ -78,8 +78,8 @@
 
   /**
    * Whether the string contains any piece from `strs`.
-   * <br> <ARGS>: strs.
-   * <br> <ARGS>: str1, str2, str3, ...
+   * <br> `ARGS`: strs.
+   * <br> `ARGS`: str1, str2, str3, ...
    * @return {boolean}
    */
   String.prototype.includesAny = function() {
@@ -91,8 +91,8 @@
 
   /**
    * Whether the string contains all the pieces from `strs`.
-   * <br> <ARGS>: strs.
-   * <br> <ARGS>: str1, str2, str3, ...
+   * <br> `ARGS`: strs.
+   * <br> `ARGS`: str1, str2, str3, ...
    * @return {boolean}
    */
   String.prototype.includesAll = function() {
@@ -105,8 +105,8 @@
   /**
    * Whether the string equals any string from `strs`.
    * No triple equality here!
-   * <br> <ARGS>: strs.
-   * <br> <ARGS>: str1, str2, str3, ...
+   * <br> `ARGS`: strs.
+   * <br> `ARGS`: str1, str2, str3, ...
    * @return {boolean}
    */
   String.prototype.equalsAny = function() {

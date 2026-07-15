@@ -115,25 +115,25 @@
 
 
         /**
-         * <PARAM>: See {@link INTF_BLK_manualClickBlock}.
+         * `PARAM`: See {@link INTF_BLK_manualClickBlock}.
          * @memberof INTF_BLK_manualTimerBlock
          * @instance
          */
         manualTimerCfgTp: "boolean",
         /**
-         * <PARAM>: Maximum time charged in frames.
+         * `PARAM`: Maximum time charged in frames.
          * @memberof INTF_BLK_manualTimerBlock
          * @instance
          */
         manualTimerCap: Number.n8,
         /**
-         * <PARAM>: Time charged by on single click.
+         * `PARAM`: Time charged by on single click.
          * @memberof INTF_BLK_manualTimerBlock
          * @instance
          */
         manualTimerClickInc: 60.0,
         /**
-         * <PARAM>: See {@link INTF_BLK_manualClickBlock}.
+         * `PARAM`: See {@link INTF_BLK_manualClickBlock}.
          * @memberof INTF_BLK_manualTimerBlock
          * @instance
          */
@@ -208,7 +208,7 @@
 
       /**
        * See {@link INTF_B_manualClickBlock}.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_manualTimerBlock
        * @instance
        * @param {any} val

@@ -17,7 +17,7 @@
     this.isHidden = false;
     this.isLoaded = false;
     /**
-     * <TUP>: name, icon, isToggle, clickScr, updateScr
+     * `TUPLE`: name, icon, isToggle, clickScr, updateScr
      * @type {Array<Array<[string|null, BaseDrawable, boolean, Function, Function]>>}
      */
     this.btnData = [

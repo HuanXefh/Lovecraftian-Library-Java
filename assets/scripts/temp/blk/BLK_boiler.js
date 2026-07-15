@@ -123,61 +123,61 @@
 
 
       /**
-       * <PARAM>: Explosion radius.
+       * `PARAM`: Explosion radius.
        * @memberof BLK_boiler
        * @instance
        */
       exploRad: 40.0,
       /**
-       * <PARAM>: Explosion damage. Use 0.0 to disable explosion.
+       * `PARAM`: Explosion damage. Use 0.0 to disable explosion.
        * @memberof BLK_boiler
        * @instance
        */
       exploDmg: 3000.0,
       /**
-       * <PARAM>: Explosion shake.
+       * `PARAM`: Explosion shake.
        * @memberof BLK_boiler
        * @instance
        */
       exploShake: 12.0,
       /**
-       * <PARAM>: Minimum instability required for this boiler to explode when destroyed.
+       * `PARAM`: Minimum instability required for this boiler to explode when destroyed.
        * @memberof BLK_boiler
        * @instance
        */
       hitExploMinInstab: 0.3,
       /**
-       * <PARAM>: Fluid that causes explosion if full, nullable.
+       * `PARAM`: Fluid that causes explosion if full, nullable.
        * @memberof BLK_boiler
        * @instance
        */
       exploFldTg: "loveclab-gas0int-steam-hp",
       /**
-       * <PARAM>: Fluid that causes explosion if the boiler is dry-heated, nullable.
+       * `PARAM`: Fluid that causes explosion if the boiler is dry-heated, nullable.
        * @memberof BLK_boiler
        * @instance
        */
       dryHeatFldTg: "loveclab-liq0ore-water",
       /**
-       * <PARAM>: Temperature above which dry-heating can happen.
+       * `PARAM`: Temperature above which dry-heating can happen.
        * @memberof BLK_boiler
        * @instance
        */
       dryHeatThr: 100.0,
       /**
-       * <PARAM>: Temperature below which the boiler exits dry-heated state, half of {@link BLK_boiler#dryHeatThr} by default.
+       * `PARAM`: Temperature below which the boiler exits dry-heated state, half of {@link BLK_boiler#dryHeatThr} by default.
        * @memberof BLK_boiler
        * @instance
        */
       dryHeatCancelThr: -1.0,
       /**
-       * <PARAM>: Instability increase/decrease rate.
+       * `PARAM`: Instability increase/decrease rate.
        * @memberof BLK_boiler
        * @instance
        */
       boilerInstabIncRate: 0.001,
       /**
-       * <PARAM>: Most boilers only accept external heat. Set this to false if the boiler burns fuel items.
+       * `PARAM`: Most boilers only accept external heat. Set this to false if the boiler burns fuel items.
        * @override
        * @memberof BLK_boiler
        * @instance

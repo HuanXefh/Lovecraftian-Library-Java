@@ -144,25 +144,25 @@
 
 
       /**
-       * <PARAM>: How deep the scanner is possible to scan. See {@link INTF_ENV_depthOverlay}.
+       * `PARAM`: How deep the scanner is possible to scan. See {@link INTF_ENV_depthOverlay}.
        * @memberof BLK_oreScanner
        * @instance
        */
       scanTier: 0,
       /**
-       * <PARAM>: Color used for scan effect.
+       * `PARAM`: Color used for scan effect.
        * @memberof BLK_oreScanner
        * @instance
        */
       scanColor: Pal.techBlue,
       /**
-       * <PARAM>: Sounds played when this scanner crafts.
+       * `PARAM`: Sounds played when this scanner crafts.
        * @memberof BLK_oreScanner
        * @instance
        */
       craftSe: Sounds.unset,
       /**
-       * <PARAM>
+       * `PARAM`
        * @override
        * @memberof BLK_oreScanner
        * @instance
@@ -184,7 +184,7 @@
     })
     .setParamAlias([
       /**
-       * <PARAM>: Radius parameter of the scanner.
+       * `PARAM`: Radius parameter of the scanner.
        * @type {number} scanRad
        * @memberof BLK_oreScanner
        * @instance

@@ -22,7 +22,7 @@
 
   /**
    * Like {@link ShootSpread} but repetitively.
-   * <br> <DEDICATION>: Inspired by Psammos.
+   * <br> `DEDICATION`: Inspired by Psammos.
    */
   newShootPattern(
     "ShootBurst",

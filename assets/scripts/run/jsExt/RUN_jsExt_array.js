@@ -67,7 +67,7 @@
 
   /**
    * Whether `ele` is found in any of these arrays.
-   * <br> <ARGS>: ele, arr1, arr2, arr3, ...
+   * <br> `ARGS`: ele, arr1, arr2, arr3, ...
    * @return {boolean}
    */
   Array.someIncludes = function() {
@@ -83,7 +83,7 @@
 
   /**
    * Whether `ele` is found in all these arrays.
-   * <br> <ARGS>: ele, arr1, arr2, arr3, ...
+   * <br> `ARGS`: ele, arr1, arr2, arr3, ...
    * @return {boolean}
    */
   Array.everyIncludes = function() {
@@ -99,7 +99,7 @@
 
   /**
    * Whether any of the given elements is found in this array.
-   * <br> <ARGS>: ele1, ele2, ele3, ...
+   * <br> `ARGS`: ele1, ele2, ele3, ...
    * @return {boolean}
    */
   Array.prototype.includesAny = function() {
@@ -115,7 +115,7 @@
 
   /**
    * Whether all the given elements are found in this array.
-   * <br> <ARGS>: ele1, ele2, ele3, ...
+   * <br> `ARGS`: ele1, ele2, ele3, ...
    * @return {boolean}
    */
   Array.prototype.includesAll = function() {
@@ -316,7 +316,7 @@
 
   /**
    * Clears this array and fill it with given arguments.
-   * <br> <ARGS>: ele1, ele2, ele3, ...
+   * <br> `ARGS`: ele1, ele2, ele3, ...
    * @return {this}
    */
   Array.prototype.with = function() {
@@ -920,7 +920,7 @@
    * Can be used for a formatted array.
    * @param {number|unset} [ord]
    * @param {number|unset} [off]
-   * @return {Array} <ROW>: ele, count.
+   * @return {Array} `ROW`: ele, count.
    */
   Array.prototype.toCountArr = function(ord, off) {
     let arr = [];

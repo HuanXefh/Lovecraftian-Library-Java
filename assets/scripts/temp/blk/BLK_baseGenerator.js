@@ -91,7 +91,7 @@
 
 
       /**
-       * <PARAM>: Whether to overwrite explosion-related parameters with generated ones. Set this to false if the generator should not explode.
+       * `PARAM`: Whether to overwrite explosion-related parameters with generated ones. Set this to false if the generator should not explode.
        * @memberof BLK_baseGenerator
        * @instance
        */

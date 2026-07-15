@@ -153,7 +153,7 @@
 
   /**
    * Iterates through all points of the noise.
-   * @param {function(Number, Number): void} scr - <ARGS>: x, y.
+   * @param {function(Number, Number): void} scr - `ARGS`: x, y.
    * @return {void}
    */
   CLS_whiteNoise.prototype.forEachPon = function(scr) {
@@ -184,7 +184,7 @@
 
   /**
    * Sets up vectors, not used for white noise.
-   * <br> <LATER>
+   * <br> `LATER`
    * @return {void}
    */
   CLS_whiteNoise.prototype.setVecData = function() {

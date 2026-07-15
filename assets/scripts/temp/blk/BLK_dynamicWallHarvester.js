@@ -86,7 +86,7 @@
 
 
       /**
-       * <PARAM>: Liquid production rate, used only if this block produces liquid.
+       * `PARAM`: Liquid production rate, used only if this block produces liquid.
        * @memberof BLK_dynamicWallHarvester
        * @instance
        */

@@ -46,7 +46,7 @@
 
     /**
      * {@link BLK_cable} with dynamic safe power level, thus able to become member of other cable graphs.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_auxiliaryCable
      * @extends BLK_cable
      */
@@ -57,7 +57,7 @@
 
 
       /**
-       * <PARAM>: Safe power level used when only this cable exists in the graph.
+       * `PARAM`: Safe power level used when only this cable exists in the graph.
        * @override
        * @memberof BLK_auxiliaryCable
        * @instance
@@ -90,7 +90,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_auxiliaryCable
        * @instance
        */

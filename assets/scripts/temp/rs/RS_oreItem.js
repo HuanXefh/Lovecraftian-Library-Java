@@ -44,8 +44,8 @@
 
 
     /**
-     * <PARAM>: Sintering temperature.
-     * <br> <DB>: itm-sint-temp.
+     * `PARAM`: Sintering temperature.
+     * <br> `DB`: itm-sint-temp.
      * @memberof RS_oreItem
      * @instance
      */

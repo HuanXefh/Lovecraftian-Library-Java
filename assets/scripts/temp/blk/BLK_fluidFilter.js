@@ -60,7 +60,7 @@
     /**
      * Fluid junction that only allows selected fluid to pass.
      * Unlike item filter gate, this has no side output since no need.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_fluidFilter
      * @extends BLK_fluidJunction
      * @extends INTF_BLK_contentSelector

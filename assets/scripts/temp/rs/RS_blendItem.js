@@ -23,7 +23,7 @@
 
   /**
    * Items produced by mixers or ball mills.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_blendItem
    * @extends RS_intermediateItem
    */
@@ -37,7 +37,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_blendItem
      * @instance

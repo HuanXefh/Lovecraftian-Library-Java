@@ -84,13 +84,13 @@
 
 
       /**
-       * <PARAM>: Cooldown between each round.
+       * `PARAM`: Cooldown between each round.
        * @memberof BLK_coreRelay
        * @instance
        */
       itmSendCooldown: 300.0,
       /**
-       * <PARAM>: Sound played when items are sent.
+       * `PARAM`: Sound played when items are sent.
        * @memberof BLK_coreRelay
        * @instance
        */

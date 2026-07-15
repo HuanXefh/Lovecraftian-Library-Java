@@ -92,13 +92,13 @@
 
 
         /**
-         * <PARAM>: Rate at which fluid heat approaches target temperature.
+         * `PARAM`: Rate at which fluid heat approaches target temperature.
          * @memberof INTF_BLK_fluidHeatAcceptor
          * @instance
          */
         fHeatWarmupRate: 0.004,
         /**
-         * <PARAM>: Whether fluid heat region is rotatable.
+         * `PARAM`: Whether fluid heat region is rotatable.
          * @memberof INTF_BLK_fluidHeatAcceptor
          * @instance
          */
@@ -109,13 +109,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_fluidHeatAcceptor
          * @instance
          */
         heatRes: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_fluidHeatAcceptor
          * @instance
          */
@@ -161,13 +161,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_fluidHeatAcceptor
          * @instance
          */
         fHeatCur: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_fluidHeatAcceptor
          * @instance
          */

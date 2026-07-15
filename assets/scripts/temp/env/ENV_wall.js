@@ -41,7 +41,7 @@
 
   /**
    * Most common terrain walls.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_wall
    * @extends ENV_baseProp
    */
@@ -52,7 +52,7 @@
 
 
     /**
-     * <PARAM>: Parent floor of this wall.
+     * `PARAM`: Parent floor of this wall.
      * @memberof ENV_wall
      * @instance
      */

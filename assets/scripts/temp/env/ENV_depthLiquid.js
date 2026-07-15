@@ -40,7 +40,7 @@
 
   /**
    * Similar to {@link ENV_depthOre}, but for liquid.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_depthLiquid
    * @extends ENV_baseOverlay
    * @extends INTF_ENV_depthOverlay
@@ -55,7 +55,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof ENV_depthLiquid
      * @instance
      */

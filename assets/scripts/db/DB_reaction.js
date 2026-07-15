@@ -25,8 +25,8 @@ const db = {
   /**
    * Reaction definition, `e` and `rs` can be null.
    * Note that the script is called on server side only.
-   * <br> <ROW>: reaction, [p, scr].
-   * <br> <ARGS>: paramObj, x, y, e, rs.
+   * <br> `ROW`: reaction, [p, scr].
+   * <br> `ARGS`: paramObj, x, y, e, rs.
    */
   reaction: [
 
@@ -99,8 +99,8 @@ const db = {
 
   /**
    * Conditions for each reaction group.
-   * <br> <ROW>: reacGrp, boolF.
-   * <br> <ARGS>: rs.
+   * <br> `ROW`: reacGrp, boolF.
+   * <br> `ARGS`: rs.
    */
   groupCond: [
 
@@ -129,7 +129,7 @@ const db = {
   /**
    * List of fluid reactants and the event called.
    * Expected to be orderless.
-   * <br> <ROW>: reac1, reac2, [reaction, paramObj].
+   * <br> `ROW`: reac1, reac2, [reaction, paramObj].
    */
   fluid: [
 
@@ -141,7 +141,7 @@ const db = {
   /**
    * List of item reactant, fluid reactant and the event called (item cannot react with item directly).
    * Expected to be orderless.
-   * <br> <ROW>: reac1, reac2, [reaction, paramObj].
+   * <br> `ROW`: reac1, reac2, [reaction, paramObj].
    */
   item: [
 
@@ -158,7 +158,7 @@ const db = {
 
   /**
    * List of block material group, fluid reactant and the event called.
-   * <br> <ROW>: matGrp, reac, [reaction, paramObj].
+   * <br> `ROW`: matGrp, reac, [reaction, paramObj].
    */
   material: [
 
@@ -170,7 +170,7 @@ const db = {
   /**
    * Target item in a denaturing reaction.
    * If null no item will be formed.
-   * <br> <ROW>: itm_f, itm_t.
+   * <br> `ROW`: itm_f, itm_t.
    */
   denaturingTarget: [],
 
@@ -179,7 +179,7 @@ const db = {
    * Target liquid in a solvation reaction.
    * If null content of puddle won't be changed.
    * <br> <ROW-xxx>: itm, liq.
-   * <br> <EXTENSIBLE>
+   * <br> `EXTENSIBLE`
    */
   solvationTarget: {
 

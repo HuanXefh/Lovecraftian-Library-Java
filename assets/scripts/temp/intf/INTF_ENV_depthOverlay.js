@@ -93,7 +93,7 @@
 
 
       /**
-       * <PARAM>: How deep the overlay is, related to scanner tier.
+       * `PARAM`: How deep the overlay is, related to scanner tier.
        * @memberof INTF_ENV_depthOverlay
        * @instance
        */

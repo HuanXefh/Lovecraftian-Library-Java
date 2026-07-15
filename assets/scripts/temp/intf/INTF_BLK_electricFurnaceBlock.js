@@ -104,32 +104,32 @@
 
 
         /**
-         * <PARAM>: Base power consumption regardless of temperature.
+         * `PARAM`: Base power consumption regardless of temperature.
          * @memberof INTF_BLK_electricFurnaceBlock
          * @instance
          */
         powConsBase: 1.0,
         /**
-         * <PARAM>: Power consumption added for each 100 HU.
+         * `PARAM`: Power consumption added for each 100 HU.
          * @memberof INTF_BLK_electricFurnaceBlock
          * @instance
          */
         powConsPerFuelLvl: 1.0,
         /**
-         * <PARAM>: Affects maximum temperature allowed to reach. The furnace will get damaged when overheated.
+         * `PARAM`: Affects maximum temperature allowed to reach. The furnace will get damaged when overheated.
          * @memberof INTF_BLK_electricFurnaceBlock
          * @instance
          */
         maxOverheatScl: 1.5,
         /**
-         * <PARAM>
+         * `PARAM`
          * @override
          * @memberof INTF_BLK_electricFurnaceBlock
          * @instance
          */
         heatWarmupRate: 0.0001,
         /**
-         * <PARAM>
+         * `PARAM`
          * @override
          * @memberof INTF_BLK_electricFurnaceBlock
          * @instance
@@ -141,13 +141,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
         skipHeatTrans: true,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
@@ -192,13 +192,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_electricFurnaceBlock
          * @instance
          */
         tempSet: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_electricFurnaceBlock
          * @instance
          */
@@ -294,7 +294,7 @@
 
 
       /**
-       * <LATER>
+       * `LATER`
        * @override
        * @memberof INTF_B_electricFurnaceBlock
        * @instance
@@ -310,7 +310,7 @@
 
       /**
        * See {@link INTF_B_furnaceBlock}.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_electricFurnaceBlock
        * @instance
        * @return {number}

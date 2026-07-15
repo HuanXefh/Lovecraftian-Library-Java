@@ -67,7 +67,7 @@
 
 
   /**
-   * <BUNDLE>: "attr.<attr_gn>.name" or "attr.<attr_gn>.description".
+   * `BUNDLE`: "attr.<attr_gn>.name" or "attr.<attr_gn>.description".
    * @param {AttrGn} attr_gn
    * @param {boolean|unset} [isDes]
    * @return {string}
@@ -85,7 +85,7 @@
    * Gets a 3-array containing blocks that have some of the given attributes.
    * @param {Plural<AttrGn>} attrs_gn_p
    * @param {(function(Block): boolean)|unset} [boolF] - Used to filter out valid blocks.
-   * @return {Array} <ROW>: blk, attrVal, attr.
+   * @return {Array} `ROW`: blk, attrVal, attr.
    */
   const _blkAttrArr = function(attrs_gn_p, boolF) {
     if(boolF == null) boolF = Function.airTrue;
@@ -109,7 +109,7 @@
 
   /**
    * Gets attributes that are present in an attribute-resource array.
-   * @param {Array} attrRsArr - See {@link DB_item}. <br> <ROW>: attr, rs.
+   * @param {Array} attrRsArr - See {@link DB_item}. <br> `ROW`: attr, rs.
    * @return {Array<string>}
    */
   const _attrs_attrRsArr = function(attrRsArr) {
@@ -244,7 +244,7 @@
    * @param {Array} attrRsArr
    * @param {Array<Tile>} ts
    * @param {number|unset} [mode] - See {@link AttrModes}.
-   * @return {[Attribute, number, Resource]} <TUP>: attr, attrSum, rs.
+   * @return {[Attribute, number, Resource]} `TUPLE`: attr, attrSum, rs.
    */
   const _dynaAttrTup = function(attrRsArr, ts, mode) {
     let attr = null;

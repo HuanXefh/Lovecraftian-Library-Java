@@ -124,25 +124,25 @@
 
 
         /**
-         * <PARAM>: See {@link INTF_BLK_manualClickBlock}.
+         * `PARAM`: See {@link INTF_BLK_manualClickBlock}.
          * @memberof INTF_BLK_manualStartBlock
          * @instance
          */
         manualStartCfgTp: "boolean",
         /**
-         * <PARAM>: Warmup increase rate.
+         * `PARAM`: Warmup increase rate.
          * @memberof INTF_BLK_manualStartBlock
          * @instance
          */
         manualStartIncRate: 0.001,
         /**
-         * <PARAM>: Warmup decrease rate.
+         * `PARAM`: Warmup decrease rate.
          * @memberof INTF_BLK_manualStartBlock
          * @instance
          */
         manualStartDecRate: 0.008,
         /**
-         * <PARAM>: See {@link INTF_BLK_manualClickBlock}.
+         * `PARAM`: See {@link INTF_BLK_manualClickBlock}.
          * @memberof INTF_BLK_manualStartBlock
          * @instance
          */
@@ -209,7 +209,7 @@
 
       /**
        * See {@link INTF_B_manualClickBlock}.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_manualStartBlock
        * @instance
        * @param {any} val

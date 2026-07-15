@@ -99,7 +99,7 @@
 
 
       /**
-       * <PARAM>: See {@link BLK_baseFactory}.
+       * `PARAM`: See {@link BLK_baseFactory}.
        * @memberof BLK_incinerator
        * @instance
        */

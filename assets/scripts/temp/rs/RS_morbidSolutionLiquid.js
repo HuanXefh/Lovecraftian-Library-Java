@@ -23,7 +23,7 @@
 
   /**
    * Fluids with unwanted insolubles.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_morbidSolutionLiquid
    * @extends RS_solutionLiquid
    */
@@ -37,7 +37,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_morbidSolutionLiquid
      * @instance

@@ -125,19 +125,19 @@
 
 
         /**
-         * <PARAM>: Payload capacity. A 2-block large payload takes 2 units, NOT SQUARED.
+         * `PARAM`: Payload capacity. A 2-block large payload takes 2 units, NOT SQUARED.
          * @memberof INTF_BLK_payloadBlock
          * @instance
          */
         payAmtCap: -1.0,
         /**
-         * <PARAM>: Determines which sides can be used for input.
+         * `PARAM`: Determines which sides can be used for input.
          * @memberof INTF_BLK_payloadBlock
          * @instance
          */
         payInputSideFracMode: SideFracModes.FRONT,
         /**
-         * <PARAM>: Determines which sides can be used for output.
+         * `PARAM`: Determines which sides can be used for output.
          * @memberof INTF_BLK_payloadBlock
          * @instance
          */
@@ -298,7 +298,7 @@
 
       /**
        * Expected consumption amount of some content, for crafters only.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_payloadBlock
        * @instance
        * @param {string} nameCt
@@ -315,7 +315,7 @@
 
       /**
        * Expected production amount of some content, for crafters only.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_payloadBlock
        * @instance
        * @param {string} nameCt

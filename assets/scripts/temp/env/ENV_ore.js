@@ -31,7 +31,7 @@
 
   /**
    * Vanilla ore overlay, only for ground ores.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_ore
    * @extends ENV_baseOverlay
    */
@@ -51,7 +51,7 @@
   })
   .setParamAlias([
     /**
-     * <PARAM>: If true, the ore will be displayed on minimap.
+     * `PARAM`: If true, the ore will be displayed on minimap.
      * @type {boolean} showOreOnMinimap
      * @memberof ENV_ore
      * @instance

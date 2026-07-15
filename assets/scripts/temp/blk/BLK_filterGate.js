@@ -109,7 +109,7 @@
 
     /**
      * Sorter with `blk.invert` being useless.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_filterGate
      * @extends BLK_baseItemGate
      */
@@ -120,14 +120,14 @@
 
 
       /**
-       * <PARAM>: Item is selected when this returns true.
-       * <ARGS>: b, b_f, itm.
+       * `PARAM`: Item is selected when this returns true.
+       * `ARGS`: b, b_f, itm.
        * @memberof BLK_filterGate
        * @instance
        */
       filterScrTup: prov(() => [(b, b_f, itm) => itm === b.sortItem]),
       /**
-       * <PARAM>: If true, item selector will be hidden.
+       * `PARAM`: If true, item selector will be hidden.
        * @memberof BLK_filterGate
        * @instance
        */

@@ -42,7 +42,7 @@
 
 
       /**
-       * <PARAM>: See {@link BLK_furnaceHeater}.
+       * `PARAM`: See {@link BLK_furnaceHeater}.
        * @memberof BLK_electricHeater
        * @instance
        */

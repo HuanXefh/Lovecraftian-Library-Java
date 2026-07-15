@@ -91,7 +91,7 @@
 
 
       /**
-       * <PARAM>: If true, pressure explosion will be disabled.
+       * `PARAM`: If true, pressure explosion will be disabled.
        * @memberof BLK_fluidRouter
        * @instance
        */

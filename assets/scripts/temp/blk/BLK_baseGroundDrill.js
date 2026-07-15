@@ -129,19 +129,19 @@
 
 
       /**
-       * <PARAM>: Whether this drill is capable of mining depth ore.
+       * `PARAM`: Whether this drill is capable of mining depth ore.
        * @memberof BLK_baseGroundDrill
        * @instance
        */
       canMineDepthOre: false,
       /**
-       * <PARAM>: Multiplier on drill tier when mining depth ore.
+       * `PARAM`: Multiplier on drill tier when mining depth ore.
        * @memberof BLK_baseGroundDrill
        * @instance
        */
       depthTierMtp: 0.5,
       /**
-       * <PARAM>: Maximum depth level of depth ores that this drill can mine.
+       * `PARAM`: Maximum depth level of depth ores that this drill can mine.
        * @memberof BLK_baseGroundDrill
        * @instance
        */

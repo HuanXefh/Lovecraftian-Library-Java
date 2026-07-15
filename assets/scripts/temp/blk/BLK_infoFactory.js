@@ -48,14 +48,14 @@
 
 
       /**
-       * <PARAM>: Gets information to display.
-       * <br> <ARGS>: b.
+       * `PARAM`: Gets information to display.
+       * <br> `ARGS`: b.
        * @memberof BLK_infoFactory
        * @instance
        */
       infoGetterTup: null,
       /**
-       * <PARAM>: Integer offset for information text.
+       * `PARAM`: Integer offset for information text.
        * @memberof BLK_infoFactory
        * @instance
        */

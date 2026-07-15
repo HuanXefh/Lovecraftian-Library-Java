@@ -31,7 +31,7 @@
 
     /**
      * Parent of all item transportation gates.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_baseItemGate
      * @extends BLK_baseItemDistributor
      */

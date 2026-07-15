@@ -26,7 +26,7 @@
 
     /**
      * Vanilla item junction.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_itemJunction
      * @extends BLK_baseItemGate
      */

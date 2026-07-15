@@ -306,7 +306,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-faction-<nameFaction>.name".
+   * `BUNDLE`: "term.common-term-faction-<nameFaction>.name".
    * @param {string} faction
    * @return {string}
    */
@@ -374,7 +374,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-fami-<nameFami>.name".
+   * `BUNDLE`: "term.common-term-fami-<nameFami>.name".
    * @param {string} facFami
    * @return {string}
    */

@@ -67,7 +67,7 @@
 
 
       /**
-       * <PARAM>: Whether this harvester outputs loot instead of items.
+       * `PARAM`: Whether this harvester outputs loot instead of items.
        * @memberof BLK_wallHarvester
        * @instance
        */

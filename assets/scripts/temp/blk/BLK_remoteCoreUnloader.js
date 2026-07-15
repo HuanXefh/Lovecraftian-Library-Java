@@ -35,7 +35,7 @@
 
     /**
      * A special directional unloader that always unloads items from the nearest core.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_remoteCoreUnloader
      * @extends BLK_directionalUnloader
      */

@@ -80,7 +80,7 @@
     /**
      * An axial torque transmitter.
      * Better than cogwheel for remote torque transfer.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_transmissionRod
      * @extends BLK_baseTorqueBlock
      */
@@ -91,7 +91,7 @@
 
 
       /**
-       * <PARAM>: Amount if frames for the rod sprite.
+       * `PARAM`: Amount if frames for the rod sprite.
        * @memberof BLK_transmissionRod
        * @instance
        */

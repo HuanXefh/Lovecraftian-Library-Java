@@ -35,7 +35,7 @@
 
   /**
    * Underground ore that is only mineable by certain drills, and requires scanning.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_depthOre
    * @extends ENV_baseOverlay
    * @extends INTF_ENV_depthOverlay

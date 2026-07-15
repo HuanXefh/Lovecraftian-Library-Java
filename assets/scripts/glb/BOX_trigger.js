@@ -13,7 +13,7 @@ const BOX_trigger = new CLS_objectBox({
   /**
    * Triggered when map is changed.
    * Can be fired more than once!
-   * <br> <ARGS>: nameMap.
+   * <br> `ARGS`: nameMap.
    */
   mapChange: new CLS_eventTrigger("lovec-map-change"),
 
@@ -21,7 +21,7 @@ const BOX_trigger = new CLS_objectBox({
   /**
    * Triggered when exiting some map.
    * Can be fired more than once!
-   * <br> <ARGS>: nameMap.
+   * <br> `ARGS`: nameMap.
    */
   mapExit: new CLS_eventTrigger("lovec-map-exit"),
 
@@ -57,9 +57,9 @@ const BOX_trigger = new CLS_objectBox({
    */
   majorIter: {
     start: new CLS_eventTrigger("lovec-major-iter-start"),
-    /** <ARGS>: b, isActive. */
+    /** `ARGS`: b, isActive. */
     building: new CLS_eventTrigger("lovec-major-iter-building"),
-    /** <ARGS>: unit. */
+    /** `ARGS`: unit. */
     unit: new CLS_eventTrigger("lovec-major-iter-unit"),
     end: new CLS_eventTrigger("lovec-major-iter-end"),
   },
@@ -67,7 +67,7 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered whenever a unit (not loot or anything internal) is destroyed.
-   * <br> <ARGS>: unit.
+   * <br> `ARGS`: unit.
    */
   unitDestroy: (function() {
     MDL_event._c_onUnitDestroy(unit => {
@@ -81,14 +81,14 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered whenever a unit gets hidden by trees.
-   * <br> <ARGS>: unit.
+   * <br> `ARGS`: unit.
    */
   treeHide: new CLS_eventTrigger("lovec-tree-hide"),
 
 
   /**
    * Triggered whenever a content is unlocked.
-   * <br> <ARGS>: ct.
+   * <br> `ARGS`: ct.
    */
   contentUnlock: (function() {
     Events.on(UnlockEvent, ev => {
@@ -101,14 +101,14 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered whenever an item is produced in some Lovec factory.
-   * <br> <ARGS>: b, itm, amt.
+   * <br> `ARGS`: b, itm, amt.
    */
   itemProduce: new CLS_eventTrigger("lovec-item-produce"),
 
 
   /**
    * Triggered every two seconds whenever a fluid is produced in some Lovec factory.
-   * <br> <ARGS>: b, liq.
+   * <br> `ARGS`: b, liq.
    */
   fluidProduce: new CLS_eventTrigger("lovec-fluid-produce"),
 
@@ -116,77 +116,77 @@ const BOX_trigger = new CLS_objectBox({
   /**
    * Triggered whenever a large building is built.
    * See {@link BLK_constructionCore}.
-   * <br> <ARGS>: b.
+   * <br> `ARGS`: b.
    */
   constructionComplete: new CLS_eventTrigger("lovec-construction-complete"),
 
 
   /**
    * Triggered whenever a loot is spawned.
-   * <br> <ARGS>: loot.
+   * <br> `ARGS`: loot.
    */
   lootSpawn: new CLS_eventTrigger("lovec-loot-spawn"),
 
 
   /**
    * Triggered whenever a loot is explicitly destroyed.
-   * <br> <ARGS>: loot.
+   * <br> `ARGS`: loot.
    */
   lootDestroy: new CLS_eventTrigger("lovec-loot-destroy"),
 
 
   /**
    * Triggered whenever a loot is drowned.
-   * <br> <ARGS>: loot.
+   * <br> `ARGS`: loot.
    */
   lootDrown: new CLS_eventTrigger("lovec-loot-drown"),
 
 
   /**
    * Triggered whenever a loot is taken by some unit.
-   * <br> <ARGS>: unit, itm, amt.
+   * <br> `ARGS`: unit, itm, amt.
    */
   lootTake: new CLS_eventTrigger("lovec-loot-take"),
 
 
   /**
    * Triggered whenever an impact wave is created (before creation).
-   * <br> <ARGS>: x, y, dmg, rad.
+   * <br> `ARGS`: x, y, dmg, rad.
    */
   impactWave: new CLS_eventTrigger("lovec-impact-wave"),
 
 
   /**
    * Triggered whenever a unit is killed by impact wave.
-   * <br> <ARGS>: x, y, unit.
+   * <br> `ARGS`: x, y, unit.
    */
   impactWaveDeath: new CLS_eventTrigger("lovec-impact-wave-death"),
 
 
   /**
    * Triggered whenever a unit touches powered wire and get damaged.
-   * <br> <ARGS>: b, unit.
+   * <br> `ARGS`: b, unit.
    */
   wireTouch: new CLS_eventTrigger("lovec-wire-touch"),
 
 
   /**
    * Triggered every second when a unit is rotated by a cogwheel.
-   * <br> <ARGS>: b, unit.
+   * <br> `ARGS`: b, unit.
    */
   cogwheelUnitSpin: new CLS_eventTrigger("lovec-cogwheel-unit-spin"),
 
 
   /**
    * Triggered whenever a building explodes due to nearby fire.
-   * <br> <ARGS>: b.
+   * <br> `ARGS`: b.
    */
   buildingFireExplosion: new CLS_eventTrigger("lovec-building-fire-explosion"),
 
 
   /**
    * Triggered when a boiler explodes.
-   * <br> <ARGS>: b.
+   * <br> `ARGS`: b.
    */
   boilerExplosion: new CLS_eventTrigger("lovec-boiler-explosion"),
 
@@ -196,7 +196,7 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered when block is placed: {@link INTF_BLK_torqueBlock}.
-   * <br> <ARGS>: b.
+   * <br> `ARGS`: b.
    */
   torqueBlockPlace: new CLS_eventTrigger("lovec-torque-block-place"),
 

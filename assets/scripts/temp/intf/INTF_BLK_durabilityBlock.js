@@ -99,43 +99,43 @@
 
 
         /**
-         * <PARAM>: Default maximum durability in frames. If infinity, durability mechanics is disabled.
+         * `PARAM`: Default maximum durability in frames. If infinity, durability mechanics is disabled.
          * @memberof INTF_BLK_durabilityBlock
          * @instance
          */
         durabCap: Infinity,
         /**
-         * <PARAM>: Multiplier on durability decrease rate.
+         * `PARAM`: Multiplier on durability decrease rate.
          * @memberof INTF_BLK_durabilityBlock
          * @instance
          */
         durabDecMtp: 1.0,
         /**
-         * <PARAM>: Damage dealt as fraction of maximum health when run out of durability.
+         * `PARAM`: Damage dealt as fraction of maximum health when run out of durability.
          * @memberof INTF_BLK_durabilityBlock
          * @instance
          */
         durabDmgFrac: 0.75,
         /**
-         * <PARAM>: If true, damage dealt by durability outage won't kill the building.
+         * `PARAM`: If true, damage dealt by durability outage won't kill the building.
          * @memberof INTF_BLK_durabilityBlock
          * @instance
          */
         noDurabDmgKill: true,
         /**
-         * <PARAM>: Minimum fraction of durability cap restored upon being repaired.
+         * `PARAM`: Minimum fraction of durability cap restored upon being repaired.
          * @memberof INTF_BLK_durabilityBlock
          * @instance
          */
         durabRegenFracMin: 0.5,
         /**
-         * <PARAM>: Maximum fraction of durability cap restored upon being repaired.
+         * `PARAM`: Maximum fraction of durability cap restored upon being repaired.
          * @memberof INTF_BLK_durabilityBlock
          * @instance
          */
         durabRegenFracMax: 1.0,
         /**
-         * <PARAM>: Integer offset of the need-repairing text in `b.drawSelect`.
+         * `PARAM`: Integer offset of the need-repairing text in `b.drawSelect`.
          * @memberof INTF_BLK_durabilityBlock
          * @instance
          */
@@ -176,19 +176,19 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_durabilityBlock
          * @instance
          */
         durabFrac: 1.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_durabilityBlock
          * @instance
          */
         durabMode: "dec",
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_durabilityBlock
          * @instance
          */

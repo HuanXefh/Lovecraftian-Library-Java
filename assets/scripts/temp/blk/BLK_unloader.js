@@ -40,7 +40,7 @@
 
     /**
      * Serpulo unloader.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_unloader
      * @extends BLK_baseItemGate
      */

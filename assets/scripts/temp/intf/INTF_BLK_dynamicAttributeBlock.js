@@ -220,37 +220,37 @@
 
 
         /**
-         * <PARAM>: Determines type of blocks to check attribute. See {@link AttrModes}.
+         * `PARAM`: Determines type of blocks to check attribute. See {@link AttrModes}.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
         attrMode: AttrModes.FLOOR,
         /**
-         * <PARAM>: Determines how efficiency is calculated. See {@link AttrRcTypes}.
+         * `PARAM`: Determines how efficiency is calculated. See {@link AttrRcTypes}.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
         attrRcType: AttrRcTypes.FLOOR,
         /**
-         * <PARAM>: Attribute-resource map used to determine output. See {@link DB_item}.
+         * `PARAM`: Attribute-resource map used to determine output. See {@link DB_item}.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
         attrRsArr: null,
         /**
-         * <PARAM>: Used to add efficiency multipliers for specific outputs.
+         * `PARAM`: Used to add efficiency multipliers for specific outputs.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
         dynaAttrRsEffcMap: prov(() => new ObjectMap()),
         /**
-         * <PARAM>: Whether efficiency text should be shown in `drawPlace`.
+         * `PARAM`: Whether efficiency text should be shown in `drawPlace`.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
         shouldDrawDynaAttrText: true,
         /**
-         * <PARAM>: Integer offset of the efficiency text in `blk.drawPlace`.
+         * `PARAM`: Integer offset of the efficiency text in `blk.drawPlace`.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
@@ -261,19 +261,19 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
         hasDynaAttrItm: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
         hasDynaAttrLiq: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
@@ -314,7 +314,7 @@
 
       /**
        * Expected list of tiles for attribute calculation.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_dynamicAttributeBlock
        * @instance
        * @param {Array|unset} contArr
@@ -334,7 +334,7 @@
 
       /**
        * Expected craft time of this block.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_dynamicAttributeBlock
        * @instance
        * @return {number}
@@ -366,7 +366,7 @@
 
       /**
        * Expected attribute sum at which efficiency reaches 1.0.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_dynamicAttributeBlock
        * @instance
        * @return {number}
@@ -422,7 +422,7 @@
 
       /**
        * Expected base production amount for items.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_dynamicAttributeBlock
        * @instance
        * @return {number}
@@ -437,7 +437,7 @@
 
       /**
        * Expected base production rate for liquids.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_dynamicAttributeBlock
        * @instance
        * @return {number}
@@ -452,7 +452,7 @@
 
       /**
        * Expected production type used in TMI.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_dynamicAttributeBlock
        * @instance
        * @return {string|null}
@@ -481,25 +481,25 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_dynamicAttributeBlock
          * @instance
          */
         dynaAttrRs: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_dynamicAttributeBlock
          * @instance
          */
         dynaAttrSum: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_dynamicAttributeBlock
          * @instance
          */
         dynaAttrEffc: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_dynamicAttributeBlock
          * @instance
          */

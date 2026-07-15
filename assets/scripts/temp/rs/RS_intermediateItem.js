@@ -55,28 +55,28 @@
 
 
     /**
-     * <PARAM>: Parent of this intermediate.
+     * `PARAM`: Parent of this intermediate.
      * @override
      * @memberof RS_intermediateItem
      * @instance
      */
     intmdParent: null,
     /**
-     * <PARAM>: Extra resources used for icon tag generation.
+     * `PARAM`: Extra resources used for icon tag generation.
      * @override
      * @memberof RS_intermediateItem
      * @instance
      */
     extraIntmdParents: prov(() => []),
     /**
-     * <PARAM>: Whether to generate icons based on the parent. Set this to false if you have sprite for this intermediate.
+     * `PARAM`: Whether to generate icons based on the parent. Set this to false if you have sprite for this intermediate.
      * @override
      * @memberof RS_intermediateItem
      * @instance
      */
     useParentReg: true,
     /**
-     * <PARAM>: Determines the pixmap used to generate recolored sprites. {@link RS_intermediateItem#intmdParent} is required in this case. If null, icon tag will be used instead.
+     * `PARAM`: Determines the pixmap used to generate recolored sprites. {@link RS_intermediateItem#intmdParent} is required in this case. If null, icon tag will be used instead.
      * @override
      * @memberof RS_intermediateItem
      * @instance

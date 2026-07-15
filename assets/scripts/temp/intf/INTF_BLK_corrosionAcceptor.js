@@ -92,19 +92,19 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_corrosionAcceptor
          * @instance
          */
         matGrp: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_corrosionAcceptor
          * @instance
          */
         corRes: 1.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_corrosionAcceptor
          * @instance
          */

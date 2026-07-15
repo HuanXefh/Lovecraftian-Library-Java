@@ -98,25 +98,25 @@
 
 
       /**
-       * <PARAM>: Pull power.
+       * `PARAM`: Pull power.
        * @memberof BLK_lootPullerHopper
        * @instance
        */
       powPull: 8.0,
       /**
-       * <PARAM>: Duration of each pull.
+       * `PARAM`: Duration of each pull.
        * @memberof BLK_lootPullerHopper
        * @instance
        */
       durPull: 240.0,
       /**
-       * <PARAM>: Duration between each pull.
+       * `PARAM`: Duration between each pull.
        * @memberof BLK_lootPullerHopper
        * @instance
        */
       intvPull: 240.0,
       /**
-       * <PARAM>: Loop sound played when pulling loots.
+       * `PARAM`: Loop sound played when pulling loots.
        * @memberof BLK_lootPullerHopper
        * @instance
        */
@@ -137,7 +137,7 @@
     })
     .setParamAlias([
       /**
-       * <PARAM>: Maximum radius to pull.
+       * `PARAM`: Maximum radius to pull.
        * @type {number} pullRad
        * @memberof BLK_lootPullerHopper
        * @instance

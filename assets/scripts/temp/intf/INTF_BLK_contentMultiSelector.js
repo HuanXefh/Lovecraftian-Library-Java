@@ -105,7 +105,7 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_contentMultiSelector
          * @instance
          */
@@ -150,13 +150,13 @@
 
 
         /**
-         * <INTERNAL>: Contents selected.
+         * `INTERNAL`: Contents selected.
          * @memberof INTF_B_contentMultiSelector
          * @instance
          */
         ctTgs: prov(() => []),
         /**
-         * <INTERNAL>: Content displayed in {@link INTF_B_contentMultiSelector#ex_drawSelected}.
+         * `INTERNAL`: Content displayed in {@link INTF_B_contentMultiSelector#ex_drawSelected}.
          * @memberof INTF_B_contentMultiSelector
          * @instance
          */
@@ -232,7 +232,7 @@
 
       /**
        * Called just after config from multi-selector is loaded.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_contentMultiSelector
        * @instance
        * @param {Array} cfgArr

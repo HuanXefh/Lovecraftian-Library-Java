@@ -318,8 +318,8 @@
 
   /**
    * Called when left mouse button is pressed.
-   * <br> <DEDICATION>: Extended-UI.
-   * @param {function(number, number, number, number): void} scr - <ARGS>: dx, dy, x_f, y_f.
+   * <br> `DEDICATION`: Extended-UI.
+   * @param {function(number, number, number, number): void} scr - `ARGS`: dx, dy, x_f, y_f.
    * @param {number|string|unset} [id]
    * @return {void}
    */

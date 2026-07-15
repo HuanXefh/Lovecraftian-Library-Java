@@ -148,7 +148,7 @@
 
     /**
      * Like {@link BLK_filterGate} but for multi-item selection.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_multiFilterGate
      * @extends BLK_baseItemGate
      */
@@ -159,8 +159,8 @@
 
 
       /**
-       * <PARAM>: See {@link BLK_filterGate}.
-       * <br> <ARGS>: b, b_f, itm, rsTgs.
+       * `PARAM`: See {@link BLK_filterGate}.
+       * <br> `ARGS`: b, b_f, itm, rsTgs.
        * @memberof BLK_multiFilterGate
        * @instance
        */

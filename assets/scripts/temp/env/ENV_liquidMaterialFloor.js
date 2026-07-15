@@ -81,7 +81,7 @@
    * Similar to {@link ENV_materialFloor} but for liquid floors.
    * `blk.shallow` is used.
    * Name will be generated from `blk.liquidDrop` if not set in bundle.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_liquidMaterialFloor
    * @extends ENV_baseFloor
    */
@@ -92,31 +92,31 @@
 
 
     /**
-     * <PARAM>: See {@link ENV_materialFloor}.
+     * `PARAM`: See {@link ENV_materialFloor}.
      * @memberof ENV_liquidMaterialFloor
      * @instance
      */
     matGrp: "none",
     /**
-     * <PARAM>: Effect shown when updating the floor.
+     * `PARAM`: Effect shown when updating the floor.
      * @memberof ENV_liquidMaterialFloor
      * @instance
      */
     updateEff: Fx.none,
     /**
-     * <PARAM>: Chance for update effect.
+     * `PARAM`: Chance for update effect.
      * @memberof ENV_liquidMaterialFloor
      * @instance
      */
     updateEffP: 0.02,
     /**
-     * <PARAM>: Spread radius of update effect.
+     * `PARAM`: Spread radius of update effect.
      * @memberof ENV_liquidMaterialFloor
      * @instance
      */
     updateEffSpread: 3.0,
     /**
-     * <PARAM>: Affects intensity of update effect, larger value leads to fewer tiles being able to create the effect.
+     * `PARAM`: Affects intensity of update effect, larger value leads to fewer tiles being able to create the effect.
      * @memberof ENV_liquidMaterialFloor
      * @instance
      */

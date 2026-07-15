@@ -40,7 +40,7 @@
 
 
     /**
-     * <PARAM>: Velocity threshold for jet trail.
+     * `PARAM`: Velocity threshold for jet trail.
      * @memberof UNIT_mech
      * @instance
      */
@@ -51,7 +51,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof UNIT_mech
      * @instance

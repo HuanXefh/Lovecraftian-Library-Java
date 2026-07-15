@@ -31,7 +31,7 @@
 
   /**
    * Items produced by rock crushers.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_chunksItem
    * @extends RS_intermediateItem
    */
@@ -45,7 +45,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_chunksItem
      * @instance

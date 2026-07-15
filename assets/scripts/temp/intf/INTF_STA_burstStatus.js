@@ -47,44 +47,44 @@
 
 
       /**
-       * <PARAM>: Duration above which this status effect bursts.
+       * `PARAM`: Duration above which this status effect bursts.
        * @memberof INTF_STA_burstStatus
        * @instance
        */
       burstTime: 0.0,
       /**
-       * <PARAM>: Damage dealt when this status effect bursts.
+       * `PARAM`: Damage dealt when this status effect bursts.
        * @memberof INTF_STA_burstStatus
        * @instance
        */
       burstDamage: 0.0,
       /**
-       * <PARAM>: Damage as fraction of maximum health.
+       * `PARAM`: Damage as fraction of maximum health.
        * @memberof INTF_STA_burstStatus
        * @instance
        */
       burstDamagePerc: 0.0,
       /**
-       * <PARAM>: If true, damage from this status will ignore unit's shield.
+       * `PARAM`: If true, damage from this status will ignore unit's shield.
        * @memberof INTF_STA_burstStatus
        * @instance
        */
       burstDamageIgnoreShield: true,
       /**
-       * <PARAM>: Effect shown when this status effect bursts.
+       * `PARAM`: Effect shown when this status effect bursts.
        * @memberof INTF_STA_burstStatus
        * @instance
        */
       burstEff: Fx.none,
       /**
-       * <PARAM>: Color of burst effect.
+       * `PARAM`: Color of burst effect.
        * @memberof INTF_STA_burstStatus
        * @instance
        */
       burstEffColor: Color.white,
       /**
-       * <PARAM>: Called when this status effect bursts.
-       * <br> <ARGS>: unit.
+       * `PARAM`: Called when this status effect bursts.
+       * <br> `ARGS`: unit.
        * @memberof INTF_STA_burstStatus
        * @instance
        */

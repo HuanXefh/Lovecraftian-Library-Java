@@ -85,7 +85,7 @@
 
     /**
      * Serpulo liquid bridge.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_fluidPipeBridge
      * @extends BLK_baseFluidDistributor
      * @extends INTF_BLK_pressureBlock

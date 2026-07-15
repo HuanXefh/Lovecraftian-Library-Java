@@ -76,25 +76,25 @@
 
 
     /**
-     * <PARAM>: Material of the floor.
+     * `PARAM`: Material of the floor.
      * @memberof ENV_materialFloor
      * @instance
      */
     matGrp: "none",
     /**
-     * <PARAM>: A list of random overlay tags, will be replaced with texture regions on INIT. See {@link DB_env}.
+     * `PARAM`: A list of random overlay tags, will be replaced with texture regions on INIT. See {@link DB_env}.
      * @memberof ENV_materialFloor
      * @instance
      */
     randRegs: [],
     /**
-     * <PARAM>: Larger value leads to fewer overlays drawn.
+     * `PARAM`: Larger value leads to fewer overlays drawn.
      * @memberof ENV_materialFloor
      * @instance
      */
     randRegDenom: 80,
     /**
-     * <PARAM>: Random overlay offsets as a 2-tuple.
+     * `PARAM`: Random overlay offsets as a 2-tuple.
      * @memberof ENV_materialFloor
      * @instance
      */

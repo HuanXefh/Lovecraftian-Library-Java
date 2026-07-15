@@ -108,13 +108,13 @@
 
 
       /**
-       * <PARAM>: Determines filter for valid targets. See {@link DB_misc}.
+       * `PARAM`: Determines filter for valid targets. See {@link DB_misc}.
        * @memberof BLK_wireNode
        * @instance
        */
       linkMode: "any",
       /**
-       * <PARAM>: Minimum radius as fraction of maximum radius.
+       * `PARAM`: Minimum radius as fraction of maximum radius.
        * @memberof BLK_wireNode
        * @instance
        */

@@ -98,7 +98,7 @@
 
 
       /**
-       * <PARAM>: Size of this vent block.
+       * `PARAM`: Size of this vent block.
        * @memberof INTF_ENV_dynamicSizeVent
        * @instance
        */
@@ -176,7 +176,7 @@
 
     /**
      * Called every frame (vent center only).
-     * <br> <LATER>
+     * <br> `LATER`
      * @memberof INTF_ENV_dynamicSizeVent
      * @instance
      * @param {Tile} t

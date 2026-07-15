@@ -71,7 +71,7 @@
 
     /**
      * A fluid junction that controls pressure/vacuum.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_fluidPressureValve
      * @extends BLK_fluidJunction
      * @extends INTF_BLK_pressureBlock

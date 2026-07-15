@@ -19,7 +19,7 @@
 
   /**
    * Modifies the method with annotation.
-   * <br> <IMPORTANT>: Should be applied last after any decorator!
+   * <br> `IMPORTANT`: Should be applied last after any decorator!
    * @param {string} nameAnno
    * @param {any} [args_p] - Arguments passed down to the annotation.
    * @param {any} [skipVal] - Value returned if the original method is skipped.

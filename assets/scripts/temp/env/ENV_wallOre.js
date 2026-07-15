@@ -51,7 +51,7 @@
   })
   .setParamAlias([
     /**
-     * <PARAM>: See {@link ENV_ore}.
+     * `PARAM`: See {@link ENV_ore}.
      * @type {boolean} showOreOnMinimap
      * @memberof ENV_wallOre
      * @instance

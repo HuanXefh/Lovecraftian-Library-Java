@@ -155,31 +155,31 @@
 
 
     /**
-     * <PARAM>: Whether to skip color assignment based on sprite.
+     * `PARAM`: Whether to skip color assignment based on sprite.
      * @memberof RS_baseResource
      * @instance
      */
     skipColorAssign: false,
     /**
-     * <PARAM>: Whether to skip icon tag generation to allow vanilla animated sprite.
+     * `PARAM`: Whether to skip icon tag generation to allow vanilla animated sprite.
      * @memberof RS_baseResource
      * @instance
      */
     skipIconTagGen: false,
     /**
-     * <PARAM>: Whether to skip automatic reaction assignment.
+     * `PARAM`: Whether to skip automatic reaction assignment.
      * @memberof RS_baseResource
      * @instance
      */
     skipReactionAssign: false,
     /**
-     * <PARAM>: Whether to clear unnecessary vanilla stats for the resource (e.g. flammability will be shown only when larger than 0.0).
+     * `PARAM`: Whether to clear unnecessary vanilla stats for the resource (e.g. flammability will be shown only when larger than 0.0).
      * @memberof RS_baseResource
      * @instance
      */
     overwriteVanillaStat: true,
     /**
-     * <PARAM>: Whether to automatically set values of some vanilla properties.
+     * `PARAM`: Whether to automatically set values of some vanilla properties.
      * @memberof RS_baseResource
      * @instance
      */
@@ -190,49 +190,49 @@
 
 
     /**
-     * <INTERNAL>: Amount of sprites generated for icon tag.
+     * `INTERNAL`: Amount of sprites generated for icon tag.
      * @memberof RS_baseResource
      * @instance
      */
     alts: 0,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseResource
      * @instance
      */
     parentRegStr: "",
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseResource
      * @instance
      */
     shortName: null,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseResource
      * @instance
      */
     intmdParent: null,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseResource
      * @instance
      */
     intmdTags: null,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseResource
      * @instance
      */
     extraIntmdParents: prov(() => []),
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseResource
      * @instance
      */
     useParentReg: false,
     /**
-     * <INTERNAL>: Sprite used for recolored sprite.
+     * `INTERNAL`: Sprite used for recolored sprite.
      * @memberof RS_baseResource
      * @instance
      */
@@ -261,8 +261,8 @@
     /**
      * Gets shortened name for this resource.
      * For example, "NaOH" for sodium hydroxide.
-     * <br> <DB>: rs-short-name.
-     * <br> <DB>: rs-formula.
+     * <br> `DB`: rs-short-name.
+     * <br> `DB`: rs-formula.
      * @memberof RS_baseResource
      * @instance
      * @return {string}
@@ -353,7 +353,7 @@
 
     /**
      * Gets main name for name generation of intermediates.
-     * <br> <LATER>
+     * <br> `LATER`
      * @memberof RS_baseResource
      * @instance
      * @return {string}

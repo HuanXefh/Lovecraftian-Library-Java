@@ -91,25 +91,25 @@
 
 
         /**
-         * <PARAM>: Anything that can be drawn in a button.
+         * `PARAM`: Anything that can be drawn in a button.
          * @memberof INTF_BLK_manualTriggerBlock
          * @instance
          */
         manualTriggerIcon: "?",
         /**
-         * <PARAM>: Size of the button.
+         * `PARAM`: Size of the button.
          * @memberof INTF_BLK_manualTriggerBlock
          * @instance
          */
         manualTriggerButtonSize: 72.0,
         /**
-         * <PARAM>: Trigger Cooldown.
+         * `PARAM`: Trigger Cooldown.
          * @memberof INTF_BLK_manualTriggerBlock
          * @instance
          */
         manualTriggerCooldown: 0.0,
         /**
-         * <PARAM>: Cooldown set when the building has just been placed.
+         * `PARAM`: Cooldown set when the building has just been placed.
          * @memberof INTF_BLK_manualTriggerBlock
          * @instance
          */
@@ -180,7 +180,7 @@
 
       /**
        * Called when the button is clicked.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_manualTriggerBlock
        * @instance
        * @return {void}
@@ -195,7 +195,7 @@
 
       /**
        * Extra condition for a valid trigger.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_manualTriggerBlock
        * @instance
        * @return {boolean}

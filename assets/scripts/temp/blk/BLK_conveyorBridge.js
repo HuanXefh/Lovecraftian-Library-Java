@@ -47,7 +47,7 @@
 
     /**
      * Simply item bridge.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_conveyorBridge
      * @extends BLK_baseItemDistributor
      */

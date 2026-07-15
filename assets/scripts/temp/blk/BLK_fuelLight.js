@@ -53,13 +53,13 @@
 
 
       /**
-       * <PARAM>: Temperature at which light radius is maximized.
+       * `PARAM`: Temperature at which light radius is maximized.
        * @memberof BLK_fuelLight
        * @instance
        */
       maxLightTemp: 1000.0,
       /**
-       * <PARAM>
+       * `PARAM`
        * @override
        * @memberof BLK_fuelLight
        * @instance

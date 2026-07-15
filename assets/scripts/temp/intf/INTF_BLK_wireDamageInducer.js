@@ -61,19 +61,19 @@
 
 
         /**
-         * <PARAM>: Wire material. See {@link DB_block}.
+         * `PARAM`: Wire material. See {@link DB_block}.
          * @memberof INTF_BLK_wireDamageInducer
          * @instance
          */
         wireMat: "copper",
         /**
-         * <PARAM>: Damage dealt when a boosting unit touches the wire.
+         * `PARAM`: Damage dealt when a boosting unit touches the wire.
          * @memberof INTF_BLK_wireDamageInducer
          * @instance
          */
         wireTouchDmg: 0.0,
         /**
-         * <PARAM>: Lightning color.
+         * `PARAM`: Lightning color.
          * @memberof INTF_BLK_wireDamageInducer
          * @instance
          */
@@ -122,7 +122,7 @@
       /**
        * Finds a random target building to check whether a boosting unit is on the way.
        * Normally a target building is a building connected to this wire block.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_wireDamageInducer
        * @instance
        * @return {Building|null}

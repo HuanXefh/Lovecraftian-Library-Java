@@ -102,13 +102,13 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof DBCT_techNodeContent
      * @instance
      */
     childCts: prov(() => []),
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof DBCT_techNodeContent
      * @instance
      */

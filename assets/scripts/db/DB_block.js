@@ -19,16 +19,16 @@ const db = {
       /**
        * Core energy points provided by a block.
        * Core block provides 5 points by default.
-       * <br> <ROW>: blk, cepProv.
-       * <br> <DYNAMIC>: b => cepProv.
+       * <br> `ROW`: blk, cepProv.
+       * <br> `DYNAMIC`: b => cepProv.
        */
       prov: [],
 
 
       /**
        * Core energy points used by a block.
-       * <br> <ROW>: blk, cepUse.
-       * <br> <DYNAMIC>: b => cepUse.
+       * <br> `ROW`: blk, cepUse.
+       * <br> `DYNAMIC`: b => cepUse.
        */
       use: [],
 
@@ -47,7 +47,7 @@ const db = {
 
     /**
      * The only faction a block belongs to.
-     * <br> <ROW>: blk, faction.
+     * <br> `ROW`: blk, faction.
      */
     faction: [],
 
@@ -56,7 +56,7 @@ const db = {
      * Factory family map. Factories included in the same processes belong to the same family.
      * For instance, both jaw crusher and hammer crusher can be classified as rock crusher.
      * A factory can be included in multiple families.
-     * <br> <ROW>: blk, fami.
+     * <br> `ROW`: blk, fami.
      */
     facFami: [],
 
@@ -75,14 +75,14 @@ const db = {
 
       /**
        * Consumption of these blocks won't be parsed for recipe dictionary.
-       * <br> <ROW>: blk.
+       * <br> `ROW`: blk.
        */
       cons: [],
 
 
       /**
        * Production of these blocks won't be parsed for recipe dictionary.
-       * <br> <ROW>: blk.
+       * <br> `ROW`: blk.
        */
       prod: [],
 
@@ -93,7 +93,7 @@ const db = {
     /**
      * Material groups, used mainly for corrosion.
      * <br> <ROW-xxx>: blk.
-     * <br> <EXTENSIBLE>
+     * <br> `EXTENSIBLE`
      */
     material: {
 
@@ -134,21 +134,21 @@ const db = {
     /**
      * These blocks will trigger item reaction.
      * Only works for item blocks.
-     * <br> <ROW>: blk.
+     * <br> `ROW`: blk.
      */
     exposed: [],
 
 
     /**
      * These blocks will get damaged if containing viscous fluids.
-     * <br> <ROW>: blk.
+     * <br> `ROW`: blk.
      */
     cloggable: [],
 
 
     /**
      * These blocks can short-circuit if soaked in water.
-     * <br> <ROW>: blk.
+     * <br> `ROW`: blk.
      */
     shortCircuit: [],
 
@@ -156,14 +156,14 @@ const db = {
     /**
      * These blocks won't get involved in reaction at all.
      * No need to put core blocks here.
-     * <br> <ROW>: blk.
+     * <br> `ROW`: blk.
      */
     noReac: [],
 
 
     /**
      * These blocks won't drop loot when destroyed.
-     * <br> <ROW>: blk.
+     * <br> `ROW`: blk.
      */
     noLoot: [],
 
@@ -171,7 +171,7 @@ const db = {
     /**
      * These blocks won't create remains upon destruction.
      * No need for 1-block sized blocks and core blocks.
-     * <br> <ROW>: blk.
+     * <br> `ROW`: blk.
      */
     noRemains: [
 
@@ -193,7 +193,7 @@ const db = {
 
     /**
      * If a mod has customized building debris, don't create remains.
-     * <br> <ROW>: nameMod.
+     * <br> `ROW`: nameMod.
      */
     noRemainsMod: [
 
@@ -213,7 +213,7 @@ const db = {
 
     /**
      * Color used for faction-related texts.
-     * <br> <ROW>: faction, color.
+     * <br> `ROW`: faction, color.
      */
     factionColor: [
 
@@ -233,7 +233,7 @@ const db = {
 
     /**
      * Base pressure resistance for each material group.
-     * <br> <ROW>: matGrp, presRes.
+     * <br> `ROW`: matGrp, presRes.
      */
     presRes: [
 
@@ -253,7 +253,7 @@ const db = {
 
     /**
      * Base vacuum resistance for each material group.
-     * <br> <ROW>: matGrp, vacRes.
+     * <br> `ROW`: matGrp, vacRes.
      */
     vacRes: [
 
@@ -273,7 +273,7 @@ const db = {
 
     /**
      * Base corrosion resistance for each material group.
-     * <br> <ROW>: matGrp, corRes.
+     * <br> `ROW`: matGrp, corRes.
      */
     corRes: [
 
@@ -293,7 +293,7 @@ const db = {
 
     /**
      * Base heat resistance for each material group.
-     * <br> <ROW>: matGrp, heatRes.
+     * <br> `ROW`: matGrp, heatRes.
      */
     heatRes: [
 
@@ -313,7 +313,7 @@ const db = {
 
     /**
      * Maps a wire material to texture region name.
-     * <br> <ROW>: wireMat, regStr.
+     * <br> `ROW`: wireMat, regStr.
      */
     wireMatReg: [
 
@@ -336,8 +336,8 @@ const db = {
 
       /**
        * Used to read shield amount.
-       * <br> <ROW>: javaCls, shieldGetter.
-       * <br> <ARGS>: b, isSelfShield.
+       * <br> `ROW`: javaCls, shieldGetter.
+       * <br> `ARGS`: b, isSelfShield.
        */
       shield: [
 
@@ -349,8 +349,8 @@ const db = {
 
       /**
        * Used to read drill speed for display.
-       * <br> <ROW>: javaCls, drillSpdGetter.
-       * <br> <ARGS>: blk, boosted.
+       * <br> `ROW`: javaCls, drillSpdGetter.
+       * <br> `ARGS`: blk, boosted.
        */
       drillSpd: [
 
@@ -365,8 +365,8 @@ const db = {
       /**
        * Used to read generalized craft time for blocks.
        * This affects calculation of consumption/production rates.
-       * <br> <ROW>: javaCls, craftTimeGetter.
-       * <br> <ARGS>: blk, isDrillTime, ct.
+       * <br> `ROW`: javaCls, craftTimeGetter.
+       * <br> `ARGS`: blk, isDrillTime, ct.
        */
       craftTime: [
 
@@ -439,7 +439,7 @@ const db = {
 
         /**
          * Reload bar will be shown for blocks of these classes.
-         * <br> <ROW> javaCls.
+         * <br> `ROW` javaCls.
          */
         class: [
 
@@ -450,14 +450,14 @@ const db = {
 
         /**
          * Blocks of these classes have reload in (0.0, 1.0).
-         * <br> <ROW>: javaCls.
+         * <br> `ROW`: javaCls.
          */
         frac: [],
 
 
         /**
          * Blocks of these classes have reversed reload calculation (decreasing).
-         * <br> <ROW>: javaCls.
+         * <br> `ROW`: javaCls.
          */
         rev: [
 
@@ -468,7 +468,7 @@ const db = {
 
         /**
          * Combination of `frac` and `rev`.
-         * <br> <ROW>: javaCls.
+         * <br> `ROW`: javaCls.
          */
         revFrac: [
 
@@ -485,7 +485,7 @@ const db = {
 
         /**
          * Block classes listed here can be a wall ore on its own.
-         * <br> <ROW>: javaCls.
+         * <br> `ROW`: javaCls.
          */
         wall: [
 
@@ -504,7 +504,7 @@ const db = {
 
         /**
          * Maps a class to its payload key name.
-         * <br> <ROW>: javaCls, key.
+         * <br> `ROW`: javaCls, key.
          */
         key: [
 
@@ -522,7 +522,7 @@ const db = {
 
           /**
            * Payload sites with fixed direction.
-           * <br> <ROW>: javaCls.
+           * <br> `ROW`: javaCls.
            */
           fixed: [
 
@@ -533,7 +533,7 @@ const db = {
 
           /**
            * Payload sites with dynamic direction.
-           * <br> <ROW>: javaCls.
+           * <br> `ROW`: javaCls.
            */
           dynamic: [
 

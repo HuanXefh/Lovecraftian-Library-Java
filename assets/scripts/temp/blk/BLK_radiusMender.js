@@ -91,25 +91,25 @@
 
 
       /**
-       * <PARAM>: Heal amount for buildings.
+       * `PARAM`: Heal amount for buildings.
        * @memberof BLK_radiusMender
        * @instance
        */
       bHealAmt: 0.0,
       /**
-       * <PARAM>: Heal percentage for buildings.
+       * `PARAM`: Heal percentage for buildings.
        * @memberof BLK_radiusMender
        * @instance
        */
       bHealPerc: 0.0,
       /**
-       * <PARAM>: Heal amount for units.
+       * `PARAM`: Heal amount for units.
        * @memberof BLK_radiusMender
        * @instance
        */
       unitHealAmt: 0.0,
       /**
-       * <PARAM>: Heal percentage for units.
+       * `PARAM`: Heal percentage for units.
        * @memberof BLK_radiusMender
        * @instance
        */

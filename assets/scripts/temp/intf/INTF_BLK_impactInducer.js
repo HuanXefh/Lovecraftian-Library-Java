@@ -77,7 +77,7 @@
 
 
         /**
-         * <PARAM>: Base impact wave radius.
+         * `PARAM`: Base impact wave radius.
          * @memberof INTF_BLK_impactInducer
          * @instance
          */
@@ -100,7 +100,7 @@
       /**
        * Calculates expected interval between each impact wave.
        * This affects things like impact damage by default.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_impactInducer
        * @instance
        * @param {Building} b

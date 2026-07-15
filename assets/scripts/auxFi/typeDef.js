@@ -119,9 +119,9 @@
    * @prop {boolean|unset} [addSuper] - If true, `this.super$xxx` will be called, used only in post-build modification.
    * @prop {boolean|unset} [override] - If true, the previous method will be ignored.
    * @prop {boolean|unset} [final] - If true, this method is fixed and won't be mixed later.
-   * @prop {string|unset} [boolMode] - For boolean operation with the previous method. <br> <VALS>: "none", "and", "or".
+   * @prop {string|unset} [boolMode] - For boolean operation with the previous method. <br> `VALS`: "none", "and", "or".
    * @prop {string|unset} [superBoolMode] - Like `boolMode` but for `this.super$xxx`.
-   * @prop {string|unset} [mergeMode] - Handles mixing of returned values. <br> <VALS>: "object", "array", any function.
+   * @prop {string|unset} [mergeMode] - Handles mixing of returned values. <br> `VALS`: "object", "array", any function.
    * @prop {number|unset} [argLen] - Expected argument length in final Java method, required if there's any argument.
    * @prop {Function|unset} [funPrev] - Previous method before mixing. Do not set.
    * @prop {Function|unset} [funCur] - Current method before mixing. Do not set.
@@ -155,12 +155,12 @@
 
 
   /**
-   * <TUP>: nameMod, nameDial, ind.
+   * `TUPLE`: nameMod, nameDial, ind.
    * @global
    * @typedef {[string, string, number]} DialogTuple
    */
   /**
-   * <TUP>: nameMod, nameChara.
+   * `TUPLE`: nameMod, nameChara.
    * @global
    * @typedef {[string, string]} CharacterTuple
    */
@@ -178,7 +178,7 @@
    * @prop {number|unset} [customActTimeS]
    */
   /**
-   * <ROW>: dialTup, charaTup, paramObj, charaArgs.
+   * `ROW`: dialTup, charaTup, paramObj, charaArgs.
    * <br> <ROW-charaArgs>: delay, nameMod, nameChara, fracX, isDark0color, anim, animParamObj, customActs.
    * @global
    * @typedef {Array} DialogFlowData

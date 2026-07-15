@@ -88,7 +88,7 @@
 
 
         /**
-         * <INTERNAL>: Whether this block consumes or produces CEP. Data should be set up in {@link DB_block}.
+         * `INTERNAL`: Whether this block consumes or produces CEP. Data should be set up in {@link DB_block}.
          * @memberof INTF_BLK_coreEnergyConsumer
          * @instance
          */
@@ -126,7 +126,7 @@
 
 
         /**
-         * <INTERNAL>: CEP efficiency.
+         * `INTERNAL`: CEP efficiency.
          * @memberof INTF_B_coreEnergyConsumer
          * @instance
          */

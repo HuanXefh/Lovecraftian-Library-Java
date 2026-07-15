@@ -64,7 +64,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_baseItemBlock
        * @instance
        */

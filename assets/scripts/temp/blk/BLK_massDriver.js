@@ -85,55 +85,55 @@
 
 
       /**
-       * <PARAM>: Damage dealt by the mass driver bolt.
+       * `PARAM`: Damage dealt by the mass driver bolt.
        * @memberof BLK_massDriver
        * @instance
        */
       bulDmg: 40.0,
       /**
-       * <PARAM>: If true, the bullet will collide with terrain wall.
+       * `PARAM`: If true, the bullet will collide with terrain wall.
        * @memberof BLK_massDriver
        * @instance
        */
       bulCollidesTerrain: true,
       /**
-       * <PARAM>: If true, the bullet only collides with terrain wall in a cave map.
+       * `PARAM`: If true, the bullet only collides with terrain wall in a cave map.
        * @memberof BLK_massDriver
        * @instance
        */
       bulCollidesTerrainCaveOnly: false,
       /**
-       * <PARAM>: Whether the bullet collides with ground units.
+       * `PARAM`: Whether the bullet collides with ground units.
        * @memberof BLK_massDriver
        * @instance
        */
       bulCollidesGround: true,
       /**
-       * <PARAM>: Whether the bullet collides with air units.
+       * `PARAM`: Whether the bullet collides with air units.
        * @memberof BLK_massDriver
        * @instance
        */
       bulCollidesAir: false,
       /**
-       * <PARAM>: `sprite` of the bullet.
+       * `PARAM`: `sprite` of the bullet.
        * @memberof BLK_massDriver
        * @instance
        */
       bulSpr: "shell",
       /**
-       * <PARAM>: `width` of the bullet.
+       * `PARAM`: `width` of the bullet.
        * @memberof BLK_massDriver
        * @instance
        */
       bulW: 9.0,
       /**
-       * <PARAM>: `height` of the bullet.
+       * `PARAM`: `height` of the bullet.
        * @memberof BLK_massDriver
        * @instance
        */
       bulH: 12.0,
       /**
-       * <PARAM>: `shrinkY` of the bullet.
+       * `PARAM`: `shrinkY` of the bullet.
        * @memberof BLK_massDriver
        * @instance
        */

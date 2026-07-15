@@ -58,7 +58,7 @@
   /**
    * Used to play a dialog flow in database.
    * This content is meant to be only unlockable by playing the dialog flow in campaign.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class DBCT_dialFlowContent
    * @extends DBCT_databaseContent
    */
@@ -69,7 +69,7 @@
 
 
     /**
-     * <PARAM>: Name of the dialog flow used, see {@link newDialogFlow}.
+     * `PARAM`: Name of the dialog flow used, see {@link newDialogFlow}.
      * <br> <BUNDLE-name>: "dial.<nameDialFlow>".
      * @memberof DBCT_dialFlowContent
      * @instance

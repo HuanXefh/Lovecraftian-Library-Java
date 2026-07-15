@@ -475,7 +475,7 @@
      * Used to construct a larger building from existing buildings.
      * {@link BLK_constructionCore#constructionData} is where the plan is defined.
      * Rotation is supported.
-     * <br> <NAMEGEN>
+     * <br> `NAMEGEN`
      * @class BLK_constructionCore
      * @extends BLK_materialBlock
      * @example
@@ -505,43 +505,43 @@
 
 
       /**
-       * <PARAM>: Definition of structure.
+       * `PARAM`: Definition of structure.
        * @memberof BLK_constructionCore
        * @instance
        */
       constructionData: prov(() => [[]]),
       /**
-       * <PARAM>: Target block that is built upon structure completion.
+       * `PARAM`: Target block that is built upon structure completion.
        * @memberof BLK_constructionCore
        * @instance
        */
       placeBlk: null,
       /**
-       * <PARAM>: X offset of the target block placement position. Set automatically if null.
+       * `PARAM`: X offset of the target block placement position. Set automatically if null.
        * @memberof BLK_constructionCore
        * @instance
        */
       placeDataX: null,
       /**
-       * <PARAM>: Y offset of the target block placement position. Set automatically if null.
+       * `PARAM`: Y offset of the target block placement position. Set automatically if null.
        * @memberof BLK_constructionCore
        * @instance
        */
       placeDataY: null,
       /**
-       * <PARAM>: Rotation offset of the target block placement position.
+       * `PARAM`: Rotation offset of the target block placement position.
        * @memberof BLK_constructionCore
        * @instance
        */
       placeOffRot: 0,
       /**
-       * <PARAM>: Timer required to complete the construction.
+       * `PARAM`: Timer required to complete the construction.
        * @memberof BLK_constructionCore
        * @instance
        */
       constructionTimeReq: 3600.0,
       /**
-       * <PARAM>: If true, this block won't modify target block on INIT.
+       * `PARAM`: If true, this block won't modify target block on INIT.
        * @memberof BLK_constructionCore
        * @instance
        */

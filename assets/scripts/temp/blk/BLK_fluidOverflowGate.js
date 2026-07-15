@@ -147,7 +147,7 @@
 
 
       acceptLiquid: function(b_f, liq) {
-        return GEOMETRY_HANDLER.accept(b_f, this, MDL_cond._isFluidRouter(b_f.block), false);
+        return LCGeometry.accept(b_f, this, MDL_cond._isFluidRouter(b_f.block), false);
       }
       .setProp({
         boolMode: "and",

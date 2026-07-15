@@ -70,37 +70,37 @@
 
 
     /**
-     * <PARAM>: Wall used for base color.
+     * `PARAM`: Wall used for base color.
      * @memberof PLA_asteroid
      * @instance
      */
     blkBase: Blocks.stoneWall,
     /**
-     * <PARAM>: Wall used for tint color.
+     * `PARAM`: Wall used for tint color.
      * @memberof PLA_asteroid
      * @instance
      */
     blkTint: Blocks.iceWall,
     /**
-     * <PARAM>: Random generation seed.
+     * `PARAM`: Random generation seed.
      * @memberof PLA_asteroid
      * @instance
      */
     astSeed: -1,
     /**
-     * <PARAM>: Tint threshold.
+     * `PARAM`: Tint threshold.
      * @memberof PLA_asteroid
      * @instance
      */
     tintThr: 0.5,
     /**
-     * <PARAM>: Amount of asteroids.
+     * `PARAM`: Amount of asteroids.
      * @memberof PLA_asteroid
      * @instance
      */
     astAmt: 12,
     /**
-     * <PARAM>: Scaling of the asteroid.
+     * `PARAM`: Scaling of the asteroid.
      * @memberof PLA_asteroid
      * @instance
      */
@@ -111,13 +111,13 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof PLA_asteroid
      * @instance
      */
     skipMeshParse: true,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof PLA_asteroid
      * @instance
      */

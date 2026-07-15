@@ -20,7 +20,7 @@
   /**
    * Iterates through all key-value pairs in an object.
    * @param {Object} obj
-   * @param {function(string, any): void} scr - <ARGS>: key, val.
+   * @param {function(string, any): void} scr - `ARGS`: key, val.
    * @param {boolean|unset} [forceIns] - If true, methods in `obj` will be ignored.
    * @return {void}
    */

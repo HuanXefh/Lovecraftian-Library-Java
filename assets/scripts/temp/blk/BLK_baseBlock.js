@@ -216,61 +216,61 @@
 
 
       /**
-       * <PARAM>: See {@link RS_baseResource}.
+       * `PARAM`: See {@link RS_baseResource}.
        * @memberof BLK_baseBlock
        * @instance
        */
       overwriteVanillaStat: true,
       /**
-       * <PARAM>: See {@link RS_baseResource}.
+       * `PARAM`: See {@link RS_baseResource}.
        * @memberof BLK_baseBlock
        * @instance
        */
       overwriteVanillaProp: true,
       /**
-       * <PARAM>: If true, `blk.drawer` will always be used even if the Java class does not support drawer. Can lead to bugs, use with care.
+       * `PARAM`: If true, `blk.drawer` will always be used even if the Java class does not support drawer. Can lead to bugs, use with care.
        * @memberof BLK_baseBlock
        * @instance
        */
       forceUseDrawer: false,
       /**
-       * <PARAM>: If true, outline parameters won't be overwritten by DB data. See {@link DB_unit}.
+       * `PARAM`: If true, outline parameters won't be overwritten by DB data. See {@link DB_unit}.
        * @memberof BLK_baseBlock
        * @instance
        */
       skipOutlineSetup: false,
       /**
-       * <PARAM>: Whether config object string is used for this block. Config object string is a JSON string for dealing with multiple parallel configs.
+       * `PARAM`: Whether config object string is used for this block. Config object string is a JSON string for dealing with multiple parallel configs.
        * @memberof BLK_baseBlock
        * @instance
        */
       useConfigStr: false,
       /**
-       * <PARAM>: If true, this block can only be placed on liquid floors. I have to do this because `blk.requiresWater` is so hard-coded.
+       * `PARAM`: If true, this block can only be placed on liquid floors. I have to do this because `blk.requiresWater` is so hard-coded.
        * @memberof BLK_baseBlock
        * @instance
        */
       isWaterborne: false,
       /**
-       * <PARAM>: If true, this block cannot be built directly and is expected to be produced as payload.
+       * `PARAM`: If true, this block cannot be built directly and is expected to be produced as payload.
        * @memberof BLK_baseBlock
        * @instance
        */
       payBuiltOnly: false,
       /**
-       * <PARAM>: Whether to skip loot spawning when building of this block is destroyed. Recommended to be set in {@link DB_block}.
+       * `PARAM`: Whether to skip loot spawning when building of this block is destroyed. Recommended to be set in {@link DB_block}.
        * @memberof BLK_baseBlock
        * @instance
        */
       noLoot: false,
       /**
-       * <PARAM>: Whether reactions are ignored in this block. Recommended to be set in {@link DB_block}.
+       * `PARAM`: Whether reactions are ignored in this block. Recommended to be set in {@link DB_block}.
        * @memberof BLK_baseBlock
        * @instance
        */
       noReac: false,
       /**
-       * <PARAM>: Whether this block will short-circuit when soaked in puddles of aqueous liquid. Recommended to be set in {@link DB_block}.
+       * `PARAM`: Whether this block will short-circuit when soaked in puddles of aqueous liquid. Recommended to be set in {@link DB_block}.
        * @memberof BLK_baseBlock
        * @instance
        */
@@ -281,31 +281,31 @@
 
 
       /**
-       * <INTERNAL>: Used as fallback if {@link BLK_baseBlock#forceUseDrawer} is true.
+       * `INTERNAL`: Used as fallback if {@link BLK_baseBlock#forceUseDrawer} is true.
        * @memberof BLK_baseBlock
        * @instance
        */
       drawer: prov(() => new DrawDefault()),
       /**
-       * <INTERNAL>: If true, this block cannot be placed by player when hidden.
+       * `INTERNAL`: If true, this block cannot be placed by player when hidden.
        * @memberof
        * @instance
        */
       hiddenNonPlaceable: false,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_baseBlock
        * @instance
        */
       configKeyCallerArr: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_baseBlock
        * @instance
        */
       logicSensorGetterMap: prov(() => new ObjectMap()),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_baseBlock
        * @instance
        */
@@ -400,7 +400,7 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {string} key
-       * @param {function(Building, any): void} valCaller - <ARGS>: b, val.
+       * @param {function(Building, any): void} valCaller - `ARGS`: b, val.
        * @return {void}
        */
       ex_addConfigCaller: function(key, valCaller) {
@@ -417,7 +417,7 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {LAccess} sensor
-       * @param {function(Building): any} valGetter - <ARGS>: b.
+       * @param {function(Building): any} valGetter - `ARGS`: b.
        * @return {void}
        */
       ex_addLogicGetter: function(sensor, valGetter) {
@@ -434,7 +434,7 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {LAccess} sensor
-       * @param {function(Building): void} scr - <ARGS>: b, param1, param2, param3, param4.
+       * @param {function(Building): void} scr - `ARGS`: b, param1, param2, param3, param4.
        * @return {void}
        */
       ex_addLogicControl: function(sensor, scr) {
@@ -465,13 +465,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_baseBlock
        * @instance
        */
       LCRevi: 5,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_baseBlock
        * @instance
        */
@@ -576,7 +576,7 @@
 
       /**
        * Fallback when the given string is not a config object string in {@link B_baseBlock#ex_handleConfigStr}.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof B_baseBlock
        * @instance
        * @return {void}
@@ -591,7 +591,7 @@
 
       /**
        * Revision used for this content template.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof B_baseBlock
        * @instance
        * @return {number}

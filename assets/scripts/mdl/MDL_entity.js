@@ -409,7 +409,7 @@
   /**
    * Gets a 4-array of wave information.
    * @param {number|unset} [countWave]
-   * @return {Array} <ROW>: utp, amtUnit, shield, sta.
+   * @return {Array} `ROW`: utp, amtUnit, shield, sta.
    */
   const _waveArr = function(countWave) {
     if(countWave == null) countWave = Vars.state.wave;

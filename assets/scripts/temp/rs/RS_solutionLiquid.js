@@ -45,7 +45,7 @@
 
   /**
    * Fluids with solubles.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class RS_solutionLiquid
    * @extends RS_intermediateFluid
    */
@@ -56,8 +56,8 @@
 
 
     /**
-     * <PARAM>: Solvent used for this solution.
-     * <br> <DB>: liq-solvent.
+     * `PARAM`: Solvent used for this solution.
+     * <br> `DB`: liq-solvent.
      * @memberof RS_solutionLiquid
      * @instance
      */
@@ -68,7 +68,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_solutionLiquid
      * @instance

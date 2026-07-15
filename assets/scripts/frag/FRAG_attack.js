@@ -182,7 +182,7 @@
   /**
    * Calculates final damage multiplier with given type multipliers.
    * @param {Unit} unit
-   * @param {Array|null} typeMtpArr - <ROW>: nameType, mtp.
+   * @param {Array|null} typeMtpArr - `ROW`: nameType, mtp.
    * @return {number}
    */
   const _dmgMtpByTypeMtpArr = function(unit, typeMtpArr) {
@@ -347,7 +347,7 @@
    * @param {number|unset} [r]
    * @param {number|unset} [offR]
    * @param {ColorGn|unset} [color_gn]
-   * @param {string|unset} [hitMode] - <VALS>: "none", "ground", "air".
+   * @param {string|unset} [hitMode] - `VALS`: "none", "ground", "air".
    * @param {SoundGn|unset} [se_gn]
    * @return {void}
    */

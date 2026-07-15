@@ -26,7 +26,7 @@
 
     /**
      * Similar to vanilla armored conduit.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_armoredFluidPipe
      * @extends BLK_fluidPipe
      */

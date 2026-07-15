@@ -34,7 +34,7 @@
     /**
      * Just vanilla liquid junction.
      * Does not transport auxiliary fluid.
-     * <br> <SINGLESIZE>
+     * <br> `SINGLESIZE`
      * @class BLK_fluidJunction
      * @extends BLK_baseFluidDistributor
      */

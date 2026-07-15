@@ -158,43 +158,43 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseFluid
      * @instance
      */
     isConductive: false,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseFluid
      * @instance
      */
     shouldFume: false,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseFluid
      * @instance
      */
     dens: 1.0,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseFluid
      * @instance
      */
     fHeat: 26.0,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseFluid
      * @instance
      */
     eleGrp: null,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseFluid
      * @instance
      */
     fTags: Array.air,
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof RS_baseFluid
      * @instance
      */

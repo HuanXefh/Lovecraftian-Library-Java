@@ -37,8 +37,8 @@
 
   /**
    * Gets recipe module for some block.
-   * <br> <PATH>: "<nameMod>/scripts/auxFi/rc/<nameBlk>.js".
-   * <br> <PATH>: "<nameMod>/scripts/auxFi/json/rc/<nameBlk>.json".
+   * <br> `PATH`: "<nameMod>/scripts/auxFi/rc/<nameBlk>.js".
+   * <br> `PATH`: "<nameMod>/scripts/auxFi/json/rc/<nameBlk>.json".
    * @param {string} nameMod
    * @param {string} nameBlk
    * @return {RecipeModule}
@@ -585,7 +585,7 @@
 
 
   /**
-   * <BUNDLE>: "term.common-term-categ-<categ>.name".
+   * `BUNDLE`: "term.common-term-categ-<categ>.name".
    * @param {string} categ
    * @return {string}
    */
@@ -819,7 +819,7 @@
 
   /**
    * Gets tooltip of this recipe, nullable.
-   * <br> <BUNDLE>: "info.common-info-tt-<tooltip>.name".
+   * <br> `BUNDLE`: "info.common-info-tt-<tooltip>.name".
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {string|null}
@@ -876,7 +876,7 @@
    * @param {string|Array|UnlockableContent} tg
    * @param {number} amt
    * @param {number|unset} [p]
-   * @param {function(UnlockableContent, number, number|null): void} [ctCaller] - <ARGS>: ct, amt, p.
+   * @param {function(UnlockableContent, number, number|null): void} [ctCaller] - `ARGS`: ct, amt, p.
    * @param {boolean|unset} [isSecondary] - Do not set this.
    * @param {number|unset} [pTg]
    * @return {void}
@@ -1442,7 +1442,7 @@
    * @param {Array|unset} contTup
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
-   * @return {Array<function(Building): void>} - <TUP>: updateScr, runScr, craftScr, stopScr, failScr.
+   * @return {Array<function(Building): void>} - `TUPLE`: updateScr, runScr, craftScr, stopScr, failScr.
    */
   const _scrTup = function(contTup, rcMdl, rcHeader) {
     let tup = contTup != null ? contTup.clear() : [];

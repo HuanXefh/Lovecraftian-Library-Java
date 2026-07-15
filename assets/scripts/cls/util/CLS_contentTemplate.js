@@ -29,9 +29,9 @@
     tempParent: null,
     tempTags: [],
   };
-  /** <ROW>: namePropNew, namePropOld, def. */
+  /** `ROW`: namePropNew, namePropOld, def. */
   CLS_contentTemplate.paramAliasArr = [];
-  /** <ROW>: nameProp, valGetter. */
+  /** `ROW`: nameProp, valGetter. */
   CLS_contentTemplate.paramParserArr = [];
   CLS_contentTemplate.funObj = {};
 
@@ -98,7 +98,7 @@
 
   /**
    * Sets aliases for properties.
-   * @param {Array} arr - <ROW>: namePropNew, namePropOld, def.
+   * @param {Array} arr - `ROW`: namePropNew, namePropOld, def.
    * @return {this}
    */
   CLS_contentTemplate.setParamAlias = function(arr) {
@@ -118,7 +118,7 @@
   /**
    * Sets parsers to change value of some property before building final object.
    * `this` in the parsers refers to the object being built.
-   * @param {Array} arr - <ROW>: nameProp, valGetter
+   * @param {Array} arr - `ROW`: nameProp, valGetter
    * @return {this}
    * @example
    * // The property "file" is a path string that needs to be converted
@@ -152,7 +152,7 @@
 
   /**
    * Sets tags of the template.
-   * <br> <ARGS>: tag1, tag2, tag3, ...
+   * <br> `ARGS`: tag1, tag2, tag3, ...
    * @return {this}
    */
   CLS_contentTemplate.setTags = function() {
@@ -246,7 +246,7 @@
 
   /**
    * Override this method to implement Java interfaces.
-   * <br> <LATER>
+   * <br> `LATER`
    * @param {Object} obj - The object built for `extend`.
    * @return {Array<Class>}
    */
@@ -257,7 +257,7 @@
 
   /**
    * Override this method to initialize some content just after `extend` is called.
-   * <br> <LATER>
+   * <br> `LATER`
    * @param {UnlockableContent} ct
    * @return {void}
    */

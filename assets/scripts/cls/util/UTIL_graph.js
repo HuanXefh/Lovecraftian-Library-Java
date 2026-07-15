@@ -61,7 +61,7 @@
   /**
    * Sets init method of a graph type. See {@link INTF_BLK_graphBlock}.
    * @param {string} graphType
-   * @param {function(MathGraph): void} scr - <ARGS>: graph
+   * @param {function(MathGraph): void} scr - `ARGS`: graph
    * @return {void}
    */
   UTIL_graph.setInit = function(graphType, scr) {
@@ -72,7 +72,7 @@
   /**
    * Sets update method of a graph type. See {@link INTF_BLK_graphBlock}.
    * @param {string} graphType
-   * @param {function(MathGraph): void} scr - <ARGS>: graph
+   * @param {function(MathGraph): void} scr - `ARGS`: graph
    * @return {void}
    */
   UTIL_graph.setUpdate = function(graphType, scr) {

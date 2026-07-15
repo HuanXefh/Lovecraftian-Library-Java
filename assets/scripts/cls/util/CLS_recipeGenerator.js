@@ -9,7 +9,7 @@
    * Utility class for automatic recipe generation.
    * See {@link TP_recipeGen} for examples.
    * @class
-   * @param {function(Object, Object): void} setter - `this` here refers to the generator itself. <br> <ARGS>: rcObj, metaObj.
+   * @param {function(Object, Object): void} setter - `this` here refers to the generator itself. <br> `ARGS`: rcObj, metaObj.
    */
   const CLS_recipeGenerator = newClass().initClass();
 
@@ -57,7 +57,7 @@
    * @param {number} amtI
    * @param {Object} metaObj
    * @param {Object|unset} [paramObj]
-   * @return {[string, number]} <TUP>: nameCt, amt.
+   * @return {[string, number]} `TUPLE`: nameCt, amt.
    */
   CLS_recipeGenerator.prototype.processCi = function(ct_gn, amtI, metaObj, paramObj) {
     return [
@@ -74,7 +74,7 @@
    * @param {number} pI
    * @param {Object} metaObj
    * @param {Object|unset} [paramObj]
-   * @return {[string, number, number]} <TUP>: nameCt, amt, p.
+   * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
    */
   CLS_recipeGenerator.prototype.processBi = function(ct_gn, amtI, pI, metaObj, paramObj) {
     return [
@@ -91,7 +91,7 @@
    * @param {number} payAmtI
    * @param {Object} metaObj
    * @param {Object|unset} [paramObj]
-   * @return {[string, number]} <TUP>: nameCt, amt.
+   * @return {[string, number]} `TUPLE`: nameCt, amt.
    */
   CLS_recipeGenerator.prototype.processPayi = function(ct_gn, payAmtI, metaObj, paramObj) {
     return [
@@ -107,7 +107,7 @@
    * @param {number} amtO
    * @param {Object} metaObj
    * @param {Object|unset} [paramObj]
-   * @return {[string, number]} <TUP>: nameCt, amt.
+   * @return {[string, number]} `TUPLE`: nameCt, amt.
    */
   CLS_recipeGenerator.prototype.processCo = function(ct_gn, amtO, metaObj, paramObj) {
     return [
@@ -124,7 +124,7 @@
    * @param {number} pO
    * @param {Object} metaObj
    * @param {Object|unset} [paramObj]
-   * @return {[string, number, number]} <TUP>: nameCt, amt, p.
+   * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
    */
   CLS_recipeGenerator.prototype.processBo = function(ct_gn, amtO, pO, metaObj, paramObj) {
     return [
@@ -141,7 +141,7 @@
    * @param {number} payAmtO
    * @param {Object} metaObj
    * @param {Object|unset} [paramObj]
-   * @return {[string, number]} <TUP>: nameCt, amt.
+   * @return {[string, number]} `TUPLE`: nameCt, amt.
    */
   CLS_recipeGenerator.prototype.processPayo = function(ct_gn, payAmtO, metaObj, paramObj) {
     return [
@@ -544,7 +544,7 @@
   /**
    * Generates recipes based on a 2-array.
    * @param {Object} rc
-   * @param {Array} arr - <ROW>: nameCt, paramObj.
+   * @param {Array} arr - `ROW`: nameCt, paramObj.
    * @param {(function(ContentGn): UnlockableContent)|unset} ctMapper
    * @param {Object} metaObj
    * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]
@@ -576,9 +576,9 @@
   /**
    * Generates recipes based on a 2-array of names and numbers.
    * @param {Object} rc
-   * @param {Array} arr - <ROW>: nameCt, num.
+   * @param {Array} arr - `ROW`: nameCt, num.
    * @param {(function(ContentGn): UnlockableContent)|unset} ctMapper
-   * @param {(function(number, Object): void)|unset} numCaller - <ARGS>: num, paramObj.
+   * @param {(function(number, Object): void)|unset} numCaller - `ARGS`: num, paramObj.
    * @param {Object} metaObj
    * @param {Object|(function(UnlockableContent, Object): Object)|unset} [paramObj_d]
    * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]

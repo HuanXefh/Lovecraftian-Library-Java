@@ -33,14 +33,14 @@
 
 
     /**
-     * <PARAM>
+     * `PARAM`
      * @override
      * @memberof UNIT_technicalUnit
      * @instance
      */
     useLovecDamagePenalty: false,
     /**
-     * <PARAM>
+     * `PARAM`
      * @override
      * @memberof UNIT_technicalUnit
      * @instance
@@ -52,14 +52,14 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof UNIT_technicalUnit
      * @instance
      */
     entityName: "base",
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof UNIT_technicalUnit
      * @instance

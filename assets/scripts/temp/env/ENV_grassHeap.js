@@ -33,7 +33,7 @@
 
   /**
    * Heap blocks that can hide some units.
-   * <br> <NAMEGEN>
+   * <br> `NAMEGEN`
    * @class ENV_grassHeap
    * @extends ENV_heap
    */
@@ -44,13 +44,13 @@
 
 
     /**
-     * <PARAM>: See {@link ENV_baseTree}.
+     * `PARAM`: See {@link ENV_baseTree}.
      * @memberof ENV_grassHeap
      * @instance
      */
     layGrass: 76.0,
     /**
-     * <PARAM>: See {@link ENV_baseTree}.
+     * `PARAM`: See {@link ENV_baseTree}.
      * @memberof ENV_grassHeap
      * @instance
      */

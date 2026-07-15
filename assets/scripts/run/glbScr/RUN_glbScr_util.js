@@ -59,8 +59,8 @@
   /**
    * 1. Checks whether a version string is newer or equal to given version string.
    * <br> 2. Whether all version requirements are met.
-   * <br> <ARGS>: verStrReq, verStrCur.
-   * <br> <ARGS>: nameMod, minVerArr
+   * <br> `ARGS`: verStrReq, verStrCur.
+   * <br> `ARGS`: nameMod, minVerArr
    * <br> <ROW-minVerArr>: nameMod, verStrReq
    * @return {boolean}
    * @example
@@ -184,7 +184,7 @@
   /**
    * Used to read 2-arrays that map classes (or template names) to functions.
    * @global
-   * @param {Array} arr - <ROW>: cls0tempName, fun.
+   * @param {Array} arr - `ROW`: cls0tempName, fun.
    * @param {Object} ins
    * @param {any} [def]
    * @return {Function}
@@ -463,7 +463,7 @@
 
   /**
    * Whether given elements don't match the ones found in given tuple.
-   * <br> <ARGS>: tup, shouldUpdateTup, ele1, ele2, ele3, ...
+   * <br> `ARGS`: tup, shouldUpdateTup, ele1, ele2, ele3, ...
    * @global
    * @return {boolean}
    */
@@ -490,101 +490,6 @@
     };
 
     return cond;
-  };
-
-
-  /**
-   * Used to check relative rotation for buildings.
-   * @global
-   */
-  GEOMETRY_HANDLER = {
-
-
-    /**
-     * @param {Building} b_f
-     * @param {Building} b_t
-     * @return {boolean}
-     */
-    acceptLine(b_f, b_t) {
-      return b_f.relativeTo(b_t) === b_f.rotation && (!b_t.block.rotate ? true : b_t.relativeTo(b_f) !== b_t.rotation);
-    },
-
-
-    /**
-     * @param {Building} b_f
-     * @param {Building} b_t
-     * @param {boolean} canSideBlend
-     * @return {boolean}
-     */
-    acceptLineNoSide(b_f, b_t, canSideBlend) {
-      return canSideBlend ?
-        GEOMETRY_HANDLER.acceptLine(b_f, b_t) :
-        b_f.relativeTo(b_t) === b_f.rotation && (!b_t.block.rotate ? true : b_f.relativeTo(b_t) === b_t.rotation);
-    },
-
-
-    /**
-     * @param {Building} b_f
-     * @param {Building} b_t
-     * @return {boolean}
-     */
-    acceptRouter(b_f, b_t) {
-      return b_f.relativeTo(b_t) !== Mathf.mod(b_f.rotation + 2, 4) && (!b_t.block.rotate ? true : b_t.relativeTo(b_f) !== b_t.rotation);
-    },
-
-
-    /**
-     * @param {Building} b_f
-     * @param {Building} b_t
-     * @param {boolean} canSideBlend
-     * @return {boolean}
-     */
-    acceptRouterNoSide(b_f, b_t, canSideBlend) {
-      return canSideBlend ?
-        GEOMETRY_HANDLER.acceptRouter(b_f, b_t) :
-        b_f.relativeTo(b_t) !== Mathf.mod(b_f.rotation + 2, 4) && (!b_t.block.rotate ? true : b_f.relativeTo(b_t) === b_t.rotation);
-    },
-
-
-    /**
-     * @param {Building} b_f
-     * @param {Building} b_t
-     * @return {boolean}
-     */
-    acceptBlock(b_f, b_t) {
-      return !b_t.block.rotate ? true : b_t.relativeTo(b_f) !== b_t.rotation;
-    },
-
-
-    /**
-     * @param {Building} b_f
-     * @param {Building} b_t
-     * @param {boolean} canSideBlend
-     * @return {boolean}
-     */
-    acceptBlockNoSide(b_f, b_t, canSideBlend) {
-      return canSideBlend ?
-        GEOMETRY_HANDLER.acceptBlock(b_f, b_t) :
-        !b_t.block.rotate ? true : b_f.relativeTo(b_t) === b_t.rotation;
-    },
-
-
-    /**
-     * @param {Building} b_f
-     * @param {Building} b_t
-     * @param {boolean} isFromRouter
-     * @param {boolean} canSideBlend
-     * @return {boolean}
-     */
-    accept(b_f, b_t, isFromRouter, canSideBlend) {
-      return !b_f.block.rotate ?
-        GEOMETRY_HANDLER.acceptBlockNoSide(b_f, b_t, canSideBlend) :
-        !isFromRouter ?
-          GEOMETRY_HANDLER.acceptLineNoSide(b_f, b_t, canSideBlend) :
-          GEOMETRY_HANDLER.acceptRouterNoSide(b_f, b_t, canSideBlend);
-    },
-
-
   };
 
 
@@ -746,7 +651,7 @@
 
     /**
      * Prints something in the console.
-     * <br> <ARGS>: name, arg1, arg2, arg3, ...
+     * <br> `ARGS`: name, arg1, arg2, arg3, ...
      * @param {string} name
      * @return {void}
      */
@@ -785,7 +690,7 @@
 
     /**
      * Throws some error found by name.
-     * <br> <ARGS>: name, arg1, arg2, arg3, ...
+     * <br> `ARGS`: name, arg1, arg2, arg3, ...
      * @param {string} name
      * @return {void}
      */

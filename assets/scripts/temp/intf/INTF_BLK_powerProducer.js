@@ -73,19 +73,19 @@
 
 
         /**
-         * <PARAM>: Base power production.
+         * `PARAM`: Base power production.
          * @memberof INTF_BLK_powerProducer
          * @instance
          */
         powProd: 0.0,
         /**
-         * <PARAM>: Whether to add power output bar.
+         * `PARAM`: Whether to add power output bar.
          * @memberof INTF_BLK_powerProducer
          * @instance
          */
         showPowProdBar: true,
         /**
-         * <PARAM>: Whether to add power balance bar.
+         * `PARAM`: Whether to add power balance bar.
          * @memberof INTF_BLK_powerProducer
          * @instance
          */
@@ -112,7 +112,7 @@
 
       /**
        * Override this method for dynamic power production.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_BLK_powerProducer
        * @instance
        * @param {Building} b

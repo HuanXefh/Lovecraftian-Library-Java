@@ -10,7 +10,7 @@
    * Not really interface but more like mixin, methods from the interface are not required to be explicitly implemented.
    * `__proto__` in the object (as a getter function) is used to set up prototype of a class.
    * Interfaces are usually named like "INTF_xxx".
-   * <br> <IMPORTANT>: It's recommended to create anonymous interfaces by `new Interface(null, {})` instead of `new Interface({})`.
+   * <br> `IMPORTANT`: It's recommended to create anonymous interfaces by `new Interface(null, {})` instead of `new Interface({})`.
    * @class
    * @param {string|unset} name
    * @param {Object} obj

@@ -9,7 +9,7 @@
    * Handles display of unit health bar.
    * @class
    * @param {string} name
-   * @param {Function} drawF - <ARGS>: e, x, y, frac, color, a, w, offY, amtSeg, armor, shield, speedMtp, dpsMtp, z.
+   * @param {Function} drawF - `ARGS`: e, x, y, frac, color, a, w, offY, amtSeg, armor, shield, speedMtp, dpsMtp, z.
    */
   const CLS_unitStatDisplayMode = newClass().initClass();
 

@@ -49,13 +49,13 @@
 
 
       /**
-       * <PARAM>: Effect created when out of CEP.
+       * `PARAM`: Effect created when out of CEP.
        * @memberof BLK_core
        * @instance
        */
       cepOutageEff: EFF.powerSpark,
       /**
-       * <PARAM>: Effect chance.
+       * `PARAM`: Effect chance.
        * @memberof BLK_core
        * @instance
        */

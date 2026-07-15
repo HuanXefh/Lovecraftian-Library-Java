@@ -634,7 +634,7 @@
    * @param {string} name
    * @param {KeyCode|unset} keyCodeDef
    * @param {string} categ
-   * @param {function(Unit, Tile|null): void} scr - <ARGS>: unitPlayer, tMouse.
+   * @param {function(Unit, Tile|null): void} scr - `ARGS`: unitPlayer, tMouse.
    * @return {void}
    */
   newKeyBind = function(name, keyCodeDef, categ, scr) {
@@ -966,7 +966,7 @@
 
   /**
    * Variant of {@link newSortF} that mixes a series of sorting functions.
-   * <br> <ARGS>: name, sortF1, sortF2, sortF3, ...
+   * <br> `ARGS`: name, sortF1, sortF2, sortF3, ...
    * @global
    * @param {string} name
    * @return {void}

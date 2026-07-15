@@ -34,7 +34,7 @@
 
 
   /**
-   * <BUNDLE>: "info.<nameMod>-info-<bp>.name" or "info.<nameMod>-info-<bp>.description".
+   * `BUNDLE`: "info.<nameMod>-info-<bp>.name" or "info.<nameMod>-info-<bp>.description".
    * @param {string} nameMod
    * @param {string} bp
    * @param {boolean|unset} [isDes]
@@ -47,7 +47,7 @@
 
 
   /**
-   * <BUNDLE>: "info.<nameMod>-term-<bp>.name" or "info.<nameMod>-term-<bp>.description".
+   * `BUNDLE`: "info.<nameMod>-term-<bp>.name" or "info.<nameMod>-term-<bp>.description".
    * @param {string} nameMod
    * @param {string} bp
    * @param {boolean|unset} [isDes]
@@ -60,7 +60,7 @@
 
 
   /**
-   * <BUNDLE>: "stat.<nameMod>-stat-<bp>".
+   * `BUNDLE`: "stat.<nameMod>-stat-<bp>".
    * @param {string} nameMod
    * @param {string} bp
    * @return string
@@ -75,7 +75,7 @@
 
 
   /**
-   * <BUNDLE>: "chara.<nameMod>-<nameChara>".
+   * `BUNDLE`: "chara.<nameMod>-<nameChara>".
    * @param {string} nameMod
    * @param {string} nameChara
    * @return string
@@ -87,7 +87,7 @@
 
 
   /**
-   * <BUNDLE>: "dial.<nameMod>-<nameDial>-<ind>".
+   * `BUNDLE`: "dial.<nameMod>-<nameDial>-<ind>".
    * @param {string} nameMod
    * @param {string} nameDial
    * @param {number} ind

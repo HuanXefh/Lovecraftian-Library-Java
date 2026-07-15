@@ -86,7 +86,7 @@
 
   /**
    * Performs an HTTP GET request, stores the response in a cache file.
-   * <br> <ARGS>: path, url, callback, errCallback, header1, header2, header3, ...
+   * <br> `ARGS`: path, url, callback, errCallback, header1, header2, header3, ...
    * @param {string} path - Relative path to common cache directory.
    * @param {string} url
    * @param {(function(Fi): void)|unset} [callback]

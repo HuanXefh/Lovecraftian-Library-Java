@@ -102,7 +102,7 @@
 
   /**
    * Builds a multiline string with given strings, null will be ignored and array will be flattened.
-   * <br> <ARGS> str1, str2, str3, ...
+   * <br> `ARGS` str1, str2, str3, ...
    * @return {string}
    */
   String.multiline = function() {
@@ -138,7 +138,7 @@
 
   /**
    * Replaces `"${1}"` or `"${1:someName}"` in the string with `str1`, and so on.
-   * <br> <ARGS>: str1, str2, str3, ...
+   * <br> `ARGS`: str1, str2, str3, ...
    * @return {string}
    */
   String.prototype.format = function() {

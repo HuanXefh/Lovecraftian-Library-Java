@@ -110,13 +110,13 @@
 
 
         /**
-         * <PARAM>: Type of parameter used for config.
+         * `PARAM`: Type of parameter used for config.
          * @memberof INTF_BLK_manualClickBlock
          * @instance
          */
         manualClickCfgTp: "boolean",
         /**
-         * <PARAM>: Change this if you have a button to click.
+         * `PARAM`: Change this if you have a button to click.
          * @memberof INTF_BLK_manualClickBlock
          * @instance
          */
@@ -147,7 +147,7 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_manualClickBlock
          * @instance
          */
@@ -178,7 +178,7 @@
 
       /**
        * Called whenever this building is configured.
-       * <br> <LATER>
+       * <br> `LATER`
        * @memberof INTF_B_manualClickBlock
        * @instance
        * @param {any} val

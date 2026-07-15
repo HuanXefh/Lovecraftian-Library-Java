@@ -20,7 +20,7 @@ const db = {
       /**
        * Maps type to a unit class and extra id if possible.
        * Make sure the id here is not used by vanilla game!
-       * <br> <ROW>: type, javaCls0id.
+       * <br> `ROW`: type, javaCls0id.
        */
       type: [
 
@@ -46,7 +46,7 @@ const db = {
 
       /**
        * Used to define new entity types.
-       * <br> <ROW>: id, tempGetter.
+       * <br> `ROW`: id, tempGetter.
        */
       entityDef: [
 
@@ -70,7 +70,7 @@ const db = {
 
     /**
      * Faction for unit type.
-     * <br> <ROW>: utp, faction.
+     * <br> `ROW`: utp, faction.
      */
     faction: [],
 
@@ -86,7 +86,7 @@ const db = {
 
     /**
      * These units are not robots, and they don't create remains upon death.
-     * <br> <ROW>: utp.
+     * <br> `ROW`: utp.
      */
     nonRobot: [
 
@@ -99,7 +99,7 @@ const db = {
     /**
      * These units are rare (?) exceptions that don't create remains.
      * No need to add biotic units here.
-     * <br> <ROW>: utp.
+     * <br> `ROW`: utp.
      */
     noRemains: [
 
@@ -129,7 +129,7 @@ const db = {
 
     /**
      * If a mod has customized unit debris, don't create extra remains.
-     * <br> <ROW>: nameMod.
+     * <br> `ROW`: nameMod.
      */
     noRemainsMod: [
 
@@ -150,7 +150,7 @@ const db = {
     /**
      * Outline parameters used for units & turrets in some mods.
      * Note that only contents created with content template will be affected.
-     * <br> <ROW>: nameMod, [stroke, color].
+     * <br> `ROW`: nameMod, [stroke, color].
      */
     outline: [
 
@@ -174,7 +174,7 @@ const db = {
 
       /**
        * These bullets can deal damage remotely.
-       * <br> <ROW>: javaCls.
+       * <br> `ROW`: javaCls.
        */
       remote: [
 

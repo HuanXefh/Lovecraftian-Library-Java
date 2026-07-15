@@ -60,7 +60,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof DBCT_databaseContent
      * @instance
      */

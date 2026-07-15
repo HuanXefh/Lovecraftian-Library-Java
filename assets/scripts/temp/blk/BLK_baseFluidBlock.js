@@ -47,7 +47,7 @@
 
 
       /**
-       * <PARAM>: Whether abstract fluid is allowed in this block.
+       * `PARAM`: Whether abstract fluid is allowed in this block.
        * @memberof BLK_baseFluidBlock
        * @instance
        */

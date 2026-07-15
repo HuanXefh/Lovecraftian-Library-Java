@@ -168,7 +168,7 @@
     return obj != null ? obj : temp.build();
   };
   extendBase.setupArgs = function(temp, obj) {
-    // <ARGS>: javaCls, javaIntf1, javaIntf2, javaIntf3, ..., obj, arg1, arg2, arg3, ...
+    // `ARGS`: javaCls, javaIntf1, javaIntf2, javaIntf3, ..., obj, arg1, arg2, arg3, ...
     let args = [temp.getParent()];
     if(args[0] == null) throw new Error("${1} has no parent Java class!".format(temp.nm));
     args.pushAll(temp.getParentIntfs(obj));

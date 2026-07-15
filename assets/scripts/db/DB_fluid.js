@@ -16,7 +16,7 @@ const db = {
     /**
      * The most basic fluid groups. Fluids in the same groups will share some parameters.
      * <br> <ROW-xxx>: liq.
-     * <br> <EXTENSIBLE>
+     * <br> `EXTENSIBLE`
      */
     elementary: {
 
@@ -81,7 +81,7 @@ const db = {
     /**
      * Fluid tag groups, used for corrosion affinities.
      * <br> <ROW-xxx>: liq.
-     * <br> <EXTENSIBLE>
+     * <br> `EXTENSIBLE`
      */
     fTag: {
 
@@ -109,24 +109,24 @@ const db = {
 
     /**
      * These fluids contain water.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: liq.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: liq.
      */
     aqueous: [],
 
 
     /**
      * These fluids are acidic.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: liq.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: liq.
      */
     acidic: [],
 
 
     /**
      * These fluids are basic.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: liq.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: liq.
      */
     basic: [],
 
@@ -134,8 +134,8 @@ const db = {
     /**
      * These fluids are conductive, and cause short circuit for some blocks.
      * Automatically merges with "aqueous" group.
-     * <br> <CONTENTGEN>
-     * <br> <ROW>: liq.
+     * <br> `CONTENTGEN`
+     * <br> `ROW`: liq.
      */
     conductive: [],
 
@@ -143,14 +143,14 @@ const db = {
     /**
      * These fluids will fume (extra visual effects for the puddle).
      * Don't put gas here.
-     * <br> <ROW>: liq.
+     * <br> `ROW`: liq.
      */
     fuming: [],
 
 
     /**
      * Fluids like regular air.
-     * <br> <ROW>: liq.
+     * <br> `ROW`: liq.
      */
     air: [],
 
@@ -166,7 +166,7 @@ const db = {
 
     /**
      * Density for a fluid group.
-     * <br> <ROW>: eleGrp, dens.
+     * <br> `ROW`: eleGrp, dens.
      */
     dens: [
 
@@ -191,7 +191,7 @@ const db = {
 
     /**
      * Wrapped viscosity for a fluid group.
-     * <br> <ROW>: eleGrp, viscWrap.
+     * <br> `ROW`: eleGrp, viscWrap.
      */
     viscWrap: [
 
@@ -212,7 +212,7 @@ const db = {
 
     /**
      * Default boiling point for a fluid group.
-     * <br> <ROW>: eleGrp, boilPon.
+     * <br> `ROW`: eleGrp, boilPon.
      */
     boil: [
 
@@ -240,7 +240,7 @@ const db = {
 
     /**
      * Default boiling point for a solvent.
-     * <br> <ROW>: solvent, boilPon.
+     * <br> `ROW`: solvent, boilPon.
      */
     solventBoil: [
 
@@ -252,7 +252,7 @@ const db = {
 
     /**
      * Default corrosion power for a fluid group.
-     * <br> <ROW>: eleGrp, corPow.
+     * <br> `ROW`: eleGrp, corPow.
      */
     corrosion: [
 
@@ -281,7 +281,7 @@ const db = {
     /**
      * Corrosion scaling for a pair of fluid group and block material group.
      * <br> <ROW-xxx>: eleGrp, scl.
-     * <br> <EXTENSIBLE>
+     * <br> `EXTENSIBLE`
      */
     matEleScl: {
 
@@ -379,7 +379,7 @@ const db = {
     /**
      * Extra corrosion multiplier for a pair of fluid tag and block material group.
      * <br> <ROW-xxx>: fldTag, mtp.
-     * <br> <EXTENSIBLE>
+     * <br> `EXTENSIBLE`
      */
     matFTagScl: {
 

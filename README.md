@@ -44,6 +44,8 @@ Here's a list of tutorials on how to use the lib.
 
 - [Global Script (WIP)]()
 
+- [Coding Tags (WIP)]()
+
 - [DB Object (WIP)]()
 
 - [Extended JS Methods (WIP)]()

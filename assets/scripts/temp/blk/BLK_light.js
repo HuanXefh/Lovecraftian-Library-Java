@@ -85,19 +85,19 @@
 
 
       /**
-       * <PARAM>: Light radius of this block at efficiency of 1.0.
+       * `PARAM`: Light radius of this block at efficiency of 1.0.
        * @memberof BLK_light
        * @instance
        */
       lightRad: 200.0,
       /**
-       * <PARAM>: Lightness of this block.
+       * `PARAM`: Lightness of this block.
        * @memberof BLK_light
        * @instance
        */
       lightA: 0.65,
       /**
-       * <PARAM>: Fraction of light radius as fog radius. Uses static fog radius if not set.
+       * `PARAM`: Fraction of light radius as fog radius. Uses static fog radius if not set.
        * @memberof BLK_light
        * @instance
        */

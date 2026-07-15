@@ -7,7 +7,7 @@
 
   /**
    * Registers new logs to {@link LOG_HANDLER}.
-   * <br> <IMPORTANT>: {@link LogModes} has not been defined yet, do not use it here!
+   * <br> `IMPORTANT`: {@link LogModes} has not been defined yet, do not use it here!
    */
 
 

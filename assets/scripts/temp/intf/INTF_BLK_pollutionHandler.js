@@ -78,7 +78,7 @@
 
 
         /**
-         * <PARAM>: If true, this block requires pollution to reache 100% efficiency. But why?
+         * `PARAM`: If true, this block requires pollution to reache 100% efficiency. But why?
          * @memberof INTF_BLK_pollutionHandler
          * @instance
          */

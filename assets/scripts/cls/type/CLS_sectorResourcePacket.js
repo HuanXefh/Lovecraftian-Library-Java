@@ -11,7 +11,7 @@
    * @class
    * @param {string|unset} nameFrom
    * @param {string|unset} nameTo
-   * @param {Array} itmAmtArr - <ROW>: itm_gn, amt.
+   * @param {Array} itmAmtArr - `ROW`: itm_gn, amt.
    * @param {number|unset} [timeReq]
    */
   const CLS_sectorResourcePacket = newClass().initClass();
