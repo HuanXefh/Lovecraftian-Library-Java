@@ -379,12 +379,9 @@
     let i = 0, iCap = plan.iCap();
     while(i < iCap) {
       if(plan[i] !== blk && !blk.ex_checkPlanTileComplete(plan[i + 1], plan[i], plan[i + 2], team, true)) {
-        MDL_draw._reg_planPlace(
+        LCDrawf.planPlace(
           plan[i], plan[i + 1],
           plan[i + 2] < 0 ? 0.0 : (plan[i + 2] * 90.0),
-          plan[i + 1].getLinkedTilesAs(plan[i], Reflect.get(Block, "tempTiles")).find(ot => ot.solid() || ot.build != null) == null ?
-            Color.white :
-            Pal.remove,
         );
       };
       i += 3;
@@ -426,7 +423,7 @@
   function comp_draw(b) {
     Draw.rect(b.block.region, b.x, b.y);
     if(b.underConstruction) {
-      MDL_draw._reg_construct(b.constructionPlanCx, b.constructionPlanCy, MDL_texture._regBlk(b.block.delegee.placeBlk), b.ex_getConstructionFrac(), b.drawrot());
+      LCDrawf.construct(b.constructionPlanCx, b.constructionPlanCy, MDL_texture._regBlk(b.block.delegee.placeBlk), b.ex_getConstructionFrac(), b.drawrot());
     } else {
       if(b.shouldDrawConstructionPlan && Vars.player.team() === b.team) {
         b.block.ex_drawPlan(b.team, b.constructionPlan);

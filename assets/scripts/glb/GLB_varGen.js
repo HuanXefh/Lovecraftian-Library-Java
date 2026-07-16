@@ -51,30 +51,6 @@
 
 
     /**
-     * Default heat regions for blocks.
-     * @type {Array<TextureRegion>}
-     */
-    exports.blockHeatRegs = [
-      findRegion("error"),
-      MDL_texture._regHeat(1),
-      MDL_texture._regHeat(2),
-      MDL_texture._regHeat(3),
-      MDL_texture._regHeat(4),
-      MDL_texture._regHeat(5),
-      MDL_texture._regHeat(6),
-      MDL_texture._regHeat(7),
-      MDL_texture._regHeat(8),
-      findRegion("error"),
-      findRegion("error"),
-      findRegion("error"),
-      findRegion("error"),
-      findRegion("error"),
-      findRegion("error"),
-      findRegion("error"),
-    ];
-
-
-    /**
      * Texture regions used for wire.
      * @type {Object}
      * @prop {ObjectMap} regMap - Maps a material to wire region.

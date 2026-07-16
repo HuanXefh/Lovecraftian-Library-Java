@@ -43,7 +43,7 @@
 
 
   function comp_draw(b) {
-    MDL_draw._reg_frameFade(
+    LCDrawf.frameFade(
       b.x, b.y,
       b.block.delegee.rodRegs[b.isVerticalRod ? 1 : 0],
       b.rodProg, 60.0,

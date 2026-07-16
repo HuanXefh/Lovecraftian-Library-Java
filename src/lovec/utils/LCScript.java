@@ -1,6 +1,7 @@
 package lovec.utils;
 
 import arc.util.Log;
+import arc.util.Nullable;
 import arc.util.Reflect;
 import mindustry.Vars;
 import rhino.*;
@@ -8,6 +9,7 @@ import rhino.*;
 public class LCScript {
 
 
+    public static NativeObject VAR;
     public static NativeObject MDL_cond;
 
 
@@ -27,6 +29,7 @@ public class LCScript {
 
 
     public static void init() {
+        VAR = (NativeObject)(get("VAR"));
         MDL_cond = (NativeObject)(get("MDL_cond"));
         Log.info("[LOVEC] Initialized Lovec module references in LCScript.");
     };
@@ -41,21 +44,61 @@ public class LCScript {
 
 
     /**
+     * Converts JS number to Java integer.
+     */
+    public static int toInt(Object val) {
+        return (int)(Math.floor((Double)(val)));
+    };
+
+
+    /**
+     * Converts JS number to Java float.
+     */
+    public static float toFloat(Object val) {
+        return ((Double)(val)).floatValue();
+    };
+
+
+    /**
      * Gets a property in a JavaScript object.
      */
-    public static Object get(String nameProp, Scriptable scope) {
-        return scope.get(nameProp, scope);
+    public static @Nullable Object get(String nameProp, Scriptable scope) {
+        Object val = scope.get(nameProp, scope);
+        return isNull(val) ? null : val;
     };
     // Overload
-    public static Object get(String nameProp) {
+    public static @Nullable Object get(String nameProp) {
         return get(nameProp, Vars.mods.getScripts().scope);
+    };
+
+
+    /**
+     * Gets a property in nested JavaScript objects by a series of names.
+     */
+    public static @Nullable Object search(Scriptable scope, String... nameProps) {
+        Object lastVal = null;
+        Scriptable lastScope = scope;
+        int i = 0;
+        int cap = nameProps.length;
+        while(i < cap) {
+            lastVal = get(nameProps[i], lastScope);
+            if(isNull(lastVal)) {
+                break;
+            } else if(lastVal instanceof Scriptable obj) {
+                lastScope = obj;
+            } else {
+                break;
+            };
+            i++;
+        };
+        return lastVal;
     };
 
 
     /**
      * Invokes a function in a JavaScript object.
      */
-    public static Object invoke(String nameFun, Scriptable scope, Object... args) {
+    public static Object invoke(String nameFun, Scriptable scope, Object... args) throws NullPointerException {
         return thisInvoke(nameFun, scope, Vars.mods.getScripts().scope, args);
     };
 
@@ -63,7 +106,8 @@ public class LCScript {
     /**
      * Variant of {@link LCScript#invoke} with <code>this</code> passed.
      */
-    public static Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) {
+    @SuppressWarnings("All")
+    public static Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) throws NullPointerException {
         Function fun = (Function)(get(nameFun, scope));
         return fun.call(Context.getContext(), scope, thisObj, args);
     };
@@ -89,7 +133,7 @@ public class LCScript {
     /**
      * Gets a property in an instance created with Rhino <code>JavaAdapter</code>.
      */
-    public static Object instanceGet(Object ins, String nameProp) {
+    public static @Nullable Object instanceGet(Object ins, String nameProp) {
         return getDelegee(ins).get(nameProp);
     };
 

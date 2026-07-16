@@ -49,7 +49,7 @@
 
   function comp_draw(b) {
     Draw.rect(b.block.region, b.x, b.y);
-    MDL_draw._reg_side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
+    LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
   };
 
 

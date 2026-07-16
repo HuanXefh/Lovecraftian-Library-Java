@@ -50,7 +50,7 @@
   function comp_drawBase(blk, t) {
     if(t.overlay() !== Blocks.air) return;
 
-    MDL_draw._reg_randOv(t, blk.randRegs, blk.randRegDenom, blk.randRegOffs[0], blk.randRegOffs[1]);
+    LCDrawf.randomOverlay(t, blk.randRegs, blk.randRegDenom, blk.randRegOffs[0], blk.randRegOffs[1]);
   };
 
 

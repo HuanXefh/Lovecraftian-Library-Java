@@ -129,7 +129,7 @@
       aSha: 0.3,
       z: z,
       off: Mathf.random(VAR.param.buildRemainsOffCap),
-      region: MDL_texture._regBlk(blk),
+      region: LCTexture.getBlockRegion(blk),
 
 
       remove() {
@@ -271,7 +271,7 @@
           if(this.isHot) {
             Draw.blend(Blending.additive);
             Draw.mixcol(VAR.color.heatMix, 1.0);
-            Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * !this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.5 - Mathf.curve(this.fin(), 0.98) * 0.5) : (0.5 - Interp.pow2Out.apply(this.fin()) * 0.5));
+            Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * (!this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.5 - Mathf.curve(this.fin(), 0.98) * 0.5) : (0.5 - Interp.pow2Out.apply(this.fin()) * 0.5)));
             Draw.rect(this.region, this.x, this.y, this.rotation);
             Draw.blend();
           };
@@ -282,7 +282,7 @@
           if(this.isHot) {
             Draw.blend(Blending.additive);
             Draw.mixcol(VAR.color.heatMix, 1.0);
-            Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * !this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.35 - Mathf.curve(this.fin(), 0.98) * 0.35) : (0.35 - Interp.pow2Out.apply(this.fin()) * 0.35));
+            Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * (!this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.35 - Mathf.curve(this.fin(), 0.98) * 0.35) : (0.35 - Interp.pow2Out.apply(this.fin()) * 0.35)));
             Lines.line(this.lineRegion, this.lineVec_f.x + Tmp.v1.x, this.lineVec_f.y + Tmp.v1.y, this.lineVec_t.x + Tmp.v1.x, this.lineVec_t.y + Tmp.v1.y, false);
             Draw.blend();
           };

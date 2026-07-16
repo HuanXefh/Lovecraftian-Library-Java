@@ -32,11 +32,10 @@
 
     let blk = findContent(blk_gn);
     if(blk == null) return ARC_AIR.reg;
-    if(!shouldReturnName) return blk.fullIcon;
 
-    return Core.atlas.has(blk.name + "-full") ?
-      blk.name + "-full" :
-      blk.name + "-icon";
+    return shouldReturnName ?
+      LCTexture.getBlockRegionString(blk) :
+      LCTexture.getBlockRegion(blk);
   }
   .setCache();
   exports._regBlk = _regBlk;
@@ -57,18 +56,6 @@
   }
   .setCache();
   exports._regBlkTileCut = _regBlkTileCut;
-
-
-  /**
-   * Gets heat region for a size, usually used as default heat region for blocks.
-   * @param {number} size
-   * @return {TextureRegion}
-   */
-  const _regHeat = function(size) {
-    return Vars.headless ? ARC_AIR.reg : Core.atlas.find("lovec-ast-block-heat" + Math.round(size));
-  }
-  .setCache();
-  exports._regHeat = _regHeat;
 
 
   /**

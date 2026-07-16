@@ -22,10 +22,14 @@
 
   /** @global lovec.graphics.LCDraw */
   LCDraw = fetchClass("lovec.graphics.LCDraw");
+  /** @global lovec.graphics.LCDrawf */
+  LCDrawf = fetchClass("lovec.graphics.LCDrawf");
   /** @global lovec.graphics.LCDrawP3D */
   LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
   /** @global lovec.graphics.LCRgb */
   LCRgb = fetchClass("lovec.graphics.LCRgb");
+  /** @global lovec.graphics.LCTexture */
+  LCTexture = fetchClass("lovec.graphics.LCTexture");
   /** @global lovec.graphics.StackDrawable */
   StackDrawable = fetchClass("lovec.graphics.StackDrawable");
 

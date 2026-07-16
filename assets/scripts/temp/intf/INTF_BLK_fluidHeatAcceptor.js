@@ -61,12 +61,12 @@
     let heatRes = b.block.delegee.heatRes;
     if(!isFinite(heatRes)) return;
 
-    MDL_draw._reg_heat(
+    LCDrawf.heat(
       b.x, b.y,
-      Math.pow(Mathf.clamp(b.fHeatCur * 0.75 / heatRes), 3),
       b.block.delegee.fHeatReg,
-      b.block.delegee.shouldRotFHeatReg ? b.drawrot() : 0.0,
+      Math.pow(Mathf.clamp(b.fHeatCur * 0.75 / heatRes), 3),
       b.block.size,
+      b.block.delegee.shouldRotFHeatReg ? b.drawrot() : 0.0,
     );
   };
 

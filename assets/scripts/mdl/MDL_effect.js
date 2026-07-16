@@ -585,12 +585,12 @@
   }
   .setProp({
     eff: new Effect(20.0, eff => {
-      MDL_draw._reg_normal(
+      LCDraw.regionMixcol(
         eff.data[1].x, eff.data[1].y,
         eff.data[0], eff.data[1].drawrot(), 1.0, eff.color,
         eff.color.a * eff.fout(),
-        Layer.effect + VAR.layer.offDrawOver,
         1.0,
+        Layer.effect + VAR.layer.offDrawOver,
       );
     }),
   })
@@ -602,25 +602,23 @@
    * Creates a texture region or icon that fades out.
    * @param {number} x
    * @param {number} y
-   * @param {TextureRegion|Icon|null} reg0icon
+   * @param {TextureRegion|null} reg
    * @param {Color|unset} [color]
    * @param {number|unset} [scl]
    * @return {void}
    */
-  const _e_regFade = function thisFun(x, y, reg0icon, color, scl) {
-    if(Vars.state.isPaused() || reg0icon == null) return;
+  const _e_regFade = function thisFun(x, y, reg, color, scl) {
+    if(Vars.state.isPaused() || reg == null) return;
     if(color == null) color = Color.white;
     if(scl == null) scl = 1.0;
 
-    showAt(x, y, thisFun.eff, scl, color, reg0icon);
+    showAt(x, y, thisFun.eff, scl, color, reg);
   }
   .setProp({
     eff: new Effect(40.0, eff => {
       eff.lifetime = 40.0 * eff.rotation;
 
-      eff.data instanceof TextureRegion ?
-        MDL_draw._reg_normal(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a, Layer.effect + VAR.layer.offDrawOver) :
-        MDL_draw._reg_icon(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a);
+      LCDraw.region(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a, Layer.effect + VAR.layer.offDrawOver);
     }),
   })
   .setAnno("non-headless");

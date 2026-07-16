@@ -3,18 +3,15 @@ package lovec.graphics;
 import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.Mathf;
-import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Nullable;
-import arc.util.Time;
 import arc.util.pooling.Pools;
 import lovec.utils.LCFormat;
 import mindustry.gen.Building;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.graphics.Layer;
-import mindustry.world.Tile;
 
 /**
  * Basic draw methods used in Lovec.
@@ -23,9 +20,95 @@ import mindustry.world.Tile;
 public class LCDraw {
 
 
-    static final Color[] tmpColors = {
+    static Color[] tmpColors = {
         new Color(), new Color(), new Color(), new Color(), new Color(),
-        new Color(), new Color(), new Color(), new Color(), new Color()
+        new Color(), new Color(), new Color(), new Color(), new Color(),
+    };
+    static float[] zs = {
+        0f, 0f, 0f, 0f, 0f,
+        0f, 0f, 0f, 0f, 0f,
+        0f, 0f, 0f, 0f, 0f,
+        0f, 0f, 0f, 0f, 0f,
+    };
+    static boolean[] zTailBools = {
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+    };
+    static float[] xScls = {
+        1f, 1f, 1f, 1f, 1f,
+        1f, 1f, 1f, 1f, 1f,
+        1f, 1f, 1f, 1f, 1f,
+        1f, 1f, 1f, 1f, 1f,
+    };
+    static float[] yScls = {
+        1f, 1f, 1f, 1f, 1f,
+        1f, 1f, 1f, 1f, 1f,
+        1f, 1f, 1f, 1f, 1f,
+        1f, 1f, 1f, 1f, 1f,
+    };
+    static boolean[] sclTailBools = {
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+    };
+    static final int
+        NORMAL_REGION_Z_IND = 10,
+        GLOW_REGION_Z_IND = 11,
+        ICON_REGION_Z_IND = 12,
+        UI_REGION_Z_IND = 13;
+
+
+
+    /* <-------------------- auxiliary --------------------> */
+
+
+    /**
+     * Temporarily changes z-layer.
+     * Should always be called twice!
+     */
+    public static void processZ(float z, int ind) {
+        if(!zTailBools[ind]) {
+            zs[ind] = Draw.z();
+            if(z >= 0f) {
+                Draw.z(z);
+            };
+        } else {
+            Draw.z(zs[ind]);
+        };
+        zTailBools[ind] = !zTailBools[ind];
+    };
+    // Overload
+    public static void processZ(float z) {
+        processZ(z, 0);
+    };
+
+
+    /**
+     * Temporarily changes scaling.
+     * Should always be called twice!
+     */
+    public static void processScl(float xscl, float yscl, int ind) {
+        if(!sclTailBools[ind]) {
+            xScls[ind] = Draw.xscl;
+            yScls[ind] = Draw.yscl;
+            Draw.scl(xscl, yscl);
+        } else {
+            Draw.scl(xScls[ind], yScls[ind]);
+        };
+        sclTailBools[ind] = !sclTailBools[ind];
+    };
+    // Overload
+    public static void processScl(float xscl, float yscl) {
+        processScl(xscl, yscl, 0);
+    };
+    public static void processScl(float scl, int ind) {
+        processScl(scl, scl, ind);
+    };
+    public static void processScl(float scl) {
+        processScl(scl, 0);
     };
 
 
@@ -164,25 +247,107 @@ public class LCDraw {
 
 
     /**
+     * Draw a region.
+     */
+    public static void region(float x, float y, @Nullable TextureRegion reg, float ang, float regScl, Color color, float a, float z) {
+        if(reg == null) return;
+
+        processZ(z, NORMAL_REGION_Z_IND);
+        Draw.color(color);
+        Draw.alpha(a);
+        Draw.rect(
+            reg, x, y,
+            reg.width * reg.scl() * regScl,
+            reg.height * reg.scl() * regScl,
+            ang
+        );
+        Draw.color();
+        processZ(-1, NORMAL_REGION_Z_IND);
+    };
+    // Overload
+    public static void region(float x, float y, @Nullable TextureRegion reg, float ang, float regScl, Color color, float a) {
+        region(x, y, reg, ang, regScl, color, a, -1);
+    };
+    public static void region(float x, float y, @Nullable TextureRegion reg, float ang, float regScl, Color color) {
+        region(x, y, reg, ang, regScl, color, 1f);
+    };
+    public static void region(float x, float y, @Nullable TextureRegion reg, float ang, float regScl) {
+        region(x, y, reg, ang, regScl, Color.white);
+    };
+    public static void region(float x, float y, @Nullable TextureRegion reg, float ang) {
+        region(x, y, reg, ang, 1f);
+    };
+    public static void region(float x, float y, @Nullable TextureRegion reg) {
+        region(x, y, reg, 0f);
+    };
+
+
+    /**
+     * Draws a region mixed with some color.
+     */
+    public static void regionMixcol(float x, float y, @Nullable TextureRegion reg, float ang, float regScl, Color color, float a, float mixcolA, float z) {
+        if(reg == null) return;
+
+        processZ(z, NORMAL_REGION_Z_IND);
+        Draw.mixcol(color, mixcolA);
+        Draw.alpha(a);
+        Draw.rect(
+            reg, x, y,
+            reg.width * reg.scl() * regScl,
+            reg.height * reg.scl() * regScl,
+            ang
+        );
+        Draw.reset();
+        processZ(-1f, NORMAL_REGION_Z_IND);
+    };
+    // Overload
+    public static void regionMixcol(float x, float y, @Nullable TextureRegion reg, float ang, float regScl, Color color, float a, float mixcolA) {
+        regionMixcol(x, y, reg, ang, regScl, color, a, mixcolA, -1f);
+    };
+    public static void regionMixcol(float x, float y, @Nullable TextureRegion reg, float ang, float regScl, Color color, float a) {
+        regionMixcol(x, y, reg, ang, regScl, color, a, 1f);
+    };
+    public static void regionMixcol(float x, float y, @Nullable TextureRegion reg, float ang, float regScl, Color color) {
+        regionMixcol(x, y, reg, ang, regScl, color, 1f);
+    };
+    public static void regionMixcol(float x, float y, @Nullable TextureRegion reg, float ang, float regScl) {
+        regionMixcol(x, y, reg, ang, regScl, Color.white);
+    };
+    public static void regionMixcol(float x, float y, @Nullable TextureRegion reg, float ang) {
+        regionMixcol(x, y, reg, ang, 1f);
+    };
+    public static void regionMixcol(float x, float y, @Nullable TextureRegion reg) {
+        regionMixcol(x, y, reg, 0f);
+    };
+
+
+    /**
      * Variant of {@link #contentIcon} that uses a drawable texture region instead of unlockable content.
      */
-    public static void regionIcon(float x, float y, TextureRegion reg, float size, float wScl) {
+    public static void regionIcon(float x, float y, @Nullable TextureRegion reg, float size, float wScl, float z) {
+        if(reg == null) return;
+
         float
             x_fi = x - Vars.tilesize * size * 0.5f,
             y_fi = y + Vars.tilesize * size * 0.5f,
             w = (reg.width > reg.height ? 8f : ((reg.width * 8f) / reg.height)) * wScl,
             h = (reg.height > reg.width ? 8f : ((reg.height * 8f) / reg.width)) * wScl;
 
+        processZ(z, ICON_REGION_Z_IND);
         Draw.mixcol(Color.darkGray, 1f);
         Draw.rect(reg, x_fi, y_fi - 1f, w, h);
         Draw.mixcol();
         Draw.rect(reg, x_fi, y_fi, w, h);
+        processZ(-1f, ICON_REGION_Z_IND);
     };
     // Overload
-    public static void regionIcon(float x, float y, TextureRegion reg, float size) {
+    public static void regionIcon(float x, float y, @Nullable TextureRegion reg, float size, float wScl) {
+        regionIcon(x, y, reg, size, wScl, -1f);
+    };
+    public static void regionIcon(float x, float y, @Nullable TextureRegion reg, float size) {
         regionIcon(x, y, reg, size, 1f);
     };
-    public static void regionIcon(float x, float y, TextureRegion reg) {
+    public static void regionIcon(float x, float y, @Nullable TextureRegion reg) {
         regionIcon(x, y, reg, 1);
     };
 
@@ -190,17 +355,22 @@ public class LCDraw {
     /**
      * Draws content icon.
      */
-    public static void content(float x, float y, @Nullable UnlockableContent ct, float size) {
+    public static void content(float x, float y, @Nullable UnlockableContent ct, float size, float z) {
         if(ct == null) return;
 
         var w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : (float)(ct.fullIcon.width / ct.fullIcon.height));
         var h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : (float)(ct.fullIcon.height / ct.fullIcon.width));
 
+        processZ(z, ICON_REGION_Z_IND);
         Draw.rect(ct.fullIcon, x, y, w, h);
+        processZ(-1f, ICON_REGION_Z_IND);
     };
     // Overload
+    public static void content(float x, float y, @Nullable UnlockableContent ct, float size) {
+        content(x, y, ct, size, -1f);
+    };
     public static void content(float x, float y, @Nullable UnlockableContent ct) {
-        content(x, y, ct, 1);
+        content(x, y, ct, 1f);
     };
 
 
@@ -269,76 +439,6 @@ public class LCDraw {
         float sizeScl, Color color
     ) {
         text(x, y, str, font, sizeScl, color, Align.center);
-    };
-
-
-    /* <-------------------- specific --------------------> */
-
-
-    /**
-     * Calculates position for random walk in a square (width of 1).
-     */
-    public static Vec2 getRandWalkVec(Vec2 out, float time) {
-        float time_fi = time / 60f;
-        return out.set(
-            0.7f * Mathf.cos(time_fi) * Mathf.sin(0.5f * time_fi) - 0.3f * Mathf.cos(time_fi),
-            0.3f * Mathf.sin(time_fi) + 0.6f * Mathf.cos(0.5f * time_fi) * Mathf.sin(time_fi) + 0.1f * Mathf.cos(time_fi + 2.5f)
-        );
-    };
-
-
-    /**
-     * Generic method to draw a tree.
-     */
-    public static void tree(
-        TextureRegion reg, TextureRegion shaReg,
-        Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z,
-        boolean shouldDrawWobble, boolean shouldCheckDst
-    ) {
-        if(a < 0.01) return;
-
-        var zPrev = Draw.z();
-        if(shaReg.found()) {
-            Draw.z(z - 0.001f);
-            Draw.rect(shaReg, t.worldx() + offSha, t.worldy() + offSha, Mathf.randomSeed(t.pos(), 0f, 360f));
-        };
-        if(!shouldCheckDst) {
-            Draw.alpha(a);
-        } else {
-            var unitPl = Vars.player.unit();
-            var dst = unitPl == null ? 99999999f : Mathf.dst(t.worldx(), t.worldy(), unitPl.x, unitPl.y);
-            Draw.alpha(a * dst < rad ? 0.37f : 1f);
-        };
-        Draw.z(z);
-        if(!shouldDrawWobble) {
-            Draw.rect(reg, t.worldx(), t.worldy(), Mathf.randomSeed(t.pos(), 0f, 360f));
-        } else {
-            Draw.rectv(
-                reg, t.worldx(), t.worldy(),
-                reg.width * reg.scl(), reg.height * reg.scl(),
-                Mathf.randomSeed(t.pos(), 0f, 360f) + Mathf.sin(Time.time + t.worldx(), 50f, 0.5f) + Mathf.sin(Time.time - t.worldy(), 65f, 0.9f) + Mathf.sin(Time.time + t.worldy() - t.worldx(), 85f, 0.9f),
-                vec2 -> vec2.add(
-                     (Mathf.sin(vec2.y * 3f + Time.time, 60f * scl, 0.5f * mag) + Mathf.sin(vec2.x * 3f - Time.time, 70f * scl, 0.8f * mag)) * 1.5f * wob,
-                     (Mathf.sin(vec2.x * 3f + Time.time + 8f, 66f * scl, 0.55f * mag) + Mathf.sin(vec2.y * 3f - Time.time, 50f * scl, 0.2f * mag)) * 1.5f * wob
-                )
-            );
-        };
-        Draw.color();
-        Draw.z(zPrev);
-    };
-    // Overload
-    public static void tree(
-        TextureRegion reg, TextureRegion shaReg,
-        Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z,
-        boolean shouldDrawWobble
-    ) {
-        tree(reg, shaReg, t, rad, offSha, scl, mag, wob, a, z, shouldDrawWobble, false);
-    };
-    public static void tree(
-        TextureRegion reg, TextureRegion shaReg,
-        Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z
-    ) {
-        tree(reg, shaReg, t, rad, offSha, scl, mag, wob, a, z, true);
     };
 
 

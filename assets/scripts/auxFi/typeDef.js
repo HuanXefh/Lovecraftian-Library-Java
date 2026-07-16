@@ -22,6 +22,13 @@
 
   /**
    * @global
+   * @param {string} context
+   * @param {any} arg
+   * @return {void}
+   */
+  function log(context, arg) {};
+  /**
+   * @global
    * @param {any} arg
    * @return {void}
    */
@@ -132,12 +139,12 @@
 
 
   /**
-   * An ordered array of coordinates of n-dimensional points (flattened).
+   * An format array containing coordinates of n-dimensional points (flattened).
    * @global
-   * @typedef {Array<number>} PathData
+   * @typedef {Array<number>} PointArray
    * @example
-   * // A path of four 3D-points
-   * let pathData = [
+   * // An array of four 3D-points
+   * let ponArr = [
    *   0, 0, 0,
    *   0, 0, 1,
    *   0, 1, 1,
@@ -420,6 +427,8 @@
   class Mesh {};
   /** @global arc.graphics.Texture */
   class Texture {};
+  Texture.TextureFilter = class {};
+  Texture.TextureWrap = class {};
   /** @global arc.graphics.g2d.TextureRegion */
   class TextureRegion {};
   /** @global arc.graphics.Pixmap */
@@ -806,6 +815,7 @@
   class EntityCollisions {};
   /** @global mindustry.entities.Effect */
   class Effect {};
+  Effect.EffectContainer = class {};
   /** @global mindustry.entities.effect.MultiEffect */
   class MultiEffect extends Effect {};
   /** @global mindustry.entities.effect.ExplosionEffect */

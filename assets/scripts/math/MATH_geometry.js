@@ -90,7 +90,7 @@
 
   /**
    * Gets total length of a path.
-   * @param {PathData} pathData
+   * @param {PointArray} pathData
    * @param {number|unset} [dim]
    * @return {number}
    */
@@ -118,7 +118,7 @@
   /**
    * Gets an array of distances between points on the path.
    * @param {Array|unset} contArr
-   * @param {PathData} pathData
+   * @param {PointArray} pathData
    * @param {number|unset} [dim]
    * @return {Array<number>}
    */

@@ -104,7 +104,7 @@
   /**
    * Path version of {@link lerp}.
    * @param {Array|unset} contTup
-   * @param {PathData} pathData
+   * @param {PointArray} pathData
    * @param {number|unset} dim
    * @param {number} param
    * @param {number|unset} [param_f]
@@ -152,8 +152,8 @@
   /**
    * Bilinear version of {@link pathLerp}.
    * @param {Array|unset} contTup
-   * @param {PathData} pathData1
-   * @param {PathData} pathData2
+   * @param {PointArray} pathData1
+   * @param {PointArray} pathData2
    * @param {number|unset} dim
    * @param {number} param1
    * @param {number} param2

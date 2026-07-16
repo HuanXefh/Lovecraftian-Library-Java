@@ -48,7 +48,7 @@
 
 
   function comp_drawBase(blk, t) {
-    LCDraw.tree(blk.region, blk.shadow, t, blk.radTree, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], PARAM.TREE_ALPHA, blk.drawTup[0], PARAM.SHOULD_DRAW_WOBBLE, PARAM.SHOULD_CHECK_TREE_DISTANCE);
+    LCDrawf.tree(blk.region, blk.shadow, t, blk.radTree, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], PARAM.TREE_ALPHA, blk.drawTup[0], PARAM.SHOULD_DRAW_WOBBLE, PARAM.SHOULD_CHECK_TREE_DISTANCE);
   };
 
 
@@ -125,7 +125,7 @@
     canReplace: function(oblk) {
       if(oblk.alwaysReplace) return true;
       if(oblk.privileged) return false;
-      
+
       return oblk.size === this.size && (
         oblk instanceof StaticWall
           || oblk instanceof TallBlock

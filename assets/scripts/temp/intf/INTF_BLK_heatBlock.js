@@ -125,10 +125,10 @@
 
     if(PARAM.SHOULD_DRAW_FURNACE_HEAT && b.block.delegee.heatA > 0.0) {
       if(!b.block.delegee.shouldDrawDoubleHeat) {
-        MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.7 * b.block.delegee.heatA, b.block.delegee.heatReg, b.drawrot(), b.block.size);
+        LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.ex_getHeatFrac(), 3) * 0.7 * b.block.delegee.heatA, b.block.size, b.drawrot());
       } else {
-        MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.delegee.heatReg, b.drawrot(), b.block.size);
-        MDL_draw._reg_heat(b.x, b.y, Math.pow(b.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, VARGEN.blockHeatRegs[b.block.size + 2], b.drawrot(), b.block.size);
+        LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.size, b.drawrot());
+        LCDrawf.heat(b.x, b.y, LCDrawf.heatRegs[b.block.size + 2], Math.pow(b.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, b.block.size, b.drawrot());
       };
     };
 

@@ -36,9 +36,9 @@
 
 
   function comp_drawStatus(b) {
-    if(b.block.enableDrawStatus) {
-      MDL_draw._reg_blkStatus(b.x, b.y, b.block.size, b.status().color);
-    };
+    if(!b.block.enableDrawStatus) return;
+
+    LCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
   };
 
 

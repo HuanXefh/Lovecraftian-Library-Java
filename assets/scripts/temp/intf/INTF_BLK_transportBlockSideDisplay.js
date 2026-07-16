@@ -48,8 +48,12 @@
   function comp_draw(b) {
     if(b.block.delegee.noSideReg) return;
 
-    if(b.shouldDrawSide1) MDL_draw._reg_side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg1, b.rotation, null, null, b.block.delegee.sideRegZ);
-    if(b.shouldDrawSide2) MDL_draw._reg_side(b.x, b.y, b.block.delegee.sideReg2, b.block.delegee.sideReg2, (b.rotation + 2) % 4, null, null, b.block.delegee.sideRegZ);
+    if(b.shouldDrawSide1) {
+      LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.rotation, Color.white, 1.0, b.block.delegee.sideRegZ);
+    };
+    if(b.shouldDrawSide2) {
+      LCDrawf.side(b.x, b.y, b.block.delegee.sideReg2, b.rotation + 2, Color.white, 1.0, b.block.delegee.sideRegZ);
+    };
   };
 
 
@@ -84,7 +88,7 @@
          * @memberof INTF_BLK_transportBlockSideDisplay
          * @instance
          */
-        sideRegZ: null,
+        sideRegZ: -1,
 
 
         /* <------------------------------ internal ------------------------------ */
