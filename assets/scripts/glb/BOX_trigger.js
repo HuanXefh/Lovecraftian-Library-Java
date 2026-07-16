@@ -201,6 +201,13 @@ const BOX_trigger = new CLS_objectBox({
   torqueBlockPlace: new CLS_eventTrigger("lovec-torque-block-place"),
 
 
+  /**
+   * Triggered when block is configured: {@link INTF_BLK_torqueBlock}.
+   * <br> `ARGS`: b.
+   */
+  torqueBlockConfigure: new CLS_eventTrigger("lovec-torque-block-configure"),
+
+
   /* <------------------------------ achievement ------------------------------ */
 
 

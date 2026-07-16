@@ -33,25 +33,6 @@
   };
 
 
-  const comp_blends = newMultiFunction(
-    function(blk, t, rot, dir) {
-      let ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));
-      return ob != null && ob.team === t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
-    },
-    function(blk, t, rot, bPlan, dir, shouldCheckWorld) {
-      if(bPlan != null) {
-        let bPlanReq = bPlan[Mathf.mod(rot - dir, 4)];
-        if(bPlanReq != null && blk.blends(t, rot, bPlanReq.x, bPlanReq.y, bPlanReq.rotation, bPlanReq.block)) return true;
-      };
-      return shouldCheckWorld && blk.blends(t, rot, dir);
-    },
-    function(blk, t, rot, otx, oty, orot, oblk) {
-      return ((oblk.consPower != null || oblk.outputsPower) && !MDL_cond._isFluidConduit(oblk) && !MDL_cond._isArmoredCable(oblk))
-        || (blk.lookingAt(t, rot, otx, oty, oblk) && oblk.hasPower && !MDL_cond._isFluidConduit(oblk));
-    },
-  );
-
-
   function comp_updateTile(b) {
     b.ex_updateGraph();
   };
@@ -145,7 +126,7 @@
 
 
       blends: function() {
-        return comp_blends.apply(null, Array.from(arguments).unshiftAll(this));
+        return BLKFragCable.setThis(this).blends.apply(BLKFragCable, arguments);
       }
       .setProp({
         noSuper: true,

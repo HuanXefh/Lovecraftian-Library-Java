@@ -38,6 +38,7 @@
     TRIGGER.torqueBlockPlace.fire(b);
     Time.run(0.0, () => {
       TRIGGER.torqueBlockPlace.addListener(ob => b.torProg = 0.0);
+      TRIGGER.torqueBlockConfigure.addListener(ob => b.torProg = 0.0);
     });
 
     // Just in case

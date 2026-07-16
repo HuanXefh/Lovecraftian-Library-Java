@@ -32,26 +32,6 @@
   };
 
 
-  const comp_blends = newMultiFunction(
-    function(blk, t, rot, dir) {
-      let ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));
-      return ob != null && ob.team === t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
-    },
-    function(blk, t, rot, bPlan, dir, shouldCheckWorld) {
-      if(bPlan != null) {
-        let bPlanReq = bPlan[Mathf.mod(rot - dir, 4)];
-        if(bPlanReq != null && blk.blends(t, rot, bPlanReq.x, bPlanReq.y, bPlanReq.rotation, bPlanReq.block)) return true;
-      };
-      return shouldCheckWorld && blk.blends(t, rot, dir);
-    },
-    function(blk, t, rot, otx, oty, orot, oblk) {
-      return oblk.hasLiquids
-        && (oblk.outputsLiquid || blk.lookingAt(t, rot, otx, oty, oblk))
-        && (blk.lookingAtEither(t, rot, otx, oty, orot, oblk) || MDL_cond._isFluidRouter(oblk));
-    },
-  );
-
-
   function comp_onDestroyed(b) {
     if(PARAM.SECRET_METAL_PIPE && String(b.block.delegee.matGrp).equalsAny([
       "iron", "steel", "galvanized-steel", "stainless-steel",
@@ -150,8 +130,8 @@
       },
 
 
-      blends: function() {
-        return comp_blends.apply(null, Array.from(arguments).unshiftAll(this));
+      blends: function thisFun() {
+        return BLKFragFluidPipe.setThis(this).blends.apply(BLKFragFluidPipe, arguments);
       }
       .setProp({
         noSuper: true,

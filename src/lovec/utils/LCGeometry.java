@@ -4,7 +4,6 @@ import arc.math.Mathf;
 import mindustry.gen.Building;
 
 import static lovec.utils.LCScript.MDL_cond;
-import static lovec.utils.LCScript.invoke;
 
 public class LCGeometry {
 
@@ -23,7 +22,9 @@ public class LCGeometry {
 
 
     private static boolean acceptBlock(Building b_f, Building b_t, boolean canSideBlend) {
-        return !b_t.block.rotate || ((canSideBlend ? b_t.relativeTo(b_f) : b_f.relativeTo(b_t)) != b_t.rotation);
+        return !b_t.block.rotate || (boolean)(LCScript.invoke("_isFullRouter", MDL_cond, b_f.block)) ?
+            canSideBlend :
+            ((canSideBlend ? b_t.relativeTo(b_f) : b_f.relativeTo(b_t)) != b_t.rotation);
     };
 
 
@@ -31,7 +32,7 @@ public class LCGeometry {
      * Whether a building accepts input from another building.
      */
     public static boolean accept(Building b_f, Building b_t, boolean fromRouter, boolean canSideBlend) {
-        return !b_f.block.rotate ?
+        return !b_f.block.rotate || (boolean)(LCScript.invoke("_isFullRouter", MDL_cond, b_f.block)) ?
             acceptBlock(b_f, b_t, canSideBlend) :
             !fromRouter ?
                 acceptLine(b_f, b_t, canSideBlend) :
@@ -43,16 +44,16 @@ public class LCGeometry {
 
 
     private static boolean backSideFromRouter(Building b_s) {
-        return b_s != null && (boolean)(invoke("_isGenericRouter", MDL_cond, b_s.block));
+        return b_s != null && (boolean)(LCScript.invoke("_isGenericRouter", MDL_cond, b_s.block));
     };
 
 
     private static boolean backSideCanSideBlend(Building b, Building b_s) {
-        return b_s != null && (
-            (boolean)(invoke("_isNoSideBlock", MDL_cond, b.block))
-                || (boolean)(invoke("_isNoSideBlock", MDL_cond, b_s.block))
-                || (boolean)(invoke("_isSameNoSideBlock", MDL_cond, b.block, b_s.block))
-        );
+        if(b_s == null) return false;
+        var noSideTo = (boolean)(LCScript.invoke("_isNoSideBlock", MDL_cond, b.block));
+        var noSideBoth = (boolean)(LCScript.invoke("_isSameNoSideBlock", MDL_cond, b.block, b_s.block));
+
+        return noSideBoth || !noSideTo;
     };
 
 

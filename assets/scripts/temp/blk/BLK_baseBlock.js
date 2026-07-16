@@ -367,6 +367,7 @@
 
       /**
        * If true, this block will be treated as gate.
+       * Used mostly for accept check.
        * @memberof BLK_baseBlock
        * @instance
        * @return {boolean}
@@ -381,12 +382,27 @@
 
       /**
        * If true, this block will be treated as one-side output block.
-       * Used mostly for router check.
+       * Used mostly for accept check.
        * @memberof BLK_baseBlock
        * @instance
        * @return {boolean}
        */
       ex_noSideOutput: function() {
+        return false;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * If true, this block will treated as non-all side output block.
+       * Used mostly for accept check.
+       * @memberof BLK_baseBlock
+       * @instance
+       * @return {boolean}
+       */
+      ex_noAllSideOutput: function() {
         return false;
       }
       .setProp({

@@ -64,3 +64,14 @@
   PoolableVec2 = fetchClass("lovec.utils.pooling.PoolableVec2");
   /** @global lovec.utils.pooling.PoolableVec3 */
   PoolableVec3 = fetchClass("lovec.utils.pooling.PoolableVec3");
+
+
+  /* <------------------------------ lovec.content.frag ------------------------------ */
+
+
+  /** @global lovec.content.frag.BLKFragArmoredCable */
+  BLKFragArmoredCable = new (fetchClass("lovec.content.frag.BLKFragArmoredCable"));
+  /** @global lovec.content.frag.BLKFragCable */
+  BLKFragCable = new (fetchClass("lovec.content.frag.BLKFragCable"));
+  /** @global lovec.content.frag.BLKFragFluidPipe */
+  BLKFragFluidPipe = new (fetchClass("lovec.content.frag.BLKFragFluidPipe"));

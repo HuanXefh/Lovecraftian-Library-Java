@@ -31,6 +31,7 @@
       b.delegee.rpmCur = b.ex_calcRpmTg();
       MDL_effect._e_click(b.x, b.y, b.team.color);
       Sounds.click.at(b);
+      TRIGGER.torqueBlockConfigure.fire(b);
     });
   };
 

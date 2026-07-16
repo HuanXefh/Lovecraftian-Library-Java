@@ -303,7 +303,7 @@
    */
   const _isGate = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
-    return blk == null ? null : (matchCond(blk_gn, "gate", "blk") && tryFun(blk.ex_isGateBlk, blk, false));
+    return blk != null && (matchCond(blk_gn, "gate", "blk") && tryFun(blk.ex_isGateBlk, blk, false));
   }
   .setCache();
   exports._isGate = _isGate;
@@ -328,10 +328,27 @@
    */
   const _isGenericRouter = function(blk_gn) {
     let blk = MDL_content._ct(blk_gn, "blk");
-    return (blk.rotate && _isGate(blk_gn) && !tryFun(blk.ex_noSideOutput, blk, false)) || _isFluidRouter(blk_gn);
+    return blk != null && (blk.rotate && _isGate(blk_gn) && !tryFun(blk.ex_noSideOutput, blk, false)) || _isFluidRouter(blk_gn);
   }
   .setCache();
   exports._isGenericRouter = _isGenericRouter;
+
+
+  /**
+   * Whether this block is a rotatable router that outputs in 4 directions.
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
+  const _isFullRouter = function(blk_gn) {
+    let blk = MDL_content._ct(blk_gn, "blk");
+    return blk != null && blk.rotate && (
+      _isDrill(blk)
+        || _isPowerGenerator(blk)
+        || _isFactory(blk)
+    ) && !tryFun(blk.ex_noAllSideOutput, blk, false);
+  }
+  .setCache();
+  exports._isFullRouter = _isFullRouter;
 
 
   /**

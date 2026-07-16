@@ -333,10 +333,11 @@
 
   /**
    * Variant of {@link Array#with} for array.
+   * @param {Arguments} eles
    */
   Array.prototype.withAll = function(eles) {
     this.clear();
-    let i = 0, iCap = eles.iCap();
+    let i = 0, iCap = eles.length;
     while(i < iCap) {
       this.push(eles[i]);
       i++;
