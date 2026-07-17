@@ -74,7 +74,7 @@
     if(!utp.useConicalLight) {
       utp.super$drawLight(unit);
     } else {
-      MDL_draw._l_arc(unit.x, unit.y, 1.0, utp.lightRadius, utp.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
+      LCDrawf.lightArc(unit.x, unit.y, 1.0, utp.lightRadius, utp.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
     };
   };
 

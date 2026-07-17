@@ -89,7 +89,7 @@
 
 
   function comp_draw(b) {
-    MDL_draw._reg_fadeProg(b.x, b.y, b.boilerInstabProg, b.block.delegee.flashReg, 0.0, 1.0, 1.0, Color.white, b.boilerInstab * 0.7);
+    LCDrawf.fadeProg(b.x, b.y, b.block.delegee.flashReg, b.boilerInstabProg, 1.0, 0.0, 1.0, Color.white, b.boilerInstab * 0.7);
   };
 
 

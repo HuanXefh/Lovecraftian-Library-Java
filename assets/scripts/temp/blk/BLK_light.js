@@ -21,7 +21,7 @@
       blk.flags.with(BlockFlag.hasFogRadius)
     };
 
-    blk.ex_addLogicGetter(LAccess.range, b => blk.lightRad * b.delegee.lightProg / Vars.tilesize);
+    blk.ex_addLogicGetter(LAccess.range, b => blk.lightRad * b.delegee.lightWarmup / Vars.tilesize);
   };
 
 
@@ -36,9 +36,9 @@
 
 
   function comp_updateTile(b) {
-    b.lightProg = Mathf.approachDelta(b.lightProg, Mathf.clamp(b.efficiency), 0.004);
+    b.lightWarmup = Mathf.approachDelta(b.lightWarmup, Mathf.clamp(b.efficiency), 0.004);
     if(TIMER.secQuarter && b.block.delegee.fogRadFrac > 0.0) {
-      b.fogRad = b.block.delegee.lightRad * b.block.delegee.fogRadFrac * b.lightProg / Vars.tilesize;
+      b.fogRad = b.block.delegee.lightRad * b.block.delegee.fogRadFrac * b.lightWarmup / Vars.tilesize;
       if(!b.lastFogRad.fEqual(b.fogRad, 0.5)) {
         Vars.fogControl.forceUpdate(b.team, b);
         b.lastFogRad = b.fogRad;
@@ -48,16 +48,16 @@
 
 
   function comp_drawSelect(b) {
-    Drawf.dashCircle(b.x, b.y, b.block.delegee.lightRad * b.lightProg, Pal.accent);
+    Drawf.dashCircle(b.x, b.y, b.block.delegee.lightRad * b.lightWarmup, Pal.accent);
   };
 
 
   function comp_drawLight(b) {
-    MDL_draw._l_disk(
-      b.x, b.y, b.lightProg,
-      b.block.delegee.lightRad * b.lightProg * 0.6,
-      b.block.size, null,
-      b.block.delegee.lightA * Interp.pow3In.apply(b.lightProg),
+    LCDrawf.light(
+      b.x, b.y, b.lightWarmup,
+      b.block.delegee.lightRad * b.lightWarmup * 0.6,
+      b.block.size, LCDrawf.lightColor,
+      b.block.delegee.lightA * Interp.pow3In.apply(b.lightWarmup),
     );
   };
 
@@ -149,7 +149,7 @@
        * @memberof B_light
        * @instance
        */
-      lightProg: 0.0,
+      lightWarmup: 0.0,
       /**
        * <INTERNAL>
        * @memberof B_light
@@ -174,7 +174,7 @@
 
 
       warmup: function() {
-        return this.lightProg;
+        return this.lightWarmup;
       }
       .setProp({
         noSuper: true,
@@ -206,7 +206,7 @@
 
       write: function(wr) {
         this.ex_processData(wr);
-        wr.f(this.lightProg);
+        wr.f(this.lightWarmup);
       },
 
 
@@ -214,7 +214,7 @@
         if(this.LCRevi === 5) rd.s();
 
         this.ex_processData(rd);
-        this.lightProg = rd.f();
+        this.lightWarmup = rd.f();
       },
 
 

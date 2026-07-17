@@ -64,7 +64,7 @@
 
 
   function comp_draw(b) {
-    MDL_draw._reg_fade(b.x, b.y, b.block.delegee.glowReg, 0.0, 1.0, 1.0, Color.white, b.glowHeat * 0.7);
+    LCDrawf.fade(b.x, b.y, b.block.delegee.glowReg, 1.0, 0.0, 1.0, Color.white, b.glowHeat * 0.7);
 
     if(b.glowHeat > 0.01) {
       b.pullTgs.forEachFast(loot => {

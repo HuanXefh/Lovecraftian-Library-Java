@@ -12,17 +12,19 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
+import arc.util.Tmp;
 import lovec.utils.LCFormat;
 import lovec.utils.LCScript;
 import mindustry.Vars;
-import mindustry.graphics.Layer;
-import mindustry.graphics.Lod;
-import mindustry.graphics.Pal;
-import mindustry.graphics.Shaders;
+import mindustry.graphics.*;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.draw.DrawFade;
+import mindustry.world.draw.DrawFlame;
 import mindustry.world.draw.DrawSideRegion;
 import mindustry.world.draw.DrawWeave;
+
+import static lovec.utils.LCScript.VAR;
 
 /**
  * Utility draw methods.
@@ -31,21 +33,39 @@ public class LCDrawf {
 
 
     public static TextureRegion[] heatRegs;
+    public static TextureRegion lightConeReg;
+    public static Color lightColor = Color.valueOf("ffc999");
     public static Color heatColor = Color.valueOf("ff3838");
 
 
     static Seq<Tile> tmpTs = new Seq<>();
-    static float randOvLay;
+    static float
+        bulFlameLay,
+        randOvLay;
 
 
     public static void init() {
-        randOvLay = LCScript.toFloat(LCScript.search(LCScript.VAR, "layer", "randOv"));
+        bulFlameLay = LCScript.toFloat(LCScript.search(VAR, "layer", "bulFlame"));
+        randOvLay = LCScript.toFloat(LCScript.search(VAR, "layer", "randOv"));
 
         heatRegs = new TextureRegion[16];
         for(int i = 0; i < heatRegs.length; i++) {
             heatRegs[i] = Vars.headless ? LCTexture.empty : Core.atlas.find("lovec-ast-block-heat" + i);
         };
+
+        if(!Vars.headless) {
+            lightConeReg = Core.atlas.find("lovec-efr-shadow-cone");
+        };
     };
+
+
+    /* <-------------------- line --------------------> */
+
+
+    /* <-------------------- circle --------------------> */
+
+
+    /* <-------------------- rectangle --------------------> */
 
 
     /* <-------------------- texture --------------------> */
@@ -176,6 +196,93 @@ public class LCDrawf {
     };
     public static void spin(float x, float y, @Nullable TextureRegion reg, float prog, float spd) {
         spin(x, y, reg, prog, spd, 0f);
+    };
+
+
+    /**
+     * {@link DrawFade}.
+     */
+    public static void fade(float x, float y, @Nullable TextureRegion reg, float fadeScl, float ang, float regScl, Color color, float a, float z) {
+        if(reg == null) return;
+
+        float a_fi = a * Math.abs(Mathf.sin(Time.time * 0.065f / fadeScl));
+        LCDraw.region(x, y, reg, ang, regScl, color, a_fi, z);
+    };
+    // Overload
+    public static void fade(float x, float y, @Nullable TextureRegion reg, float fadeScl, float ang, float regScl, Color color, float a) {
+        fade(x, y, reg, fadeScl, ang, regScl, color, a, -1f);
+    };
+    public static void fade(float x, float y, @Nullable TextureRegion reg, float fadeScl, float ang, float regScl, Color color) {
+        fade(x, y, reg, fadeScl, ang, regScl, color, 1f);
+    };
+    public static void fade(float x, float y, @Nullable TextureRegion reg, float fadeScl, float ang, float regScl) {
+        fade(x, y, reg, fadeScl, ang, regScl, Color.white);
+    };
+    public static void fade(float x, float y, @Nullable TextureRegion reg, float fadeScl, float ang) {
+        fade(x, y, reg, fadeScl, ang, 1f);
+    };
+    public static void fade(float x, float y, @Nullable TextureRegion reg, float fadeScl) {
+        fade(x, y, reg, fadeScl, 0f);
+    };
+    public static void fade(float x, float y, @Nullable TextureRegion reg) {
+        fade(x, y, reg, 1f);
+    };
+
+
+    /**
+     * Variant of {@link LCDrawf#fade} where progress is controlled by <code>prog</code> instead of <code>Time.time</code>.
+     */
+    public static void fadeProg(float x, float y, @Nullable TextureRegion reg, float prog, float fadeScl, float ang, float regScl, Color color, float a, float z) {
+        if(reg == null) return;
+
+        float a_fi = a * Math.abs(Mathf.sin(prog * 0.15f / fadeScl));
+        LCDraw.region(x, y, reg, ang, regScl, color, a_fi, z);
+    };
+    // Overload
+    public static void fadeProg(float x, float y, @Nullable TextureRegion reg, float prog, float fadeScl, float ang, float regScl, Color color, float a) {
+        fadeProg(x, y, reg, prog, fadeScl, ang, regScl, color, a, -1f);
+    };
+    public static void fadeProg(float x, float y, @Nullable TextureRegion reg, float prog, float fadeScl, float ang, float regScl, Color color) {
+        fadeProg(x, y, reg, prog, fadeScl, ang, regScl, color, 1f);
+    };
+    public static void fadeProg(float x, float y, @Nullable TextureRegion reg, float prog, float fadeScl, float ang, float regScl) {
+        fadeProg(x, y, reg, prog, fadeScl, ang, regScl, Color.white);
+    };
+    public static void fadeProg(float x, float y, @Nullable TextureRegion reg, float prog, float fadeScl, float ang) {
+        fadeProg(x, y, reg, prog, fadeScl, ang, 1f);
+    };
+    public static void fadeProg(float x, float y, @Nullable TextureRegion reg, float prog, float fadeScl) {
+        fadeProg(x, y, reg, prog, fadeScl, 0f);
+    };
+    public static void fadeProg(float x, float y, @Nullable TextureRegion reg, float prog) {
+        fadeProg(x, y, reg, prog, 1f);
+    };
+
+
+    /**
+     * Variant of {@link LCDrawf#fade} where the region becomes opaque when <code>frac</code> approaches 1.0.
+     */
+    public static void fadeAlert(float x, float y, @Nullable TextureRegion reg, float frac, float ang, float regScl, Color color, float a, float z) {
+        if(reg == null) return;
+
+        float a_fi = 1f - Mathf.pow(Mathf.clamp(frac) - 1f, 2f);
+        fade(x, y, reg, ang, regScl, 0.3f, color, a_fi, z);
+    };
+    // Overload
+    public static void fadeAlert(float x, float y, @Nullable TextureRegion reg, float frac, float ang, float regScl, Color color, float a) {
+        fadeAlert(x, y, reg, frac, ang, regScl, color, a, -1f);
+    };
+    public static void fadeAlert(float x, float y, @Nullable TextureRegion reg, float frac, float ang, float regScl, Color color) {
+        fadeAlert(x, y, reg, frac, ang, regScl, color, 1f);
+    };
+    public static void fadeAlert(float x, float y, @Nullable TextureRegion reg, float frac, float ang, float regScl) {
+        fadeAlert(x, y, reg, frac, ang, regScl, Color.white);
+    };
+    public static void fadeAlert(float x, float y, @Nullable TextureRegion reg, float frac, float ang) {
+        fadeAlert(x, y, reg, frac, ang, 1f);
+    };
+    public static void fadeAlert(float x, float y, @Nullable TextureRegion reg, float frac) {
+        fadeAlert(x, y, reg, frac, 0f);
     };
 
 
@@ -317,6 +424,162 @@ public class LCDrawf {
     };
     public static void scan(float x, float y, float prog, float warmup, float size) {
         scan(x, y, prog, warmup, size, Pal.accent);
+    };
+
+
+    /**
+     * {@link DrawFlame} without "-top" region.
+     * Light is not included.
+     */
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, float radIn, float radScl, float radMag, float radInMag, Color color, float a, float z) {
+        if(reg == null) return;
+
+        float
+            param1 = 0.3f,
+            param2 = 0.06f,
+            param3 = Mathf.random(0.1f),
+            a_fi = a * ((1f - param1) + Mathf.absin(Time.time, 8f, param1) + Mathf.random(param2) - param2) * warmup,
+            rad_fi = rad + Mathf.absin(Time.time, radScl, radMag) + param3,
+            radIn_fi = radIn + Mathf.absin(Time.time, radScl, radInMag) + param3;
+
+        LCDraw.processZ(z, LCDraw.NORMAL_REGION_Z_IND);
+        Draw.alpha(a * warmup);
+        Draw.rect(reg, x, y);
+        Draw.alpha(a_fi);
+        Draw.tint(color);
+        Fill.circle(x, y, rad_fi);
+        Draw.color(1f, 1f, 1f, a * warmup);
+        Fill.circle(x, y, radIn_fi);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.NORMAL_REGION_Z_IND);
+    };
+    // Overload
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, float radIn, float radScl, float radMag, float radInMag, Color color, float a) {
+        flame(x, y, reg, warmup, rad, radIn, radScl, radMag, radInMag, color, a, -1f);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, float radIn, float radScl, float radMag, float radInMag, Color color) {
+        flame(x, y, reg, warmup, rad, radIn, radScl, radMag, radInMag, color, 1f);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, float radIn, float radScl, float radMag, float radInMag) {
+        flame(x, y, reg, warmup, rad, radIn, radScl, radMag, radInMag, Color.white);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, float radScl, Color color, float a, float z) {
+        flame(x, y, reg, warmup, rad, rad * 0.6f, radScl, 2f, 1f, color, a, z);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, float radScl, Color color, float a) {
+        flame(x, y, reg, warmup, rad, radScl, color, a, -1f);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, float radScl, Color color) {
+        flame(x, y, reg, warmup, rad, radScl, color, 1f);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, float radScl) {
+        flame(x, y, reg, warmup, rad, radScl, Color.white);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, Color color, float a, float z) {
+        flame(x, y, reg, warmup, rad, 5f, color, a, z);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, Color color, float a) {
+        flame(x, y, reg, warmup, rad, 5f, color, a, -1f);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad, Color color) {
+        flame(x, y, reg, warmup, rad, 5f, color, 1f);
+    };
+    public static void flame(float x, float y, @Nullable TextureRegion reg, float warmup, float rad) {
+        flame(x, y, reg, warmup, rad, 5f, Color.white);
+    };
+
+
+    /**
+     * Draws Sublimate torch.
+     * No flare included.
+     */
+    public static void torch(float x, float y, float warmup, float len, float w, float size, Color color, Color colorIn, float ang, float a, float z) {
+        if(len < 0.1f) return;
+
+        float
+            offRad = size * Vars.tilesize / 2f,
+            x_fi = x + Mathf.cosDeg(ang) * offRad,
+            y_fi = y + Mathf.sinDeg(ang) * offRad,
+            len_f = len * 0.4f * warmup,
+            len_t = len * warmup,
+            w_f = w * 0.3f * warmup,
+            w_t = w * 1.2f * warmup,
+            lenScl = 1f + Mathf.sin(Time.time, 1f, 0.07f);
+
+        Drawf.light(x_fi, y_fi, x + Mathf.cosDeg(ang) * len * 1.2f, y + Mathf.sinDeg(ang) * len * 1.2f, w_t * 6f, color, a * 0.65f);
+        LCDraw.processZ(z, LCDraw.BULLET_REGION_Z_IND);
+        float frac_i, a_i, len_i, w_i;
+        for(int i = 0; i < 4; i++) {
+            frac_i = 1f - i / 3f;
+            a_i = Mathf.lerp(a, a * 0.4f, frac_i);
+            len_i = Mathf.lerp(len_f, len_t, frac_i);
+            w_i = Mathf.lerp(w_f, w_t, frac_i);
+            Draw.color(Tmp.c1.set(colorIn).lerp(color, frac_i));
+            Draw.alpha(a_i);
+            Drawf.flame(x_fi, y_fi, 12, ang, len_i * lenScl, w_i, 0.2f);
+        };
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.BULLET_REGION_Z_IND);
+    };
+    // Overload
+    public static void torch(float x, float y, float warmup, float len, float w, float size, Color color, Color colorIn, float ang, float a) {
+        torch(x, y, warmup, len, w, size, color, colorIn, ang, a, bulFlameLay);
+    };
+    public static void torch(float x, float y, float warmup, float len, float w, float size, Color color, Color colorIn, float ang) {
+        torch(x, y, warmup, len, w, size, color, colorIn, ang, 1f);
+    };
+    public static void torch(float x, float y, float warmup, float len, float w, float size, Color color, Color colorIn) {
+        torch(x, y, warmup, len, w, size, color, colorIn, 0f);
+    };
+
+
+    /* <-------------------- light --------------------> */
+
+
+    /**
+     * Draws circular light.
+     */
+    public static void light(float x, float y, float warmup, float rad, float size, Color color, float a, float sinScl, float sinMag) {
+        Drawf.light(x, y, (rad + Mathf.absin(sinScl, sinMag)) * warmup * size, color, a);
+    };
+    // Overload
+    public static void light(float x, float y, float warmup, float rad, float size, Color color, float a) {
+        light(x, y, warmup, rad, size, color, a, 16f, 6f);
+    };
+    public static void light(float x, float y, float warmup, float rad, float size, Color color) {
+        light(x, y, warmup, rad, size, color, 0.65f);
+    };
+    public static void light(float x, float y, float warmup, float rad, float size) {
+        light(x, y, warmup, rad, size, lightColor);
+    };
+    public static void light(float x, float y, float warmup, float rad) {
+        light(x, y, warmup, rad, 1);
+    };
+
+
+    /**
+     * Draws conical light.
+     */
+    public static void lightArc(float x, float y, float warmup, float rad, float coneScl, float ang, Color color, float a) {
+        if(Vars.renderer == null || lightConeReg == null) return;
+
+        float
+            w = rad * lightConeReg.scl() * Vars.tilesize * coneScl * warmup,
+            h = rad * lightConeReg.scl() * Vars.tilesize * warmup;
+
+        Vars.renderer.lights.add(() -> {
+            Draw.color(color);
+            Draw.alpha(a);
+            Draw.rect(lightConeReg, x, y, w, h, ang);
+            Draw.color();
+        });
+    };
+    // Overload
+    public static void lightArc(float x, float y, float warmup, float rad, float coneScl, float ang, Color color) {
+        lightArc(x, y, warmup, rad, coneScl, ang, color, 0.65f);
+    };
+    public static void lightArc(float x, float y, float warmup, float rad, float coneScl, float ang) {
+        lightArc(x, y, warmup, rad, coneScl, ang, lightColor);
     };
 
 

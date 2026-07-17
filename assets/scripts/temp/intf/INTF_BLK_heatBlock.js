@@ -133,7 +133,7 @@
     };
 
     if(b.block.delegee.shouldDrawHeatLight) {
-      MDL_draw._l_disk(b.x, b.y, Mathf.clamp((b.tempCur - 60.0) / (b.block.delegee.heatLightTempReq - 60.0)), b.block.delegee.heatLightRad, b.block.size);
+      LCDrawf.light(b.x, b.y, Mathf.clamp((b.tempCur - 60.0) / (b.block.delegee.heatLightTempReq - 60.0)), b.block.delegee.heatLightRad, b.block.size);
     };
   };
 
