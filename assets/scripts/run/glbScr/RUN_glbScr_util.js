@@ -265,7 +265,7 @@
   fetchTempMethod = function(nameTemp, nameFun, def) {
     if(def == null) def = Function.air;
 
-    let temp = LCTemp[nameTemp];
+    let temp = CLS_contentTemplate.get(nameTemp);
     return temp == null ?
       def :
       temp[nameFun] == null ?
@@ -277,13 +277,15 @@
   /**
    * Gets all parent templates and implemented interfaces of some template as string.
    * @global
+   * @param {Array|unset} contArr
    * @param {string} nameTemp
    * @return {Array<string>}
    */
-  fetchTempParents = function(nameTemp) {
-    return LCTemp[nameTemp] == null ?
-      [] :
-      LCTempParentMap.get(nameTemp).slice();
+  fetchTempParents = function(contArr, nameTemp) {
+    let arr = contArr != null ? contArr.clear() : [];
+    return CLS_contentTemplate.get(nameTemp) == null ?
+      arr :
+      arr.pushAll(CLS_contentTemplate.getTempParents(nameTemp));
   };
 
 

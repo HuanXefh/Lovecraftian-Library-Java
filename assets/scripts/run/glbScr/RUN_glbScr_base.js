@@ -156,19 +156,19 @@
    */
   newMultiFunction = function() {
     let fun = function() {
-      return fun.__overloadingContainer__[""].apply(this, arguments);
+      return fun.__overloadContainer__[""].apply(this, arguments);
     };
-    fun.__overloadingContainer__ = {};
+    fun.__overloadContainer__ = {};
 
     let i = 0, iCap = arguments.length;
     if(arguments[0] instanceof Array && typeof arguments[1] === "function") {
       while(i < iCap) {
-        addMethod(fun.__overloadingContainer__, "", arguments[i], arguments[i + 1]);
+        addMethod(fun.__overloadContainer__, "", arguments[i], arguments[i + 1]);
         i += 2;
       };
     } else {
       while(i < iCap) {
-        addMethod(fun.__overloadingContainer__, "", null, arguments[i]);
+        addMethod(fun.__overloadContainer__, "", null, arguments[i]);
         i++;
       };
     };

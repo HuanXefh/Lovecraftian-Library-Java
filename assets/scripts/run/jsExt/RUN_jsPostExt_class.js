@@ -41,7 +41,7 @@
       });
     } else {
       if(this.nm === "CLS_contentTemplate") throw new Error("Are you trying to implement interface on the root template?");
-      let arr = LCTempParentMap.get(this.nm);
+      let arr = CLS_contentTemplate.getTempParents(this.nm);
       if(String.isEmpty(intf.name)) {
         console.warn("[LOVEC] Content template ${1} is implementing an anonymous interface!".format(this.nm));
       } else {

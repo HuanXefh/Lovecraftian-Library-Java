@@ -131,9 +131,8 @@
     if(name != null && typeof name === "string") {
       this.nm = name;
       if(this.__isContentTemplate__) {
-        if(LCTemp[name] != null) throw new Error("Template name ${1} has already been used???".format(name));
-        LCTemp[name] = this;
-        LCTempParentMap.put(name, LCTempParentMap.get(cls.nm).cpy().pushAll(cls.nm));
+        if(CLS_contentTemplate.get(name) != null) throw new Error("Template name ${1} has already been used???".format(name));
+        CLS_contentTemplate.register(name, this);
       };
     } else {
       this.nm = "";

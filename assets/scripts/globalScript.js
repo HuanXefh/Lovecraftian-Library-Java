@@ -211,17 +211,6 @@
   /* <------------------------------ load ------------------------------ */
 
 
-  // Lovec internal data
-  /** @global */
-  LCAnno = {};
-  /** @global */
-  LCTemp = {};
-  /** @global */
-  LCTempParentMap = ObjectMap.of(
-    "CLS_contentTemplate", [],
-  );
-
-
   /**
    * For other mods, push names here for new arrays in DB files.
    * @global

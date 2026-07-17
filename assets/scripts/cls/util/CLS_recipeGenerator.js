@@ -26,9 +26,6 @@
   let rcCount = 0;
 
 
-  const TMP_TUP = [];
-
-
   MDL_event._c_onLoadDelayTask(VAR.delay.load.logRcGen, () => {
     console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(String(runCount).color(Pal.accent), String(rcCount).color(Pal.accent)));
   });
@@ -308,9 +305,9 @@
    * @param {Object|unset} [paramObj]
    * @return {void}
    */
-  CLS_recipeGenerator.prototype.addRc = function(rc, nameCt, objF, rcBuilderObj, paramObj) {
+  CLS_recipeGenerator.prototype.addRc = function thisFun(rc, nameCt, objF, rcBuilderObj, paramObj) {
     let
-      categ = readParam(paramObj, TMP_TUP.with("categ", "category")),
+      categ = readParam(paramObj, thisFun.tmpTup.with("categ", "category")),
       lastCateg = null,
       tag = readParam(paramObj, "tag"),
       lastTag = null;
@@ -345,7 +342,10 @@
     };
 
     rcCount++;
-  };
+  }
+  .setProp({
+    tmpTup: [],
+  });
 
 
   /**

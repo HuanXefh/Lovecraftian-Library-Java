@@ -19,37 +19,34 @@
 
   CLS_annotation.prototype.init = function(name, funCaller, loadScr, funArgCaller) {
     this.name = registerUniqueName(name, insNames, "annotation");
-    this.onCall = Function.airFalse;
+    this.initAnno();
+
     if(funCaller != null) {
       this.type = "on-call";
       this.onCall = function(fun, annoArgs) {
         return funCaller.apply(fun, annoArgs);
       };
     };
-    this.onLoad = Function.air;
     if(loadScr != null) {
       this.type = "on-load";
       this.onLoad = function(fun, annoLoadArgs) {
         loadScr.apply(fun, annoLoadArgs);
       };
     };
-    this.onArgCall = Function.airFalse;
     if(funArgCaller != null) {
       this.type = "argument";
       this.onArgCall = function(funArgs, annoArgArgs) {
         return funArgCaller.apply(funArgs, annoArgArgs);
       };
     };
-    if(this.type == null) {
-      this.type = "undefined";
+    if(this.type === "undefined") {
       console.warn("[LOVEC] Annotation ${1} has undefined type!".format(this.name.color(Pal.accent)));
     };
-
-    LCAnno[this.name] = this;
   };
 
 
   const insNames = [];
+  const nameAnnoMap = new ObjectMap();
 
 
 /*
@@ -59,11 +56,37 @@
 */
 
 
+  /**
+   * Gets an annotation by name.
+   * @param {string} name
+   * @return {CLS_annotation}
+   */
+  CLS_annotation.get = function(name) {
+    let anno = nameAnnoMap.get(name);
+    if(anno == null) throw new Error("Annotation " + name + " is not found!");
+    return anno;
+  };
+
+
 /*
   ========================================
   Section: Definition (Instance)
   ========================================
 */
+
+
+  /**
+   * Initializes some paramaters on this annotation.
+   * @return {void}
+   */
+  CLS_annotation.prototype.initAnno = function() {
+    nameAnnoMap.put(this.name, this);
+
+    this.onCall = Function.airFalse;
+    this.onLoad = Function.air;
+    this.onArgCall = Function.airFalse;
+    this.type = "undefined";
+  };
 
 
 

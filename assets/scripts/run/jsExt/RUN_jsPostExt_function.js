@@ -28,7 +28,7 @@
   Function.prototype.setAnno = function(nameAnno, args_p, skipVal) {
     const thisFun = this;
 
-    let anno = LCAnno[nameAnno];
+    let anno = CLS_annotation.get(nameAnno);
     if(anno == null || !(anno instanceof CLS_annotation)) ERROR_HANDLER.throw("notAnno", nameAnno);
     if(args_p == null) args_p = [];
     let args = args_p instanceof Array ? args_p : [args_p];
@@ -43,7 +43,7 @@
         thisFun.apply(this, arguments);
     };
     fun.cloneProp(thisFun);
-    fun.annos = this.getAnnos().pushAll(anno);
+    fun.__annos__ = this.getAnnos().pushAll(anno);
 
     return fun;
   };
@@ -54,8 +54,8 @@
    * @return {Array<CLS_annotation>}
    */
   Function.prototype.getAnnos = function() {
-    if(this.annos == null) {
-      this.annos = [];
+    if(this.__annos__ == null) {
+      this.__annos__ = [];
     };
-    return this.annos;
+    return this.__annos__;
   };

@@ -111,8 +111,8 @@
 
     let temp = null;
     if(obj.template != null) {
-      if(LCTemp[obj.template] != null) {
-        temp = LCTemp[obj.template];
+      if(CLS_contentTemplate.get(obj.template) != null) {
+        temp = CLS_contentTemplate.get(obj.template);
       } else {
         // Try `require` from Lovec
         // Templates from other mods won't be considered here

@@ -8,7 +8,7 @@
   /**
    * Base class of all content templates, provides basic methods to define a template.
    * Content templates are used to build the object for `extend` and its Lovec variants.
-   * Do not create instance of templates!
+   * <br> `IMPORTANT`: Do not create instance of templates!
    * @class
    */
   const CLS_contentTemplate = newClass().initClass();
@@ -19,7 +19,10 @@
   };
 
 
-  const TMP_TUP = [];
+  const nameTempMap = new ObjectMap();
+  const nameTempParentsMap = ObjectMap.of(
+    "CLS_contentTemplate", [],
+  );
   const registeredTags = [];
 
 
@@ -43,6 +46,42 @@
 */
 
 
+  /* <------------------------------ meta ------------------------------ */
+
+
+  /**
+   * Maps a name to some content template class.
+   * Do not invoke this manually!
+   * @param {string} name
+   * @param {Function} temp
+   * @return {void}
+   */
+  CLS_contentTemplate.register = function(name, temp) {
+    nameTempMap.put(name, temp);
+    nameTempParentsMap.put(name, nameTempParentsMap.get(temp.__superClass__.nm).cpy().pushAll(name));
+  };
+
+
+  /**
+   * Gets a content template by name.
+   * @param {string} name
+   * @return {Function}
+   */
+  CLS_contentTemplate.get = function(name) {
+    return nameTempMap.get(name);
+  };
+
+
+  /**
+   * Gets parent templates/interfaces as names.
+   * @param {string} name
+   * @return {Array<string>}
+   */
+  CLS_contentTemplate.getTempParents = function(name) {
+    return nameTempParentsMap.get(name, Array.air);
+  };
+
+
   /* <------------------------------ property ------------------------------ */
 
 
@@ -62,7 +101,7 @@
    * @return {boolean}
    */
   CLS_contentTemplate.isSubTempOf = function(name) {
-    return this.nm === name || LCTempParentMap.get(this.nm).includes(name);
+    return this.nm === name || CLS_contentTemplate.getTempParents(this.nm).includes(name);
   };
 
 
