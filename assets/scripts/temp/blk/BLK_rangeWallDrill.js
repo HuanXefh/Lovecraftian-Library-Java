@@ -53,7 +53,7 @@
 
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
-    MDL_draw._d_rectPlaceRot(blk, tx, ty, blk.range * 0.5, rot, valid, true);
+    LCDrawf.rectPlaceRot(blk, tx, ty, blk.range * 0.5, rot, true, valid ? Pal.accent : Pal.remove);
     if(Vars.world.tile(tx, ty) == null || blk.tmpMineRsTup[0] == null) return;
     blk.ex_drawDrillText(tx, ty, valid, 60.0 / blk.ex_calcDrillTime(blk.tmpMineRsTup[0], Math.pow(blk.range, 2)) * blk.tmpTotalOreAmt, blk.tmpMineRsTup[1].length > 1 ? null : blk.ex_findPlaceRsIcon(tx, ty, blk.tmpMineRsTup[0]));
   };
@@ -114,7 +114,7 @@
     b.totalOreAmt = b.block.delegee.tmpTotalOreAmt;
     b.mineRsTgs.cpy(b.mineRsTup[1]);
 
-    let vec2 = MDL_pos._coordsRectRotCenter(b.x, b.y, b.block.range * 0.5, b.rotation, b.block.size);
+    let vec2 = LCPos.getCoordsRectRotCenter(Tmp.v1, b.x, b.y, b.block.range * 0.5, b.rotation, b.block.size);
     b.mineRectCx = vec2.x;
     b.mineRectCy = vec2.y;
   };
@@ -171,15 +171,16 @@
       processZ();
     };
     if(b.warmup > 0.0) {
-      MDL_draw._d_laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime, 0, 1.0, color, Color.white, b.warmup * 0.6, true);
-      MDL_draw._d_laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime + 1800.0, 1, 1.0, color, Color.white, b.warmup * 0.6, true);
-      MDL_draw._d_laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime + 4200.0, -1, 1.0, color, Color.white, b.warmup * 0.6, true);
+
+      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime, 0, 1.0, color, b.warmup * 0.6, true);
+      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime + 1800.0, 1, 1.0, color, b.warmup * 0.6, true);
+      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime + 4200.0, -1, 1.0, color, b.warmup * 0.6, true);
     };
   };
 
 
   function comp_drawSelect(b) {
-    MDL_draw._d_rectSelectRot(b, b.block.range * 0.5, b.rotation, true, true);
+    LCDrawf.rectSelectRot(b, b.block.range * 0.5, b.rotation, true, Pal.accent);
     if(b.mineRsTup[0] == null) return;
     b.drawItemSelection(b.mineRsTup[0]);
   };

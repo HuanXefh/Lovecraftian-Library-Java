@@ -1,9 +1,15 @@
 package lovec.utils;
 
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.world.Tile;
 
 public class LCPos {
+
+
+    /* <-------------------- rotation --------------------> */
 
 
     /**
@@ -25,6 +31,42 @@ public class LCPos {
     };
     public static int getRotation(Building b_f, Building b_t) {
         return getRotation(b_f.tile, b_t.tile);
+    };
+
+
+    /* <-------------------- coordination --------------------> */
+
+
+    private static int calcRectRotCenterSign(int rot, boolean isY) {
+        int rot_fi = Mathf.mod(rot, 4);
+        switch(rot_fi) {
+            case 0 -> {
+                return isY ? 0 : 1;
+            }
+            case 1 -> {
+                return isY ? 1 : 0;
+            }
+            case 2 -> {
+                return isY ? 0 : -1;
+            }
+            case 3 -> {
+                return isY ? -1 : 0;
+            }
+        };
+        return 0;
+    };
+
+
+    /**
+     * Gets rotated rectangle center position.
+     */
+    public static Vec2 getCoordsRectRotCenter(Vec2 out, float x, float y, float r, int rot, float size) {
+        float off = (size / 2f + r) * Vars.tilesize;
+        out.set(
+            x + calcRectRotCenterSign(rot, false) * off,
+            y + calcRectRotCenterSign(rot, true) * off
+        );
+        return out;
     };
 
 

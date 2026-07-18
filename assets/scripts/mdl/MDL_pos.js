@@ -724,7 +724,7 @@
     if(r == null) r = 0;
     if(size == null) size = 1;
 
-    let vec2 = _coordsRectRotCenter(t.x.toFCoord(size), t.y.toFCoord(size), r, rot, size)
+    let vec2 = LCPos.getCoordsRectRotCenter(Tmp.v1, t.x.toFCoord(size), t.y.toFCoord(size), r, rot, size)
     .scl(1.0 / Vars.tilesize)
     .sub(r, r)
     .add(0.5, 0.5);

@@ -14,7 +14,7 @@
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     blk.useP3dRange ?
       LCDrawP3D.roomFade(tx.toFCoord(blk.size), ty.toFCoord(blk.size), 1.0, blk.blkR.toRectW(blk.size), blk.blkR.toRectW(blk.size), blk.ex_getBlkRColor(valid)) :
-      MDL_draw._d_rectPlace(blk, tx, ty, blk.blkR, blk.ex_getBlkRColor(valid), true);
+      LCDrawf.rectPlace(blk, tx, ty, blk.blkR, true, blk.ex_getBlkRColor(valid));
   };
 
 
@@ -29,7 +29,7 @@
 
   function comp_drawSelect(b) {
     if(!b.block.delegee.useP3dRange) {
-      MDL_draw._d_rectSelect(b, b.block.delegee.blkR, b.block.ex_getBlkRColor(true), true);
+      LCDrawf.rectSelect(b, b.block.delegee.blkR, true, b.block.ex_getBlkRColor(true));
     };
   };
 

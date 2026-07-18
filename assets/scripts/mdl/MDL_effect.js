@@ -827,14 +827,13 @@
   }
   .setProp({
     eff: new Effect(30.0, eff => {
-      MDL_draw._d_laser(
+      LCDrawf.laser(
         eff.data[0] == null ? eff.x : eff.data[0].x,
         eff.data[0] == null ? eff.y : eff.data[0].y,
         eff.data[1].x,
         eff.data[1].y,
         eff.rotation * Interp.pow2Out.apply(1.0 - eff.fin()),
         eff.color,
-        Color.white,
         1.0,
         eff.data[2],
       );

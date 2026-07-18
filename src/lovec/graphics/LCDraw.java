@@ -59,7 +59,9 @@ public class LCDraw {
         GLOW_REGION_Z_IND = 11,
         ICON_REGION_Z_IND = 12,
         BULLET_REGION_Z_IND = 13,
-        UI_REGION_Z_IND = 14;
+        UI_REGION_Z_IND = 14,
+        SHAPE_Z_IND = 15,
+        DEBUG_Z_IND = 19;
 
 
 

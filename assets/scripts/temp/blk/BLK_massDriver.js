@@ -48,9 +48,8 @@
     let ob = Vars.world.build(b.link);
     if(ob == null) return;
 
-    MDL_draw._d_lineFlick(
-      b.x, b.y, ob.x, ob.y,
-      1.0, 0.5,
+    LCDrawf.lineFlick(
+      b.x, b.y, ob.x, ob.y, false, 1.0, 0.5,
       !b.block.delegee.bulCollidesTerrain ?
         Pal.accent :
         b.block.delegee.bulCollidesTerrainCaveOnly && !PARAM.IS_CAVE_MAP ?

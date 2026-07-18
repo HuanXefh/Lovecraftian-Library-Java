@@ -49,7 +49,7 @@
     let ot = t.nearby(rot);
     if(ot == null) return;
 
-    MDL_draw._d_rect(ot.worldx(), ot.worldy(), 0, 1, Pal.heal, 1.0, true);
+    LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
   };
 
 
@@ -87,7 +87,7 @@
     let ot = b.tile.nearby(b.rotation);
     if(ot == null) return;
 
-    MDL_draw._d_rect(ot.worldx(), ot.worldy(), 0, 1, Pal.heal, 1.0, true);
+    LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
   };
 
 

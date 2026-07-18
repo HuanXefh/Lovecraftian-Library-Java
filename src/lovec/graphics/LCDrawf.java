@@ -7,6 +7,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
+import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
@@ -14,8 +15,11 @@ import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import lovec.utils.LCFormat;
+import lovec.utils.LCPos;
 import lovec.utils.LCScript;
 import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.gen.Building;
 import mindustry.graphics.*;
 import mindustry.world.Block;
 import mindustry.world.Tile;
@@ -24,7 +28,7 @@ import mindustry.world.draw.DrawFlame;
 import mindustry.world.draw.DrawSideRegion;
 import mindustry.world.draw.DrawWeave;
 
-import static lovec.utils.LCScript.VAR;
+import static lovec.utils.LCScript.*;
 
 /**
  * Utility draw methods.
@@ -32,19 +36,27 @@ import static lovec.utils.LCScript.VAR;
 public class LCDrawf {
 
 
+    public static TextureRegion arrowReg;
     public static TextureRegion[] heatRegs;
     public static TextureRegion lightConeReg;
     public static Color lightColor = Color.valueOf("ffc999");
     public static Color heatColor = Color.valueOf("ff3838");
 
 
+    static Vec2 tmpVec1 = new Vec2();
+    static Vec2 tmpVec2 = new Vec2();
+    static Vec2 tmpVec3 = new Vec2();
     static Seq<Tile> tmpTs = new Seq<>();
     static float
+        shapeLay,
+        mineBeamLay,
         bulFlameLay,
         randOvLay;
 
 
     public static void init() {
+        shapeLay = Layer.effect + LCScript.toFloat(LCScript.search(VAR, "layer", "offDraw"));
+        mineBeamLay = LCScript.toFloat(LCScript.search(VAR, "layer", "mineBeam"));
         bulFlameLay = LCScript.toFloat(LCScript.search(VAR, "layer", "bulFlame"));
         randOvLay = LCScript.toFloat(LCScript.search(VAR, "layer", "randOv"));
 
@@ -54,18 +66,401 @@ public class LCDrawf {
         };
 
         if(!Vars.headless) {
+            arrowReg = Core.atlas.find("bridge-arrow");
             lightConeReg = Core.atlas.find("lovec-efr-shadow-cone");
         };
+    };
+
+
+    /**
+     * Debug draw method.
+     */
+    public static void debug(float x, float y, Color color) {
+        LCDraw.processZ(Layer.max, LCDraw.DEBUG_Z_IND);
+        Draw.color(color);
+        Fill.circle(x, y, 3f);
+        Draw.color();
+        LCDraw.processZ(-1f, LCDraw.DEBUG_Z_IND);
+    };
+    // Overload
+    public static void debug(float x, float y) {
+        debug(x, y, Pal.heal);
+    };
+    public static void debug(float x1, float y1, float x2, float y2, Color color) {
+        LCDraw.processZ(Layer.max, LCDraw.DEBUG_Z_IND);
+        Lines.stroke(3f, color);
+        Lines.line(x1, y1, x2, y2);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.DEBUG_Z_IND);
+    };
+    public static void debug(float x1, float y1, float x2, float y2) {
+        debug(x1, y1, x2, y2, Pal.heal);
     };
 
 
     /* <-------------------- line --------------------> */
 
 
-    /* <-------------------- circle --------------------> */
+    /**
+     * Draws outlined line.
+     */
+    public static void line(float x1, float y1, float x2, float y2, boolean isDashed, Color color, float a, float z) {
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Lines.stroke(3f, Tmp.c1.set(Pal.gray).a(a));
+        LCDraw.line(x1, y1, x2, y2, isDashed);
+        Lines.stroke(1f, color);
+        Draw.alpha(a);
+        LCDraw.line(x1, y1, x2, y2, isDashed);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void line(float x1, float y1, float x2, float y2, boolean isDashed, Color color, float a) {
+        line(x1, y1, x2, y2, isDashed, color, a, shapeLay);
+    };
+    public static void line(float x1, float y1, float x2, float y2, boolean isDashed, Color color) {
+        line(x1, y1, x2, y2, isDashed, color, 1f);
+    };
+    public static void line(float x1, float y1, float x2, float y2, boolean isDashed) {
+        line(x1, y1, x2, y2, isDashed, Pal.accent);
+    };
+    public static void line(float x1, float y1, float x2, float y2) {
+        line(x1, y1, x2, y2, false);
+    };
+
+
+    /**
+     * Draws fading line.
+     */
+    public static void lineFlick(float x1, float y1, float x2, float y2, boolean isDashed, float stroke, float scl, Color color, float z) {
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Lines.stroke(stroke, color);
+        Draw.alpha(0.35f + Mathf.sin(Time.globalTime / scl / 15f) * 0.25f);
+        LCDraw.line(x1, y1, x2, y2, isDashed);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void lineFlick(float x1, float y1, float x2, float y2, boolean isDashed, float stroke, float scl, Color color) {
+        lineFlick(x1, y1, x2, y2, isDashed, stroke, scl, color, shapeLay);
+    };
+    public static void lineFlick(float x1, float y1, float x2, float y2, boolean isDashed, float stroke, float scl) {
+        lineFlick(x1, y1, x2, y2, isDashed, stroke, scl, Pal.accent);
+    };
+    public static void lineFlick(float x1, float y1, float x2, float y2, boolean isDashed, float stroke) {
+        lineFlick(x1, y1, x2, y2, isDashed, stroke, 1f);
+    };
+    public static void lineFlick(float x1, float y1, float x2, float y2, boolean isDashed) {
+        lineFlick(x1, y1, x2, y2, isDashed, 1.5f);
+    };
+    public static void lineFlick(float x1, float y1, float x2, float y2) {
+        lineFlick(x1, y1, x2, y2, false);
+    };
+
+
+    /**
+     * Calculates laser alpha using {@link Lod}.
+     */
+    public static float getLaserA(boolean useLod, float strokeScl) {
+        return !useLod ?
+            1f :
+            strokeScl < 3.3333f ? Lod.alpha1 : Lod.alpha2;
+    };
+
+
+    /**
+     * Draws laser line.
+     */
+    public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color1, Color color2, float a, boolean hasLight, float z) {
+        float strokeScl_fi = (1f + Mathf.sin(Time.time * 0.065f) * 0.2f) * strokeScl;
+
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Lines.stroke(3f * strokeScl_fi, color1);
+        Draw.alpha(a);
+        Lines.line(x1, y1, x2, y2);
+        Fill.circle(x1, y1, 2.4f * strokeScl_fi);
+        Fill.circle(x2, y2, 2.4f * strokeScl_fi);
+        Lines.stroke(strokeScl_fi, color2);
+        Draw.alpha(a);
+        Lines.line(x1, y1, x2, y2);
+        Fill.circle(x1, y1, 1.2f * strokeScl_fi);
+        Fill.circle(x2, y2, 1.2f * strokeScl_fi);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+        if(hasLight) {
+            Drawf.light(x1, y1, x2, y2);
+        };
+    };
+    // Overload
+    public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color1, Color color2, float a, boolean hasLight) {
+        laser(x1, y1, x2, y2, strokeScl, color1, color2, a, hasLight, shapeLay);
+    };
+    public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color1, Color color2, float a) {
+        laser(x1, y1, x2, y2, strokeScl, color1, color2, a, false);
+    };
+    public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color1, Color color2) {
+        laser(x1, y1, x2, y2, strokeScl, color1, color2, 1f);
+    };
+    public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color, float a, boolean hasLight, float z) {
+        laser(x1, y1, x2, y2, strokeScl, color, Color.white, a, hasLight, z);
+    };
+    public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color, float a, boolean hasLight) {
+        laser(x1, y1, x2, y2, strokeScl, color, a, hasLight, shapeLay);
+    };
+    public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color, float a) {
+        laser(x1, y1, x2, y2, strokeScl, color, a, false);
+    };
+    public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color) {
+        laser(x1, y1, x2, y2, strokeScl, color, 1f);
+    };
+
+
+    /**
+     * Draws laser that randomly walks in a rectangular range.
+     */
+    public static Vec2 laserRandWalk(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color1, Color color2, float a, boolean hasLight, float z
+    ) {
+        Vec2 vec = getRandWalkVec(tmpVec1, Time.time + offTime).rotate90(rot);
+        laser(x, y, cx + vec.x * rad, cy + vec.y * rad, strokeScl, color1, color2, a, hasLight, z);
+        return vec;
+    };
+    // Overload
+    public static Vec2 laserRandWalk(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color1, Color color2, float a, boolean hasLight
+    ) {
+        return laserRandWalk(x, y, cx, cy, rad, offTime, rot, strokeScl, color1, color2, a, hasLight, shapeLay);
+    };
+    public static Vec2 laserRandWalk(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color1, Color color2, float a
+    ) {
+        return laserRandWalk(x, y, cx, cy, rad, offTime, rot, strokeScl, color1, color2, a, false);
+    };
+    public static Vec2 laserRandWalk(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color1, Color color2
+    ) {
+        return laserRandWalk(x, y, cx, cy, rad, offTime, rot, strokeScl, color1, color2, 1f);
+    };
+    public static Vec2 laserRandWalk(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color, float a, boolean hasLight, float z
+    ) {
+        return laserRandWalk(x, y, cx, cy, rad, offTime, rot, strokeScl, color, Color.white, a, hasLight, z);
+    };
+    public static Vec2 laserRandWalk(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color, float a, boolean hasLight
+    ) {
+        return laserRandWalk(x, y, cx, cy, rad, offTime, rot, strokeScl, color, a, hasLight, shapeLay);
+    };
+    public static Vec2 laserRandWalk(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color, float a
+    ) {
+        return laserRandWalk(x, y, cx, cy, rad, offTime, rot, strokeScl, color, a, false);
+    };
+    public static Vec2 laserRandWalk(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color
+    ) {
+        return laserRandWalk(x, y, cx, cy, rad, offTime, rot, strokeScl, color, 1f);
+    };
+
+
+    /**
+     * Variant of {@link LCDrawf#laserRandWalk} for mining beam.
+     */
+    public static Vec2 laserRandMine(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color1, Color color2, float a, boolean hasLight, float z
+    ) {
+        laserRandWalk(
+            x, y,
+            cx + Mathf.cos(Time.time * 0.025f) * 4f,
+            cy + Mathf.sin(Time.time * 0.025f) * 4f,
+            rad, offTime, rot, strokeScl, color1, color2, a, hasLight, z
+        );
+        if(!Vars.state.isPaused() && LCScript.toBoolean(LCScript.get("trailCircle", TIMER))) {
+            float
+                offX = tmpVec1.x * rad,
+                offY = tmpVec1.y * rad;
+
+            LCScript.invoke("_e_trailCircle", MDL_effect, cx + offX, cy + offY, strokeScl, color1);
+            if(Mathf.chanceDelta(0.15f)) {
+                Fx.mineSmall.at(cx + offX, cy + offY);
+            };
+        };
+        return tmpVec1;
+    };
+    // Overload
+    public static Vec2 laserRandMine(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color1, Color color2, float a, boolean hasLight
+    ) {
+        return laserRandMine(x, y, cx, cy, rad, offTime, rot, strokeScl, color1, color2, a, hasLight, shapeLay);
+    };
+    public static Vec2 laserRandMine(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color1, Color color2, float a
+    ) {
+        return laserRandMine(x, y, cx, cy, rad, offTime, rot, strokeScl, color1, color2, a, false);
+    };
+    public static Vec2 laserRandMine(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color1, Color color2
+    ) {
+        return laserRandMine(x, y, cx, cy, rad, offTime, rot, strokeScl, color1, color2, 1f);
+    };
+    public static Vec2 laserRandMine(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color, float a, boolean hasLight, float z
+    ) {
+        return laserRandMine(x, y, cx, cy, rad, offTime, rot, strokeScl, color, Color.white, a, hasLight, z);
+    };
+    public static Vec2 laserRandMine(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color, float a, boolean hasLight
+    ) {
+        return laserRandMine(x, y, cx, cy, rad, offTime, rot, strokeScl, color, Color.white, a, hasLight, shapeLay);
+    };
+    public static Vec2 laserRandMine(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color, float a
+    ) {
+        return laserRandMine(x, y, cx, cy, rad, offTime, rot, strokeScl, color, Color.white, a, false);
+    };
+    public static Vec2 laserRandMine(
+        float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
+        Color color
+    ) {
+        return laserRandMine(x, y, cx, cy, rad, offTime, rot, strokeScl, color, Color.white, 1f);
+    };
+
+
+    /**
+     * Draws line with moving arrows.
+     */
+    public static void arrowLine(float x1, float y1, float x2, float y2, float strokeScl, float scl, Color color, float a, float z) {
+        float
+            frac1 = Time.globalTime / scl % 100f / 100f,
+            frac2 = (frac1 + 0.5f) % 1f,
+            ang = Mathf.angle(x2 - x1, y2 - y1);
+
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Lines.stroke(strokeScl, color);
+        Draw.alpha(a);
+        LCDraw.line(x1, y1, x2, y2, false);
+        Tmp.v1.set(x1, y1).lerp(x2, y2, frac1);
+        LCDraw.processScl(strokeScl * Interp.pow2Out.apply(1f - frac1));
+        Draw.rect(arrowReg, Tmp.v1.x, Tmp.v1.y, ang);
+        LCDraw.processScl(1f);
+        Tmp.v1.set(x1, y1).lerp(x2, y2, frac2);
+        LCDraw.processScl(strokeScl * Interp.pow2Out.apply(1f - frac2));
+        Draw.rect(arrowReg, Tmp.v1.x, Tmp.v1.y, ang);
+        LCDraw.processScl(1f);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void arrowLine(float x1, float y1, float x2, float y2, float strokeScl, float scl, Color color, float a) {
+        arrowLine(x1, y1, x2, y2, strokeScl, scl, color, a, shapeLay);
+    };
+    public static void arrowLine(float x1, float y1, float x2, float y2, float strokeScl, float scl, Color color) {
+        arrowLine(x1, y1, x2, y2, strokeScl, scl, color, 1f);
+    };
+    public static void arrowLine(float x1, float y1, float x2, float y2, float strokeScl, float scl) {
+        arrowLine(x1, y1, x2, y2, strokeScl, scl, Pal.accent);
+    };
 
 
     /* <-------------------- rectangle --------------------> */
+
+
+    /**
+     * Draws outlined rectangle.
+     */
+    public static void rect(float x, float y, float r, float size, boolean isDashed, Color color, float a, float z) {
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Lines.stroke(3f, Tmp.c1.set(Pal.gray).a(a));
+        LCDraw.rect(x, y, r, size, isDashed);
+        Lines.stroke(1f, color);
+        Draw.alpha(a);
+        LCDraw.rect(x, y, r, size, isDashed);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void rect(float x, float y, float r, float size, boolean isDashed, Color color, float a) {
+        rect(x, y, r, size, isDashed, color, a, shapeLay);
+    };
+    public static void rect(float x, float y, float r, float size, boolean isDashed, Color color) {
+        rect(x, y, r, size, isDashed, color, 1f);
+    };
+    public static void rect(float x, float y, float r, float size, boolean isDashed) {
+        rect(x, y, r, size, isDashed, Pal.accent);
+    };
+    public static void rect(float x, float y, float r, float size) {
+        rect(x, y, r, size, false);
+    };
+
+
+    /**
+     * Variant of {@link LCDrawf#rect} for block placement.
+     */
+    public static void rectPlace(Block blk, int tx, int ty, float r, boolean isDashed, Color color) {
+        rect(
+            LCFormat.toFCoord(tx, blk.size),
+            LCFormat.toFCoord(ty, blk.size),
+            r, blk.size, isDashed, color
+        );
+    };
+
+
+    /**
+     * Variant of {@link LCDrawf#rectPlace} for rotated range.
+     */
+    public static void rectPlaceRot(Block blk, int tx, int ty, float r, int rot, boolean isDashed, Color color) {
+        Vec2 vec = LCPos.getCoordsRectRotCenter(tmpVec1, LCFormat.toFCoord(tx, blk.size), LCFormat.toFCoord(ty, blk.size), r, rot, blk.size);
+        rect(vec.x, vec.y, r, 0, isDashed, color);
+    };
+
+
+    /**
+     * Variant of {@link LCDrawf#rect} for building selection.
+     */
+    public static void rectSelect(Building b, float r, boolean isDashed, Color color) {
+        rect(b.x, b.y, r, b.block.size, isDashed, color);
+    };
+
+
+    /**
+     * Variant of {@link LCDrawf#rectSelect} for rotated range.
+     */
+    public static void rectSelectRot(Building b, float r, int rot, boolean isDashed, Color color) {
+        rectPlaceRot(b.block, b.tileX(), b.tileY(), r, rot, isDashed, color);
+    };
+
+
+    /* <-------------------- circle --------------------> */
+
+
+    /* <-------------------- connector --------------------> */
+
+
+    /**
+     * Draws connector with dashed rectangles and a dashed line.
+     */
+    public static void connectorRect(@Nullable Building b, @Nullable Building ob) {
+        if(b == null || ob == null) return;
+
+        rectSelect(b, 0, true, Pal.accent);
+        rectSelect(ob, 0, true, Pal.accent);
+        line(b.x, b.y, ob.x, ob.y, true);
+    };
 
 
     /* <-------------------- texture --------------------> */

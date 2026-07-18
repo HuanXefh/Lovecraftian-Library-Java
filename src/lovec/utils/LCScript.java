@@ -10,7 +10,9 @@ public class LCScript {
 
 
     public static NativeObject VAR;
+    public static NativeObject TIMER;
     public static NativeObject MDL_cond;
+    public static NativeObject MDL_effect;
 
 
     private static final Class[][] objClss = {
@@ -30,7 +32,10 @@ public class LCScript {
 
     public static void init() {
         VAR = (NativeObject)(get("VAR"));
+        TIMER = (NativeObject)(get("TIMER"));
         MDL_cond = (NativeObject)(get("MDL_cond"));
+        MDL_effect = (NativeObject)(get("MDL_effect"));
+
         Log.info("[LOVEC] Initialized Lovec module references in LCScript.");
     };
 
@@ -39,12 +44,12 @@ public class LCScript {
      * Whether given value is null or undefined.
      */
     public static boolean isNull(Object val) {
-        return val == null || val == Undefined.instance;
+        return val == null || val == UniqueTag.NOT_FOUND || val == Undefined.instance;
     };
 
 
     /**
-     * Converts JS number to Java integer.
+     * Converts JS value to Java integer.
      */
     public static int toInt(Object val) {
         return (int)(Math.floor((Double)(val)));
@@ -52,10 +57,18 @@ public class LCScript {
 
 
     /**
-     * Converts JS number to Java float.
+     * Converts JS value to Java float.
      */
     public static float toFloat(Object val) {
         return ((Double)(val)).floatValue();
+    };
+
+
+    /**
+     * Converts JS value to Java boolean.
+     */
+    public static boolean toBoolean(Object val) {
+        return (boolean)(val);
     };
 
 

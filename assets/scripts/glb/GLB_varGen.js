@@ -73,17 +73,6 @@
 
 
     /**
-     * Miscellaneous texture regions.
-     * @type {Object<string, TextureRegion>}
-     */
-    exports.miscRegs = {
-      arrow: findRegion("bridge-arrow"),
-      laserLine: findRegion("laser"),
-      laserEnd: findRegion("laser-end"),
-    };
-
-
-    /**
      * Extra noise textures registered in {@link DB_misc}.
      * @type {Object<string, Texture>}
      */
