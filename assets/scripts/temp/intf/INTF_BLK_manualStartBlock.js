@@ -178,7 +178,7 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_manualStartBlock
          * @instance
          */

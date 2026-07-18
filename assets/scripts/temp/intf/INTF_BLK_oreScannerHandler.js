@@ -91,13 +91,13 @@
 
 
         /**
-         * <INTERNAL>: If this value is true, ore scanner check is enabled.
+         * `INTERNAL`: If this value is true, ore scanner check is enabled.
          * @memberof INTF_B_oreScannerHandler
          * @instance
          */
         requiresScanner: false,
         /**
-         * <INTERNAL>: Currently linked scanner.
+         * `INTERNAL`: Currently linked scanner.
          * @memberof INTF_B_oreScannerHandler
          * @instance
          */

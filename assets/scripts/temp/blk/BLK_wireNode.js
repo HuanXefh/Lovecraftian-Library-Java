@@ -125,7 +125,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_wireNode
        * @instance
        */

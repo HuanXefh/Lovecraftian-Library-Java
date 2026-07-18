@@ -56,6 +56,11 @@
   })();
   exports.IS_TELEPORTING = false;
   exports.UNIT_REMAINS_LIFETIME = 0.0;
+  exports.SECRET_APRIL = (function() {
+    if(Core.settings.getString("lovec-misc-secret-code", "").includes("<april>")) return true;
+    let date = new Date();
+    return date.getMonth() === 3 && date.getDate() === 1;
+  })();
 
 
 
@@ -147,7 +152,7 @@
       };
       exports.SECRET_LEGACY_SOUND = secretCode.includesAny("<legacy>");
       exports.SECRET_FITH = secretCode.includesAny("<fire-in-the-hole>", "<fire-in-da-hole>", "<fith>");
-      exports.SECRET_METAL_PIPE = secretCode.includesAny("<steel-pipe>", "<metal-pipe>");
+      exports.SECRET_METAL_PIPE = module.exports.SECRET_APRIL || secretCode.includesAny("<steel-pipe>", "<metal-pipe>");
 
 
     };

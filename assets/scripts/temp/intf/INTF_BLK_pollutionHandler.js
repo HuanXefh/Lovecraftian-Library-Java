@@ -89,7 +89,7 @@
 
 
         /**
-         * <INTERNAL>: Pollution tolerance.
+         * `INTERNAL`: Pollution tolerance.
          * @memberof INTF_BLK_pollutionHandler
          * @instance
          */
@@ -125,19 +125,19 @@
 
 
         /**
-         * <INTERNAL>: Efficiency related to pollution.
+         * `INTERNAL`: Efficiency related to pollution.
          * @memberof INTF_B_pollutionHandler
          * @instance
          */
         polEffc: 1.0,
         /**
-         * <INTERNAL>: Pollution points above tolerance.
+         * `INTERNAL`: Pollution points above tolerance.
          * @memberof INTF_B_pollutionHandler
          * @instance
          */
         polExcess: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_pollutionHandler
          * @instance
          */

@@ -44,7 +44,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof INTF_ENTITY_unitDurabilityHandler
        * @instance
        */

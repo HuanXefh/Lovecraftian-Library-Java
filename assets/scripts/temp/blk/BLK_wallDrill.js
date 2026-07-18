@@ -128,7 +128,7 @@
 
 
       /**
-       * <INTERNAL>: Wall drills should not output payloads to the front side.
+       * `INTERNAL`: Wall drills should not output payloads to the front side.
        * @override
        * @memberof BLK_wallDrill
        * @instance
@@ -182,7 +182,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_wallDrill
        * @instance
        */

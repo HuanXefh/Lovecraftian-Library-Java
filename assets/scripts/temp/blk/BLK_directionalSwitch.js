@@ -120,7 +120,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_directionalSwitch
        * @instance
        */

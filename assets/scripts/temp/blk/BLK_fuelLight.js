@@ -71,14 +71,14 @@
 
 
       /**
-       * <INTERNAL>: Have you ever seen an externally heated light?
+       * `INTERNAL`: Have you ever seen an externally heated light?
        * @override
        * @memberof BLK_fuelLight
        * @instance
        */
       tempExtMtp: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_fuelLight
        * @instance

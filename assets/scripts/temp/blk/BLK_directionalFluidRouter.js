@@ -56,26 +56,26 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_directionalFluidRouter
        * @instance
        */
       sideReg1: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_directionalFluidRouter
        * @instance
        */
       sideReg2: null,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_directionalFluidRouter
       * @instance
       */
       isPresRouter: true,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_directionalFluidRouter
       * @instance

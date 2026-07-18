@@ -97,14 +97,14 @@
 
 
       /**
-       * <INTERNAL>: This is a wall crafter, it should only check wall attributes.
+       * `INTERNAL`: This is a wall crafter, it should only check wall attributes.
        * @override
        * @memberof BLK_dynamicWallHarvester
        * @instance
        */
       attrMode: AttrModes.BLOCK,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_dynamicWallHarvester
        * @instance

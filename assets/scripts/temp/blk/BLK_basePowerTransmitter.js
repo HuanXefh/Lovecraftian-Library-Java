@@ -183,13 +183,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_basePowerTransmitter
        * @instance
        */
       transmitterOverloadFrac: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_basePowerTransmitter
        * @instance
        */

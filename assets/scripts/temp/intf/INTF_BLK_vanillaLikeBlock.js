@@ -35,28 +35,28 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @override
          * @memberof EXT_BLK_recipeFactory
          * @instance
          */
         skipOutlineSetup: true,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @override
          * @memberof EXT_BLK_recipeFactory
          * @instance
          */
         noLoot: true,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @override
          * @memberof EXT_BLK_recipeFactory
          * @instance
          */
         noReac: true,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @override
          * @memberof EXT_BLK_recipeFactory
          * @instance

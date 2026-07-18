@@ -143,13 +143,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_pressureProducer
          * @instance
          */
         presDumpTgs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_pressureProducer
          * @instance
          */

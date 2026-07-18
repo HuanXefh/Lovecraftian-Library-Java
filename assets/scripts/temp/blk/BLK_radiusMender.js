@@ -120,13 +120,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_radiusMender
        * @instance
        */
       healsBuilding: false,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_radiusMender
        * @instance
        */

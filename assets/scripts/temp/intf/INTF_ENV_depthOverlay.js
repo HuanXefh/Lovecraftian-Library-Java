@@ -104,7 +104,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof INTF_ENV_depthOverlay
        * @instance
        */

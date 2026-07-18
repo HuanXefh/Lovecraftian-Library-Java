@@ -219,31 +219,31 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_rangeWallDrill
        * @instance
        */
       tmpOreTs: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_rangeWallDrill
        * @instance
        */
       tmpMineMap: prov(() => new ObjectMap()),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_rangeWallDrill
        * @instance
        */
       tmpTotalOreAmt: 0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_rangeWallDrill
        * @instance
        */
       tmpMineRsTup: prov(() => [null, []]),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_rangeWallDrill
        * @instance
        */
@@ -378,43 +378,43 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_rangeWallDrill
        * @instance
        */
       oreTs: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_rangeWallDrill
        * @instance
        */
       mineMap: prov(() => new ObjectMap()),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_rangeWallDrill
        * @instance
        */
       totalOreAmt: 0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_rangeWallDrill
        * @instance
        */
       mineRsTup: prov(() => [null, []]),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_rangeWallDrill
        * @instance
        */
       mineRectCx: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_rangeWallDrill
        * @instance
        */
       mineRectCy: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_rangeWallDrill
        * @instance
        */

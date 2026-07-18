@@ -109,7 +109,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_groundDrill
        * @instance
        */

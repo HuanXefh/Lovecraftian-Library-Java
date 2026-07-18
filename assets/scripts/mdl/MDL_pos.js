@@ -84,37 +84,6 @@
   /* <------------------------------ rotation ------------------------------ */
 
 
-  /**
-   * Gets relative rotation from a tile to another tile.
-   * @param {Tile} t_f
-   * @param {Tile} t_t
-   * @return {number}
-   */
-  const _rotTs = function(t_f, t_t) {
-    let
-      cond1 = t_t.x >= t_f.x,
-      cond2 = t_t.y >= t_f.y,
-      cond3 = Math.abs(t_t.x - t_f.x) >= Math.abs(t_t.y - t_f.y);
-
-    return cond1 ?
-      (cond3 ? 0 : (cond2 ? 1 : 3)) :
-      (cond3 ? 2 : (cond2 ? 1 : 3));
-  };
-  exports._rotTs = _rotTs;
-
-
-  /**
-   * Variant of {@link _rotTs} for buildings.
-   * @param {Building} b_f
-   * @param {Building} b_t
-   * @return {number}
-   */
-  const _rotBs = function(b_f, b_t) {
-    return _rotTs(b_f.tile, b_t.tile);
-  };
-  exports._rotBs = _rotBs;
-
-
   /** @global */
   const SideFracModes = new CLS_enum({
     FRONT: 0,
@@ -154,10 +123,10 @@
           frac = (_tsRot(thisFun.tmpTs, b_f.tile, Mathf.mod(b_f.rotation + 1, 4), b_f.block.size).count(b_t, t => t.build) + _tsRot(b_f.tile, Mathf.mod(b_f.rotation - 1, 4), b_f.block.size, thisFun.tmpTs).count(b_t, t => t.build)) / thisFun.tmpTs.length;
           break;
         case SideFracModes.NON_FRONT :
-          frac = _tsEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => _rotTs(b_f.tile, t) === b_f.rotation ? null : t.build) * 4.0 / thisFun.tmpTs.length;
+          frac = _tsEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => LCPos.getRotation(b_f.tile, t) === b_f.rotation ? null : t.build) * 4.0 / thisFun.tmpTs.length;
           break;
         case SideFracModes.NON_BACK :
-          frac = _tsEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => _rotTs(b_f.tile, t) === Mathf.mod(b_f.rotation + 2, 4) ? null : t.build) * 4.0 / thisFun.tmpTs.length;
+          frac = _tsEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => LCPos.getRotation(b_f.tile, t) === Mathf.mod(b_f.rotation + 2, 4) ? null : t.build) * 4.0 / thisFun.tmpTs.length;
           break;
       };
     };

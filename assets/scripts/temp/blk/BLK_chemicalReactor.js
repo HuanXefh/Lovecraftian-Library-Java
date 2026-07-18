@@ -52,7 +52,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_chemicalReactor
        * @instance

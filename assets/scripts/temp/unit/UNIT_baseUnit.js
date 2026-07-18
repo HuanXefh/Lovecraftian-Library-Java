@@ -17,6 +17,12 @@
   function comp_init(utp) {
     utp.polTol = MDL_pollution._polTol(utp);
 
+    if(utp.immuneToAll) {
+      MDL_event._c_onLoadPost(() => {
+        utp.immunities.addAll(Vars.content.statusEffects());
+      });
+    };
+
     if(utp.unitDurabCap > 0.0) {
       setAbility(utp, abis => [
         abis,
@@ -131,6 +137,12 @@
      * @instance
      */
     useLovecDamagePenalty: true,
+    /**
+     * `PARAM`: If true, this unit is immune to all status effects.
+     * @memberof UNIT_baseUnit
+     * @instance
+     */
+    immuneToAll: true,
     /**
      * `PARAM`: Items (as name) that this unit cannot take.
      * @memberof UNIT_baseUnit

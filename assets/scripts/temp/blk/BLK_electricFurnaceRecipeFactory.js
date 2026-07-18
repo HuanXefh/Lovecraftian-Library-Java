@@ -83,13 +83,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_electricFurnaceRecipeFactory
        * @instance
        */
       tempReq: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_electricFurnaceRecipeFactory
        * @instance
        */

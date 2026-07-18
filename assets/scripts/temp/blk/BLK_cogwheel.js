@@ -163,32 +163,32 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_cogwheel
        * @instance
        */
       invReg: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_cogwheel
        * @instance
        */
       cogDrawW: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_cogwheel
        * @instance
        */
       cogInvOffAng: 0.0,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_cogwheel
       * @instance
       */
       skipTorFetch: true,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_cogwheel
       * @instance
@@ -233,7 +233,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_cogwheel
        * @instance
        */

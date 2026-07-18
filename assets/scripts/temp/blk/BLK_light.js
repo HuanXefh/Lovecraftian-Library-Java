@@ -145,19 +145,19 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_light
        * @instance
        */
       lightWarmup: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_light
        * @instance
        */
       fogRad: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_light
        * @instance
        */

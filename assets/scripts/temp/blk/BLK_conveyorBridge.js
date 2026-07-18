@@ -104,7 +104,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_conveyorBridge
        * @instance
        */

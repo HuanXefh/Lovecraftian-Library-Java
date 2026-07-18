@@ -545,13 +545,13 @@
 
 
         /**
-         * <INTERNAL>: Whether this block consumes Erekir heat.
+         * `INTERNAL`: Whether this block consumes Erekir heat.
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
         isErekirHeatConsumer: false,
         /**
-         * <INTERNAL>: Whether this block produces Erekir heat.
+         * `INTERNAL`: Whether this block produces Erekir heat.
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
@@ -631,157 +631,157 @@
 
 
         /**
-         * <INTERNAL>: Recipe header selected.
+         * `INTERNAL`: Recipe header selected.
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         rcHeader: "",
         /**
-         * <INTERNAL>: Recipe selected.
+         * `INTERNAL`: Recipe selected.
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         rc: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         rcEffc: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         rcEffcWinMean: prov(() => new WindowedMean(5)),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         erekirHeatI: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         erekirHeatO: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         erekirSideHeats: prov(() => Array.newFArr(4)),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         erekirHeatEffc: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         attrSum: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         attrEffc: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         lastProgInc: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         lastLiqProgInc: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         lastCanAdd: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         lastOptEffc: 1.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         keyCt: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         lastKeyCt: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         itmAcceptCacheArr: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         liqAcceptCacheArr: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         consTmpObj: prov(() => ({})),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         prodTmpObj: prov(() => ({})),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         hasRun: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         hasStopped: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         stopTimeCur: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         blk$useAutoSelection: "!REPLACE",
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
         blk$isErekirHeatConsumer: "!REPLACE",
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */

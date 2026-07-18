@@ -107,7 +107,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_generatorRecipeFactory
        * @instance
        */

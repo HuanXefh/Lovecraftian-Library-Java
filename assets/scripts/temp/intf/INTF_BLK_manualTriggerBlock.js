@@ -150,7 +150,7 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_manualTriggerBlock
          * @instance
          */

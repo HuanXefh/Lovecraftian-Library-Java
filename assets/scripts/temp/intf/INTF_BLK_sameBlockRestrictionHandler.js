@@ -72,13 +72,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_sameBlockRestrictionHandler
          * @instance
          */
         placeRestrictTmpTs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_sameBlockRestrictionHandler
          * @instance
          */

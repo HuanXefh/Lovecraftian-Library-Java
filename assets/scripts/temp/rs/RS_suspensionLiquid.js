@@ -38,7 +38,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_suspensionLiquid
      * @instance

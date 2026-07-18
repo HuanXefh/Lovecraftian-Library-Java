@@ -127,7 +127,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_lootPullerHopper
        * @instance
        */
@@ -179,31 +179,31 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_lootPullerHopper
        * @instance
        */
       isPulling: false,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_lootPullerHopper
        * @instance
        */
       pullTgs: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_lootPullerHopper
        * @instance
        */
       progPull: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_lootPullerHopper
        * @instance
        */
       progWait: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_lootPullerHopper
        * @instance
        */

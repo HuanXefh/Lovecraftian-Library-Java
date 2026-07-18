@@ -92,7 +92,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @memberof ENV_vent
      * @instance
      */

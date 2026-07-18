@@ -303,43 +303,43 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
         torProg: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
         torCur: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
         torCap: -1.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
         rpmCur: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
         torFetchTgs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
         torSupplyTgs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */

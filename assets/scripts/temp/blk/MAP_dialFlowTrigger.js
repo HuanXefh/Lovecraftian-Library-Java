@@ -85,7 +85,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof MAP_dialFlowTrigger
        * @instance
@@ -134,7 +134,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_dialFlowTrigger
        * @instance
        */

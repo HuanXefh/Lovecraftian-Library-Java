@@ -235,7 +235,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_terrainDynamicDrill
        * @instance
        */

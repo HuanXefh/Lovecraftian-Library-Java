@@ -189,20 +189,20 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_boiler
        * @instance
        */
       flashReg: null,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_boiler
       * @instance
       */
       shouldClearAuxOnStop: false,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_boiler
       * @instance
@@ -272,19 +272,19 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_boiler
        * @instance
        */
       boilerInstab: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_boiler
        * @instance
        */
       boilerInstabProg: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_boiler
        * @instance
        */

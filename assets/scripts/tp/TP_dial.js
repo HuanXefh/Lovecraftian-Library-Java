@@ -198,9 +198,21 @@
                 sta === StatusEffects.none ? "-" : sta,
               ]);
             });
-            matArr.length === 1 ?
-              MDL_table.__textNothing(pnTb) :
+            if(matArr.length === 1) {
+              MDL_table.__textNothing(pnTb);
+            } else {
+              if(PARAM.SECRET_APRIL) {
+                matArr.push([
+                  UnitTypes.alpha,
+                  UnitTypes.alpha.localizedName,
+                  9999,
+                  (UnitTypes.alpha.health * 9999 * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).ui(),
+                  0.0,
+                  StatusEffects.boss,
+                ]);
+              };
               MDL_table._l_table(pnTb, matArr);
+            };
           };
         })
         .width(MDL_ui._uiW())
@@ -209,7 +221,7 @@
         // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
-        MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "last-wave"), () => this.ex_show(Math.max(this.tmpCount - 1, 1)));
+        MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "previous-wave"), () => this.ex_show(Math.max(this.tmpCount - 1, 1)));
         MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "next-wave"), () => this.ex_show(this.tmpCount + 1));
 
         this.show();

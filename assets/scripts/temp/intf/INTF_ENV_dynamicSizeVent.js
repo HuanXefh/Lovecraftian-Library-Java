@@ -109,19 +109,19 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof INTF_ENV_dynamicSizeVent
        * @instance
        */
       offPon2s: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof INTF_ENV_dynamicSizeVent
        * @instance
        */
       offDraw: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof INTF_ENV_dynamicSizeVent
        * @instance
        */

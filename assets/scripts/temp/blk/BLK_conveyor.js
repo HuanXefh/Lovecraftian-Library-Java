@@ -44,7 +44,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_conveyor
        * @instance

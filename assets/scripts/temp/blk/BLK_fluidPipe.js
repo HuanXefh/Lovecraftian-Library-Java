@@ -29,15 +29,14 @@
         }),
       ]);
     };
-  };
 
-
-  function comp_onDestroyed(b) {
-    if(PARAM.SECRET_METAL_PIPE && String(b.block.delegee.matGrp).equalsAny([
-      "iron", "steel", "galvanized-steel", "stainless-steel",
-    ])) {
-      MDL_effect.playAt(b.x, b.y, "se-meme-steel-pipe");
-    };
+    MDL_event._c_onLoadDelay(VAR.delay.load.loadExtraSound, () => {
+      if(!Vars.headless && PARAM.SECRET_METAL_PIPE && String(blk.matGrp).equalsAny(
+        "iron", "steel", "galvanized-steel", "stainless-steel",
+      )) {
+        blk.placeSound = fetchSound("se-meme-steel-pipe");
+      };
+    });
   };
 
 
@@ -222,7 +221,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_fluidPipe
        * @instance
        */
@@ -231,11 +230,6 @@
 
     })
     .setMethod({
-
-
-      onDestroyed: function() {
-        comp_onDestroyed(this);
-      },
 
 
       onProximityUpdate: function() {

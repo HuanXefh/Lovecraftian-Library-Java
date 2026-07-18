@@ -74,7 +74,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_fluidValve
        * @instance
        */
@@ -111,7 +111,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_fluidValve
        * @instance
        */

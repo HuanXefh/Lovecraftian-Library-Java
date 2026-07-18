@@ -133,13 +133,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_directionalMender
        * @instance
        */
       sideReg1: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_directionalMender
        * @instance
        */

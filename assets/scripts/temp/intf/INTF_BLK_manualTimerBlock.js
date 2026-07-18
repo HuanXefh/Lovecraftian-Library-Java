@@ -174,7 +174,7 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_manualTimerBlock
          * @instance
          */

@@ -138,7 +138,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_filterGate
        * @instance
        */
@@ -180,7 +180,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_filterGate
        * @instance
        */

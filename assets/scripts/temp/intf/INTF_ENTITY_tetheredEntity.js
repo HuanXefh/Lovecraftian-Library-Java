@@ -49,13 +49,13 @@
 
 
       /**
-       * <INTERNAL>: Tethered building.
+       * `INTERNAL`: Tethered building.
        * @memberof INTF_ENTITY_tetheredEntity
        * @instance
        */
       bLink: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof INTF_ENTITY_tetheredEntity
        * @instance
        */

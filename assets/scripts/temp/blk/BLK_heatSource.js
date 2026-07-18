@@ -99,26 +99,26 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_heatSource
        * @instance
        */
       sideReg1: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_heatSource
        * @instance
        */
       sideReg2: null,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_heatSource
       * @instance
       */
       skipHeatFetch: true,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_heatSource
       * @instance
@@ -156,7 +156,7 @@
 
 
       /**
-       * <INTERNAL>: Target temperature.
+       * `INTERNAL`: Target temperature.
        * @memberof B_heatSource
        * @instance
        */

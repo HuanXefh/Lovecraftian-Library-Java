@@ -61,7 +61,7 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_recipeSelector
          * @instance
          */

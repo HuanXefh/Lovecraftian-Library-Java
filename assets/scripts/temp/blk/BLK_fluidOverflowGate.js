@@ -73,26 +73,26 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_fluidOverflowGate
        * @instance
        */
       sideReg1: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_fluidOverflowGate
        * @instance
        */
       sideReg2: null,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_fluidOverflowGate
       * @instance
       */
       isPresRouter: false,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_fluidOverflowGate
       * @instance
@@ -145,7 +145,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_fluidOverflowGate
        * @instance
        */

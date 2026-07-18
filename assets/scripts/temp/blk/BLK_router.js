@@ -102,13 +102,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_router
        * @instance
        */
       lastRs: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_router
        * @instance
        */

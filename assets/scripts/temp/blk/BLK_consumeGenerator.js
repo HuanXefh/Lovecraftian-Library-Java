@@ -121,7 +121,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_consumeGenerator
        * @instance
        */

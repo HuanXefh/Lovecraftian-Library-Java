@@ -79,7 +79,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_infoFactory
        * @instance
        */

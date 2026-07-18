@@ -102,7 +102,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_overflowGate
        * @instance
        */
@@ -139,7 +139,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_overflowGate
        * @instance
        */

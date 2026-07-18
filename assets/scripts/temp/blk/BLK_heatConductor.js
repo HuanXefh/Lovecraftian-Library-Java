@@ -78,13 +78,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_heatConductor
        * @instance
        */
       dirReg: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof INTF_BLK_heatBlock
        * @instance

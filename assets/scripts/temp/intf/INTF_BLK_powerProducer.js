@@ -143,7 +143,7 @@
 
 
         /**
-         * <INTERNAL>: Power production efficiency, affects output. Should be set later.
+         * `INTERNAL`: Power production efficiency, affects output. Should be set later.
          * @memberof INTF_B_powerProducer
          * @instance
          */

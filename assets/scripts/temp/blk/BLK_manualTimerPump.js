@@ -41,7 +41,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_manualTimerPump
        * @instance

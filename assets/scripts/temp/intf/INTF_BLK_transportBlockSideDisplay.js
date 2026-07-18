@@ -95,13 +95,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_transportBlockSideDisplay
          * @instance
          */
         sideReg1: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_transportBlockSideDisplay
          * @instance
          */
@@ -180,13 +180,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_transportBlockSideDisplay
          * @instance
          */
         shouldDrawSide1: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_transportBlockSideDisplay
          * @instance
          */

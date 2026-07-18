@@ -153,13 +153,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_coreRelay
        * @instance
        */
       itmSendCd: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_coreRelay
        * @instance
        */

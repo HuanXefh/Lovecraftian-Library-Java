@@ -549,43 +549,43 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
       constructionParsedData: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
       centerPon2: prov(() => new Point2()),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
       corePon2: prov(() => new Point2()),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
       planSize: 1,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
       constructionTmpPlan: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
       constructionBlksReq: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
@@ -832,43 +832,43 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_constructionCore
        * @instance
        */
       lastRot: -1,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_constructionCore
        * @instance
        */
       constructionPlan: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_constructionCore
        * @instance
        */
       constructionPlanCx: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_constructionCore
        * @instance
        */
       constructionPlanCy: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_constructionCore
        * @instance
        */
       shouldDrawConstructionPlan: false,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_constructionCore
        * @instance
        */
       underConstruction: false,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_constructionCore
        * @instance
        */

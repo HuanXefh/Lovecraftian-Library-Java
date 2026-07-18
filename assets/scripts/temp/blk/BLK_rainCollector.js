@@ -154,7 +154,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_rainCollector
        * @instance
        */

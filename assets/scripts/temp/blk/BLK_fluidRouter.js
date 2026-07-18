@@ -102,13 +102,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_fluidRouter
        * @instance
        */
       presExploRad: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_fluidRouter
        * @instance
        */

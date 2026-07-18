@@ -45,7 +45,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_ventGenerator
        * @instance

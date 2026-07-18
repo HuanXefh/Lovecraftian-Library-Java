@@ -71,32 +71,32 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_gearBox
        * @instance
        */
       topReg: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_gearBox
        * @instance
        */
       topInvReg: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_gearBox
        * @instance
        */
       botReg: null,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_gearBox
       * @instance
       */
       skipTorFetch: false,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_gearBox
       * @instance

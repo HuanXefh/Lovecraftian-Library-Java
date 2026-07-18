@@ -70,19 +70,19 @@
 
 
         /**
-         * <INTERNAL>: Vector for config position.
+         * `INTERNAL`: Vector for config position.
          * @memberof INTF_B_posConfigBlock
          * @instance
          */
         posConfigVec2: prov(() => new Vec2()),
         /**
-         * <INTERNAL>: Tile for config position.
+         * `INTERNAL`: Tile for config position.
          * @memberof INTF_B_posConfigBlock
          * @instance
          */
         posConfigT: null,
         /**
-         * <INTERNAL>: Building for config position.
+         * `INTERNAL`: Building for config position.
          * @memberof INTF_B_posConfigBlock
          * @instance
          */

@@ -171,7 +171,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_multiFilterGate
        * @instance
        */
@@ -213,19 +213,19 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_multiFilterGate
        * @instance
        */
       isInv: false,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_multiFilterGate
        * @instance
        */
       rsTgs: prov(() => []),
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_multiFilterGate
        * @instance
        */

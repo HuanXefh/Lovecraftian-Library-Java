@@ -241,6 +241,4 @@
     createRemains(unit);
     triggerDeathStatus(unit);
 
-    if(PARAM.SECRET_METAL_PIPE) MDL_effect.playAt(unit.x, unit.y, "se-meme-steel-pipe");
-
   });

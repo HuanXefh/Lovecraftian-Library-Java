@@ -105,27 +105,27 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_depthPump
        * @instance
        */
       liqReg: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof  BLK_depthPump
        * @instance
        */
       attrMode: AttrModes.OVERLAY,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof  BLK_depthPump
        * @instance
        */
       attrRsArr: DB_item.db["map"]["attr"]["dpliq"],
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof  BLK_depthPump
        * @instance

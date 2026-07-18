@@ -12,38 +12,63 @@
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureBlock");
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  let
+    i,
+    iCap,
+    ot,
+    ob,
+    rot_f;
+
+
   /* <---------- component ----------> */
 
 
   function comp_updateTile(b) {
-    if(TIMER.secThree) b.onProximityUpdate();
+    if(TIMER.secFive) b.onProximityUpdate();
   };
 
 
   function comp_ex_updatePresFetchTgs(b) {
     b.presFetchTgs.clear();
 
-    let ot = Vars.world.tile(b.link);
+    ot = Vars.world.tile(b.link);
     if(b.block.linkValid(b.tile, ot)) {
       // Find pressure sources only if bridge is connected
-      let rot_f = ot.build.relativeTo(b);
-      for(let i = 0; i < 4; i++) {
+      rot_f = ot.build.relativeTo(b);
+      i = 0;
+      iCap = 4;
+      while(i < iCap) {
         // Do not accept pressure from the facing side
-        if(i === 2) continue;
-        let ob = b.nearby((rot_f + i) % 4);
+        if(i === 2) {
+          i++;
+          continue;
+        };
+
+        ob = b.nearby((rot_f + i) % 4);
         if(
           ob != null
             && ob.team === b.team
             && ob.ex_getPres != null
-            && (!ob.block.rotate ? true : (ob.relativeTo(b) === ob.rotation))
+            && b.ex_checkPresFetchValid(ob)
         ) {
           b.presFetchTgs.push(ob);
         };
+        i++;
       };
+    } else {
+      b.proximity.each(ob => {
+        if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b)) {
+          b.presTransCount++;
+        };
+      });
     };
+
     // Treat other bridges as pressure sources
     b.incoming.each(posInt => {
-      let ob = Vars.world.build(posInt);
+      ob = Vars.world.build(posInt);
       if(
         ob != null
           && ob.team === b.team
@@ -62,11 +87,10 @@
       return;
     };
 
-    let ot, ob;
     b.incoming.each(posInt => {
       ot = Vars.world.tile(posInt);
       if(ot == null) return;
-      ob = b.nearby(MDL_pos._rotTs(b.tile, ot));
+      ob = b.nearby(LCPos.getRotation(b.tile, ot));
       if(ob == null) return;
       b.presSupplyTgs.pull(ob);
     });
@@ -93,7 +117,22 @@
     newClass().extendClass(PARENT[0], "BLK_fluidPipeBridge").implement(INTF[0]).initClass()
     .setParent(LiquidBridge)
     .setTags()
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+      * `INTERNAL`
+      * @override
+      * @memberof BLK_fluidPipeBridge
+      * @instance
+      */
+      isPresRouter: true,
+
+
+    })
     .setMethod({
 
 
@@ -156,6 +195,21 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof B_fluidPipeBridge
+       * @instance
+       * @return {boolean}
+       */
+      ex_checkIsPresRouter: function() {
+        return !this.block.linkValid(this.tile, Vars.world.tile(this.link));
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 

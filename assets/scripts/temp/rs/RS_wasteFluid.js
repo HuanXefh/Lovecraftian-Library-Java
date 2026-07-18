@@ -43,7 +43,7 @@
 
 
     /**
-     * <INTERNAL>
+     * `INTERNAL`
      * @override
      * @memberof RS_wasteFluid
      * @instance

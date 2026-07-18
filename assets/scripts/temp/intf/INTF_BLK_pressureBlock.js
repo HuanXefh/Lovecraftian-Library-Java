@@ -42,6 +42,7 @@
 
 
   function comp_onProximityUpdate(b) {
+    b.presTransCount = 0;
     b.ex_updatePresFetchTgs();
     b.ex_updatePresSupplyTgs();
   };
@@ -127,7 +128,6 @@
 
   function comp_ex_updatePresFetchTgs(b) {
     b.presFetchTgs.clear();
-    b.presTransCount = 0;
     // Find all possible pressure sources
     b.proximity.each(ob => {
       if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b)) {
@@ -204,13 +204,13 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_pressureBlock
          * @instance
          */
         presRes: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_BLK_pressureBlock
          * @instance
          */
@@ -251,49 +251,49 @@
 
 
         /**
-         * <INTERNAL> Gained from other buildings that actively dump pressure. See {@link INTF_BLK_pressureProducer}.
+         * `INTERNAL` Gained from other buildings that actively dump pressure. See {@link INTF_BLK_pressureProducer}.
          * @memberof INTF_B_pressureBlock
          * @instance
          */
         presBase: 0.0,
         /**
-         * <INTERNAL> Current real amount of pressure.
+         * `INTERNAL` Current real amount of pressure.
          * @memberof INTF_B_pressureBlock
          * @instance
          */
         presTmp: 0.0,
         /**
-         * <INTERNAL> Target pressure, very volatile. Sum of base pressure and transferred pressure.
+         * `INTERNAL` Target pressure, very volatile. Sum of base pressure and transferred pressure.
          * @memberof INTF_B_pressureBlock
          * @instance
          */
         presTg: 0.0,
         /**
-         * <INTERNAL>: Will be added for bars and pressure damage check, has no effect on pressure transferred.
+         * `INTERNAL`: Will be added for bars and pressure damage check, has no effect on pressure transferred.
          * @memberof INTF_B_pressureBlock
          * @instance
          */
         presExtra: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_pressureBlock
          * @instance
          */
         presFetchTgs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_pressureBlock
          * @instance
          */
         presTransCount: 0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_pressureBlock
          * @instance
          */
         presSupplyTgs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_pressureBlock
          * @instance
          */
@@ -381,17 +381,45 @@
       /**
        * @memberof INTF_B_pressureBlock
        * @instance
+       * @return {boolean}
+       */
+      ex_checkIsPresRouter: function() {
+        return this.block.delegee.isPresRouter;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_pressureBlock
+       * @instance
+       * @param {Building} ob
+       * @return {boolean}
+       */
+      ex_checkPresFetchSideValid: function(ob) {
+        return this.ex_checkIsPresRouter() ?
+          false :
+          !MDL_cond._isNoSideBlock(this.block) ?
+            true :
+            (MDL_cond._isFluidConduit(this.block) && MDL_cond._isFluidConduit(ob.block));
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 1,
+      }),
+
+
+      /**
+       * @memberof INTF_B_pressureBlock
+       * @instance
        * @param {Building} ob
        * @return {boolean}
        */
       ex_checkPresFetchValid: function(ob) {
         return LCGeometry.accept(
-          ob, this, ob.block.delegee.isPresRouter,
-          this.block.delegee.isPresRouter ?
-            false :
-            !MDL_cond._isNoSideBlock(this.block) ?
-              true :
-              (MDL_cond._isFluidConduit(this.block) && MDL_cond._isFluidConduit(ob.block))
+          ob, this, ob.ex_checkIsPresRouter(),
+          this.ex_checkPresFetchSideValid(ob),
         );
       }
       .setProp({
@@ -407,7 +435,7 @@
        * @return {boolean}
        */
       ex_checkPresSupplyValid: function(ob) {
-        return LCGeometry.accept(this, ob, this.block.delegee.isPresRouter, true);
+        return LCGeometry.accept(this, ob, this.ex_checkIsPresRouter(), true);
       }
       .setProp({
         noSuper: true,
@@ -436,7 +464,7 @@
        * @return {number}
        */
       ex_getPresTransScl: function(b_t) {
-        return !this.block.delegee.isPresRouter || this.presTransCount === 0 ? 1.0 : (1.0 / this.presTransCount);
+        return !this.ex_checkIsPresRouter() || this.presTransCount === 0 ? 1.0 : (1.0 / this.presTransCount);
       }
       .setProp({
         noSuper: true,
@@ -462,7 +490,6 @@
             let pres = rd.f();
             this.presTmp = pres;
             this.presTg = pres;
-            this.presBase = pres;
           },
         );
       }

@@ -173,61 +173,61 @@
 
 
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         hasPayInput: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         hasPayOutput: false,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         payAmtTotal: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         payAmtTotalAfterProd: 0.0,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         payReqObj: prov(() => ({})),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         payStockObj: prov(() => ({})),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         payInputBs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         payOutputBs: prov(() => []),
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
         lastDumpPay: null,
         /**
-         * <INTERNAL>
+         * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */

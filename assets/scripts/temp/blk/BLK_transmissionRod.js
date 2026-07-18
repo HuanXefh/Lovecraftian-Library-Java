@@ -102,26 +102,26 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_transmissionRod
        * @instance
        */
       rodRegs: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_transmissionRod
        * @instance
        */
       dirReg: null,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_transmissionRod
       * @instance
       */
       skipTorFetch: true,
       /**
-      * <INTERNAL>
+      * `INTERNAL`
       * @override
       * @memberof BLK_transmissionRod
       * @instance
@@ -180,13 +180,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_transmissionRod
        * @instance
        */
       rotProg: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_transmissionRod
        * @instance
        */

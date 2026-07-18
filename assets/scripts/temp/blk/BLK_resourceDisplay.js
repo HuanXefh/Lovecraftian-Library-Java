@@ -75,7 +75,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_resourceDisplay
        * @instance
        */

@@ -112,19 +112,19 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_lootFilter
        * @instance
        */
       sideReg1: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_lootFilter
        * @instance
        */
       sideReg2: null,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_lootFilter
        * @instance
        */
@@ -167,7 +167,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_lootFilter
        * @instance
        */

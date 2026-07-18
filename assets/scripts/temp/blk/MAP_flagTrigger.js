@@ -59,7 +59,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof MAP_flagTrigger
        * @instance
        */
@@ -109,7 +109,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_flagTrigger
        * @instance
        */

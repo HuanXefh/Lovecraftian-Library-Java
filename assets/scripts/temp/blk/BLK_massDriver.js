@@ -239,7 +239,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_massDriver
        * @instance
        */

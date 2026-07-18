@@ -101,13 +101,13 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_furnaceRecipeFactory
        * @instance
        */
       tempReq: 0.0,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_furnaceRecipeFactory
        * @instance
        */

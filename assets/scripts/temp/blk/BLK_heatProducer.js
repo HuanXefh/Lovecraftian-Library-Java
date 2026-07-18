@@ -72,7 +72,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_heatProducer
        * @instance
        */

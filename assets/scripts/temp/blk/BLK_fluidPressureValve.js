@@ -86,7 +86,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_fluidPressureValve
        * @instance
        */
@@ -124,7 +124,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_fluidPressureValve
        * @instance
        */

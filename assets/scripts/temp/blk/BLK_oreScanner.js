@@ -174,7 +174,7 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_oreScanner
        * @instance
        */
@@ -263,25 +263,25 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof B_oreScanner
        * @instance
        */
       offConeAng: 0.0,
       /**
-       * <INTERNAL>: All ores to be revealed.
+       * `INTERNAL`: All ores to be revealed.
        * @memberof B_oreScanner
        * @instance
        */
       revealTgs: prov(() => []),
       /**
-       * <INTERNAL>: Ores that are not revealed yet.
+       * `INTERNAL`: Ores that are not revealed yet.
        * @memberof B_oreScanner
        * @instance
        */
       revealQueue: prov(() => []),
       /**
-       * <INTERNAL>: Ores revealed as integers of position.
+       * `INTERNAL`: Ores revealed as integers of position.
        * @memberof B_oreScanner
        * @instance
        */

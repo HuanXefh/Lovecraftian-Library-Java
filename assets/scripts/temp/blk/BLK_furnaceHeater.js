@@ -64,20 +64,20 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_furnaceHeater
        * @instance
        */
       useAndOperForAccept: true,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_furnaceHeater
        * @instance
        */
       skipHeatFetch: true,
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @memberof BLK_furnaceHeater
        * @instance
        */

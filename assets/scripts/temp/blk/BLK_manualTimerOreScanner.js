@@ -46,14 +46,14 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_manualTimerOreScanner
        * @instance
        */
       manualTimerCfgTp: "string",
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_manualTimerOreScanner
        * @instance

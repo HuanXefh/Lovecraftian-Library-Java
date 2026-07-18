@@ -75,14 +75,14 @@
 
 
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_cable
        * @instance
        */
       graphType: "cable",
       /**
-       * <INTERNAL>
+       * `INTERNAL`
        * @override
        * @memberof BLK_cable
        * @instance
