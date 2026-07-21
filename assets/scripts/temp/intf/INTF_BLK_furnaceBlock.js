@@ -40,8 +40,8 @@
           MDL_fuel._fuelArr(blk).forEachFast(rs => {
             matArr.push([
               rs,
-              rs instanceof Liquid ? "-" : (MDL_fuel._fuelPon(rs) / blk.fuelConsMtp).roundFixed(2).color(blk.fuelConsMtp.fEqual(1.0) ? Color.white : blk.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
-              (MDL_fuel._fuelLvl(rs) * blk.fuelLvlMtp).roundFixed(2).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
+              rs instanceof Liquid ? "-" : (MDL_fuel._fuelPon(rs) / blk.fuelConsMtp).color(blk.fuelConsMtp.fEqual(1.0) ? Color.white : blk.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
+              (MDL_fuel._fuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
             ]);
           });
           MDL_table._l_table(pnTb, matArr);

@@ -96,15 +96,7 @@
    * @return {void}
    */
   Array.forEachPair = function(arr1, arr2, scr) {
-    let i = 0, j, iCap = arr1.iCap(), jCap = arr2.iCap();
-    while(i < iCap) {
-      j = 0;
-      while(j < jCap) {
-        scr(arr1[i], arr2[j]);
-        j++;
-      };
-      i++;
-    };
+    LCNativeArray.forEachPair(arr1, arr2, scr);
   };
 
 
@@ -115,11 +107,7 @@
    * @return {void}
    */
   Array.prototype.forEachFast = function(scr) {
-    let iCap = this.iCap();
-    if(iCap === 0) return;
-    for(let i = 0; i < iCap; i++) {
-      scr(this[i]);
-    };
+    LCNativeArray.forEachFast(this, scr);
   };
 
 
@@ -130,37 +118,18 @@
    * @return {void}
    */
   Array.prototype.forEachCond = function(boolF, scr) {
-    if(boolF == null) boolF = Function.airTrue;
-
-    let iCap = this.iCap();
-    if(iCap === 0) return;
-    for(let i = 0; i < iCap; i++) {
-      if(boolF(this[i])) scr(this[i]);
-    };
+    LCNativeArray.forEachCond(this, boolF, scr);
   };
 
 
   /**
    * Variant of {@link Array#forEach} used for formatted array.
-   * @param {number|unset} ord
+   * @param {number} ord
    * @param {function(...any): void} scr - Arguments here will be elements in each row.
    * @return {void}
    */
   Array.prototype.forEachRow = function(ord, scr) {
-    if(ord == null) ord = 1;
-
-    let iCap = this.iCap();
-    if(iCap === 0) return;
-    let tmpArr = [];
-    for(let i = 0, j = 0; i < iCap; i += ord) {
-      tmpArr.clear();
-      while(j < ord) {
-        tmpArr.push(this[i + j]);
-        j++;
-      };
-      j = 0;
-      scr.apply(null, tmpArr);
-    };
+    LCNativeArray.forEachRow(this, ord, arr => scr.apply(null, arr));
   };
 
 
@@ -171,14 +140,5 @@
    * @return {void}
    */
   Array.prototype.forEachAll = function(scr) {
-    Array.prototype.forEachAll.callIt.apply(this, [scr]);
-  };
-  Array.prototype.forEachAll.callIt = function(scr) {
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      this[i] instanceof Array ?
-        Array.prototype.forEachAll.callIt.apply(this[i], [scr]) :
-        scr(this[i], i, this);
-      i++;
-    };
+    LCNativeArray.forEachAll(this, scr);
   };

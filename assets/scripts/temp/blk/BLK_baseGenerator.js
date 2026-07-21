@@ -44,7 +44,7 @@
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     if(blk.explosionDamage > 0) {
-      MDL_draw._d_diskWarning(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.explosionRadius * Vars.tilesize);
+      LCDrawf.diskWarning(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.explosionRadius * Vars.tilesize);
     };
   };
 
@@ -63,7 +63,7 @@
 
   function comp_drawSelect(b) {
     if(b.block.explosionDamage > 0) {
-      MDL_draw._d_diskWarning(b.x, b.y, b.block.explosionRadius * Vars.tilesize);
+      LCDrawf.diskWarning(b.x, b.y, b.block.explosionRadius * Vars.tilesize);
     };
   };
 

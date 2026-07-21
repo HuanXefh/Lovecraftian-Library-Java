@@ -10,6 +10,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
+import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
@@ -26,6 +27,7 @@ import mindustry.world.draw.DrawFade;
 import mindustry.world.draw.DrawFlame;
 import mindustry.world.draw.DrawSideRegion;
 import mindustry.world.draw.DrawWeave;
+import rhino.NativeArray;
 
 import static lovec.utils.LCScript.*;
 
@@ -39,6 +41,10 @@ public class LCDrawf {
     public static TextureRegion arrowReg;
     public static TextureRegion[] heatRegs;
     public static TextureRegion lightConeReg;
+    public static ObjectMap<String, TextureRegion> wireMatRegMap = new ObjectMap<>();
+    public static ObjectMap<String, TextureRegion> wireMatEndRegMap = new ObjectMap<>();
+    public static TextureRegion wireGlowReg;
+    public static TextureRegion wireShaReg;
     public static Color lightColor = Color.valueOf("ffc999");
     public static Color heatColor = Color.valueOf("ff3838");
 
@@ -60,14 +66,16 @@ public class LCDrawf {
         bulFlameLay = LCScript.toFloat(LCScript.search(VAR, "layer", "bulFlame"));
         randOvLay = LCScript.toFloat(LCScript.search(VAR, "layer", "randOv"));
 
-        heatRegs = new TextureRegion[16];
-        for(int i = 0; i < heatRegs.length; i++) {
-            heatRegs[i] = Vars.headless ? LCTexture.empty : Core.atlas.find("lovec-ast-block-heat" + i);
-        };
-
         if(!Vars.headless) {
             arrowReg = Core.atlas.find("bridge-arrow");
+            heatRegs = new TextureRegion[16];
+            for(int i = 0; i < heatRegs.length; i++) {
+                heatRegs[i] = Core.atlas.find("lovec-ast-block-heat" + i);
+            };
             lightConeReg = Core.atlas.find("lovec-efr-shadow-cone");
+            NativeArray wireMats = LCScript.toArray(LCScript.search(DB_block, "db", "grpParam", "wireMatReg"));
+            wireGlowReg = Core.atlas.find("lovec-ast-wire-glow");
+            wireShaReg = Core.atlas.find("lovec-ast-wire-shadow");
         };
     };
 
@@ -412,11 +420,7 @@ public class LCDrawf {
      * Variant of {@link #rect} for block placement.
      */
     public static void rectPlace(Block blk, int tx, int ty, float r, boolean isDashed, Color color) {
-        rect(
-            LCPos.toFCoord(tx, blk.size),
-            LCPos.toFCoord(ty, blk.size),
-            r, blk.size, isDashed, color
-        );
+        rect(LCPos.toFCoord(tx, blk.size), LCPos.toFCoord(ty, blk.size), r, blk.size, isDashed, color);
     };
 
 
@@ -445,7 +449,183 @@ public class LCDrawf {
     };
 
 
+    /**
+     * Draws filled square.
+     */
+    public static void area(float x, float y, float size, Color color, float a, float z) {
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Draw.color(color, a * 0.7f);
+        LCDraw.area(x, y, size);
+        Draw.color();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void area(float x, float y, float size, Color color, float a) {
+        area(x, y, size, color, a, shapeLay);
+    };
+    public static void area(float x, float y, float size, Color color) {
+        area(x, y, size, color, 1f);
+    };
+    public static void area(float x, float y, float size) {
+        area(x, y, size, Pal.accent);
+    };
+    public static void area(float x, float y) {
+        area(x, y, 1f);
+    };
+
+
+    /**
+     * Variant of {@link #area} for tile indication.
+     */
+    public static void areaShrink(@Nullable Tile t, int size, Color color, float a, float z) {
+        if(t == null) return;
+
+        float off = size % 2 == 0 ? 4f : 0f;
+        area(t.worldx() + off, t.worldy() + off, (0.75f + Mathf.sin(Time.globalTime * 0.065f) * 0.2f * size), color, a, z);
+    };
+    // Overload
+    public static void areaShrink(@Nullable Tile t, int size, Color color, float a) {
+        areaShrink(t, size, color, a, shapeLay);
+    };
+    public static void areaShrink(@Nullable Tile t, int size, Color color) {
+        areaShrink(t, size, color, 1f);
+    };
+    public static void areaShrink(@Nullable Tile t, int size) {
+        areaShrink(t, size, Pal.accent);
+    };
+    public static void areaShrink(@Nullable Tile t) {
+        areaShrink(t, 1);
+    };
+
+
+    /**
+     * Variant of {@link #area} for building indication.
+     */
+    public static void areaBuild(Building b, float pad, Color color, float a, float z) {
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Draw.color(color, a * 0.5f);
+        LCDraw.area(b.x, b.y, b.block.size - pad * 2f / Vars.tilesize);
+        Draw.color();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void areaBuild(Building b, float pad, Color color, float a) {
+        areaBuild(b, pad, color, a, shapeLay);
+    };
+    public static void areaBuild(Building b, float pad, Color color) {
+        areaBuild(b, pad, color, 1f);
+    };
+    public static void areaBuild(Building b, float pad) {
+        areaBuild(b, pad, Pal.accent);
+    };
+    public static void areaBuild(Building b) {
+        areaBuild(b, 0f);
+    };
+
+
     /* <-------------------- circle --------------------> */
+
+
+    /**
+     * Draws outlined circle.
+     */
+    public static void circle(float x, float y, float rad, boolean isDashed, Color color, float a, float z) {
+        if(rad < 0.0001f) return;
+
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Lines.stroke(3f, Tmp.c1.set(Pal.gray).a(a));
+        LCDraw.circle(x, y, rad, isDashed);
+        Lines.stroke(1f, color);
+        Draw.alpha(a);
+        LCDraw.circle(x, y, rad, isDashed);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void circle(float x, float y, float rad, boolean isDashed, Color color, float a) {
+        circle(x, y, rad, isDashed, color, a, shapeLay);
+    };
+    public static void circle(float x, float y, float rad, boolean isDashed, Color color) {
+        circle(x, y, rad, isDashed, color, 1f);
+    };
+    public static void circle(float x, float y, float rad, boolean isDashed) {
+        circle(x, y, rad, isDashed, Pal.accent);
+    };
+    public static void circle(float x, float y, float rad) {
+        circle(x, y, rad, false);
+    };
+
+
+    /**
+     * Variant of {@link #circle} for block placement.
+     */
+    public static void circlePlace(Block blk, int tx, int ty, float rad, boolean isDashed, Color color) {
+        circle(LCPos.toFCoord(tx, blk.size), LCPos.toFCoord(ty, blk.size), rad, isDashed, color);
+    };
+
+
+    /**
+     * Variant of {@link #circle} for building selection.
+     */
+    public static void circleSelect(Building b, float rad, boolean isDashed, Color color) {
+        circle(b.x, b.y, rad, isDashed, color);
+    };
+
+
+    /**
+     * Draws expanding disk.
+     */
+    public static void diskExpand(float x, float y, float rad, float scl, Color color, float a, float z) {
+        if(rad < 0.0001f) return;
+
+        float frac = Time.globalTime % (90f * scl) / (90f * scl);
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Draw.color(color, Mathf.lerp(a, 0f, frac));
+        LCDraw.disk(x, y, Mathf.lerp(0f, rad, frac));
+        Draw.color();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void diskExpand(float x, float y, float rad, float scl, Color color, float a) {
+        diskExpand(x, y, rad, scl, color, a, shapeLay);
+    };
+    public static void diskExpand(float x, float y, float rad, float scl, Color color) {
+        diskExpand(x, y, rad, scl, color, 1f);
+    };
+    public static void diskExpand(float x, float y, float rad, float scl) {
+        diskExpand(x, y, rad, scl, Pal.accent);
+    };
+    public static void diskExpand(float x, float y, float rad) {
+        diskExpand(x, y, rad, 1f);
+    };
+
+
+    /**
+     * Draws disk that fades in and out.
+     * Usually used to indicate explosion radius.
+     */
+    public static void diskWarning(float x, float y, float rad, float scl, Color color, float a, float z) {
+        if(rad < 0.0001f) return;
+
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Draw.color(color, a * (0.15f + Mathf.sin(Time.globalTime / scl / 15f) * 0.15f));
+        LCDraw.disk(x, y, rad);
+        Draw.color();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void diskWarning(float x, float y, float rad, float scl, Color color, float a) {
+        diskWarning(x, y, rad, scl, color, a, shapeLay);
+    };
+    public static void diskWarning(float x, float y, float rad, float scl, Color color) {
+        diskWarning(x, y, rad, scl, color, 1f);
+    };
+    public static void diskWarning(float x, float y, float rad, float scl) {
+        diskWarning(x, y, rad, scl, Pal.remove);
+    };
+    public static void diskWarning(float x, float y, float rad) {
+        diskWarning(x, y, rad, 1f);
+    };
 
 
     /* <-------------------- connector --------------------> */
@@ -460,6 +640,59 @@ public class LCDrawf {
         rectSelect(b, 0, true, Pal.accent);
         rectSelect(ob, 0, true, Pal.accent);
         line(b.x, b.y, ob.x, ob.y, true);
+    };
+
+
+    /**
+     * Draws connector with filled squares and a flickering line.
+     */
+    public static void connectorArea(@Nullable Building b, @Nullable Building ob) {
+        if(b == null || ob == null) return;
+
+        areaBuild(b);
+        areaBuild(ob);
+        lineFlick(b.x, b.y, ob.x, ob.y);
+    };
+
+
+    /**
+     * Vanilla mass driver connector.
+     */
+    public static void connectorCircleArrow(@Nullable Building b, @Nullable Building b_f, @Nullable Building b_t, @Nullable Building[] bs_f, @Nullable Building[] bs_t) {
+        if(b == null) return;
+
+        float
+            param = Mathf.absin(Time.globalTime, 6f, 1f),
+            param1 = b.block.size == 1 ? 1f : b.block.size * 0.5f + 1f,
+            param2;
+
+        Drawf.circles(b.x, b.y, param1 * Vars.tilesize + param - 2f, Pal.accent);
+        if(b_f != null) {
+            Drawf.circles(b_f.x, b_f.y, param1 * Vars.tilesize + param - 2f, Pal.place);
+            Drawf.arrow(b_f.x, b_f.y, b.x, b.y, b.block.size * Vars.tilesize + param, param + 4f, Pal.place);
+        };
+        if(b_t != null) {
+            param2 = b_t.block.size == 1 ? 1f : b_t.block.size * 0.5f + 1f;
+            Drawf.circles(b_t.x, b_t.y, param2 * Vars.tilesize + param - 2f, Pal.place);
+            Drawf.arrow(b.x, b.y, b_t.x, b_t.y, b.block.size * Vars.tilesize + param, param + 4f, Pal.accent);
+        };
+        if(bs_f != null) {
+            for(Building ob : bs_f) {
+                Drawf.circles(ob.x, ob.y, param1 * Vars.tilesize + param - 2f, Pal.place);
+                Drawf.arrow(ob.x, ob.y, b.x, b.y, b.block.size * Vars.tilesize + param, param + 4f, Pal.place);
+            };
+        };
+        if(bs_t != null) {
+            for(Building ob : bs_t) {
+                param2 = ob.block.size == 1 ? 1f : ob.block.size * 0.5f + 1f;
+                Drawf.circles(ob.x, ob.y, param2 * Vars.tilesize + param - 2f, Pal.place);
+                Drawf.arrow(b.x, b.y, ob.x, ob.y, b.block.size * Vars.tilesize + param, param + 4f, Pal.accent);
+            };
+        };
+    };
+    // Overload
+    public static void connectorCircleArrow(@Nullable Building b, @Nullable Building b_f, @Nullable Building b_t) {
+        connectorCircleArrow(b, b_f, b_t, null, null);
     };
 
 

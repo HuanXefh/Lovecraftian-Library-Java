@@ -36,7 +36,7 @@
 
     thisFun.tmpTup[3].forEachFast(ot => {
       if(ot.block().attributes.get(blk.attribute) < 0.0001) return;
-      MDL_draw._d_areaShrink(ot, 1, valid);
+      LCDrawf.areaShrink(ot, 1, valid ? Pal.accent : Pal.remove);
     });
   }
   .setProp({

@@ -183,7 +183,7 @@
   extendBase.setupFields = function(ins, obj) {
     // Java adapter only copies methods, I almost forgot this
     for(let key in obj) {
-      if(typeof obj[key] === "function") continue;
+      if(obj[key] instanceof Function) continue;
       ins[key] = obj[key];
     };
     return ins;

@@ -35,17 +35,14 @@
   };
 
 
-  function comp_draw(b) {
-    if(PARAM.SHOULD_DRAW_ROUTER_HERESY && b.nextToRouter) {
-      b.proximity.each(ob => {
-        if(MDL_cond._isRouter(ob.block)) MDL_draw._d_areaShrink(ob.tile, ob.block.size, false);
-      });
-    };
-  };
-
-
   function comp_drawSelect(b) {
     LCDraw.contentIcon(b.x, b.y, b.lastRs, b.block.size);
+
+    if(PARAM.SHOULD_DRAW_ROUTER_HERESY && b.nextToRouter) {
+      b.proximity.each(ob => {
+        if(MDL_cond._isRouter(ob.block)) LCDrawf.areaShrink(ob.tile, ob.block.size, Pal.remove);
+      });
+    };
   };
 
 
@@ -140,11 +137,6 @@
       .setProp({
         boolMode: "and",
       }),
-
-
-      draw: function() {
-        comp_draw(this);
-      },
 
 
       drawSelect: function() {

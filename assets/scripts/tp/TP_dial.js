@@ -730,7 +730,7 @@
         return typeof rate !== "number" ?
           "-" :
           isStatic ?
-            String(rate) :
+            String(rate.roundFixed(deciAmt)) :
             rate > 0.0167 ?
               (rate.roundFixed(deciAmt) + "/s") :
               rate * 60.0 > 0.0167 ?

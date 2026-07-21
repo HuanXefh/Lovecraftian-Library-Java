@@ -39,8 +39,8 @@
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     if(blk.drawRange) {
-      MDL_draw._d_circlePlace(blk, tx, ty, blk.laserRange * Vars.tilesize, valid, false);
-      MDL_draw._d_circlePlace(blk, tx, ty, blk.laserRange * Vars.tilesize * blk.minRadFrac, valid, true);
+      LCDrawf.circlePlace(blk, tx, ty, blk.laserRange * Vars.tilesize, false, valid ? Pal.accent : Pal.remove);
+      LCDrawf.circlePlace(blk, tx, ty, blk.laserRange * Vars.tilesize * blk.minRadFrac, true, valid ? Pal.accent : Pal.remove);
     };
   };
 
@@ -69,7 +69,7 @@
   function comp_drawSelect(b) {
     if(!b.block.drawRange) return;
 
-    MDL_draw._d_circleSelect(b, b.block.laserRange * Vars.tilesize * b.block.delegee.minRadFrac, true, true);
+    LCDrawf.circleSelect(b, b.block.laserRange * Vars.tilesize * b.block.delegee.minRadFrac, true, Pal.accent);
   };
 
 

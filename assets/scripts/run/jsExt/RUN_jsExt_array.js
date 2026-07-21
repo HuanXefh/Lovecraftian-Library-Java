@@ -315,19 +315,12 @@
 
 
   /**
-   * Clears this array and fill it with given arguments.
+   * Clears this array and fill it with given elements.
    * <br> `ARGS`: ele1, ele2, ele3, ...
    * @return {this}
    */
   Array.prototype.with = function() {
-    this.clear();
-    let i = 0, iCap = arguments.length;
-    while(i < iCap) {
-      this.push(arguments[i]);
-      i++;
-    };
-
-    return this;
+    return LCNativeArray.withArguments(this, arguments);
   };
 
 
@@ -336,14 +329,7 @@
    * @param {Arguments} eles
    */
   Array.prototype.withAll = function(eles) {
-    this.clear();
-    let i = 0, iCap = eles.length;
-    while(i < iCap) {
-      this.push(eles[i]);
-      i++;
-    };
-
-    return this;
+    return LCNativeArray.withAll(this, eles);
   };
 
 

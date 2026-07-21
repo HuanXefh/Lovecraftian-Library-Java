@@ -14,7 +14,7 @@
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     blk.useP3dRange ?
       LCDrawP3D.cylinderFade(tx.toFCoord(blk.size), ty.toFCoord(blk.size), 1.0, blk.blkRad, blk.ex_getBlkRadColor(valid)) :
-      MDL_draw._d_circlePlace(blk, tx, ty, blk.blkRad, blk.ex_getBlkRadColor(valid), true);
+      LCDrawf.circlePlace(blk, tx, ty, blk.blkRad, true, blk.ex_getBlkRadColor(valid));
   };
 
 
@@ -29,7 +29,7 @@
 
   function comp_drawSelect(b) {
     if(!b.block.delegee.useP3dRange) {
-      MDL_draw._d_circleSelect(b, b.block.delegee.blkRad, b.block.ex_getBlkRadColor(true), true);
+      LCDrawf.circleSelect(b, b.block.delegee.blkRad, true, b.block.ex_getBlkRadColor(true));
     };
   };
 

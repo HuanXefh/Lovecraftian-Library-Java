@@ -16,6 +16,7 @@ public class LCScript {
     public static NativeObject TIMER;
     public static NativeObject MDL_cond;
     public static NativeObject MDL_effect;
+    public static NativeObject DB_block;
 
 
     private static final Class[][] objClss = {
@@ -34,10 +35,11 @@ public class LCScript {
 
 
     public static void init() {
-        VAR = (NativeObject)(get("VAR"));
-        TIMER = (NativeObject)(get("TIMER"));
-        MDL_cond = (NativeObject)(get("MDL_cond"));
-        MDL_effect = (NativeObject)(get("MDL_effect"));
+        VAR = toObject(get("VAR"));
+        TIMER = toObject(get("TIMER"));
+        MDL_cond = toObject(get("MDL_cond"));
+        MDL_effect = toObject(get("MDL_effect"));
+        DB_block = toObject(get("DB_block"));
 
         Log.info("[LOVEC] Initialized Lovec module references in LCScript.");
     };
@@ -58,8 +60,14 @@ public class LCScript {
      * Converts JS value to Java integer.
      */
     public static int toInt(Object val) {
-        if(val instanceof Integer num) return num;
-        return (int)(Math.floor(toDouble(val)));
+        if(val instanceof Number num) return num.intValue();
+        return 0;
+    };
+
+
+    public static long toLong(Object val) {
+        if(val instanceof Number num) return num.longValue();
+        return 0;
     };
 
 
@@ -67,7 +75,8 @@ public class LCScript {
      * Converts JS value to Java float.
      */
     public static float toFloat(Object val) {
-        return ((Double)(toDouble(val))).floatValue();
+        if(val instanceof Number num) return num.floatValue();
+        return 0f;
     };
 
 
@@ -75,11 +84,7 @@ public class LCScript {
      * Converts JS value to Java double.
      */
     public static double toDouble(Object val) {
-        if(val instanceof Double num) return num;
-        if(val instanceof Integer num) return num.doubleValue();
-        if(val instanceof Float num) return num.doubleValue();
-        if(val instanceof Long num) return num.doubleValue();
-        if(val instanceof Byte num) return num.doubleValue();
+        if(val instanceof Number num) return num.doubleValue();
         return 0;
     };
 
@@ -89,6 +94,30 @@ public class LCScript {
      */
     public static boolean toBoolean(Object val) {
         return (boolean)(val);
+    };
+
+
+    /**
+     * Converts JS value to Java string.
+     */
+    public static String toString(Object val) {
+        return (String)(val);
+    };
+
+
+    /**
+     * Converts JS value to JavaScript object.
+     */
+    public static NativeObject toObject(Object val) {
+        return (NativeObject)(val);
+    };
+
+
+    /**
+     * Converts JS value to JavaScript array.
+     */
+    public static NativeArray toArray(Object val) {
+        return (NativeArray)(val);
     };
 
 
@@ -106,7 +135,22 @@ public class LCScript {
     };
     // Overload
     public static NativeArray newArray(String name) {
-        return newArray(name, (NativeObject)(get("__javaInternal__")));
+        return newArray(name, toObject(get("__javaInternal__")));
+    };
+
+
+    /**
+     * Ensures a JavaScript array exists.
+     */
+    public static NativeArray ensureArray(String name, Scriptable scope) {
+        Object val = scope.get(name, scope);
+        if(val instanceof NativeArray arr) return arr;
+
+        return newArray(name, scope);
+    };
+    // Overload
+    public static NativeArray ensureArray(String name) {
+        return ensureArray(name, toObject(get("__javaInternal__")));
     };
 
 
@@ -161,6 +205,18 @@ public class LCScript {
     public static Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) throws NullPointerException {
         Function fun = (Function)(get(nameFun, scope));
         return fun.call(Context.getContext(), scope, thisObj, args);
+    };
+
+
+    /**
+     * Wraps a Java object to avoid type-related crash.
+     */
+    public static Object wrap(Object javaObj, Scriptable scope) {
+        return Context.javaToJS(javaObj, scope);
+    };
+    // Overload
+    public static Object wrap(Object javaObj) {
+        return wrap(javaObj, Vars.mods.getScripts().scope);
     };
 
 

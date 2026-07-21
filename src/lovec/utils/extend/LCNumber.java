@@ -14,12 +14,12 @@ public class LCNumber {
     /**
      * Rounds a number for some digits.
      */
-    public static float roundFixed(float num, int deciAmt) {
-        float mtp = Mathf.pow(10f, deciAmt);
+    public static double roundFixed(double num, int deciAmt) {
+        double mtp = Math.pow(10, deciAmt);
         return Math.round(num * mtp) / mtp;
     };
     // Overload
-    public static float roundFixed(float num) {
+    public static double roundFixed(float num) {
         return roundFixed(num, 2);
     };
 
