@@ -54,8 +54,6 @@
 
   /** @global lovec.utils.LCCheck */
   LCCheck = fetchClass("lovec.utils.LCCheck");
-  /** @global lovec.utils.LCFormat */
-  LCFormat = fetchClass("lovec.utils.LCFormat");
   /** @global lovec.utils.LCGeneralizer */
   LCGeneralizer = fetchClass("lovec.utils.LCGeneralizer");
   /** @global lovec.utils.LCGeometry */
@@ -66,6 +64,10 @@
   LCRand = fetchClass("lovec.utils.LCRand");
   /** @global lovec.utils.LCScript */
   LCScript = fetchClass("lovec.utils.LCScript");
+  /** @global lovec.utils.extend.LCNativeArray */
+  LCNativeArray = fetchClass("lovec.utils.extend.LCNativeArray");
+  /** @global lovec.utils.extend.LCNumber */
+  LCNumber = fetchClass("lovec.utils.extend.LCNumber");
   /** @global lovec.utils.pooling.PoolableVec2 */
   PoolableVec2 = fetchClass("lovec.utils.pooling.PoolableVec2");
   /** @global lovec.utils.pooling.PoolableVec3 */

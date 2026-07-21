@@ -6,6 +6,9 @@ import arc.util.Reflect;
 import mindustry.Vars;
 import rhino.*;
 
+/**
+ * Used for interaction with JavaScript.
+ */
 public class LCScript {
 
 
@@ -40,6 +43,9 @@ public class LCScript {
     };
 
 
+    /* <-------------------- base --------------------> */
+
+
     /**
      * Whether given value is null or undefined.
      */
@@ -52,7 +58,8 @@ public class LCScript {
      * Converts JS value to Java integer.
      */
     public static int toInt(Object val) {
-        return (int)(Math.floor((Double)(val)));
+        if(val instanceof Integer num) return num;
+        return (int)(Math.floor(toDouble(val)));
     };
 
 
@@ -60,7 +67,20 @@ public class LCScript {
      * Converts JS value to Java float.
      */
     public static float toFloat(Object val) {
-        return ((Double)(val)).floatValue();
+        return ((Double)(toDouble(val))).floatValue();
+    };
+
+
+    /**
+     * Converts JS value to Java double.
+     */
+    public static double toDouble(Object val) {
+        if(val instanceof Double num) return num;
+        if(val instanceof Integer num) return num.doubleValue();
+        if(val instanceof Float num) return num.doubleValue();
+        if(val instanceof Long num) return num.doubleValue();
+        if(val instanceof Byte num) return num.doubleValue();
+        return 0;
     };
 
 
@@ -69,6 +89,24 @@ public class LCScript {
      */
     public static boolean toBoolean(Object val) {
         return (boolean)(val);
+    };
+
+
+    /**
+     * Creates a new JavaScript array with given elements.
+     */
+    public static NativeArray newArray(String name, Scriptable scope, Object... eles) {
+        scope.put(
+            name, scope,
+            eles.length == 0 ?
+                Context.getContext().newArray(scope, 0) :
+                Context.getContext().newArray(scope, eles)
+        );
+        return (NativeArray)(scope.get(name, scope));
+    };
+    // Overload
+    public static NativeArray newArray(String name) {
+        return newArray(name, (NativeObject)(get("__javaInternal__")));
     };
 
 
@@ -117,22 +155,16 @@ public class LCScript {
 
 
     /**
-     * Variant of {@link LCScript#invoke} with <code>this</code> passed.
+     * Variant of {@link #invoke} with <code>this</code> passed.
      */
-    @SuppressWarnings("All")
+    @SuppressWarnings("ConstantConditions")
     public static Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) throws NullPointerException {
         Function fun = (Function)(get(nameFun, scope));
         return fun.call(Context.getContext(), scope, thisObj, args);
     };
 
 
-    /**
-     * Invokes a Java method created with Rhino <code>JavaAdapter</code>.
-     */
-    public static Object instanceInvoke(Object ins, String nameFun, Object... args) throws IllegalArgumentException {
-        if(args.length > objClss.length) throw new IllegalArgumentException("Argument length out of bound: " + args.length + ">" + objClss.length);
-        return Reflect.invoke(ins, nameFun, args, objClss[args.length]);
-    };
+    /* <-------------------- adapter --------------------> */
 
 
     /**
@@ -164,6 +196,15 @@ public class LCScript {
     public static void instanceSet(Object ins, String nameProp, Object val) {
         NativeObject delegee = getDelegee(ins);
         delegee.put(nameProp, delegee, val);
+    };
+
+
+    /**
+     * Invokes a Java method created with Rhino <code>JavaAdapter</code>.
+     */
+    public static Object instanceInvoke(Object ins, String nameFun, Object... args) throws IllegalArgumentException {
+        if(args.length > objClss.length) throw new IllegalArgumentException("Argument length out of bound: " + args.length + ">" + objClss.length);
+        return Reflect.invoke(ins, nameFun, args, objClss[args.length]);
     };
 
 

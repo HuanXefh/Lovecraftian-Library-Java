@@ -35,6 +35,13 @@
 
 
   /**
+   * Internal scope for Java methods.
+   * @global
+   */
+  __javaInternal__ = {};
+
+
+  /**
    * Evaluates the given string in global scope.
    * @global
    * @param {string} scrStr

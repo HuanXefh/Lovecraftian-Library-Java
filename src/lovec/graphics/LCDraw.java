@@ -7,14 +7,14 @@ import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Nullable;
 import arc.util.pooling.Pools;
-import lovec.utils.LCFormat;
+import lovec.utils.LCPos;
 import mindustry.gen.Building;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.graphics.Layer;
 
 /**
- * Basic draw methods used in Lovec.
+ * Elementary draw methods used in Lovec.
  * These are defined in Java for better performance.
  */
 public class LCDraw {
@@ -143,7 +143,7 @@ public class LCDraw {
      * Draws rectangle with colored lines.
      */
     public static void rect(float x, float y, float r, float size, boolean isDashed) {
-        var hw = LCFormat.calcRectHW(r, size);
+        var hw = LCPos.calcRectHW(r, size);
         var amtSeg = (int)(!isDashed ? 0 : (size + r * 2) * 2);
 
         if(isDashed) {

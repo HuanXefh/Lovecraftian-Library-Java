@@ -3,6 +3,9 @@ package lovec.graphics;
 import arc.graphics.Color;
 import arc.math.Mathf;
 
+/**
+ * Handles RGB color conversion.
+ */
 public class LCRgb {
 
 

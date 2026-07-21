@@ -3,6 +3,9 @@ package lovec.utils;
 import arc.math.Rand;
 import arc.util.Time;
 
+/**
+ * Handles random number.
+ */
 public class LCRand {
 
 
@@ -22,7 +25,7 @@ public class LCRand {
 
 
     /**
-     * Variant of {@link LCRand#randomInt} with double tails.
+     * Variant of {@link #randomInt} with double tails.
      */
     public static int rangeInt(Rand rand, int from, int to) {
         return chance(rand, 0.5) ?
@@ -51,7 +54,7 @@ public class LCRand {
 
 
     /**
-     * Variant of {@link LCRand#randomFloat} with double tails.
+     * Variant of {@link #randomFloat} with double tails.
      */
     public static float rangeFloat(Rand rand, float from, float to) {
         return chance(rand, 0.5) ?
@@ -93,7 +96,7 @@ public class LCRand {
 
 
     /**
-     * Variant of {@link LCRand#chance} that uses delta.
+     * Variant of {@link #chance} that uses delta.
      */
     public static boolean chanceDelta(Rand rand, double trueChance) {
         return trueChance * Time.delta > rand.nextFloat();

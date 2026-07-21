@@ -9,6 +9,9 @@ import mindustry.gen.Unit;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
 
+/**
+ * Handles generalized properties.
+ */
 public class LCGeneralizer {
 
 

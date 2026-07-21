@@ -279,8 +279,8 @@
    */
   Number.prototype.toFCoord = function(size) {
     return size == null ?
-      LCFormat.toFCoord(this) :
-      LCFormat.toFCoord(this, size);
+      LCPos.toFCoord(this) :
+      LCPos.toFCoord(this, size);
   };
 
 
@@ -289,7 +289,7 @@
    * @return {number}
    */
   Number.prototype.toIntCoord = function() {
-    return LCFormat.toIntCoord(this);
+    return LCPos.toIntCoord(this);
   };
 
 
@@ -299,7 +299,7 @@
    * @return {number}
    */
   Number.prototype.toRectW = function(size) {
-    return LCFormat.calcRectW(this, size);
+    return LCPos.calcRectW(this, size);
   };
 
 
@@ -309,7 +309,7 @@
    * @return {number}
    */
   Number.prototype.toRectHW = function(size) {
-    return LCFormat.calcRectHW(this, size);
+    return LCPos.calcRectHW(this, size);
   };
 
 

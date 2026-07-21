@@ -10,6 +10,9 @@ import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.world.blocks.environment.EmptyFloor;
 
+/**
+ * For various condition check.
+ */
 public class LCCheck {
 
 
@@ -82,7 +85,7 @@ public class LCCheck {
      * Whether a rectangular range at (x, y) has mouse.
      */
     public static boolean checkPosHoveredRect(float x, float y, float r, float size) {
-        var hw = LCFormat.calcRectHW(r, size);
+        var hw = LCPos.calcRectHW(r, size);
         return Math.abs(x - Core.input.mouseWorldX()) < hw && Math.abs(y - Core.input.mouseWorldY()) < hw;
     };
     // Overload

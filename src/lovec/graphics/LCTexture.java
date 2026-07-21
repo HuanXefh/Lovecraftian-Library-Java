@@ -6,6 +6,9 @@ import arc.struct.ObjectMap;
 import mindustry.Vars;
 import mindustry.world.Block;
 
+/**
+ * Handles texture and pixmap.
+ */
 public class LCTexture {
 
 
@@ -14,6 +17,9 @@ public class LCTexture {
 
     static ObjectMap<String, TextureRegion> blockRegionCache = new ObjectMap<>();
     static ObjectMap<String, String> blockRegionNameCache = new ObjectMap<>();
+
+
+    /* <-------------------- texture region --------------------> */
 
 
     /**
@@ -51,6 +57,9 @@ public class LCTexture {
     public static String getBlockRegionString(Block blk) {
         return getBlockRegionString(blk.name);
     };
+
+
+    /* <-------------------- pixmap --------------------> */
 
 
 };

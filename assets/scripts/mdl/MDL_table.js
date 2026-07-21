@@ -791,7 +791,7 @@
       if(scr != null) {
         tb.table(Styles.none, tb1 => {
           tb1.left();
-          tb1.button("?", () => scr).size(VAR.length.charBtnW);
+          tb1.button("?", () => scr()).size(VAR.length.charBtnW);
         });
       };
     },

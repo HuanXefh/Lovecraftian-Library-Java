@@ -14,7 +14,6 @@ import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
-import lovec.utils.LCFormat;
 import lovec.utils.LCPos;
 import lovec.utils.LCScript;
 import mindustry.Vars;
@@ -32,6 +31,7 @@ import static lovec.utils.LCScript.*;
 
 /**
  * Utility draw methods.
+ * Originally <code>MDL_draw</code> in the JavaScript part.
  */
 public class LCDrawf {
 
@@ -272,7 +272,7 @@ public class LCDrawf {
 
 
     /**
-     * Variant of {@link LCDrawf#laserRandWalk} for mining beam.
+     * Variant of {@link #laserRandWalk} for mining beam.
      */
     public static Vec2 laserRandMine(
         float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
@@ -409,28 +409,28 @@ public class LCDrawf {
 
 
     /**
-     * Variant of {@link LCDrawf#rect} for block placement.
+     * Variant of {@link #rect} for block placement.
      */
     public static void rectPlace(Block blk, int tx, int ty, float r, boolean isDashed, Color color) {
         rect(
-            LCFormat.toFCoord(tx, blk.size),
-            LCFormat.toFCoord(ty, blk.size),
+            LCPos.toFCoord(tx, blk.size),
+            LCPos.toFCoord(ty, blk.size),
             r, blk.size, isDashed, color
         );
     };
 
 
     /**
-     * Variant of {@link LCDrawf#rectPlace} for rotated range.
+     * Variant of {@link #rectPlace} for rotated range.
      */
     public static void rectPlaceRot(Block blk, int tx, int ty, float r, int rot, boolean isDashed, Color color) {
-        Vec2 vec = LCPos.getCoordsRectRotCenter(tmpVec1, LCFormat.toFCoord(tx, blk.size), LCFormat.toFCoord(ty, blk.size), r, rot, blk.size);
+        Vec2 vec = LCPos.getCoordsRectRotCenter(tmpVec1, LCPos.toFCoord(tx, blk.size), LCPos.toFCoord(ty, blk.size), r, rot, blk.size);
         rect(vec.x, vec.y, r, 0, isDashed, color);
     };
 
 
     /**
-     * Variant of {@link LCDrawf#rect} for building selection.
+     * Variant of {@link #rect} for building selection.
      */
     public static void rectSelect(Building b, float r, boolean isDashed, Color color) {
         rect(b.x, b.y, r, b.block.size, isDashed, color);
@@ -438,7 +438,7 @@ public class LCDrawf {
 
 
     /**
-     * Variant of {@link LCDrawf#rectSelect} for rotated range.
+     * Variant of {@link #rectSelect} for rotated range.
      */
     public static void rectSelectRot(Building b, float r, int rot, boolean isDashed, Color color) {
         rectPlaceRot(b.block, b.tileX(), b.tileY(), r, rot, isDashed, color);
@@ -625,7 +625,7 @@ public class LCDrawf {
 
 
     /**
-     * Variant of {@link LCDrawf#fade} where progress is controlled by <code>prog</code> instead of <code>Time.time</code>.
+     * Variant of {@link #fade} where progress is controlled by <code>prog</code> instead of <code>Time.time</code>.
      */
     public static void fadeProg(float x, float y, @Nullable TextureRegion reg, float prog, float fadeScl, float ang, float regScl, Color color, float a, float z) {
         if(reg == null) return;
@@ -655,7 +655,7 @@ public class LCDrawf {
 
 
     /**
-     * Variant of {@link LCDrawf#fade} where the region becomes opaque when <code>frac</code> approaches 1.0.
+     * Variant of {@link #fade} where the region becomes opaque when <code>frac</code> approaches 1.0.
      */
     public static void fadeAlert(float x, float y, @Nullable TextureRegion reg, float frac, float ang, float regScl, Color color, float a, float z) {
         if(reg == null) return;
@@ -768,7 +768,7 @@ public class LCDrawf {
 
 
     /**
-     * Variant of {@link LCDrawf#frame} with frame fading transition.
+     * Variant of {@link #frame} with frame fading transition.
      */
     public static void frameFade(float x, float y, TextureRegion[] regs, float prog, float intv, float ang, int offInd, Color color, float a, float z) {
         if(regs.length == 0) return;
@@ -1093,12 +1093,12 @@ public class LCDrawf {
 
 
     /**
-     * Variant of {@link LCDrawf#plan} for block placement.
+     * Variant of {@link #plan} for block placement.
      */
     public static void planPlace(Block blk, @Nullable Tile t, float ang) {
         if(t == null) return;
         Color color = t.getLinkedTilesAs(blk, tmpTs).find(ot -> ot.solid() || ot.build != null) == null ? Color.white : Pal.remove;
-        plan(LCFormat.toFCoord(t.x, blk.size), LCFormat.toFCoord(t.y, blk.size), LCTexture.getBlockRegion(blk), ang, 1f, color);
+        plan(LCPos.toFCoord(t.x, blk.size), LCPos.toFCoord(t.y, blk.size), LCTexture.getBlockRegion(blk), ang, 1f, color);
     };
     // Overload
     public static void planPlace(Block blk, @Nullable Tile t) {

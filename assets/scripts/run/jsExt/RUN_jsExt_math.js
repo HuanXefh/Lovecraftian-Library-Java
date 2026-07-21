@@ -235,9 +235,9 @@
    * @return {number}
    */
   Number.prototype.roundFixed = function(deciAmt) {
-    let mtp = Math.pow(10.0, tryVal(deciAmt, 2));
-
-    return Math.round(this * mtp) / mtp;
+    return deciAmt == null ?
+      LCNumber.roundFixed(this) :
+      LCNumber.roundFixed(this, deciAmt);
   };
 
 
@@ -247,10 +247,9 @@
    * @return {number}
    */
   Number.prototype.randInt = function(base) {
-    let cap = Math.floor(this);
-    if(base == null) base = 0;
-
-    return Math.floor(Math.random() * (cap + 1 - base) + base);
+    return base == null ?
+      LCNumber.randInt(this) :
+      LCNumber.randInt(base, this);
   };
 
 
@@ -260,16 +259,7 @@
    * @return {number}
    */
   Number.prototype.randFreq = function(p) {
-    let freq = 0;
-
-    let iCap = Math.floor(this);
-    if(iCap > 0) {
-      for(let i = 0; i < iCap; i++) {
-        if(Mathf.chance(p)) freq++;
-      };
-    };
-
-    return freq;
+    return LCNumber.randFreq(this, p);
   };
 
 
@@ -286,22 +276,9 @@
    * @return {number}
    */
   Array.prototype.sum = function(mapF) {
-    let val = 0.0;
-
-    let i = 0, iCap = this.iCap();
-    if(mapF == null) {
-      while(i < iCap) {
-        val += this[i];
-        i++;
-      };
-    } else {
-      while(i < iCap) {
-        val += mapF(this[i]);
-        i++;
-      };
-    };
-
-    return val;
+    return mapF == null ?
+      LCNativeArray.sum(this) :
+      LCNativeArray.sum(this, mapF);
   };
 
 
@@ -311,22 +288,9 @@
    * @return {number}
    */
   Array.prototype.prod = function(mapF) {
-    let val = 0.0;
-
-    let i = 0, iCap = this.iCap();
-    if(mapF == null) {
-      while(i < iCap) {
-        val *= this[i];
-        i++;
-      };
-    } else {
-      while(i < iCap) {
-        val *= mapF(this[i]);
-        i++;
-      };
-    };
-
-    return val;
+    return mapF == null ?
+      LCNativeArray.prod(this) :
+      LCNativeArray.prod(this, mapF);
   };
 
 
@@ -336,7 +300,9 @@
    * @return {number}
    */
   Array.prototype.mean = function(mapF) {
-    return this.sum(mapF) / this.length;
+    return mapF == null ?
+      LCNativeArray.mean(this) :
+      LCNativeArray.mean(this, mapF);
   };
 
 
@@ -346,7 +312,7 @@
    * @return {number}
    */
   Array.prototype.meanPow = function(pow) {
-    return Math.pow(this.mean(num => Math.pow(num, pow)), 1.0 / pow);
+    return LCNativeArray.meanPow(this, pow);
   };
 
 
@@ -354,20 +320,11 @@
    * Performs some operation on this array and `arr`.
    * This array will be modified.
    * @param {Array} arr
-   * @param {function(any, any): any} scr
+   * @param {function(any, any): any} fun
    * @return {this}
    */
-  Array.prototype.operWith = function(arr, scr) {
-    let iCap = this.iCap();
-    if(iCap !== arr.length) ERROR_HANDLER.throw("arrayLengthMismatch");
-
-    let i = 0;
-    while(i < iCap) {
-      this[i] = scr(this[i], arr[i]);
-      i++;
-    };
-
-    return this;
+  Array.prototype.operWith = function(arr, fun) {
+    return LCNativeArray.operWith(this, arr, fun);
   };
 
 
@@ -376,7 +333,9 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  Array.prototype.addWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 + num2)};
+  Array.prototype.addWith = function(arr) {
+    return LCNativeArray.addWith(this, arr);
+  };
 
 
   /**
@@ -384,7 +343,9 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  Array.prototype.subWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 - num2)};
+  Array.prototype.subWith = function(arr) {
+    return LCNativeArray.subWith(this, arr);
+  };
 
 
   /**
@@ -392,7 +353,9 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  Array.prototype.mulWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 * num2)};
+  Array.prototype.mulWith = function(arr) {
+    return LCNativeArray.mulWith(this, arr);
+  };
 
 
   /**
@@ -400,7 +363,9 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  Array.prototype.divWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 / num2)};
+  Array.prototype.divWith = function(arr) {
+    return LCNativeArray.divWith(this, arr);
+  };
 
 
   /**
@@ -408,7 +373,9 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  Array.prototype.modWith = function(arr) {return this.operWith(arr, (num1, num2) => num1 % num2)};
+  Array.prototype.modWith = function(arr) {
+    return LCNativeArray.modWith(this, arr);
+  };
 
 
   /**
@@ -416,28 +383,19 @@
    * @param {Array<number>} arr
    * @return {this}
    */
-  Array.prototype.powWith = function(arr) {return this.operWith(arr, (num1, num2) => Math.pow(num1, num2))};
+  Array.prototype.powWith = function(arr) {
+    return LCNativeArray.powWith(this, arr);
+  };
 
 
   /**
    * Performs cumulative operation on this array.
    * Result is returned as a new array.
-   * @param {function(number, any): number} scr - `ARGS`: result, valCur.
+   * @param {function(number, any): number} fun - `ARGS`: result, valCur.
    * @return {Array<number>}
    */
-  Array.prototype.cumOper = function(scr) {
-    let arr = [];
-
-    let tmp = 0.0;
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      let val = scr(tmp, this[i]);
-      arr.push(val);
-      tmp = val;
-      i++;
-    };
-
-    return arr;
+  Array.prototype.cumOper = function(fun) {
+    return LCNativeArray.cumOper(this, fun);
   };
 
 
@@ -445,14 +403,18 @@
    * Performs cumulative sum on this array.
    * @return {Array<number>}
    */
-  Array.prototype.cumSum = function() {return this.cumOper((valLast, val) => valLast + val)};
+  Array.prototype.cumSum = function() {
+    return LCNativeArray.cumSum(this);
+  };
 
 
   /**
    * Performs cumulative multiplication on this array.
    * @return {Array<number>}
    */
-  Array.prototype.cumProd = function() {return this.cumOper((valLast, val) => valLast * val)};
+  Array.prototype.cumProd = function() {
+    return LCNativeArray.cumProd(this);
+  };
 
 
   /**
@@ -460,34 +422,14 @@
    * @param {number|unset} [repeat]
    * @return {Array<number>}
    * @example
-   * [0, 5, 12, 18, 12].diff();                // Returns [5, 7, 5, -6]
-   * [0, 5, 12, 18, 12].diff(2);                // Returns [2, -2, 11]
+   * [0, 5, 12, 18, 12].diff();                // Returns [5, 7, 6, -6]
+   * [0, 5, 12, 18, 12].diff(2);                // Returns [2, -1, -12]
    */
-  Array.prototype.diff = function thisFun(repeat) {
-    if(repeat == null) repeat = 1;
-
-    let arr0 = this;
-    let i = 0;
-    while(i < repeat) {
-      arr0 = thisFun.applyDiff(arr0);
-      i++;
-    };
-
-    return arr0;
-  }
-  .setProp({
-    applyDiff: arr => {
-      let arr0 = [];
-
-      let i = 0, iCap = arr.iCap() - 1;
-      while(i < iCap) {
-        arr0.push(arr[i + 1] - arr[i]);
-        i++;
-      };
-
-      return arr0;
-    },
-  });
+  Array.prototype.diff = function(repeat) {
+    return repeat == null ?
+      LCNativeArray.diff(this) :
+      LCNativeArray.diff(this, repeat);
+  };
 
 
 /*
@@ -519,24 +461,24 @@
 
 
   /**
-   * Gets `P(cap, amt)`.
-   * @param {number} cap
-   * @param {number} amt
+   * Gets P(n, x).
+   * @param {number} n
+   * @param {number} x
    * @return {number}
    */
-  Math.permutation = function(cap, amt) {
-    return cap.fac() / (cap - amt).fac();
+  Math.permutation = function(n, x) {
+    return LCMathFunc.permutation(n, x);
   };
 
 
   /**
-   * Gets `C(cap, amt)`.
-   * @param {number} cap
-   * @param {number} amt
+   * Gets C(n, x).
+   * @param {number} n
+   * @param {number} x
    * @return {number}
    */
-  Math.combination = function(cap, amt) {
-    return cap.fac() / ((cap - amt).fac() * amt.fac());
+  Math.combination = function(n, x) {
+    return LCMathFunc.combination(n, x);
   };
 
 
@@ -547,7 +489,7 @@
    * @return {number}
    */
   Math.gcd = function(a, b) {
-    return b === 0 ? a : Math.gcd(b, a % b);
+    return LCMathFunc.gcd(a, b);
   };
 
 
@@ -558,5 +500,5 @@
    * @return {number}
    */
   Math.lcm = function(a, b) {
-    return a * b / Math.gcd(a, b);
+    return LCMathFunc.lcm(a, b);
   };

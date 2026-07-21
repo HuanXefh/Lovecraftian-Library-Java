@@ -1,11 +1,20 @@
 package lovec.math;
 
 import arc.func.Func;
+import arc.struct.IntIntMap;
+import arc.struct.IntMap;
 
+/**
+ * Common math functions.
+ */
 public class LCMathFunc {
 
 
-    /* <-------------------- basic --------------------> */
+    static IntMap<IntMap<Integer>> P_N_X = new IntMap<>();
+    static IntMap<IntMap<Integer>> C_N_X = new IntMap<>();
+
+
+    /* <-------------------- base --------------------> */
 
 
     /**
@@ -21,6 +30,52 @@ public class LCMathFunc {
             val *= i;
         };
         return val;
+    };
+
+
+    /**
+     * Gets P(n, x).
+     */
+    public static int permutation(int n, int x) {
+        if(!P_N_X.containsKey(n)) P_N_X.put(n, new IntMap<>());
+        IntMap<Integer> map = P_N_X.get(n);
+        if(map.containsKey(x)) return map.get(x);
+
+        int val = factorial(n) / factorial(n - x);
+        map.put(x, val);
+
+        return val;
+    };
+
+
+    /**
+     * Gets C(n, x).
+     */
+    public static int combination(int n, int x) {
+        if(!C_N_X.containsKey(n)) C_N_X.put(n, new IntMap<>());
+        IntMap<Integer> map = C_N_X.get(n);
+        if(map.containsKey(x)) return map.get(x);
+
+        int val = factorial(n) / (factorial(n - x) * factorial(x));
+        map.put(x, val);
+
+        return val;
+    };
+
+
+    /**
+     * Gets greatest common divisor.
+     */
+    public static int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    };
+
+
+    /**
+     * Gets lowest common multiplier.
+     */
+    public static int lcm(int a, int b) {
+        return a * b / gcd(a, b);
     };
 
 
@@ -125,7 +180,7 @@ public class LCMathFunc {
 
 
     /**
-     * Variant of {@link LCMathFunc#derivative} using central difference method for better precision.
+     * Variant of {@link #derivative} using central difference method for better precision.
      */
     public static double derivativePrecise(double x, Func<Double, Double> func, double delta) {
         return (func.get(x + delta) - func.get(x - delta)) / (delta * 2);
@@ -154,7 +209,7 @@ public class LCMathFunc {
 
 
     /**
-     * Variant of {@link LCMathFunc#integral} using Simpson's rule for better precision.
+     * Variant of {@link #integral} using Simpson's rule for better precision.
      */
     public static double integralPrecise(double base, double cap, Func<Double, Double> func, int segAmt) {
         if(segAmt % 2 != 0) segAmt++;

@@ -3,6 +3,9 @@ package lovec.math;
 import arc.math.Interp;
 import arc.math.Mathf;
 
+/**
+ * Interpolation, not only linear one.
+ */
 public class LCLerp {
 
 
