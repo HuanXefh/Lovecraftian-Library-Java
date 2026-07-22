@@ -88,7 +88,7 @@
       );
     };
 
-    if(e instanceof Unit) MDL_draw._d_stackSta(e);
+    if(e instanceof Unit) LCDrawf.stackStatus(e);
 
     Draw.z(zPrev);
   });
@@ -144,7 +144,7 @@
       );
     };
 
-    if(e instanceof Unit) MDL_draw._d_stackSta(e);
+    if(e instanceof Unit) LCDrawf.stackStatus(e);
 
     Draw.z(zPrev);
   });
@@ -171,7 +171,7 @@
     Draw.alpha(a_fi);
     Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y + offY);
 
-    if(e instanceof Unit) MDL_draw._d_stackSta(e);
+    if(e instanceof Unit) LCDrawf.stackStatus(e);
 
     Draw.z(zPrev);
   });
@@ -193,7 +193,7 @@
       0.8, Color.white, Align.center,
     );
 
-    if(e instanceof Unit) MDL_draw._d_stackSta(e);
+    if(e instanceof Unit) LCDrawf.stackStatus(e);
 
     Draw.z(zPrev);
   });

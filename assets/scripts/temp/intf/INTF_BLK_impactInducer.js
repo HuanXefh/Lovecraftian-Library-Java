@@ -17,7 +17,7 @@
 
 
   function comp_drawPlace(blk, tx, ty, rot) {
-    MDL_draw._d_pulseCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.impactRad);
+    LCDrawf.pulseCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.impactRad);
   };
 
 
@@ -37,7 +37,7 @@
 
 
   function comp_drawSelect(b) {
-    MDL_draw._d_pulseCircle(b.x, b.y, b.block.ex_calcImpactRad(b));
+    LCDrawf.pulseCircle(b.x, b.y, b.block.ex_calcImpactRad(b));
   };
 
 

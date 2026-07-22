@@ -17,10 +17,13 @@ import arc.util.Time;
 import arc.util.Tmp;
 import lovec.utils.LCPos;
 import lovec.utils.LCScript;
+import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.gen.Building;
+import mindustry.gen.Unit;
 import mindustry.graphics.*;
+import mindustry.type.StatusEffect;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.draw.DrawFade;
@@ -74,6 +77,10 @@ public class LCDrawf {
             };
             lightConeReg = Core.atlas.find("lovec-efr-shadow-cone");
             NativeArray wireMats = LCScript.toArray(LCScript.search(DB_block, "db", "grpParam", "wireMatReg"));
+            LCNativeArray.forEachRow(wireMats, 2, rowArr -> {
+                wireMatRegMap.put((String)(rowArr.get(0)), Core.atlas.find((String)(rowArr.get(1))));
+                wireMatEndRegMap.put((String)(rowArr.get(0)), Core.atlas.find(rowArr.get(1) + "-end"));
+            });
             wireGlowReg = Core.atlas.find("lovec-ast-wire-glow");
             wireShaReg = Core.atlas.find("lovec-ast-wire-shadow");
         };
@@ -385,6 +392,52 @@ public class LCDrawf {
     };
 
 
+    /**
+     * Draws wire that connects two positions.
+     */
+    public static void wire(float x1, float y1, float x2, float y2, String wireMat, float strokeScl, float glowA, float z) {
+        TextureRegion wireReg = wireMatRegMap.get(wireMat);
+        TextureRegion wireEndReg = wireMatEndRegMap.get(wireMat);
+        if(wireReg == null || wireEndReg == null) return;
+
+        float
+            ang = Mathf.angle(x2 - x1, y2 - y1),
+            dx = Mathf.cosDeg(ang) * Draw.scl * 4f * strokeScl,
+            dy = Mathf.sinDeg(ang) * Draw.scl * 4f * strokeScl;
+
+        LCDraw.processZ(z, LCDraw.NORMAL_REGION_Z_IND);
+        Draw.color(Color.white, 1f);
+        Draw.rect(wireEndReg, x1, y1, wireEndReg.width * wireEndReg.scl() * 0.5f * strokeScl, wireEndReg.height * wireEndReg.scl() * 0.5f * strokeScl, ang + 180f);
+        Draw.rect(wireEndReg, x2, y2, wireEndReg.width * wireEndReg.scl() * 0.5f * strokeScl, wireEndReg.height * wireEndReg.scl() * 0.5f * strokeScl, ang);
+        Lines.stroke(6f * strokeScl);
+        Lines.line(wireReg, x1 + dx, y1 + dy, x2 - dx, y2 - dy, false);
+        LCDraw.processZ(-1f, LCDraw.NORMAL_REGION_Z_IND);
+        LCDraw.processZ(Layer.block + 0.1f, LCDraw.SHADOW_REGION_Z_IND);
+        Lines.stroke(20f * strokeScl);
+        Draw.alpha(0.3f);
+        Lines.line(wireShaReg, x1 + dx, y1 + dy, x2 - dx, y2 - dy, false);
+        LCDraw.processZ(-1f, LCDraw.SHADOW_REGION_Z_IND);
+        LCDraw.processZ(Layer.block + 0.11f, LCDraw.GLOW_REGION_Z_IND);
+        Lines.stroke(8f * strokeScl);
+        Draw.alpha(glowA * (0.4f + Mathf.absin(15f, 0.6f)) * 0.25f);
+        Draw.blend(Blending.additive);
+        Lines.line(wireGlowReg, x1 + dx, y1 + dy, x2 - dx, y2 - dy, false);
+        Draw.blend();
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.GLOW_REGION_Z_IND);
+    };
+    // Overload
+    public static void wire(float x1, float y1, float x2, float y2, String wireMat, float strokeScl, float glowA) {
+        wire(x1, y1, x2, y2, wireMat, strokeScl, glowA, Layer.power);
+    };
+    public static void wire(float x1, float y1, float x2, float y2, String wireMat, float strokeScl) {
+        wire(x1, y1, x2, y2, wireMat, strokeScl, 1f);
+    };
+    public static void wire(float x1, float y1, float x2, float y2, String wireMat) {
+        wire(x1, y1, x2, y2, wireMat, 1f);
+    };
+
+
     /* <-------------------- rectangle --------------------> */
 
 
@@ -523,6 +576,52 @@ public class LCDrawf {
     };
 
 
+    private static float[] pulseRectRads = new float[2];
+
+
+    /**
+     * Draws hollow squares that expand and disappear.
+     */
+    public static void pulseRect(float x, float y, float rad, float scl, Color color, float a, float z) {
+        if(rad < 0.0001f) return;
+
+        float
+            stroke_f = rad * 0.25f,
+            stroke_t = 0.2f,
+            frac1 = 1f - (Time.globalTime / scl / 150f) % 1f,
+            frac2 = (frac1 + 0.5f) % 1f;
+
+        pulseRectRads[0] = Math.min(1f + Mathf.pow(1f - frac1, 0.5f) * rad, rad);
+        pulseRectRads[1] = Math.min(1f + Mathf.pow(1f - frac2, 0.5f) * rad, rad);
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Draw.color(color, a * 0.7f);
+        float rad_i;
+        for(int i = 0; i < 2; i++) {
+            rad_i = pulseRectRads[i];
+            Lines.stroke(Mathf.lerp(stroke_f, stroke_t, rad_i / rad));
+            Lines.line(x - rad_i, y - rad_i, x + rad_i, y - rad_i);
+            Lines.line(x + rad_i, y - rad_i, x + rad_i, y + rad_i);
+            Lines.line(x + rad_i, y + rad_i, x - rad_i, y + rad_i);
+            Lines.line(x - rad_i, y + rad_i, x - rad_i, y - rad_i);
+        };
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void pulseRect(float x, float y, float rad, float scl, Color color, float a) {
+        pulseRect(x, y, rad, scl, color, a, shapeLay);
+    };
+    public static void pulseRect(float x, float y, float rad, float scl, Color color) {
+        pulseRect(x, y, rad, scl, color, 1f);
+    };
+    public static void pulseRect(float x, float y, float rad, float scl) {
+        pulseRect(x, y, rad, scl, Pal.accent);
+    };
+    public static void pulseRect(float x, float y, float rad) {
+        pulseRect(x, y, rad, 1f);
+    };
+
+
     /* <-------------------- circle --------------------> */
 
 
@@ -625,6 +724,53 @@ public class LCDrawf {
     };
     public static void diskWarning(float x, float y, float rad) {
         diskWarning(x, y, rad, 1f);
+    };
+
+
+    private static float[] pulseCircleRads = new float[4];
+
+
+    /**
+     * Draws circles that expand and disappear.
+     */
+    public static void pulseCircle(float x, float y, float rad, float scl, Color color, float a, float z) {
+        if(rad < 0.0001f) return;
+
+        float
+            stroke_f = rad * 0.1f,
+            stroke_t = 0.2f,
+            frac1 = 1f - (Time.globalTime / scl / 150f) % 1f,
+            frac2 = (frac1 + 0.25f) % 1f,
+            frac3 = (frac2 + 0.25f) % 1f,
+            frac4 = (frac3 + 0.25f) % 1f;
+
+        pulseCircleRads[0] = Math.min(1f + (1f - frac1) * rad, rad);
+        pulseCircleRads[1] = Math.min(1f + (1f - frac2) * rad, rad);
+        pulseCircleRads[2] = Math.min(1f + (1f - frac3) * rad, rad);
+        pulseCircleRads[3] = Math.min(1f + (1f - frac4) * rad, rad);
+        LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
+        Draw.color(color, a * 0.3f);
+        float rad_i;
+        for(int i = 0; i < 4; i++) {
+            rad_i = pulseCircleRads[i];
+            Lines.stroke(Mathf.lerp(stroke_f, stroke_t, rad_i / rad));
+            Lines.circle(x, y, rad_i);
+        };
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.SHAPE_Z_IND);
+    };
+    // Overload
+    public static void pulseCircle(float x, float y, float rad, float scl, Color color, float a) {
+        pulseCircle(x, y, rad, scl, color, a, shapeLay);
+    };
+    public static void pulseCircle(float x, float y, float rad, float scl, Color color) {
+        pulseCircle(x, y, rad, scl, color, 1f);
+    };
+    public static void pulseCircle(float x, float y, float rad, float scl) {
+        pulseCircle(x, y, rad, scl, Pal.accent);
+    };
+    public static void pulseCircle(float x, float y, float rad) {
+        pulseCircle(x, y, rad, 1f);
     };
 
 
@@ -1211,6 +1357,79 @@ public class LCDrawf {
     };
 
 
+    /* <-------------------- progress --------------------> */
+
+
+    /**
+     * Draws regular progress bar.
+     */
+    public static void progressBar(float x, float y, float frac, float size, Color color, float a, float offW, float offTy, float z) {
+        float
+            w = (size + 1f) * Vars.tilesize + offW,
+            offY = (offTy + size * 0.5f + 0.5f) * Vars.tilesize;
+
+        LCDraw.processZ(z, LCDraw.UI_REGION_Z_IND);
+        Lines.stroke(5f, Tmp.c1.set(Pal.gray).a(a * 0.7f));
+        Lines.line(x - w * 0.5f, y + offY, x + w * 0.5f, y + offY);
+        Lines.stroke(3f, color);
+        Draw.alpha(a * 0.2f);
+        Lines.line(x - w * 0.5f, y + offY, x + w * 0.5f, y + offY);
+        Draw.alpha(a * 0.7f);
+        Lines.line(x - w * 0.5f, y + offY, Mathf.lerp(x - w * 0.5f, x + w * 0.5f, Mathf.clamp(frac)), y + offY);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.UI_REGION_Z_IND);
+    };
+    // Overload
+    public static void progressBar(float x, float y, float frac, float size, Color color, float a, float offW, float offTy) {
+        progressBar(x, y, frac, size, color, a, offW, offTy, shapeLay);
+    };
+    public static void progressBar(float x, float y, float frac, float size, Color color, float a, float offW) {
+        progressBar(x, y, frac, size, color, a, offW, 0f);
+    };
+    public static void progressBar(float x, float y, float frac, float size, Color color, float a) {
+        progressBar(x, y, frac, size, color, a, 0f);
+    };
+    public static void progressBar(float x, float y, float frac, float size, Color color) {
+        progressBar(x, y, frac, size, color, 1f);
+    };
+    public static void progressBar(float x, float y, float frac, float size) {
+        progressBar(x, y, frac, size, Pal.accent);
+    };
+    public static void progressBar(float x, float y, float frac) {
+        progressBar(x, y, frac, 1f);
+    };
+
+
+    /**
+     * Draws regular progress ring.
+     */
+    public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad, float ang, Color color, float a, float z) {
+        LCDraw.processZ(z, LCDraw.UI_REGION_Z_IND);
+        Lines.stroke(stroke, Tmp.c1.set(Pal.gray).a(a * 0.7f));
+        Lines.circle(x, y, rad);
+        Lines.stroke(stroke * 0.6f, color);
+        Draw.alpha(a * 0.2f);
+        Lines.circle(x, y, rad);
+        Draw.color(color, a * 0.7f);
+        LCDraw.ring(x, y, rad - stroke * 0.3f, rad + stroke * 0.3f, ang, frac, rev);
+        Draw.reset();
+        LCDraw.processZ(-1f, LCDraw.UI_REGION_Z_IND);
+    };
+    // Overload
+    public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad, float ang, Color color, float a) {
+        progressRing(x, y, frac, rev, stroke, rad, ang, color, a, shapeLay);
+    };
+    public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad, float ang, Color color) {
+        progressRing(x, y, frac, rev, stroke, rad, ang, color, 1f);
+    };
+    public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad, float ang) {
+        progressRing(x, y, frac, rev, stroke, rad, ang, Pal.accent);
+    };
+    public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad) {
+        progressRing(x, y, frac, rev, stroke, rad, 0f);
+    };
+
+
     /* <-------------------- specific --------------------> */
 
 
@@ -1233,6 +1452,33 @@ public class LCDrawf {
     // Overload
     public static void blockStatus(float x, float y, float size, Color color) {
         blockStatus(x, y, size, color, Layer.power + 1f);
+    };
+
+
+    /**
+     * Shows ring UI for stackable status effects on a unit.
+     */
+    public static void stackStatus(Unit unit) {
+        NativeArray tmpArr = LCScript.ensureArray("LCDrawf.stackStatus.tmpArr");
+        LCScript.invoke("_stackStas", MDL_entity, tmpArr, unit);
+
+        int i = 0;
+        long iCap = tmpArr.getLength();
+        StatusEffect sta;
+        float x_i;
+        float y = unit.y - unit.hitSize * 0.5f - 8f;
+        float w = 4f * iCap;
+        while(i < iCap) {
+            sta = (StatusEffect)(tmpArr.get(i));
+            x_i = iCap == 1 ? unit.x : (unit.x - w * (0.5f - (float)(i) / (iCap - 1)));
+            progressRing(
+                x_i, y,
+                Mathf.clamp(1f - unit.getDuration(sta) / LCScript.toFloat(LCScript.instanceGet(sta, "burstTime")))   ,
+                true, 2.25f, 2.75f, 90f, Color.white
+            );
+            Draw.rect(sta.fullIcon, x_i, y, 4f, 4f);
+            i++;
+        };
     };
 
 

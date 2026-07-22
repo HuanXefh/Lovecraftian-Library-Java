@@ -1165,6 +1165,7 @@
         j = 0;
         let chunk = new Table();
         categHeaderObj[categ].forEachFast(rcHeader => {
+          rcHeader = String(rcHeader);
           let rc = CLS_recipe.get(b.block, rcHeader);
           let btnCell = chunk.button(Tex.whiteui, Styles.clearNoneTogglei, 36.0, () => {
             if(closeSelect) Vars.control.input.config.hideConfig();
@@ -1173,6 +1174,7 @@
           .group(btnGrp);
           __tooltip(btnCell, tb => rc.displayTooltip(tb, rc.validTup[0](b)));
           let btn = btnCell.get();
+          // `String` is required for type conversion
           btn.changed(() => cfgCaller(rcHeader));
           btn.getStyle().imageUp = rc.validTup[0](b) ? rc.icon : Icon.lock;
           btn.getStyle().imageDisabledColor = Color.gray;

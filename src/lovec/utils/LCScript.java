@@ -16,6 +16,7 @@ public class LCScript {
     public static NativeObject TIMER;
     public static NativeObject MDL_cond;
     public static NativeObject MDL_effect;
+    public static NativeObject MDL_entity;
     public static NativeObject DB_block;
 
 
@@ -39,6 +40,7 @@ public class LCScript {
         TIMER = toObject(get("TIMER"));
         MDL_cond = toObject(get("MDL_cond"));
         MDL_effect = toObject(get("MDL_effect"));
+        MDL_entity = toObject(get("MDL_entity"));
         DB_block = toObject(get("DB_block"));
 
         Log.info("[LOVEC] Initialized Lovec module references in LCScript.");

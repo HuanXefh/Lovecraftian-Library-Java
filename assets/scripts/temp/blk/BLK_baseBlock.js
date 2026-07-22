@@ -159,13 +159,6 @@
   };
 
 
-  function comp_onProximityUpdate(b) {
-    if(b.block.delegee.isMultiBlockComponent) {
-      TRIGGER.multiBlockUpdate.fire();
-    };
-  };
-
-
   function comp_sense(b, sensor) {
     let getter = b.block.delegee.logicSensorGetterMap.get(sensor);
     return getter != null ?
@@ -207,6 +200,7 @@
      * @class BLK_baseBlock
      * @extends CLS_contentTemplate
      * @extends INTF_BLK_coreEnergyConsumer
+     * @extends INTF_BLK_pollutionHandler
      * @extends INTF_BLK_buildingRecacheHandler
      */
     newClass().extendClass(PARENT, "BLK_baseBlock").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).initClass()
@@ -498,7 +492,7 @@
      * @class B_baseBlock
      * @extends CLS_contentTemplate
      * @extends INTF_B_coreEnergyConsumer
-     * @extends INTF_B_multiBlockHandler
+     * @extends INTF_B_pollutionHandler
      * @extends INTF_B_buildingRecacheHandler
      */
     newClass().extendClass(PARENT, "B_baseBlock").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).initClass()
@@ -534,11 +528,6 @@
 
       onDestroyed: function() {
         comp_onDestroyed(this);
-      },
-
-
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
       },
 
 

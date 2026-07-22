@@ -60,7 +60,7 @@
 
 
   function comp_drawSelect(b) {
-    MDL_draw._d_diskExpand(b.x, b.y, b.block.range * b.heat, 1.5, b.block.baseColor, 0.3);
+    LCDrawf.diskExpand(b.x, b.y, b.block.range * b.heat, 1.5, b.block.baseColor, 0.3);
   };
 
 

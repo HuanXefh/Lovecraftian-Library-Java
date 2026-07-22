@@ -219,8 +219,6 @@
   /** @global */
   MOD_tmi = require("lovec/mod/MOD_tmi");
   /** @global */
-  MOD_multiBlockLib = require("lovec/mod/MOD_multiBlockLib");
-  /** @global */
   UTIL_dragButtonInfoList = require("lovec/cls/ui/UTIL_dragButtonInfoList");
   /** @global */
   CLS_dragButton = require("lovec/cls/ui/CLS_dragButton");

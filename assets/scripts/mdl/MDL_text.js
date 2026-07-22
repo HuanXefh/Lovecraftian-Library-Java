@@ -248,7 +248,7 @@
 
     let isTag = false, tmpTag, tmpStr, i, iCap = li.iCap();
     keywords.forEachFast(str => {
-      str = str.trim().toLowerCase();
+      str = String(str).trim().toLowerCase();
       tmpStr = "";
       i = 0;
       while(i < iCap) {

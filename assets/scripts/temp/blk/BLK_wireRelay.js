@@ -31,13 +31,13 @@
 
     let offSize = (dst - (size1 + size2) * 0.5) * Vars.tilesize;
     let pon2 = Geometry.d4[Tile.relativeTo(x1, y1, x2, y2)];
-    MDL_draw._d_wire(
+    LCDrawf.wire(
       x1 + pon2.x * blk.size * 0.5 * Vars.tilesize,
       y1 + pon2.y * blk.size * 0.5 * Vars.tilesize,
       x1 + pon2.x * (blk.size * 0.5 * Vars.tilesize + offSize),
       y1 + pon2.y * (blk.size * 0.5 * Vars.tilesize + offSize),
       blk.wireMat,
-      blk.laserWidth,
+      blk.ex_getWireStrokeScl(),
       blk.ex_getWireGlowAlpha(x1, y1, x2, y2),
       Layer.power + blk.size * 0.001,
     );
@@ -46,7 +46,7 @@
 
   function comp_draw(b) {
     MDL_draw.comp_draw_baseBuilding(b);
-    if(Vars.renderer.laserOpacity < 0.0001 || b.team === Team.derelict) return;
+    if(b.team === Team.derelict) return;
 
     let ot, ob;
     for(let i = 0; i < 4; i++) {
@@ -102,6 +102,21 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof BLK_wireRelay
+       * @instance
+       * @return {number}
+       */
+      ex_getWireStrokeScl: function() {
+        return this.laserWidth;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 

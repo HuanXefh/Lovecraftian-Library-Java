@@ -211,7 +211,7 @@
     let i = 0, iCap = rcLi.iCap();
     while(i < iCap) {
       tmpHeader = rcLi[i];
-      if(tmpHeader === rcHeader) return true;
+      if(tmpHeader == rcHeader) return true;
       i += 2;
     };
 

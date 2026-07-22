@@ -40,10 +40,7 @@
     if(e instanceof Bullet) {
       // Do nothing
     } else if(e instanceof Building) {
-      if(MOD_multiBlockLib.ENABLED) {
-        if(e.block instanceof MOD_multiBlockLib.CLASSES.PlaceholderBlock && e.linkBuild === caller) return true;
-        if(e.block instanceof MOD_multiBlockLib.CLASSES.LinkBlock && e.linkBuild === caller) return true;
-      };
+      // TODO: Handle multi-block building.
     } else if(e instanceof Unit) {
       if(e instanceof Segmentc && e.headSegment === caller) return true;
     };

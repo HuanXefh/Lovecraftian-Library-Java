@@ -1096,6 +1096,22 @@
 
 
   /**
+   * Whether this status is not a regular status effect.
+   * @param {StatusGn} sta_gn
+   * @return {boolean}
+   */
+  const _isNonStatus = function(sta_gn) {
+    let sta = MDL_content._ct(sta_gn, "sta");
+    return sta != null && (
+      (checkCreatedByTemp(sta) && sta.ex_isSubInsOf("DBCT_databaseContent"))
+        || DB_status.db["group"]["nonStatus"].includes(sta.name)
+    );
+  }
+  .setCache();
+  exports._isNonStatus = _isNonStatus;
+
+
+  /**
    * Whether this status is related to high temperature.
    * @param {StatusGn} sta_gn
    * @return {boolean}

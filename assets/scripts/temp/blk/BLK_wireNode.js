@@ -53,13 +53,13 @@
       offScl1 = size1 * Vars.tilesize * 0.5 - 0.5,
       offScl2 = size2 * Vars.tilesize * 0.5 - 0.5;
 
-    MDL_draw._d_wire(
+    LCDrawf.wire(
       x1 + offX * offScl1,
       y1 + offY * offScl1,
       x2 - offX * offScl2,
       y2 - offY * offScl2,
       blk.wireMat,
-      blk.laserScale,
+      blk.ex_getWireStrokeScl(),
       blk.ex_getWireGlowAlpha(x1, y1, x2, y2),
       Layer.power + blk.size * 0.001,
     );
@@ -170,6 +170,21 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof BLK_wireNode
+       * @instance
+       * @return {number}
+       */
+      ex_getWireStrokeScl: function() {
+        return this.laserScale;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 

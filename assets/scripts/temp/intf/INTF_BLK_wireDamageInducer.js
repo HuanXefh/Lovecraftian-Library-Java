@@ -21,7 +21,7 @@
     let b_t = Vars.world.buildWorld(x2, y2);
     if(b == null || b_t == null || b.power == null || b_t.power == null) return 0.0;
 
-    return Math.max(b.power.status, b_t.power.status);
+    return Math.max(b.power.status, b_t.power.status) * LCDrawf.getLaserA(true, blk.ex_getWireStrokeScl());
   };
 
 
@@ -103,6 +103,20 @@
       .setProp({
         noSuper: true,
       }),
+
+
+      /**
+       * `LATER`
+       * @memberof INTF_BLK_wireDamageInducer
+       * @instance
+       * @return {number}
+       */
+      ex_getWireStrokeScl: function() {
+        return 1.0;
+      }
+      .setProp({
+        noSuper: true,
+      })
 
 
     }),

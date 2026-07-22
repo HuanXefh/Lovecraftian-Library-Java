@@ -33,7 +33,7 @@
       b.nameDialFlow,
       false,
       str => {
-        str !== "read" ?
+        str != "read" ?
           b.configure(str) :
           Vars.ui.showErrorMessage(MDL_bundle._info("lovec", "reserved-read"));
       },

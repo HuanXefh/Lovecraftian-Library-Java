@@ -363,7 +363,7 @@
       offY: readParam(paramObj, "offY", 0.0),
       frameDur: readParam(paramObj, "frameDur", 2.25),
       frameCap: readParam(paramObj, "frameCap", 40),
-      frameCur: 0,
+      frameCurMap: new ObjectMap(),
       regs: null,
 
 
@@ -374,21 +374,22 @@
           this.regs[i] = Core.atlas.find(this.regStr + i);
           i++;
         };
-        this.frameCur = this.frameCap * Math.random();
+
+        TRIGGER.mapExit.addGlobalListener(() => {
+          this.frameCurMap.clear();
+        });
       },
 
 
       draw(b) {
+        if(!this.frameCurMap.containsKey(b)) this.frameCurMap.put(b, this.frameCap * Math.random());
         if(!Vars.state.isPaused()) {
-          this.frameCur += Time.delta / this.frameDur;
-          if(this.frameCur > this.frameCap) {
-            this.frameCur %= this.frameCap;
-          };
+          this.frameCurMap.put(b, (this.frameCurMap.get(b) + Time.delta / this.frameDur) % this.frameCap);
         };
         warmup = tryProp(b.warmup, b);
         Draw.color(Color.white, warmup > 0.0 ? 1.0 : 0.0);
         processScl(warmup);
-        Draw.rect(this.regs[Math.floor(this.frameCur)], b.x + this.offX, b.y + this.offY);
+        Draw.rect(this.regs[Math.floor(this.frameCurMap.get(b))], b.x + this.offX, b.y + this.offY);
         processScl(warmup);
         Draw.color();
       },

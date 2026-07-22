@@ -46,6 +46,14 @@ const db = {
 
 
     /**
+     * These status effects are not regular status effects.
+     * For example, fake contents like info panel.
+     * <br> `ROW`: sta.
+     */
+    nonStatus: [],
+
+
+    /**
      * These status effects will react with (opposite to) basic status effects.
      * <br> `ROW`: sta.
      */

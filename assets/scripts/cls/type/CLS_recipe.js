@@ -98,6 +98,7 @@
    * @return {CLS_recipe}
    */
   CLS_recipe.get = function(blk, rcHeader) {
+    rcHeader = String(rcHeader);
     if(rcHeader === "SPEC: empty" || !MDL_recipe._hasHeader(blk.delegee.rcMdl, rcHeader)) {
       return CLS_recipe.getEmptyRc(blk);
     };

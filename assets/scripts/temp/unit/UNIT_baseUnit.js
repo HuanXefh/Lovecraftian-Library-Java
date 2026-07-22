@@ -19,7 +19,10 @@
 
     if(utp.immuneToAll) {
       MDL_event._c_onLoadPost(() => {
-        utp.immunities.addAll(Vars.content.statusEffects());
+        Vars.content.statusEffects().each(
+          sta => !MDL_cond._isNonStatus(sta),
+          sta => utp.immunities.add(sta),
+        );
       });
     };
 
@@ -142,7 +145,7 @@
      * @memberof UNIT_baseUnit
      * @instance
      */
-    immuneToAll: true,
+    immuneToAll: false,
     /**
      * `PARAM`: Items (as name) that this unit cannot take.
      * @memberof UNIT_baseUnit

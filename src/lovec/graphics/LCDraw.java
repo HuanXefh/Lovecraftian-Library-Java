@@ -56,11 +56,12 @@ public class LCDraw {
     };
     static final int
         NORMAL_REGION_Z_IND = 10,
-        GLOW_REGION_Z_IND = 11,
-        ICON_REGION_Z_IND = 12,
-        BULLET_REGION_Z_IND = 13,
-        UI_REGION_Z_IND = 14,
-        SHAPE_Z_IND = 15,
+        SHADOW_REGION_Z_IND = 11,
+        GLOW_REGION_Z_IND = 12,
+        ICON_REGION_Z_IND = 13,
+        BULLET_REGION_Z_IND = 14,
+        UI_REGION_Z_IND = 15,
+        SHAPE_Z_IND = 16,
         DEBUG_Z_IND = 19;
 
 

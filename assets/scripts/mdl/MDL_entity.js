@@ -348,20 +348,23 @@
 
 
   /**
-   * Gets stack status that should be shown for some unit.
+   * Gets all stackable status effects on a unit.
+   * @param {Array|unset} contArr
    * @param {Unit} unit
-   * @return {StatusEffect|null}
+   * @return {Array<StatusEffect>}
    */
-  const _stackStaFirst = function(unit) {
+  const _stackStas = function(contArr, unit) {
+    let arr = contArr != null ? contArr.clear() : [];
+
     let i = 0, iCap = VARGEN.stackStas.iCap();
     while(i < iCap) {
-      if(unit.hasEffect(VARGEN.stackStas[i])) return VARGEN.stackStas[i];
+      if(unit.hasEffect(VARGEN.stackStas[i])) arr.push(VARGEN.stackStas[i]);
       i++;
     };
 
-    return null;
+    return arr;
   };
-  exports._stackStaFirst = _stackStaFirst;
+  exports._stackStas = _stackStas;
 
 
   /* <------------------------------ bullet ------------------------------ */
