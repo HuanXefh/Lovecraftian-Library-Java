@@ -45,7 +45,7 @@
 
 
   function comp_draw(b) {
-    MDL_draw.comp_draw_baseBuilding(b);
+    LCDrawf.baseBuildingDraw(b);
     if(b.team === Team.derelict) return;
 
     let ot, ob;

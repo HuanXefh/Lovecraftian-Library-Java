@@ -34,7 +34,7 @@
 
 
   function comp_draw(b) {
-    MDL_draw.comp_draw_baseBuilding(b);
+    LCDrawf.baseBuildingDraw(b);
 
     LCDraw.content(b.x, b.y, b.ctTg, b.block.size - b.block.delegee.rsRegPad / Vars.tilesize);
     Draw.rect(b.block.delegee.topReg, b.x, b.y);

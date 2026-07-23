@@ -79,9 +79,13 @@
   /* <------------------------------ lovec.content.frag ------------------------------ */
 
 
-  /** @global lovec.content.frag.BLKFragArmoredCable */
+  /** @global */
   BLKFragArmoredCable = new (fetchClass("lovec.content.frag.BLKFragArmoredCable"));
-  /** @global lovec.content.frag.BLKFragCable */
+  /** @global */
   BLKFragCable = new (fetchClass("lovec.content.frag.BLKFragCable"));
-  /** @global lovec.content.frag.BLKFragFluidPipe */
+  /** @global */
+  BLKFragCogwheel = new (fetchClass("lovec.content.frag.BLKFragCogwheel"));
+  /** @global */
+  BFragCogwheel = new (fetchClass("lovec.content.frag.BLKFragCogwheel").BFragCogwheel);
+  /** @global */
   BLKFragFluidPipe = new (fetchClass("lovec.content.frag.BLKFragFluidPipe"));

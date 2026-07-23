@@ -32,7 +32,7 @@
 
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
-    MDL_draw.comp_drawPlace_baseBlock(blk, tx, ty, rot, valid);
+    LCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
     LCDrawf.diskExpand(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.range, 1.5, blk.baseColor, 0.3);
   };
 

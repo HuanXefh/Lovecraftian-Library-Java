@@ -33,12 +33,12 @@
     let cond = true;
     if(blk.terMode === "enable") {
       if(thisFun.tmpTup[4] == null || !blk.ters.includes(thisFun.tmpTup[4])) {
-        MDL_draw._d_textPlace(blk, t.x, t.y, MDL_bundle._info("lovec", "text-terrain-enabled") + " " + thisFun.tmpTup[5], false, blk.terTextOffTy);
+        LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle._info("lovec", "text-terrain-enabled") + " " + thisFun.tmpTup[5], false, blk.terTextOffTy);
         cond = false;
       };
     } else {
       if(thisFun.tmpTup[4] != null && blk.ters.includes(thisFun.tmpTup[4])) {
-        MDL_draw._d_textPlace(blk, t.x, t.y, MDL_bundle._info("lovec", "text-terrain-disabled") + " " + thisFun.tmpTup[5], false, blk.terTextOffTy);
+        LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle._info("lovec", "text-terrain-disabled") + " " + thisFun.tmpTup[5], false, blk.terTextOffTy);
         cond = false;
       };
     };

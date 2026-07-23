@@ -101,7 +101,7 @@
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     if(!blk.shouldDrawDynaAttrText) return;
 
-    MDL_draw._d_textPlace(
+    LCDrawf.textPlace(
       blk, tx, ty,
       Core.bundle.format("bar.efficiency", Math.round(blk.ex_getAttrSum(tx, ty, rot) / blk.ex_getAttrLimit() * 100.0)),
       valid, blk.dynaAttrTextOffTy,

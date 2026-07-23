@@ -18,7 +18,7 @@ public class LCScript {
     public static NativeObject MDL_effect;
     public static NativeObject MDL_entity;
     public static NativeObject DB_block;
-
+    public static NativeObject DB_misc;
 
     private static final Class[][] objClss = {
         new Class[]{},
@@ -42,6 +42,7 @@ public class LCScript {
         MDL_effect = toObject(get("MDL_effect"));
         MDL_entity = toObject(get("MDL_entity"));
         DB_block = toObject(get("DB_block"));
+        DB_misc = toObject(get("DB_misc"));
 
         Log.info("[LOVEC] Initialized Lovec module references in LCScript.");
     };
@@ -124,6 +125,14 @@ public class LCScript {
 
 
     /**
+     * Converts a JS value to JavaScript function.
+     */
+    public static Function toFunction(Object val) {
+        return (Function)(val);
+    };
+
+
+    /**
      * Creates a new JavaScript array with given elements.
      */
     public static NativeArray newArray(String name, Scriptable scope, Object... eles) {
@@ -198,6 +207,10 @@ public class LCScript {
     public static Object invoke(String nameFun, Scriptable scope, Object... args) throws NullPointerException {
         return thisInvoke(nameFun, scope, Vars.mods.getScripts().scope, args);
     };
+    // Overload
+    public static Object invoke(Function fun, Scriptable scope, Object... args) {
+        return thisInvoke(fun, scope, Vars.mods.getScripts().scope, args);
+    };
 
 
     /**
@@ -206,6 +219,10 @@ public class LCScript {
     @SuppressWarnings("ConstantConditions")
     public static Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) throws NullPointerException {
         Function fun = (Function)(get(nameFun, scope));
+        return thisInvoke(fun, scope, thisObj, args);
+    };
+    // Overload
+    public static Object thisInvoke(Function fun, Scriptable scope, Scriptable thisObj, Object... args) {
         return fun.call(Context.getContext(), scope, thisObj, args);
     };
 

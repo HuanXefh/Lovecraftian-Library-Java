@@ -14,7 +14,6 @@ public class LCTexture {
 
     public static TextureRegion empty = new TextureRegion();
 
-
     static ObjectMap<String, TextureRegion> blockRegionCache = new ObjectMap<>();
     static ObjectMap<String, String> blockRegionNameCache = new ObjectMap<>();
 

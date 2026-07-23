@@ -16,14 +16,12 @@ public class MathGraph implements Iterable<Integer> {
     protected static final IntIntMap mergeVertMap = new IntIntMap();
     protected static final StringBuilder strBuilder = new StringBuilder();
 
-
     protected int vertices;
     protected final boolean isDirectional;
     protected Seq<Seq<MathGraphEdge>> adjSeq;
     protected Seq dataSeq;
     protected FloatSeq weightSeq;
     private @Nullable MathGraphIterator iterator;
-
 
     public String graphTag = "";
     public @Nullable Object graphData;

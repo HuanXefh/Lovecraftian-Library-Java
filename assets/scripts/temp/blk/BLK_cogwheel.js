@@ -118,26 +118,6 @@
   };
 
 
-  function comp_ex_drawCog(b) {
-    let ang = Mathf.mod(b.torProg, 90.0);
-
-    processZ(Layer.block + b.block.size * 0.001 + 0.72, 1);
-
-    if(b.isInv) {
-      Draw.rect(b.block.delegee.invReg, b.x, b.y, b.block.delegee.cogDrawW, b.block.delegee.cogDrawW, -ang + 90.0 + b.block.delegee.cogInvOffAng);
-      Draw.alpha(1.0 - ang / 90.0);
-      Draw.rect(b.block.delegee.invReg, b.x, b.y, b.block.delegee.cogDrawW, b.block.delegee.cogDrawW, -ang + b.block.delegee.cogInvOffAng);
-    } else {
-      Draw.rect(b.block.region, b.x, b.y, b.block.delegee.cogDrawW, b.block.delegee.cogDrawW, ang);
-      Draw.alpha(ang / 90.0);
-      Draw.rect(b.block.region, b.x, b.y, b.block.delegee.cogDrawW, b.block.delegee.cogDrawW, ang - 90.0);
-    };
-    Draw.color();
-
-    processZ(null, 1);
-  };
-
-
 /*
   ========================================
   Section: Application
@@ -396,7 +376,7 @@
        * @return {void}
        */
       ex_drawCog: function() {
-        comp_ex_drawCog(this);
+        BFragCogwheel.setThis(this).ex_drawCog.call(BFragCogwheel);
       }
       .setProp({
         noSuper: true,

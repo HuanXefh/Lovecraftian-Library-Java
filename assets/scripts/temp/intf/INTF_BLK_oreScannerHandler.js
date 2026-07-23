@@ -27,7 +27,7 @@
     if(!b.requiresScanner) return;
 
     b.scannerCur == null ?
-      MDL_draw._d_textSelect(b, MDL_bundle._info("lovec", "text-no-scanner"), false, b.block.delegee.noScannerTextOffTy) :
+      LCDrawf.textSelect(b, MDL_bundle._info("lovec", "text-no-scanner"), false, b.block.delegee.noScannerTextOffTy) :
       LCDrawf.connectorArea(b, b.scannerCur);
   };
 

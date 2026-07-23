@@ -74,7 +74,7 @@
 
     drawUnitStat();
     drawBuildStat();
-    drawExtraInfo();
+    extraInfo();
   };
 
 
@@ -141,7 +141,7 @@
         if(!PARAM.SHOULD_DRAW_UNIT_STAT) return;
 
         // Unit stat display
-        MDL_draw._d_unitStat(
+        MDL_draw.unitStat(
           unit, MDL_entity._healthFrac(unit), unit.type.hitSize / Vars.tilesize, unit.team.color,
           1.0, 0.0, 0, 1.0,
           MDL_entity._armor(unit), unit.shield, unit.speedMultiplier, unit.damageMultiplier * unit.reloadMultiplier,
@@ -152,7 +152,7 @@
           for(let i = 0; i < 3; i++) {
             mtIds = DB_HANDLER.read("utp-reload-ind-" + i, unit.type.name, null);
             if(mtIds == null) continue;
-            MDL_draw._d_reload(unit, mtIds, Pal.techBlue, 1.0, 0.0, i, null);
+            MDL_draw.unitReload(unit, mtIds, Pal.techBlue, 1.0, 0.0, i, null);
           };
         };
 
@@ -207,7 +207,7 @@
 
       // Draw bridge transportation
       if(b.block instanceof ItemBridge || b.block instanceof DirectionBridge) {
-        MDL_draw.drawBridgeLine(b);
+        MDL_draw.bridgeLine(b);
       };
 
       Draw.z(z);
@@ -226,7 +226,7 @@
 
       if(!PARAM.SHOULD_DRAW_UNIT_STAT || !PARAM.SHOULD_DRAW_BUILD_STAT) return;
 
-      MDL_draw._d_unitStat(
+      MDL_draw.unitStat(
         b, b.health / b.maxHealth, b.block.size, b.team.color,
         1.0, 0.0, -1 + VAR.range.offBuildStatR, 1.0, b.block.armor,
         MDL_entity._bShield(b), MDL_entity._bSpd(b), null,
@@ -234,9 +234,9 @@
       if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
         cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || DB_HANDLER.read("blk-reload", b.block.name, false);
         if(cond) {
-          MDL_draw._d_reload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.range.offBuildStatR, MDL_entity._reloadFrac(b));
+          MDL_draw.unitReload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.range.offBuildStatR, MDL_entity._reloadFrac(b));
         };
-        MDL_draw._d_reload(b, null, Pal.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + VAR.range.offBuildStatR, MDL_entity._warmupFrac(b, true));
+        MDL_draw.unitReload(b, null, Pal.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + VAR.range.offBuildStatR, MDL_entity._warmupFrac(b, true));
       };
       processZ(VAR.layer.debugTop - 0.02, 2);
       Lines.stroke(1.0);
@@ -248,10 +248,10 @@
   });
 
 
-  function drawExtraInfo() {
+  function extraInfo() {
     if(!PARAM.SHOULD_SHOW_EXTRA_INFO) return;
 
-    MDL_draw.drawExtraInfo(MDL_pos._tMouse());
+    MDL_draw.extraInfo(MDL_pos._tMouse());
   };
 
 

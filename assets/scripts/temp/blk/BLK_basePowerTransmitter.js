@@ -68,7 +68,7 @@
     };
 
     if(thisFun.tmpTup[4]) {
-      MDL_draw._d_textPlace(blk, t.x, t.y, MDL_bundle._info("lovec", "text-short-circuit"), false);
+      LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle._info("lovec", "text-short-circuit"), false);
       return false;
     };
 

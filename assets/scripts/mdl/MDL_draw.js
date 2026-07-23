@@ -7,6 +7,8 @@
 
   /**
    * Methods related to draw.
+   * Most draw methods are defined in {@link LCDraw} and {@link LCDrawf}.
+   * This module is reserved for very tricky ones.
    * @module lovec/mdl/MDL_draw
    */
 
@@ -16,101 +18,6 @@
   Section: Definition
   ========================================
 */
-
-
-  /* <------------------------------ progress ------------------------------ */
-
-
-  /**
-   * Draws a progress ring.
-   * @param {number} x
-   * @param {number} y
-   * @param {number} frac
-   * @param {number|unset} [stroke]
-   * @param {number|unset} [rad]
-   * @param {number|unset} [ang]
-   * @param {ColorGn|unset} [color_gn]
-   * @param {number|unset} [a]
-   * @param {boolean|unset} [rev]
-   * @param {number|unset} [z]
-   * @return {void}
-   */
-  const _d_progRing = function(
-    x, y, frac,
-    stroke, rad, ang, color_gn, a, rev, z
-  ) {
-    if(frac == null) return;
-    if(stroke == null) stroke = 5.0;
-    if(rad == null) rad = 24.0;
-    if(ang == null) ang = 0.0;
-    if(a == null) a = 1.0;
-    if(a < 0.0001) return;
-    if(z == null) z = Layer.effect + VAR.layer.offDraw;
-
-    let color = MDL_color._color(tryVal(color_gn, Pal.accent));
-
-    processZ(z);
-
-    Lines.stroke(stroke, Pal.gray);
-    Draw.alpha(a * 0.7);
-    Lines.circle(x, y, rad);
-    Lines.stroke(stroke * 0.6, color);
-    Draw.alpha(a * 0.2);
-    Lines.circle(x, y, rad);
-    Draw.color(color);
-    Draw.alpha(a * 0.7);
-    LCDraw.ring(
-      x, y,
-      rad - stroke * 0.3,
-      rad + stroke * 0.3,
-      ang, frac, rev,
-    );
-    Draw.reset();
-
-    processZ();
-  };
-  exports._d_progRing = _d_progRing;
-
-
-  /* <------------------------------ text ------------------------------ */
-
-
-  /**
-   * Draws text for block placement.
-   * @param {Block} blk
-   * @param {number} tx
-   * @param {number} ty
-   * @param {string|null} str
-   * @param {boolean|unset} [valid]
-   * @param {number|unset} [offTy]
-   * @return {void}
-   */
-  const _d_textPlace = function(blk, tx, ty, str, valid, offTy) {
-    if(str == null) return;
-    if(valid == null) valid = true;
-    if(offTy == null) offTy = 0;
-
-    blk.drawPlaceText(str, tx + blk.offset / Vars.tilesize, ty + blk.offset / Vars.tilesize + offTy, valid);
-  };
-  exports._d_textPlace = _d_textPlace;
-
-
-  /**
-   * Draws text for building selection.
-   * @param {Building} b
-   * @param {string|null} str
-   * @param {boolean|unset} [valid]
-   * @param {number|unset} [offTy]
-   * @return {void}
-   */
-  const _d_textSelect = function(b, str, valid, offTy) {
-    if(str == null) return;
-    if(valid == null) valid = true;
-    if(offTy == null) offTy = 0;
-
-    b.block.drawPlaceText(str, b.x / Vars.tilesize, b.y / Vars.tilesize + offTy, valid);
-  };
-  exports._d_textSelect = _d_textSelect;
 
 
   /* <------------------------------ unit ------------------------------ */
@@ -134,7 +41,7 @@
    * @param {number|unset} [z]
    * @return {void}
    */
-  const _d_unitStat = function(
+  const unitStat = function(
     e, healthFrac,
     size, color_gn, a, offW, offTy, segScl,
     armor, shield, speedMtp, dpsMtp,
@@ -165,7 +72,7 @@
       z,
     );
   };
-  exports._d_unitStat = _d_unitStat;
+  exports.unitStat = unitStat;
 
 
   /**
@@ -180,7 +87,7 @@
    * @param {number|unset} [z]
    * @return {void}
    */
-  const _d_reload = function(
+  const unitReload = function(
     e, mtIds,
     color_gn, a, offW, offTy,
     frac_ow,
@@ -224,41 +131,10 @@
 
     processZ();
   };
-  exports._d_reload = _d_reload;
+  exports.unitReload = unitReload;
 
 
-  /* <------------------------------ component ------------------------------ */
-
-
-  /**
-   * `drawPlace` that every block should have.
-   * Used if `blk.super$drawPlace` is not called.
-   * @param {Block} blk
-   * @param {number} tx
-   * @param {number} ty
-   * @param {number} rot
-   * @param {boolean} valid
-   * @return {void}
-   */
-  const comp_drawPlace_baseBlock = function(blk, tx, ty, rot, valid) {
-    blk.drawPotentialLinks(tx, ty);
-    blk.drawOverlay(tx.toFCoord(blk.size), ty.toFCoord(blk.size), rot);
-  };
-  exports.comp_drawPlace_baseBlock = comp_drawPlace_baseBlock;
-
-
-  /**
-   * `draw` that every building should have.
-   * Used if `b.super$draw` is not called.
-   * @param {Building} b
-   * @return {void}
-   */
-  const comp_draw_baseBuilding = function(b) {
-    b.block.variant === 0 || b.block.variantRegions == null ?
-      Draw.rect(b.block.region, b.x, b.y, b.drawrot()) :
-      Draw.rect(b.block.variantRegions[Mathf.randomSeed(b.tile.pos(), 0, Mathf.maxZero(b.block.variantRegions.length - 1))], b.x, b.y, b.drawrot());
-  };
-  exports.comp_draw_baseBuilding = comp_draw_baseBuilding;
+  /* <------------------------------ specific ------------------------------ */
 
 
   /**
@@ -266,7 +142,7 @@
    * @param {Tile|null} t
    * @return {void}
    */
-  const drawExtraInfo = function thisFun(t) {
+  const extraInfo = function thisFun(t) {
     if(t == null) return;
     if(t === thisFun.tmpT) {
       thisFun.tmpCd--;
@@ -299,7 +175,7 @@
     tmpCd: 0.0,
     tmpStr: null,
   });
-  exports.drawExtraInfo = drawExtraInfo;
+  exports.extraInfo = extraInfo;
 
 
   /**
@@ -307,7 +183,7 @@
    * @param {Building} b
    * @return {void}
    */
-  const drawBridgeLine = function thisFun(b) {
+  const bridgeLine = function thisFun(b) {
     if(!PARAM.SHOULD_DRAW_BRIDGE_LINE) return;
 
     let tmpB = b, tmpOb, isFirst = true;
@@ -344,4 +220,4 @@
   .setProp({
     tmpBs: [],
   });
-  exports.drawBridgeLine = drawBridgeLine;
+  exports.bridgeLine = bridgeLine;

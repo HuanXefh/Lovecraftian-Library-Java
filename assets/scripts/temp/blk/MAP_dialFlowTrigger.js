@@ -47,7 +47,7 @@
   function comp_drawSelect(b) {
     if(!Vars.state.isEditor()) return;
 
-    MDL_draw._d_textSelect(b, b.nameDialFlow, true);
+    LCDrawf.textSelect(b, b.nameDialFlow, true);
   };
 
 

@@ -68,7 +68,7 @@
 
   function comp_drawSelect(b) {
     if(b.durabMode !== "dec") {
-      MDL_draw._d_textSelect(b, MDL_bundle._info("lovec", "text-require-repair"), false, b.block.delegee.durabTextOffTy);
+      LCDrawf.textSelect(b, MDL_bundle._info("lovec", "text-require-repair"), false, b.block.delegee.durabTextOffTy);
     };
   };
 

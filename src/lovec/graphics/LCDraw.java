@@ -65,7 +65,6 @@ public class LCDraw {
         DEBUG_Z_IND = 19;
 
 
-
     /* <-------------------- auxiliary --------------------> */
 
 

@@ -16,7 +16,6 @@ public class MathMatrix implements Iterable<Double> {
 
     protected static final StringBuilder strBuilder = new StringBuilder();
 
-
     protected double[][] data;
     protected final int rowAmt;
     protected final int colAmt;

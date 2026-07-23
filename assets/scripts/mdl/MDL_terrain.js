@@ -200,7 +200,7 @@
       thisFun.tmpTup[3] = _terB(_ter(t, blk.size, tryFun(blk.ex_getTerrainCheckR, blk, 5)));
     };
 
-    MDL_draw._d_textPlace(blk, tx, ty, MDL_bundle._info("lovec", "text-terrain") + " " + thisFun.tmpTup[3], valid, offTy);
+    LCDrawf.textPlace(blk, tx, ty, MDL_bundle._info("lovec", "text-terrain") + " " + thisFun.tmpTup[3], valid, offTy);
   }
   .setProp({
     tmpTup: [],

@@ -215,7 +215,7 @@
       draw(unit) {
         if(!PARAM.SHOULD_DRAW_UNIT_RELOAD) return;
 
-        MDL_draw._d_reload(
+        MDL_draw.unitReload(
           unit, null,
           this.inCdMap.get(unit, false) ? Color.white : Pal.remove, 1.0, 0.0, 1,
           this.progMap.get(unit, 0.0) / this.chargeCap,

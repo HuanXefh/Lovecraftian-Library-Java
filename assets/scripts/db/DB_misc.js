@@ -31,7 +31,7 @@ const db = {
 
 
     /**
-     * Extra text information shown when mouse hovered over a tile, see {@link MDL_draw.drawExtraInfo}.
+     * Extra text information shown when mouse hovered over a tile, see {@link MDL_draw.extraInfo}.
      * Put functions that return string here to build final string. Yep, string only.
      * Tile won't be null here, and it's safe to return undefined or null, result will be skipped.
      * <br> `ROW`: strGetter.

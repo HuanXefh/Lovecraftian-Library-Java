@@ -22,7 +22,7 @@
 
 
   function comp_drawSelect(b) {
-    MDL_draw._d_textSelect(b, b.infoCur, b.efficiency > 0.0001, b.block.infoOffTy);
+    LCDrawf.textSelect(b, b.infoCur, b.efficiency > 0.0001, b.block.infoOffTy);
   };
 
 

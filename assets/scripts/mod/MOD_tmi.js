@@ -718,12 +718,12 @@
 
           // BO
           rc.bo.forEachRow(3, (ct, amt, p) => {
-            if(ct === ct0) amtBo += amt * p * (1.0 - failP);
+            if(ct === ct0) amtBo += amt * p * (1.0 - rc.failP);
           });
 
           // FO
           rc.fo.forEachRow(3, (ct, amt, p) => {
-            if(ct === ct0) amtBo += amt * p * failP;
+            if(ct === ct0) amtBo += amt * p * rc.failP;
           });
 
           // PAYO

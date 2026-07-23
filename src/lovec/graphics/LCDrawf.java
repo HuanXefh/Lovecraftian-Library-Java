@@ -48,6 +48,7 @@ public class LCDrawf {
     public static ObjectMap<String, TextureRegion> wireMatEndRegMap = new ObjectMap<>();
     public static TextureRegion wireGlowReg;
     public static TextureRegion wireShaReg;
+
     public static Color lightColor = Color.valueOf("ffc999");
     public static Color heatColor = Color.valueOf("ff3838");
 
@@ -55,7 +56,8 @@ public class LCDrawf {
     static Vec2 tmpVec1 = new Vec2();
     static Vec2 tmpVec2 = new Vec2();
     static Vec2 tmpVec3 = new Vec2();
-    static Seq<Tile> tmpTs = new Seq<>();
+    static Seq<Tile> tmpTsSeq = new Seq<>();
+
     static float
         shapeLay,
         mineBeamLay,
@@ -1430,6 +1432,39 @@ public class LCDrawf {
     };
 
 
+    /* <-------------------- text --------------------> */
+
+
+    /**
+     * Draws text for block placement.
+     */
+    public static void textPlace(Block blk, int tx, int ty, String str, boolean valid, float offTy) {
+        blk.drawPlaceText(str, tx + (int)(blk.offset / Vars.tilesize), ty + (int)(blk.offset / Vars.tilesize + offTy), valid);
+    };
+    // Overload
+    public static void textPlace(Block blk, int tx, int ty, String str, boolean valid) {
+        textPlace(blk, tx, ty, str, valid, 0f);
+    };
+    public static void textPlace(Block blk, int tx, int ty, String str) {
+        textPlace(blk, tx, ty, str, true);
+    };
+
+
+    /**
+     * Draws text for building selection.
+     */
+    public static void textSelect(Building b, String str, boolean valid, float offTy) {
+        b.block.drawPlaceText(str, (int)(b.x / Vars.tilesize), (int)(b.y / Vars.tilesize + offTy), valid);
+    };
+    // Overload
+    public static void textSelect(Building b, String str, boolean valid) {
+        textSelect(b, str, valid, 0f);
+    };
+    public static void textSelect(Building b, String str) {
+        textSelect(b, str, true);
+    };
+
+
     /* <-------------------- specific --------------------> */
 
 
@@ -1576,7 +1611,7 @@ public class LCDrawf {
      */
     public static void planPlace(Block blk, @Nullable Tile t, float ang) {
         if(t == null) return;
-        Color color = t.getLinkedTilesAs(blk, tmpTs).find(ot -> ot.solid() || ot.build != null) == null ? Color.white : Pal.remove;
+        Color color = t.getLinkedTilesAs(blk, tmpTsSeq).find(ot -> ot.solid() || ot.build != null) == null ? Color.white : Pal.remove;
         plan(LCPos.toFCoord(t.x, blk.size), LCPos.toFCoord(t.y, blk.size), LCTexture.getBlockRegion(blk), ang, 1f, color);
     };
     // Overload
@@ -1637,6 +1672,24 @@ public class LCDrawf {
         Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z
     ) {
         tree(reg, shaReg, t, rad, offSha, scl, mag, wob, a, z, true);
+    };
+
+
+    /* <-------------------- very specific --------------------> */
+
+
+    public static void baseBlockDrawPlace(Block blk, int tx, int ty, int rot, boolean valid) {
+        blk.drawPotentialLinks(tx, ty);
+        blk.drawOverlay(LCPos.toFCoord(tx, blk.size), LCPos.toFCoord(ty, blk.size), rot);
+    };
+
+
+    public static void baseBuildingDraw(Building b) {
+        if (b.block.variants == 0 || b.block.variantRegions == null) {
+            Draw.rect(b.block.region, b.x, b.y, b.drawrot());
+        } else {
+            Draw.rect(b.block.variantRegions[Mathf.randomSeed(b.tile.pos(), 0, Math.max(b.block.variantRegions.length - 1, 0))], b.x, b.y, b.drawrot());
+        };
     };
 
 
