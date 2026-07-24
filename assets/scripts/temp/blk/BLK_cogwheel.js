@@ -104,7 +104,7 @@
       ob == null
         || ob === b
         || (ob.tileX() !== b.tileX() && ob.tileY() !== b.tileY())
-        || !MDL_pos._dstT(b.tile, ob.tile).fEqual((b.block.size + ob.block.size) * 0.5 * Vars.tilesize)
+        || !LCPos.calcTileDst(b.tile, ob.tile).fEqual((b.block.size + ob.block.size) * 0.5 * Vars.tilesize)
         || !b.ex_checkCogTransValid(ob)
     ) {
       return null;

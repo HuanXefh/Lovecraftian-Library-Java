@@ -31,18 +31,15 @@
 
   function comp_onProximityUpdate(b) {
     if(!b.block.rotate) {
-      b.lootDumpX = b.x;
-      b.lootDumpY = b.y;
+      b.lootDumpVec.set(b.x, b.y);
     } else {
-      let vec2 = MDL_pos._coordsBack(b.x, b.y, b.block.size, b.rotation);
-      b.lootDumpX = vec2.x;
-      b.lootDumpY = vec2.y;
+      LCPos.getCoordsBack(b.lootDumpVec, b.x, b.y, b.block.size, b.rotation);
     };
   };
 
 
   function comp_pickedUp(b) {
-    b.lootDumpX = b.lootDumpY = null;
+    b.lootDumpVec.set(-1.0, -1.0);
   };
 
 
@@ -51,12 +48,12 @@
       b.super$offload(itm);
       return;
     };
-    if(b.lootDumpX == null || b.lootDumpY == null) return;
+    if(b.lootDumpVec.x < 0.0 || b.lootDumpVec.y < 0.0) return;
 
     b.lootCharge++;
     if(b.lootCharge >= b.ex_getDumpAmt()) {
       b.lootCharge = 0;
-      FRAG_item.produceLootAt(b.lootDumpX, b.lootDumpY, b, itm, b.ex_getDumpAmt(), true);
+      FRAG_item.produceLootAt(b.lootDumpVec.x, b.lootDumpVec.y, b, itm, b.ex_getDumpAmt(), true);
     };
   };
 
@@ -130,13 +127,7 @@
          * @memberof INTF_B_lootProducer
          * @instance
          */
-        lootDumpX: null,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_lootProducer
-         * @instance
-         */
-        lootDumpY: null,
+        lootDumpVec: prov(() => new Vec2(-1.0, -1.0)),
         /**
          * `INTERNAL`
          * @memberof INTF_B_lootProducer
@@ -232,7 +223,7 @@
       ex_processData: function(wr0rd) {
         processData(
           wr0rd,
-          
+
           wr => {
             wr.i(this.lootCharge);
           },

@@ -171,10 +171,10 @@
       processZ();
     };
     if(b.warmup > 0.0) {
-
-      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime, 0, 1.0, color, b.warmup * 0.6, true);
-      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime + 1800.0, 1, 1.0, color, b.warmup * 0.6, true);
-      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime + 4200.0, -1, 1.0, color, b.warmup * 0.6, true);
+      let a = b.warmup * 0.75 * LCDrawf.getLaserA(1.0, false, true, false);
+      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime, 0, 1.0, color, a, true);
+      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime + 1800.0, 1, 1.0, color, a, true);
+      LCDrawf.laserRandMine(b.x, b.y, b.mineRectCx, b.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.beamOffTime + 4200.0, -1, 1.0, color, a, true);
     };
   };
 

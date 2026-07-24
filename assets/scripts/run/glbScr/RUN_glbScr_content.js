@@ -398,13 +398,12 @@
    * @return {Function}
    */
   __createFetchXxx__ = function(cont, mode, isNullable, def) {
-    if(def instanceof Prov) def = def.get();
-
     switch(mode) {
 
       // Mod-specific content
       case 0 :
         return function(nameMod, name) {
+          if(def instanceof Prov) def = def.get();
           let ct = cont[nameMod] instanceof Array ?
             cont[nameMod].read(name) :
             cont[nameMod][name];
@@ -416,6 +415,7 @@
       // Universal content
       case 1 :
         return function(name) {
+          if(def instanceof Prov) def = def.get();
           let ct = cont instanceof Array ?
             cont.read(name) :
             cont[name];
@@ -427,6 +427,7 @@
       // Template-built content
       case 2 :
         return function(name, paramObj) {
+          if(def instanceof Prov) def = def.get();
           let temp = cont.read(name);
           if(temp == null && def !== undefined) temp = def;
           if(isNullable ? temp === undefined : temp == null) ERROR_HANDLER.throw("noTemplateFound", name);
@@ -437,6 +438,7 @@
       case 3 :
         if(isNullable == null) isNullable = true;
         return function(name, paramObj) {
+          if(def instanceof Prov) def = def.get();
           let getter = cont.read(name);
           if(getter == null) {
             getter = def === undefined ?

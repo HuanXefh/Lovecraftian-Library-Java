@@ -21,7 +21,7 @@
     let b_t = Vars.world.buildWorld(x2, y2);
     if(b == null || b_t == null || b.power == null || b_t.power == null) return 0.0;
 
-    return Math.max(b.power.status, b_t.power.status) * LCDrawf.getLaserA(true, blk.ex_getWireStrokeScl());
+    return Math.max(b.power.status, b_t.power.status) * LCDrawf.getLaserA(blk.ex_getWireStrokeScl(), false, false, true);
   };
 
 

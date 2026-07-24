@@ -438,7 +438,7 @@
      */
     _b = newMultiFunction(
       function() {
-        let t = MDL_pos._tMouse();
+        let t = LCPos.getTileMouse();
         return t == null ? null : t.build;
       },
       function(tx, ty) {

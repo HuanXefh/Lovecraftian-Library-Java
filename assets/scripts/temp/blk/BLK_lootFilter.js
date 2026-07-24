@@ -38,13 +38,12 @@
 
 
   function comp_onProximityUpdate(b) {
-    let vec2 = MDL_pos._coordsBack(b.x, b.y, b.block.size, b.rotation);
-    b.lootDumpVec2.set(vec2.x, vec2.y);
+    LCPos.getCoordsBack(b.lootDumpVec, b.x, b.y, b.block.size, b.rotation);
   };
 
 
   function comp_pickedUp(b) {
-    b.lootDumpVec2.set(-1.0, -1.0);
+    b.lootDumpVec.set(-1.0, -1.0);
   };
 
 
@@ -73,13 +72,13 @@
     let loot = loots.find(loot => loot.item() === b.ctTg);
     if(loot != null) {
       MDL_effect._e_itemTransfer(loot.x, loot.y, b);
-      MDL_effect._e_itemTransfer(b.x, b.y, b.lootDumpVec2);
+      MDL_effect._e_itemTransfer(b.x, b.y, b.lootDumpVec);
       if(loot.stack.amount <= amt) {
-        loot.x = b.lootDumpVec2.x;
-        loot.y = b.lootDumpVec2.y;
+        loot.x = b.lootDumpVec.x;
+        loot.y = b.lootDumpVec.y;
         loot.type.ex_resetLifetime(loot);
       } else {
-        MDL_call.spawnLoot_server(b.lootDumpVec2.x, b.lootDumpVec2.y, loot.item(), amt, 0.0);
+        MDL_call.spawnLoot_server(b.lootDumpVec.x, b.lootDumpVec.y, loot.item(), amt, 0.0);
         loot.stack.amount -= amt;
       };
     };
@@ -171,7 +170,7 @@
        * @memberof B_lootFilter
        * @instance
        */
-      lootDumpVec2: prov(() => new Vec2()),
+      lootDumpVec: prov(() => new Vec2(-1.0, -1.0)),
 
 
     })

@@ -711,16 +711,15 @@
       Lines.stroke(2.0 * eff.rotation * eff.fout(eff.data[2] ? Interp.pow10Out : Interp.linear), eff.color);
       Draw.alpha(eff.color.a);
       if(eff.data[2]) {
-        MDL_pos._it_lineRot(
+        LCPos.forEachLinePoint(
           eff.data[0] == null ? eff.x : eff.data[0].x,
           eff.data[0] == null ? eff.y : eff.data[0].y,
-          eff.data[1].x, eff.data[1].y, 1.5,
+          eff.data[1].x, eff.data[1].y,
           (x, y, ang) => {
             Drawf.tri(x, y, 6.0 * eff.fout() * eff.rotation, 12.0 * eff.rotation, !eff.data[3] ? (ang + 145.0) : (ang + 35.0));
             Drawf.tri(x, y, 8.0 * eff.fout() * eff.rotation, 18.0 * eff.rotation, !eff.data[3] ? (ang + 215.0) : (ang - 35.0));
           },
-          !eff.data[3],
-          eff.data[3],
+          1.5, !eff.data[3], eff.data[3],
         );
       };
       Lines.line(

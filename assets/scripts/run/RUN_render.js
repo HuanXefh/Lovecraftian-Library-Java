@@ -186,7 +186,7 @@
 
 
   const drawBuildStat = function thisFun() {
-    t = MDL_pos._tMouse();
+    t = LCPos.getTileMouse();
     b = t == null ? null : t.build;
     unitPlayer = Vars.player.unit();
     bPlayer = (unitPlayer == null || !(unitPlayer instanceof BlockUnitc)) ? null : unitPlayer.tile();
@@ -251,7 +251,7 @@
   function extraInfo() {
     if(!PARAM.SHOULD_SHOW_EXTRA_INFO) return;
 
-    MDL_draw.extraInfo(MDL_pos._tMouse());
+    MDL_draw.extraInfo(LCPos.getTileMouse());
   };
 
 

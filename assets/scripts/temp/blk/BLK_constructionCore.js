@@ -267,7 +267,7 @@
 
 
   function comp_ex_getPlanT(blk, tx, ty, rot, dataX, dataY) {
-    return MDL_pos._tCenterRot(
+    return LCPos.getTileRectCenterRot(
       Vars.world.tile(tx - blk.corePon2.x + dataX, ty + blk.corePon2.y - dataY),
       Vars.world.tile(tx, ty),
       rot,

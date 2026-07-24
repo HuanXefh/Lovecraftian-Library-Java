@@ -1172,7 +1172,7 @@
    */
   CLS_recipe.prototype.displayOpt = function(tb, isBase) {
     return this.displayIoFrag(tb, "opt", tb1 => {
-      tb1.button("?", () => fetchDialog("rcObj").ex_show(MDL_bundle._term("lovec", "opt"), (isBase ? this.baseOpt : this.optNoBase))).size(34.0).pad(3.0);
+      tb1.button("?", () => fetchDialog("rcOpt").ex_show(MDL_bundle._term("lovec", "opt"), (isBase ? this.baseOpt : this.optNoBase))).size(34.0).pad(3.0);
     });
   };
 

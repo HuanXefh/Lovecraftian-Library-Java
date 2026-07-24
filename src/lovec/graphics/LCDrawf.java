@@ -20,6 +20,7 @@ import lovec.utils.LCScript;
 import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.content.Fx;
+import mindustry.core.Renderer;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import mindustry.graphics.*;
@@ -178,10 +179,18 @@ public class LCDrawf {
     /**
      * Calculates laser alpha using {@link Lod}.
      */
-    public static float getLaserA(boolean useLod, float strokeScl) {
-        return !useLod ?
+    public static float getLaserA(float strokeScl, boolean useLaserA, boolean useUnitLaserA, boolean useLod) {
+        float a1 = !useLod ?
             1f :
             strokeScl < 3.3333f ? Lod.alpha1 : Lod.alpha2;
+        float a2 = !useUnitLaserA ?
+            1f :
+            Renderer.unitLaserOpacity;
+        float a3 = !useLaserA ?
+            1f :
+            Renderer.laserOpacity;
+
+        return a1 * a2 * a3;
     };
 
 

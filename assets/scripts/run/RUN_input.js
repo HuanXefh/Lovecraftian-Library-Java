@@ -50,7 +50,7 @@
   if(!Vars.headless) MDL_event._c_onUpdate(() => {
 
     unitPlayer = Vars.player.unit();
-    tMouse = MDL_pos._tMouse();
+    tMouse = LCPos.getTileMouse();
 
     updateKeybind(unitPlayer, tMouse);
 
