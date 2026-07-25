@@ -98,18 +98,23 @@
 
 
   /**
+   * Whether an element exists in an array.
+   * This method has to been overrided to avoid type-related crash.
+   * @param {any} ele
+   * @return {boolean}
+   */
+  Array.prototype.includes = function(ele) {
+    return LCNativeArray.includes(this, ele);
+  };
+
+
+  /**
    * Whether any of the given elements is found in this array.
    * <br> `ARGS`: ele1, ele2, ele3, ...
    * @return {boolean}
    */
   Array.prototype.includesAny = function() {
-    let i = 0, iCap = arguments.length;
-    while(i < iCap) {
-      if(this.includes(arguments[i])) return true;
-      i++;
-    };
-
-    return false;
+    return LCNativeArray.includesAnyArguments(this, arguments);
   };
 
 
@@ -119,13 +124,7 @@
    * @return {boolean}
    */
   Array.prototype.includesAll = function() {
-    let i = 0, iCap = arguments.length;
-    while(i < iCap) {
-      if(!this.includes(arguments[i])) return false;
-      i++;
-    };
-
-    return true;
+    return LCNativeArray.includesAllArguments(this, arguments);
   };
 
 
@@ -135,22 +134,26 @@
    * @param {(function(any): boolean)|unset} [mapF]
    * @return {boolean}
    */
-  Array.prototype.equals = function(arr, mapF) {
+  Array.prototype.arrayEquals = function(arr, mapF) {
     let i = 0, iCap = this.iCap();
     if(iCap !== arr.length) return false;
 
+    let val1, val2;
     if(mapF == null) {
       while(i < iCap) {
-        if(this[i] !== arr[i]) return false;
+        val1 = this[i];
+        val2 = arr[i];
+        if(val1 !== val2) return false;
         i++;
       };
     } else {
       while(i < iCap) {
-        if(mapF(this[i]) !== mapF(arr[i])) return false;
+        val1 = mapF(this[i]);
+        val2 = mapF(arr[i]);
+        if(val1 !== val2) return false;
         i++;
       };
     };
-
 
     return true;
   };
@@ -162,7 +165,7 @@
    * @return {boolean}
    */
   Array.prototype.looseEquals = function(arr) {
-    return Array.prototype.looseEquals.tmpArr1.cpy(this).mixSort().equals(Array.prototype.looseEquals.tmpArr2.cpy(arr).mixSort());
+    return Array.prototype.looseEquals.tmpArr1.cpy(this).mixSort().arrayEquals(Array.prototype.looseEquals.tmpArr2.cpy(arr).mixSort());
   };
   Array.prototype.looseEquals.tmpArr1 = [];
   Array.prototype.looseEquals.tmpArr2 = [];
@@ -187,23 +190,16 @@
 
 
   /**
-   * Variant of {@link Array#includes} used for formatted arrays.
+   * Variant of {@link Array#includes} for formatted array.
    * @param {any} ele
-   * @param {number|unset} [ord]
+   * @param {number} ord
    * @param {number|unset} [off]
    * @return {boolean}
    */
   Array.prototype.colIncludes = function(ele, ord, off) {
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-
-    let i = off, iCap = this.iCap();
-    while(i < iCap) {
-      if(this[i] === ele) return true;
-      i += ord;
-    };
-
-    return false;
+    return off == null ?
+      LCNativeArray.colIncludes(this, ele, ord) :
+      LCNativeArray.colIncludes(this, ele, ord, off);
   };
 
 
@@ -230,87 +226,54 @@
 
 
   /**
-   * Variant of {@link Array#push} that only pushes the element when it's not in the array.
+   * Variant of {@link Array#push} that only pushes unique element.
    * @param {any} ele
    * @return {this}
    */
   Array.prototype.pushUnique = function(ele) {
-    let cond = true;
-    if(this.includes(ele)) cond = false;
-    if(ele instanceof Array && this.some(ele0 => ele0 instanceof Array && ele0.equals(ele))) cond = false;
-    if(cond) this.push(ele);
-
-    return this;
+    return LCNativeArray.pushUnique(this, ele);
   };
 
 
   /**
-   * Variant of {@link Array#push} that only pushes the element when it's not null (nor undefined).
+   * Variant of {@link Array#push} that only pushes non-null element.
    * @param {any} ele
    * @return {this}
    */
   Array.prototype.pushNonNull = function(ele) {
-    if(ele == null) return this;
-
-    this.push(ele);
-
-    return this;
+    return LCNativeArray.pushNonNull(this, ele);
   };
 
 
   /**
-   * Variant of {@link Array#push} that pushes all elements from given array into this array.
-   * Use this method instead if in case of chaining.
+   * Variant of {@link Array#push} that pushes all elements from another array.
    * @param {any} eles_p
    * @return {this}
    */
   Array.prototype.pushAll = function(eles_p) {
-    !(eles_p instanceof Array) ?
-      this.push(eles_p) :
-      eles_p.forEachFast(ele => this.push(ele));
-
-    return this;
+    return LCNativeArray.pushAll(this, eles_p);
   };
 
 
   /**
    * Inserts an element at given index.
-   * @param {any} ele
    * @param {number} ind
+   * @param {any} ele
    * @return {number} Array length.
    */
-  Array.prototype.insert = function(ele, ind) {
-    let i = this.iCap();
-    while(i > ind) {
-      this[i] = this[i - 1];
-      i--;
-    };
-    this[ind] = ele;
-
-    return this.length;
+  Array.prototype.insert = function(ind, ele) {
+    return LCNativeArray.insert(this, ind, ele);
   };
 
 
   /**
-   * Variant of {@link Array#insert} that inserts all elements from given array into this array.
-   * Use this method instead if in case of chaining.
-   * @param {any} eles_p
+   * Variant of {@link Array#insert} for batch insertion.
    * @param {number} ind
+   * @param {any} eles_p
    * @return {this}
    */
-  Array.prototype.insertAll = function(eles_p, ind) {
-    let eles = eles_p instanceof Array ? eles_p : [eles_p];
-    let i = this.iCap(), j = 0, jCap = eles.iCap();
-    while(i > ind) {
-      this[i + jCap - 1] = this[i - 1];
-      i--;
-    };
-    while(j < jCap) {
-      this[ind + j] = eles[j];
-      j++;
-    };
-
-    return this;
+  Array.prototype.insertAll = function(ind, eles_p) {
+    return LCNativeArray.insertAll(this, ind, eles_p);
   };
 
 
@@ -327,6 +290,7 @@
   /**
    * Variant of {@link Array#with} for array.
    * @param {Arguments} eles
+   * @return {this}
    */
   Array.prototype.withAll = function(eles) {
     return LCNativeArray.withAll(this, eles);
@@ -335,32 +299,34 @@
 
   /**
    * Removes the first matching element in the array.
-   * This method does not remove all matching elements, see {@link Array#pull} instead.
    * @param {any} ele
-   * @return {any} The element removed or null if not found.
+   * @param {(function(any): any)|unset} [mapF]
+   * @return {any} Removed element.
    */
-  Array.prototype.remove = function(ele) {
-    let ind = this.indexOf(ele);
-    if(ind > -1) {
-      return this.splice(ind, 1)[0];
-    };
-
-    return null;
+  Array.prototype.remove = function(ele, mapF) {
+    return mapF == null ?
+      LCNativeArray.remove(this, ele) :
+      LCNativeArray.remove(this, ele, mapF);
   };
 
 
   /**
-   * Variant of {@link Array#remove} that removes multiple elements.
-   * Use this method instead if in case of chaining.
+   * Variant of {@link Array#remove} for batch remove.
    * @param {any} eles_p
    * @return {this}
    */
   Array.prototype.removeAll = function(eles_p) {
-    !(eles_p instanceof Array) ?
-      this.remove(eles_p) :
-      eles_p.forEachFast(ele => this.remove(ele));
+    return LCNativeArray.removeAll(this, eles_p);
+  };
 
-    return this;
+
+  /**
+   * Removes element at given index in an array.
+   * @param {number} ind
+   * @return {any} Removed element.
+   */
+  Array.prototype.removeAt = function(ind) {
+    return LCNativeArray.removeAt(this, ind);
   };
 
 
@@ -389,36 +355,26 @@
    * @return {number} Array length.
    */
   Array.prototype.pull = function(ele) {
-    while(this.includes(ele)) {
-      this.remove(ele);
-    };
-
-    return this.length;
+    return LCNativeArray.pull(this, ele);
   };
 
 
   /**
-   * Variant of {@link Array#pull} that pulls multiple elements.
+   * Variant of {@link Array#pull} for batch pull.
    * @param {any} eles_p
    * @return {this}
    */
   Array.prototype.pullAll = function(eles_p) {
-    !(eles_p instanceof Array) ?
-      this.pull(eles_p) :
-      eles_p.forEachFast(ele => this.pull(ele));
-
-    return this;
+    return LCNativeArray.pullAll(this, eles_p);
   };
 
 
   /**
-   * Pulls out all `null` and `undefined` in this array.
+   * Pulls out null values.
    * @return {this}
    */
   Array.prototype.compact = function() {
-    this.pull(null);
-    this.pull(undefined);
-    return this;
+    return LCNativeArray.compact(this);
   };
 
 

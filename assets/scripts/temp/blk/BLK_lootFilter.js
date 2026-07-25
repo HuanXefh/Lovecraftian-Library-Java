@@ -64,7 +64,7 @@
 
 
   function comp_ex_updateLootTs(b) {
-    MDL_pos._tsRot(b.lootTs, b.tile, b.rotation, b.block.size);
+    LCPos.getTilesRot(b.lootTs, b.tile, b.rotation, b.block.size);
   };
 
 

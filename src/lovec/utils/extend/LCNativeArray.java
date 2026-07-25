@@ -5,9 +5,9 @@ import arc.util.Nullable;
 import arc.util.pooling.Pools;
 import lovec.utils.LCScript;
 import lovec.utils.pooling.PoolableNativeArray;
-import rhino.NativeArray;
-import rhino.Scriptable;
-import rhino.ScriptableObject;
+import rhino.*;
+
+import java.util.Objects;
 
 public class LCNativeArray {
 
@@ -26,20 +26,66 @@ public class LCNativeArray {
 
 
     /**
-     * Wraps array-like lists to native array.
+     * Gets index of an element in an array, -1 if not found.
+     */
+    public static int indexOf(NativeArray arr, Object ele, @Nullable Func mapF) {
+        int i = 0;
+        long iCap = arr.getLength();
+        Object wrappedEle = LCScript.wrapEquality(ele);
+        if(mapF == null) {
+            while(i < iCap) {
+                if(Objects.equals(wrappedEle, LCScript.wrapEquality(arr.get(i)))) return i;
+                i++;
+            };
+        } else {
+            while(i < iCap) {
+                if(Objects.equals(wrappedEle, LCScript.wrapEquality(mapF.get(LCScript.wrap(arr.get(i)))))) return i;
+                i++;
+            };
+        };
+        return -1;
+    };
+    // Overload
+    public static int indexOf(NativeArray arr, Object ele) {
+        return indexOf(arr, ele, null);
+    };
+
+
+    /**
+     * Wraps Java object array to native array.
+     * Used when an array prototype method is called on a Java array.
      */
     @SuppressWarnings("CollectionAddedToSelf")
-    public static NativeArray wrapArrayLike(Object[] objs) {
-        // Can't use the same array, will cause change of array length while iteration
-        NativeArray tmpArr = LCScript.newArray("LCNativeArray.WrapArrayLike.tmpArr");
-        clear(tmpArr);
+    public static NativeArray wrapObjectArray(@Nullable NativeArray contArr, Object[] objs) {
+        NativeArray arr = contArr != null ? clear(contArr) : LCScript.newArray("LCNativeArray.wrapObjectArray.newArr");
         int i = 0;
         int iCap = objs.length;
         while(i < iCap) {
-            tmpArr.put(i, tmpArr, objs[i]);
+            arr.put(i, arr, objs[i]);
             i++;
         };
-        return tmpArr;
+        return arr;
+    };
+
+
+    /**
+     * Used to wrap <code>Object[]</code> in native array methods.
+     */
+    public static void wrapCons(Object[] objs, Cons<NativeArray> cons) {
+        NativeArray arr0 = Pools.obtain(PoolableNativeArray.class, () -> new PoolableNativeArray(0));
+        cons.get(wrapObjectArray(arr0, objs));
+        Pools.free(arr0);
+    };
+
+
+    /**
+     * Used to wrap <code>Object[]</code> in native array methods that have returned value.
+     */
+    public static Object wrapFunc(Object[] objs, Func<NativeArray, Object> func) {
+        NativeArray arr0 = Pools.obtain(PoolableNativeArray.class, () -> new PoolableNativeArray(0));
+        Object val = func.get(wrapObjectArray(arr0, objs));
+        Pools.free(arr0);
+        return val;
     };
 
 
@@ -58,7 +104,7 @@ public class LCNativeArray {
     };
     // Overload
     public static void forEachFast(Object[] objs, Cons cons) {
-        forEachFast(wrapArrayLike(objs), cons);
+        wrapCons(objs, arr0 -> forEachFast(arr0, cons));
     };
 
 
@@ -78,7 +124,7 @@ public class LCNativeArray {
     };
     // Overload
     public static void forEachCond(Object[] objs, @Nullable Boolf boolF, Cons cons) {
-        forEachCond(wrapArrayLike(objs), boolF, cons);
+        wrapCons(objs, arr0 -> forEachCond(arr0, boolF, cons));
     };
 
 
@@ -108,7 +154,7 @@ public class LCNativeArray {
     };
     // Overload
     public static void forEachRow(Object[] objs, int ord, Cons<NativeArray> cons) {
-        forEachRow(wrapArrayLike(objs), ord, cons);
+        wrapCons(objs, arr0 -> forEachRow(arr0, ord, cons));
     };
 
 
@@ -159,7 +205,254 @@ public class LCNativeArray {
     /* <-------------------- condition --------------------> */
 
 
+    /**
+     * Whether an element exists in an array.
+     */
+    public static boolean includes(NativeArray arr, Object ele) {
+        int i = 0;
+        long iCap = arr.getLength();
+        Object wrappedEle = LCScript.wrapEquality(ele);
+        while(i < iCap) {
+            if(Objects.equals(wrappedEle, LCScript.wrapEquality(arr.get(i)))) return true;
+            i++;
+        };
+        return false;
+    };
+    // Overload
+    public static boolean includes(Object[] objs, Object ele) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> includes(arr0, ele)));
+    };
+
+
+    /**
+     * Whether any of given elements exists in an array.
+     */
+    public static boolean includesAny(NativeArray arr, Object... eles) {
+        int i;
+        long iCap = arr.getLength();
+        int j = 0;
+        int jCap = eles.length;
+        Object wrappedEle;
+        while(j < jCap) {
+            wrappedEle = LCScript.wrapEquality(eles[j]);
+            i = 0;
+            while(i < iCap) {
+                if(Objects.equals(wrappedEle, LCScript.wrapEquality(arr.get(i)))) return true;
+                i++;
+            };
+            j++;
+        };
+        return false;
+    };
+    // Overload
+    public static boolean includesAny(Object[] objs, Object... eles) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> includesAny(arr0, eles)));
+    };
+
+
+    /**
+     * Variant of {@link #includesAny} for function arguments object.
+     */
+    public static boolean includesAnyArguments(NativeArray arr, Scriptable arguments) {
+        int i;
+        long iCap = arr.getLength();
+        int j = 0;
+        int jCap = LCScript.toInt(ScriptableObject.getProperty(arguments, "length"));
+        Object wrappedEle;
+        while(j < jCap) {
+            wrappedEle = LCScript.wrapEquality(ScriptableObject.getProperty(arguments, j));
+            i = 0;
+            while(i < iCap) {
+                if(Objects.equals(wrappedEle, LCScript.wrapEquality(arr.get(i)))) return true;
+                i++;
+            };
+            j++;
+        };
+        return false;
+    };
+    // Overload
+    public static boolean includesAnyArguments(Object[] objs, Scriptable arguments) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> includesAnyArguments(arr0, arguments)));
+    };
+
+
+    /**
+     * Whether all given elements exist in an array.
+     */
+    public static boolean includesAll(NativeArray arr, Object... eles) {
+        int i;
+        long iCap = arr.getLength();
+        int j = 0;
+        int jCap = eles.length;
+        Object wrappedEle;
+        while(j < jCap) {
+            wrappedEle = LCScript.wrapEquality(eles[j]);
+            i = 0;
+            while(i < iCap) {
+                if(!Objects.equals(wrappedEle, LCScript.wrapEquality(arr.get(i)))) return false;
+                i++;
+            };
+            j++;
+        };
+        return true;
+    };
+    // Overload
+    public static boolean includesAll(Object[] objs, Object... eles) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> includesAll(arr0, eles)));
+    };
+
+
+    /**
+     * Variant of {@link #includesAll} for function arguments object.
+     */
+    public static boolean includesAllArguments(NativeArray arr, Scriptable arguments) {
+        int i;
+        long iCap = arr.getLength();
+        int j = 0;
+        int jCap = LCScript.toInt(ScriptableObject.getProperty(arguments, "length"));
+        Object wrappedEle;
+        while(j < jCap) {
+            wrappedEle = LCScript.wrapEquality(ScriptableObject.getProperty(arguments, j));
+            i = 0;
+            while(i < iCap) {
+                if(!Objects.equals(wrappedEle, LCScript.wrapEquality(arr.get(i)))) return false;
+                i++;
+            };
+            j++;
+        };
+        return true;
+    };
+    // Overload
+    public static boolean includesAllArguments(Object[] objs, Scriptable arguments) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> includesAllArguments(arr0, arguments)));
+    };
+
+
+    /**
+     * Variant of {@link #includes} for formatted array.
+     */
+    public static boolean colIncludes(NativeArray fArr, Object ele, int ord, int off) {
+        int i = off;
+        long iCap = fArr.getLength();
+        Object wrappedEle = LCScript.wrapEquality(ele);
+        while(i < iCap) {
+            if(Objects.equals(wrappedEle, LCScript.wrapEquality(fArr.get(i)))) return true;
+            i += ord;
+        };
+        return false;
+    };
+    // Overload
+    public static boolean colIncludes(NativeArray fArr, Object ele, int ord) {
+        return colIncludes(fArr, ele, ord, 0);
+    };
+    public static boolean colIncludes(Object[] objs, Object ele, int ord, int off) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> colIncludes(arr0, ele, ord, off)));
+    };
+    public static boolean colIncludes(Object[] objs, Object ele, int ord) {
+        return colIncludes(objs, ele, ord, 0);
+    };
+
+
     /* <-------------------- modification --------------------> */
+
+
+    /**
+     * Pushes element into an array.
+     * Only necessary on Java side.
+     * @return Array length.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static int push(NativeArray arr, Object ele) {
+        int cap = LCScript.toInt(arr.getLength());
+        arr.put(cap, arr, ele);
+        return cap + 1;
+    };
+
+
+    /**
+     * Variant of {@link #push} that only pushes unique element.
+     */
+    public static NativeArray pushUnique(NativeArray arr, Object ele) {
+        if(!includes(arr, ele)) push(arr, ele);
+        return arr;
+    };
+
+
+    /**
+     * Variant of {@link #push} that only pushes non-null element.
+     */
+    public static NativeArray pushNonNull(NativeArray arr, Object ele) {
+        if(LCScript.isNull(ele)) return arr;
+        push(arr, ele);
+        return arr;
+    };
+
+
+    /**
+     * Variant of {@link #push} that pushes all elements from another array.
+     */
+    public static NativeArray pushAll(NativeArray arr1, NativeArray arr2) {
+        int i = 0;
+        long iCap = arr2.getLength();
+        while(i < iCap) {
+            push(arr1, arr2.get(i));
+            i++;
+        };
+        return arr1;
+    };
+    // Overload
+    public static NativeArray pushAll(NativeArray arr, Object ele) {
+        push(arr, ele);
+        return arr;
+    };
+    public static NativeArray pushAll(NativeArray arr, Object[] eles) {
+        return LCScript.toArray(wrapFunc(eles, arr0 -> pushAll(arr, arr0)));
+    };
+
+
+    /**
+     * Inserts an element at given index.
+     * @return Array length.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static int insert(NativeArray arr, int ind, Object ele) {
+        int i = LCScript.toInt(arr.getLength());
+        arr.put("length", arr, i + 1);
+        while(i > ind) {
+            arr.put(i, arr, arr.get(i - 1));
+            i--;
+        };
+        arr.put(ind, arr, ele);
+        return LCScript.toInt(arr.getLength());
+    };
+
+
+    /**
+     * Variant of {@link #insert} for batch insertion.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray insertAll(NativeArray arr1, int ind, NativeArray arr2) {
+        int i = LCScript.toInt(arr1.getLength());
+        int j = 0;
+        int jCap = LCScript.toInt(arr2.getLength());
+        while(i > ind) {
+            arr1.put(i + jCap - 1, arr1, arr1.get(i - 1));
+            i--;
+        };
+        while(j < jCap) {
+            arr1.put(ind + j, arr1, arr2.get(j));
+            j++;
+        };
+        return arr1;
+    };
+    // Overload
+    public static NativeArray insertAll(NativeArray arr, int ind, Object ele) {
+        insert(arr, ind, ele);
+        return arr;
+    };
+    public static NativeArray insertAll(NativeArray arr, int ind, Object[] eles) {
+        return LCScript.toArray(wrapFunc(eles, arr0 -> insertAll(arr, ind, arr0)));
+    };
 
 
     /**
@@ -175,10 +468,6 @@ public class LCNativeArray {
             i++;
         };
         return arr;
-    };
-    // Overload
-    public static NativeArray with(Object[] objs, Object... eles) {
-        return with(wrapArrayLike(objs), eles);
     };
 
 
@@ -212,9 +501,141 @@ public class LCNativeArray {
         };
         return arr;
     };
+
+
+    /**
+     * Removes the first matching element in an array.
+     * @return Removed element.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static @Nullable Object remove(NativeArray arr, Object ele, @Nullable Func mapF) {
+        int ind = indexOf(arr, ele, mapF);
+        if(ind < 0) return null;
+
+        int i = ind;
+        long iCap = arr.getLength() - 1;
+        Object removedEle = arr.get(ind);
+        while(i < iCap) {
+            arr.put(i, arr, arr.get(i + 1));
+            i++;
+        };
+        arr.put("length", arr, iCap);
+
+        return removedEle;
+    };
     // Overload
-    public static NativeArray withAll(Object[] objs, NativeArray eles) {
-        return withAll(wrapArrayLike(objs), eles);
+    public static @Nullable Object remove(NativeArray arr, Object ele) {
+        return remove(arr, ele, null);
+    };
+
+
+    /**
+     * Variant of {@link #remove} for batch remove.
+     */
+    public static NativeArray removeAll(NativeArray arr1, NativeArray arr2) {
+        int i = 0;
+        long iCap = arr2.getLength();
+        while(i < iCap) {
+            remove(arr1, arr2.get(i));
+            i++;
+        };
+        return arr1;
+    };
+    // Overload
+    public static NativeArray removeAll(NativeArray arr, Object ele) {
+        remove(arr, ele);
+        return arr;
+    };
+    public static NativeArray removeAll(NativeArray arr, Object[] eles) {
+        return LCScript.toArray(wrapFunc(eles, arr0 -> removeAll(arr, arr0)));
+    };
+
+
+    /**
+     * Removes element at given index in an array.
+     * @return Removed element.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static @Nullable Object removeAt(NativeArray arr, int ind) {
+        int iCap = LCScript.toInt(arr.getLength()) - 1;
+        if(ind < 0 || ind > iCap) return null;
+
+        int i = ind;
+        Object removedEle = arr.get(ind);
+        while(i < iCap) {
+            arr.put(i, arr, arr.get(i + 1));
+            i++;
+        };
+        arr.put("length", arr, iCap);
+
+        return removedEle;
+    };
+
+
+    /**
+     * Removes all matching elements in an array.
+     * @return Array length.
+     */
+    public static int pull(NativeArray arr, Object ele) {
+        while(includes(arr, ele)) {
+            remove(arr, ele);
+        };
+        return LCScript.toInt(arr.getLength());
+    };
+
+
+    /**
+     * Variant of {@link #pull} for batch pull.
+     */
+    public static NativeArray pullAll(NativeArray arr1, NativeArray arr2) {
+        int i = 0;
+        long iCap = arr2.getLength();
+        while(i < iCap) {
+            pull(arr1, arr2.get(i));
+            i++;
+        };
+        return arr1;
+    };
+    // Overload
+    public static NativeArray pullAll(NativeArray arr, Object ele) {
+        pull(arr, ele);
+        return arr;
+    };
+    public static NativeArray pullAll(NativeArray arr, Object[] eles) {
+        return LCScript.toArray(wrapFunc(eles, arr0 -> pullAll(arr, arr0)));
+    };
+
+
+    /**
+     * Pulls out null values.
+     */
+    public static NativeArray compact(NativeArray arr) {
+        pull(arr, null);
+        return arr;
+    };
+
+
+    /* <-------------------- operation --------------------> */
+
+
+    /**
+     * Filters out matching elements in an array.
+     * Result is returned as a new array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray filter(NativeArray arr, Boolf boolF) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.filter.newArr");
+        int i = 0;
+        long iCap = arr.getLength();
+        while(i < iCap) {
+            if(boolF.get(LCScript.wrap(arr.get(i)))) arr0.put(i, arr0, arr.get(i));
+            i++;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray filter(Object[] objs, Boolf boolF) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> filter(arr0, boolF)));
     };
 
 
@@ -246,7 +667,7 @@ public class LCNativeArray {
         return sum(arr, null);
     };
     public static double sum(Object[] objs, @Nullable Func mapF) {
-        return sum(wrapArrayLike(objs), mapF);
+        return LCScript.toDouble(wrapFunc(objs, arr0 -> sum(arr0, mapF)));
     };
     public static double sum(Object[] objs) {
         return sum(objs, null);
@@ -278,7 +699,7 @@ public class LCNativeArray {
         return prod(arr, null);
     };
     public static double prod(Object[] objs, @Nullable Func mapF) {
-        return prod(wrapArrayLike(objs), mapF);
+        return LCScript.toDouble(wrapFunc(objs, arr0 -> prod(arr0, mapF)));
     };
     public static double prod(Object[] objs) {
         return prod(objs, null);
@@ -296,7 +717,7 @@ public class LCNativeArray {
         return mean(arr, null);
     };
     public static double mean(Object[] objs, @Nullable Func mapF) {
-        return mean(wrapArrayLike(objs), mapF);
+        return LCScript.toDouble(wrapFunc(objs, arr0 -> mean(arr0, mapF)));
     };
     public static double mean(Object[] objs) {
         return mean(objs, null);
@@ -314,7 +735,7 @@ public class LCNativeArray {
     };
     // Overload
     public static double meanPow(Object[] objs, double pow) {
-        return meanPow(wrapArrayLike(objs), pow);
+        return LCScript.toDouble(wrapFunc(objs, arr0 -> meanPow(arr0, pow)));
     };
 
 
@@ -334,7 +755,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray operWith(Object[] objs, NativeArray arr, Func2 func2) throws IllegalArgumentException {
-        return operWith(wrapArrayLike(objs), arr, func2);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> operWith(arr0, arr, func2)));
     };
 
 
@@ -349,7 +770,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray addWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return addWith(wrapArrayLike(objs), arr);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> addWith(arr0, arr)));
     };
 
 
@@ -364,7 +785,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray subWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return subWith(wrapArrayLike(objs), arr);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> subWith(arr0, arr)));
     };
 
 
@@ -379,7 +800,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray mulWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return mulWith(wrapArrayLike(objs), arr);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> mulWith(arr0, arr)));
     };
 
 
@@ -394,7 +815,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray divWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return divWith(wrapArrayLike(objs), arr);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> divWith(arr0, arr)));
     };
 
 
@@ -409,7 +830,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray modWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return modWith(wrapArrayLike(objs), arr);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> modWith(arr0, arr)));
     };
 
 
@@ -424,7 +845,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray powWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return powWith(wrapArrayLike(objs), arr);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> powWith(arr0, arr)));
     };
 
 
@@ -449,7 +870,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray cumOper(Object[] objs, Func2 func2) {
-        return cumOper(wrapArrayLike(objs), func2);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> cumOper(arr0, func2)));
     };
 
 
@@ -464,7 +885,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray cumSum(Object[] objs) {
-        return cumSum(wrapArrayLike(objs));
+        return LCScript.toArray(wrapFunc(objs, LCNativeArray::cumSum));
     };
 
 
@@ -479,7 +900,7 @@ public class LCNativeArray {
     };
     // Overload
     public static NativeArray cumProd(Object[] objs) {
-        return cumProd(wrapArrayLike(objs));
+        return LCScript.toArray(wrapFunc(objs, LCNativeArray::cumProd));
     };
 
 
@@ -513,10 +934,10 @@ public class LCNativeArray {
         return applyDiff(arr);
     };
     public static NativeArray diff(Object[] objs, int repeat) {
-        return diff(wrapArrayLike(objs), repeat);
+        return LCScript.toArray(wrapFunc(objs, arr0 -> diff(arr0, repeat)));
     };
     public static NativeArray diff(Object[] objs) {
-        return diff(wrapArrayLike(objs));
+        return LCScript.toArray(wrapFunc(objs, LCNativeArray::diff));
     };
 
 

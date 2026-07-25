@@ -18,7 +18,7 @@
     };
 
     blk.ventSize = Math.round(Mathf.clamp(blk.ventSize, 1, 6));
-    blk.offPon2s = MDL_pos.sizeOffsetPon2s[blk.ventSize];
+    blk.offPon2s = LCPos.sizeOffs[blk.ventSize];
     blk.offDraw = blk.ventSize % 2 === 0 ? 4.0 : 0.0;
 
     if(blk.parent !== Blocks.air) {
@@ -39,6 +39,10 @@
     let ot;
     blk.offPon2s.forEachFast(pon2 => {
       ot = t.nearby(pon2);
+      printAll(
+        pon2,
+        ot,
+      );
       if(ot != null) blk.parent.drawBase(ot);
     });
 

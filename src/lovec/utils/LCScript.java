@@ -52,10 +52,18 @@ public class LCScript {
 
 
     /**
+     * Whether given value is undefined.
+     */
+    public static boolean isUndefined(Object val) {
+        return val == UniqueTag.NOT_FOUND || val == Undefined.instance;
+    };
+
+
+    /**
      * Whether given value is null or undefined.
      */
     public static boolean isNull(Object val) {
-        return val == null || val == UniqueTag.NOT_FOUND || val == Undefined.instance;
+        return val == null || isUndefined(val);
     };
 
 
@@ -224,6 +232,17 @@ public class LCScript {
     // Overload
     public static Object thisInvoke(Function fun, Scriptable scope, Scriptable thisObj, Object... args) {
         return fun.call(Context.getContext(), scope, thisObj, args);
+    };
+
+
+    /**
+     * Wraps a Java object (often converted from JS value) for proper equality.
+     */
+    public static Object wrapEquality(Object javaObj) {
+        if(javaObj instanceof Number num) return toDouble(javaObj);
+        if(isUndefined(javaObj)) return Undefined.instance;
+
+        return javaObj;
     };
 
 

@@ -3,19 +3,50 @@ package lovec.utils;
 import arc.Core;
 import arc.func.Cons3;
 import arc.math.Mathf;
+import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import arc.util.Nullable;
 import arc.util.Tmp;
+import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import mindustry.type.Item;
 import mindustry.world.Tile;
+import rhino.NativeArray;
 
 /**
  * Handles position-related calculation.
  */
 public class LCPos {
+
+
+    public static Point2[][] sizeOffs = {
+        {},
+        {new Point2(0, 0)},
+        {
+            new Point2(0, 0), new Point2(1, 0),
+            new Point2(0, 1), new Point2(1, 1),
+        },
+        {
+            new Point2(-1, -1), new Point2(0, -1), new Point2(1, -1),
+            new Point2(-1, 0), new Point2(0, 0), new Point2(1, 0),
+            new Point2(-1, 1), new Point2(0, 1), new Point2(1, 1),
+        },
+        {
+            new Point2(-1, -1), new Point2(0, -1), new Point2(1, -1), new Point2(2, -1),
+            new Point2(-1, 0), new Point2(0, 0), new Point2(1, 0), new Point2(2, 0),
+            new Point2(-1, 1), new Point2(0, 1), new Point2(1, 1), new Point2(2, 1),
+            new Point2(-1, 2), new Point2(0, 2), new Point2(1, 2), new Point2(2, 2),
+        },
+        {
+            new Point2(-2, -2), new Point2(-1, -2), new Point2(0, -2), new Point2(1, -2), new Point2(2, -2),
+            new Point2(-2, -1), new Point2(-1, -1), new Point2(0, -1), new Point2(1, -1), new Point2(2, -1),
+            new Point2(-2, 0), new Point2(-1, 0), new Point2(0, 0), new Point2(1, 0), new Point2(2, 0),
+            new Point2(-2, 1), new Point2(-1, 1), new Point2(0, 1), new Point2(1, 1), new Point2(2, 1),
+            new Point2(-2, 2), new Point2(-1, 2), new Point2(0, 2), new Point2(1, 2), new Point2(2, 2),
+        },
+    };
 
 
     /* <-------------------- basic --------------------> */
@@ -229,6 +260,52 @@ public class LCPos {
         return Vars.headless ?
             null :
             Vars.world.tileWorld(Core.input.mouseWorldX(), Core.input.mouseWorldY());
+    };
+
+
+    /* <-------------------- tile list --------------------> */
+
+
+    public static NativeArray getTilesRot(@Nullable NativeArray contArr, @Nullable Tile t, int rot, int size) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesRot.newArr");
+        if(t == null) return arr;
+
+        int iBase, iCap;
+        if(size % 2 == 0) {
+            iBase = (size / 2 - 1) * -1;
+            iCap = size / 2 + 1;
+        } else {
+            iBase = (size - 1) / -2;
+            iCap = (size - 1) / 2 + 1;
+        };
+        int px = 0, py = 0;
+        int rot_fi = Mathf.mod(rot, 4);
+        int i = iBase;
+        if(size % 2 == 0) {
+            while(i < iCap) {
+                switch(rot_fi) {
+                    case 0 -> {px = size / 2 + 1; py = i;}
+                    case 1 -> {px = i; py = size / 2 + 1;}
+                    case 2 -> {px = size / -2; py = i;}
+                    case 3 -> {px = i; py = size / -2;}
+                };
+                LCNativeArray.pushUnique(arr, t.nearby(px, py));
+                i++;
+            };
+        } else {
+            while(i < iCap) {
+                switch(rot_fi) {
+                    case 0 -> {px = (size + 1) / 2; py = i;}
+                    case 1 -> {px = i; py = (size + 1) / 2;}
+                    case 2 -> {px = (size + 1) / -2; py = i;}
+                    case 3 -> {px = i; py = (size + 1) / -2;}
+                };
+                LCNativeArray.pushUnique(arr, t.nearby(px, py));
+                i++;
+            };
+        };
+
+        return arr;
     };
 
 

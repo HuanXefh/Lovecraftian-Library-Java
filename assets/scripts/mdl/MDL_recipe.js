@@ -172,7 +172,7 @@
    * @return {RecipeObject|null}
    */
   const _rcObj = function(rcMdl, rcHeader) {
-    return _rcLi(rcMdl).read(convertHeader(rcMdl, rcHeader), null);
+    return _rcLi(rcMdl).read(String(convertHeader(rcMdl, rcHeader)), null);
   };
   exports._rcObj = _rcObj;
 
@@ -575,7 +575,7 @@
     _categs(rcMdl).forEachFast(categ => {
       obj[categ] = [];
       rcHeaders.forEachFast(rcHeader => {
-        if(_categ(rcMdl, rcHeader) === categ) obj[categ].push(rcHeader);
+        if(_categ(rcMdl, rcHeader) == categ) obj[categ].push(rcHeader);
       });
     });
 

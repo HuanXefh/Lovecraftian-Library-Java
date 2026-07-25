@@ -22,7 +22,7 @@
   CLS_recipe.prototype.init = function(blk, rcMdl, rcHeader, useAutoSelection) {
     this.owner = blk;
     this.rcMdl = rcMdl;
-    this.rcHeader = rcHeader;
+    this.rcHeader = String(rcHeader);
     this.name = CLS_recipe.getName(this.owner, this.rcHeader);
     this.useAutoSelection = Boolean(useAutoSelection);
 

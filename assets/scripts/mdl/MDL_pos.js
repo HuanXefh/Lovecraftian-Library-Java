@@ -18,47 +18,6 @@
 */
 
 
-  /* <------------------------------ auxiliary ------------------------------ */
-
-
-  const sizeOffsetPon2s = [
-
-    [],
-
-    [
-      new Point2(0, 0),
-    ],
-
-    [
-      new Point2(0, 0), new Point2(1, 0),
-      new Point2(0, 1), new Point2(1, 1),
-    ],
-
-    [
-      new Point2(-1, -1), new Point2(0, -1), new Point2(1, -1),
-      new Point2(-1, 0), new Point2(0, 0), new Point2(1, 0),
-      new Point2(-1, 1), new Point2(0, 1), new Point2(1, 1),
-    ],
-
-    [
-      new Point2(-1, -1), new Point2(0, -1), new Point2(1, -1), new Point2(2, -1),
-      new Point2(-1, 0), new Point2(0, 0), new Point2(1, 0), new Point2(2, 0),
-      new Point2(-1, 1), new Point2(0, 1), new Point2(1, 1), new Point2(2, 1),
-      new Point2(-1, 2), new Point2(0, 2), new Point2(1, 2), new Point2(2, 2),
-    ],
-
-    [
-      new Point2(-2, -2), new Point2(-1, -2), new Point2(0, -2), new Point2(1, -2), new Point2(2, -2),
-      new Point2(-2, -1), new Point2(-1, -1), new Point2(0, -1), new Point2(1, -1), new Point2(2, -1),
-      new Point2(-2, 0), new Point2(-1, 0), new Point2(0, 0), new Point2(1, 0), new Point2(2, 0),
-      new Point2(-2, 1), new Point2(-1, 1), new Point2(0, 1), new Point2(1, 1), new Point2(2, 1),
-      new Point2(-2, 2), new Point2(-1, 2), new Point2(0, 2), new Point2(1, 2), new Point2(2, 2),
-    ],
-
-  ];
-  exports.sizeOffsetPon2s = sizeOffsetPon2s;
-
-
   /* <------------------------------ rotation ------------------------------ */
 
 
@@ -553,7 +512,7 @@
     } else {
       let ot0;
       for(let i = 0; i < 4; i++) {
-        ot0 = t.nearby(sizeOffsetPon2s[2][i]);
+        ot0 = t.nearby(LCPos.sizeOffs[2][i]);
         if(ot0 == null) continue;
         Geometry.circle(ot0.x, ot0.y, w, h, r, (tx, ty) => {
           let ot = Vars.world.tile(tx, ty);
