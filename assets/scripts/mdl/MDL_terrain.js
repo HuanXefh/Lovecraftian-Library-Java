@@ -80,7 +80,7 @@
    * @return {void}
    */
   const newTerGetter = function(ter, matGrps) {
-    terGetters.push((map, count, thr) => sumCountTers(map, matGrps) / count < thr ? "!PENDING" : ter);
+    terGetters.push((map, count, thr) => sumCountTers(map, matGrps) / count < thr ? TmpStateTag.pending : ter);
   };
   exports.newTerGetter = newTerGetter;
 
@@ -92,7 +92,7 @@
    * @return {void}
    */
   const newBankTerGetter = function(ter, liqMatGrp) {
-    bankTerGetters.push((map, count, thr) => map.get(liqMatGrp, 0) / count < thr * VAR.param.terBankLiqFrac || sumCountTers(map, tryVal(bankTerMatGrps[ter], Array.air)) / count < thr * VAR.param.terBankGroundFrac ? "!PENDING" : ter);
+    bankTerGetters.push((map, count, thr) => map.get(liqMatGrp, 0) / count < thr * VAR.param.terBankLiqFrac || sumCountTers(map, tryVal(bankTerMatGrps[ter], Array.air)) / count < thr * VAR.param.terBankGroundFrac ? TmpStateTag.pending : ter);
   };
   exports.newBankTerGetter = newBankTerGetter;
 
@@ -153,11 +153,11 @@
     ter = null;
     terGetters.forEachFast(getter => {
       tmpTer = getter(thisFun.countMap, count, VAR.param.terFlrThr);
-      if(tmpTer !== "!PENDING") ter = tmpTer;
+      if(tmpTer !== TmpStateTag.pending) ter = tmpTer;
     });
     bankTerGetters.forEachFast(getter => {
       tmpTer = getter(thisFun.countMap, count, VAR.param.terFlrThr);
-      if(tmpTer !== "!PENDING") ter = tmpTer;
+      if(tmpTer !== TmpStateTag.pending) ter = tmpTer;
     });
 
     return ter;

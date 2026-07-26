@@ -145,7 +145,7 @@
     while(i < iCap) {
       if(arr[i] !== arr[i + 1]) {
         this.paramAliasArr.write([arr[i], arr[i + 1]], arr[i + 2]);
-        this.paramObj[arr[i]] = "!ALIAS";
+        this.paramObj[arr[i]] = TmpStateTag.alias;
       };
       i += 3;
     };
@@ -330,7 +330,7 @@
       // Migrate alias properties to real ones
       if(obj[namePropNew] === undefined) {
         obj[namePropOld] = def;
-      } else if(obj[namePropNew] === "!ALIAS") {
+      } else if(obj[namePropNew] === TmpStateTag.alias) {
         obj[namePropOld] = def;
         delete obj[namePropNew];
       } else {

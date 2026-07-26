@@ -20,7 +20,7 @@
 
   function comp_setStats(blk) {
     let matGrpB = MDL_flow._matGrpB(blk);
-    if(matGrpB !== "!ERR") blk.stats.add(fetchStat("lovec", "blk0liq-matgrp"), matGrpB);
+    if(matGrpB !== TmpStateTag.error) blk.stats.add(fetchStat("lovec", "blk0liq-matgrp"), matGrpB);
     if(blk.cloggable) blk.stats.add(fetchStat("lovec", "blk0liq-cloggable"), true);
   };
 

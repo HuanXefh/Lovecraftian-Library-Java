@@ -282,12 +282,12 @@
     let val = 0.0;
     if(ct_gn == null) return val;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
-      "!CUSTOM" :
+      TmpStateTag.customValue :
       MDL_content._ct(ct_gn, null, true);
     let blk = MDL_content._ct(blk_gn, "blk");
     if(ct == null || blk == null) return val;
 
-    let arr = ct === "!CUSTOM" ?
+    let arr = ct === TmpStateTag.customValue ?
       rcDict.cons[ct_gn] :
       ct instanceof Item ?
         rcDict.cons.item[ct.id] :
@@ -331,12 +331,12 @@
     let val = 0.0;
     if(ct_gn == null) return val;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
-      "!CUSTOM" :
+      TmpStateTag.customValue :
       MDL_content._ct(ct_gn, null, true);
     let blk = MDL_content._ct(blk_gn, "blk");
     if(ct == null || blk == null) return val;
 
-    let arr = ct === "!CUSTOM" ?
+    let arr = ct === TmpStateTag.customValue ?
       rcDict.prod[ct_gn] :
       ct instanceof Item ?
         rcDict.prod.item[ct.id] :
@@ -418,11 +418,11 @@
 
     if(ct_gn == null) return arr;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
-      "!CUSTOM" :
+      TmpStateTag.customValue :
       MDL_content._ct(ct_gn, null, true);
     if(ct == null) return arr;
 
-    let arr1 = ct === "!CUSTOM" ?
+    let arr1 = ct === TmpStateTag.customValue ?
       rcDict.cons[ct_gn] :
       ct instanceof Item ?
         rcDict.cons.item[ct.id] :
@@ -461,11 +461,11 @@
 
     if(ct_gn == null) return arr;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
-      "!CUSTOM" :
+      TmpStateTag.customValue :
       MDL_content._ct(ct_gn, null, true);
     if(ct == null) return arr;
 
-    let arr1 = ct === "!CUSTOM" ?
+    let arr1 = ct === TmpStateTag.customValue ?
       rcDict.prod[ct_gn] :
       ct instanceof Item ?
         rcDict.prod.item[ct.id] :

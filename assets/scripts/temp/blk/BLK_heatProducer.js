@@ -76,7 +76,7 @@
        * @memberof B_heatProducer
        * @instance
        */
-      blk$heatProd: "!REPLACE",
+      blk$heatProd: TmpStateTag.needReplace,
 
 
     })

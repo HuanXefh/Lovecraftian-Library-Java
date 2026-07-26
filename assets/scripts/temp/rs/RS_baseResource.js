@@ -290,7 +290,7 @@
       let str;
       if(this.intmdTags.length === 1 && DB_item.db["intmd"]["insertName"].colIncludes(this.intmdTags[0], 2)) {
         // For a single name to insert, use "main (type)" format
-        str = this.intmdParent.localizedName + MDL_text._space() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], "!ERR"));
+        str = this.intmdParent.localizedName + MDL_text._space() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], TmpStateTag.error.toString()));
       } else {
         // For regular intermediate, use "type (insert/main/sub)" format
         str = String(this.ex_getLocalizedIntmdName());

@@ -76,12 +76,12 @@
       let mapCur = global.lovecUtil.fun._mapCur();
 
       // If map name not matched, clear the LSAV (creates a backup first)
-      if(lsav["save-map"] !== "!UNDEF" && lsav["save-map"] !== mapCur) {
+      if(lsav["save-map"] !== TmpStateTag.undefined && lsav["save-map"] !== mapCur) {
         MDL_json.write(MDL_file._lsav(true), lsav);
         initLsav("lsav");
       };
       // If outside of campaign, check map name for PLASV too
-      if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && plsav["save-map"] !== "!UNDEF" && plsav["save-map"] !== mapCur) {
+      if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && plsav["save-map"] !== TmpStateTag.undefined && plsav["save-map"] !== mapCur) {
         MDL_json.write(MDL_file._plsav(true), plsav);
         initLsav("plsav");
       };

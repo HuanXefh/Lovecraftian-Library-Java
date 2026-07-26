@@ -1,14 +1,19 @@
 package lovec.utils.extend;
 
 import arc.func.*;
+import arc.math.Mathf;
 import arc.util.Nullable;
 import arc.util.pooling.Pools;
 import lovec.utils.LCScript;
+import lovec.utils.TmpStateTag;
 import lovec.utils.pooling.PoolableNativeArray;
 import rhino.*;
 
 import java.util.Objects;
 
+/**
+ * Various methods for Rhino native array.
+ */
 public class LCNativeArray {
 
 
@@ -48,6 +53,81 @@ public class LCNativeArray {
     // Overload
     public static int indexOf(NativeArray arr, Object ele) {
         return indexOf(arr, ele, null);
+    };
+    public static int indexOf(Object[] objs, Object ele, @Nullable Func mapF) {
+        return LCScript.toInt(wrapFunc(objs, arr0 -> indexOf(arr0, ele, mapF)));
+    };
+    public static int indexOf(Object[] objs, Object ele) {
+        return indexOf(objs, ele, null);
+    };
+
+
+    /**
+     * Gets first element, null if not found.
+     */
+    public static @Nullable Object first(NativeArray arr) {
+        long cap = arr.getLength();
+        return cap == 0 ? null : arr.get(0);
+    };
+    // Overload
+    public static @Nullable Object first(Object[] objs) {
+        return wrapFunc(objs, LCNativeArray::first);
+    };
+
+
+    /**
+     * Gets last element, null if not found.
+     */
+    public static @Nullable Object last(NativeArray arr) {
+        long cap = arr.getLength();
+        return cap == 0 ? null : arr.get(cap - 1);
+    };
+    // Overload
+    public static @Nullable Object last(Object[] objs) {
+        return wrapFunc(objs, LCNativeArray::last);
+    };
+
+
+    /**
+     * Gets index of the last element, 0 if empty array.
+     */
+    public static int lastIndex(NativeArray arr) {
+        long cap = arr.getLength();
+        return LCScript.toInt(cap == 0 ? 0 : (cap - 1));
+    };
+    // Overload
+    public static int lastIndex(Object[] objs) {
+        return LCScript.toInt(wrapFunc(objs, LCNativeArray::lastIndex));
+    };
+
+
+    /**
+     * Gets fraction of index of some element by array length.
+     * Returns -1 if not found.
+     */
+    public static float calcIndexFrac(NativeArray arr, Object ele, boolean useInd) {
+        int ind = -1;
+        if(useInd) {
+            if(ele instanceof Number num) {
+                int ind0 = num.intValue();
+                if(ind0 >= 0 && ind0 < arr.getLength()) {
+                    ind = ind0;
+                };
+            };
+        } else {
+            ind = indexOf(arr, ele);
+        };
+        return ind < 0 ? -1f : ((ind + 1f) / arr.getLength());
+    };
+    // Overload
+    public static float calcIndexFrac(NativeArray arr, Object ele) {
+        return calcIndexFrac(arr, ele, false);
+    };
+    public static float calcIndexFrac(Object[] objs, Object ele, boolean useInd) {
+        return LCScript.toFloat(wrapFunc(objs, arr0 -> calcIndexFrac(arr0, ele, useInd)));
+    };
+    public static float calcIndexFrac(Object[] objs, Object ele) {
+        return calcIndexFrac(objs, ele, false);
     };
 
 
@@ -456,6 +536,15 @@ public class LCNativeArray {
 
 
     /**
+     * Adds element to the start of an array.
+     * @return Array length.
+     */
+    public static int unshift(NativeArray arr, Object ele) {
+        return insert(arr, 0, ele);
+    };
+
+
+    /**
      * Clears an array and fill it with given elements.
      */
     @SuppressWarnings("CollectionAddedToSelf")
@@ -573,6 +662,42 @@ public class LCNativeArray {
 
 
     /**
+     * Removes the first element in an array.
+     * @return Removed element.
+     */
+    public static @Nullable Object shift(NativeArray arr) {
+        return removeAt(arr, 0);
+    };
+
+
+    /**
+     * Variant of {@link #shift} for batch remove.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray shiftAll(NativeArray arr, int amt, @Nullable NativeArray resultOut) {
+        int i = 0;
+        if(resultOut == null) {
+            while(i < amt) {
+                shift(arr);
+                i++;
+            };
+        } else {
+            clear(resultOut);
+            while(i < amt) {
+                resultOut.put(i, resultOut, shift(arr));
+                i++;
+            };
+        };
+
+        return arr;
+    };
+    // Overload
+    public static NativeArray shiftAll(NativeArray arr, int amt) {
+        return shiftAll(arr, amt, null);
+    };
+
+
+    /**
      * Removes all matching elements in an array.
      * @return Array length.
      */
@@ -615,7 +740,112 @@ public class LCNativeArray {
     };
 
 
+    /**
+     * Swaps position of two elements.
+     */
+    public static NativeArray swap(NativeArray arr, Object ele1, Object ele2) {
+        return swapByIndex(arr, indexOf(arr, ele1), indexOf(arr, ele2));
+    };
+
+
+    /**
+     * Variant of {@link #swap} using index.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray swapByIndex(NativeArray arr, int ind1, int ind2) {
+        long cap = arr.getLength();
+        if(ind1 < 0 || ind1 >= cap || ind2 < 0 || ind2 >= cap) return arr;
+
+        Object tmpEle = arr.get(ind2);
+        arr.put(ind2, arr, arr.get(ind1));
+        arr.put(ind1, arr, tmpEle);
+
+        return arr;
+    };
+
+
+    /**
+     * Variant of {@link #map} that modifies original array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray inSituMap(NativeArray arr, Func mapF) {
+        int i = 0;
+        long iCap = arr.getLength();
+        while(i < iCap) {
+            arr.put(i, arr, mapF.get(LCScript.wrap(arr.get(i))));
+            i++;
+        };
+        return arr;
+    };
+
+
+    /**
+     * Variant of {@link #filter} that modifies original array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray inSituFilter(NativeArray arr, Boolf boolF) {
+        int i = 0;
+        long iCap = arr.getLength();
+        while(i < iCap) {
+            if(!boolF.get(LCScript.wrap(arr.get(i)))) arr.put(i, arr, TmpStateTag.pending);
+            i++;
+        };
+        pull(arr, TmpStateTag.pending);
+
+        return arr;
+    };
+
+
+    /**
+     * Randomizes order of elements in an array.
+     * Supports formatted array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray shuffle(NativeArray fArr, int ord) {
+        int iCap = LCScript.toInt(fArr.getLength());
+        if(iCap == 0) return fArr;
+
+        int j;
+        Object tmpEle;
+        for(int i = iCap - ord; i > -1; i -= ord) {
+            j = Math.round(Mathf.random((float)(i) / ord)) * ord;
+            for(int k = 0; k < ord; k++) {
+                tmpEle = fArr.get(i + k);
+                fArr.put(i + k, fArr, fArr.get(j + k));
+                fArr.put(j + k, fArr, tmpEle);
+            };
+        };
+
+        return fArr;
+    };
+    // Overload
+    public static NativeArray shuffle(NativeArray arr) {
+        return shuffle(arr, 1);
+    };
+
+
     /* <-------------------- operation --------------------> */
+
+
+    /**
+     * Maps every element in an array to a new element.
+     * Result is returned as a new array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray map(NativeArray arr, Func mapF) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.map.newArr");
+        int i = 0;
+        long iCap = arr.getLength();
+        while(i < iCap) {
+            arr0.put(i, arr0, mapF.get(LCScript.wrap(arr.get(i))));
+            i++;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray map(Object[] objs, Func mapF) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> map(arr0, mapF)));
+    };
 
 
     /**

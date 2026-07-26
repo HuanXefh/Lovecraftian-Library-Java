@@ -706,7 +706,7 @@
           } else if(typeof tmp === "number") {
             tbCell.add(Strings.autoFixed(tmp, 2)).padLeft(8.0).padRight(8.0);
           } else {
-            tbCell.add("!ERR");
+            tbCell.add(TmpStateTag.error.toString());
           };
         })
         .growX()

@@ -773,19 +773,19 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        blk$useAutoSelection: "!REPLACE",
+        blk$useAutoSelection: TmpStateTag.needReplace,
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        blk$isErekirHeatConsumer: "!REPLACE",
+        blk$isErekirHeatConsumer: TmpStateTag.needReplace,
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        blk$isErekirHeatProducer: "!REPLACE",
+        blk$isErekirHeatProducer: TmpStateTag.needReplace,
 
 
       }))

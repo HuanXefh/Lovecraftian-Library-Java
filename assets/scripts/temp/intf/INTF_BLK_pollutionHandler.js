@@ -141,7 +141,7 @@
          * @memberof INTF_B_pollutionHandler
          * @instance
          */
-        blk$polTol: "!REPLACE",
+        blk$polTol: TmpStateTag.needReplace,
 
 
       }),

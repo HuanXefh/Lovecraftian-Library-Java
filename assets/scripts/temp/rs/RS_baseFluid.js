@@ -62,9 +62,9 @@
     let fHeat = MDL_flow._fHeat(liq);
     if(!fHeat.fEqual(26.0)) liq.stats.add(fetchStat("lovec", "rs-fheat"), fHeat, fetchStatUnit("lovec", "heatunits"));
     let eleGrpB = MDL_flow._eleGrpB(liq);
-    if(eleGrpB !== "!ERR") liq.stats.add(fetchStat("lovec", "rs-elegrp"), eleGrpB);
+    if(eleGrpB !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-elegrp"), eleGrpB);
     let fTagsB = MDL_flow._fTagsB(liq);
-    if(fTagsB !== "!NOTAG") liq.stats.add(fetchStat("lovec", "rs-ftags"), fTagsB);
+    if(fTagsB !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-ftags"), fTagsB);
     let corPow = MDL_flow._corPow(liq);
     if(corPow > 0.0) liq.stats.add(fetchStat("lovec", "rs-corpow"), corPow.perc());
 

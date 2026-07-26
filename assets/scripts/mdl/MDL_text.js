@@ -107,7 +107,7 @@
       str1 = dmg == null || dmg < 0.0001 ? null : String(dmg.roundFixed(2)).color(Pal.remove),
       str2 = dmgPerc == null || dmgPerc < 0.0001 ? null : dmgPerc.perc().color(Pal.remove);
 
-    if(str1 == null && str2 == null) return "!ERR";
+    if(str1 == null && str2 == null) return TmpStateTag.error.toString();
     if(str1 == null) return str2;
     if(str2 == null) return str1;
 
@@ -127,7 +127,7 @@
       str1 = healAmt == null || healAmt < 0.0001 ? null : String(healAmt.roundFixed(2)).color(Pal.heal),
       str2 = healPerc == null || healPerc < 0.0001 ? null : healPerc.perc().color(Pal.heal);
 
-    if(str1 == null && str2 == null) return "!ERR";
+    if(str1 == null && str2 == null) return TmpStateTag.error.toString();
     if(str1 == null) return str2;
     if(str2 == null) return str1;
     return str1 + " + ".color(Pal.heal) + str2;
@@ -139,6 +139,7 @@
    * Gets tag string from a list of tags.
    * @param {Array<string>} strs - Tags as string, should be translated beforehand.
    * @param {boolean|unset} [ignoreEmpty] - If true, returns empty string when no tags.
+   * @return {string}
    * @example
    * _tagText(["chloric", "fluoric", "oxidative"]);                // Returns "chloric; fluoric; oxidative"
    */
@@ -146,7 +147,7 @@
     let str_fi = "";
     strs.forEachFast(str => str_fi += str + "; ");
 
-    return (String.isEmpty(str_fi) && !ignoreEmpty) ? "!NOTAG" : str_fi;
+    return (String.isEmpty(str_fi) && !ignoreEmpty) ? TmpStateTag.error : str_fi;
   };
   exports._tagText = _tagText;
 
@@ -159,7 +160,7 @@
    */
   const tagTextToArr = function(contArr, text) {
     let arr = contArr != null ? contArr.clear() : [];
-    if(String.isEmpty(text) || text === "!NOTAG") return arr;
+    if(String.isEmpty(text) || text === TmpStateTag.error) return arr;
 
     let tmp = "", l;
     let i = 0, iCap = text.iCap();

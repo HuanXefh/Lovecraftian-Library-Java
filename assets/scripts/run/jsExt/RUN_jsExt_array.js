@@ -25,7 +25,7 @@
    * @return {any}
    */
   Array.prototype.first = function() {
-    return this[0] == null ? null : this[0];
+    return LCNativeArray.first(this);
   };
 
 
@@ -34,7 +34,7 @@
    * @return {any}
    */
   Array.prototype.last = function() {
-    return this.length === 0 ? null : this[this.length - 1];
+    return LCNativeArray.last(this);
   };
 
 
@@ -42,23 +42,23 @@
    * Gets index of the last element, 0 if empty array.
    * @return {number}
    */
-  Array.prototype.lastInd = function() {
-    return this.length === 0 ? 0 : this.length - 1;
+  Array.prototype.lastIndex = function() {
+    return LCNativeArray.lastIndex(this);
   };
 
 
   /**
    * Gets fraction of index of some element by array length.
+   * Returns -1 if not found.
    * @param {any} ele
    * @param {boolean|unset} [useInd] - If true, `ele` will be treated as index directly.
    * @param {boolean|unset} [returnNull] - If true, this method will return null instead of 0.0 if element not in the array.
    * @return {number|null}
    */
-  Array.prototype.getIndFrac = function(ele, useInd, returnNull) {
-    let ind = useInd ? ele : this.indexOf(ele);
-    return ind < 0 ?
-      (returnNull ? null : 0.0) :
-      ((ind + 1) / this.length);
+  Array.prototype.calcIndexFrac = function(ele, useInd) {
+    return useInd == null ?
+      LCNativeArray.calcIndexFrac(this, ele) :
+      LCNativeArray.calcIndexFrac(this, ele, useInd);
   };
 
 
@@ -379,29 +379,15 @@
 
 
   /**
-   * Variant of {@link Array#shift} that removes multiple elements at one time.
-   * @param {number|unset} [amt]
-   * @param {boolean|unset} [forResult] - If true, returns removed elements instead of this array.
+   * Variant of {@link Array#shift} for batch remove.
+   * @param {number} amt
+   * @param {Array|unset} [resultOut] - If set, removed elements will be stored here.
    * @return {Array}
    */
-  Array.prototype.shiftAll = function(amt, forResult) {
-    if(amt == null) amt = 1;
-
-    let i = 0;
-    if(!forResult) {
-      while(i < amt) {
-        this.shift();
-        i++;
-      };
-      return this;
-    };
-
-    let arr = [];
-    while(i < amt) {
-      arr.push(this.shift());
-      i++;
-    };
-    return arr;
+  Array.prototype.shiftAll = function(amt, resultOut) {
+    return resultOut == null ?
+      LCNativeArray.shiftAll(this, amt) :
+      LCNativeArray.shiftAll(this, amt, resultOut);
   };
 
 
@@ -426,10 +412,7 @@
    * @return {this}
    */
   Array.prototype.swap = function(ele1, ele2) {
-    return this.swapByInd(
-      this.indexOf(ele1),
-      this.indexOf(ele2),
-    );
+    return LCNativeArray.swap(this, ele1, ele2);
   };
 
 
@@ -439,53 +422,34 @@
    * @param {number} ind2
    * @return {this}
    */
-  Array.prototype.swapByInd = function(ind1, ind2) {
-    if(ind1 < 0 || ind2 < 0) return this;
-
-    let tmp = this[ind2];
-    this[ind2] = this[ind1];
-    this[ind1] = tmp;
-
-    return this;
+  Array.prototype.swapByIndex = function(ind1, ind2) {
+    return LCNativeArray.swapByIndex(this, ind1, ind2);
   };
 
 
   /**
-   * Variant of {@link Array#map} that doesn't return a new array.
+   * Variant of {@link Array#map} that modifies original array.
    * @param {function(any): any} mapF
    * @return {this}
    */
   Array.prototype.inSituMap = function(mapF) {
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      this[i] = mapF(this[i]);
-      i++;
-    };
-
-    return this;
+    return LCNativeArray.inSituMap(this, mapF);
   };
 
 
   /**
-   * Variant of {@link Array#filter} that doesn't return a new array.
+   * Variant of {@link Array#filter} that modifies original array.
    * @param {function(any): boolean} boolF
    * @return {this}
    */
   Array.prototype.inSituFilter = function(boolF) {
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      if(!boolF(this[i])) this[i] = "!PENDING";
-      i++;
-    };
-    this.pull("!PENDING");
-
-    return this;
+    return LCNativeArray.inSituFilter(this, boolF);
   };
 
 
 
   /**
-   * Variant of {@link Array#sort} for purely numeric array.
+   * Variant of {@link Array#sort} for numeric array.
    * @param {boolean|unset} [rev] - If true, the order is reversed (larger to smaller).
    * @return {this}
    */
@@ -515,48 +479,14 @@
 
   /**
    * Randomizes order of elements in this array.
-   * Can be used for a formatted array.
+   * Supports formatted array.
    * @param {number|unset} [ord]
    * @return {this}
    */
-  Array.prototype.randomize = function(ord) {
-    if(ord == null) ord = 1;
-
-    let iCap = this.iCap();
-    if(iCap === 0) return this;
-    for(let i = iCap - ord, j; i > -1; i -= ord) {
-      j = Math.round(Mathf.random(i / ord)) * ord;
-      for(let k = 0; k < ord; k++) {
-        let tmp = this[i + k];
-        this[i + k] = this[j + k];
-        this[j + k] = tmp;
-      };
-    };
-
-    return this;
-  };
-
-
-  /**
-   * Replaces matching elements in this array.
-   * Modifies the original array.
-   * Can be used for a formatted array.
-   * @param {function(any): any} mapF
-   * @param {number|unset} [ord]
-   * @param {number|unset} [off]
-   * @return {this}
-   */
-  Array.prototype.substitute = function(mapF, ord, off) {
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      this[i + off] = mapF(this[i + off]);
-      i += ord;
-    };
-
-    return this;
+  Array.prototype.shuffle = function(ord) {
+    return ord == null ?
+      LCNativeArray.shuffle(this) :
+      LCNativeArray.shuffle(this, ord);
   };
 
 
@@ -848,7 +778,7 @@
    * @return {Array}
    */
   Array.prototype.sample = function(amt) {
-    let arr = Array.prototype.sample.tmpArr.cpy(this).randomize();
+    let arr = Array.prototype.sample.tmpArr.cpy(this).shuffle();
     if(amt == null) amt = this.iCap();
 
     return amt >= arr.length ?

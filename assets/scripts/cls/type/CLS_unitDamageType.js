@@ -16,8 +16,7 @@
 
   CLS_unitDamageType.prototype.init = function(name, tag) {
     this.name = registerUniqueName(name, insNames, "unit damage type");
-    if(typeof tag !== "string") ERROR_HANDLER.throw("typeMismatch", tag, "string");
-    this.tag = tag;
+    this.tag = String(tag);
 
     nameTypeMap.put(this.name, this);
   };
@@ -115,7 +114,7 @@
 
 
 
-CLS_unitDamageType.NONE = new CLS_unitDamageType("none", "!ERR");
+CLS_unitDamageType.NONE = new CLS_unitDamageType("none", TmpStateTag.error);
 
 
 module.exports = CLS_unitDamageType;

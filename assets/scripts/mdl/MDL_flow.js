@@ -60,7 +60,7 @@
    */
   const _eleGrpB = function(liq_gn) {
     let eleGrp = _eleGrp(liq_gn);
-    if(eleGrp == null) return "!ERR";
+    if(eleGrp == null) return TmpStateTag.error;
 
     return MDL_bundle._term("common", "grp-" + eleGrp);
   }
@@ -96,7 +96,7 @@
    */
   const _matGrpB = function(blk_gn) {
     let matGrp = _matGrp(blk_gn);
-    if(matGrp == null) return "!ERR";
+    if(matGrp == null) return TmpStateTag.error;
 
     return MDL_bundle._term("common", "grp-" + matGrp);
   }
@@ -133,7 +133,7 @@
    */
   const _fTagsB = function(liq_gn) {
     return MDL_text._tagText(
-      _fTags(liq_gn).cpy().substitute(tag => MDL_bundle._term("common", "grp-" + tag))
+      _fTags(liq_gn).map(tag => MDL_bundle._term("common", "grp-" + tag))
     );
   }
   .setCache();

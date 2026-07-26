@@ -466,7 +466,7 @@ const db = {
     header: [
 
       "useless-field", "ohno", null,
-      "save-map", "!UNDEF", null,
+      "save-map", TmpStateTag.undefined, null,
       "save-revision", -1, null,
 
       "dynamic-pollution", 0.0, null,
@@ -496,7 +496,7 @@ const db = {
      */
     pHeader: [
 
-      "save-map", "!UNDEF", null,
+      "save-map", TmpStateTag.undefined, null,
 
       "global-bits", [], "string",
       "global-bit-hash", [], "string",

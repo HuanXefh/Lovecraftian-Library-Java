@@ -105,14 +105,14 @@
       while(i < iCap) {
         nameDepend = minVerArr[i];
         minVer = minVerArr[i + 1];
-        ver = "!PENDING";
+        ver = TmpStateTag.pending;
         mod = Vars.mods.locateMod(nameDepend);
         if(mod != null) {
           ver = String(mod.meta.version);
         };
-        if(ver === "!PENDING" || !checkVersion(minVer, ver)) {
+        if(ver === TmpStateTag.pending || !checkVersion(minVer, ver)) {
           errored = true;
-          str += "\n" + nameDepend + "        " + minVer + "        " + (ver === "!PENDING" ? "!NOTFOUND" : "!OUTDATED");
+          str += "\n" + nameDepend + "        " + minVer + "        " + (ver === TmpStateTag.pending ? "(not found)" : "(outdated)");
         };
         i += 2;
       };

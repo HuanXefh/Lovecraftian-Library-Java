@@ -64,6 +64,8 @@
   LCRand = fetchClass("lovec.utils.LCRand");
   /** @global lovec.utils.LCScript */
   LCScript = fetchClass("lovec.utils.LCScript");
+  /** @global lovec.utils.TmpStateTag */
+  TmpStateTag = fetchClass("lovec.utils.TmpStateTag");
   /** @global lovec.utils.extend.LCNativeArray */
   LCNativeArray = fetchClass("lovec.utils.extend.LCNativeArray");
   /** @global lovec.utils.extend.LCNumber */
