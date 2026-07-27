@@ -271,6 +271,19 @@
 
 
   /**
+   * Gets an index array.
+   * @param {number} cap
+   * @param {boolean} startsAtOne
+   * @return {Array<number>}
+   */
+  Array.getIndexArray = function(cap, startsAtOne) {
+    return startsAtOne == null ?
+      LCNativeArray.getIndexArray(cap) :
+      LCNativeArray.getIndexArray(cap, startsAtOne);
+  };
+
+
+  /**
    * Gets sum of numbers in this array.
    * @param {(function(any): number)|unset} [mapF]
    * @return {number}
@@ -390,9 +403,8 @@
 
   /**
    * Performs cumulative operation on this array.
-   * Result is returned as a new array.
    * @param {function(number, any): number} fun - `ARGS`: result, valCur.
-   * @return {Array<number>}
+   * @return {Array<number>} New array.
    */
   Array.prototype.cumOper = function(fun) {
     return LCNativeArray.cumOper(this, fun);

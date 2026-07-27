@@ -79,7 +79,7 @@
     if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
 
     let ointf = new CLS_interface(name, mergeObjMixin(intf.intfObj, this.intfObj));
-    ointf.parentIntfs = intf.parentIntfs.cpy().pushAll(this.parentIntfs).pushAll(this).unique();
+    ointf.parentIntfs = intf.parentIntfs.cpy().pushAll(this.parentIntfs).pushAll(this).uniquify();
 
     return ointf;
   };

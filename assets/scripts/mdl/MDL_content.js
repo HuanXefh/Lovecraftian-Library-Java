@@ -385,7 +385,7 @@
    * @return {Array<string>}
    */
   const _facFamisDefined = function() {
-    return DB_block.db["map"]["facFami"].readCol(2, 1).unique();
+    return DB_block.db["map"]["facFami"].readCol(2, 1).uniquify();
   }
   .setCache();
   exports._facFamisDefined = _facFamisDefined;

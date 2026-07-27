@@ -23,6 +23,7 @@
       if(bool !== b.delegee.isInv) {
         b.delegee.isInv = bool;
         EFF.placeFadePack[b.block.size].at(b);
+        b.recache();
         TRIGGER.invertSelection.fire();
       };
     });

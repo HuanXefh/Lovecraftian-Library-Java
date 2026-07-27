@@ -66,34 +66,22 @@
 
 
   /**
-   * Whether `ele` is found in any of these arrays.
+   * Whether some element exists in any of given arrays.
    * <br> `ARGS`: ele, arr1, arr2, arr3, ...
    * @return {boolean}
    */
   Array.someIncludes = function() {
-    let i = 1, iCap = arguments.length;
-    while(i < iCap) {
-      if(arguments[i].includes(arguments[0])) return true;
-      i++;
-    };
-
-    return false;
+    return LCNativeArray.someIncludes.apply(null, arguments);
   };
 
 
   /**
-   * Whether `ele` is found in all these arrays.
+   * Whether some element exists in all given arrays.
    * <br> `ARGS`: ele, arr1, arr2, arr3, ...
    * @return {boolean}
    */
   Array.everyIncludes = function() {
-    let i = 2, iCap = arguments.length;
-    while(i < iCap) {
-      if(!arguments[i].includes(arguments[0])) return false;
-      i++;
-    };
-
-    return true;
+    return LCNativeArray.everyIncludes.apply(null, arguments);
   };
 
 
@@ -494,26 +482,8 @@
 
 
   /**
-   * Gets an index array.
-   * If `isStatistical`, the array will start at 1 instead of 0.
-   * @return {Array<number>}
-   */
-  Array.getIndArr = function(len, isStatistical) {
-    let arr = [];
-
-    let i = 0;
-    while(i < len) {
-      arr.push(isStatistical ? (i + 1) : i);
-      i++;
-    };
-
-    return arr;
-  };
-
-
-  /**
    * Counts how many times an element occurs in this array.
-   * Can be used for a formatted array.
+   * Supports formatted array.
    * @param {any} ele
    * @param {(function(any): any)|unset} [mapF]
    * @param {number|unset} [ord]
@@ -521,79 +491,32 @@
    * @return {number}
    */
   Array.prototype.count = function(ele, mapF, ord, off) {
-    let count = 0;
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-
-    let i = 0, iCap = this.iCap();
-    if(mapF == null) {
-      while(i < iCap) {
-        if(this[i + off] === ele) count++;
-        i += ord;
-      };
-    } else {
-      while(i < iCap) {
-        if(mapF(this[i + off]) === ele) count++;
-        i += ord;
-      };
-    };
-
-    return count;
+    return LCNativeArray.count(this, ele, tryVal(mapF, null), tryVal(ord, 1), tryVal(off, 0));
   };
 
 
   /**
-   * Counts how many matching elements there are in this array.
-   * Can be used for a formatted array.
+   * Counts how many matching elements exist in this array.
+   * Supports formatted array.
    * @param {function(any): boolean} boolF
    * @param {number|unset} [ord]
    * @param {number|unset} [off]
    * @return {number}
    */
   Array.prototype.countBy = function(boolF, ord, off) {
-    let count = 0;
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      if(boolF(this[i + off])) count++;
-      i += ord;
-    };
-
-    return count;
+    return LCNativeArray.countBy(this, boolF, tryVal(ord, 1), tryVal(off, 0));
   };
 
 
   /**
-   * Removes duplicate elements.
-   * Result is returned as a new array.
+   * Removes duplicates in this array.
    * @param {(function(any): any)|unset} [mapF]
-   * @return {Array}
+   * @return {Array} New array.
    */
-  Array.prototype.unique = function(mapF) {
-    let arr = [];
-
-    let i = 0, iCap = this.iCap();
-    if(mapF == null) {
-      while(i < iCap) {
-        if(!arr.includes(this[i])) arr.push(this[i]);
-        i++;
-      };
-    } else {
-      let tmpArr = [];
-      while(i < iCap) {
-        let tmp = mapF(this[i]);
-        if(!tmpArr.includes(tmp)) {
-          arr.push(this[i]);
-          tmpArr.push(tmp);
-        };
-        i++;
-      };
-      tmpArr.clear();
-    };
-
-    return arr;
+  Array.prototype.uniquify = function(mapF) {
+    return mapF == null ?
+      LCNativeArray.uniquify(this) :
+      LCNativeArray.uniquify(this, mapF);
   };
 
 

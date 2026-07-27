@@ -286,6 +286,40 @@ public class LCNativeArray {
 
 
     /**
+     * Whether some element exists in any of given arrays.
+     */
+    public static boolean someIncludes(Object ele, Object... arrs) {
+        int i = 0;
+        int iCap = arrs.length;
+        Object arr;
+        while(i < iCap) {
+            arr = arrs[i];
+            if(arr instanceof NativeArray arr1 && includes(arr1, ele)) return true;
+            if(arr instanceof Object[] objs && includes(objs, ele)) return true;
+            i++;
+        };
+        return false;
+    };
+
+
+    /**
+     * Whether some element exists in all given arrays.
+     */
+    public static boolean everyIncludes(Object ele, Object... arrs) {
+        int i = 0;
+        int iCap = arrs.length;
+        Object arr;
+        while(i < iCap) {
+            arr = arrs[i];
+            if(arr instanceof NativeArray arr1 && !includes(arr1, ele)) return false;
+            if(arr instanceof Object[] objs && !includes(objs, ele)) return false;
+            i++;
+        };
+        return true;
+    };
+
+
+    /**
      * Whether an element exists in an array.
      */
     public static boolean includes(NativeArray arr, Object ele) {
@@ -829,7 +863,7 @@ public class LCNativeArray {
 
     /**
      * Maps every element in an array to a new element.
-     * Result is returned as a new array.
+     * @return New array.
      */
     @SuppressWarnings("CollectionAddedToSelf")
     public static NativeArray map(NativeArray arr, Func mapF) {
@@ -850,7 +884,7 @@ public class LCNativeArray {
 
     /**
      * Filters out matching elements in an array.
-     * Result is returned as a new array.
+     * @return New array.
      */
     @SuppressWarnings("CollectionAddedToSelf")
     public static NativeArray filter(NativeArray arr, Boolf boolF) {
@@ -869,7 +903,150 @@ public class LCNativeArray {
     };
 
 
+    /**
+     * Counts how many times an element occurs in an array.
+     * Supports formatted array.
+     */
+    public static int count(NativeArray fArr, Object ele, @Nullable Func mapF, int ord, int off) {
+        int count = 0;
+        int i = 0;
+        long iCap = fArr.getLength();
+        Object wrappedEle = LCScript.wrapEquality(ele);
+        if(mapF == null) {
+            while(i < iCap) {
+                if(Objects.equals(wrappedEle, LCScript.wrapEquality(fArr.get(i + off)))) count++;
+                i += ord;
+            };
+        } else {
+            while(i < iCap) {
+                if(Objects.equals(wrappedEle, LCScript.wrapEquality(mapF.get(LCScript.wrap(fArr.get(i + off)))))) count++;
+                i += ord;
+            };
+        };
+        return count;
+    };
+    // Overload
+    public static int count(NativeArray fArr, Object ele, @Nullable Func mapF, int ord) {
+        return count(fArr, ele, mapF, ord, 0);
+    };
+    public static int count(NativeArray arr, Object ele, @Nullable Func mapF) {
+        return count(arr, ele, mapF, 1);
+    };
+    public static int count(NativeArray arr, Object ele) {
+        return count(arr, ele, null);
+    };
+    public static int count(Object[] objs, Object ele, @Nullable Func mapF, int ord, int off) {
+        return LCScript.toInt(wrapFunc(objs, arr0 -> count(arr0, ele, mapF, ord, off)));
+    };
+    public static int count(Object[] objs, Object ele, @Nullable Func mapF, int ord) {
+        return count(objs, ele, mapF, ord, 0);
+    };
+    public static int count(Object[] objs, Object ele, @Nullable Func mapF) {
+        return count(objs, ele, mapF, 1);
+    };
+    public static int count(Object[] objs, Object ele) {
+        return count(objs, ele, null);
+    };
+
+
+    /**
+     * Counts how many matching elements exist in an array.
+     * Supports formatted array.
+     */
+    public static int countBy(NativeArray fArr, Boolf boolF, int ord, int off) {
+        int count = 0;
+        int i = 0;
+        long iCap = fArr.getLength();
+        while(i < iCap) {
+            if(boolF.get(LCScript.wrap(fArr.get(i + off)))) count++;
+            i += ord;
+        };
+        return count;
+    };
+    // Overload
+    public static int countBy(NativeArray fArr, Boolf boolF, int ord) {
+        return countBy(fArr, boolF, ord, 0);
+    };
+    public static int countBy(NativeArray arr, Boolf boolF) {
+        return countBy(arr, boolF, 1);
+    };
+    public static int countBy(Object[] objs, Boolf boolF, int ord, int off) {
+        return LCScript.toInt(wrapFunc(objs, arr0 -> countBy(arr0, boolF, ord, off)));
+    };
+    public static int countBy(Object[] objs, Boolf boolF, int ord) {
+        return countBy(objs, boolF, ord, 0);
+    };
+    public static int countBy(Object[] objs, Boolf boolF) {
+        return countBy(objs, boolF, 1);
+    };
+
+
+    /**
+     * Removes duplicates in an array.
+     * @return New array.
+     */
+    public static NativeArray uniquify(NativeArray arr, @Nullable Func mapF) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.uniquify.newArr");
+        int i = 0;
+        long iCap = arr.getLength();
+        Object tmpEle;
+        if(mapF == null) {
+            while(i < iCap) {
+                tmpEle = arr.get(i);
+                if(!includes(arr0, tmpEle)) push(arr0, tmpEle);
+                i++;
+            };
+        } else {
+            NativeArray tmpArr = LCScript.ensureArray("LCNativeArray.uniquify.tmpArr");
+            clear(tmpArr);
+            Object mappedEle;
+            while(i < iCap) {
+                tmpEle = arr.get(i);
+                mappedEle = mapF.get(LCScript.wrap(tmpEle));
+                if(!includes(tmpArr, mappedEle)) {
+                    push(arr0, tmpEle);
+                    push(tmpArr, mappedEle);
+                };
+                i++;
+            };
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray uniquify(NativeArray arr) {
+        return uniquify(arr, null);
+    };
+    public static NativeArray uniquify(Object[] objs, @Nullable Func mapF) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> uniquify(arr0, mapF)));
+    };
+    public static NativeArray uniquify(Object[] objs) {
+        return uniquify(objs, null);
+    };
+
+
     /* <-------------------- math --------------------> */
+
+
+    /**
+     * Gets an index array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray getIndexArray(int cap, boolean startsAtOne) {
+        NativeArray arr = LCScript.newArray("LCNativeArray.getIndexArray.newArr");
+        if(cap <= 0) return arr;
+
+        int i = 0;
+        while(i < cap) {
+            arr.put(i, arr, startsAtOne ? (i + 1) : i);
+            i++;
+        };
+
+        return arr;
+    };
+    // Overload
+    public static NativeArray getIndexArray(int cap) {
+        return getIndexArray(cap, false);
+    };
 
 
     /**
@@ -1081,7 +1258,7 @@ public class LCNativeArray {
 
     /**
      * Performs cumulative operation on an array.
-     * Result is returned as a new array.
+     * @return New array.
      */
     @SuppressWarnings("CollectionAddedToSelf")
     public static NativeArray cumOper(NativeArray arr, Func2 func2) {

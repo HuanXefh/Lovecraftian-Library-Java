@@ -142,7 +142,7 @@
    */
   const _cov = function(xs, ys, notSample) {
     let val = 0.0;
-    if(xs == null) xs = Array.getIndArr(ys.length, true);
+    if(xs == null) xs = Array.getIndexArray(ys.length, true);
 
     let meanX = xs.mean(), meanY = ys.mean();
     let iCap = xs.iCap();
@@ -191,7 +191,7 @@
    * @return {[number, number]} `TUPLE`: slip, intc.
    */
   const linearReg = function(xs, ys) {
-    if(xs == null) xs = Array.getIndArr(ys.length, true);
+    if(xs == null) xs = Array.getIndexArray(ys.length, true);
 
     let meanX = xs.mean(), meanY = ys.mean();
     let iCap = xs.iCap();
