@@ -521,139 +521,50 @@
 
 
   /**
-   * Finds elements that are in both array.
-   * Result is returned as a new array.
-   * @param {any} eles_p
+   * Finds elements exist in both arrays.
+   * @param {Array} arr
    * @param {(function(any): any)|unset} [mapF]
-   * @return {Array}
+   * @return {Array} New array.
    */
-  Array.prototype.intersect = function(eles_p, mapF) {
-    let arr = [];
-
-    let i = 0, iCap = this.iCap();
-    if(mapF == null) {
-      while(i < iCap) {
-        if(!(eles_p instanceof Array) ? this[i] === eles_p : eles_p.includes(this[i])) {
-          arr.push(eles_p);
-        };
-        i++;
-      };
-    } else {
-      let tmpArr = [], tmp;
-      if(eles_p instanceof Array) eles_p.forEachFast(ele => tmpArr.push(mapF(ele)));
-      while(i < iCap) {
-        tmp = mapF(this[i]);
-        if(!(eles_p instanceof Array) ? tmp === mapF(eles_p) : tmpArr.includes(tmp)) {
-          arr.push(eles_p);
-        };
-        i++;
-      };
-      tmpArr.clear();
-    };
-
-    return arr;
+  Array.prototype.intersect = function(arr, mapF) {
+    return mapF == null ?
+      LCNativeArray.intersect(this, arr) :
+      LCNativeArray.intersect(this, arr, mapF);
   };
 
 
   /**
-   * Finds elements in this array that are not in given array.
-   * @param {any} eles_p
+   * Finds elements only exist in this array.
+   * @param {Array} arr
    * @param {(function(any): any)|unset} [mapF]
-   * @return {Array}
+   * @return {Array} New array.
    */
-  Array.prototype.differ = function(eles_p, mapF) {
-    let arr = [];
-
-    let i = 0, iCap = this.iCap();
-    if(mapF == null) {
-      while(i < iCap) {
-        if(!(eles_p instanceof Array) ? this[i] !== eles_p : !eles_p.includes(this[i])) {
-          arr.push(eles_p);
-        };
-        i++;
-      };
-    } else {
-      let tmpArr = [], tmp;
-      if(eles_p instanceof Array) eles_p.forEachFast(ele => tmpArr.push(mapF(ele)));
-      while(i < iCap) {
-        tmp = mapF(this[i]);
-        if(!(eles_p instanceof Array) ? tmp !== mapF(eles_p) : !tmpArr.includes(tmp)) {
-          arr.push(eles_p);
-        };
-        i++;
-      };
-      tmpArr.clear();
-    };
-
-    return arr;
+  Array.prototype.differ = function(arr, mapF) {
+    return mapF == null ?
+      LCNativeArray.differ(this, arr) :
+      LCNativeArray.differ(this, arr, mapF);
   };
 
 
   /**
    * Converts this formatted array into 2D-array.
-   * @param {number|unset} [ord]
-   * @param {number|unset} [def] - If set, incomplete rows will be filled with `def`.
-   * @return {Array}
+   * @param {number} ord
+   * @param {number|unset} [def] - Incomplete rows will be filled with `def`.
+   * @return {Array} New array.
    */
   Array.prototype.chunk = function(ord, def) {
-    let arr = [];
-    if(ord == null) ord = 1;
-
-    let i = 0, j, iCap = Math.ceil(this.length / ord);
-    while(i < iCap) {
-      let tmpArr = [];
-      j = 0;
-      while(j < ord) {
-        let tmp = this[i + j];
-        if(tmp !== undefined) {
-          tmpArr.push(tmp);
-        } else if(def !== undefined) {
-          tmpArr.push(def);
-        };
-        j++;
-      };
-      arr.push(tmpArr);
-      i++;
-    };
-
-    return arr;
+    return def == null ?
+      LCNativeArray.chunk(this, ord) :
+      LCNativeArray.chunk(this, ord, def);
   };
 
 
   /**
-   * {@link Array#flat}, which doesn't exist in Rhino.
+   * `Array#flat`, which doesn't exist in Rhino.
    * @return {Array}
    */
   Array.prototype.flatten = function() {
-    let arr = [];
-
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      !(this[i] instanceof Array) ?
-        arr.push(this[i]) :
-        this[i].forEachFast(ele => arr.push(ele));
-      i++;
-    };
-
-    return arr;
-  };
-
-
-  /**
-   * Variant of {@link Array#flatten} that ensures no array exists in the result.
-   * Very costy.
-   * Do not call this on arrays that have self-reference.
-   * @param {number|unset} [maxTry]
-   * @return {Array}
-   */
-  Array.prototype.flattenAll = function(maxTry) {
-    let i = 0, iCap = tryVal(maxTry, 500), arr = this.flatten();
-    while(i < iCap && arr.some(ele => ele instanceof Array)) {
-      arr = arr.flatten();
-      i++;
-    };
-
-    return arr;
+    return LCNativeArray.flatten(this);
   };
 
 
@@ -661,52 +572,14 @@
 
 
   /**
-   * 1. Gets a copy of this array.
-   * <br> 2. Copies elements from given array.
-   * @param {Array|unset} [arr]
-   * @return {Array}
-   */
-  Array.prototype.cpy = newMultiFunction(
-    [], function() {
-      return this.slice();
-    },
-    [Array], function(arr) {
-      return this.withAll(arr);
-    },
-  );
-
-
-  /**
-   * Variant of {@link Array#cpy} for nested arrays.
-   * @return {Array}
-   */
-  Array.prototype.cpyAll = function() {
-    let arr = [];
-
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      this[i] instanceof Array ?
-        arr.push(this[i].cpyAll()) :
-        arr.push(this[i]);
-      i++;
-    };
-
-    return arr;
-  };
-
-
-  /**
-   * Picks random elements from this array, returns the result as a new array.
+   * Picks random elements from this array.
    * @param {number|unset} [amt]
-   * @return {Array}
+   * @return {Array} New array.
    */
   Array.prototype.sample = function(amt) {
-    let arr = Array.prototype.sample.tmpArr.cpy(this).shuffle();
-    if(amt == null) amt = this.iCap();
-
-    return amt >= arr.length ?
-      arr.slice() :
-      arr.slice(0, amt);
+    return amt == null ?
+      LCNativeArray.sample(this) :
+      LCNativeArray.sample(this, amt);
   };
   Array.prototype.sample.tmpArr = [];
 

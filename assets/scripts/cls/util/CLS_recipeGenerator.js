@@ -159,7 +159,7 @@
   CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous, pTg) {
     let arr = [];
 
-    let tmpArr = raw.cpyAll();
+    let tmpArr = raw.deepCpy();
     thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous, pTg]);
     tmpArr.forEachRow(isContinuous ? 2 : 3, (tg, amt, p) => {
       MDL_recipe.parseRcIoRow(arr, tg, amt, isContinuous ? null : p, null, false, pTg);

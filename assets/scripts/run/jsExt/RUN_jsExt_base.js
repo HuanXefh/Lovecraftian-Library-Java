@@ -166,6 +166,28 @@
 
 
   /**
+   * 1. Gets a copy of this array.
+   * <br> 2. Copies elements from another array.
+   * @param {Array|unset} [arr]
+   * @return {Array}
+   */
+  Array.prototype.cpy = function(arr) {
+    return arr == null ?
+      LCNativeArray.cpy(this) :
+      LCNativeArray.cpy(this, arr);
+  };
+
+
+  /**
+   * Variant of {@link Array#cpy} for nested array.
+   * @return {Array}
+   */
+  Array.prototype.deepCpy = function() {
+    return LCNativeArray.deepCpy(this);
+  };
+
+
+  /**
    * Sets length and fills this array with some value.
    * @param {any} val_fn - Use a function here if the value to fill is an object like array.
    * @param {number|unset} [len]

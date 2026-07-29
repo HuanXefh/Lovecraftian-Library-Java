@@ -31,6 +31,60 @@ public class LCNativeArray {
 
 
     /**
+     * 1. Gets a copy of an array.
+     * <br> 2. Copies elements from another array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray cpy(NativeArray arr) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.cpy.newArr");
+        int i = 0;
+        long iCap = arr.getLength();
+        while(i < iCap) {
+            arr0.put(i, arr0, arr.get(i));
+            i++;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray cpy(Object[] objs) {
+        return LCScript.toArray(wrapFunc(objs, LCNativeArray::cpy));
+    };
+    public static NativeArray cpy(NativeArray arr1, NativeArray arr2) {
+        return withAll(arr1, arr2);
+    };
+    public static NativeArray cpy(NativeArray arr, Object[] objs) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> cpy(arr, objs)));
+    };
+
+
+    /**
+     * Variant of {@link #cpy} for nested array.
+     */
+    public static NativeArray deepCpy(NativeArray arr) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.deepCpy.newArr");
+        int i = 0;
+        long iCap = arr.getLength();
+        Object tmpEle;
+        while(i < iCap) {
+            tmpEle = arr.get(i);
+            if(tmpEle instanceof NativeArray arrIn) {
+                push(arr0, deepCpy(arrIn));
+            } else if(tmpEle instanceof Object[] objs) {
+                push(arr0, deepCpy(objs));
+            } else {
+                push(arr0, tmpEle);
+            };
+            i++;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray deepCpy(Object[] objs) {
+        return LCScript.toArray(wrapFunc(objs, LCNativeArray::deepCpy));
+    };
+
+
+    /**
      * Gets index of an element in an array, -1 if not found.
      */
     public static int indexOf(NativeArray arr, Object ele, @Nullable Func mapF) {
@@ -862,6 +916,40 @@ public class LCNativeArray {
 
 
     /**
+     * Copies elements from an array, starting from given index.
+     * @return New array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray slice(NativeArray arr, int ind, int amt) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.slice.newArr");
+        int i = 0;
+        long cap = arr.getLength();
+        while(i < amt) {
+            if(ind + i >= cap) break;
+            arr0.put(i, arr0, arr.get(ind + i));
+            i++;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray slice(NativeArray arr, int ind) {
+        return slice(arr, ind, LCScript.toInt(arr.getLength() - ind));
+    };
+    public static NativeArray slice(NativeArray arr) {
+        return slice(arr, 0);
+    };
+    public static NativeArray slice(Object[] objs, int ind, int amt) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> slice(arr0, ind, amt)));
+    };
+    public static NativeArray slice(Object[] objs, int ind) {
+        return slice(objs, ind, objs.length - ind);
+    };
+    public static NativeArray slice(Object[] objs) {
+        return slice(objs, 0);
+    };
+
+
+    /**
      * Maps every element in an array to a new element.
      * @return New array.
      */
@@ -1004,7 +1092,7 @@ public class LCNativeArray {
                 tmpEle = arr.get(i);
                 mappedEle = mapF.get(LCScript.wrap(tmpEle));
                 if(!includes(tmpArr, mappedEle)) {
-                    push(arr0, tmpEle);
+                    push(arr0, mappedEle);
                     push(tmpArr, mappedEle);
                 };
                 i++;
@@ -1021,6 +1109,188 @@ public class LCNativeArray {
     };
     public static NativeArray uniquify(Object[] objs) {
         return uniquify(objs, null);
+    };
+
+
+    /**
+     * Finds elements exist in both arrays.
+     * @return New array.
+     */
+    public static NativeArray intersect(NativeArray arr1, NativeArray arr2, @Nullable Func mapF) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.intersect.newArr");
+        int i = 0;
+        long iCap = arr1.getLength();
+        Object tmpEle;
+        if(mapF == null) {
+            while(i < iCap) {
+                tmpEle = arr1.get(i);
+                if(includes(arr2, tmpEle)) {
+                    push(arr0, tmpEle);
+                };
+                i++;
+            };
+        } else {
+            NativeArray tmpArr = LCScript.ensureArray("LCNativeArray.intersect.tmpArr");
+            forEachFast(arr2, ele -> push(tmpArr, mapF.get(LCScript.wrap(ele))));
+            Object wrappedEle;
+            while(i < iCap) {
+                tmpEle = arr1.get(i);
+                wrappedEle = mapF.get(LCScript.wrap(tmpEle));
+                if(includes(tmpArr, wrappedEle)) {
+                    push(arr0, wrappedEle);
+                };
+                i++;
+            };
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray intersect(NativeArray arr1, NativeArray arr2) {
+        return intersect(arr1, arr2, null);
+    };
+    public static NativeArray intersect(Object[] objs, NativeArray arr, @Nullable Func mapF) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> intersect(arr0, arr, mapF)));
+    };
+    public static NativeArray intersect(Object[] objs, NativeArray arr) {
+        return intersect(objs, arr, null);
+    };
+
+
+    /**
+     * Finds elements only exist in the first array.
+     */
+    public static NativeArray differ(NativeArray arr1, NativeArray arr2, @Nullable Func mapF) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.differ.newArr");
+        int i = 0;
+        long iCap = arr1.getLength();
+        Object tmpEle;
+        if(mapF == null) {
+            while(i < iCap) {
+                tmpEle = arr1.get(i);
+                if(!includes(arr2, tmpEle)) {
+                    push(arr0, tmpEle);
+                };
+                i++;
+            };
+        } else {
+            NativeArray tmpArr = LCScript.ensureArray("LCNativeArray.differ.tmpArr");
+            forEachFast(arr2, ele -> push(tmpArr, mapF.get(LCScript.wrap(ele))));
+            Object wrappedEle;
+            while(i < iCap) {
+                tmpEle = arr1.get(i);
+                wrappedEle = mapF.get(LCScript.wrap(tmpEle));
+                if(!includes(tmpArr, wrappedEle)) {
+                    push(arr0, wrappedEle);
+                };
+                i++;
+            };
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray differ(NativeArray arr1, NativeArray arr2) {
+        return differ(arr1, arr2, null);
+    };
+    public static NativeArray differ(Object[] objs, NativeArray arr, @Nullable Func mapF) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> differ(arr0, arr, mapF)));
+    };
+    public static NativeArray differ(Object[] objs, NativeArray arr) {
+        return differ(objs, arr, null);
+    };
+
+
+    /**
+     * Converts a formatted array into 2D-array.
+     * @return New array.
+     */
+    public static NativeArray chunk(NativeArray fArr, int ord, @Nullable Object def) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.chunk.newArr");
+        int i = 0;
+        int j;
+        long iCap = fArr.getLength();
+        while(i < iCap) {
+            NativeArray arrIn = LCScript.newArray("LCNativeArray.chunk.newArr1");
+            j = 0;
+            while(j < ord) {
+                if(i + j >= iCap) {
+                    push(arrIn, def);
+                } else {
+                    push(arrIn, fArr.get(i + j));
+                };
+                j++;
+            };
+            push(arr0, arrIn);
+            i += ord;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray chunk(NativeArray fArr, int ord) {
+        return chunk(fArr, ord, null);
+    };
+    public static NativeArray chunk(Object[] objs, int ord, @Nullable Object def) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> chunk(arr0, ord, def)));
+    };
+    public static NativeArray chunk(Object[] objs, int ord) {
+        return chunk(objs, ord, null);
+    };
+
+
+    /**
+     * <code>Array.prototype.flat</code>, which doesn't exist in Rhino.
+     */
+    public static NativeArray flatten(NativeArray arr) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.flatten.newArr");
+        int i = 0;
+        long iCap = arr.getLength();
+        Object tmpEle;
+        while(i < iCap) {
+            tmpEle = arr.get(i);
+            if(tmpEle instanceof NativeArray arrIn) {
+                for(Object ele : arrIn) {
+                    push(arr0, ele);
+                };
+            } else if(tmpEle instanceof Object[] objs) {
+                for(Object ele : objs) {
+                    push(arr0, ele);
+                };
+            } else {
+                push(arr0, tmpEle);
+            };
+            i++;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray flatten(Object[] objs) {
+        return LCScript.toArray(wrapFunc(objs, LCNativeArray::flatten));
+    };
+
+
+    /* <-------------------- util --------------------> */
+
+
+    /**
+     * Picks random elements from an array.
+     * @return New array.
+     */
+    public static NativeArray sample(NativeArray arr, int amt) {
+        NativeArray arr0 = LCScript.ensureArray("LCNativeArray.sample.tmpArr");
+        shuffle(cpy(arr0, arr));
+
+        return amt >= arr0.getLength() ?
+            cpy(arr0) :
+            slice(arr0, 0, amt);
+    };
+    // Overload
+    public static NativeArray sample(NativeArray arr) {
+        return sample(arr, LCScript.toInt(arr.getLength()));
+    };
+    public static NativeArray sample(Object[] objs, int amt) {
+        return LCScript.toArray(wrapFunc(objs, arr0 -> sample(arr0, amt)));
+    };
+    public static NativeArray sample(Object[] objs) {
+        return sample(objs, objs.length);
     };
 
 
