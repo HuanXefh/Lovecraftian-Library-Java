@@ -135,6 +135,15 @@
    */
 
 
+  /* module */
+
+
+  /**
+   * @global
+   * @typedef {string} JSONPayload
+   */
+
+
   /* math */
 
 

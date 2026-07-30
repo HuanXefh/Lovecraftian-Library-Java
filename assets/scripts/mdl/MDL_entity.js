@@ -27,7 +27,7 @@
    * @return {number}
    */
   const _size = function(e) {
-    return LCGeneralizer.getSize(e);
+    return LCGeneralizedProp.getSize(e);
   };
   exports._size = _size;
 
@@ -38,7 +38,7 @@
    * @return {number}
    */
   const _hitSize = function(e) {
-    return LCGeneralizer.getHitSize(e);
+    return LCGeneralizedProp.getHitSize(e);
   };
   exports._hitSize = _hitSize;
 
@@ -49,7 +49,7 @@
    * @return {number}
    */
   const _clipSize = function(e) {
-    return LCGeneralizer.getClipSize(e);
+    return LCGeneralizedProp.getClipSize(e);
   };
   exports._clipSize = _clipSize;
 
@@ -60,7 +60,7 @@
    * @return {number}
    */
   const _healthFrac = function(e) {
-    return LCGeneralizer.getHealthFrac(e);
+    return LCGeneralizedProp.getHealthFrac(e);
   };
   exports._healthFrac = _healthFrac;
 
@@ -71,7 +71,7 @@
    * @return {number}
    */
   const _armor = function(e) {
-    return LCGeneralizer.getArmor(e);
+    return LCGeneralizedProp.getArmor(e);
   };
   exports._armor = _armor;
 

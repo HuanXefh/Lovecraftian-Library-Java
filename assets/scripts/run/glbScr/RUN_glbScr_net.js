@@ -25,7 +25,7 @@
    * This array should only contain primitive values.
    * @global
    * @param {Array} arr
-   * @return {string}
+   * @return {JSONPayload}
    */
   packPayload = function(arr) {
     return JSON.stringify(Object.fromArr(arr));
@@ -35,7 +35,7 @@
   /**
    * Converts given JSON string back into an array of primitive values.
    * @global
-   * @param {string} payload
+   * @param {JSONPayload} payload
    * @return {Array}
    */
   unpackPayload = function(payload) {

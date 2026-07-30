@@ -128,7 +128,7 @@
     if(size == null) size = 1;
     if(checkR == null) checkR = 5;
 
-    let ts = MDL_pos._tsRect(thisFun.tmpTs, t, checkR, size);
+    let ts = LCPos.getTilesRect(thisFun.tmpTs, t, checkR, size);
     if(ts.length === 0) return null;
     let count = Math.pow(checkR * 2 + size, 2);
     while(ts.length < count) {

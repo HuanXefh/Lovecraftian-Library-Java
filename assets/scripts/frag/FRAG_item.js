@@ -301,7 +301,7 @@
 
     if(!ignoreLoot && MDL_cond._posHasLoot(x, y)) return false;
     setItem(b, itm, amtCur - amtTrans);
-    MDL_call.spawnLoot_server(b.x, b.y, itm, amtTrans, b.block.size * Vars.tilesize * 0.7);
+    MDL_call.spawnLoots_server(b.x, b.y, itm, amtTrans, b.block.size * Vars.tilesize * 0.7);
 
     return true;
   };
@@ -326,7 +326,7 @@
     if(!ignoreLoot && MDL_cond._posHasLoot(x, y)) return false;
     TRIGGER.itemProduce.fire(b, itm, amt);
     b.produced(itm, amt);
-    MDL_call.spawnLoot_server(x, y, itm, amt, 0.0);
+    MDL_call.spawnLoot_server(x, y, itm, amt);
 
     return true;
   };
@@ -350,7 +350,7 @@
       loot.remove()
     } else {
       if(!noReset) {
-        MDL_call.spawnLoot_server(loot.x, loot.y, itm, amt, 0.0);
+        MDL_call.spawnLoot_server(loot.x, loot.y, itm, amt);
         loot.remove();
       } else {
         loot.stack.item = itm;
@@ -586,7 +586,7 @@
     if(amtTrans < 1) return false;
 
     unit.stack.amount -= amtTrans;
-    MDL_call.spawnLoot_server(unit.x, unit.y, itm, amtTrans);
+    MDL_call.spawnLoots_server(unit.x, unit.y, itm, amtTrans);
 
     return true;
   };

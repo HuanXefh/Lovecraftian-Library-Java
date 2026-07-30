@@ -50,7 +50,7 @@
     if(t == null) return;
 
     if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = MDL_pos._tsRect(thisFun.tmpTup[3], t, blk.attrR, blk.size).inSituFilter(ot => MDL_attr._sumByTs([ot], blk.attribute, blk.attrMode) > 0.0);
+      thisFun.tmpTup[3] = LCPos.getTilesRect(thisFun.tmpTup[3], t, blk.attrR, blk.size).inSituFilter(ot => MDL_attr._sumByTs([ot], blk.attribute, blk.attrMode) > 0.0);
     };
 
     thisFun.tmpTup[3].forEachFast(ot => {
@@ -58,7 +58,7 @@
     });
   }
   .setProp({
-    tmpTup: [],
+    tmpTup: [].setVal(null, 4),
   });
 
 

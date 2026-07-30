@@ -23,7 +23,7 @@
       unit.noTetherDespawnTimeCur = Mathf.maxZero(unit.noTetherDespawnTimeCur - Time.delta);
     };
     if(unit.noTetherDespawnTimeCur >= unit.type.delegee.noTetherDespawnTime) {
-      MDL_call.despawnUnit(unit);
+      Call.unitDespawn(unit);
     };
   };
 

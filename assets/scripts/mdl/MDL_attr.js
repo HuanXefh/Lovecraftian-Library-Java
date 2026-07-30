@@ -167,7 +167,7 @@
    * @return {number}
    */
   const _sumRect = function thisFun(t, r, size, attr_gn, mode) {
-    return _sumByTs(MDL_pos._tsRect(thisFun.tmpTs, t, r, size), attr_gn, mode);
+    return _sumByTs(LCPos.getTilesRect(thisFun.tmpTs, t, r, size), attr_gn, mode);
   }
   .setProp({
     tmpTs: [],
@@ -185,7 +185,7 @@
    * @return {number}
    */
   const _sumCircle = function thisFun(t, r, size, attr_gn, mode) {
-    return _sumByTs(MDL_pos._tsCircle(thisFun.tmpTs, t, r, size), attr_gn, mode);
+    return _sumByTs(LCPos.getTilesCircle(thisFun.tmpTs, t, r, size), attr_gn, mode);
   }
   .setProp({
     tmpTs: [],

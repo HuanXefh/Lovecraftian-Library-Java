@@ -277,7 +277,7 @@
           this.timerMap.put(unit, new Interval(1));
         };
         if(!this.timerMap.get(unit).get(this.intv)) return;
-        let b = MDL_pos._b_base(unit.x, unit.y, unit.team, this.rad, b => MDL_cond._canHeal(b));
+        let b = LCEntity.getBuildBy(unit.x, unit.y, unit.team, this.rad, b => MDL_cond._canHeal(b));
         if(b == null) return;
 
         FRAG_attack.heal(b, b.maxHealth * this.healPerc + this.healAmt);

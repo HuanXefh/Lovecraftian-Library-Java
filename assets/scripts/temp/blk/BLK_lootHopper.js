@@ -34,7 +34,7 @@
 
 
   function comp_ex_updateLootTs(b) {
-    MDL_pos._tsBuild(b.lootTs, b);
+    LCPos.getTilesBuild(b.lootTs, b);
   };
 
 

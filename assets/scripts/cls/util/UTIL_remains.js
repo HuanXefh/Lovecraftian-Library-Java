@@ -81,7 +81,7 @@
    */
   UTIL_remains.checkInLiq = function thisFun(t, etp) {
     return t != null
-      && MDL_pos._tsRect(thisFun.tmpTs, t, 1, 1).every(ot => ot.floor().isLiquid)
+      && LCPos.getTilesRect(thisFun.tmpTs, t, 1, 1).every(ot => ot.floor().isLiquid)
       && (etp instanceof Block || (t.build == null && !(t.solid() && MDL_cond._isTreeBlock(t.block()))))
   }
   .setProp({

@@ -368,8 +368,8 @@ const db = {
             if(unit == null) return;
             if(unit.stack.amount > 0) {
               Vars.net.client() ?
-                MDL_call.spawnLoot_client(unit.x, unit.y, unit.item(), unit.stack.amount, 0.0) :
-                MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount, 0.0);
+                MDL_call.spawnLoot_client(unit.x, unit.y, unit.item(), unit.stack.amount) :
+                MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount);
               unit.clearItem();
             };
           },

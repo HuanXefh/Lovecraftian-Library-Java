@@ -14,22 +14,22 @@
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
       blk.ex_findPlaceRestrictTs(blk.placeRestrictTmpTs, t, rot);
-      thisFun.tmpTup[4] = !MDL_pos._bsByTs(blk.placeRestrictTmpBs, blk.placeRestrictTmpTs).some(ob => ob.block === blk);
+      thisFun.tmpTup[4] = !LCEntity.getBuildsByTiles(blk.placeRestrictTmpBs, blk.placeRestrictTmpTs).some(ob => ob.block === blk);
     };
 
     return thisFun.tmpTup[4];
   }
   .setProp({
-    tmpTup: [],
+    tmpTup: [].setVal(null, 5),
   });
 
 
   function comp_ex_findPlaceRestrictTs(blk, contArr, t, rot) {
     return blk.rotate ?
-      MDL_pos._tsRectRot(blk.placeRestrictTmpTs, t, blk.placeRestrictR, blk.size, rot) :
+      LCPos.getTilesRectRotCenter(blk.placeRestrictTmpTs, t, blk.placeRestrictR, blk.size, rot) :
       !blk.useCircularPlaceRestrict ?
-        MDL_pos._tsRect(blk.placeRestrictTmpTs, t, blk.placeRestrictR, blk.size) :
-        MDL_pos._tsCircle(blk.placeRestrictTmpTs, t, blk.placeRestrictR, blk.size);
+        LCPos.getTilesRect(blk.placeRestrictTmpTs, t, blk.placeRestrictR, blk.size) :
+        LCPos.getTilesCircle(blk.placeRestrictTmpTs, t, blk.placeRestrictR, blk.size);
   };
 
 

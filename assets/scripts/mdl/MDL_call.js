@@ -53,61 +53,80 @@
    * @param {number} x
    * @param {number} y
    * @param {UnitTypeGn} utp_gn
-   * @param {Team|unset} [team]
-   * @param {number|unset} [rad] - Radius of spread.
-   * @param {number|unset} [ang] - Rotation of spawned units, random by default.
-   * @param {number|unset} [repeat] - Use this to spawn multiple times quickly.
-   * @param {boolean|unset} [applyDefSta] - If true, default status effects will be applied like what wave spawners do.
-   * @param {(function(unit): void)|unset} [scr] - Script called on each spawned unit.
-   * @return {void}
+   * @param {Team} team
+   * @param {number|unset} [ang]
+   * @param {function(unit): void|unset} [scr]
+   * @return {Unit}
    */
-  const spawnUnit_server = function(x, y, utp_gn, team, rad, ang, repeat, applyDefSta, scr) {
+  const spawnUnit_server = function(x, y, utp_gn, team, ang, scr) {
     let utp = MDL_content._ct(utp_gn, "utp");
     if(utp == null) return;
-    if(team == null) team = Team.sharded;
-    if(rad == null) rad = 0.0;
-    if(ang == null) ang = "rand";
-    if(repeat == null) repeat = 1;
+    if(ang == null) ang = Mathf.random(360.0);
 
-    let x_i, y_i, ang_i;
-    for(let i = 0; i < repeat; i++) {
-      x_i = x + Mathf.range(rad);
-      y_i = y + Mathf.range(rad);
-      ang_i = ang === "rand" ? Mathf.random(360.0) : ang;
+    let unit = scr == null ?
+      utp.spawn(team, x, y, ang) :
+      utp.spawn(team, x, y, ang, scr);
+    Units.notifyUnitSpawn(unit);
 
-      let unit = scr == null ? utp.spawn(team, x_i, y_i, ang_i) : utp.spawn(team, x_i, y_i, ang_i, scr);
-      if(applyDefSta) {
-        unit.apply(StatusEffects.unmoving, 30.0);
-        unit.apply(StatusEffects.invincible, 60.0);
-      };
-      Units.notifyUnitSpawn(unit);
-    };
+    return unit;
   }
   .setAnno("server");
   exports.spawnUnit_server = spawnUnit_server;
 
 
   /**
+   * Spawns units around (x, y).
+   * @param {number} x
+   * @param {number} y
+   * @param {UnitTypeGn} utp_gn
+   * @param {Team} team
+   * @param {number|unset} [ang]
+   * @param {number|unset} [rad]
+   * @param {number|unset} [amt]
+   * @param {(function(unit): void)|unset} [scr]
+   * @return {void}
+   */
+  const spawnUnits_server = function(x, y, utp_gn, team, ang, rad, amt, scr) {
+    let utp = MDL_content._ct(utp_gn, "utp");
+    if(utp == null) return;
+    if(rad == null) rad = 0.0;
+    if(amt == null) amt = 1;
+
+    let
+      i = 0,
+      x_i,
+      y_i,
+      ang_i;
+
+    while(i < amt) {
+      x_i = x + Mathf.range(rad);
+      y_i = y + Mathf.range(rad);
+      ang_i = ang != null ? ang : Mathf.random(360.0);
+      spawnUnit_server(x_i, y_i, utp, team, ang_i, scr);
+      i++;
+    };
+  }
+  .setAnno("server");
+  exports.spawnUnits_server = spawnUnits_server;
+
+
+  /**
    * Variant of {@link spawnUnit_server} for client side.
    * @param {number} x
    * @param {number} y
-   * @param {UnitTypeGn} [utp_gn]
-   * @param {Team|unset} [team]
-   * @param {number|unset} [rad]
+   * @param {UnitTypeGn} utp_gn
+   * @param {Team} team
    * @param {number|unset} [ang]
-   * @param {number|unset} [repeat]
-   * @param {boolean|unset} [applyDefSta]
    * @return {void}
    */
-  const spawnUnit_client = function(x, y, utp_gn, team, rad, ang, repeat, applyDefSta) {
+  const spawnUnit_client = function(x, y, utp_gn, team, ang) {
     let utp = MDL_content._ct(utp_gn, "utp");
     if(utp == null) return;
-    if(team == null) team = Team.sharded;
 
     MDL_net.sendPacket(
       PacketModes.CLIENT, "lovec-client-unit-spawn",
       packPayload([
-        x, y, utp.name, team.id, rad, ang, repeat, applyDefSta,
+        x, y, utp.name, team.id, ang,
       ]),
       true, true,
     );
@@ -115,25 +134,46 @@
   .setAnno("init", function() {
     MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-unit-spawn", payload => {
       let args = unpackPayload(payload);
-      spawnUnit_server(args[0], args[1], args[2], Team.get(args[3]), args[4], args[5], args[6], args[7]);
+      spawnUnit_server(args[0], args[1], args[2], Team.get(args[3], args[4]));
     });
   })
   .setAnno("client");
   exports.spawnUnit_client = spawnUnit_client;
 
 
+
+
   /**
-   * Lets a unit despawn.
-   * @param {Unit|null} unit
+   * Variant of {@link spawnUnits_server} for client side.
+   * @param {number} x
+   * @param {number} y
+   * @param {UnitTypeGn} utp_gn
+   * @param {Team} team
+   * @param {number|unset} [ang]
+   * @param {number|unset} [rad]
+   * @param {number|unset} [amt]
    * @return {void}
    */
-  const despawnUnit = function(unit) {
-    if(unit == null) return;
+  const spawnUnits_client = function(x, y, utp_gn, team, ang, rad, amt) {
+    let utp = MDL_content._ct(utp_gn, "utp");
+    if(utp == null) return;
 
-    Call.unitDespawn(unit);
+    MDL_net.sendPacket(
+      PacketModes.CLIENT, "lovec-client-units-spawn",
+      packPayload([
+        x, y, utp.name, team.id, ang, rad, amt,
+      ]),
+      true, true,
+    );
   }
-  .setAnno("server");
-  exports.despawnUnit = despawnUnit;
+  .setAnno("init", function() {
+    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-units-spawn", payload => {
+      let args = unpackPayload(payload);
+      spawnUnits_server(args[0], args[1], args[2], Team.get(args[3]), args[4], args[5], args[6]);
+    });
+  })
+  .setAnno("client");
+  exports.spawnUnits_client = spawnUnits_client;
 
 
   /**
@@ -153,77 +193,103 @@
    * Applies knockback on some unit from a center.
    * @param {number} x
    * @param {number} y
-   * @param {Unit|null} unit
-   * @param {number|unset} [pow] - Knockback power, can be negative to pull units.
-   * @param {number|unset} [rad] - Knockback radius, the power decreases when target gets farther.
-   * @param {number|unset} [ang] - Angle to knockback, leave empty to push units back from the center.
+   * @param {Unit} unit
+   * @param {number} pow - Can be negative to pull units.
+   * @param {number|unset} [rad]
+   * @param {number|unset} [ang] - Leave empty to push units back from the center.
    * @return {void}
    */
   const knockback = function(x, y, unit, pow, rad, ang) {
-    if(unit == null || MDL_cond._isHighAir(unit)) return;
-    if(pow == null) pow = 0.0;
+    if(MDL_cond._isHighAir(unit)) return;
     if(Math.abs(pow) < 0.0001) return;
 
-    let pow_fi = rad == null ? pow : (pow * (1.0 - Mathf.clamp(Mathf.dst(x, y, unit.x, unit.y) / rad)) * 4.0);
+    let pow_fi = rad == null ?
+      pow :
+      (pow * (1.0 - Mathf.clamp(Mathf.dst(x, y, unit.x, unit.y) / rad)) * 4.0);
     if(unit.flying) pow_fi *= 2.5;
 
-    let vec2 = Tmp.v1.set(unit).sub(x, y).nor().scl(pow_fi * 80.0);
-    if(ang != null) vec.setAngle(ang + (pow_fi < 0.0 ? 180.0 : 0.0));
-
-    unit.impulse(vec2);
+    let vec = Tmp.v1.set(unit).sub(x, y).nor().scl(pow_fi * 80.0);
+    if(ang != null) {
+      vec.setAngle(ang + (pow_fi < 0.0 ? 180.0 : 0.0));
+    };
+    unit.impulse(vec);
   };
   exports.knockback = knockback;
 
 
+  /* <------------------------------ loot unit ------------------------------ */
+
+
   /**
-   * Spawns a loot unit (dropped item) at (x, y), see {@link spawnUnit_server}.
+   * Spawns a loot unit at (x, y).
    * @param {number} x
    * @param {number} y
    * @param {ItemGn} itm_gn
-   * @param {number|unset} [amt]
-   * @param {number|unset} [rad]
-   * @param {number|unset} [repeat]
-   * @return {void}
+   * @param {number} itmAmt
+   * @return {Unit}
    */
-  const spawnLoot_server = function(x, y, itm_gn, amt, rad, repeat) {
-    if(!PARAM.MODDED) return;
+  const spawnLoot_server = function(x, y, itm_gn, itmAmt) {
+    if(!PARAM.MODDED || itmAmt < 1) return;
     let itm = MDL_content._ct(itm_gn, "rs");
     if(itm == null) return;
-    if(amt == null) amt = 0;
-    if(amt < 1) return;
-    if(rad == null) rad = VAR.range.unitLootRad;
-    if(repeat == null) repeat = 1;
 
-    spawnUnit_server(x, y, Vars.content.unit("loveclab-unit0misc-loot"), Vars.player.team(), rad, null, repeat, false, unit => {
-      unit.addItem(itm, amt);
-      MDL_effect.showAt_global(unit.x, unit.y, EFF.circlePulseDynamic, 5.0, Pal.accent);
-      MDL_effect._e_line(x, y, null, unit, Pal.accent);
-      Core.app.post(() => TRIGGER.lootSpawn.fire(unit));
-    });
+    return spawnUnit_server(
+      x, y, VARGEN.utpLoot, Vars.player.team(), null,
+      unit => {
+        unit.addItem(itm, itmAmt);
+        MDL_effect.showAt_global(unit.x, unit.y, EFF.circlePulseDynamic, 5.0, Pal.accent);
+        MDL_effect._e_line(x, y, null, unit, Pal.accent);
+        Core.app.post(() => TRIGGER.lootSpawn.fire());
+      },
+    );
   }
   .setAnno("server");
   exports.spawnLoot_server = spawnLoot_server;
 
 
   /**
-   * Variant of {@link spawnLoot_server} for client side.
+   * Spawns loot units around (x, y).
    * @param {number} x
    * @param {number} y
    * @param {ItemGn} itm_gn
-   * @param {number|unset} [amt]
+   * @param {number} itmAmt
    * @param {number|unset} [rad]
-   * @param {number|unset} [repeat]
+   * @param {number|unset} [amt]
    * @return {void}
    */
-  const spawnLoot_client = function(x, y, itm_gn, amt, rad, repeat) {
-    if(!PARAM.MODDED) return;
+  const spawnLoots_server = function(x, y, itm_gn, itmAmt, rad, amt) {
+    if(!PARAM.MODDED || itmAmt < 1) return;
     let itm = MDL_content._ct(itm_gn, "rs");
+    if(itm == null) return;
+    if(rad == null) rad = VAR.range.unitLootRad;
+    if(amt == null) amt = 1;
+
+    spawnUnits_server(
+      x, y, VARGEN.utpLoot, Vars.player.team(), null, rad, amt,
+      unit => {
+        unit.addItem(itm, itmAmt);
+        MDL_effect.showAt_global(unit.x, unit.y, EFF.circlePulseDynamic, 5.0, Pal.accent);
+        MDL_effect._e_line(x, y, null, unit, Pal.accent);
+        Core.app.post(() => TRIGGER.lootSpawn.fire());
+      },
+    );
+  }
+  .setAnno("server");
+  exports.spawnLoots_server = spawnLoots_server;
+
+
+  /**
+   * Variant of {@link spawnLoot_server} for client side.
+   */
+  const spawnLoot_client = function(x, y, itm_gn, itmAmt) {
+    if(!PARAM.MODDED || itmAmt < 1) return;
+    let itm = MDL_content._cT(itm_gn, "rs");
     if(itm == null) return;
 
     MDL_net.sendPacket(
       PacketModes.CLIENT, "lovec-client-loot-spawn",
       packPayload([
-        x, y, itm.name, amt, rad, repeat,
+        x, y, itm.name, itmAmt,
       ]),
       true, true,
     );
@@ -238,13 +304,50 @@
 
 
   /**
+   * Variant of {@link spawnLoots_server} for client side.
+   * @param {number} x
+   * @param {number} y
+   * @param {ItemGn} itm_gn
+   * @param {number} itmAmt
+   * @param {number|unset} [rad]
+   * @param {number|unset} [amt]
+   * @return {void}
+   */
+  const spawnLoots_client = function(x, y, itm_gn, itmAmt, rad, amt) {
+    if(!PARAM.MODDED || itmAmt < 1) return;
+    let itm = MDL_content._ct(itm_gn, "rs");
+    if(itm == null) return;
+
+    MDL_net.sendPacket(
+      PacketModes.CLIENT, "lovec-client-loots-spawn",
+      packPayload([
+        x, y, itm.name, itmAmt, rad, amt,
+      ]),
+      true, true,
+    );
+  }
+  .setAnno("init", function() {
+    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-loots-spawn", payload => {
+      spawnLoots_server.apply(null, unpackPayload(payload));
+    });
+  })
+  .setAnno("client");
+  exports.spawnLoots_client = spawnLoots_client;
+
+
+  /**
    * Removes all existing loot units.
    * @return {void}
    */
   const clearLoot = function() {
+    let count = 0;
     Groups.unit.each(unit => {
-      if(MDL_cond._isLoot(unit)) unit.remove();
+      if(MDL_cond._isLoot(unit)) {
+        unit.remove();
+        count++;
+      };
     });
+    console.log("[LOVEC] Removed ${1} loot units.".format(count.color(Pal.accent)));
   }
   .setAnno("server");
   exports.clearLoot = clearLoot;
@@ -254,54 +357,12 @@
 
 
   /**
-   * Spawns a bullet at (x, y).
-   * @param {number} x
-   * @param {number} y
-   * @param {BulletType|null} btp
-   * @param {SoundGn} se_gn
-   * @param {Team|unset} [team]
-   * @param {number|unset} [rad]
-   * @param {number|unset} [ang]
-   * @param {number|unset} [repeat]
-   * @param {number|unset} [dmg_ow]
-   * @param {number|unset} [scl] - Multiplier on lifetime.
-   * @param {number|unset} [velScl] - Multiplier on velocity.
-   * @return {void}
-   */
-  const spawnBul = function(x, y, btp, se_gn, team, rad, ang, repeat, dmg_ow, scl, velScl) {
-    if(btp == null) return;
-    if(team == null) team = Team.derelict;
-    if(rad == null) rad = 0.0;
-    if(ang == null) ang = "rand";
-    if(repeat == null) repeat = 1;
-    if(dmg_ow == null) dmg_ow = -1;
-    if(scl == null) scl = 1.0;
-    if(velScl == null) velScl = 1.0;
-
-    let x_i, y_i, ang_i;
-    for(let i = 0; i < repeat; i++) {
-      x_i = x + Mathf.range(rad);
-      y_i = y + Mathf.range(rad);
-      ang_i = ang === "rand" ? Mathf.random(360.0) : ang;
-
-      Call.createBullet(btp, team, x_i, y_i, ang_i, dmg_ow, velScl, scl);
-    };
-
-    MDL_effect.playAt(x, y, se_gn);
-  }
-  .setAnno("server");
-  exports.spawnBul = spawnBul;
-
-
-  /**
    * Applies damage on a bullet, will destroy it if bullet damage is reduced to zero.
-   * @param {Bullet|null} bul
-   * @param {number|unset} [dmg]
+   * @param {Bullet} bul
+   * @param {number} dmg
    * @return {void}
    */
   const damageBul = function(bul, dmg) {
-    if(bul == null) return;
-    if(dmg == null) dmg = 0.0;
     if(dmg < 0.0001) return;
 
     bul.damage > dmg ? (bul.damage -= dmg) : bul.remove();

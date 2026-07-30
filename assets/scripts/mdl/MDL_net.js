@@ -72,10 +72,16 @@
       isReliable ?
         Call.serverPacketReliable(header, payload) :
         Call.serverPacketUnreliable(header, payload);
+      if(DEBUG.shouldLogServerPacket) {
+        console.log("[LOVEC] Sent server packet ${1}.".format(header.color(Pal.accent)));
+      };
     } else if(mode === PacketModes.CLIENT || (mode === PacketModes.BOTH && Vars.net.client())) {
       isReliable ?
         (useConnection ? Call.clientPacketReliable(Vars.player.con, header, payload) : Call.clientPacketReliable(header, payload)) :
         (useConnection ? Call.clientPacketUnreliable(Vars.player.con, header, payload) : Call.clientPacketUnreliable(header, payload));
+      if(DEBUG.shouldLogClientPacket) {
+        console.log("[LOVEC] Sent client packet ${2}.".format(header.color(Pal.accent)));
+      };
     };
   };
   exports.sendPacket = sendPacket;

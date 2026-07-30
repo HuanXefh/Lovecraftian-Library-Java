@@ -12,7 +12,7 @@ import mindustry.world.Block;
 /**
  * Handles generalized properties.
  */
-public class LCGeneralizer {
+public class LCGeneralizedProp {
 
 
     /**

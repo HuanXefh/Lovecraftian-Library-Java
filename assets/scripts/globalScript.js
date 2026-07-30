@@ -295,6 +295,8 @@
       );
     },
 
+    shouldLogServerPacket: false,
+    shouldLogClientPacket: false,
     lastHttpUrl: null,
     lastHttpRes: null,
     lastHttpExc: null,

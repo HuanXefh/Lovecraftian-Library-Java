@@ -78,7 +78,7 @@
         loot.y = b.lootDumpVec.y;
         loot.type.ex_resetLifetime(loot);
       } else {
-        MDL_call.spawnLoot_server(b.lootDumpVec.x, b.lootDumpVec.y, loot.item(), amt, 0.0);
+        MDL_call.spawnLoot_server(b.lootDumpVec.x, b.lootDumpVec.y, loot.item(), amt);
         loot.stack.amount -= amt;
       };
     };

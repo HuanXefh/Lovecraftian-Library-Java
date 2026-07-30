@@ -45,7 +45,7 @@
 
 
   function comp_ex_getRevealTgs(blk, tx, ty, rot) {
-    return MDL_pos._tsCircle(blk.tmpRevealedTgs, Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond._isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
+    return LCPos.getTilesCircle(blk.tmpRevealedTgs, Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond._isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
   };
 
 
@@ -68,7 +68,7 @@
 
     b.ex_setRevealed(false);
     // Update other scanners in range
-    MDL_pos._it_bs(b.x, b.y, b.block.delegee.blkRad * 2.2, b.team, ob => MDL_cond._isOreScanner(ob.block), ob => ob.ex_setRevealed(true));
+    LCEntity.eachBuild(b.x, b.y, b.team, b.block.delegee.blkRad * 2.2, ob => MDL_cond._isOreScanner(ob.block), ob => ob.ex_setRevealed(true));
   };
 
 

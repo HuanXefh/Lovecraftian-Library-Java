@@ -52,7 +52,7 @@
       let rad = b.block.range + b.phaseHeat * b.block.phaseRangeBoost;
 
       if(b.block.delegee.healsBuilding) {
-        MDL_pos._it_bs(b.x, b.y, rad, b.team, ob => MDL_cond._canHeal(ob), ob => {
+        LCEntity.eachBuild(b.x, b.y, b.team, rad, ob => MDL_cond._canHeal(ob), ob => {
           FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency, true);
         });
       };

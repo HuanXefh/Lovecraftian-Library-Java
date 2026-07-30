@@ -86,7 +86,7 @@
 
   function comp_ex_findOreTs(blk, contArr, tx, ty, rot) {
     let itm, oblk;
-    return MDL_pos._tsRectRot(contArr, Vars.world.tile(tx, ty), blk.range * 0.5, rot, blk.size).inSituFilter(ot => {
+    return LCPos.getTilesRectRotCenter(contArr, Vars.world.tile(tx, ty), blk.range * 0.5, rot, blk.size).inSituFilter(ot => {
       itm = null;
       oblk = Blocks.air;
       if(blk.mineMode === "wall" || blk.mineMode === "any") {

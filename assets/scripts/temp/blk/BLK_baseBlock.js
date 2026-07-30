@@ -152,7 +152,7 @@
         if(amt >= 20) {
           amt = amt.randFreq(0.3);
           b.items.remove(itm, amt);
-          MDL_call.spawnLoot_server(b.x, b.y, itm, amt, b.block.size * Vars.tilesize * 0.7);
+          MDL_call.spawnLoots_server(b.x, b.y, itm, amt, b.block.size * Vars.tilesize * 0.7);
         };
       });
     };

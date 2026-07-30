@@ -39,10 +39,6 @@
     let ot;
     blk.offPon2s.forEachFast(pon2 => {
       ot = t.nearby(pon2);
-      printAll(
-        pon2,
-        ot,
-      );
       if(ot != null) blk.parent.drawBase(ot);
     });
 

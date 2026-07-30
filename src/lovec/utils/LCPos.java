@@ -1,8 +1,10 @@
 package lovec.utils;
 
 import arc.Core;
+import arc.func.Cons;
 import arc.func.Cons3;
 import arc.math.Mathf;
+import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import arc.util.Nullable;
@@ -12,11 +14,13 @@ import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import mindustry.type.Item;
+import mindustry.world.Block;
+import mindustry.world.Edges;
 import mindustry.world.Tile;
 import rhino.NativeArray;
 
 /**
- * Handles position-related calculation.
+ * Handles position-related calculation and tile search.
  */
 public class LCPos {
 
@@ -266,6 +270,9 @@ public class LCPos {
     /* <-------------------- tile list --------------------> */
 
 
+    /**
+     * Gets tiles on an edge.
+     */
     public static NativeArray getTilesRot(@Nullable NativeArray contArr, @Nullable Tile t, int rot, int size) {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesRot.newArr");
         if(t == null) return arr;
@@ -306,6 +313,188 @@ public class LCPos {
         };
 
         return arr;
+    };
+
+
+    /**
+     * Gets tiles on all four edges.
+     */
+    public static NativeArray getTilesEdge(@Nullable NativeArray contArr, @Nullable Tile t, int size, boolean isInnerEdge) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesEdge.newArr");
+        if(t == null) return arr;
+
+        Point2[] pons = isInnerEdge ? Edges.getInsideEdges(size) : Edges.getEdges(size);
+        int i = 0;
+        int iCap = size * 4;
+        while(i < iCap) {
+            LCNativeArray.pushNonNull(arr, t.nearby(pons[i]));
+            i++;
+        };
+
+        return arr;
+    };
+    // Overload
+    public static NativeArray getTilesEdge(@Nullable NativeArray contArr, @Nullable Tile t, int size) {
+        return getTilesEdge(contArr, t, size, false);
+    };
+
+
+    /**
+     * Gets tiles in a rectangular range.
+     */
+    public static NativeArray getTilesRect(@Nullable NativeArray contArr, @Nullable Tile t, int r, int size) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesRect.newArr");
+        if(t == null) return arr;
+
+        int iBase, iCap;
+        if(size % 2 == 0) {
+            iBase = -(size / 2 - 1 + r);
+            iCap = -iBase + 2;
+        } else {
+            iBase = -((size - 1) / 2 + r);
+            iCap = -iBase + 1;
+        };
+        int i;
+        int j = iBase;
+        while(j < iCap) {
+            i = iBase;
+            while(i < iCap) {
+                LCNativeArray.pushNonNull(arr, t.nearby(i, j));
+                i++;
+            };
+            j++;
+        };
+
+        return arr;
+    };
+
+
+    /**
+     * Gets tiles that some block will occupy.
+     */
+    public static NativeArray getTilesBlock(@Nullable NativeArray contArr, Block blk, int tx, int ty) {
+        return getTilesRect(contArr, Vars.world.tile(tx, ty), 0, blk.size);
+    };
+
+
+    /**
+     * Gets tiles that some building occupies.
+     */
+    public static NativeArray getTilesBuild(@Nullable NativeArray contArr, Building b) {
+        return getTilesRect(contArr, b.tile, 0, b.block.size);
+    };
+
+
+    /**
+     * Variant of {@link #getTilesRect} where the rectangle is rotated.
+     */
+    public static NativeArray getTilesRectRotCenter(@Nullable NativeArray contArr, @Nullable Tile t, int r, int rot, int size) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesRectRotCenter.newArr");
+        if(t == null) return arr;
+
+        getCoordsRectRotCenter(Tmp.v1, toFCoord(t.x, size), toFCoord(t.y, size), r, rot, size).scl(1f / Vars.tilesize).sub(r, r).add(0.5f, 0.5f);
+        int tx = LCScript.toInt(Tmp.v1.x);
+        int ty = LCScript.toInt(Tmp.v1.y);
+        if(Vars.world.tile(tx, ty) == null) return arr;
+
+        int i;
+        int iCap = r * 2;
+        int j = 0;
+        while(j < iCap) {
+            i = 0;
+            while(i < iCap) {
+                LCNativeArray.pushNonNull(arr, Vars.world.tile(tx + i, ty + j));
+                i++;
+            };
+            j++;
+        };
+
+        return arr;
+    };
+
+
+    /**
+     * Gets tiles in a circular range.
+     * <br> TODO: This is dumb and should be improved someday.
+     */
+    public static NativeArray getTilesCircle(@Nullable NativeArray contArr, @Nullable Tile t, int r, int size) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesCircle.newArr");
+        if(t == null) return arr;
+
+        int
+            w = Vars.world.width(),
+            h = Vars.world.height();
+
+        if(size % 2 != 0) {
+            Geometry.circle(t.x, t.y, w, h, r, (tx, ty) -> {
+               Tile ot = Vars.world.tile(tx, ty);
+               if(ot != null) {
+                   LCNativeArray.push(arr, ot);
+               };
+            });
+        } else {
+            Tile ot0;
+            for(int i = 0; i < 4; i++) {
+                ot0 = t.nearby(sizeOffs[2][i]);
+                if(ot0 == null) continue;
+                Geometry.circle(ot0.x, ot0.y, w, h, r, (tx, ty) -> {
+                   Tile ot = Vars.world.tile(tx, ty);
+                   if(ot != null && !LCNativeArray.includes(arr, ot)) {
+                       LCNativeArray.push(arr, ot);
+                   };
+                });
+            };
+        };
+
+        return arr;
+    };
+
+
+    /**
+     * Gets tiles in range by Manhattan distance.
+     */
+    public static NativeArray getTilesDstManhattan(@Nullable NativeArray contArr, @Nullable Tile t, int r) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesDstManhattan.newArr");
+        if(t == null) return arr;
+
+        int
+            iBase = -r,
+            iCap = r + 1,
+            jBase,
+            jCap;
+
+        for(int i = iBase; i < iCap; i++) {
+            jBase = -(r - Math.abs(i));
+            jCap = -jBase + 1;
+            for(int j = jBase; j < jCap; j++) {
+                LCNativeArray.pushNonNull(arr, t.nearby(i, j));
+            };
+        };
+
+        return arr;
+    };
+
+
+    /**
+     * Gets linked tiles of some tile.
+     */
+    public static NativeArray getTilesLinked(@Nullable NativeArray contArr, @Nullable Tile t) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesLinked.newArr");
+        if(t == null) return arr;
+
+        t.getLinkedTiles(ot -> LCNativeArray.push(arr, ot));
+
+        return arr;
+    };
+
+
+    /**
+     * Iterates through linked tiles of some tile.
+     */
+    public static void eachTileLinked(@Nullable Tile t, Cons<Tile> cons) {
+        if(t == null) return;
+
+        t.getLinkedTiles(cons);
     };
 
 
