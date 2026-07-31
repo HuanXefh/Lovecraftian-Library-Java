@@ -16,11 +16,11 @@
 
   function comp_init(utp) {
     DB_status.db["group"]["lootImmune"].forEachFast(sta_gn => {
-      let sta = MDL_content._ct(sta_gn, "sta", true);
+      let sta = MDL_content.getCt(sta_gn, "sta", true);
       if(sta == null) return;
       utp.immunities.add(sta);
     });
-    MDL_event._c_onLoadPost(() => {
+    MDL_event.onLoadPost(() => {
       VARGEN.deathStas.forEachFast(sta => utp.immunities.add(sta));
     });
   };

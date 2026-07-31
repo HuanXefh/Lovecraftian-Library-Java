@@ -16,7 +16,7 @@
   const unitDataMap = new ObjectMap();
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
     TRIGGER.majorIter.start.addGlobalListener(() => {
       expiredUnits.clear();
       unitDataMap.each((unit, dataObj) => {

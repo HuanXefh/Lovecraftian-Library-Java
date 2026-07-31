@@ -41,7 +41,7 @@
   let mapCur = null;
 
 
-  MDL_event._c_onUpdate(() => {
+  MDL_event.onUpdate(() => {
     if(Vars.state.isPaused() || (global.lovecUtil.prop.debug ? !Vars.state.isGame() : !Vars.state.isCampaign())) return;
 
     CLS_sectorResourcePacket.update();

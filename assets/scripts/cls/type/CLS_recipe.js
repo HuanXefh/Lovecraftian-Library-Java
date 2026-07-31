@@ -47,7 +47,7 @@
     };
 
     if(!blkCategHeaderObjMap.containsKey(this.owner)) {
-      blkCategHeaderObjMap.put(this.owner, MDL_recipe._categHeaderObj(this.rcMdl));
+      blkCategHeaderObjMap.put(this.owner, MDL_recipe.getCategHeaderObj(this.rcMdl));
     };
   };
 
@@ -63,7 +63,7 @@
   let rcIncompleteCount = 0;
 
 
-  MDL_event._c_onLoadDelayTask(VAR.delay.load.logRcRegis, () => {
+  MDL_event.onLoadDelayTask(VAR.delay.load.logRcRegis, () => {
     console.log("[LOVEC] Registered ${1} recipe(s) in total.".format(rcCount.color(Pal.accent)));
     if(rcIncompleteCount > 0) {
       console.log("[LOVEC] ${1} recipe(s) are incomplete!".format(rcIncompleteCount.color(Pal.accent)));
@@ -99,7 +99,7 @@
    */
   CLS_recipe.get = function(blk, rcHeader) {
     rcHeader = String(rcHeader);
-    if(rcHeader === "SPEC: empty" || !MDL_recipe._hasHeader(blk.delegee.rcMdl, rcHeader)) {
+    if(rcHeader === "SPEC: empty" || !MDL_recipe.checkHeaderValid(blk.delegee.rcMdl, rcHeader)) {
       return CLS_recipe.getEmptyRc(blk);
     };
     let rc = nameRcMap.get(CLS_recipe.getName(blk, rcHeader));
@@ -195,7 +195,7 @@
    * @return {boolean}
    */
   CLS_recipe.checkInput = function(rc, rs_gn) {
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
     if(rs == null) return false;
 
     let
@@ -273,7 +273,7 @@
    * @return {boolean}
    */
   CLS_recipe.checkOutput = function(rc, rs_gn) {
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
     if(rs == null) return false;
 
     let
@@ -552,10 +552,10 @@
    * @return {void}
    */
   CLS_recipe.register = function(blk, rcMdl) {
-    MDL_event._c_onLoadPost(() => {
+    MDL_event.onLoadPost(() => {
       MDL_recipe.initRc(blk.rcMdl, blk);
       new CLS_recipe(blk, rcMdl, "SPEC: empty");
-      MDL_recipe._rcHeaders(rcMdl).forEachFast(rcHeader => {
+      MDL_recipe.getRcHeaders(rcMdl).forEachFast(rcHeader => {
         new CLS_recipe(blk, rcMdl, rcHeader, blk.delegee.useAutoSelection);
         rcCount++;
       });
@@ -612,87 +612,87 @@
     if(this.hasInit) throw new Error("Double initialization!");
     this.hasInit = true;
 
-    this.isGen = MDL_recipe._isGen(this.rcMdl, this.rcHeader);
-    this.isIncomplete = MDL_recipe._isIncomplete(this.rcMdl, this.rcHeader);
-    this.erroredNames = MDL_recipe._rcVal(this.rcMdl, this.rcHeader, "erroredNames", Array.air);
-    this.tt = MDL_recipe._tt(this.rcMdl, this.rcHeader);
+    this.isGen = MDL_recipe.checkIsGen(this.rcMdl, this.rcHeader);
+    this.isIncomplete = MDL_recipe.checkIsIncomplete(this.rcMdl, this.rcHeader);
+    this.erroredNames = MDL_recipe.getRcVal(this.rcMdl, this.rcHeader, "erroredNames", Array.air);
+    this.tt = MDL_recipe.getTooltip(this.rcMdl, this.rcHeader);
 
     this.icon = null;
     this.altIcon = null;
     if(!Vars.headless) {
       // This have to be delayed, WTF
       Time.runTask(70.0, () => {
-        this.icon = MDL_recipe._icon(this.rcMdl, this.rcHeader);
+        this.icon = MDL_recipe.makeIcon(this.rcMdl, this.rcHeader);
         this.altIcon = new StackDrawable(
-          [new TextureRegionDrawable(this.owner.uiIcon), MDL_recipe._icon(this.rcMdl, this.rcHeader)].toSeq(),
+          [new TextureRegionDrawable(this.owner.uiIcon), MDL_recipe.makeIcon(this.rcMdl, this.rcHeader)].toSeq(),
           [new Vec2(0.0, 0.0), new Vec2(12.0, 12.0)].toSeq(),
           [0.8, 0.5],
         );
       });
     };
 
-    this.rcIconName = MDL_recipe._iconName(this.rcMdl, this.rcHeader);
-    this.categ = MDL_recipe._categ(this.rcMdl, this.rcHeader);
-    this.lockedByCts = MDL_recipe._lockedBy(this.rcMdl, this.rcHeader, true);
-    this.rcTimeScl = MDL_recipe._timeScl(this.rcMdl, this.rcHeader);
-    this.pol = MDL_recipe._pol(this.rcMdl, this.rcHeader);
-    this.ignoreItemFullness = MDL_recipe._ignoreItemFullness(this.rcMdl, this.rcHeader);
-    this.erekirHeatReq = MDL_recipe._erekirHeatReq(this.rcMdl, this.rcHeader);
-    this.erekirHeatProd = MDL_recipe._erekirHeatProd(this.rcMdl, this.rcHeader);
+    this.rcIconName = MDL_recipe.getIconName(this.rcMdl, this.rcHeader);
+    this.categ = MDL_recipe.getCateg(this.rcMdl, this.rcHeader);
+    this.lockedByCts = MDL_recipe.getLockedByCts(this.rcMdl, this.rcHeader, true);
+    this.rcTimeScl = MDL_recipe.getTimeScl(this.rcMdl, this.rcHeader);
+    this.pol = MDL_recipe.getPol(this.rcMdl, this.rcHeader);
+    this.ignoreItemFullness = MDL_recipe.checkIgnoreItemFullness(this.rcMdl, this.rcHeader);
+    this.erekirHeatReq = MDL_recipe.getErekirHeatReq(this.rcMdl, this.rcHeader);
+    this.erekirHeatProd = MDL_recipe.getErekirHeatProd(this.rcMdl, this.rcHeader);
 
-    let nameAttr = MDL_recipe._attr(this.rcMdl, this.rcHeader);
+    let nameAttr = MDL_recipe.getAttr(this.rcMdl, this.rcHeader);
     this.attr = nameAttr == null ?
       null :
       Attribute.getOrNull(nameAttr);
-    this.attrMin = MDL_recipe._attrMin(this.rcMdl, this.rcHeader) * Math.pow(this.owner.size, 2);
-    this.attrMax = MDL_recipe._attrMax(this.rcMdl, this.rcHeader) * Math.pow(this.owner.size, 2);
-    this.attrBoostScl = MDL_recipe._attrBoostScl(this.rcMdl, this.rcHeader);
-    this.attrBoostCap = MDL_recipe._attrBoostCap(this.rcMdl, this.rcHeader);
+    this.attrMin = MDL_recipe.getAttrMin(this.rcMdl, this.rcHeader) * Math.pow(this.owner.size, 2);
+    this.attrMax = MDL_recipe.getAttrMax(this.rcMdl, this.rcHeader) * Math.pow(this.owner.size, 2);
+    this.attrBoostScl = MDL_recipe.getAttrBoostScl(this.rcMdl, this.rcHeader);
+    this.attrBoostCap = MDL_recipe.getAttrBoostCap(this.rcMdl, this.rcHeader);
 
-    this.ci = MDL_recipe._ci(null, this.rcMdl, this.rcHeader);
-    this.baseCi = MDL_recipe._ci(null, this.rcMdl, "");
-    this.ciNoBase = MDL_recipe._ci(null, this.rcMdl, this.rcHeader, true);
-    this.bi = MDL_recipe._bi(null, this.rcMdl, this.rcHeader);
-    this.baseBi = MDL_recipe._bi(null, this.rcMdl, "");
-    this.biNoBase = MDL_recipe._bi(null, this.rcMdl, this.rcHeader, true);
-    this.aux = MDL_recipe._aux(null, this.rcMdl, this.rcHeader);
-    this.baseAux = MDL_recipe._aux(null, this.rcMdl, "");
-    this.auxNoBase = MDL_recipe._aux(null, this.rcMdl, this.rcHeader, true);
-    this.reqOpt = MDL_recipe._reqOpt(this.rcMdl, this.rcHeader);
-    this.opt = MDL_recipe._opt(null, this.rcMdl, this.rcHeader);
-    this.baseOpt = MDL_recipe._opt(null, this.rcMdl, "");
-    this.optNoBase = MDL_recipe._opt(null, this.rcMdl, this.rcHeader, true);
-    this.payi = MDL_recipe._payi(null, this.rcMdl, this.rcHeader);
-    this.basePayi = MDL_recipe._payi(null, this.rcMdl, "");
-    this.payiNoBase = MDL_recipe._payi(null, this.rcMdl, this.rcHeader, true);
-    this.co = MDL_recipe._co(null, this.rcMdl, this.rcHeader);
-    this.baseCo = MDL_recipe._co(null, this.rcMdl, "");
-    this.coNoBase = MDL_recipe._co(null, this.rcMdl, this.rcHeader, true);
-    this.bo = MDL_recipe._bo(null, this.rcMdl, this.rcHeader);
-    this.baseBo = MDL_recipe._bo(null, this.rcMdl, "");
-    this.boNoBase = MDL_recipe._bo(null, this.rcMdl, this.rcHeader, true);
-    this.failP = MDL_recipe._failP(this.rcMdl, this.rcHeader);
-    this.fo = MDL_recipe._fo(null, this.rcMdl, this.rcHeader);
-    this.baseFo = MDL_recipe._fo(null, this.rcMdl, "");
-    this.foNoBase = MDL_recipe._fo(null, this.rcMdl, this.rcHeader, true);
-    this.payo = MDL_recipe._payo(null, this.rcMdl, this.rcHeader);
-    this.basePayo = MDL_recipe._payo(null, this.rcMdl, "");
-    this.payoNoBase = MDL_recipe._payo(null, this.rcMdl, this.rcHeader, true);
+    this.ci = MDL_recipe.getCi(null, this.rcMdl, this.rcHeader);
+    this.baseCi = MDL_recipe.getCi(null, this.rcMdl, "");
+    this.ciNoBase = MDL_recipe.getCi(null, this.rcMdl, this.rcHeader, true);
+    this.bi = MDL_recipe.getBi(null, this.rcMdl, this.rcHeader);
+    this.baseBi = MDL_recipe.getBi(null, this.rcMdl, "");
+    this.biNoBase = MDL_recipe.getBi(null, this.rcMdl, this.rcHeader, true);
+    this.aux = MDL_recipe.getAux(null, this.rcMdl, this.rcHeader);
+    this.baseAux = MDL_recipe.getAux(null, this.rcMdl, "");
+    this.auxNoBase = MDL_recipe.getAux(null, this.rcMdl, this.rcHeader, true);
+    this.reqOpt = MDL_recipe.getReqOpt(this.rcMdl, this.rcHeader);
+    this.opt = MDL_recipe.getOpt(null, this.rcMdl, this.rcHeader);
+    this.baseOpt = MDL_recipe.getOpt(null, this.rcMdl, "");
+    this.optNoBase = MDL_recipe.getOpt(null, this.rcMdl, this.rcHeader, true);
+    this.payi = MDL_recipe.getPayi(null, this.rcMdl, this.rcHeader);
+    this.basePayi = MDL_recipe.getPayi(null, this.rcMdl, "");
+    this.payiNoBase = MDL_recipe.getPayi(null, this.rcMdl, this.rcHeader, true);
+    this.co = MDL_recipe.getCo(null, this.rcMdl, this.rcHeader);
+    this.baseCo = MDL_recipe.getCo(null, this.rcMdl, "");
+    this.coNoBase = MDL_recipe.getCo(null, this.rcMdl, this.rcHeader, true);
+    this.bo = MDL_recipe.getBo(null, this.rcMdl, this.rcHeader);
+    this.baseBo = MDL_recipe.getBo(null, this.rcMdl, "");
+    this.boNoBase = MDL_recipe.getBo(null, this.rcMdl, this.rcHeader, true);
+    this.failP = MDL_recipe.getFailP(this.rcMdl, this.rcHeader);
+    this.fo = MDL_recipe.getFo(null, this.rcMdl, this.rcHeader);
+    this.baseFo = MDL_recipe.getFo(null, this.rcMdl, "");
+    this.foNoBase = MDL_recipe.getFo(null, this.rcMdl, this.rcHeader, true);
+    this.payo = MDL_recipe.getPayo(null, this.rcMdl, this.rcHeader);
+    this.basePayo = MDL_recipe.getPayo(null, this.rcMdl, "");
+    this.payoNoBase = MDL_recipe.getPayo(null, this.rcMdl, this.rcHeader, true);
 
-    this.validTup = MDL_recipe._validTup(null, this.rcMdl, this.rcHeader);
-    this.scrTup = MDL_recipe._scrTup(null, this.rcMdl, this.rcHeader);
-    this.failEff = MDL_recipe._failEff(this.rcMdl, this.rcHeader);
-    this.rcDrawer = MDL_recipe._drawer(this.rcMdl, this.rcHeader);
+    this.validTup = MDL_recipe.getValidCheckTup(null, this.rcMdl, this.rcHeader);
+    this.scrTup = MDL_recipe.getScrTup(null, this.rcMdl, this.rcHeader);
+    this.failEff = MDL_recipe.getFailEff(this.rcMdl, this.rcHeader);
+    this.rcDrawer = MDL_recipe.getDrawer(this.rcMdl, this.rcHeader);
 
-    this.tempReq = MDL_recipe._tempReq(this.rcMdl, this.rcHeader);
-    this.tempAllowed = MDL_recipe._tempAllowed(this.rcMdl, this.rcHeader);
-    this.durabDecMtp = MDL_recipe._durabDecMtp(this.rcMdl, this.rcHeader);
-    this.powProdMtp = MDL_recipe._powProdMtp(this.rcMdl, this.rcHeader);
+    this.tempReq = MDL_recipe.getTempReq(this.rcMdl, this.rcHeader);
+    this.tempAllowed = MDL_recipe.getTempAllowed(this.rcMdl, this.rcHeader);
+    this.durabDecMtp = MDL_recipe.getDurabDecMtp(this.rcMdl, this.rcHeader);
+    this.powProdMtp = MDL_recipe.getPowProdMtp(this.rcMdl, this.rcHeader);
 
     if(this.useAutoSelection) {
-      this.keyItmHeaderMap = MDL_recipe._keyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.ITEM);
-      this.keyFldHeaderMap = MDL_recipe._keyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.FLUID);
-      this.keyPayHeaderMap = MDL_recipe._keyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.PAYLOAD);
+      this.keyItmHeaderMap = MDL_recipe.getKeyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.ITEM);
+      this.keyFldHeaderMap = MDL_recipe.getKeyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.FLUID);
+      this.keyPayHeaderMap = MDL_recipe.getKeyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.PAYLOAD);
     };
 
     this.inputFlds = CLS_recipe.getInputFlds(null, this);
@@ -806,11 +806,11 @@
           MDL_table.__break(tb2, 2);
         };
         if(!valid) {
-          tb2.add(MDL_bundle._info("lovec", "recipe-unavailable")).color(Pal.remove).row();
+          tb2.add(MDL_bundle.getInfo("lovec", "recipe-unavailable")).color(Pal.remove).row();
           MDL_table.__break(tb2, 1);
         };
         if(this.tt != null) {
-          tb2.add(this.tt.color(Color.gray)).left().labelAlign(Align.left).wrap().pad(28.0).grow().row();
+          tb2.add(this.tt.color(Color.gray)).left().labelAlign(Align.left).wrap().padLeft(28.0).padRight(28.0).padTop(14.0).padBottom(14.0).grow().row();
           MDL_table.__break(tb2, 1);
         };
         if(this.hasBaseIo) {
@@ -836,7 +836,7 @@
       tb1.left();
       MDL_table.__margin(tb1);
       // `TABLE`: Title
-      tb1.add("${1}:".format(name.toUpperCase())).left().tooltip(MDL_bundle._term("lovec", name), true).row();
+      tb1.add("${1}:".format(name.toUpperCase())).left().tooltip(MDL_bundle.getTerm("lovec", name), true).row();
       // `TABLE`: I/O contents
       tb1.table(Styles.none, tableF);
     })
@@ -900,7 +900,7 @@
           if(showWinBtn) {
             tb3.button(VARGEN.icons.window, Styles.clearNonei, 28.0, () => {
               new CLS_window(
-                "${1} (${2})".format(MDL_bundle._term("lovec", "recipe"), this.owner.localizedName + " [${1}]".format(ord)),
+                "${1} (${2})".format(MDL_bundle.getTerm("lovec", "recipe"), this.owner.localizedName + " [${1}]".format(ord)),
                 tb4 => {
                   if(this.hasBaseIo) {
                     this.displayBase(tb4, false, 28.0);
@@ -911,7 +911,7 @@
                 },
               ).add();
             })
-            .tooltip(MDL_bundle._term("lovec", "new-window"), true);
+            .tooltip(MDL_bundle.getTerm("lovec", "new-window"), true);
           };
         });
       }).width(84.0);
@@ -978,18 +978,18 @@
           // `TABLE`: Stats
           thisFun.addStat(
             tb3, this.isGen,
-            MDL_bundle._term("lovec", "generated-recipe").color(Pal.gray),
+            MDL_bundle.getTerm("lovec", "generated-recipe").color(Pal.gray),
           );
           if(this.isIncomplete) {
-            let str = MDL_bundle._info("lovec", "tt-recipe-errored-names") + "\n";
+            let str = MDL_bundle.getInfo("lovec", "tt-recipe-errored-names") + "\n";
             this.erroredNames.forEachFast(name => {
               str += ("\n- " + name).color(Pal.accent);
             });
-            tb3.add(MDL_bundle._term("lovec", "incomplete-recipe").color(Pal.remove)).left().tooltip(str, true).row();
+            tb3.add(MDL_bundle.getTerm("lovec", "incomplete-recipe").color(Pal.remove)).left().tooltip(str, true).row();
           };
           thisFun.addStat(
             tb3, true,
-            MDL_bundle._term("lovec", "time-required"),
+            MDL_bundle.getTerm("lovec", "time-required"),
             Strings.fixed(this.rcTimeScl, 1) + "x (" + Strings.autoFixed(this.owner.craftTime * this.rcTimeScl / 60.0, 2) + "s)",
           );
           thisFun.addStat(
@@ -1012,12 +1012,12 @@
           );
           thisFun.addStat(
             tb3, this.reqOpt,
-            MDL_bundle._term("lovec", "require-optional"),
-            MDL_bundle._base("yes"),
+            MDL_bundle.getTerm("lovec", "require-optional"),
+            MDL_bundle.getBase("yes"),
           );
           thisFun.addStat(
             tb3, this.failP > 0.0,
-            MDL_bundle._term("lovec", "chance-to-fail"),
+            MDL_bundle.getTerm("lovec", "chance-to-fail"),
             this.failP.perc(1).color(this.failP > 0.25 ? Pal.remove : Pal.accent),
           );
           thisFun.addStat(
@@ -1033,26 +1033,26 @@
           );
           thisFun.addStat(
             tb3, isFinite(this.tempAllowed),
-            MDL_bundle._term("lovec", "temperature-allowed"),
+            MDL_bundle.getTerm("lovec", "temperature-allowed"),
             Strings.fixed(this.tempAllowed, 2),
             fetchStatUnit("lovec", "heatunits").localized(),
           );
           thisFun.addStat(
             tb3, !this.durabDecMtp.fEqual(1.0),
-            MDL_bundle._term("lovec", "abrasion-multiplier"),
+            MDL_bundle.getTerm("lovec", "abrasion-multiplier"),
             this.durabDecMtp.perc(),
           );
           if(this.lockedByCts.length > 0) {
             tb3.table(Styles.none, tb4 => {
               tb4.left();
-              tb4.add(MDL_text._statText(MDL_bundle._term("lovec", "require-unlocking"), "")).left();
+              tb4.add(MDL_text._statText(MDL_bundle.getTerm("lovec", "require-unlocking"), "")).left();
               this.lockedByCts.forEachFast(ct => MDL_table.__ct(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2));
             })
             .left()
             .row();
           };
           if(this.attr != null) {
-            let attrCell = tb3.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr._attrB(attr))).left();
+            let attrCell = tb3.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr.getAttrB(attr))).left();
             MDL_table.__tooltip(attrCell, tb => {
               tb.table(Styles.black6, tb1 => {
                 MDL_table.__margin(tb1);
@@ -1172,7 +1172,7 @@
    */
   CLS_recipe.prototype.displayOpt = function(tb, isBase) {
     return this.displayIoFrag(tb, "opt", tb1 => {
-      tb1.button("?", () => fetchDialog("rcOpt").ex_show(MDL_bundle._term("lovec", "opt"), (isBase ? this.baseOpt : this.optNoBase))).size(34.0).pad(3.0);
+      tb1.button("?", () => fetchDialog("rcOpt").ex_show(MDL_bundle.getTerm("lovec", "opt"), (isBase ? this.baseOpt : this.optNoBase))).size(34.0).pad(3.0);
     });
   };
 
@@ -1186,7 +1186,7 @@
   CLS_recipe.prototype.displayPayi = function(tb, isBase) {
     return this.displayIoFrag(tb, "payi", tb1 => {
       (isBase ? this.basePayi : this.payiNoBase).forEachRow(2, (name, amt) => {
-        MDL_table.__rcCt(tb1, MDL_content._ct(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
+        MDL_table.__rcCt(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
       });
     });
   };
@@ -1246,7 +1246,7 @@
   CLS_recipe.prototype.displayPayo = function(tb, isBase) {
     return this.displayIoFrag(tb, "payo", tb1 => {
       (isBase ? this.basePayo : this.payoNoBase).forEachRow(2, (name, amt) => {
-        MDL_table.__rcCt(tb1, MDL_content._ct(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
+        MDL_table.__rcCt(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
       });
     });
   };

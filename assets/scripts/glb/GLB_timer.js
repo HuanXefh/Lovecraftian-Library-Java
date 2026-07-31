@@ -33,7 +33,7 @@
 */
 
 
-  MDL_event._c_onUpdate(() => {
+  MDL_event.onUpdate(() => {
 
     // Generic timer
     exports.secQuarter = timer_gn.get(0, 15.0);

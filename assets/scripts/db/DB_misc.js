@@ -55,8 +55,8 @@ const db = {
         };
 
         return String.multiline(
-          MDL_cond._isDepthOre(t.overlay()) ? null : (MDL_bundle._term("lovec", "ore") + MDL_text._colon() + itm.localizedName.plain()),
-          MDL_bundle._term("lovec", "ore-hardness") + MDL_text._colon() + tryJsProp(blk, "dropHardness", itm.hardness),
+          MDL_cond._isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text._colon() + itm.localizedName.plain()),
+          MDL_bundle.getTerm("lovec", "ore-hardness") + MDL_text._colon() + tryJsProp(blk, "dropHardness", itm.hardness),
         );
       },
 
@@ -66,8 +66,8 @@ const db = {
         if(liq == null) return;
 
         return String.multiline(
-          MDL_bundle._term("lovec", "liquid") + MDL_text._colon() + liq.localizedName.plain(),
-          MDL_bundle._term("lovec", "liquid-multiplier") + MDL_text._colon() + t.floor().liquidMultiplier.perc(),
+          MDL_bundle.getTerm("lovec", "liquid") + MDL_text._colon() + liq.localizedName.plain(),
+          MDL_bundle.getTerm("lovec", "liquid-multiplier") + MDL_text._colon() + t.floor().liquidMultiplier.perc(),
         );
       },
 
@@ -78,7 +78,7 @@ const db = {
         if(itm == null) return;
 
         return String.multiline(
-          MDL_bundle._term("lovec", "item") + MDL_text._colon() + itm.localizedName.plain(),
+          MDL_bundle.getTerm("lovec", "item") + MDL_text._colon() + itm.localizedName.plain(),
           !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text._colon() + MDL_fuel._fuelPon(itm)),
           !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text._colon() + MDL_fuel._fuelLvl(itm)),
         );
@@ -90,7 +90,7 @@ const db = {
         if(puddle == null) return;
 
         return String.multiline(
-          MDL_bundle._term("lovec", "puddle") + MDL_text._colon() + puddle.liquid.localizedName.plain(),
+          MDL_bundle.getTerm("lovec", "puddle") + MDL_text._colon() + puddle.liquid.localizedName.plain(),
         );
       },
 

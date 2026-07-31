@@ -55,12 +55,12 @@
 
     CLS_recipe.register(blk, blk.rcMdl);
 
-    MDL_event._c_onLoad(() => {
-      blk.outputsLiquid = MDL_recipe._hasAnyFldOutput(blk.rcMdl, false);
+    MDL_event.onLoad(() => {
+      blk.outputsLiquid = MDL_recipe.checkAnyFldOutput(blk.rcMdl, false);
       blk.hasConsumers = true;
 
-      blk.isErekirHeatConsumer = MDL_recipe._hasErekirHeatInput(blk.rcMdl);
-      blk.isErekirHeatProducer = MDL_recipe._hasErekirHeatOutput(blk.rcMdl);
+      blk.isErekirHeatConsumer = MDL_recipe.checkErekirHeatInput(blk.rcMdl);
+      blk.isErekirHeatProducer = MDL_recipe.checkErekirHeatOutput(blk.rcMdl);
       if(blk.isErekirHeatConsumer && blk.isErekirHeatProducer) {
         console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(Pal.accent)));
       };
@@ -88,10 +88,10 @@
 
     Time.run(0.0, () => {
       rcMdl = b.block.delegee.rcMdl;
-      if(MDL_recipe._hasHeader(rcMdl, b.rcHeader)) {
+      if(MDL_recipe.checkHeaderValid(rcMdl, b.rcHeader)) {
         b.ex_updateRcParam(rcMdl, b.rcHeader, true);
       } else {
-        header = MDL_recipe._firstHeader(rcMdl);
+        header = MDL_recipe.getFirstHeader(rcMdl);
         b.ex_updateRcParam(rcMdl, header, true);
         b.rcHeader = header;
       };
@@ -296,7 +296,7 @@
       i = 0;
       iCap = b.rc.payi.iCap();
       while(i < iCap) {
-        tmp = MDL_content._ct(b.rc.payi[i], null, true);
+        tmp = MDL_content.getCt(b.rc.payi[i], null, true);
         amt = b.rc.payi[i + 1];
         if(amt > 0) {
           MDL_table.__reqCt(tb, tmp, amt, ct => tryVal(b.payReqObj[ct.name], 0))
@@ -433,7 +433,7 @@
         });
       };
 
-      b.attrSum = MDL_attr._sumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR);
+      b.attrSum = MDL_attr.calcSumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR);
       b.ex_updateAttrEffc();
 
       Object.clear(b.consTmpObj);
@@ -568,7 +568,7 @@
           let nameMod = this.rcSourceMod;
           if(nameMod == null) ERROR_HANDLER.throw("nullArgument", "rcSourceMod");
 
-          return MDL_recipe._rcMdl(nameMod, val);
+          return MDL_recipe.getRcMdl(nameMod, val);
         },
       ])
       .setProp({
@@ -587,7 +587,7 @@
 
 
       consumesItem: function(itm) {
-        return MDL_recipe._hasInput(itm, this.rcMdl);
+        return MDL_recipe.checkInput(itm, this.rcMdl);
       }
       .setProp({
         noSuper: true,
@@ -596,7 +596,7 @@
 
 
       consumesLiquid: function(liq) {
-        return MDL_recipe._hasInput(liq, this.rcMdl);
+        return MDL_recipe.checkInput(liq, this.rcMdl);
       }
       .setProp({
         noSuper: true,
@@ -605,7 +605,7 @@
 
 
       outputsItems: function() {
-        return MDL_recipe._hasAnyItmOutput(this.rcMdl);
+        return MDL_recipe.checkAnyItmOutput(this.rcMdl);
       }
       .setProp({
         noSuper: true,

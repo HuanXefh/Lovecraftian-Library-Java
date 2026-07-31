@@ -26,7 +26,7 @@
     blk.config(JAVA.object_arr, (b, cfgArr) => {
       switch(cfgArr[0]) {
         case "selectorBlock" :
-          b.sortItem = MDL_content._ct(cfgArr[1], "rs");
+          b.sortItem = MDL_content.getCt(cfgArr[1], "rs");
           b.delegee.isInv = cfgArr[2];
           EFF.placeFadePack[b.block.size].at(b);
           break;
@@ -86,7 +86,7 @@
 
     tb.row();
     MDL_table.__btnCfgToggle(tb, b, VARGEN.icons.swap, VARGEN.icons.swap, b.isInv)
-    .tooltip(MDL_bundle._info("lovec", "tt-invert-selection"), true);
+    .tooltip(MDL_bundle.getInfo("lovec", "tt-invert-selection"), true);
   };
 
 

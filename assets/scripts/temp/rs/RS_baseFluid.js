@@ -68,7 +68,7 @@
     let corPow = MDL_flow._corPow(liq);
     if(corPow > 0.0) liq.stats.add(fetchStat("lovec", "rs-corpow"), corPow.perc());
 
-    let oreblks = MDL_content._oreBlks(liq);
+    let oreblks = MDL_content.getOreBlks(liq);
     if(oreblks.length > 0) {
       liq.stats.add(fetchStat("lovec", "rs-isore"), true);
       liq.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {

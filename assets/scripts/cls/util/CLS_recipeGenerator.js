@@ -26,7 +26,7 @@
   let rcCount = 0;
 
 
-  MDL_event._c_onLoadDelayTask(VAR.delay.load.logRcGen, () => {
+  MDL_event.onLoadDelayTask(VAR.delay.load.logRcGen, () => {
     console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(String(runCount).color(Pal.accent), String(rcCount).color(Pal.accent)));
   });
 
@@ -527,7 +527,7 @@
   CLS_recipeGenerator.prototype.handleSingle = function(rc, ct_gn, metaObj, paramObj_d, nameCtGetter) {
     if(nameCtGetter == null) nameCtGetter = ct => ct.name;
 
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
     let paramObj = convertParamObj(paramObj_d, ct, metaObj);
     if(!this.checkCtValid(ct, metaObj, paramObj)) return;
@@ -550,7 +550,7 @@
    * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]
    */
   CLS_recipeGenerator.prototype.handle2Arr = function(rc, arr, ctMapper, metaObj, nameCtGetter) {
-    if(ctMapper == null) ctMapper = tmpCt => MDL_content._ct(tmpCt, null, true);
+    if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
     if(nameCtGetter == null) nameCtGetter = ct => ct.name;
 
     let paramObjF = readParam(metaObj, "paramObjF");
@@ -584,7 +584,7 @@
    * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]
    */
   CLS_recipeGenerator.prototype.handleNameNumArr = function(rc, arr, ctMapper, numCaller, metaObj, paramObj_d, nameCtGetter) {
-    if(ctMapper == null) ctMapper = tmpCt => MDL_content._ct(tmpCt, null, true);
+    if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
     if(numCaller == null) numCaller = Function.air;
     if(nameCtGetter == null) nameCtGetter = ct => ct.name;
 
@@ -616,7 +616,7 @@
    * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]
    */
   CLS_recipeGenerator.prototype.handleCtLi = function(rc, arr, ctMapper, metaObj, paramObj_d, nameCtGetter) {
-    if(ctMapper == null) ctMapper = tmpCt => MDL_content._ct(tmpCt, null, true);
+    if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
     if(nameCtGetter == null) nameCtGetter = ct => ct.name;
 
     let ct, paramObj;
@@ -643,7 +643,7 @@
    * @return {void}
    */
   CLS_recipeGenerator.prototype.run = function(rc, metaObj) {
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       this.setCateg();
       this.setTag();
       this.setter(rc, metaObj);

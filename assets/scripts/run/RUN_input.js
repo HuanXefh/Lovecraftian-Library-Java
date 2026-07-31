@@ -47,7 +47,7 @@
 
 
 
-  if(!Vars.headless) MDL_event._c_onUpdate(() => {
+  if(!Vars.headless) MDL_event.onUpdate(() => {
 
     unitPlayer = Vars.player.unit();
     tMouse = LCPos.getTileMouse();

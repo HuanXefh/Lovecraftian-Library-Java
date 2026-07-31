@@ -29,7 +29,7 @@
         case "selectorBlock" :
           let i = 1, iCap = cfgArr.iCap();
           while(i < iCap) {
-            let ct = MDL_content._ct(cfgArr[i], null, true);
+            let ct = MDL_content.getCt(cfgArr[i], null, true);
             if(ct != null) b.ex_accCtTgs(ct, true);
             i++;
           };
@@ -59,7 +59,7 @@
     MDL_table.__btnCfg(tb, b, b => {
       b.configure("clear");
       b.deselect();
-    }, VARGEN.icons.cross).tooltip(MDL_bundle._info("lovec", "tt-clear-selection"), true)
+    }, VARGEN.icons.cross).tooltip(MDL_bundle.getInfo("lovec", "tt-clear-selection"), true)
   };
 
 

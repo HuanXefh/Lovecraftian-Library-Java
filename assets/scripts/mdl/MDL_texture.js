@@ -66,7 +66,7 @@
    * @return {TextureRegion}
    */
   const _regVari = function(blk_gn, t, off) {
-    let blk = MDL_content._ct(blk_gn, "block");
+    let blk = MDL_content.getCt(blk_gn, "block");
     if(blk == null) return ARC_AIR.reg;
     if(blk.variants === 0) return blk.region;
 
@@ -83,7 +83,7 @@
    * @return {TextureRegion}
    */
   const _regTurBase = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "block");
+    let blk = MDL_content.getCt(blk_gn, "block");
     if(blk == null) return ARC_AIR.reg;
     if(blk.baseRegion != null) return blk.baseRegion;
 

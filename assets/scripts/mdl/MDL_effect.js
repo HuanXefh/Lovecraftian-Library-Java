@@ -196,7 +196,7 @@
    * @return {void}
    */
   const _s_payloadDrop = function(x, y, ct_gn) {
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
 
     playAt(
@@ -891,7 +891,7 @@
    * @return {void}
    */
   const _e_payloadDeposit = function thisFun(x1, y1, x2, y2, ct_gn, isOut) {
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
 
     showAt(x1, y1, thisFun.eff, Angles.angle(x1, y1, x2, y2), null, [x2, y2, ct, Boolean(isOut)]);

@@ -58,7 +58,7 @@
 
     let
       frac = Mathf.clamp(healthFrac),
-      color = Tmp.c1.set(MDL_color._color(tryVal(color_gn, Pal.accent))).lerp(Color.white, Mathf.clamp(e.hitTime)),
+      color = Tmp.c1.set(MDL_color.getColor(tryVal(color_gn, Pal.accent))).lerp(Color.white, Mathf.clamp(e.hitTime)),
       x = e.x,
       y = e.y,
       w = (size + 1) * Vars.tilesize + offW,
@@ -122,7 +122,7 @@
     Lines.stroke(5.0, Pal.gray);
     Draw.alpha(a * 0.5);
     Lines.line(x - w * 0.5, y - offY, x + w * 0.5, y - offY);
-    Lines.stroke(3.0, MDL_color._color(tryVal(color_gn, Pal.techBlue)));
+    Lines.stroke(3.0, MDL_color.getColor(tryVal(color_gn, Pal.techBlue)));
     Draw.alpha(a * 0.25);
     Lines.line(x - w * 0.5, y - offY, x + w * 0.5, y - offY);
     Draw.alpha(a * 0.5);

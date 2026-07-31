@@ -21,14 +21,14 @@
     if(blk.noSandOutput) {
       if(blk.blockedItems == null) blk.blockedItems = new Seq();
       DB_item.db["group"]["sand"].forEachFast(name => {
-        let itm = MDL_content._ct(name, "rs");
+        let itm = MDL_content.getCt(name, "rs");
         if(itm != null) blk.blockedItems.add(itm);
       });
     };
 
-    blk.itmWhitelist = blk.itmWhitelist.map(nameItm => MDL_content._ct(nameItm, "rs")).compact();
+    blk.itmWhitelist = blk.itmWhitelist.map(nameItm => MDL_content.getCt(nameItm, "rs")).compact();
 
-    MDL_event._c_onLoadPost(() => {
+    MDL_event.onLoadPost(() => {
       blk.hasItmCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
       if(blk.drillItmDur < 0.0) {
         blk.drillItmDur = blk.drillTime;
@@ -36,7 +36,7 @@
 
       if(blk.shouldDropPay) {
         Vars.content.items().each(itm => {
-          let oblk = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+          let oblk = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
           if(oblk == null || !blk.ex_canMine(oblk, itm, 1.0)) return;
           MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(itm)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
         });
@@ -94,7 +94,7 @@
     };
 
     if(blk.shouldDropPay) {
-      let payBlk = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+      let payBlk = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
       if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
     };
 
@@ -125,7 +125,7 @@
       return;
     };
 
-    let blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+    let blkTg = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
     if(blkTg == null) return;
     Object.mapIncre(b.payChargeObj, itm.name);
     if(b.payChargeObj[itm.name] >= blkTg.requirements[0].amount) {

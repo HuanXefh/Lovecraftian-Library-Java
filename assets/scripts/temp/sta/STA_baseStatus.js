@@ -24,14 +24,14 @@
 
   function comp_ex_init(sta) {
     DB_status.db["map"]["affinity"].read(sta.name, Array.air).forEachRow(2, (nameSta, scr) => {
-      let osta = MDL_content._ct(nameSta, "sta");
+      let osta = MDL_content.getCt(nameSta, "sta");
       if(osta != null) sta.affinity(osta, scr);
     });
 
     let oppoTmp = DB_status.db["map"]["opposite"].read(sta.name, Array.air);
     let oppoArr = typeof oppoTmp === "function" ? oppoTmp() : oppoTmp;
     oppoArr.forEachFast(sta_gn => {
-      let osta = MDL_content._ct(sta_gn, "sta");
+      let osta = MDL_content.getCt(sta_gn, "sta");
       if(osta != null) sta.opposite(osta);
     });
   };

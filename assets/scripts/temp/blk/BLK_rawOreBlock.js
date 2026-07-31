@@ -42,7 +42,7 @@
       let oreParent = Object.keyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null);
       if(oreParent != null) blk.oreParent = oreParent;
     };
-    blk.oreParent = MDL_content._ct(blk.oreParent, "rs");
+    blk.oreParent = MDL_content.getCt(blk.oreParent, "rs");
 
     if(blk.oreParent != null) {
       MDL_content.rename(blk, blk.oreParent.localizedName);

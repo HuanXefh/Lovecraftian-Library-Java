@@ -19,7 +19,7 @@
     let cond1 = false, cond2 = false;
     blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
       if(cond1 && cond2) return;
-      let rs = MDL_content._ct(nameRs, "rs");
+      let rs = MDL_content.getCt(nameRs, "rs");
       if(rs == null) return;
       if(!cond1) cond1 = rs instanceof Item;
       if(!cond2) cond2 = rs instanceof Liquid;
@@ -32,9 +32,9 @@
       blk.outputsLiquid = true;
     };
 
-    MDL_event._c_onLoadPost(() => {
+    MDL_event.onLoadPost(() => {
       blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
-        let rs = MDL_content._ct(nameRs, "rs");
+        let rs = MDL_content.getCt(nameRs, "rs");
         if(rs == null) return;
 
         rs instanceof Item ?
@@ -60,21 +60,21 @@
 
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table._d_attr(tb, MDL_attr._attrs_attrRsArr(blk.attrRsArr));
+      MDL_table._d_attr(tb, MDL_attr.getAttrsInAttrRsArr(blk.attrRsArr));
     }));
     blk.stats.add(fetchStat("lovec", "blk-attroutput"), newStatValue(tb => {
       tb.row();
       MDL_table._l_table(tb, (function() {
         let matArr = [[
           "",
-          MDL_bundle._term("lovec", "resource"),
+          MDL_bundle.getTerm("lovec", "resource"),
           fetchStat("lovec", "blk-attrreq").localized(),
-          MDL_bundle._term("lovec", "efficiency-multiplier"),
+          MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
         ]];
         blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
-          let rs = MDL_content._ct(nameRs, "rs");
+          let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
-          matArr.push([rs, rs.localizedName, MDL_attr._attrB(nameAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
+          matArr.push([rs, rs.localizedName, MDL_attr.getAttrB(nameAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
         });
 
         return matArr;
@@ -114,7 +114,7 @@
     if(t == null) return 0.0;
 
     if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      let tup = MDL_attr._dynaAttrTup(blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
+      let tup = MDL_attr.getDynaAttrTup(blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
       thisFun.tmpTup[3] = tup == null ? 0.0 : tup[1];
     };
 
@@ -128,7 +128,7 @@
   function comp_onProximityUpdate(b) {
     b.dynaAttrTs = b.block.ex_findDynaAttrTs(b.dynaAttrTs, b.tileX(), b.tileY(), b.rotation);
 
-    let tup = MDL_attr._dynaAttrTup(b.block.delegee.attrRsArr, b.dynaAttrTs, b.block.delegee.attrMode);
+    let tup = MDL_attr.getDynaAttrTup(b.block.delegee.attrRsArr, b.dynaAttrTs, b.block.delegee.attrMode);
     if(tup == null) {
       b.dynaAttrSum = 0.0;
       b.dynaAttrRs = null;
@@ -372,7 +372,7 @@
        * @return {number}
        */
       ex_getAttrLimit: function() {
-        return this.attrRcType === AttrRcTypes.PROP ? 1.0 : MDL_attr._limit(this.size, 1.0, this.attrRcType === AttrRcTypes.WALL);
+        return this.attrRcType === AttrRcTypes.PROP ? 1.0 : MDL_attr.getAttrLimit(this.size, 1.0, this.attrRcType === AttrRcTypes.WALL);
       }
       .setProp({
         noSuper: true,

@@ -94,11 +94,11 @@
 
 
 
-  MDL_event._c_onInit(() => {
+  MDL_event.onInit(() => {
 
 
     // Initialize game window title
-    MDL_backend.setWinTitle(null, "${1}${2}".format(fetchSetting("misc-title-name"), !fetchSetting("misc-title-map") ? "" : ": menu"));
+    MDL_backend.setTitle(null, "${1}${2}".format(fetchSetting("misc-title-name"), !fetchSetting("misc-title-map") ? "" : ": menu"));
 
 
     // Map reading fallback addition
@@ -183,19 +183,19 @@
       })()) {
         DB_recipe.db["oreDict"]["def"].forEachRow(2, (nameRs, arr) => {
           let fi = dir.child(nameRs + ".csv");
-          MDL_file._w_csv(fi, arr, 1);
+          MDL_file.writeCsv(fi, arr, 1);
         });
         MDL_json.write(dir.child("meta.json"), {
           version: verCur,
         });
-        MDL_file._w_txt(dir.child("README.txt"), "Do not put files here, which may get overwritten!\nCustomized lists should be in ./saves/mods/data/sharedData/ore-dict!");
+        MDL_file.writeTxt(dir.child("README.txt"), "Do not put files here, which may get overwritten!\nCustomized lists should be in ./saves/mods/data/sharedData/ore-dict!");
       };
 
       let fiSeq = dir.parent().findAll(fi => fi.extension() === "csv" && (fetchSetting("load-ore-dict-def") ? true : fi.parent() !== dir));
       fiSeq.each(fi => {
         let ct = Vars.content.byName(fi.nameWithoutExtension());
         if(ct == null) return;
-        let arr = MDL_file._r_csv(fi);
+        let arr = MDL_file.readCsv(fi);
         arr.forEachFast(nameRs => {
           let rs = Vars.content.byName(nameRs);
           if(rs == null) return;
@@ -280,7 +280,7 @@
 
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
 
 
     // Something
@@ -383,7 +383,7 @@
         };
 
         VARGEN.rss.forEachFast(rs => rs.localizedName = rs.localizedName.color(fetchColor(rs)));
-        Object._it(VARGEN.factions, (faction, cts) => cts.forEachFast(ct => ct.localizedName = ct.localizedName.color(MDL_content._factionColor(faction))));
+        Object._it(VARGEN.factions, (faction, cts) => cts.forEachFast(ct => ct.localizedName = ct.localizedName.color(MDL_content.getFactionColor(faction))));
       });
     };
 
@@ -405,7 +405,7 @@
       TechTree.roots.each(rt => {
         let nameCt = DB_env.db["nodeRootNameMap"].read(rt.name);
         if(nameCt != null) {
-          let ct = MDL_content._ct(nameCt, null, true);
+          let ct = MDL_content.getCt(nameCt, null, true);
           if(ct != null) rt.name = ct.localizedName;
         };
       });
@@ -415,16 +415,16 @@
     // Set up status effects
     (function() {
       // Robot-only status
-      DB_status.db["group"]["robotOnly"].map(nameSta => MDL_content._ct(nameSta, "sta", true)).forEachCond(sta => sta != null, sta => {
+      DB_status.db["group"]["robotOnly"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).forEachCond(sta => sta != null, sta => {
         sta.stats.add(fetchStat("lovec", "sta-robotonly"), true);
         VARGEN.bioticUtps.forEachFast(utp => utp.immunities.add(sta));
       });
       // Oceanic status
-      DB_status.db["group"]["oceanic"].map(nameSta => MDL_content._ct(nameSta, "sta", true)).forEachCond(sta => sta != null, sta => {
+      DB_status.db["group"]["oceanic"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).forEachCond(sta => sta != null, sta => {
         VARGEN.navalUtps.forEachFast(utp => utp.immunities.add(sta));
       });
       // Missile immunities
-      DB_status.db["group"]["missileImmune"].map(nameSta => MDL_content._ct(nameSta, "sta", true)).concat(VARGEN.deathStas).forEachCond(sta => sta != null, sta => {
+      DB_status.db["group"]["missileImmune"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).concat(VARGEN.deathStas).forEachCond(sta => sta != null, sta => {
         VARGEN.missileUtps.forEachFast(utp => utp.immunities.add(sta));
       });
     })();
@@ -433,7 +433,7 @@
     // Set up faction
     (function() {
       function setFaction(ct) {
-        if(MDL_content._faction(ct) !== "none") ct.stats.add(fetchStat("lovec", "spec-faction"), newStatValue(tb => {
+        if(MDL_content.getFaction(ct) !== "none") ct.stats.add(fetchStat("lovec", "spec-faction"), newStatValue(tb => {
           tb.row();
           MDL_table._d_faction(tb, ct);
         }));
@@ -445,14 +445,14 @@
 
     // Set up planet rules
     DB_env.db["map"]["rule"]["campaign"].forEachRow(2, (namePla, ruleSetter) => {
-      let pla = MDL_content._ct(namePla, "pla");
+      let pla = MDL_content.getCt(namePla, "pla");
       if(pla == null) return;
       let campaignRules = new CampaignRules();
       ruleSetter(campaignRules);
       pla.campaignRules = campaignRules;
     });
     DB_env.db["map"]["rule"]["planet"].forEachRow(2, (namePla, ruleSetter) => {
-      let pla = MDL_content._ct(namePla, "pla");
+      let pla = MDL_content.getCt(namePla, "pla");
       if(pla == null) return;
       pla.ruleSetter = cons(ruleSetter);
     });
@@ -531,7 +531,7 @@
 
     // Add database buttons
     MDL_util.addDatabaseButton(
-      MDL_bundle._info("lovec", "dial-rc-database"),
+      MDL_bundle.getInfo("lovec", "dial-rc-database"),
       () => fetchDialog("rcDatabase").ex_show(),
     );
 
@@ -547,7 +547,7 @@
 
 
 
-  MDL_event._c_onWorldLoad(() => {
+  MDL_event.onWorldLoad(() => {
 
 
     Time.run(VAR.delay.worldLoad.triggerSecretCrash, () => {

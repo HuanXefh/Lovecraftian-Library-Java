@@ -158,7 +158,7 @@
    * @return {void}
    */
   const __textNothing = function(tb) {
-    tb.add(MDL_bundle._info("lovec", "nothing")
+    tb.add(MDL_bundle.getInfo("lovec", "nothing")
     .color(Color.lightGray))
     .center()
     .row();
@@ -385,7 +385,7 @@
           tryVal(ctDial, Vars.ui.content).show(blk);
           if(dialToHide != null) dialToHide.hide();
         })
-        .tooltip(blk.localizedName + ((nameAttr == null) ? "" : ("\n\n[green]" + MDL_attr._attrB(nameAttr) + "[]")))
+        .tooltip(blk.localizedName + ((nameAttr == null) ? "" : ("\n\n[green]" + MDL_attr.getAttrB(nameAttr) + "[]")))
         .padRight(-18.0)
         .get();
         btn.margin(0.0);
@@ -808,7 +808,7 @@
    */
   const _l_ctRow = function thisFun(tb, cts_gn_p, showOrd) {
     let cts = (cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p])
-    .map(ct_gn => MDL_content._ct(ct_gn, null, true))
+    .map(ct_gn => MDL_content.getCt(ct_gn, null, true))
     .compact();
 
     return _l_iconRow(
@@ -891,7 +891,7 @@
    */
   const _l_ctLi = function(tb, cts_gn_p, iconW, colAmt, dialToHide, ctDial) {
     let cts = (cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p])
-    .map(ct_gn => MDL_content._ct(ct_gn, null, true))
+    .map(ct_gn => MDL_content.getCt(ct_gn, null, true))
     .compact();
 
     return _l_iconLi(
@@ -1112,7 +1112,7 @@
     // Buttons
     if(useAutoSelection) {
       extraBtnSetters.unshift(
-        tb => tb.button("A", () => {useAutoSelection = false}).tooltip(MDL_bundle._info("lovec", "tt-disable-auto-selection"), true),
+        tb => tb.button("A", () => {useAutoSelection = false}).tooltip(MDL_bundle.getInfo("lovec", "tt-disable-auto-selection"), true),
       );
     };
     extraBtnSetters.unshift(
@@ -1144,7 +1144,7 @@
 
       if(useAutoSelection) {
         cont.table(Styles.none, tb1 => {
-          tb1.add(MDL_bundle._info("lovec", "recipe-auto-selection")).color(Pal.remove).row();
+          tb1.add(MDL_bundle.getInfo("lovec", "recipe-auto-selection")).color(Pal.remove).row();
           tb1.add("").row();
         })
         .left()
@@ -1159,7 +1159,7 @@
 
       for(let categ in categHeaderObj) {
         if(!uncategorizedOnly) {
-          cont.add(MDL_recipe._categB(categ)).left().pad(4.0).color(!useAutoSelection ? Color.white : Color.gray).row();
+          cont.add(MDL_recipe.getCategB(categ)).left().pad(4.0).color(!useAutoSelection ? Color.white : Color.gray).row();
         };
 
         j = 0;
@@ -1222,7 +1222,7 @@
     if(iconW == null) iconW = 64.0;
     if(colAmt == null) colAmt = MDL_ui._colAmt(iconW, 0.0, 2);
 
-    let arr = MDL_attr._blkAttrArr(attrs_gn_p, boolF);
+    let arr = MDL_attr.getBlkAttrArr(attrs_gn_p, boolF);
     let i = 0, iCap = arr.iCap(), j = 0;
     tb.table(Styles.none, tb1 => {
       tb1.left();
@@ -1254,9 +1254,9 @@
    */
   const _d_faction = function(tb, ct) {
     let
-      faction = MDL_content._faction(ct),
-      factionB = MDL_content._factionB(faction),
-      factionColor = MDL_content._factionColor(faction);
+      faction = MDL_content.getFaction(ct),
+      factionB = MDL_content.getFactionB(faction),
+      factionColor = MDL_content.getFactionColor(faction);
 
     tb.table(Tex.whiteui, tb1 => {
       tb1.center().setColor(Pal.darkestGray);
@@ -1266,7 +1266,7 @@
         new TextureRegionDrawable(Core.atlas.find(
           faction === "none" ?
             "lovec-faction-none" :
-            MDL_content._mod(ct) + "-faction-" + faction,
+            MDL_content.getMod(ct) + "-faction-" + faction,
         )),
         () => fetchDialog("cts").ex_show(
           factionB.color(factionColor),
@@ -1305,14 +1305,14 @@
     tb.left().add(root).row();
     __break(tb, 1);
 
-    MDL_content._facFamis(blk).forEachFast(fami => {
+    MDL_content.getFacFamis(blk).forEachFast(fami => {
       let cont = new Table();
       root.left().add(cont).width(420.0).growX().row();
       // `TABLE`: title
       cont.table(Tex.whiteui, tb1 =>{
         tb1.center().setColor(Color.darkGray);
         __margin(tb1, 0.5);
-        tb1.add(MDL_content._facFamiB(fami)).pad(4.0);
+        tb1.add(MDL_content.getFacFamiB(fami)).pad(4.0);
       })
       .left()
       .growX()
@@ -1382,7 +1382,7 @@
         __margin(tb1, 0.5);
         if(!uncategorizedOnly && categ !== "SPEC: base") {
           tb1.table(Styles.none, tb2 => {
-            tb2.add(MDL_recipe._categB(categ)).pad(4.0);
+            tb2.add(MDL_recipe.getCategB(categ)).pad(4.0);
             tb2.button(isCollapsed ? Icon.downOpen : Icon.upOpen, Styles.emptyi, () => coll.toggle(true))
             .update(btn => btn.getStyle().imageUp = !coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)
             .size(10.0)

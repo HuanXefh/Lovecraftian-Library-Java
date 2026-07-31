@@ -57,8 +57,8 @@
         return;
       };
       try {
-        lsavJsonVal = MDL_json.parse(MDL_file._lsav());
-        plsavJsonVal = MDL_json.parse(MDL_file._plsav());
+        lsavJsonVal = MDL_json.parse(MDL_file.getLsav());
+        plsavJsonVal = MDL_json.parse(MDL_file.getPlsav());
       } catch(err) {
         console.err("[LOVEC] Failed to load LSAV!" + "\n" + err);
         lsavJsonVal = null;
@@ -77,12 +77,12 @@
 
       // If map name not matched, clear the LSAV (creates a backup first)
       if(lsav["save-map"] !== TmpStateTag.undefined && lsav["save-map"] !== mapCur) {
-        MDL_json.write(MDL_file._lsav(true), lsav);
+        MDL_json.write(MDL_file.getLsav(true), lsav);
         initLsav("lsav");
       };
       // If outside of campaign, check map name for PLASV too
       if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && plsav["save-map"] !== TmpStateTag.undefined && plsav["save-map"] !== mapCur) {
-        MDL_json.write(MDL_file._plsav(true), plsav);
+        MDL_json.write(MDL_file.getPlsav(true), plsav);
         initLsav("plsav");
       };
 
@@ -102,8 +102,8 @@
   const saveLsav = function() {
     if(Vars.state.isEditor()) return;
 
-    MDL_json.write(MDL_file._lsav(), lsav);
-    MDL_json.write(MDL_file._plsav(), plsav);
+    MDL_json.write(MDL_file.getLsav(), lsav);
+    MDL_json.write(MDL_file.getPlsav(), plsav);
   }
   .setAnno("server");
   exports.saveLsav = saveLsav;
@@ -277,14 +277,14 @@
   initLsav();
 
 
-  MDL_event._c_onWorldLoad(() => {
+  MDL_event.onWorldLoad(() => {
 
     loadLsav();
 
   });
 
 
-  MDL_event._c_onWorldSave(() => {
+  MDL_event.onWorldSave(() => {
 
     saveLsav();
 

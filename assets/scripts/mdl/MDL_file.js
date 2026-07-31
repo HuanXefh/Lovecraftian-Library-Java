@@ -85,11 +85,11 @@
    * @param {boolean|unset} [returnZipRoot] - If true, this method will return directory of the file instead of extracted data. Handle this carefully!
    * @return {Fi|null}
    */
-  const _root = function(nameMod, returnZipRoot) {
+  const getRootDir = function(nameMod, returnZipRoot) {
     let mod = fetchMod(nameMod, true);
     return mod == null ? null : (returnZipRoot ? mod.file : mod.root);
   };
-  exports._root = _root;
+  exports.getRootDir = getRootDir;
 
 
   /**
@@ -97,14 +97,14 @@
    * @param {string} nameMod
    * @return {Fi|null}
    */
-  const _content = function(nameMod) {
-    let dirRt = _root(nameMod);
+  const getContentDir = function(nameMod) {
+    let dirRt = getRootDir(nameMod);
     if(dirRt == null) return null;
     let dir = dirRt.child("content");
 
     return !dir.exists() ? null : dir;
   };
-  exports._content = _content;
+  exports.getContentDir = getContentDir;
 
 
   /**
@@ -113,15 +113,15 @@
    * @param {ContentType} ctType
    * @return {Fi|null}
    */
-  const _subContent = function(nameMod, ctType) {
-    let dirCt = _content(nameMod);
+  const getSubContentDir = function(nameMod, ctType) {
+    let dirCt = getContentDir(nameMod);
     if(dirCt == null) return null;
     let str = ctType.name().toLowerCase();
     let dir = dirCt.child(str + (str.endsWith("s") ? "" : "s"));
 
     return !dir.exists() ? null : dir;
   };
-  exports._subContent = _subContent;
+  exports.getSubContentDir = getSubContentDir;
 
 
   /**
@@ -129,14 +129,14 @@
    * @param {string} nameMod
    * @return {Fi|null}
    */
-  const _script = function(nameMod) {
-    let dirRt = _root(nameMod);
+  const getScriptDir = function(nameMod) {
+    let dirRt = getRootDir(nameMod);
     if(dirRt == null) return null;
     let dir = dirRt.child("scripts");
 
     return !dir.exists() ? null : dir;
   };
-  exports._script = _script;
+  exports.getScriptDir = getScriptDir;
 
 
   /**
@@ -144,14 +144,14 @@
    * @param {string} nameMod
    * @return {Fi|null}
    */
-  const _sprite = function(nameMod) {
-    let dirRt = _root(nameMod);
+  const getSpriteDir = function(nameMod) {
+    let dirRt = getRootDir(nameMod);
     if(dirRt == null) return null;
     let dir = dirRt.child("sprites");
 
     return !dir.exists() ? null : dir;
   };
-  exports._sprite = _sprite;
+  exports.getSpriteDir = getSpriteDir;
 
 
   /* <------------------------------ file ------------------------------ */
@@ -208,18 +208,18 @@
    * @param {ContentGn} ct_gn
    * @return {Fi|null}
    */
-  const _jsonCt = function(ct_gn) {
+  const getCtJson = function(ct_gn) {
     let ct = findContent(ct_gn);
     if(ct == null || ct.minfo.mod == null) return null;
     let nameMod = ct.minfo.mod.name;
-    let dirSubCt = _subContent(nameMod, ct.getContentType());
+    let dirSubCt = getSubContentDir(nameMod, ct.getContentType());
     if(dirSubCt == null) return null;
     let nameCt = ct.name.replace(nameMod + "-", "");
     let fiSeq = dirSubCt.findAll(fi => (fi.name() === nameCt + ".json") || (fi.name() === nameCt + ".hjson"));
 
     return fiSeq.size === 0 ? null : fiSeq.get(0);
   };
-  exports._jsonCt = _jsonCt;
+  exports.getCtJson = getCtJson;
 
 
   /**
@@ -227,14 +227,14 @@
    * @param {boolean|unset} [isBackup]
    * @return {Fi|null}
    */
-  const _lsav = function(isBackup) {
+  const getLsav = function(isBackup) {
     if(Vars.state.isMenu()) return null;
     let saveSlotCur = Vars.control.saves.getCurrent();
     if(saveSlotCur == null) return null;
 
     return lovecData.child("saves").child(saveSlotCur.file.nameWithoutExtension() + (!isBackup ? "" : "_bak") + ".lsav");
   };
-  exports._lsav = _lsav;
+  exports.getLsav = getLsav;
 
 
   /**
@@ -242,18 +242,18 @@
    * @param {boolean|unset} [isBackup]
    * @return {Fi|null}
    */
-  const _plsav = function(isBackup) {
+  const getPlsav = function(isBackup) {
     let namePla = global.lovecUtil.fun._plaCur();
     let fi = namePla === "" ? null : lovecData.child("saves").child(namePla + (!isBackup ? "" : "_bak") + ".plsav");
     // In debug mode, PLSAV is accessible from outside of campaign
     if(Vars.state.isCampaign() || global.lovecUtil.prop.debug) return fi;
 
-    let fi1 = _lsav(isBackup);
+    let fi1 = getLsav(isBackup);
     return fi1 == null ?
       null :
       fi1.parent().child(fi1.nameWithoutExtension() + ".plsav");
   };
-  exports._plsav = _plsav;
+  exports.getPlsav = getPlsav;
 
 
   /* <------------------------------ read & write ------------------------------ */
@@ -262,15 +262,14 @@
   /**
    * Reads string in a .txt file.
    * @param {Fi|null} fi
-   * @param {boolean|unset} [bypassExt]
    * @return {string}
    */
-  const _r_txt = function(fi, bypassExt) {
-    if(fi == null || (!bypassExt && fi.extension() !== "txt")) return "";
+  const readTxt = function(fi) {
+    if(fi == null) return "";
 
     return fi.readString();
   };
-  exports._r_txt = _r_txt;
+  exports.readTxt = readTxt;
 
 
   /**
@@ -278,27 +277,25 @@
    * @param {Fi|null} fi
    * @param {string} str
    * @param {boolean|unset} [shouldAppend]
-   * @param {boolean|unset} [bypassExt]
    * @return {void}
    */
-  const _w_txt = function(fi, str, shouldAppend, bypassExt) {
-    if(fi == null || (!bypassExt && fi.extension() !== "txt")) return;
+  const writeTxt = function(fi, str, shouldAppend, bypassExt) {
+    if(fi == null) return;
 
     fi.writeString(str, Boolean(shouldAppend));
   };
-  exports._w_txt = _w_txt;
+  exports.writeTxt = writeTxt;
 
 
   /**
    * Reads data in a .csv file and returns result as a string array.
    * @param {Fi|null} fi
-   * @param {boolean|unset} [bypassExt]
    * @return {Array}
    */
-  const _r_csv = function(fi, bypassExt) {
+  const readCsv = function(fi, bypassExt) {
     let arr = [];
 
-    if(fi == null || (!bypassExt && fi.extension() !== "csv")) return arr;
+    if(fi == null) return arr;
 
     let str = fi.readString();
     let tmp = "", l, ol, i = 0, iCap = str.iCap(), j, jCap, k, kCap;
@@ -344,21 +341,19 @@
 
     return arr;
   };
-  exports._r_csv = _r_csv;
+  exports.readCsv = readCsv;
 
 
   /**
    * Writes an n-array to a .csv file.
    * @param {Fi|null} fi
    * @param {Array} arr
-   * @param {number|unset} [ord]
+   * @param {number} ord
    * @param {boolean|unset} [shouldAppend]
-   * @param {boolean|unset} [bypassExt]
    * @return {void}
    */
-  const _w_csv = function(fi, arr, ord, shouldAppend, bypassExt) {
-    if(fi == null || (!bypassExt && fi.extension() !== "csv")) return;
-    if(ord == null) ord = 2;
+  const writeCsv = function(fi, arr, ord, shouldAppend) {
+    if(fi == null) return;
 
     let str = "";
     let i = 0, iCap = arr.iCap();
@@ -373,7 +368,7 @@
 
     fi.writeString(str, Boolean(shouldAppend));
   };
-  exports._w_csv = _w_csv;
+  exports.writeCsv = writeCsv;
 
 
   /* <------------------------------ misc ------------------------------ */

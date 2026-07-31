@@ -33,7 +33,7 @@
    * @return {number}
    */
   const _blkPol = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return 0.0;
 
     return DB_HANDLER.read("blk-pol", blk, 0.0);
@@ -49,7 +49,7 @@
    * @return {number}
    */
   const _rsPol = function(rs_gn) {
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
     if(rs == null) return 0.0;
 
     return DB_HANDLER.read("rs-pol", rs, (function() {
@@ -113,7 +113,7 @@
    * @return {number}
    */
   const _polTol = function(ct_gn) {
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return 500.0;
 
     return DB_HANDLER.read(ct instanceof UnitType ? "utp-pol-tol" : "blk-pol-tol", ct, -1.0);
@@ -167,7 +167,7 @@
 
 
 
-MDL_event._c_onLoad(() => {
+MDL_event.onLoad(() => {
 
   TRIGGER.majorIter.start.addGlobalListener(() => {
     basePol = 0.0;
@@ -188,7 +188,7 @@ MDL_event._c_onLoad(() => {
 
 
 
-MDL_event._c_onWorldLoad(() => {
+MDL_event.onWorldLoad(() => {
 
   Time.run(VAR.delay.worldLoad.loadPol, () => {
     mapPol = DB_env.db["param"]["map"]["pol"].read(
@@ -204,7 +204,7 @@ MDL_event._c_onWorldLoad(() => {
 
 
 
-MDL_event._c_onUpdate(() => {
+MDL_event.onUpdate(() => {
 
   if(PARAM.MODDED) {
     if(!Vars.state.isGame()) {

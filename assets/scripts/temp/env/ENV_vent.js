@@ -33,18 +33,18 @@
         blk.effectSpacing = 4.0;
         MDL_content.rename(
           blk,
-          MDL_bundle._term("lovec", "fire") + MDL_text._space() + MDL_bundle._term("lovec", "vent") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
+          MDL_bundle.getTerm("lovec", "fire") + MDL_text._space() + MDL_bundle.getTerm("lovec", "vent") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
         );
         break;
 
       default :
-        blk.rsDrop = MDL_content._ct(blk.ventRs, "rs");
+        blk.rsDrop = MDL_content.getCt(blk.ventRs, "rs");
         if(blk.rsDrop != null) {
           blk.effect = TP_effect._ventSmog({color: blk.rsDrop.color});
           blk.effectSpacing = 20.0;
           MDL_content.rename(
             blk,
-            blk.rsDrop.localizedName + MDL_text._space() + MDL_bundle._term("lovec", "vent") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
+            blk.rsDrop.localizedName + MDL_text._space() + MDL_bundle.getTerm("lovec", "vent") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
           );
         };
     };

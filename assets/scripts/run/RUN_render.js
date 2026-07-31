@@ -320,7 +320,7 @@
 
 
 
-  MDL_event._c_onDraw(() => {
+  MDL_event.onDraw(() => {
 
     drawDebug();
     drawInfo();

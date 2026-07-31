@@ -167,7 +167,7 @@
     if(bp == null) bp = "test";
     if(timeS == null) timeS = 3.0;
 
-    Vars.ui.announce(MDL_bundle._info(nameMod, bp), timeS);
+    Vars.ui.announce(MDL_bundle.getInfo(nameMod, bp), timeS);
   }
   .setAnno("non-headless");
   exports.show_announce = show_announce;
@@ -185,7 +185,7 @@
     if(bp == null) bp = "test";
     if(timeS == null) timeS = 3.0;
 
-    Vars.ui.showInfoFade(MDL_bundle._info(nameMod, bp), timeS);
+    Vars.ui.showInfoFade(MDL_bundle.getInfo(nameMod, bp), timeS);
   }
   .setAnno("non-headless");
   exports.show_fadeInfo = show_fadeInfo;
@@ -206,7 +206,7 @@
     if(icon == null) icon = VARGEN.icons.ohno;
     if(w == null) w = -1.0;
 
-    Vars.ui.hudfrag.showToast(icon, w, MDL_bundle._info(nameMod, bp));
+    Vars.ui.hudfrag.showToast(icon, w, MDL_bundle.getInfo(nameMod, bp));
   }
   .setAnno("non-headless");
   exports.show_toast = show_toast;
@@ -226,7 +226,7 @@
     if(bp == null) bp = "test";
     if(timeS == null) timeS = 3.0;
 
-    Vars.ui.showLabel(MDL_bundle._info(nameMod, bp), timeS, x, y);
+    Vars.ui.showLabel(MDL_bundle.getInfo(nameMod, bp), timeS, x, y);
   }
   .setAnno("non-headless");
   exports.show_label = show_label;
@@ -243,7 +243,7 @@
     if(bp == null) bp = "test";
 
     Core.app.post(() => {
-      Vars.ui.showErrorMessage(MDL_bundle._info(nameMod, bp));
+      Vars.ui.showErrorMessage(MDL_bundle.getInfo(nameMod, bp));
     });
   }
   .setAnno("non-headless");
@@ -675,8 +675,8 @@
           0.25 :
           null,
       color = charaTup == null ? Color.white : MDL_color._charaColor(charaTup[0], charaTup[1]),
-      dialChara = charaTup == null ? "" : MDL_bundle._chara(charaTup[0], charaTup[1]).color(color),
-      dialText = dialTup == null ? "" : MDL_bundle._dialText(dialTup[0], dialTup[1], dialTup[2]).color(color);
+      dialChara = charaTup == null ? "" : MDL_bundle.getChara(charaTup[0], charaTup[1]).color(color),
+      dialText = dialTup == null ? "" : MDL_bundle.getDialText(dialTup[0], dialTup[1], dialTup[2]).color(color);
 
     if(charaTup != null) {
       // `TABLE`: character name
@@ -708,11 +708,11 @@
       // `TABLE`: buttons
       tb1.table(Styles.none, tb2 => {
         tb2.top();
-        tb2.button("X", () => Vars.ui.showConfirm(MDL_bundle._info("lovec", "dial-skip-dial-confirm"), MDL_bundle._info("lovec", "dial-skip-dial-confirm", true), () => {
+        tb2.button("X", () => Vars.ui.showConfirm(MDL_bundle.getInfo("lovec", "dial-skip-dial-confirm"), MDL_bundle.getInfo("lovec", "dial-skip-dial-confirm", true), () => {
           clearDialFlow();
           removeActor(tb);
-        })).size(40.0).tooltip(MDL_bundle._info("lovec", "tt-skip-dial"), true).row();
-        tb2.button("L", () => fetchDialog("dialFlowLog").ex_show()).size(40.0).tooltip(MDL_bundle._info("lovec", "tt-dial-flow-log"), true).row();
+        })).size(40.0).tooltip(MDL_bundle.getInfo("lovec", "tt-skip-dial"), true).row();
+        tb2.button("L", () => fetchDialog("dialFlowLog").ex_show()).size(40.0).tooltip(MDL_bundle.getInfo("lovec", "tt-dial-flow-log"), true).row();
       }).right().top();
     }).width(_screenW() * 0.6).height(160.0).row();
 

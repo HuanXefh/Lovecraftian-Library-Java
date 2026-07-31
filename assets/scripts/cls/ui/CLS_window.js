@@ -26,7 +26,7 @@
 
 
   let mouseMoveX = 0.0, mouseMoveY = 0.0, mouseMoveStartX = 0.0, mouseMoveStartY = 0.0;
-  MDL_event._c_onDrag((dx, dy, x_f, y_f) => {
+  MDL_event.onDrag((dx, dy, x_f, y_f) => {
     mouseMoveX = dx;
     mouseMoveY = dy;
     mouseMoveStartX = x_f;
@@ -36,7 +36,7 @@
 
   const selectedWins = [];
   const btnStyles = {};
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
     btnStyles.setProp({
       close: extend(TextButton.TextButtonStyle, {
         font: Fonts.outline,
@@ -235,13 +235,13 @@
           let funBtnSize = 8.0;
           // Close
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button("X", btnStyles.close, () => selectedWins.forEachFast(win => win.close())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._term("lovec", "win-close"), true);
+          tb2.button("X", btnStyles.close, () => selectedWins.forEachFast(win => win.close())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", "win-close"), true);
           // Minimize & restore
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button(this.isHidden ? "L" : "S", btnStyles[this.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._term("lovec", this.isHidden ? "win-restore" : "win-minimize"), true);
+          tb2.button(this.isHidden ? "L" : "S", btnStyles[this.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", this.isHidden ? "win-restore" : "win-minimize"), true);
           // Help
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button("?", btnStyles.help, () => {}).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle._info("lovec", "tt-win-help"), true);
+          tb2.button("?", btnStyles.help, () => {}).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getInfo("lovec", "tt-win-help"), true);
           // Text
           tb2.table(Styles.none, tb3 => {}).width(16.0);
           tb2.table(Styles.none, tb3 => tb3.add(this.title));

@@ -51,8 +51,8 @@
     let mod = fetchMod(nameMod);
     if(mod == null) return;
 
-    mod.meta.displayName = MDL_bundle._info(nameMod, "mod");
-    mod.meta.description = MDL_bundle._info(nameMod, "mod", true);
+    mod.meta.displayName = MDL_bundle.getInfo(nameMod, "mod");
+    mod.meta.description = MDL_bundle.getInfo(nameMod, "mod", true);
   }
   .setAnno("non-headless");
   exports.localizeModMeta = localizeModMeta;
@@ -116,7 +116,7 @@
 */
 
 
-  MDL_event._c_onDrag((dx, dy, x_f, y_f) => {
+  MDL_event.onDrag((dx, dy, x_f, y_f) => {
     mouseMoveX = dx;
     mouseMoveY = dy;
     mouseMoveStartX = x_f;

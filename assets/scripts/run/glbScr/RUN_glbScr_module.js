@@ -193,8 +193,6 @@
   /** @global */
   FRAG_unit = require("lovec/frag/FRAG_unit");
   /** @global */
-  MDL_ai = require("lovec/mdl/MDL_ai");
-  /** @global */
   CLS_recipe = require("lovec/cls/type/CLS_recipe");
   /** @global */
   MDL_recipe = require("lovec/mdl/MDL_recipe");
@@ -225,7 +223,6 @@
   /** @global */
   CLS_dragButton = require("lovec/cls/ui/CLS_dragButton");
   require("lovec/tp/TP_ability");
-  require("lovec/tp/TP_ai");
   require("lovec/tp/TP_cons");
   /** @global */
   TP_dial = require("lovec/tp/TP_dial");

@@ -22,7 +22,7 @@
 
   function updateTitle() {
     let nameMap = global.lovecUtil.fun._mapCur();
-    MDL_backend.setWinTitle(
+    MDL_backend.setTitle(
       null,
       "${1}${2}".format(
         fetchSetting("misc-title-name"),
@@ -176,7 +176,7 @@
   });
 
 
-  MDL_event._c_onUpdate(() => {
+  MDL_event.onUpdate(() => {
 
     if(Vars.state.isPaused()) return;
 
@@ -209,7 +209,7 @@
 
 
 
-  MDL_event._c_onBDamage((b, bul) => {
+  MDL_event.onBuildDamage((b, bul) => {
 
     createDamageDisplay(b, bul);
 
@@ -218,7 +218,7 @@
 
 
 
-  MDL_event._c_onBDestroy(t => {
+  MDL_event.onBuildDestroy(t => {
 
     createRemains(t.build);
 
@@ -227,7 +227,7 @@
 
 
 
-  MDL_event._c_onUnitDamage((unit, bul) => {
+  MDL_event.onUnitDamage((unit, bul) => {
 
     createDamageDisplay(unit, bul);
 
@@ -236,7 +236,7 @@
 
 
 
-  MDL_event._c_onUnitDestroy(unit => {
+  MDL_event.onUnitDestroy(unit => {
 
     createRemains(unit);
     triggerDeathStatus(unit);

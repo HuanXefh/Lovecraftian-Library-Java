@@ -18,7 +18,7 @@
     utp.polTol = MDL_pollution._polTol(utp);
 
     if(utp.immuneToAll) {
-      MDL_event._c_onLoadPost(() => {
+      MDL_event.onLoadPost(() => {
         Vars.content.statusEffects().each(
           sta => !MDL_cond._isNonStatus(sta),
           sta => utp.immunities.add(sta),

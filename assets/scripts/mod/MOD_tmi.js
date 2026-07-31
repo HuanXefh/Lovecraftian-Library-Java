@@ -70,7 +70,7 @@
         case "heat" : return CLASSES.HeatMark.INSTANCE;
       };
     };
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) {
       printObj(ct_gn);
       throw new Error("Cannot resolve content for TMI: " + ct_gn);
@@ -311,7 +311,7 @@
    * @return {Recipe}
    */
   const addMineTile = function(rawRc, rcGrp, blk_gn, realEffc, amt) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null || blk.itemDrop == null) return rawRc;
 
     rawRc.addMaterial(_tmiCT(blk), amt)
@@ -439,7 +439,7 @@
           tb1.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
           MDL_table.__rcCt(tb1, ct, amt, p).padRight(72.0);
           tb1.add(MDL_text._statText(
-            MDL_bundle._term("lovec", "efficiency-multiplier"),
+            MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
             mtp.perc(0),
           )).center().padRight(6.0);
           tb1.row();
@@ -467,16 +467,16 @@
   const _r_dynamicAttributeBlock = function(blk, attrRsArr, typeStr_ow) {
     if(!ENABLED) return;
 
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
-        let rs = MDL_content._ct(nameRs, "rs");
+        let rs = MDL_content.getCt(nameRs, "rs");
         if(rs == null) return;
 
         let rawRc = _rawRc(tryVal(typeStr_ow, "factory"), blk, blk.ex_getCraftTime(), true);
         let rcGrp = new CLASSES.RecipeItemGroup();
         baseParse(blk, rawRc);
 
-        MDL_attr._blkAttrArr(nameAttr).forEachRow(3, (oblk, attrVal, nameAttr) => {
+        MDL_attr.getBlkAttrArr(nameAttr).forEachRow(3, (oblk, attrVal, nameAttr) => {
           addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, blk.delegee.attrRcType);
         });
         addProd(rawRc, rs, blk.ex_getDynaAttrProdSpd(rs) / (rs instanceof Liquid ? 60.0 : (1.0 / blk.ex_getCraftTime())), rs instanceof Liquid);
@@ -498,13 +498,13 @@
   const _r_terrainDynamicDrill = function(blk, terItmMapMap) {
     if(!ENABLED) return;
 
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       terItmMapMap.each((nameItm, terItmMap) => {
-        let itm = MDL_content._ct(nameItm, "rs");
+        let itm = MDL_content.getCt(nameItm, "rs");
         if(itm == null) return;
         let oreGrpMap = new ObjectMap();
         terItmMap.each((ter, nameRs) => {
-          let rs = MDL_content._ct(nameRs, "rs");
+          let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
           if(!oreGrpMap.containsKey(rs)) oreGrpMap.put(rs, new CLASSES.RecipeItemGroup());
 
@@ -534,14 +534,14 @@
   const _r_rangeWallDrill = function thisFun(blk) {
     if(!ENABLED) return;
 
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       let oreGrpMap = new ObjectMap();
       thisFun.modeBlksMap[blk.mineMode].forEachFast(oblk => {
         if(!blk.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
 
         let blkTg;
         if(blk.shouldDropPay) {
-          blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
+          blkTg = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
           if(blkTg == null) return;
         };
         if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new CLASSES.RecipeItemGroup());
@@ -563,7 +563,7 @@
   .setProp({
     modeBlksMap: (function() {
       let obj = {};
-      MDL_event._c_onInit(() => {
+      MDL_event.onInit(() => {
         obj.floor = Vars.content.blocks().select(blk => blk.itemDrop != null && blk instanceof Floor && !blk.wallOre).toArray();
         obj.wall = Vars.content.blocks().select(blk => blk.itemDrop != null && (blk.solid || (blk instanceof Floor && blk.wallOre))).toArray();
         obj.both = obj.floor.concat(obj.wall);
@@ -582,7 +582,7 @@
   const _r_constructionCore = function(blk) {
     if(!ENABLED) return;
 
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       let blksReq = blk.ex_calcBlksReq([]);
       let rawRc = _rawRc("building", blk.delegee.placeBlk, blk.constructionTimeReq);
 
@@ -609,7 +609,7 @@
   const _r_rainCollector = function(blk) {
     if(!ENABLED) return;
 
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       Vars.content.weathers().each(
         wea => wea instanceof RainWeather,
         wea => {
@@ -651,7 +651,7 @@
       amtBo,
       rcGrp;
 
-    MDL_event._c_onLoadDelayTask(5.0, () => {
+    MDL_event.onLoadDelayTask(5.0, () => {
       CLS_recipe.getBlkRcsMap().get(blk).forEachFast(rc => {
         rawRc = _rawRc("factory", blk, blk.craftTime * rc.rcTimeScl);
 
@@ -743,13 +743,13 @@
           addOpt(rawRc, rcGrp, ct, amt * p, mtp, false, rc.reqOpt);
         });
         if(rc.reqOpt) {
-          addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "require-optional"), Core.bundle.get("yes")));
+          addSubInfo(rawRc, MDL_text._statText(MDL_bundle.getTerm("lovec", "require-optional"), Core.bundle.get("yes")));
         };
         addSubInfo_opt(rawRc, rc.opt);
 
         // Stat
-        if(rc.isGen) addSubInfo(rawRc, MDL_bundle._term("lovec", "generated-recipe").color(Color.gray));
-        if(rc.failP > 0.0) addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "chance-to-fail"), rc.failP.perc(1)));
+        if(rc.isGen) addSubInfo(rawRc, MDL_bundle.getTerm("lovec", "generated-recipe").color(Color.gray));
+        if(rc.failP > 0.0) addSubInfo(rawRc, MDL_text._statText(MDL_bundle.getTerm("lovec", "chance-to-fail"), rc.failP.perc(1)));
 
         // For furnaces
         if(blk.ex_isSubInsOf("BLK_furnaceRecipeFactory") || blk.ex_isSubInsOf("BLK_electricFurnaceRecipeFactory")) {
@@ -761,10 +761,10 @@
 
           // Stat
           if(rc.tempReq > 0.0) addSubInfo(rawRc, MDL_text._statText(fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(rc.tempReq, 2), fetchStatUnit("lovec", "heatunits").localized()));
-          if(isFinite(rc.tempAllowed)) addSubInfo(rawRc, MDL_text._statText(MDL_bundle._term("lovec", "temperature-allowed"), Strings.fixed(rc.tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized()));
+          if(isFinite(rc.tempAllowed)) addSubInfo(rawRc, MDL_text._statText(MDL_bundle.getTerm("lovec", "temperature-allowed"), Strings.fixed(rc.tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized()));
           if(fuelArr.length > 0) addSubInfo(rawRc, tb => {
             tb.row();
-            tb.add(MDL_text._statText(MDL_bundle._term("lovec", "fuel"))).left();
+            tb.add(MDL_text._statText(MDL_bundle.getTerm("lovec", "fuel"))).left();
             tb.row();
             MDL_table._l_ctLi(tb, fuelArr, null, 10);
           });

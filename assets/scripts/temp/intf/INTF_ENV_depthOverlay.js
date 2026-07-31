@@ -18,7 +18,7 @@
       blk.drawnMap.clear();
     });
 
-    MDL_event._c_onDraw(() => {
+    MDL_event.onDraw(() => {
       if(!Vars.state.isGame() || (!Vars.state.isEditor() && !PARAM.SHOULD_DRAW_SCANNER_RESULT)) return;
 
       processZ(VAR.layer.dporeRevealed, 4);
@@ -59,12 +59,12 @@
   function comp_getDisplayName(blk, t) {
     return blk.ex_accRevealed(t, "read") ?
       blk.super$getDisplayName(t) :
-      MDL_bundle._term("lovec", "unknown");
+      MDL_bundle.getTerm("lovec", "unknown");
   };
 
 
   function comp_ex_getDepthName(blk) {
-    return MDL_bundle._term.apply(null, DB_misc.db["block"]["depthName"].read(blk.depthLvl, ["lovec", "unknown"]))
+    return MDL_bundle.getTerm.apply(null, DB_misc.db["block"]["depthName"].read(blk.depthLvl, ["lovec", "unknown"]))
   };
 
 

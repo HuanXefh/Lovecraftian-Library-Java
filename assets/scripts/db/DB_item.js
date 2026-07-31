@@ -233,17 +233,17 @@ const db = {
      */
     insertName: [
 
-      "rs-clean", MDL_bundle._term("common", "intmd-clean"),
-      "rs-pure", MDL_bundle._term("common", "intmd-pure"),
-      "rs-high0pres", MDL_bundle._term("common", "intmd-high-pres"),
-      "rs-med0pres", MDL_bundle._term("common", "intmd-med-pres"),
-      "rs-low0pres", MDL_bundle._term("common", "intmd-low-pres"),
-      "rs-conc", MDL_bundle._term("common", "intmd-conc"),
-      "rs-dry", MDL_bundle._term("common", "intmd-dry"),
-      "rs-wet", MDL_bundle._term("common", "intmd-wet"),
-      "rs-hot", MDL_bundle._term("common", "intmd-hot"),
-      "rs-cold", MDL_bundle._term("common", "intmd-cold"),
-      "rs-inact", MDL_bundle._term("common", "intmd-inact"),
+      "rs-clean", MDL_bundle.getTerm("common", "intmd-clean"),
+      "rs-pure", MDL_bundle.getTerm("common", "intmd-pure"),
+      "rs-high0pres", MDL_bundle.getTerm("common", "intmd-high-pres"),
+      "rs-med0pres", MDL_bundle.getTerm("common", "intmd-med-pres"),
+      "rs-low0pres", MDL_bundle.getTerm("common", "intmd-low-pres"),
+      "rs-conc", MDL_bundle.getTerm("common", "intmd-conc"),
+      "rs-dry", MDL_bundle.getTerm("common", "intmd-dry"),
+      "rs-wet", MDL_bundle.getTerm("common", "intmd-wet"),
+      "rs-hot", MDL_bundle.getTerm("common", "intmd-hot"),
+      "rs-cold", MDL_bundle.getTerm("common", "intmd-cold"),
+      "rs-inact", MDL_bundle.getTerm("common", "intmd-inact"),
 
     ],
 

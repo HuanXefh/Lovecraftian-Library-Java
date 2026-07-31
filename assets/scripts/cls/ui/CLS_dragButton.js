@@ -52,13 +52,13 @@
 
 
   let mouseMoveX = 0.0, mouseMoveY = 0.0, mouseMoveStartX = 0.0, mouseMoveStartY = 0.0;
-  MDL_event._c_onDrag((dx, dy, x_f, y_f) => {
+  MDL_event.onDrag((dx, dy, x_f, y_f) => {
     mouseMoveX = dx;
     mouseMoveY = dy;
     mouseMoveStartX = x_f;
     mouseMoveStartY = y_f;
   });
-  MDL_event._c_onUpdate(() => {
+  MDL_event.onUpdate(() => {
     addedGrps.forEachFast(grp => grp.update());
   });
 

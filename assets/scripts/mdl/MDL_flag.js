@@ -26,10 +26,10 @@
    * @param {string} flag
    * @return {boolean}
    */
-  const _hasFlag = function(flag) {
+  const checkFlag = function(flag) {
     return Vars.state.rules.objectiveFlags.contains(flag);
   };
-  exports._hasFlag = _hasFlag;
+  exports.checkFlag = checkFlag;
 
 
   /**
@@ -38,7 +38,7 @@
    * @return {boolean}
    */
   const addFlag = function(flag) {
-    if(_hasFlag(flag)) return false;
+    if(checkFlag(flag)) return false;
 
     Vars.state.rules.objectiveFlags.add(flag);
 
@@ -53,7 +53,7 @@
    * @return {boolean}
    */
   const removeFlag = function(flag) {
-    if(_hasFlag(flag)) return false;
+    if(checkFlag(flag)) return false;
 
     Vars.state.rules.objectiveFlags.remove(flag);
 
@@ -70,10 +70,10 @@
    * @param {string} flag
    * @return {boolean}
    */
-  const _hasLsavFlag = function(flag) {
+  const checkLsavFlag = function(flag) {
     return SAVE.get("flags").includes(flag);
   };
-  exports._hasLsavFlag = _hasLsavFlag;
+  exports.checkLsavFlag = checkLsavFlag;
 
 
   /**
@@ -82,7 +82,7 @@
    * @return {boolean}
    */
   const addLsavFlag = function thisFun(flag) {
-    if(_hasLsavFlag(flag)) return false;
+    if(checkLsavFlag(flag)) return false;
 
     SAVE.set("flags", thisFun.tmpArr.cpy(SAVE.get("flags")).pushAll(flag));
 
@@ -100,7 +100,7 @@
    * @return {boolean}
    */
   const removeLsavFlag = function thisFun(flag) {
-    if(!_hasLsavFlag(flag)) return false;
+    if(!checkLsavFlag(flag)) return false;
 
     SAVE.set("flags", thisFun.tmpArr.cpy(SAVE.get("flags")).removeAll(flag));
 

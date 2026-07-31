@@ -28,7 +28,7 @@
    * @return {number}
    */
   const _fuelPon = function(rs_gn) {
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
     return rs == null ?
       0.0 :
       DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[0];
@@ -43,7 +43,7 @@
    * @return {number}
    */
   const _fuelLvl = function(rs_gn) {
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
     return rs == null ?
       0.0 :
       DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[1];
@@ -70,12 +70,12 @@
   const _fuelArr = function(blk_gn) {
     let arr = [];
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null || tryJsProp(blk, "noFuelInput", false)) return arr;
 
     let allowedFuels = tryJsProp(blk, "allowedFuels");
     if(allowedFuels != null) {
-      return allowedFuels.map(nameRs => MDL_content._ct(nameRs, "rs")).compact();
+      return allowedFuels.map(nameRs => MDL_content.getCt(nameRs, "rs")).compact();
     };
 
     let fuelType = tryJsProp(blk, "fuelType", FuelTypes.ITEM);
@@ -96,9 +96,9 @@
    * @return {boolean}
    */
   const _hasFuelInput = function(blk_gn, rs_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null || tryJsProp(blk, "noFuelInput", false)) return false;
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
     if(rs == null) return false;
     let allowedFuels = tryJsProp(blk, "allowedFuels");
     if(allowedFuels != null) {

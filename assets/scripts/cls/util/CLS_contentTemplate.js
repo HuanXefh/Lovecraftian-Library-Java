@@ -197,7 +197,7 @@
   CLS_contentTemplate.setTags = function() {
     this.paramObj.tempTags = Array.from(arguments);
     if(this.paramObj.tempTags.length > 0) {
-      MDL_event._c_onLoad(() => {
+      MDL_event.onLoad(() => {
         this.paramObj.tempTags.forEachFast(tag => {
           if(
             !registeredTags.includes(tag)

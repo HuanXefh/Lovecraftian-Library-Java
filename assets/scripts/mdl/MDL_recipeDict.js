@@ -42,7 +42,7 @@
     if(obj.mod != null && Vars.mods.locateMod(obj.mod) == null) return;
 
     rcDict.customFieldMap.put(name, obj);
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       obj.icon = findRegionDrawable(obj.icon);
     });
   };
@@ -55,7 +55,7 @@
    * @return {string}
    */
   const _customFieldB = function(name) {
-    return MDL_bundle._term("common", "rcdict-custom-" + name);
+    return MDL_bundle.getTerm("common", "rcdict-custom-" + name);
   };
   exports._customFieldB = _customFieldB;
 
@@ -73,9 +73,9 @@
   const addItmConsTerm = function(blk_gn, itm_gn, amt, p, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
-    let itm = MDL_content._ct(itm_gn, "rs");
+    let itm = MDL_content.getCt(itm_gn, "rs");
     if(itm == null) return;
     if(p == null) p = 1.0;
     if(p < 0.0001) return;
@@ -101,9 +101,9 @@
   const addFldConsTerm = function(blk_gn, liq_gn, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return;
 
     rcDict.cons.fluid[liq.id].push(
@@ -127,9 +127,9 @@
   const addPayConsTerm = function(blk_gn, ct_gn, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
 
     rcDict.cons[(ct instanceof Block ? "block" : "unit")][ct.id].push(
@@ -154,7 +154,7 @@
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
     if(rcDict.cons[name] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", name);
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
 
     rcDict.cons[name].push(
@@ -179,9 +179,9 @@
   const addItmProdTerm = function(blk_gn, itm_gn, amt, p, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
-    let itm = MDL_content._ct(itm_gn, "rs");
+    let itm = MDL_content.getCt(itm_gn, "rs");
     if(itm == null) return;
     if(p == null) p = 1.0;
     if(p < 0.0001) return;
@@ -207,9 +207,9 @@
   const addFldProdTerm = function(blk_gn, liq_gn, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return;
 
     rcDict.prod.fluid[liq.id].push(
@@ -233,9 +233,9 @@
   const addPayProdTerm = function(blk_gn, ct_gn, amt, data) {
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
 
     rcDict.prod[(ct instanceof Block ? "block" : "unit")][ct.id].push(
@@ -260,7 +260,7 @@
     if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
     if(rcDict.prod[name] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", name);
 
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
 
     rcDict.prod[name].push(
@@ -283,8 +283,8 @@
     if(ct_gn == null) return val;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
       TmpStateTag.customValue :
-      MDL_content._ct(ct_gn, null, true);
-    let blk = MDL_content._ct(blk_gn, "blk");
+      MDL_content.getCt(ct_gn, null, true);
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(ct == null || blk == null) return val;
 
     let arr = ct === TmpStateTag.customValue ?
@@ -315,7 +315,7 @@
    * @return {number}
    */
   const _consAmt_b = function(ct_gn, b) {
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     return tryFun(b.ex_getConsAmt, b, _consAmt(ct, b.block), ct);
   };
   exports._consAmt_b = _consAmt_b;
@@ -332,8 +332,8 @@
     if(ct_gn == null) return val;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
       TmpStateTag.customValue :
-      MDL_content._ct(ct_gn, null, true);
-    let blk = MDL_content._ct(blk_gn, "blk");
+      MDL_content.getCt(ct_gn, null, true);
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(ct == null || blk == null) return val;
 
     let arr = ct === TmpStateTag.customValue ?
@@ -364,7 +364,7 @@
    * @return {number}
    */
   const _prodAmt_b = function(ct_gn, b) {
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     return tryFun(b.ex_getProdAmt, b, _prodAmt(ct, b.block), ct);
   };
   exports._prodAmt_b = _prodAmt_b;
@@ -419,7 +419,7 @@
     if(ct_gn == null) return arr;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
       TmpStateTag.customValue :
-      MDL_content._ct(ct_gn, null, true);
+      MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return arr;
 
     let arr1 = ct === TmpStateTag.customValue ?
@@ -462,7 +462,7 @@
     if(ct_gn == null) return arr;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
       TmpStateTag.customValue :
-      MDL_content._ct(ct_gn, null, true);
+      MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return arr;
 
     let arr1 = ct === TmpStateTag.customValue ?
@@ -500,7 +500,7 @@
 */
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
 
 
     // Initialize

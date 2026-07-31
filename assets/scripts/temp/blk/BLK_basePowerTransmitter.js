@@ -36,7 +36,7 @@
   function comp_setStats(blk) {
     if(blk.overwriteVanillaStat) {
       blk.stats.remove(Stat.powerUse);
-      let powLoss = MDL_content._powConsAmt(blk);
+      let powLoss = blk.consPower.usage;
       if(powLoss > 0.0) blk.stats.add(fetchStat("lovec", "blk0pow-powloss"), powLoss * 60.0, StatUnit.powerSecond);
     };
 
@@ -68,7 +68,7 @@
     };
 
     if(thisFun.tmpTup[4]) {
-      LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle._info("lovec", "text-short-circuit"), false);
+      LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-short-circuit"), false);
       return false;
     };
 

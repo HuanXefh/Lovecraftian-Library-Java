@@ -17,8 +17,8 @@
 
   function comp_init(blk) {
     if(!blk.hasLiquids) ERROR_HANDLER.throw("noLiquidModule", blk.name);
-    blk.exploFldTg = MDL_content._ct(blk.exploFldTg, "rs");
-    blk.dryHeatFldTg = MDL_content._ct(blk.dryHeatFldTg, "rs");
+    blk.exploFldTg = MDL_content.getCt(blk.exploFldTg, "rs");
+    blk.dryHeatFldTg = MDL_content.getCt(blk.dryHeatFldTg, "rs");
     if(blk.dryHeatCancelThr < 0.0) blk.dryHeatCancelThr = blk.dryHeatThr * 0.5;
   };
 

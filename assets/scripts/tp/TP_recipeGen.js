@@ -623,13 +623,13 @@
     this.handleCtLi(
       rc,
       VARGEN.rawOreBlks,
-      blk => MDL_content._ct(Object.keyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs"),
+      blk => MDL_content.getCt(Object.keyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs"),
       metaObj,
       (itm, metaObj) => ({
         keyCt: DB_HANDLER.read("itm-pay-blk", itm.name),
         payI: DB_HANDLER.read("itm-pay-blk", itm.name),
         itmO: itm,
-        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content._ct(DB_HANDLER.read("itm-pay-blk", itm.name), "blk").requirements[0].amount,
+        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", itm.name), "blk").requirements[0].amount,
       }),
     );
   });
@@ -666,11 +666,11 @@
         null,
         metaObj,
         (itm, metaObj) => ({
-          icon: MDL_content._intmd(itm.delegee.intmdParent, "rs-ore0conc"),
+          icon: MDL_content.getIntmd(itm.delegee.intmdParent, "rs-ore0conc"),
           keyCt: itm.name,
           tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
           itmI: itm,
-          itmO: MDL_content._intmd(itm.delegee.intmdParent, "rs-ore0conc"),
+          itmO: MDL_content.getIntmd(itm.delegee.intmdParent, "rs-ore0conc"),
         }),
         itm => itm.delegee.intmdParent.name,
       );

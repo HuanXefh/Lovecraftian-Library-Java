@@ -65,7 +65,7 @@
 
 
 
-  MDL_event._c_onWorldLoad(() => {
+  MDL_event.onWorldLoad(() => {
 
     Time.run(VAR.delay.worldLoad.loadParam, () => forceLoadParam());
 
@@ -74,7 +74,7 @@
 
 
 
-  MDL_event._c_onUpdate(() => {
+  MDL_event.onUpdate(() => {
 
 
     updateSuppressCd--;
@@ -163,7 +163,7 @@
 
 
 
-  MDL_event._c_onWorldLoad(() => {
+  MDL_event.onWorldLoad(() => {
 
     updateSuppressCd = updateSuppressCooldown;
 

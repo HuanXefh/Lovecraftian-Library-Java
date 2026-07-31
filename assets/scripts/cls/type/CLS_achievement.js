@@ -113,7 +113,7 @@
    * @return {string}
    */
   CLS_achievement.prototype.getText = function() {
-    return MDL_bundle._info("common", "achieve-" + this.name);
+    return MDL_bundle.getInfo("common", "achieve-" + this.name);
   };
 
 

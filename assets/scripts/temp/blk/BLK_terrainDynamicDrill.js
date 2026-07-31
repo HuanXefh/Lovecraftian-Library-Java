@@ -15,10 +15,10 @@
 
 
   function comp_init(blk) {
-    MDL_event._c_onLoadPost(() => {
+    MDL_event.onLoadPost(() => {
       blk.terItmMapMap.each((nameItm, terItmMap) => {
         terItmMap.each((ter, nameRs) => {
-          let rs = MDL_content._ct(nameRs, "rs");
+          let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
           MDL_recipeDict.addItmProdTerm(blk, rs, Math.pow(blk.size, 2) * blk.drillTime / blk.getDrillTime(rs), 1.0, {icon: "lovec-icon-mining"});
         });
@@ -57,7 +57,7 @@
         if(terItmMap == null) {
           thisFun.tmpTup[3] = itm.fullIcon;
         } else {
-          let rs = MDL_content._ct(terItmMap.get(tryVal(ter, "transition")), "rs");
+          let rs = MDL_content.getCt(terItmMap.get(tryVal(ter, "transition")), "rs");
           thisFun.tmpTup[3] = rs == null ?
             itm.fullIcon :
             rs.fullIcon;
@@ -77,7 +77,7 @@
     const cont = contCell.get();
 
     blk.terItmMapMap.each((nameItm, terItmMap) => {
-      let itm = MDL_content._ct(nameItm, "rs");
+      let itm = MDL_content.getCt(nameItm, "rs");
       if(itm == null) return;
 
       let itmCell = cont.table(Styles.none, tb1 => {}).growX();
@@ -89,7 +89,7 @@
         let matArr = [
           [
             "",
-            MDL_bundle._term("lovec", "resource"),
+            MDL_bundle.getTerm("lovec", "resource"),
             fetchStat("lovec", "blk-terreq").localized(),
           ],
           [
@@ -99,7 +99,7 @@
           ],
         ];
         terItmMap.each((ter, nameRs) => {
-          let rs = MDL_content._ct(nameRs, "rs");
+          let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
           matArr.push([rs, rs.localizedName, MDL_terrain._terB(ter)]);
         });
@@ -115,7 +115,7 @@
 
     let terItmMap = b.block.delegee.terItmMapMap.get(b.dominantItem == null ? "null" : b.dominantItem.name);
     if(terItmMap == null) return;
-    let itm = MDL_content._ct(terItmMap.get(tryVal(b.terCur, "transition")), "rs");
+    let itm = MDL_content.getCt(terItmMap.get(tryVal(b.terCur, "transition")), "rs");
     if(itm == null) return;
 
     b.dominantItem = itm;

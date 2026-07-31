@@ -12,7 +12,7 @@
 
 
   function comp_init(blk) {
-    blk.exploLiq = MDL_content._ct(blk.exploLiq, "rs");
+    blk.exploLiq = MDL_content.getCt(blk.exploLiq, "rs");
   };
 
 

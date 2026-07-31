@@ -69,7 +69,7 @@
      * @return {string}
      */
     ex_getLocalizedMainName: function() {
-      return MDL_bundle._term("common", "intmd-dust");
+      return MDL_bundle.getTerm("common", "intmd-dust");
     }
     .setProp({
       noSuper: true,

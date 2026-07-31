@@ -82,7 +82,7 @@
   /**
    * Generalized version of {@link Vars.content.byName}.
    * Does not give warning when content not found.
-   * Do not abuse this, use {@link MDL_content._ct} if possible.
+   * Do not abuse this, use {@link MDL_content.getCt} if possible.
    * @global
    * @param {ContentGn} ct_gn
    * @return {UnlockableContent|null}

@@ -18,7 +18,7 @@
     blk.priority = TargetPriority.turret;
 
     if(!Vars.headless && !blk.skipOutlineSetup) {
-      MDL_event._c_onLoad(() => {
+      MDL_event.onLoad(() => {
         if(Core.atlas.has(blk.name + "-icon")) {
           blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-icon");
         };

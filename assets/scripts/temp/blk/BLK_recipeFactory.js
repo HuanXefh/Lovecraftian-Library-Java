@@ -36,12 +36,12 @@
 
       if(blk.useAutoSelection) {
         MDL_table.__break(tb, 1);
-        tb.add(MDL_bundle._info("lovec", "recipe-auto-selection")).left().padLeft(32.0).color(Pal.remove).row();
+        tb.add(MDL_bundle.getInfo("lovec", "recipe-auto-selection")).left().padLeft(32.0).color(Pal.remove).row();
         MDL_table.__break(tb, 1);
       };
 
       MDL_table._d_rc(tb, blk);
-      MDL_table.__btn(tb, MDL_bundle._term("lovec", "new-window"), () => {
+      MDL_table.__btn(tb, MDL_bundle.getTerm("lovec", "new-window"), () => {
         new CLS_window(
           "${1} (${2})".format(fetchStat("lovec", "blk0fac-recipes").localized(), blk.localizedName),
           tb1 => MDL_table._d_rc(tb1, blk, true, true),
@@ -49,7 +49,7 @@
       }).row();
     }));
 
-    if(!MDL_recipe._hasAnyPayOutput(blk.rcMdl)) {
+    if(!MDL_recipe.checkAnyPayOutput(blk.rcMdl)) {
       blk.stats.remove(fetchStat("lovec", "blk0fac-payroom"));
     };
   };

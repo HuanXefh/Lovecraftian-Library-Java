@@ -19,7 +19,7 @@
   function comp_init(blk) {
     blk.outputsLiquid = true;
 
-    MDL_event._c_onLoadPost(() => {
+    MDL_event.onLoadPost(() => {
       Vars.content.weathers().each(
         wea => wea instanceof RainWeather,
         wea => MDL_recipeDict.addFldProdTerm(blk, wea.liquid, blk.liqProdRate),

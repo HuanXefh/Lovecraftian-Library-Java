@@ -223,7 +223,7 @@
   const acceptItmAmtArr = function(b, b_f, itmAmtArr) {
     let i = 0, iCap = itmAmtArr.iCap(), itm;
     while(i < iCap) {
-      itm = MDL_content._ct(itmAmtArr[i], "rs");
+      itm = MDL_content.getCt(itmAmtArr[i], "rs");
       if(itm != null && b.acceptStack(itm, itmAmtArr[i + 1], b_f) < itmAmtArr[i + 1]) return false;
       i += 2;
     };
@@ -243,7 +243,7 @@
   const addItmAmtArr = function(b, b_f, itmAmtArr) {
     let i = 0, iCap = itmAmtArr.iCap(), itm, cond = false;
     while(i < iCap) {
-      itm = MDL_content._ct(itmAmtArr[i], "rs");
+      itm = MDL_content.getCt(itmAmtArr[i], "rs");
       if(itm != null) {
         b.handleStack(itm, itmAmtArr[i + 1], b_f);
         cond = true;

@@ -24,7 +24,7 @@
       })
       .left()
       .padLeft(28.0)
-      .tooltip(MDL_bundle._term("lovec", "display"), true);
+      .tooltip(MDL_bundle.getTerm("lovec", "display"), true);
     }));
   };
 
@@ -36,10 +36,10 @@
 
     MDL_content.rename(
       sta,
-      MDL_bundle._info(sta.minfo.mod.name, "content-" + sta.nameInfo),
+      MDL_bundle.getInfo(sta.minfo.mod.name, "content-" + sta.nameInfo),
     );
 
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       if(!Vars.headless && !sta.uiIcon.found()) {
         sta.fullIcon = sta.uiIcon = Core.atlas.find("lovec-icon-info-panel");
       };

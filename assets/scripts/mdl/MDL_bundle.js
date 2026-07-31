@@ -27,10 +27,10 @@
    * @param {string} bundleStr
    * @return {string}
    */
-  const _base = function(bundleStr) {
+  const getBase = function(bundleStr) {
     return Vars.headless ? "" : Core.bundle.get(bundleStr.toLowerCase());
   };
-  exports._base = _base;
+  exports.getBase = getBase;
 
 
   /**
@@ -38,12 +38,12 @@
    * @param {string} nameMod
    * @param {string} bp
    * @param {boolean|unset} [isDes]
-   * @return string
+   * @return {string}
    */
-  const _info = function(nameMod, bp, isDes) {
-    return _base("info." + nameMod + "-info-" + bp + (isDes ? ".description" : ".name"));
+  const getInfo = function(nameMod, bp, isDes) {
+    return getBase("info." + nameMod + "-info-" + bp + (isDes ? ".description" : ".name"));
   };
-  exports._info = _info;
+  exports.getInfo = getInfo;
 
 
   /**
@@ -51,24 +51,24 @@
    * @param {string} nameMod
    * @param {string} bp
    * @param {boolean|unset} [isDes]
-   * @return string
+   * @return {string}
    */
-  const _term = function(nameMod, bp, isDes) {
-    return _base("term." + nameMod + "-term-" + bp + (isDes ? ".description" : ".name"));
+  const getTerm = function(nameMod, bp, isDes) {
+    return getBase("term." + nameMod + "-term-" + bp + (isDes ? ".description" : ".name"));
   };
-  exports._term = _term;
+  exports.getTerm = getTerm;
 
 
   /**
    * `BUNDLE`: "stat.<nameMod>-stat-<bp>".
    * @param {string} nameMod
    * @param {string} bp
-   * @return string
+   * @return {string}
    */
-  const _stat = function(nameMod, bp) {
-    return _base("stat." + nameMod + "-stat-" + bp);
+  const getStat = function(nameMod, bp) {
+    return getBase("stat." + nameMod + "-stat-" + bp);
   };
-  exports._stat = _stat;
+  exports.getStat = getStat;
 
 
   /* <------------------------------ drama ------------------------------ */
@@ -78,12 +78,12 @@
    * `BUNDLE`: "chara.<nameMod>-<nameChara>".
    * @param {string} nameMod
    * @param {string} nameChara
-   * @return string
+   * @return {string}
    */
-  const _chara = function(nameMod, nameChara) {
-    return _base("chara." + nameMod + "-" + nameChara);
+  const getChara = function(nameMod, nameChara) {
+    return getBase("chara." + nameMod + "-" + nameChara);
   };
-  exports._chara = _chara;
+  exports.getChara = getChara;
 
 
   /**
@@ -91,9 +91,9 @@
    * @param {string} nameMod
    * @param {string} nameDial
    * @param {number} ind
-   * @return string
+   * @return {string}
    */
-  const _dialText = function(nameMod, nameDial, ind) {
-    return _base("dial." + nameMod + "-" + nameDial + "-" + ind);
+  const getDialText = function(nameMod, nameDial, ind) {
+    return getBase("dial." + nameMod + "-" + nameDial + "-" + ind);
   };
-  exports._dialText = _dialText;
+  exports.getDialText = getDialText;

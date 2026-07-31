@@ -45,7 +45,7 @@
     };
 
     // Sometimes non-ore items can be mined in some way
-    let oreBlks = MDL_content._oreBlks(itm);
+    let oreBlks = MDL_content.getOreBlks(itm);
     if(oreBlks.length > 0) itm.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
       tb.row();
       MDL_table._l_ctLi(tb, oreBlks, 48.0);

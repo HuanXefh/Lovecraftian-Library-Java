@@ -41,8 +41,8 @@
               let matArr = [
                 [
                   "",
-                  MDL_bundle._term("lovec", "resource"),
-                  MDL_bundle._term("lovec", "efficiency-multiplier"),
+                  MDL_bundle.getTerm("lovec", "resource"),
+                  MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
                 ],
               ];
 
@@ -121,8 +121,8 @@
               let matArr = [
                 [
                   "",
-                  MDL_bundle._term("lovec", "resource"),
-                  MDL_bundle._term("lovec", "efficiency-multiplier"),
+                  MDL_bundle.getTerm("lovec", "resource"),
+                  MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
                 ],
               ];
 

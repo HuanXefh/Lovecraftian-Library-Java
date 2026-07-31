@@ -39,7 +39,7 @@
    * @returns {string|null}
    */
   const _eleGrp = function(liq_gn) {
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return null;
 
     let obj = DB_fluid.db["group"]["elementary"];
@@ -62,7 +62,7 @@
     let eleGrp = _eleGrp(liq_gn);
     if(eleGrp == null) return TmpStateTag.error;
 
-    return MDL_bundle._term("common", "grp-" + eleGrp);
+    return MDL_bundle.getTerm("common", "grp-" + eleGrp);
   }
   .setCache();
   exports._eleGrpB = _eleGrpB;
@@ -75,7 +75,7 @@
    * @returns {string|null}
    */
   const _matGrp = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return null;
 
     let obj = DB_block.db["group"]["material"];
@@ -98,7 +98,7 @@
     let matGrp = _matGrp(blk_gn);
     if(matGrp == null) return TmpStateTag.error;
 
-    return MDL_bundle._term("common", "grp-" + matGrp);
+    return MDL_bundle.getTerm("common", "grp-" + matGrp);
   }
   .setCache();
   exports._matGrpB = _matGrpB;
@@ -112,7 +112,7 @@
   const _fTags = function(liq_gn) {
     let arr0 = [];
 
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return arr0;
 
     Object._it(DB_fluid.db["group"]["fTag"], (key, arr) => {
@@ -133,7 +133,7 @@
    */
   const _fTagsB = function(liq_gn) {
     return MDL_text._tagText(
-      _fTags(liq_gn).map(tag => MDL_bundle._term("common", "grp-" + tag))
+      _fTags(liq_gn).map(tag => MDL_bundle.getTerm("common", "grp-" + tag))
     );
   }
   .setCache();
@@ -151,7 +151,7 @@
    */
   const _dens = function(liq_gn) {
     let dens = 1.0;
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return dens;
 
     dens = DB_HANDLER.read("liq-dens", liq);
@@ -175,7 +175,7 @@
    */
   const _boilPon = function(liq_gn) {
     let boilPon = 100.0;
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return boilPon;
 
     if(liq.solvent != null) {
@@ -205,7 +205,7 @@
    */
   const _fHeat = function(liq_gn) {
     let def = 26.0, fHeat = def;
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return fHeat;
 
     fHeat = DB_HANDLER.read("liq-fheat", liq, def);
@@ -236,7 +236,7 @@
    */
   const _viscWrap = function(liq_gn) {
     let viscWrap = 0.5;
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return viscWrap;
 
     let visc = DB_HANDLER.read("liq-visc", liq);
@@ -265,7 +265,7 @@
    */
   const _presRes = function(blk_gn) {
     let res = 5.0;
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return res;
 
     res = DB_HANDLER.read("blk-pres-res", blk);
@@ -288,7 +288,7 @@
    */
   const _vacRes = function(blk_gn) {
     let res = -5.0;
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return res;
 
     res = DB_HANDLER.read("blk-vac-res", blk);
@@ -328,7 +328,7 @@
    */
   const _corPow = function(liq_gn) {
     let corPow = 0.0;
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return corPow;
 
     corPow = DB_HANDLER.read("liq-cor-pow", liq);
@@ -351,8 +351,8 @@
    */
   const _corMtp = function(blk_gn, liq_gn) {
     let corMtp = 1.0;
-    let blk = MDL_content._ct(blk_gn, "blk");
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let blk = MDL_content.getCt(blk_gn, "blk");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(blk == null || liq == null) return corMtp;
     let eleGrp = tryJsProp(liq, "eleGrp", null);
     let matGrp = tryJsProp(blk, "matGrp", null);
@@ -381,7 +381,7 @@
    */
   const _corRes = function(blk_gn) {
     let corRes = 1.0;
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return corRes;
 
     corRes = DB_HANDLER.read("blk-cor-res", blk);
@@ -407,7 +407,7 @@
    */
   const _heatRes = function(blk_gn) {
     let heatRes = Infinity;
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return heatRes;
 
     heatRes = DB_HANDLER.read("blk-heat-res", blk);

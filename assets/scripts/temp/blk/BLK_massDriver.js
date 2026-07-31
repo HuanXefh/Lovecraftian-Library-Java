@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       blk.bullet.damage = blk.bulDmg;
       blk.bullet.collidesGround = blk.bulCollidesGround;
       blk.bullet.collidesAir = blk.bulCollidesAir;

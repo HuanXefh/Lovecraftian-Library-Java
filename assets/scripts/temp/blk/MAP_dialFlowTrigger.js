@@ -27,15 +27,15 @@
 
   function comp_configTapped(b) {
     Vars.ui.showTextInput(
-      MDL_bundle._info("lovec", "dial-enter-dialog-flow-name"),
-      MDL_bundle._info("lovec", "dial-enter-dialog-flow-name", true),
+      MDL_bundle.getInfo("lovec", "dial-enter-dialog-flow-name"),
+      MDL_bundle.getInfo("lovec", "dial-enter-dialog-flow-name", true),
       255,
       b.nameDialFlow,
       false,
       str => {
         str != "read" ?
           b.configure(str) :
-          Vars.ui.showErrorMessage(MDL_bundle._info("lovec", "reserved-read"));
+          Vars.ui.showErrorMessage(MDL_bundle.getInfo("lovec", "reserved-read"));
       },
       Function.air,
     );

@@ -21,7 +21,7 @@
   /* <------------------------------ sprite ------------------------------ */
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
 
 
     /**
@@ -102,7 +102,7 @@
   /* <------------------------------ list ------------------------------ */
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
 
 
     /**
@@ -127,7 +127,7 @@
       let obj = {};
       DB_block.db["grpParam"]["factionColor"].forEachRow(2, (faction, colorStr) => {
         if(faction === "none") return;
-        obj[faction] = MDL_content._factionCts(faction);
+        obj[faction] = MDL_content.getFactionCts(faction);
       });
       return obj;
     })();
@@ -139,7 +139,7 @@
      */
     exports.facFamis = (function() {
       let obj = {};
-      MDL_content._facFamisDefined().forEachFast(fami => obj[fami] = MDL_content._facFamiBlks(fami));
+      MDL_content.getFacFamisDefined().forEachFast(fami => obj[fami] = MDL_content.getFacFamiBlks(fami));
       return obj;
     })();
 
@@ -168,7 +168,7 @@
     exports.sandItms = (function() {
       let arr = [];
       DB_item.db["group"]["sand"].forEachFast(name => {
-        let itm = MDL_content._ct(name, "rs");
+        let itm = MDL_content.getCt(name, "rs");
         if(itm != null) arr.push(itm);
       });
       return arr;
@@ -196,7 +196,7 @@
     exports.fuelItms = (function() {
       let arr = [];
       DB_item.db["param"]["fuel"]["item"].forEachRow(2, (name, params) => {
-        let itm = MDL_content._ct(name, "rs");
+        let itm = MDL_content.getCt(name, "rs");
         if(itm != null) arr.push(itm);
       });
       return arr;
@@ -210,7 +210,7 @@
     exports.fuelLiqs = (function() {
       let arr = [];
       DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (name, params) => {
-        let liq = MDL_content._ct(name, "rs");
+        let liq = MDL_content.getCt(name, "rs");
         if(liq != null && !liq.gas) arr.push(liq);
       });
       return arr;
@@ -224,7 +224,7 @@
     exports.fuelGases = (function() {
       let arr = [];
       DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (name, params) => {
-        let liq = MDL_content._ct(name, "rs");
+        let liq = MDL_content.getCt(name, "rs");
         if(liq != null && liq.gas) arr.push(liq);
       });
       return arr;
@@ -328,7 +328,7 @@
      * All vanilla unit types.
      * @type {Array<UnitType>}
      */
-    exports.vanillaUtps = Vars.content.units().select(utp => MDL_content._mod(utp) === "vanilla").toArray();
+    exports.vanillaUtps = Vars.content.units().select(utp => MDL_content.getMod(utp) === "vanilla").toArray();
 
 
     /**
@@ -410,7 +410,7 @@
   /* <------------------------------ misc ------------------------------ */
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
 
 
     exports.auxPres = Vars.content.liquid("loveclab-aux0aux-pressure");

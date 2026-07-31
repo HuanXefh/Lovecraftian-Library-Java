@@ -32,7 +32,7 @@
       readParam(TREE_PARAMS.read(treeGrp), "wob", 1.0),
     ];
 
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       if(!Vars.headless && !blk.shadow.found()) LOG_HANDLER.log("noCustomShadowRegionFound", blk.name);
     });
   };
@@ -40,7 +40,7 @@
 
   function comp_setStats(blk) {
     let treeGrp = blk.treeGrp;
-    if(treeGrp !== "none") blk.stats.add(fetchStat("lovec", "blk0env-treetype"), MDL_bundle._term("lovec", treeGrp));
+    if(treeGrp !== "none") blk.stats.add(fetchStat("lovec", "blk0env-treetype"), MDL_bundle.getTerm("lovec", treeGrp));
 
     let rsLvl = FRAG_faci._treeRsLvl(blk);
     if(rsLvl > 0.0) blk.stats.add(fetchStat("lovec", "blk0env-rslvl"), rsLvl.perc());

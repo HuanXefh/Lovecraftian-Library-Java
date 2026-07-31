@@ -39,7 +39,7 @@
         case "selectorBlock" :
           let i = 2, iCap = cfgArr.iCap();
           while(i < iCap) {
-            let rs = MDL_content._ct(nameRs, "rs");
+            let rs = MDL_content.getCt(nameRs, "rs");
             if(rs != null) b.ex_accRsTgs(rs, true);
             i++;
           };
@@ -116,12 +116,12 @@
     tb.row();
     tb.table(Styles.none, tb1 => {
       MDL_table.__btnCfgToggle(tb1, b, VARGEN.icons.swap, VARGEN.icons.swap, b.isInv)
-      .tooltip(MDL_bundle._info("lovec", "tt-invert-selection"), true);
+      .tooltip(MDL_bundle.getInfo("lovec", "tt-invert-selection"), true);
       MDL_table.__btnCfg(tb1, b, b => {
         b.configure("clear");
         b.deselect();
       }, VARGEN.icons.cross)
-      .tooltip(MDL_bundle._info("lovec", "tt-clear-selection"), true);
+      .tooltip(MDL_bundle.getInfo("lovec", "tt-clear-selection"), true);
     });
   };
 

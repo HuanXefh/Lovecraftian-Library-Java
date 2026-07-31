@@ -27,7 +27,7 @@
     blk.customShadow = true;
 
     if(!Vars.headless) {
-      MDL_event._c_onLoad(() => {
+      MDL_event.onLoad(() => {
         if(!blk.customShadowRegion.found()) LOG_HANDLER.log("noCustomShadowRegionFound", blk.name);
         if(blk.variantShadowRegions != null) {
           blk.variantShadowRegions.forEachFast(shaReg => {

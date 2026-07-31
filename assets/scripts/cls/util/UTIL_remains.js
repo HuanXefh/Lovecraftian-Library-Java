@@ -17,7 +17,7 @@
   const legRemainsArr = [];
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
     TRIGGER.mapExit.addGlobalListener(() => {
       blkRemainsMap.clear();
       unitRemainsArr.clear();

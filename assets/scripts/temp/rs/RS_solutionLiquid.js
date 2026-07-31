@@ -15,7 +15,7 @@
 
 
   function comp_init(liq) {
-    let liqSolv = MDL_content._ct(DB_HANDLER.read("liq-solvent", liq.solvent, null), "rs", true);
+    let liqSolv = MDL_content.getCt(DB_HANDLER.read("liq-solvent", liq.solvent, null), "rs", true);
 
     if(liqSolv != null && liq.overwriteVanillaProp) {
       liq.flammability = liqSolv.flammability;
@@ -25,7 +25,7 @@
     };
 
     if(!liq.skipReactionAssign && liq.intmdParent != null) {
-      MDL_event._c_onLoad(() => {
+      MDL_event.onLoad(() => {
         // The parent item will react with the solvent liquid
         if(!(liq.intmdParent instanceof Item)) return;
         let obj = DB_reaction.db["solvationTarget"];
@@ -92,7 +92,7 @@
      * @return {string}
      */
     ex_getLocalizedMainName: function() {
-      return MDL_bundle._term("common", "intmd-solution" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
+      return MDL_bundle.getTerm("common", "intmd-solution" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
     }
     .setProp({
       noSuper: true,

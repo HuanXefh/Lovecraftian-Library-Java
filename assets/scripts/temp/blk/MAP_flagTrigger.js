@@ -16,7 +16,7 @@
 
 
   function comp_updateTile(b) {
-    if(b.isDormant || !MDL_flag._hasFlag(String(b.block.ex_getFlagStr(b)))) return;
+    if(b.isDormant || !MDL_flag.checkFlag(String(b.block.ex_getFlagStr(b)))) return;
 
     if(b.block.delegee.triggerOnlyOnce) {
       b.isDormant = true;

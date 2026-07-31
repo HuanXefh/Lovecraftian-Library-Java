@@ -43,7 +43,7 @@
     iCap._it(i => {
       regs.push(Core.atlas.find(rs.name + "-t" + (i + 1)));
     });
-    MDL_event._c_onUpdate(() => {
+    MDL_event.onUpdate(() => {
       regInd = !PARAM.SHOULD_SHOW_FLIKERING_ICON_TAG ?
         1 :
         Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % regs.length);
@@ -110,7 +110,7 @@
     };
 
     // Use icon sprite as the icon tag if found, for each intermediate tag
-    let nameMod = MDL_content._mod(rs), pixTag;
+    let nameMod = MDL_content.getMod(rs), pixTag;
     if(nameMod != null) {
       tags.forEachFast(tag => {
         if(!Core.atlas.has(nameMod + "-rs0tag-" + tag)) return;
@@ -359,7 +359,7 @@
      * @return {string}
      */
     ex_getLocalizedMainName: function() {
-      return MDL_bundle._term("common", "intmd-mixture");
+      return MDL_bundle.getTerm("common", "intmd-mixture");
     }
     .setProp({
       noSuper: true,

@@ -22,7 +22,7 @@
 
 
   function comp_init(blk) {
-    blk.rsDrop = MDL_attr._dynaAttrRs(dynaAttrMap, blk);
+    blk.rsDrop = MDL_attr.getDynaAttrRs(dynaAttrMap, blk);
     if(blk.rsDrop == null) ERROR_HANDLER.throw("noLiquidDrop", blk.name);
     MDL_content.rename(
       blk,

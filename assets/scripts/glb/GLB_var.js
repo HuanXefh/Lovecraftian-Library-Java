@@ -209,7 +209,7 @@
   };
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
     exports.dialog = {
       ct1: Vars.headless ? null : new ContentInfoDialog(),
       ct2: Vars.headless ? null : new ContentInfoDialog(),

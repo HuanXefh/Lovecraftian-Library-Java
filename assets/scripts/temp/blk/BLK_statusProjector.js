@@ -19,7 +19,7 @@
     blk.suppressable = false;
 
     blk.blkRad = blk.range;
-    blk.staTg = MDL_content._ct(blk.staTg, "sta");
+    blk.staTg = MDL_content.getCt(blk.staTg, "sta");
   };
 
 

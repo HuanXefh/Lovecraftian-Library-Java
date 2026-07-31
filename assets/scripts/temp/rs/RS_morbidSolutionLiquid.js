@@ -56,7 +56,7 @@
      * @return {string}
      */
     ex_getLocalizedMainName: function() {
-      return MDL_bundle._term("common", "intmd-morbid-solution" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
+      return MDL_bundle.getTerm("common", "intmd-morbid-solution" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
     }
     .setProp({
       noSuper: true,

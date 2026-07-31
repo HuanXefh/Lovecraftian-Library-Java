@@ -29,7 +29,7 @@
     let
       size = readParam(paramObj, "size", 40.0),
       ang = readParam(paramObj, "ang", 0.0),
-      color = MDL_color._color(readParam(paramObj, "color", Pal.accent), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Pal.accent), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       noLight = readParam(paramObj, "noLight", false);
 
@@ -88,7 +88,7 @@
     let
       spr = readParam(paramObj, "spr", "circle"),
       size = readParam(paramObj, "size", 8.0),
-      color = MDL_color._color(readParam(paramObj, "color", Color.white), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       noLight = readParam(paramObj, "noLight", true);
 
@@ -155,7 +155,7 @@
       amt = readParam(paramObj, "amt", 5),
       size = readParam(paramObj, "size", 4.0),
       rad = readParam(paramObj, "rad", 12.0),
-      color = MDL_color._color(readParam(paramObj, "color", Color.white), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       rev = readParam(paramObj, "rev", false),
       hasBloom = readParam(paramObj, "hasBloom", false),
@@ -217,7 +217,7 @@
       spr = readParam(paramObj, "spr", "circle"),
       size = readParam(paramObj, "size", 4.0),
       spin = readParam(paramObj, "spin", 0.0),
-      color = MDL_color._color(readParam(paramObj, "color", Color.white), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       shouldFade = readParam(paramObj, "shouldFade", false),
       hasBloom = readParam(paramObj, "hasBloom", false),
@@ -279,7 +279,7 @@
    */
   const _wetParticle = function(paramObj) {
     let
-      color = MDL_color._color(readParam(paramObj, "color", Color.white), "new");
+      color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new");
 
     return new Effect(80.0, eff => {
       Draw.color(color);
@@ -303,7 +303,7 @@
       spr = readParam(paramObj, "spr", "lovec-efr-diamond"),
       size = readParam(paramObj, "size", 3.0),
       rad = readParam(paramObj, "rad", 18.0),
-      color = MDL_color._color(readParam(paramObj, "color", "ffc999"), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", "ffc999"), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       noLight = readParam(paramObj, "noLight", false);
 
@@ -364,7 +364,7 @@
       amt = readParam(paramObj, "amt", 3),
       size = readParam(paramObj, "size", 4.0),
       rad = readParam(paramObj, "rad", 18.0),
-      color = MDL_color._color(readParam(paramObj, "color", Color.white), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       noLight = readParam(paramObj, "noLight", true);
 
@@ -427,7 +427,7 @@
       amt = readParam(paramObj, "amt", 2),
       size = readParam(paramObj, "size", 4.0),
       rad = readParam(paramObj, "rad", 10.0),
-      color = MDL_color._color(readParam(paramObj, "color", Color.white), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       noLight = readParam(paramObj, "noLight", true);
 
@@ -488,7 +488,7 @@
       amt = readParam(paramObj, "amt", 12),
       size = readParam(paramObj, "size", 1.5),
       rad = readParam(paramObj, "rad", 12.0),
-      color = MDL_color._color(readParam(paramObj, "color", "91b692"), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", "91b692"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
     return extend(ParticleEffect, {
@@ -548,7 +548,7 @@
       amt = readParam(paramObj, "amt", 5),
       size = readParam(paramObj, "size", 3.0),
       rad = readParam(paramObj, "rad", 12.0),
-      color = MDL_color._color(readParam(paramObj, "color", Color.white), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
     return extend(ParticleEffect, {
@@ -608,7 +608,7 @@
       amt = readParam(paramObj, "amt", 7),
       size = readParam(paramObj, "size", 4.0),
       rad = readParam(paramObj, "rad", 56.0),
-      color = MDL_color._color(readParam(paramObj, "color", Color.white), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       noLight = readParam(paramObj, "noLight", true);
 
@@ -672,7 +672,7 @@
       stroke = readParam(paramObj, "stroke", 1.5),
       len = readParam(paramObj, "len", 4.0),
       rad = readParam(paramObj, "rad", 18.0),
-      color = MDL_color._color(readParam(paramObj, "color", "null"), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
     return new Effect(15.0 * scl, eff => {
@@ -695,7 +695,7 @@
       amt = readParam(paramObj, "amt", 7),
       size = readParam(paramObj, "size", 4.0),
       rad = readParam(paramObj, "rad", 30.0),
-      color = MDL_color._color(readParam(paramObj, "color", "null"), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
     return new Effect(30.0 * scl, eff => {
@@ -1025,7 +1025,7 @@
       amt = readParam(paramObj, "amt", 1),
       size = readParam(paramObj, "size", 10.0),
       rad = readParam(paramObj, "rad", 20.0),
-      color = MDL_color._color(readParam(paramObj, "color", "7898ba")),
+      color = MDL_color.getColor(readParam(paramObj, "color", "7898ba")),
       scl = readParam(paramObj, "scl", 1.0),
       isBlack = readParam(paramObj, "isBlack", false);
 
@@ -1098,7 +1098,7 @@
     const eff = new Effect(40.0, eff => {
       eff.lifetime = 40.0 * scl * Math.pow(tryVal(rad, eff.rotation) * 0.025, 0.5);
 
-      Draw.color(MDL_color._color("ffffff30", Tmp.c2), MDL_color._color("ffffff00", Tmp.c3), eff.fin());
+      Draw.color(MDL_color.getColor("ffffff30", Tmp.c2), MDL_color.getColor("ffffff00", Tmp.c3), eff.fin());
       Lines.stroke(size_f - Interp.pow2Out.apply(eff.fin()) * (size_f - size_t));
       Lines.circle(eff.x, eff.y, tryVal(rad, eff.rotation) * Interp.pow2Out.apply(eff.fin()));
       Draw.reset();
@@ -1119,7 +1119,7 @@
       size_f = readParam(paramObj, "size_f", 4.0),
       size_t = readParam(paramObj, "size_t", 0.0),
       r = readParam(paramObj, "r", null),
-      color = MDL_color._color(readParam(paramObj, "color", "null"), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
     return new Effect(20.0 * scl, eff => {
@@ -1146,7 +1146,7 @@
       size_f = readParam(paramObj, "size_f", 4.0),
       size_t = readParam(paramObj, "size_t", 0.0),
       rad = readParam(paramObj, "rad", null),
-      color = MDL_color._color(readParam(paramObj, "color", "null"), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
     return new Effect(20.0 * scl, eff => {
@@ -1169,7 +1169,7 @@
   const _squareFade = function(paramObj) {
     let
       r = readParam(paramObj, "r", 0.5),
-      color = MDL_color._color(readParam(paramObj, "color", "null"), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
       scl = readParam(paramObj, "scl", 1.0);
 
     return new Effect(40.0 * scl, eff => {
@@ -1189,7 +1189,7 @@
   const _exploDisk = function(paramObj) {
     let
       rad = readParam(paramObj, "rad", 40.0),
-      color = MDL_color._color(readParam(paramObj, "color", Pal.accent), "new"),
+      color = MDL_color.getColor(readParam(paramObj, "color", Pal.accent), "new"),
       scl = readParam(paramObj, "scl", 1.0),
       noLight = readParam(paramObj, "noLight", false);
 
@@ -1307,21 +1307,21 @@
       _ventSmog({
         size: size,
         rad: rad,
-        color: MDL_color._color(color).cpy(),
+        color: MDL_color.getColor(color).cpy(),
         scl: scl * 1.1,
         isBlack: isBlack,
       }),
       _ventSmog({
         size: size * 0.85,
         rad: rad,
-        color: MDL_color._color(color).lerp(Color.white, 0.4).cpy(),
+        color: MDL_color.getColor(color).lerp(Color.white, 0.4).cpy(),
         scl: scl * 0.85,
         isBlack: isBlack,
       }),
       _ventSmog({
         size: size * 0.7,
         rad: rad,
-        color: MDL_color._color(color).lerp(Color.white, 0.7).cpy(),
+        color: MDL_color.getColor(color).lerp(Color.white, 0.7).cpy(),
         scl: scl * 0.7,
         isBlack: isBlack,
       }),

@@ -111,10 +111,10 @@
   module.exports.initContent = function thisFun(pla) {
     this.super("initContent", pla);
 
-    let dir = MDL_file._script(MDL_content._mod(pla)).child("auxFi").child("json").child("planets");
+    let dir = MDL_file.getScriptDir(MDL_content.getMod(pla)).child("auxFi").child("json").child("planets");
     let fi = (function() {
-      let tmp = dir.child(MDL_content._nameCtNoPrefix(pla) + ".json");
-      return tmp.exists() ? tmp : dir.child(MDL_content._nameCtNoPrefix(pla) + ".hjson");
+      let tmp = dir.child(MDL_content.getCtNameNoPrefix(pla) + ".json");
+      return tmp.exists() ? tmp : dir.child(MDL_content.getCtNameNoPrefix(pla) + ".hjson");
     })();
     let jsonVal = MDL_json.parse(fi);
     if(jsonVal == null || jsonVal.isString()) return;

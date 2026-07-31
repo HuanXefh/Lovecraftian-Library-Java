@@ -542,7 +542,7 @@
         console.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
         return;
       };
-      let itm = MDL_content._ct(itm_gn, "rs");
+      let itm = MDL_content.getCt(itm_gn, "rs");
       if(itm == null) return;
       FRAG_item.setItem(b, itm, amt);
     }

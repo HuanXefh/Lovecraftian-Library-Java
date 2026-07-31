@@ -31,7 +31,7 @@ const BOX_trigger = new CLS_objectBox({
    */
   gameLoad: (function() {
     let isGame = false, lastIsGame = false;
-    MDL_event._c_onUpdate(() => {
+    MDL_event.onUpdate(() => {
       isGame = Vars.state.isGame() && !Vars.state.isEditor();
       if(isGame !== lastIsGame && isGame) {
         BOX_trigger.gameLoad.fire();
@@ -70,7 +70,7 @@ const BOX_trigger = new CLS_objectBox({
    * <br> `ARGS`: unit.
    */
   unitDestroy: (function() {
-    MDL_event._c_onUnitDestroy(unit => {
+    MDL_event.onUnitDestroy(unit => {
       if(unit.internal) return;
       BOX_trigger.unitDestroy.fire(unit);
     });

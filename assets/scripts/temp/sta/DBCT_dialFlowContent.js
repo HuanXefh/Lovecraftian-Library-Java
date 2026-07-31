@@ -21,7 +21,7 @@
         !sta.ex_checkDbctUnlocked() ?
           MDL_ui.show_fadeInfo("lovec", "info-locked") :
           MDL_ui._d_flow(sta.nameDialFlow);
-      }).left().padLeft(28.0).tooltip(MDL_bundle._term("lovec", "dialog-flow-play"), true);
+      }).left().padLeft(28.0).tooltip(MDL_bundle.getTerm("lovec", "dialog-flow-play"), true);
     }));
   };
 
@@ -38,7 +38,7 @@
       );
     };
 
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       if(!Vars.headless && !sta.uiIcon.found()) {
         sta.fullIcon = sta.uiIcon = Core.atlas.find("lovec-icon-dialog-flow");
       };

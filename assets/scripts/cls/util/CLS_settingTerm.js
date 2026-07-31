@@ -28,9 +28,9 @@
   const categSetterDebugArr = [];
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
     function buildCateg(nameMod, nameCateg, terms) {
-      Vars.ui.settings.addCategory(MDL_bundle._term(nameMod, "settings-" + nameCateg), tb => {
+      Vars.ui.settings.addCategory(MDL_bundle.getTerm(nameMod, "settings-" + nameCateg), tb => {
         terms.forEachCond(term => term.dialSetter != null, term => term.dialSetter(tb));
       });
     };

@@ -64,7 +64,7 @@
   function comp_draw(b) {
     if(b.dynaAttrRs == null) return;
 
-    LCDraw.region(b.x, b.y, b.block.delegee.liqReg, 0.0, 1.0, MDL_color._color(b.dynaAttrRs), b.liquids.get(b.dynaAttrRs) / b.block.liquidCapacity);
+    LCDraw.region(b.x, b.y, b.block.delegee.liqReg, 0.0, 1.0, MDL_color.getColor(b.dynaAttrRs), b.liquids.get(b.dynaAttrRs) / b.block.liquidCapacity);
   };
 
 

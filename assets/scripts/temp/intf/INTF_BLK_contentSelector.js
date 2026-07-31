@@ -12,7 +12,7 @@
 
 
   function comp_init(blk) {
-    MDL_event._c_onLoadPost(() => {
+    MDL_event.onLoadPost(() => {
       blk.selectionQueue.pushAll(blk.ex_findSelectionTgs());
     });
 
@@ -26,7 +26,7 @@
       b.ex_onSelectorUpdate();
     });
     blk.config(JAVA.string, (b, nameCt) => {
-      let ct = MDL_content._ct(nameCt, null, true);
+      let ct = MDL_content.getCt(nameCt, null, true);
       if(!blk.selectionQueue.includes(ct)) return;
       b.delegee.ctTg = ct;
       b.ex_onSelectorUpdate();

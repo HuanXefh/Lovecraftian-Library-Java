@@ -757,7 +757,7 @@ const db = {
       function(obj, metaObj, paramObj) {
         let bi = this.parseRawBi(readParam(paramObj, "bi", Array.air), 1, 1.0);
         if(bi.length === 0) return;
-        let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nameRs => MDL_content._ct(nameRs, "rs").hardness).compact().unshiftAll(0.0));
+        let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nameRs => MDL_content.getCt(nameRs, "rs").hardness).compact().unshiftAll(0.0));
         obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * readParam(metaObj, "abrasionFactor"), Mathf.maxZero(hardness - readParam(metaObj, "minHardness", 0)) / 10.0);
       },
 

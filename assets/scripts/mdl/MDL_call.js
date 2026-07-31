@@ -38,7 +38,7 @@
     idCurMap: new ObjectMap(),
   })
   .setAnno("init", function() {
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       TRIGGER.mapChange.addGlobalListener(nameMap => callOnce.idCurMap.clear());
     });
   });
@@ -59,7 +59,7 @@
    * @return {Unit}
    */
   const spawnUnit_server = function(x, y, utp_gn, team, ang, scr) {
-    let utp = MDL_content._ct(utp_gn, "utp");
+    let utp = MDL_content.getCt(utp_gn, "utp");
     if(utp == null) return;
     if(ang == null) ang = Mathf.random(360.0);
 
@@ -87,7 +87,7 @@
    * @return {void}
    */
   const spawnUnits_server = function(x, y, utp_gn, team, ang, rad, amt, scr) {
-    let utp = MDL_content._ct(utp_gn, "utp");
+    let utp = MDL_content.getCt(utp_gn, "utp");
     if(utp == null) return;
     if(rad == null) rad = 0.0;
     if(amt == null) amt = 1;
@@ -120,7 +120,7 @@
    * @return {void}
    */
   const spawnUnit_client = function(x, y, utp_gn, team, ang) {
-    let utp = MDL_content._ct(utp_gn, "utp");
+    let utp = MDL_content.getCt(utp_gn, "utp");
     if(utp == null) return;
 
     MDL_net.sendPacket(
@@ -155,7 +155,7 @@
    * @return {void}
    */
   const spawnUnits_client = function(x, y, utp_gn, team, ang, rad, amt) {
-    let utp = MDL_content._ct(utp_gn, "utp");
+    let utp = MDL_content.getCt(utp_gn, "utp");
     if(utp == null) return;
 
     MDL_net.sendPacket(
@@ -230,7 +230,7 @@
    */
   const spawnLoot_server = function(x, y, itm_gn, itmAmt) {
     if(!PARAM.MODDED || itmAmt < 1) return;
-    let itm = MDL_content._ct(itm_gn, "rs");
+    let itm = MDL_content.getCt(itm_gn, "rs");
     if(itm == null) return;
 
     return spawnUnit_server(
@@ -259,7 +259,7 @@
    */
   const spawnLoots_server = function(x, y, itm_gn, itmAmt, rad, amt) {
     if(!PARAM.MODDED || itmAmt < 1) return;
-    let itm = MDL_content._ct(itm_gn, "rs");
+    let itm = MDL_content.getCt(itm_gn, "rs");
     if(itm == null) return;
     if(rad == null) rad = VAR.range.unitLootRad;
     if(amt == null) amt = 1;
@@ -315,7 +315,7 @@
    */
   const spawnLoots_client = function(x, y, itm_gn, itmAmt, rad, amt) {
     if(!PARAM.MODDED || itmAmt < 1) return;
-    let itm = MDL_content._ct(itm_gn, "rs");
+    let itm = MDL_content.getCt(itm_gn, "rs");
     if(itm == null) return;
 
     MDL_net.sendPacket(

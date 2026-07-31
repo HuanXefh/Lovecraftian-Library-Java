@@ -52,7 +52,7 @@
 
     if(liq != null) MDL_content.rename(
       blk,
-      liq.localizedName + (!blk.shallow ? "" : (MDL_text._space() + "(" + MDL_bundle._term("lovec", "shallow") + ")")),
+      liq.localizedName + (!blk.shallow ? "" : (MDL_text._space() + "(" + MDL_bundle.getTerm("lovec", "shallow") + ")")),
     );
   };
 

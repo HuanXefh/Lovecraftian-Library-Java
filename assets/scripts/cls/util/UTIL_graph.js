@@ -19,7 +19,7 @@
 
   (function() {
     let i, iCap, graph;
-    MDL_event._c_onUpdate(() => {
+    MDL_event.onUpdate(() => {
       if(Vars.state.isPaused()) return;
 
       i = 0;

@@ -22,12 +22,12 @@
 
 
   function matchTag(ct_gn, tag, mode, suppressWarning) {
-    return checkTempTag(MDL_content._ct(ct_gn, mode, suppressWarning), tag);
+    return checkTempTag(MDL_content.getCt(ct_gn, mode, suppressWarning), tag);
   };
 
 
   function matchCond(ct_gn, key, mode, suppressWarning) {
-    let ct = MDL_content._ct(ct_gn, mode, suppressWarning);
+    let ct = MDL_content.getCt(ct_gn, mode, suppressWarning);
     return ct == null ? false : DB_block.db["class"]["group"]["condition"][key].hasIns(ct);
   };
 
@@ -61,7 +61,7 @@
    * @return {boolean}
    */
   const _isVanilla = function(ct_gn) {
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     return ct != null && ct.minfo.mod == null;
   }
   .setCache();
@@ -77,7 +77,7 @@
    * @return {boolean}
    */
   const _isRsAvailable = function(rs_gn) {
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
     return rs != null && rs.unlockedNow() && rs.isOnPlanet(Vars.state.getPlanet()) && !rs.isHidden();
   };
   exports._isRsAvailable = _isRsAvailable;
@@ -137,7 +137,7 @@
    * @return {boolean}
    */
   const _isAqueousLiquid = function(liq_gn) {
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     return liq != null && DB_fluid.db["group"]["aqueous"].includes(liq.name);
   }
   .setCache();
@@ -150,7 +150,7 @@
    * @return {boolean}
    */
   const _isConductiveLiquid = function(liq_gn) {
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     return liq != null && DB_fluid.db["group"]["conductive"].includes(liq.name);
   }
   .setCache();
@@ -226,7 +226,7 @@
    * @return {boolean}
    */
   const _isNoSideBlock = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => checkInstance(blk, tup[0]) && tup[1](blk));
   }
   .setCache();
@@ -240,8 +240,8 @@
    * @return {boolean}
    */
   const _isSameNoSideBlock = function(blk1_gn, blk2_gn) {
-    let blk1 = MDL_content._ct(blk1_gn, "blk");
-    let blk2 = MDL_content._ct(blk2_gn, "blk");
+    let blk1 = MDL_content.getCt(blk1_gn, "blk");
+    let blk2 = MDL_content.getCt(blk2_gn, "blk");
     return blk1 != null && blk2 != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => checkInstance(blk1, tup[0]) && checkInstance(blk2, tup[0]) && tup[1](blk1) && tup[1](blk2));
   }
   .setCache();
@@ -302,7 +302,7 @@
    * @return {boolean}
    */
   const _isGate = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && (matchCond(blk_gn, "gate", "blk") && tryFun(blk.ex_isGateBlk, blk, false));
   }
   .setCache();
@@ -327,7 +327,7 @@
    * @return {boolean}
    */
   const _isGenericRouter = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && (blk.rotate && _isGate(blk_gn) && !tryFun(blk.ex_noSideOutput, blk, false)) || _isFluidRouter(blk_gn);
   }
   .setCache();
@@ -340,7 +340,7 @@
    * @return {boolean}
    */
   const _isFullRouter = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && blk.rotate && (
       _isDrill(blk)
         || _isPowerGenerator(blk)
@@ -369,7 +369,7 @@
    * @return {boolean}
    */
   const _isExposedBlock = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && DB_block.db["group"]["exposed"].includes(blk.name);
   }
   .setCache();
@@ -468,7 +468,7 @@
    * @return {boolean}
    */
   const _isCloggableBlock = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && DB_block.db["group"]["cloggable"].includes(blk.name);
   }
   .setCache();
@@ -553,7 +553,7 @@
    * @return {boolean}
    */
   const _isReactorGenerator = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && DB_block.db["class"]["group"]["condition"]["powerReactor"].some(tup => checkInstance(blk, tup[0]) && tup[1](blk));
   }
   .setCache();
@@ -800,7 +800,7 @@
    * @return {boolean}
    */
   const _isNonRobot = function(utp_gn) {
-    let utp = MDL_content._ct(utp_gn, "utp");
+    let utp = MDL_content.getCt(utp_gn, "utp");
     return utp != null && DB_unit.db["group"]["nonRobot"].includes(utp.name);
   }
   .setCache();
@@ -813,19 +813,19 @@
    * @return {boolean}
    */
   const _hasNoRemains = function(etp_gn) {
-    let etp = MDL_content._ct(etp_gn, null, true);
+    let etp = MDL_content.getCt(etp_gn, null, true);
     if(etp == null) return false;
 
     if(etp instanceof Block) {
       return !etp.createRubble
         || etp.instantDeconstruct
         || _isCoreBlock(etp)
-        || DB_block.db["group"]["noRemainsMod"].includes(MDL_content._mod(etp))
+        || DB_block.db["group"]["noRemainsMod"].includes(MDL_content.getMod(etp))
         || DB_block.db["group"]["noRemains"].includes(etp.name);
     };
     return !etp.createScorch
       || etp instanceof MissileUnitType
-      || DB_unit.db["group"]["noRemainsMod"].includes(MDL_content._mod(etp))
+      || DB_unit.db["group"]["noRemainsMod"].includes(MDL_content.getMod(etp))
       || DB_unit.db["group"]["noRemains"].includes(etp.name);
   }
   .setCache();
@@ -1036,7 +1036,7 @@
   const _hasEffectAny = function(unit, stas_gn) {
     let sta;
     return stas_gn.some(sta_gn => {
-      sta = MDL_content._ct(sta_gn, "sta", true);
+      sta = MDL_content.getCt(sta_gn, "sta", true);
       return sta != null && unit.hasEffect(sta);
     });
   };
@@ -1101,7 +1101,7 @@
    * @return {boolean}
    */
   const _isNonStatus = function(sta_gn) {
-    let sta = MDL_content._ct(sta_gn, "sta");
+    let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && (
       (checkCreatedByTemp(sta) && sta.ex_isSubInsOf("DBCT_databaseContent"))
         || DB_status.db["group"]["nonStatus"].includes(sta.name)
@@ -1117,7 +1117,7 @@
    * @return {boolean}
    */
   const _isHotStatus = function(sta_gn) {
-    let sta = MDL_content._ct(sta_gn, "sta");
+    let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && DB_status.db["group"]["hot"].includes(sta.name);
   }
   .setCache();
@@ -1130,7 +1130,7 @@
    * @return {boolean}
    */
   const _isWetStatus = function(sta_gn) {
-    let sta = MDL_content._ct(sta_gn, "sta");
+    let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && DB_status.db["group"]["wet"].includes(sta.name);
   }
   .setCache();
@@ -1167,7 +1167,7 @@
    * @return {boolean}
    */
   const _isStackStatus = function(sta_gn) {
-    let sta = MDL_content._ct(sta_gn, "sta");
+    let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && tryFun(sta.ex_isStackSta, sta, false);
   }
   .setCache();

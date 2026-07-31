@@ -375,7 +375,7 @@
     };
 
     let i = 0;
-    let r_fi, color = MDL_color._color(tryVal(color_gn, Pal.accent));
+    let r_fi, color = MDL_color.getColor(tryVal(color_gn, Pal.accent));
     while(i < amt) {
       r_fi = Math.round(r + Mathf.random() * offR);
       Lightning.create(

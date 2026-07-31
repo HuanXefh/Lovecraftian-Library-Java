@@ -75,7 +75,7 @@
           || ((blk.blockedItems == null || blk.blockedItems.size === 0) && blk.itmWhitelist.length > 0 && !blk.itmWhitelist.includes(ot1.drop()))
       ));
       let itm = ot == null ? null : ot.drop();
-      if(itm != null) blk.drawPlaceText(MDL_bundle._info("lovec", "text-cannot-mine"), tx, ty, valid);
+      if(itm != null) blk.drawPlaceText(MDL_bundle.getInfo("lovec", "text-cannot-mine"), tx, ty, valid);
     };
   };
 

@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    blk.flrParent = MDL_content._ct(blk.flrParent, "blk");
+    blk.flrParent = MDL_content.getCt(blk.flrParent, "blk");
     if(blk.flrParent != null) {
       if(blk.flrParent.wall === Blocks.air) {
         blk.flrParent.wall = blk
@@ -23,7 +23,7 @@
 
       MDL_content.rename(
         blk,
-        blk.flrParent.localizedName + MDL_text._space() + "(" + MDL_bundle._term("lovec", "wall") + ")",
+        blk.flrParent.localizedName + MDL_text._space() + "(" + MDL_bundle.getTerm("lovec", "wall") + ")",
       );
 
       // Set wall color to darkened version of floor color

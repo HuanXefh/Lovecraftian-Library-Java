@@ -247,7 +247,7 @@
    * @return {boolean}
    */
   checkTempTag = function(ct_gn, tag) {
-    let ct = MDL_content._ct(ct_gn, null, true);
+    let ct = MDL_content.getCt(ct_gn, null, true);
     return ct == null || !checkCreatedByTemp(ct) ?
       false :
       ct.delegee.tempTags.includes(tag);

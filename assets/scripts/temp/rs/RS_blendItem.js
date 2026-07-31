@@ -56,7 +56,7 @@
      * @return {string}
      */
     ex_getLocalizedMainName: function() {
-      return MDL_bundle._term("common", "intmd-blend");
+      return MDL_bundle.getTerm("common", "intmd-blend");
     }
     .setProp({
       noSuper: true,

@@ -18,11 +18,11 @@
     blk.floating = true;
     blk.placeableLiquid = true;
 
-    blk.flrParent = MDL_content._ct(blk.flrParent, "blk");
+    blk.flrParent = MDL_content.getCt(blk.flrParent, "blk");
     if(blk.flrParent != null) {
       MDL_content.rename(
         blk,
-        blk.flrParent.localizedName + MDL_text._space() + "(" + MDL_bundle._term("lovec", "heap") + ")",
+        blk.flrParent.localizedName + MDL_text._space() + "(" + MDL_bundle.getTerm("lovec", "heap") + ")",
       );
     };
   };

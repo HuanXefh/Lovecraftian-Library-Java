@@ -43,12 +43,12 @@
    * @param {string} nameBlk
    * @return {RecipeModule}
    */
-  const _rcMdl = function(nameMod, nameBlk) {
+  const getRcMdl = function(nameMod, nameBlk) {
     let rcMdl;
     try {
       rcMdl = require(nameMod + "/auxFi/rc/" + nameBlk);
     } catch(err) {
-      let obj = _rcMdlJson(nameMod, nameBlk);
+      let obj = getRcMdlFromJson(nameMod, nameBlk);
       if(obj != null) {
         rcMdl = obj;
       } else {
@@ -58,17 +58,17 @@
 
     return rcMdl;
   };
-  exports._rcMdl = _rcMdl;
+  exports.getRcMdl = getRcMdl;
 
 
   /**
    * Gets recipe module from JSON file.
-   * Used in {@link _rcMdl}.
+   * Used in {@link getRcMdl}.
    * @param {string} nameMod
    * @param {string} nameBlk
    * @return {RecipeModule}
    */
-  const _rcMdlJson = function(nameMod, nameBlk) {
+  const getRcMdlFromJson = function(nameMod, nameBlk) {
     let mod = fetchMod(nameMod);
     if(mod == null) return null;
     let dir = mod.root.child("scripts").child("auxFi").child("json").child("rc");
@@ -98,7 +98,7 @@
 
     return {rc: obj};
   };
-  exports._rcMdlJson = _rcMdlJson;
+  exports.getRcMdlFromJson = getRcMdlFromJson;
 
 
   /**
@@ -106,12 +106,12 @@
    * @param {RecipeModule} rcMdl
    * @return {RecipeBase}
    */
-  const _rcBase = function(rcMdl) {
+  const getRcBase = function(rcMdl) {
     return rcMdl == null ?
       Object.air :
       tryVal(rcMdl.rc.base, Object.air);
   };
-  exports._rcBase = _rcBase;
+  exports.getRcBase = getRcBase;
 
 
   /**
@@ -121,10 +121,10 @@
    * @param {any} [def]
    * @return {any}
    */
-  const _rcBaseVal = function(rcMdl, key, def) {
-    return tryVal(_rcBase(rcMdl)[key], def);
+  const getRcBaseVal = function(rcMdl, key, def) {
+    return tryVal(getRcBase(rcMdl)[key], def);
   };
-  exports._rcBaseVal= _rcBaseVal;
+  exports.getRcBaseVal= getRcBaseVal;
 
 
   /**
@@ -132,12 +132,12 @@
    * @param {RecipeModule} rcMdl
    * @return {Array<RecipeObject>}
    */
-  const _rcLi = function(rcMdl) {
+  const getRcLi = function(rcMdl) {
     return rcMdl == null ?
       Array.air :
       tryVal(rcMdl.rc.recipe, Array.air);
   };
-  exports._rcLi = _rcLi;
+  exports.getRcLi = getRcLi;
 
 
   /**
@@ -145,10 +145,10 @@
    * @param {RecipeModule} rcMdl
    * @return {number}
    */
-  const _rcSize = function(rcMdl) {
-    return _rcLi(rcMdl).iCap() / 2;
+  const getRcSize = function(rcMdl) {
+    return getRcLi(rcMdl).iCap() / 2;
   };
-  exports._rcSize = _rcSize;
+  exports.getRcSize = getRcSize;
 
 
   /**
@@ -171,10 +171,10 @@
    * @param {string} rcHeader
    * @return {RecipeObject|null}
    */
-  const _rcObj = function(rcMdl, rcHeader) {
-    return _rcLi(rcMdl).read(String(convertHeader(rcMdl, rcHeader)), null);
+  const getRcObj = function(rcMdl, rcHeader) {
+    return getRcLi(rcMdl).read(String(convertHeader(rcMdl, rcHeader)), null);
   };
-  exports._rcObj = _rcObj;
+  exports.getRcObj = getRcObj;
 
 
   /**
@@ -182,10 +182,10 @@
    * @param {RecipeModule} rcMdl
    * @return {Array<string>}
    */
-  const _rcHeaders = function(rcMdl) {
-    return _rcLi(rcMdl).readCol(2, 0);
+  const getRcHeaders = function(rcMdl) {
+    return getRcLi(rcMdl).readCol(2, 0);
   };
-  exports._rcHeaders = _rcHeaders;
+  exports.getRcHeaders = getRcHeaders;
 
 
   /**
@@ -193,10 +193,10 @@
    * @param {RecipeModule} rcMdl
    * @return {Array<RecipeObject>}
    */
-  const _rcObjs = function(rcMdl) {
-    return _rcLi(rcMdl).readCol(2, 1);
+  const getRcObjs = function(rcMdl) {
+    return getRcLi(rcMdl).readCol(2, 1);
   };
-  exports._rcObjs = _rcObjs;
+  exports.getRcObjs = getRcObjs;
 
 
   /**
@@ -205,9 +205,9 @@
    * @param {string} rcHeader
    * @return {boolean}
    */
-  const _hasHeader = function(rcMdl, rcHeader) {
+  const checkHeaderValid = function(rcMdl, rcHeader) {
     rcHeader = convertHeader(rcMdl, rcHeader);
-    let rcLi = _rcLi(rcMdl), tmpHeader;
+    let rcLi = getRcLi(rcMdl), tmpHeader;
     let i = 0, iCap = rcLi.iCap();
     while(i < iCap) {
       tmpHeader = rcLi[i];
@@ -217,7 +217,7 @@
 
     return false;
   };
-  exports._hasHeader = _hasHeader;
+  exports.checkHeaderValid = checkHeaderValid;
 
 
   /**
@@ -225,10 +225,10 @@
    * @param {RecipeModule} rcMdl
    * @return {string}
    */
-  const _firstHeader = function(rcMdl) {
-    return tryVal(_rcLi(rcMdl)[0], "");
+  const getFirstHeader = function(rcMdl) {
+    return tryVal(getRcLi(rcMdl)[0], "");
   };
-  exports._firstHeader = _firstHeader;
+  exports.getFirstHeader = getFirstHeader;
 
 
   /**
@@ -239,13 +239,13 @@
    * @param {any} [def]
    * @return {any}
    */
-  const _rcVal = function(rcMdl, rcHeader, key, def) {
-    let rcObj = _rcObj(rcMdl, rcHeader);
+  const getRcVal = function(rcMdl, rcHeader, key, def) {
+    let rcObj = getRcObj(rcMdl, rcHeader);
     return rcObj == null ?
       def :
       tryVal(rcObj[key], def);
   };
-  exports._rcVal = _rcVal;
+  exports.getRcVal = getRcVal;
 
 
   /**
@@ -254,12 +254,12 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasInput = function thisFun(rs_gn, rcMdl) {
-    return _rcHeaders(rcMdl).some(rcHeader => {
-      _ci(thisFun.fakeRc.ci, rcMdl, rcHeader);
-      _bi(thisFun.fakeRc.bi, rcMdl, rcHeader);
-      _aux(thisFun.fakeRc.aux, rcMdl, rcHeader);
-      _opt(thisFun.fakeRc.opt, rcMdl, rcHeader);
+  const checkInput = function thisFun(rs_gn, rcMdl) {
+    return getRcHeaders(rcMdl).some(rcHeader => {
+      getCi(thisFun.fakeRc.ci, rcMdl, rcHeader);
+      getBi(thisFun.fakeRc.bi, rcMdl, rcHeader);
+      getAux(thisFun.fakeRc.aux, rcMdl, rcHeader);
+      getOpt(thisFun.fakeRc.opt, rcMdl, rcHeader);
 
       return CLS_recipe.checkInput(thisFun.fakeRc, rs_gn);
     });
@@ -272,7 +272,7 @@
       opt: [],
     },
   });
-  exports._hasInput = _hasInput;
+  exports.checkInput = checkInput;
 
 
   /**
@@ -280,9 +280,9 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasAnyPayInput = function thisFun(rcMdl) {
-    return _rcHeaders(rcMdl).some(rcHeader => {
-      _payi(thisFun.fakeRc.payi, rcMdl, rcHeader);
+  const checkAnyPayInput = function thisFun(rcMdl) {
+    return getRcHeaders(rcMdl).some(rcHeader => {
+      getPayi(thisFun.fakeRc.payi, rcMdl, rcHeader);
 
       return CLS_recipe.checkAnyPayInput(thisFun.fakeRc);
     });
@@ -292,7 +292,7 @@
       payi: [],
     },
   });
-  exports._hasAnyPayInput = _hasAnyPayInput;
+  exports.checkAnyPayInput = checkAnyPayInput;
 
 
   /**
@@ -301,11 +301,11 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasOutput = function thisFun(rs_gn, rcMdl) {
-    return _rcHeaders(rcMdl).some(rcHeader => {
-      _co(thisFun.fakeRc.co, rcMdl, rcHeader);
-      _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
-      _fo(thisFun.fakeRc.fo, rcMdl, rcHeader);
+  const checkOutput = function thisFun(rs_gn, rcMdl) {
+    return getRcHeaders(rcMdl).some(rcHeader => {
+      getCo(thisFun.fakeRc.co, rcMdl, rcHeader);
+      getBo(thisFun.fakeRc.bo, rcMdl, rcHeader);
+      getFo(thisFun.fakeRc.fo, rcMdl, rcHeader);
 
       return CLS_recipe.checkOutput(thisFun.fakeRc, rs_gn);
     });
@@ -317,7 +317,7 @@
       fo: [],
     },
   });
-  exports._hasOutput = _hasOutput;
+  exports.checkOutput = checkOutput;
 
 
   /**
@@ -325,10 +325,10 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasAnyItmOutput = function thisFun(rcMdl) {
-    return _rcHeaders(rcMdl).some(rcHeader => {
-      _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
-      _fo(thisFun.fakeRc.fo, rcMdl, rcHeader);
+  const checkAnyItmOutput = function thisFun(rcMdl) {
+    return getRcHeaders(rcMdl).some(rcHeader => {
+      getBo(thisFun.fakeRc.bo, rcMdl, rcHeader);
+      getFo(thisFun.fakeRc.fo, rcMdl, rcHeader);
 
       return CLS_recipe.checkAnyItmOutput(thisFun.fakeRc);
     });
@@ -339,7 +339,7 @@
       fo: [],
     },
   });
-  exports._hasAnyItmOutput = _hasAnyItmOutput;
+  exports.checkAnyItmOutput = checkAnyItmOutput;
 
 
   /**
@@ -347,10 +347,10 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasAnyFldOutput = function thisFun(rcMdl, includeAux) {
-    return _rcHeaders(rcMdl).some(rcHeader => {
-      _co(thisFun.fakeRc.co, rcMdl, rcHeader);
-      _bo(thisFun.fakeRc.bo, rcMdl, rcHeader);
+  const checkAnyFldOutput = function thisFun(rcMdl, includeAux) {
+    return getRcHeaders(rcMdl).some(rcHeader => {
+      getCo(thisFun.fakeRc.co, rcMdl, rcHeader);
+      getBo(thisFun.fakeRc.bo, rcMdl, rcHeader);
 
       return CLS_recipe.checkAnyFldOutput(thisFun.fakeRc, includeAux);
     });
@@ -361,7 +361,7 @@
       bo: [],
     },
   });
-  exports._hasAnyFldOutput = _hasAnyFldOutput;
+  exports.checkAnyFldOutput = checkAnyFldOutput;
 
 
   /**
@@ -369,9 +369,9 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasAnyPayOutput = function thisFun(rcMdl) {
-    return _rcHeaders(rcMdl).some(rcHeader => {
-      _payo(thisFun.fakeRc.payo, rcMdl, rcHeader);
+  const checkAnyPayOutput = function thisFun(rcMdl) {
+    return getRcHeaders(rcMdl).some(rcHeader => {
+      getPayo(thisFun.fakeRc.payo, rcMdl, rcHeader);
 
       return CLS_recipe.checkAnyPayOutput(thisFun.fakeRc);
     });
@@ -381,7 +381,7 @@
       payo: [],
     },
   });
-  exports._hasAnyPayOutput = _hasAnyPayOutput;
+  exports.checkAnyPayOutput = checkAnyPayOutput;
 
 
   /**
@@ -389,10 +389,10 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasErekirHeatInput = function(rcMdl) {
+  const checkErekirHeatInput = function(rcMdl) {
     return rcMdl.rc.base.baseErekirHeatReq > 0.0 || rcMdl.rc.recipe.some(tmp => typeof tmp === "object" && tmp.erekirHeatReq != null && tmp.erekirHeatReq > 0.0);
   };
-  exports._hasErekirHeatInput = _hasErekirHeatInput;
+  exports.checkErekirHeatInput = checkErekirHeatInput;
 
 
   /**
@@ -400,10 +400,10 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const _hasErekirHeatOutput = function(rcMdl) {
+  const checkErekirHeatOutput = function(rcMdl) {
     return rcMdl.rc.base.baseErekirHeatProd > 0.0 || rcMdl.rc.recipe.some(tmp => typeof tmp === "object" && tmp.erekirHeatProd != null && tmp.erekirHeatProd > 0.0);
   };
-  exports._hasErekirHeatOutput = _hasErekirHeatOutput;
+  exports.checkErekirHeatOutput = checkErekirHeatOutput;
 
 
   const RecipeKeyResourceModes = new CLS_enum({
@@ -421,7 +421,7 @@
    * @param {number|unset} [mode] - See {@link RecipeKeyResourceModes}.
    * @return {ObjectMap}
    */
-  const _keyCtHeaderMap = function thisFun(contMap, rcMdl, mode) {
+  const getKeyCtHeaderMap = function thisFun(contMap, rcMdl, mode) {
     let map;
     if(contMap == null) {
       map = new ObjectMap();
@@ -433,6 +433,7 @@
 
     let ct, keyCt;
     rcMdl.rc.recipe.forEachRow(2, (rcHeader, rcObj) => {
+      rcHeader = String(rcHeader);
       keyCt = tryVal(rcObj.keyCt, rcObj.icon);
       if(typeof keyCt === "string") {
         if(keyCt.startsWith("GROUP: ")) {
@@ -440,12 +441,12 @@
           keyCt = keyCt.replace("GROUP: ", "");
           DB_recipe.db["gen"]["group"].readList(keyCt).forEachFast(tup => {
             // Group is used for items and fluids only
-            ct = MDL_content._ct(tup[0], "rs");
+            ct = MDL_content.getCt(tup[0], "rs");
             thisFun.handleCt(map, ct, rcHeader, mode);
           });
         } else {
           // Content name
-          ct = MDL_content._ct(keyCt, null, true);
+          ct = MDL_content.getCt(keyCt, null, true);
           thisFun.handleCt(map, ct, rcHeader, mode);
         };
       } else if(keyCt instanceof UnlockableContent) {
@@ -454,7 +455,7 @@
       } else if(keyCt instanceof Array) {
         // Array of contents or content names
         keyCt.forEachFast(name => {
-          ct = MDL_content._ct(name, null, true);
+          ct = MDL_content.getCt(name, null, true);
           thisFun.handleCt(map, ct, rcHeader, mode);
         });
       };
@@ -486,7 +487,7 @@
       map.put(ct, rcHeader);
     },
   });
-  exports._keyCtHeaderMap = _keyCtHeaderMap;
+  exports.getKeyCtHeaderMap = getKeyCtHeaderMap;
 
 
   /* <------------------------------ recipe fields ------------------------------ */
@@ -498,10 +499,10 @@
    * @param {string} rcHeader
    * @return {string}
    */
-  const _iconName = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "icon", "null");
+  const getIconName = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "icon", "null");
   };
-  exports._iconName = _iconName;
+  exports.getIconName = getIconName;
 
 
   /**
@@ -511,16 +512,16 @@
    * @param {boolean|unset} [notContent]
    * @return {TextureRegionDrawable}
    */
-  const _icon = function(rcMdl, rcHeader, notContent) {
-    let iconName = _iconName(rcMdl, rcHeader);
-    if(notContent) return new TextureRegionDrawable(Core.atlas.find(iconName)).tint(_rcVal(rcMdl, rcHeader, "tint", Color.white));
-    let ct = MDL_content._ct(iconName, null, true);
+  const makeIcon = function(rcMdl, rcHeader, notContent) {
+    let iconName = getIconName(rcMdl, rcHeader);
+    if(notContent) return new TextureRegionDrawable(Core.atlas.find(iconName)).tint(getRcVal(rcMdl, rcHeader, "tint", Color.white));
+    let ct = MDL_content.getCt(iconName, null, true);
 
     return ct == null ?
       Icon.cancel :
-      new TextureRegionDrawable(ct.uiIcon).tint(_rcVal(rcMdl, rcHeader, "tint", Color.white));
+      new TextureRegionDrawable(ct.uiIcon).tint(getRcVal(rcMdl, rcHeader, "tint", Color.white));
   };
-  exports._icon = _icon;
+  exports.makeIcon = makeIcon;
 
 
   /**
@@ -529,10 +530,10 @@
    * @param {string} rcHeader
    * @return {string}
    */
-  const _categ = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "category", "uncategorized");
+  const getCateg = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "category", "uncategorized");
   };
-  exports._categ = _categ;
+  exports.getCateg = getCateg;
 
 
   /**
@@ -541,10 +542,10 @@
    * @param {RecipeModule} rcMdl
    * @return {Array<string>}
    */
-  const _categs = function(rcMdl) {
+  const getCategs = function(rcMdl) {
     let arr = [];
 
-    let rcLi = _rcLi(rcMdl);
+    let rcLi = getRcLi(rcMdl);
     let i = 0, iCap = rcLi.iCap(), categ;
     while(i < iCap) {
       categ = tryVal(rcLi[i + 1]["category"], "uncategorized");
@@ -560,7 +561,7 @@
 
     return arr;
   };
-  exports._categs = _categs;
+  exports.getCategs = getCategs;
 
 
   /**
@@ -568,20 +569,20 @@
    * @param {RecipeModule} rcMdl
    * @return {Object<string: string>}
    */
-  const _categHeaderObj = function(rcMdl) {
+  const getCategHeaderObj = function(rcMdl) {
     let obj = {};
 
-    let rcHeaders = _rcHeaders(rcMdl);
-    _categs(rcMdl).forEachFast(categ => {
+    let rcHeaders = getRcHeaders(rcMdl);
+    getCategs(rcMdl).forEachFast(categ => {
       obj[categ] = [];
       rcHeaders.forEachFast(rcHeader => {
-        if(_categ(rcMdl, rcHeader) == categ) obj[categ].push(rcHeader);
+        if(getCateg(rcMdl, rcHeader) == categ) obj[categ].push(rcHeader);
       });
     });
 
     return obj;
   };
-  exports._categHeaderObj = _categHeaderObj;
+  exports.getCategHeaderObj = getCategHeaderObj;
 
 
   /**
@@ -589,10 +590,10 @@
    * @param {string} categ
    * @return {string}
    */
-  const _categB = function(categ) {
-    return MDL_bundle._term("common", "categ-" + categ);
+  const getCategB = function(categ) {
+    return MDL_bundle.getTerm("common", "categ-" + categ);
   };
-  exports._categB = _categB;
+  exports.getCategB = getCategB;
 
 
   /**
@@ -602,13 +603,13 @@
   * @param {string} rcHeader
   * @return {string|null}
   */
-  const _tt = function(rcMdl, rcHeader) {
-    let tt = _rcVal(rcMdl, rcHeader, "tooltip", null);
+  const getTooltip = function(rcMdl, rcHeader) {
+    let tt = getRcVal(rcMdl, rcHeader, "tooltip", null);
     return tt == null ?
     null :
-    MDL_bundle._info("common", "tt-" + tt);
+    MDL_bundle.getInfo("common", "tt-" + tt);
   };
-  exports._tt = _tt;
+  exports.getTooltip = getTooltip;
 
 
   /**
@@ -618,10 +619,10 @@
    * @param {string} rcHeader
    * @return {boolean}
    */
-  const _isGen = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "isGenerated", false);
+  const checkIsGen = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "isGenerated", false);
   };
-  exports._isGen = _isGen;
+  exports.checkIsGen = checkIsGen;
 
 
   /**
@@ -631,10 +632,10 @@
    * @param {string} rcHeader
    * @return {boolean}
    */
-  const _isIncomplete = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "isIncomplete", false);
+  const checkIsIncomplete = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "isIncomplete", false);
   };
-  exports._isIncomplete = _isIncomplete;
+  exports.checkIsIncomplete = checkIsIncomplete;
 
 
   /**
@@ -643,10 +644,10 @@
    * @param {string} rcHeader
    * @return {function(Building): boolean}
    */
-  const _validCheck = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "validCheck", Function.airTrue);
+  const getValidCheck = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "validCheck", Function.airTrue);
   };
-  exports._validCheck = _validCheck;
+  exports.getValidCheck = getValidCheck;
 
 
   /**
@@ -656,19 +657,19 @@
    * @param {boolean|unset} [toCts]
    * @return {Array<string>|Array<UnlockableContent>}
    */
-  const _lockedBy = function(rcMdl, rcHeader, toCts) {
-    let arr = _rcVal(rcMdl, rcHeader, "lockedBy", Array.air);
+  const getLockedByCts = function(rcMdl, rcHeader, toCts) {
+    let arr = getRcVal(rcMdl, rcHeader, "lockedBy", Array.air);
     if(!toCts) return arr;
 
     let cts = [], ct;
     arr.forEachFast(nameCt => {
-      ct = MDL_content._ct(nameCt, null, true);
+      ct = MDL_content.getCt(nameCt, null, true);
       if(ct != null) cts.pushUnique(ct);
     });
 
     return cts;
   };
-  exports._lockedBy = _lockedBy;
+  exports.getLockedByCts = getLockedByCts;
 
 
   /**
@@ -677,9 +678,9 @@
    * @param {string} rcHeader
    * @return {function(Building): boolean}
    */
-  const _finalValidCheck = function(rcMdl, rcHeader) {
-    let validCheck = _validCheck(rcMdl, rcHeader);
-    let cts = _lockedBy(rcMdl, rcHeader, true);
+  const getFinalValidCheck = function(rcMdl, rcHeader) {
+    let validCheck = getValidCheck(rcMdl, rcHeader);
+    let cts = getLockedByCts(rcMdl, rcHeader, true);
 
     return cts.length === 0 ?
       validCheck :
@@ -691,24 +692,24 @@
           return validCheck(b) && ct.every(ct => ct.unlockedNow());
         };
   };
-  exports._finalValidCheck = _finalValidCheck;
+  exports.getFinalValidCheck = getFinalValidCheck;
 
 
   /**
-   * Variant of {@link _finalValidCheck} for tuple.
+   * Variant of {@link getFinalValidCheck} for tuple.
    * @param {Array|unset} contTup
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
    * @return {[function(): boolean]}
    */
-  const _validTup = function(contTup, rcMdl, rcHeader) {
+  const getValidCheckTup = function(contTup, rcMdl, rcHeader) {
     let tup = contTup != null ? contTup.clear() : [];
 
-    tup.push(_finalValidCheck(rcMdl, rcHeader));
+    tup.push(getFinalValidCheck(rcMdl, rcHeader));
 
     return tup;
   };
-  exports._validTup = _validTup;
+  exports.getValidCheckTup = getValidCheckTup;
 
 
   /**
@@ -717,10 +718,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _timeScl = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "timeScl", 1.0);
+  const getTimeScl = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "timeScl", 1.0);
   };
-  exports._timeScl = _timeScl;
+  exports.getTimeScl = getTimeScl;
 
 
   /**
@@ -729,10 +730,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _pol = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "pollution", 0.0);
+  const getPol = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "pollution", 0.0);
   };
-  exports._pol = _pol;
+  exports.getPol = getPol;
 
 
   /**
@@ -741,10 +742,10 @@
    * @param {string} rcHeader
    * @return {boolean}
    */
-  const _ignoreItemFullness = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "ignoreItemFullness", false);
+  const checkIgnoreItemFullness = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "ignoreItemFullness", false);
   };
-  exports._ignoreItemFullness = _ignoreItemFullness;
+  exports.checkIgnoreItemFullness = checkIgnoreItemFullness;
 
 
   /**
@@ -754,10 +755,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _erekirHeatReq = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "erekirHeatReq", _rcBaseVal(rcMdl, "baseErekirHeatReq", 0.0));
+  const getErekirHeatReq = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "erekirHeatReq", getRcBaseVal(rcMdl, "baseErekirHeatReq", 0.0));
   };
-  exports._erekirHeatReq = _erekirHeatReq;
+  exports.getErekirHeatReq = getErekirHeatReq;
 
 
   /**
@@ -767,10 +768,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _erekirHeatProd = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "erekirHeatProd", _rcBaseVal(rcMdl, "baseErekirHeatProd", 0.0));
+  const getErekirHeatProd = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "erekirHeatProd", getRcBaseVal(rcMdl, "baseErekirHeatProd", 0.0));
   };
-  exports._erekirHeatProd = _erekirHeatProd;
+  exports.getErekirHeatProd = getErekirHeatProd;
 
 
   /**
@@ -779,10 +780,10 @@
    * @param {string} rcHeader
    * @return {string}
    */
-  const _attr = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "attr", _rcBaseVal(rcMdl, "baseAttr", null));
+  const getAttr = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "attr", getRcBaseVal(rcMdl, "baseAttr", null));
   };
-  exports._attr = _attr;
+  exports.getAttr = getAttr;
 
 
   /**
@@ -791,10 +792,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _attrMin = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "attrMin", _rcBaseVal(rcMdl, "baseAttrMin", 0.0));
+  const getAttrMin = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "attrMin", getRcBaseVal(rcMdl, "baseAttrMin", 0.0));
   };
-  exports._attrMin = _attrMin;
+  exports.getAttrMin = getAttrMin;
 
 
   /**
@@ -803,10 +804,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _attrMax = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "attrMax", _rcBaseVal(rcMdl, "baseAttrMax", 1.0));
+  const getAttrMax = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "attrMax", getRcBaseVal(rcMdl, "baseAttrMax", 1.0));
   };
-  exports._attrMax = _attrMax;
+  exports.getAttrMax = getAttrMax;
 
 
   /**
@@ -815,10 +816,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _attrBoostScl = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "attrBoostScl", _rcBaseVal(rcMdl, "baseAttrBoostScl", 1.0));
+  const getAttrBoostScl = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "attrBoostScl", getRcBaseVal(rcMdl, "baseAttrBoostScl", 1.0));
   };
-  exports._attrBoostScl = _attrBoostScl;
+  exports.getAttrBoostScl = getAttrBoostScl;
 
 
   /**
@@ -827,10 +828,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _attrBoostCap = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "attrBoostCap", _rcBaseVal(rcMdl, "baseAttrBoostCap", Infinity));
+  const getAttrBoostCap = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "attrBoostCap", getRcBaseVal(rcMdl, "baseAttrBoostCap", Infinity));
   };
-  exports._attrBoostCap = _attrBoostCap;
+  exports.getAttrBoostCap = getAttrBoostCap;
 
 
   /* <------------------------------ recipe I/O ------------------------------ */
@@ -847,21 +848,21 @@
     if(thisFun.blks.includes(blkInit)) throw new Error("Block ${1} has its recipe initialized more than once???".format(blkInit.name));
 
     let initParamObj;
-    _rcHeaders(rcMdl).forEachFast(rcHeader => {
+    getRcHeaders(rcMdl).forEachFast(rcHeader => {
       initParamObj = {
         blk: blkInit,
-        timeScl: _timeScl(rcMdl, rcHeader),
-        failP: _failP(rcMdl, rcHeader),
+        timeScl: getTimeScl(rcMdl, rcHeader),
+        failP: getFailP(rcMdl, rcHeader),
       };
-      _ci(null, rcMdl, rcHeader, false, initParamObj);
-      _bi(null, rcMdl, rcHeader, false, initParamObj);
-      _aux(null, rcMdl, rcHeader, false, initParamObj);
-      _opt(null, rcMdl, rcHeader, false, initParamObj);
-      _payi(null, rcMdl, rcHeader, false, initParamObj);
-      _co(null, rcMdl, rcHeader, false, initParamObj);
-      _bo(null, rcMdl, rcHeader, false, initParamObj);
-      _fo(null, rcMdl, rcHeader, false, initParamObj);
-      _payo(null, rcMdl, rcHeader, false, initParamObj);
+      getCi(null, rcMdl, rcHeader, false, initParamObj);
+      getBi(null, rcMdl, rcHeader, false, initParamObj);
+      getAux(null, rcMdl, rcHeader, false, initParamObj);
+      getOpt(null, rcMdl, rcHeader, false, initParamObj);
+      getPayi(null, rcMdl, rcHeader, false, initParamObj);
+      getCo(null, rcMdl, rcHeader, false, initParamObj);
+      getBo(null, rcMdl, rcHeader, false, initParamObj);
+      getFo(null, rcMdl, rcHeader, false, initParamObj);
+      getPayo(null, rcMdl, rcHeader, false, initParamObj);
     });
   }
   .setProp({
@@ -939,7 +940,7 @@
         };
       } else if(tg.startsWith("COST: ")) {
         // COST: xxx
-        let blk = MDL_content._ct(tg.replace("COST: ", ""), "blk");
+        let blk = MDL_content.getCt(tg.replace("COST: ", ""), "blk");
         if(blk == null) {
           thisFun.reportIncompleteRc(tg);
         } else {
@@ -949,7 +950,7 @@
         };
       } else {
         // Content name
-        let ct = MDL_content._ct(tg, null, true);
+        let ct = MDL_content.getCt(tg, null, true);
         if(ct == null) {
           thisFun.reportIncompleteRc(tg);
         } else {
@@ -997,8 +998,8 @@
 
     let baseName = "base" + name.firstUpperCase();
     let raw = ignoreBase ?
-      _rcVal(rcMdl, rcHeader, name, Array.air) :
-      _rcBaseVal(rcMdl, baseName, Array.air).concat(_rcVal(rcMdl, rcHeader, name, Array.air));
+      getRcVal(rcMdl, rcHeader, name, Array.air) :
+      getRcBaseVal(rcMdl, baseName, Array.air).concat(getRcVal(rcMdl, rcHeader, name, Array.air));
 
     let
       i = 0,
@@ -1017,8 +1018,8 @@
             ct,
             amt,
             {
-              ct: _iconName(rcMdl, rcHeader),
-              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ct: getIconName(rcMdl, rcHeader),
+              ctTint: getRcVal(rcMdl, rcHeader, "tint"),
               ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
@@ -1035,8 +1036,8 @@
               amt / readParam(initParamObj, "timeScl", 1.0),
               p,
               {
-                ct: _iconName(rcMdl, rcHeader),
-                ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+                ct: getIconName(rcMdl, rcHeader),
+                ctTint: getRcVal(rcMdl, rcHeader, "tint"),
                 ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               },
             ) :
@@ -1045,8 +1046,8 @@
               ct,
               amt / readParam(initParamObj, "blk").craftTime / readParam(initParamObj, "timeScl", 1.0),
               {
-                ct: _iconName(rcMdl, rcHeader),
-                ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+                ct: getIconName(rcMdl, rcHeader),
+                ctTint: getRcVal(rcMdl, rcHeader, "tint"),
                 ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               },
             );
@@ -1061,8 +1062,8 @@
             ct,
             amt,
             {
-              ct: _iconName(rcMdl, rcHeader),
-              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ct: getIconName(rcMdl, rcHeader),
+              ctTint: getRcVal(rcMdl, rcHeader, "tint"),
               ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
@@ -1078,8 +1079,8 @@
             amt / readParam(initParamObj, "timeScl", 1.0),
             p,
             {
-              ct: _iconName(rcMdl, rcHeader),
-              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ct: getIconName(rcMdl, rcHeader),
+              ctTint: getRcVal(rcMdl, rcHeader, "tint"),
               ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
               icon: "lovec-icon-boost",
             },
@@ -1095,8 +1096,8 @@
             ct,
             amt / readParam(initParamObj, "timeScl", 1.0),
             {
-              ct: _iconName(rcMdl, rcHeader),
-              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ct: getIconName(rcMdl, rcHeader),
+              ctTint: getRcVal(rcMdl, rcHeader, "tint"),
               ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
@@ -1111,8 +1112,8 @@
             ct,
             amt,
             {
-              ct: _iconName(rcMdl, rcHeader),
-              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ct: getIconName(rcMdl, rcHeader),
+              ctTint: getRcVal(rcMdl, rcHeader, "tint"),
               ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
@@ -1128,8 +1129,8 @@
             amt / readParam(initParamObj, "timeScl", 1.0),
             p * (readParam(initParamObj, "failP") == null ? 1.0 : (1.0 - readParam(initParamObj, "failP"))),
             {
-              ct: _iconName(rcMdl, rcHeader),
-              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ct: getIconName(rcMdl, rcHeader),
+              ctTint: getRcVal(rcMdl, rcHeader, "tint"),
               ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
@@ -1145,8 +1146,8 @@
             amt / readParam(initParamObj, "timeScl", 1.0),
             p * (readParam(initParamObj, "failP") == null ? 0.0 : readParam(initParamObj, "failP")),
             {
-              ct: _iconName(rcMdl, rcHeader),
-              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ct: getIconName(rcMdl, rcHeader),
+              ctTint: getRcVal(rcMdl, rcHeader, "tint"),
               ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
@@ -1161,8 +1162,8 @@
             ct,
             amt / readParam(initParamObj, "timeScl", 1.0),
             {
-              ct: _iconName(rcMdl, rcHeader),
-              ctTint: _rcVal(rcMdl, rcHeader, "tint"),
+              ct: getIconName(rcMdl, rcHeader),
+              ctTint: getRcVal(rcMdl, rcHeader, "tint"),
               ctTableF: (tb, blk, ct) => CLS_recipe.get(blk, rcHeader).displayTooltip(tb, true, blk.localizedName),
             },
           );
@@ -1200,10 +1201,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _ci = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getCi = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "ci", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
-  exports._ci = _ci;
+  exports.getCi = getCi;
 
 
   /**
@@ -1215,10 +1216,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _bi = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getBi = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "bi", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
-  exports._bi = _bi;
+  exports.getBi = getBi;
 
 
   /**
@@ -1230,10 +1231,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _aux = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getAux = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "aux", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
-  exports._aux = _aux;
+  exports.getAux = getAux;
 
 
   /**
@@ -1242,10 +1243,10 @@
    * @param {string} rcHeader
    * @return {boolean}
    */
-  const _reqOpt = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "reqOpt", _rcBaseVal(rcMdl, "baseReqOpt", false));
+  const getReqOpt = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "reqOpt", getRcBaseVal(rcMdl, "baseReqOpt", false));
   };
-  exports._reqOpt = _reqOpt;
+  exports.getReqOpt = getReqOpt;
 
 
   /**
@@ -1257,10 +1258,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _opt = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getOpt = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "opt", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
-  exports._opt = _opt;
+  exports.getOpt = getOpt;
 
 
   /**
@@ -1272,10 +1273,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _payi = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getPayi = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "payi", rcMdl, rcHeader, ignoreBase, initParamObj).inSituMap(ele => ele instanceof UnlockableContent ? ele.name : ele);
   };
-  exports._payi = _payi;
+  exports.getPayi = getPayi;
 
 
   /**
@@ -1287,10 +1288,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _co = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getCo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "co", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
-  exports._co = _co;
+  exports.getCo = getCo;
 
 
   /**
@@ -1302,10 +1303,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _bo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getBo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "bo", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
-  exports._bo = _bo;
+  exports.getBo = getBo;
 
 
   /**
@@ -1314,10 +1315,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _failP = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "failP", _rcBaseVal(rcMdl, "baseFailP", 0.0));
+  const getFailP = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "failP", getRcBaseVal(rcMdl, "baseFailP", 0.0));
   };
-  exports._failP = _failP;
+  exports.getFailP = getFailP;
 
 
   /**
@@ -1329,10 +1330,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _fo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getFo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "fo", rcMdl, rcHeader, ignoreBase, initParamObj);
   };
-  exports._fo = _fo;
+  exports.getFo = getFo;
 
 
   /**
@@ -1344,10 +1345,10 @@
    * @param {Object|unset} [initParamObj]
    * @return {Array}
    */
-  const _payo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
+  const getPayo = function(contArr, rcMdl, rcHeader, ignoreBase, initParamObj) {
     return parseRcIo(contArr, "payo", rcMdl, rcHeader, ignoreBase, initParamObj).inSituMap(ele => ele instanceof UnlockableContent ? ele.name : ele);
   };
-  exports._payo = _payo;
+  exports.getPayo = getPayo;
 
 
   /**
@@ -1359,8 +1360,8 @@
    */
   const processRcScr = function(rcMdl, rcHeader, name) {
     let
-      scr = _rcVal(rcMdl, rcHeader, name, null),
-      baseScr = _rcBaseVal(rcMdl, "base" + name.firstUpperCase, null);
+      scr = getRcVal(rcMdl, rcHeader, name, null),
+      baseScr = getRcBaseVal(rcMdl, "base" + name.firstUpperCase, null);
 
     return scr == null && baseScr == null ?
       Function.air :
@@ -1382,10 +1383,10 @@
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
-  const _updateScr = function(rcMdl, rcHeader) {
+  const getUpdateScr = function(rcMdl, rcHeader) {
     return processRcScr(rcMdl, rcHeader, "updateScr");
   };
-  exports._updateScr = _updateScr;
+  exports.getUpdateScr = getUpdateScr;
 
 
   /**
@@ -1394,10 +1395,10 @@
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
-  const _runScr = function(rcMdl, rcHeader) {
+  const getRunScr = function(rcMdl, rcHeader) {
     return processRcScr(rcMdl, rcHeader, "runScr");
   };
-  exports._runScr = _runScr;
+  exports.getRunScr = getRunScr;
 
 
   /**
@@ -1406,10 +1407,10 @@
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
-  const _craftScr = function(rcMdl, rcHeader) {
+  const getCraftScr = function(rcMdl, rcHeader) {
     return processRcScr(rcMdl, rcHeader, "craftScr");
   };
-  exports._craftScr = _craftScr;
+  exports.getCraftScr = getCraftScr;
 
 
   /**
@@ -1419,10 +1420,10 @@
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
-  const _stopScr = function(rcMdl, rcHeader) {
+  const getStopScr = function(rcMdl, rcHeader) {
     return processRcScr(rcMdl, rcHeader, "stopScr");
   };
-  exports._stopScr = _stopScr;
+  exports.getStopScr = getStopScr;
 
 
   /**
@@ -1431,10 +1432,10 @@
    * @param {string} rcHeader
    * @return {function(Building): void}
    */
-  const _failScr = function(rcMdl, rcHeader) {
+  const getFailScr = function(rcMdl, rcHeader) {
     return processRcScr(rcMdl, rcHeader, "failScr");
   };
-  exports._failScr = _failScr;
+  exports.getFailScr = getFailScr;
 
 
   /**
@@ -1444,67 +1445,20 @@
    * @param {string} rcHeader
    * @return {Array<function(Building): void>} - `TUPLE`: updateScr, runScr, craftScr, stopScr, failScr.
    */
-  const _scrTup = function(contTup, rcMdl, rcHeader) {
+  const getScrTup = function(contTup, rcMdl, rcHeader) {
     let tup = contTup != null ? contTup.clear() : [];
 
     tup.push(
-      _updateScr(rcMdl, rcHeader),
-      _runScr(rcMdl, rcHeader),
-      _craftScr(rcMdl, rcHeader),
-      _stopScr(rcMdl, rcHeader),
-      _failScr(rcMdl, rcHeader),
+      getUpdateScr(rcMdl, rcHeader),
+      getRunScr(rcMdl, rcHeader),
+      getCraftScr(rcMdl, rcHeader),
+      getStopScr(rcMdl, rcHeader),
+      getFailScr(rcMdl, rcHeader),
     );
 
     return tup;
   };
-  exports._scrTup = _scrTup;
-
-
-  /**
-   * Gets a 2-tuple of items and fluids to dump.
-   * CO not included due to `liquidOutputDirections`.
-   * @param {Array|unset} contTup
-   * @param {Block} blk
-   * @param {RecipeModule} rcMdl
-   * @param {string} rcHeader
-   * @return {[Array<Item>, Array<Liquid>]}
-   */
-  const _dumpTup = function thisFun(contTup, blk, rcMdl, rcHeader) {
-    let tup = contTup != null ? contTup : [[], []];
-    tup[0].clear();
-    tup[1].clear();
-
-    let i, iCap, tmp;
-
-    // BO
-    _bo(thisFun.tmpArr1, rcMdl, rcHeader);
-    i = 0;
-    iCap = thisFun.tmpArr1.iCap();
-    while(i < iCap) {
-      tmp = thisFun.tmpArr1[i];
-      if(blk.hasItems && tmp instanceof Item) tup[0].pushUnique(tmp);
-      if(blk.hasLiquids && tmp instanceof Liquid) tup[1].pushUnique(tmp);
-      i += 3;
-    };
-
-    // FO
-    if(blk.hasItems) {
-      _fo(thisFun.tmpArr2, rcMdl, rcHeader);
-      i = 0;
-      iCap = thisFun.tmpArr2.iCap();
-      while(i < iCap) {
-        tup[0].pushUnique(thisFun.tmpArr2[i]);
-        i += 3;
-      };
-    };
-
-    return tup;
-  }
-  .setProp({
-    tmpArr1: [],
-    tmpArr2: [],
-  });
-  exports._dumpTup = _dumpTup;
+  exports.getScrTup = getScrTup;
 
 
   /**
@@ -1514,10 +1468,10 @@
    * @param {string} rcHeader
    * @return {Effect|null}
    */
-  const _failEff = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "failEff", _rcBaseVal(rcMdl, "baseFailEff", null));
+  const getFailEff = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "failEff", getRcBaseVal(rcMdl, "baseFailEff", null));
   };
-  exports._failEff = _failEff;
+  exports.getFailEff = getFailEff;
 
 
   /**
@@ -1526,10 +1480,10 @@
    * @param {string} rcHeader
    * @return {DrawBlock|null}
    */
-  const _drawer = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "drawer", null);
+  const getDrawer = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "drawer", null);
   };
-  exports._drawer = _drawer;
+  exports.getDrawer = getDrawer;
 
 
   /* <------------------------------ specific ------------------------------ */
@@ -1542,10 +1496,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _powProdMtp = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "powProdMtp", 1.0);
+  const getPowProdMtp = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "powProdMtp", 1.0);
   };
-  exports._powProdMtp = _powProdMtp;
+  exports.getPowProdMtp = getPowProdMtp;
 
 
   /**
@@ -1555,10 +1509,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _tempReq = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "tempReq", 0.0);
+  const getTempReq = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "tempReq", 0.0);
   };
-  exports._tempReq = _tempReq;
+  exports.getTempReq = getTempReq;
 
 
   /**
@@ -1568,10 +1522,10 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _tempAllowed = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "tempAllowed", Infinity);
+  const getTempAllowed = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "tempAllowed", Infinity);
   };
-  exports._tempAllowed = _tempAllowed;
+  exports.getTempAllowed = getTempAllowed;
 
 
   /**
@@ -1581,7 +1535,7 @@
    * @param {string} rcHeader
    * @return {number}
    */
-  const _durabDecMtp = function(rcMdl, rcHeader) {
-    return _rcVal(rcMdl, rcHeader, "durabDecMtp", 1.0);
+  const getDurabDecMtp = function(rcMdl, rcHeader) {
+    return getRcVal(rcMdl, rcHeader, "durabDecMtp", 1.0);
   };
-  exports._durabDecMtp = _durabDecMtp;
+  exports.getDurabDecMtp = getDurabDecMtp;

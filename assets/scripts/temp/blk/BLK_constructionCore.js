@@ -23,7 +23,7 @@
     if(blk.placeDataX == null) blk.placeDataX = blk.centerPon2.x;
     if(blk.placeDataY == null) blk.placeDataY = blk.centerPon2.y;
 
-    blk.placeBlk = MDL_content._ct(blk.placeBlk, "blk");
+    blk.placeBlk = MDL_content.getCt(blk.placeBlk, "blk");
     if(blk.placeBlk == null) ERROR_HANDLER.throw("nullArgument", "placeBlk");
     blk.ex_calcBlksReq(blk.constructionBlksReq);
     blk.ex_calcItmsReq(blk.constructionItmsReq, blk.constructionBlksReq);
@@ -42,7 +42,7 @@
             itmStacks.push(new ItemStack(Vars.content.item(nameItm), amt));
           });
           this.requirements = itmStacks;
-          MDL_event._c_onLoad(() => {
+          MDL_event.onLoad(() => {
             this.buildTime = blk.constructionTimeReq * 0.5;
           });
           if(this.delegee != null) {
@@ -89,7 +89,7 @@
 
     MDL_content.rename(
       blk,
-      blk.placeBlk.localizedName + MDL_text._space() + "(" + MDL_bundle._term("lovec", "construction-core") + ")",
+      blk.placeBlk.localizedName + MDL_text._space() + "(" + MDL_bundle.getTerm("lovec", "construction-core") + ")",
     );
 
     MOD_tmi._r_constructionCore(blk);
@@ -109,7 +109,7 @@
           MDL_table.__barV(tb2, Color.darkGray);
           tb2.table(Styles.none, tb3 => {}).width(12.0);
           tb2.table(Styles.none, tb3 => {
-            tb3.add(MDL_text._statText(MDL_bundle._term("lovec", "construction-time"), (blk.constructionTimeReq / 3600.0).roundFixed(2), StatUnit.minutes.localized())).left().row();
+            tb3.add(MDL_text._statText(MDL_bundle.getTerm("lovec", "construction-time"), (blk.constructionTimeReq / 3600.0).roundFixed(2), StatUnit.minutes.localized())).left().row();
           }).growX();
         }).growX().row();
         MDL_table.__break(tb1, 1);
@@ -150,7 +150,7 @@
       i = 0;
       while(i < iCap) {
         tup = blk.constructionData[j][i] instanceof Array ? blk.constructionData[j][i] : [blk.constructionData[j][i], -1];
-        blkTg = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content._ct(tup[0], "blk"), Blocks.air);
+        blkTg = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content.getCt(tup[0], "blk"), Blocks.air);
         blk.constructionParsedData[j].push({
           blk: blkTg,
           rot: blkTg instanceof RotBlock ? -1 : tryVal(tup[1], -1),
@@ -173,7 +173,7 @@
     let ot = blk.ex_getPlanT(tx, ty, rot, blk.placeDataX, blk.placeDataY);
     if(ot != null) {
       ot.setBlock(blk.placeBlk, team, Mathf.mod(rot + blk.placeOffRot, 4));
-      MDL_effect._e_textFade(ot.worldx() + blk.placeBlk.offset, ot.worldy() + blk.placeBlk.offset, MDL_bundle._info("lovec", "construction-complete"), Pal.accent, blk.placeBlk.size * 0.5);
+      MDL_effect._e_textFade(ot.worldx() + blk.placeBlk.offset, ot.worldy() + blk.placeBlk.offset, MDL_bundle.getInfo("lovec", "construction-complete"), Pal.accent, blk.placeBlk.size * 0.5);
       Time.run(0.0, () => {
         if(ot.build != null && ot.build.block === blk.placeBlk) TRIGGER.constructionComplete.fire(ot.build);
       });
@@ -434,12 +434,12 @@
 
   function comp_buildConfiguration(b, tb) {
     tb.row();
-    MDL_table.__btnCfgToggle(tb, b, Icon.eyeOffSmall, Icon.eyeSmall, b.shouldDrawConstructionPlan).tooltip(MDL_bundle._term("lovec", "toggle-display"), true);
+    MDL_table.__btnCfgToggle(tb, b, Icon.eyeOffSmall, Icon.eyeSmall, b.shouldDrawConstructionPlan).tooltip(MDL_bundle.getTerm("lovec", "toggle-display"), true);
     b.underConstruction ?
        MDL_table.__btnCfg(tb, b, () => {
          b.configure("SPEC: stop");
          b.deselect();
-       }, VARGEN.icons.cross).tooltip(MDL_bundle._term("lovec", "construction-stop"), true) :
+       }, VARGEN.icons.cross).tooltip(MDL_bundle.getTerm("lovec", "construction-stop"), true) :
        MDL_table.__btnCfg(tb, b, () => {
          if(!b.block.ex_checkPlanComplete(b.team, b.constructionPlan)) {
            MDL_ui.show_fadeInfo("lovec", "structure-incomplete");
@@ -447,7 +447,7 @@
          };
          b.configure("SPEC: start");
          b.deselect();
-       }, VARGEN.icons.check).tooltip(MDL_bundle._term("lovec", "construction-start"), true);
+       }, VARGEN.icons.check).tooltip(MDL_bundle.getTerm("lovec", "construction-start"), true);
   };
 
 

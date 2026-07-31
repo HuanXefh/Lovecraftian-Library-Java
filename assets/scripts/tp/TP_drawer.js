@@ -177,7 +177,7 @@
         if(this.colorGetterTup == null) {
           Draw.rect(reg, b.x + this.offX, b.y + this.offY, reg.width * this.regScl, reg.height * this.regScl);
         } else {
-          Draw.color(MDL_color._color(this.colorGetterTup[0](b)));
+          Draw.color(MDL_color.getColor(this.colorGetterTup[0](b)));
           Draw.rect(reg, b.x + this.offX, b.y + this.offY, reg.width * this.regScl, reg.height * this.regScl);
           Draw.color();
         };
@@ -423,7 +423,7 @@
 
 
       load(blk) {
-        this.color = MDL_color._color(this.color, "new");
+        this.color = MDL_color.getColor(this.color, "new");
 
         TRIGGER.mapExit.addGlobalListener(() => {
           this.noLiqCdMap.clear();

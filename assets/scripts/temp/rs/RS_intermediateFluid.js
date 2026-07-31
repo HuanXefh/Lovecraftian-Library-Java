@@ -15,8 +15,8 @@
 
 
   function comp_init(liq) {
-    liq.intmdParent = MDL_content._ct(liq.intmdParent, "rs");
-    liq.extraIntmdParents.inSituMap(nameRs => MDL_content._ct(nameRs, "rs"));
+    liq.intmdParent = MDL_content.getCt(liq.intmdParent, "rs");
+    liq.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, "rs"));
 
     liq.ex_generateIntmdName();
   };

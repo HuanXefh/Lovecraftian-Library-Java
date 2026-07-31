@@ -22,7 +22,7 @@
     blk.placeableLiquid = true;
 
     if(blk.customShadow) {
-      MDL_event._c_onLoad(() => {
+      MDL_event.onLoad(() => {
         if(!Vars.headless && !blk.customShadowRegion.found()) LOG_HANDLER.log("noCustomShadowRegionFound", blk.name);
       });
     };

@@ -91,7 +91,7 @@
 
 
   function comp_buildConfiguration(b, tb) {
-    MDL_table.__btnCfgToggle(tb, b, Icon.eyeOffSmall, Icon.eyeSmall, Core.settings.getBool("lovec-draw0aux-scanner", true)).tooltip(MDL_bundle._term("lovec", "toggle-display"), true);
+    MDL_table.__btnCfgToggle(tb, b, Icon.eyeOffSmall, Icon.eyeSmall, Core.settings.getBool("lovec-draw0aux-scanner", true)).tooltip(MDL_bundle.getTerm("lovec", "toggle-display"), true);
   };
 
 

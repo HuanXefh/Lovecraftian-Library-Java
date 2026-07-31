@@ -27,7 +27,7 @@
   'on init':
     prefix: 'lc_oninit'
     body: '''
-    MDL_event._c_onInit(() => {
+    MDL_event.onInit(() => {
       ${1:}
     });
     '''
@@ -35,7 +35,7 @@
   'on load':
     prefix: 'lc_onload'
     body: '''
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       ${1:}
     });
     '''
@@ -43,7 +43,7 @@
   'on load post':
     prefix: 'lc_onloadpost'
     body: '''
-    MDL_event._c_onLoadPost(() => {
+    MDL_event.onLoadPost(() => {
       ${1:}
     });
     '''
@@ -51,7 +51,7 @@
   'on load delay':
     prefix: 'lc_onloaddelay'
     body: '''
-    MDL_event._c_onLoadDelay(${1:delay}, () => {
+    MDL_event.onLoadDelay(${1:delay}, () => {
       ${2:}
     });
     '''
@@ -59,7 +59,7 @@
   'on load delay task':
     prefix: 'lc_onloaddelaytask'
     body: '''
-    MDL_event._c_onLoadDelayTask(${1:delay}, () => {
+    MDL_event.onLoadDelayTask(${1:delay}, () => {
       ${2:}
     });
     '''
@@ -67,7 +67,7 @@
   'on world load':
     prefix: 'lc_onworldload'
     body: '''
-    MDL_event._c_onWorldLoad(() => {
+    MDL_event.onWorldLoad(() => {
       ${1:}
     });
     '''
@@ -75,7 +75,7 @@
   'on world save':
     prefix: 'lc_onworldsave'
     body: '''
-    MDL_event._c_onWorldSave(() => {
+    MDL_event.onWorldSave(() => {
       ${1:}
     });
     '''
@@ -83,7 +83,7 @@
   'on update':
     prefix: 'lc_onupdate'
     body: '''
-    MDL_event._c_onUpdate(() => {
+    MDL_event.onUpdate(() => {
       ${1:}
     });
     '''
@@ -91,7 +91,7 @@
   'on draw':
     prefix: 'lc_ondraw'
     body: '''
-    MDL_event._c_onDraw(() => {
+    MDL_event.onDraw(() => {
       ${1:}
     });
     '''

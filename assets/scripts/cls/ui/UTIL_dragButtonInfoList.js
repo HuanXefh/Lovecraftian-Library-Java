@@ -105,7 +105,7 @@
    * @return {string}
    */
   UTIL_dragButtonInfoList.getLocalizedInfoName = function(name) {
-    return MDL_bundle._term("common", "infolist-info-" + tryVal(name, "unknown"));
+    return MDL_bundle.getTerm("common", "infolist-info-" + tryVal(name, "unknown"));
   };
 
 
@@ -115,7 +115,7 @@
    * @return {string}
    */
   UTIL_dragButtonInfoList.getLocalizedCategName = function(categ) {
-    return MDL_bundle._term("common", "infolist-categ-" + tryVal(categ, "uncategorized"));
+    return MDL_bundle.getTerm("common", "infolist-categ-" + tryVal(categ, "uncategorized"));
   };
 
 

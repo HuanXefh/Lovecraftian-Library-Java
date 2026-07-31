@@ -18,7 +18,7 @@
   function comp_init(blk) {
     blk.config(JAVA.string, (b, str) => {
       if(str.startsWith("FUEL: ")) {
-        b.delegee.fuelSel = MDL_content._ct(str.replace("FUEL: ", ""), "rs");
+        b.delegee.fuelSel = MDL_content.getCt(str.replace("FUEL: ", ""), "rs");
       };
     });
   };

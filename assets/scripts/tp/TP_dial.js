@@ -82,12 +82,12 @@
 
 
       ex_show(nameMod, nameInfo) {
-        resetDial(this, MDL_bundle._info(nameMod, "content-" + nameInfo));
+        resetDial(this, MDL_bundle.getInfo(nameMod, "content-" + nameInfo));
 
         // `TABLE`: text
         this.cont.pane(pnTb => {
           MDL_table.__margin(pnTb);
-          MDL_table.__wrapLine(pnTb, MDL_bundle._info(nameMod, "content-" + nameInfo, true), Align.left, 1);
+          MDL_table.__wrapLine(pnTb, MDL_bundle.getInfo(nameMod, "content-" + nameInfo, true), Align.left, 1);
         })
         .width(MDL_ui._uiW())
         .row();
@@ -109,7 +109,7 @@
    */
   newDialog(
     "dialFlowLog",
-    () => extend(BaseDialog, MDL_bundle._info("lovec", "dial-dial-flow-log"), {
+    () => extend(BaseDialog, MDL_bundle.getInfo("lovec", "dial-dial-flow-log"), {
 
 
       ex_show() {
@@ -169,7 +169,7 @@
       ex_show(countWave) {
         if(countWave == null) countWave = Vars.state.wave;
         this.tmpCount = countWave;
-        resetDial(this, MDL_bundle._info("lovec", "dial-wave-enemies") + " (" + countWave + ")");
+        resetDial(this, MDL_bundle.getInfo("lovec", "dial-wave-enemies") + " (" + countWave + ")");
 
         // `TABLE`: list
         this.cont.pane(pnTb => {
@@ -179,11 +179,11 @@
           } else {
             let matArr = [[
               "",
-              MDL_bundle._term("lovec", "unit"),
-              MDL_bundle._term("lovec", "amount"),
-              MDL_bundle._term("lovec", "total-health"),
-              MDL_bundle._term("lovec", "shield"),
-              MDL_bundle._term("lovec", "status"),
+              MDL_bundle.getTerm("lovec", "unit"),
+              MDL_bundle.getTerm("lovec", "amount"),
+              MDL_bundle.getTerm("lovec", "total-health"),
+              MDL_bundle.getTerm("lovec", "shield"),
+              MDL_bundle.getTerm("lovec", "status"),
             ]];
             let amt_fi;
             MDL_prop._waveArr(countWave).forEachRow(4, (utp, amt, shield, sta) => {
@@ -221,8 +221,8 @@
         // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
-        MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "previous-wave"), () => this.ex_show(Math.max(this.tmpCount - 1, 1)));
-        MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "next-wave"), () => this.ex_show(this.tmpCount + 1));
+        MDL_table.__btn(this.buttons, MDL_bundle.getTerm("lovec", "previous-wave"), () => this.ex_show(Math.max(this.tmpCount - 1, 1)));
+        MDL_table.__btn(this.buttons, MDL_bundle.getTerm("lovec", "next-wave"), () => this.ex_show(this.tmpCount + 1));
 
         this.show();
       },
@@ -237,7 +237,7 @@
    */
   newDialog(
     "infoListMain",
-    () => extend(BaseDialog, MDL_bundle._term("lovec", "info-list"), {
+    () => extend(BaseDialog, MDL_bundle.getTerm("lovec", "info-list"), {
 
 
       ex_show(infoListData, moddedNames) {
@@ -339,7 +339,7 @@
    */
   newDialog(
     "achievement",
-    () => extend(BaseDialog, MDL_bundle._term("lovec", "achievement"), {
+    () => extend(BaseDialog, MDL_bundle.getTerm("lovec", "achievement"), {
 
 
       ex_buildBox(tb, achievement) {
@@ -427,7 +427,7 @@
           } else {
             let colAmt = MDL_ui._colAmt(32.0, 4.0, 2);
             for(let i = 0, j = 0; i < iCap; i++) {
-              MDL_table.__ct(pnTb, MDL_content._ct(cts_gn[i], null, true), null, null, !isAfterCt ? null : this);
+              MDL_table.__ct(pnTb, MDL_content.getCt(cts_gn[i], null, true), null, null, !isAfterCt ? null : this);
               if(j % colAmt === colAmt - 1) pnTb.row();
               j++;
             };
@@ -495,7 +495,7 @@
 
         // `TABLE`: info
         MDL_table.__break(this.cont);
-        MDL_table._d_note(this.cont, MDL_bundle._info("lovec", "opt"));
+        MDL_table._d_note(this.cont, MDL_bundle.getInfo("lovec", "opt"));
 
         // `TABLE`: bar
         MDL_table.__break(this.cont);
@@ -518,7 +518,7 @@
               pnTb.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
               MDL_table.__rcCt(pnTb, tmp, amt, p, null, null, this).padRight(72.0);
               pnTb.add(MDL_text._statText(
-                MDL_bundle._term("lovec", "efficiency-multiplier"),
+                MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
                 mtp.perc(0),
               )).center().padRight(6.0);
               pnTb.row();
@@ -545,7 +545,7 @@
    */
   newDialog(
     "rcDatabase",
-    () => extend(BaseDialog, MDL_bundle._info("lovec", "dial-rc-database"), {
+    () => extend(BaseDialog, MDL_bundle.getInfo("lovec", "dial-rc-database"), {
 
 
       map: CLS_recipe.getBlkRcsMap(),
@@ -634,7 +634,7 @@
    */
   newDialog(
     "rcDictDatabase",
-    () => extend(BaseDialog, MDL_bundle._info("lovec", "dial-rcdict-database"), {
+    () => extend(BaseDialog, MDL_bundle.getInfo("lovec", "dial-rcdict-database"), {
 
 
       w: 32.0,
@@ -767,7 +767,7 @@
             data = rcDictArr[i + 2];
             craftTime = data.time != null ?
               data.time :
-              MDL_content._craftTime(rcDictArr[i], data.icon === "lovec-icon-mining", isCustomField ? null : ct);
+              MDL_content.getCraftTime(rcDictArr[i], data.icon === "lovec-icon-mining", isCustomField ? null : ct);
             craftRate = !isFinite(craftTime) && !isContinuous && !isStatic ?
               null :
               isContinuous ?
@@ -777,7 +777,7 @@
                   (rcDictArr[i + 1] / craftTime * 60.0);
             // `TABLE`: rate text
             tb1.add(MDL_text._statText(
-              MDL_bundle._term("lovec", isStatic ? "amount" : "rate"),
+              MDL_bundle.getTerm("lovec", isStatic ? "amount" : "rate"),
               this.ex_getRateStr(craftRate, 2, isStatic),
             ))
             .left()
@@ -793,7 +793,7 @@
                   isOtherCustomField = true;
                   oct = data.ct;
                 } else {
-                  oct = MDL_content._ct(data.ct, null, true);
+                  oct = MDL_content.getCt(data.ct, null, true);
                 };
                 if(oct != null) {
                   btnCell = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
@@ -848,7 +848,7 @@
           isCustomField = true;
           ct = ct_gn;
         } else {
-          ct = MDL_content._ct(ct_gn, null, true);
+          ct = MDL_content.getCt(ct_gn, null, true);
         };
         if(ct == null) return;
         let ctIcon = isCustomField ?
@@ -877,7 +877,7 @@
             cont.table(Tex.whiteui, tb => {
               tb.center().setColor(Color.darkGray);
               MDL_table.__margin(tb, 0.5);
-              tb.add(MDL_bundle._term("lovec", "produced-in")).pad(4.0);
+              tb.add(MDL_bundle.getTerm("lovec", "produced-in")).pad(4.0);
             }).left().growX().row();
             // `TABLE`: producer list
             cont.table(Tex.whiteui, tb => {
@@ -894,7 +894,7 @@
             cont.table(Tex.whiteui, tb => {
               tb.center().setColor(Color.darkGray);
               MDL_table.__margin(tb, 0.5);
-              tb.add(MDL_bundle._term("lovec", "used-in")).pad(4.0);
+              tb.add(MDL_bundle.getTerm("lovec", "used-in")).pad(4.0);
             }).left().growX().row();
             // `TABLE`: consumer list
             cont.table(Tex.whiteui, tb => {
@@ -906,13 +906,13 @@
 
           // `TABLE`: building
           if(ct instanceof Item) {
-            let reqBlks = MDL_content._reqBlks(ct);
+            let reqBlks = MDL_content.getReqBlks(ct);
             if(reqBlks.length > 0) {
               // `TABLE`: building title
               cont.table(Tex.whiteui, tb => {
                 tb.center().setColor(Color.darkGray);
                 MDL_table.__margin(tb, 0.5);
-                tb.add(MDL_bundle._term("lovec", "building")).pad(4.0);
+                tb.add(MDL_bundle.getTerm("lovec", "building")).pad(4.0);
               })
               .left()
               .growX()
@@ -932,7 +932,7 @@
         // `TABLE`: buttons
         MDL_table.__break(this.cont);
         MDL_table.__btnClose(this.buttons, this);
-        MDL_table.__btn(this.buttons, MDL_bundle._term("lovec", "new-window"), () => {
+        MDL_table.__btn(this.buttons, MDL_bundle.getTerm("lovec", "new-window"), () => {
           this.hide();
           new CLS_window(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName, tb => {
             tb.center();
@@ -943,7 +943,7 @@
             }).center();
           }).add();
         });
-        MDL_table.__btn(this.buttons, MDL_bundle._info("lovec", "dial-rcdict-database"), () => {
+        MDL_table.__btn(this.buttons, MDL_bundle.getInfo("lovec", "dial-rcdict-database"), () => {
           this.hide();
           fetchDialog("rcDictDatabase").ex_show();
         });

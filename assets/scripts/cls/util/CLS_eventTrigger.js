@@ -23,7 +23,7 @@
     this.mapLast = "";
     this.mapCur = "";
 
-    MDL_event._c_onUpdate(() => {
+    MDL_event.onUpdate(() => {
       this.mapCur = global.lovecUtil.fun._mapCur();
       if(this.mapLast !== this.mapCur) {
         this.clearListener();

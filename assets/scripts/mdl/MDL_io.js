@@ -308,7 +308,7 @@
 
       wr => wr.str(ct == null ? "null" : ct.name),
 
-      rd => MDL_content._ct(rd.str(), null, true),
+      rd => MDL_content.getCt(rd.str(), null, true),
     );
   };
   exports.__ct = __ct;

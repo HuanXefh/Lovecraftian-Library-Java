@@ -39,7 +39,7 @@
     const itmMap = new ObjectMap();
     const liqMap = new ObjectMap();
 
-    MDL_event._c_onLoadDelayTask(VAR.delay.load.loadReacGrp, () => {
+    MDL_event.onLoadDelayTask(VAR.delay.load.loadReacGrp, () => {
       DB_reaction.db["groupCond"].forEachRow(2, (grp, boolF) => {
         let itmBitset = new Bits(), liqBitset = new Bits();
         Vars.content.items().each(boolF, rs => itmBitset.set(rs.id));
@@ -130,7 +130,7 @@
    * @return {void}
    */
   const applyReaction = function(reactions, pMtp, x, y, e, rs_gn) {
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
 
     let tup;
     reactions.forEachFast(tup0 => {
@@ -156,7 +156,7 @@
    * @return {void}
    */
   const requestReaction = function(reactions, pMtp, x, y, e, rs_gn) {
-    let rs = MDL_content._ct(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, "rs");
 
     MDL_net.sendPacket(
       PacketModes.CLIENT, "lovec-client-reaction",

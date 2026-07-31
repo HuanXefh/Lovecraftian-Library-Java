@@ -15,8 +15,8 @@
 
 
   function comp_init(itm) {
-    itm.intmdParent = MDL_content._ct(itm.intmdParent, "rs");
-    itm.extraIntmdParents.inSituMap(nameRs => MDL_content._ct(nameRs, "rs")).compact();
+    itm.intmdParent = MDL_content.getCt(itm.intmdParent, "rs");
+    itm.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, "rs")).compact();
 
     itm.ex_generateIntmdName();
 

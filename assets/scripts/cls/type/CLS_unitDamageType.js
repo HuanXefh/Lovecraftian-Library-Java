@@ -52,7 +52,7 @@
    * @return {CLS_unitDamageType}
    */
   CLS_unitDamageType.getByUtp = function(utp_gn) {
-    let utp = MDL_content._ct(utp_gn, "utp");
+    let utp = MDL_content.getCt(utp_gn, "utp");
     if(utp == null) return CLS_unitDamageType.NONE;
 
     let type_fi = CLS_unitDamageType.NONE;
@@ -108,7 +108,7 @@
    * @return {string}
    */
   CLS_unitDamageType.prototype.localized = function() {
-    return MDL_bundle._base("database-tag.common-dmg0type-" + this.getName());
+    return MDL_bundle.getBase("database-tag.common-dmg0type-" + this.getName());
   };
 
 

@@ -20,7 +20,7 @@
 
     blk.ex_addLogicGetter(LAccess.config, b => b.delegee.rcHeader);
     blk.ex_addLogicControl(LAccess.config, (b, param1) => {
-      if(typeof param1 === "string" && param1 !== b.delegee.rcHeader && MDL_recipe._hasHeader(blk.rcMdl, param1)) b.configure(param1);
+      if(typeof param1 === "string" && param1 !== b.delegee.rcHeader && MDL_recipe.checkHeaderValid(blk.rcMdl, param1)) b.configure(param1);
     });
   };
 

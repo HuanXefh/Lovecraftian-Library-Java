@@ -66,7 +66,7 @@
 
 
   function comp_ex_init(sta) {
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       if(sta.techNode == null) {
         console.warn("[LOVEC] Tech node ${1} has never been used in tech tree!".format(sta.name.color(Pal.accent)));
       } else {

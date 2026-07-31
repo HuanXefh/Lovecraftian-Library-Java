@@ -42,12 +42,12 @@
    * @param {string|Color|unset} [colorMod] - If given color, it will be the output. If given "new", the method will return a new instance of {@link Color}.
    * @return {Color|null}
    */
-  const _color = function(color_gn, colorMod) {
+  const getColor = function(color_gn, colorMod) {
     if(color_gn === "null") return null;
     if(colorMod == null) colorMod = tmpColors[9];
     if(color_gn == null) return colorMod === "new" ? Color.white.cpy() : Color.white;
 
-    return _color.tmpGetter(color_gn, colorMod);
+    return getColor.tmpGetter(color_gn, colorMod);
   }
   .setProp({
     tmpGetter: newMultiFunction(
@@ -61,7 +61,7 @@
       [Color, null], (color, colorMod) => colorMod === "new" ? color.cpy() : color,
     ),
   });
-  exports._color = _color;
+  exports.getColor = getColor;
 
 
   /* <------------------------------ sprite ------------------------------ */
@@ -144,7 +144,7 @@
    */
   const _charaColor = function thisFun(nameMod, nameChara) {
     thisFun.tmpArgs.with(nameMod, nameChara);
-    return _color(DB_misc.db["drama"]["chara"]["color"].read(thisFun.tmpArgs));
+    return getColor(DB_misc.db["drama"]["chara"]["color"].read(thisFun.tmpArgs));
   }
   .setProp({
     tmpArgs: [],

@@ -69,7 +69,7 @@
      * @return {string}
      */
     ex_getLocalizedMainName: function() {
-      return MDL_bundle._term("common", "intmd-chunks");
+      return MDL_bundle.getTerm("common", "intmd-chunks");
     }
     .setProp({
       noSuper: true,

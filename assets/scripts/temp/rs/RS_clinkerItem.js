@@ -56,7 +56,7 @@
      * @return {string}
      */
     ex_getLocalizedMainName: function() {
-      return MDL_bundle._term("common", "intmd-clinker");
+      return MDL_bundle.getTerm("common", "intmd-clinker");
     }
     .setProp({
       noSuper: true,

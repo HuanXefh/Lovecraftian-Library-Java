@@ -21,12 +21,12 @@
 
 
   function comp_init(blk) {
-    blk.parent = MDL_content._ct(blk.parent, "blk");
+    blk.parent = MDL_content.getCt(blk.parent, "blk");
     if(blk.parent == null) ERROR_HANDLER.throw("nullArgument", "parent");
     if(!(blk.parent instanceof Floor)) throw new Error("${1} is not a floor!".format(blk.name));
 
     blk.blendGroup = blk.parent;
-    MDL_event._c_onLoad(() => {
+    MDL_event.onLoad(() => {
       let color_f = blk.parent.mapColor.cpy().mul(1.5);
       let color_t = blk.parent.mapColor.cpy().mul(2.2);
       color_t.a = 0.0;
@@ -155,7 +155,7 @@
 
     MDL_content.rename(
       blk,
-      () => MDL_bundle._term("lovec", "geyser") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
+      () => MDL_bundle.getTerm("lovec", "geyser") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
     );
   };
 

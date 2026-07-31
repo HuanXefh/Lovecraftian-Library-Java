@@ -315,7 +315,7 @@
     if(waitTimeS == null) waitTimeS = 1.0;
 
     let texts = [];
-    selTextParamArr.forEachRow(3, (nameMod, nameDial, selInd) => texts.push(MDL_bundle._dialText(nameMod, nameDial, ind + "-s-" + selInd)));
+    selTextParamArr.forEachRow(3, (nameMod, nameDial, selInd) => texts.push(MDL_bundle.getDialText(nameMod, nameDial, ind + "-s-" + selInd)));
 
     this.completeRow();
     let paramObj = this.fixParamObj();

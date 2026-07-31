@@ -7,7 +7,7 @@
 
 
 
-  MDL_event._c_onPostRun(() => {
+  MDL_event.onPostRun(() => {
 
 
     function checkParser(parserCur, parserOther) {
@@ -81,7 +81,7 @@
 
               let blkTg;
               if(blk.delegee.shouldDropPay) {
-                blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
+                blkTg = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
                 if(blkTg == null) return;
               };
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
@@ -89,7 +89,7 @@
               let rawRc = !blk.delegee.shouldDropPay ?
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime / blk.size / blk.delegee.drillAmtMtp, true) :
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / blk.size / blk.delegee.drillAmtMtp, true);
-              MDL_event._c_onLoad(() => {
+              MDL_event.onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, blk.optionalBoostIntensity);
               });
               MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), Math.pow(blk.size, 2));
@@ -115,7 +115,7 @@
 
               let blkTg;
               if(blk.delegee.shouldDropPay) {
-                blkTg = MDL_content._ct(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
+                blkTg = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
                 if(blkTg == null) return;
               };
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
@@ -123,7 +123,7 @@
               let rawRc = !blk.delegee.shouldDropPay ?
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2) / blk.delegee.drillAmtMtp, true) :
                 MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.size, 2) / blk.delegee.drillAmtMtp, true);
-              MDL_event._c_onLoad(() => {
+              MDL_event.onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
               });
               MOD_tmi.addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), blk.size);
@@ -169,10 +169,10 @@
         let rawRc = MOD_tmi._rawRc(
           tryVal(blk.ex_getRangeAttrProdTypeStr(), "collecting"),
           blk,
-          MDL_content._craftTime(blk),
+          MDL_content.getCraftTime(blk),
           true,
         );
-        MDL_event._c_onLoad(() => {
+        MDL_event.onLoad(() => {
           MOD_tmi.baseParse(blk, rawRc);
         });
         let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
@@ -231,7 +231,7 @@
           let rawRc = MOD_tmi._rawRc("collecting", blk, blk.consumeTime, true);
           let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
 
-          MDL_event._c_onLoad(() => {
+          MDL_event.onLoad(() => {
             MOD_tmi.baseParse(blk, rawRc);
           });
           blks.forEachFast(oblk => {
@@ -277,11 +277,11 @@
         let rawRc = MOD_tmi._rawRc("generator", blk, 0.0, true);
         let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
 
-        MDL_event._c_onLoad(() => {
+        MDL_event.onLoad(() => {
           MOD_tmi.baseParse(blk, rawRc);
         });
         MOD_tmi.addProdPow(rawRc, blk.powerProduction);
-        MDL_attr._blkAttrArr(blk.attribute, oblk => checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size).forEachRow(3, (oblk, attrVal, attr) => {
+        MDL_attr.getBlkAttrArr(blk.attribute, oblk => checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size).forEachRow(3, (oblk, attrVal, attr) => {
           MOD_tmi.addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, AttrRcTypes.FLOOR);
         });
 
@@ -333,9 +333,9 @@
         let rawRc = MOD_tmi._rawRc(
           this.tempTypeMap.get(blk.ex_getTempName(), "factory"),
           blk,
-          MDL_content._craftTime(blk),
+          MDL_content.getCraftTime(blk),
         );
-        MDL_event._c_onLoad(() => {
+        MDL_event.onLoad(() => {
           MOD_tmi.baseParse(blk, rawRc);
         });
 

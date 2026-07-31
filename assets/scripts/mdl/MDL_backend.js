@@ -50,11 +50,11 @@
    * @param {number|unset} [winLong]
    * @return {void}
    */
-  const _w_min = function(winLong) {
+  const minimize = function(winLong) {
     (SHOULD_USE_SDL3 ? SDLVideo : SDL).SDL_MinimizeWindow(tryVal(winLong, Core.app.window));
   }
   .setAnno("windows-only");
-  exports._w_min = _w_min;
+  exports.minimize = minimize;
 
 
   /**
@@ -62,11 +62,11 @@
    * @param {number|unset} [winLong]
    * @return {void}
    */
-  const _w_max = function(winLong) {
+  const maximize = function(winLong) {
     (SHOULD_USE_SDL3 ? SDLVideo : SDL).SDL_MaximizeWindow(tryVal(winLong, Core.app.window));
   }
   .setAnno("windows-only");
-  exports._w_max = _w_max;
+  exports.maximize = maximize;
 
 
   /**
@@ -74,11 +74,11 @@
    * @param {number|unset} [winLong]
    * @return {void}
    */
-  const _w_restore = function(winLong) {
+  const restore = function(winLong) {
     (SHOULD_USE_SDL3 ? SDLVideo : SDL).SDL_RestoreWindow(tryVal(winLong, Core.app.window));
   }
   .setAnno("windows-only");
-  exports._w_restore = _w_restore;
+  exports.restore = restore;
 
 
   /**
@@ -87,11 +87,11 @@
    * @param {string|unset} [title]
    * @return {void}
    */
-  const setWinTitle = function(winLong, title) {
+  const setTitle = function(winLong, title) {
     (SHOULD_USE_SDL3 ? SDLVideo : SDL).SDL_SetWindowTitle(tryVal(winLong, Core.app.window), tryVal(title, Vars.appName));
   }
   .setAnno("windows-only");
-  exports.setWinTitle = setWinTitle;
+  exports.setTitle = setTitle;
 
 
   /**

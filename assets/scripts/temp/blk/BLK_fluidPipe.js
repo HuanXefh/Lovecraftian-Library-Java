@@ -30,7 +30,7 @@
       ]);
     };
 
-    MDL_event._c_onLoadDelay(VAR.delay.load.loadExtraSound, () => {
+    MDL_event.onLoadDelay(VAR.delay.load.loadExtraSound, () => {
       if(!Vars.headless && PARAM.SECRET_METAL_PIPE && String(blk.matGrp).equalsAny(
         "iron", "steel", "galvanized-steel", "stainless-steel",
       )) {

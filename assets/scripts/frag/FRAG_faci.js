@@ -33,7 +33,7 @@
    * @return {number}
    */
   const _cepProv = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk == null ?
       0.0 :
       DB_block.db["param"]["cep"]["prov"].read(blk.name, MDL_cond._isCoreBlock(blk) ? 5.0 : 0.0);
@@ -48,7 +48,7 @@
    * @return {number}
    */
   const _cepUse = function(blk_gn) {
-    let blk = MDL_content._ct(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, "blk");
     return blk == null ?
       0.0 :
       DB_block.db["param"]["cep"]["use"].read(blk.name, 0.0);
@@ -124,7 +124,7 @@
   const _depthLvlB = function thisFun(depthLvl) {
     return "${1} (${2})".format(
       depthLvl,
-      MDL_bundle._term.apply(null, DB_misc.db["block"]["depthName"].read(depthLvl, thisFun.tmpTup.with("lovec", "unknown"))),
+      MDL_bundle.getTerm.apply(null, DB_misc.db["block"]["depthName"].read(depthLvl, thisFun.tmpTup.with("lovec", "unknown"))),
     );
   }
   .setProp({
@@ -164,14 +164,14 @@
    * @return {void}
    */
   const setupOutline = function(ct) {
-    let tup = DB_unit.db["grpParam"]["outline"].read(MDL_content._mod(ct));
+    let tup = DB_unit.db["grpParam"]["outline"].read(MDL_content.getMod(ct));
     if(tup == null) return;
 
     if(tup[0] < 1) {
       if(ct.outlines != null) ct.outlines = false;
     } else {
       ct.outlineRadius = tup[0];
-      ct.outlineColor = MDL_color._color(tup[1], "new");
+      ct.outlineColor = MDL_color.getColor(tup[1], "new");
     };
   };
   exports.setupOutline = setupOutline;
@@ -186,7 +186,7 @@
 
 
 
-  MDL_event._c_onLoad(() => {
+  MDL_event.onLoad(() => {
 
     let cepCapObj = {}, cepUseObj = {};
     TRIGGER.majorIter.start.addGlobalListener(() => {

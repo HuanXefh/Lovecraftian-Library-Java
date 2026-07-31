@@ -46,7 +46,7 @@
    * @param {boolean|unset} [toAttr] - If true, the result will be an attribute instead of string.
    * @return {string|Attribute}
    */
-  const _attr = function(attr_gn, toAttr) {
+  const getAttr = function(attr_gn, toAttr) {
     return toAttr ?
       (
         attr_gn instanceof Attribute ?
@@ -63,7 +63,7 @@
             "lovec-attr-placeholder"
       );
   };
-  exports._attr = _attr;
+  exports.getAttr = getAttr;
 
 
   /**
@@ -72,10 +72,10 @@
    * @param {boolean|unset} [isDes]
    * @return {string}
    */
-  const _attrB = function(attr_gn, isDes) {
-    return MDL_bundle._base("attr." + _attr(attr_gn) + (!isDes ? ".name" : ".description"));
+  const getAttrB = function(attr_gn, isDes) {
+    return MDL_bundle.getBase("attr." + getAttr(attr_gn) + (!isDes ? ".name" : ".description"));
   };
-  exports._attrB = _attrB;
+  exports.getAttrB = getAttrB;
 
 
   /* <------------------------------ map ------------------------------ */
@@ -87,13 +87,13 @@
    * @param {(function(Block): boolean)|unset} [boolF] - Used to filter out valid blocks.
    * @return {Array} `ROW`: blk, attrVal, attr.
    */
-  const _blkAttrArr = function(attrs_gn_p, boolF) {
+  const getBlkAttrArr = function(attrs_gn_p, boolF) {
     if(boolF == null) boolF = Function.airTrue;
     let attrs_gn = (attrs_gn_p instanceof Array) ? attrs_gn_p : [attrs_gn_p];
     let map = [];
 
     attrs_gn.forEachFast(attr_gn => {
-      let nameAttr = _attr(attr_gn);
+      let nameAttr = getAttr(attr_gn);
       Vars.content.blocks().each(blk => boolF(blk), blk => {
         let attrVal = blk.attributes.get(Attribute.get(nameAttr));
         if(Math.abs(attrVal) > 0.0) {
@@ -104,7 +104,7 @@
 
     return map;
   };
-  exports._blkAttrArr = _blkAttrArr;
+  exports.getBlkAttrArr = getBlkAttrArr;
 
 
   /**
@@ -112,10 +112,10 @@
    * @param {Array} attrRsArr - See {@link DB_item}. <br> `ROW`: attr, rs.
    * @return {Array<string>}
    */
-  const _attrs_attrRsArr = function(attrRsArr) {
+  const getAttrsInAttrRsArr = function(attrRsArr) {
     return attrRsArr.readCol(2, 0);
   };
-  exports._attrs_attrRsArr = _attrs_attrRsArr;
+  exports.getAttrsInAttrRsArr = getAttrsInAttrRsArr;
 
 
   /* <------------------------------ sum ------------------------------ */
@@ -128,24 +128,24 @@
    * @param {AttrGn} attr_gn
    * @return {number}
    */
-  const _sum = function(blk, t, attr_gn) {
-    return blk.sumAttribute(_attr(attr_gn, true), t.x, t.y);
+  const calcSum = function(blk, t, attr_gn) {
+    return blk.sumAttribute(getAttr(attr_gn, true), t.x, t.y);
   };
-  exports._sum = _sum;
+  exports.calcSum = calcSum;
 
 
   /**
-   * Variant of {@link _sum} that uses a list of tiles.
+   * Variant of {@link calcSum} that uses a list of tiles.
    * @param {Array<Tile>} ts
    * @param {AttrGn} attr_gn
    * @param {number|unset} [mode] - Determines what blocks will be involved for attribute calculation. See {@link AttrModes}
    * @return {number}
    */
-  const _sumByTs = function thisFun(ts, attr_gn, mode) {
+  const calcSumByTs = function thisFun(ts, attr_gn, mode) {
     let attrSum = 0.0;
     if(mode == null) mode = AttrModes.FLOOR;
 
-    let attr = _attr(attr_gn, true);
+    let attr = getAttr(attr_gn, true);
     ts.forEachFast(ot => {
       if((mode & AttrModes.FLOOR) !== 0) attrSum += ot.floor().attributes.get(attr);
       if((mode & AttrModes.BLOCK) !== 0) attrSum += ot.block().attributes.get(attr);
@@ -154,11 +154,11 @@
 
     return attrSum;
   };
-  exports._sumByTs = _sumByTs;
+  exports.calcSumByTs = calcSumByTs;
 
 
   /**
-   * Variant of {@link _sumByTs} that uses a rectangular range.
+   * Variant of {@link calcSumByTs} that uses a rectangular range.
    * @param {Tile|null} t
    * @param {number|unset} r
    * @param {number|unset} size
@@ -166,17 +166,17 @@
    * @param {number|unset} [mode] - See {@link AttrModes}.
    * @return {number}
    */
-  const _sumRect = function thisFun(t, r, size, attr_gn, mode) {
-    return _sumByTs(LCPos.getTilesRect(thisFun.tmpTs, t, r, size), attr_gn, mode);
+  const calcSumRect = function thisFun(t, r, size, attr_gn, mode) {
+    return calcSumByTs(LCPos.getTilesRect(thisFun.tmpTs, t, r, size), attr_gn, mode);
   }
   .setProp({
     tmpTs: [],
   });
-  exports._sumRect = _sumRect;
+  exports.calcSumRect = calcSumRect;
 
 
   /**
-   * Variant of {@link _sumByTs} that uses a circular range.
+   * Variant of {@link calcSumByTs} that uses a circular range.
    * @param {Tile|null} t
    * @param {number|unset} r
    * @param {number|unset} size
@@ -184,13 +184,13 @@
    * @param {number|unset} [mode] - See {@link AttrModes}.
    * @return {number}
    */
-  const _sumCircle = function thisFun(t, r, size, attr_gn, mode) {
-    return _sumByTs(LCPos.getTilesCircle(thisFun.tmpTs, t, r, size), attr_gn, mode);
+  const calcSumCircle = function thisFun(t, r, size, attr_gn, mode) {
+    return calcSumByTs(LCPos.getTilesCircle(thisFun.tmpTs, t, r, size), attr_gn, mode);
   }
   .setProp({
     tmpTs: [],
   });
-  exports._sumCircle = _sumCircle;
+  exports.calcSumCircle = calcSumCircle;
 
 
   /* <------------------------------ limit ------------------------------ */
@@ -203,12 +203,12 @@
    * @param {boolean|unset} [isWall] - For blocks like wall crafter.
    * @return {number}
    */
-  const _limit = function(size, avLimit, isWall) {
+  const getAttrLimit = function(size, avLimit, isWall) {
     if(avLimit == null) avLimit = 1.0;
 
     return Math.pow(size, isWall ? 1 : 2) * avLimit;
   };
-  exports._limit = _limit;
+  exports.getAttrLimit = getAttrLimit;
 
 
   /* <------------------------------ dynamic attribute ------------------------------ */
@@ -220,7 +220,7 @@
    * @param {Block} blk
    * @return {Resource|null}
    */
-  const _dynaAttrRs = function(attrRsArr, blk) {
+  const getDynaAttrRs = function(attrRsArr, blk) {
     let tmpNameRs = null;
     let tmpVal = 0.0;
 
@@ -233,20 +233,20 @@
       };
     });
 
-    return MDL_content._ct(tmpNameRs, "rs");
+    return MDL_content.getCt(tmpNameRs, "rs");
   };
-  exports._dynaAttrRs = _dynaAttrRs;
+  exports.getDynaAttrRs = getDynaAttrRs;
 
 
   /**
    * Gets currently preferred dynamic attribute and the target resource from a list of tiles.
-   * See {@link _sumByTs}.
+   * See {@link calcSumByTs}.
    * @param {Array} attrRsArr
    * @param {Array<Tile>} ts
    * @param {number|unset} [mode] - See {@link AttrModes}.
    * @return {[Attribute, number, Resource]} `TUPLE`: attr, attrSum, rs.
    */
-  const _dynaAttrTup = function(attrRsArr, ts, mode) {
+  const getDynaAttrTup = function(attrRsArr, ts, mode) {
     let attr = null;
     let attrSum = 0.0;
     let rs = null;
@@ -255,19 +255,19 @@
     let tmpAttr, tmpAttrSum;
     if(iCap > 0) {
       for(let i = 0; i < iCap; i += 2) {
-        tmpAttr = _attr(attrRsArr[i], true);
-        tmpAttrSum = _sumByTs(ts, tmpAttr, mode) + tmpAttr.env();
+        tmpAttr = getAttr(attrRsArr[i], true);
+        tmpAttrSum = calcSumByTs(ts, tmpAttr, mode) + tmpAttr.env();
         if(tmpAttrSum > attrSum) {
           attr = tmpAttr;
           attrSum = tmpAttrSum;
-          rs = MDL_content._ct(attrRsArr[i + 1], "rs");
+          rs = MDL_content.getCt(attrRsArr[i + 1], "rs");
         };
       };
     };
 
     return (rs == null) ? null : [attr, attrSum, rs];
   };
-  exports._dynaAttrTup = _dynaAttrTup;
+  exports.getDynaAttrTup = getDynaAttrTup;
 
 
   /* <------------------------------ special ------------------------------ */
@@ -280,7 +280,7 @@
    * Gets current liquid of rain weather, null if not found.
    * @return {Liquid|null}
    */
-  const _rainLiq = function() {
+  const getRainLiq = function() {
     if(!Vars.state.isGame()) return null;
 
     let weaState = Groups.weather.find(weaState1 => weaState1.weather instanceof RainWeather);
@@ -288,7 +288,7 @@
 
     return weaState.weather.liquid;
   };
-  exports._rainLiq = _rainLiq;
+  exports.getRainLiq = getRainLiq;
 
 
   /* wind */
@@ -301,7 +301,7 @@
    * @param {number|unset} [mtp] - Multiplier on final value.
    * @return {number}
    */
-  const _sumWind = function thisFun(t, mtp) {
+  const calcSumWind = function thisFun(t, mtp) {
     if(mtp == null) mtp = 1.0;
 
     let attrSum = (1.0 - Math.pow(Math.sin(Time.time / 6400.0 / mtp), 2) * 0.7);
@@ -322,4 +322,4 @@
       this.sumScl = null;
     });
   });
-  exports._sumWind = _sumWind;
+  exports.calcSumWind = calcSumWind;

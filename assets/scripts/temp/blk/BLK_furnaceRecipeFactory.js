@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    blk.ex_addConfigCaller("fuelSel", (b, val) => b.delegee.fuelSel = MDL_content._ct(val, "rs"));
+    blk.ex_addConfigCaller("fuelSel", (b, val) => b.delegee.fuelSel = MDL_content.getCt(val, "rs"));
   };
 
 
@@ -225,7 +225,7 @@
        */
       ex_handleConfigStrDef: function thisFun(str) {
         if(str.startsWith("FUEL: ")) {
-          this.delegee.fuelSel = MDL_content._ct(str.replace("FUEL: ", ""), "rs");
+          this.delegee.fuelSel = MDL_content.getCt(str.replace("FUEL: ", ""), "rs");
         } else {
           thisFun.funPrev.apply(this, [str]);
         };
@@ -249,7 +249,7 @@
               tb.clearChildren();
               tb.row();
               this.ex_buildFuelSelector(tb);
-            }).tooltip(MDL_bundle._term("lovec", "fuel-filter"), true),
+            }).tooltip(MDL_bundle.getTerm("lovec", "fuel-filter"), true),
           ];
       }
       .setProp({

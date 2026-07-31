@@ -53,7 +53,7 @@
    * @return {void}
    */
   const changePuddle = function(puddle, liq_gn, mtp) {
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null || liq === puddle.liquid) return;
 
     let amt = puddle.amount * tryVal(mtp, 1.0);
@@ -73,7 +73,7 @@
    * @return {void}
    */
   const changePuddle_global = function(puddle, liq_gn, mtp) {
-    let liq = MDL_content._ct(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null || liq === puddle.liquid) return;
 
     changePuddle(puddle, liq, mtp);
