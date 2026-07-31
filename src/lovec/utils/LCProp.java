@@ -1,18 +1,20 @@
 package lovec.utils;
 
+import arc.math.Mathf;
+import arc.util.Nullable;
 import mindustry.Vars;
 import mindustry.entities.bullet.BulletType;
-import mindustry.gen.Building;
-import mindustry.gen.Bullet;
-import mindustry.gen.Healthc;
-import mindustry.gen.Unit;
+import mindustry.entities.units.AIController;
+import mindustry.gen.*;
+import mindustry.graphics.Layer;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
+import mindustry.world.blocks.ControlBlock;
 
 /**
  * Handles generalized properties.
  */
-public class LCGeneralizedProp {
+public class LCProp {
 
 
     /**
@@ -66,6 +68,23 @@ public class LCGeneralizedProp {
 
 
     /**
+     * Gets layer of some entity.
+     */
+    public static float getLayer(Object obj) {
+        if(obj instanceof Unit unit) {
+            return unit.elevation() > 0.5f || (unit.type.flying && unit.dead) ?
+                    unit.type.flyingLayer :
+                    (unit.type.groundLayer + Mathf.clamp(unit.hitSize() / 4000f, 0f, 0.01f));
+        } else if(obj instanceof Block blk) {
+            return blk.underBullets ?
+                    Layer.blockUnder :
+                    Layer.block;
+        };
+        return 0f;
+    };
+
+
+    /**
      * Gets health fraction of some entity.
      */
     public static float getHealthFrac(Object obj) {
@@ -88,6 +107,65 @@ public class LCGeneralizedProp {
             return unit.armorOverride() < 0.0 ? unit.armor : unit.armorOverride();
         };
         return 0f;
+    };
+
+
+    /**
+     * Gets payload fraction of some entity.
+     */
+    public static float getPayloadFrac(Object obj, boolean nearCap) {
+        if(obj instanceof Payloadc e) {
+            // I don't think `Payloadc` can be cast to something other than unit, inform me if that happens
+            return Mathf.clamp(e.payloadUsed() / Math.max(((Unit)(e)).type.payloadCapacity, 1f), 0f, nearCap ? 0.999f : 1f);
+        };
+        return 0f;
+    };
+    // Overload
+    public static float getPayloadFrac(Object obj) {
+        return getPayloadFrac(obj, false);
+    };
+
+
+    /**
+     * Gets elevation of some entity.
+     */
+    public static float getElevation(Object obj) {
+        if(obj instanceof Unit unit) {
+            return Mathf.clamp(unit.elevation(), unit.type.shadowElevation, 1f) * unit.type.shadowElevationScl * (1f - unit.drownTime());
+        };
+        return 0f;
+    };
+
+
+    /**
+     * Gets reload multiplier of some entity.
+     */
+    public static float getReloadMultiplier(Object obj, boolean isClamped) {
+        float mtp = 1f;
+        if(obj instanceof Unit unit) {
+            mtp = unit.reloadMultiplier() * (unit.disarmed() ? 0f : 1f);
+        } else if(obj instanceof Building b) {
+            mtp = b.timeScale();
+        };
+        return !isClamped ?
+            mtp :
+            Mathf.clamp(mtp);
+    };
+    // Overload
+    public static float getReloadMultiplier(Object obj) {
+        return getReloadMultiplier(obj, false);
+    };
+
+
+    /**
+     * Gets AI controller of some entity.
+     * Null if controlled by player.
+     */
+    public static @Nullable AIController getAi(Object obj) {
+        if(obj instanceof Unit unit) {
+            return unit.isPlayer() ? null : (AIController)(unit.controller());
+        };
+        return null;
     };
 
 

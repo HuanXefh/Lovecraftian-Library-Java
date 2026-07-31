@@ -56,8 +56,8 @@
   LCCheck = fetchClass("lovec.utils.LCCheck");
   /** @global lovec.utils.LCEntity */
   LCEntity = fetchClass("lovec.utils.LCEntity");
-  /** @global lovec.utils.LCGeneralizedProp */
-  LCGeneralizedProp = fetchClass("lovec.utils.LCGeneralizedProp");
+  /** @global lovec.utils.LCProp */
+  LCProp = fetchClass("lovec.utils.LCProp");
   /** @global lovec.utils.LCGeometry */
   LCGeometry = fetchClass("lovec.utils.LCGeometry");
   /** @global lovec.utils.LCPos */

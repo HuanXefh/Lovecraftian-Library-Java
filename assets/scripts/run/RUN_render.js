@@ -142,9 +142,9 @@
 
         // Unit stat display
         MDL_draw.unitStat(
-          unit, MDL_entity._healthFrac(unit), unit.type.hitSize / Vars.tilesize, unit.team.color,
+          unit, LCProp.getHealthFrac(unit), unit.type.hitSize / Vars.tilesize, unit.team.color,
           1.0, 0.0, 0, 1.0,
-          MDL_entity._armor(unit), unit.shield, unit.speedMultiplier, unit.damageMultiplier * unit.reloadMultiplier,
+          LCProp.getArmor(unit), unit.shield, unit.speedMultiplier, unit.damageMultiplier * unit.reloadMultiplier,
         );
 
         // Unit reload display
@@ -229,14 +229,14 @@
       MDL_draw.unitStat(
         b, b.health / b.maxHealth, b.block.size, b.team.color,
         1.0, 0.0, -1 + VAR.range.offBuildStatR, 1.0, b.block.armor,
-        MDL_entity._bShield(b), MDL_entity._bSpd(b), null,
+        MDL_prop._bShield(b), MDL_prop._bSpd(b), null,
       );
       if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
         cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || DB_HANDLER.read("blk-reload", b.block.name, false);
         if(cond) {
-          MDL_draw.unitReload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.range.offBuildStatR, MDL_entity._reloadFrac(b));
+          MDL_draw.unitReload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.range.offBuildStatR, MDL_prop._reloadFrac(b));
         };
-        MDL_draw.unitReload(b, null, Pal.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + VAR.range.offBuildStatR, MDL_entity._warmupFrac(b, true));
+        MDL_draw.unitReload(b, null, Pal.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + VAR.range.offBuildStatR, MDL_prop._warmupFrac(b, true));
       };
       processZ(VAR.layer.debugTop - 0.02, 2);
       Lines.stroke(1.0);

@@ -596,6 +596,22 @@
 
 
   /**
+  * Gets tooltip of this recipe, nullable.
+  * <br> `BUNDLE`: "info.common-info-tt-<tooltip>.name".
+  * @param {RecipeModule} rcMdl
+  * @param {string} rcHeader
+  * @return {string|null}
+  */
+  const _tt = function(rcMdl, rcHeader) {
+    let tt = _rcVal(rcMdl, rcHeader, "tooltip", null);
+    return tt == null ?
+    null :
+    MDL_bundle._info("common", "tt-" + tt);
+  };
+  exports._tt = _tt;
+
+
+  /**
    * Whether this recipe is generated.
    * Do not set this field.
    * @param {RecipeModule} rcMdl
@@ -815,22 +831,6 @@
     return _rcVal(rcMdl, rcHeader, "attrBoostCap", _rcBaseVal(rcMdl, "baseAttrBoostCap", Infinity));
   };
   exports._attrBoostCap = _attrBoostCap;
-
-
-  /**
-   * Gets tooltip of this recipe, nullable.
-   * <br> `BUNDLE`: "info.common-info-tt-<tooltip>.name".
-   * @param {RecipeModule} rcMdl
-   * @param {string} rcHeader
-   * @return {string|null}
-   */
-  const _tt = function(rcMdl, rcHeader) {
-    let tt = _rcVal(rcMdl, rcHeader, "tooltip", null);
-    return tt == null ?
-      null :
-      MDL_bundle._info("common", "tt-" + tt);
-  };
-  exports._tt = _tt;
 
 
   /* <------------------------------ recipe I/O ------------------------------ */

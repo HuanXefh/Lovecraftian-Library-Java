@@ -116,11 +116,11 @@
   const damage = function(e, dmg, armorMtp, mode_ow, ignoreShield) {
     if(dmg < 0.0001) return false;
 
-    dmg = MDL_entity._dmgTake(e, dmg, armorMtp, false);
-    let dmgShow = MDL_entity._dmgTake(e, dmg, armorMtp, true);
+    dmg = MDL_prop._dmgTake(e, dmg, armorMtp, false);
+    let dmgShow = MDL_prop._dmgTake(e, dmg, armorMtp, true);
     let shield = 0.0;
     if(e instanceof Building) {
-      MDL_effect._e_dmg(e.x, e.y, dmgShow, null, tryVal(mode_ow, MDL_entity._bShield(e, true) > dmgShow ? "shield" : "health"));
+      MDL_effect._e_dmg(e.x, e.y, dmgShow, null, tryVal(mode_ow, MDL_prop._bShield(e, true) > dmgShow ? "shield" : "health"));
       MDL_effect._e_flash(e);
       e.damagePierce(dmg, true);
     } else {

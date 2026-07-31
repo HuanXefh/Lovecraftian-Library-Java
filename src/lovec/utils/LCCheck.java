@@ -111,11 +111,11 @@ public class LCCheck {
      */
     public static boolean checkEntityVisible(Object obj) {
         if(obj instanceof Building b) {
-            return checkPosVisible(b.x, b.y, LCGeneralizedProp.getClipSize(b));
+            return checkPosVisible(b.x, b.y, LCProp.getClipSize(b));
         } else if(obj instanceof Unit unit) {
-            return !unit.inFogTo(Vars.player.team()) && checkPosVisible(unit.x, unit.y, LCGeneralizedProp.getClipSize(unit));
+            return !unit.inFogTo(Vars.player.team()) && checkPosVisible(unit.x, unit.y, LCProp.getClipSize(unit));
         } else if(obj instanceof Bullet bul) {
-            return checkPosVisible(bul.x, bul.y, LCGeneralizedProp.getClipSize(bul));
+            return checkPosVisible(bul.x, bul.y, LCProp.getClipSize(bul));
         };
         return true;
     };

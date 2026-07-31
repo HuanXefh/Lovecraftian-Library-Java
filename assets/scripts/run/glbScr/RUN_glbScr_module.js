@@ -169,6 +169,8 @@
   /** @global */
   MDL_flow = require("lovec/mdl/MDL_flow");
   /** @global */
+  MDL_prop = require("lovec/mdl/MDL_prop");
+  /** @global */
   MDL_entity = require("lovec/mdl/MDL_entity");
   /** @global */
   MDL_draw = require("lovec/mdl/MDL_draw");

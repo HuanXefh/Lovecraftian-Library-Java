@@ -25,7 +25,7 @@
       if(osta === sta) isAfter = true;
       return !isAfter && sta.fadeReg != null && unit.hasEffect(osta) && osta !== sta;
     })) {
-      LCDrawf.fade(unit.x, unit.y, sta.fadeReg, 0.5, 0.0, MDL_entity._hitSize(unit) * 0.1, sta.fadeColor, 0.5, Layer.effect + VAR.layer.offDrawOver);
+      LCDrawf.fade(unit.x, unit.y, sta.fadeReg, 0.5, 0.0, LCProp.getHitSize(unit) * 0.1, sta.fadeColor, 0.5, Layer.effect + VAR.layer.offDrawOver);
     };
   };
 

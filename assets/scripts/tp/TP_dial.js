@@ -186,7 +186,7 @@
               MDL_bundle._term("lovec", "status"),
             ]];
             let amt_fi;
-            MDL_entity._waveArr(countWave).forEachRow(4, (utp, amt, shield, sta) => {
+            MDL_prop._waveArr(countWave).forEachRow(4, (utp, amt, shield, sta) => {
               amt_fi = Math.round(amt / Vars.state.rules.unitCost(Vars.state.rules.waveTeam));
               if(amt_fi < 1) return;
               matArr.push([

@@ -44,7 +44,7 @@
    * @return {boolean}
    */
   const _c_holdPos = function(unit) {
-    return unit.isPlayer() || MDL_entity._ctrl(unit).hasStance(UnitStance.holdPosition);
+    return unit.isPlayer() || LCProp.getAi(unit).hasStance(UnitStance.holdPosition);
   };
   exports._c_holdPos = _c_holdPos;
 
@@ -64,7 +64,7 @@
   const moveTo = function(unit, posIns, dst, smooth, keepDst) {
     if(unit.isPlayer()) return;
 
-    MDL_entity._ctrl(unit).moveTo(
+    LCProp.getAi(unit).moveTo(
       posIns,
       tryVal(dst, 4.0),
       tryVal(smooth, unit.flying ? 30.0 : 2.0),
@@ -112,7 +112,7 @@
   const circle = function(unit, posIns, dst) {
     if(unit.isPlayer()) return;
 
-    MDL_entity._ctrl(unit).circle(posIns, tryVal(dst, unit.type.range / 1.8));
+    LCProp.getAi(unit).circle(posIns, tryVal(dst, unit.type.range / 1.8));
   };
   exports.circle = circle;
 
@@ -128,7 +128,7 @@
   const lookAt = function(unit, x, y, noAim) {
     if(unit.isPlayer()) return;
 
-    noAim || _tg(MDL_entity._ctrl(unit)) != null ?
+    noAim || _tg(LCProp.getAi(unit)) != null ?
       unit.lookAt(x, y) :
       unit.aimLook(x, y);
   };

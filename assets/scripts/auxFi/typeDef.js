@@ -242,7 +242,8 @@
    * @prop {string|unset} [icon] - Content icon used for this recipe.
    * @prop {Color|unset} [tint] - Tint color of icon.
    * @prop {ContentGn|unset} [keyCt] - Key item/fluid of this recipe, used in recipe auto-selection.
-   * @prop {string|unset} [categ] - Category this recipe is in.
+   * @prop {string|unset} [category] - Category this recipe is in.
+   * @prop {string|unset} [tooltip] - Bundle piece used for recipe tooltip.
    * @prop {boolean|unset} [isGenerated] - Whether this recipe is created by recipe generators. Do not set this manually!
    * @prop {boolean|unset} [isIncomplete] - Whether this recipe has contents not found. Do not set this manually!
    * @prop {Array<string>|unset} [erroredNames] - Content names not resolved. Do not set this manually!
@@ -258,7 +259,6 @@
    * @prop {number|unset} [attrMax] - Attribute value for 1.0 efficiency (no block size included).
    * @prop {number|unset} [attrBoostScl] - Scaling on attribute boost.
    * @prop {number|unset} [attrBoostCap] - Maximum efficiency can be reached with attribute boost.
-   * @prop {string|unset} [tooltip] - Bundle piece used for recipe tooltip.
    * @prop {number|unset} [powProdMtp] - Multiplier on power produced. For {@link BLK_generatorRecipeFactory}.
    * @prop {number|unset} [tempReq] - Temperature required. For {@link BLK_furnaceRecipeFactory}.
    * @prop {number|unset} [tempAllowed] - Temperature allowed. For {@link BLK_furnaceRecipeFactory}.

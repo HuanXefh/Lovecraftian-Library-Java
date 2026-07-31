@@ -58,7 +58,7 @@
 
     let
       frac = Mathf.clamp(healthFrac),
-      color = Tmp.c1.set(MDL_color._color(tryVal(color_gn, Pal.accent))).lerp(Color.white, MDL_entity._flashFrac(e)),
+      color = Tmp.c1.set(MDL_color._color(tryVal(color_gn, Pal.accent))).lerp(Color.white, Mathf.clamp(e.hitTime)),
       x = e.x,
       y = e.y,
       w = (size + 1) * Vars.tilesize + offW,
@@ -106,14 +106,14 @@
     } else if(mtIds == null) {
       frac = 0.0;
     } else {
-      frac = MDL_entity._reloadFrac(e, mtIds);
+      frac = MDL_prop._reloadFrac(e, mtIds);
     };
     if(frac > 0.9999 || frac < 0.0001) return;
 
     let
       x = e.x,
       y = e.y,
-      hitSize = MDL_entity._hitSize(e),
+      hitSize = LCProp.getHitSize(e),
       w = (hitSize + 8.0 + offW) * 1.7,
       offY = hitSize * 0.5 + 4.0 + (offTy + 1.25) * Vars.tilesize;
 

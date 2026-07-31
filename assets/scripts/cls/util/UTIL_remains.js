@@ -96,7 +96,7 @@
    * @return {boolean}
    */
   UTIL_remains.checkFloating = function(etp, hitSize) {
-    return !(etp instanceof Block) && tryVal(hitSize, MDL_entity._hitSize(etp)) < VAR.param.unitRemainsFloatThr;
+    return !(etp instanceof Block) && tryVal(hitSize, LCProp.getHitSize(etp)) < VAR.param.unitRemainsFloatThr;
   };
 
 
@@ -122,7 +122,7 @@
       x: x,
       y: y,
       t: t,
-      hitSize: MDL_entity._hitSize(blk),
+      hitSize: LCProp.getHitSize(blk),
       rotation: Mathf.random(90.0) - 45.0,
       color: VAR.color.darkMix,
       a: a,
@@ -197,7 +197,7 @@
       floatOffX: 0.0,
       floatOffY: 0.0,
       t: t,
-      hitSize: MDL_entity._hitSize(utp),
+      hitSize: LCProp.getHitSize(utp),
       clipRad: null,
       rotation: unit == null ? Mathf.random(360.0) : (unit.rotation - 90.0 + Mathf.range(25.0)),
       team: team,

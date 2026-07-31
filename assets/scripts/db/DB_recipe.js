@@ -717,7 +717,7 @@ const db = {
       // Check payload size
       function(ct, metaObj, paramObj) {
         if(!instanceOfAny(ct, Block, UnitType)) return true;
-        return MDL_entity._size(ct) <= readParam(metaObj, "sizeCap", Infinity);
+        return LCProp.getSize(ct) <= readParam(metaObj, "sizeCap", Infinity);
       },
 
     ],

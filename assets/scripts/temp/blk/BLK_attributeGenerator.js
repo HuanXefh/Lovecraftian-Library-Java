@@ -48,7 +48,7 @@
     b.lastWarmup = Mathf.approachDelta(b.lastWarmup, Mathf.num(b.lastEffc > 0.0), b.block.delegee.warmupRate);
     b.productionEfficiency = Mathf.approachDelta(b.productionEfficiency, b.lastEffc, b.block.delegee.warmupRate);
     b.attrGenItmProg += b.productionEfficiency * b.delta();
-    b.attrGenTProg += b.productionEfficiency * b.delta();
+    b.attrGenProg += b.productionEfficiency * b.delta();
     if(Mathf.chanceDelta(b.block.effectChance * b.productionEfficiency)) {
       MDL_effect.showAround(b.x, b.y, b.block.generateEffect, b.block.delegee.generateEffectRange, 0.0);
     };
@@ -196,7 +196,7 @@
        * @memberof B_attributeGenerator
        * @instance
        */
-      attrGenTProg: 0.0,
+      attrGenProg: 0.0,
 
 
     })
@@ -222,7 +222,7 @@
 
 
       totalProgress: function() {
-        return this.attrGenTProg;
+        return this.attrGenProg;
       }
       .setProp({
         noSuper: true,

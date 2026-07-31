@@ -195,7 +195,7 @@
           this.inCdMap.put(unit, false);
         };
 
-        let prog = Math.min(this.progMap.get(unit, 0.0) + Time.delta * 5.0 * this.chargeMtp * MDL_entity._reloadMtp(unit), this.chargeCap);
+        let prog = Math.min(this.progMap.get(unit, 0.0) + Time.delta * 5.0 * this.chargeMtp * LCProp.getReloadMultiplier(unit), this.chargeCap);
         let inCd = this.inCdMap.get(unit, false);
         if(prog > 0.0 && !inCd) {
           let bul = MDL_pos._bulTg(unit.x, unit.y, unit.team, this.rad);

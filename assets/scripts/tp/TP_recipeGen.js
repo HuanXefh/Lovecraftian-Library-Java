@@ -197,7 +197,7 @@
       DB_item.db["group"]["biomass"],
       null,
       (mtp, paramObj) => {
-        paramObj.amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * mtp;
+        paramObj.amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) / mtp;
       },
       metaObj,
       (itm, metaObj) => ({

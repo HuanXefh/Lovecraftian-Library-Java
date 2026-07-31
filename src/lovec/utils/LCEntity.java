@@ -2,11 +2,15 @@ package lovec.utils;
 
 import arc.func.Boolf;
 import arc.func.Cons;
+import arc.struct.Seq;
 import arc.util.Nullable;
 import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.type.UnitType;
+import mindustry.world.Block;
 import mindustry.world.Tile;
 import rhino.NativeArray;
 
@@ -17,6 +21,26 @@ public class LCEntity {
 
 
     /* <-------------------- building --------------------> */
+
+
+    /**
+     * Gets amount of buildings of some type for a team.
+     */
+    public static int getBuildCount(Block blk, Team team) {
+        Seq<Building> bSeq = team.data().buildingTypes.get(blk);
+        return bSeq == null ? 0 : bSeq.size;
+    };
+
+
+    /**
+     * Iterates through buildings of the same type in a team.
+     */
+    public static void eachSomeBlock(Block blk, Team team, Cons<Building> cons) {
+        Seq<Building> bSeq = team.data().buildingTypes.get(blk);
+        if(bSeq != null) {
+            bSeq.each(cons);
+        };
+    };
 
 
     /**
@@ -78,6 +102,29 @@ public class LCEntity {
         });
 
         return arr;
+    };
+
+
+    /* <-------------------- unit --------------------> */
+
+
+    /**
+     * Gets amount of units of some type for a team.
+     */
+    public static int getUnitCount(UnitType utp, Team team) {
+        Seq<Unit> unitSeq = team.data().unitsByType[utp.id];
+        return unitSeq == null ? 0 : unitSeq.size;
+    };
+
+
+    /**
+     * Iterates through units of the same type in a team.
+     */
+    public static void eachSomeUnitType(UnitType utp, Team team, Cons<Unit> cons) {
+        Seq<Unit> unitSeq = team.data().unitsByType[utp.id];
+        if(unitSeq != null) {
+            unitSeq.each(cons);
+        };
     };
 
 
