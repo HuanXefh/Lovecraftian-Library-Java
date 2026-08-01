@@ -26,7 +26,7 @@
     liq.stats.add(fetchStat("lovec", "rs-isintermediate"), true);
     if(liq.intmdParent != null) liq.stats.add(fetchStat("lovec", "rs0int-parent"), newStatValue(tb => {
       tb.row();
-      MDL_table._l_ctRow(tb, liq.intmdParent);
+      MDL_table.setCtRow(tb, liq.intmdParent);
     }));
   };
 

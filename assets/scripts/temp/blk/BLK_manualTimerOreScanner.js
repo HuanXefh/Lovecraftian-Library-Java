@@ -16,7 +16,7 @@
 
 
   function comp_buildConfiguration(b, tb) {
-    MDL_table.__btnCfg(tb, b, () => b.ex_configureClick(), VARGEN.icons.boost);
+    MDL_table.btnCfg(tb, b, () => b.ex_configureClick(), VARGEN.icons.boost);
   };
 
 

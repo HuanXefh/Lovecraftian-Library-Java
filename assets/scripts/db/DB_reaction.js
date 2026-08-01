@@ -7,7 +7,7 @@
 function applyExplosion(x, y, rs, paramObj) {
   let pow = readParam(paramObj, "pow", 1.0);
 
-  FRAG_attack._a_explosion_global(
+  FRAG_attack.explosion_global(
     x, y,
     Mathf.lerp(40.0, 200.0, rs == null ? 1.0 : rs.explosiveness) * pow,
     16.0 * pow,

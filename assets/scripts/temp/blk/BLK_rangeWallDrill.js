@@ -21,7 +21,7 @@
       blk.range = blk.range + 1;
     };
 
-    MOD_tmi._r_rangeWallDrill(blk);
+    MOD_tmi.regisRc_rangeWallDrill(blk);
   };
 
 

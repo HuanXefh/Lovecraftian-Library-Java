@@ -76,8 +76,8 @@
   function comp_ex_buildTempSlider(b, tb) {
     tb.table(Styles.black3, tb1 => {
       tb1.left();
-      MDL_table.__margin(tb1);
-      MDL_table.__sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.ex_getTempSetMax(), 50.0, b.tempSet);
+      MDL_table.margin(tb1);
+      MDL_table.sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.ex_getTempSetMax(), 50.0, b.tempSet);
     }).left().growX();
   };
 

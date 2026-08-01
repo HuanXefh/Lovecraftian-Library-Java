@@ -52,7 +52,7 @@
 
 
   function comp_ex_onFlagTriggered(b) {
-    MDL_ui._d_flow(b.nameDialFlow);
+    MDL_ui.createFlow(b.nameDialFlow);
     if(Vars.state.isCampaign() && UTIL_dialogFlow.getNameCtMap().containsKey(b.nameDialFlow)) {
       UTIL_dialogFlow.getNameCtMap().get(b.nameDialFlow).unlock();
     };

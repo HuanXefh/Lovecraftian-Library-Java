@@ -87,7 +87,7 @@
    * @param {function(): number} fun
    * @return {DistributionArray}
    */
-  const _dis_fun = function(size, fun) {
+  const genDis = function(size, fun) {
     let arr = [];
 
     let i = 0;
@@ -98,7 +98,7 @@
 
     return arr;
   };
-  exports._dis_fun = _dis_fun;
+  exports.genDis = genDis;
 
 
   /**
@@ -109,7 +109,7 @@
    * @param {number|unset} [seed]
    * @return {DistributionArray}
    */
-  const _dis_rand = function(size, base, cap, seed) {
+  const genDisRand = function(size, base, cap, seed) {
     let arr = [];
     if(base == null) base = 0.0;
     if(cap == null) cap = 1.0;
@@ -130,7 +130,7 @@
 
     return arr;
   };
-  exports._dis_rand = _dis_rand;
+  exports.genDisRand = genDisRand;
 
 
   /**
@@ -141,7 +141,7 @@
    * @param {number|unset} [sigma]
    * @return {DistributionArray}
    */
-  const _dis_norm = function thisFun(size, mu, sigma) {
+  const genDisNorm = function thisFun(size, mu, sigma) {
     let arr = [];
     if(mu == null) mu = 0.0;
     if(sigma == null) sigma = 1.0;
@@ -170,4 +170,4 @@
   .setProp({
     tmpVal: null,
   });
-  exports._dis_norm = _dis_norm;
+  exports.genDisNorm = genDisNorm;

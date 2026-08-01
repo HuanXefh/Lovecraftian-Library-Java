@@ -18,26 +18,6 @@
 */
 
 
-  /* <------------------------------ input ------------------------------ */
-
-
-  let mouseMoveX = 0.0;
-  let mouseMoveY = 0.0;
-  let mouseMoveStartX = 0.0;
-  let mouseMoveStartY = 0.0;
-
-
-  /**
-   * Mouse movement velocity in pixels per second.
-   * LMB must be pressed.
-   * @return {number}
-   */
-  const _mouseVel = function() {
-    return Math.sqrt(Math.pow(mouseMoveX, 2) + Math.pow(mouseMoveY, 2));
-  };
-  exports._mouseVel = _mouseVel;
-
-
   /* <------------------------------ mod ------------------------------ */
 
 
@@ -107,18 +87,3 @@
   })
   .setAnno("debug");
   exports.lockModContents = lockModContents;
-
-
-/*
-  ========================================
-  Section: Application
-  ========================================
-*/
-
-
-  MDL_event.onDrag((dx, dy, x_f, y_f) => {
-    mouseMoveX = dx;
-    mouseMoveY = dy;
-    mouseMoveStartX = x_f;
-    mouseMoveStartY = y_f;
-  });

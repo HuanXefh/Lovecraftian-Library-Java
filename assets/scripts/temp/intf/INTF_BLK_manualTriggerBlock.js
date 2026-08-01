@@ -57,11 +57,11 @@
   function comp_ex_buildManualTriggerButton(b, tb) {
     tb.table(Styles.none, tb1 => {
       tb1.center();
-      MDL_table.__btnCfg(tb1, b, () => {
+      MDL_table.btnCfg(tb1, b, () => {
         Vars.state.paused ?
-          MDL_ui.show_fadeInfo("lovec", "paused-manual-click") :
+          MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
           b.manualTriggerCd > 0.0 ?
-            MDL_ui.show_fadeInfo("lovec", "in-cd") :
+            MDL_ui.showFadeInfo("lovec", "in-cd") :
             !b.ex_checkManualTriggerValid() ?
               undefined :
               b.configure("SPEC: click");

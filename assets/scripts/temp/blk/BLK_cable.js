@@ -41,7 +41,7 @@
   function comp_unitOn(b, unit) {
     if(b.power == null || b.power.status < 0.1 || !b.block.delegee.canShortCircuit || !LCRand.chanceDelta(UTIL_rand.get("block"), 0.03) || !MDL_cond._isWet(unit)) return;
 
-    FRAG_attack._a_lightning(b.x, b.y, null, null, null, 6, 4, null, "ground");
+    FRAG_attack.lightning(b.x, b.y, null, null, null, 6, 4, null, "ground");
     TRIGGER.wetStepOnCable.fire();
   };
 

@@ -12,14 +12,14 @@
 
 
   function comp_init(blk) {
-    blk.matGrp = MDL_flow._matGrp(blk);
-    blk.corRes = MDL_flow._corRes(blk);
+    blk.matGrp = MDL_flow.getMatGrp(blk);
+    blk.corRes = MDL_flow.getCorRes(blk);
     blk.cloggable = MDL_cond._isCloggableBlock(blk);
   };
 
 
   function comp_setStats(blk) {
-    let matGrpB = MDL_flow._matGrpB(blk);
+    let matGrpB = MDL_flow.getMatGrpB(blk);
     if(matGrpB !== TmpStateTag.error) blk.stats.add(fetchStat("lovec", "blk0liq-matgrp"), matGrpB);
     if(blk.cloggable) blk.stats.add(fetchStat("lovec", "blk0liq-cloggable"), true);
   };
@@ -50,7 +50,7 @@
 
   function comp_ex_updateCorrosion(b, liq, amt) {
     let corPow = tryJsProp(liq, "corPow", 0.0);
-    let corMtp = MDL_flow._corMtp(b.block, liq);
+    let corMtp = MDL_flow.calcCorMtp(b.block, liq);
     if(corPow < 0.01 && corMtp > 1.0) corPow = 1.0;
     if(corPow < 0.01) return;
     let corRes = tryJsProp(b.block, "corRes", 1.0);

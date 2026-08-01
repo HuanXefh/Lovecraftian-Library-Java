@@ -26,7 +26,7 @@
       Draw.alpha(0.65);
       blk.drawnMap.each((t, cond) => {
         if(!cond || !LCCheck.checkPosVisible(t.worldx(), t.worldy(), 8.0)) return;
-        Draw.rect(MDL_texture._regVari(blk, t), t.worldx(), t.worldy());
+        Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx(), t.worldy());
       });
       Draw.color();
 

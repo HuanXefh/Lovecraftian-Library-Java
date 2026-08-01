@@ -32,14 +32,14 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _cepProv = function(blk_gn) {
+  const getCepProv = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk == null ?
       0.0 :
       DB_block.db["param"]["cep"]["prov"].read(blk.name, MDL_cond._isCoreBlock(blk) ? 5.0 : 0.0);
   }
   .setCache();
-  exports._cepProv = _cepProv;
+  exports.getCepProv = getCepProv;
 
 
   /**
@@ -47,14 +47,14 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _cepUse = function(blk_gn) {
+  const getCepUse = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk == null ?
       0.0 :
       DB_block.db["param"]["cep"]["use"].read(blk.name, 0.0);
   }
   .setCache();
-  exports._cepUse = _cepUse;
+  exports.getCepUse = getCepUse;
 
 
   /**
@@ -62,10 +62,10 @@
    * @param {Team} team
    * @return {number}
    */
-  const _cepCapCur = function(team) {
+  const getCepCapCur = function(team) {
     return cepCapMap.get(team, 0.0);
   };
-  exports._cepCapCur = _cepCapCur;
+  exports.getCepCapCur = getCepCapCur;
 
 
   /**
@@ -73,10 +73,10 @@
    * @param {Team} team
    * @return {number}
    */
-  const _cepUseCur = function(team) {
+  const getCepUseCur = function(team) {
     return cepUseMap.get(team, 0.0);
   };
-  exports._cepUseCur = _cepUseCur;
+  exports.getCepUseCur = getCepUseCur;
 
 
   /**
@@ -84,10 +84,10 @@
    * @param {Team} team
    * @return {number}
    */
-  const _cepFracCur = function(team) {
+  const getCepFracCur = function(team) {
     return cepFracMap.get(team, 0.0);
   };
-  exports._cepFracCur = _cepFracCur;
+  exports.getCepFracCur = getCepFracCur;
 
 
   /**
@@ -95,10 +95,10 @@
    * @param {Team} team
    * @return {number}
    */
-  const _cepEffcCur = function(team) {
+  const getCepEffcCur = function(team) {
     return cepEffcMap.get(team, 1.0);
   };
-  exports._cepEffcCur = _cepEffcCur;
+  exports.getCepEffcCur = getCepEffcCur;
 
 
   /* <------------------------------ mining ------------------------------ */
@@ -110,10 +110,10 @@
    * @param {boolean|unset} [boosted]
    * @return {number}
    */
-  const _drillSpd = function(blk, boosted) {
+  const getDrillSpd = function(blk, boosted) {
     return readClassFunMap(DB_block.db["class"]["map"]["drillSpd"], blk, Function.airZero)(blk, tryVal(boosted, false)) * tryJsProp(blk, "drillAmtMtp", 1.0);
   };
-  exports._drillSpd = _drillSpd;
+  exports.getDrillSpd = getDrillSpd;
 
 
   /**
@@ -121,7 +121,7 @@
    * @param {number} depthLvl
    * @return {string}
    */
-  const _depthLvlB = function thisFun(depthLvl) {
+  const getDepthLvlB = function thisFun(depthLvl) {
     return "${1} (${2})".format(
       depthLvl,
       MDL_bundle.getTerm.apply(null, DB_misc.db["block"]["depthName"].read(depthLvl, thisFun.tmpTup.with("lovec", "unknown"))),
@@ -130,7 +130,7 @@
   .setProp({
     tmpTup: [],
   });
-  exports._depthLvlB = _depthLvlB;
+  exports.getDepthLvlB = getDepthLvlB;
 
 
   /**
@@ -138,7 +138,7 @@
    * @param {Block} blk
    * @return {number}
    */
-  const _treeRsLvl = function(blk) {
+  const getTreeRsLvl = function(blk) {
     if(!MDL_cond._isTreeBlock(blk)) return 0.0;
 
     let
@@ -152,7 +152,7 @@
 
     return rsLvl;
   };
-  exports._treeRsLvl = _treeRsLvl;
+  exports.getTreeRsLvl = getTreeRsLvl;
 
 
   /* <------------------------------ turret ------------------------------ */
@@ -197,9 +197,9 @@
     });
     TRIGGER.majorIter.building.addGlobalListener((b, isActive) => {
       if(!isActive) return;
-      cepCapObj[b.team] += _cepProv(b.block);
+      cepCapObj[b.team] += getCepProv(b.block);
       if(b.cheating()) return;
-      cepUseObj[b.team] += _cepUse(b.block);
+      cepUseObj[b.team] += getCepUse(b.block);
     });
     TRIGGER.majorIter.end.addGlobalListener(() => {
       VARGEN.mainTeams.forEachFast(team => {

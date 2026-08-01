@@ -27,7 +27,7 @@
    * @param {boolean|unset} [shouldReturnName]
    * @return {TextureRegion|string}
    */
-  const _regBlk = function(blk_gn, shouldReturnName) {
+  const getRegBlk = function(blk_gn, shouldReturnName) {
     if(Vars.headless) return shouldReturnName ? "" : ARC_AIR.reg;
 
     let blk = findContent(blk_gn);
@@ -38,7 +38,7 @@
       LCTexture.getBlockRegion(blk);
   }
   .setCache();
-  exports._regBlk = _regBlk;
+  exports.getRegBlk = getRegBlk;
 
 
   /**
@@ -49,13 +49,13 @@
    * @param {number} offTy
    * @return {TextureRegion}
    */
-  const _regBlkTileCut = function(blk_gn, offTx, offTy) {
-    let reg = _regBlk(blk_gn);
+  const getRegBlkTileCut = function(blk_gn, offTx, offTy) {
+    let reg = getRegBlk(blk_gn);
     if(reg === ARC_AIR.reg) return reg;
     return new TextureRegion(reg, offTx * 32.0, offTy * 32.0, 32.0, 32.0);
   }
   .setCache();
-  exports._regBlkTileCut = _regBlkTileCut;
+  exports.getRegBlkTileCut = getRegBlkTileCut;
 
 
   /**
@@ -65,7 +65,7 @@
    * @param {number|unset} [off]
    * @return {TextureRegion}
    */
-  const _regVari = function(blk_gn, t, off) {
+  const getRegVari = function(blk_gn, t, off) {
     let blk = MDL_content.getCt(blk_gn, "block");
     if(blk == null) return ARC_AIR.reg;
     if(blk.variants === 0) return blk.region;
@@ -74,7 +74,7 @@
     return blk.variantRegions[Math.floor(Mathf.randomSeed(t.pos() + off, 0.0, Mathf.maxZero(blk.variantRegions.length - 1) + 0.9999))];
   }
   .setAnno("non-headless", null, ARC_AIR.reg);
-  exports._regVari = _regVari;
+  exports.getRegVari = getRegVari;
 
 
   /**
@@ -82,7 +82,7 @@
    * @param {BlockGn} blk_gn
    * @return {TextureRegion}
    */
-  const _regTurBase = function(blk_gn) {
+  const getRegTurBase = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "block");
     if(blk == null) return ARC_AIR.reg;
     if(blk.baseRegion != null) return blk.baseRegion;
@@ -100,7 +100,7 @@
   }
   .setCache()
   .setAnno("non-headless", null, ARC_AIR.reg);
-  exports._regTurBase = _regTurBase;
+  exports.getRegTurBase = getRegTurBase;
 
 
   /* random overlay */
@@ -112,7 +112,7 @@
    * @param {string} name
    * @return {function(): TextureRegion[]}
    */
-  const _randRegsGetter = function(name) {
+  const getRandRegsGetter = function(name) {
     return function() {
       let arr = [];
       if(Vars.headless) return arr;
@@ -126,7 +126,7 @@
       return arr;
     };
   };
-  exports._randRegsGetter = _randRegsGetter;
+  exports.getRandRegsGetter = getRandRegsGetter;
 
 
   /* <------------------------------ pixmap ------------------------------ */
@@ -144,7 +144,7 @@
    * @param {number|unset} [aThr] - Alpha thresh below which top pixel is ignored.
    * @return {Pixmap}
    */
-  const _pix_stack = function(pixBot, pixTop, aThr) {
+  const stackPix = function(pixBot, pixTop, aThr) {
     let
       pix = new Pixmap(pixBot.width, pixBot.height),
       thr = Math.round(tryVal(aThr, 0.14) * 255),
@@ -167,7 +167,7 @@
 
     return pix;
   };
-  exports._pix_stack = _pix_stack;
+  exports.stackPix = stackPix;
 
 
   /**
@@ -176,20 +176,20 @@
    * @param {ContentGn} ct_gn
    * @return {Pixmap}
    */
-  const _pix_ctStack = function(pixBase, ct_gn) {
+  const stackPixWithCt = function(pixBase, ct_gn) {
     let ct = findContent(ct_gn);
     if(ct == null) ERROR_HANDLER.throw("noContentFound", ct_gn);
     let
-      pixCt = Core.atlas.getPixmap(ct instanceof Block ? _regBlk(ct) : ct.fullIcon),
+      pixCt = Core.atlas.getPixmap(ct instanceof Block ? getRegBlk(ct) : ct.fullIcon),
       pixCtStack = new Pixmap(pixBase.width, pixBase.height);
 
     pixCtStack.draw(pixCt, pixCtStack.width * 0.5, pixCtStack.height * 0.5, pixCtStack.width * 0.5, pixCtStack.height * 0.5);
-    let pix = _pix_stack(pixBase, pixCtStack);
+    let pix = stackPix(pixBase, pixCtStack);
     pixCtStack.dispose();
 
     return pix;
   };
-  exports._pix_ctStack = _pix_ctStack;
+  exports.stackPixWithCt = stackPixWithCt;
 
 
   /**
@@ -198,7 +198,7 @@
    * @param {PixmapGn} pixRef
    * @return {Pixmap}
    */
-  const _pix_gsColor = function(pixBase, pixRef) {
+  const recolorPix = function(pixBase, pixRef) {
     let pix = new Pixmap(pixBase.width, pixBase.height);
     let
       rawBaseColors = MDL_color._pixColors(pixBase),
@@ -233,7 +233,7 @@
 
     return pix;
   };
-  exports._pix_gsColor = _pix_gsColor;
+  exports.recolorPix = recolorPix;
 
 
   /* <------------------------------ icon packing ------------------------------ */
@@ -248,14 +248,14 @@
    * @param {function(): Pixmap} pixGetter
    * @param {MultiPacker.PageType|unset} [pageType]
    */
-  const _ip_base = function(ct, packer, suffix, pixGetter, pageType) {
+  const packIcon = function(ct, packer, suffix, pixGetter, pageType) {
     if(suffix == null) suffix = "";
 
     let pix = pixGetter();
     packer.add(tryVal(pageType, MultiPacker.PageType.main), ct.name + suffix, pix);
     pix.dispose();
   };
-  exports._ip_base = _ip_base;
+  exports.packIcon = packIcon;
 
 
   /**
@@ -266,12 +266,12 @@
    * @param {ContentGn} ctUnd_gn
    * @param {ContentGn} ctOv_gn
    */
-  const _ip_ctTg = function(ct, packer, suffix, ctUnd_gn, ctOv_gn) {
+  const packIconWithCt = function(ct, packer, suffix, ctUnd_gn, ctOv_gn) {
     let ctUnd = findContent(ctUnd_gn);
     if(ctUnd == null) ERROR_HANDLER.throw("noContentFound", ctUnd_gn);
     let ctOv = findContent(ctOv_gn);
     if(ctOv == null) ERROR_HANDLER.throw("noContentFound", ctOv_gn);
 
-    _ip_base(ct, packer, suffix, () => _pix_ctStack(Core.atlas.getPixmap(ctUnd.name), ctOv));
+    packIcon(ct, packer, suffix, () => stackPixWithCt(Core.atlas.getPixmap(ctUnd.name), ctOv));
   };
-  exports._ip_ctTg = _ip_ctTg;
+  exports.packIconWithCt = packIconWithCt;

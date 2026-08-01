@@ -187,7 +187,7 @@
         tb.left().setColor(Pal.darkestGray);
         tb.add("").get().setText(prov(() => Strings.fixed(this.timeScl, 2) + "x"));
         tb.row();
-        MDL_table.__slider(tb, val => {
+        MDL_table.slider(tb, val => {
           val = checkCanControlTime() ? val : 1.0;
           Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0 * val);
           this.timeScl = val;
@@ -216,8 +216,8 @@
    */
   CLS_dragButton.prototype.add = function(x, y) {
     if(Core.scene == null) return;
-    if(x == null) x = MDL_ui._centerX() * 1.2;
-    if(y == null) y = MDL_ui._centerY() * 0.4;
+    if(x == null) x = MDL_ui.getCenterX() * 1.2;
+    if(y == null) y = MDL_ui.getCenterY() * 0.4;
 
     this.rebuild();
     this.root.setPosition(x, y, Align.center);

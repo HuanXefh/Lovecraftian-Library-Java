@@ -19,8 +19,8 @@
     blk.priority = VAR.priority.powGen;
 
     if(blk.overwriteExploParam) {
-      blk.explosionRadius = Math.round(FRAG_attack._presExploRad(blk.size) / Vars.tilesize);
-      blk.explosionDamage = FRAG_attack._presExploDmg(blk.size);
+      blk.explosionRadius = Math.round(FRAG_attack.getPresExploRad(blk.size) / Vars.tilesize);
+      blk.explosionDamage = FRAG_attack.getPresExploDmg(blk.size);
       if(blk.explosionPuddleLiquid != null) {
         blk.explosionPuddles = Math.round(Mathf.lerp(5, 10, blk.size / 2));
         blk.explosionPuddleRange = blk.explosionRadius * 0.75;
@@ -50,8 +50,8 @@
 
 
   function comp_createExplosion(b) {
-    FRAG_attack._a_shockwave(b.x, b.y, b.block.explosionRadius);
-    FRAG_attack._a_impact(b.x, b.y, b.block.explosionDamage * 0.5, 480.0, b.block.explosionRadius * Vars.tilesize, 0.0, 0.0);
+    FRAG_attack.shockwave(b.x, b.y, b.block.explosionRadius);
+    FRAG_attack.impact(b.x, b.y, b.block.explosionDamage * 0.5, 480.0, b.block.explosionRadius * Vars.tilesize, 0.0, 0.0);
   };
 
 

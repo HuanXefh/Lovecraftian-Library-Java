@@ -17,9 +17,9 @@
 
 
   function comp_setStats(blk) {
-    let cepProv = FRAG_faci._cepProv(blk);
+    let cepProv = FRAG_faci.getCepProv(blk);
     if(cepProv > 0.0) blk.stats.add(fetchStat("lovec", "blk0misc-cepprov"), cepProv);
-    let cepUse = FRAG_faci._cepUse(blk);
+    let cepUse = FRAG_faci.getCepUse(blk);
     if(cepUse > 0.0) blk.stats.add(fetchStat("lovec", "blk0misc-cepuse"), cepUse);
   };
 
@@ -32,9 +32,9 @@
     ) return;
 
     blk.addBar("lovec-cep", b => new Bar(
-      prov(() => Core.bundle.format("bar.lovec-bar-cep-amt", (FRAG_faci._cepCapCur(b.team) - FRAG_faci._cepUseCur(b.team)) + "/" + FRAG_faci._cepCapCur(b.team))),
-      prov(() => FRAG_faci._cepFracCur(b.team) < 1.0 ? Pal.accent : Tmp.c1.set(Color.scarlet).lerp(Color.clear, Math.abs(Math.sin(Time.globalTime * 0.03)))),
-      () => FRAG_faci._cepFracCur(b.team) > 1.0 ? 1.0 : Mathf.clamp(1.0 - FRAG_faci._cepFracCur(b.team)),
+      prov(() => Core.bundle.format("bar.lovec-bar-cep-amt", (FRAG_faci.getCepCapCur(b.team) - FRAG_faci.getCepUseCur(b.team)) + "/" + FRAG_faci.getCepCapCur(b.team))),
+      prov(() => FRAG_faci.getCepFracCur(b.team) < 1.0 ? Pal.accent : Tmp.c1.set(Color.scarlet).lerp(Color.clear, Math.abs(Math.sin(Time.globalTime * 0.03)))),
+      () => FRAG_faci.getCepFracCur(b.team) > 1.0 ? 1.0 : Mathf.clamp(1.0 - FRAG_faci.getCepFracCur(b.team)),
     ));
   };
 
@@ -43,7 +43,7 @@
     if(!b.block.delegee.useCep) return;
 
     if(TIMER.effc) {
-      b.cepEffc = FRAG_faci._cepEffcCur(b.team);
+      b.cepEffc = FRAG_faci.getCepEffcCur(b.team);
     };
     if(TIMER.coreSignal && b.efficiency > 0.0 && b.shouldConsume()) {
       MDL_effect._e_coreSignal(b.x, b.y, b.team, b.block.size * 0.6 * Vars.tilesize);

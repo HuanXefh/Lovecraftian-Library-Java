@@ -23,7 +23,7 @@
 
 
   function comp_init(blk) {
-    MOD_tmi._r_recipeFactory(blk, blk.rcMdl);
+    MOD_tmi.regisRc_recipeFactory(blk, blk.rcMdl);
   };
 
 
@@ -35,16 +35,16 @@
       tb.row();
 
       if(blk.useAutoSelection) {
-        MDL_table.__break(tb, 1);
+        MDL_table.br(tb, 1);
         tb.add(MDL_bundle.getInfo("lovec", "recipe-auto-selection")).left().padLeft(32.0).color(Pal.remove).row();
-        MDL_table.__break(tb, 1);
+        MDL_table.br(tb, 1);
       };
 
-      MDL_table._d_rc(tb, blk);
-      MDL_table.__btn(tb, MDL_bundle.getTerm("lovec", "new-window"), () => {
+      MDL_table.setRc(tb, blk);
+      MDL_table.btn(tb, MDL_bundle.getTerm("lovec", "new-window"), () => {
         new CLS_window(
           "${1} (${2})".format(fetchStat("lovec", "blk0fac-recipes").localized(), blk.localizedName),
-          tb1 => MDL_table._d_rc(tb1, blk, true, true),
+          tb1 => MDL_table.setRc(tb1, blk, true, true),
         ).add();
       }).row();
     }));

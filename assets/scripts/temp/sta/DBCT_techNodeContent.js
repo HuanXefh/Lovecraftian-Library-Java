@@ -41,8 +41,8 @@
       sta.stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
         tb.row();
         tb.table(Styles.none, tb1 => {
-          MDL_table.__margin(tb1);
-          MDL_table._l_ctLi(tb, sta.childCts, 48.0, 7, null, VAR.dialog.ct1);
+          MDL_table.margin(tb1);
+          MDL_table.setCtLi(tb, sta.childCts, 48.0, 7, null, VAR.dialog.ct1);
         }).growX();
       }));
     };
@@ -50,8 +50,8 @@
       sta.stats.add(fetchStat("lovec", "spec-nodercs"), newStatValue(tb => {
         tb.row();
         tb.table(Styles.none, tb1 => {
-          MDL_table.__margin(tb1);
-          MDL_table._l_iconLi(
+          MDL_table.margin(tb1);
+          MDL_table.setIconLi(
             tb1,
             sta.childRcs.map(rc => rc.altIcon),
             sta.childRcs.map(rc => tb => rc.displayTooltip(tb, true, rc.owner.localizedName)),

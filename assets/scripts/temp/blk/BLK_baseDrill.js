@@ -50,9 +50,9 @@
       blk.stats.remove(Stat.drillTier);
       blk.stats.remove(Stat.drillSpeed);
 
-      let drillSpd = FRAG_faci._drillSpd(blk, false);
+      let drillSpd = FRAG_faci.getDrillSpd(blk, false);
       blk.stats.add(fetchStat("lovec", "blk0min-basedrillspd"), drillSpd, StatUnit.itemsSecond);
-      let drillSpdBoost = FRAG_faci._drillSpd(blk, true);
+      let drillSpdBoost = FRAG_faci.getDrillSpd(blk, true);
       if(!drillSpdBoost.fEqual(drillSpd)) blk.stats.add(fetchStat("lovec", "blk0min-boosteddrillspd"), drillSpdBoost, StatUnit.itemsSecond);
       blk.stats.add(fetchStat("lovec", "blk0min-drilltier"), blk.tier);
     };
@@ -60,12 +60,12 @@
     if(blk.blockedItems != null && blk.blockedItems.size > 0) {
       blk.stats.add(fetchStat("lovec", "blk0min-blockeditms"), newStatValue(tb => {
         tb.row();
-        MDL_table._l_ctLi(tb, blk.blockedItems.toArray());
+        MDL_table.setCtLi(tb, blk.blockedItems.toArray());
       }));
     } else if(blk.itmWhitelist.length > 0) {
       blk.stats.add(fetchStat("lovec", "blk0min-alloweditms"), newStatValue(tb => {
         tb.row();
-        MDL_table._l_ctLi(tb, blk.itmWhitelist);
+        MDL_table.setCtLi(tb, blk.itmWhitelist);
       }));
     };
 
@@ -428,7 +428,7 @@
 
       write: function(wr) {
         wr.f(this.drillItmProg);
-        MDL_io.__objStrNum(wr, this.payChargeObj);
+        MDL_io.objStrNum(wr, this.payChargeObj);
       },
 
 
@@ -437,7 +437,7 @@
           this.drillItmProg = rd.f();
         };
         if(this.LCReviSub >= 1) {
-          MDL_io.__objStrNum(rd, this.payChargeObj);
+          MDL_io.objStrNum(rd, this.payChargeObj);
         };
       },
 

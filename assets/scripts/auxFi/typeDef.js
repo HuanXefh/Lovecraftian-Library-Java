@@ -171,6 +171,10 @@
 
 
   /**
+   * @global
+   * @typedef {Table} DialogActor
+   */
+  /**
    * `TUPLE`: nameMod, nameDial, ind.
    * @global
    * @typedef {[string, string, number]} DialogTuple

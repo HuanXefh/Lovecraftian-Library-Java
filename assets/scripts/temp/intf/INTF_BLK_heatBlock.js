@@ -21,7 +21,7 @@
   function comp_init(blk) {
     blk.clipSize += 140.0;
     if(blk.heatCooldownRate < 0.0) blk.heatCooldownRate = blk.heatWarmupRate;
-    blk.heatBlkMeltTemp = MDL_flow._heatRes(blk);
+    blk.heatBlkMeltTemp = MDL_flow.getHeatRes(blk);
     blk.heatLightTempReq = Math.max(blk.heatLightTempReq, 60.01);
     if(blk.heatLightRad < 0.0) blk.heatLightRad = blk.size * Vars.tilesize * 0.7;
 
@@ -143,8 +143,8 @@
 
     b.heatFetchTgs.clear();
     b.proximity.each(
-      ob => ob.ex_getHeatProd != null || MDL_recipeDict._prodAmt(VARGEN.auxHeat, ob.block) > 0.0,
-      ob => b.heatFetchTgs.push(ob, MDL_pos._sideFrac(ob, b)),
+      ob => ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(VARGEN.auxHeat, ob.block) > 0.0,
+      ob => b.heatFetchTgs.push(ob, MDL_pos.calcSideFrac(ob, b)),
     );
   };
 
@@ -191,7 +191,7 @@
         if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
         heat = ob.ex_getHeatProd != null ?
           (ob.ex_getHeatProd() * sideFrac) :
-          (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict._prodAmt_b(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict._prodAmt_b(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
+          (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
         b.maxHeaterProd = Math.max(heat, b.maxHeaterProd);
         heatTg += heat * b.block.delegee.tempExtMtp;
       });

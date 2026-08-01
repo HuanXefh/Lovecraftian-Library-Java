@@ -12,8 +12,8 @@
 
 
   function comp_init(blk) {
-    blk.presRes = MDL_flow._presRes(blk);
-    blk.vacRes = MDL_flow._vacRes(blk);
+    blk.presRes = MDL_flow.getPresRes(blk);
+    blk.vacRes = MDL_flow.getVacRes(blk);
   };
 
 
@@ -96,7 +96,7 @@
       let b_t = b.presSupplyTgs[b.presSupplyIncre % b.presSupplyTgs.length];
       if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
         let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
-        let consAmt = MDL_recipeDict._consAmt_b(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t);
+        let consAmt = MDL_recipeDict.getConsAmtByBuild(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t);
         FRAG_fluid.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt * VAR.time.liqIntv, false, false, true);
         if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
           b_t.damagePierce((b_t.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) / 5.0);

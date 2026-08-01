@@ -106,7 +106,7 @@
       null, null,
       {
         haltTimeS: inTimeS + outTimeS + susTimeS,
-        scr: () => MDL_ui._d_fade(0.0, color, inTimeS, outTimeS, susTimeS),
+        scr: () => MDL_ui.createFade(0.0, color, inTimeS, outTimeS, susTimeS),
       },
     );
     this.offInd = 3;
@@ -129,7 +129,7 @@
         haltTimeS: 0.0,
         scr: () => {
           TRIGGER_BACKGROUND = true;
-          MDL_ui._d_bg(0.0, nameBg, () => !TRIGGER_BACKGROUND);
+          MDL_ui.createBg(0.0, nameBg, () => !TRIGGER_BACKGROUND);
         },
       },
     );
@@ -175,7 +175,7 @@
         haltTimeS: 0.0,
         scr: () => {
           TRIGGER_MUSIC = true;
-          MDL_ui._d_bgm(0.0, mus_gn, () => !TRIGGER_MUSIC);
+          MDL_ui.createBgm(0.0, mus_gn, () => !TRIGGER_MUSIC);
         },
       },
     );
@@ -319,13 +319,13 @@
 
     this.completeRow();
     let paramObj = this.fixParamObj();
-    let callFlow = () => MDL_ui._d_flow.callNext(this.dialFlowData);
+    let callFlow = () => MDL_ui.createFlow.callNext(this.dialFlowData);
     let textScrArr = [];
     (texts.length)._it(i => {
       textScrArr.push(texts[i], callFlow);
     });
 
-    paramObj.selectionScr = () => MDL_ui._d_selection(waitTimeS, textScrArr, w, h);
+    paramObj.selectionScr = () => MDL_ui.createSelection(waitTimeS, textScrArr, w, h);
 
     return this;
   };

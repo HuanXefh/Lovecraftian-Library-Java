@@ -278,7 +278,7 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _consAmt = function(ct_gn, blk_gn) {
+  const getConsAmt = function(ct_gn, blk_gn) {
     let val = 0.0;
     if(ct_gn == null) return val;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
@@ -305,20 +305,20 @@
     return val;
   }
   .setCache();
-  exports._consAmt = _consAmt;
+  exports.getConsAmt = getConsAmt;
 
 
   /**
-   * Variant of {@link _consAmt} for buildings.
+   * Variant of {@link getConsAmt} for buildings.
    * @param {ContentGn} ct_gn
    * @param {Building} b
    * @return {number}
    */
-  const _consAmt_b = function(ct_gn, b) {
+  const getConsAmtByBuild = function(ct_gn, b) {
     let ct = MDL_content.getCt(ct_gn, null, true);
-    return tryFun(b.ex_getConsAmt, b, _consAmt(ct, b.block), ct);
+    return tryFun(b.ex_getConsAmt, b, getConsAmt(ct, b.block), ct);
   };
-  exports._consAmt_b = _consAmt_b;
+  exports.getConsAmtByBuild = getConsAmtByBuild;
 
 
   /**
@@ -327,7 +327,7 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _prodAmt = function(ct_gn, blk_gn) {
+  const getProdAmt = function(ct_gn, blk_gn) {
     let val = 0.0;
     if(ct_gn == null) return val;
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
@@ -354,20 +354,20 @@
     return val;
   }
   .setCache();
-  exports._prodAmt = _prodAmt;
+  exports.getProdAmt = getProdAmt;
 
 
   /**
-   * Variant of {@link _prodAmt} for buildings.
+   * Variant of {@link getProdAmt} for buildings.
    * @param {ContentGn} ct_gn
    * @param {Building} b
    * @return {number}
    */
-  const _prodAmt_b = function(ct_gn, b) {
+  const getProdAmtByBuild = function(ct_gn, b) {
     let ct = MDL_content.getCt(ct_gn, null, true);
-    return tryFun(b.ex_getProdAmt, b, _prodAmt(ct, b.block), ct);
+    return tryFun(b.ex_getProdAmt, b, getProdAmt(ct, b.block), ct);
   };
-  exports._prodAmt_b = _prodAmt_b;
+  exports.getProdAmtByBuild = getProdAmtByBuild;
 
 
   /**
@@ -376,11 +376,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _hasIo = function(ct_gn, blk_gn) {
-    return _consAmt(ct_gn, blk_gn) > 0.0 || _prodAmt(ct_gn, blk_gn) > 0.0;
+  const checkIo = function(ct_gn, blk_gn) {
+    return getConsAmt(ct_gn, blk_gn) > 0.0 || getProdAmt(ct_gn, blk_gn) > 0.0;
   }
   .setCache();
-  exports._hasIo = _hasIo;
+  exports.checkIo = checkIo;
 
 
   /**
@@ -389,10 +389,10 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _hasAnyIo =  function(cts_gn, blk_gn) {
-    return cts_gn.some(ct_gn => _hasIo(ct_gn, blk_gn));
+  const checkAnyIo =  function(cts_gn, blk_gn) {
+    return cts_gn.some(ct_gn => checkIo(ct_gn, blk_gn));
   };
-  exports._hasAnyIo = _hasAnyIo;
+  exports.checkAnyIo = checkAnyIo;
 
 
   /**
@@ -401,10 +401,10 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _hasAllIo =  function(cts_gn, blk_gn) {
-    return cts_gn.every(ct_gn => _hasIo(ct_gn, blk_gn));
+  const checkAllIo =  function(cts_gn, blk_gn) {
+    return cts_gn.every(ct_gn => checkIo(ct_gn, blk_gn));
   };
-  exports._hasAllIo = _hasAllIo;
+  exports.checkAllIo = checkAllIo;
 
 
   /**
@@ -413,7 +413,7 @@
    * @param {boolean|unset} [appendData] - If true, this method will return a 3-array instead. <br> `ROW`: blk, amt, data.
    * @return {Array}
    */
-  const _consumers = function(ct_gn, appendData) {
+  const getConsumers = function(ct_gn, appendData) {
     let arr = [];
 
     if(ct_gn == null) return arr;
@@ -447,16 +447,16 @@
     return arr;
   }
   .setCache();
-  exports._consumers = _consumers;
+  exports.getConsumers = getConsumers;
 
 
   /**
-   * Variant of {@link _consumers} that finds producers instead.
+   * Variant of {@link getConsumers} that finds producers instead.
    * @param {ContentGn} ct_gn - Can be a custom field name.
    * @param {boolean|unset} [appendData]
    * @return {Array}
    */
-  const _producers = function(ct_gn, appendData) {
+  const getProducers = function(ct_gn, appendData) {
     let arr = [];
 
     if(ct_gn == null) return arr;
@@ -490,7 +490,7 @@
     return arr;
   }
   .setCache();
-  exports._producers = _producers;
+  exports.getProducers = getProducers;
 
 
 /*

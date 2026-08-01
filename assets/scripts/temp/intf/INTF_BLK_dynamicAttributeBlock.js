@@ -43,7 +43,7 @@
       });
     });
 
-    MOD_tmi._r_dynamicAttributeBlock(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr());
+    MOD_tmi.regisRc_dynamicAttributeBlock(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr());
   };
 
 
@@ -60,11 +60,11 @@
 
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table._d_attr(tb, MDL_attr.getAttrsInAttrRsArr(blk.attrRsArr));
+      MDL_table.setAttr(tb, MDL_attr.getAttrsInAttrRsArr(blk.attrRsArr));
     }));
     blk.stats.add(fetchStat("lovec", "blk-attroutput"), newStatValue(tb => {
       tb.row();
-      MDL_table._l_table(tb, (function() {
+      MDL_table.setTable(tb, (function() {
         let matArr = [[
           "",
           MDL_bundle.getTerm("lovec", "resource"),

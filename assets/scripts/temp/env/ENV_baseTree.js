@@ -42,7 +42,7 @@
     let treeGrp = blk.treeGrp;
     if(treeGrp !== "none") blk.stats.add(fetchStat("lovec", "blk0env-treetype"), MDL_bundle.getTerm("lovec", treeGrp));
 
-    let rsLvl = FRAG_faci._treeRsLvl(blk);
+    let rsLvl = FRAG_faci.getTreeRsLvl(blk);
     if(rsLvl > 0.0) blk.stats.add(fetchStat("lovec", "blk0env-rslvl"), rsLvl.perc());
   };
 

@@ -41,7 +41,7 @@
 
 
   MDL_event.onInit(() => {
-    MDL_net.__packetHandler(PacketModes.BOTH, "lovec-both-rand-sync", payload => {
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-rand-sync", payload => {
       let args = unpackPayload(payload);
       UTIL_rand.getByInd(args[0]).setSeed(args[1]);
     });

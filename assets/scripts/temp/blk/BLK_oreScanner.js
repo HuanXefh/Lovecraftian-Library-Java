@@ -40,7 +40,7 @@
 
   function comp_setStats(blk) {
     blk.stats.add(Stat.range, blk.blkRad / Vars.tilesize, StatUnit.blocks);
-    blk.stats.add(fetchStat("lovec", "blk0min-scantier"), FRAG_faci._depthLvlB(blk.scanTier));
+    blk.stats.add(fetchStat("lovec", "blk0min-scantier"), FRAG_faci.getDepthLvlB(blk.scanTier));
   };
 
 
@@ -91,7 +91,7 @@
 
 
   function comp_buildConfiguration(b, tb) {
-    MDL_table.__btnCfgToggle(tb, b, Icon.eyeOffSmall, Icon.eyeSmall, Core.settings.getBool("lovec-draw0aux-scanner", true)).tooltip(MDL_bundle.getTerm("lovec", "toggle-display"), true);
+    MDL_table.btnCfgToggle(tb, b, Icon.eyeOffSmall, Icon.eyeSmall, Core.settings.getBool("lovec-draw0aux-scanner", true)).tooltip(MDL_bundle.getTerm("lovec", "toggle-display"), true);
   };
 
 
@@ -321,14 +321,14 @@
 
 
       write: function(wr) {
-        MDL_io.__ints(wr, this.revealedInts);
+        MDL_io.ints(wr, this.revealedInts);
       },
 
 
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
 
-        MDL_io.__ints(rd, this.revealedInts);
+        MDL_io.ints(rd, this.revealedInts);
       },
 
 

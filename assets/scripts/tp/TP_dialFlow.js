@@ -22,7 +22,7 @@
 
   /**
    * Example dialog flow.
-   * Type `MDL_ui._d_flow("lovec-test")` in console to see.
+   * Type `MDL_ui.createFlow("lovec-test")` in console to see.
    */
   newDialogFlow(
     "lovec-test",

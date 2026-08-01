@@ -25,7 +25,7 @@
    * Gets a space character or empty string, based on current locale.
    * @return {string}
    */
-  const _space = function() {
+  const getSpace = function() {
     switch(global.lovecUtil.prop.locale) {
       case "zh_CN" : return "";
       case "zh_TW" : return "";
@@ -34,14 +34,14 @@
     };
     return " ";
   };
-  exports._space = _space;
+  exports.getSpace = getSpace;
 
 
   /**
    * Gets a colon character based on current locale.
    * @return {string}
    */
-  const _colon = function() {
+  const getColon = function() {
     switch(global.lovecUtil.prop.locale) {
       case "zh_CN" : return "：";
       case "zh_TW" : return "：";
@@ -50,7 +50,7 @@
     };
     return ": ";
   };
-  exports._colon = _colon;
+  exports.getColon = getColon;
 
 
   /* <------------------------------ format (stat) ------------------------------ */
@@ -64,9 +64,9 @@
    * @param {string|unset} [strUnit]
    * @return {string}
    * @example
-   * _statText(Stat.range.localized(), 8, StatUnit.blocks.localized());                // Returns "Range: 8 blocks" with proper colors
+   * getStat(Stat.range.localized(), 8, StatUnit.blocks.localized());                // Returns "Range: 8 blocks" with proper colors
    */
-  const _statText = function(strStat, strVal, strUnit) {
+  const getStat = function(strStat, strVal, strUnit) {
     let
       str1 = (strStat == null) ? "" : ("[lightgray]" + strStat + ": []"),
       str2 = (strVal == null) ? "" : strVal,
@@ -74,7 +74,7 @@
 
     return str1 + str2 + str3;
   };
-  exports._statText = _statText;
+  exports.getStat = getStat;
 
 
   /**
@@ -84,13 +84,13 @@
    * @param {number} mtp
    * @param {boolean|unset} [isRev] - If true, it's red for more than 100% and vice versa.
    */
-  const _statText_mtp = function(strStat, mtp, isRev) {
-    return _statText(
+  const getMtpStat = function(strStat, mtp, isRev) {
+    return getStat(
       strStat,
       (mtp < 1.0 ? (isRev ? "[green]" : "[red]") : (isRev ? "[red]" : "[green]")) + Strings.autoFixed(mtp * 100.0, 2) + "%[]",
     );
   };
-  exports._statText_mtp = _statText_mtp;
+  exports.getMtpStat = getMtpStat;
 
 
   /* <------------------------------ format ------------------------------ */
@@ -102,7 +102,7 @@
    * @param {number|unset} [dmgPerc]
    * @return {string}
    */
-  const _dmgText = function(dmg, dmgPerc) {
+  const getDmgText = function(dmg, dmgPerc) {
     let
       str1 = dmg == null || dmg < 0.0001 ? null : String(dmg.roundFixed(2)).color(Pal.remove),
       str2 = dmgPerc == null || dmgPerc < 0.0001 ? null : dmgPerc.perc().color(Pal.remove);
@@ -113,7 +113,7 @@
 
     return str1 + " + ".color(Pal.remove) + str2;
   };
-  exports._dmgText = _dmgText;
+  exports.getDmgText = getDmgText;
 
 
   /**
@@ -122,7 +122,7 @@
    * @param {number|unset} [healPerc]
    * @return {string}
    */
-  const _healText = function(healAmt, healPerc) {
+  const getHealText = function(healAmt, healPerc) {
     let
       str1 = healAmt == null || healAmt < 0.0001 ? null : String(healAmt.roundFixed(2)).color(Pal.heal),
       str2 = healPerc == null || healPerc < 0.0001 ? null : healPerc.perc().color(Pal.heal);
@@ -132,7 +132,7 @@
     if(str2 == null) return str1;
     return str1 + " + ".color(Pal.heal) + str2;
   };
-  exports._healText = _healText;
+  exports.getHealText = getHealText;
 
 
   /**
@@ -141,15 +141,15 @@
    * @param {boolean|unset} [ignoreEmpty] - If true, returns empty string when no tags.
    * @return {string}
    * @example
-   * _tagText(["chloric", "fluoric", "oxidative"]);                // Returns "chloric; fluoric; oxidative"
+   * getTagText(["chloric", "fluoric", "oxidative"]);                // Returns "chloric; fluoric; oxidative"
    */
-  const _tagText = function(strs, ignoreEmpty) {
+  const getTagText = function(strs, ignoreEmpty) {
     let str_fi = "";
     strs.forEachFast(str => str_fi += str + "; ");
 
     return (String.isEmpty(str_fi) && !ignoreEmpty) ? TmpStateTag.error : str_fi;
   };
-  exports._tagText = _tagText;
+  exports.getTagText = getTagText;
 
 
   /**
@@ -208,9 +208,9 @@
    * @param {string} str
    * @return {Array<string>}
    * @example
-   * _keywords("copper;lead;graphite");                // Returns ["copper", "lead", "graphite"]
+   * parseKeywords("copper;lead;graphite");                // Returns ["copper", "lead", "graphite"]
    */
-  const _keywords = function thisFun(str) {
+  const parseKeywords = function thisFun(str) {
     let arr = [];
 
     let tmp = "", l;
@@ -235,7 +235,7 @@
       "，", "。", "、",
     ],
   });
-  exports._keywords = _keywords;
+  exports.parseKeywords = parseKeywords;
 
 
   /**
@@ -243,7 +243,7 @@
    * @param {Array<string>} keywords
    * @return {(function(UnlockableContent): boolean)[]}
    */
-  const _searchBoolFs = function(keywords) {
+  const getSearchChecks = function(keywords) {
     let arr = [];
     const li = DB_misc.db["search"]["tag"];
 
@@ -276,7 +276,7 @@
 
     return arr;
   };
-  exports._searchBoolFs = _searchBoolFs;
+  exports.getSearchChecks = getSearchChecks;
 
 
   /**
@@ -285,7 +285,7 @@
    * @param {string} str
    * @return {boolean}
    */
-  const _searchValid = function(ct, str) {
-    return parseLogicOp(str).some(strs => strs.every(str1 => _searchBoolFs(_keywords(str1)).every(boolF => boolF(ct))));
+  const checkSearchValid = function(ct, str) {
+    return parseLogicOp(str).some(strs => strs.every(str1 => getSearchChecks(parseKeywords(str1)).every(boolF => boolF(ct))));
   };
-  exports._searchValid = _searchValid;
+  exports.checkSearchValid = checkSearchValid;

@@ -30,7 +30,7 @@
     itm.stats.add(fetchStat("lovec", "rs-isintermediate"), true);
     if(itm.intmdParent != null) itm.stats.add(fetchStat("lovec", "rs0int-parent"), newStatValue(tb => {
       tb.row();
-      MDL_table._l_ctRow(tb, itm.intmdParent);
+      MDL_table.setCtRow(tb, itm.intmdParent);
     }));
   };
 

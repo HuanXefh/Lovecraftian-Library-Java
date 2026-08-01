@@ -45,7 +45,7 @@
 
 
   function comp_ex_buildSelector(b, tb) {
-    MDL_table._s_ct(
+    MDL_table.setCtSelect(
       tb, b.block, b.block.delegee.selectionQueue,
       () => b.delegee.ctTg, val => b.configure(val == null ? null : val.name), false,
       b.block.selectionRows, b.block.selectionColumns,
@@ -202,11 +202,11 @@
           wr0rd,
 
           wr => {
-            MDL_io.__ct(wr, this.ctTg);
+            MDL_io.ct(wr, this.ctTg);
           },
 
           rd => {
-            this.ctTg = MDL_io.__ct(rd);
+            this.ctTg = MDL_io.ct(rd);
           },
         );
       }

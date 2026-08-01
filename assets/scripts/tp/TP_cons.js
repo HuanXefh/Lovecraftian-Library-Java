@@ -56,7 +56,7 @@
                 ]);
               });
 
-              MDL_table._l_table(tb, matArr).padLeft(48.0);
+              MDL_table.setTable(tb, matArr).padLeft(48.0);
             }).growX();
           }));
         },
@@ -130,13 +130,13 @@
                 let liq = Vars.content.liquid(nameLiq);
                 if(liq == null) return;
                 matArr.push([
-                  tb2 => MDL_table.__rcCt(tb2, liq, this.amount),
+                  tb2 => MDL_table.rcCtIcon(tb2, liq, this.amount),
                   liq.localizedName,
                   effc.perc(0),
                 ]);
               });
 
-              MDL_table._l_table(tb, matArr).padLeft(48.0);
+              MDL_table.setTable(tb, matArr).padLeft(48.0);
             }).growX();
           }));
         },
@@ -209,7 +209,7 @@
         if(b.power == null || b.power.status < 0.0001) return;
 
         TRIGGER.poweredMetalPipe.fire();
-        FRAG_attack._a_lightning(b.x, b.y, null, VAR.param.lightningDmg * b.power.status * this.dmgMtp, null, 6, 4, null, "ground");
+        FRAG_attack.lightning(b.x, b.y, null, VAR.param.lightningDmg * b.power.status * this.dmgMtp, null, 6, 4, null, "ground");
       },
 
 

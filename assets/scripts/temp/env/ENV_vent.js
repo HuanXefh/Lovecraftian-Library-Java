@@ -33,7 +33,7 @@
         blk.effectSpacing = 4.0;
         MDL_content.rename(
           blk,
-          MDL_bundle.getTerm("lovec", "fire") + MDL_text._space() + MDL_bundle.getTerm("lovec", "vent") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
+          MDL_bundle.getTerm("lovec", "fire") + MDL_text.getSpace() + MDL_bundle.getTerm("lovec", "vent") + MDL_text.getSpace() + "(" + blk.parent.localizedName + ")",
         );
         break;
 
@@ -44,7 +44,7 @@
           blk.effectSpacing = 20.0;
           MDL_content.rename(
             blk,
-            blk.rsDrop.localizedName + MDL_text._space() + MDL_bundle.getTerm("lovec", "vent") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
+            blk.rsDrop.localizedName + MDL_text.getSpace() + MDL_bundle.getTerm("lovec", "vent") + MDL_text.getSpace() + "(" + blk.parent.localizedName + ")",
           );
         };
     };

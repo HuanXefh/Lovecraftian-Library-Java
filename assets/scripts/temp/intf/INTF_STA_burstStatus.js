@@ -13,7 +13,7 @@
 
   function comp_setStats(sta) {
     if(sta.burstTime > 0.0) sta.stats.add(fetchStat("lovec", "sta-bursttime"), sta.burstTime / 60.0, StatUnit.seconds);
-    if(sta.burstDamage > 0.0) sta.stats.add(fetchStat("lovec", "sta-burstdmg"), MDL_text._dmgText(sta.burstDamage, sta.burstDamagePerc));
+    if(sta.burstDamage > 0.0) sta.stats.add(fetchStat("lovec", "sta-burstdmg"), MDL_text.getDmgText(sta.burstDamage, sta.burstDamagePerc));
   };
 
 

@@ -75,10 +75,10 @@
       if(team == null) team = Vars.player.team();
       return String.multiline(
         "[LOVEC] CEP stats for ${1}".format(team.toString().color(team.color)),
-        "- Provided: ${1}".format(Strings.fixed(FRAG_faci._cepCapCur(team), 2)),
-        "- Used: ${1}".format(Strings.fixed(FRAG_faci._cepUseCur(team), 2)),
-        "- Fraction: ${1}".format(FRAG_faci._cepFracCur(team).perc()),
-        "- Efficiency: ${1}".format(FRAG_faci._cepEffcCur(team).perc()),
+        "- Provided: ${1}".format(Strings.fixed(FRAG_faci.getCepCapCur(team), 2)),
+        "- Used: ${1}".format(Strings.fixed(FRAG_faci.getCepUseCur(team), 2)),
+        "- Fraction: ${1}".format(FRAG_faci.getCepFracCur(team).perc()),
+        "- Efficiency: ${1}".format(FRAG_faci.getCepEffcCur(team).perc()),
       );
     });
 

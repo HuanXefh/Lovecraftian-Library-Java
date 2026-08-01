@@ -139,7 +139,7 @@
     if(Vars.headless || this.isCompleted()) return;
 
     Core.settings.put(this.getHeader(), true);
-    MDL_ui.show_toast("common", "achieve-" + this.name, this.icon, 80.0);
+    MDL_ui.showToast("common", "achieve-" + this.name, this.icon, 80.0);
   }
   .setAnno("non-console");
 

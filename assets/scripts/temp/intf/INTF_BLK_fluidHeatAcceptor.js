@@ -12,7 +12,7 @@
 
 
   function comp_init(blk) {
-    blk.heatRes = MDL_flow._heatRes(blk);
+    blk.heatRes = MDL_flow.getHeatRes(blk);
   };
 
 
@@ -27,7 +27,7 @@
 
 
   function comp_setBars(blk) {
-    if(!isFinite(MDL_flow._heatRes(blk))) return;
+    if(!isFinite(MDL_flow.getHeatRes(blk))) return;
 
     blk.addBar("lovec-fheat", b => new Bar(
       prov(() => Core.bundle.format("bar.lovec-bar-fluid-heat-amt", Strings.fixed(b.delegee.fHeatCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized())),
@@ -39,12 +39,12 @@
 
   function comp_created(b) {
     b.fHeatCur = PARAM.GLOBAL_HEAT;
-    b.fHeatTg = MDL_flow._fHeat_b(b, true);
+    b.fHeatTg = MDL_flow.getFHeatInBuild(b, true);
   };
 
 
   function comp_updateTile(b) {
-    if(TIMER.heat && LCRand.chance(UTIL_rand.get("fluidHeat"), 0.25)) b.fHeatTg = MDL_flow._fHeat_b(b, true);
+    if(TIMER.heat && LCRand.chance(UTIL_rand.get("fluidHeat"), 0.25)) b.fHeatTg = MDL_flow.getFHeatInBuild(b, true);
     if(TIMER.heat) b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTg, b.block.delegee.fHeatWarmupRate * VAR.time.heatIntv);
 
     if(PARAM.UPDATE_SUPPRESSED || !TIMER.secQuarter || !LCRand.chance(UTIL_rand.get("fluidHeat"), 0.25)) return;

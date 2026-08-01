@@ -27,7 +27,7 @@
    * @param {Team} team
    * @return {Payload|null}
    */
-  const _pay = function(ct_gn, team) {
+  const makePay = function(ct_gn, team) {
     let ct = findContent(ct_gn);
     if(ct instanceof Block) {
       return new BuildPayload(ct, team);
@@ -37,7 +37,7 @@
 
     return null;
   };
-  exports._pay = _pay;
+  exports.makePay = makePay;
 
 
   /**
@@ -45,14 +45,14 @@
    * @param {string|Block|UnitType|null} ct_gn
    * @return {number}
    */
-  const _paySize = function(ct_gn) {
+  const getPaySize = function(ct_gn) {
     let ct = findContent(ct_gn);
     if(ct instanceof Block) return ct.size;
     if(ct instanceof UnitType) return ct.hitSize / Vars.tilesize;
     return 1;
   }
   .setCache();
-  exports._paySize = _paySize;
+  exports.getPaySize = getPaySize;
 
 
   /**
@@ -62,12 +62,12 @@
    * @param {number|unset} [mode] - See {@link SideFracModes}.
    * @return {Array<Building>}
    */
-  const _bsPayInput = function(contArr, b, mode) {
+  const findPayInputBs = function(contArr, b, mode) {
     let arr = contArr != null ? contArr.clear() : [];
 
     let obj = DB_block.db["class"]["group"]["payload"]["site"];
     b.proximity.each(
-      ob => MDL_pos._sideFrac(ob, b, mode, true, true) >= 0.5 && (
+      ob => MDL_pos.calcSideFrac(ob, b, mode, true, true) >= 0.5 && (
         obj["dynamic"].hasIns(ob.block) ?
           true :
           obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) === ob.rotation
@@ -77,7 +77,7 @@
 
     return arr;
   };
-  exports._bsPayInput = _bsPayInput;
+  exports.findPayInputBs = findPayInputBs;
 
 
   /**
@@ -87,12 +87,12 @@
    * @param {number|unset} [mode] - See {@link SideFracModes}.
    * @return {Array<Building>}
    */
-  const _bsPayOutput = function(contArr, b, mode) {
+  const findPayOutputBs = function(contArr, b, mode) {
     let arr = contArr != null ? contArr.clear() : [];
 
     let obj = DB_block.db["class"]["group"]["payload"]["site"];
     b.proximity.each(
-      ob => MDL_pos._sideFrac(b, ob, mode, true, true) >= 0.5 && (
+      ob => MDL_pos.calcSideFrac(b, ob, mode, true, true) >= 0.5 && (
         obj["dynamic"].hasIns(ob.block) ?
           true :
           obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) !== ob.rotation
@@ -102,7 +102,7 @@
 
     return arr;
   };
-  exports._bsPayOutput = _bsPayOutput;
+  exports.findPayOutputBs = findPayOutputBs;
 
 
   /* <------------------------------ crafting ------------------------------ */

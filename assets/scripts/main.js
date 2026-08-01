@@ -208,7 +208,7 @@
         if(itmRedir == null) return;
         itm.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
           tb.row();
-          MDL_table._l_ctRow(tb, itmRedir);
+          MDL_table.setCtRow(tb, itmRedir);
         }));
         itmRedir.shownPlanets.addAll(itm.shownPlanets);
         itmRedir.databaseTabs.addAll(itm.databaseTabs);
@@ -218,7 +218,7 @@
         if(liqRedir == null) return;
         liq.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
           tb.row();
-          MDL_table._l_ctRow(tb, liqRedir);
+          MDL_table.setCtRow(tb, liqRedir);
         }));
         liqRedir.shownPlanets.addAll(liq.shownPlanets);
         liqRedir.databaseTabs.addAll(liq.databaseTabs);
@@ -393,7 +393,7 @@
       VARGEN.rss.concat(VARGEN.payMatBlks).concat(VARGEN.buildableUtps).forEachFast(ct => {
         ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
           tb.row();
-          MDL_table.__btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct)).left().padLeft(28.0).row();
+          MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct)).left().padLeft(28.0).row();
         }));
         VARGEN.rcDictCts.push(ct);
       });
@@ -435,7 +435,7 @@
       function setFaction(ct) {
         if(MDL_content.getFaction(ct) !== "none") ct.stats.add(fetchStat("lovec", "spec-faction"), newStatValue(tb => {
           tb.row();
-          MDL_table._d_faction(tb, ct);
+          MDL_table.setFaction(tb, ct);
         }));
       };
       Vars.content.blocks().each(blk => setFaction(blk));
@@ -517,9 +517,9 @@
         seq.each(ct => {
           ct.stats.add(fetchStat("lovec", "debug-copyname"), newStatValue(tb => {
             tb.row();
-            MDL_table.__btnSmall(tb, "C", () => {
+            MDL_table.btnSmall(tb, "C", () => {
               MDL_backend.accClipboard(ct.name);
-              MDL_ui.show_fadeInfo("lovec", "copy-name");
+              MDL_ui.showFadeInfo("lovec", "copy-name");
             })
             .left()
             .padLeft(28.0);

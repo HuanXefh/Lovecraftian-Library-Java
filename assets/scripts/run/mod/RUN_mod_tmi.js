@@ -87,8 +87,8 @@
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
 
               let rawRc = !blk.delegee.shouldDropPay ?
-                MOD_tmi._rawRc("collecting", blk, blk.drillTime / blk.size / blk.delegee.drillAmtMtp, true) :
-                MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / blk.size / blk.delegee.drillAmtMtp, true);
+                MOD_tmi.makeRawRc("collecting", blk, blk.drillTime / blk.size / blk.delegee.drillAmtMtp, true) :
+                MOD_tmi.makeRawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / blk.size / blk.delegee.drillAmtMtp, true);
               MDL_event.onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, blk.optionalBoostIntensity);
               });
@@ -121,8 +121,8 @@
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
 
               let rawRc = !blk.delegee.shouldDropPay ?
-                MOD_tmi._rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2) / blk.delegee.drillAmtMtp, true) :
-                MOD_tmi._rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.size, 2) / blk.delegee.drillAmtMtp, true);
+                MOD_tmi.makeRawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2) / blk.delegee.drillAmtMtp, true) :
+                MOD_tmi.makeRawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.size, 2) / blk.delegee.drillAmtMtp, true);
               MDL_event.onLoad(() => {
                 MOD_tmi.baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
               });
@@ -166,7 +166,7 @@
 
 
       parse(blk) {
-        let rawRc = MOD_tmi._rawRc(
+        let rawRc = MOD_tmi.makeRawRc(
           tryVal(blk.ex_getRangeAttrProdTypeStr(), "collecting"),
           blk,
           MDL_content.getCraftTime(blk),
@@ -228,7 +228,7 @@
         if(blk.ex_isSubInsOf("BLK_depthPump")) return seq;
 
         this.liqBlksMap.each((liq, blks) => {
-          let rawRc = MOD_tmi._rawRc("collecting", blk, blk.consumeTime, true);
+          let rawRc = MOD_tmi.makeRawRc("collecting", blk, blk.consumeTime, true);
           let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
 
           MDL_event.onLoad(() => {
@@ -274,7 +274,7 @@
 
 
       parse(blk) {
-        let rawRc = MOD_tmi._rawRc("generator", blk, 0.0, true);
+        let rawRc = MOD_tmi.makeRawRc("generator", blk, 0.0, true);
         let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
 
         MDL_event.onLoad(() => {
@@ -330,7 +330,7 @@
 
 
       parse(blk) {
-        let rawRc = MOD_tmi._rawRc(
+        let rawRc = MOD_tmi.makeRawRc(
           this.tempTypeMap.get(blk.ex_getTempName(), "factory"),
           blk,
           MDL_content.getCraftTime(blk),

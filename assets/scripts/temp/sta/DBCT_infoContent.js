@@ -17,9 +17,9 @@
   function comp_setStats(sta) {
     sta.stats.add(fetchStat("lovec", "spec-info"), newStatValue(tb => {
       tb.row();
-      MDL_table.__btnSmall(tb, "I", () => {
+      MDL_table.btnSmall(tb, "I", () => {
         !sta.ex_checkDbctUnlocked() ?
-          MDL_ui.show_fadeInfo("lovec", "info-locked") :
+          MDL_ui.showFadeInfo("lovec", "info-locked") :
           fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.nameInfo);
       })
       .left()

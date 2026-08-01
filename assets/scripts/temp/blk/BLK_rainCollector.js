@@ -26,7 +26,7 @@
       );
     });
 
-    MOD_tmi._r_rainCollector(blk);
+    MOD_tmi.regisRc_rainCollector(blk);
   };
 
 

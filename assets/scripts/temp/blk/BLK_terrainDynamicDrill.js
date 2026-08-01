@@ -25,7 +25,7 @@
       });
     });
 
-    MOD_tmi._r_terrainDynamicDrill(blk, blk.terItmMapMap);
+    MOD_tmi.regisRc_terrainDynamicDrill(blk, blk.terItmMapMap);
   };
 
 
@@ -52,7 +52,7 @@
       if(blk.ex_isMiningDpore(tx, ty, itm) && !blk.ex_anyDporeRevealed(tx, ty, itm)) {
         thisFun.tmpTup[3] = VARGEN.iconRegs.questionMark;
       } else {
-        let ter = MDL_terrain._ter(t, blk.size);
+        let ter = MDL_terrain.getTer(t, blk.size);
         let terItmMap = blk.terItmMapMap.get(itm == null ? "null" : itm.name);
         if(terItmMap == null) {
           thisFun.tmpTup[3] = itm.fullIcon;
@@ -101,17 +101,17 @@
         terItmMap.each((ter, nameRs) => {
           let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
-          matArr.push([rs, rs.localizedName, MDL_terrain._terB(ter)]);
+          matArr.push([rs, rs.localizedName, MDL_terrain.getTerB(ter)]);
         });
 
-        MDL_table._l_table(tb1, matArr);
+        MDL_table.setTable(tb1, matArr);
       }).growX().row();
     });
   };
 
 
   function comp_onProximityUpdate(b) {
-    b.terCur = MDL_terrain._ter(b.tile, b.block.size);
+    b.terCur = MDL_terrain.getTer(b.tile, b.block.size);
 
     let terItmMap = b.block.delegee.terItmMapMap.get(b.dominantItem == null ? "null" : b.dominantItem.name);
     if(terItmMap == null) return;

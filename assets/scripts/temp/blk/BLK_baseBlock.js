@@ -61,7 +61,7 @@
     if(DB_block.db["map"]["facFami"].colIncludes(blk.name, 2, 0)) {
       blk.stats.add(fetchStat("lovec", "spec-facfami"), newStatValue(tb => {
         tb.row();
-        MDL_table._d_facFami(tb, blk);
+        MDL_table.setFacFami(tb, blk);
       }));
     };
 
@@ -131,7 +131,7 @@
       let amt, liqPol;
       b.liquids.each(liq => {
         amt = b.liquids.get(liq);
-        liqPol = MDL_pollution._rsPol(liq);
+        liqPol = MDL_pollution.getRsPol(liq);
         if(liqPol > 0.0) {
           MDL_pollution.addLingerPol(liqPol * amt / 150.0);
         };

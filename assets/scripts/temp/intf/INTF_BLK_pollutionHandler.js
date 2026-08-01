@@ -12,7 +12,7 @@
 
 
   function comp_init(blk) {
-    blk.polTol = MDL_pollution._polTol(blk);
+    blk.polTol = MDL_pollution.getPolTol(blk);
   };
 
 
@@ -24,7 +24,7 @@
   function comp_updateTile(b) {
     if(b.blk$polTol < 0.0001) return;
 
-    b.polExcess = Mathf.maxZero(MDL_pollution._glbPol() - b.blk$polTol);
+    b.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.blk$polTol);
     b.polEffc = b.ex_calcPolEffc();
 
     if(b.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {

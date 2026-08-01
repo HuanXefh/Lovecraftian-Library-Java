@@ -113,8 +113,8 @@
    * @param {ContentGn} ct_gn
    * @return {JsonValue|null}
    */
-  const _jsonValByCt = function(ct_gn) {
+  const getJsonValByCt = function(ct_gn) {
     let fi = MDL_file._json_ct(ct_gn);
     return fi == null ? null : parse(fi);
   };
-  exports._jsonValByCt = _jsonValByCt;
+  exports.getJsonValByCt = getJsonValByCt;

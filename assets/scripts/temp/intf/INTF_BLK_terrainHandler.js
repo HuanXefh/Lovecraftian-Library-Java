@@ -16,7 +16,7 @@
 
     blk.stats.add(
       blk.terMode === "enable" ? fetchStat("lovec", "blk-terreq") : fetchStat("lovec", "blk-terban"),
-      MDL_text._tagText(blk.ters.map(ter => MDL_terrain._terB(ter))).color(blk.terMode === "enable" ? Pal.heal : Pal.remove),
+      MDL_text.getTagText(blk.ters.map(ter => MDL_terrain.getTerB(ter))).color(blk.terMode === "enable" ? Pal.heal : Pal.remove),
     );
   };
 
@@ -26,8 +26,8 @@
     if(blk.ters.length === 0) return true;
 
     if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
-      thisFun.tmpTup[4] = MDL_terrain._ter(t, blk.size, blk.ex_getTerrainCheckR());
-      thisFun.tmpTup[5] = MDL_terrain._terB(thisFun.tmpTup[4]);
+      thisFun.tmpTup[4] = MDL_terrain.getTer(t, blk.size, blk.ex_getTerrainCheckR());
+      thisFun.tmpTup[5] = MDL_terrain.getTerB(thisFun.tmpTup[4]);
     };
 
     let cond = true;

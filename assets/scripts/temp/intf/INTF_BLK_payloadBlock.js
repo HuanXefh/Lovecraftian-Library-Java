@@ -16,7 +16,7 @@
 
     blk.ex_addLogicGetter(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
     blk.ex_addLogicGetter(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
-    blk.ex_addLogicGetter(LAccess.totalPayload, b => Object.mapSum(b.delegee.payStockObj, (nameCt, amt) => FRAG_payload._paySize(nameCt) * amt));
+    blk.ex_addLogicGetter(LAccess.totalPayload, b => Object.mapSum(b.delegee.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
     blk.ex_addLogicGetter(LAccess.payloadCapacity, b => blk.payAmtCap);
   };
 
@@ -41,8 +41,8 @@
     if(PARAM.UPDATE_SUPPRESSED) return;
 
     if(b.hasPayOutput && TIMER.effc) {
-      b.payAmtTotal = Object.mapSum(b.payStockObj, (nameCt, amt) => FRAG_payload._paySize(nameCt) * amt);
-      b.payAmtTotalAfterProd = Object.mapSum(b.payStockObj, (nameCt, amt) => FRAG_payload._paySize(nameCt) * (amt + b.ex_getPayProdAmt(nameCt)));
+      b.payAmtTotal = Object.mapSum(b.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt);
+      b.payAmtTotalAfterProd = Object.mapSum(b.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.ex_getPayProdAmt(nameCt)));
     };
 
     if(TIMER.secHalf) {
@@ -61,7 +61,7 @@
       if(b.lastDumpPay == null) {
         let nameCt = Object.randKey(b.payStockObj);
         if(nameCt != null && b.payStockObj[nameCt] > 0) {
-          b.lastDumpPay = FRAG_payload._pay(nameCt, b.team);
+          b.lastDumpPay = FRAG_payload.makePay(nameCt, b.team);
         };
       } else {
         let b_t = b.payOutputBs[b.payDumpIncre % b.payOutputBs.length];
@@ -99,8 +99,8 @@
 
 
   function comp_ex_updatePaySite(b) {
-    FRAG_payload._bsPayInput(b.payInputBs, b, b.block.delegee.payInputSideFracMode);
-    FRAG_payload._bsPayOutput(b.payOutputBs, b, b.block.delegee.payOutputSideFracMode);
+    FRAG_payload.findPayInputBs(b.payInputBs, b, b.block.delegee.payInputSideFracMode);
+    FRAG_payload.findPayOutputBs(b.payOutputBs, b, b.block.delegee.payOutputSideFracMode);
   };
 
 
@@ -357,14 +357,14 @@
           wr0rd,
 
           wr => {
-            MDL_io.__objStrNum(wr, this.payReqObj);
-            MDL_io.__objStrNum(wr, this.payStockObj);
+            MDL_io.objStrNum(wr, this.payReqObj);
+            MDL_io.objStrNum(wr, this.payStockObj);
           },
 
           rd => {
             if(this.LCReviSub >= 0 || !this.block.ex_isSubInsOf("BLK_baseDrill")) {
-              MDL_io.__objStrNum(rd, this.payReqObj);
-              MDL_io.__objStrNum(rd, this.payStockObj);
+              MDL_io.objStrNum(rd, this.payReqObj);
+              MDL_io.objStrNum(rd, this.payStockObj);
             };
           },
         );

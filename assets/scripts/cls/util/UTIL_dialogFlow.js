@@ -14,6 +14,7 @@
 
   const nameCtMap = new ObjectMap();
   let textCur = null;
+  const textReadBools = [];
   const lastTextLogs = [];
   const pool = {
     bg: [],
@@ -46,6 +47,35 @@
    */
   UTIL_dialogFlow.setTextCur = function(textTb) {
     textCur = textTb;
+  };
+
+
+  /**
+   * Marks a text as read.
+   * @param {number} ind
+   * @return {void}
+   */
+  UTIL_dialogFlow.setRead = function(ind) {
+    textReadBools[ind] = true;
+  };
+
+
+  /**
+   * Checks if some text has been read.
+   * @param {number} ind
+   * @return {boolean}
+   */
+  UTIL_dialogFlow.checkRead = function(ind) {
+    return Boolean(textReadBools[ind]);
+  };
+
+
+  /**
+   * Clears read marks.
+   * @return {void}
+   */
+  UTIL_dialogFlow.clearRead = function() {
+    textReadBools.clear();
   };
 
 

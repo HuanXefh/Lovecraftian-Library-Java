@@ -53,12 +53,12 @@
 
       addStats(tb) {
         comp_addStats(this, tb, tb => {
-          tb.add(MDL_text._statText(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
+          tb.add(MDL_text.getStat(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
           tb.row();
-          tb.add(MDL_text._statText(Stat.range.localized(), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
+          tb.add(MDL_text.getStat(Stat.range.localized(), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
           tb.row();
           if(this.sta !== StatusEffects.none) {
-            tb.add(MDL_text._statText(Core.bundle.get("stat.lovec-stat-blk0misc-status"), this.sta.localizedName));
+            tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-status"), this.sta.localizedName));
           };
         });
       },
@@ -112,9 +112,9 @@
 
       addStats(tb) {
         comp_addStats(this, tb, tb => {
-          tb.add(MDL_text._statText(Stat.shieldHealth.localized(), Strings.autoFixed(this.maxShield, 2)));
+          tb.add(MDL_text.getStat(Stat.shieldHealth.localized(), Strings.autoFixed(this.maxShield, 2)));
           tb.row();
-          tb.add(MDL_text._statText(Stat.repairSpeed.localized(), Strings.autoFixed(this.regenAmt / this.regenIntv * 60.0, 2), StatUnit.perSecond.localized()));
+          tb.add(MDL_text.getStat(Stat.repairSpeed.localized(), Strings.autoFixed(this.regenAmt / this.regenIntv * 60.0, 2), StatUnit.perSecond.localized()));
         });
       },
 
@@ -173,11 +173,11 @@
 
       addStats(tb) {
         comp_addStats(this, tb, tb => {
-          tb.add(MDL_text._statText(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
+          tb.add(MDL_text.getStat(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
           tb.row();
-          tb.add(MDL_text._statText(Core.bundle.get("stat.lovec-stat-blk0misc-reloadtime"), Strings.autoFixed(this.chargeCap / 60.0 / this.chargeMtp, 2), StatUnit.seconds.localized()));
+          tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-reloadtime"), Strings.autoFixed(this.chargeCap / 60.0 / this.chargeMtp, 2), StatUnit.seconds.localized()));
           tb.row();
-          tb.add(MDL_text._statText(Stat.range.localized(), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
+          tb.add(MDL_text.getStat(Stat.range.localized(), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
         });
       },
 
@@ -258,11 +258,11 @@
 
       addStats(tb) {
         comp_addStats(this, tb, tb => {
-          tb.add(MDL_text._statText(Core.bundle.get("stat.lovec-stat-blk0misc-repairamt"), MDL_text._healText(this.healAmt, this.healPerc)));
+          tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairamt"), MDL_text.getHealText(this.healAmt, this.healPerc)));
           tb.row();
-          tb.add(MDL_text._statText(Core.bundle.get("stat.lovec-stat-blk0misc-repairintv"), Strings.autoFixed(this.intv / 60.0, 2), StatUnit.seconds.localized()));
+          tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairintv"), Strings.autoFixed(this.intv / 60.0, 2), StatUnit.seconds.localized()));
           tb.row();
-          tb.add(MDL_text._statText(Core.bundle.get("stat.lovec-stat-blk0misc-repairr"), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
+          tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairr"), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
         });
       },
 
@@ -311,7 +311,7 @@
 
       addStats(tb) {
         comp_addStats(this, tb, tb => {
-          tb.add(MDL_text._statText(Core.bundle.get("stat.lovec-stat-blk0fac-durabtime"), Strings.autoFixed(this.durabCap / 60.0, 2), StatUnit.seconds.localized()));
+          tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0fac-durabtime"), Strings.autoFixed(this.durabCap / 60.0, 2), StatUnit.seconds.localized()));
         });
       },
 

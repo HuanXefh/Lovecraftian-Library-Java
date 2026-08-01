@@ -27,7 +27,7 @@
    * <br> `ARGS`: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
    * @return {number}
    */
-  const _dst = function() {
+  const calcDst = function() {
     let val = 0.0;
     let i = 0, iCap = arguments.length / 2;
     while(i < iCap) {
@@ -37,15 +37,15 @@
 
     return Math.sqrt(val);
   };
-  exports._dst = _dst;
+  exports.calcDst = calcDst;
 
 
   /**
-   * Variant of {@link _dst} for Manhattan distance.
+   * Variant of {@link calcDst} for Manhattan distance.
    * <br> `ARGS`: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
    * @return {number}
    */
-  const _dstManh = function() {
+  const calcDstManhattan = function() {
     let val = 0.0;
     let i = 0, iCap = arguments.length / 2;
     while(i < iCap) {
@@ -55,15 +55,15 @@
 
     return val;
   };
-  exports._dstManh = _dstManh;
+  exports.calcDstManhattan = calcDstManhattan;
 
 
   /**
-   * Variant of {@link _dst} for Chebyshev distance.
+   * Variant of {@link calcDst} for Chebyshev distance.
    * <br> `ARGS`: x1, y1, x2, y2 | x1, y1, z1, x2, y2, z2 | ...
    * @return {number}
    */
-  const _dstCheb = function() {
+  const calcDstChebyshev = function() {
     let val = 0.0;
     let i = 0, iCap = arguments.length / 2;
     while(i < iCap) {
@@ -73,7 +73,7 @@
 
     return val;
   };
-  exports._dstCheb = _dstCheb;
+  exports.calcDstChebyshev = calcDstChebyshev;
 
 
   /* <------------------------------ path ------------------------------ */
@@ -94,7 +94,7 @@
    * @param {number|unset} [dim]
    * @return {number}
    */
-  const _pathLen = function thisFun(pathData, dim) {
+  const calcPathLen = function thisFun(pathData, dim) {
     if(dim == null) dim = 2;
 
     let len = 0.0;
@@ -103,7 +103,7 @@
     while(i < iCap) {
       if(i === 0) continue;
       fetchPathTwoPointArg(thisFun.tmpArr, pathData, dim, i);
-      len += _dst.apply(null, thisFun.tmpArr);
+      len += calcDst.apply(null, thisFun.tmpArr);
       i += dim;
     };
 
@@ -112,7 +112,7 @@
   .setProp({
     tmpArr: [],
   });
-  exports._pathLen = _pathLen;
+  exports.calcPathLen = calcPathLen;
 
 
   /**
@@ -122,7 +122,7 @@
    * @param {number|unset} [dim]
    * @return {Array<number>}
    */
-  const _pathSegLens = function thisFun(contArr, pathData, dim) {
+  const calcPathSegLens = function thisFun(contArr, pathData, dim) {
     let arr = contArr != null ? contArr.clear() : [];
     if(dim == null) dim = 2;
 
@@ -131,7 +131,7 @@
     while(i < iCap) {
       if(i === 0) continue;
       fetchPathTwoPointArg(thisFun.tmpArr, pathData, dim, i);
-      arr.push(_dst.apply(null, thisFun.tmpArr));
+      arr.push(calcDst.apply(null, thisFun.tmpArr));
       i += dim;
     };
 
@@ -140,7 +140,7 @@
   .setProp({
     tmpArr: [],
   });
-  exports._pathSegLens = _pathSegLens;
+  exports.calcPathSegLens = calcPathSegLens;
 
 
   /* <------------------------------ area ------------------------------ */
@@ -152,7 +152,7 @@
    * <br> `REFERENCE`: Shoelace theorem.
    * @return {number}
    */
-  const _area = function() {
+  const calcArea = function() {
     let iCap = arguments.length;
     if(iCap < 6) return 0.0;
 
@@ -176,7 +176,7 @@
 
     return Math.abs(tmp1 - tmp2) * 0.5;
   };
-  exports._area = _area;
+  exports.calcArea = calcArea;
 
 
   /**
@@ -184,7 +184,7 @@
    * <br> `ARGS`: x, y, x1, y1, x2, y2, x3, y3, ...
    * @return {boolean}
    */
-  const _inPolygon = function thisFun() {
+  const checkInPolygon = function thisFun() {
     let iCap = arguments.length;
     if(iCap < 8) return true;
 
@@ -193,7 +193,7 @@
     for(let i = 2; i < iCap; i++) {
       thisFun.coords.push(arguments[i]);
     };
-    let area = _area.apply(null, thisFun.coords);
+    let area = calcArea.apply(null, thisFun.coords);
 
     let
       x_i,
@@ -209,7 +209,7 @@
       x_ii = (i + 2 > iCap1 - 1) ? thisFun.coords[0] : thisFun.coords[i + 2];
       y_ii = (i + 3 > iCap1 - 1) ? thisFun.coords[1] : thisFun.coords[i + 3];
 
-      tmpArea += _area(x, y, x_i, y_i, x_ii, y_ii);
+      tmpArea += calcArea(x, y, x_i, y_i, x_ii, y_ii);
     };
 
     return Math.abs(area - tmpArea) < 0.0000001;
@@ -217,4 +217,4 @@
   .setProp({
     coords: [],
   });
-  exports._inPolygon = _inPolygon;
+  exports.checkInPolygon = checkInPolygon;

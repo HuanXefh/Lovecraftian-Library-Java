@@ -15,7 +15,7 @@
 
 
   function comp_init(utp) {
-    utp.polTol = MDL_pollution._polTol(utp);
+    utp.polTol = MDL_pollution.getPolTol(utp);
 
     if(utp.immuneToAll) {
       MDL_event.onLoadPost(() => {

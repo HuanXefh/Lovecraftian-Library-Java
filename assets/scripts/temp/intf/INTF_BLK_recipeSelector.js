@@ -27,7 +27,7 @@
 
   function comp_buildConfiguration(b, tb) {
     tb.row();
-    MDL_table._s_rc(
+    MDL_table.setRcSelect(
       tb, b,
       () => b.rcHeader, val => b.configure(val),
       b.ex_getSelectorExtraBtnSetters(),

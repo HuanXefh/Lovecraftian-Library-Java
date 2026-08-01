@@ -122,7 +122,7 @@ public class LCDraw {
      * Draws colored line.
      */
     public static void line(float x1, float y1, float x2, float y2, boolean isDashed) {
-        var amtSeg = (int)(!isDashed ? 0 : Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1)) / Vars.tilesize * 2);
+        int amtSeg = (int)(!isDashed ? 0 : Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1)) / Vars.tilesize * 2);
 
         if(isDashed) {
             Lines.dashLine(x1, y1, x2, y2, amtSeg);
@@ -143,8 +143,8 @@ public class LCDraw {
      * Draws rectangle with colored lines.
      */
     public static void rect(float x, float y, float r, float size, boolean isDashed) {
-        var hw = LCPos.calcRectHW(r, size);
-        var amtSeg = (int)(!isDashed ? 0 : (size + r * 2) * 2);
+        float hw = LCPos.calcRectHW(r, size);
+        int amtSeg = (int)(!isDashed ? 0 : (size + r * 2) * 2);
 
         if(isDashed) {
             Lines.dashLine(x - hw, y - hw, x + hw, y - hw, amtSeg);
@@ -195,11 +195,11 @@ public class LCDraw {
      * Draws colored ring shape that can be cut.
      */
     public static void ring(float x, float y, float radIn, float radOut, float ang, float frac, boolean rev) {
-        var sideAmt = Lines.circleVertices((radIn + radOut) * 0.5f);
-        var angSide = 360f / sideAmt * (rev ? -1f : 1f);
-        var iCap = Math.round(sideAmt * Mathf.clamp(frac));
+        int sideAmt = Lines.circleVertices((radIn + radOut) * 0.5f);
+        float angSide = 360f / sideAmt * (rev ? -1f : 1f);
+        int iCap = Math.round(sideAmt * Mathf.clamp(frac));
 
-        var ang_i = 0f;
+        float ang_i;
         for (int i = 0; i < iCap; i++) {
             ang_i = angSide * i + ang;
             Fill.quad(
@@ -361,8 +361,9 @@ public class LCDraw {
     public static void content(float x, float y, @Nullable UnlockableContent ct, float size, float z) {
         if(ct == null) return;
 
-        var w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : (float)(ct.fullIcon.width / ct.fullIcon.height));
-        var h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : (float)(ct.fullIcon.height / ct.fullIcon.width));
+        float
+            w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : (float)(ct.fullIcon.width / ct.fullIcon.height)),
+            h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : (float)(ct.fullIcon.height / ct.fullIcon.width));
 
         processZ(z, ICON_REGION_Z_IND);
         Draw.rect(ct.fullIcon, x, y, w, h);
@@ -407,9 +408,9 @@ public class LCDraw {
     ) {
         if(str == null || str.isEmpty()) return;
 
-        var zPrev = Draw.z();
-        var layout = Pools.obtain(GlyphLayout.class, GlyphLayout::new);
-        var useInt = font.usesIntegerPositions();
+        float zPrev = Draw.z();
+        GlyphLayout layout = Pools.obtain(GlyphLayout.class, GlyphLayout::new);
+        boolean useInt = font.usesIntegerPositions();
         Draw.z(Layer.playerName + 0.5f + offZ);
         font.setUseIntegerPositions(false);
         font.getData().setScale(0.25f / Scl.scl(1f) * sizeScl);

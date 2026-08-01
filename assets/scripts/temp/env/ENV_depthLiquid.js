@@ -26,7 +26,7 @@
     if(blk.rsDrop == null) ERROR_HANDLER.throw("noLiquidDrop", blk.name);
     MDL_content.rename(
       blk,
-      blk.rsDrop.localizedName + MDL_text._space() + "(" + blk.ex_getDepthName() + ")",
+      blk.rsDrop.localizedName + MDL_text.getSpace() + "(" + blk.ex_getDepthName() + ")",
     );
   };
 

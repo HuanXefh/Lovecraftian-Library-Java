@@ -23,7 +23,7 @@
 
       MDL_content.rename(
         blk,
-        blk.flrParent.localizedName + MDL_text._space() + "(" + MDL_bundle.getTerm("lovec", "wall") + ")",
+        blk.flrParent.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "wall") + ")",
       );
 
       // Set wall color to darkened version of floor color

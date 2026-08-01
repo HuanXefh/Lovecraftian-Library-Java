@@ -72,7 +72,7 @@
     return offload(b, b_f, itm, amt, checkAccept);
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.CLIENT, "lovec-server-item-offload", payload => {
+    MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-item-offload", payload => {
       let args = unpackPayload(payload);
       offload(Vars.world.build(args[0]), Vars.world.build(args[1]), Vars.content.item(args[2]), args[3], args[4]);
     });
@@ -398,7 +398,7 @@
     return destroyLoot(loot);
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.BOTH, "lovec-both-destroy-loot", payload => {
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-destroy-loot", payload => {
       let args = unpackPayload(payload);
       destroyLoot(Groups.unit.getById(args[0]));
     });
@@ -564,7 +564,7 @@
     return takeUnitLoot(unit, loot, max);
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.BOTH, "lovec-both-unit-take-loot", payload => {
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-unit-take-loot", payload => {
       let args = unpackPayload(payload);
       takeUnitLoot(Groups.unit.getById(args[0]), Groups.unit.getById(args[1]), args[2]);
     });

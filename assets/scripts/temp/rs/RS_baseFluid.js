@@ -16,8 +16,8 @@
 
   function comp_init(liq) {
     if(liq.overwriteVanillaProp) {
-      if(liq.temperature.fEqual(0.5)) liq.temperature = MDL_flow._tempWrap(liq);
-      if(liq.viscosity.fEqual(0.5)) liq.viscosity = MDL_flow._viscWrap(liq);
+      if(liq.temperature.fEqual(0.5)) liq.temperature = MDL_flow.getTempWrap(liq);
+      if(liq.viscosity.fEqual(0.5)) liq.viscosity = MDL_flow.getViscWrap(liq);
 
       if(liq.gas && liq.vaporEffect === Fx.vapor) {
         liq.vaporEffect = TP_effect._gasEmission({
@@ -27,17 +27,17 @@
       if(liq.gas) {
         liq.gasColor = Color.valueOf("bfbfbf");
       } else {
-        liq.boilPoint = MDL_flow._boilPon(liq) / 50.0;
+        liq.boilPoint = MDL_flow.getBoilPon(liq) / 50.0;
       };
     };
 
     liq.isConductive = MDL_cond._isConductiveLiquid(liq);
     liq.shouldFume = DB_fluid.db["group"]["fuming"].includes(liq.name);
-    liq.dens = MDL_flow._dens(liq);
-    liq.fHeat = MDL_flow._fHeat(liq);
-    liq.eleGrp = MDL_flow._eleGrp(liq);
-    liq.fTags = MDL_flow._fTags(liq);
-    liq.corPow = MDL_flow._corPow(liq);
+    liq.dens = MDL_flow.getDens(liq);
+    liq.fHeat = MDL_flow.getFHeat(liq);
+    liq.eleGrp = MDL_flow.getEleGrp(liq);
+    liq.fTags = MDL_flow.getFTags(liq);
+    liq.corPow = MDL_flow.getCorPow(liq);
   };
 
 
@@ -57,15 +57,15 @@
 
     if(liq.effect !== StatusEffects.none) liq.stats.add(fetchStat("lovec", "rs-fluidstatus"), StatValues.content([liq.effect].toSeq()));
     if(!liq.gas && MDL_cond._isConductiveLiquid(liq)) liq.stats.add(fetchStat("lovec", "rs-conductiveliq"), true);
-    let dens = MDL_flow._dens(liq);
+    let dens = MDL_flow.getDens(liq);
     liq.stats.add(fetchStat("lovec", "rs-dens"), liq.gas ? dens.sci(-3) : Strings.fixed(dens, 2));
-    let fHeat = MDL_flow._fHeat(liq);
+    let fHeat = MDL_flow.getFHeat(liq);
     if(!fHeat.fEqual(26.0)) liq.stats.add(fetchStat("lovec", "rs-fheat"), fHeat, fetchStatUnit("lovec", "heatunits"));
-    let eleGrpB = MDL_flow._eleGrpB(liq);
+    let eleGrpB = MDL_flow.getEleGrpB(liq);
     if(eleGrpB !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-elegrp"), eleGrpB);
-    let fTagsB = MDL_flow._fTagsB(liq);
+    let fTagsB = MDL_flow.getFTagsB(liq);
     if(fTagsB !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-ftags"), fTagsB);
-    let corPow = MDL_flow._corPow(liq);
+    let corPow = MDL_flow.getCorPow(liq);
     if(corPow > 0.0) liq.stats.add(fetchStat("lovec", "rs-corpow"), corPow.perc());
 
     let oreblks = MDL_content.getOreBlks(liq);
@@ -73,12 +73,12 @@
       liq.stats.add(fetchStat("lovec", "rs-isore"), true);
       liq.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
         tb.row();
-        MDL_table._l_ctLi(tb, oreblks, 48.0);
+        MDL_table.setCtLi(tb, oreblks, 48.0);
       }));
     };
 
     if(Array.someIncludes(liq, VARGEN.fuelLiqs, VARGEN.fuelGases)) {
-      liq.stats.add(fetchStat("lovec", "rs0fuel-level"), MDL_fuel._fuelLvl(liq));
+      liq.stats.add(fetchStat("lovec", "rs0fuel-level"), MDL_fuel.getFuelLvl(liq));
     };
   };
 
@@ -104,7 +104,7 @@
         dmg = ob.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0;
         ob.damagePierce(dmg);
         if(Mathf.chance(0.15)) MDL_effect.showAt(ob.x, ob.y, EFF.heatSmog);
-        if(Mathf.chance(0.05)) FRAG_attack._a_lightning(ob.x, ob.y, null, null, null, 6, 4, null, "ground");
+        if(Mathf.chance(0.05)) FRAG_attack.lightning(ob.x, ob.y, null, null, null, 6, 4, null, "ground");
       });
     };
 

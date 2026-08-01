@@ -56,7 +56,7 @@
     b.ex_buildSelector(tb);
 
     tb.row();
-    MDL_table.__btnCfg(tb, b, b => {
+    MDL_table.btnCfg(tb, b, b => {
       b.configure("clear");
       b.deselect();
     }, VARGEN.icons.cross).tooltip(MDL_bundle.getInfo("lovec", "tt-clear-selection"), true)
@@ -73,7 +73,7 @@
 
 
   function comp_ex_buildSelector(b, tb) {
-    MDL_table._s_ctMulti(
+    MDL_table.setCtSelectMulti(
       tb, b.block, b.block.delegee.selectionQueue,
       () => b.ex_accCtTgs("read", false), val => b.configure(val), false,
       b.block.selectionRows, b.block.selectionColumns,
@@ -299,11 +299,11 @@
           wr0rd,
 
           wr => {
-            MDL_io.__cts(wr, this.ctTgs);
+            MDL_io.cts(wr, this.ctTgs);
           },
 
           rd => {
-            MDL_io.__cts(rd, this.ctTgs);
+            MDL_io.cts(rd, this.ctTgs);
           },
         );
       }

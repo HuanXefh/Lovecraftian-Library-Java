@@ -52,10 +52,10 @@
    * @param {string} typeStr
    * @return {RecipeType}
    */
-  const _tmiRcType = function(typeStr) {
+  const getTmiRcType = function(typeStr) {
     return tryVal(CLASSES.RecipeType[typeStr], CLASSES.RecipeType.factory);
   };
-  exports._tmiRcType = _tmiRcType;
+  exports.getTmiRcType = getTmiRcType;
 
 
   /**
@@ -63,7 +63,7 @@
    * @param {ContentGn} ct_gn
    * @return {RecipeItem}
    */
-  const _tmiCT = function(ct_gn) {
+  const getTmiCt = function(ct_gn) {
     if(typeof ct_gn === "string") {
       switch(ct_gn) {
         case "power" : return CLASSES.PowerMark.INSTANCE;
@@ -78,7 +78,7 @@
 
     return CLASSES.TooManyItems.itemsManager.getItem(ct);
   };
-  exports._tmiCT = _tmiCT;
+  exports.getTmiCt = getTmiCt;
 
 
   /**
@@ -89,15 +89,15 @@
    * @param {boolean|unset} [reqBooster]
    * @return {Recipe}
    */
-  const _rawRc = function(typeStr, ct_gn, time, reqBooster) {
-    let rawRc = new CLASSES.Recipe(_tmiRcType(typeStr), _tmiCT(ct_gn), tryVal(time, 0.0));
+  const makeRawRc = function(typeStr, ct_gn, time, reqBooster) {
+    let rawRc = new CLASSES.Recipe(getTmiRcType(typeStr), getTmiCt(ct_gn), tryVal(time, 0.0));
     if(reqBooster) {
       rawRc.setBaseEff(0.0);
     };
 
     return rawRc;
   };
-  exports._rawRc = _rawRc;
+  exports.makeRawRc = makeRawRc;
 
 
   /**
@@ -141,8 +141,8 @@
    */
   const addCons = function(rawRc, ct_gn, amt, isContinuous) {
     !isContinuous ?
-      rawRc.addMaterialFloat(_tmiCT(ct_gn), amt) :
-      rawRc.addMaterialPersec(_tmiCT(ct_gn), amt);
+      rawRc.addMaterialFloat(getTmiCt(ct_gn), amt) :
+      rawRc.addMaterialPersec(getTmiCt(ct_gn), amt);
 
     return rawRc;
   };
@@ -156,7 +156,7 @@
    * @return {Recipe}
    */
   const addConsPow = function(rawRc, amt) {
-    rawRc.addMaterialPersec(_tmiCT("power"), amt)
+    rawRc.addMaterialPersec(getTmiCt("power"), amt)
     .setType(CLASSES.RecipeItemType.POWER);
 
     return rawRc;
@@ -172,7 +172,7 @@
    * @return {Recipe}
    */
   const addConsHeatErekir = function(rawRc, amt) {
-    rawRc.addMaterial(_tmiCT("heat"), amt)
+    rawRc.addMaterial(getTmiCt("heat"), amt)
     .setType(CLASSES.RecipeItemType.POWER)
     .floatFormat();
 
@@ -190,7 +190,7 @@
    * @return {Recipe}
    */
   const addConsBooster = function(rawRc, ct_gn, amt, boostEffc) {
-    rawRc.addMaterialPersec(_tmiCT(ct_gn), amt)
+    rawRc.addMaterialPersec(getTmiCt(ct_gn), amt)
     .setType(CLASSES.RecipeItemType.BOOSTER)
     .setOptional()
     .setEfficiency(boostEffc)
@@ -212,8 +212,8 @@
    */
   const addConsAlter = function(rawRc, rcGrp, ct_gn, amt, isContinuous) {
     let rcStack = !isContinuous ?
-      rawRc.addMaterialFloat(_tmiCT(ct_gn), amt) :
-      rawRc.addMaterialPersec(_tmiCT(ct_gn), amt);
+      rawRc.addMaterialFloat(getTmiCt(ct_gn), amt) :
+      rawRc.addMaterialPersec(getTmiCt(ct_gn), amt);
 
     rcStack
     .setGroup(rcGrp);
@@ -233,8 +233,8 @@
    */
   const addProd = function(rawRc, ct_gn, amt, isContinuous) {
     !isContinuous ?
-      rawRc.addProductionFloat(_tmiCT(ct_gn), amt) :
-      rawRc.addProductionPersec(_tmiCT(ct_gn), amt);
+      rawRc.addProductionFloat(getTmiCt(ct_gn), amt) :
+      rawRc.addProductionPersec(getTmiCt(ct_gn), amt);
 
     return rawRc;
   };
@@ -248,7 +248,7 @@
    * @return {Recipe}
    */
   const addProdPow = function(rawRc, amt) {
-    rawRc.addProductionPersec(_tmiCT("power"), amt)
+    rawRc.addProductionPersec(getTmiCt("power"), amt)
     .setType(CLASSES.RecipeItemType.POWER);
 
     return rawRc;
@@ -264,7 +264,7 @@
    * @return {Recipe}
    */
   const addProdHeatErekir = function(rawRc, amt) {
-    rawRc.addProduction(_tmiCT("heat"), amt)
+    rawRc.addProduction(getTmiCt("heat"), amt)
     .setType(CLASSES.RecipeItemType.POWER)
     .floatFormat();
 
@@ -286,7 +286,7 @@
    * @return {Recipe}
    */
   const addAttr = function(rawRc, rcGrp, ct_gn, val, size, reqAttr, attrRcType, hideEffc) {
-    let rcStack = rawRc.addMaterial(_tmiCT(ct_gn), attrRcType === AttrRcTypes.PROP ? 1 : attrRcType === AttrRcTypes.WALL ? size : Math.pow(size, 2))
+    let rcStack = rawRc.addMaterial(getTmiCt(ct_gn), attrRcType === AttrRcTypes.PROP ? 1 : attrRcType === AttrRcTypes.WALL ? size : Math.pow(size, 2))
     .setType(CLASSES.RecipeItemType.ATTRIBUTE)
     .setOptional(tryVal(!reqAttr, true))
     .setEfficiency(tryVal(val, 1.0))
@@ -314,7 +314,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null || blk.itemDrop == null) return rawRc;
 
-    rawRc.addMaterial(_tmiCT(blk), amt)
+    rawRc.addMaterial(getTmiCt(blk), amt)
     .setType(CLASSES.RecipeItemType.ATTRIBUTE)
     .setEfficiency(realEffc)
     .emptyFormat()
@@ -338,8 +338,8 @@
    */
   const addOpt = function(rawRc, rcGrp, ct_gn, amt, mtp, isContinuous, reqOpt) {
     let rcStack = !isContinuous ?
-      rawRc.addMaterialFloat(_tmiCT(ct_gn), amt) :
-      rawRc.addMaterialPersec(_tmiCT(ct_gn), amt);
+      rawRc.addMaterialFloat(getTmiCt(ct_gn), amt) :
+      rawRc.addMaterialPersec(getTmiCt(ct_gn), amt);
 
     rcStack
     .setType(CLASSES.RecipeItemType.BOOSTER)
@@ -437,8 +437,8 @@
         let i = 0;
         opt.forEachRow(4, (ct, amt, p, mtp) => {
           tb1.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
-          MDL_table.__rcCt(tb1, ct, amt, p).padRight(72.0);
-          tb1.add(MDL_text._statText(
+          MDL_table.rcCtIcon(tb1, ct, amt, p).padRight(72.0);
+          tb1.add(MDL_text.getStat(
             MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
             mtp.perc(0),
           )).center().padRight(6.0);
@@ -446,7 +446,7 @@
           i += 4;
         });
       }).row();
-      MDL_table.__break(tb);
+      MDL_table.br(tb);
     });
 
     return rawRc;
@@ -464,7 +464,7 @@
    * @param {string|unset} [typeStr_ow]
    * @return {void}
    */
-  const _r_dynamicAttributeBlock = function(blk, attrRsArr, typeStr_ow) {
+  const regisRc_dynamicAttributeBlock = function(blk, attrRsArr, typeStr_ow) {
     if(!ENABLED) return;
 
     MDL_event.onLoad(() => {
@@ -472,7 +472,7 @@
         let rs = MDL_content.getCt(nameRs, "rs");
         if(rs == null) return;
 
-        let rawRc = _rawRc(tryVal(typeStr_ow, "factory"), blk, blk.ex_getCraftTime(), true);
+        let rawRc = makeRawRc(tryVal(typeStr_ow, "factory"), blk, blk.ex_getCraftTime(), true);
         let rcGrp = new CLASSES.RecipeItemGroup();
         baseParse(blk, rawRc);
 
@@ -486,7 +486,7 @@
       });
     });
   };
-  exports._r_dynamicAttributeBlock = _r_dynamicAttributeBlock;
+  exports.regisRc_dynamicAttributeBlock = regisRc_dynamicAttributeBlock;
 
 
   /**
@@ -495,7 +495,7 @@
    * @param {ObjectMap} terItmMapMap
    * @return {void}
    */
-  const _r_terrainDynamicDrill = function(blk, terItmMapMap) {
+  const regisRc_terrainDynamicDrill = function(blk, terItmMapMap) {
     if(!ENABLED) return;
 
     MDL_event.onLoad(() => {
@@ -508,14 +508,14 @@
           if(rs == null) return;
           if(!oreGrpMap.containsKey(rs)) oreGrpMap.put(rs, new CLASSES.RecipeItemGroup());
 
-          let rawRc = _rawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2), true);
+          let rawRc = makeRawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2), true);
           baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
           Vars.content.blocks().each(
             oblk => oblk.itemDrop === itm && ((oblk instanceof OverlayFloor) ? !oblk.wallOre : (oblk instanceof Floor)),
             oblk => addMineTile(rawRc, oreGrpMap.get(rs), oblk, blk.drillTime / blk.getDrillTime(itm), blk.size),
           );
           addProd(rawRc, rs, 1);
-          addSubInfo(rawRc, MDL_text._statText(fetchStat("lovec", "blk-terreq").localized(), MDL_terrain._terB(ter)));
+          addSubInfo(rawRc, MDL_text.getStat(fetchStat("lovec", "blk-terreq").localized(), MDL_terrain.getTerB(ter)));
 
           rawRc.complete();
           regisRc(rawRc);
@@ -523,7 +523,7 @@
       });
     });
   };
-  exports._r_terrainDynamicDrill = _r_terrainDynamicDrill;
+  exports.regisRc_terrainDynamicDrill = regisRc_terrainDynamicDrill;
 
 
   /**
@@ -531,7 +531,7 @@
    * @param {Block} blk
    * @return {void}
    */
-  const _r_rangeWallDrill = function thisFun(blk) {
+  const regisRc_rangeWallDrill = function thisFun(blk) {
     if(!ENABLED) return;
 
     MDL_event.onLoad(() => {
@@ -547,8 +547,8 @@
         if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new CLASSES.RecipeItemGroup());
 
         let rawRc = !blk.shouldDropPay ?
-          _rawRc("collecting", blk, blk.drillTime, true) :
-          _rawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.range, 2), true);
+          makeRawRc("collecting", blk, blk.drillTime, true) :
+          makeRawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.range, 2), true);
         baseParse(blk, rawRc, blk.optionalBoostIntensity);
         addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), Math.pow(blk.range, 2));
         !blk.shouldDropPay ?
@@ -571,7 +571,7 @@
       return obj;
     })(),
   });
-  exports._r_rangeWallDrill = _r_rangeWallDrill;
+  exports.regisRc_rangeWallDrill = regisRc_rangeWallDrill;
 
 
   /**
@@ -579,12 +579,12 @@
    * @param {Block} blk
    * @return {void}
    */
-  const _r_constructionCore = function(blk) {
+  const regisRc_constructionCore = function(blk) {
     if(!ENABLED) return;
 
     MDL_event.onLoad(() => {
       let blksReq = blk.ex_calcBlksReq([]);
-      let rawRc = _rawRc("building", blk.delegee.placeBlk, blk.constructionTimeReq);
+      let rawRc = makeRawRc("building", blk.delegee.placeBlk, blk.constructionTimeReq);
 
       blksReq.forEachRow(2, (oblk, amt) => {
         addCons(rawRc, oblk, amt);
@@ -598,7 +598,7 @@
       regisRc(rawRc);
     });
   };
-  exports._r_constructionCore = _r_constructionCore;
+  exports.regisRc_constructionCore = regisRc_constructionCore;
 
 
   /**
@@ -606,14 +606,14 @@
    * @param {Block} blk
    * @return {void}
    */
-  const _r_rainCollector = function(blk) {
+  const regisRc_rainCollector = function(blk) {
     if(!ENABLED) return;
 
     MDL_event.onLoad(() => {
       Vars.content.weathers().each(
         wea => wea instanceof RainWeather,
         wea => {
-          let rawRc = _rawRc("collecting", blk, 300.0);
+          let rawRc = makeRawRc("collecting", blk, 300.0);
 
           baseParse(blk, rawRc);
           addProd(rawRc, wea.liquid, blk.delegee.liqProdRate, true);
@@ -624,7 +624,7 @@
       );
     });
   };
-  exports._r_rainCollector = _r_rainCollector;
+  exports.regisRc_rainCollector = regisRc_rainCollector;
 
 
   /**
@@ -633,7 +633,7 @@
    * @param {RecipeModule} rcMdl
    * @return {void}
    */
-  const _r_recipeFactory = function thisFun(blk) {
+  const regisRc_recipeFactory = function thisFun(blk) {
     if(!ENABLED) return;
 
     if(thisFun.tmpSeq.size === 0) {
@@ -653,7 +653,7 @@
 
     MDL_event.onLoadDelayTask(5.0, () => {
       CLS_recipe.getBlkRcsMap().get(blk).forEachFast(rc => {
-        rawRc = _rawRc("factory", blk, blk.craftTime * rc.rcTimeScl);
+        rawRc = makeRawRc("factory", blk, blk.craftTime * rc.rcTimeScl);
 
         // Power
         if(blk.consPower != null) {
@@ -743,30 +743,30 @@
           addOpt(rawRc, rcGrp, ct, amt * p, mtp, false, rc.reqOpt);
         });
         if(rc.reqOpt) {
-          addSubInfo(rawRc, MDL_text._statText(MDL_bundle.getTerm("lovec", "require-optional"), Core.bundle.get("yes")));
+          addSubInfo(rawRc, MDL_text.getStat(MDL_bundle.getTerm("lovec", "require-optional"), Core.bundle.get("yes")));
         };
         addSubInfo_opt(rawRc, rc.opt);
 
         // Stat
         if(rc.isGen) addSubInfo(rawRc, MDL_bundle.getTerm("lovec", "generated-recipe").color(Color.gray));
-        if(rc.failP > 0.0) addSubInfo(rawRc, MDL_text._statText(MDL_bundle.getTerm("lovec", "chance-to-fail"), rc.failP.perc(1)));
+        if(rc.failP > 0.0) addSubInfo(rawRc, MDL_text.getStat(MDL_bundle.getTerm("lovec", "chance-to-fail"), rc.failP.perc(1)));
 
         // For furnaces
         if(blk.ex_isSubInsOf("BLK_furnaceRecipeFactory") || blk.ex_isSubInsOf("BLK_electricFurnaceRecipeFactory")) {
           // Specific
           let fuelArr = Array.air;
           if(blk.ex_isSubInsOf("INTF_BLK_furnaceBlock")) {
-            fuelArr = MDL_fuel._fuelArr(blk);
+            fuelArr = MDL_fuel.getFuelArr(blk);
           };
 
           // Stat
-          if(rc.tempReq > 0.0) addSubInfo(rawRc, MDL_text._statText(fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(rc.tempReq, 2), fetchStatUnit("lovec", "heatunits").localized()));
-          if(isFinite(rc.tempAllowed)) addSubInfo(rawRc, MDL_text._statText(MDL_bundle.getTerm("lovec", "temperature-allowed"), Strings.fixed(rc.tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized()));
+          if(rc.tempReq > 0.0) addSubInfo(rawRc, MDL_text.getStat(fetchStat("lovec", "blk0heat-tempreq").localized(), Strings.fixed(rc.tempReq, 2), fetchStatUnit("lovec", "heatunits").localized()));
+          if(isFinite(rc.tempAllowed)) addSubInfo(rawRc, MDL_text.getStat(MDL_bundle.getTerm("lovec", "temperature-allowed"), Strings.fixed(rc.tempAllowed, 2), fetchStatUnit("lovec", "heatunits").localized()));
           if(fuelArr.length > 0) addSubInfo(rawRc, tb => {
             tb.row();
-            tb.add(MDL_text._statText(MDL_bundle.getTerm("lovec", "fuel"))).left();
+            tb.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "fuel"))).left();
             tb.row();
-            MDL_table._l_ctLi(tb, fuelArr, null, 10);
+            MDL_table.setCtLi(tb, fuelArr, null, 10);
           });
         };
 
@@ -778,4 +778,4 @@
   .setProp({
     tmpSeq: new Seq(),
   });
-  exports._r_recipeFactory = _r_recipeFactory;
+  exports.regisRc_recipeFactory = regisRc_recipeFactory;

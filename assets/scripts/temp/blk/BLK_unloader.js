@@ -20,7 +20,7 @@
 
 
   function comp_buildConfiguration(b, tb) {
-    MDL_table._s_ct(
+    MDL_table.setCtSelect(
       tb, b.block, Vars.content.items().toArray(),
       () => b.sortItem, val => b.configure(val), false,
       b.block.selectionRows, b.block.selectionColumns,

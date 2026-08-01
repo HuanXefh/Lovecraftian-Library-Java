@@ -155,7 +155,7 @@
 
     MDL_content.rename(
       blk,
-      () => MDL_bundle.getTerm("lovec", "geyser") + MDL_text._space() + "(" + blk.parent.localizedName + ")",
+      () => MDL_bundle.getTerm("lovec", "geyser") + MDL_text.getSpace() + "(" + blk.parent.localizedName + ")",
     );
   };
 

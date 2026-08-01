@@ -27,14 +27,14 @@
    * @param {ResourceGn} rs_gn
    * @return {number}
    */
-  const _fuelPon = function(rs_gn) {
+  const getFuelPon = function(rs_gn) {
     let rs = MDL_content.getCt(rs_gn, "rs");
     return rs == null ?
       0.0 :
       DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[0];
   }
   .setCache();
-  exports._fuelPon = _fuelPon;
+  exports.getFuelPon = getFuelPon;
 
 
   /**
@@ -42,14 +42,14 @@
    * @param {ResourceGn} rs_gn
    * @return {number}
    */
-  const _fuelLvl = function(rs_gn) {
+  const getFuelLvl = function(rs_gn) {
     let rs = MDL_content.getCt(rs_gn, "rs");
     return rs == null ?
       0.0 :
       DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[1];
   }
   .setCache();
-  exports._fuelLvl = _fuelLvl;
+  exports.getFuelLvl = getFuelLvl;
 
 
   /** @global */
@@ -67,7 +67,7 @@
    * @param {BlockGn} blk_gn
    * @return {Resource[]}
    */
-  const _fuelArr = function(blk_gn) {
+  const getFuelArr = function(blk_gn) {
     let arr = [];
 
     let blk = MDL_content.getCt(blk_gn, "blk");
@@ -86,7 +86,7 @@
     return arr.inSituFilter(rs => !tryJsProp(blk, "blockedFuels", Array.air).includes(rs.name));
   }
   .setCache();
-  exports._fuelArr = _fuelArr;
+  exports.getFuelArr = getFuelArr;
 
 
   /**
@@ -95,7 +95,7 @@
    * @param {ResourceGn} rs_gn
    * @return {boolean}
    */
-  const _hasFuelInput = function(blk_gn, rs_gn) {
+  const checkFuelInput = function(blk_gn, rs_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null || tryJsProp(blk, "noFuelInput", false)) return false;
     let rs = MDL_content.getCt(rs_gn, "rs");
@@ -114,7 +114,7 @@
     return VARGEN.fuelItms.includes(rs) || VARGEN.fuelLiqs.includes(rs) || VARGEN.fuelGases.includes(rs);
   }
   .setCache();
-  exports._hasFuelInput = _hasFuelInput;
+  exports.checkFuelInput = checkFuelInput;
 
 
   /**
@@ -122,7 +122,7 @@
    * @param {Building} b
    * @return {[Resource, number, number]|null} `TUPLE`: fuel, fuelPon, fuelLvl.
    */
-  const _fuelTup = function(b) {
+  const getFuelTup = function(b) {
     if(tryJsProp(b.block, "noFuelInput", false)) return null;
 
     let
@@ -137,14 +137,14 @@
 
     // If a fuel is selected, return it instead
     if(fuelSel != null) {
-      return [fuelSel, _fuelPon(fuelSel), _fuelLvl(fuelSel)];
+      return [fuelSel, getFuelPon(fuelSel), getFuelLvl(fuelSel)];
     };
 
     // Find fuel with the highest fuel level
     let tmpLvl;
     if(b.items != null && (fuelType & FuelTypes.ITEM) !== 0) VARGEN.fuelItms.forEachFast(itm => {
       if((allowedFuels != null ? !allowedFuels.includes(itm.name) : blockedFuels.includes(itm.name)) || !b.items.has(itm)) return;
-      tmpLvl = _fuelLvl(itm);
+      tmpLvl = getFuelLvl(itm);
       if(tmpLvl > fuelLvl) {
         fuelSpare = fuel;
         fuelLvlSpare = fuelLvl;
@@ -155,7 +155,7 @@
     if(b.liquids != null) {
       if((fuelType & FuelTypes.LIQUID) !== 0) VARGEN.fuelLiqs.forEachFast(liq => {
         if((allowedFuels != null ? !allowedFuels.includes(liq.name) : blockedFuels.includes(liq.name)) || b.liquids.get(liq < 0.01)) return;
-        tmpLvl = _fuelLvl(liq);
+        tmpLvl = getFuelLvl(liq);
         if(tmpLvl > fuelLvl) {
           fuelSpare = fuel;
           fuelLvlSpare = fuelLvl;
@@ -165,7 +165,7 @@
       });
       if((fuelType & FuelTypes.GAS) !== 0) VARGEN.fuelGases.forEachFast(gas => {
         if((allowedFuels != null ? !allowedFuels.includes(gas.name) : blockedFuels.includes(gas.name)) || b.liquids.get(gas < 0.01)) return;
-        tmpLvl = _fuelLvl(gas);
+        tmpLvl = getFuelLvl(gas);
         if(tmpLvl > fuelLvl) {
           fuelSpare = fuel;
           fuelLvlSpare = fuelLvl;
@@ -176,13 +176,13 @@
     };
 
     // If the building produces the target fuel, try using the one with second-highest level
-    if(fuel != null && MDL_recipeDict._prodAmt_b(fuel, b) > 0.0 && fuelSpare != null) {
+    if(fuel != null && MDL_recipeDict.getProdAmtByBuild(fuel, b) > 0.0 && fuelSpare != null) {
       fuel = fuelSpare;
       fuelLvl = fuelLvlSpare;
     };
 
     return fuel == null ?
       null :
-      [fuel, _fuelPon(fuel), fuelLvl];
+      [fuel, getFuelPon(fuel), fuelLvl];
   };
-  exports._fuelTup = _fuelTup;
+  exports.getFuelTup = getFuelTup;

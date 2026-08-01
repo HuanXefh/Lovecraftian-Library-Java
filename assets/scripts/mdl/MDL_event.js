@@ -365,7 +365,7 @@
         lastY = null;
       };
 
-      if(x < pad || x > MDL_ui._screenW() - pad || y < pad || y > MDL_ui._screenH() - pad) {
+      if(x < pad || x > MDL_ui.getScreenW() - pad || y < pad || y > MDL_ui.getScreenH() - pad) {
         if(lastX != null && lastY != null) scr(0.0, 0.0, startX, startY);
         return;
       };

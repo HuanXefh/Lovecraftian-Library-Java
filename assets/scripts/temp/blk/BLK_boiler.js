@@ -53,7 +53,7 @@
 
   function comp_onDestroyed(b) {
     if(b.boilerInstab > b.block.delegee.hitExploMinInstab) {
-      FRAG_attack._a_explosion(b.x, b.y, b.block.delegee.exploDmg, b.block.delegee.exploRad, b.block.delegee.exploShake);
+      FRAG_attack.explosion(b.x, b.y, b.block.delegee.exploDmg, b.block.delegee.exploRad, b.block.delegee.exploShake);
     };
   };
 

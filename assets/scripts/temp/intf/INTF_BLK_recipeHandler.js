@@ -213,7 +213,7 @@
       tmp = b.rc.bi[i];
       if(!(tmp instanceof Array)) {
         amt = b.rc.bi[i + 1];
-        if(amt > 0) MDL_table.__reqRs(tb, b, tmp, amt);
+        if(amt > 0) MDL_table.reqRs(tb, b, tmp, amt);
       } else {
         thisFun.tmpCts.clear();
         thisFun.tmpAmts.clear();
@@ -229,7 +229,7 @@
           j += 3;
         };
         if(thisFun.tmpCts.length > 0) {
-          MDL_table.__reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
+          MDL_table.reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
         };
       };
       i += 3;
@@ -241,7 +241,7 @@
     while(i < iCap) {
       tmp = b.rc.ci[i];
       if(!(tmp instanceof Array)) {
-        if(b.rc.ci[i + 1] > 0.0) MDL_table.__reqRs(tb, b, tmp);
+        if(b.rc.ci[i + 1] > 0.0) MDL_table.reqRs(tb, b, tmp);
       } else {
         thisFun.tmpCts.clear();
         j = 0;
@@ -254,7 +254,7 @@
           j += 2;
         };
         if(thisFun.tmpCts.length > 0) {
-          MDL_table.__reqMultiCt(tb, b, thisFun.tmpCts);
+          MDL_table.reqMultiCt(tb, b, thisFun.tmpCts);
         };
       };
       i += 2;
@@ -266,7 +266,7 @@
     while(i < iCap) {
       tmp = b.rc.aux[i];
       if(b.rc.aux[i + 1] > 0.0) {
-        MDL_table.__reqRs(tb, b, tmp);
+        MDL_table.reqRs(tb, b, tmp);
       };
       i += 2;
     };
@@ -287,7 +287,7 @@
         i += 4;
       };
       if(thisFun.tmpCts.length > 0) {
-        MDL_table.__reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
+        MDL_table.reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
       };
     };
 
@@ -299,7 +299,7 @@
         tmp = MDL_content.getCt(b.rc.payi[i], null, true);
         amt = b.rc.payi[i + 1];
         if(amt > 0) {
-          MDL_table.__reqCt(tb, tmp, amt, ct => tryVal(b.payReqObj[ct.name], 0))
+          MDL_table.reqCt(tb, tmp, amt, ct => tryVal(b.payReqObj[ct.name], 0))
         };
         i += 2;
       };
@@ -1231,7 +1231,7 @@
        * @return {number}
        */
       ex_getBlkPol: function() {
-        return MDL_pollution._blkPol(this.block) + this.rc.pol;
+        return MDL_pollution.getBlkPol(this.block) + this.rc.pol;
       }
       .setProp({
         noSuper: true,

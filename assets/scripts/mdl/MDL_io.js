@@ -27,7 +27,7 @@
    * @param {Object<string, number>} obj
    * @return {Object<string, number>|unset}
    */
-  const __objStrNum = function(wr0rd, obj) {
+  const objStrNum = function(wr0rd, obj) {
     return processData(
       wr0rd,
 
@@ -53,7 +53,7 @@
       },
     );
   };
-  exports.__objStrNum = __objStrNum;
+  exports.objStrNum = objStrNum;
 
 
   /**
@@ -62,7 +62,7 @@
    * @param {Object<string, string>} obj
    * @return {Object<string, string>|unset}
    */
-  const __objStrStr = function(wr0rd, obj) {
+  const objStrStr = function(wr0rd, obj) {
     return processData(
       wr0rd,
 
@@ -88,7 +88,7 @@
       },
     );
   };
-  exports.__objStrStr = __objStrStr;
+  exports.objStrStr = objStrStr;
 
 
   /**
@@ -100,7 +100,7 @@
    * @param {(function(Reads): T)|unset} [rdFun] - Leave empty if two in one.
    * @return {Array<T>|unset}
    */
-  const __xxxs = function(wr0rd, xxxs, wrFun, rdFun) {
+  const xxxs = function(wr0rd, xxxs, wrFun, rdFun) {
     if(rdFun == null) rdFun = wrFun;
     return processData(
       wr0rd,
@@ -124,7 +124,7 @@
       },
     );
   };
-  exports.__xxxs = __xxxs;
+  exports.xxxs = xxxs;
 
 
   /**
@@ -133,8 +133,8 @@
    * @param {Array<number>} ints
    * @return {Array<number>|unset}
    */
-  const __ints = function(wr0rd, ints) {
-    return __xxxs(
+  const ints = function(wr0rd, ints) {
+    return xxxs(
       wr0rd, ints,
 
       (wr, int) => wr.i(int),
@@ -142,7 +142,7 @@
       rd => rd.i(),
     );
   };
-  exports.__ints = __ints;
+  exports.ints = ints;
 
 
   /**
@@ -151,8 +151,8 @@
    * @param {Array<number>} fs
    * @return {Array<number>|unset}
    */
-  const __fs = function(wr0rd, fs) {
-    return __xxxs(
+  const fs = function(wr0rd, fs) {
+    return xxxs(
       wr0rd, fs,
 
       (wr, f) => wr.f(f),
@@ -160,7 +160,7 @@
       rd => rd.f(),
     );
   };
-  exports.__fs = __fs;
+  exports.fs = fs;
 
 
   /* <------------------------------ Arc ------------------------------ */
@@ -172,7 +172,7 @@
    * @param {Color|unset} [color]
    * @return {Color|unset}
    */
-  const __color = function(wr0rd, color) {
+  const color = function(wr0rd, color) {
     return processData(
       wr0rd,
 
@@ -181,7 +181,7 @@
       rd => new Color(rd.i()),
     );
   };
-  exports.__color = __color;
+  exports.color = color;
 
 
   /**
@@ -190,10 +190,10 @@
    * @param {Array<Color>} colors
    * @return {Array<Color>|unset}
    */
-  const __colors = function(wr0rd, colors) {
-    return __xxxs(wr0rd, colors, __color);
+  const colors = function(wr0rd, colors) {
+    return xxxs(wr0rd, colors, color);
   };
-  exports.__colors = __colors;
+  exports.colors = colors;
 
 
   /**
@@ -202,7 +202,7 @@
    * @param {Point2|unset} [pon2]
    * @return {Point2|unset}
    */
-  const __pon2 = function(wr0rd, pon2) {
+  const pon2 = function(wr0rd, pon2) {
     return processData(
       wr0rd,
 
@@ -211,7 +211,7 @@
       rd => Point2.unpack(rd.i()),
     );
   };
-  exports.__pon2 = __pon2;
+  exports.pon2 = pon2;
 
 
   /**
@@ -220,10 +220,10 @@
    * @param {Array<Point2>} pon2s
    * @return {Array<Point2>|unset}
    */
-  const __pon2s = function(wr0rd, pon2s) {
-    return __xxxs(wr0rd, pon2s, __pon2);
+  const pon2s = function(wr0rd, pon2s) {
+    return xxxs(wr0rd, pon2s, pon2);
   };
-  exports.__pon2s = __pon2s;
+  exports.pon2s = pon2s;
 
 
   /**
@@ -232,7 +232,7 @@
    * @param {Vec2|unset} [vec2]
    * @return {Vec2|unset}
    */
-  const __vec2 = function(wr0rd, vec2) {
+  const vec2 = function(wr0rd, vec2) {
     return processData(
       wr0rd,
 
@@ -244,7 +244,7 @@
       rd => new Vec2(rd.f(), rd.f()),
     );
   };
-  exports.__vec2 = __vec2;
+  exports.vec2 = vec2;
 
 
   /**
@@ -253,10 +253,10 @@
    * @param {Array<Vec2>} vec2s
    * @return {Array<Vec2>|unset}
    */
-  const __vec2s = function(wr0rd, vec2s) {
-    return __xxxs(wr0rd, vec2s, __vec2);
+  const vec2s = function(wr0rd, vec2s) {
+    return xxxs(wr0rd, vec2s, vec2);
   };
-  exports.__vec2s = __vec2s;
+  exports.vec2s = vec2s;
 
 
   /**
@@ -265,7 +265,7 @@
    * @param {Vec3|unset} [vec3]
    * @return {Vec3|unset}
    */
-  const __vec3 = function(wr0rd, vec3) {
+  const vec3 = function(wr0rd, vec3) {
     return processData(
       wr0rd,
 
@@ -278,7 +278,7 @@
       rd => new Vec3(rd.f(), rd.f(), rd.f()),
     );
   };
-  exports.__vec3 = __vec3;
+  exports.vec3 = vec3;
 
 
   /**
@@ -287,10 +287,10 @@
    * @param {Array<Vec3>} vec3s
    * @return {Array<Vec3>|unset}
    */
-  const __vec3s = function(wr0rd, vec3s) {
-    return __xxxs(wr0rd, vec3s, __vec3);
+  const vec3s = function(wr0rd, vec3s) {
+    return xxxs(wr0rd, vec3s, vec3);
   };
-  exports.__vec3s = __vec3s;
+  exports.vec3s = vec3s;
 
 
   /* <------------------------------ content ------------------------------ */
@@ -302,7 +302,7 @@
    * @param {UnlockableContent|unset} [ct]
    * @return {UnlockableContent|unset}
    */
-  const __ct = function(wr0rd, ct) {
+  const ct = function(wr0rd, ct) {
     return processData(
       wr0rd,
 
@@ -311,7 +311,7 @@
       rd => MDL_content.getCt(rd.str(), null, true),
     );
   };
-  exports.__ct = __ct;
+  exports.ct = ct;
 
 
   /**
@@ -321,14 +321,14 @@
    * @param {Array<UnlockableContent>} cts
    * @return {Array<UnlockableContent>|unset}
    */
-  const __cts = function(wr0rd, cts) {
-    let result = __xxxs(wr0rd, cts, __ct);
+  const cts = function(wr0rd, cts) {
+    let result = xxxs(wr0rd, cts, ct);
     if(result instanceof Array) {
       result.compact();
     };
     return result;
   };
-  exports.__cts = __cts;
+  exports.cts = cts;
 
 
   /* <------------------------------ Lovec ------------------------------ */
@@ -340,21 +340,21 @@
    * @param {MathMatrix|unset} [mat]
    * @return {MathMatrix|unset}
    */
-  const __lcMat = function(wr0rd, mat) {
+  const lcMat = function(wr0rd, mat) {
     return processData(
       wr0rd,
 
       wr => {
         let fs = mat.toArray().cpy();
         fs.unshift(mat.getColAmt());
-        __fs(wr, fs);
+        fs(wr, fs);
       },
 
       rd => {
-        let fs = __fs(rd, []);
+        let fs = fs(rd, []);
         let colAmt = fs.shift();
         return new MathMatrix(fs.chunk(colAmt, 0));
       },
     );
   };
-  exports.__lcMat = __lcMat;
+  exports.lcMat = lcMat;

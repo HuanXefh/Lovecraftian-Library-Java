@@ -124,8 +124,8 @@
       tmpFrac2 = 0.0,
       tmpFrac3 = null,
       paramFrac = LCLerp.calcParamFrac(param, param_f, param_t),
-      pathLen = MATH_geometry._pathLen(pathData, dim),
-      pathSegLens = MATH_geometry._pathSegLens(thisFun.tmpArr, pathData, dim);
+      pathLen = MATH_geometry.calcPathLen(pathData, dim),
+      pathSegLens = MATH_geometry.calcPathSegLens(thisFun.tmpArr, pathData, dim);
 
     while(i < iCap) {
       tmpFrac1 = tmpFrac2;

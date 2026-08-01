@@ -40,7 +40,7 @@
     blk.stats.remove(Stat.affinities);
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table._d_attr(tb, blk.attribute);
+      MDL_table.setAttr(tb, blk.attribute);
     }));
   };
 

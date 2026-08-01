@@ -44,7 +44,7 @@
 
     let z = Draw.z();
     Draw.z(VAR.layer.vent);
-    Draw.rect(MDL_texture._regVari(blk, t), t.worldx() + blk.offDraw, t.worldy() + blk.offDraw);
+    Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx() + blk.offDraw, t.worldy() + blk.offDraw);
     Draw.z(z);
   };
 

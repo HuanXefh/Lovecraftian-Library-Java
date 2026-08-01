@@ -55,8 +55,8 @@ const db = {
         };
 
         return String.multiline(
-          MDL_cond._isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text._colon() + itm.localizedName.plain()),
-          MDL_bundle.getTerm("lovec", "ore-hardness") + MDL_text._colon() + tryJsProp(blk, "dropHardness", itm.hardness),
+          MDL_cond._isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text.getColon() + itm.localizedName.plain()),
+          MDL_bundle.getTerm("lovec", "ore-hardness") + MDL_text.getColon() + tryJsProp(blk, "dropHardness", itm.hardness),
         );
       },
 
@@ -66,8 +66,8 @@ const db = {
         if(liq == null) return;
 
         return String.multiline(
-          MDL_bundle.getTerm("lovec", "liquid") + MDL_text._colon() + liq.localizedName.plain(),
-          MDL_bundle.getTerm("lovec", "liquid-multiplier") + MDL_text._colon() + t.floor().liquidMultiplier.perc(),
+          MDL_bundle.getTerm("lovec", "liquid") + MDL_text.getColon() + liq.localizedName.plain(),
+          MDL_bundle.getTerm("lovec", "liquid-multiplier") + MDL_text.getColon() + t.floor().liquidMultiplier.perc(),
         );
       },
 
@@ -78,9 +78,9 @@ const db = {
         if(itm == null) return;
 
         return String.multiline(
-          MDL_bundle.getTerm("lovec", "item") + MDL_text._colon() + itm.localizedName.plain(),
-          !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text._colon() + MDL_fuel._fuelPon(itm)),
-          !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text._colon() + MDL_fuel._fuelLvl(itm)),
+          MDL_bundle.getTerm("lovec", "item") + MDL_text.getColon() + itm.localizedName.plain(),
+          !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text.getColon() + MDL_fuel.getFuelPon(itm)),
+          !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text.getColon() + MDL_fuel.getFuelLvl(itm)),
         );
       },
 
@@ -90,7 +90,7 @@ const db = {
         if(puddle == null) return;
 
         return String.multiline(
-          MDL_bundle.getTerm("lovec", "puddle") + MDL_text._colon() + puddle.liquid.localizedName.plain(),
+          MDL_bundle.getTerm("lovec", "puddle") + MDL_text.getColon() + puddle.liquid.localizedName.plain(),
         );
       },
 
@@ -315,7 +315,7 @@ const db = {
             if(!global.lovecUtil.fun._isSandBox()) {
               this.setChecked(false);
               PARAM.IS_TELEPORTING = false;
-              MDL_ui.show_fadeInfo("lovec", "sandbox-only");
+              MDL_ui.showFadeInfo("lovec", "sandbox-only");
               return;
             };
 
@@ -466,7 +466,7 @@ const db = {
     header: [
 
       "useless-field", "ohno", null,
-      "save-map", TmpStateTag.undefined, null,
+      "save-map", null, null,
       "save-revision", -1, null,
 
       "dynamic-pollution", 0.0, null,
@@ -496,7 +496,7 @@ const db = {
      */
     pHeader: [
 
-      "save-map", TmpStateTag.undefined, null,
+      "save-map", null, null,
 
       "global-bits", [], "string",
       "global-bit-hash", [], "string",

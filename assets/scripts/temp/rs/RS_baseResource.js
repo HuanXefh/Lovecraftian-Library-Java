@@ -69,7 +69,7 @@
 
     if(rs.recolorRegStr != null && parent != null && global.lovecUtil.prop.useRecolorSpr) {
       // Generate recolored sprite
-      let pix = MDL_texture._pix_gsColor(
+      let pix = MDL_texture.recolorPix(
         Core.atlas.getPixmap(rs.recolorRegStr),
         Core.atlas.getPixmap(parent),
       );
@@ -101,7 +101,7 @@
 
     if(rs.recolorRegStr != null && parent != null) {
       // For recolored sprites, always use parent as the icon tag
-      pixCombine = MDL_texture._pix_ctStack(pixBase, parent);
+      pixCombine = MDL_texture.stackPixWithCt(pixBase, parent);
       packer.add(MultiPacker.PageType.main, rs.name + "-t1", pixCombine);
       pixCombine.dispose();
       alts++;
@@ -116,7 +116,7 @@
         if(!Core.atlas.has(nameMod + "-rs0tag-" + tag)) return;
 
         pixTag = Core.atlas.getPixmap(nameMod + "-rs0tag-" + tag);
-        pixCombine = MDL_texture._pix_stack(pixBase, pixTag);
+        pixCombine = MDL_texture.stackPix(pixBase, pixTag);
         packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine);
         pixCombine.dispose();
         alts++;
@@ -125,7 +125,7 @@
 
     // Extra resource sprites as icon tags, if used
     rs.extraIntmdParents.forEachFast(nameRs => {
-      pixCombine = MDL_texture._pix_ctStack(pixBase, nameRs);
+      pixCombine = MDL_texture.stackPixWithCt(pixBase, nameRs);
       packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine);
       pixCombine.dispose();
       alts++;
@@ -290,7 +290,7 @@
       let str;
       if(this.intmdTags.length === 1 && DB_item.db["intmd"]["insertName"].colIncludes(this.intmdTags[0], 2)) {
         // For a single name to insert, use "main (type)" format
-        str = this.intmdParent.localizedName + MDL_text._space() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], TmpStateTag.error.toString()));
+        str = this.intmdParent.localizedName + MDL_text.getSpace() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], TmpStateTag.error.toString()));
       } else {
         // For regular intermediate, use "type (insert/main/sub)" format
         str = String(this.ex_getLocalizedIntmdName());
@@ -344,7 +344,7 @@
      * @return {string}
      */
     ex_getLocalizedIntmdName: function() {
-      return this.ex_getLocalizedMainName() + MDL_text._space() + "(${1})".format(this.ex_getLocalizedSubName());
+      return this.ex_getLocalizedMainName() + MDL_text.getSpace() + "(${1})".format(this.ex_getLocalizedSubName());
     }
     .setProp({
       noSuper: true,

@@ -22,17 +22,17 @@
 
 
   function comp_ex_calcImpactDmg(blk, b) {
-    return FRAG_attack._impactDmg(blk.size, blk.ex_calcImpactIntv(b));
+    return FRAG_attack.getImpactDmg(blk.size, blk.ex_calcImpactIntv(b));
   };
 
 
   function comp_ex_calcImpactDur(blk, b) {
-    return FRAG_attack._impactDur(blk.ex_calcImpactIntv(b));
+    return FRAG_attack.getImpactDur(blk.ex_calcImpactIntv(b));
   };
 
 
   function comp_ex_calcImpactMinRad(blk, b) {
-    return FRAG_attack._impactMinRad(blk.size);
+    return FRAG_attack.getImpactMinRad(blk.size);
   };
 
 
@@ -43,7 +43,7 @@
 
   function comp_createImpactWave(b) {
     TRIGGER.impactWave.fire(b.x, b.y, b.block.ex_calcImpactDmg(b), b.block.ex_calcImpactRad(b));
-    FRAG_attack._a_impact(
+    FRAG_attack.impact(
       b.x, b.y,
       b.block.ex_calcImpactDmg(b),
       b.block.ex_calcImpactDur(b),
@@ -51,8 +51,8 @@
       b.block.ex_calcImpactMinRad(b),
       b.block.ex_calcImpactShake(b),
     );
-    MDL_effect._e_dust(b.x, b.y, FRAG_attack._impactDustRad(b.block.size), Math.pow(b.block.size, 2));
-    MDL_effect._e_colorDust(b.x, b.y, FRAG_attack._impactDustRad(b.block.size) * 1.5, b.tile.getFloorColor());
+    MDL_effect._e_dust(b.x, b.y, FRAG_attack.getImpactDustRad(b.block.size), Math.pow(b.block.size, 2));
+    MDL_effect._e_colorDust(b.x, b.y, FRAG_attack.getImpactDustRad(b.block.size) * 1.5, b.tile.getFloorColor());
   };
 
 

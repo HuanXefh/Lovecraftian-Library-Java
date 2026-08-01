@@ -106,7 +106,7 @@
     } else if(mtIds == null) {
       frac = 0.0;
     } else {
-      frac = MDL_prop._reloadFrac(e, mtIds);
+      frac = MDL_prop.getReloadFrac(e, mtIds);
     };
     if(frac > 0.9999 || frac < 0.0001) return;
 

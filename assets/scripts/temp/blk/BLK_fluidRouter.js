@@ -24,8 +24,8 @@
 
     if(blk.fldType === "liquid") blk.noPresExplode = true;
     if(!blk.noPresExplode) {
-      blk.presExploRad = FRAG_attack._presExploRad(blk.size);
-      blk.presExploDmg = FRAG_attack._presExploDmg(blk.size);
+      blk.presExploRad = FRAG_attack.getPresExploRad(blk.size);
+      blk.presExploDmg = FRAG_attack.getPresExploDmg(blk.size);
     };
   };
 
@@ -53,7 +53,7 @@
     let frac = b.liquids.get(liqCur) / b.block.liquidCapacity;
     if(frac < 0.01) return;
 
-    FRAG_attack._a_explosion(
+    FRAG_attack.explosion(
       b.x, b.y,
       b.block.delegee.presExploDmg * frac,
       b.block.delegee.presExploRad * frac,

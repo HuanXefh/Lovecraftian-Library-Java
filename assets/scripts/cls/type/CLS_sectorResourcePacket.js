@@ -101,7 +101,7 @@
   CLS_sectorResourcePacket.prototype.calcTimeReq = function() {
     return this.from === "SPEC: windfall" ?
       1800.0 :
-      MDL_planet._dstSecBySec(this.from, this.to) * TIME_DST_RATIO;
+      MDL_planet.calcSecDstBySec(this.from, this.to) * TIME_DST_RATIO;
   };
 
 

@@ -33,7 +33,7 @@
 
 
   /**
-   * Gets fraction of sides in contact.
+   * Calculates fraction of sides in contact.
    * @param {Building} b_f
    * @param {Building} b_t
    * @param {number|unset} [mode] - Determines which sides can be used. See {@link SideFracModes}.
@@ -41,7 +41,7 @@
    * @param {boolean|unset} [useToAsParent] - If true, size of `b_t` will be used as denominator instead.
    * @return {number}
    */
-  const _sideFrac = function thisFun(b_f, b_t, mode, forceOneSide, useToAsParent) {
+  const calcSideFrac = function thisFun(b_f, b_t, mode, forceOneSide, useToAsParent) {
     if(mode == null) mode = SideFracModes.FRONT;
     if(!SideFracModes.has(mode)) return 0.0;
 
@@ -75,7 +75,7 @@
   .setProp({
     tmpTs: [],
   });
-  exports._sideFrac = _sideFrac;
+  exports.calcSideFrac = calcSideFrac;
 
 
   /* <------------------------------ raycast ------------------------------ */

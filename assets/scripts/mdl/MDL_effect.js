@@ -573,9 +573,9 @@
     if(e instanceof Building) {
       let reg = !(e.block instanceof BaseTurret) ?
         e.block.fullIcon :
-        tryVal(MDL_texture._regTurBase(e.block), e.block.region);
+        tryVal(MDL_texture.getRegTurBase(e.block), e.block.region);
       if(reg != null) {
-        showAt(MDL_ui._cameraX(), MDL_ui._cameraY(), thisFun.eff, 0.0, color, [reg, e]);
+        showAt(MDL_ui.getCameraX(), MDL_ui.getCameraY(), thisFun.eff, 0.0, color, [reg, e]);
       };
     } else {
       color.equals(Pal.heal) ?

@@ -158,8 +158,8 @@
     if(!TIMER.unit || !LCRand.chance(UTIL_rand.get("unit"), VAR.chance.unitUpdateP * 0.3)) return;
     if(!MDL_cond._isHeatDamageable(unit)) return;
 
-    let rHeat = MDL_flow._rHeat(unit.tileOn());
-    let rHeatRes = MDL_flow._rHeatRes(utp);
+    let rHeat = MDL_flow.calcRHeat(unit.tileOn());
+    let rHeatRes = MDL_flow.getRHeatRes(utp);
     let dmg = Mathf.maxZero(rHeat - rHeatRes) * 0.65;
     if(dmg < 0.0001) return;
     let dmg_fi = Math.min(dmg, VAR.param.heatDmgMax);

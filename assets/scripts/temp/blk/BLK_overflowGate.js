@@ -65,7 +65,7 @@
 
 
   function comp_buildConfiguration(b, tb) {
-    MDL_table.__btnCfgToggle(tb, b, VARGEN.icons.swap, VARGEN.icons.swap, b.isInv)
+    MDL_table.btnCfgToggle(tb, b, VARGEN.icons.swap, VARGEN.icons.swap, b.isInv)
     .tooltip(MDL_bundle.getInfo("lovec", "tt-invert-selection"), true);
   };
 

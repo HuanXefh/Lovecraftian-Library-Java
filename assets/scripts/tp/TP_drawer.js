@@ -121,7 +121,7 @@
 
 
       draw(b) {
-        ang = Mathf.mod(MDL_prop._totalProg(b) * this.spd + this.ang, 90.0);
+        ang = Mathf.mod(MDL_prop.getTotalProg(b) * this.spd + this.ang, 90.0);
         if(!this.shouldFade) {
           Draw.rect(this.rotReg, b.x + this.offX, b.y + this.offY, ang);
         } else {

@@ -37,7 +37,7 @@
    * @param {function(string): void} payloadCaller
    * @return {void};
    */
-  const __packetHandler = function thisFun(mode, header, payloadCaller) {
+  const addPacketHandler = function thisFun(mode, header, payloadCaller) {
     if(thisFun.headers.includes(header)) ERROR_HANDLER.throw("headerConflict", header);
     if(mode == null) mode = PacketModes.CLIENT;
     if(!PacketModes.has(mode)) return;
@@ -51,7 +51,7 @@
   .setProp({
     headers: [],
   });
-  exports.__packetHandler = __packetHandler;
+  exports.addPacketHandler = addPacketHandler;
 
 
   /**

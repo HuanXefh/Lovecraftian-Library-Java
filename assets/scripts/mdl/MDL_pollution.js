@@ -32,14 +32,14 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _blkPol = function(blk_gn) {
+  const getBlkPol = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return 0.0;
 
     return DB_HANDLER.read("blk-pol", blk, 0.0);
   }
   .setCache();
-  exports._blkPol = _blkPol;
+  exports.getBlkPol = getBlkPol;
 
 
   /**
@@ -48,7 +48,7 @@
    * @param {ResourceGn} rs_gn
    * @return {number}
    */
-  const _rsPol = function(rs_gn) {
+  const getRsPol = function(rs_gn) {
     let rs = MDL_content.getCt(rs_gn, "rs");
     if(rs == null) return 0.0;
 
@@ -58,51 +58,51 @@
         0.0 :
         parent.getContentType() !== rs.getContentType() ?
           0.0 :
-          _rsPol(parent);
+          getRsPol(parent);
     })());
   }
   .setCache();
-  exports._rsPol = _rsPol;
+  exports.getRsPol = getRsPol;
 
 
   /**
    * Gets block pollution of current save.
    * @return {number}
    */
-  const _basePol = function() {
+  const getBasePol = function() {
     return basePol;
   };
-  exports._basePol = _basePol;
+  exports.getBasePol = getBasePol;
 
 
   /**
    * Gets dynamic pollution of current save.
    * @return {number}
    */
-  const _dynaPol = function() {
+  const getDynaPol = function() {
     return dynaPol;
   };
-  exports._dynaPol = _dynaPol;
+  exports.getDynaPol = getDynaPol;
 
 
   /**
    * Gets lingering pollution of current save.
    * @return {number}
    */
-  const _lingerPol = function() {
+  const getLingerPol = function() {
     return lingerPol;
   };
-  exports._lingerPol = _lingerPol;
+  exports.getLingerPol = getLingerPol;
 
 
   /**
    * Gets total pollution of current save.
    * @return {number}
    */
-  const _glbPol = function() {
+  const getGlbPol = function() {
     return glbPolMeanArr.getMean();
   };
-  exports._glbPol = _glbPol;
+  exports.getGlbPol = getGlbPol;
 
 
   /**
@@ -112,14 +112,14 @@
    * @param {string|Block|UnitType|null} ct_gn
    * @return {number}
    */
-  const _polTol = function(ct_gn) {
+  const getPolTol = function(ct_gn) {
     let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return 500.0;
 
     return DB_HANDLER.read(ct instanceof UnitType ? "utp-pol-tol" : "blk-pol-tol", ct, -1.0);
   }
   .setCache();
-  exports._polTol = _polTol;
+  exports.getPolTol = getPolTol;
 
 
   /**
@@ -152,7 +152,7 @@
    * @return {void}
    */
   const comp_setStats_pol = function(blk) {
-    let pol = _blkPol(blk);
+    let pol = getBlkPol(blk);
     if(!pol.fEqual(0.0)) blk.stats.add(pol > 0.0 ? fetchStat("lovec", "blk-pol") : fetchStat("lovec", "blk-polred"), (Math.abs(pol).roundFixed(2) + " " + fetchStatUnit("lovec", "polunits").localized()).color(pol > 0.0 ? Pal.remove : Pal.heal));
   };
   exports.comp_setStats_pol = comp_setStats_pol;
@@ -176,7 +176,7 @@ MDL_event.onLoad(() => {
     if(isActive && LCRand.chance(UTIL_rand.get("pollution"), VAR.chance.polUpdateP)) {
       basePol += b.ex_getBlkPol != null ?
         b.ex_getBlkPol() :
-        _blkPol(b.block);
+        getBlkPol(b.block);
     };
   });
   TRIGGER.majorIter.end.addGlobalListener(() => {

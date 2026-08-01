@@ -35,7 +35,7 @@
     if(unit == null) return;
 
     TRIGGER.wireTouch.fire(b, unit);
-    FRAG_attack._a_lightning(unit.x, unit.y, null, dmg, 3, 7, 8, b.block.delegee.wireArcColor, "air");
+    FRAG_attack.lightning(unit.x, unit.y, null, dmg, 3, 7, 8, b.block.delegee.wireArcColor, "air");
   };
 
 

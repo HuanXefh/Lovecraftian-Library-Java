@@ -27,12 +27,12 @@
    * @param {number|unset} [scl]
    * @return {Table|Cell}
    */
-  const __margin = function(tb, scl) {
+  const margin = function(tb, scl) {
     if(scl == null) scl = 1.0;
 
     return tb.marginLeft(12.0 * scl).marginRight(12.0 * scl).marginTop(15.0 * scl).marginBottom(15.0 * scl);
   };
-  exports.__margin = __margin;
+  exports.margin = margin;
 
 
   /**
@@ -41,12 +41,12 @@
    * @param {number|unset} [repeat]
    * @return {void}
    */
-  const __break = function(tb, repeat) {
+  const br = function(tb, repeat) {
     tryVal(repeat, 2)._it(i => {
       tb.add("").row();
     });
   };
-  exports.__break = __break;
+  exports.br = br;
 
 
   /**
@@ -57,7 +57,7 @@
    * @param {number|unset} [stroke]
    * @return {void}
    */
-  const __bar = function(tb, color, w, stroke) {
+  const bar = function(tb, color, w, stroke) {
     if(color == null) color = Color.darkGray;
     if(stroke == null) stroke = 4.0;
 
@@ -65,7 +65,7 @@
       tb.image().color(color).height(stroke).pad(0.0).growX().fillX().row() :
       tb.image().color(color).width(w).height(stroke).pad(0.0).fillX().row();
   };
-  exports.__bar = __bar;
+  exports.bar = bar;
 
 
   /**
@@ -76,7 +76,7 @@
    * @param {number|unset} [stroke]
    * @return {Cell}
    */
-  const __barV = function(tb, color, h, stroke) {
+  const barV = function(tb, color, h, stroke) {
     if(color == null) color = Color.darkGray;
     if(stroke == null) stroke = 4.0;
 
@@ -84,7 +84,7 @@
       tb.image().color(color).width(stroke).pad(0.0).growY().fillY() :
       tb.image().color(color).width(stroke).height(h).pad(0.0).fillY();
   };
-  exports.__barV = __barV;
+  exports.barV = barV;
 
 
   /**
@@ -95,7 +95,7 @@
    * @param {number|unset} [stroke]
    * @return {Cell}
    */
-  const __edge = function(tb, tableF, color, stroke) {
+  const edge = function(tb, tableF, color, stroke) {
     if(color == null) color = Color.white;
     if(stroke == null) stroke = 2.0;
 
@@ -113,7 +113,7 @@
       tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).height(stroke);
     });
   };
-  exports.__edge = __edge;
+  exports.edge = edge;
 
 
   /**
@@ -122,13 +122,13 @@
    * @param {function(Table): void} tableF
    * @return {Cell}
    */
-  const __tooltip = function(cell, tableF) {
+  const tooltip = function(cell, tableF) {
     let tooltip = new Tooltip(cons(tableF));
     tooltip.allowMobile = true;
     Reflect.get(Cell, cell, "element").addListener(tooltip);
     return cell;
   };
-  exports.__tooltip = __tooltip;
+  exports.tooltip = tooltip;
 
 
   /**
@@ -140,16 +140,16 @@
    * @param {number|unset} [padLeft]
    * @return {void}
    */
-  const __wrapLine = function(tb, str, align, ord, padLeft) {
+  const wrapLine = function(tb, str, align, ord, padLeft) {
     tb.add(str)
     .center()
     .labelAlign(tryVal(align, Align.left))
     .wrap()
-    .width(MDL_ui._uiW(null, null, tryVal(ord, 0) * VAR.length.ordW))
+    .width(MDL_ui.getUiW(null, null, tryVal(ord, 0) * VAR.length.ordW))
     .padLeft(tryVal(padLeft, 0.0))
     .row();
   };
-  exports.__wrapLine = __wrapLine;
+  exports.wrapLine = wrapLine;
 
 
   /**
@@ -157,13 +157,13 @@
    * @param {Table} tb
    * @return {void}
    */
-  const __textNothing = function(tb) {
+  const textNothing = function(tb) {
     tb.add(MDL_bundle.getInfo("lovec", "nothing")
     .color(Color.lightGray))
     .center()
     .row();
   };
-  exports.__textNothing = __textNothing;
+  exports.textNothing = textNothing;
 
 
   /**
@@ -175,13 +175,13 @@
    * @param {number|unset} [h]
    * @return {Cell}
    */
-  const __btn = function(tb, text, scr, w, h) {
+  const btn = function(tb, text, scr, w, h) {
     return tb.button(text, scr)
     .size(tryVal(w, 200.0), tryVal(h, 50.0))
     .center()
     .pad(12.0);
   };
-  exports.__btn = __btn;
+  exports.btn = btn;
 
 
   /**
@@ -191,13 +191,13 @@
    * @param {function(): void} scr
    * @return {Cell}
    */
-  const __btnSmall = function(tb, icon, scr) {
+  const btnSmall = function(tb, icon, scr) {
     return tb.button(icon, scr)
     .size(42.0)
     .center()
     .pad(12.0);
   };
-  exports.__btnSmall = __btnSmall;
+  exports.btnSmall = btnSmall;
 
 
   /**
@@ -208,11 +208,11 @@
    * @param {number|unset} [h]
    * @return {Cell}
    */
-  const __btnClose = function(tb, dial, w, h) {
+  const btnClose = function(tb, dial, w, h) {
     dial.addCloseListener();
-    return __btn(tb, "@close", () => dial.hide(), w, h);
+    return btn(tb, "@close", () => dial.hide(), w, h);
   };
-  exports.__btnClose = __btnClose;
+  exports.btnClose = btnClose;
 
 
   /**
@@ -224,10 +224,10 @@
    * @param {number|unset} [h]
    * @return {Cell}
    */
-  const __btnLink = function(tb, text, url, w, h) {
-    return __btn(tb, text, () => Core.app.openURI(url), w, h);
+  const btnLink = function(tb, text, url, w, h) {
+    return btn(tb, text, () => Core.app.openURI(url), w, h);
   };
-  exports.__btnLink = __btnLink;
+  exports.btnLink = btnLink;
 
 
   /**
@@ -241,15 +241,15 @@
    * @param {number|unset} [h]
    * @return {Cell}
    */
-  const __btnCond = function(tb, text, textInvalid, boolF, scr, w, h) {
+  const btnCond = function(tb, text, textInvalid, boolF, scr, w, h) {
     let cond;
-    return __btn(tb, textInvalid, scr, w, h).update(btn => {
+    return btn(tb, textInvalid, scr, w, h).update(btn => {
       cond = boolF();
       btn.setText(cond ? text : textInvalid);
       btn.setDisabled(!cond);
     });
   };
-  exports.__btnCond = __btnCond;
+  exports.btnCond = btnCond;
 
 
   /**
@@ -261,14 +261,14 @@
    * @param {number|unset} [w]
    * @return {Cell}
    */
-  const __btnCfg = function(tb, b, scr, icon, w) {
+  const btnCfg = function(tb, b, scr, icon, w) {
     return tb.button(icon, tryVal(w, 24.0), () => scr(b)).center();
   };
-  exports.__btnCfg = __btnCfg;
+  exports.btnCfg = btnCfg;
 
 
   /**
-   * Variant of {@link __btnCfg} used to toggle a boolean config.
+   * Variant of {@link btnCfg} used to toggle a boolean config.
    * @param {Table} tb
    * @param {Building} b
    * @param {string|TextureRegionDrawable} iconTrue
@@ -277,10 +277,10 @@
    * @param {number|unset} [w]
    * @return {Cell}
    */
-  const __btnCfgToggle = function(tb, b, iconTrue, iconFalse, bool, w) {
+  const btnCfgToggle = function(tb, b, iconTrue, iconFalse, bool, w) {
     return tb.button(bool ? iconTrue : iconFalse, tryVal(w, 24.0), () => {b.configure(!bool); b.deselect()}).center();
   };
-  exports.__btnCfgToggle = __btnCfgToggle;
+  exports.btnCfgToggle = btnCfgToggle;
 
 
   /**
@@ -294,7 +294,7 @@
    * @param {number|unset} [w]
    * @return {Cell}
    */
-  const __slider = function(tb, valCaller, min, max, step, def, w) {
+  const slider = function(tb, valCaller, min, max, step, def, w) {
     let sliderCell = tb.slider(
       tryVal(min, 0),
       tryVal(max, 2),
@@ -311,7 +311,7 @@
 
     return sliderCell;
   };
-  exports.__slider = __slider;
+  exports.slider = slider;
 
 
   /**
@@ -326,15 +326,15 @@
    * @param {number|unset} [w]
    * @return {Cell}
    */
-  const __sliderCfg = function(tb, b, strGetter, min, max, step, def, w) {
+  const sliderCfg = function(tb, b, strGetter, min, max, step, def, w) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
       tb1.add("").left().get().setText(prov(() => strGetter(b)));
       tb1.row();
-      __slider(tb1, val => b.configure(val.toF()), min, max, step, def, w !== undefined ? w : 260.0);
+      slider(tb1, val => b.configure(val.toF()), min, max, step, def, w !== undefined ? w : 260.0);
     }).left().growX();
   };
-  exports.__sliderCfg = __sliderCfg;
+  exports.sliderCfg = sliderCfg;
 
 
   /**
@@ -345,7 +345,7 @@
    * @param {number|unset} [maxH]
    * @return {Cell}
    */
-  const __pnFixed = function(tb, tableF, maxW, maxH) {
+  const pnFixed = function(tb, tableF, maxW, maxH) {
     let pnCell = tb.pane(pnTb => {
       tableF(pnTb);
     });
@@ -357,7 +357,7 @@
 
     return pnCell;
   };
-  exports.__pnFixed = __pnFixed;
+  exports.pnFixed = pnFixed;
 
 
   /**
@@ -372,7 +372,7 @@
    * @param {ContentInfoDialog|unset} [ctDial]
    * @return {Cell}
    */
-  const __blkEffc = function(tb, blk, mtp, nameAttr, w, dialToHide, ctDial) {
+  const blkEffc = function(tb, blk, mtp, nameAttr, w, dialToHide, ctDial) {
     if(w == null) w = 64.0;
     let str = (Math.abs(mtp) < 0.0001) ? "" : ((mtp < 0.0 ? "-" : "") + Strings.autoFixed(mtp * 100.0, 2) + "%");
 
@@ -396,7 +396,7 @@
         // `TABLE`: efficiency label
         tb2.table(Styles.none, tb3 => {
           tb3.left();
-          __break(tb3);
+          br(tb3);
           tb3.add(str).fontScale(0.85).left().style(Styles.outlineLabel).color(mtp < 0.0 ? Pal.remove : Pal.accent);
         });
       }).padRight(4.0);
@@ -404,7 +404,7 @@
     .left()
     .padRight(8.0).padTop(4.0).padBottom(4.0);
   };
-  exports.__blkEffc = __blkEffc;
+  exports.blkEffc = blkEffc;
 
 
   /**
@@ -417,7 +417,7 @@
    * @param {number|unset} [pad]
    * @return {Cell}
    */
-  const __clickIcon = function(tb, icon, ttArg, scr, w, pad) {
+  const clickIcon = function(tb, icon, ttArg, scr, w, pad) {
     if(w == null) w = 32.0;
     if(pad == null) pad = 4.0;
 
@@ -426,7 +426,7 @@
       if(typeof ttArg === "string") {
         btnCell.tooltip(ttArg, true);
       } else if(typeof ttArg === "function") {
-        __tooltip(btnCell, ttArg);
+        tooltip(btnCell, ttArg);
       };
     };
     let btn = btnCell.get();
@@ -438,7 +438,7 @@
 
     return btnCell;
   };
-  exports.__clickIcon = __clickIcon;
+  exports.clickIcon = clickIcon;
 
 
   /**
@@ -450,8 +450,8 @@
    * @param {Dialog|unset} [dialToHide]
    * @param {ContentInfoDialog|unset} [ctDial]
    */
-  const __ct = function(tb, ct, w, pad, dialToHide, ctDial) {
-    return __clickIcon(
+  const ctIcon = function(tb, ct, w, pad, dialToHide, ctDial) {
+    return clickIcon(
       tb,
       new TextureRegionDrawable(ct.uiIcon),
       ct.localizedName,
@@ -464,7 +464,7 @@
       w, pad,
     );
   };
-  exports.__ct = __ct;
+  exports.ctIcon = ctIcon;
 
 
   /**
@@ -475,7 +475,7 @@
    * @param {function(UnlockableContent): number} amtGetter
    * @return {Cell}
    */
-  const __reqCt = function(tb, ct, amt, amtGetter) {
+  const reqCt = function(tb, ct, amt, amtGetter) {
     let reqImg = new ReqImage(
       StatValues.stack(ct, amt),
       () => (amtGetter(ct) >= amt),
@@ -483,7 +483,7 @@
 
     return tb.add(reqImg).size(32.0);
   };
-  exports.__reqCt = __reqCt;
+  exports.reqCt = reqCt;
 
 
   /**
@@ -494,7 +494,7 @@
    * @param {number|unset} [amt]
    * @return {Cell}
    */
-  const __reqRs = function(tb, b, rs, amt) {
+  const reqRs = function(tb, b, rs, amt) {
     let reqImg = new ReqImage(
       amt == null ? rs.uiIcon : StatValues.stack(rs, amt),
       amt == null ?
@@ -512,7 +512,7 @@
 
     return tb.add(reqImg).size(32.0);
   };
-  exports.__reqRs = __reqRs;
+  exports.reqRs = reqRs;
 
 
   /**
@@ -524,7 +524,7 @@
    * @param {(function(UnlockableContent): number)|unset} [amtGetter]
    * @return {Cell}
    */
-  const __reqMultiCt = function(tb, b, cts, amts, amtGetter) {
+  const reqMultiCt = function(tb, b, cts, amts, amtGetter) {
     let multiReqImg = new MultiReqImage();
     let i = 0;
     if(amts != null) {
@@ -557,7 +557,7 @@
 
     return tb.add(multiReqImg).size(32.0);
   };
-  exports.__reqMultiCt = __reqMultiCt;
+  exports.reqMultiCt = reqMultiCt;
 
 
   /**
@@ -571,7 +571,7 @@
    * @param {Dialog|unset} [dialToHide]
    * @param {ContentInfoDialog|unset} [ctDial]
    */
-  const __rcCt = function(tb, ct, amt, p, cancelLiq, w, dialToHide, ctDial) {
+  const rcCtIcon = function(tb, ct, amt, p, cancelLiq, w, dialToHide, ctDial) {
     if(ct == null) return;
     if(amt == null) amt = -1;
     if(p == null) p = 1.0;
@@ -619,7 +619,7 @@
       }).marginRight(4.0);
     }).left().marginRight(8.0).padTop(4.0).padBottom(4.0);
   };
-  exports.__rcCt = __rcCt;
+  exports.rcCtIcon = rcCtIcon;
 
 
   /* <------------------------------ text ------------------------------ */
@@ -633,18 +633,18 @@
    * @param {number|unset} [padLeft]
    * @return {Cell}
    */
-  const _d_note = function(tb, text, ord, padLeft) {
+  const setNote = function(tb, text, ord, padLeft) {
     let noteCell = tb.table(Tex.whiteui, tb1 => {
       tb1.center().setColor(Pal.darkestGray);
-      __margin(tb1, 1.5);
-      __wrapLine(tb1, text.color(Color.gray), Align.left, tryVal(ord, 1), padLeft);
+      margin(tb1, 1.5);
+      wrapLine(tb1, text.color(Color.gray), Align.left, tryVal(ord, 1), padLeft);
     })
     .padTop(8.0).padBottom(8.0);
     noteCell.row();
 
     return noteCell;
   };
-  exports._d_note = _d_note;
+  exports.setNote = setNote;
 
 
   /* <------------------------------ list ------------------------------ */
@@ -661,7 +661,7 @@
    * @param {number|unset} [imgW]
    * @return {Cell}
    */
-  const _l_table = function(tb, matArr, colorLine, colorTitle, colorBase, stroke, imgW) {
+  const setTable = function(tb, matArr, colorLine, colorTitle, colorBase, stroke, imgW) {
     if(colorLine == null) colorLine = Color.darkGray;
     if(colorTitle == null) colorTitle = colorLine;
     if(colorBase == null) colorBase = Pal.darkestGray;
@@ -692,13 +692,13 @@
         tbRow.table(Styles.none, tb => {}).width(stroke).height(stroke);
         tbRow.table(Tex.whiteui, tbCell => {
           tbCell.left().setColor(j === 0 ? colorTitle : colorBase);
-          __margin(tbCell, 0.25);
+          margin(tbCell, 0.25);
 
           let tmp = matArr[j][i];
           if(tmp instanceof TextureRegion) {
             tbCell.image(tmp).width(imgW).height(imgW);
           } else if(tmp instanceof UnlockableContent) {
-            __ct(tbCell, tmp, imgW, null, null, VAR.dialog.ct1);
+            ctIcon(tbCell, tmp, imgW, null, null, VAR.dialog.ct1);
           } else if(typeof tmp === "function") {
             tmp(tbCell);
           } else if(typeof tmp === "string") {
@@ -723,7 +723,7 @@
 
     return contCell;
   };
-  exports._l_table = _l_table;
+  exports.setTable = setTable;
 
 
   /**
@@ -735,7 +735,7 @@
    * @param {boolean|unset} [showOrd]
    * @return {Cell}
    */
-  const _l_iconRow = function thisFun(tb, icons_p, names_p, scrs_p, showOrd) {
+  const setIconRow = function thisFun(tb, icons_p, names_p, scrs_p, showOrd) {
     let icons = icons_p instanceof Array ? icons_p : [icons_p];
     let names = names_p instanceof Array ? names_p : [names_p];
     let scrs = scrs_p instanceof Array ? scrs_p : [scrs_p];
@@ -746,18 +746,18 @@
     let cont = contCell.get();
     contCell.row();
 
-    __break(cont, 1);
+    br(cont, 1);
     icons.forEachFast(icon => {
       cont.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(Pal.darkestGray);
-        __margin(tb1);
+        margin(tb1);
 
         thisFun.buildOrder(tb1, showOrd, ordCur);
         thisFun.buildRowContent(tb1, icon, names[ordCur], scrs[ordCur]);
       })
       .growX()
       .row();
-      __break(cont, 1);
+      br(cont, 1);
       ordCur++;
     });
 
@@ -780,7 +780,7 @@
       tb.table(Styles.none, tb1 => {
         tb1.left();
         tb1.image(icon).size(Vars.iconLarge).padRight(18.0);
-        __barV(tb1).padRight(18.0);
+        barV(tb1).padRight(18.0);
         if(name != null) {
           tb1.add(name);
         };
@@ -796,22 +796,22 @@
       };
     },
   });
-  exports._l_iconRow = _l_iconRow;
+  exports.setIconRow = setIconRow;
 
 
   /**
-   * Variant of {@link _l_iconRow} that shows content icons.
+   * Variant of {@link setIconRow} that shows content icons.
    * @param {Table} tb
    * @param {Plural<ContentGn>} cts_gn_p
    * @param {boolean|unset} [showOrd]
    * @return {Cell}
    */
-  const _l_ctRow = function thisFun(tb, cts_gn_p, showOrd) {
+  const setCtRow = function thisFun(tb, cts_gn_p, showOrd) {
     let cts = (cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p])
     .map(ct_gn => MDL_content.getCt(ct_gn, null, true))
     .compact();
 
-    return _l_iconRow(
+    return setIconRow(
       tb,
       cts.map(ct => new TextureRegionDrawable(ct.uiIcon)),
       cts.map(ct => ct.localizedName),
@@ -819,7 +819,7 @@
       showOrd,
     );
   };
-  exports._l_ctRow = _l_ctRow;
+  exports.setCtRow = setCtRow;
 
 
   /**
@@ -833,9 +833,9 @@
    * @param {Array<boolean>|unset} [breakBools]
    * @return {Cell}
    */
-  const _l_iconLi = function(tb, icons_p, ttArgs_p, scrs_p, iconW, colAmt, breakBools) {
+  const setIconLi = function(tb, icons_p, ttArgs_p, scrs_p, iconW, colAmt, breakBools) {
     if(iconW == null) iconW = 32.0;
-    if(colAmt == null) colAmt = MDL_ui._colAmt(iconW, 0.0, 2);
+    if(colAmt == null) colAmt = MDL_ui.getColAmt(iconW, 0.0, 2);
     if(breakBools == null) breakBools = Array.air;
     let icons = icons_p instanceof Array ? icons_p : [icons_p];
     let ttArgs = ttArgs_p instanceof Array ? ttArgs_p : [ttArgs_p];
@@ -843,7 +843,7 @@
 
     let contCell = tb.table(Tex.whiteui, tb1 => {
       tb1.left().setColor(Pal.darkestGray);
-      __margin(tb1, 0.5);
+      margin(tb1, 0.5);
 
       let
         i = 0,
@@ -851,7 +851,7 @@
         j = 0;
 
       while(i < iCap) {
-        __clickIcon(
+        clickIcon(
           tb1,
           icons[i],
           ttArgs[i],
@@ -862,7 +862,7 @@
 
         if(i > 0 && breakBools[i + 1]) {
           tb1.row();
-          __break(tb1, 1);
+          br(tb1, 1);
           j = -1;
         } else if(j % colAmt === colAmt - 1) {
           tb1.row();
@@ -876,7 +876,7 @@
 
     return contCell;
   };
-  exports._l_iconLi = _l_iconLi;
+  exports.setIconLi = setIconLi;
 
 
   /**
@@ -889,12 +889,12 @@
    * @param {ContentInfoDialog|unset} [ctDial]
    * @return {Cell}
    */
-  const _l_ctLi = function(tb, cts_gn_p, iconW, colAmt, dialToHide, ctDial) {
+  const setCtLi = function(tb, cts_gn_p, iconW, colAmt, dialToHide, ctDial) {
     let cts = (cts_gn_p instanceof Array ? cts_gn_p : [cts_gn_p])
     .map(ct_gn => MDL_content.getCt(ct_gn, null, true))
     .compact();
 
-    return _l_iconLi(
+    return setIconLi(
       tb,
       cts.map(ct => new TextureRegionDrawable(ct.uiIcon)),
       cts.map(ct => ct.localizedName),
@@ -907,7 +907,7 @@
       iconW, colAmt,
     );
   };
-  exports._l_ctLi = _l_ctLi;
+  exports.setCtLi = setCtLi;
 
 
   /* <------------------------------ selector ------------------------------ */
@@ -925,7 +925,7 @@
    * @param {number|unset} [colAmt]
    * @return {void}
    */
-  const _s_ct = function(tb, blk, cts, ctGetter, cfgCaller, closeSelect, rowAmt, colAmt) {
+  const setCtSelect = function(tb, blk, cts, ctGetter, cfgCaller, closeSelect, rowAmt, colAmt) {
     if(closeSelect == null) closeSelect = false;
     if(rowAmt == null) rowAmt = 4;
     if(colAmt == null) colAmt = 4;
@@ -945,7 +945,7 @@
       cont.clearChildren();
 
       searchText = search == null ? "" : search.getText().replace(/=/g, "");
-      searchArr = LCNativeArray.filter(cts, ct => String.isEmpty(searchText) || MDL_text._searchValid(ct, searchText));
+      searchArr = LCNativeArray.filter(cts, ct => String.isEmpty(searchText) || MDL_text.checkSearchValid(ct, searchText));
       countRow = 0;
       i = 0;
       iCap = searchArr.iCap();
@@ -996,7 +996,7 @@
     root.add(pn).maxHeight(rowAmt * 40.0).growX();
     tb.top().add(root).width(colAmt * 40.0 + 28.0);
   };
-  exports._s_ct = _s_ct;
+  exports.setCtSelect = setCtSelect;
 
 
   /**
@@ -1012,7 +1012,7 @@
    * @param {number|unset} [max]
    * @return {void}
    */
-  const _s_ctMulti = function(tb, blk, cts, ctsGetter, cfgCaller, closeSelect, rowAmt, colAmt, max) {
+  const setCtSelectMulti = function(tb, blk, cts, ctsGetter, cfgCaller, closeSelect, rowAmt, colAmt, max) {
     if(closeSelect == null) closeSelect = false;
     if(rowAmt == null) rowAmt = 4;
     if(colAmt == null) colAmt = 4;
@@ -1033,7 +1033,7 @@
       cont.clearChildren();
 
       searchText = search == null ? "" : search.getText().replace(/=/g, "");
-      searchArr = LCNativeArray.filter(cts, ct => String.isEmpty(searchText) || MDL_text._searchValid(ct, searchText));
+      searchArr = LCNativeArray.filter(cts, ct => String.isEmpty(searchText) || MDL_text.checkSearchValid(ct, searchText));
       countRow = 0;
       i = 0;
       iCap = searchArr.iCap();
@@ -1084,7 +1084,7 @@
     root.add(pn).maxHeight(rowAmt * 40.0).growX();
     tb.top().add(root).width(colAmt * 40.0 + 28.0);
   };
-  exports._s_ctMulti = _s_ctMulti;
+  exports.setCtSelectMulti = setCtSelectMulti;
 
 
   /**
@@ -1099,7 +1099,7 @@
    * @param {number|unset} [colAmt]
    * @return {void}
    */
-  const _s_rc = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, useAutoSelection, closeSelect, colAmt) {
+  const setRcSelect = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, useAutoSelection, closeSelect, colAmt) {
     if(extraBtnSetters == null) extraBtnSetters = [];
     if(useAutoSelection == null) useAutoSelection = false;
     if(closeSelect == null) closeSelect = true;
@@ -1172,7 +1172,7 @@
           })
           .margin(3.0)
           .group(btnGrp);
-          __tooltip(btnCell, tb => rc.displayTooltip(tb, rc.validTup[0](b)));
+          tooltip(btnCell, tb => rc.displayTooltip(tb, rc.validTup[0](b)));
           let btn = btnCell.get();
           // `String` is required for type conversion
           btn.changed(() => cfgCaller(rcHeader));
@@ -1199,7 +1199,7 @@
     };
     rebuildCont();
   };
-  exports._s_rc = _s_rc;
+  exports.setRcSelect = setRcSelect;
 
 
   /* <------------------------------ database stat ------------------------------ */
@@ -1217,20 +1217,20 @@
    * @param {ContentInfoDialog|unset} [ctDial]
    * @return {void}
    */
-  const _d_attr = function(tb, attrs_gn_p, boolF, scl, iconW, colAmt, dialToHide, ctDial) {
+  const setAttr = function(tb, attrs_gn_p, boolF, scl, iconW, colAmt, dialToHide, ctDial) {
     if(scl == null) scl = 1.0;
     if(iconW == null) iconW = 64.0;
-    if(colAmt == null) colAmt = MDL_ui._colAmt(iconW, 0.0, 2);
+    if(colAmt == null) colAmt = MDL_ui.getColAmt(iconW, 0.0, 2);
 
     let arr = MDL_attr.getBlkAttrArr(attrs_gn_p, boolF);
     let i = 0, iCap = arr.iCap(), j = 0;
     tb.table(Styles.none, tb1 => {
       tb1.left();
-      __margin(tb1, 0.5);
+      margin(tb1, 0.5);
 
       while(i < iCap) {
         (function(i) {
-          __blkEffc(tb1, arr[i], arr[i + 1] * scl, arr[i + 2], iconW, dialToHide, tryVal(ctDial, VAR.dialog.ct2));
+          blkEffc(tb1, arr[i], arr[i + 1] * scl, arr[i + 2], iconW, dialToHide, tryVal(ctDial, VAR.dialog.ct2));
         })(i);
         if(j % colAmt === colAmt - 1) {
           tb1.row();
@@ -1243,7 +1243,7 @@
     .left()
     .row();
   };
-  exports._d_attr = _d_attr;
+  exports.setAttr = setAttr;
 
 
   /**
@@ -1252,7 +1252,7 @@
    * @param {UnlockableContent} ct
    * @return {void}
    */
-  const _d_faction = function(tb, ct) {
+  const setFaction = function(tb, ct) {
     let
       faction = MDL_content.getFaction(ct),
       factionB = MDL_content.getFactionB(faction),
@@ -1260,7 +1260,7 @@
 
     tb.table(Tex.whiteui, tb1 => {
       tb1.center().setColor(Pal.darkestGray);
-      __margin(tb1);
+      margin(tb1);
 
       let btn = tb1.button(
         new TextureRegionDrawable(Core.atlas.find(
@@ -1290,7 +1290,7 @@
     .growX()
     .row();
   };
-  exports._d_faction = _d_faction;
+  exports.setFaction = setFaction;
 
 
   /**
@@ -1299,11 +1299,11 @@
    * @param {Block} blk
    * @return {void}
    */
-  const _d_facFami = function(tb, blk) {
+  const setFacFami = function(tb, blk) {
     let root = new Table();
-    __break(tb, 1);
+    br(tb, 1);
     tb.left().add(root).row();
-    __break(tb, 1);
+    br(tb, 1);
 
     MDL_content.getFacFamis(blk).forEachFast(fami => {
       let cont = new Table();
@@ -1311,7 +1311,7 @@
       // `TABLE`: title
       cont.table(Tex.whiteui, tb1 =>{
         tb1.center().setColor(Color.darkGray);
-        __margin(tb1, 0.5);
+        margin(tb1, 0.5);
         tb1.add(MDL_content.getFacFamiB(fami)).pad(4.0);
       })
       .left()
@@ -1320,15 +1320,15 @@
       // `TABLE`: contents
       cont.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(Pal.darkestGray);
-        __margin(tb1, 0.5);
-        _l_ctLi(tb1, VARGEN.facFamis[fami], 48.0);
+        margin(tb1, 0.5);
+        setCtLi(tb1, VARGEN.facFamis[fami], 48.0);
       })
       .left()
       .growX()
       .row();
     });
   };
-  exports._d_facFami = _d_facFami;
+  exports.setFacFami = setFacFami;
 
 
   /**
@@ -1340,10 +1340,10 @@
    * @param {boolean|unset} [noInnerPane]
    * @return {void}
    */
-  const _d_rc = function(tb, blk, isCollapsed, noInnerPane) {
+  const setRc = function(tb, blk, isCollapsed, noInnerPane) {
     let rcs = CLS_recipe.getBlkRcsMap().get(blk, Array.air);
     if(rcs.length === 0) {
-      __textNothing(tb);
+      textNothing(tb);
       return;
     };
 
@@ -1356,12 +1356,12 @@
     contPn.setOverscroll(false, false);
 
     tb.left();
-    __break(tb, 1);
+    br(tb, 1);
     tb.add(baseCont).left().row();
     noInnerPane ?
       tb.add(cont).row() :
       tb.add(contPn).maxHeight(640.0).row();
-    __break(tb, 1);
+    br(tb, 1);
 
     let buildCateg = categ => {
       let chunk = new Table();
@@ -1379,7 +1379,7 @@
       // `TABLE`: category title
       chunk.table(Tex.whiteui, tb1 => {
         tb1.center().setColor(categ !== "SPEC: base" ? Color.darkGray : Tmp.c1.set(Pal.accent).lerp(Color.black, 0.4));
-        __margin(tb1, 0.5);
+        margin(tb1, 0.5);
         if(!uncategorizedOnly && categ !== "SPEC: base") {
           tb1.table(Styles.none, tb2 => {
             tb2.add(MDL_recipe.getCategB(categ)).pad(4.0);
@@ -1393,7 +1393,7 @@
         };
         tb1.add(coll).growX();
       }).left().growX().row();
-      __break(chunk, 1);
+      br(chunk, 1);
 
       if(categ === "SPEC: base") {
         rcs[0].displayBase(rcRoot);
@@ -1402,7 +1402,7 @@
 
       categHeaderObj[categ].forEachFast(rcHeader => {
         CLS_recipe.get(blk, rcHeader).display(rcRoot, i, false, true);
-        __bar(rcRoot, Color.valueOf(Tmp.c1, "303030"), null, 1.0);
+        bar(rcRoot, Color.valueOf(Tmp.c1, "303030"), null, 1.0);
 
         i++;
       });
@@ -1426,4 +1426,4 @@
       buildCateg(categ);
     };
   };
-  exports._d_rc = _d_rc;
+  exports.setRc = setRc;

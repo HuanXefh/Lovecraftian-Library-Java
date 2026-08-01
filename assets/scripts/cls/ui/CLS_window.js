@@ -231,7 +231,7 @@
         // `TABLE`: title base
         tb1.table(Styles.none, tb2 => {
           tb2.left();
-          MDL_table.__margin(tb2, 0.25);
+          MDL_table.margin(tb2, 0.25);
           let funBtnSize = 8.0;
           // Close
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
@@ -253,7 +253,7 @@
       if(!this.isHidden) {
         tb.table(Tex.whiteui, tb1 => {
           tb1.left().setColor(this.contColor);
-          MDL_table.__margin(tb1);
+          MDL_table.margin(tb1);
           tb1.pane(pnTb => {
             this.tableF(pnTb);
             this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW) / global.lovecUtil.prop.uiScale;
@@ -275,7 +275,7 @@
     };
 
     // Move the window table to center position
-    root.setPosition(MDL_ui._centerX(), MDL_ui._centerY() + this.prefH * 0.5, Align.center);
+    root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
   }
   .setProp({
     addPlaceholder: function(tb) {
@@ -291,12 +291,12 @@
   CLS_window.prototype.add = function() {
     if(Core.scene == null || this.added) return;
     if(!fetchSetting("misc-enable-window")) {
-      MDL_ui.show_fadeInfo("lovec", "window-disabled");
+      MDL_ui.showFadeInfo("lovec", "window-disabled");
       return;
     };
 
     this.rebuild();
-    this.root.setPosition(MDL_ui._centerX(), MDL_ui._centerY() + this.prefH * 0.5, Align.center);
+    this.root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
     Core.scene.add(this.root);
     this.added = true;
   };

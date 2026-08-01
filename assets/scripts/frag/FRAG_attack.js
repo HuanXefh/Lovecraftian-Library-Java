@@ -26,12 +26,12 @@
    * @param {number|unset} [size]
    * @return {number}
    */
-  const _presExploRad = function(size) {
+  const getPresExploRad = function(size) {
     if(size == null) size = 1;
 
     return VAR.range.presExploRad + size * 0.8 * Vars.tilesize;
   };
-  exports._presExploRad = _presExploRad;
+  exports.getPresExploRad = getPresExploRad;
 
 
   /**
@@ -39,12 +39,12 @@
    * @param {number|unset} [size]
    * @return {number}
    */
-  const _presExploDmg = function(size) {
+  const getPresExploDmg = function(size) {
     if(size == null) size = 1;
 
     return VAR.param.presExploDmg * size * 0.3;
   };
-  exports._presExploDmg = _presExploDmg;
+  exports.getPresExploDmg = getPresExploDmg;
 
 
   /**
@@ -53,13 +53,13 @@
    * @param {number|unset} [intv]
    * @return {number}
    */
-  const _impactDmg = function(size, intv) {
+  const getImpactDmg = function(size, intv) {
     if(size == null) size = 1;
     if(intv == null) intv = 0.0;
 
     return Math.log(size + 1) * Math.log(Math.min(intv / 60.0, 10.0) + 1) * 400.0;
   };
-  exports._impactDmg = _impactDmg;
+  exports.getImpactDmg = getImpactDmg;
 
 
   /**
@@ -67,12 +67,12 @@
    * @param {number|unset} [intv]
    * @return {number}
    */
-  const _impactDur = function(intv) {
+  const getImpactDur = function(intv) {
     if(intv == null) intv = 0.0;
 
     return Math.min(intv * 0.5, 240.0);
   };
-  exports._impactDur = _impactDur;
+  exports.getImpactDur = getImpactDur;
 
 
   /**
@@ -80,12 +80,12 @@
    * @param {number|unset} [size]
    * @return {number}
    */
-  const _impactMinRad = function(size) {
+  const getImpactMinRad = function(size) {
     if(size == null) size = 1;
 
     return size * 1.2 * Vars.tilesize;
   };
-  exports._impactMinRad = _impactMinRad;
+  exports.getImpactMinRad = getImpactMinRad;
 
 
   /**
@@ -93,12 +93,12 @@
    * @param {number|unset} [size]
    * @return {number}
    */
-  const _impactDustRad = function(size) {
+  const getImpactDustRad = function(size) {
     if(size == null) size = 1;
 
     return (size * 0.5 + 1.0) * Vars.tilesize;
   };
-  exports._impactDustRad = _impactDustRad;
+  exports.getImpactDustRad = getImpactDustRad;
 
 
   /* <------------------------------ damage ------------------------------ */
@@ -116,11 +116,11 @@
   const damage = function(e, dmg, armorMtp, mode_ow, ignoreShield) {
     if(dmg < 0.0001) return false;
 
-    dmg = MDL_prop._dmgTake(e, dmg, armorMtp, false);
-    let dmgShow = MDL_prop._dmgTake(e, dmg, armorMtp, true);
+    dmg = MDL_prop.getDmgTake(e, dmg, armorMtp, false);
+    let dmgShow = MDL_prop.getDmgTake(e, dmg, armorMtp, true);
     let shield = 0.0;
     if(e instanceof Building) {
-      MDL_effect._e_dmg(e.x, e.y, dmgShow, null, tryVal(mode_ow, MDL_prop._bShield(e, true) > dmgShow ? "shield" : "health"));
+      MDL_effect._e_dmg(e.x, e.y, dmgShow, null, tryVal(mode_ow, MDL_prop.getBuildShield(e, true) > dmgShow ? "shield" : "health"));
       MDL_effect._e_flash(e);
       e.damagePierce(dmg, true);
     } else {
@@ -171,12 +171,12 @@
    * @param {number} mtp - The multiplier returned if type matches.
    * @return {number}
    */
-  const _dmgMtpByType = function(unit, nameType, mtp) {
+  const getDmgMtpByType = function(unit, nameType, mtp) {
     return !checkTempTag(unit.type, CLS_unitDamageType.getTag(nameType)) ?
       1.0 :
       mtp;
   };
-  exports._dmgMtpByType = _dmgMtpByType;
+  exports.getDmgMtpByType = getDmgMtpByType;
 
 
   /**
@@ -185,18 +185,18 @@
    * @param {Array|null} typeMtpArr - `ROW`: nameType, mtp.
    * @return {number}
    */
-  const _dmgMtpByTypeMtpArr = function(unit, typeMtpArr) {
+  const getDmgMtpByTypeMtpArr = function(unit, typeMtpArr) {
     if(typeMtpArr == null || typeMtpArr.length === 0) return 1.0;
 
     let i = 0, iCap = typeMtpArr.iCap(), mtp = 1.0;
     while(i < iCap) {
-      mtp *= _dmgMtpByType(unit, typeMtpArr[i], typeMtpArr[i + 1]);
+      mtp *= getDmgMtpByType(unit, typeMtpArr[i], typeMtpArr[i + 1]);
       i += 2;
     };
 
     return mtp;
   };
-  exports._dmgMtpByTypeMtpArr = _dmgMtpByTypeMtpArr;
+  exports.getDmgMtpByTypeMtpArr = getDmgMtpByTypeMtpArr;
 
 
   /* <------------------------------ event ------------------------------ */
@@ -209,7 +209,7 @@
    * @param {number} rad
    * @param {number|unset} [scl]
    */
-  const _a_shockwave = function thisFun(x, y, rad, scl) {
+  const shockwave = function thisFun(x, y, rad, scl) {
     if(thisFun.shader == null) return;
 
     thisFun.shader.add(x, y, rad, thisFun.calcLifetime(rad) * tryVal(scl, 1.0));
@@ -220,7 +220,7 @@
       return 0.2708 * rad + 14.9;
     },
   });
-  exports._a_shockwave = _a_shockwave;
+  exports.shockwave = shockwave;
 
 
   /**
@@ -233,7 +233,7 @@
    * @param {string|unset} [se_gn]
    * @return {void}
    */
-  const _a_explosion = function(
+  const explosion = function(
     x, y, dmg,
     rad, shake, se_gn
   ) {
@@ -245,14 +245,14 @@
     Damage.damage(x, y, rad, dmg);
     MDL_effect.showAt(x, y, rad < 16.0 ? EFF.explosionSmall : EFF.explosion, 0.0);
     MDL_effect._e_shake(x, y, shake);
-    _a_shockwave(x, y, rad * 1.7, 3.0);
+    shockwave(x, y, rad * 1.7, 3.0);
     MDL_effect.playAt(x, y, tryVal(se_gn, "se-shot-explosion"), 1.0, 1.0, 0.1);
   };
-  exports._a_explosion = _a_explosion;
+  exports.explosion = explosion;
 
 
   /**
-   * Variant of {@link _a_explosion} for sync.
+   * Variant of {@link explosion} for sync.
    * @param {number} x
    * @param {number} y
    * @param {number} dmg
@@ -261,7 +261,7 @@
    * @param {string|unset} [se_gn]
    * @return {void}
    */
-  const _a_explosion_global = function(
+  const explosion_global = function(
     x, y, dmg,
     rad, shake, se_gn
   ) {
@@ -273,14 +273,14 @@
       true, true,
     );
 
-    _a_explosion(x, y, dmg, rad, shake, se_gn);
+    explosion(x, y, dmg, rad, shake, se_gn);
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.BOTH, "lovec-both-attack-explosion", payload => {
-      _a_explosion.apply(this, unpackPayload(payload));
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-attack-explosion", payload => {
+      explosion.apply(this, unpackPayload(payload));
     });
   });
-  exports._a_explosion_global = _a_explosion_global;
+  exports.explosion_global = explosion_global;
 
 
   /**
@@ -295,7 +295,7 @@
    * @param {Unit|unset} [caller] - This single unit won't be affected by impact wave.
    * @return {void}
    */
-  const _a_impact = function thisFun(
+  const impact = function thisFun(
     x, y, dmg,
     staDur, rad, minRad, shake, caller
   ) {
@@ -334,7 +334,7 @@
   .setProp({
     tmpUnits: [],
   });
-  exports._a_impact = _a_impact;
+  exports.impact = impact;
 
 
   /**
@@ -351,7 +351,7 @@
    * @param {SoundGn|unset} [se_gn]
    * @return {void}
    */
-  const _a_lightning = function(
+  const lightning = function(
     x, y, team, dmg, amt,
     r, offR, color_gn, hitMode, se_gn
   ) {
@@ -387,4 +387,4 @@
 
     MDL_effect.playAt(x, y, tryVal(se_gn, Sounds.shootArc));
   };
-  exports._a_lightning = _a_lightning;
+  exports.lightning = lightning;

@@ -87,7 +87,7 @@
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.BOTH, "lovec-both-puddle-change", payload => {
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-puddle-change", payload => {
       let args = unpackPayload(payload);
       changePuddle(Groups.puddle.getById(args[0]), args[1], args[2]);
     });

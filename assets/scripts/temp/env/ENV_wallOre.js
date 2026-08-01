@@ -19,7 +19,7 @@
 
     MDL_content.rename(
       blk,
-      blk.itemDrop.localizedName + MDL_text._space() + "(" + MDL_bundle.getTerm("lovec", "wall-ore") + ")",
+      blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "wall-ore") + ")",
     );
   };
 

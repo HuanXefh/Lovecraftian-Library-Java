@@ -59,7 +59,7 @@
     if(flam > 0.0 || explo > 0.0 || pow > 0.0) {
       TRIGGER.incineratorExplosion.fire();
       Sounds.unitExplode1.at(b);
-      Damage.dynamicExplosion(b.x, b.y, flam, explo, pow, FRAG_attack._presExploRad(b.block.size) / Vars.tilesize, true);
+      Damage.dynamicExplosion(b.x, b.y, flam, explo, pow, FRAG_attack.getPresExploRad(b.block.size) / Vars.tilesize, true);
     };
   };
 

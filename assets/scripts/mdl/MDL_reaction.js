@@ -21,7 +21,7 @@
   /* <------------------------------ auxiliary ------------------------------ */
 
 
-  function _isReac(reac) {
+  function checkReac(reac) {
     return typeof reac === "string" && reac.startsWithAny(
       "GROUP: ",
       "ITEMGROUP: ",
@@ -62,7 +62,7 @@
    * @param {string|UnlockableContent} reac
    * @return {Array<string>}
    */
-  const _reacGrps = function(contArr, reac) {
+  const getReacGrps = function(contArr, reac) {
     let arr = contArr != null ? contArr.clear() : [];
 
     !(reac instanceof UnlockableContent) ?
@@ -73,7 +73,7 @@
 
     return arr;
   };
-  exports._reacGrps = _reacGrps;
+  exports.getReacGrps = getReacGrps;
 
 
   /**
@@ -82,21 +82,21 @@
    * @param {string|UnlockableContent} reac2
    * @return {Array} `ROW`: reacType, paramObj.
    */
-  const _reactions = function thisFun(reac1, reac2) {
+  const getReactions = function thisFun(reac1, reac2) {
     let arr = [];
 
     if(typeof reac1 === "string" && reac1.startsWith("MATERIAL: ")) {
       // Material-type reaction
       reac1 = reac1.replace("MATERIAL: ", "");
-      let grps = _reacGrps(thisFun.grpsCaches[1], reac2);
+      let grps = getReacGrps(thisFun.grpsCaches[1], reac2);
       grps.forEachFast(grp => {
         thisFun.tmpTup.with(reac1, grp);
         arr.pushNonNull(DB_reaction.db["material"].read(thisFun.tmpTup, null, false));
       });
     } else {
       // Regular reaction
-      let grps1 = _reacGrps(thisFun.grpsCaches[0], reac1);
-      let grps2 = _reacGrps(thisFun.grpsCaches[1], reac2);
+      let grps1 = getReacGrps(thisFun.grpsCaches[0], reac1);
+      let grps2 = getReacGrps(thisFun.grpsCaches[1], reac2);
 
       Array.forEachPair(grps1, grps2, (grp1, grp2) => {
         thisFun.tmpTup.with(grp1, grp2);
@@ -112,7 +112,7 @@
     grpsCaches: [[], []],
   })
   .setCache(reactionCache);
-  exports._reactions = _reactions;
+  exports.getReactions = getReactions;
 
 
   /* <------------------------------ application ------------------------------ */
@@ -169,7 +169,7 @@
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-reaction", payload => {
+    MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-reaction", payload => {
       let args = unpackPayload(payload);
       applyReaction(args[0], args[1], args[2], args[3], Vars.world.build(args[4]), args[5]);
     });
@@ -188,12 +188,12 @@
    */
   const handleReaction = function(reac1, reac2, pMtp, t0e) {
     applyReaction(
-      _reactions(reac1, reac2),
+      getReactions(reac1, reac2),
       pMtp,
       t0e instanceof Tile ? t0e.worldx() : t0e.x,
       t0e instanceof Tile ? t0e.worldy() : t0e.y,
       t0e instanceof Tile ? null : t0e,
-      _isReac(reac1) ? null : reac1,
+      checkReac(reac1) ? null : reac1,
     );
   };
   exports.handleReaction = handleReaction;
@@ -212,12 +212,12 @@
       handleReaction(reac1, reac2, pMtp, t0e);
     } else {
       requestReaction(
-        _reactions(reac1, reac2),
+        getReactions(reac1, reac2),
         pMtp,
         t0e instanceof Tile ? t0e.worldx() : t0e.x,
         t0e instanceof Tile ? t0e.worldy() : t0e.y,
         t0e instanceof Tile ? null : t0e,
-        _isReac(reac1) ? null : reac1,
+        checkReac(reac1) ? null : reac1,
       );
     };
   };

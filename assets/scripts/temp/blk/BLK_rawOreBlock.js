@@ -26,7 +26,7 @@
       Object.keyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null);
     if(parent == null) return;
 
-    let pix = MDL_texture._pix_gsColor(
+    let pix = MDL_texture.recolorPix(
       Core.atlas.getPixmap(blk.recolorRegStr),
       Core.atlas.getPixmap(parent),
     );

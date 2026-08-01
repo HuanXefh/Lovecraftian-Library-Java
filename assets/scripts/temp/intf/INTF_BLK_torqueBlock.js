@@ -145,7 +145,7 @@
         ob.handleLiquid(b, VARGEN.auxRpm, rate2 * b.edelta());
       };
       if(TIMER.secFive && ob.block.consumesLiquid(VARGEN.auxRpm)) {
-        b.ex_updateRpmDmg(ob, rate2, MDL_recipeDict._consAmt_b(VARGEN.auxRpm, ob));
+        b.ex_updateRpmDmg(ob, rate2, MDL_recipeDict.getConsAmtByBuild(VARGEN.auxRpm, ob));
       };
 
       i += 2;
@@ -172,7 +172,7 @@
       if(ob.block instanceof LiquidSource) {
         b.torFetchTgs.push(ob, 100.0 / 60.0);
       } else {
-        let rateProd = MDL_recipeDict._prodAmt(VARGEN.auxTor, ob.block);
+        let rateProd = MDL_recipeDict.getProdAmt(VARGEN.auxTor, ob.block);
         if(rateProd < 0.0001) return;
         b.torFetchTgs.push(ob, rateProd);
       };
@@ -188,7 +188,7 @@
       if(ob.block instanceof LiquidVoid) {
         b.torSupplyTgs.push(ob, 100.0 / 60.0);
       } else if(ob.block.consumesLiquid(VARGEN.auxTor) || ob.block.consumesLiquid(VARGEN.auxRpm)) {
-        b.torSupplyTgs.push(ob, MDL_recipeDict._consAmt(VARGEN.auxTor, ob.block));
+        b.torSupplyTgs.push(ob, MDL_recipeDict.getConsAmt(VARGEN.auxTor, ob.block));
       };
     });
   };

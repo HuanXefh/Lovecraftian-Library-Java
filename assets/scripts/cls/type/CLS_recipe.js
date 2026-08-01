@@ -742,19 +742,36 @@
    * @param {number} ord - Order of the recipe, use -1 to hide order box.
    * @param {boolean|unset} [noPane] - If true, no {@link ScrollPane} is used.
    * @param {boolean|unset} [showWinBtn] - If true, a button to create new window is added to order box.
+   * @param {boolean|unset} [breakForStats] - If true, stats are displayed in another row.
    * @return {Cell}
    */
-  CLS_recipe.prototype.display = function(tb, ord, noPane, showWinBtn) {
+  CLS_recipe.prototype.display = function(tb, ord, noPane, showWinBtn, breakForStats) {
     return tb.table(Tex.whiteui, tb1 => {
       tb1.left().setColor(Pal.darkestGray);
-      if(ord >= 0) {
-        this.displayOrder(tb1, ord, showWinBtn);
+      if(!breakForStats) {
+        if(ord >= 0) {
+          this.displayOrder(tb1, ord, showWinBtn);
+        };
+        tb1.table(Styles.none, tb2 => {}).left().width(36.0).growY();
+        this.displayInput(tb1, false, noPane);
+        tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
+        this.displayOutput(tb1, false);
+        this.displayStats(tb1, noPane);
+      } else {
+        tb1.table(Styles.none, tb2 => {
+          tb2.left();
+          if(ord >= 0) {
+            this.displayOrder(tb2, ord, showWinBtn);
+          };
+          tb2.table(Styles.none, tb3 => {}).left().width(36.0).growY();
+          this.displayInput(tb2, false, noPane);
+          tb2.table(Styles.none, tb3 => {}).left().width(48.0).growX().growY();
+          this.displayOutput(tb2, false);
+        }).left().row();
+        MDL_table.br(tb1, 1);
+        MDL_table.bar(tb1, Pal.accent, null, 2.0);
+        this.displayStats(tb1, noPane, true);
       };
-      tb1.table(Styles.none, tb2 => {}).left().width(36.0).growY();
-      this.displayInput(tb1, false, noPane);
-      tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
-      this.displayOutput(tb1, false);
-      this.displayStats(tb1, noPane);
     })
     .left()
     .growX()
@@ -795,31 +812,32 @@
   CLS_recipe.prototype.displayTooltip = function(tb, valid, title) {
     if(valid == null) valid = true;
 
-    return MDL_table.__edge(tb, tb1 => {
+    return MDL_table.edge(tb, tb1 => {
       tb1.table(Tex.whiteui, tb2 => {
         tb2.left().setColor(Pal.darkestGray);
-        MDL_table.__margin(tb2);
+        MDL_table.margin(tb2);
 
-        if(title != null) {
-          tb2.add(title.plain().color(Pal.accent)).left().padLeft(12.0).fontScale(1.1).row();
-          MDL_table.__bar(tb2, Pal.accent, null, 2.0);
-          MDL_table.__break(tb2, 2);
-        };
         if(!valid) {
           tb2.add(MDL_bundle.getInfo("lovec", "recipe-unavailable")).color(Pal.remove).row();
-          MDL_table.__break(tb2, 1);
+        } else {
+          if(title != null) {
+            tb2.add(title.plain().color(Pal.accent)).left().padLeft(12.0).fontScale(1.1).row();
+            MDL_table.bar(tb2, Pal.accent, null, 2.0);
+            MDL_table.br(tb2, 2);
+          };
+          if(this.tt != null) {
+            tb2.add(this.tt.color(Color.gray)).left().labelAlign(Align.left).wrap().padLeft(28.0).padRight(28.0).padTop(14.0).padBottom(14.0).grow().row();
+            MDL_table.br(tb2, 1);
+          };
+          if(this.hasBaseIo) {
+            MDL_table.br(tb2, 1);
+            this.displayBase(tb2, true, 28.0);
+            MDL_table.br(tb2, 1);
+            MDL_table.bar(tb2, Color.valueOf(Tmp.c1, "303030"), null, 3.0);
+          };
+          this.display(tb2, -1, true, false, true);
         };
-        if(this.tt != null) {
-          tb2.add(this.tt.color(Color.gray)).left().labelAlign(Align.left).wrap().padLeft(28.0).padRight(28.0).padTop(14.0).padBottom(14.0).grow().row();
-          MDL_table.__break(tb2, 1);
-        };
-        if(this.hasBaseIo) {
-          this.displayBase(tb2, true, 28.0);
-          MDL_table.__break(tb2, 1);
-          MDL_table.__bar(tb2, Color.valueOf(Tmp.c1, "303030"), null, 3.0);
-        };
-        this.display(tb2, -1, true);
-      });
+      }).left();
     });
   };
 
@@ -834,7 +852,7 @@
   CLS_recipe.prototype.displayIoFrag = function(tb, name, tableF) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
-      MDL_table.__margin(tb1);
+      MDL_table.margin(tb1);
       // `TABLE`: Title
       tb1.add("${1}:".format(name.toUpperCase())).left().tooltip(MDL_bundle.getTerm("lovec", name), true).row();
       // `TABLE`: I/O contents
@@ -894,7 +912,7 @@
       tb1.table(Styles.none, tb2 => {
         tb2.center();
         tb2.add("[" + Strings.fixed(ord, 0) + "]").color(Pal.accent).tooltip(this.rcHeader, true).row();
-        MDL_table.__break(tb2, 1);
+        MDL_table.br(tb2, 1);
         tb2.table(Styles.none, tb3 => {
           tb3.button(this.icon, Styles.clearNonei, 28.0, () => {});
           if(showWinBtn) {
@@ -904,8 +922,8 @@
                 tb4 => {
                   if(this.hasBaseIo) {
                     this.displayBase(tb4, false, 28.0);
-                    MDL_table.__break(tb4, 1);
-                    MDL_table.__bar(tb4, Color.valueOf(Tmp.c1, "303030"), null, 3.0);
+                    MDL_table.br(tb4, 1);
+                    MDL_table.bar(tb4, Color.valueOf(Tmp.c1, "303030"), null, 3.0);
                   };
                   this.display(tb4, -1, false, false);
                 },
@@ -915,7 +933,7 @@
           };
         });
       }).width(84.0);
-      MDL_table.__barV(tb1, Pal.accent);
+      MDL_table.barV(tb1, Pal.accent);
     })
     .left()
     .growY();
@@ -967,13 +985,20 @@
    * Builds the recipe stats fragment.
    * @param {Table} tb
    * @param {boolean|unset} [noPane]
+   * @param {boolean|unset} [breakForStats]
    * @return {Cell}
    */
-  CLS_recipe.prototype.displayStats = function thisFun(tb, noPane) {
+  CLS_recipe.prototype.displayStats = function thisFun(tb, noPane, breakForStats) {
     return tb.table(Styles.none, tb1 => {
-      MDL_table.__barV(tb1, Pal.accent);
-      tb1.table(Styles.none, tb2 => {}).width(24.0);
+      if(!breakForStats) {
+        MDL_table.barV(tb1, Pal.accent);
+        tb1.table(Styles.none, tb2 => {}).width(24.0);
+      };
       tb1.table(Styles.none, tb2 => {
+        tb2.left();
+        if(breakForStats) {
+          MDL_table.margin(tb2);
+        };
         let build = tb3 => {
           // `TABLE`: Stats
           thisFun.addStat(
@@ -1045,18 +1070,18 @@
           if(this.lockedByCts.length > 0) {
             tb3.table(Styles.none, tb4 => {
               tb4.left();
-              tb4.add(MDL_text._statText(MDL_bundle.getTerm("lovec", "require-unlocking"), "")).left();
-              this.lockedByCts.forEachFast(ct => MDL_table.__ct(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2));
+              tb4.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "require-unlocking"), "")).left();
+              this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2));
             })
             .left()
             .row();
           };
           if(this.attr != null) {
-            let attrCell = tb3.add(MDL_text._statText(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr.getAttrB(attr))).left();
-            MDL_table.__tooltip(attrCell, tb => {
+            let attrCell = tb3.add(MDL_text.getStat(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr.getAttrB(attr))).left();
+            MDL_table.tooltip(attrCell, tb => {
               tb.table(Styles.black6, tb1 => {
-                MDL_table.__margin(tb1);
-                MDL_table._d_attr(tb1, this.attr, null, this.attrBoostScl, 40.0, 5);
+                MDL_table.margin(tb1);
+                MDL_table.setAttr(tb1, this.attr, null, this.attrBoostScl, 40.0, 5);
               });
             }).row();
           };
@@ -1084,7 +1109,9 @@
       .width(320.0)
       .growX();
       tb1.table(Styles.none, tb2 => {}).width(20.0);
-    }).growY();
+    })
+    .left()
+    .growY();
   }
   .setProp({
     addStat: newMultiFunction(
@@ -1092,10 +1119,10 @@
         if(cond) tb.add(str).left().row();
       },
       function(tb, cond, titleStr, valStr) {
-        if(cond) tb.add(MDL_text._statText(titleStr, valStr)).left().row();
+        if(cond) tb.add(MDL_text.getStat(titleStr, valStr)).left().row();
       },
       function(tb, cond, titleStr, valStr, unitStr) {
-        if(cond) tb.add(MDL_text._statText(titleStr, valStr, unitStr)).left().row();
+        if(cond) tb.add(MDL_text.getStat(titleStr, valStr, unitStr)).left().row();
       },
     ),
   });
@@ -1112,11 +1139,11 @@
     return this.displayIoFrag(tb, "bi", tb1 => {
       (isBase ? this.baseBi : this.biNoBase).forEachRow(3, (tmp, amt, p) => {
         if(!(tmp instanceof Array)) {
-          MDL_table.__rcCt(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
+          MDL_table.rcCtIcon(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
         } else {
           this.displayAltIoFrag(tb1, tb2 => {
             tmp.forEachRow(3, (tmp1, amt, p) => {
-              MDL_table.__rcCt(tb2, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
+              MDL_table.rcCtIcon(tb2, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
             });
           }, noPane);
         };
@@ -1136,11 +1163,11 @@
     return this.displayIoFrag(tb, "ci", tb1 => {
       (isBase ? this.baseCi : this.ciNoBase).forEachRow(2, (tmp, amt) => {
         if(!(tmp instanceof Array)) {
-          MDL_table.__rcCt(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
+          MDL_table.rcCtIcon(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
         } else {
           this.displayAltIoFrag(tb1, tb2 => {
             tmp.forEachRow(2, (tmp1, amt) => {
-              MDL_table.__rcCt(tb2, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
+              MDL_table.rcCtIcon(tb2, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
             });
           }, noPane);
         };
@@ -1158,7 +1185,7 @@
   CLS_recipe.prototype.displayAux = function(tb, isBase) {
     return this.displayIoFrag(tb, "aux", tb1 => {
       (isBase ? this.baseAux : this.auxNoBase).forEachRow(2, (tmp, amt) => {
-        MDL_table.__rcCt(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
+        MDL_table.rcCtIcon(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
       });
     });
   };
@@ -1186,7 +1213,7 @@
   CLS_recipe.prototype.displayPayi = function(tb, isBase) {
     return this.displayIoFrag(tb, "payi", tb1 => {
       (isBase ? this.basePayi : this.payiNoBase).forEachRow(2, (name, amt) => {
-        MDL_table.__rcCt(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
+        MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
       });
     });
   };
@@ -1201,7 +1228,7 @@
   CLS_recipe.prototype.displayBo = function(tb, isBase) {
     return this.displayIoFrag(tb, "bo", tb1 => {
       (isBase ? this.baseBo : this.boNoBase).forEachRow(3, (tmp, amt, p) => {
-        MDL_table.__rcCt(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
+        MDL_table.rcCtIcon(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
       });
     });
   };
@@ -1216,7 +1243,7 @@
   CLS_recipe.prototype.displayCo = function(tb, isBase) {
     return this.displayIoFrag(tb, "co", tb1 => {
       (isBase ? this.baseCo : this.coNoBase).forEachRow(2, (tmp, amt) => {
-        MDL_table.__rcCt(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
+        MDL_table.rcCtIcon(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
       });
     });
   };
@@ -1231,7 +1258,7 @@
   CLS_recipe.prototype.displayFo = function(tb, isBase) {
     return this.displayIoFrag(tb, "fo", tb1 => {
       (isBase ? this.baseFo : this.foNoBase).forEachRow(3, (tmp, amt, p) => {
-        MDL_table.__rcCt(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
+        MDL_table.rcCtIcon(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
       });
     });
   };
@@ -1246,7 +1273,7 @@
   CLS_recipe.prototype.displayPayo = function(tb, isBase) {
     return this.displayIoFrag(tb, "payo", tb1 => {
       (isBase ? this.basePayo : this.payoNoBase).forEachRow(2, (name, amt) => {
-        MDL_table.__rcCt(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
+        MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
       });
     });
   };

@@ -28,7 +28,7 @@
    * @param {Array<number>|unset} [mtIds]
    * @return {number}
    */
-  const _reloadFrac = function(e, mtIds) {
+  const getReloadFrac = function(e, mtIds) {
     let
       reload = 0.0,
       maxReload = 0.0;
@@ -68,7 +68,7 @@
 
     return 0.0;
   };
-  exports._reloadFrac = _reloadFrac;
+  exports.getReloadFrac = getReloadFrac;
 
 
   /**
@@ -79,13 +79,13 @@
    * @param {number|unset} [bDmgMtp]
    * @return {number}
    */
-  const _dmgDeal = function(e, e_t, dmg, bDmgMtp) {
+  const getDmgDeal = function(e, e_t, dmg, bDmgMtp) {
     return dmg
       * tryProp(e.damageMultiplier, e)
       * (e instanceof Building ? Vars.state.rules.blockDamage(e.team) : Vars.state.rules.unitDamage(e.team))
       * (e_t instanceof Building ? tryVal(bDmgMtp, 1.0) : 1.0);
   };
-  exports._dmgDeal = _dmgDeal;
+  exports.getDmgDeal = getDmgDeal;
 
 
   /**
@@ -97,7 +97,7 @@
    * @param {boolean|unset} [useHealthMtp]
    * @return {number}
    */
-  const _dmgTake = function(e, dmg, armorMtp, useHealthMtp) {
+  const getDmgTake = function(e, dmg, armorMtp, useHealthMtp) {
     return Damage.applyArmor(dmg, LCProp.getArmor(e) * tryVal(armorMtp, 1.0) / (
       !useHealthMtp ?
         1.0 :
@@ -108,7 +108,7 @@
         )
     ))
   };
-  exports._dmgTake = _dmgTake;
+  exports.getDmgTake = getDmgTake;
 
 
   /* <------------------------------ building ------------------------------ */
@@ -119,10 +119,10 @@
    * @param {Building} b
    * @return {number}
    */
-  const _warmup = function(b) {
+  const getWarmup = function(b) {
     return tryFun(b.ex_getWarmupFrac, b, Mathf.maxZero(tryProp(b.warmup, b)));
   };
-  exports._warmup = _warmup;
+  exports.getWarmup = getWarmup;
 
 
   /**
@@ -131,13 +131,13 @@
    * @param {boolean|unset} [nearCap]
    * @return {number}
    */
-  const _warmupFrac = function(b, nearCap) {
+  const getWarmupFrac = function(b, nearCap) {
     return Math.min(
-      tryVal(b.block.linearWarmup, false) ? _warmup(b) : Interp.pow3In.apply(_warmup(b)),
+      tryVal(b.block.linearWarmup, false) ? getWarmup(b) : Interp.pow3In.apply(getWarmup(b)),
       nearCap ? 0.999 : 1.0,
     );
   };
-  exports._warmupFrac = _warmupFrac;
+  exports.getWarmupFrac = getWarmupFrac;
 
 
   /**
@@ -145,10 +145,10 @@
    * @param {Building} b
    * @return {number}
    */
-  const _totalProg = function(b) {
+  const getTotalProg = function(b) {
     return tryFun(b.ex_getTotalProg, b, tryProp(b.totalProgress, b));
   };
-  exports._totalProg = _totalProg;
+  exports.getTotalProg = getTotalProg;
 
 
   /**
@@ -157,12 +157,12 @@
    * @param {boolean|unset} [isSelfShield]
    * @return {number}
    */
-  const _bShield = function(b, isSelfShield) {
+  const getBuildShield = function(b, isSelfShield) {
     if(b.power != null && b.power.status < 0.0001) return 0.0;
 
     return readClassFunMap(DB_block.db["class"]["map"]["shield"], b.block, Function.airZero)(b, isSelfShield);
   };
-  exports._bShield = _bShield;
+  exports.getBuildShield = getBuildShield;
 
 
   /**
@@ -170,10 +170,10 @@
    * @param {Building} b
    * @return {number}
    */
-  const _bSpd = function(b) {
+  const getBuildSpd = function(b) {
     return b.efficiency * tryProp(b.timeScale, b);
   };
-  exports._bSpd = _bSpd;
+  exports.getBuildSpd = getBuildSpd;
 
 
   /* <------------------------------ unit ------------------------------ */
@@ -185,7 +185,7 @@
    * @param {Unit} unit
    * @return {Array<StatusEffect>}
    */
-  const _stackStas = function(contArr, unit) {
+  const getStackStas = function(contArr, unit) {
     let arr = contArr != null ? contArr.clear() : [];
 
     let i = 0, iCap = VARGEN.stackStas.iCap();
@@ -196,19 +196,19 @@
 
     return arr;
   };
-  exports._stackStas = _stackStas;
+  exports.getStackStas = getStackStas;
 
 
   /* <------------------------------ bullet ------------------------------ */
 
 
   /**
-   * Gets bullet damage for damage display.
+   * Calculates bullet damage for damage display.
    * @param {Bullet} bul
    * @param {Building|Unit} e - The entity to hit.
    * @return {number}
    */
-  const _bulDmg = function(bul, e) {
+  const calcBulDmg = function(bul, e) {
     let
       dmg = bul.damage,
       sDmg = bul.type.splashDamage,
@@ -218,12 +218,12 @@
       isRemote = DB_unit.db["class"]["btp"]["remote"].hasIns(bul.type),
       isRemoteCur = (dst > (bul.hitSize + LCProp.getHitSize(e)) * 0.7499);
     if(e instanceof Unit && tryJsProp(bul.type, "typeMtpArr") != null) {
-      dmg *= FRAG_attack._dmgMtpByTypeMtpArr(e, bul.type.delegee.typeMtpArr);
+      dmg *= FRAG_attack.getDmgMtpByTypeMtpArr(e, bul.type.delegee.typeMtpArr);
     };
     let
       mtp = e instanceof Unit ?
         (1.0 / e.healthMultiplier * (e.shield > dmg ? 1.0 : bul.type.shieldDamageMultiplier)) :
-        (bul.type.buildingDamageMultiplier * (_bShield(e, true) > dmg ? 1.0 : bul.type.shieldDamageMultiplier)),
+        (bul.type.buildingDamageMultiplier * (getBuildShield(e, true) > dmg ? 1.0 : bul.type.shieldDamageMultiplier)),
       armor = LCProp.getArmor(e);
 
     if(bul.type.pierceArmor) {
@@ -235,7 +235,7 @@
 
     return dmg_fi * mtp;
   };
-  exports._bulDmg = _bulDmg;
+  exports.calcBulDmg = calcBulDmg;
 
 
   /* <------------------------------ wave ------------------------------ */
@@ -246,7 +246,7 @@
    * @param {number|unset} [countWave]
    * @return {Array} `ROW`: utp, amtUnit, shield, sta.
    */
-  const _waveArr = function(countWave) {
+  const getWaveArr = function(countWave) {
     if(countWave == null) countWave = Vars.state.wave;
 
     let arr = [];
@@ -257,4 +257,4 @@
 
     return arr;
   };
-  exports._waveArr = _waveArr;
+  exports.getWaveArr = getWaveArr;

@@ -89,10 +89,10 @@
 
     MDL_content.rename(
       blk,
-      blk.placeBlk.localizedName + MDL_text._space() + "(" + MDL_bundle.getTerm("lovec", "construction-core") + ")",
+      blk.placeBlk.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "construction-core") + ")",
     );
 
-    MOD_tmi._r_constructionCore(blk);
+    MOD_tmi.regisRc_constructionCore(blk);
   };
 
 
@@ -100,19 +100,19 @@
     blk.stats.add(fetchStat("lovec", "blk0misc-blktg"), newStatValue(tb => {
       tb.row();
       tb.table(Styles.none, tb1 => {
-        MDL_table.__break(tb1, 1);
+        MDL_table.br(tb1, 1);
         tb1.table(Tex.whiteui, tb2 => {
           tb2.left().setColor(Pal.darkestGray);
-          MDL_table.__margin(tb2);
-          MDL_table.__ct(tb2, blk.placeBlk, 48.0);
+          MDL_table.margin(tb2);
+          MDL_table.ctIcon(tb2, blk.placeBlk, 48.0);
           tb2.table(Styles.none, tb3 => {}).width(12.0);
-          MDL_table.__barV(tb2, Color.darkGray);
+          MDL_table.barV(tb2, Color.darkGray);
           tb2.table(Styles.none, tb3 => {}).width(12.0);
           tb2.table(Styles.none, tb3 => {
-            tb3.add(MDL_text._statText(MDL_bundle.getTerm("lovec", "construction-time"), (blk.constructionTimeReq / 3600.0).roundFixed(2), StatUnit.minutes.localized())).left().row();
+            tb3.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "construction-time"), (blk.constructionTimeReq / 3600.0).roundFixed(2), StatUnit.minutes.localized())).left().row();
           }).growX();
         }).growX().row();
-        MDL_table.__break(tb1, 1);
+        MDL_table.br(tb1, 1);
       }).growX();
     }));
     blk.stats.add(fetchStat("lovec", "blk0misc-struct"), newStatValue(tb => {
@@ -325,7 +325,7 @@
         };
         if(blkCur !== Blocks.air && blkCur.size === 1) {
           matArr[j][i] = (function(blkCur) {
-            return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlk(blkCur)), Styles.clearNonei, 32.0, () => VAR.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
+            return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture.getRegBlk(blkCur)), Styles.clearNonei, 32.0, () => VAR.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
           })(blkCur);
         } else if(blkCur === Blocks.air) {
           k = j;
@@ -338,7 +338,7 @@
                 l = kCap;
                 while(l >= 0) {
                   matArr[j + k][i + l] = (function(blkCur, k, l) {
-                    return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture._regBlkTileCut(blkCur, l, k)), Styles.clearNonei, 32.0, () => VAR.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
+                    return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture.getRegBlkTileCut(blkCur, l, k)), Styles.clearNonei, 32.0, () => VAR.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
                   })(blkCur, k, l);
                   l--;
                 };
@@ -355,7 +355,7 @@
     };
 
     tb.table(Styles.none, tb1 => {
-      MDL_table.__break(tb1, 1);
+      MDL_table.br(tb1, 1);
       j = 0;
       while(j < jCap) {
         i = 0;
@@ -370,7 +370,7 @@
         tb1.row();
         j++;
       };
-      MDL_table.__break(tb1, 1);
+      MDL_table.br(tb1, 1);
     }).left().padLeft(28.0);
   };
 
@@ -423,7 +423,7 @@
   function comp_draw(b) {
     Draw.rect(b.block.region, b.x, b.y);
     if(b.underConstruction) {
-      LCDrawf.construct(b.constructionPlanCx, b.constructionPlanCy, MDL_texture._regBlk(b.block.delegee.placeBlk), b.ex_getConstructionFrac(), b.drawrot());
+      LCDrawf.construct(b.constructionPlanCx, b.constructionPlanCy, MDL_texture.getRegBlk(b.block.delegee.placeBlk), b.ex_getConstructionFrac(), b.drawrot());
     } else {
       if(b.shouldDrawConstructionPlan && Vars.player.team() === b.team) {
         b.block.ex_drawPlan(b.team, b.constructionPlan);
@@ -434,15 +434,15 @@
 
   function comp_buildConfiguration(b, tb) {
     tb.row();
-    MDL_table.__btnCfgToggle(tb, b, Icon.eyeOffSmall, Icon.eyeSmall, b.shouldDrawConstructionPlan).tooltip(MDL_bundle.getTerm("lovec", "toggle-display"), true);
+    MDL_table.btnCfgToggle(tb, b, Icon.eyeOffSmall, Icon.eyeSmall, b.shouldDrawConstructionPlan).tooltip(MDL_bundle.getTerm("lovec", "toggle-display"), true);
     b.underConstruction ?
-       MDL_table.__btnCfg(tb, b, () => {
+       MDL_table.btnCfg(tb, b, () => {
          b.configure("SPEC: stop");
          b.deselect();
        }, VARGEN.icons.cross).tooltip(MDL_bundle.getTerm("lovec", "construction-stop"), true) :
-       MDL_table.__btnCfg(tb, b, () => {
+       MDL_table.btnCfg(tb, b, () => {
          if(!b.block.ex_checkPlanComplete(b.team, b.constructionPlan)) {
-           MDL_ui.show_fadeInfo("lovec", "structure-incomplete");
+           MDL_ui.showFadeInfo("lovec", "structure-incomplete");
            return;
          };
          b.configure("SPEC: start");

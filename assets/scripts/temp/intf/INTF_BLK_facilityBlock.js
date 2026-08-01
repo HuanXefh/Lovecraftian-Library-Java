@@ -61,10 +61,10 @@
       };
       if(b.fireExplodeCd >= b.block.delegee.fireExplodeCooldown) {
         TRIGGER.buildingFireExplosion.fire(b);
-        FRAG_attack._a_explosion_global(
+        FRAG_attack.explosion_global(
           b.x, b.y,
-          FRAG_attack._presExploDmg(b.block.size),
-          FRAG_attack._presExploRad(b.block.size),
+          FRAG_attack.getPresExploDmg(b.block.size),
+          FRAG_attack.getPresExploRad(b.block.size),
           8.0,
         );
       };
@@ -165,7 +165,7 @@
        * @return {boolean}
        */
       ex_checkHandleAuxPossible: function() {
-        return MDL_recipeDict._hasAnyIo(VARGEN.auxs, this);
+        return MDL_recipeDict.checkAnyIo(VARGEN.auxs, this);
       }
       .setProp({
         noSuper: true,
@@ -179,7 +179,7 @@
        * @return {boolean}
        */
       ex_checkFireExplodePossible: function() {
-        return MDL_recipeDict._hasAnyIo(VARGEN.exploItms, this) || MDL_recipeDict._hasAnyIo(VARGEN.exploFlds, this);
+        return MDL_recipeDict.checkAnyIo(VARGEN.exploItms, this) || MDL_recipeDict.checkAnyIo(VARGEN.exploFlds, this);
       }
       .setProp({
         noSuper: true,

@@ -77,7 +77,7 @@
 
   function comp_buildConfiguration(b, tb) {
     if(!b.block.delegee.hideSelection) {
-      MDL_table._s_ct(
+      MDL_table.setCtSelect(
         tb, b.block, Vars.content.items().toArray(),
         () => b.sortItem, val => b.configure(val), false,
         b.block.selectionRows, b.block.selectionColumns,
@@ -85,7 +85,7 @@
     };
 
     tb.row();
-    MDL_table.__btnCfgToggle(tb, b, VARGEN.icons.swap, VARGEN.icons.swap, b.isInv)
+    MDL_table.btnCfgToggle(tb, b, VARGEN.icons.swap, VARGEN.icons.swap, b.isInv)
     .tooltip(MDL_bundle.getInfo("lovec", "tt-invert-selection"), true);
   };
 
@@ -226,7 +226,7 @@
 
 
       write: function(wr) {
-        MDL_io.__ct(wr, this.sortItem);
+        MDL_io.ct(wr, this.sortItem);
         wr.bool(this.isInv);
       },
 
@@ -234,7 +234,7 @@
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
 
-        this.sortItem = MDL_io.__ct(rd);
+        this.sortItem = MDL_io.ct(rd);
         this.isInv = rd.bool();
       },
 

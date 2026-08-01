@@ -1504,7 +1504,7 @@ public class LCDrawf {
      */
     public static void stackStatus(Unit unit) {
         NativeArray tmpArr = LCScript.ensureArray("LCDrawf.stackStatus.tmpArr");
-        LCScript.invoke("_stackStas", MDL_prop, tmpArr, unit);
+        LCScript.invoke("getStackStas", MDL_prop, tmpArr, unit);
 
         int i = 0;
         long iCap = tmpArr.getLength();

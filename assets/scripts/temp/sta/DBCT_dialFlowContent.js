@@ -17,10 +17,10 @@
   function comp_setStats(sta) {
     sta.stats.add(fetchStat("lovec", "spec-dialflow"), newStatValue(tb => {
       tb.row();
-      MDL_table.__btnSmall(tb, VARGEN.icons.play, () => {
+      MDL_table.btnSmall(tb, VARGEN.icons.play, () => {
         !sta.ex_checkDbctUnlocked() ?
-          MDL_ui.show_fadeInfo("lovec", "info-locked") :
-          MDL_ui._d_flow(sta.nameDialFlow);
+          MDL_ui.showFadeInfo("lovec", "info-locked") :
+          MDL_ui.createFlow(sta.nameDialFlow);
       }).left().padLeft(28.0).tooltip(MDL_bundle.getTerm("lovec", "dialog-flow-play"), true);
     }));
   };

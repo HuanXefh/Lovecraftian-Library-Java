@@ -24,11 +24,11 @@
     blk.stats.remove(Stat.repairTime);
     blk.stats.remove(Stat.range);
 
-    if(blk.healsBuilding) blk.stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text._healText(
+    if(blk.healsBuilding) blk.stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
       blk.bHealAmt,
       blk.bHealPerc,
     ));
-    if(blk.healsUnit) blk.stats.add(fetchStat("lovec", "blk0misc-unitrepairamt"), MDL_text._healText(
+    if(blk.healsUnit) blk.stats.add(fetchStat("lovec", "blk0misc-unitrepairamt"), MDL_text.getHealText(
       blk.unitHealAmt,
       blk.unitHealPerc,
     ));

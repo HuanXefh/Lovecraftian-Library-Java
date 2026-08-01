@@ -22,7 +22,9 @@
 
 
   function comp_drawSelect(b) {
-    LCDrawf.textSelect(b, b.infoCur, b.efficiency > 0.0001, b.block.infoOffTy);
+    if(b.infoCur != null) {
+      LCDrawf.textSelect(b, b.infoCur, b.efficiency > 0.0001, b.block.delegee.infoOffTy);
+    };
   };
 
 

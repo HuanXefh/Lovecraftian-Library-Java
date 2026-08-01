@@ -123,7 +123,7 @@
    * @param {number|unset} [checkR]
    * @return {string|null} - Terrain type "transition" is null.
    */
-  const _ter = function thisFun(t, size, checkR) {
+  const getTer = function thisFun(t, size, checkR) {
     if(t == null) return null;
     if(size == null) size = 1;
     if(checkR == null) checkR = 5;
@@ -166,7 +166,7 @@
     tmpTs: [],
     countMap: new ObjectMap(),
   });
-  exports._ter = _ter;
+  exports.getTer = getTer;
 
 
   /**
@@ -174,10 +174,10 @@
    * @param {string|unset} [ter]
    * @return {string}
    */
-  const _terB = function(ter) {
+  const getTerB = function(ter) {
     return Vars.headless ? "" : MDL_bundle.getTerm("common", "ter-" + (tryVal(ter, "transition")));
   };
-  exports._terB = _terB;
+  exports.getTerB = getTerB;
 
 
   /* <------------------------------ component ------------------------------ */
@@ -197,7 +197,7 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
     if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = _terB(_ter(t, blk.size, tryFun(blk.ex_getTerrainCheckR, blk, 5)));
+      thisFun.tmpTup[3] = getTerB(getTer(t, blk.size, tryFun(blk.ex_getTerrainCheckR, blk, 5)));
     };
 
     LCDrawf.textPlace(blk, tx, ty, MDL_bundle.getInfo("lovec", "text-terrain") + " " + thisFun.tmpTup[3], valid, offTy);

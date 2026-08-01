@@ -38,7 +38,7 @@
    * @param {LiquidGn} liq_gn
    * @returns {string|null}
    */
-  const _eleGrp = function(liq_gn) {
+  const getEleGrp = function(liq_gn) {
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return null;
 
@@ -50,7 +50,7 @@
     return null;
   }
   .setCache();
-  exports._eleGrp = _eleGrp;
+  exports.getEleGrp = getEleGrp;
 
 
   /**
@@ -58,14 +58,14 @@
    * @param {LiquidGn} liq_gn
    * @return {string}
    */
-  const _eleGrpB = function(liq_gn) {
-    let eleGrp = _eleGrp(liq_gn);
+  const getEleGrpB = function(liq_gn) {
+    let eleGrp = getEleGrp(liq_gn);
     if(eleGrp == null) return TmpStateTag.error;
 
     return MDL_bundle.getTerm("common", "grp-" + eleGrp);
   }
   .setCache();
-  exports._eleGrpB = _eleGrpB;
+  exports.getEleGrpB = getEleGrpB;
 
 
   /**
@@ -74,7 +74,7 @@
    * @param {BlockGn} blk_gn
    * @returns {string|null}
    */
-  const _matGrp = function(blk_gn) {
+  const getMatGrp = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return null;
 
@@ -86,7 +86,7 @@
     return null;
   }
   .setCache();
-  exports._matGrp = _matGrp;
+  exports.getMatGrp = getMatGrp;
 
 
   /**
@@ -94,14 +94,14 @@
    * @param {BlockGn} blk_gn
    * @return {string}
    */
-  const _matGrpB = function(blk_gn) {
-    let matGrp = _matGrp(blk_gn);
+  const getMatGrpB = function(blk_gn) {
+    let matGrp = getMatGrp(blk_gn);
     if(matGrp == null) return TmpStateTag.error;
 
     return MDL_bundle.getTerm("common", "grp-" + matGrp);
   }
   .setCache();
-  exports._matGrpB = _matGrpB;
+  exports.getMatGrpB = getMatGrpB;
 
 
   /**
@@ -109,7 +109,7 @@
    * @param {LiquidGn} liq_gn
    * @return {Array<string>}
    */
-  const _fTags = function(liq_gn) {
+  const getFTags = function(liq_gn) {
     let arr0 = [];
 
     let liq = MDL_content.getCt(liq_gn, "rs");
@@ -122,7 +122,7 @@
     return arr0;
   }
   .setCache();
-  exports._fTags = _fTags;
+  exports.getFTags = getFTags;
 
 
   /**
@@ -131,13 +131,13 @@
    * @param {LiquidGn} liq_gn
    * @return {string}
    */
-  const _fTagsB = function(liq_gn) {
-    return MDL_text._tagText(
-      _fTags(liq_gn).map(tag => MDL_bundle.getTerm("common", "grp-" + tag))
+  const getFTagsB = function(liq_gn) {
+    return MDL_text.getTagText(
+      getFTags(liq_gn).map(tag => MDL_bundle.getTerm("common", "grp-" + tag))
     );
   }
   .setCache();
-  exports._fTagsB = _fTagsB;
+  exports.getFTagsB = getFTagsB;
 
 
   /* <------------------------------ base (param) ------------------------------ */
@@ -149,7 +149,7 @@
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
-  const _dens = function(liq_gn) {
+  const getDens = function(liq_gn) {
     let dens = 1.0;
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return dens;
@@ -157,14 +157,14 @@
     dens = DB_HANDLER.read("liq-dens", liq);
     if(dens == null) {
       let dens_def = liq.gas ? 0.00129 : 1.0;
-      let eleGrp = _eleGrp(liq);
+      let eleGrp = getEleGrp(liq);
       dens = eleGrp == null ? dens_def : DB_fluid.db["grpParam"]["dens"].read(eleGrp, dens_def);
     };
 
     return dens;
   }
   .setCache();
-  exports._dens = _dens;
+  exports.getDens = getDens;
 
 
   /**
@@ -173,7 +173,7 @@
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
-  const _boilPon = function(liq_gn) {
+  const getBoilPon = function(liq_gn) {
     let boilPon = 100.0;
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return boilPon;
@@ -185,7 +185,7 @@
 
     boilPon = DB_HANDLER.read("liq-boil-pon", liq);
     if(boilPon == null) {
-      let eleGrp = _eleGrp(liq);
+      let eleGrp = getEleGrp(liq);
       boilPon = eleGrp == null ?
         100.0 :
         DB_fluid.db["grpParam"]["boil"].read(eleGrp, 100.0);
@@ -194,7 +194,7 @@
     return boilPon;
   }
   .setCache();
-  exports._boilPon = _boilPon;
+  exports.getBoilPon = getBoilPon;
 
 
   /**
@@ -203,7 +203,7 @@
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
-  const _fHeat = function(liq_gn) {
+  const getFHeat = function(liq_gn) {
     let def = 26.0, fHeat = def;
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return fHeat;
@@ -213,7 +213,7 @@
     return fHeat;
   }
   .setCache();
-  exports._fHeat = _fHeat;
+  exports.getFHeat = getFHeat;
 
 
   /**
@@ -221,11 +221,11 @@
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
-  const _tempWrap = function(liq_gn) {
-    return halfLogWrap(_fHeat(liq_gn), 26.0, 1500.0);
+  const getTempWrap = function(liq_gn) {
+    return halfLogWrap(getFHeat(liq_gn), 26.0, 1500.0);
   }
   .setCache();
-  exports._tempWrap  = _tempWrap;
+  exports.getTempWrap  = getTempWrap;
 
 
   /**
@@ -234,7 +234,7 @@
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
-  const _viscWrap = function(liq_gn) {
+  const getViscWrap = function(liq_gn) {
     let viscWrap = 0.5;
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return viscWrap;
@@ -246,7 +246,7 @@
       if(liq.gas) {
         viscWrap = 0.15;
       } else {
-        let eleGrp = _eleGrp(liq);
+        let eleGrp = getEleGrp(liq);
         viscWrap = eleGrp == null ? 0.5 : DB_fluid.db["grpParam"]["viscWrap"].read(eleGrp, 0.5);
       };
     };
@@ -254,7 +254,7 @@
     return viscWrap;
   }
   .setCache();
-  exports._viscWrap = _viscWrap;
+  exports.getViscWrap = getViscWrap;
 
 
   /**
@@ -263,21 +263,21 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _presRes = function(blk_gn) {
+  const getPresRes = function(blk_gn) {
     let res = 5.0;
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return res;
 
     res = DB_HANDLER.read("blk-pres-res", blk);
     if(res == null) {
-      let matGrp = _matGrp(blk);
+      let matGrp = getMatGrp(blk);
       res = matGrp == null ? 5.0 : DB_block.db["grpParam"]["presRes"].read(matGrp, 5.0);
     };
 
     return res;
   }
   .setCache();
-  exports._presRes = _presRes;
+  exports.getPresRes = getPresRes;
 
 
   /**
@@ -286,21 +286,21 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _vacRes = function(blk_gn) {
+  const getVacRes = function(blk_gn) {
     let res = -5.0;
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return res;
 
     res = DB_HANDLER.read("blk-vac-res", blk);
     if(res == null) {
-      let matGrp = _matGrp(blk);
+      let matGrp = getMatGrp(blk);
       res = matGrp == null ? -5.0 : DB_block.db["grpParam"]["vacRes"].read(matGrp, -5.0);
     };
 
     return res;
   }
   .setCache();
-  exports._vacRes = _vacRes;
+  exports.getVacRes = getVacRes;
 
 
   /**
@@ -308,13 +308,13 @@
    * @param {Building} b
    * @return {number}
    */
-  const _pres = function(b) {
+  const getPresByBuild = function(b) {
     return tryFun(
       b.ex_getPres, b,
       b.liquids == null ? 0.0 : (b.liquids.get(VARGEN.auxPres) - b.liquids.get(VARGEN.auxVac))
     );
   };
-  exports._pres = _pres;
+  exports.getPresByBuild = getPresByBuild;
 
 
   /* <------------------------------ corrosion ------------------------------ */
@@ -326,30 +326,30 @@
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
-  const _corPow = function(liq_gn) {
+  const getCorPow = function(liq_gn) {
     let corPow = 0.0;
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return corPow;
 
     corPow = DB_HANDLER.read("liq-cor-pow", liq);
     if(corPow == null) {
-      let eleGrp = _eleGrp(liq);
+      let eleGrp = getEleGrp(liq);
       corPow = eleGrp == null ? 0.0 : corPow = DB_fluid.db["grpParam"]["corrosion"].read(eleGrp, 0.0);
     };
 
     return corPow;
   }
   .setCache();
-  exports._corPow = _corPow;
+  exports.getCorPow = getCorPow;
 
 
   /**
-   * Gets multiplier on corrosion damage for a pair of block and fluid.
+   * Calculates multiplier on corrosion damage for a pair of block and fluid.
    * @param {BlockGn} blk_gn
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
-  const _corMtp = function(blk_gn, liq_gn) {
+  const calcCorMtp = function(blk_gn, liq_gn) {
     let corMtp = 1.0;
     let blk = MDL_content.getCt(blk_gn, "blk");
     let liq = MDL_content.getCt(liq_gn, "rs");
@@ -370,7 +370,7 @@
     return corMtp;
   }
   .setCache();
-  exports._corMtp = _corMtp;
+  exports.calcCorMtp = calcCorMtp;
 
 
   /**
@@ -379,21 +379,21 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _corRes = function(blk_gn) {
+  const getCorRes = function(blk_gn) {
     let corRes = 1.0;
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return corRes;
 
     corRes = DB_HANDLER.read("blk-cor-res", blk);
     if(corRes == null) {
-      let matGrp = _matGrp(blk);
+      let matGrp = getMatGrp(blk);
       corRes = matGrp == null ? 1.0 : DB_block.db["grpParam"]["corRes"].read(matGrp, 1.0);
     };
 
     return corRes;
   }
   .setCache();
-  exports._corRes = _corRes;
+  exports.getCorRes = getCorRes;
 
 
   /* <------------------------------ heat ------------------------------ */
@@ -405,21 +405,21 @@
    * @param {BlockGn} blk_gn
    * @return {number}
    */
-  const _heatRes = function(blk_gn) {
+  const getHeatRes = function(blk_gn) {
     let heatRes = Infinity;
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return heatRes;
 
     heatRes = DB_HANDLER.read("blk-heat-res", blk);
     if(heatRes == null) {
-      let matGrp = _matGrp(blk);
+      let matGrp = getMatGrp(blk);
       heatRes = matGrp == null ? Infinity : DB_block.db["grpParam"]["heatRes"].read(matGrp, Infinity);
     };
 
     return heatRes;
   }
   .setCache();
-  exports._heatRes = _heatRes;
+  exports.getHeatRes = getHeatRes;
 
 
   /**
@@ -427,13 +427,13 @@
    * @param {Building} b
    * @return {number}
    */
-  const _heat_b = function(b) {
+  const getHeatInBuild = function(b) {
     return tryFun(
       b.ex_getHeat, b,
       b.liquids == null ? 0.0 : b.liquids.get(VARGEN.auxHeat) * 100.0,
     );
   };
-  exports._heat_b = _heat_b;
+  exports.getHeatInBuild = getHeatInBuild;
 
 
   /**
@@ -442,7 +442,7 @@
    * @param {boolean|unset} [forceCalc] - If true, this method will always calculate heat based on liquid module.
    * @return {number}
    */
-  const _fHeat_b = function(b, forceCalc) {
+  const getFHeatInBuild = function(b, forceCalc) {
     let def = PARAM.GLOBAL_HEAT;
     if(!forceCalc) {
       if(tryJsProp(b, "fHeatCur") != null) return b.delegee.fHeatCur;
@@ -458,42 +458,42 @@
 
     return fHeatBase * (1.0 + amt / cap * 0.2);
   };
-  exports._fHeat_b = _fHeat_b;
+  exports.getFHeatInBuild = getFHeatInBuild;
 
 
   /**
-   * Gets range heat at some tile.
+   * Calculates range heat at some tile.
    * @param {Tile|null} t
    * @return {number}
    */
-  const _rHeat = function(t) {
+  const calcRHeat = function(t) {
     if(t == null) return 0.0;
 
     // Heat from building and global heat
     let rHeat = t.build == null ?
       PARAM.GLOBAL_HEAT :
-      (_heat_b(t.build) * 0.25 + _fHeat_b(t.build) * 0.5 + PARAM.GLOBAL_HEAT);
+      (getHeatInBuild(t.build) * 0.25 + getFHeatInBuild(t.build) * 0.5 + PARAM.GLOBAL_HEAT);
     // Heat from attribute
     rHeat += t.floor().attributes.get(Attribute.get("lovec-attr0env-heat")) * 100.0;
     // Heat from puddle
     let puddle = Puddles.get(t);
     if(puddle != null) {
-      rHeat += _fHeat(puddle.liquid) * 0.75;
+      rHeat += getFHeat(puddle.liquid) * 0.75;
     };
     // Heat from nearby buildings
     let rHeatSpare = 0.0, countSpare = 0, ot;
-    (4)._it(ind => {
-      ot = t.nearby(ind);
+    for(let i = 0; i < 4; i++) {
+      ot = t.nearby(i);
       if(ot != null && ot.build != null) {
-        rHeatSpare += _heat_b(ot.build);
+        rHeatSpare += getHeatInBuild(ot.build);
         countSpare++;
       };
-    });
+    };
     if(countSpare > 0) rHeat += rHeatSpare / countSpare;
 
     return rHeat;
   };
-  exports._rHeat = _rHeat;
+  exports.calcRHeat = calcRHeat;
 
 
   /**
@@ -501,7 +501,7 @@
    * @param {UnitType} utp
    * @return {number}
    */
-  const _rHeatRes = function(utp) {
+  const getRHeatRes = function(utp) {
     return Math.sqrt(utp.health) * utp.hitSize * 0.7;
   };
-  exports._rHeatRes = _rHeatRes;
+  exports.getRHeatRes = getRHeatRes;

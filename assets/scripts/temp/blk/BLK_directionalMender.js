@@ -32,7 +32,7 @@
     blk.stats.remove(Stat.range);
     blk.stats.remove(Stat.booster);
 
-    blk.stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text._healText(
+    blk.stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
       blk.bHealAmt,
       blk.bHealPerc,
     ));

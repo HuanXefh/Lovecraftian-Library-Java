@@ -24,7 +24,7 @@
   function comp_setStats(blk) {
     if(blk.canMineDepthOre) {
       blk.stats.add(fetchStat("lovec", "blk0min-depthmtp"), blk.depthTierMtp.perc(2));
-      blk.stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci._depthLvlB(blk.maxDepthLvl));
+      blk.stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci.getDepthLvlB(blk.maxDepthLvl));
     };
   };
 

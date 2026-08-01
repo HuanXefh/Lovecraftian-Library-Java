@@ -18,10 +18,10 @@
     if(!blk.noFuelInput) blk.configurable = true;
 
     MDL_event.onLoadPost(() => {
-      MDL_fuel._fuelArr(blk).forEachFast(rs => {
+      MDL_fuel.getFuelArr(blk).forEachFast(rs => {
         rs instanceof Item ?
-        MDL_recipeDict.addItmConsTerm(blk, rs, 1, 1.0, {icon: "lovec-icon-fuel", item: MDL_fuel._fuelPon(rs) * 60.0 / blk.fuelConsMtp}) :
-        MDL_recipeDict.addFldConsTerm(blk, rs, MDL_fuel._fuelPon(rs) * blk.fuelConsMtp, {icon: "lovec-icon-fuel"});
+        MDL_recipeDict.addItmConsTerm(blk, rs, 1, 1.0, {icon: "lovec-icon-fuel", item: MDL_fuel.getFuelPon(rs) * 60.0 / blk.fuelConsMtp}) :
+        MDL_recipeDict.addFldConsTerm(blk, rs, MDL_fuel.getFuelPon(rs) * blk.fuelConsMtp, {icon: "lovec-icon-fuel"});
       });
     });
   };
@@ -31,20 +31,20 @@
     if(!blk.noFuelInput) {
       blk.stats.add(fetchStat("lovec", "blk0fac-fuel"), newStatValue(tb => {
         tb.row();
-        MDL_table.__pnFixed(tb, pnTb => {
+        MDL_table.pnFixed(tb, pnTb => {
           let matArr = [[
             "",
             fetchStat("lovec", "rs0fuel-point").localized(),
             fetchStat("lovec", "rs0fuel-level").localized(),
           ]];
-          MDL_fuel._fuelArr(blk).forEachFast(rs => {
+          MDL_fuel.getFuelArr(blk).forEachFast(rs => {
             matArr.push([
               rs,
-              rs instanceof Liquid ? "-" : (MDL_fuel._fuelPon(rs) / blk.fuelConsMtp).color(blk.fuelConsMtp.fEqual(1.0) ? Color.white : blk.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
-              (MDL_fuel._fuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
+              rs instanceof Liquid ? "-" : (MDL_fuel.getFuelPon(rs) / blk.fuelConsMtp).color(blk.fuelConsMtp.fEqual(1.0) ? Color.white : blk.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
+              (MDL_fuel.getFuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
             ]);
           });
-          MDL_table._l_table(pnTb, matArr);
+          MDL_table.setTable(pnTb, matArr);
         }, null, 300.0).left().padLeft(28.0);
       }));
 
@@ -67,13 +67,13 @@
   function comp_updateTile(b) {
     // Update currently used fuel
     if(TIMER.secFive && !b.block.delegee.noFuelInput) {
-      b.fuelTup = MDL_fuel._fuelTup(b);
+      b.fuelTup = MDL_fuel.getFuelTup(b);
       b.tempFuel = b.fuelTup == null ?
         0.0 :
         (b.fuelTup[2] * 100.0 * b.block.delegee.fuelLvlMtp);
       b.fuelPolProd = b.fuelTup == null ?
         0.0 :
-        MDL_pollution._rsPol(b.fuelTup[0]);
+        MDL_pollution.getRsPol(b.fuelTup[0]);
     };
 
     // Add dynamic pollution
@@ -106,14 +106,14 @@
   function comp_acceptItem(b, b_f, itm) {
     return b.block.delegee.noFuelInput ?
       b.items != null :
-      b.items != null && b.items.get(itm) < b.getMaximumAccepted(itm) && (b.fuelSel != null ? itm === b.fuelSel : MDL_fuel._hasFuelInput(b.block, itm));
+      b.items != null && b.items.get(itm) < b.getMaximumAccepted(itm) && (b.fuelSel != null ? itm === b.fuelSel : MDL_fuel.checkFuelInput(b.block, itm));
   };
 
 
   function comp_acceptLiquid(b, b_f, liq) {
     return b.block.delegee.noFuelInput ?
       b.liquids != null :
-      b.liquids != null && b.liquids.get(liq) < b.block.liquidCapacity && (b.fuelSel != null ? liq === b.fuelSel : MDL_fuel._hasFuelInput(b.block, liq));
+      b.liquids != null && b.liquids.get(liq) < b.block.liquidCapacity && (b.fuelSel != null ? liq === b.fuelSel : MDL_fuel.checkFuelInput(b.block, liq));
   };
 
 
@@ -152,8 +152,8 @@
 
 
   function comp_ex_buildFuelSelector(b, tb) {
-    MDL_table._s_ct(
-      tb, b.block, MDL_fuel._fuelArr(b.block),
+    MDL_table.setCtSelect(
+      tb, b.block, MDL_fuel.getFuelArr(b.block),
       () => b.delegee.fuelSel, val => b.configure("FUEL: " + (val == null ? "null" : val.name)), false,
       b.block.selectionRows, b.block.selectionColumns - 1,
     );
@@ -280,7 +280,7 @@
 
 
       consumesItem: function(itm) {
-        return MDL_fuel._hasFuelInput(this, itm);
+        return MDL_fuel.checkFuelInput(this, itm);
       }
       .setProp({
         boolMode: "or",
@@ -288,7 +288,7 @@
 
 
       consumesLiquid: function(liq) {
-        return MDL_fuel._hasFuelInput(this, liq);
+        return MDL_fuel.checkFuelInput(this, liq);
       }
       .setProp({
         boolMode: "or",
@@ -536,11 +536,11 @@
           wr0rd,
 
           wr => {
-            MDL_io.__ct(wr, this.fuelSel);
+            MDL_io.ct(wr, this.fuelSel);
           },
 
           rd => {
-            this.fuelSel = MDL_io.__ct(rd);
+            this.fuelSel = MDL_io.ct(rd);
           },
         );
       }

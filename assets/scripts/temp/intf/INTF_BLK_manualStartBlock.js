@@ -74,7 +74,7 @@
     if(b.block.delegee.skipTapConfig) return true;
 
     Vars.state.paused ?
-      MDL_ui.show_fadeInfo("lovec", "paused-manual-click") :
+      MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
       b.ex_configureClick();
 
     return false;

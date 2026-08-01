@@ -124,12 +124,12 @@
       e.isMissile() && !PARAM.SHOULD_DRAW_MISSILE_STAT
     )) return;
 
-    let dmg = MDL_prop._bulDmg(bul, e);
+    let dmg = MDL_prop.calcBulDmg(bul, e);
     if(dmg < PARAM.DAMAGE_DISPLAY_THRESHOLD) return;
 
     MDL_effect._e_dmg(
       e.x, e.y, dmg, bul.team,
-      (e instanceof Building ? MDL_prop._bShield(e, true) : e.shield) > dmg ? "shield" : "health",
+      (e instanceof Building ? MDL_prop.getBuildShield(e, true) : e.shield) > dmg ? "shield" : "health",
     );
   };
 

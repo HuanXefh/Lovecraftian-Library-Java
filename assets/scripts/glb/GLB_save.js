@@ -56,6 +56,7 @@
         requestSync();
         return;
       };
+      console.log("[LOVEC] Loading LSAV data...");
       try {
         lsavJsonVal = MDL_json.parse(MDL_file.getLsav());
         plsavJsonVal = MDL_json.parse(MDL_file.getPlsav());
@@ -76,12 +77,12 @@
       let mapCur = global.lovecUtil.fun._mapCur();
 
       // If map name not matched, clear the LSAV (creates a backup first)
-      if(lsav["save-map"] !== TmpStateTag.undefined && lsav["save-map"] !== mapCur) {
+      if(lsav["save-map"] != null && lsav["save-map"] !== mapCur) {
         MDL_json.write(MDL_file.getLsav(true), lsav);
         initLsav("lsav");
       };
       // If outside of campaign, check map name for PLASV too
-      if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && plsav["save-map"] !== TmpStateTag.undefined && plsav["save-map"] !== mapCur) {
+      if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && plsav["save-map"] != null && plsav["save-map"] !== mapCur) {
         MDL_json.write(MDL_file.getPlsav(true), plsav);
         initLsav("plsav");
       };
@@ -114,10 +115,10 @@
    * @param {Object} obj
    * @return {void}
    */
-  const __lsav = function(obj) {
+  const setLsav = function(obj) {
     lsav = obj;
   };
-  exports.__lsav = __lsav;
+  exports.setLsav = setLsav;
 
 
   /**
@@ -125,10 +126,10 @@
    * @param {Object} obj
    * @return {void}
    */
-  const __plsav = function(obj) {
+  const setPlsav = function(obj) {
     plsav = obj;
   };
-  exports.__plsav = __plsav;
+  exports.setPlsav = setPlsav;
 
 
   /**
@@ -198,23 +199,27 @@
    * @return {void}
    */
   const sync = function() {
-    MDL_net.sendPacket(
-      PacketModes.SERVER, "lovec-server-lsav-sync",
-      JSON.stringify(lsav),
-      true,
-    );
-    MDL_net.sendPacket(
-      PacketModes.SERVER, "lovec-server-plsav-sync",
-      JSON.stringify(plsav),
-      true,
-    );
+    try {
+      MDL_net.sendPacket(
+        PacketModes.SERVER, "lovec-server-lsav-sync",
+        JSON.stringify(lsav),
+        true,
+      );
+      MDL_net.sendPacket(
+        PacketModes.SERVER, "lovec-server-plsav-sync",
+        JSON.stringify(plsav),
+        true,
+      );
+    } catch(err) {
+      console.err("[LOVEC] Failed to sync LSAV: \n" + err);
+    };
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.CLIENT, "lovec-server-lsav-sync", payload => {
-      __lsav(JSON.parse(payload));
+    MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-lsav-sync", payload => {
+      setLsav(JSON.parse(payload));
     });
-    MDL_net.__packetHandler(PacketModes.CLIENT, "lovec-server-plsav-sync", payload => {
-      __plsav(JSON.parse(payload));
+    MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-plsav-sync", payload => {
+      setPlsav(JSON.parse(payload));
     });
   })
   .setAnno("server");
@@ -233,7 +238,7 @@
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-lsav-sync-request", payload => {
+    MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-lsav-sync-request", payload => {
       sync();
     });
   })
@@ -259,7 +264,7 @@
     );
   }
   .setAnno("init", function() {
-    MDL_net.__packetHandler(PacketModes.SERVER, "lovec-client-lsav-set-request", payload => {
+    MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-lsav-set-request", payload => {
       setSafe.apply(this, unpackPayload(payload));
     });
   })
@@ -274,7 +279,11 @@
 */
 
 
+
+
   initLsav();
+
+
 
 
   MDL_event.onWorldLoad(() => {
@@ -282,6 +291,8 @@
     loadLsav();
 
   });
+
+
 
 
   MDL_event.onWorldSave(() => {

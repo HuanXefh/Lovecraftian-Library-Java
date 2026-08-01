@@ -27,10 +27,10 @@
    * @param {Array<number>} ys
    * @return {number}
    */
-  const _diffMean = function(xs, ys) {
+  const getDiffMean = function(xs, ys) {
     return xs.subWith(ys).mean();
   };
-  exports._diffMean = _diffMean;
+  exports.getDiffMean = getDiffMean;
 
 
   /**
@@ -39,10 +39,10 @@
    * @param {boolean|unset} [notSample]
    * @return {number}
    */
-  const _stdDev = function(xs, notSample) {
-    return Math.sqrt(_vari(xs, notSample));
+  const getStdDev = function(xs, notSample) {
+    return Math.sqrt(getVari(xs, notSample));
   };
-  exports._stdDev = _stdDev;
+  exports.getStdDev = getStdDev;
 
 
   /**
@@ -52,10 +52,10 @@
    * @param {boolean|unset} [notSample]
    * @return {number}
    */
-  const _diffStdDev = function(xs, ys, notSample) {
-    return Math.sqrt(_diffVari(xs, ys, notSample));
+  const getDiffStdDev = function(xs, ys, notSample) {
+    return Math.sqrt(getDiffVari(xs, ys, notSample));
   };
-  exports._diffStdDev = _diffStdDev;
+  exports.getDiffStdDev = getDiffStdDev;
 
 
   /**
@@ -64,26 +64,26 @@
    * @param {boolean|unset} [notSample]
    * @return {Array<number>}
    */
-  const _zScore = function(xs, notSample) {
+  const getZScore = function(xs, notSample) {
     let mean = xs.mean();
-    let stdDev = _stdDev(xs, notSample);
+    let stdDev = getStdDev(xs, notSample);
     return xs.map(x => (x - mean) / stdDev);
   };
-  exports._zScore = _zScore;
+  exports.getZScore = getZScore;
 
 
   /**
-   * Variant of {@link _zScore} with assigned mean value and standard deviation.
+   * Variant of {@link getZScore} with assigned mean value and standard deviation.
    * @param {Array<number>} xs
    * @param {number} mean
    * @param {number} stdDev
    * @param {boolean|unset} [notSample]
    * @return {Array<number>}
    */
-  const _tScore = function(xs, mean, stdDev, notSample) {
-    return _zScore(xs, notSample).inSituMap(x => x * stdDev + mean);
+  const getTScore = function(xs, mean, stdDev, notSample) {
+    return getZScore(xs, notSample).inSituMap(x => x * stdDev + mean);
   };
-  exports._tScore = _tScore;
+  exports.getTScore = getTScore;
 
 
   /**
@@ -92,12 +92,12 @@
    * @param {number} trueVal
    * @return {number}
    */
-  const _errRel = function(xs, trueVal) {
-    let stdDev = _stdDev(xs);
+  const getErrRel = function(xs, trueVal) {
+    let stdDev = getStdDev(xs);
 
     return (stdDev - trueVal) / trueVal;
   };
-  exports._errRel = _errRel;
+  exports.getErrRel = getErrRel;
 
 
   /**
@@ -106,7 +106,7 @@
    * @param {boolean|unset} [notSample]
    * @return {number}
    */
-  const _vari = function(xs, notSample) {
+  const getVari = function(xs, notSample) {
     let val = 0.0;
 
     let mean = xs.mean();
@@ -117,7 +117,7 @@
 
     return val;
   };
-  exports._vari = _vari;
+  exports.getVari = getVari;
 
 
   /**
@@ -127,10 +127,10 @@
    * @param {boolean|unset} [notSample]
    * @return {number}
    */
-  const _diffVari = function(xs, ys, notSample) {
-    return _vari(xs.subWith(ys), notSample);
+  const getDiffVari = function(xs, ys, notSample) {
+    return getVari(xs.subWith(ys), notSample);
   };
-  exports._diffVari = _diffVari;
+  exports.getDiffVari = getDiffVari;
 
 
   /**
@@ -140,7 +140,7 @@
    * @param {boolean|unset} [notSample]
    * @return {number}
    */
-  const _cov = function(xs, ys, notSample) {
+  const getCov = function(xs, ys, notSample) {
     let val = 0.0;
     if(xs == null) xs = Array.getIndexArray(ys.length, true);
 
@@ -153,7 +153,7 @@
 
     return val;
   };
-  exports._cov = _cov;
+  exports.getCov = getCov;
 
 
   /* <------------------------------ multi-dimensional ------------------------------ */
@@ -165,20 +165,20 @@
    * @param {boolean|unset} [notSample]
    * @return {MathMatrix}
    */
-  const _covMat = function(xss, notSample) {
+  const getCovMat = function(xss, notSample) {
     const matArr = [];
 
     for(let j = 0; j < xss.length; j++) {
       let rowArr = [];
       for(let i = 0; i < xss.length; i++) {
-        rowArr.push(_cov(xss[j], xss[i], notSample));
+        rowArr.push(getCov(xss[j], xss[i], notSample));
       };
       matArr.push(rowArr);
     };
 
     return new MathMatrix(matArr);
   };
-  exports._covMat = _covMat;
+  exports.getCovMat = getCovMat;
 
 
   /* <------------------------------ regression ------------------------------ */

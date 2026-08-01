@@ -23,7 +23,7 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci._depthLvlB(blk.maxDepthLvl));
+    blk.stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci.getDepthLvlB(blk.maxDepthLvl));
   };
 
 
