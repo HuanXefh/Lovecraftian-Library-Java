@@ -397,10 +397,62 @@
 
     // Resolve entity mapping
     let entityVal = DB_unit.db["map"]["entity"]["type"].read(utp.delegee.entityName, UnitEntity);
-    if(typeof entityVal !== "number") {
-      utp.constructor = () => extend(entityVal, {});
+
+    if(entityVal instanceof Prov) {
+      utp.delegee.entityTemplate = entityVal.get();
+
+      let unitProv = EntityMapping.map(utp.delegee.entityName);
+      if(unitProv == null) {
+        unitProv = prov(() => {
+          processClassLoader();
+          let obj = mergeObj(
+            utp.delegee.entityTemplate.build(),
+            {
+              classId: function() {return id},
+            },
+          );
+          Object._it(obj, (key, val) => {
+            if(!key.startsWith("utp$")) return;
+            obj[key] = tryJsProp(utp, key.replace("utp$", ""), undefined);
+          });
+          let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
+          utp.delegee.entityTemplate.initContent(unit);
+          processClassLoader();
+
+          return unit;
+        });
+        let id = EntityMapping.register(utp.delegee.entityName, unitProv);
+      };
+      utp.constructor = unitProv;
     } else {
-      if(EntityMapping.idMap[entityVal] == null) {
+      utp.constructor = () => extend(entityVal, {});
+    };
+
+
+    /*if(typeof entityVal === "number") {
+      utp.constructor = () => extend(entityVal, {});
+    } else if(typeof val) {
+      let entityId = EntityMapping.register(utp.delegee.entityName, prov(() => {
+        processClassLoader();
+        let obj = mergeObj(
+          utp.delegee.entityTemplate.build(),
+          {
+            classId: function() {return entityId},
+          },
+        );
+        Object._it(obj, (key, val) => {
+          if(!key.startsWith("utp$")) return;
+          obj[key] = tryJsProp(utp, key.replace("utp$", ""), undefined);
+        });
+        let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
+        utp.delegee.entityTemplate.initContent(unit);
+        processClassLoader();
+
+        return unit;
+      }));
+
+
+      /*if(EntityMapping.idMap[entityVal] == null) {
         let templateGetter = DB_unit.db["map"]["entity"]["entityDef"].read(entityVal);
         if(templateGetter == null) throw new Error("Entity (${1}) is not defined yet!".format(entityVal));
         utp.delegee.entityTemplate = templateGetter();
@@ -426,7 +478,7 @@
       };
       EntityMapping.nameMap.put(utp.delegee.entityName, EntityMapping.idMap[entityVal]);
       utp.constructor = EntityMapping.map(utp.delegee.entityName);
-    };
+    };*/
 
     // Resolve unit damage type
     let dmgType = CLS_unitDamageType.getByUtp(utp);

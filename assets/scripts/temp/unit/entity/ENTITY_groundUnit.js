@@ -23,10 +23,10 @@
 
   /**
    * Basic air units.
-   * @class ENTITY_baseGroundUnit
+   * @class ENTITY_groundUnit
    * @extends ENTITY_baseUnitEntity
    */
-  module.exports = newClass().extendClass(PARENT, "ENTITY_baseGroundUnit").initClass()
+  module.exports = newClass().extendClass(PARENT, "ENTITY_groundUnit").initClass()
   .setParent(null)
   .setParam({})
   .setMethod({});

@@ -8,7 +8,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/temp/unit/entity/ENTITY_baseAirUnit");
+  const PARENT = require("lovec/temp/unit/entity/ENTITY_airUnit");
 
 
   /* <---------- component ----------> */
@@ -49,7 +49,7 @@
   /**
    * An air unit that only flies when moving.
    * @class ENTITY_jet
-   * @extends ENTITY_baseAirUnit
+   * @extends ENTITY_airUnit
    */
   module.exports = newClass().extendClass(PARENT, "ENTITY_jet").initClass()
   .setParent(UnitEntity)

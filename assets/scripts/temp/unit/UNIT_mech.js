@@ -8,7 +8,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/temp/unit/UNIT_baseGroundUnit");
+  const PARENT = require("lovec/temp/unit/UNIT_groundUnit");
 
 
   /* <---------- component ----------> */
@@ -31,7 +31,7 @@
   /**
    * Mech unit.
    * @class UNIT_mech
-   * @extends UNIT_baseGroundUnit
+   * @extends UNIT_groundUnit
    */
   module.exports = newClass().extendClass(PARENT, "UNIT_mech").initClass()
   .setParent(UnitType)

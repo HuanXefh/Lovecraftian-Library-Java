@@ -8,7 +8,7 @@
   /* <---------- import ----------> */
 
 
-  const PARENT = require("lovec/temp/unit/entity/ENTITY_baseUnitEntity");
+  const PARENT = require("lovec/temp/unit/UNIT_baseUnit");
 
 
   /* <---------- component ----------> */
@@ -22,11 +22,12 @@
 
 
   /**
-   * Basic air units.
-   * @class ENTITY_baseAirUnit
-   * @extends ENTITY_baseUnitEntity
+   * Parent of all ground units.
+   * @class UNIT_groundUnit
+   * @extends UNIT_baseUnit
    */
-  module.exports = newClass().extendClass(PARENT, "ENTITY_baseAirUnit").initClass()
-  .setParent(UnitEntity)
+  module.exports = newClass().extendClass(PARENT, "UNIT_groundUnit").initClass()
+  .setParent(null)
+  .setTags()
   .setParam({})
   .setMethod({});

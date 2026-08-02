@@ -23,10 +23,10 @@
 
   /**
    * Parent of all ground units.
-   * @class UNIT_baseGroundUnit
+   * @class UNIT_airUnit
    * @extends UNIT_baseUnit
    */
-  module.exports = newClass().extendClass(PARENT, "UNIT_baseAirUnit").initClass()
+  module.exports = newClass().extendClass(PARENT, "UNIT_airUnit").initClass()
   .setParent(UnitType)
   .setTags("dmg0type-air")
   .setParam({
@@ -38,7 +38,7 @@
     /**
      * `INTERNAL`
      * @override
-     * @memberof UNIT_baseAirUnit
+     * @memberof UNIT_airUnit
      * @instance
      */
     entityName: "lovec-air",

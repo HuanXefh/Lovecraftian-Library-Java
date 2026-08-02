@@ -18,9 +18,8 @@ const db = {
 
 
       /**
-       * Maps type to a unit class and extra id if possible.
-       * Make sure the id here is not used by vanilla game!
-       * <br> `ROW`: type, javaCls0id.
+       * Maps type to a unit class or entity template.
+       * <br> `ROW`: type, javaCls0tempProv.
        */
       type: [
 
@@ -36,31 +35,9 @@ const db = {
         "tether", BuildingTetherPayloadUnit,
         "crawl", CrawlUnit,
 
-        "lovec-air", 80,
-        "lovec-mech", 81,
-        "lovec-tether-air", 82,
-        "lovec-jet", 83,
-
-      ],
-
-
-      /**
-       * Used to define new entity types.
-       * <br> `ROW`: id, tempGetter.
-       */
-      entityDef: [
-
-        // lovec-air
-        80, () => require("lovec/temp/unit/entity/ENTITY_baseAirUnit"),
-
-        // lovec-mech
-        81, () => require("lovec/temp/unit/entity/ENTITY_mech"),
-
-        // lovec-tether-air
-        82, () => require("lovec/temp/unit/entity/ENTITY_tetheredAirUnit"),
-
-        // lovec-jet
-        83, () => require("lovec/temp/unit/entity/ENTITY_jet"),
+        "lovec-mech", prov(() => require("lovec/temp/unit/entity/ENTITY_mech")),
+        "lovec-air", prov(() => require("lovec/temp/unit/entity/ENTITY_airUnit")),
+        "lovec-jet", prov(() => require("lovec/temp/unit/entity/ENTITY_jet")),
 
       ],
 
