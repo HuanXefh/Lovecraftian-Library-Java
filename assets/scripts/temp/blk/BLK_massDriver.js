@@ -54,7 +54,7 @@
         Pal.accent :
         b.block.delegee.bulCollidesTerrainCaveOnly && !PARAM.IS_CAVE_MAP ?
           Pal.accent :
-          !MDL_pos._rayCheck_legSolid(b.x, b.y, ob.x, ob.y) ?
+          !LCRaycastf.checkLegSolid(b.x, b.y, ob.x, ob.y) ?
             Pal.accent :
             Pal.remove,
     );

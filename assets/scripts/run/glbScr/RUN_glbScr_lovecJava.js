@@ -64,6 +64,8 @@
   LCPos = fetchClass("lovec.utils.LCPos");
   /** @global lovec.utils.LCRand */
   LCRand = fetchClass("lovec.utils.LCRand");
+  /** @global lovec.utils.LCRaycastf */
+  LCRaycastf = fetchClass("lovec.utils.LCRaycastf");
   /** @global lovec.utils.LCScript */
   LCScript = fetchClass("lovec.utils.LCScript");
   /** @global lovec.utils.TmpStateTag */

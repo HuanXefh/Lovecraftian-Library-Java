@@ -32,12 +32,12 @@ public class BLKFragCable implements ContentFrag<Conveyor, BLKFragCable> {
         Conveyor blk = getThis();
         return (
             (oblk.consPower != null || oblk.outputsPower)
-                && !(boolean)(LCScript.invoke("_isFluidConduit", MDL_cond, oblk))
-                && !(boolean)(LCScript.invoke("_isArmoredCable", MDL_cond, oblk))
+                && !(boolean) LCScript.invoke("_isFluidConduit", MDL_cond, oblk)
+                && !(boolean) LCScript.invoke("_isArmoredCable", MDL_cond, oblk)
         ) || (
             blk.lookingAt(t, rot, otx, oty, oblk)
                 && oblk.hasPower
-                && !(boolean)(LCScript.invoke("_isFluidConduit", MDL_cond, oblk))
+                && !(boolean) LCScript.invoke("_isFluidConduit", MDL_cond, oblk)
         );
     };
     // Overload

@@ -50,11 +50,13 @@
       b.charge = 0.0;
 
       let rad = b.block.range * b.heat;
-      if(rad > 1.0) MDL_pos._it_units(
-        b.x, b.y, rad, null,
-        ounit => b.block.delegee.filterScrTup[0](b, ounit),
-        ounit => ounit.apply(b.block.delegee.staTg, b.block.delegee.staDur),
-      );
+      if(rad > 1.0) {
+        LCEntity.eachUnit(
+          b.x, b.y, null, rad,
+          ounit => b.block.delegee.filterScrTup[0](b, ounit),
+          ounit => ounit.apply(b.block.delegee.staTg, b.block.delegee.staDur),
+        );
+      };
     };
   };
 

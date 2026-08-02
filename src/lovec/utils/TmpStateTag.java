@@ -1,8 +1,5 @@
 package lovec.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public enum TmpStateTag {
 
 

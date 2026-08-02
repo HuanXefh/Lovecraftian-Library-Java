@@ -1,7 +1,6 @@
 package lovec.math;
 
 import arc.func.Func;
-import arc.struct.IntIntMap;
 import arc.struct.IntMap;
 
 /**

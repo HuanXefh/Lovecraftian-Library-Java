@@ -81,8 +81,8 @@ public class LCDrawf {
             lightConeReg = Core.atlas.find("lovec-efr-shadow-cone");
             NativeArray wireMats = LCScript.toArray(LCScript.search(DB_block, "db", "grpParam", "wireMatReg"));
             LCNativeArray.forEachRow(wireMats, 2, rowArr -> {
-                wireMatRegMap.put((String)(rowArr.get(0)), Core.atlas.find((String)(rowArr.get(1))));
-                wireMatEndRegMap.put((String)(rowArr.get(0)), Core.atlas.find(rowArr.get(1) + "-end"));
+                wireMatRegMap.put((String) rowArr.get(0), Core.atlas.find((String) rowArr.get(1)));
+                wireMatEndRegMap.put((String) rowArr.get(0), Core.atlas.find(rowArr.get(1) + "-end"));
             });
             wireGlowReg = Core.atlas.find("lovec-ast-wire-glow");
             wireShaReg = Core.atlas.find("lovec-ast-wire-shadow");
@@ -587,7 +587,7 @@ public class LCDrawf {
     };
 
 
-    private static float[] pulseRectRads = new float[2];
+    private static final float[] pulseRectRads = new float[2];
 
 
     /**
@@ -738,7 +738,7 @@ public class LCDrawf {
     };
 
 
-    private static float[] pulseCircleRads = new float[4];
+    private static final float[] pulseCircleRads = new float[4];
 
 
     /**
@@ -1448,7 +1448,7 @@ public class LCDrawf {
      * Draws text for block placement.
      */
     public static void textPlace(Block blk, int tx, int ty, String str, boolean valid, float offTy) {
-        blk.drawPlaceText(str, tx + (int)(blk.offset / Vars.tilesize), ty + (int)(blk.offset / Vars.tilesize + offTy), valid);
+        blk.drawPlaceText(str, tx + (int) (blk.offset / Vars.tilesize), ty + (int) (blk.offset / Vars.tilesize + offTy), valid);
     };
     // Overload
     public static void textPlace(Block blk, int tx, int ty, String str, boolean valid) {
@@ -1463,7 +1463,7 @@ public class LCDrawf {
      * Draws text for building selection.
      */
     public static void textSelect(Building b, String str, boolean valid, float offTy) {
-        b.block.drawPlaceText(str, (int)(b.x / Vars.tilesize), (int)(b.y / Vars.tilesize + offTy), valid);
+        b.block.drawPlaceText(str, (int) (b.x / Vars.tilesize), (int) (b.y / Vars.tilesize + offTy), valid);
     };
     // Overload
     public static void textSelect(Building b, String str, boolean valid) {
@@ -1513,8 +1513,8 @@ public class LCDrawf {
         float y = unit.y - unit.hitSize * 0.5f - 8f;
         float w = 4f * iCap;
         while(i < iCap) {
-            sta = (StatusEffect)(tmpArr.get(i));
-            x_i = iCap == 1 ? unit.x : (unit.x - w * (0.5f - (float)(i) / (iCap - 1)));
+            sta = (StatusEffect) tmpArr.get(i);
+            x_i = iCap == 1 ? unit.x : (unit.x - w * (0.5f - (float) i / (iCap - 1)));
             progressRing(
                 x_i, y,
                 Mathf.clamp(1f - unit.getDuration(sta) / LCScript.toFloat(LCScript.instanceGet(sta, "burstTime")))   ,
@@ -1542,10 +1542,10 @@ public class LCDrawf {
      * Draws random overlay on floor at a tile.
      */
     public static void randomOverlay(Tile t, TextureRegion[] regs, int denom, float off1, float off2) {
-        if(regs.length == 0 || Mathf.floor(Mathf.randomSeed((long)(t.pos() + off1), 0, denom)) != 0) return;
+        if(regs.length == 0 || Mathf.floor(Mathf.randomSeed((long) (t.pos() + off1), 0, denom)) != 0) return;
         LCDraw.region(
             t.worldx(), t.worldy(),
-            regs[Mathf.round(Mathf.randomSeed((long)(t.pos() + 114514 + off2), 0, regs.length - 1))],
+            regs[Mathf.round(Mathf.randomSeed((long) (t.pos() + 114514 + off2), 0, regs.length - 1))],
             0f, 1f, Color.white, 1f, randOvLay
         );
     };

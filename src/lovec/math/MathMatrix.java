@@ -573,9 +573,9 @@ public class MathMatrix implements Iterable<Double> {
         if(!vec.isVec()) throw new IllegalArgumentException("Argument is not a vector:\n" + vec);
         var arr = vec.toArray();
         if(arr.length == 2) {
-            return new Vec2((float)(arr[0]), (float)(arr[1]));
+            return new Vec2((float) arr[0], (float) arr[1]);
         } else if(arr.length == 3) {
-            return new Vec3((float)(arr[0]), (float)(arr[1]), (float)(arr[2]));
+            return new Vec3((float) arr[0], (float) arr[1], (float) arr[2]);
         };
 
         return null;

@@ -19,7 +19,7 @@
 
   function sumCrowdHealth(unit, x, y) {
     let sum = 0.0;
-    MDL_pos._it_units(x, y, VAR.range.sortCrowdRad, unit.team, ounit => unit.flying === ounit.flying, ounit => {
+    LCEntity.eachUnit(x, y, unit.team, VAR.range.sortCrowdRad, ounit => unit.flying === ounit.flying, ounit => {
       sum += ounit.health;
     });
     return sum;

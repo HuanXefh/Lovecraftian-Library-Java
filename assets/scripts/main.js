@@ -144,7 +144,7 @@
           i++;
 
           Time.run(0.0, () => {
-            unit = MDL_pos._units(this.tmpArr, x, y, 8.0).inSituFilter(ounit => ounit.type.name == str).first();
+            unit = LCEntity.getUnits(this.tmpArr, x, y, 6.0).inSituFilter(ounit => ounit.type.name == str).first();
             if(unit != null && unit.delegee != null && checkCreatedByTemp(unit.type) && unit.type.ex_isSubInsOf("UNIT_baseUnit")) {
               unit.type.ex_readUnitData(unit, JSON.parse(json));
             };
@@ -286,7 +286,7 @@
     // Something
     if(!Vars.headless && PARAM.MODDED && !fetchSetting("load-vanilla-flyer")) {
       try {
-        Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", Vars.content.unit(DB_misc.db["mod"]["menuFlyer"].readRand()));
+        Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", Vars.content.unit(DB_misc.db["mod"]["menuFlyer"].random()));
       } catch(err) {
         console.err("[LOVEC] Failed to modify the menu scene:\n" + err);
       };

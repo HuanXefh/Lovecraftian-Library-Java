@@ -23,7 +23,7 @@
    * @return {string}
    */
   Object.randKey = function(obj) {
-    return Object.keys(obj).readRand();
+    return Object.keys(obj).random();
   };
 
 

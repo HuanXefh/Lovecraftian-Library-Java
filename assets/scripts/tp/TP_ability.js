@@ -66,7 +66,7 @@
 
       death(unit) {
         Damage.damage(unit.team, unit.x, unit.y, this.rad, this.dmg);
-        MDL_pos._it_units(unit.x, unit.y, this.rad, unit.team, null, ounit => {
+        LCEntity.eachUnit(unit.x, unit.y, unit.team, this.rad, null, ounit => {
           ounit.apply(this.sta, this.staDur);
         });
 

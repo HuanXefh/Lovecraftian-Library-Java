@@ -104,7 +104,7 @@ public class LCScript {
      * Converts JS value to Java boolean.
      */
     public static boolean toBoolean(Object val) {
-        return (boolean)(val);
+        return (boolean) val;
     };
 
 
@@ -112,7 +112,7 @@ public class LCScript {
      * Converts JS value to Java string.
      */
     public static String toString(Object val) {
-        return (String)(val);
+        return (String) val;
     };
 
 
@@ -120,7 +120,7 @@ public class LCScript {
      * Converts JS value to JavaScript object.
      */
     public static NativeObject toObject(Object val) {
-        return (NativeObject)(val);
+        return (NativeObject) val;
     };
 
 
@@ -128,7 +128,7 @@ public class LCScript {
      * Converts JS value to JavaScript array.
      */
     public static NativeArray toArray(Object val) {
-        return (NativeArray)(val);
+        return (NativeArray) val;
     };
 
 
@@ -136,7 +136,7 @@ public class LCScript {
      * Converts a JS value to JavaScript function.
      */
     public static Function toFunction(Object val) {
-        return (Function)(val);
+        return (Function) val;
     };
 
 
@@ -150,7 +150,7 @@ public class LCScript {
                 Context.getContext().newArray(scope, 0) :
                 Context.getContext().newArray(scope, eles)
         );
-        return (NativeArray)(scope.get(name, scope));
+        return (NativeArray) scope.get(name, scope);
     };
     // Overload
     public static NativeArray newArray(String name) {
@@ -226,7 +226,7 @@ public class LCScript {
      */
     @SuppressWarnings("ConstantConditions")
     public static Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) throws NullPointerException {
-        Function fun = (Function)(get(nameFun, scope));
+        Function fun = (Function) get(nameFun, scope);
         return thisInvoke(fun, scope, thisObj, args);
     };
     // Overload

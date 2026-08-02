@@ -56,7 +56,7 @@ public class BLKFragCogwheel implements ContentFrag<Wall, BLKFragCogwheel> {
             LCDraw.processZ(Layer.block + b.block.size * 0.001f + 0.72f, 1);
             TextureRegion reg;
             if(LCScript.toBoolean(LCScript.instanceGet(b, "isInv"))) {
-                reg = (TextureRegion)(LCScript.instanceGet(b.block, "invReg"));
+                reg = (TextureRegion) LCScript.instanceGet(b.block, "invReg");
                 Draw.rect(reg, b.x, b.y, w, w, -ang + 90f + offAng);
                 Draw.alpha(1f - ang / 90f);
                 Draw.rect(reg, b.x, b.y, w, w, -ang + offAng);

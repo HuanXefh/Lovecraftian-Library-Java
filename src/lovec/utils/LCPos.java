@@ -213,7 +213,7 @@ public class LCPos {
         float ang = Mathf.angle(x2 - x1, y2 - y1);
         float frac_i;
         while(i < iCap) {
-            frac_i = (float)(i) / segAmt;
+            frac_i = (float) i / segAmt;
             cons3.get(x1 + (x2 - x1) * frac_i, y1 + (y2 - y1) * frac_i, ang);
             i++;
         };
@@ -243,8 +243,8 @@ public class LCPos {
         }
 
         return Vars.world.tile(
-            (int)(tCenter.x + Tmp.v2.x - off + offCenter),
-            (int)(tCenter.y + Tmp.v2.y - off + offCenter)
+            (int) (tCenter.x + Tmp.v2.x - off + offCenter),
+            (int) (tCenter.y + Tmp.v2.y - off + offCenter)
         );
     };
 

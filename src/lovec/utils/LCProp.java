@@ -9,7 +9,6 @@ import mindustry.gen.*;
 import mindustry.graphics.Layer;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
-import mindustry.world.blocks.ControlBlock;
 
 /**
  * Handles generalized properties.
@@ -116,7 +115,7 @@ public class LCProp {
     public static float getPayloadFrac(Object obj, boolean nearCap) {
         if(obj instanceof Payloadc e) {
             // I don't think `Payloadc` can be cast to something other than unit, inform me if that happens
-            return Mathf.clamp(e.payloadUsed() / Math.max(((Unit)(e)).type.payloadCapacity, 1f), 0f, nearCap ? 0.999f : 1f);
+            return Mathf.clamp(e.payloadUsed() / Math.max(((Unit) e).type.payloadCapacity, 1f), 0f, nearCap ? 0.999f : 1f);
         };
         return 0f;
     };
@@ -163,7 +162,7 @@ public class LCProp {
      */
     public static @Nullable AIController getAi(Object obj) {
         if(obj instanceof Unit unit) {
-            return unit.isPlayer() ? null : (AIController)(unit.controller());
+            return unit.isPlayer() ? null : (AIController) unit.controller();
         };
         return null;
     };

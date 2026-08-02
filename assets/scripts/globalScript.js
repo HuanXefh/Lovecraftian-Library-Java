@@ -462,7 +462,7 @@
         return Vars.player.unit();
       },
       function(tx, ty) {
-        return MDL_pos._unit(tx * Vars.tilesize, ty * Vars.tilesize);
+        return LCEntity.getUnit((tx + 0.5) * Vars.tilesize, (ty + 0.5) * Vars.tilesize);
       },
     )
     .setAnno("console");
@@ -494,7 +494,7 @@
       },
       function(name) {
         if(!__checkCheatState__()) return;
-        let unit = MDL_pos._unitPlayerByName(name);
+        let unit = LCEntity.getPlayerUnitByName(name);
         if(unit == null) {
           console.err("[LOVEC] No player found with name ${1}!".format(String(name).color(Pal.accent)));
           return;

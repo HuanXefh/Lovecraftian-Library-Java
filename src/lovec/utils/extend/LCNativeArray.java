@@ -896,7 +896,7 @@ public class LCNativeArray {
         int j;
         Object tmpEle;
         for(int i = iCap - ord; i > -1; i -= ord) {
-            j = Math.round(Mathf.random((float)(i) / ord)) * ord;
+            j = Math.round(Mathf.random((float) i / ord)) * ord;
             for(int k = 0; k < ord; k++) {
                 tmpEle = fArr.get(i + k);
                 fArr.put(i + k, fArr, fArr.get(j + k));
@@ -1271,6 +1271,32 @@ public class LCNativeArray {
 
 
     /**
+     * Gets a random element in an array, null for empty array.
+     * Supports formatted array.
+     */
+    public static @Nullable Object random(NativeArray fArr, int ord, int off) {
+        if(fArr.getLength() == 0) return null;
+        return fArr.get(LCNumber.randInt(calcRowAmt(fArr, ord) - 1) * ord + off);
+    };
+    // Overload
+    public static @Nullable Object random(NativeArray fArr, int ord) {
+        return random(fArr, ord, 0);
+    };
+    public static @Nullable Object random(NativeArray arr) {
+        return random(arr, 1);
+    };
+    public static @Nullable Object random(Object[] objs, int ord, int off) {
+        return wrapFunc(objs, arr0 -> random(arr0, ord, off));
+    };
+    public static @Nullable Object random(Object[] objs, int ord) {
+        return random(objs, ord, 0);
+    };
+    public static @Nullable Object random(Object[] objs) {
+        return random(objs, 1);
+    };
+
+
+    /**
      * Picks random elements from an array.
      * @return New array.
      */
@@ -1291,6 +1317,25 @@ public class LCNativeArray {
     };
     public static NativeArray sample(Object[] objs) {
         return sample(objs, objs.length);
+    };
+
+
+    /* <-------------------- formatted array --------------------> */
+
+
+    /**
+     * Calculates row amount of a formatted array.
+     * Internal use.
+     */
+    public static int calcRowAmt(NativeArray fArr, int ord) {
+        long cap = fArr.getLength();
+        return cap == 0 ?
+            0 :
+            (int) ((cap - cap % ord) / ord + (cap % ord != 0 ? 1 : 0));
+    };
+    // Overload
+    public static int calcRowAmt(Object[] objs, int ord) {
+        return LCScript.toInt(wrapFunc(objs, arr0 -> calcRowAmt(arr0, ord)));
     };
 
 

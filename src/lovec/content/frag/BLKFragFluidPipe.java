@@ -32,7 +32,7 @@ public class BLKFragFluidPipe implements ContentFrag<Conduit, BLKFragFluidPipe> 
         Conduit blk = getThis();
         return oblk.hasLiquids
             && (oblk.outputsLiquid || blk.lookingAt(t, rot, otx, oty, oblk))
-            && (blk.lookingAtEither(t, rot, otx, oty, orot, oblk) || (boolean)(LCScript.invoke("_isFluidRouter", MDL_cond, oblk)));
+            && (blk.lookingAtEither(t, rot, otx, oty, orot, oblk) || (boolean) LCScript.invoke("_isFluidRouter", MDL_cond, oblk));
     };
     // Overload
     public boolean blends(Tile t, int rot, BuildPlan[] bPlans, int dir, boolean shouldCheckWorld) {

@@ -73,7 +73,7 @@
 
 
   function comp_craft(b) {
-    let ot = b.revealQueue.readRand();
+    let ot = b.revealQueue.random();
     if(ot != null) {
       b.revealQueue.pull(ot);
       b.revealedInts.push(ot.pos());

@@ -30,7 +30,7 @@
 
     let bSpd = MDL_prop.getBuildSpd(b);
     if(bSpd > 0.0 && b.timer.get(b.block.timerDump, b.block.dumpTime / Math.max(bSpd, 0.0001))) {
-      b.dump(b.ctTgs.readRand());
+      b.dump(b.ctTgs.random());
     };
   };
 

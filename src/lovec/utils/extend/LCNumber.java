@@ -28,7 +28,7 @@ public class LCNumber {
      * Gets a random integer in range.
      */
     public static int randInt(int base, int cap) {
-        return (int)(Mathf.random() * (cap + 1 - base) + base);
+        return (int) (Mathf.random() * (cap + 1 - base) + base);
     };
     // Overload
     public static int randInt(int cap) {

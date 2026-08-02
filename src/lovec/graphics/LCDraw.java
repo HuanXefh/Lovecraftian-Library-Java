@@ -122,7 +122,7 @@ public class LCDraw {
      * Draws colored line.
      */
     public static void line(float x1, float y1, float x2, float y2, boolean isDashed) {
-        int amtSeg = (int)(!isDashed ? 0 : Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1)) / Vars.tilesize * 2);
+        int amtSeg = (int) (!isDashed ? 0 : Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1)) / Vars.tilesize * 2);
 
         if(isDashed) {
             Lines.dashLine(x1, y1, x2, y2, amtSeg);
@@ -144,7 +144,7 @@ public class LCDraw {
      */
     public static void rect(float x, float y, float r, float size, boolean isDashed) {
         float hw = LCPos.calcRectHW(r, size);
-        int amtSeg = (int)(!isDashed ? 0 : (size + r * 2) * 2);
+        int amtSeg = (int) (!isDashed ? 0 : (size + r * 2) * 2);
 
         if(isDashed) {
             Lines.dashLine(x - hw, y - hw, x + hw, y - hw, amtSeg);
@@ -362,8 +362,8 @@ public class LCDraw {
         if(ct == null) return;
 
         float
-            w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : (float)(ct.fullIcon.width / ct.fullIcon.height)),
-            h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : (float)(ct.fullIcon.height / ct.fullIcon.width));
+            w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : (float) (ct.fullIcon.width / ct.fullIcon.height)),
+            h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : (float) (ct.fullIcon.height / ct.fullIcon.width));
 
         processZ(z, ICON_REGION_Z_IND);
         Draw.rect(ct.fullIcon, x, y, w, h);

@@ -39,7 +39,7 @@
 
 
   function comp_ex_lootCall(b, loots, amt) {
-    let loot = loots.readRand();
+    let loot = loots.random();
     if(loot != null) {
       if(FRAG_item.takeLoot(b, loot, amt, true)) MDL_effect._e_itemTransfer(loot.x, loot.y, b);
     };

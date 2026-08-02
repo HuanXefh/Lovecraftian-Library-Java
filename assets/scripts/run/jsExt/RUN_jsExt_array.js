@@ -572,6 +572,18 @@
 
 
   /**
+   * Gets a random element in this array, null for empty array.
+   * Supports formatted array.
+   * @param {number|unset} [ord]
+   * @param {number|unset} [off]
+   * @return {any}
+   */
+  Array.prototype.random = function(ord, off) {
+    return LCNativeArray.random(this, tryVal(ord, 1), tryVal(off, 0));
+  };
+
+
+  /**
    * Picks random elements from this array.
    * @param {number|unset} [amt]
    * @return {Array} New array.
@@ -626,17 +638,7 @@
   };
 
 
-  /**
-   * Gets row amount of this formatted array.
-   * @param {number|unset} [ord]
-   * @return {number}
-   */
-  Array.prototype.rowAmt = function(ord) {
-    if(this.length === 0) return 0;
-    if(ord == null) ord = 1;
-
-    return (this.length - this.length % ord) / ord + Number(this.length % ord !== 0);
-  };
+  /* <------------------------------ formatted array ------------------------------ */
 
 
   // Condition checking for read & write methods
@@ -724,26 +726,6 @@
     };
 
     return arr;
-  };
-
-
-  /**
-   * Gets a random element in this array.
-   * Can be used for a formatted array.
-   * @param {number|unset} [ord]
-   * @param {number|unset} [off]
-   * @param {any} [def]
-   * @return {any}
-   */
-  Array.prototype.readRand = function(ord, off, def) {
-    if(this.length === 0) return null;
-
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-
-    let val = this[Math.round((this.rowAmt(ord) - 1).randInt() * ord + off)];
-
-    return val == null ? def : val;
   };
 
 
