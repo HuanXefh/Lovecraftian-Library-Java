@@ -45,7 +45,11 @@
   const write = function(fi, str0obj) {
     if(fi == null || str0obj == null) return;
 
-    fi.writeString(typeof str0obj === "string" ? str0obj : JSON.stringify(str0obj));
+    try {
+      fi.writeString(typeof str0obj === "string" ? str0obj : toJsonSafe(str0obj));
+    } catch(err) {
+      console.err("[LOVEC] Failed to write ${1}:\n".format(fi) + err);
+    };
   };
   exports.write = write;
 

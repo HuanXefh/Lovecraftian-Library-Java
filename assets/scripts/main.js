@@ -122,7 +122,7 @@
           stream.writeFloat(unit.x);
           stream.writeFloat(unit.y);
           stream.writeUTF(unit.type.name);
-          stream.writeUTF(JSON.stringify(dataObj))
+          stream.writeUTF(toJsonSafe(dataObj))
         });
         UTIL_unitData.getUnitDataMap().clear();
       },
@@ -146,10 +146,16 @@
           Time.run(0.0, () => {
             unit = LCEntity.getUnits(this.tmpArr, x, y, 6.0).inSituFilter(ounit => ounit.type.name == str).first();
             if(unit != null && unit.delegee != null && checkCreatedByTemp(unit.type) && unit.type.ex_isSubInsOf("UNIT_baseUnit")) {
-              unit.type.ex_readUnitData(unit, JSON.parse(json));
+              try {
+                unit.type.ex_readUnitData(unit, JSON.parse(json));
+              } catch(err) {
+                console.err("[LOVEC] Failed to parse unit data for ${1}, unexpected behavior can happen:\n".format(unit) + err);
+              };
             };
           });
         };
+
+        console.log("[LOVEC] Loaded custom unit data.");
       },
 
 

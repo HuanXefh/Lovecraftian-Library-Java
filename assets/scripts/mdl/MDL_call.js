@@ -237,8 +237,6 @@
       x, y, VARGEN.utpLoot, Vars.player.team(), null,
       unit => {
         unit.addItem(itm, itmAmt);
-        MDL_effect.showAt_global(unit.x, unit.y, EFF.circlePulseDynamic, 5.0, Pal.accent);
-        MDL_effect._e_line(x, y, null, unit, Pal.accent);
         Core.app.post(() => TRIGGER.lootSpawn.fire());
       },
     );
@@ -268,8 +266,6 @@
       x, y, VARGEN.utpLoot, Vars.player.team(), null, rad, amt,
       unit => {
         unit.addItem(itm, itmAmt);
-        MDL_effect.showAt_global(unit.x, unit.y, EFF.circlePulseDynamic, 5.0, Pal.accent);
-        MDL_effect._e_line(x, y, null, unit, Pal.accent);
         Core.app.post(() => TRIGGER.lootSpawn.fire());
       },
     );

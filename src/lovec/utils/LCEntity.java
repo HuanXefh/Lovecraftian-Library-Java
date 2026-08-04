@@ -1,8 +1,12 @@
 package lovec.utils;
 
 import arc.func.Boolf;
+import arc.func.Boolf2;
 import arc.func.Cons;
 import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Tmp;
@@ -10,10 +14,7 @@ import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.entities.Units;
 import mindustry.game.Team;
-import mindustry.gen.Building;
-import mindustry.gen.Groups;
-import mindustry.gen.Player;
-import mindustry.gen.Unit;
+import mindustry.gen.*;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
 import mindustry.world.Tile;
@@ -103,12 +104,13 @@ public class LCEntity {
     public static NativeArray getBuildsByTiles(@Nullable NativeArray contArr, NativeArray ts) {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getBuildsByTiles.newArr");
 
-        LCNativeArray.forEachFast(ts, ot -> {
-            Tile ot_fi = (Tile) ot;
-            if(ot_fi.build != null && !LCNativeArray.includes(arr, ot_fi.build)) {
-                LCNativeArray.push(arr, ot_fi.build);
+        Tile ot;
+        for(Object rawOt : ts) {
+            ot = (Tile) rawOt;
+            if(ot.build != null && !LCNativeArray.includes(arr, ot.build)) {
+                LCNativeArray.push(arr, ot.build);
             };
-        });
+        };
 
         return arr;
     };
@@ -221,6 +223,182 @@ public class LCEntity {
     public static @Nullable Unit getPlayerUnitByName(String name) {
         Player player = Groups.player.find(oplayer -> oplayer.name.equals(name));
         return player == null ? null : player.unit();
+    };
+
+
+    /* <-------------------- loot --------------------> */
+
+
+    /**
+     * Gets a random loot in a circular range.
+     */
+    public static @Nullable Unit getLoot(float x, float y, float rad) {
+        return (Unit) LCNativeArray.random(getLoots(LCScript.ensureArray("LCEntity.getLoot.tmpArr"), x, y, rad));
+    };
+    // Overload
+    public static @Nullable Unit getLoot(float x, float y) {
+        return getLoot(x, y, 6f);
+    };
+
+
+    /**
+     * Variant of {@link #getLoot} that excludes some loot.
+     */
+    public static @Nullable Unit getOtherLoot(float x, float y, float rad, Unit loot) {
+        return (Unit) LCNativeArray.random(LCNativeArray.pullAll(getLoots(LCScript.ensureArray("LCEntity.getOtherLoot.tmpArr"), x, y, rad), loot));
+    };
+    // Overload
+    public static @Nullable Unit getOtherLoot(float x, float y, Unit loot) {
+        return getOtherLoot(x, y, 6f, loot);
+    };
+
+
+    /**
+     * Gets loots in a circular range.
+     */
+    public static NativeArray getLoots(@Nullable NativeArray contArr, float x, float y, float rad) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getLoots.newArr");
+        if(rad < 0.0001f) return contArr;
+
+        Units.nearby(null, x, y, rad, ounit -> {
+            if((boolean) LCScript.invoke("_isLoot", MDL_cond, ounit)) {
+                LCNativeArray.push(arr, ounit);
+            };
+        });
+
+        return arr;
+    };
+
+
+    /**
+     * Gets loots on given tiles.
+     */
+    public static NativeArray getLootsByTiles(@Nullable NativeArray contArr, NativeArray ts) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getLootsByTiles.newArr");
+
+        Tile ot;
+        NativeArray loots;
+        for(Object rawOt : ts) {
+            ot = (Tile) rawOt;
+            loots = getLoots(LCScript.ensureArray("LCEntity.getLootsByTiles.tmpArr"), ot.worldx() + Vars.tilesize * 0.5f, ot.worldy() + Vars.tilesize * 0.5f, 6f);
+            for(Object loot : loots) {
+                LCNativeArray.pushUnique(arr, loot);
+            };
+        };
+
+        return arr;
+    };
+
+
+    /* <-------------------- bullets --------------------> */
+
+
+    /**
+     * Gets bullets in a circular range.
+     */
+    public static NativeArray getBullets(@Nullable NativeArray contArr, float x, float y, @Nullable Team team, float rad) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getBullets.newArr");
+        if(rad < 0.0001f) return arr;
+
+        Groups.bullet.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f), obul -> LCNativeArray.push(arr, obul));
+
+        return arr;
+    };
+
+
+    /**
+     * Iterate through bullets in a circular range.
+     */
+    public static void eachBullet(float x, float y, @Nullable Team team, float rad, @Nullable Boolf<Bullet> boolF, Cons<Bullet> cons) {
+        if(rad < 0.0001f) return;
+
+        Groups.bullet.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f) && (boolF == null || boolF.get(obul)), cons);
+    };
+
+
+    /* <-------------------- target --------------------> */
+
+
+    /**
+     * Gets closest target entity.
+     */
+    public static @Nullable Object getTarget(float x, float y, Team team, float rad, boolean targetAir, boolean targetGround, @Nullable Boolf boolF) {
+        if(rad < 0.0001f) return null;
+
+        return Units.closestTarget(team, x, y, rad, ounit -> ounit.checkTarget(targetAir, targetGround) && (boolF == null || boolF.get(ounit)), ot -> targetGround && boolF.get(ot));
+    };
+    // Overload
+    public static @Nullable Object getTarget(float x, float y, Team team, float rad, boolean targetAir, boolean targetGround) {
+        return getTarget(x, y, team, rad, targetAir, targetGround, null);
+    };
+    public static @Nullable Object getTarget(float x, float y, Team team, boolean targetAir, boolean targetGround, @Nullable Boolf boolF) {
+        return getTarget(x, y, team, 999999999999f, targetAir, targetGround, boolF);
+    };
+    public static @Nullable Object getTarget(float x, float y, Team team, boolean targetAir, boolean targetGround) {
+        return getTarget(x, y, team, targetAir, targetGround, null);
+    };
+
+
+    /**
+     * Gets all valid target entities.
+     */
+    public static NativeArray getTargets(@Nullable NativeArray contArr, float x, float y, Team team, float rad) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getTargets.newArr");
+        if(rad < 0.0001f) return arr;
+
+        eachUnit(x, y, null, rad, ounit -> (boolean) LCScript.invoke("_isEnemy", MDL_cond, ounit, team), ounit -> LCNativeArray.push(arr, ounit));
+        eachBuild(x, y, null, rad, ob -> (boolean) LCScript.invoke("_isEnemy", MDL_cond, ob, team), ob -> LCNativeArray.push(arr, ob));
+
+        return arr;
+    };
+    // Overload
+    public static NativeArray getTargets(@Nullable NativeArray contArr, float x, float y, Team team) {
+        return getTargets(contArr, x, y, team, 999999999999f);
+    };
+
+
+    static Vec2 getChainTargetsVec1 = new Vec2();
+    static Vec2 getChainTargetsVec2 = new Vec2();
+    static Seq<Position> getChainTargetsSeq = new Seq<>();
+
+
+    /**
+     * Gets targets linked by a lightning chain.
+     */
+    public static NativeArray getChainTargets(@Nullable NativeArray contArr, float x, float y, Team team, float rad, float chainRad, float chainCap, @Nullable Boolf2 rayCheck) {
+        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getChainTargets.newArr");
+        if(rad < 0.0001f) return arr;
+
+        NativeArray tgs = getTargets(LCScript.ensureArray("LCEntity.getChainTargets.tmpArr"), x, y, team, rad * 2f);
+        getChainTargetsSeq.clear();
+        for(Object rawTg : tgs) {
+            getChainTargetsSeq.add((Position) rawTg);
+        };
+        Position tmpTg;
+        float tmpX = x;
+        float tmpY = y;
+        boolean isFirst = true;
+        int i = 0;
+        while(chainCap < 0 || i < chainCap) {
+            tmpTg = Geometry.findClosest(tmpX, tmpY, getChainTargetsSeq);
+            if(tmpTg == null) break;
+            getChainTargetsVec1.set(tmpX, tmpY);
+            getChainTargetsVec2.set(tmpTg.getX(), tmpTg.getY());
+            if(getChainTargetsVec1.dst(getChainTargetsVec2) > (isFirst ? rad : chainRad) + 0.0001f || (rayCheck != null && rayCheck.get(getChainTargetsVec1, getChainTargetsVec2))) break;
+
+            LCNativeArray.push(arr, tmpTg);
+            getChainTargetsSeq.remove(tmpTg);
+            tmpX = tmpTg.getX();
+            tmpY = tmpTg.getY();
+            isFirst = false;
+            i++;
+        };
+
+        return arr;
+    };
+    // Overload
+    public static NativeArray getChainTargets(@Nullable NativeArray contArr, float x, float y, Team team, float rad, float chainRad, float chainCap) {
+        return getChainTargets(contArr, x, y, team, rad, chainRad, chainCap, null);
     };
 
 

@@ -28,7 +28,7 @@
    * @return {JSONPayload}
    */
   packPayload = function(arr) {
-    return JSON.stringify(Object.fromArr(arr));
+    return toJsonSafe(Object.fromArr(arr));
   };
 
 

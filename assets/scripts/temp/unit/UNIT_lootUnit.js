@@ -58,9 +58,10 @@
 
     // Merge loot units randomly
     if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {
-      let ounit = MDL_pos._lootOther(unit.x, unit.y, VAR.range.lootMergeRad, unit);
+      let ounit = LCEntity.getOtherLoot(unit.x, unit.y, VAR.range.lootMergeRad, unit);
       if(ounit != null && ounit.item() === unit.item()) {
-        unit.stack.amount += ounit.stack.amount;
+        MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount + ounit.stack.amount);
+        unit.remove();
         ounit.remove();
       };
     };

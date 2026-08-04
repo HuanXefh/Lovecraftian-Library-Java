@@ -17,6 +17,60 @@
 */
 
 
+  /* <------------------------------ JSON ------------------------------ */
+
+
+  /**
+   * Variant of {@link JSON.stringify} that can be safely called on object containing Java strings.
+   * @global
+   * @param {Object} obj
+   * @return {string}
+   */
+  toJsonSafe = function(obj) {
+    Object.clear(toJsonSafe.tmpObj);
+    Object.assign(toJsonSafe.tmpObj, obj);
+    let val;
+    for(let key in toJsonSafe.tmpObj) {
+      val = toJsonSafe.tmpObj[key];
+      if(typeof val === "object") {
+        if(val instanceof String) {toJsonSafe.tmpObj[key] = String(val)};
+        // I don't know why but this is required somehow
+        if(val instanceof JsonValue) {
+          if(val.isNumber()) {toJsonSafe.tmpObj[key] = Number(val.asDouble())};
+          if(val.isBoolean()) {toJsonSafe.tmpObj[key] = Boolean(val.asBoolean())};
+          if(val.isString()) {toJsonSafe.tmpObj[key] = String(val.asString())};
+          if(val.isNull()) {toJsonSafe.tmpObj[key] = null};
+        };
+      };
+    };
+
+    return JSON.stringify(toJsonSafe.tmpObj);
+  };
+  toJsonSafe.tmpObj = {};
+
+
+  /**
+   * Convert JSON into JavaScript object using Arc JSON parser, which supports comment and HJSON.
+   * @global
+   * @param {Fi|string} fi0str
+   * @return {Object}
+   */
+  jsonToJsObj = function(fi0str) {
+    let str;
+    if(typeof fi0str === "string") {
+      str = fi0str;
+    } else {
+      str = fi0str.readString("UTF-8");
+      if(fi0str.extension() === "json") {
+        str = str.replace("#", "\\#");
+      };
+    };
+
+    // Dealing with Jval? No way
+    return JSON.parse(VAR.jsonParser.fromJson(null, Jval.read(str).toString(Jval.Jformat.plain)).toJson(JsonWriter.OutputType.json));
+  };
+
+
   /* <------------------------------ read & write ------------------------------ */
 
 
@@ -45,7 +99,7 @@
    * @return {string}
    */
   packConfig = function(obj) {
-    return "CONFIG: " + JSON.stringify(obj);
+    return "CONFIG: " + toJsonSafe(obj);
   };
 
 
@@ -61,28 +115,6 @@
 
 
   /* <------------------------------ DB file ------------------------------ */
-
-
-  /**
-   * Convert JSON into JavaScript object using Arc JSON parser, which supports comment and HJSON.
-   * @global
-   * @param {Fi|string} fi0str
-   * @return {Object}
-   */
-  jsonToJsObj = function(fi0str) {
-    let str;
-    if(typeof fi0str === "string") {
-      str = fi0str;
-    } else {
-      str = fi0str.readString("UTF-8");
-      if(fi0str.extension() === "json") {
-        str = str.replace("#", "\\#");
-      };
-    };
-
-    // Dealing with Jval? No way
-    return JSON.parse(VAR.jsonParser.fromJson(null, Jval.read(str).toString(Jval.Jformat.plain)).toJson(JsonWriter.OutputType.json));
-  };
 
 
   /**

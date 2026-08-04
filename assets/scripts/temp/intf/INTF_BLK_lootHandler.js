@@ -163,7 +163,7 @@
        * @return {void}
        */
       ex_updateLootQueue: function() {
-        MDL_pos._lootsByTs(this.lootQueue, this.lootTs);
+        LCEntity.getLootsByTiles(this.lootQueue, this.lootTs);
       }
       .setProp({
         noSuper: true,

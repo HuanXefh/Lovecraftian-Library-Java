@@ -56,7 +56,9 @@
         requestSync();
         return;
       };
+
       console.log("[LOVEC] Loading LSAV data...");
+
       try {
         lsavJsonVal = MDL_json.parse(MDL_file.getLsav());
         plsavJsonVal = MDL_json.parse(MDL_file.getPlsav());
@@ -75,14 +77,17 @@
       });
 
       let mapCur = global.lovecUtil.fun._mapCur();
+      console.log("[LOVEC] Checking LSAV data validity...");
 
       // If map name not matched, clear the LSAV (creates a backup first)
-      if(lsav["save-map"] != null && lsav["save-map"] !== mapCur) {
+      if(lsav["save-map"] != "!UNDEF" && lsav["save-map"] !== mapCur) {
+        console.log("[LOVEC] Initializing LSAV data...");
         MDL_json.write(MDL_file.getLsav(true), lsav);
         initLsav("lsav");
       };
       // If outside of campaign, check map name for PLASV too
-      if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && plsav["save-map"] != null && plsav["save-map"] !== mapCur) {
+      if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && (plsav["save-map"] != "UNDEF" && plsav["save-map"] !== mapCur)) {
+        console.log("[LOVEC] Initializing PLSAV data...");
         MDL_json.write(MDL_file.getPlsav(true), plsav);
         initLsav("plsav");
       };
@@ -92,6 +97,7 @@
       set("save-revision", VAR.lovecRevi);
 
       TRIGGER.lsavLoad.fire();
+      console.log("[LOVEC] Loaded LSAV data.");
     });
   };
 
@@ -202,12 +208,12 @@
     try {
       MDL_net.sendPacket(
         PacketModes.SERVER, "lovec-server-lsav-sync",
-        JSON.stringify(lsav),
+        toJsonSafe(lsav),
         true,
       );
       MDL_net.sendPacket(
         PacketModes.SERVER, "lovec-server-plsav-sync",
-        JSON.stringify(plsav),
+        toJsonSafe(plsav),
         true,
       );
     } catch(err) {
