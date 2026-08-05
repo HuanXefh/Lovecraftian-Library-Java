@@ -1321,7 +1321,7 @@
       amt = this.bo[i + 1];
       p = this.bo[i + 2];
       if(b.items != null && tmp instanceof Item) {
-        if(amt > 0 && !b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
+        if(amt > 0 && !this.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
       };
       if(b.liquids != null && tmp instanceof Liquid) {
         if(amt > 0.0 && !b.block.ignoreLiquidFullness && b.liquids.get(tmp) / b.block.liquidCapacity > 0.98) return false;
@@ -1337,7 +1337,7 @@
         tmp = this.fo[i];
         amt = this.fo[i + 1];
         // No probability for failed output
-        if(amt > 0 && !b.delegee.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
+        if(amt > 0 && !this.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
         i += 3;
       };
     };
