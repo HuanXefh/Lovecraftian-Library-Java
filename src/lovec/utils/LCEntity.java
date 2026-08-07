@@ -294,6 +294,33 @@ public class LCEntity {
 
 
     /**
+     * Gets closest enemy bullet.
+     */
+    public static @Nullable Bullet getEnemyBullet(float x, float y, Team team, float rad, boolean ignoreHittable) {
+        if(rad < 0.0001f) return null;
+
+        AtomicReference<Bullet> bulRef = new AtomicReference<>();
+        AtomicReference<Float> dstRef = new AtomicReference<>(999999999999f);
+        eachBullet(
+            x, y, team, rad,
+            bul -> ignoreHittable || bul.type.hittable,
+            bul -> {
+                float dst = Mathf.dst(x, y, bul.x, bul.y);
+                if(dst >= dstRef.get()) return;
+                dstRef.set(dst);
+                bulRef.set(bul);
+            }
+        );
+
+        return bulRef.get();
+    };
+    // Overload
+    public static @Nullable Bullet getEnemyBullet(float x, float y, Team team, float rad) {
+        return getEnemyBullet(x, y, team, rad, false);
+    };
+
+
+    /**
      * Gets bullets in a circular range.
      */
     public static NativeArray getBullets(@Nullable NativeArray contArr, float x, float y, @Nullable Team team, float rad) {

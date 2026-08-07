@@ -6,7 +6,8 @@
 
 
   /**
-   * Methods to get coordinates, tiles and entities.
+   * Methods to calculate position.
+   * Most methods are defined in {@link LCPos}.
    * @module lovec/mdl/MDL_pos
    */
 
@@ -16,9 +17,6 @@
   Section: Definition
   ========================================
 */
-
-
-  /* <------------------------------ rotation ------------------------------ */
 
 
   /** @global */
@@ -76,87 +74,3 @@
     tmpTs: [],
   });
   exports.calcSideFrac = calcSideFrac;
-
-
-  /* <------------------------------ bullet ------------------------------ */
-
-
-  /**
-   * Gets bullets in a circular range.
-   * @param {Array|unset} contArr
-   * @param {number} x
-   * @param {number} y
-   * @param {number|unset} [rad]
-   * @return {Bullet[]}
-   */
-  const _buls = function thisFun(contArr, x, y, rad) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    if(rad == null) rad = 0.0;
-    if(rad < 0.0001) return arr;
-
-    Groups.bullet
-    .intersect(x - rad, y - rad, rad * 2.0, rad * 2.0)
-    .each(
-      bul => bul.within(x, y, rad + bul.hitSize * 0.5),
-      bul => arr.push(bul),
-    );
-    return arr;
-  };
-  exports._buls = _buls;
-
-
-  /**
-   * Iterates through bullets in range.
-   * @param {number} x
-   * @param {number} y
-   * @param {number|unset} rad
-   * @param {Team|unset} team
-   * @param {(function(Bullet): boolean)|unset} boolF
-   * @param {function(Bullet): void} scr
-   * @return {void}
-   */
-  const _it_buls = function(x, y, rad, team, boolF, scr) {
-    if(rad == null) rad = 0.0;
-    if(rad < 0.0001) return;
-    if(boolF == null) boolF = Function.airTrue;
-
-    Groups.bullet
-    .intersect(x - rad, y - rad, rad * 2.0, rad * 2.0)
-    .each(
-      bul => bul.team !== Team.derelict && (team == null ? true : bul.team !== team) && bul.within(x, y, rad + bul.hitSize * 0.5) && boolF(bul),
-      bul => scr(bul),
-    );
-  };
-  exports._it_buls = _it_buls;
-
-
-  /**
-   * Gets closest enemy bullet.
-   * @param {number} x
-   * @param {number} y
-   * @param {Team|unset} [team]
-   * @param {number|unset} [rad]
-   * @param {boolean|unset} [ignoreHittable]
-   */
-  const _bulTg = function(x, y, team, rad, ignoreHittable) {
-    if(team == null) return null;
-    if(rad == null) rad = 0.0;
-    if(rad < 0.0001) return null;
-
-    let tmpDst = Number.n8;
-    let bulTg = null, dst;
-    _it_buls(
-      x, y, rad, team,
-      bul => ignoreHittable ? true : bul.type.hittable,
-      bul => {
-        dst = Mathf.dst(x, y, bul.x, bul.y);
-        if(dst >= tmpDst) return;
-        tmpDst = dst;
-        bulTg = bul;
-      },
-    );
-
-    return bulTg;
-  };
-  exports._bulTg = _bulTg;

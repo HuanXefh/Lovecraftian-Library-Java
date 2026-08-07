@@ -7,6 +7,7 @@ import arc.util.pooling.Pools;
 import lovec.utils.LCScript;
 import lovec.utils.TmpStateTag;
 import lovec.utils.pooling.PoolableNativeArray;
+import mindustry.Vars;
 import rhino.*;
 
 import java.util.Objects;
@@ -518,6 +519,29 @@ public class LCNativeArray {
     };
     public static boolean colIncludes(Object[] objs, Object ele, int ord) {
         return colIncludes(objs, ele, ord, 0);
+    };
+
+
+    /**
+     * Whether an array is a subset of another array.
+     */
+    public static boolean subsetOf(NativeArray arr1, NativeArray arr2) {
+        NativeArray countArr = toCountArray(arr1);
+        int i = 0;
+        long iCap = countArr.getLength();
+        while(i < iCap) {
+            if(count(arr2, countArr.get(i)) < (int) countArr.get(i + 1)) {
+                clear(countArr);
+                return false;
+            };
+            i += 2;
+        };
+        clear(countArr);
+        return true;
+    };
+    // Overload
+    public static boolean subsetOf(Object[] objs, NativeArray arr) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> subsetOf(arr0, arr)));
     };
 
 
@@ -1320,6 +1344,35 @@ public class LCNativeArray {
     };
 
 
+    /**
+     * Counts each element in an array, returns result as a 2-array.
+     * Supports formatted array.
+     * @return New array.
+     */
+    public static NativeArray toCountArray(NativeArray fArr, int ord, int off) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.toCountArray");
+        int i = 0;
+        long iCap = fArr.getLength();
+        Object tmpEle;
+        while(i < iCap) {
+            tmpEle = fArr.get(i + off);
+            if(Objects.equals(read(arr0, tmpEle, 0), 0)) {
+                push(arr0, tmpEle);
+                push(arr0, count(fArr, tmpEle));
+            };
+            i += ord;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray toCountArray(NativeArray fArr, int ord) {
+        return toCountArray(fArr, ord, 0);
+    };
+    public static NativeArray toCountArray(NativeArray arr) {
+        return toCountArray(arr, 1);
+    };
+
+
     /* <-------------------- formatted array --------------------> */
 
 
@@ -1336,6 +1389,178 @@ public class LCNativeArray {
     // Overload
     public static int calcRowAmt(Object[] objs, int ord) {
         return LCScript.toInt(wrapFunc(objs, arr0 -> calcRowAmt(arr0, ord)));
+    };
+
+
+    /**
+     * Checks if a row matches given names.
+     * Internal use.
+     */
+    public static boolean formatRowCheck(NativeArray fArr, NativeArray names, int arrInd, boolean isUnordered) {
+        int i = 0;
+        long iCap = names.getLength();
+        if(!isUnordered) {
+            while(i < iCap) {
+                if(!Objects.equals(LCScript.wrapEquality(names.get(i)), LCScript.wrapEquality(fArr.get(arrInd + i)))) return false;
+                i++;
+            };
+            return true;
+        };
+
+        NativeArray tmpArr = LCScript.ensureArray("LCNativeArray.checkFormatArrayRow.tmpArr");
+        clear(tmpArr);
+        while(i < iCap) {
+            push(tmpArr, fArr.get(arrInd + i));
+            i++;
+        };
+        NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
+        scope.put("LCNativeArray.checkFormatArrayRow.names", scope, names);
+
+        return (boolean) Context.getContext().evaluateString(
+            Vars.mods.getScripts().scope,
+            "__javaInternal__['LCNativeArray.checkFormatArrayRow.names'].looseEquals(__javaInternal__['LCNativeArray.checkFormatArrayRow.tmpArr'])",
+            "LCNativeArray_formatRowCheck.js",
+            0
+        );
+    };
+    // Overload
+    public static boolean formatRowCheck(NativeArray fArr, NativeArray names, int arrInd) {
+        return formatRowCheck(fArr, names, arrInd, false);
+    };
+
+
+    /**
+     * Reads data from a formatted array.
+     */
+    public static @Nullable Object read(NativeArray fArr, NativeArray keys, @Nullable Object def, boolean isUnordered) {
+        int i = 0;
+        long iCap = fArr.getLength();
+        int jCap = LCScript.toInt(keys.getLength());
+        while(i < iCap) {
+            if(formatRowCheck(fArr, keys, i, isUnordered)) return fArr.get(i + jCap);
+            i += jCap + 1;
+        };
+        return def;
+    };
+    // Overload
+    public static @Nullable Object read(NativeArray fArr, NativeArray keys, @Nullable Object def) {
+        return read(fArr, keys, def, false);
+    };
+    public static @Nullable Object read(NativeArray fArr, NativeArray keys) {
+        return read(fArr, keys, null);
+    };
+    public static @Nullable Object read(NativeArray fArr, Object key, @Nullable Object def, boolean isUnordered) {
+        return read(fArr, LCNativeArray.with(LCScript.ensureArray("LCNativeArray.read.tmpKeys"), key), def, isUnordered);
+    };
+    public static @Nullable Object read(NativeArray fArr, Object key, @Nullable Object def) {
+        return read(fArr, key, def, false);
+    };
+    public static @Nullable Object read(NativeArray fArr, Object key) {
+        return read(fArr, key, null);
+    };
+
+
+    /**
+     * Variant of {@link #read} that returns all matching results.
+     * @return New array.
+     */
+    public static NativeArray readList(NativeArray fArr, NativeArray keys, boolean isUnordered) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.readList.newArr");
+        int i = 0;
+        long iCap = fArr.getLength();
+        int jCap = LCScript.toInt(keys.getLength());
+        while(i < iCap) {
+            if(formatRowCheck(fArr, keys, i, isUnordered)) {
+                push(arr0, fArr.get(i + jCap));
+            };
+            i += jCap + 1;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray readList(NativeArray fArr, NativeArray keys) {
+        return readList(fArr, keys, false);
+    };
+    public static NativeArray readList(NativeArray fArr, Object key, boolean isUnordered) {
+        return readList(fArr, LCNativeArray.with(LCScript.ensureArray("LCNativeArray.readList.tmpKeys"), key), isUnordered);
+    };
+    public static NativeArray readList(NativeArray fArr, Object key) {
+        return readList(fArr, key, false);
+    };
+
+
+    /**
+     * Variant of {@link #read} that returns row index, -1 if not found.
+     */
+    public static int readRowIndex(NativeArray fArr, NativeArray keys, boolean isUnordered) {
+        int i = 0;
+        long iCap = fArr.getLength();
+        int jCap = LCScript.toInt(keys.getLength());
+        while(i < iCap) {
+            if(formatRowCheck(fArr, keys, i, isUnordered)) return i / (jCap + 1);
+            i += jCap + 1;
+        };
+        return -1;
+    };
+    // Overload
+    public static int readRowIndex(NativeArray fArr, NativeArray keys) {
+        return readRowIndex(fArr, keys, false);
+    };
+    public static int readRowIndex(NativeArray fArr, Object key, boolean isUnordered) {
+        return readRowIndex(fArr, LCNativeArray.with(LCScript.ensureArray("LCNativeArray.readRowIndex.tmpKeys"), key), isUnordered);
+    };
+    public static int readRowIndex(NativeArray fArr, Object key) {
+        return readRowIndex(fArr, key, false);
+    };
+
+
+    /**
+     * Gets elements in the same column.
+     */
+    public static NativeArray readCol(NativeArray fArr, int ord, int off) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.readCol.newArr");
+        int i = 0;
+        long iCap = fArr.getLength();
+        while(i < iCap) {
+            push(arr0, fArr.get(i + off));
+            i += ord;
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray readCol(NativeArray fArr, int ord) {
+        return readCol(fArr, ord, 0);
+    };
+
+
+    /**
+     * Writes data in a formatted array.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray write(NativeArray fArr, NativeArray keys, Object val, boolean isUnordered) {
+        int i = 0;
+        long iCap = fArr.getLength();
+        int jCap = LCScript.toInt(keys.getLength());
+        while(i < iCap) {
+            if(formatRowCheck(fArr, keys, i, isUnordered)) {
+                fArr.put(i + jCap, fArr, val);
+                return fArr;
+            };
+            i += jCap + 1;
+        };
+        pushAll(fArr, keys);
+        push(fArr, val);
+        return fArr;
+    };
+    // Overload
+    public static NativeArray write(NativeArray fArr, NativeArray keys, Object val) {
+        return write(fArr, keys, val, false);
+    };
+    public static NativeArray write(NativeArray fArr, Object key, Object val, boolean isUnordered) {
+        return write(fArr, LCNativeArray.with(LCScript.ensureArray("LCNativeArray.write.tmpKeys"), key), val, isUnordered);
+    };
+    public static NativeArray write(NativeArray fArr, Object key, Object val) {
+        return write(fArr, key, val, false);
     };
 
 

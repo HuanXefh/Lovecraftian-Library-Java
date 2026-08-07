@@ -198,7 +198,7 @@
         let prog = Math.min(this.progMap.get(unit, 0.0) + Time.delta * 5.0 * this.chargeMtp * LCProp.getReloadMultiplier(unit), this.chargeCap);
         let inCd = this.inCdMap.get(unit, false);
         if(prog > 0.0 && !inCd) {
-          let bul = MDL_pos._bulTg(unit.x, unit.y, unit.team, this.rad);
+          let bul = LCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.rad);
           if(bul != null) {
             prog = Mathf.maxZero(prog - Mathf.clamp((bul.damage + bul.type.splashDamage) / this.dmg, 0.25, 1.0) * this.dmg);
             MDL_effect._e_pointLaser(unit.x, unit.y, bul, Pal.remove, this.se);

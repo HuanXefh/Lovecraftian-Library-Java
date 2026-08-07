@@ -197,16 +197,7 @@
    * @return {boolean}
    */
   Array.prototype.subsetOf = function(arr) {
-    const countArr = this.toCountArr();
-
-    let i = 0, iCap = countArr.iCap();
-    while(i < iCap) {
-      if(arr.count(countArr[i]) < countArr[i + 1]) return false;
-      i += 2;
-    };
-    countArr.clear();
-
-    return true;
+    return LCNativeArray.subsetOf(this, arr);
   };
 
 
@@ -597,27 +588,14 @@
 
 
   /**
-   * Counts each element in this array, result is returned as a 2-array.
-   * Can be used for a formatted array.
+   * Counts each element in an array, returns result as a 2-array.
+   * Supports formatted array.
    * @param {number|unset} [ord]
    * @param {number|unset} [off]
-   * @return {Array} `ROW`: ele, count.
+   * @return {Array} New array. <br> `ROW`: ele, count.
    */
-  Array.prototype.toCountArr = function(ord, off) {
-    let arr = [];
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      let tmp = this[i + off];
-      if(arr.read(tmp, 0) === 0) {
-        arr.push(tmp, this.count(tmp));
-      };
-      i += ord;
-    };
-
-    return arr;
+  Array.prototype.toCountArray = function(ord, off) {
+    return LCNativeArray.toCountArray(this, tryVal(ord, 1), tryVal(off, 0));
   };
 
 
@@ -641,30 +619,9 @@
   /* <------------------------------ formatted array ------------------------------ */
 
 
-  // Condition checking for read & write methods
-  function checkArrayRow(names, arr, rowInd, isUnordered) {
-    let i = 0, iCap = names.iCap();
-    if(!isUnordered) {
-      while(i < iCap) {
-        if(arr[rowInd + i] !== names[i]) return false;
-        i++;
-      };
-      return true;
-    };
-
-    let tmpArr = [];
-    while(i < iCap) {
-      tmpArr.push(arr[rowInd + i]);
-      i++;
-    };
-    return names.looseEquals(tmpArr);
-  };
-
-
   /**
    * Reads data from a formatted array.
-   * For arrays containing multiple matching results, see {@link Array#readList}.
-   * @param {Plural<string>} names_p
+   * @param {Plural<Object>} keys_p
    * @param {any} [def]
    * @param {boolean|unset} [isUnordered]
    * @return {any}
@@ -675,126 +632,51 @@
    *   "a", "c", 2,
    * ].read(["b", "c"]);                // Returns 1
    */
-  Array.prototype.read = function(names_p, def, isUnordered) {
-    let i = 0, iCap = this.iCap();
-    let names = names_p instanceof Array ? names_p : [names_p];
-    let jCap = names.iCap();
-    while(i < iCap) {
-      if(checkArrayRow(names, this, i, isUnordered)) return this[i + jCap];
-      i += jCap + 1;
-    };
-
-    return def;
+  Array.prototype.read = function(keys_p, def, isUnordered) {
+    return LCNativeArray.read(this, keys_p, tryVal(def, null), tryVal(isUnordered, false));
   };
 
 
   /**
-   * Variant of {@link Array#read} that returns row index.
-   * Will return -1 if not found.
-   * @param {Plural<string>} names_p
+  * Variant of {@link Array#read} that returns all matching results.
+  * @param {Plural<Object>} keys_p
+  * @param {boolean|unset} [isUnordered]
+  * @return {Array} New array.
+  */
+  Array.prototype.readList = function(keys_p, isUnordered) {
+    return LCNativeArray.readList(this, keys_p, tryVal(isUnordered, false));
+  };
+
+
+  /**
+   * Variant of {@link Array#read} that returns row index, -1 if not found.
+   * @param {Plural<Object>} keys_p
    * @param {boolean|unset} [isUnordered]
    * @return {number}
    */
-  Array.prototype.readRowInd = function(names_p, isUnordered) {
-    let i = 0, iCap = this.iCap();
-    let names = names_p instanceof Array ? names_p : [names_p];
-    let jCap = names.iCap();
-    while(i < iCap) {
-      if(checkArrayRow(names, this, i, isUnordered)) return Math.round(i / (jCap + 1));
-      i += jCap + 1;
-    };
-
-    return -1;
+  Array.prototype.readRowIndex = function(keys_p, isUnordered) {
+    return LCNativeArray.readRowIndex(this, keys_p, tryVal(isUnordered, false));
   };
 
 
   /**
-   * Gets elements in the same column in a formatted array.
-   * @param {number|unset} [ord]
+   * Gets elements in the same column.
+   * @param {number} ord
    * @param {number|unset} [off]
    * @return {Array}
    */
   Array.prototype.readCol = function(ord, off) {
-    let arr = [];
-    if(ord == null) ord = 1;
-    if(off == null) off = 0;
-
-    let i = 0, iCap = this.iCap();
-    while(i < iCap) {
-      arr.push(this[i + off]);
-      i += ord;
-    };
-
-    return arr;
+    return LCNativeArray.readCol(this, ord, tryVal(off, 0));
   };
 
 
   /**
-   * Variant of {@link Array#read} that returns all found results as a new array.
-   * @param {Plural<string>} names_p
-   * @param {boolean|unset} [isUnordered]
-   * @return {Array}
-   */
-  Array.prototype.readList = function(names_p, isUnordered) {
-    let arr = [];
-
-    let i = 0, iCap = this.iCap();
-    let names = names_p instanceof Array ? names_p : [names_p];
-    let jCap = names.iCap();
-    while(i < iCap) {
-      if(checkArrayRow(names, this, i, isUnordered)) arr.push(this[i + jCap]);
-      i += jCap + 1;
-    };
-
-    return arr;
-  };
-
-
-  /**
-   * The other side of {@link Array#read}.
-   * @param {Plural<string>} names_p
+   * Writes data in a formatted array.
+   * @param {Plural<Object>} keys_p
    * @param {any} val
    * @param {boolean|unset} [isUnordered]
    * @return {this}
    */
-  Array.prototype.write = function(names_p, val, isUnordered) {
-    let i = 0, iCap = this.iCap();
-    let names = names_p instanceof Array ? names_p : [names_p];
-    let jCap = names.iCap();
-    while(i < iCap) {
-      if(checkArrayRow(names, this, i, isUnordered)) {
-        this[i + jCap] = val;
-        return this;
-      };
-      i += jCap + 1;
-    };
-
-    this.pushAll(names);
-    this.push(val);
-
-    return this;
-  };
-
-
-  /**
-   * Removes first matching row in a formatted array.
-   * @param {Plural<string>} names_p
-   * @param {boolean|unset} [isUnordered]
-   * @return {this}
-   */
-  Array.prototype.removeFormatRow = function(names_p, isUnordered) {
-    let i = 0, iCap = this.iCap();
-    let names = names_p instanceof Array ? names_p : [names_p];
-    let jCap = names.iCap();
-    let ind = null;
-    while(i < iCap) {
-      if(checkArrayRow(names, this, i, isUnordered)) ind = i;
-      i += jCap + 1;
-    };
-
-    if(ind != null) {
-      this.splice(ind, jCap + 1);
-    };
-
-    return this;
+  Array.prototype.write = function(keys_p, val, isUnordered) {
+    return LCNativeArray.write(this, keys_p, val, tryVal(isUnordered, false));
   };
