@@ -7,15 +7,9 @@ hidden: false
 java: true
 main: lovec.Lovec
 
-
 author: MaboroshiX
 repo: HuanXefh/Lovecraftian-Library-Java
 minGameVersion: 159
-dependencies: []
-softDependencies: [
-  tmi
-]
-
 
 description:
 '''
