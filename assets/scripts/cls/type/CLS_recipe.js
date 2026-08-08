@@ -1015,7 +1015,7 @@
           thisFun.addStat(
             tb3, true,
             MDL_bundle.getTerm("lovec", "time-required"),
-            Strings.fixed(this.rcTimeScl, 1) + "x (" + Strings.autoFixed(this.owner.craftTime * this.rcTimeScl / 60.0, 2) + "s)",
+            Strings.fixed(this.rcTimeScl, 1) + "x (" + (this.owner.craftTime * this.rcTimeScl).time(2) + ")",
           );
           thisFun.addStat(
             tb3, !this.pol.fEqual(0.0),

@@ -347,7 +347,7 @@
     .setEfficiency(mtp)
     .setGroup(rcGrp)
     .setFormat({format(f) {
-      return (!isContinuous ? amt.ui() : ((amt * 60.0).ui() + "/"  + StatUnit.seconds.localized())) + "\n" + ((reqOpt ? "" : "+") + mtp.perc(0)).color(mtp > 0.0 ? Pal.heal : Pal.remove);
+      return (!isContinuous ? amt.amount() : ((amt * 60.0).amount() + "/"  + StatUnit.seconds.localized())) + "\n" + ((reqOpt ? "" : "+") + mtp.perc(0)).color(mtp > 0.0 ? Pal.heal : Pal.remove);
     }});
 
     return rawRc;

@@ -18,78 +18,87 @@
 
 
   /**
-   * To percentage string.
+   * Converts this number to string with capped amount of digits.
    * @param {number|unset} [deciAmt]
    * @return {string}
    */
-  Number.prototype.perc = function(deciAmt) {
-    return Strings.fixed((this * 100.0).roundFixed(tryVal(deciAmt, 2)), tryVal(deciAmt, 2)) + "%";
+  Number.prototype.numToStr = function(deciAmt) {
+    return deciAmt == null ?
+      LCFormat.numToStr(this) :
+      LCFormat.numToStr(this, deciAmt);
   };
 
 
   /**
-   * To colored string.
+   * Converts this number to percentage string.
+   * @param {number|unset} [deciAmt]
+   * @return {string}
+   */
+  Number.prototype.perc = function(deciAmt) {
+    return deciAmt == null ?
+      LCFormat.perc(this) :
+      LCFormat.perc(this, deciAmt);
+  };
+
+
+  /**
+  * Converts this number to scientific notation string.
+  * @param {number} pow
+  * @param {number|unset} [deciAmt]
+  * @return {string}
+  */
+  Number.prototype.sci = function(pow, deciAmt) {
+    return deciAmt == null ?
+    LCFormat.sci(this, pow) :
+    LCFormat.sci(this, pow, deciAmt);
+  };
+
+
+  /**
+  * Converts this number to UI amount string.
+  * @return {string}
+  */
+  Number.prototype.amount = function() {
+    return UI.formatAmount(this);
+  };
+
+
+  /**
+   * Adds color markup to this number.
    * @param {Color} color
    * @param {number|unset} [deciAmt]
    * @return {string}
    */
   Number.prototype.color = function(color, deciAmt) {
-    return String(this.roundFixed(deciAmt)).color(color);
+    return deciAmt == null ?
+      LCFormat.colorNum(this, color) :
+      LCFormat.colorNum(this, color, deciAmt);
   };
 
 
   /**
-   * Variant of {@link Number#perc} with color.
-   * @param {number|unset} deciAmt
-   * @param {Color|unset} overColor
-   * @param {Color|unset} lessColor
-   * @param {Color|unset} midColor
-   * @param {number|unset} midTol
+   * Variant of {@link Number#color} for percentage string.
+   * @param {number|unset} [deciAmt]
+   * @param {Color|unset} [overColor]
+   * @param {Color|unset} [lessColor]
+   * @param {Color|unset} [midColor]
+   * @param {number|unset} [midTol]
    * @return {string}
    */
   Number.prototype.percColor = function(deciAmt, overColor, lessColor, midColor, midTol) {
-    return this.perc(deciAmt).color(
-      this.fEqual(1.0, tryVal(midTol, 0.025)) ?
-        tryVal(midColor, Pal.accent) :
-        this > 1.0 ?
-          tryVal(overColor, Pal.heal) :
-          tryVal(lessColor, Pal.remove),
-    );
+    return LCFormat.percColor(this, tryVal(deciAmt, 2), tryVal(overColor, Pal.heal), tryVal(lessColor, Pal.remove), tryVal(midColor, Pal.accent), tryVal(midTol, 0.025));
   };
 
 
   /**
-   * To scientific notation string.
-   * @param {number} pow
+   * Converts this number to time string.
    * @param {number|unset} [deciAmt]
    * @return {string}
    */
-  Number.prototype.sci = function(pow, deciAmt) {
-    return Strings.fixed(this * Math.pow(10, -pow), tryVal(deciAmt, 2)) + " × 10^" + pow;
-  };
-
-
-  /**
-   * To UI format.
-   * @return {string}
-   */
-  Number.prototype.ui = function() {
-    let intNum = Math.round(this);
-    let abs = Math.abs(Math.round(this));
-
-    if(abs < 1000.0) {
-      return String(this);
-    } else if(abs < 1000000.0) {
-      return intNum / 1000.0 + "k";
-    } else if(abs < 1000000000.0) {
-      return intNum / 1000000.0 + "m";
-    } else if(abs < 1000000000000.0) {
-      return intNum / 1000000000.0 + "b";
-    } else if(abs < 1000000000000000.0) {
-      return intNum / 1000000000000.0 + "t";
-    };
-
-    return "!LARGE";
+  Number.prototype.time = function(deciAmt) {
+    return deciAmt == null ?
+      LCFormat.time(this) :
+      LCFormat.time(this, deciAmt);
   };
 
 
@@ -155,22 +164,21 @@
 
 
   /**
-   * Removes color markup.
-   * @return {string}
-   */
-  String.prototype.plain = function() {
-    // WTF why should it be strictly Java string
-    return Strings.stripColors(new java.lang.String(this));
-  };
-
-
-  /**
-   * Adds color markup.
+   * Adds color markup to this string.
    * @param {Color} color
    * @return {string}
    */
   String.prototype.color = function(color) {
-    return "[#" + color.toString() + "]" + this + "[]";
+    return LCFormat.color(this, color);
+  };
+
+
+  /**
+  * Removes color markup.
+  * @return {string}
+  */
+  String.prototype.plain = function() {
+    return LCFormat.plain(this);
   };
 
 

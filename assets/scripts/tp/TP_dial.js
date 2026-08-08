@@ -193,8 +193,8 @@
                 utp,
                 utp.localizedName,
                 amt_fi,
-                (utp.health * amt_fi * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).ui(),
-                (shield * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).ui(),
+                (utp.health * amt_fi * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).amount(),
+                (shield * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).amount(),
                 sta === StatusEffects.none ? "-" : sta,
               ]);
             });
@@ -206,7 +206,7 @@
                   UnitTypes.alpha,
                   UnitTypes.alpha.localizedName,
                   9999,
-                  (UnitTypes.alpha.health * 9999 * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).ui(),
+                  (UnitTypes.alpha.health * 9999 * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).amount(),
                   0.0,
                   StatusEffects.boss,
                 ]);
@@ -730,13 +730,13 @@
         return typeof rate !== "number" ?
           "-" :
           isStatic ?
-            String(rate.roundFixed(deciAmt)) :
+            rate.numToStr(deciAmt) :
             rate > 0.0167 ?
-              (rate.roundFixed(deciAmt) + "/s") :
+              (rate.numToStr(deciAmt) + "/s") :
               rate * 60.0 > 0.0167 ?
-                ((rate * 60.0).roundFixed(deciAmt) + "/min") :
+                ((rate * 60.0).numToStr(deciAmt) + "/min") :
                 rate * 3600.0 > 0.0167 ?
-                  ((rate * 3600.0).roundFixed(deciAmt) + "/h") :
+                  ((rate * 3600.0).numToStr(deciAmt) + "/h") :
                   "~0.0/s";
       },
 
@@ -778,7 +778,7 @@
             // `TABLE`: rate text
             tb1.add(MDL_text.getStat(
               MDL_bundle.getTerm("lovec", isStatic ? "amount" : "rate"),
-              this.ex_getRateStr(craftRate, 2, isStatic),
+              this.ex_getRateStr(craftRate, 3, isStatic),
             ))
             .left()
             .tooltip(this.ex_getRateStr(craftRate, 7, isStatic), true)

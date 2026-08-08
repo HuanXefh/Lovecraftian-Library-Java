@@ -56,12 +56,14 @@
   LCCheck = fetchClass("lovec.utils.LCCheck");
   /** @global lovec.utils.LCEntity */
   LCEntity = fetchClass("lovec.utils.LCEntity");
-  /** @global lovec.utils.LCProp */
-  LCProp = fetchClass("lovec.utils.LCProp");
+  /** @global lovec.utils.LCFormat */
+  LCFormat = fetchClass("lovec.utils.LCFormat");
   /** @global lovec.utils.LCGeometry */
   LCGeometry = fetchClass("lovec.utils.LCGeometry");
   /** @global lovec.utils.LCPos */
   LCPos = fetchClass("lovec.utils.LCPos");
+  /** @global lovec.utils.LCProp */
+  LCProp = fetchClass("lovec.utils.LCProp");
   /** @global lovec.utils.LCRand */
   LCRand = fetchClass("lovec.utils.LCRand");
   /** @global lovec.utils.LCRaycastf */

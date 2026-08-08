@@ -104,7 +104,7 @@
    */
   const getDmgText = function(dmg, dmgPerc) {
     let
-      str1 = dmg == null || dmg < 0.0001 ? null : String(dmg.roundFixed(2)).color(Pal.remove),
+      str1 = dmg == null || dmg < 0.0001 ? null : dmg.numToStr(2).color(Pal.remove),
       str2 = dmgPerc == null || dmgPerc < 0.0001 ? null : dmgPerc.perc().color(Pal.remove);
 
     if(str1 == null && str2 == null) return TmpStateTag.error.toString();
@@ -124,7 +124,7 @@
    */
   const getHealText = function(healAmt, healPerc) {
     let
-      str1 = healAmt == null || healAmt < 0.0001 ? null : String(healAmt.roundFixed(2)).color(Pal.heal),
+      str1 = healAmt == null || healAmt < 0.0001 ? null : healAmt.numToStr(2).color(Pal.heal),
       str2 = healPerc == null || healPerc < 0.0001 ? null : healPerc.perc().color(Pal.heal);
 
     if(str1 == null && str2 == null) return TmpStateTag.error.toString();

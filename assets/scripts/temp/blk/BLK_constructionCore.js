@@ -109,7 +109,7 @@
           MDL_table.barV(tb2, Color.darkGray);
           tb2.table(Styles.none, tb3 => {}).width(12.0);
           tb2.table(Styles.none, tb3 => {
-            tb3.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "construction-time"), (blk.constructionTimeReq / 3600.0).roundFixed(2), StatUnit.minutes.localized())).left().row();
+            tb3.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "construction-time"), blk.constructionTimeReq.time(2))).left().row();
           }).growX();
         }).growX().row();
         MDL_table.br(tb1, 1);
