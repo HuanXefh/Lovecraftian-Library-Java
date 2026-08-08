@@ -47,12 +47,19 @@
     return thisFun.tmpTup[4];
   }
   .setProp({
-    tmpTup: [],
+    tmpTup: [].setVal(null, 5),
   });
 
 
   function comp_created(b) {
     b.requiresScanner = true;
+  };
+
+
+  function comp_onProximityUpdate(b) {
+    if(b.dynaAttrRs != null) {
+      b.depthLvlReqCur = b.block.ex_calcDpLvlReq(b.tileX(), b.tileY(), b.dynaAttrRs);
+    };
   };
 
 
@@ -216,6 +223,11 @@
 
       created: function() {
         comp_created(this);
+      },
+
+
+      onProximityUpdate: function() {
+        comp_onProximityUpdate(this);
       },
 
 

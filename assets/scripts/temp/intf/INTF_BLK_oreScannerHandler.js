@@ -62,12 +62,6 @@
 
 
         /**
-         * `PARAM`: Currently required minimum depth tier of ore scanner. Should be updated else where.
-         * @memberof INTF_BLK_oreScannerHandler
-         * @instance
-         */
-        depthLvlReqCur: 0,
-        /**
          * `PARAM`: Integer offset of the no-scanner-found text.
          * @memberof INTF_BLK_oreScannerHandler
          * @instance
@@ -105,6 +99,12 @@
          * @instance
          */
         scannerCur: null,
+        /**
+         * `PARAM`: Currently required minimum depth tier of ore scanner. Should be updated somewhere else.
+         * @memberof INTF_B_oreScannerHandler
+         * @instance
+         */
+        depthLvlReqCur: 0,
 
 
       }),
