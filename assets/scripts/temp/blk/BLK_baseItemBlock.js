@@ -20,8 +20,7 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0itm-unloadable"), blk.unloadable);
-
+    if(blk.hasItems) blk.stats.add(fetchStat("lovec", "blk0itm-unloadable"), blk.unloadable);
     if(blk.isExposed) blk.stats.add(fetchStat("lovec", "blk0itm-exposed"), true);
   };
 

@@ -17,6 +17,12 @@
   function comp_init(blk) {
     blk.rotate = true;
     blk.quickRotate = false;
+
+    blk.config(JAVA.boolean, (b, bool) => {
+      b.enabled = bool;
+      b.block.clickSound.at(b);
+      b.ex_toggle(b.nearby(b.rotation));
+    });
   };
 
 
@@ -69,8 +75,6 @@
 
   function comp_configTapped(b) {
     b.configure(!b.enabled);
-    b.block.clickSound.at(b);
-    b.ex_toggle(b.nearby(b.rotation));
 
     return false;
   };

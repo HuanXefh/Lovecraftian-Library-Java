@@ -77,11 +77,13 @@
   /* <------------------------------ smog ------------------------------ */
 
 
-  exports.furnaceSmog = TP_effect._releaseSmog();
+  exports.furnaceSmog = TP_effect._releaseSmog({
+    scl: 1.5,
+  });
   exports.furnaceSmogLarge = TP_effect._releaseSmog({
     amt: 18,
     size: 14.0,
-    rad: 64.0,
+    rad: 96.0,
     scl: 4.0,
   });
   exports.blackSmog = TP_effect._releaseSmog({

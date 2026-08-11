@@ -40,14 +40,15 @@
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(t == null) return false;
 
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
-      thisFun.tmpTup[4] = blk.ex_anyDporeRevealed(t.x, t.y, "liquid");
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+      thisFun.tmpCond = blk.ex_anyDporeRevealed(t.x, t.y, "liquid");
     };
 
-    return thisFun.tmpTup[4];
+    return thisFun.tmpCond;
   }
   .setProp({
-    tmpTup: [].setVal(null, 5),
+    tmpTup: [],
+    tmpCond: false,
   });
 
 

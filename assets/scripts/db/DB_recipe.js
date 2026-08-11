@@ -216,18 +216,24 @@ const db = {
           blk.recipes.each(rc => {
             i++;
             ordText = ("[" + i + "]").color(Pal.accent);
-            rc.input.items.forEachFast(itmStack => {
-              if(itmStack.amount <= 0) return;
-              dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-            });
-            rc.input.liquids.forEachFast(liqStack => {
-              if(liqStack.amount < 0.0001) return;
-              dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-            });
-            rc.input.payloads.forEachFast(payStack => {
-              if(payStack.amount <= 0) return;
-              (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-            });
+            if(rc.input.items != null) {
+              rc.input.items.forEachFast(itmStack => {
+                if(itmStack.amount <= 0) return;
+                dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+              });
+            };
+            if(rc.input.liquids != null) {
+              rc.input.liquids.forEachFast(liqStack => {
+                if(liqStack.amount < 0.0001) return;
+                dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+              });
+            };
+            if(rc.input.payloads != null) {
+              rc.input.payloads.forEachFast(payStack => {
+                if(payStack.amount <= 0) return;
+                (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+              });
+            };
             if(rc.intput.power > 0.0) {
               MDL_recipeDict.addCustomConsTerm(blk, "power", rc.input.power, mergeObj({time: rc.craftTime, iconText: ordText}, data))
             };
@@ -442,18 +448,24 @@ const db = {
           blk.recipes.each(rc => {
             i++;
             ordText = ("[" + i + "]").color(Pal.accent);
-            rc.output.items.forEachFast(itmStack => {
-              if(itmStack.amount <= 0) return;
-              dictProdItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-            });
-            rc.output.liquids.forEachFast(liqStack => {
-              if(liqStack.amount < 0.0001) return;
-              dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-            });
-            rc.output.payloads.forEachFast(payStack => {
-              if(payStack.amount <= 0) return;
-              (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-            });
+            if(rc.output.items != null) {
+              rc.output.items.forEachFast(itmStack => {
+                if(itmStack.amount <= 0) return;
+                dictProdItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+              });
+            };
+            if(rc.output.liquids != null) {
+              rc.output.liquids.forEachFast(liqStack => {
+                if(liqStack.amount < 0.0001) return;
+                dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+              });
+            };
+            if(rc.output.payloads != null) {
+              rc.output.payloads.forEachFast(payStack => {
+                if(payStack.amount <= 0) return;
+                (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+              });
+            };
             if(rc.output.power > 0.0) {
               MDL_recipeDict.addCustomProdTerm(blk, "power", rc.output.power, mergeObj({time: rc.craftTime, iconText: ordText}, data))
             };

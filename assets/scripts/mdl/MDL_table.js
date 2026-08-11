@@ -955,10 +955,14 @@
           let ct = searchArr[i];
           if(!MDL_cond._isRsAvailable(ct)) return 0;
 
+          let ctCur;
           let btn = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(ct.selectionSize, 0.0, 40.0), () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ct.localizedName, true).group(btnGrp).get();
           btn.changed(() => cfgCaller(btn.isChecked() ? ct : null));
           btn.getStyle().imageUp = new TextureRegionDrawable(ct.uiIcon);
-          btn.update(() => btn.setChecked(ctGetter() === ct));
+          btn.update(() => {
+            ctCur = ctGetter();
+            btn.setChecked(ctCur != null && ctCur.name == ct.name);
+          });
 
           return 1;
         })(i);

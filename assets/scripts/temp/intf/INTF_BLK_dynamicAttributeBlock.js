@@ -113,15 +113,16 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return 0.0;
 
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
       let tup = MDL_attr.getDynaAttrTup(blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
-      thisFun.tmpTup[3] = tup == null ? 0.0 : tup[1];
+      thisFun.tmpSum = tup == null ? 0.0 : tup[1];
     };
 
-    return thisFun.tmpTup[3];
+    return thisFun.tmpSum;
   }
   .setProp({
     tmpTup: [],
+    tmpSum: 0.0,
   });
 
 

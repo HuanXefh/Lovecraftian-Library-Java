@@ -719,7 +719,7 @@
     let
       amt = readParam(paramObj, "amt", 12),
       size = readParam(paramObj, "size", 7.0),
-      rad = readParam(paramObj, "rad", 24.0),
+      rad = readParam(paramObj, "rad", 36.0),
       scl = readParam(paramObj, "scl", 1.0),
       isBlack = readParam(paramObj, "isBlack", false),
       isHigh = readParam(paramObj, "isHigh", false);
@@ -747,9 +747,9 @@
 
       /* angle & length */
 
-      baseRotation: 0.0,
+      baseRotation: 55.0,
       offset: 0.0,
-      cone: 180.0,
+      cone: 30.0,
       spin: 0.0,
       randLength: true,
       length: rad,
@@ -904,7 +904,7 @@
     let
       amt = readParam(paramObj, "amt", 4),
       size = readParam(paramObj, "size", 6.0),
-      rad = readParam(paramObj, "rad", 10.0),
+      rad = readParam(paramObj, "rad", 18.0),
       scl = readParam(paramObj, "scl", 1.0),
       isBlack = readParam(paramObj, "isBlack", false),
       isHigh = readParam(paramObj, "isHigh", false);
@@ -932,8 +932,8 @@
 
       /* angle & length */
 
-      baseRotation: 0.0,
-      offset: 0.0,
+      baseRotation: 55.0,
+      offset: 20.0,
       cone: 180.0,
       spin: 0.0,
       randLength: true,
@@ -962,9 +962,9 @@
    */
   const _exploSmog = function(paramObj) {
     let
-      amt = readParam(paramObj, "amt", 16),
-      size = readParam(paramObj, "size", 54.0),
-      rad = readParam(paramObj, "rad", 54.0),
+      amt = readParam(paramObj, "amt", 24),
+      size = readParam(paramObj, "size", 14.0),
+      rad = readParam(paramObj, "rad", 36.0),
       scl = readParam(paramObj, "scl", 1.0),
       isBlack = readParam(paramObj, "isBlack", false),
       isHigh = readParam(paramObj, "isHigh", false);
@@ -992,9 +992,9 @@
 
       /* angle & length */
 
-      baseRotation: 0.0,
+      baseRotation: 55.0,
       offset: 0.0,
-      cone: 180.0,
+      cone: 40.0,
       spin: 0.0,
       randLength: true,
       length: rad,
@@ -1408,8 +1408,8 @@
           scl: 1.9,
         }),
         _exploSmog({
-          size: rad * 1.35,
-          rad: rad * 1.35,
+          size: rad * 0.35,
+          rad: rad * 1.125,
         }),
         _squareCrack({
           rad: rad,

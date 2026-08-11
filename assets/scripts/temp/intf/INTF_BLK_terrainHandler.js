@@ -25,20 +25,20 @@
     if(t == null) return false;
     if(blk.ters.length === 0) return true;
 
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
-      thisFun.tmpTup[4] = MDL_terrain.getTer(t, blk.size, blk.ex_getTerrainCheckR());
-      thisFun.tmpTup[5] = MDL_terrain.getTerB(thisFun.tmpTup[4]);
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+      thisFun.tmpTer = MDL_terrain.getTer(t, blk.size, blk.ex_getTerrainCheckR());
+      thisFun.tmpTerB = MDL_terrain.getTerB(thisFun.tmpTer);
     };
 
     let cond = true;
     if(blk.terMode === "enable") {
-      if(thisFun.tmpTup[4] == null || !blk.ters.includes(thisFun.tmpTup[4])) {
-        LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-enabled") + " " + thisFun.tmpTup[5], false, blk.terTextOffTy);
+      if(thisFun.tmpTer == null || !blk.ters.includes(thisFun.tmpTer)) {
+        LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-enabled") + " " + thisFun.tmpTerB, false, blk.terTextOffTy);
         cond = false;
       };
     } else {
-      if(thisFun.tmpTup[4] != null && blk.ters.includes(thisFun.tmpTup[4])) {
-        LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-disabled") + " " + thisFun.tmpTup[5], false, blk.terTextOffTy);
+      if(thisFun.tmpTer != null && blk.ters.includes(thisFun.tmpTer)) {
+        LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-disabled") + " " + thisFun.tmpTerB, false, blk.terTextOffTy);
         cond = false;
       };
     };
@@ -47,6 +47,8 @@
   }
   .setProp({
     tmpTup: [],
+    tmpTer: null,
+    tmpTerB: "",
   });
 
 

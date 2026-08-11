@@ -358,7 +358,7 @@ public class LCDraw {
     /**
      * Draws content icon.
      */
-    public static void content(float x, float y, @Nullable UnlockableContent ct, float size, float z) {
+    public static void content(float x, float y, @Nullable UnlockableContent ct, float size, float ang, float z) {
         if(ct == null) return;
 
         float
@@ -366,12 +366,15 @@ public class LCDraw {
             h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : (float) (ct.fullIcon.height / ct.fullIcon.width));
 
         processZ(z, ICON_REGION_Z_IND);
-        Draw.rect(ct.fullIcon, x, y, w, h);
+        Draw.rect(ct.fullIcon, x, y, w, h, ang);
         processZ(-1f, ICON_REGION_Z_IND);
     };
     // Overload
+    public static void content(float x, float y, @Nullable UnlockableContent ct, float size, float ang) {
+        content(x, y, ct, size, ang, -1f);
+    };
     public static void content(float x, float y, @Nullable UnlockableContent ct, float size) {
-        content(x, y, ct, size, -1f);
+        content(x, y, ct, size, 0f);
     };
     public static void content(float x, float y, @Nullable UnlockableContent ct) {
         content(x, y, ct, 1f);

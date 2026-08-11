@@ -12,15 +12,16 @@
 
 
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
       blk.ex_findPlaceRestrictTs(blk.placeRestrictTmpTs, t, rot);
-      thisFun.tmpTup[4] = !LCEntity.getBuildsByTiles(blk.placeRestrictTmpBs, blk.placeRestrictTmpTs).some(ob => ob.block === blk);
+      thisFun.tmpCond = !LCEntity.getBuildsByTiles(blk.placeRestrictTmpBs, blk.placeRestrictTmpTs).some(ob => ob.block === blk);
     };
 
-    return thisFun.tmpTup[4];
+    return thisFun.tmpCond;
   }
   .setProp({
-    tmpTup: [].setVal(null, 5),
+    tmpTup: [],
+    tmpCond: false,
   });
 
 

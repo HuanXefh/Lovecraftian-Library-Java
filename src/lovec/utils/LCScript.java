@@ -174,6 +174,47 @@ public class LCScript {
 
 
     /**
+     * Creates a new JavaScript object with given key-value pairs.
+     */
+    public static NativeObject newObject(String name, Scriptable scope, Object... args) throws IllegalArgumentException {
+        Scriptable obj = Context.getContext().newObject(scope);
+        if(args.length > 0) {
+            if(args.length % 2 != 0) throw new IllegalArgumentException("Incomplete key-value pair!");
+            Object rawKey;
+            for(int i = 0; i < args.length; i += 2) {
+                rawKey = args[i];
+                if(rawKey instanceof String key) {
+                    obj.put(key, obj, args[i + 1]);
+                } else {
+                    throw new IllegalArgumentException("Object key must be a string! Found: " + rawKey);
+                };
+            };
+        };
+        scope.put(name, scope, obj);
+        return (NativeObject) scope.get(name, scope);
+    };
+    // Overload
+    public static NativeObject newObject(String name) {
+        return newObject(name, toObject(get("__javaInternal__")));
+    };
+
+
+    /**
+     * Ensures a JavaScript object exists.
+     */
+    public static NativeObject ensureObject(String name, Scriptable scope) {
+        Object val = scope.get(name, scope);
+        if(val instanceof NativeObject obj) return obj;
+
+        return newObject(name, scope);
+    };
+    // Overload
+    public static NativeObject ensureObject(String name) {
+        return ensureObject(name, toObject(get("__javaInternal__")));
+    };
+
+
+    /**
      * Gets a property in a JavaScript object.
      */
     public static @Nullable Object get(String nameProp, Scriptable scope) {

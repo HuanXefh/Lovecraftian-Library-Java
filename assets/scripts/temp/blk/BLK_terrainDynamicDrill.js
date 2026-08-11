@@ -48,27 +48,28 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return VARGEN.iconRegs.ohno;
 
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, itm)) {
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, itm)) {
       if(blk.ex_isMiningDpore(tx, ty, itm) && !blk.ex_anyDporeRevealed(tx, ty, itm)) {
-        thisFun.tmpTup[3] = VARGEN.iconRegs.questionMark;
+        thisFun.tmpIcon = VARGEN.iconRegs.questionMark;
       } else {
         let ter = MDL_terrain.getTer(t, blk.size);
         let terItmMap = blk.terItmMapMap.get(itm == null ? "null" : itm.name);
         if(terItmMap == null) {
-          thisFun.tmpTup[3] = itm.fullIcon;
+          thisFun.tmpIcon = itm.fullIcon;
         } else {
           let rs = MDL_content.getCt(terItmMap.get(tryVal(ter, "transition")), "rs");
-          thisFun.tmpTup[3] = rs == null ?
+          thisFun.tmpIcon = rs == null ?
             itm.fullIcon :
             rs.fullIcon;
         };
       };
     };
 
-    return thisFun.tmpTup[3];
+    return thisFun.tmpIcon;
   }
   .setProp({
     tmpTup: [],
+    tmpIcon: null,
   });
 
 

@@ -41,7 +41,8 @@
 
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(t == null) return false;
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
+    
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
       blk.ex_updateMineMap(blk.tmpMineMap, blk.tmpMineRsTup, blk.tmpOreTs, t.x, t.y, rot);
     };
 

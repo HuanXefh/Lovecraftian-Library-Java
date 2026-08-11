@@ -310,25 +310,6 @@
 
 
   /**
-   * Removes some row in a formatted array.
-   * `rowInd` for the first row is 0.
-   * @param {number|unset} [ord]
-   * @param {number|unset} [rowInd]
-   * @return {this}
-   */
-  Array.prototype.removeRow = function(ord, rowInd) {
-    if(ord == null) ord = 1;
-    if(rowInd == null) rowInd = 0;
-    // Don't remove anything if index is negative
-    if(rowInd < 0) return;
-
-    this.splice((rowInd + 1) * ord, ord);
-
-    return this;
-  };
-
-
-  /**
    * Removes all matching elements in the array.
    * @param {any} ele
    * @return {number} Array length.
@@ -600,19 +581,13 @@
 
 
   /**
-   * Gets an object of categories and elements for this array.
-   * @param {function(any): string|null} categGetter - Determines which category an element is in. If this returns null, the element will be skipped.
-   * @return {Object}
+   * Creates an object by categorizing elements in this array.
+   * Elements in null category will be omitted.
+   * @param {function(any): string|null} categF
+   * @return {Object} New object.
    */
-  Array.prototype.categorize = function(categGetter) {
-    let key;
-    return this.reduce((obj, ele) => {
-      key = categGetter(ele);
-      if(key == null) return obj;
-      if(obj[key] === undefined) obj[key] = [];
-      obj[key].push(ele);
-      return obj;
-    }, {});
+  Array.prototype.categorize = function(categF) {
+    return LCNativeArray.categorize(this, categF);
   };
 
 
@@ -679,4 +654,15 @@
    */
   Array.prototype.write = function(keys_p, val, isUnordered) {
     return LCNativeArray.write(this, keys_p, val, tryVal(isUnordered, false));
+  };
+
+
+  /**
+   * Removes a row in a formatted array.
+   * @param {number} ord
+   * @param {number} rowInd
+   * @return {this}
+   */
+  Array.prototype.removeRow = function(ord, rowInd) {
+    return LCNativeArray.removeRow(this, ord, rowInd);
   };

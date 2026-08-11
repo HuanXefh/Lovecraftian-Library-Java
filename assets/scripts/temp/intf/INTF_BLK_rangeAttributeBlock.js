@@ -15,14 +15,15 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
 
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = MDL_attr.calcSumRect(t, blk.attrR, blk.size, blk.ex_getAttrTg(), blk.delegee.attrMode) + blk.ex_getAttrTg().env();
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+      thisFun.tmpSum = MDL_attr.calcSumRect(t, blk.attrR, blk.size, blk.ex_getAttrTg(), blk.delegee.attrMode) + blk.ex_getAttrTg().env();
     };
 
-    return thisFun.tmpTup[3];
+    return thisFun.tmpSum;
   }
   .setProp({
     tmpTup: [],
+    tmpSum: 0.0,
   });
 
 

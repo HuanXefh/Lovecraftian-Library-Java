@@ -49,16 +49,17 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
 
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = LCPos.getTilesRect(thisFun.tmpTup[3], t, blk.attrR, blk.size).inSituFilter(ot => MDL_attr.calcSumByTs([ot], blk.attribute, blk.attrMode) > 0.0);
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+      LCPos.getTilesRect(thisFun.tmpTs, t, blk.attrR, blk.size).inSituFilter(ot => MDL_attr.calcSumByTs([ot], blk.attribute, blk.attrMode) > 0.0);
     };
 
-    thisFun.tmpTup[3].forEachFast(ot => {
+    thisFun.tmpTs.forEachFast(ot => {
       LCDrawf.areaShrink(ot, (blk.attrMode & AttrModes.BLOCK) !== 0 ? ot.block().size : 1, valid ? Pal.accent : Pal.remove);
     });
   }
   .setProp({
-    tmpTup: [].setVal(null, 4),
+    tmpTup: [],
+    tmpTs: [],
   });
 
 

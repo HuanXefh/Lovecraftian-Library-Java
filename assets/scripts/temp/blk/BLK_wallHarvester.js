@@ -30,17 +30,19 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
 
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = LCPos.getTilesRect(thisFun.tmpTup[3], t, 5, blk.size);
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+      LCPos.getTilesRect(thisFun.tmpTs, t, 5, blk.size);
     };
 
-    thisFun.tmpTup[3].forEachFast(ot => {
-      if(ot.block().attributes.get(blk.attribute) < 0.0001) return;
-      LCDrawf.areaShrink(ot, 1, valid ? Pal.accent : Pal.remove);
+    thisFun.tmpTs.forEachFast(ot => {
+      if(ot.block().attributes.get(blk.attribute) > 0.0) {
+        LCDrawf.areaShrink(ot, 1, valid ? Pal.accent : Pal.remove);
+      };
     });
   }
   .setProp({
-    tmpTup: [].setVal(null, 4),
+    tmpTup: [],
+    tmpTs: [],
   });
 
 

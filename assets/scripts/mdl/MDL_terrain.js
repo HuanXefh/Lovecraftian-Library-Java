@@ -196,13 +196,14 @@
   const comp_drawPlace_ter = function thisFun(blk, tx, ty, rot, valid, offTy) {
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, rot)) {
-      thisFun.tmpTup[3] = getTerB(getTer(t, blk.size, tryFun(blk.ex_getTerrainCheckR, blk, 5)));
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+      thisFun.tmpText = getTerB(getTer(t, blk.size, tryFun(blk.ex_getTerrainCheckR, blk, 5)));
     };
 
-    LCDrawf.textPlace(blk, tx, ty, MDL_bundle.getInfo("lovec", "text-terrain") + " " + thisFun.tmpTup[3], valid, offTy);
+    LCDrawf.textPlace(blk, tx, ty, MDL_bundle.getInfo("lovec", "text-terrain") + " " + thisFun.tmpText, valid, offTy);
   }
   .setProp({
     tmpTup: [],
+    tmpText: "",
   });
   exports.comp_drawPlace_ter = comp_drawPlace_ter;

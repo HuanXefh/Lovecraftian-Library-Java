@@ -19,6 +19,8 @@
     blk.conductivePower = true;
     blk.connectedPower = false;
     blk.pushUnits = false;
+    blk.junctionReplacement = null;
+    blk.bridgeReplacement = null;
   };
 
 
@@ -94,8 +96,6 @@
 
 
       enableDrawStatus: false,
-      junctionReplacement: null,
-      bridgeReplacement: null,
 
 
     })

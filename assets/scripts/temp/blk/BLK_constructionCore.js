@@ -132,7 +132,7 @@
 
 
   const comp_drawPlace = function thisFun(blk, tx, ty, rot, valid) {
-    if(checkTupChange(thisFun.tmpTup, true, blk, tx, ty, rot)) {
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, tx, ty, rot)) {
       blk.ex_findPlan(blk.constructionTmpPlan, tx, ty, rot);
     };
 

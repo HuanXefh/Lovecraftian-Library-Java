@@ -6,11 +6,13 @@ import arc.util.Nullable;
 import arc.util.pooling.Pools;
 import lovec.utils.LCScript;
 import lovec.utils.TmpStateTag;
+import lovec.utils.func.Func4;
 import lovec.utils.pooling.PoolableNativeArray;
 import mindustry.Vars;
 import rhino.*;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Various methods for Rhino native array.
@@ -810,6 +812,35 @@ public class LCNativeArray {
 
 
     /**
+     * Removes elements in an array, optionally inserts elements.
+     * @return Removed elements.
+     */
+    public static NativeArray splice(NativeArray arr, int ind, int amt, Object... eles) {
+        NativeArray arr0 = LCScript.newArray("LCNativeArray.splice.newArr");
+        int i = 0;
+        Object removedEle;
+        while(i < amt) {
+            removedEle = removeAt(arr, ind);
+            if(removedEle != null) {
+                push(arr0, removedEle);
+            };
+            i++;
+        };
+        if(eles.length > 0) {
+            insertAll(arr, ind, eles);
+        };
+        return arr0;
+    };
+    // Overload
+    public static NativeArray splice(NativeArray arr, int ind) {
+        return splice(arr, ind, (int) arr.getLength() - ind);
+    };
+    public static NativeArray splice(NativeArray arr) {
+        return splice(arr, 0);
+    };
+
+
+    /**
      * Removes all matching elements in an array.
      * @return Array length.
      */
@@ -1012,6 +1043,27 @@ public class LCNativeArray {
     // Overload
     public static NativeArray filter(Object[] objs, Boolf boolF) {
         return LCScript.toArray(wrapFunc(objs, arr0 -> filter(arr0, boolF)));
+    };
+
+
+    /**
+     * Iterates through an array with an accumulator.
+     * @return Accumulator.
+     */
+    public static Object reduce(NativeArray arr, Func4<Object, Object, Integer, NativeArray, Object> reducer, @Nullable Object initVal) {
+        long iCap = arr.getLength();
+        if(iCap == 0) return initVal;
+        int i = initVal != null ? 0 : 1;
+        Object lastVal = initVal != null ? initVal : arr.get(0);
+        while(i < iCap) {
+            lastVal = reducer.get(lastVal, arr.get(i), i, arr);
+            i++;
+        };
+        return lastVal;
+    };
+    // Overload
+    public static Object reduce(NativeArray arr, Func4<Object, Object, Integer, NativeArray, Object> reducer) {
+        return reduce(arr, reducer, null);
     };
 
 
@@ -1373,6 +1425,62 @@ public class LCNativeArray {
     };
 
 
+    /**
+     * Creates an object by categorizing elements in an array.
+     * Elements in null category will be omitted.
+     * @return New object.
+     */
+    public static NativeObject categorize(NativeArray arr, Func<Object, String> categF) {
+        AtomicReference<NativeObject> objRef = new AtomicReference<>();
+        return (NativeObject) reduce(arr, (obj, ele, ind, arrCur) -> {
+            String key = categF.get(LCScript.wrap(ele));
+            if(key == null) return obj;
+            objRef.set((NativeObject) obj);
+            if(LCScript.isNull(objRef.get().get(key))) {
+                objRef.get().put(key, objRef.get(), LCScript.newArray("LCNativeArray.categorize.newArr"));
+            };
+            push((NativeArray) objRef.get().get(key), ele);
+            return obj;
+        }, LCScript.newObject("LCNativeArray.categorize.newObj"));
+    };
+    // Overload
+    public static NativeObject categorize(Object[] objs, Func<Object, String> categF) {
+        return LCScript.toObject(wrapFunc(objs, arr0 -> categorize(arr0, categF)));
+    };
+
+
+    /**
+     * Checks if a tuple contains exactly same elements with given ones.
+     * If mismatched, the tuple will be updated with given elements.
+     * @return Whether tuple is updated.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static boolean checkTupChange(NativeArray tup, Object... eles) {
+        boolean cond = tup.getLength() == 0;
+        int i;
+        int iCap = eles.length;
+        tup.put("length", tup, iCap);
+        if(!cond) {
+            i = 0;
+            while(i < iCap) {
+                if(!Objects.equals(LCScript.wrapEquality(eles[i]), LCScript.wrapEquality(tup.get(i)))) {
+                    cond = true;
+                    break;
+                };
+                i++;
+            };
+        };
+        if(cond) {
+            i = 0;
+            while(i < iCap) {
+                tup.put(i, tup, eles[i]);
+                i++;
+            };
+        };
+        return cond;
+    };
+
+
     /* <-------------------- formatted array --------------------> */
 
 
@@ -1396,12 +1504,12 @@ public class LCNativeArray {
      * Checks if a row matches given names.
      * Internal use.
      */
-    public static boolean formatRowCheck(NativeArray fArr, NativeArray names, int arrInd, boolean isUnordered) {
+    public static boolean formatRowCheck(NativeArray fArr, NativeArray names, int ind, boolean isUnordered) {
         int i = 0;
         long iCap = names.getLength();
         if(!isUnordered) {
             while(i < iCap) {
-                if(!Objects.equals(LCScript.wrapEquality(names.get(i)), LCScript.wrapEquality(fArr.get(arrInd + i)))) return false;
+                if(!Objects.equals(LCScript.wrapEquality(names.get(i)), LCScript.wrapEquality(fArr.get(ind + i)))) return false;
                 i++;
             };
             return true;
@@ -1410,7 +1518,7 @@ public class LCNativeArray {
         NativeArray tmpArr = LCScript.ensureArray("LCNativeArray.checkFormatArrayRow.tmpArr");
         clear(tmpArr);
         while(i < iCap) {
-            push(tmpArr, fArr.get(arrInd + i));
+            push(tmpArr, fArr.get(ind + i));
             i++;
         };
         NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
@@ -1561,6 +1669,16 @@ public class LCNativeArray {
     };
     public static NativeArray write(NativeArray fArr, Object key, Object val) {
         return write(fArr, key, val, false);
+    };
+
+
+    /**
+     * Removes a row in a formatted array.
+     */
+    public static NativeArray removeRow(NativeArray fArr, int ord, int rowInd) {
+        if(rowInd < 0) return fArr;
+        splice(fArr, rowInd * ord, ord);
+        return fArr;
     };
 
 

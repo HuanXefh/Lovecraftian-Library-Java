@@ -464,38 +464,6 @@
 
 
   /**
-   * Whether given elements don't match the ones found in given tuple.
-   * <br> `ARGS`: tup, shouldUpdateTup, ele1, ele2, ele3, ...
-   * @global
-   * @return {boolean}
-   */
-  checkTupChange = function() {
-    let tup = arguments[0];
-
-    let cond = false;
-    if(tup.length === 0) cond = true;
-    let i = 2, iCap = arguments.length;
-    while(i < iCap) {
-      if(arguments[i] !== tup[i - 2]) {
-        cond = true;
-        break;
-      };
-      i++;
-    };
-
-    if(cond && arguments[1]) {
-      i = 0;
-      while(i < iCap) {
-        tup[i - 2] = arguments[i];
-        i++;
-      };
-    };
-
-    return cond;
-  };
-
-
-  /**
    * Used for blocks with dynamic building info layout for their buildings, e.g. multi-crafters.
    * @global
    * @return {void}

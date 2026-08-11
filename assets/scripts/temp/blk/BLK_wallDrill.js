@@ -28,15 +28,16 @@
 
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(t == null) return;
-    if(checkTupChange(thisFun.tmpTup, true, blk, t, team, rot)) {
-      thisFun.tmpTup[4] = thisFun.tmpBoolF(blk, t, team, rot);
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+      thisFun.tmpCond = thisFun.checkOreValid(blk, t, team, rot);
     };
 
-    return thisFun.tmpTup[4];
+    return thisFun.tmpCond;
   }
   .setProp({
     tmpTup: [],
-    tmpBoolF: function(blk, t, team, rot) {
+    tmpCond: false,
+    checkOreValid: function(blk, t, team, rot) {
       let ot = null, itm = null, isBlockDrop = false;
       for(let i = 0; i < blk.size; i++) {
         blk.nearbySide(t.x, t.y, rot, i, Tmp.p1);
