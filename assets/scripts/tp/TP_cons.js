@@ -205,11 +205,12 @@
 
 
       trigger(b) {
-        if(b.liquids == null || !tryJsProp(b.liquids.current(), "isConductive", false)) return;
+        if(Vars.net.client()) return;
         if(b.power == null || b.power.status < 0.0001) return;
+        if(b.liquids == null || !tryJsProp(b.liquids.current(), "isConductive", false)) return;
 
+        FRAG_attack.lightning_global(b.x, b.y, null, VAR.param.lightningDmg * b.power.status * this.dmgMtp, null, 6, 4, null, "ground");
         TRIGGER.poweredMetalPipe.fire();
-        FRAG_attack.lightning(b.x, b.y, null, VAR.param.lightningDmg * b.power.status * this.dmgMtp, null, 6, 4, null, "ground");
       },
 
 

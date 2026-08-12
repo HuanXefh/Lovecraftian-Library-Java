@@ -38,10 +38,16 @@
   };
 
 
+  function comp_onProximityUpdate(b) {
+    b.moveTg = TmpStateTag.pending;
+  };
+
+
   function comp_updateTile(b) {
-    if(TIMER.sec) {
+    if(TIMER.secHalf) {
       b.moveTg = b.ex_findMoveB(true);
     };
+    if(b.moveTg === TmpStateTag.pending) return;
 
     if(!b.isBackMove) {
       b.moveProg += b.ex_getMoveProdInc();
@@ -52,7 +58,9 @@
           if(b.ex_canInsertItm(b_t, b.moveItmCur, b.moveItmAmtCur)) {
             if(b.isFirstInsertion) {
               b.isFirstInsertion = false;
-              let amtTrans = b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b);
+              let amtTrans = b.block.ex_canForceInsert(b_t.block) ?
+                b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b) :
+                Math.min(b_t.getMaximumAccepted(b.moveItmCur) - b_t.items.get(b.moveItmAmtCur), b.moveItmAmtCur);
               if(amtTrans > 0) {
                 b_t.handleStack(b.moveItmCur, amtTrans, b);
                 b.moveItmAmtCur -= amtTrans;
@@ -208,6 +216,24 @@
       },
 
 
+      /**
+       * Whether insertion can happen regardless of relative rotation.
+       * @memberof BLK_itemArm
+       * @instance
+       * @param {Block} oblk
+       * @return {boolean}
+       */
+      ex_canForceInsert: function(oblk) {
+        return MDL_cond._isConveyor(oblk)
+          || MDL_cond._isBridge(oblk)
+      }
+      .setCache()
+      .setProp({
+        noSuper: true,
+        argLen: 1,
+      })
+
+
     }),
 
 
@@ -228,7 +254,7 @@
        * @memberof B_itemArm
        * @instance
        */
-      moveTg: null,
+      moveTg: TmpStateTag.pending,
       /**
        * `INTERNAL`
        * @memberof B_itemArm
@@ -275,6 +301,11 @@
 
     })
     .setMethod({
+
+
+      onProximityUpdate: function() {
+        comp_onProximityUpdate(this);
+      },
 
 
       updateTile: function() {
@@ -325,7 +356,8 @@
        * @return {boolean}
        */
       ex_canPickItm: function(b_f, itm, amt) {
-        return b_f.items != null && b_f.items.get(itm) >= amt;
+        return !MDL_cond._isDuct(b_f.block)
+          && b_f.items != null && b_f.items.get(itm) >= amt;
       }
       .setProp({
         noSuper: true,
@@ -343,7 +375,8 @@
        * @return {boolean}
        */
       ex_canInsertItm: function(b_t, itm, amt) {
-        return b_t.acceptStack(itm, amt, this) > 0;
+        return !MDL_cond._isDuct(b_t.block)
+          && (this.block.ex_canForceInsert(b_t.block) ? b_t.acceptStack(itm, amt, b_t) > 0 : b_t.acceptItem(this, itm));
       }
       .setProp({
         noSuper: true,

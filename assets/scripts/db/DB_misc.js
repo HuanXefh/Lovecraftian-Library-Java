@@ -370,7 +370,7 @@ const db = {
               Vars.net.client() ?
                 MDL_call.spawnLoot_client(unit.x, unit.y, unit.item(), unit.stack.amount) :
                 MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount);
-              unit.clearItem();
+              FRAG_item.setUnitItem_global(unit, unit.item(), 0);
             };
           },
         },

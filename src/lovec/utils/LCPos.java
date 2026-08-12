@@ -226,7 +226,7 @@ public class LCPos {
     /**
      * Gets a tile by rotation from original tile, with another tile as the center.
      */
-    public static @Nullable Tile getTileRectCenterRot(@Nullable Tile t, @Nullable Tile tCenter, int rot, float size, float sizeCenter) {
+    public static @Nullable Tile getTileRectRotCenter(@Nullable Tile t, @Nullable Tile tCenter, int rot, float size, float sizeCenter) {
         if(t == null || tCenter == null) return null;
 
         int rot_fi = Mathf.mod(rot, 4);

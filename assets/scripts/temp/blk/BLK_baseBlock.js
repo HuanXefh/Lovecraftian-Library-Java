@@ -52,6 +52,12 @@
       blk.buildVisibility = BuildVisibility.sandboxOnly;
       blk.hiddenNonPlaceable = true;
     };
+
+    if(!Vars.headless && Core.atlas.has(blk.name + "-ui")) {
+      MDL_event.onLoad(() => {
+        blk.uiIcon = Core.atlas.find(blk.name + "-ui");
+      });
+    };
   };
 
 

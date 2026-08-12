@@ -34,8 +34,8 @@
         MDL_table.pnFixed(tb, pnTb => {
           let matArr = [[
             "",
-            fetchStat("lovec", "rs0fuel-point").localized(),
-            fetchStat("lovec", "rs0fuel-level").localized(),
+            tb1 => tb1.add(fetchStat("lovec", "rs0fuel-point").localized()).tooltip(MDL_bundle.getInfo("lovec", "tt-fuel-point")),
+            tb1 => tb1.add(fetchStat("lovec", "rs0fuel-level").localized()).tooltip(MDL_bundle.getInfo("lovec", "tt-fuel-level")),
           ]];
           MDL_fuel.getFuelArr(blk).forEachFast(rs => {
             matArr.push([

@@ -159,13 +159,13 @@
     let rs = MDL_content.getCt(rs_gn, "rs");
 
     MDL_net.sendPacket(
-      PacketModes.CLIENT, "lovec-client-reaction",
+      PacketModes.SERVER, "lovec-client-reaction",
       packPayload([
         reactions, pMtp, x, y,
         e == null ? -1 : e.pos(),
         rs == null ? "null" : rs.name,
       ]),
-      true, true,
+      true,
     );
   }
   .setAnno("init", function() {

@@ -88,7 +88,7 @@ const db = {
           e.removeStack(rs, amt);
           Call.setItem(e, rs, e.items.get(rs));
         } else if(e instanceof Unit && e.stack.amount > 0) {
-          e.stack.amount = Mathf.maxZero(e.stack.amount - amt);
+          FRAG_item.setUnitItem_global(e, e.item(), e.stack.amount - amt);
         };
       };
       FRAG_puddle.changePuddle_global(puddle, liq, puddleScl);

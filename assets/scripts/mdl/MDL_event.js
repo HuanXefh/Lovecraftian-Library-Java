@@ -317,6 +317,23 @@
 
 
   /**
+   * Called whenever a player joins the game.
+   * @param {function(Player): void} scr
+   * @param {number|string|unset} [id]
+   * @return {void}
+   */
+  const onPlayerJoin = function thisFun(scr, id) {
+    if(id != null && thisFun.ids.includes(id)) return;
+    if(id != null) thisFun.ids.push(id);
+
+    Events.on(PlayerJoin, ev => {
+      scr(ev.player);
+    });
+  };
+  exports.onPlayerJoin = onPlayerJoin;
+
+
+  /**
    * Called when left mouse button is pressed.
    * <br> `DEDICATION`: Extended-UI.
    * @param {function(number, number, number, number): void} scr - `ARGS`: dx, dy, x_f, y_f.

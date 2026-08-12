@@ -32,7 +32,9 @@
 
 
   function comp_update(utp, unit) {
-    if(unit.fin() > 0.5 || unit.stack.amount < 1) unit.remove();
+    if(!Vars.net.client() && unit.fin() > 0.5 || unit.stack.amount < 1) {
+      FRAG_item.removeLoot_global(unit);
+    };
     if(MDL_cond._isLootProtected(unit)) return;
 
     // If damaged somehow, create explosion
@@ -61,8 +63,8 @@
       let ounit = LCEntity.getOtherLoot(unit.x, unit.y, VAR.range.lootMergeRad, unit);
       if(ounit != null && ounit.item() === unit.item()) {
         MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount + ounit.stack.amount);
-        unit.remove();
-        ounit.remove();
+        FRAG_item.removeLoot_global(unit);
+        FRAG_item.removeLoot_global(ounit);
       };
     };
 

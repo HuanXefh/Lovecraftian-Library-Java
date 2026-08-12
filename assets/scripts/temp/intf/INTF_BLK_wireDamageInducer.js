@@ -26,7 +26,7 @@
 
 
   function comp_updateTile(b) {
-    if(!TIMER.secQuarter) return;
+    if(Vars.net.client() || !TIMER.secQuarter) return;
     let dmg = b.block.delegee.wireTouchDmg * b.power.status;
     if(dmg < 0.0001) return;
     let b_t = b.ex_findWireTarget();
@@ -34,8 +34,8 @@
     let unit = LCRaycastf.findUnit(b.x, b.y, b_t.x, b_t.y, ounit => MDL_cond._isBoosting(ounit));
     if(unit == null) return;
 
+    FRAG_attack.lightning_global(unit.x, unit.y, null, dmg, 3, 7, 8, b.block.delegee.wireArcColor, "air");
     TRIGGER.wireTouch.fire(b, unit);
-    FRAG_attack.lightning(unit.x, unit.y, null, dmg, 3, 7, 8, b.block.delegee.wireArcColor, "air");
   };
 
 

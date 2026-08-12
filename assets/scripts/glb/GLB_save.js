@@ -57,8 +57,6 @@
         return;
       };
 
-      console.log("[LOVEC] Loading LSAV data...");
-
       try {
         lsavJsonVal = MDL_json.parse(MDL_file.getLsav());
         plsavJsonVal = MDL_json.parse(MDL_file.getPlsav());
@@ -207,12 +205,12 @@
   const sync = function() {
     try {
       MDL_net.sendPacket(
-        PacketModes.SERVER, "lovec-server-lsav-sync",
+        PacketModes.CLIENT, "lovec-server-lsav-sync",
         toJsonSafe(lsav),
         true,
       );
       MDL_net.sendPacket(
-        PacketModes.SERVER, "lovec-server-plsav-sync",
+        PacketModes.CLIENT, "lovec-server-plsav-sync",
         toJsonSafe(plsav),
         true,
       );
@@ -238,9 +236,9 @@
    */
   const requestSync = function() {
     MDL_net.sendPacket(
-      PacketModes.CLIENT, "lovec-client-lsav-sync-request",
+      PacketModes.SERVER, "lovec-client-lsav-sync-request",
       "",
-      true, true,
+      true,
     );
   }
   .setAnno("init", function() {
@@ -262,11 +260,11 @@
    */
   const requestSet = function(header, val, isPSet) {
     MDL_net.sendPacket(
-      PacketModes.CLIENT, "lovec-client-lsav-set-request",
+      PacketModes.SERVER, "lovec-client-lsav-set-request",
       packPayload([
         header, val, isPSet,
       ]),
-      true, true,
+      true,
     );
   }
   .setAnno("init", function() {

@@ -96,7 +96,7 @@
    * Method is only available on client.
    */
   new CLS_annotation("client", function() {
-    return !(Vars.net.server() || !Vars.net.client());
+    return Groups.player.size() <= 1 || !Vars.net.client();
   });
 
 

@@ -34,7 +34,7 @@
    * Registers a new packet handler.
    * @param {number|unset} mode
    * @param {string} header
-   * @param {function(string): void} payloadCaller
+   * @param {function(string, Player|unset): void} payloadCaller
    * @return {void};
    */
   const addPacketHandler = function thisFun(mode, header, payloadCaller) {
@@ -44,7 +44,7 @@
     if(payloadCaller == null) payloadCaller = Function.air;
 
     if(mode === PacketModes.CLIENT || mode === PacketModes.BOTH) Vars.netClient.addPacketHandler(header, payloadCaller);
-    if(mode === PacketModes.SERVER || mode === PacketModes.BOTH) Vars.netServer.addPacketHandler(header, payloadCaller);
+    if(mode === PacketModes.SERVER || mode === PacketModes.BOTH) Vars.netServer.addPacketHandler(header, (player, payload) => payloadCaller(payload, player));
 
     thisFun.headers.push(header);
   }
@@ -60,7 +60,6 @@
    * @param {string} header
    * @param {string|unset} [payload]
    * @param {boolean|unset} [isReliable]
-   * @param {boolean|unset} [useConnection]
    * @return {void}
    */
   const sendPacket = function (mode, header, payload, isReliable, useConnection) {
@@ -68,20 +67,25 @@
     if(mode == null) mode = PacketModes.SERVER;
     if(!PacketModes.has(mode)) return;
 
-    if(mode === PacketModes.SERVER || (mode === PacketModes.BOTH && !Vars.net.client())) {
+    if(mode === PacketModes.SERVER) {
       isReliable ?
         Call.serverPacketReliable(header, payload) :
         Call.serverPacketUnreliable(header, payload);
       if(DEBUG.shouldLogServerPacket) {
         console.log("[LOVEC] Sent server packet ${1}.".format(header.color(Pal.accent)));
       };
-    } else if(mode === PacketModes.CLIENT || (mode === PacketModes.BOTH && Vars.net.client())) {
+    } else if(mode === PacketModes.CLIENT) {
       isReliable ?
-        (useConnection ? Call.clientPacketReliable(Vars.player.con, header, payload) : Call.clientPacketReliable(header, payload)) :
-        (useConnection ? Call.clientPacketUnreliable(Vars.player.con, header, payload) : Call.clientPacketUnreliable(header, payload));
+        Call.clientPacketReliable(header, payload) :
+        Call.clientPacketUnreliable(header, payload);
       if(DEBUG.shouldLogClientPacket) {
         console.log("[LOVEC] Sent client packet ${2}.".format(header.color(Pal.accent)));
       };
+    } else if(mode === PacketModes.BOTH) {
+      sendPacket(Vars.net.client() ? PacketModes.SERVER : PacketModes.CLIENT, header, payload, isReliable, useConnection);
+      Vars.net.client() ?
+        Reflect.get(Vars.netClient, "customPacketHandlers").get(header).each(packetCons => packetCons.get(payload)) :
+        Reflect.get(Vars.netServer, "customPacketHandlers").get(header).each(packetCons => packetCons.get(Vars.player, payload));
     };
   };
   exports.sendPacket = sendPacket;

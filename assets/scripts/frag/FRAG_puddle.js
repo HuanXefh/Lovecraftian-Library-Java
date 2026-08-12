@@ -76,8 +76,6 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null || liq === puddle.liquid) return;
 
-    changePuddle(puddle, liq, mtp);
-
     MDL_net.sendPacket(
       PacketModes.BOTH, "lovec-both-puddle-change",
       packPayload([
@@ -89,7 +87,10 @@
   .setAnno("init", function() {
     MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-puddle-change", payload => {
       let args = unpackPayload(payload);
-      changePuddle(Groups.puddle.getById(args[0]), args[1], args[2]);
+      let puddle = Groups.puddle.getByID(args[0]);
+      if(puddle == null) return;
+      
+      changePuddle(puddle, args[1], args[2]);
     });
   });
   exports.changePuddle_global = changePuddle_global;

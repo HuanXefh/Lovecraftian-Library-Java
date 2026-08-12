@@ -124,11 +124,11 @@
     if(utp == null) return;
 
     MDL_net.sendPacket(
-      PacketModes.CLIENT, "lovec-client-unit-spawn",
+      PacketModes.SERVER, "lovec-client-unit-spawn",
       packPayload([
         x, y, utp.name, team.id, ang,
       ]),
-      true, true,
+      true,
     );
   }
   .setAnno("init", function() {
@@ -159,11 +159,11 @@
     if(utp == null) return;
 
     MDL_net.sendPacket(
-      PacketModes.CLIENT, "lovec-client-units-spawn",
+      PacketModes.SERVER, "lovec-client-units-spawn",
       packPayload([
         x, y, utp.name, team.id, ang, rad, amt,
       ]),
-      true, true,
+      true,
     );
   }
   .setAnno("init", function() {
@@ -279,15 +279,15 @@
    */
   const spawnLoot_client = function(x, y, itm_gn, itmAmt) {
     if(!PARAM.MODDED || itmAmt < 1) return;
-    let itm = MDL_content._cT(itm_gn, "rs");
+    let itm = MDL_content.getCt(itm_gn, "rs");
     if(itm == null) return;
 
     MDL_net.sendPacket(
-      PacketModes.CLIENT, "lovec-client-loot-spawn",
+      PacketModes.SERVER, "lovec-client-loot-spawn",
       packPayload([
         x, y, itm.name, itmAmt,
       ]),
-      true, true,
+      true,
     );
   }
   .setAnno("init", function() {
@@ -315,11 +315,11 @@
     if(itm == null) return;
 
     MDL_net.sendPacket(
-      PacketModes.CLIENT, "lovec-client-loots-spawn",
+      PacketModes.SERVER, "lovec-client-loots-spawn",
       packPayload([
         x, y, itm.name, itmAmt, rad, amt,
       ]),
-      true, true,
+      true,
     );
   }
   .setAnno("init", function() {
@@ -335,17 +335,23 @@
    * Removes all existing loot units.
    * @return {void}
    */
-  const clearLoot = function() {
-    let count = 0;
+  const clearLoot = function thisFun() {
+    thisFun.tmpUnits.clear();
     Groups.unit.each(unit => {
       if(MDL_cond._isLoot(unit)) {
-        unit.remove();
-        count++;
+        thisFun.tmpUnits.push(unit);
       };
     });
-    console.log("[LOVEC] Removed ${1} loot units.".format(count.color(Pal.accent)));
+    console.log("[LOVEC] Removed ${1} loot units.".format(thisFun.tmpUnits.length.color(Pal.accent)));
+    thisFun.tmpUnits.forEachFast(loot => {
+      FRAG_item.removeLoot_global(loot);
+    });
+    thisFun.tmpUnits.clear();
   }
-  .setAnno("server");
+  .setAnno("server")
+  .setProp({
+    tmpUnits: [],
+  });
   exports.clearLoot = clearLoot;
 
 

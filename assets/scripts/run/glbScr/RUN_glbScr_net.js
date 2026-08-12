@@ -24,11 +24,11 @@
    * Converts an array into JSON string for packets.
    * This array should only contain primitive values.
    * @global
-   * @param {Array} arr
+   * @param {Array|unset} [arr]
    * @return {JSONPayload}
    */
   packPayload = function(arr) {
-    return toJsonSafe(Object.fromArr(arr));
+    return toJsonSafe(Object.fromArr(tryVal(arr, Array.air)));
   };
 
 
@@ -39,7 +39,7 @@
    * @return {Array}
    */
   unpackPayload = function(payload) {
-    return Object.toArr(JSON.parse(payload));
+    return Object.toArr(JSON.parse(String(payload)));
   };
 
 

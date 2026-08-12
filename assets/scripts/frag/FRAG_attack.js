@@ -230,7 +230,7 @@
    * @param {number} dmg
    * @param {number|unset} rad
    * @param {number|unset} [shake]
-   * @param {string|unset} [se_gn]
+   * @param {SoundGn|unset} [se_gn]
    * @return {void}
    */
   const explosion = function(
@@ -258,26 +258,24 @@
    * @param {number} dmg
    * @param {number|unset} rad
    * @param {number|unset} [shake]
-   * @param {string|unset} [se_gn]
+   * @param {string|unset} [seStr]
    * @return {void}
    */
   const explosion_global = function(
     x, y, dmg,
-    rad, shake, se_gn
+    rad, shake, seStr
   ) {
     if(!Vars.state.rules.reactorExplosions) return;
 
     MDL_net.sendPacket(
       PacketModes.BOTH, "lovec-both-attack-explosion",
-      packPayload([x, y, dmg, rad, shake, se_gn]),
-      true, true,
+      packPayload([x, y, dmg, rad, shake, seStr]),
+      true,
     );
-
-    explosion(x, y, dmg, rad, shake, se_gn);
   }
   .setAnno("init", function() {
     MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-attack-explosion", payload => {
-      explosion.apply(this, unpackPayload(payload));
+      explosion.apply(null, unpackPayload(payload));
     });
   });
   exports.explosion_global = explosion_global;
@@ -388,3 +386,43 @@
     MDL_effect.playAt(x, y, tryVal(se_gn, Sounds.shootArc));
   };
   exports.lightning = lightning;
+
+
+  /**
+   * Variant of {@link explosion} for sync.
+   * @param {number} x
+   * @param {number} y
+   * @param {Team|unset} [team]
+   * @param {number|unset} [dmg]
+   * @param {number|unset} [amt]
+   * @param {number|unset} [r]
+   * @param {number|unset} [offR]
+   * @param {ColorGn|unset} [color_gn]
+   * @param {string|unset} [hitMode]
+   * @param {string|unset} [seStr]
+   * @return {void}
+   */
+  const lightning_global = function(
+    x, y, team, dmg, amt,
+    r, offR, color_gn, hitMode, seStr
+  ) {
+    if(team == null) team = Team.derelict;
+    if(dmg == null) dmg = VAR.param.lightningDmg;
+    if(amt == null) amt = 1;
+    if(amt < 1) return;
+    if(r == null) r = 5;
+    if(offR == null) offR = 2;
+
+    MDL_net.sendPacket(
+      PacketModes.BOTH, "lovec-both-attack-lightning",
+      packPayload([x, y, team.id, dmg, amt, r, offR, MDL_color.getColor(color_gn).rgba8888(), hitMode, seStr]),
+      true,
+    );
+  }
+  .setAnno("init", function() {
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-attack-lightning", payload => {
+      let args = unpackPayload(payload);
+      lightning(args[0], args[1], Team.get(args[2]), args[3], args[4], args[5], args[6], Tmp.c1.set(args[7]), args[8], args[9]);
+    });
+  });
+  exports.lightning_global = lightning_global;

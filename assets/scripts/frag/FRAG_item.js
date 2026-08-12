@@ -61,12 +61,13 @@
     if(amt < 1) return false;
 
     MDL_net.sendPacket(
-      PacketModes.SERVER, "lovec-server-item-offload",
+      PacketModes.CLIENT, "lovec-server-item-offload",
       packPayload([
         b.pos(),
         b_f == null ? -1 : b_f.pos(),
         itm.name, amt, checkAccept,
       ]),
+      true,
     );
 
     return offload(b, b_f, itm, amt, checkAccept);
@@ -275,7 +276,7 @@
     if(amtTrans < 1) return false;
 
     addItem(b, b, itm, amtTrans, 1.0, true);
-    loot.stack.amount = Mathf.maxZero(loot.stack.amount - amtTrans);
+    setUnitItem(loot, loot.item(), Mathf.maxZero(loot.stack.amount - amtTrans));
 
     return true;
   };
@@ -347,14 +348,17 @@
     if(!MDL_cond._isLoot(loot)) return false;
     if(amt == null) amt = 0;
     if(amt < 1 || itm == null) {
-      loot.remove()
+      if(!Vars.net.client()) {
+        removeLoot_global(loot);
+      };
     } else {
-      if(!noReset) {
-        MDL_call.spawnLoot_server(loot.x, loot.y, itm, amt);
-        loot.remove();
-      } else {
-        loot.stack.item = itm;
-        loot.stack.amount = amt;
+      if(!Vars.net.client()) {
+        if(!noReset) {
+          MDL_call.spawnLoot_server(loot.x, loot.y, itm, amt);
+          removeLoot_global(loot);
+        } else {
+          setUnitItem_global(loot, itm, amt);
+        };
       };
       TRIGGER.itemProduce.fire(b, itm, amt);
       b.produced(itm, amt);
@@ -363,6 +367,48 @@
     return true;
   };
   exports.convertLoot = convertLoot;
+
+
+
+  /**
+   * Removes a loot unit.
+   * @param {Unit} loot
+   * @return {boolean}
+   */
+  const removeLoot = function(loot) {
+    if(!MDL_cond._isLoot(loot)) return false;
+
+    loot.remove();
+
+    return true;
+  };
+  exports.removeLoot = removeLoot;
+
+
+  /**
+   * Variant of {@link removeLoot} for sync.
+   * @param {Unit} loot
+   * @return {void}
+   */
+  const removeLoot_global = function(loot) {
+    if(!MDL_cond._isLoot(loot)) return false;
+
+    MDL_net.sendPacket(
+      PacketModes.BOTH, "lovec-both-remove-loot",
+      packPayload([loot.id]),
+      true,
+    );
+  }
+  .setAnno("init", function() {
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-remove-loot", payload => {
+      let args = unpackPayload(payload);
+      let loot = Groups.unit.getByID(args[0]);
+      if(loot == null) return;
+
+      removeLoot(loot);
+    });
+  });
+  exports.removeLoot_global = removeLoot_global;
 
 
   /**
@@ -384,7 +430,7 @@
   /**
    * Variant of {@link destroyLoot} for sync.
    * @param {Unit} loot
-   * @return {boolean}
+   * @return {void}
    */
   const destroyLoot_global = function(loot) {
     if(!MDL_cond._isLoot(loot)) return false;
@@ -392,18 +438,18 @@
     MDL_net.sendPacket(
       PacketModes.BOTH, "lovec-both-destroy-loot",
       packPayload([loot.id]),
-      true, true,
+      true,
     );
-
-    return destroyLoot(loot);
   }
   .setAnno("init", function() {
     MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-destroy-loot", payload => {
       let args = unpackPayload(payload);
-      destroyLoot(Groups.unit.getById(args[0]));
+      let loot = Groups.unit.getByID(args[0]);
+      if(loot == null) return;
+
+      destroyLoot(loot);
     });
-  })
-  .setAnno("non-console", null, false);
+  });
   exports.destroyLoot_global = destroyLoot_global;
 
 
@@ -475,6 +521,49 @@
 
 
   /**
+   * Sets item and amount in a unit.
+   * @param {Unit} unit
+   * @param {Item} itm
+   * @param {number} amt
+   * @return {void}
+   */
+  const setUnitItem = function(unit, itm, amt) {
+    unit.stack.item = itm;
+    unit.stack.amount = amt;
+  };
+  exports.setUnitItem = setUnitItem;
+
+
+  /**
+   * Variant of {@link setUnitItem} for sync.
+   * @param {Unit} unit
+   * @param {Item} itm
+   * @param {number} amt
+   * @return {void}
+   */
+  const setUnitItem_global = function(unit, itm, amt) {
+    MDL_net.sendPacket(
+      PacketModes.BOTH, "lovec-both-unit-set-item",
+      packPayload([
+        unit.id, itm.name, amt,
+      ]),
+      true,
+    );
+  }
+  .setAnno("init", function() {
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-unit-set-item", payload => {
+      let args = unpackPayload(payload);
+      let unit = Groups.unit.getByID(args[0]);
+      let itm = MDL_content.getCt(args[1], "rs");
+      if(unit == null || itm == null) return;
+
+      setUnitItem(unit, itm, args[2]);
+    });
+  });
+  exports.setUnitItem_global = setUnitItem_global;
+
+
+  /**
    * Lets a unit take item from a building, the first item by default.
    * @param {Unit} unit
    * @param {Building} b
@@ -510,7 +599,9 @@
     if(amtTrans < 1) return false;
 
     Call.transferItemTo(unit, unit.item(), amtTrans, unit.x, unit.y, b);
-    if(alwaysClearStack) unit.clearItem();
+    if(alwaysClearStack) {
+      setUnitItem_global(unit, unit.item(), 0);
+    };
 
     return true;
   };
@@ -536,7 +627,7 @@
 
     Core.app.post(() => TRIGGER.lootTake.fire(unit, itm, amtTrans));
     addUnitItem(unit, itm, amtTrans);
-    loot.stack.amount = Mathf.maxZero(loot.stack.amount - amtTrans);
+    setUnitItem(loot, loot.item(), Mathf.maxZero(loot.stack.amount - amtTrans));
 
     return true;
   };
@@ -548,7 +639,7 @@
    * @param {Unit} unit
    * @param {Unit} loot
    * @param {number|unset} [max]
-   * @return {boolean}
+   * @return {void}
    */
   const takeUnitLoot_global = function(unit, loot, max) {
     if(!MDL_cond._isLoot(loot)) return false;
@@ -558,15 +649,17 @@
       packPayload([
         unit.id, loot.id, max,
       ]),
-      true, true,
+      true,
     );
-
-    return takeUnitLoot(unit, loot, max);
   }
   .setAnno("init", function() {
     MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-unit-take-loot", payload => {
       let args = unpackPayload(payload);
-      takeUnitLoot(Groups.unit.getById(args[0]), Groups.unit.getById(args[1]), args[2]);
+      let unit = Groups.unit.getByID(args[0]);
+      let loot = Groups.unit.getByID(args[1]);
+      if(unit == null || loot == null) return;
+
+      takeUnitLoot(unit, loot, args[2]);
     });
   })
   .setAnno("non-console", null, false);

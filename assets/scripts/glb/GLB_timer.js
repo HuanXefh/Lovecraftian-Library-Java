@@ -18,12 +18,21 @@
 */
 
 
-  const timer_gn = new Interval(10);
-  const timer_effc = new Interval(4);
-  const timer_param = new Interval(3);
-  const timer_eff = new Interval(4);
-  const timer_unit = new Interval(1);
-  const timer_stackSta = new Interval(1);
+  const timers = {};
+  timers.generic = new Interval(10);
+  timers.efficiency = new Interval(4);
+  timers.param = new Interval(3);
+  timers.effect = new Interval(4);
+  timers.unit = new Interval(1);
+  timers.status = new Interval(1);
+
+
+  function syncTimer() {
+    for(let key in timers) {
+      timers[key].clear();
+    };
+    console.log("[LOVEC] Synced timer state.");
+  };
 
 
 /*
@@ -33,47 +42,75 @@
 */
 
 
+
+
+  MDL_event.onLoad(() => {
+
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-sync-timer", payload => {
+      syncTimer();
+    });
+
+  });
+
+
+
+
+  MDL_event.onPlayerJoin(player => {
+
+    Time.run(60.0, () => {
+      MDL_net.sendPacket(
+        PacketModes.BOTH, "lovec-both-sync-timer",
+        packPayload(),
+        true,
+      );
+    });
+
+  });
+
+
+
+
   MDL_event.onUpdate(() => {
 
     // Generic timer
-    exports.secQuarter = timer_gn.get(0, 15.0);
-    exports.secHalf = timer_gn.get(1, 30.0);
-    exports.sec = timer_gn.get(2, 60.0);
-    exports.secTwo = timer_gn.get(3, 120.0);
-    exports.secThree = timer_gn.get(4, 180.0);
-    exports.secFive = timer_gn.get(5, 300.0);
-    exports.secTen = timer_gn.get(6, 300.0);
-    exports.minHalf = timer_gn.get(7, 1800.0);
-    exports.min = timer_gn.get(8, 3600.0);
-    exports.minTwo = timer_gn.get(9, 7200.0);
+    exports.secQuarter = timers.generic.get(0, 15.0);
+    exports.secHalf = timers.generic.get(1, 30.0);
+    exports.sec = timers.generic.get(2, 60.0);
+    exports.secTwo = timers.generic.get(3, 120.0);
+    exports.secThree = timers.generic.get(4, 180.0);
+    exports.secFive = timers.generic.get(5, 300.0);
+    exports.secTen = timers.generic.get(6, 300.0);
+    exports.minHalf = timers.generic.get(7, 1800.0);
+    exports.min = timers.generic.get(8, 3600.0);
+    exports.minTwo = timers.generic.get(9, 7200.0);
 
     // Timer for building efficiency
-    exports.effc = timer_effc.get(0, fetchSetting("interval-efficiency", true));
+    exports.effc = timers.efficiency.get(0, fetchSetting("interval-efficiency", true));
 
     // Timer for last resource update
-    exports.rsCur = timer_effc.get(1, 180.0);
+    exports.rsCur = timers.efficiency.get(1, 180.0);
 
     // Timer for liquid calculation update
-    exports.liq = timer_effc.get(2, VAR.time.liqIntv);
+    exports.liq = timers.efficiency.get(2, VAR.time.liqIntv);
 
     // Timer for heat calculation update
-    exports.heat = timer_effc.get(3, VAR.time.heatIntv);
+    exports.heat = timers.efficiency.get(3, VAR.time.heatIntv);
 
     // Timer for parameter update
-    exports.param = timer_param.get(0, VAR.time.paramIntv);
-    exports.paramGlobal = timer_param.get(1, VAR.time.paramGlobalIntv);
-    exports.paramLarge = timer_param.get(2, VAR.time.paramLargeIntv);
+    exports.param = timers.param.get(0, VAR.time.paramIntv);
+    exports.paramGlobal = timers.param.get(1, VAR.time.paramGlobalIntv);
+    exports.paramLarge = timers.param.get(2, VAR.time.paramLargeIntv);
 
     // Timer for some visual effects
-    exports.lightning = timer_eff.get(0, VAR.time.lightningIntv);
-    exports.coreSignal = timer_eff.get(1, 32.0);
-    exports.trailCircle = timer_eff.get(2, 15.0);
-    exports.jetTrail = timer_eff.get(3, 2.0);
+    exports.lightning = timers.effect.get(0, VAR.time.lightningIntv);
+    exports.coreSignal = timers.effect.get(1, 32.0);
+    exports.trailCircle = timers.effect.get(2, 15.0);
+    exports.jetTrail = timers.effect.get(3, 2.0);
 
     // Timer for generic unit update
-    exports.unit = timer_unit.get(VAR.time.unitIntv);
+    exports.unit = timers.unit.get(VAR.time.unitIntv);
 
     // Timer for stack status effect update
-    exports.stackSta = timer_stackSta.get(VAR.time.stackStaExtDef * 0.5);
+    exports.stackSta = timers.status.get(VAR.time.stackStaExtDef * 0.5);
 
   });
