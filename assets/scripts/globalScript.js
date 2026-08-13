@@ -77,6 +77,12 @@
   /* <------------------------------ class & package ------------------------------ */
 
 
+  const __lovecClassLoader__ = java.net.URLClassLoader(
+    [Vars.mods.getMod("lovec").file.file().toURI().toURL()],
+    Vars.mods.mainLoader(),
+  );
+
+
   /**
    * Used to get Java classes by path, e.g. "aquarion.AquaItems" from Aquarion.
    * Will return null if not found.
@@ -91,10 +97,7 @@
     try {
       cls = Packages.rhino.NativeJavaClass(
         Vars.mods.scripts.scope,
-        java.net.URLClassLoader(
-          [Vars.mods.getMod("lovec").file.file().toURI().toURL()],
-          Vars.mods.mainLoader(),
-        ).loadClass(clsPath),
+        __lovecClassLoader__.loadClass(clsPath),
       );
     } catch(err) {
       cls = null;
@@ -102,6 +105,34 @@
     };
 
     return cls;
+  };
+
+
+  /**
+   * Gets Java classes in a package.
+   * Unlike {@link fetchClass}, this one cannot be called early, like in global scripts.
+   * @global
+   * @param {string} packagePath
+   * @return {Array<Class>}
+   */
+  fetchClasses = function(packagePath) {
+    packagePath = String(packagePath);
+    let clss = [];
+    let nameMod = packagePath.split(".")[0];
+    if(nameMod == null) return clss;
+    let path = packagePath.replace(/\./g, "/");
+    let dir = MDL_file.parsePath(MDL_file.getRootDir(nameMod), path);
+    if(dir == null) return clss;
+
+    dir.list().forEach(fi => {
+      if(fi.isDirectory()) {
+        clss.pushAll(fetchClasses(packagePath + "." + fi.name()));
+      } else if(fi.extEquals("class")) {
+        clss.push(fetchClass(packagePath + "." + fi.nameWithoutExtension()));
+      };
+    });
+
+    return clss;
   };
 
 

@@ -86,6 +86,7 @@
   MDL_file = require("lovec/mdl/MDL_file");
   /** @global */
   MDL_json = require("lovec/mdl/MDL_json");
+  require("lovec/run/RUN_contentFrag");
   /** @global */
   MDL_net = require("lovec/mdl/MDL_net");
   /** @global */
