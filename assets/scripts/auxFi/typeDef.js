@@ -1242,6 +1242,8 @@
   class Fonts {};
   /** @global mindustry.ui.Styles */
   class Styles {};
+  /** @global mindustry.ui.Elems */
+  class Elems {};
   /** @global mindustry.ui.dialogs.BaseDialog */
   class BaseDialog extends Dialog {};
   /** @global mindustry.ui.dialogs.ContentInfoDialog */

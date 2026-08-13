@@ -9,42 +9,15 @@ import lovec.utils.LCScript;
 import mindustry.graphics.Layer;
 import mindustry.world.blocks.defense.Wall;
 
-public class BLKFragCogwheel implements ContentFrag<Wall, BLKFragCogwheel> {
-
-
-    Wall lastThis;
-
-
-    public Wall getThis() {
-        return lastThis;
-    };
-
-
-    public BLKFragCogwheel setThis(Wall thisVal) {
-        lastThis = thisVal;
-        return this;
-    };
+public class BLKFragCogwheel extends ContentFrag<Wall> {
 
 
 
 
-    public static class BFragCogwheel implements ContentFrag<Wall.WallBuild, BFragCogwheel> {
+    public static class BFragCogwheel extends ContentFrag<Wall.WallBuild> {
 
 
-        Wall.WallBuild lastThis;
-
-
-        public Wall.WallBuild getThis() {
-            return lastThis;
-        };
-
-
-        public BFragCogwheel setThis(Wall.WallBuild thisVal) {
-            lastThis = thisVal;
-            return this;
-        };
-
-
+        @FragMethod
         public void ex_drawCog() {
             Wall.WallBuild b = getThis();
 

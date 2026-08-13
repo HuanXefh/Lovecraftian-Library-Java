@@ -11,23 +11,10 @@ import mindustry.world.blocks.distribution.Conveyor;
 
 import static lovec.utils.LCScript.MDL_cond;
 
-public class BLKFragCable implements ContentFrag<Conveyor, BLKFragCable> {
+public class BLKFragCable extends ContentFrag<Conveyor> {
 
 
-    Conveyor lastThis;
-
-
-    public Conveyor getThis() {
-        return lastThis;
-    };
-
-
-    public BLKFragCable setThis(Conveyor thisVal) {
-        lastThis = thisVal;
-        return this;
-    };
-
-
+    @FragMethod
     public boolean blends(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
         Conveyor blk = getThis();
         return (
@@ -41,6 +28,7 @@ public class BLKFragCable implements ContentFrag<Conveyor, BLKFragCable> {
         );
     };
     // Overload
+    @FragMethod
     public boolean blends(Tile t, int rot, BuildPlan[] bPlans, int dir, boolean shouldCheckWorld) {
         Conveyor blk = getThis();
         if(bPlans != null) {
@@ -49,6 +37,7 @@ public class BLKFragCable implements ContentFrag<Conveyor, BLKFragCable> {
         };
         return shouldCheckWorld && blk.blends(t, rot, dir);
     };
+    @FragMethod
     public boolean blends(Tile t, int rot, int dir) {
         Conveyor blk = getThis();
         Building ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));

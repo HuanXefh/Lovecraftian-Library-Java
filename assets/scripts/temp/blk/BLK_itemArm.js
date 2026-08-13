@@ -257,6 +257,7 @@
 
     /**
      * Inserter from Factorio.
+     * Intentionally capable of interaction with enemy buildings and units.
      * @class BLK_itemArm
      * @extends BLK_baseItemDistributor
      */

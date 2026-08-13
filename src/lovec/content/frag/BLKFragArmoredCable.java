@@ -14,23 +14,10 @@ import mindustry.world.blocks.distribution.ArmoredConveyor;
 
 import static lovec.utils.LCScript.MDL_cond;
 
-public class BLKFragArmoredCable implements ContentFrag<ArmoredConveyor, BLKFragArmoredCable> {
+public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
 
 
-    ArmoredConveyor lastThis;
-
-
-    public ArmoredConveyor getThis() {
-        return lastThis;
-    };
-
-
-    public BLKFragArmoredCable setThis(ArmoredConveyor thisVal) {
-        lastThis = thisVal;
-        return this;
-    };
-
-
+    @FragMethod
     public boolean blends(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
         ArmoredConveyor blk = getThis();
         return (
@@ -44,6 +31,7 @@ public class BLKFragArmoredCable implements ContentFrag<ArmoredConveyor, BLKFrag
         );
     };
     // Overload
+    @FragMethod
     public boolean blends(Tile t, int rot, BuildPlan[] bPlans, int dir, boolean shouldCheckWorld) {
         ArmoredConveyor blk = getThis();
         if(bPlans != null) {
@@ -52,6 +40,7 @@ public class BLKFragArmoredCable implements ContentFrag<ArmoredConveyor, BLKFrag
         };
         return shouldCheckWorld && blk.blends(t, rot, dir);
     };
+    @FragMethod
     public boolean blends(Tile t, int rot, int dir) {
         ArmoredConveyor blk = getThis();
         Building ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));
@@ -59,6 +48,7 @@ public class BLKFragArmoredCable implements ContentFrag<ArmoredConveyor, BLKFrag
     };
 
 
+    @FragMethod
     public boolean blendsArmored(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
         ArmoredConveyor blk = getThis();
 
