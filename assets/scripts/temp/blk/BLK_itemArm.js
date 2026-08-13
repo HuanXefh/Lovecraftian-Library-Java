@@ -19,6 +19,7 @@
     blk.group = BlockGroup.none;
     blk.priority = TargetPriority.transport;
     blk.update = true;
+    blk.canOverdrive = true;
     blk.rotate = true;
     blk.drawArrow = false;
     blk.drawDisabled = true;
@@ -50,20 +51,30 @@
     if(b.moveTg === TmpStateTag.pending) return;
 
     if(!b.isBackMove) {
+      // Moving forwards
       b.moveProg += b.ex_getMoveProdInc();
       if(b.moveProg >= 1.0) {
+        // Reached target
         b.moveProg = 1.0;
         let b_t = b.ex_findMoveB(true);
         if(b_t != null) {
+          // Target is a building, insert if possible
           if(b.ex_canInsertItm(b_t, b.moveItmCur, b.moveItmAmtCur)) {
             if(b.isFirstInsertion) {
               b.isFirstInsertion = false;
-              let amtTrans = b.block.ex_canForceInsert(b_t.block) ?
-                b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b) :
-                Math.min(b_t.getMaximumAccepted(b.moveItmCur) - b_t.items.get(b.moveItmAmtCur), b.moveItmAmtCur);
-              if(amtTrans > 0) {
-                b_t.handleStack(b.moveItmCur, amtTrans, b);
-                b.moveItmAmtCur -= amtTrans;
+              if(b_t.block instanceof ItemVoid) {
+                // Do nothing, dump instead to prevent crash
+              } else {
+                let amtTrans = b.block.ex_canForceInsert(b_t.block) ?
+                  b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b) :
+                  b_t.items == null ?
+                    0 :
+                    Math.min(b_t.getMaximumAccepted(b.moveItmCur) - b_t.items.get(b.moveItmAmtCur), b.moveItmAmtCur);
+
+                if(amtTrans > 0) {
+                  b_t.handleStack(b.moveItmCur, amtTrans, b);
+                  b.moveItmAmtCur -= amtTrans;
+                };
               };
             } else {
               if(b.moveItmAmtCur > 0 && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
@@ -77,6 +88,7 @@
             };
           };
         } else {
+          // Target is floor, drop items as loot
           let itm = b.moveItmCur;
           let amt = b.moveItmAmtCur;
           Core.app.post(() => {
@@ -89,18 +101,50 @@
         };
       };
     } else {
+      // Moving backwards
       b.moveProg -= b.ex_getMoveProdInc();
       if(b.moveProg <= 0.0) {
+        // Reached start
         b.moveProg = 0.0;
         let b_f = b.ex_findMoveB(false);
         if(b_f != null) {
-          b.moveItmCur = b.ex_getMoveItmTg(b_f);
-          if(b.moveItmCur != null && b.ex_canPickItm(b_f, b.moveItmCur, b.ctTg == null ? 1 : b.blk$moveStackAmt) && (b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt))) {
-            let amtTrans = Math.min(b_f.items.get(b.moveItmCur), b.blk$moveStackAmt);
-            b.isBackMove = false;
-            b.isFirstInsertion = true;
-            b.moveItmAmtCur = amtTrans;
-            b_f.removeStack(b.moveItmCur, b.moveItmAmtCur);
+          // Start is a building, pick if possible
+          if(b_f.block instanceof ItemSource) {
+            if(b_f.outputItem != null) {
+              b.moveItmCur = b_f.outputItem;
+              if(b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt)) {
+                b.isBackMove = false;
+                b.isFirstInsertion = true;
+                b.moveItmAmtCur = b.blk$moveStackAmt;
+              };
+            };
+          } else {
+            b.moveItmCur = b.ex_getMoveItmTg(b_f);
+            if(b.moveItmCur != null && b.ex_canPickItm(b_f, b.moveItmCur, b.ctTg == null ? 1 : b.blk$moveStackAmt) && (b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt))) {
+              let amtTrans = Math.min(b_f.items.get(b.moveItmCur), b.blk$moveStackAmt);
+              b.isBackMove = false;
+              b.isFirstInsertion = true;
+              b.moveItmAmtCur = amtTrans;
+              b_f.removeStack(b.moveItmCur, amtTrans);
+            };
+          };
+
+        } else {
+          // Start is floor, pick if there's a loot
+          if(TIMER.secHalf) {
+            let loot = LCEntity.getLoot((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
+            if(loot != null && loot.stack.amount > 0) {
+              b.moveItmCur = loot.item();
+              if(b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt)) {
+                let amtTrans = Math.min(loot.stack.amount, b.blk$moveStackAmt);
+                b.isBackMove = false;
+                b.isFirstInsertion = true;
+                b.moveItmAmtCur = amtTrans;
+                if(!Vars.net.client()) {
+                  FRAG_item.setUnitItem_global(loot, loot.item(), loot.stack.amount - amtTrans);
+                };
+              };
+            };
           };
         };
       };
@@ -356,6 +400,8 @@
        * @return {boolean}
        */
       ex_canPickItm: function(b_f, itm, amt) {
+        if(b_f.block instanceof ItemSource) return true;
+
         return !MDL_cond._isDuct(b_f.block)
           && b_f.items != null && b_f.items.get(itm) >= amt;
       }
@@ -392,14 +438,30 @@
        * @return {Building|null}
        */
       ex_findMoveB: function(isTo) {
-        return Vars.world.build(
-          this.rotation % 2 !== 0 ? this.tileX() : (this.tileX() + this.block.delegee.moveR * Mathf.sign(this.rotation >= 2) * (isTo ? 1 : -1)),
-          this.rotation % 2 === 0 ? this.tileY() : (this.tileY() + this.block.delegee.moveR * Mathf.sign(this.rotation >= 2) * (isTo ? 1 : -1)),
-        );
+        return Vars.world.build(this.ex_calcMoveIntCoord(isTo, false), this.ex_calcMoveIntCoord(isTo, true));
       }
       .setProp({
         noSuper: true,
         argLen: 1,
+      }),
+
+
+      /**
+       * Calculates coordinates of target position.
+       * @memberof B_itemArm
+       * @instance
+       * @param {boolean} isTo
+       * @param {boolean} isY
+       * @return {number}
+       */
+      ex_calcMoveIntCoord: function(isTo, isY) {
+        return !isY ?
+          this.rotation % 2 !== 0 ? this.tileX() : (this.tileX() + this.block.delegee.moveR * Mathf.sign(this.rotation >= 2) * (isTo ? 1 : -1)) :
+          this.rotation % 2 === 0 ? this.tileY() : (this.tileY() + this.block.delegee.moveR * Mathf.sign(this.rotation >= 2) * (isTo ? 1 : -1));
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 2,
       }),
 
 
@@ -430,7 +492,8 @@
        * @return {number}
        */
       ex_getMoveProdInc: function() {
-        return this.edelta() / this.block.delegee.moveTime;
+        // Real time required is slightly shorter to match displayed speed
+        return this.edelta() / Math.max(this.block.delegee.moveTime - 7.5, 0.0001);
       }
       .setProp({
         noSuper: true,

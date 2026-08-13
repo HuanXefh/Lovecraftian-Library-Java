@@ -157,8 +157,8 @@
 
         b.handlePayload(b, pay);
         produceAt.queueMap.put(b, false);
-        MDL_effect._s_payloadDrop(b.x, b.y, pay.content());
-        MDL_effect._e_dust(b.x, b.y, pay.size(), 3);
+        MDL_sound.payloadDrop(b.x, b.y, pay.content());
+        MDL_effect.dust(b.x, b.y, pay.size(), 3);
       });
     },
   })

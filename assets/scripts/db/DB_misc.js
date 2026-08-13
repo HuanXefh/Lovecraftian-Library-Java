@@ -326,7 +326,7 @@ const db = {
               if(unit != null && unit.canPass(vec.x.toIntCoord(), vec.y.toIntCoord())) {
                 let vecPrev = new Vec2(unit.x, unit.y);
                 unit.set(vec);
-                MDL_effect._e_line(unit.x, unit.y, null, vecPrev, Pal.accent, 1.5);
+                MDL_effect.line(unit.x, unit.y, null, vecPrev, Pal.accent, 1.5);
               };
               this.setChecked(false);
               PARAM.IS_TELEPORTING = false;
@@ -355,7 +355,7 @@ const db = {
             let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond._isLoot(ounit));
             if(loot == null) return;
             if(FRAG_item.takeUnitLoot_global(unit, loot)) {
-              MDL_effect._e_itemTransfer(loot.x, loot.y, unit, null, null, true);
+              MDL_effect.itemTransfer(loot.x, loot.y, unit, null, null, true);
             };
           },
         },

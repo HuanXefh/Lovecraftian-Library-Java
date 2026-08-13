@@ -29,7 +29,7 @@
         break;
 
       case "fire" :
-        blk.effect = new MultiEffect(EFF.fireExplodeSmog, Fx.fire);
+        blk.effect = new MultiEffect(EFF.smogFireExplo, Fx.fire);
         blk.effectSpacing = 4.0;
         MDL_content.rename(
           blk,
@@ -40,7 +40,7 @@
       default :
         blk.rsDrop = MDL_content.getCt(blk.ventRs, "rs");
         if(blk.rsDrop != null) {
-          blk.effect = TP_effect._ventSmog({color: blk.rsDrop.color});
+          blk.effect = TP_effect.smogVent({color: blk.rsDrop.color});
           blk.effectSpacing = 20.0;
           MDL_content.rename(
             blk,

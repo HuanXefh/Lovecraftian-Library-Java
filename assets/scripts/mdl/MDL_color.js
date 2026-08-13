@@ -75,19 +75,19 @@
    * @param {Color|unset} [colorCont]
    * @return {Color}
    */
-  const _iconColor = function(ct_gn, colorInd, colorCont) {
+  const getIconColor = function(ct_gn, colorInd, colorCont) {
     let color = colorCont != null ? colorCont.set(0, 0, 0, 1) : new Color(0, 0, 0, 1);
     if(Vars.headless) return color;
     let ct = findContent(ct_gn);
     if(ct == null) return color;
     if(ct.fullIcon == null) throw new Error("Null `fullIcon` for ${1}???".format(ct.name));
-    let colors = _pixColors(Core.atlas.getPixmap(ct.fullIcon));
+    let colors = getPixColors(Core.atlas.getPixmap(ct.fullIcon));
     if(colorInd == null) colorInd = colors.length >= 3 ? 1 : 0;
     if(colorInd >= colors.length) ERROR_HANDLER.throw("indexOutOfBound", colorInd, colors.length);
 
     return color.set(colors[colors.length - colorInd - 1]);
   };
-  exports._iconColor = _iconColor;
+  exports.getIconColor = getIconColor;
 
 
   /**
@@ -96,7 +96,7 @@
    * @param {boolean|unset} [useArcColor] - If true, this method will return Arc colors instead of numbers.
    * @return {Array<number>|Array<Color>}
    */
-  const _pixColors = function thisFun(pix, useArcColor) {
+  const getPixColors = function thisFun(pix, useArcColor) {
     // No need for temporary array, there are always new color objects anyway
     let arr = [];
 
@@ -129,7 +129,7 @@
       new Color(),
     ],
   });
-  exports._pixColors = _pixColors;
+  exports.getPixColors = getPixColors;
 
 
   /* <------------------------------ misc ------------------------------ */
@@ -142,11 +142,11 @@
    * @param {string} nameChara
    * @return {Color}
    */
-  const _charaColor = function thisFun(nameMod, nameChara) {
+  const getCharaColor = function thisFun(nameMod, nameChara) {
     thisFun.tmpArgs.with(nameMod, nameChara);
     return getColor(DB_misc.db["drama"]["chara"]["color"].read(thisFun.tmpArgs));
   }
   .setProp({
     tmpArgs: [],
   });
-  exports._charaColor = _charaColor;
+  exports.getCharaColor = getCharaColor;

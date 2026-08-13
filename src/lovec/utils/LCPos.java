@@ -53,7 +53,7 @@ public class LCPos {
     };
 
 
-    /* <-------------------- basic --------------------> */
+    /* <-------------------- base --------------------> */
 
 
     /**
@@ -206,7 +206,7 @@ public class LCPos {
     /**
      * Iterates through each point on a line.
      */
-    public static void forEachLinePoint(float x1, float y1, float x2, float y2, Cons3 cons3, float segScl, boolean noStart, boolean noEnd) {
+    public static void forEachLinePoint(float x1, float y1, float x2, float y2, Cons3<Float, Float, Float> cons3, float segScl, boolean noStart, boolean noEnd) {
         int segAmt = Mathf.ceil(Mathf.dst(x1, y1, x2, y2) / segScl / 48f);
         int i = noStart ? 1 : 0;
         int iCap = noEnd ? segAmt : (segAmt + 1);

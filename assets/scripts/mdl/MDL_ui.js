@@ -681,7 +681,7 @@
         autoClick ?
           0.25 :
           null,
-      color = charaTup == null ? Color.white : MDL_color._charaColor(charaTup[0], charaTup[1]),
+      color = charaTup == null ? Color.white : MDL_color.getCharaColor(charaTup[0], charaTup[1]),
       dialChara = charaTup == null ? "" : MDL_bundle.getChara(charaTup[0], charaTup[1]).color(color),
       dialText = dialTup == null ? "" : MDL_bundle.getDialText(dialTup[0], dialTup[1], dialTup[2]).color(color);
 
@@ -734,7 +734,7 @@
     );
 
     if(selectionScr != null) paramObj.selectionScr();
-    if(sound != null) MDL_effect.play(paramObj.sound);
+    if(sound != null) MDL_sound.play(paramObj.sound);
 
     UTIL_dialogFlow.setTextCur(actor);
     UTIL_dialogFlow.addLog({

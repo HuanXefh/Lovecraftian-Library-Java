@@ -50,11 +50,11 @@
         amt = b.sendBCur.acceptStack(itm, b.items.get(itm), b);
         if(amt > 0) {
           b.sendBCur.handleStack(itm, amt, b);
-          MDL_effect._e_line(b.x, b.y, null, b.sendBCur, itm.color, 1.5, true, false);
-          MDL_effect._e_line(b.sendBCur.x, b.sendBCur.y, null, b, itm.color, 1.5, true, true);
+          MDL_effect.line(b.x, b.y, null, b.sendBCur, itm.color, 1.5, true, false);
+          MDL_effect.line(b.sendBCur.x, b.sendBCur.y, null, b, itm.color, 1.5, true, true);
           Fx.dynamicWave.at(b.x, b.y, b.block.size * Vars.tilesize * 0.75, itm.color);
           Fx.dynamicWave.at(b.sendBCur.x, b.sendBCur.y, b.sendBCur.block.size * Vars.tilesize * 0.75, itm.color);
-          MDL_effect.playAt(b.x, b.y, b.block.delegee.shootSe);
+          MDL_sound.playAt(b.x, b.y, b.block.delegee.shootSe);
         };
         b.items.remove(itm, amt);
       });

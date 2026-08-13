@@ -16,7 +16,7 @@
 
     let scr = b => {
       b.delegee.manualStartWarmup = Mathf.lerp(b.delegee.manualStartWarmup, 1.2, blk.manualStartIncRate * 1.65);
-      MDL_effect._e_click(b.x, b.y, b.team.color);
+      MDL_effect.click(b.x, b.y, b.team.color);
       Sounds.click.at(b);
     };
     switch(blk.manualStartCfgTp) {

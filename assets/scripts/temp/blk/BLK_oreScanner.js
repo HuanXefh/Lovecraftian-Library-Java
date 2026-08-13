@@ -79,13 +79,13 @@
       b.revealedInts.push(ot.pos());
 
       if(b.team === Vars.player.team()) {
-        MDL_effect._e_click(ot.worldx(), ot.worldy(), b.block.delegee.scanColor);
-        MDL_effect._e_line(ot.worldx(), ot.worldy(), null, b, b.block.delegee.scanColor);
+        MDL_effect.click(ot.worldx(), ot.worldy(), b.block.delegee.scanColor);
+        MDL_effect.line(ot.worldx(), ot.worldy(), null, b, b.block.delegee.scanColor);
         ot.overlay().ex_accRevealed(ot, true);
       };
     };
 
-    MDL_effect.playAt(b.x, b.y, b.block.delegee.craftSe, Math.min(b.block.ambientSoundVolume * 2.0, 1.0), 1.0, 0.1);
+    MDL_sound.playAt(b.x, b.y, b.block.delegee.craftSe, Math.min(b.block.ambientSoundVolume * 2.0, 1.0), 1.0, 0.1);
     if(Mathf.chance(0.2)) b.ex_setRevealed(true);
   };
 

@@ -45,7 +45,7 @@
     if(presProd.fEqual(0.0)) return;
     let aux = presProd > 0.0 ? VARGEN.auxPres : VARGEN.auxVac;
 
-    FRAG_fluid.addLiquid(b, b, aux, Math.abs(presProd), true);
+    FRAG_fluid.addLiquid(b, b, aux, Math.abs(presProd) / b.timeScale, true);
     if(!b.ex_dumpPres(Math.abs(presProd), presProd < 0.0)) {
       b.dumpLiquid(aux, 2.0);
     };

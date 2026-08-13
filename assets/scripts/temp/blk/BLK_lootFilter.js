@@ -71,8 +71,8 @@
   function comp_ex_lootCall(b, loots, amt) {
     let loot = loots.find(loot => loot.item() === b.ctTg);
     if(loot != null) {
-      MDL_effect._e_itemTransfer(loot.x, loot.y, b);
-      MDL_effect._e_itemTransfer(b.x, b.y, b.lootDumpVec);
+      MDL_effect.itemTransfer(loot.x, loot.y, b);
+      MDL_effect.itemTransfer(b.x, b.y, b.lootDumpVec);
       if(loot.stack.amount <= amt) {
         loot.x = b.lootDumpVec.x;
         loot.y = b.lootDumpVec.y;

@@ -56,7 +56,7 @@
     let corRes = tryJsProp(b.block, "corRes", 1.0);
 
     b.damagePierce((b.maxHealth * VAR.param.corDmgFrac + VAR.param.corDmgMin) * corPow * corMtp / corRes);
-    if(Mathf.chance(0.5)) MDL_effect._e_corrosion(b.x, b.y, b.block.size, liq.color);
+    if(Mathf.chance(0.5)) MDL_effect.corrosion(b.x, b.y, b.block.size, liq.color);
   };
 
 
@@ -64,7 +64,7 @@
     if(liq.viscosity < VAR.param.clogViscThr) return;
 
     b.damagePierce((b.maxHealth * VAR.param.clogDmgFrac + VAR.param.clogDmgMin) * Mathf.lerp(0.5, 1.0, amt / b.block.liquidCapacity) * Mathf.lerp(0.5, 1.0, liq.viscosity / VAR.param.clogViscThr * 4.0));
-    if(Mathf.chance(0.5)) MDL_effect._e_corrosion(b.x, b.y, b.block.size, liq.color, true);
+    if(Mathf.chance(0.5)) MDL_effect.corrosion(b.x, b.y, b.block.size, liq.color, true);
   };
 
 

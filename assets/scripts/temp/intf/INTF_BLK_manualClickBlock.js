@@ -16,7 +16,7 @@
 
     let scr = b => {
       b.delegee.manualClickFrac = Mathf.lerp(b.delegee.manualClickFrac, 1.25, 0.125);
-      MDL_effect._e_click(b.x, b.y, b.team.color);
+      MDL_effect.click(b.x, b.y, b.team.color);
       Sounds.click.at(b);
     };
     switch(blk.manualClickCfgTp) {

@@ -16,6 +16,7 @@
 
   function comp_init(blk) {
     blk.update = true;
+    blk.canOverdrive = true;
     blk.drawCached = false;
     blk.drawDynamic = true;
 
@@ -79,8 +80,8 @@
               blk.ex_placePlanTg(b.team, b.tileX(), b.tileY(), b.rotation);
             });
             let ot = blk.ex_getPlanT(b.tileX(), b.tileY(), b.rotation, blk.centerPon2.x, blk.centerPon2.y);
-            MDL_effect.showAt(ot.worldx() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), ot.worldy() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), EFF.placeFadePack[blk.planSize], 0.0);
-            MDL_effect.playAt(ot.worldx(), ot.worldy(), blk.placeBlk.placeSound);
+            MDL_effect.showAt(ot.worldx() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), ot.worldy() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), EFF.fadePlacePack[blk.planSize], 0.0);
+            MDL_sound.playAt(ot.worldx(), ot.worldy(), blk.placeBlk.placeSound);
             blk.ex_removePlanBlks(b.delegee.constructionPlan);
           };
           break;
@@ -173,7 +174,7 @@
     let ot = blk.ex_getPlanT(tx, ty, rot, blk.placeDataX, blk.placeDataY);
     if(ot != null) {
       ot.setBlock(blk.placeBlk, team, Mathf.mod(rot + blk.placeOffRot, 4));
-      MDL_effect._e_textFade(ot.worldx() + blk.placeBlk.offset, ot.worldy() + blk.placeBlk.offset, MDL_bundle.getInfo("lovec", "construction-complete"), Pal.accent, blk.placeBlk.size * 0.5);
+      MDL_effect.fadeText(ot.worldx() + blk.placeBlk.offset, ot.worldy() + blk.placeBlk.offset, MDL_bundle.getInfo("lovec", "construction-complete"), Pal.accent, blk.placeBlk.size * 0.5);
       Time.run(0.0, () => {
         if(ot.build != null && ot.build.block === blk.placeBlk) TRIGGER.constructionComplete.fire(ot.build);
       });
@@ -454,7 +455,7 @@
   function comp_ex_stopConstruction(b) {
     b.underConstruction = false;
     b.constructionTimeCur = 0.0;
-    EFF.removeFadePack[b.block.size].at(b);
+    EFF.fadeRemovePack[b.block.size].at(b);
   };
 
 

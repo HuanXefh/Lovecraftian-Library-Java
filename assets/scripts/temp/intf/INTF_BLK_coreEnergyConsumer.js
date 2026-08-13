@@ -46,7 +46,7 @@
       b.cepEffc = FRAG_faci.getCepEffcCur(b.team);
     };
     if(TIMER.coreSignal && b.efficiency > 0.0 && b.shouldConsume()) {
-      MDL_effect._e_coreSignal(b.x, b.y, b.team, b.block.size * 0.6 * Vars.tilesize);
+      MDL_effect.coreSignal(b.x, b.y, b.team, b.block.size * 0.6 * Vars.tilesize);
     };
   };
 

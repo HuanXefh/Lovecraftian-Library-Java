@@ -42,7 +42,7 @@ const db = {
 
     // Create fire
     "heat", [0.01, (paramObj, x, y, e, rs) => {
-      MDL_effect.showAt_global(x, y, EFF.heatSmog, 0.0);
+      MDL_effect.showAt_global(x, y, EFF.smogHeat, 0.0);
       if(e != null) FRAG_attack.damage(e, readParam(paramObj, "dmg", 10.0), 0.0, "heat");
       Bullets.fireball.createNet(Team.derelict, x, y, Mathf.random(360.0), -1.0, 1, 1);
     }],

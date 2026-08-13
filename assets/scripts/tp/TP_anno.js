@@ -124,3 +124,11 @@
 
     return cond;
   });
+
+
+  /**
+   * Method is used to spawn effect.
+   */
+  new CLS_annotation("effect", function() {
+    return Vars.headless || Vars.state.isPaused();
+  });

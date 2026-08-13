@@ -50,7 +50,7 @@
         ob => b.ex_acceptPay(ob, ob.getPayload()) && b.hasPayInput,
         ob => {
           let pay = FRAG_payload.takeAt(ob);
-          MDL_effect._e_payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content(), false);
+          MDL_effect.payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content(), false);
           Object.mapIncre(b.payReqObj, pay.content().name);
         },
       );
@@ -67,7 +67,7 @@
         let b_t = b.payOutputBs[b.payDumpIncre % b.payOutputBs.length];
         b.payDumpIncre++;
         if(b_t.isAdded() && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
-          MDL_effect._e_payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content(), true);
+          MDL_effect.payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content(), true);
           Object.mapIncre(b.payStockObj, b.lastDumpPay.content().name, -1);
           b.lastDumpPay = null;
         };

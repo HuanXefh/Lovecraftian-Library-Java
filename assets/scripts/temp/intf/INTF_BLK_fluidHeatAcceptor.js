@@ -51,7 +51,7 @@
     if(!isFinite(b.block.delegee.heatRes) || b.fHeatCur - b.block.delegee.heatRes < 0.0001) return;
 
     b.damagePierce(2.0 * b.fHeatCur / b.block.delegee.heatRes);
-    MDL_effect.showAt(b.x, b.y, EFF.heatSmog, 0.0);
+    MDL_effect.showAt(b.x, b.y, EFF.smogHeat, 0.0);
   };
 
 

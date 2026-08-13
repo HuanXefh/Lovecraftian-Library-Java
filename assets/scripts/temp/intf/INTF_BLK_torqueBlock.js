@@ -160,7 +160,7 @@
       // I have to delay this or crash happens somehow, idk why
       ob.damagePierce(ob.maxHealth * (VAR.param.rpmDmgFrac + (rateAdd - rateCons * 3.0) / rateCons));
     });
-    MDL_effect._e_textFade(ob.x, ob.y, MDL_bundle.getInfo("lovec", "rpm-overload"), Pal.remove, ob.block.size * 0.5);
+    MDL_effect.fadeText(ob.x, ob.y, MDL_bundle.getInfo("lovec", "rpm-overload"), Pal.remove, ob.block.size * 0.5);
   };
 
 
@@ -214,7 +214,7 @@
               b.torCap += 100.0;
             };
           } else {
-            val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt, true, true, true) * amt * 60.0;
+            val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt / ob.timeScale, true, true, true) * amt * 60.0;
             b.torCap += amt * 60.0;
           };
         };

@@ -246,7 +246,7 @@
         this.y = this.yOri + this.floatOffY;
 
         if(this.shouldFloat && Mathf.chanceDelta(0.01)) {
-          MDL_effect._e_ripple(this.x, this.y, this.hitSize * 1.2);
+          MDL_effect.ripple(this.x, this.y, this.hitSize * 1.2);
         };
 
         processZ(this.z - 1.0, 6);

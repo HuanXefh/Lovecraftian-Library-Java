@@ -37,7 +37,7 @@
     };
     let shake = b.block.ex_calcExploShake(b);
     if(shake > 0.0) {
-      MDL_effect._e_shake(b.x, b.y, shake, b.block.ex_calcExploShakeDur(b));
+      MDL_effect.shake(b.x, b.y, shake, b.block.ex_calcExploShakeDur(b));
     };
     if(b.block.delegee.hasImpactOnExplosion) {
       FRAG_attack.impact(b.x, b.y, b.block.ex_calcExploDmg(b) * 0.5, 480.0, b.block.ex_calcExploRad(b), 0.0, 0.0);

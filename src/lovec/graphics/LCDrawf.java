@@ -315,7 +315,7 @@ public class LCDrawf {
                 offX = tmpVec1.x * rad,
                 offY = tmpVec1.y * rad;
 
-            LCScript.invoke("_e_trailCircle", MDL_effect, cx + offX, cy + offY, strokeScl, color1);
+            LCScript.invoke("trailCircle", MDL_effect, cx + offX, cy + offY, strokeScl, color1);
             if(Mathf.chanceDelta(0.15f)) {
                 Fx.mineSmall.at(cx + offX, cy + offY);
             };
@@ -1117,7 +1117,7 @@ public class LCDrawf {
     };
     // Overload
     public static void heat(float x, float y, @Nullable TextureRegion reg, float frac, int size, float ang, Color color) {
-        heat(x, y, reg, frac, size, ang, color, -1f);
+        heat(x, y, reg, frac, size, ang, color, Layer.blockAdditive);
     };
     public static void heat(float x, float y, @Nullable TextureRegion reg, float frac, int size, float ang) {
         heat(x, y, reg, frac, size, ang, heatColor);

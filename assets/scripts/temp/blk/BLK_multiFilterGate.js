@@ -22,14 +22,14 @@
 
     blk.config(JAVA.string, (b, str) => {
       b.ex_accRsTgs(str, false);
-      EFF.placeFadePack[b.block.size].at(b);
+      EFF.fadePlacePack[b.block.size].at(b);
       b.sortItem = b.ex_accRsTgs("read", false).first();
     });
 
     blk.config(JAVA.boolean, (b, bool) => {
       if(bool !== b.delegee.isInv) {
         b.delegee.isInv = bool;
-        EFF.placeFadePack[b.block.size].at(b);
+        EFF.fadePlacePack[b.block.size].at(b);
         TRIGGER.invertSelection.fire();
       };
     });
@@ -43,14 +43,14 @@
             if(rs != null) b.ex_accRsTgs(rs, true);
             i++;
           };
-          EFF.placeFadePack[b.block.size].at(b);
+          EFF.fadePlacePack[b.block.size].at(b);
           b.delegee.isInv = cfgArr[1];
           b.sortItem = b.ex_accRsTgs("read", false).first();
           break;
 
         case "selector" :
           b.ex_accRsTgs(cfgArr[1], cfgArr[2]);
-          EFF.placeFadePack[b.block.size].at(b);
+          EFF.fadePlacePack[b.block.size].at(b);
           b.sortItem = b.ex_accRsTgs("read", false).first();
       };
     });

@@ -127,7 +127,7 @@
     let dmg = MDL_prop.calcBulDmg(bul, e);
     if(dmg < PARAM.DAMAGE_DISPLAY_THRESHOLD) return;
 
-    MDL_effect._e_dmg(
+    MDL_effect.damage(
       e.x, e.y, dmg, bul.team,
       (e instanceof Building ? MDL_prop.getBuildShield(e, true) : e.shield) > dmg ? "shield" : "health",
     );

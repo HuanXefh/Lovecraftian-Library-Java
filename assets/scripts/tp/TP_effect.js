@@ -25,7 +25,7 @@
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _flare = function(paramObj) {
+  const flare = function(paramObj) {
     let
       size = readParam(paramObj, "size", 40.0),
       ang = readParam(paramObj, "ang", 0.0),
@@ -77,14 +77,14 @@
 
     });
   };
-  exports._flare = _flare;
+  exports.flare = flare;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _trailFade = function(paramObj) {
+  const trailFade = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "circle"),
       size = readParam(paramObj, "size", 8.0),
@@ -139,7 +139,7 @@
 
     });
   };
-  exports._trailFade = _trailFade;
+  exports.trailFade = trailFade;
 
 
   /* <------------------------------ particle ------------------------------ */
@@ -149,7 +149,7 @@
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _releaseParticle = function(paramObj) {
+  const particleRelease = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "circle"),
       amt = readParam(paramObj, "amt", 5),
@@ -205,14 +205,14 @@
 
     });
   };
-  exports._releaseParticle = _releaseParticle;
+  exports.particleRelease = particleRelease;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _shrinkParticle = function(paramObj) {
+  const particleShrink = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "circle"),
       size = readParam(paramObj, "size", 4.0),
@@ -270,14 +270,14 @@
 
     });
   };
-  exports._shrinkParticle = _shrinkParticle;
+  exports.particleShrink = particleShrink;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {Effect}
    */
-  const _wetParticle = function(paramObj) {
+  const particleWet = function(paramObj) {
     let
       color = MDL_color.getColor(readParam(paramObj, "color", Color.white), "new");
 
@@ -288,7 +288,7 @@
       Draw.reset();
     });
   };
-  exports._wetParticle = _wetParticle;
+  exports.particleWet = particleWet;
 
 
   /* <------------------------------ crack ------------------------------ */
@@ -298,7 +298,7 @@
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _furnaceCrack = function(paramObj) {
+  const crackFurnace = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "lovec-efr-diamond"),
       size = readParam(paramObj, "size", 3.0),
@@ -351,14 +351,14 @@
 
     });
   };
-  exports._furnaceCrack = _furnaceCrack;
+  exports.crackFurnace = crackFurnace;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _drillCrack = function(paramObj) {
+  const crackDrill = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "lovec-efr-diamond"),
       amt = readParam(paramObj, "amt", 3),
@@ -414,14 +414,14 @@
 
     });
   };
-  exports._drillCrack = _drillCrack;
+  exports.crackDrill = crackDrill;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _craftCrack = function(paramObj) {
+  const crackCraft = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "lovec-efr-diamond"),
       amt = readParam(paramObj, "amt", 2),
@@ -475,14 +475,14 @@
 
     });
   };
-  exports._craftCrack = _craftCrack;
+  exports.crackCraft = crackCraft;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _plantCrack = function(paramObj) {
+  const crackPlant = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "lovec-efr-diamond"),
       amt = readParam(paramObj, "amt", 12),
@@ -535,14 +535,14 @@
 
     });
   };
-  exports._plantCrack = _plantCrack;
+  exports.crackPlant = crackPlant;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _smokeCrack = function(paramObj) {
+  const crackSmoke = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "lovec-efr-urchin"),
       amt = readParam(paramObj, "amt", 5),
@@ -595,14 +595,14 @@
 
     });
   };
-  exports._smokeCrack = _smokeCrack;
+  exports.crackSmoke = crackSmoke;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _squareCrack = function(paramObj) {
+  const crackSquare = function(paramObj) {
     let
       spr = readParam(paramObj, "spr", "lovec-efr-square"),
       amt = readParam(paramObj, "amt", 7),
@@ -656,7 +656,7 @@
 
     });
   };
-  exports._squareCrack = _squareCrack;
+  exports.crackSquare = crackSquare;
 
 
   /* <------------------------------ spark ------------------------------ */
@@ -666,7 +666,7 @@
    * @param {Object|unset} [paramObj]
    * @return {Effect}
    */
-  const _lineSpark = function(paramObj) {
+  const sparkLine = function(paramObj) {
     let
       amt = readParam(paramObj, "amt", 7),
       stroke = readParam(paramObj, "stroke", 1.5),
@@ -683,14 +683,14 @@
       });
     });
   };
-  exports._lineSpark = _lineSpark;
+  exports.sparkLine = sparkLine;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {Effect}
    */
-  const _circleSpark = function(paramObj) {
+  const sparkCircle = function(paramObj) {
     let
       amt = readParam(paramObj, "amt", 7),
       size = readParam(paramObj, "size", 4.0),
@@ -705,7 +705,7 @@
       });
     });
   };
-  exports._circleSpark = _circleSpark;
+  exports.sparkCircle = sparkCircle;
 
 
   /* <------------------------------ smog ------------------------------ */
@@ -715,7 +715,7 @@
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _releaseSmog = function(paramObj) {
+  const smogRelease = function(paramObj) {
     let
       amt = readParam(paramObj, "amt", 12),
       size = readParam(paramObj, "size", 7.0),
@@ -768,14 +768,14 @@
 
     });
   };
-  exports._releaseSmog = _releaseSmog;
+  exports.smogRelease = smogRelease;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _sideReleaseSmog = function(paramObj) {
+  const smogSideRelease = function(paramObj) {
     let
       amt = readParam(paramObj, "amt", 6),
       size = readParam(paramObj, "size", 5.0),
@@ -831,14 +831,14 @@
 
     });
   };
-  exports._sideReleaseSmog = _sideReleaseSmog;
+  exports.smogSideRelease = smogSideRelease;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _shootSmog = function(paramObj) {
+  const smogShoot = function(paramObj) {
     let
       amt = readParam(paramObj, "amt", 12),
       size_f = readParam(paramObj, "size_f", 4.0),
@@ -893,14 +893,14 @@
 
     });
   };
-  exports._shootSmog = _shootSmog;
+  exports.smogShoot = smogShoot;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _heatSmog = function(paramObj) {
+  const smogHeat = function(paramObj) {
     let
       amt = readParam(paramObj, "amt", 4),
       size = readParam(paramObj, "size", 6.0),
@@ -953,14 +953,14 @@
 
     });
   };
-  exports._heatSmog = _heatSmog;
+  exports.smogHeat = smogHeat;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _exploSmog = function(paramObj) {
+  const smogExplo = function(paramObj) {
     let
       amt = readParam(paramObj, "amt", 24),
       size = readParam(paramObj, "size", 14.0),
@@ -1013,14 +1013,14 @@
 
     });
   };
-  exports._exploSmog = _exploSmog;
+  exports.smogExplo = smogExplo;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {ParticleEffect}
    */
-  const _ventSmog = function(paramObj) {
+  const smogVent = function(paramObj) {
     let
       amt = readParam(paramObj, "amt", 1),
       size = readParam(paramObj, "size", 10.0),
@@ -1078,7 +1078,7 @@
 
     });
   };
-  exports._ventSmog = _ventSmog;
+  exports.smogVent = smogVent;
 
 
   /* <------------------------------ wave ------------------------------ */
@@ -1088,7 +1088,7 @@
    * @param {Object|unset} [paramObj]
    * @return {Effect}
    */
-  const _impactWave = function(paramObj) {
+  const waveImpact = function(paramObj) {
     let
       size_f = readParam(paramObj, "size_f", 6.0),
       size_t = readParam(paramObj, "size_t", 0.0),
@@ -1107,14 +1107,14 @@
 
     return eff;
   };
-  exports._impactWave = _impactWave;
+  exports.waveImpact = waveImpact;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {Effect}
    */
-  const _rectWave = function(paramObj) {
+  const waveRect = function(paramObj) {
     let
       size_f = readParam(paramObj, "size_f", 4.0),
       size_t = readParam(paramObj, "size_t", 0.0),
@@ -1134,14 +1134,14 @@
       Draw.reset();
     });
   };
-  exports._rectWave = _rectWave;
+  exports.waveRect = waveRect;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {Effect}
    */
-  const _circleWave = function(paramObj) {
+  const waveCircle = function(paramObj) {
     let
       size_f = readParam(paramObj, "size_f", 4.0),
       size_t = readParam(paramObj, "size_t", 0.0),
@@ -1156,7 +1156,7 @@
       Draw.reset();
     });
   };
-  exports._circleWave = _circleWave;
+  exports.waveCircle = waveCircle;
 
 
   /* <------------------------------ area ------------------------------ */
@@ -1166,7 +1166,7 @@
    * @param {Object|unset} [paramObj]
    * @return {Effect}
    */
-  const _squareFade = function(paramObj) {
+  const fadeSquare = function(paramObj) {
     let
       r = readParam(paramObj, "r", 0.5),
       color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
@@ -1179,14 +1179,14 @@
       Draw.reset();
     });
   };
-  exports._squareFade = _squareFade;
+  exports.fadeSquare = fadeSquare;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {MultiEffect}
    */
-  const _exploDisk = function(paramObj) {
+  const diskExplo = function(paramObj) {
     let
       rad = readParam(paramObj, "rad", 40.0),
       color = MDL_color.getColor(readParam(paramObj, "color", Pal.accent), "new"),
@@ -1285,7 +1285,7 @@
       }),
     );
   };
-  exports._exploDisk = _exploDisk;
+  exports.diskExplo = diskExplo;
 
 
   /* <------------------------------ complex ------------------------------ */
@@ -1295,7 +1295,7 @@
    * @param {Object|unset} [paramObj]
    * @return {MultiEffect}
    */
-  const _gasEmission = function(paramObj) {
+  const gasEmission = function(paramObj) {
     let
       size = readParam(paramObj, "size", 7.0),
       rad = readParam(paramObj, "rad", 30.0),
@@ -1304,21 +1304,21 @@
       isBlack = readParam(paramObj, "isBlack", false);
 
     return new MultiEffect(
-      _ventSmog({
+      smogVent({
         size: size,
         rad: rad,
         color: MDL_color.getColor(color).cpy(),
         scl: scl * 1.1,
         isBlack: isBlack,
       }),
-      _ventSmog({
+      smogVent({
         size: size * 0.85,
         rad: rad,
         color: MDL_color.getColor(color).lerp(Color.white, 0.4).cpy(),
         scl: scl * 0.85,
         isBlack: isBlack,
       }),
-      _ventSmog({
+      smogVent({
         size: size * 0.7,
         rad: rad,
         color: MDL_color.getColor(color).lerp(Color.white, 0.7).cpy(),
@@ -1327,48 +1327,48 @@
       }),
     );
   };
-  exports._gasEmission = _gasEmission;
+  exports.gasEmission = gasEmission;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {MultiEffect}
    */
-  const _impactDrillCraft = function(paramObj) {
+  const impactDrillCraft = function(paramObj) {
     let
       blkSize = readParam(paramObj, "blkSize", 1),
       rad = readParam(paramObj, "rad", null);
 
     return new MultiEffect(
-      _impactWave({
+      waveImpact({
         rad: rad,
         scl: blkSize / 2.0 * 0.75,
       }),
-      _impactWave({
+      waveImpact({
         rad: rad,
         scl: blkSize / 2.0,
       }),
-      _releaseSmog({
+      smogRelease({
         amt: 18,
         size: 10.0,
         rad: 40.0,
         scl: 1.5,
       }),
-      _drillCrack({
+      crackDrill({
         amt: 6,
         rad: blkSize * 9.0,
         scl: 1.33333333,
       }),
     );
   };
-  exports._impactDrillCraft = _impactDrillCraft;
+  exports.impactDrillCraft = impactDrillCraft;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {MultiEffect}
    */
-  const _explosion = function(paramObj) {
+  const explosion = function(paramObj) {
     let
       rad = readParam(paramObj, "rad", 56.0),
       radDyna = readParam(paramObj, "rad", null),
@@ -1378,7 +1378,7 @@
 
     return noSmog ?
       new MultiEffect(
-        _squareCrack({
+        crackSquare({
           amt: 5,
           size: 1.5,
           rad: rad,
@@ -1386,61 +1386,61 @@
           scl: 0.3,
           noLight: false,
         }),
-        _exploDisk({
+        diskExplo({
           rad: rad * 0.7,
           color: colorCenter,
         }),
       ) :
       new MultiEffect(
-        _impactWave({
+        waveImpact({
           rad: radDyna,
         }),
-        _impactWave({
+        waveImpact({
           rad: radDyna,
           scl: 1.2,
         }),
-        _impactWave({
+        waveImpact({
           rad: radDyna,
           scl: 1.5,
         }),
-        _impactWave({
+        waveImpact({
           rad: radDyna,
           scl: 1.9,
         }),
-        _exploSmog({
+        smogExplo({
           size: rad * 0.35,
           rad: rad * 1.125,
         }),
-        _squareCrack({
+        crackSquare({
           rad: rad,
           color: color,
           noLight: false,
         }),
-        _exploDisk({
+        diskExplo({
           rad: rad * 0.7,
           color: colorCenter,
         }),
       );
   };
-  exports._explosion = _explosion;
+  exports.explosion = explosion;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {MultiEffect}
    */
-  const _rectPulse = function(paramObj) {
+  const pulseRect = function(paramObj) {
     let
       r = readParam(paramObj, "r", null),
       color = readParam(paramObj, "color", null);
 
     return new MultiEffect(
-      _rectWave({
+      waveRect({
         size_f: 3.5,
         r: r,
         color: color,
       }),
-      _rectWave({
+      waveRect({
         size_f: 2.5,
         r: r,
         color: color,
@@ -1448,25 +1448,25 @@
       }),
     );
   };
-  exports._rectPulse = _rectPulse;
+  exports.pulseRect = pulseRect;
 
 
   /**
    * @param {Object|unset} [paramObj]
    * @return {MultiEffect}
    */
-  const _circlePulse = function(paramObj) {
+  const pulseCircle = function(paramObj) {
     let
       rad = readParam(paramObj, "rad", null),
       color = readParam(paramObj, "color", null);
 
     return new MultiEffect(
-      _circleWave({
+      waveCircle({
         size_f: 3.5,
         rad: rad,
         color: color,
       }),
-      _circleWave({
+      waveCircle({
         size_f: 2.5,
         rad: rad,
         color: color,
@@ -1474,4 +1474,4 @@
       }),
     );
   };
-  exports._circlePulse = _circlePulse;
+  exports.pulseCircle = pulseCircle;

@@ -55,7 +55,7 @@
       };
       if(b.fireExplodeReady) {
         b.fireExplodeCd += Time.delta;
-        if(Mathf.chanceDelta(0.4)) EFF.fireExplodeSmog.at(b);
+        if(Mathf.chanceDelta(0.4)) EFF.smogFireExplo.at(b);
       } else {
         b.fireExplodeCd = Mathf.maxZero(b.fireExplodeCd - Time.delta);
       };

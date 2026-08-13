@@ -62,7 +62,7 @@
     };
     // Set resource color based on sprite color
     if(!rs.skipColorAssign) {
-      rs.color = MDL_color._iconColor(tryVal(parent, rs), null, rs.color);
+      rs.color = MDL_color.getIconColor(tryVal(parent, rs), null, rs.color);
     };
 
     let pixBase = Core.atlas.getPixmap(tryVal(parent, rs.name));

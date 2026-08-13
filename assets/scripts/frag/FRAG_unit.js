@@ -171,6 +171,6 @@
       unit.apply(VARGEN.staOverheated);
       i++;
     };
-    if(Mathf.chance(0.5)) EFF.heatSmog.at(unit);
+    if(Mathf.chance(0.5)) EFF.smogHeat.at(unit);
   };
   exports.comp_update_heat = comp_update_heat;

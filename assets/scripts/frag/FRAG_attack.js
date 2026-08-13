@@ -120,12 +120,12 @@
     let dmgShow = MDL_prop.getDmgTake(e, dmg, armorMtp, true);
     let shield = 0.0;
     if(e instanceof Building) {
-      MDL_effect._e_dmg(e.x, e.y, dmgShow, null, tryVal(mode_ow, MDL_prop.getBuildShield(e, true) > dmgShow ? "shield" : "health"));
-      MDL_effect._e_flash(e);
+      MDL_effect.damage(e.x, e.y, dmgShow, null, tryVal(mode_ow, MDL_prop.getBuildShield(e, true) > dmgShow ? "shield" : "health"));
+      MDL_effect.flash(e);
       e.damagePierce(dmg, true);
     } else {
       shield = e.shield;
-      MDL_effect._e_dmg(e.x, e.y, dmgShow, null, tryVal(mode_ow, !ignoreShield && e.shield > dmgShow ? "shield" : "health"));
+      MDL_effect.damage(e.x, e.y, dmgShow, null, tryVal(mode_ow, !ignoreShield && e.shield > dmgShow ? "shield" : "health"));
       if(!ignoreShield) {
         e.damagePierce(dmg, true);
       } else {
@@ -150,11 +150,11 @@
     if(healAmt < 0.0001) return false;
 
     if(e instanceof Building) {
-      MDL_effect._e_dmg(e.x, e.y, healAmt, null, "heal");
-      MDL_effect._e_flash(e, Pal.heal);
+      MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
+      MDL_effect.flash(e, Pal.heal);
       e.recentlyHealed();
     } else {
-      MDL_effect._e_dmg(e.x, e.y, healAmt, null, "heal");
+      MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
       e.healTime = 1.0;
     };
     e.heal(healAmt);
@@ -244,9 +244,9 @@
 
     Damage.damage(x, y, rad, dmg);
     MDL_effect.showAt(x, y, rad < 16.0 ? EFF.explosionSmall : EFF.explosion, 0.0);
-    MDL_effect._e_shake(x, y, shake);
+    MDL_effect.shake(x, y, shake);
     shockwave(x, y, rad * 1.7, 3.0);
-    MDL_effect.playAt(x, y, tryVal(se_gn, "se-shot-explosion"), 1.0, 1.0, 0.1);
+    MDL_sound.playAt(x, y, tryVal(se_gn, "se-shot-explosion"), 1.0, 1.0, 0.1);
   };
   exports.explosion = explosion;
 
@@ -327,7 +327,7 @@
       if(LCRand.chance(UTIL_rand.get("unit"), Math.max(frac, 0.2))) unit.apply(VARGEN.staStunned, staDur);
     });
 
-    MDL_effect._e_shake(x, y, shake);
+    MDL_effect.shake(x, y, shake);
   }
   .setProp({
     tmpUnits: [],
@@ -383,7 +383,7 @@
       i++;
     };
 
-    MDL_effect.playAt(x, y, tryVal(se_gn, Sounds.shootArc));
+    MDL_sound.playAt(x, y, tryVal(se_gn, Sounds.shootArc));
   };
   exports.lightning = lightning;
 

@@ -538,7 +538,7 @@
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
-        failEff: EFF.rcFailSmog,
+        failEff: EFF.smogFail,
 
 
         /* <------------------------------ internal ------------------------------ */
@@ -1093,7 +1093,7 @@
        * @return {void}
        */
       ex_showRcChangeEff: function() {
-        EFF.placeFadePack[this.block.size].at(this);
+        EFF.fadePlacePack[this.block.size].at(this);
       }
       .setProp({
         noSuper: true,

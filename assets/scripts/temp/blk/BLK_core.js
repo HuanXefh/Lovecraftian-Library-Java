@@ -53,7 +53,7 @@
        * @memberof BLK_core
        * @instance
        */
-      cepOutageEff: EFF.powerSpark,
+      cepOutageEff: EFF.sparkPower,
       /**
        * `PARAM`: Effect chance.
        * @memberof BLK_core

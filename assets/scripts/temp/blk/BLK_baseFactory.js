@@ -40,7 +40,7 @@
 
 
   function comp_craft(b) {
-    MDL_effect.playAt(b.x, b.y, b.craftSe, Math.min(b.block.ambientSoundVolume * 2.0, 1.0), 1.0, 0.1);
+    MDL_sound.playAt(b.x, b.y, b.craftSe, Math.min(b.block.ambientSoundVolume * 2.0, 1.0), 1.0, 0.1);
   };
 
 

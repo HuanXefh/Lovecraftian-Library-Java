@@ -1761,7 +1761,7 @@
         TRIGGER.fluidProduce.fire(b, tmp);
       };
       b.handleLiquid(b, tmp, Math.min(amt * progIncLiq * this.rcTimeScl, b.block.liquidCapacity - b.liquids.get(tmp)));
-      b.delegee.prodTmpObj[tmp.name] = amt;
+      b.delegee.prodTmpObj[tmp.name] = amt / b.timeScale;
       i += 2;
     };
   };

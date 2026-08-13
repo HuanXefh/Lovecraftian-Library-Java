@@ -60,7 +60,7 @@
       if(b.block.delegee.healsUnit) {
         LCEntity.eachUnit(b.x, b.y, b.team, rad, ounit => MDL_cond._canHeal(ounit), ounit => {
           if(FRAG_attack.heal(ounit, (ounit.maxHealth * b.block.delegee.unitHealPerc + b.block.delegee.unitHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency)) {
-            MDL_effect._e_line(b.x, b.y, null, ounit, Pal.heal);
+            MDL_effect.line(b.x, b.y, null, ounit, Pal.heal);
           };
         });
       };

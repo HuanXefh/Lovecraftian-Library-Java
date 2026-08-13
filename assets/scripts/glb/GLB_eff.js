@@ -22,7 +22,7 @@
   /* <------------------------------ static ------------------------------ */
 
 
-  exports.sniperTrail = TP_effect._trailFade({
+  exports.trailSniper = TP_effect.trailFade({
     spr: "lovec-efr-sniper-wave",
     size: 18.0,
     color: "ffffffa0",
@@ -33,7 +33,7 @@
   /* <------------------------------ particle ------------------------------ */
 
 
-  exports.harvesterParticle = TP_effect._shrinkParticle({
+  exports.particleHarvester = TP_effect.particleShrink({
     spr: "lovec-efr-square",
     size: 4.0,
     color: Pal.accent,
@@ -41,7 +41,7 @@
     hasBloom: true,
     noLight: true,
   });
-  exports.powerParticle = TP_effect._releaseParticle({
+  exports.particlePower = TP_effect.particleRelease({
     spr: "circle",
     amt: 3,
     size: 1.2,
@@ -53,22 +53,22 @@
   /* <------------------------------ crack ------------------------------ */
 
 
-  exports.furnaceCrack = TP_effect._furnaceCrack();
-  exports.furnaceCrackLarge = TP_effect._furnaceCrack({
+  exports.crackFurnace = TP_effect.crackFurnace();
+  exports.crackFurnaceLarge = TP_effect.crackFurnace({
     size: 4.5,
     rad: 24.0,
     scl: 2.0,
   });
-  exports.craftCrack = TP_effect._craftCrack();
-  exports.drillCrack = TP_effect._drillCrack();
-  exports.plantCrack = TP_effect._plantCrack();
-  exports.sawmillCrack = TP_effect._smokeCrack({color: "dccdb1"});
+  exports.crackCraft = TP_effect.crackCraft();
+  exports.crackDrill = TP_effect.crackDrill();
+  exports.crackPlant = TP_effect.crackPlant();
+  exports.crackSawmill = TP_effect.crackSmoke({color: "dccdb1"});
 
 
   /* <------------------------------ spark ------------------------------ */
 
 
-  exports.powerSpark = TP_effect._lineSpark({
+  exports.sparkPower = TP_effect.sparkLine({
     amt: 5,
     color: Pal.accent,
   });
@@ -77,33 +77,33 @@
   /* <------------------------------ smog ------------------------------ */
 
 
-  exports.furnaceSmog = TP_effect._releaseSmog({
+  exports.smogFurnace = TP_effect.smogRelease({
     scl: 1.5,
   });
-  exports.furnaceSmogLarge = TP_effect._releaseSmog({
+  exports.smogFurnaceLarge = TP_effect.smogRelease({
     amt: 18,
     size: 14.0,
     rad: 96.0,
     scl: 4.0,
   });
-  exports.blackSmog = TP_effect._releaseSmog({
+  exports.smogBlack = TP_effect.smogRelease({
     scl: 1.5,
     isBlack: true,
   });
-  exports.rcFailSmog = new MultiEffect(
-    module.exports.blackSmog,
-    module.exports.blackSmog,
-    module.exports.blackSmog,
+  exports.smogFail = new MultiEffect(
+    module.exports.smogBlack,
+    module.exports.smogBlack,
+    module.exports.smogBlack,
   );
-  exports.unitDamagedSmog = TP_effect._releaseSmog({
+  exports.smogUnitDamaged = TP_effect.smogRelease({
     amt: 1,
     rad: 12.0,
     scl: 0.6,
     isBlack: true,
     isHigh: true,
   });
-  exports.heatSmog = TP_effect._heatSmog();
-  exports.gunSmog = TP_effect._shootSmog({
+  exports.smogHeat = TP_effect.smogHeat();
+  exports.smogGun = TP_effect.smogShoot({
     amt: 8,
     size_f: 2.0,
     size_t: 6.0,
@@ -111,7 +111,7 @@
     cone: 30.0,
     scl: 0.6,
   });
-  exports.launcherSmog = TP_effect._shootSmog({
+  exports.smogLauncher = TP_effect.smogShoot({
     amt: 24,
     size_f: 2.0,
     size_t: 16.0,
@@ -119,7 +119,7 @@
     cone: 40.0,
     scl: 1.6,
   });
-  exports.sniperSmog = TP_effect._shootSmog({
+  exports.smogSniper = TP_effect.smogShoot({
     amt: 22,
     size_f: 2.0,
     size_t: 10.0,
@@ -127,7 +127,7 @@
     cone: 30.0,
     scl: 1.6,
   });
-  exports.massDriverSmog = TP_effect._shootSmog({
+  exports.smogMassDriver = TP_effect.smogShoot({
     amt: 14,
     size_f: 4.0,
     size_t: 12.0,
@@ -135,7 +135,7 @@
     cone: 24.0,
     scl: 2.8,
   });
-  exports.massDriverSmogLarge = TP_effect._shootSmog({
+  exports.smogMassDriverLarge = TP_effect.smogShoot({
     amt: 26,
     size_f: 4.0,
     size_t: 20.0,
@@ -151,10 +151,10 @@
   /* <------------------------------ area ------------------------------ */
 
 
-  exports.placeFadePack = (function() {
+  exports.fadePlacePack = (function() {
     let arr = [];
     (10)._it(size => {
-      arr.push(size === 0 ? Fx.none : TP_effect._squareFade({
+      arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
         r: size * 0.5,
         color: Pal.accent,
       }));
@@ -163,10 +163,10 @@
   })();
 
 
-  exports.removeFadePack = (function() {
+  exports.fadeRemovePack = (function() {
     let arr = [];
     (10)._it(size => {
-      arr.push(size === 0 ? Fx.none : TP_effect._squareFade({
+      arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
         r: size * 0.5,
         color: Pal.remove,
       }));
@@ -175,10 +175,10 @@
   })();
 
 
-  exports.disableFadePack = (function() {
+  exports.fadeDisablePack = (function() {
     let arr = [];
     (10)._it(size => {
-      arr.push(size === 0 ? Fx.none : TP_effect._squareFade({
+      arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
         r: size * 0.5,
         color: Pal.sap,
       }));
@@ -190,25 +190,25 @@
   /* <------------------------------ complex ------------------------------ */
 
 
-  exports.fireExplodeSmog = TP_effect._gasEmission({
+  exports.smogFireExplo = TP_effect.gasEmission({
     color: "303030",
     scl: 0.75,
   });
 
 
-  exports.explosion = TP_effect._explosion({
+  exports.explosion = TP_effect.explosion({
     rad: 56.0,
   });
-  exports.explosionSmall = TP_effect._explosion({
+  exports.explosionSmall = TP_effect.explosion({
     rad: 24.0,
     noSmog: true,
   });
 
 
-  exports.drillPulsePack = (function() {
+  exports.pulseDrillPack = (function() {
     let arr = [];
     (10)._it(size => {
-      arr.push(size === 0 ? Fx.none : TP_effect._rectPulse({
+      arr.push(size === 0 ? Fx.none : TP_effect.pulseRect({
         r: size * 0.5,
         color: Pal.techBlue,
       }));
@@ -217,4 +217,4 @@
   })();
 
 
-  exports.circlePulseDynamic = TP_effect._circlePulse();
+  exports.pulseCircleDynamic = TP_effect.pulseCircle();

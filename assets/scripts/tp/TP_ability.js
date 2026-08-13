@@ -71,8 +71,8 @@
         });
 
         MDL_effect.showAt(unit.x, unit.y, this.rad < 16.0 ? EFF.explosionSmall : EFF.explosion, 0.0);
-        MDL_effect._e_shake(unit.x, unit.y, this.dmg / 160.0);
-        MDL_effect.playAt(unit.x, unit.y, this.se, 1.0, 1.0, 0.1);
+        MDL_effect.shake(unit.x, unit.y, this.dmg / 160.0);
+        MDL_sound.playAt(unit.x, unit.y, this.se, 1.0, 1.0, 0.1);
       },
 
 
@@ -201,7 +201,7 @@
           let bul = LCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.rad);
           if(bul != null) {
             prog = Mathf.maxZero(prog - Mathf.clamp((bul.damage + bul.type.splashDamage) / this.dmg, 0.25, 1.0) * this.dmg);
-            MDL_effect._e_pointLaser(unit.x, unit.y, bul, Pal.remove, this.se);
+            MDL_effect.pointLaser(unit.x, unit.y, bul, Pal.remove, this.se);
             MDL_call.damageBul(bul, this.dmg);
           };
         };
@@ -281,7 +281,7 @@
         if(b == null) return;
 
         FRAG_attack.heal(b, b.maxHealth * this.healPerc + this.healAmt);
-        MDL_effect._e_laser(unit.x, unit.y, unit, b, Pal.heal, this.strokeScl);
+        MDL_effect.laser(unit.x, unit.y, unit, b, Pal.heal, this.strokeScl);
       },
 
 

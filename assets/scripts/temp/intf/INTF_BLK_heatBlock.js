@@ -114,7 +114,7 @@
           (b.heatSupplied / 3.0);
         b_t.ex_handleExtHeat != null ?
           b_t.ex_handleExtHeat(b, heatAmt) :
-          FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, heatAmt / 6000.0, false, false, true);
+          FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, heatAmt / 6000.0 * b_t.timeScale, false, false, true);
       };
     };
   };

@@ -59,7 +59,7 @@
     if(ob == null || ob.team !== b.team || ob.enabled || !b.block.ex_isValidTg(ob.block)) return;
 
     ob.enabled = true;
-    EFF.placeFadePack[ob.block.size].at(ob);
+    EFF.fadePlacePack[ob.block.size].at(ob);
   };
 
 
@@ -93,8 +93,8 @@
 
     ob.enabled = !b.enabled;
     ob.enabled ?
-      EFF.placeFadePack[ob.block.size].at(ob) :
-      EFF.disableFadePack[ob.block.size].at(ob);
+      EFF.fadePlacePack[ob.block.size].at(ob) :
+      EFF.fadeDisablePack[ob.block.size].at(ob);
   };
 
 

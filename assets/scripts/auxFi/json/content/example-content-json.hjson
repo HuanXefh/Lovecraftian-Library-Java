@@ -15,11 +15,11 @@ drillAmtMtp: 2.0
 durabCap: 3600.0
 drillEff: {
   type: EffectPreset
-  name: drillPulsePack
+  name: pulseDrillPack
   index: 3
 }
 updateEff: {
   type: EffectPreset
-  name: drillCrack
+  name: crackDrill
 }
 updateEffP: 0.01

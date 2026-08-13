@@ -177,6 +177,8 @@
   /** @global */
   MDL_effect = require("lovec/mdl/MDL_effect");
   /** @global */
+  MDL_sound = require("lovec/mdl/MDL_sound");
+  /** @global */
   DB_reaction = require("lovec/db/DB_reaction");
   /** @global */
   MDL_reaction = require("lovec/mdl/MDL_reaction");

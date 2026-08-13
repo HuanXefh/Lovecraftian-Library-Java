@@ -18,6 +18,7 @@
     resetBlockFlag(blk, []);
 
     blk.update = true;
+    blk.canOverdrive = true;
   };
 
 
@@ -41,7 +42,7 @@
   function comp_ex_lootCall(b, loots, amt) {
     let loot = loots.random();
     if(loot != null) {
-      if(FRAG_item.takeLoot(b, loot, amt, true)) MDL_effect._e_itemTransfer(loot.x, loot.y, b);
+      if(FRAG_item.takeLoot(b, loot, amt, true)) MDL_effect.itemTransfer(loot.x, loot.y, b);
     };
   };
 
@@ -86,6 +87,14 @@
       setStats: function() {
         comp_setStats(this);
       },
+
+
+      outputsItems: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
     }),

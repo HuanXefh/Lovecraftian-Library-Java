@@ -20,7 +20,7 @@
       if(liq.viscosity.fEqual(0.5)) liq.viscosity = MDL_flow.getViscWrap(liq);
 
       if(liq.gas && liq.vaporEffect === Fx.vapor) {
-        liq.vaporEffect = TP_effect._gasEmission({
+        liq.vaporEffect = TP_effect.gasEmission({
           color: liq.color,
         });
       };
@@ -90,8 +90,8 @@
     if(isNaN(puddle.amount)) puddle.remove();
 
     // Fume if possible
-    if(!liq.gas && liq.shouldFume && Mathf.chance(MDL_effect._p_frac(0.03, puddle.amount * 0.04))) {
-      MDL_effect.showAt(puddle.x, puddle.y, EFF.heatSmog);
+    if(!liq.gas && liq.shouldFume && Mathf.chance(MDL_effect.calcEffPByFrac(0.03, puddle.amount * 0.04))) {
+      MDL_effect.showAt(puddle.x, puddle.y, EFF.smogHeat);
     };
 
     // Cause short circuit if possible
@@ -103,7 +103,7 @@
         ob = ot.build;
         dmg = ob.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0;
         ob.damagePierce(dmg);
-        if(Mathf.chance(0.15)) MDL_effect.showAt(ob.x, ob.y, EFF.heatSmog);
+        if(Mathf.chance(0.15)) MDL_effect.showAt(ob.x, ob.y, EFF.smogHeat);
         if(!Vars.net.client() && Mathf.chance(0.05)) FRAG_attack.lightning_global(ob.x, ob.y, null, null, null, 6, 4, null, "ground");
       });
     };

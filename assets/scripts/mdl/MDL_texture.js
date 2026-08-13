@@ -201,8 +201,8 @@
   const recolorPix = function(pixBase, pixRef) {
     let pix = new Pixmap(pixBase.width, pixBase.height);
     let
-      rawBaseColors = MDL_color._pixColors(pixBase),
-      rawRefColors = MDL_color._pixColors(pixRef);
+      rawBaseColors = MDL_color.getPixColors(pixBase),
+      rawRefColors = MDL_color.getPixColors(pixRef);
     // Make sure the two arrays match in length
     if(rawRefColors.length > rawBaseColors) {
       rawRefColors.length = rawBaseColors.length;

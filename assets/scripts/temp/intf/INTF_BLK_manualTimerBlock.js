@@ -16,7 +16,7 @@
 
     let scr = b => {
       b.delegee.timeClickCur = Math.min(b.delegee.timeClickCur + blk.manualTimerClickInc, blk.manualTimerCap);
-      MDL_effect._e_click(b.x, b.y, b.team.color);
+      MDL_effect.click(b.x, b.y, b.team.color);
       Sounds.click.at(b);
     };
     switch(blk.manualTimerCfgTp) {
@@ -62,7 +62,7 @@
 
 
   function comp_updateTile(b) {
-    if(b.efficiency > 0.0) b.timeClickCur = Mathf.maxZero(b.timeClickCur - b.edelta());
+    if(b.efficiency > 0.0) b.timeClickCur = Mathf.maxZero(b.timeClickCur - b.edelta() / b.timeScale);
   };
 
 

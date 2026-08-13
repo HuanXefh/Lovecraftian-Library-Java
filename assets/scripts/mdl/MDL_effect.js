@@ -28,73 +28,10 @@
    * @param {number} frac
    * @return {number}
    */
-  const _p_frac = function(p, frac) {
+  const calcEffPByFrac = function(p, frac) {
     return Math.min(p * frac, VAR.chance.effPCap);
   };
-  exports._p_frac = _p_frac;
-
-
-  /* <------------------------------ sound ------------------------------ */
-
-
-  /**
-   * Plays a sound.
-   * @param {SoundGn} se_gn
-   * @return {void}
-   */
-  const play = function(se_gn) {
-    if(se_gn == null) return;
-
-    fetchSound(se_gn).play();
-  }
-  .setAnno("non-headless");
-  exports.play = play;
-
-
-  /**
-   * Variant of {@link play} for server side.
-   * @param {SoundGn} se_gn
-   * @param {number|unset} [vol]
-   * @param {number|unset} [pitch]
-   * @param {number|unset} [offPitch]
-   * @return {void}
-   */
-  const play_server = function(se_gn, vol, pitch, offPitch) {
-    if(se_gn == null) return;
-    if(vol == null) vol = 1.0;
-    if(pitch == null) pitch = 1.0;
-    let pitch_fi = (offPitch == null) ? pitch : (pitch + Mathf.range(offPitch));
-
-    Call.sound(fetchSound(se_gn), vol, pitch_fi, 1.0);
-  }
-  .setAnno("non-headless")
-  .setAnno("server");
-  exports.play_server = play_server;
-
-
-  /**
-   * Plays a sound at (x, y).
-   * @param {number} x
-   * @param {number} y
-   * @param {SoundGn} se_gn
-   * @param {number|unset} [vol]
-   * @param {number|unset} [pitch]
-   * @param {number|unset} [offPitch]
-   * @return {void}
-   */
-  const playAt = function(x, y, se_gn, vol, pitch, offPitch) {
-    if(se_gn == null) return;
-    if(vol == null) vol = 1.0;
-    if(pitch == null) pitch = 1.0;
-    let pitch_fi = (offPitch == null) ? pitch : (pitch + Mathf.range(offPitch));
-
-    fetchSound(se_gn).at(x, y, pitch_fi, vol);
-  }
-  .setAnno("non-headless");
-  exports.playAt = playAt;
-
-
-  /* <------------------------------ effect ------------------------------ */
+  exports.calcEffPByFrac = calcEffPByFrac;
 
 
   /**
@@ -108,7 +45,6 @@
    * @return {void}
    */
   const showAt = function(x, y, eff, rot, color, data) {
-    if(Vars.state.isPaused()) return;
     if(rot == null) rot = Mathf.random(360.0);
     if(color == null) color = Color.white;
 
@@ -116,7 +52,7 @@
       eff.at(x, y, rot, color) :
       eff.at(x, y, rot, color, data);
   }
-  .setAnno("non-headless");
+  .setAnno("effect");
   exports.showAt = showAt;
 
 
@@ -131,7 +67,6 @@
    * @return {void}
    */
   const showAt_global = function(x, y, eff, rot, color, data) {
-    if(Vars.state.isPaused()) return;
     if(rot == null) rot = Mathf.random(360.0);
     if(color == null) color = Color.white;
 
@@ -141,7 +76,7 @@
 
     showAt(x, y, eff, rot, color, data);
   }
-  .setAnno("non-headless");
+  .setAnno("effect");
   exports.showAt_global = showAt_global;
 
 
@@ -157,11 +92,9 @@
    * @return {void}
    */
   const showAround = function(x, y, eff, rad, rot, color, data) {
-    if(Vars.state.isPaused()) return;
-
     showAt(x + Mathf.range(rad), y + Mathf.range(rad), eff, rot, color, data);
   }
-  .setAnno("non-headless");
+  .setAnno("effect");
   exports.showAround = showAround;
 
 
@@ -177,45 +110,13 @@
    * @return {void}
    */
   const showAround_global = function(x, y, eff, rad, rot, color, data) {
-    if(Vars.state.isPaused()) return;
-
     showAt_global(x + Mathf.range(rad), y + Mathf.range(rad), eff, rot, color, data);
   }
-  .setAnno("non-headless");
+  .setAnno("effect");
   exports.showAround_global = showAround_global;
 
 
-  /* <------------------------------ special sounds ------------------------------ */
-
-
-  /**
-   * Payload drop sound.
-   * @param {number} x
-   * @param {number} y
-   * @param {string|Block|UnitType|null} ct_gn
-   * @return {void}
-   */
-  const _s_payloadDrop = function(x, y, ct_gn) {
-    let ct = MDL_content.getCt(ct_gn, null, true);
-    if(ct == null) return;
-
-    playAt(
-      x, y,
-      ct instanceof Block ?
-        ct.placeSound :
-        ct.hitSize <= 12.0 ?
-          Sounds.payloadDrop1 :
-          ct.hitSize <= 20.0 ?
-            Sounds.payloadDrop2 :
-            Sounds.payloadDrop3,
-      1.0, 1.0, 0.1,
-    );
-  }
-  .setAnno("non-headless");
-  exports._s_payloadDrop = _s_payloadDrop;
-
-
-  /* <------------------------------ special effects ------------------------------ */
+  /* <------------------------------ effect ------------------------------ */
 
 
   /**
@@ -226,16 +127,15 @@
    * @param {number|unset} [dur]
    * @return {void}
    */
-  const _e_shake = function(x, y, pow, dur) {
-    if(Vars.state.isPaused()) return;
+  const shake = function(x, y, pow, dur) {
     if(pow == null) pow = 4.0;
     if(dur == null) dur = 60.0;
     if(pow < 0.0001 || dur < 0.0001) return;
 
     Effect.shake(pow, dur, x, y);
   }
-  .setAnno("non-headless");
-  exports._e_shake = _e_shake;
+  .setAnno("effect");
+  exports.shake = shake;
 
 
   /**
@@ -246,8 +146,7 @@
    * @param {number|unset} [repeat]
    * @return {void}
    */
-  const _e_dust = function(x, y, rad, repeat) {
-    if(Vars.state.isPaused()) return;
+  const dust = function(x, y, rad, repeat) {
     if(rad == null) rad = 8.0;
     if(repeat == null) repeat = 1;
 
@@ -258,8 +157,8 @@
       Effect.floorDust(x_i, y_i, 8.0);
     });
   }
-  .setAnno("non-headless");
-  exports._e_dust = _e_dust;
+  .setAnno("effect");
+  exports.dust = dust;
 
 
   /**
@@ -269,21 +168,20 @@
    * @param {Color|unset} [color]
    * @return {void}
    */
-  const _e_click = function thisFun(x, y, color) {
-    if(Vars.state.isPaused()) return;
+  const click = function thisFun(x, y, color) {
     if(color == null) color = Pal.accent;
 
     showAt(x, y, thisFun.eff, 0.0, color);
   }
   .setProp({
-    eff: TP_effect._circleWave({
+    eff: TP_effect.waveCircle({
       size_f: 2.0,
       rad: 6.0,
       scl: 0.75,
     }),
   })
-  .setAnno("non-headless");
-  exports._e_click = _e_click;
+  .setAnno("effect");
+  exports.click = click;
 
 
   /**
@@ -294,347 +192,66 @@
    * @param {Color|unset} [color]
    * @return {void}
    */
-  const _e_colorDust = function thisFun(x, y, rad, color) {
-    if(Vars.state.isPaused()) return;
+  const colorDust = function(x, y, rad, color) {
     if(rad == null) rad = 20.0;
     if(color == null) color = Color.white;
 
-    showAt(x, y, thisFun.eff, rad, color);
+    showAt(x, y, LCFx.colorDust, rad, color);
   }
-  .setProp({
-    eff: (function() {
-      const tmp = new Effect(80.0, eff => {
-        let
-          frac1 = Interp.pow10Out.apply(Interp.pow10Out.apply(eff.fin())),
-          frac2 = 1.0 - Interp.pow2In.apply(eff.fin());
-
-        Draw.color(eff.color);
-        Angles.randLenVectors(eff.id, 18, eff.finpow() * eff.rotation, (x, y) => {
-          Fill.circle(eff.x + x * frac1, eff.y + y * frac1, frac2 * 3.5);
-        });
-        Draw.color(Tmp.c1.set(eff.color).mul(1.2));
-        Angles.randLenVectors(eff.id + 11, 14, eff.finpow() * eff.rotation * 0.9, (x, y) => {
-          Fill.circle(eff.x + x * frac1, eff.y + y * frac1, frac2 * 3.0);
-        });
-        Draw.color(Tmp.c1.set(eff.color).mul(1.35));
-        Angles.randLenVectors(eff.id + 22, 10, eff.finpow() * eff.rotation * 0.85, (x, y) => {
-          Fill.circle(eff.x + x * frac1, eff.y + y * frac1, frac2 * 2.5);
-        });
-      });
-      tmp.layer = VAR.layer.effFlr - 0.1;
-
-      return tmp;
-    })(),
-  })
-  .setAnno("non-headless");
-  exports._e_colorDust = _e_colorDust;
+  .setAnno("effect");
+  exports.colorDust = colorDust;
 
 
   /**
    * Triangles that move towards the nearest core.
    * @param {number} x
    * @param {number} y
-   * @param {Team|unset} [team]
+   * @param {Team} team
    * @param {number|unset} [pad] - Distance between center and actual starting position.
    * @param {number|unset} [rad] - Length of path.
    * @return {void}
    */
-  const _e_coreSignal = function thisFun(x, y, team, pad, rad) {
-    if(Vars.state.isPaused() || team == null) return;
+  const coreSignal = function (x, y, team, pad, rad) {
     let b = Vars.state.teams.closestCore(x, y, team);
     if(b == null) return;
     if(pad == null) pad = 0.0;
     if(rad == null) rad = 40.0;
 
-    showAt(x, y, thisFun.eff, rad, team.color, [b, pad, Math.random() > 0.5]);
+    showAt(x, y, LCFx.coreSignal, rad, team.color, [b, pad, Math.random() > 0.5]);
   }
-  .setProp({
-    eff: new Effect(200.0, eff => {
-      let
-        ang = Mathf.angle(eff.data[0].x - eff.x, eff.data[0].y - eff.y),
-        size = 18.0 - 14.0 * Interp.pow2Out.apply(1.0 - eff.fout());
-
-      Draw.color(eff.color, Interp.pow2In.apply(1.0 - eff.fin()));
-      Draw.rect(
-        "lovec-efr-triangle-hollow",
-        eff.x + eff.rotation * Mathf.cosDeg(ang) * eff.fin() + eff.data[1] * Mathf.cosDeg(ang),
-        eff.y + eff.rotation * Mathf.sinDeg(ang) * eff.fin() + eff.data[1] * Mathf.sinDeg(ang),
-        size,
-        size,
-        ang + 90.0 + 640.0 * eff.fin() * (eff.data[2] ? -1.0 : 1.0));
-      Draw.reset();
-    }),
-  })
-  .setAnno("non-headless");
-  exports._e_coreSignal = _e_coreSignal;
+  .setAnno("effect");
+  exports.coreSignal = coreSignal;
 
 
   /**
-   * Circle effect usually used as trail.
-   * @param {number} x
-   * @param {number} y
-   * @param {number|unset} [rad]
-   * @param {Color|unset} [color]
-   * @return {void}
-   */
-  const _e_trailCircle = function thisFun(x, y, rad, color) {
-    if(Vars.state.isPaused()) return;
-    if(rad == null) rad = 4.0;
-    if(color == null) color = Pal.accent;
-
-    showAt(x, y, thisFun.eff, rad, color);
-  }
-  .setProp({
-    eff: new Effect(50.0, eff => {
-      Draw.color(eff.color);
-      Fill.circle(eff.x, eff.y, eff.fout() * eff.rotation);
-      Draw.color();
-    }),
-  })
-  .setAnno("non-headless");
-  exports._e_trailCircle = _e_trailCircle;
-
-
-  /**
-   * Ripple effect on liquid floor.
-   * @param {number} x
-   * @param {number} y
-   * @param {number|unset} [rad]
-   * @param {Color|unset} [color]
-   * @return {void}
-   */
-  const _e_ripple = function thisFun(x, y, rad, color) {
-    if(Vars.state.isPaused()) return;
-    if(rad == null) rad = 18.0;
-    if(color == null) {
-      let t = Vars.world.tileWorld(x, y);
-      color = t == null ? Color.white : t.getFloorColor();
-    };
-
-    showAt(x, y, thisFun.eff, rad, color);
-  }
-  .setProp({
-    eff: (function() {
-      const tmp = new Effect(30.0, eff => {
-        eff.lifetime = 30.0 * eff.rotation * 0.25;
-
-        Draw.color(Tmp.c1.set(eff.color).mul(1.5));
-        Lines.stroke(eff.fout() * 1.4);
-        Lines.circle(eff.x, eff.y, eff.fin() * eff.rotation);
-        Draw.reset();
-      });
-      tmp.layer = Layer.debris - 0.0001;
-
-      return tmp;
-    })(),
-  })
-  .setAnno("non-headless");
-  exports._e_ripple = _e_ripple;
-
-
-  /**
-   * Impact wave effect.
-   * @param {number} x
-   * @param {number} y
-   * @param {number|unset} [rad]
-   * @return {void}
-   */
-  const _e_impactWave = function thisFun(x, y, rad) {
-    if(Vars.state.isPaused()) return;
-
-    thisFun.effs.forEachFast(eff => {
-      showAt(x, y, eff, rad);
-    });
-  }
-  .setProp({
-    effs: [
-      TP_effect._impactWave(),
-      TP_effect._impactWave({scl: 1.2}),
-      TP_effect._impactWave({scl: 1.5}),
-      TP_effect._impactWave({scl: 1.9}),
-    ],
-  })
-  .setAnno("non-headless");
-  exports._e_impactWave = _e_impactWave;
-
-
-  /**
-   * Rotor wave effect for some units.
-   * @param {number} x
-   * @param {number} y
-   * @param {number|unset} [rad]
-   * @return {void}
-   */
-  const _e_rotorWave = function thisFun(x, y, rad) {
-    if(Vars.state.isPaused()) return;
-
-    showAt(x, y, thisFun.eff, rad);
-  }
-  .setProp({
-    eff: (function() {
-      const tmp = new Effect(20.0, eff => {
-        eff.lifetime = 20.0 * Math.pow(eff.rotation * 0.025, 0.5);
-
-        Draw.color(_e_rotorWave.effColor1, _e_rotorWave.effColor2, eff.fin());
-        Lines.stroke(2.0);
-        Lines.circle(eff.x, eff.y, eff.rotation * eff.fin());
-        Draw.reset();
-      });
-      tmp.layer = VAR.layer.effFlr;
-
-      return tmp;
-    })(),
-    effColor1: VAR.color.rotorWhite,
-    effColor2: VAR.color.whiteClear,
-  })
-  .setAnno("non-headless");
-  exports._e_rotorWave = _e_rotorWave;
-
-
-  /**
-   * Jet trail effect for some units.
-   * @param {number} x
-   * @param {number} y
-   * @param {number|unset} [rad]
-   * @return {void}
-   */
-  const _e_jetTrail = function thisFun(x, y, unit) {
-    if(Vars.state.isPaused()) return;
-
-    showAt(x, y, thisFun.eff, unit.rotation - 90.0, null, unit);
-  }
-  .setProp({
-    eff: (function() {
-      const tmp = new Effect(50.0, eff => {
-        Draw.alpha(Interp.pow2In.apply(eff.fout()) * 0.08);
-        Draw.rect(
-          "lovec-efr-jet-trail",
-          eff.data.x - Mathf.cosDeg(eff.rotation + 90.0) * eff.data.hitSize * 6.0 * eff.fin(),
-          eff.data.y - Mathf.sinDeg(eff.rotation + 90.0) * eff.data.hitSize * 6.0 * eff.fin(),
-          eff.data.hitSize * (8.0 + eff.fin() * 8.0),
-          eff.data.hitSize * (4.0 + eff.fin() * 4.0),
-          eff.rotation,
-        );
-        Draw.color();
-      });
-      tmp.layer = VAR.layer.effSmogHigh;
-
-      return tmp;
-    })(),
-  })
-  .setAnno("non-headless");
-  exports._e_jetTrail = _e_jetTrail;
-
-
-  /**
-   * Liquid corrosion effect.
-   * @param {number} x
-   * @param {number} y
-   * @param {number|unset} [size]
-   * @param {Color|unset} [color]
-   * @param {boolean|unset} [isClogging]
-   * @return {void}
-   */
-  const _e_corrosion = function thisFun(x, y, size, color, isClogging) {
-    if(Vars.state.isPaused()) return;
+  * Liquid corrosion effect.
+  * @param {number} x
+  * @param {number} y
+  * @param {number|unset} [size]
+  * @param {Color|unset} [color]
+  * @param {boolean|unset} [isClogging]
+  * @return {void}
+  */
+  const corrosion = function(x, y, size, color, isClogging) {
     if(size == null) size = 1;
     if(color == null) color = Color.white;
 
-    showAround(x, y, thisFun.eff, size * Vars.tilesize * 0.5, null, color, tryVal(isClogging, false));
+    showAround(x, y, LCFx.corrosion, size * Vars.tilesize * 0.5, null, color, tryVal(isClogging, false));
   }
-  .setProp({
-    eff: new Effect(120.0, eff => {
-      Draw.z(VAR.layer.effBase);
-      Draw.color(eff.color);
-      !eff.data ?
-        Fill.circle(eff.x, eff.y, 0.8 * Interp.pow5Out.apply(1.0 - eff.fin())) :
-        Draw.rect(
-          "lovec-efr-glob", eff.x, eff.y,
-          5.0 * Interp.pow5Out.apply(1.0 - eff.fin()),
-          5.0 * Interp.pow5Out.apply(1.0 - eff.fin()),
-          eff.rotation,
-        );
-    }),
-  })
-  .setAnno("non-headless");
-  exports._e_corrosion = _e_corrosion;
+  .setAnno("effect");
+  exports.corrosion = corrosion;
 
 
   /**
-   * Creates flash effect over an entity.
-   * @param {Building|Unit} e
-   * @param {Color|unset} [color]
-   * @return {void}
-   */
-  const _e_flash = function thisFun(e, color) {
-    if(Vars.state.isPaused() || e == null) return;
-    if(color == null) color = Color.white;
-
-    if(e instanceof Building) {
-      let reg = !(e.block instanceof BaseTurret) ?
-        e.block.fullIcon :
-        tryVal(MDL_texture.getRegTurBase(e.block), e.block.region);
-      if(reg != null) {
-        showAt(MDL_ui.getCameraX(), MDL_ui.getCameraY(), thisFun.eff, 0.0, color, [reg, e]);
-      };
-    } else {
-      color.equals(Pal.heal) ?
-        unit.healTime = 1.0 :
-        unit.hitTime = 1.0;
-    };
-  }
-  .setProp({
-    eff: new Effect(20.0, eff => {
-      LCDraw.regionMixcol(
-        eff.data[1].x, eff.data[1].y,
-        eff.data[0], eff.data[1].drawrot(), 1.0, eff.color,
-        eff.color.a * eff.fout(),
-        1.0,
-        Layer.effect + VAR.layer.offDrawOver,
-      );
-    }),
-  })
-  .setAnno("non-headless");
-  exports._e_flash = _e_flash;
-
-
-  /**
-   * Creates a texture region or icon that fades out.
-   * @param {number} x
-   * @param {number} y
-   * @param {TextureRegion|null} reg
-   * @param {Color|unset} [color]
-   * @param {number|unset} [scl]
-   * @return {void}
-   */
-  const _e_regFade = function thisFun(x, y, reg, color, scl) {
-    if(Vars.state.isPaused() || reg == null) return;
-    if(color == null) color = Color.white;
-    if(scl == null) scl = 1.0;
-
-    showAt(x, y, thisFun.eff, scl, color, reg);
-  }
-  .setProp({
-    eff: new Effect(40.0, eff => {
-      eff.lifetime = 40.0 * eff.rotation;
-
-      LCDraw.region(eff.x, eff.y, eff.data, 0.0, 1.0, eff.color, eff.fout() * eff.color.a, Layer.effect + VAR.layer.offDrawOver);
-    }),
-  })
-  .setAnno("non-headless");
-  exports._e_regFade = _e_regFade;
-
-
-  /**
-   * Damage display effect.
-   * @param {number} x
-   * @param {number} y
-   * @param {number} dmg
-   * @param {Team|unset} [team]
-   * @param {string|unset} [mode] - Determines format of damage text, see {@link CLS_damageTextMode}.
-   * @return {void}
-   */
-  const _e_dmg = function thisFun(x, y, dmg, team, mode) {
+  * Damage display effect.
+  * @param {number} x
+  * @param {number} y
+  * @param {number} dmg
+  * @param {Team|unset} [team]
+  * @param {string|unset} [mode] - Determines format of damage text, see {@link CLS_damageTextMode}.
+  * @return {void}
+  */
+  const damage = function thisFun(x, y, dmg, team, mode) {
     if(!PARAM.ENABLE_DAMAGE_DISPLAY || dmg < 0.0001 || dmg < PARAM.DAMAGE_DISPLAY_THRESHOLD) return;
     if(mode == null) mode = "health";
     if(team == null) team = Team.derelict;
@@ -656,8 +273,28 @@
       );
     }),
   })
-  .setAnno("non-headless");
-  exports._e_dmg = _e_dmg;
+  .setAnno("effect");
+  exports.damage = damage;
+
+
+  /**
+  * Creates a texture region or icon that fades out.
+  * @param {number} x
+  * @param {number} y
+  * @param {TextureRegion|null} reg
+  * @param {Color|unset} [color]
+  * @param {number|unset} [scl]
+  * @return {void}
+  */
+  const fadeRegion = function(x, y, reg, color, scl) {
+    if(reg == null) return;
+    if(color == null) color = Color.white;
+    if(scl == null) scl = 1.0;
+
+    showAt(x, y, LCFx.fadeRegion, scl, color, reg);
+  }
+  .setAnno("effect");
+  exports.fadeRegion = fadeRegion;
 
 
   /**
@@ -669,22 +306,162 @@
    * @param {number|unset} [offTy]
    * @return {void}
    */
-  const _e_textFade = function thisFun(x, y, text, color, offTy) {
-    if(Vars.state.isPaused()) return;
+  const fadeText = function(x, y, text, color, offTy) {
     if(color == null) color = Color.white;
 
-    showAt(x, y + (tryVal(offTy, 0) + 0.5) * Vars.tilesize, thisFun.eff, 0.0, color.cpy(), String(text));
+    showAt(x, y + (tryVal(offTy, 0) + 0.5) * Vars.tilesize, LCFx.fadeText, 0.0, color, String(text));
+  }
+  .setAnno("effect");
+  exports.fadeText = fadeText;
+
+
+  /**
+  * Creates flash effect over an entity.
+  * @param {Building|Unit} e
+  * @param {Color|unset} [color]
+  * @return {void}
+  */
+  const flash = function(e, color) {
+    if(e == null) return;
+    if(color == null) color = Color.white;
+
+    if(e instanceof Building) {
+      let reg = !(e.block instanceof BaseTurret) ?
+      e.block.fullIcon :
+      tryVal(MDL_texture.getRegTurBase(e.block), e.block.region);
+      if(reg != null) {
+        showAt(MDL_ui.getCameraX(), MDL_ui.getCameraY(), LCFx.flashBuild, 0.0, color, [reg, e]);
+      };
+    } else {
+      color.equals(Pal.heal) ?
+      unit.healTime = 1.0 :
+      unit.hitTime = 1.0;
+    };
+  }
+  .setAnno("effect");
+  exports.flash = flash;
+
+
+  /**
+  * Impact wave effect.
+  * @param {number} x
+  * @param {number} y
+  * @param {number|unset} [rad]
+  * @return {void}
+  */
+  const impactWave = function thisFun(x, y, rad) {
+    thisFun.effs.forEachFast(eff => {
+      showAt(x, y, eff, rad);
+    });
   }
   .setProp({
-    eff: new Effect(80.0, eff => {
-      eff.color.a = 1.0 - Interp.pow2In.apply(eff.fin());
-      LCDraw.text(
-        eff.x, eff.y + 2.0 * eff.fin(), eff.data, Fonts.outline,
-        0.85, eff.color,
-      );
-    }),
-  });
-  exports._e_textFade = _e_textFade;
+    effs: [
+      TP_effect.waveImpact(),
+      TP_effect.waveImpact({scl: 1.2}),
+      TP_effect.waveImpact({scl: 1.5}),
+      TP_effect.waveImpact({scl: 1.9}),
+    ],
+  })
+  .setAnno("effect");
+  exports.impactWave = impactWave;
+
+
+  /**
+   * Item transfer effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {PosGn|null} posIns
+   * @param {Color|unset} [color]
+   * @param {number|unset} [repeat]
+   * @param {boolean|unset} [isGlobal]
+   * @return {void}
+   */
+  const itemTransfer = function(x, y, posIns, color, repeat, isGlobal) {
+    if(posIns == null) return;
+    if(color == null) color = Pal.accent;
+    if(repeat == null) repeat = 3;
+
+    for(let i = 0; i < repeat; i++) {
+      (isGlobal ? showAt_global : showAt)(x, y, Fx.itemTransfer, 0.0, color, posIns);
+    };
+  }
+  .setAnno("effect");
+  exports.itemTransfer = itemTransfer;
+
+
+  /**
+   * Laser beam effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {PoscGn|null} e_f
+   * @param {PoscGn|null} e_t
+   * @param {Color|unset} [color]
+   * @param {number|unset} [strokeScl]
+   * @param {boolean|unset} [hasLight]
+   * @return {void}
+   */
+  const laser = function thisFun(x, y, e_f, e_t, color, strokeScl, hasLight) {
+    if(e_t == null) return;
+    if(color == null) color = Pal.accent;
+
+    showAt(x, y, LCFx.laser, tryVal(strokeScl, 1.0), color, [e_f, e_t, tryVal(hasLight, false)]);
+  }
+  .setAnno("effect");
+  exports.laser = laser;
+
+
+  /**
+   * Lightning effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {PoscGn|null} e
+   * @param {Color|unset} [color]
+   * @param {boolean|unset} [hasSound]
+   * @return {void}
+   */
+  const lightning = function(x, y, e, color, hasSound) {
+    if(posIns == null) return;
+    if(color == null) color = Pal.accent;
+
+    showAt(x, y, Fx.chainLightning, 0.0, color, e);
+    if(hasSound) {
+      MDL_sound.playAt(x, y, Sounds.shootArc);
+    };
+  }
+  .setAnno("effect");
+  exports.lightning = lightning;
+
+
+  /**
+   * Chain lightning effect with multiple targets.
+   * @param {number} x
+   * @param {number} y
+   * @param {Array<PoscGn>} es
+   * @param {Color|unset} [color]
+   * @param {boolean|unset} [hasSound]
+   * @return {void}
+   */
+  const lightningChain = function thisFun(x, y, es, color, hasSound) {
+    if(es.length === 0) return;
+
+    let i = 0, iCap = es.iCap();
+    let e1, e2;
+    while(i < iCap) {
+      e1 = (i === 0) ? thisFun.tmpVec.set(x, y) : es[i - 1];
+      e2 = es[i];
+      lightning(e1.x, e1.y, e2, color);
+      i++;
+    };
+
+    if(hasSound) {
+      MDL_sound.playAt(x, y, Sounds.shootArc);
+    };
+  }
+  .setProp({
+    tmpVec: new Vec2(),
+  })
+  .setAnno("effect");
+  exports.lightningChain = lightningChain;
 
 
   /**
@@ -699,185 +476,15 @@
    * @param {boolean|unset} [shouldInvertSpike]
    * @return {void}
    */
-  const _e_line = function thisFun(x, y, e_f, e_t, color, strokeScl, shouldDrawSpike, shouldInvertSpike) {
-    if(Vars.state.isPaused() || e_t == null) return;
+  const line = function (x, y, e_f, e_t, color, strokeScl, shouldDrawSpike, shouldInvertSpike) {
+    if(e_t == null) return;
     if(color == null) color = Color.white;
     if(strokeScl == null) strokeScl = 1.0;
 
-    showAt(x, y, thisFun.eff, strokeScl, color, [e_f, e_t, Boolean(shouldDrawSpike), Boolean(shouldInvertSpike)]);
+    showAt(x, y, LCFx.line, strokeScl, color, [e_f, e_t, Boolean(shouldDrawSpike), Boolean(shouldInvertSpike)]);
   }
-  .setProp({
-    eff: new Effect(40.0, eff => {
-      Lines.stroke(2.0 * eff.rotation * eff.fout(eff.data[2] ? Interp.pow10Out : Interp.linear), eff.color);
-      Draw.alpha(eff.color.a);
-      if(eff.data[2]) {
-        LCPos.forEachLinePoint(
-          eff.data[0] == null ? eff.x : eff.data[0].x,
-          eff.data[0] == null ? eff.y : eff.data[0].y,
-          eff.data[1].x, eff.data[1].y,
-          (x, y, ang) => {
-            Drawf.tri(x, y, 6.0 * eff.fout() * eff.rotation, 12.0 * eff.rotation, !eff.data[3] ? (ang + 145.0) : (ang + 35.0));
-            Drawf.tri(x, y, 8.0 * eff.fout() * eff.rotation, 18.0 * eff.rotation, !eff.data[3] ? (ang + 215.0) : (ang - 35.0));
-          },
-          1.5, !eff.data[3], eff.data[3],
-        );
-      };
-      Lines.line(
-        eff.data[0] == null ? eff.x : eff.data[0].x,
-        eff.data[0] == null ? eff.y : eff.data[0].y,
-        eff.data[1].x, eff.data[1].y,
-      );
-      Draw.reset();
-    }),
-  })
-  .setAnno("non-headless");
-  exports._e_line = _e_line;
-
-
-  /**
-   * Item transfer effect.
-   * @param {number} x
-   * @param {number} y
-   * @param {PosGn|null} posIns
-   * @param {Color|unset} [color]
-   * @param {number|unset} [repeat]
-   * @param {boolean|unset} [isGlobal]
-   * @return {void}
-   */
-  const _e_itemTransfer = function(x, y, posIns, color, repeat, isGlobal) {
-    if(Vars.state.isPaused() || posIns == null) return;
-    if(color == null) color = Pal.accent;
-    if(repeat == null) repeat = 3;
-
-    for(let i = 0; i < repeat; i++) {
-      (isGlobal ? showAt_global : showAt)(x, y, Fx.itemTransfer, 0.0, color, posIns);
-    };
-  }
-  .setAnno("non-headless");
-  exports._e_itemTransfer = _e_itemTransfer;
-
-
-  /**
-   * Lightning effect.
-   * @param {number} x
-   * @param {number} y
-   * @param {PoscGn|null} e
-   * @param {Color|unset} [color]
-   * @param {boolean|unset} [hasSound]
-   * @return {void}
-   */
-  const _e_lightning = function(x, y, e, color, hasSound) {
-    if(Vars.state.isPaused() || posIns == null) return;
-    if(color == null) color = Pal.accent;
-
-    showAt(x, y, Fx.chainLightning, 0.0, color, e);
-    if(hasSound) playAt(x, y, Sounds.shootArc);
-  }
-  .setAnno("non-headless");
-  exports._e_lightning = _e_lightning;
-
-
-  /**
-   * Chain lightning effect with multiple targets.
-   * @param {number} x
-   * @param {number} y
-   * @param {Array<PoscGn>} es
-   * @param {Color|unset} [color]
-   * @param {boolean|unset} [hasSound]
-   * @return {void}
-   */
-  const _e_chainLightning = function thisFun(x, y, es, color, hasSound) {
-    if(Vars.state.isPaused() || es.length === 0) return;
-
-    let i = 0, iCap = es.iCap();
-    let e1, e2;
-    while(i < iCap) {
-      e1 = (i === 0) ? thisFun.tmpVec.set(x, y) : es[i - 1];
-      e2 = es[i];
-      _e_lightning(e1.x, e1.y, e2, color);
-      i++;
-    };
-
-    if(hasSound) playAt(x, y, Sounds.shootArc);
-  }
-  .setProp({
-    tmpVec: new Vec2(),
-  })
-  .setAnno("non-headless");
-  exports._e_chainLightning = _e_chainLightning;
-
-
-  /**
-   * Laser beam effect.
-   * @param {number} x
-   * @param {number} y
-   * @param {PoscGn|null} e_f
-   * @param {PoscGn|null} e_t
-   * @param {Color|unset} [color]
-   * @param {number|unset} [strokeScl]
-   * @param {boolean|unset} [hasLight]
-   * @return {void}
-   */
-  const _e_laser = function thisFun(x, y, e_f, e_t, color, strokeScl, hasLight) {
-    if(Vars.state.isPaused() || e_t == null) return;
-    if(color == null) color = Pal.accent;
-
-    showAt(x, y, thisFun.eff, tryVal(strokeScl, 1.0), color, [e_f, e_t, tryVal(hasLight, false)]);
-  }
-  .setProp({
-    eff: new Effect(30.0, eff => {
-      LCDrawf.laser(
-        eff.data[0] == null ? eff.x : eff.data[0].x,
-        eff.data[0] == null ? eff.y : eff.data[0].y,
-        eff.data[1].x,
-        eff.data[1].y,
-        eff.rotation * Interp.pow2Out.apply(1.0 - eff.fin()),
-        eff.color,
-        1.0,
-        eff.data[2],
-      );
-    }),
-  })
-  .setAnno("non-headless");
-  exports._e_laser = _e_laser;
-
-
-  /**
-   * Point laser effect.
-   * @param {number} x
-   * @param {number} y
-   * @param {PoscGn|null} e
-   * @param {Color|unset} [color]
-   * @param {SoundGn|unset} [se_gn]
-   * @return {void}
-   */
-  const _e_pointLaser = function thisFun(x, y, e, color, se_gn) {
-    if(Vars.state.isPaused() || e == null) return;
-    if(color == null) color = Pal.remove;
-    let tup = [e.x, e.y];
-
-    showAt(x, y, thisFun.eff1, 0.0, color, tup);
-    showAt(x, y, thisFun.eff2, 0.0, color, tup);
-    showAt(x, y, thisFun.eff2, 0.0, color);
-    if(se_gn != null) playAt(x, y, se_gn, 1.0, 1.0, 0.05);
-  }
-  .setProp({
-    eff1: new Effect(30.0, 300.0, eff => {
-      Draw.color(eff.color, eff.fout());
-      Lines.stroke(2.0);
-      Lines.line(eff.x, eff.y, eff.data[0], eff.data[1]);
-      Drawf.light(eff.x, eff.y, eff.data[0], eff.data[1], 20.0, eff.color, 0.65 * eff.fout());
-      Draw.reset();
-    }),
-    eff2: new Effect(30.0, eff => {
-      Draw.color(eff.color, eff.fout());
-      eff.data == null ?
-        Fill.circle(eff.x, eff.y, 2.0 + eff.fout()) :
-        Fill.circle(eff.data[0], eff.data[1], 2.0 + eff.fout());
-    }),
-  })
-  .setAnno("non-headless");
-  exports._e_pointLaser = _e_pointLaser;
+  .setAnno("effect");
+  exports.line = line;
 
 
   /**
@@ -890,29 +497,119 @@
    * @param {boolean|unset} [isOut]
    * @return {void}
    */
-  const _e_payloadDeposit = function thisFun(x1, y1, x2, y2, ct_gn, isOut) {
+  const payloadDeposit = function(x1, y1, x2, y2, ct_gn, isOut) {
     let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
 
-    showAt(x1, y1, thisFun.eff, Angles.angle(x1, y1, x2, y2), null, [x2, y2, ct, Boolean(isOut)]);
+    showAt(x1, y1, LCFx.payloadDeposit, Angles.angle(x1, y1, x2, y2), null, [x2, y2, ct, Boolean(isOut)]);
+  }
+  .setAnno("effect");
+  exports.payloadDeposit = payloadDeposit;
+
+
+  /**
+   * Point laser effect.
+   * @param {number} x
+   * @param {number} y
+   * @param {PoscGn|null} e
+   * @param {Color|unset} [color]
+   * @param {SoundGn|unset} [se_gn]
+   * @return {void}
+   */
+  const pointLaser = function(x, y, e, color, se_gn) {
+    if(e == null) return;
+    if(color == null) color = Pal.remove;
+
+    showAt(x, y, LCFx.pointLaserLine, 0.0, color, e);
+    showAt(x, y, LCFx.pointLaserEnd, 0.0, color, e);
+    showAt(x, y, LCFx.pointLaserEnd, 0.0, color);
+    if(se_gn != null) {
+      MDL_sound.playAt(x, y, se_gn, 1.0, 1.0, 0.05);
+    };
+  }
+  .setAnno("effect");
+  exports.pointLaser = pointLaser;
+
+
+  /**
+  * Ripple effect on liquid floor.
+  * @param {number} x
+  * @param {number} y
+  * @param {number|unset} [rad]
+  * @param {Color|unset} [color]
+  * @return {void}
+  */
+  const ripple = function(x, y, rad, color) {
+    if(rad == null) rad = 18.0;
+    if(color == null) {
+      let t = Vars.world.tileWorld(x, y);
+      color = t == null ? Color.white : t.getFloorColor();
+    };
+
+    showAt(x, y, LCFx.ripple, rad, color);
+  }
+  .setAnno("effect");
+  exports.ripple = ripple;
+
+
+  /**
+  * Rotor wave effect for some units.
+  * @param {number} x
+  * @param {number} y
+  * @param {number|unset} [rad]
+  * @return {void}
+  */
+  const rotorWave = function thisFun(x, y, rad) {
+    showAt(x, y, thisFun.eff, rad);
   }
   .setProp({
     eff: (function() {
-      const tmp = new Effect(30.0, eff => {
-        Tmp.v1.set(eff.x, eff.y).lerp(Tmp.v2.set(eff.data[0], eff.data[1]), eff.fin(eff.data[3] ? Interp.pow5In : Interp.linear));
-        processScl((eff.data[3] ? eff.fin() : eff.fout(Interp.pow3Out)) * 1.05);
-        eff.data[2] instanceof Block ?
-          Drawf.squareShadow(Tmp.v1.x, Tmp.v1.y, eff.data[2].size * Vars.tilesize * 1.85, 1.0) :
-          eff.data[2] instanceof UnitType ?
-            eff.data[2].drawSoftShadow(Tmp.v1.x, Tmp.v2.y, eff.data[2].rotation, 1.0) :
-            Drawf.shadow(Tmp.v1.x, Tmp.v1.y, 18.0, 1.0);
-        Draw.rect(eff.data[2].fullIcon, Tmp.v1.x, Tmp.v1.y, eff.data[2] instanceof UnitType ? (eff.data[2].rotation - 90.0) : 0.0);
-        processScl();
+      const tmp = new Effect(20.0, eff => {
+        eff.lifetime = 20.0 * Math.pow(eff.rotation * 0.025, 0.5);
+
+        Draw.color(rotorWave.effColor1, rotorWave.effColor2, eff.fin());
+        Lines.stroke(2.0);
+        Lines.circle(eff.x, eff.y, eff.rotation * eff.fin());
+        Draw.reset();
       });
-      tmp.layer = Layer.flyingUnitLow - 5.0;
+      tmp.layer = VAR.layer.effFlr;
 
       return tmp;
     })(),
+    effColor1: VAR.color.rotorWhite,
+    effColor2: VAR.color.whiteClear,
   })
-  .setAnno("non-headless");
-  exports._e_payloadDeposit = _e_payloadDeposit;
+  .setAnno("effect");
+  exports.rotorWave = rotorWave;
+
+
+  /**
+   * Circle effect usually used as trail.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @param {Color|unset} [color]
+   * @return {void}
+   */
+  const trailCircle = function(x, y, rad, color) {
+    if(rad == null) rad = 4.0;
+    if(color == null) color = Pal.accent;
+
+    showAt(x, y, LCFx.trailCircle, rad, color);
+  }
+  .setAnno("effect");
+  exports.trailCircle = trailCircle;
+
+
+  /**
+   * Jet trail effect for some units.
+   * @param {number} x
+   * @param {number} y
+   * @param {number|unset} [rad]
+   * @return {void}
+   */
+  const trailJet = function(x, y, unit) {
+    showAt(x, y, LCFx.trailJet, unit.rotation - 90.0, null, unit);
+  }
+  .setAnno("effect");
+  exports.trailJet = trailJet;

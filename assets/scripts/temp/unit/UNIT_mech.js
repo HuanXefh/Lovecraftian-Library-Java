@@ -16,7 +16,7 @@
 
   function comp_update(utp, unit) {
     if(!PARAM.IS_SPACE_MAP && TIMER.jetTrail && utp.jetTrailVelThr > 0.0 && unit.elevation > 0.73 && unit.vel.len() > utp.jetTrailVelThr) {
-      MDL_effect._e_jetTrail(unit.x, unit.y, unit);
+      MDL_effect.trailJet(unit.x, unit.y, unit);
     };
   };
 

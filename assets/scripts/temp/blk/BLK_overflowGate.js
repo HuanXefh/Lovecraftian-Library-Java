@@ -22,7 +22,7 @@
     blk.config(JAVA.boolean, (b, bool) => {
       if(bool !== b.delegee.isInv) {
         b.delegee.isInv = bool;
-        EFF.placeFadePack[b.block.size].at(b);
+        EFF.fadePlacePack[b.block.size].at(b);
         b.recache();
         TRIGGER.invertSelection.fire();
       };

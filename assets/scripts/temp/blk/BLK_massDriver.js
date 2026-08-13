@@ -291,7 +291,7 @@
        */
       ex_onCraft: function() {
         this.ex_createImpactWave();
-        MDL_effect._e_impactWave(this.x, this.y, this.block.ex_calcImpactRad(this));
+        MDL_effect.impactWave(this.x, this.y, this.block.ex_calcImpactRad(this));
       }
       .setProp({
         noSuper: true,
