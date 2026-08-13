@@ -42,8 +42,10 @@
     blk.canShortCircuit = blk.canShortCircuit || DB_block.db["group"]["shortCircuit"].includes(blk.name);
 
     if(blk.useConfigStr) {
-      blk.config(JAVA.string, (b, str) => {
-        b.ex_handleConfigStr(str);
+      Core.app.post(() => {
+        blk.config(JAVA.string, (b, str) => {
+          b.ex_handleConfigStr(str);
+        });
       });
     };
 

@@ -362,8 +362,8 @@ public class LCDraw {
         if(ct == null) return;
 
         float
-            w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : (float) (ct.fullIcon.width / ct.fullIcon.height)),
-            h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : (float) (ct.fullIcon.height / ct.fullIcon.width));
+            w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : ((float) ct.fullIcon.width / ct.fullIcon.height)),
+            h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : ((float) ct.fullIcon.height / ct.fullIcon.width));
 
         processZ(z, ICON_REGION_Z_IND);
         Draw.rect(ct.fullIcon, x, y, w, h, ang);

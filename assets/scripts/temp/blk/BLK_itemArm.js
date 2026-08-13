@@ -25,6 +25,16 @@
     blk.drawDisabled = true;
     blk.drawDynamic = true;
     blk.drawCached = false;
+
+    blk.config(JAVA.boolean, (b, bool) => {
+      b.delegee.shouldDropLoot = bool;
+    });
+    blk.config(JAVA.float, (b, f) => {
+      b.delegee.blk$moveStackAmt = f;
+    });
+
+    blk.ex_addConfigCaller("shouldDropLoot", (b, val) => b.delegee.shouldDropLoot = val);
+    blk.ex_addConfigCaller("stackThreshold", (b, val) => b.delegee.blk$moveStackAmt = val);
   };
 
 
@@ -62,14 +72,14 @@
           if(b.ex_canInsertItm(b_t, b.moveItmCur, b.moveItmAmtCur)) {
             if(b.isFirstInsertion) {
               b.isFirstInsertion = false;
-              if(b_t.block instanceof ItemVoid) {
-                // Do nothing, dump instead to prevent crash
+              if(b.block.ex_shouldAlwaysDump(b_t.block)) {
+                // Do nothing, dump instead
               } else {
-                let amtTrans = b.block.ex_canForceInsert(b_t.block) ?
-                  b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b) :
-                  b_t.items == null ?
-                    0 :
-                    Math.min(b_t.getMaximumAccepted(b.moveItmCur) - b_t.items.get(b.moveItmAmtCur), b.moveItmAmtCur);
+                let amtTrans = b.block.ex_shouldCheckStack(b_t.block) ?
+                b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b) :
+                b_t.items == null ?
+                0 :
+                Math.min(b_t.getMaximumAccepted(b.moveItmCur) - b_t.items.get(b.moveItmAmtCur), b.moveItmAmtCur);
 
                 if(amtTrans > 0) {
                   b_t.handleStack(b.moveItmCur, amtTrans, b);
@@ -77,7 +87,7 @@
                 };
               };
             } else {
-              if(b.moveItmAmtCur > 0 && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+              if(b.moveItmAmtCur > 0 && (!(b_t.block instanceof Conveyor) || b_t.items.get(b.moveItmCur) < b_t.getMaximumAccepted(b.moveItmCur)) && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
                 b_t.handleItem(b, b.moveItmCur);
                 b.moveItmAmtCur--;
               };
@@ -88,16 +98,43 @@
             };
           };
         } else {
-          // Target is floor, drop items as loot
-          let itm = b.moveItmCur;
-          let amt = b.moveItmAmtCur;
-          Core.app.post(() => {
-            let ang = b.drawrot() + b.moveAng;
-            MDL_call.spawnLoot_server(b.x + b.block.delegee.itmDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itmDrawOff * Mathf.sinDeg(ang), itm, amt);
-          });
-          b.isBackMove = true;
-          b.moveItmCur = null;
-          b.moveItmAmtCur = 0;
+          // Target is floor, insert item into unit if found
+          let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(true, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(true, true) + 0.5) * Vars.tilesize);
+          if(unit != null && unit.isGrounded() && unit.acceptsItem(b.moveItmCur)) {
+            let amtTrans = Math.min(unit.maxAccepted(b.moveItmCur) - unit.stack.amount, b.moveItmAmtCur);
+            if(amtTrans > 0) {
+              FRAG_item.setUnitItem(unit, b.moveItmCur, unit.stack.amount + amtTrans);
+              b.moveItmAmtCur -= amtTrans;
+            };
+          };
+          if(b.moveItmAmtCur <= 0) {
+            b.isBackMove = true;
+            b.moveItmCur = null;
+            b.moveItmAmtCur = 0;
+          } else if(b.shouldDropLoot) {
+            // Insert item into loot if found
+            let loot = LCEntity.getLoot((b.ex_calcMoveIntCoord(true, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(true, true) + 0.5) * Vars.tilesize);
+            if(loot != null && loot.acceptsItem(b.moveItmCur)) {
+              let amtTrans = Math.min(loot.maxAccepted(b.moveItmCur) - loot.stack.amount, b.moveItmAmtCur);
+              if(amtTrans > 0) {
+                FRAG_item.setUnitItem(loot, b.moveItmCur, loot.stack.amount + amtTrans);
+                loot.time = 0.0;
+                b.moveItmAmtCur -= amtTrans;
+              };
+            };
+            if(b.moveItmAmtCur > 0) {
+              // Drop remaining items as loot
+              let itm = b.moveItmCur;
+              let amt = b.moveItmAmtCur;
+              Core.app.post(() => {
+                let ang = b.drawrot() + b.moveAng;
+                MDL_call.spawnLoot_server(b.x + b.block.delegee.itmDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itmDrawOff * Mathf.sinDeg(ang), itm, amt);
+              });
+            };
+            b.isBackMove = true;
+            b.moveItmCur = null;
+            b.moveItmAmtCur = 0;
+          };
         };
       };
     } else {
@@ -130,18 +167,30 @@
           };
 
         } else {
-          // Start is floor, pick if there's a loot
+          // Start is floor, pick if there's a unit
           if(TIMER.secHalf) {
-            let loot = LCEntity.getLoot((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
-            if(loot != null && loot.stack.amount > 0) {
-              b.moveItmCur = loot.item();
+            let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
+            if(unit != null && unit.isGrounded() && unit.stack.amount > 0) {
+              b.moveItmCur = unit.item();
               if(b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt)) {
-                let amtTrans = Math.min(loot.stack.amount, b.blk$moveStackAmt);
+                let amtTrans = Math.min(unit.stack.amount, b.blk$moveStackAmt);
                 b.isBackMove = false;
                 b.isFirstInsertion = true;
                 b.moveItmAmtCur = amtTrans;
-                if(!Vars.net.client()) {
-                  FRAG_item.setUnitItem_global(loot, loot.item(), loot.stack.amount - amtTrans);
+                FRAG_item.setUnitItem(unit, unit.item(), unit.stack.amount - amtTrans);
+              };
+            } else {
+              // Pick item from loot if found
+              let loot = LCEntity.getLoot((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
+              if(loot != null && loot.stack.amount > 0) {
+                b.moveItmCur = loot.item();
+                if(b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt)) {
+                  let amtTrans = Math.min(loot.stack.amount, b.blk$moveStackAmt);
+                  b.isBackMove = false;
+                  b.isFirstInsertion = true;
+                  b.moveItmAmtCur = amtTrans;
+                  FRAG_item.setUnitItem(loot, loot.item(), loot.stack.amount - amtTrans);
+                  loot.time = 0.0;
                 };
               };
             };
@@ -151,6 +200,25 @@
     };
 
     b.moveAng = b.moveProg * 180.0 * Mathf.sign(b.rotation <= 1);
+  };
+
+
+  function comp_buildConfiguration(b, tb) {
+    b.ex_buildSelector(tb);
+
+    tb.row();
+    tb.table(Styles.black6, tb1 => {
+      MDL_table.margin(tb1);
+      tb1.table(Styles.none, tb2 => {
+        MDL_table.sliderCfg(tb2, b, () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "stack-threshold"), b.blk$moveStackAmt), 1, b.block.delegee.moveStackAmt, 1, b.blk$moveStackAmt);
+      });
+    })
+    .growX()
+    .row();
+    tb.table(Styles.none, tb1 => {
+      MDL_table.btnCfgToggleColor(tb1, b, VARGEN.icons.dropLoot, b.shouldDropLoot)
+      .tooltip(MDL_bundle.getInfo("lovec", "tt-switch-loot-dropping"), true);
+    });
   };
 
 
@@ -239,6 +307,13 @@
        * @instance
        */
       itemReg: null,
+      /**
+       * `INTERNAL`
+       * @override
+       * @memberof BLK_itemArm
+       * @instance
+       */
+      useConfigStr: true,
 
 
     })
@@ -261,13 +336,13 @@
 
 
       /**
-       * Whether insertion can happen regardless of relative rotation.
+       * Whether insertion happens using stack methods.
        * @memberof BLK_itemArm
        * @instance
        * @param {Block} oblk
        * @return {boolean}
        */
-      ex_canForceInsert: function(oblk) {
+      ex_shouldCheckStack: function(oblk) {
         return MDL_cond._isConveyor(oblk)
           || MDL_cond._isBridge(oblk)
       }
@@ -275,7 +350,25 @@
       .setProp({
         noSuper: true,
         argLen: 1,
-      })
+      }),
+
+
+      /**
+       * Whether batch insertion at once should be skipped.
+       * @memberof BLK_itemArm
+       * @instance
+       * @param {Block} oblk
+       * @return {boolean}
+       */
+      ex_shouldAlwaysDump: function(oblk) {
+        return MDL_cond._isConveyor(oblk)
+          || oblk instanceof ItemVoid;
+      }
+      .setCache()
+      .setProp({
+        noSuper: true,
+        argLen: 1,
+      }),
 
 
     }),
@@ -293,6 +386,12 @@
       /* <------------------------------ internal ------------------------------ */
 
 
+      /**
+       * `INTERNAL`
+       * @memberof B_itemArm
+       * @instance
+       */
+      shouldDropLoot: false,
       /**
        * `INTERNAL
        * @memberof B_itemArm
@@ -357,6 +456,27 @@
       },
 
 
+      config: function() {
+        return packConfig({
+          shouldDropLoot: this.shouldDropLoot,
+          stackThreshold: this.blk$moveStackAmt,
+        });
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      buildConfiguration: function(tb) {
+        comp_buildConfiguration(this, tb);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
       draw: function() {
         comp_draw(this);
       }
@@ -377,6 +497,8 @@
         wr.i(this.moveItmAmtCur);
         wr.bool(this.isBackMove);
         wr.f(this.moveProg);
+        wr.bool(this.shouldDropLoot);
+        wr.i(this.blk$moveStackAmt);
       },
 
 
@@ -387,7 +509,29 @@
         this.moveItmAmtCur = rd.i();
         this.isBackMove = rd.bool();
         this.moveProg = rd.f();
+        if(this.LCReviSub >= 1) {
+          this.shouldDropLoot = rd.bool();
+          this.blk$moveStackAmt = rd.i();
+        };
       },
+
+
+      /**
+       * @override
+       * @memberof B_itemArm
+       * @instance
+       * @return {void}
+       */
+      ex_handleConfigStrDef: function(str) {
+        let ct = MDL_content.getCt(nameCt, null, true);
+        if(!this.block.delegee.selectionQueue.includes(ct)) return;
+        this.ctTg = ct;
+        this.ex_onSelectorUpdate();
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
 
 
       /**
@@ -422,7 +566,7 @@
        */
       ex_canInsertItm: function(b_t, itm, amt) {
         return !MDL_cond._isDuct(b_t.block)
-          && (this.block.ex_canForceInsert(b_t.block) ? b_t.acceptStack(itm, amt, b_t) > 0 : b_t.acceptItem(this, itm));
+          && (!this.block.ex_shouldCheckStack(b_t.block) ? b_t.acceptItem(this, itm) : b_t.acceptStack(itm, amt, b_t) >= 1);
       }
       .setProp({
         noSuper: true,
@@ -497,6 +641,21 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof B_itemArm
+       * @instance
+       * @return {number}
+       */
+      ex_subRevi: function() {
+        return 1;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 

@@ -76,7 +76,7 @@
       if(loot.stack.amount <= amt) {
         loot.x = b.lootDumpVec.x;
         loot.y = b.lootDumpVec.y;
-        loot.type.ex_resetLifetime(loot);
+        loot.time = 0.0;
       } else {
         MDL_call.spawnLoot_server(b.lootDumpVec.x, b.lootDumpVec.y, loot.item(), amt);
         loot.stack.amount -= amt;

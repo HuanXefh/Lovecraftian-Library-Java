@@ -273,7 +273,7 @@
    * @param {Building} b
    * @param {string|TextureRegionDrawable} iconTrue
    * @param {string|TextureRegionDrawable} iconFalse
-   * @param {boolean} bool - Value of target boolean.
+   * @param {boolean} bool
    * @param {number|unset} [w]
    * @return {Cell}
    */
@@ -281,6 +281,26 @@
     return tb.button(bool ? iconTrue : iconFalse, tryVal(w, 24.0), () => {b.configure(!bool); b.deselect()}).center();
   };
   exports.btnCfgToggle = btnCfgToggle;
+
+
+  /**
+   * Variant of {@link btnCfgToggle} that uses color to indicate status.
+   * @param {Table} tb
+   * @param {Building} b
+   * @param {string|TextureRegionDrawable} icon
+   * @param {boolean} bool
+   * @param {Color|unset} [colorTrue]
+   * @param {Color|unset} [colorFalse]
+   * @param {number|unset} [w]
+   * @return {Cell}
+   */
+  const btnCfgToggleColor = function(tb, b, icon, bool, colorTrue, colorFalse, w) {
+    if(colorTrue == null) colorTrue = Pal.heal;
+    if(colorFalse == null) colorFalse = Color.darkGray;
+
+    return tb.button(icon.tint(bool ? colorTrue : colorFalse), tryVal(w, 24.0), () => {b.configure(!bool); b.deselect()}).center();
+  };
+  exports.btnCfgToggleColor = btnCfgToggleColor;
 
 
   /**
@@ -329,7 +349,7 @@
   const sliderCfg = function(tb, b, strGetter, min, max, step, def, w) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
-      tb1.add("").left().get().setText(prov(() => strGetter(b)));
+      tb1.add("").left().get().setText(prov(() => strGetter()));
       tb1.row();
       slider(tb1, val => b.configure(val.toF()), min, max, step, def, w !== undefined ? w : 260.0);
     }).left().growX();

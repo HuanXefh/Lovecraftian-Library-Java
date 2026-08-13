@@ -204,17 +204,4 @@
     }),
 
 
-    /**
-     * @memberof UNIT_lootUnit
-     * @instance
-     * @return {void}
-     */
-    ex_resetLifetime: function(unit) {
-      unit.time = 0.0;
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
   });

@@ -526,7 +526,7 @@ const db = {
 
 
     /**
-     * Icons populated in {@link VARGEN.icons}.
+     * Icons populated in {@link VARGEN.icons} and {@link VARGEN.iconRegs}.
      * <br> `ROW`: name, regStr.
      */
     icon: [
@@ -537,6 +537,7 @@ const db = {
       "check", "lovec-icon-check",
       "cross", "lovec-icon-cross",
       "dot", "lovec-icon-dot",
+      "dropLoot", "lovec-icon-drop-loot",
       "harvest", "lovec-icon-harvest",
       "play", "lovec-icon-play",
       "questionMark", "lovec-icon-question-mark",
