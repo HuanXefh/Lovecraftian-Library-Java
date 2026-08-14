@@ -234,7 +234,7 @@ const db = {
                 (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
               });
             };
-            if(rc.intput.power > 0.0) {
+            if(rc.input.power > 0.0) {
               MDL_recipeDict.addCustomConsTerm(blk, "power", rc.input.power, mergeObj({time: rc.craftTime, iconText: ordText}, data))
             };
             if(rc.input.heat > 0.0) {

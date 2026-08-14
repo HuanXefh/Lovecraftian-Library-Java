@@ -79,7 +79,7 @@
     MDL_net.sendPacket(
       PacketModes.BOTH, "lovec-both-puddle-change",
       packPayload([
-        puddle.id, liq.name, mtp,
+        puddle.tile.pos(), liq.name, mtp,
       ]),
       false, true,
     );
@@ -87,9 +87,9 @@
   .setAnno("init", function() {
     MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-puddle-change", payload => {
       let args = unpackPayload(payload);
-      let puddle = Groups.puddle.getByID(args[0]);
+      let puddle = Puddles.get(Vars.world.tile(args[0]));
       if(puddle == null) return;
-      
+
       changePuddle(puddle, args[1], args[2]);
     });
   });
