@@ -65,6 +65,8 @@
 
 
   function comp_updateTile(b) {
+    if(DEBUG.skipFurnUpdate) return;
+
     // Update currently used fuel
     if(TIMER.secFive && !b.block.delegee.noFuelInput) {
       b.fuelTup = MDL_fuel.getFuelTup(b);

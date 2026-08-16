@@ -442,39 +442,6 @@
   };
 
 
-  function comp_ex_calcProgInc(b, time) {
-    if(b.block.ignoreLiquidFullness) {
-      inc = b.edelta() / time / b.rc.rcTimeScl;
-    } else {
-      val = 1.0;
-      scl = 1.0;
-      cond = false;
-      iCap = b.rc.co.iCap();
-      if(b.liquids != null && iCap > 0) {
-        val = 0.0;
-        i = 0;
-        while(i < iCap) {
-          tmp = b.rc.co[i];
-          amt = b.rc.co[i + 1];
-          tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(tmp)) / (amt * b.edelta());
-          val = Math.max(val, tmpVal);
-          if(!MDL_cond._isAuxiliaryFluid(tmp)) {
-            scl = Math.min(scl, tmpVal);
-          };
-          cond = true;
-          i += 2;
-        };
-      };
-      if(!cond) val = 1.0;
-      inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rc.rcTimeScl;
-    };
-
-    return isNaN(inc) ?
-      0.0 :
-      inc;
-  };
-
-
   function comp_ex_calcRcEffcTg(b) {
     b.rcEffcWinMean.add(b.rc.calcEffc(b));
     return (b.rcEffcWinMean.hasEnoughData() ? b.rcEffcWinMean.mean() : b.rcEffcWinMean.latest()) * b.attrEffc;
@@ -1178,7 +1145,7 @@
        * @return {number}
        */
       ex_calcProgInc: function(time) {
-        return comp_ex_calcProgInc(this, time);
+        return INTFBFragRecipeHandler.setThis(this).ex_calcProgInc.apply(INTFBFragRecipeHandler, arguments);
       }
       .setProp({
         noSuper: true,

@@ -2,14 +2,12 @@ package lovec.content.frag;
 
 import arc.math.Mathf;
 import lovec.content.ContentFrag;
-import lovec.utils.LCScript;
+import lovec.utils.LCScriptUtil;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.liquid.Conduit;
-
-import static lovec.utils.LCScript.MDL_cond;
 
 public class BLKFragFluidPipe extends ContentFrag<Conduit> {
 
@@ -19,7 +17,7 @@ public class BLKFragFluidPipe extends ContentFrag<Conduit> {
         Conduit blk = getThis();
         return oblk.hasLiquids
             && (oblk.outputsLiquid || blk.lookingAt(t, rot, otx, oty, oblk))
-            && (blk.lookingAtEither(t, rot, otx, oty, orot, oblk) || (boolean) LCScript.invoke("_isFluidRouter", MDL_cond, oblk));
+            && (blk.lookingAtEither(t, rot, otx, oty, orot, oblk) || LCScriptUtil.checkCond("_isFluidRouter", oblk));
     };
     // Overload
     @FragMethod

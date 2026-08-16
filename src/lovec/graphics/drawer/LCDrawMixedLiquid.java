@@ -7,11 +7,10 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Tmp;
 import lovec.utils.LCScript;
+import lovec.utils.LCScriptUtil;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
-
-import static lovec.utils.LCScript.MDL_cond;
 
 /**
  * Draws liquid region, color is determined by all liquids in the building.
@@ -40,7 +39,7 @@ public class LCDrawMixedLiquid extends DrawBlock {
         Tmp.c1.set(Color.clear);
         firstLiq = true;
         b.liquids.each((liq, amt) -> {
-            if(amt > 0.01 && !liq.gas && !((boolean) LCScript.invoke("_isAuxiliaryFluid", MDL_cond, LCScript.wrap(liq)))) {
+            if(amt > 0.01 && !liq.gas && !LCScriptUtil.checkCond("_isAuxiliaryFluid", LCScript.wrap(liq))) {
                 if(firstLiq) {
                     firstLiq = false;
                     Tmp.c1.set(liq.color).a(amt / b.block.liquidCapacity);

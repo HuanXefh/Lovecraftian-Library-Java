@@ -335,14 +335,9 @@
   DEBUG = {
 
     shouldLogDelta: false,
-
     skipFacilityUpdate: false,
-
+    skipFurnUpdate: false,
     skipRcUpdate: false,
-    skipRcEffcCalc: false,
-    skipRcLiqCons: false,
-    skipRcLiqProd: false,
-    skipRcDump: false,
 
     bft(filter) {
       Vars.content.blocks().each(

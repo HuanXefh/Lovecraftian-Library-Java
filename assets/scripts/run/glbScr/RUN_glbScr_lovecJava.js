@@ -17,6 +17,13 @@
 */
 
 
+  /* <------------------------------ lovec.content ------------------------------ */
+
+
+  /** @global lovec.content.LCRecipeHandler */
+  LCRecipeHandler = fetchClass("lovec.content.LCRecipeHandler");
+
+
   /* <------------------------------ lovec.graphics ------------------------------ */
 
 

@@ -17,6 +17,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import lovec.utils.LCPos;
 import lovec.utils.LCScript;
+import lovec.utils.LCScriptUtil;
 import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -310,7 +311,7 @@ public class LCDrawf {
             cy + Mathf.sin(Time.time * 0.025f) * 4f,
             rad, offTime, rot, strokeScl, color1, color2, a, hasLight, z
         );
-        if(!Vars.state.isPaused() && LCScript.toBoolean(LCScript.get("trailCircle", TIMER))) {
+        if(!Vars.state.isPaused() && LCScriptUtil.checkTimer("trailCircle")) {
             float
                 offX = tmpVec1.x * rad,
                 offY = tmpVec1.y * rad;

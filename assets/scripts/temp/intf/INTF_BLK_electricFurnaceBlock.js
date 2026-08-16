@@ -48,6 +48,8 @@
 
 
   function comp_updateTile(b) {
+    if(DEBUG.skipFurnUpdate) return;
+    
     // Update furnace efficiency
     b.furnEffc = Mathf.clamp(Math.min(
       Math.pow(b.tempCur / b.ex_getHeatTg(), 1.5),

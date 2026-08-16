@@ -2,14 +2,12 @@ package lovec.content.frag;
 
 import arc.math.Mathf;
 import lovec.content.ContentFrag;
-import lovec.utils.LCScript;
+import lovec.utils.LCScriptUtil;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
-
-import static lovec.utils.LCScript.MDL_cond;
 
 public class BLKFragCable extends ContentFrag<Conveyor> {
 
@@ -19,12 +17,12 @@ public class BLKFragCable extends ContentFrag<Conveyor> {
         Conveyor blk = getThis();
         return (
             (oblk.consPower != null || oblk.outputsPower)
-                && !(boolean) LCScript.invoke("_isFluidConduit", MDL_cond, oblk)
-                && !(boolean) LCScript.invoke("_isArmoredCable", MDL_cond, oblk)
+                && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
+                && !LCScriptUtil.checkCond("_isArmoredCable", oblk)
         ) || (
             blk.lookingAt(t, rot, otx, oty, oblk)
                 && oblk.hasPower
-                && !(boolean) LCScript.invoke("_isFluidConduit", MDL_cond, oblk)
+                && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
         );
     };
     // Overload

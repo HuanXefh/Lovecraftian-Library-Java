@@ -4,15 +4,13 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import lovec.content.ContentFrag;
-import lovec.utils.LCScript;
+import lovec.utils.LCScriptUtil;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.Edges;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.ArmoredConveyor;
-
-import static lovec.utils.LCScript.MDL_cond;
 
 public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
 
@@ -22,12 +20,12 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
         ArmoredConveyor blk = getThis();
         return (
             (oblk.consPower != null || oblk.outputsPower)
-                && !(boolean) LCScript.invoke("_isFluidConduit", MDL_cond, oblk)
+                && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
                 && blk.blendsArmored(t, rot, otx, oty, orot, oblk)
         ) || (
             blk.lookingAt(t, rot, otx, oty, oblk)
                 && oblk.hasPower
-                && !(boolean) LCScript.invoke("_isFluidConduit", MDL_cond, oblk)
+                && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
         );
     };
     // Overload
@@ -60,7 +58,7 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
                         && Edges.getFacingEdge(oblk, otx, oty, t) != null
                         && Edges.getFacingEdge(oblk, otx, oty, t).relativeTo(t) == rot
                 ) || (
-                    (boolean) LCScript.invoke("_isArmoredCable", MDL_cond, oblk)
+                    LCScriptUtil.checkCond("_isArmoredCable", oblk)
                         && oblk.rotatedOutput(otx, oty, t)
                         && Point2.equals(otx + Geometry.d4(orot).x, oty + Geometry.d4(orot).y, t.x, t.y)
                 )

@@ -6,8 +6,6 @@ import mindustry.gen.Building;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.ItemBridge;
 
-import static lovec.utils.LCScript.MDL_cond;
-
 public class LCGeometry {
 
 
@@ -25,7 +23,7 @@ public class LCGeometry {
 
 
     public static boolean acceptBlock(Building b_f, Building b_t, boolean canSideBlend) {
-        return !b_t.block.rotate || (boolean) LCScript.invoke("_isFullRouter", MDL_cond, b_f.block) ?
+        return !b_t.block.rotate || LCScriptUtil.checkCond("_isFullRouter", b_f.block) ?
             canSideBlend :
             (canSideBlend ? b_t.relativeTo(b_f) != b_t.rotation : b_f.relativeTo(b_t) == b_t.rotation);
     };
@@ -56,7 +54,7 @@ public class LCGeometry {
             return acceptBridge(b, b_t, canSideBlend);
         };
 
-        return (!b_f.block.rotate || (boolean) LCScript.invoke("_isFullRouter", MDL_cond, b_f.block) ?
+        return (!b_f.block.rotate || LCScriptUtil.checkCond("_isFullRouter", b_f.block) ?
             acceptBlock(b_f, b_t, canSideBlend) :
             !fromRouter ?
                 acceptLine(b_f, b_t, canSideBlend) :
@@ -68,14 +66,14 @@ public class LCGeometry {
 
 
     private static boolean backSideFromRouter(Building b_s) {
-        return b_s != null && (boolean) LCScript.invoke("_isGenericRouter", MDL_cond, b_s.block);
+        return b_s != null && LCScriptUtil.checkCond("_isGenericRouter", b_s.block);
     };
 
 
     private static boolean backSideCanSideBlend(Building b, Building b_s) {
         if(b_s == null) return false;
-        boolean noSideTo = (boolean) LCScript.invoke("_isNoSideBlock", MDL_cond, b.block);
-        boolean noSideBoth = (boolean) LCScript.invoke("_isSameNoSideBlock", MDL_cond, b.block, b_s.block);
+        boolean noSideTo = LCScriptUtil.checkCond("_isNoSideBlock", b.block);
+        boolean noSideBoth = LCScriptUtil.checkCond("_isSameNoSideBlock", b.block, b_s.block);
 
         return noSideBoth || !noSideTo;
     };

@@ -1288,61 +1288,7 @@
    * @return {boolean}
    */
   CLS_recipe.prototype.checkCanAdd = function(b) {
-    let
-      i,
-      iCap,
-      tmp,
-      amt,
-      p;
-
-    // CO
-    if(b.liquids != null) {
-      let allFull = true;
-      i = 0;
-      iCap = this.co.iCap();
-      while(i < iCap) {
-        tmp = this.co[i];
-        amt = this.co[i + 1];
-        if(b.liquids.get(tmp) < b.block.liquidCapacity - 0.001) {
-          allFull = false;
-        } else if(!b.block.ignoreLiquidFullness && !b.block.dumpExtraLiquid && amt > 0.0 && !MDL_cond._isAuxiliaryFluid(tmp)) {
-          return false;
-        };
-        i += 2;
-      };
-      if(allFull && this.hasAnyFldOutputIncludeAux && !b.block.ignoreLiquidFullness) return false;
-    };
-
-    // BO
-    i = 0;
-    iCap = this.bo.iCap();
-    while(i < iCap) {
-      tmp = this.bo[i];
-      amt = this.bo[i + 1];
-      p = this.bo[i + 2];
-      if(b.items != null && tmp instanceof Item) {
-        if(amt > 0 && !this.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt * p) return false;
-      };
-      if(b.liquids != null && tmp instanceof Liquid) {
-        if(amt > 0.0 && !b.block.ignoreLiquidFullness && b.liquids.get(tmp) / b.block.liquidCapacity > 0.98) return false;
-      };
-      i += 3;
-    };
-
-    // FO
-    if(b.items != null) {
-      i = 0;
-      iCap = this.fo.iCap();
-      while(i < iCap) {
-        tmp = this.fo[i];
-        amt = this.fo[i + 1];
-        // No probability for failed output
-        if(amt > 0 && !this.ignoreItemFullness && b.items.get(tmp) > b.getMaximumAccepted(tmp) - amt) return false;
-        i += 3;
-      };
-    };
-
-    return true;
+    return LCRecipeHandler.checkCanAdd(this, b);
   };
 
 
@@ -1353,31 +1299,7 @@
    * @return {[Item, number, number, number]|null} `TUPLE`: item, amt, p, mtp.
    */
   CLS_recipe.prototype.getOptTup = function(b) {
-    if(b.items == null) return null;
-
-    let
-      tup = [],
-      i = 0,
-      iCap = this.opt.iCap(),
-      tmp,
-      amt,
-      p,
-      mtp,
-      tmpMtp = 0.0;
-
-    while(i < iCap) {
-      tmp = this.opt[i];
-      amt = this.opt[i + 1];
-      p = this.opt[i + 2];
-      mtp = this.opt[i + 3];
-      if(b.items.get(tmp) >= amt && mtp >= tmpMtp) {
-        tmpMtp = mtp;
-        tup.with(tmp, amt, p, mtp);
-      };
-      i += 4;
-    };
-
-    return tup.length === 0 ? null : tup;
+    return LCRecipeHandler.getOptTup(this, b);
   };
 
 
@@ -1387,129 +1309,7 @@
    * @return {number}
    */
   CLS_recipe.prototype.calcEffc = function(b) {
-    if(b.cheating() || DEBUG.skipRcEffcCalc) return 1.0;
-
-    let
-      i,
-      iCap,
-      j,
-      jCap,
-      tmp,
-      tmp1,
-      amt,
-      p,
-      allAbsent,
-      effc = 1.0,
-      mtp = 1.0;
-
-    if(b.power != null && !b.block.outputsPower) effc *= b.power.status;
-
-    // OPT
-    if(effc > 0.0 && this.opt.length > 0) {
-      let optTup = this.getOptTup(b);
-      if(this.reqOpt && optTup == null) {
-        b.delegee.lastOptEffc = 0.0;
-        return 0.0;
-      };
-      if(optTup != null) {
-        effc *= optTup[3];
-        b.delegee.lastOptEffc = optTup[3];
-        optTup.clear();
-      };
-    };
-
-    // CI
-    if(b.liquids != null) {
-      i = 0;
-      iCap = this.ci.iCap();
-      while(i < iCap) {
-        if(effc < 0.0001) return 0.0;
-        tmp = this.ci[i];
-        if(!(tmp instanceof Array)) {
-          amt = this.ci[i + 1];
-          mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
-            0.0 :
-            amt < 0.0001 ?
-              1.0 :
-              Math.min(b.liquids.get(tmp) / amt / b.delegee.lastOptEffc * b.delta() * b.efficiencyScale(), 1.0);
-        } else {
-          j = 0;
-          jCap = tmp.iCap();
-          allAbsent = true;
-          while(j < jCap) {
-            // No zero amount check here, why put that in an alternative input list?
-            if(b.liquids.get(tmp[j]) > 0.01) {
-              amt = tmp[j + 1];
-              mtp = b.efficiencyScale() < 0.0001 || b.delegee.lastOptEffc < 0.0001 ?
-                0.0 :
-                Math.min(b.liquids.get(tmp[j]) / amt / b.delegee.lastOptEffc * b.delta() * b.efficiencyScale(), 1.0);
-              allAbsent = false;
-              break;
-            };
-            j += 2;
-          };
-          if(allAbsent) mtp = 0.0;
-        };
-        effc *= mtp;
-        i += 2;
-      };
-    };
-
-    // BI
-    if(b.items != null || b.liquids != null) {
-      i = 0;
-      iCap = this.bi.iCap();
-      while(i < iCap) {
-        if(effc < 0.0001) return 0.0;
-        tmp = this.bi[i];
-        if(!(tmp instanceof Array)) {
-          amt = this.bi[i + 1];
-          if(b.items != null && tmp instanceof Item) {
-            if(b.items.get(tmp) < amt) return 0.0;
-          };
-          if(b.liquids != null && tmp instanceof Liquid) {
-            if(b.liquids.get(tmp) < amt) return 0.0;
-          };
-        } else {
-          allAbsent = true;
-          j = 0;
-          jCap = tmp.iCap();
-          while(j < jCap) {
-            tmp1 = tmp[j];
-            amt = tmp[j + 1];
-            if(b.items != null && tmp1 instanceof Item) {
-              if(b.items.get(tmp1) >= amt) allAbsent = false;
-            };
-            if(b.liquids != null && tmp1 instanceof Liquid) {
-              if(b.liquids.get(tmp1) > amt - 0.0001) allAbsent = false;
-            };
-            j += 3;
-          };
-          if(allAbsent) return 0.0;
-        };
-        i += 3;
-      };
-    };
-
-    // AUX
-    if(b.liquids != null) {
-      i = 0;
-      iCap = this.aux.iCap();
-      while(i < iCap) {
-        if(effc < 0.0001) return 0.0;
-        tmp = this.aux[i];
-        amt = this.aux[i + 1];
-        mtp = b.efficiencyScale() < 0.0001 ?
-          0.0 :
-          amt < 0.0001 ?
-            1.0 :
-            Math.min(b.liquids.get(tmp) / amt * b.delta() * b.efficiencyScale(), 1.0);
-        effc *= mtp;
-        i += 2;
-      };
-    };
-
-    return Mathf.maxZero(effc);
+    return LCRecipeHandler.calcEffc(this, b);
   };
 
 
@@ -1629,55 +1429,8 @@
    * @return {void}
    */
   CLS_recipe.prototype.consumeContinuous = function(b, progIncLiq) {
-    if(b.liquids == null || DEBUG.skipRcLiqCons) return;
-
-    let
-     i,
-     iCap,
-     j,
-     jCap,
-     tmp,
-     tmp1,
-     amt;
-
-    // CI
-    i = 0;
-    iCap = this.ci.iCap();
-    while(i < iCap) {
-      tmp = this.ci[i];
-      if(!(tmp instanceof Array)) {
-        amt = this.ci[i + 1];
-        b.liquids.remove(tmp, Math.min(amt * progIncLiq * this.rcTimeScl, b.liquids.get(tmp)));
-        b.delegee.consTmpObj[tmp.name] = amt;
-      } else {
-        j = 0;
-        jCap = tmp.iCap();
-        while(j < jCap) {
-          tmp1 = tmp[j];
-          if(b.liquids.get(tmp1) > 0.01) {
-            amt = tmp[j + 1];
-            b.liquids.remove(tmp1, Math.min(amt * progIncLiq * this.rcTimeScl, b.liquids.get(tmp1)));
-            b.delegee.consTmpObj[tmp1.name] = amt;
-            break;
-          };
-          j += 2;
-        };
-      };
-      i += 2;
-    };
-
-    // AUX
-    i = 0;
-    iCap = this.aux.iCap();
-    while(i < iCap) {
-      tmp = this.aux[i];
-      amt = this.aux[i + 1];
-      b.liquids.remove(tmp, Math.min(amt * progIncLiq, this.rcTimeScl, b.liquids.get(tmp)));
-      b.delegee.consTmpObj[tmp.name] = amt;
-      i += 2;
-    };
+    LCRecipeHandler.consumeContinuous(this, b, progIncLiq);
   };
-
 
 
   /**
@@ -1743,27 +1496,7 @@
    * @return {void}
    */
   CLS_recipe.prototype.craftContinuous = function(b, progIncLiq) {
-    if(b.liquids == null || DEBUG.skipRcLiqProd) return;
-
-    let
-      i,
-      iCap,
-      tmp,
-      amt;
-
-    // CO
-    i = 0;
-    iCap = this.co.iCap();
-    while(i < iCap) {
-      tmp = this.co[i];
-      amt = this.co[i + 1];
-      if(TIMER.secTwo && amt > 0.0) {
-        TRIGGER.fluidProduce.fire(b, tmp);
-      };
-      b.handleLiquid(b, tmp, Math.min(amt * progIncLiq * this.rcTimeScl, b.block.liquidCapacity - b.liquids.get(tmp)));
-      b.delegee.prodTmpObj[tmp.name] = amt / b.timeScale;
-      i += 2;
-    };
+    LCRecipeHandler.craftContinuous(this, b, progIncLiq);
   };
 
 
@@ -1802,37 +1535,7 @@
    * @return {void}
    */
   CLS_recipe.prototype.dump = function(b) {
-    if(DEBUG.skipRcDump) return;
-
-    if(b.liquids != null) {
-      i = 0;
-      iCap = this.co.iCap();
-      while(i < iCap) {
-        tmp = this.co[i];
-        dir = (b.block.liquidOutputDirections.length > i / 2) ? b.block.liquidOutputDirections[i / 2] : -1;
-        b.dumpLiquid(tmp, 2.0, dir);
-        i += 2;
-      };
-
-      i = 0;
-      iCap = this.dumpTup[1].iCap();
-      while(i < iCap) {
-        if(this.dumpTup[1][i] != null) {
-          b.dumpLiquid(this.dumpTup[1][i], 2.0);
-        };
-        i++;
-      };
-    };
-    if(b.items != null && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
-      i = 0;
-      iCap = this.dumpTup[0].iCap();
-      while(i < iCap) {
-        if(this.dumpTup[0][i] != null) {
-          b.dump(this.dumpTup[0][i]);
-        };
-        i++;
-      };
-    };
+    LCRecipeHandler.dump(this, b);
   };
 
 

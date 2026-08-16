@@ -8,13 +8,11 @@ import arc.graphics.g2d.Lines;
 import arc.math.Rand;
 import arc.struct.IntFloatMap;
 import arc.util.Time;
-import lovec.utils.LCScript;
+import lovec.utils.LCScriptUtil;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
-
-import static lovec.utils.LCScript.MDL_cond;
 
 /**
  * Draws bubbles.
@@ -57,7 +55,7 @@ public class LCDrawRipple extends DrawBlock {
             noLiq = true;
             b.liquids.each((liq, amt) -> {
                 if(!noLiq) return;
-                if(amt > 0.01f && !liq.gas && !((boolean) LCScript.invoke("_isAuxiliaryFluid", MDL_cond, liq))) {
+                if(amt > 0.01f && !liq.gas && !LCScriptUtil.checkCond("_isAuxiliaryFluid", liq)) {
                     noLiq = false;
                 };
             });

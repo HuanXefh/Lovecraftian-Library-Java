@@ -22,8 +22,6 @@ import rhino.NativeArray;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import static lovec.utils.LCScript.MDL_cond;
-
 /**
  * Handles entity search.
  */
@@ -186,7 +184,7 @@ public class LCEntity {
         if(rad < 0.0001f) return contArr;
 
         Units.nearby(null, x, y, rad, ounit -> {
-            if(!((boolean) LCScript.invoke("_isIrregularUnit", MDL_cond, ounit))) {
+            if(!LCScriptUtil.checkCond("_isIrregularUnit", ounit)) {
                 LCNativeArray.push(arr, ounit);
             };
         });
@@ -202,7 +200,7 @@ public class LCEntity {
         if(rad < 0.0001f) return;
 
         Units.nearby(team, x, y, rad, ounit -> {
-            if(!((boolean) LCScript.invoke("_isIrregularUnit", MDL_cond, ounit)) && (boolF == null || boolF.get(ounit))) {
+            if(!LCScriptUtil.checkCond("_isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
             };
         });
@@ -216,7 +214,7 @@ public class LCEntity {
         if(w < 0.0001f) return;
 
         Units.nearby(team, x, y, w, w, ounit -> {
-            if(!((boolean) LCScript.invoke("_isIrregularUnit", MDL_cond, ounit)) && (boolF == null || boolF.get(ounit))) {
+            if(!LCScriptUtil.checkCond("_isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
             };
         });
@@ -290,7 +288,7 @@ public class LCEntity {
         if(rad < 0.0001f) return contArr;
 
         Units.nearby(null, x, y, rad, ounit -> {
-            if((boolean) LCScript.invoke("_isLoot", MDL_cond, ounit)) {
+            if(LCScriptUtil.checkCond("_isLoot", ounit)) {
                 LCNativeArray.push(arr, ounit);
             };
         });
@@ -402,8 +400,8 @@ public class LCEntity {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getTargets.newArr");
         if(rad < 0.0001f) return arr;
 
-        eachUnit(x, y, null, rad, ounit -> (boolean) LCScript.invoke("_isEnemy", MDL_cond, ounit, team), ounit -> LCNativeArray.push(arr, ounit));
-        eachBuild(x, y, null, rad, ob -> (boolean) LCScript.invoke("_isEnemy", MDL_cond, ob, team), ob -> LCNativeArray.push(arr, ob));
+        eachUnit(x, y, null, rad, ounit -> LCScriptUtil.checkCond("_isEnemy", ounit, team), ounit -> LCNativeArray.push(arr, ounit));
+        eachBuild(x, y, null, rad, ob -> LCScriptUtil.checkCond("_isEnemy", ob, team), ob -> LCNativeArray.push(arr, ob));
 
         return arr;
     };

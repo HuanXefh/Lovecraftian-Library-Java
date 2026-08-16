@@ -14,6 +14,7 @@ public class LCScript {
 
     public static NativeObject VAR;
     public static NativeObject TIMER;
+    public static NativeObject TRIGGER;
     public static NativeObject MDL_cond;
     public static NativeObject MDL_effect;
     public static NativeObject MDL_prop;
@@ -38,6 +39,7 @@ public class LCScript {
     public static void init() {
         VAR = toObject(get("VAR"));
         TIMER = toObject(get("TIMER"));
+        TRIGGER = toObject(get("TRIGGER"));
         MDL_cond = toObject(get("MDL_cond"));
         MDL_effect = toObject(get("MDL_effect"));
         MDL_prop = toObject(get("MDL_prop"));
@@ -224,6 +226,19 @@ public class LCScript {
     // Overload
     public static @Nullable Object get(String nameProp) {
         return get(nameProp, Vars.mods.getScripts().scope);
+    };
+
+
+    /**
+     * Sets a property in a JavaScript object.
+     */
+    public static Scriptable set(String nameProp, Object val, Scriptable scope) {
+        scope.put(nameProp, scope, val);
+        return scope;
+    };
+    // Overload
+    public static void set(String nameProp, Object val) {
+        set(nameProp, val, Vars.mods.getScripts().scope);
     };
 
 

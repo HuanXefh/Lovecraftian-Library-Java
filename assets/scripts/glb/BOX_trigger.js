@@ -7,6 +7,25 @@
 const BOX_trigger = new CLS_objectBox({
 
 
+  /**
+   * Triggers some event trigger by name.
+   * Mostly for invocation from Java.
+   * @param {String} name
+   * @param {any} [arg1]
+   * @param {any} [arg2]
+   * @param {any} [arg3]
+   * @param {any} [arg4]
+   * @param {any} [arg5]
+   * @return {void}
+   */
+  fire: function(name, arg1, arg2, arg3, arg4, arg5) {
+    let trigger = BOX_trigger[name];
+    if(!(trigger instanceof CLS_eventTrigger)) throw new Error("No trigger found by name ${1}!".format(name));
+
+    trigger.fire(arg1, arg2, arg3, arg4, arg5);
+  },
+
+
   /* <------------------------------ state ------------------------------ */
 
 
