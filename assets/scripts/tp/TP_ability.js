@@ -100,11 +100,11 @@
       maxShield: readParam(paramObj, "maxShield", 0.0),
       regenAmt: readParam(paramObj, "regenAmt", 0.0),
       regenIntv: readParam(paramObj, "regenIntv", 1.0),
-      timerMap: new ObjectMap(),
+      timerMap: new IntMap(),
 
 
       init(utp) {
-        TRIGGER.mapExit.addGlobalListener(() => {
+        MDL_event.onWorldLoad(() => {
           this.timerMap.clear();
         });
       },
@@ -120,15 +120,15 @@
 
 
       death(unit) {
-        this.timerMap.remove(unit);
+        this.timerMap.remove(unit.id);
       },
 
 
       update(unit) {
-        if(!this.timerMap.containsKey(unit)) {
-          this.timerMap.put(unit, new Interval(1));
+        if(!this.timerMap.containsKey(unit.id)) {
+          this.timerMap.put(unit.id, new Interval(1));
         };
-        if(unit.shield >= this.maxShield || !this.timerMap.get(unit).get(this.regenIntv)) return;
+        if(unit.shield >= this.maxShield || !this.timerMap.get(unit.id).get(this.regenIntv)) return;
 
         unit.shield = Math.min(unit.shield + this.regenAmt, this.maxShield);
         unit.shieldAlpha = 1.0;
@@ -159,12 +159,12 @@
       chargeMtp: readParam(paramObj, "chargeMtp", 1.0),
       rad: readParam(paramObj, "rad", 80.0),
       se: fetchSound(readParam(paramObj, "se", "se-shot-laser-defense")),
-      progMap: new ObjectMap(),
-      inCdMap: new ObjectMap(),
+      progMap: new IntFloatMap(),
+      inCdMap: new IntMap(),
 
 
       init(utp) {
-        TRIGGER.mapExit.addGlobalListener(() => {
+        MDL_event.onWorldLoad(() => {
           this.progMap.clear();
           this.inCdMap.clear();
         });
@@ -190,13 +190,13 @@
 
       update(unit) {
         if(!LCRand.chance(UTIL_rand.get("ability"), 0.2)) return;
-        if(!this.progMap.containsKey(unit)) {
-          this.progMap.put(unit, this.chargeCap);
-          this.inCdMap.put(unit, false);
+        if(!this.progMap.containsKey(unit.id)) {
+          this.progMap.put(unit.id, this.chargeCap);
+          this.inCdMap.put(unit.id, false);
         };
 
-        let prog = Math.min(this.progMap.get(unit, 0.0) + Time.delta * 5.0 * this.chargeMtp * LCProp.getReloadMultiplier(unit), this.chargeCap);
-        let inCd = this.inCdMap.get(unit, false);
+        let prog = Math.min(this.progMap.get(unit.id, 0.0) + Time.delta * 5.0 * this.chargeMtp * LCProp.getReloadMultiplier(unit), this.chargeCap);
+        let inCd = this.inCdMap.get(unit.id, false);
         if(prog > 0.0 && !inCd) {
           let bul = LCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.rad);
           if(bul != null) {
@@ -205,10 +205,10 @@
             MDL_call.damageBul(bul, this.dmg);
           };
         };
-        if(prog < 0.0001) this.inCdMap.put(unit, true);
-        if(prog > this.chargeCap - 0.0001 && inCd) this.inCdMap.put(unit, false);
+        if(prog < 0.0001) this.inCdMap.put(unit.id, true);
+        if(prog > this.chargeCap - 0.0001 && inCd) this.inCdMap.put(unit.id, false);
 
-        this.progMap.put(unit, prog);
+        this.progMap.put(unit.id, prog);
       },
 
 
@@ -217,8 +217,8 @@
 
         MDL_draw.unitReload(
           unit, null,
-          this.inCdMap.get(unit, false) ? Color.white : Pal.remove, 1.0, 0.0, 1,
-          this.progMap.get(unit, 0.0) / this.chargeCap,
+          this.inCdMap.get(unit.id, false) ? Color.white : Pal.remove, 1.0, 0.0, 1,
+          this.progMap.get(unit.id, 0.0) / this.chargeCap,
         );
       },
 
@@ -246,11 +246,11 @@
       intv: readParam(paramObj, "intv", 60.0),
       rad: readParam(paramObj, "rad", 40.0),
       strokeScl: readParam(paramObj, "strokeScl", 1.0),
-      timerMap: new ObjectMap(),
+      timerMap: new IntMap(),
 
 
       init(utp) {
-        TRIGGER.mapExit.addGlobalListener(() => {
+        MDL_event.onWorldLoad(() => {
           this.timerMap.clear();
         });
       },
@@ -268,15 +268,15 @@
 
 
       death(unit) {
-        this.timerMap.remove(unit);
+        this.timerMap.remove(unit.id);
       },
 
 
       update(unit) {
-        if(!this.timerMap.containsKey(unit)) {
-          this.timerMap.put(unit, new Interval(1));
+        if(!this.timerMap.containsKey(unit.id)) {
+          this.timerMap.put(unit.id, new Interval(1));
         };
-        if(!this.timerMap.get(unit).get(this.intv)) return;
+        if(!this.timerMap.get(unit.id).get(this.intv)) return;
         let b = LCEntity.getBuildBy(unit.x, unit.y, unit.team, this.rad, b => MDL_cond._canHeal(b));
         if(b == null) return;
 

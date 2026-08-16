@@ -33,6 +33,7 @@
       b.delegee.blk$moveStackAmt = f;
     });
 
+    blk.ex_addConfigCaller("ctTg", (b, val) => b.delegee.ctTg = MDL_content.getCt(val, "rs"));
     blk.ex_addConfigCaller("shouldDropLoot", (b, val) => b.delegee.shouldDropLoot = val);
     blk.ex_addConfigCaller("stackThreshold", (b, val) => b.delegee.blk$moveStackAmt = val);
   };
@@ -75,21 +76,40 @@
               if(b.block.ex_shouldAlwaysDump(b_t.block)) {
                 // Do nothing, dump instead
               } else {
-                let amtTrans = b.block.ex_shouldCheckStack(b_t.block) ?
-                b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b) :
-                b_t.items == null ?
-                0 :
-                Math.min(b_t.getMaximumAccepted(b.moveItmCur) - b_t.items.get(b.moveItmAmtCur), b.moveItmAmtCur);
-
-                if(amtTrans > 0) {
-                  b_t.handleStack(b.moveItmCur, amtTrans, b);
-                  b.moveItmAmtCur -= amtTrans;
+                let amtTrans;
+                if(b_t.getPayload() instanceof BuildPayload) {
+                  // Insert items into container payload
+                  amtTrans = b_t.getPayload().build.acceptStack(b.moveItmCur, b.moveItmAmtCur, b);
+                  if(amtTrans > 0) {
+                    b_t.getPayload().build.handleStack(b.moveItmCur, amtTrans, b);
+                    b.moveItmAmtCur -= amtTrans;
+                  };
+                } else {
+                  // Insert items into building
+                  amtTrans = b.block.ex_shouldCheckStack(b_t.block) ?
+                    b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b) :
+                    b_t.items == null ?
+                      0 :
+                      Math.min(b_t.getMaximumAccepted(b.moveItmCur) - b_t.items.get(b.moveItmAmtCur), b.moveItmAmtCur);
+                  if(amtTrans > 0) {
+                    b_t.handleStack(b.moveItmCur, amtTrans, b);
+                    b.moveItmAmtCur -= amtTrans;
+                  };
                 };
               };
             } else {
-              if(b.moveItmAmtCur > 0 && (!(b_t.block instanceof Conveyor) || b_t.items.get(b.moveItmCur) < b_t.getMaximumAccepted(b.moveItmCur)) && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
-                b_t.handleItem(b, b.moveItmCur);
-                b.moveItmAmtCur--;
+              if(b_t.getPayload() instanceof BuildPayload) {
+                // Dump items into container payload
+                if(b.moveItmAmtCur > 0 && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+                  b_t.getPayload().build.handleItem(b, b.moveItmCur);
+                  b.moveItmAmtCur--;
+                };
+              } else {
+                // Dump items into building
+                if(b.moveItmAmtCur > 0 && (!(b_t.block instanceof Conveyor) || b_t.items.get(b.moveItmCur) < b_t.getMaximumAccepted(b.moveItmCur)) && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+                  b_t.handleItem(b, b.moveItmCur);
+                  b.moveItmAmtCur--;
+                };
               };
             };
             if(b.moveItmAmtCur <= 0) {
@@ -158,11 +178,17 @@
           } else {
             b.moveItmCur = b.ex_getMoveItmTg(b_f);
             if(b.moveItmCur != null && b.ex_canPickItm(b_f, b.moveItmCur, b.ctTg == null ? 1 : b.blk$moveStackAmt) && (b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt))) {
-              let amtTrans = Math.min(b_f.items.get(b.moveItmCur), b.blk$moveStackAmt);
+              let amtTrans;
+              if(b_f.getPayload() instanceof BuildPayload) {
+                amtTrans = Math.min(b_f.getPayload().build.items.get(b.moveItmCur), b.blk$moveStackAmt);
+                b_f.getPayload().build.removeStack(b.moveItmCur, amtTrans);
+              } else {
+                amtTrans = Math.min(b_f.items.get(b.moveItmCur), b.blk$moveStackAmt);
+                b_f.removeStack(b.moveItmCur, amtTrans);
+              };
               b.isBackMove = false;
               b.isFirstInsertion = true;
               b.moveItmAmtCur = amtTrans;
-              b_f.removeStack(b.moveItmCur, amtTrans);
             };
           };
 
@@ -257,7 +283,7 @@
 
     /**
      * Inserter from Factorio.
-     * Intentionally capable of interaction with enemy buildings and units.
+     * Intentionally capable of interaction with enemy units.
      * @class BLK_itemArm
      * @extends BLK_baseItemDistributor
      */
@@ -459,6 +485,7 @@
 
       config: function() {
         return packConfig({
+          ctTg: this.ctTg == null ? "null" : this.ctTg.name,
           shouldDropLoot: this.shouldDropLoot,
           stackThreshold: this.blk$moveStackAmt,
         });
@@ -524,7 +551,7 @@
        * @return {void}
        */
       ex_handleConfigStrDef: function(str) {
-        let ct = MDL_content.getCt(nameCt, null, true);
+        let ct = MDL_content.getCt(str, null, true);
         if(!this.block.delegee.selectionQueue.includes(ct)) return;
         this.ctTg = ct;
         this.ex_onSelectorUpdate();
@@ -546,6 +573,10 @@
        */
       ex_canPickItm: function(b_f, itm, amt) {
         if(b_f.block instanceof ItemSource) return true;
+        if(b_f.getPayload() instanceof BuildPayload) {
+          let ob = b_f.getPayload().build;
+          if(ob.items != null && ob.items.get(itm) >= amt) return true;
+        };
 
         return !MDL_cond._isDuct(b_f.block)
           && b_f.items != null && b_f.items.get(itm) >= amt;
@@ -566,6 +597,11 @@
        * @return {boolean}
        */
       ex_canInsertItm: function(b_t, itm, amt) {
+        if(b_t.getPayload() instanceof BuildPayload) {
+          let ob = b_t.getPayload().build;
+          if(ob.items != null && MDL_cond._isContainer(ob.block) && ob.acceptStack(itm, amt, b_t) >= amt) return true;
+        };
+
         return !MDL_cond._isDuct(b_t.block)
           && (!this.block.ex_shouldCheckStack(b_t.block) ? b_t.acceptItem(this, itm) : b_t.acceptStack(itm, amt, b_t) >= 1);
       }
@@ -583,7 +619,10 @@
        * @return {Building|null}
        */
       ex_findMoveB: function(isTo) {
-        return Vars.world.build(this.ex_calcMoveIntCoord(isTo, false), this.ex_calcMoveIntCoord(isTo, true));
+        let ob = Vars.world.build(this.ex_calcMoveIntCoord(isTo, false), this.ex_calcMoveIntCoord(isTo, true));
+        return ob == null || ob.team !== this.team ?
+          null :
+          ob;
       }
       .setProp({
         noSuper: true,
@@ -620,9 +659,11 @@
       ex_getMoveItmTg: function(b_f) {
         return this.ctTg != null ?
           this.ctTg :
-          b_f.items != null ?
-            b_f.items.first() :
-            null;
+          b_f.getPayload() instanceof BuildPayload && b_f.getPayload().build.items != null ?
+            b_f.getPayload().build.items.first() :
+            b_f.items != null ?
+              b_f.items.first() :
+              null;
       }
       .setProp({
         noSuper: true,
