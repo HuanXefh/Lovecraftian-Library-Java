@@ -18,6 +18,7 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
     @FragMethod
     public boolean blends(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
         ArmoredConveyor blk = getThis();
+
         return (
             (oblk.consPower != null || oblk.outputsPower)
                 && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
@@ -32,6 +33,7 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
     @FragMethod
     public boolean blends(Tile t, int rot, BuildPlan[] bPlans, int dir, boolean shouldCheckWorld) {
         ArmoredConveyor blk = getThis();
+
         if(bPlans != null) {
             BuildPlan bPlan = bPlans[Mathf.mod(rot - dir, 4)];
             if(bPlan != null && blk.blends(t, rot, bPlan.x, bPlan.y, bPlan.rotation, bPlan.block)) return true;
@@ -41,6 +43,7 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
     @FragMethod
     public boolean blends(Tile t, int rot, int dir) {
         ArmoredConveyor blk = getThis();
+
         Building ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));
         return ob != null && ob.team == t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
     };

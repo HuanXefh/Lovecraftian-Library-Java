@@ -3,6 +3,7 @@ package lovec.content.frag;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
+import lovec.content.BuildContentFrag;
 import lovec.content.ContentFrag;
 import lovec.graphics.LCDraw;
 import lovec.utils.LCScript;
@@ -14,7 +15,7 @@ public class BLKFragCogwheel extends ContentFrag<Wall> {
 
 
 
-    public static class BFragCogwheel extends ContentFrag<Wall.WallBuild> {
+    public static class BFragCogwheel extends BuildContentFrag<Wall.WallBuild, Wall> {
 
 
         @FragMethod

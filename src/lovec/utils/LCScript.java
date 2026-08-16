@@ -18,6 +18,8 @@ public class LCScript {
     public static NativeObject MDL_cond;
     public static NativeObject MDL_effect;
     public static NativeObject MDL_prop;
+    public static NativeObject FRAG_fluid;
+    public static NativeObject FRAG_item;
     public static NativeObject DB_block;
     public static NativeObject DB_misc;
 
@@ -43,6 +45,8 @@ public class LCScript {
         MDL_cond = toObject(get("MDL_cond"));
         MDL_effect = toObject(get("MDL_effect"));
         MDL_prop = toObject(get("MDL_prop"));
+        FRAG_fluid = toObject(get("FRAG_fluid"));
+        FRAG_item = toObject(get("FRAG_item"));
         DB_block = toObject(get("DB_block"));
         DB_misc = toObject(get("DB_misc"));
 

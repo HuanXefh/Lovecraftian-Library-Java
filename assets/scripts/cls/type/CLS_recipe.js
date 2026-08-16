@@ -1361,64 +1361,7 @@
    * @return {void}
    */
   CLS_recipe.prototype.consumeBatch = function(b) {
-    if((b.items == null || !b.items.any()) && b.liquids == null) return;
-
-    let
-      i,
-      iCap,
-      j,
-      jCap,
-      tmp,
-      tmp1,
-      amt,
-      p;
-
-    // BI
-    i = 0;
-    iCap = this.bi.iCap();
-    while(i < iCap) {
-      tmp = this.bi[i];
-      if(!(tmp instanceof Array)) {
-        amt = this.bi[i + 1];
-        p = this.bi[i + 2];
-        if(b.items != null && tmp instanceof Item) {
-          FRAG_item.consumeItem(b, tmp, amt, p);
-          b.delegee.consTmpObj[tmp.name] = amt * p;
-        };
-        if(b.liquids != null && tmp instanceof Liquid) {
-          FRAG_fluid.addLiquidBatch(b, b, tmp, -amt);
-          b.delegee.consTmpObj[tmp.name] = amt;
-        };
-      } else {
-        j = 0;
-        jCap = tmp.iCap();
-        while(j < jCap) {
-          tmp1 = tmp[j];
-          amt = tmp[j + 1];
-          p = tmp[j + 2];
-          if(b.items != null && tmp1 instanceof Item && FRAG_item.consumeItem(b, tmp1, amt, p)) {
-            b.delegee.consTmpObj[tmp1.name] = amt * p;
-            break;
-          };
-          if(b.liquids != null && tmp1 instanceof Liquid && FRAG_fluid.addLiquidBatch(b, b, tmp1, -amt) > 0.0) {
-            b.delegee.consTmpObj[tmp1.name] = amt;
-            break;
-          };
-          j += 3;
-        };
-      };
-      i += 3;
-    };
-
-    // OPT
-    if(this.opt.length > 0) {
-      let optTup = this.getOptTup(b);
-      if(optTup != null) {
-        FRAG_item.consumeItem(b, optTup[0], optTup[1], optTup[2]);
-        b.delegee.consTmpObj[optTup[0].name] = optTup[1] * optTup[2];
-        optTup.clear();
-      };
-    };
+    LCRecipeHandler.consumeBatch(this, b);
   };
 
 
@@ -1440,50 +1383,12 @@
    * @return {void}
    */
   CLS_recipe.prototype.craftBatch = function(b, failP) {
-    let
-      i,
-      iCap,
-      tmp,
-      amt,
-      p,
-      failed = LCRand.chance(UTIL_rand.get("crafter"), failP);
-
-    // BO
+    let failed = LCRand.chance(UTIL_rand.get("crafter"), failP);
+    LCRecipeHandler.craftBatch(this, b, failed);
     if(!failed) {
       MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);
-      i = 0;
-      iCap = this.bo.iCap();
-      while(i < iCap) {
-        tmp = this.bo[i];
-        amt = this.bo[i + 1];
-        p = this.bo[i + 2];
-        if(b.items != null && tmp instanceof Item && b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
-          FRAG_item.produceItem(b, tmp, amt, p);
-          b.delegee.prodTmpObj[tmp.name] = amt * p;
-        };
-        if(b.liquids != null && tmp instanceof Liquid) {
-          FRAG_fluid.addLiquidBatch(b, b, tmp, amt, true);
-          b.delegee.prodTmpObj[tmp.name] = amt;
-        };
-        i += 3;
-      };
-    };
-
-    // FO
-    if(b.items != null && failed) {
+    } else {
       MDL_effect.showAt(b.x, b.y, b.ex_getFailEff(), 0.0);
-      i = 0;
-      iCap = this.fo.iCap();
-      while(i < iCap) {
-        tmp = this.fo[i];
-        amt = this.fo[i + 1];
-        p = this.fo[i + 2];
-        if(b.items.get(tmp) < b.getMaximumAccepted(tmp)) {
-          FRAG_item.produceItem(b, tmp, amt, p);
-          b.delegee.prodTmpObj[tmp.name] = amt * p;
-        };
-        i += 3;
-      };
       b.ex_onRcFail();
     };
   };

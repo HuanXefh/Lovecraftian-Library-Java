@@ -1,5 +1,6 @@
 package lovec.content.frag;
 
+import lovec.content.BuildContentFrag;
 import lovec.content.ContentFrag;
 import lovec.utils.LCScript;
 import lovec.utils.LCScriptUtil;
@@ -13,23 +14,18 @@ public class INTFBLKFragRecipeHandler extends ContentFrag<GenericCrafter> {
 
 
 
-    public static class INTFBFragRecipeHandler extends ContentFrag<GenericCrafter.GenericCrafterBuild> {
+    public static class INTFBFragRecipeHandler extends BuildContentFrag<GenericCrafter.GenericCrafterBuild, GenericCrafter> {
 
 
-        GenericCrafter.GenericCrafterBuild lastResolved;
-        GenericCrafter blk;
         NativeObject rc;
         float rcTimeScl;
         NativeArray co;
 
 
-        public void resolve() {
-            GenericCrafter.GenericCrafterBuild b = getThis();
-            if(b == lastResolved) return;
-
-            lastResolved = b;
-            blk = (GenericCrafter) b.block;
-            rc = LCScript.toObject(LCScript.instanceGet(b, "rc"));
+        @Override
+        public void onResolved() {
+            super.onResolved();
+            rc = LCScript.toObject(LCScript.instanceGet(lastThis, "rc"));
             rcTimeScl = LCScript.toFloat(rc.get("rcTimeScl"));
             co = LCScript.toArray(rc.get("co"));
         };

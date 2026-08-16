@@ -13,6 +13,8 @@ import mindustry.world.blocks.production.GenericCrafter;
 import rhino.NativeArray;
 import rhino.NativeObject;
 
+import static lovec.utils.LCScript.*;
+
 public class LCRecipeHandler {
 
 
@@ -30,6 +32,10 @@ public class LCRecipeHandler {
     static NativeArray fo;
     static boolean hasAnyFldOutputIncludeAux;
     static NativeArray dumpTup;
+    static NativeObject consTmpObj;
+    static NativeObject prodTmpObj;
+    static boolean hasPayInput;
+    static boolean hasPayOutput;
 
 
     public static void resolve(NativeObject rc, GenericCrafter.GenericCrafterBuild b) {
@@ -49,6 +55,10 @@ public class LCRecipeHandler {
         fo = LCScript.toArray(rc.get("fo"));
         hasAnyFldOutputIncludeAux = LCScript.toBoolean(rc.get("hasAnyFldOutputIncludeAux"));
         dumpTup = LCScript.toArray(rc.get("dumpTup"));
+        consTmpObj = LCScript.toObject(LCScript.instanceGet(b, "consTmpObj"));
+        prodTmpObj = LCScript.toObject(LCScript.instanceGet(b, "prodTmpObj"));
+        hasPayInput = LCScript.toBoolean(LCScript.instanceGet(b, "hasPayInput"));
+        hasPayOutput = LCScript.toBoolean(LCScript.instanceGet(b, "hasPayOutput"));
     };
 
 
@@ -301,7 +311,7 @@ public class LCRecipeHandler {
                     if(b.liquids.get(liq) > 0.01f) {
                         amt = LCScript.toFloat(arr.get(j + 1));
                         b.liquids.remove(liq, Math.min(amt * progIncLiq * rcTimeScl, b.liquids.get(liq)));
-                        LCScript.set(liq.name, amt, LCScript.toObject(LCScript.instanceGet(b, "consTmpObj")));
+                        LCScript.set(liq.name, amt, consTmpObj);
                         break;
                     };
                     j += 2;
@@ -310,7 +320,7 @@ public class LCRecipeHandler {
                 liq = (Liquid) tmp;
                 amt = LCScript.toFloat(ci.get(i + 1));
                 b.liquids.remove(liq, Math.min(amt * progIncLiq * rcTimeScl, b.liquids.get(liq)));
-                LCScript.set(liq.name, amt, LCScript.toObject(LCScript.instanceGet(b, "consTmpObj")));
+                LCScript.set(liq.name, amt, consTmpObj);
             };
             i += 2;
         };
@@ -322,13 +332,79 @@ public class LCRecipeHandler {
             liq = (Liquid) aux.get(i);
             amt = LCScript.toFloat(aux.get(i + 1));
             b.liquids.remove(liq, Math.min(amt * progIncLiq * rcTimeScl, b.liquids.get(liq)));
-            LCScript.set(liq.name, amt, LCScript.toObject(LCScript.instanceGet(b, "consTmpObj")));
+            LCScript.set(liq.name, amt, consTmpObj);
             i += 2;
         };
     };
 
 
-    @SuppressWarnings("ConstantConditions")
+    public static void consumeBatch(NativeObject rc, GenericCrafter.GenericCrafterBuild b) {
+        if(b.items == null && b.liquids == null) return;
+
+        resolve(rc, b);
+        int i;
+        long iCap;
+        int j;
+        long jCap;
+        Object tmp;
+        Object tmp1;
+        int intAmt;
+        float fAmt;
+        float p;
+
+        // BI
+        i = 0;
+        iCap = bi.getLength();
+        while(i < iCap) {
+            tmp = bi.get(i);
+            if(tmp instanceof NativeArray arr) {
+                j = 0;
+                jCap = arr.getLength();
+                while(j < jCap) {
+                    tmp1 = arr.get(j);
+                    intAmt = LCScript.toInt(arr.get(j + 1));
+                    fAmt = LCScript.toFloat(arr.get(j + 1));
+                    p = LCScript.toFloat(arr.get(j + 2));
+                    if(b.items != null && tmp1 instanceof Item itm && (boolean) LCScript.invoke("consumeItem", FRAG_item, b, itm, intAmt, p)) {
+                        LCScript.set(itm.name, intAmt * p, consTmpObj);
+                        break;
+                    };
+                    if(b.liquids != null && tmp1 instanceof Liquid liq && LCScript.toFloat(LCScript.invoke("addLiquidBatch", FRAG_fluid, b, b, liq, -fAmt)) > 0f) {
+                        LCScript.set(liq.name, fAmt, consTmpObj);
+                        break;
+                    };
+                    j += 3;
+                };
+            } else {
+                intAmt = LCScript.toInt(bi.get(i + 1));
+                fAmt = LCScript.toFloat(bi.get(i + 1));
+                p = LCScript.toFloat(bi.get(i + 2));
+                if(b.items != null && tmp instanceof Item itm) {
+                    LCScript.invoke("consumeItem", FRAG_item, b, itm, intAmt, p);
+                    LCScript.set(itm.name, intAmt * p, consTmpObj);
+                };
+                if(b.liquids != null && tmp instanceof Liquid liq) {
+                    LCScript.invoke("addLiquidBatch", FRAG_fluid, b, b, liq, -fAmt);
+                    LCScript.set(liq.name, fAmt, consTmpObj);
+                };
+            };
+            i += 3;
+        };
+
+        // OPT
+        if(opt.getLength() > 0) {
+            NativeArray tup = getOptTup(rc, b);
+            if(tup != null) {
+                Item itm = (Item) tup.get(0);
+                intAmt = LCScript.toInt(tup.get(1));
+                p = LCScript.toFloat(tup.get(2));
+                LCScript.invoke("consumeItem", FRAG_item, b, itm, intAmt, p);
+                LCScript.set(itm.name, intAmt * p, consTmpObj);
+            };
+        };
+    };
+
+
     public static void craftContinuous(NativeObject rc, GenericCrafter.GenericCrafterBuild b, float progIncLiq) {
         if(b.liquids == null) return;
 
@@ -348,8 +424,57 @@ public class LCRecipeHandler {
                 LCScriptUtil.fireTrigger("fluidProduce", b, liq);
             };
             b.handleLiquid(b, liq, Math.min(amt * progIncLiq * rcTimeScl, b.block.liquidCapacity - b.liquids.get(liq)));
-            LCScript.set(liq.name, amt / b.timeScale(), LCScript.toObject(LCScript.instanceGet(b, "prodTmpObj")));
+            LCScript.set(liq.name, amt / b.timeScale(), prodTmpObj);
             i += 2;
+        };
+    };
+
+
+    public static void craftBatch(NativeObject rc, GenericCrafter.GenericCrafterBuild b, boolean failed) {
+        resolve(rc, b);
+        int i;
+        long iCap;
+        Object tmp;
+        int intAmt;
+        float fAmt;
+        float p;
+
+        // BO
+        if(!failed) {
+            i = 0;
+            iCap = bo.getLength();
+            while(i < iCap) {
+                tmp = bo.get(i);
+                intAmt = LCScript.toInt(bo.get(i + 1));
+                fAmt = LCScript.toFloat(bo.get(i + 1));
+                p = LCScript.toFloat(bo.get(i + 2));
+                if(b.items != null && tmp instanceof Item itm && b.items.get(itm) < b.getMaximumAccepted(itm)) {
+                    LCScript.invoke("produceItem", FRAG_item, b, itm, intAmt, p);
+                    LCScript.set(itm.name, intAmt * p, prodTmpObj);
+                };
+                if(b.liquids != null && tmp instanceof Liquid liq) {
+                    LCScript.invoke("addLiquidBatch", FRAG_fluid, b, b, liq, fAmt, true);
+                    LCScript.set(liq.name, fAmt, prodTmpObj);
+                };
+                i += 3;
+            };
+        };
+
+        // FO
+        if(b.items != null && failed) {
+            i = 0;
+            iCap = fo.getLength();
+            Item itm;
+            while(i < iCap) {
+                itm = (Item) fo.get(i);
+                intAmt = LCScript.toInt(fo.get(i + 1));
+                p = LCScript.toFloat(fo.get(i + 2));
+                if(b.items.get(itm) < b.getMaximumAccepted(itm)) {
+                    LCScript.invoke("produceItem", FRAG_item, b, itm, intAmt, p);
+                    LCScript.set(itm.name, intAmt * p, prodTmpObj);
+                };
+                i += 3;
+            };
         };
     };
 

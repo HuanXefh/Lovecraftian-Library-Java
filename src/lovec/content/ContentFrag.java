@@ -13,6 +13,7 @@ public abstract class ContentFrag<T> {
 
 
     protected T lastThis;
+    protected T lastResolvedThis;
 
 
     /**
@@ -29,6 +30,33 @@ public abstract class ContentFrag<T> {
     public ContentFrag setThis(T thisVal) {
         lastThis = thisVal;
         return this;
+    };
+
+
+    /**
+     * Resolves temporary values.
+     */
+    public void resolve() {
+        if(!canResolve()) return;
+        lastResolvedThis = lastThis;
+        onResolved();
+    };
+
+
+    /**
+     * Whether temporary values should be resolved.
+     */
+    public boolean canResolve() {
+        return lastResolvedThis != lastThis;
+    };
+
+
+    /**
+     * Override this method to resolve temporary values.
+     * <br> <code>LATER</code>
+     */
+    public void onResolved() {
+
     };
 
 
