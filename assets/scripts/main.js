@@ -41,7 +41,6 @@
 
     // Initialize some global objects
     JAVA.init();
-    MUSIC_HANDLER.init();
   })();
 
 

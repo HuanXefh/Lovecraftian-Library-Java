@@ -321,7 +321,7 @@
   const clearDialFlow = function() {
     TRIGGER_BACKGROUND = false;
     TRIGGER_MUSIC = false;
-    MUSIC_HANDLER.stop();
+    LCSoundControl.stop();
     UTIL_dialogFlow.removeTextCur();
     UTIL_dialogFlow.clearRead();
     UTIL_dialogFlow.clearLog();
@@ -388,11 +388,11 @@
    * Shows a background image.
    * @param {number} delay
    * @param {string} nameBg
-   * @param {function(): boolean} endGetter
+   * @param {function(): boolean} endF
    * @param {number|unset} [inTimeS]
    * @return {number}
    */
-  const createBg = function(delay, nameBg, endGetter, inTimeS) {
+  const createBg = function(delay, nameBg, endF, inTimeS) {
     if(inTimeS == null) inTimeS = 1.0;
 
     let actor = new Table();
@@ -408,7 +408,7 @@
     setActorAction(actor, delay, [
       Actions.fadeIn(inTimeS),
       Actions.run(() => actor.update(() => {
-        if(endGetter()) {
+        if(endF()) {
           UTIL_dialogFlow.getPool("bg").pull(actor);
           removeActor(actor);
         };
@@ -424,19 +424,19 @@
    * Plays background music, temporarily mutes vanilla sound control.
    * @param {number} delay
    * @param {MusicGn} mus_gn
-   * @param {function(): boolean} endGetter
+   * @param {function(): boolean} endF
    * @return {number}
    */
-  const createBgm = function(delay, mus_gn, endGetter) {
+  const createBgm = function(delay, mus_gn, endF) {
     let actor = new Table();
 
     setActorAction(actor, delay, [
       Actions.run(() => {
-        MUSIC_HANDLER.setMusic(mus_gn);
+        LCSoundControl.setMusic(fetchMusic(mus_gn));
       }),
       Actions.run(() => actor.update(() => {
-        if(endGetter()) {
-          MUSIC_HANDLER.stop();
+        if(endF()) {
+          LCSoundControl.stop();
           removeActor(actor);
         };
       })),
@@ -453,7 +453,7 @@
    * @param {number} delay
    * @param {string} nameMod
    * @param {string} nameChara
-   * @param {function(): boolean} endGetter
+   * @param {function(): boolean} endF
    * @param {number|unset} [fracX] - The initial x position of image as fraction.
    * @param {boolean|Color|unset} [isDark0color] - Determines color of the image. The character art will be darkened if this property is true.
    * @param {string|unset} [anim] - Determines animation used on the image.
@@ -463,7 +463,7 @@
    * @return {number}
    */
   const createChara = function(
-    delay, nameMod, nameChara, endGetter,
+    delay, nameMod, nameChara, endF,
     fracX, isDark0color, anim, animParamObj,
     customActs, customActTimeS
   ) {
@@ -582,7 +582,7 @@
         animTup[1].withAll(customActs);
       };
       animTup[1].push(Actions.run(() => actor.update(() => {
-        if(endGetter()) {
+        if(endF()) {
           UTIL_dialogFlow.getPool("chara").pull(actor);
           removeActor(actor);
         };
@@ -653,10 +653,10 @@
    * @param {boolean|unset} [paramObj.autoClick] - If true, the box will be automatically clicked.
    * @param {boolean|unset} [paramObj.isTail] - Set this to true for last text.
    * @param {Function|unset} [paramObj.selectionScr] - Use this field to call {@link createSelection}.
-   * @param {(function(): boolean)|unset} [endGetter]
+   * @param {(function(): boolean)|unset} [endF]
    * @return {number}
    */
-  const createText = function(delay, dialTup, charaTup, scr, paramObj, endGetter) {
+  const createText = function(delay, dialTup, charaTup, scr, paramObj, endF) {
     if(scr == null) scr = Function.air;
 
     let actor = new Table();
@@ -728,7 +728,7 @@
       actions_fi != null ?
         actions_fi :
         [Actions.fadeIn(0.25), Actions.run(() => actor.update(() => {
-          if(endGetter != null && endGetter()) removeActor(actor);
+          if(endF != null && endF()) removeActor(actor);
         }))],
       true,
     );

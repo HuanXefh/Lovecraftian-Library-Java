@@ -17,6 +17,13 @@
 */
 
 
+  /* <------------------------------ lovec.audio ------------------------------ */
+
+
+  /** @global lovec.audio.LCSoundControl */
+  LCSoundControl = fetchClass("lovec.audio.LCSoundControl");
+
+
   /* <------------------------------ lovec.content ------------------------------ */
 
 
