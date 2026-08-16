@@ -136,6 +136,31 @@
   };
 
 
+  /**
+   * Exposes a Java class to all scripts.
+   * @global
+   * @param {Class} javaCls
+   * @return {void}
+   */
+  exposeClass = function(javaCls) {
+    let name = javaCls.__javaObject__.getSimpleName();
+    Object.globalize(javaCls, name);
+    exposeClass.__exposedClasses__[name] = javaCls;
+  };
+  exposeClass.__exposedClasses__ = {};
+
+
+  /**
+   * Variant of {@link exposeClass} that targets all classes in a package.
+   * @global
+   * @param {string} packagePath
+   * @return {void}
+   */
+  exposeClasses = function(packagePath) {
+    fetchClasses(packagePath).forEach(cls => exposeClass(cls));
+  };
+
+
   // Common packages
   /** @global */
   com = Packages.com;

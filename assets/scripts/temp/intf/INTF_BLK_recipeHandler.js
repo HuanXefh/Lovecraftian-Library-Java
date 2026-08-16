@@ -364,7 +364,7 @@
 
 
   function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rcIconName), b.block.size, 0.75);
+    LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rc.rcIconName), b.block.size, 0.75);
   };
 
 

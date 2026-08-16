@@ -31,7 +31,7 @@
 
 
   function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, b.lastRs, b.block.size);
+    LCDraw.contentIcon(b.x, b.y, b.lastRs, b.block.size, 0.75);
   };
 
 

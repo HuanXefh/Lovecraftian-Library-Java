@@ -9,6 +9,7 @@ public class Lovec extends Mod{
 
 
     public Lovec() {
+        LCClassMap.load();
         Log.info("[LOVEC] Loaded Java classes.");
     };
 

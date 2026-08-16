@@ -99,6 +99,21 @@ public class LCEntity {
 
 
     /**
+     * Iterates through buildings in a rectangular range.
+     */
+    public static void eachBuildRect(float x, float y, Team team, float w, @Nullable Boolf<Building> boolF, Cons<Building> cons) {
+        if(w < 0.0001f) return;
+
+        Vars.indexer.eachBlock(
+            team,
+            Tmp.r1.setCentered(x, y, w),
+            boolF != null ? boolF : b -> true,
+            cons
+        );
+    };
+
+
+    /**
      * Gets buildings on given tiles.
      */
     public static NativeArray getBuildsByTiles(@Nullable NativeArray contArr, NativeArray ts) {
@@ -187,6 +202,20 @@ public class LCEntity {
         if(rad < 0.0001f) return;
 
         Units.nearby(team, x, y, rad, ounit -> {
+            if(!((boolean) LCScript.invoke("_isIrregularUnit", MDL_cond, ounit)) && (boolF == null || boolF.get(ounit))) {
+                cons.get(ounit);
+            };
+        });
+    };
+
+
+    /**
+     * Iterates through units in a rectangular range.
+     */
+    public static void eachUnitRect(float x, float y, @Nullable Team team, float w, @Nullable Boolf<Unit> boolF, Cons<Unit> cons) {
+        if(w < 0.0001f) return;
+
+        Units.nearby(team, x, y, w, w, ounit -> {
             if(!((boolean) LCScript.invoke("_isIrregularUnit", MDL_cond, ounit)) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
             };

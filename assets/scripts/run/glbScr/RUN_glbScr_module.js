@@ -34,6 +34,7 @@
   /** @global */
   CLS_objectBox = require("lovec/cls/struct/CLS_objectBox");
   require("lovec/run/RUN_methodPostExt");
+  require("lovec/run/RUN_func");
   /** @global */
   LIB_fft = require("lovec/lib/LIB_fft");
   /** @global */
@@ -86,7 +87,7 @@
   MDL_file = require("lovec/mdl/MDL_file");
   /** @global */
   MDL_json = require("lovec/mdl/MDL_json");
-  require("lovec/run/RUN_contentFrag");
+  require("lovec/run/RUN_classExposure");
   /** @global */
   MDL_net = require("lovec/mdl/MDL_net");
   /** @global */

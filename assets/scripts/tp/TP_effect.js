@@ -1093,9 +1093,10 @@
       size_f = readParam(paramObj, "size_f", 6.0),
       size_t = readParam(paramObj, "size_t", 0.0),
       rad = readParam(paramObj, "rad", null),
-      scl = readParam(paramObj, "scl", 1.0);
+      scl = readParam(paramObj, "scl", 1.0),
+      z = readParam(paramObj, "z", null);
 
-    const eff = new Effect(40.0, eff => {
+    let tmp = new Effect(40.0, eff => {
       eff.lifetime = 40.0 * scl * Math.pow(tryVal(rad, eff.rotation) * 0.025, 0.5);
 
       Draw.color(MDL_color.getColor("ffffff30", Tmp.c2), MDL_color.getColor("ffffff00", Tmp.c3), eff.fin());
@@ -1103,9 +1104,11 @@
       Lines.circle(eff.x, eff.y, tryVal(rad, eff.rotation) * Interp.pow2Out.apply(eff.fin()));
       Draw.reset();
     });
-    eff.layer = VAR.layer.effFlr;
+    z == null ?
+      tmp.layer = VAR.layer.effFlr :
+      tmp.layer = z;
 
-    return eff;
+    return tmp;
   };
   exports.waveImpact = waveImpact;
 
@@ -1120,9 +1123,10 @@
       size_t = readParam(paramObj, "size_t", 0.0),
       r = readParam(paramObj, "r", null),
       color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
-      scl = readParam(paramObj, "scl", 1.0);
+      scl = readParam(paramObj, "scl", 1.0),
+      z = readParam(paramObj, "z", null);
 
-    return new Effect(20.0 * scl, eff => {
+    let tmp = new Effect(20.0 * scl, eff => {
       let rad = tryVal(r, eff.rotation) * Vars.tilesize * Interp.pow2Out.apply(eff.fin());
 
       Draw.color(tryVal(color, eff.color));
@@ -1133,6 +1137,11 @@
       Lines.line(eff.x - rad, eff.y + rad, eff.x - rad, eff.y - rad);
       Draw.reset();
     });
+    if(z != null) {
+      tmp.layer = z;
+    };
+
+    return tmp;
   };
   exports.waveRect = waveRect;
 
@@ -1147,14 +1156,20 @@
       size_t = readParam(paramObj, "size_t", 0.0),
       rad = readParam(paramObj, "rad", null),
       color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
-      scl = readParam(paramObj, "scl", 1.0);
+      scl = readParam(paramObj, "scl", 1.0)
+      z = readParam(paramObj, "z", null);
 
-    return new Effect(20.0 * scl, eff => {
+    let tmp = new Effect(20.0 * scl, eff => {
       Draw.color(tryVal(color, eff.color));
       Lines.stroke(size_f - eff.fin() * (size_f - size_t));
       Lines.circle(eff.x, eff.y, tryVal(rad, eff.rotation) * Interp.pow2Out.apply(eff.fin()));
       Draw.reset();
     });
+    if(z != null) {
+      tmp.layer = z;
+    };
+
+    return tmp;
   };
   exports.waveCircle = waveCircle;
 
@@ -1170,14 +1185,20 @@
     let
       r = readParam(paramObj, "r", 0.5),
       color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
-      scl = readParam(paramObj, "scl", 1.0);
+      scl = readParam(paramObj, "scl", 1.0),
+      z = readParam(paramObj, "z", null);
 
-    return new Effect(40.0 * scl, eff => {
+    let tmp = new Effect(40.0 * scl, eff => {
       Draw.color(tryVal(color, eff.color));
       Draw.alpha(eff.fout());
       Fill.square(eff.x, eff.y, r * Vars.tilesize);
       Draw.reset();
     });
+    if(z != null) {
+      tmp.layer = z;
+    };
+
+    return tmp;
   };
   exports.fadeSquare = fadeSquare;
 

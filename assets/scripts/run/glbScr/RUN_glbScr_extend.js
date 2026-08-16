@@ -142,6 +142,19 @@
 
 
   /**
+   * Variant of {@link extend} that can be safely used on mod classes.
+   * @global
+   */
+  extendSafe = function() {
+    processClassLoader();
+    let ins = extend.apply(this, arguments);
+    processClassLoader();
+
+    return ins;
+  };
+
+
+  /**
    * Lovec version of {@link extend} using content templates.
    * Significantly simplifies content codes.
    * @global
