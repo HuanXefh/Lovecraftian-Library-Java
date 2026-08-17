@@ -83,7 +83,7 @@
      * @memberof BUL_baseBullet
      * @instance
      */
-    typeMtpArr: prov(() => []),
+    typeMtpArr: tprov(() => []),
 
 
     /* <------------------------------ vanilla ------------------------------ */
@@ -124,9 +124,9 @@
     sticky: false,
     weaveMag: 0.0,
     circleShooter: false,
-    parts: prov(() => []),
+    parts: tprov(() => []),
 
-    
+
   })
   .setParamAlias([
     "z", "layer", Layer.bullet,
@@ -240,7 +240,7 @@
     "circleShooterRad", "circleShooterRadius", 13.0,
     "circleShooterSmoothRad", "circleShooterRadiusSmooth", -1.0,
     "circleShooterRotSpdFrac", "circleShooterRotateSpeed", 0.3,
-    "btps", "spawnBullets", prov(() => []),
+    "btps", "spawnBullets", tprov(() => []),
     "btpsRandAng", "spawnBulletRandomSpread", 0.0,
     "utp", "spawnUnit", null,
     "desUtp", "despawnUnit", null,
@@ -263,10 +263,10 @@
       return val >= 0.0 ? val : (this.circleShooterRadius * 0.7692);
     },
     "spawnBullets", function(val) {
-      return prov(() => val.get().toSeq());
+      return tprov(() => val.get().toSeq());
     },
     "parts", function(val) {
-      return prov(() => val.get().toSeq());
+      return tprov(() => val.get().toSeq());
     },
   ])
   .setMethod({

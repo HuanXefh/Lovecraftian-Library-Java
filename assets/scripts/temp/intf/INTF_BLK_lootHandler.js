@@ -105,13 +105,13 @@
          * @memberof INTF_B_lootHandler
          * @instance
          */
-        lootTs: prov(() => []),
+        lootTs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_lootHandler
          * @instance
          */
-        lootQueue: prov(() => []),
+        lootQueue: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_lootHandler

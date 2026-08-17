@@ -973,7 +973,7 @@
       while(i < iCap) {
         j += (function(i) {
           let ct = searchArr[i];
-          if(!MDL_cond._isRsAvailable(ct)) return 0;
+          if(!MDL_cond.isRsAvailable(ct)) return 0;
 
           let ctCur;
           let btn = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(ct.selectionSize, 0.0, 40.0), () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ct.localizedName, true).group(btnGrp).get();
@@ -1065,7 +1065,7 @@
       while(i < iCap) {
         j += (function(i) {
           let ct = searchArr[i];
-          if(!MDL_cond._isRsAvailable(ct)) return 0;
+          if(!MDL_cond.isRsAvailable(ct)) return 0;
 
           let btn = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(ct.selectionSize, 0.0, 40.0), () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ct.localizedName, true).group(btnGrp).get();
           btn.changed(() => cfgCaller((btn.isChecked() ? ["selector", ct, true] : ["selector", ct, false]).toJavaArr(JAVA.object)));

@@ -184,7 +184,7 @@ public class LCEntity {
         if(rad < 0.0001f) return contArr;
 
         Units.nearby(null, x, y, rad, ounit -> {
-            if(!LCScriptUtil.checkCond("_isIrregularUnit", ounit)) {
+            if(!LCScriptUtil.checkCond("isIrregularUnit", ounit)) {
                 LCNativeArray.push(arr, ounit);
             };
         });
@@ -200,7 +200,7 @@ public class LCEntity {
         if(rad < 0.0001f) return;
 
         Units.nearby(team, x, y, rad, ounit -> {
-            if(!LCScriptUtil.checkCond("_isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
+            if(!LCScriptUtil.checkCond("isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
             };
         });
@@ -214,7 +214,7 @@ public class LCEntity {
         if(w < 0.0001f) return;
 
         Units.nearby(team, x, y, w, w, ounit -> {
-            if(!LCScriptUtil.checkCond("_isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
+            if(!LCScriptUtil.checkCond("isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
             };
         });
@@ -288,7 +288,7 @@ public class LCEntity {
         if(rad < 0.0001f) return contArr;
 
         Units.nearby(null, x, y, rad, ounit -> {
-            if(LCScriptUtil.checkCond("_isLoot", ounit)) {
+            if(LCScriptUtil.checkCond("isLoot", ounit)) {
                 LCNativeArray.push(arr, ounit);
             };
         });
@@ -400,8 +400,8 @@ public class LCEntity {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getTargets.newArr");
         if(rad < 0.0001f) return arr;
 
-        eachUnit(x, y, null, rad, ounit -> LCScriptUtil.checkCond("_isEnemy", ounit, team), ounit -> LCNativeArray.push(arr, ounit));
-        eachBuild(x, y, null, rad, ob -> LCScriptUtil.checkCond("_isEnemy", ob, team), ob -> LCNativeArray.push(arr, ob));
+        eachUnit(x, y, null, rad, ounit -> LCScriptUtil.checkCond("isEnemy", ounit, team), ounit -> LCNativeArray.push(arr, ounit));
+        eachBuild(x, y, null, rad, ob -> LCScriptUtil.checkCond("isEnemy", ob, team), ob -> LCNativeArray.push(arr, ob));
 
         return arr;
     };

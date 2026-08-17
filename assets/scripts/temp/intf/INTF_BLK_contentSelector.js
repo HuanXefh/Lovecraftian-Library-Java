@@ -81,7 +81,7 @@
          * @memberof INTF_BLK_contentSelector
          * @instance
          */
-        selectionQueue: prov(() => []),
+        selectionQueue: tprov(() => []),
 
 
       }),

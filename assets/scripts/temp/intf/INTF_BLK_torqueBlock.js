@@ -331,19 +331,19 @@
          * @memberof INTF_B_torqueBlock
          * @instance
          */
-        torFetchTgs: prov(() => []),
+        torFetchTgs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
-        torSupplyTgs: prov(() => []),
+        torSupplyTgs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
-        torTransTgs: prov(() => []),
+        torTransTgs: tprov(() => []),
 
 
       }),

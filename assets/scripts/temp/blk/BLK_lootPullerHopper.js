@@ -189,7 +189,7 @@
        * @memberof B_lootPullerHopper
        * @instance
        */
-      pullTgs: prov(() => []),
+      pullTgs: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof B_lootPullerHopper

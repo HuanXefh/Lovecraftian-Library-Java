@@ -3,6 +3,7 @@ package lovec.graphics.drawer;
 import arc.func.Func3;
 import arc.graphics.Color;
 import arc.math.Mathf;
+import lovec.utils.func.Floatf3;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -24,7 +25,7 @@ public class LCDrawEffect extends DrawBlock {
     public boolean rotate = false;
     public float angle = -1f;
     public boolean randomAngle = false;
-    public Func3<Building, Float, Float, Float> angleF;
+    public Floatf3<Building, Float, Float> angleF;
     public Color color;
     public Func3<Building, Float, Float, Color> colorF;
     public Object data;

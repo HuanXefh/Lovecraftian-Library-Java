@@ -15,7 +15,7 @@
 
 
   function comp_onProximityUpdate(b) {
-    b.nextToRouter = b.proximity.find(ob => MDL_cond._isRouter(ob.block)) != null;
+    b.nextToRouter = b.proximity.find(ob => MDL_cond.isClassicRouter(ob.block)) != null;
   };
 
 
@@ -40,7 +40,7 @@
 
     if(PARAM.SHOULD_DRAW_ROUTER_HERESY && b.nextToRouter) {
       b.proximity.each(ob => {
-        if(MDL_cond._isRouter(ob.block)) LCDrawf.areaShrink(ob.tile, ob.block.size, Pal.remove);
+        if(MDL_cond.isClassicRouter(ob.block)) LCDrawf.areaShrink(ob.tile, ob.block.size, Pal.remove);
       });
     };
   };

@@ -67,7 +67,7 @@
      * @memberof RS_intermediateItem
      * @instance
      */
-    extraIntmdParents: prov(() => []),
+    extraIntmdParents: tprov(() => []),
     /**
      * `PARAM`: Whether to generate icons based on the parent. Set this to false if you have sprite for this intermediate.
      * @override

@@ -58,9 +58,9 @@
     if(ob == null || ob.team !== b.team) return;
 
     if(
-      MDL_cond._isTransmissionRod(ob.block) ?
+      MDL_cond.isTransmissionRod(ob.block) ?
         ob.relativeTo(b) === ob.rotation :
-        MDL_cond._isGearBox(ob.block)
+        MDL_cond.isGearBox(ob.block)
     ) {
       b.torTransTgs.push(ob);
     };

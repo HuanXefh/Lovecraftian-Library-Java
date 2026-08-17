@@ -50,7 +50,7 @@
     let b_t = b.nearby(rot);
     let tg = null;
 
-    if((b.block.delegee.filterScrTup[0](b, b_f, itm) !== b.isInv) === b.enabled) {
+    if((b.block.delegee.filterScr.get(b, b_f, itm) !== b.isInv) === b.enabled) {
       if(b.isSame(b_f) && b.isSame(b_t)) return tg;
       tg = b_t;
     } else {
@@ -125,7 +125,7 @@
        * @memberof BLK_filterGate
        * @instance
        */
-      filterScrTup: prov(() => [(b, b_f, itm) => itm === b.sortItem]),
+      filterScr: tprov(() => boolf3(function(b, b_f, itm) {return itm === b.sortItem})),
       /**
        * `PARAM`: If true, item selector will be hidden.
        * @memberof BLK_filterGate

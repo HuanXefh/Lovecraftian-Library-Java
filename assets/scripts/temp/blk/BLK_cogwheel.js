@@ -346,7 +346,7 @@
        * @return {boolean}
        */
       ex_checkCogTransValid: function(ob) {
-        return MDL_cond._isCogwheel(ob.block);
+        return MDL_cond.isCogwheel(ob.block);
       }
       .setProp({
         noSuper: true,

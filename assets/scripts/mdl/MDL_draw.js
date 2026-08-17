@@ -47,7 +47,7 @@
     armor, shield, speedMtp, dpsMtp,
     z
   ) {
-    if(e.dead || (e instanceof Unit && MDL_cond._isCovered(e))) return;
+    if(e.dead || (e instanceof Unit && MDL_cond.isUnitCovered(e))) return;
     if(size == null) size = 1;
     if(a == null) a = 1.0;
     if(a < 0.0001) return;
@@ -93,7 +93,7 @@
     frac_ow,
     z
   ) {
-    if(e.dead || (e instanceof Unit && MDL_cond._isCovered(e))) return;
+    if(e.dead || (e instanceof Unit && MDL_cond.isUnitCovered(e))) return;
     if(a == null) a = 1.0;
     if(a < 0.0001) return;
     if(offW == null) offW = 0.0;

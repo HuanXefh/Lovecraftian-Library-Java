@@ -342,10 +342,8 @@
       obj[nameProp] = parser.apply(obj, [obj[nameProp]]);
     });
     Object._it(obj, (name, prop) => {
-      // When the property is a `Prov`, use the content instead
-      if(prop instanceof Prov) obj[name] = prop.get();
-      // When the property is a `Cons`, pass the object to it
-      if(prop instanceof Cons) obj[name] = prop.get(obj);
+      if(prop instanceof TemplateProv) obj[name] = prop.get();
+      if(prop instanceof TemplateFunc) obj[name] = prop.get(obj);
     });
     Object._it(this.funObj, (name, fun) => {
       // Get the final method and wrap its length

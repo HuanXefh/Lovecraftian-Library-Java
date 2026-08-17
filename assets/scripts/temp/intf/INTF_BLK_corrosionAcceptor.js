@@ -14,7 +14,7 @@
   function comp_init(blk) {
     blk.matGrp = MDL_flow.getMatGrp(blk);
     blk.corRes = MDL_flow.getCorRes(blk);
-    blk.cloggable = MDL_cond._isCloggableBlock(blk);
+    blk.cloggable = MDL_cond.isCloggableBlock(blk);
   };
 
 

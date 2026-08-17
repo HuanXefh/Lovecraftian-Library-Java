@@ -27,7 +27,7 @@
 
 
   function comp_getLiquidDestination(b, b_f, liq) {
-    return !b.enabled || liq !== b.ctTg || MDL_cond._isAuxiliaryFluid(liq) ?
+    return !b.enabled || liq !== b.ctTg || MDL_cond.isAuxiliaryFluid(liq) ?
       b :
       b.super$getLiquidDestination(b_f, liq);
   };
@@ -103,7 +103,7 @@
        * @return {Array<Liquid>}
        */
       ex_findSelectionTgs: function() {
-        return Vars.content.liquids().select(liq => !MDL_cond._isAuxiliaryFluid(liq)).toArray();
+        return Vars.content.liquids().select(liq => !MDL_cond.isAuxiliaryFluid(liq)).toArray();
       }
       .setProp({
         noSuper: true,

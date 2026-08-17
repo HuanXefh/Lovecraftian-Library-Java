@@ -92,6 +92,10 @@
   LCNativeArray = fetchClass("lovec.utils.extend.LCNativeArray");
   /** @global lovec.utils.extend.LCNumber */
   LCNumber = fetchClass("lovec.utils.extend.LCNumber");
+  /** @global lovec.utils.func.TemplateFunc */
+  TemplateFunc = fetchClass("lovec.utils.func.TemplateFunc");
+  /** @global lovec.utils.func.TemplateProv */
+  TemplateProv = fetchClass("lovec.utils.func.TemplateProv");
   /** @global lovec.utils.pooling.PoolableNativeArray */
   PoolableNativeArray = fetchClass("lovec.utils.pooling.PoolableNativeArray");
   /** @global lovec.utils.pooling.PoolableVec2 */

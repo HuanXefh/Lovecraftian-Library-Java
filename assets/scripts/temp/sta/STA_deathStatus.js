@@ -38,8 +38,8 @@
      * @memberof STA_deathStatus
      * @instance
      */
-    killedScrTup: null,
+    killedScr: null,
 
-    
+
   })
   .setMethod({});

@@ -201,25 +201,25 @@
          * @memberof INTF_B_payloadBlock
          * @instance
          */
-        payReqObj: prov(() => ({})),
+        payReqObj: tprov(() => ({})),
         /**
          * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
-        payStockObj: prov(() => ({})),
+        payStockObj: tprov(() => ({})),
         /**
          * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
-        payInputBs: prov(() => []),
+        payInputBs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_payloadBlock
          * @instance
          */
-        payOutputBs: prov(() => []),
+        payOutputBs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_payloadBlock

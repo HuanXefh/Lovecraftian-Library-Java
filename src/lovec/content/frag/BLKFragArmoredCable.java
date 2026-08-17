@@ -21,12 +21,12 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
 
         return (
             (oblk.consPower != null || oblk.outputsPower)
-                && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
+                && !LCScriptUtil.checkCond("isFluidConduit", oblk)
                 && blk.blendsArmored(t, rot, otx, oty, orot, oblk)
         ) || (
             blk.lookingAt(t, rot, otx, oty, oblk)
                 && oblk.hasPower
-                && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
+                && !LCScriptUtil.checkCond("isFluidConduit", oblk)
         );
     };
     // Overload
@@ -61,7 +61,7 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
                         && Edges.getFacingEdge(oblk, otx, oty, t) != null
                         && Edges.getFacingEdge(oblk, otx, oty, t).relativeTo(t) == rot
                 ) || (
-                    LCScriptUtil.checkCond("_isArmoredCable", oblk)
+                    LCScriptUtil.checkCond("isArmoredCable", oblk)
                         && oblk.rotatedOutput(otx, oty, t)
                         && Point2.equals(otx + Geometry.d4(orot).x, oty + Geometry.d4(orot).y, t.x, t.y)
                 )

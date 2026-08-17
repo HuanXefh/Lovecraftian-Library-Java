@@ -53,7 +53,7 @@
       if(rad > 1.0) {
         LCEntity.eachUnit(
           b.x, b.y, null, rad,
-          ounit => b.block.delegee.filterScrTup[0](b, ounit),
+          ounit => b.block.delegee.filterScr.get(b, ounit),
           ounit => ounit.apply(b.block.delegee.staTg, b.block.delegee.staDur),
         );
       };
@@ -107,7 +107,7 @@
        * @memberof BLK_statusProjector
        * @instance
        */
-      filterScrTup: prov(() => [Function.airTrue]),
+      filterScr: tprov(() => boolf2(function(b, ounit) {return true})),
 
 
     })

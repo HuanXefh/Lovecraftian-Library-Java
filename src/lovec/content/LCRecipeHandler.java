@@ -81,7 +81,7 @@ public class LCRecipeHandler {
                 fAmt = LCScript.toFloat(co.get(i + 1));
                 if(b.liquids.get((Liquid) tmp) <= b.block.liquidCapacity) {
                     allFull = false;
-                } else if(!blk.ignoreLiquidFullness && !blk.dumpExtraLiquid && fAmt > 0f && !LCScriptUtil.checkCond("_isAuxiliaryFluid", tmp)) {
+                } else if(!blk.ignoreLiquidFullness && !blk.dumpExtraLiquid && fAmt > 0f && !LCScriptUtil.checkCond("isAuxiliaryFluid", tmp)) {
                     return false;
                 };
                 i += 2;

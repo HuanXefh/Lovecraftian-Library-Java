@@ -20,7 +20,7 @@
     if(utp.immuneToAll) {
       MDL_event.onLoadPost(() => {
         Vars.content.statusEffects().each(
-          sta => !MDL_cond._isNonStatus(sta),
+          sta => !MDL_cond.isNonStatus(sta),
           sta => utp.immunities.add(sta),
         );
       });
@@ -50,7 +50,7 @@
       utp.stats.remove(Stat.mineTier);
     };
 
-    if(MDL_cond._isNonRobot(utp)) utp.stats.add(fetchStat("lovec", "utp-notrobot"), true);
+    if(MDL_cond.isNonRobot(utp)) utp.stats.add(fetchStat("lovec", "utp-notrobot"), true);
     if(utp.polTol > 0.0) utp.stats.add(fetchStat("lovec", "blk-poltol"), utp.polTol, fetchStatUnit("lovec", "polunits"));
   };
 
@@ -151,7 +151,7 @@
      * @memberof UNIT_baseUnit
      * @instance
      */
-    itmBlacklist: prov(() => []),
+    itmBlacklist: tprov(() => []),
     /**
      * `PARAM`: If larger than 0.0, shield will always be drawn.
      * @memberof UNIT_baseUnit
@@ -404,7 +404,7 @@
       let unitProv = EntityMapping.map(utp.delegee.entityName);
       if(unitProv == null) {
         unitProv = prov(() => {
-          processClassLoader();
+          processClassLoader(null, VAR.extendInd.entity);
           let obj = mergeObj(
             utp.delegee.entityTemplate.build(),
             {
@@ -417,7 +417,7 @@
           });
           let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
           utp.delegee.entityTemplate.initContent(unit);
-          processClassLoader();
+          processClassLoader(null, VAR.extendInd.entity);
 
           return unit;
         });
@@ -427,58 +427,6 @@
     } else {
       utp.constructor = () => extend(entityVal, {});
     };
-
-
-    /*if(typeof entityVal === "number") {
-      utp.constructor = () => extend(entityVal, {});
-    } else if(typeof val) {
-      let entityId = EntityMapping.register(utp.delegee.entityName, prov(() => {
-        processClassLoader();
-        let obj = mergeObj(
-          utp.delegee.entityTemplate.build(),
-          {
-            classId: function() {return entityId},
-          },
-        );
-        Object._it(obj, (key, val) => {
-          if(!key.startsWith("utp$")) return;
-          obj[key] = tryJsProp(utp, key.replace("utp$", ""), undefined);
-        });
-        let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
-        utp.delegee.entityTemplate.initContent(unit);
-        processClassLoader();
-
-        return unit;
-      }));
-
-
-      /*if(EntityMapping.idMap[entityVal] == null) {
-        let templateGetter = DB_unit.db["map"]["entity"]["entityDef"].read(entityVal);
-        if(templateGetter == null) throw new Error("Entity (${1}) is not defined yet!".format(entityVal));
-        utp.delegee.entityTemplate = templateGetter();
-
-        EntityMapping.idMap[entityVal] = prov(() => {
-          processClassLoader();
-          let obj = mergeObj(
-            utp.delegee.entityTemplate.build(),
-            {
-              classId: function() {return entityVal},
-            },
-          );
-          Object._it(obj, (key, val) => {
-            if(!key.startsWith("utp$")) return;
-            obj[key] = tryJsProp(utp, key.replace("utp$", ""), undefined);
-          });
-          let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
-          utp.delegee.entityTemplate.initContent(unit);
-          processClassLoader();
-
-          return unit;
-        });
-      };
-      EntityMapping.nameMap.put(utp.delegee.entityName, EntityMapping.idMap[entityVal]);
-      utp.constructor = EntityMapping.map(utp.delegee.entityName);
-    };*/
 
     // Resolve unit damage type
     let dmgType = CLS_unitDamageType.getByUtp(utp);

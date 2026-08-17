@@ -31,7 +31,7 @@
       };
     };
 
-    liq.isConductive = MDL_cond._isConductiveLiquid(liq);
+    liq.isConductive = MDL_cond.isConductiveLiquid(liq);
     liq.shouldFume = DB_fluid.db["group"]["fuming"].includes(liq.name);
     liq.dens = MDL_flow.getDens(liq);
     liq.fHeat = MDL_flow.getFHeat(liq);
@@ -56,7 +56,7 @@
     };
 
     if(liq.effect !== StatusEffects.none) liq.stats.add(fetchStat("lovec", "rs-fluidstatus"), StatValues.content([liq.effect].toSeq()));
-    if(!liq.gas && MDL_cond._isConductiveLiquid(liq)) liq.stats.add(fetchStat("lovec", "rs-conductiveliq"), true);
+    if(!liq.gas && MDL_cond.isConductiveLiquid(liq)) liq.stats.add(fetchStat("lovec", "rs-conductiveliq"), true);
     let dens = MDL_flow.getDens(liq);
     liq.stats.add(fetchStat("lovec", "rs-dens"), liq.gas ? dens.sci(-3) : Strings.fixed(dens, 2));
     let fHeat = MDL_flow.getFHeat(liq);

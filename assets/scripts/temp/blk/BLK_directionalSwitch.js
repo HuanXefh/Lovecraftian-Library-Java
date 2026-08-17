@@ -34,13 +34,13 @@
   function comp_ex_isValidTg(blk, oblk) {
     return tryFun(oblk.ex_canSwitchDisable, oblk, true) && (
       tryFun(oblk.ex_isSwitchDisableTg, oblk, false)
-        || MDL_cond._isMiner(oblk)
-        || MDL_cond._isMassDriver(oblk)
-        || MDL_cond._isPump(oblk)
-        || MDL_cond._isNonReactorGenerator(oblk)
-        || MDL_cond._isFactory(oblk)
-        || MDL_cond._isAssistanceBlock(oblk)
-        || MDL_cond._isTurret(oblk)
+        || MDL_cond.isMinerBlock(oblk)
+        || MDL_cond.isMassDriver(oblk)
+        || MDL_cond.isPump(oblk)
+        || MDL_cond.isNonReactorPowerGenerator(oblk)
+        || MDL_cond.isFactory(oblk)
+        || MDL_cond.isAssistanceBlock(oblk)
+        || MDL_cond.isTurret(oblk)
     );
   };
 

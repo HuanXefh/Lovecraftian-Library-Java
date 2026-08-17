@@ -121,20 +121,27 @@
    * Should always be called twice!
    * @global
    * @param {java.lang.ClassLoader|unset} [clsLoader]
+   * @param {number|unset} [ind]
    * @return {void}
    */
-  processClassLoader = function(clsLoader) {
+  processClassLoader = function(clsLoader, ind) {
     if(clsLoader == null) clsLoader = Vars.mods.mainLoader();
+    if(ind == null) ind = 0;
 
-    if(!processClassLoader.isTail) {
+    if(!processClassLoader.tailBools[ind]) {
       CONTEXT.setApplicationClassLoader(clsLoader);
     } else {
       CONTEXT.setApplicationClassLoader(processClassLoader.defLoader);
     };
 
-    processClassLoader.isTail = !processClassLoader.isTail;
+    processClassLoader.tailBools[ind] = !processClassLoader.tailBools[ind];
   };
-  processClassLoader.isTail = false;
+  processClassLoader.tailBools = [
+    false, false, false, false, false,
+    false, false, false, false, false,
+    false, false, false, false, false,
+    false, false, false, false, false,
+  ],
   processClassLoader.defLoader = CONTEXT.getApplicationClassLoader();
 
 
@@ -146,9 +153,9 @@
    * @global
    */
   extendSafe = function() {
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.safe);
     let ins = extend.apply(this, arguments);
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.safe);
 
     return ins;
   };
@@ -164,7 +171,7 @@
    * @return {UnlockableContent}
    */
   extendBase = function(temp, nameCt, obj) {
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.base);
     obj = extendBase.setupObj(temp, obj);
     // Can't implement interfaces with `extend`, that's why `new JavaAdapter(...)` is used
     // You cannot pass an array as arguments to a constructor function directly, here it's wrapped in `ctorCall`
@@ -172,7 +179,7 @@
     extendBase.setupFields(ct, obj);
     temp.initContent(ct);
     CONTENT_HANDLER.add(ct);
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.base);
 
     return ct;
   };
@@ -213,7 +220,7 @@
    * @return {Block}
    */
   extendBlock = function(temp, nameBlk, objBlk, objB) {
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.block);
     let obj = extendBase.setupObj(temp[0], objBlk);
 
     if(obj.forceUseDrawer) {
@@ -240,7 +247,7 @@
     let blk = ctorCall(JavaAdapter, extendBase.setupArgs(temp[0], obj, nameBlk));
     extendBase.setupFields(blk, obj);
     blk.buildType = () => {
-      processClassLoader();
+      processClassLoader(null, VAR.extendInd.build);
       let obj1 = extendBase.setupObj(temp[1], objB);
 
       if(obj.forceUseDrawer) {
@@ -267,12 +274,12 @@
       let b = ctorCall(JavaAdapter, extendBase.setupArgs(temp[1], obj1, blk));
       extendBase.setupFields(b, obj1);
       temp[1].initContent(b);
-      processClassLoader();
+      processClassLoader(null, VAR.extendInd.build);
       return b;
     };
     temp[0].initContent(blk);
     CONTENT_HANDLER.add(blk);
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.block);
 
     return blk;
   };
@@ -287,13 +294,13 @@
    * @return {UnitType}
    */
   extendUnit = function(temp, nameUtp, objUtp) {
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.unit);
     objUtp = extendBase.setupObj(temp, objUtp);
     let utp = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objUtp, nameUtp));
     extendBase.setupFields(utp, objUtp);
     temp.initContent(utp);
     CONTENT_HANDLER.add(utp);
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.unit);
 
     return utp;
   };
@@ -309,13 +316,13 @@
    * @return {Planet}
    */
   extendPlanet = function(temp, namePla, sectorSize, objPla) {
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.planet);
     objPla = extendBase.setupObj(temp, objPla);
     let pla = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objPla, namePla, null, 1.0, sectorSize));
     extendBase.setupFields(temp, objPla);
     temp.initContent(pla);
     CONTENT_HANDLER.add(pla);
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.planet);
 
     return pla;
   };

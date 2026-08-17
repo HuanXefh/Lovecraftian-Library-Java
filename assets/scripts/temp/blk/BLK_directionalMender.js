@@ -66,7 +66,7 @@
       b.charge = 0.0;
 
       let ob = b.nearby(b.rotation);
-      if(ob != null && MDL_cond._canHeal(ob)) {
+      if(ob != null && MDL_cond.canHeal(ob)) {
         FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt) * b.efficiency, true);
       };
     };

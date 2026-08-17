@@ -243,7 +243,7 @@
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
-        dynaAttrRsEffcMap: prov(() => new ObjectMap()),
+        dynaAttrRsEffcMap: tprov(() => new ObjectMap()),
         /**
          * `PARAM`: Whether efficiency text should be shown in `drawPlace`.
          * @memberof INTF_BLK_dynamicAttributeBlock
@@ -278,7 +278,7 @@
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
-        dynaAttrTmpTs: prov(() => []),
+        dynaAttrTmpTs: tprov(() => []),
 
 
       }),
@@ -504,7 +504,7 @@
          * @memberof INTF_B_dynamicAttributeBlock
          * @instance
          */
-        dynaAttrTs: prov(() => []),
+        dynaAttrTs: tprov(() => []),
 
 
       }),

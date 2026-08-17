@@ -39,7 +39,7 @@ public class LCDrawMixedLiquid extends DrawBlock {
         Tmp.c1.set(Color.clear);
         firstLiq = true;
         b.liquids.each((liq, amt) -> {
-            if(amt > 0.01 && !liq.gas && !LCScriptUtil.checkCond("_isAuxiliaryFluid", LCScript.wrap(liq))) {
+            if(amt > 0.01 && !liq.gas && !LCScriptUtil.checkCond("isAuxiliaryFluid", LCScript.wrap(liq))) {
                 if(firstLiq) {
                     firstLiq = false;
                     Tmp.c1.set(liq.color).a(amt / b.block.liquidCapacity);

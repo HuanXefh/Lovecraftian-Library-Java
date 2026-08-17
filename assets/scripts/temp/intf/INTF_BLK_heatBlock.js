@@ -421,13 +421,13 @@
          * @memberof INTF_B_heatBlock
          * @instance
          */
-        heatFetchTgs: prov(() => []),
+        heatFetchTgs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
-        heatTransTgs: prov(() => []),
+        heatTransTgs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_heatBlock
@@ -439,7 +439,7 @@
          * @memberof INTF_B_heatBlock
          * @instance
          */
-        heatSupplyTgs: prov(() => []),
+        heatSupplyTgs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_heatBlock

@@ -38,7 +38,7 @@
 
   function comp_ex_updateTorTransTgs(b) {
     b.proximity.each(
-      ob => MDL_cond._isTransmissionRod(ob.block) ?
+      ob => MDL_cond.isTransmissionRod(ob.block) ?
         ob.front() === b :
         false,
       ob => b.torTransTgs.push(ob),

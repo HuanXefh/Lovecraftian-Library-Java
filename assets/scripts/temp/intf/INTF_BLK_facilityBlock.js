@@ -32,12 +32,12 @@
     // Handle auxiliary liquids
     if(b.liquids != null && TIMER.secTwo && b.block.delegee.canHandleAux) {
       b.liquids.each(liq => {
-        if(!MDL_cond._isAuxiliaryFluid(liq)) return;
+        if(!MDL_cond.isAuxiliaryFluid(liq)) return;
         if(b.efficiency < 0.0001 && b.block.delegee.shouldClearAuxOnStop) {
           b.liquids.set(liq, 0.0);
           return;
         };
-        if(b.block.delegee.shouldCapAux && !MDL_cond._isNoCapAuxiliaryFluid(liq) && b.liquids.get(liq) > VAR.param.auxCap) {
+        if(b.block.delegee.shouldCapAux && !MDL_cond.isNoCapAuxiliaryFluid(liq) && b.liquids.get(liq) > VAR.param.auxCap) {
           b.liquids.set(liq, VAR.param.auxCap);
         };
       });

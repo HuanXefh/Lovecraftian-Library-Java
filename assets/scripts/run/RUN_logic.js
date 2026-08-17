@@ -36,7 +36,7 @@
     if(!PARAM.MODDED) return;
 
     Groups.unit.each(unit => {
-      if(MDL_cond._isIrregularUnit(unit)) return;
+      if(MDL_cond.isIrregularUnit(unit)) return;
 
       if(PARAM.IS_NO_BUILD_MAP && VARGEN.staNoConstruction != null) {
         unit.apply(VARGEN.staNoConstruction, 60.0);
@@ -148,12 +148,12 @@
 
 
   function triggerDeathStatus(unit) {
-    let tup;
+    let scr;
     VARGEN.deathStas.forEachFast(sta => {
       if(!unit.hasEffect(sta)) return;
-      tup = sta.delegee.killedScrTup;
-      if(tup == null) return;
-      tup[0](unit);
+      scr = sta.delegee.killedScr;
+      if(scr == null) return;
+      scr.get(unit);
     });
   };
 
@@ -195,7 +195,7 @@
       TRIGGER.majorIter.start.fire();
       VARGEN.mainTeams.forEachFast(team => {
         team.data().buildings.each(b => {
-          TRIGGER.majorIter.building.fire(b, MDL_cond._isBuildingActive(b));
+          TRIGGER.majorIter.building.fire(b, MDL_cond.isBuildingActive(b));
         });
         team.data().units.each(unit => {
           TRIGGER.majorIter.unit.fire(unit);

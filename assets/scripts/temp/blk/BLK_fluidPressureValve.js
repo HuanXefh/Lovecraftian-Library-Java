@@ -37,7 +37,7 @@
 
 
   function comp_getLiquidDestination(b, b_f, liq) {
-    return !b.enabled || MDL_cond._isAuxiliaryFluid(liq) ?
+    return !b.enabled || MDL_cond.isAuxiliaryFluid(liq) ?
       b :
       tryVal(b.front(), b);
   };

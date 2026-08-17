@@ -106,13 +106,13 @@
      * @memberof DBCT_techNodeContent
      * @instance
      */
-    childCts: prov(() => []),
+    childCts: tprov(() => []),
     /**
      * `INTERNAL`
      * @memberof DBCT_techNodeContent
      * @instance
      */
-    childRcs: prov(() => []),
+    childRcs: tprov(() => []),
 
 
     /* <------------------------------ vanilla ------------------------------ */

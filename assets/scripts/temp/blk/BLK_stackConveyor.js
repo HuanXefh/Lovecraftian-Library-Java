@@ -105,7 +105,7 @@
       acceptItem: function(b_f, itm) {
         return !this.block.delegee.convInputOnly ?
           true :
-          MDL_cond._isConveyor(b_f.block) || MDL_cond._isDuct(b_f.block);
+          MDL_cond.isConveyor(b_f.block) || MDL_cond.isDuct(b_f.block);
       }
       .setProp({
         boolMode: "and",

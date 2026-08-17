@@ -18,7 +18,7 @@
   function comp_update(sta, unit, staEn) {
     if(sta.burstTime < 0.0001 || !TIMER.stackSta) return;
     let t = unit.tileOn();
-    if(t == null || !MDL_cond._isOnFloor(unit)) return;
+    if(t == null || !MDL_cond.isUnitOnFloor(unit)) return;
 
     let flr = t.floor();
     let puddle = Puddles.get(t);

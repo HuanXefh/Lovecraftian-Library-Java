@@ -224,7 +224,7 @@
      * @memberof RS_baseResource
      * @instance
      */
-    extraIntmdParents: prov(() => []),
+    extraIntmdParents: tprov(() => []),
     /**
      * `INTERNAL`
      * @memberof RS_baseResource

@@ -15,7 +15,7 @@
     if(b.requiresScanner && TIMER.effc) {
       b.scannerCur = LCEntity.getBuildBy(
         b.x, b.y, b.team,
-        ob => MDL_cond._isOreScanner(ob.block) && ob.block.delegee.scanTier >= b.delegee.depthLvlReqCur && ob.efficiency > 0.0 && Mathf.dst(b.x, b.y, ob.x, ob.y) < ob.block.delegee.blkRad,
+        ob => MDL_cond.isOreScanner(ob.block) && ob.block.delegee.scanTier >= b.delegee.depthLvlReqCur && ob.efficiency > 0.0 && Mathf.dst(b.x, b.y, ob.x, ob.y) < ob.block.delegee.blkRad,
       );
     };
   };

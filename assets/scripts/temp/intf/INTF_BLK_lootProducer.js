@@ -127,7 +127,7 @@
          * @memberof INTF_B_lootProducer
          * @instance
          */
-        lootDumpVec: prov(() => new Vec2(-1.0, -1.0)),
+        lootDumpVec: tprov(() => new Vec2(-1.0, -1.0)),
         /**
          * `INTERNAL`
          * @memberof INTF_B_lootProducer

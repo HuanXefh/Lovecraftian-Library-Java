@@ -22,7 +22,7 @@
   function comp_onProximityUpdate(b) {
     let safeLvl = Number.n8, tmpSafeLvl;
     b.proximity.each(
-      ob => MDL_cond._isCable(ob.block),
+      ob => MDL_cond.isCable(ob.block),
       ob => {
         tmpSafeLvl = ob.ex_getMaxPowProdAllowed();
         if(tmpSafeLvl < safeLvl) {

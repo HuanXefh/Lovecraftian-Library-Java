@@ -109,7 +109,7 @@
          * @memberof INTF_BLK_contentMultiSelector
          * @instance
          */
-        selectionQueue: prov(() => []),
+        selectionQueue: tprov(() => []),
 
 
       }),
@@ -154,7 +154,7 @@
          * @memberof INTF_B_contentMultiSelector
          * @instance
          */
-        ctTgs: prov(() => []),
+        ctTgs: tprov(() => []),
         /**
          * `INTERNAL`: Content displayed in {@link INTF_B_contentMultiSelector#ex_drawSelected}.
          * @memberof INTF_B_contentMultiSelector

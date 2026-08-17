@@ -49,12 +49,12 @@
     colorTo: null,
     mixColor: null,
     mixColorTo: null,
-    heatColor: prov(() => Pal.turretHeat.cpy()),
+    heatColor: tprov(() => Pal.turretHeat.cpy()),
     progress: DrawPart.PartProgress.warmup,
     growProgress: DrawPart.PartProgress.warmup,
     heatProgress: DrawPart.PartProgress.heat,
-    children: prov(() => []),
-    moves: prov(() => []),
+    children: tprov(() => []),
+    moves: tprov(() => []),
 
 
   })
@@ -78,10 +78,10 @@
   ])
   .setParamParser([
     "children", function(val) {
-      return prov(() => val.get().toSeq());
+      return tprov(() => val.get().toSeq());
     },
     "moves", function(val) {
-      return prov(() => val.get().toSeq());
+      return tprov(() => val.get().toSeq());
     },
   ])
   .setMethod({});

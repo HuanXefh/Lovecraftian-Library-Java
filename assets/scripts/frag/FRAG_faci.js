@@ -36,7 +36,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk == null ?
       0.0 :
-      DB_block.db["param"]["cep"]["prov"].read(blk.name, MDL_cond._isCoreBlock(blk) ? 5.0 : 0.0);
+      DB_block.db["param"]["cep"]["prov"].read(blk.name, MDL_cond.isCoreBlock(blk) ? 5.0 : 0.0);
   }
   .setCache();
   exports.getCepProv = getCepProv;
@@ -139,7 +139,7 @@
    * @return {number}
    */
   const getTreeRsLvl = function(blk) {
-    if(!MDL_cond._isTreeBlock(blk)) return 0.0;
+    if(!MDL_cond.isTreeBlock(blk)) return 0.0;
 
     let
       treeGrp = tryJsProp(blk, "treeGrp", "none"),

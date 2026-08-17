@@ -1,7 +1,9 @@
 package lovec.graphics.drawer;
 
 import arc.Core;
+import arc.func.Floatf;
 import arc.func.Func;
+import arc.func.Intf;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
@@ -26,9 +28,9 @@ public class LCDrawItemPile extends DrawBlock {
     public Item item;
     public Func<Building, Item> itemF;
     public float frac = -1f;
-    public Func<Building, Float> fracF;
+    public Floatf<Building> fracF;
     public int amount = -1;
-    public Func<Building, Integer> amountF;
+    public Intf<Building> amountF;
 
     protected TextureRegion shaReg;
 

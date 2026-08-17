@@ -279,7 +279,7 @@
          * @memberof INTF_B_pressureBlock
          * @instance
          */
-        presFetchTgs: prov(() => []),
+        presFetchTgs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_pressureBlock
@@ -291,7 +291,7 @@
          * @memberof INTF_B_pressureBlock
          * @instance
          */
-        presSupplyTgs: prov(() => []),
+        presSupplyTgs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_pressureBlock
@@ -400,9 +400,9 @@
       ex_checkPresFetchSideValid: function(ob) {
         return this.ex_checkIsPresRouter() ?
           false :
-          !MDL_cond._isNoSideBlock(this.block) ?
+          !MDL_cond.isNoSideBlock(this.block) ?
             true :
-            (MDL_cond._isFluidConduit(this.block) && MDL_cond._isFluidConduit(ob.block));
+            (MDL_cond.isFluidConduit(this.block) && MDL_cond.isFluidConduit(ob.block));
       }
       .setProp({
         noSuper: true,

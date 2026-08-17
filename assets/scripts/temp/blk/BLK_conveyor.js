@@ -79,7 +79,7 @@
        * @return {boolean}
        */
       ex_shouldBlendBackSide: function(ob) {
-        return ob.block.outputsItems() && !MDL_cond._isCable(ob.block);
+        return ob.block.outputsItems() && !MDL_cond.isCable(ob.block);
       }
       .setProp({
         noSuper: true,
@@ -96,7 +96,7 @@
        * @return {boolean}
        */
       ex_shouldBlendFlankSide: function(ob) {
-        return ob.block.outputsItems() && !MDL_cond._isCable(ob.block);
+        return ob.block.outputsItems() && !MDL_cond.isCable(ob.block);
       }
       .setProp({
         noSuper: true,
@@ -113,7 +113,7 @@
        * @return {boolean}
        */
       ex_shouldBlendFrontSide: function(ob) {
-        return ob.items != null && !MDL_cond._isCable(ob.block);
+        return ob.items != null && !MDL_cond.isCable(ob.block);
       }
       .setProp({
         noSuper: true,

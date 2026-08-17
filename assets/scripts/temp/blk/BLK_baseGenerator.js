@@ -57,7 +57,7 @@
 
   function comp_conductsTo(b, ob) {
     // Don't cause short circuit for pipes
-    return !MDL_cond._isFluidConduit(ob.block);
+    return !MDL_cond.isFluidConduit(ob.block);
   };
 
 

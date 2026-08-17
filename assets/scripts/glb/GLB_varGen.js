@@ -248,14 +248,14 @@
      * All waste items.
      * @type {Array<Item>}
      */
-    exports.wasItms = Vars.content.items().select(itm => MDL_cond._isWaste(itm)).toArray();
+    exports.wasItms = Vars.content.items().select(itm => MDL_cond.isWaste(itm)).toArray();
 
 
     /**
      * All waste fluids.
      * @type {Array<Liquid>}
      */
-    exports.wasFlds = Vars.content.liquids().select(liq => MDL_cond._isWaste(liq)).toArray();
+    exports.wasFlds = Vars.content.liquids().select(liq => MDL_cond.isWaste(liq)).toArray();
 
 
     /**
@@ -269,21 +269,21 @@
      * Fluids that are considered explosive.
      * @type {Array<Liquid>}
      */
-    exports.exploFlds = Vars.content.liquids().select(liq => (liq.explosiveness >= 0.3 || liq.flammability >= 0.3) && !MDL_cond._isAuxiliaryFluid(liq)).toArray();
+    exports.exploFlds = Vars.content.liquids().select(liq => (liq.explosiveness >= 0.3 || liq.flammability >= 0.3) && !MDL_cond.isAuxiliaryFluid(liq)).toArray();
 
 
     /**
      * All abstract fluids.
      * @type {Array<Liquid>}
      */
-    exports.auxs = Vars.content.liquids().select(liq => MDL_cond._isAuxiliaryFluid(liq)).toArray();
+    exports.auxs = Vars.content.liquids().select(liq => MDL_cond.isAuxiliaryFluid(liq)).toArray();
 
 
     /**
      * All non-abstract fluids.
      * @type {Array<Liquid>}
      */
-    exports.nonAuxs = Vars.content.liquids().select(liq => !MDL_cond._isAuxiliaryFluid(liq)).toArray();
+    exports.nonAuxs = Vars.content.liquids().select(liq => !MDL_cond.isAuxiliaryFluid(liq)).toArray();
 
 
     /* <------------------------------ block ------------------------------ */
@@ -335,7 +335,7 @@
      * Non-robot unit types.
      * @type {Array<UnitType>}
      */
-    exports.bioticUtps = Vars.content.units().select(utp => MDL_cond._isNonRobot(utp)).toArray();
+    exports.bioticUtps = Vars.content.units().select(utp => MDL_cond.isNonRobot(utp)).toArray();
 
 
     /**
@@ -359,21 +359,21 @@
      * Fading status effect.
      * @type {Array<StatusEffect>}
      */
-    exports.fadeStas = Vars.content.statusEffects().select(sta => MDL_cond._isFadeStatus(sta)).toArray();
+    exports.fadeStas = Vars.content.statusEffects().select(sta => MDL_cond.isFadeStatus(sta)).toArray();
 
 
     /**
      * On-death status effect.
      * @type {Array<StatusEffect>}
      */
-    exports.deathStas = Vars.content.statusEffects().select(sta => MDL_cond._isDeathStatus(sta)).toArray();
+    exports.deathStas = Vars.content.statusEffects().select(sta => MDL_cond.isDeathStatus(sta)).toArray();
 
 
     /**
      * Stackable status effect.
      * @type {Array<StatusEffect>}
      */
-    exports.stackStas = Vars.content.statusEffects().select(sta => MDL_cond._isStackStatus(sta)).toArray();
+    exports.stackStas = Vars.content.statusEffects().select(sta => MDL_cond.isStackStatus(sta)).toArray();
 
 
     /* <------------------------------ planet ------------------------------ */

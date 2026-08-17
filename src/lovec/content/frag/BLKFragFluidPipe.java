@@ -18,7 +18,7 @@ public class BLKFragFluidPipe extends ContentFrag<Conduit> {
 
         return oblk.hasLiquids
             && (oblk.outputsLiquid || blk.lookingAt(t, rot, otx, oty, oblk))
-            && (blk.lookingAtEither(t, rot, otx, oty, orot, oblk) || LCScriptUtil.checkCond("_isFluidRouter", oblk));
+            && (blk.lookingAtEither(t, rot, otx, oty, orot, oblk) || LCScriptUtil.checkCond("isFluidRouter", oblk));
     };
     // Overload
     @FragMethod

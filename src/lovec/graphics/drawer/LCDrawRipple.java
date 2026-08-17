@@ -55,7 +55,7 @@ public class LCDrawRipple extends DrawBlock {
             noLiq = true;
             b.liquids.each((liq, amt) -> {
                 if(!noLiq) return;
-                if(amt > 0.01f && !liq.gas && !LCScriptUtil.checkCond("_isAuxiliaryFluid", liq)) {
+                if(amt > 0.01f && !liq.gas && !LCScriptUtil.checkCond("isAuxiliaryFluid", liq)) {
                     noLiq = false;
                 };
             });

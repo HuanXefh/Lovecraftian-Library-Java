@@ -95,14 +95,14 @@
           b.graphCur.addEdge(vert_ob, vert_b, b.block.ex_calcGraphDst(ob, b));
         };
       } else {
-        if(MDL_cond._isNoSideBlock(ob.block) ? b.relativeTo(ob) === ob.rotation : ob.relativeTo(b) !== b.rotation) {
+        if(MDL_cond.isNoSideBlock(ob.block) ? b.relativeTo(ob) === ob.rotation : ob.relativeTo(b) !== b.rotation) {
           if(vert_ob === -1) {
             b.graphCur.addVert(ob);
             vert_ob = b.graphCur.getSize() - 1;
           };
           b.graphCur.addEdge(vert_b, vert_ob, b.block.ex_calcGraphDst(b, ob));
         };
-        if(MDL_cond._isNoSideBlock(ob.block) ? ob.relativeTo(b) === b.rotation : b.relativeTo(ob) !== ob.rotation) {
+        if(MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === b.rotation : b.relativeTo(ob) !== ob.rotation) {
           if(vert_ob === -1) {
             b.graphCur.addVert(ob);
             vert_ob = b.graphCur.getSize() - 1;
@@ -192,7 +192,7 @@
          * @memberof INTF_B_graphBlock
          * @instance
          */
-        graphProximity: prov(() => new Seq()),
+        graphProximity: tprov(() => new Seq()),
 
 
       }),

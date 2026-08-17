@@ -57,7 +57,7 @@
     let fldType1, fldType2;
     b.proximity.each(ob => {
       if(tryJsProp(ob, "presBase") == null) return;
-      if(ob.block.rotate && (!MDL_cond._isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
+      if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
       fldType1 = b.block.delegee.presFldType;
       fldType2 = tryJsProp(ob.block, "fldType", "any");
       if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
@@ -147,7 +147,7 @@
          * @memberof INTF_B_pressureProducer
          * @instance
          */
-        presDumpTgs: prov(() => []),
+        presDumpTgs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_pressureProducer

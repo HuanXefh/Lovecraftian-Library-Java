@@ -81,7 +81,7 @@
     let b_t = b.nearby(rot);
     let tg = null;
 
-    if((b.block.delegee.filterScrTup[0](b, b_f, itm, b.rsTgs) !== b.isInv) === b.enabled) {
+    if((b.block.delegee.filterScr.get(b, b_f, itm, b.rsTgs) !== b.isInv) === b.enabled) {
       if(b.isSame(b_f) && b.isSame(b_t)) return tg;
       tg = b_t;
     } else {
@@ -164,7 +164,7 @@
        * @memberof BLK_multiFilterGate
        * @instance
        */
-      filterScrTup: prov(() => [(b, b_f, itm, rsTgs) => rsTgs.includes(itm)]),
+      filterScr: tprov(() => boolf4(function(b, b_f, itm, rsTgs) {return rsTgs.includes(itm)})),
 
 
       /* <------------------------------ internal ------------------------------ */
@@ -223,7 +223,7 @@
        * @memberof B_multiFilterGate
        * @instance
        */
-      rsTgs: prov(() => []),
+      rsTgs: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof B_multiFilterGate

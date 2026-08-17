@@ -59,8 +59,8 @@
     incinerable: false,
     coolant: false,
     capPuddles: true,
-    lightColor: prov(() => Color.black.cpy()),
-    gasColor: prov(() => Color.black.cpy()),
+    lightColor: tprov(() => Color.black.cpy()),
+    gasColor: tprov(() => Color.black.cpy()),
     vaporEffect: Fx.none,
 
 

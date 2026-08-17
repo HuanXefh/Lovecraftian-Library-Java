@@ -41,15 +41,15 @@
    * @param {number} y
    * @return {boolean}
    */
-  const _posHasLoot = function(x, y) {
+  const posHasLoot = function(x, y) {
     let count = 0;
     Groups.unit.intersect(x - 3.0, y - 3.0, 12.0, 12.0).each(ounit => {
-      if(_isLoot(ounit)) count++;
+      if(isLoot(ounit)) count++;
     });
 
     return count > 0;
   };
-  exports._posHasLoot = _posHasLoot;
+  exports.posHasLoot = posHasLoot;
 
 
   /* <------------------------------ content ------------------------------ */
@@ -60,12 +60,12 @@
    * @param {ContentGn} ct_gn
    * @return {boolean}
    */
-  const _isVanilla = function(ct_gn) {
+  const isVanilla = function(ct_gn) {
     let ct = MDL_content.getCt(ct_gn, null, true);
     return ct != null && ct.minfo.mod == null;
   }
   .setCache();
-  exports._isVanilla = _isVanilla;
+  exports.isVanilla = isVanilla;
 
 
 /* <------------------------------ resource ------------------------------ */
@@ -76,11 +76,11 @@
    * @param {ResourceGn} rs_gn
    * @return {boolean}
    */
-  const _isRsAvailable = function(rs_gn) {
+  const isRsAvailable = function(rs_gn) {
     let rs = MDL_content.getCt(rs_gn, "rs");
     return rs != null && rs.unlockedNow() && rs.isOnPlanet(Vars.state.getPlanet()) && !rs.isHidden();
   };
-  exports._isRsAvailable = _isRsAvailable;
+  exports.isRsAvailable = isRsAvailable;
 
 
   /**
@@ -88,11 +88,11 @@
    * @param {ResourceGn} rs_gn
    * @return {boolean}
    */
-  const _isIntermediate = function(rs_gn) {
+  const isIntermediate = function(rs_gn) {
     return matchTag(rs_gn, "rs-intmd", "rs");
   }
   .setCache();
-  exports._isIntermediate = _isIntermediate;
+  exports.isIntermediate = isIntermediate;
 
 
   /**
@@ -100,11 +100,11 @@
    * @param {ResourceGn} rs_gn
    * @return {boolean}
    */
-  const _isWaste = function(rs_gn) {
+  const isWaste = function(rs_gn) {
     return matchTag(rs_gn, "rs-was", "rs");
   }
   .setCache();
-  exports._isWaste = _isWaste;
+  exports.isWaste = isWaste;
 
 
   /**
@@ -112,11 +112,11 @@
    * @param {LiquidGn} liq_gn
    * @return {boolean}
    */
-  const _isAuxiliaryFluid = function(liq_gn) {
+  const isAuxiliaryFluid = function(liq_gn) {
     return matchTag(liq_gn, "rs-aux", "rs");
   }
   .setCache();
-  exports._isAuxiliaryFluid = _isAuxiliaryFluid;
+  exports.isAuxiliaryFluid = isAuxiliaryFluid;
 
 
   /**
@@ -124,11 +124,11 @@
    * @param {LiquidGn} liq_gn
    * @return {boolean}
    */
-  const _isNoCapAuxiliaryFluid = function(liq_gn) {
+  const isNoCapAuxiliaryFluid = function(liq_gn) {
     return matchTag(liq_gn, "rs-aux-nocap", "rs");
   }
   .setCache();
-  exports._isNoCapAuxiliaryFluid = _isNoCapAuxiliaryFluid;
+  exports.isNoCapAuxiliaryFluid = isNoCapAuxiliaryFluid;
 
 
   /**
@@ -136,12 +136,12 @@
    * @param {LiquidGn} liq_gn
    * @return {boolean}
    */
-  const _isAqueousLiquid = function(liq_gn) {
+  const isAqueousLiquid = function(liq_gn) {
     let liq = MDL_content.getCt(liq_gn, "rs");
     return liq != null && DB_fluid.db["group"]["aqueous"].includes(liq.name);
   }
   .setCache();
-  exports._isAqueousLiquid = _isAqueousLiquid;
+  exports.isAqueousLiquid = isAqueousLiquid;
 
 
   /**
@@ -149,12 +149,12 @@
    * @param {LiquidGn} liq_gn
    * @return {boolean}
    */
-  const _isConductiveLiquid = function(liq_gn) {
+  const isConductiveLiquid = function(liq_gn) {
     let liq = MDL_content.getCt(liq_gn, "rs");
     return liq != null && DB_fluid.db["group"]["conductive"].includes(liq.name);
   }
   .setCache();
-  exports._isConductiveLiquid = _isConductiveLiquid;
+  exports.isConductiveLiquid = isConductiveLiquid;
 
 
   /* <------------------------------ block ------------------------------ */
@@ -165,11 +165,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isMiner = function(blk_gn) {
-    return _isDrill(blk_gn) || _isHarvester(blk_gn);
+  const isMinerBlock = function(blk_gn) {
+    return isDrill(blk_gn) || isHarvester(blk_gn);
   }
   .setCache();
-  exports._isMiner = _isMiner;
+  exports.isMinerBlock = isMinerBlock;
 
 
   /**
@@ -177,11 +177,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isDrill = function(blk_gn) {
+  const isDrill = function(blk_gn) {
     return matchCond(blk_gn, "drill", "blk");
   }
   .setCache();
-  exports._isDrill = _isDrill;
+  exports.isDrill = isDrill;
 
 
   /**
@@ -189,11 +189,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isHarvester = function(blk_gn) {
+  const isHarvester = function(blk_gn) {
     return matchCond(blk_gn, "harvester", "blk");
   }
   .setCache();
-  exports._isHarvester = _isHarvester;
+  exports.isHarvester = isHarvester;
 
 
   /**
@@ -201,11 +201,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isOreScanner = function(blk_gn) {
+  const isOreScanner = function(blk_gn) {
     return matchTag(blk_gn, "blk-scan", "blk");
   }
   .setCache();
-  exports._isOreScanner = _isOreScanner;
+  exports.isOreScanner = isOreScanner;
 
 
   /**
@@ -213,11 +213,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isCrop = function(blk_gn) {
+  const isCrop = function(blk_gn) {
     return matchTag(blk_gn, "blk-crop", "blk");
   }
   .setCache();
-  exports._isCrop = _isCrop;
+  exports.isCrop = isCrop;
 
 
   /**
@@ -225,12 +225,12 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isNoSideBlock = function(blk_gn) {
+  const isNoSideBlock = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => checkInstance(blk, tup[0]) && tup[1](blk));
   }
   .setCache();
-  exports._isNoSideBlock = _isNoSideBlock;
+  exports.isNoSideBlock = isNoSideBlock;
 
 
   /**
@@ -239,13 +239,13 @@
    * @param {BlockGn} blk2_gn
    * @return {boolean}
    */
-  const _isSameNoSideBlock = function(blk1_gn, blk2_gn) {
+  const isSamePairNoSideBlock = function(blk1_gn, blk2_gn) {
     let blk1 = MDL_content.getCt(blk1_gn, "blk");
     let blk2 = MDL_content.getCt(blk2_gn, "blk");
     return blk1 != null && blk2 != null && DB_block.db["class"]["group"]["condition"]["noSide"].some(tup => checkInstance(blk1, tup[0]) && checkInstance(blk2, tup[0]) && tup[1](blk1) && tup[1](blk2));
   }
   .setCache();
-  exports._isSameNoSideBlock = _isSameNoSideBlock;
+  exports.isSamePairNoSideBlock = isSamePairNoSideBlock;
 
 
   /**
@@ -253,11 +253,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isConveyor = function(blk_gn) {
-    return (matchCond(blk_gn, "conveyor", "blk") && !_isCable(blk_gn)) || _isStackConveyor(blk_gn);
+  const isConveyor = function(blk_gn) {
+    return (matchCond(blk_gn, "conveyor", "blk") && !isCable(blk_gn)) || isStackConveyor(blk_gn);
   }
   .setCache();
-  exports._isConveyor = _isConveyor;
+  exports.isConveyor = isConveyor;
 
 
   /**
@@ -265,11 +265,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isStackConveyor = function(blk_gn) {
+  const isStackConveyor = function(blk_gn) {
     return matchCond(blk_gn, "stackConveyor", "blk");
   }
   .setCache();
-  exports._isStackConveyor = _isStackConveyor;
+  exports.isStackConveyor = isStackConveyor;
 
 
   /**
@@ -277,11 +277,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isDuct = function(blk_gn) {
+  const isDuct = function(blk_gn) {
     return matchCond(blk_gn, "duct", "blk");
   }
   .setCache();
-  exports._isDuct = _isDuct;
+  exports.isDuct = isDuct;
 
 
   /**
@@ -289,11 +289,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isBridge = function(blk_gn) {
+  const isBridge = function(blk_gn) {
     return matchCond(blk_gn, "bridge", "blk");
   }
   .setCache();
-  exports._isBridge = _isBridge;
+  exports.isBridge = isBridge;
 
 
   /**
@@ -301,12 +301,12 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isGate = function(blk_gn) {
+  const isGate = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && (matchCond(blk_gn, "gate", "blk") && tryFun(blk.ex_isGateBlk, blk, false));
   }
   .setCache();
-  exports._isGate = _isGate;
+  exports.isGate = isGate;
 
 
   /**
@@ -314,11 +314,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isRouter = function(blk_gn) {
+  const isClassicRouter = function(blk_gn) {
     return matchCond(blk_gn, "router", "blk");
   }
   .setCache();
-  exports._isRouter = _isRouter;
+  exports.isClassicRouter = isClassicRouter;
 
 
   /**
@@ -326,12 +326,12 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isGenericRouter = function(blk_gn) {
+  const isGenericRouter = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
-    return blk != null && (blk.rotate && _isGate(blk_gn) && !tryFun(blk.ex_noSideOutput, blk, false)) || _isFluidRouter(blk_gn);
+    return blk != null && (blk.rotate && isGate(blk_gn) && !tryFun(blk.ex_noSideOutput, blk, false)) || isFluidRouter(blk_gn);
   }
   .setCache();
-  exports._isGenericRouter = _isGenericRouter;
+  exports.isGenericRouter = isGenericRouter;
 
 
   /**
@@ -339,16 +339,16 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isFullRouter = function(blk_gn) {
+  const isFullRouter = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && blk.rotate && (
-      _isDrill(blk)
-        || _isPowerGenerator(blk)
-        || _isFactory(blk)
+      isDrill(blk)
+        || isPowerGenerator(blk)
+        || isFactory(blk)
     ) && !tryFun(blk.ex_noAllSideOutput, blk, false);
   }
   .setCache();
-  exports._isFullRouter = _isFullRouter;
+  exports.isFullRouter = isFullRouter;
 
 
   /**
@@ -356,11 +356,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isMassDriver = function(blk_gn) {
+  const isMassDriver = function(blk_gn) {
     return matchCond(blk_gn, "massDriver", "blk");
   }
   .setCache();
-  exports._isMassDriver = _isMassDriver;
+  exports.isMassDriver = isMassDriver;
 
 
   /**
@@ -368,12 +368,12 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isExposedBlock = function(blk_gn) {
+  const isExposedBlock = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && DB_block.db["group"]["exposed"].includes(blk.name);
   }
   .setCache();
-  exports._isExposedBlock = _isExposedBlock;
+  exports.isExposedBlock = isExposedBlock;
 
 
   /**
@@ -381,11 +381,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isContainer = function(blk_gn) {
-    return matchCond(blk_gn, "container", "blk") && !_isCoreBlock(blk_gn) && !matchTag(blk_gn, "blk-non-cont", "blk");
+  const isContainer = function(blk_gn) {
+    return matchCond(blk_gn, "container", "blk") && !isCoreBlock(blk_gn) && !matchTag(blk_gn, "blk-non-cont", "blk");
   }
   .setCache();
-  exports._isContainer = _isContainer;
+  exports.isContainer = isContainer;
 
 
   /**
@@ -393,11 +393,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isCoreBlock = function(blk_gn) {
+  const isCoreBlock = function(blk_gn) {
     return matchCond(blk_gn, "core", "blk");
   }
   .setCache();
-  exports._isCoreBlock = _isCoreBlock;
+  exports.isCoreBlock = isCoreBlock;
 
 
   /**
@@ -406,11 +406,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isPump = function(blk_gn) {
+  const isPump = function(blk_gn) {
     return matchCond(blk_gn, "pump", "blk");
   }
   .setCache();
-  exports._isPump = _isPump;
+  exports.isPump = isPump;
 
 
   /**
@@ -418,11 +418,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isPressurePump = function(blk_gn) {
+  const isPressurePump = function(blk_gn) {
     return matchCond(blk_gn, "pressurePump", "blk");
   }
   .setCache();
-  exports._isPressurePump = _isPressurePump;
+  exports.isPressurePump = isPressurePump;
 
 
   /**
@@ -430,11 +430,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isFluidConduit = function(blk_gn) {
+  const isFluidConduit = function(blk_gn) {
     return matchCond(blk_gn, "conduit", "blk");
   }
   .setCache();
-  exports._isFluidConduit = _isFluidConduit;
+  exports.isFluidConduit = isFluidConduit;
 
 
    /**
@@ -442,11 +442,11 @@
     * @param {BlockGn} blk_gn
     * @return {boolean}
     */
-  const _isFluidContainer = function(blk_gn) {
-    return matchCond(blk_gn, "fluidContainer", "blk") && !_isFluidRouter(blk_gn);
+  const isFluidContainer = function(blk_gn) {
+    return matchCond(blk_gn, "fluidContainer", "blk") && !isFluidRouter(blk_gn);
   }
   .setCache();
-  exports._isFluidContainer = _isFluidContainer;
+  exports.isFluidContainer = isFluidContainer;
 
 
    /**
@@ -455,11 +455,11 @@
     * @param {BlockGn} blk_gn
     * @return {boolean}
     */
-  const _isFluidRouter = function(blk_gn) {
+  const isFluidRouter = function(blk_gn) {
     return matchCond(blk_gn, "fluidRouter", "blk");
   }
   .setCache();
-  exports._isFluidRouter = _isFluidRouter;
+  exports.isFluidRouter = isFluidRouter;
 
 
   /**
@@ -467,12 +467,12 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isCloggableBlock = function(blk_gn) {
+  const isCloggableBlock = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && DB_block.db["group"]["cloggable"].includes(blk.name);
   }
   .setCache();
-  exports._isCloggableBlock = _isCloggableBlock;
+  exports.isCloggableBlock = isCloggableBlock;
 
 
   /**
@@ -480,11 +480,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isCogwheel = function(blk_gn) {
+  const isCogwheel = function(blk_gn) {
     return matchTag(blk_gn, "blk-cog", "blk");
   }
   .setCache();
-  exports._isCogwheel = _isCogwheel;
+  exports.isCogwheel = isCogwheel;
 
 
   /**
@@ -492,11 +492,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isGearBox = function(blk_gn) {
+  const isGearBox = function(blk_gn) {
     return matchTag(blk_gn, "blk-cog-box", "blk");
   }
   .setCache();
-  exports._isGearBox = _isGearBox;
+  exports.isGearBox = isGearBox;
 
 
   /**
@@ -504,11 +504,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isTransmissionRod = function(blk_gn) {
+  const isTransmissionRod = function(blk_gn) {
     return matchTag(blk_gn, "blk-tor-rod", "blk");
   }
   .setCache();
-  exports._isTransmissionRod = _isTransmissionRod;
+  exports.isTransmissionRod = isTransmissionRod;
 
 
   /**
@@ -516,11 +516,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isPowerBlock = function(blk_gn) {
-    return _isPowerGenerator(blk_gn) || _isPowerTransmitter(blk_gn);
+  const isPowerBlock = function(blk_gn) {
+    return isPowerGenerator(blk_gn) || isPowerTransmitter(blk_gn);
   }
   .setCache();
-  exports._isPowerBlock = _isPowerBlock;
+  exports.isPowerBlock = isPowerBlock;
 
 
   /**
@@ -528,11 +528,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isPowerGenerator = function(blk_gn) {
+  const isPowerGenerator = function(blk_gn) {
     return matchCond(blk_gn, "generator", "blk");
   }
   .setCache();
-  exports._isPowerGenerator = _isPowerGenerator;
+  exports.isPowerGenerator = isPowerGenerator;
 
 
   /**
@@ -540,11 +540,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isNonReactorGenerator = function(blk_gn) {
-    return _isPowerGenerator(blk_gn) && !_isReactorGenerator(blk_gn);
+  const isNonReactorPowerGenerator = function(blk_gn) {
+    return isPowerGenerator(blk_gn) && !isReactorPowerGenerator(blk_gn);
   }
   .setCache();
-  exports._isNonReactorGenerator = _isNonReactorGenerator;
+  exports.isNonReactorPowerGenerator = isNonReactorPowerGenerator;
 
 
   /**
@@ -552,12 +552,12 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isReactorGenerator = function(blk_gn) {
+  const isReactorPowerGenerator = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "blk");
     return blk != null && DB_block.db["class"]["group"]["condition"]["powerReactor"].some(tup => checkInstance(blk, tup[0]) && tup[1](blk));
   }
   .setCache();
-  exports._isReactorGenerator = _isReactorGenerator;
+  exports.isReactorPowerGenerator = isReactorPowerGenerator;
 
 
   /**
@@ -565,11 +565,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isPowerTransmitter = function(blk_gn) {
-    return matchCond(blk_gn, "transmitter", "blk") || _isCable(blk_gn);
+  const isPowerTransmitter = function(blk_gn) {
+    return matchCond(blk_gn, "transmitter", "blk") || isCable(blk_gn);
   }
   .setCache();
-  exports._isPowerTransmitter = _isPowerTransmitter;
+  exports.isPowerTransmitter = isPowerTransmitter;
 
 
   /**
@@ -577,11 +577,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isCable = function(blk_gn) {
+  const isCable = function(blk_gn) {
     return matchCond(blk_gn, "cable", "blk");
   }
   .setCache();
-  exports._isCable = _isCable;
+  exports.isCable = isCable;
 
 
   /**
@@ -589,11 +589,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isArmoredCable = function(blk_gn) {
+  const isArmoredCable = function(blk_gn) {
     return matchCond(blk_gn, "armoredCable", "blk");
   }
   .setCache();
-  exports._isArmoredCable = _isArmoredCable;
+  exports.isArmoredCable = isArmoredCable;
 
 
   /**
@@ -601,11 +601,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isPowerRelay = function(blk_gn) {
+  const isPowerRelay = function(blk_gn) {
     return matchTag(blk_gn, "blk-pow-relay", "blk");
   }
   .setCache();
-  exports._isPowerRelay = _isPowerRelay;
+  exports.isPowerRelay = isPowerRelay;
 
 
   /**
@@ -613,11 +613,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isPowerNode = function(blk_gn) {
-    return matchCond(blk_gn, "transmitter", "blk") && !_isPowerRelay(blk_gn) && !_isCable(blk_gn);
+  const isPowerNode = function(blk_gn) {
+    return matchCond(blk_gn, "transmitter", "blk") && !isPowerRelay(blk_gn) && !isCable(blk_gn);
   }
   .setCache();
-  exports._isPowerNode = _isPowerNode;
+  exports.isPowerNode = isPowerNode;
 
 
   /**
@@ -625,11 +625,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isFactory = function(blk_gn) {
-    return (matchCond(blk_gn, "factory", "blk") || _isMultiCrafter(blk_gn)) && !matchTag(blk_gn, "blk-non-fac", "blk");
+  const isFactory = function(blk_gn) {
+    return (matchCond(blk_gn, "factory", "blk") || isMultiCrafter(blk_gn)) && !matchTag(blk_gn, "blk-non-fac", "blk");
   }
   .setCache();
-  exports._isFactory = _isFactory;
+  exports.isFactory = isFactory;
 
 
   /**
@@ -637,11 +637,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isMultiCrafter = function(blk_gn) {
+  const isMultiCrafter = function(blk_gn) {
     return matchCond(blk_gn, "multiCrafter", "blk");
   }
   .setCache();
-  exports._isMultiCrafter = _isMultiCrafter;
+  exports.isMultiCrafter = isMultiCrafter;
 
 
   /**
@@ -649,11 +649,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isLight = function(blk_gn) {
+  const isLightBlock = function(blk_gn) {
     return matchCond(blk_gn, "light", "blk");
   }
   .setCache();
-  exports._isLight = _isLight;
+  exports.isLightBlock = isLightBlock;
 
 
   /**
@@ -661,11 +661,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isAssistanceBlock = function(blk_gn) {
-    return _isProjector(blk_gn) || _isProjector(blk_gn) || _isRepairer(blk_gn);
+  const isAssistanceBlock = function(blk_gn) {
+    return isProjector(blk_gn) || isRepairer(blk_gn) || isShield(blk_gn);
   }
   .setCache();
-  exports._isAssistanceBlock = _isAssistanceBlock;
+  exports.isAssistanceBlock = isAssistanceBlock;
 
 
   /**
@@ -673,11 +673,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isProjector = function(blk_gn) {
+  const isProjector = function(blk_gn) {
     return matchCond(blk_gn, "projector", "blk");
   }
   .setCache();
-  exports._isProjector = _isProjector;
+  exports.isProjector = isProjector;
 
 
   /**
@@ -685,11 +685,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isRepairer = function(blk_gn) {
+  const isRepairer = function(blk_gn) {
     return matchCond(blk_gn, "repairer", "blk") && !matchTag(blk_gn, "blk-non-mend", "blk");
   }
   .setCache();
-  exports._isRepairer = _isRepairer;
+  exports.isRepairer = isRepairer;
 
 
   /**
@@ -697,11 +697,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isShield = function(blk_gn) {
+  const isShield = function(blk_gn) {
     return matchCond(blk_gn, "shield", "blk");
   }
   .setCache();
-  exports._isShield = _isShield;
+  exports.isShield = isShield;
 
 
   /**
@@ -709,11 +709,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isDefenseWall = function(blk_gn) {
+  const isDefenseWall = function(blk_gn) {
     return matchCond(blk_gn, "wall", "blk") && !matchTag(blk_gn, "blk-non-wall", "blk");
   }
   .setCache();
-  exports._isDefenseWall = _isDefenseWall;
+  exports.isDefenseWall = isDefenseWall;
 
 
   /**
@@ -721,11 +721,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isTurret = function(blk_gn) {
+  const isTurret = function(blk_gn) {
     return matchCond(blk_gn, "turret", "blk");
   }
   .setCache();
-  exports._isTurret = _isTurret;
+  exports.isTurret = isTurret;
 
 
   /* <------------------------------ env ------------------------------ */
@@ -736,11 +736,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isTreeBlock = function(blk_gn) {
+  const isTreeBlock = function(blk_gn) {
     return matchTag(blk_gn, "env-tree", "blk");
   }
   .setCache();
-  exports._isTreeBlock = _isTreeBlock;
+  exports.isTreeBlock = isTreeBlock;
 
 
   /**
@@ -748,11 +748,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isTallGrassBlock = function(blk_gn) {
+  const isTallGrassBlock = function(blk_gn) {
     return matchTag(blk_gn, "env-grass-tall", "blk");
   }
   .setCache();
-  exports._isTallGrassBlock = _isTallGrassBlock;
+  exports.isTallGrassBlock = isTallGrassBlock;
 
 
   /**
@@ -760,11 +760,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isDepthOre = function(blk_gn) {
+  const isDepthOre = function(blk_gn) {
     return matchTag(blk_gn, "env-dpore", "blk");
   }
   .setCache();
-  exports._isDepthOre = _isDepthOre;
+  exports.isDepthOre = isDepthOre;
 
 
   /**
@@ -772,11 +772,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isDepthLiquid = function(blk_gn) {
+  const isDepthLiquid = function(blk_gn) {
     return matchTag(blk_gn, "env-dpliq", "blk");
   }
   .setCache();
-  exports._isDepthLiquid = _isDepthLiquid;
+  exports.isDepthLiquid = isDepthLiquid;
 
 
   /**
@@ -784,11 +784,11 @@
    * @param {BlockGn} blk_gn
    * @return {boolean}
    */
-  const _isScannerTarget = function(blk_gn) {
-    return _isDepthOre(blk_gn) || _isDepthLiquid(blk_gn)
+  const isScannerTarget = function(blk_gn) {
+    return isDepthOre(blk_gn) || isDepthLiquid(blk_gn)
   }
   .setCache();
-  exports._isScannerTarget = _isScannerTarget;
+  exports.isScannerTarget = isScannerTarget;
 
 
   /* <------------------------------ unit type ------------------------------ */
@@ -799,12 +799,12 @@
    * @param {UnitTypeGn} utp_gn
    * @return {boolean}
    */
-  const _isNonRobot = function(utp_gn) {
+  const isNonRobot = function(utp_gn) {
     let utp = MDL_content.getCt(utp_gn, "utp");
     return utp != null && DB_unit.db["group"]["nonRobot"].includes(utp.name);
   }
   .setCache();
-  exports._isNonRobot = _isNonRobot;
+  exports.isNonRobot = isNonRobot;
 
 
   /**
@@ -812,14 +812,14 @@
    * @param {string|Block|UnitType|null} etp_gn
    * @return {boolean}
    */
-  const _hasNoRemains = function(etp_gn) {
+  const hasNoRemains = function(etp_gn) {
     let etp = MDL_content.getCt(etp_gn, null, true);
     if(etp == null) return false;
 
     if(etp instanceof Block) {
       return !etp.createRubble
         || etp.instantDeconstruct
-        || _isCoreBlock(etp)
+        || isCoreBlock(etp)
         || DB_block.db["group"]["noRemainsMod"].includes(MDL_content.getMod(etp))
         || DB_block.db["group"]["noRemains"].includes(etp.name);
     };
@@ -829,7 +829,7 @@
       || DB_unit.db["group"]["noRemains"].includes(etp.name);
   }
   .setCache();
-  exports._hasNoRemains = _hasNoRemains;
+  exports.hasNoRemains = hasNoRemains;
 
 
   /* <------------------------------ entity ------------------------------ */
@@ -841,10 +841,10 @@
    * @param {Team|unset} [team]
    * @return {boolean}
    */
-  const _isEnemy = function(e, team) {
+  const isEnemy = function(e, team) {
     return LCCheck.checkHostile(e, tryVal(team, null));
   };
-  exports._isEnemy = _isEnemy;
+  exports.isEnemy = isEnemy;
 
 
   /**
@@ -853,10 +853,10 @@
    * @param {Team|unset} [team]
    * @return {boolean}
    */
-  const _canHeal = function(e, team) {
+  const canHeal = function(e, team) {
     return LCCheck.checkHealable(e, tryVal(team, null));
   };
-  exports._canHeal = _canHeal;
+  exports.canHeal = canHeal;
 
 
   /**
@@ -864,10 +864,10 @@
    * @param {Building} b
    * @return {boolean}
    */
-  const _isBuildingActive = function(b) {
+  const isBuildingActive = function(b) {
     return b.team !== Team.derelict && b.efficiency > 0.0;
   };
-  exports._isBuildingActive = _isBuildingActive;
+  exports.isBuildingActive = isBuildingActive;
 
 
   /**
@@ -875,10 +875,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isLoot = function(unit) {
+  const isLoot = function(unit) {
     return checkCreatedByTemp(unit.type) && unit.type.ex_isSubInsOf("UNIT_lootUnit");
   };
-  exports._isLoot = _isLoot;
+  exports.isLoot = isLoot;
 
 
   /**
@@ -886,10 +886,10 @@
    * @param {Unit} loot
    * @return {boolean}
    */
-  const _isLootProtected = function(loot) {
+  const isLootProtected = function(loot) {
     return loot.fin() * 2.0 < VAR.time.lootProtection / loot.type.lifetime;
   };
-  exports._isLootProtected = _isLootProtected;
+  exports.isLootProtected = isLootProtected;
 
 
   /**
@@ -897,10 +897,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isIrregularUnit = function(unit) {
-    return unit.internal || _isLoot(unit);
+  const isIrregularUnit = function(unit) {
+    return unit.internal || isLoot(unit);
   };
-  exports._isIrregularUnit = _isIrregularUnit;
+  exports.isIrregularUnit = isIrregularUnit;
 
 
   /**
@@ -909,10 +909,10 @@
    * @param {boolean|unset} [includeSize]
    * @return {boolean}
    */
-  const _isCoverable = function(unit, includeSize) {
+  const isUnitCoverable = function(unit, includeSize) {
     return !unit.flying && unit.type.groundLayer < 76.0 && (!includeSize ? true : unit.hitSize <= VAR.range.treeHideMaxRad);
   };
-  exports._isCoverable = _isCoverable;
+  exports.isUnitCoverable = isUnitCoverable;
 
 
   /**
@@ -920,10 +920,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isCovered = function(unit) {
+  const isUnitCovered = function(unit) {
     return VARGEN.staHiddenWell != null && unit.hasEffect(VARGEN.staHiddenWell);
   };
-  exports._isCovered = _isCovered;
+  exports.isUnitCovered = isUnitCovered;
 
 
   /**
@@ -931,10 +931,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isHeatDamageable = function(unit) {
-    return !unit.type.naval && _isOnFloor(unit)
+  const isHeatDamageable = function(unit) {
+    return !unit.type.naval && isUnitOnFloor(unit)
   };
-  exports._isHeatDamageable = _isHeatDamageable;
+  exports.isHeatDamageable = isHeatDamageable;
 
 
   /**
@@ -942,10 +942,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isOnFloor = function(unit) {
+  const isUnitOnFloor = function(unit) {
     return !unit.flying && (!unit.hovering ? true : !(unit instanceof Legsc));
   };
-  exports._isOnFloor = _isOnFloor;
+  exports.isUnitOnFloor = isUnitOnFloor;
 
 
   /**
@@ -953,10 +953,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isLowAir = function(unit) {
+  const isUnitInLowAir = function(unit) {
     return unit.flying && unit.type.lowAltitude;
   };
-  exports._isLowAir = _isLowAir;
+  exports.isUnitInLowAir = isUnitInLowAir;
 
 
   /**
@@ -964,10 +964,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isHighAir = function(unit) {
+  const isUnitInHighAir = function(unit) {
     return unit.flying && unit.elevation >= VAR.param.highAirElev;
   };
-  exports._isHighAir = _isHighAir;
+  exports.isUnitInHighAir = isUnitInHighAir;
 
 
   /**
@@ -975,10 +975,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isMoving = function(unit) {
+  const isUnitMoving = function(unit) {
     return unit.vel.len() > (unit.flying ? 0.1 : 0.01);
   };
-  exports._isMoving = _isMoving;
+  exports.isUnitMoving = isUnitMoving;
 
 
   /**
@@ -986,10 +986,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isBoosting = function(unit) {
+  const isUnitBoosting = function(unit) {
     return unit.type.canBoost && unit.elevation > 0.73 && unit.elevation < 1.0;
   };
-  exports._isBoosting = _isBoosting;
+  exports.isUnitBoosting = isUnitBoosting;
 
 
   /**
@@ -997,8 +997,8 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isInjured = function thisFun(unit) {
-    return _hasEffectAny(unit, thisFun.injuredStas);
+  const isUnitInjured = function thisFun(unit) {
+    return hasAnyEffect(unit, thisFun.injuredStas);
   }
   .setProp({
     injuredStas: [
@@ -1007,7 +1007,7 @@
       "loveclab-sta-heavily-injured",
     ],
   });
-  exports._isInjured = _isInjured;
+  exports.isUnitInjured = isUnitInjured;
 
 
   /**
@@ -1015,8 +1015,8 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isDamaged = function thisFun(unit) {
-    return _hasEffectAny(unit, thisFun.damagedStas);
+  const isUnitDamaged = function thisFun(unit) {
+    return hasAnyEffect(unit, thisFun.damagedStas);
   }
   .setProp({
     damagedStas: [
@@ -1024,7 +1024,7 @@
       "loveclab-sta-severely-damaged",
     ],
   });
-  exports._isDamaged = _isDamaged;
+  exports.isUnitDamaged = isUnitDamaged;
 
 
   /**
@@ -1033,14 +1033,14 @@
    * @param {Array<StatusGn>} stas_gn
    * @return {boolean}
    */
-  const _hasEffectAny = function(unit, stas_gn) {
+  const hasAnyEffect = function(unit, stas_gn) {
     let sta;
     return stas_gn.some(sta_gn => {
       sta = MDL_content.getCt(sta_gn, "sta", true);
       return sta != null && unit.hasEffect(sta);
     });
   };
-  exports._hasEffectAny = _hasEffectAny;
+  exports.hasAnyEffect = hasAnyEffect;
 
 
   /**
@@ -1050,12 +1050,12 @@
    * @param {Tile|unset} [t]
    * @return {boolean}
    */
-  const _isHot = function(e, t) {
+  const isHot = function(e, t) {
     return e == null ?
-      t != null && _isHotStatus(t.floor().status) :
-      !(e instanceof Building) && (_hasEffectAny(e, DB_status.db["group"]["hot"]) || _isHot(null, e.tileOn()));
+      t != null && isHotStatus(t.floor().status) :
+      !(e instanceof Building) && (hasAnyEffect(e, DB_status.db["group"]["hot"]) || isHot(null, e.tileOn()));
   };
-  exports._isHot = _isHot;
+  exports.isHot = isHot;
 
 
   /**
@@ -1064,10 +1064,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isWet = function(unit) {
-    return _hasEffectAny(unit, DB_status.db["group"]["wet"]);
+  const isUnitWet = function(unit) {
+    return hasAnyEffect(unit, DB_status.db["group"]["wet"]);
   };
-  exports._isWet = _isWet;
+  exports.isUnitWet = isUnitWet;
 
 
   /**
@@ -1075,10 +1075,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isAttacking = function(unit) {
+  const isUnitAttacking = function(unit) {
     return unit.mounts.some(mt => mt.reload > 0.0);
   };
-  exports._isAttacking = _isAttacking;
+  exports.isUnitAttacking = isUnitAttacking;
 
 
   /**
@@ -1086,10 +1086,10 @@
    * @param {Unit} unit
    * @return {boolean}
    */
-  const _isActing = function(unit) {
-    return _isMoving(unit) || _isAttacking(unit) || unit.mining() || unit.isBuilding();
+  const isUnitActing = function(unit) {
+    return isUnitMoving(unit) || isUnitAttacking(unit) || unit.mining() || unit.isBuilding();
   };
-  exports._isActing = _isActing;
+  exports.isUnitActing = isUnitActing;
 
 
   /* <------------------------------ status effect ------------------------------ */
@@ -1100,7 +1100,7 @@
    * @param {StatusGn} sta_gn
    * @return {boolean}
    */
-  const _isNonStatus = function(sta_gn) {
+  const isNonStatus = function(sta_gn) {
     let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && (
       (checkCreatedByTemp(sta) && sta.ex_isSubInsOf("DBCT_databaseContent"))
@@ -1108,7 +1108,7 @@
     );
   }
   .setCache();
-  exports._isNonStatus = _isNonStatus;
+  exports.isNonStatus = isNonStatus;
 
 
   /**
@@ -1116,12 +1116,12 @@
    * @param {StatusGn} sta_gn
    * @return {boolean}
    */
-  const _isHotStatus = function(sta_gn) {
+  const isHotStatus = function(sta_gn) {
     let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && DB_status.db["group"]["hot"].includes(sta.name);
   }
   .setCache();
-  exports._isHotStatus = _isHotStatus;
+  exports.isHotStatus = isHotStatus;
 
 
   /**
@@ -1129,12 +1129,12 @@
    * @param {StatusGn} sta_gn
    * @return {boolean}
    */
-  const _isWetStatus = function(sta_gn) {
+  const isWetStatus = function(sta_gn) {
     let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && DB_status.db["group"]["wet"].includes(sta.name);
   }
   .setCache();
-  exports._isWetStatus = _isWetStatus;
+  exports.isWetStatus = isWetStatus;
 
 
   /**
@@ -1142,11 +1142,11 @@
    * @param {StatusGn} sta_gn
    * @return {boolean}
    */
-  const _isFadeStatus = function(sta_gn) {
+  const isFadeStatus = function(sta_gn) {
     return matchTag(sta_gn, "sta-fade", "sta");
   }
   .setCache();
-  exports._isFadeStatus = _isFadeStatus;
+  exports.isFadeStatus = isFadeStatus;
 
 
   /**
@@ -1154,11 +1154,11 @@
    * @param {StatusGn} sta_gn
    * @return {boolean}
    */
-  const _isDeathStatus = function(sta_gn) {
+  const isDeathStatus = function(sta_gn) {
     return matchTag(sta_gn, "sta-death", "sta");
   }
   .setCache();
-  exports._isDeathStatus = _isDeathStatus;
+  exports.isDeathStatus = isDeathStatus;
 
 
   /**
@@ -1166,9 +1166,9 @@
    * @param {StatusGn} sta_gn
    * @return {boolean}
    */
-  const _isStackStatus = function(sta_gn) {
+  const isStackStatus = function(sta_gn) {
     let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && tryFun(sta.ex_isStackSta, sta, false);
   }
   .setCache();
-  exports._isStackStatus = _isStackStatus;
+  exports.isStackStatus = isStackStatus;

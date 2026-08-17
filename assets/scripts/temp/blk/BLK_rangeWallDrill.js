@@ -41,7 +41,7 @@
 
   const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
     if(t == null) return false;
-    
+
     if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
       blk.ex_updateMineMap(blk.tmpMineMap, blk.tmpMineRsTup, blk.tmpOreTs, t.x, t.y, rot);
     };
@@ -225,13 +225,13 @@
        * @memberof BLK_rangeWallDrill
        * @instance
        */
-      tmpOreTs: prov(() => []),
+      tmpOreTs: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof BLK_rangeWallDrill
        * @instance
        */
-      tmpMineMap: prov(() => new ObjectMap()),
+      tmpMineMap: tprov(() => new ObjectMap()),
       /**
        * `INTERNAL`
        * @memberof BLK_rangeWallDrill
@@ -243,7 +243,7 @@
        * @memberof BLK_rangeWallDrill
        * @instance
        */
-      tmpMineRsTup: prov(() => [null, []]),
+      tmpMineRsTup: tprov(() => [null, []]),
       /**
        * `INTERNAL`
        * @memberof BLK_rangeWallDrill
@@ -384,13 +384,13 @@
        * @memberof B_rangeWallDrill
        * @instance
        */
-      oreTs: prov(() => []),
+      oreTs: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof B_rangeWallDrill
        * @instance
        */
-      mineMap: prov(() => new ObjectMap()),
+      mineMap: tprov(() => new ObjectMap()),
       /**
        * `INTERNAL`
        * @memberof B_rangeWallDrill
@@ -402,7 +402,7 @@
        * @memberof B_rangeWallDrill
        * @instance
        */
-      mineRsTup: prov(() => [null, []]),
+      mineRsTup: tprov(() => [null, []]),
       /**
        * `INTERNAL`
        * @memberof B_rangeWallDrill

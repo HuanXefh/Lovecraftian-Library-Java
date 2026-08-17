@@ -72,7 +72,7 @@
     aiControllable: true,
     useAttackRange: true,
     shootOnDeath: false,
-    parts: prov(() => []),
+    parts: tprov(() => []),
 
 
   })
@@ -91,7 +91,7 @@
     "baseRot", "baseRotation", 0.0,
     "rotCap", "rotationLimit", 361.0,
     "rotSpd", "rotateSpeed", 20.0,
-    "pattern", "shoot", prov(() => new ShootPattern()),
+    "pattern", "shoot", tprov(() => new ShootPattern()),
     "shootSta", "shootStatus", StatusEffects.none,
     "shootStaDur", "shootStatusDuration", 300.0,
     "activeSe", "activeSound", Sounds.unset,
@@ -108,7 +108,7 @@
       return val >= 0.0 ? val : Math.round(this.reload * 0.75);
     },
     "parts", function(val) {
-      return prov(() => val.get().toSeq());
+      return tprov(() => val.get().toSeq());
     },
   ])
   .setMethod({});

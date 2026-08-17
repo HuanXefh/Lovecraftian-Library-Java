@@ -142,7 +142,7 @@
       /* <------------------------------ vanilla ------------------------------ */
 
 
-      bullet: prov(() => extend(MassDriverBolt, {
+      bullet: tprov(() => extend(MassDriverBolt, {
 
 
         update(bul) {

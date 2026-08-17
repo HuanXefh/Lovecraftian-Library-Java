@@ -507,7 +507,7 @@
        * @memberof BLK_constructionCore
        * @instance
        */
-      constructionData: prov(() => [[]]),
+      constructionData: tprov(() => [[]]),
       /**
        * `PARAM`: Target block that is built upon structure completion.
        * @memberof BLK_constructionCore
@@ -554,19 +554,19 @@
        * @memberof BLK_constructionCore
        * @instance
        */
-      constructionParsedData: prov(() => []),
+      constructionParsedData: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
-      centerPon2: prov(() => new Point2()),
+      centerPon2: tprov(() => new Point2()),
       /**
        * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
-      corePon2: prov(() => new Point2()),
+      corePon2: tprov(() => new Point2()),
       /**
        * `INTERNAL`
        * @memberof BLK_constructionCore
@@ -578,19 +578,19 @@
        * @memberof BLK_constructionCore
        * @instance
        */
-      constructionTmpPlan: prov(() => []),
+      constructionTmpPlan: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
-      constructionBlksReq: prov(() => []),
+      constructionBlksReq: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof BLK_constructionCore
        * @instance
        */
-      constructionItmsReq: prov(() => ({})),
+      constructionItmsReq: tprov(() => ({})),
 
 
     })
@@ -843,7 +843,7 @@
        * @memberof B_constructionCore
        * @instance
        */
-      constructionPlan: prov(() => []),
+      constructionPlan: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof B_constructionCore

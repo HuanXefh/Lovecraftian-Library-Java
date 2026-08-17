@@ -19,7 +19,7 @@
     if(sta.justApplied) return;
 
     sta.justApplied = true;
-    unit.apply(sta, time + sta.timeGetterTup[0](unit, time));
+    unit.apply(sta, time + sta.timeF.get(unit, time));
     sta.justApplied = false;
   };
 
@@ -49,7 +49,7 @@
      * @memberof STA_burstStatus
      * @instance
      */
-    timeGetterTup: prov(() => [(unit, time) => 300.0]),
+    timeF: tprov(() => floatf2(function(unit, time) {return 300.0})),
 
 
     /* <------------------------------ internal ------------------------------ */

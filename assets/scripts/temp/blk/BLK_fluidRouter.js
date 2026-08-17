@@ -49,7 +49,7 @@
   function comp_onDestroyed(b) {
     if(b.block.delegee.noPresExplode) return;
     let liqCur = b.liquids.current();
-    if(MDL_cond._isAuxiliaryFluid(liqCur) || (!liqCur.gas && !liqCur.willBoil())) return;
+    if(MDL_cond.isAuxiliaryFluid(liqCur) || (!liqCur.gas && !liqCur.willBoil())) return;
     let frac = b.liquids.get(liqCur) / b.block.liquidCapacity;
     if(frac < 0.01) return;
 

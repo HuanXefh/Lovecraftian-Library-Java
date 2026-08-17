@@ -356,7 +356,7 @@
       tb.add(new Bar(
         liq.localizedName,
         tryVal(liq.barColor, liq.color),
-        () => MDL_cond._isAuxiliaryFluid(liq) && !MDL_cond._isNoCapAuxiliaryFluid(liq) ? Mathf.clamp(b.liquids.get(liq) / VAR.param.auxCap) : (b.liquids.get(liq) / b.block.liquidCapacity),
+        () => MDL_cond.isAuxiliaryFluid(liq) && !MDL_cond.isNoCapAuxiliaryFluid(liq) ? Mathf.clamp(b.liquids.get(liq) / VAR.param.auxCap) : (b.liquids.get(liq) / b.block.liquidCapacity),
       )).growX();
       tb.row();
     },
@@ -620,7 +620,7 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        rcEffcWinMean: prov(() => new WindowedMean(5)),
+        rcEffcWinMean: tprov(() => new WindowedMean(5)),
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler
@@ -638,7 +638,7 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        erekirSideHeats: prov(() => Array.newFArr(4)),
+        erekirSideHeats: tprov(() => Array.newFArr(4)),
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler
@@ -698,25 +698,25 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        itmAcceptCacheArr: prov(() => []),
+        itmAcceptCacheArr: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        liqAcceptCacheArr: prov(() => []),
+        liqAcceptCacheArr: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        consTmpObj: prov(() => ({})),
+        consTmpObj: tprov(() => ({})),
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        prodTmpObj: prov(() => ({})),
+        prodTmpObj: tprov(() => ({})),
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler

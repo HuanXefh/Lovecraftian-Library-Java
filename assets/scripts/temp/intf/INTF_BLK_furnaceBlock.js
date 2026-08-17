@@ -200,7 +200,7 @@
          * @memberof INTF_BLK_furnaceBlock
          * @instance
          */
-        blockedFuels: prov(() => []),
+        blockedFuels: tprov(() => []),
         /**
          * `PARAM`: If not null, this furnace can only consume these fuels.
          * @memberof INTF_BLK_furnaceBlock

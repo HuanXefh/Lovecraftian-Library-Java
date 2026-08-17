@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    blk.isExposed = MDL_cond._isExposedBlock(blk);
+    blk.isExposed = MDL_cond.isExposedBlock(blk);
   };
 
 

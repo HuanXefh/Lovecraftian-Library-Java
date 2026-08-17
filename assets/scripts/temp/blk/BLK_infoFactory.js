@@ -15,8 +15,8 @@
 
 
   function comp_craft(b) {
-    if(b.block.delegee.infoGetterTup != null) {
-      b.infoCur = b.block.delegee.infoGetterTup[0](b);
+    if(b.block.delegee.infoF != null) {
+      b.infoCur = b.block.delegee.infoF.get(b);
     };
   };
 
@@ -55,7 +55,7 @@
        * @memberof BLK_infoFactory
        * @instance
        */
-      infoGetterTup: null,
+      infoF: null,
       /**
        * `PARAM`: Integer offset for information text.
        * @memberof BLK_infoFactory

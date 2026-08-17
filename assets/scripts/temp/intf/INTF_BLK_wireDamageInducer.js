@@ -31,7 +31,7 @@
     if(dmg < 0.0001) return;
     let b_t = b.ex_findWireTarget();
     if(b_t == null || b_t.power == null || b_t.power < 0.01) return;
-    let unit = LCRaycastf.findUnit(b.x, b.y, b_t.x, b_t.y, ounit => MDL_cond._isBoosting(ounit));
+    let unit = LCRaycastf.findUnit(b.x, b.y, b_t.x, b_t.y, ounit => MDL_cond.isUnitBoosting(ounit));
     if(unit == null) return;
 
     FRAG_attack.lightning_global(unit.x, unit.y, null, dmg, 3, 7, 8, b.block.delegee.wireArcColor, "air");

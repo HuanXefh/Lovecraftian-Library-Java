@@ -175,7 +175,7 @@
        * @memberof BLK_baseDrill
        * @instance
        */
-      itmWhitelist: prov(() => []),
+      itmWhitelist: tprov(() => []),
       /**
        * `PARAM`: Item duration, `drillTime` by default.
        * @memberof BLK_baseDrill
@@ -377,7 +377,7 @@
        * @memberof B_baseDrill
        * @instance
        */
-      payChargeObj: prov(() => ({})),
+      payChargeObj: tprov(() => ({})),
       /**
        * `INTERNAL`
        * @memberof B_baseDrill

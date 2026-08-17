@@ -28,7 +28,7 @@
 
   function comp_onProximityUpdate(b) {
     b.unloadTg = b.back();
-    if(b.unloadTg == null || b.unloadTg.liquids == null || MDL_cond._isFluidConduit(b.unloadTg.block) || MDL_cond._isGate(b.unloadTg.block)) {
+    if(b.unloadTg == null || b.unloadTg.liquids == null || MDL_cond.isFluidConduit(b.unloadTg.block) || MDL_cond.isGate(b.unloadTg.block)) {
       b.unloadTg = null;
     };
   };

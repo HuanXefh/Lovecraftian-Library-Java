@@ -18,12 +18,12 @@ public class BLKFragCable extends ContentFrag<Conveyor> {
 
         return (
             (oblk.consPower != null || oblk.outputsPower)
-                && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
-                && !LCScriptUtil.checkCond("_isArmoredCable", oblk)
+                && !LCScriptUtil.checkCond("isFluidConduit", oblk)
+                && !LCScriptUtil.checkCond("isArmoredCable", oblk)
         ) || (
             blk.lookingAt(t, rot, otx, oty, oblk)
                 && oblk.hasPower
-                && !LCScriptUtil.checkCond("_isFluidConduit", oblk)
+                && !LCScriptUtil.checkCond("isFluidConduit", oblk)
         );
     };
     // Overload

@@ -364,7 +364,7 @@
     iCap = rc.co.iCap();
     while(i < iCap) {
       tmp = rc.co[i];
-      if(!MDL_cond._isAuxiliaryFluid(tmp)) {
+      if(!MDL_cond.isAuxiliaryFluid(tmp)) {
         if(rc.co[i + 1] > 0.0) return true;
       } else {
         if(includeAux && rc.co[i + 1] > 0.0) return true;
@@ -378,7 +378,7 @@
     while(i < iCap) {
       tmp = rc.bo[i];
       if(tmp instanceof Liquid) {
-        if(!MDL_cond._isAuxiliaryFluid(tmp)) {
+        if(!MDL_cond.isAuxiliaryFluid(tmp)) {
           if(rc.bo[i + 1] > 0.0) return true;
         } else {
           if(includeAux && rc.bo[i + 1] > 0.0) return true;

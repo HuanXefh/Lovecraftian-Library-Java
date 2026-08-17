@@ -40,7 +40,7 @@
     };
     if(itm == null) return false;
 
-    return (isFloorDrop ? false : MDL_cond._isDepthOre(t.overlay())) ?
+    return (isFloorDrop ? false : MDL_cond.isDepthOre(t.overlay())) ?
       blk.canMineDepthOre && blk.ex_canMine(t.overlay(), itm, blk.depthTierMtp) && blk.ex_calcDpLvlReq(t.x, t.y, itm) <= blk.maxDepthLvl :
       blk.ex_canMine(isFloorDrop ? t.floor() : t.overlay(), itm, 1.0);
   };

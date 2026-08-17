@@ -50,9 +50,9 @@
        * @memberof BLK_ventGenerator
        * @instance
        */
-      attrFilterTup: prov(() => [function(blk, oblk) {
+      attrFilter: tprov(() => boolf2(function(blk, oblk) {
         return checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size;
-      }]),
+      })),
 
 
     })

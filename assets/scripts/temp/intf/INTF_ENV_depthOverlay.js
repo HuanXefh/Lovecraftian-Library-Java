@@ -108,7 +108,7 @@
        * @memberof INTF_ENV_depthOverlay
        * @instance
        */
-      drawnMap: prov(() => new ObjectMap()),
+      drawnMap: tprov(() => new ObjectMap()),
 
 
       /* <------------------------------ vanilla ------------------------------ */

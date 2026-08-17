@@ -20,7 +20,7 @@
 
 
   function comp_acceptLiquid(b, b_f, liq) {
-    return !(!b.block.delegee.allowAux && MDL_cond._isAuxiliaryFluid(liq));
+    return !(!b.block.delegee.allowAux && MDL_cond.isAuxiliaryFluid(liq));
   };
 
 

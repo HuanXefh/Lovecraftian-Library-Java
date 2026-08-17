@@ -23,7 +23,7 @@ public class LCGeometry {
 
 
     public static boolean acceptBlock(Building b_f, Building b_t, boolean canSideBlend) {
-        return !b_t.block.rotate || LCScriptUtil.checkCond("_isFullRouter", b_f.block) ?
+        return !b_t.block.rotate || LCScriptUtil.checkCond("isFullRouter", b_f.block) ?
             canSideBlend :
             (canSideBlend ? b_t.relativeTo(b_f) != b_t.rotation : b_f.relativeTo(b_t) == b_t.rotation);
     };
@@ -54,7 +54,7 @@ public class LCGeometry {
             return acceptBridge(b, b_t, canSideBlend);
         };
 
-        return (!b_f.block.rotate || LCScriptUtil.checkCond("_isFullRouter", b_f.block) ?
+        return (!b_f.block.rotate || LCScriptUtil.checkCond("isFullRouter", b_f.block) ?
             acceptBlock(b_f, b_t, canSideBlend) :
             !fromRouter ?
                 acceptLine(b_f, b_t, canSideBlend) :
@@ -66,14 +66,14 @@ public class LCGeometry {
 
 
     private static boolean backSideFromRouter(Building b_s) {
-        return b_s != null && LCScriptUtil.checkCond("_isGenericRouter", b_s.block);
+        return b_s != null && LCScriptUtil.checkCond("isGenericRouter", b_s.block);
     };
 
 
     private static boolean backSideCanSideBlend(Building b, Building b_s) {
         if(b_s == null) return false;
-        boolean noSideTo = LCScriptUtil.checkCond("_isNoSideBlock", b.block);
-        boolean noSideBoth = LCScriptUtil.checkCond("_isSameNoSideBlock", b.block, b_s.block);
+        boolean noSideTo = LCScriptUtil.checkCond("isNoSideBlock", b.block);
+        boolean noSideBoth = LCScriptUtil.checkCond("isSamePairNoSideBlock", b.block, b_s.block);
 
         return noSideBoth || !noSideTo;
     };

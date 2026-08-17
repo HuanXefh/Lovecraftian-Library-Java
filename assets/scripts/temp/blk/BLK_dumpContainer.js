@@ -36,7 +36,7 @@
 
 
   function comp_acceptItem(b, b_f, itm) {
-    return b_f === b || !MDL_cond._isContainer(b_f.block);
+    return b_f === b || !MDL_cond.isContainer(b_f.block);
   };
 
 

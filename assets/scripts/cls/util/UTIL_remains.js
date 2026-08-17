@@ -58,8 +58,8 @@
    */
   UTIL_remains.checkRemainsValid = function(e) {
     return e instanceof Building ?
-      PARAM.SHOULD_CREATE_BUILD_REMAINS && !(e.block instanceof ConstructBlock) && (e.block.size > 1 || Mathf.chance(0.5)) && !MDL_cond._hasNoRemains(e.block) :
-      !MDL_cond._hasNoRemains(e.type);
+      PARAM.SHOULD_CREATE_BUILD_REMAINS && !(e.block instanceof ConstructBlock) && (e.block.size > 1 || Mathf.chance(0.5)) && !MDL_cond.hasNoRemains(e.block) :
+      !MDL_cond.hasNoRemains(e.type);
   };
 
 
@@ -82,7 +82,7 @@
   UTIL_remains.checkInLiq = function thisFun(t, etp) {
     return t != null
       && LCPos.getTilesRect(thisFun.tmpTs, t, 1, 1).every(ot => ot.floor().isLiquid)
-      && (etp instanceof Block || (t.build == null && !(t.solid() && MDL_cond._isTreeBlock(t.block()))))
+      && (etp instanceof Block || (t.build == null && !(t.solid() && MDL_cond.isTreeBlock(t.block()))))
   }
   .setProp({
     tmpTs: [],
@@ -214,8 +214,8 @@
       lineVec_f: null,
       lineVec_t: null,
       shouldFloat: shouldFloat,
-      isHot: forceHot ? true : MDL_cond._isHot(unit, t),
-      shouldFadeHeat: forceHot ? false : (!MDL_cond._isHotStatus(t.floor().status) || !inLiq),
+      isHot: forceHot ? true : MDL_cond.isHot(unit, t),
+      shouldFadeHeat: forceHot ? false : (!MDL_cond.isHotStatus(t.floor().status) || !inLiq),
 
 
       remove() {
@@ -383,7 +383,7 @@
         remainsLeg.lineRegionRandOff = Mathf.random(utp.legRegion.width / 8.0);
         remainsLeg.lineVec_f = vecBase.cpy().add(offX, offY);
         remainsLeg.lineVec_t = leg.joint.cpy().add(offX, offY);
-        remainsLeg.isHot = MDL_cond._isHot(unit, unit.tile);
+        remainsLeg.isHot = MDL_cond.isHot(unit, unit.tile);
       };
 
       offX = Mathf.random(8.0);
@@ -425,7 +425,7 @@
         remainsLegBase.lineRegionRandOff = Mathf.random(utp.legBaseRegion.width / 8.0);
         remainsLegBase.lineVec_f = vecLegJoint.cpy().add(offX, offY);
         remainsLegBase.lineVec_t = leg.base.cpy().add(offX, offY);
-        remainsLegBase.isHot = MDL_cond._isHot(unit, unit.tile);
+        remainsLegBase.isHot = MDL_cond.isHot(unit, unit.tile);
       };
 
       arr.push(remainsLeg, remainsLegBase);

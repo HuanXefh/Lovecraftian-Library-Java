@@ -25,8 +25,8 @@
 
     return t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).removeAll(
       ot => (rs instanceof Item || rs === "item") ?
-        ((rs !== "item" && ot.overlay().itemDrop !== rs) || !MDL_cond._isDepthOre(ot.overlay())) :
-        (!MDL_cond._isDepthLiquid(ot.overlay()) || (rs !== "liquid" && ot.overlay().ex_getRsDrop() !== rs))
+        ((rs !== "item" && ot.overlay().itemDrop !== rs) || !MDL_cond.isDepthOre(ot.overlay())) :
+        (!MDL_cond.isDepthLiquid(ot.overlay()) || (rs !== "liquid" && ot.overlay().ex_getRsDrop() !== rs))
     );
   };
 

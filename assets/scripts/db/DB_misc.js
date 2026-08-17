@@ -55,7 +55,7 @@ const db = {
         };
 
         return String.multiline(
-          MDL_cond._isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text.getColon() + itm.localizedName.plain()),
+          MDL_cond.isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text.getColon() + itm.localizedName.plain()),
           MDL_bundle.getTerm("lovec", "ore-hardness") + MDL_text.getColon() + tryJsProp(blk, "dropHardness", itm.hardness),
         );
       },
@@ -178,12 +178,12 @@ const db = {
     nodeLinkFilter: [
 
       "any", (b, b_t) => true,
-      "cons", (b, b_t) => MDL_cond._isPowerTransmitter(b.block) && !MDL_cond._isPowerTransmitter(b_t.block),
-      "trans", (b, b_t) => MDL_cond._isPowerTransmitter(b.block) && MDL_cond._isPowerTransmitter(b_t.block),
+      "cons", (b, b_t) => MDL_cond.isPowerTransmitter(b.block) && !MDL_cond.isPowerTransmitter(b_t.block),
+      "trans", (b, b_t) => MDL_cond.isPowerTransmitter(b.block) && MDL_cond.isPowerTransmitter(b_t.block),
       "self", (b, b_t) => b.block === b_t.block,
-      "node", (b, b_t) => MDL_cond._isPowerNode(b.block) && MDL_cond._isPowerNode(b_t.block),
-      "relay", (b, b_t) => MDL_cond._isPowerRelay(b_t.block),
-      "remote-node", (b, b_t) => MDL_cond._isPowerRelay(b_t.block) || b.block === b_t.block,
+      "node", (b, b_t) => MDL_cond.isPowerNode(b.block) && MDL_cond.isPowerNode(b_t.block),
+      "relay", (b, b_t) => MDL_cond.isPowerRelay(b_t.block),
+      "remote-node", (b, b_t) => MDL_cond.isPowerRelay(b_t.block) || b.block === b_t.block,
 
     ],
 
@@ -352,7 +352,7 @@ const db = {
           clickScr: function() {
             let unit = Vars.player.unit();
             if(unit == null) return;
-            let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond._isLoot(ounit));
+            let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
             if(loot == null) return;
             if(FRAG_item.takeUnitLoot_global(unit, loot)) {
               MDL_effect.itemTransfer(loot.x, loot.y, unit, null, null, true);
@@ -381,7 +381,7 @@ const db = {
           clickScr: function() {
             let unit = Vars.player.unit();
             if(unit == null) return;
-            let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond._isLoot(ounit));
+            let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
             if(loot == null) return;
             FRAG_item.destroyLoot_global(loot);
           },
@@ -437,15 +437,15 @@ const db = {
       "viscous", ct => ct.viscosity != null && ct.viscosity > VAR.param.clogViscThr,
       "coolant", ct => ct.coolanet != null && ct.coolant && ct.temperature != null && ct.temperature <= 0.5 && ct.flammability != null && ct.flammability < 0.1,
 
-      "intermediate", ct => MDL_cond._isIntermediate(ct),
-      "waste", ct => MDL_cond._isWaste(ct),
+      "intermediate", ct => MDL_cond.isIntermediate(ct),
+      "waste", ct => MDL_cond.isWaste(ct),
 
       "sand", ct => DB_item.db["group"]["sand"].includes(ct.name),
       "aggregate", ct => DB_item.db["group"]["aggregate"].includes(ct.name),
 
       "aqueous", ct => DB_fluid.db["group"]["aqueous"].includes(ct.name),
       "conductive", ct => DB_fluid.db["group"]["conductive"].includes(ct.name),
-      "aux", ct => MDL_cond._isAuxiliaryFluid(ct),
+      "aux", ct => MDL_cond.isAuxiliaryFluid(ct),
 
     ],
 

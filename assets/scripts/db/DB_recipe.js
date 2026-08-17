@@ -41,14 +41,14 @@ const db = {
 
         ConsumeItemFilter, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           Vars.content.items().each(itm => {
-            if(blk.itemFilter[itm.id]) dictConsItm[itm.id].push(blk, 1, mergeObj({icon: MDL_cond._isTurret(blk) ? "lovec-icon-ammo" : null}, data));
+            if(blk.itemFilter[itm.id]) dictConsItm[itm.id].push(blk, 1, mergeObj({icon: MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
         ConsumeItems, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           cons.items.forEachFast(itmStack => {
             if(itmStack.amount <= 0) return;
-            dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond._isTurret(blk) ? "lovec-icon-ammo" : null}, data));
+            dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
@@ -77,7 +77,7 @@ const db = {
         ConsumeLiquidFilter, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           Vars.content.liquids().each(liq => {
             if(cons.amount < 0.0001) return;
-            if(blk.liquidFilter[liq.id]) dictConsFld[liq.id].push(blk, cons.amount, mergeObj({icon: MDL_cond._isTurret(blk) ? "lovec-icon-ammo" : null}, data));
+            if(blk.liquidFilter[liq.id]) dictConsFld[liq.id].push(blk, cons.amount, mergeObj({icon: MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
@@ -87,14 +87,14 @@ const db = {
             dictConsFld[blk.consumeLiquid.id].push(blk, blk.consumeLiquidAmount / blk.cooldownTime, {});
           } else {
             if(cons.amount < 0.0001) return;
-            dictConsFld[cons.liquid.id].push(blk, cons.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond._isTurret(blk) ? "lovec-icon-ammo" : null}, data));
+            dictConsFld[cons.liquid.id].push(blk, cons.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
           };
         },
 
         ConsumeLiquids, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           cons.liquids.forEachFast(liqStack => {
             if(liqStack.amount < 0.0001) return;
-            dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond._isTurret(blk) ? "lovec-icon-ammo" : null}, data));
+            dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
@@ -122,7 +122,7 @@ const db = {
         ConsumePayloads, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           cons.payloads.each(payStack => {
             if(payStack.amount <= 0) return;
-            (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({icon: MDL_cond._isTurret(blk) ? "lovec-icon-ammo" : null}, data));
+            (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({icon: MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
@@ -170,7 +170,7 @@ const db = {
         fetchClass("carpediem.world.consumers.ConsumeItemsUses", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
           cons.items.forEachFast(itmStack => {
             if(itmStack.amount <= 0) return;
-            dictConsItm[itmStack.item.id].push(blk, itmStack.amount / cons.uses, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond._isTurret(blk) ? "lovec-icon-ammo" : null}, data));
+            dictConsItm[itmStack.item.id].push(blk, itmStack.amount / cons.uses, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
           });
         },
 
@@ -298,7 +298,7 @@ const db = {
           if(tryJsProp(blk, "shouldDropPay", false)) return;
           Vars.content.items().each(itm => {
             if(blk.blockedItems != null && blk.blockedItems.contains(itm)) return;
-            let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === itm && ((oblk instanceof Floor && !(oblk instanceof OverlayFloor)) || (oblk instanceof OverlayFloor && !oblk.wallOre)) && (blk.ex_canMine == null || blk.ex_canMine(oblk, itm, !MDL_cond._isDepthOre(oblk) ? 1.0 : tryJsProp(blk, "canMineDepthOre", true) ? tryJsProp(blk, "depthTierMtp", 1.0) : 0.0))).toArray();
+            let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === itm && ((oblk instanceof Floor && !(oblk instanceof OverlayFloor)) || (oblk instanceof OverlayFloor && !oblk.wallOre)) && (blk.ex_canMine == null || blk.ex_canMine(oblk, itm, !MDL_cond.isDepthOre(oblk) ? 1.0 : tryJsProp(blk, "canMineDepthOre", true) ? tryJsProp(blk, "depthTierMtp", 1.0) : 0.0))).toArray();
             if(oblks.length > 0) {
               dictProdItm[itm.id].push(blk, Math.pow(blk.size, 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(itm)) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({icon: "lovec-icon-mining", iconCts: oblks}, data));
             };

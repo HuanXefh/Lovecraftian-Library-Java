@@ -187,7 +187,7 @@
        * @memberof B_wallDrill
        * @instance
        */
-      mineRsTgs: prov(() => []),
+      mineRsTgs: tprov(() => []),
 
 
     })

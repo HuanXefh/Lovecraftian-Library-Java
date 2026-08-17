@@ -52,7 +52,7 @@
 
 
   function comp_acceptLiquid(b, b_f, liq) {
-    if(!b.block.rotate || b.block.delegee.fldInputDirs.length === 0 || MDL_cond._isAuxiliaryFluid(liq)) return true;
+    if(!b.block.rotate || b.block.delegee.fldInputDirs.length === 0 || MDL_cond.isAuxiliaryFluid(liq)) return true;
 
     return b.block.delegee.fldInputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
   };
@@ -94,19 +94,19 @@
        * @memberof BLK_baseFactory
        * @instance
        */
-      inputDirs: prov(() => []),
+      inputDirs: tprov(() => []),
       /**
        * `PARAM`: Relative directions of fluid input sides (not abstract fluid).
        * @memberof BLK_baseFactory
        * @instance
        */
-      fldInputDirs: prov(() => []),
+      fldInputDirs: tprov(() => []),
       /**
        * `PARAM`: Relative directions of item output sides.
        * @memberof BLK_baseFactory
        * @instance
        */
-      outputDirs: prov(() => []),
+      outputDirs: tprov(() => []),
       /**
        * `PARAM`: Sound played when this building crafts.
        * @memberof BLK_baseFactory

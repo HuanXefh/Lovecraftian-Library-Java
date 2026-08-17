@@ -197,6 +197,18 @@
   };
 
 
+  exports.extendInd = {
+    safe: 10,
+    base: 11,
+    block: 12,
+    build: 13,
+    unit: 14,
+    entity: 15,
+    planet: 16,
+    tmi: 19,
+  };
+
+
   exports.randInd = {
     block: 0,
     crafter: 1,

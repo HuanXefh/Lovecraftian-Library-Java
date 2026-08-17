@@ -266,7 +266,7 @@
    * @return {boolean}
    */
   const takeLoot = function(b, loot, max, isForced) {
-    if(!MDL_cond._isLoot(loot) || b.items == null) return false;
+    if(!MDL_cond.isLoot(loot) || b.items == null) return false;
     let itm = loot.item();
     if(itm == null || (!isForced && !b.acceptItem(b, itm))) return false;
     let amt = loot.stack.amount;
@@ -300,7 +300,7 @@
     let amtTrans = Math.min(amtCur, max);
     if(amtTrans < 1) return false;
 
-    if(!ignoreLoot && MDL_cond._posHasLoot(x, y)) return false;
+    if(!ignoreLoot && MDL_cond.posHasLoot(x, y)) return false;
     setItem(b, itm, amtCur - amtTrans);
     MDL_call.spawnLoots_server(b.x, b.y, itm, amtTrans, b.block.size * Vars.tilesize * 0.7);
 
@@ -324,7 +324,7 @@
     if(amt == null) amt = 0;
     if(amt < 1) return false;
 
-    if(!ignoreLoot && MDL_cond._posHasLoot(x, y)) return false;
+    if(!ignoreLoot && MDL_cond.posHasLoot(x, y)) return false;
     TRIGGER.itemProduce.fire(b, itm, amt);
     b.produced(itm, amt);
     MDL_call.spawnLoot_server(x, y, itm, amt);
@@ -345,7 +345,7 @@
    * @return {boolean}
    */
   const convertLoot = function(b, loot, itm, amt, noReset) {
-    if(!MDL_cond._isLoot(loot)) return false;
+    if(!MDL_cond.isLoot(loot)) return false;
     if(amt == null) amt = 0;
     if(amt < 1 || itm == null) {
       if(!Vars.net.client()) {
@@ -376,7 +376,7 @@
    * @return {boolean}
    */
   const removeLoot = function(loot) {
-    if(!MDL_cond._isLoot(loot)) return false;
+    if(!MDL_cond.isLoot(loot)) return false;
 
     loot.remove();
 
@@ -391,7 +391,7 @@
    * @return {void}
    */
   const removeLoot_global = function(loot) {
-    if(!MDL_cond._isLoot(loot)) return false;
+    if(!MDL_cond.isLoot(loot)) return false;
 
     MDL_net.sendPacket(
       PacketModes.BOTH, "lovec-both-remove-loot",
@@ -417,7 +417,7 @@
    * @return {boolean}
    */
   const destroyLoot = function(loot) {
-    if(!MDL_cond._isLoot(loot)) return false;
+    if(!MDL_cond.isLoot(loot)) return false;
 
     TRIGGER.lootDestroy.fire(loot);
     loot.remove();
@@ -433,7 +433,7 @@
    * @return {void}
    */
   const destroyLoot_global = function(loot) {
-    if(!MDL_cond._isLoot(loot)) return false;
+    if(!MDL_cond.isLoot(loot)) return false;
 
     MDL_net.sendPacket(
       PacketModes.BOTH, "lovec-both-destroy-loot",
@@ -616,7 +616,7 @@
    * @return {boolean}
    */
   const takeUnitLoot = function(unit, loot, max) {
-    if(!MDL_cond._isLoot(loot)) return false;
+    if(!MDL_cond.isLoot(loot)) return false;
     let itm = loot.item();
     if(!unit.acceptsItem(itm)) return false;
     let amt = loot.stack.amount;
@@ -642,7 +642,7 @@
    * @return {void}
    */
   const takeUnitLoot_global = function(unit, loot, max) {
-    if(!MDL_cond._isLoot(loot)) return false;
+    if(!MDL_cond.isLoot(loot)) return false;
 
     MDL_net.sendPacket(
       PacketModes.BOTH, "lovec-both-unit-take-loot",

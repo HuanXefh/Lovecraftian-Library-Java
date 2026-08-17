@@ -112,7 +112,7 @@
       exports.SHOULD_DRAW_STATIC_LOOT = fetchSetting("draw0loot-static");
       exports.SHOULD_DRAW_LOOT_AMOUNT = fetchSetting("draw0loot-amount");
       exports.TREE_ALPHA = (Groups.player.size() > 1) ? 1.0 : fetchSetting("draw0tree-alpha", true);
-      exports.SHOULD_CHECK_TREE_DISTANCE = fetchSetting("draw0tree-player") && unitPlayer != null && MDL_cond._isCoverable(unitPlayer);
+      exports.SHOULD_CHECK_TREE_DISTANCE = fetchSetting("draw0tree-player") && unitPlayer != null && MDL_cond.isUnitCoverable(unitPlayer);
       exports.SHOULD_SHOW_EXTRA_INFO = fetchSetting("draw0aux-extra-info");
       exports.SHOULD_DRAW_BRIDGE_LINE = fetchSetting("draw0aux-bridge");
       exports.SHOULD_DRAW_ROUTER_HERESY = fetchSetting("draw0aux-router");

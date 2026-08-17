@@ -425,7 +425,7 @@
       );
     } else {
       metaObj.paramObjF = paramObj => {
-        if(MDL_cond._isWaste(paramObj.bo[0])) {
+        if(MDL_cond.isWaste(paramObj.bo[0])) {
           // No purification target in the recipe
           paramObj.shouldSkip = true;
           return;

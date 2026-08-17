@@ -30,13 +30,13 @@
     blk.stats.remove(Stat.affinities);
     blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
-      MDL_table.setAttr(tb, blk.attribute, oblk => blk.attrFilterTup[0](blk, oblk));
+      MDL_table.setAttr(tb, blk.attribute, oblk => blk.attrFilter.get(blk, oblk));
     }));
   };
 
 
   function comp_canPlaceOn(blk, t, team, rot) {
-    return blk.attrFilterTup[0](blk, t.floor());
+    return blk.attrFilter.get(blk, t.floor());
   };
 
 
@@ -105,7 +105,7 @@
        * @memberof BLK_attributeGenerator
        * @instance
        */
-      attrFilterTup: prov(() => [Function.airTrue]),
+      attrFilter: tprov(() => boolf2(function(blk, oblk) {return true})),
       /**
        * `PARAM`: Effect created when item is consumed.
        * @memberof BLK_attributeGenerator

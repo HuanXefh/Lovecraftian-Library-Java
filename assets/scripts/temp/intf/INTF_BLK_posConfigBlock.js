@@ -74,7 +74,7 @@
          * @memberof INTF_B_posConfigBlock
          * @instance
          */
-        posConfigVec2: prov(() => new Vec2()),
+        posConfigVec2: tprov(() => new Vec2()),
         /**
          * `INTERNAL`: Tile for config position.
          * @memberof INTF_B_posConfigBlock

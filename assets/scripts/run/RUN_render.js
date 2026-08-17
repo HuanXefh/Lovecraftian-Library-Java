@@ -81,7 +81,7 @@
   function drawUnitStat() {
     Groups.unit.each(
       unit => !(
-        (!LCCheck.checkEntityVisible(unit) || MDL_cond._isIrregularUnit(unit))
+        (!LCCheck.checkEntityVisible(unit) || MDL_cond.isIrregularUnit(unit))
           || ((!unit.isPlayer() || !PARAM.SHOULD_DRAW_PLAYER_STAT) && !unit.isMissile() && PARAM.SHOULD_DRAW_UNIT_STAT_NEAR_MOUSE && Mathf.dst(Core.input.mouseWorldX(), Core.input.mouseWorldY(), unit.x, unit.y) > VAR.range.mouseRad + unit.hitSize * 0.5)
           || (unit.isMissile() && !PARAM.SHOULD_DRAW_MISSILE_STAT)
           || (!unit.type.logicControllable && !unit.type.playerControllable && unit.type.hidden && !unit.type.drawCell && !unit.isMissile())

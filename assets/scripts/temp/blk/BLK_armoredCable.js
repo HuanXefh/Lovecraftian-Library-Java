@@ -15,7 +15,7 @@
 
 
   function comp_conductsTo(b, ob) {
-    return !MDL_cond._isArmoredCable(ob.block) ?
+    return !MDL_cond.isArmoredCable(ob.block) ?
       (b.front() === ob || b.back() === ob) :
       (b.front() === ob || ob.front() === b);
   };

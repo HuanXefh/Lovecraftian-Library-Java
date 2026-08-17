@@ -55,7 +55,7 @@ public class INTFBLKFragRecipeHandler extends ContentFrag<GenericCrafter> {
                         amt = LCScript.toFloat(co.get(i + 1));
                         tmpVal = amt < 0.0001f ? 1f : (blk.liquidCapacity - b.liquids.get(liq)) / (amt * b.edelta());
                         val = Math.max(val, tmpVal);
-                        if(!LCScriptUtil.checkCond("_isAuxiliaryFluid", liq)) {
+                        if(!LCScriptUtil.checkCond("isAuxiliaryFluid", liq)) {
                             scl = Math.min(scl, tmpVal);
                         };
                         cond = true;

@@ -118,9 +118,9 @@
    * @return {RecipeParser}
    */
   const regisParser = function(obj) {
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.tmi);
     let rcParser = extend(CLASSES.RecipeParser, obj);
-    processClassLoader();
+    processClassLoader(null, VAR.extendInd.tmi);
     CLASSES.TooManyItems.recipesManager.registerParser(rcParser);
 
     return rcParser;

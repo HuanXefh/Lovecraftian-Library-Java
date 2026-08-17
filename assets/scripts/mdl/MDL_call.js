@@ -200,7 +200,7 @@
    * @return {void}
    */
   const knockback = function(x, y, unit, pow, rad, ang) {
-    if(MDL_cond._isHighAir(unit)) return;
+    if(MDL_cond.isUnitInHighAir(unit)) return;
     if(Math.abs(pow) < 0.0001) return;
 
     let pow_fi = rad == null ?
@@ -338,7 +338,7 @@
   const clearLoot = function thisFun() {
     thisFun.tmpUnits.clear();
     Groups.unit.each(unit => {
-      if(MDL_cond._isLoot(unit)) {
+      if(MDL_cond.isLoot(unit)) {
         thisFun.tmpUnits.push(unit);
       };
     });

@@ -287,7 +287,7 @@
        * @memberof BLK_baseBlock
        * @instance
        */
-      drawer: prov(() => new DrawDefault()),
+      drawer: tprov(() => new DrawDefault()),
       /**
        * `INTERNAL`: If true, this block cannot be placed by player when hidden.
        * @memberof
@@ -299,19 +299,19 @@
        * @memberof BLK_baseBlock
        * @instance
        */
-      configKeyCallerArr: prov(() => []),
+      configKeyCallerArr: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof BLK_baseBlock
        * @instance
        */
-      logicSensorGetterMap: prov(() => new ObjectMap()),
+      logicSensorGetterMap: tprov(() => new ObjectMap()),
       /**
        * `INTERNAL`
        * @memberof BLK_baseBlock
        * @instance
        */
-      logicSensorControlMap: prov(() => new ObjectMap()),
+      logicSensorControlMap: tprov(() => new ObjectMap()),
 
 
       /* <------------------------------ vanilla ------------------------------ */

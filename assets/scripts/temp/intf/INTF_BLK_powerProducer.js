@@ -48,7 +48,7 @@
 
 
   function comp_conductsTo(b, ob) {
-    return !MDL_cond._isFluidConduit(ob.block);
+    return !MDL_cond.isFluidConduit(ob.block);
   };
 
 

@@ -106,7 +106,7 @@
             oblk => {
               if(!blk.ex_canMine(
                 oblk, oblk.itemDrop,
-                !MDL_cond._isDepthOre(oblk) ?
+                !MDL_cond.isDepthOre(oblk) ?
                   1.0 :
                   tryJsProp(blk, "canMineDepthOre", false) ?
                     tryJsProp(blk, "depthTierMtp", 1.0) :
@@ -323,7 +323,7 @@
 
       isTarget(blk) {
         return checkCreatedByTemp(blk) && (
-          (MDL_cond._isFactory(blk) && !blk.ex_isSubInsOf("BLK_recipeFactory") && checkTarget(this, blk))
+          (MDL_cond.isFactory(blk) && !blk.ex_isSubInsOf("BLK_recipeFactory") && checkTarget(this, blk))
             || this.tempTypeMap.containsKey(blk.ex_getTempName())
         );
       },

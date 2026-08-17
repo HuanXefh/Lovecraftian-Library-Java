@@ -62,7 +62,7 @@
      * @memberof RS_intermediateFluid
      * @instance
      */
-    extraIntmdParents: prov(() => []),
+    extraIntmdParents: tprov(() => []),
     /**
      * `PARAM`: See {@link RS_intermediateItem}.
      * @override

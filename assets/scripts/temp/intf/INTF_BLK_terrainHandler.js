@@ -77,7 +77,7 @@
          * @memberof INTF_BLK_terrainHandler
          * @instance
          */
-        ters: prov(() => []),
+        ters: tprov(() => []),
         /**
          * `PARAM`: "enable" for requirement, "disable" for restriction.
          * @memberof INTF_BLK_terrainHandler

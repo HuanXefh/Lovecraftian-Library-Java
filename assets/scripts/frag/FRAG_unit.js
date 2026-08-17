@@ -65,7 +65,7 @@
 
     let healthFrac = Mathf.clamp(unit.health / unit.maxHealth);
 
-    if(MDL_cond._isNonRobot(utp)) {
+    if(MDL_cond.isNonRobot(utp)) {
       if(healthFrac < 0.25) {
         unit.apply(VARGEN.staHeavilyInjured, STA_DUR);
         unit.unapply(VARGEN.staSlightlyInjured);
@@ -114,7 +114,7 @@
     let ts = LCPos.getTilesDstManhattan(thisFun.tmpTs, t, VAR.range.unitSurR);
 
     // Floor
-    if(MDL_cond._isOnFloor(unit)) {
+    if(MDL_cond.isUnitOnFloor(unit)) {
 
     };
 
@@ -128,11 +128,11 @@
 
       // Tree
       if(
-        ob == null && oblk !== Blocks.air && MDL_cond._isCoverable(unit, true)
+        ob == null && oblk !== Blocks.air && MDL_cond.isUnitCoverable(unit, true)
           && (
-            MDL_cond._isTreeBlock(oblk) ?
+            MDL_cond.isTreeBlock(oblk) ?
               oblk.delegee.hidable && dst < oblk.delegee.radTree :
-              MDL_cond._isTallGrassBlock(oblk) ?
+              MDL_cond.isTallGrassBlock(oblk) ?
                 oblk.delegee.hidable && dst < oblk.size * Vars.tilesize * 0.5 :
                 false
           )
@@ -156,7 +156,7 @@
    */
   const comp_update_heat = function(utp, unit) {
     if(!TIMER.unit || !LCRand.chance(UTIL_rand.get("unit"), VAR.chance.unitUpdateP * 0.3)) return;
-    if(!MDL_cond._isHeatDamageable(unit)) return;
+    if(!MDL_cond.isHeatDamageable(unit)) return;
 
     let rHeat = MDL_flow.calcRHeat(unit.tileOn());
     let rHeatRes = MDL_flow.getRHeatRes(utp);

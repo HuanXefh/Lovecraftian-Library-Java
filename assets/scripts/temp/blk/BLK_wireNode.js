@@ -23,7 +23,7 @@
       blk.underBullets = blk.size === 1;
     };
 
-    blk.linkFilterTup = [DB_misc.db["block"]["nodeLinkFilter"].read(blk.linkMode, Function.airTrue)];
+    blk.linkFilter = boolf2(DB_misc.db["block"]["nodeLinkFilter"].read(blk.linkMode, Function.airTrue));
   };
 
 
@@ -33,7 +33,7 @@
 
 
   function comp_linkValid(blk, b, b_t) {
-    return Mathf.dst(b.x, b.y, b_t.x, b_t.y) >= blk.laserRange * Vars.tilesize * blk.minRadFrac && blk.linkFilterTup[0](b, b_t);
+    return Mathf.dst(b.x, b.y, b_t.x, b_t.y) >= blk.laserRange * Vars.tilesize * blk.minRadFrac && blk.linkFilter.get(b, b_t);
   };
 
 
@@ -129,7 +129,7 @@
        * @memberof BLK_wireNode
        * @instance
        */
-      linkFilterTup: null,
+      linkFilter: null,
 
 
       /* <------------------------------ vanilla ------------------------------ */

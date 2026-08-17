@@ -64,7 +64,7 @@
     if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
       thisFun.tmpCond = tryJsProp(blk, "canShortCircuit", false)
         && t.floor().liquidDrop != null
-        && MDL_cond._isConductiveLiquid(t.floor().liquidDrop);
+        && MDL_cond.isConductiveLiquid(t.floor().liquidDrop);
     };
 
     if(thisFun.tmpCond) {

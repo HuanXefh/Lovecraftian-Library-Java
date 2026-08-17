@@ -45,7 +45,7 @@
 
 
   function comp_ex_getRevealTgs(blk, tx, ty, rot) {
-    return LCPos.getTilesCircle(blk.tmpRevealedTgs, Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond._isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
+    return LCPos.getTilesCircle(blk.tmpRevealedTgs, Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond.isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
   };
 
 
@@ -68,7 +68,7 @@
 
     b.ex_setRevealed(false);
     // Update other scanners in range
-    LCEntity.eachBuild(b.x, b.y, b.team, b.block.delegee.blkRad * 2.2, ob => MDL_cond._isOreScanner(ob.block), ob => ob.ex_setRevealed(true));
+    LCEntity.eachBuild(b.x, b.y, b.team, b.block.delegee.blkRad * 2.2, ob => MDL_cond.isOreScanner(ob.block), ob => ob.ex_setRevealed(true));
   };
 
 
@@ -178,7 +178,7 @@
        * @memberof BLK_oreScanner
        * @instance
        */
-      tmpRevealedTgs: prov(() => []),
+      tmpRevealedTgs: tprov(() => []),
 
 
     })
@@ -273,19 +273,19 @@
        * @memberof B_oreScanner
        * @instance
        */
-      revealTgs: prov(() => []),
+      revealTgs: tprov(() => []),
       /**
        * `INTERNAL`: Ores that are not revealed yet.
        * @memberof B_oreScanner
        * @instance
        */
-      revealQueue: prov(() => []),
+      revealQueue: tprov(() => []),
       /**
        * `INTERNAL`: Ores revealed as integers of position.
        * @memberof B_oreScanner
        * @instance
        */
-      revealedInts: prov(() => []),
+      revealedInts: tprov(() => []),
 
 
     })
