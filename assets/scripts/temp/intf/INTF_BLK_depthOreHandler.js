@@ -70,7 +70,7 @@
     new CLS_interface("INTF_BLK_depthOreHandler", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**

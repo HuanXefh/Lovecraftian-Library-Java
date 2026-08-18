@@ -27,7 +27,7 @@
     new CLS_interface("INTF_BLK_xxx", {
 
 
-      __paramObjSetter__: () => ({}),
+      __paramObjM__: () => ({}),
 
 
     }),
@@ -39,7 +39,7 @@
     new CLS_interface("INTF_B_xxx", {
 
 
-      __paramObjSetter__: () => ({}),
+      __paramObjM__: () => ({}),
 
 
     }),

@@ -68,7 +68,7 @@
 
 
     // Sync random number generator
-    Object._it(VAR.randInd, (name, ind) => {
+    Object.eachPair(VAR.randInd, (name, ind) => {
       let rand = new Rand();
       TRIGGER.majorIter.start.addGlobalListener(() => {
         UTIL_rand.sync(ind, Number(rand.nextLong()));
@@ -85,7 +85,7 @@
     // Register custom fields for recipe dictionary
     DB_recipe.db["dict"]["customField"].forEachRow(2, (name, obj) => {
       MDL_recipeDict.newCustomField(name, obj);
-    });
+    }, true);
 
 
   })();
@@ -101,7 +101,7 @@
 
 
     // Map reading fallback addition
-    DB_misc.db["block"]["migration"].forEachRow(2, (name_f, name_t) => SaveVersion.fallback.put(name_f, name_t));
+    DB_misc.db["block"]["migration"].forEachRow(2, (name_f, name_t) => SaveVersion.fallback.put(name_f, name_t), true);
 
 
     // Register custom W/R chunk
@@ -164,9 +164,20 @@
     // Register graph methods
     DB_misc.db["block"]["graph"]["init"].forEachRow(2, (graphType, scr) => {
       UTIL_graph.setInit(graphType, scr);
-    });
+    }, true);
     DB_misc.db["block"]["graph"]["update"].forEachRow(2, (graphType, scr) => {
       UTIL_graph.setUpdate(graphType, scr);
+    }, true);
+
+
+    // Set up major sync
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-major-sync", payload => {
+      TRIGGER.majorSync.fire();
+    });
+    MDL_event.onPlayerJoin(player => {
+      Time.run(30.0, () => {
+        MDL_net.sendPacket(PacketModes.BOTH, "lovec-both-major-sync", "", true);
+      });
     });
 
 
@@ -186,10 +197,11 @@
 
         return MDL_json.fetch(jsonVal, "version") !== verCur;
       })()) {
+        let fi;
         DB_recipe.db["oreDict"]["def"].forEachRow(2, (nameRs, arr) => {
-          let fi = dir.child(nameRs + ".csv");
+          fi = dir.child(nameRs + ".csv");
           MDL_file.writeCsv(fi, arr, 1);
-        });
+        }, true);
         MDL_json.write(dir.child("meta.json"), {
           version: verCur,
         });
@@ -197,15 +209,16 @@
       };
 
       let fiSeq = dir.parent().findAll(fi => fi.extension() === "csv" && (fetchSetting("load-ore-dict-def") ? true : fi.parent() !== dir));
+      let ct, arr, rs;
       fiSeq.each(fi => {
-        let ct = Vars.content.byName(fi.nameWithoutExtension());
+        ct = Vars.content.byName(fi.nameWithoutExtension());
         if(ct == null) return;
-        let arr = MDL_file.readCsv(fi);
+        arr = MDL_file.readCsv(fi);
         arr.forEachFast(nameRs => {
-          let rs = Vars.content.byName(nameRs);
+          rs = Vars.content.byName(nameRs);
           if(rs == null) return;
           oreDict.put(rs, ct);
-        });
+        }, true);
       });
 
       Vars.content.items().each(itm => {
@@ -232,7 +245,7 @@
       Vars.content.blocks().each(blk => {
         blk.requirements.forEachFast(itmStack => {
           itmStack.item = oreDict.get(itmStack.item, itmStack.item);
-        });
+        }, true);
         Vars.content.planets().each(pla => pla.accessible && pla.isLandable(), pla => {
           // No `every` here, or too many blocks hidden
           if(blk.requirements.some(itmStack => itmStack.item.isOnPlanet(pla))) blk.shownPlanets.add(pla);
@@ -242,39 +255,39 @@
         if(blk.itemDrop != null) blk.itemDrop = oreDict.get(blk.itemDrop, blk.itemDrop);
         if(blk.liquidDrop != null) blk.liquidDrop = oreDict.get(blk.liquidDrop, blk.liquidDrop);
 
-        let arr, i, iCap, cls, dictCaller;
+        let arr, i, iCap, cls, dictC;
 
         blk.consumers.forEachFast(blkCons => {
           arr = DB_recipe.db["oreDict"]["setter"]["consume"];
-          dictCaller = null;
+          dictC = null;
           i = 0;
           iCap = arr.iCap();
           while(i < iCap) {
             cls = arr[i];
             if(cls != null && blkCons instanceof cls) {
-              dictCaller = arr[i + 1];
+              dictC = arr[i + 1];
             };
             i += 2;
           };
-          if(dictCaller != null) {
-            dictCaller(blk, blkCons, oreDict);
+          if(dictC != null) {
+            dictC(blk, blkCons, oreDict);
             blkCons.apply(blk);
           };
         });
 
         arr = DB_recipe.db["oreDict"]["setter"]["produce"];
-        dictCaller = null;
+        dictC = null;
         i = 0;
         iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
           if(cls != null && blk instanceof cls) {
-            dictCaller = arr[i + 1];
+            dictC = arr[i + 1];
           };
           i += 2;
         };
-        if(dictCaller != null) {
-          dictCaller(blk, oreDict);
+        if(dictC != null) {
+          dictC(blk, oreDict);
         };
       });
     })();
@@ -300,7 +313,7 @@
 
     // Load extra sounds
     if(!Vars.headless) {
-      DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr));
+      DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr), true);
       // This one cannot be `Time.runTask`, otherwise `PARAM.xxx` will be undefined!
       Time.run(VAR.delay.load.loadExtraSound, () => {
         if(PARAM.SECRET_LEGACY_SOUND) {
@@ -387,8 +400,8 @@
             );
         };
 
-        VARGEN.rss.forEachFast(rs => rs.localizedName = rs.localizedName.color(fetchColor(rs)));
-        Object._it(VARGEN.factions, (faction, cts) => cts.forEachFast(ct => ct.localizedName = ct.localizedName.color(MDL_content.getFactionColor(faction))));
+        VARGEN.rss.forEachFast(rs => rs.localizedName = rs.localizedName.color(fetchColor(rs)), true);
+        Object.eachPair(VARGEN.factions, (faction, cts) => cts.forEachFast(ct => ct.localizedName = ct.localizedName.color(MDL_content.getFactionColor(faction)), true));
       });
     };
 
@@ -401,7 +414,7 @@
           MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct)).left().padLeft(28.0).row();
         }));
         VARGEN.rcDictCts.push(ct);
-      });
+      }, true);
     });
 
 
@@ -420,18 +433,18 @@
     // Set up status effects
     (function() {
       // Robot-only status
-      DB_status.db["group"]["robotOnly"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).forEachCond(sta => sta != null, sta => {
+      DB_status.db["group"]["robotOnly"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).compact().forEachFast(sta => {
         sta.stats.add(fetchStat("lovec", "sta-robotonly"), true);
-        VARGEN.bioticUtps.forEachFast(utp => utp.immunities.add(sta));
-      });
+        VARGEN.bioticUtps.forEachFast(utp => utp.immunities.add(sta), true);
+      }, true);
       // Oceanic status
-      DB_status.db["group"]["oceanic"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).forEachCond(sta => sta != null, sta => {
-        VARGEN.navalUtps.forEachFast(utp => utp.immunities.add(sta));
-      });
+      DB_status.db["group"]["oceanic"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).compact().forEachFast(sta => {
+        VARGEN.navalUtps.forEachFast(utp => utp.immunities.add(sta), true);
+      }, true);
       // Missile immunities
-      DB_status.db["group"]["missileImmune"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).concat(VARGEN.deathStas).forEachCond(sta => sta != null, sta => {
-        VARGEN.missileUtps.forEachFast(utp => utp.immunities.add(sta));
-      });
+      DB_status.db["group"]["missileImmune"].map(nameSta => MDL_content.getCt(nameSta, "sta", true)).pushAll(VARGEN.deathStas).compact().forEachFast(sta => {
+        VARGEN.missileUtps.forEachFast(utp => utp.immunities.add(sta), true);
+      }, true);
     })();
 
 
@@ -449,18 +462,18 @@
 
 
     // Set up planet rules
-    DB_env.db["map"]["rule"]["campaign"].forEachRow(2, (namePla, ruleSetter) => {
+    DB_env.db["map"]["rule"]["campaign"].forEachRow(2, (namePla, ruleM) => {
       let pla = MDL_content.getCt(namePla, "pla");
       if(pla == null) return;
       let campaignRules = new CampaignRules();
-      ruleSetter(campaignRules);
+      ruleM(campaignRules);
       pla.campaignRules = campaignRules;
-    });
-    DB_env.db["map"]["rule"]["planet"].forEachRow(2, (namePla, ruleSetter) => {
+    }, true);
+    DB_env.db["map"]["rule"]["planet"].forEachRow(2, (namePla, ruleM) => {
       let pla = MDL_content.getCt(namePla, "pla");
       if(pla == null) return;
-      pla.ruleSetter = cons(ruleSetter);
-    });
+      pla.ruleSetter = cons(ruleM);
+    }, true);
 
 
     // Initialize miscellaneous things
@@ -479,23 +492,23 @@
 
       // Terrain types
       batchCall(MDL_terrain, function() {
-        this.newTerGetter("dirt", ["dirt", "grass"]);
-        this.newTerGetter("rock", ["gravel", "rock"]);
-        this.newTerGetter("salt", ["salt"]);
-        this.newTerGetter("sand", ["gravel", "sand"]);
-        this.newTerGetter("snow", ["grass", "ice", "snow"]);
-        this.newTerGetter("lava", ["lava"]);
-        this.newTerGetter("puddle", ["puddle"]);
-        this.newTerGetter("river", ["river"]);
-        this.newTerGetter("sea", ["sea"]);
+        this.newTerF("dirt", ["dirt", "grass"]);
+        this.newTerF("rock", ["gravel", "rock"]);
+        this.newTerF("salt", ["salt"]);
+        this.newTerF("sand", ["gravel", "sand"]);
+        this.newTerF("snow", ["grass", "ice", "snow"]);
+        this.newTerF("lava", ["lava"]);
+        this.newTerF("puddle", ["puddle"]);
+        this.newTerF("river", ["river"]);
+        this.newTerF("sea", ["sea"]);
 
-        this.newBankTerGetter("bank", "river");
+        this.newBankTerF("bank", "river");
         this.setBankTerMatGrps("bank", [
           "dirt", "grass",
           "sand", "gravel", "rock", "salt",
           "ice", "snow",
         ]);
-        this.newBankTerGetter("beach", "sea");
+        this.newBankTerF("beach", "sea");
         this.setBankTerMatGrps("beach", [
           "sand", "gravel", "rock", "salt",
           "ice", "snow",

@@ -23,7 +23,7 @@
       if(rs == null) return;
       if(!cond1) cond1 = rs instanceof Item;
       if(!cond2) cond2 = rs instanceof Liquid;
-    });
+    }, true);
     if(cond1) {
       blk.hasDynaAttrItm = true;
     };
@@ -40,7 +40,7 @@
         rs instanceof Item ?
         MDL_recipeDict.addItmProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs), 1.0, {time: blk.ex_getCraftTime() / blk.dynaAttrRsEffcMap.get(rs.name, 1.0)}) :
         MDL_recipeDict.addFldProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs) * blk.dynaAttrRsEffcMap.get(rs.name, 1.0));
-      });
+      }, true);
     });
 
     MOD_tmi.regisRc_dynamicAttributeBlock(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr());
@@ -75,7 +75,7 @@
           let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
           matArr.push([rs, rs.localizedName, MDL_attr.getAttrB(nameAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
-        });
+        }, true);
 
         return matArr;
       })());
@@ -217,7 +217,7 @@
     new CLS_interface("INTF_BLK_dynamicAttributeBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -475,7 +475,7 @@
     new CLS_interface("INTF_B_dynamicAttributeBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

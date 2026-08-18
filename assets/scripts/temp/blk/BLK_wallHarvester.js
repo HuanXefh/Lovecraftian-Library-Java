@@ -38,7 +38,7 @@
       if(ot.block().attributes.get(blk.attribute) > 0.0) {
         LCDrawf.areaShrink(ot, 1, valid ? Pal.accent : Pal.remove);
       };
-    });
+    }, true);
   }
   .setProp({
     tmpTup: [],

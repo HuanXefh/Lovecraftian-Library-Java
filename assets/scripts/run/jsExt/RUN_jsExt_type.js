@@ -272,7 +272,7 @@
    */
   Array.prototype.toObjMap = function() {
     let objMap = new ObjectMap();
-    this.forEachRow(2, (key, val) => objMap.put(key, val));
+    this.forEachRow(2, (key, val) => objMap.put(key, val), true);
 
     return objMap;
   };

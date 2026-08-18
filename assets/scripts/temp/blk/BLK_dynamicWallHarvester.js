@@ -52,7 +52,7 @@
           ot.worldy() + Mathf.range(3.0),
           ot.block().getColor(ot),
         );
-      });
+      }, true);
     };
 
     if(b.time += b.edelta() >= b.block.drillTime) {

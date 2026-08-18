@@ -20,10 +20,10 @@
   /* <------------------------------ auxiliary ------------------------------ */
 
 
-  function comp_addStats(abi, tb, tableF) {
+  function comp_addStats(abi, tb, tableM) {
     tb.add("\n\n[gray]" + Core.bundle.get("ability.lovec-abi-" + abi.name + ".description") + "[]\n\n").wrap().width(350.0);
     tb.row();
-    tableF(tb);
+    tableM(tb);
   };
 
 
@@ -104,7 +104,7 @@
 
 
       init(utp) {
-        MDL_event.onWorldLoad(() => {
+        TRIGGER.abilityDataInit.addGlobalListener(() => {
           this.timerMap.clear();
         });
       },
@@ -164,7 +164,7 @@
 
 
       init(utp) {
-        MDL_event.onWorldLoad(() => {
+        TRIGGER.abilityDataInit.addGlobalListener(() => {
           this.progMap.clear();
           this.inCdMap.clear();
         });
@@ -183,8 +183,8 @@
 
 
       death(unit) {
-        this.progMap.remove(unit);
-        this.inCdMap.remove(unit);
+        this.progMap.remove(unit.id, 0.0);
+        this.inCdMap.remove(unit.id);
       },
 
 
@@ -250,7 +250,7 @@
 
 
       init(utp) {
-        MDL_event.onWorldLoad(() => {
+        TRIGGER.abilityDataInit.addGlobalListener(() => {
           this.timerMap.clear();
         });
       },

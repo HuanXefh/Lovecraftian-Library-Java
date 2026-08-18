@@ -16,9 +16,9 @@
     blk.saveConfig = true;
     blk.clearOnDoubleTap = false;
 
-    blk.ex_addConfigCaller("rcHeader", (b, val) => b.delegee.rcHeader = val);
+    blk.ex_addConfigM("rcHeader", (b, val) => b.delegee.rcHeader = val);
 
-    blk.ex_addLogicGetter(LAccess.config, b => b.delegee.rcHeader);
+    blk.ex_addLogicF(LAccess.config, b => b.delegee.rcHeader);
     blk.ex_addLogicControl(LAccess.config, (b, param1) => {
       if(typeof param1 === "string" && param1 !== b.delegee.rcHeader && MDL_recipe.checkHeaderValid(blk.rcMdl, param1)) b.configure(param1);
     });
@@ -54,7 +54,7 @@
     new CLS_interface("INTF_BLK_recipeSelector", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

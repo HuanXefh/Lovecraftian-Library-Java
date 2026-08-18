@@ -138,7 +138,7 @@
               };
             }).growX().row();
             MDL_table.br(pnTb, 3);
-          });
+          }, true);
         })
         .width(MDL_ui.getUiW())
         .row();
@@ -197,7 +197,7 @@
                 (shield * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).amount(),
                 sta === StatusEffects.none ? "-" : sta,
               ]);
-            });
+            }, true);
             if(matArr.length === 1) {
               MDL_table.textNothing(pnTb);
             } else {
@@ -371,8 +371,8 @@
               nameMod = achievement.getMod().name;
               if(tmpObj[nameMod] === undefined) tmpObj[nameMod] = [];
               tmpObj[nameMod].push(achievement);
-            });
-            Object._it(tmpObj, (nameMod, arr) => {
+            }, true);
+            Object.eachPair(tmpObj, (nameMod, arr) => {
               pnTb.add(fetchMod(nameMod, true).meta.displayName).left().fontScale(1.1).color(Pal.accent).row();
               pnTb.table(Styles.none, tb => {
                 i = 0;
@@ -575,7 +575,7 @@
               data.scrs.push(() => Vars.ui.content.show(rc.owner));
               data.breakBools.push(lastRc != null && lastRc.owner !== rc.owner);
               lastRc = rc;
-            });
+            }, true);
           });
         };
 
@@ -700,7 +700,7 @@
               i++;
               j++;
               lastCt = ct;
-            });
+            }, true);
           });
         })
         .width(MDL_ui.getUiW())
@@ -939,7 +939,7 @@
             let tmpCt = ct;
             let tmpIsCustomField = isCustomField;
             tb.button(ctIcon, 48.0, () => {
-              rcDict.ex_show(tmpIsCustomField ? MDL_recipeDict._customFieldB(tmpCt) : tmpCt.localizedName, tmpCt);
+              fetchDialog("rcDict").ex_show(tmpIsCustomField ? MDL_recipeDict._customFieldB(tmpCt) : tmpCt.localizedName, tmpCt);
             }).center();
           }).add();
         });

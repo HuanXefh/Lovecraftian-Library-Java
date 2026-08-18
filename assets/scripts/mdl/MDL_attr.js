@@ -150,7 +150,7 @@
       if((mode & AttrModes.FLOOR) !== 0) attrSum += ot.floor().attributes.get(attr);
       if((mode & AttrModes.BLOCK) !== 0) attrSum += ot.block().attributes.get(attr);
       if((mode & AttrModes.OVERLAY) !== 0) attrSum += ot.overlay().attributes.get(attr);
-    });
+    }, true);
 
     return attrSum;
   };
@@ -231,7 +231,7 @@
         tmpNameRs = nameRs;
         tmpVal = val;
       };
-    });
+    }, true);
 
     return MDL_content.getCt(tmpNameRs, "rs");
   };

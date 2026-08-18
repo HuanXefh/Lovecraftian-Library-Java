@@ -195,7 +195,7 @@
    * @return {void}
    */
   CLS_contentTemplateParser.prototype.run = function() {
-    this.findJsonFis().forEachFast(jsonFi => this.parse(jsonFi));
+    this.findJsonFis().forEachFast(jsonFi => this.parse(jsonFi), true);
     console.log("[LOVEC] Parsed ${1} JSON files and created ${2} contents for ${3} through content template.".format(this.jsonFis.length, this.parsedCts.length, this.mod.name.color(Pal.accent)));
   };
 

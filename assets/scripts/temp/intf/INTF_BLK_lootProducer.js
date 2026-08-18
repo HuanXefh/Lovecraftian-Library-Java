@@ -16,7 +16,7 @@
       blk.drawArrow = blk.rotate;
     };
 
-    blk.ex_addLogicGetter(LAccess.progress, b => b.ex_getProg());
+    blk.ex_addLogicF(LAccess.progress, b => b.ex_getProg());
   };
 
 
@@ -116,7 +116,7 @@
     new CLS_interface("INTF_B_lootProducer", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

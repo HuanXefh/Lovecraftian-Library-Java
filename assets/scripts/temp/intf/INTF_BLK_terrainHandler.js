@@ -69,7 +69,7 @@
     new CLS_interface("INTF_BLK_terrainHandler", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**

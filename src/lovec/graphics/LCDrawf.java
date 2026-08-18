@@ -84,7 +84,7 @@ public class LCDrawf {
             LCNativeArray.forEachRow(wireMats, 2, rowArr -> {
                 wireMatRegMap.put((String) rowArr.get(0), Core.atlas.find((String) rowArr.get(1)));
                 wireMatEndRegMap.put((String) rowArr.get(0), Core.atlas.find(rowArr.get(1) + "-end"));
-            });
+            }, true);
             wireGlowReg = Core.atlas.find("lovec-ast-wire-glow");
             wireShaReg = Core.atlas.find("lovec-ast-wire-shadow");
         };

@@ -151,7 +151,7 @@
         fuel = itm;
         fuelLvl = tmpLvl;
       };
-    });
+    }, true);
     if(b.liquids != null) {
       if((fuelType & FuelTypes.LIQUID) !== 0) VARGEN.fuelLiqs.forEachFast(liq => {
         if((allowedFuels != null ? !allowedFuels.includes(liq.name) : blockedFuels.includes(liq.name)) || b.liquids.get(liq < 0.01)) return;
@@ -162,7 +162,7 @@
           fuel = liq;
           fuelLvl = tmpLvl;
         };
-      });
+      }, true);
       if((fuelType & FuelTypes.GAS) !== 0) VARGEN.fuelGases.forEachFast(gas => {
         if((allowedFuels != null ? !allowedFuels.includes(gas.name) : blockedFuels.includes(gas.name)) || b.liquids.get(gas < 0.01)) return;
         tmpLvl = getFuelLvl(gas);
@@ -172,7 +172,7 @@
           fuel = gas;
           fuelLvl = tmpLvl;
         };
-      });
+      }, true);
     };
 
     // If the building produces the target fuel, try using the one with second-highest level

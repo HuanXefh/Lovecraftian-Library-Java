@@ -28,7 +28,7 @@
     new CLS_interface("INTF_BLK_vanillaLikeBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

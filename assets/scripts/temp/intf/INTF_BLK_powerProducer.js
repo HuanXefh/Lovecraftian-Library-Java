@@ -69,7 +69,7 @@
     new CLS_interface("INTF_BLK_powerProducer", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -136,7 +136,7 @@
     new CLS_interface("INTF_B_powerProducer", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

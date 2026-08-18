@@ -46,7 +46,7 @@
         Vars.content.liquids().each(boolF, rs => liqBitset.set(rs.id));
         itmMap.put(grp, itmBitset);
         liqMap.put(grp, liqBitset);
-      });
+      }, true);
     });
 
     return [itmMap, liqMap];
@@ -92,7 +92,7 @@
       grps.forEachFast(grp => {
         thisFun.tmpTup.with(reac1, grp);
         arr.pushNonNull(DB_reaction.db["material"].read(thisFun.tmpTup, null, false));
-      });
+      }, true);
     } else {
       // Regular reaction
       let grps1 = getReacGrps(thisFun.grpsCaches[0], reac1);
@@ -102,7 +102,7 @@
         thisFun.tmpTup.with(grp1, grp2);
         arr.pushNonNull(DB_reaction.db["fluid"].read(thisFun.tmpTup, null, true));
         arr.pushNonNull(DB_reaction.db["item"].read(thisFun.tmpTup, null, true));
-      });
+      }, true);
     };
 
     return arr;
@@ -139,7 +139,7 @@
       if(!Mathf.chance(tup[0] * pMtp)) return;
 
       tup[1](tup0[1], x, y, e, rs);
-    });
+    }, true);
   }
   .setAnno("server");
   exports.applyReaction = applyReaction;

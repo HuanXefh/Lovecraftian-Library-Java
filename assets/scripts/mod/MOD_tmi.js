@@ -408,14 +408,14 @@
   /**
    * Builds the sub info table of `rawRc`.
    * @param {Recipe} rawRc
-   * @param {string|(function(Table): void)} str0tableF
+   * @param {string|(function(Table): void)} str0tableM
    * @param {boolean|unset} [shouldPrepend]
    * @return {Recipe}
    */
-  const addSubInfo = function(rawRc, str0tableF, shouldPrepend) {
-    typeof str0tableF !== "string" ?
-      (shouldPrepend ? rawRc.prependSubInfo(str0tableF) : rawRc.appendSubInfo(str0tableF)) :
-      (shouldPrepend ? rawRc.prependSubInfo(tb => {tb.add(str0tableF).left(); tb.row()}) : rawRc.appendSubInfo(tb => {tb.row(); tb.add(str0tableF).left()}));
+  const addSubInfo = function(rawRc, str0tableM, shouldPrepend) {
+    typeof str0tableM !== "string" ?
+      (shouldPrepend ? rawRc.prependSubInfo(str0tableM) : rawRc.appendSubInfo(str0tableM)) :
+      (shouldPrepend ? rawRc.prependSubInfo(tb => {tb.add(str0tableM).left(); tb.row()}) : rawRc.appendSubInfo(tb => {tb.row(); tb.add(str0tableM).left()}));
 
     return rawRc;
   };
@@ -444,7 +444,7 @@
           )).center().padRight(6.0);
           tb1.row();
           i += 4;
-        });
+        }, true);
       }).row();
       MDL_table.br(tb);
     });
@@ -483,7 +483,7 @@
 
         rawRc.complete();
         regisRc(rawRc);
-      });
+      }, true);
     });
   };
   exports.regisRc_dynamicAttributeBlock = regisRc_dynamicAttributeBlock;
@@ -772,7 +772,7 @@
 
         rawRc.complete();
         regisRc(rawRc);
-      });
+      }, true);
     });
   }
   .setProp({

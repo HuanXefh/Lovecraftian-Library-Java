@@ -23,7 +23,7 @@
     mapPol = 0.0,
     dynaPol = 0.0,
     lingerPol = 0.0,
-    glbPolMeanArr = new CLS_meanArray(8);
+    glbPolMeanArr = new MathMeanArray(8);
 
 
   /**

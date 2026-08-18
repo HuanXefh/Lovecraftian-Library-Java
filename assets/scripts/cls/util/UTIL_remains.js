@@ -514,7 +514,7 @@
       UTIL_remains.getLegRemains(thisFun.tmpArr, x, y, e, etp, team, isPermanent, forceHot).forEachFast(remains => {
         remains.add();
         legRemainsArr.push(remains);
-      });
+      }, true);
     };
 
     if(etp instanceof Block) {
@@ -540,9 +540,9 @@
    */
   UTIL_remains.clear = function thisFun() {
     blkRemainsMap.each((t, remains) => thisFun.tmpArr.push(remains));
-    unitRemainsArr.forEachFast(remains => thisFun.tmpArr.push(remains));
-    legRemainsArr.forEachFast(remains => thisFun.tmpArr.push(remains));
-    thisFun.tmpArr.forEachFast(remains => remains.remove());
+    unitRemainsArr.forEachFast(remains => thisFun.tmpArr.push(remains), true);
+    legRemainsArr.forEachFast(remains => thisFun.tmpArr.push(remains), true);
+    thisFun.tmpArr.forEachFast(remains => remains.remove(), true);
     thisFun.tmpArr.clear();
   }
   .setProp({

@@ -62,7 +62,7 @@
     new CLS_interface("INTF_BLK_explosionInducer", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**

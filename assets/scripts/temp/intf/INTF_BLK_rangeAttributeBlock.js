@@ -45,7 +45,7 @@
     new CLS_interface("INTF_BLK_rangeAttributeBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**

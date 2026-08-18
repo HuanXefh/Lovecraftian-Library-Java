@@ -156,12 +156,12 @@
     if(thisFun.tmpStr == null) {
       thisFun.tmpStr = "";
       let str1;
-      DB_misc.db["block"]["extraInfo"].forEachFast(strGetter => {
-        str1 = strGetter(t, t.build);
+      DB_misc.db["block"]["extraInfo"].forEachFast(strF => {
+        str1 = strF(t, t.build);
         if(str1 != null) {
           thisFun.tmpStr += str1 + "\n";
         };
-      });
+      }, true);
     };
 
     LCDraw.text(

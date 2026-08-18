@@ -81,7 +81,7 @@
     new CLS_interface("INTF_BLK_coreEnergyConsumer", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */
@@ -122,7 +122,7 @@
     new CLS_interface("INTF_B_coreEnergyConsumer", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**

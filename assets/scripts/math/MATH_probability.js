@@ -71,7 +71,7 @@
     };
 
     let str_fi = "[Lovec] Data distribution:\n";
-    thisFun.tmpArr.forEachFast(str => str_fi += "\n" + str);
+    thisFun.tmpArr.forEachFast(str => str_fi += "\n" + str, true);
     console.log(str_fi);
   }
   .setProp({

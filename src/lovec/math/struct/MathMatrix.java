@@ -1,4 +1,4 @@
-package lovec.math;
+package lovec.math.struct;
 
 import arc.func.Boolf;
 import arc.func.Cons;

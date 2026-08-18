@@ -1322,7 +1322,8 @@
       rad = readParam(paramObj, "rad", 30.0),
       color = readParam(paramObj, "color", Color.white),
       scl = readParam(paramObj, "scl", 1.0),
-      isBlack = readParam(paramObj, "isBlack", false);
+      isBlack = readParam(paramObj, "isBlack", false),
+      noWhiteSmog = readParam(paramObj, "noWhiteSmog", false);
 
     return new MultiEffect(
       smogVent({
@@ -1335,14 +1336,14 @@
       smogVent({
         size: size * 0.85,
         rad: rad,
-        color: MDL_color.getColor(color).lerp(Color.white, 0.4).cpy(),
+        color: noWhiteSmog ? MDL_color.getColor(color).lerp(Color.white, 0.25).cpy() : MDL_color.getColor(color).lerp(Color.white, 0.4).cpy(),
         scl: scl * 0.85,
         isBlack: isBlack,
       }),
       smogVent({
         size: size * 0.7,
         rad: rad,
-        color: MDL_color.getColor(color).lerp(Color.white, 0.7).cpy(),
+        color: noWhiteSmog ? MDL_color.getColor(color).cpy() : MDL_color.getColor(color).lerp(Color.white, 0.7).cpy(),
         scl: scl * 0.7,
         isBlack: isBlack,
       }),

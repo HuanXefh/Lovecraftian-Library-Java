@@ -411,7 +411,7 @@
               classId: function() {return id},
             },
           );
-          Object._it(obj, (key, val) => {
+          Object.eachPair(obj, (key, val) => {
             if(!key.startsWith("utp$")) return;
             obj[key] = tryJsProp(utp, key.replace("utp$", ""), undefined);
           });

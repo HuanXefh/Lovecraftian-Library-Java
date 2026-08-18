@@ -23,7 +23,7 @@
   exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
 
 
-  exports.lovecRevi = 6;
+  exports.lovecRevi = 7;
   exports.lovecReviOff = 96;
 
 

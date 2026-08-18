@@ -24,7 +24,7 @@
    * @param {boolean|unset} [forceIns] - If true, methods in `obj` will be ignored.
    * @return {void}
    */
-  Object._it = function(obj, scr, forceIns) {
+  Object.eachPair = function(obj, scr, forceIns) {
     if(!forceIns) {
       for(let key in obj) {
         scr(key, obj[key]);
@@ -38,14 +38,14 @@
 
 
   /**
-   * Variant of {@link Object._it} for instance.
+   * Variant of {@link Object.eachPair} for instance.
    * @func Object#_it
    * @param {function(string, any): void} scr
    * @param {boolean|unset} [forceIns]
    * @return {void}
    */
-  setHiddenProp(Object.prototype, "_it", function(scr, forceIns) {
-    Object._it(this, scr, forceIns);
+  setHiddenProp(Object.prototype, "eachPair", function(scr, forceIns) {
+    Object.eachPair(this, scr, forceIns);
   });
 
 
@@ -57,27 +57,14 @@
 
 
   /**
-   * Iteration using this number (rounded) as cap.
-   * @override
+   * Iteration using this number as cap.
    * @param {function(number): void} scr
    * @param {number|unset} [gap]
    * @param {number|unset} [base]
    * @return {void}
    */
-  Number.prototype._it = function(scr, gap, base) {
-    if(gap == null) gap = 1;
-    if(base == null) base = 0;
-
-    gap = Math.round(gap);
-    if(gap < 1) return;
-    let iCap = Math.round(this);
-    if(iCap < 1) return;
-
-    let i = base;
-    while(i < iCap) {
-      scr(i);
-      i += gap;
-    };
+  Number.prototype.each = function(scr, gap, base) {
+    LCNumber.each(Number(this), scr, tryVal(gap, 1), tryVal(base, 0));
   };
 
 
@@ -93,10 +80,11 @@
    * @param {Array} arr1
    * @param {Array} arr2
    * @param {function(any, any): void} scr
+   * @param {boolean|unset} [noWrap]
    * @return {void}
    */
-  Array.forEachPair = function(arr1, arr2, scr) {
-    LCNativeArray.forEachPair(arr1, arr2, scr);
+  Array.forEachPair = function(arr1, arr2, scr, noWrap) {
+    LCNativeArray.forEachPair(arr1, arr2, scr, tryVal(noWrap, false));
   };
 
 
@@ -104,10 +92,11 @@
    * Not really faster.
    * Use this instead of {@link Array#forEach} so you won't accidentally call it on something like {@link Seq}, which can crash the game on Android.
    * @param {function(any): void} scr
+   * @param {boolean|unset} [noWrap]
    * @return {void}
    */
-  Array.prototype.forEachFast = function(scr) {
-    LCNativeArray.forEachFast(this, scr);
+  Array.prototype.forEachFast = function(scr, noWrap) {
+    LCNativeArray.forEachFast(this, scr, tryVal(noWrap, false));
   };
 
 
@@ -115,10 +104,11 @@
    * Variant of {@link Array#forEach} with a condition check.
    * @param {function(any): boolean} boolF
    * @param {function(any): void} scr
+   * @param {boolean|unset} [noWrap]
    * @return {void}
    */
-  Array.prototype.forEachCond = function(boolF, scr) {
-    LCNativeArray.forEachCond(this, boolF, scr);
+  Array.prototype.forEachCond = function(boolF, scr, noWrap) {
+    LCNativeArray.forEachCond(this, boolF, scr, tryVal(noWrap, false));
   };
 
 
@@ -126,10 +116,11 @@
    * Variant of {@link Array#forEach} used for formatted array.
    * @param {number} ord
    * @param {function(...any): void} scr - Arguments here will be elements in each row.
+   * @param {boolean|unset} [noWrap]
    * @return {void}
    */
-  Array.prototype.forEachRow = function(ord, scr) {
-    LCNativeArray.forEachRow(this, ord, arr => scr.apply(null, arr));
+  Array.prototype.forEachRow = function(ord, scr, noWrap) {
+    LCNativeArray.forEachRow(this, ord, arr => scr.apply(null, arr), tryVal(noWrap, false));
   };
 
 
@@ -137,8 +128,9 @@
    * Variant of {@link Array#forEach} used for layered array.
    * This one provides index and array reference which are hard to access directly.
    * @param {function(any, number, Array): void} scr
+   * @param {boolean|unset} [noWrap]
    * @return {void}
    */
-  Array.prototype.forEachAll = function(scr) {
-    LCNativeArray.forEachAll(this, scr);
+  Array.prototype.forEachAll = function(scr, noWrap) {
+    LCNativeArray.forEachAll(this, scr, tryVal(noWrap, false));
   };

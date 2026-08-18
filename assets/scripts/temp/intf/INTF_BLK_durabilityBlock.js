@@ -12,8 +12,8 @@
 
 
   function comp_init(blk) {
-    blk.ex_addLogicGetter(LAccess.ammo, b => b.delegee.durabFrac * blk.durabCap / 60.0);
-    blk.ex_addLogicGetter(LAccess.ammoCapacity, b => blk.durabCap / 60.0 * (blk.durabRegenFracMin + blk.durabRegenFracMax) * 0.5);
+    blk.ex_addLogicF(LAccess.ammo, b => b.delegee.durabFrac * blk.durabCap / 60.0);
+    blk.ex_addLogicF(LAccess.ammoCapacity, b => blk.durabCap / 60.0 * (blk.durabRegenFracMin + blk.durabRegenFracMax) * 0.5);
   };
 
 
@@ -95,7 +95,7 @@
     new CLS_interface("INTF_BLK_durabilityBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -169,7 +169,7 @@
     new CLS_interface("INTF_B_durabilityBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

@@ -157,8 +157,8 @@
    * @return {void}
    */
   CLS_whiteNoise.prototype.forEachPon = function(scr) {
-    this.height._it(j => {
-      this.width._it(i => {
+    this.height.each(j => {
+      this.width.each(i => {
         scr(i, j);
       });
     });
@@ -171,8 +171,8 @@
    * @return {void}
    */
   CLS_whiteNoise.prototype.forEachVert = function(scr) {
-    this.gridHeight._it(j => {
-      this.gridWidth._it(i => {
+    this.gridHeight.each(j => {
+      this.gridWidth.each(i => {
         scr(i, j);
       });
     });

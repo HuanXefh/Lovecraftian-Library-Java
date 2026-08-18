@@ -34,17 +34,17 @@
    * Registers a new packet handler.
    * @param {number|unset} mode
    * @param {string} header
-   * @param {function(string, Player|unset): void} payloadCaller
+   * @param {function(string, Player|unset): void} payloadC
    * @return {void};
    */
-  const addPacketHandler = function thisFun(mode, header, payloadCaller) {
+  const addPacketHandler = function thisFun(mode, header, payloadC) {
     if(thisFun.headers.includes(header)) ERROR_HANDLER.throw("headerConflict", header);
     if(mode == null) mode = PacketModes.CLIENT;
     if(!PacketModes.has(mode)) return;
-    if(payloadCaller == null) payloadCaller = Function.air;
+    if(payloadC == null) payloadC = Function.air;
 
-    if(mode === PacketModes.CLIENT || mode === PacketModes.BOTH) Vars.netClient.addPacketHandler(header, payloadCaller);
-    if(mode === PacketModes.SERVER || mode === PacketModes.BOTH) Vars.netServer.addPacketHandler(header, (player, payload) => payloadCaller(payload, player));
+    if(mode === PacketModes.CLIENT || mode === PacketModes.BOTH) Vars.netClient.addPacketHandler(header, payloadC);
+    if(mode === PacketModes.SERVER || mode === PacketModes.BOTH) Vars.netServer.addPacketHandler(header, (player, payload) => payloadC(payload, player));
 
     thisFun.headers.push(header);
   }

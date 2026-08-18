@@ -85,7 +85,7 @@
     new CLS_interface("INTF_BLK_corrosionAcceptor", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

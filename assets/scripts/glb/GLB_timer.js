@@ -44,27 +44,8 @@
 
 
 
-  MDL_event.onLoad(() => {
-
-    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-sync-timer", payload => {
-      syncTimer();
-    });
-
-  });
-
-
-
-
-  MDL_event.onPlayerJoin(player => {
-
-    Time.run(60.0, () => {
-      MDL_net.sendPacket(
-        PacketModes.BOTH, "lovec-both-sync-timer",
-        packPayload(),
-        true,
-      );
-    });
-
+  TRIGGER.majorSync.addGlobalListener(() => {
+    syncTimer();
   });
 
 

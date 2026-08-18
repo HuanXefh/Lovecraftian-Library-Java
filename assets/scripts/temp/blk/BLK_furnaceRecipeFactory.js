@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    blk.ex_addConfigCaller("fuelSel", (b, val) => b.delegee.fuelSel = MDL_content.getCt(val, "rs"));
+    blk.ex_addConfigM("fuelSel", (b, val) => b.delegee.fuelSel = MDL_content.getCt(val, "rs"));
   };
 
 

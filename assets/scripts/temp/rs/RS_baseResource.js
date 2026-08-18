@@ -23,7 +23,7 @@
 
   function comp_loadIcon(rs) {
     // Use a new texture region to keep "ohno" intact
-    if(rs.fullIcon === Core.atlas.find("error")) {
+    if(!rs.fullIcon.found()) {
       rs.fullIcon = rs.uiIcon = new TextureRegion();
     };
 
@@ -40,7 +40,7 @@
 
     // Set up icon tag-based sprites
     let regs = [!String.isEmpty(rs.parentRegStr) ? Core.atlas.find(rs.parentRegStr) : Core.atlas.find(rs.name)], regInd;
-    iCap._it(i => {
+    iCap.each(i => {
       regs.push(Core.atlas.find(rs.name + "-t" + (i + 1)));
     });
     MDL_event.onUpdate(() => {
@@ -120,7 +120,7 @@
         packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine);
         pixCombine.dispose();
         alts++;
-      });
+      }, true);
     };
 
     // Extra resource sprites as icon tags, if used
@@ -129,7 +129,7 @@
       packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine);
       pixCombine.dispose();
       alts++;
-    });
+    }, true);
 
     rs.alts = alts;
   };
@@ -297,12 +297,12 @@
         let strs1 = [];
         DB_item.db["intmd"]["insertName"].forEachRow(2, (tag, str1) => {
           if(this.intmdTags.includes(tag)) strs1.push(str1);
-        });
+        }, true);
         if(strs1.length > 0) {
           let strs = str.split("(");
           if(strs.length !== 1) {
             str = strs[0];
-            strs1.forEachFast(str1 => str += str1 + " / ");
+            strs1.forEachFast(str1 => str += str1 + " / ", true);
             str += strs[1];
           };
         };
@@ -326,7 +326,7 @@
         this.intmdTags = this.tempTags.filter(tag => DB_item.db["intmd"]["tag"].includes(tag));
         DB_item.db["intmd"]["tagCheck"].forEachRow(2, (tag, boolF) => {
           if(boolF(this)) this.intmdTags.pushUnique(tag);
-        });
+        }, true);
         // Should not be stored in template tags anymore, for better performance
         this.tempTags.pullAll(this.intmdTags);
       };
@@ -375,7 +375,7 @@
      */
     ex_getLocalizedSubName: function() {
       let str = tryFun(this.intmdParent.ex_getShortName, this.intmdParent, this.intmdParent.localizedName);
-      this.extraIntmdParents.forEachFast(rs => str += " / " + tryFun(rs.ex_getShortName, rs, rs.localizedName));
+      this.extraIntmdParents.forEachFast(rs => str += " / " + tryFun(rs.ex_getShortName, rs, rs.localizedName), true);
       return str;
     }
     .setProp({

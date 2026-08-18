@@ -17,7 +17,7 @@
   function comp_init(blk) {
     blk.rotate = true;
 
-    blk.ex_addLogicGetter(LAccess.range, b => 1);
+    blk.ex_addLogicF(LAccess.range, b => 1);
   };
 
 

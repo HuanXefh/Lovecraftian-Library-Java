@@ -21,7 +21,7 @@
       blk.flags.with(BlockFlag.hasFogRadius)
     };
 
-    blk.ex_addLogicGetter(LAccess.range, b => blk.lightRad * b.delegee.lightWarmup / Vars.tilesize);
+    blk.ex_addLogicF(LAccess.range, b => blk.lightRad * b.delegee.lightWarmup / Vars.tilesize);
   };
 
 

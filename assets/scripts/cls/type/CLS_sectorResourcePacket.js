@@ -63,17 +63,17 @@
     mapCur = global.lovecUtil.fun._mapCur();
     inProgPackets.forEachFast(packet => {
       packet.update();
-    });
+    }, true);
     if(TIMER.secTwo) {
       arrivedPackets.forEachFast(packet => {
         if(packet.to === mapCur) arrivedLocalPackets.push(packet);
-      });
+      }, true);
     };
     if(TIMER.secTen) {
       let b = Vars.player.team().core();
       arrivedLocalPackets.forEachFast(packet => {
         packet.handle();
-      });
+      }, true);
     };
   };
 

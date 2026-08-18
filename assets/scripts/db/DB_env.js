@@ -92,7 +92,7 @@ const db = {
 
       /**
        * Default values for campaign rules of some planet.
-       * <br> `ROW`: namePla, ruleSetter.
+       * <br> `ROW`: namePla, ruleM.
        * <br> `ARGS`: rule.
        */
       campaign: [],
@@ -101,7 +101,7 @@ const db = {
       /**
        * Maps a planet to a rule setter function, that sets planet rules.
        * Fog should be set in campaign rules, you should ask Anuke why.
-       * <br> `ROW`: namePla, ruleSetter.
+       * <br> `ROW`: namePla, ruleM.
        * <br> `ARGS`: rule.
        */
       planet: [],
@@ -112,7 +112,7 @@ const db = {
 
     /**
      * Maps a random overlay region tag to a region array getter function.
-     * <br> `ROW`: tag, regsGetter.
+     * <br> `ROW`: tag, regsF.
      */
     randRegTag: [],
 
@@ -195,7 +195,7 @@ const db = {
 
       /**
        * Used to more deeply set properties of some floor material.
-       * <br> `ROW`: matGrp, propSetter.
+       * <br> `ROW`: matGrp, propM.
        * <br> `ARGS`: flr, overwriteVanillaProp.
        */
       extraSetter: [
@@ -243,7 +243,7 @@ const db = {
     /**
      * Tree parameters used for tree types.
      * See {@link ENV_baseTree}.
-     * <br> `ROW`: treeGrp, {scl, mag, wob, attrsGetter}.
+     * <br> `ROW`: treeGrp, {scl, mag, wob, attrsF}.
      */
     tree: [
 
@@ -251,7 +251,7 @@ const db = {
         scl: 1.0,
         mag: 1.0,
         wob: 1.0,
-        attrsGetter: () => [
+        attrsF: () => [
           "lovec-attr0blk-tree",
           "lovec-attr0blk-hard-tree",
         ],
@@ -261,14 +261,14 @@ const db = {
         scl: 0.5,
         mag: 1.5,
         wob: 0.7,
-        attrsGetter: () => DB_item.db["map"]["attr"]["bush"].readCol(2, 0),
+        attrsF: () => DB_item.db["map"]["attr"]["bush"].readCol(2, 0),
       },
 
       "fungi", {
         scl: 3.0,
         mag: 0.4,
         wob: 0.3,
-        attrsGetter: () => [
+        attrsF: () => [
           "lovec-attr0blk-fungi",
           "lovec-attr0blk-hard-fungi",
         ],

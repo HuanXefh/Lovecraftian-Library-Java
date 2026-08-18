@@ -112,7 +112,7 @@
    * @param {string} name
    * @return {function(): TextureRegion[]}
    */
-  const getRandRegsGetter = function(name) {
+  const getRandRegsF = function(name) {
     return function() {
       let arr = [];
       if(Vars.headless) return arr;
@@ -126,7 +126,7 @@
       return arr;
     };
   };
-  exports.getRandRegsGetter = getRandRegsGetter;
+  exports.getRandRegsF = getRandRegsF;
 
 
   /* <------------------------------ pixmap ------------------------------ */
@@ -245,13 +245,13 @@
    * @param {UnlockableContent} ct
    * @param {MultiPacker} packer
    * @param {string|unset} suffix
-   * @param {function(): Pixmap} pixGetter
+   * @param {function(): Pixmap} pixF
    * @param {MultiPacker.PageType|unset} [pageType]
    */
-  const packIcon = function(ct, packer, suffix, pixGetter, pageType) {
+  const packIcon = function(ct, packer, suffix, pixF, pageType) {
     if(suffix == null) suffix = "";
 
-    let pix = pixGetter();
+    let pix = pixF();
     packer.add(tryVal(pageType, MultiPacker.PageType.main), ct.name + suffix, pix);
     pix.dispose();
   };

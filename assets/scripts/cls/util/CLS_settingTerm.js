@@ -9,35 +9,35 @@
    * Use to register settings, see {@link TP_setting}.
    * @class
    * @param {string} name
-   * @param {function(boolean): void} valGetter - `ARGS`: useScl.
+   * @param {function(boolean): void} valF - `ARGS`: useScl.
    */
   const CLS_settingTerm = newClass().initClass();
 
 
-  CLS_settingTerm.prototype.init = function(name, valGetter) {
+  CLS_settingTerm.prototype.init = function(name, valF) {
     this.name = registerUniqueName(name, insNames, "setting term");
-    this.valGetter = valGetter;
-    this.dialSetter = null;
+    this.valF = valF;
+    this.dialM = null;
 
     global.lovecUtil.db.settingTerm.push(name, this);
   };
 
 
   const insNames = [];
-  const categSetterArr = [];
-  const categSetterDebugArr = [];
+  const categMArr = [];
+  const categMDebugArr = [];
 
 
   MDL_event.onLoad(() => {
     function buildCateg(nameMod, nameCateg, terms) {
       Vars.ui.settings.addCategory(MDL_bundle.getTerm(nameMod, "settings-" + nameCateg), tb => {
-        terms.forEachCond(term => term.dialSetter != null, term => term.dialSetter(tb));
+        terms.forEachCond(term => term.dialM != null, term => term.dialM(tb), true);
       });
     };
 
-    categSetterArr.forEachRow(3, (nameMod, nameCateg, terms) => buildCateg(nameMod, nameCateg, terms));
+    categMArr.forEachRow(3, (nameMod, nameCateg, terms) => buildCateg(nameMod, nameCateg, terms), true);
     if(global.lovecUtil.prop.debug) {
-      categSetterDebugArr.forEachRow(3, (nameMod, nameCateg, terms) => buildCateg(nameMod, nameCateg, terms));
+      categMDebugArr.forEachRow(3, (nameMod, nameCateg, terms) => buildCateg(nameMod, nameCateg, terms), true);
     };
   });
 
@@ -61,7 +61,7 @@
    * @return {void}
    */
   CLS_settingTerm.registerCategory = function(nameMod, nameCateg, isDebugCateg) {
-    (isDebugCateg ? categSetterDebugArr : categSetterArr).write([nameMod, nameCateg], []);
+    (isDebugCateg ? categMDebugArr : categMArr).write([nameMod, nameCateg], []);
   };
 
 
@@ -81,7 +81,7 @@
    * @return {any}
    */
   CLS_settingTerm.prototype.get = function(useScl) {
-    return this.valGetter(useScl);
+    return this.valF(useScl);
   };
 
 
@@ -90,16 +90,16 @@
    * If this method is not called, this setting won't show up there.
    * @param {string} nameMod
    * @param {string} nameCateg
-   * @param {function(Table): void} tableF
+   * @param {function(Table): void} tableM
    * @return {this}
    */
-  CLS_settingTerm.prototype.setDialSetter = function thisFun(nameMod, nameCateg, tableF) {
+  CLS_settingTerm.prototype.setDialM = function thisFun(nameMod, nameCateg, tableM) {
     thisFun.tmpTup.with(nameMod, nameCateg);
 
-    let terms = categSetterDebugArr.read(thisFun.tmpTup, categSetterArr.read(thisFun.tmpTup));
+    let terms = categMDebugArr.read(thisFun.tmpTup, categMArr.read(thisFun.tmpTup));
     if(terms == null) throw new Error("Cannot find setting category for ${1}-${2}!".format(nameMod, nameCateg));
 
-    this.dialSetter = tableF;
+    this.dialM = tableM;
     terms.push(this);
 
     return this;

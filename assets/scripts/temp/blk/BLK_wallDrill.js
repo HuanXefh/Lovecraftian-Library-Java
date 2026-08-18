@@ -70,7 +70,7 @@
         if(itm != null) {
           b.mineRsTgs.pushUnique(itm);
         };
-      });
+      }, true);
     });
   };
 
@@ -93,7 +93,7 @@
         if(itm != null && b.items.get(itm) < b.getMaximumAccepted(itm)) {
           b.offload(itm);
         };
-      });
+      }, true);
       b.time %= drillTime;
       b.ex_onCraft();
     };

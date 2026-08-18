@@ -535,7 +535,7 @@
     rcDict.hasInit = true;
 
 
-    let arr, cls, i, iCap, dictCaller;
+    let arr, cls, i, iCap, dictC;
     Core.app.post(() => Vars.content.blocks().each(blk => {
       if(!DB_block.db["group"]["noRcDict"]["cons"].includes(blk.name)) {
         arr = DB_recipe.db["dict"]["reader"]["consume"];
@@ -545,71 +545,71 @@
             return;
           };
 
-          dictCaller = null;
+          dictC = null;
           i = 0;
           iCap = arr.iCap();
           while(i < iCap) {
             cls = arr[i];
             if(cls != null && cons instanceof cls) {
-              dictCaller = arr[i + 1];
+              dictC = arr[i + 1];
             };
             i += 2;
           };
-          if(dictCaller != null) dictCaller(blk, cons, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
+          if(dictC != null) dictC(blk, cons, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
         });
 
-        dictCaller = null;
+        dictC = null;
         i = 0;
         iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
           if(cls != null && blk instanceof cls) {
-            dictCaller = arr[i + 1];
+            dictC = arr[i + 1];
           };
           i += 2;
         };
-        if(dictCaller != null) dictCaller(blk, null, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
+        if(dictC != null) dictC(blk, null, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
 
       };
 
       arr = DB_recipe.db["dict"]["reader"]["consumeSpec"];
-      dictCaller = null;
+      dictC = null;
       i = 0;
       iCap = arr.iCap();
       while(i < iCap) {
         if(blk.name === arr[i]) {
-          dictCaller = arr[i + 1];
+          dictC = arr[i + 1];
         };
         i += 2;
       };
-      if(dictCaller != null) dictCaller(blk, null, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
+      if(dictC != null) dictC(blk, null, null, rcDict.cons.item, rcDict.cons.fluid, rcDict.cons.block, rcDict.cons.unit);
 
       if(!DB_block.db["group"]["noRcDict"]["prod"].includes(blk.name)) {
         arr = DB_recipe.db["dict"]["reader"]["produce"];
-        dictCaller = null;
+        dictC = null;
         i = 0;
         iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
           if(cls != null && blk instanceof cls) {
-            dictCaller = arr[i + 1];
+            dictC = arr[i + 1];
           };
           i += 2;
         };
-        if(dictCaller != null) dictCaller(blk, null, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
+        if(dictC != null) dictC(blk, null, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
       };
 
       arr = DB_recipe.db["dict"]["reader"]["produceSpec"];
-      dictCaller = null;
+      dictC = null;
       i = 0;
       iCap = arr.iCap();
       while(i < iCap) {
         if(blk.name === arr[i]) {
-          dictCaller = arr[i + 1];
+          dictC = arr[i + 1];
         };
         i += 2;
       };
-      if(dictCaller != null) dictCaller(blk, null, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
+      if(dictC != null) dictC(blk, null, rcDict.prod.item, rcDict.prod.fluid, rcDict.prod.block, rcDict.prod.unit);
 
     }));
 

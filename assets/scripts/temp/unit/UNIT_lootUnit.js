@@ -19,9 +19,9 @@
       let sta = MDL_content.getCt(sta_gn, "sta", true);
       if(sta == null) return;
       utp.immunities.add(sta);
-    });
+    }, true);
     MDL_event.onLoadPost(() => {
-      VARGEN.deathStas.forEachFast(sta => utp.immunities.add(sta));
+      VARGEN.deathStas.forEachFast(sta => utp.immunities.add(sta), true);
     });
   };
 

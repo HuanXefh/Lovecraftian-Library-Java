@@ -42,7 +42,7 @@
   module.exports = new CLS_interface("INTF_ENTITY_tetheredEntity", {
 
 
-    __paramObjSetter__: () => ({
+    __paramObjM__: () => ({
 
 
       /* <------------------------------ internal ------------------------------ */

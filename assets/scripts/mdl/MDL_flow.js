@@ -115,7 +115,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return arr0;
 
-    Object._it(DB_fluid.db["group"]["fTag"], (key, arr) => {
+    Object.eachPair(DB_fluid.db["group"]["fTag"], (key, arr) => {
       if(arr.includes(liq.name)) arr0.push(key);
     });
 
@@ -365,7 +365,7 @@
       matFTagSclArr = DB_fluid.db["grpParam"]["matFTagScl"][matGrp];
       tagMtp = matFTagSclArr == null ? 1.0 : matFTagSclArr.read(tag, 1.0);
       corMtp *= tagMtp;
-    });
+    }, true);
 
     return corMtp;
   }

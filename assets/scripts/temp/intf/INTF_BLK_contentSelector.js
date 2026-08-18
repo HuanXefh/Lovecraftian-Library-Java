@@ -70,7 +70,7 @@
     new CLS_interface("INTF_BLK_contentSelector", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */
@@ -115,7 +115,7 @@
     new CLS_interface("INTF_B_contentSelector", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

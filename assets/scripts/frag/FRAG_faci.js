@@ -63,7 +63,7 @@
    * @return {number}
    */
   const getCepCapCur = function(team) {
-    return cepCapMap.get(team, 0.0);
+    return cepCapMap.get(team.name, 0.0);
   };
   exports.getCepCapCur = getCepCapCur;
 
@@ -74,7 +74,7 @@
    * @return {number}
    */
   const getCepUseCur = function(team) {
-    return cepUseMap.get(team, 0.0);
+    return cepUseMap.get(team.name, 0.0);
   };
   exports.getCepUseCur = getCepUseCur;
 
@@ -85,7 +85,7 @@
    * @return {number}
    */
   const getCepFracCur = function(team) {
-    return cepFracMap.get(team, 0.0);
+    return cepFracMap.get(team.name, 0.0);
   };
   exports.getCepFracCur = getCepFracCur;
 
@@ -96,7 +96,7 @@
    * @return {number}
    */
   const getCepEffcCur = function(team) {
-    return cepEffcMap.get(team, 1.0);
+    return cepEffcMap.get(team.name, 1.0);
   };
   exports.getCepEffcCur = getCepEffcCur;
 
@@ -144,7 +144,7 @@
     let
       treeGrp = tryJsProp(blk, "treeGrp", "none"),
       rsLvl = 0.0,
-      attrs = readParam(DB_env.db["grpParam"]["tree"].read(treeGrp), "attrsGetter", Function.airArr)();
+      attrs = readParam(DB_env.db["grpParam"]["tree"].read(treeGrp), "attrsF", Function.airArr)();
 
     if(attrs.length !== 0) {
       rsLvl = Math.max.apply(null, attrs.map(nameAttr => blk.attributes.get(Attribute.get(nameAttr))));
@@ -191,23 +191,23 @@
     let cepCapObj = {}, cepUseObj = {};
     TRIGGER.majorIter.start.addGlobalListener(() => {
       VARGEN.mainTeams.forEachFast(team => {
-        cepCapObj[team] = 0.0;
-        cepUseObj[team] = 0.0;
-      });
+        cepCapObj[team.name] = 0.0;
+        cepUseObj[team.name] = 0.0;
+      }, true);
     });
     TRIGGER.majorIter.building.addGlobalListener((b, isActive) => {
       if(!isActive) return;
-      cepCapObj[b.team] += getCepProv(b.block);
+      cepCapObj[b.team.name] += getCepProv(b.block);
       if(b.cheating()) return;
-      cepUseObj[b.team] += getCepUse(b.block);
+      cepUseObj[b.team.name] += getCepUse(b.block);
     });
     TRIGGER.majorIter.end.addGlobalListener(() => {
       VARGEN.mainTeams.forEachFast(team => {
-        cepCapMap.put(team, cepCapObj[team]);
-        cepUseMap.put(team, cepUseObj[team]);
-        cepFracMap.put(team, cepCapObj[team] < 0.0001 ? 1.0 : cepUseObj[team] / cepCapObj[team]);
-        cepEffcMap.put(team, cepFracMap.get(team) < 1.0001 ? 1.0 : Mathf.maxZero((2.0 * cepCapObj[team] - cepUseObj[team]) / cepCapObj[team]));
-      });
+        cepCapMap.put(team.name, cepCapObj[team]);
+        cepUseMap.put(team.name, cepUseObj[team]);
+        cepFracMap.put(team.name, cepCapObj[team] < 0.0001 ? 1.0 : cepUseObj[team] / cepCapObj[team]);
+        cepEffcMap.put(team.name, cepFracMap.get(team) < 1.0001 ? 1.0 : Mathf.maxZero((2.0 * cepCapObj[team] - cepUseObj[team]) / cepCapObj[team]));
+      }, true);
     });
 
   });

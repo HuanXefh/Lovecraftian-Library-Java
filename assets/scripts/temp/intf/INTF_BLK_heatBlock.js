@@ -25,7 +25,7 @@
     blk.heatLightTempReq = Math.max(blk.heatLightTempReq, 60.01);
     if(blk.heatLightRad < 0.0) blk.heatLightRad = blk.size * Vars.tilesize * 0.7;
 
-    blk.ex_addLogicGetter(LAccess.heat, b => b.delegee.tempCur / 100.0);
+    blk.ex_addLogicF(LAccess.heat, b => b.delegee.tempCur / 100.0);
   };
 
 
@@ -194,7 +194,7 @@
           (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
         b.maxHeaterProd = Math.max(heat, b.maxHeaterProd);
         heatTg += heat * b.block.delegee.tempExtMtp;
-      });
+      }, true);
     };
 
     if(!b.block.delegee.skipHeatTrans) {
@@ -207,7 +207,7 @@
           (ob.ex_getHeatTransferred() / 3.0);
         b.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.maxHeaterProd);
         b.heatTransCount++;
-      });
+      }, true);
       heatTg += b.heatTransCount < 2 ?
         heat :
         b.heatTransCount === 2 ?
@@ -242,7 +242,7 @@
     new CLS_interface("INTF_BLK_heatBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -368,7 +368,7 @@
     new CLS_interface("INTF_B_heatBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

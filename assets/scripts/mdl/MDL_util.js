@@ -64,13 +64,13 @@
     if(cts != null) {
       cts.forEachFast(ct => {
         if(thisFun.checkTg(ct, nameMod)) isUnlocking ? ct.unlock() : ct.clearUnlock();
-      });
+      }, true);
       TechTree.all.each(node => cts.includes(node.content) && thisFun.checkTg(node.content, nameMod), node => node.reset());
     } else {
       thisFun.defSeqs.forEachFast(seq => seq.each(
         ct => thisFun.checkTg(ct, nameMod),
         ct => {isUnlocking ? ct.unlock() : ct.clearUnlock(); console.log("[LOVEC] Changed unlock state for " + ct.name.color(Pal.accent) + ".")},
-      ));
+      ), true);
       TechTree.all.each(node => thisFun.checkTg(node.content, nameMod), node => node.reset());
     };
   }

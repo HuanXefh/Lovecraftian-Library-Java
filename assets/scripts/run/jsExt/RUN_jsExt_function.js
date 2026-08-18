@@ -130,18 +130,18 @@
    * Returned values will be cached for this method for better performance.
    * Used for costy methods that have static inputs.
    * @param {ObjectMap|unset} [map] - If set, this object map will be used to store cache.
-   * @param {(function(): number)|unset} [stateGetter] - If set, cache will be cleared when state is changed.
+   * @param {(function(): number)|unset} [stateF] - If set, cache will be cleared when state is changed.
    * @return {Function}
    */
-  Function.prototype.setCache = function thisDecor(map, stateGetter) {
+  Function.prototype.setCache = function thisDecor(map, stateF) {
     const thisFun = this;
 
     let cacheMap = map != null ? map : new ObjectMap();
     let fun = function() {
       // Reset cache if state is changed
-      if(stateGetter != null && stateGetter.call(this) !== fun.__cachedState__) {
+      if(stateF != null && stateF.call(this) !== fun.__cachedState__) {
         cacheMap.clear();
-        fun.__cachedState__ = stateGetter();
+        fun.__cachedState__ = stateF();
       };
 
       let hash = thisDecor.calcHash.apply(this, arguments);

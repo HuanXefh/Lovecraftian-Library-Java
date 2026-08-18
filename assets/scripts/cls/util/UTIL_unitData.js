@@ -24,7 +24,7 @@
       });
       expiredUnits.forEachFast(unit => {
         unitDataMap.remove(unit);
-      });
+      }, true);
     });
   });
 

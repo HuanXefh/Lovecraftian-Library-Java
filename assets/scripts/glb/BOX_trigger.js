@@ -85,6 +85,13 @@ const BOX_trigger = new CLS_objectBox({
 
 
   /**
+   * Triggered for data sync.
+   * Never triggered in single player.
+   */
+  majorSync: new CLS_eventTrigger("lovec-major-sync"),
+
+
+  /**
    * Triggered whenever a unit (not loot or anything internal) is destroyed.
    * <br> `ARGS`: unit.
    */
@@ -211,6 +218,19 @@ const BOX_trigger = new CLS_objectBox({
 
 
   /* <------------------------------ util ------------------------------ */
+
+
+  /**
+   * Triggered when some ability data should be initialized.
+   */
+  abilityDataInit: (function() {
+    Time.run(0.0, () => {
+      MDL_event.onWorldLoad(() => BOX_trigger.abilityDataInit.fire());
+      BOX_trigger.majorSync.addGlobalListener(() => BOX_trigger.abilityDataInit.fire());
+    });
+    
+    return new CLS_eventTrigger("lovec-ability-data-init");
+  })(),
 
 
   /**

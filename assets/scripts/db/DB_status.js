@@ -190,20 +190,20 @@ db["map"]["affinity"].pushAll((function() {
   let arr = [];
   db["group"]["acidic"].forEachFast(nameSta => {
     arr.push(nameSta, ["melting", function(unit, staEn, time) {staEn.set(this, time + 240.0)}]);
-  });
+  }, true);
   db["group"]["basic"].forEachFast(nameSta => {
     arr.push(nameSta, ["melting", function(unit, staEn, time) {staEn.set(this, time + 240.0)}]);
-  });
+  }, true);
   return arr;
 })());
 db["map"]["opposite"].pushAll((function() {
   let arr = [];
   db["group"]["acidic"].forEachFast(nameSta => {
     arr.push(nameSta, () => db["group"]["basic"]);
-  });
+  }, true);
   db["group"]["basic"].forEachFast(nameSta => {
     arr.push(nameSta, () => db["group"]["acidic"]);
-  });
+  }, true);
   return arr;
 })());
 db["group"]["lootImmune"].pushAll(db["group"]["robotOnly"]);

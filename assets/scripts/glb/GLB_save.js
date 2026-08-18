@@ -36,12 +36,12 @@
     if(mode.equalsAny("both", "lsav")) {
       DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
         lsav[header] = def;
-      });
+      }, true);
     };
     if(mode.equalsAny("both", "plsav")) {
       DB_misc.db["lsav"]["pHeader"].forEachRow(3, (header, def, arrMode) => {
         plsav[header] = def;
-      });
+      }, true);
     };
 
     exports.lsav = lsav;
@@ -69,10 +69,10 @@
 
       DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
         lsav[header] = tryVal(MDL_json.fetch(lsavJsonVal, header, false, arrMode), def);
-      });
+      }, true);
       DB_misc.db["lsav"]["pHeader"].forEachRow(3, (header, def, arrMode) => {
         plsav[header] = tryVal(MDL_json.fetch(plsavJsonVal, header, false, arrMode), def);
-      });
+      }, true);
 
       let mapCur = global.lovecUtil.fun._mapCur();
       console.log("[LOVEC] Checking LSAV data validity...");

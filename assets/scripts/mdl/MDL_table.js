@@ -42,7 +42,7 @@
    * @return {void}
    */
   const br = function(tb, repeat) {
-    tryVal(repeat, 2)._it(i => {
+    tryVal(repeat, 2).each(i => {
       tb.add("").row();
     });
   };
@@ -90,12 +90,12 @@
   /**
    * Adds a table with colored edge lines.
    * @param {Table} tb
-   * @param {function(Table): void} tableF
+   * @param {function(Table): void} tableM
    * @param {Color|unset} [color]
    * @param {number|unset} [stroke]
    * @return {Cell}
    */
-  const edge = function(tb, tableF, color, stroke) {
+  const edge = function(tb, tableM, color, stroke) {
     if(color == null) color = Color.white;
     if(stroke == null) stroke = 2.0;
 
@@ -105,7 +105,7 @@
       tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).height(stroke);
       tb1.row();
       tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).growY();
-      tableF(tb1);
+      tableM(tb1);
       tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).growY();
       tb1.row();
       tb1.table(Tex.whiteui, tb2 => {tb2.setColor(color)}).width(stroke).height(stroke);
@@ -119,11 +119,11 @@
   /**
    * Adds a table into a cell.
    * @param {Cell} cell
-   * @param {function(Table): void} tableF
+   * @param {function(Table): void} tableM
    * @return {Cell}
    */
-  const tooltip = function(cell, tableF) {
-    let tooltip = new Tooltip(cons(tableF));
+  const tooltip = function(cell, tableM) {
+    let tooltip = new Tooltip(cons(tableM));
     tooltip.allowMobile = true;
     Reflect.get(Cell, cell, "element").addListener(tooltip);
     return cell;
@@ -306,7 +306,7 @@
   /**
    * Adds a slider for a table.
    * @param {Table} tb
-   * @param {function(number): void} valCaller
+   * @param {function(number): void} valC
    * @param {number|unset} [min]
    * @param {number|unset} [max]
    * @param {number|unset} [step]
@@ -314,13 +314,13 @@
    * @param {number|unset} [w]
    * @return {Cell}
    */
-  const slider = function(tb, valCaller, min, max, step, def, w) {
+  const slider = function(tb, valC, min, max, step, def, w) {
     let sliderCell = tb.slider(
       tryVal(min, 0),
       tryVal(max, 2),
       tryVal(step, 1),
       tryVal(def, tryVal(min, 0)),
-      tryVal(valCaller, Function.air),
+      tryVal(valC, Function.air),
     ).left();
     if(w != null) {
       sliderCell.width(w);
@@ -338,7 +338,7 @@
    * Adds a config slider for a table.
    * @param {Table} tb
    * @param {Building} b
-   * @param {function(Building): string} strGetter - Gets string to display for current value.
+   * @param {function(Building): string} strF - Gets string to display for current value.
    * @param {number|unset} [min]
    * @param {number|unset} [max]
    * @param {number|unset} [step]
@@ -346,10 +346,10 @@
    * @param {number|unset} [w]
    * @return {Cell}
    */
-  const sliderCfg = function(tb, b, strGetter, min, max, step, def, w) {
+  const sliderCfg = function(tb, b, strF, min, max, step, def, w) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
-      tb1.add("").left().get().setText(prov(() => strGetter()));
+      tb1.add("").left().get().setText(prov(() => strF()));
       tb1.row();
       slider(tb1, val => b.configure(val.toF()), min, max, step, def, w !== undefined ? w : 260.0);
     }).left().growX();
@@ -360,14 +360,14 @@
   /**
    * Adds a fixed scroll pane for a table.
    * @param {Table} tb
-   * @param {function(Table): void} tableF
+   * @param {function(Table): void} tableM
    * @param {number|unset} [maxW]
    * @param {number|unset} [maxH]
    * @return {Cell}
    */
-  const pnFixed = function(tb, tableF, maxW, maxH) {
+  const pnFixed = function(tb, tableM, maxW, maxH) {
     let pnCell = tb.pane(pnTb => {
-      tableF(pnTb);
+      tableM(pnTb);
     });
     if(maxW != null) pnCell.maxWidth(maxW);
     if(maxH != null) pnCell.maxHeight(maxH);
@@ -492,13 +492,13 @@
    * @param {Table} tb
    * @param {UnlockableContent} ct
    * @param {number} amt
-   * @param {function(UnlockableContent): number} amtGetter
+   * @param {function(UnlockableContent): number} amtF
    * @return {Cell}
    */
-  const reqCt = function(tb, ct, amt, amtGetter) {
+  const reqCt = function(tb, ct, amt, amtF) {
     let reqImg = new ReqImage(
       StatValues.stack(ct, amt),
-      () => (amtGetter(ct) >= amt),
+      () => (amtF(ct) >= amt),
     );
 
     return tb.add(reqImg).size(32.0);
@@ -541,10 +541,10 @@
    * @param {Building} b
    * @param {Array<UnlockableContent>} cts
    * @param {Array<number>|unset} [amts]
-   * @param {(function(UnlockableContent): number)|unset} [amtGetter]
+   * @param {(function(UnlockableContent): number)|unset} [amtF]
    * @return {Cell}
    */
-  const reqMultiCt = function(tb, b, cts, amts, amtGetter) {
+  const reqMultiCt = function(tb, b, cts, amts, amtF) {
     let multiReqImg = new MultiReqImage();
     let i = 0;
     if(amts != null) {
@@ -566,10 +566,10 @@
               () => b.liquids.get(ct) >= amts[i];
           };
 
-          if(amtGetter == null) throw new Error("Hey WTF did you do to the recipe data?");
+          if(amtF == null) throw new Error("Hey WTF did you do to the recipe data?");
           return amts == null || amts[i] == null ?
-            () => amtGetter(ct) > 0.0 :
-            () => amtGetter(ct) > amts[i];
+            () => amtF(ct) > 0.0 :
+            () => amtF(ct) > amts[i];
         })(i),
       ));
       i++;
@@ -598,7 +598,7 @@
     if(w == null) w = 32.0;
     let str = amt < 0.0001 ?
       "" :
-      ct instanceof Liquid && !cancelLiq ?
+      ct.getContentType() === ContentType.liquid && !cancelLiq ?
         (Strings.autoFixed(amt * 60.0, 2) + "/s") :
         Strings.autoFixed(amt, 0) + "     ";
 
@@ -779,7 +779,7 @@
       .row();
       br(cont, 1);
       ordCur++;
-    });
+    }, true);
 
     return contCell;
   }
@@ -938,14 +938,14 @@
    * @param {Table} tb
    * @param {Block} blk
    * @param {Array<UnlockableContent>} cts
-   * @param {function(): UnlockableContent|null} ctGetter
-   * @param {function(UnlockableContent|null): void} cfgCaller
+   * @param {function(): UnlockableContent|null} ctF
+   * @param {function(UnlockableContent|null): void} cfgC
    * @param {boolean|unset} [closeSelect]
    * @param {number|unset} [rowAmt]
    * @param {number|unset} [colAmt]
    * @return {void}
    */
-  const setCtSelect = function(tb, blk, cts, ctGetter, cfgCaller, closeSelect, rowAmt, colAmt) {
+  const setCtSelect = function(tb, blk, cts, ctF, cfgC, closeSelect, rowAmt, colAmt) {
     if(closeSelect == null) closeSelect = false;
     if(rowAmt == null) rowAmt = 4;
     if(colAmt == null) colAmt = 4;
@@ -977,10 +977,10 @@
 
           let ctCur;
           let btn = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(ct.selectionSize, 0.0, 40.0), () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ct.localizedName, true).group(btnGrp).get();
-          btn.changed(() => cfgCaller(btn.isChecked() ? ct : null));
+          btn.changed(() => cfgC(btn.isChecked() ? ct : null));
           btn.getStyle().imageUp = new TextureRegionDrawable(ct.uiIcon);
           btn.update(() => {
-            ctCur = ctGetter();
+            ctCur = ctF();
             btn.setChecked(ctCur != null && ctCur.name == ct.name);
           });
 
@@ -1028,15 +1028,15 @@
    * @param {Table} tb
    * @param {Block} blk
    * @param {Array<UnlockableContent>} cts
-   * @param {function(): Array<UnlockableContent>} ctsGetter
-   * @param {function(Array): void} cfgCaller
+   * @param {function(): Array<UnlockableContent>} ctsF
+   * @param {function(Array): void} cfgC
    * @param {boolean|unset} [closeSelect]
    * @param {number|unset} [rowAmt]
    * @param {number|unset} [colAmt]
    * @param {number|unset} [max]
    * @return {void}
    */
-  const setCtSelectMulti = function(tb, blk, cts, ctsGetter, cfgCaller, closeSelect, rowAmt, colAmt, max) {
+  const setCtSelectMulti = function(tb, blk, cts, ctsF, cfgC, closeSelect, rowAmt, colAmt, max) {
     if(closeSelect == null) closeSelect = false;
     if(rowAmt == null) rowAmt = 4;
     if(colAmt == null) colAmt = 4;
@@ -1068,9 +1068,9 @@
           if(!MDL_cond.isRsAvailable(ct)) return 0;
 
           let btn = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(ct.selectionSize, 0.0, 40.0), () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ct.localizedName, true).group(btnGrp).get();
-          btn.changed(() => cfgCaller((btn.isChecked() ? ["selector", ct, true] : ["selector", ct, false]).toJavaArr(JAVA.object)));
+          btn.changed(() => cfgC((btn.isChecked() ? ["selector", ct, true] : ["selector", ct, false]).toJavaArr(JAVA.object)));
           btn.getStyle().imageUp = new TextureRegionDrawable(ct.uiIcon);
-          btn.update(() => btn.setChecked(ctsGetter().includes(ct)));
+          btn.update(() => btn.setChecked(ctsF().includes(ct)));
 
           return 1;
         })(i);
@@ -1115,16 +1115,16 @@
    * Sets recipe selector for {@link BLK_recipeFactory}.
    * @param {Table} tb
    * @param {Building} b
-   * @param {function(): string} headerGetter
-   * @param {function(string): void} cfgCaller
-   * @param {Array<function(Table): void>|unset} [extraBtnSetters]
+   * @param {function(): string} headerF
+   * @param {function(string): void} cfgC
+   * @param {Array<function(Table): void>|unset} [extraBtnMs]
    * @param {boolean|unset} [useAutoSelection]
    * @param {boolean|unset} [closeSelect]
    * @param {number|unset} [colAmt]
    * @return {void}
    */
-  const setRcSelect = function(tb, b, headerGetter, cfgCaller, extraBtnSetters, useAutoSelection, closeSelect, colAmt) {
-    if(extraBtnSetters == null) extraBtnSetters = [];
+  const setRcSelect = function(tb, b, headerF, cfgC, extraBtnMs, useAutoSelection, closeSelect, colAmt) {
+    if(extraBtnMs == null) extraBtnMs = [];
     if(useAutoSelection == null) useAutoSelection = false;
     if(closeSelect == null) closeSelect = true;
     if(colAmt == null) colAmt = 4;
@@ -1135,18 +1135,18 @@
 
     // Buttons
     if(useAutoSelection) {
-      extraBtnSetters.unshift(
+      extraBtnMs.unshift(
         tb => tb.button("A", () => {useAutoSelection = false}).tooltip(MDL_bundle.getInfo("lovec", "tt-disable-auto-selection"), true),
       );
     };
-    extraBtnSetters.unshift(
+    extraBtnMs.unshift(
       tb => tb.button("?", () => Vars.ui.content.show(b.block)).tooltip(fetchStat("lovec", "spec-info").localized(), true),
     );
     tb.table(Styles.none, tb1 => {
       tb1.left().clicked(() => rebuildCont());
-      extraBtnSetters.forEachFast(setter => {
-        setter(tb1).left().size(42.0);
-      });
+      extraBtnMs.forEachFast(btnM => {
+        btnM(tb1).left().size(42.0);
+      }, true);
     })
     .left()
     .row();
@@ -1199,13 +1199,13 @@
           tooltip(btnCell, tb => rc.displayTooltip(tb, rc.validTup[0](b)));
           let btn = btnCell.get();
           // `String` is required for type conversion
-          btn.changed(() => cfgCaller(rcHeader));
+          btn.changed(() => cfgC(rcHeader));
           btn.getStyle().imageUp = rc.validTup[0](b) ? rc.icon : Icon.lock;
           btn.getStyle().imageDisabledColor = Color.gray;
           btn.update(() => {
             btn.setDisabled(useAutoSelection);
             // Double equality, string returned here is an object
-            btn.setChecked(headerGetter() == rcHeader);
+            btn.setChecked(headerF() == rcHeader);
             if(TIMER.secHalf) {
               btn.getStyle().imageUp = rc.validTup[0](b) ? rc.icon : Icon.lock;
             };
@@ -1216,7 +1216,7 @@
             chunk.row();
             j = 0;
           };
-        });
+        }, true);
 
         cont.add(chunk).left().row();
       };
@@ -1350,7 +1350,7 @@
       .left()
       .growX()
       .row();
-    });
+    }, true);
   };
   exports.setFacFami = setFacFami;
 
@@ -1427,9 +1427,8 @@
       categHeaderObj[categ].forEachFast(rcHeader => {
         CLS_recipe.get(blk, rcHeader).display(rcRoot, i, false, true);
         bar(rcRoot, Color.valueOf(Tmp.c1, "303030"), null, 1.0);
-
         i++;
-      });
+      }, true);
     };
 
     // Used above!

@@ -76,8 +76,8 @@
       str += "\n";
       rc.erroredNames.forEachFast(name => {
         str += "\n- " + name;
-      });
-    });
+      }, true);
+    }, true);
     MDL_file.commonCache.child("temp").child("incompleteRecipes.log").writeString(str);
   });
 
@@ -558,7 +558,7 @@
       MDL_recipe.getRcHeaders(rcMdl).forEachFast(rcHeader => {
         new CLS_recipe(blk, rcMdl, rcHeader, blk.delegee.useAutoSelection);
         rcCount++;
-      });
+      }, true);
     });
   };
 
@@ -726,7 +726,7 @@
       this.techNodes.forEachFast(node => {
         if(!nodeRcsMap.containsKey(node)) nodeRcsMap.put(node, []);
         nodeRcsMap.get(node).push(this);
-      });
+      }, true);
     };
 
     return this;
@@ -846,17 +846,17 @@
    * Builds the container table for an I/O fragment.
    * @param {Table} tb
    * @param {string} name
-   * @param {function(Table): void} tableF
+   * @param {function(Table): void} tableM
    * @return {Cell}
    */
-  CLS_recipe.prototype.displayIoFrag = function(tb, name, tableF) {
+  CLS_recipe.prototype.displayIoFrag = function(tb, name, tableM) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
       MDL_table.margin(tb1);
       // `TABLE`: Title
       tb1.add("${1}:".format(name.toUpperCase())).left().tooltip(MDL_bundle.getTerm("lovec", name), true).row();
       // `TABLE`: I/O contents
-      tb1.table(Styles.none, tableF);
+      tb1.table(Styles.none, tableM);
     })
     .left()
     .marginRight(24.0);
@@ -866,18 +866,18 @@
   /**
    * Builds the pane for alternative I/O fragment.
    * @param {Table} tb
-   * @param {function(Table): void} tableF
+   * @param {function(Table): void} tableM
    * @param {boolean|unset} [noPane]
    * @return {Cell}
    */
-  CLS_recipe.prototype.displayAltIoFrag = function(tb, tableF, noPane) {
+  CLS_recipe.prototype.displayAltIoFrag = function(tb, tableM, noPane) {
     return tb.table(Styles.none, tb1 => {
       tb1.left();
 
       if(noPane) {
         tb1.table(Tex.whiteui, tb2 => {
           tb2.left().setColor(Pal.darkerGray);
-          tableF(tb2);
+          tableM(tb2);
         })
         .growX();
         return;
@@ -887,7 +887,7 @@
         pnTb.setBackground(Tex.whiteui);
         pnTb.setColor(Pal.darkerGray);
         pnTb.left();
-        tableF(pnTb);
+        tableM(pnTb);
       })
       .growX()
       .get();
@@ -1009,7 +1009,7 @@
             let str = MDL_bundle.getInfo("lovec", "tt-recipe-errored-names") + "\n";
             this.erroredNames.forEachFast(name => {
               str += ("\n- " + name).color(Pal.accent);
-            });
+            }, true);
             tb3.add(MDL_bundle.getTerm("lovec", "incomplete-recipe").color(Pal.remove)).left().tooltip(str, true).row();
           };
           thisFun.addStat(
@@ -1071,7 +1071,7 @@
             tb3.table(Styles.none, tb4 => {
               tb4.left();
               tb4.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "require-unlocking"), "")).left();
-              this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2));
+              this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2), true);
             })
             .left()
             .row();
@@ -1144,7 +1144,7 @@
           this.displayAltIoFrag(tb1, tb2 => {
             tmp.forEachRow(3, (tmp1, amt, p) => {
               MDL_table.rcCtIcon(tb2, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
-            });
+            }, true);
           }, noPane);
         };
       });
@@ -1168,7 +1168,7 @@
           this.displayAltIoFrag(tb1, tb2 => {
             tmp.forEachRow(2, (tmp1, amt) => {
               MDL_table.rcCtIcon(tb2, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
-            });
+            }, true);
           }, noPane);
         };
       });
@@ -1186,7 +1186,7 @@
     return this.displayIoFrag(tb, "aux", tb1 => {
       (isBase ? this.baseAux : this.auxNoBase).forEachRow(2, (tmp, amt) => {
         MDL_table.rcCtIcon(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
-      });
+      }, true);
     });
   };
 
@@ -1214,7 +1214,7 @@
     return this.displayIoFrag(tb, "payi", tb1 => {
       (isBase ? this.basePayi : this.payiNoBase).forEachRow(2, (name, amt) => {
         MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
-      });
+      }, true);
     });
   };
 
@@ -1229,7 +1229,7 @@
     return this.displayIoFrag(tb, "bo", tb1 => {
       (isBase ? this.baseBo : this.boNoBase).forEachRow(3, (tmp, amt, p) => {
         MDL_table.rcCtIcon(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
-      });
+      }, true);
     });
   };
 
@@ -1244,7 +1244,7 @@
     return this.displayIoFrag(tb, "co", tb1 => {
       (isBase ? this.baseCo : this.coNoBase).forEachRow(2, (tmp, amt) => {
         MDL_table.rcCtIcon(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
-      });
+      }, true);
     });
   };
 
@@ -1259,7 +1259,7 @@
     return this.displayIoFrag(tb, "fo", tb1 => {
       (isBase ? this.baseFo : this.foNoBase).forEachRow(3, (tmp, amt, p) => {
         MDL_table.rcCtIcon(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
-      });
+      }, true);
     });
   };
 
@@ -1274,7 +1274,7 @@
     return this.displayIoFrag(tb, "payo", tb1 => {
       (isBase ? this.basePayo : this.payoNoBase).forEachRow(2, (name, amt) => {
         MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
-      });
+      }, true);
     });
   };
 

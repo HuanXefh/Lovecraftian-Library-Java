@@ -28,7 +28,7 @@
     new CLS_interface("INTF_BLK_buildingRecacheHandler", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**

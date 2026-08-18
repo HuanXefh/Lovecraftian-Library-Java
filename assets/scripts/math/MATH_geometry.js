@@ -81,8 +81,8 @@
 
   function fetchPathTwoPointArg(arr, pathData, dim, ponInd_t) {
     arr.clear();
-    dim._it(ind => arr.push(pathData[ponInd_t + ind]));
-    dim._it(ind => arr.push(pathData[ponInd_t - dim + ind]));
+    dim.each(ind => arr.push(pathData[ponInd_t + ind]));
+    dim.each(ind => arr.push(pathData[ponInd_t - dim + ind]));
 
     return arr;
   };

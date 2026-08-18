@@ -20,7 +20,7 @@
     this.keys = [];
     this.vals = [];
     let count = 0;
-    Object._it(obj, (key, val) => {
+    Object.eachPair(obj, (key, val) => {
       if(typeof val !== "function") {
         this.setProp(true, key, val);
         this.keys.push(key);

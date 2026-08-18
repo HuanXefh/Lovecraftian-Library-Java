@@ -49,7 +49,7 @@ const db = {
           cons.items.forEachFast(itmStack => {
             if(itmStack.amount <= 0) return;
             dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
-          });
+          }, true);
         },
 
         ConsumeItemFlammable, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
@@ -95,7 +95,7 @@ const db = {
           cons.liquids.forEachFast(liqStack => {
             if(liqStack.amount < 0.0001) return;
             dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
-          });
+          }, true);
         },
 
         ConsumeCoolant, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
@@ -138,7 +138,7 @@ const db = {
             uPlan.requirements.forEachFast(itmStack => {
               if(itmStack.amount <= 0) return;
               dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: uPlan.time, ct: uPlan.unit}, data));
-            });
+            }, true);
           });
         },
 
@@ -147,11 +147,11 @@ const db = {
             if(uPlan.itemReq != null) uPlan.itemReq.forEachFast(itmStack => {
               if(itmStack.amount <= 0) return;
               dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: uPlan.time, ct: uPlan.unit}, data));
-            });
+            }, true);
             if(uPlan.liquidReq != null) uPlan.liquidReq.forEachFast(liqStack => {
               if(liqStack.amount < 0.0001) return;
               dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({ct: uPlan.unit}, data));
-            });
+            }, true);
             if(uPlan.requirements != null) uPlan.requirements.each(payStack => {
               if(payStack.amount <= 0) return;
               (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: uPlan.time, ct: uPlan.unit}, data));
@@ -171,7 +171,7 @@ const db = {
           cons.items.forEachFast(itmStack => {
             if(itmStack.amount <= 0) return;
             dictConsItm[itmStack.item.id].push(blk, itmStack.amount / cons.uses, mergeObj({icon: cons.optional ? "lovec-icon-boost" : MDL_cond.isTurret(blk) ? "lovec-icon-ammo" : null}, data));
-          });
+          }, true);
         },
 
         fetchClass("carpediem.world.consumers.ConsumePressure", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
@@ -186,12 +186,12 @@ const db = {
         },
 
         fetchClass("carpediem.world.blocks.crafting.RecipeCrafter", true), function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
-          let dictCaller;
+          let dictC;
           blk.recipes.each(rc => {
             rc.consumes.each(rcI => {
-              dictCaller = readClassFunMap(db["dict"]["reader"]["consume"], rcI, null);
-              if(dictCaller != null) {
-                dictCaller(blk, rcI, mergeObj({time: rc.craftTime, ct: rc.primaryOutput}, data), dictConsItm, dictConsFld, dictConsBlk, dictConsUtp);
+              dictC = readClassFunMap(db["dict"]["reader"]["consume"], rcI, null);
+              if(dictC != null) {
+                dictC(blk, rcI, mergeObj({time: rc.craftTime, ct: rc.primaryOutput}, data), dictConsItm, dictConsFld, dictConsBlk, dictConsUtp);
               };
             });
           });
@@ -220,19 +220,19 @@ const db = {
               rc.input.items.forEachFast(itmStack => {
                 if(itmStack.amount <= 0) return;
                 dictConsItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-              });
+              }, true);
             };
             if(rc.input.liquids != null) {
               rc.input.liquids.forEachFast(liqStack => {
                 if(liqStack.amount < 0.0001) return;
                 dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-              });
+              }, true);
             };
             if(rc.input.payloads != null) {
               rc.input.payloads.forEachFast(payStack => {
                 if(payStack.amount <= 0) return;
                 (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-              });
+              }, true);
             };
             if(rc.input.power > 0.0) {
               MDL_recipeDict.addCustomConsTerm(blk, "power", rc.input.power, mergeObj({time: rc.craftTime, iconText: ordText}, data))
@@ -362,12 +362,12 @@ const db = {
             amt = itmStack.amount * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0);
             if(amt <= 0) return;
             dictProdItm[itmStack.item.id].push(blk, amt, mergeObj(data));
-          });
+          }, true);
           if(blk.outputLiquids != null) blk.outputLiquids.forEachFast(liqStack => {
             amt = liqStack.amount * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0);
             if(amt < 0.0001) return;
             dictProdFld[liqStack.liquid.id].push(blk, amt, mergeObj(data));
-          });
+          }, true);
         },
 
         HeatProducer, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
@@ -422,12 +422,12 @@ const db = {
                 rcO.items.forEachFast(itmStack => {
                   if(itmStack.amount <= 0) return;
                   dictProdItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, ct: rc.primaryOutput}, data));
-                });
+                }, true);
               } else if(instanceOfAny(rcO, fetchClass("carpediem.world.outputs.OutputItems", true))) {
                 rcO.liquids.forEachFast(liqStack => {
                   if(liqStack.amount < 0.0001) return;
                   dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, ct: rc.primaryOutput}, data));
-                });
+                }, true);
               };
             });
           });
@@ -452,19 +452,19 @@ const db = {
               rc.output.items.forEachFast(itmStack => {
                 if(itmStack.amount <= 0) return;
                 dictProdItm[itmStack.item.id].push(blk, itmStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-              });
+              }, true);
             };
             if(rc.output.liquids != null) {
               rc.output.liquids.forEachFast(liqStack => {
                 if(liqStack.amount < 0.0001) return;
                 dictProdFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-              });
+              }, true);
             };
             if(rc.output.payloads != null) {
               rc.output.payloads.forEachFast(payStack => {
                 if(payStack.amount <= 0) return;
                 (payStack.item instanceof Block ? dictProdBlk : dictProdUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-              });
+              }, true);
             };
             if(rc.output.power > 0.0) {
               MDL_recipeDict.addCustomProdTerm(blk, "power", rc.output.power, mergeObj({time: rc.craftTime, iconText: ordText}, data))
@@ -633,13 +633,13 @@ const db = {
         ConsumeItems, (blk, cons, oreDict) => {
           cons.items.forEachFast(itmStack => {
             itmStack.item = oreDict.get(itmStack.item, itmStack.item);
-          });
+          }, true);
         },
 
         ConsumeLiquids, (blk, cons, oreDict) => {
           cons.liquids.forEachFast(liqStack => {
             liqStack.liquid = oreDict.get(liqStack.liquid, liqStack.liquid);
-          });
+          }, true);
         },
 
       ],
@@ -669,8 +669,8 @@ const db = {
         },
 
         GenericCrafter, (blk, oreDict) => {
-          if(blk.outputItems != null) blk.outputItems.forEachFast(itmStack => itmStack.item = oreDict.get(itmStack.item, itmStack.item));
-          if(blk.outputLiquids != null) blk.outputLiquids.forEachFast(liqStack => liqStack.liquid = oreDict.get(liqStack.liquid, liqStack.liquid));
+          if(blk.outputItems != null) blk.outputItems.forEachFast(itmStack => itmStack.item = oreDict.get(itmStack.item, itmStack.item), true);
+          if(blk.outputLiquids != null) blk.outputLiquids.forEachFast(liqStack => liqStack.liquid = oreDict.get(liqStack.liquid, liqStack.liquid), true);
         },
 
       ],

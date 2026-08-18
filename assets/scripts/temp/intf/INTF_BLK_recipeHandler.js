@@ -343,12 +343,12 @@
       if(thisFun.addedLiqs.includes(liq)) return;
       thisFun.addLiqBar(tb, b, liq);
       thisFun.addedLiqs.push(liq);
-    });
+    }, true);
     b.rc.outputFlds.forEachFast(liq => {
       if(thisFun.addedLiqs.includes(liq)) return;
       thisFun.addLiqBar(tb, b, liq);
       thisFun.addedLiqs.push(liq);
-    });
+    }, true);
   }
   .setProp({
     addedLiqs: [],
@@ -411,7 +411,7 @@
     };
     b.efficiency = 0.0;
     b.lastOptEffc = 1.0;
-    b.rcEffcWinMean.clear();
+    b.rcEffcMeanArr.clear();
 
     b.proximity.each(ob => {
       ob.onProximityUpdate();
@@ -430,7 +430,7 @@
           if(amt > 0 && b.payReqObj[tmp] == null) {
             b.payReqObj[tmp] = 0;
           };
-        });
+        }, true);
       };
 
       b.attrSum = MDL_attr.calcSumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR);
@@ -443,8 +443,8 @@
 
 
   function comp_ex_calcRcEffcTg(b) {
-    b.rcEffcWinMean.add(b.rc.calcEffc(b));
-    return (b.rcEffcWinMean.hasEnoughData() ? b.rcEffcWinMean.mean() : b.rcEffcWinMean.latest()) * b.attrEffc;
+    b.rcEffcMeanArr.push(b.rc.calcEffc(b));
+    return b.rcEffcMeanArr.getMean() * b.attrEffc;
   };
 
 
@@ -467,7 +467,7 @@
     new CLS_interface({
 
 
-      __paramObjSetter__: (() => ({
+      __paramObjM__: (() => ({
 
 
         /**
@@ -529,7 +529,7 @@
       .setProp({
         mergeMode: "object",
       }),
-      __paramParserSetter__: (() => [
+      __paramParserM__: (() => [
         "rcMdl", function(val) {
           if(val == null) ERROR_HANDLER.throw("nullArgument", "rcMdl");
           let nameMod = this.rcSourceMod;
@@ -591,7 +591,7 @@
     new CLS_interface({
 
 
-      __paramObjSetter__: (() => ({
+      __paramObjM__: (() => ({
 
 
         /* <------------------------------ internal ------------------------------ */
@@ -620,7 +620,7 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        rcEffcWinMean: tprov(() => new WindowedMean(5)),
+        rcEffcMeanArr: tprov(() => new MathMeanArray(5)),
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler

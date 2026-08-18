@@ -190,23 +190,23 @@
    * @return {Object}
    */
   Object.mergeObjDB = function thisFun(obj0, obj) {
-    Object._it(obj0, (key1, val1) => {
+    Object.eachPair(obj0, (key1, val1) => {
       // Depth: 0
       val1 instanceof Array ?
         thisFun.applyMerge(key1, obj, val1) :
-        Object._it(obj0[key1], (key2, val2) => {
+        Object.eachPair(obj0[key1], (key2, val2) => {
           // Depth: 1
           val2 instanceof Array ?
             thisFun.applyMerge(key2, Object.searchByKeys(obj, [key1], Object.air), val2) :
-            Object._it(obj0[key1][key2], (key3, val3) => {
+            Object.eachPair(obj0[key1][key2], (key3, val3) => {
               // Depth: 2
               val3 instanceof Array ?
                 thisFun.applyMerge(key3, Object.searchByKeys(obj, [key1, key2], Object.air), val3) :
-                Object._it(obj0[key1][key2][key3], (key4, val4) => {
+                Object.eachPair(obj0[key1][key2][key3], (key4, val4) => {
                   // Depth: 3
                   val4 instanceof Array ?
                     thisFun.applyMerge(key4, Object.searchByKeys(obj, [key1, key2, key3], Object.air), val4) :
-                    Object._it(obj0[key1][key2][key3][key4], (key5, val5) => {
+                    Object.eachPair(obj0[key1][key2][key3][key4], (key5, val5) => {
                       // Depth: 4
                       val5 instanceof Array ?
                         thisFun.applyMerge(key5, Object.searchByKeys(obj, [key1, key2, key3, key4], Object.air), val5) :

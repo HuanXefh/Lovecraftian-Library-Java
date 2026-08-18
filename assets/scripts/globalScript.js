@@ -308,7 +308,7 @@
       if(!(LCModDbRegister[name] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended!".format(name));
       LCModDbRegister[name].forEachFast(key => {
         obj[key] = [];
-      });
+      }, true);
       return LCModDbRegister;
     },
   };
@@ -383,10 +383,10 @@
 
       enabled: false,
       safe: false,
-      xGetter: Function.airZero,
-      yGetter: Function.airZero,
-      radGetter: Function.airZero,
-      colorGetter: Function.airWhite,
+      xF: Function.airZero,
+      yF: Function.airZero,
+      radF: Function.airZero,
+      colorF: Function.airWhite,
       drawF: Function.air,
 
 
@@ -396,10 +396,10 @@
       reset() {
         DRAW_TEST.enabled = false;
         DRAW_TEST.safe = false;
-        DRAW_TEST.xGetter = Function.airZero;
-        DRAW_TEST.yGetter = Function.airZero;
-        DRAW_TEST.radGetter = Function.airZero;
-        DRAW_TEST.colorGetter = Function.airWhite;
+        DRAW_TEST.xF = Function.airZero;
+        DRAW_TEST.yF = Function.airZero;
+        DRAW_TEST.radF = Function.airZero;
+        DRAW_TEST.colorF = Function.airWhite;
         DRAW_TEST.drawF = Function.air;
       },
 
@@ -418,32 +418,32 @@
 
 
       /**
-       * @param {(function(): number)|unset} [xGetter]
-       * @param {(function(): number)|unset} [yGetter]
-       * @param {(function(): number)|unset} [radGetter]
-       * @param {(function(): Color)|unset} [colorGetter]
+       * @param {(function(): number)|unset} [xF]
+       * @param {(function(): number)|unset} [yF]
+       * @param {(function(): number)|unset} [radF]
+       * @param {(function(): Color)|unset} [colorF]
        * @return {void}
        */
-      setGetter(xGetter, yGetter, radGetter, colorGetter) {
+      setGetter(xF, yF, radF, colorF) {
         DRAW_TEST.safe = false;
-        if(xGetter != null && typeof xGetter === "function") DRAW_TEST.xGetter = xGetter;
-        if(yGetter != null && typeof yGetter === "function") DRAW_TEST.yGetter = yGetter;
-        if(radGetter != null && typeof radGetter === "function") DRAW_TEST.radGetter = radGetter;
-        if(colorGetter != null && typeof colorGetter === "function") DRAW_TEST.colorGetter = colorGetter;
+        if(xF != null && typeof xF === "function") DRAW_TEST.xF = xF;
+        if(yF != null && typeof yF === "function") DRAW_TEST.yF = yF;
+        if(radF != null && typeof radF === "function") DRAW_TEST.radF = radF;
+        if(colorF != null && typeof colorF === "function") DRAW_TEST.colorF = colorF;
       },
 
 
       /**
-       * @param {(function(): number)|unset} [radGetter]
-       * @param {(function(): Color)|unset} [colorGetter]
+       * @param {(function(): number)|unset} [radF]
+       * @param {(function(): Color)|unset} [colorF]
        * @return {void}
        */
-      setGetter_player(radGetter, colorGetter) {
+      setGetter_player(radF, colorF) {
         DRAW_TEST.setGetter(
           () => Vars.player.unit() == null ? -9999.0 : Vars.player.unit().x,
           () => Vars.player.unit() == null ? -9999.0 : Vars.player.unit().y,
-          radGetter,
-          colorGetter,
+          radF,
+          colorF,
         );
       },
 
@@ -464,11 +464,11 @@
        */
       draw() {
         if(DRAW_TEST.safe) {
-          DRAW_TEST.drawF(DRAW_TEST.xGetter(), DRAW_TEST.yGetter(), DRAW_TEST.radGetter(), DRAW_TEST.colorGetter());
+          DRAW_TEST.drawF(DRAW_TEST.xF(), DRAW_TEST.yF(), DRAW_TEST.radF(), DRAW_TEST.colorF());
         } else {
           // Try only once to save memory
           try {
-            DRAW_TEST.drawF(DRAW_TEST.xGetter(), DRAW_TEST.yGetter(), DRAW_TEST.radGetter(), DRAW_TEST.colorGetter());
+            DRAW_TEST.drawF(DRAW_TEST.xF(), DRAW_TEST.yF(), DRAW_TEST.radF(), DRAW_TEST.colorF());
           } catch(err) {
             DRAW_TEST.reset();
             console.err("[LOVEC] Failed to implement the draw function: \n" + err);

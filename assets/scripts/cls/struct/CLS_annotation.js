@@ -10,21 +10,21 @@
    * Annotations can be applied by `fun.setAnno(name, annoArgs, skipDef)`.
    * @class
    * @param {string} name
-   * @param {Function|unset} [funCaller] - Called before the original function is called, `this` refers to the original function. If ture is returned, the original function will be skipped.
+   * @param {Function|unset} [funC] - Called before the original function is called, `this` refers to the original function. If ture is returned, the original function will be skipped.
    * @param {Function|unset} [loadScr] - Called just after the original function is defined, `this` refers to the original function.
-   * @param {Function|unset} [funArgCaller] - Like `funCaller` but `this` refers to arguments of the original function.
+   * @param {Function|unset} [funArgC] - Like `funC` but `this` refers to arguments of the original function.
    */
   const CLS_annotation = newClass().initClass();
 
 
-  CLS_annotation.prototype.init = function(name, funCaller, loadScr, funArgCaller) {
+  CLS_annotation.prototype.init = function(name, funC, loadScr, funArgC) {
     this.name = registerUniqueName(name, insNames, "annotation");
     this.initAnno();
 
-    if(funCaller != null) {
+    if(funC != null) {
       this.type = "on-call";
       this.onCall = function(fun, annoArgs) {
-        return funCaller.apply(fun, annoArgs);
+        return funC.apply(fun, annoArgs);
       };
     };
     if(loadScr != null) {
@@ -33,10 +33,10 @@
         loadScr.apply(fun, annoLoadArgs);
       };
     };
-    if(funArgCaller != null) {
+    if(funArgC != null) {
       this.type = "argument";
       this.onArgCall = function(funArgs, annoArgArgs) {
-        return funArgCaller.apply(funArgs, annoArgArgs);
+        return funArgC.apply(funArgs, annoArgArgs);
       };
     };
     if(this.type === "undefined") {

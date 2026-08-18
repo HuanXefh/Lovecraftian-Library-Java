@@ -41,7 +41,7 @@
     if(typeof obj === "function") {
       print(obj);
     };
-    Object._it(obj, (key, val) => {
+    Object.eachPair(obj, (key, val) => {
       print([key, val]);
     });
   };
@@ -84,7 +84,7 @@
    * @return {void}
    */
   Array.prototype.printEach = function() {
-    this.forEachFast(i => print(i));
+    this.forEachFast(i => print(i), true);
   };
 
 
@@ -96,5 +96,5 @@
   Array.prototype.printFormat = function(ord) {
     this.forEachRow(tryVal(ord, 1), () => {
       print(Array.from(arguments));
-    });
+    }, true);
   };

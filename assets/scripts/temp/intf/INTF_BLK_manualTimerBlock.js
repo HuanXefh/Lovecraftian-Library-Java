@@ -42,8 +42,8 @@
         throw new Error("Unsupported config type: " + blk.manualTimerCfgTp);
     };
 
-    blk.ex_addLogicGetter(LAccess.ammo, b => b.delegee.timeClickCur / 60.0);
-    blk.ex_addLogicGetter(LAccess.ammoCapacity, b => blk.manualTimerCap / 60.0);
+    blk.ex_addLogicF(LAccess.ammo, b => b.delegee.timeClickCur / 60.0);
+    blk.ex_addLogicF(LAccess.ammoCapacity, b => blk.manualTimerCap / 60.0);
   };
 
 
@@ -111,7 +111,7 @@
     new CLS_interface("INTF_BLK_manualTimerBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -167,7 +167,7 @@
     new CLS_interface("INTF_B_manualTimerBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

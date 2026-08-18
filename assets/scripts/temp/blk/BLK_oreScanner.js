@@ -29,7 +29,7 @@
       PARAM.forceLoadParam();
     });
 
-    blk.ex_addLogicGetter(LAccess.range, b => blk.blkRad / Vars.tilesize);
+    blk.ex_addLogicF(LAccess.range, b => blk.blkRad / Vars.tilesize);
   };
 
 
@@ -57,7 +57,7 @@
       b.revealedInts.forEachFast(int => {
         let ot = Vars.world.tile(int);
         if(ot != null) b.revealQueue.pull(ot);
-      });
+      }, true);
       b.ex_setRevealed(true);
     });
   };
@@ -112,7 +112,7 @@
     b.revealedInts.forEachFast(int => {
       ot = Vars.world.tile(int);
       ot.overlay().ex_accRevealed(ot, bool);
-    });
+    }, true);
   };
 
 

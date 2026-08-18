@@ -37,7 +37,7 @@
       pla, pla.astSeed, 2, pla.radius, 2, 0.55, 0.45, 14.0,
       colorBase, colorTint, 3, 0.6, 0.38, pla.tintThr,
     ));
-    pla.astAmt._it(i => {
+    pla.astAmt.each(i => {
       meshes.push(new MatMesh(
         new NoiseMesh(
           pla, pla.astSeed + i + 1, 1, 0.022 + rand.random(0.039) * pla.astScl, 2, 0.6, 0.38, 20.0,

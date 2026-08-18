@@ -19,7 +19,7 @@
     blk.drawCached = false;
     blk.drawDynamic = true;
 
-    blk.ex_addLogicGetter(LAccess.range, b => blk.blkRad / Vars.tilesize);
+    blk.ex_addLogicF(LAccess.range, b => blk.blkRad / Vars.tilesize);
   };
 
 
@@ -51,7 +51,7 @@
       } else {
         b.pullTgs.forEachFast(loot => {
           loot.impulse(Tmp.v2.set(loot).sub(b.x, b.y).nor().scl(-b.block.delegee.powPull * b.glowHeat));
-        });
+        }, true);
       };
 
       if(!Vars.headless) {
@@ -69,7 +69,7 @@
     if(b.glowHeat > 0.01) {
       b.pullTgs.forEachFast(loot => {
         if(loot.isAdded()) LCDrawf.arrowLine(loot.x, loot.y, b.x, b.y, 2.0, 1.0, Color.white, 0.35 * b.glowHeat, VAR.layer.effFlr);
-      });
+      }, true);
     };
   };
 

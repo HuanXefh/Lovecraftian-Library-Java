@@ -47,10 +47,10 @@
     if(colorMod == null) colorMod = tmpColors[9];
     if(color_gn == null) return colorMod === "new" ? Color.white.cpy() : Color.white;
 
-    return getColor.tmpGetter(color_gn, colorMod);
+    return getColor.convertColor(color_gn, colorMod);
   }
   .setProp({
-    tmpGetter: newMultiFunction(
+    convertColor: newMultiFunction(
       [Tile, null], (t, colorMod) => colorMod === "new" ? new Color(t.getFloorColor()) : t.getFloorColor(),
       [Item, null], (itm, colorMod) => colorMod === "new" ? itm.color.cpy() : itm.color,
       [Liquid, null], (liq, colorMod) => colorMod === "new" ? liq.color.cpy() : liq.color,

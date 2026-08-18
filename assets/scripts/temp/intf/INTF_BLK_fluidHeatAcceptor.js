@@ -88,7 +88,7 @@
     new CLS_interface("INTF_BLK_fluidHeatAcceptor", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -154,7 +154,7 @@
     new CLS_interface("INTF_B_fluidHeatAcceptor", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

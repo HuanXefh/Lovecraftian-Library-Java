@@ -39,7 +39,7 @@
           this.envRequired = blk.envRequired;
           this.envDisabled = blk.envDisabled;
           let itmStacks = [];
-          Object._it(blk.constructionItmsReq, (nameItm, amt) => {
+          Object.eachPair(blk.constructionItmsReq, (nameItm, amt) => {
             itmStacks.push(new ItemStack(Vars.content.item(nameItm), amt));
           });
           this.requirements = itmStacks;
@@ -242,7 +242,7 @@
         j++;
       };
       arr.push(oblk, count);
-    });
+    }, true);
 
     return arr;
   }
@@ -260,8 +260,8 @@
       oblk.requirements.forEachFast(itmStack => {
         if(obj[itmStack.item.name] === undefined) obj[itmStack.item.name] = 0;
         obj[itmStack.item.name] += itmStack.amount * count;
-      });
-    });
+      }, true);
+    }, true);
 
     return obj;
   };

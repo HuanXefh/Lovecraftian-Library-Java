@@ -293,7 +293,7 @@
         readParam(charaObj, "customActs"),
         readParam(charaObj, "customActTimeS"),
       ]);
-    });
+    }, true);
 
     this.dialFlowData.push(arr);
     this.offInd = 0;
@@ -315,13 +315,13 @@
     if(waitTimeS == null) waitTimeS = 1.0;
 
     let texts = [];
-    selTextParamArr.forEachRow(3, (nameMod, nameDial, selInd) => texts.push(MDL_bundle.getDialText(nameMod, nameDial, ind + "-s-" + selInd)));
+    selTextParamArr.forEachRow(3, (nameMod, nameDial, selInd) => texts.push(MDL_bundle.getDialText(nameMod, nameDial, ind + "-s-" + selInd)), true);
 
     this.completeRow();
     let paramObj = this.fixParamObj();
     let callFlow = () => MDL_ui.createFlow.callNext(this.dialFlowData);
     let textScrArr = [];
-    (texts.length)._it(i => {
+    (texts.length).each(i => {
       textScrArr.push(texts[i], callFlow);
     });
 

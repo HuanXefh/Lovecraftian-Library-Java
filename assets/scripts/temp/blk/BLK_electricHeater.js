@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    blk.ex_addConfigCaller("tempSet", (b, val) => b.delegee.tempSet = val);
+    blk.ex_addConfigM("tempSet", (b, val) => b.delegee.tempSet = val);
   };
 
 

@@ -185,7 +185,7 @@
       blk.hasConsumers = conss.length > 0;
       blk.consPower = consPow == null ? null : consPow;
 
-      conssNew.forEachFast(consX => consX.apply(blk));
+      conssNew.forEachFast(consX => consX.apply(blk), true);
     });
   };
 
@@ -620,12 +620,12 @@
   /**
    * Used for stat value, where arrow function doesn't work.
    * @global
-   * @param {function(Table): void} tableF
+   * @param {function(Table): void} tableM
    * @return {StatValue}
    */
-  newStatValue = function(tableF) {
+  newStatValue = function(tableM) {
     return extend(StatValue, {display(tb) {
-      tableF(tb);
+      tableM(tb);
     }});
   };
 
@@ -780,14 +780,14 @@
      * Registers a shader.
      * @global
      * @param {string} name
-     * @param {function(): Shader} shaderGetter
+     * @param {function(): Shader} shaderF
      * @return {void}
      */
-    newShader = __createNewXxx__(__extraContentData__.shader, 1, function(name, shaderGetter) {
+    newShader = __createNewXxx__(__extraContentData__.shader, 1, function(name, shaderF) {
       let shader;
       try {
         throwDebugError();
-        shader = shaderGetter();
+        shader = shaderF();
       } catch(err) {
         shader = null;
         warnShaderLoadFail(name, err);
@@ -883,7 +883,7 @@
    * Registers a weapon template.
    * @global
    * @param {string} name
-   * @param {function(): Function} tempGetter
+   * @param {function(): Function} tempF
    * @return {void}
    */
   newWeaponTemplate = __createNewXxx__(__extraContentData__.weaponTemplate, 2);
@@ -893,7 +893,7 @@
    * Registers a bullet template.
    * @global
    * @param {string} name
-   * @param {function(): Function} tempGetter
+   * @param {function(): Function} tempF
    * @return {void}
    */
   newBulletTemplate = __createNewXxx__(__extraContentData__.bulletTemplate, 2);
@@ -903,7 +903,7 @@
    * Registers a part template.
    * @global
    * @param {string} name
-   * @param {function(): Function} tempGetter
+   * @param {function(): Function} tempF
    * @return {void}
    */
   newPartTemplate = __createNewXxx__(__extraContentData__.partTemplate, 2);
@@ -943,12 +943,12 @@
    * Registers a target sorting function.
    * @global
    * @param {string} name
-   * @param {function(Unit, number, number): number} costGetter
+   * @param {function(Unit, number, number): number} costF
    * @return {void}
    */
-  newSortF = __createNewXxx__(__extraContentData__.sortF, 1, function(name, costGetter) {
+  newSortF = __createNewXxx__(__extraContentData__.sortF, 1, function(name, costF) {
     return extend(Units.Sortf, {cost(unit, x, y) {
-      return costGetter(unit, x, y);
+      return costF(unit, x, y);
     }});
   });
 
@@ -958,11 +958,11 @@
    * Larger value means less priority.
    * @global
    * @param {string} name
-   * @param {function(Unit, number, number): number} propGetter
+   * @param {function(Unit, number, number): number} propF
    * @return {void}
    */
-  newPropSortF = function(name, propGetter) {
-    newSortF(name, (unit, x, y) => propGetter(unit, x, y) + Mathf.dst2(unit.x, unit.y, x, y) / 6400.0);
+  newPropSortF = function(name, propF) {
+    newSortF(name, (unit, x, y) => propF(unit, x, y) + Mathf.dst2(unit.x, unit.y, x, y) / 6400.0);
   };
 
 

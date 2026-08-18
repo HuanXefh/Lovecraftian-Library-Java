@@ -23,7 +23,7 @@
       DB_item.db["group"]["sand"].forEachFast(name => {
         let itm = MDL_content.getCt(name, "rs");
         if(itm != null) blk.blockedItems.add(itm);
-      });
+      }, true);
     };
 
     blk.itmWhitelist = blk.itmWhitelist.map(nameItm => MDL_content.getCt(nameItm, "rs")).compact();

@@ -130,7 +130,7 @@
     new CLS_interface("INTF_BLK_graphBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -175,7 +175,7 @@
     new CLS_interface("INTF_B_graphBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

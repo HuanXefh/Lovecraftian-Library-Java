@@ -42,7 +42,7 @@
           Function.air :
           DB_env.db["map"]["randRegTag"].read(tag, Function.air)
       )());
-    });
+    }, true);
     blk.randRegs = randRegs.flatten();
   };
 

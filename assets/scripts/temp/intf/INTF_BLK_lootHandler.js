@@ -65,7 +65,7 @@
     new CLS_interface("INTF_BLK_lootHandler", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -94,7 +94,7 @@
     new CLS_interface("INTF_B_lootHandler", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

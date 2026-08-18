@@ -163,7 +163,7 @@
     thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous, pTg]);
     tmpArr.forEachRow(isContinuous ? 2 : 3, (tg, amt, p) => {
       MDL_recipe.parseRcIoRow(arr, tg, amt, isContinuous ? null : p, null, false, pTg);
-    });
+    }, true);
     arr.forEachAll((ele, ind, arr1) => {
       if(ele instanceof UnlockableContent) arr1[ind] = ele.name;
     });
@@ -401,7 +401,7 @@
       DB_recipe.db["gen"]["objF"].forEachRow(2, (boolF, objF) => {
         if(!boolF.apply(this, [ct, metaObj, paramObj])) return;
         objF.apply(this, [obj, metaObj, paramObj]);
-      });
+      }, true);
       readParam(metaObj, "objF", Function.air)(obj);
     };
   };
@@ -522,10 +522,10 @@
    * @param {ContentGn} ct_gn
    * @param {Object} metaObj
    * @param {Object|(function(UnlockableContent, Object): Object)|unset} [paramObj_d]
-   * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]
+   * @param {(function(UnlockableContent): string)|unset} [nameCtF]
    */
-  CLS_recipeGenerator.prototype.handleSingle = function(rc, ct_gn, metaObj, paramObj_d, nameCtGetter) {
-    if(nameCtGetter == null) nameCtGetter = ct => ct.name;
+  CLS_recipeGenerator.prototype.handleSingle = function(rc, ct_gn, metaObj, paramObj_d, nameCtF) {
+    if(nameCtF == null) nameCtF = ct => ct.name;
 
     let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
@@ -533,7 +533,7 @@
     if(!this.checkCtValid(ct, metaObj, paramObj)) return;
 
     this.addRc(
-      rc, nameCtGetter(ct),
+      rc, nameCtF(ct),
       this.processObjF(ct, metaObj, paramObj),
       this.buildRcObj(ct, metaObj, paramObj),
       paramObj,
@@ -547,11 +547,11 @@
    * @param {Array} arr - `ROW`: nameCt, paramObj.
    * @param {(function(ContentGn): UnlockableContent)|unset} ctMapper
    * @param {Object} metaObj
-   * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]
+   * @param {(function(UnlockableContent): string)|unset} [nameCtF]
    */
-  CLS_recipeGenerator.prototype.handle2Arr = function(rc, arr, ctMapper, metaObj, nameCtGetter) {
+  CLS_recipeGenerator.prototype.handle2Arr = function(rc, arr, ctMapper, metaObj, nameCtF) {
     if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
-    if(nameCtGetter == null) nameCtGetter = ct => ct.name;
+    if(nameCtF == null) nameCtF = ct => ct.name;
 
     let paramObjF = readParam(metaObj, "paramObjF");
 
@@ -564,12 +564,12 @@
       if(!this.checkCtValid(ct, metaObj, paramObj)) return;
 
       this.addRc(
-        rc, nameCtGetter(ct),
+        rc, nameCtF(ct),
         this.processObjF(ct, metaObj, paramObj),
         this.buildRcObj(ct, metaObj, paramObj),
         paramObj,
       );
-    });
+    }, true);
   };
 
 
@@ -578,31 +578,31 @@
    * @param {Object} rc
    * @param {Array} arr - `ROW`: nameCt, num.
    * @param {(function(ContentGn): UnlockableContent)|unset} ctMapper
-   * @param {(function(number, Object): void)|unset} numCaller - `ARGS`: num, paramObj.
+   * @param {(function(number, Object): void)|unset} numC - `ARGS`: num, paramObj.
    * @param {Object} metaObj
    * @param {Object|(function(UnlockableContent, Object): Object)|unset} [paramObj_d]
-   * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]
+   * @param {(function(UnlockableContent): string)|unset} [nameCtF]
    */
-  CLS_recipeGenerator.prototype.handleNameNumArr = function(rc, arr, ctMapper, numCaller, metaObj, paramObj_d, nameCtGetter) {
+  CLS_recipeGenerator.prototype.handleNameNumArr = function(rc, arr, ctMapper, numC, metaObj, paramObj_d, nameCtF) {
     if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
-    if(numCaller == null) numCaller = Function.air;
-    if(nameCtGetter == null) nameCtGetter = ct => ct.name;
+    if(numC == null) numC = Function.air;
+    if(nameCtF == null) nameCtF = ct => ct.name;
 
     let ct, paramObj;
     arr.forEachRow(2, (nameCt, num) => {
       ct = ctMapper(nameCt);
       if(ct == null) return;
       paramObj = convertParamObj(paramObj_d, ct, metaObj);
-      numCaller(num, paramObj);
+      numC(num, paramObj);
       if(!this.checkCtValid(ct, metaObj, paramObj)) return;
 
       this.addRc(
-        rc, nameCtGetter(ct),
+        rc, nameCtF(ct),
         this.processObjF(ct, metaObj, paramObj),
         this.buildRcObj(ct, metaObj, paramObj),
         paramObj,
       );
-    });
+    }, true);
   };
 
 
@@ -613,11 +613,11 @@
    * @param {(function(ContentGn): UnlockableContent)|unset} ctMapper
    * @param {Object} metaObj
    * @param {Object|(function(UnlockableContent, Object): Object)|unset} [paramObj_d]
-   * @param {(function(UnlockableContent): string)|unset} [nameCtGetter]
+   * @param {(function(UnlockableContent): string)|unset} [nameCtF]
    */
-  CLS_recipeGenerator.prototype.handleCtLi = function(rc, arr, ctMapper, metaObj, paramObj_d, nameCtGetter) {
+  CLS_recipeGenerator.prototype.handleCtLi = function(rc, arr, ctMapper, metaObj, paramObj_d, nameCtF) {
     if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
-    if(nameCtGetter == null) nameCtGetter = ct => ct.name;
+    if(nameCtF == null) nameCtF = ct => ct.name;
 
     let ct, paramObj;
     arr.forEachFast(tmpCt => {
@@ -627,12 +627,12 @@
       if(!this.checkCtValid(ct, metaObj, paramObj)) return;
 
       this.addRc(
-        rc, nameCtGetter(ct),
+        rc, nameCtF(ct),
         this.processObjF(ct, metaObj, paramObj),
         this.buildRcObj(ct, metaObj, paramObj),
         paramObj,
       );
-    });
+    }, true);
   };
 
 

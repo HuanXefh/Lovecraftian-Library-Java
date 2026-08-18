@@ -265,7 +265,7 @@
       };
 
       // Building field "blk$xxx" will copy value from block field "xxx" before being used, for edge cases
-      Object._it(obj1, (key, val) => {
+      Object.eachPair(obj1, (key, val) => {
         if(!key.startsWith("blk$")) return;
         obj1[key] = obj[key.replace("blk$", "")];
       });

@@ -20,7 +20,7 @@ const db = {
     "class.Seq", raw => new Seq(raw.array),
     "class.ObjectMap", raw => raw => {
       let map = new ObjectMap();
-      Object._it(raw.object, (key, val) => map.put(key, CLS_contentTemplateParser.parseField(val)));
+      Object.eachPair(raw.object, (key, val) => map.put(key, CLS_contentTemplateParser.parseField(val)));
       return map;
     },
 

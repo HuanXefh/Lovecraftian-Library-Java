@@ -54,7 +54,7 @@
       if(b.efficiency > 0.0 && Mathf.chanceDelta(0.04) && b.liquids.get(b.rsTg) > b.block.liquidCapacity * 0.98) {
         LCPos.getTilesEdge(thisFun.tmpTs, b.tile, b.block.size, true).forEachFast(ot => {
           if(Mathf.chance(0.5)) Puddles.deposit(ot, b.rsTg, 4.0);
-        });
+        }, true);
       };
 
       b.dumpLiquid(b.rsTg, 2.0);

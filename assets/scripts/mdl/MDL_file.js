@@ -192,7 +192,7 @@
       dir = name === "." ?
         dir.parent() :
         dir.child(name);
-    });
+    }, true);
 
     return ignoreExist ? dir : (!dir.exists() ? null : dir);
   }

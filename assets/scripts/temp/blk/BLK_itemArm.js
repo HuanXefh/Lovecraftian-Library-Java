@@ -33,9 +33,9 @@
       b.delegee.blk$moveStackAmt = f;
     });
 
-    blk.ex_addConfigCaller("ctTg", (b, val) => b.delegee.ctTg = MDL_content.getCt(val, "rs"));
-    blk.ex_addConfigCaller("shouldDropLoot", (b, val) => b.delegee.shouldDropLoot = val);
-    blk.ex_addConfigCaller("stackThreshold", (b, val) => b.delegee.blk$moveStackAmt = val);
+    blk.ex_addConfigM("ctTg", (b, val) => b.delegee.ctTg = MDL_content.getCt(val, "rs"));
+    blk.ex_addConfigM("shouldDropLoot", (b, val) => b.delegee.shouldDropLoot = val);
+    blk.ex_addConfigM("stackThreshold", (b, val) => b.delegee.blk$moveStackAmt = val);
   };
 
 

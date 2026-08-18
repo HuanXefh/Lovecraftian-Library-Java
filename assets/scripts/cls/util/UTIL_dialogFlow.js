@@ -111,7 +111,7 @@
   UTIL_dialogFlow.clearPool = function(name) {
     if(name != null) {
       let arr = UTIL_dialogFlow.getPool(name);
-      arr.forEachFast(tb => MDL_ui.removeActor(tb));
+      arr.forEachFast(tb => MDL_ui.removeActor(tb), true);
       arr.clear();
     } else {
       for(let name in pool) {

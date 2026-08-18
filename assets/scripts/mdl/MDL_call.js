@@ -345,7 +345,7 @@
     console.log("[LOVEC] Removed ${1} loot units.".format(thisFun.tmpUnits.length.color(Pal.accent)));
     thisFun.tmpUnits.forEachFast(loot => {
       FRAG_item.removeLoot_global(loot);
-    });
+    }, true);
     thisFun.tmpUnits.clear();
   }
   .setAnno("server")

@@ -168,7 +168,7 @@
 
 
   function comp_sense(b, sensor) {
-    let getter = b.block.delegee.logicSensorGetterMap.get(sensor);
+    let getter = b.block.delegee.logicSensorFMap.get(sensor);
     return getter != null ?
       getter(b) :
       b.super$sense(sensor);
@@ -176,7 +176,7 @@
 
 
   function comp_senseObject(b, sensor) {
-    let getter = b.block.delegee.logicSensorGetterMap.get(sensor);
+    let getter = b.block.delegee.logicSensorFMap.get(sensor);
     return getter != null ?
       getter(b) :
       b.super$senseObject(sensor);
@@ -299,13 +299,13 @@
        * @memberof BLK_baseBlock
        * @instance
        */
-      configKeyCallerArr: tprov(() => []),
+      configKeyCArr: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof BLK_baseBlock
        * @instance
        */
-      logicSensorGetterMap: tprov(() => new ObjectMap()),
+      logicSensorFMap: tprov(() => new ObjectMap()),
       /**
        * `INTERNAL`
        * @memberof BLK_baseBlock
@@ -447,11 +447,11 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {string} key
-       * @param {function(Building, any): void} valCaller - `ARGS`: b, val.
+       * @param {function(Building, any): void} valC - `ARGS`: b, val.
        * @return {void}
        */
-      ex_addConfigCaller: function(key, valCaller) {
-        this.configKeyCallerArr.write(key, valCaller);
+      ex_addConfigM: function(key, valC) {
+        this.configKeyCArr.write(key, valC);
       }
       .setProp({
         noSuper: true,
@@ -464,11 +464,11 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {LAccess} sensor
-       * @param {function(Building): any} valGetter - `ARGS`: b.
+       * @param {function(Building): any} valF - `ARGS`: b.
        * @return {void}
        */
-      ex_addLogicGetter: function(sensor, valGetter) {
-        this.logicSensorGetterMap.put(sensor, valGetter);
+      ex_addLogicF: function(sensor, valF) {
+        this.logicSensorFMap.put(sensor, valF);
       }
       .setProp({
         noSuper: true,
@@ -522,6 +522,12 @@
        * @memberof B_baseBlock
        * @instance
        */
+      LCReviMajor: 0,
+      /**
+       * `INTERNAL`
+       * @memberof B_baseBlock
+       * @instance
+       */
       LCReviSub: 0,
 
 
@@ -547,6 +553,7 @@
       writeAll: function(wr) {
         this.writeBase(wr);
         wr.s(this.ex_subRevi());
+        wr.s(this.ex_majorRevi());
         this.write(wr);
       }
       .setProp({
@@ -559,6 +566,9 @@
         this.LCRevi = revi < VAR.lovecReviOff ? 5 : (revi - VAR.lovecReviOff - this.super$version());
         if(this.LCRevi >= 6) {
           this.LCReviSub = rd.s();
+        };
+        if(this.LCRevi >= 7) {
+          this.LCReviMajor = rd.s();
         };
         this.read(rd, this.super$version());
       }
@@ -604,8 +614,8 @@
        */
       ex_handleConfigStr: function(str) {
         if(str.startsWith("CONFIG: ")) {
-          Object._it(unpackConfig(str), (key, val) => {
-            this.block.delegee.configKeyCallerArr.read(key, Function.air)(this, val);
+          Object.eachPair(unpackConfig(str), (key, val) => {
+            this.block.delegee.configKeyCArr.read(key, Function.air)(this, val);
           });
         } else {
           this.ex_handleConfigStrDef(str);
@@ -628,6 +638,21 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * Revision used for all block content templates.
+       * @memberof B_baseBlock
+       * @instance
+       * @return {number}
+       */
+      ex_majorRevi: function() {
+        return 0;
+      }
+      .setProp({
+        noSuper: true,
+        final: true,
       }),
 
 

@@ -493,22 +493,22 @@
      * Registers a new log type.
      * @param {number} mode - See {@link LogModes}.
      * @param {string} name
-     * @param {function(): string} strGetter
+     * @param {function(): string} strF
      * @return {void}
      */
-    add(mode, name, strGetter) {
+    add(mode, name, strF) {
       switch(mode) {
         case 0 :
-          this.__infoMap__.put(name, strGetter);
+          this.__infoMap__.put(name, strF);
           break;
         case 1 :
-          this.__warnMap__.put(name, strGetter);
+          this.__warnMap__.put(name, strF);
           break;
         case 2 :
-          this.__errMap__.put(name, strGetter);
+          this.__errMap__.put(name, strF);
           break;
         case 3 :
-          this.__debugMap__.put(name, strGetter);
+          this.__debugMap__.put(name, strF);
           break;
         default :
           throw new Error("Unknown log type: " + mode);
@@ -522,15 +522,15 @@
      * @return {[number, function(): string]|null}
      */
     find(name) {
-      let strGetter;
-      strGetter = this.__infoMap__.get(name);
-      if(strGetter != null) return [LogModes.I, strGetter];
-      strGetter = this.__warnMap__.get(name);
-      if(strGetter != null) return [LogModes.W, strGetter];
-      strGetter = this.__errMap__.get(name);
-      if(strGetter != null) return [LogModes.E, strGetter];
-      strGetter = this.__debugMap__.get(name);
-      if(strGetter != null) return [LogModes.D, strGetter];
+      let strF;
+      strF = this.__infoMap__.get(name);
+      if(strF != null) return [LogModes.I, strF];
+      strF = this.__warnMap__.get(name);
+      if(strF != null) return [LogModes.W, strF];
+      strF = this.__errMap__.get(name);
+      if(strF != null) return [LogModes.E, strF];
+      strF = this.__debugMap__.get(name);
+      if(strF != null) return [LogModes.D, strF];
 
       return null;
     },
@@ -589,7 +589,7 @@
         throw new Error(str);
       };
       let args = Array.from(arguments).splice(1);
-      args.forEachFast(arg => printObj(arg));
+      args.forEachFast(arg => printObj(arg), true);
       throw new Error(str.format.apply(str, args));
     },
 

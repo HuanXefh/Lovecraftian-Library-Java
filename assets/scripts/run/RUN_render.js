@@ -58,7 +58,7 @@
 
     if(unitPlayer != null) {
       // Draw surrounding range
-      LCPos.getTilesDstManhattan(thisFun.tmpTs, unitPlayer.tileOn(), VAR.range.unitSurR).forEachFast(ot => LCDrawf.areaShrink(ot, 1, Pal.accent, 0.5, VAR.layer.debugFlr));
+      LCPos.getTilesDstManhattan(thisFun.tmpTs, unitPlayer.tileOn(), VAR.range.unitSurR).forEachFast(ot => LCDrawf.areaShrink(ot, 1, Pal.accent, 0.5, VAR.layer.debugFlr), true);
     };
   }
   .setProp({
@@ -127,7 +127,7 @@
               Draw.color(Pal.accent, PARAM.UNIT_RANGE_ALPHA);
               LCDraw.circle(unit.x, unit.y, wp.bullet.splashDamageRadius, false);
             };
-          });
+          }, true);
           if(!cond) {
             Lines.stroke(1.0);
             Draw.color(Pal.accent, PARAM.UNIT_RANGE_ALPHA);

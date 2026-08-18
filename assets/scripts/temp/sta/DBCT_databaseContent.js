@@ -71,6 +71,7 @@
 
 
     allDatabaseTabs: false,
+    outline: false,
 
 
   })

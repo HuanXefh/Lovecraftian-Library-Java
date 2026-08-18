@@ -151,7 +151,7 @@
     if(repeat == null) repeat = 1;
 
     let x_i, y_i;
-    (repeat)._it(i => {
+    (repeat).each(i => {
       x_i = x + Mathf.range(rad);
       y_i = y + Mathf.range(rad);
       Effect.floorDust(x_i, y_i, 8.0);
@@ -352,7 +352,7 @@
   const impactWave = function thisFun(x, y, rad) {
     thisFun.effs.forEachFast(eff => {
       showAt(x, y, eff, rad);
-    });
+    }, true);
   }
   .setProp({
     effs: [

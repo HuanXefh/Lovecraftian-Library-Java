@@ -120,7 +120,7 @@
     new CLS_interface("INTF_BLK_manualStartBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -171,7 +171,7 @@
     new CLS_interface("INTF_B_manualStartBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

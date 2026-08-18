@@ -58,7 +58,7 @@
     new CLS_interface("INTF_BLK_oreScannerHandler", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -81,7 +81,7 @@
     new CLS_interface("INTF_B_oreScannerHandler", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

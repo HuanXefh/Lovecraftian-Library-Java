@@ -18,7 +18,7 @@
     if(obj == null) obj = {};
 
     let args = [this, true];
-    Object._it(obj, (key, val) => {
+    Object.eachPair(obj, (key, val) => {
       args.push(key, val);
     });
     Object.setProp.apply(null, args);

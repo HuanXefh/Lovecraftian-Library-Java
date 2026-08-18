@@ -24,7 +24,7 @@
 
     blk.blkR = blk.attrR;
 
-    blk.ex_addLogicGetter(LAccess.range, b => blk.blkR);
+    blk.ex_addLogicF(LAccess.range, b => blk.blkR);
   };
 
 
@@ -55,7 +55,7 @@
 
     thisFun.tmpTs.forEachFast(ot => {
       LCDrawf.areaShrink(ot, (blk.attrMode & AttrModes.BLOCK) !== 0 ? ot.block().size : 1, valid ? Pal.accent : Pal.remove);
-    });
+    }, true);
   }
   .setProp({
     tmpTup: [],

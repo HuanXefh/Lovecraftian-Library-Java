@@ -59,7 +59,7 @@
     mouseMoveStartY = y_f;
   });
   MDL_event.onUpdate(() => {
-    addedGrps.forEachFast(grp => grp.update());
+    addedGrps.forEachFast(grp => grp.update(), true);
   });
 
 
@@ -113,7 +113,7 @@
         readParam(paramObj, "clickScr", Function.air),
         readParam(paramObj, "updateScr", null),
       ]);
-    });
+    }, true);
     this.isLoaded = true;
   };
 
@@ -173,7 +173,7 @@
             let btn = btnCell.get();
             btnCell.update(() => updateScr.call(btn));
           };
-        });
+        }, true);
         btns.row();
         i++;
       };

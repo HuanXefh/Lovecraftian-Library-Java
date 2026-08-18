@@ -37,7 +37,7 @@
         Puddles.deposit(ot, puddle.liquid, Time.delta * amtDepos);
         if(ot === puddle.tile && scr != null) scr(ot);
       };
-    });
+    }, true);
   }
   .setProp({
     tmpTs: [],

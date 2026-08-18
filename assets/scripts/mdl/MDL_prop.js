@@ -55,7 +55,7 @@
         reload += mt.reload;
         maxReload += mt.weapon.reload;
         if(mt.weapon.flipSprite) isAltWp = true;
-      });
+      }, true);
 
       return maxReload < 0.0001 ?
         1.0 :

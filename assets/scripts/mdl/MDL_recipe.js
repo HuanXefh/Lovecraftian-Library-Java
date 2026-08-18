@@ -443,7 +443,7 @@
             // Group is used for items and fluids only
             ct = MDL_content.getCt(tup[0], "rs");
             thisFun.handleCt(map, ct, rcHeader, mode);
-          });
+          }, true);
         } else {
           // Content name
           ct = MDL_content.getCt(keyCt, null, true);
@@ -457,9 +457,9 @@
         keyCt.forEachFast(name => {
           ct = MDL_content.getCt(name, null, true);
           thisFun.handleCt(map, ct, rcHeader, mode);
-        });
+        }, true);
       };
-    });
+    }, true);
 
     return map;
   }
@@ -577,8 +577,8 @@
       obj[categ] = [];
       rcHeaders.forEachFast(rcHeader => {
         if(getCateg(rcMdl, rcHeader) == categ) obj[categ].push(rcHeader);
-      });
-    });
+      }, true);
+    }, true);
 
     return obj;
   };
@@ -665,7 +665,7 @@
     arr.forEachFast(nameCt => {
       ct = MDL_content.getCt(nameCt, null, true);
       if(ct != null) cts.pushUnique(ct);
-    });
+    }, true);
 
     return cts;
   };
@@ -863,7 +863,7 @@
       getBo(null, rcMdl, rcHeader, false, initParamObj);
       getFo(null, rcMdl, rcHeader, false, initParamObj);
       getPayo(null, rcMdl, rcHeader, false, initParamObj);
-    });
+    }, true);
   }
   .setProp({
     blks: [],
@@ -877,13 +877,13 @@
    * @param {string|Array|UnlockableContent} tg
    * @param {number} amt
    * @param {number|unset} [p]
-   * @param {function(UnlockableContent, number, number|null): void} [ctCaller] - `ARGS`: ct, amt, p.
+   * @param {function(UnlockableContent, number, number|null): void} [ctC] - `ARGS`: ct, amt, p.
    * @param {boolean|unset} [isSecondary] - Do not set this.
    * @param {number|unset} [pTg]
    * @return {void}
    */
-  const parseRcIoRow = function thisFun(outArr, tg, amt, p, ctCaller, isSecondary, pTg) {
-    if(ctCaller == null) ctCaller = Function.air;
+  const parseRcIoRow = function thisFun(outArr, tg, amt, p, ctC, isSecondary, pTg) {
+    if(ctC == null) ctC = Function.air;
     if(pTg == null) pTg = 1.0;
     let isContinuous = p == null;
 
@@ -891,7 +891,7 @@
       // Alternative input
       let i = 0, iCap = tg.iCap(), tmpArr = [];
       while(i < iCap) {
-        parseRcIoRow(tmpArr, tg[i], tg[i + 1], isContinuous ? null : tg[i + 2], ctCaller, true, pTg);
+        parseRcIoRow(tmpArr, tg[i], tg[i + 1], isContinuous ? null : tg[i + 2], ctC, true, pTg);
         i += isContinuous ? 2 : 3;
       };
       if(tmpArr.length > 0) {
@@ -918,9 +918,9 @@
             tmpArr, tup[0],
             amt * readParam(tup[1], "amtScl", 1.0),
             isContinuous ? null : (p * readParam(tup[1], "pScl", 1.0)),
-            ctCaller, true, pTg,
+            ctC, true, pTg,
           );
-        });
+        }, true);
         if(tmpArr.length > 0) {
           isSecondary ?
           outArr.pushAll(tmpArr) :
@@ -945,8 +945,8 @@
           thisFun.reportIncompleteRc(tg);
         } else {
           blk.requirements.forEachFast(itmStack => {
-            parseRcIoRow(outArr, itmStack.item, itmStack.amount, 1.0, ctCaller, false, pTg);
-          });
+            parseRcIoRow(outArr, itmStack.item, itmStack.amount, 1.0, ctC, false, pTg);
+          }, true);
         };
       } else {
         // Content name
@@ -954,17 +954,17 @@
         if(ct == null) {
           thisFun.reportIncompleteRc(tg);
         } else {
-          parseRcIoRow(outArr, ct, amt, p, ctCaller, false, pTg);
+          parseRcIoRow(outArr, ct, amt, p, ctC, false, pTg);
         };
       };
     } else if(tg instanceof UnlockableContent) {
       // Content
       if(isContinuous) {
         outArr.push(tg, amt);
-        ctCaller(tg, amt, null);
+        ctC(tg, amt, null);
       } else {
         outArr.push(tg, Math.round(amt / pTg), p * pTg);
-        ctCaller(tg, Math.round(amt / pTg), p * pTg);
+        ctC(tg, Math.round(amt / pTg), p * pTg);
       };
     } else {
       printObj(tg);
@@ -1005,13 +1005,13 @@
       i = 0,
       iCap = raw.iCap(),
       ord = IO_ORDER_MAP.get(name),
-      ctCaller = null;
+      ctC = null;
 
     // It's OK to hard code this I guess
     switch(name) {
 
       case "ci" :
-        ctCaller = function(ct, amt) {
+        ctC = function(ct, amt) {
           if(initParamObj == null || amt < 0.0001) return;
           MDL_recipeDict.addFldConsTerm(
             readParam(initParamObj, "blk"),
@@ -1027,7 +1027,7 @@
         break;
 
       case "bi" :
-        ctCaller = function(ct, amt, p) {
+        ctC = function(ct, amt, p) {
           if(initParamObj == null || amt <= 0) return;
           ct instanceof Item ?
             MDL_recipeDict.addItmConsTerm(
@@ -1055,7 +1055,7 @@
         break;
 
       case "aux" :
-        ctCaller = function(ct, amt) {
+        ctC = function(ct, amt) {
           if(initParamObj == null || amt < 0.0001) return;
           MDL_recipeDict.addFldConsTerm(
             readParam(initParamObj, "blk"),
@@ -1071,7 +1071,7 @@
         break;
 
       case "opt" :
-        ctCaller = function(ct, amt, p) {
+        ctC = function(ct, amt, p) {
           if(initParamObj == null || amt <= 0) return;
           MDL_recipeDict.addItmConsTerm(
             readParam(initParamObj, "blk"),
@@ -1089,7 +1089,7 @@
         break;
 
       case "payi" :
-        ctCaller = function(ct, amt) {
+        ctC = function(ct, amt) {
           if(initParamObj == null || amt <= 0) return;
           MDL_recipeDict.addPayConsTerm(
             readParam(initParamObj, "blk"),
@@ -1105,7 +1105,7 @@
         break;
 
       case "co" :
-        ctCaller = function(ct, amt) {
+        ctC = function(ct, amt) {
           if(initParamObj == null || amt < 0.0001) return;
           MDL_recipeDict.addFldProdTerm(
             readParam(initParamObj, "blk"),
@@ -1121,7 +1121,7 @@
         break;
 
       case "bo" :
-        ctCaller = function(ct, amt, p) {
+        ctC = function(ct, amt, p) {
           if(initParamObj == null || amt <= 0) return;
           MDL_recipeDict.addItmProdTerm(
             readParam(initParamObj, "blk"),
@@ -1138,7 +1138,7 @@
         break;
 
       case "fo" :
-        ctCaller = function(ct, amt, p) {
+        ctC = function(ct, amt, p) {
           if(initParamObj == null || amt <= 0) return;
           MDL_recipeDict.addItmProdTerm(
             readParam(initParamObj, "blk"),
@@ -1155,7 +1155,7 @@
         break;
 
       case "payo" :
-        ctCaller = function(ct, amt) {
+        ctC = function(ct, amt) {
           if(initParamObj == null || amt <= 0) return;
           MDL_recipeDict.addPayProdTerm(
             readParam(initParamObj, "blk"),
@@ -1176,7 +1176,7 @@
       parseRcIoRow(
         arr, raw[i], raw[i + 1],
         ord === 2 ? null : raw[i + 2],
-        ctCaller,
+        ctC,
       );
 
       if(name === "opt") {

@@ -132,14 +132,14 @@
       tmpFrac2 += pathSegLens[i] / pathLen;
       if(tmpFrac2 > paramFrac) {
         tmpFrac3 = (paramFrac - tmpFrac1) / (tmpFrac2 - tmpFrac1);
-        dim._it(ind => {
+        dim.each(ind => {
           tup.push(Mathf.lerp(pathData[i * dim + ind], pathData[i * dim + dim + ind], tmpFrac3));
         });
         break;
       };
       i++;
     };
-    if(tmpFrac3 == null) dim._it(ind => tup.push(pathData[ind]));
+    if(tmpFrac3 == null) dim.each(ind => tup.push(pathData[ind]));
 
     return tup;
   }

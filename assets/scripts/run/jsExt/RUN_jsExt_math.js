@@ -39,7 +39,7 @@
    */
   Object.mapSum = function(obj, mapF) {
     let val = 0.0;
-    Object._it(obj, (key, val1) => {
+    Object.eachPair(obj, (key, val1) => {
       if(typeof val1 === "number") {
         mapF == null ?
           (val += val1) :
@@ -59,7 +59,7 @@
    */
   Object.mapMax = function(obj, mapF) {
     let val = 0.0;
-    Object._it(obj, (key, val1) => {
+    Object.eachPair(obj, (key, val1) => {
       if(
         mapF == null ?
           val1 > val :
@@ -81,7 +81,7 @@
    */
   Object.mapMin = function(obj, mapF) {
     let val = Number.n8;
-    Object._it(obj, (key, val1) => {
+    Object.eachPair(obj, (key, val1) => {
       if(
         mapF == null ?
           val1 < val :
@@ -100,7 +100,7 @@
    * <br> `ARGS`: obj1, obj2, includeEqual.
    * <br> `ARGS`: obj1, num, includeEqual.
    * <br> `ARGS`: obj1, arr, includeEqual.
-   * <br> `ARGS`: obj1, valGetter, includeEqual.
+   * <br> `ARGS`: obj1, valF, includeEqual.
    * @return {boolean}
    */
   Object.mapSomeLargerThan = newMultiFunction(
@@ -125,9 +125,9 @@
 
       return false;
     },
-    ["object", Function, "boolean"], function(obj, valGetter, includeEqual) {
+    ["object", Function, "boolean"], function(obj, valF, includeEqual) {
       for(let key in obj) {
-        if(includeEqual ? tryVal(obj[key], 0.0) >= valGetter(key, tryVal(obj[key], 0.0)) : tryVal(obj[key], 0.0) > valGetter(key, tryVal(obj[key], 0.0))) return true;
+        if(includeEqual ? tryVal(obj[key], 0.0) >= valF(key, tryVal(obj[key], 0.0)) : tryVal(obj[key], 0.0) > valF(key, tryVal(obj[key], 0.0))) return true;
       };
 
       return false;
@@ -140,7 +140,7 @@
    * <br> `ARGS`: obj1, obj2, includeEqual.
    * <br> `ARGS`: obj1, num, includeEqual.
    * <br> `ARGS`: obj1, arr, includeEqual.
-   * <br> `ARGS`: obj1, valGetter, includeEqual.
+   * <br> `ARGS`: obj1, valF, includeEqual.
    * @return {boolean}
    */
   Object.mapAllLargerThan = function(obj, arg, includeEqual) {
@@ -153,7 +153,7 @@
    * <br> `ARGS`: obj1, obj2, includeEqual.
    * <br> `ARGS`: obj1, num, includeEqual.
    * <br> `ARGS`: obj1, arr, includeEqual.
-   * <br> `ARGS`: obj1, valGetter, includeEqual.
+   * <br> `ARGS`: obj1, valF, includeEqual.
    * @return {boolean}
    */
   Object.mapSomeSmallerThan = newMultiFunction(
@@ -184,10 +184,10 @@
 
       return i === 0;
     },
-    ["object", Function, "boolean"], function(obj, valGetter, includeEqual) {
+    ["object", Function, "boolean"], function(obj, valF, includeEqual) {
       let i = 0;
       for(let key in obj) {
-        if(includeEqual ? tryVal(obj[key], 0.0) <= valGetter(key, tryVal(obj[key], 0.0)) : tryVal(obj[key], 0.0) < valGetter(key, tryVal(obj[key], 0.0))) return true;
+        if(includeEqual ? tryVal(obj[key], 0.0) <= valF(key, tryVal(obj[key], 0.0)) : tryVal(obj[key], 0.0) < valF(key, tryVal(obj[key], 0.0))) return true;
         i++;
       };
 
@@ -201,7 +201,7 @@
    * <br> `ARGS`: obj1, obj2, includeEqual.
    * <br> `ARGS`: obj1, num, includeEqual.
    * <br> `ARGS`: obj1, arr, includeEqual.
-   * <br> `ARGS`: obj1, valGetter, includeEqual.
+   * <br> `ARGS`: obj1, valF, includeEqual.
    * @return {boolean}
    */
   Object.mapAllSmallerThan = function(obj1, obj2, includeEqual) {

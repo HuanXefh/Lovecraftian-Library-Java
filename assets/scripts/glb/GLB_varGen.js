@@ -32,7 +32,7 @@
       let obj = {};
       DB_misc.db["texture"]["icon"].forEachRow(2, (name, nameReg) => {
         obj[name] = findRegion(nameReg);
-      });
+      }, true);
       return obj;
     })();
 
@@ -43,31 +43,9 @@
      */
     exports.icons = (function() {
       let obj = {};
-      Object._it(module.exports.iconRegs, (name, reg) => {
+      Object.eachPair(module.exports.iconRegs, (name, reg) => {
         obj[name] = new TextureRegionDrawable(reg);
       });
-      return obj;
-    })();
-
-
-    /**
-     * Texture regions used for wire.
-     * @type {Object}
-     * @prop {ObjectMap} regMap - Maps a material to wire region.
-     * @prop {ObjectMap} endRegMap - Maps a material to wire end region.
-     * @prop {TextureRegion} glowReg - Wire glow region.
-     * @prop {TextureRegion} shaReg - Wire shadow region.
-     */
-    exports.wireRegs = (function() {
-      let obj = {};
-      obj.regMap = new ObjectMap();
-      obj.endRegMap = new ObjectMap();
-      DB_block.db["grpParam"]["wireMatReg"].forEachRow(2, (wireMat, nameReg) => {
-        obj.regMap.put(wireMat, findRegion(nameReg));
-        obj.endRegMap.put(wireMat, findRegion(nameReg + "-end"));
-      });
-      obj.glowReg = findRegion("lovec-ast-wire-glow");
-      obj.shaReg = findRegion("lovec-ast-wire-shadow");
       return obj;
     })();
 
@@ -128,7 +106,7 @@
       DB_block.db["grpParam"]["factionColor"].forEachRow(2, (faction, colorStr) => {
         if(faction === "none") return;
         obj[faction] = MDL_content.getFactionCts(faction);
-      });
+      }, true);
       return obj;
     })();
 
@@ -139,7 +117,7 @@
      */
     exports.facFamis = (function() {
       let obj = {};
-      MDL_content.getFacFamisDefined().forEachFast(fami => obj[fami] = MDL_content.getFacFamiBlks(fami));
+      MDL_content.getFacFamisDefined().forEachFast(fami => obj[fami] = MDL_content.getFacFamiBlks(fami), true);
       return obj;
     })();
 
@@ -170,7 +148,7 @@
       DB_item.db["group"]["sand"].forEachFast(name => {
         let itm = MDL_content.getCt(name, "rs");
         if(itm != null) arr.push(itm);
-      });
+      }, true);
       return arr;
     })();
 
@@ -198,7 +176,7 @@
       DB_item.db["param"]["fuel"]["item"].forEachRow(2, (name, params) => {
         let itm = MDL_content.getCt(name, "rs");
         if(itm != null) arr.push(itm);
-      });
+      }, true);
       return arr;
     })();
 
@@ -212,7 +190,7 @@
       DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (name, params) => {
         let liq = MDL_content.getCt(name, "rs");
         if(liq != null && !liq.gas) arr.push(liq);
-      });
+      }, true);
       return arr;
     })();
 
@@ -226,7 +204,7 @@
       DB_item.db["param"]["fuel"]["fluid"].forEachRow(2, (name, params) => {
         let liq = MDL_content.getCt(name, "rs");
         if(liq != null && liq.gas) arr.push(liq);
-      });
+      }, true);
       return arr;
     })();
 
@@ -237,9 +215,9 @@
      */
     exports.intmds = (function() {
       let obj = {};
-      DB_item.db["intmd"]["tag"].forEachFast(tag => obj[tag] = []);
-      Vars.content.items().each(itm => tryFun(itm.ex_getIntmdTags, itm, Array.air).forEachFast(tag => obj[tag].push(itm)));
-      Vars.content.liquids().each(liq => tryFun(liq.ex_getIntmdTags, liq, Array.air).forEachFast(tag => obj[tag].push(liq)));
+      DB_item.db["intmd"]["tag"].forEachFast(tag => obj[tag] = [], true);
+      Vars.content.items().each(itm => tryFun(itm.ex_getIntmdTags, itm, Array.air).forEachFast(tag => obj[tag].push(itm), true));
+      Vars.content.liquids().each(liq => tryFun(liq.ex_getIntmdTags, liq, Array.air).forEachFast(tag => obj[tag].push(liq), true));
       return obj;
     })();
 

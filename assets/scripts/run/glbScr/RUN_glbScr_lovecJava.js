@@ -59,10 +59,12 @@
   LCMathFunc = fetchClass("lovec.math.LCMathFunc");
   /** @global lovec.math.LCRaycast */
   LCRaycast = fetchClass("lovec.math.LCRaycast");
-  /** @global lovec.math.MathGraph */
-  MathGraph = fetchClass("lovec.math.MathGraph");
-  /** @global lovec.math.MathMatrix */
-  MathMatrix = fetchClass("lovec.math.MathMatrix");
+  /** @global lovec.math.struct.MathGraph */
+  MathGraph = fetchClass("lovec.math.struct.MathGraph");
+  /** @global lovec.math.struct.MathMatrix */
+  MathMatrix = fetchClass("lovec.math.struct.MathMatrix");
+  /** @global lovec.math.struct.MathMeanArray */
+  MathMeanArray = fetchClass("lovec.math.struct.MathMeanArray");
 
 
   /* <------------------------------ lovec.utils ------------------------------ */

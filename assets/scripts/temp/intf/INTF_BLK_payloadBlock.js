@@ -14,10 +14,10 @@
   function comp_init(blk) {
     if(blk.payAmtCap < 0.0) blk.payAmtCap = blk.size;
 
-    blk.ex_addLogicGetter(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
-    blk.ex_addLogicGetter(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
-    blk.ex_addLogicGetter(LAccess.totalPayload, b => Object.mapSum(b.delegee.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
-    blk.ex_addLogicGetter(LAccess.payloadCapacity, b => blk.payAmtCap);
+    blk.ex_addLogicF(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
+    blk.ex_addLogicF(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
+    blk.ex_addLogicF(LAccess.totalPayload, b => Object.mapSum(b.delegee.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
+    blk.ex_addLogicF(LAccess.payloadCapacity, b => blk.payAmtCap);
   };
 
 
@@ -53,6 +53,7 @@
           MDL_effect.payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content(), false);
           Object.mapIncre(b.payReqObj, pay.content().name);
         },
+        true,
       );
     };
 
@@ -121,7 +122,7 @@
     new CLS_interface("INTF_BLK_payloadBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -166,7 +167,7 @@
     new CLS_interface("INTF_B_payloadBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

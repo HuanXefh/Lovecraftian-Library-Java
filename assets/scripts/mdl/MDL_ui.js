@@ -621,7 +621,7 @@
         shouldClose = true;
       }).center().size(w, h).row();
       actor.add("").row();
-    });
+    }, true);
     UTIL_dialogFlow.getPool("selection").push(actor);
 
     let shouldClose = false;
@@ -776,7 +776,7 @@
 
       if(obj.scr != null) obj.scr();
       if(args != null) {
-        args.forEachFast(arr => createChara(arr[0], arr[1], arr[2], () => UTIL_dialogFlow.checkRead(ind), arr[3], arr[4], arr[5], arr[6], arr[7]));
+        args.forEachFast(arr => createChara(arr[0], arr[1], arr[2], () => UTIL_dialogFlow.checkRead(ind), arr[3], arr[4], arr[5], arr[6], arr[7]), true);
       };
       createText(0.0, dialFlowData[ind * 4], dialFlowData[ind * 4 + 1], () => {
         let nextInd = ind + 1;

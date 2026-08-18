@@ -232,36 +232,48 @@ public class LCNativeArray {
     /**
      * Not really faster.
      */
-    public static void forEachFast(NativeArray arr, Cons cons) {
+    public static void forEachFast(NativeArray arr, Cons cons, boolean noWrap) {
         long iCap = arr.getLength();
         if(iCap == 0) return;
         for(int i = 0; i < iCap; i++) {
-            cons.get(LCScript.wrap(arr.get(i)));
+            cons.get(noWrap ? arr.get(i) : LCScript.wrap(arr.get(i)));
         };
     };
     // Overload
+    public static void forEachFast(NativeArray arr, Cons cons) {
+        forEachFast(arr, cons, false);
+    };
+    public static void forEachFast(Object[] objs, Cons cons, boolean noWrap) {
+        wrapCons(objs, arr0 -> forEachFast(arr0, cons, noWrap));
+    };
     public static void forEachFast(Object[] objs, Cons cons) {
-        wrapCons(objs, arr0 -> forEachFast(arr0, cons));
+        forEachFast(objs, cons, false);
     };
 
 
     /**
      * Variant of {@link #forEachFast} with a condition check.
      */
-    public static void forEachCond(NativeArray arr, @Nullable Boolf boolF, Cons cons) {
+    public static void forEachCond(NativeArray arr, @Nullable Boolf boolF, Cons cons, boolean noWrap) {
         long iCap = arr.getLength();
         if(iCap == 0) return;
         Object wrapped;
         for(int i = 0; i < iCap; i++) {
-            wrapped = LCScript.wrap(arr.get(i));
+            wrapped = noWrap ? arr.get(i) : LCScript.wrap(arr.get(i));
             if(boolF == null || boolF.get(wrapped)) {
                 cons.get(wrapped);
             };
         };
     };
     // Overload
+    public static void forEachCond(NativeArray arr, @Nullable Boolf boolF, Cons cons) {
+        forEachCond(arr, boolF, cons, false);
+    };
+    public static void forEachCond(Object[] objs, @Nullable Boolf boolF, Cons cons, boolean noWrap) {
+        wrapCons(objs, arr0 -> forEachCond(arr0, boolF, cons, noWrap));
+    };
     public static void forEachCond(Object[] objs, @Nullable Boolf boolF, Cons cons) {
-        wrapCons(objs, arr0 -> forEachCond(arr0, boolF, cons));
+        forEachCond(objs, boolF, cons, false);
     };
 
 
@@ -270,7 +282,7 @@ public class LCNativeArray {
      * Unlike the JavaScript version, this method passes the whole row array to <code>cons</code>.
      */
     @SuppressWarnings("CollectionAddedToSelf")
-    public static void forEachRow(NativeArray fArr, int ord, Cons<NativeArray> cons) {
+    public static void forEachRow(NativeArray fArr, int ord, Cons<NativeArray> cons, boolean noWrap) {
         long iCap = fArr.getLength();
         if(iCap == 0) return;
         // Don't use the same array, to avoid reference corruption
@@ -281,7 +293,7 @@ public class LCNativeArray {
             clear(tmpArr);
             j = 0;
             while(j < ord) {
-                tmpArr.put(j, tmpArr, LCScript.wrap(fArr.get(i + j)));
+                tmpArr.put(j, tmpArr, noWrap ? fArr.get(i + j) : LCScript.wrap(fArr.get(i + j)));
                 j++;
             };
             cons.get(tmpArr);
@@ -290,19 +302,25 @@ public class LCNativeArray {
         Pools.free(tmpArr);
     };
     // Overload
+    public static void forEachRow(NativeArray fArr, int ord, Cons<NativeArray> cons) {
+        forEachRow(fArr, ord, cons, false);
+    };
+    public static void forEachRow(Object[] objs, int ord, Cons<NativeArray> cons, boolean noWrap) {
+        wrapCons(objs, arr0 -> forEachRow(arr0, ord, cons, noWrap));
+    };
     public static void forEachRow(Object[] objs, int ord, Cons<NativeArray> cons) {
-        wrapCons(objs, arr0 -> forEachRow(arr0, ord, cons));
+        forEachRow(objs, ord, cons, false);
     };
 
 
-    private static void applyForEachAll(NativeArray arr, Cons3 cons3) {
+    private static void applyForEachAll(NativeArray arr, Cons3 cons3, boolean noWrap) {
         int i = 0;
         long iCap = arr.getLength();
         Object wrapped;
         while(i < iCap) {
-            wrapped = LCScript.wrap(arr.get(i));
+            wrapped = noWrap ? arr.get(i) : LCScript.wrap(arr.get(i));
             if(wrapped instanceof NativeArray arr1) {
-                applyForEachAll(arr1, cons3);
+                applyForEachAll(arr1, cons3, noWrap);
             } else {
                 cons3.get(wrapped, i, arr);
             };
@@ -315,15 +333,19 @@ public class LCNativeArray {
      * Variant of {@link #forEachFast} used for layered array.
      * Does not support object array, which is probably unnecessary.
      */
+    public static void forEachAll(NativeArray arr, Cons3 cons3, boolean noWrap) {
+        applyForEachAll(arr, cons3, noWrap);
+    };
+    // Overload
     public static void forEachAll(NativeArray arr, Cons3 cons3) {
-        applyForEachAll(arr, cons3);
+        forEachAll(arr, cons3, false);
     };
 
 
     /**
      * Iterates through each element pair in two arrays.
      */
-    public static void forEachPair(NativeArray arr1, NativeArray arr2, Cons2 cons2) {
+    public static void forEachPair(NativeArray arr1, NativeArray arr2, Cons2 cons2, boolean noWrap) {
         int i = 0;
         long iCap = arr1.getLength();
         int j;
@@ -331,11 +353,15 @@ public class LCNativeArray {
         while(i < iCap) {
             j = 0;
             while(j < jCap) {
-                cons2.get(LCScript.wrap(arr1.get(i)), LCScript.wrap(arr2.get(j)));
+                cons2.get(noWrap ? arr1.get(i) : LCScript.wrap(arr1.get(i)), noWrap ? arr2.get(j) : LCScript.wrap(arr2.get(j)));
                 j++;
             };
             i++;
         };
+    };
+    // Overload
+    public static void forEachPair(NativeArray arr1, NativeArray arr2, Cons2 cons2) {
+        forEachPair(arr1, arr2, cons2, false);
     };
 
 

@@ -145,7 +145,7 @@
    */
   const getTagText = function(strs, ignoreEmpty) {
     let str_fi = "";
-    strs.forEachFast(str => str_fi += str + "; ");
+    strs.forEachFast(str => str_fi += str + "; ", true);
 
     return (String.isEmpty(str_fi) && !ignoreEmpty) ? TmpStateTag.error : str_fi;
   };
@@ -196,7 +196,7 @@
 
     str.split(/\s*OR\s*/).forEachFast(str1 => {
       matArr.push(str1.split(/\s*AND\s*/));
-    });
+    }, true);
 
     return matArr;
   };
@@ -272,7 +272,7 @@
         );
       };
       isTag = false;
-    });
+    }, true);
 
     return arr;
   };

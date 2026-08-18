@@ -50,7 +50,7 @@
   * @return {T}
   */
   Object.cloneProp = function(objNew, objOld) {
-    Object._it(objOld, (key, prop) => {
+    Object.eachPair(objOld, (key, prop) => {
       objNew[key] = prop;
     });
 

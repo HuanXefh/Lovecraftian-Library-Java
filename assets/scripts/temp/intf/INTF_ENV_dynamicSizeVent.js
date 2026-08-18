@@ -40,7 +40,7 @@
     blk.offPon2s.forEachFast(pon2 => {
       ot = t.nearby(pon2);
       if(ot != null) blk.parent.drawBase(ot);
-    });
+    }, true);
 
     let z = Draw.z();
     Draw.z(VAR.layer.vent);
@@ -94,7 +94,7 @@
   module.exports = new CLS_interface("INTF_ENV_dynamicSizeVent", {
 
 
-    __paramObjSetter__: () => ({
+    __paramObjM__: () => ({
 
 
       /**

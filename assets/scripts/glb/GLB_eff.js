@@ -153,7 +153,7 @@
 
   exports.fadePlacePack = (function() {
     let arr = [];
-    (10)._it(size => {
+    (10).each(size => {
       arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
         r: size * 0.5,
         color: Pal.accent,
@@ -165,7 +165,7 @@
 
   exports.fadeRemovePack = (function() {
     let arr = [];
-    (10)._it(size => {
+    (10).each(size => {
       arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
         r: size * 0.5,
         color: Pal.remove,
@@ -177,7 +177,7 @@
 
   exports.fadeDisablePack = (function() {
     let arr = [];
-    (10)._it(size => {
+    (10).each(size => {
       arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
         r: size * 0.5,
         color: Pal.sap,
@@ -207,7 +207,7 @@
 
   exports.pulseDrillPack = (function() {
     let arr = [];
-    (10)._it(size => {
+    (10).each(size => {
       arr.push(size === 0 ? Fx.none : TP_effect.pulseRect({
         r: size * 0.5,
         color: Pal.techBlue,

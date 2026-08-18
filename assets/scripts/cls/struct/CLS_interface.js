@@ -38,7 +38,7 @@
       name = null;
     };
 
-    Object._it(obj, (key, val) => {
+    Object.eachPair(obj, (key, val) => {
       if(typeof val !== "function") ERROR_HANDLER.throw("nonFunctionInInterface", key);
     });
 

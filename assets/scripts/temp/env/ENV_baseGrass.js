@@ -30,9 +30,13 @@
       MDL_event.onLoad(() => {
         if(!blk.customShadowRegion.found()) LOG_HANDLER.log("noCustomShadowRegionFound", blk.name);
         if(blk.variantShadowRegions != null) {
-          blk.variantShadowRegions.forEachFast(shaReg => {
-            if(!shaReg.found()) shaReg.set(blk.customShadowRegion);
-          });
+          let i = 0, iCap = blk.variantShadowRegions.iCap();
+          while(i < iCap) {
+            if(!blk.variantShadowRegions[i].found()) {
+              blk.variantShadowRegions[i] = blk.customShadowRegion;
+            };
+            i++;
+          };
         };
       });
     };

@@ -9,14 +9,14 @@
    * Container of a special table that can be dragged.
    * @class
    * @param {string|unset} [title]
-   * @param {function(Table): void} [tableF]
+   * @param {function(Table): void} [tableM]
    */
   const CLS_window = newClass().initClass();
 
 
-  CLS_window.prototype.init = function(title, tableF) {
+  CLS_window.prototype.init = function(title, tableM) {
     this.title = tryVal(title, "").plain();
-    this.tableF = tryVal(tableF, Function.air);
+    this.tableM = tryVal(tableM, Function.air);
 
     this.initParam();
 
@@ -96,15 +96,15 @@
     let tb = new Table().top();
     tb.update(() => {
       if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
-        if(Core.input.keyDown(KeyCode.x)) selectedWins.forEachFast(win => win.close());
-        if(Core.input.keyDown(KeyCode.s)) selectedWins.forEachCond(win => !win.isHidden, win => win.minimize());
-        if(Core.input.keyDown(KeyCode.a)) selectedWins.forEachCond(win => win.isHidden, win => win.minimize());
+        if(Core.input.keyDown(KeyCode.x)) selectedWins.forEachFast(win => win.close(), true);
+        if(Core.input.keyDown(KeyCode.s)) selectedWins.forEachCond(win => !win.isHidden, win => win.minimize(), true);
+        if(Core.input.keyDown(KeyCode.a)) selectedWins.forEachCond(win => win.isHidden, win => win.minimize(), true);
       };
       if(win.isDragged) {
         selectedWins.forEachFast(win => {
           win.root.translation.x += mouseMoveX;
           win.root.translation.y += mouseMoveY;
-        });
+        }, true);
       };
     });
     tb.tapped(() => {
@@ -215,7 +215,7 @@
     base.top();
 
     // Row 1
-    (3)._it(() => thisFun.addPlaceholder(base));
+    (3).each(() => thisFun.addPlaceholder(base));
     base.row();
     // Row 2 (contents)
     thisFun.addPlaceholder(base);
@@ -235,10 +235,10 @@
           let funBtnSize = 8.0;
           // Close
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button("X", btnStyles.close, () => selectedWins.forEachFast(win => win.close())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", "win-close"), true);
+          tb2.button("X", btnStyles.close, () => selectedWins.forEachFast(win => win.close(), true)).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", "win-close"), true);
           // Minimize & restore
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button(this.isHidden ? "L" : "S", btnStyles[this.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize())).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", this.isHidden ? "win-restore" : "win-minimize"), true);
+          tb2.button(this.isHidden ? "L" : "S", btnStyles[this.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize(), true)).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", this.isHidden ? "win-restore" : "win-minimize"), true);
           // Help
           tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
           tb2.button("?", btnStyles.help, () => {}).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getInfo("lovec", "tt-win-help"), true);
@@ -255,7 +255,7 @@
           tb1.left().setColor(this.contColor);
           MDL_table.margin(tb1);
           tb1.pane(pnTb => {
-            this.tableF(pnTb);
+            this.tableM(pnTb);
             this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW) / global.lovecUtil.prop.uiScale;
             this.prefH = Mathf.clamp(pnTb.prefHeight, this.minH, this.maxH) / global.lovecUtil.prop.uiScale;
           }).width(this.prefW).height(this.prefH);
@@ -268,7 +268,7 @@
     thisFun.addPlaceholder(base);
     base.row();
     // Row 3
-    (3)._it(() => thisFun.addPlaceholder(base));
+    (3).each(() => thisFun.addPlaceholder(base));
 
     if(this.isHidden) {
       root.table(Styles.none, tb1 => {}).height(this.prefHCont);

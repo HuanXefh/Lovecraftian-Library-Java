@@ -21,7 +21,7 @@
     blk.drawCached = false;
     blk.drawDynamic = true;
 
-    blk.ex_addLogicGetter(LAccess.config, b => b.delegee.ctTg);
+    blk.ex_addLogicF(LAccess.config, b => b.delegee.ctTg);
     blk.ex_addLogicControl(LAccess.config, (b, param1) => {
       if(param1 instanceof UnlockableContent || typeof param1 === "string") b.configure(param1);
     });

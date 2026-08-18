@@ -92,7 +92,7 @@
 
     Object.assign(this, cls);
     // Clone all native objects/arrays to prevent modification of the super one
-    Object._it(this, (key, val) => {
+    Object.eachPair(this, (key, val) => {
       if(isNativeObject(val)) this[key] = Object.assign({}, val);
       if(val instanceof Array) this[key] = val.deepCpy();
     });

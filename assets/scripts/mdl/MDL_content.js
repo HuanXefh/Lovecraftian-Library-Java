@@ -38,7 +38,7 @@
       thisFun.modeMap.get(mode, Array.air).forEachFast(ctTypeStr => {
         if(ct != null) return;
         ct = Vars.content.getByName(ContentType[ctTypeStr], ct_gn);
-      });
+      }, true);
     } else {
       // Try finding content in all categories, can be costy
       if(!suppressWarning) LOG_HANDLER.log("costyContentSearch", ct_gn);
@@ -147,7 +147,7 @@
       oblk => {
         oblk.requirements.forEachFast(itmStack => {
           if(itmStack.item === itm && itmStack.amount > 0) !appendAmt ? arr.push(oblk) : arr.push(oblk, itmStack.amount);
-        });
+        }, true);
       },
     );
     if(arr.length > 0 && !itm.buildable) {
@@ -220,15 +220,15 @@
     let blk = getCt(blk_gn, "blk");
     if(blk == null) return val;
 
-    let valCaller = null;
+    let valC = null;
     let i = 0, iCap = arr.iCap();
     let cls;
     while(i < iCap) {
       cls = arr[i];
-      if(cls != null && blk instanceof cls) valCaller = arr[i + 1];
+      if(cls != null && blk instanceof cls) valC = arr[i + 1];
       i += 2;
     };
-    if(valCaller != null) val = valCaller(blk, isDrillTime, getCt(ct_gn, null, true));
+    if(valC != null) val = valC(blk, isDrillTime, getCt(ct_gn, null, true));
     if(isDrillTime) val /= tryJsProp(blk, "drillAmtMtp", 1.0);
 
     return val;

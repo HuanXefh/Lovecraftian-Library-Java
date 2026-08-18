@@ -43,7 +43,7 @@
   module.exports = new CLS_interface("INTF_STA_burstStatus", {
 
 
-    __paramObjSetter__: () => ({
+    __paramObjM__: () => ({
 
 
       /**

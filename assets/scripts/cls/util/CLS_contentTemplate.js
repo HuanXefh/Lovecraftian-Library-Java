@@ -34,7 +34,7 @@
   };
   /** `ROW`: namePropNew, namePropOld, def. */
   CLS_contentTemplate.paramAliasArr = [];
-  /** `ROW`: nameProp, valGetter. */
+  /** `ROW`: nameProp, valF. */
   CLS_contentTemplate.paramParserArr = [];
   CLS_contentTemplate.funObj = {};
 
@@ -157,7 +157,7 @@
   /**
    * Sets parsers to change value of some property before building final object.
    * `this` in the parsers refers to the object being built.
-   * @param {Array} arr - `ROW`: nameProp, valGetter
+   * @param {Array} arr - `ROW`: nameProp, valF
    * @return {this}
    * @example
    * // The property "file" is a path string that needs to be converted
@@ -206,7 +206,7 @@
           ) {
             console.warn("[LOVEC] Template tag ${1} has not been registered yet!".format(tag.color(Pal.accent)));
           };
-        });
+        }, true);
       });
     };
 
@@ -217,9 +217,9 @@
   /**
    * Sets methods, which will be mixed with previous methods.
    * <br> Special method names:
-   * <br> "__paramObjSetter__" - Result will be used in `setParam`.
-   * <br> "__paramAliasSetter__" - Result will be used in `setParamAlias`.
-   * <br> "__paramParserSetter__" - Result will be used in `setParamParser`.
+   * <br> "__paramObjM__" - Result will be used in `setParam`.
+   * <br> "__paramAliasM__" - Result will be used in `setParamAlias`.
+   * <br> "__paramParserM__" - Result will be used in `setParamParser`.
    * @param {Object<string, TemplateFunction>} nameFunObj
    * @param {boolean|unset} [isFromIntf] - Do not set this!
    * @return {this}
@@ -227,20 +227,20 @@
   CLS_contentTemplate.setMethod = function(nameFunObj, isFromIntf) {
     const thisCls = this;
 
-    Object._it(nameFunObj, (name, fun) => {
+    Object.eachPair(nameFunObj, (name, fun) => {
       // Internal methods used in interfaces
       if(name === "__proto__") {
         throw new Error("Do not set prototype properties for content template interface!");
       };
-      if(name === "__paramObjSetter__") {
+      if(name === "__paramObjM__") {
         thisCls.setParam(fun());
         return;
       };
-      if(name === "__paramAliasSetter__") {
+      if(name === "__paramAliasM__") {
         thisCls.setParamAlias(fun());
         return;
       };
-      if(name === "__paramParserSetter__") {
+      if(name === "__paramParserM__") {
         thisCls.setParamParser(fun());
         return;
       };
@@ -262,7 +262,7 @@
       thisCls.funObj[name].nm = name;
       if(!thisCls.funObj[name].noSuper && name.startsWith("ex_")) {
         let str = "";
-        Object._it(nameFunObj, (nnamem, fun) => {
+        Object.eachPair(nameFunObj, (nnamem, fun) => {
           str += "> " + name + "\n";
           str += fun;
         });
@@ -315,7 +315,7 @@
     let obj = {};
     if(this.getParent() == null) ERROR_HANDLER.throw("contentTemplateNoParentJavaClass");
 
-    Object._it(this.paramObj, (name, def) => {
+    Object.eachPair(this.paramObj, (name, def) => {
       // Skip template parent, or an error jumps out of nowhere
       if(name === "tempParent") return;
       // Copy template tags to avoid modification on the template
@@ -337,15 +337,15 @@
         obj[namePropOld] = obj[namePropNew];
         delete obj[namePropNew];
       };
-    });
+    }, true);
     this.paramParserArr.forEachRow(2, (nameProp, parser) => {
       obj[nameProp] = parser.apply(obj, [obj[nameProp]]);
-    });
-    Object._it(obj, (name, prop) => {
+    }, true);
+    Object.eachPair(obj, (name, prop) => {
       if(prop instanceof TemplateProv) obj[name] = prop.get();
       if(prop instanceof TemplateFunc) obj[name] = prop.get(obj);
     });
-    Object._it(this.funObj, (name, fun) => {
+    Object.eachPair(this.funObj, (name, fun) => {
       // Get the final method and wrap its length
       obj[name] = mixTempMethods(null, fun, MethodMixModes.BUILD, name);
     });

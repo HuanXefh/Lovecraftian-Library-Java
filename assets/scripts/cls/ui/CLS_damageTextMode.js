@@ -9,16 +9,16 @@
    * Handles formatting of text used in damage display.
    * @class
    * @param {string} name
-   * @param {function(Team): Color} colorGetter
-   * @param {function(string): string} strGetter
+   * @param {function(Team): Color} colorF
+   * @param {function(string): string} strF
    */
   const CLS_damageTextMode = newClass().initClass();
 
 
-  CLS_damageTextMode.prototype.init = function(name, colorGetter, strGetter) {
+  CLS_damageTextMode.prototype.init = function(name, colorF, strF) {
     this.name = registerUniqueName(name, insNames, "damage text mode");
-    this.colorGetter = tryVal(colorGetter, Function.airWhite);
-    this.strGetter = tryVal(strGetter, Function.airSelf);
+    this.colorF = tryVal(colorF, Function.airWhite);
+    this.strF = tryVal(strF, Function.airSelf);
 
     nameModeMap.put(this.name, this);
   };
@@ -64,7 +64,7 @@
    * @return {Color}
    */
   CLS_damageTextMode.prototype.getColor = function(team) {
-    return this.colorGetter(team);
+    return this.colorF(team);
   };
 
 
@@ -74,7 +74,7 @@
    * @return {string}
    */
   CLS_damageTextMode.prototype.getText = function(str) {
-    return this.strGetter(str);
+    return this.strF(str);
   };
 
 

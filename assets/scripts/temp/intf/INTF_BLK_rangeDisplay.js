@@ -52,7 +52,7 @@
     new CLS_interface("INTF_BLK_rangeDisplay", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**

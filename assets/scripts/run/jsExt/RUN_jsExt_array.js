@@ -359,7 +359,7 @@
   Array.prototype.unshiftAll = function(eles_p) {
     !(eles_p instanceof Array) ?
       this.unshift(eles_p) :
-      eles_p.reverse().forEachFast(ele => this.unshift(ele));
+      eles_p.reverse().forEachFast(ele => this.unshift(ele), true);
 
     return this;
   };

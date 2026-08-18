@@ -140,7 +140,7 @@
         if(VARGEN.staHiddenWell != null && !unit.hasEffect(VARGEN.staHiddenWell)) TRIGGER.treeHide.fire(unit);
         unit.apply(VARGEN.staHiddenWell, STA_DUR);
       };
-    });
+    }, true);
   }
   .setProp({
     tmpTs: [],

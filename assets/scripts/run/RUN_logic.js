@@ -83,7 +83,7 @@
         weaEn == null ?
           console.warn("[LOVEC] Invalid weather name: " + nameWea.color(Pal.accent)) :
           seq.add(weaEn);
-      });
+      }, true);
       Vars.state.rules.weather = seq;
     });
   };
@@ -154,7 +154,7 @@
       scr = sta.delegee.killedScr;
       if(scr == null) return;
       scr.get(unit);
-    });
+    }, true);
   };
 
 
@@ -200,7 +200,7 @@
         team.data().units.each(unit => {
           TRIGGER.majorIter.unit.fire(unit);
         });
-      });
+      }, true);
       TRIGGER.majorIter.end.fire();
     };
 

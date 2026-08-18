@@ -40,7 +40,7 @@
     new CLS_interface("INTF_BLK_mapBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**

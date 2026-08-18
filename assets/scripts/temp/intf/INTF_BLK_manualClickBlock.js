@@ -106,7 +106,7 @@
     new CLS_interface("INTF_BLK_manualClickBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /**
@@ -140,7 +140,7 @@
     new CLS_interface("INTF_B_manualClickBlock", {
 
 
-      __paramObjSetter__: () => ({
+      __paramObjM__: () => ({
 
 
         /* <------------------------------ internal ------------------------------ */

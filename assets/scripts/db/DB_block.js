@@ -336,7 +336,7 @@ const db = {
 
       /**
        * Used to read shield amount.
-       * <br> `ROW`: javaCls, shieldGetter.
+       * <br> `ROW`: javaCls, shieldF.
        * <br> `ARGS`: b, isSelfShield.
        */
       shield: [
@@ -349,7 +349,7 @@ const db = {
 
       /**
        * Used to read drill speed for display.
-       * <br> `ROW`: javaCls, drillSpdGetter.
+       * <br> `ROW`: javaCls, drillSpdF.
        * <br> `ARGS`: blk, boosted.
        */
       drillSpd: [
@@ -365,7 +365,7 @@ const db = {
       /**
        * Used to read generalized craft time for blocks.
        * This affects calculation of consumption/production rates.
-       * <br> `ROW`: javaCls, craftTimeGetter.
+       * <br> `ROW`: javaCls, craftTimeF.
        * <br> `ARGS`: blk, isDrillTime, ct.
        */
       craftTime: [

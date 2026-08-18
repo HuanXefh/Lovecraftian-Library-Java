@@ -151,9 +151,9 @@
    * @return {void}
    */
   CLS_eventTrigger.prototype.fire = function() {
-    this.listeners.forEachFast(listener =>listener.apply(null, arguments));
-    this.glbListeners.forEachFast(listener => listener.apply(null, arguments));
-    this.onceListeners.forEachFast(listener => listener.apply(null, arguments));
+    this.listeners.forEachFast(listener =>listener.apply(null, arguments), true);
+    this.glbListeners.forEachFast(listener => listener.apply(null, arguments), true);
+    this.onceListeners.forEachFast(listener => listener.apply(null, arguments), true);
 
     this.clearOnceListener();
   };

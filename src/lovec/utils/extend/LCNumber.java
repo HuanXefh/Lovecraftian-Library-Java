@@ -1,5 +1,6 @@
 package lovec.utils.extend;
 
+import arc.func.Cons;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.util.Nullable;
@@ -9,6 +10,28 @@ import lovec.utils.LCRand;
  * Handles numerical calculation.
  */
 public class LCNumber {
+
+
+    /**
+     * Iteration using a number as cap.
+     */
+    public static void each(Number num, Cons<Integer> cons, int gap, int base) {
+        if(gap < 1) return;
+        int iCap = Math.round(num.floatValue());
+        if(iCap < 1) return;
+        int i = 0;
+        while(i < iCap) {
+            cons.get(i);
+            i += gap;
+        };
+    };
+    // Overload
+    public static void each(Number num, Cons<Integer> cons, int gap) {
+        each(num, cons, gap, 0);
+    };
+    public static void each(Number num, Cons<Integer> cons) {
+        each(num, cons, 1);
+    };
 
 
     /**
