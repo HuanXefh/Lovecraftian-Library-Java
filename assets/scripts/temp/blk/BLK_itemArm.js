@@ -46,7 +46,7 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.add(Stat.itemsMoved, blk.moveStackAmt * 60.0 / blk.moveTime / 2.0, StatUnit.itemsSecond);
+    blk.stats.add(Stat.itemsMoved, blk.moveStackAmt * 60.0 / (blk.moveTime * 2.0 + blk.pickCooldown), StatUnit.itemsSecond);
   };
 
 
@@ -126,6 +126,11 @@
 
   function comp_ex_waitStart(b) {
     b.moveProg = 0.0;
+    if(b.pickCd > 0.0) {
+      b.pickCd = Mathf.maxZero(b.pickCd - b.edelta());
+      return;
+    };
+
     let b_f = b.ex_findMoveB(false);
     if(b_f != null) {
       b.ex_doPick(b_f);
@@ -336,10 +341,17 @@
 
       /**
        * `PARAM`: Time required to rotate by 180°. Needs double time to send an item.
+       * <br> `SINGLESIZE`
        * @memberof BLK_itemArm
        * @instance
        */
       moveTime: 60.0,
+      /**
+       * `PARAM`: Cooldown time after item insertion.
+       * @memberof BLK_itemArm
+       * @instance
+       */
+      pickCooldown: 0.0,
       /**
        * `PARAM`: Reach distance.
        * @memberof BLK_itemArm
@@ -507,6 +519,12 @@
        * @memberof B_itemArm
        * @instance
        */
+      pickCd: 0.0,
+      /**
+       * `INTERNAL`
+       * @memberof B_itemArm
+       * @instance
+       */
       blk$moveStackAmt: TmpStateTag.needReplace,
 
 
@@ -610,6 +628,7 @@
         this.isBackMove = true;
         this.moveItmCur = null;
         this.moveItmAmtCur = 0;
+        this.pickCd = this.block.delegee.pickCooldown;
       }
       .setProp({
         noSuper: true,
@@ -795,6 +814,21 @@
 
 
       /**
+       * @override
+       * @memberof B_itemArm
+       * @instance
+       * @return {boolean}
+       */
+      ex_isSingleSized: function() {
+        return true;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
        * Whether it's time to take items from a building now.
        * @memberof B_itemArm
        * @instance
@@ -928,6 +962,21 @@
       ex_getMoveProdInc: function() {
         // Real time required is slightly shorter to match displayed speed
         return this.edelta() / Math.max(this.block.delegee.moveTime - 7.5, 0.0001);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof B_itemArm
+       * @instance
+       * @return {number}
+       */
+      ex_getReloadFrac: function() {
+        return this.block.delegee.pickCooldown < 0.0001 ?
+          1.0 :
+          Mathf.clamp(1.0 - this.pickCd / this.block.delegee.pickCooldown);
       }
       .setProp({
         noSuper: true,

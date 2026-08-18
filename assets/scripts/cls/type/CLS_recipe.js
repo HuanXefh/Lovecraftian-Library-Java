@@ -1017,6 +1017,15 @@
             MDL_bundle.getTerm("lovec", "time-required"),
             Strings.fixed(this.rcTimeScl, 1) + "x (" + (this.owner.craftTime * this.rcTimeScl).time(2) + ")",
           );
+          if(this.lockedByCts.length > 0) {
+            tb3.table(Styles.none, tb4 => {
+              tb4.left();
+              tb4.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "require-unlocking"), "")).left();
+              this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2), true);
+            })
+            .left()
+            .row();
+          };
           thisFun.addStat(
             tb3, !this.pol.fEqual(0.0),
             fetchStat("lovec", "blk-pol").localized(),
@@ -1067,15 +1076,6 @@
             MDL_bundle.getTerm("lovec", "abrasion-multiplier"),
             this.durabDecMtp.perc(),
           );
-          if(this.lockedByCts.length > 0) {
-            tb3.table(Styles.none, tb4 => {
-              tb4.left();
-              tb4.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "require-unlocking"), "")).left();
-              this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2), true);
-            })
-            .left()
-            .row();
-          };
           if(this.attr != null) {
             let attrCell = tb3.add(MDL_text.getStat(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr.getAttrB(attr))).left();
             MDL_table.tooltip(attrCell, tb => {

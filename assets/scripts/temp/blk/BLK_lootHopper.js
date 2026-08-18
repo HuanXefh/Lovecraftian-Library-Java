@@ -35,12 +35,12 @@
 
 
   function comp_ex_updateLootTs(b) {
-    LCPos.getTilesBuild(b.lootTs, b);
+    LCPos.getTilesRect(b.lootTs, b.tile, 1, b.block.size);
   };
 
 
   function comp_ex_lootCall(b, loots, amt) {
-    let loot = loots.random();
+    let loot = loots.first();
     if(loot != null) {
       if(FRAG_item.takeLoot(b, loot, amt, true)) MDL_effect.itemTransfer(loot.x, loot.y, b);
     };

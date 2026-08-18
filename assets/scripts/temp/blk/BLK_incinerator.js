@@ -10,6 +10,7 @@
 
   const PARENT = require("lovec/temp/blk/BLK_baseItemBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_contentMultiSelector");
+  const INTF_A = require("lovec/temp/intf/INTF_BLK_fluidTypeFilter");
 
 
   /* <---------- auxiliary ----------> */
@@ -24,6 +25,8 @@
   function comp_init(blk) {
     resetBlockFlag(blk, []);
     blk.group = BlockGroup.transportation;
+
+    blk.outputsLiquid = blk.outputLiquids != null && blk.outputLiquids.length > 0;
   };
 
 
@@ -41,20 +44,49 @@
   };
 
 
+  function comp_updateTile(b) {
+    if(b.efficiency < 0.0001) {
+      b.progress = 0.0;
+    };
+  };
+
+
   function comp_craft(b) {
     MDL_sound.playAt(b.x, b.y, b.block.delegee.craftSe, Math.min(b.block.ambientSoundVolume * 2.0, 1.0), 1.0, 0.1);
 
-    let flam = 0.0, explo = 0.0, pow = 0.0, amt = 0;
-    b.items.each(itm => {
-      if(b.block.consumesItem(itm)) return;
-      if(b.block.outputItems != null && b.block.outputItems.some(itmStack => itmStack.item === itm)) return;
+    let
+      flam = 0.0,
+      explo = 0.0,
+      pow = 0.0,
+      canExplo = b.ex_canExploIncinerate(),
+      amt;
 
-      amt = b.items.get(itm);
-      flam += (itm.flammability < EXPLO_FLAM_THR ? 0.0 : itm.flammability) * amt * 3.0;
-      explo += itm.explosiveness * amt * 3.0;
-      pow += itm.charge * amt * 3.0;
-      b.items.set(itm, 0);
-    });
+    if(b.items != null) {
+      b.items.each(itm => {
+        if(b.block.consumesItem(itm)) return;
+        if(b.block.outputItems != null && b.block.outputItems.some(itmStack => itmStack.item === itm)) return;
+
+        amt = b.items.get(itm);
+        if(canExplo) {
+          flam += (itm.flammability < EXPLO_FLAM_THR ? 0.0 : itm.flammability) * amt * 3.0;
+          explo += itm.explosiveness * amt * 3.0;
+          pow += itm.charge * amt * 3.0;
+        };
+        b.items.set(itm, 0);
+      });
+    };
+    if(b.liquids != null) {
+      b.liquids.each((liq, amt) => {
+        if(b.block.consumesLiquid(liq) || amt < 0.01) return;
+        if(b.block.outputLiquids != null && b.block.outputLiquids.some(liqStack => liqStack.liquid === liq)) return;
+
+        if(canExplo) {
+          flam += (liq.flammability < EXPLO_FLAM_THR ? 0.0 : liq.flammability) * amt * 30.0;
+          explo += liq.explosiveness * amt * 30.0;
+        };
+        b.liquids.set(liq, 0.0);
+      });
+    };
 
     if(flam > 0.0 || explo > 0.0 || pow > 0.0) {
       TRIGGER.incineratorExplosion.fire();
@@ -65,9 +97,18 @@
 
 
   function comp_acceptItem(b, b_f, itm) {
+    if(!b.block.delegee.itmTgFilter.get(itm)) return false;
+
     return b.ctTgs.length === 0 ?
       b.items.total() < b.block.itemCapacity :
       b.ctTgs.includes(itm) && b.items.total() < b.block.itemCapacity;
+  };
+
+
+  function comp_acceptLiquid(b, b_f, liq) {
+    if(!b.block.delegee.liqTgFilter.get(liq)) return false;
+
+    return b.ctTgs.length === 0 || b.ctTgs.includes(liq);
   };
 
 
@@ -87,17 +128,35 @@
 
 
     /**
-     * Item incinerator that is actually a crafter.
+     * Incinerator that is actually a crafter.
      * @class BLK_incinerator
      * @extends BLK_baseItemBlock
      * @extends INTF_BLK_contentMultiSelector
      */
-    newClass().extendClass(PARENT[0], "BLK_incinerator").implement(INTF[0]).initClass()
+    newClass().extendClass(PARENT[0], "BLK_incinerator").implement(INTF[0]).implement(INTF_A[0]).initClass()
     .setParent(GenericCrafter)
     .setTags("blk-non-fac")
     .setParam({
 
 
+      /**
+       * `PARAM`: If true, explosion can happen if explosive resource is consumed.
+       * @memberof BLK_incinerator
+       * @instance
+       */
+      hasExploIncineration: true,
+      /**
+       * `PARAM`: Extra filter for valid item.
+       * @memberof BLK_incinerator
+       * @instance
+       */
+      itmTgFilter: tprov(() => func(function(itm) {return true})),
+      /**
+       * `PARAM`: Extra filter for valid fluid.
+       * @memberof BLK_incinerator
+       * @instance
+       */
+      liqTgFilter: tprov(() => func(function(liq) {return true})),
       /**
        * `PARAM`: See {@link BLK_baseFactory}.
        * @memberof BLK_incinerator
@@ -142,6 +201,35 @@
        * @override
        * @memberof BLK_incinerator
        * @instance
+       * @return {Array<UnlockableContent>}
+       */
+      ex_findSelectionTgs: function() {
+        let arr = [];
+        if(this.hasItems) {
+          arr.pushAll(Vars.content.items().toArray());
+        };
+        if(this.hasLiquids) {
+          if(this.fldType === "liquid") {
+            arr.pushAll(Vars.content.liquids().select(liq => !liq.gas).toArray());
+          } else if(this.fldType === "gas") {
+            arr.pushAll(Vars.content.liquids().select(liq => liq.gas).toArray());
+          } else {
+            arr.pushAll(Vars.content.liquids().toArray());
+          };
+        };
+
+        return arr;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
+       * @override
+       * @memberof BLK_incinerator
+       * @instance
        * @return {boolean}
        */
       ex_isSwitchDisableTg: function() {
@@ -161,10 +249,15 @@
      * @extends B_baseItemBlock
      * @extends INTF_B_contentMultiSelector
      */
-    newClass().extendClass(PARENT[1], "B_incinerator").implement(INTF[1]).initClass()
+    newClass().extendClass(PARENT[1], "B_incinerator").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
     .setParam({})
     .setMethod({
+
+
+      updateTile: function() {
+        comp_updateTile(this);
+      },
 
 
       craft: function() {
@@ -174,6 +267,15 @@
 
       acceptItem: function(b_f, itm) {
         return comp_acceptItem(this, b_f, itm);
+      }
+      .setProp({
+        noSuper: true,
+        boolMode: "and",
+      }),
+
+
+      acceptLiquid: function(b_f, liq) {
+        return comp_acceptLiquid(this, b_f, liq);
       }
       .setProp({
         noSuper: true,
@@ -204,6 +306,20 @@
 
         this.ex_processData(rd);
       },
+
+
+      /**
+       * Whether explosion can happen.
+       * @memberof B_incinerator
+       * @instance
+       * @return {boolean}
+       */
+      ex_canExploIncinerate: function() {
+        return Vars.state.rules.reactorExplosions && this.block.delegee.hasExploIncineration;
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
     }),

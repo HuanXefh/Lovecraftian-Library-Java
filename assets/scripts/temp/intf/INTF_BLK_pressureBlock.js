@@ -90,14 +90,14 @@
     // Pressure drop
     b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase * 0.01666667 * Time.delta);
 
-    // Occasionally supply abstract fluid
-    if(TIMER.liq && !b.block.delegee.skipPresSupply && b.presSupplyTgs.length > 0 && Math.abs(b.presTmp) > 0.0) {
+    // Supply abstract fluid
+    if(!b.block.delegee.skipPresSupply && b.presSupplyTgs.length > 0 && Math.abs(b.presTmp) > 0.0) {
       b.presSupplyIncre++;
       let b_t = b.presSupplyTgs[b.presSupplyIncre % b.presSupplyTgs.length];
       if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
         let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
         let consAmt = MDL_recipeDict.getConsAmtByBuild(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t);
-        FRAG_fluid.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt * VAR.time.liqIntv, false, false, true);
+        FRAG_fluid.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt, false, false, true);
         if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
           b_t.damagePierce((b_t.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) / 5.0);
         };

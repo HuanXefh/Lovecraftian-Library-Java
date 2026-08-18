@@ -194,7 +194,9 @@
        * @return {number}
        */
       ex_getReloadFrac: function() {
-        return this.block.delegee.lootCallCooldown < 1.0 ? 1.0 : Mathf.clamp(this.lootCallCd / this.block.delegee.lootCallCooldown);
+        return this.block.delegee.lootCallCooldown < 1.0 ?
+          1.0 :
+          Mathf.clamp(this.lootCallCd / this.block.delegee.lootCallCooldown);
       }
       .setProp({
         noSuper: true,

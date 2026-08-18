@@ -197,7 +197,7 @@
                 (shield * Vars.state.rules.unitHealth(Vars.state.rules.waveTeam)).amount(),
                 sta === StatusEffects.none ? "-" : sta,
               ]);
-            }, true);
+            });
             if(matArr.length === 1) {
               MDL_table.textNothing(pnTb);
             } else {

@@ -114,7 +114,7 @@
       x = e.x,
       y = e.y,
       hitSize = LCProp.getHitSize(e),
-      w = (hitSize + 8.0 + offW) * 1.7,
+      w = Math.max((hitSize + 8.0 + offW) * 1.7, 14.0),
       offY = hitSize * 0.5 + 4.0 + (offTy + 1.25) * Vars.tilesize;
 
     processZ(z);

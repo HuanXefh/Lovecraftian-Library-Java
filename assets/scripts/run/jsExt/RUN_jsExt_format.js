@@ -116,7 +116,7 @@
    */
   String.multiline = function() {
     let str_fi = "";
-    let args = Array.from(arguments).flatten().filter(tmp => tmp != null);
+    let args = Array.from(arguments).flatten().compact();
     let i = 0, iCap = args.length;
     while(i < iCap) {
       str_fi += args[i];

@@ -79,14 +79,14 @@ public class LCRecipeHandler {
             while(i < iCap) {
                 tmp = co.get(i);
                 fAmt = LCScript.toFloat(co.get(i + 1));
-                if(b.liquids.get((Liquid) tmp) <= b.block.liquidCapacity) {
+                if(b.liquids.get((Liquid) tmp) / b.block.liquidCapacity <= 0.98f) {
                     allFull = false;
                 } else if(!blk.ignoreLiquidFullness && !blk.dumpExtraLiquid && fAmt > 0f && !LCScriptUtil.checkCond("isAuxiliaryFluid", tmp)) {
                     return false;
                 };
                 i += 2;
             };
-            if(allFull && (boolean) rc.get("hasAnyFldOutputIncludeAux") && !(blk.ignoreLiquidFullness)) return false;
+            if(allFull && hasAnyFldOutputIncludeAux && !blk.ignoreLiquidFullness) return false;
         };
 
         // BO

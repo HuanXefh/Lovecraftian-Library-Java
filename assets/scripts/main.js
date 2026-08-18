@@ -171,14 +171,26 @@
 
 
     // Set up major sync
-    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-major-sync", payload => {
-      TRIGGER.majorSync.fire();
-    });
-    MDL_event.onPlayerJoin(player => {
-      Time.run(30.0, () => {
-        MDL_net.sendPacket(PacketModes.BOTH, "lovec-both-major-sync", "", true);
+    (function() {
+      MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-major-sync", payload => {
+        TRIGGER.majorSync.fire();
       });
-    });
+      let majorIterCount = 0;
+      TRIGGER.majorIter.end.addGlobalListener(() => {
+        if(!Vars.net.client() && Groups.player.size() > 1) {          
+          majorIterCount++;
+          if(majorIterCount >= 6) {
+            majorIterCount = 0;
+            MDL_net.sendPacket(PacketModes.BOTH, "lovec-both-major-sync", "", true);
+          };
+        };
+      });
+      MDL_event.onPlayerJoin(player => {
+        Time.run(30.0, () => {
+          MDL_net.sendPacket(PacketModes.BOTH, "lovec-both-major-sync", "", true);
+        });
+      });
+    })();
 
 
     // Set up ore dictionary, EXPERIMENTAL!
