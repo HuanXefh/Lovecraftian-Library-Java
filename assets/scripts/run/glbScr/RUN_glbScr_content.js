@@ -223,7 +223,7 @@
     if(suffixFallback == null) suffixFallback = "";
 
     return Vars.headless ?
-      ARC_AIR.reg :
+      LCAirObjects.textureRegion :
       Core.atlas.find(name + suffix, Core.atlas.find(name + suffixFallback));
   };
 
@@ -318,7 +318,7 @@
     return reg0regStr instanceof TextureRegion ?
       reg0regStr :
       Vars.headless ?
-        ARC_AIR.reg :
+        LCAirObjects.textureRegion :
         Core.atlas.find(reg0regStr);
   };
 
@@ -345,15 +345,17 @@
   fetchSound = function(se_gn, returnUnset) {
     return se_gn instanceof Sound ?
       se_gn :
-      typeof se_gn === "string" ?
-        (
-          !se_gn.startsWith("SOUND: ") ?
-            Vars.tree.loadSound(se_gn) :
-            Sounds[se_gn.replace(/"SOUNDS: "/g, "")]
-        ) :
-        returnUnset ?
-          Sounds.unset :
-          Sounds.none;
+      Vars.headless ?
+        Sounds.none :
+        typeof se_gn === "string" ?
+          (
+            !se_gn.startsWith("SOUND: ") ?
+              Vars.tree.loadSound(se_gn) :
+              Sounds[se_gn.replace(/"SOUNDS: "/g, "")]
+          ) :
+          returnUnset ?
+            Sounds.unset :
+            Sounds.none;
   };
 
 
@@ -366,9 +368,11 @@
   fetchMusic = function(mus_gn) {
     return mus_gn instanceof Music ?
       mus_gn :
-      typeof mus_gn === "string" ?
-        Vars.tree.loadMusic(mus_gn) :
-        Musics.none;
+      Vars.headless ?
+        Musics.none :
+        typeof mus_gn === "string" ?
+          Vars.tree.loadMusic(mus_gn) :
+          Musics.none;
   };
 
 

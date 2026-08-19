@@ -177,7 +177,7 @@
       });
       let majorIterCount = 0;
       TRIGGER.majorIter.end.addGlobalListener(() => {
-        if(!Vars.net.client() && Groups.player.size() > 1) {          
+        if(!Vars.net.client() && Groups.player.size() > 1) {
           majorIterCount++;
           if(majorIterCount >= 6) {
             majorIterCount = 0;

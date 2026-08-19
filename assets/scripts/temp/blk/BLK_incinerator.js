@@ -35,6 +35,12 @@
   };
 
 
+  function comp_setStats(blk) {
+    blk.stats.remove(Stat.productionTime);
+    blk.stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
+  };
+
+
   function comp_setBars(blk) {
     blk.addBar("lovec-prog", b => new Bar(
       MDL_bundle.getTerm("lovec", "progress"),
@@ -47,6 +53,31 @@
   function comp_updateTile(b) {
     if(b.efficiency < 0.0001) {
       b.progress = 0.0;
+    };
+
+    if(TIMER.sec) {
+      if(b.items != null && !b.justCrafted) {
+        b.hasItmTg = false;
+        b.items.each(itm => {
+          if(b.hasItmTg) return;
+          if(!b.block.consumesItem(itm)) {
+            b.hasItmTg = true;
+          };
+        });
+      };
+
+      if(b.liquids != null && !b.justCrafted) {
+        b.hasLiqTg = false;
+        b.liquids.each((liq, amt) => {
+          if(b.hasLiqTg) return;
+          if(!b.block.consumesLiquid(liq) && amt > 1.0) {
+            b.hasLiqTg = true;;
+          };
+        });
+      };
+
+      // Skip a round for consistent incineration
+      b.justCrafted = false;
     };
   };
 
@@ -93,10 +124,13 @@
       Sounds.unitExplode1.at(b);
       Damage.dynamicExplosion(b.x, b.y, flam, explo, pow, FRAG_attack.getPresExploRad(b.block.size) / Vars.tilesize, true);
     };
+
+    b.justCrafted = true;
   };
 
 
   function comp_acceptItem(b, b_f, itm) {
+    if(b.block.consumesItem(itm) && b.items.get(itm) < b.getMaximumAccepted(itm)) return true;
     if(!b.block.delegee.itmTgFilter.get(itm)) return false;
 
     return b.ctTgs.length === 0 ?
@@ -106,6 +140,8 @@
 
 
   function comp_acceptLiquid(b, b_f, liq) {
+    if(b.liquids.get(liq) / b.block.liquidCapacity >= 0.98) return false;
+    if(b.block.consumesLiquid(liq)) return true;
     if(!b.block.delegee.liqTgFilter.get(liq)) return false;
 
     return b.ctTgs.length === 0 || b.ctTgs.includes(liq);
@@ -147,12 +183,14 @@
       hasExploIncineration: true,
       /**
        * `PARAM`: Extra filter for valid item.
+       * <br> `ARGS`: itm.
        * @memberof BLK_incinerator
        * @instance
        */
       itmTgFilter: tprov(() => func(function(itm) {return true})),
       /**
        * `PARAM`: Extra filter for valid fluid.
+       * <br> `ARGS`: liq.
        * @memberof BLK_incinerator
        * @instance
        */
@@ -184,6 +222,11 @@
       },
 
 
+      setStats: function() {
+        comp_setStats(this);
+      },
+
+
       setBars: function() {
         comp_setBars(this);
       },
@@ -206,15 +249,15 @@
       ex_findSelectionTgs: function() {
         let arr = [];
         if(this.hasItems) {
-          arr.pushAll(Vars.content.items().toArray());
+          arr.pushAll(Vars.content.items().select(itm => this.itmTgFilter.get(itm)).toArray());
         };
         if(this.hasLiquids) {
           if(this.fldType === "liquid") {
-            arr.pushAll(Vars.content.liquids().select(liq => !liq.gas).toArray());
+            arr.pushAll(Vars.content.liquids().select(liq => !liq.gas && this.liqTgFilter.get(liq)).toArray());
           } else if(this.fldType === "gas") {
-            arr.pushAll(Vars.content.liquids().select(liq => liq.gas).toArray());
+            arr.pushAll(Vars.content.liquids().select(liq => liq.gas && this.liqTgFilter.get(liq)).toArray());
           } else {
-            arr.pushAll(Vars.content.liquids().toArray());
+            arr.pushAll(Vars.content.liquids().select(liq => this.liqTgFilter.get(liq)).toArray());
           };
         };
 
@@ -251,7 +294,33 @@
      */
     newClass().extendClass(PARENT[1], "B_incinerator").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof B_incinerator
+       * @instance
+       */
+      hasItmTg: false,
+      /**
+       * `INTERNAL`
+       * @memberof B_incinerator
+       * @instance
+       */
+      hasLiqTg: false,
+      /**
+       * `INTERNAL`
+       * @memberof B_incinerator
+       * @instance
+       */
+      justCrafted: false,
+
+
+    })
     .setMethod({
 
 
@@ -284,7 +353,7 @@
 
 
       shouldConsume: function() {
-        return this.items.total() > 0;
+        return this.hasItmTg || this.hasLiqTg;
       }
       .setProp({
         noSuper: true,

@@ -30,6 +30,14 @@
       ]);
     };
 
+    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-flammable-gas-emission", payload => {
+      let args = unpackPayload(payload);
+      let b = Vars.world.build(args[0]);
+      if(b == null || b.ex_onFlamEmission == null) return;
+
+      b.ex_onFlamEmission(args[1], args[2]);
+    }, true);
+
     MDL_event.onLoadDelay(VAR.delay.load.loadExtraSound, () => {
       if(!Vars.headless && PARAM.SECRET_METAL_PIPE && String(blk.matGrp).equalsAny(
         "iron", "steel", "galvanized-steel", "stainless-steel",
@@ -42,7 +50,7 @@
 
   function comp_onProximityUpdate(b) {
     let ot = b.tile.nearby(b.rotation);
-    b.isLeak = b.block.leaks && (ot == null ? true : !ot.solid());
+    b.isLeak = b.block.leaks && (ot == null || (ot.build == null && !ot.solid()));
   };
 
 
@@ -56,8 +64,23 @@
       b.block.consPower.trigger(b);
     };
 
-    if(TIMER.sec && b.isLeak && b.liquids.currentAmount() > 0.001) {
-      MDL_pollution.addDynaPol(MDL_pollution.getRsPol(b.liquids.current()) / 60.0);
+    if(TIMER.sec && b.isLeak) {
+      let amt = b.liquids.currentAmount();
+      if(amt > 0.001) {
+        let liq = b.liquids.current();
+        MDL_pollution.addDynaPol(MDL_pollution.getRsPol(liq) / 60.0);
+        if(!Vars.net.client() && liq.gas && liq.flammability > 0.0 && Mathf.chance(0.03 * liq.flammability)) {
+          MDL_net.sendPacket(
+            PacketModes.BOTH, "lovec-both-flammable-gas-emission",
+            packPayload([
+              b.pos(),
+              liq.flammability * amt * 5.0,
+              liq.explosiveness * amt * 5.0,
+            ]),
+            true,
+          );
+        };
+      };
     };
   };
 
@@ -86,6 +109,14 @@
     };
 
     return amtTrans;
+  };
+
+
+  function comp_onFlamEmission(b, flam, explo) {
+    if(!b.isLeak || flam < 0.0001) return;
+
+    fetchSound("se-shot-explosion").at(b);
+    Damage.dynamicExplosion(b.x, b.y, flam, explo, 0.0, FRAG_attack.getPresExploRad(b.block.size) / Vars.tilesize, true);
   };
 
 
@@ -252,6 +283,22 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * @memberof B_fluidPipe
+       * @instance
+       * @param {number} flam
+       * @param {number} explo
+       * @return {void}
+       */
+      ex_onFlamEmission: function(flam, explo) {
+        comp_onFlamEmission(this, flam, explo);
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 2,
       }),
 
 

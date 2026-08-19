@@ -91,7 +91,7 @@
     if(parent != null) {
       if(rs.recolorRegStr == null) {
         // No base sprite used for this intermediate, free unused space in atlas
-        packer.add(MultiPacker.PageType.main, rs.name, ARC_AIR.pix);
+        packer.add(MultiPacker.PageType.main, rs.name, LCAirObjects.pixmap);
         rs.parentRegStr = parent;
       } else {
         // The base sprite is a recolored version

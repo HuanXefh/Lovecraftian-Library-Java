@@ -317,7 +317,6 @@
   // Run other global script fragments
   [
     "RUN_glbScr_lovecJava",
-    "RUN_glbScr_air",
     "RUN_glbScr_base",
     "RUN_glbScr_data",
     "RUN_glbScr_draw",

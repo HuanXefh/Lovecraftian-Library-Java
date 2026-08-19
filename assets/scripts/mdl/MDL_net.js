@@ -35,10 +35,14 @@
    * @param {number|unset} mode
    * @param {string} header
    * @param {function(string, Player|unset): void} payloadC
+   * @param {boolean|unset} [addOnce] - If true, header conflict error will be suppressed. Used when explicitly called multiple times like in `init`.
    * @return {void};
    */
-  const addPacketHandler = function thisFun(mode, header, payloadC) {
-    if(thisFun.headers.includes(header)) ERROR_HANDLER.throw("headerConflict", header);
+  const addPacketHandler = function thisFun(mode, header, payloadC, addOnce) {
+    if(thisFun.headers.includes(header)) {
+      if(addOnce) return;
+      ERROR_HANDLER.throw("headerConflict", header);
+    };
     if(mode == null) mode = PacketModes.CLIENT;
     if(!PacketModes.has(mode)) return;
     if(payloadC == null) payloadC = Function.air;

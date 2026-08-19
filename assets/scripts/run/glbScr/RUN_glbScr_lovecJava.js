@@ -70,6 +70,8 @@
   /* <------------------------------ lovec.utils ------------------------------ */
 
 
+  /** @global lovec.utils.LCAirObjects */
+  LCAirObjects = fetchClass("lovec.utils.LCAirObjects");
   /** @global lovec.utils.LCCheck */
   LCCheck = fetchClass("lovec.utils.LCCheck");
   /** @global lovec.utils.LCEntity */

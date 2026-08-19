@@ -261,6 +261,18 @@
 
 
   /**
+   * Whether this block is a regular conveyor.
+   * @param {BlockGn} blk_gn
+   * @return {boolean}
+   */
+  const isNonStackConveyor = function(blk_gn) {
+    return isConveyor(blk_gn) && !isStackConveyor(blk_gn);
+  }
+  .setCache();
+  exports.isNonStackConveyor = isNonStackConveyor;
+
+
+  /**
    * Whether this block is a stack conveyor.
    * @param {BlockGn} blk_gn
    * @return {boolean}

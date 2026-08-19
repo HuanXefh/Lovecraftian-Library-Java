@@ -28,10 +28,10 @@
    * @return {TextureRegion|string}
    */
   const getRegBlk = function(blk_gn, shouldReturnName) {
-    if(Vars.headless) return shouldReturnName ? "" : ARC_AIR.reg;
+    if(Vars.headless) return shouldReturnName ? "" : LCAirObjects.textureRegion;
 
     let blk = findContent(blk_gn);
-    if(blk == null) return ARC_AIR.reg;
+    if(blk == null) return LCAirObjects.textureRegion;
 
     return shouldReturnName ?
       LCTexture.getBlockRegionString(blk) :
@@ -51,7 +51,7 @@
    */
   const getRegBlkTileCut = function(blk_gn, offTx, offTy) {
     let reg = getRegBlk(blk_gn);
-    if(reg === ARC_AIR.reg) return reg;
+    if(reg === LCAirObjects.textureRegion) return reg;
     return new TextureRegion(reg, offTx * 32.0, offTy * 32.0, 32.0, 32.0);
   }
   .setCache();
@@ -67,13 +67,13 @@
    */
   const getRegVari = function(blk_gn, t, off) {
     let blk = MDL_content.getCt(blk_gn, "block");
-    if(blk == null) return ARC_AIR.reg;
+    if(blk == null) return LCAirObjects.textureRegion;
     if(blk.variants === 0) return blk.region;
 
     if(off == null) off = 0;
     return blk.variantRegions[Math.floor(Mathf.randomSeed(t.pos() + off, 0.0, Mathf.maxZero(blk.variantRegions.length - 1) + 0.9999))];
   }
-  .setAnno("non-headless", null, ARC_AIR.reg);
+  .setAnno("non-headless", null, LCAirObjects.textureRegion);
   exports.getRegVari = getRegVari;
 
 
@@ -84,7 +84,7 @@
    */
   const getRegTurBase = function(blk_gn) {
     let blk = MDL_content.getCt(blk_gn, "block");
-    if(blk == null) return ARC_AIR.reg;
+    if(blk == null) return LCAirObjects.textureRegion;
     if(blk.baseRegion != null) return blk.baseRegion;
 
     if(blk instanceof Turret) {
@@ -96,10 +96,10 @@
       };
     };
 
-    return ARC_AIR.reg;
+    return LCAirObjects.textureRegion;
   }
   .setCache()
-  .setAnno("non-headless", null, ARC_AIR.reg);
+  .setAnno("non-headless", null, LCAirObjects.textureRegion);
   exports.getRegTurBase = getRegTurBase;
 
 

@@ -47,6 +47,7 @@
 
   function comp_setStats(blk) {
     blk.stats.add(Stat.itemsMoved, blk.moveStackAmt * 60.0 / (blk.moveTime * 2.0 + blk.pickCooldown), StatUnit.itemsSecond);
+    blk.stats.add(fetchStat("lovec", "blk0itm-stackamt"), blk.moveStackAmt);
   };
 
 
@@ -441,7 +442,7 @@
        * @return {boolean}
        */
       ex_shouldAlwaysDump: function(oblk) {
-        return MDL_cond.isConveyor(oblk)
+        return MDL_cond.isNonStackConveyor(oblk)
           || oblk instanceof ItemVoid;
       }
       .setCache()

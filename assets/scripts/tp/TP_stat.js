@@ -72,6 +72,7 @@
 
   newStat("lovec", "blk0itm-unloadable", StatCat.items);
   newStat("lovec", "blk0itm-exposed", StatCat.items);
+  newStat("lovec", "blk0itm-stackamt", StatCat.items);
 
 
   newStat("lovec", "blk0liq-presoutput", fetchStatCategory("lovec", "pressure"));
