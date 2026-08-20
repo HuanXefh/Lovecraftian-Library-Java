@@ -8,20 +8,20 @@ import arc.graphics.g2d.Lines;
 import arc.math.Rand;
 import arc.struct.IntFloatMap;
 import arc.util.Time;
+import arc.util.Tmp;
+import lovec.annotation.JSONTypeClass;
 import lovec.utils.LCScriptUtil;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.world.Block;
-import mindustry.world.draw.DrawBlock;
 
 /**
  * Draws bubbles.
  */
-public class LCDrawRipple extends DrawBlock {
+@JSONTypeClass
+public class LCDrawRipple extends LCDrawer {
 
 
-    public float offX;
-    public float offY;
     public int amount = 12;
     public float radius = 3f;
     public float size = 3f;
@@ -73,15 +73,14 @@ public class LCDrawRipple extends DrawBlock {
         rand.setSeed(b.id);
         int i = 0;
         while(i < amount) {
-            float offX_fi = rand.range(radius) + offX;
-            float offY_fi = rand.range(radius) + offY;
+            calcRotatedOff(Tmp.v1, b.rotation).add(b).add(rand.range(radius), rand.range(radius));
             float life = 1f - ((Time.time / scl + rand.random(recur)) % recur);
             if(life > 0f) {
                 if(filled) {
-                    Fill.circle(b.x + offX_fi, b.y + offY_fi, size);
+                    Fill.circle(Tmp.v1.x, Tmp.v1.y, size);
                 } else {
                     Lines.stroke(warmup * (life + minStroke));
-                    Lines.poly(b.x + offX_fi, b.y + offY_fi, 8, (1f - life) * size);
+                    Lines.poly(Tmp.v1.x, Tmp.v1.y, 8, (1f - life) * size);
                 };
             };
             i++;

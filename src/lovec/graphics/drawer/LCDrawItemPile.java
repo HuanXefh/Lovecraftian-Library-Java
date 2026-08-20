@@ -9,6 +9,9 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
+import arc.util.Tmp;
+import lovec.annotation.JSONTypeClass;
+import lovec.annotation.NoJSON;
 import lovec.graphics.LCDraw;
 import mindustry.gen.Building;
 import mindustry.type.Item;
@@ -19,18 +22,19 @@ import mindustry.world.draw.DrawBlock;
  * Draws piled items.
  * <br> <code>DEDICATION</code>: Inspired by Psammos.
  */
-public class LCDrawItemPile extends DrawBlock {
+@JSONTypeClass
+public class LCDrawItemPile extends LCDrawer {
 
 
     public float radius = 8f;
     public float itemWidth = 7f;
     public float z = -1f;
     public Item item;
-    public Func<Building, Item> itemF;
+    public @NoJSON Func<Building, Item> itemF;
     public float frac = -1f;
-    public Floatf<Building> fracF;
+    public @NoJSON Floatf<Building> fracF;
     public int amount = -1;
-    public Intf<Building> amountF;
+    public @NoJSON Intf<Building> amountF;
 
     protected TextureRegion shaReg;
 
@@ -64,9 +68,10 @@ public class LCDrawItemPile extends DrawBlock {
         LCDraw.processZ(z >= 0f ? z : (Draw.z() + 0.5f));
         Angles.randLenVectors(b.id, Math.round(Mathf.maxZero(amountF.get(b) * fracF.get(b))), radius, (dx, dy) -> {
             Draw.color(Color.black, 0.4f);
-            Draw.rect(shaReg, b.x + dx, b.y + dy, itemWidth * 1.6f, itemWidth * 1.6f);
+            calcRotatedOff(Tmp.v1, b.rotation).add(b);
+            Draw.rect(shaReg, Tmp.v1.x, Tmp.v1.y, itemWidth * 1.6f, itemWidth * 1.6f);
             Draw.color();
-            Draw.rect(item0.fullIcon, b.x + dx, b.y + dy, itemWidth, itemWidth, Mathf.randomSeed((long) (b.pos() + dx + dy * 10000), 0f, 360f));
+            Draw.rect(item0.fullIcon, Tmp.v1.x, Tmp.v1.y, itemWidth, itemWidth, Mathf.randomSeed((long) (b.pos() + dx + dy * 10000), 0f, 360f));
         });
         LCDraw.processZ(-1f);
     };

@@ -8,22 +8,22 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.struct.IntFloatMap;
 import arc.util.Time;
+import arc.util.Tmp;
+import lovec.annotation.JSONTypeClass;
 import lovec.graphics.LCDraw;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.world.Block;
-import mindustry.world.draw.DrawBlock;
 
 /**
  * Draws fake fire that won't spread.
  */
-public class LCDrawFire extends DrawBlock {
+@JSONTypeClass
+public class LCDrawFire extends LCDrawer {
 
 
     public String sprite = "fire";
-    public float offX;
-    public float offY;
     public float frameDuration = 2.25f;
     public int frameCap = 40;
 
@@ -54,7 +54,8 @@ public class LCDrawFire extends DrawBlock {
         float warmup = b.warmup();
         Draw.color(Color.white, warmup > 0f ? 1f : 0f);
         LCDraw.processScl(warmup);
-        Draw.rect(regs[Mathf.floor(frameCurMap.get(posInt))], b.x + offX, b.y + offY);
+        calcRotatedOff(Tmp.v1, b.rotation).add(b);
+        Draw.rect(regs[Mathf.floor(frameCurMap.get(posInt))], Tmp.v1.x, Tmp.v1.y);
         LCDraw.processScl(-1f);
         Draw.color();
     };

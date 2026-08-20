@@ -2,6 +2,7 @@ package lovec;
 
 import arc.util.*;
 import lovec.audio.LCSoundControl;
+import lovec.content.LCMultiBlockHandler;
 import lovec.graphics.LCDrawf;
 import lovec.utils.LCScript;
 import mindustry.mod.*;
@@ -20,6 +21,12 @@ public class Lovec extends Mod{
     public void init() {
         LCScript.init();
         LCDrawf.init();
+    };
+
+
+    @Override
+    public void loadContent() {
+        LCMultiBlockHandler.loadBlock();
     };
 
 

@@ -115,9 +115,9 @@
     b.totalOreAmt = b.block.delegee.tmpTotalOreAmt;
     b.mineRsTgs.cpy(b.mineRsTup[1]);
 
-    let vec2 = LCPos.getCoordsRectRotCenter(Tmp.v1, b.x, b.y, b.block.range * 0.5, b.rotation, b.block.size);
-    b.mineRectCx = vec2.x;
-    b.mineRectCy = vec2.y;
+    LCPos.getCoordsRectRotCenter(Tmp.v1, b.x, b.y, b.block.range * 0.5, b.rotation, b.block.size);
+    b.mineRectCx = Tmp.v1.x;
+    b.mineRectCy = Tmp.v1.y;
   };
 
 

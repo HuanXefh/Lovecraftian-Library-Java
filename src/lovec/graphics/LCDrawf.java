@@ -1640,7 +1640,7 @@ public class LCDrawf {
     ) {
         if(a < 0.01f) return;
 
-        var zPrev = Draw.z();
+        float zPrev = Draw.z();
         if(shaReg.found()) {
             Draw.z(z - 0.001f);
             Draw.rect(shaReg, t.worldx() + offSha, t.worldy() + offSha, Mathf.randomSeed(t.pos(), 0f, 360f));
@@ -1648,8 +1648,8 @@ public class LCDrawf {
         if(!shouldCheckDst) {
             Draw.alpha(a);
         } else {
-            var unitPl = Vars.player.unit();
-            var dst = unitPl == null ? 99999999f : Mathf.dst(t.worldx(), t.worldy(), unitPl.x, unitPl.y);
+            Unit unitPlayer = Vars.player.unit();
+            float dst = unitPlayer == null ? 99999999f : Mathf.dst(t.worldx(), t.worldy(), unitPlayer.x, unitPlayer.y);
             Draw.alpha(a * dst < rad ? 0.37f : 1f);
         };
         Draw.z(z);

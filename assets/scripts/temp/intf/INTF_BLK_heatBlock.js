@@ -66,9 +66,11 @@
 
 
   function comp_onProximityUpdate(b) {
-    b.ex_updateHeatFetchTgs();
-    b.ex_updateHeatTransTgs();
-    b.ex_updateHeatSupplyTgs();
+    Time.run(60.0, () => {
+      b.ex_updateHeatFetchTgs();
+      b.ex_updateHeatTransTgs();
+      b.ex_updateHeatSupplyTgs();
+    });
   };
 
 
@@ -142,10 +144,14 @@
     if(b.block.delegee.skipHeatFetch) return;
 
     b.heatFetchTgs.clear();
-    b.proximity.each(
-      ob => ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(VARGEN.auxHeat, ob.block) > 0.0,
-      ob => b.heatFetchTgs.push(ob, MDL_pos.calcSideFrac(ob, b)),
-    );
+    b.proximity.each(ob => {
+      if(ob.block instanceof MultiBlockLinkBlock) {
+        ob = ob.linkedBuild;
+      };
+      if(ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(VARGEN.auxHeat, ob.block) > 0.0) {
+        b.heatFetchTgs.push(ob, MDL_pos.calcSideFrac(ob, b));
+      };
+    });
   };
 
 
@@ -154,8 +160,12 @@
 
     b.heatTransTgs.clear();
     b.proximity.each(ob => {
-      if(ob.ex_getHeatTransferred == null || tryJsProp(ob.block, "skipHeatTrans", false) || !LCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) return;
-      b.heatTransTgs.push(ob);
+      if(ob.block instanceof MultiBlockLinkBlock) {
+        ob = ob.linkedBuild;
+      };
+      if(ob.ex_getHeatTransferred != null && !ob.block.delegee.skipHeatTrans && LCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) {
+        b.heatTransTgs.push(ob);
+      };
     });
   };
 
@@ -164,12 +174,17 @@
     if(b.block.delegee.skipHeatSupply) return;
 
     b.heatSupplyTgs.clear();
-    b.proximity.each(
-      ob => (!b.block.rotate ? true : b.relativeTo(ob) === b.rotation)
-        && !tryJsProp(ob.block, "skipHeatFetch", false)
-        && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(VARGEN.auxHeat)),
-      ob => b.heatSupplyTgs.push(ob),
-    );
+    b.proximity.each(ob => {
+      if(ob.block instanceof MultiBlockLinkBlock) {
+        ob = ob.linkedBuild;
+      };
+      if((!b.block.rotate ? true : b.relativeTo(ob) === b.rotation)
+        && !ob.block.delegee.skipHeatFetch
+        && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(VARGEN.auxHeat))
+      ) {
+        b.heatSupplyTgs.push(ob);
+      };
+    });
   };
 
 

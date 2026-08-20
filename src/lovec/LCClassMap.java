@@ -1,6 +1,11 @@
 package lovec;
 
 import lovec.graphics.drawer.*;
+import lovec.graphics.drawer.multiblock.LCDrawMultiBlockFade;
+import lovec.graphics.drawer.multiblock.LCDrawMultiBlockRotator;
+import lovec.graphics.drawer.multiblock.LCDrawMultiBlockSymmetricPistons;
+import lovec.graphics.drawer.multiblock.LCDrawMultiBlockSymmetricRegion;
+import lovec.type.block.factory.MultiBlockCrafter;
 import mindustry.mod.ClassMap;
 
 public class LCClassMap {
@@ -16,6 +21,13 @@ public class LCClassMap {
         add("LCDrawMixedLiquid", LCDrawMixedLiquid.class);
         add("LCDrawRipple", LCDrawRipple.class);
         add("LCDrawRotator", LCDrawRotator.class);
+        add("LCDrawMultiBlockSymmetricRegion", LCDrawMultiBlockSymmetricRegion.class);
+        add("LCDrawMultiBlockFade", LCDrawMultiBlockFade.class);
+        add("LCDrawMultiBlockRotator", LCDrawMultiBlockRotator.class);
+        add("LCDrawMultiBlockSymmetricPistons", LCDrawMultiBlockSymmetricPistons.class);
+
+        // Block
+        add("MultiBlockCrafter", MultiBlockCrafter.class);
     };
 
 

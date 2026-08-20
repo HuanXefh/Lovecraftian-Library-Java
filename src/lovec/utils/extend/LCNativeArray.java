@@ -551,6 +551,54 @@ public class LCNativeArray {
 
 
     /**
+     * Whether some element matches given condition.
+     */
+    public static boolean some(NativeArray arr, Boolf boolF, boolean noWrap) {
+        int i = 0;
+        long iCap = arr.getLength();
+        while(i < iCap) {
+            if(boolF.get(noWrap ? arr.get(i) : LCScript.wrap(arr.get(i)))) return true;
+            i++;
+        };
+        return false;
+    };
+    // Overload
+    public static boolean some(NativeArray arr, Boolf boolF) {
+        return some(arr, boolF, false);
+    };
+    public static boolean some(Object[] objs, Boolf boolF, boolean noWrap) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> some(arr0, boolF, noWrap)));
+    };
+    public static boolean some(Object[] objs, Boolf boolF) {
+        return some(objs, boolF, false);
+    };
+
+
+    /**
+     * Whether all elements match given condition.
+     */
+    public static boolean every(NativeArray arr, Boolf boolF, boolean noWrap) {
+        int i = 0;
+        long iCap = arr.getLength();
+        while(i < iCap) {
+            if(!boolF.get(noWrap ? arr.get(i) : LCScript.wrap(arr.get(i)))) return false;
+            i++;
+        };
+        return true;
+    };
+    // Overload
+    public static boolean every(NativeArray arr, Boolf boolF) {
+        return every(arr, boolF, false);
+    };
+    public static boolean every(Object[] objs, Boolf boolF, boolean noWrap) {
+        return LCScript.toBoolean(wrapFunc(objs, arr0 -> every(arr0, boolF, noWrap)));
+    };
+    public static boolean every(Object[] objs, Boolf boolF) {
+        return every(objs, boolF, false);
+    };
+
+
+    /**
      * Whether an array is a subset of another array.
      */
     public static boolean subsetOf(NativeArray arr1, NativeArray arr2) {

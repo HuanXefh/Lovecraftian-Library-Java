@@ -43,8 +43,10 @@
 
   function comp_onProximityUpdate(b) {
     b.presTransCount = 0;
-    b.ex_updatePresFetchTgs();
-    b.ex_updatePresSupplyTgs();
+    Time.run(60.0, () => {
+      b.ex_updatePresFetchTgs();
+      b.ex_updatePresSupplyTgs();
+    });
   };
 
 
@@ -130,11 +132,15 @@
     b.presFetchTgs.clear();
     // Find all possible pressure sources
     b.proximity.each(ob => {
+      if(ob.block instanceof MultiBlockLinkBlock) {
+        ob = ob.linkedBuild;
+      };
       if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b)) {
         b.presTransCount++;
       };
-      if(ob.ex_getPres == null || !b.ex_checkPresFetchValid(ob) || (ob.ex_checkPresSupplyValid != null && !ob.ex_checkPresSupplyValid(b))) return;
-      b.presFetchTgs.push(ob);
+      if(ob.ex_getPres != null && b.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.ex_checkPresSupplyValid(b))) {
+        b.presFetchTgs.push(ob);
+      };
     });
   };
 
@@ -144,8 +150,13 @@
     // Find all possible pressure consumers
     b.proximity.each(ob => {
       ob = ob.getLiquidDestination(b, VARGEN.auxPres);
-      if((!ob.acceptLiquid(b, VARGEN.auxPres) && !ob.acceptLiquid(b, VARGEN.auxVac)) || !b.ex_checkPresSupplyValid(ob)) return;
-      b.presSupplyTgs.push(ob);
+      if(ob == null) return;
+      if(ob.block instanceof MultiBlockLinkBlock) {
+        ob = ob.linkedBuild;
+      };
+      if((ob.acceptLiquid(b, VARGEN.auxPres) || ob.acceptLiquid(b, VARGEN.auxVac)) && b.ex_checkPresSupplyValid(ob)) {
+        b.presSupplyTgs.push(ob);
+      };
     });
   };
 

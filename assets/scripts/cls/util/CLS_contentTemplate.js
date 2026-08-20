@@ -178,7 +178,7 @@
 
   /**
    * Sets the Java class used in `extend`.
-   * @param {Function} javaCls
+   * @param {Class} javaCls
    * @return {this}
    */
   CLS_contentTemplate.setParent = function(javaCls) {

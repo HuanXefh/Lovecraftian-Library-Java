@@ -50,3 +50,4 @@
 
   exposeContentFrags();
   exposeClasses("lovec.graphics.drawer");
+  exposeClasses("lovec.type");

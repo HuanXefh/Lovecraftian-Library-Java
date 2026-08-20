@@ -175,18 +175,18 @@ const db = {
      */
     noRemains: [
 
-      "multi-block-lib-link-entity-1",
-      "multi-block-lib-link-entity-2",
-      "multi-block-lib-link-entity-3",
-      "multi-block-lib-link-entity-4",
-      "multi-block-lib-link-entity-liquid-1",
-      "multi-block-lib-link-entity-liquid-2",
-      "multi-block-lib-link-entity-liquid-3",
-      "multi-block-lib-link-entity-liquid-4",
-      "multi-block-lib-placeholder-entity-1",
-      "multi-block-lib-placeholder-entity-2",
-      "multi-block-lib-placeholder-entity-3",
-      "multi-block-lib-placeholder-entity-4",
+      "lovec-multiblock-link-block-1",
+      "lovec-multiblock-link-block-2",
+      "lovec-multiblock-link-block-3",
+      "lovec-multiblock-link-block-4",
+      "lovec-multiblock-link-liquid-block-1",
+      "lovec-multiblock-link-liquid-block-2",
+      "lovec-multiblock-link-liquid-block-3",
+      "lovec-multiblock-link-liquid-block-4",
+      "lovec-multiblock-link-construct-block-1",
+      "lovec-multiblock-link-construct-block-2",
+      "lovec-multiblock-link-construct-block-3",
+      "lovec-multiblock-link-construct-block-4",
 
     ],
 

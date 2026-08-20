@@ -5,24 +5,24 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Tmp;
+import lovec.annotation.JSONTypeClass;
+import lovec.annotation.NoJSON;
 import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Building;
 import mindustry.world.Block;
-import mindustry.world.draw.DrawBlock;
 
 /**
  * Draws icon of some content.
  */
-public class LCDrawContent extends DrawBlock {
+@JSONTypeClass
+public class LCDrawContent extends LCDrawer {
 
 
-    public float offX;
-    public float offY;
     public float regScl = 1f;
     public UnlockableContent content;
-    public Func<Building, UnlockableContent> contentF;
+    public @NoJSON Func<Building, UnlockableContent> contentF;
     public Color color;
-    public Func<Building, Color> colorF;
+    public @NoJSON Func<Building, Color> colorF;
 
 
     @Override
@@ -43,12 +43,13 @@ public class LCDrawContent extends DrawBlock {
         if(ct == null) return;
 
         TextureRegion reg = ct.fullIcon;
+        calcRotatedOff(Tmp.v1, b.rotation).add(b);
         if(colorF == null) {
-            Draw.rect(reg, b.x + offX, b.y + offY, reg.width * reg.scl() * regScl, reg.height * reg.scl() * regScl);
+            Draw.rect(reg, Tmp.v1.x, Tmp.v1.y, reg.width * reg.scl() * regScl, reg.height * reg.scl() * regScl, calcAng(b.rotation));
         } else {
             Tmp.c1.set(colorF.get(b));
             Draw.color(Tmp.c1, Tmp.c1.a);
-            Draw.rect(reg, b.x + offX, b.y + offY, reg.width * reg.scl() * regScl, reg.height * reg.scl() * regScl);
+            Draw.rect(reg, Tmp.v1.x, Tmp.v1.y, reg.width * reg.scl() * regScl, reg.height * reg.scl() * regScl, calcAng(b.rotation));
             Draw.color();
         };
     };

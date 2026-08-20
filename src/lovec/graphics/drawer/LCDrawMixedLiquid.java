@@ -4,24 +4,21 @@ import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import arc.math.Mathf;
 import arc.util.Tmp;
+import lovec.annotation.JSONTypeClass;
 import lovec.utils.LCScript;
 import lovec.utils.LCScriptUtil;
 import mindustry.gen.Building;
 import mindustry.world.Block;
-import mindustry.world.draw.DrawBlock;
 
 /**
  * Draws liquid region, color is determined by all liquids in the building.
  */
-public class LCDrawMixedLiquid extends DrawBlock {
+@JSONTypeClass
+public class LCDrawMixedLiquid extends LCDrawer {
 
 
     public String suffix = "-liquid";
-    public float offX;
-    public float offY;
-    public boolean rotate = false;
 
     protected boolean firstLiq = false;
     protected TextureRegion liqReg;
@@ -50,11 +47,8 @@ public class LCDrawMixedLiquid extends DrawBlock {
         });
 
         Draw.color(Tmp.c1, Tmp.c1.a);
-        if(rotate) {
-            Draw.rect(liqReg, b.x + offX * Mathf.cosDeg(b.drawrot()), b.y + offY * Mathf.sinDeg(b.drawrot()), b.drawrot());
-        } else {
-            Draw.rect(liqReg, b.x + offX, b.y + offY);
-        };
+        calcRotatedOff(Tmp.v1, b.rotation).add(b);
+        Draw.rect(liqReg, Tmp.v1.x, Tmp.v1.y, rotate ? 0f : b.drawrot());
         Draw.color();
     };
 

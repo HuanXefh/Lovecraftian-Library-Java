@@ -50,9 +50,11 @@
 
 
   function comp_onProximityUpdate(b) {
-    b.ex_updateTorFetchTgs();
-    b.ex_updateTorSupplyTgs();
-    b.ex_updateTorTransTgs();
+    Time.run(60.0, () => {
+      b.ex_updateTorFetchTgs();
+      b.ex_updateTorSupplyTgs();
+      b.ex_updateTorTransTgs();
+    });
   };
 
 
@@ -172,6 +174,9 @@
       if(ob.block instanceof LiquidSource) {
         b.torFetchTgs.push(ob, 100.0 / 60.0);
       } else {
+        if(ob.block instanceof MultiBlockLinkBlock) {
+          ob = ob.linkedBuild;
+        };
         let rateProd = MDL_recipeDict.getProdAmt(VARGEN.auxTor, ob.block);
         if(rateProd < 0.0001) return;
         b.torFetchTgs.push(ob, rateProd);
@@ -187,8 +192,13 @@
     b.proximity.each(ob => {
       if(ob.block instanceof LiquidVoid) {
         b.torSupplyTgs.push(ob, 100.0 / 60.0);
-      } else if(ob.block.consumesLiquid(VARGEN.auxTor) || ob.block.consumesLiquid(VARGEN.auxRpm)) {
-        b.torSupplyTgs.push(ob, MDL_recipeDict.getConsAmt(VARGEN.auxTor, ob.block));
+      } else {
+        if(ob.block instanceof MultiBlockLinkBlock) {
+          ob = ob.linkedBuild;
+        };
+        if(ob.block.consumesLiquid(VARGEN.auxTor) || ob.block.consumesLiquid(VARGEN.auxRpm)) {
+          b.torSupplyTgs.push(ob, MDL_recipeDict.getConsAmt(VARGEN.auxTor, ob.block));
+        };
       };
     });
   };

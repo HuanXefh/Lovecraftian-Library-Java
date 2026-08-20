@@ -60,6 +60,9 @@ public abstract class ContentFrag<T> {
     };
 
 
+    /**
+     * This method has a content template version.
+     */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
     public @interface FragMethod {};

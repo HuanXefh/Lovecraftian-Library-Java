@@ -117,6 +117,7 @@
    */
   fetchClasses = function(packagePath) {
     packagePath = String(packagePath);
+
     let clss = [];
     let nameMod = packagePath.split(".")[0];
     if(nameMod == null) return clss;
@@ -124,11 +125,17 @@
     let dir = MDL_file.parsePath(MDL_file.getRootDir(nameMod), path);
     if(dir == null) return clss;
 
+    let cls, innerCls;
     dir.list().forEach(fi => {
       if(fi.isDirectory()) {
-        clss.pushAll(fetchClasses(packagePath + "." + fi.name()));
-      } else if(fi.extEquals("class")) {
-        clss.push(fetchClass(packagePath + "." + fi.nameWithoutExtension()));
+        fetchClasses(packagePath + "." + fi.name()).forEach(cls1 => clss.push(cls1));
+      } else if(fi.extEquals("class") && !fi.nameWithoutExtension().includes("$")) {
+        cls = fetchClass(packagePath + "." + fi.nameWithoutExtension());
+        clss.push(cls);
+        cls.__javaObject__.getDeclaredClasses().forEach(innerClsObj => {
+          innerCls = fetchClass(packagePath + "." + fi.nameWithoutExtension() + "$" + innerClsObj.getSimpleName());
+          clss.push(innerCls);
+        });
       };
     });
 
@@ -143,6 +150,7 @@
    * @return {void}
    */
   exposeClass = function(javaCls) {
+    if(javaCls.__javaObject__ == null) throw new Error("Not Java class constructor: " + javaCls);
     let name = javaCls.__javaObject__.getSimpleName();
     Object.globalize(javaCls, name);
     exposeClass.__exposedClasses__[name] = javaCls;
@@ -158,6 +166,7 @@
    */
   exposeClasses = function(packagePath) {
     fetchClasses(packagePath).forEach(cls => exposeClass(cls));
+    console.log("[LOVEC] Exposed Java classes in ${1} to JavaScript environment.".format(packagePath.color(Pal.accent)));
   };
 
 
@@ -207,7 +216,7 @@
      */
     init() {
       function convertName(javaCls) {
-        let str = javaCls.__javaObject__.getSimpleName();
+        let str = tryVal(javaCls.__javaObject__, javaCls).getSimpleName();
         return str.charAt(0).toLowerCase() + str.slice(1) + "_arr";
       };
       function getArrayClass(javaCls) {

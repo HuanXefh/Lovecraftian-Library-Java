@@ -21,6 +21,7 @@
 
   /** @global */
   const SideFracModes = new CLS_enum({
+    ALL: -1,
     FRONT: 0,
     BACK: 1,
     SIDE: 2,
@@ -48,6 +49,9 @@
       frac = LCPos.getTilesEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => t.build) / thisFun.tmpTs.length * (forceOneSide ? 4.0 : 1.0);
     } else {
       switch(mode) {
+        case SideFracModes.ALL :
+          frac = LCPos.getTilesEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false).count(b_t, t => t.build) * 4.0 / thisFun.tmpTs.length;
+          break;
         case SideFracModes.FRONT :
           frac = LCPos.getTilesRot(thisFun.tmpTs, b_f.tile, b_f.rotation, b_f.block.size).count(b_t, t => t.build) / thisFun.tmpTs.length;
           break;
