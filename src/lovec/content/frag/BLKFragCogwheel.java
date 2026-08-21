@@ -10,12 +10,12 @@ import lovec.utils.LCScript;
 import mindustry.graphics.Layer;
 import mindustry.world.blocks.defense.Wall;
 
-public class BLKFragCogwheel extends ContentFrag<Wall> {
+public class BLKFragCogwheel extends ContentFrag<Wall, BLKFragCogwheel> {
 
 
 
 
-    public static class BFragCogwheel extends BuildContentFrag<Wall.WallBuild, Wall> {
+    public static class BFragCogwheel extends BuildContentFrag<Wall.WallBuild, Wall, BFragCogwheel> {
 
 
         @FragMethod

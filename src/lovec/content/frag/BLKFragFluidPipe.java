@@ -9,7 +9,7 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.liquid.Conduit;
 
-public class BLKFragFluidPipe extends ContentFrag<Conduit> {
+public class BLKFragFluidPipe extends ContentFrag<Conduit, BLKFragFluidPipe> {
 
 
     @FragMethod

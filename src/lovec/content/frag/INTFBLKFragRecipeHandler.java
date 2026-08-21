@@ -9,12 +9,12 @@ import mindustry.world.blocks.production.GenericCrafter;
 import rhino.NativeArray;
 import rhino.NativeObject;
 
-public class INTFBLKFragRecipeHandler extends ContentFrag<GenericCrafter> {
+public class INTFBLKFragRecipeHandler extends ContentFrag<GenericCrafter, INTFBLKFragRecipeHandler> {
 
 
 
 
-    public static class INTFBFragRecipeHandler extends BuildContentFrag<GenericCrafter.GenericCrafterBuild, GenericCrafter> {
+    public static class INTFBFragRecipeHandler extends BuildContentFrag<GenericCrafter.GenericCrafterBuild, GenericCrafter, INTFBFragRecipeHandler> {
 
 
         NativeObject rc;

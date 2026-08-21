@@ -9,7 +9,7 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
 
-public class BLKFragCable extends ContentFrag<Conveyor> {
+public class BLKFragCable extends ContentFrag<Conveyor, BLKFragCable> {
 
 
     @FragMethod

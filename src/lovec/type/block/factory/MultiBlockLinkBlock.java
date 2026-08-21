@@ -18,6 +18,7 @@ import mindustry.world.consumers.Consume;
 import mindustry.world.meta.BuildVisibility;
 import mindustry.world.modules.ItemModule;
 import mindustry.world.modules.LiquidModule;
+import mindustry.world.modules.PowerModule;
 
 /**
  * Internal block type for multi-block structure.
@@ -41,10 +42,12 @@ public class MultiBlockLinkBlock extends Block {
         hasItems = true;
         hasLiquids = true;
         hasPower = false;
+        conductivePower = true;
         squareSprite = false;
         drawCracks = false;
         drawArrow = false;
         drawTeamOverlay = false;
+        enableDrawStatus = false;
         ambientSound = Sounds.none;
         breakSound = Sounds.none;
         destroySound = Sounds.none;
@@ -84,6 +87,12 @@ public class MultiBlockLinkBlock extends Block {
 
 
         public Building linkedBuild;
+
+
+        @Override
+        public void created() {
+            Core.app.post(this::updatePowerGraph);
+        };
 
 
         @Override
@@ -145,6 +154,19 @@ public class MultiBlockLinkBlock extends Block {
         public void handleLiquid(Building b_f, Liquid liq, float amt) {
             if(linkedBuild == null) return;
             linkedBuild.handleLiquid(b_f, liq, amt);
+        };
+
+
+        @Override
+        public boolean conductsTo(Building ob) {
+            if(linkedBuild == null) return false;
+            if(ob == linkedBuild || linkedBuild.block.conductivePower) return true;
+
+            if(ob instanceof MultiBlockLinkBuild omb) {
+                return omb.linkedBuild == linkedBuild;
+            };
+
+            return ob.conductsTo(this);
         };
 
 
@@ -238,6 +260,9 @@ public class MultiBlockLinkBlock extends Block {
             };
             if(liquids == null) {
                 liquids = new LiquidModule();
+            };
+            if(block.hasPower && power == null) {
+                power = new PowerModule();
             };
         };
 

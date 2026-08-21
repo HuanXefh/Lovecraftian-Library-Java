@@ -1452,17 +1452,7 @@
   CLS_recipe.prototype.calcAttrEffc = function(attrSum) {
     return this.attr == null ?
       1.0 :
-      Mathf.clamp(
-        MATH_interp.lerp(
-          0.0,
-          1.0,
-          attrSum + this.attr.env(),
-          this.attrMin,
-          this.attrMax,
-        ) * this.attrBoostScl,
-        0.0,
-        this.attrBoostCap,
-      );
+      MDL_attr.calcAttrEffc(attrSum + this.attr.env(), this.attrMin, this.attrMax, this.attrBoostScl, this.attrBoostCap);
   };
 
 

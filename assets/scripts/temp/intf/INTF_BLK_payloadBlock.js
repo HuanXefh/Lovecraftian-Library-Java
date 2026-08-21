@@ -12,7 +12,7 @@
 
 
   function comp_init(blk) {
-    if(blk.payAmtCap < 0.0) blk.payAmtCap = blk.size;
+    if(blk.payAmtCap < 0.0) blk.payAmtCap = blk.ex_calcPayRoomDef();
 
     blk.ex_addLogicF(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
     blk.ex_addLogicF(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
@@ -156,6 +156,20 @@
       setStats: function() {
         comp_setStats(this);
       },
+
+
+      /**
+       * Calculates default payload room for this block.
+       * @memberof INTF_BLK_payloadBlock
+       * @instance
+       * @return {number}
+       */
+      ex_calcPayRoomDef: function() {
+        return this.size;
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
     }),

@@ -25,6 +25,7 @@
 
 
     /**
+     * Non-square multi-crafter.
      * @class BLK_multiBlockRecipeFactory
      * @extends BLK_recipeFactory
      */
@@ -54,7 +55,26 @@
 
 
     })
-    .setMethod({}),
+    .setMethod({
+
+
+      /**
+       * @override
+       * @memberof BLK_multiBlockRecipeFactory
+       * @instance
+       * @return {number}
+       */
+      ex_calcPayRoomDef: function() {
+        this.calcMaxSize(Tmp.p1, this.size, 0);
+        return Math.round((Tmp.p1.x + Tmp.p1.y) * 0.5);
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+    }),
 
 
     /**
@@ -77,6 +97,22 @@
       }),
 
 
+      shouldDrawStatus: function() {
+        return this.block.enableDrawStatus;
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      drawStatus: function() {
+        // Use Java class method instead
+      }
+      .setProp({
+        override: true,
+      }),
+
+
       /**
        * @override
        * @memberof B_multiBlockRecipeFactory
@@ -88,7 +124,7 @@
       }
       .setProp({
         noSuper: true,
-      })
+      }),
 
 
     }),

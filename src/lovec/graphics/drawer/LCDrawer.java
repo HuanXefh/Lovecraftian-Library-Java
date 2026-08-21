@@ -20,7 +20,7 @@ public abstract class LCDrawer extends DrawBlock {
 
     public float calcRotatedOff(int rot, boolean isY) {
         if(spread < 0f) {
-            if(!rotate) return 0f;
+            if(!rotate) return !isY ? offX : offY;
             return switch(rot) {
                 case 1 -> !isY ? -offY : offX;
                 case 2 -> !isY ? -offX : -offY;

@@ -18,8 +18,11 @@ import mindustry.world.Tile;
 public interface MultiBlockLinkCenterBlockFrag {
 
 
+    int[] getLinkValues();
     Seq<Point2> getLinkPoints();
     IntSeq getLinkSizes();
+    int[] getMultiBlockSizes();
+    void setMultiBlockSizes(int w, int h);
 
 
     default void addLink(int... linkVals) {
@@ -50,6 +53,21 @@ public interface MultiBlockLinkCenterBlockFrag {
     };
 
 
+    default MultiBlockLinkBlock[] findLinkBlocks(Block blk) {
+        return !blk.hasPower ?
+            (
+                !blk.outputsLiquid ?
+                    LCMultiBlockHandler.linkBlocks :
+                    LCMultiBlockHandler.linkLiquidBlocks
+            ) :
+            (
+                !blk.outputsLiquid ?
+                    LCMultiBlockHandler.linkPowerBlocks :
+                    LCMultiBlockHandler.linkLiquidPowerBlocks
+            );
+    };
+
+
     default Seq<Building> createLinkBuilds(Seq<Building> out, Building b, Block blk, Tile t, Team team, int size, int rot) {
         out.clear();
         Seq<Point2> seq1 = getLinkPoints();
@@ -65,7 +83,7 @@ public interface MultiBlockLinkCenterBlockFrag {
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, t.build.rotation);
             t_i = Vars.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
             t_i.setBlock(
-                (blk.outputsLiquid ? LCMultiBlockHandler.linkLiquidBlocks : LCMultiBlockHandler.linkBlocks)[size_i - 1],
+                findLinkBlocks(blk)[size_i - 1],
                 team, 0
             );
             b_i = (MultiBlockLinkBlock.MultiBlockLinkBuild) t_i.build;
@@ -159,7 +177,7 @@ public interface MultiBlockLinkCenterBlockFrag {
             pon_i = seq1.get(i);
             size_i = seq2.get(i);
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, rot);
-            ponLB_i = calcPosLeftBottom(Tmp.p2, size).add(ponRot_i);
+            ponLB_i = calcPosLeftBottom(Tmp.p2, size_i).add(ponRot_i);
             if((ponLB_i.x + ponLB_i.y) < (out.x + out.y)) {
                 out.set(ponLB_i.x, ponLB_i.y);
             };
@@ -182,7 +200,7 @@ public interface MultiBlockLinkCenterBlockFrag {
             pon_i = seq1.get(i);
             size_i = seq2.get(i);
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, rot);
-            ponRB_i = calcPosRightBottom(Tmp.p2, size).add(ponRot_i);
+            ponRB_i = calcPosRightBottom(Tmp.p2, size_i).add(ponRot_i);
             if((ponRB_i.x - ponRB_i.y) > (out.x - out.y)) {
                 out.set(ponRB_i.x, ponRB_i.y);
             };

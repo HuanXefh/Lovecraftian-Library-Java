@@ -8,8 +8,9 @@ import java.lang.annotation.Target;
 /**
  * Utility class to contain methods used in content templates (defined in JavaScript).
  * @param <T> Type of <code>this</code>.
+ * @param <C> Type of the content frag class.
  */
-public abstract class ContentFrag<T> {
+public abstract class ContentFrag<T, C extends ContentFrag<T, C>> {
 
 
     protected T lastThis;
@@ -27,9 +28,9 @@ public abstract class ContentFrag<T> {
     /**
      * Sets <code>this</code> value used in frag methods.
      */
-    public ContentFrag setThis(T thisVal) {
+    public C setThis(T thisVal) {
         lastThis = thisVal;
-        return this;
+        return (C) this;
     };
 
 
@@ -65,7 +66,12 @@ public abstract class ContentFrag<T> {
      */
     @Retention(RetentionPolicy.RUNTIME)
     @Target(ElementType.METHOD)
-    public @interface FragMethod {};
+    public @interface FragMethod {
+
+        String superMode() default "none";
+        String boolMode() default "none";
+
+    };
 
 
 };

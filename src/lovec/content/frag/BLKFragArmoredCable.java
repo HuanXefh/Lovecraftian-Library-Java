@@ -12,7 +12,7 @@ import mindustry.world.Edges;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.ArmoredConveyor;
 
-public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor> {
+public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor, BLKFragArmoredCable> {
 
 
     @FragMethod

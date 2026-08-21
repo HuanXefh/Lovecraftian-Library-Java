@@ -78,6 +78,24 @@
   exports.getAttrB = getAttrB;
 
 
+  /**
+   * Calculates attribute efficiency.
+   * @param {number} sum
+   * @param {number|unset} [min] - Sum for 0% without scaling.
+   * @param {number|unset} [max] - Sum for 100% without scaling.
+   * @param {number|unset} [boostScl]
+   * @param {number|unset} [boostCap]
+   */
+  const calcAttrEffc = function(sum, min, max, boostScl, boostCap) {
+    return Mathf.clamp(
+      MATH_interp.lerp(0.0, 1.0, sum, tryVal(min, 0.0), tryVal(max, 1.0)) * tryVal(boostScl, 1.0),
+      0.0,
+      tryVal(boostCap, 1.0),
+    );
+  };
+  exports.calcAttrEffc = calcAttrEffc;
+
+
   /* <------------------------------ map ------------------------------ */
 
 
