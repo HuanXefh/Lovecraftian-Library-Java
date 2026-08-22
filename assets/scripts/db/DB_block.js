@@ -173,30 +173,7 @@ const db = {
      * No need for 1-block sized blocks and core blocks.
      * <br> `ROW`: blk.
      */
-    noRemains: [
-
-      "lovec-multiblock-link-block-1",
-      "lovec-multiblock-link-block-2",
-      "lovec-multiblock-link-block-3",
-      "lovec-multiblock-link-block-4",
-      "lovec-multiblock-link-liquid-block-1",
-      "lovec-multiblock-link-liquid-block-2",
-      "lovec-multiblock-link-liquid-block-3",
-      "lovec-multiblock-link-liquid-block-4",
-      "lovec-multiblock-link-power-block-1",
-      "lovec-multiblock-link-power-block-2",
-      "lovec-multiblock-link-power-block-3",
-      "lovec-multiblock-link-power-block-4",
-      "lovec-multiblock-link-liquid-power-block-1",
-      "lovec-multiblock-link-liquid-power-block-2",
-      "lovec-multiblock-link-liquid-power-block-3",
-      "lovec-multiblock-link-liquid-power-block-4",
-      "lovec-multiblock-link-construct-block-1",
-      "lovec-multiblock-link-construct-block-2",
-      "lovec-multiblock-link-construct-block-3",
-      "lovec-multiblock-link-construct-block-4",
-
-    ],
+    noRemains: [],
 
 
     /**

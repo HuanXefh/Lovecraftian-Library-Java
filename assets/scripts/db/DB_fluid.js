@@ -321,7 +321,7 @@ const db = {
 
       steel: [
 
-        "brine", 4.5,
+        "brine", 5.0,
         "acidAq", 2.0,
         "acidGas", 2.5,
         "acidSub", 2.0,
@@ -332,7 +332,7 @@ const db = {
 
       galvanized: [
 
-        "acidAq", 1.5,
+        "acidAq", 5.0,
         "acidGas", 2.0,
         "acidSub", 1.5,
         "acidSlurry", 1.5,
@@ -342,14 +342,14 @@ const db = {
 
       stainless: [
 
-        "brine", 4.5,
+        "brine", 5.0,
 
       ],
 
 
       cement: [
 
-        "brine", 5.0,
+        "brine", 4.0,
         "acidAq", 2.5,
         "acidGas", 3.5,
         "acidSub", 2.5,

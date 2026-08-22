@@ -58,7 +58,7 @@
    */
   UTIL_remains.checkRemainsValid = function(e) {
     return e instanceof Building ?
-      PARAM.SHOULD_CREATE_BUILD_REMAINS && !(e.block instanceof ConstructBlock) && (e.block.size > 1 || Mathf.chance(0.5)) && !MDL_cond.hasNoRemains(e.block) :
+      PARAM.SHOULD_CREATE_BUILD_REMAINS && !(instanceOfAny(e.block, ConstructBlock, MultiBlockLinkBlock, MultiBlockLinkConstructBlock)) && (e.block.size > 1 || Mathf.chance(0.5)) && !MDL_cond.hasNoRemains(e.block) :
       !MDL_cond.hasNoRemains(e.type);
   };
 

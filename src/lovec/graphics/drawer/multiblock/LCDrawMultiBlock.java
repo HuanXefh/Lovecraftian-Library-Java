@@ -14,6 +14,7 @@ public abstract class LCDrawMultiBlock extends LCDrawer {
 
     protected boolean evenWidth = false;
     protected boolean evenHeight = false;
+    protected float[] multiBlockCenterOff = new float[2];
 
 
     @Override
@@ -23,6 +24,13 @@ public abstract class LCDrawMultiBlock extends LCDrawer {
             mblk.calcMaxSize(Tmp.p1, blk.size, 0);
             evenWidth = Mathf.mod(Tmp.p1.x, 2) == 0;
             evenHeight = Mathf.mod(Tmp.p1.y, 2) == 0;
+            if(blk.size % 2 == 0) {
+                evenWidth = !evenWidth;
+                evenHeight = !evenHeight;
+            };
+            mblk.calcCenterOff(Tmp.v1, blk.size);
+            multiBlockCenterOff[0] = Tmp.v1.x;
+            multiBlockCenterOff[1] = Tmp.v1.y;
         };
     };
 
@@ -36,6 +44,13 @@ public abstract class LCDrawMultiBlock extends LCDrawer {
 
     public Vec2 calcMultiBlockOff(Vec2 out, int rot) {
         return calcEvenOff(out, rot).add(calcRotatedOff(Tmp.v3, rot));
+    };
+
+
+    public Vec2 calcCenterOff(Vec2 out, int rot) {
+        out.set(multiBlockCenterOff[0], multiBlockCenterOff[1]);
+        out.rotate(calcAng(rot));
+        return out;
     };
 
 

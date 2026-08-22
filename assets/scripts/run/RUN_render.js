@@ -197,7 +197,7 @@
     };
 
     // Draw mouse building if not player
-    if(b != null && !b.block.privileged && b.team !== Team.derelict && (!PARAM.SHOULD_DRAW_PLAYER_STAT || b !== bPlayer)) {
+    if(b != null && !b.block.privileged && !(instanceOfAny(b.block, MultiBlockLinkBlock, MultiBlockLinkConstructBlock)) && b.team !== Team.derelict && (!PARAM.SHOULD_DRAW_PLAYER_STAT || b !== bPlayer)) {
       thisFun.drawBaseBuildStats(b);
 
       if(b.team !== Vars.player.team()) return;

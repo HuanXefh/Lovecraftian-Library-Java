@@ -357,6 +357,7 @@
       isDrill(blk)
         || isPowerGenerator(blk)
         || isFactory(blk)
+        || blk instanceof MultiBlockLiquidRouter
     ) && !tryFun(blk.ex_noAllSideOutput, blk, false);
   }
   .setCache();

@@ -1,5 +1,6 @@
 package lovec.content;
 
+import arc.struct.ObjectMap;
 import lovec.type.block.factory.MultiBlockLinkBlock;
 import lovec.type.block.factory.MultiBlockLinkConstructBlock;
 
@@ -12,6 +13,7 @@ public class LCMultiBlockHandler {
     public static MultiBlockLinkBlock[] linkPowerBlocks = new MultiBlockLinkBlock[maxLinkBlockSize];
     public static MultiBlockLinkBlock[] linkLiquidPowerBlocks = new MultiBlockLinkBlock[maxLinkBlockSize];
     public static MultiBlockLinkConstructBlock[] linkConstructBlocks = new MultiBlockLinkConstructBlock[maxLinkBlockSize];
+    public static ObjectMap<String, MultiBlockLinkBlock[]> uniqueLinkBlockMap = new ObjectMap<>();
 
 
     public static void loadBlock() {

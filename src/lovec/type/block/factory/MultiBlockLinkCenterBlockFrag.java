@@ -1,6 +1,7 @@
 package lovec.type.block.factory;
 
 import arc.math.geom.Point2;
+import arc.math.geom.Vec2;
 import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.Tmp;
@@ -54,6 +55,10 @@ public interface MultiBlockLinkCenterBlockFrag {
 
 
     default MultiBlockLinkBlock[] findLinkBlocks(Block blk) {
+        if(blk instanceof MultiBlockUniqueLinkBlockHandler ulblk) {
+            return ulblk.getLinkBlocks();
+        };
+
         return !blk.hasPower ?
             (
                 !blk.outputsLiquid ?
@@ -121,6 +126,33 @@ public interface MultiBlockLinkCenterBlockFrag {
             if(!Build.validPlace(LCMultiBlockHandler.linkBlocks[size_i - 1], team, t.x + ponRot_i.x, t.y + ponRot_i.y, 0, false)) return false;
         };
         return true;
+    };
+
+
+    default Vec2 calcCenterOff(Vec2 out, int size) {
+        out.set(size % 2 == 0 ? -0.5f : 0f, size % 2 == 0 ? -0.5f : 0f);
+        Seq<Point2> seq1 = getLinkPoints();
+        IntSeq seq2 = getLinkSizes();
+        Point2 pon_i;
+        int size_i;
+        float l = 0f, r = 0f, t = 0f, b = 0f;
+        for(int i = 0; i < seq1.size; i++) {
+            pon_i = seq1.get(i);
+            size_i = seq2.get(i);
+            Tmp.v3.set(size_i % 2 == 0 ? 0.5f : 0f, size_i % 2 == 0 ? 0.5f : 0f).add(pon_i.x, pon_i.y);
+            if(Tmp.v3.x >= 0) {
+                r = Math.max(Tmp.v3.x, r);
+            } else {
+                l = Math.min(Tmp.v3.x, l);
+            };
+            if(Tmp.v3.y >= 0) {
+                t = Math.max(Tmp.v3.y, t);
+            } else {
+                b = Math.min(Tmp.v3.x, b);
+            };
+        };
+
+        return out.add((l + r) / 2f, (t + b) / 2f).scl(Vars.tilesize);
     };
 
 
