@@ -160,7 +160,7 @@ public class LCEntity {
     };
     // Overload
     public static @Nullable Unit getUnit(float x, float y) {
-        return (Unit) LCNativeArray.first(getUnits(LCScript.ensureArray("LCEntity.getUnit.tmpArr"), x, y, 6f));
+        return (Unit) LCNativeArray.first(getUnits(LCScript.ensureArray("LCEntity.getUnit.tmpArr"), x, y, 8f));
     };
 
 
@@ -172,7 +172,7 @@ public class LCEntity {
     };
     // Overload
     public static @Nullable Unit getOtherUnit(float x, float y, Unit unit) {
-        return (Unit) LCNativeArray.first(LCNativeArray.pullAll(getUnits(LCScript.ensureArray("LCEntity.getOtherUnit.tmpArr"), x, y, 6f), unit));
+        return (Unit) LCNativeArray.first(LCNativeArray.pullAll(getUnits(LCScript.ensureArray("LCEntity.getOtherUnit.tmpArr"), x, y, 8f), unit));
     };
 
 
@@ -264,7 +264,7 @@ public class LCEntity {
     };
     // Overload
     public static @Nullable Unit getLoot(float x, float y) {
-        return (Unit) LCNativeArray.first(getLoots(LCScript.ensureArray("LCEntity.getLoot.tmpArr"), x, y, 6f));
+        return (Unit) LCNativeArray.first(getLoots(LCScript.ensureArray("LCEntity.getLoot.tmpArr"), x, y, 8f));
     };
 
 
@@ -276,7 +276,7 @@ public class LCEntity {
     };
     // Overload
     public static @Nullable Unit getOtherLoot(float x, float y, Unit loot) {
-        return (Unit) LCNativeArray.first(LCNativeArray.pullAll(getLoots(LCScript.ensureArray("LCEntity.getOtherLoot.tmpArr"), x, y, 6f), loot));
+        return (Unit) LCNativeArray.first(LCNativeArray.pullAll(getLoots(LCScript.ensureArray("LCEntity.getOtherLoot.tmpArr"), x, y, 8f), loot));
     };
 
 

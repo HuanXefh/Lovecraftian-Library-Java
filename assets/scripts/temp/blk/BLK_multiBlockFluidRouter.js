@@ -15,9 +15,9 @@
 
 
   function comp_init(blk) {
-    // Should always be solid to avoid bugs
     blk.solid = true;
     blk.underBullets = false;
+    blk.group = BlockGroup.none;
   };
 
 

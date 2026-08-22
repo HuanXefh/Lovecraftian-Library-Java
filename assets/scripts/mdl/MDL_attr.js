@@ -316,19 +316,27 @@
    * Gets current value of wind attribute at some tile.
    * Wind force is set in {@link DB_env}.
    * @param {Tile} t
-   * @param {number|unset} [mtp] - Multiplier on final value.
+   * @param {number|unset} [scl] - Scaling on oscillation.
+   * @param {number|unset} [maxRed] - Max reduction as fraction.
+   * @param {number|unset} [posVari] - Magnitude related to position.
    * @return {number}
    */
-  const calcSumWind = function thisFun(t, mtp) {
-    if(mtp == null) mtp = 1.0;
+  const calcSumWind = function thisFun(t, scl, maxRed, posVari) {
+    if(scl == null) scl = 1.0;
+    if(maxRed == null) maxRed = 0.7;
+    if(posVari == null) posVari = 0.0;
 
-    let attrSum = (1.0 - Math.pow(Math.sin(Time.time / 6400.0 / mtp), 2) * 0.7);
+    let attrSum = (1.0 - Math.pow(Math.sin(Time.time / 6400.0 / scl), 2) * maxRed);
     if(thisFun.sumScl == null) {
       thisFun.sumScl = DB_env.db["param"]["map"]["wind"].read(PARAM.MAP_CURRENT, DB_env.db["param"]["pla"]["wind"].read(PARAM.PLANET_CURRENT, 1.0));
     };
     attrSum *= thisFun.sumScl;
-    if(t != null && attrSum > 0.0) attrSum += Mathf.randomSeed(t.pos(), -2, 2) * 0.1;
-    if(attrSum < 0.0) attrSum = 0.0;
+    if(t != null && attrSum > 0.0 && posVari > 0.0) {
+      attrSum += Mathf.randomSeed(t.pos(), -posVari, posVari);
+    };
+    if(attrSum < 0.0) {
+      attrSum = 0.0;
+    };
 
     return attrSum;
   }

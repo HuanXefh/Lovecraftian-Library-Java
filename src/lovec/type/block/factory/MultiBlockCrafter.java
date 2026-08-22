@@ -41,6 +41,7 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
         rotate = true;
         quickRotate = false;
         allowDiagonal = false;
+        drawArrow = false;
     };
 
 

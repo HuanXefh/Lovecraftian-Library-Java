@@ -52,11 +52,26 @@
 
 
   function comp_onProximityUpdate(b) {
+    b.blk$armZ = b.block.delegee.armZ + b.x * -0.000001 - b.y * 0.00001 + b.block.delegee.moveR * 0.0001;
     b.moveTg = TmpStateTag.pending;
+
+    let ob = b.ex_findMoveB(false);
+    b.playingWithUnit = false;
+    b.playingWithCrank = ob != null && checkCreatedByTemp(ob.block) && ob.block.ex_isSubInsOf("BLK_manualTurbine");
   };
 
 
   function comp_updateTile(b) {
+    if((b.playingWithUnit || b.playingWithCrank) && b.efficiency > VAR.param.buildActiveEffcThr) {
+      b.moveAng = Math.sin(Time.time / 10.0) * 20.0;
+      if(!Vars.net.client() && b.playingWithCrank && TIMER.minHalf) {
+        let ob = b.ex_findMoveB(false);
+        if(ob != null && checkCreatedByTemp(ob.block) && ob.block.ex_isSubInsOf("BLK_manualTurbine")) {
+          MDL_call.callOnce("arm plays crank: " + ob.pos(), () => ob.ex_configureClick());
+        };
+      };
+    };
+
     if(TIMER.secHalf) {
       b.moveTg = b.ex_findMoveB(true);
     };
@@ -76,7 +91,9 @@
       };
     };
 
-    b.moveAng = b.moveProg * 180.0 * Mathf.sign(b.rotation <= 1);
+    if(!b.playingWithUnit && !b.playingWithCrank) {
+      b.moveAng = b.moveProg * 180.0 * Mathf.sign(b.rotation <= 1);
+    };
   };
 
 
@@ -103,7 +120,7 @@
     let ang = b.drawrot() + b.moveAng;
 
     Draw.rect(b.block.region, b.x, b.y);
-    processZ(Layer.groundUnit - 0.1);
+    processZ(b.blk$armZ);
     Draw.rect(b.block.delegee.armReg, b.x, b.y, ang);
     if(b.ctTg instanceof Item && b.block.delegee.itemReg.found()) {
       Draw.color(b.ctTg.color);
@@ -113,7 +130,7 @@
     if(b.moveItmCur != null && b.moveItmAmtCur > 0) {
       LCDraw.content(b.x + b.block.delegee.itmDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itmDrawOff * Mathf.sinDeg(ang), b.moveItmCur, 0.6, b.moveAng);
     };
-    processZ(-1.0);
+    processZ();
   };
 
 
@@ -134,6 +151,7 @@
 
     let b_f = b.ex_findMoveB(false);
     if(b_f != null) {
+      b.playingWithUnit = false;
       b.ex_doPick(b_f);
     } else {
       b.ex_doFloorPick();
@@ -194,8 +212,12 @@
     if(TIMER.secHalf) {
       let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
       if(unit != null && unit.isGrounded() && unit.stack.amount > 0) {
+        b.playingWithUnit = false;
         b.ex_doUnitPick(unit);
+      } else if(unit != null && unit.isGrounded() && LCProp.getHitSize(unit) <= 8.0) {
+        b.playingWithUnit = true;
       } else {
+        b.playingWithUnit = false;
         let loot = LCEntity.getLoot((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
         if(loot != null && loot.stack.amount > 0) {
           b.ex_doLootPick(loot);
@@ -333,6 +355,7 @@
      * Intentionally capable of interaction with enemy units.
      * @class BLK_itemArm
      * @extends BLK_baseItemDistributor
+     * @extends INTF_BLK_contentSelector
      */
     newClass().extendClass(PARENT[0], "BLK_itemArm").implement(INTF[0]).initClass()
     .setParent(Wall)
@@ -371,6 +394,12 @@
        * @instance
        */
       itmDrawOff: 8.0,
+      /**
+       * `PARAM`: Z-layer of arm region.
+       * @memberof BLK_itemArm
+       * @instance
+       */
+      armZ: 69.1,
 
 
       /* <------------------------------ internal ------------------------------ */
@@ -458,6 +487,7 @@
     /**
      * @class B_itemArm
      * @extends B_baseItemDistributor
+     * @extends INTF_B_contentSelector
      */
     newClass().extendClass(PARENT[1], "B_itemArm").implement(INTF[1]).initClass()
     .setParent(Wall.WallBuild)
@@ -526,7 +556,25 @@
        * @memberof B_itemArm
        * @instance
        */
+      playingWithUnit: false,
+      /**
+       * `INTERNAL`
+       * @memberof B_itemArm
+       * @instance
+       */
+      playingWithCrank: false,
+      /**
+       * `INTERNAL`
+       * @memberof B_itemArm
+       * @instance
+       */
       blk$moveStackAmt: TmpStateTag.needReplace,
+      /**
+       * `INTERNAL`
+       * @memberof B_itemArm
+       * @instance
+       */
+      blk$armZ: TmpStateTag.needReplace,
 
 
     })
@@ -576,6 +624,17 @@
       drawSelect: function() {
         comp_drawSelect(this);
       },
+
+
+      status: function() {
+        return this.pickCd > 0.0 ?
+          BlockStatus.inactive :
+          this.super$status();
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
 
 
       write: function(wr) {

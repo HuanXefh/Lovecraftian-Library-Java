@@ -232,7 +232,7 @@
         };
         this.drawer.load(this);
       };
-      obj.drawPlan = function(bPlan, bPlans, valid, a) {
+      obj.drawPlanRegion = function(bPlan, bPlans) {
         this.drawer.drawPlan(this, bPlan, bPlans);
       };
       obj.getRegionsToOutline = function(regSeqOut) {

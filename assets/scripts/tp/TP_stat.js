@@ -102,6 +102,7 @@
   newStat("lovec", "blk0pow-safepowlvl", StatCat.power);
 
 
+  newStat("lovec", "blk0misc-restrictr");
   newStat("lovec", "blk0misc-maxdur");
   newStat("lovec", "blk0misc-reloadtime");
   newStat("lovec", "blk0misc-cepprov");

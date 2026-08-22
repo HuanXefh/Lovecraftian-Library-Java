@@ -60,7 +60,7 @@
     exports.secTwo = timers.generic.get(3, 120.0);
     exports.secThree = timers.generic.get(4, 180.0);
     exports.secFive = timers.generic.get(5, 300.0);
-    exports.secTen = timers.generic.get(6, 300.0);
+    exports.secTen = timers.generic.get(6, 600.0);
     exports.minHalf = timers.generic.get(7, 1800.0);
     exports.min = timers.generic.get(8, 3600.0);
     exports.minTwo = timers.generic.get(9, 7200.0);

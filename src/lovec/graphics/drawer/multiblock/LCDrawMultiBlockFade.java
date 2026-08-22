@@ -18,7 +18,7 @@ public class LCDrawMultiBlockFade extends LCDrawMultiBlock {
 
     public String suffix = "-top";
     public float alpha = 0.6f;
-    public float scl = 3f;
+    public float scale = 3f;
     public float progressOffset = 0f;
 
     protected TextureRegion fadeReg;
@@ -40,7 +40,7 @@ public class LCDrawMultiBlockFade extends LCDrawMultiBlock {
 
     @Override
     public void draw(Building b) {
-        Draw.alpha(Mathf.absin(b.totalProgress() + progressOffset, scl, alpha) * b.warmup());
+        Draw.alpha(Mathf.absin(b.totalProgress() + progressOffset, scale, alpha) * b.warmup());
         calcMultiBlockOff(Tmp.v1, b.rotation).add(b);
         Draw.rect(fadeReg, Tmp.v1.x, Tmp.v1.y, calcAng(b.rotation));
         Draw.color();

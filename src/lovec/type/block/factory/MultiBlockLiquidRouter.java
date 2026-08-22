@@ -46,6 +46,7 @@ public class MultiBlockLiquidRouter extends LiquidRouter implements MultiBlockLi
         floating = true;
         noUpdateDisabled = true;
         allowDiagonal = false;
+        drawArrow = false;
 
         requestUniqueLink(this, (sizeCur, blk) -> new MultiBlockLinkBlock(name + "-link-" + sizeCur) {{
             size = sizeCur;
@@ -57,16 +58,16 @@ public class MultiBlockLiquidRouter extends LiquidRouter implements MultiBlockLi
 
 
     @Override
-    public void load() {
-        super.load();
-        drawer.load(this);
+    public void init() {
+        super.init();
+        blkFrag.setThis(this).init();
     };
 
 
     @Override
-    public void init() {
-        super.init();
-        blkFrag.setThis(this).init();
+    public void load() {
+        super.load();
+        drawer.load(this);
     };
 
 
@@ -96,7 +97,7 @@ public class MultiBlockLiquidRouter extends LiquidRouter implements MultiBlockLi
 
 
     @Override
-    public void drawPlan(BuildPlan bPlan, Eachable<BuildPlan> bPlans, boolean valid) {
+    public void drawPlanRegion(BuildPlan bPlan, Eachable<BuildPlan> bPlans) {
         drawer.drawPlan(this, bPlan, bPlans);
     };
 

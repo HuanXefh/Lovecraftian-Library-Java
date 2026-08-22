@@ -85,7 +85,7 @@
        * @return {Color}
        */
       ex_getBlkRColor: function(valid) {
-        return Pal.accent;
+        return valid ? Pal.accent : Pal.remove;
       }
       .setProp({
         noSuper: true,

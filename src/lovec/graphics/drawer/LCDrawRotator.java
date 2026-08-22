@@ -7,6 +7,7 @@ import arc.math.Mathf;
 import arc.util.Eachable;
 import arc.util.Tmp;
 import lovec.annotation.JSONTypeClass;
+import lovec.graphics.LCDraw;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -20,16 +21,30 @@ public class LCDrawRotator extends LCDrawer implements SpinSpriteFrag {
 
 
     public String suffix = "-rotator";
+    public String blurSuffix = "-blur";
+    public float z = -1f;
     public float angle;
     public float speed;
+    public int sides = 4;
     public boolean spinSprite = true;
+    public float blurThreshold = -1f;
 
+    protected float sideAng;
+    protected float lastProg;
+    protected boolean blurred;
     protected TextureRegion rotReg;
+    protected TextureRegion blurRotReg;
 
 
     @Override
     public void load(Block blk) {
+        if(blurThreshold  < 0f) {
+            blurThreshold = speed * 30f;
+        };
+        sideAng = 360f / sides;
+
         rotReg = Core.atlas.find(blk.name + suffix);
+        blurRotReg = Core.atlas.find(blk.name + suffix + blurSuffix);
     };
 
 
@@ -48,14 +63,18 @@ public class LCDrawRotator extends LCDrawer implements SpinSpriteFrag {
 
     @Override
     public void draw(Building b) {
-        float ang = Mathf.mod(b.totalProgress() * Math.abs(speed) + angle, 90f);
+        float ang = b.totalProgress() * Math.abs(speed) + angle;
+        blurred = blurRotReg.found() && ang - lastProg >= blurThreshold;
+        ang = Mathf.mod(ang, sideAng);
 
+        LCDraw.processZ(z);
         calcRotatedOff(Tmp.v1, b.rotation).add(b);
         if(!spinSprite) {
-            Draw.rect(rotReg, Tmp.v1.x, Tmp.v1.y, ang);
+            Draw.rect(blurred ? blurRotReg : rotReg, Tmp.v1.x, Tmp.v1.y, ang);
         } else {
-            drawRotator(rotReg, Tmp.v1.x, Tmp.v1.y, ang, speed);
+            drawRotator(blurred ? blurRotReg : rotReg, Tmp.v1.x, Tmp.v1.y, ang, speed, sideAng);
         };
+        LCDraw.processZ(-1f);
     };
 
 
