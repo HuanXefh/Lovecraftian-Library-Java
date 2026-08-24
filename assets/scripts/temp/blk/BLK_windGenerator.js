@@ -23,7 +23,6 @@
 
 
   function comp_init(blk) {
-    blk.powerProduction *= POW_PROD_SCL;
     blk.blkR = blk.placeRestrictR;
   };
 
@@ -35,11 +34,12 @@
 
   function comp_setStats(blk) {
     blk.stats.remove(blk.generationType);
-    blk.stats.add(blk.generationType, blk.powerProduction / POW_PROD_SCL * 60.0, StatUnit.powerSecond);
+    blk.stats.add(blk.generationType, blk.powerProduction * 60.0, StatUnit.powerSecond);
   };
 
 
   function comp_setBars(blk) {
+    blk.removeBar("lovec-warmup");
     blk.addBar("lovec-wind-effc", b => new Bar(
       prov(() => Core.bundle.format("bar.lovec-bar-wind-effc-amt", b.delegee.windEffc.perc(0))),
       prov(() => Tmp.c1.set(Pal.accent).lerp(Pal.heal, b.delegee.windEffc)),
@@ -58,14 +58,14 @@
       b.windEffc = MDL_attr.calcSumWind(b.tile, b.block.delegee.windScl, b.block.delegee.minProdEffc, b.block.delegee.posVari);
     };
 
-    if(TIMER.secQuarter && b.block.delegee.bladeTouchRad > 0.0) {
+    if(TIMER.secHalf && b.block.delegee.bladeTouchRad > 0.0 && b.windEffc >= b.block.delegee.bladeTouchWarmupThr) {
       let hasHit = false;
       LCEntity.eachUnit(b.x, b.y, null, b.block.delegee.bladeTouchRad, ounit => MDL_cond.isUnitInLowAir(ounit) || MDL_cond.isUnitBoosting(ounit), ounit => {
-        FRAG_attack.damage(ounit, b.block.delegee.bladeTouchDmg);
+        FRAG_attack.damage(ounit, b.block.delegee.bladeTouchDmg * b.windEffc);
         hasHit = true;
       });
       if(hasHit) {
-        FRAG_attack.damage(b, b.block.delegee.bladeTouchSelfDmg);
+        FRAG_attack.damage(b, b.block.delegee.bladeTouchSelfDmg * b.windEffc);
         MDL_sound.playAt(b.x, b.y, b.block.delegee.bladeHitSe);
       };
     };
@@ -119,11 +119,17 @@
        */
       bladeTouchRad: -1.0,
       /**
+       * `PARAM`: Warmup above which blade damage can happen.
+       * @memberof BLK_windGenerator
+       * @instance
+       */
+      bladeTouchWarmupThr: 0.7,
+      /**
        * `PARAM`: Damage dealt to flying units hit by blade.
        * @memberof BLK_windGenerator
        * @instance
        */
-      bladeTouchDmg: 120.0,
+      bladeTouchDmg: 200.0,
       /**
        * `PARAM`: Like {@link BLK_windGenerator#bladeTouchDmg} but dealt to the building itself.
        * @memberof BLK_windGenerator
@@ -216,17 +222,35 @@
 
       updateTile: function() {
         comp_updateTile(this);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       getPowerProduction: function() {
-        return this.windEffc;
+        return POW_PROD_SCL;
       }
       .setProp({
         noSuper: true,
         mergeMode: function(valPrev, val) {
           return valPrev * val;
         },
+      }),
+
+
+      /**
+       * @override
+       * @memberof B_windGenerator
+       * @instance
+       * @return {number}
+       */
+      ex_getGenWarmupTg: function() {
+        return this.windEffc;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 

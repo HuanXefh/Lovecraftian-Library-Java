@@ -35,6 +35,7 @@ public class LCDrawRipple extends LCDrawer {
     protected Rand rand = new Rand();
     protected IntFloatMap noLiqCdMap = new IntFloatMap();
     protected boolean noLiq = false;
+    protected float lastA;
 
 
     @Override
@@ -49,6 +50,7 @@ public class LCDrawRipple extends LCDrawer {
     public void draw(Building b) {
         float warmup = b.warmup();
         if(warmup < 0.01f) return;
+        lastA = 1f;
         if(hasNoLiqCheck) {
             int posInt = b.pos();
             float cd = noLiqCdMap.get(posInt, 0f);
@@ -57,6 +59,7 @@ public class LCDrawRipple extends LCDrawer {
                 if(!noLiq) return;
                 if(amt > 0.01f && !liq.gas && !LCScriptUtil.checkCond("isAuxiliaryFluid", liq)) {
                     noLiq = false;
+                    lastA = Math.min(amt / b.block.liquidCapacity, lastA);
                 };
             });
             if(noLiq) {
@@ -69,7 +72,7 @@ public class LCDrawRipple extends LCDrawer {
             if(cd >= 20f) return;
         };
 
-        Draw.color(color, color.a * warmup);
+        Draw.color(color, color.a * warmup * lastA);
         rand.setSeed(b.id);
         int i = 0;
         while(i < amount) {

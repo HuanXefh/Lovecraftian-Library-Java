@@ -30,6 +30,7 @@
 
 
   function comp_onProximityUpdate(b) {
+    b.ex_updatePresDumpTs();
     b.ex_updatePresDumpTgs();
   };
 
@@ -52,17 +53,42 @@
   };
 
 
+  function comp_ex_updatePresDumpTs(b) {
+    b.presDumpTs.clear();
+    b.block.delegee.presDumpPons.forEachFast(pon => {
+      b.presDumpTs.push(LCPos.getTileRectRotCenter(Vars.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), Vars.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
+    }, true);
+  };
+
+
   function comp_ex_updatePresDumpTgs(b) {
     b.presDumpTgs.clear();
     let fldType1, fldType2;
-    b.proximity.each(ob => {
-      if(tryJsProp(ob, "presBase") == null) return;
-      if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
-      fldType1 = b.block.delegee.presFldType;
-      fldType2 = tryJsProp(ob.block, "fldType", "any");
-      if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
-      b.presDumpTgs.push(ob);
-    });
+    if(b.presDumpTs.length > 0) {
+      let ob;
+      b.presDumpTs.forEachFast(ot => {
+        ob = ot.build;
+        if(ob == null || ob.team !== b.team) return;
+        if(ob.block instanceof MultiBlockLinkBlock) {
+          ob = ob.linkedBuild;
+        };
+        if(tryJsProp(ob, "presBase") == null) return;
+        if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
+        fldType1 = b.block.delegee.presFldType;
+        fldType2 = tryJsProp(ob.block, "fldType", "any");
+        if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
+        b.presDumpTgs.push(ob);
+      }, true);
+    } else {
+      b.proximity.each(ob => {
+        if(tryJsProp(ob, "presBase") == null) return;
+        if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
+        fldType1 = b.block.delegee.presFldType;
+        fldType2 = tryJsProp(ob.block, "fldType", "any");
+        if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
+        b.presDumpTgs.push(ob);
+      });
+    };
   };
 
 
@@ -112,6 +138,12 @@
          * @instance
          */
         presFldType: "any",
+        /**
+         * `PARAM`: Dump positions (relative to tile center). Leave empty if not used.
+         * @memberof INTF_BLK_pressureProducer
+         * @instance
+         */
+        presDumpPons: tprov(() => []),
 
 
       }),
@@ -147,6 +179,12 @@
          * @memberof INTF_B_pressureProducer
          * @instance
          */
+        presDumpTs: tprov(() => []),
+        /**
+         * `INTERNAL`
+         * @memberof INTF_B_pressureProducer
+         * @instance
+         */
         presDumpTgs: tprov(() => []),
         /**
          * `INTERNAL`
@@ -172,6 +210,19 @@
       updateTile: function() {
         comp_updateTile(this);
       },
+
+
+      /**
+       * @memberof INTF_B_pressureProducer
+       * @instance
+       * @return {void}
+       */
+      ex_updatePresDumpTs: function() {
+        comp_ex_updatePresDumpTs(this);
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       /**

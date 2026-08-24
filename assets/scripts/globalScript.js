@@ -360,6 +360,8 @@
     lastHttpRes: null,
     lastHttpExc: null,
 
+    windMtp: 1.0,
+
   };
 
 

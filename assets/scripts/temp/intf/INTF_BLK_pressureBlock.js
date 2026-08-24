@@ -90,7 +90,7 @@
     };
 
     // Pressure drop
-    b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase * 0.01666667 * Time.delta);
+    b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase / 60.0 * Time.delta);
 
     // Supply abstract fluid
     if(!b.block.delegee.skipPresSupply && b.presSupplyTgs.length > 0 && Math.abs(b.presTmp) > 0.0) {

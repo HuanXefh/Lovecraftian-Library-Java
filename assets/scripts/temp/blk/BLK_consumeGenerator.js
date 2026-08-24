@@ -30,13 +30,13 @@
     if(rate < 0.0) {
       b.genWarmup = 1.0;
     } else {
-      b.genWarmup = b.efficiency > 0.9999 && b.power.status > 0.99 ?
-        Mathf.approachDelta(b.genWarmup, 1.0, rate * b.timeScale) :
-        Mathf.approachDelta(b.genWarmup, 0.0, rate * 5.0);
+      b.genWarmup = b.efficiency > 0.9999 && (!b.block.consumesPower || b.power.status > 0.99) ?
+        Mathf.approachDelta(b.genWarmup, b.ex_getGenWarmupTg(), rate * b.timeScale) :
+        Mathf.approachDelta(b.genWarmup, 0.0, rate * b.timeScale * 5.0);
     };
 
     b.productionEfficiency = b.efficiency * b.efficiencyMultiplier;
-    b.totalTime += b.delegee.warmup.call(b) * b.edelta();
+    b.totalTime += b.ex_getWarmupFrac() * b.edelta();
 
     if(b.efficiency > 0.0 && Mathf.chanceDelta(b.block.effectChance * b.efficiency)) {
       MDL_effect.showAround(b.x, b.y, b.block.generateEffect, b.block.generateEffectRange, 0.0);
@@ -61,6 +61,7 @@
     };
 
     b.generateTime -= b.delta() / b.block.itemDuration / b.itemDurationMultiplier;
+    b.warmup = b.ex_getWarmupFrac();
   };
 
 
@@ -150,16 +151,6 @@
       }),
 
 
-      warmup: function() {
-        return !this.enabled ?
-          0.0 :
-          (this.productionEfficiency * this.genWarmup);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
       write: function(wr) {
         this.ex_processData(wr);
         wr.f(this.genWarmup);
@@ -172,6 +163,35 @@
         this.ex_processData(rd);
         this.genWarmup = rd.f();
       },
+
+
+      /**
+       * @memberof B_consumeGenerator
+       * @instance
+       * @return {number}
+       */
+      ex_getWarmupFrac: function() {
+        return !this.enabled ?
+          0.0 :
+          (this.productionEfficiency * this.genWarmup);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * Warmup target for `b.genWarmup`.
+       * @memberof B_consumeGenerator
+       * @instance
+       * @return {number}
+       */
+      ex_getGenWarmupTg: function() {
+        return 1.0;
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       /**

@@ -16,7 +16,10 @@
     blk.saveConfig = true;
     blk.clearOnDoubleTap = false;
 
-    blk.ex_addConfigM("rcHeader", (b, val) => b.delegee.rcHeader = val);
+    blk.ex_addConfigM("rcHeader", (b, val) => {
+      b.delegee.rcHeader = val;
+      b.ex_showRcChangeEff()
+    });
 
     blk.ex_addLogicF(LAccess.config, b => b.delegee.rcHeader);
     blk.ex_addLogicControl(LAccess.config, (b, param1) => {

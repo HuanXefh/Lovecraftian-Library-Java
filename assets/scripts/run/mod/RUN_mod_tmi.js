@@ -10,6 +10,8 @@
   MDL_event.onPostRun(() => {
 
 
+
+
     function checkParser(parserCur, parserOther) {
       return (parserCur.parserBlacklist == null || !parserCur.parserBlacklist.hasIns(parserOther))
         && (parserCur.parserWhitelist == null || parserCur.parserWhitelist.hasIns(parserOther))
@@ -23,14 +25,18 @@
     };
 
 
+
+
     // I don't know why but adding `excludes` here will cause crash now
     // It did not happen in older versions of TMI
+
+
 
 
     /**
      * Default parser for most Lovec drills.
      */
-    const _p_defDrill = MOD_tmi.regisParser({
+    const defDrillParser = MOD_tmi.regisParser({
 
 
       parserBlacklist: [
@@ -71,7 +77,7 @@
 
 
       parse(blk) {
-        const seq = new Seq();
+        let seq = new Seq();
 
         let oreGrpMap = new ObjectMap();
         if(blk instanceof BeamDrill) {
@@ -144,10 +150,67 @@
     });
 
 
+
+
+    /**
+     * Parses recipes for {@link BLK_fluidPackager}.
+     */
+    const fluidPackagerParser = MOD_tmi.regisParser({
+
+
+      parserBlacklist: [
+        MOD_tmi.CLASSES.GenericCrafterParser,
+      ],
+
+
+      exclude(parser) {
+        return !checkParser(this, parser);
+      },
+
+
+      isTarget(blk) {
+        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_fluidPackager");
+      },
+
+
+      parse(blk) {
+        let seq = new Seq();
+
+        global.fcell.fluidItemMap.each((liq, itm) => {
+          let rawRc = MOD_tmi.makeRawRc(
+            "factory",
+            blk,
+            MDL_content.getCraftTime(blk),
+          );
+          MDL_event.onLoad(() => {
+            MOD_tmi.baseParse(blk, rawRc);
+          });
+
+          if(!blk.delegee.isUnpacker) {
+            MOD_tmi.addCons(rawRc, liq, blk.delegee.packageAmt * blk.delegee.liqPerCellItm);
+            MOD_tmi.addProd(rawRc, itm, blk.delegee.packageAmt);
+          } else {
+            MOD_tmi.addCons(rawRc, itm, blk.delegee.packageAmt);
+            MOD_tmi.addProd(rawRc, liq, blk.delegee.packageAmt * blk.delegee.liqPerCellItm);
+          };
+
+          rawRc.complete();
+          seq.add(rawRc);
+        });
+
+        return seq;
+      },
+
+
+    });
+
+
+
+
     /**
      * Parses recipes for {@link INTF_BLK_rangeAttributeBlock}.
      */
-    const _p_rangeHarvester = MOD_tmi.regisParser({
+    const rangeHarvesterParser = MOD_tmi.regisParser({
 
 
       parserBlacklist: [
@@ -194,7 +257,7 @@
     /**
      * Fixes parser for {@link BLK_liquidPump}.
      */
-    const _p_pump = MOD_tmi.regisParser({
+    const pumpParser = MOD_tmi.regisParser({
 
 
       parserBlacklist: [
@@ -224,7 +287,7 @@
 
 
       parse(blk) {
-        const seq = new Seq();
+        let seq = new Seq();
         if(blk.ex_isSubInsOf("BLK_depthPump")) return seq;
 
         this.liqBlksMap.each((liq, blks) => {
@@ -255,7 +318,7 @@
     /**
      * Fixes parser for {@link BLK_ventGenerator}.
      */
-    const _p_ventGenerator = MOD_tmi.regisParser({
+    const ventGeneratorParser = MOD_tmi.regisParser({
 
 
       parserBlacklist: [
@@ -298,7 +361,7 @@
     /**
      * Default parser for most Lovec producers.
      */
-    const _p_defProd = MOD_tmi.regisParser({
+    const defProdParser = MOD_tmi.regisParser({
 
 
       parserBlacklist: [
@@ -306,7 +369,7 @@
         MOD_tmi.CLASSES.GenericCrafterParser,
       ],
       parserConflicted: [
-        _p_rangeHarvester,
+        rangeHarvesterParser,
       ],
       tempTypeMap: ObjectMap.of(
         "BLK_oreScanner", "factory",
@@ -323,7 +386,7 @@
 
       isTarget(blk) {
         return checkCreatedByTemp(blk) && (
-          (MDL_cond.isFactory(blk) && !blk.ex_isSubInsOf("BLK_recipeFactory") && checkTarget(this, blk))
+          (blk.ex_isSubInsOf("BLK_baseFactory") && !blk.ex_isSubInsOf("BLK_recipeFactory") && checkTarget(this, blk))
             || this.tempTypeMap.containsKey(blk.ex_getTempName())
         );
       },
@@ -352,7 +415,7 @@
     /**
      * Used to remove invalid recipes for some templates.
      */
-    const _p_skipParse = MOD_tmi.regisParser({
+    const skipParser = MOD_tmi.regisParser({
 
 
       parserBlacklist: [

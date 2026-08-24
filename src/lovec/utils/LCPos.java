@@ -117,7 +117,7 @@ public class LCPos {
      */
     public static int getRotation(float x1, float y1, float x2, float y2) {
         boolean
-            cond1 = x2 >= x2,
+            cond1 = x2 >= x1,
             cond2 = y2 >= y1,
             cond3 = Math.abs(x2 - x1) >= Math.abs(y2 - y1);
 

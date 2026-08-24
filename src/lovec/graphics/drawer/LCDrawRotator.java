@@ -27,10 +27,9 @@ public class LCDrawRotator extends LCDrawer implements SpinSpriteFrag {
     public float speed;
     public int sides = 4;
     public boolean spinSprite = true;
-    public float blurThreshold = -1f;
+    public float blurThreshold = 0.7f;
 
     protected float sideAng;
-    protected float lastProg;
     protected boolean blurred;
     protected TextureRegion rotReg;
     protected TextureRegion blurRotReg;
@@ -38,9 +37,6 @@ public class LCDrawRotator extends LCDrawer implements SpinSpriteFrag {
 
     @Override
     public void load(Block blk) {
-        if(blurThreshold  < 0f) {
-            blurThreshold = speed * 30f;
-        };
         sideAng = 360f / sides;
 
         rotReg = Core.atlas.find(blk.name + suffix);
@@ -64,7 +60,7 @@ public class LCDrawRotator extends LCDrawer implements SpinSpriteFrag {
     @Override
     public void draw(Building b) {
         float ang = b.totalProgress() * Math.abs(speed) + angle;
-        blurred = blurRotReg.found() && ang - lastProg >= blurThreshold;
+        blurred = blurRotReg.found() && b.warmup() >= blurThreshold;
         ang = Mathf.mod(ang, sideAng);
 
         LCDraw.processZ(z);

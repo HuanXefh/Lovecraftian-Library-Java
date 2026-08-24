@@ -110,7 +110,7 @@
 
       return funParent === this[nameFun] ?
         clsParent.super.apply(clsParent, arguments) :
-        funParent.apply(this, Array.from(arguments).splice(1));
+        funParent.apply(clsParent, Array.from(arguments).splice(1));
     };
 
     this.prototype = Object.create(cls.prototype);

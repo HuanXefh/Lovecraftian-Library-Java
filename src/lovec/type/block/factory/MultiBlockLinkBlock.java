@@ -14,6 +14,7 @@ import mindustry.type.Liquid;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.sandbox.PowerSource;
 import mindustry.world.consumers.Consume;
 import mindustry.world.meta.BuildVisibility;
 import mindustry.world.modules.ItemModule;
@@ -166,7 +167,7 @@ public class MultiBlockLinkBlock extends Block {
                 return omb.linkedBuild == linkedBuild;
             };
 
-            return ob.conductsTo(this);
+            return (ob.block.conductivePower || ob.block instanceof PowerSource) && ob.conductsTo(this);
         };
 
 

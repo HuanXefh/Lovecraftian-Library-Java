@@ -26,6 +26,8 @@
     blk.drawDynamic = true;
     blk.drawCached = false;
 
+    blk.armPlayAng = Math.atan(7.0 / blk.moveR) * 2.0 * Math.PI;
+
     blk.config(JAVA.boolean, (b, bool) => {
       b.delegee.shouldDropLoot = bool;
     });
@@ -63,7 +65,13 @@
 
   function comp_updateTile(b) {
     if((b.playingWithUnit || b.playingWithCrank) && b.efficiency > VAR.param.buildActiveEffcThr) {
-      b.moveAng = Math.sin(Time.time / 10.0) * 20.0;
+      b.moveAng = Math.sin(Time.time / 10.0) * b.block.delegee.armPlayAng;
+      if(b.playingWithUnit && TIMER.secFive) {
+        let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
+        if(unit != null && unit.isGrounded() && MDL_cond.canHeal(unit, b.team)) {
+          FRAG_attack.heal(unit, 5.0);
+        };
+      };
       if(!Vars.net.client() && b.playingWithCrank && TIMER.minHalf) {
         let ob = b.ex_findMoveB(false);
         if(ob != null && checkCreatedByTemp(ob.block) && ob.block.ex_isSubInsOf("BLK_manualTurbine")) {
@@ -405,6 +413,12 @@
       /* <------------------------------ internal ------------------------------ */
 
 
+      /**
+       * `INTERNAL`
+       * @memberof BLK_itemArm
+       * @instance
+       */
+      armPlayAng: 0.0,
       /**
        * `INTERNAL`
        * @memberof BLK_itemArm

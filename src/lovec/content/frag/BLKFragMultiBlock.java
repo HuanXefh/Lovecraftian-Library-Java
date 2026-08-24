@@ -263,12 +263,15 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
                 mblk.calcPosStatusOverlay(statusOverlayOffset, blk.size, b.rotation);
                 Tile t = Vars.world.tile(b.tileX() + statusOverlayOffset.x, b.tileY() + statusOverlayOffset.y);
                 if(t != null) {
-                    float mtp = mblk.getMultiBlockSizes()[b.rotation % 2] > 1 ? 1f : 0.64f;
+                    float mtp = mblk.getMultiBlockSizes()[0] > 1 && mblk.getMultiBlockSizes()[1] > 1 ? 1f : 0.64f;
+                    float off = mtp == 1f ? 0f : (mtp * Vars.tilesize / 4f);
+                    float x = t.worldx() + off;
+                    float y = t.worldy() - off;
                     Draw.z(Layer.power + 1f);
                     Draw.color(Pal.gray);
-                    Fill.square(t.worldx(), t.worldy(), 2.5f * mtp, 45f);
+                    Fill.square(x, y, 2.5f * mtp, 45f);
                     Draw.color(b.status().color);
-                    Fill.square(t.worldx(), t.worldy(), 1.5f * mtp, 45f);
+                    Fill.square(x, y, 1.5f * mtp, 45f);
                     Draw.color();
                 };
             };
