@@ -103,8 +103,9 @@ public class LCFx {
             NativeArray arr = LCScript.toArray(eff.data);
             TextureRegion reg = (TextureRegion) arr.get(0);
             Building b = (Building) arr.get(1);
+            float rotSpd = LCScript.toFloat(arr.get(2));
 
-            LCDraw.regionMixcol(b.x, b.y, reg, b.drawrot(), 1f, eff.color, eff.color.a * eff.fout(), 1f);
+            LCDraw.regionMixcol(b.x, b.y, reg, b.drawrot() + eff.rotation + eff.lifetime * eff.fin() * rotSpd, 1f, eff.color, eff.color.a * eff.fout(), 1f);
         })
         .layer(136.13f),
 

@@ -15,7 +15,7 @@ import mindustry.world.Block;
  * Draws pistons for non-square structure.
  */
 @JSONTypeClass
-public class LCDrawMultiBlockSymmetricPistons extends LCDrawMultiBlock {
+public class LCDrawMultiBlockPistons extends LCDrawMultiBlock {
 
 
     public String suffix = "-piston";
@@ -33,11 +33,10 @@ public class LCDrawMultiBlockSymmetricPistons extends LCDrawMultiBlock {
     protected TextureRegion iconReg;
 
 
-    public LCDrawMultiBlockSymmetricPistons() {
+    public LCDrawMultiBlockPistons() {
         super();
 
         rotate = true;
-        isSymmetric = true;
     };
 
 

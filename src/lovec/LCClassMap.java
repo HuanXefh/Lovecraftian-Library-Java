@@ -15,6 +15,7 @@ public class LCClassMap {
         add("LCDrawEffect", LCDrawEffect.class);
         add("LCDrawFade", LCDrawFade.class);
         add("LCDrawFire", LCDrawFire.class);
+        add("LCDrawFourSideRegions", LCDrawFourSideRegions.class);
         add("LCDrawItemPile", LCDrawItemPile.class);
         add("LCDrawMixedLiquid", LCDrawMixedLiquid.class);
         add("LCDrawRipple", LCDrawRipple.class);
@@ -23,7 +24,7 @@ public class LCClassMap {
         add("LCDrawMultiBlockFade", LCDrawMultiBlockFade.class);
         add("LCDrawMultiBlockLiquidTile", LCDrawMultiBlockLiquidTile.class);
         add("LCDrawMultiBlockRotator", LCDrawMultiBlockRotator.class);
-        add("LCDrawMultiBlockSymmetricPistons", LCDrawMultiBlockSymmetricPistons.class);
+        add("LCDrawMultiBlockPistons", LCDrawMultiBlockPistons.class);
 
         // Block
         add("MultiBlockCrafter", MultiBlockCrafter.class);

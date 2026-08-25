@@ -69,7 +69,7 @@
       if(b.playingWithUnit && TIMER.secFive) {
         let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
         if(unit != null && unit.isGrounded() && MDL_cond.canHeal(unit, b.team)) {
-          FRAG_attack.heal(unit, 5.0);
+          FRAG_attack.heal(unit, 1.0);
         };
       };
       if(!Vars.net.client() && b.playingWithCrank && TIMER.minHalf) {
@@ -438,6 +438,12 @@
        * @instance
        */
       useConfigStr: true,
+
+
+      /* <------------------------------ vanilla ------------------------------ */
+
+
+      ignoreLineRotation: true,
 
 
     })

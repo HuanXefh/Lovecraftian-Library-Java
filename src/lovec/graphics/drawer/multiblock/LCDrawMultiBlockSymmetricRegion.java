@@ -45,18 +45,18 @@ public class LCDrawMultiBlockSymmetricRegion extends LCDrawMultiBlock {
 
 
     @Override
+    public void drawPlan(Block blk, BuildPlan bPlan, Eachable<BuildPlan> bPlans) {
+        calcMultiBlockOff(Tmp.v1, bPlan.rotation).add(bPlan.drawx(), bPlan.drawy());
+        Draw.rect(regs[bPlan.rotation % 2], Tmp.v1.x, Tmp.v1.y);
+    };
+
+
+    @Override
     public void draw(Building b) {
         LCDraw.processZ(z);
         calcMultiBlockOff(Tmp.v1, b.rotation).add(b);
         Draw.rect(regs[b.rotation % 2], Tmp.v1.x, Tmp.v1.y);
         LCDraw.processZ(-1f);
-    };
-
-
-    @Override
-    public void drawPlan(Block blk, BuildPlan bPlan, Eachable<BuildPlan> bPlans) {
-        calcMultiBlockOff(Tmp.v1, bPlan.rotation).add(bPlan.drawx(), bPlan.drawy());
-        Draw.rect(regs[bPlan.rotation % 2], Tmp.v1.x, Tmp.v1.y);
     };
 
 

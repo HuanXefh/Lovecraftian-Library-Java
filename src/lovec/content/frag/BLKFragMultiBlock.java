@@ -33,6 +33,7 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
             mblk.addLink(mblk.getLinkValues());
             mblk.calcMaxSize(Tmp.p1, blk.size, 0);
             mblk.setMultiBlockSizes(Tmp.p1.x, Tmp.p1.y);
+            blk.clipSize += (Math.max(Tmp.p1.x, Tmp.p1.y) - blk.size) * Vars.tilesize;
             blk.hasItems = true;
             blk.hasLiquids = true;
         };
@@ -66,8 +67,8 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
         if(blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
             Placement.calculateNodes(ponSeq, blk, rot, (pon, opon) -> rot % 2 == 0 ?
-                Math.abs(pon.x - opon.y) <= mblk.calcMaxSize(Tmp.p1, blk.size, rot).x :
-                Math.abs(pon.y - opon.y) <= mblk.calcMaxSize(Tmp.p1, blk.size, rot).y
+                Math.abs(pon.x - opon.x) <= mblk.getMultiBlockSizes()[0] :
+                Math.abs(pon.y - opon.y) <= mblk.getMultiBlockSizes()[0]
             );
         };
     };

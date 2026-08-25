@@ -19,6 +19,7 @@ public class LCDrawMixedLiquid extends LCDrawer {
 
 
     public String suffix = "-liquid";
+    public float alpha = 1f;
 
     protected boolean firstLiq = false;
     protected TextureRegion liqReg;
@@ -46,9 +47,9 @@ public class LCDrawMixedLiquid extends LCDrawer {
             };
         });
 
-        Draw.color(Tmp.c1, Tmp.c1.a);
+        Draw.color(Tmp.c1, Tmp.c1.a * alpha);
         calcRotatedOff(Tmp.v1, b.rotation).add(b);
-        Draw.rect(liqReg, Tmp.v1.x, Tmp.v1.y, rotate ? 0f : b.drawrot());
+        Draw.rect(liqReg, Tmp.v1.x, Tmp.v1.y, calcAng(b.rotation));
         Draw.color();
     };
 

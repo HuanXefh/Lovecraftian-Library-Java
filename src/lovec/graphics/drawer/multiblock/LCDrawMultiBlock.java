@@ -73,6 +73,7 @@ public abstract class LCDrawMultiBlock extends LCDrawer {
 
 
     public float calcEvenOff(int rot, boolean isY) {
+        if(!isSymmetric) return 0f;
         return switch(rot) {
             case 2 -> !isY ? (!evenWidth ? 0f : -8f) : (!evenHeight ? 0f : 8f);
             case 3 -> !isY ? (!evenHeight ? 0f : 8f) : (!evenWidth ? 0f : -8f);

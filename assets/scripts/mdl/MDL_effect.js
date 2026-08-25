@@ -330,7 +330,7 @@
       e.block.fullIcon :
       tryVal(MDL_texture.getRegTurBase(e.block), e.block.region);
       if(reg != null) {
-        showAt(MDL_ui.getCameraX(), MDL_ui.getCameraY(), LCFx.flashBuild, 0.0, color, [reg, e]);
+        showAt(MDL_ui.getCameraX(), MDL_ui.getCameraY(), LCFx.flashBuild, tryFun(e.ex_getFlashEffAng, e, 0.0), color, [reg, e, tryFun(e.ex_getFlashEffRotSpd, e, 0.0)]);
       };
     } else {
       color.equals(Pal.heal) ?

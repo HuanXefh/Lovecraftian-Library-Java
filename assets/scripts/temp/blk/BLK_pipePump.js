@@ -39,7 +39,7 @@
 
 
   function comp_onProximityUpdate(b) {
-    b.pumpFrontB = b.presDumpTs[0] == null ? null : b.presDumpTs[0].build;
+    b.pumpFrontB = b.presDumpTgs[0] == null ? null : b.presDumpTgs[0];
     b.pumpBackB = b.nearby((b.rotation + 2) % 4);
     if(b.pumpBackB != null && b.pumpBackB.team !== b.team) {
       b.pumpBackB = null;
@@ -59,7 +59,7 @@
           b.pumpPresCur = b.pumpBackB.ex_getPres();
         };
         if(checkCreatedByTemp(b.pumpBackB.block) && b.pumpBackB.block.ex_isSubInsOf("BLK_pipePump")) {
-          b.pumpPresCur = b.pumpBackB.delegee.presBase + b.pumpBackB.delegee.pumpPresCur;
+          b.pumpPresCur = b.delegee.presBase;
         };
       };
     };
@@ -261,7 +261,7 @@
       ex_calcPresDumpRate: function() {
         return this.pumpFrontB == null || this.pumpBackB == null || this.pumpLiqCur == null || this.pumpFrontB.liquids.get(this.pumpLiqCur) < 0.01 ?
           -1.0 :
-          (this.pumpPresCur + this.presBase) / 60.0;
+          this.pumpPresCur / 60.0;
       }
       .setProp({
         noSuper: true,

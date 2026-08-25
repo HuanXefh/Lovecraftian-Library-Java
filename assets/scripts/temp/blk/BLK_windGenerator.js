@@ -24,6 +24,7 @@
 
   function comp_init(blk) {
     blk.blkR = blk.placeRestrictR;
+    blk.clipSize += blk.placeRestrictR * Vars.tilesize;
   };
 
 
@@ -49,7 +50,8 @@
 
 
   function comp_created(b) {
-    b.totalTime += Mathf.random(300.0);
+    b.bladeOffAng = Mathf.random(360.0);
+    b.totalTime += b.bladeOffAng
   };
 
 
@@ -137,6 +139,12 @@
        */
       bladeTouchSelfDmg: 40.0,
       /**
+       * `PARAM`: The rotator speed used in drawer. Required for proper flash effect.
+       * @memberof BLK_windGenerator
+       * @instance
+       */
+      bladeVisualSpd: 0.0,
+      /**
        * `PARAM`: Sound played when a unit is hit by blade.
        * @memberof BLK_windGenerator
        * @instance
@@ -209,6 +217,12 @@
        * @instance
        */
       windEffc: 0.0,
+      /**
+       * `INTERNAL`
+       * @memberof B_windGenerator
+       * @instance
+       */
+      bladeOffAng: 0.0,
 
 
     })
@@ -252,6 +266,32 @@
         noSuper: true,
         override: true,
       }),
+
+
+      /**
+       * @memberof B_windGenerator
+       * @instance
+       * @return {number}
+       */
+      ex_getFlashEffAng: function() {
+        return Mathf.mod(this.totalTime * this.block.delegee.bladeVisualSpd, 360.0);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof B_windGenerator
+       * @instance
+       * @return {number}
+       */
+      ex_getFlashEffRotSpd: function() {
+        return this.block.delegee.bladeVisualSpd;
+      }
+      .setProp({
+        noSuper: true,
+      })
 
 
     }),
