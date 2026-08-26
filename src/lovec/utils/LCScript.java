@@ -12,13 +12,15 @@ import rhino.*;
 public class LCScript {
 
 
-    public static NativeObject VAR;
+    public static NativeObject PARAM;
     public static NativeObject TIMER;
     public static NativeObject TRIGGER;
+    public static NativeObject VAR;
     public static NativeObject MDL_cond;
     public static NativeObject MDL_effect;
     public static NativeObject MDL_prop;
-    public static NativeObject FRAG_fluid;
+    public static NativeObject MDL_reaction;
+    public static NativeObject MDL_recipeDict;
     public static NativeObject FRAG_item;
     public static NativeObject DB_block;
     public static NativeObject DB_misc;
@@ -39,13 +41,15 @@ public class LCScript {
 
 
     public static void init() {
-        VAR = toObject(get("VAR"));
+        PARAM = toObject(get("PARAM"));
         TIMER = toObject(get("TIMER"));
         TRIGGER = toObject(get("TRIGGER"));
+        VAR = toObject(get("VAR"));
         MDL_cond = toObject(get("MDL_cond"));
         MDL_effect = toObject(get("MDL_effect"));
         MDL_prop = toObject(get("MDL_prop"));
-        FRAG_fluid = toObject(get("FRAG_fluid"));
+        MDL_reaction = toObject(get("MDL_reaction"));
+        MDL_recipeDict = toObject(get("MDL_recipeDict"));
         FRAG_item = toObject(get("FRAG_item"));
         DB_block = toObject(get("DB_block"));
         DB_misc = toObject(get("DB_misc"));
@@ -180,6 +184,27 @@ public class LCScript {
 
 
     /**
+     * Ensures array length is not less than given length.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray ensureLength(NativeArray arr, int len, @Nullable Object def) {
+        int lenPrev = LCScript.toInt(arr.getLength());
+        if(lenPrev < len) {
+            int i = 0;
+            while(lenPrev + i < len) {
+                arr.put(lenPrev + i, arr, def);
+                i++;
+            };
+        };
+        return arr;
+    };
+    // Overload
+    public static NativeArray ensureLength(NativeArray arr, int len) {
+        return ensureLength(arr, len, null);
+    };
+
+
+    /**
      * Creates a new JavaScript object with given key-value pairs.
      */
     public static NativeObject newObject(String name, Scriptable scope, Object... args) throws IllegalArgumentException {
@@ -296,6 +321,14 @@ public class LCScript {
 
 
     /**
+     * Variant of {@link #invoke} for JavaScript class instances.
+     */
+    public static Object protoInvoke(String nameFun, Scriptable ins, Object... args) throws NullPointerException {
+        return thisInvoke(nameFun, ins.getPrototype(), ins, args);
+    };
+
+
+    /**
      * Wraps a Java object (often converted from JS value) for proper equality.
      */
     public static Object wrapEquality(Object javaObj) {
@@ -322,10 +355,26 @@ public class LCScript {
 
 
     /**
+     * Whether an instance is created with Rhino <code>JavaAdapter</code>.
+     */
+    public static boolean hasDelegee(Object ins) {
+        return ins.getClass().getName().startsWith("adapter");
+    };
+
+
+    /**
      * Gets delegee of an instance created with Rhino <code>JavaAdapter</code>.
      */
-    public static NativeObject getDelegee(Object ins) {
+    public static @Nullable NativeObject getDelegee(Object ins) {
         return Reflect.get(ins, "delegee");
+    };
+
+
+    /**
+     * Whether an instance created with Rhino <code>JavaAdapter</code> has some property.
+     */
+    public static boolean instanceHas(Object ins, String nameProp) {
+        return hasDelegee(ins) && instanceGet(ins, nameProp) != null;
     };
 
 
@@ -333,7 +382,8 @@ public class LCScript {
      * Gets a property in an instance created with Rhino <code>JavaAdapter</code>.
      */
     public static @Nullable Object instanceGet(Object ins, String nameProp) {
-        return getDelegee(ins).get(nameProp);
+        NativeObject delegee = getDelegee(ins);
+        return delegee == null ? null : delegee.get(nameProp);
     };
 
 
@@ -342,6 +392,7 @@ public class LCScript {
      */
     public static void instanceSet(Object ins, String[] nameProps, Object... vals) {
         NativeObject delegee = getDelegee(ins);
+        if(delegee == null) return;
         for(int i = 0; i < nameProps.length; i++) {
             delegee.put(nameProps[i], delegee, vals[i]);
         };
@@ -349,6 +400,7 @@ public class LCScript {
     // Overload
     public static void instanceSet(Object ins, String nameProp, Object val) {
         NativeObject delegee = getDelegee(ins);
+        if(delegee == null) return;
         delegee.put(nameProp, delegee, val);
     };
 

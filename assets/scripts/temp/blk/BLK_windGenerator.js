@@ -50,8 +50,7 @@
 
 
   function comp_created(b) {
-    b.bladeOffAng = Mathf.random(360.0);
-    b.totalTime += b.bladeOffAng
+    b.totalTime += Mathf.random(360.0);
   };
 
 
@@ -167,7 +166,7 @@
        * @memberof BLK_windGenerator
        * @instance
        */
-      sameTypeFilter: tprov(() => boolf2(function(blk, oblk) {return checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("BLK_windGenerator")})),
+      sameTypeFilter: tprov(() => boolf2(function(blk, oblk) {return checkSubInsOfTemp(oblk, "BLK_windGenerator")})),
 
 
     })
@@ -217,12 +216,6 @@
        * @instance
        */
       windEffc: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_windGenerator
-       * @instance
-       */
-      bladeOffAng: 0.0,
 
 
     })

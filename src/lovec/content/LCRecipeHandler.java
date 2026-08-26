@@ -18,24 +18,24 @@ import static lovec.utils.LCScript.*;
 public class LCRecipeHandler {
 
 
-    static NativeObject lastRc;
-    static GenericCrafter blk;
-    static float rcTimeScl;
-    static boolean ignoreItemFullness;
-    static NativeArray ci;
-    static NativeArray bi;
-    static NativeArray aux;
-    static boolean reqOpt;
-    static NativeArray opt;
-    static NativeArray co;
-    static NativeArray bo;
-    static NativeArray fo;
-    static boolean hasAnyFldOutputIncludeAux;
-    static NativeArray dumpTup;
-    static NativeObject consTmpObj;
-    static NativeObject prodTmpObj;
-    static boolean hasPayInput;
-    static boolean hasPayOutput;
+    private static NativeObject lastRc;
+    private static GenericCrafter blk;
+    private static float rcTimeScl;
+    private static boolean ignoreItemFullness;
+    private static NativeArray ci;
+    private static NativeArray bi;
+    private static NativeArray aux;
+    private static boolean reqOpt;
+    private static NativeArray opt;
+    private static NativeArray co;
+    private static NativeArray bo;
+    private static NativeArray fo;
+    private static boolean hasAnyFldOutputIncludeAux;
+    private static NativeArray dumpTup;
+    private static NativeObject consTmpObj;
+    private static NativeObject prodTmpObj;
+    private static boolean hasPayInput;
+    private static boolean hasPayOutput;
 
 
     public static void resolve(NativeObject rc, GenericCrafter.GenericCrafterBuild b) {
@@ -369,7 +369,7 @@ public class LCRecipeHandler {
                         LCScript.set(itm.name, intAmt * p, consTmpObj);
                         break;
                     };
-                    if(b.liquids != null && tmp1 instanceof Liquid liq && LCScript.toFloat(LCScript.invoke("addLiquidBatch", FRAG_fluid, b, b, liq, -fAmt)) > 0f) {
+                    if(b.liquids != null && tmp1 instanceof Liquid liq && LCCraftingHandler.addLiquidBatch(b, b, liq, -fAmt) > 0f) {
                         LCScript.set(liq.name, fAmt, consTmpObj);
                         break;
                     };
@@ -384,7 +384,7 @@ public class LCRecipeHandler {
                     LCScript.set(itm.name, intAmt * p, consTmpObj);
                 };
                 if(b.liquids != null && tmp instanceof Liquid liq) {
-                    LCScript.invoke("addLiquidBatch", FRAG_fluid, b, b, liq, -fAmt);
+                    LCCraftingHandler.addLiquidBatch(b, b, liq, -fAmt);
                     LCScript.set(liq.name, fAmt, consTmpObj);
                 };
             };
@@ -453,7 +453,7 @@ public class LCRecipeHandler {
                     LCScript.set(itm.name, intAmt * p, prodTmpObj);
                 };
                 if(b.liquids != null && tmp instanceof Liquid liq) {
-                    LCScript.invoke("addLiquidBatch", FRAG_fluid, b, b, liq, fAmt, true);
+                    LCCraftingHandler.addLiquidBatch(b, b, liq, fAmt, true);
                     LCScript.set(liq.name, fAmt, prodTmpObj);
                 };
                 i += 3;

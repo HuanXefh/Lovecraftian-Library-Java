@@ -69,7 +69,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED) return;
+    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipTorUpdate) return;
 
     b.torProg += b.rpmCur / 6.0 * Time.delta;
     b.ex_updateTor();
@@ -224,7 +224,7 @@
               b.torCap += 100.0;
             };
           } else {
-            val += FRAG_fluid.addLiquid(ob, ob, VARGEN.auxTor, -amt / ob.timeScale, true, true, true) * amt * 60.0;
+            val += LCCraftingHandler.addLiquid(ob, ob, VARGEN.auxTor, -amt / ob.timeScale, true, true, true) * amt * 60.0;
             b.torCap += amt * 60.0;
           };
         };

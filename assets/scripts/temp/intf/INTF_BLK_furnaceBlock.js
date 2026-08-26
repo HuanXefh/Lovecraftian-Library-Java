@@ -127,7 +127,7 @@
       if(b.fuelPonCur < 1.0) b.fuelEffc = 0.0;
       b.fuelPonCur = Mathf.maxZero(b.fuelPonCur - VAR.time.heatIntv / 60.0 * b.block.delegee.fuelConsMtp);
     } else {
-      b.fuelPonCur = FRAG_fluid.addLiquid(b, b, fuel, pon * b.block.delegee.fuelConsMtp * VAR.time.heatIntv, false, false, true);
+      b.fuelPonCur = LCCraftingHandler.addLiquid(b, b, fuel, -pon * b.block.delegee.fuelConsMtp * VAR.time.heatIntv, false, false, true);
       b.fuelEffc = Math.min(b.fuelPonCur, 1.0);
     };
   };

@@ -82,6 +82,8 @@
 
 
   function comp_updateTile(b) {
+    if(DEBUG.skipHeatUpdate) return;
+
     // Update temperature and apply damage if overheated
     if(!PARAM.UPDATE_SUPPRESSED && TIMER.secHalf) {
       b.tempRiseTg = b.ex_calcTempTg();
@@ -116,7 +118,7 @@
           (b.heatSupplied / 3.0);
         b_t.ex_handleExtHeat != null ?
           b_t.ex_handleExtHeat(b, heatAmt) :
-          FRAG_fluid.addLiquid(b_t, null, VARGEN.auxHeat, heatAmt / 6000.0 * b_t.timeScale, false, false, true);
+          LCCraftingHandler.addLiquid(b_t, null, VARGEN.auxHeat, heatAmt / 6000.0 * b_t.timeScale, false, false, true);
       };
     };
   };
@@ -206,7 +208,7 @@
         if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
         heat = ob.ex_getHeatProd != null ?
           (ob.ex_getHeatProd() * sideFrac) :
-          (FRAG_fluid.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
+          (LCCraftingHandler.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
         b.maxHeaterProd = Math.max(heat, b.maxHeaterProd);
         heatTg += heat * b.block.delegee.tempExtMtp;
       }, true);

@@ -90,8 +90,8 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
     public static class BFragMultiBlock extends BuildContentFrag<Building, Block, BFragMultiBlock> {
 
 
-        public static Point2 statusOverlayOffset = new Point2();
-        public static Point2 teamOverlayOffset = new Point2();
+        protected static Point2 statusOverlayOffset = new Point2();
+        protected static Point2 teamOverlayOffset = new Point2();
 
 
         @FragMethod(superMode = "after")

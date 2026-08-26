@@ -27,6 +27,8 @@
   /* <------------------------------ lovec.content ------------------------------ */
 
 
+  /** @global lovec.content.LCCraftingHandler */
+  LCCraftingHandler = fetchClass("lovec.content.LCCraftingHandler");
   /** @global lovec.content.LCRecipeHandler */
   LCRecipeHandler = fetchClass("lovec.content.LCRecipeHandler");
 
@@ -90,6 +92,8 @@
   LCRaycastf = fetchClass("lovec.utils.LCRaycastf");
   /** @global lovec.utils.LCScript */
   LCScript = fetchClass("lovec.utils.LCScript");
+  /** @global lovec.utils.LCScriptUtil */
+  LCScriptUtil = fetchClass("lovec.utils.LCScriptUtil");
   /** @global lovec.utils.TmpStateTag */
   TmpStateTag = fetchClass("lovec.utils.TmpStateTag");
   /** @global lovec.utils.extend.LCNativeArray */

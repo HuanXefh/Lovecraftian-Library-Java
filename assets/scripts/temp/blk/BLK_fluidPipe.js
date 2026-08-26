@@ -85,33 +85,6 @@
   };
 
 
-  function comp_moveLiquid(b, b_t, liq) {
-    let amtTrans = 0.0;
-    if(b_t == null) return amtTrans;
-    b_t = b_t.getLiquidDestination(b, liq);
-    if(b_t == null || b_t.liquids == null) return amtTrans;
-
-    amtTrans = FRAG_fluid.transLiquid(
-      b, b_t, liq,
-      b.block.liquidCapacity * Math.max(b.liquids.get(liq) / b.block.liquidCapacity - b_t.liquids.get(liq) / b_t.block.liquidCapacity, 0.0),
-    );
-
-    let oliq = b_t.liquids.current();
-    if(
-      !Vars.net.client()
-        && oliq !== liq
-        && Mathf.chanceDelta(0.1)
-        && !b_t.block.consumesLiquid(liq)
-        && b.liquids.get(liq) / b.block.liquidCapacity > 0.1
-        && b_t.liquids.get(oliq) / b_t.block.liquidCapacity > 0.1
-    ) {
-      MDL_reaction.handleReaction(liq, oliq, 10.0, b_t);
-    };
-
-    return amtTrans;
-  };
-
-
   function comp_onFlamEmission(b, flam, explo) {
     if(!b.isLeak || flam < 0.0001) return;
 
@@ -279,7 +252,7 @@
 
 
       moveLiquid: function(b_t, liq) {
-        comp_moveLiquid(this, b_t, liq);
+        return BFragFluidPipe.setThis(this).moveLiquid.apply(BFragFluidPipe, arguments);
       }
       .setProp({
         noSuper: true,

@@ -59,7 +59,7 @@
 
     let ob = b.ex_findMoveB(false);
     b.playingWithUnit = false;
-    b.playingWithCrank = ob != null && checkCreatedByTemp(ob.block) && ob.block.ex_isSubInsOf("BLK_manualTurbine");
+    b.playingWithCrank = ob != null && checkSubInsOfTemp(ob.block, "BLK_manualTurbine");
   };
 
 
@@ -74,7 +74,7 @@
       };
       if(!Vars.net.client() && b.playingWithCrank && TIMER.minHalf) {
         let ob = b.ex_findMoveB(false);
-        if(ob != null && checkCreatedByTemp(ob.block) && ob.block.ex_isSubInsOf("BLK_manualTurbine")) {
+        if(ob != null && checkSubInsOfTemp(ob.block, "BLK_manualTurbine")) {
           MDL_call.callOnce("arm plays crank: " + ob.pos(), () => ob.ex_configureClick());
         };
       };

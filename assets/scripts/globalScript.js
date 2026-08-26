@@ -345,7 +345,10 @@
     shouldLogDelta: false,
     skipFacilityUpdate: false,
     skipFurnUpdate: false,
+    skipHeatUpdate: false,
+    skipPresUpdate: false,
     skipRcUpdate: false,
+    skipTorUpdate: false,
 
     bft(filter) {
       Vars.content.blocks().each(

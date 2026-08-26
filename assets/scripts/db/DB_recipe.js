@@ -636,6 +636,10 @@ const db = {
           }, true);
         },
 
+        ConsumeLiquid, (blk, cons, oreDict) => {
+          Reflect.set(ConsumeLiquid, cons, "liquid", oreDict.get(cons.liquid, cons.liquid));
+        },
+
         ConsumeLiquids, (blk, cons, oreDict) => {
           cons.liquids.forEachFast(liqStack => {
             liqStack.liquid = oreDict.get(liqStack.liquid, liqStack.liquid);

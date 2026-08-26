@@ -889,7 +889,7 @@
    * @return {boolean}
    */
   const isLoot = function(unit) {
-    return checkCreatedByTemp(unit.type) && unit.type.ex_isSubInsOf("UNIT_lootUnit");
+    return checkSubInsOfTemp(unit.type, "UNIT_lootUnit");
   };
   exports.isLoot = isLoot;
 
@@ -1116,7 +1116,7 @@
   const isNonStatus = function(sta_gn) {
     let sta = MDL_content.getCt(sta_gn, "sta");
     return sta != null && (
-      (checkCreatedByTemp(sta) && sta.ex_isSubInsOf("DBCT_databaseContent"))
+      (checkSubInsOfTemp(sta, "DBCT_databaseContent"))
         || DB_status.db["group"]["nonStatus"].includes(sta.name)
     );
   }

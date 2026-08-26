@@ -56,7 +56,7 @@
 
 
       isTarget(blk) {
-        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_baseDrill") && checkTarget(this, blk);
+        return checkSubInsOfTemp(blk, "BLK_baseDrill") && checkTarget(this, blk);
       },
 
 
@@ -169,7 +169,7 @@
 
 
       isTarget(blk) {
-        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_fluidPackager");
+        return checkSubInsOfTemp(blk, "BLK_fluidPackager");
       },
 
 
@@ -224,7 +224,7 @@
 
 
       isTarget(blk) {
-        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("INTF_BLK_rangeAttributeBlock");
+        return checkSubInsOfTemp(blk, "INTF_BLK_rangeAttributeBlock");
       },
 
 
@@ -272,7 +272,7 @@
 
 
       isTarget(blk) {
-        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_liquidPump");
+        return checkSubInsOfTemp(blk, "BLK_liquidPump");
       },
 
 
@@ -332,7 +332,7 @@
 
 
       isTarget(blk) {
-        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_ventGenerator");
+        return checkSubInsOfTemp(blk, "BLK_ventGenerator");
       },
 
 
@@ -344,7 +344,7 @@
           MOD_tmi.baseParse(blk, rawRc);
         });
         MOD_tmi.addProdPow(rawRc, blk.powerProduction);
-        MDL_attr.getBlkAttrArr(blk.attribute, oblk => checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size).forEachRow(3, (oblk, attrVal, attr) => {
+        MDL_attr.getBlkAttrArr(blk.attribute, oblk => checkSubInsOfTemp(oblk, "INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size).forEachRow(3, (oblk, attrVal, attr) => {
           MOD_tmi.addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, AttrRcTypes.FLOOR);
         });
 
@@ -441,7 +441,7 @@
 
 
       isTarget(blk) {
-        return checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_recipeFactory") || checkTarget(this, blk);
+        return checkSubInsOfTemp(blk, "BLK_recipeFactory") || checkTarget(this, blk);
       },
 
 

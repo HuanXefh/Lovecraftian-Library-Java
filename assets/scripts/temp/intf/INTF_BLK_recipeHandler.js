@@ -166,34 +166,6 @@
   };
 
 
-  function comp_acceptItem(b, b_f, itm) {
-    if(b.items == null || b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
-    if(b.blk$useAutoSelection && b.rc.keyItmHeaderMap != null && itm !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.rc.keyItmHeaderMap.containsKey(itm) && !b.rc.checkOutput(itm)) {
-      b.keyCt = itm;
-    };
-
-    if(b.itmAcceptCacheArr[itm.id] == null) {
-      b.itmAcceptCacheArr[itm.id] = b.rc.checkInput(itm);
-    };
-
-    return b.itmAcceptCacheArr[itm.id];
-  };
-
-
-  function comp_acceptLiquid(b, b_f, liq) {
-    if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
-    if(b.blk$useAutoSelection && b.rc.keyFldHeaderMap != null && liq !== b.keyCt && b_f !== b && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)) {
-      b.keyCt = liq;
-    };
-
-    if(b.liqAcceptCacheArr[liq.id] == null) {
-      b.liqAcceptCacheArr[liq.id] = b.rc.checkInput(liq);
-    };
-
-    return b.liqAcceptCacheArr[liq.id];
-  };
-
-
   function comp_craft(b) {
     b.rc.craftBatch(b, b.ex_calcFailP());
     b.rc.craftPay(b);
@@ -784,7 +756,7 @@
 
 
       acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+        return INTFBFragRecipeHandler.setThis(this).acceptItem.apply(INTFBFragRecipeHandler, arguments);
       }
       .setProp({
         noSuper: true,
@@ -793,7 +765,7 @@
 
 
       acceptLiquid: function(b_f, liq) {
-        return comp_acceptLiquid(this, b_f, liq);
+        return INTFBFragRecipeHandler.setThis(this).acceptLiquid.apply(INTFBFragRecipeHandler, arguments);
       }
       .setProp({
         noSuper: true,

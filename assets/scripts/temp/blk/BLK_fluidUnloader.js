@@ -36,7 +36,7 @@
 
   function comp_updateTile(b) {
     if(b.unloadTg != null && b.ctTg != null) {
-      FRAG_fluid.transLiquid(b.unloadTg, b, b.ctTg, 2.0, true);
+      LCCraftingHandler.transLiquid(b.unloadTg, b, b.ctTg, 2.0, true);
     };
   };
 

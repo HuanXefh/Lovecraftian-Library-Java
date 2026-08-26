@@ -37,6 +37,10 @@
   };
 
 
+  function comp_created(b) {
+    b.totalProgress += Mathf.random(360.0);
+  };
+
 
   function comp_onProximityUpdate(b) {
     b.pumpFrontB = b.presDumpTgs[0] == null ? null : b.presDumpTgs[0];
@@ -47,48 +51,10 @@
   };
 
 
-  function comp_updateTile(b) {
-    if(TIMER.sec) {
-      b.onProximityUpdate();
-      b.pumpPresCur = 0.0;
-      if(b.pumpBackB != null) {
-        if(b.pumpBackB.block instanceof MultiBlockLinkBlock) {
-          b.pumpBackB = b.pumpBackB.linkedBuild;
-        };
-        if(b.pumpBackB.ex_getPres != null) {
-          b.pumpPresCur = b.pumpBackB.ex_getPres();
-        };
-        if(checkCreatedByTemp(b.pumpBackB.block) && b.pumpBackB.block.ex_isSubInsOf("BLK_pipePump")) {
-          b.pumpPresCur = b.delegee.presBase;
-        };
-      };
-    };
-
-    if(b.pumpLiqCur != null && b.liquids.get(b.pumpLiqCur) < 0.1) {
-      b.pumpLiqCur = null;
-    };
-
-    b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase / 60.0 * Time.delta);
-  };
-
-
   function comp_dumpOutputs(b) {
     if(b.pumpLiqCur != null) {
       b.dumpLiquid(b.pumpLiqCur, 2.0);
     };
-  };
-
-
-  function comp_acceptLiquid(b, b_f, liq) {
-    if(b.liquids.get(liq) / b.block.liquidCapacity >= 0.98) return false;
-    if(b.block.consumesLiquid(liq)) return true;
-    if(MDL_cond.isAuxiliaryFluid(liq)) return false;
-    if(LCPos.getRotation(b_f, b) !== b.rotation) return false;
-    if(b.pumpLiqCur != null && liq !== b.pumpLiqCur) return false;
-
-    b.pumpLiqCur = liq;
-
-    return true;
   };
 
 
@@ -211,13 +177,18 @@
     .setMethod({
 
 
+      create: function() {
+        comp_created(this);
+      },
+
+
       onProximityUpdate: function() {
         comp_onProximityUpdate(this);
       },
 
 
       updateTile: function() {
-        comp_updateTile(this);
+        BFragPipePump.setThis(this).updateTile.call(BFragPipePump);
       },
 
 
@@ -227,7 +198,7 @@
 
 
       acceptLiquid: function(b_f, liq) {
-        return comp_acceptLiquid(this, b_f, liq);
+        return BFragPipePump.setThis(this).acceptLiquid.apply(BFragPipePump, arguments);
       }
       .setProp({
         noSuper: true,

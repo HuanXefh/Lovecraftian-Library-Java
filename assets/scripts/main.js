@@ -144,7 +144,7 @@
 
           Time.run(0.0, () => {
             unit = LCEntity.getUnits(this.tmpArr, x, y, 6.0).inSituFilter(ounit => ounit.type.name == str).first();
-            if(unit != null && unit.delegee != null && checkCreatedByTemp(unit.type) && unit.type.ex_isSubInsOf("UNIT_baseUnit")) {
+            if(unit != null && unit.delegee != null && checkSubInsOfTemp(unit.type, "UNIT_baseUnit")) {
               try {
                 unit.type.ex_readUnitData(unit, JSON.parse(json));
               } catch(err) {
@@ -259,7 +259,7 @@
           itmStack.item = oreDict.get(itmStack.item, itmStack.item);
         }, true);
         Vars.content.planets().each(pla => pla.accessible && pla.isLandable(), pla => {
-          // No `every` here, or too many blocks hidden
+          // No `every` here, otherwise too many blocks hidden
           if(blk.requirements.some(itmStack => itmStack.item.isOnPlanet(pla))) blk.shownPlanets.add(pla);
         });
         blk.databaseTabs.addAll(blk.shownPlanets);
@@ -301,6 +301,12 @@
         if(dictC != null) {
           dictC(blk, oreDict);
         };
+      });
+
+      TechTree.all.each(node => {
+        node.requirements.forEachFast(itmStack => {
+          itmStack.item = oreDict.get(itmStack.item, itmStack.item);
+        });
       });
     })();
 

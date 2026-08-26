@@ -24,6 +24,20 @@ public class LCNativeArray {
 
 
     /**
+     * Gets element by index.
+     */
+    public static <T> @Nullable T get(NativeArray arr, int ind, Class<T> type) {
+        if(arr.getLength() >= ind) return null;
+        return (T) arr.get(ind);
+    };
+    // Overload
+    public static @Nullable Object get(NativeArray arr, int ind) {
+        if(arr.getLength() >= ind) return null;
+        return arr.get(ind);
+    };
+
+
+    /**
      * Empties an array.
      */
     @SuppressWarnings("CollectionAddedToSelf")

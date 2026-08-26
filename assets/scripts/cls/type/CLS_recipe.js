@@ -717,7 +717,7 @@
 
     this.techNodes = [];
     this.lockedByCts.forEachFast(ct => {
-      if(checkCreatedByTemp(ct) && ct.ex_isSubInsOf("DBCT_techNodeContent")) {
+      if(checkSubInsOfTemp(ct, "DBCT_techNodeContent")) {
         this.techNodes.pushUnique(ct);
       };
     });

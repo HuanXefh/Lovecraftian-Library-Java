@@ -216,6 +216,18 @@
 
 
   /**
+   * Whether this content is an instance of some content template.
+   * @global
+   * @param {UnlockableContent} ct
+   * @param {string} tempName
+   * @return {boolean}
+   */
+  checkSubInsOfTemp = function(ct, tempName) {
+    return ct.ex_isSubInsOf != null && ct.ex_isSubInsOf(tempName);
+  };
+
+
+  /**
    * Whether 'ins' is an instance of a class or content template.
    * Returns false if `cls0tempName` is null.
    * Returns true if `cls0tempName` is exactly `ins`.
@@ -232,7 +244,7 @@
     } else if(typeof cls0tempName === "function") {
       return ins instanceof cls0tempName;
     } else if(typeof cls0tempName === "string") {
-      return checkCreatedByTemp(ins) && ins.ex_isSubInsOf(cls0tempName);
+      return checkSubInsOfTemp(ins, cls0tempName);
     };
 
     return false;

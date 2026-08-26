@@ -129,7 +129,7 @@
       return oblk.size === this.size && (
         oblk instanceof StaticWall
           || oblk instanceof TallBlock
-          || (checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("ENV_baseTree"))
+          || checkSubInsOfTemp(oblk, "ENV_baseTree")
       );
     }
     .setProp({

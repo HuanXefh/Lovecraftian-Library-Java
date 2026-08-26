@@ -17,7 +17,7 @@
   function appendChildren(cts, node) {
     node.children.each(onode => {
       // Don't append contents under other nodes (including the other nodes)
-      if(checkCreatedByTemp(onode.content) && onode.content.ex_isSubInsOf("DBCT_techNodeContent")) return;
+      if(checkSubInsOfTemp(onode.content, "DBCT_techNodeContent")) return;
       // Don't append hidden contents
       if(
         (instanceOfAny(onode.content, Item, Liquid, UnitType) && onode.content.hidden)

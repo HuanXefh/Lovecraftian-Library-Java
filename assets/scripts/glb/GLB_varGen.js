@@ -278,7 +278,7 @@
      * See {@link BLK_rawOreBlock}.
      * @type {Array<Block>}
      */
-    exports.rawOreBlks = Vars.content.blocks().select(blk => checkCreatedByTemp(blk) && blk.ex_isSubInsOf("BLK_rawOreBlock")).toArray();
+    exports.rawOreBlks = Vars.content.blocks().select(blk => checkSubInsOfTemp(blk, "BLK_rawOreBlock")).toArray();
 
 
     Time.runTask(0.0, () => {

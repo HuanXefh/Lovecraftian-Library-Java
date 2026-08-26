@@ -51,7 +51,7 @@
        * @instance
        */
       attrFilter: tprov(() => boolf2(function(blk, oblk) {
-        return checkCreatedByTemp(oblk) && oblk.ex_isSubInsOf("INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size;
+        return checkSubInsOfTemp(oblk, "INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size;
       })),
 
 

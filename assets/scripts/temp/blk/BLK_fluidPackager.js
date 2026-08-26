@@ -67,11 +67,11 @@
 
   function comp_craft(b) {
     if(!b.block.delegee.isUnpacker) {
-      FRAG_fluid.addLiquidBatch(b, b, b.packLiqCur, -b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm, true);
+      LCCraftingHandler.addLiquidBatch(b, b, b.packLiqCur, -b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm, true);
       FRAG_item.produceItem(b, b.packageOutputCur, b.block.delegee.packageAmt);
     } else {
       FRAG_item.consumeItem(b, b.unpackItmCur, b.block.delegee.packageAmt);
-      FRAG_fluid.addLiquidBatch(b, b, b.packageOutputCur, b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm, true);
+      LCCraftingHandler.addLiquidBatch(b, b, b.packageOutputCur, b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm, true);
     };
     b.unpackItmCur = null;
     b.packLiqCur = null;

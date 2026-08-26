@@ -57,7 +57,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED) return;
+    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipPresUpdate) return;
 
     if(TIMER.secQuarter) {
       b.ex_updatePresTg();
@@ -99,7 +99,7 @@
       if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
         let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
         let consAmt = MDL_recipeDict.getConsAmtByBuild(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t);
-        FRAG_fluid.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt, false, false, true);
+        LCCraftingHandler.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt, false, false, true);
         if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
           b_t.damagePierce((b_t.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) / 5.0);
         };

@@ -189,8 +189,6 @@
   /** @global */
   FRAG_item = require("lovec/frag/FRAG_item");
   /** @global */
-  FRAG_fluid = require("lovec/frag/FRAG_fluid");
-  /** @global */
   FRAG_payload = require("lovec/frag/FRAG_payload");
   /** @global */
   FRAG_unit = require("lovec/frag/FRAG_unit");
