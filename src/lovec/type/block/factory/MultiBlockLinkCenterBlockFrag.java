@@ -87,10 +87,12 @@ public interface MultiBlockLinkCenterBlockFrag {
             size_i = seq2.get(i);
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, t.build.rotation);
             t_i = Vars.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
-            t_i.setBlock(
-                findLinkBlocks(blk)[size_i - 1],
-                team, 0
-            );
+            if(t_i.build == null || t_i.build.team != team || t_i.build.block != findLinkBlocks(blk)[size_i - 1]) {
+                t_i.setBlock(
+                    findLinkBlocks(blk)[size_i - 1],
+                    team, 0
+                );
+            };
             b_i = (MultiBlockLinkBlock.MultiBlockLinkBuild) t_i.build;
             b_i.updateLink(b);
             out.add(b_i);

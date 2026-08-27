@@ -142,6 +142,7 @@
 
     /**
      * Converts fluid into cell item.
+     * <br> `IMPORTANT`: Requires Fluid Cells mod.
      * @class BLK_fluidPackager
      * @extends BLK_baseFactory
      */

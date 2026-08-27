@@ -618,11 +618,13 @@
     this.tt = MDL_recipe.getTooltip(this.rcMdl, this.rcHeader);
 
     this.icon = null;
+    this.lockedIcon = null;
     this.altIcon = null;
     if(!Vars.headless) {
       // This have to be delayed, WTF
       Time.runTask(70.0, () => {
         this.icon = MDL_recipe.makeIcon(this.rcMdl, this.rcHeader);
+        this.lockedIcon = this.icon.tint(Color.darkGray);
         this.altIcon = new StackDrawable(
           [new TextureRegionDrawable(this.owner.uiIcon), MDL_recipe.makeIcon(this.rcMdl, this.rcHeader)].toSeq(),
           [new Vec2(0.0, 0.0), new Vec2(12.0, 12.0)].toSeq(),
@@ -679,7 +681,8 @@
     this.basePayo = MDL_recipe.getPayo(null, this.rcMdl, "");
     this.payoNoBase = MDL_recipe.getPayo(null, this.rcMdl, this.rcHeader, true);
 
-    this.validTup = MDL_recipe.getValidCheckTup(null, this.rcMdl, this.rcHeader);
+    this.unlockedCheck = MDL_recipe.getUnlockedCheck(this.rcMdl, this.rcHeader);
+    this.validCheck = MDL_recipe.getFinalValidCheck(this.rcMdl, this.rcHeader);
     this.scrTup = MDL_recipe.getScrTup(null, this.rcMdl, this.rcHeader);
     this.failEff = MDL_recipe.getFailEff(this.rcMdl, this.rcHeader);
     this.rcDrawer = MDL_recipe.getDrawer(this.rcMdl, this.rcHeader);

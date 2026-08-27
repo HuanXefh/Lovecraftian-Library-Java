@@ -1183,7 +1183,7 @@
 
       for(let categ in categHeaderObj) {
         if(!uncategorizedOnly) {
-          cont.add(MDL_recipe.getCategB(categ)).left().pad(4.0).color(!useAutoSelection ? Color.white : Color.gray).row();
+          cont.add(MDL_recipe.getCategB(categ)).left().pad(4.0).color(!useAutoSelection ? Color.white : Color.lightGray).row();
         };
 
         j = 0;
@@ -1196,18 +1196,26 @@
           })
           .margin(3.0)
           .group(btnGrp);
-          tooltip(btnCell, tb => rc.displayTooltip(tb, rc.validTup[0](b)));
+          tooltip(btnCell, tb => rc.displayTooltip(tb, rc.validCheck(b)));
           let btn = btnCell.get();
           // `String` is required for type conversion
           btn.changed(() => cfgC(rcHeader));
-          btn.getStyle().imageUp = rc.validTup[0](b) ? rc.icon : Icon.lock;
-          btn.getStyle().imageDisabledColor = Color.gray;
+          btn.getStyle().imageUp = !rc.validCheck(b) ?
+            Icon.lock :
+            rc.unlockedCheck() ?
+              rc.icon :
+              rc.lockedIcon;
+          btn.getStyle().imageDisabledColor = Color.lightGray;
           btn.update(() => {
             btn.setDisabled(useAutoSelection);
             // Double equality, string returned here is an object
             btn.setChecked(headerF() == rcHeader);
             if(TIMER.secHalf) {
-              btn.getStyle().imageUp = rc.validTup[0](b) ? rc.icon : Icon.lock;
+              btn.getStyle().imageUp = !rc.validCheck(b) ?
+                Icon.lock :
+                rc.unlockedCheck() ?
+                  rc.icon :
+                  rc.lockedIcon;
             };
           });
 

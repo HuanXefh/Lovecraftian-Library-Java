@@ -673,6 +673,23 @@
 
 
   /**
+   * Gets recipe unlocked status check.
+   * @param {RecipeModule} rcMdl
+   * @param {string} rcHeader
+   * @return {function(Building): boolean}
+   */
+  const getUnlockedCheck = function(rcMdl, rcHeader) {
+    let cts = getLockedByCts(rcMdl, rcHeader, true);
+    return cts.length === 0 ?
+      Function.airTrue :
+      function() {
+        return cts.every(ct => ct.unlocked);
+      };
+  };
+  exports.getUnlockedCheck = getUnlockedCheck;
+
+
+  /**
    * Gets the final `validCheck` used in multi-crafters.
    * @param {RecipeModule} rcMdl
    * @param {string} rcHeader
@@ -693,23 +710,6 @@
         };
   };
   exports.getFinalValidCheck = getFinalValidCheck;
-
-
-  /**
-   * Variant of {@link getFinalValidCheck} for tuple.
-   * @param {Array|unset} contTup
-   * @param {RecipeModule} rcMdl
-   * @param {string} rcHeader
-   * @return {[function(): boolean]}
-   */
-  const getValidCheckTup = function(contTup, rcMdl, rcHeader) {
-    let tup = contTup != null ? contTup.clear() : [];
-
-    tup.push(getFinalValidCheck(rcMdl, rcHeader));
-
-    return tup;
-  };
-  exports.getValidCheckTup = getValidCheckTup;
 
 
   /**

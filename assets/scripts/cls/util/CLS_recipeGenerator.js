@@ -471,18 +471,18 @@
       this.processPayo(tg, payAmtO, metaObj, paramObj);
     });
 
-    readParamAndCall(paramObj, "ci", val => builder.__ci(this.parseRawCi(val, amtO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
+    readParamAndCall(paramObj, "ci", val => builder.__ci(this.parseRawCi(val, amtO * pO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
     readParamAndCall(paramObj, "payCi", val => builder.__ci(this.parseRawCi(val, payAmtO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
     readParamAndCall(paramObj, "bi", val => builder.__bi(this.parseRawBi(val, amtO * readParam(paramObj, "amtOScl", 1.0), pO, pINullable), true));
-    readParamAndCall(paramObj, "liqBi", val => builder.__bi(this.parseRawBi(val, amtO * 6.0 * readParam(paramObj, "amtOScl", 1.0), pO, pINullable), true));
+    readParamAndCall(paramObj, "liqBi", val => builder.__bi(this.parseRawBi(val, amtO * pO * 6.0 * readParam(paramObj, "amtOScl", 1.0), 1.0, pINullable), true));
     readParamAndCall(paramObj, "payBi", val => builder.__bi(this.parseRawBi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0), 1.0), true));
     readParamAndCall(paramObj, "aux", val => builder.__aux(this.parseRawCi(val, 1.0), true));
     readParamAndCall(paramObj, "payAux", val => builder.__aux(this.parseRawCi(val, 1.0), true));
     readParamAndCall(paramObj, "payi", val => builder.__payi(this.parseRawPayi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0))));
-    readParamAndCall(paramObj, "co", val => builder.__co(this.parseRawCo(val, amtI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
+    readParamAndCall(paramObj, "co", val => builder.__co(this.parseRawCo(val, amtI * pI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
     readParamAndCall(paramObj, "payCo", val => builder.__co(this.parseRawCo(val, payAmtI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
     readParamAndCall(paramObj, "bo", val => builder.__bo(this.parseRawBo(val, amtI * readParam(paramObj, "amtIScl", 1.0), pI, pONullable), true));
-    readParamAndCall(paramObj, "liqBo", val => builder.__bo(this.parseRawBo(val, amtI * 6.0 * readParam(paramObj, "amtIScl", 1.0), pI, pONullable), true));
+    readParamAndCall(paramObj, "liqBo", val => builder.__bo(this.parseRawBo(val, amtI * pI * 6.0 * readParam(paramObj, "amtIScl", 1.0), 1.0, pONullable), true));
     readParamAndCall(paramObj, "payBo", val => builder.__bo(this.parseRawBo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0), 1.0), true));
     readParamAndCall(paramObj, "payo", val => builder.__payo(this.parseRawPayo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0))));
 

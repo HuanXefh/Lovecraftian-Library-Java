@@ -356,10 +356,10 @@
     if(blk == null || liq == null) return corMtp;
     let eleGrp = tryJsProp(liq, "eleGrp", null);
     let matGrp = tryJsProp(blk, "matGrp", null);
-    if(eleGrp == null || matGrp == null) return corMtp;
+    if(matGrp == null) return corMtp;
 
     let matEleSclArr = DB_fluid.db["grpParam"]["matEleScl"][matGrp];
-    corMtp = matEleSclArr == null ? 1.0 : matEleSclArr.read(eleGrp, 1.0);
+    corMtp = eleGrp == null || matEleSclArr == null ? 1.0 : matEleSclArr.read(eleGrp, 1.0);
     let tagMtp, matFTagSclArr;
     tryJsProp(liq, "fTags", Array.air).forEachFast(tag => {
       matFTagSclArr = DB_fluid.db["grpParam"]["matFTagScl"][matGrp];

@@ -43,6 +43,7 @@
 
   function comp_onProximityUpdate(b) {
     b.presTransCount = 0;
+    b.presTransCountTmpBs.clear();
     Time.run(60.0, () => {
       b.ex_updatePresFetchTgs();
       b.ex_updatePresSupplyTgs();
@@ -135,8 +136,9 @@
       if(ob.block instanceof MultiBlockLinkBlock) {
         ob = ob.linkedBuild;
       };
-      if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b)) {
+      if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b) && !b.presTransCountTmpBs.includes(ob)) {
         b.presTransCount++;
+        b.presTransCountTmpBs.push(ob);
       };
       if(ob.ex_getPres != null && b.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.ex_checkPresSupplyValid(b))) {
         b.presFetchTgs.push(ob);
@@ -297,6 +299,12 @@
          * @instance
          */
         presTransCount: 0,
+        /**
+         * `INTERNAL`
+         * @memberof INTF_B_pressureBlock
+         * @instance
+         */
+        presTransCountTmpBs: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_pressureBlock

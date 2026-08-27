@@ -162,7 +162,7 @@
 
     b.ex_postUpdateEfficiencyMultiplier();
     if(b.rc.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
-    if(!b.rc.validTup[0](b)) b.efficiency = 0.0;
+    if(!b.rc.validCheck(b)) b.efficiency = 0.0;
   };
 
 
