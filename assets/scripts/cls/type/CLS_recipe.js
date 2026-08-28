@@ -1386,7 +1386,7 @@
    * @return {void}
    */
   CLS_recipe.prototype.craftBatch = function(b, failP) {
-    let failed = LCRand.chance(UTIL_rand.get("crafter"), failP);
+    let failed = syncChance("crafter", failP);
     LCRecipeHandler.craftBatch(this, b, failed);
     if(!failed) {
       MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);

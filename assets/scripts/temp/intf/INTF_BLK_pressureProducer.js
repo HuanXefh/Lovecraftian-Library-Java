@@ -97,7 +97,7 @@
     let b_t = b.presDumpTgs[b.presDumpIncre % b.presDumpTgs.length];
     b.presDumpIncre++;
     if(!b_t.isAdded() || b_t.isPayload()) return false;
-    let amtTrans = LCCraftingHandler.addLiquid(b, b, !isVac ? VARGEN.auxPres : VARGEN.auxVac, -rate);
+    let amtTrans = LCCraftingHandler.addLiquid(b, b, !isVac ? VARGEN.auxPres : VARGEN.auxVac, -(rate - 0.0001));
     if(amtTrans < 0.0001) return false;
 
     b_t.delegee.presBase = b_t.delegee.presBase + amtTrans * (isVac ? -1.0 : 1.0);

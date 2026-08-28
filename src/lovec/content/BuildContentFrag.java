@@ -16,6 +16,12 @@ public abstract class BuildContentFrag<T extends Building, K extends Block, C ex
 
 
     @Override
+    public boolean canResolve() {
+        return lastResolvedThis == null || lastResolvedThis.id != lastThis.id;
+    };
+
+
+    @Override
     public void onResolved() {
         blk = (K) lastThis.block;
     };

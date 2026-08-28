@@ -189,7 +189,7 @@
 
 
       update(unit) {
-        if(!LCRand.chance(UTIL_rand.get("ability"), 0.2)) return;
+        if(!syncChanceDelta("ability", 0.2)) return;
         if(!this.progMap.containsKey(unit.id)) {
           this.progMap.put(unit.id, this.chargeCap);
           this.inCdMap.put(unit.id, false);

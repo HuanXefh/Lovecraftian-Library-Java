@@ -84,8 +84,8 @@
 
 
   /**
-   * Used to get Java classes by path, e.g. "aquarion.AquaItems" from Aquarion.
-   * Will return null if not found.
+   * Gets a Java class by path, e.g. "aquarion.AquaItems" from Aquarion.
+   * Returns null if class is not found.
    * Do not include this in main loops!
    * @global
    * @param {string} clsPath
@@ -101,7 +101,9 @@
       );
     } catch(err) {
       cls = null;
-      if(!suppressWarning) console.warn("[LOVEC] Failed to fetch class:\n" + err);
+      if(!suppressWarning) {
+        console.warn("[LOVEC] Failed to fetch class:\n" + err);
+      };
     };
 
     return cls;
@@ -110,7 +112,7 @@
 
   /**
    * Gets Java classes in a package.
-   * Unlike {@link fetchClass}, this one cannot be called early, like in global scripts.
+   * Unlike {@link fetchClass}, this one cannot be called early, e.g. in global scripts.
    * @global
    * @param {string} packagePath
    * @return {Array<Class>}
@@ -346,7 +348,6 @@
     skipFacilityUpdate: false,
     skipFurnUpdate: false,
     skipHeatUpdate: false,
-    skipPresUpdate: false,
     skipRcUpdate: false,
     skipTorUpdate: false,
 

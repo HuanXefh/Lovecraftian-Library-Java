@@ -17,6 +17,10 @@ public class LCScriptUtil {
 
 
     @FromScript(source = "VARGEN")
+    public static Liquid auxPres;
+    @FromScript(source = "VARGEN")
+    public static Liquid auxVac;
+    @FromScript(source = "VARGEN")
     public static Liquid auxTor;
     @FromScript(source = "VARGEN")
     public static Liquid auxRpm;
@@ -26,7 +30,7 @@ public class LCScriptUtil {
 
 
     /**
-     * Whether some content is an instance of some content template.
+     * <code>checkTemplate(ct, tempName)</code>.
      */
     public static boolean checkTemplate(UnlockableContent ct, String tempName) {
         NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
@@ -38,6 +42,40 @@ public class LCScriptUtil {
             "checkCreatedByTemp(__javaInternal__['LCScriptUtil.checkTemplate.ct'], __javaInternal__['LCScriptUtil.checkTemplate.tempName'])",
             "LCScriptUtil_checkTemplate.js",
             0
+        );
+    };
+
+
+    /**
+     * <code>syncChance(name, trueChance)</code>.
+     */
+    public static boolean syncChance(String name, float trueChance) {
+        NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
+        scope.put("LCScriptUtil.syncChance.name", scope, name);
+        scope.put("LCScriptUtil.syncChance.trueChance", scope, trueChance);
+
+        return (boolean) Context.getContext().evaluateString(
+            Vars.mods.getScripts().scope,
+            "syncChance(__javaInternal__['LCScriptUtil.syncChance.name'], __javaInternal__['LCScriptUtil.syncChance.trueChance'])",
+            "LCScriptUtil_syncChance.js",
+            0
+        );
+    };
+
+
+    /**
+     * <code>syncChanceDelta(name, trueChance)</code>.
+     */
+    public static boolean syncChanceDelta(String name, float trueChance) {
+        NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
+        scope.put("LCScriptUtil.syncChanceDelta.name", scope, name);
+        scope.put("LCScriptUtil.syncChanceDelta.trueChance", scope, trueChance);
+
+        return (boolean) Context.getContext().evaluateString(
+                Vars.mods.getScripts().scope,
+                "syncChanceDelta(__javaInternal__['LCScriptUtil.syncChanceDelta.name'], __javaInternal__['LCScriptUtil.syncChanceDelta.trueChance'])",
+                "LCScriptUtil_syncChanceDelta.js",
+                0
         );
     };
 

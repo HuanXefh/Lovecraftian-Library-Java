@@ -37,10 +37,14 @@ public abstract class ContentFrag<T, C extends ContentFrag<T, C>> {
     /**
      * Resolves temporary values.
      */
-    public void resolve() {
-        if(!canResolve()) return;
+    public void resolve(boolean forced) {
+        if(!forced && !canResolve()) return;
         lastResolvedThis = lastThis;
         onResolved();
+    };
+    // Overload
+    public void resolve() {
+        resolve(false);
     };
 
 

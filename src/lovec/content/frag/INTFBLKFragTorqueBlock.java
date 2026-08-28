@@ -47,7 +47,7 @@ public class INTFBLKFragTorqueBlock extends ContentFrag<Block, INTFBLKFragTorque
         @FragMethod
         public void ex_updateTor() {
             Building b = getThis();
-            resolve();
+            resolve(true);
 
             Building ob;
             float rateAddNet = 0f;

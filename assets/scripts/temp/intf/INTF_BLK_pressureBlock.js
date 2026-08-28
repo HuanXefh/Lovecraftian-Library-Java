@@ -57,78 +57,6 @@
   };
 
 
-  function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipPresUpdate) return;
-
-    if(TIMER.secQuarter) {
-      b.ex_updatePresTg();
-      b.presTmp = (b.presTmp + b.presTg) * 0.5;
-      if(Math.abs(b.presTmp) < 0.005) b.presTmp = 0.0;
-    };
-    if(Math.abs(b.presTmp) > 0.0) {
-      b.noSleep();
-      if(b.next != null && b.next() != null) b.next().noSleep();
-    };
-
-    if(TIMER.sec && Math.abs(b.presTmp) > 0.0) {
-      b.ex_updatePresSupplyTgs();
-    };
-
-    // Apply damage if over limit
-    if(
-      !PARAM.UPDATE_DEEP_SUPPRESSED && TIMER.secQuarter && LCRand.chance(UTIL_rand.get("pressure"), 0.25)
-        && (
-          (b.presTmp + b.presExtra) > 0.0 ?
-            ((b.presTmp + b.presExtra) > (b.block.delegee.presRes + 0.5)) :
-            ((b.presTmp + b.presExtra) < (b.block.delegee.vacRes - 0.5))
-        )
-    ) {
-      b.damagePierce((b.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) * (
-        b.presTmp > 0.0 ?
-          (b.presTmp / Math.max(b.block.delegee.presRes, 0.0001)) :
-          (-b.presTmp / Math.max(-b.block.delegee.vacRes, 0.0001))
-      ));
-    };
-
-    // Pressure drop
-    b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase / 60.0 * Time.delta);
-
-    // Supply abstract fluid
-    if(!b.block.delegee.skipPresSupply && b.presSupplyTgs.length > 0 && Math.abs(b.presTmp) > 0.0) {
-      b.presSupplyIncre++;
-      let b_t = b.presSupplyTgs[b.presSupplyIncre % b.presSupplyTgs.length];
-      if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
-        let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
-        let consAmt = MDL_recipeDict.getConsAmtByBuild(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t);
-        LCCraftingHandler.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt, false, false, true);
-        if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
-          b_t.damagePierce((b_t.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) / 5.0);
-        };
-      };
-    };
-  };
-
-
-  function comp_acceptItem(b, b_f, itm) {
-    let presThr = b.block.delegee.presThr;
-    if(presThr.fEqual(0.0)) return true;
-
-    return presThr > 0.0 ?
-      b.presTmp >= presThr - 0.15 :
-      b.presTmp <= presThr + 0.15;
-  };
-
-
-  function comp_acceptLiquid(b, b_f, liq) {
-    let presThr = b.block.delegee.presThr;
-    if(presThr.fEqual(0.0)) return true;
-
-    return presThr > 0.0 ?
-      b.presTmp >= presThr - 0.15 :
-      b.presTmp <= presThr + 0.15;
-  };
-
-
   function comp_ex_updatePresFetchTgs(b) {
     b.presFetchTgs.clear();
     // Find all possible pressure sources
@@ -144,31 +72,6 @@
         b.presFetchTgs.push(ob);
       };
     });
-  };
-
-
-  function comp_ex_updatePresSupplyTgs(b) {
-    b.presSupplyTgs.clear();
-    // Find all possible pressure consumers
-    b.proximity.each(ob => {
-      ob = ob.getLiquidDestination(b, VARGEN.auxPres);
-      if(ob == null) return;
-      if(ob.block instanceof MultiBlockLinkBlock) {
-        ob = ob.linkedBuild;
-      };
-      if((ob.acceptLiquid(b, VARGEN.auxPres) || ob.acceptLiquid(b, VARGEN.auxVac)) && b.ex_checkPresSupplyValid(ob)) {
-        b.presSupplyTgs.push(ob);
-      };
-    });
-  };
-
-
-  function comp_ex_updatePresTg(b) {
-    b.presTg = b.presBase;
-    b.presFetchTgs.forEachFast(ob => {
-      if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
-      b.presTg += tryFun(ob.ex_getPres, ob, 0.0) * tryFun(ob.ex_getPresTransScl, ob, 1.0, b);
-    }, true);
   };
 
 
@@ -338,12 +241,12 @@
 
 
       updateTile: function() {
-        comp_updateTile(this);
+        INTFBFragPressureBlock.setThis(this).updateTile.call(INTFBFragPressureBlock);
       },
 
 
       acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+        return INTFBFragPressureBlock.setThis(this).acceptItem.apply(INTFBFragPressureBlock, arguments);
       }
       .setProp({
         boolMode: "and",
@@ -351,7 +254,7 @@
 
 
       acceptLiquid: function(b_f, liq) {
-        return comp_acceptLiquid(this, b_f, liq);
+        return INTFBFragPressureBlock.setThis(this).acceptLiquid.apply(INTFBFragPressureBlock, arguments);
       }
       .setProp({
         boolMode: "and",
@@ -377,7 +280,7 @@
        * @return {void}
        */
       ex_updatePresSupplyTgs: function() {
-        comp_ex_updatePresSupplyTgs(this);
+        INTFBFragPressureBlock.setThis(this).ex_updatePresSupplyTgs.call(INTFBFragPressureBlock);
       }
       .setProp({
         noSuper: true,
@@ -390,7 +293,7 @@
        * @return {void}
        */
       ex_updatePresTg: function() {
-        comp_ex_updatePresTg(this);
+        INTFBFragPressureBlock.setThis(this).ex_updatePresTg.call(INTFBFragPressureBlock);
       }
       .setProp({
         noSuper: true,

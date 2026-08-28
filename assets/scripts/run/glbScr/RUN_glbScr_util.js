@@ -476,6 +476,30 @@
 
 
   /**
+   * `Mathf.chance(float trueChance)` but using fixed rand.
+   * @global
+   * @param {string} name
+   * @param {number} trueChance
+   * @return {boolean}
+   */
+  syncChance = function(name, trueChance) {
+    return LCRand.chance(UTIL_rand.get(name), trueChance);
+  };
+
+
+  /**
+   * Variant of {@link syncChance} involving delta.
+   * @global
+   * @param {string} name
+   * @param {number} trueChance
+   * @return {boolean}
+   */
+  syncChanceDelta = function(name, trueChance) {
+    return LCRand.chanceDelta(UTIL_rand.get(name), trueChance);
+  };
+
+
+  /**
    * Used for blocks with dynamic building info layout for their buildings, e.g. multi-crafters.
    * @global
    * @return {void}

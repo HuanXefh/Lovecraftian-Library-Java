@@ -130,6 +130,7 @@
 
 
   function comp_acceptItem(b, b_f, itm) {
+    if(b.items == null) return false;
     if(b.block.consumesItem(itm) && b.items.get(itm) < b.getMaximumAccepted(itm)) return true;
     if(!b.block.delegee.itmTgFilter.get(itm)) return false;
 
@@ -140,6 +141,7 @@
 
 
   function comp_acceptLiquid(b, b_f, liq) {
+    if(b.liquids == null) return false;
     if(b.liquids.get(liq) / b.block.liquidCapacity >= 0.98) return false;
     if(b.block.consumesLiquid(liq)) return true;
     if(!b.block.delegee.liqTgFilter.get(liq)) return false;

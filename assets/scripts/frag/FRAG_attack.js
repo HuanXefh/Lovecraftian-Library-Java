@@ -324,7 +324,9 @@
 
       MDL_call.knockback(x, y, unit, dmg / 100.0, rad);
       damage(unit, dmg_fi, 0.0);
-      if(LCRand.chance(UTIL_rand.get("unit"), Math.max(frac, 0.2))) unit.apply(VARGEN.staStunned, staDur);
+      if(syncChance("unit", Math.max(frac, 0.2))) {
+        unit.apply(VARGEN.staStunned, staDur);
+      };
     });
 
     MDL_effect.shake(x, y, shake);
