@@ -1,3 +1,4 @@
+import os
 import pandas as PANDAS
 
 
@@ -21,7 +22,11 @@ LANG_SUFFIX_DICT = {
 
 
 def buildFile(nameMod="lovec", dirTg=BUNDLE_PATH_TEST, lang="EN"):
-    path = dirTg + "bundle" + LANG_SUFFIX_DICT[lang] + ".properties"
+    fileName = "bundle" + LANG_SUFFIX_DICT[lang] + ".properties"
+    baseDir = os.path.abspath(dirTg)
+    path = os.path.abspath(os.path.join(baseDir, fileName))
+    if os.path.dirname(path) != baseDir:
+        raise ValueError("Invalid target path: " + path)
     fi = open(path, mode="w", encoding="utf-8")
     data = PANDAS.read_excel(BUNDLE_FILE_NAME, sheet_name=nameMod)
     fi.write(data["Output [" + lang + "]"].str.cat())
