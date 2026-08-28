@@ -8,15 +8,6 @@
   /* <---------- import ----------> */
 
 
-  /* <---------- auxiliary ----------> */
-
-
-  /**
-   * Without this torque can be over-consumed.
-   */
-  const NO_SUPPLY_THRESHOLD = 1.0;
-
-
   /* <---------- component ----------> */
 
 
