@@ -129,7 +129,7 @@
     let btns = this.root.table(Styles.black3, tb => tb.left()).left().get();
     this.root.left().top().row();
 
-    this.colCounts.setVal(0);
+    this.colCounts.setValue(0);
 
     // Drag button
     let isDragged = false;

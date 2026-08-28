@@ -87,6 +87,34 @@
 
 
   /**
+   * Creates a global reference to some object.
+   * @global
+   * @template T
+   * @param {T} obj
+   * @param {string} name
+   * @return {T}
+   */
+  globalize = function(obj, name) {
+    registerUniqueName(name, globalize.names, "globalize");
+    globalEval(
+      'let cond = false; try {cond = ' + name + ' !== undefined} catch(err) {cond = false}; if(cond) throw new Error("Cannot globalize an object due to reference conflict! Exception: ' + name + '")',
+      "globalizeCheck_" + globalize.ind,
+    );
+    globalize.tmp = obj;
+    globalEval(
+      name + " = globalize.tmp",
+      "globalize_" + globalize.ind,
+    );
+    globalize.ind++;
+
+    return obj;
+  };
+  globalize.names = [];
+  globalize.ind = 0;
+  globalize.tmp = null;
+
+
+  /**
    * See {@link Object.mergeObj}.
    * <br> `ARGS`: obj1, obj2, obj3, ...
    * @global

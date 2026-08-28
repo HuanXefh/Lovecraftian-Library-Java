@@ -38,7 +38,7 @@
     if(mode == null) mode = ConvolutionModes.FULL;
 
     let i = 0, iCap = this.iCap(), j, jCap = arr.iCap();
-    Array.prototype.convol.tmpArr.setVal(0.0, iCap + jCap - 1);
+    Array.prototype.convol.tmpArr.setValue(0.0, iCap + jCap - 1);
     while(i < iCap) {
       j = 0;
       while(j < jCap) {

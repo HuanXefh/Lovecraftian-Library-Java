@@ -230,7 +230,7 @@
    * @return {void}
    */
   const apply = function(xsReal, xsImag) {
-    if(xsImag == null) xsImag = TMP_ARRS[0].setVal(0.0, xsReal.length);
+    if(xsImag == null) xsImag = TMP_ARRS[0].setValue(0.0, xsReal.length);
     transform(xsReal, xsImag);
   };
   exports.apply = apply;
@@ -245,7 +245,7 @@
    * @return {void}
    */
   const applyInv = function(xsReal, xsImag) {
-    if(xsImag == null) xsImag = TMP_ARRS[1].setVal(0.0, xsReal.length);
+    if(xsImag == null) xsImag = TMP_ARRS[1].setValue(0.0, xsReal.length);
     inverseTransform(xsReal, xsImag);
     xsReal.inSituMap(x => x / xsReal.length);
     xsImag.inSituMap(x => x / xsImag.length);

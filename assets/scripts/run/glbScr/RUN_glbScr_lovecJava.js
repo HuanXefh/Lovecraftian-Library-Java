@@ -17,6 +17,13 @@
 */
 
 
+  /* <------------------------------ lovec.annotation ------------------------------ */
+
+
+  /** @global lovec.annotation.FromScript */
+  FromScript = fetchClass("lovec.annotation.FromScript");
+
+
   /* <------------------------------ lovec.audio ------------------------------ */
 
 

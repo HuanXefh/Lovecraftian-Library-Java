@@ -86,75 +86,6 @@
   };
 
 
-  function comp_ex_updateTor(b) {
-    // Update current torque, which is capped by transported RPM
-    let ob, rateAddNet = 0.0, amtTransTg, i, iCap;
-    if(!b.block.delegee.skipTorFetch) {
-      i = 0;
-      iCap = b.torFetchTgs.iCap();
-      while(i < iCap) {
-        rateAddNet += b.torFetchTgs[i].efficiency * b.torFetchTgs[i + 1];
-        i += 2;
-      };
-    };
-    if(!b.block.delegee.skipTorSupply) {
-      i = 0;
-      iCap = b.torSupplyTgs.iCap();
-      while(i < iCap) {
-        rateAddNet -= b.torSupplyTgs[i].efficiency * b.torSupplyTgs[i + 1];
-        i += 2;
-      };
-    };
-    if(b.torCap >= 0.0) {
-      b.torCur = Mathf.clamp(b.torCur + rateAddNet * Time.delta, 0.0, b.torCap);
-    };
-
-    // Transport torque
-    i = 0;
-    iCap = b.torTransTgs.iCap();
-    while(i < iCap) {
-      ob = b.torTransTgs[i];
-      if(b.ex_checkTorTransValid(ob)) {
-        amtTransTg = (ob.delegee.torCur + b.torCur) * 0.5;
-        ob.delegee.torCur = amtTransTg;
-        b.torCur = amtTransTg;
-      };
-      i++;
-    };
-
-    // Update current RPM
-    if(TIMER.secQuarter) {
-      b.rpmCur = b.ex_calcRpmTg();
-      if(b.rpmCur < 0.25) b.rpmCur = 0.0;
-    };
-  };
-
-
-  function comp_ex_supplyTor(b) {
-    if(b.torCur < NO_SUPPLY_THRESHOLD) return;
-
-    let ob, rate1, rate2;
-    let i = 0, iCap = b.torSupplyTgs.iCap();
-    while(i < iCap) {
-      ob = b.torSupplyTgs[i];
-      rate1 = Math.min(b.torSupplyTgs[i + 1], b.torCur);
-      rate2 = b.rpmCur / 60.0;
-
-      if(ob.acceptLiquid(b, VARGEN.auxTor)) {
-        ob.handleLiquid(b, VARGEN.auxTor, rate1 * b.edelta());
-      };
-      if(ob.acceptLiquid(b, VARGEN.auxRpm)) {
-        ob.handleLiquid(b, VARGEN.auxRpm, rate2 * b.edelta());
-      };
-      if(TIMER.secFive && ob.block.consumesLiquid(VARGEN.auxRpm)) {
-        b.ex_updateRpmDmg(ob, rate2, MDL_recipeDict.getConsAmtByBuild(VARGEN.auxRpm, ob));
-      };
-
-      i += 2;
-    };
-  };
-
-
   function comp_ex_updateRpmDmg(b, ob, rateAdd, rateCons) {
     if(rateCons < 0.0001 || rateAdd <= rateCons * 3.0) return;
 
@@ -201,51 +132,6 @@
         };
       };
     });
-  };
-
-
-  function comp_ex_calcRpmTg(b) {
-    let val = 0.0;
-    let ob, amt, i, iCap;
-
-    b.torCap = 0.0;
-
-    if(!b.block.delegee.skipTorFetch) {
-      i = 0;
-      iCap = b.torFetchTgs.iCap();
-      while(i < iCap) {
-        ob = b.torFetchTgs[i];
-        if(ob.isAdded() && ob.enabled && !ob.isPayload()) {
-          amt = b.torFetchTgs[i + 1];
-          if(ob.block instanceof LiquidSource) {
-            // Liquid source gives 100.0 RPM, for test
-            if(ob.source === VARGEN.auxTor) {
-              val += 100.0;
-              b.torCap += 100.0;
-            };
-          } else {
-            val += LCCraftingHandler.addLiquid(ob, ob, VARGEN.auxTor, -amt / ob.timeScale, true, true, true) * amt * 60.0;
-            b.torCap += amt * 60.0;
-          };
-        };
-        i += 2;
-      };
-    };
-
-    if(val < 0.0001) {
-      i = 0;
-      iCap = b.torTransTgs.iCap();
-      while(i < iCap) {
-        ob = b.torTransTgs[i];
-        if(ob.isAdded() && ob.enabled && !ob.isPayload() && ob.ex_calcRpmTrans != null && b.ex_checkTorTransValid(ob)) {
-          val = Math.max(val, ob.ex_calcRpmTrans(b) * b.ex_calcRpmAcceptScl(ob));
-          b.torCap = Math.max(ob.ex_calcRpmTrans(b), b.torCap);
-        };
-        i++;
-      };
-    };
-
-    return val;
   };
 
 
@@ -385,7 +271,7 @@
        * @return {void}
        */
       ex_updateTor: function() {
-        comp_ex_updateTor(this);
+        INTFBFragTorqueBlock.setThis(this).ex_updateTor.call(INTFBFragTorqueBlock);
       }
       .setProp({
         noSuper: true,
@@ -398,7 +284,7 @@
        * @return {void}
        */
       ex_supplyTor: function() {
-        comp_ex_supplyTor(this);
+        INTFBFragTorqueBlock.setThis(this).ex_supplyTor.call(INTFBFragTorqueBlock);
       }
       .setProp({
         noSuper: true,
@@ -467,7 +353,7 @@
        * @return {number}
        */
       ex_calcRpmTg: function() {
-        return comp_ex_calcRpmTg(this);
+        return INTFBFragTorqueBlock.setThis(this).ex_calcRpmTg.call(INTFBFragTorqueBlock);
       }
       .setProp({
         noSuper: true,

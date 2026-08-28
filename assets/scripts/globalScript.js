@@ -152,7 +152,7 @@
   exposeClass = function(javaCls) {
     if(javaCls.__javaObject__ == null) throw new Error("Not Java class constructor: " + javaCls);
     let name = javaCls.__javaObject__.getSimpleName();
-    Object.globalize(javaCls, name);
+    globalize(javaCls, name);
     exposeClass.__exposedClasses__[name] = javaCls;
   };
   exposeClass.__exposedClasses__ = {};

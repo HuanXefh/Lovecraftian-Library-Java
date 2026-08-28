@@ -315,7 +315,7 @@
 
   function comp_ex_buildConstructionPlan(blk, tb) {
     let i, iCap = blk.constructionParsedData[0].iCap(), j = 0, jCap = blk.constructionParsedData.iCap(), k, kCap, l, blkCur;
-    let matArr = [].setVal(() => [], jCap);
+    let matArr = [].setValue(prov(() => []), jCap);
     while(j < jCap) {
       i = 0;
       while(i < iCap) {

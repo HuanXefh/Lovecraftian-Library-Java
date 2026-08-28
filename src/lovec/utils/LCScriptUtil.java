@@ -1,8 +1,10 @@
 package lovec.utils;
 
+import lovec.annotation.FromScript;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Building;
+import mindustry.type.Liquid;
 import rhino.Context;
 import rhino.NativeObject;
 
@@ -12,6 +14,12 @@ import static lovec.utils.LCScript.*;
  * Utility methods directly related to Lovec modules.
  */
 public class LCScriptUtil {
+
+
+    @FromScript(source = "VARGEN")
+    public static Liquid auxTor;
+    @FromScript(source = "VARGEN")
+    public static Liquid auxRpm;
 
 
     /* <-------------------- util --------------------> */

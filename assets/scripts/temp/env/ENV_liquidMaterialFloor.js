@@ -30,7 +30,7 @@
       blk.isLiquid = true;
       if(blk.speedMultiplier.fEqual(1.0)) {
         blk.speedMultiplier = blk.shallow ? 0.85 : 0.5;
-        if(liq != null) blk.speedMultiplier *= MATH_interp.applyInterp(
+        if(liq != null) blk.speedMultiplier *= LCLerp.applyInterp(
           1.0, 0.2, liq.viscosity,
           Interp.linear, 0.5, 1.0,
         );

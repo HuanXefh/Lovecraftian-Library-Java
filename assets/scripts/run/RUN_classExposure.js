@@ -20,8 +20,7 @@
   /* <------------------------------ content frag ------------------------------ */
 
 
-  const contentFrags = {};
-  Object.globalize(contentFrags, "__contentFrags__");
+  globalize({}, "__contentFrags__");
 
 
   function exposeContentFrags() {
@@ -31,8 +30,8 @@
     fetchClasses("lovec.content.frag").forEach(cls => {
       name = cls.__javaObject__.getSimpleName();
       ins = new cls();
-      Object.globalize(ins, name);
-      contentFrags[name] = ins;
+      globalize(ins, name);
+      __contentFrags__[name] = ins;
       i++;
     });
     console.log("[LOVEC] Created global references for ${1} content frag classes.".format(i.color(Pal.accent)));

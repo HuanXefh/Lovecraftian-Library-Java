@@ -205,6 +205,19 @@
 
 
   /**
+   * Sets length and fills this array with given value.
+   * @param {any} val_fn
+   * @param {number|unset} [len]
+   * @return {this}
+   */
+  Array.prototype.setValue = function(val_fn, len) {
+    return len == null ?
+      LCNativeArray.setValue(this, val_fn) :
+      LCNativeArray.setValue(this, val_fn, len);
+  };
+
+
+  /**
    * Variant of {@link Array#push} that only pushes unique element.
    * @param {any} ele
    * @return {this}

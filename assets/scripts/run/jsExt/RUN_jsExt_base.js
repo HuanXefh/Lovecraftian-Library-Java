@@ -185,30 +185,3 @@
   Array.prototype.deepCpy = function() {
     return LCNativeArray.deepCpy(this);
   };
-
-
-  /**
-   * Sets length and fills this array with some value.
-   * @param {any} val_fn - Use a function here if the value to fill is an object like array.
-   * @param {number|unset} [len]
-   * @return {this}
-   */
-  Array.prototype.setVal = function(val_fn, len) {
-    if(len == null) len = this.length;
-
-    this.clear();
-    let i = 0;
-    if(typeof val_fn !== "function") {
-      while(i < len) {
-        this[i] = val_fn;
-        i++;
-      };
-    } else {
-      while(i < len) {
-        this[i] = val_fn();
-        i++;
-      };
-    };
-
-    return this;
-  };

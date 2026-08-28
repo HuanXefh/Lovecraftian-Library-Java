@@ -144,29 +144,6 @@
    */
 
 
-  /* math */
-
-
-  /**
-   * An format array containing coordinates of n-dimensional points (flattened).
-   * @global
-   * @typedef {Array<number>} PointArray
-   * @example
-   * // An array of four 3D-points
-   * let ponArr = [
-   *   0, 0, 0,
-   *   0, 0, 1,
-   *   0, 1, 1,
-   *   1, 1, 1,
-   * ];
-   */
-  /**
-   * A number array filled with randomly distributed values.
-   * @global
-   * @typedef {Array<number>} DistributionArray
-   */
-
-
   /* dialog flow */
 
 

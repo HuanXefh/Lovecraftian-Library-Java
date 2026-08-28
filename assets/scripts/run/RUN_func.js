@@ -18,7 +18,7 @@
 
 
   function create(name, javaIntf) {
-    Object.globalize(fun => extendSafe(javaIntf, {
+    globalize(fun => extendSafe(javaIntf, {
       get: fun,
     }), name);
   };

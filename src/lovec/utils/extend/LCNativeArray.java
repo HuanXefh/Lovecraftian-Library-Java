@@ -639,6 +639,38 @@ public class LCNativeArray {
 
 
     /**
+     * Sets length and fills an array with given value.
+     */
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray setValue(NativeArray arr, Object ele, int len) {
+        clear(arr);
+        int i = 0;
+        while(i < len) {
+            arr.put(i, arr, ele);
+            i++;
+        };
+        return arr;
+    };
+    // Overload
+    public static NativeArray setValue(NativeArray arr, Object ele) {
+        return setValue(arr, ele, LCScript.toInt(arr.getLength()));
+    };
+    @SuppressWarnings("CollectionAddedToSelf")
+    public static NativeArray setValue(NativeArray arr, Prov eleF, int len) {
+        clear(arr);
+        int i = 0;
+        while(i < len) {
+            arr.put(i, arr, eleF.get());
+            i++;
+        };
+        return arr;
+    };
+    public static NativeArray setValue(NativeArray arr, Prov eleF) {
+        return setValue(arr, eleF, LCScript.toInt(arr.getLength()));
+    };
+
+
+    /**
      * Pushes element into an array.
      * Only necessary on Java side.
      * @return Array length.

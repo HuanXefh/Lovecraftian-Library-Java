@@ -211,14 +211,14 @@
     iCap = rc.ci.iCap();
     while(i < iCap) {
       tmp = rc.ci[i];
-      if(tmp === rs) {
+      if(tmp.id === rs.id) {
         return true;
       } else if(tmp instanceof Array) {
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
           tmp1 = tmp[j];
-          if(tmp1 === rs) return true;
+          if(tmp1.id === rs.id) return true;
           j += 2;
         };
       };
@@ -230,14 +230,14 @@
     iCap = rc.bi.iCap();
     while(i < iCap) {
       tmp = rc.bi[i];
-      if(tmp === rs) {
+      if(tmp.id === rs.id) {
         return true;
       } else if(tmp instanceof Array) {
         j = 0;
         jCap = tmp.iCap();
         while(j < jCap) {
           tmp1 = tmp[j];
-          if(tmp1 === rs) return true;
+          if(tmp1.id === rs.id) return true;
           j += 3;
         };
       };
@@ -249,7 +249,7 @@
     iCap = rc.aux.iCap();
     while(i < iCap) {
       tmp = rc.aux[i];
-      if(tmp === rs) return true;
+      if(tmp.id === rs.id) return true;
       i += 2;
     };
 
@@ -258,7 +258,7 @@
     iCap = rc.opt.iCap();
     while(i < iCap) {
       tmp = rc.opt[i];
-      if(tmp === rs) return true;
+      if(tmp.id === rs.id) return true;
       i += 4;
     };
 
@@ -286,7 +286,7 @@
     iCap = rc.co.iCap();
     while(i < iCap) {
       tmp = rc.co[i];
-      if(tmp === rs) return true;
+      if(tmp.id === rs.id) return true;
       i += 2;
     };
 
@@ -295,7 +295,7 @@
     iCap = rc.bo.iCap();
     while(i < iCap) {
       tmp = rc.bo[i];
-      if(tmp === rs) return true;
+      if(tmp.id === rs.id) return true;
       i += 3;
     };
 
@@ -304,7 +304,7 @@
     iCap = rc.fo.iCap();
     while(i < iCap) {
       tmp = rc.fo[i];
-      if(tmp === rs) return true;
+      if(tmp.id === rs.id) return true;
       i += 3;
     };
 

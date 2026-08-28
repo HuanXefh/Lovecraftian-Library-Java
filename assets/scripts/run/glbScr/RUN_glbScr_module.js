@@ -56,18 +56,6 @@
   /** @global */
   TP_attr = require("lovec/tp/TP_attr");
   /** @global */
-  MATH_geometry = require("lovec/math/MATH_geometry");
-  /** @global */
-  MATH_interp = require("lovec/math/MATH_interp");
-  /** @global */
-  MATH_probability = require("lovec/math/MATH_probability");
-  /** @global */
-  CLS_whiteNoise = require("lovec/cls/math/noise/CLS_whiteNoise");
-  /** @global */
-  CLS_valueNoise = require("lovec/cls/math/noise/CLS_valueNoise");
-  /** @global */
-  CLS_perlinNoise = require("lovec/cls/math/noise/CLS_perlinNoise");
-  /** @global */
   MDL_bundle = require("lovec/mdl/MDL_bundle");
   /** @global */
   MDL_text = require("lovec/mdl/MDL_text");
@@ -150,6 +138,7 @@
   MDL_planet = require("lovec/mdl/MDL_planet");
   /** @global */
   VARGEN = require("lovec/glb/GLB_varGen");
+  require("lovec/run/RUN_annoProcess");
   /** @global */
   UTIL_rand = require("lovec/cls/util/UTIL_rand");
   /** @global */
