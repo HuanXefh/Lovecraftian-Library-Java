@@ -36,8 +36,8 @@
 
   /** @global lovec.content.LCCraftingHandler */
   LCCraftingHandler = fetchClass("lovec.content.LCCraftingHandler");
-  /** @global lovec.content.LCRecipeHandler */
-  LCRecipeHandler = fetchClass("lovec.content.LCRecipeHandler");
+  /** @global lovec.content.RecipeUpdater */
+  RecipeUpdater = fetchClass("lovec.content.RecipeUpdater");
 
 
   /* <------------------------------ lovec.graphics ------------------------------ */

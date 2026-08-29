@@ -11,6 +11,11 @@
   /* <---------- component ----------> */
 
 
+  function comp_init(blk) {
+    blk.torqueBlockUpdater = new INTFBLKTorqueBlockUpdater(blk);
+  };
+
+
   function comp_setBars(blk) {
     blk.addBar("lovec-rpm", b => new Bar(
       prov(() => Core.bundle.format("bar.lovec-bar-rpm-amt", Strings.fixed(b.delegee.rpmCur, 1))),
@@ -26,6 +31,8 @@
 
 
   function comp_created(b) {
+    b.torqueBlockUpdater = new INTFBTorqueBlockUpdater(b.block.delegee.torqueBlockUpdater, b);
+
     TRIGGER.torqueBlockPlace.fire(b);
     Time.run(0.0, () => {
       TRIGGER.torqueBlockPlace.addListener(ob => b.torProg = 0.0);
@@ -166,7 +173,23 @@
         rpmDropRate: 0.002,
 
 
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * `INTERNAL`
+         * @memberof INTF_BLK_torqueBlock
+         * @instance
+         */
+        torqueBlockUpdater: null,
+
+
       }),
+
+
+      init: function() {
+        comp_init(this);
+      },
 
 
       setBars: function() {
@@ -189,6 +212,12 @@
         /* <------------------------------ internal ------------------------------ */
 
 
+        /**
+         * `INTERNAL`
+         * @memberof INTF_B_torqueBlock
+         * @instance
+         */
+        torqueBlockUpdater: null,
         /**
          * `INTERNAL`
          * @memberof INTF_B_torqueBlock
@@ -262,7 +291,7 @@
        * @return {void}
        */
       ex_updateTor: function() {
-        INTFBFragTorqueBlock.setThis(this).ex_updateTor.call(INTFBFragTorqueBlock);
+        this.torqueBlockUpdater.ex_updateTor();
       }
       .setProp({
         noSuper: true,
@@ -275,7 +304,7 @@
        * @return {void}
        */
       ex_supplyTor: function() {
-        INTFBFragTorqueBlock.setThis(this).ex_supplyTor.call(INTFBFragTorqueBlock);
+        this.torqueBlockUpdater.ex_supplyTor();
       }
       .setProp({
         noSuper: true,
@@ -344,7 +373,7 @@
        * @return {number}
        */
       ex_calcRpmTg: function() {
-        return INTFBFragTorqueBlock.setThis(this).ex_calcRpmTg.call(INTFBFragTorqueBlock);
+        return this.torqueBlockUpdater.ex_calcRpmTg();
       }
       .setProp({
         noSuper: true,

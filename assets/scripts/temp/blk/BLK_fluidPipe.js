@@ -17,6 +17,8 @@
 
 
   function comp_init(blk) {
+    blk.fluidPipeUpdater = new BLKFluidPipeUpdater(blk);
+
     if(blk.isShortCircuitPipe) {
       blk.conductivePower = false;
       blk.connectedPower = false;
@@ -45,6 +47,11 @@
         blk.placeSound = fetchSound("se-meme-steel-pipe");
       };
     });
+  };
+
+
+  function comp_created(b) {
+    b.fluidPipeUpdater = new BFluidPipeUpdater(b.block.delegee.fluidPipeUpdater, b);
   };
 
 
@@ -124,6 +131,17 @@
       isShortCircuitPipe: false,
 
 
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof BLK_fluidPipe
+       * @instance
+       */
+      fluidPipeUpdater: null,
+
+
     })
     .setMethod({
 
@@ -134,7 +152,7 @@
 
 
       blends: function thisFun() {
-        return BLKFragFluidPipe.setThis(this).blends.apply(BLKFragFluidPipe, arguments);
+        return this.fluidPipeUpdater.blends.apply(this.fluidPipeUpdater, arguments);
       }
       .setProp({
         noSuper: true,
@@ -229,11 +247,22 @@
        * @memberof B_fluidPipe
        * @instance
        */
+      fluidPipeUpdater: null,
+      /**
+       * `INTERNAL`
+       * @memberof B_fluidPipe
+       * @instance
+       */
       isLeak: false,
 
 
     })
     .setMethod({
+
+
+      created: function() {
+        comp_created(this);
+      },
 
 
       onProximityUpdate: function() {
@@ -252,7 +281,7 @@
 
 
       moveLiquid: function(b_t, liq) {
-        return BFragFluidPipe.setThis(this).moveLiquid.apply(BFragFluidPipe, arguments);
+        return this.fluidPipeUpdater.moveLiquid(b_t, liq);
       }
       .setProp({
         noSuper: true,

@@ -16,7 +16,6 @@ import lovec.graphics.LCDraw;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.world.Block;
-import mindustry.world.draw.DrawBlock;
 
 /**
  * Draws piled items.

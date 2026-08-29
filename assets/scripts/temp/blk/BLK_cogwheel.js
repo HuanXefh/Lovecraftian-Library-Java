@@ -17,6 +17,8 @@
   function comp_init(blk) {
     if(blk.size % 2 === 0) ERROR_HANDLER.throw("evenSizedCogwheel", blk.name);
 
+    blk.cogwheelUpdater = new BLKCogwheelUpdater(blk);
+
     blk.group = BlockGroup.none;
     blk.priority = TargetPriority.transport;
     blk.update = true;
@@ -40,6 +42,11 @@
     blk.invReg = fetchRegion(blk, "-inv", "");
     blk.cogDrawW = blk.region.width * 2.0 * 1.06 / Vars.tilesize;
     blk.cogInvOffAng = 22.5 / (blk.size + 1) * 2.0;
+  };
+
+
+  function comp_created(b) {
+    b.cogwheelUpdater = new BCogwheelUpdater(b.block.delegee.cogwheelUpdater, b);
   };
 
 
@@ -147,6 +154,12 @@
        * @memberof BLK_cogwheel
        * @instance
        */
+      cogwheelUpdater: null,
+      /**
+       * `INTERNAL`
+       * @memberof BLK_cogwheel
+       * @instance
+       */
       invReg: null,
       /**
        * `INTERNAL`
@@ -217,11 +230,22 @@
        * @memberof B_cogwheel
        * @instance
        */
+      cogwheelUpdater: null,
+      /**
+       * `INTERNAL`
+       * @memberof B_cogwheel
+       * @instance
+       */
       isInv: false,
 
 
     })
     .setMethod({
+
+
+      created: function() {
+        comp_created(this);
+      },
 
 
       unitOn: function(unit) {
@@ -376,7 +400,7 @@
        * @return {void}
        */
       ex_drawCog: function() {
-        BFragCogwheel.setThis(this).ex_drawCog.call(BFragCogwheel);
+        this.cogwheelUpdater.ex_drawCog();
       }
       .setProp({
         noSuper: true,

@@ -1,9 +1,10 @@
-package lovec.content.frag;
+package lovec.content.updater;
 
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
-import lovec.content.ContentFrag;
+import lovec.content.BuildUpdater;
+import lovec.content.ContentUpdater;
 import lovec.utils.LCScriptUtil;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -12,19 +13,22 @@ import mindustry.world.Edges;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.ArmoredConveyor;
 
-public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor, BLKFragArmoredCable> {
+public class BLKArmoredCableUpdater extends ContentUpdater<ArmoredConveyor> {
+
+
+    public BLKArmoredCableUpdater(ArmoredConveyor blk) throws NoSuchFieldException, IllegalAccessException {
+        super(blk);
+    };
 
 
     @FragMethod
     public boolean blends(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
-        ArmoredConveyor blk = getThis();
-
         return (
             (oblk.consPower != null || oblk.outputsPower)
                 && !LCScriptUtil.checkCond("isFluidConduit", oblk)
-                && blk.blendsArmored(t, rot, otx, oty, orot, oblk)
+                && target.blendsArmored(t, rot, otx, oty, orot, oblk)
         ) || (
-            blk.lookingAt(t, rot, otx, oty, oblk)
+            target.lookingAt(t, rot, otx, oty, oblk)
                 && oblk.hasPower
                 && !LCScriptUtil.checkCond("isFluidConduit", oblk)
         );
@@ -32,27 +36,21 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor, BLKFragArm
     // Overload
     @FragMethod
     public boolean blends(Tile t, int rot, BuildPlan[] bPlans, int dir, boolean shouldCheckWorld) {
-        ArmoredConveyor blk = getThis();
-
         if(bPlans != null) {
             BuildPlan bPlan = bPlans[Mathf.mod(rot - dir, 4)];
-            if(bPlan != null && blk.blends(t, rot, bPlan.x, bPlan.y, bPlan.rotation, bPlan.block)) return true;
+            if(bPlan != null && target.blends(t, rot, bPlan.x, bPlan.y, bPlan.rotation, bPlan.block)) return true;
         };
-        return shouldCheckWorld && blk.blends(t, rot, dir);
+        return shouldCheckWorld && target.blends(t, rot, dir);
     };
     @FragMethod
     public boolean blends(Tile t, int rot, int dir) {
-        ArmoredConveyor blk = getThis();
-
         Building ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));
-        return ob != null && ob.team == t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
+        return ob != null && ob.team == t.team() && target.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
     };
 
 
     @FragMethod
     public boolean blendsArmored(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
-        ArmoredConveyor blk = getThis();
-
         // WTF is going on here
         return Point2.equals(t.x + Geometry.d4(rot).x, t.y + Geometry.d4(rot).y, otx, oty)
             || (
@@ -69,4 +67,17 @@ public class BLKFragArmoredCable extends ContentFrag<ArmoredConveyor, BLKFragArm
     };
 
 
-}
+
+
+    public class BArmoredCableUpdater extends BuildUpdater<ArmoredConveyor.ArmoredConveyorBuild, ArmoredConveyor> {
+
+
+        public BArmoredCableUpdater(ArmoredConveyor.ArmoredConveyorBuild b) throws NoSuchFieldException, IllegalAccessException {
+            super(b);
+        };
+
+
+    };
+
+
+};

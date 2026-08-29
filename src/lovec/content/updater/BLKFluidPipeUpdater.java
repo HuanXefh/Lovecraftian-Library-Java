@@ -1,8 +1,8 @@
-package lovec.content.frag;
+package lovec.content.updater;
 
 import arc.math.Mathf;
-import lovec.content.BuildContentFrag;
-import lovec.content.ContentFrag;
+import lovec.content.BuildUpdater;
+import lovec.content.ContentUpdater;
 import lovec.content.LCCraftingHandler;
 import lovec.utils.LCScriptUtil;
 import mindustry.Vars;
@@ -13,48 +13,48 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.liquid.Conduit;
 
-public class BLKFragFluidPipe extends ContentFrag<Conduit, BLKFragFluidPipe> {
+public class BLKFluidPipeUpdater extends ContentUpdater<Conduit> {
+
+
+    public BLKFluidPipeUpdater(Conduit blk) throws NoSuchFieldException, IllegalAccessException {
+        super(blk);
+    };
 
 
     @FragMethod
     public boolean blends(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
-        Conduit blk = getThis();
-
         return oblk.hasLiquids
-            && (oblk.outputsLiquid || blk.lookingAt(t, rot, otx, oty, oblk))
-            && (blk.lookingAtEither(t, rot, otx, oty, orot, oblk) || LCScriptUtil.checkCond("isFluidRouter", oblk) || LCScriptUtil.checkCond("isFullRouter", oblk));
+            && (oblk.outputsLiquid || target.lookingAt(t, rot, otx, oty, oblk))
+            && (target.lookingAtEither(t, rot, otx, oty, orot, oblk) || LCScriptUtil.checkCond("isFluidRouter", oblk) || LCScriptUtil.checkCond("isFullRouter", oblk));
     };
     // Overload
     @FragMethod
     public boolean blends(Tile t, int rot, BuildPlan[] bPlans, int dir, boolean shouldCheckWorld) {
-        Conduit blk = getThis();
-
         if(bPlans != null) {
             BuildPlan bPlan = bPlans[Mathf.mod(rot - dir, 4)];
-            if(bPlan != null && blk.blends(t, rot, bPlan.x, bPlan.y, bPlan.rotation, bPlan.block)) return true;
+            if(bPlan != null && target.blends(t, rot, bPlan.x, bPlan.y, bPlan.rotation, bPlan.block)) return true;
         };
-        return shouldCheckWorld && blk.blends(t, rot, dir);
+        return shouldCheckWorld && target.blends(t, rot, dir);
     };
     @FragMethod
     public boolean blends(Tile t, int rot, int dir) {
-        Conduit blk = getThis();
-
         Building ob = t.nearbyBuild(Mathf.mod(rot - dir, 4));
-        return ob != null && ob.team == t.team() && blk.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
+        return ob != null && ob.team == t.team() && target.blends(t, rot, ob.tileX(), ob.tileY(), ob.rotation, ob.block);
     };
 
 
 
 
-    public static class BFragFluidPipe extends BuildContentFrag<Conduit.ConduitBuild, Conduit, BFragFluidPipe> {
+    public class BFluidPipeUpdater extends BuildUpdater<Conduit.ConduitBuild, Conduit> {
 
+
+        public BFluidPipeUpdater(Conduit.ConduitBuild b) throws NoSuchFieldException, IllegalAccessException {
+            super(b);
+        };
 
 
         @FragMethod
         public float moveLiquid(Building b_t, Liquid liq) {
-            Conduit.ConduitBuild b = getThis();
-            resolve();
-
             float amtTrans = 0f;
             if(b_t == null) return amtTrans;
             b_t = b_t.getLiquidDestination(b, liq);

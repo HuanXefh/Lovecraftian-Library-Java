@@ -69,11 +69,11 @@
 
     // Update currently used fuel
     if(TIMER.secFive && !b.block.delegee.noFuelInput) {
-      b.fuelTup = MDL_fuel.getFuelTup(b);
-      b.tempFuel = b.fuelTup == null ?
+      b.fuelTup = MDL_fuel.getFuelTup(b.fuelTup, b);
+      b.tempFuel = b.fuelTup[0] == null ?
         0.0 :
         (b.fuelTup[2] * 100.0 * b.block.delegee.fuelLvlMtp);
-      b.fuelPolProd = b.fuelTup == null ?
+      b.fuelPolProd = b.fuelTup[0] == null ?
         0.0 :
         MDL_pollution.getRsPol(b.fuelTup[0]);
     };
@@ -142,7 +142,7 @@
     // If external heat outruns fuel heat
     if(b.tempExt > b.tempFuel || b.maxHeaterProd > b.tempFuel) return 1.0;
     // If no fuel supplied
-    if(b.fuelTup == null || b.fuelTup[0] == null || b.fuelPonCur < 0.0001) return 0.0;
+    if(b.fuelTup[0] == null || b.fuelPonCur < 0.0001) return 0.0;
     if(b.fuelTup[0] instanceof Item) {
       if(b.items == null || !b.items.has(b.fuelTup[0])) return 0.0;
     } else {
@@ -336,7 +336,7 @@
          * @memberof INTF_B_furnaceBlock
          * @instance
          */
-        fuelTup: null,
+        fuelTup: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_furnaceBlock

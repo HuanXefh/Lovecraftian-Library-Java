@@ -16,6 +16,8 @@
 
 
   function comp_init(blk) {
+    blk.cableUpdater = new BLKCableUpdater(blk);
+
     blk.conductivePower = true;
     blk.connectedPower = false;
     blk.pushUnits = false;
@@ -32,6 +34,11 @@
   function comp_setBars(blk) {
     blk.addBar("power", PowerNode.makePowerBalance());
     blk.addBar("batteries", PowerNode.makeBatteryBalance());
+  };
+
+
+  function comp_created(b) {
+    b.cableUpdater = new BCableUpdater(b.block.delegee.cableUpdater, b);
   };
 
 
@@ -76,6 +83,12 @@
       /* <------------------------------ internal ------------------------------ */
 
 
+      /**
+       * `INTERNAL`
+       * @memberof BLK_cable
+       * @instance
+       */
+      cableUpdater: null,
       /**
        * `INTERNAL`
        * @override
@@ -126,7 +139,7 @@
 
 
       blends: function() {
-        return BLKFragCable.setThis(this).blends.apply(BLKFragCable, arguments);
+        return this.cableUpdater.blends.apply(this.cableUpdater, arguments);
       }
       .setProp({
         noSuper: true,
@@ -158,8 +171,27 @@
      */
     newClass().extendClass(PARENT[1], "B_cable").implement(INTF[1]).initClass()
     .setParent(ArmoredConveyor.ArmoredConveyorBuild)
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof B_cable
+       * @instance
+       */
+      cableUpdater: null,
+
+
+    })
     .setMethod({
+
+
+      created: function() {
+        comp_created(this);
+      },
 
 
       updateTile: function() {

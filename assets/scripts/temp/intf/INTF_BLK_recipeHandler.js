@@ -175,6 +175,34 @@
   };
 
 
+  function comp_acceptItem(b, b_f, itm) {
+    if(b.items == null || b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
+    if(b.blk$useAutoSelection && b.rc.keyItmHeaderMap != null && itm !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.rc.keyItmHeaderMap.containsKey(itm) && !b.rc.checkOutput(itm)) {
+      b.keyCt = itm;
+    };
+
+    if(b.itmAcceptCacheArr[itm.id] == null) {
+      b.itmAcceptCacheArr[itm.id] = b.rc.checkInput(itm);
+    };
+
+    return b.itmAcceptCacheArr[itm.id];
+  };
+
+
+  function comp_acceptLiquid(b, b_f, liq) {
+    if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
+    if(b.blk$useAutoSelection && b.rc.keyFldHeaderMap != null && liq !== b.keyCt && b_f !== b && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)) {
+      b.keyCt = liq;
+    };
+
+    if(b.liqAcceptCacheArr[liq.id] == null) {
+      b.liqAcceptCacheArr[liq.id] = b.rc.checkInput(liq);
+    };
+
+    return b.liqAcceptCacheArr[liq.id];
+  };
+
+
   const comp_displayConsumption = function thisFun(b, tb) {
     tb.left();
 
@@ -411,6 +439,39 @@
       Object.clear(b.consTmpObj);
       Object.clear(b.prodTmpObj);
     });
+  };
+
+
+  function comp_ex_calcProgInc(b, time) {
+    if(b.block.ignoreLiquidFullness) {
+      inc = b.edelta() / time / b.rc.rcTimeScl;
+    } else {
+      val = 1.0;
+      scl = 1.0;
+      cond = false;
+      iCap = b.rc.co.iCap();
+      if(b.liquids != null && iCap > 0) {
+        val = 0.0;
+        i = 0;
+        while(i < iCap) {
+          tmp = b.rc.co[i];
+          amt = b.rc.co[i + 1];
+          tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(tmp)) / (amt * b.edelta());
+          val = Math.max(val, tmpVal);
+          if(!MDL_cond.isAuxiliaryFluid(tmp)) {
+            scl = Math.min(scl, tmpVal);
+          };
+          cond = true;
+          i += 2;
+        };
+      };
+      if(!cond) val = 1.0;
+      inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rc.rcTimeScl;
+    };
+
+    return isNaN(inc) ?
+      0.0 :
+      inc;
   };
 
 
@@ -756,7 +817,7 @@
 
 
       acceptItem: function(b_f, itm) {
-        return INTFBFragRecipeHandler.setThis(this).acceptItem.apply(INTFBFragRecipeHandler, arguments);
+        return comp_acceptItem(this, b_f, itm);
       }
       .setProp({
         noSuper: true,
@@ -765,7 +826,7 @@
 
 
       acceptLiquid: function(b_f, liq) {
-        return INTFBFragRecipeHandler.setThis(this).acceptLiquid.apply(INTFBFragRecipeHandler, arguments);
+        return comp_acceptLiquid(this, b_f, liq);
       }
       .setProp({
         noSuper: true,
@@ -1117,7 +1178,7 @@
        * @return {number}
        */
       ex_calcProgInc: function(time) {
-        return INTFBFragRecipeHandler.setThis(this).ex_calcProgInc.apply(INTFBFragRecipeHandler, arguments);
+        return comp_ex_calcProgInc(this, time);
       }
       .setProp({
         noSuper: true,

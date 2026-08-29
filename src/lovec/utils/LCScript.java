@@ -2,9 +2,10 @@ package lovec.utils;
 
 import arc.util.Log;
 import arc.util.Nullable;
-import arc.util.Reflect;
 import mindustry.Vars;
 import rhino.*;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Used for interaction with JavaScript.
@@ -365,15 +366,15 @@ public class LCScript {
     /**
      * Gets delegee of an instance created with Rhino <code>JavaAdapter</code>.
      */
-    public static @Nullable NativeObject getDelegee(Object ins) {
-        return Reflect.get(ins, "delegee");
+    public static @Nullable NativeObject getDelegee(Object ins) throws NoSuchFieldException, IllegalAccessException {
+        return (NativeObject) ins.getClass().getDeclaredField("delegee").get(ins);
     };
 
 
     /**
      * Whether an instance created with Rhino <code>JavaAdapter</code> has some property.
      */
-    public static boolean instanceHas(Object ins, String nameProp) {
+    public static boolean instanceHas(Object ins, String nameProp) throws NoSuchFieldException, IllegalAccessException {
         return hasDelegee(ins) && instanceGet(ins, nameProp) != null;
     };
 
@@ -381,7 +382,7 @@ public class LCScript {
     /**
      * Gets a property in an instance created with Rhino <code>JavaAdapter</code>.
      */
-    public static @Nullable Object instanceGet(Object ins, String nameProp) {
+    public static @Nullable Object instanceGet(Object ins, String nameProp) throws NoSuchFieldException, IllegalAccessException {
         NativeObject delegee = getDelegee(ins);
         return delegee == null ? null : delegee.get(nameProp);
     };
@@ -390,7 +391,7 @@ public class LCScript {
     /**
      * Sets a property in an instance created with Rhino <code>JavaAdapter</code>.
      */
-    public static void instanceSet(Object ins, String[] nameProps, Object... vals) {
+    public static void instanceSet(Object ins, String[] nameProps, Object... vals) throws NoSuchFieldException, IllegalAccessException {
         NativeObject delegee = getDelegee(ins);
         if(delegee == null) return;
         for(int i = 0; i < nameProps.length; i++) {
@@ -398,7 +399,7 @@ public class LCScript {
         };
     };
     // Overload
-    public static void instanceSet(Object ins, String nameProp, Object val) {
+    public static void instanceSet(Object ins, String nameProp, Object val) throws NoSuchFieldException, IllegalAccessException {
         NativeObject delegee = getDelegee(ins);
         if(delegee == null) return;
         delegee.put(nameProp, delegee, val);
@@ -408,9 +409,9 @@ public class LCScript {
     /**
      * Invokes a Java method created with Rhino <code>JavaAdapter</code>.
      */
-    public static Object instanceInvoke(Object ins, String nameFun, Object... args) throws IllegalArgumentException {
+    public static Object instanceInvoke(Object ins, String nameFun, Object... args) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if(args.length > objClss.length) throw new IllegalArgumentException("Argument length out of bound: " + args.length + ">" + objClss.length);
-        return Reflect.invoke(ins, nameFun, args, objClss[args.length]);
+        return ins.getClass().getDeclaredMethod(nameFun, objClss[args.length]).invoke(ins, args);
     };
 
 

@@ -15,6 +15,8 @@
 
 
   function comp_init(blk) {
+    blk.pipePumpUpdater = new BLKPipePumpUpdater(blk);
+
     blk.drawArrow = false;
   };
 
@@ -38,6 +40,8 @@
 
 
   function comp_created(b) {
+    b.pipePumpUpdater = new BPipePumpUpdater(b.block.delegee.pipePumpUpdater, b);
+
     b.totalProgress += Mathf.random(360.0);
   };
 
@@ -90,6 +94,12 @@
       /* <------------------------------ internal ------------------------------ */
 
 
+      /**
+       * `INTERNAL`
+       * @memberof BLK_pipePump
+       * @instance
+       */
+      pipePumpUpdater: null,
       /**
        * `INTERNAL`
        * @override
@@ -146,6 +156,12 @@
        * @memberof B_pipePump
        * @instance
        */
+      pipePumpUpdater: null,
+      /**
+       * `INTERNAL`
+       * @memberof B_pipePump
+       * @instance
+       */
       pumpFrontB: null,
       /**
        * `INTERNAL`
@@ -188,7 +204,7 @@
 
 
       updateTile: function() {
-        BFragPipePump.setThis(this).updateTile.call(BFragPipePump);
+        this.pipePumpUpdater.updateTile();
       },
 
 
@@ -198,7 +214,7 @@
 
 
       acceptLiquid: function(b_f, liq) {
-        return BFragPipePump.setThis(this).acceptLiquid.apply(BFragPipePump, arguments);
+        return this.pipePumpUpdater.acceptLiquid(b_f, liq);
       }
       .setProp({
         noSuper: true,

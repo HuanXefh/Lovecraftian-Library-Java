@@ -732,6 +732,10 @@
       }, true);
     };
 
+    Core.app.post(() => {
+      this.updater = new RecipeUpdater(this);
+    });
+
     return this;
   };
 
@@ -1291,7 +1295,7 @@
    * @return {boolean}
    */
   CLS_recipe.prototype.checkCanAdd = function(b) {
-    return LCRecipeHandler.checkCanAdd(this, b);
+    return this.updater.checkCanAdd(b);
   };
 
 
@@ -1302,7 +1306,7 @@
    * @return {[Item, number, number, number]|null} `TUPLE`: item, amt, p, mtp.
    */
   CLS_recipe.prototype.getOptTup = function(b) {
-    return LCRecipeHandler.getOptTup(this, b);
+    return this.updater.getOptTup(b);
   };
 
 
@@ -1312,7 +1316,7 @@
    * @return {number}
    */
   CLS_recipe.prototype.calcEffc = function(b) {
-    return LCRecipeHandler.calcEffc(this, b);
+    return this.updater.calcEffc(b);
   };
 
 
@@ -1364,7 +1368,7 @@
    * @return {void}
    */
   CLS_recipe.prototype.consumeBatch = function(b) {
-    LCRecipeHandler.consumeBatch(this, b);
+    this.updater.consumeBatch(b);
   };
 
 
@@ -1375,7 +1379,7 @@
    * @return {void}
    */
   CLS_recipe.prototype.consumeContinuous = function(b, progIncLiq) {
-    LCRecipeHandler.consumeContinuous(this, b, progIncLiq);
+    this.updater.consumeContinuous(b, progIncLiq);
   };
 
 
@@ -1387,7 +1391,7 @@
    */
   CLS_recipe.prototype.craftBatch = function(b, failP) {
     let failed = syncChance("crafter", failP);
-    LCRecipeHandler.craftBatch(this, b, failed);
+    this.updater.craftBatch(b, failed);
     if(!failed) {
       MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);
     } else {
@@ -1404,7 +1408,7 @@
    * @return {void}
    */
   CLS_recipe.prototype.craftContinuous = function(b, progIncLiq) {
-    LCRecipeHandler.craftContinuous(this, b, progIncLiq);
+    this.updater.craftContinuous(b, progIncLiq);
   };
 
 
@@ -1443,7 +1447,7 @@
    * @return {void}
    */
   CLS_recipe.prototype.dump = function(b) {
-    LCRecipeHandler.dump(this, b);
+    this.updater.dump(b);
   };
 
 

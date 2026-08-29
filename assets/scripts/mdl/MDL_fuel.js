@@ -119,11 +119,13 @@
 
   /**
    * Gets preferred fuel tuple for some building, which should be a furnace.
+   * @param {Array|unset} contTup
    * @param {Building} b
    * @return {[Resource, number, number]|null} `TUPLE`: fuel, fuelPon, fuelLvl.
    */
-  const getFuelTup = function(b) {
-    if(tryJsProp(b.block, "noFuelInput", false)) return null;
+  const getFuelTup = function(contTup, b) {
+    let tup = contTup != null ? contTup.clear() : [];
+    if(tryJsProp(b.block, "noFuelInput", false)) return contTup;
 
     let
       fuelType = tryJsProp(b.block, "fuelType", FuelTypes.ITEM),
@@ -182,7 +184,7 @@
     };
 
     return fuel == null ?
-      null :
-      [fuel, getFuelPon(fuel), fuelLvl];
+      tup :
+      tup.with(fuel, getFuelPon(fuel), fuelLvl);
   };
   exports.getFuelTup = getFuelTup;

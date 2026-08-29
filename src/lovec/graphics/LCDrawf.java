@@ -1503,7 +1503,7 @@ public class LCDrawf {
     /**
      * Shows ring UI for stackable status effects on a unit.
      */
-    public static void stackStatus(Unit unit) {
+    public static void stackStatus(Unit unit) throws NoSuchFieldException, IllegalAccessException {
         NativeArray tmpArr = LCScript.ensureArray("LCDrawf.stackStatus.tmpArr");
         LCScript.invoke("getStackStas", MDL_prop, tmpArr, unit);
 

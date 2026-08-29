@@ -1,10 +1,10 @@
-package lovec.content.frag;
+package lovec.content.updater;
 
 import arc.math.Mathf;
 import arc.util.Time;
-import lovec.content.BuildContentFrag;
-import lovec.content.ContentFrag;
+import lovec.content.ContentUpdater;
 import lovec.content.LCCraftingHandler;
+import lovec.content.BuildUpdater;
 import lovec.utils.LCScript;
 import lovec.utils.LCScriptUtil;
 import mindustry.gen.Building;
@@ -12,16 +12,32 @@ import mindustry.world.Block;
 import mindustry.world.blocks.sandbox.LiquidSource;
 import rhino.NativeArray;
 
-public class INTFBLKFragTorqueBlock extends ContentFrag<Block, INTFBLKFragTorqueBlock> {
+import java.lang.reflect.InvocationTargetException;
+
+public class INTFBLKTorqueBlockUpdater extends ContentUpdater<Block> {
+
+
+    protected boolean skipTorFetch;
+    protected boolean skipTorSupply;
+
+
+    public INTFBLKTorqueBlockUpdater(Block blk) throws NoSuchFieldException, IllegalAccessException {
+        super(blk);
+    };
+
+
+    @Override
+    protected void resolve() throws NoSuchFieldException, IllegalAccessException {
+        skipTorFetch = LCScript.toBoolean(get("skipTorFetch"));
+        skipTorSupply = LCScript.toBoolean(get("skipTorSupply"));
+    };
 
 
 
 
-    public static class INTFBFragTorqueBlock extends BuildContentFrag<Building, Block, INTFBFragTorqueBlock> {
+    public class INTFBTorqueBlockUpdater extends BuildUpdater<Building, Block> {
 
 
-        protected boolean skipTorFetch;
-        protected boolean skipTorSupply;
         protected float torCur;
         protected float torCap;
         protected float rpmCur;
@@ -30,24 +46,30 @@ public class INTFBLKFragTorqueBlock extends ContentFrag<Block, INTFBLKFragTorque
         protected NativeArray torSupplyTgs;
 
 
+        public INTFBTorqueBlockUpdater(Building b) throws NoSuchFieldException, IllegalAccessException {
+            super(b);
+        };
+
+
         @Override
-        public void onResolved() {
-            super.onResolved();
-            skipTorFetch = LCScript.toBoolean(LCScript.instanceGet(blk, "skipTorFetch"));
-            skipTorSupply = LCScript.toBoolean(LCScript.instanceGet(blk, "skipTorSupply"));
-            torCur = LCScript.toFloat(LCScript.instanceGet(lastThis, "torCur"));
-            torCap = LCScript.toFloat(LCScript.instanceGet(lastThis, "torCap"));
-            rpmCur = LCScript.toFloat(LCScript.instanceGet(lastThis, "rpmCur"));
-            torFetchTgs = LCScript.toArray(LCScript.instanceGet(lastThis, "torFetchTgs"));
-            torTransTgs = LCScript.toArray(LCScript.instanceGet(lastThis, "torTransTgs"));
-            torSupplyTgs = LCScript.toArray(LCScript.instanceGet(lastThis, "torSupplyTgs"));
+        protected void init() throws NoSuchFieldException, IllegalAccessException {
+            torFetchTgs = LCScript.toArray(get("torFetchTgs"));
+            torTransTgs = LCScript.toArray(get("torTransTgs"));
+            torSupplyTgs = LCScript.toArray(get("torSupplyTgs"));
+        };
+
+
+        @Override
+        public void resolve() throws NoSuchFieldException, IllegalAccessException {
+            torCur = LCScript.toFloat(get("torCur"));
+            torCap = LCScript.toFloat(get("torCap"));
+            rpmCur = LCScript.toFloat(get("rpmCur"));
         };
 
 
         @FragMethod
-        public void ex_updateTor() {
-            Building b = getThis();
-            resolve(true);
+        public void ex_updateTor() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+            resolve();
 
             Building ob;
             float rateAddNet = 0f;
@@ -84,9 +106,9 @@ public class INTFBLKFragTorqueBlock extends ContentFrag<Block, INTFBLKFragTorque
             iCap = torTransTgs.getLength();
             while(i < iCap) {
                 ob = (Building) torTransTgs.get(i);
-                if((boolean) LCScript.instanceInvoke(b, "ex_checkTorTransValid", ob)) {
-                    amtTransTg = (LCScript.toFloat(LCScript.instanceGet(ob, "torCur")) + torCur) / 2f;
-                    LCScript.instanceSet(ob, "torCur", amtTransTg);
+                if((boolean) invoke("ex_checkTorTransValid", ob)) {
+                    amtTransTg = (LCScript.toFloat(get(ob, "torCur")) + torCur) / 2f;
+                    set(ob, "torCur", amtTransTg);
                     torCur = amtTransTg;
                 };
                 i++;
@@ -94,20 +116,19 @@ public class INTFBLKFragTorqueBlock extends ContentFrag<Block, INTFBLKFragTorque
 
             // Update current RPM
             if(LCScriptUtil.checkTimer("secQuarter")) {
-                rpmCur = LCScript.toFloat(LCScript.instanceInvoke(b, "ex_calcRpmTg"));
+                rpmCur = LCScript.toFloat(invoke("ex_calcRpmTg"));
                 if(rpmCur < 0.25f) {
                     rpmCur = 0f;
                 };
-                LCScript.instanceSet(b, "rpmCur", rpmCur);
+                set("rpmCur", rpmCur);
             };
 
-            LCScript.instanceSet(b, "torCur", torCur);
+            set("torCur", torCur);
         };
 
 
         @FragMethod
-        public void ex_supplyTor() {
-            Building b = getThis();
+        public void ex_supplyTor() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
             resolve();
 
             if(torCur < 1f) return;
@@ -128,7 +149,7 @@ public class INTFBLKFragTorqueBlock extends ContentFrag<Block, INTFBLKFragTorque
                     ob.handleLiquid(b, LCScriptUtil.auxRpm, rpmRate * b.edelta());
                 };
                 if(LCScriptUtil.checkTimer("secFive") && ob.block.consumesLiquid(LCScriptUtil.auxRpm)) {
-                    LCScript.instanceInvoke(b, "ex_updateRpmDmg", ob, rpmRate, LCScriptUtil.getConsAmt(LCScriptUtil.auxRpm.name, ob));
+                    invoke("ex_updateRpmDmg", ob, rpmRate, LCScriptUtil.getConsAmt(LCScriptUtil.auxRpm.name, ob));
                 };
                 i += 2;
             };
@@ -136,8 +157,7 @@ public class INTFBLKFragTorqueBlock extends ContentFrag<Block, INTFBLKFragTorque
 
 
         @FragMethod
-        public float ex_calcRpmTg() {
-            Building b = getThis();
+        public float ex_calcRpmTg() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
             resolve();
 
             float rpmTg = 0f;
@@ -178,16 +198,16 @@ public class INTFBLKFragTorqueBlock extends ContentFrag<Block, INTFBLKFragTorque
                 iCap = torTransTgs.getLength();
                 while(i < iCap) {
                     ob = (Building) torTransTgs.get(i);
-                    if(ob.isAdded() && ob.enabled && !ob.isPayload() && LCScript.instanceHas(ob, "ex_calcRpmTrans") && (boolean) LCScript.instanceInvoke(b, "ex_checkTorTransValid", ob)) {
-                        float rpmTrans = LCScript.toFloat(LCScript.instanceInvoke(ob, "ex_calcRpmTrans", b));
-                        rpmTg = Math.max(rpmTg, rpmTrans * LCScript.toFloat(LCScript.instanceInvoke(b, "ex_calcRpmAcceptScl", ob)));
+                    if(ob.isAdded() && ob.enabled && !ob.isPayload() && has(ob, "ex_calcRpmTrans") && (boolean) invoke("ex_checkTorTransValid", ob)) {
+                        float rpmTrans = LCScript.toFloat(invoke(ob, "ex_calcRpmTrans", b)) + 0.2f;
+                        rpmTg = Math.max(rpmTg, rpmTrans * LCScript.toFloat(invoke("ex_calcRpmAcceptScl", ob)));
                         torCap = Math.max(torCap, rpmTrans);
                     };
                     i++;
                 };
             };
 
-            LCScript.instanceSet(b, "torCap", torCap);
+            set("torCap", torCap);
 
             return rpmTg;
         };

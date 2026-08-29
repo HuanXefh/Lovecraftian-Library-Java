@@ -14,6 +14,16 @@
   /* <---------- component ----------> */
 
 
+  function comp_init(blk) {
+    blk.armoredCableUpdater = new BLKArmoredCableUpdater(blk);
+  };
+
+
+  function comp_created(b) {
+    b.armoredCableUpdater = new BArmoredCableUpdater(b.block.delegee.armoredCableUpdater, b);
+  };
+
+
   function comp_conductsTo(b, ob) {
     return !MDL_cond.isArmoredCable(ob.block) ?
       (b.front() === ob || b.back() === ob) :
@@ -40,12 +50,31 @@
     newClass().extendClass(PARENT[0], "BLK_armoredCable").initClass()
     .setParent(ArmoredConveyor)
     .setTags()
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof BLK_armoredCable
+       * @instance
+       */
+      armoredCableUpdater: null,
+
+
+    })
     .setMethod({
 
 
+      init: function() {
+        comp_init(this);
+      },
+
+
       blends: function() {
-        return BLKFragArmoredCable.setThis(this).blends.apply(BLKFragArmoredCable, arguments);
+        return this.armoredCableUpdater.blends.apply(this.armoredCableUpdater, arguments);
       }
       .setProp({
         noSuper: true,
@@ -54,7 +83,7 @@
 
 
       blendsArmored: function(t, rot, otx, oty, orot, oblk) {
-        return BLKFragArmoredCable.setThis(this).blendsArmored.apply(BLKFragArmoredCable, arguments);
+        return this.armoredCableUpdater.blendsArmored.apply(this.armoredCableUpdater, arguments);
       }
       .setProp({
         noSuper: true,
@@ -70,8 +99,27 @@
      */
     newClass().extendClass(PARENT[1], "B_armoredCable").initClass()
     .setParent(ArmoredConveyor.ArmoredConveyorBuild)
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------ */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof B_armoredCable
+       * @instance
+       */
+      armoredCableUpdater: null,
+
+
+    })
     .setMethod({
+
+
+      created: function() {
+        comp_created(this);
+      },
 
 
       conductsTo: function(ob) {

@@ -13,53 +13,64 @@ import mindustry.world.blocks.production.GenericCrafter;
 import rhino.NativeArray;
 import rhino.NativeObject;
 
-import static lovec.utils.LCScript.*;
+import static lovec.utils.LCScript.FRAG_item;
 
-public class LCRecipeHandler {
-
-
-    private static NativeObject lastRc;
-    private static GenericCrafter blk;
-    private static float rcTimeScl;
-    private static boolean ignoreItemFullness;
-    private static NativeArray ci;
-    private static NativeArray bi;
-    private static NativeArray aux;
-    private static boolean reqOpt;
-    private static NativeArray opt;
-    private static NativeArray co;
-    private static NativeArray bo;
-    private static NativeArray fo;
-    private static boolean hasAnyFldOutputIncludeAux;
-    private static NativeArray dumpTup;
-    private static NativeObject consTmpObj;
-    private static NativeObject prodTmpObj;
+public class RecipeUpdater extends ContentUpdater<NativeObject> {
 
 
-    public static void resolve(NativeObject rc, GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
-        if(rc == lastRc) return;
+    protected float rcTimeScl;
+    protected boolean ignoreItemFullness;
+    protected NativeArray ci;
+    protected NativeArray bi;
+    protected NativeArray aux;
+    protected boolean reqOpt;
+    protected NativeArray opt;
+    protected NativeArray co;
+    protected NativeArray bo;
+    protected NativeArray fo;
+    protected boolean hasAnyFldOutputIncludeAux;
+    protected NativeArray dumpTup;
 
-        lastRc = rc;
-        blk = (GenericCrafter) b.block;
-        rcTimeScl = LCScript.toFloat(rc.get("rcTimeScl"));
-        ignoreItemFullness = LCScript.toBoolean(rc.get("ignoreItemFullness"));
-        ci = LCScript.toArray(rc.get("ci"));
-        bi = LCScript.toArray(rc.get("bi"));
-        aux = LCScript.toArray(rc.get("aux"));
-        reqOpt = LCScript.toBoolean(rc.get("reqOpt"));
-        opt = LCScript.toArray(rc.get("opt"));
-        co = LCScript.toArray(rc.get("co"));
-        bo = LCScript.toArray(rc.get("bo"));
-        fo = LCScript.toArray(rc.get("fo"));
-        hasAnyFldOutputIncludeAux = LCScript.toBoolean(rc.get("hasAnyFldOutputIncludeAux"));
-        dumpTup = LCScript.toArray(rc.get("dumpTup"));
-        consTmpObj = LCScript.toObject(LCScript.instanceGet(b, "consTmpObj"));
-        prodTmpObj = LCScript.toObject(LCScript.instanceGet(b, "prodTmpObj"));
+    protected int lastResolvedId = -1;
+    protected GenericCrafter blk;
+    protected NativeObject consTmpObj;
+    protected NativeObject prodTmpObj;
+
+
+    public RecipeUpdater(NativeObject rc) throws NoSuchFieldException, IllegalAccessException {
+        super(rc);
     };
 
 
-    public static boolean checkCanAdd(NativeObject rc, GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
-        resolve(rc, b);
+    @Override
+    protected void init() {
+        rcTimeScl = LCScript.toFloat(target.get("rcTimeScl"));
+        ignoreItemFullness = LCScript.toBoolean(target.get("ignoreItemFullness"));
+        ci = LCScript.toArray(target.get("ci"));
+        bi = LCScript.toArray(target.get("bi"));
+        aux = LCScript.toArray(target.get("aux"));
+        reqOpt = LCScript.toBoolean(target.get("reqOpt"));
+        opt = LCScript.toArray(target.get("opt"));
+        co = LCScript.toArray(target.get("co"));
+        bo = LCScript.toArray(target.get("bo"));
+        fo = LCScript.toArray(target.get("fo"));
+        hasAnyFldOutputIncludeAux = LCScript.toBoolean(target.get("hasAnyFldOutputIncludeAux"));
+        dumpTup = LCScript.toArray(target.get("dumpTup"));
+    };
+
+
+    protected void resolve(GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
+        if(lastResolvedId < 0 && b.id == lastResolvedId) return;
+
+        lastResolvedId = b.id;
+        blk = (GenericCrafter) b.block;
+        consTmpObj = LCScript.toObject(get(b, "consTmpObj"));
+        prodTmpObj = LCScript.toObject(get(b, "prodTmpObj"));
+    };
+
+
+    public boolean checkCanAdd(GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
+        resolve(b);
         int i ;
         long iCap;
         Object tmp;
@@ -118,10 +129,10 @@ public class LCRecipeHandler {
     };
 
 
-    public static @Nullable NativeArray getOptTup(NativeObject rc, GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
+    public @Nullable NativeArray getOptTup(GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
         if(b.items == null) return null;
 
-        resolve(rc, b);
+        resolve(b);
         NativeArray tup = LCScript.newArray("LCRecipeHandler.getOptTup.newArr");
         int i = 0;
         long iCap = opt.getLength();
@@ -147,10 +158,10 @@ public class LCRecipeHandler {
     };
 
 
-    public static float calcEffc(NativeObject rc, GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
+    public float calcEffc(GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
         if(b.cheating()) return 1f;
 
-        resolve(rc, b);
+        resolve(b);
         int i;
         long iCap;
         int j;
@@ -170,7 +181,7 @@ public class LCRecipeHandler {
 
         // OPT
         if(effc > 0f && opt.getLength() > 0) {
-            NativeArray tup = getOptTup(rc, b);
+            NativeArray tup = getOptTup(b);
             if(reqOpt && tup == null) {
                 LCScript.instanceSet(b, "lastOptEffc", 0f);
                 return 0f;
@@ -282,10 +293,10 @@ public class LCRecipeHandler {
     };
 
 
-    public static void consumeContinuous(NativeObject rc, GenericCrafter.GenericCrafterBuild b, float progIncLiq) throws NoSuchFieldException, IllegalAccessException {
+    public void consumeContinuous(GenericCrafter.GenericCrafterBuild b, float progIncLiq) throws NoSuchFieldException, IllegalAccessException {
         if(b.liquids == null) return;
 
-        resolve(rc, b);
+        resolve(b);
         int i;
         long iCap;
         int j;
@@ -334,10 +345,10 @@ public class LCRecipeHandler {
     };
 
 
-    public static void consumeBatch(NativeObject rc, GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
+    public void consumeBatch(GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
         if(b.items == null && b.liquids == null) return;
 
-        resolve(rc, b);
+        resolve(b);
         int i;
         long iCap;
         int j;
@@ -389,7 +400,7 @@ public class LCRecipeHandler {
 
         // OPT
         if(opt.getLength() > 0) {
-            NativeArray tup = getOptTup(rc, b);
+            NativeArray tup = getOptTup(b);
             if(tup != null) {
                 Item itm = (Item) tup.get(0);
                 intAmt = LCScript.toInt(tup.get(1));
@@ -401,10 +412,10 @@ public class LCRecipeHandler {
     };
 
 
-    public static void craftContinuous(NativeObject rc, GenericCrafter.GenericCrafterBuild b, float progIncLiq) throws NoSuchFieldException, IllegalAccessException {
+    public void craftContinuous(GenericCrafter.GenericCrafterBuild b, float progIncLiq) throws NoSuchFieldException, IllegalAccessException {
         if(b.liquids == null) return;
 
-        resolve(rc, b);
+        resolve(b);
         int i;
         long iCap;
         Liquid liq;
@@ -426,8 +437,8 @@ public class LCRecipeHandler {
     };
 
 
-    public static void craftBatch(NativeObject rc, GenericCrafter.GenericCrafterBuild b, boolean failed) throws NoSuchFieldException, IllegalAccessException {
-        resolve(rc, b);
+    public void craftBatch(GenericCrafter.GenericCrafterBuild b, boolean failed) throws NoSuchFieldException, IllegalAccessException {
+        resolve(b);
         int i;
         long iCap;
         Object tmp;
@@ -475,8 +486,8 @@ public class LCRecipeHandler {
     };
 
 
-    public static void dump(NativeObject rc, GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
-        resolve(rc, b);
+    public void dump(GenericCrafter.GenericCrafterBuild b) throws NoSuchFieldException, IllegalAccessException {
+        resolve(b);
         int i;
         long iCap;
         Liquid liq;

@@ -6,6 +6,8 @@ import mindustry.gen.Building;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.ItemBridge;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class LCGeometry {
 
 
@@ -84,7 +86,7 @@ public class LCGeometry {
      * <br> <code>JSFUN</code>: b.ex_shouldBlendBackSide
      * <br> <code>JSFUN</code>: b.ex_shouldBlendFlankSide
      */
-    public static boolean showBackSide(Building b) {
+    public static boolean showBackSide(Building b) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         Building b_f = b.nearby((b.rotation + 2) % 4);
         Building b_t = b.nearby(b.rotation);
         Building b_s1 = b.nearby((b.rotation + 1) % 4);
@@ -102,7 +104,7 @@ public class LCGeometry {
      * Whether back side region should be displayed.
      * <br> <code>JSFUN</code>: b.ex_shouldBlendFrontSide
      */
-    public static boolean showFrontSide(Building b) {
+    public static boolean showFrontSide(Building b) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
         Building b_t = b.nearby(b.rotation);
         return !(b_t != null && b_t.team == b.team && (boolean) LCScript.instanceInvoke(b.block, "ex_shouldBlendFrontSide", b_t));
     };
