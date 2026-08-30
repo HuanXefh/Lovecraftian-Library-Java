@@ -46,7 +46,7 @@
 
 
   function comp_created(b) {
-    b.cogwheelUpdater = new BCogwheelUpdater(b.block.delegee.cogwheelUpdater, b);
+    b.cogwheelBuildUpdater = new BCogwheelUpdater(b.block.delegee.cogwheelUpdater, b);
   };
 
 
@@ -230,7 +230,7 @@
        * @memberof B_cogwheel
        * @instance
        */
-      cogwheelUpdater: null,
+      cogwheelBuildUpdater: null,
       /**
        * `INTERNAL`
        * @memberof B_cogwheel
@@ -400,7 +400,7 @@
        * @return {void}
        */
       ex_drawCog: function() {
-        this.cogwheelUpdater.ex_drawCog();
+        this.cogwheelBuildUpdater.ex_drawCog();
       }
       .setProp({
         noSuper: true,

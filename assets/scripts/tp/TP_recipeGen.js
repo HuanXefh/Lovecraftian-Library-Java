@@ -143,7 +143,7 @@
     this.setCateg("condensation");
 
     // Steam condensation recipe on top of everything
-    const STEAM_REFUND_FRAC = 0.75;
+    const STEAM_REFUND_FRAC = 0.85;
     this.handleSingle(
       rc,
       "loveclab-gas0misc-steam",

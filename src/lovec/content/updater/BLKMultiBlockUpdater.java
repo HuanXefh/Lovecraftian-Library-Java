@@ -1,4 +1,4 @@
-package lovec.content.frag;
+package lovec.content.updater;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -6,8 +6,8 @@ import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.content.BuildContentFrag;
-import lovec.content.ContentFrag;
+import lovec.content.BuildUpdater;
+import lovec.content.ContentUpdater;
 import lovec.type.block.factory.MultiBlockLinkCenterBlockFrag;
 import lovec.type.block.factory.MultiBlockLinkCenterBuildFrag;
 import mindustry.Vars;
@@ -22,53 +22,50 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.meta.Stat;
 
-public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
+public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
+
+
+    public BLKMultiBlockUpdater(Block blk) throws NoSuchFieldException, IllegalAccessException {
+        super(blk);
+    };
 
 
     @FragMethod(superMode = "after")
     public void init() {
-        Block blk = getThis();
-
-        if(blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
+        if(target instanceof MultiBlockLinkCenterBlockFrag mblk) {
             mblk.addLink(mblk.getLinkValues());
-            mblk.calcMaxSize(Tmp.p1, blk.size, 0);
+            mblk.calcMaxSize(Tmp.p1, target.size, 0);
             mblk.setMultiBlockSizes(Tmp.p1.x, Tmp.p1.y);
-            blk.clipSize += (Math.max(Tmp.p1.x, Tmp.p1.y) - blk.size) * Vars.tilesize;
-            blk.hasItems = true;
-            blk.hasLiquids = true;
+            target.clipSize += (Math.max(Tmp.p1.x, Tmp.p1.y) - target.size) * Vars.tilesize;
+            target.hasItems = true;
+            target.hasLiquids = true;
         };
     };
 
 
     @FragMethod(superMode = "after")
     public void setStats() {
-        Block blk = getThis();
-
-        if(blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-            blk.stats.remove(Stat.size);
-            blk.stats.add(Stat.size, "@x@", mblk.getMultiBlockSizes()[0], mblk.getMultiBlockSizes()[1]);
+        if(target instanceof MultiBlockLinkCenterBlockFrag mblk) {
+            target.stats.remove(Stat.size);
+            target.stats.add(Stat.size, "@x@", mblk.getMultiBlockSizes()[0], mblk.getMultiBlockSizes()[1]);
         };
     };
 
 
     @FragMethod
     public void placeBegan(Tile t, Block blkPrev) {
-        Block blk = getThis();
-
-        if(blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-            mblk.createLinkConstructBuilds(t, blk.size);
+        if(target instanceof MultiBlockLinkCenterBlockFrag mblk) {
+            mblk.createLinkConstructBuilds(t, target.size);
         };
     };
 
 
     @FragMethod
     public void changePlacementPath(Seq<Point2> ponSeq, int rot) {
-        Block blk = getThis();
-
-        if(blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-            Placement.calculateNodes(ponSeq, blk, rot, (pon, opon) -> rot % 2 == 0 ?
-                Math.abs(pon.x - opon.x) <= mblk.getMultiBlockSizes()[0] :
-                Math.abs(pon.y - opon.y) <= mblk.getMultiBlockSizes()[0]
+        if(target instanceof MultiBlockLinkCenterBlockFrag mblk) {
+            Placement.calculateNodes(ponSeq, target, rot, (pon, opon) -> rot % 2 == 0 ?
+                    Math.abs(pon.x - opon.x) <= mblk.getMultiBlockSizes()[0] :
+                    Math.abs(pon.y - opon.y) <= mblk.getMultiBlockSizes()[0]
             );
         };
     };
@@ -76,10 +73,8 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
     @FragMethod(boolMode = "and")
     public boolean canPlaceOn(Tile t, Team team, int rot) {
-        Block blk = getThis();
-
-        if(blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-            return mblk.checkLink(t, team, blk.size, rot);
+        if(target instanceof MultiBlockLinkCenterBlockFrag mblk) {
+            return mblk.checkLink(t, team, target.size, rot);
         };
         return false;
     };
@@ -87,18 +82,20 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
 
 
-    public static class BFragMultiBlock extends BuildContentFrag<Building, Block, BFragMultiBlock> {
+    public class BMultiBlockUpdater extends BuildUpdater<Building, Block> {
 
 
-        protected static Point2 statusOverlayOffset = new Point2();
-        protected static Point2 teamOverlayOffset = new Point2();
+        protected Point2 statusOverlayOffset = new Point2();
+        protected Point2 teamOverlayOffset = new Point2();
+
+
+        public BMultiBlockUpdater(Building b) throws NoSuchFieldException, IllegalAccessException {
+            super(b);
+        };
 
 
         @FragMethod(superMode = "after")
         public void onRemoved() {
-            Building b = getThis();
-            resolve();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
                 mblk.createLinkConstructBuilds(b.tile, blk.size);
             };
@@ -107,18 +104,16 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
         @FragMethod(superMode = "after")
         public void onProximityUpdate() {
-            Building b = getThis();
-
-            if(b instanceof MultiBlockLinkCenterBuildFrag mb) {
+            if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
                 mb.updateLinkProximity();
+                mblk.calcPosTeamOverlay(teamOverlayOffset, blk.size, b.rotation);
+                mblk.calcPosStatusOverlay(statusOverlayOffset, blk.size, b.rotation);
             };
         };
 
 
         @FragMethod(superMode = "before")
         public void updateTile() {
-            Building b = getThis();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb) {
                 mb.updateLinkedBuilds();
             };
@@ -126,16 +121,13 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
 
         public void incrementDumpIndex(int prox) {
-            var mb = (MultiBlockLinkCenterBuildFrag) getThis();
+            var mb = (MultiBlockLinkCenterBuildFrag) b;
             mb.setDumpIndex((mb.getDumpIndex() + 1) % prox);
         };
 
 
         @FragMethod
         public boolean dump(@Nullable Item itm) {
-            Building b = getThis();
-            resolve();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
                 if(!blk.hasItems || b.items.total() == 0 || mb.getLinkedProximityMap().size == 0 || (itm != null && !b.items.has(itm))) return false;
 
@@ -178,9 +170,6 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
         @FragMethod
         public void offload(Item itm) {
-            Building b = getThis();
-            resolve();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
                 b.produced(itm, 1);
 
@@ -206,9 +195,6 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
         @FragMethod
         public void dumpLiquid(Liquid liq, float scl, int dir) {
-            Building b = getThis();
-            resolve();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
                 if(b.liquids.get(liq) < 0.0001f) return;
                 if(!Vars.net.client() && Vars.state.isCampaign() && b.team == Vars.state.rules.defaultTeam) {
@@ -240,11 +226,7 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
         @FragMethod
         public void drawTeam() {
-            Building b = getThis();
-            resolve();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-                mblk.calcPosTeamOverlay(teamOverlayOffset, blk.size, b.rotation);
                 Tile t = Vars.world.tile(b.tileX() + teamOverlayOffset.x, b.tileY() + teamOverlayOffset.y);
                 if(t != null) {
                     Draw.color(b.team.color);
@@ -257,11 +239,7 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
         @FragMethod
         public void drawStatus() {
-            Building b = getThis();
-            resolve();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-                mblk.calcPosStatusOverlay(statusOverlayOffset, blk.size, b.rotation);
                 Tile t = Vars.world.tile(b.tileX() + statusOverlayOffset.x, b.tileY() + statusOverlayOffset.y);
                 if(t != null) {
                     float mtp = mblk.getMultiBlockSizes()[0] > 1 && mblk.getMultiBlockSizes()[1] > 1 ? 1f : 0.64f;
@@ -280,8 +258,6 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
 
         private boolean checkLinkPairValid(Building b_t, Building b_f) {
-            Building b = getThis();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb) {
                 Building pairB_f;
                 Building pairB_t;
@@ -298,8 +274,6 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
         @FragMethod
         public void updateLinkProximity() {
-            Building b = getThis();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb) {
                 if(mb.getLinkedBuilds() != null) {
                     mb.getLinkedProximityMap().clear();
@@ -322,9 +296,6 @@ public class BLKFragMultiBlock extends ContentFrag<Block, BLKFragMultiBlock> {
 
         @FragMethod
         public void updateLinkedBuilds() {
-            Building b = getThis();
-            resolve();
-
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
                 if(!b.isPayload()) {
                     if(!mb.getIsLinkCreated()) {

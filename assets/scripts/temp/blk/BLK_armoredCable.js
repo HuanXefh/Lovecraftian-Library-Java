@@ -20,7 +20,7 @@
 
 
   function comp_created(b) {
-    b.armoredCableUpdater = new BArmoredCableUpdater(b.block.delegee.armoredCableUpdater, b);
+    b.armoredCableBuildUpdater = new BArmoredCableUpdater(b.block.delegee.armoredCableUpdater, b);
   };
 
 
@@ -110,7 +110,7 @@
        * @memberof B_armoredCable
        * @instance
        */
-      armoredCableUpdater: null,
+      armoredCableBuildUpdater: null,
 
 
     })

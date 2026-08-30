@@ -52,7 +52,7 @@ public class INTFBLKTorqueBlockUpdater extends ContentUpdater<Block> {
 
 
         @Override
-        protected void init() throws NoSuchFieldException, IllegalAccessException {
+        protected void targetSetInit() throws NoSuchFieldException, IllegalAccessException {
             torFetchTgs = LCScript.toArray(get("torFetchTgs"));
             torTransTgs = LCScript.toArray(get("torTransTgs"));
             torSupplyTgs = LCScript.toArray(get("torSupplyTgs"));
@@ -183,7 +183,7 @@ public class INTFBLKTorqueBlockUpdater extends ContentUpdater<Block> {
                                 torCap += 100f;
                             };
                         } else {
-                            rpmFetched = LCCraftingHandler.addLiquid(ob, ob, LCScriptUtil.auxTor, -amt / ob.timeScale() * 15f, true, true, true) * amt * 60f;
+                            rpmFetched = LCCraftingHandler.addLiquid(ob, ob, LCScriptUtil.auxTor, -amt * ob.efficiency / ob.timeScale() * 15f, true, true, true) * amt * 60f;
                             rpmTg += rpmFetched;
                             torCap += rpmFetched;
                         };

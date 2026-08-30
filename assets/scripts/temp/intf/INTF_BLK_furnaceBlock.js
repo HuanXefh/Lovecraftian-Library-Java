@@ -397,6 +397,14 @@
       }),
 
 
+      canDump: function(b_t, itm) {
+        return this.fuelTup[0] == null || this.fuelTup[0].id != itm.id || this.items.has(itm, 5);
+      }
+      .setProp({
+        boolMode: "and",
+      }),
+
+
       warmupTarget: function() {
         return this.cheating() ? 1.0 : this.ex_getHeatFrac();
       }

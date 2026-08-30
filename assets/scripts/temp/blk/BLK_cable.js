@@ -38,7 +38,7 @@
 
 
   function comp_created(b) {
-    b.cableUpdater = new BCableUpdater(b.block.delegee.cableUpdater, b);
+    b.cableBuildUpdater = new BCableUpdater(b.block.delegee.cableUpdater, b);
   };
 
 
@@ -182,7 +182,7 @@
        * @memberof B_cable
        * @instance
        */
-      cableUpdater: null,
+      cableBuildUpdater: null,
 
 
     })

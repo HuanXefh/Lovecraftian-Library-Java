@@ -40,7 +40,7 @@
 
 
   function comp_created(b) {
-    b.pipePumpUpdater = new BPipePumpUpdater(b.block.delegee.pipePumpUpdater, b);
+    b.pipePumpBuildUpdater = new BPipePumpUpdater(b.block.delegee.pipePumpUpdater, b);
 
     b.totalProgress += Mathf.random(360.0);
   };
@@ -156,7 +156,7 @@
        * @memberof B_pipePump
        * @instance
        */
-      pipePumpUpdater: null,
+      pipePumpBuildUpdater: null,
       /**
        * `INTERNAL`
        * @memberof B_pipePump
@@ -204,7 +204,7 @@
 
 
       updateTile: function() {
-        this.pipePumpUpdater.updateTile();
+        this.pipePumpBuildUpdater.updateTile();
       },
 
 
@@ -214,7 +214,7 @@
 
 
       acceptLiquid: function(b_f, liq) {
-        return this.pipePumpUpdater.acceptLiquid(b_f, liq);
+        return this.pipePumpBuildUpdater.acceptLiquid(b_f, liq);
       }
       .setProp({
         noSuper: true,

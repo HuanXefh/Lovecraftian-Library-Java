@@ -51,7 +51,7 @@
 
 
   function comp_created(b) {
-    b.fluidPipeUpdater = new BFluidPipeUpdater(b.block.delegee.fluidPipeUpdater, b);
+    b.fluidPipeBuildUpdater = new BFluidPipeUpdater(b.block.delegee.fluidPipeUpdater, b);
   };
 
 
@@ -247,7 +247,7 @@
        * @memberof B_fluidPipe
        * @instance
        */
-      fluidPipeUpdater: null,
+      fluidPipeBuildUpdater: null,
       /**
        * `INTERNAL`
        * @memberof B_fluidPipe
@@ -281,7 +281,7 @@
 
 
       moveLiquid: function(b_t, liq) {
-        return this.fluidPipeUpdater.moveLiquid(b_t, liq);
+        return this.fluidPipeBuildUpdater.moveLiquid(b_t, liq);
       }
       .setProp({
         noSuper: true,

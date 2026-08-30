@@ -139,7 +139,7 @@
 
     // If a fuel is selected, return it instead
     if(fuelSel != null) {
-      return [fuelSel, getFuelPon(fuelSel), getFuelLvl(fuelSel)];
+      return tup.with(fuelSel, getFuelPon(fuelSel), getFuelLvl(fuelSel));
     };
 
     // Find fuel with the highest fuel level

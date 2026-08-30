@@ -18,12 +18,12 @@ public abstract class ContentUpdater<T> {
 
     public ContentUpdater(T target) throws NoSuchFieldException, IllegalAccessException {
         this.target = target;
-        init();
+        targetSetInit();
         Events.on(EventType.ClientLoadEvent.class, ev -> {
             try {
                 clientLoadInit();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            } catch(Exception err) {
+                throw new RuntimeException(err);
             };
         });
     };
@@ -33,7 +33,7 @@ public abstract class ContentUpdater<T> {
      * Called right after <code>target</code> is set.
      * <br> <code>LATER</code>.
      */
-    protected void init() throws NoSuchFieldException, IllegalAccessException {
+    protected void targetSetInit() throws NoSuchFieldException, IllegalAccessException {
 
     };
 

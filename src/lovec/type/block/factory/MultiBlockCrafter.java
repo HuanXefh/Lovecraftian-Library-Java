@@ -6,7 +6,7 @@ import arc.struct.Seq;
 import arc.util.Nullable;
 import lovec.annotation.JSONTypeClass;
 import lovec.annotation.NoJSON;
-import lovec.content.frag.BLKFragMultiBlock;
+import lovec.content.updater.BLKMultiBlockUpdater;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.type.Item;
@@ -23,8 +23,7 @@ import mindustry.world.blocks.production.GenericCrafter;
 public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkCenterBlockFrag {
 
 
-    private static final BLKFragMultiBlock blkFrag = new BLKFragMultiBlock();
-    private static final BLKFragMultiBlock.BFragMultiBlock bFrag = new BLKFragMultiBlock.BFragMultiBlock();
+    public @NoJSON @Nullable BLKMultiBlockUpdater multiBlockUpdater;
 
     public int[] linkValues = {};
     public @NoJSON Seq<Point2> linkPoints = new Seq<>();
@@ -48,14 +47,19 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
     @Override
     public void init() {
         super.init();
-        blkFrag.setThis(this).init();
+        try {
+            multiBlockUpdater = new BLKMultiBlockUpdater(this);
+        } catch(Exception err) {
+            throw new RuntimeException(err);
+        };
+        multiBlockUpdater.init();
     };
 
 
     @Override
     public void setStats() {
         super.setStats();
-        blkFrag.setThis(this).setStats();
+        multiBlockUpdater.setStats();
     };
 
 
@@ -70,19 +74,19 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
 
     @Override
     public void placeBegan(Tile t, Block blkPrev) {
-        blkFrag.setThis(this).placeBegan(t, blkPrev);
+        multiBlockUpdater.placeBegan(t, blkPrev);
     };
 
 
     @Override
     public void changePlacementPath(Seq<Point2> ponSeq, int rot) {
-        blkFrag.setThis(this).changePlacementPath(ponSeq, rot);
+        multiBlockUpdater.changePlacementPath(ponSeq, rot);
     };
 
 
     @Override
     public boolean canPlaceOn(Tile t, Team team, int rot) {
-        return super.canPlaceOn(t, team, rot) && blkFrag.setThis(this).canPlaceOn(t, team, rot);
+        return super.canPlaceOn(t, team, rot) && multiBlockUpdater.canPlaceOn(t, team, rot);
     };
 
 
@@ -122,6 +126,8 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
     public class MultiBlockCrafterBuild extends GenericCrafterBuild implements MultiBlockLinkCenterBuildFrag {
 
 
+        public @NoJSON @Nullable BLKMultiBlockUpdater.BMultiBlockUpdater multiBlockBuildUpdater;
+
         public boolean isLinkCreated = false;
         public boolean isLinkValid = true;
         public Seq<Building> linkedBuilds = new Seq<>();
@@ -132,6 +138,11 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
         @Override
         public void created() {
             super.created();
+            try {
+                multiBlockBuildUpdater = multiBlockUpdater.new BMultiBlockUpdater(this);
+            } catch(Exception err) {
+                throw new RuntimeException(err);
+            };
             linkedProximityMap = new Seq<>();
         };
 
@@ -139,39 +150,39 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
         @Override
         public void onRemoved() {
             super.onRemoved();
-            bFrag.setThis(this).onRemoved();
+            multiBlockBuildUpdater.onRemoved();
         };
 
 
         @Override
         public void onProximityUpdate() {
             super.onProximityUpdate();
-            bFrag.setThis(this).onProximityUpdate();
+            multiBlockBuildUpdater.onProximityUpdate();
         };
 
 
         @Override
         public void updateTile() {
-            bFrag.setThis(this).updateTile();
+            multiBlockBuildUpdater.updateTile();
             super.updateTile();
         };
 
 
         @Override
         public boolean dump(@Nullable Item itm) {
-            return bFrag.setThis(this).dump(itm);
+            return multiBlockBuildUpdater.dump(itm);
         };
 
 
         @Override
         public void offload(Item itm) {
-            bFrag.setThis(this).offload(itm);
+            multiBlockBuildUpdater.offload(itm);
         };
 
 
         @Override
         public void dumpLiquid(Liquid liq, float scl, int dir) {
-            bFrag.setThis(this).dumpLiquid(liq, scl, dir);
+            multiBlockBuildUpdater.dumpLiquid(liq, scl, dir);
         };
 
 
@@ -183,7 +194,7 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
 
         @Override
         public void drawTeam() {
-            bFrag.setThis(this).drawTeam();
+            multiBlockBuildUpdater.drawTeam();
         };
 
 
@@ -195,7 +206,7 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
         @Override
         public void drawStatus() {
             if(shouldDrawStatus()) {
-                bFrag.setThis(this).drawStatus();
+                multiBlockBuildUpdater.drawStatus();
             };
         };
 
@@ -244,13 +255,13 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
 
         @Override
         public void updateLinkedBuilds() {
-            bFrag.setThis(this).updateLinkedBuilds();
+            multiBlockBuildUpdater.updateLinkedBuilds();
         };
 
 
         @Override
         public void updateLinkProximity() {
-            bFrag.setThis(this).updateLinkProximity();
+            multiBlockBuildUpdater.updateLinkProximity();
         };
 
 

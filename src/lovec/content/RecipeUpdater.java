@@ -43,7 +43,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
 
 
     @Override
-    protected void init() {
+    protected void targetSetInit() {
         rcTimeScl = LCScript.toFloat(target.get("rcTimeScl"));
         ignoreItemFullness = LCScript.toBoolean(target.get("ignoreItemFullness"));
         ci = LCScript.toArray(target.get("ci"));

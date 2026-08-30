@@ -24,7 +24,7 @@ public class BLKCogwheelUpdater extends ContentUpdater<Wall> {
 
 
     @Override
-    protected void init() throws NoSuchFieldException, IllegalAccessException {
+    protected void targetSetInit() throws NoSuchFieldException, IllegalAccessException {
         cogInvOffAng = LCScript.toFloat(get("cogInvOffAng"));
         cogDrawW = LCScript.toFloat(get("cogDrawW"));
     };

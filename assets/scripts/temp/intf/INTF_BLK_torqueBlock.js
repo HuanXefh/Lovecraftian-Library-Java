@@ -31,7 +31,7 @@
 
 
   function comp_created(b) {
-    b.torqueBlockUpdater = new INTFBTorqueBlockUpdater(b.block.delegee.torqueBlockUpdater, b);
+    b.torqueBlockBuildUpdater = new INTFBTorqueBlockUpdater(b.block.delegee.torqueBlockUpdater, b);
 
     TRIGGER.torqueBlockPlace.fire(b);
     Time.run(0.0, () => {
@@ -217,7 +217,7 @@
          * @memberof INTF_B_torqueBlock
          * @instance
          */
-        torqueBlockUpdater: null,
+        torqueBlockBuildUpdater: null,
         /**
          * `INTERNAL`
          * @memberof INTF_B_torqueBlock
@@ -291,7 +291,7 @@
        * @return {void}
        */
       ex_updateTor: function() {
-        this.torqueBlockUpdater.ex_updateTor();
+        this.torqueBlockBuildUpdater.ex_updateTor();
       }
       .setProp({
         noSuper: true,
@@ -304,7 +304,7 @@
        * @return {void}
        */
       ex_supplyTor: function() {
-        this.torqueBlockUpdater.ex_supplyTor();
+        this.torqueBlockBuildUpdater.ex_supplyTor();
       }
       .setProp({
         noSuper: true,
@@ -373,7 +373,7 @@
        * @return {number}
        */
       ex_calcRpmTg: function() {
-        return this.torqueBlockUpdater.ex_calcRpmTg();
+        return this.torqueBlockBuildUpdater.ex_calcRpmTg();
       }
       .setProp({
         noSuper: true,
