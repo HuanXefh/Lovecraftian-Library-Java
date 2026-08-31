@@ -36,7 +36,7 @@
 
       if(blk.shouldDropPay) {
         Vars.content.items().each(itm => {
-          let oblk = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+          let oblk = MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name, null), "blk");
           if(oblk == null || !blk.ex_canMine(oblk, itm, 1.0)) return;
           MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(itm)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
         });
@@ -94,7 +94,7 @@
     };
 
     if(blk.shouldDropPay) {
-      let payBlk = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+      let payBlk = MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name, null), "blk");
       if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
     };
 
@@ -125,7 +125,7 @@
       return;
     };
 
-    let blkTg = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", itm.name, null), "blk");
+    let blkTg = MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name, null), "blk");
     if(blkTg == null) return;
     Object.mapIncre(b.payChargeObj, itm.name);
     if(b.payChargeObj[itm.name] >= blkTg.requirements[0].amount) {

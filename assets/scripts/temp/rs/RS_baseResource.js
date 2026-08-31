@@ -21,6 +21,18 @@
   };
 
 
+  function comp_setStats(rs) {
+    let shortName = DB_HANDLER.read("resource-short-name", rs);
+    if(shortName != null) {
+      rs.stats.add(fetchStat("lovec", "rs-shortname"), shortName);
+    };
+    let formula = DB_HANDLER.read("resource-chemical-formula", rs);
+    if(formula != null) {
+      rs.stats.add(fetchStat("lovec", "rs-formula"), formula);
+    };
+  };
+
+
   function comp_loadIcon(rs) {
     // Use a new texture region to keep "ohno" intact
     if(!rs.fullIcon.found()) {
@@ -248,6 +260,11 @@
     },
 
 
+    setStats: function() {
+      comp_setStats(this);
+    },
+
+
     loadIcon: function() {
       comp_loadIcon(this);
     },
@@ -261,15 +278,15 @@
     /**
      * Gets shortened name for this resource.
      * For example, "NaOH" for sodium hydroxide.
-     * <br> `DB`: rs-short-name.
-     * <br> `DB`: rs-formula.
+     * <br> `DB`: resource-short-name.
+     * <br> `DB`: resource-chemical-formula.
      * @memberof RS_baseResource
      * @instance
      * @return {string}
      */
     ex_getShortName: function() {
       if(this.shortName == null) {
-        this.shortName = DB_HANDLER.read("rs-short-name", this, DB_HANDLER.read("rs-formula", this, this.localizedName));
+        this.shortName = DB_HANDLER.read("resource-short-name", this, DB_HANDLER.read("resource-chemical-formula", this, this.localizedName));
       };
       return this.shortName;
     }

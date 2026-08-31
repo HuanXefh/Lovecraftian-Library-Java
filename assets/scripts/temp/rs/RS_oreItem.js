@@ -15,7 +15,7 @@
 
 
   function comp_init(itm) {
-    itm.sintTemp = itm.sintTemp >= 0.0 ? itm.sintTemp : DB_HANDLER.read("itm-sint-temp", itm, 100.0);
+    itm.sintTemp = itm.sintTemp >= 0.0 ? itm.sintTemp : DB_HANDLER.read("item-sintering-temperature", itm, 100.0);
   };
 
 
@@ -45,7 +45,7 @@
 
     /**
      * `PARAM`: Sintering temperature.
-     * <br> `DB`: itm-sint-temp.
+     * <br> `DB`: item-sintering-temperature.
      * @memberof RS_oreItem
      * @instance
      */

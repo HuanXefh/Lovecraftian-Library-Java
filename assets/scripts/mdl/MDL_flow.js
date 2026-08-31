@@ -145,7 +145,7 @@
 
   /**
    * Gets density of a fluid.
-   * <br> `DB`: liq-dens.
+   * <br> `DB`: liquid-density.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -154,7 +154,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return dens;
 
-    dens = DB_HANDLER.read("liq-dens", liq);
+    dens = DB_HANDLER.read("liquid-density", liq);
     if(dens == null) {
       let dens_def = liq.gas ? 0.00129 : 1.0;
       let eleGrp = getEleGrp(liq);
@@ -169,7 +169,7 @@
 
   /**
    * Gets boiling point of a fluid (in HU).
-   * <br> `DB`: liq-boil-pon.
+   * <br> `DB`: liquid-boiling-point.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -183,7 +183,7 @@
       if(boilPon != null) return boilPon;
     };
 
-    boilPon = DB_HANDLER.read("liq-boil-pon", liq);
+    boilPon = DB_HANDLER.read("liquid-boiling-point", liq);
     if(boilPon == null) {
       let eleGrp = getEleGrp(liq);
       boilPon = eleGrp == null ?
@@ -199,7 +199,7 @@
 
   /**
    * Gets fluid heat of a fluid.
-   * <br> `DB`: liq-fheat.
+   * <br> `DB`: liquid-fluid-heat.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -208,7 +208,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return fHeat;
 
-    fHeat = DB_HANDLER.read("liq-fheat", liq, def);
+    fHeat = DB_HANDLER.read("liquid-fluid-heat", liq, def);
 
     return fHeat;
   }
@@ -230,7 +230,7 @@
 
   /**
    * Gets wrapped viscosity of a fluid.
-   * <br> `DB`: liq-visc.
+   * <br> `DB`: liquid-viscosity.
    * @param {LiquidGn} liq_gn
    * @return {number}
    */
@@ -239,7 +239,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return viscWrap;
 
-    let visc = DB_HANDLER.read("liq-visc", liq);
+    let visc = DB_HANDLER.read("liquid-viscosity", liq);
     if(visc != null) {
       viscWrap = halfLogWrap(visc, 0.98, 2800.0);
     } else {
@@ -259,7 +259,7 @@
 
   /**
    * Gets maximum pressure allowed for a block.
-   * <br> `DB`: blk-pres-res.
+   * <br> `DB`: block-pressure-resistance.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -268,7 +268,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return res;
 
-    res = DB_HANDLER.read("blk-pres-res", blk);
+    res = DB_HANDLER.read("block-pressure-resistance", blk);
     if(res == null) {
       let matGrp = getMatGrp(blk);
       res = matGrp == null ? 5.0 : DB_block.db["grpParam"]["presRes"].read(matGrp, 5.0);
@@ -282,7 +282,7 @@
 
   /**
    * Gets maximum vacuum allowed for a block.
-   * <br> `DB`: blk-vac-res.
+   * <br> `DB`: block-vacuum-resistance.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -291,7 +291,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return res;
 
-    res = DB_HANDLER.read("blk-vac-res", blk);
+    res = DB_HANDLER.read("block-vacuum-resistance", blk);
     if(res == null) {
       let matGrp = getMatGrp(blk);
       res = matGrp == null ? -5.0 : DB_block.db["grpParam"]["vacRes"].read(matGrp, -5.0);
@@ -331,7 +331,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return corPow;
 
-    corPow = DB_HANDLER.read("liq-cor-pow", liq);
+    corPow = DB_HANDLER.read("liquid-corrosion-power", liq);
     if(corPow == null) {
       let eleGrp = getEleGrp(liq);
       corPow = eleGrp == null ? 0.0 : corPow = DB_fluid.db["grpParam"]["corrosion"].read(eleGrp, 0.0);
@@ -375,7 +375,7 @@
 
   /**
    * Gets corrosion resistance of a block.
-   * <br> `DB`: blk-cor-res.
+   * <br> `DB`: block-corrosion-resistance.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -384,7 +384,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return corRes;
 
-    corRes = DB_HANDLER.read("blk-cor-res", blk);
+    corRes = DB_HANDLER.read("block-corrosion-resistance", blk);
     if(corRes == null) {
       let matGrp = getMatGrp(blk);
       corRes = matGrp == null ? 1.0 : DB_block.db["grpParam"]["corRes"].read(matGrp, 1.0);
@@ -401,7 +401,7 @@
 
   /**
    * Gets maximum heat allowed for a block.
-   * <br> `DB`: blk-heat-res.
+   * <br> `DB`: block-heat-resistance.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -410,7 +410,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return heatRes;
 
-    heatRes = DB_HANDLER.read("blk-heat-res", blk);
+    heatRes = DB_HANDLER.read("block-heat-resistance", blk);
     if(heatRes == null) {
       let matGrp = getMatGrp(blk);
       heatRes = matGrp == null ? Infinity : DB_block.db["grpParam"]["heatRes"].read(matGrp, Infinity);
@@ -454,7 +454,7 @@
     if(amt < 0.01) return def;
     let cap = b.block.liquidCapacity;
     if(cap < 0.0001) return def;
-    let fHeatBase = DB_HANDLER.read("liq-fheat", liqCur, def);
+    let fHeatBase = DB_HANDLER.read("liquid-fluid-heat", liqCur, def);
 
     return fHeatBase * (1.0 + amt / cap * 0.2);
   };

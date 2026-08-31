@@ -28,7 +28,7 @@
 
   /**
    * Gets pollution produced/reduced by some block.
-   * <br> `DB`: blk-pol.
+   * <br> `DB`: block-pollution.
    * @param {BlockGn} blk_gn
    * @return {number}
    */
@@ -36,7 +36,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return 0.0;
 
-    return DB_HANDLER.read("blk-pol", blk, 0.0);
+    return DB_HANDLER.read("block-pollution", blk, 0.0);
   }
   .setCache();
   exports.getBlkPol = getBlkPol;
@@ -44,7 +44,7 @@
 
   /**
    * Gets pollution of some resource.
-   * <br> `DB`: rs-pol.
+   * <br> `DB`: resource-pollution.
    * @param {ResourceGn} rs_gn
    * @return {number}
    */
@@ -52,7 +52,7 @@
     let rs = MDL_content.getCt(rs_gn, "rs");
     if(rs == null) return 0.0;
 
-    return DB_HANDLER.read("rs-pol", rs, (function() {
+    return DB_HANDLER.read("resource-pollution", rs, (function() {
       let parent = tryJsProp(rs, "intmdParent", null);
       return parent == null ?
         0.0 :
@@ -107,8 +107,8 @@
 
   /**
    * Gets pollution tolerance of some block or unit type.
-   * <br> `DB`: blk-pol-tol.
-   * <br> `DB`: utp-pol-tol.
+   * <br> `DB`: block-pollution-tolerance.
+   * <br> `DB`: unit-pollution-tolerance.
    * @param {string|Block|UnitType|null} ct_gn
    * @return {number}
    */
@@ -116,7 +116,7 @@
     let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return 500.0;
 
-    return DB_HANDLER.read(ct instanceof UnitType ? "utp-pol-tol" : "blk-pol-tol", ct, -1.0);
+    return DB_HANDLER.read(ct instanceof UnitType ? "unit-pollution-tolerance" : "block-pollution-tolerance", ct, -1.0);
   }
   .setCache();
   exports.getPolTol = getPolTol;

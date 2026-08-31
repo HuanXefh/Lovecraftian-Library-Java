@@ -341,7 +341,7 @@ const db = {
 
         PowerGenerator, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           if(blk.powerProduction < 0.0001) return;
-          MDL_recipeDict.addCustomProdTerm(blk, "power", blk.powerProduction, mergeObj(data));
+          MDL_recipeDict.addCustomProdTerm(blk, "power", blk.powerProduction * tryFun(blk.ex_getRcDictPowOutputScl, blk, 1.0), mergeObj(data));
         },
 
         ConsumeGenerator, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
@@ -351,7 +351,7 @@ const db = {
 
         ThermalGenerator, function(blk, data, dictProdItm, dictProdFld, dictProdBlk, dictProdUtp) {
           if(blk.powerProduction > 0.0) {
-            MDL_recipeDict.addCustomProdTerm(blk, "power", blk.powerProduction / blk.displayEfficiencyScale, mergeObj(data));
+            MDL_recipeDict.addCustomProdTerm(blk, "power", blk.powerProduction / blk.displayEfficiencyScale * tryFun(blk.ex_getRcDictPowOutputScl, blk, 1.0), mergeObj(data));
           };
           if(blk.outputLiquid != null) dictProdFld[blk.outputLiquid.liquid.id].push(blk, blk.outputLiquid.amount * Math.pow(blk.size, 2) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj(data));
         },

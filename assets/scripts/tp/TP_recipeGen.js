@@ -358,11 +358,11 @@
     );
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-sol"].filter(liq => liq.delegee.intmdParent != null && DB_HANDLER.read("liq-solvent", liq.delegee.solvent) != null),
+      VARGEN.intmds["rs-sol"].filter(liq => liq.delegee.intmdParent != null && DB_HANDLER.read("liquid-solvent", liq.delegee.solvent) != null),
       null,
       metaObj,
       (liq, metaObj) => {
-        let liqSolv = DB_HANDLER.read("liq-solvent", liq.delegee.solvent);
+        let liqSolv = DB_HANDLER.read("liquid-solvent", liq.delegee.solvent);
         return {
           tag: liqSolv.name,
           liqI: liqSolv,
@@ -623,13 +623,13 @@
     this.handleCtLi(
       rc,
       VARGEN.rawOreBlks,
-      blk => MDL_content.getCt(Object.keyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null), "rs"),
+      blk => MDL_content.getCt(Object.keyByVal(DB_HANDLER.getDataObj("item-payload-block"), blk.name, null), "rs"),
       metaObj,
       (itm, metaObj) => ({
-        keyCt: DB_HANDLER.read("itm-pay-blk", itm.name),
-        payI: DB_HANDLER.read("itm-pay-blk", itm.name),
+        keyCt: DB_HANDLER.read("item-payload-block", itm.name),
+        payI: DB_HANDLER.read("item-payload-block", itm.name),
         itmO: itm,
-        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", itm.name), "blk").requirements[0].amount,
+        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name), "blk").requirements[0].amount,
       }),
     );
   });
@@ -653,7 +653,7 @@
         metaObj,
         (itm, metaObj) => ({
           keyCt: itm.name,
-          tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
+          tempReq: DB_HANDLER.read("item-sintering-temperature", itm.delegee.intmdParent, -1.0),
           itmI: itm,
           itmO: itm.delegee.intmdParent,
         }),
@@ -668,7 +668,7 @@
         (itm, metaObj) => ({
           icon: MDL_content.getIntmd(itm.delegee.intmdParent, "rs-ore0conc"),
           keyCt: itm.name,
-          tempReq: DB_HANDLER.read("itm-sint-temp", itm.delegee.intmdParent, -1.0),
+          tempReq: DB_HANDLER.read("item-sintering-temperature", itm.delegee.intmdParent, -1.0),
           itmI: itm,
           itmO: MDL_content.getIntmd(itm.delegee.intmdParent, "rs-ore0conc"),
         }),

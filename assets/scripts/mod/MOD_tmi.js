@@ -541,7 +541,7 @@
 
         let blkTg;
         if(blk.shouldDropPay) {
-          blkTg = MDL_content.getCt(DB_HANDLER.read("itm-pay-blk", oblk.itemDrop.name, null), "blk");
+          blkTg = MDL_content.getCt(DB_HANDLER.read("item-payload-block", oblk.itemDrop.name, null), "blk");
           if(blkTg == null) return;
         };
         if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new CLASSES.RecipeItemGroup());

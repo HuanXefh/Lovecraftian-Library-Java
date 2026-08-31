@@ -550,7 +550,7 @@
           iCap = arr.iCap();
           while(i < iCap) {
             cls = arr[i];
-            if(cls != null && cons instanceof cls) {
+            if(cls != null && checkInstance(cons, cls)) {
               dictC = arr[i + 1];
             };
             i += 2;
@@ -563,7 +563,7 @@
         iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
-          if(cls != null && blk instanceof cls) {
+          if(cls != null && checkInstance(blk, cls)) {
             dictC = arr[i + 1];
           };
           i += 2;
@@ -591,7 +591,7 @@
         iCap = arr.iCap();
         while(i < iCap) {
           cls = arr[i];
-          if(cls != null && blk instanceof cls) {
+          if(cls != null && checkInstance(blk, cls)) {
             dictC = arr[i + 1];
           };
           i += 2;

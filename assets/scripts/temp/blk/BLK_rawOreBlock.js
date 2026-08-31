@@ -23,7 +23,7 @@
     if(blk.recolorRegStr == null) return;
     let parent = blk.oreParent != null ?
       blk.oreParent :
-      Object.keyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null);
+      Object.keyByVal(DB_HANDLER.getDataObj("item-payload-block"), blk.name, null);
     if(parent == null) return;
 
     let pix = MDL_texture.recolorPix(
@@ -39,7 +39,7 @@
     if(blk.requirements.length !== 1) throw new Error("Raw ore block should have only one item material!");
 
     if(blk.oreParent == null) {
-      let oreParent = Object.keyByVal(DB_HANDLER.getDataObj("itm-pay-blk"), blk.name, null);
+      let oreParent = Object.keyByVal(DB_HANDLER.getDataObj("item-payload-block"), blk.name, null);
       if(oreParent != null) blk.oreParent = oreParent;
     };
     blk.oreParent = MDL_content.getCt(blk.oreParent, "rs");
@@ -75,7 +75,7 @@
 
       /**
        * `PARAM`: Ore item parent. If unset, this will be automatically set according to DB file.
-       * <br> `DB`: itm-pay-blk.
+       * <br> `DB`: item-payload-block.
        * @memberof BLK_rawOreBlock
        * @instance
        */

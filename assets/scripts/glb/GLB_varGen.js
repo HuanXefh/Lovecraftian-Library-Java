@@ -160,7 +160,7 @@
     exports.hotFlds = (function() {
       let arr = [];
       Vars.content.liquids().each(
-        liq => DB_HANDLER.read("liq-fheat", liq, 0.0) >= 50.0,
+        liq => DB_HANDLER.read("liquid-fluid-heat", liq, 0.0) >= 50.0,
         liq => arr.push(liq),
       );
       return arr;

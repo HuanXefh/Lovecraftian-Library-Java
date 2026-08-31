@@ -16,7 +16,7 @@
 
   function comp_init(itm) {
     if(itm.overwriteVanillaProp) {
-      let hardness = DB_HANDLER.read("itm-hardness", itm, -1.0);
+      let hardness = DB_HANDLER.read("item-hardness", itm, -1.0);
       if(hardness >= 0.0) {
         itm.hardness = hardness;
       };

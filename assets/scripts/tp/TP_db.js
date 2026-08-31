@@ -6,7 +6,7 @@
 
 
   /**
-   * Registers new logs to {@link LOG_HANDLER}.
+   * Registers new database objects to {@link DB_HANDLER}.
    */
 
 
@@ -21,55 +21,55 @@
 
 
     /** Blocks that have reload bar. */
-    this.addContentReader("blk-reload");
+    this.addContentReader("block-reload");
     /** Block pressure resistence. */
-    this.addContentReader("blk-pres-res");
+    this.addContentReader("block-pressure-resistance");
     /** Block vacuum resistence. */
-    this.addContentReader("blk-vac-res");
+    this.addContentReader("block-vacuum-resistance");
     /** Block heat resistence. */
-    this.addContentReader("blk-heat-res");
+    this.addContentReader("block-heat-resistance");
     /** Block corrosion resistence. */
-    this.addContentReader("blk-cor-res");
+    this.addContentReader("block-corrosion-resistance");
     /** Block pollution. */
-    this.addContentReader("blk-pol");
+    this.addContentReader("block-pollution");
     /** Block pollution tolerance. */
-    this.addContentReader("blk-pol-tol");
+    this.addContentReader("block-pollution-tolerance");
 
 
     /** Mounts on some unit for 1st reload bar. */
-    this.addContentReader("utp-reload-ind-0");
+    this.addContentReader("unit-reload-0");
     /** Mounts on some unit for 2nd reload bar. */
-    this.addContentReader("utp-reload-ind-1");
+    this.addContentReader("unit-reload-1");
     /** Mounts on some unit for 3rd reload bar. */
-    this.addContentReader("utp-reload-ind-2");
+    this.addContentReader("unit-reload-2");
     /** Unit pollution tolerance. */
-    this.addContentReader("utp-pol-tol");
+    this.addContentReader("unit-pollution-tolerance");
 
 
     /** Resource short name. */
-    this.addContentReader("rs-short-name");
+    this.addContentReader("resource-short-name");
     /** Resource chemical formula. */
-    this.addContentReader("rs-formula");
+    this.addContentReader("resource-chemical-formula");
     /** Resource pollution. */
-    this.addContentReader("rs-pol");
+    this.addContentReader("resource-pollution");
     /** Item hardness. */
-    this.addContentReader("itm-hardness");
+    this.addContentReader("item-hardness");
     /** Item sintering temperature. */
-    this.addContentReader("itm-sint-temp");
+    this.addContentReader("item-sintering-temperature");
     /** Payload form of some item (usually an ore). */
-    this.addContentReader("itm-pay-blk");
+    this.addContentReader("item-payload-block");
     /** Fluid density. */
-    this.addContentReader("liq-dens");
+    this.addContentReader("liquid-density");
     /** Fluid boiling point. */
-    this.addContentReader("liq-boil-pon");
+    this.addContentReader("liquid-boiling-point");
     /** Fluid heat. */
-    this.addContentReader("liq-fheat");
+    this.addContentReader("liquid-fluid-heat");
     /** Fluid viscosity. */
-    this.addContentReader("liq-visc");
+    this.addContentReader("liquid-viscosity");
     /** Fluid corrosion power. */
-    this.addContentReader("liq-cor-pow");
+    this.addContentReader("liquid-corrosion-power");
     /** Fluid for some solvent name. */
-    this.addReader("liq-solvent", (obj, solvent, def) => {
+    this.addReader("liquid-solvent", (obj, solvent, def) => {
       return tryVal(findContent(tryVal(obj[solvent], null)), def);
     });
 

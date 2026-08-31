@@ -143,6 +143,8 @@
 
 
   newStat("lovec", "rs-blockrelated");
+  newStat("lovec", "rs-shortname");
+  newStat("lovec", "rs-formula");
 
 
   newStat("lovec", "utp-notrobot");

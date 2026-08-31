@@ -150,7 +150,7 @@
         // Unit reload display
         if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
           for(let i = 0; i < 3; i++) {
-            mtIds = DB_HANDLER.read("utp-reload-ind-" + i, unit.type.name, null);
+            mtIds = DB_HANDLER.read("unit-reload-" + i, unit.type.name, null);
             if(mtIds == null) continue;
             MDL_draw.unitReload(unit, mtIds, Pal.techBlue, 1.0, 0.0, i, null);
           };
@@ -232,7 +232,7 @@
         MDL_prop.getBuildShield(b), MDL_prop.getBuildSpd(b), null,
       );
       if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
-        cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || DB_HANDLER.read("blk-reload", b.block.name, false);
+        cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || DB_HANDLER.read("block-reload", b.block.name, false);
         if(cond) {
           MDL_draw.unitReload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.range.offBuildStatR, MDL_prop.getReloadFrac(b));
         };
