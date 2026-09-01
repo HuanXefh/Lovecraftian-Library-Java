@@ -387,6 +387,31 @@
   };
 
 
+  /**
+   * Converts null values in a param object into assigned default values.
+   * <br> `ARGS`: paramObj, nameProp1, def1, nameProp2, def2, nameProp3, def3...
+   * @global
+   * @param {Object} paramObj
+   * @return {Object}
+   */
+  processNullParam = function(paramObj) {
+    let args = Array.from(arguments).splice(1);
+    let i = 0;
+    let iCap = args.iCap();
+    let nameProp, def;
+    while(i < iCap) {
+      nameProp = args[i];
+      def = args[i + 1];
+      if(paramObj[nameProp] == null) {
+        paramObj[nameProp] = def;
+      };
+      i += 2;
+    };
+
+    return paramObj;
+  };
+
+
   /* <------------------------------ call ------------------------------ */
 
 

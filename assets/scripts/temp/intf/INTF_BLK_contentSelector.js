@@ -13,7 +13,7 @@
 
   function comp_init(blk) {
     MDL_event.onLoadPost(() => {
-      blk.selectionQueue.pushAll(blk.ex_findSelectionTgs());
+      blk.selectionQueue.pushAll(blk.ex_findSelectionTargets());
     });
 
     blk.configurable = true;
@@ -22,18 +22,18 @@
 
     blk.config(UnlockableContent, (b, ct) => {
       if(!blk.selectionQueue.includes(ct)) return;
-      b.delegee.ctTg = ct;
+      b.delegee.ctTarget = ct;
       b.ex_onSelectorUpdate();
     });
     blk.config(JAVA.string, (b, nameCt) => {
       let ct = MDL_content.getCt(nameCt, null, true);
       if(!blk.selectionQueue.includes(ct)) return;
-      b.delegee.ctTg = ct;
+      b.delegee.ctTarget = ct;
       b.ex_onSelectorUpdate();
     });
 
     blk.configClear(b => {
-      b.delegee.ctTg = null;
+      b.delegee.ctTarget = null;
       b.ex_onSelectorUpdate();
     });
   };
@@ -47,7 +47,7 @@
   function comp_ex_buildSelector(b, tb) {
     MDL_table.setCtSelect(
       tb, b.block, b.block.delegee.selectionQueue,
-      () => b.delegee.ctTg, val => b.configure(val == null ? null : val.name), false,
+      () => b.delegee.ctTarget, val => b.configure(val == null ? null : val.name), false,
       b.block.selectionRows, b.block.selectionColumns,
     );
   };
@@ -98,7 +98,7 @@
        * @instance
        * @return {Array<UnlockableContent>}
        */
-      ex_findSelectionTgs: function() {
+      ex_findSelectionTargets: function() {
         return Vars.content.items().toArray();
       }
       .setProp({
@@ -126,7 +126,7 @@
          * @memberof INTF_B_contentSelector
          * @instance
          */
-        ctTg: null,
+        ctTarget: null,
 
 
       }),
@@ -141,7 +141,7 @@
 
 
       config: function() {
-        return this.ctTg == null ? "null" : this.ctTg.name;
+        return this.ctTarget == null ? "null" : this.ctTarget.name;
       }
       .setProp({
         noSuper: true,
@@ -184,7 +184,7 @@
        * @return {void}
        */
       ex_drawSelected: function() {
-        LCDraw.contentIcon(this.x, this.y, this.ctTg, this.block.size, 0.75);
+        LCDraw.contentIcon(this.x, this.y, this.ctTarget, this.block.size, 0.75);
       }
       .setProp({
         noSuper: true,
@@ -202,11 +202,11 @@
           wr0rd,
 
           wr => {
-            MDL_io.ct(wr, this.ctTg);
+            MDL_io.ct(wr, this.ctTarget);
           },
 
           rd => {
-            this.ctTg = MDL_io.ct(rd);
+            this.ctTarget = MDL_io.ct(rd);
           },
         );
       }

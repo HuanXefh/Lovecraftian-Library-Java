@@ -63,15 +63,15 @@
   const lockModContents = function thisFun(nameMod, cts, isUnlocking) {
     if(cts != null) {
       cts.forEachFast(ct => {
-        if(thisFun.checkTg(ct, nameMod)) isUnlocking ? ct.unlock() : ct.clearUnlock();
+        if(thisFun.checkTarget(ct, nameMod)) isUnlocking ? ct.unlock() : ct.clearUnlock();
       }, true);
-      TechTree.all.each(node => cts.includes(node.content) && thisFun.checkTg(node.content, nameMod), node => node.reset());
+      TechTree.all.each(node => cts.includes(node.content) && thisFun.checkTarget(node.content, nameMod), node => node.reset());
     } else {
       thisFun.defSeqs.forEachFast(seq => seq.each(
-        ct => thisFun.checkTg(ct, nameMod),
+        ct => thisFun.checkTarget(ct, nameMod),
         ct => {isUnlocking ? ct.unlock() : ct.clearUnlock(); console.log("[LOVEC] Changed unlock state for " + ct.name.color(Pal.accent) + ".")},
       ), true);
-      TechTree.all.each(node => thisFun.checkTg(node.content, nameMod), node => node.reset());
+      TechTree.all.each(node => thisFun.checkTarget(node.content, nameMod), node => node.reset());
     };
   }
   .setProp({
@@ -83,7 +83,7 @@
       Vars.content.statusEffects(),
       Vars.content.sectors(),
     ],
-    checkTg: (ct, nameMod) => ct.minfo.mod != null && ct.minfo.mod.name === nameMod,
+    checkTarget: (ct, nameMod) => ct.minfo.mod != null && ct.minfo.mod.name === nameMod,
   })
   .setAnno("debug");
   exports.lockModContents = lockModContents;

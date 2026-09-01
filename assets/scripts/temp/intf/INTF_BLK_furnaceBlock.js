@@ -92,7 +92,7 @@
     b.furnEffc = b.cheating() ?
       1.0 :
       Mathf.clamp(Math.min(
-        Math.pow(b.tempCur / b.ex_getHeatTg(), 1.5),
+        Math.pow(b.tempCur / b.ex_getHeatTarget(), 1.5),
         !isFinite(b.ex_getHeatAllowed()) ? Infinity : ((b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0),
       ));
     if(b.furnEffc < 0.15) b.furnEffc = 0.0;
@@ -138,7 +138,7 @@
   };
 
 
-  function comp_ex_calcTempTgFrac(b) {
+  function comp_ex_calcTempTargetFrac(b) {
     // If external heat outruns fuel heat
     if(b.tempExt > b.tempFuel || b.maxHeaterProd > b.tempFuel) return 1.0;
     // If no fuel supplied
@@ -451,7 +451,7 @@
        * @instance
        * @return {number}
        */
-      ex_calcTempTg: function thisFun() {
+      ex_calcTempTarget: function thisFun() {
         return Math.max(thisFun.funPrev.apply(this, arguments), this.tempFuel);
       }
       .setProp({
@@ -466,8 +466,8 @@
        * @instance
        * @return {number}
        */
-      ex_calcTempTgFrac: function() {
-        return comp_ex_calcTempTgFrac(this);
+      ex_calcTempTargetFrac: function() {
+        return comp_ex_calcTempTargetFrac(this);
       }
       .setProp({
         noSuper: true,
@@ -482,7 +482,7 @@
        * @instance
        * @return {number}
        */
-      ex_getHeatTg: function() {
+      ex_getHeatTarget: function() {
         return PARAM.GLOBAL_HEAT;
       }
       .setProp({
@@ -513,7 +513,7 @@
        * @return {boolean}
        */
       ex_checkHeatingValid: function() {
-        return this.tempRiseTg - PARAM.GLOBAL_HEAT >= 10.0;
+        return this.tempRiseTarget - PARAM.GLOBAL_HEAT >= 10.0;
       }
       .setProp({
         noSuper: true,

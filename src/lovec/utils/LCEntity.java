@@ -423,27 +423,27 @@ public class LCEntity {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getChainTargets.newArr");
         if(rad < 0.0001f) return arr;
 
-        NativeArray tgs = getTargets(LCScript.ensureArray("LCEntity.getChainTargets.tmpArr"), x, y, team, rad * 2f);
+        NativeArray targets = getTargets(LCScript.ensureArray("LCEntity.getChainTargets.tmpArr"), x, y, team, rad * 2f);
         getChainTargetsSeq.clear();
-        for(Object rawTg : tgs) {
-            getChainTargetsSeq.add((Position) rawTg);
+        for(Object rawTarget : targets) {
+            getChainTargetsSeq.add((Position) rawTarget);
         };
-        Position tmpTg;
+        Position tmpTarget;
         float tmpX = x;
         float tmpY = y;
         boolean isFirst = true;
         int i = 0;
         while(chainCap < 0 || i < chainCap) {
-            tmpTg = Geometry.findClosest(tmpX, tmpY, getChainTargetsSeq);
-            if(tmpTg == null) break;
+            tmpTarget = Geometry.findClosest(tmpX, tmpY, getChainTargetsSeq);
+            if(tmpTarget == null) break;
             getChainTargetsVec1.set(tmpX, tmpY);
-            getChainTargetsVec2.set(tmpTg.getX(), tmpTg.getY());
+            getChainTargetsVec2.set(tmpTarget.getX(), tmpTarget.getY());
             if(getChainTargetsVec1.dst(getChainTargetsVec2) > (isFirst ? rad : chainRad) + 0.0001f || (rayCheck != null && rayCheck.get(getChainTargetsVec1, getChainTargetsVec2))) break;
 
-            LCNativeArray.push(arr, tmpTg);
-            getChainTargetsSeq.remove(tmpTg);
-            tmpX = tmpTg.getX();
-            tmpY = tmpTg.getY();
+            LCNativeArray.push(arr, tmpTarget);
+            getChainTargetsSeq.remove(tmpTarget);
+            tmpX = tmpTarget.getX();
+            tmpY = tmpTarget.getY();
             isFirst = false;
             i++;
         };

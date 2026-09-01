@@ -31,12 +31,12 @@
 
   function comp_onProximityUpdate(b) {
     b.ex_updatePresDumpTs();
-    b.ex_updatePresDumpTgs();
+    b.ex_updatePresDumpTargets();
   };
 
 
   function comp_pickedUp(b) {
-    b.presDumpTgs.clear();
+    b.presDumpTargets.clear();
   };
 
 
@@ -61,8 +61,8 @@
   };
 
 
-  function comp_ex_updatePresDumpTgs(b) {
-    b.presDumpTgs.clear();
+  function comp_ex_updatePresDumpTargets(b) {
+    b.presDumpTargets.clear();
     let fldType1, fldType2;
     if(b.presDumpTs.length > 0) {
       let ob;
@@ -77,7 +77,7 @@
         fldType1 = b.block.delegee.presFldType;
         fldType2 = tryJsProp(ob.block, "fldType", "any");
         if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
-        b.presDumpTgs.push(ob);
+        b.presDumpTargets.push(ob);
       }, true);
     } else {
       b.proximity.each(ob => {
@@ -86,15 +86,15 @@
         fldType1 = b.block.delegee.presFldType;
         fldType2 = tryJsProp(ob.block, "fldType", "any");
         if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
-        b.presDumpTgs.push(ob);
+        b.presDumpTargets.push(ob);
       });
     };
   };
 
 
   function comp_ex_dumpPres(b, rate, isVac) {
-    if(b.presDumpTgs.length === 0) return false;
-    let b_t = b.presDumpTgs[b.presDumpIncre % b.presDumpTgs.length];
+    if(b.presDumpTargets.length === 0) return false;
+    let b_t = b.presDumpTargets[b.presDumpIncre % b.presDumpTargets.length];
     b.presDumpIncre++;
     if(!b_t.isAdded() || b_t.isPayload()) return false;
     let amtTrans = LCCraftingHandler.addLiquid(b, b, !isVac ? VARGEN.auxPres : VARGEN.auxVac, -(rate - 0.0001));
@@ -185,7 +185,7 @@
          * @memberof INTF_B_pressureProducer
          * @instance
          */
-        presDumpTgs: tprov(() => []),
+        presDumpTargets: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_pressureProducer
@@ -230,8 +230,8 @@
        * @instance
        * @return {void}
        */
-      ex_updatePresDumpTgs: function() {
-        comp_ex_updatePresDumpTgs(this);
+      ex_updatePresDumpTargets: function() {
+        comp_ex_updatePresDumpTargets(this);
       }
       .setProp({
         noSuper: true,

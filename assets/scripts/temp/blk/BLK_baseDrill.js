@@ -125,14 +125,14 @@
       return;
     };
 
-    let blkTg = MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name, null), "blk");
-    if(blkTg == null) return;
+    let blkTarget = MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name, null), "blk");
+    if(blkTarget == null) return;
     Object.mapIncre(b.payChargeObj, itm.name);
-    if(b.payChargeObj[itm.name] >= blkTg.requirements[0].amount) {
-      b.payChargeObj[itm.name] %= blkTg.requirements[0].amount;
-      Object.mapIncre(b.payStockObj, blkTg.name);
+    if(b.payChargeObj[itm.name] >= blkTarget.requirements[0].amount) {
+      b.payChargeObj[itm.name] %= blkTarget.requirements[0].amount;
+      Object.mapIncre(b.payStockObj, blkTarget.name);
     };
-    b.payChargeFrac = b.payChargeObj[itm.name] / blkTg.requirements[0].amount;
+    b.payChargeFrac = b.payChargeObj[itm.name] / blkTarget.requirements[0].amount;
   };
 
 

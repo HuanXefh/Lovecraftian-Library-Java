@@ -98,14 +98,17 @@
    * @global
    * @typedef {null|undefined} unset
    */
+
   /**
    * @global
    * @typedef {Array|IArguments} Arguments
    */
+
   /**
    * @global
    * @typedef {string|Function|null} ArgumentType
    */
+
   /**
    * @global
    * @template T
@@ -116,7 +119,7 @@
   /* <------------------------------ Lovec ------------------------------ */
 
 
-  /* content template */
+  /* content */
 
 
   /**
@@ -132,6 +135,23 @@
    * @prop {number|unset} [argLen] - Expected argument length in final Java method, required if there's any argument.
    * @prop {Function|unset} [funPrev] - Previous method before mixing. Do not set.
    * @prop {Function|unset} [funCur] - Current method before mixing. Do not set.
+   */
+
+  /**
+   * @global
+   * @typedef {Object} CropData
+   * @prop {number} dur - Duration of this stage.
+   * @prop {ItemGn} [itm] - Item produced when harvested, null if not harvestable.
+   * @prop {number|unset} [amt] - Amount items produced when harvested.
+   * @prop {number|unset} [p] - Chance to produce each item.
+   * @prop {number|unset} [rad] - Visual radius of the crop.
+   * @prop {boolean|unset} [canHide] - Whether this crop can hide units like a tree.
+   * @prop {number|unset} [scl]
+   * @prop {number|unset} [mag]
+   * @prop {number|unset} [wob]
+   * @prop {number|unset} [z]
+   * @prop {number|unset} [offSha]
+   * @prop {(function(Building): void)|unset} [drawF] - How to draw the crop. <br> <ARGS>: b.
    */
 
 
@@ -151,16 +171,19 @@
    * @global
    * @typedef {Table} DialogActor
    */
+
   /**
    * `TUPLE`: nameMod, nameDial, ind.
    * @global
    * @typedef {[string, string, number]} DialogTuple
    */
+
   /**
    * `TUPLE`: nameMod, nameChara.
    * @global
    * @typedef {[string, string]} CharacterTuple
    */
+
   /**
    * @global
    * @typedef {Object} CharacterData
@@ -174,12 +197,14 @@
    * @prop {Array<Action>|unset} [customActs]
    * @prop {number|unset} [customActTimeS]
    */
+
   /**
    * `ROW`: dialTup, charaTup, paramObj, charaArgs.
    * <br> <ROW-charaArgs>: delay, nameMod, nameChara, fracX, isDark0color, anim, animParamObj, customActs.
    * @global
    * @typedef {Array} DialogFlowData
    */
+
   /**
    * @global
    * @typedef {Object} DialogLogObject
@@ -193,8 +218,9 @@
 
   /**
    * @global
-   * @typedef {Object|null} RecipeModule
+   * @typedef {Object} RecipeModule
    */
+
   /**
    * @global
    * @typedef {Object} RecipeBase
@@ -217,6 +243,7 @@
    * @prop {(function(Building): void)|unset} [baseCraftScr]
    * @prop {(function(Building): void)|unset} [baseStopScr]
    */
+
   /**
    * @global
    * @typedef {Object} RecipeObject
@@ -263,6 +290,7 @@
    * @prop {Effect|unset} [failEff] - Effect created if recipe is failed.
    * @prop {DrawBlock|unset} [drawer] - The particular drawer used for this recipe in "DrawRecipe", see {@link TP_drawer}.
    */
+
   /**
    * @global
    * @typedef {Object} RecipeDictionaryData
@@ -1724,74 +1752,92 @@
    * @global
    * @typedef {string|UnlockableContent|null} ContentGn
    */
+
   /**
    * @global
    * @typedef {string|Block|null} BlockGn
    */
+
   /**
    * @global
    * @typedef {string|Item|null} ItemGn
    */
+
   /**
    * @global
    * @typedef {string|Liquid|null} LiquidGn
    */
+
   /**
    * @global
    * @typedef {Item|Liquid} Resource
    */
+
   /**
    * @global
    * @typedef {string|Item|Liquid|null} ResourceGn
    */
+
   /**
    * @global
    * @typedef {string|UnitType|null} UnitTypeGn
    */
+
   /**
    * @global
    * @typedef {string|StatusEffect|null} StatusGn
    */
+
   /**
    * @global
    * @typedef {string|Planet|null} PlanetGn
    */
+
   /**
    * @global
    * @typedef {string|SectorPreset|null} SectorGn
    */
+
   /**
    * @global
    * @typedef {string|Attribute} AttrGn
    */
+
   /**
    * @global
    * @typedef {number|boolean|string|Color|Item|Liquid|Tile|Team|null} ColorGn
    */
+
   /**
    * @global
    * @typedef {string|Sound|null} SoundGn
    */
+
   /**
    * @global
    * @typedef {string|Music|null} MusicGn
    */
+
   /**
    * @global
    * @typedef {Pixmap|PixmapRegion} PixmapGn
    */
+
   /**
    * @global
    * @typedef {Building|Unit|Bullet|Puddle|EffectState|Decal|Tile|Vec2} PosGn
    */
+
   /**
    * @global
    * @typedef {Building|Unit|Bullet} PoscGn
    */
+
   /**
    * @global
    * @typedef {Building|Unit} HealthcGn
    */
+
   /**
    * @global
    * @typedef {Building|Unit|Bullet} TeamcGn

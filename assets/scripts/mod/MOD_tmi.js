@@ -539,21 +539,21 @@
       thisFun.modeBlksMap[blk.mineMode].forEachFast(oblk => {
         if(!blk.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
 
-        let blkTg;
+        let blkTarget;
         if(blk.shouldDropPay) {
-          blkTg = MDL_content.getCt(DB_HANDLER.read("item-payload-block", oblk.itemDrop.name, null), "blk");
-          if(blkTg == null) return;
+          blkTarget = MDL_content.getCt(DB_HANDLER.read("item-payload-block", oblk.itemDrop.name, null), "blk");
+          if(blkTarget == null) return;
         };
         if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new CLASSES.RecipeItemGroup());
 
         let rawRc = !blk.shouldDropPay ?
           makeRawRc("collecting", blk, blk.drillTime, true) :
-          makeRawRc("collecting", blk, blk.drillTime * blkTg.requirements[0] / Math.pow(blk.range, 2), true);
+          makeRawRc("collecting", blk, blk.drillTime * blkTarget.requirements[0] / Math.pow(blk.range, 2), true);
         baseParse(blk, rawRc, blk.optionalBoostIntensity);
         addMineTile(rawRc, oreGrpMap.get(oblk.itemDrop), oblk, blk.drillTime / blk.getDrillTime(oblk.itemDrop), Math.pow(blk.range, 2));
         !blk.shouldDropPay ?
           addProd(rawRc, oblk.itemDrop, Math.pow(blk.range, 2)) :
-          addProd(rawRc, blkTg, 1);
+          addProd(rawRc, blkTarget, 1);
 
         rawRc.complete();
         regisRc(rawRc);

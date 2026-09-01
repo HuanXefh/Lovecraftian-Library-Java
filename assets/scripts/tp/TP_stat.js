@@ -112,7 +112,7 @@
   newStat("lovec", "blk0misc-repairr");
   newStat("lovec", "blk0misc-repairintv");
   newStat("lovec", "blk0misc-status");
-  newStat("lovec", "blk0misc-blktg");
+  newStat("lovec", "blk0misc-blktarget");
   newStat("lovec", "blk0misc-struct");
 
 

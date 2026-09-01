@@ -21,7 +21,7 @@
     blk.drawCached = false;
     blk.drawDynamic = true;
 
-    blk.ex_addLogicF(LAccess.config, b => b.delegee.ctTg);
+    blk.ex_addLogicF(LAccess.config, b => b.delegee.ctTarget);
     blk.ex_addLogicControl(LAccess.config, (b, param1) => {
       if(param1 instanceof UnlockableContent || typeof param1 === "string") b.configure(param1);
     });
@@ -36,7 +36,7 @@
   function comp_draw(b) {
     LCDrawf.baseBuildingDraw(b);
 
-    LCDraw.content(b.x, b.y, b.ctTg, b.block.size - b.block.delegee.rsRegPad / Vars.tilesize);
+    LCDraw.content(b.x, b.y, b.ctTarget, b.block.size - b.block.delegee.rsRegPad / Vars.tilesize);
     Draw.rect(b.block.delegee.topReg, b.x, b.y);
   };
 
@@ -109,7 +109,7 @@
        * @instance
        * @return {Array<Resource>}
        */
-      ex_findSelectionTgs: function() {
+      ex_findSelectionTargets: function() {
         return Vars.content.items().toArray().concat(Vars.content.liquids().toArray());
       }
       .setProp({

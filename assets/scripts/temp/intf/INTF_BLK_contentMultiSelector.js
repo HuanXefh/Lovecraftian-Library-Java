@@ -12,14 +12,14 @@
 
 
   function comp_init(blk) {
-    blk.selectionQueue.pushAll(blk.ex_findSelectionTgs());
+    blk.selectionQueue.pushAll(blk.ex_findSelectionTargets());
 
     blk.configurable = true;
     blk.saveConfig = false;
     blk.clearOnDoubleTap = false;
 
     blk.config(JAVA.string, (b, str) => {
-      b.ex_accCtTgs(str, false);
+      b.ex_accCtTargets(str, false);
       b.ex_onSelectorUpdate();
       EFF.fadePlacePack[blk.size].at(b);
     });
@@ -30,7 +30,7 @@
           let i = 1, iCap = cfgArr.iCap();
           while(i < iCap) {
             let ct = MDL_content.getCt(cfgArr[i], null, true);
-            if(ct != null) b.ex_accCtTgs(ct, true);
+            if(ct != null) b.ex_accCtTargets(ct, true);
             i++;
           };
           b.ex_onSelectorConfigLoad(cfgArr);
@@ -38,7 +38,7 @@
           break;
 
         case "selector" :
-          b.ex_accCtTgs(cfgArr[1], cfgArr[2]);
+          b.ex_accCtTargets(cfgArr[1], cfgArr[2]);
           b.ex_onSelectorUpdate();
           EFF.fadePlacePack[blk.size].at(b);
           break;
@@ -48,7 +48,7 @@
 
 
   function comp_updateTile(b) {
-    b.ex_updateDisplayedCtTg();
+    b.ex_updateDisplayedCtTarget();
   };
 
 
@@ -63,19 +63,19 @@
   };
 
 
-  function comp_ex_updateDisplayedCtTg(b) {
+  function comp_ex_updateDisplayedCtTarget(b) {
     if(Vars.headless) return;
 
-    b.displayedCtTg = b.ctTgs.length === 0 ?
+    b.displayedCtTarget = b.ctTargets.length === 0 ?
       null :
-      b.ctTgs[Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % b.ctTgs.length)];
+      b.ctTargets[Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % b.ctTargets.length)];
   };
 
 
   function comp_ex_buildSelector(b, tb) {
     MDL_table.setCtSelectMulti(
       tb, b.block, b.block.delegee.selectionQueue,
-      () => b.ex_accCtTgs("read", false), val => b.configure(val), false,
+      () => b.ex_accCtTargets("read", false), val => b.configure(val), false,
       b.block.selectionRows, b.block.selectionColumns,
     );
   };
@@ -126,7 +126,7 @@
        * @instance
        * @return {Array<UnlockableContent>}
        */
-      ex_findSelectionTgs: function() {
+      ex_findSelectionTargets: function() {
         return Vars.content.items().toArray();
       }
       .setProp({
@@ -154,13 +154,13 @@
          * @memberof INTF_B_contentMultiSelector
          * @instance
          */
-        ctTgs: tprov(() => []),
+        ctTargets: tprov(() => []),
         /**
          * `INTERNAL`: Content displayed in {@link INTF_B_contentMultiSelector#ex_drawSelected}.
          * @memberof INTF_B_contentMultiSelector
          * @instance
          */
-        displayedCtTg: null,
+        displayedCtTarget: null,
 
 
       }),
@@ -181,7 +181,7 @@
 
       config: function() {
         return ["selectorBlock"]
-        .pushAll(this.ctTgs.map(ct => ct == null ? "null" : ct.name))
+        .pushAll(this.ctTargets.map(ct => ct == null ? "null" : ct.name))
         .toJavaArr(JAVA.object);
       }
       .setProp({
@@ -198,18 +198,18 @@
        * @param {boolean} isAdd
        * @return {Array<UnlockableContent>}
        */
-      ex_accCtTgs: function(param, isAdd) {
+      ex_accCtTargets: function(param, isAdd) {
         switch(param) {
           case "read" :
-            return this.ctTgs;
+            return this.ctTargets;
           case "clear" :
             this.block.lastConfig = "clear";
-            return this.ctTgs.clear();
+            return this.ctTargets.clear();
         };
 
         return isAdd ?
-          this.ctTgs.pushUnique(param) :
-          this.ctTgs.removeAll(param);
+          this.ctTargets.pushUnique(param) :
+          this.ctTargets.removeAll(param);
       }
       .setProp({
         noSuper: true,
@@ -266,8 +266,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateDisplayedCtTg: function() {
-        comp_ex_updateDisplayedCtTg(this);
+      ex_updateDisplayedCtTarget: function() {
+        comp_ex_updateDisplayedCtTarget(this);
       }
       .setProp({
         noSuper: true,
@@ -281,7 +281,7 @@
        * @return {void}
        */
       ex_drawSelected: function() {
-        LCDraw.contentIcon(this.x, this.y, this.displayedCtTg, this.block.size, 0.75);
+        LCDraw.contentIcon(this.x, this.y, this.displayedCtTarget, this.block.size, 0.75);
       }
       .setProp({
         noSuper: true,
@@ -299,11 +299,11 @@
           wr0rd,
 
           wr => {
-            MDL_io.cts(wr, this.ctTgs);
+            MDL_io.cts(wr, this.ctTargets);
           },
 
           rd => {
-            MDL_io.cts(rd, this.ctTgs);
+            MDL_io.cts(rd, this.ctTargets);
           },
         );
       }

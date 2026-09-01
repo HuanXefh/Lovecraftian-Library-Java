@@ -67,17 +67,17 @@
 
   function comp_onProximityUpdate(b) {
     Time.run(60.0, () => {
-      b.ex_updateHeatFetchTgs();
-      b.ex_updateHeatTransTgs();
-      b.ex_updateHeatSupplyTgs();
+      b.ex_updateHeatFetchTargets();
+      b.ex_updateHeatTransTargets();
+      b.ex_updateHeatSupplyTargets();
     });
   };
 
 
   function comp_pickedUp(b) {
-    b.heatFetchTgs.clear();
-    b.heatTransTgs.clear();
-    b.heatSupplyTgs.clear();
+    b.heatFetchTargets.clear();
+    b.heatTransTargets.clear();
+    b.heatSupplyTargets.clear();
   };
 
 
@@ -86,8 +86,8 @@
 
     // Update temperature and apply damage if overheated
     if(!PARAM.UPDATE_SUPPRESSED && TIMER.secHalf) {
-      b.tempRiseTg = b.ex_calcTempTg();
-      b.tempCur = Math.max(Mathf.lerp(b.tempCur, Mathf.lerp(PARAM.GLOBAL_HEAT, b.tempRiseTg, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTgFrac()), (b.tempCur <= b.tempRiseTg ? b.block.delegee.heatWarmupRate : b.block.delegee.heatCooldownRate) * 30.0), PARAM.GLOBAL_HEAT);
+      b.tempRiseTarget = b.ex_calcTempTarget();
+      b.tempCur = Math.max(Mathf.lerp(b.tempCur, Mathf.lerp(PARAM.GLOBAL_HEAT, b.tempRiseTarget, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTargetFrac()), (b.tempCur <= b.tempRiseTarget ? b.block.delegee.heatWarmupRate : b.block.delegee.heatCooldownRate) * 30.0), PARAM.GLOBAL_HEAT);
       if(b.tempCur > b.block.delegee.heatBlkMeltTemp) {
         FRAG_attack.damage(b, (VAR.param.corDmgMin + VAR.param.corDmgFrac * b.maxHealth) * (b.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
       };
@@ -104,14 +104,14 @@
 
     // Update heat fraction
     if(TIMER.secQuarter) {
-      b.heatBlkHeatFrac = Mathf.clamp(b.tempCur / Math.max(b.ex_getHeatTg(), 100.0));
+      b.heatBlkHeatFrac = Mathf.clamp(b.tempCur / Math.max(b.ex_getHeatTarget(), 100.0));
       b.heatSupplied = b.ex_calcHeatSupplied();
     };
 
     // Occasionally supply abstract fluid, or output external heat
-    if(!b.block.delegee.skipHeatSupply && b.heatSupplyTgs.length > 0) {
+    if(!b.block.delegee.skipHeatSupply && b.heatSupplyTargets.length > 0) {
       b.heatSupplyIncre++;
-      let b_t = b.heatSupplyTgs[b.heatSupplyIncre % b.heatSupplyTgs.length];
+      let b_t = b.heatSupplyTargets[b.heatSupplyIncre % b.heatSupplyTargets.length];
       if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
         let heatAmt = !b.block.delegee.isHeatRouter ?
           b.heatSupplied :
@@ -142,40 +142,40 @@
   };
 
 
-  function comp_ex_updateHeatFetchTgs(b) {
+  function comp_ex_updateHeatFetchTargets(b) {
     if(b.block.delegee.skipHeatFetch) return;
 
-    b.heatFetchTgs.clear();
+    b.heatFetchTargets.clear();
     b.proximity.each(ob => {
       if(ob.block instanceof MultiBlockLinkBlock) {
         ob = ob.linkedBuild;
       };
       if(ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(VARGEN.auxHeat, ob.block) > 0.0) {
-        b.heatFetchTgs.push(ob, MDL_pos.calcSideFrac(ob, b));
+        b.heatFetchTargets.push(ob, MDL_pos.calcSideFrac(ob, b));
       };
     });
   };
 
 
-  function comp_ex_updateHeatTransTgs(b) {
+  function comp_ex_updateHeatTransTargets(b) {
     if(b.block.delegee.skipHeatTrans) return;
 
-    b.heatTransTgs.clear();
+    b.heatTransTargets.clear();
     b.proximity.each(ob => {
       if(ob.block instanceof MultiBlockLinkBlock) {
         ob = ob.linkedBuild;
       };
       if(ob.ex_getHeatTransferred != null && !ob.block.delegee.skipHeatTrans && LCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) {
-        b.heatTransTgs.push(ob);
+        b.heatTransTargets.push(ob);
       };
     });
   };
 
 
-  function comp_ex_updateHeatSupplyTgs(b) {
+  function comp_ex_updateHeatSupplyTargets(b) {
     if(b.block.delegee.skipHeatSupply) return;
 
-    b.heatSupplyTgs.clear();
+    b.heatSupplyTargets.clear();
     b.proximity.each(ob => {
       if(ob.block instanceof MultiBlockLinkBlock) {
         ob = ob.linkedBuild;
@@ -184,7 +184,7 @@
         && !ob.block.delegee.skipHeatFetch
         && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(VARGEN.auxHeat))
       ) {
-        b.heatSupplyTgs.push(ob);
+        b.heatSupplyTargets.push(ob);
       };
     });
   };
@@ -192,32 +192,32 @@
 
   function comp_ex_handleExtHeat(b, b_f, amt) {
     if(b.block.delegee.tempExtMtp.fEqual(0.0)) return;
-    if(!b.block.delegee.skipHeatFetch && b.heatFetchTgs.includes(b_f)) return;
+    if(!b.block.delegee.skipHeatFetch && b.heatFetchTargets.includes(b_f)) return;
 
     b.tempExt = (b.tempExt + amt * b.block.delegee.tempExtMtp) * 0.5;
     b.extHeatCd = 60.0;
   };
 
 
-  function comp_ex_calcTempTg(b) {
-    let heat, heatTg = 0.0;
+  function comp_ex_calcTempTarget(b) {
+    let heat, heatTarget = 0.0;
     b.maxHeaterProd = 0.0;
 
     if(!b.block.delegee.skipHeatFetch) {
-      b.heatFetchTgs.forEachRow(2, (ob, sideFrac) => {
+      b.heatFetchTargets.forEachRow(2, (ob, sideFrac) => {
         if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
         heat = ob.ex_getHeatProd != null ?
           (ob.ex_getHeatProd() * sideFrac) :
           (LCCraftingHandler.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
         b.maxHeaterProd = Math.max(heat, b.maxHeaterProd);
-        heatTg += heat * b.block.delegee.tempExtMtp;
+        heatTarget += heat * b.block.delegee.tempExtMtp;
       }, true);
     };
 
     if(!b.block.delegee.skipHeatTrans) {
       heat = 0.0;
       b.heatTransCount = 0;
-      b.heatTransTgs.forEachFast(ob => {
+      b.heatTransTargets.forEachFast(ob => {
         if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
         heat += !ob.block.delegee.isHeatRouter ?
           ob.ex_getHeatTransferred() :
@@ -225,7 +225,7 @@
         b.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.maxHeaterProd);
         b.heatTransCount++;
       }, true);
-      heatTg += b.heatTransCount < 2 ?
+      heatTarget += b.heatTransCount < 2 ?
         heat :
         b.heatTransCount === 2 ?
           (heat * HEAT_MERGE_FRAC_BI) :
@@ -236,9 +236,9 @@
       b.maxHeaterProd = Math.max(b.ex_getHeatProd(), b.maxHeaterProd);
     };
 
-    if(b.tempExt > heatTg) heatTg = b.tempExt;
+    if(b.tempExt > heatTarget) heatTarget = b.tempExt;
 
-    return Math.max(heatTg, PARAM.GLOBAL_HEAT);
+    return Math.max(heatTarget, PARAM.GLOBAL_HEAT);
   };
 
 
@@ -402,7 +402,7 @@
          * @memberof INTF_B_heatBlock
          * @instance
          */
-        tempRiseTg: 0.0,
+        tempRiseTarget: 0.0,
         /**
          * `INTERNAL`
          * @memberof INTF_B_heatBlock
@@ -438,13 +438,13 @@
          * @memberof INTF_B_heatBlock
          * @instance
          */
-        heatFetchTgs: tprov(() => []),
+        heatFetchTargets: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_heatBlock
          * @instance
          */
-        heatTransTgs: tprov(() => []),
+        heatTransTargets: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_heatBlock
@@ -456,7 +456,7 @@
          * @memberof INTF_B_heatBlock
          * @instance
          */
-        heatSupplyTgs: tprov(() => []),
+        heatSupplyTargets: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_heatBlock
@@ -498,8 +498,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateHeatFetchTgs: function() {
-        comp_ex_updateHeatFetchTgs(this);
+      ex_updateHeatFetchTargets: function() {
+        comp_ex_updateHeatFetchTargets(this);
       }
       .setProp({
         noSuper: true,
@@ -511,8 +511,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateHeatTransTgs: function() {
-        comp_ex_updateHeatTransTgs(this);
+      ex_updateHeatTransTargets: function() {
+        comp_ex_updateHeatTransTargets(this);
       }
       .setProp({
         noSuper: true,
@@ -524,8 +524,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateHeatSupplyTgs: function() {
-        comp_ex_updateHeatSupplyTgs(this);
+      ex_updateHeatSupplyTargets: function() {
+        comp_ex_updateHeatSupplyTargets(this);
       }
       .setProp({
         noSuper: true,
@@ -555,8 +555,8 @@
        * @instance
        * @return {number}
        */
-      ex_calcTempTg: function() {
-        return comp_ex_calcTempTg(this);
+      ex_calcTempTarget: function() {
+        return comp_ex_calcTempTarget(this);
       }
       .setProp({
         noSuper: true,
@@ -570,7 +570,7 @@
        * @instance
        * @return {number}
        */
-      ex_calcTempTgFrac: function() {
+      ex_calcTempTargetFrac: function() {
         return 1.0;
       }
       .setProp({
@@ -614,7 +614,7 @@
        * @instance
        * @return {number}
        */
-      ex_getHeatTg: function() {
+      ex_getHeatTarget: function() {
         return this.block.delegee.heatBlkMeltTemp;
       }
       .setProp({
@@ -692,7 +692,7 @@
           rd => {
             let temp = rd.f();
             this.tempCur = temp;
-            this.tempRiseTg = temp;
+            this.tempRiseTarget = temp;
           },
         );
       }

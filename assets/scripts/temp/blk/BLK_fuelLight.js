@@ -150,7 +150,7 @@
        * @instance
        * @return {number}
        */
-      ex_getHeatTg: function() {
+      ex_getHeatTarget: function() {
         return this.block.delegee.maxLightTemp;
       }
       .setProp({

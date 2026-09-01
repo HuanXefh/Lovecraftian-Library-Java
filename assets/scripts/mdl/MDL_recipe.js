@@ -874,24 +874,24 @@
   /**
    * Parses given I/O row data, and pushes results into `outArr`.
    * @param {Array} outArr
-   * @param {string|Array|UnlockableContent} tg
+   * @param {string|Array|UnlockableContent} target
    * @param {number} amt
    * @param {number|unset} [p]
    * @param {function(UnlockableContent, number, number|null): void} [ctC] - `ARGS`: ct, amt, p.
    * @param {boolean|unset} [isSecondary] - Do not set this.
-   * @param {number|unset} [pTg]
+   * @param {number|unset} [pTarget]
    * @return {void}
    */
-  const parseRcIoRow = function thisFun(outArr, tg, amt, p, ctC, isSecondary, pTg) {
+  const parseRcIoRow = function thisFun(outArr, target, amt, p, ctC, isSecondary, pTarget) {
     if(ctC == null) ctC = Function.air;
-    if(pTg == null) pTg = 1.0;
+    if(pTarget == null) pTarget = 1.0;
     let isContinuous = p == null;
 
-    if(tg instanceof Array) {
+    if(target instanceof Array) {
       // Alternative input
-      let i = 0, iCap = tg.iCap(), tmpArr = [];
+      let i = 0, iCap = target.iCap(), tmpArr = [];
       while(i < iCap) {
-        parseRcIoRow(tmpArr, tg[i], tg[i + 1], isContinuous ? null : tg[i + 2], ctC, true, pTg);
+        parseRcIoRow(tmpArr, target[i], target[i + 1], isContinuous ? null : target[i + 2], ctC, true, pTarget);
         i += isContinuous ? 2 : 3;
       };
       if(tmpArr.length > 0) {
@@ -909,16 +909,16 @@
                 outArr.push(tmpArr, -1.0, -1.0)
             );
       };
-    } else if(typeof tg === "string") {
-      if(tg.startsWith("GROUP: ")) {
+    } else if(typeof target === "string") {
+      if(target.startsWith("GROUP: ")) {
         // GROUP: xxx
         let tmpArr = [];
-        DB_recipe.db["gen"]["group"].readList(tg.replace("GROUP: ", "")).forEachFast(tup => {
+        DB_recipe.db["gen"]["group"].readList(target.replace("GROUP: ", "")).forEachFast(tup => {
           parseRcIoRow(
             tmpArr, tup[0],
             amt * readParam(tup[1], "amtScl", 1.0),
             isContinuous ? null : (p * readParam(tup[1], "pScl", 1.0)),
-            ctC, true, pTg,
+            ctC, true, pTarget,
           );
         }, true);
         if(tmpArr.length > 0) {
@@ -936,38 +936,38 @@
             outArr.push(tmpArr, -1.0, -1.0)
           );
         } else {
-          console.warn("[LOVEC] No content found under ${1}!".format(tg.color(Pal.accent)));
+          console.warn("[LOVEC] No content found under ${1}!".format(target.color(Pal.accent)));
         };
-      } else if(tg.startsWith("COST: ")) {
+      } else if(target.startsWith("COST: ")) {
         // COST: xxx
-        let blk = MDL_content.getCt(tg.replace("COST: ", ""), "blk");
+        let blk = MDL_content.getCt(target.replace("COST: ", ""), "blk");
         if(blk == null) {
-          thisFun.reportIncompleteRc(tg);
+          thisFun.reportIncompleteRc(target);
         } else {
           blk.requirements.forEachFast(itmStack => {
-            parseRcIoRow(outArr, itmStack.item, itmStack.amount, 1.0, ctC, false, pTg);
+            parseRcIoRow(outArr, itmStack.item, itmStack.amount, 1.0, ctC, false, pTarget);
           }, true);
         };
       } else {
         // Content name
-        let ct = MDL_content.getCt(tg, null, true);
+        let ct = MDL_content.getCt(target, null, true);
         if(ct == null) {
-          thisFun.reportIncompleteRc(tg);
+          thisFun.reportIncompleteRc(target);
         } else {
-          parseRcIoRow(outArr, ct, amt, p, ctC, false, pTg);
+          parseRcIoRow(outArr, ct, amt, p, ctC, false, pTarget);
         };
       };
-    } else if(tg instanceof UnlockableContent) {
+    } else if(target instanceof UnlockableContent) {
       // Content
       if(isContinuous) {
-        outArr.push(tg, amt);
-        ctC(tg, amt, null);
+        outArr.push(target, amt);
+        ctC(target, amt, null);
       } else {
-        outArr.push(tg, Math.round(amt / pTg), p * pTg);
-        ctC(tg, Math.round(amt / pTg), p * pTg);
+        outArr.push(target, Math.round(amt / pTarget), p * pTarget);
+        ctC(target, Math.round(amt / pTarget), p * pTarget);
       };
     } else {
-      printObj(tg);
+      printObj(target);
       throw new Error("WTF did you put into the I/O array???");
     };
   }

@@ -50,8 +50,8 @@
   function comp_draw(b) {
     Draw.rect(b.block.region, b.x, b.y);
     LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
-    if(b.ctTg != null) {
-      Draw.color(b.ctTg.color);
+    if(b.ctTarget != null) {
+      Draw.color(b.ctTarget.color);
       Draw.rect(b.block.delegee.itemReg, b.x, b.y, b.drawrot());
       Draw.color();
     };
@@ -69,7 +69,7 @@
 
 
   function comp_ex_lootCall(b, loots, amt) {
-    let loot = loots.find(loot => loot.item() === b.ctTg);
+    let loot = loots.find(loot => loot.item() === b.ctTarget);
     if(loot != null) {
       MDL_effect.itemTransfer(loot.x, loot.y, b);
       MDL_effect.itemTransfer(b.x, b.y, b.lootDumpVec);

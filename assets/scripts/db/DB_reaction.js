@@ -197,7 +197,7 @@ const db = {
 
 
 LCModDbRegister
-.apply("reacSolvTg", db["solvationTarget"]);
+.apply("reacSolvTarget", db["solvationTarget"]);
 
 
 Object.mergeDB(db, "DB_reaction");

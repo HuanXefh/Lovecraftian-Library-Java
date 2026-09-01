@@ -49,17 +49,17 @@
 
   function comp_onProximityUpdate(b) {
     Time.run(60.0, () => {
-      b.ex_updateTorFetchTgs();
-      b.ex_updateTorSupplyTgs();
-      b.ex_updateTorTransTgs();
+      b.ex_updateTorFetchTargets();
+      b.ex_updateTorSupplyTargets();
+      b.ex_updateTorTransTargets();
     });
   };
 
 
   function comp_pickedUp(b) {
-    b.torFetchTgs.clear();
-    b.torSupplyTgs.clear();
-    b.torTransTgs.clear();
+    b.torFetchTargets.clear();
+    b.torSupplyTargets.clear();
+    b.torTransTargets.clear();
 
     b.torCur = 0.0;
     b.rpmCur = 0.0;
@@ -95,38 +95,38 @@
   };
 
 
-  function comp_ex_updateTorFetchTgs(b) {
+  function comp_ex_updateTorFetchTargets(b) {
     if(b.block.delegee.skipTorFetch) return;
 
-    b.torFetchTgs.clear();
+    b.torFetchTargets.clear();
     b.proximity.each(ob => {
       if(ob.block instanceof LiquidSource) {
-        b.torFetchTgs.push(ob, 100.0 / 60.0);
+        b.torFetchTargets.push(ob, 100.0 / 60.0);
       } else {
         if(ob.block instanceof MultiBlockLinkBlock) {
           ob = ob.linkedBuild;
         };
         let rateProd = MDL_recipeDict.getProdAmt(VARGEN.auxTor, ob.block);
         if(rateProd < 0.0001) return;
-        b.torFetchTgs.push(ob, rateProd);
+        b.torFetchTargets.push(ob, rateProd);
       };
     });
   };
 
 
-  function comp_ex_updateTorSupplyTgs(b) {
+  function comp_ex_updateTorSupplyTargets(b) {
     if(b.block.delegee.skipTorSupply) return;
 
-    b.torSupplyTgs.clear();
+    b.torSupplyTargets.clear();
     b.proximity.each(ob => {
       if(ob.block instanceof LiquidVoid) {
-        b.torSupplyTgs.push(ob, 100.0 / 60.0);
+        b.torSupplyTargets.push(ob, 100.0 / 60.0);
       } else {
         if(ob.block instanceof MultiBlockLinkBlock) {
           ob = ob.linkedBuild;
         };
         if(ob.block.consumesLiquid(VARGEN.auxTor) || ob.block.consumesLiquid(VARGEN.auxRpm)) {
-          b.torSupplyTgs.push(ob, MDL_recipeDict.getConsAmt(VARGEN.auxTor, ob.block));
+          b.torSupplyTargets.push(ob, MDL_recipeDict.getConsAmt(VARGEN.auxTor, ob.block));
         };
       };
     });
@@ -247,19 +247,19 @@
          * @memberof INTF_B_torqueBlock
          * @instance
          */
-        torFetchTgs: tprov(() => []),
+        torFetchTargets: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
-        torSupplyTgs: tprov(() => []),
+        torSupplyTargets: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_torqueBlock
          * @instance
          */
-        torTransTgs: tprov(() => []),
+        torTransTargets: tprov(() => []),
 
 
       }),
@@ -332,8 +332,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateTorFetchTgs: function() {
-        comp_ex_updateTorFetchTgs(this);
+      ex_updateTorFetchTargets: function() {
+        comp_ex_updateTorFetchTargets(this);
       }
       .setProp({
         noSuper: true,
@@ -345,8 +345,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateTorSupplyTgs: function() {
-        comp_ex_updateTorSupplyTgs(this);
+      ex_updateTorSupplyTargets: function() {
+        comp_ex_updateTorSupplyTargets(this);
       }
       .setProp({
         noSuper: true,
@@ -359,7 +359,7 @@
        * @instance
        * @return {void}
        */
-      ex_updateTorTransTgs: function() {
+      ex_updateTorTransTargets: function() {
 
       }
       .setProp({
@@ -372,8 +372,8 @@
        * @instance
        * @return {number}
        */
-      ex_calcRpmTg: function() {
-        return this.torqueBlockBuildUpdater.ex_calcRpmTg();
+      ex_calcRpmTarget: function() {
+        return this.torqueBlockBuildUpdater.ex_calcRpmTarget();
       }
       .setProp({
         noSuper: true,

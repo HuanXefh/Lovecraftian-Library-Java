@@ -48,11 +48,11 @@
   function comp_getTileTarget(b, itm, b_f, isFlip) {
     let rot = b_f.relativeTo(b);
     let b_t = b.nearby(rot);
-    let tg = null;
+    let target = null;
 
     if((b.block.delegee.filterScr.get(b, b_f, itm) !== b.isInv) === b.enabled) {
-      if(b.isSame(b_f) && b.isSame(b_t)) return tg;
-      tg = b_t;
+      if(b.isSame(b_f) && b.isSame(b_t)) return target;
+      target = b_t;
     } else {
       let b_s1 = b.nearby(Mathf.mod(rot - 1, 4));
       let b_s2 = b.nearby(Mathf.mod(rot + 1, 4));
@@ -60,18 +60,18 @@
       let cond2 = b_s2 != null && b_s2.team === b.team && !(b_s2.block.instantTransfer && b_f.block.instantTransfer) && b_s2.acceptItem(b, itm);
 
       if(cond1 && !cond2) {
-        tg = b_s1;
+        target = b_s1;
       } else if(!cond1 && cond2) {
-        tg = b_s2;
+        target = b_s2;
       } else if(!cond2) {
-        return tg;
+        return target;
       } else {
-        tg = (b.rotation & (1 << rot)) === 0 ? b_s1 : b_s2;
+        target = (b.rotation & (1 << rot)) === 0 ? b_s1 : b_s2;
         if(isFlip) b.rotation ^= (1 << rot);
       };
     };
 
-    return tg;
+    return target;
   };
 
 

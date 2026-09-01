@@ -28,7 +28,7 @@
 
   function comp_ex_calcFailP(b) {
     let frac = Mathf.clamp(Math.min(
-      Math.pow(b.tempCur / b.ex_getHeatTg(), 1.5),
+      Math.pow(b.tempCur / b.ex_getHeatTarget(), 1.5),
       !isFinite(b.ex_getHeatAllowed()) ? Infinity : (b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0,
     ));
 
@@ -149,7 +149,7 @@
        * @instance
        * @return {number}
        */
-      ex_getHeatTg: function() {
+      ex_getHeatTarget: function() {
         return this.tempReq;
       }
       .setProp({

@@ -113,7 +113,7 @@
   function comp_onProximityUpdate(b) {
     b.block.ex_updateMineMap(b.mineMap, b.mineRsTup, b.oreTs, b.tileX(), b.tileY(), b.rotation);
     b.totalOreAmt = b.block.delegee.tmpTotalOreAmt;
-    b.mineRsTgs.cpy(b.mineRsTup[1]);
+    b.mineRsTargets.cpy(b.mineRsTup[1]);
 
     LCPos.getCoordsRectRotCenter(Tmp.v1, b.x, b.y, b.block.range * 0.5, b.rotation, b.block.size);
     b.mineRectCx = Tmp.v1.x;

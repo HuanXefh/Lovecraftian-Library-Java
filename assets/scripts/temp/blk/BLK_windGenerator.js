@@ -252,7 +252,7 @@
        * @instance
        * @return {number}
        */
-      ex_getGenWarmupTg: function() {
+      ex_getGenWarmupTarget: function() {
         return this.windEffc;
       }
       .setProp({

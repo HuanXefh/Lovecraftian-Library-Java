@@ -24,11 +24,11 @@
    */
   const _g_auxTemp = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      tg = readParam(metaObj, "tg"),
+      target = readParam(metaObj, "target"),
       maxTemp = readParam(metaObj, "maxTemp"),
       tempGap = readParam(metaObj, "tempGap", 300.0);
 
-    if(tg == null) ERROR_HANDLER.throw("nullArgument", "tg");
+    if(target == null) ERROR_HANDLER.throw("nullArgument", "target");
     if(maxTemp == null) ERROR_HANDLER.throw("nullArgument", "maxTemp");
 
     this.setCateg("aux");
@@ -36,12 +36,12 @@
     while(tempCur <= maxTemp) {
       this.handleSingle(
         rc,
-        tg,
+        target,
         metaObj,
         {
           tag: i,
           tempReq: tempCur,
-          liqO: tg,
+          liqO: target,
           amtO: i / 6.0,
         },
       );
@@ -172,7 +172,7 @@
    */
   const _g_crusherBiomass = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      tg = readParam(metaObj, "tg", "loveclab-item0bio-biomass-powder"),
+      target = readParam(metaObj, "target", "loveclab-item0bio-biomass-powder"),
       noSawdust = readParam(metaObj, "noSawdust", false);
 
     this.setCateg("crushing");
@@ -203,7 +203,7 @@
       (itm, metaObj) => ({
         keyCt: itm.name,
         itmI: itm,
-        itmO: tg,
+        itmO: target,
       }),
     );
   });
@@ -577,7 +577,7 @@
    */
   const _g_rockCrusherAggregate = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      tg = readParam(metaObj, "tg", "loveclab-item0buil-coarse-aggregate"),
+      target = readParam(metaObj, "target", "loveclab-item0buil-coarse-aggregate"),
       noAggregateConvert = readParam(metaObj, "noAggregateConvert", false);
 
     this.setCateg("aggregate-crushing");
@@ -606,7 +606,7 @@
       (itm, metaObj) => ({
         keyCt: itm.name,
         itmI: itm,
-        itmO: tg,
+        itmO: target,
       }),
     );
   });

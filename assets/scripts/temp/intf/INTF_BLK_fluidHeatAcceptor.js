@@ -39,13 +39,13 @@
 
   function comp_created(b) {
     b.fHeatCur = PARAM.GLOBAL_HEAT;
-    b.fHeatTg = MDL_flow.getFHeatInBuild(b, true);
+    b.fHeatTarget = MDL_flow.getFHeatInBuild(b, true);
   };
 
 
   function comp_updateTile(b) {
-    if(TIMER.heat && syncChance("fluidHeat", 0.25)) b.fHeatTg = MDL_flow.getFHeatInBuild(b, true);
-    if(TIMER.heat) b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTg, b.block.delegee.fHeatWarmupRate * VAR.time.heatIntv);
+    if(TIMER.heat && syncChance("fluidHeat", 0.25)) b.fHeatTarget = MDL_flow.getFHeatInBuild(b, true);
+    if(TIMER.heat) b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTarget, b.block.delegee.fHeatWarmupRate * VAR.time.heatIntv);
 
     if(PARAM.UPDATE_SUPPRESSED || !TIMER.secQuarter || !syncChance("fluidHeat", 0.25)) return;
     if(!isFinite(b.block.delegee.heatRes) || b.fHeatCur - b.block.delegee.heatRes < 0.0001) return;
@@ -171,7 +171,7 @@
          * @memberof INTF_B_fluidHeatAcceptor
          * @instance
          */
-        fHeatTg: 0.0,
+        fHeatTarget: 0.0,
 
 
       }),

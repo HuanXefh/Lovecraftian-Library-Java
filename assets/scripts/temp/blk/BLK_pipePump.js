@@ -47,7 +47,7 @@
 
 
   function comp_onProximityUpdate(b) {
-    b.pumpFrontB = b.presDumpTgs[0] == null ? null : b.presDumpTgs[0];
+    b.pumpFrontB = b.presDumpTargets[0] == null ? null : b.presDumpTargets[0];
     b.pumpBackB = b.nearby((b.rotation + 2) % 4);
     if(b.pumpBackB != null && b.pumpBackB.team !== b.team) {
       b.pumpBackB = null;
@@ -246,9 +246,13 @@
        * @return {number}
        */
       ex_calcPresDumpRate: function() {
-        return this.pumpFrontB == null || this.pumpBackB == null || this.pumpLiqCur == null || this.pumpFrontB.liquids.get(this.pumpLiqCur) < 0.01 ?
+        return this.pumpBackB == null || this.pumpLiqCur == null ?
           -1.0 :
-          this.pumpPresCur / 60.0;
+          this.pumpFrontB == null ?
+            0.0 :
+            this.pumpFrontB.liquids.get(this.pumpLiqCur) < 0.01 ?
+              -1.0 :
+              this.pumpPresCur / 60.0;
       }
       .setProp({
         noSuper: true,

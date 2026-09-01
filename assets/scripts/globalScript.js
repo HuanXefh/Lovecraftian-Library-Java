@@ -227,14 +227,14 @@
 
       let arr = [];
       for(let key in JAVA) {
-        if(key === "init" || key === "clsTgs") continue;
+        if(key === "init" || key === "clsTargets") continue;
         arr.push(key);
       };
       arr.forEach(key => {
         JAVA[key + "_arr"] = getArrayClass(JAVA[key]);
       });
 
-      JAVA.clsTgs.forEach(javaCls => {
+      JAVA.clsTargets.forEach(javaCls => {
         JAVA[convertName(javaCls)] = getArrayClass(javaCls);
       });
     },
@@ -245,7 +245,7 @@
      * For example, you can use `JAVA.point2_arr` to access `Point2[]`.
      * @type {Array<Class>}
      */
-    clsTgs: [
+    clsTargets: [
       Boolc, Boolf, Boolf2, Boolf3, Boolp, Cons, Cons2, Cons3, Cons4, ConsT, FloatFloatf, Floatc, Floatc2, Floatc4, Floatf, Floatp, Func, Func2, Func3, IntIntf, Intc, Intc4, Intf, Intp, Longf, Prov,
       ArrayMap, BinaryHeap, Bits, BoolSeq, ByteSeq, ComparableTimSort, DelayedRemovalSeq, EnumSet, FloatSeq, GridBits, GridMap, IntFloatMap, IntIntMap, IntMap, IntQueue, IntSeq, IntSeq, LongMap, LongQueue, LongSeq, ObjectFloatMap, ObjectIntMap, ObjectMap, ObjectSet, OrderedMap, OrderedSet, PQueue, Queue, Seq, ShortSeq, SnapshotSeq, Sort, StringMap, TimSort,
       Color, Fi, ZipFi,
@@ -307,7 +307,7 @@
     /** Target: {@link DB_recipe.db["genData"]["assembly"]}. */
     rcGenAssemblyData: [],
     /** Target: {@link DB_reaction.db["solvationTarget"]}. */
-    reacSolvTg: [],
+    reacSolvTarget: [],
 
     /**
      * Creates new arrays for an object in DB objects.

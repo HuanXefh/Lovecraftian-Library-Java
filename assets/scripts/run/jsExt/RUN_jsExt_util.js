@@ -52,21 +52,21 @@
    * @return {any}
    */
   Object.searchByKeys = function(obj, keys, def) {
-    let tg = obj;
+    let target = obj;
     let tmp = null;
 
     let i = 0, iCap = keys.iCap();
     while(i < iCap) {
-      tmp = tg[keys[i]];
+      tmp = target[keys[i]];
       if(tmp != null) {
-        tg = tmp;
+        target = tmp;
       } else if(def !== undefined) {
         return def;
       } else break;
       i++;
     };
 
-    return tg;
+    return target;
   };
 
 
@@ -220,11 +220,11 @@
     return obj0;
   }
   .setProp({
-    applyMerge: (key, objTg, arrTg) => {
-      let tmp = objTg[key];
+    applyMerge: (key, objTarget, arrTarget) => {
+      let tmp = objTarget[key];
       if(tmp == null || !(tmp instanceof Array)) return;
 
-      arrTg.pushAll(tmp);
+      arrTarget.pushAll(tmp);
     },
   });
 

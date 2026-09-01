@@ -210,7 +210,7 @@
        * @instance
        * @return {number}
        */
-      ex_calcTempTg: function() {
+      ex_calcTempTarget: function() {
         return this.tempSet;
       }
       .setProp({

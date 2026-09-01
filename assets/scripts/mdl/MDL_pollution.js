@@ -180,6 +180,7 @@ MDL_event.onLoad(() => {
     };
   });
   TRIGGER.majorIter.end.addGlobalListener(() => {
+    basePol = Mathf.maxZero(basePol);
     basePol /= VAR.chance.polUpdateP;
   });
 

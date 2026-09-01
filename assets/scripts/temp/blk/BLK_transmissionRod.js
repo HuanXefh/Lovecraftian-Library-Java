@@ -52,8 +52,8 @@
   };
 
 
-  function comp_ex_updateTorTransTgs(b) {
-    b.torTransTgs.clear();
+  function comp_ex_updateTorTransTargets(b) {
+    b.torTransTargets.clear();
     let ob = b.back();
     if(ob == null || ob.team !== b.team) return;
 
@@ -62,7 +62,7 @@
         ob.relativeTo(b) === ob.rotation :
         MDL_cond.isGearBox(ob.block)
     ) {
-      b.torTransTgs.push(ob);
+      b.torTransTargets.push(ob);
     };
   };
 
@@ -221,8 +221,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateTorTransTgs: function() {
-        comp_ex_updateTorTransTgs(this);
+      ex_updateTorTransTargets: function() {
+        comp_ex_updateTorTransTargets(this);
       }
       .setProp({
         noSuper: true,

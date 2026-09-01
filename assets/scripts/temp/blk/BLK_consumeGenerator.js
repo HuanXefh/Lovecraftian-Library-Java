@@ -31,7 +31,7 @@
       b.genWarmup = 1.0;
     } else {
       b.genWarmup = b.efficiency > 0.9999 && (!b.block.consumesPower || b.power.status > 0.99) ?
-        Mathf.approachDelta(b.genWarmup, b.ex_getGenWarmupTg(), rate * b.timeScale) :
+        Mathf.approachDelta(b.genWarmup, b.ex_getGenWarmupTarget(), rate * b.timeScale) :
         Mathf.approachDelta(b.genWarmup, 0.0, rate * b.timeScale * 5.0);
     };
 
@@ -186,7 +186,7 @@
        * @instance
        * @return {number}
        */
-      ex_getGenWarmupTg: function() {
+      ex_getGenWarmupTarget: function() {
         return 1.0;
       }
       .setProp({

@@ -36,12 +36,12 @@
   };
 
 
-  function comp_ex_updateTorTransTgs(b) {
+  function comp_ex_updateTorTransTargets(b) {
     b.proximity.each(
       ob => MDL_cond.isTransmissionRod(ob.block) ?
         ob.front() === b :
         false,
-      ob => b.torTransTgs.push(ob),
+      ob => b.torTransTargets.push(ob),
     );
   };
 
@@ -156,8 +156,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateTorTransTgs: function() {
-        comp_ex_updateTorTransTgs(this);
+      ex_updateTorTransTargets: function() {
+        comp_ex_updateTorTransTargets(this);
       }
       .setProp({
         noSuper: true,

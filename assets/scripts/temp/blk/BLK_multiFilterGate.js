@@ -21,9 +21,9 @@
     blk.clearOnDoubleTap = false;
 
     blk.config(JAVA.string, (b, str) => {
-      b.ex_accRsTgs(str, false);
+      b.ex_accRsTargets(str, false);
       EFF.fadePlacePack[b.block.size].at(b);
-      b.sortItem = b.ex_accRsTgs("read", false).first();
+      b.sortItem = b.ex_accRsTargets("read", false).first();
     });
 
     blk.config(JAVA.boolean, (b, bool) => {
@@ -40,18 +40,18 @@
           let i = 2, iCap = cfgArr.iCap();
           while(i < iCap) {
             let rs = MDL_content.getCt(nameRs, "rs");
-            if(rs != null) b.ex_accRsTgs(rs, true);
+            if(rs != null) b.ex_accRsTargets(rs, true);
             i++;
           };
           EFF.fadePlacePack[b.block.size].at(b);
           b.delegee.isInv = cfgArr[1];
-          b.sortItem = b.ex_accRsTgs("read", false).first();
+          b.sortItem = b.ex_accRsTargets("read", false).first();
           break;
 
         case "selector" :
-          b.ex_accRsTgs(cfgArr[1], cfgArr[2]);
+          b.ex_accRsTargets(cfgArr[1], cfgArr[2]);
           EFF.fadePlacePack[b.block.size].at(b);
-          b.sortItem = b.ex_accRsTgs("read", false).first();
+          b.sortItem = b.ex_accRsTargets("read", false).first();
       };
     });
   };
@@ -70,20 +70,20 @@
   function comp_updateTile(b) {
     if(Vars.headless) return;
 
-    b.displayedRsTg = b.rsTgs.length === 0 ?
+    b.displayedRsTarget = b.rsTargets.length === 0 ?
       null :
-      b.rsTgs[Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % b.rsTgs.length)];
+      b.rsTargets[Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % b.rsTargets.length)];
   };
 
 
   function comp_getTileTarget(b, itm, b_f, isFlip) {
     let rot = b_f.relativeTo(b);
     let b_t = b.nearby(rot);
-    let tg = null;
+    let target = null;
 
-    if((b.block.delegee.filterScr.get(b, b_f, itm, b.rsTgs) !== b.isInv) === b.enabled) {
-      if(b.isSame(b_f) && b.isSame(b_t)) return tg;
-      tg = b_t;
+    if((b.block.delegee.filterScr.get(b, b_f, itm, b.rsTargets) !== b.isInv) === b.enabled) {
+      if(b.isSame(b_f) && b.isSame(b_t)) return target;
+      target = b_t;
     } else {
       let b_s1 = b.nearby(Mathf.mod(rot - 1, 4));
       let b_s2 = b.nearby(Mathf.mod(rot + 1, 4));
@@ -91,25 +91,25 @@
       let cond2 = b_s2 != null && b_s2.team === b.team && !(b_s2.block.instantTransfer && b_f.block.instantTransfer) && b_s2.acceptItem(b, itm);
 
       if(cond1 && !cond2) {
-        tg = b_s1;
+        target = b_s1;
       } else if(!cond1 && cond2) {
-        tg = b_s2;
+        target = b_s2;
       } else if(!cond2) {
-        return tg;
+        return target;
       } else {
-        tg = (b.rotation & (1 << rot)) === 0 ? b_s1 : b_s2;
+        target = (b.rotation & (1 << rot)) === 0 ? b_s1 : b_s2;
         if(isFlip) b.rotation ^= (1 << rot);
       };
     };
 
-    return tg;
+    return target;
   };
 
 
   function comp_buildConfiguration(b, tb) {
     MDL_table.setCtSelectMulti(
       tb, b.block, Vars.content.items().toArray(),
-      () => b.rsTgs, val => b.configure(val), false,
+      () => b.rsTargets, val => b.configure(val), false,
       b.block.selectionRows, b.block.selectionColumns,
     );
 
@@ -132,7 +132,7 @@
 
 
   function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, b.displayedRsTg, b.block.size, 0.75);
+    LCDraw.contentIcon(b.x, b.y, b.displayedRsTarget, b.block.size, 0.75);
   };
 
 
@@ -160,11 +160,11 @@
 
       /**
        * `PARAM`: See {@link BLK_filterGate}.
-       * <br> `ARGS`: b, b_f, itm, rsTgs.
+       * <br> `ARGS`: b, b_f, itm, rsTargets.
        * @memberof BLK_multiFilterGate
        * @instance
        */
-      filterScr: tprov(() => boolf4(function(b, b_f, itm, rsTgs) {return rsTgs.includes(itm)})),
+      filterScr: tprov(() => boolf4(function(b, b_f, itm, rsTargets) {return rsTargets.includes(itm)})),
 
 
       /* <------------------------------ internal ------------------------------ */
@@ -223,13 +223,13 @@
        * @memberof B_multiFilterGate
        * @instance
        */
-      rsTgs: tprov(() => []),
+      rsTargets: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof B_multiFilterGate
        * @instance
        */
-      displayedRsTg: null,
+      displayedRsTarget: null,
 
 
     })
@@ -259,7 +259,7 @@
 
       config: function() {
         return ["selectorBlock", this.isInv]
-        .pushAll(this.rsTgs.map(rs => rs == null ? "null" : rs.name))
+        .pushAll(this.rsTargets.map(rs => rs == null ? "null" : rs.name))
         .toJavaArr(JAVA.object);
       }
       .setProp({
@@ -282,7 +282,7 @@
 
 
       write: function(wr) {
-        MDL_io.cts(wr, this.rsTgs);
+        MDL_io.cts(wr, this.rsTargets);
         wr.bool(this.isInv);
       },
 
@@ -290,8 +290,8 @@
       read: function(rd, revi) {
         if(this.LCRevi === 5) rd.s();
 
-        MDL_io.cts(rd, this.rsTgs);
-        this.sortItem = this.rsTgs.first();
+        MDL_io.cts(rd, this.rsTargets);
+        this.sortItem = this.rsTargets.first();
         this.isInv = rd.bool();
       },
 
@@ -303,18 +303,18 @@
        * @param {boolean} isAdd
        * @return {Array<Item>}
        */
-      ex_accRsTgs: function(param, isAdd) {
+      ex_accRsTargets: function(param, isAdd) {
         switch(param) {
           case "read" :
-            return this.rsTgs;
+            return this.rsTargets;
           case "clear" :
             this.block.lastConfig = "clear";
-            return this.rsTgs.clear();
+            return this.rsTargets.clear();
         };
 
         return isAdd ?
-          this.rsTgs.pushUnique(param) :
-          this.rsTgs.remove(param);
+          this.rsTargets.pushUnique(param) :
+          this.rsTargets.remove(param);
       }
       .setProp({
         noSuper: true,

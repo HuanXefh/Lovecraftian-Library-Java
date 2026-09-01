@@ -45,15 +45,15 @@
     b.presTransCount = 0;
     b.presTransCountTmpBs.clear();
     Time.run(60.0, () => {
-      b.ex_updatePresFetchTgs();
-      b.ex_updatePresSupplyTgs();
+      b.ex_updatePresFetchTargets();
+      b.ex_updatePresSupplyTargets();
     });
   };
 
 
   function comp_pickedUp(b) {
-    b.presFetchTgs.clear();
-    b.presSupplyTgs.clear();
+    b.presFetchTargets.clear();
+    b.presSupplyTargets.clear();
   };
 
 
@@ -61,8 +61,8 @@
     if(PARAM.UPDATE_SUPPRESSED) return;
 
     if(TIMER.secQuarter) {
-      b.ex_updatePresTg();
-      b.presTmp = (b.presTmp + b.presTg) * 0.5;
+      b.ex_updatePresTarget();
+      b.presTmp = (b.presTmp + b.presTarget) * 0.5;
       if(Math.abs(b.presTmp) < 0.005) b.presTmp = 0.0;
     };
     if(Math.abs(b.presTmp) > 0.0) {
@@ -71,7 +71,7 @@
     };
 
     if(TIMER.sec && Math.abs(b.presTmp) > 0.0) {
-      b.ex_updatePresSupplyTgs();
+      b.ex_updatePresSupplyTargets();
     };
 
     // Apply damage if over limit
@@ -94,9 +94,9 @@
     b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase / 60.0 * Time.delta);
 
     // Supply abstract fluid
-    if(!b.block.delegee.skipPresSupply && b.presSupplyTgs.length > 0 && Math.abs(b.presTmp) > 0.0) {
+    if(!b.block.delegee.skipPresSupply && b.presSupplyTargets.length > 0 && Math.abs(b.presTmp) > 0.0) {
       b.presSupplyIncre++;
-      let b_t = b.presSupplyTgs[b.presSupplyIncre % b.presSupplyTgs.length];
+      let b_t = b.presSupplyTargets[b.presSupplyIncre % b.presSupplyTargets.length];
       if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
         let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
         let consAmt = MDL_recipeDict.getConsAmtByBuild(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t);
@@ -129,8 +129,8 @@
   };
 
 
-  function comp_ex_updatePresFetchTgs(b) {
-    b.presFetchTgs.clear();
+  function comp_ex_updatePresFetchTargets(b) {
+    b.presFetchTargets.clear();
     // Find all possible pressure sources
     b.proximity.each(ob => {
       if(ob.block instanceof MultiBlockLinkBlock) {
@@ -141,14 +141,14 @@
         b.presTransCountTmpBs.push(ob);
       };
       if(ob.ex_getPres != null && b.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.ex_checkPresSupplyValid(b))) {
-        b.presFetchTgs.push(ob);
+        b.presFetchTargets.push(ob);
       };
     });
   };
 
 
-  function comp_ex_updatePresSupplyTgs(b) {
-    b.presSupplyTgs.clear();
+  function comp_ex_updatePresSupplyTargets(b) {
+    b.presSupplyTargets.clear();
     // Find all possible pressure consumers
     b.proximity.each(ob => {
       ob = ob.getLiquidDestination(b, VARGEN.auxPres);
@@ -157,17 +157,17 @@
         ob = ob.linkedBuild;
       };
       if((ob.acceptLiquid(b, VARGEN.auxPres) || ob.acceptLiquid(b, VARGEN.auxVac)) && b.ex_checkPresSupplyValid(ob)) {
-        b.presSupplyTgs.push(ob);
+        b.presSupplyTargets.push(ob);
       };
     });
   };
 
 
-  function comp_ex_updatePresTg(b) {
-    b.presTg = b.presBase;
-    b.presFetchTgs.forEachFast(ob => {
+  function comp_ex_updatePresTarget(b) {
+    b.presTarget = b.presBase;
+    b.presFetchTargets.forEachFast(ob => {
       if(ob.isAdded() && ob.enabled && !ob.isPayload()) {
-        b.presTg += tryFun(ob.ex_getPres, ob, 0.0) * tryFun(ob.ex_getPresTransScl, ob, 1.0, b);
+        b.presTarget += tryFun(ob.ex_getPres, ob, 0.0) * tryFun(ob.ex_getPresTransScl, ob, 1.0, b);
       };
     }, true);
   };
@@ -281,7 +281,7 @@
          * @memberof INTF_B_pressureBlock
          * @instance
          */
-        presTg: 0.0,
+        presTarget: 0.0,
         /**
          * `INTERNAL`: Will be added for bars and pressure damage check, has no effect on pressure transferred.
          * @memberof INTF_B_pressureBlock
@@ -293,7 +293,7 @@
          * @memberof INTF_B_pressureBlock
          * @instance
          */
-        presFetchTgs: tprov(() => []),
+        presFetchTargets: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_pressureBlock
@@ -311,7 +311,7 @@
          * @memberof INTF_B_pressureBlock
          * @instance
          */
-        presSupplyTgs: tprov(() => []),
+        presSupplyTargets: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_pressureBlock
@@ -364,8 +364,8 @@
        * @instance
        * @return {void}
        */
-      ex_updatePresFetchTgs: function() {
-        comp_ex_updatePresFetchTgs(this);
+      ex_updatePresFetchTargets: function() {
+        comp_ex_updatePresFetchTargets(this);
       }
       .setProp({
         noSuper: true,
@@ -377,8 +377,8 @@
        * @instance
        * @return {void}
        */
-      ex_updatePresSupplyTgs: function() {
-        comp_ex_updatePresSupplyTgs(this);
+      ex_updatePresSupplyTargets: function() {
+        comp_ex_updatePresSupplyTargets(this);
       }
       .setProp({
         noSuper: true,
@@ -390,8 +390,8 @@
        * @instance
        * @return {void}
        */
-      ex_updatePresTg: function() {
-        comp_ex_updatePresTg(this);
+      ex_updatePresTarget: function() {
+        comp_ex_updatePresTarget(this);
       }
       .setProp({
         noSuper: true,
@@ -509,7 +509,7 @@
           rd => {
             let pres = rd.f();
             this.presTmp = pres;
-            this.presTg = pres;
+            this.presTarget = pres;
           },
         );
       }

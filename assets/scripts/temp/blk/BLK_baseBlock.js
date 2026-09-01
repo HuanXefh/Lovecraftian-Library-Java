@@ -419,7 +419,7 @@
        * @instance
        * @return {boolean}
        */
-      ex_isSwitchDisableTg: function() {
+      ex_isSwitchDisableTarget: function() {
         return false;
       }
       .setProp({

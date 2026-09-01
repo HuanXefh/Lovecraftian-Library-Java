@@ -19,7 +19,7 @@
     blk.suppressable = false;
 
     blk.blkRad = blk.range;
-    blk.staTg = MDL_content.getCt(blk.staTg, "sta");
+    blk.staTarget = MDL_content.getCt(blk.staTarget, "sta");
   };
 
 
@@ -27,7 +27,7 @@
     blk.stats.remove(Stat.repairTime);
     blk.stats.remove(Stat.booster);
 
-    if(blk.staTg != null) blk.stats.add(fetchStat("lovec", "blk0misc-status"), StatValues.content([blk.staTg].toSeq()));
+    if(blk.staTarget != null) blk.stats.add(fetchStat("lovec", "blk0misc-status"), StatValues.content([blk.staTarget].toSeq()));
   };
 
 
@@ -38,7 +38,7 @@
 
 
   function comp_updateTile(b) {
-    if(b.block.delegee.staTg == null) return;
+    if(b.block.delegee.staTarget == null) return;
 
     b.heat = Mathf.lerpDelta(b.heat, b.efficiency > 0.0 ? 1.0 : 0.0, 0.01);
     if(b.heat < 0.01) b.heat = 0.0;
@@ -54,7 +54,7 @@
         LCEntity.eachUnit(
           b.x, b.y, null, rad,
           ounit => b.block.delegee.filterScr.get(b, ounit),
-          ounit => ounit.apply(b.block.delegee.staTg, b.block.delegee.staDur),
+          ounit => ounit.apply(b.block.delegee.staTarget, b.block.delegee.staDur),
         );
       };
     };
@@ -94,7 +94,7 @@
        * @memberof BLK_statusProjector
        * @instance
        */
-      staTg: StatusEffects.none,
+      staTarget: StatusEffects.none,
       /**
        * `PARAM`: Duration of the applied status effect.
        * @memberof BLK_statusProjector

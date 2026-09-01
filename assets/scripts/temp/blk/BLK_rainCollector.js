@@ -46,18 +46,18 @@
 
 
   const comp_updateTile = function thisFun(b) {
-    if(TIMER.secFive) b.rsTg = b.block.ex_findWeatherLiquid();
+    if(TIMER.secFive) b.rsTarget = b.block.ex_findWeatherLiquid();
 
-    if(b.rsTg !== null && !Vars.net.client()) {
-      LCCraftingHandler.addLiquid(b, b, b.rsTg, b.block.delegee.liqProdRate, true);
+    if(b.rsTarget !== null && !Vars.net.client()) {
+      LCCraftingHandler.addLiquid(b, b, b.rsTarget, b.block.delegee.liqProdRate, true);
       // Spill liquid if full
-      if(b.efficiency > 0.0 && Mathf.chanceDelta(0.04) && b.liquids.get(b.rsTg) > b.block.liquidCapacity * 0.98) {
+      if(b.efficiency > 0.0 && Mathf.chanceDelta(0.04) && b.liquids.get(b.rsTarget) > b.block.liquidCapacity * 0.98) {
         LCPos.getTilesEdge(thisFun.tmpTs, b.tile, b.block.size, true).forEachFast(ot => {
-          if(Mathf.chance(0.5)) Puddles.deposit(ot, b.rsTg, 4.0);
+          if(Mathf.chance(0.5)) Puddles.deposit(ot, b.rsTarget, 4.0);
         }, true);
       };
 
-      b.dumpLiquid(b.rsTg, 2.0);
+      b.dumpLiquid(b.rsTarget, 2.0);
     };
   }
   .setProp({
@@ -66,10 +66,10 @@
 
 
   function comp_displayBars(b, tb) {
-    if(b.rsTg != null && b.block.outputLiquids != null && !b.block.outputLiquids.some(liqStack => liqStack.liquid === b.rsTg)) {
+    if(b.rsTarget != null && b.block.outputLiquids != null && !b.block.outputLiquids.some(liqStack => liqStack.liquid === b.rsTarget)) {
       tb.add(new Bar(
-        b.rsTg.localizedName,
-        tryVal(b.rsTg.barColor, b.rsTg.color),
+        b.rsTarget.localizedName,
+        tryVal(b.rsTarget.barColor, b.rsTarget.color),
         () => b.liquids.get(liq) / b.block.liquidCapacity,
       )).growX();
       tb.row();
@@ -158,7 +158,7 @@
        * @memberof B_rainCollector
        * @instance
        */
-      rsTg: null,
+      rsTarget: null,
 
 
     })

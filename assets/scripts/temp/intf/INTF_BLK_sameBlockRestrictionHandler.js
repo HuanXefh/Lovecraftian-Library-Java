@@ -102,7 +102,7 @@
          * @memberof INTF_BLK_sameBlockRestrictionHandler
          * @instance
          */
-        sameTypeFilter: tprov(() => boolf2(function(blk, oblk) {return blk === oblk})),
+        sameTypeFilter: tprov(() => boolf2(function(blk, oblk) {return blk.id === oblk.id})),
 
 
         /* <------------------------------ internal ------------------------------ */

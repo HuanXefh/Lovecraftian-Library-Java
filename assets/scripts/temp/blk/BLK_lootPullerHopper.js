@@ -40,8 +40,8 @@
       b.progWait += b.edelta();
       if(b.progWait > b.block.delegee.intvPull) {
         b.progWait %= b.block.delegee.intvPull;
-        LCEntity.getLoots(b.pullTgs, b.x, b.y, b.block.delegee.blkRad).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
-        b.isPulling = b.pullTgs.length > 0;
+        LCEntity.getLoots(b.pullTargets, b.x, b.y, b.block.delegee.blkRad).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
+        b.isPulling = b.pullTargets.length > 0;
       };
     } else {
       b.progPull += Time.delta;
@@ -49,7 +49,7 @@
         b.progPull %= b.block.delegee.durPull;
         b.isPulling = false;
       } else {
-        b.pullTgs.forEachFast(loot => {
+        b.pullTargets.forEachFast(loot => {
           loot.impulse(Tmp.v2.set(loot).sub(b.x, b.y).nor().scl(-b.block.delegee.powPull * b.glowHeat));
         }, true);
       };
@@ -67,7 +67,7 @@
     LCDrawf.fade(b.x, b.y, b.block.delegee.glowReg, 1.0, 0.0, 1.0, Color.white, b.glowHeat * 0.7);
 
     if(b.glowHeat > 0.01) {
-      b.pullTgs.forEachFast(loot => {
+      b.pullTargets.forEachFast(loot => {
         if(loot.isAdded()) LCDrawf.arrowLine(loot.x, loot.y, b.x, b.y, 2.0, 1.0, Color.white, 0.35 * b.glowHeat, VAR.layer.effFlr);
       }, true);
     };
@@ -189,7 +189,7 @@
        * @memberof B_lootPullerHopper
        * @instance
        */
-      pullTgs: tprov(() => []),
+      pullTargets: tprov(() => []),
       /**
        * `INTERNAL`
        * @memberof B_lootPullerHopper

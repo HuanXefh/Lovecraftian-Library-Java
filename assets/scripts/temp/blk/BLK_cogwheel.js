@@ -30,7 +30,7 @@
     blk.config(JAVA.boolean, (b, bool) => {
       b.onProximityUpdate();
       b.delegee.isInv = bool;
-      b.delegee.rpmCur = b.ex_calcRpmTg();
+      b.delegee.rpmCur = b.ex_calcRpmTarget();
       MDL_effect.click(b.x, b.y, b.team.color);
       Sounds.click.at(b);
       TRIGGER.torqueBlockConfigure.fire(b);
@@ -73,14 +73,14 @@
   };
 
 
-  function comp_ex_updateTorTransTgs(b) {
-    b.torTransTgs.clear();
+  function comp_ex_updateTorTransTargets(b) {
+    b.torTransTargets.clear();
     let size = b.block.size, rot;
     while(size > 0) {
       rot = 0;
       while(rot < 4) {
         let ob = b.ex_findCog(size, rot);
-        if(ob != null) b.torTransTgs.push(ob);
+        if(ob != null) b.torTransTargets.push(ob);
         rot++;
       };
       size -= 2;
@@ -303,8 +303,8 @@
        * @instance
        * @return {void}
        */
-      ex_updateTorTransTgs: function() {
-        comp_ex_updateTorTransTgs(this);
+      ex_updateTorTransTargets: function() {
+        comp_ex_updateTorTransTargets(this);
       }
       .setProp({
         noSuper: true,

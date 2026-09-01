@@ -27,7 +27,7 @@
 
 
   function comp_getLiquidDestination(b, b_f, liq) {
-    return !b.enabled || liq !== b.ctTg || MDL_cond.isAuxiliaryFluid(liq) ?
+    return !b.enabled || liq !== b.ctTarget || MDL_cond.isAuxiliaryFluid(liq) ?
       b :
       b.super$getLiquidDestination(b_f, liq);
   };
@@ -35,8 +35,8 @@
 
   function comp_draw(b) {
     Draw.rect(b.block.region, b.x, b.y);
-    if(b.ctTg != null) {
-      LiquidBlock.drawTiledFrames(b.block.size, b.x, b.y, 1.0, 1.0, 1.0, 1.0, b.ctTg, 1.0);
+    if(b.ctTarget != null) {
+      LiquidBlock.drawTiledFrames(b.block.size, b.x, b.y, 1.0, 1.0, 1.0, 1.0, b.ctTarget, 1.0);
     };
     Draw.rect(b.block.delegee.topReg, b.x, b.y);
   };
@@ -102,7 +102,7 @@
        * @instance
        * @return {Array<Liquid>}
        */
-      ex_findSelectionTgs: function() {
+      ex_findSelectionTargets: function() {
         return Vars.content.liquids().select(liq => !MDL_cond.isAuxiliaryFluid(liq)).toArray();
       }
       .setProp({
@@ -135,7 +135,7 @@
 
 
       config: function() {
-        return this.ctTg;
+        return this.ctTarget;
       }
       .setProp({
         noSuper: true,
@@ -158,7 +158,7 @@
 
       write: function(wr) {
         this.ex_processData(wr);
-        MDL_io.ct(wr, this.ctTg);
+        MDL_io.ct(wr, this.ctTarget);
       }
       .setProp({
         override: true,
@@ -169,7 +169,7 @@
         if(this.LCRevi === 5) rd.s();
 
         this.ex_processData(rd);
-        this.ctTg = MDL_io.ct(rd);
+        this.ctTarget = MDL_io.ct(rd);
       }
       .setProp({
         override: true,

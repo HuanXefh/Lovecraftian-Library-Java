@@ -27,16 +27,16 @@
 
 
   function comp_onProximityUpdate(b) {
-    b.unloadTg = b.back();
-    if(b.unloadTg == null || b.unloadTg.liquids == null || MDL_cond.isFluidConduit(b.unloadTg.block) || MDL_cond.isGate(b.unloadTg.block)) {
-      b.unloadTg = null;
+    b.unloadTarget = b.back();
+    if(b.unloadTarget == null || b.unloadTarget.liquids == null || MDL_cond.isFluidConduit(b.unloadTarget.block) || MDL_cond.isGate(b.unloadTarget.block)) {
+      b.unloadTarget = null;
     };
   };
 
 
   function comp_updateTile(b) {
-    if(b.unloadTg != null && b.ctTg != null) {
-      LCCraftingHandler.transLiquid(b.unloadTg, b, b.ctTg, 2.0, true);
+    if(b.unloadTarget != null && b.ctTarget != null) {
+      LCCraftingHandler.transLiquid(b.unloadTarget, b, b.ctTarget, 2.0, true);
     };
   };
 
@@ -115,7 +115,7 @@
        * @instance
        * @return {Array<Liquid>}
        */
-      ex_findSelectionTgs: function() {
+      ex_findSelectionTargets: function() {
         return VARGEN.nonAuxs;
       }
       .setProp({
@@ -174,7 +174,7 @@
        * @memberof B_fluidUnloader
        * @instance
        */
-      unloadTg: null,
+      unloadTarget: null,
 
 
     })

@@ -38,7 +38,7 @@
   function comp_getTileTarget(b, itm, b_f, isFlip) {
     let rot = b_f.relativeTo(b);
     let b_t = b.nearby(rot);
-    let tg = b_t;
+    let target = b_t;
     let cond0 = b_t != null && b_t.team === b.team && !(b_t.block.instantTransfer && b_f.block.instantTransfer) && b_t.acceptItem(b, itm);
 
     if(!cond0 || b.isInv === b.enabled) {
@@ -51,16 +51,16 @@
         return b.isInv === b.enabled && cond0 ? b_t : null;
       };
       if(cond1 && !cond2) {
-        tg = b_s1;
+        target = b_s1;
       } else if(!cond1 && cond2) {
-        tg = b_s2;
+        target = b_s2;
       } else {
-        tg = (b.rotation & (1 << rot)) === 0 ? b_s1 : b_s2;
+        target = (b.rotation & (1 << rot)) === 0 ? b_s1 : b_s2;
         if(isFlip) b.rotation ^= (1 << rot);
       };
     };
 
-    return tg;
+    return target;
   };
 
 

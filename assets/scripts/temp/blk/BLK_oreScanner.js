@@ -44,16 +44,16 @@
   };
 
 
-  function comp_ex_getRevealTgs(blk, tx, ty, rot) {
-    return LCPos.getTilesCircle(blk.tmpRevealedTgs, Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond.isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
+  function comp_ex_getRevealTargets(blk, tx, ty, rot) {
+    return LCPos.getTilesCircle(blk.tmpRevealedTargets, Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond.isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
   };
 
 
   function comp_created(b) {
     b.offConeAng = Mathf.range(180.0);
-    b.revealTgs.withAll(b.block.ex_getRevealTgs(b.tileX(), b.tileY(), b.rotation));
+    b.revealTargets.withAll(b.block.ex_getRevealTargets(b.tileX(), b.tileY(), b.rotation));
     Time.run(0.0, () => {
-      b.revealQueue.withAll(b.revealTgs);
+      b.revealQueue.withAll(b.revealTargets);
       b.revealedInts.forEachFast(int => {
         let ot = Vars.world.tile(int);
         if(ot != null) b.revealQueue.pull(ot);
@@ -117,7 +117,7 @@
 
 
   function comp_ex_getScanFrac(b) {
-    return b.efficiency * ((b.revealTgs.length === 0 || b.revealQueue.length === 0) ? 1.0 : (b.revealedInts.length / b.revealTgs.length));
+    return b.efficiency * ((b.revealTargets.length === 0 || b.revealQueue.length === 0) ? 1.0 : (b.revealedInts.length / b.revealTargets.length));
   };
 
 
@@ -178,7 +178,7 @@
        * @memberof BLK_oreScanner
        * @instance
        */
-      tmpRevealedTgs: tprov(() => []),
+      tmpRevealedTargets: tprov(() => []),
 
 
     })
@@ -222,8 +222,8 @@
        * @param {number} rot
        * @return {Array<Tile>}
        */
-      ex_getRevealTgs: function(tx, ty, rot) {
-        return comp_ex_getRevealTgs(this, tx, ty, rot);
+      ex_getRevealTargets: function(tx, ty, rot) {
+        return comp_ex_getRevealTargets(this, tx, ty, rot);
       }
       .setProp({
         noSuper: true,
@@ -237,7 +237,7 @@
        * @instance
        * @return {boolean}
        */
-      ex_isSwitchDisableTg: function() {
+      ex_isSwitchDisableTarget: function() {
         return true;
       }
       .setProp({
@@ -273,7 +273,7 @@
        * @memberof B_oreScanner
        * @instance
        */
-      revealTgs: tprov(() => []),
+      revealTargets: tprov(() => []),
       /**
        * `INTERNAL`: Ores that are not revealed yet.
        * @memberof B_oreScanner

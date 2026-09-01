@@ -57,21 +57,21 @@
 
     if(TIMER.sec) {
       if(b.items != null && !b.justCrafted) {
-        b.hasItmTg = false;
+        b.hasItmTarget = false;
         b.items.each(itm => {
-          if(b.hasItmTg) return;
+          if(b.hasItmTarget) return;
           if(!b.block.consumesItem(itm)) {
-            b.hasItmTg = true;
+            b.hasItmTarget = true;
           };
         });
       };
 
       if(b.liquids != null && !b.justCrafted) {
-        b.hasLiqTg = false;
+        b.hasLiqTarget = false;
         b.liquids.each((liq, amt) => {
-          if(b.hasLiqTg) return;
+          if(b.hasLiqTarget) return;
           if(!b.block.consumesLiquid(liq) && amt > 1.0) {
-            b.hasLiqTg = true;;
+            b.hasLiqTarget = true;;
           };
         });
       };
@@ -132,11 +132,11 @@
   function comp_acceptItem(b, b_f, itm) {
     if(b.items == null) return false;
     if(b.block.consumesItem(itm) && b.items.get(itm) < b.getMaximumAccepted(itm)) return true;
-    if(!b.block.delegee.itmTgFilter.get(itm)) return false;
+    if(!b.block.delegee.itmTargetFilter.get(itm)) return false;
 
-    return b.ctTgs.length === 0 ?
+    return b.ctTargets.length === 0 ?
       b.items.total() < b.block.itemCapacity :
-      b.ctTgs.includes(itm) && b.items.total() < b.block.itemCapacity;
+      b.ctTargets.includes(itm) && b.items.total() < b.block.itemCapacity;
   };
 
 
@@ -144,9 +144,9 @@
     if(b.liquids == null) return false;
     if(b.liquids.get(liq) / b.block.liquidCapacity >= 0.98) return false;
     if(b.block.consumesLiquid(liq)) return true;
-    if(!b.block.delegee.liqTgFilter.get(liq)) return false;
+    if(!b.block.delegee.liqTargetFilter.get(liq)) return false;
 
-    return b.ctTgs.length === 0 || b.ctTgs.includes(liq);
+    return b.ctTargets.length === 0 || b.ctTargets.includes(liq);
   };
 
 
@@ -189,14 +189,14 @@
        * @memberof BLK_incinerator
        * @instance
        */
-      itmTgFilter: tprov(() => func(function(itm) {return true})),
+      itmTargetFilter: tprov(() => func(function(itm) {return true})),
       /**
        * `PARAM`: Extra filter for valid fluid.
        * <br> `ARGS`: liq.
        * @memberof BLK_incinerator
        * @instance
        */
-      liqTgFilter: tprov(() => func(function(liq) {return true})),
+      liqTargetFilter: tprov(() => func(function(liq) {return true})),
       /**
        * `PARAM`: See {@link BLK_baseFactory}.
        * @memberof BLK_incinerator
@@ -248,18 +248,18 @@
        * @instance
        * @return {Array<UnlockableContent>}
        */
-      ex_findSelectionTgs: function() {
+      ex_findSelectionTargets: function() {
         let arr = [];
         if(this.hasItems) {
-          arr.pushAll(Vars.content.items().select(itm => this.itmTgFilter.get(itm)).toArray());
+          arr.pushAll(Vars.content.items().select(itm => this.itmTargetFilter.get(itm)).toArray());
         };
         if(this.hasLiquids) {
           if(this.fldType === "liquid") {
-            arr.pushAll(Vars.content.liquids().select(liq => !liq.gas && this.liqTgFilter.get(liq)).toArray());
+            arr.pushAll(Vars.content.liquids().select(liq => !liq.gas && this.liqTargetFilter.get(liq)).toArray());
           } else if(this.fldType === "gas") {
-            arr.pushAll(Vars.content.liquids().select(liq => liq.gas && this.liqTgFilter.get(liq)).toArray());
+            arr.pushAll(Vars.content.liquids().select(liq => liq.gas && this.liqTargetFilter.get(liq)).toArray());
           } else {
-            arr.pushAll(Vars.content.liquids().select(liq => this.liqTgFilter.get(liq)).toArray());
+            arr.pushAll(Vars.content.liquids().select(liq => this.liqTargetFilter.get(liq)).toArray());
           };
         };
 
@@ -277,7 +277,7 @@
        * @instance
        * @return {boolean}
        */
-      ex_isSwitchDisableTg: function() {
+      ex_isSwitchDisableTarget: function() {
         return true;
       }
       .setProp({
@@ -307,13 +307,13 @@
        * @memberof B_incinerator
        * @instance
        */
-      hasItmTg: false,
+      hasItmTarget: false,
       /**
        * `INTERNAL`
        * @memberof B_incinerator
        * @instance
        */
-      hasLiqTg: false,
+      hasLiqTarget: false,
       /**
        * `INTERNAL`
        * @memberof B_incinerator
@@ -355,7 +355,7 @@
 
 
       shouldConsume: function() {
-        return this.hasItmTg || this.hasLiqTg;
+        return this.hasItmTarget || this.hasLiqTarget;
       }
       .setProp({
         noSuper: true,

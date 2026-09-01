@@ -16,7 +16,7 @@
     if(t == null) return;
 
     if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
-      thisFun.tmpSum = MDL_attr.calcSumRect(t, blk.attrR, blk.size, blk.ex_getAttrTg(), blk.delegee.attrMode) + blk.ex_getAttrTg().env();
+      thisFun.tmpSum = MDL_attr.calcSumRect(t, blk.attrR, blk.size, blk.ex_getAttrTarget(), blk.delegee.attrMode) + blk.ex_getAttrTarget().env();
     };
 
     return thisFun.tmpSum;
@@ -103,7 +103,7 @@
        * @instance
        * @return {Attribute}
        */
-      ex_getAttrTg: function() {
+      ex_getAttrTarget: function() {
         return this.attribute;
       }
       .setProp({

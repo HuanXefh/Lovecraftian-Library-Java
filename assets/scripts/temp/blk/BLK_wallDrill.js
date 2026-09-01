@@ -63,12 +63,12 @@
 
 
   function comp_onProximityUpdate(b) {
-    b.mineRsTgs.clear();
+    b.mineRsTargets.clear();
     Core.app.post(() => {
       b.facing.forEachFast(ot => {
         let itm = ot == null ? null : ot.wallDrop();
         if(itm != null) {
-          b.mineRsTgs.pushUnique(itm);
+          b.mineRsTargets.pushUnique(itm);
         };
       }, true);
     });
@@ -187,7 +187,7 @@
        * @memberof B_wallDrill
        * @instance
        */
-      mineRsTgs: tprov(() => []),
+      mineRsTargets: tprov(() => []),
 
 
     })
@@ -208,7 +208,7 @@
 
 
       shouldConsume: function() {
-        return this.enabled && this.mineRsTgs.length > 0 && this.mineRsTgs.every(itm => this.items.get(itm) < this.getMaximumAccepted(itm));
+        return this.enabled && this.mineRsTargets.length > 0 && this.mineRsTargets.every(itm => this.items.get(itm) < this.getMaximumAccepted(itm));
       }
       .setProp({
         noSuper: true,
@@ -217,7 +217,7 @@
 
 
       canDump: function(b_t, itm) {
-        return !this.block.consumesItem(itm) || (this.mineRsTgs.includes(itm) && this.items.has(itm, 2));
+        return !this.block.consumesItem(itm) || (this.mineRsTargets.includes(itm) && this.items.has(itm, 2));
       }
       .setProp({
         noSuper: true,

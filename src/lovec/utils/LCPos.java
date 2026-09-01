@@ -144,17 +144,17 @@ public class LCPos {
         int rot_fi = Mathf.mod(rot, 4);
         float
             off = (size + 0.5f) * Vars.tilesize / 2f,
-            tgX = x,
-            tgY = y;
+            targetX = x,
+            targetY = y;
 
         switch(rot_fi) {
-            case 0 -> tgX = x - off;
-            case 1 -> tgY = y - off;
-            case 2 -> tgX = x + off;
-            case 3 -> tgY = y + off;
+            case 0 -> targetX = x - off;
+            case 1 -> targetY = y - off;
+            case 2 -> targetX = x + off;
+            case 3 -> targetY = y + off;
         };
 
-        return out.set(tgX, tgY);
+        return out.set(targetX, targetY);
     };
 
 

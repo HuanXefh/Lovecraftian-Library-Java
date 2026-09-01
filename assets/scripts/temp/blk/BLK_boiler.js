@@ -17,8 +17,8 @@
 
   function comp_init(blk) {
     if(!blk.hasLiquids) ERROR_HANDLER.throw("noLiquidModule", blk.name);
-    blk.exploFldTg = MDL_content.getCt(blk.exploFldTg, "rs");
-    blk.dryHeatFldTg = MDL_content.getCt(blk.dryHeatFldTg, "rs");
+    blk.exploFldTarget = MDL_content.getCt(blk.exploFldTarget, "rs");
+    blk.dryHeatFldTarget = MDL_content.getCt(blk.dryHeatFldTarget, "rs");
     if(blk.dryHeatCancelThr < 0.0) blk.dryHeatCancelThr = blk.dryHeatThr * 0.5;
   };
 
@@ -61,8 +61,8 @@
   function comp_updateTile(b) {
     let
       cap = b.block.liquidCapacity,
-      amtWater = b.block.delegee.dryHeatFldTg == null ? cap : b.liquids.get(b.block.delegee.dryHeatFldTg),
-      amtSteam = b.block.delegee.exploFldTg == null ? 0.0 : b.liquids.get(b.block.delegee.exploFldTg),
+      amtWater = b.block.delegee.dryHeatFldTarget == null ? cap : b.liquids.get(b.block.delegee.dryHeatFldTarget),
+      amtSteam = b.block.delegee.exploFldTarget == null ? 0.0 : b.liquids.get(b.block.delegee.exploFldTarget),
       amtHeat = b.ex_getHeat();
 
     if(amtWater < 0.01 && amtHeat > b.block.delegee.dryHeatThr) {
@@ -151,13 +151,13 @@
        * @memberof BLK_boiler
        * @instance
        */
-      exploFldTg: "loveclab-gas0int-steam-hp",
+      exploFldTarget: "loveclab-gas0int-steam-hp",
       /**
        * `PARAM`: Fluid that causes explosion if the boiler is dry-heated, nullable.
        * @memberof BLK_boiler
        * @instance
        */
-      dryHeatFldTg: "loveclab-liq0ore-water",
+      dryHeatFldTarget: "loveclab-liq0ore-water",
       /**
        * `PARAM`: Temperature above which dry-heating can happen.
        * @memberof BLK_boiler

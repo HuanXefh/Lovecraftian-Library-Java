@@ -376,7 +376,7 @@
 
 
   function comp_ex_onRcParamUpdate(b) {
-    b.rcEffc = b.ex_calcRcEffcTg();
+    b.rcEffc = b.ex_calcRcEffcTarget();
     b.lastProgInc = b.ex_calcProgInc(b.block.craftTime);
     b.lastLiqProgInc = b.ex_calcProgInc(1.0);
     b.lastCanAdd = b.rc.checkCanAdd(b);
@@ -475,7 +475,7 @@
   };
 
 
-  function comp_ex_calcRcEffcTg(b) {
+  function comp_ex_calcRcEffcTarget(b) {
     b.rcEffcMeanArr.push(b.rc.calcEffc(b));
     return b.rcEffcMeanArr.getMean() * b.attrEffc;
   };
@@ -1190,8 +1190,8 @@
        * @instance
        * @return {number}
        */
-      ex_calcRcEffcTg: function() {
-        return comp_ex_calcRcEffcTg(this);
+      ex_calcRcEffcTarget: function() {
+        return comp_ex_calcRcEffcTarget(this);
       }
       .setProp({
         noSuper: true,

@@ -25,13 +25,13 @@
 
   function comp_shouldConsume(b) {
     return b.enabled
-      && !(b.block instanceof Pump) ? true : b.ex_getRsTg() != null
-      && !b.block.delegee.presProd.fEqual(0.0) ? true : b.liquids.get(b.ex_getRsTg()) < (b.block.liquidCapacity - 0.01)
+      && !(b.block instanceof Pump) ? true : b.ex_getRsTarget() != null
+      && !b.block.delegee.presProd.fEqual(0.0) ? true : b.liquids.get(b.ex_getRsTarget()) < (b.block.liquidCapacity - 0.01)
   };
 
 
   function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, b.ex_getRsTg(), b.block.size, 0.75);
+    LCDraw.contentIcon(b.x, b.y, b.ex_getRsTarget(), b.block.size, 0.75);
   };
 
 
@@ -143,7 +143,7 @@
        * @instance
        * @return {Liquid|null}
        */
-      ex_getRsTg: function() {
+      ex_getRsTarget: function() {
         return tryVal(this.liquidDrop, null);
       }
       .setProp({

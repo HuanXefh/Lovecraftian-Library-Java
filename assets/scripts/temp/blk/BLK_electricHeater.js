@@ -127,7 +127,7 @@
        * @instance
        * @return {number}
        */
-      ex_getHeatTg: function() {
+      ex_getHeatTarget: function() {
         return this.blk$heatProd;
       }
       .setProp({

@@ -49,10 +49,10 @@
 
   function comp_updateTile(b) {
     if(DEBUG.skipFurnUpdate) return;
-    
+
     // Update furnace efficiency
     b.furnEffc = Mathf.clamp(Math.min(
-      Math.pow(b.tempCur / b.ex_getHeatTg(), 1.5),
+      Math.pow(b.tempCur / b.ex_getHeatTarget(), 1.5),
       !isFinite(b.ex_getHeatAllowed()) ? Infinity : (b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0,
     ));
     if(b.furnEffc < 0.15) b.furnEffc = 0.0;
@@ -269,7 +269,7 @@
        * @instance
        * @return {number}
        */
-      ex_calcTempTg: function thisFun() {
+      ex_calcTempTarget: function thisFun() {
         return Math.max(thisFun.funPrev.apply(this, arguments), this.tempSet);
       }
       .setProp({
@@ -284,7 +284,7 @@
        * @instance
        * @return {number}
        */
-      ex_calcTempTgFrac: function() {
+      ex_calcTempTargetFrac: function() {
         return this.tempSet < 0.0001 ?
           0.0 :
           Math.max(Mathf.clamp(this.tempExt / this.tempSet), this.power.status);
@@ -302,7 +302,7 @@
        * @instance
        * @return {number}
        */
-      ex_getHeatTg: function() {
+      ex_getHeatTarget: function() {
         return PARAM.GLOBAL_HEAT;
       }
       .setProp({

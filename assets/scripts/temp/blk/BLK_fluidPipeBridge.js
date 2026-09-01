@@ -31,8 +31,8 @@
   };
 
 
-  function comp_ex_updatePresFetchTgs(b) {
-    b.presFetchTgs.clear();
+  function comp_ex_updatePresFetchTargets(b) {
+    b.presFetchTargets.clear();
 
     ot = Vars.world.tile(b.link);
     if(b.block.linkValid(b.tile, ot)) {
@@ -54,7 +54,7 @@
             && ob.ex_getPres != null
             && b.ex_checkPresFetchValid(ob)
         ) {
-          b.presFetchTgs.push(ob);
+          b.presFetchTargets.push(ob);
         };
         i++;
       };
@@ -74,16 +74,16 @@
           && ob.team === b.team
           && ob.ex_getPres != null
       ) {
-        b.presFetchTgs.push(ob);
+        b.presFetchTargets.push(ob);
       };
     });
   };
 
 
-  function comp_ex_updatePresSupplyTgs(b) {
+  function comp_ex_updatePresSupplyTargets(b) {
     if(b.block.linkValid(b.tile, Vars.world.tile(b.link))) {
       // Don't supply pressure if connected to another bridge
-      b.presSupplyTgs.clear();
+      b.presSupplyTargets.clear();
       return;
     };
 
@@ -92,7 +92,7 @@
       if(ot == null) return;
       ob = b.nearby(LCPos.getRotation(b.tile, ot));
       if(ob == null) return;
-      b.presSupplyTgs.pull(ob);
+      b.presSupplyTargets.pull(ob);
     });
   };
 
@@ -176,8 +176,8 @@
        * @instance
        * @return {void}
        */
-      ex_updatePresFetchTgs: function() {
-        comp_ex_updatePresFetchTgs(this);
+      ex_updatePresFetchTargets: function() {
+        comp_ex_updatePresFetchTargets(this);
       }
       .setProp({
         noSuper: true,
@@ -190,8 +190,8 @@
        * @instance
        * @return {void}
        */
-      ex_updatePresSupplyTgs: function() {
-        comp_ex_updatePresSupplyTgs(this);
+      ex_updatePresSupplyTargets: function() {
+        comp_ex_updatePresSupplyTargets(this);
       }
       .setProp({
         noSuper: true,

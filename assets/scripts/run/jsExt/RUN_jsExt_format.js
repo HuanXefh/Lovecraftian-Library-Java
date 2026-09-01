@@ -151,11 +151,11 @@
    * @return {string}
    */
   String.prototype.format = function() {
-    let str = this, strTg;
+    let str = this, strTarget;
     let i = 0, iCap = arguments.length;
     while(i < iCap) {
-      strTg = "\\$\\{" + (i + 1) +"(\\:(\\w|\\d|\\s)+|)\\}";
-      str = str.replace(new RegExp(strTg, "g"), arguments[i]);
+      strTarget = "\\$\\{" + (i + 1) +"(\\:(\\w|\\d|\\s)+|)\\}";
+      str = str.replace(new RegExp(strTarget, "g"), arguments[i]);
       i++;
     };
 

@@ -77,7 +77,7 @@
             b.ex_stopConstruction();
           } else {
             Time.run(0.0, () => {
-              blk.ex_placePlanTg(b.team, b.tileX(), b.tileY(), b.rotation);
+              blk.ex_placePlanTarget(b.team, b.tileX(), b.tileY(), b.rotation);
             });
             let ot = blk.ex_getPlanT(b.tileX(), b.tileY(), b.rotation, blk.centerPon2.x, blk.centerPon2.y);
             MDL_effect.showAt(ot.worldx() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), ot.worldy() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), EFF.fadePlacePack[blk.planSize], 0.0);
@@ -98,7 +98,7 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0misc-blktg"), newStatValue(tb => {
+    blk.stats.add(fetchStat("lovec", "blk0misc-blktarget"), newStatValue(tb => {
       tb.row();
       tb.table(Styles.none, tb1 => {
         MDL_table.br(tb1, 1);
@@ -145,18 +145,18 @@
 
 
   function comp_ex_parseConstructionData(blk) {
-    let i, iCap = blk.constructionData[0].iCap(), j = 0, jCap = blk.constructionData.iCap(), tup, blkTg;
+    let i, iCap = blk.constructionData[0].iCap(), j = 0, jCap = blk.constructionData.iCap(), tup, blkTarget;
     while(j < jCap) {
       blk.constructionParsedData[j] = [];
       i = 0;
       while(i < iCap) {
         tup = blk.constructionData[j][i] instanceof Array ? blk.constructionData[j][i] : [blk.constructionData[j][i], -1];
-        blkTg = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content.getCt(tup[0], "blk"), Blocks.air);
+        blkTarget = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content.getCt(tup[0], "blk"), Blocks.air);
         blk.constructionParsedData[j].push({
-          blk: blkTg,
-          rot: blkTg instanceof RotBlock ? -1 : tryVal(tup[1], -1),
+          blk: blkTarget,
+          rot: blkTarget instanceof RotBlock ? -1 : tryVal(tup[1], -1),
         });
-        if(blkTg === blk) blk.corePon2.set(i, j);
+        if(blkTarget === blk) blk.corePon2.set(i, j);
         i++;
       };
       j++;
@@ -170,7 +170,7 @@
   };
 
 
-  function comp_ex_placePlanTg(blk, team, tx, ty, rot) {
+  function comp_ex_placePlanTarget(blk, team, tx, ty, rot) {
     let ot = blk.ex_getPlanT(tx, ty, rot, blk.placeDataX, blk.placeDataY);
     if(ot != null) {
       ot.setBlock(blk.placeBlk, team, Mathf.mod(rot + blk.placeOffRot, 4));
@@ -640,8 +640,8 @@
        * @param {number} rot
        * @return {void}
        */
-      ex_placePlanTg: function(team, tx, ty, rot) {
-        comp_ex_placePlanTg(this, team, tx, ty, rot);
+      ex_placePlanTarget: function(team, tx, ty, rot) {
+        comp_ex_placePlanTarget(this, team, tx, ty, rot);
       }
       .setProp({
         noSuper: true,

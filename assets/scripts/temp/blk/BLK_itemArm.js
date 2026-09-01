@@ -35,7 +35,7 @@
       b.delegee.blk$moveStackAmt = f;
     });
 
-    blk.ex_addConfigM("ctTg", (b, val) => b.delegee.ctTg = MDL_content.getCt(val, "rs"));
+    blk.ex_addConfigM("ctTarget", (b, val) => b.delegee.ctTarget = MDL_content.getCt(val, "rs"));
     blk.ex_addConfigM("shouldDropLoot", (b, val) => b.delegee.shouldDropLoot = val);
     blk.ex_addConfigM("stackThreshold", (b, val) => b.delegee.blk$moveStackAmt = val);
   };
@@ -55,7 +55,7 @@
 
   function comp_onProximityUpdate(b) {
     b.blk$armZ = b.block.delegee.armZ + b.x * -0.000001 - b.y * 0.00001 + b.block.delegee.moveR * 0.0001;
-    b.moveTg = TmpStateTag.pending;
+    b.moveTarget = TmpStateTag.pending;
 
     let ob = b.ex_findMoveB(false);
     b.playingWithUnit = false;
@@ -81,9 +81,9 @@
     };
 
     if(TIMER.secHalf) {
-      b.moveTg = b.ex_findMoveB(true);
+      b.moveTarget = b.ex_findMoveB(true);
     };
-    if(b.moveTg === TmpStateTag.pending) return;
+    if(b.moveTarget === TmpStateTag.pending) return;
 
     if(!b.isBackMove) {
       // Moving forwards
@@ -130,8 +130,8 @@
     Draw.rect(b.block.region, b.x, b.y);
     processZ(b.blk$armZ);
     Draw.rect(b.block.delegee.armReg, b.x, b.y, ang);
-    if(b.ctTg instanceof Item && b.block.delegee.itemReg.found()) {
-      Draw.color(b.ctTg.color);
+    if(b.ctTarget instanceof Item && b.block.delegee.itemReg.found()) {
+      Draw.color(b.ctTarget.color);
       Draw.rect(b.block.delegee.itemReg, b.x, b.y, ang);
       Draw.color();
     };
@@ -194,13 +194,13 @@
     if(b_f.block instanceof ItemSource) {
       if(b_f.outputItem == null) return;
       b.moveItmCur = b_f.outputItem;
-      if(b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt)) {
+      if(b.moveTarget == null || b.ex_canInsertItm(b.moveTarget, b.moveItmCur, b.blk$moveStackAmt)) {
         b.moveItmAmtCur = b.blk$moveStackAmt;
         b.ex_moveForward();
       };
     } else {
-      b.moveItmCur = b.ex_getMoveItmTg(b_f);
-      if(b.moveItmCur != null && b.ex_canPickItm(b_f, b.moveItmCur, b.ctTg == null ? 1 : b.blk$moveStackAmt) && (b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt))) {
+      b.moveItmCur = b.ex_getMoveItmTarget(b_f);
+      if(b.moveItmCur != null && b.ex_canPickItm(b_f, b.moveItmCur, b.ctTarget == null ? 1 : b.blk$moveStackAmt) && (b.moveTarget == null || b.ex_canInsertItm(b.moveTarget, b.moveItmCur, b.blk$moveStackAmt))) {
         let amtTrans;
         if(b_f.getPayload() instanceof BuildPayload) {
           amtTrans = Math.min(b_f.getPayload().build.items.get(b.moveItmCur), b.blk$moveStackAmt);
@@ -237,7 +237,7 @@
 
   function comp_ex_doUnitPick(b, unit) {
     b.moveItmCur = unit.item();
-    if(b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt)) {
+    if(b.moveTarget == null || b.ex_canInsertItm(b.moveTarget, b.moveItmCur, b.blk$moveStackAmt)) {
       let amtTrans = Math.min(unit.stack.amount, b.blk$moveStackAmt);
       b.moveItmAmtCur = amtTrans;
       FRAG_item.setUnitItem(unit, unit.item(), unit.stack.amount - amtTrans);
@@ -248,7 +248,7 @@
 
   function comp_ex_doLootPick(b, loot) {
     b.moveItmCur = loot.item();
-    if(b.moveTg == null || b.ex_canInsertItm(b.moveTg, b.moveItmCur, b.blk$moveStackAmt)) {
+    if(b.moveTarget == null || b.ex_canInsertItm(b.moveTarget, b.moveItmCur, b.blk$moveStackAmt)) {
       let amtTrans = Math.min(loot.stack.amount, b.blk$moveStackAmt);
       b.moveItmAmtCur = amtTrans;
       FRAG_item.setUnitItem(loot, loot.item(), loot.stack.amount - amtTrans);
@@ -528,7 +528,7 @@
        * @memberof B_itemArm
        * @instance
        */
-      moveTg: TmpStateTag.pending,
+      moveTarget: TmpStateTag.pending,
       /**
        * `INTERNAL`
        * @memberof B_itemArm
@@ -613,7 +613,7 @@
 
       config: function() {
         return packConfig({
-          ctTg: this.ctTg == null ? "null" : this.ctTg.name,
+          ctTarget: this.ctTarget == null ? "null" : this.ctTarget.name,
           shouldDropLoot: this.shouldDropLoot,
           stackThreshold: this.blk$moveStackAmt,
         });
@@ -1018,9 +1018,9 @@
        * @param {Building} b_f
        * @return {Item|null}
        */
-      ex_getMoveItmTg: function(b_f) {
-        return this.ctTg != null ?
-          this.ctTg :
+      ex_getMoveItmTarget: function(b_f) {
+        return this.ctTarget != null ?
+          this.ctTarget :
           b_f.getPayload() instanceof BuildPayload && b_f.getPayload().build.items != null ?
             b_f.getPayload().build.items.first() :
             b_f.items != null ?
@@ -1072,7 +1072,7 @@
       ex_handleConfigStrDef: function(str) {
         let ct = MDL_content.getCt(str, null, true);
         if(!this.block.delegee.selectionQueue.includes(ct)) return;
-        this.ctTg = ct;
+        this.ctTarget = ct;
         this.ex_onSelectorUpdate();
       }
       .setProp({

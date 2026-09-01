@@ -580,7 +580,7 @@ const db = {
      * Used to generate default files for ore dictionary.
      * For other mods, simply put .csv files in "Mindustry/saves/mods/data/sharedData/ore-dict".
      * DO NOT MODIFY THIS IN OTHER MODS!
-     * <br> `ROW`: rsTg, rss.
+     * <br> `ROW`: rsTarget, rss.
      */
     def: [
 

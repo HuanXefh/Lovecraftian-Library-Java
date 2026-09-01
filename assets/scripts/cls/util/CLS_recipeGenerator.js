@@ -153,16 +153,16 @@
    * @param {Array} raw
    * @param {number} baseAmt
    * @param {boolean|unset} [isContinuous]
-   * @param {number|unset} [pTg]
+   * @param {number|unset} [pTarget]
    * @return {Array}
    */
-  CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous, pTg) {
+  CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous, pTarget) {
     let arr = [];
 
     let tmpArr = raw.deepCpy();
-    thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous, pTg]);
-    tmpArr.forEachRow(isContinuous ? 2 : 3, (tg, amt, p) => {
-      MDL_recipe.parseRcIoRow(arr, tg, amt, isContinuous ? null : p, null, false, pTg);
+    thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous, pTarget]);
+    tmpArr.forEachRow(isContinuous ? 2 : 3, (target, amt, p) => {
+      MDL_recipe.parseRcIoRow(arr, target, amt, isContinuous ? null : p, null, false, pTarget);
     }, true);
     arr.forEachAll((ele, ind, arr1) => {
       if(ele instanceof UnlockableContent) arr1[ind] = ele.name;
@@ -203,11 +203,11 @@
    * @param {Array} rawBi
    * @param {number} amtO
    * @param {number} pO
-   * @param {number|unset} [pTg]
+   * @param {number|unset} [pTarget]
    * @return {Array}
    */
-  CLS_recipeGenerator.prototype.parseRawBi = function(rawBi, amtO, pO, pTg) {
-    return this.parseRawIo(rawBi, amtO * pO, false, pTg);
+  CLS_recipeGenerator.prototype.parseRawBi = function(rawBi, amtO, pO, pTarget) {
+    return this.parseRawIo(rawBi, amtO * pO, false, pTarget);
   };
 
 
@@ -238,11 +238,11 @@
    * @param {Array} rawBo
    * @param {number} amtI
    * @param {number} pI
-   * @param {number|unset} [pTg]
+   * @param {number|unset} [pTarget]
    * @return {Array}
    */
-  CLS_recipeGenerator.prototype.parseRawBo = function(rawBo, amtI, pI, pTg) {
-    return this.parseRawIo(rawBo, amtI * pI, false, pTg);
+  CLS_recipeGenerator.prototype.parseRawBo = function(rawBo, amtI, pI, pTarget) {
+    return this.parseRawIo(rawBo, amtI * pI, false, pTarget);
   };
 
 
@@ -438,37 +438,37 @@
     readParamAndCall(paramObj, "payO", val => builder.__payo(this.processPayo(val, payAmtO, metaObj, paramObj)));
 
     // No time here too
-    let tg;
+    let target;
     readParamAndCall(paramObj, "liqIMapper", val => {
-      tg = val(ct);
-      if(tg == null) return;
-      this.processCi(tg, amtI, metaObj, paramObj);
+      target = val(ct);
+      if(target == null) return;
+      this.processCi(target, amtI, metaObj, paramObj);
     });
     readParamAndCall(paramObj, "itmIMapper", val => {
-      tg = val(ct);
-      if(tg == null) return;
-      this.processBi(tg, amtI, pI, metaObj, paramObj);
+      target = val(ct);
+      if(target == null) return;
+      this.processBi(target, amtI, pI, metaObj, paramObj);
     });
     readParamAndCall(paramObj, "payIMapper", val => {
-      tg = val(ct);
-      if(tg == null) return;
-      this.processPayi(tg, payAmtI, metaObj, paramObj);
+      target = val(ct);
+      if(target == null) return;
+      this.processPayi(target, payAmtI, metaObj, paramObj);
     });
     readParamAndCall(paramObj, "liqOMapper", val => {
-      tg = val(ct);
-      if(tg == null) return;
-      this.processCo(tg, amtO, metaObj, paramObj);
+      target = val(ct);
+      if(target == null) return;
+      this.processCo(target, amtO, metaObj, paramObj);
     });
     readParamAndCall(paramObj, "itmOMapper", val => {
-      tg = val(ct);
+      target = val(ct);
       printAll(val, ct);
-      if(tg == null) return;
-      this.processBo(tg, amtO, pO, metaObj, paramObj);
+      if(target == null) return;
+      this.processBo(target, amtO, pO, metaObj, paramObj);
     });
     readParamAndCall(paramObj, "payOMapper", val => {
-      tg = val(ct);
-      if(tg == null) return;
-      this.processPayo(tg, payAmtO, metaObj, paramObj);
+      target = val(ct);
+      if(target == null) return;
+      this.processPayo(target, payAmtO, metaObj, paramObj);
     });
 
     readParamAndCall(paramObj, "ci", val => builder.__ci(this.parseRawCi(val, amtO * pO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));

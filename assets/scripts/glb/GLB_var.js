@@ -51,6 +51,12 @@
     unitRemains: 58.11,
     dporeRevealed: 107.21,
 
+    cropSeed: 2.2,
+    cropLow: 58.22,
+    cropTall: 76.22,
+    cropTaller: 78.52,
+    cropTallest: 79.52,
+
     mineBeam: 71.21,
     bulBase: 74.11,
     bulHigh: 86.01,

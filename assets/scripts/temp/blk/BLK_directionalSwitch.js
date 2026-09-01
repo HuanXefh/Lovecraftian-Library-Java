@@ -31,9 +31,9 @@
   };
 
 
-  function comp_ex_isValidTg(blk, oblk) {
+  function comp_ex_isValidTarget(blk, oblk) {
     return tryFun(oblk.ex_canSwitchDisable, oblk, true) && (
-      tryFun(oblk.ex_isSwitchDisableTg, oblk, false)
+      tryFun(oblk.ex_isSwitchDisableTarget, oblk, false)
         || MDL_cond.isMinerBlock(oblk)
         || MDL_cond.isMassDriver(oblk)
         || MDL_cond.isPump(oblk)
@@ -56,7 +56,7 @@
   function comp_onRemoved(b) {
     if(!b.enabled) return;
     let ob = b.nearby(b.rotation);
-    if(ob == null || ob.team !== b.team || ob.enabled || !b.block.ex_isValidTg(ob.block)) return;
+    if(ob == null || ob.team !== b.team || ob.enabled || !b.block.ex_isValidTarget(ob.block)) return;
 
     ob.enabled = true;
     EFF.fadePlacePack[ob.block.size].at(ob);
@@ -89,7 +89,7 @@
 
 
   function comp_ex_toggle(b, ob) {
-    if(ob == null || ob.team !== b.team || !b.block.ex_isValidTg(ob.block)) return;
+    if(ob == null || ob.team !== b.team || !b.block.ex_isValidTarget(ob.block)) return;
 
     ob.enabled = !b.enabled;
     ob.enabled ?
@@ -166,8 +166,8 @@
        * @param {Block} oblk
        * @return {boolean}
        */
-      ex_isValidTg: function(oblk) {
-        return comp_ex_isValidTg(this, oblk);
+      ex_isValidTarget: function(oblk) {
+        return comp_ex_isValidTarget(this, oblk);
       }
       .setProp({
         noSuper: true,
