@@ -128,16 +128,20 @@
 
       // Tree
       if(
-        ob == null && oblk !== Blocks.air && MDL_cond.isUnitCoverable(unit, true)
+        oblk !== Blocks.air && MDL_cond.isUnitCoverable(unit, true)
           && (
             MDL_cond.isTreeBlock(oblk) ?
               oblk.delegee.hidable && dst < oblk.delegee.radTree :
               MDL_cond.isTallGrassBlock(oblk) ?
                 oblk.delegee.hidable && dst < oblk.size * Vars.tilesize * 0.5 :
-                false
+                MDL_cond.isCrop(oblk) ?
+                  ob.delegee.stageCanHide && dst < ob.delegee.stageCropRad :
+                  false
           )
       ) {
-        if(VARGEN.staHiddenWell != null && !unit.hasEffect(VARGEN.staHiddenWell)) TRIGGER.treeHide.fire(unit);
+        if(VARGEN.staHiddenWell != null && !unit.hasEffect(VARGEN.staHiddenWell)) {
+          TRIGGER.treeHide.fire(unit);
+        };
         unit.apply(VARGEN.staHiddenWell, STA_DUR);
       };
     }, true);

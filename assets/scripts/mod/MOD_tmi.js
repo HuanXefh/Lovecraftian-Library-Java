@@ -602,6 +602,36 @@
 
 
   /**
+   * Registers item output for {@link BLK_crop}.
+   * @param {Block} blk
+   * @return {void}
+   */
+  const regisRc_crop = function(blk) {
+    if(!ENABLED) return;
+
+    MDL_event.onLoad(() => {
+      let i = 0;
+      let iCap = blk.delegee.cropData.iCap();
+      let itm, amt, p;
+      while(i < iCap) {
+        itm = blk.delegee.cropData[i].itm;
+        amt = blk.delegee.cropData[i].amt;
+        p = blk.delegee.cropData[i].p;
+        if(itm != null && amt * p > 0.0) {
+          let rawRc = makeRawRc("factory", blk, blk.ex_calcStageTotalTime(i) - blk.ex_calcStageTotalTime(blk.delegee.cropData[i].stageTo));
+          addProd(rawRc, itm, amt * p);
+
+          rawRc.complete();
+          regisRc(rawRc);
+        };
+        i++;
+      };
+    });
+  };
+  exports.regisRc_crop = regisRc_crop;
+
+
+  /**
    * Registers liquid output for {@link BLK_rainCollector}.
    * @param {Block} blk
    * @return {void}

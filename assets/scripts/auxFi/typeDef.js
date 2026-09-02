@@ -123,6 +123,7 @@
 
 
   /**
+   * See {@link CLS_contentTemplate}.
    * @global
    * @typedef {Function<any>} TemplateFunction
    * @prop {boolean|unset} [noSuper] - If true, `this.super$xxx` won't be called.
@@ -138,20 +139,26 @@
    */
 
   /**
+   * See {@link BLK_crop}.
    * @global
    * @typedef {Object} CropData
    * @prop {number} dur - Duration of this stage.
    * @prop {ItemGn} [itm] - Item produced when harvested, null if not harvestable.
    * @prop {number|unset} [amt] - Amount items produced when harvested.
    * @prop {number|unset} [p] - Chance to produce each item.
+   * @prop {number|unset} [stageTo] - Stage to move back to after being harvested.
    * @prop {number|unset} [rad] - Visual radius of the crop.
    * @prop {boolean|unset} [canHide] - Whether this crop can hide units like a tree.
+   * @prop {boolean|unset} [static]
    * @prop {number|unset} [scl]
    * @prop {number|unset} [mag]
    * @prop {number|unset} [wob]
    * @prop {number|unset} [z]
    * @prop {number|unset} [offSha]
-   * @prop {(function(Building): void)|unset} [drawF] - How to draw the crop. <br> <ARGS>: b.
+   * @prop {(function(Building): void)|unset} [drawF] - How to draw the crop. <br> `ARGS`: b.
+   * @prop {(function(Building): void)|unset} [updateScr] - Called when this crop updates. <br> `ARGS`: b.
+   * @prop {(function(Building): void)|unset} [harvestScr] - Called when this crop gets harvested. <br> `ARGS`: b.
+   * @prop {(function(Building): void)|unset} [destroyScr] - Called when this crop gets destroyed. <br> `ARGS`: b.
    */
 
 

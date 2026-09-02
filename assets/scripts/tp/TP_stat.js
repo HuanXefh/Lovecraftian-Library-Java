@@ -60,6 +60,8 @@
   newStat("lovec", "blk0min-blockeditms", StatCat.crafting);
   newStat("lovec", "blk0min-alloweditms", StatCat.crafting);
   newStat("lovec", "blk0min-scantier", StatCat.crafting);
+  newStat("lovec", "blk0min-cropstage", StatCat.crafting);
+  newStat("lovec", "blk0min-croptotaltime", StatCat.crafting);
 
 
   newStat("lovec", "blk-erekirheatreq", StatCat.crafting);

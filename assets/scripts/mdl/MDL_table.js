@@ -590,9 +590,10 @@
    * @param {number|unset} [w]
    * @param {Dialog|unset} [dialToHide]
    * @param {ContentInfoDialog|unset} [ctDial]
+   * @return {Cell|null}
    */
   const rcCtIcon = function(tb, ct, amt, p, cancelLiq, w, dialToHide, ctDial) {
-    if(ct == null) return;
+    if(ct == null) return null;
     if(amt == null) amt = -1;
     if(p == null) p = 1.0;
     if(w == null) w = 32.0;

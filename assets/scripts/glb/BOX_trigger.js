@@ -140,6 +140,13 @@ const BOX_trigger = new CLS_objectBox({
 
 
   /**
+   * Triggered whenever a crop is harvested.
+   * <br> `ARGS`: b, itm.
+   */
+  cropHarvest: new CLS_eventTrigger("lovec-crop-harvest"),
+
+
+  /**
    * Triggered whenever a large building is built.
    * See {@link BLK_constructionCore}.
    * <br> `ARGS`: b.
@@ -228,7 +235,7 @@ const BOX_trigger = new CLS_objectBox({
       MDL_event.onWorldLoad(() => BOX_trigger.abilityDataInit.fire());
       BOX_trigger.majorSync.addGlobalListener(() => BOX_trigger.abilityDataInit.fire());
     });
-    
+
     return new CLS_eventTrigger("lovec-ability-data-init");
   })(),
 

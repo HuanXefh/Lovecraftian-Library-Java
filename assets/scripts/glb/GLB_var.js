@@ -137,6 +137,7 @@
     lootPickRad: 10.0,
     lootMergeRad: 4.0,
     unitLootRad: 18.0,
+    cropLootRad: 6.0,
 
     offBuildStatR: 2.25,
     unitSurR: 4,

@@ -21,11 +21,11 @@
       if(!blk.isUnpacker) {
         global.fcell.fluidItemMap.each((liq, itm) => {
           MDL_recipeDict.addFldConsTerm(blk, liq, blk.packageAmt * blk.liqPerCellItm / blk.craftTime);
-          MDL_recipeDict.addItmProdTerm(blk, itm, blk.packageAmt);
+          MDL_recipeDict.addItmProdTerm(blk, itm, blk.packageAmt, 1.0);
         });
       } else {
         global.fcell.fluidItemMap.each((liq, itm) => {
-          MDL_recipeDict.addItmConsTerm(blk, itm, blk.packageAmt);
+          MDL_recipeDict.addItmConsTerm(blk, itm, blk.packageAmt, 1.0);
           MDL_recipeDict.addFldProdTerm(blk, liq, blk.packageAmt * blk.liqPerCellItm / blk.craftTime);
         });
       };

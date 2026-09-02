@@ -42,7 +42,10 @@
   function comp_ex_lootCall(b, loots, amt) {
     let loot = loots.first();
     if(loot != null) {
-      if(FRAG_item.takeLoot(b, loot, amt, true)) MDL_effect.itemTransfer(loot.x, loot.y, b);
+      if(FRAG_item.takeLoot(b, loot, amt, true)) {
+        loot.time = 0.0;
+        MDL_effect.itemTransfer(loot.x, loot.y, b);
+      };
     };
   };
 
