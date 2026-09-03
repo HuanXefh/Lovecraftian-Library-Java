@@ -14,12 +14,12 @@ canMineDepthOre: true
 drillAmtMtp: 2.0
 durabCap: 3600.0
 drillEff: {
-  type: EffectPreset
-  name: pulseDrillPack
-  index: 3
+    type: EffectPreset
+    name: pulseDrillPack
+    index: 3
 }
 updateEff: {
-  type: EffectPreset
-  name: crackDrill
+    type: EffectPreset
+    name: crackDrill
 }
 updateEffP: 0.01

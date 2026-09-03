@@ -5,40 +5,53 @@
 */
 
 
-  /**
-   * Lovec version of {@link EventType}.
-   * @class
-   * @param {string} name
-   */
-  const CLS_eventTrigger = newClass().initClass();
+    /**
+     * Lovec version of {@link EventType}.
+     * @class
+     * @param {string} name
+     */
+    const CLS_eventTrigger = newClass().initClass();
 
 
-  CLS_eventTrigger.prototype.init = function(name) {
-    this.name = registerUniqueName(name, insNames, "event trigger");
-    this.listeners = [];
-    this.glbListeners = [];
-    this.onceListeners = [];
-    this.idListenerMap = new ObjectMap();
-
-    this.mapLast = "";
-    this.mapCur = "";
-
-    MDL_event.onUpdate(() => {
-      this.mapCur = global.lovecUtil.fun._mapCur();
-      if(this.mapLast !== this.mapCur) {
-        this.clearListener();
-        this.clearOnceListener();
-        if(String.isEmpty(this.mapCur) || !String.isEmpty(this.mapLast)) {
-          TRIGGER.mapExit.fire(this.mapLast);
-        };
-        TRIGGER.mapChange.fire(this.mapCur);
-        this.mapLast = this.mapCur;
-      };
-    }, "eventTrigger: ${1}".format(this.name));
-  };
+    CLS_eventTrigger.prototype.init = function(name) {
 
 
-  const insNames = [];
+        /** @type {string} */
+        this.name = registerUniqueName(name, insNames, "event trigger");
+        /** @type {Array<Function>} */
+        this.listeners = [];
+        /** @type {Array<Function>} */
+        this.glbListeners = [];
+        /** @type {Array<Function>} */
+        this.onceListeners = [];
+        /** @type {ObjectMap<string, Function>} */
+        this.idListenerMap = new ObjectMap();
+
+        /** @type {string} */
+        this.mapLast = "";
+        /** @type {string} */
+        this.mapCur = "";
+
+
+        MDL_event.onUpdate(() => {
+            this.mapCur = global.lovecUtil.fun._mapCur();
+            if(this.mapLast !== this.mapCur) {
+                this.clearListener();
+                this.clearOnceListener();
+                if(String.isEmpty(this.mapCur) || !String.isEmpty(this.mapLast)) {
+                    TRIGGER.mapExit.fire(this.mapLast);
+                };
+                TRIGGER.mapChange.fire(this.mapCur);
+                this.mapLast = this.mapCur;
+            };
+        }, "eventTrigger: ${1}".format(this.name));
+
+
+    };
+
+
+    /** @type {Array<string>} */
+    const insNames = [];
 
 
 /*
@@ -55,108 +68,101 @@
 */
 
 
-  /* <------------------------------ util ------------------------------ */
+    /* <------------------------------ util ------------------------------ */
 
 
-  /**
-   * Adds a listener to the trigger.
-   * These listeners will be cleared on map change.
-   * @param {Function} listener
-   * @param {number|string|unset} [id]
-   * @param {boolean|unset} [shouldOverwrite]
-   * @return {this}
-   */
-  CLS_eventTrigger.prototype.addListener = function(listener, id, shouldOverwrite) {
-    if(id == null) {
-      this.listeners.push(listener);
-    } else {
-      if(this.idListenerMap.containsKey(id)) {
-        if(shouldOverwrite) {
-          this.listeners.remove(this.idListenerMap.get(id));
-          this.listeners.push(listener);
-          this.idListenerMap.put(id, listener);
+    /**
+     * Adds a listener to the trigger.
+     * These listeners will be cleared on map change.
+     * @param {Function} listener
+     * @param {string|unset} [id]
+     * @param {boolean|unset} [shouldOverwrite]
+     * @return {this}
+     */
+    CLS_eventTrigger.prototype.addListener = function(listener, id, shouldOverwrite) {
+        if(id == null) {
+            this.listeners.push(listener);
+        } else {
+            if(this.idListenerMap.containsKey(id)) {
+                if(shouldOverwrite) {
+                    this.listeners.remove(this.idListenerMap.get(id));
+                    this.listeners.push(listener);
+                    this.idListenerMap.put(id, listener);
+                };
+            } else {
+                this.listeners.push(listener);
+                this.idListenerMap.put(id, listener);
+            };
         };
-      } else {
-        this.listeners.push(listener);
-        this.idListenerMap.put(id, listener);
-      };
+        return this;
     };
 
-    return this;
-  };
+
+    /**
+     * Adds a global listener which won't be removed on map change.
+     * @param {Function} listener
+     * @return {this}
+     */
+    CLS_eventTrigger.prototype.addGlobalListener = function(listener) {
+        this.glbListeners.push(listener);
+        return this;
+    };
 
 
-  /**
-   * Adds a global listener which won't be removed on map change.
-   * @param {Function} listener
-   * @return {this}
-   */
-  CLS_eventTrigger.prototype.addGlobalListener = function(listener) {
-    this.glbListeners.push(listener);
-
-    return this;
-  };
-
-
-  /**
-   * Adds a one-time listener.
-   * @param {Function} listener
-   * @return {this}
-   */
-  CLS_eventTrigger.prototype.addOnceListener = function(listener) {
-    this.onceListeners.push(listener);
-
-    return this;
-  };
+    /**
+     * Adds a one-time listener.
+     * @param {Function} listener
+     * @return {this}
+     */
+    CLS_eventTrigger.prototype.addOnceListener = function(listener) {
+        this.onceListeners.push(listener);
+        return this;
+    };
 
 
-  /**
-   * Removes a listener by ID.
-   * Only regular listeners can be removed.
-   * @param {number|string} id
-   * @return {this}
-   */
-  CLS_eventTrigger.prototype.removeListener = function(id) {
-    this.listeners.remove(this.idListenerMap.remove(id));
-
-    return this;
-  };
-
-
-  /**
-   * Removes all regular listeners from the trigger.
-   * @return {this}
-   */
-  CLS_eventTrigger.prototype.clearListener = function() {
-    this.listeners.clear();
-    this.idListenerMap.clear();
-
-    return this;
-  };
+    /**
+     * Removes a listener by ID.
+     * Only regular listeners can be removed.
+     * @param {number|string} id
+     * @return {this}
+     */
+    CLS_eventTrigger.prototype.removeListener = function(id) {
+        this.listeners.remove(this.idListenerMap.remove(id));
+        return this;
+    };
 
 
-  /**
-   * Removes all one-time listeners from the trigger.
-   * @return {this}
-   */
-  CLS_eventTrigger.prototype.clearOnceListener = function() {
-    this.onceListeners.clear();
+    /**
+     * Removes all regular listeners from the trigger.
+     * @return {this}
+     */
+    CLS_eventTrigger.prototype.clearListener = function() {
+        this.listeners.clear();
+        this.idListenerMap.clear();
+        return this;
+    };
 
-    return this;
-  };
+
+    /**
+     * Removes all one-time listeners from the trigger.
+     * @return {this}
+     */
+    CLS_eventTrigger.prototype.clearOnceListener = function() {
+        this.onceListeners.clear();
+        return this;
+    };
 
 
-  /**
-   * Calls all listeners of the trigger with the arguments passed down.
-   * @return {void}
-   */
-  CLS_eventTrigger.prototype.fire = function() {
-    this.listeners.forEachFast(listener =>listener.apply(null, arguments), true);
-    this.glbListeners.forEachFast(listener => listener.apply(null, arguments), true);
-    this.onceListeners.forEachFast(listener => listener.apply(null, arguments), true);
-
-    this.clearOnceListener();
-  };
+    /**
+     * Calls all listeners of the trigger with the arguments passed down.
+     * @return {void}
+     */
+    CLS_eventTrigger.prototype.fire = function() {
+        this.listeners.forEachFast(listener =>listener.apply(null, arguments), true);
+        this.glbListeners.forEachFast(listener => listener.apply(null, arguments), true);
+        this.onceListeners.forEachFast(listener => listener.apply(null, arguments), true);
+        this.clearOnceListener();
+    };
 
 
 

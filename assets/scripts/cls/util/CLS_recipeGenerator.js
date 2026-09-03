@@ -5,30 +5,38 @@
 */
 
 
-  /**
-   * Utility class for automatic recipe generation.
-   * See {@link TP_recipeGen} for examples.
-   * @class
-   * @param {function(Object, Object): void} setter - `this` here refers to the generator itself. <br> `ARGS`: rcObj, metaObj.
-   */
-  const CLS_recipeGenerator = newClass().initClass();
+    /**
+     * Utility class for automatic recipe generation.
+     * See {@link TP_recipeGen} for examples.
+     * @class
+     * @param {C2Function<Object, Object>} setter - `this` here refers to the generator itself. <br> `ARGS`: rcObj, metaObj.
+     */
+    const CLS_recipeGenerator = newClass().initClass();
 
 
-  CLS_recipeGenerator.prototype.init = function(setter) {
-    this.setter = tryVal(setter, Function.air);
-
-    this.__categ__ = null;
-    this.__tag__ = null;
-  };
+    CLS_recipeGenerator.prototype.init = function(setter) {
 
 
-  let runCount = 0;
-  let rcCount = 0;
+        /** @type {C2Function<Object, Object>} */
+        this.setter = tryVal(setter, Function.air);
+        /** @type {string|null} */
+        this.__categ__ = null;
+        /** @type {string|null} */
+        this.__tag__ = null;
 
 
-  MDL_event.onLoadDelayTask(VAR.delay.load.logRcGen, () => {
-    console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(String(runCount).color(Pal.accent), String(rcCount).color(Pal.accent)));
-  });
+    };
+
+
+    /** @type {number} */
+    let runCount = 0;
+    /** @type {number} */
+    let rcCount = 0;
+
+
+    MDL_event.onLoadDelayTask(VAR.delay.load.logRcGen, () => {
+        console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(String(runCount).color(Pal.accent), String(rcCount).color(Pal.accent)));
+    });
 
 
 /*
@@ -45,615 +53,615 @@
 */
 
 
-  /* <------------------------------ I/O ------------------------------ */
+    /* <------------------------------ I/O ------------------------------ */
 
 
-  /**
-   * Sets up single-content CI.
-   * @param {ContentGn} ct_gn
-   * @param {number} amtI
-   * @param {Object} metaObj
-   * @param {Object|unset} [paramObj]
-   * @return {[string, number]} `TUPLE`: nameCt, amt.
-   */
-  CLS_recipeGenerator.prototype.processCi = function(ct_gn, amtI, metaObj, paramObj) {
-    return [
-      ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
-      readParam(paramObj, "amtI", amtI * readParam(paramObj, "amtIScl", 1.0)) * 6.0 / readParam(metaObj, "time", 60.0),
-    ];
-  };
+    /**
+     * Sets up single-content CI.
+     * @param {ContentGn} ct_gn
+     * @param {number} amtI
+     * @param {Object} metaObj
+     * @param {Object|unset} [paramObj]
+     * @return {[string, number]} `TUPLE`: nameCt, amt.
+     */
+    CLS_recipeGenerator.prototype.processCi = function(ct_gn, amtI, metaObj, paramObj) {
+        return [
+            ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
+            readParam(paramObj, "amtI", amtI * readParam(paramObj, "amtIScl", 1.0)) * 6.0 / readParam(metaObj, "time", 60.0),
+        ];
+    };
 
 
-  /**
-   * Sets up single-content BI.
-   * @param {ContentGn} ct_gn
-   * @param {number} amtI
-   * @param {number} pI
-   * @param {Object} metaObj
-   * @param {Object|unset} [paramObj]
-   * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
-   */
-  CLS_recipeGenerator.prototype.processBi = function(ct_gn, amtI, pI, metaObj, paramObj) {
-    return [
-      ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
-      readParam(paramObj, "amtI", Math.round(amtI * readParam(paramObj, "amtIScl", 1.0))),
-      pI,
-    ];
-  };
+    /**
+     * Sets up single-content BI.
+     * @param {ContentGn} ct_gn
+     * @param {number} amtI
+     * @param {number} pI
+     * @param {Object} metaObj
+     * @param {Object|unset} [paramObj]
+     * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
+     */
+    CLS_recipeGenerator.prototype.processBi = function(ct_gn, amtI, pI, metaObj, paramObj) {
+        return [
+            ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
+            readParam(paramObj, "amtI", Math.round(amtI * readParam(paramObj, "amtIScl", 1.0))),
+            pI,
+        ];
+    };
 
 
-  /**
-   * Sets up single-content PAYI.
-   * @param {ContentGn} ct_gn
-   * @param {number} payAmtI
-   * @param {Object} metaObj
-   * @param {Object|unset} [paramObj]
-   * @return {[string, number]} `TUPLE`: nameCt, amt.
-   */
-  CLS_recipeGenerator.prototype.processPayi = function(ct_gn, payAmtI, metaObj, paramObj) {
-    return [
-      ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
-      readParam(paramObj, "payAmtI", Math.round(payAmtI * readParam(paramObj, "amtIScl", 1.0))),
-    ];
-  };
+    /**
+     * Sets up single-content PAYI.
+     * @param {ContentGn} ct_gn
+     * @param {number} payAmtI
+     * @param {Object} metaObj
+     * @param {Object|unset} [paramObj]
+     * @return {[string, number]} `TUPLE`: nameCt, amt.
+     */
+    CLS_recipeGenerator.prototype.processPayi = function(ct_gn, payAmtI, metaObj, paramObj) {
+        return [
+            ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
+            readParam(paramObj, "payAmtI", Math.round(payAmtI * readParam(paramObj, "amtIScl", 1.0))),
+        ];
+    };
 
 
-  /**
-   * Sets up single-content CO.
-   * @param {ContentGn} ct_gn
-   * @param {number} amtO
-   * @param {Object} metaObj
-   * @param {Object|unset} [paramObj]
-   * @return {[string, number]} `TUPLE`: nameCt, amt.
-   */
-  CLS_recipeGenerator.prototype.processCo = function(ct_gn, amtO, metaObj, paramObj) {
-    return [
-      ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
-      readParam(paramObj, "amtO", amtO * readParam(paramObj, "amtOScl", 1.0)) * 6.0 / readParam(metaObj, "time", 60.0),
-    ];
-  };
+    /**
+     * Sets up single-content CO.
+     * @param {ContentGn} ct_gn
+     * @param {number} amtO
+     * @param {Object} metaObj
+     * @param {Object|unset} [paramObj]
+     * @return {[string, number]} `TUPLE`: nameCt, amt.
+     */
+    CLS_recipeGenerator.prototype.processCo = function(ct_gn, amtO, metaObj, paramObj) {
+        return [
+            ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
+            readParam(paramObj, "amtO", amtO * readParam(paramObj, "amtOScl", 1.0)) * 6.0 / readParam(metaObj, "time", 60.0),
+        ];
+    };
 
 
-  /**
-   * Sets up single-content BO.
-   * @param {ContentGn} ct_gn
-   * @param {number} amtO
-   * @param {number} pO
-   * @param {Object} metaObj
-   * @param {Object|unset} [paramObj]
-   * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
-   */
-  CLS_recipeGenerator.prototype.processBo = function(ct_gn, amtO, pO, metaObj, paramObj) {
-    return [
-      ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
-      readParam(paramObj, "amtO", Math.round(amtO * readParam(paramObj, "amtOScl", 1.0))),
-      pO,
-    ];
-  };
+    /**
+     * Sets up single-content BO.
+     * @param {ContentGn} ct_gn
+     * @param {number} amtO
+     * @param {number} pO
+     * @param {Object} metaObj
+     * @param {Object|unset} [paramObj]
+     * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
+     */
+    CLS_recipeGenerator.prototype.processBo = function(ct_gn, amtO, pO, metaObj, paramObj) {
+        return [
+            ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
+            readParam(paramObj, "amtO", Math.round(amtO * readParam(paramObj, "amtOScl", 1.0))),
+            pO,
+        ];
+    };
 
 
-  /**
-   * Sets up single-content PAYI.
-   * @param {ContentGn} ct_gn
-   * @param {number} payAmtO
-   * @param {Object} metaObj
-   * @param {Object|unset} [paramObj]
-   * @return {[string, number]} `TUPLE`: nameCt, amt.
-   */
-  CLS_recipeGenerator.prototype.processPayo = function(ct_gn, payAmtO, metaObj, paramObj) {
-    return [
-      ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
-      readParam(paramObj, "payAmtO", Math.round(payAmtO * readParam(paramObj, "amtOScl", 1.0))),
-    ];
-  };
+    /**
+     * Sets up single-content PAYI.
+     * @param {ContentGn} ct_gn
+     * @param {number} payAmtO
+     * @param {Object} metaObj
+     * @param {Object|unset} [paramObj]
+     * @return {[string, number]} `TUPLE`: nameCt, amt.
+     */
+    CLS_recipeGenerator.prototype.processPayo = function(ct_gn, payAmtO, metaObj, paramObj) {
+        return [
+            ct_gn instanceof UnlockableContent ? ct_gn.name : ct_gn,
+            readParam(paramObj, "payAmtO", Math.round(payAmtO * readParam(paramObj, "amtOScl", 1.0))),
+        ];
+    };
 
 
-  /**
-   * Parses raw IO array.
-   * @param {Array} raw
-   * @param {number} baseAmt
-   * @param {boolean|unset} [isContinuous]
-   * @param {number|unset} [pTarget]
-   * @return {Array}
-   */
-  CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous, pTarget) {
-    let arr = [];
+    /**
+     * Parses raw IO array.
+     * @param {Array} raw
+     * @param {number} baseAmt
+     * @param {boolean|unset} [isContinuous]
+     * @param {number|unset} [pTarget]
+     * @return {Array}
+     */
+    CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous, pTarget) {
+        let arr = [];
 
-    let tmpArr = raw.deepCpy();
-    thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous, pTarget]);
-    tmpArr.forEachRow(isContinuous ? 2 : 3, (target, amt, p) => {
-      MDL_recipe.parseRcIoRow(arr, target, amt, isContinuous ? null : p, null, false, pTarget);
-    }, true);
-    arr.forEachAll((ele, ind, arr1) => {
-      if(ele instanceof UnlockableContent) arr1[ind] = ele.name;
+        let tmpArr = raw.deepCpy();
+        thisFun.convertFrac.apply(this, [tmpArr, baseAmt, isContinuous, pTarget]);
+        tmpArr.forEachRow(isContinuous ? 2 : 3, (target, amt, p) => {
+            MDL_recipe.parseRcIoRow(arr, target, amt, isContinuous ? null : p, null, false, pTarget);
+        }, true);
+        arr.forEachAll((ele, ind, arr1) => {
+            if(ele instanceof UnlockableContent) arr1[ind] = ele.name;
+        });
+
+        return arr;
+    }
+    .setProp({
+        convertFrac: function(arr, baseAmt, isContinuous) {
+            let i = 0, iCap = arr.iCap();
+            while(i < iCap) {
+                if(arr[i] instanceof Array) {
+                    this.parseRawIo.convertFrac.apply(this, [arr[i], baseAmt, isContinuous]);
+                } else {
+                    arr[i + 1] = isContinuous ?
+                        (baseAmt * arr[i + 1]) :
+                        (baseAmt * arr[i + 1] * (1.0 / arr[i + 2]));
+                };
+                i += isContinuous ? 2 : 3;
+            };
+        },
     });
 
-    return arr;
-  }
-  .setProp({
-    convertFrac: function(arr, baseAmt, isContinuous) {
-      let i = 0, iCap = arr.iCap();
-      while(i < iCap) {
-        if(arr[i] instanceof Array) {
-          this.parseRawIo.convertFrac.apply(this, [arr[i], baseAmt, isContinuous]);
-        } else {
-          arr[i + 1] = isContinuous ?
-            (baseAmt * arr[i + 1]) :
-            (baseAmt * arr[i + 1] * (1.0 / arr[i + 2]));
+
+    /**
+     * Parses raw CI array.
+     * @param {Array} rawCi
+     * @param {number} amtO
+     * @return {RecipeIo2Array}
+     */
+    CLS_recipeGenerator.prototype.parseRawCi = function(rawCi, amtO) {
+        return this.parseRawIo(rawCi, amtO, true);
+    };
+
+
+    /**
+     * Parses raw BI array.
+     * @param {Array} rawBi
+     * @param {number} amtO
+     * @param {number} pO
+     * @param {number|unset} [pTarget]
+     * @return {RecipeIo3Array}
+     */
+    CLS_recipeGenerator.prototype.parseRawBi = function(rawBi, amtO, pO, pTarget) {
+        return this.parseRawIo(rawBi, amtO * pO, false, pTarget);
+    };
+
+
+    /**
+     * Parses raw PAYI array.
+     * @param {Array} rawPayi
+     * @param {number} payAmtO
+     * @return {RecipeIo2Array}
+     */
+    CLS_recipeGenerator.prototype.parseRawPayi = function(rawPayi, payAmtO) {
+        return this.parseRawIo(rawPayi, payAmtO, true);
+    };
+
+
+    /**
+     * Parses raw CO array.
+     * @param {Array} rawCo
+     * @param {number} amtI
+     * @return {RecipeIo2Array}
+     */
+    CLS_recipeGenerator.prototype.parseRawCo = function(rawCo, amtI) {
+        return this.parseRawIo(rawCo, amtI, true);
+    };
+
+
+    /**
+     * Parses raw BO array.
+     * @param {Array} rawBo
+     * @param {number} amtI
+     * @param {number} pI
+     * @param {number|unset} [pTarget]
+     * @return {RecipeIo3Array}
+     */
+    CLS_recipeGenerator.prototype.parseRawBo = function(rawBo, amtI, pI, pTarget) {
+        return this.parseRawIo(rawBo, amtI * pI, false, pTarget);
+    };
+
+
+    /**
+     * Parses raw PAYO array.
+     * @param {Array} rawPayo
+     * @param {number} payAmtI
+     * @return {RecipeIo2Array}
+     */
+    CLS_recipeGenerator.prototype.parseRawPayo = function(rawPayo, payAmtI) {
+        return this.parseRawIo(rawPayo, payAmtI, true);
+    };
+
+
+    /* <------------------------------ property ------------------------------ */
+
+
+    /**
+     * Sets current category.
+     * @param {string|unset} [categ]
+     * @return {this}
+     */
+    CLS_recipeGenerator.prototype.setCateg = function(categ) {
+        this.__categ__ = tryVal(categ, null);
+        return this;
+    };
+
+
+    /**
+     * Sets current recipe tag.
+     * @param {string|unset} [tag]
+     * @return {this}
+     */
+    CLS_recipeGenerator.prototype.setTag = function(tag) {
+        this.__tag__ = tryVal(tag, null);
+        return this;
+    };
+
+
+    /* <------------------------------ util ------------------------------ */
+
+
+    /**
+     * Gets standard generated header for some recipe.
+     * @param {string} nameCt
+     * @return {string}
+     */
+    CLS_recipeGenerator.prototype.getHeaderName = function(nameCt) {
+        return tryVal(this.__categ__, "uncategorized").toUpperCase() + ": <${1}${2}>".format(nameCt, this.__tag__ == null ? "" : " (${1})".format(this.__tag__));
+    };
+
+
+    /**
+     * Adds a recipe.
+     * Any recipe added by this method will be tagged as GENERATED.
+     * @param {Object} rc
+     * @param {string} nameCt
+     * @param {CFunction<Object>|unset} [objF] - Used to further modify the recipe.
+     * @param {Object|unset} [rcBuilderObj] - Expected to be built with {@link CLS_recipeBuilder}.
+     * @param {Object|unset} [paramObj]
+     * @return {void}
+     */
+    CLS_recipeGenerator.prototype.addRc = function thisFun(rc, nameCt, objF, rcBuilderObj, paramObj) {
+        let
+            categ = readParam(paramObj, thisFun.tmpTup.with("categ", "category")),
+            lastCateg = null,
+            tag = readParam(paramObj, "tag"),
+            lastTag = null;
+
+        if(categ != null) {
+            lastCateg = this.__categ__;
+            this.setCateg(categ);
         };
-        i += isContinuous ? 2 : 3;
-      };
-    },
-  });
+        if(tag != null) {
+            lastTag = this.__tag__;
+            this.setTag(tag);
+        };
 
+        let rcObj = {
+            icon: nameCt,
+            category: this.__categ__,
+            isGenerated: true,
+        };
+        if(rcBuilderObj != null) {
+            Object.cloneProp(rcObj, rcBuilderObj);
+        };
+        if(objF != null) {
+            objF(rcObj);
+        };
+        rc.recipe.write(this.getHeaderName(nameCt), rcObj);
 
-  /**
-   * Parses raw CI array.
-   * @param {Array} rawCi
-   * @param {number} amtO
-   * @return {Array}
-   */
-  CLS_recipeGenerator.prototype.parseRawCi = function(rawCi, amtO) {
-    return this.parseRawIo(rawCi, amtO, true);
-  };
+        if(lastCateg != null) {
+            this.setCateg(lastCateg);
+        };
+        if(lastTag != null) {
+            this.setTag(lastTag);
+        };
 
-
-  /**
-   * Parses raw BI array.
-   * @param {Array} rawBi
-   * @param {number} amtO
-   * @param {number} pO
-   * @param {number|unset} [pTarget]
-   * @return {Array}
-   */
-  CLS_recipeGenerator.prototype.parseRawBi = function(rawBi, amtO, pO, pTarget) {
-    return this.parseRawIo(rawBi, amtO * pO, false, pTarget);
-  };
-
-
-  /**
-   * Parses raw CI array.
-   * @param {Array} rawPayi
-   * @param {number} payAmtO
-   * @return {Array}
-   */
-  CLS_recipeGenerator.prototype.parseRawPayi = function(rawPayi, payAmtO) {
-    return this.parseRawIo(rawPayi, payAmtO, true);
-  };
-
-
-  /**
-   * Parses raw CO array.
-   * @param {Array} rawCo
-   * @param {number} amtI
-   * @return {Array}
-   */
-  CLS_recipeGenerator.prototype.parseRawCo = function(rawCo, amtI) {
-    return this.parseRawIo(rawCo, amtI, true);
-  };
-
-
-  /**
-   * Parses raw BO array.
-   * @param {Array} rawBo
-   * @param {number} amtI
-   * @param {number} pI
-   * @param {number|unset} [pTarget]
-   * @return {Array}
-   */
-  CLS_recipeGenerator.prototype.parseRawBo = function(rawBo, amtI, pI, pTarget) {
-    return this.parseRawIo(rawBo, amtI * pI, false, pTarget);
-  };
-
-
-  /**
-   * Parses raw PAYO array.
-   * @param {Array} rawPayo
-   * @param {number} payAmtI
-   * @return {Array}
-   */
-  CLS_recipeGenerator.prototype.parseRawPayo = function(rawPayo, payAmtI) {
-    return this.parseRawIo(rawPayo, payAmtI, true);
-  };
-
-
-  /* <------------------------------ property ------------------------------ */
-
-
-  /**
-   * Sets current category.
-   * @param {string|unset} [categ]
-   * @return {this}
-   */
-  CLS_recipeGenerator.prototype.setCateg = function(categ) {
-    this.__categ__ = tryVal(categ, null);
-    return this;
-  };
-
-
-  /**
-   * Sets current recipe tag.
-   * @param {string|unset} [tag]
-   * @return {this}
-   */
-  CLS_recipeGenerator.prototype.setTag = function(tag) {
-    this.__tag__ = tryVal(tag, null);
-    return this;
-  };
-
-
-  /* <------------------------------ util ------------------------------ */
-
-
-  /**
-   * Gets standard generated header for some recipe.
-   * @param {string} nameCt
-   * @return {string}
-   */
-  CLS_recipeGenerator.prototype.getHeaderName = function(nameCt) {
-    return tryVal(this.__categ__, "uncategorized").toUpperCase() + ": <${1}${2}>".format(nameCt, this.__tag__ == null ? "" : " (${1})".format(this.__tag__));
-  };
-
-
-  /**
-   * Adds a recipe.
-   * Any recipe added by this method will be tagged as GENERATED.
-   * @param {Object} rc
-   * @param {string} nameCt
-   * @param {(function(Object): void)|unset} [objF] - Used to further modify the recipe.
-   * @param {Object|unset} [rcBuilderObj] - Expected to be built with {@link CLS_recipeBuilder}.
-   * @param {Object|unset} [paramObj]
-   * @return {void}
-   */
-  CLS_recipeGenerator.prototype.addRc = function thisFun(rc, nameCt, objF, rcBuilderObj, paramObj) {
-    let
-      categ = readParam(paramObj, thisFun.tmpTup.with("categ", "category")),
-      lastCateg = null,
-      tag = readParam(paramObj, "tag"),
-      lastTag = null;
-
-    if(categ != null) {
-      lastCateg = this.__categ__;
-      this.setCateg(categ);
-    };
-    if(tag != null) {
-      lastTag = this.__tag__;
-      this.setTag(tag);
-    };
-
-    let rcObj = {
-      icon: nameCt,
-      category: this.__categ__,
-      isGenerated: true,
-    };
-    if(rcBuilderObj != null) {
-      Object.cloneProp(rcObj, rcBuilderObj);
-    };
-    if(objF != null) {
-      objF(rcObj);
-    };
-    rc.recipe.write(this.getHeaderName(nameCt), rcObj);
-
-    if(lastCateg != null) {
-      this.setCateg(lastCateg);
-    };
-    if(lastTag != null) {
-      this.setTag(lastTag);
-    };
-
-    rcCount++;
-  }
-  .setProp({
-    tmpTup: [],
-  });
-
-
-  /**
-   * Reads basic parameters from `paramObj`.
-   * @param {Object} rcObj
-   * @param {Object|unset} [paramObj]
-   * @return {void}
-   */
-  CLS_recipeGenerator.prototype.setBaseParam = function(rcObj, paramObj) {
-    readParamAndCall(paramObj, "icon", val => rcObj.icon = val);
-    readParamAndCall(paramObj, "tint", val => rcObj.tint = val);
-    readParamAndCall(paramObj, "keyCt", val => rcObj.keyCt = val);
-    readParamAndCall(paramObj, "validCheck", val => rcObj.validCheck = val);
-    readParamAndCall(paramObj, "lockedBy", val => rcObj.lockedBy = val);
-    readParamAndCall(paramObj, "timeScl", val => rcObj.timeScl = val);
-    readParamAndCall(paramObj, "pollution", val => rcObj.pollution = val);
-    readParamAndCall(paramObj, "ignoreItemFullness", val => rcObj.ignoreItemFullness = val);
-    readParamAndCall(paramObj, "erekirHeatI", val => rcObj.erekirHeatI = val);
-    readParamAndCall(paramObj, "erekirHeatO", val => rcObj.erekirHeatO = val);
-    readParamAndCall(paramObj, "attr", val => rcObj.attr = val);
-    readParamAndCall(paramObj, "attrMin", val => rcObj.attrMin = val);
-    readParamAndCall(paramObj, "attrMax", val => rcObj.attrMax = val);
-    readParamAndCall(paramObj, "attrBoostScl", val => rcObj.attrBoostScl = val);
-    readParamAndCall(paramObj, "attrBoostCap", val => rcObj.attrBoostCap = val);
-    readParamAndCall(paramObj, "tooltip", val => rcObj.tooltip = val);
-    readParamAndCall(paramObj, "tempReq", val => rcObj.tempReq = val);
-    readParamAndCall(paramObj, "tempAllowed", val => rcObj.tempAllowed = val);
-  };
-
-
-  /**
-   * Whether recipe for given content should be created.
-   * @param {UnlockableContent} ct
-   * @param {Object} metaObj
-   * @param {Object|unset} [paramObj]
-   * @return {boolean}
-   */
-  CLS_recipeGenerator.prototype.checkCtValid = function(ct, metaObj, paramObj) {
-    return DB_recipe.db["gen"]["validCheck"].every(boolF => boolF.apply(this, [ct, metaObj, paramObj]));
-  };
-
-
-  /**
-   * Handles `objF` used for recipe.
-   * @param {UnlockableContent} ct
-   * @param {Object} metaObj
-   * @param {Object} paramObj
-   * @return {function(Object): void}
-   */
-  CLS_recipeGenerator.prototype.processObjF = function(ct, metaObj, paramObj) {
-    return obj => {
-      this.setBaseParam(obj, paramObj);
-      DB_recipe.db["gen"]["objF"].forEachRow(2, (boolF, objF) => {
-        if(!boolF.apply(this, [ct, metaObj, paramObj])) return;
-        objF.apply(this, [obj, metaObj, paramObj]);
-      }, true);
-      readParam(metaObj, "objF", Function.air)(obj);
-    };
-  };
-
-
-  /**
-   * Builds final recipe object.
-   * @param {UnlockableContent} ct
-   * @param {Object} metaObj
-   * @param {Object|unset} [paramObj]
-   * @return {Object}
-   */
-  CLS_recipeGenerator.prototype.buildRcObj = function(ct, metaObj, paramObj) {
-    Object.clear(CLS_recipeGenerator.RECIPE_OBJECT_TMP);
-
-    let builder = new CLS_recipeBuilder();
-    let
-      amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)),
-      payAmtI = readParam(metaObj, "payAmtI", readParam(metaObj, "payAmt", 1)),
-      pI = readParam(metaObj, "pI", readParam(metaObj, "p", 1.0)),
-      amtO = readParam(metaObj, "amtO", readParam(metaObj, "amt", 1)),
-      payAmtO = readParam(metaObj, "payAmtO", readParam(metaObj, "payAmt", 1)),
-      pO = readParam(metaObj, "pO", readParam(metaObj, "p", 1.0)),
-      time = readParam(metaObj, "time", 60.0),
-      pINullable = readParam(metaObj, "pI", readParam(metaObj, "p", null)),
-      pONullable = readParam(metaObj, "pO", readParam(metaObj, "p", null));
-
-    // No time here, which is handled in `processXxx`
-    readParamAndCall(paramObj, "liqI", val => builder.__ci(this.processCi(val, amtI, metaObj, paramObj)));
-    readParamAndCall(paramObj, "itmI", val => builder.__bi(this.processBi(val, amtI, pI, metaObj, paramObj)));
-    readParamAndCall(paramObj, "payI", val => builder.__payi(this.processPayi(val, payAmtI, metaObj, paramObj)));
-    readParamAndCall(paramObj, "liqO", val => builder.__co(this.processCo(val, amtO, metaObj, paramObj)));
-    readParamAndCall(paramObj, "itmO", val => builder.__bo(this.processBo(val, amtO, pO, metaObj, paramObj)));
-    readParamAndCall(paramObj, "payO", val => builder.__payo(this.processPayo(val, payAmtO, metaObj, paramObj)));
-
-    // No time here too
-    let target;
-    readParamAndCall(paramObj, "liqIMapper", val => {
-      target = val(ct);
-      if(target == null) return;
-      this.processCi(target, amtI, metaObj, paramObj);
-    });
-    readParamAndCall(paramObj, "itmIMapper", val => {
-      target = val(ct);
-      if(target == null) return;
-      this.processBi(target, amtI, pI, metaObj, paramObj);
-    });
-    readParamAndCall(paramObj, "payIMapper", val => {
-      target = val(ct);
-      if(target == null) return;
-      this.processPayi(target, payAmtI, metaObj, paramObj);
-    });
-    readParamAndCall(paramObj, "liqOMapper", val => {
-      target = val(ct);
-      if(target == null) return;
-      this.processCo(target, amtO, metaObj, paramObj);
-    });
-    readParamAndCall(paramObj, "itmOMapper", val => {
-      target = val(ct);
-      printAll(val, ct);
-      if(target == null) return;
-      this.processBo(target, amtO, pO, metaObj, paramObj);
-    });
-    readParamAndCall(paramObj, "payOMapper", val => {
-      target = val(ct);
-      if(target == null) return;
-      this.processPayo(target, payAmtO, metaObj, paramObj);
+        rcCount++;
+    }
+    .setProp({
+        tmpTup: [],
     });
 
-    readParamAndCall(paramObj, "ci", val => builder.__ci(this.parseRawCi(val, amtO * pO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
-    readParamAndCall(paramObj, "payCi", val => builder.__ci(this.parseRawCi(val, payAmtO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
-    readParamAndCall(paramObj, "bi", val => builder.__bi(this.parseRawBi(val, amtO * readParam(paramObj, "amtOScl", 1.0), pO, pINullable), true));
-    readParamAndCall(paramObj, "liqBi", val => builder.__bi(this.parseRawBi(val, amtO * pO * 6.0 * readParam(paramObj, "amtOScl", 1.0), 1.0, pINullable), true));
-    readParamAndCall(paramObj, "payBi", val => builder.__bi(this.parseRawBi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0), 1.0), true));
-    readParamAndCall(paramObj, "aux", val => builder.__aux(this.parseRawCi(val, 1.0), true));
-    readParamAndCall(paramObj, "payAux", val => builder.__aux(this.parseRawCi(val, 1.0), true));
-    readParamAndCall(paramObj, "payi", val => builder.__payi(this.parseRawPayi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0))));
-    readParamAndCall(paramObj, "co", val => builder.__co(this.parseRawCo(val, amtI * pI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
-    readParamAndCall(paramObj, "payCo", val => builder.__co(this.parseRawCo(val, payAmtI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
-    readParamAndCall(paramObj, "bo", val => builder.__bo(this.parseRawBo(val, amtI * readParam(paramObj, "amtIScl", 1.0), pI, pONullable), true));
-    readParamAndCall(paramObj, "liqBo", val => builder.__bo(this.parseRawBo(val, amtI * pI * 6.0 * readParam(paramObj, "amtIScl", 1.0), 1.0, pONullable), true));
-    readParamAndCall(paramObj, "payBo", val => builder.__bo(this.parseRawBo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0), 1.0), true));
-    readParamAndCall(paramObj, "payo", val => builder.__payo(this.parseRawPayo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0))));
 
-    readParamAndCall(paramObj, "heatO", val => builder.__co(this.processCo("loveclab-aux0aux-heat", val / 600.0 * readParam(metaObj, "heatOScl", 1.0), Object.air), true));
-
-    let rcObj = builder.build();
-    rcObj.setProp(CLS_recipeGenerator.RECIPE_OBJECT_TMP);
-
-    return rcObj;
-  };
-
-
-  /**
-   * @param {Object|(function(UnlockableContent, Object): Object)} paramObj_d
-   * @param {UnlockableContent} ct
-   * @param {Object} metaObj
-   * @return {Object}
-   */
-  function convertParamObj(paramObj_d, ct, metaObj) {
-    let obj = typeof paramObj_d === "function" ?
-      paramObj_d(ct, metaObj) :
-      paramObj_d != null ?
-        Object.assign({}, paramObj_d) :
-        {};
-
-    if(obj.hardness == null && ct instanceof Item) {
-      obj.hardness = ct.hardness;
+    /**
+     * Reads basic parameters from `paramObj`.
+     * @param {Object} rcObj
+     * @param {Object|unset} [paramObj]
+     * @return {void}
+     */
+    CLS_recipeGenerator.prototype.setBaseParam = function(rcObj, paramObj) {
+        readParamAndCall(paramObj, "icon", val => rcObj.icon = val);
+        readParamAndCall(paramObj, "tint", val => rcObj.tint = val);
+        readParamAndCall(paramObj, "keyCt", val => rcObj.keyCt = val);
+        readParamAndCall(paramObj, "validCheck", val => rcObj.validCheck = val);
+        readParamAndCall(paramObj, "lockedBy", val => rcObj.lockedBy = val);
+        readParamAndCall(paramObj, "timeScl", val => rcObj.timeScl = val);
+        readParamAndCall(paramObj, "pollution", val => rcObj.pollution = val);
+        readParamAndCall(paramObj, "ignoreItemFullness", val => rcObj.ignoreItemFullness = val);
+        readParamAndCall(paramObj, "erekirHeatI", val => rcObj.erekirHeatI = val);
+        readParamAndCall(paramObj, "erekirHeatO", val => rcObj.erekirHeatO = val);
+        readParamAndCall(paramObj, "attr", val => rcObj.attr = val);
+        readParamAndCall(paramObj, "attrMin", val => rcObj.attrMin = val);
+        readParamAndCall(paramObj, "attrMax", val => rcObj.attrMax = val);
+        readParamAndCall(paramObj, "attrBoostScl", val => rcObj.attrBoostScl = val);
+        readParamAndCall(paramObj, "attrBoostCap", val => rcObj.attrBoostCap = val);
+        readParamAndCall(paramObj, "tooltip", val => rcObj.tooltip = val);
+        readParamAndCall(paramObj, "tempReq", val => rcObj.tempReq = val);
+        readParamAndCall(paramObj, "tempAllowed", val => rcObj.tempAllowed = val);
     };
 
-    return obj;
-  };
+
+    /**
+     * Whether recipe for given content should be created.
+     * @param {UnlockableContent} ct
+     * @param {Object} metaObj
+     * @param {Object|unset} [paramObj]
+     * @return {boolean}
+     */
+    CLS_recipeGenerator.prototype.checkCtValid = function(ct, metaObj, paramObj) {
+        return DB_recipe.db["gen"]["validCheck"].every(boolF => boolF.apply(this, [ct, metaObj, paramObj]));
+    };
 
 
-  /**
-   * Generates a single recipe.
-   * @param {Object} rc
-   * @param {ContentGn} ct_gn
-   * @param {Object} metaObj
-   * @param {Object|(function(UnlockableContent, Object): Object)|unset} [paramObj_d]
-   * @param {(function(UnlockableContent): string)|unset} [nameCtF]
-   */
-  CLS_recipeGenerator.prototype.handleSingle = function(rc, ct_gn, metaObj, paramObj_d, nameCtF) {
-    if(nameCtF == null) nameCtF = ct => ct.name;
-
-    let ct = MDL_content.getCt(ct_gn, null, true);
-    if(ct == null) return;
-    let paramObj = convertParamObj(paramObj_d, ct, metaObj);
-    if(!this.checkCtValid(ct, metaObj, paramObj)) return;
-
-    this.addRc(
-      rc, nameCtF(ct),
-      this.processObjF(ct, metaObj, paramObj),
-      this.buildRcObj(ct, metaObj, paramObj),
-      paramObj,
-    );
-  };
+    /**
+     * Handles `objF` used for recipe.
+     * @param {UnlockableContent} ct
+     * @param {Object} metaObj
+     * @param {Object} paramObj
+     * @return {CFunction<Object>}
+     */
+    CLS_recipeGenerator.prototype.processObjF = function(ct, metaObj, paramObj) {
+        return obj => {
+            this.setBaseParam(obj, paramObj);
+            DB_recipe.db["gen"]["objF"].forEachRow(2, (boolF, objF) => {
+                if(!boolF.apply(this, [ct, metaObj, paramObj])) return;
+                objF.apply(this, [obj, metaObj, paramObj]);
+            }, true);
+            readParam(metaObj, "objF", Function.air)(obj);
+        };
+    };
 
 
-  /**
-   * Generates recipes based on a 2-array.
-   * @param {Object} rc
-   * @param {Array} arr - `ROW`: nameCt, paramObj.
-   * @param {(function(ContentGn): UnlockableContent)|unset} ctMapper
-   * @param {Object} metaObj
-   * @param {(function(UnlockableContent): string)|unset} [nameCtF]
-   */
-  CLS_recipeGenerator.prototype.handle2Arr = function(rc, arr, ctMapper, metaObj, nameCtF) {
-    if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
-    if(nameCtF == null) nameCtF = ct => ct.name;
+    /**
+     * Builds final recipe object.
+     * @param {UnlockableContent} ct
+     * @param {Object} metaObj
+     * @param {Object|unset} [paramObj]
+     * @return {Object}
+     */
+    CLS_recipeGenerator.prototype.buildRcObj = function(ct, metaObj, paramObj) {
+        Object.clear(CLS_recipeGenerator.RECIPE_OBJECT_TMP);
 
-    let paramObjF = readParam(metaObj, "paramObjF");
+        let builder = new CLS_recipeBuilder();
+        let
+            amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)),
+            payAmtI = readParam(metaObj, "payAmtI", readParam(metaObj, "payAmt", 1)),
+            pI = readParam(metaObj, "pI", readParam(metaObj, "p", 1.0)),
+            amtO = readParam(metaObj, "amtO", readParam(metaObj, "amt", 1)),
+            payAmtO = readParam(metaObj, "payAmtO", readParam(metaObj, "payAmt", 1)),
+            pO = readParam(metaObj, "pO", readParam(metaObj, "p", 1.0)),
+            time = readParam(metaObj, "time", 60.0),
+            pINullable = readParam(metaObj, "pI", readParam(metaObj, "p", null)),
+            pONullable = readParam(metaObj, "pO", readParam(metaObj, "p", null));
 
-    let ct, paramObj;
-    arr.forEachRow(2, (nameCt, tmpParamObj) => {
-      ct = ctMapper(nameCt);
-      if(ct == null) return;
-      paramObj = convertParamObj(tmpParamObj, ct, metaObj);
-      if(paramObjF != null) paramObjF(paramObj);
-      if(!this.checkCtValid(ct, metaObj, paramObj)) return;
+        // No time here, which is handled in `processXxx`
+        readParamAndCall(paramObj, "liqI", val => builder.setCi(this.processCi(val, amtI, metaObj, paramObj)));
+        readParamAndCall(paramObj, "itmI", val => builder.setBi(this.processBi(val, amtI, pI, metaObj, paramObj)));
+        readParamAndCall(paramObj, "payI", val => builder.setPayi(this.processPayi(val, payAmtI, metaObj, paramObj)));
+        readParamAndCall(paramObj, "liqO", val => builder.setCo(this.processCo(val, amtO, metaObj, paramObj)));
+        readParamAndCall(paramObj, "itmO", val => builder.setBo(this.processBo(val, amtO, pO, metaObj, paramObj)));
+        readParamAndCall(paramObj, "payO", val => builder.setPayo(this.processPayo(val, payAmtO, metaObj, paramObj)));
 
-      this.addRc(
-        rc, nameCtF(ct),
-        this.processObjF(ct, metaObj, paramObj),
-        this.buildRcObj(ct, metaObj, paramObj),
-        paramObj,
-      );
-    }, true);
-  };
+        // No time here too
+        let target;
+        readParamAndCall(paramObj, "liqIMapper", val => {
+            target = val(ct);
+            if(target == null) return;
+            this.processCi(target, amtI, metaObj, paramObj);
+        });
+        readParamAndCall(paramObj, "itmIMapper", val => {
+            target = val(ct);
+            if(target == null) return;
+            this.processBi(target, amtI, pI, metaObj, paramObj);
+        });
+        readParamAndCall(paramObj, "payIMapper", val => {
+            target = val(ct);
+            if(target == null) return;
+            this.processPayi(target, payAmtI, metaObj, paramObj);
+        });
+        readParamAndCall(paramObj, "liqOMapper", val => {
+            target = val(ct);
+            if(target == null) return;
+            this.processCo(target, amtO, metaObj, paramObj);
+        });
+        readParamAndCall(paramObj, "itmOMapper", val => {
+            target = val(ct);
+            if(target == null) return;
+            this.processBo(target, amtO, pO, metaObj, paramObj);
+        });
+        readParamAndCall(paramObj, "payOMapper", val => {
+            target = val(ct);
+            if(target == null) return;
+            this.processPayo(target, payAmtO, metaObj, paramObj);
+        });
 
+        readParamAndCall(paramObj, "ci", val => builder.setCi(this.parseRawCi(val, amtO * pO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
+        readParamAndCall(paramObj, "payCi", val => builder.setCi(this.parseRawCi(val, payAmtO * 6.0 / time * readParam(paramObj, "amtOScl", 1.0)), true));
+        readParamAndCall(paramObj, "bi", val => builder.setBi(this.parseRawBi(val, amtO * readParam(paramObj, "amtOScl", 1.0), pO, pINullable), true));
+        readParamAndCall(paramObj, "liqBi", val => builder.setBi(this.parseRawBi(val, amtO * pO * 6.0 * readParam(paramObj, "amtOScl", 1.0), 1.0, pINullable), true));
+        readParamAndCall(paramObj, "payBi", val => builder.setBi(this.parseRawBi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0), 1.0), true));
+        readParamAndCall(paramObj, "aux", val => builder.setAux(this.parseRawCi(val, 1.0), true));
+        readParamAndCall(paramObj, "payAux", val => builder.setAux(this.parseRawCi(val, 1.0), true));
+        readParamAndCall(paramObj, "payi", val => builder.setPayi(this.parseRawPayi(val, payAmtO * readParam(paramObj, "amtOScl", 1.0))));
+        readParamAndCall(paramObj, "co", val => builder.setCo(this.parseRawCo(val, amtI * pI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
+        readParamAndCall(paramObj, "payCo", val => builder.setCo(this.parseRawCo(val, payAmtI * 6.0 / time * readParam(paramObj, "amtIScl", 1.0)), true));
+        readParamAndCall(paramObj, "bo", val => builder.setBo(this.parseRawBo(val, amtI * readParam(paramObj, "amtIScl", 1.0), pI, pONullable), true));
+        readParamAndCall(paramObj, "liqBo", val => builder.setBo(this.parseRawBo(val, amtI * pI * 6.0 * readParam(paramObj, "amtIScl", 1.0), 1.0, pONullable), true));
+        readParamAndCall(paramObj, "payBo", val => builder.setBo(this.parseRawBo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0), 1.0), true));
+        readParamAndCall(paramObj, "payo", val => builder.setPayo(this.parseRawPayo(val, payAmtI * readParam(paramObj, "amtIScl", 1.0))));
 
-  /**
-   * Generates recipes based on a 2-array of names and numbers.
-   * @param {Object} rc
-   * @param {Array} arr - `ROW`: nameCt, num.
-   * @param {(function(ContentGn): UnlockableContent)|unset} ctMapper
-   * @param {(function(number, Object): void)|unset} numC - `ARGS`: num, paramObj.
-   * @param {Object} metaObj
-   * @param {Object|(function(UnlockableContent, Object): Object)|unset} [paramObj_d]
-   * @param {(function(UnlockableContent): string)|unset} [nameCtF]
-   */
-  CLS_recipeGenerator.prototype.handleNameNumArr = function(rc, arr, ctMapper, numC, metaObj, paramObj_d, nameCtF) {
-    if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
-    if(numC == null) numC = Function.air;
-    if(nameCtF == null) nameCtF = ct => ct.name;
+        readParamAndCall(paramObj, "heatO", val => builder.setCo(this.processCo("loveclab-aux0aux-heat", val / 600.0 * readParam(metaObj, "heatOScl", 1.0), Object.air), true));
 
-    let ct, paramObj;
-    arr.forEachRow(2, (nameCt, num) => {
-      ct = ctMapper(nameCt);
-      if(ct == null) return;
-      paramObj = convertParamObj(paramObj_d, ct, metaObj);
-      numC(num, paramObj);
-      if(!this.checkCtValid(ct, metaObj, paramObj)) return;
+        let rcObj = builder.build();
+        rcObj.setProp(CLS_recipeGenerator.RECIPE_OBJECT_TMP);
 
-      this.addRc(
-        rc, nameCtF(ct),
-        this.processObjF(ct, metaObj, paramObj),
-        this.buildRcObj(ct, metaObj, paramObj),
-        paramObj,
-      );
-    }, true);
-  };
-
-
-  /**
-   * Generates recipes based on a list of contents.
-   * @param {Object} rc
-   * @param {Array<ContentGn>} arr
-   * @param {(function(ContentGn): UnlockableContent)|unset} ctMapper
-   * @param {Object} metaObj
-   * @param {Object|(function(UnlockableContent, Object): Object)|unset} [paramObj_d]
-   * @param {(function(UnlockableContent): string)|unset} [nameCtF]
-   */
-  CLS_recipeGenerator.prototype.handleCtLi = function(rc, arr, ctMapper, metaObj, paramObj_d, nameCtF) {
-    if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
-    if(nameCtF == null) nameCtF = ct => ct.name;
-
-    let ct, paramObj;
-    arr.forEachFast(tmpCt => {
-      ct = ctMapper(tmpCt);
-      if(ct == null) return;
-      paramObj = convertParamObj(paramObj_d, ct, metaObj);
-      if(!this.checkCtValid(ct, metaObj, paramObj)) return;
-
-      this.addRc(
-        rc, nameCtF(ct),
-        this.processObjF(ct, metaObj, paramObj),
-        this.buildRcObj(ct, metaObj, paramObj),
-        paramObj,
-      );
-    }, true);
-  };
+        return rcObj;
+    };
 
 
-  /**
-   * Modifies `rc` on CLIENT LOAD.
-   * @param {Object} rc
-   * @param {Object} metaObj
-   * @return {void}
-   */
-  CLS_recipeGenerator.prototype.run = function(rc, metaObj) {
-    MDL_event.onLoad(() => {
-      this.setCateg();
-      this.setTag();
-      this.setter(rc, metaObj);
-    });
-    runCount++;
-  };
+    /**
+     * @param {Object|F2Function<UnlockableContent, Object, Object>} paramObj_d
+     * @param {UnlockableContent} ct
+     * @param {Object} metaObj
+     * @return {Object}
+     */
+    function convertParamObj(paramObj_d, ct, metaObj) {
+        let obj = typeof paramObj_d === "function" ?
+            paramObj_d(ct, metaObj) :
+            paramObj_d != null ?
+                Object.assign({}, paramObj_d) :
+                {};
+
+        if(obj.hardness == null && ct instanceof Item) {
+            obj.hardness = ct.hardness;
+        };
+
+        return obj;
+    };
+
+
+    /**
+     * Generates a single recipe.
+     * @param {Object} rc
+     * @param {ContentGn} ct_gn
+     * @param {Object} metaObj
+     * @param {Object|F2Function<UnlockableContent, Object, Object>|unset} [paramObj_d]
+     * @param {FFunction<UnlockableContent, string>|unset} [nameCtF]
+     */
+    CLS_recipeGenerator.prototype.handleSingle = function(rc, ct_gn, metaObj, paramObj_d, nameCtF) {
+        if(nameCtF == null) nameCtF = ct => ct.name;
+
+        let ct = MDL_content.getCt(ct_gn, null, true);
+        if(ct == null) return;
+        let paramObj = convertParamObj(paramObj_d, ct, metaObj);
+        if(!this.checkCtValid(ct, metaObj, paramObj)) return;
+
+        this.addRc(
+            rc, nameCtF(ct),
+            this.processObjF(ct, metaObj, paramObj),
+            this.buildRcObj(ct, metaObj, paramObj),
+            paramObj,
+        );
+    };
+
+
+    /**
+     * Generates recipes based on a 2-array.
+     * @param {Object} rc
+     * @param {RecipeRawData2Array} arr
+     * @param {FFunction<ContentGn, UnlockableContent>|unset} ctMapper
+     * @param {Object} metaObj
+     * @param {FFunction<UnlockableContent, string>|unset} [nameCtF]
+     */
+    CLS_recipeGenerator.prototype.handle2Arr = function(rc, arr, ctMapper, metaObj, nameCtF) {
+        if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
+        if(nameCtF == null) nameCtF = ct => ct.name;
+
+        let paramObjF = readParam(metaObj, "paramObjF");
+
+        let ct, paramObj;
+        arr.forEachRow(2, (nameCt, tmpParamObj) => {
+            ct = ctMapper(nameCt);
+            if(ct == null) return;
+            paramObj = convertParamObj(tmpParamObj, ct, metaObj);
+            if(paramObjF != null) paramObjF(paramObj);
+            if(!this.checkCtValid(ct, metaObj, paramObj)) return;
+
+            this.addRc(
+                rc, nameCtF(ct),
+                this.processObjF(ct, metaObj, paramObj),
+                this.buildRcObj(ct, metaObj, paramObj),
+                paramObj,
+            );
+        }, true);
+    };
+
+
+    /**
+     * Generates recipes based on a 2-array of names and numbers.
+     * @param {Object} rc
+     * @param {RecipeRawDataNumberArray} arr
+     * @param {FFunction<ContentGn, UnlockableContent>|unset} ctMapper
+     * @param {C2Function<number, Object>|unset} numC - `ARGS`: num, paramObj.
+     * @param {Object} metaObj
+     * @param {Object|F2Function<UnlockableContent, Object, Object>|unset} [paramObj_d]
+     * @param {FFunction<UnlockableContent, string>|unset} [nameCtF]
+     */
+    CLS_recipeGenerator.prototype.handleNameNumArr = function(rc, arr, ctMapper, numC, metaObj, paramObj_d, nameCtF) {
+        if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
+        if(numC == null) numC = Function.air;
+        if(nameCtF == null) nameCtF = ct => ct.name;
+
+        let ct, paramObj;
+        arr.forEachRow(2, (nameCt, num) => {
+            ct = ctMapper(nameCt);
+            if(ct == null) return;
+            paramObj = convertParamObj(paramObj_d, ct, metaObj);
+            numC(num, paramObj);
+            if(!this.checkCtValid(ct, metaObj, paramObj)) return;
+
+            this.addRc(
+                rc, nameCtF(ct),
+                this.processObjF(ct, metaObj, paramObj),
+                this.buildRcObj(ct, metaObj, paramObj),
+                paramObj,
+            );
+        }, true);
+    };
+
+
+    /**
+     * Generates recipes based on a list of contents.
+     * @param {Object} rc
+     * @param {Array<ContentGn>} arr
+     * @param {C2Function<ContentGn, UnlockableContent>|unset} ctMapper
+     * @param {Object} metaObj
+     * @param {Object|F2Function<UnlockableContent, Object, Object>|unset} [paramObj_d]
+     * @param {FFunction<UnlockableContent, string>|unset} [nameCtF]
+     */
+    CLS_recipeGenerator.prototype.handleCtLi = function(rc, arr, ctMapper, metaObj, paramObj_d, nameCtF) {
+        if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
+        if(nameCtF == null) nameCtF = ct => ct.name;
+
+        let ct, paramObj;
+        arr.forEachFast(tmpCt => {
+            ct = ctMapper(tmpCt);
+            if(ct == null) return;
+            paramObj = convertParamObj(paramObj_d, ct, metaObj);
+            if(!this.checkCtValid(ct, metaObj, paramObj)) return;
+
+            this.addRc(
+                rc, nameCtF(ct),
+                this.processObjF(ct, metaObj, paramObj),
+                this.buildRcObj(ct, metaObj, paramObj),
+                paramObj,
+            );
+        }, true);
+    };
+
+
+    /**
+     * Modifies `rc` on CLIENT LOAD.
+     * @param {Object} rc
+     * @param {Object} metaObj
+     * @return {void}
+     */
+    CLS_recipeGenerator.prototype.run = function(rc, metaObj) {
+        MDL_event.onLoad(() => {
+            this.setCateg();
+            this.setTag();
+            this.setter(rc, metaObj);
+        });
+        runCount++;
+    };
 
 
 
 
+/** @type {Object} */
 CLS_recipeGenerator.RECIPE_OBJECT_TMP = {};
 
 

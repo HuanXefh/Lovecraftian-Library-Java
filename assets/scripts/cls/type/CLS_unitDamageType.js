@@ -5,25 +5,34 @@
 */
 
 
-  /**
-   * Affects damage dealt by Lovec bullets.
-   * @class
-   * @param {string} name
-   * @param {string} tag - Content template tag assigned to this type.
-   */
-  const CLS_unitDamageType = newClass().initClass();
+    /**
+     * Affects damage dealt by Lovec bullets.
+     * @class
+     * @param {string} name
+     * @param {string} tag - Content template tag assigned to this type.
+     */
+    const CLS_unitDamageType = newClass().initClass();
 
 
-  CLS_unitDamageType.prototype.init = function(name, tag) {
-    this.name = registerUniqueName(name, insNames, "unit damage type");
-    this.tag = String(tag);
-
-    nameTypeMap.put(this.name, this);
-  };
+    CLS_unitDamageType.prototype.init = function(name, tag) {
 
 
-  const insNames = [];
-  const nameTypeMap = new ObjectMap();
+        /** @type {string} */
+        this.name = registerUniqueName(name, insNames, "unit damage type");
+        /** @type {string} */
+        this.tag = String(tag);
+
+
+        nameTypeMap.put(this.name, this);
+
+
+    };
+
+
+    /** @type {Array<string>} */
+    const insNames = [];
+    /** @type {ObjectMap<string, CLS_unitDamageType>} */
+    const nameTypeMap = new ObjectMap();
 
 
 /*
@@ -33,49 +42,49 @@
 */
 
 
-  /**
-   * Gets a unit damage type by name.
-   * @param {string} name
-   * @return {CLS_unitDamageType}
-   */
-  CLS_unitDamageType.get = function(name) {
-    let type = nameTypeMap.get(name);
-    if(type == null) throw new Error("Unregistered unit damage type: " + name);
-    return type;
-  };
+    /**
+     * Gets a unit damage type by name.
+     * @param {string} name
+     * @return {CLS_unitDamageType}
+     */
+    CLS_unitDamageType.get = function(name) {
+        let type = nameTypeMap.get(name);
+        if(type == null) throw new Error("Unregistered unit damage type: " + name);
+        return type;
+    };
 
 
-  /**
-   * Gets unit damage type of some unit type.
-   * If none found, {@link CLS_unitDamageType.NONE} will be returned.
-   * @param {UnitTypeGn} utp_gn
-   * @return {CLS_unitDamageType}
-   */
-  CLS_unitDamageType.getByUtp = function(utp_gn) {
-    let utp = MDL_content.getCt(utp_gn, "utp");
-    if(utp == null) return CLS_unitDamageType.NONE;
+    /**
+     * Gets unit damage type of some unit type.
+     * If none found, {@link CLS_unitDamageType.NONE} will be returned.
+     * @param {UnitTypeGn} utp_gn
+     * @return {CLS_unitDamageType}
+     */
+    CLS_unitDamageType.getByUtp = function(utp_gn) {
+        let utp = MDL_content.getCt(utp_gn, "utp");
+        if(utp == null) return CLS_unitDamageType.NONE;
 
-    let type_fi = CLS_unitDamageType.NONE;
-    nameTypeMap.each((name, type) => {
-      if(type_fi != CLS_unitDamageType.NONE) return;
-      if(checkTempTag(utp, type.getTag())) {
-        type_fi = type;
-      };
-    });
+        let type_fi = CLS_unitDamageType.NONE;
+        nameTypeMap.each((name, type) => {
+            if(type_fi !== CLS_unitDamageType.NONE) return;
+            if(checkTempTag(utp, type.getTag())) {
+                type_fi = type;
+            };
+        });
 
-    return type_fi;
-  }
-  .setCache();
+        return type_fi;
+    }
+    .setCache();
 
 
-  /**
-   * Gets content template tag of a unit damage type by name.
-   * @param {string} name
-   * @return {string}
-   */
-  CLS_unitDamageType.getTag = function(name) {
-    return CLS_unitDamageType.get(name).getTag();
-  };
+    /**
+     * Gets content template tag of a unit damage type by name.
+     * @param {string} name
+     * @return {string}
+     */
+    CLS_unitDamageType.getTag = function(name) {
+        return CLS_unitDamageType.get(name).getTag();
+    };
 
 
 /*
@@ -85,35 +94,36 @@
 */
 
 
-  /**
-   * Gets name of this unit damage type.
-   * @return {string}
-   */
-  CLS_unitDamageType.prototype.getName = function() {
-    return this.name;
-  };
+    /**
+     * Gets name of this unit damage type.
+     * @return {string}
+     */
+    CLS_unitDamageType.prototype.getName = function() {
+        return this.name;
+    };
 
 
-  /**
-   * Gets content template tag of this unit damage type.
-   * @return {string}
-   */
-  CLS_unitDamageType.prototype.getTag = function() {
-    return this.tag;
-  };
+    /**
+     * Gets content template tag of this unit damage type.
+     * @return {string}
+     */
+    CLS_unitDamageType.prototype.getTag = function() {
+        return this.tag;
+    };
 
 
-  /**
-   * Gets localized name of this unit damage type.
-   * @return {string}
-   */
-  CLS_unitDamageType.prototype.localized = function() {
-    return MDL_bundle.getBase("database-tag.common-dmg0type-" + this.getName());
-  };
+    /**
+     * Gets localized name of this unit damage type.
+     * @return {string}
+     */
+    CLS_unitDamageType.prototype.localized = function() {
+        return MDL_bundle.getBase("database-tag.common-dmg0type-" + this.getName());
+    };
 
 
 
 
+/** @type {CLS_unitDamageType} */
 CLS_unitDamageType.NONE = new CLS_unitDamageType("none", TmpStateTag.error);
 
 

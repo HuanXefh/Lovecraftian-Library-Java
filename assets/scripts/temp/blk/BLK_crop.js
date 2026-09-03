@@ -37,8 +37,8 @@
     if(blk.cropParent != null) {
       if(!Vars.headless) {
         MDL_event.onLoad(() => {
-          blk.uiIcon = blk.cropParent.uiIcon
-          blk.fullIcon = blk.cropParent.fullIcon
+          blk.uiIcon = blk.cropParent.uiIcon;
+          blk.fullIcon = blk.cropParent.fullIcon;
         });
       };
       MDL_content.rename(blk, () => blk.cropParent.localizedName);

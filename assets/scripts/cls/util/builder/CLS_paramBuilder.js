@@ -5,12 +5,12 @@
 */
 
 
-  /**
-   * Base class for most parameter builders.
-   * `this.builderObj` should be defined in child classes.
-   * @class
-   */
-  const CLS_paramBuilder = newClass().initAbstrClass();
+    /**
+     * Base class for most parameter builders.
+     * `this.builderObj` should be defined in child classes.
+     * @class
+     */
+    const CLS_paramBuilder = newClass().initAbstrClass();
 
 
 /*
@@ -27,16 +27,16 @@
 */
 
 
-  /* <------------------------------ util ------------------------------ */
+    /* <------------------------------ util ------------------------------ */
 
 
-  /**
-   * Builds the final object.
-   * @return {Object}
-   */
-  CLS_paramBuilder.prototype.build = function() {
-    return tryVal(this.builderObj, Object.air);
-  };
+    /**
+     * Builds the final object.
+     * @return {Object}
+     */
+    CLS_paramBuilder.prototype.build = function() {
+        return tryVal(this.builderObj, Object.air);
+    };
 
 
 

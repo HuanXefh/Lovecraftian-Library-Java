@@ -5,35 +5,48 @@
 */
 
 
-  /**
-   * Used to store fixed values.
-   * Very similar to {@link CLS_objectBox}.
-   * @class
-   * @param {Object} obj
-   */
-  const CLS_enum = newClass().initClass();
+    /**
+     * Used to store fixed values.
+     * Very similar to {@link CLS_objectBox}.
+     * @class
+     * @param {Object} obj
+     */
+    const CLS_enum = newClass().initClass();
 
 
-  CLS_enum.prototype.init = function(obj) {
-    if(obj == null) ERROR_HANDLER.throw("nullArgument", "obj");
+    CLS_enum.prototype.init = function(obj) {
 
-    this.keys = [];
-    this.vals = [];
-    let count = 0;
-    Object.eachPair(obj, (key, val) => {
-      if(typeof val !== "function") {
-        this.setProp(true, key, val);
-        this.keys.push(key);
-        this.vals.pushUnique(val);
-        count++;
-      } else {
-        this[key] = val;
-      };
-    });
-    this.size = count;
 
-    Object.freeze(this);
-  };
+        if(obj == null) ERROR_HANDLER.throw("nullArgument", "obj");
+
+
+        /** @type {Array<string>} */
+        this.keys = [];
+        /** @type {Array} */
+        this.vals = [];
+
+
+        let count = 0;
+        Object.eachPair(obj, (key, val) => {
+            if(typeof val !== "function") {
+                this.setProp(true, key, val);
+                this.keys.push(key);
+                this.vals.pushUnique(val);
+                count++;
+            } else {
+                this[key] = val;
+            };
+        });
+
+
+        /** @type {number} */
+        this.size = count;
+
+
+        Object.freeze(this);
+
+
+    };
 
 
 /*
@@ -50,48 +63,48 @@
 */
 
 
-  /* <------------------------------ property ------------------------------ */
+    /* <------------------------------ property ------------------------------ */
 
 
-  /**
-   * Gets size of the enum.
-   * @return {number}
-   */
-  CLS_enum.prototype.getSize = function() {
-    return this.size;
-  };
+    /**
+     * Gets size of the enum.
+     * @return {number}
+     */
+    CLS_enum.prototype.getSize = function() {
+        return this.size;
+    };
 
 
-  /**
-   * Gets available keys of the enum.
-   * @return {Array<string>}
-   */
-  CLS_enum.prototype.getKeys = function() {
-    return this.keys;
-  };
+    /**
+     * Gets available keys of the enum.
+     * @return {Array<string>}
+     */
+    CLS_enum.prototype.getKeys = function() {
+        return this.keys;
+    };
 
 
-  /* <------------------------------ condition ------------------------------ */
+    /* <------------------------------ condition ------------------------------ */
 
 
-  /**
-   * Whether this enum contains some key.
-   * @param {string} key
-   * @return {boolean}
-   */
-  CLS_enum.prototype.hasKey = function(key) {
-    return this.keys.includes(key);
-  };
+    /**
+     * Whether this enum contains some key.
+     * @param {string} key
+     * @return {boolean}
+     */
+    CLS_enum.prototype.hasKey = function(key) {
+        return this.keys.includes(key);
+    };
 
 
-  /**
-   * Whether this enum contains some value.
-   * @param {any} val
-   * @return {boolean}
-   */
-  CLS_enum.prototype.has = function(val) {
-    return this.vals.includes(val);
-  };
+    /**
+     * Whether this enum contains some value.
+     * @param {any} val
+     * @return {boolean}
+     */
+    CLS_enum.prototype.has = function(val) {
+        return this.vals.includes(val);
+    };
 
 
 
@@ -99,15 +112,15 @@
 CLS_enum.setIterator({
 
 
-  ind: -1,
+    ind: -1,
 
 
-  next() {
-    this.ind++;
-    return this.ind >= this.__parent__.vals.length ?
-      {done: true} :
-      {value: this.__parent__.vals[this.ind], done: false};
-  },
+    next() {
+        this.ind++;
+        return this.ind >= this.__parent__.vals.length ?
+            {done: true} :
+            {value: this.__parent__.vals[this.ind], done: false};
+    },
 
 
 });

@@ -5,28 +5,30 @@
 */
 
 
-  /**
-   * Utility class for handling extra data for Lovec units.
-   * @class
-   */
-  const UTIL_unitData = newClass().initClass();
+    /**
+     * Utility class for handling extra data for Lovec units.
+     * @class
+     */
+    const UTIL_unitData = newClass().initClass();
 
 
-  const expiredUnits = [];
-  const unitDataMap = new ObjectMap();
+    /** @type {Array<Unit>} */
+    const expiredUnits = [];
+    /** @type {ObjectMap<Unit, Object>} */
+    const unitDataMap = new ObjectMap();
 
 
-  MDL_event.onLoad(() => {
-    TRIGGER.majorIter.start.addGlobalListener(() => {
-      expiredUnits.clear();
-      unitDataMap.each((unit, dataObj) => {
-        if(!unit.isAdded()) expiredUnits.push(unit);
-      });
-      expiredUnits.forEachFast(unit => {
-        unitDataMap.remove(unit);
-      }, true);
+    MDL_event.onLoad(() => {
+        TRIGGER.majorIter.start.addGlobalListener(() => {
+            expiredUnits.clear();
+            unitDataMap.each((unit, dataObj) => {
+                if(!unit.isAdded()) expiredUnits.push(unit);
+            });
+            expiredUnits.forEachFast(unit => {
+                unitDataMap.remove(unit);
+            }, true);
+        });
     });
-  });
 
 
 /*
@@ -36,56 +38,56 @@
 */
 
 
-  /**
-   * Gets a data from the unit data map.
-   * @param {Unit} unit
-   * @param {any} def
-   * @return {any}
-   */
-  UTIL_unitData.get = function(unit, def) {
-    return def == null ?
-      unitDataMap.get(unit) :
-      unitDataMap.get(unit, def);
-  };
+    /**
+     * Gets a data from the unit data map.
+     * @param {Unit} unit
+     * @param {Object|unset} [def]
+     * @return {Object|null}
+     */
+    UTIL_unitData.get = function(unit, def) {
+        return def == null ?
+            unitDataMap.get(unit) :
+            unitDataMap.get(unit, def);
+    };
 
 
-  /**
-   * Gets the unit data map.
-   * @return {ObjectMap}
-   */
-  UTIL_unitData.getUnitDataMap = function() {
-    return unitDataMap;
-  };
+    /**
+     * Gets the unit data map.
+     * @return {ObjectMap<Unit, Object>}
+     */
+    UTIL_unitData.getUnitDataMap = function() {
+        return unitDataMap;
+    };
 
 
-  /**
-   * Whether a unit exists in the unit data map.
-   * @param {Unit} unit
-   * @return {boolean}
-   */
-  UTIL_unitData.includes = function(unit) {
-    return unitDataMap.containsKey(unit);
-  };
+    /**
+     * Whether a unit exists in the unit data map.
+     * @param {Unit} unit
+     * @return {boolean}
+     */
+    UTIL_unitData.includes = function(unit) {
+        return unitDataMap.containsKey(unit);
+    };
 
 
-  /**
-   * Adds a unit data pair into the unit data map.
-   * @param {Unit} unit
-   * @param {Object} dataObj
-   * @return {void}
-   */
-  UTIL_unitData.add = function(unit, dataObj) {
-    unitDataMap.put(unit, dataObj);
-  };
+    /**
+     * Adds a unit data pair into the unit data map.
+     * @param {Unit} unit
+     * @param {Object} dataObj
+     * @return {void}
+     */
+    UTIL_unitData.add = function(unit, dataObj) {
+        unitDataMap.put(unit, dataObj);
+    };
 
 
-  /**
-   * Removes a unit from the unit data map.
-   * @return {void}
-   */
-  UTIL_unitData.remove = function(unit) {
-    unitDataMap.remove(unit);
-  };
+    /**
+     * Removes a unit from the unit data map.
+     * @return {void}
+     */
+    UTIL_unitData.remove = function(unit) {
+        unitDataMap.remove(unit);
+    };
 
 
 /*

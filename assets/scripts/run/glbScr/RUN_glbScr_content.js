@@ -198,7 +198,7 @@
    * @global
    * @param {string} nameMod
    * @param {boolean|unset} [ignoreEnabled]
-   * @return {Mod|null}
+   * @return {LoadedMod|null}
    */
   fetchMod = function(nameMod, ignoreEnabled) {
     return nameMod === "vanilla" ?

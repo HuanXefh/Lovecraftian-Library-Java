@@ -5,18 +5,22 @@
 */
 
 
-  /* <---------- meta ----------> */
+    /* <---------- meta ----------> */
 
 
-  /**
-   * @class
-   */
-  const CLS_xxx = newClass().initClass();
+    /**
+     * @class
+     */
+    const CLS_xxx = newClass().initClass();
 
 
-  CLS_xxx.prototype.init = function() {
+    CLS_xxx.prototype.init = function() {
 
-  };
+
+
+
+
+    };
 
 
 /*

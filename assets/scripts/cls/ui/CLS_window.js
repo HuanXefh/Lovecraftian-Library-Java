@@ -5,76 +5,92 @@
 */
 
 
-  /**
-   * Container of a special table that can be dragged.
-   * @class
-   * @param {string|unset} [title]
-   * @param {function(Table): void} [tableM]
-   */
-  const CLS_window = newClass().initClass();
+    /**
+     * Container of a special table that can be dragged.
+     * @class
+     * @param {string|unset} [title]
+     * @param {CFunction<Table>} [tableM]
+     */
+    const CLS_window = newClass().initClass();
 
 
-  CLS_window.prototype.init = function(title, tableM) {
-    this.title = tryVal(title, "").plain();
-    this.tableM = tryVal(tableM, Function.air);
-
-    this.initParam();
-
-    this.root = CLS_window.getRootTable(this);
-    this.base = null;
-  };
+    CLS_window.prototype.init = function(title, tableM) {
 
 
-  let mouseMoveX = 0.0, mouseMoveY = 0.0, mouseMoveStartX = 0.0, mouseMoveStartY = 0.0;
-  MDL_event.onDrag((dx, dy, x_f, y_f) => {
-    mouseMoveX = dx;
-    mouseMoveY = dy;
-    mouseMoveStartX = x_f;
-    mouseMoveStartY = y_f;
-  });
+        /** @type {string} */
+        this.title = tryVal(title, "").plain();
+        /** @type {CFunction<Table>} */
+        this.tableM = tryVal(tableM, Function.air);
+
+        this.initParam();
+        /** @type {Table} */
+        this.root = CLS_window.getRootTable(this);
+        /** @type {Table|null} */
+        this.base = null;
 
 
-  const selectedWins = [];
-  const btnStyles = {};
-  MDL_event.onLoad(() => {
-    btnStyles.setProp({
-      close: extend(TextButton.TextButtonStyle, {
-        font: Fonts.outline,
-        fontColor: Pal.remove,
-        downFontColor: Pal.remove,
-        overFontColor: Color.white,
-      }),
-      minimize: extend(TextButton.TextButtonStyle, {
-        font: Fonts.outline,
-        fontColor: Pal.heal,
-        downFontColor: Pal.heal,
-        overFontColor: Color.white,
-      }),
-      restore: extend(TextButton.TextButtonStyle, {
-        font: Fonts.outline,
-        fontColor: Pal.accent,
-        downFontColor: Pal.accent,
-        overFontColor: Color.white,
-      }),
-      help: extend(TextButton.TextButtonStyle, {
-        font: Fonts.outline,
-        fontColor: Pal.techBlue,
-        downFontColor: Pal.techBlue,
-        overFontColor: Color.white,
-      }),
-    });
-  });
-
-
-  function selectWin(win) {
-    if(!Core.input.keyDown(KeyCode.controlLeft) && !Core.input.keyDown(KeyCode.controlRight)) {
-      selectedWins.clear();
     };
 
-    selectedWins.pushUnique(win);
-    Core.scene.root.getChildren().remove(win.root);
-    Core.scene.root.getChildren().add(win.root);
-  };
+
+    /** @type {Array<CLS_window>} */
+    const selectedWins = [];
+    /** @type {Object<string, Button.ButtonStyle>} */
+    const btnStyles = {};
+
+
+    MDL_event.onLoad(() => {
+        btnStyles.setProp({
+            close: extend(TextButton.TextButtonStyle, {
+                font: Fonts.outline,
+                fontColor: Pal.remove,
+                downFontColor: Pal.remove,
+                overFontColor: Color.white,
+            }),
+            minimize: extend(TextButton.TextButtonStyle, {
+                font: Fonts.outline,
+                fontColor: Pal.heal,
+                downFontColor: Pal.heal,
+                overFontColor: Color.white,
+            }),
+            restore: extend(TextButton.TextButtonStyle, {
+                font: Fonts.outline,
+                fontColor: Pal.accent,
+                downFontColor: Pal.accent,
+                overFontColor: Color.white,
+            }),
+            help: extend(TextButton.TextButtonStyle, {
+                font: Fonts.outline,
+                fontColor: Pal.techBlue,
+                downFontColor: Pal.techBlue,
+                overFontColor: Color.white,
+            }),
+        });
+    });
+
+
+    let mouseMoveX = 0.0, mouseMoveY = 0.0, mouseMoveStartX = 0.0, mouseMoveStartY = 0.0;
+    MDL_event.onDrag((dx, dy, x_f, y_f) => {
+        mouseMoveX = dx;
+        mouseMoveY = dy;
+        mouseMoveStartX = x_f;
+        mouseMoveStartY = y_f;
+    });
+
+
+    /**
+     * Marks a window as selected.
+     * @param {CLS_window} win
+     * @return {void}
+     */
+    function selectWin(win) {
+        if(!Core.input.keyDown(KeyCode.controlLeft) && !Core.input.keyDown(KeyCode.controlRight)) {
+            selectedWins.clear();
+        };
+
+        selectedWins.pushUnique(win);
+        Core.scene.root.getChildren().remove(win.root);
+        Core.scene.root.getChildren().add(win.root);
+    };
 
 
 /*
@@ -84,49 +100,49 @@
 */
 
 
-  /* <------------------------------ util ------------------------------ */
+    /* <------------------------------ util ------------------------------ */
 
 
-  /**
-   * Gets a new root table for some window.
-   * @param {CLS_window} win
-   * @return {Table}
-   */
-  CLS_window.getRootTable = function(win) {
-    let tb = new Table().top();
-    tb.update(() => {
-      if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
-        if(Core.input.keyDown(KeyCode.x)) selectedWins.forEachFast(win => win.close(), true);
-        if(Core.input.keyDown(KeyCode.s)) selectedWins.forEachCond(win => !win.isHidden, win => win.minimize(), true);
-        if(Core.input.keyDown(KeyCode.a)) selectedWins.forEachCond(win => win.isHidden, win => win.minimize(), true);
-      };
-      if(win.isDragged) {
-        selectedWins.forEachFast(win => {
-          win.root.translation.x += mouseMoveX;
-          win.root.translation.y += mouseMoveY;
-        }, true);
-      };
-    });
-    tb.tapped(() => {
-      selectWin(win);
-      if(Core.app.isMobile() || Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
-        win.isDragged = true;
-      };
-    });
-    tb.released(() => win.isDragged = false);
-    tb.visibility = () => Vars.ui.hudfrag.shown && PARAM.SHOULD_SHOW_WINDOW;
-    return tb;
-  };
+    /**
+     * Gets a new root table for some window.
+     * @param {CLS_window} win
+     * @return {Table}
+     */
+    CLS_window.getRootTable = function(win) {
+        let tb = new Table().top();
+        tb.update(() => {
+            if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
+                if(Core.input.keyDown(KeyCode.x)) selectedWins.forEachFast(win => win.close(), true);
+                if(Core.input.keyDown(KeyCode.s)) selectedWins.forEachCond(win => !win.isHidden, win => win.minimize(), true);
+                if(Core.input.keyDown(KeyCode.a)) selectedWins.forEachCond(win => win.isHidden, win => win.minimize(), true);
+            };
+            if(win.isDragged) {
+                selectedWins.forEachFast(win => {
+                    win.root.translation.x += mouseMoveX;
+                    win.root.translation.y += mouseMoveY;
+                }, true);
+            };
+        });
+        tb.tapped(() => {
+            selectWin(win);
+            if(Core.app.isMobile() || Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
+                win.isDragged = true;
+            };
+        });
+        tb.released(() => win.isDragged = false);
+        tb.visibility = () => Vars.ui.hudfrag.shown && PARAM.SHOULD_SHOW_WINDOW;
+        return tb;
+    };
 
 
-  /**
-   * Gets a new base table for some window.
-   * @param {CLS_window} win
-   * @return {Table}
-   */
-  CLS_window.getBaseTable = function(win) {
-    return new Table(Tex.whiteui);
-  };
+    /**
+     * Gets a new base table for some window.
+     * @param {CLS_window} win
+     * @return {Table}
+     */
+    CLS_window.getBaseTable = function(win) {
+        return new Table(Tex.whiteui);
+    };
 
 
 /*
@@ -136,197 +152,197 @@
 */
 
 
-  /* <------------------------------ property ------------------------------ */
+    /* <------------------------------ property ------------------------------ */
 
 
-  /**
-   * Sets colors used for the window.
-   * @param {Color|unset} [titleColor]
-   * @param {Color|unset} [contColor]
-   * @return {this}
-   */
-  CLS_window.prototype.setColor = function(titleColor, contColor) {
-    if(titleColor != null) this.titleColor = titleColor;
-    if(contColor != null) this.contColor = contColor;
+    /**
+     * Sets colors used for the window.
+     * @param {Color|unset} [titleColor]
+     * @param {Color|unset} [contColor]
+     * @return {this}
+     */
+    CLS_window.prototype.setColor = function(titleColor, contColor) {
+        if(titleColor != null) this.titleColor = titleColor;
+        if(contColor != null) this.contColor = contColor;
 
-    return this;
-  };
-
-
-  /**
-   * Sets range for window width and height.
-   * @param {number|unset} [minW]
-   * @param {number|unset} [maxW]
-   * @param {number|unset} [minH]
-   * @param {number|unset} [maxH]
-   * @return {this}
-   */
-  CLS_window.prototype.setSizeRange = function(minW, maxW, minH, maxH) {
-    if(minW != null) this.minW = minW;
-    if(maxW != null) this.maxW = maxW;
-    if(minH != null) this.minH = minH;
-    if(maxH != null) this.maxH = maxH;
-
-    return this;
-  };
-
-
-  /* <------------------------------ util ------------------------------ */
-
-
-  /**
-   * Initializes some parameters of this window.
-   * @return {this}
-   */
-  CLS_window.prototype.initParam = function() {
-    this.added = false;
-    this.isHidden = false;
-    this.isDragged = false;
-    this.prefW = 0.0;
-    this.prefH = 0.0;
-    this.prefWCont = 0.0;
-    this.prefHCont = 0.0;
-
-    this.minW = 320.0;
-    this.maxW = 840.0;
-    this.minH = 40.0;
-    this.maxH = 420.0;
-    this.titleColor = Color.darkGray;
-    this.contColor = Pal.darkestGray;
-
-    return this;
-  };
-
-
-  /**
-   * Rebuilds the entire window.
-   * @return {void}
-   */
-  CLS_window.prototype.rebuild = function thisFun() {
-    let root = this.root;
-    root.clearChildren();
-    let base = CLS_window.getBaseTable(this);
-    this.base = base;
-    root.add(base).top().growX();
-
-    base.update(() => {
-      base.setColor(selectedWins.includes(this) ? Pal.accent : Color.white);
-    });
-    base.top();
-
-    // Row 1
-    (3).each(() => thisFun.addPlaceholder(base));
-    base.row();
-    // Row 2 (contents)
-    thisFun.addPlaceholder(base);
-    base.table(Styles.none, tb => {
-      // `TABLE`: title
-      let titleCell = tb.table(Tex.whiteui, tb1 => {
-        tb1.left().setColor(this.titleColor);
-        tb1.tapped(() => {
-          selectWin(this);
-          this.isDragged = true;
-        });
-        tb1.released(() => this.isDragged = false);
-        // `TABLE`: title base
-        tb1.table(Styles.none, tb2 => {
-          tb2.left();
-          MDL_table.margin(tb2, 0.25);
-          let funBtnSize = 8.0;
-          // Close
-          tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button("X", btnStyles.close, () => selectedWins.forEachFast(win => win.close(), true)).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", "win-close"), true);
-          // Minimize & restore
-          tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button(this.isHidden ? "L" : "S", btnStyles[this.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize(), true)).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", this.isHidden ? "win-restore" : "win-minimize"), true);
-          // Help
-          tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
-          tb2.button("?", btnStyles.help, () => {}).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getInfo("lovec", "tt-win-help"), true);
-          // Text
-          tb2.table(Styles.none, tb3 => {}).width(16.0);
-          tb2.table(Styles.none, tb3 => tb3.add(this.title));
-          tb2.table(Styles.none, tb3 => {}).width(16.0);
-        });
-      }).growX();
-      tb.row();
-      // `TABLE`: contents
-      if(!this.isHidden) {
-        tb.table(Tex.whiteui, tb1 => {
-          tb1.left().setColor(this.contColor);
-          MDL_table.margin(tb1);
-          tb1.pane(pnTb => {
-            this.tableM(pnTb);
-            this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW) / global.lovecUtil.prop.uiScale;
-            this.prefH = Mathf.clamp(pnTb.prefHeight, this.minH, this.maxH) / global.lovecUtil.prop.uiScale;
-          }).width(this.prefW).height(this.prefH);
-          this.prefWCont = tb1.prefWidth / global.lovecUtil.prop.uiScale;
-          this.prefHCont = tb1.prefHeight / global.lovecUtil.prop.uiScale;
-        }).grow().row();
-      };
-      titleCell.width(this.prefWCont);
-    });
-    thisFun.addPlaceholder(base);
-    base.row();
-    // Row 3
-    (3).each(() => thisFun.addPlaceholder(base));
-
-    if(this.isHidden) {
-      root.table(Styles.none, tb1 => {}).height(this.prefHCont);
+        return this;
     };
 
-    // Move the window table to center position
-    root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
-  }
-  .setProp({
-    addPlaceholder: function(tb) {
-      tb.table(Styles.none, tb1 => {}).width(2.0).height(2.0);
-    },
-  });
 
+    /**
+     * Sets range for window width and height.
+     * @param {number|unset} [minW]
+     * @param {number|unset} [maxW]
+     * @param {number|unset} [minH]
+     * @param {number|unset} [maxH]
+     * @return {this}
+     */
+    CLS_window.prototype.setSizeRange = function(minW, maxW, minH, maxH) {
+        if(minW != null) this.minW = minW;
+        if(maxW != null) this.maxW = maxW;
+        if(minH != null) this.minH = minH;
+        if(maxH != null) this.maxH = maxH;
 
-  /**
-   * Adds the window to scene.
-   * @return {void}
-   */
-  CLS_window.prototype.add = function() {
-    if(Core.scene == null || this.added) return;
-    if(!fetchSetting("misc-enable-window")) {
-      MDL_ui.showFadeInfo("lovec", "window-disabled");
-      return;
+        return this;
     };
 
-    this.rebuild();
-    this.root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
-    Core.scene.add(this.root);
-    this.added = true;
-  };
+
+    /* <------------------------------ util ------------------------------ */
 
 
-  /**
-   * Removes the window from scene.
-   * @return {void}
-   */
-  CLS_window.prototype.close = function() {
-    if(!this.added) return;
+    /**
+     * Initializes some parameters of this window.
+     * @return {this}
+     */
+    CLS_window.prototype.initParam = function() {
+        this.added = false;
+        this.isHidden = false;
+        this.isDragged = false;
+        this.prefW = 0.0;
+        this.prefH = 0.0;
+        this.prefWCont = 0.0;
+        this.prefHCont = 0.0;
 
-    this.root.actions(Actions.remove());
-    this.added = false;
-    Core.app.post(() => {
-      selectedWins.remove(this);
+        this.minW = 320.0;
+        this.maxW = 840.0;
+        this.minH = 40.0;
+        this.maxH = 420.0;
+        this.titleColor = Color.darkGray;
+        this.contColor = Pal.darkestGray;
+
+        return this;
+    };
+
+
+    /**
+     * Rebuilds the entire window.
+     * @return {void}
+     */
+    CLS_window.prototype.rebuild = function thisFun() {
+        let root = this.root;
+        root.clearChildren();
+        let base = CLS_window.getBaseTable(this);
+        this.base = base;
+        root.add(base).top().growX();
+
+        base.update(() => {
+            base.setColor(selectedWins.includes(this) ? Pal.accent : Color.white);
+        });
+        base.top();
+
+        // Row 1
+        (3).each(() => thisFun.addPlaceholder(base));
+        base.row();
+        // Row 2 (contents)
+        thisFun.addPlaceholder(base);
+        base.table(Styles.none, tb => {
+            // `TABLE`: title
+            let titleCell = tb.table(Tex.whiteui, tb1 => {
+                tb1.left().setColor(this.titleColor);
+                tb1.tapped(() => {
+                    selectWin(this);
+                    this.isDragged = true;
+                });
+                tb1.released(() => this.isDragged = false);
+                // `TABLE`: title base
+                tb1.table(Styles.none, tb2 => {
+                    tb2.left();
+                    MDL_table.margin(tb2, 0.25);
+                    let funBtnSize = 8.0;
+                    // Close
+                    tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
+                    tb2.button("X", btnStyles.close, () => selectedWins.forEachFast(win => win.close(), true)).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", "win-close"), true);
+                    // Minimize & restore
+                    tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
+                    tb2.button(this.isHidden ? "L" : "S", btnStyles[this.isHidden ? "restore" : "minimize"], () => selectedWins.forEachFast(win => win.minimize(), true)).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getTerm("lovec", this.isHidden ? "win-restore" : "win-minimize"), true);
+                    // Help
+                    tb2.table(Styles.none, tb3 => {}).width(funBtnSize);
+                    tb2.button("?", btnStyles.help, () => {}).size(funBtnSize).padRight(4.0).tooltip(MDL_bundle.getInfo("lovec", "tt-win-help"), true);
+                    // Text
+                    tb2.table(Styles.none, tb3 => {}).width(16.0);
+                    tb2.table(Styles.none, tb3 => tb3.add(this.title));
+                    tb2.table(Styles.none, tb3 => {}).width(16.0);
+                });
+            }).growX();
+            tb.row();
+            // `TABLE`: contents
+            if(!this.isHidden) {
+                tb.table(Tex.whiteui, tb1 => {
+                    tb1.left().setColor(this.contColor);
+                    MDL_table.margin(tb1);
+                    tb1.pane(pnTb => {
+                        this.tableM(pnTb);
+                        this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW) / global.lovecUtil.prop.uiScale;
+                        this.prefH = Mathf.clamp(pnTb.prefHeight, this.minH, this.maxH) / global.lovecUtil.prop.uiScale;
+                    }).width(this.prefW).height(this.prefH);
+                    this.prefWCont = tb1.prefWidth / global.lovecUtil.prop.uiScale;
+                    this.prefHCont = tb1.prefHeight / global.lovecUtil.prop.uiScale;
+                }).grow().row();
+            };
+            titleCell.width(this.prefWCont);
+        });
+        thisFun.addPlaceholder(base);
+        base.row();
+        // Row 3
+        (3).each(() => thisFun.addPlaceholder(base));
+
+        if(this.isHidden) {
+            root.table(Styles.none, tb1 => {}).height(this.prefHCont);
+        };
+
+        // Move the window table to center position
+        root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
+    }
+    .setProp({
+        addPlaceholder: function(tb) {
+            tb.table(Styles.none, tb1 => {}).width(2.0).height(2.0);
+        },
     });
-  };
 
 
-  /**
-   * Minimizes the window, or restores it if already hidden.
-   * @return {void}
-   */
-  CLS_window.prototype.minimize = function() {
-    if(!this.added) return;
+    /**
+     * Adds the window to scene.
+     * @return {void}
+     */
+    CLS_window.prototype.add = function() {
+        if(Core.scene == null || this.added) return;
+        if(!fetchSetting("misc-enable-window")) {
+            MDL_ui.showFadeInfo("lovec", "window-disabled");
+            return;
+        };
 
-    this.isHidden = !this.isHidden;
-    this.rebuild();
-  };
+        this.rebuild();
+        this.root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
+        Core.scene.add(this.root);
+        this.added = true;
+    };
+
+
+    /**
+     * Removes the window from scene.
+     * @return {void}
+     */
+    CLS_window.prototype.close = function() {
+        if(!this.added) return;
+
+        this.root.actions(Actions.remove());
+        this.added = false;
+        Core.app.post(() => {
+            selectedWins.remove(this);
+        });
+    };
+
+
+    /**
+     * Minimizes the window, or restores it if already hidden.
+     * @return {void}
+     */
+    CLS_window.prototype.minimize = function() {
+        if(!this.added) return;
+
+        this.isHidden = !this.isHidden;
+        this.rebuild();
+    };
 
 
 

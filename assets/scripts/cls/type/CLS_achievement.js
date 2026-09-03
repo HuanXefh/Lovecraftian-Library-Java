@@ -5,37 +5,49 @@
 */
 
 
-  /**
-   * Lovec achievement.
-   * Achievements should be created on CLIENT LOAD and not on headless end.
-   * See {@link TP_achievement} in ProjReind for examples.
-   * @class
-   * @param {string} nameMod
-   * @param {string} name
-   * @param {TextureRegionDrawable} icon
-   * @param {CLS_eventTrigger} trigger - Trigger used to check state of the achievement.
-   * @param {Function|unset} [listener] - Complete the achievement here. If not set, the achievement will be completed when trigger is fired.
-   */
-  const CLS_achievement = newClass().initClass();
+    /**
+     * Lovec achievement.
+     * Achievements should be created on CLIENT LOAD and not on headless end.
+     * See {@link TP_achievement} in ProjReind for examples.
+     * @class
+     * @param {string} nameMod
+     * @param {string} name
+     * @param {TextureRegionDrawable} icon
+     * @param {CLS_eventTrigger} trigger - Trigger used to check state of the achievement.
+     * @param {Function|unset} [listener] - Complete the achievement here. If not set, the achievement will be completed when trigger is fired.
+     */
+    const CLS_achievement = newClass().initClass();
 
 
-  CLS_achievement.prototype.init = function(nameMod, name, icon, trigger, listener) {
-    const thisIns = this;
-    if(fetchMod(nameMod, true) == null) ERROR_HANDLER.throw("noModFound", nameMod);
-    this.name = nameMod + "-" + registerUniqueName(name, insNames, "achievement");
-    this.mod = nameMod;
-
-    this.icon = tryVal(icon, VARGEN.icons.ohno);
-    listener == null ?
-      trigger.addGlobalListener(() => this.complete()) :
-      trigger.addGlobalListener(function() {listener.apply(thisIns, arguments)});
-
-    allInss.push(this);
-  };
+    CLS_achievement.prototype.init = function(nameMod, name, icon, trigger, listener) {
 
 
-  const insNames = [];
-  const allInss = [];
+        const thisIns = this;
+        if(fetchMod(nameMod, true) == null) ERROR_HANDLER.throw("noModFound", nameMod);
+
+
+        /** @type {string} */
+        this.name = nameMod + "-" + registerUniqueName(name, insNames, "achievement");
+        /** @type {string} */
+        this.mod = nameMod;
+        /** @type {TextureRegionDrawable} */
+        this.icon = tryVal(icon, VARGEN.icons.ohno);
+
+
+        listener == null ?
+            trigger.addGlobalListener(() => this.complete()) :
+            trigger.addGlobalListener(function() {listener.apply(thisIns, arguments)});
+
+        allInss.push(this);
+
+
+    };
+
+
+    /** @type {Array<string>} */
+    const insNames = [];
+    /** @type {Array<CLS_achievement>} */
+    const allInss = [];
 
 
 /*
@@ -45,29 +57,29 @@
 */
 
 
-  /**
-   * Gets all achievements.
-   * @return {Array<CLS_achievement>}
-   */
-  CLS_achievement.getAll = function() {
-    return allInss;
-  };
+    /**
+     * Gets all achievements.
+     * @return {Array<CLS_achievement>}
+     */
+    CLS_achievement.getAll = function() {
+        return allInss;
+    };
 
 
-  /**
-   * Clears all completed achievements.
-   * @return {void}
-   */
-  CLS_achievement.clear = function() {
-    if(Vars.headless) return;
+    /**
+     * Clears all completed achievements.
+     * @return {void}
+     */
+    CLS_achievement.clear = function() {
+        if(Vars.headless) return;
 
-    allInss.forEachFast(achievement => {
-      Core.settings.put(achievement.getHeader(), false);
-    }, true);
-    Core.settings.put("lovec-misc-secret-code-crashed", false);
-    console.log("[LOVEC] Lovec achievement data has been ${1}.".format("cleared".color(Pal.remove)));
-  }
-  .setAnno("debug");
+        allInss.forEachFast(achievement => {
+            Core.settings.put(achievement.getHeader(), false);
+        }, true);
+        Core.settings.put("lovec-misc-secret-code-crashed", false);
+        console.log("[LOVEC] Lovec achievement data has been ${1}.".format("cleared".color(Pal.remove)));
+    }
+    .setAnno("debug");
 
 
 /*
@@ -77,71 +89,71 @@
 */
 
 
-  /* <------------------------------ property ------------------------------ */
+    /* <------------------------------ property ------------------------------ */
 
 
-  /**
-   * Gets mod of this achievement.
-   * @return {Mod}
-   */
-  CLS_achievement.prototype.getMod = function() {
-    return fetchMod(this.mod);
-  };
+    /**
+     * Gets mod of this achievement.
+     * @return {Mod}
+     */
+    CLS_achievement.prototype.getMod = function() {
+        return fetchMod(this.mod);
+    };
 
 
-  /**
-   * Gets header of this achievement.
-   * @return {string}
-   */
-  CLS_achievement.prototype.getHeader = function() {
-    return this.name;
-  };
+    /**
+     * Gets header of this achievement.
+     * @return {string}
+     */
+    CLS_achievement.prototype.getHeader = function() {
+        return this.name;
+    };
 
 
-  /**
-   * Gets icon used by this achievement.
-   * @return {TextureRegionDrawable}
-   */
-  CLS_achievement.prototype.getIcon = function() {
-    return this.icon;
-  };
+    /**
+     * Gets icon used by this achievement.
+     * @return {TextureRegionDrawable}
+     */
+    CLS_achievement.prototype.getIcon = function() {
+        return this.icon;
+    };
 
 
-  /**
-   * Gets text description of this achievement.
-   * <br> `BUNDLE`: "info.common-info-achieve-<nameMod>-<name>".
-   * @return {string}
-   */
-  CLS_achievement.prototype.getText = function() {
-    return MDL_bundle.getInfo("common", "achieve-" + this.name);
-  };
+    /**
+     * Gets text description of this achievement.
+     * <br> `BUNDLE`: "info.common-info-achieve-<nameMod>-<name>".
+     * @return {string}
+     */
+    CLS_achievement.prototype.getText = function() {
+        return MDL_bundle.getInfo("common", "achieve-" + this.name);
+    };
 
 
-  /**
-   * Whether this achievement has been completed.
-   * @return {boolean}
-   */
-  CLS_achievement.prototype.isCompleted = function() {
-    return Vars.headless ?
-      false :
-      Core.settings.getBool(this.getHeader(), false);
-  };
+    /**
+     * Whether this achievement has been completed.
+     * @return {boolean}
+     */
+    CLS_achievement.prototype.isCompleted = function() {
+        return Vars.headless ?
+            false :
+            Core.settings.getBool(this.getHeader(), false);
+    };
 
 
-  /* <------------------------------ util ------------------------------ */
+    /* <------------------------------ util ------------------------------ */
 
 
-  /**
-   * Completes this achievement.
-   * @return {void}
-   */
-  CLS_achievement.prototype.complete = function() {
-    if(Vars.headless || this.isCompleted()) return;
+    /**
+     * Completes this achievement.
+     * @return {void}
+     */
+    CLS_achievement.prototype.complete = function() {
+        if(Vars.headless || this.isCompleted()) return;
 
-    Core.settings.put(this.getHeader(), true);
-    MDL_ui.showToast("common", "achieve-" + this.name, this.icon, 80.0);
-  }
-  .setAnno("non-console");
+        Core.settings.put(this.getHeader(), true);
+        MDL_ui.showToast("common", "achieve-" + this.name, this.icon, 80.0);
+    }
+    .setAnno("non-console");
 
 
 

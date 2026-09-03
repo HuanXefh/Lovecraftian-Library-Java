@@ -218,35 +218,35 @@
    * Whether a building can accept a list of items from `b_f`.
    * @param {Building} b
    * @param {Building} b_f
-   * @param {Array} itmAmtArr - `ROW`: itm_gn, amt.
+   * @param {Item2Array} itm2Arr - `ROW`: itm_gn, amt.
    * @return {boolean}
    */
-  const acceptItmAmtArr = function(b, b_f, itmAmtArr) {
-    let i = 0, iCap = itmAmtArr.iCap(), itm;
+  const acceptItm2Arr = function(b, b_f, itm2Arr) {
+    let i = 0, iCap = itm2Arr.iCap(), itm;
     while(i < iCap) {
-      itm = MDL_content.getCt(itmAmtArr[i], "rs");
-      if(itm != null && b.acceptStack(itm, itmAmtArr[i + 1], b_f) < itmAmtArr[i + 1]) return false;
+      itm = MDL_content.getCt(itm2Arr[i], "rs");
+      if(itm != null && b.acceptStack(itm, itm2Arr[i + 1], b_f) < itm2Arr[i + 1]) return false;
       i += 2;
     };
 
     return true;
   };
-  exports.acceptItmAmtArr = acceptItmAmtArr;
+  exports.acceptItm2Arr = acceptItm2Arr;
 
 
   /**
    * Adds a list of items to some building from `b_f`.
    * @param {Building} b
    * @param {Building} b_f
-   * @param {Array} itmAmtArr - `ROW`: itm_gn, amt.
+   * @param {Item2Array} itm2Arr - `ROW`: itm_gn, amt.
    * @return {boolean}
    */
-  const addItmAmtArr = function(b, b_f, itmAmtArr) {
-    let i = 0, iCap = itmAmtArr.iCap(), itm, cond = false;
+  const addItm2Arr = function(b, b_f, itm2Arr) {
+    let i = 0, iCap = itm2Arr.iCap(), itm, cond = false;
     while(i < iCap) {
-      itm = MDL_content.getCt(itmAmtArr[i], "rs");
+      itm = MDL_content.getCt(itm2Arr[i], "rs");
       if(itm != null) {
-        b.handleStack(itm, itmAmtArr[i + 1], b_f);
+        b.handleStack(itm, itm2Arr[i + 1], b_f);
         cond = true;
       };
       i += 2;
@@ -254,7 +254,7 @@
 
     return true;
   };
-  exports.addItmAmtArr = addItmAmtArr;
+  exports.addItm2Arr = addItm2Arr;
 
 
   /**

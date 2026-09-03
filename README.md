@@ -42,9 +42,9 @@ Here's a list of tutorials on how to use the lib.
 
 - [File Structure](https://github.com/HuanXefh/Lovecraftian-Library-Java/blob/master/document/tutorial/file-structure.md)
 
-- [Global Script (WIP)]()
+- [Custom Tags](https://github.com/HuanXefh/Lovecraftian-Library-Java/blob/master/document/tutorial/custom-tags.md)
 
-- [Coding Tags (WIP)]()
+- [Global Script (WIP)]()
 
 - [DB Object (WIP)]()
 

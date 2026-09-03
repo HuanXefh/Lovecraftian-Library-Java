@@ -567,7 +567,7 @@
   /**
    * Gets object of categories and recipe headers.
    * @param {RecipeModule} rcMdl
-   * @return {Object<string: string>}
+   * @return {Object<string, string>}
    */
   const getCategHeaderObj = function(rcMdl) {
     let obj = {};

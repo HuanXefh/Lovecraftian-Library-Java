@@ -645,7 +645,7 @@
    * Shows clickable text box at the bottom of screen.
    * @param {number} delay
    * @param {DialogTuple|unset} [dialTup]
-   * @param {CharacterTuple|unset} [charaTup]
+   * @param {DialogCharaTuple|unset} [charaTup]
    * @param {(function(): void)|unset} [scr] - Called just before the text box is removed.
    * @param {Object|unset} [paramObj]
    * @param {SoundGn|unset} [paramObj.sound] - If set, the sound will be played when the text is shown.

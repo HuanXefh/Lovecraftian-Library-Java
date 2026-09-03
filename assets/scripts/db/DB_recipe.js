@@ -57,7 +57,7 @@ const db = {
         },
 
         ConsumeItemExplosive, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
-          Vars.content.items().each(itm => itm.explosiveness >= cons.minExplosiveness && !(consFlam != null && itm.flammability >= consFlam.minFlammability), itm => dictConsItm[itm.id].push(blk, 1, mergeObj(data)));
+          Vars.content.items().each(itm => itm.explosiveness >= cons.minExplosiveness, itm => dictConsItm[itm.id].push(blk, 1, mergeObj(data)));
         },
 
         ConsumeItemRadioactive, function(blk, cons, data, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {

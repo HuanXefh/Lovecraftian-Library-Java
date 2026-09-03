@@ -33,7 +33,7 @@
 
   /**
    * Sums all numbers in a number mapper object.
-   * @param {Object<string: number>} obj
+   * @param {Object<string, number>} obj
    * @param {(function(string, number): void)|unset} [mapF] - `ARGS`: key, val.
    * @return {number}
    */
@@ -53,7 +53,7 @@
 
   /**
    * Finds largest value in a number mapper object.
-   * @param {Object<string: number>} obj
+   * @param {Object<string, number>} obj
    * @param {(function(string, number): void)|unset} [mapF] - `ARGS`: key, val.
    * @return {number}
    */
@@ -75,7 +75,7 @@
 
   /**
    * Finds smallest value in a number mapper object.
-   * @param {Object<string: number>} obj
+   * @param {Object<string, number>} obj
    * @param {(function(string, number): void)|unset} [mapF] - `ARGS`: key, val.
    * @return {number}
    */
