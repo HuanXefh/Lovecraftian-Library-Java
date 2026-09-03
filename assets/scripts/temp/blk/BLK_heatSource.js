@@ -168,7 +168,7 @@
 
 
       config: function() {
-        return this.tempSet;
+        return this.tempSet.toF();
       }
       .setProp({
         noSuper: true,

@@ -225,7 +225,7 @@
    * @return {JavaArray<java.lang.Object>}
    */
   Array.newObjArr = function(cap) {
-    return Array.newJavaArr(JAVA.Object, cap);
+    return Array.newJavaArr(JAVA.object, cap);
   };
 
 

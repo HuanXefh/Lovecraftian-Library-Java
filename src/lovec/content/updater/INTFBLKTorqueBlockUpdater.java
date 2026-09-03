@@ -199,7 +199,7 @@ public class INTFBLKTorqueBlockUpdater extends ContentUpdater<Block> {
                 while(i < iCap) {
                     ob = (Building) torTransTargets.get(i);
                     if(ob.isAdded() && ob.enabled && !ob.isPayload() && has(ob, "ex_calcRpmTrans") && (boolean) invoke("ex_checkTorTransValid", ob)) {
-                        float rpmTrans = LCScript.toFloat(invoke(ob, "ex_calcRpmTrans", b)) + 0.2f;
+                        float rpmTrans = LCScript.toFloat(invoke(ob, "ex_calcRpmTrans", b));
                         rpmTarget = Math.max(rpmTarget, rpmTrans * LCScript.toFloat(invoke("ex_calcRpmAcceptScl", ob)));
                         torCap = Math.max(torCap, rpmTrans);
                     };

@@ -42,13 +42,9 @@
         tempParent: null,
         tempTags: [],
     };
-    /**
-     * @type {TemplateAliasArray}
-     */
+    /** @type {TemplateAliasArray} */
     CLS_contentTemplate.paramAliasArr = [];
-    /**
-     * @type {TemplateParserArray}
-     */
+    /** @type {TemplateParserArray} */
     CLS_contentTemplate.paramParserArr = [];
     /** @type {Object<string, TemplateFunction>} */
     CLS_contentTemplate.funObj = {};

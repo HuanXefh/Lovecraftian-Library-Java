@@ -150,7 +150,7 @@
 
 
       config: function() {
-        return this.presAllowFrac;
+        return this.presAllowFrac.toF();
       }
       .setProp({
         noSuper: true,

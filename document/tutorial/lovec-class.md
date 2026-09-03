@@ -11,22 +11,22 @@ const SomeClass = newClass().initClass();
 // Define `init` method of its prototype
 // Without this method you cannot create instance of this class!
 SomeClass.prototype.init = function(someProp) {
-  // Initialize instance properties here
-  this.someProp = someProp != null ? someProp : "ohno";
+    // Initialize instance properties here
+    this.someProp = someProp != null ? someProp : "ohno";
 };
 
 
 // Define a class method
 // `this` here is the class
 SomeClass.someFun = function() {
-  print("ohyes");
+    print("ohyes");
 };
 
 
 // Define an instance method
 // `this` here is the instance
 SomeClass.prototype.someFun = function() {
-  print(this.someProp);
+    print(this.someProp);
 };
 
 
@@ -45,15 +45,15 @@ A Lovec class can extend another class and implement interfaces, just like norma
 // You need an object to define an interface
 // `__proto__` object inside is used for instance methods
 const SomeInterface = new CLS_interface({
-  oof() {
-    print("class oof");
-  },
-
-  __proto__: {
     oof() {
-      print("instance oof");
+        print("class oof");
     },
-  },
+
+    __proto__: {
+        oof() {
+            print("instance oof");
+        },
+    },
 });
 
 
@@ -64,13 +64,13 @@ const OtherClass = newClass().extendClass(SomeClass).implement(SomeInterface).in
 
 // Override the instance method `someFun`
 OtherClass.prototype.someFun = function(someProp) {
-  // If no argument provided, call the super method from `SomeClass`
-  if(someProp == null) {
-    this.super("someFun");
-    return;
-  };
+    // If no argument provided, call the super method from `SomeClass`
+    if(someProp == null) {
+        this.super("someFun");
+        return;
+    };
 
-  print(someProp);
+    print(someProp);
 };
 
 
