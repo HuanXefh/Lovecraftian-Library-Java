@@ -120,28 +120,28 @@ public class MultiBlockLinkBlock extends Block {
 
 
         @Override
-        public boolean acceptItem(Building b_f, Item itm) {
-            return linkedBuild != null && linkedBuild.acceptItem(b_f, itm);
+        public boolean acceptItem(Building b_f, Item item) {
+            return linkedBuild != null && linkedBuild.acceptItem(b_f, item);
         };
 
 
         @Override
-        public int acceptStack(Item itm, int amt, Teamc e_f) {
-            return linkedBuild == null ? 0 : linkedBuild.acceptStack(itm, amt, e_f);
+        public int acceptStack(Item item, int amt, Teamc e_f) {
+            return linkedBuild == null ? 0 : linkedBuild.acceptStack(item, amt, e_f);
         };
 
 
         @Override
-        public void handleItem(Building b_f, Item itm) {
+        public void handleItem(Building b_f, Item item) {
             if(linkedBuild == null) return;
-            linkedBuild.handleItem(b_f, itm);
+            linkedBuild.handleItem(b_f, item);
         };
 
 
         @Override
-        public void handleStack(Item itm, int amt, Teamc e_f) {
+        public void handleStack(Item item, int amt, Teamc e_f) {
             if(linkedBuild == null) return;
-            linkedBuild.handleStack(itm, amt, e_f);
+            linkedBuild.handleStack(item, amt, e_f);
         };
 
 

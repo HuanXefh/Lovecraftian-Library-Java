@@ -64,29 +64,29 @@
    * Adds an item consumption term.
    * Should be called strictly after CLIENT LOAD.
    * @param {BlockGn} blk_gn
-   * @param {ItemGn} itm_gn
+   * @param {ItemGn} item_gn
    * @param {number} amt
    * @param {number|unset} [p]
    * @param {RecipeDictionaryData|unset} [data]
    * @return {void}
    */
-  const addItmConsTerm = function(blk_gn, itm_gn, amt, p, data) {
-    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
+  const addItemConsTerm = function(blk_gn, item_gn, amt, p, data) {
+    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
-    let itm = MDL_content.getCt(itm_gn, "rs");
-    if(itm == null) return;
+    let item = MDL_content.getCt(item_gn, "rs");
+    if(item == null) return;
     if(p == null) p = 1.0;
     if(p < 0.0001) return;
 
-    rcDict.cons.item[itm.id].push(
+    rcDict.cons.item[item.id].push(
       blk,
       amt * p,
       tryVal(data, Object.air),
     );
   };
-  exports.addItmConsTerm = addItmConsTerm;
+  exports.addItemConsTerm = addItemConsTerm;
 
 
   /**
@@ -99,7 +99,7 @@
    * @return {void}
    */
   const addFldConsTerm = function(blk_gn, liq_gn, amt, data) {
-    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -125,7 +125,7 @@
    * @return {void}
    */
   const addPayConsTerm = function(blk_gn, ct_gn, amt, data) {
-    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -151,8 +151,8 @@
    * @return {void}
    */
   const addCustomConsTerm = function(blk_gn, name, amt, data) {
-    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
-    if(rcDict.cons[name] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", name);
+    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
+    if(rcDict.cons[name] == null) LCErrorHandler.throw("recipeDictionaryCustomFieldNotFound", name);
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -170,29 +170,29 @@
    * Adds an item production term.
    * Should be called strictly after CLIENT LOAD.
    * @param {BlockGn} blk_gn
-   * @param {ItemGn} itm_gn
+   * @param {ItemGn} item_gn
    * @param {number} amt
    * @param {number|unset} [p]
    * @param {RecipeDictionaryData|unset} [data]
    * @return {void}
    */
-  const addItmProdTerm = function(blk_gn, itm_gn, amt, p, data) {
-    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
+  const addItemProdTerm = function(blk_gn, item_gn, amt, p, data) {
+    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
-    let itm = MDL_content.getCt(itm_gn, "rs");
-    if(itm == null) return;
+    let item = MDL_content.getCt(item_gn, "rs");
+    if(item == null) return;
     if(p == null) p = 1.0;
     if(p < 0.0001) return;
 
-    rcDict.prod.item[itm.id].push(
+    rcDict.prod.item[item.id].push(
       blk,
       amt * p,
       tryVal(data, Object.air),
     );
   };
-  exports.addItmProdTerm = addItmProdTerm;
+  exports.addItemProdTerm = addItemProdTerm;
 
 
   /**
@@ -205,7 +205,7 @@
    * @return {void}
    */
   const addFldProdTerm = function(blk_gn, liq_gn, amt, data) {
-    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -231,7 +231,7 @@
    * @return {void}
    */
   const addPayProdTerm = function(blk_gn, ct_gn, amt, data) {
-    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -257,8 +257,8 @@
    * @return {void}
    */
   const addCustomProdTerm = function(blk_gn, name, amt, data) {
-    if(!rcDict.hasInit) ERROR_HANDLER.throw("recipeDictionaryNotInitialized");
-    if(rcDict.prod[name] == null) ERROR_HANDLER.throw("recipeDictionaryCustomFieldNotFound", name);
+    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
+    if(rcDict.prod[name] == null) LCErrorHandler.throw("recipeDictionaryCustomFieldNotFound", name);
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -516,9 +516,9 @@
       rcDict.cons[name] = [];
       rcDict.prod[name] = [];
     });
-    Vars.content.items().each(itm => {
-      rcDict.cons.item[itm.id] = [];
-      rcDict.prod.item[itm.id] = [];
+    Vars.content.items().each(item => {
+      rcDict.cons.item[item.id] = [];
+      rcDict.prod.item[item.id] = [];
     });
     Vars.content.liquids().each(liq => {
       rcDict.cons.fluid[liq.id] = [];

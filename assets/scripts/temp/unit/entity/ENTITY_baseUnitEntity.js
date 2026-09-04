@@ -35,8 +35,8 @@
   };
 
 
-  function comp_acceptsItem(unit, itm) {
-    return !unit.type.delegee.itmBlacklist.includes(itm.name);
+  function comp_acceptsItem(unit, item) {
+    return !unit.type.delegee.itemBlacklist.includes(item.name);
   };
 
 
@@ -105,8 +105,8 @@
     }),
 
 
-    acceptsItem: function(itm) {
-      return comp_acceptsItem(this, itm);
+    acceptsItem: function(item) {
+      return comp_acceptsItem(this, item);
     }
     .setProp({
       boolMode: "and",

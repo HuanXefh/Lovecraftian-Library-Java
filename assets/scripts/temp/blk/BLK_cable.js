@@ -209,7 +209,7 @@
       },
 
 
-      acceptItem: function(b_f, itm) {
+      acceptItem: function(b_f, item) {
         return false;
       }
       .setProp({
@@ -219,7 +219,7 @@
       }),
 
 
-      acceptStack: function(itm, amt, e_f) {
+      acceptStack: function(item, amt, e_f) {
         return 0;
       }
       .setProp({

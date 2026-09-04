@@ -176,7 +176,7 @@
       parse(blk) {
         let seq = new Seq();
 
-        global.fcell.fluidItemMap.each((liq, itm) => {
+        global.fcell.fluidItemMap.each((liq, item) => {
           let rawRc = MOD_tmi.makeRawRc(
             "factory",
             blk,
@@ -187,11 +187,11 @@
           });
 
           if(!blk.delegee.isUnpacker) {
-            MOD_tmi.addCons(rawRc, liq, blk.delegee.packageAmt * blk.delegee.liqPerCellItm);
-            MOD_tmi.addProd(rawRc, itm, blk.delegee.packageAmt);
+            MOD_tmi.addCons(rawRc, liq, blk.delegee.packageAmt * blk.delegee.liqPerCellItem);
+            MOD_tmi.addProd(rawRc, item, blk.delegee.packageAmt);
           } else {
-            MOD_tmi.addCons(rawRc, itm, blk.delegee.packageAmt);
-            MOD_tmi.addProd(rawRc, liq, blk.delegee.packageAmt * blk.delegee.liqPerCellItm);
+            MOD_tmi.addCons(rawRc, item, blk.delegee.packageAmt);
+            MOD_tmi.addProd(rawRc, liq, blk.delegee.packageAmt * blk.delegee.liqPerCellItem);
           };
 
           rawRc.complete();

@@ -102,7 +102,7 @@
     .setMethod({
 
 
-      acceptItem: function(b_f, itm) {
+      acceptItem: function(b_f, item) {
         return !this.block.delegee.convInputOnly ?
           true :
           MDL_cond.isConveyor(b_f.block) || MDL_cond.isDuct(b_f.block);

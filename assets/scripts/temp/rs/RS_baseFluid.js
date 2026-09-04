@@ -116,7 +116,7 @@
 
         ob = ot.build;
         if(ob != null && !tryJsProp(ob.block, "noReac", false)) {
-          if(ob.items != null && ob.items.any() && tryJsProp(ob.block, "isExposed", false)) ob.items.each(itm => MDL_reaction.handleReaction(itm, liq, 20.0, ob));
+          if(ob.items != null && ob.items.any() && tryJsProp(ob.block, "isExposed", false)) ob.items.each(item => MDL_reaction.handleReaction(item, liq, 20.0, ob));
           if(ob.liquids != null && ob.liquids.currentAmount() > 0.001) MDL_reaction.handleReaction(ob.liquids.current(), liq, 20.0, ob);
         };
 

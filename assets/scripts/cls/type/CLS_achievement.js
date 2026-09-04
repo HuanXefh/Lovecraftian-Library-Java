@@ -23,7 +23,7 @@
 
 
         const thisIns = this;
-        if(fetchMod(nameMod, true) == null) ERROR_HANDLER.throw("noModFound", nameMod);
+        if(fetchMod(nameMod, true) == null) LCErrorHandler.throw("noModFound", nameMod);
 
 
         /** @type {string} */

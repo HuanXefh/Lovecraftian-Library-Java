@@ -127,7 +127,7 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered whenever an item is produced in some Lovec factory.
-   * <br> `ARGS`: b, itm, amt.
+   * <br> `ARGS`: b, item, amt.
    */
   itemProduce: new CLS_eventTrigger("lovec-item-produce"),
 
@@ -141,7 +141,7 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered whenever a crop is harvested.
-   * <br> `ARGS`: b, itm.
+   * <br> `ARGS`: b, item.
    */
   cropHarvest: new CLS_eventTrigger("lovec-crop-harvest"),
 
@@ -177,7 +177,7 @@ const BOX_trigger = new CLS_objectBox({
 
   /**
    * Triggered whenever a loot is taken by some unit.
-   * <br> `ARGS`: unit, itm, amt.
+   * <br> `ARGS`: unit, item, amt.
    */
   lootTake: new CLS_eventTrigger("lovec-loot-take"),
 

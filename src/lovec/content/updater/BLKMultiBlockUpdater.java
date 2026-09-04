@@ -127,9 +127,9 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
 
 
         @FragMethod
-        public boolean dump(@Nullable Item itm) {
+        public boolean dump(@Nullable Item item) {
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-                if(!blk.hasItems || b.items.total() == 0 || mb.getLinkedProximityMap().size == 0 || (itm != null && !b.items.has(itm))) return false;
+                if(!blk.hasItems || b.items.total() == 0 || mb.getLinkedProximityMap().size == 0 || (item != null && !b.items.has(item))) return false;
 
                 Building[] pair;
                 Building b_f;
@@ -140,22 +140,22 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
                     pair = mb.getLinkedProximityMap().get((i + dumpInd) % iCap);
                     b_f = pair[1];
                     b_t = pair[0];
-                    if(itm == null) {
-                        Item itmCur;
+                    if(item == null) {
+                        Item itemCur;
                         for(int j = 0; j < Vars.content.items().size; j++) {
                             if(!b.items.has(j)) continue;
-                            itmCur = Vars.content.item(j);
-                            if(b_t.acceptItem(b_f, itmCur) && b.canDump(b_t, itmCur)) {
-                                b_t.handleItem(b_f, itmCur);
-                                b.items.remove(itmCur, 1);
+                            itemCur = Vars.content.item(j);
+                            if(b_t.acceptItem(b_f, itemCur) && b.canDump(b_t, itemCur)) {
+                                b_t.handleItem(b_f, itemCur);
+                                b.items.remove(itemCur, 1);
                                 incrementDumpIndex(iCap);
                                 return true;
                             };
                         };
                     } else {
-                        if(b_t.acceptItem(b_f, itm) && b.canDump(b_t, itm)) {
-                            b_t.handleItem(b_f, itm);
-                            b.items.remove(itm, 1);
+                        if(b_t.acceptItem(b_f, item) && b.canDump(b_t, item)) {
+                            b_t.handleItem(b_f, item);
+                            b.items.remove(item, 1);
                             incrementDumpIndex(iCap);
                             return true;
                         };
@@ -169,9 +169,9 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
 
 
         @FragMethod
-        public void offload(Item itm) {
+        public void offload(Item item) {
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-                b.produced(itm, 1);
+                b.produced(item, 1);
 
                 Building[] pair;
                 Building b_f;
@@ -183,12 +183,12 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
                     pair = mb.getLinkedProximityMap().get((i + dumpInd) % iCap);
                     b_f = pair[1];
                     b_t = pair[0];
-                    if(b_t.acceptItem(b_f, itm) && b.canDump(b_t, itm)) {
-                        b_t.handleItem(b_f, itm);
+                    if(b_t.acceptItem(b_f, item) && b.canDump(b_t, item)) {
+                        b_t.handleItem(b_f, item);
                         return;
                     };
                 };
-                b.handleItem(b, itm);
+                b.handleItem(b, item);
             };
         };
 

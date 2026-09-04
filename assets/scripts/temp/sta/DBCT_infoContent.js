@@ -30,7 +30,7 @@
 
 
   function comp_ex_init(sta) {
-    if(sta.nameInfo == null) ERROR_HANDLER.throw("nullArgument", "nameInfo");
+    if(sta.nameInfo == null) LCErrorHandler.throw("nullArgument", "nameInfo");
 
     sta.databaseCategory = "lovec-information";
 

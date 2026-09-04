@@ -168,7 +168,7 @@
   Array.prototype.looseIncludes = function(arr) {
     let i = 0, iCap = this.iCap();
     while(i < iCap) {
-      if(!(this[i] instanceof Array)) ERROR_HANDLER.throw("not2dArray");
+      if(!(this[i] instanceof Array)) LCErrorHandler.throw("not2dArray");
       if(this[i].looseEquals(arr)) return true;
       i++;
     };

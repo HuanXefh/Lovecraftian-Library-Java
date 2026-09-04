@@ -38,19 +38,19 @@
     tmpTup: [],
     tmpCond: false,
     checkOreValid: function(blk, t, team, rot) {
-      let ot = null, itm = null, isBlockDrop = false;
+      let ot = null, item = null, isBlockDrop = false;
       for(let i = 0; i < blk.size; i++) {
         blk.nearbySide(t.x, t.y, rot, i, Tmp.p1);
         for(let j = 0; j < blk.range; j++) {
           ot = Vars.world.tile(Tmp.p1.x + Geometry.d4x[rot] * j, Tmp.p1.y + Geometry.d4y[rot] * j);
           if(ot != null && ot.solid()) {
             if(ot.overlay().itemDrop != null) {
-              itm = ot.overlay().itemDrop;
+              item = ot.overlay().itemDrop;
             } else if(ot.block().itemDrop != null) {
-              itm = ot.block().itemDrop;
+              item = ot.block().itemDrop;
               isBlockDrop = true;
             };
-            if(itm != null && blk.ex_canMine(isBlockDrop ? ot.block() : ot.overlay(), itm, 1.0)) return true;
+            if(item != null && blk.ex_canMine(isBlockDrop ? ot.block() : ot.overlay(), item, 1.0)) return true;
             isBlockDrop = false;
             break;
           };
@@ -66,9 +66,9 @@
     b.mineRsTargets.clear();
     Core.app.post(() => {
       b.facing.forEachFast(ot => {
-        let itm = ot == null ? null : ot.wallDrop();
-        if(itm != null) {
-          b.mineRsTargets.pushUnique(itm);
+        let item = ot == null ? null : ot.wallDrop();
+        if(item != null) {
+          b.mineRsTargets.pushUnique(item);
         };
       }, true);
     });
@@ -87,11 +87,11 @@
     b.time += b.edelta() * mtp;
 
     if(b.time >= drillTime) {
-      let itm;
+      let item;
       b.facing.forEachFast(ot => {
-        itm = ot == null ? null : ot.wallDrop();
-        if(itm != null && b.items.get(itm) < b.getMaximumAccepted(itm)) {
-          b.offload(itm);
+        item = ot == null ? null : ot.wallDrop();
+        if(item != null && b.items.get(item) < b.getMaximumAccepted(item)) {
+          b.offload(item);
         };
       }, true);
       b.time %= drillTime;
@@ -208,7 +208,7 @@
 
 
       shouldConsume: function() {
-        return this.enabled && this.mineRsTargets.length > 0 && this.mineRsTargets.every(itm => this.items.get(itm) < this.getMaximumAccepted(itm));
+        return this.enabled && this.mineRsTargets.length > 0 && this.mineRsTargets.every(item => this.items.get(item) < this.getMaximumAccepted(item));
       }
       .setProp({
         noSuper: true,
@@ -216,8 +216,8 @@
       }),
 
 
-      canDump: function(b_t, itm) {
-        return !this.block.consumesItem(itm) || (this.mineRsTargets.includes(itm) && this.items.has(itm, 2));
+      canDump: function(b_t, item) {
+        return !this.block.consumesItem(item) || (this.mineRsTargets.includes(item) && this.items.has(item, 2));
       }
       .setProp({
         noSuper: true,

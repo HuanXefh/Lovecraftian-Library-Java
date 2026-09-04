@@ -83,7 +83,7 @@
 
     /**
      * Initializes some parameters on this annotation.
-     * @lovecPropgen {@link CLS_annotation}
+     * @lovecPropGen {@link CLS_annotation}
      * @return {void}
      */
     CLS_annotation.prototype.initAnno = function() {

@@ -2,10 +2,12 @@
 
 This lib uses some custom JSDoc tags for documentation.
 
-| Tag             | Target   | Description                                             | Value                |
-|-----------------|----------|---------------------------------------------------------|----------------------|
-| `@lovecRow`     | Array    | This array is a formatted array.                        | `type` - fieldName   |
-| `@lovecPropgen` | Function | This method generates new properties for this instance. | {@link targetClass } |
+| Tag                | Target   | Description                                                               | Value                |
+|--------------------|----------|---------------------------------------------------------------------------|----------------------|
+| `@lovecRow`        | Array    | This array is a formatted array.                                          | `type` - fieldName   |
+| `@lovecContentGen` | Array    | For DB array. Elements are pushed automatically.                          |                      |
+| `@lovecExtensible` | Object   | For DB object. New arrays can be registered with {@link LCModDBRegister}. | {@link targetArray}  |
+| `@lovecPropGen`    | Function | This method generates new properties for this instance.                   | {@link targetClass } |
 
 Apart from JSDoc tags, there are comment tags to describe fields and methods in more detail.
 

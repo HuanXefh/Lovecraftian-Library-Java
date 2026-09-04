@@ -112,29 +112,7 @@
   globalize.names = [];
   globalize.ind = 0;
   globalize.tmp = null;
-
-
-  /**
-   * See {@link Object.mergeObj}.
-   * <br> `ARGS`: obj1, obj2, obj3, ...
-   * @global
-   * @return {Object}
-   */
-  mergeObj = function() {
-    return Object.mergeObj.apply(this, arguments);
-  };
-
-
-  /**
-   * See {@link Object.mergeObjMixin}.
-   * <br> `ARGS`: obj1, obj2, obj3, ...
-   * @global
-   * @return {Object}
-   */
-  mergeObjMixin = function() {
-    return Object.mergeObjMixin.apply(this, arguments);
-  };
-
+  
 
   /* <------------------------------ struct ------------------------------ */
 
@@ -251,7 +229,7 @@
     return function() {
       this.init != null ?
         this.init.apply(this, arguments) :
-        ERROR_HANDLER.throw("noInitForClassPrototype");
+        LCErrorHandler.throw("noInitForClassPrototype");
     };
   };
 
@@ -281,7 +259,7 @@
    * @return {any}
    */
   tryValProv = function(val, defProv) {
-    if(!(defProv instanceof Prov)) ERROR_HANDLER.throw("notProv", defProv);
+    if(!(defProv instanceof Prov)) LCErrorHandler.throw("notProv", defProv);
 
     return val == null ? defProv.get() : val;
   };

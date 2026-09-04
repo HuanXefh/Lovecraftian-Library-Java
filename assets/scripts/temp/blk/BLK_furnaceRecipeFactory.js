@@ -66,7 +66,7 @@
       },
 
 
-      consumesItem: function thisFun(itm) {
+      consumesItem: function thisFun(item) {
         return thisFun.funPrev.apply(this, arguments);
       }
       .setProp({
@@ -126,7 +126,7 @@
       }),
 
 
-      acceptItem: function thisFun(b_f, itm) {
+      acceptItem: function thisFun(b_f, item) {
         return thisFun.funPrev.apply(this, arguments);
       }
       .setProp({

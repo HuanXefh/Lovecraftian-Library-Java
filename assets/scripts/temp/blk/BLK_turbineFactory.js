@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    if(!blk.hasLiquids) ERROR_HANDLER.throw("noLiquidModule", blk.name);
+    if(!blk.hasLiquids) LCErrorHandler.throw("noLiquidModule", blk.name);
     blk.ignoreLiquidFullness = true;
   };
 

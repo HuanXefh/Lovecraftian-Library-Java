@@ -151,7 +151,7 @@
      * @memberof UNIT_baseUnit
      * @instance
      */
-    itmBlacklist: tprov(() => []),
+    itemBlacklist: tprov(() => []),
     /**
      * `PARAM`: If larger than 0.0, shield will always be drawn.
      * @memberof UNIT_baseUnit

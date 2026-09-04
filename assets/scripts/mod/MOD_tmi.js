@@ -369,8 +369,8 @@
           addConsPow(rawRc, cons.usage);
           break;
         case ConsumeItems :
-          for(let itmStack of cons.items) {
-            addCons(rawRc, itmStack.item, itmStack.amount);
+          for(let itemStack of cons.items) {
+            addCons(rawRc, itemStack.item, itemStack.amount);
           };
           break;
         case ConsumeLiquid :
@@ -389,8 +389,8 @@
       };
     });
 
-    if(blk.outputItems != null) for(let itmStack of blk.outputItems) {
-      addProd(rawRc, itmStack.item, itmStack.amount);
+    if(blk.outputItems != null) for(let itemStack of blk.outputItems) {
+      addProd(rawRc, itemStack.item, itemStack.amount);
     };
     if(blk.outputLiquids != null) for(let liqStack of blk.outputLiquids) {
       addProd(rawRc, liqStack.liquid, liqStack.amount, true);
@@ -492,18 +492,18 @@
   /**
    * Registers extra recipes for {@link BLK_terrainDynamicDrill}.
    * @param {Block} blk
-   * @param {ObjectMap} terItmMapMap
+   * @param {ObjectMap} terItemMapMap
    * @return {void}
    */
-  const regisRc_terrainDynamicDrill = function(blk, terItmMapMap) {
+  const regisRc_terrainDynamicDrill = function(blk, terItemMapMap) {
     if(!ENABLED) return;
 
     MDL_event.onLoad(() => {
-      terItmMapMap.each((nameItm, terItmMap) => {
-        let itm = MDL_content.getCt(nameItm, "rs");
-        if(itm == null) return;
+      terItemMapMap.each((nameItem, terItemMap) => {
+        let item = MDL_content.getCt(nameItem, "rs");
+        if(item == null) return;
         let oreGrpMap = new ObjectMap();
-        terItmMap.each((ter, nameRs) => {
+        terItemMap.each((ter, nameRs) => {
           let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
           if(!oreGrpMap.containsKey(rs)) oreGrpMap.put(rs, new CLASSES.RecipeItemGroup());
@@ -511,8 +511,8 @@
           let rawRc = makeRawRc("collecting", blk, blk.drillTime / Math.pow(blk.size, 2), true);
           baseParse(blk, rawRc, Math.pow(blk.liquidBoostIntensity, 2));
           Vars.content.blocks().each(
-            oblk => oblk.itemDrop === itm && ((oblk instanceof OverlayFloor) ? !oblk.wallOre : (oblk instanceof Floor)),
-            oblk => addMineTile(rawRc, oreGrpMap.get(rs), oblk, blk.drillTime / blk.getDrillTime(itm), blk.size),
+            oblk => oblk.itemDrop === item && ((oblk instanceof OverlayFloor) ? !oblk.wallOre : (oblk instanceof Floor)),
+            oblk => addMineTile(rawRc, oreGrpMap.get(rs), oblk, blk.drillTime / blk.getDrillTime(item), blk.size),
           );
           addProd(rawRc, rs, 1);
           addSubInfo(rawRc, MDL_text.getStat(fetchStat("lovec", "blk-terreq").localized(), MDL_terrain.getTerB(ter)));
@@ -612,14 +612,14 @@
     MDL_event.onLoad(() => {
       let i = 0;
       let iCap = blk.delegee.cropData.iCap();
-      let itm, amt, p;
+      let item, amt, p;
       while(i < iCap) {
-        itm = blk.delegee.cropData[i].itm;
+        item = blk.delegee.cropData[i].item;
         amt = blk.delegee.cropData[i].amt;
         p = blk.delegee.cropData[i].p;
-        if(itm != null && amt * p > 0.0) {
+        if(item != null && amt * p > 0.0) {
           let rawRc = makeRawRc("factory", blk, blk.ex_calcStageTotalTime(i) - blk.ex_calcStageTotalTime(blk.delegee.cropData[i].stageTo));
-          addProd(rawRc, itm, amt * p);
+          addProd(rawRc, item, amt * p);
 
           rawRc.complete();
           regisRc(rawRc);
@@ -667,7 +667,7 @@
     if(!ENABLED) return;
 
     if(thisFun.tmpSeq.size === 0) {
-      Vars.content.items().each(itm => thisFun.tmpSeq.add(itm));
+      Vars.content.items().each(item => thisFun.tmpSeq.add(item));
       Vars.content.liquids().each(liq => thisFun.tmpSeq.add(liq));
     };
 

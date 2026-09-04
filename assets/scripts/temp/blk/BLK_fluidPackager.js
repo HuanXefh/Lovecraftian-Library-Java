@@ -19,14 +19,14 @@
 
     MDL_event.onLoadPost(() => {
       if(!blk.isUnpacker) {
-        global.fcell.fluidItemMap.each((liq, itm) => {
-          MDL_recipeDict.addFldConsTerm(blk, liq, blk.packageAmt * blk.liqPerCellItm / blk.craftTime);
-          MDL_recipeDict.addItmProdTerm(blk, itm, blk.packageAmt, 1.0);
+        global.fcell.fluidItemMap.each((liq, item) => {
+          MDL_recipeDict.addFldConsTerm(blk, liq, blk.packageAmt * blk.liqPerCellItem / blk.craftTime);
+          MDL_recipeDict.addItemProdTerm(blk, item, blk.packageAmt, 1.0);
         });
       } else {
-        global.fcell.fluidItemMap.each((liq, itm) => {
-          MDL_recipeDict.addItmConsTerm(blk, itm, blk.packageAmt, 1.0);
-          MDL_recipeDict.addFldProdTerm(blk, liq, blk.packageAmt * blk.liqPerCellItm / blk.craftTime);
+        global.fcell.fluidItemMap.each((liq, item) => {
+          MDL_recipeDict.addItemConsTerm(blk, item, blk.packageAmt, 1.0);
+          MDL_recipeDict.addFldProdTerm(blk, liq, blk.packageAmt * blk.liqPerCellItem / blk.craftTime);
         });
       };
     });
@@ -38,7 +38,7 @@
     blk.stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
     !blk.isUnpacker ?
       blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.packageAmt / blk.craftTime * 60.0, StatUnit.itemsSecond) :
-      blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.packageAmt * blk.liqPerCellItm / blk.craftTime * 60.0, StatUnit.liquidSecond);
+      blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.packageAmt * blk.liqPerCellItem / blk.craftTime * 60.0, StatUnit.liquidSecond);
   };
 
 
@@ -56,10 +56,10 @@
       b.progress = 0.0;
     };
 
-    if(b.unpackItmCur != null && b.items.get(b.unpackItmCur) < b.block.delegee.packageAmt) {
-      b.unpackItmCur = null;
+    if(b.unpackItemCur != null && b.items.get(b.unpackItemCur) < b.block.delegee.packageAmt) {
+      b.unpackItemCur = null;
     };
-    if(b.packLiqCur != null && b.liquids.get(b.packLiqCur) < b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm) {
+    if(b.packLiqCur != null && b.liquids.get(b.packLiqCur) < b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem) {
       b.packLiqCur = null;
     };
   };
@@ -67,13 +67,13 @@
 
   function comp_craft(b) {
     if(!b.block.delegee.isUnpacker) {
-      LCCraftingHandler.addLiquidBatch(b, b, b.packLiqCur, -b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm, true);
+      LCCraftingHandler.addLiquidBatch(b, b, b.packLiqCur, -b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem, true);
       FRAG_item.produceItem(b, b.packageOutputCur, b.block.delegee.packageAmt);
     } else {
-      FRAG_item.consumeItem(b, b.unpackItmCur, b.block.delegee.packageAmt);
-      LCCraftingHandler.addLiquidBatch(b, b, b.packageOutputCur, b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm, true);
+      FRAG_item.consumeItem(b, b.unpackItemCur, b.block.delegee.packageAmt);
+      LCCraftingHandler.addLiquidBatch(b, b, b.packageOutputCur, b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem, true);
     };
-    b.unpackItmCur = null;
+    b.unpackItemCur = null;
     b.packLiqCur = null;
     b.justCrafted = true;
   };
@@ -92,20 +92,20 @@
 
   function comp_shouldConsume(b) {
     return !b.block.delegee.isUnpacker ?
-      (b.packLiqCur != null && b.liquids.get(b.packLiqCur) >= b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm && b.items.get(b.packageOutputCur) <= b.getMaximumAccepted(b.packageOutputCur) - b.block.delegee.packageAmt) :
-      (b.unpackItmCur != null && b.items.get(b.unpackItmCur) >= b.block.delegee.packageAmt && b.liquids.get(b.packageOutputCur) <= b.block.liquidCapacity - b.block.delegee.packageAmt * b.block.delegee.liqPerCellItm);
+      (b.packLiqCur != null && b.liquids.get(b.packLiqCur) >= b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem && b.items.get(b.packageOutputCur) <= b.getMaximumAccepted(b.packageOutputCur) - b.block.delegee.packageAmt) :
+      (b.unpackItemCur != null && b.items.get(b.unpackItemCur) >= b.block.delegee.packageAmt && b.liquids.get(b.packageOutputCur) <= b.block.liquidCapacity - b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem);
   };
 
 
-  function comp_acceptItem(b, b_f, itm) {
-    if(b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
-    if(b.block.consumesItem(itm)) return true;
+  function comp_acceptItem(b, b_f, item) {
+    if(b.items.get(item) >= b.getMaximumAccepted(item)) return false;
+    if(b.block.consumesItem(item)) return true;
     if(!b.block.delegee.isUnpacker) return false;
-    if(b.unpackItmCur != null && b.unpackItmCur !== itm) return false;
-    if(itm.ex_getFluid == null) return false;
+    if(b.unpackItemCur != null && b.unpackItemCur !== item) return false;
+    if(item.ex_getFluid == null) return false;
 
-    b.unpackItmCur = itm;
-    b.packageOutputCur = itm.ex_getFluid();
+    b.unpackItemCur = item;
+    b.packageOutputCur = item.ex_getFluid();
 
     return true;
   };
@@ -169,7 +169,7 @@
        * @memberof BLK_fluidPackager
        * @instance
        */
-      liqPerCellItm: 6.0,
+      liqPerCellItem: 6.0,
 
 
     })
@@ -219,7 +219,7 @@
        * @memberof B_fluidPackager
        * @instance
        */
-      unpackItmCur: null,
+      unpackItemCur: null,
       /**
        * `INTERNAL`
        * @memberof B_fluidPackager
@@ -273,8 +273,8 @@
       }),
 
 
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+      acceptItem: function(b_f, item) {
+        return comp_acceptItem(this, b_f, item);
       }
       .setProp({
         noSuper: true,
@@ -308,14 +308,14 @@
 
 
       write: function(wr) {
-        MDL_io.ct(wr, this.unpackItmCur);
+        MDL_io.ct(wr, this.unpackItemCur);
         MDL_io.ct(wr, this.packLiqCur);
         MDL_io.ct(wr, this.packageOutputCur);
       },
 
 
       read: function(rd, revi) {
-        this.unpackItmCur = MDL_io.ct(rd);
+        this.unpackItemCur = MDL_io.ct(rd);
         this.packLiqCur = MDL_io.ct(rd);
         this.packageOutputCur = MDL_io.ct(rd);
       },

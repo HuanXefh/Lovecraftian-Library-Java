@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    if(!blk.hasLiquids) ERROR_HANDLER.throw("noLiquidModule", blk.name);
+    if(!blk.hasLiquids) LCErrorHandler.throw("noLiquidModule", blk.name);
     blk.exploFldTarget = MDL_content.getCt(blk.exploFldTarget, "rs");
     blk.dryHeatFldTarget = MDL_content.getCt(blk.dryHeatFldTarget, "rs");
     if(blk.dryHeatCancelThr < 0.0) blk.dryHeatCancelThr = blk.dryHeatThr * 0.5;

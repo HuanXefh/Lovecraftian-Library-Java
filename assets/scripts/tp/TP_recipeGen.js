@@ -28,8 +28,8 @@
       maxTemp = readParam(metaObj, "maxTemp"),
       tempGap = readParam(metaObj, "tempGap", 300.0);
 
-    if(target == null) ERROR_HANDLER.throw("nullArgument", "target");
-    if(maxTemp == null) ERROR_HANDLER.throw("nullArgument", "maxTemp");
+    if(target == null) LCErrorHandler.throw("nullArgument", "target");
+    if(maxTemp == null) LCErrorHandler.throw("nullArgument", "maxTemp");
 
     this.setCateg("aux");
     let i = 1, tempCur = tempGap;
@@ -185,8 +185,8 @@
         metaObj,
         {
           tint: Pal.heal,
-          itmI: "loveclab-item0bio-log",
-          itmO: "loveclab-item0bio-sawdust",
+          itemI: "loveclab-item0bio-log",
+          itemO: "loveclab-item0bio-sawdust",
         },
       );
       this.setTag();
@@ -200,10 +200,10 @@
         paramObj.amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) / mtp;
       },
       metaObj,
-      (itm, metaObj) => ({
-        keyCt: itm.name,
-        itmI: itm,
-        itmO: target,
+      (item, metaObj) => ({
+        keyCt: item.name,
+        itemI: item,
+        itemO: target,
       }),
     );
   });
@@ -366,7 +366,7 @@
         return {
           tag: liqSolv.name,
           liqI: liqSolv,
-          itmI: liq.delegee.intmdParent,
+          itemI: liq.delegee.intmdParent,
           liqO: liq,
         };
       },
@@ -394,13 +394,13 @@
 
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-dust"].filter(itm => !DB_recipe.db["genData"]["pulverization"].colIncludes(itm.name, 2, 0) && !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitm => itm.delegee.intmdParent === oitm.delegee.intmdParent)),
+      VARGEN.intmds["rs-dust"].filter(item => !DB_recipe.db["genData"]["pulverization"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitem => item.delegee.intmdParent === oitem.delegee.intmdParent)),
       null,
       metaObj,
-      (itm, metaObj) => ({
-        keyCt: itm.delegee.intmdParent.name,
-        itmI: itm.delegee.intmdParent,
-        itmO: itm,
+      (item, metaObj) => ({
+        keyCt: item.delegee.intmdParent.name,
+        itemI: item.delegee.intmdParent,
+        itemO: item,
       }),
     );
   });
@@ -557,13 +557,13 @@
 
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-chunks"].filter(itm => !DB_recipe.db["genData"]["rockCrushing"].colIncludes(itm.name, 2, 0) && !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+      VARGEN.intmds["rs-chunks"].filter(item => !DB_recipe.db["genData"]["rockCrushing"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
       null,
       metaObj,
-      (itm, metaObj) => ({
-        keyCt: itm.delegee.intmdParent.name,
-        itmI: itm.delegee.intmdParent,
-        itmO: itm,
+      (item, metaObj) => ({
+        keyCt: item.delegee.intmdParent.name,
+        itemI: item.delegee.intmdParent,
+        itemO: item,
       }),
     );
   });
@@ -589,8 +589,8 @@
         metaObj,
         {
           keyCt: "loveclab-item0buil-coarse-aggregate",
-          itmI: "loveclab-item0buil-coarse-aggregate",
-          itmO: "loveclab-item0buil-fine-aggregate",
+          itemI: "loveclab-item0buil-coarse-aggregate",
+          itemO: "loveclab-item0buil-fine-aggregate",
         },
       );
     };
@@ -603,10 +603,10 @@
         paramObj.amtI = readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * mtp;
       },
       metaObj,
-      (itm, metaObj) => ({
-        keyCt: itm.name,
-        itmI: itm,
-        itmO: target,
+      (item, metaObj) => ({
+        keyCt: item.name,
+        itemI: item,
+        itemO: target,
       }),
     );
   });
@@ -625,11 +625,11 @@
       VARGEN.rawOreBlks,
       blk => MDL_content.getCt(Object.keyByVal(DB_HANDLER.getDataObj("item-payload-block"), blk.name, null), "rs"),
       metaObj,
-      (itm, metaObj) => ({
-        keyCt: DB_HANDLER.read("item-payload-block", itm.name),
-        payI: DB_HANDLER.read("item-payload-block", itm.name),
-        itmO: itm,
-        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name), "blk").requirements[0].amount,
+      (item, metaObj) => ({
+        keyCt: DB_HANDLER.read("item-payload-block", item.name),
+        payI: DB_HANDLER.read("item-payload-block", item.name),
+        itemO: item,
+        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(DB_HANDLER.read("item-payload-block", item.name), "blk").requirements[0].amount,
       }),
     );
   });
@@ -648,31 +648,31 @@
       this.setCateg("sintering");
       this.handleCtLi(
         rc,
-        VARGEN.intmds["rs-dust"].filter(itm => !itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+        VARGEN.intmds["rs-dust"].filter(item => !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
         null,
         metaObj,
-        (itm, metaObj) => ({
-          keyCt: itm.name,
-          tempReq: DB_HANDLER.read("item-sintering-temperature", itm.delegee.intmdParent, -1.0),
-          itmI: itm,
-          itmO: itm.delegee.intmdParent,
+        (item, metaObj) => ({
+          keyCt: item.name,
+          tempReq: DB_HANDLER.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
+          itemI: item,
+          itemO: item.delegee.intmdParent,
         }),
       );
     } else {
       this.setCateg("concentrate-sintering");
       this.handleCtLi(
         rc,
-        VARGEN.intmds["rs-chunks"].concat(VARGEN.intmds["rs-dust"]).filter(itm => itm.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+        VARGEN.intmds["rs-chunks"].concat(VARGEN.intmds["rs-dust"]).filter(item => item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
         null,
         metaObj,
-        (itm, metaObj) => ({
-          icon: MDL_content.getIntmd(itm.delegee.intmdParent, "rs-ore0conc"),
-          keyCt: itm.name,
-          tempReq: DB_HANDLER.read("item-sintering-temperature", itm.delegee.intmdParent, -1.0),
-          itmI: itm,
-          itmO: MDL_content.getIntmd(itm.delegee.intmdParent, "rs-ore0conc"),
+        (item, metaObj) => ({
+          icon: MDL_content.getIntmd(item.delegee.intmdParent, "rs-ore0conc"),
+          keyCt: item.name,
+          tempReq: DB_HANDLER.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
+          itemI: item,
+          itemO: MDL_content.getIntmd(item.delegee.intmdParent, "rs-ore0conc"),
         }),
-        itm => itm.delegee.intmdParent.name,
+        item => item.delegee.intmdParent.name,
       );
     };
   });

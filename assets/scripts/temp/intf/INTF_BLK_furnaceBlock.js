@@ -20,7 +20,7 @@
     MDL_event.onLoadPost(() => {
       MDL_fuel.getFuelArr(blk).forEachFast(rs => {
         rs instanceof Item ?
-        MDL_recipeDict.addItmConsTerm(blk, rs, 1, 1.0, {icon: "lovec-icon-fuel", item: MDL_fuel.getFuelPon(rs) * 60.0 / blk.fuelConsMtp}) :
+        MDL_recipeDict.addItemConsTerm(blk, rs, 1, 1.0, {icon: "lovec-icon-fuel", item: MDL_fuel.getFuelPon(rs) * 60.0 / blk.fuelConsMtp}) :
         MDL_recipeDict.addFldConsTerm(blk, rs, MDL_fuel.getFuelPon(rs) * blk.fuelConsMtp, {icon: "lovec-icon-fuel"});
       });
     });
@@ -105,10 +105,10 @@
   };
 
 
-  function comp_acceptItem(b, b_f, itm) {
+  function comp_acceptItem(b, b_f, item) {
     return b.block.delegee.noFuelInput ?
       b.items != null :
-      b.items != null && b.items.get(itm) < b.getMaximumAccepted(itm) && (b.fuelSel != null ? itm === b.fuelSel : MDL_fuel.checkFuelInput(b.block, itm));
+      b.items != null && b.items.get(item) < b.getMaximumAccepted(item) && (b.fuelSel != null ? item === b.fuelSel : MDL_fuel.checkFuelInput(b.block, item));
   };
 
 
@@ -281,8 +281,8 @@
       },
 
 
-      consumesItem: function(itm) {
-        return MDL_fuel.checkFuelInput(this, itm);
+      consumesItem: function(item) {
+        return MDL_fuel.checkFuelInput(this, item);
       }
       .setProp({
         boolMode: "or",
@@ -373,8 +373,8 @@
       },
 
 
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+      acceptItem: function(b_f, item) {
+        return comp_acceptItem(this, b_f, item);
       }
       .setProp({
         mergeMode: function(valPrev, val) {
@@ -397,8 +397,8 @@
       }),
 
 
-      canDump: function(b_t, itm) {
-        return this.fuelTup[0] == null || this.fuelTup[0].id != itm.id || this.items.has(itm, 5);
+      canDump: function(b_t, item) {
+        return this.fuelTup[0] == null || this.fuelTup[0].id != item.id || this.items.has(item, 5);
       }
       .setProp({
         boolMode: "and",

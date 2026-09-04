@@ -183,7 +183,7 @@ const db = {
 };
 
 
-Object.mergeDB(db, "DB_status");
+mergeDB(db, "DB_status");
 
 
 db["map"]["affinity"].pushAll((function() {

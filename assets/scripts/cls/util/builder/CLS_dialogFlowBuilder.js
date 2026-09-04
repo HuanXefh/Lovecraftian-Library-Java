@@ -227,7 +227,7 @@
      * @return {this}
      */
     CLS_dialogFlowBuilder.prototype.setSpeaker = function(nameMod, nameChara) {
-        if(this.offInd !== 1) ERROR_HANDLER.throw("dialogFlowGenerateFail");
+        if(this.offInd !== 1) LCErrorHandler.throw("dialogFlowGenerateFail");
         this.dialFlowData.push([nameMod, nameChara]);
         this.offInd = 2;
         return this;
@@ -246,7 +246,7 @@
         } else if(this.offInd === 1) {
             this.dialFlowData.push(null);
         } else if(this.offInd !== 2) {
-            ERROR_HANDLER.throw("dialogFlowGenerateFail");
+            LCErrorHandler.throw("dialogFlowGenerateFail");
         };
         this.dialFlowData.push(obj);
         this.offInd = 3;
@@ -328,9 +328,9 @@
      * @return {DialogFlowData}
      */
     CLS_dialogFlowBuilder.prototype.build = function() {
-        if(this.isBuilt) ERROR_HANDLER.throw("dialogFlowDoubleBuild");
-        if(this.hasBackground) ERROR_HANDLER.throw("dialogFlowMissingBackgroundEnd");
-        if(this.hasMusic) ERROR_HANDLER.throw("dialogFlowMissingMusicEnd");
+        if(this.isBuilt) LCErrorHandler.throw("dialogFlowDoubleBuild");
+        if(this.hasBackground) LCErrorHandler.throw("dialogFlowMissingBackgroundEnd");
+        if(this.hasMusic) LCErrorHandler.throw("dialogFlowMissingMusicEnd");
         this.isBuilt = true;
 
         this.completeRow();

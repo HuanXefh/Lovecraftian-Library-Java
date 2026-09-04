@@ -24,18 +24,18 @@
    * @return {this}
    */
   Function.prototype.implement = function(intf, shouldOverride) {
-    if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
-    if(intf.children.includes(this)) ERROR_HANDLER.throw("duplicateInterface");
+    if(!(intf instanceof CLS_interface)) LCErrorHandler.throw("notInterface", intf);
+    if(intf.children.includes(this)) LCErrorHandler.throw("duplicateInterface");
 
     if(!this.__isContentTemplate__) {
       Object.eachPair(intf.intfObj, (name, fun) => {
         if(name === "__proto__") {
           this.prototype[name] !== undefined && !shouldOverride ?
-            ERROR_HANDLER.throw("interfaceMethodNameConflict", name) :
+            LCErrorHandler.throw("interfaceMethodNameConflict", name) :
             this.prototype[name] = fun;
         } else {
           this[name] !== undefined && !shouldOverride ?
-            ERROR_HANDLER.throw("interfaceMethodNameConflict", name) :
+            LCErrorHandler.throw("interfaceMethodNameConflict", name) :
             this[name] = fun;
         };
       });

@@ -175,7 +175,7 @@ const db = {
 };
 
 
-Object.mergeDB(db, "DB_unit");
+mergeDB(db, "DB_unit");
 
 
 exports.db = db;

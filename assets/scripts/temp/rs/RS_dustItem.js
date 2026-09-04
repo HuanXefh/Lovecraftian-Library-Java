@@ -14,10 +14,10 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(itm) {
-    if(itm.intmdParent != null) {
-      if(itm.flammability < 0.0001) itm.flammability = itm.intmdParent.flammability * 1.5;
-      if(itm.explosiveness < 0.0001) itm.explosiveness = itm.intmdParent.explosiveness * 1.5;
+  function comp_init(item) {
+    if(item.intmdParent != null) {
+      if(item.flammability < 0.0001) item.flammability = item.intmdParent.flammability * 1.5;
+      if(item.explosiveness < 0.0001) item.explosiveness = item.intmdParent.explosiveness * 1.5;
     };
   };
 

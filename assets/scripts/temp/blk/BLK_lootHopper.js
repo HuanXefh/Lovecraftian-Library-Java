@@ -118,7 +118,7 @@
       },
 
 
-      acceptItem: function(b_f, itm) {
+      acceptItem: function(b_f, item) {
         return false;
       }
       .setProp({

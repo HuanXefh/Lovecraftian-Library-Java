@@ -6,7 +6,7 @@
 
 
   /**
-   * Registers new errors to {@link ERROR_HANDLER}.
+   * Registers new errors to {@link LCErrorHandler}.
    */
 
 
@@ -17,7 +17,7 @@
 */
 
 
-  batchCall(ERROR_HANDLER, function() {
+  batchCall(LCErrorHandler, function() {
 
     this.add("debug", "${1} sucks.");
     this.add("nullArgument", "Argument ${1} cannot be null!");

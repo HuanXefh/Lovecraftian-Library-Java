@@ -224,19 +224,19 @@
    * Spawns a loot unit at (x, y).
    * @param {number} x
    * @param {number} y
-   * @param {ItemGn} itm_gn
-   * @param {number} itmAmt
+   * @param {ItemGn} item_gn
+   * @param {number} itemAmt
    * @return {Unit}
    */
-  const spawnLoot_server = function(x, y, itm_gn, itmAmt) {
-    if(!PARAM.MODDED || itmAmt < 1) return;
-    let itm = MDL_content.getCt(itm_gn, "rs");
-    if(itm == null) return;
+  const spawnLoot_server = function(x, y, item_gn, itemAmt) {
+    if(!PARAM.MODDED || itemAmt < 1) return;
+    let item = MDL_content.getCt(item_gn, "rs");
+    if(item == null) return;
 
     return spawnUnit_server(
       x, y, VARGEN.utpLoot, Vars.player.team(), null,
       unit => {
-        unit.addItem(itm, itmAmt);
+        unit.addItem(item, itemAmt);
         Core.app.post(() => TRIGGER.lootSpawn.fire());
       },
     );
@@ -249,23 +249,23 @@
    * Spawns loot units around (x, y).
    * @param {number} x
    * @param {number} y
-   * @param {ItemGn} itm_gn
-   * @param {number} itmAmt
+   * @param {ItemGn} item_gn
+   * @param {number} itemAmt
    * @param {number|unset} [rad]
    * @param {number|unset} [amt]
    * @return {void}
    */
-  const spawnLoots_server = function(x, y, itm_gn, itmAmt, rad, amt) {
-    if(!PARAM.MODDED || itmAmt < 1) return;
-    let itm = MDL_content.getCt(itm_gn, "rs");
-    if(itm == null) return;
+  const spawnLoots_server = function(x, y, item_gn, itemAmt, rad, amt) {
+    if(!PARAM.MODDED || itemAmt < 1) return;
+    let item = MDL_content.getCt(item_gn, "rs");
+    if(item == null) return;
     if(rad == null) rad = VAR.range.unitLootRad;
     if(amt == null) amt = 1;
 
     spawnUnits_server(
       x, y, VARGEN.utpLoot, Vars.player.team(), null, rad, amt,
       unit => {
-        unit.addItem(itm, itmAmt);
+        unit.addItem(item, itemAmt);
         Core.app.post(() => TRIGGER.lootSpawn.fire());
       },
     );
@@ -277,15 +277,15 @@
   /**
    * Variant of {@link spawnLoot_server} for client side.
    */
-  const spawnLoot_client = function(x, y, itm_gn, itmAmt) {
-    if(!PARAM.MODDED || itmAmt < 1) return;
-    let itm = MDL_content.getCt(itm_gn, "rs");
-    if(itm == null) return;
+  const spawnLoot_client = function(x, y, item_gn, itemAmt) {
+    if(!PARAM.MODDED || itemAmt < 1) return;
+    let item = MDL_content.getCt(item_gn, "rs");
+    if(item == null) return;
 
     MDL_net.sendPacket(
       PacketModes.SERVER, "lovec-client-loot-spawn",
       packPayload([
-        x, y, itm.name, itmAmt,
+        x, y, item.name, itemAmt,
       ]),
       true,
     );
@@ -303,21 +303,21 @@
    * Variant of {@link spawnLoots_server} for client side.
    * @param {number} x
    * @param {number} y
-   * @param {ItemGn} itm_gn
-   * @param {number} itmAmt
+   * @param {ItemGn} item_gn
+   * @param {number} itemAmt
    * @param {number|unset} [rad]
    * @param {number|unset} [amt]
    * @return {void}
    */
-  const spawnLoots_client = function(x, y, itm_gn, itmAmt, rad, amt) {
-    if(!PARAM.MODDED || itmAmt < 1) return;
-    let itm = MDL_content.getCt(itm_gn, "rs");
-    if(itm == null) return;
+  const spawnLoots_client = function(x, y, item_gn, itemAmt, rad, amt) {
+    if(!PARAM.MODDED || itemAmt < 1) return;
+    let item = MDL_content.getCt(item_gn, "rs");
+    if(item == null) return;
 
     MDL_net.sendPacket(
       PacketModes.SERVER, "lovec-client-loots-spawn",
       packPayload([
-        x, y, itm.name, itmAmt, rad, amt,
+        x, y, item.name, itemAmt, rad, amt,
       ]),
       true,
     );

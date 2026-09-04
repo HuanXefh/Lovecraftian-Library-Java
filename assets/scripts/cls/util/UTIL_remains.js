@@ -88,6 +88,10 @@
             && (etp instanceof Block || (t.build == null && !(t.solid() && MDL_cond.isTreeBlock(t.block()))))
     }
     .setProp({
+        /**
+         * @memberof UTIL_remains.checkInLiq
+         * @type {Array<Tile>}
+         */
         tmpTs: [],
     });
 
@@ -434,6 +438,13 @@
         return arr.compact();
     }
     .setProp({
+        /**
+         * @memberof UTIL_remains.getLegRemains
+         * @param {Vec2} vecOut
+         * @param {Unit} unit
+         * @param {number} ind
+         * @return {Vec2}
+         */
         calcLegOff: function(vecOut, unit, ind) {
             vecOut.trns(UTIL_remains.getLegRemains.calcLegAngDef(unit, ind), unit.type.legBaseOffset);
             if(unit.type.legStraightness > 0.0) {
@@ -444,6 +455,12 @@
             };
             return vecOut;
         },
+        /**
+         * @memberof UTIL_remains.getLegRemains
+         * @param {Unit} unit
+         * @param {number} ind
+         * @return {number}
+         */
         calcLegAngDef: function(unit, ind) {
             return unit.baseRotation + 360.0 / unit.legs.length * ind + (360.0 / unit.legs.length / 2.0);
         },
@@ -529,6 +546,10 @@
         };
     }
     .setProp({
+        /**
+         * @memberof UTIL_remains.create
+         * @type {Array<Decal>}
+         */
         tmpArr: [],
     });
 
@@ -545,6 +566,10 @@
         thisFun.tmpArr.clear();
     }
     .setProp({
+        /**
+         * @memberof UTIL_remains.clear
+         * @type {Array<Decal>}
+         */
         tmpArr: [],
     });
 

@@ -15,7 +15,7 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.remove(fetchStat("lovec", "blk0itm-unloadable"));
+    blk.stats.remove(fetchStat("lovec", "blk0item-unloadable"));
   };
 
 

@@ -179,6 +179,13 @@
         return arr;
     }
     .setProp({
+        /**
+         * @memberof CLS_recipeGenerator#parseRawIo
+         * @param {Array} arr
+         * @param {number} baseAmt
+         * @param {boolean|unset} [isContinuous]
+         * @return {void}
+         */
         convertFrac: function(arr, baseAmt, isContinuous) {
             let i = 0, iCap = arr.iCap();
             while(i < iCap) {
@@ -352,6 +359,10 @@
         rcCount++;
     }
     .setProp({
+        /**
+         * @memberof CLS_recipeGenerator#addRc
+         * @type {[string, string]}
+         */
         tmpTup: [],
     });
 
@@ -439,10 +450,10 @@
 
         // No time here, which is handled in `processXxx`
         readParamAndCall(paramObj, "liqI", val => builder.setCi(this.processCi(val, amtI, metaObj, paramObj)));
-        readParamAndCall(paramObj, "itmI", val => builder.setBi(this.processBi(val, amtI, pI, metaObj, paramObj)));
+        readParamAndCall(paramObj, "itemI", val => builder.setBi(this.processBi(val, amtI, pI, metaObj, paramObj)));
         readParamAndCall(paramObj, "payI", val => builder.setPayi(this.processPayi(val, payAmtI, metaObj, paramObj)));
         readParamAndCall(paramObj, "liqO", val => builder.setCo(this.processCo(val, amtO, metaObj, paramObj)));
-        readParamAndCall(paramObj, "itmO", val => builder.setBo(this.processBo(val, amtO, pO, metaObj, paramObj)));
+        readParamAndCall(paramObj, "itemO", val => builder.setBo(this.processBo(val, amtO, pO, metaObj, paramObj)));
         readParamAndCall(paramObj, "payO", val => builder.setPayo(this.processPayo(val, payAmtO, metaObj, paramObj)));
 
         // No time here too
@@ -452,7 +463,7 @@
             if(target == null) return;
             this.processCi(target, amtI, metaObj, paramObj);
         });
-        readParamAndCall(paramObj, "itmIMapper", val => {
+        readParamAndCall(paramObj, "itemIMapper", val => {
             target = val(ct);
             if(target == null) return;
             this.processBi(target, amtI, pI, metaObj, paramObj);
@@ -467,7 +478,7 @@
             if(target == null) return;
             this.processCo(target, amtO, metaObj, paramObj);
         });
-        readParamAndCall(paramObj, "itmOMapper", val => {
+        readParamAndCall(paramObj, "itemOMapper", val => {
             target = val(ct);
             if(target == null) return;
             this.processBo(target, amtO, pO, metaObj, paramObj);

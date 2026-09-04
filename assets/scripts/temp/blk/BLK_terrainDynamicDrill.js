@@ -16,21 +16,21 @@
 
   function comp_init(blk) {
     MDL_event.onLoadPost(() => {
-      blk.terItmMapMap.each((nameItm, terItmMap) => {
-        terItmMap.each((ter, nameRs) => {
+      blk.terItemMapMap.each((nameItem, terItemMap) => {
+        terItemMap.each((ter, nameRs) => {
           let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
-          MDL_recipeDict.addItmProdTerm(blk, rs, Math.pow(blk.size, 2) * blk.drillTime / blk.getDrillTime(rs), 1.0, {icon: "lovec-icon-mining"});
+          MDL_recipeDict.addItemProdTerm(blk, rs, Math.pow(blk.size, 2) * blk.drillTime / blk.getDrillTime(rs), 1.0, {icon: "lovec-icon-mining"});
         });
       });
     });
 
-    MOD_tmi.regisRc_terrainDynamicDrill(blk, blk.terItmMapMap);
+    MOD_tmi.regisRc_terrainDynamicDrill(blk, blk.terItemMapMap);
   };
 
 
   function comp_setStats(blk) {
-    if(blk.terItmMapMap.size > 0) {
+    if(blk.terItemMapMap.size > 0) {
       blk.stats.add(Stat.output, newStatValue(tb => {
         tb.row();
         blk.ex_buildTerrainDynamicOutput(tb);
@@ -44,22 +44,22 @@
   };
 
 
-  const comp_ex_findPlaceRsIcon = function thisFun(blk, tx, ty, itm) {
+  const comp_ex_findPlaceRsIcon = function thisFun(blk, tx, ty, item) {
     let t = Vars.world.tile(tx, ty);
     if(t == null) return VARGEN.iconRegs.ohno;
 
-    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, itm)) {
-      if(blk.ex_isMiningDpore(tx, ty, itm) && !blk.ex_anyDporeRevealed(tx, ty, itm)) {
+    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, item)) {
+      if(blk.ex_isMiningDpore(tx, ty, item) && !blk.ex_anyDporeRevealed(tx, ty, item)) {
         thisFun.tmpIcon = VARGEN.iconRegs.questionMark;
       } else {
         let ter = MDL_terrain.getTer(t, blk.size);
-        let terItmMap = blk.terItmMapMap.get(itm == null ? "null" : itm.name);
-        if(terItmMap == null) {
-          thisFun.tmpIcon = itm.fullIcon;
+        let terItemMap = blk.terItemMapMap.get(item == null ? "null" : item.name);
+        if(terItemMap == null) {
+          thisFun.tmpIcon = item.fullIcon;
         } else {
-          let rs = MDL_content.getCt(terItmMap.get(tryVal(ter, "transition")), "rs");
+          let rs = MDL_content.getCt(terItemMap.get(tryVal(ter, "transition")), "rs");
           thisFun.tmpIcon = rs == null ?
-            itm.fullIcon :
+            item.fullIcon :
             rs.fullIcon;
         };
       };
@@ -77,16 +77,16 @@
     const contCell = tb.table(Styles.none, tb1 => {}).growX();
     const cont = contCell.get();
 
-    blk.terItmMapMap.each((nameItm, terItmMap) => {
-      let itm = MDL_content.getCt(nameItm, "rs");
-      if(itm == null) return;
+    blk.terItemMapMap.each((nameItem, terItemMap) => {
+      let item = MDL_content.getCt(nameItem, "rs");
+      if(item == null) return;
 
-      let itmCell = cont.table(Styles.none, tb1 => {}).growX();
-      let itmTb = itmCell.get();
-      itmCell.row();
+      let itemCell = cont.table(Styles.none, tb1 => {}).growX();
+      let itemTb = itemCell.get();
+      itemCell.row();
 
-      itmTb.add(itm.localizedName).row();
-      itmTb.table(Styles.none, tb1 => {
+      itemTb.add(item.localizedName).row();
+      itemTb.table(Styles.none, tb1 => {
         let matArr = [
           [
             "",
@@ -94,12 +94,12 @@
             fetchStat("lovec", "blk-terreq").localized(),
           ],
           [
-            itm,
-            itm.localizedName,
+            item,
+            item.localizedName,
             "-",
           ],
         ];
-        terItmMap.each((ter, nameRs) => {
+        terItemMap.each((ter, nameRs) => {
           let rs = MDL_content.getCt(nameRs, "rs");
           if(rs == null) return;
           matArr.push([rs, rs.localizedName, MDL_terrain.getTerB(ter)]);
@@ -114,12 +114,12 @@
   function comp_onProximityUpdate(b) {
     b.terCur = MDL_terrain.getTer(b.tile, b.block.size);
 
-    let terItmMap = b.block.delegee.terItmMapMap.get(b.dominantItem == null ? "null" : b.dominantItem.name);
-    if(terItmMap == null) return;
-    let itm = MDL_content.getCt(terItmMap.get(tryVal(b.terCur, "transition")), "rs");
-    if(itm == null) return;
+    let terItemMap = b.block.delegee.terItemMapMap.get(b.dominantItem == null ? "null" : b.dominantItem.name);
+    if(terItemMap == null) return;
+    let item = MDL_content.getCt(terItemMap.get(tryVal(b.terCur, "transition")), "rs");
+    if(item == null) return;
 
-    b.dominantItem = itm;
+    b.dominantItem = item;
   };
 
 
@@ -161,7 +161,7 @@
        *   ),
        * );
        */
-      terItmMapMap: tprov(() => new ObjectMap()),
+      terItemMapMap: tprov(() => new ObjectMap()),
 
 
     })
@@ -192,11 +192,11 @@
        * @instance
        * @param {number} tx
        * @param {number} ty
-       * @param {Item} itm
+       * @param {Item} item
        * @return {TextureRegion}
        */
-      ex_findPlaceRsIcon: function(tx, ty, itm) {
-        return comp_ex_findPlaceRsIcon(this, tx, ty, itm);
+      ex_findPlaceRsIcon: function(tx, ty, item) {
+        return comp_ex_findPlaceRsIcon(this, tx, ty, item);
       }
       .setProp({
         noSuper: true,

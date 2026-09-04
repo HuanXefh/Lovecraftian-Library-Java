@@ -325,12 +325,12 @@
    * @param {RecipeModule} rcMdl
    * @return {boolean}
    */
-  const checkAnyItmOutput = function thisFun(rcMdl) {
+  const checkAnyItemOutput = function thisFun(rcMdl) {
     return getRcHeaders(rcMdl).some(rcHeader => {
       getBo(thisFun.fakeRc.bo, rcMdl, rcHeader);
       getFo(thisFun.fakeRc.fo, rcMdl, rcHeader);
 
-      return CLS_recipe.checkAnyItmOutput(thisFun.fakeRc);
+      return CLS_recipe.checkAnyItemOutput(thisFun.fakeRc);
     });
   }
   .setProp({
@@ -339,7 +339,7 @@
       fo: [],
     },
   });
-  exports.checkAnyItmOutput = checkAnyItmOutput;
+  exports.checkAnyItemOutput = checkAnyItemOutput;
 
 
   /**
@@ -944,8 +944,8 @@
         if(blk == null) {
           thisFun.reportIncompleteRc(target);
         } else {
-          blk.requirements.forEachFast(itmStack => {
-            parseRcIoRow(outArr, itmStack.item, itmStack.amount, 1.0, ctC, false, pTarget);
+          blk.requirements.forEachFast(itemStack => {
+            parseRcIoRow(outArr, itemStack.item, itemStack.amount, 1.0, ctC, false, pTarget);
           }, true);
         };
       } else {
@@ -1030,7 +1030,7 @@
         ctC = function(ct, amt, p) {
           if(initParamObj == null || amt <= 0) return;
           ct instanceof Item ?
-            MDL_recipeDict.addItmConsTerm(
+            MDL_recipeDict.addItemConsTerm(
               readParam(initParamObj, "blk"),
               ct,
               amt / readParam(initParamObj, "timeScl", 1.0),
@@ -1073,7 +1073,7 @@
       case "opt" :
         ctC = function(ct, amt, p) {
           if(initParamObj == null || amt <= 0) return;
-          MDL_recipeDict.addItmConsTerm(
+          MDL_recipeDict.addItemConsTerm(
             readParam(initParamObj, "blk"),
             ct,
             amt / readParam(initParamObj, "timeScl", 1.0),
@@ -1123,7 +1123,7 @@
       case "bo" :
         ctC = function(ct, amt, p) {
           if(initParamObj == null || amt <= 0) return;
-          MDL_recipeDict.addItmProdTerm(
+          MDL_recipeDict.addItemProdTerm(
             readParam(initParamObj, "blk"),
             ct,
             amt / readParam(initParamObj, "timeScl", 1.0),
@@ -1140,7 +1140,7 @@
       case "fo" :
         ctC = function(ct, amt, p) {
           if(initParamObj == null || amt <= 0) return;
-          MDL_recipeDict.addItmProdTerm(
+          MDL_recipeDict.addItemProdTerm(
             readParam(initParamObj, "blk"),
             ct,
             amt / readParam(initParamObj, "timeScl", 1.0),

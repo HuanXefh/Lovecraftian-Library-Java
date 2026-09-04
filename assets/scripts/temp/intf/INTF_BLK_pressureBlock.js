@@ -109,7 +109,7 @@
   };
 
 
-  function comp_acceptItem(b, b_f, itm) {
+  function comp_acceptItem(b, b_f, item) {
     let presThr = b.block.delegee.presThr;
     if(presThr.fEqual(0.0)) return true;
 
@@ -343,8 +343,8 @@
       },
 
 
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+      acceptItem: function(b_f, item) {
+        return comp_acceptItem(this, b_f, item);
       }
       .setProp({
         boolMode: "and",

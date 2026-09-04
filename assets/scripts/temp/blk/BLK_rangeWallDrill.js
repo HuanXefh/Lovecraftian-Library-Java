@@ -65,42 +65,42 @@
     contTup[0] = null;
     contTup[1].clear();
     blk.tmpTotalOreAmt = 0;
-    let itm = null, amt = 0, tmpAmt = 0;
+    let item = null, amt = 0, tmpAmt = 0;
     blk.ex_findOreTs(contArr, tx, ty, rot).forEachFast(ot => {
-      itm = blk.mineMode === "wall" ?
+      item = blk.mineMode === "wall" ?
         ot.wallDrop() :
         blk.mineMode === "floor" ?
           ot.drop() :
           tryVal(ot.wallDrop(), ot.drop());
-      if(itm == null) return;
-      amt = contMap.get(itm, 0) + 1;
+      if(item == null) return;
+      amt = contMap.get(item, 0) + 1;
       blk.tmpTotalOreAmt++;
-      contMap.put(itm, amt);
+      contMap.put(item, amt);
       if(amt > tmpAmt) {
         tmpAmt = amt;
-        contTup[0] = itm;
-        contTup[1].pushUnique(itm);
+        contTup[0] = item;
+        contTup[1].pushUnique(item);
       };
     }, true);
   };
 
 
   function comp_ex_findOreTs(blk, contArr, tx, ty, rot) {
-    let itm, oblk;
+    let item, oblk;
     return LCPos.getTilesRectRotCenter(contArr, Vars.world.tile(tx, ty), blk.range * 0.5, rot, blk.size).inSituFilter(ot => {
-      itm = null;
+      item = null;
       oblk = Blocks.air;
       if(blk.mineMode === "wall" || blk.mineMode === "any") {
-        itm = ot.wallDrop();
+        item = ot.wallDrop();
         oblk = ot.overlay().wallOre ? ot.overlay() : ot.block();
       } else if(blk.mineMode === "floor" || blk.mineMode === "any") {
-        itm = ot.drop();
+        item = ot.drop();
         oblk = ot.overlay().wallOre ? ot.floor() : ot.overlay();
-        if(oblk.itemDrop !== itm) {
+        if(oblk.itemDrop !== item) {
           oblk = ot.floor();
         };
       };
-      return itm != null && oblk.itemDrop === itm && blk.ex_canMine(oblk, itm, 1.0);
+      return item != null && oblk.itemDrop === item && blk.ex_canMine(oblk, item, 1.0);
     });
   };
 
@@ -132,8 +132,8 @@
       b.time += b.edelta() * mtp;
 
       if(b.time >= drillTime) {
-        b.mineMap.each((itm, amt) => {
-          FRAG_item.offload(b, b, itm, Math.pow(b.block.range, 2) * amt / b.totalOreAmt);
+        b.mineMap.each((item, amt) => {
+          FRAG_item.offload(b, b, item, Math.pow(b.block.range, 2) * amt / b.totalOreAmt);
         });
         b.time %= drillTime;
         b.ex_onCraft();
@@ -297,7 +297,7 @@
        * @memberof BLK_rangeWallDrill
        * @instance
        * @param {ObjectMap} contMap - Stores mineable ores and their amounts.
-       * @param {Array} contTup - Stores found ores. <br> `TUPLE`: mainItm, foundItms.
+       * @param {Array} contTup - Stores found ores. <br> `TUPLE`: mainItem, foundItems.
        * @param {Array<Tile>} contArr - Stores tiles in range temporarily.
        * @param {number} tx
        * @param {number} ty
@@ -351,12 +351,12 @@
       /**
        * @memberof BLK_rangeWallDrill
        * @instance
-       * @param {Item} itm
+       * @param {Item} item
        * @param {number} totalAmt
        * @return {number}
        */
-      ex_calcDrillTime: function(itm, totalAmt) {
-        return this.getDrillTime(itm) / Math.max(totalAmt, 0.000001) * Math.pow(this.range, 2);
+      ex_calcDrillTime: function(item, totalAmt) {
+        return this.getDrillTime(item) / Math.max(totalAmt, 0.000001) * Math.pow(this.range, 2);
       }
       .setProp({
         noSuper: true,

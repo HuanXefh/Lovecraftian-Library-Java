@@ -7,450 +7,549 @@
 const db = {
 
 
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-  group: {
+    group: {
 
 
-    /**
-     * The most basic fluid groups. Fluids in the same groups will share some parameters.
-     * <br> <ROW-xxx>: liq.
-     * <br> `EXTENSIBLE`
-     */
-    elementary: {
+        /**
+         * The most basic fluid groups. Fluids in the same groups will share some parameters.
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.eleFldGrp}
+         */
+        elementary: {
 
 
-      brine: [],
+            /** @type {Array<LiquidGn>} */
+            brine: [],
 
 
-      acidAq: [],
+            /** @type {Array<LiquidGn>} */
+            acidAq: [],
 
 
-      baseAq: [],
+            /** @type {Array<LiquidGn>} */
+            baseAq: [],
 
 
-      acidGas: [],
+            /** @type {Array<LiquidGn>} */
+            acidGas: [],
 
 
-      baseGas: [],
+            /** @type {Array<LiquidGn>} */
+            baseGas: [],
 
 
-      acidSub: [],
+            /** @type {Array<LiquidGn>} */
+            acidSub: [],
 
 
-      baseSub: [],
+            /** @type {Array<LiquidGn>} */
+            baseSub: [],
 
 
-      alc: [],
+            /** @type {Array<LiquidGn>} */
+            alc: [],
 
 
-      acidAlc: [],
+            /** @type {Array<LiquidGn>} */
+            acidAlc: [],
 
 
-      baseAlc: [],
+            /** @type {Array<LiquidGn>} */
+            baseAlc: [],
 
 
-      oil: [],
+            /** @type {Array<LiquidGn>} */
+            oil: [],
 
 
-      acidOil: [],
+            /** @type {Array<LiquidGn>} */
+            acidOil: [],
 
 
-      baseOil: [],
+            /** @type {Array<LiquidGn>} */
+            baseOil: [],
 
 
-      slurry: [],
+            /** @type {Array<LiquidGn>} */
+            slurry: [],
 
 
-      acidSlurry: [],
+            /** @type {Array<LiquidGn>} */
+            acidSlurry: [],
 
 
-      baseSlurry: [],
+            /** @type {Array<LiquidGn>} */
+            baseSlurry: [],
 
 
-      melt: [],
+            /** @type {Array<LiquidGn>} */
+            melt: [],
 
 
-      sMelt: [],
+            /** @type {Array<LiquidGn>} */
+            sMelt: [],
+
+
+        },
+
+
+        /**
+         * Fluid tag groups, used for corrosion affinities.
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.fTag}
+         */
+        fTag: {
+
+
+            /** @type {Array<LiquidGn>} */
+            chloric: [],
+
+
+            /** @type {Array<LiquidGn>} */
+            fluoric: [],
+
+
+            /** @type {Array<LiquidGn>} */
+            oxidative: [],
+
+
+            /** @type {Array<LiquidGn>} */
+            reductive: [],
+
+
+            /** @type {Array<LiquidGn>} */
+            dehydrative: [],
+
+
+            /** @type {Array<LiquidGn>} */
+            acetylene: [],
+
+
+        },
+
+
+        /**
+         * These fluids contain water.
+         * @type {Array<LiquidGn>}
+         * @lovecContentGen
+         */
+        aqueous: [],
+
+
+        /**
+         * These fluids are acidic.
+         * @type {Array<LiquidGn>}
+         * @lovecContentGen
+         */
+        acidic: [],
+
+
+        /**
+         * These fluids are basic.
+         * @type {Array<LiquidGn>}
+         * @lovecContentGen
+         */
+        basic: [],
+
+
+        /**
+         * These fluids are conductive, and cause short circuit for some blocks.
+         * Automatically merges with "aqueous" group.
+         * @type {Array<LiquidGn>}
+         * @lovecContentGen
+         */
+        conductive: [],
+
+
+        /**
+         * These fluids will fume (extra visual effects for the puddle).
+         * Don't put gas here.
+         * @type {Array<LiquidGn>}
+         */
+        fuming: [],
+
+
+        /**
+         * Fluids that act like regular air.
+         * @type {Array<LiquidGn>}
+         */
+        air: [],
 
 
     },
 
 
-    /**
-     * Fluid tag groups, used for corrosion affinities.
-     * <br> <ROW-xxx>: liq.
-     * <br> `EXTENSIBLE`
-     */
-    fTag: {
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-      chloric: [],
+    grpParam: {
 
 
-      fluoric: [],
+        /**
+         * Density for a fluid group.
+         * @type {Array}
+         * @lovecRow `string` - eleGrp
+         * @lovecRow `number` - dens
+         */
+        dens: [
+
+            "acidGas", 0.00121,
+            "baseGas", 0.00121,
+            "acidSub", 1.2,
+            "baseSub", 1.2,
+            "alc", 0.95,
+            "acidAlc", 0.95,
+            "baseAlc", 0.95,
+            "oil", 0.7,
+            "acidOil", 0.7,
+            "baseOil", 0.7,
+            "melt", 4.0,
+            "sMelt", 4.0,
+            "slurry", 1.5,
+            "acidSlurry", 1.5,
+            "baseSlurry", 1.5,
+
+        ],
 
 
-      oxidative: [],
+        /**
+         * Wrapped viscosity for a fluid group.
+         * @type {Array}
+         * @lovecRow `string` - eleGrp
+         * @lovecRow `number` - viscWrap
+         */
+        viscWrap: [
+
+            "alc", 0.5286,
+            "acidAlc", 0.5286,
+            "baseAlc", 0.5286,
+            "oil", 0.4856,
+            "acidOil", 0.4856,
+            "baseOil", 0.4856,
+            "slurry", 0.7710,
+            "acidSlurry", 0.7710,
+            "baseSlurry", 0.7710,
+            "melt", 0.6421,
+            "sMelt", 0.8814,
+
+        ],
 
 
-      reductive: [],
+        /**
+         * Default boiling point for a fluid group.
+         * @type {Array}
+         * @lovecRow `string` - eleGrp
+         * @lovecRow `number` - boilPon
+         */
+        boil: [
+
+            "brine", 100.0,
+            "acidAq", 100.0,
+            "baseAq", 100.0,
+            "acidGas", -60.0,
+            "baseGas", -60.0,
+            "acidSub", 300.0,
+            "baseSub", 300.0,
+            "alc", 70.0,
+            "acidAlc", 70.0,
+            "baseAlc", 70.0,
+            "oil", 200.0,
+            "acidOil", 200.0,
+            "baseOil", 200.0,
+            "melt", 1500.0,
+            "sMelt", 1500.0,
+            "slurry", 100.0,
+            "acidSlurry", 100.0,
+            "baseSlurry", 100.0,
+
+        ],
 
 
-      dehydrative: [],
+        /**
+         * Default boiling point for a solvent.
+         * @type {Array}
+         * @lovecRow `string` - solvent
+         * @lovecRow `number` - boilPon
+         */
+        solventBoil: [
+
+            "ethanol", 78.0,
+            "water", 100.0,
+
+        ],
 
 
-      acetylene: [],
+        /**
+         * Default corrosion power for a fluid group.
+         * @type {Array}
+         * @lovecRow `string` - eleGrp
+         * @lovecRow `number` - corPow
+         */
+        corrosion: [
+
+            "brine", 1.0,
+            "acidAq", 1.3,
+            "baseAq", 1.3,
+            "acidGas", 1.6,
+            "baseGas", 1.6,
+            "acidSub", 1.2,
+            "baseSub", 1.2,
+            "alc", 0.0,
+            "acidAlc", 1.2,
+            "baseAlc", 1.2,
+            "oil", 0.0,
+            "acidOil", 0.6,
+            "baseOil", 0.6,
+            "melt", 0.0,
+            "sMelt", 0.0,
+            "slurry", 0.0,
+            "acidSlurry", 1.3,
+            "baseSlurry", 1.3,
+
+        ],
+
+
+        /**
+         * Corrosion scaling for a pair of block material group and elementary fluid group.
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.matEleCorScl}
+         */
+        matEleScl: {
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - eleGrp
+             * @lovecRow `number` - scl
+             */
+            wood: [
+
+                "acidAq", 5.0,
+                "baseAq", 5.0,
+                "acidGas", 4.0,
+                "baseGas", 4.0,
+                "acidSub", 5.0,
+                "baseSub", 5.0,
+                "acidAlc", 10.0,
+                "baseAlc", 10.0,
+                "acidOil", 8.0,
+                "baseOil", 8.0,
+                "acidSlurry", 5.0,
+                "baseSlurry", 5.0,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - eleGrp
+             * @lovecRow `number` - scl
+             */
+            iron: [
+
+                "brine", 7.5,
+                "acidAq", 5.0,
+                "baseAq", 4.0,
+                "acidGas", 5.5,
+                "baseGas", 4.0,
+                "acidSub", 5.5,
+                "baseSub", 4.0,
+                "acidSlurry", 5.5,
+                "baseSlurry", 4.0,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - eleGrp
+             * @lovecRow `number` - scl
+             */
+            steel: [
+
+                "brine", 5.0,
+                "acidAq", 2.0,
+                "acidGas", 2.5,
+                "acidSub", 2.0,
+                "acidSlurry", 2.0,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - eleGrp
+             * @lovecRow `number` - scl
+             */
+            galvanized: [
+
+                "acidAq", 5.0,
+                "acidGas", 2.0,
+                "acidSub", 1.5,
+                "acidSlurry", 1.5,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - eleGrp
+             * @lovecRow `number` - scl
+             */
+            stainless: [
+
+                "brine", 5.0,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - eleGrp
+             * @lovecRow `number` - scl
+             */
+            cement: [
+
+                "brine", 4.0,
+                "acidAq", 2.5,
+                "acidGas", 3.5,
+                "acidSub", 2.5,
+                "acidAlc", 3.0,
+                "acidOil", 3.0,
+                "acidSlurry", 2.5,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - eleGrp
+             * @lovecRow `number` - scl
+             */
+            rubber: [
+
+                "acidGas", 2.0,
+                "baseGas", 2.0,
+                "acidSub", 1.5,
+                "baseSub", 1.5,
+                "oil", 5.0,
+                "acidOil", 7.5,
+                "baseOil", 7.5,
+
+            ],
+
+
+        },
+
+
+        /**
+         * Extra corrosion multiplier for a pair of fluid tag and block material group.
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.matFTagCorScl}
+         */
+        matFTagScl: {
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - fTag
+             * @lovecRow `number` - scl
+             */
+            wood: [
+
+                "oxidative", 5.0,
+                "reductive", 5.0,
+                "dehydrative", 5.0,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - fTag
+             * @lovecRow `number` - scl
+             */
+            copper: [
+
+                "ammoniacal", 8.0,
+                "chloric", 6.0,
+                "acetylene", 1.0,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - fTag
+             * @lovecRow `number` - scl
+             */
+            lead: [
+
+                "oxidative", 4.5,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - fTag
+             * @lovecRow `number` - scl
+             */
+            iron: [
+
+                "oxidative", 0.7,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - fTag
+             * @lovecRow `number` - scl
+             */
+            glass: [
+
+                "fluoric", 12.5,
+
+            ],
+
+
+            /**
+             * @type {Array}
+             * @lovecRow `string` - fTag
+             * @lovecRow `number` - scl
+             */
+            rubber: [
+
+                "fluoric", 7.5,
+                "oxidative", 4.5,
+
+            ],
+
+
+        },
 
 
     },
 
 
-    /**
-     * These fluids contain water.
-     * <br> `CONTENTGEN`
-     * <br> `ROW`: liq.
-     */
-    aqueous: [],
-
-
-    /**
-     * These fluids are acidic.
-     * <br> `CONTENTGEN`
-     * <br> `ROW`: liq.
-     */
-    acidic: [],
-
-
-    /**
-     * These fluids are basic.
-     * <br> `CONTENTGEN`
-     * <br> `ROW`: liq.
-     */
-    basic: [],
-
-
-    /**
-     * These fluids are conductive, and cause short circuit for some blocks.
-     * Automatically merges with "aqueous" group.
-     * <br> `CONTENTGEN`
-     * <br> `ROW`: liq.
-     */
-    conductive: [],
-
-
-    /**
-     * These fluids will fume (extra visual effects for the puddle).
-     * Don't put gas here.
-     * <br> `ROW`: liq.
-     */
-    fuming: [],
-
-
-    /**
-     * Fluids like regular air.
-     * <br> `ROW`: liq.
-     */
-    air: [],
-
-
-  },
-
-
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
-
-
-  grpParam: {
-
-
-    /**
-     * Density for a fluid group.
-     * <br> `ROW`: eleGrp, dens.
-     */
-    dens: [
-
-      "acidGas", 0.00121,
-      "baseGas", 0.00121,
-      "acidSub", 1.2,
-      "baseSub", 1.2,
-      "alc", 0.95,
-      "acidAlc", 0.95,
-      "baseAlc", 0.95,
-      "oil", 0.7,
-      "acidOil", 0.7,
-      "baseOil", 0.7,
-      "melt", 4.0,
-      "sMelt", 4.0,
-      "slurry", 1.5,
-      "acidSlurry", 1.5,
-      "baseSlurry", 1.5,
-
-    ],
-
-
-    /**
-     * Wrapped viscosity for a fluid group.
-     * <br> `ROW`: eleGrp, viscWrap.
-     */
-    viscWrap: [
-
-      "alc", 0.5286,
-      "acidAlc", 0.5286,
-      "baseAlc", 0.5286,
-      "oil", 0.4856,
-      "acidOil", 0.4856,
-      "baseOil", 0.4856,
-      "slurry", 0.7710,
-      "acidSlurry", 0.7710,
-      "baseSlurry", 0.7710,
-      "melt", 0.6421,
-      "sMelt", 0.8814,
-
-    ],
-
-
-    /**
-     * Default boiling point for a fluid group.
-     * <br> `ROW`: eleGrp, boilPon.
-     */
-    boil: [
-
-      "brine", 100.0,
-      "acidAq", 100.0,
-      "baseAq", 100.0,
-      "acidGas", -60.0,
-      "baseGas", -60.0,
-      "acidSub", 300.0,
-      "baseSub", 300.0,
-      "alc", 70.0,
-      "acidAlc", 70.0,
-      "baseAlc", 70.0,
-      "oil", 200.0,
-      "acidOil", 200.0,
-      "baseOil", 200.0,
-      "melt", 1500.0,
-      "sMelt", 1500.0,
-      "slurry", 100.0,
-      "acidSlurry", 100.0,
-      "baseSlurry", 100.0,
-
-    ],
-
-
-    /**
-     * Default boiling point for a solvent.
-     * <br> `ROW`: solvent, boilPon.
-     */
-    solventBoil: [
-
-      "ethanol", 78.0,
-      "water", 100.0,
-
-    ],
-
-
-    /**
-     * Default corrosion power for a fluid group.
-     * <br> `ROW`: eleGrp, corPow.
-     */
-    corrosion: [
-
-      "brine", 1.0,
-      "acidAq", 1.3,
-      "baseAq", 1.3,
-      "acidGas", 1.6,
-      "baseGas", 1.6,
-      "acidSub", 1.2,
-      "baseSub", 1.2,
-      "alc", 0.0,
-      "acidAlc", 1.2,
-      "baseAlc", 1.2,
-      "oil", 0.0,
-      "acidOil", 0.6,
-      "baseOil", 0.6,
-      "melt", 0.0,
-      "sMelt", 0.0,
-      "slurry", 0.0,
-      "acidSlurry", 1.3,
-      "baseSlurry", 1.3,
-
-    ],
-
-
-    /**
-     * Corrosion scaling for a pair of fluid group and block material group.
-     * <br> <ROW-xxx>: eleGrp, scl.
-     * <br> `EXTENSIBLE`
-     */
-    matEleScl: {
-
-
-      wood: [
-
-        "acidAq", 5.0,
-        "baseAq", 5.0,
-        "acidGas", 4.0,
-        "baseGas", 4.0,
-        "acidSub", 5.0,
-        "baseSub", 5.0,
-        "acidAlc", 10.0,
-        "baseAlc", 10.0,
-        "acidOil", 8.0,
-        "baseOil", 8.0,
-        "acidSlurry", 5.0,
-        "baseSlurry", 5.0,
-
-      ],
-
-
-      iron: [
-
-        "brine", 7.5,
-        "acidAq", 5.0,
-        "baseAq", 4.0,
-        "acidGas", 5.5,
-        "baseGas", 4.0,
-        "acidSub", 5.5,
-        "baseSub", 4.0,
-        "acidSlurry", 5.5,
-        "baseSlurry", 4.0,
-
-      ],
-
-
-      steel: [
-
-        "brine", 5.0,
-        "acidAq", 2.0,
-        "acidGas", 2.5,
-        "acidSub", 2.0,
-        "acidSlurry", 2.0,
-
-      ],
-
-
-      galvanized: [
-
-        "acidAq", 5.0,
-        "acidGas", 2.0,
-        "acidSub", 1.5,
-        "acidSlurry", 1.5,
-
-      ],
-
-
-      stainless: [
-
-        "brine", 5.0,
-
-      ],
-
-
-      cement: [
-
-        "brine", 4.0,
-        "acidAq", 2.5,
-        "acidGas", 3.5,
-        "acidSub", 2.5,
-        "acidAlc", 3.0,
-        "acidOil", 3.0,
-        "acidSlurry", 2.5,
-
-      ],
-
-
-      rubber: [
-
-        "acidGas", 2.0,
-        "baseGas", 2.0,
-        "acidSub", 1.5,
-        "baseSub", 1.5,
-        "oil", 5.0,
-        "acidOil", 7.5,
-        "baseOil", 7.5,
-
-      ],
-
-
-    },
-
-
-    /**
-     * Extra corrosion multiplier for a pair of fluid tag and block material group.
-     * <br> <ROW-xxx>: fldTag, mtp.
-     * <br> `EXTENSIBLE`
-     */
-    matFTagScl: {
-
-
-      wood: [
-
-        "oxidative", 5.0,
-        "reductive", 5.0,
-        "dehydrative", 5.0,
-
-      ],
-
-
-      copper: [
-
-        "ammoniacal", 8.0,
-        "chloric", 6.0,
-        "acetylene", 1.0,
-
-      ],
-
-
-      lead: [
-
-        "oxidative", 4.5,
-
-      ],
-
-
-      iron: [
-
-        "oxidative", 0.7,
-
-      ],
-
-
-      glass: [
-
-        "fluoric", 12.5,
-
-      ],
-
-
-      rubber: [
-
-        "fluoric", 7.5,
-        "oxidative", 4.5,
-
-      ],
-
-
-    },
-
-
-  },
-
-
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
 };
 
 
-LCModDbRegister
+LCModDBRegister
 .apply("eleFldGrp", db["group"]["elementary"])
 .apply("fTag", db["group"]["fTag"])
 .apply("matEleCorScl", db["grpParam"]["matEleScl"])
 .apply("matFTagCorScl", db["grpParam"]["matFTagScl"]);
 
 
-Object.mergeDB(db, "DB_fluid");
+mergeDB(db, "DB_fluid");
 
 
 db["group"]["aqueous"]

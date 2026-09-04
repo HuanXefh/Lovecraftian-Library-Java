@@ -289,7 +289,7 @@
    * For other mods, push names here for new arrays in DB files.
    * @global
    */
-  LCModDbRegister = {
+  LCModDBRegister = {
     /** Target: {@link DB_item.db["map"]["attr"]}. */
     attrRsMap: [],
     /** Target: {@link DB_fluid.db["group"]["elementary"]}. */
@@ -316,11 +316,11 @@
      * @return {this}
      */
     apply(name, obj) {
-      if(!(LCModDbRegister[name] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended!".format(name));
-      LCModDbRegister[name].forEachFast(key => {
+      if(!(LCModDBRegister[name] instanceof Array)) throw new Error("Error registering DB list: ${1} cannot be extended!".format(name));
+      LCModDBRegister[name].forEachFast(key => {
         obj[key] = [];
       }, true);
-      return LCModDbRegister;
+      return LCModDBRegister;
     },
   };
 
@@ -596,20 +596,20 @@
      * @global
      * @param {number} tx
      * @param {number} ty
-     * @param {ItemGn} itm_gn
+     * @param {ItemGn} item_gn
      * @param {number} amt
      * @return {void}
      */
-    __itm = function(tx, ty, itm_gn, amt) {
+    __item = function(tx, ty, item_gn, amt) {
       if(!__checkCheatState__()) return;
       let b = Vars.world.build(tx, ty);
       if(b == null) {
         console.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
         return;
       };
-      let itm = MDL_content.getCt(itm_gn, "rs");
-      if(itm == null) return;
-      FRAG_item.setItem(b, itm, amt);
+      let item = MDL_content.getCt(item_gn, "rs");
+      if(item == null) return;
+      FRAG_item.setItem(b, item, amt);
     }
     .setAnno("console");
 

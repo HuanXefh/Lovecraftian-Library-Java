@@ -20,8 +20,8 @@
 
 
   function comp_setStats(blk) {
-    if(blk.hasItems) blk.stats.add(fetchStat("lovec", "blk0itm-unloadable"), blk.unloadable);
-    if(blk.isExposed) blk.stats.add(fetchStat("lovec", "blk0itm-exposed"), true);
+    if(blk.hasItems) blk.stats.add(fetchStat("lovec", "blk0item-unloadable"), blk.unloadable);
+    if(blk.isExposed) blk.stats.add(fetchStat("lovec", "blk0item-exposed"), true);
   };
 
 
@@ -32,7 +32,7 @@
         && b.items != null && b.items.any() && !b.block.delegee.noReac
         && Mathf.chance(0.025)
     ) {
-      b.items.each(itm => MDL_reaction.handleReaction(itm, "GROUP: air", 40.0, b));
+      b.items.each(item => MDL_reaction.handleReaction(item, "GROUP: air", 40.0, b));
     };
   };
 

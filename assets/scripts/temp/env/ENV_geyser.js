@@ -22,7 +22,7 @@
 
   function comp_init(blk) {
     blk.parent = MDL_content.getCt(blk.parent, "blk");
-    if(blk.parent == null) ERROR_HANDLER.throw("nullArgument", "parent");
+    if(blk.parent == null) LCErrorHandler.throw("nullArgument", "parent");
     if(!(blk.parent instanceof Floor)) throw new Error("${1} is not a floor!".format(blk.name));
 
     blk.blendGroup = blk.parent;

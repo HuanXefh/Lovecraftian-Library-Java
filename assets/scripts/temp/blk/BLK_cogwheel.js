@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    if(blk.size % 2 === 0) ERROR_HANDLER.throw("evenSizedCogwheel", blk.name);
+    if(blk.size % 2 === 0) LCErrorHandler.throw("evenSizedCogwheel", blk.name);
 
     blk.cogwheelUpdater = new BLKCogwheelUpdater(blk);
 

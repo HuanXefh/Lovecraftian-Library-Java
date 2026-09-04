@@ -49,7 +49,7 @@
 
   function comp_setStats(blk) {
     blk.stats.add(Stat.itemsMoved, blk.moveStackAmt * 60.0 / (blk.moveTime * 2.0 + blk.pickCooldown), StatUnit.itemsSecond);
-    blk.stats.add(fetchStat("lovec", "blk0itm-stackamt"), blk.moveStackAmt);
+    blk.stats.add(fetchStat("lovec", "blk0item-stackamt"), blk.moveStackAmt);
   };
 
 
@@ -135,8 +135,8 @@
       Draw.rect(b.block.delegee.itemReg, b.x, b.y, ang);
       Draw.color();
     };
-    if(b.moveItmCur != null && b.moveItmAmtCur > 0) {
-      LCDraw.content(b.x + b.block.delegee.itmDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itmDrawOff * Mathf.sinDeg(ang), b.moveItmCur, 0.6, b.moveAng);
+    if(b.moveItemCur != null && b.moveItemAmtCur > 0) {
+      LCDraw.content(b.x + b.block.delegee.itemDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itemDrawOff * Mathf.sinDeg(ang), b.moveItemCur, 0.6, b.moveAng);
     };
     processZ();
   };
@@ -171,7 +171,7 @@
     b.moveProg = 1.0;
     let b_t = b.ex_findMoveB(true);
     if(b_t != null) {
-      if(b.ex_canInsertItm(b_t, b.moveItmCur, b.moveItmAmtCur)) {
+      if(b.ex_canInsertItem(b_t, b.moveItemCur, b.moveItemAmtCur)) {
         if(!b.isFirstInsertion) {
           b.ex_doDump(b_t);
         } else {
@@ -180,7 +180,7 @@
             b.ex_doInsert(b_t);
           };
         };
-        if(b.moveItmAmtCur <= 0) {
+        if(b.moveItemAmtCur <= 0) {
           b.ex_moveBack();
         };
       };
@@ -193,23 +193,23 @@
   function comp_ex_doPick(b, b_f) {
     if(b_f.block instanceof ItemSource) {
       if(b_f.outputItem == null) return;
-      b.moveItmCur = b_f.outputItem;
-      if(b.moveTarget == null || b.ex_canInsertItm(b.moveTarget, b.moveItmCur, b.blk$moveStackAmt)) {
-        b.moveItmAmtCur = b.blk$moveStackAmt;
+      b.moveItemCur = b_f.outputItem;
+      if(b.moveTarget == null || b.ex_canInsertItem(b.moveTarget, b.moveItemCur, b.blk$moveStackAmt)) {
+        b.moveItemAmtCur = b.blk$moveStackAmt;
         b.ex_moveForward();
       };
     } else {
-      b.moveItmCur = b.ex_getMoveItmTarget(b_f);
-      if(b.moveItmCur != null && b.ex_canPickItm(b_f, b.moveItmCur, b.ctTarget == null ? 1 : b.blk$moveStackAmt) && (b.moveTarget == null || b.ex_canInsertItm(b.moveTarget, b.moveItmCur, b.blk$moveStackAmt))) {
+      b.moveItemCur = b.ex_getMoveItemTarget(b_f);
+      if(b.moveItemCur != null && b.ex_canPickItem(b_f, b.moveItemCur, b.ctTarget == null ? 1 : b.blk$moveStackAmt) && (b.moveTarget == null || b.ex_canInsertItem(b.moveTarget, b.moveItemCur, b.blk$moveStackAmt))) {
         let amtTrans;
         if(b_f.getPayload() instanceof BuildPayload) {
-          amtTrans = Math.min(b_f.getPayload().build.items.get(b.moveItmCur), b.blk$moveStackAmt);
-          b_f.getPayload().build.removeStack(b.moveItmCur, amtTrans);
+          amtTrans = Math.min(b_f.getPayload().build.items.get(b.moveItemCur), b.blk$moveStackAmt);
+          b_f.getPayload().build.removeStack(b.moveItemCur, amtTrans);
         } else {
-          amtTrans = Math.min(b_f.items.get(b.moveItmCur), b.blk$moveStackAmt);
-          b_f.removeStack(b.moveItmCur, amtTrans);
+          amtTrans = Math.min(b_f.items.get(b.moveItemCur), b.blk$moveStackAmt);
+          b_f.removeStack(b.moveItemCur, amtTrans);
         };
-        b.moveItmAmtCur = amtTrans;
+        b.moveItemAmtCur = amtTrans;
         b.ex_moveForward();
       };
     };
@@ -236,10 +236,10 @@
 
 
   function comp_ex_doUnitPick(b, unit) {
-    b.moveItmCur = unit.item();
-    if(b.moveTarget == null || b.ex_canInsertItm(b.moveTarget, b.moveItmCur, b.blk$moveStackAmt)) {
+    b.moveItemCur = unit.item();
+    if(b.moveTarget == null || b.ex_canInsertItem(b.moveTarget, b.moveItemCur, b.blk$moveStackAmt)) {
       let amtTrans = Math.min(unit.stack.amount, b.blk$moveStackAmt);
-      b.moveItmAmtCur = amtTrans;
+      b.moveItemAmtCur = amtTrans;
       FRAG_item.setUnitItem(unit, unit.item(), unit.stack.amount - amtTrans);
       b.ex_moveForward();
     };
@@ -247,10 +247,10 @@
 
 
   function comp_ex_doLootPick(b, loot) {
-    b.moveItmCur = loot.item();
-    if(b.moveTarget == null || b.ex_canInsertItm(b.moveTarget, b.moveItmCur, b.blk$moveStackAmt)) {
+    b.moveItemCur = loot.item();
+    if(b.moveTarget == null || b.ex_canInsertItem(b.moveTarget, b.moveItemCur, b.blk$moveStackAmt)) {
       let amtTrans = Math.min(loot.stack.amount, b.blk$moveStackAmt);
-      b.moveItmAmtCur = amtTrans;
+      b.moveItemAmtCur = amtTrans;
       FRAG_item.setUnitItem(loot, loot.item(), loot.stack.amount - amtTrans);
       loot.time = 0.0;
       b.ex_moveForward();
@@ -262,21 +262,21 @@
     let amtTrans;
     if(b_t.getPayload() instanceof BuildPayload) {
       // Insert items into payload
-      amtTrans = b_t.getPayload().build.acceptStack(b.moveItmCur, b.moveItmAmtCur, b);
+      amtTrans = b_t.getPayload().build.acceptStack(b.moveItemCur, b.moveItemAmtCur, b);
       if(amtTrans > 0) {
-        b_t.getPayload().build.handleStack(b.moveItmCur, amtTrans, b);
-        b.moveItmAmtCur -= amtTrans;
+        b_t.getPayload().build.handleStack(b.moveItemCur, amtTrans, b);
+        b.moveItemAmtCur -= amtTrans;
       };
     } else {
       // Insert items into building
       amtTrans = b.block.ex_shouldCheckStack(b_t.block) ?
-        b_t.acceptStack(b.moveItmCur, b.moveItmAmtCur, b) :
+        b_t.acceptStack(b.moveItemCur, b.moveItemAmtCur, b) :
         b_t.items == null ?
           0 :
-          Math.min(b_t.getMaximumAccepted(b.moveItmCur) - b_t.items.get(b.moveItmAmtCur), b.moveItmAmtCur);
+          Math.min(b_t.getMaximumAccepted(b.moveItemCur) - b_t.items.get(b.moveItemAmtCur), b.moveItemAmtCur);
       if(amtTrans > 0) {
-        b_t.handleStack(b.moveItmCur, amtTrans, b);
-        b.moveItmAmtCur -= amtTrans;
+        b_t.handleStack(b.moveItemCur, amtTrans, b);
+        b.moveItemAmtCur -= amtTrans;
       };
     };
   };
@@ -284,14 +284,14 @@
 
   function comp_ex_doFloorInsert(b) {
     let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(true, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(true, true) + 0.5) * Vars.tilesize);
-    if(unit != null && unit.isGrounded() && unit.acceptsItem(b.moveItmCur)) {
+    if(unit != null && unit.isGrounded() && unit.acceptsItem(b.moveItemCur)) {
       b.ex_doUnitInsert(unit);
     };
-    if(b.moveItmAmtCur <= 0) {
+    if(b.moveItemAmtCur <= 0) {
       b.ex_moveBack();
     } else if(b.shouldDropLoot) {
       let loot = LCEntity.getLoot((b.ex_calcMoveIntCoord(true, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(true, true) + 0.5) * Vars.tilesize);
-      if(loot != null && loot.acceptsItem(b.moveItmCur)) {
+      if(loot != null && loot.acceptsItem(b.moveItemCur)) {
         b.ex_doLootInsert(loot);
       };
       b.ex_doLootDump();
@@ -301,20 +301,20 @@
 
 
   function comp_ex_doUnitInsert(b, unit) {
-    let amtTrans = Math.min(unit.maxAccepted(b.moveItmCur) - unit.stack.amount, b.moveItmAmtCur);
+    let amtTrans = Math.min(unit.maxAccepted(b.moveItemCur) - unit.stack.amount, b.moveItemAmtCur);
     if(amtTrans > 0) {
-      FRAG_item.setUnitItem(unit, b.moveItmCur, unit.stack.amount + amtTrans);
-      b.moveItmAmtCur -= amtTrans;
+      FRAG_item.setUnitItem(unit, b.moveItemCur, unit.stack.amount + amtTrans);
+      b.moveItemAmtCur -= amtTrans;
     };
   };
 
 
   function comp_ex_doLootInsert(b, loot) {
-    let amtTrans = Math.min(loot.maxAccepted(b.moveItmCur) - loot.stack.amount, b.moveItmAmtCur);
+    let amtTrans = Math.min(loot.maxAccepted(b.moveItemCur) - loot.stack.amount, b.moveItemAmtCur);
     if(amtTrans > 0) {
-      FRAG_item.setUnitItem(loot, b.moveItmCur, loot.stack.amount + amtTrans);
+      FRAG_item.setUnitItem(loot, b.moveItemCur, loot.stack.amount + amtTrans);
       loot.time = 0.0;
-      b.moveItmAmtCur -= amtTrans;
+      b.moveItemAmtCur -= amtTrans;
     };
   };
 
@@ -322,27 +322,27 @@
   function comp_ex_doDump(b, b_t) {
     if(b_t.getPayload() instanceof BuildPayload) {
       // Dump items into payload
-      if(b.moveItmAmtCur > 0 && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
-        b_t.getPayload().build.handleItem(b, b.moveItmCur);
-        b.moveItmAmtCur--;
+      if(b.moveItemAmtCur > 0 && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+        b_t.getPayload().build.handleItem(b, b.moveItemCur);
+        b.moveItemAmtCur--;
       };
     } else {
       // Dump items into building
-      if(b.moveItmAmtCur > 0 && (!(b_t.block instanceof Conveyor) || b_t.items.get(b.moveItmCur) < b_t.getMaximumAccepted(b.moveItmCur)) && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
-        b_t.handleItem(b, b.moveItmCur);
-        b.moveItmAmtCur--;
+      if(b.moveItemAmtCur > 0 && (!(b_t.block instanceof Conveyor) || b_t.items.get(b.moveItemCur) < b_t.getMaximumAccepted(b.moveItemCur)) && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+        b_t.handleItem(b, b.moveItemCur);
+        b.moveItemAmtCur--;
       };
     };
   };
 
 
   function comp_ex_doLootDump(b) {
-    if(b.moveItmAmtCur > 0) {
-      let itm = b.moveItmCur;
-      let amt = b.moveItmAmtCur;
+    if(b.moveItemAmtCur > 0) {
+      let item = b.moveItemCur;
+      let amt = b.moveItemAmtCur;
       Core.app.post(() => {
         let ang = b.drawrot() + b.moveAng;
-        MDL_call.spawnLoot_server(b.x + b.block.delegee.itmDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itmDrawOff * Mathf.sinDeg(ang), itm, amt);
+        MDL_call.spawnLoot_server(b.x + b.block.delegee.itemDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itemDrawOff * Mathf.sinDeg(ang), item, amt);
       });
     };
   };
@@ -401,7 +401,7 @@
        * @memberof BLK_itemArm
        * @instance
        */
-      itmDrawOff: 8.0,
+      itemDrawOff: 8.0,
       /**
        * `PARAM`: Z-layer of arm region.
        * @memberof BLK_itemArm
@@ -534,13 +534,13 @@
        * @memberof B_itemArm
        * @instance
        */
-      moveItmCur: null,
+      moveItemCur: null,
       /**
        * `INTERNAL`
        * @memberof B_itemArm
        * @instance
        */
-      moveItmAmtCur: 0,
+      moveItemAmtCur: 0,
       /**
        * `INTERNAL`
        * @memberof B_itemArm
@@ -660,8 +660,8 @@
       write: function(wr) {
         this.ex_processData(wr);
 
-        MDL_io.ct(wr, this.moveItmCur);
-        wr.i(this.moveItmAmtCur);
+        MDL_io.ct(wr, this.moveItemCur);
+        wr.i(this.moveItemAmtCur);
         wr.bool(this.isBackMove);
         wr.f(this.moveProg);
         wr.bool(this.shouldDropLoot);
@@ -672,8 +672,8 @@
       read: function(rd, revi) {
         this.ex_processData(rd);
 
-        this.moveItmCur = MDL_io.ct(rd);
-        this.moveItmAmtCur = rd.i();
+        this.moveItemCur = MDL_io.ct(rd);
+        this.moveItemAmtCur = rd.i();
         this.isBackMove = rd.bool();
         this.moveProg = rd.f();
         if(this.LCReviSub >= 1) {
@@ -689,7 +689,7 @@
        * @return {void}
        */
       ex_moveForward: function() {
-        if(this.moveItmCur != null && this.moveItmAmtCur > 0) {
+        if(this.moveItemCur != null && this.moveItemAmtCur > 0) {
           this.isBackMove = false;
           this.isFirstInsertion = true;
         };
@@ -706,8 +706,8 @@
        */
       ex_moveBack: function() {
         this.isBackMove = true;
-        this.moveItmCur = null;
-        this.moveItmAmtCur = 0;
+        this.moveItemCur = null;
+        this.moveItemAmtCur = 0;
         this.pickCd = this.block.delegee.pickCooldown;
       }
       .setProp({
@@ -913,19 +913,19 @@
        * @memberof B_itemArm
        * @instance
        * @param {Building} b_f
-       * @param {Item} itm
+       * @param {Item} item
        * @param {number} amt
        * @return {boolean}
        */
-      ex_canPickItm: function(b_f, itm, amt) {
+      ex_canPickItem: function(b_f, item, amt) {
         if(b_f.block instanceof ItemSource) return true;
         if(b_f.getPayload() instanceof BuildPayload) {
           let ob = b_f.getPayload().build;
-          if(ob.items != null && ob.items.get(itm) >= amt) return true;
+          if(ob.items != null && ob.items.get(item) >= amt) return true;
         };
 
         return !MDL_cond.isDuct(b_f.block)
-          && b_f.items != null && b_f.items.get(itm) >= amt;
+          && b_f.items != null && b_f.items.get(item) >= amt;
       }
       .setProp({
         noSuper: true,
@@ -938,18 +938,18 @@
        * @memberof B_itemArm
        * @instance
        * @param {Building} b_t
-       * @param {Item} itm
+       * @param {Item} item
        * @param {number} amt
        * @return {boolean}
        */
-      ex_canInsertItm: function(b_t, itm, amt) {
+      ex_canInsertItem: function(b_t, item, amt) {
         if(b_t.getPayload() instanceof BuildPayload) {
           let ob = b_t.getPayload().build;
-          if(ob.items != null && MDL_cond.isContainer(ob.block) && ob.acceptStack(itm, amt, b_t) >= amt) return true;
+          if(ob.items != null && MDL_cond.isContainer(ob.block) && ob.acceptStack(item, amt, b_t) >= amt) return true;
         };
 
         return !MDL_cond.isDuct(b_t.block)
-          && (!this.block.ex_shouldCheckStack(b_t.block) ? b_t.acceptItem(this, itm) : b_t.acceptStack(itm, amt, b_t) >= 1);
+          && (!this.block.ex_shouldCheckStack(b_t.block) ? b_t.acceptItem(this, item) : b_t.acceptStack(item, amt, b_t) >= 1);
       }
       .setProp({
         noSuper: true,
@@ -1018,7 +1018,7 @@
        * @param {Building} b_f
        * @return {Item|null}
        */
-      ex_getMoveItmTarget: function(b_f) {
+      ex_getMoveItemTarget: function(b_f) {
         return this.ctTarget != null ?
           this.ctTarget :
           b_f.getPayload() instanceof BuildPayload && b_f.getPayload().build.items != null ?

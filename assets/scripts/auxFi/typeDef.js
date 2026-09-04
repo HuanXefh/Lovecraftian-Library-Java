@@ -213,6 +213,11 @@
 
     /**
      * @global
+     * @typedef {Class|string|null} ContentTypeGn
+     */
+
+    /**
+     * @global
      * @typedef {Array} TemplateAliasArray
      * @lovecRow `string` - namePropNew
      * @lovecRow `string` - namePropOld
@@ -252,14 +257,14 @@
     /**
      * @global
      * @typedef {Array} Item2Array
-     * @lovecRow `ItemGn` - itm_gn
+     * @lovecRow `ItemGn` - item_gn
      * @lovecRow `number` - amt
      */
 
     /**
      * @global
      * @typedef {Array} Item3Array
-     * @lovecRow `ItemGn` - itm_gn
+     * @lovecRow `ItemGn` - item_gn
      * @lovecRow `number` - amt
      * @lovecRow `number` - p
      */
@@ -276,7 +281,7 @@
      * @global
      * @typedef {Object} CropData
      * @prop {number} dur - Duration of this stage.
-     * @prop {ItemGn} [itm] - Item produced when harvested, null if not harvestable.
+     * @prop {ItemGn} [item] - Item produced when harvested, null if not harvestable.
      * @prop {number|unset} [amt] - Amount items produced when harvested.
      * @prop {number|unset} [p] - Chance to produce each item.
      * @prop {number|unset} [stageTo] - Stage to move back to after being harvested.
@@ -304,7 +309,22 @@
      */
 
 
-    /* UI */
+    /* render */
+
+
+    /**
+     * @global
+     * @typedef {Array} NoiseLayerArgumentArray
+     * @lovecRow `string` - nameTex
+     * @lovecRow `Color` - color
+     * @lovecRow `number` - noiseScl
+     * @lovecRow `number` - noiseOpac
+     * @lovecRow `number` - noiseSpd
+     * @lovecRow `number` - noiseIntens
+     * @lovecRow `number` - windX
+     * @lovecRow `number` - windY
+     * @lovecRow `number` - off
+     */
 
 
     /**

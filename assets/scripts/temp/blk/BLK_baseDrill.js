@@ -21,24 +21,24 @@
     if(blk.noSandOutput) {
       if(blk.blockedItems == null) blk.blockedItems = new Seq();
       DB_item.db["group"]["sand"].forEachFast(name => {
-        let itm = MDL_content.getCt(name, "rs");
-        if(itm != null) blk.blockedItems.add(itm);
+        let item = MDL_content.getCt(name, "rs");
+        if(item != null) blk.blockedItems.add(item);
       }, true);
     };
 
-    blk.itmWhitelist = blk.itmWhitelist.map(nameItm => MDL_content.getCt(nameItm, "rs")).compact();
+    blk.itemWhitelist = blk.itemWhitelist.map(nameItem => MDL_content.getCt(nameItem, "rs")).compact();
 
     MDL_event.onLoadPost(() => {
-      blk.hasItmCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
-      if(blk.drillItmDur < 0.0) {
-        blk.drillItmDur = blk.drillTime;
+      blk.hasItemCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
+      if(blk.drillItemDur < 0.0) {
+        blk.drillItemDur = blk.drillTime;
       };
 
       if(blk.shouldDropPay) {
-        Vars.content.items().each(itm => {
-          let oblk = MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name, null), "blk");
-          if(oblk == null || !blk.ex_canMine(oblk, itm, 1.0)) return;
-          MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(itm)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
+        Vars.content.items().each(item => {
+          let oblk = MDL_content.getCt(DB_HANDLER.read("item-payload-block", item.name, null), "blk");
+          if(oblk == null || !blk.ex_canMine(oblk, item, 1.0)) return;
+          MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(item)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
         });
       };
     });
@@ -58,18 +58,18 @@
     };
 
     if(blk.blockedItems != null && blk.blockedItems.size > 0) {
-      blk.stats.add(fetchStat("lovec", "blk0min-blockeditms"), newStatValue(tb => {
+      blk.stats.add(fetchStat("lovec", "blk0min-blockeditems"), newStatValue(tb => {
         tb.row();
         MDL_table.setCtLi(tb, blk.blockedItems.toArray());
       }));
-    } else if(blk.itmWhitelist.length > 0) {
-      blk.stats.add(fetchStat("lovec", "blk0min-alloweditms"), newStatValue(tb => {
+    } else if(blk.itemWhitelist.length > 0) {
+      blk.stats.add(fetchStat("lovec", "blk0min-alloweditems"), newStatValue(tb => {
         tb.row();
-        MDL_table.setCtLi(tb, blk.itmWhitelist);
+        MDL_table.setCtLi(tb, blk.itemWhitelist);
       }));
     };
 
-    if(blk.hasItmCons) blk.stats.add(Stat.productionTime, blk.drillItmDur / 60.0, StatUnit.seconds);
+    if(blk.hasItemCons) blk.stats.add(Stat.productionTime, blk.drillItemDur / 60.0, StatUnit.seconds);
 
     if(!blk.shouldDropPay) blk.stats.remove(fetchStat("lovec", "blk0fac-payroom"));
   };
@@ -86,19 +86,19 @@
   };
 
 
-  function comp_ex_canMine(blk, oblk, itm, tierMtp) {
+  function comp_ex_canMine(blk, oblk, item, tierMtp) {
     if(blk.blockedItems != null && blk.blockedItems.size > 0) {
-      if(blk.blockedItems.contains(itm)) return false;
+      if(blk.blockedItems.contains(item)) return false;
     } else {
-      if(blk.itmWhitelist.length > 0 && !blk.itmWhitelist.includes(itm)) return false;
+      if(blk.itemWhitelist.length > 0 && !blk.itemWhitelist.includes(item)) return false;
     };
 
     if(blk.shouldDropPay) {
-      let payBlk = MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name, null), "blk");
+      let payBlk = MDL_content.getCt(DB_HANDLER.read("item-payload-block", item.name, null), "blk");
       if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
     };
 
-    return blk.ex_calcDropHardness(oblk, itm) <= blk.tier * tierMtp;
+    return blk.ex_calcDropHardness(oblk, item) <= blk.tier * tierMtp;
   };
 
 
@@ -108,31 +108,31 @@
 
 
   function comp_updateTile(b) {
-    if(!b.block.delegee.hasItmCons) return;
+    if(!b.block.delegee.hasItemCons) return;
 
-    b.drillItmProg += b.edelta();
-    if(b.drillItmProg >= b.block.delegee.drillItmDur) {
-      b.drillItmProg %= b.block.delegee.drillItmDur;
+    b.drillItemProg += b.edelta();
+    if(b.drillItemProg >= b.block.delegee.drillItemDur) {
+      b.drillItemProg %= b.block.delegee.drillItemDur;
       b.consume();
       MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
     };
   };
 
 
-  function comp_offload(b, itm) {
+  function comp_offload(b, item) {
     if(!b.block.delegee.shouldDropPay) {
-      b.super$offload(itm);
+      b.super$offload(item);
       return;
     };
 
-    let blkTarget = MDL_content.getCt(DB_HANDLER.read("item-payload-block", itm.name, null), "blk");
+    let blkTarget = MDL_content.getCt(DB_HANDLER.read("item-payload-block", item.name, null), "blk");
     if(blkTarget == null) return;
-    Object.mapIncre(b.payChargeObj, itm.name);
-    if(b.payChargeObj[itm.name] >= blkTarget.requirements[0].amount) {
-      b.payChargeObj[itm.name] %= blkTarget.requirements[0].amount;
+    Object.mapIncre(b.payChargeObj, item.name);
+    if(b.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {
+      b.payChargeObj[item.name] %= blkTarget.requirements[0].amount;
       Object.mapIncre(b.payStockObj, blkTarget.name);
     };
-    b.payChargeFrac = b.payChargeObj[itm.name] / blkTarget.requirements[0].amount;
+    b.payChargeFrac = b.payChargeObj[item.name] / blkTarget.requirements[0].amount;
   };
 
 
@@ -175,13 +175,13 @@
        * @memberof BLK_baseDrill
        * @instance
        */
-      itmWhitelist: tprov(() => []),
+      itemWhitelist: tprov(() => []),
       /**
        * `PARAM`: Item duration, `drillTime` by default.
        * @memberof BLK_baseDrill
        * @instance
        */
-      drillItmDur: -1.0,
+      drillItemDur: -1.0,
       /**
        * `PARAM`: If true, this drill outputs payload instead of item. Only ores that have payload form can be mined.
        * @memberof BLK_baseDrill
@@ -211,7 +211,7 @@
        * @memberof BLK_baseDrill
        * @instance
        */
-      hasItmCons: false,
+      hasItemCons: false,
 
 
     })
@@ -256,11 +256,11 @@
        * @memberof BLK_baseDrill
        * @instance
        * @param {Block} oblk
-       * @param {Item} itm
+       * @param {Item} item
        * @return {number}
        */
-      ex_calcDropHardness: function(oblk, itm) {
-        return tryJsProp(oblk, "dropHardness", itm.hardness);
+      ex_calcDropHardness: function(oblk, item) {
+        return tryJsProp(oblk, "dropHardness", item.hardness);
       }
       .setProp({
         noSuper: true,
@@ -269,17 +269,17 @@
 
 
       /**
-       * Whether this drill can obtain `itm` from `oblk`.
+       * Whether this drill can obtain `item` from `oblk`.
        * <br> WTF why is there no `canMine` for `BeamDrill`???
        * @memberof BLK_baseDrill
        * @instance
        * @param {Block} oblk
-       * @param {Item} itm
+       * @param {Item} item
        * @param {number} tierMtp
        * @return {boolean}
        */
-      ex_canMine: function(oblk, itm, tierMtp) {
-        return comp_ex_canMine(this, oblk, itm, tierMtp);
+      ex_canMine: function(oblk, item, tierMtp) {
+        return comp_ex_canMine(this, oblk, item, tierMtp);
       }
       .setProp({
         noSuper: true,
@@ -371,7 +371,7 @@
        * @memberof B_baseDrill
        * @instance
        */
-      drillItmProg: 0.0,
+      drillItemProg: 0.0,
       /**
        * `INTERNAL`
        * @memberof B_baseDrill
@@ -400,8 +400,8 @@
       },
 
 
-      offload: function(itm) {
-        comp_offload(this, itm);
+      offload: function(item) {
+        comp_offload(this, item);
       }
       .setProp({
         noSuper: true,
@@ -409,16 +409,16 @@
 
 
       consumeTriggerValid: function() {
-        return this.block.delegee.drillItmDur > 0.0;
+        return this.block.delegee.drillItemDur > 0.0;
       }
       .setProp({
         noSuper: true,
       }),
 
 
-      canDump: function(b_t, itm) {
+      canDump: function(b_t, item) {
         // Yep this line is borrowed from Carpe Diem
-        return !this.block.consumesItem(itm) || (this.dominantItem === itm && this.items.has(itm, this.getMaximumAccepted(itm) * 0.5));
+        return !this.block.consumesItem(item) || (this.dominantItem === item && this.items.has(item, this.getMaximumAccepted(item) * 0.5));
       }
       .setProp({
         noSuper: true,
@@ -427,14 +427,14 @@
 
 
       write: function(wr) {
-        wr.f(this.drillItmProg);
+        wr.f(this.drillItemProg);
         MDL_io.objStrNum(wr, this.payChargeObj);
       },
 
 
       read: function(rd, revi) {
         if(this.LCReviSub >= 2) {
-          this.drillItmProg = rd.f();
+          this.drillItemProg = rd.f();
         };
         if(this.LCReviSub >= 1) {
           MDL_io.objStrNum(rd, this.payChargeObj);

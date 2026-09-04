@@ -233,15 +233,15 @@
         }, true);
       });
 
-      Vars.content.items().each(itm => {
-        let itmRedir = oreDict.get(itm);
-        if(itmRedir == null) return;
-        itm.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
+      Vars.content.items().each(item => {
+        let itemRedir = oreDict.get(item);
+        if(itemRedir == null) return;
+        item.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
           tb.row();
-          MDL_table.setCtRow(tb, itmRedir);
+          MDL_table.setCtRow(tb, itemRedir);
         }));
-        itmRedir.shownPlanets.addAll(itm.shownPlanets);
-        itmRedir.databaseTabs.addAll(itm.databaseTabs);
+        itemRedir.shownPlanets.addAll(item.shownPlanets);
+        itemRedir.databaseTabs.addAll(item.databaseTabs);
       });
       Vars.content.liquids().each(liq => {
         let liqRedir = oreDict.get(liq);
@@ -255,12 +255,12 @@
       });
 
       Vars.content.blocks().each(blk => {
-        blk.requirements.forEachFast(itmStack => {
-          itmStack.item = oreDict.get(itmStack.item, itmStack.item);
+        blk.requirements.forEachFast(itemStack => {
+          itemStack.item = oreDict.get(itemStack.item, itemStack.item);
         }, true);
         Vars.content.planets().each(pla => pla.accessible && pla.isLandable(), pla => {
           // No `every` here, otherwise too many blocks hidden
-          if(blk.requirements.some(itmStack => itmStack.item.isOnPlanet(pla))) blk.shownPlanets.add(pla);
+          if(blk.requirements.some(itemStack => itemStack.item.isOnPlanet(pla))) blk.shownPlanets.add(pla);
         });
         blk.databaseTabs.addAll(blk.shownPlanets);
 
@@ -304,8 +304,8 @@
       });
 
       TechTree.all.each(node => {
-        node.requirements.forEachFast(itmStack => {
-          itmStack.item = oreDict.get(itmStack.item, itmStack.item);
+        node.requirements.forEachFast(itemStack => {
+          itemStack.item = oreDict.get(itemStack.item, itemStack.item);
         });
       });
     })();

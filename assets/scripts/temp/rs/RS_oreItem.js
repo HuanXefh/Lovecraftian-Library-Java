@@ -14,14 +14,14 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(itm) {
-    itm.sintTemp = itm.sintTemp >= 0.0 ? itm.sintTemp : DB_HANDLER.read("item-sintering-temperature", itm, 100.0);
+  function comp_init(item) {
+    item.sintTemp = item.sintTemp >= 0.0 ? item.sintTemp : DB_HANDLER.read("item-sintering-temperature", item, 100.0);
   };
 
 
-  function comp_setStats(itm) {
-    itm.stats.add(fetchStat("lovec", "rs-isore"), true);
-    if(itm.sintTemp > 100.0) itm.stats.add(fetchStat("lovec", "rs-sinttemp"), itm.sintTemp, fetchStatUnit("lovec", "heatunits"));
+  function comp_setStats(item) {
+    item.stats.add(fetchStat("lovec", "rs-isore"), true);
+    if(item.sintTemp > 100.0) item.stats.add(fetchStat("lovec", "rs-sinttemp"), item.sintTemp, fetchStatUnit("lovec", "heatunits"));
   };
 
 

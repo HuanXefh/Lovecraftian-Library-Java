@@ -17,7 +17,7 @@
     CLS_contentTemplate.prototype.init = function() {
 
 
-        ERROR_HANDLER.throw("contentTemplateInstance");
+        LCErrorHandler.throw("contentTemplateInstance");
 
 
     };
@@ -197,7 +197,7 @@
 
     /**
      * Sets tags of the template.
-     * <br> `ARGS`: `string...` - tags
+     * <br> `ARGS`: `...string` - tags
      * @return {this}
      */
     CLS_contentTemplate.setTags = function() {
@@ -318,7 +318,7 @@
     CLS_contentTemplate.build = function(paramObj) {
         const thisTemp = this;
         let obj = {};
-        if(this.getParent() == null) ERROR_HANDLER.throw("contentTemplateNoParentJavaClass");
+        if(this.getParent() == null) LCErrorHandler.throw("contentTemplateNoParentJavaClass");
 
         Object.eachPair(this.paramObj, (name, def) => {
             // Skip template parent, or an error jumps out of nowhere

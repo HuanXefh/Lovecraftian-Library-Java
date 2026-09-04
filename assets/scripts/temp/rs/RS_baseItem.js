@@ -14,39 +14,39 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(itm) {
-    if(itm.overwriteVanillaProp) {
-      let hardness = DB_HANDLER.read("item-hardness", itm, -1.0);
+  function comp_init(item) {
+    if(item.overwriteVanillaProp) {
+      let hardness = DB_HANDLER.read("item-hardness", item, -1.0);
       if(hardness >= 0.0) {
-        itm.hardness = hardness;
+        item.hardness = hardness;
       };
     };
   };
 
 
-  function comp_setStats(itm) {
-    if(itm.overwriteVanillaStat) {
-      itm.stats.remove(Stat.explosiveness);
-      itm.stats.remove(Stat.flammability);
-      itm.stats.remove(Stat.radioactivity);
-      itm.stats.remove(Stat.charge);
-      if(itm.explosiveness > 0.0) itm.stats.addPercent(Stat.explosiveness, itm.explosiveness);
-      if(itm.flammability > 0.0) itm.stats.addPercent(Stat.flammability, itm.flammability);
-      if(itm.radioactivity > 0.0) itm.stats.addPercent(Stat.radioactivity, itm.radioactivity);
-      if(itm.charge > 0.0) itm.stats.addPercent(Stat.charge, itm.charge);
+  function comp_setStats(item) {
+    if(item.overwriteVanillaStat) {
+      item.stats.remove(Stat.explosiveness);
+      item.stats.remove(Stat.flammability);
+      item.stats.remove(Stat.radioactivity);
+      item.stats.remove(Stat.charge);
+      if(item.explosiveness > 0.0) item.stats.addPercent(Stat.explosiveness, item.explosiveness);
+      if(item.flammability > 0.0) item.stats.addPercent(Stat.flammability, item.flammability);
+      if(item.radioactivity > 0.0) item.stats.addPercent(Stat.radioactivity, item.radioactivity);
+      if(item.charge > 0.0) item.stats.addPercent(Stat.charge, item.charge);
 
-      if(itm.buildable) itm.stats.add(fetchStat("lovec", "rs-buildable"), true);
-      if(itm.hardness > 0) itm.stats.add(fetchStat("lovec", "rs-hardness"), itm.hardness);
+      if(item.buildable) item.stats.add(fetchStat("lovec", "rs-buildable"), true);
+      if(item.hardness > 0) item.stats.add(fetchStat("lovec", "rs-hardness"), item.hardness);
     };
 
-    if(VARGEN.fuelItms.includes(itm)) {
-      itm.stats.add(fetchStat("lovec", "rs0fuel-point"), MDL_fuel.getFuelPon(itm));
-      itm.stats.add(fetchStat("lovec", "rs0fuel-level"), MDL_fuel.getFuelLvl(itm));
+    if(VARGEN.fuelItems.includes(item)) {
+      item.stats.add(fetchStat("lovec", "rs0fuel-point"), MDL_fuel.getFuelPon(item));
+      item.stats.add(fetchStat("lovec", "rs0fuel-level"), MDL_fuel.getFuelLvl(item));
     };
 
     // Sometimes non-ore items can be mined in some way
-    let oreBlks = MDL_content.getOreBlks(itm);
-    if(oreBlks.length > 0) itm.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
+    let oreBlks = MDL_content.getOreBlks(item);
+    if(oreBlks.length > 0) item.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
       tb.row();
       MDL_table.setCtLi(tb, oreBlks, 48.0);
     }));

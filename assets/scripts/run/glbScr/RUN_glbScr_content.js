@@ -412,7 +412,7 @@
             cont[nameMod].read(name) :
             cont[nameMod][name];
           if(ct == null && def !== undefined) ct = def;
-          if(isNullable ? ct === undefined : ct == null) ERROR_HANDLER.throw("unregisteredContent", nameMod + "-" + name);
+          if(isNullable ? ct === undefined : ct == null) LCErrorHandler.throw("unregisteredContent", nameMod + "-" + name);
           return ct;
         };
 
@@ -424,7 +424,7 @@
             cont.read(name) :
             cont[name];
           if(ct == null && def !== undefined) ct = def;
-          if(isNullable ? ct === undefined : ct == null) ERROR_HANDLER.throw("unregisteredContent", name);
+          if(isNullable ? ct === undefined : ct == null) LCErrorHandler.throw("unregisteredContent", name);
           return ct;
         };
 
@@ -434,7 +434,7 @@
           if(def instanceof Prov) def = def.get();
           let temp = cont.read(name);
           if(temp == null && def !== undefined) temp = def;
-          if(isNullable ? temp === undefined : temp == null) ERROR_HANDLER.throw("noTemplateFound", name);
+          if(isNullable ? temp === undefined : temp == null) LCErrorHandler.throw("noTemplateFound", name);
           return temp.build(paramObj);
         };
 
@@ -450,7 +450,7 @@
               def;
           };
           let ct = getter(paramObj);
-          if(ct == null && !isNullable) ERROR_HANDLER.throw("unregisteredContent", name);
+          if(ct == null && !isNullable) LCErrorHandler.throw("unregisteredContent", name);
           return ct;
         };
 
@@ -773,7 +773,7 @@
 
 
     function throwDebugError() {
-      if(Core.settings.getBool("lovec-test0error-shader", false)) ERROR_HANDLER.throw("debug", "shader");
+      if(Core.settings.getBool("lovec-test0error-shader", false)) LCErrorHandler.throw("debug", "shader");
     };
     function warnShaderLoadFail(name, err) {
       console.warn("[LOVEC] Failed to load shader " + name.color(Pal.accent) + ":\n" + err);

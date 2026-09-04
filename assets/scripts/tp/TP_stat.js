@@ -57,8 +57,8 @@
   newStat("lovec", "blk0min-drilltier", StatCat.crafting);
   newStat("lovec", "blk0min-depthmtp", StatCat.crafting);
   newStat("lovec", "blk0min-maxdepthlvl", StatCat.crafting);
-  newStat("lovec", "blk0min-blockeditms", StatCat.crafting);
-  newStat("lovec", "blk0min-alloweditms", StatCat.crafting);
+  newStat("lovec", "blk0min-blockeditems", StatCat.crafting);
+  newStat("lovec", "blk0min-alloweditems", StatCat.crafting);
   newStat("lovec", "blk0min-scantier", StatCat.crafting);
   newStat("lovec", "blk0min-cropstage", StatCat.crafting);
   newStat("lovec", "blk0min-croptotaltime", StatCat.crafting);
@@ -72,9 +72,9 @@
   newStat("lovec", "blk0fac-recipes", StatCat.crafting);
 
 
-  newStat("lovec", "blk0itm-unloadable", StatCat.items);
-  newStat("lovec", "blk0itm-exposed", StatCat.items);
-  newStat("lovec", "blk0itm-stackamt", StatCat.items);
+  newStat("lovec", "blk0item-unloadable", StatCat.items);
+  newStat("lovec", "blk0item-exposed", StatCat.items);
+  newStat("lovec", "blk0item-stackamt", StatCat.items);
 
 
   newStat("lovec", "blk0liq-presoutput", fetchStatCategory("lovec", "pressure"));

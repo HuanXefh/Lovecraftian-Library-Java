@@ -36,20 +36,20 @@
 
 
   const grpBitsetMapTup = (function() {
-    const itmMap = new ObjectMap();
+    const itemMap = new ObjectMap();
     const liqMap = new ObjectMap();
 
     MDL_event.onLoadDelayTask(VAR.delay.load.loadReacGrp, () => {
       DB_reaction.db["groupCond"].forEachRow(2, (grp, boolF) => {
-        let itmBitset = new Bits(), liqBitset = new Bits();
-        Vars.content.items().each(boolF, rs => itmBitset.set(rs.id));
+        let itemBitset = new Bits(), liqBitset = new Bits();
+        Vars.content.items().each(boolF, rs => itemBitset.set(rs.id));
         Vars.content.liquids().each(boolF, rs => liqBitset.set(rs.id));
-        itmMap.put(grp, itmBitset);
+        itemMap.put(grp, itemBitset);
         liqMap.put(grp, liqBitset);
       }, true);
     });
 
-    return [itmMap, liqMap];
+    return [itemMap, liqMap];
   })();
 
 

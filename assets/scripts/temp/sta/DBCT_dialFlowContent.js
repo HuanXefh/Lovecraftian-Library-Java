@@ -27,7 +27,7 @@
 
 
   function comp_ex_init(sta) {
-    if(sta.nameDialFlow == null) ERROR_HANDLER.throw("nullArgument", "nameDialFlow");
+    if(sta.nameDialFlow == null) LCErrorHandler.throw("nullArgument", "nameDialFlow");
 
     sta.databaseCategory = "lovec-information";
 

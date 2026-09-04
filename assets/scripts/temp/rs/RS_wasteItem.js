@@ -14,8 +14,8 @@
   /* <---------- component ----------> */
 
 
-  function comp_setStats(itm) {
-    itm.stats.add(fetchStat("lovec", "rs-iswaste"), true);
+  function comp_setStats(item) {
+    item.stats.add(fetchStat("lovec", "rs-iswaste"), true);
   };
 
 

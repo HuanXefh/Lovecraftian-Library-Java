@@ -44,7 +44,7 @@
   };
 
 
-  function comp_acceptItem(b, b_f, itm) {
+  function comp_acceptItem(b, b_f, item) {
     if(!b.block.rotate || b.block.delegee.inputDirs.length === 0) return true;
 
     return b.block.delegee.inputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
@@ -58,7 +58,7 @@
   };
 
 
-  function comp_canDump(b, b_t, itm) {
+  function comp_canDump(b, b_t, item) {
     if(!b.block.rotate || b.block.delegee.outputDirs.length === 0) return true;
 
     return b.block.delegee.outputDirs.some(offRot => b.relativeTo(b_t) === Mathf.mod(b.rotation + offRot, 4));
@@ -159,8 +159,8 @@
       },
 
 
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+      acceptItem: function(b_f, item) {
+        return comp_acceptItem(this, b_f, item);
       }
       .setProp({
         boolMode: "and",
@@ -175,8 +175,8 @@
       }),
 
 
-      canDump: function(b_t, itm) {
-        return comp_canDump(this, b_t, itm);
+      canDump: function(b_t, item) {
+        return comp_canDump(this, b_t, item);
       }
       .setProp({
         boolMode: "and",

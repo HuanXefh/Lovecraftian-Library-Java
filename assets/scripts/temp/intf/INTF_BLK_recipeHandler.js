@@ -175,17 +175,17 @@
   };
 
 
-  function comp_acceptItem(b, b_f, itm) {
-    if(b.items == null || b.items.get(itm) >= b.getMaximumAccepted(itm)) return false;
-    if(b.blk$useAutoSelection && b.rc.keyItmHeaderMap != null && itm !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.rc.keyItmHeaderMap.containsKey(itm) && !b.rc.checkOutput(itm)) {
-      b.keyCt = itm;
+  function comp_acceptItem(b, b_f, item) {
+    if(b.items == null || b.items.get(item) >= b.getMaximumAccepted(item)) return false;
+    if(b.blk$useAutoSelection && b.rc.keyItemHeaderMap != null && item !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.rc.keyItemHeaderMap.containsKey(item) && !b.rc.checkOutput(item)) {
+      b.keyCt = item;
     };
 
-    if(b.itmAcceptCacheArr[itm.id] == null) {
-      b.itmAcceptCacheArr[itm.id] = b.rc.checkInput(itm);
+    if(b.itemAcceptCacheArr[item.id] == null) {
+      b.itemAcceptCacheArr[item.id] = b.rc.checkInput(item);
     };
 
-    return b.itmAcceptCacheArr[itm.id];
+    return b.itemAcceptCacheArr[item.id];
   };
 
 
@@ -401,7 +401,7 @@
 
 
   function comp_ex_resetRcParam(b) {
-    b.itmAcceptCacheArr.clear();
+    b.itemAcceptCacheArr.clear();
     b.liqAcceptCacheArr.clear();
     forceUpdateBlockFrag();
 
@@ -564,9 +564,9 @@
       }),
       __paramParserM__: (() => [
         "rcMdl", function(val) {
-          if(val == null) ERROR_HANDLER.throw("nullArgument", "rcMdl");
+          if(val == null) LCErrorHandler.throw("nullArgument", "rcMdl");
           let nameMod = this.rcSourceMod;
-          if(nameMod == null) ERROR_HANDLER.throw("nullArgument", "rcSourceMod");
+          if(nameMod == null) LCErrorHandler.throw("nullArgument", "rcSourceMod");
 
           return MDL_recipe.getRcMdl(nameMod, val);
         },
@@ -586,8 +586,8 @@
       },
 
 
-      consumesItem: function(itm) {
-        return MDL_recipe.checkInput(itm, this.rcMdl);
+      consumesItem: function(item) {
+        return MDL_recipe.checkInput(item, this.rcMdl);
       }
       .setProp({
         noSuper: true,
@@ -605,7 +605,7 @@
 
 
       outputsItems: function() {
-        return MDL_recipe.checkAnyItmOutput(this.rcMdl);
+        return MDL_recipe.checkAnyItemOutput(this.rcMdl);
       }
       .setProp({
         noSuper: true,
@@ -731,7 +731,7 @@
          * @memberof INTF_B_recipeHandler
          * @instance
          */
-        itmAcceptCacheArr: tprov(() => []),
+        itemAcceptCacheArr: tprov(() => []),
         /**
          * `INTERNAL`
          * @memberof INTF_B_recipeHandler
@@ -816,8 +816,8 @@
       }),
 
 
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+      acceptItem: function(b_f, item) {
+        return comp_acceptItem(this, b_f, item);
       }
       .setProp({
         noSuper: true,

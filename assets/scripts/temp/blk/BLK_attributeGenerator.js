@@ -47,14 +47,14 @@
 
     b.lastWarmup = Mathf.approachDelta(b.lastWarmup, Mathf.num(b.lastEffc > 0.0), b.block.delegee.warmupRate);
     b.productionEfficiency = Mathf.approachDelta(b.productionEfficiency, b.lastEffc, b.block.delegee.warmupRate);
-    b.attrGenItmProg += b.productionEfficiency * b.delta();
+    b.attrGenItemProg += b.productionEfficiency * b.delta();
     b.attrGenProg += b.productionEfficiency * b.delta();
     if(Mathf.chanceDelta(b.block.effectChance * b.productionEfficiency)) {
       MDL_effect.showAround(b.x, b.y, b.block.generateEffect, b.block.delegee.generateEffectRange, 0.0);
     };
 
-    if(b.items != null && b.attrGenItmProg > b.block.delegee.attrGenItmDur) {
-      b.attrGenItmProg %= b.block.delegee.attrGenItmDur;
+    if(b.items != null && b.attrGenItemProg > b.block.delegee.attrGenItemDur) {
+      b.attrGenItemProg %= b.block.delegee.attrGenItemDur;
       b.consume();
       MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
     };
@@ -98,7 +98,7 @@
        * @memberof BLK_attributeGenerator
        * @instance
        */
-      attrGenItmDur: 120.0,
+      attrGenItemDur: 120.0,
       /**
        * `PARAM`: Used to filter out valid blocks with matching attribute.
        * <br> `ARGS`: blk, oblk.
@@ -190,7 +190,7 @@
        * @memberof B_attributeGenerator
        * @instance
        */
-      attrGenItmProg: 0.0,
+      attrGenItemProg: 0.0,
       /**
        * `INTERNAL`
        * @memberof B_attributeGenerator

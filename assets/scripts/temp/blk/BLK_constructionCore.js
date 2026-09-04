@@ -25,9 +25,9 @@
     if(blk.placeDataY == null) blk.placeDataY = blk.centerPon2.y;
 
     blk.placeBlk = MDL_content.getCt(blk.placeBlk, "blk");
-    if(blk.placeBlk == null) ERROR_HANDLER.throw("nullArgument", "placeBlk");
+    if(blk.placeBlk == null) LCErrorHandler.throw("nullArgument", "placeBlk");
     blk.ex_calcBlksReq(blk.constructionBlksReq);
-    blk.ex_calcItmsReq(blk.constructionItmsReq, blk.constructionBlksReq);
+    blk.ex_calcItemsReq(blk.constructionItemsReq, blk.constructionBlksReq);
     if(!blk.skipTargetSetup) {
       Core.app.post(() => {
         batchCall(blk.placeBlk, function() {
@@ -38,11 +38,11 @@
           this.alwaysUnlocked = true;
           this.envRequired = blk.envRequired;
           this.envDisabled = blk.envDisabled;
-          let itmStacks = [];
-          Object.eachPair(blk.constructionItmsReq, (nameItm, amt) => {
-            itmStacks.push(new ItemStack(Vars.content.item(nameItm), amt));
+          let itemStacks = [];
+          Object.eachPair(blk.constructionItemsReq, (nameItem, amt) => {
+            itemStacks.push(new ItemStack(Vars.content.item(nameItem), amt));
           });
-          this.requirements = itmStacks;
+          this.requirements = itemStacks;
           MDL_event.onLoad(() => {
             this.buildTime = blk.constructionTimeReq * 0.5;
           });
@@ -251,15 +251,15 @@
   });
 
 
-  function comp_ex_calcItmsReq(blk, contObj, blksReq) {
+  function comp_ex_calcItemsReq(blk, contObj, blksReq) {
     // I'm using an object cauz adding numbers is torturous when using a formatted array
     let obj = contObj != null ? Object.clear(contObj) : {};
 
     blksReq = tryVal(blksReq, blk.ex_calcBlksReq(null));
     blksReq.forEachRow(2, (oblk, count) => {
-      oblk.requirements.forEachFast(itmStack => {
-        if(obj[itmStack.item.name] === undefined) obj[itmStack.item.name] = 0;
-        obj[itmStack.item.name] += itmStack.amount * count;
+      oblk.requirements.forEachFast(itemStack => {
+        if(obj[itemStack.item.name] === undefined) obj[itemStack.item.name] = 0;
+        obj[itemStack.item.name] += itemStack.amount * count;
       }, true);
     }, true);
 
@@ -590,7 +590,7 @@
        * @memberof BLK_constructionCore
        * @instance
        */
-      constructionItmsReq: tprov(() => ({})),
+      constructionItemsReq: tprov(() => ({})),
 
 
     })
@@ -706,8 +706,8 @@
        * @param {Array} blksReq
        * @return {Object}
        */
-      ex_calcItmsReq: function(contObj, blksReq) {
-        return comp_ex_calcItmsReq(this, contObj, blksReq);
+      ex_calcItemsReq: function(contObj, blksReq) {
+        return comp_ex_calcItemsReq(this, contObj, blksReq);
       }
       .setProp({
         noSuper: true,

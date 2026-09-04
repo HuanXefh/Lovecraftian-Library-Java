@@ -50,7 +50,7 @@
       case 13 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
       case 14 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
       case 15 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      default : ERROR_HANDLER.throw("functionLengthWrapFail", len_fi);
+      default : LCErrorHandler.throw("functionLengthWrapFail", len_fi);
     };
   };
 

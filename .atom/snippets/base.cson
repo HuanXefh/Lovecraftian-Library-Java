@@ -40,4 +40,4 @@
 
   'ERROR HANDLER throw':
     prefix: 'lc_throw'
-    body: 'ERROR_HANDLER.throw(${1:name})'
+    body: 'LCErrorHandler.throw(${1:name})'

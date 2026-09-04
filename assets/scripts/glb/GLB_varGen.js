@@ -143,11 +143,11 @@
      * Items in the sand group, see {@link DB_item}.
      * @type {Array<Item>}
      */
-    exports.sandItms = (function() {
+    exports.sandItems = (function() {
       let arr = [];
       DB_item.db["group"]["sand"].forEachFast(name => {
-        let itm = MDL_content.getCt(name, "rs");
-        if(itm != null) arr.push(itm);
+        let item = MDL_content.getCt(name, "rs");
+        if(item != null) arr.push(item);
       }, true);
       return arr;
     })();
@@ -171,11 +171,11 @@
      * Items that can be used as fuel.
      * @type {Array<Item>}
      */
-    exports.fuelItms = (function() {
+    exports.fuelItems = (function() {
       let arr = [];
       DB_item.db["param"]["fuel"]["item"].forEachRow(2, (name, params) => {
-        let itm = MDL_content.getCt(name, "rs");
-        if(itm != null) arr.push(itm);
+        let item = MDL_content.getCt(name, "rs");
+        if(item != null) arr.push(item);
       }, true);
       return arr;
     })();
@@ -216,7 +216,7 @@
     exports.intmds = (function() {
       let obj = {};
       DB_item.db["intmd"]["tag"].forEachFast(tag => obj[tag] = [], true);
-      Vars.content.items().each(itm => tryFun(itm.ex_getIntmdTags, itm, Array.air).forEachFast(tag => obj[tag].push(itm), true));
+      Vars.content.items().each(item => tryFun(item.ex_getIntmdTags, item, Array.air).forEachFast(tag => obj[tag].push(item), true));
       Vars.content.liquids().each(liq => tryFun(liq.ex_getIntmdTags, liq, Array.air).forEachFast(tag => obj[tag].push(liq), true));
       return obj;
     })();
@@ -226,7 +226,7 @@
      * All waste items.
      * @type {Array<Item>}
      */
-    exports.wasItms = Vars.content.items().select(itm => MDL_cond.isWaste(itm)).toArray();
+    exports.wasItems = Vars.content.items().select(item => MDL_cond.isWaste(item)).toArray();
 
 
     /**
@@ -240,7 +240,7 @@
      * Items that are considered explosive.
      * @type {Array<Item>}
      */
-    exports.exploItms = Vars.content.items().select(itm => itm.explosiveness >= 0.3 && itm.flammability >= 0.3).toArray();
+    exports.exploItems = Vars.content.items().select(item => item.explosiveness >= 0.3 && item.flammability >= 0.3).toArray();
 
 
     /**

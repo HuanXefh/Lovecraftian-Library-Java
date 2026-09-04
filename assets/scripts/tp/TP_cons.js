@@ -25,13 +25,13 @@
     paramObj => extend(
       ConsumeItemFilter,
       (function() {
-        let arr = readParam(paramObj, "itmEffcArr", Array.air).readCol(2, 0);
-        return itm => arr.includes(itm.name);
+        let arr = readParam(paramObj, "itemEffcArr", Array.air).readCol(2, 0);
+        return item => arr.includes(item.name);
       })(),
       {
 
 
-        effcMap: readParam(paramObj, "itmEffcArr", Array.air).toObjMap(),
+        effcMap: readParam(paramObj, "itemEffcArr", Array.air).toObjMap(),
 
 
         display(stats) {
@@ -46,12 +46,12 @@
                 ],
               ];
 
-              this.effcMap.each((nameItm, effc) => {
-                let itm = Vars.content.item(nameItm);
-                if(itm == null) return;
+              this.effcMap.each((nameItem, effc) => {
+                let item = Vars.content.item(nameItem);
+                if(item == null) return;
                 matArr.push([
-                  itm,
-                  itm.localizedName,
+                  item,
+                  item.localizedName,
                   effc.perc(0),
                 ]);
               });
@@ -63,27 +63,27 @@
 
 
         efficiency(b) {
-          let itm = this.getConsumed(b);
-          return !b.consumeTriggerValid() || itm == null ?
+          let item = this.getConsumed(b);
+          return !b.consumeTriggerValid() || item == null ?
             0.0 :
-            (this.super$efficiency(b) * this.effcMap.get(itm.name, 0.0));
+            (this.super$efficiency(b) * this.effcMap.get(item.name, 0.0));
         },
 
 
-        ex_setRcDict(blk, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
-          let itm;
-          this.effcMap.each((nameItm, effc) => {
-            itm = Vars.content.item(nameItm);
-            if(itm == null) return;
-            dictConsItm[itm.id].push(blk, 1, {});
+        ex_setRcDict(blk, dictConsItem, dictConsFld, dictConsBlk, dictConsUtp) {
+          let item;
+          this.effcMap.each((nameItem, effc) => {
+            item = Vars.content.item(nameItem);
+            if(item == null) return;
+            dictConsItem[item.id].push(blk, 1, {});
           });
         },
 
 
         ex_setTmiRc(blk, rawRc, boostEffc) {
           let rcGrp = new MOD_tmi.CLASSES.RecipeItemGroup();
-          this.effcMap.each((nameItm, effc) => {
-            MOD_tmi.addOpt(rawRc, rcGrp, nameItm, 1, effc, false, true);
+          this.effcMap.each((nameItem, effc) => {
+            MOD_tmi.addOpt(rawRc, rcGrp, nameItem, 1, effc, false, true);
           });
         },
 
@@ -160,7 +160,7 @@
         },
 
 
-        ex_setRcDict(blk, dictConsItm, dictConsFld, dictConsBlk, dictConsUtp) {
+        ex_setRcDict(blk, dictConsItem, dictConsFld, dictConsBlk, dictConsUtp) {
           let liq;
           this.effcMap.each((nameLiq, effc) => {
             liq = Vars.content.liquid(nameLiq);

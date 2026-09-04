@@ -41,22 +41,22 @@ const db = {
 
       // Ore item info
       (t, b) => {
-        let itm = t.wallDrop() || t.drop();
-        if(itm == null) return;
+        let item = t.wallDrop() || t.drop();
+        if(item == null) return;
         let blk;
-        if(t.overlay().itemDrop === itm && t.overlay().wallOre) {
+        if(t.overlay().itemDrop === item && t.overlay().wallOre) {
           blk = t.overlay();
-        } else if(t.block().itemDrop === itm) {
+        } else if(t.block().itemDrop === item) {
           blk = t.block();
-        } else if(t.overlay().itemDrop === itm) {
+        } else if(t.overlay().itemDrop === item) {
           blk = t.overlay();
         } else {
           blk = t.floor();
         };
 
         return String.multiline(
-          MDL_cond.isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text.getColon() + itm.localizedName.plain()),
-          MDL_bundle.getTerm("lovec", "ore-hardness") + MDL_text.getColon() + tryJsProp(blk, "dropHardness", itm.hardness),
+          MDL_cond.isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text.getColon() + item.localizedName.plain()),
+          MDL_bundle.getTerm("lovec", "ore-hardness") + MDL_text.getColon() + tryJsProp(blk, "dropHardness", item.hardness),
         );
       },
 
@@ -74,13 +74,13 @@ const db = {
       // Conveyor info
       (t, b) => {
         if(b == null || b.items == null || (!(b.block instanceof Conveyor) && !(b.block instanceof Duct) && !(b.block instanceof StackConveyor))) return;
-        let itm = b.items.first();
-        if(itm == null) return;
+        let item = b.items.first();
+        if(item == null) return;
 
         return String.multiline(
-          MDL_bundle.getTerm("lovec", "item") + MDL_text.getColon() + itm.localizedName.plain(),
-          !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text.getColon() + MDL_fuel.getFuelPon(itm)),
-          !VARGEN.fuelItms.includes(itm) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text.getColon() + MDL_fuel.getFuelLvl(itm)),
+          MDL_bundle.getTerm("lovec", "item") + MDL_text.getColon() + item.localizedName.plain(),
+          !VARGEN.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text.getColon() + MDL_fuel.getFuelPon(item)),
+          !VARGEN.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text.getColon() + MDL_fuel.getFuelLvl(item)),
         );
       },
 
@@ -548,7 +548,7 @@ const db = {
 
 
     /**
-     * Noise textures polulated in {@link VARGEN.noiseTexs}.
+     * Noise textures populated in {@link VARGEN.noiseTexs}.
      * <br> `ROW`: name, path.
      */
     noise: [
@@ -601,7 +601,7 @@ const db = {
 };
 
 
-Object.mergeDB(db, "DB_misc");
+mergeDB(db, "DB_misc");
 
 
 Vars.mods.eachEnabled(mod => {

@@ -43,9 +43,9 @@
   };
 
 
-  function comp_offload(b, itm) {
+  function comp_offload(b, item) {
     if(!b.ex_shouldDropLoot()) {
-      b.super$offload(itm);
+      b.super$offload(item);
       return;
     };
     if(b.lootDumpVec.x < 0.0 || b.lootDumpVec.y < 0.0) return;
@@ -53,7 +53,7 @@
     b.lootCharge++;
     if(b.lootCharge >= b.ex_getDumpAmt()) {
       b.lootCharge = 0;
-      FRAG_item.produceLootAt(b.lootDumpVec.x, b.lootDumpVec.y, b, itm, b.ex_getDumpAmt(), true);
+      FRAG_item.produceLootAt(b.lootDumpVec.x, b.lootDumpVec.y, b, item, b.ex_getDumpAmt(), true);
     };
   };
 
@@ -149,8 +149,8 @@
       },
 
 
-      offload: function(itm) {
-        comp_offload(this, itm);
+      offload: function(item) {
+        comp_offload(this, item);
       }
       .setProp({
         noSuper: true,

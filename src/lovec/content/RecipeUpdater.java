@@ -104,8 +104,8 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
             intAmt = LCScript.toInt(bo.get(i + 1));
             fAmt = LCScript.toFloat(bo.get(i + 1));
             p = LCScript.toFloat(bo.get(i + 2));
-            if(b.items != null && tmp instanceof Item itm) {
-                if(intAmt > 0 && !ignoreItemFullness && b.items.get(itm) > b.getMaximumAccepted(itm) - intAmt * p) return false;
+            if(b.items != null && tmp instanceof Item item) {
+                if(intAmt > 0 && !ignoreItemFullness && b.items.get(item) > b.getMaximumAccepted(item) - intAmt * p) return false;
             };
             if(b.liquids != null && tmp instanceof Liquid liq) {
                 if(fAmt > 0f && !blk.ignoreLiquidFullness && b.liquids.get(liq) / b.block.liquidCapacity > 0.98f) return false;
@@ -136,20 +136,20 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
         NativeArray tup = LCScript.newArray("LCRecipeHandler.getOptTup.newArr");
         int i = 0;
         long iCap = opt.getLength();
-        Item itm;
+        Item item;
         int amt;
         float p;
         float mtp;
         float tmpMtp = 0f;
 
         while(i < iCap) {
-            itm = (Item) opt.get(i);
+            item = (Item) opt.get(i);
             amt = LCScript.toInt(opt.get(i + 1));
             p = LCScript.toFloat(opt.get(i + 2));
             mtp = LCScript.toFloat(opt.get(i + 3));
-            if(b.items.get(itm) >= amt && mtp >= tmpMtp) {
+            if(b.items.get(item) >= amt && mtp >= tmpMtp) {
                 tmpMtp = mtp;
-                LCNativeArray.with(tup, itm, amt, p, mtp);
+                LCNativeArray.with(tup, item, amt, p, mtp);
             };
             i += 4;
         };
@@ -248,8 +248,8 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
                         tmp1 = arr.get(j);
                         intAmt = LCScript.toInt(arr.get(j + 1));
                         fAmt = LCScript.toFloat(arr.get(j + 1));
-                        if(b.items != null && tmp1 instanceof Item itm) {
-                            if(b.items.get(itm) >= intAmt) allAbsent = false;
+                        if(b.items != null && tmp1 instanceof Item item) {
+                            if(b.items.get(item) >= intAmt) allAbsent = false;
                         };
                         if(b.liquids != null && tmp1 instanceof Liquid liq) {
                             if(b.liquids.get(liq) > fAmt - 0.0001f) allAbsent = false;
@@ -260,8 +260,8 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
                 } else {
                     intAmt = LCScript.toInt(bi.get(i + 1));
                     fAmt = LCScript.toInt(bi.get(i + 1));
-                    if(b.items != null && tmp instanceof Item itm) {
-                        if(b.items.get(itm) < intAmt) return 0f;
+                    if(b.items != null && tmp instanceof Item item) {
+                        if(b.items.get(item) < intAmt) return 0f;
                     };
                     if(b.liquids != null && tmp instanceof Liquid liq) {
                         if(b.liquids.get(liq) < fAmt) return 0f;
@@ -372,8 +372,8 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
                     intAmt = LCScript.toInt(arr.get(j + 1));
                     fAmt = LCScript.toFloat(arr.get(j + 1));
                     p = LCScript.toFloat(arr.get(j + 2));
-                    if(b.items != null && tmp1 instanceof Item itm && (boolean) LCScript.invoke("consumeItem", FRAG_item, b, itm, intAmt, p)) {
-                        LCScript.set(itm.name, intAmt * p, consTmpObj);
+                    if(b.items != null && tmp1 instanceof Item item && (boolean) LCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p)) {
+                        LCScript.set(item.name, intAmt * p, consTmpObj);
                         break;
                     };
                     if(b.liquids != null && tmp1 instanceof Liquid liq && LCCraftingHandler.addLiquidBatch(b, b, liq, -fAmt) > 0f) {
@@ -386,9 +386,9 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
                 intAmt = LCScript.toInt(bi.get(i + 1));
                 fAmt = LCScript.toFloat(bi.get(i + 1));
                 p = LCScript.toFloat(bi.get(i + 2));
-                if(b.items != null && tmp instanceof Item itm) {
-                    LCScript.invoke("consumeItem", FRAG_item, b, itm, intAmt, p);
-                    LCScript.set(itm.name, intAmt * p, consTmpObj);
+                if(b.items != null && tmp instanceof Item item) {
+                    LCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p);
+                    LCScript.set(item.name, intAmt * p, consTmpObj);
                 };
                 if(b.liquids != null && tmp instanceof Liquid liq) {
                     LCCraftingHandler.addLiquidBatch(b, b, liq, -fAmt);
@@ -402,11 +402,11 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
         if(opt.getLength() > 0) {
             NativeArray tup = getOptTup(b);
             if(tup != null) {
-                Item itm = (Item) tup.get(0);
+                Item item = (Item) tup.get(0);
                 intAmt = LCScript.toInt(tup.get(1));
                 p = LCScript.toFloat(tup.get(2));
-                LCScript.invoke("consumeItem", FRAG_item, b, itm, intAmt, p);
-                LCScript.set(itm.name, intAmt * p, consTmpObj);
+                LCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p);
+                LCScript.set(item.name, intAmt * p, consTmpObj);
             };
         };
     };
@@ -455,9 +455,9 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
                 intAmt = LCScript.toInt(bo.get(i + 1));
                 fAmt = LCScript.toFloat(bo.get(i + 1));
                 p = LCScript.toFloat(bo.get(i + 2));
-                if(b.items != null && tmp instanceof Item itm && b.items.get(itm) < b.getMaximumAccepted(itm)) {
-                    LCScript.invoke("produceItem", FRAG_item, b, itm, intAmt, p);
-                    LCScript.set(itm.name, intAmt * p, prodTmpObj);
+                if(b.items != null && tmp instanceof Item item && b.items.get(item) < b.getMaximumAccepted(item)) {
+                    LCScript.invoke("produceItem", FRAG_item, b, item, intAmt, p);
+                    LCScript.set(item.name, intAmt * p, prodTmpObj);
                 };
                 if(b.liquids != null && tmp instanceof Liquid liq) {
                     LCCraftingHandler.addLiquidBatch(b, b, liq, fAmt, true);
@@ -471,14 +471,14 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
         if(b.items != null && failed) {
             i = 0;
             iCap = fo.getLength();
-            Item itm;
+            Item item;
             while(i < iCap) {
-                itm = (Item) fo.get(i);
+                item = (Item) fo.get(i);
                 intAmt = LCScript.toInt(fo.get(i + 1));
                 p = LCScript.toFloat(fo.get(i + 2));
-                if(b.items.get(itm) < b.getMaximumAccepted(itm)) {
-                    LCScript.invoke("produceItem", FRAG_item, b, itm, intAmt, p);
-                    LCScript.set(itm.name, intAmt * p, prodTmpObj);
+                if(b.items.get(item) < b.getMaximumAccepted(item)) {
+                    LCScript.invoke("produceItem", FRAG_item, b, item, intAmt, p);
+                    LCScript.set(item.name, intAmt * p, prodTmpObj);
                 };
                 i += 3;
             };

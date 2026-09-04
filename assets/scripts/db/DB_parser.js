@@ -50,7 +50,7 @@ const db = {
 };
 
 
-Object.mergeDB(db, "DB_parser");
+mergeDB(db, "DB_parser");
 
 
 exports.db = db;

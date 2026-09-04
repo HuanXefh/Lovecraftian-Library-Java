@@ -35,17 +35,17 @@
   };
 
 
-  function comp_getTileTarget(b, itm, b_f, isFlip) {
+  function comp_getTileTarget(b, item, b_f, isFlip) {
     let rot = b_f.relativeTo(b);
     let b_t = b.nearby(rot);
     let target = b_t;
-    let cond0 = b_t != null && b_t.team === b.team && !(b_t.block.instantTransfer && b_f.block.instantTransfer) && b_t.acceptItem(b, itm);
+    let cond0 = b_t != null && b_t.team === b.team && !(b_t.block.instantTransfer && b_f.block.instantTransfer) && b_t.acceptItem(b, item);
 
     if(!cond0 || b.isInv === b.enabled) {
       let b_s1 = b.nearby(Mathf.mod(rot - 1, 4));
       let b_s2 = b.nearby(Mathf.mod(rot + 1, 4));
-      let cond1 = b_s1 != null && b_s1.team === b.team && !(b_s1.block.instantTransfer && b_f.block.instantTransfer) && b_s1.acceptItem(b, itm);
-      let cond2 = b_s2 != null && b_s2.team === b.team && !(b_s2.block.instantTransfer && b_f.block.instantTransfer) && b_s2.acceptItem(b, itm);
+      let cond1 = b_s1 != null && b_s1.team === b.team && !(b_s1.block.instantTransfer && b_f.block.instantTransfer) && b_s1.acceptItem(b, item);
+      let cond2 = b_s2 != null && b_s2.team === b.team && !(b_s2.block.instantTransfer && b_f.block.instantTransfer) && b_s2.acceptItem(b, item);
 
       if(!cond1 && !cond2) {
         return b.isInv === b.enabled && cond0 ? b_t : null;
@@ -151,8 +151,8 @@
     .setMethod({
 
 
-      getTileTarget: function(itm, b_f, isFlip) {
-        return comp_getTileTarget(this, itm, b_f, isFlip);
+      getTileTarget: function(item, b_f, isFlip) {
+        return comp_getTileTarget(this, item, b_f, isFlip);
       }
       .setProp({
         noSuper: true,

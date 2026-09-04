@@ -33,7 +33,7 @@
 
 
   function comp_init(blk) {
-    if(blk.ex_isSingleSized() && blk.size > 1) ERROR_HANDLER.throw("notSingleSized", blk.name);
+    if(blk.ex_isSingleSized() && blk.size > 1) LCErrorHandler.throw("notSingleSized", blk.name);
 
     if(blk.isWaterborne) blk.floating = true;
 
@@ -78,14 +78,14 @@
     // Vanilla stat for I/O looks ass in Lovec, to be honest
     if(blk instanceof GenericCrafter) {
       let
-        consItms = blk.consumers.find(blkCons => blkCons instanceof ConsumeItems),
+        consItems = blk.consumers.find(blkCons => blkCons instanceof ConsumeItems),
         consLiq = blk.consumers.find(blkCons => blkCons instanceof ConsumeLiquid),
         consLiqs = blk.consumers.find(blkCons => blkCons instanceof ConsumeLiquids);
-      if(consItms != null || consLiq != null || consLiqs != null) {
+      if(consItems != null || consLiq != null || consLiqs != null) {
         blk.stats.remove(Stat.input);
-        if(consItms != null) {
+        if(consItems != null) {
           blk.stats.add(Stat.input, newStatValue(tb => {
-            buildIo(tb, consItms.items, blk.craftTime);
+            buildIo(tb, consItems.items, blk.craftTime);
           }));
         };
         if(consLiq != null) {
@@ -153,14 +153,14 @@
 
     if(b.items != null) {
       let amt;
-      b.items.each(itm => {
+      b.items.each(item => {
         amt = !(b.block instanceof CoreBlock) ?
-          b.items.get(itm) :
-          (b.items.get(itm) / Math.max(b.team.cores().size, 1));
+          b.items.get(item) :
+          (b.items.get(item) / Math.max(b.team.cores().size, 1));
         if(amt >= 20) {
           amt = amt.randFreq(0.3);
-          b.items.remove(itm, amt);
-          MDL_call.spawnLoots_server(b.x, b.y, itm, amt, b.block.size * Vars.tilesize * 0.7);
+          b.items.remove(item, amt);
+          MDL_call.spawnLoots_server(b.x, b.y, item, amt, b.block.size * Vars.tilesize * 0.7);
         };
       });
     };

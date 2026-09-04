@@ -29,7 +29,7 @@
     const thisFun = this;
 
     let anno = CLS_annotation.get(nameAnno);
-    if(anno == null || !(anno instanceof CLS_annotation)) ERROR_HANDLER.throw("notAnno", nameAnno);
+    if(anno == null || !(anno instanceof CLS_annotation)) LCErrorHandler.throw("notAnno", nameAnno);
     if(args_p == null) args_p = [];
     let args = args_p instanceof Array ? args_p : [args_p];
 

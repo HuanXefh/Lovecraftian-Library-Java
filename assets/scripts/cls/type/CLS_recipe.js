@@ -351,7 +351,7 @@
      * @param {CLS_recipe} rc
      * @return {boolean}
      */
-    CLS_recipe.checkAnyItmOutput = function(rc) {
+    CLS_recipe.checkAnyItemOutput = function(rc) {
         let
             i,
             iCap;
@@ -630,7 +630,7 @@
 
     /**
      * Initialize recipe data.
-     * @lovecPropgen {@link CLS_recipe}
+     * @lovecPropGen {@link CLS_recipe}
      * @return {this}
      */
     CLS_recipe.prototype.initData = function() {
@@ -797,7 +797,7 @@
 
         if(this.useAutoSelection) {
             /** @type {ObjectMap<Item, string>} */
-            this.keyItmHeaderMap = MDL_recipe.getKeyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.ITEM);
+            this.keyItemHeaderMap = MDL_recipe.getKeyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.ITEM);
             /** @type {ObjectMap<Liquid, string>} */
             this.keyFldHeaderMap = MDL_recipe.getKeyCtHeaderMap(null, this.rcMdl, RecipeKeyResourceModes.FLUID);
             /** @type {ObjectMap<Block|UnitType, string>} */
@@ -808,7 +808,7 @@
         /** @type {Array<Liquid>} */
         this.outputFlds = CLS_recipe.getOutputFlds(null, this);
         /** @type {boolean} */
-        this.hasAnyItmOutput = CLS_recipe.checkAnyItmOutput(this);
+        this.hasAnyItemOutput = CLS_recipe.checkAnyItemOutput(this);
         /** @type {boolean} */
         this.hasAnyFldOutput = CLS_recipe.checkAnyFldOutput(this, false);
         /** @type {boolean} */
@@ -1235,6 +1235,13 @@
         .growY();
     }
     .setProp({
+        /**
+         * `ARGS`: `Table` - tb, `boolean` - cond, `string` - str.
+         * <br> `ARGS`: `Table`- tb, `boolean`- cond, `string` - titleStr, `string` - valStr.
+         * <br> `ARGS`: `Table`- tb, `boolean`- cond, `string` - titleStr, `string` - valStr, `string` - unitStr.
+         * @memberof CLS_recipe#displayStats
+         * @return {void}
+         */
         addStat: newMultiFunction(
             function(tb, cond, str) {
                 if(cond) tb.add(str).left().row();
@@ -1445,7 +1452,7 @@
         b.delegee.lastKeyCt = b.delegee.keyCt;
         thisFun.lastHeader = (
             b.delegee.keyCt instanceof Item ?
-                this.keyItmHeaderMap :
+                this.keyItemHeaderMap :
                 b.delegee.keyCt instanceof Liquid ?
                     this.keyFldHeaderMap :
                     this.keyPayHeaderMap
@@ -1456,6 +1463,10 @@
         };
     }
     .setProp({
+        /**
+         * @type {string|null}
+         * @memberof CLS_recipe#updateAutoSelection
+         */
         lastHeader: null,
     });
 

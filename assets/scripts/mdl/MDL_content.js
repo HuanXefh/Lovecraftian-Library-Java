@@ -133,25 +133,25 @@
 
   /**
    * Gets a list of blocks that are built with the given item.
-   * @param {ItemGn} itm_gn
+   * @param {ItemGn} item_gn
    * @param {boolean|unset} [appendAmt] - If true, a 2-array will be returned instead, where amount is appended.
    * @return {Array<Block>|Array}
    */
-  const getReqBlks = function(itm_gn, appendAmt) {
+  const getReqBlks = function(item_gn, appendAmt) {
     let arr = [];
-    let itm = getCt(itm_gn, "rs");
-    if(itm == null || !(itm instanceof Item)) return arr;
+    let item = getCt(item_gn, "rs");
+    if(item == null || !(item instanceof Item)) return arr;
 
     Vars.content.blocks().each(
       oblk => oblk.placeablePlayer && !DB_block.db["class"]["group"]["visibility"]["hidden"].includes(oblk.buildVisibility),
       oblk => {
-        oblk.requirements.forEachFast(itmStack => {
-          if(itmStack.item === itm && itmStack.amount > 0) !appendAmt ? arr.push(oblk) : arr.push(oblk, itmStack.amount);
+        oblk.requirements.forEachFast(itemStack => {
+          if(itemStack.item === item && itemStack.amount > 0) !appendAmt ? arr.push(oblk) : arr.push(oblk, itemStack.amount);
         }, true);
       },
     );
-    if(arr.length > 0 && !itm.buildable) {
-      console.warn("[LOVEC] Item ${1} is marked as not buildable, but actually used for ${2} blocks!".format(itm.name.color(Pal.accent), arr.length));
+    if(arr.length > 0 && !item.buildable) {
+      console.warn("[LOVEC] Item ${1} is marked as not buildable, but actually used for ${2} blocks!".format(item.name.color(Pal.accent), arr.length));
     };
 
     return arr;

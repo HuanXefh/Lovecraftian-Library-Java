@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    if(blk.attrRsArr == null) ERROR_HANDLER.throw("nullArgument", "attrRsArr");
+    if(blk.attrRsArr == null) LCErrorHandler.throw("nullArgument", "attrRsArr");
 
     blk.attribute = TP_attr.attr_placeholder;
   };
@@ -199,7 +199,7 @@
        * @instance
        * @return {number}
        */
-      ex_getDynaAttrBaseAmt_itm: function() {
+      ex_getDynaAttrBaseAmt_item: function() {
         return this.size;
       }
       .setProp({

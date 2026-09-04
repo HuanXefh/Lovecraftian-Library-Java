@@ -20,21 +20,21 @@
 
 
   function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk-cd"), blk.itmSendCooldown / 60.0, StatUnit.seconds);
+    blk.stats.add(fetchStat("lovec", "blk-cd"), blk.itemSendCooldown / 60.0, StatUnit.seconds);
   };
 
 
   function comp_setBars(blk) {
     blk.addBar("lovec-cd", b => new Bar(
-      prov(() => Core.bundle.format("bar.lovec-bar-cd-amt", Strings.fixed(b.delegee.itmSendCd / 60.0, 1) + " " + StatUnit.seconds.localized())),
+      prov(() => Core.bundle.format("bar.lovec-bar-cd-amt", Strings.fixed(b.delegee.itemSendCd / 60.0, 1) + " " + StatUnit.seconds.localized())),
       prov(() => Pal.ammo),
-      () => (blk.itmSendCooldown - b.delegee.itmSendCd) / blk.itmSendCooldown,
+      () => (blk.itemSendCooldown - b.delegee.itemSendCd) / blk.itemSendCooldown,
     ));
   };
 
 
   function comp_created(b) {
-    b.itmSendCd = Mathf.random(b.block.delegee.itmSendCooldown);
+    b.itemSendCd = Mathf.random(b.block.delegee.itemSendCooldown);
   };
 
 
@@ -42,21 +42,21 @@
     if(TIMER.secTwo) b.sendBCur = b.ex_findSendB();
     if(b.sendBCur == null || !b.sendBCur.isAdded()) return
 
-    b.itmSendCd = Mathf.maxZero(b.itmSendCd - b.edelta());
-    if(b.itmSendCd < 0.0001 && b.items.total() >= b.block.itemCapacity) {
-      b.itmSendCd += b.block.delegee.itmSendCooldown;
+    b.itemSendCd = Mathf.maxZero(b.itemSendCd - b.edelta());
+    if(b.itemSendCd < 0.0001 && b.items.total() >= b.block.itemCapacity) {
+      b.itemSendCd += b.block.delegee.itemSendCooldown;
       let amt;
-      b.items.each(itm => {
-        amt = b.sendBCur.acceptStack(itm, b.items.get(itm), b);
+      b.items.each(item => {
+        amt = b.sendBCur.acceptStack(item, b.items.get(item), b);
         if(amt > 0) {
-          b.sendBCur.handleStack(itm, amt, b);
-          MDL_effect.line(b.x, b.y, null, b.sendBCur, itm.color, 1.5, true, false);
-          MDL_effect.line(b.sendBCur.x, b.sendBCur.y, null, b, itm.color, 1.5, true, true);
-          Fx.dynamicWave.at(b.x, b.y, b.block.size * Vars.tilesize * 0.75, itm.color);
-          Fx.dynamicWave.at(b.sendBCur.x, b.sendBCur.y, b.sendBCur.block.size * Vars.tilesize * 0.75, itm.color);
+          b.sendBCur.handleStack(item, amt, b);
+          MDL_effect.line(b.x, b.y, null, b.sendBCur, item.color, 1.5, true, false);
+          MDL_effect.line(b.sendBCur.x, b.sendBCur.y, null, b, item.color, 1.5, true, true);
+          Fx.dynamicWave.at(b.x, b.y, b.block.size * Vars.tilesize * 0.75, item.color);
+          Fx.dynamicWave.at(b.sendBCur.x, b.sendBCur.y, b.sendBCur.block.size * Vars.tilesize * 0.75, item.color);
           MDL_sound.playAt(b.x, b.y, b.block.delegee.shootSe);
         };
-        b.items.remove(itm, amt);
+        b.items.remove(item, amt);
       });
     };
   };
@@ -88,7 +88,7 @@
        * @memberof BLK_coreRelay
        * @instance
        */
-      itmSendCooldown: 300.0,
+      itemSendCooldown: 300.0,
       /**
        * `PARAM`: Sound played when items are sent.
        * @memberof BLK_coreRelay
@@ -157,7 +157,7 @@
        * @memberof B_coreRelay
        * @instance
        */
-      itmSendCd: 0.0,
+      itemSendCd: 0.0,
       /**
        * `INTERNAL`
        * @memberof B_coreRelay

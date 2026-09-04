@@ -73,7 +73,7 @@
     * @return {Rand}
     */
     UTIL_rand.getByInd = function(ind) {
-        if(ind >= rands.length) ERROR_HANDLER.throw("indexOutOfBound", ind, rands.length);
+        if(ind >= rands.length) LCErrorHandler.throw("indexOutOfBound", ind, rands.length);
         return rands[ind];
     };
 
@@ -85,8 +85,8 @@
      * @return {void}
      */
     UTIL_rand.sync = function(ind, seed) {
-        if(ind >= rands.length) ERROR_HANDLER.throw("indexOutOfBound", ind, rands.length);
-        if(typeof seed !== "number") ERROR_HANDLER.throw("typeMismatch", seed, "number");
+        if(ind >= rands.length) LCErrorHandler.throw("indexOutOfBound", ind, rands.length);
+        if(typeof seed !== "number") LCErrorHandler.throw("typeMismatch", seed, "number");
 
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-rand-sync",

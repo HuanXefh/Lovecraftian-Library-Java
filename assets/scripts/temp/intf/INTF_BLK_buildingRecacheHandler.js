@@ -36,7 +36,7 @@
          * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
          * @instance
          */
-        recacheForItm: false,
+        recacheForItem: false,
         /**
          * `PARAM`: Whether to recache when a fluid is added or removed.
          * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
@@ -57,23 +57,23 @@
     new CLS_interface("INTF_B_buildingRecacheHandler", {
 
 
-      handleItem: function(b_f, itm) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItm) this.recache();
+      handleItem: function(b_f, item) {
+        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
       },
 
 
-      handleStack: function(itm, amt, e_f) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItm) this.recache();
+      handleStack: function(item, amt, e_f) {
+        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
       },
 
 
-      itemTaken: function(itm) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItm) this.recache();
+      itemTaken: function(item) {
+        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
       },
 
 
-      removeStack: function(itm, amt) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItm) this.recache();
+      removeStack: function(item, amt) {
+        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
       }
       .setProp({
         mergeMode: function(valPrev, val) {
@@ -82,8 +82,8 @@
       }),
 
 
-      dump: function(itm) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItm) this.recache();
+      dump: function(item) {
+        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
       }
       .setProp({
         mergeMode: function(valPrev, val) {
@@ -92,8 +92,8 @@
       }),
 
 
-      moveForward: function(itm) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItm) this.recache();
+      moveForward: function(item) {
+        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
       }
       .setProp({
         mergeMode: function(valPrev, val) {

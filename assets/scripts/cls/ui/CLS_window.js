@@ -40,24 +40,40 @@
 
     MDL_event.onLoad(() => {
         btnStyles.setProp({
+            /**
+             * @type {Button.ButtonStyle}
+             * @memberof btnStyles
+             */
             close: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
                 fontColor: Pal.remove,
                 downFontColor: Pal.remove,
                 overFontColor: Color.white,
             }),
+            /**
+             * @type {Button.ButtonStyle}
+             * @memberof btnStyles
+             */
             minimize: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
                 fontColor: Pal.heal,
                 downFontColor: Pal.heal,
                 overFontColor: Color.white,
             }),
+            /**
+             * @type {Button.ButtonStyle}
+             * @memberof btnStyles
+             */
             restore: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
                 fontColor: Pal.accent,
                 downFontColor: Pal.accent,
                 overFontColor: Color.white,
             }),
+            /**
+             * @type {Button.ButtonStyle}
+             * @memberof btnStyles
+             */
             help: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
                 fontColor: Pal.techBlue,

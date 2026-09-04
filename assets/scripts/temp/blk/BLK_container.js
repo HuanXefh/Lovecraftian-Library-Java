@@ -16,9 +16,9 @@
 
   function comp_warmup(b) {
     let amt = 0, typeAmt = 0;
-    b.items.each(itm => {
+    b.items.each(item => {
       typeAmt++;
-      amt += b.items.get(itm);
+      amt += b.items.get(item);
     });
 
     return typeAmt === 0 ?

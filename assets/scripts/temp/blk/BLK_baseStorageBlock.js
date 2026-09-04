@@ -14,9 +14,9 @@
   /* <---------- component ----------> */
 
 
-  function comp_acceptItem(b, b_f, itm) {
-    if(!b.block.separateItemCapacity) return b.items.total() < b.getMaximumAccepted(itm);
-    if(b.block.delegee.singleTypeOnly) return !b.items.any() || b.items.total() === b.items.get(itm);
+  function comp_acceptItem(b, b_f, item) {
+    if(!b.block.separateItemCapacity) return b.items.total() < b.getMaximumAccepted(item);
+    if(b.block.delegee.singleTypeOnly) return !b.items.any() || b.items.total() === b.items.get(item);
 
     return true;
   };
@@ -65,8 +65,8 @@
     .setMethod({
 
 
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+      acceptItem: function(b_f, item) {
+        return comp_acceptItem(this, b_f, item);
       }
       .setProp({
         boolMode: "and",

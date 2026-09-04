@@ -31,18 +31,18 @@
 
   function comp_canMine(blk, t) {
     if(t == null || t.block().isStatic()) return false;
-    let itm = null, isFloorDrop = false;
+    let item = null, isFloorDrop = false;
     if(t.overlay().itemDrop != null) {
-      itm = t.overlay().itemDrop;
+      item = t.overlay().itemDrop;
     } else if(t.floor().itemDrop != null) {
-      itm = t.floor().itemDrop;
+      item = t.floor().itemDrop;
       isFloorDrop = true;
     };
-    if(itm == null) return false;
+    if(item == null) return false;
 
     return (isFloorDrop ? false : MDL_cond.isDepthOre(t.overlay())) ?
-      blk.canMineDepthOre && blk.ex_canMine(t.overlay(), itm, blk.depthTierMtp) && blk.ex_calcDpLvlReq(t.x, t.y, itm) <= blk.maxDepthLvl :
-      blk.ex_canMine(isFloorDrop ? t.floor() : t.overlay(), itm, 1.0);
+      blk.canMineDepthOre && blk.ex_canMine(t.overlay(), item, blk.depthTierMtp) && blk.ex_calcDpLvlReq(t.x, t.y, item) <= blk.maxDepthLvl :
+      blk.ex_canMine(isFloorDrop ? t.floor() : t.overlay(), item, 1.0);
   };
 
 
@@ -53,17 +53,17 @@
     if(t == null) return;
 
     Reflect.invoke(Drill, blk, "countOre", [t], [Tile]);
-    let returnItm = Reflect.get(Drill, blk, "returnItem");
+    let returnItem = Reflect.get(Drill, blk, "returnItem");
     let returnAmt = Reflect.get(Drill, blk, "returnCount");
-    if(returnItm != null) {
-      let w = blk.drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", 60.0 / blk.getDrillTime(returnItm) * blk.drillAmtMtp * returnAmt, 2), tx, ty, valid);
+    if(returnItem != null) {
+      let w = blk.drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", 60.0 / blk.getDrillTime(returnItem) * blk.drillAmtMtp * returnAmt, 2), tx, ty, valid);
       let x = tx.toFCoord(blk.size) - w * 0.5 - 4.0;
       let y = ty.toFCoord(blk.size) + blk.size * Vars.tilesize * 0.5 + 5.0;
 
-      LCDraw.regionIcon(x, y, blk.ex_findPlaceRsIcon(tx, ty, returnItm), 0, 0.75);
+      LCDraw.regionIcon(x, y, blk.ex_findPlaceRsIcon(tx, ty, returnItem), 0, 0.75);
 
       if(blk.drawMineItem) {
-        Draw.color(returnItm.color);
+        Draw.color(returnItem.color);
         Draw.rect(blk.itemRegion, tx.toFCoord(blk.size), ty.toFCoord(blk.size));
         Draw.color();
       };
@@ -72,10 +72,10 @@
       .find(ot1 => ot1.drop() != null && (
         ot1.drop().hardness > blk.tier * (blk.ex_isMiningDpore(tx, ty, ot1.drop()) ? blk.depthTierMtp : 1.0)
           || (blk.blockedItems != null && blk.blockedItems.contains(ot1.drop()))
-          || ((blk.blockedItems == null || blk.blockedItems.size === 0) && blk.itmWhitelist.length > 0 && !blk.itmWhitelist.includes(ot1.drop()))
+          || ((blk.blockedItems == null || blk.blockedItems.size === 0) && blk.itemWhitelist.length > 0 && !blk.itemWhitelist.includes(ot1.drop()))
       ));
-      let itm = ot == null ? null : ot.drop();
-      if(itm != null) blk.drawPlaceText(MDL_bundle.getInfo("lovec", "text-cannot-mine"), tx, ty, valid);
+      let item = ot == null ? null : ot.drop();
+      if(item != null) blk.drawPlaceText(MDL_bundle.getInfo("lovec", "text-cannot-mine"), tx, ty, valid);
     };
   };
 

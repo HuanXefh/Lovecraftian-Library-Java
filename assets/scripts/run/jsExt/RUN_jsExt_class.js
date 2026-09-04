@@ -63,7 +63,7 @@
 
     this.__isAbstractClass__ = true;
     this.prototype.init = function() {
-      ERROR_HANDLER.throw("abstractInstance");
+      LCErrorHandler.throw("abstractInstance");
     };
 
     return this;
@@ -87,8 +87,8 @@
    * @return {this}
    */
   Function.prototype.extendClass = function(cls, name) {
-    if(typeof cls !== "function" || !cls.__isClass__) ERROR_HANDLER.throw("notClass", cls);
-    if(this.__isContentTemplate__ && !cls.__isContentTemplate__) ERROR_HANDLER.throw("notContentTemplate", cls);
+    if(typeof cls !== "function" || !cls.__isClass__) LCErrorHandler.throw("notClass", cls);
+    if(this.__isContentTemplate__ && !cls.__isContentTemplate__) LCErrorHandler.throw("notContentTemplate", cls);
 
     Object.assign(this, cls);
     // Clone all native objects/arrays to prevent modification of the super one
@@ -103,10 +103,10 @@
 
     this.super = function(nameFun) {
       let clsParent = this.getSuper();
-      if(clsParent === Function) ERROR_HANDLER.throw("noSuperClass");
-      if(clsParent.__isAbstractClass__) ERROR_HANDLER.throw("abstractSuper");
+      if(clsParent === Function) LCErrorHandler.throw("noSuperClass");
+      if(clsParent.__isAbstractClass__) LCErrorHandler.throw("abstractSuper");
       let funParent = clsParent[nameFun];
-      if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nameFun);
+      if(funParent == null) LCErrorHandler.throw("noSuperMethod", nameFun);
 
       return funParent === this[nameFun] ?
         clsParent.super.apply(clsParent, arguments) :
@@ -118,10 +118,10 @@
 
     this.prototype.super = function(nameFun) {
       let clsParent = this.getClass().getSuper();
-      if(clsParent === Function) ERROR_HANDLER.throw("noSuperClass");
-      if(clsParent.__isAbstractClass__) ERROR_HANDLER.throw("abstractSuper");
+      if(clsParent === Function) LCErrorHandler.throw("noSuperClass");
+      if(clsParent.__isAbstractClass__) LCErrorHandler.throw("abstractSuper");
       let funParent = clsParent.prototype[nameFun];
-      if(funParent == null) ERROR_HANDLER.throw("noSuperMethod", nameFun);
+      if(funParent == null) LCErrorHandler.throw("noSuperMethod", nameFun);
 
       return funParent === this[nameFun] ?
         clsParent.prototype.super.apply(clsParent.prototype, arguments) :

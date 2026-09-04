@@ -51,18 +51,18 @@ const db = {
     "denaturing", [0.01, (paramObj, x, y, b, rs) => {
       if(e == null || rs == null) return;
       if(e instanceof Building ? e.items == null : e.stack.amount < 1) return;
-      let itm = MDL_content.getCt(db["denaturingTarget"].read(rs.name), "rs");
-      if(itm == null) return;
+      let item = MDL_content.getCt(db["denaturingTarget"].read(rs.name), "rs");
+      if(item == null) return;
 
       let amt = Math.round(readParam(paramObj, "amt", 1));
 
       if(e instanceof Building) {
         e.removeStack(rs, amt);
-        e.handleStack(itm, amt, e);
+        e.handleStack(item, amt, e);
         Call.setItem(e, rs, e.items.get(rs));
-        Call.setItem(e, itm, e.items.get(itm));
+        Call.setItem(e, item, e.items.get(item));
       } else {
-        if(Mathf.chance(amt / e.stack.amount)) e.stack.item = itm;
+        if(Mathf.chance(amt / e.stack.amount)) e.stack.item = item;
       };
     }],
 
@@ -170,7 +170,7 @@ const db = {
   /**
    * Target item in a denaturing reaction.
    * If null no item will be formed.
-   * <br> `ROW`: itm_f, itm_t.
+   * <br> `ROW`: item_f, item_t.
    */
   denaturingTarget: [],
 
@@ -178,7 +178,7 @@ const db = {
   /**
    * Target liquid in a solvation reaction.
    * If null content of puddle won't be changed.
-   * <br> <ROW-xxx>: itm, liq.
+   * <br> <ROW-xxx>: item, liq.
    * <br> `EXTENSIBLE`
    */
   solvationTarget: {
@@ -196,11 +196,11 @@ const db = {
 };
 
 
-LCModDbRegister
+LCModDBRegister
 .apply("reacSolvTarget", db["solvationTarget"]);
 
 
-Object.mergeDB(db, "DB_reaction");
+mergeDB(db, "DB_reaction");
 
 
 exports.db = db;

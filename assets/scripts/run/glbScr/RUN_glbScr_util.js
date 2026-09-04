@@ -174,7 +174,7 @@
    * @return {string}
    */
   registerUniqueName = function(name, names, tag) {
-    if(name == null || names.includes(name)) ERROR_HANDLER.throw("notUniqueName", name, tryVal(tag, "unknown"));
+    if(name == null || names.includes(name)) LCErrorHandler.throw("notUniqueName", name, tryVal(tag, "unknown"));
     names.push(name);
 
     return name;
@@ -198,6 +198,141 @@
     };
 
     return fun;
+  };
+
+
+  /* <------------------------------ object ------------------------------ */
+
+
+  /**
+   * Merges a series of objects.
+   * Properties defined later will overwrite the ones defined before.
+   * <br> `ARGS`: obj1, obj2, obj3, ...
+   * @global
+   * @return {Object}
+   */
+  mergeObj = function() {
+    let obj0 = {};
+
+    for(let obj of arguments) {
+      if(typeof obj !== "object") continue;
+      for(let key in obj) {
+        obj0[key] = obj[key];
+      };
+    };
+
+    return obj0;
+  };
+
+
+  /**
+   * Variant of {@link mergeObj} that mixes methods.
+   * `addSuper` is used to call `super$xxx` if `override` is true.
+   * <br> `ARGS`: obj1, obj2, obj3, ...
+   * @global
+   * @return {Object}
+   */
+  mergeObjWithMixin = function() {
+    let obj0 = {};
+
+    let superFun, fun;
+    for(let obj of arguments) {
+      if(typeof obj !== "object") continue;
+      for(let key in obj) {
+        if(typeof obj[key] !== "function" || typeof obj0[key] !== "function") {
+          obj0[key] = obj[key];
+        } else {
+          superFun = obj0[key];
+          fun = obj[key];
+          fun.argLen = Math.max(tryVal(superFun.argLen, -1), tryVal(fun.argLen, -1));
+          obj0[key] = !fun.override ?
+            mixTempMethods(superFun, fun, MethodMixModes.NORMAL).wrapLen(fun.argLen) :
+            !fun.addSuper ?
+              fun.wrapLen(fun.argLen) :
+              mixTempMethods(null, fun, MethodMixModes.BUILD, key);
+          initTempMethod(obj0[key]).setProp({
+            override: false,
+            funPrev: superFun,
+            funCur: fun,
+          });
+        };
+      };
+    };
+
+    return obj0;
+  };
+
+
+  /**
+   * Merges all found DB files with the same name in "scripts/db" folder.
+   * Cross-mod.
+   * @global
+   * @param {Object} dbObj
+   * @param {string} nameFi
+   * @param {string|unset} [nameModCur]
+   * @return {void}
+   */
+  mergeDB = function(dbObj, nameFi, nameModCur) {
+    if(nameModCur == null) nameModCur = "lovec";
+
+    let i = 0;
+    Vars.mods.eachEnabled(mod => {
+      if(mod.name === nameModCur) return;
+
+      let path = mod.name + "/db/" + nameFi;
+      let dbMdl;
+      try {
+        dbMdl = require(path);
+      } catch(err) {
+        dbMdl = null;
+        if(!err.message.startsWith("Module ")) {
+          console.err("[LOVEC] Error loading DB file from ${1}:\n".format(mod.name.color(Pal.accent)) + err);
+        };
+      };
+
+      if(dbMdl != null) {
+        mergeDB.mergeDBObj(dbObj, dbMdl.db);
+        i++;
+      };
+    });
+
+    console.log("[LOVEC] Merged ${1} DB file(s) for ${2} in ${3} from other mods.".format(i, nameFi, nameModCur.color(Pal.accent)));
+  };
+  mergeDB.mergeDBObj = function(obj0, obj) {
+    Object.eachPair(obj0, (key1, val1) => {
+      // Depth: 0
+      val1 instanceof Array ?
+        mergeDB.applyMerge(key1, obj, val1) :
+        Object.eachPair(obj0[key1], (key2, val2) => {
+          // Depth: 1
+          val2 instanceof Array ?
+            mergeDB.applyMerge(key2, Object.searchByKeys(obj, [key1], Object.air), val2) :
+            Object.eachPair(obj0[key1][key2], (key3, val3) => {
+              // Depth: 2
+              val3 instanceof Array ?
+                mergeDB.applyMerge(key3, Object.searchByKeys(obj, [key1, key2], Object.air), val3) :
+                Object.eachPair(obj0[key1][key2][key3], (key4, val4) => {
+                  // Depth: 3
+                  val4 instanceof Array ?
+                    mergeDB.applyMerge(key4, Object.searchByKeys(obj, [key1, key2, key3], Object.air), val4) :
+                    Object.eachPair(obj0[key1][key2][key3][key4], (key5, val5) => {
+                      // Depth: 4
+                      val5 instanceof Array ?
+                        mergeDB.applyMerge(key5, Object.searchByKeys(obj, [key1, key2, key3, key4], Object.air), val5) :
+                        console.err("[LOVEC] Cannot fully merge an object due to " + "too many layers".color(Pal.remove) + ".");
+                    });
+                });
+            });
+        });
+    });
+
+    return obj0;
+  };
+  mergeDB.applyMerge = function(key, objTarget, arrTarget) {
+    let tmp = objTarget[key];
+    if(tmp == null || !(tmp instanceof Array)) return;
+
+    arrTarget.pushAll(tmp);
   };
 
 
@@ -359,7 +494,7 @@
         } else if(fun.mergeMode != null) {
           if(fun.mergeMode === "object") {
             fun_fi = function() {
-              return Object.mergeObj(superFun.apply(this, arguments), fun.apply(this, arguments));
+              return mergeObj(superFun.apply(this, arguments), fun.apply(this, arguments));
             };
           } else if(fun.mergeMode === "array") {
             fun_fi = function() {
@@ -410,7 +545,7 @@
         } else if(fun.mergeMode != null) {
           if(fun.mergeMode === "object") {
             fun_fi = function() {
-              return Object.mergeObj(this[nameSuperFun].apply(this, arguments), fun.apply(this, arguments));
+              return mergeObj(this[nameSuperFun].apply(this, arguments), fun.apply(this, arguments));
             };
           } else if(fun.mergeMode === "array") {
             fun_fi = function() {
@@ -595,7 +730,7 @@
    * Collection of errors, see {@link TP_error}.
    * @global
    */
-  ERROR_HANDLER = {
+  LCErrorHandler = {
 
 
     __errMap__: new ObjectMap(),

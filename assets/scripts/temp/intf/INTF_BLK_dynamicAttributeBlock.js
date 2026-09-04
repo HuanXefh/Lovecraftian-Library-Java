@@ -25,7 +25,7 @@
       if(!cond2) cond2 = rs instanceof Liquid;
     }, true);
     if(cond1) {
-      blk.hasDynaAttrItm = true;
+      blk.hasDynaAttrItem = true;
     };
     if(cond2) {
       blk.hasDynaAttrLiq = true;
@@ -38,7 +38,7 @@
         if(rs == null) return;
 
         rs instanceof Item ?
-        MDL_recipeDict.addItmProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs), 1.0, {time: blk.ex_getCraftTime() / blk.dynaAttrRsEffcMap.get(rs.name, 1.0)}) :
+        MDL_recipeDict.addItemProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs), 1.0, {time: blk.ex_getCraftTime() / blk.dynaAttrRsEffcMap.get(rs.name, 1.0)}) :
         MDL_recipeDict.addFldProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs) * blk.dynaAttrRsEffcMap.get(rs.name, 1.0));
       }, true);
     });
@@ -51,8 +51,8 @@
     blk.stats.remove(Stat.tiles);
     blk.stats.remove(Stat.affinities);
 
-    if(blk.hasDynaAttrItm && !blk.ex_getDynaAttrBaseAmt_itm().fEqual(0.0)) {
-      blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_itm() / blk.ex_getCraftTime(), StatUnit.itemsSecond);
+    if(blk.hasDynaAttrItem && !blk.ex_getDynaAttrBaseAmt_item().fEqual(0.0)) {
+      blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_item() / blk.ex_getCraftTime(), StatUnit.itemsSecond);
     };
     if(blk.hasDynaAttrLiq && !blk.ex_getDynaAttrBaseAmt_liq().fEqual(0.0)) {
       blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_liq() * 60.0, StatUnit.liquidSecond);
@@ -266,7 +266,7 @@
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
-        hasDynaAttrItm: false,
+        hasDynaAttrItem: false,
         /**
          * `INTERNAL`
          * @memberof INTF_BLK_dynamicAttributeBlock
@@ -391,7 +391,7 @@
         return rs == null ?
           0.0 :
           rs instanceof Item ?
-            this.ex_getDynaAttrBaseAmt_itm() :
+            this.ex_getDynaAttrBaseAmt_item() :
             this.ex_getDynaAttrBaseAmt_liq();
       }
       .setProp({
@@ -411,7 +411,7 @@
           0.0 :
           (
             rs instanceof Item ?
-              this.ex_getDynaAttrBaseAmt_itm() / this.ex_getCraftTime() :
+              this.ex_getDynaAttrBaseAmt_item() / this.ex_getCraftTime() :
               this.ex_getDynaAttrBaseAmt_liq() * 60.0
           ) * this.dynaAttrRsEffcMap.get(rs.name, 1.0);
       }
@@ -428,7 +428,7 @@
        * @instance
        * @return {number}
        */
-      ex_getDynaAttrBaseAmt_itm: function() {
+      ex_getDynaAttrBaseAmt_item: function() {
         return 0;
       }
       .setProp({

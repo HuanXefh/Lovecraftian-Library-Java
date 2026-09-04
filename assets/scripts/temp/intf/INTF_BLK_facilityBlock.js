@@ -82,7 +82,7 @@
       return cond;
     },
     checkExplosiveItem: function(b) {
-      return b.items == null ? false : VARGEN.exploItms.some(itm => b.items.has(itm));
+      return b.items == null ? false : VARGEN.exploItems.some(item => b.items.has(item));
     },
   });
 
@@ -179,7 +179,7 @@
        * @return {boolean}
        */
       ex_checkFireExplodePossible: function() {
-        return MDL_recipeDict.checkAnyIo(VARGEN.exploItms, this) || MDL_recipeDict.checkAnyIo(VARGEN.exploFlds, this);
+        return MDL_recipeDict.checkAnyIo(VARGEN.exploItems, this) || MDL_recipeDict.checkAnyIo(VARGEN.exploFlds, this);
       }
       .setProp({
         noSuper: true,

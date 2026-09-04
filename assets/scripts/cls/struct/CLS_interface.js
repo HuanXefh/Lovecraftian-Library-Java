@@ -40,7 +40,7 @@
             name = null;
         };
         Object.eachPair(obj, (key, val) => {
-            if(typeof val !== "function") ERROR_HANDLER.throw("nonFunctionInInterface", key);
+            if(typeof val !== "function") LCErrorHandler.throw("nonFunctionInInterface", key);
         });
 
 
@@ -85,9 +85,9 @@
      * @return {CLS_interface}
      */
     CLS_interface.prototype.extendInterface = function(intf, name) {
-        if(!(intf instanceof CLS_interface)) ERROR_HANDLER.throw("notInterface", intf);
+        if(!(intf instanceof CLS_interface)) LCErrorHandler.throw("notInterface", intf);
 
-        let ointf = new CLS_interface(name, mergeObjMixin(intf.intfObj, this.intfObj));
+        let ointf = new CLS_interface(name, mergeObjWithMixin(intf.intfObj, this.intfObj));
         ointf.parentIntfs = intf.parentIntfs.cpy().pushAll(this.parentIntfs).pushAll(this).uniquify();
 
         return ointf;

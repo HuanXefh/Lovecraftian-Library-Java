@@ -116,7 +116,7 @@
         })()
         .forEachRow(2, (name, paramObj) => {
             let rowInd = readParam(paramObj, "rowInd", 0);
-            if(rowInd >= this.btnData.length) ERROR_HANDLER.throw("indexOutOfBound", rowInd, this.btnData.length);
+            if(rowInd >= this.btnData.length) LCErrorHandler.throw("indexOutOfBound", rowInd, this.btnData.length);
 
             this.btnData[rowInd].push([
                 !Core.bundle.has("drag." + name) ? null : Core.bundle.get("drag." + name),

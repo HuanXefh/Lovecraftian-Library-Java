@@ -14,23 +14,23 @@
   /* <---------- component ----------> */
 
 
-  function comp_init(itm) {
-    itm.intmdParent = MDL_content.getCt(itm.intmdParent, "rs");
-    itm.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, "rs")).compact();
+  function comp_init(item) {
+    item.intmdParent = MDL_content.getCt(item.intmdParent, "rs");
+    item.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, "rs")).compact();
 
-    itm.ex_generateIntmdName();
+    item.ex_generateIntmdName();
 
-    if(itm.intmdParent != null && itm.hardness === 0) {
-      itm.hardness = itm.intmdParent.hardness;
+    if(item.intmdParent != null && item.hardness === 0) {
+      item.hardness = item.intmdParent.hardness;
     };
   };
 
 
-  function comp_setStats(itm) {
-    itm.stats.add(fetchStat("lovec", "rs-isintermediate"), true);
-    if(itm.intmdParent != null) itm.stats.add(fetchStat("lovec", "rs0int-parent"), newStatValue(tb => {
+  function comp_setStats(item) {
+    item.stats.add(fetchStat("lovec", "rs-isintermediate"), true);
+    if(item.intmdParent != null) item.stats.add(fetchStat("lovec", "rs0int-parent"), newStatValue(tb => {
       tb.row();
-      MDL_table.setCtRow(tb, itm.intmdParent);
+      MDL_table.setCtRow(tb, item.intmdParent);
     }));
   };
 

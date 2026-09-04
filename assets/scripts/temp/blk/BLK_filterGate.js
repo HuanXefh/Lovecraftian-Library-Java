@@ -45,19 +45,19 @@
   };
 
 
-  function comp_getTileTarget(b, itm, b_f, isFlip) {
+  function comp_getTileTarget(b, item, b_f, isFlip) {
     let rot = b_f.relativeTo(b);
     let b_t = b.nearby(rot);
     let target = null;
 
-    if((b.block.delegee.filterScr.get(b, b_f, itm) !== b.isInv) === b.enabled) {
+    if((b.block.delegee.filterScr.get(b, b_f, item) !== b.isInv) === b.enabled) {
       if(b.isSame(b_f) && b.isSame(b_t)) return target;
       target = b_t;
     } else {
       let b_s1 = b.nearby(Mathf.mod(rot - 1, 4));
       let b_s2 = b.nearby(Mathf.mod(rot + 1, 4));
-      let cond1 = b_s1 != null && b_s1.team === b.team && !(b_s1.block.instantTransfer && b_f.block.instantTransfer) && b_s1.acceptItem(b, itm);
-      let cond2 = b_s2 != null && b_s2.team === b.team && !(b_s2.block.instantTransfer && b_f.block.instantTransfer) && b_s2.acceptItem(b, itm);
+      let cond1 = b_s1 != null && b_s1.team === b.team && !(b_s1.block.instantTransfer && b_f.block.instantTransfer) && b_s1.acceptItem(b, item);
+      let cond2 = b_s2 != null && b_s2.team === b.team && !(b_s2.block.instantTransfer && b_f.block.instantTransfer) && b_s2.acceptItem(b, item);
 
       if(cond1 && !cond2) {
         target = b_s1;
@@ -121,11 +121,11 @@
 
       /**
        * `PARAM`: Item is selected when this returns true.
-       * `ARGS`: b, b_f, itm.
+       * `ARGS`: b, b_f, item.
        * @memberof BLK_filterGate
        * @instance
        */
-      filterScr: tprov(() => boolf3(function(b, b_f, itm) {return itm === b.sortItem})),
+      filterScr: tprov(() => boolf3(function(b, b_f, item) {return item === b.sortItem})),
       /**
        * `PARAM`: If true, item selector will be hidden.
        * @memberof BLK_filterGate
@@ -191,8 +191,8 @@
     .setMethod({
 
 
-      getTileTarget: function(itm, b_f, isFlip) {
-        return comp_getTileTarget(this, itm, b_f, isFlip);
+      getTileTarget: function(item, b_f, isFlip) {
+        return comp_getTileTarget(this, item, b_f, isFlip);
       }
       .setProp({
         noSuper: true,

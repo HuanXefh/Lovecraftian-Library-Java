@@ -11,13 +11,13 @@
      * @class
      * @param {string|unset} nameFrom
      * @param {string} nameTo
-     * @param {Item2Array} itm2Arr
+     * @param {Item2Array} item2Arr
      * @param {number|unset} [timeReq]
      */
     const CLS_sectorResourcePacket = newClass().initClass();
 
 
-    CLS_sectorResourcePacket.prototype.init = function(nameFrom, nameTo, itm2Arr, timeReq) {
+    CLS_sectorResourcePacket.prototype.init = function(nameFrom, nameTo, item2Arr, timeReq) {
 
 
         if(nameFrom == null) nameFrom = Vars.state.rules.sector == null ? "SPEC: windfall" : Vars.state.rules.sector.preset.name;
@@ -28,7 +28,7 @@
         /** @type {string} */
         this.to = nameTo;
         /** @type {Item2Array} */
-        this.data = itm2Arr;
+        this.data = item2Arr;
         /** @type {number} */
         this.timeReq = timeReq != null ? timeReq : this.calcTimeReq();
         /** @type {number} */
@@ -135,9 +135,9 @@
     CLS_sectorResourcePacket.prototype.handle = function() {
         if(this.to !== mapCur || !this.isCompleted()) return false;
         let b = Vars.player.team().core();
-        if(b == null || !FRAG_item.acceptItm2Arr(b, b, this.data)) return false;
+        if(b == null || !FRAG_item.acceptItem2Arr(b, b, this.data)) return false;
 
-        FRAG_item.addItm2Arr(b, b, this.data);
+        FRAG_item.addItem2Arr(b, b, this.data);
         Core.app.post(() => {
             this.remove();
         });

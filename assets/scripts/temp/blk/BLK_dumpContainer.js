@@ -35,7 +35,7 @@
   };
 
 
-  function comp_acceptItem(b, b_f, itm) {
+  function comp_acceptItem(b, b_f, item) {
     return b_f === b || !MDL_cond.isContainer(b_f.block);
   };
 
@@ -121,8 +121,8 @@
       },
 
 
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+      acceptItem: function(b_f, item) {
+        return comp_acceptItem(this, b_f, item);
       }
       .setProp({
         boolMode: "and",

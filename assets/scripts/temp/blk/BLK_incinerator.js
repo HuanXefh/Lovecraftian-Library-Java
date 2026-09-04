@@ -57,11 +57,11 @@
 
     if(TIMER.sec) {
       if(b.items != null && !b.justCrafted) {
-        b.hasItmTarget = false;
-        b.items.each(itm => {
-          if(b.hasItmTarget) return;
-          if(!b.block.consumesItem(itm)) {
-            b.hasItmTarget = true;
+        b.hasItemTarget = false;
+        b.items.each(item => {
+          if(b.hasItemTarget) return;
+          if(!b.block.consumesItem(item)) {
+            b.hasItemTarget = true;
           };
         });
       };
@@ -93,17 +93,17 @@
       amt;
 
     if(b.items != null) {
-      b.items.each(itm => {
-        if(b.block.consumesItem(itm)) return;
-        if(b.block.outputItems != null && b.block.outputItems.some(itmStack => itmStack.item === itm)) return;
+      b.items.each(item => {
+        if(b.block.consumesItem(item)) return;
+        if(b.block.outputItems != null && b.block.outputItems.some(itemStack => itemStack.item === item)) return;
 
-        amt = b.items.get(itm);
+        amt = b.items.get(item);
         if(canExplo) {
-          flam += (itm.flammability < EXPLO_FLAM_THR ? 0.0 : itm.flammability) * amt * 3.0;
-          explo += itm.explosiveness * amt * 3.0;
-          pow += itm.charge * amt * 3.0;
+          flam += (item.flammability < EXPLO_FLAM_THR ? 0.0 : item.flammability) * amt * 3.0;
+          explo += item.explosiveness * amt * 3.0;
+          pow += item.charge * amt * 3.0;
         };
-        b.items.set(itm, 0);
+        b.items.set(item, 0);
       });
     };
     if(b.liquids != null) {
@@ -129,14 +129,14 @@
   };
 
 
-  function comp_acceptItem(b, b_f, itm) {
+  function comp_acceptItem(b, b_f, item) {
     if(b.items == null) return false;
-    if(b.block.consumesItem(itm) && b.items.get(itm) < b.getMaximumAccepted(itm)) return true;
-    if(!b.block.delegee.itmTargetFilter.get(itm)) return false;
+    if(b.block.consumesItem(item) && b.items.get(item) < b.getMaximumAccepted(item)) return true;
+    if(!b.block.delegee.itemTargetFilter.get(item)) return false;
 
     return b.ctTargets.length === 0 ?
       b.items.total() < b.block.itemCapacity :
-      b.ctTargets.includes(itm) && b.items.total() < b.block.itemCapacity;
+      b.ctTargets.includes(item) && b.items.total() < b.block.itemCapacity;
   };
 
 
@@ -185,11 +185,11 @@
       hasExploIncineration: true,
       /**
        * `PARAM`: Extra filter for valid item.
-       * <br> `ARGS`: itm.
+       * <br> `ARGS`: item.
        * @memberof BLK_incinerator
        * @instance
        */
-      itmTargetFilter: tprov(() => func(function(itm) {return true})),
+      itemTargetFilter: tprov(() => func(function(item) {return true})),
       /**
        * `PARAM`: Extra filter for valid fluid.
        * <br> `ARGS`: liq.
@@ -251,7 +251,7 @@
       ex_findSelectionTargets: function() {
         let arr = [];
         if(this.hasItems) {
-          arr.pushAll(Vars.content.items().select(itm => this.itmTargetFilter.get(itm)).toArray());
+          arr.pushAll(Vars.content.items().select(item => this.itemTargetFilter.get(item)).toArray());
         };
         if(this.hasLiquids) {
           if(this.fldType === "liquid") {
@@ -307,7 +307,7 @@
        * @memberof B_incinerator
        * @instance
        */
-      hasItmTarget: false,
+      hasItemTarget: false,
       /**
        * `INTERNAL`
        * @memberof B_incinerator
@@ -336,8 +336,8 @@
       },
 
 
-      acceptItem: function(b_f, itm) {
-        return comp_acceptItem(this, b_f, itm);
+      acceptItem: function(b_f, item) {
+        return comp_acceptItem(this, b_f, item);
       }
       .setProp({
         noSuper: true,
@@ -355,7 +355,7 @@
 
 
       shouldConsume: function() {
-        return this.hasItmTarget || this.hasLiqTarget;
+        return this.hasItemTarget || this.hasLiqTarget;
       }
       .setProp({
         noSuper: true,

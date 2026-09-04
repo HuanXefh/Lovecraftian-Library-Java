@@ -169,14 +169,14 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
 
 
         @Override
-        public boolean dump(@Nullable Item itm) {
-            return multiBlockBuildUpdater.dump(itm);
+        public boolean dump(@Nullable Item item) {
+            return multiBlockBuildUpdater.dump(item);
         };
 
 
         @Override
-        public void offload(Item itm) {
-            multiBlockBuildUpdater.offload(itm);
+        public void offload(Item item) {
+            multiBlockBuildUpdater.offload(item);
         };
 
 

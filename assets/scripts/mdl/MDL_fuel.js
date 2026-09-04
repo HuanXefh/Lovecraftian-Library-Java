@@ -79,7 +79,7 @@
     };
 
     let fuelType = tryJsProp(blk, "fuelType", FuelTypes.ITEM);
-    if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(VARGEN.fuelItms);
+    if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(VARGEN.fuelItems);
     if((fuelType & FuelTypes.LIQUID) !== 0) arr.pushAll(VARGEN.fuelLiqs);
     if((fuelType & FuelTypes.GAS) !== 0) arr.pushAll(VARGEN.fuelGases);
 
@@ -107,11 +107,11 @@
     if(tryJsProp(blk, "blockedFuels", Array.air).includes(rs.name)) return false;
 
     switch(tryJsProp(blk, "fuelType", FuelTypes.ITEM)) {
-      case FuelTypes.ITEM : return VARGEN.fuelItms.includes(rs);
+      case FuelTypes.ITEM : return VARGEN.fuelItems.includes(rs);
       case FuelTypes.LIQUID : return VARGEN.fuelLiqs.includes(rs);
       case FuelTypes.GAS : return VARGEN.fuelGases.includes(rs);
     };
-    return VARGEN.fuelItms.includes(rs) || VARGEN.fuelLiqs.includes(rs) || VARGEN.fuelGases.includes(rs);
+    return VARGEN.fuelItems.includes(rs) || VARGEN.fuelLiqs.includes(rs) || VARGEN.fuelGases.includes(rs);
   }
   .setCache();
   exports.checkFuelInput = checkFuelInput;
@@ -144,13 +144,13 @@
 
     // Find fuel with the highest fuel level
     let tmpLvl;
-    if(b.items != null && (fuelType & FuelTypes.ITEM) !== 0) VARGEN.fuelItms.forEachFast(itm => {
-      if((allowedFuels != null ? !allowedFuels.includes(itm.name) : blockedFuels.includes(itm.name)) || !b.items.has(itm)) return;
-      tmpLvl = getFuelLvl(itm);
+    if(b.items != null && (fuelType & FuelTypes.ITEM) !== 0) VARGEN.fuelItems.forEachFast(item => {
+      if((allowedFuels != null ? !allowedFuels.includes(item.name) : blockedFuels.includes(item.name)) || !b.items.has(item)) return;
+      tmpLvl = getFuelLvl(item);
       if(tmpLvl > fuelLvl) {
         fuelSpare = fuel;
         fuelLvlSpare = fuelLvl;
-        fuel = itm;
+        fuel = item;
         fuelLvl = tmpLvl;
       };
     }, true);

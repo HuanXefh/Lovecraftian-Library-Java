@@ -17,7 +17,7 @@
 
 
   function comp_init(blk) {
-    if(blk.cropData == null) ERROR_HANDLER.throw("nullArgument", "cropData");
+    if(blk.cropData == null) LCErrorHandler.throw("nullArgument", "cropData");
 
     blk.group = BlockGroup.none;
     blk.update = true;
@@ -29,7 +29,7 @@
     blk.config(JAVA.string, (b, str) => {
       if(str === "SPEC: harvest") {
         b.ex_harvest();
-        TRIGGER.cropHarvest.fire(b, b.delegee.stageItm);
+        TRIGGER.cropHarvest.fire(b, b.delegee.stageItem);
       };
     });
 
@@ -49,13 +49,13 @@
     MDL_event.onLoadPost(() => {
       let i = 0;
       let iCap = blk.cropData.iCap();
-      let itm, amt, p;
+      let item, amt, p;
       while(i < iCap) {
-        itm = blk.cropData[i].itm;
+        item = blk.cropData[i].item;
         amt = blk.cropData[i].amt;
         p = blk.cropData[i].p;
-        if(itm != null && amt * p > 0.0) {
-          MDL_recipeDict.addItmProdTerm(blk, itm, amt, p, {time: blk.ex_calcStageTotalTime(i) - blk.ex_calcStageTotalTime(blk.cropData[i].stageTo)});
+        if(item != null && amt * p > 0.0) {
+          MDL_recipeDict.addItemProdTerm(blk, item, amt, p, {time: blk.ex_calcStageTotalTime(i) - blk.ex_calcStageTotalTime(blk.cropData[i].stageTo)});
         };
         i++;
       };
@@ -90,7 +90,7 @@
             blk.cropData[stage].dur < 0.0001 ? "-" : blk.cropData[stage].dur.time(2),
             tb2 => {
               tb2.center();
-              let cell = MDL_table.rcCtIcon(tb2, blk.cropData[stage].itm, blk.cropData[stage].amt, blk.cropData[stage].p);
+              let cell = MDL_table.rcCtIcon(tb2, blk.cropData[stage].item, blk.cropData[stage].amt, blk.cropData[stage].p);
               if(cell != null) {
                 cell.marginRight(0.0);
               };
@@ -137,9 +137,9 @@
         "offSha", -4.0,
         "drawF", function(b) {b.block.ex_drawCropDef(b)},
       );
-      if(obj.dur == null) ERROR_HANDLER.throw("nullArgument", "cropData.dur");
+      if(obj.dur == null) LCErrorHandler.throw("nullArgument", "cropData.dur");
       blk.growTotalTime += obj.dur;
-      obj.itm = MDL_content.getCt(obj.itm, "rs");
+      obj.item = MDL_content.getCt(obj.item, "rs");
       i++;
     };
   };
@@ -206,9 +206,9 @@
       -1.0 :
       b.block.ex_calcStageTotalTime(b.stageCur + 1);
 
-    b.stageItm = b.block.delegee.cropData[b.stageCur].itm;
-    b.stageItmAmt = b.block.delegee.cropData[b.stageCur].amt;
-    b.stageItmP = b.block.delegee.cropData[b.stageCur].p;
+    b.stageItem = b.block.delegee.cropData[b.stageCur].item;
+    b.stageItemAmt = b.block.delegee.cropData[b.stageCur].amt;
+    b.stageItemP = b.block.delegee.cropData[b.stageCur].p;
     b.stageBackTo = b.block.delegee.cropData[b.stageCur].stageTo;
     b.stageReg = b.block.delegee.cropRegs[b.stageCur];
     b.stageShaReg = b.block.delegee.cropShaRegs[b.stageCur];
@@ -228,7 +228,7 @@
 
 
   function comp_ex_harvest(b) {
-    MDL_call.spawnLoots_server(b.x, b.y, b.stageItm, b.stageItmAmt.randFreq(b.stageItmP), VAR.range.cropLootRad);
+    MDL_call.spawnLoots_server(b.x, b.y, b.stageItem, b.stageItemAmt.randFreq(b.stageItemP), VAR.range.cropLootRad);
     b.ex_changeStage(b.stageBackTo, true);
     MDL_effect.showAt(b.x, b.y, b.block.destroyEffect, 0.0);
     MDL_sound.playAt(b.x, b.y, b.block.destroySound);
@@ -491,19 +491,19 @@
        * @memberof B_crop
        * @instance
        */
-      stageItm: null,
+      stageItem: null,
       /**
        * `INTERNAL`
        * @memberof B_crop
        * @instance
        */
-      stageItmAmt: 1,
+      stageItemAmt: 1,
       /**
        * `INTERNAL`
        * @memberof B_crop
        * @instance
        */
-      stageItmP: 1.0,
+      stageItemP: 1.0,
       /**
        * `INTERNAL`
        * @memberof B_crop
@@ -686,7 +686,7 @@
        * @return {boolean}
        */
       ex_checkCanHarvest: function() {
-        return this.stageItm != null && this.stageItmAmt * this.stageItmAmt > 0.0;
+        return this.stageItem != null && this.stageItemAmt * this.stageItemAmt > 0.0;
       }
       .setProp({
         noSuper: true,

@@ -252,8 +252,8 @@ public class LCPos {
     /**
      * Gets closest ore tile.
      */
-    public static @Nullable Tile getTileOre(float x, float y, Item itm) {
-        return Vars.indexer.findClosestOre(x, y, itm);
+    public static @Nullable Tile getTileOre(float x, float y, Item item) {
+        return Vars.indexer.findClosestOre(x, y, item);
     };
 
 
