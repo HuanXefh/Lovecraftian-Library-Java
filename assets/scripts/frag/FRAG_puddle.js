@@ -5,10 +5,10 @@
 */
 
 
-  /**
-   * Handles liquid puddle.
-   * @module lovec/frag/FRAG_puddle
-   */
+    /**
+     * Handles liquid puddle.
+     * @module lovec/frag/FRAG_puddle
+     */
 
 
 /*
@@ -18,79 +18,83 @@
 */
 
 
-  /* <------------------------------ base ------------------------------ */
+    /* <------------------------------ base ------------------------------ */
 
 
-  /**
-   * Lets a puddle spread and trigger something.
-   * @param {Puddle} puddle
-   * @param {number|unset} amtDepos
-   * @param {function(Tile): boolean} boolF - Whether some tile is spreadable.
-   * @param {function(Tile): void} scr - Called when puddle is on some tile.
-   * @return {void}
-   */
-  const spreadPuddle = function thisFun(puddle, amtDepos, boolF, scr) {
-    if(amtDepos == null) amtDepos = 0.5;
+    /**
+     * Lets a puddle spread and trigger something.
+     * @param {Puddle} puddle
+     * @param {number|unset} amtDepos
+     * @param {function(Tile): boolean} boolF - Whether some tile is spreadable.
+     * @param {function(Tile): void} scr - Called when puddle is on some tile.
+     * @return {void}
+     */
+    const spreadPuddle = function thisFun(puddle, amtDepos, boolF, scr) {
+        if(amtDepos == null) amtDepos = 0.5;
 
-    LCPos.getTilesRect(thisFun.tmpTs, puddle.tile, 1, 0).forEachFast(ot => {
-      if(boolF != null && boolF(ot)) {
-        Puddles.deposit(ot, puddle.liquid, Time.delta * amtDepos);
-        if(ot === puddle.tile && scr != null) scr(ot);
-      };
-    }, true);
-  }
-  .setProp({
-    tmpTs: [],
-  });
-  exports.spreadPuddle = spreadPuddle;
-
-
-  /**
-   * Change the liquid of a puddle.
-   * @param {Puddle} puddle
-   * @param {LiquidGn} liq_gn
-   * @param {number|unset} [mtp]
-   * @return {void}
-   */
-  const changePuddle = function(puddle, liq_gn, mtp) {
-    let liq = MDL_content.getCt(liq_gn, "rs");
-    if(liq == null || liq === puddle.liquid) return;
-
-    let amt = puddle.amount * tryVal(mtp, 1.0);
-    let t = puddle.tile;
-
-    puddle.remove();
-    Puddles.deposit(t, liq, amt);
-  };
-  exports.changePuddle = changePuddle;
-
-
-  /**
-   * Variant of {@link changePuddle} for sync.
-   * @param {Puddle} puddle
-   * @param {LiquidGn} liq_gn
-   * @param {number|unset} [mtp]
-   * @return {void}
-   */
-  const changePuddle_global = function(puddle, liq_gn, mtp) {
-    let liq = MDL_content.getCt(liq_gn, "rs");
-    if(liq == null || liq === puddle.liquid) return;
-
-    MDL_net.sendPacket(
-      PacketModes.BOTH, "lovec-both-puddle-change",
-      packPayload([
-        puddle.tile.pos(), liq.name, mtp,
-      ]),
-      false, true,
-    );
-  }
-  .setAnno("init", function() {
-    MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-puddle-change", payload => {
-      let args = unpackPayload(payload);
-      let puddle = Puddles.get(Vars.world.tile(args[0]));
-      if(puddle == null) return;
-
-      changePuddle(puddle, args[1], args[2]);
+        LCPos.getTilesRect(thisFun.tmpTs, puddle.tile, 1, 0).forEachFast(ot => {
+            if(boolF != null && boolF(ot)) {
+                Puddles.deposit(ot, puddle.liquid, Time.delta * amtDepos);
+                if(ot === puddle.tile && scr != null) scr(ot);
+            };
+        }, true);
+    }
+    .setProp({
+        /**
+         * @memberof spreadPuddle
+         * @type {Array<Tile>}
+         */
+        tmpTs: [],
     });
-  });
-  exports.changePuddle_global = changePuddle_global;
+    exports.spreadPuddle = spreadPuddle;
+
+
+    /**
+     * Change the liquid of a puddle.
+     * @param {Puddle} puddle
+     * @param {LiquidGn} liq_gn
+     * @param {number|unset} [mtp]
+     * @return {void}
+     */
+    const changePuddle = function(puddle, liq_gn, mtp) {
+        let liq = MDL_content.getCt(liq_gn, "rs");
+        if(liq == null || liq === puddle.liquid) return;
+
+        let amt = puddle.amount * tryVal(mtp, 1.0);
+        let t = puddle.tile;
+
+        puddle.remove();
+        Puddles.deposit(t, liq, amt);
+    };
+    exports.changePuddle = changePuddle;
+
+
+    /**
+     * Variant of {@link changePuddle} for sync.
+     * @param {Puddle} puddle
+     * @param {LiquidGn} liq_gn
+     * @param {number|unset} [mtp]
+     * @return {void}
+     */
+    const changePuddle_global = function(puddle, liq_gn, mtp) {
+        let liq = MDL_content.getCt(liq_gn, "rs");
+        if(liq == null || liq === puddle.liquid) return;
+
+        MDL_net.sendPacket(
+            PacketModes.BOTH, "lovec-both-puddle-change",
+            packPayload([
+                puddle.tile.pos(), liq.name, mtp,
+            ]),
+            false, true,
+        );
+    }
+    .setAnno("init", function() {
+        MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-puddle-change", payload => {
+            let args = unpackPayload(payload);
+            let puddle = Puddles.get(Vars.world.tile(args[0]));
+            if(puddle == null) return;
+
+            changePuddle(puddle, args[1], args[2]);
+        });
+    });
+    exports.changePuddle_global = changePuddle_global;

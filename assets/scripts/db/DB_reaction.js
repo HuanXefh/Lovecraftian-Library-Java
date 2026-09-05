@@ -70,7 +70,9 @@ const db = {
                 Call.setItem(e, rs, e.items.get(rs));
                 Call.setItem(e, item, e.items.get(item));
             } else {
-                if(Mathf.chance(amt / e.stack.amount)) e.stack.item = item;
+                if(Mathf.chance(amt / e.stack.amount)) {
+                    FRAG_item.setUnitItem_global(e, item, e.stack.amount);
+                };
             };
         }],
 

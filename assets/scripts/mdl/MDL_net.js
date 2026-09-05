@@ -66,7 +66,7 @@
    * @param {boolean|unset} [isReliable]
    * @return {void}
    */
-  const sendPacket = function (mode, header, payload, isReliable, useConnection) {
+  const sendPacket = function (mode, header, payload, isReliable) {
     if(!PARAM.MODDED || payload == null) return;
     if(mode == null) mode = PacketModes.SERVER;
     if(!PacketModes.has(mode)) return;

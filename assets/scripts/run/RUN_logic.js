@@ -42,7 +42,7 @@
         unit.apply(VARGEN.staNoConstruction, 60.0);
       };
 
-      FRAG_unit.comp_update_surrounding(unit.type, unit);
+      FRAG_unit.updateSurrounding(unit.type, unit);
       FRAG_unit.comp_update_heat(unit.type, unit);
     });
   };

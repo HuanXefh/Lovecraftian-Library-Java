@@ -1156,7 +1156,7 @@
       size_t = readParam(paramObj, "size_t", 0.0),
       rad = readParam(paramObj, "rad", null),
       color = MDL_color.getColor(readParam(paramObj, "color", "null"), "new"),
-      scl = readParam(paramObj, "scl", 1.0)
+      scl = readParam(paramObj, "scl", 1.0),
       z = readParam(paramObj, "z", null);
 
     let tmp = new Effect(20.0 * scl, eff => {

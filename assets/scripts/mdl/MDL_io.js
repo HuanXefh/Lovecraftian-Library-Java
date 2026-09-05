@@ -345,15 +345,15 @@
       wr0rd,
 
       wr => {
-        let fs = mat.toArray().cpy();
-        fs.unshift(mat.getColAmt());
-        fs(wr, fs);
+        let nums = mat.toArray().cpy();
+        nums.unshift(mat.getColAmt());
+        fs(wr, nums);
       },
 
       rd => {
-        let fs = fs(rd, []);
-        let colAmt = fs.shift();
-        return new MathMatrix(fs.chunk(colAmt, 0));
+        let nums = fs(rd, []);
+        let colAmt = nums.shift();
+        return new MathMatrix(nums.chunk(colAmt, 0));
       },
     );
   };

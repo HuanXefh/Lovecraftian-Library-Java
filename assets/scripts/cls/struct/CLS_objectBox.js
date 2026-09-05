@@ -25,7 +25,7 @@
         Object.setProp.apply(null, args);
 
 
-        /** @type {Array<string} */
+        /** @type {Array<string>} */
         this.keys = Object.keys(obj);
 
 

@@ -73,7 +73,7 @@
       }));
     };
 
-    MDL_pollution.comp_setStats_pol(blk);
+    MDL_pollution.setPolStats(blk);
 
     // Vanilla stat for I/O looks ass in Lovec, to be honest
     if(blk instanceof GenericCrafter) {
@@ -398,7 +398,7 @@
 
 
       /**
-       * If true, this block will treated as non-all side output block.
+       * If true, this block will be treated as non-all side output block.
        * Used mostly for accept check.
        * @memberof BLK_baseBlock
        * @instance

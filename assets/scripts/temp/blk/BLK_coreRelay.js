@@ -40,7 +40,7 @@
 
   function comp_updateTile(b) {
     if(TIMER.secTwo) b.sendBCur = b.ex_findSendB();
-    if(b.sendBCur == null || !b.sendBCur.isAdded()) return
+    if(b.sendBCur == null || !b.sendBCur.isAdded()) return;
 
     b.itemSendCd = Mathf.maxZero(b.itemSendCd - b.edelta());
     if(b.itemSendCd < 0.0001 && b.items.total() >= b.block.itemCapacity) {

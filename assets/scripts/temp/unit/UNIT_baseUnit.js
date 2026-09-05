@@ -61,7 +61,7 @@
 
 
   function comp_update(utp, unit) {
-    if(utp.useLovecDamagePenalty) FRAG_unit.comp_update_damaged(utp, unit);
+    if(utp.useLovecDamagePenalty) FRAG_unit.updateDamagedSta(utp, unit);
 
     if(utp.hasUnitData && unit.delegee != null && TIMER.secHalf) {
       if(!UTIL_unitData.includes(unit)) {

@@ -128,7 +128,7 @@
         "p", 1.0,
         "stageTo", 0,
         "rad", 0.0,
-        "canHide", false,
+        "hidable", false,
         "static", false,
         "scl", 1.0,
         "mag", 1.0,
@@ -213,7 +213,7 @@
     b.stageReg = b.block.delegee.cropRegs[b.stageCur];
     b.stageShaReg = b.block.delegee.cropShaRegs[b.stageCur];
     b.stageCropRad = b.block.delegee.cropData[b.stageCur].rad;
-    b.stageCanHide = b.block.delegee.cropData[b.stageCur].canHide;
+    b.stageHidable = b.block.delegee.cropData[b.stageCur].hidable;
     b.stageStatic = b.block.delegee.cropData[b.stageCur].static;
     b.stageCropScl = b.block.delegee.cropData[b.stageCur].scl;
     b.stageCropMag = b.block.delegee.cropData[b.stageCur].mag;
@@ -533,7 +533,7 @@
        * @memberof B_crop
        * @instance
        */
-      stageCanHide: false,
+      stageHidable: false,
       /**
        * `INTERNAL`
        * @memberof B_crop

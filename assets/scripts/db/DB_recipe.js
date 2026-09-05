@@ -250,23 +250,23 @@ const db = {
                 /* <------------------------------ New Horizon ------------------------------ */
 
                 fetchClass("newhorizon.expand.block.production.factory.RecipeGenericCrafter", true), function(blk, cons, data, dictConsItem, dictConsFld, dictConsBlk, dictConsUtp) {
-                  let i = 0, ordText;
-                  blk.recipes.each(rc => {
-                      i++;
-                      ordText = ("[" + i + "]").color(Pal.accent);
-                      rc.inputItem.each(itemStack => {
-                          if(itemStack.amount <= 0) return;
-                          dictConsItem[itemStack.item.id].push(blk, itemStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-                      });
-                      rc.inputLiquid.each(liqStack => {
-                          if(liqStack.amount < 0.0001) return;
-                          dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-                      });
-                      rc.inputPayload.each(payStack => {
-                          if(payStack.amount <= 0) return;
-                          (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
-                      });
-                  });
+                    let i = 0, ordText;
+                    blk.recipes.each(rc => {
+                        i++;
+                        ordText = ("[" + i + "]").color(Pal.accent);
+                        rc.inputItem.each(itemStack => {
+                            if(itemStack.amount <= 0) return;
+                            dictConsItem[itemStack.item.id].push(blk, itemStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+                        });
+                        rc.inputLiquid.each(liqStack => {
+                            if(liqStack.amount < 0.0001) return;
+                            dictConsFld[liqStack.liquid.id].push(blk, liqStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+                        });
+                        rc.inputPayload.each(payStack => {
+                            if(payStack.amount <= 0) return;
+                            (payStack.item instanceof Block ? dictConsBlk : dictConsUtp)[payStack.item.id].push(blk, payStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
+                        });
+                    });
                 },
 
                 fetchClass("newhorizon.expand.block.special.JumpGate", true), function(blk, cons, data, dictConsItem, dictConsFld, dictConsBlk, dictConsUtp) {

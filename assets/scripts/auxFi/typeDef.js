@@ -293,7 +293,7 @@
      * @prop {number|unset} [p] - Chance to produce each item.
      * @prop {number|unset} [stageTo] - Stage to move back to after being harvested.
      * @prop {number|unset} [rad] - Visual radius of the crop.
-     * @prop {boolean|unset} [canHide] - Whether this crop can hide units like a tree.
+     * @prop {boolean|unset} [hidable] - Whether this crop can hide units like a tree.
      * @prop {boolean|unset} [static]
      * @prop {number|unset} [scl]
      * @prop {number|unset} [mag]
@@ -407,7 +407,7 @@
      * @typedef {Object} DialogCharaData
      * @prop {string} nameMod
      * @prop {string} nameChara
-     * @prop {number|unset} [fracX] - Determines horizonal postion.
+     * @prop {number|unset} [fracX] - Determines horizonal position.
      * @prop {boolean|unset} [isDark] - If true, character art is darkened.
      * @prop {Color|unset} [color]
      * @prop {string|unset} [anim]

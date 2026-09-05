@@ -5,10 +5,10 @@
 */
 
 
-  /**
-   * Methods for payload.
-   * @module lovec/frag/FRAG_payload
-   */
+    /**
+     * Methods for payload.
+     * @module lovec/frag/FRAG_payload
+     */
 
 
 /*
@@ -18,153 +18,164 @@
 */
 
 
-  /* <------------------------------ base ------------------------------ */
+    /* <------------------------------ base ------------------------------ */
 
 
-  /**
-   * Converts a block or unit type into a payload.
-   * @param {string|Block|UnitType|null} ct_gn
-   * @param {Team} team
-   * @return {Payload|null}
-   */
-  const makePay = function(ct_gn, team) {
-    let ct = findContent(ct_gn);
-    if(ct instanceof Block) {
-      return new BuildPayload(ct, team);
-    } else if(ct instanceof UnitType) {
-      return new UnitPayload(ct.create(team));
-    };
-
-    return null;
-  };
-  exports.makePay = makePay;
-
-
-  /**
-   * Gets size of some content as payload.
-   * @param {string|Block|UnitType|null} ct_gn
-   * @return {number}
-   */
-  const getPaySize = function(ct_gn) {
-    let ct = findContent(ct_gn);
-    if(ct instanceof Block) return ct.size;
-    if(ct instanceof UnitType) return ct.hitSize / Vars.tilesize;
-    return 1;
-  }
-  .setCache();
-  exports.getPaySize = getPaySize;
-
-
-  /**
-   * Gets a list of payload input sites around `b`.
-   * @param {Array|unset} contArr
-   * @param {Building} b
-   * @param {number|unset} [mode] - See {@link SideFracModes}.
-   * @return {Array<Building>}
-   */
-  const findPayInputBs = function(contArr, b, mode) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let obj = DB_block.db["class"]["group"]["payload"]["site"];
-    b.proximity.each(
-      ob => MDL_pos.calcSideFrac(ob, b, mode, true, true) >= 0.5 && (
-        obj["dynamic"].hasIns(ob.block) ?
-          true :
-          obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) === ob.rotation
-      ),
-      ob => arr.push(ob),
-    );
-
-    return arr;
-  };
-  exports.findPayInputBs = findPayInputBs;
-
-
-  /**
-   * Gets a list of payload output sites around `b`.
-   * @param {Array|unset} contArr
-   * @param {Building} b
-   * @param {number|unset} [mode] - See {@link SideFracModes}.
-   * @return {Array<Building>}
-   */
-  const findPayOutputBs = function(contArr, b, mode) {
-    let arr = contArr != null ? contArr.clear() : [];
-
-    let obj = DB_block.db["class"]["group"]["payload"]["site"];
-    b.proximity.each(
-      ob => MDL_pos.calcSideFrac(b, ob, mode, true, true) >= 0.5 && (
-        obj["dynamic"].hasIns(ob.block) ?
-          true :
-          obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) !== ob.rotation
-      ),
-      ob => arr.push(ob),
-    );
-
-    return arr;
-  };
-  exports.findPayOutputBs = findPayOutputBs;
-
-
-  /* <------------------------------ crafting ------------------------------ */
-
-
-  /**
-   * Takes a payload out of some building.
-   * @param {Building} b
-   * @return {Payload|null}
-   */
-  const takeAt = function(b) {
-    let pay = null;
-    if(b.getPayload() == null) return pay;
-
-    pay = b.getPayload();
-    let key = readClassFunMap(DB_block.db["class"]["group"]["payload"]["key"], b.block, Function.air);
-    if(key == null) {
-      throw new Error("Payload key is not defined for ${1}???".format(b.block.name));
-    } else {
-      b[key] = null;
-    };
-
-    return pay;
-  };
-  exports.takeAt = takeAt;
-
-
-  /**
-   * Produces a payload in some building.
-   * @param {Building} b
-   * @param {Payload|null} pay
-   * @param {number|unset} [delay] - Used for effect.
-   * @return {boolean}
-   */
-  const produceAt = function thisFun(b, pay, delay) {
-    if(pay == null || !b.acceptPayload(b, pay) || thisFun.queueMap.get(b, false)) return false;
-
-    thisFun.addQueue(b, pay, delay);
-
-    return true;
-  }
-  .setProp({
-    queueMap: new ObjectMap(),
-    addQueue: function(b, pay, delay) {
-      produceAt.queueMap.put(b, true);
-      Time.run(tryVal(delay, 30.0), () => {
-        if(!b.acceptPayload(b, pay)) {
-          // Delay payload change again, otherwise existing payload will be removed
-          produceAt.addQueue(b, pay, 15.0);
-          return;
+    /**
+     * Converts a block or unit type into a payload.
+     * @param {string|Block|UnitType|null} ct_gn
+     * @param {Team} team
+     * @return {Payload|null}
+     */
+    const makePay = function(ct_gn, team) {
+        let ct = findContent(ct_gn);
+        if(ct instanceof Block) {
+            return new BuildPayload(ct, team);
+        } else if(ct instanceof UnitType) {
+            return new UnitPayload(ct.create(team));
         };
 
-        b.handlePayload(b, pay);
-        produceAt.queueMap.put(b, false);
-        MDL_sound.payloadDrop(b.x, b.y, pay.content());
-        MDL_effect.dust(b.x, b.y, pay.size(), 3);
-      });
-    },
-  })
-  .setAnno("init", function() {
-    TRIGGER.mapChange.addGlobalListener(nameMap => {
-      this.queueMap.clear();
+        return null;
+    };
+    exports.makePay = makePay;
+
+
+    /**
+     * Gets size of some content as payload.
+     * @param {string|Block|UnitType|null} ct_gn
+     * @return {number}
+     */
+    const getPaySize = function(ct_gn) {
+        let ct = findContent(ct_gn);
+        if(ct instanceof Block) return ct.size;
+        if(ct instanceof UnitType) return ct.hitSize / Vars.tilesize;
+        return 1;
+    }
+    .setCache();
+    exports.getPaySize = getPaySize;
+
+
+    /**
+     * Gets a list of payload input sites around `b`.
+     * @param {Array|unset} contArr
+     * @param {Building} b
+     * @param {number|unset} [mode] - See {@link SideFracModes}.
+     * @return {Array<Building>}
+     */
+    const findPayInputBs = function(contArr, b, mode) {
+        let arr = contArr != null ? contArr.clear() : [];
+
+        let obj = DB_block.db["class"]["group"]["payload"]["site"];
+        b.proximity.each(
+            ob => MDL_pos.calcSideFrac(ob, b, mode, true, true) >= 0.5 && (
+                obj["dynamic"].hasIns(ob.block) ?
+                    true :
+                    obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) === ob.rotation
+            ),
+            ob => arr.push(ob),
+        );
+
+        return arr;
+    };
+    exports.findPayInputBs = findPayInputBs;
+
+
+    /**
+     * Gets a list of payload output sites around `b`.
+     * @param {Array|unset} contArr
+     * @param {Building} b
+     * @param {number|unset} [mode] - See {@link SideFracModes}.
+     * @return {Array<Building>}
+     */
+    const findPayOutputBs = function(contArr, b, mode) {
+        let arr = contArr != null ? contArr.clear() : [];
+
+        let obj = DB_block.db["class"]["group"]["payload"]["site"];
+        b.proximity.each(
+            ob => MDL_pos.calcSideFrac(b, ob, mode, true, true) >= 0.5 && (
+                obj["dynamic"].hasIns(ob.block) ?
+                    true :
+                    obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) !== ob.rotation
+            ),
+            ob => arr.push(ob),
+        );
+
+        return arr;
+    };
+    exports.findPayOutputBs = findPayOutputBs;
+
+
+    /* <------------------------------ crafting ------------------------------ */
+
+
+    /**
+     * Takes a payload out of some building.
+     * @param {Building} b
+     * @return {Payload|null}
+     */
+    const takeAt = function(b) {
+        let pay = null;
+        if(b.getPayload() == null) return pay;
+
+        pay = b.getPayload();
+        let key = readClassFunMap(DB_block.db["class"]["group"]["payload"]["key"], b.block, Function.air);
+        if(key == null) {
+            throw new Error("Payload key is not defined for ${1}???".format(b.block.name));
+        } else {
+            b[key] = null;
+        };
+
+        return pay;
+    };
+    exports.takeAt = takeAt;
+
+
+    /**
+     * Produces a payload in some building.
+     * @param {Building} b
+     * @param {Payload|null} pay
+     * @param {number|unset} [delay] - Used for effect.
+     * @return {boolean}
+     */
+    const produceAt = function thisFun(b, pay, delay) {
+        if(pay == null || !b.acceptPayload(b, pay) || thisFun.queueMap.get(b, false)) return false;
+
+        thisFun.addQueue(b, pay, delay);
+
+        return true;
+    }
+    .setProp({
+        /**
+         * @memberof produceAt
+         * @type {ObjectMap<Building, boolean>}
+         */
+        queueMap: new ObjectMap(),
+        /**
+         * @memberof produceAt
+         * @param {Building} b
+         * @param {Payload} pay
+         * @param {number|unset} [delay]
+         * @return {void}
+         */
+        addQueue: function(b, pay, delay) {
+            produceAt.queueMap.put(b, true);
+            Time.run(tryVal(delay, 30.0), () => {
+                if(!b.acceptPayload(b, pay)) {
+                    // Delay payload change again, otherwise existing payload will be removed
+                    produceAt.addQueue(b, pay, 15.0);
+                    return;
+                };
+
+                b.handlePayload(b, pay);
+                produceAt.queueMap.put(b, false);
+                MDL_sound.payloadDrop(b.x, b.y, pay.content());
+                MDL_effect.dust(b.x, b.y, pay.size(), 3);
+            });
+        },
+    })
+    .setAnno("init", function() {
+        TRIGGER.mapChange.addGlobalListener(nameMap => {
+            this.queueMap.clear();
+        });
     });
-  });
-  exports.produceAt = produceAt;
+    exports.produceAt = produceAt;

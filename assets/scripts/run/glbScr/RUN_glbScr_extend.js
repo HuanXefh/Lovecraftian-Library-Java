@@ -141,7 +141,7 @@
     false, false, false, false, false,
     false, false, false, false, false,
     false, false, false, false, false,
-  ],
+  ];
   processClassLoader.defLoader = CONTEXT.getApplicationClassLoader();
 
 

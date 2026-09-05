@@ -1,27 +1,33 @@
 @echo off
 
 @rem Version of game to launch.
-set LAUNCHER=H:\Dropbox\_gm_mdt\Mindustry\Mindustry-BE-Desktop-27635.jar
+set LAUNCHER=H:\Dropbox\_gm_mdt\Mindustry\Mindustry-BE-Desktop-27754.jar
+
+@rem Project root path.
+set LOCAL=H:\Dropbox\_gm_mdt\lovec
 @rem Project path of Lovec (.jar built).
-set LOCAL1=H:\Dropbox\_gm_mdt\lovec\mabo-lovecraftian-library\build\libs\mabo-lovecraftian-libraryDesktop.jar
+set LOCAL1=%LOCAL%\mabo-lovecraftian-library\build\libs\mabo-lovecraftian-libraryDesktop.jar
 @rem Project path of LovecLab.
-set LOCAL2=H:\Dropbox\_gm_mdt\lovec\mabo-lovecraftian-laboratory
+set LOCAL2=%LOCAL%\mabo-lovecraftian-laboratory
 @rem Project path of ProjReind.
-set LOCAL3=H:\Dropbox\_gm_mdt\lovec\mabo-project-reindustrialization
+set LOCAL3=%LOCAL%\mabo-project-reindustrialization
 @rem Project path of Serp2.
-set LOCAL4=H:\Dropbox\_gm_mdt\lovec\mabo-serpulo-squared
+set LOCAL4=%LOCAL%\mabo-serpulo-squared
 @rem Project path of FCell.
-set LOCAL5=H:\Dropbox\_gm_mdt\lovec\mabo-fluid-cells
+set LOCAL5=%LOCAL%\mabo-fluid-cells
+
+@rem Target root path.
+set TARGET=C:\Users\lenovo\AppData\Roaming\Mindustry\mods
 @rem Target path of Lovec.
-set TARGET1=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-lovecraftian-libraryDesktop.jar
+set TARGET1=%TARGET%\mabo-lovecraftian-libraryDesktop.jar
 @rem Target path of LovecLab.
-set TARGET2=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-lovecraftian-laboratory
+set TARGET2=%TARGET%\mabo-lovecraftian-laboratory
 @rem Target path of ProjReind.
-set TARGET3=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-project-reindustrialization
+set TARGET3=%TARGET%\mabo-project-reindustrialization
 @rem Target path of Serp2.
-set TARGET4=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-serpulo-squared
+set TARGET4=%TARGET%\mabo-serpulo-squared
 @rem Target path of FCell.
-set TARGET5=C:\Users\lenovo\AppData\Roaming\Mindustry\mods\mabo-fluid-cells
+set TARGET5=%TARGET%\mabo-fluid-cells
 
 echo.
 echo Select deploy mode:

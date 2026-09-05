@@ -50,7 +50,7 @@
         this.intfObj = obj;
         /** @type {Array<CLS_interface>} */
         this.parentIntfs = [];
-        /** @type {Array<LovecClass} */
+        /** @type {Array<LovecClass>} */
         this.children = [];
 
 

@@ -39,8 +39,20 @@
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     if(blk.drawRange) {
-      LCDrawf.circlePlace(blk, tx, ty, blk.laserRange * Vars.tilesize, false, valid ? Pal.accent : Pal.remove);
-      LCDrawf.circlePlace(blk, tx, ty, blk.laserRange * Vars.tilesize * blk.minRadFrac, true, valid ? Pal.accent : Pal.remove);
+      Draw.color(valid ? Pal.accent : Pal.remove, 0.3);
+      LCDraw.ring(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.laserRange * Vars.tilesize * blk.minRadFrac, blk.laserRange * Vars.tilesize);
+      Draw.color();
+    };
+    if(blk.autolink) {
+      let t = Vars.world.tile(tx, ty);
+      if(t != null) {
+        blk.getPotentialLinks(t, Vars.player.team(), ob => {
+          Draw.color(blk.laserColor1, Renderer.laserOpacity * 0.5);
+          blk.drawLaser(tx.toFCoord(blk.size), ty.toFCoord(blk.size), ob.x, ob.y, blk.size, ob.block.size);
+          Drawf.square(ob.x, ob.y, ob.block.size * Vars.tilesize * 0.5 + 2.0, Pal.place);
+        });
+        Draw.color();
+      };
     };
   };
 
@@ -67,9 +79,11 @@
 
 
   function comp_drawSelect(b) {
-    if(!b.block.drawRange) return;
-
-    LCDrawf.circleSelect(b, b.block.laserRange * Vars.tilesize * b.block.delegee.minRadFrac, true, Pal.accent);
+    if(b.block.drawRange) {
+      Draw.color(Pal.accent, 0.3);
+      LCDraw.ring(b.x, b.y, b.block.laserRange * Vars.tilesize * b.block.delegee.minRadFrac, b.block.laserRange * Vars.tilesize);
+      Draw.color();
+    };
   };
 
 
@@ -162,7 +176,10 @@
 
       drawPlace: function(tx, ty, rot, valid) {
         comp_drawPlace(this, tx, ty, rot, valid);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       drawLaser: function(x1, y1, x2, y2, size1, size2) {
@@ -204,7 +221,10 @@
 
       drawSelect: function() {
         comp_drawSelect(this);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       drawConfigure: function() {

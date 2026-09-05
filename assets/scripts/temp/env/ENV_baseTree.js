@@ -48,7 +48,7 @@
 
 
   function comp_drawBase(blk, t) {
-    LCDrawf.tree(blk.region, blk.shadow, t, blk.radTree, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], PARAM.TREE_ALPHA, blk.drawTup[0], PARAM.SHOULD_DRAW_WOBBLE, PARAM.SHOULD_CHECK_TREE_DISTANCE);
+    LCDrawf.tree(blk.region, blk.shadow, t, blk.treeRad, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], PARAM.TREE_ALPHA, blk.drawTup[0], PARAM.SHOULD_DRAW_WOBBLE, PARAM.SHOULD_CHECK_TREE_DISTANCE);
   };
 
 
@@ -82,7 +82,7 @@
      * @memberof ENV_baseTree
      * @instance
      */
-    radTree: 0.0,
+    treeRad: 0.0,
     /**
      * `PARAM`: Whether this tree can hide units.
      * @memberof ENV_baseTree

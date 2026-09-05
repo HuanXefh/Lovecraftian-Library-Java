@@ -279,7 +279,7 @@
    * @param {boolean|unset} [shouldAppend]
    * @return {void}
    */
-  const writeTxt = function(fi, str, shouldAppend, bypassExt) {
+  const writeTxt = function(fi, str, shouldAppend) {
     if(fi == null) return;
 
     fi.writeString(str, Boolean(shouldAppend));
@@ -292,7 +292,7 @@
    * @param {Fi|null} fi
    * @return {Array}
    */
-  const readCsv = function(fi, bypassExt) {
+  const readCsv = function(fi) {
     let arr = [];
 
     if(fi == null) return arr;

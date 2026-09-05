@@ -52,7 +52,6 @@
    * Returns -1 if not found.
    * @param {any} ele
    * @param {boolean|unset} [useInd] - If true, `ele` will be treated as index directly.
-   * @param {boolean|unset} [returnNull] - If true, this method will return null instead of 0.0 if element not in the array.
    * @return {number|null}
    */
   Array.prototype.calcIndexFrac = function(ele, useInd) {
@@ -87,7 +86,7 @@
 
   /**
    * Whether an element exists in an array.
-   * This method has to been overrided to avoid type-related crash.
+   * This method has to be overrided to avoid type-related crash.
    * @param {any} ele
    * @return {boolean}
    */
