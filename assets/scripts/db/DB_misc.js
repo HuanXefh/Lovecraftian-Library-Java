@@ -7,595 +7,624 @@
 const db = {
 
 
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-  block: {
+    block: {
 
 
-    /**
-     * Maps a block/unit name before change to the changed name.
-     * Used when internal name of some block is changed.
-     * <br> `ROW`: namePrev, nameCur.
-     */
-    migration: [
+        /**
+         * Maps a block/unit name before change to the changed name.
+         * Used when internal name of some block is changed.
+         * @type {Array}
+         * @lovecRow `string` - namePrev
+         * @lovecRow `string` - nameCur
+         */
+        migration: [
 
-      "lovec-unit0misc-loot", "loveclab-unit0misc-loot",
+            "lovec-unit0misc-loot", "loveclab-unit0misc-loot",
 
-      "loveclab-env0tree0bush-rocky-furn", "loveclab-env0tree0bush-rocky-fern",
+            "loveclab-env0tree0bush-rocky-furn", "loveclab-env0tree0bush-rocky-fern",
 
-      "projreind-bliq0stor-pressure-router", "projreind-bliq0aux-pressure-router",
-      "projreind-pow0turb-primitive-steam-turbine", "projreind-pow0tor-primitive-steam-turbine",
+            "projreind-bliq0stor-pressure-router", "projreind-bliq0aux-pressure-router",
+            "projreind-pow0turb-primitive-steam-turbine", "projreind-pow0tor-primitive-steam-turbine",
 
-    ],
-
-
-    /**
-     * Extra text information shown when mouse hovered over a tile, see {@link MDL_draw.extraInfo}.
-     * Put functions that return string here to build final string. Yep, string only.
-     * Tile won't be null here, and it's safe to return undefined or null, result will be skipped.
-     * <br> `ROW`: strF.
-     * <br> `ARGS`: t, b.
-     */
-    extraInfo: [
-
-      // Ore item info
-      (t, b) => {
-        let item = t.wallDrop() || t.drop();
-        if(item == null) return;
-        let blk;
-        if(t.overlay().itemDrop === item && t.overlay().wallOre) {
-          blk = t.overlay();
-        } else if(t.block().itemDrop === item) {
-          blk = t.block();
-        } else if(t.overlay().itemDrop === item) {
-          blk = t.overlay();
-        } else {
-          blk = t.floor();
-        };
-
-        return String.multiline(
-          MDL_cond.isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text.getColon() + item.localizedName.plain()),
-          MDL_bundle.getTerm("lovec", "ore-hardness") + MDL_text.getColon() + tryJsProp(blk, "dropHardness", item.hardness),
-        );
-      },
-
-      // Ore liquid info
-      (t, b) => {
-        let liq = t.floor().liquidDrop;
-        if(liq == null) return;
-
-        return String.multiline(
-          MDL_bundle.getTerm("lovec", "liquid") + MDL_text.getColon() + liq.localizedName.plain(),
-          MDL_bundle.getTerm("lovec", "liquid-multiplier") + MDL_text.getColon() + t.floor().liquidMultiplier.perc(),
-        );
-      },
-
-      // Conveyor info
-      (t, b) => {
-        if(b == null || b.items == null || (!(b.block instanceof Conveyor) && !(b.block instanceof Duct) && !(b.block instanceof StackConveyor))) return;
-        let item = b.items.first();
-        if(item == null) return;
-
-        return String.multiline(
-          MDL_bundle.getTerm("lovec", "item") + MDL_text.getColon() + item.localizedName.plain(),
-          !VARGEN.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text.getColon() + MDL_fuel.getFuelPon(item)),
-          !VARGEN.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text.getColon() + MDL_fuel.getFuelLvl(item)),
-        );
-      },
-
-      // Puddle info
-      (t, b) => {
-        let puddle = Puddles.get(t);
-        if(puddle == null) return;
-
-        return String.multiline(
-          MDL_bundle.getTerm("lovec", "puddle") + MDL_text.getColon() + puddle.liquid.localizedName.plain(),
-        );
-      },
-
-    ],
+        ],
 
 
-    graph: {
+        /**
+         * Extra text information shown when mouse hovered over a tile, see {@link MDL_draw.extraInfo}.
+         * Put string getters here to build final string. Yep, string only.
+         * Tile won't be null here, and it's safe to return null, result will be skipped.
+         * @type {Array<F2Function<Tile, Building, string|null>>}
+         */
+        extraInfo: [
+
+            // Ore item info
+            function(t, b) {
+                let item = t.wallDrop() || t.drop();
+                if(item == null) return null;
+                let blk;
+                if(t.overlay().itemDrop === item && t.overlay().wallOre) {
+                    blk = t.overlay();
+                } else if(t.block().itemDrop === item) {
+                    blk = t.block();
+                } else if(t.overlay().itemDrop === item) {
+                    blk = t.overlay();
+                } else {
+                    blk = t.floor();
+                };
+
+                return String.multiline(
+                    MDL_cond.isDepthOre(t.overlay()) ? null : (MDL_bundle.getTerm("lovec", "ore") + MDL_text.getColon() + item.localizedName.plain()),
+                    MDL_bundle.getTerm("lovec", "ore-hardness") + MDL_text.getColon() + tryJsProp(blk, "dropHardness", item.hardness),
+                );
+            },
+
+            // Ore liquid info
+            function(t, b) {
+                let liq = t.floor().liquidDrop;
+                if(liq == null) return null;
+
+                return String.multiline(
+                    MDL_bundle.getTerm("lovec", "liquid") + MDL_text.getColon() + liq.localizedName.plain(),
+                    MDL_bundle.getTerm("lovec", "liquid-multiplier") + MDL_text.getColon() + t.floor().liquidMultiplier.perc(),
+                );
+            },
+
+            // Conveyor info
+            function(t, b) {
+                if(b == null || b.items == null || (!(b.block instanceof Conveyor) && !(b.block instanceof Duct) && !(b.block instanceof StackConveyor))) return null;
+                let item = b.items.first();
+                if(item == null) return null;
+
+                return String.multiline(
+                    MDL_bundle.getTerm("lovec", "item") + MDL_text.getColon() + item.localizedName.plain(),
+                    !VARGEN.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text.getColon() + MDL_fuel.getFuelPon(item)),
+                    !VARGEN.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text.getColon() + MDL_fuel.getFuelLvl(item)),
+                );
+            },
+
+            // Puddle info
+            function(t, b) {
+                let puddle = Puddles.get(t);
+                if(puddle == null) return null;
+
+                return String.multiline(
+                    MDL_bundle.getTerm("lovec", "puddle") + MDL_text.getColon() + puddle.liquid.localizedName.plain(),
+                );
+            },
+
+        ],
 
 
-      /**
-       * Maps graph type to its init method.
-       * See {@Link INTF_BLK_graphBlock}.
-       * <br> `ROW`: graphType, fun.
-       */
-      init: [
+        graph: {
 
-        "cable", graph => {
-          graph.graphData.overloadFrac = 0.0;
-          graph.graphData.overloadTimeCur = 0.0;
-          graph.graphData.maxPowProdAllowed = graph.getData(0).ex_getMaxPowProdAllowed();
+
+            /**
+             * Maps graph type to its init method.
+             * See {@Link INTF_BLK_graphBlock}.
+             * @type {Array}
+             * @lovecRow `string` - graphType
+             * @lovecRow `CFunction<MathGraph>` - initScr
+             */
+            init: [
+
+                "cable", function(graph) {
+                    graph.graphData.overloadFrac = 0.0;
+                    graph.graphData.overloadTimeCur = 0.0;
+                    graph.graphData.maxPowProdAllowed = graph.getData(0).ex_getMaxPowProdAllowed();
+                },
+
+            ],
+
+
+            /**
+             * Maps graph type to its update method.
+             * See {@Link INTF_BLK_graphBlock}.
+             * @type {Array}
+             * @lovecRow `string` - graphType
+             * @lovecRow `CFunction<MathGraph>` - updateScr
+             */
+            update: [
+
+                "test", function(graph) {
+                    if(TIMER.secTwo) print(graph);
+                },
+
+                "cable", function(graph) {
+                    if(PARAM.UPDATE_DEEP_SUPPRESSED || !isFinite(graph.graphData.maxPowProdAllowed) || graph.getSize() === 0) return;
+
+                    let powProd = graph.getData(0).power.graph.getLastPowerProduced() / Time.delta;
+                    if(TIMER.secHalf) {
+                        graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > VAR.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
+                    };
+                    if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) {
+                        graph.graphData.overloadTimeCur = 0.0;
+                    } else {
+                        graph.graphData.overloadTimeCur += Time.delta;
+                    };
+                    if(graph.graphData.overloadTimeCur > VAR.time.powTransOverloadTime) {
+                        graph.each(
+                            (ob, vert) => ob.isAdded() && !ob.isPayload(),
+                            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
+                        );
+                    };
+                },
+
+            ],
+
+
         },
 
-      ],
+
+        /**
+         * Maps depth level to a term.
+         * See {@link INTF_ENV_depthOverlay}.
+         * @type {Array}
+         * @lovecRow `number` - lvl
+         * @lovecRow `[string, string]` - [nameMod, tag]
+         * @lovecBundle `term.<nameMod>-term-<tag>.name`
+         */
+        depthName: [
+
+            0, ["lovec", "depth-0"],
+            1, ["lovec", "depth-1"],
+            2, ["lovec", "depth-2"],
+            3, ["lovec", "depth-3"],
+            4, ["lovec", "depth-4"],
+
+        ],
 
 
-      /**
-       * Maps graph type to its update method.
-       * See {@Link INTF_BLK_graphBlock}.
-       * <br> `ROW`: graphType, fun.
-       */
-      update: [
+        /**
+         * Filters for {@link BLK_wireNode} that select valid links.
+         * @type {Array}
+         * @lovecRow `string` - mode
+         * @lovecRow `F2Function<Building, Building, boolean>` - boolF - `ARGS`: b, b_t.
+         */
+        nodeLinkFilter: [
 
-        "test", graph => {
-          if(TIMER.secTwo) print(graph);
-        },
+            "any", (b, b_t) => true,
+            "cons", (b, b_t) => MDL_cond.isPowerTransmitter(b.block) && !MDL_cond.isPowerTransmitter(b_t.block),
+            "trans", (b, b_t) => MDL_cond.isPowerTransmitter(b.block) && MDL_cond.isPowerTransmitter(b_t.block),
+            "self", (b, b_t) => b.block === b_t.block,
+            "node", (b, b_t) => MDL_cond.isPowerNode(b.block) && MDL_cond.isPowerNode(b_t.block),
+            "relay", (b, b_t) => MDL_cond.isPowerRelay(b_t.block),
+            "remote-node", (b, b_t) => MDL_cond.isPowerRelay(b_t.block) || b.block === b_t.block,
 
-        "cable", graph => {
-          if(PARAM.UPDATE_DEEP_SUPPRESSED || !isFinite(graph.graphData.maxPowProdAllowed) || graph.getSize() === 0) return;
-
-          let powProd = graph.getData(0).power.graph.getLastPowerProduced() / Time.delta;
-          if(TIMER.secHalf) {
-            graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > VAR.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
-          };
-          if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) {
-            graph.graphData.overloadTimeCur = 0.0;
-          } else {
-            graph.graphData.overloadTimeCur += Time.delta;
-          };
-          if(graph.graphData.overloadTimeCur > VAR.time.powTransOverloadTime) {
-            graph.each(
-              (ob, vert) => ob.isAdded() && !ob.isPayload(),
-              (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
-            );
-          };
-        },
-
-      ],
+        ],
 
 
     },
 
 
-    /**
-     * Maps depth level to a term.
-     * See {@link INTF_ENV_depthOverlay}.
-     * <br> `ROW`: lvl, [nameMod, tag].
-     * <br> `BUNDLE`: "term.<nameMod>-term-<tag>.name".
-     */
-    depthName: [
-
-      0, ["lovec", "depth-0"],
-      1, ["lovec", "depth-1"],
-      2, ["lovec", "depth-2"],
-      3, ["lovec", "depth-3"],
-      4, ["lovec", "depth-4"],
-
-    ],
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-    /**
-     * Filters for {@link BLK_wireNode} that select valid links.
-     * <br> `ROW`: mode, boolF.
-     * <br> `ARGS`: b, b_t.
-     */
-    nodeLinkFilter: [
-
-      "any", (b, b_t) => true,
-      "cons", (b, b_t) => MDL_cond.isPowerTransmitter(b.block) && !MDL_cond.isPowerTransmitter(b_t.block),
-      "trans", (b, b_t) => MDL_cond.isPowerTransmitter(b.block) && MDL_cond.isPowerTransmitter(b_t.block),
-      "self", (b, b_t) => b.block === b_t.block,
-      "node", (b, b_t) => MDL_cond.isPowerNode(b.block) && MDL_cond.isPowerNode(b_t.block),
-      "relay", (b, b_t) => MDL_cond.isPowerRelay(b_t.block),
-      "remote-node", (b, b_t) => MDL_cond.isPowerRelay(b_t.block) || b.block === b_t.block,
-
-    ],
+    mod: {
 
 
-  },
+        /**
+         * List of names of Lovec-based mods.
+         * {@link PARAM.MODDED} will be true if any of these exists, which enables extra mechanics.
+         * You don't need to put your mod name here, just use write `dependencies` or `softDependencies` in your mod.json.
+         * @type {Array<string>}
+         * @lovecContentGen
+         */
+        lovecMod: [],
 
 
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+        /**
+         * Overwrites the vanilla list of menu flyers.
+         * @type {Array<UnitTypeGn>}
+         */
+        menuFlyer: [
+
+            "crawler",
+            "oct",
+            "risso",
+
+        ],
 
 
-  mod: {
+        /**
+         * Sounds listed here will be loaded beforehand, otherwise it takes time to be loaded in game.
+         * @type {Array<string>}
+         */
+        extraSound: [
+
+            "se-meme-steel-pipe",
+
+        ],
 
 
-    /**
-     * List of names of Lovec-based mods.
-     * {@link PARAM.MODDED} will be true if any of these exists, which enables extra mechanics.
-     * You don't need to put your mod name here, just use write `dependencies` or `softDependencies` in your mod.json.
-     * <br> `CONTENTGEN`
-     * <br> `ROW`: nameMod.
-     * ---------------------------------------- */
-    lovecMod: [],
+        /**
+         * Used to set up draggable button group.
+         * @type {Object<string, Array>}
+         */
+        dragButton: {
 
 
-    /**
-     * Overwrites the vanilla list of menu flyers.
-     * <br> `ROW`: utp.
-     */
-    menuFlyer: [
+            /**
+             * @type {Array}
+             * @lovecRow `string` - name
+             * @lovecRow `DragButtonParamObject` paramObj
+             */
+            base: [
 
-      "crawler",
-      "oct",
-      "risso",
+                "lovec-player-detach-camera", {
+                    rowInd: 0,
+                    icon: "lovec-icon-detach-camera",
+                    isToggle: true,
+                    updateScr: function() {
+                        Core.settings.put("detach-camera", this.isChecked());
+                        if(this.isChecked() && Vars.player.unit() != null) Vars.player.unit().apply(StatusEffects.unmoving, 5.0);
+                    },
+                },
 
-    ],
+                "lovec-setting-unit-health", {
+                    rowInd: 0,
+                    icon: "lovec-icon-health",
+                    clickScr: function() {
+                        Core.settings.put("lovec-unit0stat-show", !fetchSetting("unit0stat-show"));
+                        PARAM.forceLoadParam();
+                    },
+                },
+
+                "lovec-setting-unit-range", {
+                    rowInd: 0,
+                    icon: "lovec-icon-range",
+                    clickScr: function() {
+                        Core.settings.put("lovec-unit0stat-range", !fetchSetting("unit0stat-range"));
+                        PARAM.forceLoadParam();
+                    },
+                },
+
+                "lovec-setting-extra-info", {
+                    rowInd: 0,
+                    icon: "lovec-icon-extra-info",
+                    clickScr: function() {
+                        Core.settings.put("lovec-draw0aux-extra-info", !fetchSetting("draw0aux-extra-info"));
+                        PARAM.forceLoadParam();
+                    },
+                },
+
+                "lovec-info-wave-enemies", {
+                    rowInd: 0,
+                    icon: "units",
+                    clickScr: function() {
+                        fetchDialog("waveInfo").ex_show(null);
+                    },
+                },
+
+                "lovec-info-info-list", {
+                    rowInd: 0,
+                    icon: "lovec-icon-info-panel",
+                    clickScr: function() {
+                        UTIL_dragButtonInfoList.show();
+                    },
+                },
+
+                "lovec-player-dump-item-to-core", {
+                    rowInd: 1,
+                    icon: "lovec-icon-to-core",
+                    clickScr: function() {
+                        let unit = Vars.player.unit();
+                        if(unit == null) return;
+                        let b = unit.closestCore();
+                        if(b == null || !b.within(unit, unit.range())) return;
+                        FRAG_item.dropBuildItem(unit, b);
+                    },
+                },
+
+                "lovec-player-teleport", {
+                    rowInd: 1,
+                    icon: "lovec-icon-teleport",
+                    isToggle: true,
+                    updateScr: function() {
+                        if(!this.isChecked()) return;
+                        if(!global.lovecUtil.fun._isSandBox()) {
+                            this.setChecked(false);
+                            PARAM.IS_TELEPORTING = false;
+                            MDL_ui.showFadeInfo("lovec", "sandbox-only");
+                            return;
+                        };
+
+                        PARAM.IS_TELEPORTING = true;
+                        if(Core.input.keyTap(KeyCode.mouseLeft)) {
+                            let unit = Vars.player.unit();
+                            let vec = Core.input.mouseWorld();
+                            if(unit != null && unit.canPass(vec.x.toIntCoord(), vec.y.toIntCoord())) {
+                                let vecPrev = new Vec2(unit.x, unit.y);
+                                unit.set(vec);
+                                MDL_effect.line(unit.x, unit.y, null, vecPrev, Pal.accent, 1.5);
+                            };
+                            this.setChecked(false);
+                            PARAM.IS_TELEPORTING = false;
+                        } else if(Core.input.keyTap(KeyCode.mouseRight)) {
+                            this.setChecked(false);
+                            PARAM.IS_TELEPORTING = false;
+                        };
+                    },
+                },
+
+            ],
 
 
-    /**
-     * Sounds listed here will be loaded beforehand, or it takes time to be loaded in game.
-     * <br> `ROW`: nameSe.
-     */
-    extraSound: [
+            /**
+             * Added only if `PARAM.MODDED` is true.
+             * @type {Array}
+             * @lovecRow `string` - name
+             * @lovecRow `DragButtonParamObject` paramObj
+             */
+            modded: [
 
-      "se-meme-steel-pipe",
+                "lovec-player-take-loot", {
+                    rowInd: 1,
+                    icon: "lovec-icon-take-loot",
+                    clickScr: function() {
+                        let unit = Vars.player.unit();
+                        if(unit == null) return;
+                        let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
+                        if(loot == null) return;
+                        if(FRAG_item.takeUnitLoot_global(unit, loot)) {
+                            MDL_effect.itemTransfer(loot.x, loot.y, unit, null, null, true);
+                        };
+                    },
+                },
 
-    ],
+                "lovec-player-drop-loot", {
+                    rowInd: 1,
+                    icon: "lovec-icon-drop-loot",
+                    clickScr: function() {
+                        let unit = Vars.player.unit();
+                        if(unit == null) return;
+                        if(unit.stack.amount > 0) {
+                            Vars.net.client() ?
+                                MDL_call.spawnLoot_client(unit.x, unit.y, unit.item(), unit.stack.amount) :
+                                MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount);
+                            FRAG_item.setUnitItem_global(unit, unit.item(), 0);
+                        };
+                    },
+                },
+
+                "lovec-player-destroy-loot", {
+                    rowInd: 1,
+                    icon: "lovec-icon-destroy-loot",
+                    clickScr: function() {
+                        let unit = Vars.player.unit();
+                        if(unit == null) return;
+                        let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
+                        if(loot == null) return;
+                        FRAG_item.destroyLoot_global(loot);
+                    },
+                },
+
+            ],
 
 
-    /**
-     * Used to set up draggable button group.
-     * `this` in `updateScr` is the button.
-     * <br> `ROW`: name, {rowInd, icon, isToggle, clickScr, updateScr}.
-     */
-    dragButton: {
-
-
-      base: [
-
-        "lovec-player-detach-camera", {
-          rowInd: 0,
-          icon: "lovec-icon-detach-camera",
-          isToggle: true,
-          updateScr: function() {
-            Core.settings.put("detach-camera", this.isChecked());
-            if(this.isChecked() && Vars.player.unit() != null) Vars.player.unit().apply(StatusEffects.unmoving, 5.0);
-          },
         },
-
-        "lovec-setting-unit-health", {
-          rowInd: 0,
-          icon: "lovec-icon-health",
-          clickScr: function() {
-            Core.settings.put("lovec-unit0stat-show", !fetchSetting("unit0stat-show"));
-            PARAM.forceLoadParam();
-          },
-        },
-
-        "lovec-setting-unit-range", {
-          rowInd: 0,
-          icon: "lovec-icon-range",
-          clickScr: function() {
-            Core.settings.put("lovec-unit0stat-range", !fetchSetting("unit0stat-range"));
-            PARAM.forceLoadParam();
-          },
-        },
-
-        "lovec-setting-extra-info", {
-          rowInd: 0,
-          icon: "lovec-icon-extra-info",
-          clickScr: function() {
-            Core.settings.put("lovec-draw0aux-extra-info", !fetchSetting("draw0aux-extra-info"));
-            PARAM.forceLoadParam();
-          },
-        },
-
-        "lovec-info-wave-enemies", {
-          rowInd: 0,
-          icon: "units",
-          clickScr: function() {
-            fetchDialog("waveInfo").ex_show(null);
-          },
-        },
-
-        "lovec-info-info-list", {
-          rowInd: 0,
-          icon: "lovec-icon-info-panel",
-          clickScr: function() {
-            UTIL_dragButtonInfoList.show();
-          },
-        },
-
-        "lovec-player-dump-item-to-core", {
-          rowInd: 1,
-          icon: "lovec-icon-to-core",
-          clickScr: function() {
-            let unit = Vars.player.unit();
-            if(unit == null) return;
-            let b = unit.closestCore();
-            if(b == null || !b.within(unit, unit.range())) return;
-            FRAG_item.dropBuildItem(unit, b);
-          },
-        },
-
-        "lovec-player-teleport", {
-          rowInd: 1,
-          icon: "lovec-icon-teleport",
-          isToggle: true,
-          updateScr: function() {
-            if(!this.isChecked()) return;
-            if(!global.lovecUtil.fun._isSandBox()) {
-              this.setChecked(false);
-              PARAM.IS_TELEPORTING = false;
-              MDL_ui.showFadeInfo("lovec", "sandbox-only");
-              return;
-            };
-
-            PARAM.IS_TELEPORTING = true;
-            if(Core.input.keyTap(KeyCode.mouseLeft)) {
-              let unit = Vars.player.unit();
-              let vec = Core.input.mouseWorld();
-              if(unit != null && unit.canPass(vec.x.toIntCoord(), vec.y.toIntCoord())) {
-                let vecPrev = new Vec2(unit.x, unit.y);
-                unit.set(vec);
-                MDL_effect.line(unit.x, unit.y, null, vecPrev, Pal.accent, 1.5);
-              };
-              this.setChecked(false);
-              PARAM.IS_TELEPORTING = false;
-            } else if(Core.input.keyTap(KeyCode.mouseRight)) {
-              this.setChecked(false);
-              PARAM.IS_TELEPORTING = false;
-            };
-          },
-        },
-
-      ],
-
-
-      /**
-       * Buttons defined here will only be added if `PARAM.MODDED`.
-       * <br> `ROW`: name, {rowInd, icon, isToggle, clickScr, updateScr}.
-       */
-      modded: [
-
-        "lovec-player-take-loot", {
-          rowInd: 1,
-          icon: "lovec-icon-take-loot",
-          clickScr: function() {
-            let unit = Vars.player.unit();
-            if(unit == null) return;
-            let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
-            if(loot == null) return;
-            if(FRAG_item.takeUnitLoot_global(unit, loot)) {
-              MDL_effect.itemTransfer(loot.x, loot.y, unit, null, null, true);
-            };
-          },
-        },
-
-        "lovec-player-drop-loot", {
-          rowInd: 1,
-          icon: "lovec-icon-drop-loot",
-          clickScr: function() {
-            let unit = Vars.player.unit();
-            if(unit == null) return;
-            if(unit.stack.amount > 0) {
-              Vars.net.client() ?
-                MDL_call.spawnLoot_client(unit.x, unit.y, unit.item(), unit.stack.amount) :
-                MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount);
-              FRAG_item.setUnitItem_global(unit, unit.item(), 0);
-            };
-          },
-        },
-
-        "lovec-player-destroy-loot", {
-          rowInd: 1,
-          icon: "lovec-icon-destroy-loot",
-          clickScr: function() {
-            let unit = Vars.player.unit();
-            if(unit == null) return;
-            let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
-            if(loot == null) return;
-            FRAG_item.destroyLoot_global(loot);
-          },
-        },
-
-      ],
 
 
     },
 
 
-  },
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    search: {
 
 
-  search: {
+        /**
+         * Extra tags used for search.
+         * @type {Array}
+         * @lovecRow `string` - prefix
+         * @lovecRow `F2Function<UnlockableContent, string, boolean>` - boolF
+         */
+        tag: [
 
+            "no:", (ct, str) => !ct.name.toLowerCase().includes(str) && !Strings.stripColors(ct.localizedName).toLowerCase().includes(str) && (Core.settings.getString("locale") !== "zh_CN" || !LIB_pinyin.fetchPinyin(Strings.stripColors(ct.localizedName)).toLowerCase().includes(str)),
 
-    /**
-     * Extra tags used for search.
-     * <br> `ROW`: prefix, boolF.
-     * <br> `ARGS`: ct, str.
-     */
-    tag: [
+            "mod:", (ct, str) => str.equalsAny("none", "vanilla", "mindustry") ? ct.minfo.mod == null : (ct.minfo.mod !== null && ct.minfo.mod.name === str),
 
-      "no:", (ct, str) => !ct.name.toLowerCase().includes(str) && !Strings.stripColors(ct.localizedName).toLowerCase().includes(str) && (Core.settings.getString("locale") !== "zh_CN" || !LIB_pinyin.fetchPinyin(Strings.stripColors(ct.localizedName)).toLowerCase().includes(str)),
+            "type:", (ct, str) => ct.getContentType().toString() === str,
 
-      "mod:", (ct, str) => str.equalsAny("none", "vanilla", "mindustry") ? ct.minfo.mod == null : (ct.minfo.mod !== null && ct.minfo.mod.name === str),
+            "hardness:", (ct, str) => ct instanceof Item && ct.hardness == str,
 
-      "type:", (ct, str) => ct.getContentType().toString() === str,
+            "group:", (ct, str) => db["search"]["group"].read(str, Function.airFalse)(ct),
 
-      "hardness:", (ct, str) => ct instanceof Item && ct.hardness == str,
+        ],
 
-      "group:", (ct, str) => db["search"]["group"].read(str, Function.airFalse)(ct),
 
-    ],
+        /**
+         * Used for "group: xxx" tags.
+         * @type {Array}
+         * @lovecRow `string` - prefix
+         * @lovecRow `FFunction<UnlockableContent, boolean>` - boolF
+         * @lovecContentGen
+         */
+        group: [
 
+            "flammable", ct => ct.flammability != null && ct.flammability > 0.0,
+            "explosive", ct => ct.explosiveness != null && ct.explosiveness > 0.0,
+            "charged", ct => ct.charge != null && ct.charge > 0.0,
+            "radioactive", ct => ct.radioactivity != null && ct.radioactivity > 0.0,
+            "viscous", ct => ct.viscosity != null && ct.viscosity > VAR.param.clogViscThr,
+            "coolant", ct => ct.coolanet != null && ct.coolant && ct.temperature != null && ct.temperature <= 0.5 && ct.flammability != null && ct.flammability < 0.1,
 
-    /**
-     * Used for "group: xxx" tags.
-     * <br> `CONTENTGEN`
-     * <br> `ROW`: str, boolF.
-     * <br> `ARGS`: ct.
-     */
-    group: [
+            "intermediate", ct => MDL_cond.isIntermediate(ct),
+            "waste", ct => MDL_cond.isWaste(ct),
 
-      "flammable", ct => ct.flammability != null && ct.flammability > 0.0,
-      "explosive", ct => ct.explosiveness != null && ct.explosiveness > 0.0,
-      "charged", ct => ct.charge != null && ct.charge > 0.0,
-      "radioactive", ct => ct.radioactivity != null && ct.radioactivity > 0.0,
-      "viscous", ct => ct.viscosity != null && ct.viscosity > VAR.param.clogViscThr,
-      "coolant", ct => ct.coolanet != null && ct.coolant && ct.temperature != null && ct.temperature <= 0.5 && ct.flammability != null && ct.flammability < 0.1,
+            "sand", ct => DB_item.db["group"]["sand"].includes(ct.name),
+            "aggregate", ct => DB_item.db["group"]["aggregate"].includes(ct.name),
 
-      "intermediate", ct => MDL_cond.isIntermediate(ct),
-      "waste", ct => MDL_cond.isWaste(ct),
+            "aqueous", ct => DB_fluid.db["group"]["aqueous"].includes(ct.name),
+            "conductive", ct => DB_fluid.db["group"]["conductive"].includes(ct.name),
+            "aux", ct => MDL_cond.isAuxiliaryFluid(ct),
 
-      "sand", ct => DB_item.db["group"]["sand"].includes(ct.name),
-      "aggregate", ct => DB_item.db["group"]["aggregate"].includes(ct.name),
-
-      "aqueous", ct => DB_fluid.db["group"]["aqueous"].includes(ct.name),
-      "conductive", ct => DB_fluid.db["group"]["conductive"].includes(ct.name),
-      "aux", ct => MDL_cond.isAuxiliaryFluid(ct),
-
-    ],
-
-
-  },
-
-
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
-
-
-  lsav: {
-
-
-    /**
-     * Properties that are saved in a LSAV.
-     * <br> `ROW`: header, def, arrMode.
-     */
-    header: [
-
-      "useless-field", "ohno", null,
-      "save-map", "!UNDEF", null,
-      "save-revision", -1, null,
-
-      "dynamic-pollution", 0.0, null,
-      "lingering-pollution", 0.0, null,
-      "bits", [], "string",
-      "bit-hash", [], "string",
-      "flags", [], "string",
-
-    ],
-
-
-    /**
-     * Properties here are safe (or required) to be set by client sides.
-     * <br> `ROW`: header.
-     */
-    safe: [
-
-      "bits",
-      "bit-hash",
-
-    ],
-
-
-    /**
-     * Properties that are saved in a PLSAV.
-     * <br> `ROW`: header, def, arrMode.
-     */
-    pHeader: [
-
-      "save-map", "!UNDEF", null,
-
-      "global-bits", [], "string",
-      "global-bit-hash", [], "string",
-
-    ],
-
-
-    /**
-     * Safe properties in PLSAV.
-     * <br> `ROW`: header.
-     */
-    pSafe: [
-
-      "global-bits",
-      "global-bit-hash",
-
-    ],
-
-
-  },
-
-
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
-
-
-  texture: {
-
-
-    /**
-     * Icons populated in {@link VARGEN.icons} and {@link VARGEN.iconRegs}.
-     * <br> `ROW`: name, regStr.
-     */
-    icon: [
-
-      "ohno", "error",
-
-      "boost", "lovec-icon-boost",
-      "check", "lovec-icon-check",
-      "cross", "lovec-icon-cross",
-      "dot", "lovec-icon-dot",
-      "dropLoot", "lovec-icon-drop-loot",
-      "harvest", "lovec-icon-harvest",
-      "play", "lovec-icon-play",
-      "questionMark", "lovec-icon-question-mark",
-      "swap", "lovec-icon-swap",
-      "window", "lovec-icon-window",
-
-    ],
-
-
-    /**
-     * Noise textures populated in {@link VARGEN.noiseTexs}.
-     * <br> `ROW`: name, path.
-     */
-    noise: [
-
-      "caustics", "sprites/caustics.png",
-      "clouds", "sprites/clouds.png",
-      "distortAlpha", "sprites/distortAlpha.png",
-      "fog", "sprites/fog.png",
-      "noise", "sprites/noise.png",
-      "noiseAlpha", "sprites/noiseAlpha.png",
-
-    ],
-
-
-  },
-
-
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
-
-
-  drama: {
-
-
-    chara: {
-
-
-      /**
-       * The colors used for characters in dialog flow.
-       * <br> `ROW`: nameMod, nameChara, color.
-       */
-      color: [
-
-        "lovec", "earlan", "d4c0d8",
-
-        "projreind", "shirone", "e2cad1",
-        "projreind", "expe", "d6eaff",
-
-      ],
+        ],
 
 
     },
 
 
-  },
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
-  /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    lsav: {
+
+
+        /**
+         * Properties that are saved in a LSAV.
+         * @type {Array}
+         * @lovecRow `string` - header
+         * @lovecRow `Object` - def
+         * @lovecRow `string|null` - arrMode
+         */
+        header: [
+
+            "useless-field", "ohno", null,
+            "save-map", "!UNDEF", null,
+            "save-revision", -1, null,
+
+            "dynamic-pollution", 0.0, null,
+            "lingering-pollution", 0.0, null,
+            "bits", [], "string",
+            "bit-hash", [], "string",
+            "flags", [], "string",
+
+        ],
+
+
+        /**
+         * Properties here are safe (or required) to be set by client sides.
+         * @type {Array<string>}
+         */
+        safe: [
+
+            "bits",
+            "bit-hash",
+
+        ],
+
+
+        /**
+         * Properties that are saved in a PLSAV.
+         * @type {Array}
+         * @lovecRow `string` - header
+         * @lovecRow `Object` - def
+         * @lovecRow `string|null` - arrMode
+         */
+        pHeader: [
+
+            "save-map", "!UNDEF", null,
+
+            "global-bits", [], "string",
+            "global-bit-hash", [], "string",
+
+        ],
+
+
+        /**
+         * Safe properties in PLSAV.
+         * @type {Array<string>}
+         */
+        pSafe: [
+
+            "global-bits",
+            "global-bit-hash",
+
+        ],
+
+
+    },
+
+
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+
+
+    texture: {
+
+
+        /**
+         * Icons populated in {@link VARGEN.icons} and {@link VARGEN.iconRegs}.
+         * @type {Array}
+         * @lovecRow `string` - name
+         * @lovecRow `string` - regStr
+         */
+        icon: [
+
+            "ohno", "error",
+
+            "boost", "lovec-icon-boost",
+            "check", "lovec-icon-check",
+            "cross", "lovec-icon-cross",
+            "dot", "lovec-icon-dot",
+            "dropLoot", "lovec-icon-drop-loot",
+            "harvest", "lovec-icon-harvest",
+            "play", "lovec-icon-play",
+            "questionMark", "lovec-icon-question-mark",
+            "swap", "lovec-icon-swap",
+            "window", "lovec-icon-window",
+
+        ],
+
+
+        /**
+         * Noise textures populated in {@link VARGEN.noiseTexs}.
+         * @type {Array}
+         * @lovecRow `string` - name
+         * @lovecRow `string` - imgPath
+         */
+        noise: [
+
+            "caustics", "sprites/caustics.png",
+            "clouds", "sprites/clouds.png",
+            "distortAlpha", "sprites/distortAlpha.png",
+            "fog", "sprites/fog.png",
+            "noise", "sprites/noise.png",
+            "noiseAlpha", "sprites/noiseAlpha.png",
+
+        ],
+
+
+    },
+
+
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+
+
+    drama: {
+
+
+        chara: {
+
+
+            /**
+             * Colors used for characters in dialog flow.
+             * @type {Array}
+             * @lovecRow `string` - nameMod
+             * @lovecRow `string` - nameChara
+             * @lovecRow `string` - colorStr
+             */
+            color: [
+
+                "lovec", "earlan", "d4c0d8",
+
+                "projreind", "shirone", "e2cad1",
+                "projreind", "expe", "d6eaff",
+
+            ],
+
+
+        },
+
+
+    },
+
+
+    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
 
 
 };
@@ -605,12 +634,12 @@ mergeDB(db, "DB_misc");
 
 
 Vars.mods.eachEnabled(mod => {
-  if(mod.meta.dependencies.contains("lovec") || mod.meta.softDependencies.contains("lovec")) db["mod"]["lovecMod"].push(mod.name);
+    if(mod.meta.dependencies.contains("lovec") || mod.meta.softDependencies.contains("lovec")) db["mod"]["lovecMod"].push(mod.name);
 });
 
 
 Object.eachPair(DB_fluid.db["group"]["elementary"], (eleGrp, arr) => {
-  db["search"]["group"].push(eleGrp, ct => arr.includes(ct.name));
+    db["search"]["group"].push(eleGrp, ct => arr.includes(ct.name));
 });
 
 

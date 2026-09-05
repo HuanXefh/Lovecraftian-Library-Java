@@ -83,14 +83,14 @@
    * @param {number|unset} [a]
    * @param {number|unset} [offW]
    * @param {number|unset} [offTy]
-   * @param {number|unset} [frac_ow]
+   * @param {number|unset} [fracOverwrite]
    * @param {number|unset} [z]
    * @return {void}
    */
   const unitReload = function(
     e, mtIds,
     color_gn, a, offW, offTy,
-    frac_ow,
+    fracOverwrite,
     z
   ) {
     if(e.dead || (e instanceof Unit && MDL_cond.isUnitCovered(e))) return;
@@ -101,8 +101,8 @@
     if(z == null) z = Layer.effect + VAR.layer.offDraw + 1.0;
 
     let frac;
-    if(frac_ow != null) {
-      frac = frac_ow;
+    if(fracOverwrite != null) {
+      frac = fracOverwrite;
     } else if(mtIds == null) {
       frac = 0.0;
     } else {

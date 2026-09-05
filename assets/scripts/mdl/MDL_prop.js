@@ -215,7 +215,7 @@
       sDmgRad = bul.type.splashDamageRadius,
       dmg_fi = 0.0,
       dst = Mathf.dst(bul.x, bul.y, e.x, e.y),
-      isRemote = DB_unit.db["class"]["btp"]["remote"].hasIns(bul.type),
+      isRemote = DB_unit.db["class"]["bullet"]["remote"].hasIns(bul.type),
       isRemoteCur = (dst > (bul.hitSize + LCProp.getHitSize(e)) * 0.7499);
     if(e instanceof Unit && tryJsProp(bul.type, "typeMtpArr") != null) {
       dmg *= FRAG_attack.getDmgMtpByTypeMtpArr(e, bul.type.delegee.typeMtpArr);

@@ -461,10 +461,10 @@
    * Registers recipes for dynamic attribute factory (or miner).
    * @param {Block} blk
    * @param {Array} attrRsArr
-   * @param {string|unset} [typeStr_ow]
+   * @param {string|unset} [typeStrOverwrite]
    * @return {void}
    */
-  const regisRc_dynamicAttributeBlock = function(blk, attrRsArr, typeStr_ow) {
+  const regisRc_dynamicAttributeBlock = function(blk, attrRsArr, typeStrOverwrite) {
     if(!ENABLED) return;
 
     MDL_event.onLoad(() => {
@@ -472,7 +472,7 @@
         let rs = MDL_content.getCt(nameRs, "rs");
         if(rs == null) return;
 
-        let rawRc = makeRawRc(tryVal(typeStr_ow, "factory"), blk, blk.ex_getCraftTime(), true);
+        let rawRc = makeRawRc(tryVal(typeStrOverwrite, "factory"), blk, blk.ex_getCraftTime(), true);
         let rcGrp = new CLASSES.RecipeItemGroup();
         baseParse(blk, rawRc);
 

@@ -269,11 +269,18 @@
      * @lovecRow `number` - p
      */
 
-     /**
+    /**
      * @global
      * @typedef {Array} Liquid2Array
      * @lovecRow `LiquidGn` - liq_gn
      * @lovecRow `number` - amt
+     */
+
+    /**
+     * @global
+     * @typedef {Array} StatusReactionArray
+     * @lovecRow `StatusGn` - sta
+     * @lovecRow `[StatusGn, C3Function<Unit, StatusEntry, number>]` - [osta, reacScr]
      */
 
     /**
@@ -308,6 +315,38 @@
      * @typedef {string} JSONPayload
      */
 
+    /**
+     * @global
+     * @typedef {Object} ReactionParamObject
+     * @prop {number|unset} [pow]
+     * @prop {number|unset} [dmg]
+     * @prop {number|unset} [amt]
+     * @prop {number|unset} [solvent]
+     * @prop {number|unset} [puddleScl]
+     */
+
+    /**
+     * `TUPLE`: p, invoker.
+     * @global
+     * @typedef {[number, ReactionInvoker]} ReactionData
+     */
+
+    /**
+     * @global
+     * @typedef {Function} ReactionInvoker
+     * @param {ReactionParamObject} paramObj
+     * @param {number} x
+     * @param {number} y
+     * @param {Building|Unit|null} e
+     * @param {Resource|null} rs
+     * @return {void}
+     */
+
+    /**
+     * @global
+     * @typedef {string|Resource} Reactant
+     */
+
 
     /* render */
 
@@ -326,11 +365,20 @@
      * @lovecRow `number` - off
      */
 
-
     /**
      * `TUPLE`: name, icon, isToggle, clickScr, updateScr
      * @global
      * @typedef {Array<Array<[string|null, BaseDrawable, boolean, C0Function, C0Function]>>} DragButtonData
+     */
+
+    /**
+     * @global
+     * @typedef {Object} DragButtonParamObject
+     * @prop {number} rowInd
+     * @prop {string} icon
+     * @prop {boolean|unset} [isToggle]
+     * @prop {CFunction|unset} [clickScr]
+     * @prop {CFunction|unset} [updateScr] - `this` refers to the button.
      */
 
 
@@ -510,9 +558,26 @@
 
     /**
      * @global
+     * @typedef {Object} RecipeMetaObject
+     */
+
+    /**
+     * @global
+     * @typedef {Object} RecipeParamObject
+     */
+
+    /**
+     * @global
+     * @typedef {Object} RecipeGroupData
+     * @prop {number|unset} [amtScl]
+     * @prop {number|unset} [pScl]
+     */
+
+    /**
+     * @global
      * @typedef {Array} RecipeRawData2Array
      * @lovecRow `string` - nameCt
-     * @lovecRow `Object` - paramObj
+     * @lovecRow `RecipeParamObject` - paramObj
      */
 
     /**
@@ -533,6 +598,47 @@
      * @prop {function(Table, Block, UnlockableContent): void} [ctTableF] - Table builder function used for content icon tooltip.
      * @prop {string|unset} [ctText] - Tooltip text used for content icon.
      * @prop {number|unset} [time] - Overwrites crafting time.
+     */
+
+    /**
+     * @global
+     * @typedef {Function} RecipeDictionaryConsumeReader
+     * @param {Block} blk
+     * @param {Consume|null} cons
+     * @param {RecipeDictionaryData|null} data
+     * @param {Array<Array>} dictConsItem
+     * @param {Array<Array>} dictConsFld
+     * @param {Array<Array>} dictConsBlk
+     * @param {Array<Array>} dictConsUtp
+     * @return {void}
+     */
+
+    /**
+     * @global
+     * @typedef {Function} RecipeDictionaryProduceReader
+     * @param {Block} blk
+     * @param {RecipeDictionaryData|null} data
+     * @param {Array<Array>} dictProdItem
+     * @param {Array<Array>} dictProdFld
+     * @param {Array<Array>} dictProdBlk
+     * @param {Array<Array>} dictProdUtp
+     */
+
+    /**
+     * @global
+     * @typedef {Function} OreDictionaryConsumeSetter
+     * @param {Block} blk
+     * @param {Consume|null} cons
+     * @param {ObjectMap<Resource, Resource>} oreDict
+     * @return {void}
+     */
+
+    /**
+     * @global
+     * @typedef {Function} OreDictionaryProduceSetter
+     * @param {Block} blk
+     * @param {ObjectMap<Resource, Resource>} oreDict
+     * @return {void}
      */
 
 

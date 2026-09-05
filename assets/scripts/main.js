@@ -322,7 +322,7 @@
     // Something
     if(!Vars.headless && PARAM.MODDED && !fetchSetting("load-vanilla-flyer")) {
       try {
-        Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", Vars.content.unit(DB_misc.db["mod"]["menuFlyer"].random()));
+        Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", MDL_content.getCt(DB_misc.db["mod"]["menuFlyer"].random(), "utp"));
       } catch(err) {
         console.err("[LOVEC] Failed to modify the menu scene:\n" + err);
       };
