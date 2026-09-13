@@ -67,7 +67,7 @@
     if((b.playingWithUnit || b.playingWithCrank) && b.efficiency > VAR.param.buildActiveEffcThr) {
       b.moveAng = Math.sin(Time.time / 10.0) * b.block.delegee.armPlayAng;
       if(b.playingWithUnit && TIMER.secFive) {
-        let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
+        let unit = LCEntity.getUnit(b.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
         if(unit != null && unit.isGrounded() && MDL_cond.canHeal(unit, b.team)) {
           FRAG_attack.heal(unit, 1.0);
         };
@@ -218,7 +218,7 @@
 
   function comp_ex_doFloorPick(b) {
     if(TIMER.secHalf) {
-      let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
+      let unit = LCEntity.getUnit(b.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
       if(unit != null && unit.isGrounded() && unit.stack.amount > 0) {
         b.playingWithUnit = false;
         b.ex_doUnitPick(unit);
@@ -226,7 +226,7 @@
         b.playingWithUnit = true;
       } else {
         b.playingWithUnit = false;
-        let loot = LCEntity.getLoot((b.ex_calcMoveIntCoord(false, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(false, true) + 0.5) * Vars.tilesize);
+        let loot = LCEntity.getLoot(b.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
         if(loot != null && loot.stack.amount > 0) {
           b.ex_doLootPick(loot);
         };
@@ -283,14 +283,14 @@
 
 
   function comp_ex_doFloorInsert(b) {
-    let unit = LCEntity.getUnit((b.ex_calcMoveIntCoord(true, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(true, true) + 0.5) * Vars.tilesize);
+    let unit = LCEntity.getUnit(b.ex_calcMoveIntCoord(true, false) * Vars.tilesize, b.ex_calcMoveIntCoord(true, true) * Vars.tilesize);
     if(unit != null && unit.isGrounded() && unit.acceptsItem(b.moveItemCur)) {
       b.ex_doUnitInsert(unit);
     };
     if(b.moveItemAmtCur <= 0) {
       b.ex_moveBack();
     } else if(b.shouldDropLoot) {
-      let loot = LCEntity.getLoot((b.ex_calcMoveIntCoord(true, false) + 0.5) * Vars.tilesize, (b.ex_calcMoveIntCoord(true, true) + 0.5) * Vars.tilesize);
+      let loot = LCEntity.getLoot(b.ex_calcMoveIntCoord(true, false) * Vars.tilesize, b.ex_calcMoveIntCoord(true, true) * Vars.tilesize);
       if(loot != null && loot.acceptsItem(b.moveItemCur)) {
         b.ex_doLootInsert(loot);
       };

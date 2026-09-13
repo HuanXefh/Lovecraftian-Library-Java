@@ -430,7 +430,7 @@
   /**
    * Adds a clickable icon display for a table.
    * @param {Table} tb
-   * @param {BaseDrawable} icon
+   * @param {Drawable} icon
    * @param {TooltipArgument|unset} ttArg
    * @param {function(): void} scr
    * @param {number|unset} [w]
@@ -750,7 +750,7 @@
   /**
    * Sets a list that shows icons in rows.
    * @param {Table} tb
-   * @param {Plural<BaseDrawable>} icons_p
+   * @param {Plural<Drawable>} icons_p
    * @param {Plural<string>} names_p
    * @param {Plural<function(): void>} scrs_p
    * @param {boolean|unset} [showOrd]
@@ -846,7 +846,7 @@
   /**
    * Sets a list that shows clickable icons just like in the database.
    * @param {Table} tb
-   * @param {Plural<BaseDrawable>} icons_p
+   * @param {Plural<Drawable>} icons_p
    * @param {Plural<TooltipArgument>} ttArgs_p
    * @param {Plural<function(): void>} scrs_p
    * @param {number|unset} [iconW]
@@ -1303,7 +1303,7 @@
         )),
         () => fetchDialog("cts").ex_show(
           factionB.color(factionColor),
-          VARGEN.factions[faction],
+          VARGEN.factionBlksMap.get(faction),
           true,
         ),
       )
@@ -1354,7 +1354,7 @@
       cont.table(Tex.whiteui, tb1 => {
         tb1.left().setColor(Pal.darkestGray);
         margin(tb1, 0.5);
-        setCtLi(tb1, VARGEN.facFamis[fami], 48.0);
+        setCtLi(tb1, VARGEN.famiBlksMap.get(fami), 48.0);
       })
       .left()
       .growX()

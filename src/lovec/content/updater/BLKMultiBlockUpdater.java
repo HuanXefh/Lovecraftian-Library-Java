@@ -39,6 +39,7 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
             target.clipSize += (Math.max(Tmp.p1.x, Tmp.p1.y) - target.size) * Vars.tilesize;
             target.hasItems = true;
             target.hasLiquids = true;
+            target.allowedInPayloads = false;
         };
     };
 

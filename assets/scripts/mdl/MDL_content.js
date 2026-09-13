@@ -41,11 +41,11 @@
       }, true);
     } else {
       // Try finding content in all categories, can be costy
-      if(!suppressWarning) LOG_HANDLER.log("costyContentSearch", ct_gn);
+      if(!suppressWarning) LCLogHandler.log("costyContentSearch", ct_gn);
       ct = Vars.content.byName(ct_gn);
     };
 
-    if(ct == null && !suppressWarning) LOG_HANDLER.log("noContentFound", ct_gn);
+    if(ct == null && !suppressWarning) LCLogHandler.log("noContentFound", ct_gn);
 
     return ct == null ? null : global.lovecUtil.db.oreDict.get(ct, ct);
   }
@@ -195,7 +195,7 @@
     if(rs == null) return null;
     if(tryJsProp(rs, "intmdParent") != null) rs = rs.delegee.intmdParent;
 
-    let arr = VARGEN.intmds[intmdTag];
+    let arr = VARGEN.tagIntmdsMap.get(intmdTag);
     if(arr == null) return null;
 
     return arr.find(ors => ors.delegee.intmdParent === rs);

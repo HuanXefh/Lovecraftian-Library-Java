@@ -20,8 +20,7 @@
 
     blk.clipSize += blk.blkRad;
     blk.configurable = true;
-    // I'm lazy to do more for this
-    blk.canPickup = false;
+    blk.allowedInPayloads = false;
 
     blk.config(JAVA.boolean, (b, bool) => {
       if(b.team !== Vars.player.team()) return;
@@ -185,7 +184,7 @@
     .setParamAlias([
       /**
        * `PARAM`: Radius parameter of the scanner.
-       * @type {number} scanRad
+       * @type {number}
        * @memberof BLK_oreScanner
        * @instance
        */

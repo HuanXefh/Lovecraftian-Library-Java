@@ -19,9 +19,8 @@ const db = {
 
             /**
              * Maps type to a unit class or entity template.
-             * @type {Array}
-             * @lovecRow `string` - type
-             * @lovecRow `Class|Prov<ContentTemplate>` - parent
+             * <br> `ROW`: type, parent.
+             * @type {F2Array<string, Class|Prov<ContentTemplate>>}
              */
             type: [
 
@@ -49,9 +48,8 @@ const db = {
 
         /**
          * Faction for unit type.
-         * @type {Array}
-         * @lovecRow `UnitTypeGn` - utp
-         * @lovecRow `string` - faction
+         * <br> `ROW`: utp, faction.
+         * @type {F2Array<UnitTypeGn, string>}
          */
         faction: [],
 
@@ -131,9 +129,8 @@ const db = {
         /**
          * Outline parameters used for units & turrets in some mods.
          * Note that only contents created with content template will be affected.
-         * @type {Array}
-         * @lovecRow `string` - nameMod
-         * @lovecRow `[number, ColorGn]` - [stroke, color]
+         * <br> `ROW`: nameMod, [stroke, color].
+         * @type {F2Array<string, [number, ColorGn]>}
          */
         outline: [
 

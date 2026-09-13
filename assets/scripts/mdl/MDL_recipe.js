@@ -42,6 +42,7 @@
    * @param {string} nameMod
    * @param {string} nameBlk
    * @return {RecipeModule}
+   * @lovecTryBlock
    */
   const getRcMdl = function(nameMod, nameBlk) {
     let rcMdl;
@@ -406,12 +407,13 @@
   exports.checkErekirHeatOutput = checkErekirHeatOutput;
 
 
+  /** @global */
   const RecipeKeyResourceModes = new CLS_enum({
     ITEM: 0,
     FLUID: 1,
     PAYLOAD: 2,
-  })
-  .globalize("RecipeKeyResourceModes");
+  });
+  globalize(RecipeKeyResourceModes, "RecipeKeyResourceModes");
 
 
   /**

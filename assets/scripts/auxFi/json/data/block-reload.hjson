@@ -18,6 +18,15 @@ aquarion-vector: true
 aquarion-thrash: true
 aquarion-flagellate: true
 
+/* <---------- Azimuth ----------> */
+
+azimut-yongsin: true
+azimut-priority: true
+azimut-dezolo: true
+azimut-jannabi: true
+azimut-retray: true
+azimut-seraphim: true
+
 /* <---------- New Horizon ----------> */
 
 new-horizon-hive: true

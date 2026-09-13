@@ -13,6 +13,7 @@
     const CLS_eventTrigger = newClass().initClass();
 
 
+    /** @private */
     CLS_eventTrigger.prototype.init = function(name) {
 
 
@@ -34,7 +35,7 @@
 
 
         MDL_event.onUpdate(() => {
-            this.mapCur = global.lovecUtil.fun._mapCur();
+            this.mapCur = global.lovecUtil.fun.getMapCur();
             if(this.mapLast !== this.mapCur) {
                 this.clearListener();
                 this.clearOnceListener();
@@ -155,6 +156,7 @@
 
     /**
      * Calls all listeners of the trigger with the arguments passed down.
+     * <br> `ARGS`: arg1, arg2, arg3, ...
      * @return {void}
      */
     CLS_eventTrigger.prototype.fire = function() {

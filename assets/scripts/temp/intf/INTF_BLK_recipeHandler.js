@@ -177,7 +177,11 @@
 
   function comp_acceptItem(b, b_f, item) {
     if(b.items == null || b.items.get(item) >= b.getMaximumAccepted(item)) return false;
-    if(b.blk$useAutoSelection && b.rc.keyItemHeaderMap != null && item !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f) && b.rc.keyItemHeaderMap.containsKey(item) && !b.rc.checkOutput(item)) {
+    if(
+      b.blk$useAutoSelection && b.rc.keyItemHeaderMap != null
+        && item !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f)
+        && b.rc.keyItemHeaderMap.containsKey(item) && !b.rc.checkOutput(item)
+    ) {
       b.keyCt = item;
     };
 
@@ -191,7 +195,11 @@
 
   function comp_acceptLiquid(b, b_f, liq) {
     if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
-    if(b.blk$useAutoSelection && b.rc.keyFldHeaderMap != null && liq !== b.keyCt && b_f !== b && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)) {
+    if(
+      b.blk$useAutoSelection && TIMER.sec && b.rc.keyFldHeaderMap != null
+        && liq !== b.keyCt && b_f !== b
+        && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)
+    ) {
       b.keyCt = liq;
     };
 
@@ -564,9 +572,9 @@
       }),
       __paramParserM__: (() => [
         "rcMdl", function(val) {
-          if(val == null) LCErrorHandler.throw("nullArgument", "rcMdl");
+          if(val == null) throw new LCError.NullArgumentError("rcMdl");
           let nameMod = this.rcSourceMod;
-          if(nameMod == null) LCErrorHandler.throw("nullArgument", "rcSourceMod");
+          if(nameMod == null) throw new LCError.NullArgumentError("rcSourceMod");
 
           return MDL_recipe.getRcMdl(nameMod, val);
         },

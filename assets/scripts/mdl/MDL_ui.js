@@ -158,7 +158,7 @@
   /**
    * Displays information at screen center.
    * @param {string|unset} [nameMod]
-   * @param {string|unset} [bp]
+   * @param {BundlePiece|unset} [bp]
    * @param {number|unset} [timeS]
    * @return {void}
    */
@@ -176,7 +176,7 @@
   /**
    * Displays information that fades out at upper position.
    * @param {string|unset} [nameMod]
-   * @param {string|unset} [bp]
+   * @param {BundlePiece|unset} [bp]
    * @param {number|unset} [timeS]
    * @return {void}
    */
@@ -195,7 +195,7 @@
    * Content unlocked, sector captured...
    * Only possible to show in game.
    * @param {string|unset} [nameMod]
-   * @param {string|unset} [bp]
+   * @param {BundlePiece|unset} [bp]
    * @param {TextureRegionDrawable|unset} [icon]
    * @param {number|unset} [w]
    * @return {void}
@@ -217,7 +217,7 @@
    * @param {number} x
    * @param {number} y
    * @param {string|unset} [nameMod]
-   * @param {string|unset} [bp]
+   * @param {BundlePiece|unset} [bp]
    * @param {number|unset} [timeS]
    * @return {void}
    */
@@ -235,7 +235,7 @@
   /**
    * Displays an error dialog.
    * @param {string|unset} [nameMod]
-   * @param {string|unset} [bp]
+   * @param {BundlePiece|unset} [bp]
    * @return {void}
    */
   const showError = function(nameMod, bp) {
@@ -319,8 +319,8 @@
    * @return {void}
    */
   const clearDialFlow = function() {
-    TRIGGER_BACKGROUND = false;
-    TRIGGER_MUSIC = false;
+    UTIL_dialogFlow.TRIGGER_BACKGROUND = false;
+    UTIL_dialogFlow.TRIGGER_MUSIC = false;
     LCSoundControl.stop();
     UTIL_dialogFlow.removeTextCur();
     UTIL_dialogFlow.clearRead();
@@ -455,7 +455,7 @@
    * @param {string} nameChara
    * @param {function(): boolean} endF
    * @param {number|unset} [fracX] - The initial x position of image as fraction.
-   * @param {boolean|Color|unset} [isDark0color] - Determines color of the image. The character art will be darkened if this property is true.
+   * @param {boolean|Color|unset} [charaColorArg] - Determines color of the image. The character art will be darkened if this property is true.
    * @param {string|unset} [anim] - Determines animation used on the image.
    * @param {Object|unset} [animParamObj]
    * @param {Array<Action>|unset} [customActs]
@@ -464,7 +464,7 @@
    */
   const createChara = function(
     delay, nameMod, nameChara, endF,
-    fracX, isDark0color, anim, animParamObj,
+    fracX, charaColorArg, anim, animParamObj,
     customActs, customActTimeS
   ) {
     if(customActTimeS == null) customActTimeS = 0.0;
@@ -474,9 +474,9 @@
     UTIL_dialogFlow.getPool("chara").push(actor);
 
     actor.table(new TextureRegionDrawable(Core.atlas.find(nameMod + "-chara-" + nameChara, Core.atlas.find("lovec-chara-error"))), tb => {
-      if(isDark0color instanceof Color) {
-        tb.setColor(isDark0color);
-      } else if(isDark0color) {
+      if(charaColorArg instanceof Color) {
+        tb.setColor(charaColorArg);
+      } else if(charaColorArg) {
         tb.setColor(VAR.color.darkMix);
       };
     })
@@ -644,15 +644,10 @@
   /**
    * Shows clickable text box at the bottom of screen.
    * @param {number} delay
-   * @param {DialogTuple|unset} [dialTup]
+   * @param {DialogTextTuple|unset} [dialTup]
    * @param {DialogCharaTuple|unset} [charaTup]
    * @param {(function(): void)|unset} [scr] - Called just before the text box is removed.
-   * @param {Object|unset} [paramObj]
-   * @param {SoundGn|unset} [paramObj.sound] - If set, the sound will be played when the text is shown.
-   * @param {number|unset} [paramObj.haltTimeS] - If set, the box will be removed after some seconds.
-   * @param {boolean|unset} [paramObj.autoClick] - If true, the box will be automatically clicked.
-   * @param {boolean|unset} [paramObj.isTail] - Set this to true for last text.
-   * @param {Function|unset} [paramObj.selectionScr] - Use this field to call {@link createSelection}.
+   * @param {DialogFlowParamObject|unset} [paramObj]
    * @param {(function(): boolean)|unset} [endF]
    * @return {number}
    */
@@ -734,7 +729,7 @@
     );
 
     if(selectionScr != null) paramObj.selectionScr();
-    if(sound != null) MDL_sound.play(paramObj.sound);
+    if(sound != null) MDL_sound.play(sound);
 
     UTIL_dialogFlow.setTextCur(actor);
     UTIL_dialogFlow.addLog({

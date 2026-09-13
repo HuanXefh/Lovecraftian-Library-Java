@@ -17,7 +17,7 @@
     let scr = b => {
       b.delegee.manualClickFrac = Mathf.lerp(b.delegee.manualClickFrac, 1.25, 0.125);
       MDL_effect.click(b.x, b.y, b.team.color);
-      Sounds.click.at(b);
+      MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
     };
     switch(blk.manualClickCfgTp) {
       case "boolean" :

@@ -10,13 +10,14 @@
      * Annotations can be applied by `fun.setAnno(name, annoArgs, skipDef)`.
      * @class
      * @param {string} name
-     * @param {Function|unset} [funC] - Called before the original function is called, `this` refers to the original function. If ture is returned, the original function will be skipped.
+     * @param {Function|unset} [funC] - Called before the original function is called, `this` refers to the original function. If true is returned, the original function will be skipped.
      * @param {Function|unset} [loadScr] - Called just after the original function is defined, `this` refers to the original function.
      * @param {Function|unset} [funArgC] - Like `funC` but `this` refers to arguments of the original function.
      */
     const CLS_annotation = newClass().initClass();
 
 
+    /** @private */
     CLS_annotation.prototype.init = function(name, funC, loadScr, funArgC) {
 
 
@@ -51,7 +52,9 @@
     };
 
 
+    /** @type {Array<string>} */
     const insNames = [];
+    /** @type {ObjectMap<string, CLS_annotation>} */
     const nameAnnoMap = new ObjectMap();
 
 
@@ -82,18 +85,17 @@
 
 
     /**
-     * Initializes some parameters on this annotation.
      * @lovecPropGen {@link CLS_annotation}
      * @return {void}
      */
     CLS_annotation.prototype.initAnno = function() {
         nameAnnoMap.put(this.name, this);
 
-        /** @type {F2Function<Function, Array, boolean>} */
+        /** @type {F2Function<Function, Arguments, boolean>} */
         this.onCall = Function.airFalse;
-        /** @type {C2Function<Function, Array>} */
+        /** @type {C2Function<Function, Arguments>} */
         this.onLoad = Function.air;
-        /** @type {F2Function<Array, Array, boolean>} */
+        /** @type {F2Function<Arguments, Arguments, boolean>} */
         this.onArgCall = Function.airFalse;
         /** @type {string} */
         this.type = "undefined";

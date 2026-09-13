@@ -16,9 +16,8 @@ const db = {
         /**
          * Maps a block/unit name before change to the changed name.
          * Used when internal name of some block is changed.
-         * @type {Array}
-         * @lovecRow `string` - namePrev
-         * @lovecRow `string` - nameCur
+         * <br> `ROW`: namePrev, nameCur.
+         * @type {F2Array<string, string>}
          */
         migration: [
 
@@ -104,9 +103,8 @@ const db = {
             /**
              * Maps graph type to its init method.
              * See {@Link INTF_BLK_graphBlock}.
-             * @type {Array}
-             * @lovecRow `string` - graphType
-             * @lovecRow `CFunction<MathGraph>` - initScr
+             * <br> `ROW`: graphType, initScr.
+             * @type {F2Array<string, CFunction<MathGraph>>}
              */
             init: [
 
@@ -122,9 +120,8 @@ const db = {
             /**
              * Maps graph type to its update method.
              * See {@Link INTF_BLK_graphBlock}.
-             * @type {Array}
-             * @lovecRow `string` - graphType
-             * @lovecRow `CFunction<MathGraph>` - updateScr
+             * <br> `ROW`: graphType, updateScr.
+             * @type {F2Array<string, CFunction<MathGraph>>}
              */
             update: [
 
@@ -161,10 +158,9 @@ const db = {
         /**
          * Maps depth level to a term.
          * See {@link INTF_ENV_depthOverlay}.
-         * @type {Array}
-         * @lovecRow `number` - lvl
-         * @lovecRow `[string, string]` - [nameMod, tag]
-         * @lovecBundle `term.<nameMod>-term-<tag>.name`
+         * <br> `ROW`: lvl, [nameMod, bp].
+         * <br> `BUNDLE`: `term.<nameMod>-term-<bp>.name`.
+         * @type {F2Array<number, [string, BundlePiece]>}
          */
         depthName: [
 
@@ -179,9 +175,9 @@ const db = {
 
         /**
          * Filters for {@link BLK_wireNode} that select valid links.
-         * @type {Array}
-         * @lovecRow `string` - mode
-         * @lovecRow `F2Function<Building, Building, boolean>` - boolF - `ARGS`: b, b_t.
+         * <br> `ROW`: mode, boolF.
+         * <br> `ARGS`: b, b_t.
+         * @type {F2Array<string, F2Function<Building, Building, boolean>>}
          */
         nodeLinkFilter: [
 
@@ -247,9 +243,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - name
-             * @lovecRow `DragButtonParamObject` paramObj
+             * `ROW`: name, paramObj.
+             * @type {F2Array<string, DragButtonParamObject>}
              */
             base: [
 
@@ -324,7 +319,7 @@ const db = {
                     isToggle: true,
                     updateScr: function() {
                         if(!this.isChecked()) return;
-                        if(!global.lovecUtil.fun._isSandBox()) {
+                        if(!global.lovecUtil.fun.checkSandbox()) {
                             this.setChecked(false);
                             PARAM.IS_TELEPORTING = false;
                             MDL_ui.showFadeInfo("lovec", "sandbox-only");
@@ -354,9 +349,8 @@ const db = {
 
             /**
              * Added only if `PARAM.MODDED` is true.
-             * @type {Array}
-             * @lovecRow `string` - name
-             * @lovecRow `DragButtonParamObject` paramObj
+             * <br> `ROW`: name, paramObj.
+             * @type {F2Array<string, DragButtonParamObject>}
              */
             modded: [
 
@@ -418,9 +412,8 @@ const db = {
 
         /**
          * Extra tags used for search.
-         * @type {Array}
-         * @lovecRow `string` - prefix
-         * @lovecRow `F2Function<UnlockableContent, string, boolean>` - boolF
+         * <br> `ROW`: prefix, boolF.
+         * @type {F2Array<string, F2Function<UnlockableContent, string, boolean>>}
          */
         tag: [
 
@@ -439,9 +432,8 @@ const db = {
 
         /**
          * Used for "group: xxx" tags.
-         * @type {Array}
-         * @lovecRow `string` - prefix
-         * @lovecRow `FFunction<UnlockableContent, boolean>` - boolF
+         * <br> `ROW`: prefix, boolF.
+         * @type {F2Array<string, FFunction<UnlockableContent, boolean>>}
          * @lovecContentGen
          */
         group: [
@@ -477,10 +469,8 @@ const db = {
 
         /**
          * Properties that are saved in a LSAV.
-         * @type {Array}
-         * @lovecRow `string` - header
-         * @lovecRow `Object` - def
-         * @lovecRow `string|null` - arrMode
+         * <br> `ROW`: header, def, arrMode.
+         * @type {F3Array<string, Object, string|null>}
          */
         header: [
 
@@ -511,10 +501,8 @@ const db = {
 
         /**
          * Properties that are saved in a PLSAV.
-         * @type {Array}
-         * @lovecRow `string` - header
-         * @lovecRow `Object` - def
-         * @lovecRow `string|null` - arrMode
+         * <br> `ROW`: header, def, arrMode.
+         * @type {F3Array<string, Object, string|null>}
          */
         pHeader: [
 
@@ -549,9 +537,8 @@ const db = {
 
         /**
          * Icons populated in {@link VARGEN.icons} and {@link VARGEN.iconRegs}.
-         * @type {Array}
-         * @lovecRow `string` - name
-         * @lovecRow `string` - regStr
+         * <br> `ROW`: name, regStr.
+         * @type {F2Array<string, string>}
          */
         icon: [
 
@@ -573,9 +560,8 @@ const db = {
 
         /**
          * Noise textures populated in {@link VARGEN.noiseTexs}.
-         * @type {Array}
-         * @lovecRow `string` - name
-         * @lovecRow `string` - imgPath
+         * <br> `ROW`: name, imgPath.
+         * @type {F2Array<string, string>}
          */
         noise: [
 
@@ -603,10 +589,8 @@ const db = {
 
             /**
              * Colors used for characters in dialog flow.
-             * @type {Array}
-             * @lovecRow `string` - nameMod
-             * @lovecRow `string` - nameChara
-             * @lovecRow `string` - colorStr
+             * <br> `ROW`: nameMod, nameChara, colorStr.
+             * @type {F3Array<string, string, string>}
              */
             color: [
 

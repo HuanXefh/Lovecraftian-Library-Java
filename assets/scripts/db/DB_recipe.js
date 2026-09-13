@@ -15,9 +15,8 @@ const db = {
 
         /**
          * Used to register new custom fields in recipe dictionary.
-         * @type {Array}
-         * @lovecRow `string` - name
-         * @lovecRow `{mod: string|unset, icon: string, isContinuous: boolean|unset, isStatic: boolean|unset}`
+         * <br> `ROW`: name, data.
+         * @type {F2Array<string, RecipeDictionaryCustomFieldData>}
          */
         customField: [
 
@@ -35,9 +34,8 @@ const db = {
             /**
              * Used to read a particular consumer for recipe dictionary.
              * The Java class can be a consumer class or block class.
-             * @type {Array}
-             * @lovecRow `ContentTypeGn` - type
-             * @lovecRow `RecipeDictionaryConsumeReader` - reader
+             * <br> `ROW`: type, reader.
+             * @type {F2Array<ContentTypeGn, RecipeDictionaryConsumeReader>}
              */
             consume: [
 
@@ -193,7 +191,7 @@ const db = {
                     let dictC;
                     blk.recipes.each(rc => {
                         rc.consumes.each(rcI => {
-                            dictC = readClassFunMap(db["dict"]["reader"]["consume"], rcI, null);
+                            dictC = readTypeValArr(db["dict"]["reader"]["consume"], rcI, null);
                             if(dictC != null) {
                                 dictC(blk, rcI, mergeObj({time: rc.craftTime, ct: rc.primaryOutput}, data), dictConsItem, dictConsFld, dictConsBlk, dictConsUtp);
                             };
@@ -293,9 +291,8 @@ const db = {
 
             /**
              * Used to read a particular block class to get production list for recipe dictionary.
-             * @type {Array}
-             * @lovecRow `ContentTypeGn` - type
-             * @lovecRow `RecipeDictionaryProduceReader` - reader
+             * <br> `ROW`: type, reader.
+             * @type {F2Array<ContentTypeGn, RecipeDictionaryProduceReader>}
              */
             produce: [
 
@@ -531,18 +528,16 @@ const db = {
 
             /**
              * Used to add consumption terms for a particular block in recipe dictionary.
-             * @type {Array}
-             * @lovecRow `string` - nameBlk
-             * @lovecRow `RecipeDictionaryConsumeReader` - reader
+             * <br> `ROW`: nameBlk, reader.
+             * @type {F2Array<string, RecipeDictionaryConsumeReader>}
              */
             consumeSpec: [],
 
 
             /**
              * Used to add production terms for a particular block in recipe dictionary.
-             * @type {Array}
-             * @lovecRow `string` - nameBlk
-             * @lovecRow `RecipeDictionaryProduceReader` - reader
+             * <br> `ROW`: nameBlk, reader.
+             * @type {F2Array<string, RecipeDictionaryProduceReader>}
              */
             produceSpec: [
 
@@ -587,9 +582,8 @@ const db = {
          * Used to generate default files for ore dictionary.
          * For other mods, simply put .csv files in "Mindustry/saves/mods/data/sharedData/ore-dict".
          * DO NOT MODIFY THIS IN OTHER MODS!
-         * @type {Array}
-         * @lovecRow `string` - nameRsTarget
-         * @lovecRow `Array<string>` - nameRss
+         * <br> `ROW`: nameRsTarget, nameRss.
+         * @type {F2Array<string, Array<string>>}
          */
         def: [
 
@@ -634,9 +628,8 @@ const db = {
 
             /**
              * Used to modify consumers for ore dictionary.
-             * @type {Array}
-             * @lovecRow `ContentTypeGn` - type
-             * @lovecRow `OreDictionaryConsumeSetter` - setter
+             * <br> `ROW`: type, setter.
+             * @type {F2Array<ContentTypeGn, OreDictionaryConsumeSetter>}
              */
             consume: [
 
@@ -661,9 +654,8 @@ const db = {
 
             /**
              * Used to modify producers for ore dictionary.
-             * @type {Array}
-             * @lovecRow `ContentTypeGn` - type
-             * @lovecRow `OreDictionaryProduceSetter` - setter
+             * <br> `ROW`: type, setter.
+             * @type {F2Array<ContentTypeGn, OreDictionaryProduceSetter>}
              */
             produce: [
 
@@ -751,9 +743,8 @@ const db = {
 
         /**
          * Used to modify final recipe object.
-         * @type {Array}
-         * @lovecRow `F3Function<UnlockableContent, RecipeMetaObject, RecipeParamObject>` - boolF - Condition check.
-         * @lovecRow `C3Function<Object, RecipeMetaObject, RecipeParamObject>` - scr - Used to modify recipe object.
+         * <br> `ROW`: boolF, scr.
+         * @type {F2Array<F3Function<UnlockableContent, RecipeMetaObject, RecipeParamObject>, C3Function<RecipeObject, RecipeMetaObject, RecipeParamObject>>}
          */
         objF: [
 
@@ -792,9 +783,8 @@ const db = {
 
         /**
          * "GROUP: xxx" in recipe I/O arrays.
-         * @type {Array}
-         * @lovecRow `string` - grpStr - Group name without "GROUP: ".
-         * @lovecRow `[string, RecipeGroupData]` - [nameRs, data]
+         * <br> `ROW`: grpStr, [nameRs, data].
+         * @type {F2Array<string, [string, RecipeGroupData]>}
          */
         group: [],
 
@@ -820,20 +810,20 @@ const db = {
         assembly: {
 
 
-          /** @type {RecipeRawData2Array} */
-          ammunition: [],
+            /** @type {RecipeRawData2Array} */
+            ammunition: [],
 
 
-          /** @type {RecipeRawData2Array} */
-          electrode: [],
+            /** @type {RecipeRawData2Array} */
+            electrode: [],
 
 
-          /** @type {RecipeRawData2Array} */
-          membrane: [],
+            /** @type {RecipeRawData2Array} */
+            membrane: [],
 
 
-          /** @type {RecipeRawData2Array} */
-          brickBlock: [],
+            /** @type {RecipeRawData2Array} */
+            brickBlock: [],
 
 
         },

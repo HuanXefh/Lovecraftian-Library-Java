@@ -121,7 +121,7 @@
 
     if(flam > 0.0 || explo > 0.0 || pow > 0.0) {
       TRIGGER.incineratorExplosion.fire();
-      Sounds.unitExplode1.at(b);
+      MDL_sound.playAt(b.x, b.y, "SOUNDS: unitExplode1");
       Damage.dynamicExplosion(b.x, b.y, flam, explo, pow, FRAG_attack.getPresExploRad(b.block.size) / Vars.tilesize, true);
     };
 

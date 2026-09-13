@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/sta/STA_baseStatus");
+    /**
+     * @typedef {TemplateInstance<StatusEffect, STA_deathStatus>} STADeathStatus
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/sta/STA_baseStatus");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,25 +26,28 @@
 */
 
 
-  /**
-   * A status effect that triggers something when the unit is killed.
-   * @class STA_deathStatus
-   * @extends STA_baseStatus
-   */
-  module.exports = newClass().extendClass(PARENT, "STA_deathStatus").initClass()
-  .setParent(StatusEffect)
-  .setTags("sta-death")
-  .setParam({
-
-
     /**
-     * `PARAM`: Script called when the unit is killed.
-     * <br> `ARGS`: unit.
-     * @memberof STA_deathStatus
-     * @instance
+     * A status effect that triggers something when the unit is killed.
+     * @class STA_deathStatus
+     * @extends STA_baseStatus
      */
-    killedScr: null,
+    module.exports = newClass()
+    .extendClass(PARENT, "STA_deathStatus")
+    .initClass()
+    .setParent(StatusEffect)
+    .setTags("sta-death")
+    .setParam({
 
 
-  })
-  .setMethod({});
+        /**
+         * `PARAM`: Script called when the unit is killed.
+         * <br> `ARGS`: unit.
+         * @memberof STA_deathStatus
+         * @instance
+         * @type {Cons<Unit>}
+         */
+        killedScr: null,
+
+
+    })
+    .setMethod({});

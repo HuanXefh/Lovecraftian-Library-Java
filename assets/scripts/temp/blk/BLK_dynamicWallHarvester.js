@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    if(blk.attrRsArr == null) LCErrorHandler.throw("nullArgument", "attrRsArr");
+    if(blk.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
 
     blk.attribute = TP_attr.attr_placeholder;
   };

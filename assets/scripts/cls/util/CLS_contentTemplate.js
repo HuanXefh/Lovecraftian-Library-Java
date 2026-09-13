@@ -14,15 +14,6 @@
     const CLS_contentTemplate = newClass().initClass();
 
 
-    CLS_contentTemplate.prototype.init = function() {
-
-
-        LCErrorHandler.throw("contentTemplateInstance");
-
-
-    };
-
-
     /** @type {ObjectMap<string, ContentTemplate>} */
     const nameTempMap = new ObjectMap();
     /** @type {ObjectMap<string, Array<string>>} */
@@ -31,15 +22,18 @@
     );
     /** @type {Array<string>} */
     const registeredTags = [];
+    /** @type {number} */
+    let buildTaskAmt = 0;
 
 
     /** @type {boolean} */
     CLS_contentTemplate.__isContentTemplate__ = true;
     /** @type {string} */
-    CLS_contentTemplate.nm = "CLS_contentTemplate";
+    CLS_contentTemplate.clsName = "CLS_contentTemplate";
     /** @type {Object} */
     CLS_contentTemplate.paramObj = {
         tempParent: null,
+        tempFunPrefix: "ex_",
         tempTags: [],
     };
     /** @type {TemplateAliasArray} */
@@ -48,6 +42,11 @@
     CLS_contentTemplate.paramParserArr = [];
     /** @type {Object<string, TemplateFunction>} */
     CLS_contentTemplate.funObj = {};
+
+
+    MDL_event.onLoad(() => {
+        console.log("[LOVEC] ${1} objects built with content template.".format(buildTaskAmt.color(Pal.accent)));
+    });
 
 
 /*
@@ -64,12 +63,12 @@
      * Maps a name to some content template class.
      * Do not invoke this manually!
      * @param {string} name
-     * @param {ContentTemplate} temp
+     * @param {typeof CLS_contentTemplate} temp
      * @return {void}
      */
     CLS_contentTemplate.register = function(name, temp) {
         nameTempMap.put(name, temp);
-        nameTempParentsMap.put(name, nameTempParentsMap.get(temp.__superClass__.nm).cpy().pushAll(name));
+        nameTempParentsMap.put(name, nameTempParentsMap.get(temp.__superClass__.clsName).cpy().pushAll(name));
     };
 
 
@@ -93,12 +92,61 @@
     };
 
 
+    /**
+     * Adds common methods shared by all contents created with template.
+     * @param {Object} obj
+     * @param {CLS_contentTemplate} tempCur
+     * @return {void}
+     */
+    CLS_contentTemplate.registerCommonMethods = function(obj, tempCur) {
+
+
+        /**
+         * Gets the content template that creates this content.
+         * @memberof UnlockableContent
+         * @instance
+         * @return {CLS_contentTemplate}
+         * @lovecAttached
+         */
+        obj.ex_getTemp = function() {
+            return tempCur;
+        };
+
+
+        /**
+         * Variant of {@link UnlockableContent#ex_getTemp} that returns name instead.
+         * @memberof UnlockableContent
+         * @instance
+         * @return {string}
+         * @lovecAttached
+         */
+        obj.ex_getTempName = function() {
+            return tempCur.clsName;
+        };
+
+
+        /**
+         * Whether this content inherits data from a content template.
+         * @memberof UnlockableContent
+         * @instance
+         * @param {string} name
+         * @return {boolean}
+         * @lovecAttached
+         */
+        obj.ex_isSubInsOf = function(name) {
+            return obj.ex_getTemp().isSubTempOf(name);
+        };
+
+
+    };
+
+
     /* <------------------------------ property ------------------------------ */
 
 
     /**
      * Gets the Java class used in `extend`.
-     * @return {Class}
+     * @return {Class<Object>}
      */
     CLS_contentTemplate.getParent = function() {
         return this.paramObj.tempParent;
@@ -112,7 +160,7 @@
      * @return {boolean}
      */
     CLS_contentTemplate.isSubTempOf = function(name) {
-        return this.nm === name || CLS_contentTemplate.getTempParents(this.nm).includes(name);
+        return this.clsName === name || CLS_contentTemplate.getTempParents(this.clsName).includes(name);
     };
 
 
@@ -135,6 +183,8 @@
 
     /**
      * Sets new properties and their default values.
+     * <br> When param is a function, wrap it with proper function getter like {@link boolf}.
+     * <br> When param is an object and not shared among all instances (e.g. array), wrap it with {@link tprov} or {@link tfunc}.
      * @param {Object} obj
      * @return {this}
      */
@@ -187,9 +237,10 @@
      * Sets the Java class used in `extend`.
      * @param {Class} javaCls
      * @return {this}
+     * @lovecTypeSensitive
      */
     CLS_contentTemplate.setParent = function(javaCls) {
-        if(javaCls != null && (typeof javaCls !== "function" || javaCls.__javaObject__ == null)) throw new Error("Cannot set parent of ${1} to a non-Java class!".format(this.nm));
+        if(javaCls != null && (typeof javaCls !== "function" || javaCls.__javaObject__ == null)) throw new Error("Cannot set parent of ${1} to a non-Java class".format(this.clsName));
         this.paramObj.tempParent = javaCls;
         return this;
     };
@@ -220,11 +271,23 @@
 
 
     /**
+     * Sets expected prefix of all new methods.
+     * <br> New methods starts with "ex_" by default.
+     * @param {string} prefix
+     * @return {this}
+     */
+    CLS_contentTemplate.setMethodPrefix = function(prefix) {
+        this.paramObj.tempFunPrefix = String(prefix);
+        return this;
+    };
+
+
+    /**
      * Sets methods, which will be mixed with previous methods.
      * <br> Special method names:
-     * <br> "__paramObjM__" - Result will be used in `setParam`.
-     * <br> "__paramAliasM__" - Result will be used in `setParamAlias`.
-     * <br> "__paramParserM__" - Result will be used in `setParamParser`.
+     * <br> "__paramObjM__" - Result will be used in {@link CLS_contentTemplate.setParam}.
+     * <br> "__paramAliasM__" - Result will be used in {@link CLS_contentTemplate.setParamAlias}.
+     * <br> "__paramParserM__" - Result will be used in {@link CLS_contentTemplate.setParamParser}.
      * @param {Object<string, TemplateFunction>} nameFunObj
      * @param {boolean|unset} [isFromIntf] - Do not set this!
      * @return {this}
@@ -234,7 +297,7 @@
 
         Object.eachPair(nameFunObj, (name, fun) => {
             // Internal methods used in interfaces
-            if(name === "__proto__") {
+            if(name === "__protoF__") {
                 throw new Error("Do not set prototype properties for content template interface!");
             };
             if(name === "__paramObjM__") {
@@ -259,20 +322,24 @@
             } else {
                 let superFun = thisCls.funObj[name];
                 if(superFun != null) {
-                    if((fetchSetting("test-intf-nosuper-warning") ? true : !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(name.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.nm.color(Pal.accent)));
-                    if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(name.color(Pal.accent), fun.argLen, this.nm.color(Pal.accent)));
+                    if((fetchSetting("test-intf-nosuper-warning") || !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) {
+                        console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(name.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.clsName.color(Pal.accent)));
+                    };
+                    if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) {
+                        console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(name.color(Pal.accent), fun.argLen, this.clsName.color(Pal.accent)));
+                    };
                 };
                 thisCls.funObj[name] = mixTempMethods(superFun, fun, MethodMixModes.NORMAL);
             };
-            thisCls.funObj[name].nm = name;
-            if(!thisCls.funObj[name].noSuper && name.startsWith("ex_")) {
+            thisCls.funObj[name].clsName = name;
+            if(!thisCls.funObj[name].noSuper && name.startsWith(thisCls.paramObj.tempFunPrefix)) {
                 let str = "";
                 Object.eachPair(nameFunObj, (name, fun) => {
                     str += "> " + name + "\n";
                     str += fun;
                 });
                 console.warn(String.multiline(
-                    '[LOVEC] Found an "ex_xxx" method without `noSuper = true` in ${1}:'.format(this.nm.color(Pal.accent)),
+                    '[LOVEC] Found an "${1}xxx" method without `noSuper = true` in ${2}:'.format(thisCls.paramObj.tempFunPrefix, this.clsName.color(Pal.accent)),
                     name,
                     thisCls.funObj[name],
                     "Full object:",
@@ -291,7 +358,7 @@
     /**
      * Override this method to implement Java interfaces.
      * <br> `LATER`
-     * @param {Object} obj - The object built for `extend`.
+     * @param {ExtendObject} obj
      * @return {Array<Class>}
      */
     CLS_contentTemplate.getParentIntfs = function(obj) {
@@ -301,6 +368,7 @@
 
     /**
      * Override this method to initialize some content right after `extend` is called.
+     * <br> Remember to call `this.super("initContent", ct)`!
      * <br> `LATER`
      * @param {UnlockableContent} ct
      * @return {void}
@@ -312,25 +380,29 @@
 
     /**
      * Builds the object used in `extend`.
-     * @param {Object} paramObj - Sets values of properties in a template. Only properties defined with content template can be set.
-     * @return {Object}
+     * @param {ExtendParamObject} paramObj
+     * @param {Object|unset} [baseObj] - In case that someone needs raw fields without type check.
+     * @return {ExtendObject}
      */
-    CLS_contentTemplate.build = function(paramObj) {
-        const thisTemp = this;
-        let obj = {};
-        if(this.getParent() == null) LCErrorHandler.throw("contentTemplateNoParentJavaClass");
+    CLS_contentTemplate.build = function(paramObj, baseObj) {
+        let obj = baseObj != null ? baseObj : {};
+        let parent = this.getParent();
+        if(parent == null) throw new Error("Content template has null parent: " + this.clsName);
 
+        // Copy valid values from `paramObj` to `this.paramObj`
         Object.eachPair(this.paramObj, (name, def) => {
-            // Skip template parent, or an error jumps out of nowhere
-            if(name === "tempParent") return;
+            if(name.equalsAny("tempParent", "tempFunPrefix")) return;
             // Copy template tags to avoid modification on the template
             if(name === "tempTags") {
                 obj[name] = paramObj == null || paramObj[name] === undefined ? def.cpy() : paramObj[name];
                 return;
             };
-
+            if(name === "metaObj") {
+                throw new Error("Do not set `metaObj` with `setParam()`!");
+            };
             obj[name] = paramObj == null || paramObj[name] === undefined ? def : paramObj[name];
         });
+        // Handle aliases
         this.paramAliasArr.forEachRow(3, (namePropNew, namePropOld, def) => {
             // Migrate alias properties to real ones
             if(obj[namePropNew] === undefined) {
@@ -343,28 +415,37 @@
                 delete obj[namePropNew];
             };
         }, true);
+        // Handle meta object in `paramObj`
+        if(paramObj != null && typeof paramObj.metaObj === "object") {
+            let fields = VAR.ctJsonParser.getFields(parent);
+            let metaData;
+            paramObj.metaObj.eachPair((name, val) => {
+                metaData = fields.get(name.replace(/ /g, "_"));
+                if(metaData == null) {
+                    console.warn("[LOVEC] Unknown field ${1} for class ${2}!".format(name.color(Pal.remove), parent.__javaObject__.getSimpleName().color(Pal.accent)));
+                    printObj(paramObj);
+                    printObj(paramObj.metaObj);
+                    return;
+                };
+                obj[name] = val;
+            });
+        };
+        // Parse parameters
         this.paramParserArr.forEachRow(2, (nameProp, parser) => {
             obj[nameProp] = parser.apply(obj, [obj[nameProp]]);
         }, true);
+        // Handle template getters
         Object.eachPair(obj, (name, prop) => {
             if(prop instanceof TemplateProv) obj[name] = prop.get();
             if(prop instanceof TemplateFunc) obj[name] = prop.get(obj);
         });
+        // Gets final version of methods (with wrapped length)
         Object.eachPair(this.funObj, (name, fun) => {
-            // Get the final method and wrap its length
             obj[name] = mixTempMethods(null, fun, MethodMixModes.BUILD, name);
         });
 
-        // Utility methods on the content created
-        obj.ex_getTemp = function() {
-            return thisTemp;
-        };
-        obj.ex_getTempName = function() {
-            return thisTemp.nm;
-        };
-        obj.ex_isSubInsOf = function(name) {
-            return obj.ex_getTemp().isSubTempOf(name);
-        };
+        CLS_contentTemplate.registerCommonMethods(obj, this);
+        buildTaskAmt++;
 
         return obj;
     };

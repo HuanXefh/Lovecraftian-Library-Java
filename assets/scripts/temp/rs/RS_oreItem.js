@@ -15,7 +15,7 @@
 
 
   function comp_init(item) {
-    item.sintTemp = item.sintTemp >= 0.0 ? item.sintTemp : DB_HANDLER.read("item-sintering-temperature", item, 100.0);
+    item.sintTemp = item.sintTemp >= 0.0 ? item.sintTemp : LCDBFileHandler.read("item-sintering-temperature", item, 100.0);
   };
 
 

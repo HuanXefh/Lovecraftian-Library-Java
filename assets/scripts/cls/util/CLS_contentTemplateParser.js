@@ -13,6 +13,7 @@
     const CLS_contentTemplateParser = newClass().initClass();
 
 
+    /** @private */
     CLS_contentTemplateParser.prototype.init = function(nameMod) {
 
 
@@ -60,8 +61,9 @@
 
     /**
      * Parses a raw field value.
-     * @param {any} raw
-     * @return {any}
+     * @param {Object} raw
+     * @return {Object}
+     * @lovecTypeSensitive
      */
     CLS_contentTemplateParser.parseField = function(raw) {
         if(typeof raw !== "object" || raw instanceof Array || typeof raw.type !== "string") return raw;
@@ -170,10 +172,10 @@
             this.parseFields(obj);
             this.parseFields(objB);
             ct = extendBlock(temp, nameCt, temp[0].build(obj), temp[1].build(objB));
-        } else if(temp.nm.startsWithAny("UNIT_", "EXT_UNIT_")) {
+        } else if(temp.clsName.startsWithAny("UNIT_", "EXT_UNIT_")) {
             this.parseFields(obj);
             ct = extendUnit(temp, nameCt, temp.build(obj));
-        } else if(temp.nm.startsWithAny("PLA_", "EXT_PLA_")) {
+        } else if(temp.clsName.startsWithAny("PLA_", "EXT_PLA_")) {
             let sectorSize = obj.sectorSize;
             delete obj.sectorSize;
             this.parseFields(obj);

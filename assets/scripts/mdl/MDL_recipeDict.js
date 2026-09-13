@@ -71,7 +71,7 @@
    * @return {void}
    */
   const addItemConsTerm = function(blk_gn, item_gn, amt, p, data) {
-    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -99,7 +99,7 @@
    * @return {void}
    */
   const addFldConsTerm = function(blk_gn, liq_gn, amt, data) {
-    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -125,7 +125,7 @@
    * @return {void}
    */
   const addPayConsTerm = function(blk_gn, ct_gn, amt, data) {
-    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -151,8 +151,8 @@
    * @return {void}
    */
   const addCustomConsTerm = function(blk_gn, name, amt, data) {
-    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
-    if(rcDict.cons[name] == null) LCErrorHandler.throw("recipeDictionaryCustomFieldNotFound", name);
+    if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
+    if(rcDict.cons[name] == null) throw new LCError.RecipeDictionaryCustomFieldNotFoundError(name);
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -177,7 +177,7 @@
    * @return {void}
    */
   const addItemProdTerm = function(blk_gn, item_gn, amt, p, data) {
-    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -205,7 +205,7 @@
    * @return {void}
    */
   const addFldProdTerm = function(blk_gn, liq_gn, amt, data) {
-    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -231,7 +231,7 @@
    * @return {void}
    */
   const addPayProdTerm = function(blk_gn, ct_gn, amt, data) {
-    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
+    if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;
@@ -257,8 +257,8 @@
    * @return {void}
    */
   const addCustomProdTerm = function(blk_gn, name, amt, data) {
-    if(!rcDict.hasInit) LCErrorHandler.throw("recipeDictionaryNotInitialized");
-    if(rcDict.prod[name] == null) LCErrorHandler.throw("recipeDictionaryCustomFieldNotFound", name);
+    if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
+    if(rcDict.prod[name] == null) throw new LCError.RecipeDictionaryCustomFieldNotFoundError(name);
 
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return;

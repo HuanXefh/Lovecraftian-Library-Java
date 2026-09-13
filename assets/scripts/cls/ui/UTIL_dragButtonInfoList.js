@@ -12,7 +12,7 @@
     const UTIL_dragButtonInfoList = newClass().initClass();
 
 
-    /** @type {ObjectMap<string, ObjectMap<string, ObjectMap<C0Function>>>} */
+    /** @type {ObjectMap<string, ObjectMap<string, ObjectMap<string, C0Function>>>} */
     const infoListData = ObjectMap.of(
         "uncategorized", ObjectMap.of("uncategorized", new ObjectMap()),
     );
@@ -33,7 +33,7 @@
     /**
      * Adds a new info dialog.
      * @param {string} name
-     * @param {C0Function} scr
+     * @param {C0Function} scr - Show dialog with this function.
      * @param {string|unset} [categ]
      * @param {string|unset} [subCateg]
      * @return {this}
@@ -81,7 +81,7 @@
     UTIL_dragButtonInfoList.findMap = function(categ, subCateg, noRegister) {
         if(noRegister) {
             let map = infoListData.get(categ, LCAirObjects.objectMap).get(subCateg, LCAirObjects.objectMap);
-            if(map === LCAirObjects.objectMap) throw new Error("Cannot find info list under ${1}/${2}!".format(categ, subCateg));
+            if(map === LCAirObjects.objectMap) throw new Error("Cannot find info list under ${1}/${2}".format(categ, subCateg));
             return map;
         };
 

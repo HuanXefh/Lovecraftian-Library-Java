@@ -243,7 +243,7 @@
    * @return {Fi|null}
    */
   const getPlsav = function(isBackup) {
-    let namePla = global.lovecUtil.fun._plaCur();
+    let namePla = global.lovecUtil.fun.getPlaCur();
     let fi = namePla === "" ? null : lovecData.child("saves").child(namePla + (!isBackup ? "" : "_bak") + ".plsav");
     // In debug mode, PLSAV is accessible from outside of campaign
     if(Vars.state.isCampaign() || global.lovecUtil.prop.debug) return fi;
@@ -276,13 +276,13 @@
    * Writes string to a .txt file.
    * @param {Fi|null} fi
    * @param {string} str
-   * @param {boolean|unset} [shouldAppend]
+   * @param {boolean|unset} [append]
    * @return {void}
    */
-  const writeTxt = function(fi, str, shouldAppend) {
+  const writeTxt = function(fi, str, append) {
     if(fi == null) return;
 
-    fi.writeString(str, Boolean(shouldAppend));
+    fi.writeString(str, Boolean(append));
   };
   exports.writeTxt = writeTxt;
 
@@ -349,10 +349,10 @@
    * @param {Fi|null} fi
    * @param {Array} arr
    * @param {number} ord
-   * @param {boolean|unset} [shouldAppend]
+   * @param {boolean|unset} [append]
    * @return {void}
    */
-  const writeCsv = function(fi, arr, ord, shouldAppend) {
+  const writeCsv = function(fi, arr, ord, append) {
     if(fi == null) return;
 
     let str = "";
@@ -366,7 +366,7 @@
       i++;
     };
 
-    fi.writeString(str, Boolean(shouldAppend));
+    fi.writeString(str, Boolean(append));
   };
   exports.writeCsv = writeCsv;
 

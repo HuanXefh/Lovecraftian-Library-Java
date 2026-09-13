@@ -8,29 +8,31 @@
     /**
      * Used to add properties to a class by `cls.implement(intf)`.
      * Not really interface but more like mixin, methods from the interface are not required to be explicitly implemented.
-     * `__proto__` in the object (as a getter function) is used to set up prototype of a class.
+     * `__protoF__` in the object (as a getter function) is used to set up prototype of a class.
      * Interfaces are usually named like "INTF_xxx".
      * <br> `IMPORTANT`: It's recommended to create anonymous interfaces by `new Interface(null, {})` instead of `new Interface({})`.
      * @class
      * @param {string|unset} name
-     * @param {Object} obj
+     * @param {InterfaceObject} obj
+     * @lovecTypeSensitive
      * @example
      * let INTF_test = new CLS_interface(null, {
      *     print: function() {print("ohno")},
      *     printAbstr: function() {}.setAbstr(),
-     *     __proto__: () => ({
+     *     __protoF__: () => ({
      *         print: function() {print("ohyes")},
      *     }),
      * });
      * let CLS_test = newClass().implement(INTF_test).initClass();
      *
      * CLS_test.print();                // Prints "ohno", which is from the interface
-     * new CLS_test().print();                // Prints "ohyes", which is from `__proto__` of the interface
-     * CLS_test.printAbstr();                // Throws an error since the method becomes abstract method by calling `setAbstr`.
+     * new CLS_test().print();                // Prints "ohyes", which is from `__protoF__` of the interface
+     * CLS_test.printAbstr();                // Throws an error since the method is abstract.
      */
     const CLS_interface = newClass().initClass();
 
 
+    /** @private */
     CLS_interface.prototype.init = function(name, obj) {
 
 
@@ -39,18 +41,24 @@
             obj = name;
             name = null;
         };
+        let hasProto = false;
         Object.eachPair(obj, (key, val) => {
-            if(typeof val !== "function") LCErrorHandler.throw("nonFunctionInInterface", key);
+            if(typeof val !== "function") throw new Error("Interface should only contain functions: " + key + "\n" + val);
+            if(key === "__protoF__") {
+                hasProto = true;
+            };
         });
 
 
         /** @type {string} */
         this.name = name == null ? "" : registerUniqueName(name, insNames, "interface");
-        /** @type {Object} */
+        /** @type {InterfaceObject} */
         this.intfObj = obj;
+        /** @type {boolean} */
+        this.hasProto = hasProto;
         /** @type {Array<CLS_interface>} */
         this.parentIntfs = [];
-        /** @type {Array<LovecClass>} */
+        /** @type {Array<Class>} */
         this.children = [];
 
 
@@ -85,7 +93,7 @@
      * @return {CLS_interface}
      */
     CLS_interface.prototype.extendInterface = function(intf, name) {
-        if(!(intf instanceof CLS_interface)) LCErrorHandler.throw("notInterface", intf);
+        if(!(intf instanceof CLS_interface)) throw new TypeError(intf + " is not an interface");
 
         let ointf = new CLS_interface(name, mergeObjWithMixin(intf.intfObj, this.intfObj));
         ointf.parentIntfs = intf.parentIntfs.cpy().pushAll(this.parentIntfs).pushAll(this).uniquify();

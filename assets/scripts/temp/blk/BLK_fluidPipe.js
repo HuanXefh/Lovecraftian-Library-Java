@@ -33,7 +33,7 @@
     };
 
     MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-flammable-gas-emission", payload => {
-      let args = unpackPayload(payload);
+      let args = unpackSplitorPayload(payload);
       let b = Vars.world.build(args[0]);
       if(b == null || b.ex_onFlamEmission == null) return;
 
@@ -79,11 +79,11 @@
         if(!Vars.net.client() && liq.gas && liq.flammability > 0.0 && Mathf.chance(0.03 * liq.flammability)) {
           MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-flammable-gas-emission",
-            packPayload([
+            packSplitorPayload(
               b.pos(),
               liq.flammability * amt * 5.0,
               liq.explosiveness * amt * 5.0,
-            ]),
+            ),
             true,
           );
         };

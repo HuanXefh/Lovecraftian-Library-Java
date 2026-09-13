@@ -20,7 +20,7 @@
     if(blk.overwriteVanillaProp) {
       if(!Vars.headless && (blk.walkSound === Sounds.none || blk.walkSound === Sounds.unset)) {
         blk.walkSound = DB_env.db["grpParam"]["floor"]["splashMaterial"].includes(blk.delegee.matGrp) ?
-          Sounds.stepWater :
+          fetchSound("SOUNDS: stepWater") :
           fetchSound("se-step-" + blk.matGrp);
         blk.walkSoundVolume = 0.2;
         blk.walkSoundPitchMin = 0.95;

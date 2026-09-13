@@ -4,9 +4,7 @@
  */
 
 
-/**
- * @namespace BOX_trigger
- */
+/** @namespace BOX_trigger */
 const BOX_trigger = new CLS_objectBox({
 
 
@@ -24,7 +22,7 @@ const BOX_trigger = new CLS_objectBox({
      */
     fire: function(name, arg1, arg2, arg3, arg4, arg5, arg6) {
         let trigger = BOX_trigger[name];
-        if(!(trigger instanceof CLS_eventTrigger)) throw new Error("No trigger found by name ${1}!".format(name));
+        if(!(trigger instanceof CLS_eventTrigger)) throw new Error("No trigger found by name ${1}".format(name));
         trigger.fire(arg1, arg2, arg3, arg4, arg5, arg6);
     },
 

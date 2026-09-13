@@ -1,6 +1,53 @@
 {
-  "tags": {
-    "allowUnknownTags": true,
-    "dictionaries": ["jsdoc", "closure"]
-  }
+    "source": {
+        "include": [
+            "assets/scripts/temp",
+            "assets/scripts/tempExt"
+        ],
+        "exclude": [],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": ""
+    },
+    "opts": {
+        "destination": "./document/jsdoc/",
+        "template": "node_modules/docdash"
+    },
+    "plugins": [
+        "plugins/markdown"
+    ],
+    "templates": {
+        "default": {
+            "outputSourceFiles": false,
+            "staticFiles": {
+                "include": [
+                    "./doc_files/"
+                ]
+            }
+        },
+        "cleverLinks": true,
+        "monospaceLinks": true
+    },
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc", "closure"]
+    },
+    "docdash": {
+        "static": true,
+        "sort": false,
+        "search": true,
+        "commonNav": false,
+        "collapse": true,
+        "wrap": true,
+        "typedefs": true,
+        "private": false,
+        "removeQuotes": "none",
+        "menu": {
+            "Repository": {
+                "href": "https://github.com/HuanXefh/Lovecraftian-Library-Java",
+                "target": "_blank",
+                "class": "menu-item",
+                "id": "repository_link"
+            }
+        }
+    }
 }

@@ -18,9 +18,8 @@ const db = {
 
             /**
              * Fuel parameters for an item.
-             * @type {Array}
-             * @lovecRow `ItemGn` - item
-             * @lovecRow `[number, number]` - [fuelPon, fuelLvl]
+             * <br> `ROW`: item, [fuelPon, fuelLvl].
+             * @type {F2Array<ItemGn, [number, number]>}
              */
             item: [
 
@@ -33,9 +32,8 @@ const db = {
 
             /**
              * Fuel parameters for a fluid.
-             * @type {Array}
-             * @lovecRow `LiquidGn` - liq
-             * @lovecRow `[number, number]` - [consRate, fuelLvl]
+             * <br> `ROW`: liq, [consRate, fuelLvl].
+             * @type {F2Array<LiquidGn, [number, number]>}
              */
             fluid: [],
 
@@ -61,41 +59,36 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `AttrGn` - attr
-             * @lovecRow `ResourceGn` - rs
+             * `ROW`: attr, rs.
+             * @type {F2Array<AttrGn, ResourceGn>}
              */
             bush: [],
 
 
             /**
-             * @type {Array}
-             * @lovecRow `AttrGn` - attr
-             * @lovecRow `ResourceGn` - rs
+             * `ROW`: attr, rs.
+             * @type {F2Array<AttrGn, ResourceGn>}
              */
             dpliq: [],
 
 
             /**
-             * @type {Array}
-             * @lovecRow `AttrGn` - attr
-             * @lovecRow `ResourceGn` - rs
+             * `ROW`: attr, rs.
+             * @type {F2Array<AttrGn, ResourceGn>}
              */
             rock: [],
 
 
             /**
-             * @type {Array}
-             * @lovecRow `AttrGn` - attr
-             * @lovecRow `ResourceGn` - rs
+             * `ROW`: attr, rs.
+             * @type {F2Array<AttrGn, ResourceGn>}
              */
             tree: [],
 
 
             /**
-             * @type {Array}
-             * @lovecRow `AttrGn` - attr
-             * @lovecRow `ResourceGn` - rs
+             * `ROW`: attr, rs.
+             * @type {F2Array<AttrGn, ResourceGn>}
              */
             vent: [],
 
@@ -144,9 +137,8 @@ const db = {
         /**
          * Items here can be crushed for aggregate.
          * Used for recipe generation.
-         * @type {Array}
-         * @lovecRow `ItemGn` - item
-         * @lovecRow `number` - reqAmtMtp
+         * <br> `ROW`: item, reqAmtMtp.
+         * @type {F2Array<ItemGn, number>}
          */
         aggregate: [],
 
@@ -154,9 +146,8 @@ const db = {
         /**
          * Items here can be crushed for biomass powder.
          * Used for recipe generation.
-         * @type {Array}
-         * @lovecRow `ItemGn` - item
-         * @lovecRow `number` - reqAmtMtp
+         * <br> `ROW`: item, reqAmtMtp.
+         * @type {F2Array<ItemGn, number>}
          */
         biomass: [],
 
@@ -193,7 +184,7 @@ const db = {
 
         /**
          * Intermediate tags, which are used in `rs.tempTags`.
-         * Items and fluids with these tags will be categorized in `VARGEN.intmds`.
+         * Items and fluids with these tags will be categorized in `VARGEN.tagIntmdsMap`.
          * If tag sprite ("rs0tag-<tag>") is found, it will be used for icon tag generation.
          * @type {Array<string>}
          */
@@ -240,9 +231,8 @@ const db = {
 
         /**
          * Some intermediate tags are added automatically if condition met.
-         * @type {Array}
-         * @lovecRow `string` - tag
-         * @lovecRow `FFunction<Resource, boolean>` - boolF
+         * <br> `ROW`: tag, boolF.
+         * @type {F2Array<string, FFunction<Resource, boolean>>}
          */
         tagCheck: [
 
@@ -257,9 +247,8 @@ const db = {
         /**
          * Maps intermediate tags to their localized names for name insertion.
          * Used for some tags that don't have separate content templates.
-         * @type {Array}
-         * @lovecRow `string` - tag
-         * @lovecRow `string` - name
+         * <br> `ROW`: tag, name.
+         * @type {F2Array<string, string>}
          */
         insertName: [
 

@@ -26,8 +26,8 @@
     BOTH: 0,
     CLIENT: 1,
     SERVER: 2,
-  })
-  .globalize("PacketModes");
+  });
+  globalize(PacketModes, "PacketModes");
 
 
   /**
@@ -41,7 +41,7 @@
   const addPacketHandler = function thisFun(mode, header, payloadC, addOnce) {
     if(thisFun.headers.includes(header)) {
       if(addOnce) return;
-      LCErrorHandler.throw("headerConflict", header);
+      throw new HeaderConflictError(header);
     };
     if(mode == null) mode = PacketModes.CLIENT;
     if(!PacketModes.has(mode)) return;
@@ -86,7 +86,7 @@
         console.log("[LOVEC] Sent client packet ${2}.".format(header.color(Pal.accent)));
       };
     } else if(mode === PacketModes.BOTH) {
-      sendPacket(Vars.net.client() ? PacketModes.SERVER : PacketModes.CLIENT, header, payload, isReliable, useConnection);
+      sendPacket(Vars.net.client() ? PacketModes.SERVER : PacketModes.CLIENT, header, payload, isReliable);
       Vars.net.client() ?
         Reflect.get(Vars.netClient, "customPacketHandlers").get(header).each(packetCons => packetCons.get(payload)) :
         Reflect.get(Vars.netServer, "customPacketHandlers").get(header).each(packetCons => packetCons.get(Vars.player, payload));

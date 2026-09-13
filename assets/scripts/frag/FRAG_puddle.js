@@ -82,15 +82,15 @@
 
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-puddle-change",
-            packPayload([
+            packSplitorPayload(
                 puddle.tile.pos(), liq.name, mtp,
-            ]),
+            ),
             false, true,
         );
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-puddle-change", payload => {
-            let args = unpackPayload(payload);
+            let args = unpackSplitorPayload(payload);
             let puddle = Puddles.get(Vars.world.tile(args[0]));
             if(puddle == null) return;
 

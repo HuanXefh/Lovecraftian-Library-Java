@@ -5,11 +5,11 @@
 */
 
 
-  /**
-   * Most basic static parameters, just like {@link Vars} in Mindustry.
-   * Do not import anything here!
-   * @module lovec/glb/GLB_var
-   */
+    /**
+     * Most basic static parameters, just like {@link Vars} in Mindustry.
+     * Do not import anything here!
+     * @module lovec/glb/GLB_var
+     */
 
 
 /*
@@ -19,219 +19,237 @@
 */
 
 
-  exports.jsonParser = new Json();
-  exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
+    /** @type {ContentParser} */
+    exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
+    /** @type {Json} */
+    exports.jsonParser = new Json();
+    /** @type {Json} */
+    exports.ctJsonParser = Reflect.get(ContentParser, module.exports.ctParser, "parser");
 
 
-  exports.lovecRevi = 7;
-  exports.lovecReviOff = 96;
+    /** @type {number} */
+    exports.lovecRevi = 7;
+    /** @type {number} */
+    exports.lovecReviOff = 96;
 
 
-  exports.layer = {
-    offDraw: 6.11,
-    offDrawOver: 26.11,
-    effFlr: 14.11,
-    effBase: 69.11,
-    effHigh: 116.41,
-    effSmog: 86.11,
-    effSmogHigh: 116.01,
-    effBloom: 109.61,
-    p3dRange: 34.52,
-    unitRange: 115.03,
-    overText: 219.81,
-    debugFlr: 2.21,
-    debugTop: 118.91,
+    /** @type {Object<string, number>} */
+    exports.layer = {
+        offDraw: 6.11,
+        offDrawOver: 26.11,
+        effFlr: 14.11,
+        effBase: 69.11,
+        effHigh: 116.41,
+        effSmog: 86.11,
+        effSmogHigh: 116.01,
+        effBloom: 109.61,
+        p3dRange: 34.52,
+        unitRange: 115.03,
+        overText: 219.81,
+        debugFlr: 2.21,
+        debugTop: 118.91,
 
-    vent: 0.61,
-    randOv: 1.07,
-    onConveyor: 29.76,
-    buildRemainsDrown: 22.05,
-    buildRemains: 27.07,
-    unitRemainsDrown: 22.07,
-    unitRemains: 58.11,
-    dporeRevealed: 107.21,
+        vent: 0.61,
+        randOv: 1.07,
+        onConveyor: 29.76,
+        buildRemainsDrown: 22.05,
+        buildRemains: 27.07,
+        unitRemainsDrown: 22.07,
+        unitRemains: 58.11,
+        dporeRevealed: 107.21,
 
-    cropSeed: 2.2,
-    cropLow: 58.22,
-    cropTall: 76.22,
-    cropTaller: 78.52,
-    cropTallest: 79.52,
+        cropSeed: 2.2,
+        cropLow: 58.22,
+        cropTall: 76.22,
+        cropTaller: 78.52,
+        cropTallest: 79.52,
 
-    mineBeam: 71.21,
-    bulBase: 74.11,
-    bulHigh: 86.01,
-    bulFlame: 108.51,
-  };
-
-
-  exports.priority = {
-    powTrans: 0.1,
-    min: 0.2,
-    fac: 0.5,
-    powGen: 1.4,
-    proj: 1.2,
-  };
-
-
-  exports.time = {
-    liqIntv: 4.0,
-    heatIntv: 20.0,
-    paramIntv: 90.0,
-    paramGlobalIntv: 110.0,
-    paramLargeIntv: 600.0,
-    lightningIntv: 40.0,
-    unitIntv: 20.0,
-
-    drownDef: 200.0,
-    flrStaDef: 40.0,
-    liqStaDef: 150.0,
-    unitStaDef: 120.0,
-    stackStaExtDef: 120.0,
-
-    extraInfoCooldown: 50.0,
-    lootProtection: 240.0,
-    lootLifetime: 7200.0,
-    powTransOverloadTime: 120.0,
-  };
-
-
-  exports.delay = {
-    load: {
-      addStat: 3.0,
-      loadExtraSound: 9.0,
-      loadReacGrp: 5.0,
-      blkCheck: 10.0,
-      loadNodeRcs: 15.0,
-      logRcGen: 280.0,
-      logRcRegis: 300.0,
-    },
-    worldLoad: {
-      loadParam: 5.0,
-      loadLsav: 6.0,
-      loadPol: 20.0,
-      triggerSecretCrash: 240.0,
-    },
-    mapChange: {
-      setWeather: 60.0,
-    },
-    gameLoad: {
-      setNoise: 30.0,
-    },
-  };
-
-
-  exports.chance = {
-    effPCap: 0.08,
-
-    unitUpdateP: 0.6,
-    polUpdateP: 0.2,
-  };
-
-
-  exports.range = {
-    mouseRad: 28.0,
-    sortCrowdRad: 28.0,
-    treeHideMaxRad: 28.0,
-    presExploRad: 34.4,
-    lootRad: 80.0,
-    lootPickRad: 10.0,
-    lootMergeRad: 4.0,
-    unitLootRad: 18.0,
-    cropLootRad: 6.0,
-
-    offBuildStatR: 2.25,
-    unitSurR: 4,
-  };
-
-
-  exports.length = {
-    ordW: 120.0,
-    charBtnW: 42.0,
-    bgW: 1920.0,
-    bgH: 1080.0,
-    charaW: 450.0,
-    charaH: 900.0,
-  };
-
-
-  exports.color = {
-    whiteClear: Color.valueOf("ffffff00"),
-    darkMix: Color.valueOf("606060"),
-    heatMix: Color.valueOf("ff3838"),
-    smogWhite: Color.valueOf("ffffff40"),
-    smogWhiteThick: Color.valueOf("ffffff60"),
-    smogWhiteThickest: Color.valueOf("ffffffc0"),
-    rotorWhite: Color.valueOf("ffffff30"),
-  };
-
-
-  exports.param = {
-    presExploDmg: 1800.0,
-    presDmgFrac: 0.015,
-    presDmgMin: 3.0,
-    corDmgFrac: 0.0135,
-    corDmgMin: 2.0,
-    clogViscThr: 0.7,
-    clogDmgFrac: 0.0135,
-    clogDmgMin: 3.0,
-    impactDmgMin: 40.0,
-    lightningDmg: 20.0,
-    shortCircuitDmgFrac: 0.12,
-    rpmDmgFrac: 0.15,
-    heatDmgMax: 100.0,
-    overheatedConversionDmg: 150.0,
-
-    auxCap: 1.0,
-    auxHeatTempFrac: 0.01666667,
-    terFlrThr: 0.75,
-    terBankLiqFrac: 0.55,
-    terBankGroundFrac: 0.45,
-    buildActiveEffcThr: 0.96,
-    powSourceStdProd: 8000.0,
-
-    groundElev: 0.35,
-    airElev: 0.5,
-    highAirElev: 0.75,
-
-    ctNameColorMtp: 1.15,
-    ctNameColorMtpHigh: 1.5,
-    wallColorDarkLerpA: 0.35,
-    ventColorDarkLerpA: 0.2,
-    buildRemainsOffCap: 90.0,
-    unitRemainsFloatThr: 17.5001,
-    ovCogA1: 0.315,
-    ovCogA2: 0.7,
-  };
-
-
-  exports.extendInd = {
-    safe: 10,
-    base: 11,
-    block: 12,
-    build: 13,
-    unit: 14,
-    entity: 15,
-    planet: 16,
-    tmi: 19,
-  };
-
-
-  exports.randInd = {
-    block: 0,
-    crafter: 1,
-    unit: 2,
-    ability: 3,
-    corrosion: 16,
-    pressure: 17,
-    fluidHeat: 18,
-    pollution: 19,
-  };
-
-
-  MDL_event.onLoad(() => {
-    exports.dialog = {
-      ct1: Vars.headless ? null : new ContentInfoDialog(),
-      ct2: Vars.headless ? null : new ContentInfoDialog(),
-      ct3: Vars.headless ? null : new ContentInfoDialog(),
+        mineBeam: 71.21,
+        bulBase: 74.11,
+        bulHigh: 86.01,
+        bulFlame: 108.51,
     };
-  });
+
+
+    /** @type {Object<string, number>} */
+    exports.priority = {
+        powTrans: 0.1,
+        min: 0.2,
+        fac: 0.5,
+        powGen: 1.4,
+        proj: 1.2,
+    };
+
+
+    /** @type {Object<string, number>} */
+    exports.time = {
+        liqIntv: 4.0,
+        heatIntv: 20.0,
+        paramIntv: 90.0,
+        paramGlobalIntv: 110.0,
+        paramLargeIntv: 600.0,
+        lightningIntv: 40.0,
+        unitIntv: 20.0,
+
+        drownDef: 200.0,
+        flrStaDef: 40.0,
+        liqStaDef: 150.0,
+        unitStaDef: 120.0,
+        stackStaExtDef: 120.0,
+
+        extraInfoCooldown: 50.0,
+        lootProtection: 240.0,
+        lootLifetime: 7200.0,
+        powTransOverloadTime: 120.0,
+    };
+
+
+    /** @type {Object<string, Object<string, number>>} */
+    exports.delay = {
+        load: {
+            addStat: 3.0,
+            loadExtraSound: 9.0,
+            loadReacGrp: 5.0,
+            blkCheck: 10.0,
+            loadNodeRcs: 15.0,
+            logRcGen: 280.0,
+            logRcRegis: 300.0,
+        },
+        worldLoad: {
+            loadParam: 5.0,
+            loadLsav: 6.0,
+            loadPol: 20.0,
+            triggerSecretCrash: 240.0,
+        },
+        mapChange: {
+            setWeather: 60.0,
+        },
+        gameLoad: {
+            setNoise: 30.0,
+        },
+    };
+
+
+    /** @type {Object<string, number>} */
+    exports.chance = {
+        effPCap: 0.08,
+
+        unitUpdateP: 0.6,
+        polUpdateP: 0.2,
+    };
+
+
+    /** @type {Object<string, number>} */
+    exports.range = {
+        mouseRad: 28.0,
+        sortCrowdRad: 28.0,
+        treeHideMaxRad: 28.0,
+        presExploRad: 34.4,
+        lootRad: 80.0,
+        lootPickRad: 10.0,
+        lootMergeRad: 4.0,
+        unitLootRad: 18.0,
+        cropLootRad: 6.0,
+
+        offBuildStatR: 2.25,
+        unitSurR: 4,
+    };
+
+
+    /** @type {Object<string, number>} */
+    exports.length = {
+        ordW: 120.0,
+        charBtnW: 42.0,
+        bgW: 1920.0,
+        bgH: 1080.0,
+        charaW: 450.0,
+        charaH: 900.0,
+    };
+
+
+    /** @type {Object<string, Color>} */
+    exports.color = {
+        whiteClear: Color.valueOf("ffffff00"),
+        darkMix: Color.valueOf("606060"),
+        heatMix: Color.valueOf("ff3838"),
+        smogWhite: Color.valueOf("ffffff40"),
+        smogWhiteThick: Color.valueOf("ffffff60"),
+        smogWhiteThickest: Color.valueOf("ffffffc0"),
+        rotorWhite: Color.valueOf("ffffff30"),
+    };
+
+
+    /** @type {Object<string, number>} */
+    exports.param = {
+        presExploDmg: 1800.0,
+        presDmgFrac: 0.015,
+        presDmgMin: 3.0,
+        corDmgFrac: 0.0135,
+        corDmgMin: 2.0,
+        clogViscThr: 0.7,
+        clogDmgFrac: 0.0135,
+        clogDmgMin: 3.0,
+        impactDmgMin: 40.0,
+        lightningDmg: 20.0,
+        shortCircuitDmgFrac: 0.12,
+        rpmDmgFrac: 0.15,
+        heatDmgMax: 100.0,
+        overheatedConversionDmg: 150.0,
+
+        auxCap: 1.0,
+        auxHeatTempFrac: 0.01666667,
+        terFlrThr: 0.75,
+        terBankLiqFrac: 0.55,
+        terBankGroundFrac: 0.45,
+        buildActiveEffcThr: 0.96,
+        powSourceStdProd: 8000.0,
+
+        groundElev: 0.35,
+        airElev: 0.5,
+        highAirElev: 0.75,
+
+        ctNameColorMtp: 1.15,
+        ctNameColorMtpHigh: 1.5,
+        wallColorDarkLerpA: 0.35,
+        ventColorDarkLerpA: 0.2,
+        buildRemainsOffCap: 90.0,
+        unitRemainsFloatThr: 17.5001,
+        ovCogA1: 0.315,
+        ovCogA2: 0.7,
+    };
+
+
+    /** @type {Object<string, number>} */
+    exports.extendInd = {
+        safe: 10,
+        base: 11,
+        block: 12,
+        build: 13,
+        unit: 14,
+        entity: 15,
+        planet: 16,
+        tmi: 19,
+    };
+
+
+    /** @type {Object<string, number>} */
+    exports.randInd = {
+        block: 0,
+        crafter: 1,
+        unit: 2,
+        ability: 3,
+        corrosion: 16,
+        pressure: 17,
+        fluidHeat: 18,
+        pollution: 19,
+    };
+
+
+    /** @type {Object<string, Dialog>} */
+    MDL_event.onLoad(() => {
+        exports.dialog = {
+            ct1: Vars.headless ? null : new ContentInfoDialog(),
+            ct2: Vars.headless ? null : new ContentInfoDialog(),
+            ct3: Vars.headless ? null : new ContentInfoDialog(),
+        };
+    });

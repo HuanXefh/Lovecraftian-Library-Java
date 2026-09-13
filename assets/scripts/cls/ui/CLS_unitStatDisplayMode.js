@@ -6,26 +6,6 @@
 
 
     /**
-     * @typedef {Function} UnitStatDrawF
-     * @param {Building|Unit} e
-     * @param {number} x
-     * @param {number} y
-     * @param {number} frac
-     * @param {Color} color
-     * @param {number} a
-     * @param {number} w
-     * @param {number} offY
-     * @param {number} amtSeg
-     * @param {number|null} armor
-     * @param {number|null} shield
-     * @param {number|null} speedMtp
-     * @param {number|null} dpsMtp
-     * @param {number|null} z
-     * @return {void}
-     */
-
-
-    /**
      * Handles display of unit health bar.
      * @class
      * @param {string} name
@@ -34,6 +14,7 @@
     const CLS_unitStatDisplayMode = newClass().initClass();
 
 
+    /** @private */
     CLS_unitStatDisplayMode.prototype.init = function(name, drawF) {
 
 

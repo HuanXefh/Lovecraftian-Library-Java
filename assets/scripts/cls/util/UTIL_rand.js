@@ -43,7 +43,7 @@
 
     MDL_event.onInit(() => {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-rand-sync", payload => {
-            let args = unpackPayload(payload);
+            let args = unpackSplitorPayload(payload);
             UTIL_rand.getByInd(args[0]).setSeed(args[1]);
         });
     });
@@ -62,7 +62,7 @@
      * @return {Rand}
      */
     UTIL_rand.get = function(name) {
-        if(VAR.randInd[name] == null) throw new Error("Name ${1} is not used!".format(name));
+        if(VAR.randInd[name] == null) throw new Error("Name ${1} is not used".format(name));
         return UTIL_rand.getByInd(VAR.randInd[name]);
     };
 
@@ -73,7 +73,7 @@
     * @return {Rand}
     */
     UTIL_rand.getByInd = function(ind) {
-        if(ind >= rands.length) LCErrorHandler.throw("indexOutOfBound", ind, rands.length);
+        if(ind >= rands.length) throw new RangeError("Index out of bound: " + ind + ">=" + rands.length);
         return rands[ind];
     };
 
@@ -85,12 +85,10 @@
      * @return {void}
      */
     UTIL_rand.sync = function(ind, seed) {
-        if(ind >= rands.length) LCErrorHandler.throw("indexOutOfBound", ind, rands.length);
-        if(typeof seed !== "number") LCErrorHandler.throw("typeMismatch", seed, "number");
-
+        if(ind >= rands.length) throw new RangeError("Index out of bound: " + ind + ">=" + rands.length);
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-rand-sync",
-            packPayload([ind, seed]),
+            packSplitorPayload(ind, seed),
         );
     };
 

@@ -190,9 +190,8 @@ const db = {
 
         /**
          * Density for a fluid group.
-         * @type {Array}
-         * @lovecRow `string` - eleGrp
-         * @lovecRow `number` - dens
+         * <br> `ROW`: eleGrp, dens.
+         * @type {F2Array<string, number>}
          */
         dens: [
 
@@ -217,9 +216,8 @@ const db = {
 
         /**
          * Wrapped viscosity for a fluid group.
-         * @type {Array}
-         * @lovecRow `string` - eleGrp
-         * @lovecRow `number` - viscWrap
+         * <br> `ROW`: eleGrp, viscWrap.
+         * @type {F2Array<string, number>}
          */
         viscWrap: [
 
@@ -240,9 +238,8 @@ const db = {
 
         /**
          * Default boiling point for a fluid group.
-         * @type {Array}
-         * @lovecRow `string` - eleGrp
-         * @lovecRow `number` - boilPon
+         * <br> `ROW`: eleGrp, boilPon.
+         * @type {F2Array<string, number>}
          */
         boil: [
 
@@ -270,9 +267,8 @@ const db = {
 
         /**
          * Default boiling point for a solvent.
-         * @type {Array}
-         * @lovecRow `string` - solvent
-         * @lovecRow `number` - boilPon
+         * <br> `ROW`: solvent, boilPon.
+         * @type {F2Array<string, number>}
          */
         solventBoil: [
 
@@ -284,9 +280,8 @@ const db = {
 
         /**
          * Default corrosion power for a fluid group.
-         * @type {Array}
-         * @lovecRow `string` - eleGrp
-         * @lovecRow `number` - corPow
+         * <br> `ROW`: eleGrp, corPow.
+         * @type {F2Array<string, number>}
          */
         corrosion: [
 
@@ -321,9 +316,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - eleGrp
-             * @lovecRow `number` - scl
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
              */
             wood: [
 
@@ -344,9 +338,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - eleGrp
-             * @lovecRow `number` - scl
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
              */
             iron: [
 
@@ -364,9 +357,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - eleGrp
-             * @lovecRow `number` - scl
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
              */
             steel: [
 
@@ -380,9 +372,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - eleGrp
-             * @lovecRow `number` - scl
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
              */
             galvanized: [
 
@@ -395,9 +386,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - eleGrp
-             * @lovecRow `number` - scl
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
              */
             stainless: [
 
@@ -407,9 +397,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - eleGrp
-             * @lovecRow `number` - scl
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
              */
             cement: [
 
@@ -425,9 +414,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - eleGrp
-             * @lovecRow `number` - scl
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
              */
             rubber: [
 
@@ -454,9 +442,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - fTag
-             * @lovecRow `number` - scl
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
              */
             wood: [
 
@@ -468,9 +455,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - fTag
-             * @lovecRow `number` - scl
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
              */
             copper: [
 
@@ -482,9 +468,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - fTag
-             * @lovecRow `number` - scl
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
              */
             lead: [
 
@@ -494,9 +479,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - fTag
-             * @lovecRow `number` - scl
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
              */
             iron: [
 
@@ -506,9 +490,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - fTag
-             * @lovecRow `number` - scl
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
              */
             glass: [
 
@@ -518,9 +501,8 @@ const db = {
 
 
             /**
-             * @type {Array}
-             * @lovecRow `string` - fTag
-             * @lovecRow `number` - scl
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
              */
             rubber: [
 

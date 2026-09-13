@@ -128,18 +128,18 @@ public class LCScript {
 
 
     /**
-     * Converts JS value to JavaScript object.
-     */
-    public static NativeObject toObject(Object val) {
-        return (NativeObject) val;
-    };
-
-
-    /**
      * Converts JS value to JavaScript array.
      */
     public static NativeArray toArray(Object val) {
         return (NativeArray) val;
+    };
+
+
+    /**
+     * Converts JS value to JavaScript object.
+     */
+    public static NativeObject toObject(Object val) {
+        return (NativeObject) val;
     };
 
 

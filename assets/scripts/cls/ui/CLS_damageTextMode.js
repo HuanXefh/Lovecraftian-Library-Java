@@ -15,6 +15,7 @@
     const CLS_damageTextMode = newClass().initClass();
 
 
+    /** @private */
     CLS_damageTextMode.prototype.init = function(name, colorF, strF) {
 
 

@@ -19,4 +19,4 @@
 
 
 
-  if(fetchMod("tmi") != null) require("lovec/run/mod/RUN_mod_tmi");
+    runWithDependency("lovec", "tmi", () => require("lovec/run/mod/RUN_mod_tmi"), true);

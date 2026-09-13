@@ -19,18 +19,16 @@ const db = {
             /**
              * Core energy points provided by a block.
              * Core block provides 5 points by default.
-             * @type {Array}
-             * @lovecRow `BlockGn` - blk
-             * @lovecRow `number|FFunction<Building>` - cepProv
+             * <br> `ROW`: blk, cepProv.
+             * @type {F2Array<BlockGn, number|FFunction<Building, number>>}
              */
             prov: [],
 
 
             /**
              * Core energy points used by a block.
-             * @type {Array}
-             * @lovecRow `BlockGn` - blk
-             * @lovecRow `number|FFunction<Building>` - cepUse
+             * <br> `ROW`: blk, cepUse.
+             * @type {F2Array<BlockGn, number|FFunction<Building, number>>}
              */
             use: [],
 
@@ -49,9 +47,8 @@ const db = {
 
         /**
          * The only faction a block belongs to.
-         * @type {Array}
-         * @lovecRow {BlockGn} blk
-         * @lovecRow {string} faction
+         * <br> `ROW`: blk, faction.
+         * @type {F2Array<BlockGn, string>}
          */
         faction: [],
 
@@ -60,9 +57,8 @@ const db = {
          * Factory family map. Factories included in the same processes belong to the same family.
          * For instance, both jaw crusher and hammer crusher can be classified as rock crusher.
          * A factory can be included in multiple families.
-         * @type {Array}
-         * @lovecRow {BlockGn} blk
-         * @lovecRow {string} fami
+         * <br> `ROW`: blk, fami.
+         * @type {F2Array<BlockGn, string>}
          */
         facFami: [],
 
@@ -204,9 +200,8 @@ const db = {
 
         /**
          * Color used for faction-related texts.
-         * @type {Array}
-         * @lovecRow `string` - faction
-         * @lovecRow `string` - colorStr
+         * <br> `ROW`: faction, colorStr.
+         * @type {F2Array<string, string>}
          */
         factionColor: [
 
@@ -226,9 +221,8 @@ const db = {
 
         /**
          * Base pressure resistance for each material group.
-         * @type {Array}
-         * @lovecRow `string` - matGrp
-         * @lovecRow `number` - presRes
+         * <br> `ROW`: matGrp, presRes.
+         * @type {F2Array<string, number>}
          */
         presRes: [
 
@@ -248,9 +242,8 @@ const db = {
 
         /**
          * Base vacuum resistance for each material group.
-         * @type {Array}
-         * @lovecRow `string` - matGrp
-         * @lovecRow `number` - vacRes
+         * <br> `ROW`: matGrp, vacRes.
+         * @type {F2Array<string, number>}
          */
         vacRes: [
 
@@ -270,9 +263,8 @@ const db = {
 
         /**
          * Base corrosion resistance for each material group.
-         * @type {Array}
-         * @lovecRow `string` - matGrp
-         * @lovecRow `number` - corRes
+         * <br> `ROW`: matGrp, corRes.
+         * @type {F2Array<string, number>}
          */
         corRes: [
 
@@ -292,9 +284,8 @@ const db = {
 
         /**
          * Base heat resistance for each material group.
-         * @type {Array}
-         * @lovecRow `string` - matGrp
-         * @lovecRow `number` - heatRes
+         * <br> `ROW`: matGrp, heatRes.
+         * @type {F2Array<string, number>}
          */
         heatRes: [
 
@@ -314,9 +305,8 @@ const db = {
 
         /**
          * Maps a wire material to texture region name.
-         * @type {Array}
-         * @lovecRow `string` - wireMat
-         * @lovecRow `string` - regStr
+         * <br> `ROW`: wireMat, regStr.
+         * @type {F2Array<string, string>}
          */
         wireMatReg: [
 
@@ -339,9 +329,9 @@ const db = {
 
             /**
              * Used to read shield amount.
-             * @type {Array}
-             * @lovecRow `ContentTypeGn` - type
-             * @lovecRow `F2Function<Building, boolean, number>` - shieldF - `ARGS`: b, isSelfShield.
+             * <br> `ROW`: type, shieldF.
+             * <br> `ARGS`: b, isSelfShield.
+             * @type {F2Array<ContentTypeGn, F2Function<Building, boolean, number>>}
              */
             shield: [
 
@@ -353,9 +343,9 @@ const db = {
 
             /**
              * Used to read drill speed for display.
-             * @type {Array}
-             * @lovecRow `ContentTypeGn` - type
-             * @lovecRow `F2Function<Block, boolean, number>` - drillSpdF - `ARGS`: blk, boosted.
+             * <br> `ROW`: type, drillSpdF.
+             * <br> `ARGS`: blk, boosted.
+             * @type {F2Array<ContentTypeGn, F2Function<Block, boolean, number>>}
              */
             drillSpd: [
 
@@ -371,9 +361,9 @@ const db = {
             /**
              * Used to read generalized craft time for blocks.
              * This affects calculation of consumption/production rates.
-             * @type {Array}
-             * @lovecRow `ContentTypeGn` - type
-             * @lovecRow `F3Function<Block, boolean, UnlockableContent|null, number>` - craftTimeF - `ARGS`: blk, isDrillTime, ctUsed.
+             * <br> `ROW`: type, craftTimeF.
+             * <br> `ARGS`: blk, isDrillTime, ctUsed.
+             * @type {F2Array<ContentTypeGn, F3Function<Block, boolean, UnlockableContent|null, number>>}
              */
             craftTime: [
 
@@ -527,9 +517,8 @@ const db = {
 
                 /**
                  * Maps a class to its payload key name.
-                 * @type {Array}
-                 * @lovecRow `ContentTypeGn` - type
-                 * @lovecRow `string` - key
+                 * <br> `ROW`: type, key.
+                 * @type {F2Array<ContentTypeGn, string>}
                  */
                 key: [
 

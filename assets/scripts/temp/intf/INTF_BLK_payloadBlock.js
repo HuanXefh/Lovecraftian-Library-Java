@@ -16,7 +16,7 @@
 
     blk.ex_addLogicF(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
     blk.ex_addLogicF(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
-    blk.ex_addLogicF(LAccess.totalPayload, b => Object.mapSum(b.delegee.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
+    blk.ex_addLogicF(LAccess.totalPayload, b => LCNativeObject.numSum(b.delegee.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
     blk.ex_addLogicF(LAccess.payloadCapacity, b => blk.payAmtCap);
   };
 
@@ -40,9 +40,9 @@
   function comp_updateTile(b) {
     if(PARAM.UPDATE_SUPPRESSED) return;
 
-    if(b.hasPayOutput && TIMER.effc) {
-      b.payAmtTotal = Object.mapSum(b.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt);
-      b.payAmtTotalAfterProd = Object.mapSum(b.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.ex_getPayProdAmt(nameCt)));
+    if(b.hasPayOutput && TIMER.effcPay) {
+      b.payAmtTotal = LCNativeObject.numSum(b.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt);
+      b.payAmtTotalAfterProd = LCNativeObject.numSum(b.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.ex_getPayProdAmt(nameCt)));
     };
 
     if(TIMER.secHalf) {
@@ -51,7 +51,7 @@
         ob => {
           let pay = FRAG_payload.takeAt(ob);
           MDL_effect.payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content(), false);
-          Object.mapIncre(b.payReqObj, pay.content().name);
+          LCNativeObject.numIncre(b.payReqObj, pay.content().name);
         },
         true,
       );
@@ -69,7 +69,7 @@
         b.payDumpIncre++;
         if(b_t.isAdded() && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
           MDL_effect.payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content(), true);
-          Object.mapIncre(b.payStockObj, b.lastDumpPay.content().name, -1);
+          LCNativeObject.numIncre(b.payStockObj, b.lastDumpPay.content().name, -1);
           b.lastDumpPay = null;
         };
       };
@@ -78,7 +78,7 @@
 
 
   function comp_updateEfficiencyMultiplier(b) {
-    if(b.hasPayInput && Object.mapSomeSmallerThan(b.payReqObj, (nameCt, amt) => b.ex_getPayConsAmt(nameCt), false)) b.efficiency = 0.0;
+    if(b.hasPayInput && !b.ex_checkPayCons()) b.efficiency = 0.0;
   };
 
 
@@ -216,6 +216,12 @@
          * @memberof INTF_B_payloadBlock
          * @instance
          */
+        payConsValid: false,
+        /**
+         * `INTERNAL`
+         * @memberof INTF_B_payloadBlock
+         * @instance
+         */
         payReqObj: tprov(() => ({})),
         /**
          * `INTERNAL`
@@ -305,6 +311,22 @@
        */
       ex_updatePaySite: function() {
         comp_ex_updatePaySite(this);
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * @memberof INTF_B_payloadBlock
+       * @instance
+       * @return {boolean}
+       */
+      ex_checkPayCons: function() {
+        if(TIMER.effcPay) {
+          this.payConsValid = LCNativeObject.numAllLargerThan(b.payReqObj, (nameCt, amt) => b.ex_getPayConsAmt(nameCt), true);
+        };
+        return this.payConsValid;
       }
       .setProp({
         noSuper: true,

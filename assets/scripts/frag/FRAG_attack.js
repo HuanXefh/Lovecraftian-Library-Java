@@ -100,60 +100,62 @@
 
     /**
      * Applies damage (triggers damage display).
-     * @param {HealthcGn} e
+     * @param {Healthc} e
      * @param {number} dmg
      * @param {number|unset} [armorMtp]
      * @param {string|unset} [modeOverwrite] - See {@link CLS_damageTextMode}.
      * @param {boolean|unset} [ignoreShield] - Has no effect on buildings.
      * @return {boolean} Whether damage is dealt.
+     * @lovecTypeSensitive
      */
     const damage = function(e, dmg, armorMtp, modeOverwrite, ignoreShield) {
-      if(dmg < 0.0001) return false;
+        if(dmg < 0.0001) return false;
 
-      dmg = MDL_prop.getDmgTake(e, dmg, armorMtp, false);
-      let dmgShow = MDL_prop.getDmgTake(e, dmg, armorMtp, true);
-      let shield = 0.0;
-      if(e instanceof Building) {
-          MDL_effect.damage(e.x, e.y, dmgShow, null, tryVal(modeOverwrite, MDL_prop.getBuildShield(e, true) > dmgShow ? "shield" : "health"));
-          MDL_effect.flash(e);
-          e.damagePierce(dmg, true);
-      } else {
-          shield = e.shield;
-          MDL_effect.damage(e.x, e.y, dmgShow, null, tryVal(modeOverwrite, !ignoreShield && e.shield > dmgShow ? "shield" : "health"));
-          if(!ignoreShield) {
-              e.damagePierce(dmg, true);
-          } else {
-              dmg += shield;
-              e.damagePierce(dmg, true);
-              e.shield = shield;
-          };
-      };
+        dmg = MDL_prop.getDmgTake(e, dmg, armorMtp, false);
+        let dmgShow = MDL_prop.getDmgTake(e, dmg, armorMtp, true);
+        let shield = 0.0;
+        if(e instanceof Building) {
+            MDL_effect.damage(e.x, e.y, dmgShow, null, tryVal(modeOverwrite, MDL_prop.getBuildShield(e, true) > dmgShow ? "shield" : "health"));
+            MDL_effect.flash(e);
+            e.damagePierce(dmg, true);
+        } else if(e instanceof Unit) {
+            shield = e.shield;
+            MDL_effect.damage(e.x, e.y, dmgShow, null, tryVal(modeOverwrite, !ignoreShield && e.shield > dmgShow ? "shield" : "health"));
+            if(!ignoreShield) {
+                e.damagePierce(dmg, true);
+            } else {
+                dmg += shield;
+                e.damagePierce(dmg, true);
+                e.shield = shield;
+            };
+        };
 
-      return true;
+        return true;
     };
     exports.damage = damage;
 
 
     /**
      * Applies healing (triggers damage display).
-     * @param {HealthcGn} e
+     * @param {Healthc} e
      * @param {number} healAmt
      * @return {boolean} Whether target is healed.
+     * @lovecTypeSensitive
      */
     const heal = function(e, healAmt) {
-      if(healAmt < 0.0001 || !MDL_cond.canHeal(e)) return false;
+        if(healAmt < 0.0001 || !MDL_cond.canHeal(e)) return false;
 
-      if(e instanceof Building) {
-          MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
-          MDL_effect.flash(e, Pal.heal);
-          e.recentlyHealed();
-      } else {
-          MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
-          e.healTime = 1.0;
-      };
-      e.heal(healAmt);
+        if(e instanceof Building) {
+            MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
+            MDL_effect.flash(e, Pal.heal);
+            e.recentlyHealed();
+        } else if(e instanceof Unit) {
+            MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
+            e.healTime = 1.0;
+        };
+        e.heal(healAmt);
 
-      return true;
+        return true;
     };
     exports.heal = heal;
 
@@ -271,13 +273,13 @@
 
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-attack-explosion",
-            packPayload([x, y, dmg, rad, shake, seStr]),
+            packSplitorPayload(x, y, dmg, rad, shake, seStr),
             true,
         );
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-attack-explosion", payload => {
-            explosion.apply(null, unpackPayload(payload));
+            explosion.apply(null, unpackSplitorPayload(payload));
         });
     });
     exports.explosion_global = explosion_global;
@@ -395,7 +397,7 @@
             i++;
         };
 
-        MDL_sound.playAt(x, y, tryVal(se_gn, Sounds.shootArc));
+        MDL_sound.playAt(x, y, tryVal(se_gn, "SOUNDS: shootArc"));
     };
     exports.lightning = lightning;
 
@@ -427,13 +429,13 @@
 
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-attack-lightning",
-            packPayload([x, y, team.id, dmg, amt, r, offR, MDL_color.getColor(color_gn).rgba8888(), hitMode, seStr]),
+            packSplitorPayload(x, y, team.id, dmg, amt, r, offR, MDL_color.getColor(color_gn).rgba8888(), hitMode, seStr),
             true,
         );
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-attack-lightning", payload => {
-            let args = unpackPayload(payload);
+            let args = unpackSplitorPayload(payload);
             lightning(args[0], args[1], Team.get(args[2]), args[3], args[4], args[5], args[6], Tmp.c1.set(args[7]), args[8], args[9]);
         });
     });

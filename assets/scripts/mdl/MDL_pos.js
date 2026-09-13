@@ -27,8 +27,8 @@
     SIDE: 2,
     NON_FRONT: 3,
     NON_BACK: 4,
-  })
-  .globalize("SideFracModes");
+  });
+  globalize(SideFracModes, "SideFracModes");
 
 
   /**

@@ -1,68 +1,70 @@
 '.source.js':
 
-  'use strict':
-    prefix: 'us;'
-    body: '"use strict";'
+    'use strict':
+        prefix: 'us;'
+        body: '"use strict";'
 
-  'immediately called function':
-    prefix: 'icfun'
-    body: '''
-    (function() {
-      ${1:}
-    })();
-    '''
+    'immediately called function':
+        prefix: 'icfun'
+        body: '''
+        (function() {
+            ${1:}
+        })();
+        '''
 
-  'module.exports':
-    prefix: 'mdlexp'
-    body: 'module.exports = ${1:}'
+    'module.exports':
+        prefix: 'mdlexp'
+        body: 'module.exports = ${1:}'
 
-  'jsdoc':
-    prefix: 'jd'
-    body: '''
-    /**
-     * ${1:}
-     */
-    '''
+    'jsdoc':
+        prefix: 'jd'
+        body: '''
+        /**
+         * ${1:}
+         */
+        '''
 
-  'jsdoc def':
-    prefix: 'jdd'
-    body: '/** ${1:} */'
+    'jsdoc def':
+        prefix: 'jdd'
+        body: '/** ${1:} */'
 
-  'jsdoc def type':
-    prefix: 'jddt'
-    body: '/** @type {${1:}} */'
+    'jsdoc def type':
+        prefix: 'jddt'
+        body: '/** @type {${1:}} */'
 
-  'jsdoc def global':
-    prefix: 'jddg'
-    body: '/** @global ${1:} */'
+    'jsdoc def global':
+        prefix: 'jddg'
+        body: '/** @global ${1:} */'
 
-  'jsdoc def template param':
-    prefix: 'jdtp'
-    body: '''
-    /**
-     * `PARAM`: ${1:}
-     * @memberof ${2:}
-     * @instance
-     */
-    '''
+    'jsdoc def template param':
+        prefix: 'jdtp'
+        body: '''
+        /**
+         * `PARAM`: ${1:}
+         * @memberof ${2:}
+         * @instance
+         * @type {${3:}}
+         */
+        '''
 
-  'jsdoc def template internal':
-    prefix: 'jdti'
-    body: '''
-    /**
-     * `INTERNAL`: ${1:}
-     * @memberof ${2:}
-     * @instance
-     */
-    '''
+    'jsdoc def template internal':
+        prefix: 'jdti'
+        body: '''
+        /**
+         * `INTERNAL`: ${1:}
+         * @memberof ${2:}
+         * @instance
+         * @type {${3:}}
+         */
+        '''
 
-  'jsdoc def template function':
-    prefix: 'jdtf'
-    body: '''
-    /**
-     * ${1:}
-     * @memberof ${2:}
-     * @instance
-     * @return {${3:}}
-     */
-    '''
+    'jsdoc def template function':
+        prefix: 'jdtf'
+        body: '''
+        /**
+         * ${1:}
+         * @memberof ${2:}
+         * @instance
+         * @return {${3:}}
+         */
+        '''

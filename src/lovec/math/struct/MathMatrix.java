@@ -216,7 +216,7 @@ public class MathMatrix implements Iterable<Double> {
      * Sets up this matrix with given values.
      */
     public MathMatrix set(double[][] matArr) throws IllegalArgumentException {
-        if(matArr.length != rowAmt || matArr[0].length != colAmt) throw new IllegalArgumentException("Unmatched matrix size!");
+        if(matArr.length != rowAmt || matArr[0].length != colAmt) throw new IllegalArgumentException("Unmatched matrix size");
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < colAmt; i++) {
                 data[j][i] = matArr[j][i];
@@ -268,7 +268,7 @@ public class MathMatrix implements Iterable<Double> {
     };
     // Overload
     public MathMatrix add(double[][] matArr) throws IllegalArgumentException {
-        if(!isSameSizeWith(matArr)) throw new IllegalArgumentException("Unmatched matrix size!");
+        if(!isSameSizeWith(matArr)) throw new IllegalArgumentException("Unmatched matrix size");
         setEach((i, j) -> data[j][i] + matArr[j][i]);
         return this;
     };
@@ -282,7 +282,7 @@ public class MathMatrix implements Iterable<Double> {
     };
     // Overload
     public MathMatrix sub(double[][] matArr) throws IllegalArgumentException {
-        if(!isSameSizeWith(matArr)) throw new IllegalArgumentException("Unmatched matrix size!");
+        if(!isSameSizeWith(matArr)) throw new IllegalArgumentException("Unmatched matrix size");
         return scl(-1).add(matArr).scl(-1);
     };
 
@@ -310,7 +310,7 @@ public class MathMatrix implements Iterable<Double> {
     };
     // Overload
     public MathMatrix mul(double[][] matArr) throws IllegalArgumentException {
-        if(!canMultiply(matArr)) throw new IllegalArgumentException("Unmatched matrix size!");
+        if(!canMultiply(matArr)) throw new IllegalArgumentException("Unmatched matrix size");
         var mat0 = new MathMatrix(rowAmt, matArr[0].length);
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < matArr[0].length; i++) {

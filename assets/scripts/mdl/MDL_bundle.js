@@ -36,7 +36,7 @@
   /**
    * `BUNDLE`: "info.<nameMod>-info-<bp>.name" or "info.<nameMod>-info-<bp>.description".
    * @param {string} nameMod
-   * @param {string} bp
+   * @param {BundlePiece} bp
    * @param {boolean|unset} [isDes]
    * @return {string}
    */
@@ -49,7 +49,7 @@
   /**
    * `BUNDLE`: "info.<nameMod>-term-<bp>.name" or "info.<nameMod>-term-<bp>.description".
    * @param {string} nameMod
-   * @param {string} bp
+   * @param {BundlePiece} bp
    * @param {boolean|unset} [isDes]
    * @return {string}
    */
@@ -62,7 +62,7 @@
   /**
    * `BUNDLE`: "stat.<nameMod>-stat-<bp>".
    * @param {string} nameMod
-   * @param {string} bp
+   * @param {BundlePiece} bp
    * @return {string}
    */
   const getStat = function(nameMod, bp) {

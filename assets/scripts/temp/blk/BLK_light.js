@@ -16,7 +16,7 @@
 
   function comp_init(blk) {
     blk.emitLight = true;
-    blk.canPickup = false;
+    blk.allowedInPayloads = false;
     if(blk.fogRadFrac > 0.0) {
       blk.flags.with(BlockFlag.hasFogRadius)
     };

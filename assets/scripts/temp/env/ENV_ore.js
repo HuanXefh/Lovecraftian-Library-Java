@@ -52,7 +52,7 @@
   .setParamAlias([
     /**
      * `PARAM`: If true, the ore will be displayed on minimap.
-     * @type {boolean} showOreOnMinimap
+     * @type {boolean}
      * @memberof ENV_ore
      * @instance
      */

@@ -83,7 +83,7 @@
     if(ct.fullIcon == null) throw new Error("Null `fullIcon` for ${1}???".format(ct.name));
     let colors = getPixColors(Core.atlas.getPixmap(ct.fullIcon));
     if(colorInd == null) colorInd = colors.length >= 3 ? 1 : 0;
-    if(colorInd >= colors.length) LCErrorHandler.throw("indexOutOfBound", colorInd, colors.length);
+    if(colorInd >= colors.length) throw new RangeError("Index out of bound: " + colorInd + ">=" + colors.length);
 
     return color.set(colors[colors.length - colorInd - 1]);
   };

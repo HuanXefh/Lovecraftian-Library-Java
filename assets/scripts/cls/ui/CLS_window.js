@@ -8,21 +8,25 @@
     /**
      * Container of a special table that can be dragged.
      * @class
-     * @param {string|unset} [title]
-     * @param {CFunction<Table>} [tableM]
+     * @param {string} title
+     * @param {CFunction<Table>} tableM
      */
     const CLS_window = newClass().initClass();
 
 
+    /** @private */
     CLS_window.prototype.init = function(title, tableM) {
 
 
         /** @type {string} */
-        this.title = tryVal(title, "").plain();
+        this.title = title.plain();
         /** @type {CFunction<Table>} */
-        this.tableM = tryVal(tableM, Function.air);
+        this.tableM = tableM;
+
 
         this.initParam();
+
+
         /** @type {Table} */
         this.root = CLS_window.getRootTable(this);
         /** @type {Table|null} */
@@ -42,7 +46,7 @@
         btnStyles.setProp({
             /**
              * @type {Button.ButtonStyle}
-             * @memberof btnStyles
+             * @memberOf btnStyles
              */
             close: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
@@ -52,7 +56,7 @@
             }),
             /**
              * @type {Button.ButtonStyle}
-             * @memberof btnStyles
+             * @memberOf btnStyles
              */
             minimize: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
@@ -62,7 +66,7 @@
             }),
             /**
              * @type {Button.ButtonStyle}
-             * @memberof btnStyles
+             * @memberOf btnStyles
              */
             restore: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
@@ -72,7 +76,7 @@
             }),
             /**
              * @type {Button.ButtonStyle}
-             * @memberof btnStyles
+             * @memberOf btnStyles
              */
             help: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
@@ -127,7 +131,7 @@
     CLS_window.getRootTable = function(win) {
         let tb = new Table().top();
         tb.update(() => {
-            if(Core.input.keyDown(KeyCode.shiftLeft) || Core.input.keyDown(KeyCode.shiftRight)) {
+            if(Core.input.shift()) {
                 if(Core.input.keyDown(KeyCode.x)) selectedWins.forEachFast(win => win.close(), true);
                 if(Core.input.keyDown(KeyCode.s)) selectedWins.forEachCond(win => !win.isHidden, win => win.minimize(), true);
                 if(Core.input.keyDown(KeyCode.a)) selectedWins.forEachCond(win => win.isHidden, win => win.minimize(), true);
@@ -209,21 +213,35 @@
     /**
      * Initializes some parameters of this window.
      * @return {this}
+     * @lovecPropGen
      */
     CLS_window.prototype.initParam = function() {
+        /** @type {boolean} */
         this.added = false;
+        /** @type {boolean} */
         this.isHidden = false;
+        /** @type {boolean} */
         this.isDragged = false;
+        /** @type {number} */
         this.prefW = 0.0;
+        /** @type {number} */
         this.prefH = 0.0;
+        /** @type {number} */
         this.prefWCont = 0.0;
+        /** @type {number} */
         this.prefHCont = 0.0;
 
+        /** @type {number} */
         this.minW = 320.0;
+        /** @type {number} */
         this.maxW = 840.0;
+        /** @type {number} */
         this.minH = 40.0;
+        /** @type {number} */
         this.maxH = 420.0;
+        /** @type {Color} */
         this.titleColor = Color.darkGray;
+        /** @type {Color} */
         this.contColor = Pal.darkestGray;
 
         return this;

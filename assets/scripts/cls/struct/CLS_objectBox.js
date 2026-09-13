@@ -9,11 +9,14 @@
      * A container formed from an object that is not expected to be modified afterward.
      * Object boxes are usually named like "BOX_xxx".
      * @class
-     * @param {Object} obj
+     * @template T
+     * @param {T} obj
+     * @return {this&T}
      */
     const CLS_objectBox = newClass().initClass();
 
 
+    /** @private */
     CLS_objectBox.prototype.init = function(obj) {
 
 
@@ -22,14 +25,14 @@
         Object.eachPair(obj, (key, val) => {
             args.push(key, val);
         });
-        Object.setProp.apply(null, args);
+        Object.setProps.apply(null, args);
 
 
         /** @type {Array<string>} */
         this.keys = Object.keys(obj);
 
 
-        Object.seal(this);
+        Object.freeze(this);
 
 
     };

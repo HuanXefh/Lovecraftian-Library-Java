@@ -5,79 +5,100 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/sta/DBCT_databaseContent");
+    /**
+     * @typedef {TemplateInstance<StatusEffect, DBCT_techNodeContent>} DBCTTechNodeContent
+     */
 
 
-  /* <---------- auxiliary ----------> */
+    const PARENT = require("lovec/temp/sta/DBCT_databaseContent");
 
 
-  function appendChildren(cts, node) {
-    node.children.each(onode => {
-      // Don't append contents under other nodes (including the other nodes)
-      if(checkSubInsOfTemp(onode.content, "DBCT_techNodeContent")) return;
-      // Don't append hidden contents
-      if(
-        (instanceOfAny(onode.content, Item, Liquid, UnitType) && onode.content.hidden)
-          || (onode.content instanceof Block && DB_block.db["class"]["group"]["visibility"]["hidden"].includes(onode.content.buildVisibility))
-      ) return;
-
-      cts.pushUnique(onode.content);
-      appendChildren(cts, onode);
-    });
-  };
+    /* <------------------------------ auxiliary ------------------------------ */
 
 
-  /* <---------- component ----------> */
+    /**
+     * @private
+     * @param {Array<UnlockableContent>} cts
+     * @param {TechTree.TechNode} node
+     * @return {void}
+     */
+    function appendChildren(cts, node) {
+        node.children.each(onode => {
+            // Don't append contents under other nodes (including other nodes)
+            if(checkSubInsOfTemp(onode.content, "DBCT_techNodeContent")) return;
+            // Don't append hidden contents
+            if(
+                (instanceOfAny(onode.content, Item, Liquid, UnitType) && onode.content.hidden)
+                    || (onode.content instanceof Block && DB_block.db["class"]["group"]["visibility"]["hidden"].includes(onode.content.buildVisibility))
+            ) return;
 
-
-  function comp_setStats(sta) {
-    if(sta.techNode != null) {
-      sta.stats.add(fetchStat("lovec", "spec-researchreq"), StatValues.items(false, sta.techNode.requirements));
-    };
-    if(sta.childCts.length > 0) {
-      sta.stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
-        tb.row();
-        tb.table(Styles.none, tb1 => {
-          MDL_table.margin(tb1);
-          MDL_table.setCtLi(tb, sta.childCts, 48.0, 7, null, VAR.dialog.ct1);
-        }).growX();
-      }));
-    };
-    if(sta.childRcs.length > 0) {
-      sta.stats.add(fetchStat("lovec", "spec-nodercs"), newStatValue(tb => {
-        tb.row();
-        tb.table(Styles.none, tb1 => {
-          MDL_table.margin(tb1);
-          MDL_table.setIconLi(
-            tb1,
-            sta.childRcs.map(rc => rc.altIcon),
-            sta.childRcs.map(rc => tb => rc.displayTooltip(tb, true, rc.owner.localizedName)),
-            sta.childRcs.map(rc => () => Vars.ui.content.show(rc.owner)),
-            64.0,
-            7,
-          );
+            cts.pushUnique(onode.content);
+            appendChildren(cts, onode);
         });
-      }));
     };
-  };
 
 
-  function comp_ex_init(sta) {
-    MDL_event.onLoad(() => {
-      if(sta.techNode == null) {
-        console.warn("[LOVEC] Tech node ${1} has never been used in tech tree!".format(sta.name.color(Pal.accent)));
-      } else {
-        appendChildren(sta.childCts, sta.techNode);
-        sta.childCts.sort((ct1, ct2) => ct2.id - ct1.id);
-      };
-      Time.runTask(VAR.delay.load.loadNodeRcs, () => {
-        sta.childRcs.pushAll(CLS_recipe.getNodeRcsMap().get(sta, Array.air));
-      });
-    });
-  };
+    /* <------------------------------ component ------------------------------ */
+
+
+    /**
+     * @private
+     * @param {DBCTTechNodeContent} sta
+     * @return {void}
+     */
+    function comp_setStats(sta) {
+        if(sta.techNode != null) {
+            sta.stats.add(fetchStat("lovec", "spec-researchreq"), StatValues.items(false, sta.techNode.requirements));
+        };
+        if(sta.childCts.length > 0) {
+            sta.stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
+                tb.row();
+                tb.table(Styles.none, tb1 => {
+                    MDL_table.margin(tb1);
+                    MDL_table.setCtLi(tb, sta.childCts, 48.0, 7, null, VAR.dialog.ct1);
+                }).growX();
+            }));
+        };
+        if(sta.childRcs.length > 0) {
+            sta.stats.add(fetchStat("lovec", "spec-nodercs"), newStatValue(tb => {
+                tb.row();
+                tb.table(Styles.none, tb1 => {
+                    MDL_table.margin(tb1);
+                    MDL_table.setIconLi(
+                        tb1,
+                        sta.childRcs.map(rc => rc.altIcon),
+                        sta.childRcs.map(rc => tb => rc.displayTooltip(tb, true, rc.owner.localizedName)),
+                        sta.childRcs.map(rc => () => Vars.ui.content.show(rc.owner)),
+                        64.0,
+                        7,
+                    );
+                });
+            }));
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {DBCTTechNodeContent} sta
+     * @return {void}
+     */
+    function comp_ex_init(sta) {
+        MDL_event.onLoad(() => {
+            if(sta.techNode == null) {
+                console.warn("[LOVEC] Tech node ${1} has never been used in tech tree!".format(sta.name.color(Pal.accent)));
+            } else {
+                appendChildren(sta.childCts, sta.techNode);
+                sta.childCts.sort((ct1, ct2) => ct2.id - ct1.id);
+            };
+            Time.runTask(VAR.delay.load.loadNodeRcs, () => {
+                sta.childRcs.pushAll(CLS_recipe.getNodeRcsMap().get(sta, Array.air));
+            });
+        });
+    };
 
 
 /*
@@ -87,70 +108,72 @@
 */
 
 
-  /**
-   * Used to categorize tech nodes.
-   * @class DBCT_techNodeContent
-   * @extends DBCT_databaseContent
-   */
-  module.exports = newClass().extendClass(PARENT, "DBCT_techNodeContent").initClass()
-  .setParent(StatusEffect)
-  .setTags()
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------ */
-
-
     /**
-     * `INTERNAL`
-     * @memberof DBCT_techNodeContent
-     * @instance
+     * Used to categorize tech nodes.
+     * @class DBCT_techNodeContent
+     * @extends DBCT_databaseContent
      */
-    childCts: tprov(() => []),
-    /**
-     * `INTERNAL`
-     * @memberof DBCT_techNodeContent
-     * @instance
-     */
-    childRcs: tprov(() => []),
+    module.exports = newClass()
+    .extendClass(PARENT, "DBCT_techNodeContent")
+    .initClass()
+    .setParent(StatusEffect)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------ */
+        /* <------------------------------ internal ------------------------------ */
 
 
-    databaseCategory: "lovec-tech-node",
-    databaseTag: "default",
+        /**
+         * `INTERNAL`: Contents that require this node in tech tree.
+         * @memberof DBCT_techNodeContent
+         * @instance
+         * @type {TDynamic<Array<UnlockableContent>>}
+         */
+        childCts: tprov(() => []),
+        /**
+         * `INTERNAL`: Recipes that require this node in tech tree. See {@link CLS_recipe}.
+         * @memberof DBCT_techNodeContent
+         * @instance
+         * @type {TDynamic<Array<CLS_recipe>>}
+         */
+        childRcs: tprov(() => []),
 
 
-  })
-  .setMethod({
+        /* <------------------------------ vanilla ------------------------------ */
 
 
-    setStats: function() {
-      comp_setStats(this);
-    },
+        databaseCategory: "lovec-tech-node",
+        databaseTag: "default",
 
 
-    isHidden: function() {
-      return false;
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
+    })
+    .setMethod({
 
 
-    /**
-     * @memberof DBCT_techNodeContent
-     * @instance
-     * @return {void}
-     */
-    ex_init: function() {
-      comp_ex_init(this);
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        setStats: function() {
+            comp_setStats(this);
+        },
 
 
-  });
+        isHidden: function() {
+            return false;
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+        /**
+         * @inheritdoc
+         */
+        ex_init: function() {
+            comp_ex_init(this);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+    });

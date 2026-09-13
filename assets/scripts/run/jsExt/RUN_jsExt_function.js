@@ -5,9 +5,9 @@
 */
 
 
-  /**
-   * Mostly function decorators.
-   */
+    /**
+     * Mostly function decorators.
+     */
 
 
 /*
@@ -17,265 +17,279 @@
 */
 
 
-  /* <------------------------------ modification ------------------------------ */
+    /* <------------------------------ modification ------------------------------ */
 
 
-  /**
-   * Wraps `Function#length`, mostly for {@link JavaAdapter}.
-   * It's ridiculous.
-   * @param {number|unset} [len]
-   * @return {Function}
-   */
-  Function.prototype.wrapLen = function(len) {
-    const thisFun = this;
+    /**
+     * Wraps `Function#length`, mostly for {@link JavaAdapter}.
+     * <br> It's ridiculous.
+     * @param {number|unset} [len]
+     * @return {Function}
+     */
+    Function.prototype.wrapLen = function(len) {
+        const thisFun = this;
 
-    let len_fi = len < 0 || len == null ? -1 : Math.max(Math.round(len), 0);
-    if(thisFun.length === len_fi) return thisFun;
+        let len_fi = len < 0 || len == null ? -1 : Math.max(Math.round(len), 0);
+        if(thisFun.length === len_fi) return thisFun;
 
-    switch(len_fi) {
-      case -1 : return thisFun;
-      case 0 : return function() {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 1 : return function(arg1) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 2 : return function(arg1, arg2) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 3 : return function(arg1, arg2, arg3) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 4 : return function(arg1, arg2, arg3, arg4) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 5 : return function(arg1, arg2, arg3, arg4, arg5) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 6 : return function(arg1, arg2, arg3, arg4, arg5, arg6) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 7 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 8 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 9 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 10 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 11 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 12 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 13 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 14 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      case 15 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) {return thisFun.apply(this, arguments)}.cloneProp(thisFun);
-      default : LCErrorHandler.throw("functionLengthWrapFail", len_fi);
+        switch(len_fi) {
+            case -1 : return thisFun;
+            case 0 : return function() {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 1 : return function(arg1) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 2 : return function(arg1, arg2) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 3 : return function(arg1, arg2, arg3) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 4 : return function(arg1, arg2, arg3, arg4) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 5 : return function(arg1, arg2, arg3, arg4, arg5) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 6 : return function(arg1, arg2, arg3, arg4, arg5, arg6) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 7 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 8 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 9 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 10 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 11 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 12 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 13 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 14 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+            case 15 : return function(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) {return thisFun.apply(this, arguments)}.setProp(thisFun);
+        };
+        throw new RangeError("Target length (" + len_fi + ") is too large!");
     };
-  };
 
 
-  /**
-   * Marks a method as abstract method.
-   * @return {Function}
-   */
-  Function.prototype.setAbstr = function() {
-    return function() {
-      throw new Error("Abstract method should be overrided before being called!");
+    /**
+     * Marks a method as abstract method.
+     * @return {Function}
+     */
+    Function.prototype.setAbstr = function() {
+        return function() {
+            throw new Error("Abstract method not implemented");
+        };
     };
-  };
 
 
-  /* <------------------------------ util ------------------------------ */
+    /* <------------------------------ util ------------------------------ */
 
 
-  /**
-   * Calls a method after some time (in frames).
-   * No returned value.
-   * @param {number} delay
-   * @param {Arguments|unset} [args]
-   * @param {any} [thisVal]
-   * @return {void}
-   */
-  Function.prototype.delay = function(delay, args, thisVal) {
-    Time.run(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
-  };
-
-
-  /**
-   * Variant of {@link Function#delay} that cannot be canceled.
-   * @param {number} delay
-   * @param {Arguments|unset} [args]
-   * @param {any} [thisVal]
-   * @return {void}
-   */
-  Function.prototype.delayTask = function(delay, args, thisVal) {
-    Time.runTask(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
-  };
-
-
-  /**
-   * Calls a method repetitively.
-   * No returned value.
-   * @param {number} repeat
-   * @param {number|unset} [intv]
-   * @param {Arguments|unset} [args]
-   * @param {any} [thisVal]
-   * @return {void}
-   */
-  Function.prototype.repeat = function(repeat, intv, args, thisVal) {
-    let fun = args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args);
-    intv == null ?
-      Timer.schedule(fun, 0.0, 0.0, repeat) :
-      Timer.schedule(fun, 0.0, intv / 60.0, repeat);
-  };
-
-
-  /**
-   * Calls a method after everything else has been called.
-   * No returned value.
-   * @param {Arguments|unset} [args]
-   * @param {any} [thisVal]
-   * @return {void}
-   */
-  Function.prototype.post = function(args, thisVal) {
-    Core.app.post(args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
-  };
-
-
-  /* <------------------------------ decorator ------------------------------ */
-
-
-  /**
-   * Returned values will be cached for this method for better performance.
-   * Used for costy methods that have static inputs.
-   * @param {ObjectMap|unset} [map] - If set, this object map will be used to store cache.
-   * @param {(function(): number)|unset} [stateF] - If set, cache will be cleared when state is changed.
-   * @return {Function}
-   */
-  Function.prototype.setCache = function thisDecor(map, stateF) {
-    const thisFun = this;
-
-    let cacheMap = map != null ? map : new ObjectMap();
-    let fun = function() {
-      // Reset cache if state is changed
-      if(stateF != null && stateF.call(this) !== fun.__cachedState__) {
-        cacheMap.clear();
-        fun.__cachedState__ = stateF();
-      };
-
-      let hash = thisDecor.calcHash.apply(this, arguments);
-      if(cacheMap.containsKey(hash)) return cacheMap.get(hash);
-
-      let val = thisFun.apply(this, arguments);
-      cacheMap.put(hash, val);
-
-      return val;
+    /**
+     * Calls a method after some time (in frames).
+     * No returned value.
+     * @param {number} delay
+     * @param {Arguments|unset} [args]
+     * @param {Object} [thisVal]
+     * @return {void}
+     */
+    Function.prototype.delay = function(delay, args, thisVal) {
+        Time.run(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
     };
-    fun.cloneProp(thisFun);
-    fun.__cachedState__ = -1;
-
-    return fun;
-  }
-  .setProp({
-    calcHash: function() {
-      let str = "";
-      let i = 0, iCap = arguments.length;
-      while(i < iCap) {
-        str += arguments[i] + ",";
-        i++;
-      };
-
-      return str;
-    },
-  });
 
 
-  /**
-   * For test only. Monitors time spent on this method.
-   * @param {number|unset} [dataAmt] - How many data to collect before printing the average.
-   * @return {Function}
-   */
-  Function.prototype.setTimeTest = function(dataAmt) {
-    const thisFun = this;
-
-    let meanWin = new WindowedMean(tryVal(dataAmt, 60));
-    let fun = function() {
-      Time.mark();
-      let returnVal = thisFun.apply(this, arguments);
-      meanWin.add(Time.elapsed());
-      if(meanWin.hasEnoughData()) {
-        console.log("[LOVEC] Method cost: ${1} ms.".format(meanWin.mean()));
-        meanWin.clear();
-      };
-
-      return returnVal;
+    /**
+     * Variant of {@link Function#delay} that cannot be canceled.
+     * @param {number} delay
+     * @param {Arguments|unset} [args]
+     * @param {Object} [thisVal]
+     * @return {void}
+     */
+    Function.prototype.delayTask = function(delay, args, thisVal) {
+        Time.runTask(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
     };
-    fun.cloneProp(thisFun);
-
-    return fun;
-  };
 
 
-  /**
-   * For test only. Monitors various behaviors of this method.
-   * @return {Function}
-   */
-  Function.prototype.setSpy = function thisDecor() {
-    const thisFun = this;
-
-    let fun = function() {
-      fun.__calledCount__++;
-      fun.__calledThis__.push(this);
-      fun.__calledArgs__.push(Array.from(arguments));
-      let returnVal = thisFun.apply(this, arguments);
-      fun.__returnedVals__.push(returnVal);
-
-      return returnVal;
+    /**
+     * Calls a method repetitively.
+     * No returned value.
+     * @param {number} repeat
+     * @param {number|unset} [intv]
+     * @param {Arguments|unset} [args]
+     * @param {Object} [thisVal]
+     * @return {void}
+     */
+    Function.prototype.repeat = function(repeat, intv, args, thisVal) {
+        let fun = args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args);
+        intv == null ?
+            Timer.schedule(fun, 0.0, 0.0, repeat) :
+            Timer.schedule(fun, 0.0, intv / 60.0, repeat);
     };
-    fun.cloneProp(thisFun);
-    fun.__calledCount__ = 0;
-    fun.__calledThis__ = [];
-    fun.__calledArgs__ = [];
-    fun.__returnedVals__ = [];
-
-    thisDecor.setMethods(fun);
-
-    return fun;
-  }
-  .setProp({
-    setMethods: function(fun) {
 
 
-      fun.getCallCount = function() {
-        return fun.__calledCount__;
-      };
+    /**
+     * Calls a method after everything else has been called.
+     * No returned value.
+     * @param {Arguments|unset} [args]
+     * @param {Object} [thisVal]
+     * @return {void}
+     */
+    Function.prototype.post = function(args, thisVal) {
+        Core.app.post(args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
+    };
 
 
-      fun.getCallThis = function() {
-        return fun.__calledThis__.cpy();
-      };
+    /* <------------------------------ decorator ------------------------------ */
 
 
-      fun.getLastThis = function() {
-        return fun.__calledThis__.cpy();
-      };
+    /**
+     * Returned values will be cached for this method for better performance.
+     * Used for costy methods that have static inputs.
+     * @param {ObjectMap|unset} [map] - If set, this object map will be used to store cache.
+     * @param {F0Function<number>|unset} [stateF] - If set, cache will be cleared when state is changed.
+     * @return {this}
+     */
+    Function.prototype.setCache = function thisDecor(map, stateF) {
+        const thisFun = this;
+
+        let cacheMap = map != null ? map : new ObjectMap();
+        let hash, val;
+        let fun = stateF == null ?
+            function() {
+                hash = thisDecor.calcHash(arguments);
+                val = cacheMap.get(hash);
+                if(val == null) {
+                    val = thisFun.apply(this, arguments);
+                    cacheMap.put(hash, val);
+                };
+                return val;
+            } :
+            function() {
+                if(stateF.call(this) !== fun.__cachedState__) {
+                    cacheMap.clear();
+                    fun.__cachedState__ = stateF();
+                };
+                hash = thisDecor.calcHash(arguments);
+                val = cacheMap.get(hash);
+                if(val == null) {
+                    val = thisFun.apply(this, arguments);
+                    cacheMap.put(hash, val);
+                };
+                return val;
+            };
+        fun.setProp(thisFun);
+        fun.__cachedState__ = -1;
+
+        return fun;
+    }
+    .setProp({
+        /**
+         * Converts given arguments to string.
+         * <br> Do not even try moving this method to Java!
+         * @memberof Function#setCache
+         * @param {Arguments} args
+         * @return {string}
+         */
+        calcHash: function(args) {
+            return Array.from(args).join(";;");
+        },
+    });
 
 
-      fun.hasCalledOn = function(obj) {
-        return fun.__calledThis__.includes(obj);
-      };
+    /**
+     * For test only. Monitors time spent on this method.
+     * @param {number|unset} [dataAmt] - How many data to collect before printing the average.
+     * @return {Function}
+     */
+    Function.prototype.setTimeTest = function(dataAmt) {
+        const thisFun = this;
+
+        let meanWin = new WindowedMean(tryVal(dataAmt, 60));
+        let returnVal;
+        let fun = function() {
+            Time.mark();
+            returnVal = thisFun.apply(this, arguments);
+            meanWin.add(Time.elapsed());
+            if(meanWin.hasEnoughData()) {
+                console.log("[LOVEC] Method cost: ${1} ms.".format(meanWin.mean()));
+                meanWin.clear();
+            };
+
+            return returnVal;
+        };
+        fun.setProp(thisFun);
+
+        return fun;
+    };
 
 
-      fun.getCallArgs = function() {
-        return fun.__calledArgs__.cpy();
-      };
+    /**
+     * For test only. Monitors various behaviors of this method.
+     * @return {Function}
+     */
+    Function.prototype.setSpy = function thisDecor() {
+        const thisFun = this;
+
+        let fun = function() {
+            fun.__calledCount__++;
+            fun.__calledThis__.push(this);
+            fun.__calledArgs__.push(Array.from(arguments));
+            let returnVal = thisFun.apply(this, arguments);
+            fun.__returnedVals__.push(returnVal);
+
+            return returnVal;
+        };
+        fun.setProp(thisFun);
+        fun.__calledCount__ = 0;
+        fun.__calledThis__ = [];
+        fun.__calledArgs__ = [];
+        fun.__returnedVals__ = [];
+        thisDecor.setMethods(fun);
+
+        return fun;
+    }
+    .setProp({
+        /**
+         * @memberof Function#setSpy
+         * @param {Function} fun
+         * @return {void}
+         */
+        setMethods: function(fun) {
 
 
-      fun.getLastCallArg = function() {
-        return fun.__calledArgs__.last();
-      };
+            fun.getCallCount = function() {
+                return fun.__calledCount__;
+            };
 
 
-      fun.isArgCalled = function(args) {
-        return fun.__calledArgs__.some(args1 => args.equals(args1));
-      };
+            fun.getCallThis = function() {
+                return fun.__calledThis__.cpy();
+            };
 
 
-      fun.getReturnVals = function() {
-        return fun.__returnedVals__.cpy();
-      };
+            fun.getLastThis = function() {
+                return fun.__calledThis__.cpy();
+            };
 
 
-      fun.getLastReturnVal = function() {
-        return fun.__returnedVals__.last();
-      };
+            fun.hasCalledOn = function(obj) {
+                return fun.__calledThis__.includes(obj);
+            };
 
 
-      fun.hasReturned = function(val) {
-        return fun.__returnedVals__.includes(val);
-      };
+            fun.getCallArgs = function() {
+                return fun.__calledArgs__.cpy();
+            };
 
 
-    },
-  });
+            fun.getLastCallArg = function() {
+                return fun.__calledArgs__.last();
+            };
+
+
+            fun.isArgCalled = function(args) {
+                return fun.__calledArgs__.some(args1 => args.equals(args1));
+            };
+
+
+            fun.getReturnVals = function() {
+                return fun.__returnedVals__.cpy();
+            };
+
+
+            fun.getLastReturnVal = function() {
+                return fun.__returnedVals__.last();
+            };
+
+
+            fun.hasReturned = function(val) {
+                return fun.__returnedVals__.includes(val);
+            };
+
+
+        },
+    });

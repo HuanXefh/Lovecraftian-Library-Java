@@ -20,15 +20,15 @@
   /* <------------------------------ base ------------------------------ */
 
 
-  newCacheLayer(
+  newShaderCacheLayer(
     "lovec-lava", fetchShader("shader0surf-flr0liq-lava"), CacheLayer.water,
   );
-  newCacheLayer(
+  newShaderCacheLayer(
     "lovec-puddle", fetchShader("shader0surf-flr0liq-puddle"), CacheLayer.water,
   );
-  newCacheLayer(
+  newShaderCacheLayer(
     "lovec-river", fetchShader("shader0surf-flr0liq-river"), CacheLayer.water,
   );
-  newCacheLayer(
+  newShaderCacheLayer(
     "lovec-sea", fetchShader("shader0surf-flr0liq-sea"), CacheLayer.water,
   );

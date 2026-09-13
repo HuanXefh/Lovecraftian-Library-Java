@@ -17,7 +17,7 @@
     let scr = b => {
       b.delegee.timeClickCur = Math.min(b.delegee.timeClickCur + blk.manualTimerClickInc, blk.manualTimerCap);
       MDL_effect.click(b.x, b.y, b.team.color);
-      Sounds.click.at(b);
+      MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
     };
     switch(blk.manualTimerCfgTp) {
       case "boolean" :

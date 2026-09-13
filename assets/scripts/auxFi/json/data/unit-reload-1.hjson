@@ -6,6 +6,11 @@ aquarion-reave: [1]
 
 asthosus-16p-05-expound: [4]
 
+/* <---------- Azimuth ----------> */
+
+azimut-Whale: [0, 1]
+azimut-Cthulhu: [0]
+
 /* <---------- Exogenesis (old) ----------> */
 
 exogenesis-T-atlas: [0]
@@ -15,6 +20,11 @@ exogenesis-battle: [5]
 exogenesis-collapse: [0]
 exogenesis-magnapinna: [2, 3]
 exogenesis-xenoct: [6, 7]
+
+/* <---------- Magic ----------> */
+
+magic-Ember: [2, 3]
+magic-StarrySky: [0, 1, 2, 3]
 
 /* <---------- New Horizon ----------> */
 

@@ -9,15 +9,16 @@
      * Utility class for automatic recipe generation.
      * See {@link TP_recipeGen} for examples.
      * @class
-     * @param {C2Function<Object, Object>} setter - `this` here refers to the generator itself. <br> `ARGS`: rcObj, metaObj.
+     * @param {RecipeRCSetter} setter
      */
     const CLS_recipeGenerator = newClass().initClass();
 
 
+    /** @private */
     CLS_recipeGenerator.prototype.init = function(setter) {
 
 
-        /** @type {C2Function<Object, Object>} */
+        /** @type {RecipeRCSetter} */
         this.setter = tryVal(setter, Function.air);
         /** @type {string|null} */
         this.__categ__ = null;
@@ -342,7 +343,7 @@
             isGenerated: true,
         };
         if(rcBuilderObj != null) {
-            Object.cloneProp(rcObj, rcBuilderObj);
+            Object.setProp(rcObj, rcBuilderObj);
         };
         if(objF != null) {
             objF(rcObj);
@@ -520,12 +521,17 @@
      * @return {Object}
      */
     function convertParamObj(paramObj_d, ct, metaObj) {
-        let obj = typeof paramObj_d === "function" ?
-            paramObj_d(ct, metaObj) :
-            paramObj_d != null ?
-                Object.assign({}, paramObj_d) :
-                {};
-
+        let obj;
+        try {
+            obj = typeof paramObj_d === "function" ?
+                paramObj_d(ct, metaObj) :
+                paramObj_d != null ?
+                    Object.assign({}, paramObj_d) :
+                    {};
+        } catch(err) {
+            obj = {};
+            console.warn("[LOVEC] Failed to convert param object when generating recipe:\n" + err);
+        };
         if(obj.hardness == null && ct instanceof Item) {
             obj.hardness = ct.hardness;
         };
@@ -656,8 +662,8 @@
 
     /**
      * Modifies `rc` on CLIENT LOAD.
-     * @param {Object} rc
-     * @param {Object} metaObj
+     * @param {RecipeRC} rc
+     * @param {RecipeMetaObject} metaObj
      * @return {void}
      */
     CLS_recipeGenerator.prototype.run = function(rc, metaObj) {

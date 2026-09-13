@@ -49,7 +49,7 @@
     if(TIMER.secFive) b.rsTarget = b.block.ex_findWeatherLiquid();
 
     if(b.rsTarget !== null && !Vars.net.client()) {
-      LCCraftingHandler.addLiquid(b, b, b.rsTarget, b.block.delegee.liqProdRate, true);
+      LCCraftingHandler.addLiquid(b, b, b.rsTarget, b.scaleOutput(b.block.delegee.liqProdRate), true);
       // Spill liquid if full
       if(b.efficiency > 0.0 && Mathf.chanceDelta(0.04) && b.liquids.get(b.rsTarget) > b.block.liquidCapacity * 0.98) {
         LCPos.getTilesEdge(thisFun.tmpTs, b.tile, b.block.size, true).forEachFast(ot => {

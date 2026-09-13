@@ -370,7 +370,7 @@
    * Item transfer effect.
    * @param {number} x
    * @param {number} y
-   * @param {PosGn|null} posIns
+   * @param {Position|null} posIns
    * @param {Color|unset} [color]
    * @param {number|unset} [repeat]
    * @param {boolean|unset} [isGlobal]
@@ -393,8 +393,8 @@
    * Laser beam effect.
    * @param {number} x
    * @param {number} y
-   * @param {PoscGn|null} e_f
-   * @param {PoscGn|null} e_t
+   * @param {Posc|null} e_f
+   * @param {Posc|null} e_t
    * @param {Color|unset} [color]
    * @param {number|unset} [strokeScl]
    * @param {boolean|unset} [hasLight]
@@ -414,7 +414,7 @@
    * Lightning effect.
    * @param {number} x
    * @param {number} y
-   * @param {PoscGn|null} e
+   * @param {Posc|null} e
    * @param {Color|unset} [color]
    * @param {boolean|unset} [hasSound]
    * @return {void}
@@ -425,7 +425,7 @@
 
     showAt(x, y, Fx.chainLightning, 0.0, color, e);
     if(hasSound) {
-      MDL_sound.playAt(x, y, Sounds.shootArc);
+      MDL_sound.playAt(x, y, "SOUNDS: shootArc");
     };
   }
   .setAnno("effect");
@@ -436,7 +436,7 @@
    * Chain lightning effect with multiple targets.
    * @param {number} x
    * @param {number} y
-   * @param {Array<PoscGn>} es
+   * @param {Array<Posc>} es
    * @param {Color|unset} [color]
    * @param {boolean|unset} [hasSound]
    * @return {void}
@@ -454,7 +454,7 @@
     };
 
     if(hasSound) {
-      MDL_sound.playAt(x, y, Sounds.shootArc);
+      MDL_sound.playAt(x, y, "SOUNDS: shootArc");
     };
   }
   .setProp({
@@ -468,8 +468,8 @@
    * Line effect from (x, y) or an entity to another entity.
    * @param {number} x
    * @param {number} y
-   * @param {PoscGn|null} e_f
-   * @param {PoscGn|null} e_t
+   * @param {Posc|null} e_f
+   * @param {Posc|null} e_t
    * @param {Color|unset} [color]
    * @param {number|unset} [strokeScl]
    * @param {boolean|unset} [shouldDrawSpike]
@@ -511,7 +511,7 @@
    * Point laser effect.
    * @param {number} x
    * @param {number} y
-   * @param {PoscGn|null} e
+   * @param {Posc|null} e
    * @param {Color|unset} [color]
    * @param {SoundGn|unset} [se_gn]
    * @return {void}

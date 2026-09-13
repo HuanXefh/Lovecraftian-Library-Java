@@ -22,11 +22,11 @@
 
 
   function comp_setStats(rs) {
-    let shortName = DB_HANDLER.read("resource-short-name", rs);
+    let shortName = LCDBFileHandler.read("resource-short-name", rs);
     if(shortName != null) {
       rs.stats.add(fetchStat("lovec", "rs-shortname"), shortName);
     };
-    let formula = DB_HANDLER.read("resource-chemical-formula", rs);
+    let formula = LCDBFileHandler.read("resource-chemical-formula", rs);
     if(formula != null) {
       rs.stats.add(fetchStat("lovec", "rs-formula"), formula);
     };
@@ -286,7 +286,7 @@
      */
     ex_getShortName: function() {
       if(this.shortName == null) {
-        this.shortName = DB_HANDLER.read("resource-short-name", this, DB_HANDLER.read("resource-chemical-formula", this, this.localizedName));
+        this.shortName = LCDBFileHandler.read("resource-short-name", this, LCDBFileHandler.read("resource-chemical-formula", this, this.localizedName));
       };
       return this.shortName;
     }

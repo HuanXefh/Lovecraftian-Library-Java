@@ -11,6 +11,7 @@
     const CLS_dialogFlowBuilder = newClass().initClass();
 
 
+    /** @private */
     CLS_dialogFlowBuilder.prototype.init = function() {
 
 
@@ -132,8 +133,8 @@
             {
                 haltTimeS: 0.0,
                 scr: () => {
-                  TRIGGER_BACKGROUND = true;
-                  MDL_ui.createBg(0.0, nameBg, () => !TRIGGER_BACKGROUND);
+                    UTIL_dialogFlow.TRIGGER_BACKGROUND = true;
+                    MDL_ui.createBg(0.0, nameBg, () => UTIL_dialogFlow.TRIGGER_BACKGROUND);
                 },
             },
         );
@@ -153,7 +154,7 @@
             null, null,
             {
                 haltTimeS: 0.0,
-                scr: () => TRIGGER_BACKGROUND = false,
+                scr: () => UTIL_dialogFlow.TRIGGER_BACKGROUND = false,
             },
         );
         this.offInd = 3;
@@ -174,8 +175,8 @@
             {
                 haltTimeS: 0.0,
                 scr: () => {
-                    TRIGGER_MUSIC = true;
-                    MDL_ui.createBgm(0.0, mus_gn, () => !TRIGGER_MUSIC);
+                    UTIL_dialogFlow.TRIGGER_MUSIC = true;
+                    MDL_ui.createBgm(0.0, mus_gn, () => !UTIL_dialogFlow.TRIGGER_MUSIC);
                 },
             },
         );
@@ -195,7 +196,7 @@
             null, null,
             {
                 haltTimeS: 0.0,
-                scr: () => TRIGGER_MUSIC = false,
+                scr: () => UTIL_dialogFlow.TRIGGER_MUSIC = false,
             },
         );
         this.offInd = 3;
@@ -227,7 +228,7 @@
      * @return {this}
      */
     CLS_dialogFlowBuilder.prototype.setSpeaker = function(nameMod, nameChara) {
-        if(this.offInd !== 1) LCErrorHandler.throw("dialogFlowGenerateFail");
+        if(this.offInd !== 1) throw new LCError.DialogFlowDataStructureError;
         this.dialFlowData.push([nameMod, nameChara]);
         this.offInd = 2;
         return this;
@@ -246,7 +247,7 @@
         } else if(this.offInd === 1) {
             this.dialFlowData.push(null);
         } else if(this.offInd !== 2) {
-            LCErrorHandler.throw("dialogFlowGenerateFail");
+            throw new LCError.DialogFlowDataStructureError;
         };
         this.dialFlowData.push(obj);
         this.offInd = 3;
@@ -257,7 +258,7 @@
     /**
      * Adds character arts to current row.
      * This method always completes the row.
-     * @param {Plural<DialogCharaData>} charaData_p
+     * @param {Plural<DialogCharaParamObject>} charaData_p
      * @return {this}
      */
     CLS_dialogFlowBuilder.prototype.setChara = function(charaData_p) {
@@ -328,9 +329,9 @@
      * @return {DialogFlowData}
      */
     CLS_dialogFlowBuilder.prototype.build = function() {
-        if(this.isBuilt) LCErrorHandler.throw("dialogFlowDoubleBuild");
-        if(this.hasBackground) LCErrorHandler.throw("dialogFlowMissingBackgroundEnd");
-        if(this.hasMusic) LCErrorHandler.throw("dialogFlowMissingMusicEnd");
+        if(this.isBuilt) throw new Error("Don't build the same dialog flow twice!");
+        if(this.hasBackground) throw new Error("Missing background end!");
+        if(this.hasMusic) throw new Error("Missing music end!");
         this.isBuilt = true;
 
         this.completeRow();

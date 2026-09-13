@@ -19,6 +19,7 @@
     const CLS_recipe = newClass().initClass();
 
 
+    /** @private */
     CLS_recipe.prototype.init = function(blk, rcMdl, rcHeader, useAutoSelection) {
 
 
@@ -634,7 +635,7 @@
      * @return {this}
      */
     CLS_recipe.prototype.initData = function() {
-        if(this.hasInit) throw new Error("Double initialization!");
+        if(this.hasInit) throw new Error("Double initialization");
         this.hasInit = true;
 
         /* meta info */
@@ -1551,7 +1552,7 @@
             i = 0;
             iCap = this.payi.iCap();
             while(i < iCap) {
-                Object.mapIncre(b.delegee.payReqObj, this.payi[i], -this.payi[i + 1]);
+                LCNativeObject.numIncre(b.delegee.payReqObj, this.payi[i], -this.payi[i + 1]);
                 i += 2;
             };
         };
@@ -1559,7 +1560,7 @@
             i = 0;
             iCap = this.payo.iCap();
             while(i < iCap) {
-                Object.mapIncre(b.delegee.payStockObj, this.payo[i], this.payo[i + 1]);
+                LCNativeObject.numIncre(b.delegee.payStockObj, this.payo[i], this.payo[i + 1]);
                 i += 2;
             };
         };

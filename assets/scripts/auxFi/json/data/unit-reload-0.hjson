@@ -42,6 +42,22 @@ asthosus-17q-06-clitelle: [0]
 asthosus-barite-elder: [0]
 asthosus-barite-stalker: [0]
 
+/* <---------- Azimuth ----------> */
+
+azimut-Legate: [0]
+azimut-Paladin: [2]
+azimut-Archon: [0]
+azimut-Improvement: [4]
+azimut-Innovation: [0, 1]
+azimut-Promotion: [0]
+azimut-Development: [0, 1]
+azimut-Perfection: [0]
+azimut-Plankton: [1, 2]
+azimut-Octopus: [0, 1]
+azimut-Whale: [2, 3]
+azimut-Cthulhu: [1, 2]
+azimut-Neptune: [0]
+
 /* <---------- Exogenesis (old) ----------> */
 
 exogenesis-T-atlas: [1, 2]
@@ -66,6 +82,29 @@ exogenesis-sagittarius: [16]
 exogenesis-toxicity: [0]
 exogenesis-war: [0]
 exogenesis-xenoct: [4, 5]
+
+/* <---------- Magical ----------> */
+
+magic-drizzle: [0]
+magic-drizzlingRain: [0]
+magic-ColdRain: [0]
+magic-HeavyRain: [0]
+magic-TorrentialRain: [0]
+magic-BeaconFire: [0, 1]
+magic-GAle: [2, 3, 4, 5]
+magic-blazing: [2]
+magic-Ember: [0, 1]
+magic-BrightStar: [1]
+magic-Turbulence: [0]
+magic-VastOcean: [0, 1]
+magic-FlowingSun: [0]
+magic-SplendidBrilliant: [0]
+magic-Radiance: [0]
+magic-Nightingale: [0]
+magic-Qingxiao: [0]
+magic-Aoba: [0]
+magic-MoonRise: [0, 1]
+magic-StarrySky: [4]
 
 /* <---------- New Horizon ----------> */
 

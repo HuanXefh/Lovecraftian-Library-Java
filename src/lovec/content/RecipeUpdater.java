@@ -85,7 +85,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
             iCap = co.getLength();
             while(i < iCap) {
                 tmp = co.get(i);
-                fAmt = LCScript.toFloat(co.get(i + 1));
+                fAmt = b.scaleOutput(LCScript.toFloat(co.get(i + 1)));
                 if(b.liquids.get((Liquid) tmp) / b.block.liquidCapacity <= 0.98f) {
                     allFull = false;
                 } else if(!blk.ignoreLiquidFullness && !blk.dumpExtraLiquid && fAmt > 0f && !LCScriptUtil.checkCond("isAuxiliaryFluid", tmp)) {
@@ -101,8 +101,8 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
         iCap = bo.getLength();
         while(i < iCap) {
             tmp = bo.get(i);
-            intAmt = LCScript.toInt(bo.get(i + 1));
-            fAmt = LCScript.toFloat(bo.get(i + 1));
+            intAmt = LCScript.toInt(b.scaleOutput(LCScript.toFloat(bo.get(i + 1))));
+            fAmt = b.scaleOutput(LCScript.toFloat(bo.get(i + 1)));
             p = LCScript.toFloat(bo.get(i + 2));
             if(b.items != null && tmp instanceof Item item) {
                 if(intAmt > 0 && !ignoreItemFullness && b.items.get(item) > b.getMaximumAccepted(item) - intAmt * p) return false;
@@ -119,7 +119,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
             iCap = fo.getLength();
             while(i < iCap) {
                 tmp = fo.get(i);
-                intAmt = LCScript.toInt(fo.get(i + 1));
+                intAmt = LCScript.toInt(b.scaleOutput(LCScript.toFloat(fo.get(i + 1))));
                 if(intAmt > 0 && !ignoreItemFullness && b.items.get((Item) tmp) > b.getMaximumAccepted((Item) tmp) - intAmt) return false;
                 i += 3;
             };
@@ -426,7 +426,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
         iCap = co.getLength();
         while(i < iCap) {
             liq = (Liquid) co.get(i);
-            amt = LCScript.toFloat(co.get(i + 1));
+            amt = b.scaleOutput(LCScript.toFloat(co.get(i + 1)));
             if(LCScriptUtil.checkTimer("secTwo") && amt > 0f) {
                 LCScriptUtil.fireTrigger("fluidProduce", b, liq);
             };
@@ -452,8 +452,8 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
             iCap = bo.getLength();
             while(i < iCap) {
                 tmp = bo.get(i);
-                intAmt = LCScript.toInt(bo.get(i + 1));
-                fAmt = LCScript.toFloat(bo.get(i + 1));
+                intAmt = LCScript.toInt(b.scaleOutput(LCScript.toFloat(bo.get(i + 1))));
+                fAmt = b.scaleOutput(LCScript.toFloat(bo.get(i + 1)));
                 p = LCScript.toFloat(bo.get(i + 2));
                 if(b.items != null && tmp instanceof Item item && b.items.get(item) < b.getMaximumAccepted(item)) {
                     LCScript.invoke("produceItem", FRAG_item, b, item, intAmt, p);
@@ -474,7 +474,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
             Item item;
             while(i < iCap) {
                 item = (Item) fo.get(i);
-                intAmt = LCScript.toInt(fo.get(i + 1));
+                intAmt = LCScript.toInt(b.scaleOutput(LCScript.toFloat(fo.get(i + 1))));
                 p = LCScript.toFloat(fo.get(i + 2));
                 if(b.items.get(item) < b.getMaximumAccepted(item)) {
                     LCScript.invoke("produceItem", FRAG_item, b, item, intAmt, p);

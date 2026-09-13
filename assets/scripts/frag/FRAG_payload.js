@@ -118,7 +118,7 @@
         if(b.getPayload() == null) return pay;
 
         pay = b.getPayload();
-        let key = readClassFunMap(DB_block.db["class"]["group"]["payload"]["key"], b.block, Function.air);
+        let key = readTypeValArr(DB_block.db["class"]["group"]["payload"]["key"], b.block, Function.air);
         if(key == null) {
             throw new Error("Payload key is not defined for ${1}???".format(b.block.name));
         } else {

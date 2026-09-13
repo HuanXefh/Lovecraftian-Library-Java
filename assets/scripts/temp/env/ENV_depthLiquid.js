@@ -23,7 +23,7 @@
 
   function comp_init(blk) {
     blk.rsDrop = MDL_attr.getDynaAttrRs(dynaAttrMap, blk);
-    if(blk.rsDrop == null) LCErrorHandler.throw("noLiquidDrop", blk.name);
+    if(blk.rsDrop == null) throw new NullArgumentError(blk.name + ".liquidDrop");
     MDL_content.rename(
       blk,
       blk.rsDrop.localizedName + MDL_text.getSpace() + "(" + blk.ex_getDepthName() + ")",

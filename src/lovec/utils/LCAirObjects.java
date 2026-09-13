@@ -24,7 +24,7 @@ public class LCAirObjects {
     public static final Vec3 vec3 = new Vec3();
 
     public static final TextureRegion textureRegion = new TextureRegion();
-    public static final Pixmap pixmap = new Pixmap(0, 0);
+    public static final Pixmap pixmap = new Pixmap(1, 1);
 
 
 };

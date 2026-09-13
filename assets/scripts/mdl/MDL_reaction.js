@@ -125,8 +125,8 @@
    * @param {number} pMtp
    * @param {number} x
    * @param {number} y
-   * @param {Building|Unit|unset} [e] - Entity involved, like a building where reaction happens.
-   * @param {ResourceGn|unset} [rs_gn] - Resource involved.
+   * @param {ReactionEntity|unset} [e]
+   * @param {ResourceGn|unset} [rs_gn]
    * @return {void}
    */
   const applyReaction = function(reactions, pMtp, x, y, e, rs_gn) {
@@ -151,7 +151,7 @@
    * @param {number} pMtp
    * @param {number} x
    * @param {number} y
-   * @param {Building|Unit|unset} [e]
+   * @param {ReactionEntity|unset} [e]
    * @param {ResourceGn|unset} [rs_gn]
    * @return {void}
    */
@@ -183,16 +183,16 @@
    * @param {string|UnlockableContent} reac1
    * @param {string|UnlockableContent} reac2
    * @param {number} pMtp
-   * @param {Tile|Building|Unit|unset} [t0e]
+   * @param {Tile|ReactionEntity|unset} [bearer]
    * @return {void}
    */
-  const handleReaction = function(reac1, reac2, pMtp, t0e) {
+  const handleReaction = function(reac1, reac2, pMtp, bearer) {
     applyReaction(
       getReactions(reac1, reac2),
       pMtp,
-      t0e instanceof Tile ? t0e.worldx() : t0e.x,
-      t0e instanceof Tile ? t0e.worldy() : t0e.y,
-      t0e instanceof Tile ? null : t0e,
+      bearer instanceof Tile ? bearer.worldx() : bearer.x,
+      bearer instanceof Tile ? bearer.worldy() : bearer.y,
+      bearer instanceof Tile ? null : bearer,
       checkReac(reac1) ? null : reac1,
     );
   };
@@ -204,19 +204,19 @@
    * @param {string|UnlockableContent} reac1
    * @param {string|UnlockableContent} reac2
    * @param {number} pMtp
-   * @param {Tile|Building|Unit|unset} [t0e]
+   * @param {Tile|ReactionEntity|unset} [bearer]
    * @return {void}
    */
-  const handleReaction_global = function(reac1, reac2, pMtp, t0e) {
+  const handleReaction_global = function(reac1, reac2, pMtp, bearer) {
     if(!Vars.net.client()) {
       handleReaction(reac1, reac2, pMtp, t0e);
     } else {
       requestReaction(
         getReactions(reac1, reac2),
         pMtp,
-        t0e instanceof Tile ? t0e.worldx() : t0e.x,
-        t0e instanceof Tile ? t0e.worldy() : t0e.y,
-        t0e instanceof Tile ? null : t0e,
+        bearer instanceof Tile ? bearer.worldx() : bearer.x,
+        bearer instanceof Tile ? bearer.worldy() : bearer.y,
+        bearer instanceof Tile ? null : bearer,
         checkReac(reac1) ? null : reac1,
       );
     };

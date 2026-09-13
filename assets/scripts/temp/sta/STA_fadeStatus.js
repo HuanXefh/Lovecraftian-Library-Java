@@ -5,29 +5,45 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/sta/STA_baseStatus");
+    /**
+     * @typedef {TemplateInstance<StatusEffect, STA_fadeStatus>} STAFadeStatus
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/sta/STA_baseStatus");
 
 
-  function comp_load(sta) {
-    sta.fadeReg = fetchRegionOrNull(sta, "-fade");
-  };
+    /* <---------- component ----------> */
 
 
-  function comp_draw(sta, unit) {
-    let isAfter = false;
-    if(!VARGEN.fadeStas.some(osta => {
-      if(osta === sta) isAfter = true;
-      return !isAfter && sta.fadeReg != null && unit.hasEffect(osta) && osta !== sta;
-    })) {
-      LCDrawf.fade(unit.x, unit.y, sta.fadeReg, 0.5, 0.0, LCProp.getHitSize(unit) * 0.1, sta.fadeColor, 0.5, Layer.effect + VAR.layer.offDrawOver);
+    /**
+     * @private
+     * @param {STAFadeStatus} sta
+     * @return {void}
+     */
+    function comp_load(sta) {
+        sta.fadeReg = fetchRegionOrNull(sta, "-fade");
     };
-  };
+
+
+    /**
+     * @private
+     * @param {STAFadeStatus} sta
+     * @param {Unit} unit
+     * @return {void}
+     */
+    function comp_draw(sta, unit) {
+        let isAfter = false;
+        if(!VARGEN.fadeStas.some(osta => {
+            if(osta === sta) isAfter = true;
+            return !isAfter && sta.fadeReg != null && unit.hasEffect(osta) && osta !== sta;
+        })) {
+            LCDrawf.fade(unit.x, unit.y, sta.fadeReg, 0.5, 0.0, LCProp.getHitSize(unit) * 0.1, sta.fadeColor, 0.5, Layer.effect + VAR.layer.offDrawOver);
+        };
+    };
 
 
 /*
@@ -37,48 +53,52 @@
 */
 
 
-  /**
-   * A status effect with fading sprite.
-   * @class STA_fadeStatus
-   * @extends STA_baseStatus
-   */
-  module.exports = newClass().extendClass(PARENT, "STA_fadeStatus").initClass()
-  .setParent(StatusEffect)
-  .setTags("sta-fade")
-  .setParam({
-
-
     /**
-     * `PARAM`: Color used for the fading region.
-     * @memberof STA_fadeStatus
-     * @instance
+     * A status effect with fading sprite.
+     * @class STA_fadeStatus
+     * @extends STA_baseStatus
      */
-    fadeColor: Color.white,
+    module.exports = newClass()
+    .extendClass(PARENT, "STA_fadeStatus")
+    .initClass()
+    .setParent(StatusEffect)
+    .setTags("sta-fade")
+    .setParam({
 
 
-    /* <------------------------------ internal ------------------------------ */
+        /**
+         * `PARAM`: Color used for the fading region.
+         * @memberof STA_fadeStatus
+         * @instance
+         * @type {Color}
+         */
+        fadeColor: Color.white,
 
 
-    /**
-     * `INTERNAL`
-     * @memberof STA_fadeStatus
-     * @instance
-     */
-    fadeReg: null,
+        /* <------------------------------ region ------------------------------ */
 
 
-  })
-  .setMethod({
+        /**
+         * `INTERNAL`
+         * @memberof STA_fadeStatus
+         * @instance
+         * @type {TextureRegion}
+         */
+        fadeReg: null,
 
 
-    load: function() {
-      comp_load(this);
-    },
+    })
+    .setMethod({
 
 
-    draw: function(unit) {
-      comp_draw(this, unit);
-    },
+        load: function() {
+            comp_load(this);
+        },
 
 
-  });
+        draw: function(unit) {
+            comp_draw(this, unit);
+        },
+
+
+    });

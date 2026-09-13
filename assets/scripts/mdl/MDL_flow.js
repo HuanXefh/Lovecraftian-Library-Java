@@ -154,7 +154,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return dens;
 
-    dens = DB_HANDLER.read("liquid-density", liq);
+    dens = LCDBFileHandler.read("liquid-density", liq);
     if(dens == null) {
       let dens_def = liq.gas ? 0.00129 : 1.0;
       let eleGrp = getEleGrp(liq);
@@ -183,7 +183,7 @@
       if(boilPon != null) return boilPon;
     };
 
-    boilPon = DB_HANDLER.read("liquid-boiling-point", liq);
+    boilPon = LCDBFileHandler.read("liquid-boiling-point", liq);
     if(boilPon == null) {
       let eleGrp = getEleGrp(liq);
       boilPon = eleGrp == null ?
@@ -208,7 +208,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return fHeat;
 
-    fHeat = DB_HANDLER.read("liquid-fluid-heat", liq, def);
+    fHeat = LCDBFileHandler.read("liquid-fluid-heat", liq, def);
 
     return fHeat;
   }
@@ -239,7 +239,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return viscWrap;
 
-    let visc = DB_HANDLER.read("liquid-viscosity", liq);
+    let visc = LCDBFileHandler.read("liquid-viscosity", liq);
     if(visc != null) {
       viscWrap = halfLogWrap(visc, 0.98, 2800.0);
     } else {
@@ -268,7 +268,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return res;
 
-    res = DB_HANDLER.read("block-pressure-resistance", blk);
+    res = LCDBFileHandler.read("block-pressure-resistance", blk);
     if(res == null) {
       let matGrp = getMatGrp(blk);
       res = matGrp == null ? 5.0 : DB_block.db["grpParam"]["presRes"].read(matGrp, 5.0);
@@ -291,7 +291,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return res;
 
-    res = DB_HANDLER.read("block-vacuum-resistance", blk);
+    res = LCDBFileHandler.read("block-vacuum-resistance", blk);
     if(res == null) {
       let matGrp = getMatGrp(blk);
       res = matGrp == null ? -5.0 : DB_block.db["grpParam"]["vacRes"].read(matGrp, -5.0);
@@ -331,7 +331,7 @@
     let liq = MDL_content.getCt(liq_gn, "rs");
     if(liq == null) return corPow;
 
-    corPow = DB_HANDLER.read("liquid-corrosion-power", liq);
+    corPow = LCDBFileHandler.read("liquid-corrosion-power", liq);
     if(corPow == null) {
       let eleGrp = getEleGrp(liq);
       corPow = eleGrp == null ? 0.0 : corPow = DB_fluid.db["grpParam"]["corrosion"].read(eleGrp, 0.0);
@@ -384,7 +384,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return corRes;
 
-    corRes = DB_HANDLER.read("block-corrosion-resistance", blk);
+    corRes = LCDBFileHandler.read("block-corrosion-resistance", blk);
     if(corRes == null) {
       let matGrp = getMatGrp(blk);
       corRes = matGrp == null ? 1.0 : DB_block.db["grpParam"]["corRes"].read(matGrp, 1.0);
@@ -410,7 +410,7 @@
     let blk = MDL_content.getCt(blk_gn, "blk");
     if(blk == null) return heatRes;
 
-    heatRes = DB_HANDLER.read("block-heat-resistance", blk);
+    heatRes = LCDBFileHandler.read("block-heat-resistance", blk);
     if(heatRes == null) {
       let matGrp = getMatGrp(blk);
       heatRes = matGrp == null ? Infinity : DB_block.db["grpParam"]["heatRes"].read(matGrp, Infinity);
@@ -454,7 +454,7 @@
     if(amt < 0.01) return def;
     let cap = b.block.liquidCapacity;
     if(cap < 0.0001) return def;
-    let fHeatBase = DB_HANDLER.read("liquid-fluid-heat", liqCur, def);
+    let fHeatBase = LCDBFileHandler.read("liquid-fluid-heat", liqCur, def);
 
     return fHeatBase * (1.0 + amt / cap * 0.2);
   };

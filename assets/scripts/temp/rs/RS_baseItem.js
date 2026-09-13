@@ -16,7 +16,7 @@
 
   function comp_init(item) {
     if(item.overwriteVanillaProp) {
-      let hardness = DB_HANDLER.read("item-hardness", item, -1.0);
+      let hardness = LCDBFileHandler.read("item-hardness", item, -1.0);
       if(hardness >= 0.0) {
         item.hardness = hardness;
       };

@@ -24,8 +24,8 @@
     /**
      * Whether `e` is `caller` or part of it.
      * Used to avoid damage to the caller itself on some occasions like impact wave.
-     * @param {Building|Unit|Bullet} e
-     * @param {Building|Unit|Bullet|unset} [caller]
+     * @param {Entityc} e
+     * @param {Entityc|unset} [caller]
      * @return {boolean}
      */
     const checkCaller = function(e, caller) {
@@ -153,7 +153,7 @@
      * @param {Unit} unit
      * @return {void}
      */
-    const comp_update_heat = function(utp, unit) {
+    const updateHeat = function(utp, unit) {
         if(!TIMER.unit || !syncChance("unit", VAR.chance.unitUpdateP * 0.3)) return;
         if(!MDL_cond.isHeatDamageable(unit)) return;
 
@@ -174,4 +174,4 @@
             EFF.smogHeat.at(unit);
         };
     };
-    exports.comp_update_heat = comp_update_heat;
+    exports.updateHeat = updateHeat;

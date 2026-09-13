@@ -38,11 +38,7 @@
 
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
-    if(blk.drawRange) {
-      Draw.color(valid ? Pal.accent : Pal.remove, 0.3);
-      LCDraw.ring(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.laserRange * Vars.tilesize * blk.minRadFrac, blk.laserRange * Vars.tilesize);
-      Draw.color();
-    };
+    blk.ex_drawRange(tx.toFCoord(blk.size), ty.toFCoord(blk.size), valid);
     if(blk.autolink) {
       let t = Vars.world.tile(tx, ty);
       if(t != null) {
@@ -79,22 +75,22 @@
 
 
   function comp_drawSelect(b) {
-    if(b.block.drawRange) {
-      Draw.color(Pal.accent, 0.3);
-      LCDraw.ring(b.x, b.y, b.block.laserRange * Vars.tilesize * b.block.delegee.minRadFrac, b.block.laserRange * Vars.tilesize);
-      Draw.color();
-    };
+    if(Vars.control.input.config.isShown()) return;
+
+    b.block.ex_drawRange(b.x, b.y, true);
+    b.ex_drawLinkTargets();
   };
 
 
   function comp_drawConfigure(b) {
-    comp_drawSelect(b);
+    Drawf.circles(b.x, b.y, b.block.size * Vars.tilesize * 0.5 + 1.0 + Mathf.absin(Time.time, 4.0, 1.0));
+    b.block.ex_drawRange(b.x, b.y, true);
+    b.ex_drawLinkTargets();
   };
 
 
   function comp_ex_findWireTarget(b) {
     let int_t = b.power.links.random();
-
     return int_t == null ? null : Vars.world.build(int_t);
   };
 
@@ -205,6 +201,27 @@
       }),
 
 
+      /**
+       * @memberof BLK_wireNode
+       * @instance
+       * @param {number} x
+       * @param {number} y
+       * @param {boolean} valid
+       * @return {void}
+       */
+      ex_drawRange: function(x, y, valid) {
+        if(this.drawRange) {
+          Draw.color(valid ? Pal.accent : Pal.remove, 0.3);
+          LCDraw.ring(x, y, this.laserRange * Vars.tilesize * this.minRadFrac, this.laserRange * Vars.tilesize);
+          Draw.color();
+        };
+      }
+      .setProp({
+        noSuper: true,
+        argLen: 3,
+      })
+
+
     }),
 
 
@@ -229,7 +246,10 @@
 
       drawConfigure: function() {
         comp_drawConfigure(this);
-      },
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       /**
@@ -246,6 +266,28 @@
         noSuper: true,
         override: true,
       }),
+
+
+      /**
+       * @memberof B_wireNode
+       * @instance
+       * @return {void}
+       */
+      ex_drawLinkTargets: function() {
+        LCEntity.eachBuild(
+          this.x, this.y, this.team,
+          this.block.laserRange * Vars.tilesize,
+          ob => ob.dst(this) >= this.block.laserRange * Vars.tilesize * this.block.delegee.minRadFrac && this.block.linkValid(this, ob),
+          ob => {
+            Tmp.c1.set(Pal.accent);
+            Tmp.c1.a = Mathf.absin(4.0, 1.0);
+            Drawf.selected(ob, Tmp.c1);
+          },
+        );
+      }
+      .setProp({
+        noSuper: true,
+      })
 
 
     }),

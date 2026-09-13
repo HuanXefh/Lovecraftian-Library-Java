@@ -17,7 +17,7 @@
 
 
   function comp_init(blk) {
-    if(blk.cropData == null) LCErrorHandler.throw("nullArgument", "cropData");
+    if(blk.cropData == null || blk.cropData.length === 0) throw new LCError.NullArgumentError(blk.name + ".cropData");
 
     blk.group = BlockGroup.none;
     blk.update = true;
@@ -25,6 +25,7 @@
     blk.enableDrawStatus = false;
     blk.drawDynamic = true;
     blk.drawCached = false;
+    blk.allowedInPayloads = false;
 
     blk.config(JAVA.string, (b, str) => {
       if(str === "SPEC: harvest") {
@@ -137,7 +138,7 @@
         "offSha", -4.0,
         "drawF", function(b) {b.block.ex_drawCropDef(b)},
       );
-      if(obj.dur == null) LCErrorHandler.throw("nullArgument", "cropData.dur");
+      if(obj.dur == null) throw new LCError.NullArgumentError(blk.name + ".cropData.dur");
       blk.growTotalTime += obj.dur;
       obj.item = MDL_content.getCt(obj.item, "rs");
       i++;
@@ -210,17 +211,17 @@
     b.stageItemAmt = b.block.delegee.cropData[b.stageCur].amt;
     b.stageItemP = b.block.delegee.cropData[b.stageCur].p;
     b.stageBackTo = b.block.delegee.cropData[b.stageCur].stageTo;
-    b.stageReg = b.block.delegee.cropRegs[b.stageCur];
-    b.stageShaReg = b.block.delegee.cropShaRegs[b.stageCur];
-    b.stageCropRad = b.block.delegee.cropData[b.stageCur].rad;
-    b.stageHidable = b.block.delegee.cropData[b.stageCur].hidable;
-    b.stageStatic = b.block.delegee.cropData[b.stageCur].static;
-    b.stageCropScl = b.block.delegee.cropData[b.stageCur].scl;
-    b.stageCropMag = b.block.delegee.cropData[b.stageCur].mag;
-    b.stageCropWob = b.block.delegee.cropData[b.stageCur].wob;
-    b.stageCropZ = b.block.delegee.cropData[b.stageCur].z;
-    b.stageOffSha = b.block.delegee.cropData[b.stageCur].offSha;
-    b.stageDrawF = b.block.delegee.cropData[b.stageCur].drawF;
+    b.stageReg = Vars.state.isEditor() ? b.block.delegee.cropRegs.last() : b.block.delegee.cropRegs[b.stageCur];
+    b.stageShaReg = Vars.state.isEditor() ? b.block.delegee.cropShaRegs.last() : b.block.delegee.cropShaRegs[b.stageCur];
+    b.stageCropRad = Vars.state.isEditor() ? b.block.delegee.cropData.last().rad : b.block.delegee.cropData[b.stageCur].rad;
+    b.stageHidable = Vars.state.isEditor() ? b.block.delegee.cropData.last().hidable : b.block.delegee.cropData[b.stageCur].hidable;
+    b.stageStatic = Vars.state.isEditor() ? b.block.delegee.cropData.last().static : b.block.delegee.cropData[b.stageCur].static;
+    b.stageCropScl = Vars.state.isEditor() ? b.block.delegee.cropData.last().scl : b.block.delegee.cropData[b.stageCur].scl;
+    b.stageCropMag = Vars.state.isEditor() ? b.block.delegee.cropData.last().mag : b.block.delegee.cropData[b.stageCur].mag;
+    b.stageCropWob = Vars.state.isEditor() ? b.block.delegee.cropData.last().wob : b.block.delegee.cropData[b.stageCur].wob;
+    b.stageCropZ = Vars.state.isEditor() ? b.block.delegee.cropData.last().z : b.block.delegee.cropData[b.stageCur].z;
+    b.stageOffSha = Vars.state.isEditor() ? b.block.delegee.cropData.last().offSha : b.block.delegee.cropData[b.stageCur].offSha;
+    b.stageDrawF = Vars.state.isEditor() ? b.block.delegee.cropData.last().drawF : b.block.delegee.cropData[b.stageCur].drawF;
     b.stageUpdateScr = b.block.delegee.cropData[b.stageCur].updateScr;
     b.stageHarvestScr = b.block.delegee.cropData[b.stageCur].harvestScr;
     b.stageDestroyScr = b.block.delegee.cropData[b.stageCur].destroyScr;
@@ -686,7 +687,7 @@
        * @return {boolean}
        */
       ex_checkCanHarvest: function() {
-        return this.stageItem != null && this.stageItemAmt * this.stageItemAmt > 0.0;
+        return !Vars.state.isEditor() && this.stageItem != null && this.stageItemAmt * this.stageItemAmt > 0.0;
       }
       .setProp({
         noSuper: true,

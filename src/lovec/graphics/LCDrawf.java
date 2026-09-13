@@ -1638,12 +1638,12 @@ public class LCDrawf {
         Tile t, float rad, float offSha, float scl, float mag, float wob, float a, float z,
         boolean shouldDrawWobble, boolean shouldCheckDst
     ) {
-        if(a < 0.01f) return;
+        if(a < 0.01f || reg == null) return;
 
         float zPrev = Draw.z();
-        if(shaReg.found()) {
+        if(shaReg != null && shaReg.found()) {
             Draw.z(z - 0.001f);
-            Draw.rect(shaReg, t.worldx() + offSha, t.worldy() + offSha, Mathf.randomSeed(t.pos(), 0f, 360f));
+            Draw.rect(shaReg, t.worldx() + offSha, t.worldy() + offSha, Mathf.randomSeed(t.pos(), -45f, 45f));
         };
         if(!shouldCheckDst) {
             Draw.alpha(a);
@@ -1654,7 +1654,7 @@ public class LCDrawf {
         };
         Draw.z(z);
         if(!shouldDrawWobble) {
-            Draw.rect(reg, t.worldx(), t.worldy(), Mathf.randomSeed(t.pos(), 0f, 360f));
+            Draw.rect(reg, t.worldx(), t.worldy(), Mathf.randomSeed(t.pos(), -45f, 45f));
         } else {
             Draw.rectv(
                 reg, t.worldx(), t.worldy(),

@@ -15,9 +15,8 @@ const db = {
 
         /**
          * Used to set up status affinities.
-         * @type {Array}
-         * @lovecRow `StatusGn` - sta
-         * @lovecRow `StatusReactionArray` - staReacArr
+         * <br> `ROW`: sta, staReacArr.
+         * @type {F2Array<StatusGn, StatusReactionArray>}
          * @lovecContentGen
          */
         affinity: [],
@@ -26,9 +25,8 @@ const db = {
         /**
          * Used to set up status opposites.
          * Acidic and basic status effects are by default opposite to each other.
-         * @type {Array}
-         * @lovecRow `StatusGn` - sta
-         * @lovecRow `Array<StatusGn>|F0Function<Array<StatusGn>>` - ostas_fn
+         * <br> `ROW`: sta, ostas_fn.
+         * @type {F2Array<StatusGn, Dynamic<Array<StatusGn>>>}
          * @lovecContentGen
          */
         opposite: [

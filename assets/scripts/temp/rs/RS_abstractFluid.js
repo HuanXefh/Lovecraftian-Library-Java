@@ -15,7 +15,7 @@
 
 
   function comp_init(aux) {
-    if(!aux.gas) LCErrorHandler.throw("auxNotGas", aux.name);
+    if(!aux.gas) throw new Error("Abstract fluid must be gas: " + aux.name);
 
     aux.databaseCategory = "lovec-aux";
   };

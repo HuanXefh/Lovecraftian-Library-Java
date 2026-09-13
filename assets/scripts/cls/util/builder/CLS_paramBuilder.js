@@ -7,10 +7,20 @@
 
     /**
      * Base class for most parameter builders.
-     * `this.builderObj` should be defined in child classes.
      * @class
      */
     const CLS_paramBuilder = newClass().initAbstrClass();
+
+
+    /** @private */
+    CLS_paramBuilder.prototype.init = function() {
+
+
+        /** @type {Object} */
+        this.builderObj = {};
+
+
+    };
 
 
 /*

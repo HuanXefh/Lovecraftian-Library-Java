@@ -1,6 +1,9 @@
 *.bkp
 ~$*
 .todo/
+node_modules/
+doc_files/
+document/jsdoc
 
 logs/
 /core/assets/mindustry-saves/

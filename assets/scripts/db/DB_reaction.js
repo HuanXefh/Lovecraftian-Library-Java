@@ -32,9 +32,8 @@ const db = {
     /**
      * Reaction definition.
      * Called on server side only.
-     * @type {Array}
-     * @lovecRow `string` - reaction
-     * @lovecRow `ReactionData` - data
+     * <br> `ROW`: reaction, tup.
+     * @type {F2Array<string, ReactionTuple>}
      */
     reaction: [
 
@@ -109,9 +108,8 @@ const db = {
 
     /**
      * Conditions for each reaction group.
-     * @type {Array}
-     * @lovecRow `string` - reacGrp
-     * @lovecRow `FFunction<Resource, boolean>` - boolF
+     * <br> `ROW`: reacGrp, boolF.
+     * @type {F2Array<string, FFunction<Resource, boolean>>}
      */
     groupCond: [
 
@@ -139,10 +137,8 @@ const db = {
 
     /**
      * List of fluid reactants and the event called.
-     * @type {Array}
-     * @lovecRow `Reactant` - reac1
-     * @lovecRow `Reactant` - reac2
-     * @lovecRow `[string, ReactionParamObject]` - [reaction, paramObj]
+     * <br> `ROW`: reac1, reac2, [reaction, paramObj].
+     * @type {F3Array<Reactant, Reactant, [string, ReactionParamObject]>}
      * @lovecOrderless
      */
     fluid: [
@@ -154,10 +150,8 @@ const db = {
 
     /**
      * List of item reactant, fluid reactant and the event called (item cannot react with item directly).
-     * @type {Array}
-     * @lovecRow `Reactant` - reac1
-     * @lovecRow `Reactant` - reac2
-     * @lovecRow `[string, ReactionParamObject]` - [reaction, paramObj]
+     * <br> `ROW`: reac1, reac2, [reaction, paramObj].
+     * @type {F3Array<Reactant, Reactant, [string, ReactionParamObject]>}
      * @lovecOrderless
      */
     item: [
@@ -175,10 +169,8 @@ const db = {
 
     /**
      * List of block material group, fluid reactant and the event called.
-     * @type {Array}
-     * @lovecRow `string` - matGrp
-     * @lovecRow `Reactant` - reac
-     * @lovecRow `[string, ReactionParamObject]` - [reaction, paramObj]
+     * <br> `ROW`: matGrp, reac, [reaction, paramObj].
+     * @type {F3Array<string, Reactant, [string, ReactionParamObject]>}
      * @lovecOrderless
      */
     material: [
@@ -191,9 +183,8 @@ const db = {
     /**
      * Target item in a denaturing reaction.
      * If null no item will be formed.
-     * @type {Array}
-     * @lovecRow `ItemGn` - item_f
-     * @lovecRow `ItemGn` - item_t
+     * <br> `ROW`: item_f, item_t.
+     * @type {F2Array<ItemGn, ItemGn>}
      */
     denaturingTarget: [],
 
@@ -208,9 +199,8 @@ const db = {
 
 
         /**
-         * @type {Array}
-         * @lovecRow `ItemGn` - item
-         * @lovecRow `LiquidGn` - liq
+         * `ROW`: item, liq.
+         * @type {F2Array<ItemGn, LiquidGn>}
          */
         water: [],
 

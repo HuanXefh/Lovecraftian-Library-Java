@@ -5,9 +5,9 @@
 */
 
 
-  /**
-   * More methods for Lovec class that should be defined later.
-   */
+    /**
+     * More methods for Lovec class that should be defined later.
+     */
 
 
 /*
@@ -24,33 +24,31 @@
    * @return {this}
    */
   Function.prototype.implement = function(intf, shouldOverride) {
-    if(!(intf instanceof CLS_interface)) LCErrorHandler.throw("notInterface", intf);
-    if(intf.children.includes(this)) LCErrorHandler.throw("duplicateInterface");
+      if(!(intf instanceof CLS_interface)) throw new TypeError(intf + " is not an interface");
+      if(intf.children.includes(this)) throw new Error("Do not implement the same interface twice!");
 
-    if(!this.__isContentTemplate__) {
-      Object.eachPair(intf.intfObj, (name, fun) => {
-        if(name === "__proto__") {
-          this.prototype[name] !== undefined && !shouldOverride ?
-            LCErrorHandler.throw("interfaceMethodNameConflict", name) :
-            this.prototype[name] = fun;
-        } else {
-          this[name] !== undefined && !shouldOverride ?
-            LCErrorHandler.throw("interfaceMethodNameConflict", name) :
-            this[name] = fun;
-        };
-      });
-    } else {
-      if(this.nm === "CLS_contentTemplate") throw new Error("Are you trying to implement interface on the root template?");
-      let arr = CLS_contentTemplate.getTempParents(this.nm);
-      if(String.isEmpty(intf.name)) {
-        console.warn("[LOVEC] Content template ${1} is implementing an anonymous interface!".format(this.nm));
+      if(!this.__isContentTemplate__) {
+          Object.eachPair(intf.intfObj, (name, fun) => {
+              if(name === "__protoF__") {
+                  if(this.prototype[name] !== undefined && !shouldOverride) throw new Error("Prototype method name conflict: " + name);
+                  this.prototype[name] = fun;
+              } else {
+                  if(this[name] !== undefined && !shouldOverride) throw new Error("Method name conflict: " + name);
+                  this[name] = fun;
+              };
+          });
       } else {
-        arr.push(intf.name);
+          if(this.clsName === "CLS_contentTemplate") throw new Error("Are you trying to implement interface on the root template?");
+          let arr = CLS_contentTemplate.getTempParents(this.clsName);
+          if(String.isEmpty(intf.name)) {
+              console.warn("[LOVEC] Content template ${1} is implementing an anonymous interface!".format(this.clsName));
+          } else {
+              arr.push(intf.name);
+          };
+          intf.parentIntfs.forEachCond(ointf => !String.isEmpty(ointf.name), ointf => arr.push(ointf.name), true);
+          this.setMethod(intf.intfObj, true);
       };
-      intf.parentIntfs.forEachCond(ointf => !String.isEmpty(ointf.name), ointf => arr.push(ointf.name), true);
-      this.setMethod(intf.intfObj, true);
-    };
-    intf.children.push(this);
+      intf.children.push(this);
 
-    return this;
+      return this;
   };

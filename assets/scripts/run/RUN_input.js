@@ -5,9 +5,9 @@
 */
 
 
-  /**
-   * Handles player input.
-   */
+    /**
+     * Handles player input.
+     */
 
 
 /*
@@ -17,25 +17,31 @@
 */
 
 
-  /* <---------- base ----------> */
+    /* <---------- base ----------> */
 
 
-  let
-    unitPlayer = null,
-    tMouse = null;
+    /** @type {Unit|null} */
+    let unitPlayer = null;
+    /** @type {Tile|null} */
+    let tMouse = null;
 
 
-  function updateKeybind(unitPlayer, tMouse) {
-    if(Core.scene.hasField() || Core.scene.hasDialog()) return;
+    /**
+     * @param {Unit|null} unitPlayer
+     * @param {Tile|null} tMouse
+     * @return {void}
+     */
+    function updateKeybind(unitPlayer, tMouse) {
+        if(Core.scene.hasField() || Core.scene.hasDialog()) return;
 
-    let i = 0, iCap = global.lovecUtil.db.keyBindListener.iCap();
-    while(i < iCap) {
-      if(Core.input.keyTap(global.lovecUtil.db.keyBindListener[i])) {
-        global.lovecUtil.db.keyBindListener[i + 1](unitPlayer, tMouse);
-      };
-      i += 2;
+        let i = 0, iCap = global.lovecUtil.db.keyBindListener.iCap();
+        while(i < iCap) {
+            if(Core.input.keyTap(global.lovecUtil.db.keyBindListener[i])) {
+                global.lovecUtil.db.keyBindListener[i + 1](unitPlayer, tMouse);
+            };
+            i += 2;
+        };
     };
-  };
 
 
 /*
@@ -47,11 +53,13 @@
 
 
 
-  if(!Vars.headless) MDL_event.onUpdate(() => {
+    if(!Vars.headless) {
+        MDL_event.onUpdate(() => {
 
-    unitPlayer = Vars.player.unit();
-    tMouse = LCPos.getTileMouse();
+          unitPlayer = Vars.player.unit();
+          tMouse = LCPos.getTileMouse();
 
-    updateKeybind(unitPlayer, tMouse);
+          updateKeybind(unitPlayer, tMouse);
 
-  });
+        });
+    };

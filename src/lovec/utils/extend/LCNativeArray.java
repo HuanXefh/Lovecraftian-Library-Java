@@ -1931,7 +1931,7 @@ public class LCNativeArray {
     public static NativeArray operWith(NativeArray arr1, NativeArray arr2, Func2 func2) throws IllegalArgumentException {
         int i = 0;
         long iCap = arr1.getLength();
-        if(iCap != arr2.getLength()) throw new IllegalArgumentException("Expected two arrays with same length!");
+        if(iCap != arr2.getLength()) throw new IllegalArgumentException("Expecting two arrays with same length!");
         while(i < iCap) {
             arr1.set(i, func2.get(arr1.get(i), arr2.get(i)));
             i++;

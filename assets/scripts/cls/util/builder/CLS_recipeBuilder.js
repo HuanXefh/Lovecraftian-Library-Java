@@ -14,11 +14,11 @@
     const CLS_recipeBuilder = newClass().extendClass(CLS_paramBuilder).initClass();
 
 
+    /** @private */
     CLS_recipeBuilder.prototype.init = function() {
 
 
-        /** @type {Object} */
-        this.builderObj = {};
+        this.super("init");
 
 
     };

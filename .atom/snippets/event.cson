@@ -1,97 +1,97 @@
 '.source.js':
 
-  'Core.post':
-    prefix: 'lc_post'
-    body: '''
-    Core.app.post(() => {
-      ${1:}
-    });
-    '''
+    'Core.post':
+        prefix: 'lc_post'
+        body: '''
+        Core.app.post(() => {
+            ${1:}
+        });
+        '''
 
-  'Time.run':
-    prefix: 'lc_time'
-    body: '''
-    Time.run(${1:delay}, () => {
-      ${2:}
-    });
-    '''
+    'Time.run':
+        prefix: 'lc_time'
+        body: '''
+        Time.run(${1:delay}, () => {
+            ${2:}
+        });
+        '''
 
-  'Time.runTask':
-    prefix: 'lc_task'
-    body: '''
-    Time.runTask(${1:delay}, () => {
-      ${2:}
-    });
-    '''
+    'Time.runTask':
+        prefix: 'lc_task'
+        body: '''
+        Time.runTask(${1:delay}, () => {
+            ${2:}
+        });
+        '''
 
-  'on init':
-    prefix: 'lc_oninit'
-    body: '''
-    MDL_event.onInit(() => {
-      ${1:}
-    });
-    '''
+    'on init':
+        prefix: 'lc_oninit'
+        body: '''
+        MDL_event.onInit(() => {
+            ${1:}
+        });
+        '''
 
-  'on load':
-    prefix: 'lc_onload'
-    body: '''
-    MDL_event.onLoad(() => {
-      ${1:}
-    });
-    '''
+    'on load':
+        prefix: 'lc_onload'
+        body: '''
+        MDL_event.onLoad(() => {
+            ${1:}
+        });
+        '''
 
-  'on load post':
-    prefix: 'lc_onloadpost'
-    body: '''
-    MDL_event.onLoadPost(() => {
-      ${1:}
-    });
-    '''
+    'on load post':
+        prefix: 'lc_onloadpost'
+        body: '''
+        MDL_event.onLoadPost(() => {
+            ${1:}
+        });
+        '''
 
-  'on load delay':
-    prefix: 'lc_onloaddelay'
-    body: '''
-    MDL_event.onLoadDelay(${1:delay}, () => {
-      ${2:}
-    });
-    '''
+    'on load delay':
+        prefix: 'lc_onloaddelay'
+        body: '''
+        MDL_event.onLoadDelay(${1:delay}, () => {
+            ${2:}
+        });
+        '''
 
-  'on load delay task':
-    prefix: 'lc_onloaddelaytask'
-    body: '''
-    MDL_event.onLoadDelayTask(${1:delay}, () => {
-      ${2:}
-    });
-    '''
+    'on load delay task':
+        prefix: 'lc_onloaddelaytask'
+        body: '''
+        MDL_event.onLoadDelayTask(${1:delay}, () => {
+            ${2:}
+        });
+        '''
 
-  'on world load':
-    prefix: 'lc_onworldload'
-    body: '''
-    MDL_event.onWorldLoad(() => {
-      ${1:}
-    });
-    '''
+    'on world load':
+        prefix: 'lc_onworldload'
+        body: '''
+        MDL_event.onWorldLoad(() => {
+            ${1:}
+        });
+        '''
 
-  'on world save':
-    prefix: 'lc_onworldsave'
-    body: '''
-    MDL_event.onWorldSave(() => {
-      ${1:}
-    });
-    '''
+    'on world save':
+        prefix: 'lc_onworldsave'
+        body: '''
+        MDL_event.onWorldSave(() => {
+            ${1:}
+        });
+        '''
 
-  'on update':
-    prefix: 'lc_onupdate'
-    body: '''
-    MDL_event.onUpdate(() => {
-      ${1:}
-    });
-    '''
+    'on update':
+        prefix: 'lc_onupdate'
+        body: '''
+        MDL_event.onUpdate(() => {
+            ${1:}
+        });
+        '''
 
-  'on draw':
-    prefix: 'lc_ondraw'
-    body: '''
-    MDL_event.onDraw(() => {
-      ${1:}
-    });
-    '''
+    'on draw':
+        prefix: 'lc_ondraw'
+        body: '''
+        MDL_event.onDraw(() => {
+            ${1:}
+        });
+        '''

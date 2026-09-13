@@ -15,9 +15,8 @@ const db = {
 
             /**
              * Wind attribute multiplier for a planet.
-             * @type {Array}
-             * @lovecRow `PlanetGn` - pla
-             * @lovecRow `number` - mtp
+             * <br> `ROW`: pla, mtp.
+             * @type {F2Array<PlanetGn, number>}
              */
             wind: [],
 
@@ -25,18 +24,16 @@ const db = {
             /**
              * Global heat for a planet.
              * 1.0 here equals 100.0 HU.
-             * @type {Array}
-             * @lovecRow `PlanetGn` - pla
-             * @lovecRow `number` - heat
+             * <br> `ROW`: pla, heat.
+             * @type {F2Array<PlanetGn, number>}
              */
             heat: [],
 
 
             /**
              * Base pollution for a planet.
-             * @type {Array}
-             * @lovecRow `PlanetGn` - pla
-             * @lovecRow `number` - pol
+             * <br> `ROW`: pla, pol.
+             * @type {F2Array<PlanetGn, number>}
              */
             pol: [],
 
@@ -49,9 +46,8 @@ const db = {
 
             /**
              * Noise layer drawn for a map.
-             * @type {Array}
-             * @lovecRow `string` - nameMap
-             * @lovecRow `NoiseLayerArgumentArray` - noiseArgArr
+             * <br> `ROW`: nameMap, noiseLayArgs.
+             * @type {F2Array<string, NoiseLayerArguments>}
              */
             noise: [],
 
@@ -59,36 +55,32 @@ const db = {
             /**
              * Weather entries for a map (always permanent), used for campaign maps but works for any map.
              * No need to set weathers for those maps in editor, it doesn't work in campaign anyway.
-             * @type {Array}
-             * @lovecRow `string` - nameMap
-             * @lovecRow `Array<string>` - nameWeas
+             * <br> `ROW`: nameMap, nameWeas.
+             * @type {F2Array<string, Array<string>>}
              */
             weaEn: [],
 
 
             /**
              * Wind attribute multiplier for a map.
-             * @type {Array}
-             * @lovecRow `string` - nameMap
-             * @lovecRow `number` - mtp
+             * <br> `ROW`: nameMap, mtp.
+             * @type {F2Array<string, number>}
              */
             wind: [],
 
 
             /**
              * Global heat for a map.
-             * @type {Array}
-             * @lovecRow `string` - nameMap
-             * @lovecRow `number` - heat
+             * <br> `ROW`: nameMap, heat.
+             * @type {F2Array<string, number>}
              */
             heat: [],
 
 
             /**
              * Base pollution for a map.
-             * @type {Array}
-             * @lovecRow `string` - nameMap
-             * @lovecRow `number` - pol
+             * <br> `ROW`: nameMap, pol.
+             * @type {F2Array<string, number>}
              */
             pol: [],
 
@@ -107,9 +99,8 @@ const db = {
 
             /**
              * Default values for campaign rules of some planet.
-             * @type {Array}
-             * @lovecRow `string` - namePla
-             * @lovecRow `CFunction<CampaignRules>` - ruleM
+             * <br> `ROW`: namePla, ruleM.
+             * @type {F2Array<string, CFunction<CampaignRules>>}
              */
             campaign: [],
 
@@ -117,9 +108,8 @@ const db = {
             /**
              * Maps a planet to a rule setter function, that sets planet rules.
              * Fog should be set in campaign rules, you should ask Anuke why.
-             * @type {Array}
-             * @lovecRow `string` - namePla
-             * @lovecRow `CFunction<Rules>` - ruleM
+             * <br> `ROW`: namePla, ruleM.
+             * @type {F2Array<string, CFunction<Rules>>}
              */
             planet: [],
 
@@ -129,9 +119,8 @@ const db = {
 
         /**
          * Maps a random overlay tag to a region array getter function.
-         * @type {Array}
-         * @lovecRow `string` - tag
-         * @lovecRow `F0Function<Array<TextureRegion>>` - regsF
+         * <br> `ROW`: tag, regsF.
+         * @type {F2Array<string, F0Function<Array<TextureRegion>>>}
          */
         randRegTag: [],
 
@@ -180,9 +169,8 @@ const db = {
             /**
              * Used to set speed multiplier of floor blocks in the same material group.
              * See {@link ENV_materialFloor}.
-             * @type {Array}
-             * @lovecRow `string` - matGrp
-             * @lovecRow `number` - spdMtp
+             * <br> `ROW`: matGrp, spdMtp.
+             * @type {F2Array<string, number>}
              */
             speed: [
 
@@ -201,9 +189,8 @@ const db = {
 
             /**
              * Maps a liquid floor material to some cache layer.
-             * @type {Array}
-             * @lovecRow `string` - matGrp
-             * @lovecRow `CacheLayer` - cacheLay
+             * <br> `ROW`: matGrp, cacheLay.
+             * @type {F2Array<string, CacheLayer>}
              */
             cacheLayer: [
 
@@ -218,9 +205,9 @@ const db = {
 
             /**
              * Used to more deeply set properties of some floor material.
-             * @type {Array}
-             * @lovecRow `string` - matGrp
-             * @lovecRow `C2Function<Floor, boolean>` - propM - `ARGS`: flr, overwriteVanillaProp.
+             * <br> `ROW`: matGrp, propM.
+             * <br> `ARGS`: flr, overwriteVanillaProp.
+             * @type {F2Array<string, C2Function<Floor, boolean>>}
              */
             extraSetter: [
 
@@ -267,9 +254,8 @@ const db = {
         /**
          * Tree parameters used for tree types.
          * See {@link ENV_baseTree}.
-         * @type {Array}
-         * @lovecRow `string` - treeGrp
-         * @lovecRow `{scl: number, mag: number, wob: number, attrsF: F0Function<Array<AttrGn>>}`
+         * <br> `ROW`: treeGrp, treeData.
+         * @type {F2Array<string, TreeData>}
          */
         tree: [
 
@@ -311,9 +297,8 @@ const db = {
 
     /**
      * Maps name of some root node to localized name of some content.
-     * @type {Array}
-     * @lovecRow `string` - nameRoot
-     * @lovecRow `ContentGn` - ct
+     * <br> `ROW`: nameRoot, ct.
+     * @type {F2Array<string, ContentGn>}
      */
     nodeRootNameMap: [],
 

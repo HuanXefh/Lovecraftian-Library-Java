@@ -28,8 +28,8 @@
       maxTemp = readParam(metaObj, "maxTemp"),
       tempGap = readParam(metaObj, "tempGap", 300.0);
 
-    if(target == null) LCErrorHandler.throw("nullArgument", "target");
-    if(maxTemp == null) LCErrorHandler.throw("nullArgument", "maxTemp");
+    if(target == null) throw new LCError.NullArgumentError("target");
+    if(maxTemp == null) throw new LCError.NullArgumentError("maxTemp");
 
     this.setCateg("aux");
     let i = 1, tempCur = tempGap;
@@ -58,7 +58,9 @@
    */
   const _g_assembler = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      mode = readParam(metaObj, "mode", Array.air);
+      mode = readParam(metaObj, "mode");
+
+    if(mode == null) throw new LCError.NullArgumentError("mode");
 
     this.setCateg("assembly");
     this.handle2Arr(
@@ -215,7 +217,7 @@
       includeItem = readParam(metaObj, "includeItem", true),
       includeLiquid = readParam(metaObj, "includeLiquid", false),
       includeGas = readParam(metaObj, "includeGas", false),
-      mode = readParam(metaObj, "neutral", false);
+      mode = readParam(metaObj, "mode", "neutral");
 
     let arr = [];
     if(includeItem) arr.pushAll(DB_recipe.db["genData"]["dryingItem"]);
@@ -358,11 +360,11 @@
     );
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-sol"].filter(liq => liq.delegee.intmdParent != null && DB_HANDLER.read("liquid-solvent", liq.delegee.solvent) != null),
+      VARGEN.tagIntmdsMap.get("rs-sol").filter(liq => liq.delegee.intmdParent != null && LCDBFileHandler.read("liquid-solvent", liq.delegee.solvent) != null),
       null,
       metaObj,
       (liq, metaObj) => {
-        let liqSolv = DB_HANDLER.read("liquid-solvent", liq.delegee.solvent);
+        let liqSolv = LCDBFileHandler.read("liquid-solvent", liq.delegee.solvent);
         return {
           tag: liqSolv.name,
           liqI: liqSolv,
@@ -394,7 +396,7 @@
 
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-dust"].filter(item => !DB_recipe.db["genData"]["pulverization"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.intmds["rs-chunks"].some(oitem => item.delegee.intmdParent === oitem.delegee.intmdParent)),
+      VARGEN.tagIntmdsMap.get("rs-dust").filter(item => !DB_recipe.db["genData"]["pulverization"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.tagIntmdsMap.get("rs-chunks").some(oitem => item.delegee.intmdParent === oitem.delegee.intmdParent)),
       null,
       metaObj,
       (item, metaObj) => ({
@@ -467,12 +469,12 @@
    */
   const _g_reactorMixing = new CLS_recipeGenerator(function(rc, metaObj) {
     let
-      isGas = readParam(metaObj, "isGas", false);
+      isGasReactor = readParam(metaObj, "isGasReactor", false);
 
-    this.setCateg(isGas ? "gas-reaction" : "liquid-reaction");
+    this.setCateg(isGasReactor ? "gas-reaction" : "liquid-reaction");
     this.handle2Arr(
       rc,
-      DB_recipe.db["genData"][isGas ? "reactionGas" : "reactionLiquid"],
+      DB_recipe.db["genData"][isGasReactor ? "reactionGas" : "reactionLiquid"],
       null,
       metaObj,
     );
@@ -557,7 +559,7 @@
 
     this.handleCtLi(
       rc,
-      VARGEN.intmds["rs-chunks"].filter(item => !DB_recipe.db["genData"]["rockCrushing"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+      VARGEN.tagIntmdsMap.get("rs-chunks").filter(item => !DB_recipe.db["genData"]["rockCrushing"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
       null,
       metaObj,
       (item, metaObj) => ({
@@ -623,13 +625,13 @@
     this.handleCtLi(
       rc,
       VARGEN.rawOreBlks,
-      blk => MDL_content.getCt(Object.keyByVal(DB_HANDLER.getDataObj("item-payload-block"), blk.name, null), "rs"),
+      blk => MDL_content.getCt(Object.keyByVal(LCDBFileHandler.getDataObj("item-payload-block"), blk.name, null), "rs"),
       metaObj,
       (item, metaObj) => ({
-        keyCt: DB_HANDLER.read("item-payload-block", item.name),
-        payI: DB_HANDLER.read("item-payload-block", item.name),
+        keyCt: LCDBFileHandler.read("item-payload-block", item.name),
+        payI: LCDBFileHandler.read("item-payload-block", item.name),
         itemO: item,
-        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(DB_HANDLER.read("item-payload-block", item.name), "blk").requirements[0].amount,
+        amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name), "blk").requirements[0].amount,
       }),
     );
   });
@@ -648,12 +650,12 @@
       this.setCateg("sintering");
       this.handleCtLi(
         rc,
-        VARGEN.intmds["rs-dust"].filter(item => !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+        VARGEN.tagIntmdsMap.get("rs-dust").filter(item => !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
         null,
         metaObj,
         (item, metaObj) => ({
           keyCt: item.name,
-          tempReq: DB_HANDLER.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
+          tempReq: LCDBFileHandler.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
           itemI: item,
           itemO: item.delegee.intmdParent,
         }),
@@ -662,13 +664,13 @@
       this.setCateg("concentrate-sintering");
       this.handleCtLi(
         rc,
-        VARGEN.intmds["rs-chunks"].concat(VARGEN.intmds["rs-dust"]).filter(item => item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+        VARGEN.tagIntmdsMap.get("rs-chunks").concat(VARGEN.tagIntmdsMap.get("rs-dust")).filter(item => item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
         null,
         metaObj,
         (item, metaObj) => ({
           icon: MDL_content.getIntmd(item.delegee.intmdParent, "rs-ore0conc"),
           keyCt: item.name,
-          tempReq: DB_HANDLER.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
+          tempReq: LCDBFileHandler.read("item-sintering-temperature", item.delegee.intmdParent, -1.0),
           itemI: item,
           itemO: MDL_content.getIntmd(item.delegee.intmdParent, "rs-ore0conc"),
         }),

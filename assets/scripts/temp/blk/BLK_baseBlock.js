@@ -33,7 +33,7 @@
 
 
   function comp_init(blk) {
-    if(blk.ex_isSingleSized() && blk.size > 1) LCErrorHandler.throw("notSingleSized", blk.name);
+    if(blk.ex_isSingleSized() && blk.size > 1) throw new Error("Block size should be 1: " + blk);
 
     if(blk.isWaterborne) blk.floating = true;
 
@@ -290,7 +290,7 @@
       drawer: tprov(() => new DrawDefault()),
       /**
        * `INTERNAL`: If true, this block cannot be placed by player when hidden.
-       * @memberof
+       * @memberof BLK_baseBlock
        * @instance
        */
       hiddenNonPlaceable: false,
@@ -447,7 +447,7 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {string} key
-       * @param {function(Building, any): void} valC - `ARGS`: b, val.
+       * @param {function(Building, Object): void} valC - `ARGS`: b, val.
        * @return {void}
        */
       ex_addConfigM: function(key, valC) {
@@ -609,7 +609,7 @@
        * Requires {@link BLK_baseBlock#useConfigStr} to be true.
        * @memberof B_baseBlock
        * @instance
-       * @param {string} str
+       * @param {JSONConfigString|string} str
        * @return {void}
        */
       ex_handleConfigStr: function(str) {

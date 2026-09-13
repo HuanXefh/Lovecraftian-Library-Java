@@ -14,8 +14,8 @@
     const CLS_xxx = newClass().initClass();
 
 
+    /** @private */
     CLS_xxx.prototype.init = function() {
-
 
 
 

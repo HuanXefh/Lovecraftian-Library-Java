@@ -36,7 +36,7 @@
 
       if(blk.shouldDropPay) {
         Vars.content.items().each(item => {
-          let oblk = MDL_content.getCt(DB_HANDLER.read("item-payload-block", item.name, null), "blk");
+          let oblk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), "blk");
           if(oblk == null || !blk.ex_canMine(oblk, item, 1.0)) return;
           MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(item)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
         });
@@ -94,7 +94,7 @@
     };
 
     if(blk.shouldDropPay) {
-      let payBlk = MDL_content.getCt(DB_HANDLER.read("item-payload-block", item.name, null), "blk");
+      let payBlk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), "blk");
       if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
     };
 
@@ -125,12 +125,12 @@
       return;
     };
 
-    let blkTarget = MDL_content.getCt(DB_HANDLER.read("item-payload-block", item.name, null), "blk");
+    let blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), "blk");
     if(blkTarget == null) return;
-    Object.mapIncre(b.payChargeObj, item.name);
+    LCNativeObject.numIncre(b.payChargeObj, item.name);
     if(b.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {
       b.payChargeObj[item.name] %= blkTarget.requirements[0].amount;
-      Object.mapIncre(b.payStockObj, blkTarget.name);
+      LCNativeObject.numIncre(b.payStockObj, blkTarget.name);
     };
     b.payChargeFrac = b.payChargeObj[item.name] / blkTarget.requirements[0].amount;
   };

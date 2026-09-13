@@ -41,6 +41,7 @@
    * @param {Fi|null} fi
    * @param {string|Object|null} str0obj
    * @return {void}
+   * @lovecTryBlock
    */
   const write = function(fi, str0obj) {
     if(fi == null || str0obj == null) return;

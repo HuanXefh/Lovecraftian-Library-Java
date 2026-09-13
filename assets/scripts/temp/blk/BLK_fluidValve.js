@@ -19,7 +19,7 @@
 
     blk.config(JAVA.boolean, (b, bool) => {
       b.delegee.isOn = bool;
-      Sounds.click.at(b);
+      MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
       b.recache();
     });
   };

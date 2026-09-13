@@ -97,10 +97,10 @@
       ct instanceof Block ?
         ct.placeSound :
         ct.hitSize <= 12.0 ?
-          Sounds.payloadDrop1 :
+          "SOUNDS: payloadDrop1" :
           ct.hitSize <= 20.0 ?
-            Sounds.payloadDrop2 :
-            Sounds.payloadDrop3,
+            "SOUNDS: payloadDrop2" :
+            "SOUNDS: payloadDrop3",
       1.0, 1.0, 0.1,
     );
   }

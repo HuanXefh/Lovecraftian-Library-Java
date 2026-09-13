@@ -30,7 +30,6 @@
   const objStrNum = function(wr0rd, obj) {
     return processData(
       wr0rd,
-
       wr => {
         let keys = Object.keys(obj);
         let i = 0, iCap = keys.iCap();
@@ -41,7 +40,6 @@
           i++;
         };
       },
-
       rd => {
         let i = 0, iCap = rd.i();
         while(i < iCap) {
@@ -65,7 +63,6 @@
   const objStrStr = function(wr0rd, obj) {
     return processData(
       wr0rd,
-
       wr => {
         let keys = Object.keys(obj);
         let i = 0, iCap = keys.iCap();
@@ -76,7 +73,6 @@
           i++;
         };
       },
-
       rd => {
         let i = 0, iCap = rd.i();
         while(i < iCap) {
@@ -96,15 +92,14 @@
    * @template T
    * @param {Writes|Reads} wr0rd
    * @param {Array<T>} xxxs
-   * @param {function(Writes, T): void} wrFun
-   * @param {(function(Reads): T)|unset} [rdFun] - Leave empty if two in one.
+   * @param {C2Function<Writes, T>|CFunction<Writes>|FFunction<Reads, T|unset>} wrFun
+   * @param {FFunction<Reads|unset>} [rdFun] - Leave empty if two in one.
    * @return {Array<T>|unset}
    */
   const xxxs = function(wr0rd, xxxs, wrFun, rdFun) {
     if(rdFun == null) rdFun = wrFun;
     return processData(
       wr0rd,
-
       wr => {
         let i = 0, iCap = xxxs.iCap();
         wr.i(iCap);
@@ -113,7 +108,6 @@
           i++;
         };
       },
-
       rd => {
         let i = 0, iCap = rd.i();
         while(i < iCap) {
@@ -136,9 +130,7 @@
   const ints = function(wr0rd, ints) {
     return xxxs(
       wr0rd, ints,
-
       (wr, int) => wr.i(int),
-
       rd => rd.i(),
     );
   };
@@ -154,9 +146,7 @@
   const fs = function(wr0rd, fs) {
     return xxxs(
       wr0rd, fs,
-
       (wr, f) => wr.f(f),
-
       rd => rd.f(),
     );
   };
@@ -175,9 +165,7 @@
   const color = function(wr0rd, color) {
     return processData(
       wr0rd,
-
       wr => wr.i(color.rgba8888()),
-
       rd => new Color(rd.i()),
     );
   };
@@ -305,9 +293,7 @@
   const ct = function(wr0rd, ct) {
     return processData(
       wr0rd,
-
       wr => wr.str(ct == null ? "null" : ct.name),
-
       rd => MDL_content.getCt(rd.str(), null, true),
     );
   };
@@ -343,13 +329,11 @@
   const lcMat = function(wr0rd, mat) {
     return processData(
       wr0rd,
-
       wr => {
         let nums = mat.toArray().cpy();
         nums.unshift(mat.getColAmt());
         fs(wr, nums);
       },
-
       rd => {
         let nums = fs(rd, []);
         let colAmt = nums.shift();

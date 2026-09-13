@@ -19,11 +19,12 @@
     const CLS_achievement = newClass().initClass();
 
 
+    /** @private */
     CLS_achievement.prototype.init = function(nameMod, name, icon, trigger, listener) {
 
 
         const thisIns = this;
-        if(fetchMod(nameMod, true) == null) LCErrorHandler.throw("noModFound", nameMod);
+        if(fetchMod(nameMod, true) == null) throw new Error("No mod found for " + nameMod);
 
 
         /** @type {string} */
@@ -94,7 +95,7 @@
 
     /**
      * Gets mod of this achievement.
-     * @return {Mod}
+     * @return {Mods.LoadedMod}
      */
     CLS_achievement.prototype.getMod = function() {
         return fetchMod(this.mod);

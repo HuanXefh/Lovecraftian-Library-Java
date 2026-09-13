@@ -87,7 +87,7 @@
 
               let blkTarget;
               if(blk.delegee.shouldDropPay) {
-                blkTarget = MDL_content.getCt(DB_HANDLER.read("item-payload-block", oblk.itemDrop.name, null), "blk");
+                blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), "blk");
                 if(blkTarget == null) return;
               };
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());
@@ -121,7 +121,7 @@
 
               let blkTarget;
               if(blk.delegee.shouldDropPay) {
-                blkTarget = MDL_content.getCt(DB_HANDLER.read("item-payload-block", oblk.itemDrop.name, null), "blk");
+                blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), "blk");
                 if(blkTarget == null) return;
               };
               if(!oreGrpMap.containsKey(oblk.itemDrop)) oreGrpMap.put(oblk.itemDrop, new MOD_tmi.CLASSES.RecipeItemGroup());

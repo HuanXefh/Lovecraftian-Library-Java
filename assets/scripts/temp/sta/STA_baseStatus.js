@@ -5,38 +5,53 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = CLS_contentTemplate;
+    /**
+     * @typedef {TemplateInstance<StatusEffect, STA_baseStatus>} STABaseStatus
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = CLS_contentTemplate;
 
 
-  function comp_init(sta) {
-    if(!sta.exInitCalled) {
-      sta.ex_init();
-      sta.exInitCalled = true;
+    /* <------------------------------ component ------------------------------ */
+
+
+    /**
+     * @private
+     * @param {STABaseStatus} sta
+     * @return {void}
+     */
+    function comp_init(sta) {
+        if(!sta.exInitCalled) {
+            sta.ex_init();
+            sta.exInitCalled = true;
+        };
     };
-  };
 
 
-  function comp_ex_init(sta) {
-    let osta;
+    /**
+     * @private
+     * @param {STABaseStatus} sta
+     * @return {void}
+     */
+    function comp_ex_init(sta) {
+        let osta;
 
-    DB_status.db["map"]["affinity"].read(sta.name, Array.air).forEachRow(2, (nameSta, scr) => {
-      osta = MDL_content.getCt(nameSta, "sta");
-      if(osta != null) sta.affinity(osta, scr);
-    }, true);
+        DB_status.db["map"]["affinity"].read(sta.name, Array.air).forEachRow(2, (nameSta, scr) => {
+            osta = MDL_content.getCt(nameSta, "sta");
+            if(osta != null) sta.affinity(osta, scr);
+        }, true);
 
-    let oppoTmp = DB_status.db["map"]["opposite"].read(sta.name, Array.air);
-    let oppoArr = typeof oppoTmp === "function" ? oppoTmp() : oppoTmp;
-    oppoArr.forEachFast(sta_gn => {
-      osta = MDL_content.getCt(sta_gn, "sta");
-      if(osta != null) sta.opposite(osta);
-    }, true);
-  };
+        let oppoTmp = DB_status.db["map"]["opposite"].read(sta.name, Array.air);
+        let oppoArr = typeof oppoTmp === "function" ? oppoTmp() : oppoTmp;
+        oppoArr.forEachFast(sta_gn => {
+            osta = MDL_content.getCt(sta_gn, "sta");
+            if(osta != null) sta.opposite(osta);
+        }, true);
+    };
 
 
 /*
@@ -46,74 +61,93 @@
 */
 
 
-  /**
-   * Most basic status effects with no features.
-   * Affinities and opposites are defined in {@link DB_status}, do not call `sta.init` anymore!
-   * @class STA_baseStatus
-   * @extends CLS_contentTemplate
-   */
-  module.exports = newClass().extendClass(PARENT, "STA_baseStatus").initClass()
-  .setParent(StatusEffect)
-  .setTags()
-  .setParam({
-
-
     /**
-     * `PARAM`: See {@link RS_baseResource}.
-     * @memberof STA_baseStatus
-     * @instance
+     * Most basic status effects with no features.
+     * Affinities and opposites are defined in {@link DB_status}, do not call `sta.init` anymore!
+     * @class STA_baseStatus
+     * @extends CLS_contentTemplate
      */
-    overwriteVanillaStat: true,
-    /**
-     * `PARAM`: See {@link RS_baseResource}.
-     * @memberof STA_baseStatus
-     * @instance
-     */
-    overwriteVanillaProp: true,
+    module.exports = newClass()
+    .extendClass(PARENT, "STA_baseStatus")
+    .initClass()
+    .setParent(StatusEffect)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ internal ------------------------------ */
+        /**
+         * `PARAM`: See {@link RS_baseResource#overwriteVanillaStat}.
+         * @memberof STA_baseStatus
+         * @instance
+         * @type {boolean}
+         */
+        overwriteVanillaStat: true,
+        /**
+         * `PARAM`: See {@link RS_baseResource#overwriteVanillaProp}.
+         * @memberof STA_baseStatus
+         * @instance
+         * @type {boolean}
+         */
+        overwriteVanillaProp: true,
 
 
-    /**
-     * `INTERNAL`
-     * @memberof STA_baseStatus
-     * @instance
-     */
-    exInitCalled: false,
+        /* <------------------------------ internal ------------------------------ */
 
 
-    /* <------------------------------ vanilla ------------------------------ */
+        /**
+         * `INTERNAL`: Used internally to avoid double initialization.
+         * @memberof STA_baseStatus
+         * @instance
+         * @type {boolean}
+         */
+        exInitCalled: false,
 
 
-    outline: false,
+        /* <------------------------------ vanilla ------------------------------ */
 
 
-  })
-  .setParamAlias([
-    "eff", "effect", Fx.none,
-    "effP", "effectChance", 0.02,
-  ])
-  .setMethod({
+        outline: false,
 
 
-    init: function() {
-      comp_init(this);
-    },
+    })
+    .setParamAlias([
+        /**
+         * `ALIAS`: effect.
+         * @memberof STA_baseStatus
+         * @instance
+         * @name eff
+         * @type {Effect}
+         */
+        "eff", "effect", Fx.none,
+        /**
+         * `ALIAS`: effectChance.
+         * @memberof STA_baseStatus
+         * @instance
+         * @name effP
+         * @type {number}
+         */
+        "effP", "effectChance", 0.02,
+    ])
+    .setMethod({
 
 
-    /**
-     * `init` of status effects can be called twice! Use this method to avoid it.
-     * @memberof STA_baseStatus
-     * @instance
-     * @return {void}
-     */
-    ex_init: function() {
-      comp_ex_init(this);
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        init: function() {
+            comp_init(this);
+        },
 
 
-  });
+        /**
+         * `init` of status effects can be called twice! Use this method to avoid it.
+         * @memberof STA_baseStatus
+         * @instance
+         * @return {void}
+         */
+        ex_init: function() {
+            comp_ex_init(this);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+    });

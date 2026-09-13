@@ -55,6 +55,9 @@
 
 
   function comp_updateTile(b) {
+    if(b.isPayload()) {
+      b.windEffc = 0.0;
+    };
     if(TIMER.secHalf) {
       b.windEffc = MDL_attr.calcSumWind(b.tile, b.block.delegee.windScl, b.block.delegee.minProdEffc, b.block.delegee.posVari);
     };
@@ -148,7 +151,7 @@
        * @memberof BLK_windGenerator
        * @instance
        */
-      bladeHitSe: Sounds.blockExplode2Alt,
+      bladeHitSe: "SOUNDS: blockExplode2Alt",
       /**
        * `PARAM`
        * @override

@@ -9,41 +9,30 @@
      * Used to store fixed values.
      * Very similar to {@link CLS_objectBox}.
      * @class
-     * @param {Object} obj
+     * @template T
+     * @param {T} obj
+     * @return {CLS_enum&T}
+     * @lovecTypeSensitive
      */
     const CLS_enum = newClass().initClass();
 
 
+    /** @private */
     CLS_enum.prototype.init = function(obj) {
 
 
-        if(obj == null) LCErrorHandler.throw("nullArgument", "obj");
+        if(obj == null) throw new LCError.NullArgumentError("obj");
 
 
         /** @type {Array<string>} */
         this.keys = [];
         /** @type {Array} */
         this.vals = [];
-
-
-        let count = 0;
-        Object.eachPair(obj, (key, val) => {
-            if(typeof val !== "function") {
-                this.setProp(true, key, val);
-                this.keys.push(key);
-                this.vals.pushUnique(val);
-                count++;
-            } else {
-                this[key] = val;
-            };
-        });
-
-
         /** @type {number} */
-        this.size = count;
+        this.size = 0;
 
 
-        Object.freeze(this);
+        this.initEnum(obj);
 
 
     };
@@ -104,6 +93,31 @@
      */
     CLS_enum.prototype.has = function(val) {
         return this.vals.includes(val);
+    };
+
+
+    /* <------------------------------ util ------------------------------ */
+
+
+    /**
+     * @param {Object} obj
+     * @return {this}
+     */
+    CLS_enum.prototype.initEnum = function(obj) {
+        let count = 0;
+        Object.eachPair(obj, (key, val) => {
+            if(typeof val !== "function") {
+                this.setProps(true, key, val);
+                this.keys.push(key);
+                this.vals.pushUnique(val);
+                count++;
+            } else {
+                this[key] = val;
+            };
+        });
+        this.size = count;
+        Object.freeze(this);
+        return this;
     };
 
 

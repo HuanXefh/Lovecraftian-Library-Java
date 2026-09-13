@@ -120,7 +120,7 @@
        * @memberof BLK_lootPullerHopper
        * @instance
        */
-      pullSe: Sounds.beamParallax,
+      pullSe: "SOUNDS: beamParallax",
 
 
       /* <------------------------------ internal ------------------------------ */

@@ -1,0 +1,13 @@
+'.source.ts':
+
+    'jsdoc':
+        prefix: 'jd'
+        body: '''
+        /**
+         * ${1:}
+         */
+        '''
+
+    'jsdoc def':
+      prefix: 'jdd'
+      body: '/** ${1:} */'

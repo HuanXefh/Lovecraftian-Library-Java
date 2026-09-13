@@ -1,43 +1,39 @@
 '.source.js':
 
-  'exported function':
-    prefix: 'lc_expfun'
-    body: '''
-    const ${1:name} = function() {
-      ${2:}
-    };
-    exports.${1:name} = ${1:name};
-    '''
+    'exported function':
+        prefix: 'lc_expfun'
+        body: '''
+        const ${1:name} = function() {
+            ${2:}
+        };
+        exports.${1:name} = ${1:name};
+        '''
 
-  'multifunction':
-    prefix: 'lc_multifun'
-    body: '''
-    const ${1:name} = newMultifunction(
-      ${2:}
-    );
-    '''
+    'multifunction':
+        prefix: 'lc_multifun'
+        body: '''
+        const ${1:name} = newMultifunction(
+            ${2:}
+        );
+        '''
 
-  'exported multifunction':
-    prefix: 'lc_expmultifun'
-    body: '''
-    const ${1:name} = newMultifunction(
-      ${2:}
-    );
-    exports.${1:name} = ${1:name};
-    '''
+    'exported multifunction':
+        prefix: 'lc_expmultifun'
+        body: '''
+        const ${1:name} = newMultifunction(
+            ${2:}
+        );
+        exports.${1:name} = ${1:name};
+        '''
 
-  'Lovec class':
-    prefix: 'lc_cls'
-    body: 'newClass().initClass()'
+    'Lovec class':
+        prefix: 'lc_cls'
+        body: 'newClass().initClass()'
 
-  'Lovec class extend':
-    prefix: 'lc_clsext'
-    body: 'newClass().extendClass(${1:class}).initClass()'
+    'Lovec class extend':
+        prefix: 'lc_clsext'
+        body: 'newClass().extendClass(${1:class}).initClass()'
 
-  'Lovec class extend implement':
-    prefix: 'lc_clsextimp'
-    body: 'newClass().extendClass(${1:class}).implement(${2:interface}).initClass()'
-
-  'ERROR HANDLER throw':
-    prefix: 'lc_throw'
-    body: 'LCErrorHandler.throw(${1:name})'
+    'Lovec class extend implement':
+        prefix: 'lc_clsextimp'
+        body: 'newClass().extendClass(${1:class}).implement(${2:interface}).initClass()'

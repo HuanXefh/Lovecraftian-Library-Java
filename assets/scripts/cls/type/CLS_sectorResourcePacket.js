@@ -11,13 +11,14 @@
      * @class
      * @param {string|unset} nameFrom
      * @param {string} nameTo
-     * @param {Item2Array} item2Arr
+     * @param {Item2Array} data
      * @param {number|unset} [timeReq]
      */
     const CLS_sectorResourcePacket = newClass().initClass();
 
 
-    CLS_sectorResourcePacket.prototype.init = function(nameFrom, nameTo, item2Arr, timeReq) {
+    /** @private */
+    CLS_sectorResourcePacket.prototype.init = function(nameFrom, nameTo, data, timeReq) {
 
 
         if(nameFrom == null) nameFrom = Vars.state.rules.sector == null ? "SPEC: windfall" : Vars.state.rules.sector.preset.name;
@@ -28,7 +29,7 @@
         /** @type {string} */
         this.to = nameTo;
         /** @type {Item2Array} */
-        this.data = item2Arr;
+        this.data = data;
         /** @type {number} */
         this.timeReq = timeReq != null ? timeReq : this.calcTimeReq();
         /** @type {number} */
@@ -49,14 +50,12 @@
     const arrivedPackets = [];
     /** @type {Array<CLS_sectorResourcePacket>} */
     const arrivedLocalPackets = [];
-
     /** @type {string|null} */
     let mapCur = null;
 
 
     MDL_event.onUpdate(() => {
         if(Vars.state.isPaused() || (global.lovecUtil.prop.debug ? !Vars.state.isGame() : !Vars.state.isCampaign())) return;
-
         CLS_sectorResourcePacket.update();
     });
 
@@ -73,7 +72,7 @@
      * @return {void}
      */
     CLS_sectorResourcePacket.update = function() {
-        mapCur = global.lovecUtil.fun._mapCur();
+        mapCur = global.lovecUtil.fun.getMapCur();
         inProgPackets.forEachFast(packet => {
             packet.update();
         }, true);

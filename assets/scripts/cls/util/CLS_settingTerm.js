@@ -14,6 +14,7 @@
     const CLS_settingTerm = newClass().initClass();
 
 
+    /** @private */
     CLS_settingTerm.prototype.init = function(name, valF) {
 
 
@@ -34,17 +35,13 @@
     /** @type {Array<string>} */
     const insNames = [];
     /**
-     * @type {Array}
-     * @lovecRow `string` - nameMod
-     * @lovecRow `string` - nameCateg
-     * @lovecRow `Array<CLS_settingTerm>` - terms
+     * `ROW`: nameMod, nameCateg, terms.
+     * @type {F3Array<string, string, CLS_settingTerm>}
      */
     const categMArr = [];
     /**
-     * @type {Array}
-     * @lovecRow `string` - nameMod
-     * @lovecRow `string` - nameCateg
-     * @lovecRow `Array<CLS_settingTerm>` - terms
+     * `ROW`: nameMod, nameCateg, terms.
+     * @type {F3Array<string, string, CLS_settingTerm>}
      */
     const categMDebugArr = [];
 
@@ -118,7 +115,7 @@
         thisFun.tmpTup.with(nameMod, nameCateg);
 
         let terms = categMDebugArr.read(thisFun.tmpTup, categMArr.read(thisFun.tmpTup));
-        if(terms == null) throw new Error("Cannot find setting category for ${1}-${2}!".format(nameMod, nameCateg));
+        if(terms == null) throw new Error("Cannot find setting category for ${1}-${2}".format(nameMod, nameCateg));
 
         this.dialM = tableM;
         terms.push(this);

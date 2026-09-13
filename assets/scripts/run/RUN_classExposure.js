@@ -5,9 +5,9 @@
 */
 
 
-  /**
-   * Creates global references for some Java classes.
-   */
+    /**
+     * Creates global references for some Java classes.
+     */
 
 
 /*
@@ -19,6 +19,6 @@
 
 
 
-  exposeClasses("lovec.content.updater");
-  exposeClasses("lovec.graphics.drawer");
-  exposeClasses("lovec.type");
+    exposeClasses("lovec.content.updater");
+    exposeClasses("lovec.graphics.drawer");
+    exposeClasses("lovec.type");

@@ -25,7 +25,7 @@
     if(blk.placeDataY == null) blk.placeDataY = blk.centerPon2.y;
 
     blk.placeBlk = MDL_content.getCt(blk.placeBlk, "blk");
-    if(blk.placeBlk == null) LCErrorHandler.throw("nullArgument", "placeBlk");
+    if(blk.placeBlk == null) throw new LCError.NullArgumentError(blk.name + ".placeBlk");
     blk.ex_calcBlksReq(blk.constructionBlksReq);
     blk.ex_calcItemsReq(blk.constructionItemsReq, blk.constructionBlksReq);
     if(!blk.skipTargetSetup) {
@@ -408,9 +408,9 @@
       if(!Vars.net.client() && b.constructionTimeCur >= b.block.delegee.constructionTimeReq) {
         b.configure("SPEC: complete");
       };
-      b.constructionTimeCur += !global.lovecUtil.fun._isSandBox() ? Time.delta : b.block.delegee.constructionTimeReq / 60.0;
+      b.constructionTimeCur += !global.lovecUtil.fun.checkSandbox() ? Time.delta : b.block.delegee.constructionTimeReq / 60.0;
       if(!Vars.headless) {
-        Vars.control.sound.loop(Sounds.loopBuild, b, 1.3);
+        Vars.control.sound.loop(fetchSound("SOUNDS: loopBuild"), b, 1.3);
       };
 
       if(!Vars.net.client() && TIMER.secFive) {

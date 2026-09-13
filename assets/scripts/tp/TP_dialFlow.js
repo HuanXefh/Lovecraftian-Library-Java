@@ -27,7 +27,7 @@
   newDialogFlow(
     "lovec-test",
     new CLS_dialogFlowBuilder()
-    .setBgmStart(Musics.boss1)
+    .setBgmStart(fetchMusic("MUSICS: boss1"))
     .setText("lovec", "test", 0).setSpeaker("lovec", "earlan").setChara({
       nameMod: "lovec", nameChara: "earlan",
       fracX: 0.5, isDark: false,

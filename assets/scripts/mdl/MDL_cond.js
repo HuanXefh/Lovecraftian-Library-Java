@@ -850,7 +850,7 @@
 
   /**
    * Whether this entity is seen as enemy to given team.
-   * @param {TeamcGn} e
+   * @param {Teamc} e
    * @param {Team|unset} [team]
    * @return {boolean}
    */
@@ -862,7 +862,7 @@
 
   /**
    * Whether this entity can be healed.
-   * @param {HealthcGn} e
+   * @param {Healthc} e
    * @param {Team|unset} [team]
    * @return {boolean}
    */

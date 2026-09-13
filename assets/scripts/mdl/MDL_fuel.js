@@ -58,8 +58,8 @@
     ITEM: 1 << 0,
     LIQUID: 1 << 1,
     GAS: 1 << 2,
-  })
-  .globalize("FuelTypes");
+  });
+  globalize(FuelTypes, "FuelTypes");
 
 
   /**

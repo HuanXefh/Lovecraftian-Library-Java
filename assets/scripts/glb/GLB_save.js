@@ -5,12 +5,12 @@
 */
 
 
-  /**
-   * Lovec creates .lsav files for each save in "Mindustry/saves/mods/data/Lovec/saves".
-   * Similarly, .plsav files are created for saves of the same planet (in campaign).
-   * LSAV fields are registered in {@link DB_misc}.
-   * @module lovec/glb/GLB_save
-   */
+    /**
+     * Lovec creates .lsav files for each save in "Mindustry/saves/mods/data/Lovec/saves".
+     * Similarly, .plsav files are created for saves of the same planet (in campaign).
+     * LSAV fields are registered in {@link DB_misc}.
+     * @module lovec/glb/GLB_save
+     */
 
 
 /*
@@ -20,260 +20,268 @@
 */
 
 
-  /* <------------------------------ base ------------------------------ */
+    /* <------------------------------ base ------------------------------ */
 
 
-  let
-    lsav = {},
-    lsavJsonVal = null,
-    plsav = {},
-    plsavJsonVal = null;
-
-
-  function initLsav(mode) {
-    if(mode == null) mode = "both";
-
-    if(mode.equalsAny("both", "lsav")) {
-      DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
-        lsav[header] = def;
-      }, true);
-    };
-    if(mode.equalsAny("both", "plsav")) {
-      DB_misc.db["lsav"]["pHeader"].forEachRow(3, (header, def, arrMode) => {
-        plsav[header] = def;
-      }, true);
-    };
-
-    exports.lsav = lsav;
-    exports.plsav = plsav;
-  };
-
-
-  function loadLsav() {
-    Time.run(VAR.delay.worldLoad.loadLsav, () => {
-      if(Vars.state.isEditor()) return;
-      if(Vars.net.client()) {
-        requestSync();
-        return;
-      };
-
-      try {
-        lsavJsonVal = MDL_json.parse(MDL_file.getLsav());
-        plsavJsonVal = MDL_json.parse(MDL_file.getPlsav());
-      } catch(err) {
-        console.err("[LOVEC] Failed to load LSAV!" + "\n" + err);
-        lsavJsonVal = null;
+    let
+        lsav = {},
+        lsavJsonVal = null,
+        plsav = {},
         plsavJsonVal = null;
-      };
-      if(lsavJsonVal == null || plsavJsonVal == null) return;
-
-      DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
-        lsav[header] = tryVal(MDL_json.fetch(lsavJsonVal, header, false, arrMode), def);
-      }, true);
-      DB_misc.db["lsav"]["pHeader"].forEachRow(3, (header, def, arrMode) => {
-        plsav[header] = tryVal(MDL_json.fetch(plsavJsonVal, header, false, arrMode), def);
-      }, true);
-
-      let mapCur = global.lovecUtil.fun._mapCur();
-      console.log("[LOVEC] Checking LSAV data validity...");
-
-      // If map name not matched, clear the LSAV (creates a backup first)
-      if(lsav["save-map"] != "!UNDEF" && lsav["save-map"] !== mapCur) {
-        console.log("[LOVEC] Initializing LSAV data...");
-        MDL_json.write(MDL_file.getLsav(true), lsav);
-        initLsav("lsav");
-      };
-      // If outside of campaign, check map name for PLASV too
-      if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && (plsav["save-map"] != "UNDEF" && plsav["save-map"] !== mapCur)) {
-        console.log("[LOVEC] Initializing PLSAV data...");
-        MDL_json.write(MDL_file.getPlsav(true), plsav);
-        initLsav("plsav");
-      };
-
-      set("save-map", mapCur);
-      set("save-map", mapCur, true);
-      set("save-revision", VAR.lovecRevi);
-
-      TRIGGER.lsavLoad.fire();
-      console.log("[LOVEC] Loaded LSAV data.");
-    });
-  };
 
 
-  /**
-   * Saves LSAV data.
-   * @return {void}
-   */
-  const saveLsav = function() {
-    if(Vars.state.isEditor()) return;
+    /**
+     * @param {string} mode - `VALS`: "lsav", "plsav", "both".
+     * @return {void}
+     */
+    function initLsav(mode) {
+        if(mode == null) mode = "both";
 
-    MDL_json.write(MDL_file.getLsav(), lsav);
-    MDL_json.write(MDL_file.getPlsav(), plsav);
-  }
-  .setAnno("server");
-  exports.saveLsav = saveLsav;
+        if(mode.equalsAny("both", "lsav")) {
+            DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
+                lsav[header] = def;
+            }, true);
+        };
+        if(mode.equalsAny("both", "plsav")) {
+            DB_misc.db["lsav"]["pHeader"].forEachRow(3, (header, def, arrMode) => {
+                plsav[header] = def;
+            }, true);
+        };
 
-
-  /**
-   * Overwrites local LSAV object with `obj`.
-   * @param {Object} obj
-   * @return {void}
-   */
-  const setLsav = function(obj) {
-    lsav = obj;
-  };
-  exports.setLsav = setLsav;
-
-
-  /**
-   * Overwrites local PLSAV object with `obj`.
-   * @param {Object} obj
-   * @return {void}
-   */
-  const setPlsav = function(obj) {
-    plsav = obj;
-  };
-  exports.setPlsav = setPlsav;
-
-
-  /**
-   * Sets a value in LSAV.
-   * @param {string} header
-   * @param {any} val
-   * @param {boolean|unset} [isPSet] - If true, this method will set a value in PLSAV instead.
-   * @param {boolean|unset} [suppressWarning]
-   * @return {void}
-   */
-  const set = function(header, val, isPSet, suppressWarning) {
-    let obj = isPSet ? plsav : lsav;
-    let cond = false;
-    if(suppressWarning) {
-      cond = true;
-    } else {
-      if(val === undefined) {
-        console.warn("[LOVEC] Passing " + "undefined".color(Pal.remove) + " as LSAV value to " + header.color(Pal.accent) + "!");
-      } else if(obj[header] === undefined) {
-        console.warn("[LOVEC] The LSAV field " + header.color(Pal.accent) + " is " + "undefined".color(Pal.remove) + "!");
-      } else if(typeof val !== typeof obj[header]) {
-        console.warn("[LOVEC] LSAV value for ${1} changed to a different type!".format(header.color(Pal.accent)));
-      } else {
-        cond = true;
-      };
+        exports.lsav = lsav;
+        exports.plsav = plsav;
     };
 
-    if(cond) {
-      obj[header] = val;
-      sync();
+
+    /**
+     * @return {void}
+     */
+    function loadLsav() {
+        Time.run(VAR.delay.worldLoad.loadLsav, () => {
+            if(Vars.state.isEditor()) return;
+            if(Vars.net.client()) {
+                requestSync();
+                return;
+            };
+
+            try {
+                lsavJsonVal = MDL_json.parse(MDL_file.getLsav());
+                plsavJsonVal = MDL_json.parse(MDL_file.getPlsav());
+            } catch(err) {
+                console.err("[LOVEC] Failed to load LSAV!" + "\n" + err);
+                lsavJsonVal = null;
+                plsavJsonVal = null;
+            };
+            if(lsavJsonVal == null || plsavJsonVal == null) return;
+
+            DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
+                lsav[header] = tryVal(MDL_json.fetch(lsavJsonVal, header, false, arrMode), def);
+            }, true);
+            DB_misc.db["lsav"]["pHeader"].forEachRow(3, (header, def, arrMode) => {
+                plsav[header] = tryVal(MDL_json.fetch(plsavJsonVal, header, false, arrMode), def);
+            }, true);
+
+            let mapCur = global.lovecUtil.fun.getMapCur();
+            console.log("[LOVEC] Checking LSAV data validity...");
+
+            // If map name not matched, clear the LSAV (creates a backup first)
+            if(lsav["save-map"] != "!UNDEF" && lsav["save-map"] !== mapCur) {
+                console.log("[LOVEC] Initializing LSAV data...");
+                MDL_json.write(MDL_file.getLsav(true), lsav);
+                initLsav("lsav");
+            };
+            // If outside of campaign, check map name for PLASV too
+            if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && (plsav["save-map"] != "!UNDEF" && plsav["save-map"] !== mapCur)) {
+                console.log("[LOVEC] Initializing PLSAV data...");
+                MDL_json.write(MDL_file.getPlsav(true), plsav);
+                initLsav("plsav");
+            };
+
+            set("save-map", mapCur);
+            set("save-map", mapCur, true);
+            set("save-revision", VAR.lovecRevi);
+
+            TRIGGER.lsavLoad.fire();
+            console.log("[LOVEC] Loaded LSAV data.");
+        });
     };
-  }
-  .setAnno("server");
-  exports.set = set;
 
 
-  /**
-   * Sets a LSAV value only if it's marked as safe.
-   * @param {string} header
-   * @param {any} val
-   * @param {boolean|unset} [isPSet] - If true, this method will set a value in PLSAV instead.
-   * @return {void}
-   */
-  const setSafe = function(header, val, isPSet) {
-    if(!DB_misc.db["lsav"][isPSet ? "pSafe" : "safe"].includes(header)) return;
+    /**
+     * Saves LSAV data.
+     * @return {void}
+     */
+    const saveLsav = function() {
+        if(Vars.state.isEditor()) return;
 
-    set(header, val, isPSet, false);
-  }
-  .setAnno("server");
-  exports.setSafe = setSafe;
+        MDL_json.write(MDL_file.getLsav(), lsav);
+        MDL_json.write(MDL_file.getPlsav(), plsav);
+    }
+    .setAnno("server");
+    exports.saveLsav = saveLsav;
 
 
-  /**
-   * Gets a value in local LSAV.
-   * @param {string} header
-   * @param {boolean|unset} [isPGet] - If true, this method will get a value from PLSAV instead.
-   * @return {any}
-   */
-  const get = function(header, isPGet) {
-    return (isPGet ? plsav : lsav)[header];
-  };
-  exports.get = get;
-
-
-  /**
-   * Called on server side, synchronizes LSAV on all client sides.
-   * @return {void}
-   */
-  const sync = function() {
-    try {
-      MDL_net.sendPacket(
-        PacketModes.CLIENT, "lovec-server-lsav-sync",
-        toJsonSafe(lsav),
-        true,
-      );
-      MDL_net.sendPacket(
-        PacketModes.CLIENT, "lovec-server-plsav-sync",
-        toJsonSafe(plsav),
-        true,
-      );
-    } catch(err) {
-      console.err("[LOVEC] Failed to sync LSAV: \n" + err);
+    /**
+     * Overwrites local LSAV object with `obj`.
+     * @param {Object} obj
+     * @return {void}
+     */
+    const setLsav = function(obj) {
+        lsav = obj;
     };
-  }
-  .setAnno("init", function() {
-    MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-lsav-sync", payload => {
-      setLsav(JSON.parse(payload));
-    });
-    MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-plsav-sync", payload => {
-      setPlsav(JSON.parse(payload));
-    });
-  })
-  .setAnno("server");
-  exports.sync = sync;
+    exports.setLsav = setLsav;
 
 
-  /**
-   * Requests the server to send sync packets.
-   * @return {void}
-   */
-  const requestSync = function() {
-    MDL_net.sendPacket(
-      PacketModes.SERVER, "lovec-client-lsav-sync-request",
-      "",
-      true,
-    );
-  }
-  .setAnno("init", function() {
-    MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-lsav-sync-request", payload => {
-      sync();
-    });
-  })
-  .setAnno("client");
-  exports.requestSync = requestSync;
+    /**
+     * Overwrites local PLSAV object with `obj`.
+     * @param {Object} obj
+     * @return {void}
+     */
+    const setPlsav = function(obj) {
+        plsav = obj;
+    };
+    exports.setPlsav = setPlsav;
 
 
-  /**
-   * Requests the server to set an LSAV value.
-   * Only safe properties are allowed.
-   * @param {string} header
-   * @param {any} val
-   * @param {boolean|unset} [isPSet] - If true, this method will set a value in PLSAV instead.
-   * @return {void}
-   */
-  const requestSet = function(header, val, isPSet) {
-    MDL_net.sendPacket(
-      PacketModes.SERVER, "lovec-client-lsav-set-request",
-      packPayload([
-        header, val, isPSet,
-      ]),
-      true,
-    );
-  }
-  .setAnno("init", function() {
-    MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-lsav-set-request", payload => {
-      setSafe.apply(this, unpackPayload(payload));
-    });
-  })
-  .setAnno("client");
-  exports.requestSet = requestSet;
+    /**
+     * Sets a value in LSAV.
+     * @param {string} header
+     * @param {Object} val
+     * @param {boolean|unset} [isPSet] - If true, this method will set a value in PLSAV instead.
+     * @param {boolean|unset} [suppressWarning]
+     * @return {void}
+     * @lovecTypeSensitive
+     */
+    const set = function(header, val, isPSet, suppressWarning) {
+        let obj = isPSet ? plsav : lsav;
+        let cond = false;
+        if(suppressWarning) {
+            cond = true;
+        } else {
+            if(val === undefined) {
+                console.warn("[LOVEC] Passing " + "undefined".color(Pal.remove) + " as LSAV value to " + header.color(Pal.accent) + "!");
+            } else if(obj[header] === undefined) {
+                console.warn("[LOVEC] The LSAV field " + header.color(Pal.accent) + " is " + "undefined".color(Pal.remove) + "!");
+            } else if(typeof val !== typeof obj[header]) {
+                console.warn("[LOVEC] LSAV value for ${1} changed to a different type!".format(header.color(Pal.accent)));
+            } else {
+                cond = true;
+            };
+        };
+
+        if(cond) {
+            obj[header] = val;
+            sync();
+        };
+    }
+    .setAnno("server");
+    exports.set = set;
+
+
+    /**
+     * Sets a LSAV value only if it's marked as safe.
+     * @param {string} header
+     * @param {any} val
+     * @param {boolean|unset} [isPSet] - If true, this method will set a value in PLSAV instead.
+     * @return {void}
+     */
+    const setSafe = function(header, val, isPSet) {
+        if(!DB_misc.db["lsav"][isPSet ? "pSafe" : "safe"].includes(header)) return;
+        set(header, val, isPSet, false);
+    }
+    .setAnno("server");
+    exports.setSafe = setSafe;
+
+
+    /**
+     * Gets a value in local LSAV.
+     * @param {string} header
+     * @param {boolean|unset} [isPGet] - If true, this method will get a value from PLSAV instead.
+     * @return {any}
+     */
+    const get = function(header, isPGet) {
+        return (isPGet ? plsav : lsav)[header];
+    };
+    exports.get = get;
+
+
+    /**
+     * Called on server side, synchronizes LSAV on all client sides.
+     * @return {void}
+     * @lovecTryBlock
+     */
+    const sync = function() {
+        try {
+          MDL_net.sendPacket(
+              PacketModes.CLIENT, "lovec-server-lsav-sync",
+              toJsonSafe(lsav),
+              true,
+          );
+          MDL_net.sendPacket(
+              PacketModes.CLIENT, "lovec-server-plsav-sync",
+              toJsonSafe(plsav),
+              true,
+          );
+        } catch(err) {
+            console.err("[LOVEC] Failed to sync LSAV: \n" + err);
+        };
+    }
+    .setAnno("init", function() {
+        MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-lsav-sync", payload => {
+            setLsav(JSON.parse(payload));
+        });
+        MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-plsav-sync", payload => {
+            setPlsav(JSON.parse(payload));
+        });
+    })
+    .setAnno("server");
+    exports.sync = sync;
+
+
+    /**
+     * Requests the server to send sync packets.
+     * @return {void}
+     */
+    const requestSync = function() {
+        MDL_net.sendPacket(
+            PacketModes.SERVER, "lovec-client-lsav-sync-request",
+            "",
+            true,
+        );
+    }
+    .setAnno("init", function() {
+        MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-lsav-sync-request", payload => {
+            sync();
+        });
+    })
+    .setAnno("client");
+    exports.requestSync = requestSync;
+
+
+    /**
+     * Requests the server to set an LSAV value.
+     * Only safe properties are allowed.
+     * @param {string} header
+     * @param {Object} val
+     * @param {boolean|unset} [isPSet] - If true, this method will set a value in PLSAV instead.
+     * @return {void}
+     */
+    const requestSet = function(header, val, isPSet) {
+        MDL_net.sendPacket(
+            PacketModes.SERVER, "lovec-client-lsav-set-request",
+            packPayload([
+                header, val, isPSet,
+            ]),
+            true,
+        );
+    }
+    .setAnno("init", function() {
+        MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-lsav-set-request", payload => {
+            setSafe.apply(this, unpackPayload(payload));
+        });
+    })
+    .setAnno("client");
+    exports.requestSet = requestSet;
 
 
 /*
@@ -285,22 +293,22 @@
 
 
 
-  initLsav();
+    initLsav();
 
 
 
 
-  MDL_event.onWorldLoad(() => {
+    MDL_event.onWorldLoad(() => {
 
-    loadLsav();
+        loadLsav();
 
-  });
-
-
+    });
 
 
-  MDL_event.onWorldSave(() => {
 
-    saveLsav();
 
-  });
+    MDL_event.onWorldSave(() => {
+
+        saveLsav();
+
+    });

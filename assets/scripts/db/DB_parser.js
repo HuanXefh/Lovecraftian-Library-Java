@@ -12,9 +12,8 @@ const db = {
 
     /**
      * Used in {@link CLS_contentTemplateParser}.
-     * @type {Array}
-     * @lovecRow `string` - typeStr
-     * @lovecRow `FFunction<Object, Object>` - valF
+     * <br> `ROW`: typeStr, valF.
+     * @type {F2Array<string, FFunction<Object, Object>>}
      */
     template: [
 

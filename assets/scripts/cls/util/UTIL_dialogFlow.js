@@ -21,6 +21,7 @@
     /** @type {Array<DialogLogObject>} */
     const lastTextLogs = [];
 
+
     const pool = {
         /** @type {Array<Table>} */
         bg: [],
@@ -31,6 +32,12 @@
         /** @type {Array<Table>} */
         selection: [],
     };
+
+
+    /** @type {boolean} */
+    UTIL_dialogFlow.TRIGGER_BACKGROUND = false;
+    /** @type {boolean} */
+    UTIL_dialogFlow.TRIGGER_MUSIC = false;
 
 
 /*
@@ -107,7 +114,7 @@
      */
     UTIL_dialogFlow.getPool = function(name) {
         let arr = pool[name];
-        if(arr == null) throw new Error("Pool ${1} is not registered!".format(name));
+        if(arr == null) throw new Error("Pool ${1} is not registered".format(name));
         return arr;
     };
 

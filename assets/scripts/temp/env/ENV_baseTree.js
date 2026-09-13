@@ -33,7 +33,7 @@
     ];
 
     MDL_event.onLoad(() => {
-      if(!Vars.headless && !blk.shadow.found()) LOG_HANDLER.log("noCustomShadowRegionFound", blk.name);
+      if(!Vars.headless && !blk.shadow.found()) LCLogHandler.log("noCustomShadowRegionFound", blk.name);
     });
   };
 

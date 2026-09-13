@@ -14,6 +14,7 @@
     const CLS_unitDamageType = newClass().initClass();
 
 
+    /** @private */
     CLS_unitDamageType.prototype.init = function(name, tag) {
 
 

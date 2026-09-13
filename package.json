@@ -1,0 +1,13 @@
+{
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "docdash": "^2.0.2",
+        "eslint": "^10.10.0",
+        "eslint-plugin-no-default-parameters": "^1.0.3",
+        "jsdoc": "^4.0.5"
+    },
+    "scripts": {
+        "jsdoc": "jsdoc -r -c jsdoc.json",
+        "jsdoc-test": "jsdoc assets/scripts/temp/sta/DBCT_databaseContent.js -c jsdoc.json --debug"
+    }
+}

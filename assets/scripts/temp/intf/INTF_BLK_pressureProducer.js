@@ -12,7 +12,7 @@
 
 
   function comp_init(blk) {
-    if(!blk.hasLiquids) LCErrorHandler.throw("noLiquidModule", blk.name);
+    if(!blk.hasLiquids) throw new LCError.NoLiquidModuleError(blk);
 
     if(!blk.presProd.fEqual(0.0)) {
       MDL_event.onLoadPost(() => {

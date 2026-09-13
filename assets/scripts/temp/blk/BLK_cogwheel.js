@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    if(blk.size % 2 === 0) LCErrorHandler.throw("evenSizedCogwheel", blk.name);
+    if(blk.size % 2 === 0) throw new Error("Cogwheel size should be odd number: " + blk);
 
     blk.cogwheelUpdater = new BLKCogwheelUpdater(blk);
 
@@ -32,7 +32,7 @@
       b.delegee.isInv = bool;
       b.delegee.rpmCur = b.ex_calcRpmTarget();
       MDL_effect.click(b.x, b.y, b.team.color);
-      Sounds.click.at(b);
+      MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
       TRIGGER.torqueBlockConfigure.fire(b);
     });
   };

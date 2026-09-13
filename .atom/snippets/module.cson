@@ -1,15 +1,5 @@
 '.source.js':
 
-  # Common
-
-  'PARENT':
-    prefix: 'lc_parent'
-    body: 'const PARENT = require("lovec/temp/${1:type}/${2:name}");'
-
-  'INTF':
-    prefix: 'lc_interface'
-    body: 'const INTF = require("lovec/temp/intf/INTF_${1:name}");'
-
-  'TEMPLATE':
-    prefix: 'lc_temp'
-    body: 'const TEMPLATE = require("lovec/temp/${1:type}/${2:name}");'
+    'PARENT':
+        prefix: 'lc_parent'
+        body: 'const PARENT = require("lovec/temp/${1:type}/${2:name}");'

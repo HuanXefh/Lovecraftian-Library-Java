@@ -13,6 +13,7 @@
     const CLS_dragButton = newClass().initClass();
 
 
+    /** @private */
     CLS_dragButton.prototype.init = function() {
 
 
@@ -116,7 +117,7 @@
         })()
         .forEachRow(2, (name, paramObj) => {
             let rowInd = readParam(paramObj, "rowInd", 0);
-            if(rowInd >= this.btnData.length) LCErrorHandler.throw("indexOutOfBound", rowInd, this.btnData.length);
+            if(rowInd >= this.btnData.length) throw new RangeError("Index out of bound: " + rowInd + ">=" + this.btnData.length);
 
             this.btnData[rowInd].push([
                 !Core.bundle.has("drag." + name) ? null : Core.bundle.get("drag." + name),

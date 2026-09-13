@@ -22,8 +22,8 @@
 
   function comp_init(blk) {
     blk.parent = MDL_content.getCt(blk.parent, "blk");
-    if(blk.parent == null) LCErrorHandler.throw("nullArgument", "parent");
-    if(!(blk.parent instanceof Floor)) throw new Error("${1} is not a floor!".format(blk.name));
+    if(blk.parent == null) throw new LCError.NullArgumentError(blk.name + ".parent");
+    if(!(blk.parent instanceof Floor)) throw new TypeError("${1} is not a floor".format(blk.name));
 
     blk.blendGroup = blk.parent;
     MDL_event.onLoad(() => {
