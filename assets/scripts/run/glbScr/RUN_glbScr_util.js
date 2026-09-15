@@ -366,7 +366,7 @@
 
 
     /**
-     * Whether this content is created with {@link CLS_contentTemplate}.
+     * Whether a content is created with {@link CLS_contentTemplate}.
      * @global
      * @param {UnlockableContent} ct
      * @return {boolean}
@@ -377,7 +377,7 @@
 
 
     /**
-     * Whether this content is an instance of some content template.
+     * Whether a content is an instance of some content template.
      * @global
      * @param {UnlockableContent} ct
      * @param {string} tempName

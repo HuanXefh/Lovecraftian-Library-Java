@@ -226,3 +226,9 @@ declare class GlyphLayout {}
 interface GL20 {}
 /** arc.graphics.GL30 */
 interface GL30 extends GL20 {}
+
+
+/** arc.graphics.GLTexture */
+declare class GLTexture implements Disposable {}
+/** arc.graphics.Cubemap */
+declare class Cubemap extends GLTexture {}

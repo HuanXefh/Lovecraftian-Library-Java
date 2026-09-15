@@ -1,5 +1,6 @@
 type RecipeMetaObject = {
-    objF?: CFunction<RecipeObject>
+    objF?: CFunction<RecipeObject>;
+    paramObjF?: FFunction<RecipeParamObject, RecipeParamObject>;
 
     amt?: number;
     p?: number;

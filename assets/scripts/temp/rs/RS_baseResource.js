@@ -30,6 +30,12 @@
     if(formula != null) {
       rs.stats.add(fetchStat("lovec", "rs-formula"), formula);
     };
+
+    // TODO: Remove this when Anuke decides to add external stats modification support
+    rs.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
+      tb.row();
+      MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(rs.localizedName, rs, false)).left().padLeft(28.0).row();
+    }));
   };
 
 

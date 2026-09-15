@@ -859,6 +859,13 @@ const db = {
          * @type {RecipeRawData2Array}
          * @lovecAutoRecipe
          */
+        decortication: [],
+
+
+        /**
+         * @type {RecipeRawData2Array}
+         * @lovecAutoRecipe
+         */
         dryingItem: [],
 
 

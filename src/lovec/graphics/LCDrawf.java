@@ -415,7 +415,10 @@ public class LCDrawf {
         float
             ang = Mathf.angle(x2 - x1, y2 - y1),
             dx = Mathf.cosDeg(ang) * Draw.scl * 4f * strokeScl,
-            dy = Mathf.sinDeg(ang) * Draw.scl * 4f * strokeScl;
+            dy = Mathf.sinDeg(ang) * Draw.scl * 4f * strokeScl,
+            dst = Math.max(Math.abs(x2 - x1), Math.abs(y2 - y1)) / Vars.tilesize;
+
+        if(dst < 1) return;
 
         LCDraw.processZ(z, LCDraw.NORMAL_REGION_Z_IND);
         Draw.color(Color.white, 1f);

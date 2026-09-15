@@ -48,5 +48,9 @@ declare class Fill {}
 declare class Lines {}
 
 
+/** arc.graphics.g2d.Bloom */
+declare class Bloom {}
+
+
 /** arc.graphics.g2d.Animation */
 declare class Animation {}

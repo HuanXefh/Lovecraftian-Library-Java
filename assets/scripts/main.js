@@ -426,19 +426,19 @@
 
 
         // Set up recipe dictionary stat
-        // Complete broken in 160 due to `computeStats`
-        /*Time.runTask(VAR.delay.load.addStat, () => {
+        Time.runTask(VAR.delay.load.addStat, () => {
             VARGEN.allRss
             .concat(VARGEN.payMatBlks)
             .concat(VARGEN.buildableUtps)
             .forEachFast(ct => {
-                ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
-                    tb.row();
-                    MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct)).left().padLeft(28.0).row();
-                }));
                 VARGEN.rcDictCts.push(ct);
+                // Complete broken in 160 due to `computeStats`
+                /*ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
+                  tb.row();
+                  MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct, false)).left().padLeft(28.0).row();
+                }));*/
             }, true);
-        });*/
+        });
 
 
         // Set up node root names

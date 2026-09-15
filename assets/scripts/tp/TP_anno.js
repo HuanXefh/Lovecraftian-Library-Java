@@ -5,9 +5,10 @@
 */
 
 
-  /**
-   * Registers new annotations.
-   */
+    /**
+     * Registers new annotations.
+     * @module lovec/tp/TP_anno
+     */
 
 
 /*
@@ -17,118 +18,116 @@
 */
 
 
-  /* <------------------------------ meta ------------------------------ */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  /**
-   * Simply prints the original function.
-   */
-  new CLS_annotation("test", function() {
-    print(this);
-  });
+    /**
+     * Simply prints the original function.
+     */
+    exports.test = new CLS_annotation("test", function() {
+        print(this);
+    });
 
 
-  /**
-   * Used to inform method deprecation.
-   */
-  new CLS_annotation("deprecated", function(nameFun) {
-    console.warn(
-      "[LOVEC] A method called (${1}) has been ${2} and will be removed in future updates!".format(nameFun.color(Pal.accent), "deprecated".color(Pal.remove())),
-    );
-  });
+    /**
+     * Used to inform method deprecation.
+     */
+    exports.deprecated = new CLS_annotation("deprecated", function(nameFun) {
+        console.warn(
+            "[LOVEC] A method called (${1}) has been ${2} and will be removed in future updates!".format(nameFun.color(Pal.accent), "deprecated".color(Pal.remove())),
+        );
+    });
 
 
-  /**
-   * Runs something right after definition of some method.
-   * `this` is the original function.
-   * DO NOT USE ARROW FUNCTION FOR `scr`!
-   */
-  new CLS_annotation("init", null, function(scr) {
-    scr.call(this);
-  });
+    /**
+     * Runs something right after definition of some method.
+     * `this` is the original function.
+     * <br> DO NOT USE ARROW FUNCTION FOR `scr`!
+     */
+    exports.init = new CLS_annotation("init", null, function(scr) {
+        scr.call(this);
+    });
 
 
-  /* <------------------------------ skip ------------------------------ */
+    /* <------------------------------ skip ------------------------------ */
 
 
-  /**
-   * Method is skipped if game is not in Lovec debug mode.
-   */
-  new CLS_annotation("debug", function() {
-    return !global.lovecUtil.prop.debug;
-  });
+    /**
+     * Method is skipped if game is not in Lovec debug mode.
+     */
+    exports.debug = new CLS_annotation("debug", function() {
+        return !global.lovecUtil.prop.debug;
+    });
 
 
-  /**
-   * Method is skipped on headless server.
-   */
-  new CLS_annotation("non-headless", function() {
-    return Vars.headless;
-  });
+    /**
+     * Method is skipped on headless server.
+     */
+    exports.nonHeadless = new CLS_annotation("non-headless", function() {
+        return Vars.headless;
+    });
 
 
-  /**
-   * Method is skipped on mobile end.
-   */
-  new CLS_annotation("non-mobile", function() {
-    return Core.app.isMobile();
-  });
+    /**
+     * Method is skipped on mobile end.
+     */
+    exports.nonMobile = new CLS_annotation("non-mobile", function() {
+        return Core.app.isMobile();
+    });
 
 
-  /**
-   * Method is only available on Windows.
-   * I have to do this, I can't test on other OS.
-   */
-  new CLS_annotation("windows-only", function() {
-    return !OS.isWindows;
-  });
+    /**
+     * Method is only available on Windows.
+     * I have to do this, I can't test on other OS.
+     */
+    exports.windowsOnly = new CLS_annotation("windows-only", function() {
+        return !OS.isWindows;
+    });
 
 
-  /**
-   * Method is only available on server or in single player game.
-   */
-  new CLS_annotation("server", function() {
-    return !Vars.net.server() && Vars.net.client();
-  });
+    /**
+     * Method is only available on server or in single player game.
+     */
+    exports.server = new CLS_annotation("server", function() {
+        return !Vars.net.server() && Vars.net.client();
+    });
 
 
-  /**
-   * Method is only available on client.
-   */
-  new CLS_annotation("client", function() {
-    return Groups.player.size() <= 1 || !Vars.net.client();
-  });
+    /**
+     * Method is only available on client.
+     */
+    exports.clienter = new CLS_annotation("client", function() {
+        return Groups.player.size() <= 1 || !Vars.net.client();
+    });
 
 
-  /**
-   * Method is only available in console.
-   */
-  new CLS_annotation("console", function() {
-    let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown();
-    if(!cond) {
-      console.warn("[LOVEC] Method is only available in ${1}!".format("console".color(Pal.remove)));
-    };
-
-    return !cond;
-  });
-
-
-  /**
-   * Method is unavailable in console.
-   */
-  new CLS_annotation("non-console", function() {
-    let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown() && OS.username.toHash() !== -1106355917.0;
-    if(cond) {
-      console.warn("[LOVEC] Method is not available in ${1}!".format("console".color(Pal.remove)));
-    };
-
-    return cond;
-  });
+    /**
+     * Method is only available in console.
+     */
+    exports.console = new CLS_annotation("console", function() {
+        let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown();
+        if(!cond) {
+            console.warn("[LOVEC] Method is only available in ${1}!".format("console".color(Pal.remove)));
+        };
+        return !cond;
+    });
 
 
-  /**
-   * Method is used to spawn effect.
-   */
-  new CLS_annotation("effect", function() {
-    return Vars.headless || Vars.state.isPaused();
-  });
+    /**
+     * Method is unavailable in console.
+     */
+    exports.nonConsole = new CLS_annotation("non-console", function() {
+        let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown() && OS.username.toHash() !== -1106355917.0;
+        if(cond) {
+            console.warn("[LOVEC] Method is not available in ${1}!".format("console".color(Pal.remove)));
+        };
+        return cond;
+    });
+
+
+    /**
+     * Method is used to spawn effect.
+     */
+    exports.effect = new CLS_annotation("effect", function() {
+        return Vars.headless || Vars.state.isPaused();
+    });

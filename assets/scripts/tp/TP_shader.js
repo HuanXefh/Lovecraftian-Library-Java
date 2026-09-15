@@ -5,9 +5,9 @@
 */
 
 
-  /**
-   * Registers shaders.
-   */
+    /**
+     * Registers shaders.
+     */
 
 
 /*
@@ -17,13 +17,13 @@
 */
 
 
-  newShader("shockwave", () => new Shaders.ShockwaveShader());
+    newShader("shockwave", () => new Shaders.ShockwaveShader());
 
 
-  newSurfaceShader("shader0surf-flr0liq-lava");
-  newSurfaceShader("shader0surf-flr0liq-puddle");
-  newSurfaceShader("shader0surf-flr0liq-river");
-  newSurfaceShader("shader0surf-flr0liq-sea");
+    newSurfaceShader("shader0surf-flr0liq-lava");
+    newSurfaceShader("shader0surf-flr0liq-puddle");
+    newSurfaceShader("shader0surf-flr0liq-river");
+    newSurfaceShader("shader0surf-flr0liq-sea");
 
 
-  newRegionShader("shader0reg-debris");
+    newRegionShader("shader0reg-debris");

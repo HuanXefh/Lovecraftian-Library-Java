@@ -5,9 +5,9 @@
 */
 
 
-  /**
-   * Registers new dialog flows.
-   */
+    /**
+     * Registers new dialog flows.
+     */
 
 
 /*
@@ -20,40 +20,40 @@
   /* <------------------------------ base ------------------------------ */
 
 
-  /**
-   * Example dialog flow.
-   * Type `MDL_ui.createFlow("lovec-test")` in console to see.
-   */
-  newDialogFlow(
-    "lovec-test",
-    new CLS_dialogFlowBuilder()
-    .setBgmStart(fetchMusic("MUSICS: boss1"))
-    .setText("lovec", "test", 0).setSpeaker("lovec", "earlan").setChara({
-      nameMod: "lovec", nameChara: "earlan",
-      fracX: 0.5, isDark: false,
-      anim: "fade-in",
-    })
-    .setText("lovec", "test", 1).setChara({
-      nameMod: "lovec", nameChara: "earlan",
-      fracX: 0.5, isDark: true,
-    })
-    .setColorTransition().setChara({
-      nameMod: "lovec", nameChara: "earlan",
-      fracX: 0.5, isDark: true,
-    })
-    .setText("lovec", "test", 2).setChara({
-      nameMod: "lovec", nameChara: "earlan",
-      fracX: 0.5, isDark: true,
-      anim: "move", animParamObj: {
-        transTimeS: 1.0,
-        fracXFrom: 0.5,
-        fracXTo: 0.33,
-      },
-    })
-    .setBgmEnd().setChara({
-      nameMod: "lovec", nameChara: "earlan",
-      fracX: 0.33, isDark: true,
-      anim: "fade-out",
-    })
-    .build(),
-  );
+    /**
+     * Example dialog flow.
+     * Type `MDL_ui.createFlow("lovec-test")` in console to see.
+     */
+    newDialogFlow(
+        "lovec-test",
+        new CLS_dialogFlowBuilder()
+        .setBgmStart(fetchMusic("MUSICS: boss1"))
+        .setText("lovec", "test", 0).setSpeaker("lovec", "earlan").setChara({
+            nameMod: "lovec", nameChara: "earlan",
+            fracX: 0.5, isDark: false,
+            anim: "fade-in",
+        })
+        .setText("lovec", "test", 1).setChara({
+            nameMod: "lovec", nameChara: "earlan",
+            fracX: 0.5, isDark: true,
+        })
+        .setColorTransition().setChara({
+            nameMod: "lovec", nameChara: "earlan",
+            fracX: 0.5, isDark: true,
+        })
+        .setText("lovec", "test", 2).setChara({
+            nameMod: "lovec", nameChara: "earlan",
+            fracX: 0.5, isDark: true,
+            anim: "move", animParamObj: {
+                transTimeS: 1.0,
+                fracXFrom: 0.5,
+                fracXTo: 0.33,
+            },
+        })
+        .setBgmEnd().setChara({
+            nameMod: "lovec", nameChara: "earlan",
+            fracX: 0.33, isDark: true,
+            anim: "fade-out",
+        })
+        .build(),
+    );

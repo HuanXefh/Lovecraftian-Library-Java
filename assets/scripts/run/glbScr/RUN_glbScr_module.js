@@ -41,7 +41,8 @@
     LIB_pinyin = require("lovec/lib/LIB_pinyin");
     /** @global */
     CLS_paramBuilder = require("lovec/cls/util/builder/CLS_paramBuilder");
-    require("lovec/tp/TP_anno");
+    /** @global */
+    TP_anno = require("lovec/tp/TP_anno");
     require("lovec/run/RUN_global");
     require("lovec/tp/TP_shader");
     require("lovec/tp/TP_cacheLayer");
@@ -207,19 +208,26 @@
     UTIL_dragButtonInfoList = require("lovec/cls/ui/UTIL_dragButtonInfoList");
     /** @global */
     CLS_dragButton = require("lovec/cls/ui/CLS_dragButton");
-    require("lovec/tp/TP_ability");
-    require("lovec/tp/TP_cons");
+    /** @global */
+    TP_ability = require("lovec/tp/TP_ability");
+    /** @global */
+    TP_cons = require("lovec/tp/TP_cons");
     /** @global */
     TP_dial = require("lovec/tp/TP_dial");
     require("lovec/tp/TP_dialFlow");
-    require("lovec/tp/TP_drawer");
+    /** @global */
+    TP_drawer = require("lovec/tp/TP_drawer");
     require("lovec/tp/TP_keyBind");
-    require("lovec/tp/TP_setting");
-    require("lovec/tp/TP_shoot");
+    /** @global */
+    TP_setting = require("lovec/tp/TP_setting");
+    /** @global */
+    TP_shoot = require("lovec/tp/TP_shoot");
     require("lovec/tp/TP_sortF");
     require("lovec/tp/TP_stat");
-    require("lovec/tp/TP_unitStatDisplay");
-    require("lovec/tp/TP_unitDamageType");
+    /** @global */
+    TP_unitStatDisplay = require("lovec/tp/TP_unitStatDisplay");
+    /** @global */
+    TP_unitDamageType = require("lovec/tp/TP_unitDamageType");
     require("lovec/run/RUN_input");
     require("lovec/run/RUN_logic");
     require("lovec/run/RUN_render");

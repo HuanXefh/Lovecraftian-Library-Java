@@ -41,6 +41,8 @@
         statUnit: {},
         /** @type {Object<string, Object<string, StatCat>>} */
         statCategory: {},
+        /** @type {Object<string, Object<string, CLS_recipeGenerator>>} */
+        recipeGenerator: {},
 
         // Universal
         /** @type {Object<string, Shader>} */
@@ -669,6 +671,24 @@
     fetchDialogFlow = __createFetchXxx__(__extraContentData__.dialogFlow, 1, null, Array.air);
 
 
+    /**
+     * Performs recipe generation on an RC object.
+     * @global
+     * @param {RecipeRC} rc
+     * @param {string} nameMod
+     * @param {string} name
+     * @param {RecipeMetaObject} metaObj
+     * @return {void}
+     */
+    runRecipeGeneration = function(rc, nameMod, name, metaObj) {
+        let rcGenObj = __extraContentData__.recipeGenerator[nameMod];
+        if(rcGenObj == null) throw new Error("Cannot find recipe generator mod entry: " + nameMod);
+        let rcGen = rcGenObj[name];
+        if(rcGen == null) throw new Error("Cannot find recipe generator: " + nameMod + " | " + name);
+        rcGen.run(rc, metaObj);
+    };
+
+
     /* <------------------------------ register ------------------------------ */
 
 
@@ -1096,3 +1116,16 @@
     newDialogFlow = __createNewXxx__(__extraContentData__.dialogFlow, 1, function(name, dialFlowData) {
         return dialFlowData;
     }, 1, true);
+
+
+    /**
+     * Registers a recipe generator.
+     * @global
+     * @param {string} nameMod
+     * @param {string} name
+     * @param {(rc: RecipeRC, metaObj: RecipeMetaObject) => void} rcM
+     * @return {void}
+     */
+    newRecipeGenerator = __createNewXxx__(__extraContentData__.recipeGenerator, 0, function(nameMod, name, rcM) {
+        return new CLS_recipeGenerator(rcM);
+    });

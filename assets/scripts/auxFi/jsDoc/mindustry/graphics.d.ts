@@ -44,3 +44,12 @@ declare namespace MultiPacker {
         height: number;
     }
 }
+
+
+/** mindustry.graphics.CubemapMesh */
+declare class CubemapMesh implements Disposable {
+    constructor(cubemap: Cubemap)
+
+    setCubemap(cubemap: Cubemap): void
+    render(proj: Mat3D): void
+}

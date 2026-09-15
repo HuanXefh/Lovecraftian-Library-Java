@@ -325,7 +325,7 @@
      * @param {Object} obj
      * @param {string} nameProp
      * @param {Object} [def]
-     * @return {Object}
+     * @return {*}
      */
     tryJsProp = function(obj, nameProp, def) {
         return obj.delegee == null || obj.delegee[nameProp] === undefined ?
@@ -340,8 +340,8 @@
      * @global
      * @param {Object|unset} paramObj
      * @param {Plural<string>} nameProps_p
-     * @param {Object} [def]
-     * @return {Object}
+     * @param {Object|unset} [def]
+     * @return {*}
      */
     readParam = function(paramObj, nameProps_p, def) {
         if(paramObj == null) return def;
@@ -364,8 +364,8 @@
      * @global
      * @param {Object|unset} paramObj
      * @param {Plural<string>} nameProps_p
-     * @param {CFunction<Object>} scr
-     * @param {Object} [def]
+     * @param {CFunction<*>} scr
+     * @param {Object|unset} [def]
      * @return {void}
      */
     readParamAndCall = function(paramObj, nameProps_p, scr, def) {

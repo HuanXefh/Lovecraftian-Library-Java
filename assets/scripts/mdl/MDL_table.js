@@ -117,13 +117,23 @@
 
 
   /**
-   * Adds a table into a cell.
+   * Adds a tooltip into a cell.
    * @param {Cell} cell
    * @param {function(Table): void} tableM
+   * @param {string|unset} [pinName] - If true, this tooltip can be pinned as a new window.
    * @return {Cell}
    */
-  const tooltip = function(cell, tableM) {
-    let tooltip = new Tooltip(cons(tableM));
+  const tooltip = function(cell, tableM, pinName) {
+    let tooltip = pinName == null ?
+      new Tooltip(cons(tableM)) :
+      extend(Tooltip, cons(tableM), {
+        exit(inputEv, x, y, pointer, toActor) {
+          if(Core.input.shift() && fetchSetting("misc-enable-window")) {
+            new CLS_window(pinName, tableM).add();
+          };
+          this.super$exit(inputEv, x, y, pointer, toActor);
+        },
+      });
     tooltip.allowMobile = true;
     Reflect.get(Cell, cell, "element").addListener(tooltip);
     return cell;
@@ -213,6 +223,22 @@
     return btn(tb, "@close", () => dial.hide(), w, h);
   };
   exports.btnClose = btnClose;
+
+
+  /**
+   * Variant of {@link btnClose} with a callback.
+   * @param {Table} tb
+   * @param {Dialog} dial - Dialog to close.
+   * @param {C0Function} callback
+   * @param {number|unset} [w]
+   * @param {number|unset} [h]
+   * @return {Cell}
+   */
+  const btnCloseCallback = function(tb, dial, callback, w, h) {
+    dial.closeOnBack(callback);
+    return btn(tb, "@close", () => {dial.hide(); callback()}, w, h);
+  };
+  exports.btnCloseCallback = btnCloseCallback;
 
 
   /**
@@ -447,6 +473,8 @@
         btnCell.tooltip(ttArg, true);
       } else if(typeof ttArg === "function") {
         tooltip(btnCell, ttArg);
+      } else if(ttArg instanceof Array) {
+        tooltip(btnCell, ttArg[1], ttArg[0]);
       };
     };
     let btn = btnCell.get();

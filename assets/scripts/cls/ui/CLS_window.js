@@ -37,6 +37,8 @@
 
 
     /** @type {Array<CLS_window>} */
+    const allWins = [];
+    /** @type {Array<CLS_window>} */
     const selectedWins = [];
     /** @type {Object<string, Button.ButtonStyle>} */
     const btnStyles = {};
@@ -121,6 +123,15 @@
 
 
     /* <------------------------------ util ------------------------------ */
+
+
+    /**
+     * Gets all shown windows.
+     * @return {Array<CLS_window>}
+     */
+    CLS_window.getAllWins = function() {
+        return allWins;
+    };
 
 
     /**
@@ -328,6 +339,11 @@
         root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
     }
     .setProp({
+        /**
+         * @memberof CLS_window#rebuild
+         * @param {Table} tb
+         * @return {void}
+         */
         addPlaceholder: function(tb) {
             tb.table(Styles.none, tb1 => {}).width(2.0).height(2.0);
         },
@@ -336,9 +352,11 @@
 
     /**
      * Adds the window to scene.
+     * @param {number|unset} [x]
+     * @param {number|unset} [y]
      * @return {void}
      */
-    CLS_window.prototype.add = function() {
+    CLS_window.prototype.add = function(x, y) {
         if(Core.scene == null || this.added) return;
         if(!fetchSetting("misc-enable-window")) {
             MDL_ui.showFadeInfo("lovec", "window-disabled");
@@ -346,9 +364,11 @@
         };
 
         this.rebuild();
-        this.root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
+        this.root.setPosition(tryVal(x, MDL_ui.getCenterX()), tryVal(y, MDL_ui.getCenterY()) + this.prefH * 0.5, Align.center);
+        this.root.toFront();
         Core.scene.add(this.root);
         this.added = true;
+        allWins.pushUnique(this);
     };
 
 
@@ -364,6 +384,7 @@
         Core.app.post(() => {
             selectedWins.remove(this);
         });
+        allWins.remove(this);
     };
 
 

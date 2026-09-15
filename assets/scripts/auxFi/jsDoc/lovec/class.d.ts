@@ -19,7 +19,3 @@ type UnitStatDrawF = (
     dpsMtp: number|null,
     z: number|null,
 ) => void
-
-
-/** @this {CLS_recipeGenerator} */
-type RecipeRCSetter = (rc: RecipeRC, metaObj: RecipeMetaObject) => void

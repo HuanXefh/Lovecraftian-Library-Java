@@ -17,39 +17,6 @@
 */
 
 
-    /** @global mindustry.graphics.g3d.GenericMesh */
-    class GenericMesh {};
-    /** @global mindustry.graphics.g3d.MultiMesh */
-    class MultiMesh extends GenericMesh {};
-    /** @global mindustry.graphics.g3d.MatMesh */
-    class MatMesh extends GenericMesh {};
-    /** @global mindustry.graphics.g3d.PlanetMesh */
-    class PlanetMesh extends GenericMesh {};
-    /** @global mindustry.graphics.g3d.ShaderSphereMesh */
-    class ShaderSphereMesh extends PlanetMesh {};
-    /** @global mindustry.graphics.g3d.HexMesh */
-    class HexMesh extends PlanetMesh {};
-    /** @global mindustry.graphics.g3d.SunMesh */
-    class SunMesh extends HexMesh {};
-    /** @global mindustry.graphics.g3d.NoiseMesh */
-    class NoiseMesh extends HexMesh {};
-    /** @global mindustry.graphics.g3d.HexSkyMesh */
-    class HexSkyMesh extends PlanetMesh {};
-    /** @global mindustry.graphics.g3d.PlanetGrid */
-    class PlanetGrid {};
-    PlanetGrid.PTile = class {};
-    /** @global mindustry.graphics.g3d.MeshBuilder */
-    class MeshBuilder {};
-
-
-    /** @global mindustry.logic.LAccess */
-    class LAccess {};
-    /** @global mindustry.logic.LLocate */
-    class LLocate {};
-    /** @global mindustry.logic.RadarTarget */
-    class RadarTarget {};
-
-
     /** @global mindustry.ui.Bar */
     class Bar extends Element {};
     /** @global mindustry.ui.ReqImage */
@@ -521,22 +488,3 @@
     class TallBlock extends Block {};
     /** @global mindustry.world.blocks.environment.TreeBlock */
     class TreeBlock extends Block {};
-
-
-/*
-  ========================================
-  Section: Definition (TMI)
-  ========================================
-*/
-
-
-    /** @global tmi.recipe.Recipe */
-    class Recipe {};
-    /** @global tmi.recipe.RecipeType */
-    class RecipeType {};
-    /** @global tmi.recipe.RecipeParser */
-    class RecipeParser {};
-    /** @global tmi.recipe.types.RecipeItem */
-    class RecipeItem {};
-    /** @global tmi.recipe.types.RecipeItemType */
-    class RecipeItemType {};

@@ -9,7 +9,7 @@
      * Utility class for automatic recipe generation.
      * See {@link TP_recipeGen} for examples.
      * @class
-     * @param {RecipeRCSetter} setter
+     * @param {(rc: RecipeRC, metaObj: RecipeMetaObject) => void} setter
      */
     const CLS_recipeGenerator = newClass().initClass();
 
@@ -18,7 +18,7 @@
     CLS_recipeGenerator.prototype.init = function(setter) {
 
 
-        /** @type {RecipeRCSetter} */
+        /** @type {(rc: RecipeRC, metaObj: RecipeMetaObject) => void} */
         this.setter = tryVal(setter, Function.air);
         /** @type {string|null} */
         this.__categ__ = null;
@@ -61,8 +61,8 @@
      * Sets up single-content CI.
      * @param {ContentGn} ct_gn
      * @param {number} amtI
-     * @param {Object} metaObj
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {[string, number]} `TUPLE`: nameCt, amt.
      */
     CLS_recipeGenerator.prototype.processCi = function(ct_gn, amtI, metaObj, paramObj) {
@@ -78,8 +78,8 @@
      * @param {ContentGn} ct_gn
      * @param {number} amtI
      * @param {number} pI
-     * @param {Object} metaObj
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
      */
     CLS_recipeGenerator.prototype.processBi = function(ct_gn, amtI, pI, metaObj, paramObj) {
@@ -95,8 +95,8 @@
      * Sets up single-content PAYI.
      * @param {ContentGn} ct_gn
      * @param {number} payAmtI
-     * @param {Object} metaObj
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {[string, number]} `TUPLE`: nameCt, amt.
      */
     CLS_recipeGenerator.prototype.processPayi = function(ct_gn, payAmtI, metaObj, paramObj) {
@@ -111,8 +111,8 @@
      * Sets up single-content CO.
      * @param {ContentGn} ct_gn
      * @param {number} amtO
-     * @param {Object} metaObj
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {[string, number]} `TUPLE`: nameCt, amt.
      */
     CLS_recipeGenerator.prototype.processCo = function(ct_gn, amtO, metaObj, paramObj) {
@@ -128,8 +128,8 @@
      * @param {ContentGn} ct_gn
      * @param {number} amtO
      * @param {number} pO
-     * @param {Object} metaObj
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
      */
     CLS_recipeGenerator.prototype.processBo = function(ct_gn, amtO, pO, metaObj, paramObj) {
@@ -145,8 +145,8 @@
      * Sets up single-content PAYI.
      * @param {ContentGn} ct_gn
      * @param {number} payAmtO
-     * @param {Object} metaObj
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {[string, number]} `TUPLE`: nameCt, amt.
      */
     CLS_recipeGenerator.prototype.processPayo = function(ct_gn, payAmtO, metaObj, paramObj) {
@@ -159,11 +159,11 @@
 
     /**
      * Parses raw IO array.
-     * @param {Array} raw
+     * @param {RecipeIoArray} raw
      * @param {number} baseAmt
      * @param {boolean|unset} [isContinuous]
      * @param {number|unset} [pTarget]
-     * @return {Array}
+     * @return {RecipeIoArray}
      */
     CLS_recipeGenerator.prototype.parseRawIo = function thisFun(raw, baseAmt, isContinuous, pTarget) {
         let arr = [];
@@ -182,7 +182,7 @@
     .setProp({
         /**
          * @memberof CLS_recipeGenerator#parseRawIo
-         * @param {Array} arr
+         * @param {RecipeIoArray} arr
          * @param {number} baseAmt
          * @param {boolean|unset} [isContinuous]
          * @return {void}
@@ -205,7 +205,7 @@
 
     /**
      * Parses raw CI array.
-     * @param {Array} rawCi
+     * @param {RecipeIo2Array} rawCi
      * @param {number} amtO
      * @return {RecipeIo2Array}
      */
@@ -216,7 +216,7 @@
 
     /**
      * Parses raw BI array.
-     * @param {Array} rawBi
+     * @param {RecipeIo3Array} rawBi
      * @param {number} amtO
      * @param {number} pO
      * @param {number|unset} [pTarget]
@@ -229,7 +229,7 @@
 
     /**
      * Parses raw PAYI array.
-     * @param {Array} rawPayi
+     * @param {RecipeIo2Array} rawPayi
      * @param {number} payAmtO
      * @return {RecipeIo2Array}
      */
@@ -240,7 +240,7 @@
 
     /**
      * Parses raw CO array.
-     * @param {Array} rawCo
+     * @param {RecipeIo2Array} rawCo
      * @param {number} amtI
      * @return {RecipeIo2Array}
      */
@@ -251,7 +251,7 @@
 
     /**
      * Parses raw BO array.
-     * @param {Array} rawBo
+     * @param {RecipeIo3Array} rawBo
      * @param {number} amtI
      * @param {number} pI
      * @param {number|unset} [pTarget]
@@ -264,7 +264,7 @@
 
     /**
      * Parses raw PAYO array.
-     * @param {Array} rawPayo
+     * @param {RecipeIo2Array} rawPayo
      * @param {number} payAmtI
      * @return {RecipeIo2Array}
      */
@@ -314,11 +314,11 @@
     /**
      * Adds a recipe.
      * Any recipe added by this method will be tagged as GENERATED.
-     * @param {Object} rc
+     * @param {RecipeRC} rc
      * @param {string} nameCt
-     * @param {CFunction<Object>|unset} [objF] - Used to further modify the recipe.
+     * @param {CFunction<RecipeObject>|unset} [objF] - Used to further modify the recipe.
      * @param {Object|unset} [rcBuilderObj] - Expected to be built with {@link CLS_recipeBuilder}.
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {void}
      */
     CLS_recipeGenerator.prototype.addRc = function thisFun(rc, nameCt, objF, rcBuilderObj, paramObj) {
@@ -370,8 +370,8 @@
 
     /**
      * Reads basic parameters from `paramObj`.
-     * @param {Object} rcObj
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeObject} rcObj
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {void}
      */
     CLS_recipeGenerator.prototype.setBaseParam = function(rcObj, paramObj) {
@@ -399,8 +399,8 @@
     /**
      * Whether recipe for given content should be created.
      * @param {UnlockableContent} ct
-     * @param {Object} metaObj
-     * @param {Object|unset} [paramObj]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|unset} [paramObj]
      * @return {boolean}
      */
     CLS_recipeGenerator.prototype.checkCtValid = function(ct, metaObj, paramObj) {
@@ -411,9 +411,9 @@
     /**
      * Handles `objF` used for recipe.
      * @param {UnlockableContent} ct
-     * @param {Object} metaObj
-     * @param {Object} paramObj
-     * @return {CFunction<Object>}
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject} paramObj
+     * @return {CFunction<RecipeObject>}
      */
     CLS_recipeGenerator.prototype.processObjF = function(ct, metaObj, paramObj) {
         return obj => {
@@ -430,9 +430,9 @@
     /**
      * Builds final recipe object.
      * @param {UnlockableContent} ct
-     * @param {Object} metaObj
-     * @param {Object|unset} [paramObj]
-     * @return {Object}
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|unset} [paramObj]
+     * @return {RecipeObject}
      */
     CLS_recipeGenerator.prototype.buildRcObj = function(ct, metaObj, paramObj) {
         Object.clear(CLS_recipeGenerator.RECIPE_OBJECT_TMP);
@@ -515,10 +515,10 @@
 
 
     /**
-     * @param {Object|F2Function<UnlockableContent, Object, Object>} paramObj_d
+     * @param {RecipeParamObject|F2Function<UnlockableContent, RecipeMetaObject, RecipeParamObject>} paramObj_d
      * @param {UnlockableContent} ct
-     * @param {Object} metaObj
-     * @return {Object}
+     * @param {RecipeMetaObject} metaObj
+     * @return {RecipeParamObject}
      */
     function convertParamObj(paramObj_d, ct, metaObj) {
         let obj;
@@ -542,11 +542,12 @@
 
     /**
      * Generates a single recipe.
-     * @param {Object} rc
+     * @param {RecipeRC} rc
      * @param {ContentGn} ct_gn
-     * @param {Object} metaObj
-     * @param {Object|F2Function<UnlockableContent, Object, Object>|unset} [paramObj_d]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|F2Function<UnlockableContent, RecipeMetaObject, RecipeParamObject>|unset} [paramObj_d]
      * @param {FFunction<UnlockableContent, string>|unset} [nameCtF]
+     * @return {void}
      */
     CLS_recipeGenerator.prototype.handleSingle = function(rc, ct_gn, metaObj, paramObj_d, nameCtF) {
         if(nameCtF == null) nameCtF = ct => ct.name;
@@ -567,11 +568,12 @@
 
     /**
      * Generates recipes based on a 2-array.
-     * @param {Object} rc
+     * @param {RecipeRC} rc
      * @param {RecipeRawData2Array} arr
      * @param {FFunction<ContentGn, UnlockableContent>|unset} ctMapper
-     * @param {Object} metaObj
+     * @param {RecipeMetaObject} metaObj
      * @param {FFunction<UnlockableContent, string>|unset} [nameCtF]
+     * @return {void}
      */
     CLS_recipeGenerator.prototype.handle2Arr = function(rc, arr, ctMapper, metaObj, nameCtF) {
         if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
@@ -599,13 +601,14 @@
 
     /**
      * Generates recipes based on a 2-array of names and numbers.
-     * @param {Object} rc
+     * @param {RecipeRC} rc
      * @param {RecipeRawDataNumberArray} arr
      * @param {FFunction<ContentGn, UnlockableContent>|unset} ctMapper
      * @param {C2Function<number, Object>|unset} numC - `ARGS`: num, paramObj.
-     * @param {Object} metaObj
-     * @param {Object|F2Function<UnlockableContent, Object, Object>|unset} [paramObj_d]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|F2Function<UnlockableContent, RecipeMetaObject, RecipeParamObject>|unset} [paramObj_d]
      * @param {FFunction<UnlockableContent, string>|unset} [nameCtF]
+     * @return {void}
      */
     CLS_recipeGenerator.prototype.handleNameNumArr = function(rc, arr, ctMapper, numC, metaObj, paramObj_d, nameCtF) {
         if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
@@ -632,12 +635,13 @@
 
     /**
      * Generates recipes based on a list of contents.
-     * @param {Object} rc
+     * @param {RecipeRC} rc
      * @param {Array<ContentGn>} arr
      * @param {C2Function<ContentGn, UnlockableContent>|unset} ctMapper
-     * @param {Object} metaObj
-     * @param {Object|F2Function<UnlockableContent, Object, Object>|unset} [paramObj_d]
+     * @param {RecipeMetaObject} metaObj
+     * @param {RecipeParamObject|F2Function<UnlockableContent, RecipeMetaObject, RecipeParamObject>|unset} [paramObj_d]
      * @param {FFunction<UnlockableContent, string>|unset} [nameCtF]
+     * @return {void}
      */
     CLS_recipeGenerator.prototype.handleCtLi = function(rc, arr, ctMapper, metaObj, paramObj_d, nameCtF) {
         if(ctMapper == null) ctMapper = tmpCt => MDL_content.getCt(tmpCt, null, true);
