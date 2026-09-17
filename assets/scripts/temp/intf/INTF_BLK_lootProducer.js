@@ -21,11 +21,13 @@
 
 
   function comp_setBars(blk) {
-    blk.addBar("lovec-prog", b => new Bar(
-      prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.ex_getProg().perc(0))),
-      prov(() => Pal.ammo),
-      () => Mathf.clamp(b.ex_getProg()),
-    ));
+    if(!VAR.isMindustryX) {
+      blk.addBar("lovec-prog", b => new Bar(
+        prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.ex_getProg().perc(0))),
+        prov(() => Pal.ammo),
+        () => Mathf.clamp(b.ex_getProg()),
+      ));
+    };
   };
 
 

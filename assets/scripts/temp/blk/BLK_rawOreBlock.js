@@ -27,10 +27,10 @@
     if(parent == null) return;
 
     let pix = MDL_texture.recolorPix(
-      Core.atlas.getPixmap(blk.recolorRegStr),
-      Core.atlas.getPixmap(parent),
+      packer.get(blk.recolorRegStr),
+      packer.get(parent),
     );
-    packer.add(MultiPacker.PageType.main, blk.name, pix);
+    packer.add(blk.name, pix);
     pix.dispose();
   };
 

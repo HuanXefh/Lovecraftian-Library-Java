@@ -21,6 +21,8 @@ import mindustry.world.modules.ItemModule;
 import mindustry.world.modules.LiquidModule;
 import mindustry.world.modules.PowerModule;
 
+import static lovec.utils.LCScript.VAR;
+
 /**
  * Internal block type for multi-block structure.
  * <br> <code>DEDICATION</code>: Inspired by MultiBlockLib.
@@ -262,7 +264,7 @@ public class MultiBlockLinkBlock extends Block {
             if(liquids == null) {
                 liquids = new LiquidModule();
             };
-            if(block.hasPower && power == null) {
+            if((block.hasPower && power == null) || (boolean) VAR.get("isMindustryX") || (boolean) VAR.get("isFoosClient")) {
                 power = new PowerModule();
             };
         };

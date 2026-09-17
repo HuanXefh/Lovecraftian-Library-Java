@@ -209,15 +209,14 @@
             if(!defaultDir.exists() || defaultDir.list().length === 0 || (function() {
                 let fi = defaultDir.child("meta.json");
                 if(!fi.exists()) return true;
-                let jsonVal = MDL_json.parse(fi);
-                return MDL_json.fetch(jsonVal, "version") !== verCur;
+                return jsonToJsObj(fi).version !== verCur;
             })()) {
                 let fi;
                 DB_recipe.db["oreDict"]["def"].forEachRow(2, (nameRs, arr) => {
                     fi = defaultDir.child(nameRs + ".csv");
                     MDL_file.writeCsv(fi, arr, 1);
                 }, true);
-                MDL_json.write(defaultDir.child("meta.json"), {
+                MDL_file.writeJson(defaultDir.child("meta.json"), {
                     version: verCur,
                 });
                 MDL_file.writeTxt(defaultDir.child("README.txt"), "Do not put files here, which may get overwritten!\nCustomized lists should be in ./saves/mods/data/sharedData/ore-dict!");

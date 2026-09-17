@@ -69,16 +69,9 @@
 
 
   function comp_setBars(blk) {
-    // Flashing liquid bar bug in Multi-Crafter Lib
+    // Flashing liquid bar bug in old Multi-Crafter Lib
+    // Liquid bars are created in `b.displayBars` for dynamic amount of bars
     blk.removeBar("liquid");
-
-    blk.addBar("lovec-prog", b => new Bar(
-      prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
-      prov(() => Pal.ammo),
-      () => Mathf.clamp(b.progress, 0.0, 1.0),
-    ));
-
-    // Liquid bars are defined in `b.displayBars` for dynamic amount of bars
   };
 
 

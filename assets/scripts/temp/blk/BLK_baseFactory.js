@@ -31,6 +31,17 @@
   };
 
 
+  function comp_setBars(blk) {
+    if(!VAR.isMindustryX) {
+      blk.addBar("lovec-prog", b => new Bar(
+        prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
+        prov(() => Pal.ammo),
+        () => Mathf.clamp(b.progress, 0.0, 1.0),
+      ));
+    };
+  };
+
+
   function comp_created(b) {
     Time.run(0.0, () => {
       if(isNaN(b.warmup)) b.warmup = 0.0;
@@ -131,6 +142,11 @@
 
       load: function() {
         comp_load(this);
+      },
+
+
+      setBars: function() {
+        comp_setBars(this);
       },
 
 

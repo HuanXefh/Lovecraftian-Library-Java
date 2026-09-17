@@ -329,69 +329,7 @@ declare namespace Base64Coder {
 
 
 /** arc.util.serialization.Json */
-declare class Json {
-    getIgnoreUnknownFields(): boolean
-    setIgnoreUnknownFields(bool: boolean): void
-    setIgnoreDeprecated(bool: boolean): void
-    setReadDeprecated(bool: boolean): void
-    setOutputType(type: JsonWriter.OutputType): void
-    setQuoteLongValues(bool: boolean): void
-    setEnumNames(bool: boolean): void
-    setUsePrototypes(bool: boolean): void
-
-    addClassTag(tag: string, type: Class<Object>): void
-    getClass(tag: string): Class<Object>
-    getTag(type: Class<T>): string
-    setTypeName(name: string): void
-    setElementType(type: Class<Object>, fieldName: string, elementType: Class<Object>): void
-
-    setDefaultSerializer(serializer: Json.Serializer<Object>): void
-    setSerializer<T>(type: Class<T>, serializer: Json.Serializer<T>): void
-    getSerializer<T>(type: Class<T>): Json.Serializer<T>
-
-    getWriter(): BaseJsonWriter
-    setWriter(writer: BaseJsonWriter): void
-
-    writeField(obj: Object, name: string, elementType?: Class<Object>): void
-    writeField(obj: Object, fieldName: string, jsonName: string, elementType?: Class<Object>): void
-    writeFields(obj: Object): void
-    readField(obj: Object, name: string, jsonVal: JsonValue): void
-    readField(obj: Object, name: string, elementType: Class<Object>, jsonVal: JsonValue): void
-    readField(obj: Object, fieldName: string, jsonName: string, jsonVal: JsonValue): void
-    readField(obj: Object, fieldName: string, jsonName: string, elementType: Class<Object>, jsonVal: JsonValue): void
-    readField(obj: Object, field: java.lang.reflect.Field, jsonName: string, elementType: Class<Object>, jsonVal: JsonValue): void
-    readFields(obj: Object, jsonVal: JsonValue): void
-    writeValue(name: string, val: Object, knownType?: Class<Object>, elementType?: Class<Object>): void
-    writeValue(val: Object, knownType?: Class<Object>, elementType?: Class<Object>): void
-    readValue<T>(name: string, type: Class<T>, jsonVal: JsonValue): T|null
-    readValue<T>(name: string, type: Class<T>, def: T, jsonVal: JsonValue): T|null
-    readValue<T>(name: string, type: Class<T>, elementType: Class<Object>, jsonVal: JsonValue): T|null
-    readValue<T>(name: string, type: Class<T>, elementType: Class<Object>, def: T, jsonVal: JsonValue): T|null
-    readValue<T>(type: Class<T>, jsonVal: JsonValue): T|null
-    readValue<T>(type: Class<T>, elementType: Class<Object>, jsonVal: JsonValue): T|null
-    readValue<T>(type: Class<T>, elementType: Class<Object>, def: T, jsonVal: JsonValue): T|null
-    readValue<T>(type: Class<T>, elementType: Class<Object>, jsonVal: JsonValue, keyType: Class<Object>): T|null
-    toJson(obj: Object, knownType?: Class<Object>, elementType?: Class<Object>): string
-    toJson(obj: Object, fi: Fi): void
-    toJson(obj: Object, knownType: Class<Object>, fi: Fi): void
-    toJson(obj: Object, knownType: Class<Object>, elementType: Class<Object>, fi: Fi): void
-    toJson(obj: Object, writer: java.io.Writer): void
-    toJson(obj: Object, knownType: Class<Object>, writer: java.io.Writer): void
-    toJson(obj: Object, knownType: Class<Object>, elementType: Class<Object>, writer: java.io.Writer): void
-    toUBJson(obj: Object, knownType: Class<Object>, stream: java.io.OutputStream): void
-    fromJson<T>(type: Class<T>, reader: java.io.Reader): T
-    fromJson<T>(type: Class<T>, elementType: Class<Object>, reader: java.io.Reader): T
-    fromJson<T>(type: Class<T>, stream: java.io.InputStream): T
-    fromJson<T>(type: Class<T>, elementType: Class<Object>, stream: java.io.InputStream): T
-    fromJson<T>(type: Class<T>, fi: Fi): T
-    fromJson<T>(type: Class<T>, elementType: Class<Object>, fi: Fi): T
-    fromJson<T>(type: Class<T>, str: string): T
-    fromJson<T>(type: Class<T>, elementType: Class<Object>, str: string): T
-    fromJson<T>(type: Class<T>, data: Array<java.lang.Character>, off: number, offLen: number): T
-    fromJson<T>(type: Class<T>, elementType: Class<Object>, data: Array<java.lang.Character>, off: number, offLen: number): T
-
-    copyFields(obj_f: Object, obj_t: Object, setFinals?: boolean): void
-}
+declare class Json {}
 declare namespace Json {
     interface Serializer<T> {}
     interface JsonSerializable {}
@@ -401,91 +339,20 @@ declare namespace Json {
         keyType: java.lang.Class<Object>|null;
     }
 }
-/** arc.util.serialization.BaseJsonWriter */
-interface BaseJsonWriter extends java.io.Closeable {}
 /** arc.util.serialization.JsonWriter */
-declare class JsonWriter extends java.io.Writer implements BaseJsonWriter {}
-declare namespace JsonWriter {
-    class OutputType {
-        static json: OutputType;
-        static javascript: OutputType;
-        static minimal: OutputType;
-    }
-}
-/** arc.util.serialization.BaseJsonReader */
-interface BaseJsonReader {}
-/** arc.util.serialization.JsonReader */
-declare class JsonReader implements BaseJsonReader {
-    parse(jsonStr: string): JsonValue
-    parse(reader: java.io.Reader): JsonValue
-    parse(stream: java.io.InputStream): JsonValue
-    parse(fi: Fi): JsonValue
-    parse(bytes: Array<java.lang.Byte>, off: number, len: number): JsonValue
-}
+interface JsonWriter extends java.io.Closeable {}
+/** arc.util.serialization.StringJsonWriter */
+declare class StringJsonWriter extends java.io.Writer implements JsonWriter {}
 /** arc.util.serialization.Jval */
-declare class Jval {
-    static readonly TRUE: Jval;
-    static readonly FALSE: Jval;
-    static readonly NULL: Jval;
-
-    constructor(val: Object)
-
-    static newArray(): Jval
-    static newObject(): Jval
-    static valueOf(num: number): Jval
-    static valueOf(bool: boolean): Jval
-    static valueOf(str: string): Jval
-
-    static read(reader: java.io.Reader): Jval
-    static read(bytes: Array<java.lang.Byte>): Jval
-    static read(str: string): Jval
-    writeTo(writer: java.io.Writer, format?: Jval.Jformat): void
-    toString(): string
-    toString(format: Jval.Jformat): string
-
-    get(name: string): Jval
-    getType(): Jval.Jtype
-    add(val: Jval): void
-    add(num: number): void
-    add(bool: boolean): void
-    add(str: string): void
-    add(name: string, str: string): void
-    add(name: string, val: Jval): void
-    put(name: string, val: Jval): this
-    put(name: string, num: number): this
-    put(name: string, bool: boolean): this
-    put(name: string, str: string): this
-    remove(name: string): Jval
-    has(name: string): boolean
-    isNumber(): boolean
-    isBoolean(): boolean
-    isTrue(): boolean
-    isFalse(): boolean
-    isString(): boolean
-    isArray(): boolean
-    isObject(): boolean
-    isNull(): boolean
-    asInt(): java.lang.Integer
-    asByte(): java.lang.Byte
-    asShort(): java.lang.Short
-    asLong(): java.lang.Long
-    asFloat(): java.lang.Float
-    asDouble(): java.lang.Double
-    asBool(): java.lang.Boolean
-    asString(): java.lang.String
-    asArray(): Jval.JsonArray
-    asObject(): Jval.JsonMap
-    getInt(name: string, def: java.lang.Integer): java.lang.Integer
-    getLong(name: string, def: java.lang.Long): java.lang.Long
-    getFloat(name: string, def: java.lang.Float): java.lang.Float
-    getDouble(name: string, def: java.lang.Double): java.lang.Double
-    getBool(name: string, def: java.lang.Boolean): java.lang.Boolean
-    getString(name: string): java.lang.String|null
-    getString(name: string, def: java.lang.String|null): java.lang.String|null
-}
+interface Jval {}
 declare namespace Jval {
-    class JsonMap extends ArrayMap<string, Jval> {}
-    class JsonArray extends Seq<Jval> {}
+    class JsonBool implements Jval {}
+    class JsonLong implements Jval {}
+    class JsonDouble implements Jval {}
+    class JsonString implements Jval {}
+    class JsonNull implements Jval {}
+    class JsonMap extends ArrayMap<string, Jval> implements Jval {}
+    class JsonArray extends Seq<Jval> implements Jval {}
     class Jformat {
         static plain: Jformat;
         static minimal: Jformat;
@@ -499,94 +366,6 @@ declare namespace Jval {
         static array: Jtype;
         static bool: Jtype;
         static nil: Jtype;
-    }
-}
-/** arc.util.serialization.JsonValue */
-declare class JsonValue {
-    name: string|null;
-    child: JsonValue|null;
-    next: JsonValue|null;
-    prev: JsonValue|null;
-    parent: JsonValue|null;
-    size: number;
-
-    type(): JsonValue.ValueType
-    setType(type: JsonValue.ValueType): void
-    //name(): string
-    setName(name: string): void
-    //parent(): JsonValue|null
-    //child(): JsonValue|null
-    addChild(jsonVal: JsonValue): void
-    addChild(name: string, jsonVal: JsonValue): void
-    //next(): JsonValue|null
-    setNext(jsonVal: JsonValue): void
-    //prev(): JsonValue|null
-    setPrev(jsonVal: JsonValue): void
-
-    get(ind: number): JsonValue|null
-    get(name: string): JsonValue|null
-    set(long: java.lang.Long, strVal: string): void
-    set(double: java.lang.Double, strVal: string): void
-    set(str: string): void
-    set(bool: boolean): void
-    has(name: string): boolean
-    require(ind: number): JsonValue
-    require(name: string): JsonValue
-    remove(ind: number): JsonValue
-    remove(name: string): JsonValue
-    hasChild(name: string): boolean
-    getChild(name: string): JsonValue|null
-
-    isNumber(): boolean
-    isLong(): boolean
-    isDouble(): boolean
-    isBoolean(): boolean
-    isString(): boolean
-    isArray(): boolean
-    isObject(): boolean
-    isNull(): boolean
-    isValue(): boolean
-
-    asInt(): java.lang.Integer
-    asByte(): java.lang.Byte
-    asShort(): java.lang.Short
-    asLong(): java.lang.Long
-    asFloat(): java.lang.Float
-    asDouble(): java.lang.Double
-    asBoolean(): java.lang.Boolean
-    asChar(): java.lang.Character
-    asString(): java.lang.String
-    asIntArray(): JavaArray<java.lang.Integer>
-    asByteArray(): JavaArray<java.lang.Byte>
-    asShortArray(): JavaArray<java.lang.Short>
-    asLongArray(): JavaArray<java.lang.Long>
-    asFloatArray(): JavaArray<java.lang.Float>
-    asDoubleArray(): JavaArray<java.lang.Double>
-    asBooleanArray(): JavaArray<java.lang.Boolean>
-    asCharArray(): JavaArray<java.lang.Character>
-    asStringArray(): JavaArray<java.lang.String>
-
-    getInt(name: string, def?: number): java.lang.Integer
-    getByte(name: string, def?: number): java.lang.Byte
-    getShort(name: string, def?: number): java.lang.Short
-    getLong(name: string, def?: number): java.lang.Long
-    getFloat(name: string, def?: number): java.lang.Float
-    getDouble(name: string, def?: number): java.lang.Double
-    getBoolean(name: string, def?: string): java.lang.Boolean
-    getChar(name: string, def?: string): java.lang.Character
-    getString(name: string, def?: string): java.lang.String
-
-    toJson(type: JsonWriter.OutputType): string
-}
-declare namespace JsonValue {
-    class ValueType {
-        static object: ValueType;
-        static array: ValueType;
-        static stringValue: ValueType;
-        static doubleValue: ValueType;
-        static longValue: ValueType;
-        static booleanValue: ValueType;
-        static nullValue: ValueType;
     }
 }
 

@@ -249,7 +249,7 @@
             Boolc, Boolf, Boolf2, Boolf3, Boolp, Cons, Cons2, Cons3, Cons4, ConsT, FloatFloatf, Floatc, Floatc2, Floatc4, Floatf, Floatp, Func, Func2, Func3, IntIntf, Intc, Intc4, Intf, Intp, Longf, Prov,
             ArrayMap, BinaryHeap, Bits, BoolSeq, ByteSeq, ComparableTimSort, DelayedRemovalSeq, EnumSet, FloatSeq, GridBits, GridMap, IntFloatMap, IntIntMap, IntMap, IntQueue, IntSeq, IntSeq, LongMap, LongQueue, LongSeq, ObjectFloatMap, ObjectIntMap, ObjectMap, ObjectSet, OrderedMap, OrderedSet, PQueue, Queue, Seq, ShortSeq, SnapshotSeq, Sort, StringMap, TimSort,
             Color, Fi, ZipFi,
-            Texture, Texture.TextureFilter, Texture.TextureWrap, TextureData, TextureRegion, PixmapRegion,
+            Texture, TextureFilter, TextureWrap, TextureRegion, PixmapRegion,
             Point2, Point3, Vec2, Vec3,
             Element, Group, Action,
             EditorSpriteCache,

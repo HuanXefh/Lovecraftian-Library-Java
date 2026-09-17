@@ -33,11 +33,13 @@
       prov(() => Pal.lightOrange),
       () => Mathf.clamp(b.delegee.attrEffc),
     ));
-    blk.addBar("lovec-prog", b => new Bar(
-      prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
-      prov(() => Pal.ammo),
-      () => Mathf.clamp(b.progress, 0.0, 1.0),
-    ));
+    if(!VAR.mindustryX) {      
+      blk.addBar("lovec-prog", b => new Bar(
+        prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
+        prov(() => Pal.ammo),
+        () => Mathf.clamp(b.progress, 0.0, 1.0),
+      ));
+    };
   };
 
 

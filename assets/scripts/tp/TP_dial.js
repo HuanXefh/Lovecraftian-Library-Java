@@ -636,7 +636,7 @@
                     rcs.forEachFast(rc => {
                         data.rcs.push(rc);
                         data.icons.push(rc.altIcon);
-                        data.ttArgs.push([MDL_bundle.getTerm("lovec", "recipe"), tb => rc.displayTooltip(tb, true, rc.owner.localizedName)]);
+                        data.ttArgs.push([MDL_bundle.getTerm("lovec", "recipe-display"), tb => rc.displayTooltip(tb, true, rc.owner.localizedName)]);
                         data.scrs.push(() => Vars.ui.content.show(rc.owner));
                         data.breakBools.push(lastRc != null && lastRc.owner !== rc.owner);
                         lastRc = rc;
@@ -923,7 +923,7 @@
                                 }).left();
                                 if(data.ctTableF != null) {
                                     let blk = rcDictArr[i];
-                                    MDL_table.tooltip(btnCell, tb => data.ctTableF(tb, blk, ct), MDL_bundle.getTerm("lovec", "recipe"));
+                                    MDL_table.tooltip(btnCell, tb => data.ctTableF(tb, blk, ct), MDL_bundle.getTerm("lovec", "recipe-display"));
                                 } else if(data.ctText) {
                                     btnCell.tooltip(data.ctText, true);
                                 } else if(isOtherCustomField) {

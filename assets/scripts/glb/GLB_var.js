@@ -19,6 +19,12 @@
 */
 
 
+    /** @type {boolean} */
+    exports.isMindustryX = fetchClass("mindustryX.VarsX", true) != null;
+    /** @type {boolean} */
+    exports.isFoosClient = fetchClass("mindustry.client.Main", true) != null;
+
+
     /** @type {ContentParser} */
     exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
     /** @type {Json} */

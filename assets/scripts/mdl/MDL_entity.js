@@ -5,10 +5,10 @@
 */
 
 
-  /**
-   * Methods for searching building, unit and bullet entities.
-   * @module lovec/mdl/MDL_entity
-   */
+    /**
+     * Methods for searching building, unit and bullet entities.
+     * @module lovec/mdl/MDL_entity
+     */
 
 
 /*

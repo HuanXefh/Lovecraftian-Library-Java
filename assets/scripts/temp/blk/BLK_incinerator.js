@@ -42,11 +42,13 @@
 
 
   function comp_setBars(blk) {
-    blk.addBar("lovec-prog", b => new Bar(
-      MDL_bundle.getTerm("lovec", "progress"),
-      Pal.ammo,
-      () => Mathf.clamp(b.progress, 0.0, 1.0),
-    ));
+    if(!VAR.isMindustryX) {
+      blk.addBar("lovec-prog", b => new Bar(
+        MDL_bundle.getTerm("lovec", "progress"),
+        Pal.ammo,
+        () => Mathf.clamp(b.progress, 0.0, 1.0),
+      ));
+    };
   };
 
 

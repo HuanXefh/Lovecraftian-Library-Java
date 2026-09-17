@@ -52,7 +52,7 @@
     let t = Vars.world.tile(tx, ty);
     if(t == null) return;
 
-    Reflect.invoke(Drill, blk, "countOre", [t], [Tile]);
+    Reflect.invoke(Drill, blk, "countOre", [t], Tile);
     let returnItem = Reflect.get(Drill, blk, "returnItem");
     let returnAmt = Reflect.get(Drill, blk, "returnCount");
     if(returnItem != null) {

@@ -116,16 +116,16 @@
       let tmp = dir.child(MDL_content.getCtNameNoPrefix(pla) + ".json");
       return tmp.exists() ? tmp : dir.child(MDL_content.getCtNameNoPrefix(pla) + ".hjson");
     })();
-    let jsonVal = MDL_json.parse(fi);
-    if(jsonVal == null || jsonVal.isString()) return;
+    let jval = jsonToJval(fi);
+    if(jval == null || jval.isString()) return;
 
-    pla.parent = thisFun.locate(ContentType.planet, jsonVal.getString("parent", ""));
-    jsonVal.remove("parent");
+    pla.parent = thisFun.locate(ContentType.planet, jval.getString("parent", ""));
+    jval.remove("parent");
 
-    if(jsonVal.has("mesh") && !pla.skipMeshParse) {
-      let mesh = jsonVal.get("mesh");
+    if(jval.has("mesh") && !pla.skipMeshParse) {
+      let mesh = jval.get("mesh");
       if(!mesh.isObject() && !mesh.isArray()) throw new Error("Failed to parse base mesh: " + pla);
-      jsonVal.remove("mesh");
+      jval.remove("mesh");
       pla.meshLoader = prov(() => {
         let mesh_fi;
         try {
@@ -137,14 +137,14 @@
         return mesh_fi;
       });
     } else {
-      jsonVal.remove("mesh");
+      jval.remove("mesh");
       pla.meshLoader = prov(() => pla.ex_getMesh());
     };
 
-    if(jsonVal.has("cloudMesh") && !pla.skipCloudMeshParse) {
-      let mesh = jsonVal.get("cloudMesh");
+    if(jval.has("cloudMesh") && !pla.skipCloudMeshParse) {
+      let mesh = jval.get("cloudMesh");
       if(!mesh.isObject() && !mesh.isArray()) throw new Error("Failed to parse cloud mesh: " + pla);
-      jsonVal.remove("cloudMesh");
+      jval.remove("cloudMesh");
       pla.cloudMeshLoader = prov(() => {
         let mesh_fi;
         try {
@@ -156,18 +156,18 @@
         return mesh_fi;
       });
     } else {
-      jsonVal.remove("cloudMesh");
+      jval.remove("cloudMesh");
       pla.cloudMeshLoader = prov(() => pla.ex_getCloudMesh());
     };
 
-    if(jsonVal.has("generator") && !pla.skipGeneratorParse) {
+    if(jval.has("generator") && !pla.skipGeneratorParse) {
       // TODO: Generator things, maybe for years.
     } else {
-      jsonVal.remove("generator");
+      jval.remove("generator");
     };
 
     Reflect.set(ContentParser, VAR.ctParser, "currentContent", pla);
-    thisFun.read(run(() => thisFun.readFields(pla, jsonVal)));
+    thisFun.read(run(() => thisFun.readFields(pla, jval)));
 
     // I don't know why but `pla.orbitRadius` is not read in this frame
     Time.run(0.0, () => {
@@ -179,8 +179,8 @@
     });
   }
   .setProp({
-    locate: (ctType, name) => Reflect.invoke(ContentParser, VAR.ctParser, "locate", [ctType, name], [ContentType, JAVA.string]),
-    read: runnable => Reflect.invoke(ContentParser, VAR.ctParser, "read", [runnable], [JAVA.runnable]),
-    readFields: (obj, jVal) => Reflect.invoke(ContentParser, VAR.ctParser, "readFields", [obj, jVal], [JAVA.object, JsonValue]),
-    parseMesh: (pla, jVal) => Reflect.invoke(ContentParser, VAR.ctParser, "parseMesh", [pla, jVal], [Planet, JsonValue]),
+    locate: (ctType, name) => Reflect.invoke(ContentParser, VAR.ctParser, "locate", [ctType, name], ContentType, JAVA.string),
+    read: runnable => Reflect.invoke(ContentParser, VAR.ctParser, "read", [runnable], JAVA.runnable),
+    readFields: (obj, jval) => Reflect.invoke(ContentParser, VAR.ctParser, "readFields", [obj, jval], JAVA.object, Jval),
+    parseMesh: (pla, jval) => Reflect.invoke(ContentParser, VAR.ctParser, "parseMesh", [pla, jval], Planet, Jval),
   });

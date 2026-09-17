@@ -36,7 +36,7 @@
             if(typeof val === "object") {
                 if(val instanceof String) {toJsonSafe.tmpObj[key] = String(val)};
                 // I don't know why but this is required somehow
-                if(val instanceof JsonValue) {
+                if(val instanceof Jval) {
                     if(val.isNumber()) {toJsonSafe.tmpObj[key] = Number(val.asDouble())};
                     if(val.isBoolean()) {toJsonSafe.tmpObj[key] = Boolean(val.asBoolean())};
                     if(val.isString()) {toJsonSafe.tmpObj[key] = String(val.asString())};
@@ -52,24 +52,33 @@
 
 
     /**
-     * Convert JSON into JavaScript object using Arc JSON parser, which supports comment and HJSON.
+     * Converts JSON into {@link Jval}.
      * @global
      * @param {Fi|JSONString} fi0str
-     * @return {Object}
+     * @return {Jval}
      */
-    jsonToJsObj = function(fi0str) {
+    jsonToJval = function(fi0str) {
         let str;
         if(typeof fi0str === "string") {
             str = fi0str;
         } else {
             str = fi0str.readString("UTF-8");
             if(fi0str.extension() === "json") {
-                str = str.replace("#", "\\#");
+                str = str.replace(/#/g, "\\#");
             };
         };
+        return Jval.read(str);
+    };
 
-        // Dealing with Jval? No way
-        return JSON.parse(VAR.jsonParser.fromJson(null, Jval.read(str).toString(Jval.Jformat.plain)).toJson(JsonWriter.OutputType.json));
+
+    /**
+     * Converts JSON into JavaScript object.
+     * @global
+     * @param {Fi|JSONString} fi0str
+     * @return {Object}
+     */
+    jsonToJsObj = function(fi0str) {
+        return JSON.parse(jsonToJval(fi0str).toString(Jval.Jformat.formatted));
     };
 
 

@@ -75,25 +75,25 @@
   function comp_createIcons(rs, packer) {
     // `rs.intmdParent` is still a string at this moment
     let parent = !rs.useParentReg ? null : tryVal(rs.intmdParent, null);
-    if(parent != null && !Core.atlas.has(parent)) {
+    if(parent != null && !packer.has(parent)) {
       console.warn("[LOVEC] Can't find parent texture region:" + parent);
     };
     // Set resource color based on sprite color
     if(!rs.skipColorAssign) {
-      rs.color = MDL_color.getIconColor(rs.color, tryVal(parent, rs));
+      rs.color = MDL_color.getIconColor(rs.color, packer, tryVal(parent, rs));
     };
 
-    let pixBase = Core.atlas.getPixmap(tryVal(parent, rs.name));
+    let pixBase = packer.get(tryVal(parent, rs.name));
 
     if(rs.recolorRegStr != null && parent != null && global.lovecUtil.prop.useRecolorSpr) {
       // Generate recolored sprite
       let pix = MDL_texture.recolorPix(
-        Core.atlas.getPixmap(rs.recolorRegStr),
-        Core.atlas.getPixmap(parent),
+        packer.get(rs.recolorRegStr),
+        packer.get(parent),
       );
-      packer.add(MultiPacker.PageType.main, rs.name + "-recolor", pix);
+      packer.add(rs.name + "-recolor", pix);
       pix.dispose();
-      pixBase = Core.atlas.getPixmap(rs.name + "-recolor");
+      pixBase = packer.get(rs.name + "-recolor");
     } else {
       rs.recolorRegStr = null;
     };
@@ -109,7 +109,7 @@
     if(parent != null) {
       if(rs.recolorRegStr == null) {
         // No base sprite used for this intermediate, free unused space in atlas
-        packer.add(MultiPacker.PageType.main, rs.name, LCAirObjects.pixmap);
+        packer.add(rs.name, LCAirObjects.pixmap);
         rs.parentRegStr = parent;
       } else {
         // The base sprite is a recolored version
@@ -119,8 +119,8 @@
 
     if(rs.recolorRegStr != null && parent != null) {
       // For recolored sprites, always use parent as the icon tag
-      pixCombine = MDL_texture.stackPixWithCt(pixBase, parent);
-      packer.add(MultiPacker.PageType.main, rs.name + "-t1", pixCombine);
+      pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, parent);
+      packer.add(rs.name + "-t1", pixCombine);
       pixCombine.dispose();
       alts++;
       // No need to add dust icon tag if the sprite is a recolored dust
@@ -131,11 +131,10 @@
     let nameMod = MDL_content.getMod(rs), pixTag;
     if(nameMod != null) {
       tags.forEachFast(tag => {
-        if(!Core.atlas.has(nameMod + "-rs0tag-" + tag)) return;
-
-        pixTag = Core.atlas.getPixmap(nameMod + "-rs0tag-" + tag);
+        if(!packer.has(nameMod + "-rs0tag-" + tag)) return;
+        pixTag = packer.get(nameMod + "-rs0tag-" + tag);
         pixCombine = MDL_texture.stackPix(pixBase, pixTag);
-        packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine);
+        packer.add(rs.name + "-t" + (alts + 1), pixCombine);
         pixCombine.dispose();
         alts++;
       }, true);
@@ -143,8 +142,8 @@
 
     // Extra resource sprites as icon tags, if used
     rs.extraIntmdParents.forEachFast(nameRs => {
-      pixCombine = MDL_texture.stackPixWithCt(pixBase, nameRs);
-      packer.add(MultiPacker.PageType.main, rs.name + "-t" + (alts + 1), pixCombine);
+      pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, nameRs);
+      packer.add(rs.name + "-t" + (alts + 1), pixCombine);
       pixCombine.dispose();
       alts++;
     }, true);

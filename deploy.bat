@@ -48,7 +48,8 @@ echo Updated bundle files
 call gradlew jar
 echo.
 xcopy %LOCAL1% %TARGET1%* /Y /s /e /i /q
-goto :Launch
+echo.
+goto :BeforeLaunch
 
 :All
 python bundleGen.py
@@ -68,7 +69,16 @@ xcopy %LOCAL4% %TARGET4% /s /e /i /q
 xcopy %LOCAL5% %TARGET5% /s /e /i /q
 echo.
 
+:BeforeLaunch
+echo Launch game now?
+choice /c YN
+echo.
+if errorlevel 2 goto :End
+if errorlevel 1 goto :Launch
+
 :Launch
 echo Launching Mindustry...
 echo.
 %LAUNCHER%
+
+:End

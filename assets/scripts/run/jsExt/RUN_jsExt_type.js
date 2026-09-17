@@ -91,6 +91,15 @@
 
 
     /**
+     * Converts this string to Java string.
+     * @return {java.lang.String}
+     */
+    String.prototype.toJavaStr = function() {
+        return new java.lang.String(this);
+    };
+
+
+    /**
      * Converts this bits string to Arc bits.
      * @return {Bits}
      */

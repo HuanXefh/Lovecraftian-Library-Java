@@ -157,21 +157,21 @@ declare class Mesh {}
 
 /** arc.graphics.Texture */
 declare class Texture {}
-declare namespace Texture {
-    class TextureFilter {
-        static nearest: Texture.TextureFilter;
-        static linear: Texture.TextureFilter;
-        static mipMap: Texture.TextureFilter;
-        static mipMapNearestNearest: Texture.TextureFilter;
-        static mipMapLinearNearest: Texture.TextureFilter;
-        static mipMapNearestLinear: Texture.TextureFilter;
-        static mipMapLinearLinear: Texture.TextureFilter;
-    }
-    class TextureWrap {
-        static mirroredRepeat: Texture.TextureFilter;
-        static clampToEdge: Texture.TextureFilter;
-        static repeat: Texture.TextureFilter;
-    }
+/** arc.graphics.TextureFilter */
+declare class TextureFilter {
+    static nearest: TextureFilter;
+    static linear: TextureFilter;
+    static mipMap: TextureFilter;
+    static mipMapNearestNearest: TextureFilter;
+    static mipMapLinearNearest: TextureFilter;
+    static mipMapNearestLinear: TextureFilter;
+    static mipMapLinearLinear: TextureFilter;
+}
+/** arc.graphics.TextureWrap */
+declare class TextureWrap {
+    static mirroredRepeat: TextureFilter;
+    static clampToEdge: TextureFilter;
+    static repeat: TextureFilter;
 }
 /** arc.graphics.TextureRegion */
 declare class TextureRegion {}

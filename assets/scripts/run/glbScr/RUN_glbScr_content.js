@@ -894,7 +894,7 @@
             let shader;
             try {
                 throwDebugError();
-                shader = new Shaders.SurfaceShader(name);
+                shader = new SurfaceShader(name);
             } catch(err) {
                 shader = null;
                 warnShaderLoadFail(name, err);
@@ -913,7 +913,7 @@
             let shader;
             try {
                 throwDebugError();
-                shader = extend(Shaders.LoadShader, name, "default", {
+                shader = extend(LoadShader, name, "default", {
 
 
                     /** @type {TextureRegion} */

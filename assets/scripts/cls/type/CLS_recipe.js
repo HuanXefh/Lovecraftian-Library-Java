@@ -1043,7 +1043,7 @@
                     if(showWinBtn) {
                         tb3.button(VARGEN.icons.window, Styles.clearNonei, 28.0, () => {
                             new CLS_window(
-                                "${1} (${2})".format(MDL_bundle.getTerm("lovec", "recipe"), this.owner.localizedName + " [${1}]".format(ord)),
+                                "${1} (${2})".format(MDL_bundle.getTerm("lovec", "recipe-display"), this.owner.localizedName + " [${1}]".format(ord)),
                                 tb4 => {
                                     if(this.hasBaseIo) {
                                         this.displayBase(tb4, false, 28.0);

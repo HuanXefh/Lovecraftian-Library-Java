@@ -64,8 +64,8 @@
             DB_misc.db["texture"]["noise"].forEachRow(2, (name, path) => {
                 try {
                     obj[name] = load(path);
-                    obj[name].setFilter(Texture.TextureFilter.linear);
-                    obj[name].setWrap(Texture.TextureWrap.repeat);
+                    obj[name].setFilter(TextureFilter.linear);
+                    obj[name].setWrap(TextureWrap.repeat);
                 } catch(err) {
                     console.warn("[LOVEC] Cannot load noise texture for: " + path);
                 };

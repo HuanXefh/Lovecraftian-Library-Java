@@ -371,6 +371,25 @@
   exports.writeCsv = writeCsv;
 
 
+  /**
+   * Writes a JSON data to a .json file.
+   * @param {Fi|null} fi
+   * @param {JSONString|JSONObject} jsonData
+   * @return {void}
+   */
+  const writeJson = function(fi, jsonData) {
+    if(fi == null) return;
+
+    let str = typeof jsonData === "string" ? jsonData : toJsonSafe(jsonData);
+    try {
+      fi.writeString(str);
+    } catch(err) {
+      console.err("[LOVEC] Failed to write ${1}:\n".format(fi) + err);
+    };
+  };
+  exports.writeJson = writeJson;
+
+
   /* <------------------------------ misc ------------------------------ */
 
 
@@ -381,7 +400,6 @@
    */
   const openFi = function(fi) {
     if(fi == null || !fi.exists()) return false;
-
     return Core.app.openFolder(fi.file().path);
   };
   exports.openFi = openFi;

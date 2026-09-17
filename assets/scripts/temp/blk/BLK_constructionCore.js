@@ -19,6 +19,7 @@
     blk.canOverdrive = true;
     blk.drawCached = false;
     blk.drawDynamic = true;
+    blk.allowedInPayloads = false;
 
     blk.ex_parseConstructionData();
     if(blk.placeDataX == null) blk.placeDataX = blk.centerPon2.x;

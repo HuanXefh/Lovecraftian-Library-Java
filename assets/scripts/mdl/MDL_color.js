@@ -73,22 +73,24 @@
 
 
     /**
-     * Gets the default color of some content, from its icon.
+     * Gets the default color of some content.
      * Should only be called in `createIcons`.
      * @param {Color|unset} contColor
+     * @param {MultiPacker} packer
      * @param {ContentGn} ct_gn
      * @param {number|unset} [colorInd] - Index of the result color in colors found (light to dark), leave empty for automatic selection.
      * @return {Color}
      */
-    const getIconColor = function(contColor, ct_gn, colorInd) {
+    const getIconColor = function(contColor, packer, ct_gn, colorInd) {
         let color = contColor != null ? contColor.set(0, 0, 0, 1) : new Color(0, 0, 0, 1);
         if(Vars.headless) return color;
         let ct = findContent(ct_gn);
         if(ct == null) return color;
-        if(ct.fullIcon == null) throw new Error("Null `fullIcon` for ${1}???".format(ct.name));
-        let colors = getPixColors(Core.atlas.getPixmap(ct.fullIcon));
+        let colors = getPixColors(packer.get(ct.name));
         if(colorInd == null) colorInd = colors.length >= 3 ? 1 : 0;
-        if(colorInd >= colors.length) throw new RangeError("Index out of bound: " + colorInd + ">=" + colors.length);
+        if(colorInd >= colors.length) {
+            colorInd = colors.length - 1;
+        };
         return color.set(colors[colors.length - colorInd - 1]);
     };
     exports.getIconColor = getIconColor;

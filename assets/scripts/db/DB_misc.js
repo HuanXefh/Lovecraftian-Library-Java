@@ -474,15 +474,15 @@ const db = {
          */
         header: [
 
-            "useless-field", "ohno", null,
-            "save-map", "!UNDEF", null,
-            "save-revision", -1, null,
+            "useless-field", "ohno",
+            "save-map", "!UNDEF",
+            "save-revision", -1,
 
-            "dynamic-pollution", 0.0, null,
-            "lingering-pollution", 0.0, null,
-            "bits", [], "string",
-            "bit-hash", [], "string",
-            "flags", [], "string",
+            "dynamic-pollution", 0.0,
+            "lingering-pollution", 0.0,
+            "bits", [],
+            "bit-hash", [],
+            "flags", [],
 
         ],
 
@@ -506,10 +506,10 @@ const db = {
          */
         pHeader: [
 
-            "save-map", "!UNDEF", null,
+            "save-map", "!UNDEF",
 
-            "global-bits", [], "string",
-            "global-bit-hash", [], "string",
+            "global-bits", [],
+            "global-bit-hash", [],
 
         ],
 

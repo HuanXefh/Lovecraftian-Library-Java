@@ -35,7 +35,7 @@
       if(item.radioactivity > 0.0) item.stats.addPercent(Stat.radioactivity, item.radioactivity);
       if(item.charge > 0.0) item.stats.addPercent(Stat.charge, item.charge);
 
-      if(item.buildable) item.stats.add(fetchStat("lovec", "rs-buildable"), true);
+      if(!VAR.isMindustryX && item.buildable) item.stats.add(fetchStat("lovec", "rs-buildable"), true);
       if(item.hardness > 0) item.stats.add(fetchStat("lovec", "rs-hardness"), item.hardness);
     };
 

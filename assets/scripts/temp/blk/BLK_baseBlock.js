@@ -55,9 +55,20 @@
       blk.hiddenNonPlaceable = true;
     };
 
-    if(!Vars.headless && Core.atlas.has(blk.name + "-ui")) {
+    if(!Vars.headless) {
       MDL_event.onLoad(() => {
-        blk.uiIcon = Core.atlas.find(blk.name + "-ui");
+        if(!String.isEmpty(blk.fullOverride)) {
+          blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.fullOverride);
+        } else if(Core.atlas.has(blk.name + "-full")) {
+          blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-full");
+        } else if(Core.atlas.has(blk.name + "-icon")) {
+          blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-icon");
+        } else {
+          blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name);
+        };
+        if(Core.atlas.has(blk.name + "-ui")) {
+          blk.uiIcon = Core.atlas.find(blk.name + "-ui");
+        };
       });
     };
   };

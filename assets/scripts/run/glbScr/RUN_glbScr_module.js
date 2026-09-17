@@ -68,8 +68,6 @@
     TIMER = require("lovec/glb/GLB_timer");
     /** @global */
     MDL_file = require("lovec/mdl/MDL_file");
-    /** @global */
-    MDL_json = require("lovec/mdl/MDL_json");
     require("lovec/run/RUN_classExposure");
     /** @global */
     MDL_net = require("lovec/mdl/MDL_net");

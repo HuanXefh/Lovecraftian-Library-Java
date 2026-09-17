@@ -17,7 +17,7 @@
 */
 
 
-    newShader("shockwave", () => new Shaders.ShockwaveShader());
+    newShader("shockwave", () => new ShockwaveShader());
 
 
     newSurfaceShader("shader0surf-flr0liq-lava");

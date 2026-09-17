@@ -25,6 +25,8 @@
     blk.enableDrawStatus = false;
     blk.drawDynamic = true;
     blk.drawCached = false;
+    blk.drawCracks = false;
+    blk.createRubble = false;
     blk.allowedInPayloads = false;
 
     blk.config(JAVA.string, (b, str) => {

@@ -70,7 +70,7 @@
                     MDL_table.setIconLi(
                         tb1,
                         sta.childRcs.map(rc => rc.altIcon),
-                        sta.childRcs.map(rc => tb => rc.displayTooltip(tb, true, rc.owner.localizedName)),
+                        sta.childRcs.map(rc => [MDL_bundle.getTerm("lovec", "recipe-display"), tb => rc.displayTooltip(tb, true, rc.owner.localizedName)]),
                         sta.childRcs.map(rc => () => Vars.ui.content.show(rc.owner)),
                         64.0,
                         7,

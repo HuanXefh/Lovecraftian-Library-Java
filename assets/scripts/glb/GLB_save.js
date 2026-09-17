@@ -25,9 +25,9 @@
 
     let
         lsav = {},
-        lsavJsonVal = null,
+        lsavJsonObj = null,
         plsav = {},
-        plsavJsonVal = null;
+        plsavJsonObj = null;
 
 
     /**
@@ -38,12 +38,12 @@
         if(mode == null) mode = "both";
 
         if(mode.equalsAny("both", "lsav")) {
-            DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
+            DB_misc.db["lsav"]["header"].forEachRow(2, (header, def) => {
                 lsav[header] = def;
             }, true);
         };
         if(mode.equalsAny("both", "plsav")) {
-            DB_misc.db["lsav"]["pHeader"].forEachRow(3, (header, def, arrMode) => {
+            DB_misc.db["lsav"]["pHeader"].forEachRow(2, (header, def) => {
                 plsav[header] = def;
             }, true);
         };
@@ -65,20 +65,22 @@
             };
 
             try {
-                lsavJsonVal = MDL_json.parse(MDL_file.getLsav());
-                plsavJsonVal = MDL_json.parse(MDL_file.getPlsav());
+                let lsavFi = MDL_file.getLsav();
+                lsavJsonObj = !lsavFi.exists() ? null : jsonToJsObj(MDL_file.getLsav());
+                let plasvFi = MDL_file.getPlsav();
+                plsavJsonObj = !plsavFi.exists() ? null : jsonToJsObj(MDL_file.getPlsav());
             } catch(err) {
                 console.err("[LOVEC] Failed to load LSAV!" + "\n" + err);
-                lsavJsonVal = null;
-                plsavJsonVal = null;
+                lsavJsonObj = null;
+                plsavJsonObj = null;
             };
-            if(lsavJsonVal == null || plsavJsonVal == null) return;
+            if(lsavJsonObj == null || plsavJsonObj == null) return;
 
-            DB_misc.db["lsav"]["header"].forEachRow(3, (header, def, arrMode) => {
-                lsav[header] = tryVal(MDL_json.fetch(lsavJsonVal, header, false, arrMode), def);
+            DB_misc.db["lsav"]["header"].forEachRow(2, (header, def) => {
+                lsav[header] = tryVal(lsavJsonObj[header], def);
             }, true);
-            DB_misc.db["lsav"]["pHeader"].forEachRow(3, (header, def, arrMode) => {
-                plsav[header] = tryVal(MDL_json.fetch(plsavJsonVal, header, false, arrMode), def);
+            DB_misc.db["lsav"]["pHeader"].forEachRow(2, (header, def) => {
+                plsav[header] = tryVal(plsavJsonObj[header], def);
             }, true);
 
             let mapCur = global.lovecUtil.fun.getMapCur();
@@ -87,13 +89,13 @@
             // If map name not matched, clear the LSAV (creates a backup first)
             if(lsav["save-map"] != "!UNDEF" && lsav["save-map"] !== mapCur) {
                 console.log("[LOVEC] Initializing LSAV data...");
-                MDL_json.write(MDL_file.getLsav(true), lsav);
+                MDL_file.writeJson(MDL_file.getLsav(true), lsav);
                 initLsav("lsav");
             };
             // If outside of campaign, check map name for PLASV too
             if(!Vars.state.isCampaign() && !global.lovecUtil.prop.debug && (plsav["save-map"] != "!UNDEF" && plsav["save-map"] !== mapCur)) {
                 console.log("[LOVEC] Initializing PLSAV data...");
-                MDL_json.write(MDL_file.getPlsav(true), plsav);
+                MDL_file.writeJson(MDL_file.getPlsav(true), plsav);
                 initLsav("plsav");
             };
 
@@ -113,9 +115,8 @@
      */
     const saveLsav = function() {
         if(Vars.state.isEditor()) return;
-
-        MDL_json.write(MDL_file.getLsav(), lsav);
-        MDL_json.write(MDL_file.getPlsav(), plsav);
+        MDL_file.writeJson(MDL_file.getLsav(), lsav);
+        MDL_file.writeJson(MDL_file.getPlsav(), plsav);
     }
     .setAnno("server");
     exports.saveLsav = saveLsav;

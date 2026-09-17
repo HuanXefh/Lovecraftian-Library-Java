@@ -172,16 +172,27 @@
 
   /**
    * Draws a smaller icon of some content over a pixmap in the bottom right corner.
+   * @param {MultiPacker} packer
    * @param {PixmapGn} pixBase
    * @param {ContentGn} ct_gn
    * @return {Pixmap}
    */
-  const stackPixWithCt = function(pixBase, ct_gn) {
+  const stackPixWithCt = function(packer, pixBase, ct_gn) {
     let ct = findContent(ct_gn);
     if(ct == null) throw new LCError.ContentNotFoundError(ct_gn);
     let
-      pixCt = Core.atlas.getPixmap(ct instanceof Block ? getRegBlk(ct) : ct.fullIcon),
+      pixCt,
       pixCtStack = new Pixmap(pixBase.width, pixBase.height);
+
+    if(ct instanceof Block) {
+      pixCt = packer.has(ct.name + "-icon") ?
+        packer.get(ct.name + "-icon") :
+        packer.has(ct.name + "-full") ?
+          packer.get(ct.name + "-full") :
+          packer.get(ct.name);
+    } else {
+      pixCt = packer.get(ct.name);
+    };
 
     pixCtStack.draw(pixCt, pixCtStack.width * 0.5, pixCtStack.height * 0.5, pixCtStack.width * 0.5, pixCtStack.height * 0.5);
     let pix = stackPix(pixBase, pixCtStack);
@@ -246,13 +257,13 @@
    * @param {MultiPacker} packer
    * @param {string|unset} suffix
    * @param {function(): Pixmap} pixF
-   * @param {MultiPacker.PageType|unset} [pageType]
+   * @return {void}
    */
-  const packIcon = function(ct, packer, suffix, pixF, pageType) {
+  const packIcon = function(ct, packer, suffix, pixF) {
     if(suffix == null) suffix = "";
 
     let pix = pixF();
-    packer.add(tryVal(pageType, MultiPacker.PageType.main), ct.name + suffix, pix);
+    packer.add(ct.name + suffix, pix);
     pix.dispose();
   };
   exports.packIcon = packIcon;
@@ -265,6 +276,7 @@
    * @param {string|unset} suffix
    * @param {ContentGn} ctUnd_gn
    * @param {ContentGn} ctOv_gn
+   * @return {void}
    */
   const packIconWithCt = function(ct, packer, suffix, ctUnd_gn, ctOv_gn) {
     let ctUnd = findContent(ctUnd_gn);
@@ -272,6 +284,6 @@
     let ctOv = findContent(ctOv_gn);
     if(ctOv == null) throw new LCError.ContentNotFoundError(ctOv_gn);
 
-    packIcon(ct, packer, suffix, () => stackPixWithCt(Core.atlas.getPixmap(ctUnd.name), ctOv));
+    packIcon(ct, packer, suffix, () => stackPixWithCt(packer, packer.get(ctUnd.name), ctOv));
   };
   exports.packIconWithCt = packIconWithCt;

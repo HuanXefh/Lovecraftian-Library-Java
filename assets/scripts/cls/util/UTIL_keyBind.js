@@ -45,7 +45,9 @@
             console.warn("[LOVEC] Key binding ${1} has already been registered!".format(name.color(Pal.accent)));
             return false;
         };
-        nameBindingMap.put(name, KeyBind.add(name, tryVal(keyCodeDef, KeyCode.unset), categ));
+        VAR.isFoosClient ?
+            nameBindingMap.put(name, Reflect.invoke(KeyBind, null, "add", [name, tryVal(keyCodeDef, KeyCode.unset), categ], JAVA.string, KeyBind.KeybindValue, JAVA.string)) :
+            nameBindingMap.put(name, KeyBind.add(name, tryVal(keyCodeDef, KeyCode.unset), categ));
         return true;
     };
 

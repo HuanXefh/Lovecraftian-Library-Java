@@ -1,8 +1,5 @@
 /** arc.graphics.g2d.TextureAtlas */
 declare class TextureAtlas implements Disposable {
-    getPixmap(name: string): PixmapRegion
-    getPixmap(reg: TextureRegion): PixmapRegion
-    getPixmap(atlasReg: TextureAtlas.AtlasRegion): PixmapRegion
     addRegion(name: string, reg: TextureRegion): TextureAtlas.AtlasRegion
     addRegion(name: string, tex: Texture, x: number, y: number, w: number, h: number): TextureAtlas.AtlasRegion
     disposePixmap(tex: Texture): void
