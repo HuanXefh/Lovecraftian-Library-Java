@@ -15,8 +15,8 @@
 
 
   function comp_init(item) {
-    item.intmdParent = MDL_content.getCt(item.intmdParent, "rs");
-    item.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, "rs")).compact();
+    item.intmdParent = MDL_content.getCt(item.intmdParent, ContentGetModes.RS);
+    item.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS)).compact();
 
     item.ex_generateIntmdName();
 
@@ -50,7 +50,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_intermediateItem").initClass()
   .setParent(Item)
-  .setTags("rs-intmd")
+  .setTags("ct-intmd")
   .setParam({
 
 

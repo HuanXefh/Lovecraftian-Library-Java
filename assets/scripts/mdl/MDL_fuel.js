@@ -28,7 +28,7 @@
    * @return {number}
    */
   const getFuelPon = function(rs_gn) {
-    let rs = MDL_content.getCt(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
     return rs == null ?
       0.0 :
       DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[0];
@@ -43,7 +43,7 @@
    * @return {number}
    */
   const getFuelLvl = function(rs_gn) {
-    let rs = MDL_content.getCt(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
     return rs == null ?
       0.0 :
       DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[1];
@@ -53,13 +53,12 @@
 
 
   /** @global */
-  const FuelTypes = new CLS_enum({
+  const FuelTypes = newEnum({
     ALL: 0xff,
     ITEM: 1 << 0,
     LIQUID: 1 << 1,
     GAS: 1 << 2,
-  });
-  globalize(FuelTypes, "FuelTypes");
+  }, "FuelTypes");
 
 
   /**
@@ -70,12 +69,12 @@
   const getFuelArr = function(blk_gn) {
     let arr = [];
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null || tryJsProp(blk, "noFuelInput", false)) return arr;
 
     let allowedFuels = tryJsProp(blk, "allowedFuels");
     if(allowedFuels != null) {
-      return allowedFuels.map(nameRs => MDL_content.getCt(nameRs, "rs")).compact();
+      return allowedFuels.map(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS)).compact();
     };
 
     let fuelType = tryJsProp(blk, "fuelType", FuelTypes.ITEM);
@@ -96,9 +95,9 @@
    * @return {boolean}
    */
   const checkFuelInput = function(blk_gn, rs_gn) {
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null || tryJsProp(blk, "noFuelInput", false)) return false;
-    let rs = MDL_content.getCt(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
     if(rs == null) return false;
     let allowedFuels = tryJsProp(blk, "allowedFuels");
     if(allowedFuels != null) {

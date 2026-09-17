@@ -29,7 +29,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_morbidSolutionLiquid").initClass()
   .setParent(Liquid)
-  .setTags("rs-intmd", "rs-morbid")
+  .setTags("ct-intmd", "rs-morbid")
   .setParam({
 
 

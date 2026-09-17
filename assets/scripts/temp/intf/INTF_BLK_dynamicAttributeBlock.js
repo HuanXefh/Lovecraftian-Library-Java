@@ -19,7 +19,7 @@
     let cond1 = false, cond2 = false;
     blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
       if(cond1 && cond2) return;
-      let rs = MDL_content.getCt(nameRs, "rs");
+      let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
       if(rs == null) return;
       if(!cond1) cond1 = rs instanceof Item;
       if(!cond2) cond2 = rs instanceof Liquid;
@@ -34,7 +34,7 @@
 
     MDL_event.onLoadPost(() => {
       blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
-        let rs = MDL_content.getCt(nameRs, "rs");
+        let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
         if(rs == null) return;
 
         rs instanceof Item ?
@@ -72,9 +72,9 @@
           MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
         ]];
         blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
-          let rs = MDL_content.getCt(nameRs, "rs");
+          let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
           if(rs == null) return;
-          matArr.push([rs, rs.localizedName, MDL_attr.getAttrB(nameAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
+          matArr.push([rs, rs.localizedName, MDL_attr.getAttrBundle(nameAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
         }, true);
 
         return matArr;
@@ -103,7 +103,7 @@
 
     LCDrawf.textPlace(
       blk, tx, ty,
-      Core.bundle.format("bar.efficiency", Math.round(blk.ex_getAttrSum(tx, ty, rot) / blk.ex_getAttrLimit() * 100.0)),
+      Core.bundle.format("bar.efficiency", Math.round(blk.ex_getAttrSum(tx, ty, rot) / blk.ex_getAttrReq() * 100.0)),
       valid, blk.dynaAttrTextOffTy,
     );
   };
@@ -114,7 +114,7 @@
     if(t == null) return 0.0;
 
     if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
-      let tup = MDL_attr.getDynaAttrTup(blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
+      let tup = MDL_attr.getDynaAttrTup(thisFun.tmpDynaAttrTup, blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
       thisFun.tmpSum = tup == null ? 0.0 : tup[1];
     };
 
@@ -122,25 +122,28 @@
   }
   .setProp({
     tmpTup: [],
+    tmpDynaAttrTup: [],
     tmpSum: 0.0,
   });
 
 
-  function comp_onProximityUpdate(b) {
+  const comp_onProximityUpdate = function thisFun(b) {
     b.dynaAttrTs = b.block.ex_findDynaAttrTs(b.dynaAttrTs, b.tileX(), b.tileY(), b.rotation);
 
-    let tup = MDL_attr.getDynaAttrTup(b.block.delegee.attrRsArr, b.dynaAttrTs, b.block.delegee.attrMode);
+    let tup = MDL_attr.getDynaAttrTup(thisFun.tmpDynaAttrTup, b.block.delegee.attrRsArr, b.dynaAttrTs, b.block.delegee.attrMode);
     if(tup == null) {
       b.dynaAttrSum = 0.0;
       b.dynaAttrRs = null;
     } else {
       b.dynaAttrSum = tup[1];
       b.dynaAttrRs = tup[2];
-      tup.clear();
     };
 
-    b.dynaAttrEffc = b.dynaAttrSum / b.block.ex_getAttrLimit();
-  };
+    b.dynaAttrEffc = b.dynaAttrSum / b.block.ex_getAttrReq();
+  }
+  .setProp({
+    tmpDynaAttrTup: [],
+  });
 
 
   function comp_pickedUp(b) {
@@ -227,11 +230,11 @@
          */
         attrMode: AttrModes.FLOOR,
         /**
-         * `PARAM`: Determines how efficiency is calculated. See {@link AttrRcTypes}.
+         * `PARAM`: Determines how efficiency is calculated. See {@link AttrRecipeTypes}.
          * @memberof INTF_BLK_dynamicAttributeBlock
          * @instance
          */
-        attrRcType: AttrRcTypes.FLOOR,
+        attrRcType: AttrRecipeTypes.FLOOR,
         /**
          * `PARAM`: Attribute-resource map used to determine output. See {@link DB_item}.
          * @memberof INTF_BLK_dynamicAttributeBlock
@@ -372,8 +375,8 @@
        * @instance
        * @return {number}
        */
-      ex_getAttrLimit: function() {
-        return this.attrRcType === AttrRcTypes.PROP ? 1.0 : MDL_attr.getAttrLimit(this.size, 1.0, this.attrRcType === AttrRcTypes.WALL);
+      ex_getAttrReq: function() {
+        return this.attrRcType === AttrRecipeTypes.PROP ? 1.0 : MDL_attr.getAttrReq(this.size, 1.0, this.attrRcType === AttrRecipeTypes.WALL);
       }
       .setProp({
         noSuper: true,

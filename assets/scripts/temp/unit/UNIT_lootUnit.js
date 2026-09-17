@@ -16,7 +16,7 @@
 
   function comp_init(utp) {
     DB_status.db["group"]["lootImmune"].forEachFast(sta_gn => {
-      let sta = MDL_content.getCt(sta_gn, "sta", true);
+      let sta = MDL_content.getCt(sta_gn, ContentGetModes.STA, true);
       if(sta == null) return;
       utp.immunities.add(sta);
     }, true);

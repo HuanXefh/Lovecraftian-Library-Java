@@ -382,7 +382,7 @@ const db = {
                 Constructor, function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
                     Vars.content.blocks().each(
                         oblk => oblk.synthetic() && !(oblk instanceof CoreBlock) && oblk.size >= blk.minBlockSize && oblk.size <= blk.maxBlockSize && !DB_block.db["class"]["group"]["visibility"]["hidden"].includes(oblk.buildVisibility) && (blk.filter.size === 0 || blk.filter.contains(oblk)),
-                        oblk => dictProdBlk[oblk.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({time: oblk.buildTime / blk.buildSpeed}, data)),
+                        oblk => dictProdBlk[oblk.id].push(blk, tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({hidden: blk.filter.size === 0, time: oblk.buildTime / blk.buildSpeed}, data)),
                     );
                 },
 
@@ -774,7 +774,7 @@ const db = {
             function(obj, metaObj, paramObj) {
                 let bi = this.parseRawBi(readParam(paramObj, "bi", Array.air), 1, 1.0);
                 if(bi.length === 0) return;
-                let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nameRs => MDL_content.getCt(nameRs, "rs").hardness).compact().unshiftAll(0.0));
+                let hardness = Math.max.apply(null, bi.flatten().pullAll(-1.0).readCol(3, 0).inSituMap(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS).hardness).compact().unshiftAll(0.0));
                 obj.durabDecMtp = Mathf.lerp(1.0, 2.0 * readParam(metaObj, "abrasionFactor"), Mathf.maxZero(hardness - readParam(metaObj, "minHardness", 0)) / 10.0);
             },
 

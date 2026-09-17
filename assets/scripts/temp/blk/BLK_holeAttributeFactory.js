@@ -183,7 +183,7 @@
        * @memberof BLK_holeAttributeFactory
        * @instance
        */
-      attrRcType: AttrRcTypes.WALL,
+      attrRcType: AttrRecipeTypes.WALL,
       /**
        * `PARAM`
        * @memberof BLK_holeAttributeFactory

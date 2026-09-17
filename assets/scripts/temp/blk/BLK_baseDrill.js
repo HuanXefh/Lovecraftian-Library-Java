@@ -21,12 +21,12 @@
     if(blk.noSandOutput) {
       if(blk.blockedItems == null) blk.blockedItems = new Seq();
       DB_item.db["group"]["sand"].forEachFast(name => {
-        let item = MDL_content.getCt(name, "rs");
+        let item = MDL_content.getCt(name, ContentGetModes.RS);
         if(item != null) blk.blockedItems.add(item);
       }, true);
     };
 
-    blk.itemWhitelist = blk.itemWhitelist.map(nameItem => MDL_content.getCt(nameItem, "rs")).compact();
+    blk.itemWhitelist = blk.itemWhitelist.map(nameItem => MDL_content.getCt(nameItem, ContentGetModes.RS)).compact();
 
     MDL_event.onLoadPost(() => {
       blk.hasItemCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
@@ -36,7 +36,7 @@
 
       if(blk.shouldDropPay) {
         Vars.content.items().each(item => {
-          let oblk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), "blk");
+          let oblk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
           if(oblk == null || !blk.ex_canMine(oblk, item, 1.0)) return;
           MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(item)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
         });
@@ -94,7 +94,7 @@
     };
 
     if(blk.shouldDropPay) {
-      let payBlk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), "blk");
+      let payBlk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
       if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
     };
 
@@ -125,7 +125,7 @@
       return;
     };
 
-    let blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), "blk");
+    let blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
     if(blkTarget == null) return;
     LCNativeObject.numIncre(b.payChargeObj, item.name);
     if(b.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {

@@ -220,7 +220,7 @@
      * @return {boolean}
      */
     CLS_recipe.checkInput = function(rc, rs_gn) {
-        let rs = MDL_content.getCt(rs_gn, "rs");
+        let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
         if(rs == null) return false;
 
         let
@@ -298,7 +298,7 @@
      * @return {boolean}
      */
     CLS_recipe.checkOutput = function(rc, rs_gn) {
-        let rs = MDL_content.getCt(rs_gn, "rs");
+        let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
         if(rs == null) return false;
 
         let
@@ -1200,7 +1200,7 @@
                         this.durabDecMtp.perc(),
                     );
                     if(this.attr != null) {
-                        let attrCell = tb3.add(MDL_text.getStat(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr.getAttrB(attr))).left();
+                        let attrCell = tb3.add(MDL_text.getStat(fetchStat("lovec", "blk-attrreq").localized(), MDL_attr.getAttrBundle(attr))).left();
                         MDL_table.tooltip(attrCell, tb => {
                             tb.table(Styles.black6, tb1 => {
                                 MDL_table.margin(tb1);

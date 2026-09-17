@@ -37,7 +37,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_chunksItem").initClass()
   .setParent(Item)
-  .setTags("rs-intmd", "rs-chunks")
+  .setTags("ct-intmd", "rs-chunks")
   .setParam({
 
 

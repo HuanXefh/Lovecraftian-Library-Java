@@ -50,3 +50,8 @@ type TreeData = {
     wob?: number;
     attrsF?: F0Function<Array<AttrGn>>;
 }
+
+
+type LootUnit = Unit&{
+    type: UNITLootUnit;
+}

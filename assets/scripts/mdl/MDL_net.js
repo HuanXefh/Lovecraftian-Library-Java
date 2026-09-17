@@ -22,12 +22,11 @@
 
 
   /** @global */
-  const PacketModes = new CLS_enum({
+  const PacketModes = newEnum({
     BOTH: 0,
     CLIENT: 1,
     SERVER: 2,
-  });
-  globalize(PacketModes, "PacketModes");
+  }, "PacketModes");
 
 
   /**

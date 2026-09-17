@@ -408,12 +408,11 @@
 
 
   /** @global */
-  const RecipeKeyResourceModes = new CLS_enum({
+  const RecipeKeyResourceModes = newEnum({
     ITEM: 0,
     FLUID: 1,
     PAYLOAD: 2,
-  });
-  globalize(RecipeKeyResourceModes, "RecipeKeyResourceModes");
+  }, "RecipeKeyResourceModes");
 
 
   /**
@@ -443,7 +442,7 @@
           keyCt = keyCt.replace("GROUP: ", "");
           DB_recipe.db["gen"]["group"].readList(keyCt).forEachFast(tup => {
             // Group is used for items and fluids only
-            ct = MDL_content.getCt(tup[0], "rs");
+            ct = MDL_content.getCt(tup[0], ContentGetModes.RS);
             thisFun.handleCt(map, ct, rcHeader, mode);
           }, true);
         } else {
@@ -942,7 +941,7 @@
         };
       } else if(target.startsWith("COST: ")) {
         // COST: xxx
-        let blk = MDL_content.getCt(target.replace("COST: ", ""), "blk");
+        let blk = MDL_content.getCt(target.replace("COST: ", ""), ContentGetModes.BLK);
         if(blk == null) {
           thisFun.reportIncompleteRc(target);
         } else {

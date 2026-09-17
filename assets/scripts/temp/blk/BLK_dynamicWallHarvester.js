@@ -184,7 +184,7 @@
        * @instance
        * @return {number}
        */
-      ex_getAttrLimit: function() {
+      ex_getAttrReq: function() {
         return this.size;
       }
       .setProp({

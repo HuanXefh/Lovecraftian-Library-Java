@@ -59,7 +59,7 @@
      * Gets a list of payload input sites around `b`.
      * @param {Array|unset} contArr
      * @param {Building} b
-     * @param {number|unset} [mode] - See {@link SideFracModes}.
+     * @param {ENumber|unset} [mode] - See {@link SideFracModes}.
      * @return {Array<Building>}
      */
     const findPayInputBs = function(contArr, b, mode) {
@@ -84,7 +84,7 @@
      * Gets a list of payload output sites around `b`.
      * @param {Array|unset} contArr
      * @param {Building} b
-     * @param {number|unset} [mode] - See {@link SideFracModes}.
+     * @param {ENumber|unset} [mode] - See {@link SideFracModes}.
      * @return {Array<Building>}
      */
     const findPayOutputBs = function(contArr, b, mode) {
@@ -139,9 +139,7 @@
      */
     const produceAt = function thisFun(b, pay, delay) {
         if(pay == null || !b.acceptPayload(b, pay) || thisFun.queueMap.get(b, false)) return false;
-
         thisFun.addQueue(b, pay, delay);
-
         return true;
     }
     .setProp({

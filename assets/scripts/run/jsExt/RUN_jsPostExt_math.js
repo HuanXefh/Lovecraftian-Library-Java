@@ -18,15 +18,14 @@
 
 
     /** @global */
-    const ConvolutionModes = new CLS_enum({
+    const ConvolutionModes = newEnum({
         /** @type {ENumber} */
         FULL: 0,
         /** @type {ENumber} */
         SAME: 1,
         /** @type {ENumber} */
         VALID: 2,
-    });
-    globalize(ConvolutionModes, "ConvolutionModes");
+    }, "ConvolutionModes");
 
 
     /**

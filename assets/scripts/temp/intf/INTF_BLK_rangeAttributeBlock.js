@@ -65,7 +65,7 @@
          * @memberof INTF_BLK_rangeAttributeBlock
          * @instance
          */
-        attrRcType: AttrRcTypes.FLOOR,
+        attrRcType: AttrRecipeTypes.FLOOR,
 
 
       }),

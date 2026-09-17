@@ -15,7 +15,7 @@
 
 
   function comp_init(liq) {
-    let liqSolv = MDL_content.getCt(LCDBFileHandler.read("liquid-solvent", liq.solvent, null), "rs", true);
+    let liqSolv = MDL_content.getCt(LCDBFileHandler.read("liquid-solvent", liq.solvent, null), ContentGetModes.RS, true);
 
     if(liqSolv != null && liq.overwriteVanillaProp) {
       liq.flammability = liqSolv.flammability;
@@ -51,7 +51,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_solutionLiquid").initClass()
   .setParent(Liquid)
-  .setTags("rs-intmd", "rs-sol")
+  .setTags("ct-intmd", "rs-sol")
   .setParam({
 
 

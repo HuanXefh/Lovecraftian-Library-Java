@@ -33,7 +33,7 @@
    * @return {number}
    */
   const getBlkPol = function(blk_gn) {
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return 0.0;
 
     return LCDBFileHandler.read("block-pollution", blk, 0.0);
@@ -49,7 +49,7 @@
    * @return {number}
    */
   const getRsPol = function(rs_gn) {
-    let rs = MDL_content.getCt(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
     if(rs == null) return 0.0;
 
     return LCDBFileHandler.read("resource-pollution", rs, (function() {

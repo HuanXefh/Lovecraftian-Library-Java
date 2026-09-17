@@ -34,7 +34,7 @@
       };
     });
 
-    blk.cropParent = MDL_content.getCt(blk.cropParent, "rs");
+    blk.cropParent = MDL_content.getCt(blk.cropParent, ContentGetModes.RS);
     if(blk.cropParent != null) {
       if(!Vars.headless) {
         MDL_event.onLoad(() => {
@@ -140,7 +140,7 @@
       );
       if(obj.dur == null) throw new LCError.NullArgumentError(blk.name + ".cropData.dur");
       blk.growTotalTime += obj.dur;
-      obj.item = MDL_content.getCt(obj.item, "rs");
+      obj.item = MDL_content.getCt(obj.item, ContentGetModes.RS);
       i++;
     };
   };
@@ -619,6 +619,16 @@
       updateEfficiencyMultiplier: function() {
         comp_updateEfficiencyMultiplier(this);
       },
+
+
+      getCursor: function() {
+        return this.ex_checkCanHarvest() ?
+          Vars.ui.drillCursor :
+          this.super$getCursor();
+      }
+      .setProp({
+        noSuper: true,
+      }),
 
 
       configTapped: function() {

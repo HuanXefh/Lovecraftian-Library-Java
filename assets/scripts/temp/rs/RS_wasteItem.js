@@ -34,7 +34,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_wasteItem").initClass()
   .setParent(Item)
-  .setTags("rs-was")
+  .setTags("ct-was")
   .setParam({})
   .setMethod({
 

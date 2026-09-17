@@ -24,7 +24,7 @@
     if(blk.placeDataX == null) blk.placeDataX = blk.centerPon2.x;
     if(blk.placeDataY == null) blk.placeDataY = blk.centerPon2.y;
 
-    blk.placeBlk = MDL_content.getCt(blk.placeBlk, "blk");
+    blk.placeBlk = MDL_content.getCt(blk.placeBlk, ContentGetModes.BLK);
     if(blk.placeBlk == null) throw new LCError.NullArgumentError(blk.name + ".placeBlk");
     blk.ex_calcBlksReq(blk.constructionBlksReq);
     blk.ex_calcItemsReq(blk.constructionItemsReq, blk.constructionBlksReq);
@@ -151,7 +151,7 @@
       i = 0;
       while(i < iCap) {
         tup = blk.constructionData[j][i] instanceof Array ? blk.constructionData[j][i] : [blk.constructionData[j][i], -1];
-        blkTarget = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content.getCt(tup[0], "blk"), Blocks.air);
+        blkTarget = tup[0] === "SPEC: this" ? blk : tryVal(MDL_content.getCt(tup[0], ContentGetModes.BLK), Blocks.air);
         blk.constructionParsedData[j].push({
           blk: blkTarget,
           rot: blkTarget instanceof RotBlock ? -1 : tryVal(tup[1], -1),

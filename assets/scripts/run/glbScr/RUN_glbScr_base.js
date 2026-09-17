@@ -246,6 +246,24 @@
     };
 
 
+    /**
+     * Creates a new Lovec enum.
+     * @global
+     * @template T
+     * @param {T} obj
+     * @param {string|unset} [globalName] - If set, this enum will be exposed to global scope.
+     * @param {string|unset} [nameWrapper]
+     * @return {CLS_enum&T}
+     */
+    newEnum = function(obj, globalName, nameWrapper) {
+        let enumIns = new CLS_enum(obj);
+        if(globalName != null) {
+            globalize(enumIns, globalName, nameWrapper);
+        };
+        return enumIns;
+    };
+
+
     /* <------------------------------ null check ------------------------------ */
 
 

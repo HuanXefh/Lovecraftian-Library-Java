@@ -705,7 +705,7 @@
 
 
         /** @type {number} */
-        w: 32.0,
+        w: 36.0,
         /** @type {number} */
         pad: 4.0,
         /** @type {ScrollPane} */
@@ -736,13 +736,25 @@
             .pad(this.pad)
             .tooltip(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName)
             .get();
-            btn.margin(0.0);
+            btn.margin(3.0);
             btn.setChecked(ct === this.lastChecked);
             let btnStyle = btn.getStyle();
             btnStyle.up = Styles.none;
             btnStyle.down = Styles.none;
             btnStyle.over = Styles.flatOver;
             btnStyle.checked = Styles.flatDown;
+        },
+
+
+        /**
+         * @param {UnlockableContent} ct
+         * @param {UnlockableContent} lastCt
+         * @return {boolean}
+         */
+        ex_shouldBreak(ct, lastCt) {
+            return ct.getContentType() !== lastCt.getContentType()
+                || (ct.ex_getFluid != null && lastCt.ex_getFluid == null)
+                || (MDL_cond.isAuxiliaryFluid(ct) && !MDL_cond.isAuxiliaryFluid(lastCt));
         },
 
 
@@ -774,7 +786,7 @@
                     tb.row();
                     MDL_table.br(tb);
                     VARGEN.rcDictCts.forEachFast(ct => {
-                        if(lastCt != null && ct.getContentType() !== lastCt.getContentType()) {
+                        if(lastCt != null && this.ex_shouldBreak(ct, lastCt)) {
                             j = -1;
                             tb.row();
                             MDL_table.br(tb);
@@ -858,7 +870,12 @@
                     MDL_table.ctIcon(tb1, rcDictArr[i], 48.0, 8.0, this);
                 });
                 // `TABLE`: recipe text
-                let data, craftTime, craftRate, btn, btnCell;
+                let data = rcDictArr[i + 2];
+                if(data.hidden) {
+                    i += 3;
+                    continue;
+                };
+                let craftTime, craftRate, btn, btnCell;
                 let isContinuous = isCustomField ?
                     MDL_recipeDict.rcDict.customFieldMap.get(ct).isContinuous :
                     ct instanceof Liquid;
@@ -867,7 +884,6 @@
                     Boolean(MDL_recipeDict.rcDict.customFieldMap.get(ct).isStatic) :
                     false;
                 rcCont.table(Styles.none, tb1 => {
-                    data = rcDictArr[i + 2];
                     craftTime = data.time != null ?
                         data.time :
                         MDL_content.getCraftTime(rcDictArr[i], data.icon === "lovec-icon-mining", isCustomField ? null : ct);

@@ -39,7 +39,7 @@
    * @returns {string|null}
    */
   const getEleGrp = function(liq_gn) {
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return null;
 
     let obj = DB_fluid.db["group"]["elementary"];
@@ -75,7 +75,7 @@
    * @returns {string|null}
    */
   const getMatGrp = function(blk_gn) {
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return null;
 
     let obj = DB_block.db["group"]["material"];
@@ -112,7 +112,7 @@
   const getFTags = function(liq_gn) {
     let arr0 = [];
 
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return arr0;
 
     Object.eachPair(DB_fluid.db["group"]["fTag"], (key, arr) => {
@@ -151,7 +151,7 @@
    */
   const getDens = function(liq_gn) {
     let dens = 1.0;
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return dens;
 
     dens = LCDBFileHandler.read("liquid-density", liq);
@@ -175,7 +175,7 @@
    */
   const getBoilPon = function(liq_gn) {
     let boilPon = 100.0;
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return boilPon;
 
     if(liq.solvent != null) {
@@ -205,7 +205,7 @@
    */
   const getFHeat = function(liq_gn) {
     let def = 26.0, fHeat = def;
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return fHeat;
 
     fHeat = LCDBFileHandler.read("liquid-fluid-heat", liq, def);
@@ -236,7 +236,7 @@
    */
   const getViscWrap = function(liq_gn) {
     let viscWrap = 0.5;
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return viscWrap;
 
     let visc = LCDBFileHandler.read("liquid-viscosity", liq);
@@ -265,7 +265,7 @@
    */
   const getPresRes = function(blk_gn) {
     let res = 5.0;
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return res;
 
     res = LCDBFileHandler.read("block-pressure-resistance", blk);
@@ -288,7 +288,7 @@
    */
   const getVacRes = function(blk_gn) {
     let res = -5.0;
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return res;
 
     res = LCDBFileHandler.read("block-vacuum-resistance", blk);
@@ -328,7 +328,7 @@
    */
   const getCorPow = function(liq_gn) {
     let corPow = 0.0;
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return corPow;
 
     corPow = LCDBFileHandler.read("liquid-corrosion-power", liq);
@@ -351,8 +351,8 @@
    */
   const calcCorMtp = function(blk_gn, liq_gn) {
     let corMtp = 1.0;
-    let blk = MDL_content.getCt(blk_gn, "blk");
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(blk == null || liq == null) return corMtp;
     let eleGrp = tryJsProp(liq, "eleGrp", null);
     let matGrp = tryJsProp(blk, "matGrp", null);
@@ -381,7 +381,7 @@
    */
   const getCorRes = function(blk_gn) {
     let corRes = 1.0;
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return corRes;
 
     corRes = LCDBFileHandler.read("block-corrosion-resistance", blk);
@@ -407,7 +407,7 @@
    */
   const getHeatRes = function(blk_gn) {
     let heatRes = Infinity;
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return heatRes;
 
     heatRes = LCDBFileHandler.read("block-heat-resistance", blk);

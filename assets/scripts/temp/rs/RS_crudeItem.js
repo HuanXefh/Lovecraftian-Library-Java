@@ -29,7 +29,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_crudeItem").initClass()
   .setParent(Item)
-  .setTags("rs-intmd", "rs-crd")
+  .setTags("ct-intmd", "rs-crd")
   .setParam({
 
 

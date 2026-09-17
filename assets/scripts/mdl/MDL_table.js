@@ -431,7 +431,7 @@
           tryVal(ctDial, Vars.ui.content).show(blk);
           if(dialToHide != null) dialToHide.hide();
         })
-        .tooltip(blk.localizedName + ((nameAttr == null) ? "" : ("\n\n[green]" + MDL_attr.getAttrB(nameAttr) + "[]")))
+        .tooltip(blk.localizedName + ((nameAttr == null) ? "" : ("\n\n[green]" + MDL_attr.getAttrBundle(nameAttr) + "[]")))
         .padRight(-18.0)
         .get();
         btn.margin(0.0);
@@ -1227,7 +1227,6 @@
           .group(btnGrp);
           tooltip(btnCell, tb => rc.displayTooltip(tb, rc.validCheck(b)));
           let btn = btnCell.get();
-          // `String` is required for type conversion
           btn.changed(() => cfgC(rcHeader));
           btn.getStyle().imageUp = !rc.validCheck(b) ?
             Icon.lock :
@@ -1316,8 +1315,8 @@
   const setFaction = function(tb, ct) {
     let
       faction = MDL_content.getFaction(ct),
-      factionB = MDL_content.getFactionB(faction),
-      factionColor = MDL_content.getFactionColor(faction);
+      factionB = MDL_content.getFactionBundle(faction),
+      factionColor = MDL_content.getFactionColor(null, faction);
 
     tb.table(Tex.whiteui, tb1 => {
       tb1.center().setColor(Pal.darkestGray);
@@ -1373,7 +1372,7 @@
       cont.table(Tex.whiteui, tb1 =>{
         tb1.center().setColor(Color.darkGray);
         margin(tb1, 0.5);
-        tb1.add(MDL_content.getFacFamiB(fami)).pad(4.0);
+        tb1.add(MDL_content.getFacFamiBundle(fami)).pad(4.0);
       })
       .left()
       .growX()

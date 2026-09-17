@@ -131,16 +131,24 @@
      * Used for costy methods that have static inputs.
      * @param {ObjectMap|unset} [map] - If set, this object map will be used to store cache.
      * @param {F0Function<number>|unset} [stateF] - If set, cache will be cleared when state is changed.
+     * @param {Plural<number>|unset} [ignoreInds_p] - Indexes of arguments to ignore.
      * @return {this}
      */
-    Function.prototype.setCache = function thisDecor(map, stateF) {
+    Function.prototype.setCache = function thisDecor(map, stateF, ignoreInds_p) {
         const thisFun = this;
 
         let cacheMap = map != null ? map : new ObjectMap();
+        let ignoreInds = ignoreInds_p == null ?
+            null :
+            ignoreInds_p instanceof Array ?
+                ignoreInds_p :
+                [ignoreInds_p];
         let hash, val;
         let fun = stateF == null ?
             function() {
-                hash = thisDecor.calcHash(arguments);
+                hash = ignoreInds == null ?
+                    thisDecor.calcHash(arguments) :
+                    thisDecor.calcHashIgnoreInds(arguments, ignoreInds);
                 val = cacheMap.get(hash);
                 if(val == null) {
                     val = thisFun.apply(this, arguments);
@@ -153,7 +161,9 @@
                     cacheMap.clear();
                     fun.__cachedState__ = stateF();
                 };
-                hash = thisDecor.calcHash(arguments);
+                hash = ignoreInds == null ?
+                    thisDecor.calcHash(arguments) :
+                    thisDecor.calcHashIgnoreInds(arguments, ignoreInds);
                 val = cacheMap.get(hash);
                 if(val == null) {
                     val = thisFun.apply(this, arguments);
@@ -177,13 +187,25 @@
         calcHash: function(args) {
             return Array.from(args).join(";;");
         },
+        /**
+         * Ignores some arguments when calculating hash.
+         * @memberof Function#setCache
+         * @param {Arguments} args
+         * @param {Array<number>} ignoreInds
+         * @return {string}
+         */
+        calcHashIgnoreInds: function(args, ignoreInds) {
+            let arr = Array.from(args);
+            ignoreInds.forEachFast(i => arr[i] = null);
+            return arr.join(";;");
+        },
     });
 
 
     /**
      * For test only. Monitors time spent on this method.
      * @param {number|unset} [dataAmt] - How many data to collect before printing the average.
-     * @return {Function}
+     * @return {this}
      */
     Function.prototype.setTimeTest = function(dataAmt) {
         const thisFun = this;
@@ -198,7 +220,6 @@
                 console.log("[LOVEC] Method cost: ${1} ms.".format(meanWin.mean()));
                 meanWin.clear();
             };
-
             return returnVal;
         };
         fun.setProp(thisFun);
@@ -208,8 +229,34 @@
 
 
     /**
+     * Applies cooldown between each call to method.
+     * @param {number} time
+     * @param {Object|unset} [skipVal] - Returned if method is not ready.
+     * @param {boolean|unset} [useGlobalTime] - If true, {@link Time.globalTime} will be used instead.
+     * @return {this}
+     */
+    Function.prototype.setThrottle = function(time, skipVal, useGlobalTime) {
+        const thisFun = this;
+
+        let timeCur;
+        let fun = function() {
+            timeCur = useGlobalTime ? Time.globalTime : Time.time;
+            if(timeCur - fun.__lastCallTime__ < time) {
+                return skipVal;
+            };
+            fun.__lastCallTime__ = timeCur;
+            return thisFun.apply(this, arguments);
+        };
+        fun.setProp(thisFun);
+        fun.__lastCallTime__ = 0.0;
+
+        return fun;
+    };
+
+
+    /**
      * For test only. Monitors various behaviors of this method.
-     * @return {Function}
+     * @return {this}
      */
     Function.prototype.setSpy = function thisDecor() {
         const thisFun = this;
@@ -220,7 +267,6 @@
             fun.__calledArgs__.push(Array.from(arguments));
             let returnVal = thisFun.apply(this, arguments);
             fun.__returnedVals__.push(returnVal);
-
             return returnVal;
         };
         fun.setProp(thisFun);

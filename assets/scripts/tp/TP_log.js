@@ -26,6 +26,7 @@
 
         this.add(1, "forceModded", () => "[LOVEC] Lovec has been force to ${1}, but no mod requires Lovec to load.".format("MODDED MODE".color(Pal.remove)));
         this.add(1, "noContentFound", nameCt => "[LOVEC] Content ${1} is not found!".format(nameCt.color(Pal.accent)));
+        this.add(1, "noContentFoundWithMode", (nameCt, mode) => "[LOVEC] Content ${1} is not found using mode ${2}!".format(nameCt.color(Pal.accent), String(mode).color(Pal.remove)));
         this.add(1, "costyContentSearch", nameCt => "[LOVEC] Performing costy search for ${1}!".format(nameCt.color(Pal.accent)));
         this.add(1, "noCustomShadowRegionFound", nameCt => "[LOVEC] Cannot find custom shadow region for ${1}!".format(nameCt.color(Pal.accent)));
 

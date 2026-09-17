@@ -634,7 +634,7 @@
                 console.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
                 return;
             };
-            let item = MDL_content.getCt(item_gn, "rs");
+            let item = MDL_content.getCt(item_gn, ContentGetModes.RS);
             if(item == null) return;
             FRAG_item.setItem(b, item, amt);
         }

@@ -36,7 +36,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_concentrateItem").initClass()
   .setParent(Item)
-  .setTags("rs-intmd", "rs-ore0conc")
+  .setTags("ct-intmd", "rs-ore0conc")
   .setParam({
 
 

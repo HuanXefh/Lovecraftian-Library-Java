@@ -29,7 +29,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_clinkerItem").initClass()
   .setParent(Item)
-  .setTags("rs-intmd", "rs-clinker")
+  .setTags("ct-intmd", "rs-clinker")
   .setParam({
 
 

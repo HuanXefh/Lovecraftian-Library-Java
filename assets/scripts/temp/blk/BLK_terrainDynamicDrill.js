@@ -18,7 +18,7 @@
     MDL_event.onLoadPost(() => {
       blk.terItemMapMap.each((nameItem, terItemMap) => {
         terItemMap.each((ter, nameRs) => {
-          let rs = MDL_content.getCt(nameRs, "rs");
+          let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
           if(rs == null) return;
           MDL_recipeDict.addItemProdTerm(blk, rs, Math.pow(blk.size, 2) * blk.drillTime / blk.getDrillTime(rs), 1.0, {icon: "lovec-icon-mining"});
         });
@@ -57,7 +57,7 @@
         if(terItemMap == null) {
           thisFun.tmpIcon = item.fullIcon;
         } else {
-          let rs = MDL_content.getCt(terItemMap.get(tryVal(ter, "transition")), "rs");
+          let rs = MDL_content.getCt(terItemMap.get(tryVal(ter, "transition")), ContentGetModes.RS);
           thisFun.tmpIcon = rs == null ?
             item.fullIcon :
             rs.fullIcon;
@@ -78,7 +78,7 @@
     const cont = contCell.get();
 
     blk.terItemMapMap.each((nameItem, terItemMap) => {
-      let item = MDL_content.getCt(nameItem, "rs");
+      let item = MDL_content.getCt(nameItem, ContentGetModes.RS);
       if(item == null) return;
 
       let itemCell = cont.table(Styles.none, tb1 => {}).growX();
@@ -100,7 +100,7 @@
           ],
         ];
         terItemMap.each((ter, nameRs) => {
-          let rs = MDL_content.getCt(nameRs, "rs");
+          let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
           if(rs == null) return;
           matArr.push([rs, rs.localizedName, MDL_terrain.getTerB(ter)]);
         });
@@ -116,7 +116,7 @@
 
     let terItemMap = b.block.delegee.terItemMapMap.get(b.dominantItem == null ? "null" : b.dominantItem.name);
     if(terItemMap == null) return;
-    let item = MDL_content.getCt(terItemMap.get(tryVal(b.terCur, "transition")), "rs");
+    let item = MDL_content.getCt(terItemMap.get(tryVal(b.terCur, "transition")), ContentGetModes.RS);
     if(item == null) return;
 
     b.dominantItem = item;

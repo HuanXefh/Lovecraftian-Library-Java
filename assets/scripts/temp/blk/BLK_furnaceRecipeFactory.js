@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    blk.ex_addConfigM("fuelSel", (b, val) => b.delegee.fuelSel = MDL_content.getCt(val, "rs"));
+    blk.ex_addConfigM("fuelSel", (b, val) => b.delegee.fuelSel = MDL_content.getCt(val, ContentGetModes.RS));
   };
 
 
@@ -225,7 +225,7 @@
        */
       ex_handleConfigStrDef: function thisFun(str) {
         if(str.startsWith("FUEL: ")) {
-          this.delegee.fuelSel = MDL_content.getCt(str.replace("FUEL: ", ""), "rs");
+          this.delegee.fuelSel = MDL_content.getCt(str.replace("FUEL: ", ""), ContentGetModes.RS);
         } else {
           thisFun.funPrev.apply(this, [str]);
         };

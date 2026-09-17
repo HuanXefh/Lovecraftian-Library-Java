@@ -15,8 +15,8 @@
 
 
   function comp_init(liq) {
-    liq.intmdParent = MDL_content.getCt(liq.intmdParent, "rs");
-    liq.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, "rs"));
+    liq.intmdParent = MDL_content.getCt(liq.intmdParent, ContentGetModes.RS);
+    liq.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS));
 
     liq.ex_generateIntmdName();
   };
@@ -45,7 +45,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_intermediateFluid").initClass()
   .setParent(Liquid)
-  .setTags("rs-intmd")
+  .setTags("ct-intmd")
   .setParam({
 
 

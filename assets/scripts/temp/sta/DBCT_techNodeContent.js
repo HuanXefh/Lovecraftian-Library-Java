@@ -94,7 +94,7 @@
                 appendChildren(sta.childCts, sta.techNode);
                 sta.childCts.sort((ct1, ct2) => ct2.id - ct1.id);
             };
-            Time.runTask(VAR.delay.load.loadNodeRcs, () => {
+            Time.run(VAR.delay.load.loadNodeRcs, () => {
                 sta.childRcs.pushAll(CLS_recipe.getNodeRcsMap().get(sta, Array.air));
             });
         });

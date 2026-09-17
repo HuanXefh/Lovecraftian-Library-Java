@@ -19,7 +19,7 @@
     blk.suppressable = false;
 
     blk.blkRad = blk.range;
-    blk.staTarget = MDL_content.getCt(blk.staTarget, "sta");
+    blk.staTarget = MDL_content.getCt(blk.staTarget, ContentGetModes.STA);
   };
 
 

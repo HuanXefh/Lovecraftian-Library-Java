@@ -26,7 +26,7 @@
     blk.config(JAVA.object_arr, (b, cfgArr) => {
       switch(cfgArr[0]) {
         case "selectorBlock" :
-          b.sortItem = MDL_content.getCt(cfgArr[1], "rs");
+          b.sortItem = MDL_content.getCt(cfgArr[1], ContentGetModes.RS);
           b.delegee.isInv = cfgArr[2];
           EFF.fadePlacePack[b.block.size].at(b);
           break;

@@ -779,13 +779,13 @@
         this.handleCtLi(
             rc,
             VARGEN.rawOreBlks,
-            blk => MDL_content.getCt(Object.keyByVal(LCDBFileHandler.getDataObj("item-payload-block"), blk.name, null), "rs"),
+            blk => MDL_content.getCt(Object.keyByVal(LCDBFileHandler.getDataObj("item-payload-block"), blk.name, null), ContentGetModes.RS),
             metaObj,
             (item, metaObj) => ({
                 keyCt: LCDBFileHandler.read("item-payload-block", item.name),
                 payI: LCDBFileHandler.read("item-payload-block", item.name),
                 itemO: item,
-                amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name), "blk").requirements[0].amount,
+                amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name), ContentGetModes.BLK).requirements[0].amount,
             }),
         );
     };

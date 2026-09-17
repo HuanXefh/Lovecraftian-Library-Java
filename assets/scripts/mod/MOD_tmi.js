@@ -288,7 +288,7 @@
      */
     const addAttr = function(rawRc, rcGrp, ct_gn, val, size, reqAttr, attrRcType, hideEffc) {
         let rcStack = rawRc
-        .addMaterial(getTmiCt(ct_gn), attrRcType === AttrRcTypes.PROP ? 1 : attrRcType === AttrRcTypes.WALL ? size : Math.pow(size, 2))
+        .addMaterial(getTmiCt(ct_gn), attrRcType === AttrRecipeTypes.PROP ? 1 : attrRcType === AttrRecipeTypes.WALL ? size : Math.pow(size, 2))
         .setType(classes.RecipeItemType.ATTRIBUTE)
         .setOptional(tryVal(!reqAttr, true))
         .setEfficiency(tryVal(val, 1.0))
@@ -313,7 +313,7 @@
      * @return {tmi.recipe.Recipe}
      */
     const addMineTile = function(rawRc, rcGrp, blk_gn, realEffc, amt) {
-        let blk = MDL_content.getCt(blk_gn, "blk");
+        let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
         if(blk == null || blk.itemDrop == null) return rawRc;
         rawRc
         .addMaterial(getTmiCt(blk), amt)
@@ -460,7 +460,7 @@
 
     /**
      * Registers recipes for dynamic attribute factory (or miner).
-     * @param {Block} blk
+     * @param {INTFBLKDynamicAttributeBlock} blk
      * @param {F2Array<string, string>} attrRsArr
      * @param {string|unset} [typeStrOverwrite]
      * @return {void}
@@ -471,7 +471,7 @@
         MDL_event.onLoad(() => {
             let rawRc, rcGrp, rs;
             attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
-                rs = MDL_content.getCt(nameRs, "rs");
+                rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
                 if(rs == null) return;
 
                 rawRc = makeRawRc(tryVal(typeStrOverwrite, "factory"), blk, blk.ex_getCraftTime(), true);
@@ -492,7 +492,7 @@
 
     /**
      * Registers extra recipes for {@link BLK_terrainDynamicDrill}.
-     * @param {Block} blk
+     * @param {BLKTerrainDynamicDrill} blk
      * @param {ObjectMap<string, ObjectMap<string, string>>} terItemMapMap
      * @return {void}
      */
@@ -501,12 +501,12 @@
 
         MDL_event.onLoad(() => {
             terItemMapMap.each((nameItem, terItemMap) => {
-                let item = MDL_content.getCt(nameItem, "rs");
+                let item = MDL_content.getCt(nameItem, ContentGetModes.RS);
                 if(item == null) return;
                 let oreGrpMap = new ObjectMap();
                 let rawRc, rcGrp, rs;
                 terItemMap.each((ter, nameRs) => {
-                    rs = MDL_content.getCt(nameRs, "rs");
+                    rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
                     if(rs == null) return;
                     rcGrp = oreGrpMap.get(rs);
                     if(rcGrp == null) {
@@ -534,7 +534,7 @@
 
     /**
      * Registers recipes fpr {@link BLK_rangeWallDrill}.
-     * @param {Block} blk
+     * @param {BLKRangeWallDrill} blk
      * @return {void}
      */
     const regisRc_rangeWallDrill = function thisFun(blk) {
@@ -548,7 +548,7 @@
 
                 blkTarget = null;
                 if(blk.shouldDropPay) {
-                    blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), "blk");
+                    blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
                     if(blkTarget == null) return;
                 };
                 rcGrp = oreGrpMap.get(oblk.itemDrop);
@@ -591,7 +591,7 @@
 
     /**
      * Registers building recipe for {@link BLK_constructionCore}.
-     * @param {Block} blk
+     * @param {BLKConstructionCore} blk
      * @return {void}
      */
     const regisRc_constructionCore = function(blk) {
@@ -618,7 +618,7 @@
 
     /**
      * Registers item output for {@link BLK_crop}.
-     * @param {Block} blk
+     * @param {BLKCrop} blk
      * @return {void}
      */
     const regisRc_crop = function(blk) {
@@ -653,7 +653,7 @@
 
     /**
      * Registers liquid output for {@link BLK_rainCollector}.
-     * @param {Block} blk
+     * @param {BLKRainCollector} blk
      * @return {void}
      */
     const regisRc_rainCollector = function(blk) {
@@ -680,7 +680,7 @@
 
     /**
      * Registers recipes for the recipe factory.
-     * @param {Block} blk
+     * @param {BLKRecipeFactory} blk
      * @param {RecipeModule} rcMdl
      * @return {void}
      */

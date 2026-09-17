@@ -62,7 +62,7 @@
      * @return {CLS_unitDamageType}
      */
     CLS_unitDamageType.getByUtp = function(utp_gn) {
-        let utp = MDL_content.getCt(utp_gn, "utp");
+        let utp = MDL_content.getCt(utp_gn, ContentGetModes.UTP);
         if(utp == null) return CLS_unitDamageType.NONE;
 
         let type_fi = CLS_unitDamageType.NONE;

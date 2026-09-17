@@ -29,7 +29,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_slurryLiquid").initClass()
   .setParent(Liquid)
-  .setTags("rs-intmd", "rs-slur")
+  .setTags("ct-intmd", "rs-slur")
   .setParam({
 
 

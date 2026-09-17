@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    blk.flrParent = MDL_content.getCt(blk.flrParent, "blk");
+    blk.flrParent = MDL_content.getCt(blk.flrParent, ContentGetModes.BLK);
     if(blk.flrParent != null) {
       if(blk.flrParent.wall === Blocks.air) {
         blk.flrParent.wall = blk

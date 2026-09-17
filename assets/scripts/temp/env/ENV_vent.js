@@ -38,7 +38,7 @@
         break;
 
       default :
-        blk.rsDrop = MDL_content.getCt(blk.ventRs, "rs");
+        blk.rsDrop = MDL_content.getCt(blk.ventRs, ContentGetModes.RS);
         if(blk.rsDrop != null) {
           blk.effect = TP_effect.smogVent({color: blk.rsDrop.color});
           blk.effectSpacing = 20.0;

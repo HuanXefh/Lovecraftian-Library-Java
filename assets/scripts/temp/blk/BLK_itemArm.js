@@ -35,7 +35,7 @@
       b.delegee.blk$moveStackAmt = f;
     });
 
-    blk.ex_addConfigM("ctTarget", (b, val) => b.delegee.ctTarget = MDL_content.getCt(val, "rs"));
+    blk.ex_addConfigM("ctTarget", (b, val) => b.delegee.ctTarget = MDL_content.getCt(val, ContentGetModes.RS));
     blk.ex_addConfigM("shouldDropLoot", (b, val) => b.delegee.shouldDropLoot = val);
     blk.ex_addConfigM("stackThreshold", (b, val) => b.delegee.blk$moveStackAmt = val);
   };

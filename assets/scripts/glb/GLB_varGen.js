@@ -144,7 +144,7 @@
          * Items in the sand group, see {@link DB_item}.
          * @type {Array<Item>}
          */
-        exports.sandItems = DB_item.db["group"]["sand"].map(name => MDL_content.getCt(name, "rs")).compact();
+        exports.sandItems = DB_item.db["group"]["sand"].map(name => MDL_content.getCt(name, ContentGetModes.RS)).compact();
 
 
         /**
@@ -158,21 +158,21 @@
          * Items that can be used as fuel.
          * @type {Array<Item>}
          */
-        exports.fuelItems = DB_item.db["param"]["fuel"]["item"].readCol(2, 0).inSituMap(name => MDL_content.getCt(name, "rs")).compact();
+        exports.fuelItems = DB_item.db["param"]["fuel"]["item"].readCol(2, 0).inSituMap(name => MDL_content.getCt(name, ContentGetModes.RS)).compact();
 
 
         /**
          * Liquids (no gases) that can be used as fuel.
          * @type {Array<Liquid>}
          */
-        exports.fuelLiqs = DB_item.db["param"]["fuel"]["fluid"].readCol(2, 0).inSituMap(name => MDL_content.getCt(name, "rs")).compact().inSituFilter(liq => !liq.gas);
+        exports.fuelLiqs = DB_item.db["param"]["fuel"]["fluid"].readCol(2, 0).inSituMap(name => MDL_content.getCt(name, ContentGetModes.RS)).compact().inSituFilter(liq => !liq.gas);
 
 
         /**
          * Gases that can be used as fuel.
          * @type {Array<Liquid>}
          */
-        exports.fuelGases = DB_item.db["param"]["fuel"]["fluid"].readCol(2, 0).inSituMap(name => MDL_content.getCt(name, "rs")).compact().inSituFilter(liq => liq.gas);
+        exports.fuelGases = DB_item.db["param"]["fuel"]["fluid"].readCol(2, 0).inSituMap(name => MDL_content.getCt(name, ContentGetModes.RS)).compact().inSituFilter(liq => liq.gas);
 
 
         /**
@@ -247,19 +247,19 @@
         exports.rawOreBlks = Vars.content.blocks().select(blk => checkSubInsOfTemp(blk, "BLK_rawOreBlock")).toArray();
 
 
-        Time.runTask(0.0, () => {
+        Time.run(0.0, () => {
             /**
              * Blocks that can be payload input or output.
              * @type {Array<Block>}
              */
-            exports.payMatBlks = module.exports.nonEnvBlks.filter(blk => MDL_recipeDict.rcDict.cons.block[blk.id].length > 0 || MDL_recipeDict.rcDict.prod.block[blk.id].length > 0);
+            exports.payMatBlks = module.exports.nonEnvBlks.filter(blk => MDL_recipeDict.rcDict.cons.block[blk.id].some(tmp => isNativeObject(tmp) && !tmp.hidden) || MDL_recipeDict.rcDict.prod.block[blk.id].some(tmp => isNativeObject(tmp) && !tmp.hidden));
         });
 
 
         /* unit type */
 
 
-        Time.runTask(0.0, () => {
+        Time.run(0.0, () => {
             /**
              * Unit types that can be crafted.
              * @type {Array<UnitType>}

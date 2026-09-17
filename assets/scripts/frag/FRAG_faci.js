@@ -37,7 +37,7 @@
      * @return {number}
      */
     const getCepProv = function(blk_gn) {
-        let blk = MDL_content.getCt(blk_gn, "blk");
+        let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
         return blk == null ?
             0.0 :
             DB_block.db["param"]["cep"]["prov"].read(blk.name, MDL_cond.isCoreBlock(blk) ? 5.0 : 0.0);
@@ -52,7 +52,7 @@
      * @return {number}
      */
     const getCepUse = function(blk_gn) {
-        let blk = MDL_content.getCt(blk_gn, "blk");
+        let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
         return blk == null ?
             0.0 :
             DB_block.db["param"]["cep"]["use"].read(blk.name, 0.0);

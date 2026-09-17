@@ -66,7 +66,7 @@
    * @return {TextureRegion}
    */
   const getRegVari = function(blk_gn, t, off) {
-    let blk = MDL_content.getCt(blk_gn, "block");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return LCAirObjects.textureRegion;
     if(blk.variants === 0) return blk.region;
 
@@ -83,7 +83,7 @@
    * @return {TextureRegion}
    */
   const getRegTurBase = function(blk_gn) {
-    let blk = MDL_content.getCt(blk_gn, "block");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return LCAirObjects.textureRegion;
     if(blk.baseRegion != null) return blk.baseRegion;
 

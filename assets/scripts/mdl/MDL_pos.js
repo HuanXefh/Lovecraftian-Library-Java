@@ -20,15 +20,14 @@
 
 
   /** @global */
-  const SideFracModes = new CLS_enum({
+  const SideFracModes = newEnum({
     ALL: -1,
     FRONT: 0,
     BACK: 1,
     SIDE: 2,
     NON_FRONT: 3,
     NON_BACK: 4,
-  });
-  globalize(SideFracModes, "SideFracModes");
+  }, "SideFracModes");
 
 
   /**

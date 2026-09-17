@@ -18,7 +18,7 @@
     blk.floating = true;
     blk.placeableLiquid = true;
 
-    blk.flrParent = MDL_content.getCt(blk.flrParent, "blk");
+    blk.flrParent = MDL_content.getCt(blk.flrParent, ContentGetModes.BLK);
     if(blk.flrParent != null) {
       MDL_content.rename(
         blk,

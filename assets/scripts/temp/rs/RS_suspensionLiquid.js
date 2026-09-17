@@ -30,7 +30,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_suspensionLiquid").initClass()
   .setParent(Liquid)
-  .setTags("rs-intmd", "rs-susp")
+  .setTags("ct-intmd", "rs-susp")
   .setParam({
 
 

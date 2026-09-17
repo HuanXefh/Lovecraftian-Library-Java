@@ -19,10 +19,8 @@
 
 
 
-    /**
-     * @global
-     */
-    const LogModes = new CLS_enum({
+     /** @global */
+    const LogModes = newEnum({
         /** @type {ENumber} */
         INFO: 0,
         /** @type {ENumber} */
@@ -41,20 +39,16 @@
         DEBUG: 3,
         /** @type {ENumber} */
         D: 3,
-    });
-    globalize(LogModes, "LogModes");
+    }, "LogModes");
 
 
-    /**
-     * @global
-     */
-    const MethodMixModes = new CLS_enum({
+    /** @global */
+    const MethodMixModes = newEnum({
         /** @type {ENumber} */
         NORMAL: 0,
         /** @type {ENumber} */
         BUILD: 1,
-    });
-    globalize(MethodMixModes, "MethodMixModes");
+    }, "MethodMixModes");
 
 
 

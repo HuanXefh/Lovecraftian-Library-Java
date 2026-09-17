@@ -110,6 +110,7 @@
 
     /**
      * Variant of {@link onLoadDelay} that cannot be canceled.
+     * <br> Known to spawn very weird bugs, use with care.
      * @param {number} delay
      * @param {C0Function} scr
      * @param {number|string|unset} [id]

@@ -226,7 +226,7 @@
             item;
 
         while(i < iCap) {
-            item = MDL_content.getCt(item2Arr[i], "rs");
+            item = MDL_content.getCt(item2Arr[i], ContentGetModes.RS);
             if(item != null && b.acceptStack(item, item2Arr[i + 1], b_f) < item2Arr[i + 1]) return false;
             i += 2;
         };
@@ -251,7 +251,7 @@
             cond = false;
 
         while(i < iCap) {
-            item = MDL_content.getCt(item2Arr[i], "rs");
+            item = MDL_content.getCt(item2Arr[i], ContentGetModes.RS);
             if(item != null) {
                 b.handleStack(item, item2Arr[i + 1], b_f);
                 cond = true;
@@ -278,7 +278,7 @@
             item;
 
         while(i < iCap) {
-            item = MDL_content.getCt(item3Arr[i], "rs");
+            item = MDL_content.getCt(item3Arr[i], ContentGetModes.RS);
             if(item != null && b.acceptStack(item, item3Arr[i + 1], b_f) < item3Arr[i + 1]) return false;
             i += 3;
         };
@@ -304,7 +304,7 @@
             cond = false;
 
         while(i < iCap) {
-            item = MDL_content.getCt(item3Arr[i], "rs");
+            item = MDL_content.getCt(item3Arr[i], ContentGetModes.RS);
             if(item != null) {
                 amt = item3Arr[i + 1].randFreq(item3Arr[i + 1]);
                 if(amt > 0) {
@@ -324,7 +324,7 @@
     /**
      * Lets a building take a loot.
      * @param {Building} b
-     * @param {Unit} loot
+     * @param {LootUnit} loot
      * @param {number|unset} [max]
      * @param {boolean|unset} [isForced]
      * @return {boolean}
@@ -364,9 +364,17 @@
         let amtTrans = Math.min(amtCur, max);
         if(amtTrans < 1) return false;
 
-        if(!ignoreLoot && MDL_cond.posHasLoot(x, y)) return false;
-        setItem(b, item, amtCur - amtTrans);
-        MDL_call.spawnLoots_server(b.x, b.y, item, amtTrans, b.block.size * Vars.tilesize * 0.7);
+        let loot = LCEntity.getLoot(x, y);
+        if(loot == null) {
+            MDL_call.spawnLoot_server(x, y, item, amtTrans);
+            setItem(b, item, amtCur - amtTrans);
+            return true;
+        };
+        if(!ignoreLoot) return false;
+        if(!Vars.net.client()) {
+            setUnitItem_global(loot, loot.item(), loot.stack.amount + amtTrans);
+            setItem(b, item, amtCur - amtTrans);
+        };
 
         return true;
     };
@@ -388,10 +396,19 @@
         if(amt == null) amt = 0;
         if(amt < 1) return false;
 
-        if(!ignoreLoot && MDL_cond.posHasLoot(x, y)) return false;
+        let loot = LCEntity.getLoot(x, y);
+        if(loot == null) {
+            MDL_call.spawnLoot_server(x, y, item, amt);
+            TRIGGER.itemProduce.fire(b, item, amt);
+            b.produced(item, amt);
+            return true;
+        };
+        if(!ignoreLoot) return false;
+        if(!Vars.net.client()) {
+            setUnitItem_global(loot, loot.item(), loot.stack.amount + amt);
+        };
         TRIGGER.itemProduce.fire(b, item, amt);
         b.produced(item, amt);
-        MDL_call.spawnLoot_server(x, y, item, amt);
 
         return true;
     };
@@ -402,7 +419,7 @@
      * Lets a building convert the content of a loot.
      * This resets lifetime by default.
      * @param {Building} b
-     * @param {Unit} loot
+     * @param {LootUnit} loot
      * @param {Item} item
      * @param {number|unset} [amt]
      * @param {boolean|unset} [noReset]
@@ -436,7 +453,7 @@
 
     /**
      * Removes a loot unit.
-     * @param {Unit} loot
+     * @param {LootUnit} loot
      * @return {void}
      */
     const removeLoot = function(loot) {
@@ -448,7 +465,7 @@
 
     /**
      * Variant of {@link removeLoot} for sync.
-     * @param {Unit} loot
+     * @param {LootUnit} loot
      * @return {void}
      */
     const removeLoot_global = function(loot) {
@@ -473,7 +490,7 @@
 
     /**
      * Destroys a loot unit.
-     * @param {Unit} loot
+     * @param {LootUnit} loot
      * @return {void}
      */
     const destroyLoot = function(loot) {
@@ -486,7 +503,7 @@
 
     /**
      * Variant of {@link destroyLoot} for sync.
-     * @param {Unit} loot
+     * @param {LootUnit} loot
      * @return {void}
      */
     const destroyLoot_global = function(loot) {
@@ -610,7 +627,7 @@
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-unit-set-item", payload => {
             let args = unpackSplitorPayload(payload);
             let unit = Groups.unit.getByID(args[0]);
-            let item = MDL_content.getCt(args[1], "rs");
+            let item = MDL_content.getCt(args[1], ContentGetModes.RS);
             if(unit == null || item == null) return;
 
             setUnitItem(unit, item, args[2]);
@@ -667,7 +684,7 @@
     /**
      * Lets a unit take item from a loot.
      * @param {Unit} unit
-     * @param {Unit} loot
+     * @param {LootUnit} loot
      * @param {number|unset} [max]
      * @return {boolean}
      */
@@ -693,7 +710,7 @@
     /**
      * Variant of {@link takeUnitLoot} for sync.
      * @param {Unit} unit
-     * @param {Unit} loot
+     * @param {LootUnit} loot
      * @param {number|unset} [max]
      * @return {void}
      */

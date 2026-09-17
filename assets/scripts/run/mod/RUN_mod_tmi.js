@@ -126,7 +126,7 @@
 
                             let blkTarget;
                             if(blk.delegee.shouldDropPay) {
-                                blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), "blk");
+                                blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
                                 if(blkTarget == null) return;
                             };
                             let rcGrp = oreGrpMap.get(oblk.itemDrop);
@@ -164,7 +164,7 @@
 
                             let blkTarget;
                             if(blk.delegee.shouldDropPay) {
-                                blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), "blk");
+                                blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", oblk.itemDrop.name, null), ContentGetModes.BLK);
                                 if(blkTarget == null) return;
                             };
                             let rcGrp = oreGrpMap.get(oblk.itemDrop);
@@ -312,7 +312,7 @@
                 let rcGrp = new MOD_tmi.classes.RecipeItemGroup();
                 Vars.content.blocks().each(
                     oblk => !oblk.attributes.get(blk.ex_getAttrTarget()).fEqual(0.0),
-                    oblk => MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.attributes.get(blk.ex_getAttrTarget()), blk.size, true, AttrRcTypes.PROP),
+                    oblk => MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.attributes.get(blk.ex_getAttrTarget()), blk.size, true, AttrRecipeTypes.PROP),
                 );
 
                 rawRc.complete();
@@ -386,7 +386,7 @@
                         MOD_tmi.baseParse(blk, rawRc);
                     });
                     blks.forEachFast(oblk => {
-                        MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.liquidMultiplier, blk.size, true, AttrRcTypes.FLOOR);
+                        MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.liquidMultiplier, blk.size, true, AttrRecipeTypes.FLOOR);
                     });
                     MOD_tmi.addProd(rawRc, liq, blk.pumpAmount * Math.pow(blk.size, 2), true);
 
@@ -448,7 +448,7 @@
                     blk.attribute,
                     oblk => checkSubInsOfTemp(oblk, "INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size,
                 ).forEachRow(3, (oblk, attrVal, attr) => {
-                    MOD_tmi.addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, AttrRcTypes.FLOOR);
+                    MOD_tmi.addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, AttrRecipeTypes.FLOOR);
                 });
 
                 rawRc.complete();

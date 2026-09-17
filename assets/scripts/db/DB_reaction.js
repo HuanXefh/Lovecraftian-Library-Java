@@ -58,7 +58,7 @@ const db = {
         "denaturing", [0.01, (paramObj, x, y, b, rs) => {
             if(e == null || rs == null) return;
             if(e instanceof Building ? e.items == null : e.stack.amount < 1) return;
-            let item = MDL_content.getCt(db["denaturingTarget"].read(rs.name), "rs");
+            let item = MDL_content.getCt(db["denaturingTarget"].read(rs.name), ContentGetModes.RS);
             if(item == null) return;
 
             let amt = Math.round(readParam(paramObj, "amt", 1));

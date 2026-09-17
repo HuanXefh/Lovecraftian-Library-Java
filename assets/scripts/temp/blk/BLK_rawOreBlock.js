@@ -42,7 +42,7 @@
       let oreParent = Object.keyByVal(LCDBFileHandler.getDataObj("item-payload-block"), blk.name, null);
       if(oreParent != null) blk.oreParent = oreParent;
     };
-    blk.oreParent = MDL_content.getCt(blk.oreParent, "rs");
+    blk.oreParent = MDL_content.getCt(blk.oreParent, ContentGetModes.RS);
 
     if(blk.oreParent != null) {
       MDL_content.rename(blk, blk.oreParent.localizedName);

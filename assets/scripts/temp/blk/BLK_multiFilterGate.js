@@ -39,7 +39,7 @@
         case "selectorBlock" :
           let i = 2, iCap = cfgArr.iCap();
           while(i < iCap) {
-            let rs = MDL_content.getCt(nameRs, "rs");
+            let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
             if(rs != null) b.ex_accRsTargets(rs, true);
             i++;
           };

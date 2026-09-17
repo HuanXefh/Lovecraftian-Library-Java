@@ -1,4 +1,6 @@
 type RecipeDictionaryData = {
+    /** If true, this recipe won't be displayed. */
+    hidden?: boolean;
     /** Texture region used. */
     icon?: string;
     /** Contents displayed in icon tooltip. */

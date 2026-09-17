@@ -73,9 +73,9 @@
   const addItemConsTerm = function(blk_gn, item_gn, amt, p, data) {
     if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return;
-    let item = MDL_content.getCt(item_gn, "rs");
+    let item = MDL_content.getCt(item_gn, ContentGetModes.RS);
     if(item == null) return;
     if(p == null) p = 1.0;
     if(p < 0.0001) return;
@@ -101,9 +101,9 @@
   const addFldConsTerm = function(blk_gn, liq_gn, amt, data) {
     if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return;
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return;
 
     rcDict.cons.fluid[liq.id].push(
@@ -127,7 +127,7 @@
   const addPayConsTerm = function(blk_gn, ct_gn, amt, data) {
     if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return;
     let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
@@ -154,7 +154,7 @@
     if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
     if(rcDict.cons[name] == null) throw new LCError.RecipeDictionaryCustomFieldNotFoundError(name);
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return;
 
     rcDict.cons[name].push(
@@ -179,9 +179,9 @@
   const addItemProdTerm = function(blk_gn, item_gn, amt, p, data) {
     if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return;
-    let item = MDL_content.getCt(item_gn, "rs");
+    let item = MDL_content.getCt(item_gn, ContentGetModes.RS);
     if(item == null) return;
     if(p == null) p = 1.0;
     if(p < 0.0001) return;
@@ -207,9 +207,9 @@
   const addFldProdTerm = function(blk_gn, liq_gn, amt, data) {
     if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return;
-    let liq = MDL_content.getCt(liq_gn, "rs");
+    let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
     if(liq == null) return;
 
     rcDict.prod.fluid[liq.id].push(
@@ -233,7 +233,7 @@
   const addPayProdTerm = function(blk_gn, ct_gn, amt, data) {
     if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return;
     let ct = MDL_content.getCt(ct_gn, null, true);
     if(ct == null) return;
@@ -260,7 +260,7 @@
     if(!rcDict.hasInit) throw new LCError.RecipeDictionaryUninitializedError();
     if(rcDict.prod[name] == null) throw new LCError.RecipeDictionaryCustomFieldNotFoundError(name);
 
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(blk == null) return;
 
     rcDict.prod[name].push(
@@ -284,7 +284,7 @@
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
       TmpStateTag.customValue :
       MDL_content.getCt(ct_gn, null, true);
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(ct == null || blk == null) return val;
 
     let arr = ct === TmpStateTag.customValue ?
@@ -333,7 +333,7 @@
     let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
       TmpStateTag.customValue :
       MDL_content.getCt(ct_gn, null, true);
-    let blk = MDL_content.getCt(blk_gn, "blk");
+    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
     if(ct == null || blk == null) return val;
 
     let arr = ct === TmpStateTag.customValue ?

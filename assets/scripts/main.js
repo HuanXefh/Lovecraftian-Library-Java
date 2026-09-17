@@ -317,7 +317,7 @@
         // Menu flyer
         if(!Vars.headless && PARAM.MODDED && !fetchSetting("load-vanilla-flyer")) {
             try {
-                Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", MDL_content.getCt(DB_misc.db["mod"]["menuFlyer"].random(), "utp"));
+                Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", MDL_content.getCt(DB_misc.db["mod"]["menuFlyer"].random(), ContentGetModes.UTP));
             } catch(err) {
                 console.err("[LOVEC] Failed to modify the menu scene:\n" + err);
             };
@@ -328,7 +328,6 @@
         if(!Vars.headless) {
             DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr), true);
 
-            // This one cannot be `Time.runTask`, otherwise `PARAM.xxx` will be undefined!
             Time.run(VAR.delay.load.loadExtraSound, () => {
 
                 if(PARAM.SECRET_LEGACY_SOUND) {
@@ -420,13 +419,13 @@
                 };
 
                 VARGEN.allRss.forEachFast(rs => rs.localizedName = rs.localizedName.color(fetchColor(rs)), true);
-                VARGEN.factionBlksMap.each((faction, cts) => cts.forEachFast(ct => ct.localizedName = ct.localizedName.color(MDL_content.getFactionColor(faction)), true));
+                VARGEN.factionBlksMap.each((faction, cts) => cts.forEachFast(ct => ct.localizedName = ct.localizedName.color(MDL_content.getFactionColor(Tmp.c1, faction)), true));
             });
         };
 
 
         // Set up recipe dictionary stat
-        Time.runTask(VAR.delay.load.addStat, () => {
+        Time.run(VAR.delay.load.addStat, () => {
             VARGEN.allRss
             .concat(VARGEN.payMatBlks)
             .concat(VARGEN.buildableUtps)
@@ -461,7 +460,7 @@
 
             // Robot-only status
             DB_status.db["group"]["robotOnly"]
-            .map(nameSta => MDL_content.getCt(nameSta, "sta", true))
+            .map(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA, true))
             .compact()
             .forEachFast(sta => {
                 sta.stats.add(fetchStat("lovec", "sta-robotonly"), true);
@@ -470,7 +469,7 @@
 
             // Oceanic status
             DB_status.db["group"]["oceanic"]
-            .map(nameSta => MDL_content.getCt(nameSta, "sta", true))
+            .map(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA, true))
             .compact()
             .forEachFast(sta => {
                 VARGEN.navalUtps.forEachFast(utp => utp.immunities.add(sta), true);
@@ -478,7 +477,7 @@
 
             // Missile immunities
             DB_status.db["group"]["missileImmune"]
-            .map(nameSta => MDL_content.getCt(nameSta, "sta", true))
+            .map(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA, true))
             .pushAll(VARGEN.deathStas)
             .compact()
             .forEachFast(sta => {
@@ -506,14 +505,14 @@
         (function() {
             let pla;
             DB_env.db["map"]["rule"]["campaign"].forEachRow(2, (namePla, ruleM) => {
-                pla = MDL_content.getCt(namePla, "pla");
+                pla = MDL_content.getCt(namePla, ContentGetModes.PLA);
                 if(pla == null) return;
                 let campaignRules = new CampaignRules();
                 ruleM(campaignRules);
                 pla.campaignRules = campaignRules;
             }, true);
             DB_env.db["map"]["rule"]["planet"].forEachRow(2, (namePla, ruleM) => {
-                pla = MDL_content.getCt(namePla, "pla");
+                pla = MDL_content.getCt(namePla, ContentGetModes.PLA);
                 if(pla == null) return;
                 pla.ruleSetter = cons(ruleM);
             }, true);

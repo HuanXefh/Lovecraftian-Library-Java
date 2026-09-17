@@ -36,7 +36,7 @@
    */
   module.exports = newClass().extendClass(PARENT, "RS_crudeGas").initClass()
   .setParent(Liquid)
-  .setTags("rs-intmd", "rs-crdg")
+  .setTags("ct-intmd", "rs-crdg")
   .setParam({
 
 

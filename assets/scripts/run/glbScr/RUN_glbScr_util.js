@@ -469,7 +469,7 @@
      * @global
      * @param {Function|null} superFun
      * @param {Function} fun
-     * @param {number|unset} [mode] - See {@link MethodMixModes}.
+     * @param {ENumber|unset} [mode] - See {@link MethodMixModes}.
      * @param {string|unset} [nameFun] - Required if used in mode BUILD.
      * @return {Function}
      */

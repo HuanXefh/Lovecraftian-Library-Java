@@ -130,7 +130,7 @@
    * @return {void}
    */
   const applyReaction = function(reactions, pMtp, x, y, e, rs_gn) {
-    let rs = MDL_content.getCt(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
 
     let tup;
     reactions.forEachFast(tup0 => {
@@ -156,7 +156,7 @@
    * @return {void}
    */
   const requestReaction = function(reactions, pMtp, x, y, e, rs_gn) {
-    let rs = MDL_content.getCt(rs_gn, "rs");
+    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
 
     MDL_net.sendPacket(
       PacketModes.SERVER, "lovec-client-reaction",

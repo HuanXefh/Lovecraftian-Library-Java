@@ -25,7 +25,7 @@
    * @return {PlanetGrid.PTile|null}
    */
   const getPTile = function(pla_gn, secId) {
-    let pla = MDL_content.getCt(pla_gn, "pla", true);
+    let pla = MDL_content.getCt(pla_gn, ContentGetModes.PLA, true);
     return pla == null ?
       null :
       tryVal(pla.grid.tiles[secId], null);
@@ -39,7 +39,7 @@
    * @return {PlanetGrid.PTile|null}
    */
   const getPTileBySec = function(sec_gn) {
-    let sec = MDL_content.getCt(sec_gn, "sec", true);
+    let sec = MDL_content.getCt(sec_gn, ContentGetModes.SEC, true);
     return sec == null ?
       null :
       sec.sector.tile;
@@ -55,7 +55,7 @@
    * @return {number}
    */
   const calcSecDst = function(pla_gn, secId1, secId2) {
-    let pla = MDL_content.getCt(pla_gn, "pla", true);
+    let pla = MDL_content.getCt(pla_gn, ContentGetModes.PLA, true);
     if(pla == null) return Number.n12;
     let pTile1 = getPTile(pla, secId1), pTile2 = getPTile(pla, secId2);
     if(pTile1 == null || pTile2 == null) return Number.n12;
@@ -72,7 +72,7 @@
    * @return {number}
    */
   const calcSecDstBySec = function(sec1_gn, sec2_gn) {
-    let sec1 = MDL_content.getCt(sec1_gn, "sec", true), sec2 = MDL_content.getCt(sec2_gn, "sec", true);
+    let sec1 = MDL_content.getCt(sec1_gn, ContentGetModes.SEC, true), sec2 = MDL_content.getCt(sec2_gn, ContentGetModes.SEC, true);
     if(sec1 == null || sec2 == null || sec1.planet !== sec2.planet) return Number.n12;
 
     return calcSecDst(pla, sec1.sector.id, sec2.sector.id);

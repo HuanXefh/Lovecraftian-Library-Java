@@ -20,15 +20,20 @@
     batchCall(CLS_contentTemplate, function() {
 
 
+        /* <------------------------------ content ------------------------------ */
+        
+
+        // Intermediate
+        this.registerTag("ct-intmd");
+        // Waste
+        this.registerTag("ct-was");
+
+
         /* <------------------------------ resource ------------------------------ */
 
 
         // Ore
         this.registerTag("rs-ore");
-        // Intermediate
-        this.registerTag("rs-intmd");
-        // Waste
-        this.registerTag("rs-was");
         // Abstract fluid
         this.registerTag("rs-aux");
         // Abstract fluid (no amount cap)
