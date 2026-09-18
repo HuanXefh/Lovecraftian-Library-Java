@@ -44,29 +44,29 @@
 
 
     /**
-     * Converts arguments into splitor payload string for packets.
+     * Converts arguments into splitter payload string for packets.
      * Shoulds only be used for primitive values. Does not support array and JSON object.
      * <br> Faster than {@link packPayload}.
      * <br> `ARGS`: arg1, arg2, arg3, ...
      * @return {string}
      */
-    packSplitorPayload = function() {
-        return LCScriptUtil.packSplitorPayload(arguments);
+    packSplitterPayload = function() {
+        return LCScriptUtil.packSplitterPayload(arguments);
     };
 
 
     /**
-     * Converts a splitor payload string back into an array of strings.
+     * Converts a splitter payload string back into an array of strings.
      * Result array is reused!
      * <br> Faster than {@link unpackPayload}.
      * @param {string} payload
      * @param {number|unset} [ind]
      * @return {Array}
      */
-    unpackSplitorPayload = function(payload, ind) {
+    unpackSplitterPayload = function(payload, ind) {
         return ind == null ?
-            LCScriptUtil.unpackSplitorPayload(payload) :
-            LCScriptUtil.unpackSplitorPayload(payload, ind);
+            LCScriptUtil.unpackSplitterPayload(payload) :
+            LCScriptUtil.unpackSplitterPayload(payload, ind);
     };
 
 

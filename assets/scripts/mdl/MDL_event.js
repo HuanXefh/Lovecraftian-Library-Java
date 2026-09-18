@@ -216,7 +216,7 @@
 
     /**
      * Called whenever a tile is tapped by local player, the tile is never null.
-     * @param {CFunction(Tile)} scr
+     * @param {CFunction<Tile>} scr
      * @param {number|string|unset} [id]
      * @return {void}
      */
@@ -233,7 +233,7 @@
 
     /**
      * Called whenever a building receives damage.
-     * @param {C2Function(Building, Bullet)} scr
+     * @param {C2Function<Building, Bullet>} scr
      * @param {number|string|unset} [id]
      * @return {void}
      */
@@ -251,7 +251,7 @@
     /**
      * Called whenever a building is destroyed.
      * The building has already been removed!
-     * @param {CFunction(Tile)} scr
+     * @param {CFunction<Tile>} scr
      * @param {number|string|unset} [id]
      * @return {void}
      */
@@ -268,7 +268,7 @@
 
     /**
      * Called whenever a unit receives damage.
-     * @param {C2Function(Unit, Bullet)} scr
+     * @param {C2Function<Unit, Bullet>} scr
      * @param {number|string|unset} [id]
      * @return {void}
      */
@@ -285,7 +285,7 @@
 
     /**
      * Called whenever a unit is destroyed.
-     * @param {CFunction(Unit)} scr
+     * @param {CFunction<Unit>} scr
      * @param {number|string|unset} [id]
      * @return {void}
      */
@@ -302,7 +302,7 @@
 
     /**
      * Called whenever a unit drowns.
-     * @param {CFunction(Unit)} scr
+     * @param {CFunction<Unit>} scr
      * @param {number|string|unset} [id]
      * @return {void}
      */
@@ -319,7 +319,7 @@
 
     /**
      * Called whenever a player joins the game.
-     * @param {CFunction(Player)} scr
+     * @param {CFunction<Player>} scr
      * @param {number|string|unset} [id]
      * @return {void}
      */
@@ -337,7 +337,7 @@
     /**
      * Called when left mouse button is pressed.
      * <br> `DEDICATION`: Extended-UI.
-     * @param {C4Function(number, number, number, number)} scr - `ARGS`: dx, dy, x_f, y_f.
+     * @param {C4Function<number, number, number, number>} scr - `ARGS`: dx, dy, x_f, y_f.
      * @param {number|string|unset} [id]
      * @return {void}
      */

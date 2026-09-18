@@ -40,7 +40,7 @@
 
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
-    MDL_terrain.comp_drawPlace_ter(blk, tx, ty, rot, valid, 1);
+    MDL_terrain.drawTerPlace(blk, tx, ty, rot, valid, 1);
   };
 
 

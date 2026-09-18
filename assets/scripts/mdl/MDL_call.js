@@ -128,7 +128,7 @@
 
         MDL_net.sendPacket(
             PacketModes.SERVER, "lovec-client-unit-spawn",
-            packSplitorPayload(
+            packSplitterPayload(
                 x, y, utp.name, team.id, ang,
             ),
             true,
@@ -136,7 +136,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-unit-spawn", payload => {
-            let args = unpackSplitorPayload(payload);
+            let args = unpackSplitterPayload(payload);
             spawnUnit_server(args[0], args[1], args[2], Team.get(args[3], args[4]));
         });
     })
@@ -163,7 +163,7 @@
 
         MDL_net.sendPacket(
             PacketModes.SERVER, "lovec-client-units-spawn",
-            packSplitorPayload(
+            packSplitterPayload(
                 x, y, utp.name, team.id, ang, rad, amt,
             ),
             true,
@@ -171,7 +171,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-units-spawn", payload => {
-            let args = unpackSplitorPayload(payload);
+            let args = unpackSplitterPayload(payload);
             spawnUnits_server(args[0], args[1], args[2], Team.get(args[3]), args[4], args[5], args[6]);
         });
     })
@@ -290,7 +290,7 @@
 
         MDL_net.sendPacket(
             PacketModes.SERVER, "lovec-client-loot-spawn",
-            packSplitorPayload(
+            packSplitterPayload(
                 x, y, item.name, itemAmt,
             ),
             true,
@@ -298,7 +298,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-loot-spawn", payload => {
-            spawnLoot_server.apply(null, unpackSplitorPayload(payload));
+            spawnLoot_server.apply(null, unpackSplitterPayload(payload));
         });
     })
     .setAnno("client");
@@ -322,7 +322,7 @@
 
         MDL_net.sendPacket(
             PacketModes.SERVER, "lovec-client-loots-spawn",
-            packSplitorPayload(
+            packSplitterPayload(
                 x, y, item.name, itemAmt, rad, amt,
             ),
             true,
@@ -330,7 +330,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-loots-spawn", payload => {
-            spawnLoots_server.apply(null, unpackSplitorPayload(payload));
+            spawnLoots_server.apply(null, unpackSplitterPayload(payload));
         });
     })
     .setAnno("client");

@@ -40,11 +40,13 @@ const db = {
         // Create explosion
         "explosion", [0.006, (paramObj, x, y, e, rs) => {
             applyExplosion(x, y, rs, paramObj);
+            MDL_pollution.addLingerPol_global(readParam(paramObj, "pow", 1.0) * 80.0);
         }],
 
         // Create explosion very quickly
         "explosionFast", [0.04, (paramObj, x, y, e, rs) => {
             applyExplosion(x, y, rs, paramObj);
+            MDL_pollution.addLingerPol_global(readParam(paramObj, "pow", 1.0) * 80.0);
         }],
 
         // Create fire

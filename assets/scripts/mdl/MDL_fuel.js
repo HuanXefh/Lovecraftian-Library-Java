@@ -5,10 +5,10 @@
 */
 
 
-  /**
-   * Methods related to fuels, used mostly for {@link INTF_BLK_furnaceBlock}.
-   * @module lovec/mdl/MDL_fuel
-   */
+    /**
+     * Methods related to fuels, used mostly for {@link INTF_BLK_furnaceBlock}.
+     * @module lovec/mdl/MDL_fuel
+     */
 
 
 /*
@@ -18,172 +18,186 @@
 */
 
 
-  /* <------------------------------ base ------------------------------ */
+    /* <------------------------------ base ------------------------------ */
 
 
-  /**
-   * Gets fuel point of some resource.
-   * Returns consumption rate if it's a fluid.
-   * @param {ResourceGn} rs_gn
-   * @return {number}
-   */
-  const getFuelPon = function(rs_gn) {
-    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
-    return rs == null ?
-      0.0 :
-      DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[0];
-  }
-  .setCache();
-  exports.getFuelPon = getFuelPon;
+    /**
+     * Gets fuel point of some resource.
+     * Returns consumption rate if it's a fluid.
+     * @param {ResourceGn} rs_gn
+     * @return {number}
+     */
+    const getFuelPon = function(rs_gn) {
+        let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
+        return rs == null ?
+            0.0 :
+            DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[0];
+    }
+    .setCache();
+    exports.getFuelPon = getFuelPon;
 
 
-  /**
-   * Gets fuel level (1% of target temperature) of some resource.
-   * @param {ResourceGn} rs_gn
-   * @return {number}
-   */
-  const getFuelLvl = function(rs_gn) {
-    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
-    return rs == null ?
-      0.0 :
-      DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[1];
-  }
-  .setCache();
-  exports.getFuelLvl = getFuelLvl;
+    /**
+     * Gets fuel level (1% of target temperature) of some resource.
+     * @param {ResourceGn} rs_gn
+     * @return {number}
+     */
+    const getFuelLvl = function(rs_gn) {
+        let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
+        return rs == null ?
+            0.0 :
+            DB_item.db["param"]["fuel"][rs instanceof Item ? "item" : "fluid"].read(rs.name, Array.airZero)[1];
+    }
+    .setCache();
+    exports.getFuelLvl = getFuelLvl;
 
 
-  /** @global */
-  const FuelTypes = newEnum({
-    ALL: 0xff,
-    ITEM: 1 << 0,
-    LIQUID: 1 << 1,
-    GAS: 1 << 2,
-  }, "FuelTypes");
+    /** @global */
+    const FuelTypes = newEnum({
+        /** @type {ENumber} */
+        ALL: 0xff,
+        /** @type {ENumber} */
+        ITEM: 1 << 0,
+        /** @type {ENumber} */
+        LIQUID: 1 << 1,
+        /** @type {ENumber} */
+        GAS: 1 << 2,
+    }, "FuelTypes");
 
 
-  /**
-   * Gets available fuels for some block.
-   * @param {BlockGn} blk_gn
-   * @return {Resource[]}
-   */
-  const getFuelArr = function(blk_gn) {
-    let arr = [];
+    /**
+     * Gets available fuels for some block.
+     * @param {BlockGn} blk_gn
+     * @return {Array<Resource>}
+     */
+    const getFuelArr = function(blk_gn) {
+        let arr = [];
+        let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
+        if(blk == null || tryJsProp(blk, "noFuelInput", false)) return arr;
 
-    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
-    if(blk == null || tryJsProp(blk, "noFuelInput", false)) return arr;
-
-    let allowedFuels = tryJsProp(blk, "allowedFuels");
-    if(allowedFuels != null) {
-      return allowedFuels.map(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS)).compact();
-    };
-
-    let fuelType = tryJsProp(blk, "fuelType", FuelTypes.ITEM);
-    if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(VARGEN.fuelItems);
-    if((fuelType & FuelTypes.LIQUID) !== 0) arr.pushAll(VARGEN.fuelLiqs);
-    if((fuelType & FuelTypes.GAS) !== 0) arr.pushAll(VARGEN.fuelGases);
-
-    return arr.inSituFilter(rs => !tryJsProp(blk, "blockedFuels", Array.air).includes(rs.name));
-  }
-  .setCache();
-  exports.getFuelArr = getFuelArr;
-
-
-  /**
-   * Whether some resource can be consumed by this block as fuel.
-   * @param {BlockGn} blk_gn
-   * @param {ResourceGn} rs_gn
-   * @return {boolean}
-   */
-  const checkFuelInput = function(blk_gn, rs_gn) {
-    let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
-    if(blk == null || tryJsProp(blk, "noFuelInput", false)) return false;
-    let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
-    if(rs == null) return false;
-    let allowedFuels = tryJsProp(blk, "allowedFuels");
-    if(allowedFuels != null) {
-      return allowedFuels.includes(rs.name);
-    };
-    if(tryJsProp(blk, "blockedFuels", Array.air).includes(rs.name)) return false;
-
-    switch(tryJsProp(blk, "fuelType", FuelTypes.ITEM)) {
-      case FuelTypes.ITEM : return VARGEN.fuelItems.includes(rs);
-      case FuelTypes.LIQUID : return VARGEN.fuelLiqs.includes(rs);
-      case FuelTypes.GAS : return VARGEN.fuelGases.includes(rs);
-    };
-    return VARGEN.fuelItems.includes(rs) || VARGEN.fuelLiqs.includes(rs) || VARGEN.fuelGases.includes(rs);
-  }
-  .setCache();
-  exports.checkFuelInput = checkFuelInput;
-
-
-  /**
-   * Gets preferred fuel tuple for some building, which should be a furnace.
-   * @param {Array|unset} contTup
-   * @param {Building} b
-   * @return {[Resource, number, number]|null} `TUPLE`: fuel, fuelPon, fuelLvl.
-   */
-  const getFuelTup = function(contTup, b) {
-    let tup = contTup != null ? contTup.clear() : [];
-    if(tryJsProp(b.block, "noFuelInput", false)) return contTup;
-
-    let
-      fuelType = tryJsProp(b.block, "fuelType", FuelTypes.ITEM),
-      blockedFuels = tryJsProp(b.block, "blockedFuels", Array.air),
-      allowedFuels = tryJsProp(b.block, "allowedFuels"),
-      fuelSel = tryJsProp(b, "fuelSel", null),
-      fuel = null,
-      fuelLvl = 0.0,
-      fuelSpare = null,
-      fuelLvlSpare = 0.0;
-
-    // If a fuel is selected, return it instead
-    if(fuelSel != null) {
-      return tup.with(fuelSel, getFuelPon(fuelSel), getFuelLvl(fuelSel));
-    };
-
-    // Find fuel with the highest fuel level
-    let tmpLvl;
-    if(b.items != null && (fuelType & FuelTypes.ITEM) !== 0) VARGEN.fuelItems.forEachFast(item => {
-      if((allowedFuels != null ? !allowedFuels.includes(item.name) : blockedFuels.includes(item.name)) || !b.items.has(item)) return;
-      tmpLvl = getFuelLvl(item);
-      if(tmpLvl > fuelLvl) {
-        fuelSpare = fuel;
-        fuelLvlSpare = fuelLvl;
-        fuel = item;
-        fuelLvl = tmpLvl;
-      };
-    }, true);
-    if(b.liquids != null) {
-      if((fuelType & FuelTypes.LIQUID) !== 0) VARGEN.fuelLiqs.forEachFast(liq => {
-        if((allowedFuels != null ? !allowedFuels.includes(liq.name) : blockedFuels.includes(liq.name)) || b.liquids.get(liq < 0.01)) return;
-        tmpLvl = getFuelLvl(liq);
-        if(tmpLvl > fuelLvl) {
-          fuelSpare = fuel;
-          fuelLvlSpare = fuelLvl;
-          fuel = liq;
-          fuelLvl = tmpLvl;
+        let allowedFuels = tryJsProp(blk, "allowedFuels");
+        if(allowedFuels != null) {
+            return allowedFuels.map(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS)).compact();
         };
-      }, true);
-      if((fuelType & FuelTypes.GAS) !== 0) VARGEN.fuelGases.forEachFast(gas => {
-        if((allowedFuels != null ? !allowedFuels.includes(gas.name) : blockedFuels.includes(gas.name)) || b.liquids.get(gas < 0.01)) return;
-        tmpLvl = getFuelLvl(gas);
-        if(tmpLvl > fuelLvl) {
-          fuelSpare = fuel;
-          fuelLvlSpare = fuelLvl;
-          fuel = gas;
-          fuelLvl = tmpLvl;
+
+        let fuelType = tryJsProp(blk, "fuelType", FuelTypes.ITEM);
+        if((fuelType & FuelTypes.ITEM) !== 0) {
+            arr.pushAll(VARGEN.fuelItems);
         };
-      }, true);
-    };
+        if((fuelType & FuelTypes.LIQUID) !== 0) {
+            arr.pushAll(VARGEN.fuelLiqs);
+        };
+        if((fuelType & FuelTypes.GAS) !== 0) {
+            arr.pushAll(VARGEN.fuelGases);
+        };
 
-    // If the building produces the target fuel, try using the one with second-highest level
-    if(fuel != null && MDL_recipeDict.getProdAmtByBuild(fuel, b) > 0.0 && fuelSpare != null) {
-      fuel = fuelSpare;
-      fuelLvl = fuelLvlSpare;
-    };
+        return arr.inSituFilter(rs => !tryJsProp(blk, "blockedFuels", Array.air).includes(rs.name));
+    }
+    .setCache();
+    exports.getFuelArr = getFuelArr;
 
-    return fuel == null ?
-      tup :
-      tup.with(fuel, getFuelPon(fuel), fuelLvl);
-  };
-  exports.getFuelTup = getFuelTup;
+
+    /**
+     * Whether some resource can be consumed by this block as fuel.
+     * @param {BlockGn} blk_gn
+     * @param {ResourceGn} rs_gn
+     * @return {boolean}
+     */
+    const checkFuelInput = function(blk_gn, rs_gn) {
+        let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
+        if(blk == null || tryJsProp(blk, "noFuelInput", false)) return false;
+        let rs = MDL_content.getCt(rs_gn, ContentGetModes.RS);
+        if(rs == null) return false;
+
+        let allowedFuels = tryJsProp(blk, "allowedFuels");
+        if(allowedFuels != null) {
+            return allowedFuels.includes(rs.name);
+        };
+        if(tryJsProp(blk, "blockedFuels", Array.air).includes(rs.name)) return false;
+
+        switch(tryJsProp(blk, "fuelType", FuelTypes.ITEM)) {
+            case FuelTypes.ITEM : return VARGEN.fuelItems.includes(rs);
+            case FuelTypes.LIQUID : return VARGEN.fuelLiqs.includes(rs);
+            case FuelTypes.GAS : return VARGEN.fuelGases.includes(rs);
+        };
+
+        return VARGEN.fuelItems.includes(rs) || VARGEN.fuelLiqs.includes(rs) || VARGEN.fuelGases.includes(rs);
+    }
+    .setCache();
+    exports.checkFuelInput = checkFuelInput;
+
+
+    /**
+     * Gets preferred fuel tuple for some building, which should be a furnace.
+     * @param {Array|unset} contTup
+     * @param {Building} b
+     * @return {[Resource, number, number]|null} `TUPLE`: fuel, fuelPon, fuelLvl.
+     */
+    const getFuelTup = function(contTup, b) {
+        let tup = contTup != null ? contTup.clear() : [];
+        if(tryJsProp(b.block, "noFuelInput", false)) return contTup;
+
+        let
+            fuelType = tryJsProp(b.block, "fuelType", FuelTypes.ITEM),
+            blockedFuels = tryJsProp(b.block, "blockedFuels", Array.air),
+            allowedFuels = tryJsProp(b.block, "allowedFuels"),
+            fuelSel = tryJsProp(b, "fuelSel", null),
+            fuel = null,
+            fuelLvl = 0.0,
+            fuelSpare = null,
+            fuelLvlSpare = 0.0;
+
+        // If a fuel is selected, return it instead
+        if(fuelSel != null) {
+            return tup.with(fuelSel, getFuelPon(fuelSel), getFuelLvl(fuelSel));
+        };
+
+        // Find fuel with the highest fuel level
+        let tmpLvl;
+        if(b.items != null && (fuelType & FuelTypes.ITEM) !== 0) VARGEN.fuelItems.forEachFast(item => {
+            if(b.items.has(item) && (allowedFuels != null ? allowedFuels.includes(item.name) : !blockedFuels.includes(item.name))) {
+                tmpLvl = getFuelLvl(item);
+                if(tmpLvl > fuelLvl) {
+                    fuelSpare = fuel;
+                    fuelLvlSpare = fuelLvl;
+                    fuel = item;
+                    fuelLvl = tmpLvl;
+                };
+            };
+        }, true);
+        if(b.liquids != null) {
+            if((fuelType & FuelTypes.LIQUID) !== 0) VARGEN.fuelLiqs.forEachFast(liq => {
+                if(b.liquids.get(liq) > 0.01 && (allowedFuels != null ? allowedFuels.includes(liq.name) : !blockedFuels.includes(liq.name))) {
+                    tmpLvl = getFuelLvl(liq);
+                    if(tmpLvl > fuelLvl) {
+                        fuelSpare = fuel;
+                        fuelLvlSpare = fuelLvl;
+                        fuel = liq;
+                        fuelLvl = tmpLvl;
+                    };
+                };
+            }, true);
+            if((fuelType & FuelTypes.GAS) !== 0) VARGEN.fuelGases.forEachFast(gas => {
+                if(b.liquids.get(gas) > 0.01 && (allowedFuels != null ? allowedFuels.includes(gas.name) : !blockedFuels.includes(gas.name))) {
+                    tmpLvl = getFuelLvl(gas);
+                    if(tmpLvl > fuelLvl) {
+                        fuelSpare = fuel;
+                        fuelLvlSpare = fuelLvl;
+                        fuel = gas;
+                        fuelLvl = tmpLvl;
+                    };
+                };
+            }, true);
+        };
+
+        // If this building produces the target fuel, try using the one with second-highest level
+        if(fuel != null && MDL_recipeDict.getProdAmtByBuild(fuel, b) > 0.0 && fuelSpare != null) {
+            fuel = fuelSpare;
+            fuelLvl = fuelLvlSpare;
+        };
+
+        return fuel == null ?
+            tup :
+            tup.with(fuel, getFuelPon(fuel), fuelLvl);
+    };
+    exports.getFuelTup = getFuelTup;

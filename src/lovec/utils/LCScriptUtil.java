@@ -18,13 +18,13 @@ import static lovec.utils.LCScript.*;
 public class LCScriptUtil {
 
 
-    private static final StringBuilder splitorPayloadStrBuilder = new StringBuilder();
-    private static final char splitorChar = ';';
-    private static final String splitor = ";;";
-    private static final String splitorNumberTag = "D@";
-    private static final String splitorBooleanTag = "B@";
-    private static final String splitorStringTag = "S@";
-    private static final String splitorNullTag = "N@";
+    private static final StringBuilder splitterPayloadStrBuilder = new StringBuilder();
+    private static final char splitterChar = ';';
+    private static final String splitter = ";;";
+    private static final String splitterNumberTag = "D@";
+    private static final String splitterBooleanTag = "B@";
+    private static final String splitterStringTag = "S@";
+    private static final String splitterNullTag = "N@";
 
     @FromScript(source = "VARGEN")
     public static Liquid auxPres;
@@ -40,77 +40,77 @@ public class LCScriptUtil {
 
 
     /**
-     * Converts arguments into splitor payload string for packets.
+     * Converts arguments into splitter payload string for packets.
      * Should only be used for primitive values. Does not support array and JSON object.
      */
-    public static String packSplitorPayload(Scriptable arguments) {
+    public static String packSplitterPayload(Scriptable arguments) {
         int i = 0;
         int iCap = LCScript.toInt(ScriptableObject.getProperty(arguments, "length"));
         Object val;
-        splitorPayloadStrBuilder.setLength(0);
+        splitterPayloadStrBuilder.setLength(0);
         while(i < iCap) {
             val = ScriptableObject.getProperty(arguments, i);
             if(LCScript.isNull(val)) {
-                splitorPayloadStrBuilder.append(splitorNullTag);
+                splitterPayloadStrBuilder.append(splitterNullTag);
             } else if(val instanceof Number) {
-                splitorPayloadStrBuilder.append(splitorNumberTag);
-                splitorPayloadStrBuilder.append(val);
+                splitterPayloadStrBuilder.append(splitterNumberTag);
+                splitterPayloadStrBuilder.append(val);
             } else if(val instanceof Boolean) {
-                splitorPayloadStrBuilder.append(splitorBooleanTag);
-                splitorPayloadStrBuilder.append(val);
+                splitterPayloadStrBuilder.append(splitterBooleanTag);
+                splitterPayloadStrBuilder.append(val);
             } else {
-                splitorPayloadStrBuilder.append(splitorStringTag);
-                splitorPayloadStrBuilder.append(val);
+                splitterPayloadStrBuilder.append(splitterStringTag);
+                splitterPayloadStrBuilder.append(val);
             };
-            splitorPayloadStrBuilder.append(splitor);
+            splitterPayloadStrBuilder.append(splitter);
             i++;
         };
-        return splitorPayloadStrBuilder.toString();
+        return splitterPayloadStrBuilder.toString();
     };
 
 
-    private static Object processSplitorPayloadVal(String val) {
-        if(val.equals(splitorNullTag)) return null;
+    private static Object processSplitterPayloadVal(String val) {
+        if(val.equals(splitterNullTag)) return null;
         String tag = val.substring(0, 2);
         return switch (tag) {
-            case splitorNumberTag -> Float.parseFloat(val.substring(2));
-            case splitorBooleanTag -> Boolean.parseBoolean(val.substring(2));
-            case splitorStringTag -> val.substring(2);
-            default -> throw new IllegalArgumentException("Invalid splitor payload tag: " + tag);
+            case splitterNumberTag -> Float.parseFloat(val.substring(2));
+            case splitterBooleanTag -> Boolean.parseBoolean(val.substring(2));
+            case splitterStringTag -> val.substring(2);
+            default -> throw new IllegalArgumentException("Invalid splitter payload tag: " + tag);
         };
     };
 
 
     /**
-     * Converts a splitor payload string back into an array of strings.
+     * Converts a splitter payload string back into an array of strings.
      * Result array is reused!
      */
-    public static NativeArray unpackSplitorPayload(String payload, int ind) {
-        NativeArray arr = LCScript.ensureArray("LCScriptUtil.unpackSplitorPayload.tmpArr" + ind);
+    public static NativeArray unpackSplitterPayload(String payload, int ind) {
+        NativeArray arr = LCScript.ensureArray("LCScriptUtil.unpackSplitterPayload.tmpArr" + ind);
         LCNativeArray.clear(arr);
         int i = 0;
         int iCap = payload.length() - 1;
         char l1, l2;
-        splitorPayloadStrBuilder.setLength(0);
+        splitterPayloadStrBuilder.setLength(0);
         while(i < iCap) {
             l1 = payload.charAt(i);
-            if(l1 == splitorChar) {
+            if(l1 == splitterChar) {
                 l2 = payload.charAt(i + 1);
-                if(l2 == splitorChar) {
+                if(l2 == splitterChar) {
                     i++;
-                    LCNativeArray.push(arr, processSplitorPayloadVal(splitorPayloadStrBuilder.toString()));
-                    splitorPayloadStrBuilder.setLength(0);
+                    LCNativeArray.push(arr, processSplitterPayloadVal(splitterPayloadStrBuilder.toString()));
+                    splitterPayloadStrBuilder.setLength(0);
                 };
             } else {
-                splitorPayloadStrBuilder.append(l1);
+                splitterPayloadStrBuilder.append(l1);
             };
             i++;
         };
         return arr;
     };
     // Overload
-    public static NativeArray unpackSplitorPayload(String payload) {
-        return unpackSplitorPayload(payload, 0);
+    public static NativeArray unpackSplitterPayload(String payload) {
+        return unpackSplitterPayload(payload, 0);
     };
 
 

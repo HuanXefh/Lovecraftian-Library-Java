@@ -13,3 +13,5 @@ type ReactionTuple = [number, ReactionInvoker]
 
 
 type Reactant = string|Resource
+/** `ROW`: reaction, paramObj. */
+type ReactionResult = Array<[string, ReactionParamObject]>

@@ -521,7 +521,7 @@
                         oblk => addMineTile(rawRc, rcGrp, oblk, blk.drillTime / blk.getDrillTime(item), blk.size),
                     );
                     addProd(rawRc, rs, 1);
-                    addSubInfo(rawRc, MDL_text.getStat(fetchStat("lovec", "blk-terreq").localized(), MDL_terrain.getTerB(ter)));
+                    addSubInfo(rawRc, MDL_text.getStat(fetchStat("lovec", "blk-terreq").localized(), MDL_terrain.getTerBundle(ter)));
 
                     rawRc.complete();
                     regisRc(rawRc);

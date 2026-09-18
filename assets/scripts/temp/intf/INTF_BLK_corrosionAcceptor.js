@@ -19,8 +19,8 @@
 
 
   function comp_setStats(blk) {
-    let matGrpB = MDL_flow.getMatGrpB(blk);
-    if(matGrpB !== TmpStateTag.error) blk.stats.add(fetchStat("lovec", "blk0liq-matgrp"), matGrpB);
+    let matGrpBundle = MDL_flow.getMatGrpBundle(blk);
+    if(matGrpBundle !== TmpStateTag.error) blk.stats.add(fetchStat("lovec", "blk0liq-matgrp"), matGrpBundle);
     if(blk.cloggable) blk.stats.add(fetchStat("lovec", "blk0liq-cloggable"), true);
   };
 

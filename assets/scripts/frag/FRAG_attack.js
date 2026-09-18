@@ -273,13 +273,13 @@
 
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-attack-explosion",
-            packSplitorPayload(x, y, dmg, rad, shake, seStr),
+            packSplitterPayload(x, y, dmg, rad, shake, seStr),
             true,
         );
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-attack-explosion", payload => {
-            explosion.apply(null, unpackSplitorPayload(payload));
+            explosion.apply(null, unpackSplitterPayload(payload));
         });
     });
     exports.explosion_global = explosion_global;
@@ -429,13 +429,13 @@
 
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-attack-lightning",
-            packSplitorPayload(x, y, team.id, dmg, amt, r, offR, MDL_color.getColor(color_gn).rgba8888(), hitMode, seStr),
+            packSplitterPayload(x, y, team.id, dmg, amt, r, offR, MDL_color.getColor(color_gn).rgba8888(), hitMode, seStr),
             true,
         );
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-attack-lightning", payload => {
-            let args = unpackSplitorPayload(payload);
+            let args = unpackSplitterPayload(payload);
             lightning(args[0], args[1], Team.get(args[2]), args[3], args[4], args[5], args[6], Tmp.c1.set(args[7]), args[8], args[9]);
         });
     });

@@ -62,7 +62,7 @@
 
         MDL_net.sendPacket(
             PacketModes.CLIENT, "lovec-server-item-offload",
-            packSplitorPayload(
+            packSplitterPayload(
                 b.pos(),
                 b_f == null ? -1 : b_f.pos(),
                 item.name, amt, checkAccept,
@@ -74,7 +74,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-item-offload", payload => {
-            let args = unpackSplitorPayload(payload);
+            let args = unpackSplitterPayload(payload);
             offload(Vars.world.build(args[0]), Vars.world.build(args[1]), Vars.content.item(args[2]), args[3], args[4]);
         });
     })
@@ -617,7 +617,7 @@
     const setUnitItem_global = function(unit, item, amt) {
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-unit-set-item",
-            packSplitorPayload(
+            packSplitterPayload(
                 unit.id, item.name, amt,
             ),
             true,
@@ -625,7 +625,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-unit-set-item", payload => {
-            let args = unpackSplitorPayload(payload);
+            let args = unpackSplitterPayload(payload);
             let unit = Groups.unit.getByID(args[0]);
             let item = MDL_content.getCt(args[1], ContentGetModes.RS);
             if(unit == null || item == null) return;
@@ -719,7 +719,7 @@
 
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-unit-take-loot",
-            packSplitorPayload(
+            packSplitterPayload(
                 unit.id, loot.id, max,
             ),
             true,
@@ -727,7 +727,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-unit-take-loot", payload => {
-            let args = unpackSplitorPayload(payload);
+            let args = unpackSplitterPayload(payload);
             let unit = Groups.unit.getByID(args[0]);
             let loot = Groups.unit.getByID(args[1]);
             if(unit == null || loot == null) return;

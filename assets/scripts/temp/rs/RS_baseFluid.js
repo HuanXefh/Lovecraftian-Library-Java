@@ -61,10 +61,10 @@
     liq.stats.add(fetchStat("lovec", "rs-dens"), liq.gas ? dens.sci(-3) : Strings.fixed(dens, 2));
     let fHeat = MDL_flow.getFHeat(liq);
     if(!fHeat.fEqual(26.0)) liq.stats.add(fetchStat("lovec", "rs-fheat"), fHeat, fetchStatUnit("lovec", "heatunits"));
-    let eleGrpB = MDL_flow.getEleGrpB(liq);
-    if(eleGrpB !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-elegrp"), eleGrpB);
-    let fTagsB = MDL_flow.getFTagsB(liq);
-    if(fTagsB !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-ftags"), fTagsB);
+    let eleGrpBundle = MDL_flow.getEleGrpBundle(liq);
+    if(eleGrpBundle !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-elegrp"), eleGrpBundle);
+    let fTagsBundle = MDL_flow.getFTagsBundle(liq);
+    if(fTagsBundle !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-ftags"), fTagsBundle);
     let corPow = MDL_flow.getCorPow(liq);
     if(corPow > 0.0) liq.stats.add(fetchStat("lovec", "rs-corpow"), corPow.perc());
 

@@ -66,9 +66,9 @@
 
             try {
                 let lsavFi = MDL_file.getLsav();
-                lsavJsonObj = !lsavFi.exists() ? null : jsonToJsObj(MDL_file.getLsav());
+                lsavJsonObj = lsavFi == null ? null : jsonToJsObj(MDL_file.getLsav());
                 let plasvFi = MDL_file.getPlsav();
-                plsavJsonObj = !plsavFi.exists() ? null : jsonToJsObj(MDL_file.getPlsav());
+                plsavJsonObj = plsavFi == null ? null : jsonToJsObj(MDL_file.getPlsav());
             } catch(err) {
                 console.err("[LOVEC] Failed to load LSAV!" + "\n" + err);
                 lsavJsonObj = null;

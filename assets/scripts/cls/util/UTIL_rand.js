@@ -43,7 +43,7 @@
 
     MDL_event.onInit(() => {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-rand-sync", payload => {
-            let args = unpackSplitorPayload(payload);
+            let args = unpackSplitterPayload(payload);
             UTIL_rand.getByInd(args[0]).setSeed(args[1]);
         });
     });
@@ -88,7 +88,7 @@
         if(ind >= rands.length) throw new RangeError("Index out of bound: " + ind + ">=" + rands.length);
         MDL_net.sendPacket(
             PacketModes.BOTH, "lovec-both-rand-sync",
-            packSplitorPayload(ind, seed),
+            packSplitterPayload(ind, seed),
         );
     };
 

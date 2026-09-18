@@ -16,10 +16,50 @@ declare class Cell extends Element {}
 
 /** arc.scene.ui.Label */
 declare class Label extends Element {}
+declare namespace Label {
+    class LabelStyle extends Style {
+        font: Font;
+        fontColor: Color;
+        background: Drawable;
+
+        constructor()
+        constructor(style: LabelStyle)
+        constructor(font: Font, color: Color)
+    }
+}
 
 
 /** arc.scene.ui.TextField */
-declare class TextField extends Element {}
+declare class TextField extends Element implements Disposable {}
+declare namespace TextField {
+    interface TextFieldListener {
+        keyTyped(textField: TextField, l: java.lang.Character): void
+    }
+    interface TextFieldFilter {
+        acceptChar(textField: TextField, l: java.lang.Character): boolean
+    }
+    interface TextFieldValidator {
+        valid(test: string): boolean
+    }
+    class TextFieldClickListener extends ClickListener {}
+    class TextFieldStyle extends Style {
+        font: Font;
+        fontColor: Color;
+        focusedFontColor: Color;
+        disabledFontColor: Color;
+        background: Drawable;
+        focusedBackground: Drawable;
+        disabledBackground: Drawable;
+        invalidBackground: Drawable;
+        cursor: Drawable;
+        selection: Drawable;
+        messageFont: Font;
+        messageFontColor: Color;
+
+        constructor()
+        constructor(style: TextFieldStyle)
+    }
+}
 /** arc.scene.ui.TextArea */
 declare class TextArea extends TextField {}
 
@@ -27,20 +67,87 @@ declare class TextArea extends TextField {}
 /** arc.scene.ui.Button */
 declare class Button extends Table {}
 declare namespace Button {
-    class ButtonStyle extends Style {}
+    class ButtonStyle extends Style {
+        up: Drawable;
+        down: Drawable;
+        over: Drawable;
+        checked: Drawable;
+        checkedOver: Drawable;
+        disabled: Drawable;
+        pressedOffsetX: number;
+        pressedOffsetY: number;
+        unpressedOffsetX: number;
+        unpressedOffsetY: number;
+        checkedOffsetX: number;
+        checkedOffsetY: number;
+
+        constructor()
+        constructor(style: ButtonStyle)
+        constructor(up: Drawable, down: Drawable, checked: Drawable)
+    }
 }
 /** arc.scene.ui.TextButton */
 declare class TextButton extends Button {}
+declare namespace TextButton {
+    class TextButtonStyle extends Button.ButtonStyle {
+        font: Font;
+        fontColor: Color;
+        downFontColor: Color;
+        overFontColor: Color;
+        checkedFontColor: Color;
+        checkedOverFontColor: Color;
+        disabledFontColor: Color;
+
+        constructor()
+        constructor(style: TextButtonStyle)
+        constructor(up: Drawable, down: Drawable, checked: Drawable, font: Font)
+    }
+}
 /** arc.scene.ui.ImageButton */
 declare class ImageButton extends Button {}
+declare namespace ImageButton {
+    class ImageButtonStyle extends Button.ButtonStyle {
+        imageUp: Drawable;
+        imageDown: Drawable;
+        imageOver: Drawable;
+        imageChecked: Drawable;
+        imageCheckedOver: Drawable;
+        imageCheckedDisabled: Drawable;
+        imageUpColor: Color;
+        imageCheckedColor: Color;
+        imageDownColor: Color;
+        imageOverColor: Color;
+        imageDisabledColor: Color;
+
+        constructor()
+        constructor(style: ImageButtonStyle)
+        constructor(up: Drawable, down: Drawable, checked: Drawable, imgUp: Drawable, imgDown: Drawable, imgChecked: Drawable)
+    }
+}
 /** arc.scene.ui.ButtonGroup */
 declare class ButtonGroup extends Button {}
 /** arc.scene.ui.CheckBox */
 declare class CheckBox extends TextButton {}
+declare namespace CheckBox {
+    class CheckBoxStyle extends TextButton.TextButtonStyle {
+        checkboxOn: Drawable;
+        checkboxOff: Drawable;
+        checkboxOver: Drawable;
+        checkboxOnDisabled: Drawable;
+        checkboxOffDisabled: Drawable;
+        checkboxOnOver: Drawable;
+    }
+}
 
 
 /** arc.scene.ui.Slider */
 declare class Slider extends ProgressBar {}
+declare namespace Slider {
+    class SliderStyle extends ProgressBar.ProgressBarStyle {
+        knobOver: Drawable;
+        knobDown: Drawable;
+    }
+}
 
 
 /** arc.scene.ui.Touchpad */
@@ -55,6 +162,22 @@ declare class ColorImage extends Image {}
 
 /** arc.scene.ui.ProgressBar */
 declare class ProgressBar extends Element {}
+declare namespace ProgressBar {
+    class ProgressBarStyle extends Style {
+        background: Drawable;
+        disabledBackground: Drawable;
+        knob: Drawable;
+        disabledKnob: Drawable;
+        knobBefore: Drawable;
+        knobAfter: Drawable;
+        disabledKnobBefore: Drawable;
+        disabledKnobAfter: Drawable;
+
+        constructor()
+        constructor(style: ProgressBarStyle)
+        constructor(bg: Drawable, knob: Drawable)
+    }
+}
 
 
 /** arc.scene.Group */
@@ -67,10 +190,36 @@ declare class Table extends WidgetGroup {}
 declare class Stack extends WidgetGroup {}
 /** arc.scene.ui.layout.ScrollPane */
 declare class ScrollPane extends WidgetGroup {}
+declare namespace ScrollPane {
+    class ScrollPaneStyle extends Style {
+        background: Drawable;
+        corner: Drawable;
+        hScroll: Drawable;
+        hScrollKnob: Drawable;
+        vScroll: Drawable;
+        vScrollKnob: Drawable;
+
+        constructor()
+        constructor(style: ScrollPaneStyle)
+    }
+}
 /** arc.scene.ui.layout.Collapser */
 declare class Collapser extends WidgetGroup {}
 /** arc.scene.ui.layout.TreeElement */
 declare class TreeElement extends WidgetGroup {}
+declare namespace TreeElement {
+    class TreeStyle {
+        plus: Drawable;
+        minus: Drawable;
+        over: Drawable;
+        selection: Drawable;
+        background: Drawable;
+
+        constructor()
+        constructor(style: TreeStyle)
+        constructor(plus: Drawable, minus: Drawable, selection: Drawable)
+    }
+}
 
 
 /** arc.scene.ui.Tooltip */
@@ -111,6 +260,14 @@ declare class Actions {}
 
 /** arc.scene.ui.Dialog */
 declare class Dialog extends Table {}
+declare namespace Dialog {
+    class DialogStyle extends Style {
+        background: Drawable;
+        titleFont: Font;
+        titleFontColor: Color;
+        stageBackground: Drawable;
+    }
+}
 
 
 /** arc.scene.event.Touchable */
