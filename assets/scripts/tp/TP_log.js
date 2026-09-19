@@ -56,9 +56,7 @@
                     if(b.liquids.currentAmount() > 0.0) {
                         arr.push("- Current liquid: " + b.liquids.current().localizedName);
                         arr.push("- Liquids:");
-                        let amt;
-                        b.liquids.each(liq => {
-                            amt = b.liquids.get(liq);
+                        b.liquids.each((liq, amt) => {
                             arr.push("  > ${1}: ${2} (${3})".format(liq.localizedName, Strings.fixed(amt, 4), (amt / b.block.liquidCapacity).perc()));
                         });
                     };

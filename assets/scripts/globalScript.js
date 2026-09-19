@@ -204,6 +204,9 @@
     rhino = Packages.rhino;
 
 
+    globalRequire("lovec", dir => dir.child("scripts").child("run").child("glbScr").child("RUN_glbScr_compatibility.js"));
+
+
     /**
      * Container of commonly used Java classes.
      * @global

@@ -102,7 +102,7 @@
         terItemMap.each((ter, nameRs) => {
           let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
           if(rs == null) return;
-          matArr.push([rs, rs.localizedName, MDL_terrain.getTerB(ter)]);
+          matArr.push([rs, rs.localizedName, MDL_terrain.getTerBundle(ter)]);
         });
 
         MDL_table.setTable(tb1, matArr);

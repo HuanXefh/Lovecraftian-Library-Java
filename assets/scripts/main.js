@@ -154,8 +154,6 @@
                         };
                     });
                 };
-
-                console.log("[LOVEC] Loaded custom unit data.");
             },
 
 

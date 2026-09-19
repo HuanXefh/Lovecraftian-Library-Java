@@ -45,18 +45,18 @@
     b.itemSendCd = Mathf.maxZero(b.itemSendCd - b.edelta());
     if(b.itemSendCd < 0.0001 && b.items.total() >= b.block.itemCapacity) {
       b.itemSendCd += b.block.delegee.itemSendCooldown;
-      let amt;
-      b.items.each(item => {
-        amt = b.sendBCur.acceptStack(item, b.items.get(item), b);
-        if(amt > 0) {
-          b.sendBCur.handleStack(item, amt, b);
+      let amt_fi;
+      b.items.each((item, amt) => {
+        amt_fi = b.sendBCur.acceptStack(item, amt, b);
+        if(amt_fi > 0) {
+          b.sendBCur.handleStack(item, amt_fi, b);
           MDL_effect.line(b.x, b.y, null, b.sendBCur, item.color, 1.5, true, false);
           MDL_effect.line(b.sendBCur.x, b.sendBCur.y, null, b, item.color, 1.5, true, true);
           Fx.dynamicWave.at(b.x, b.y, b.block.size * Vars.tilesize * 0.75, item.color);
           Fx.dynamicWave.at(b.sendBCur.x, b.sendBCur.y, b.sendBCur.block.size * Vars.tilesize * 0.75, item.color);
           MDL_sound.playAt(b.x, b.y, b.block.delegee.shootSe);
         };
-        b.items.remove(item, amt);
+        b.items.remove(item, amt_fi);
       });
     };
   };

@@ -5,20 +5,30 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/pla/PLA_basePlanet");
+    /**
+     * @typedef {Planet&PLA_sun} PLASun
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/pla/PLA_basePlanet");
 
 
-  function comp_init(pla) {
-    pla.drawOrbit = false;
-    pla.bloom = true;
-    pla.updateLighting = false;
-  };
+    /* <------------------------------ component ------------------------------ */
+
+
+    /**
+     * @private
+     * @param {PLASun} pla
+     * @return {void}
+     */
+    function comp_init(pla) {
+        pla.drawOrbit = false;
+        pla.bloom = true;
+        pla.updateLighting = false;
+    };
 
 
 /*
@@ -28,21 +38,23 @@
 */
 
 
-  /**
-   * Regular sun.
-   * @class PLA_sun
-   * @extends PLA_basePlanet
-   */
-  module.exports = newClass().extendClass(PARENT, "PLA_sun").initClass()
-  .setParent(Planet)
-  .setTags()
-  .setParam({})
-  .setMethod({
+    /**
+     * Regular sun.
+     * @class PLA_sun
+     * @extends PLA_basePlanet
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "PLA_sun")
+    .initClass()
+    .setParent(Planet)
+    .setTags()
+    .setParam({})
+    .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
+        init: function() {
+            comp_init(this);
+        },
 
 
-  });
+    });

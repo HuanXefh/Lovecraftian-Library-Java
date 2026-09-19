@@ -31,7 +31,7 @@
 
     // Handle auxiliary liquids
     if(b.liquids != null && TIMER.secTwo && b.block.delegee.canHandleAux) {
-      b.liquids.each(liq => {
+      b.liquids.each((liq, amt) => {
         if(!MDL_cond.isAuxiliaryFluid(liq)) return;
         if(b.efficiency < 0.0001 && b.block.delegee.shouldClearAuxOnStop) {
           b.liquids.set(liq, 0.0);
@@ -75,7 +75,7 @@
     checkExplosiveLiquid: function(b) {
       if(b.liquids == null) return false;
       cond = false;
-      b.liquids.each(liq => {
+      b.liquids.each((liq, amt) => {
         if(cond) return;
         cond = VARGEN.exploFlds.includes(liq);
       });

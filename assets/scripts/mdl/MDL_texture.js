@@ -50,7 +50,7 @@
      * @param {number|unset} [tileWidth]
      * @return {TextureRegion}
      */
-    const getRegBlkTileCut = function(blk_gn, offTx, offTy) {
+    const getRegBlkTileCut = function(blk_gn, offTx, offTy, tileWidth) {
         if(tileWidth == null) tileWidth = 32.0;
         let reg = getRegBlk(blk_gn);
         if(reg === LCAirObjects.textureRegion) return reg;
@@ -270,7 +270,9 @@
     const packIcon = function(ct, packer, suffix, pixF) {
         if(suffix == null) suffix = "";
         let pix = pixF();
-        packer.add(ct.name + suffix, pix);
+        LCCompatibilityResolver.isV8 ?
+            packer.add(eval("MultiPacker.PageType.main"), ct.name + suffix, pix) :
+            packer.add(ct.name + suffix, pix);
         pix.dispose();
     };
     exports.packIcon = packIcon;

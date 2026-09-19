@@ -67,7 +67,7 @@
             try {
                 let lsavFi = MDL_file.getLsav();
                 lsavJsonObj = lsavFi == null ? null : jsonToJsObj(MDL_file.getLsav());
-                let plasvFi = MDL_file.getPlsav();
+                let plsavFi = MDL_file.getPlsav();
                 plsavJsonObj = plsavFi == null ? null : jsonToJsObj(MDL_file.getPlsav());
             } catch(err) {
                 console.err("[LOVEC] Failed to load LSAV!" + "\n" + err);
@@ -84,7 +84,6 @@
             }, true);
 
             let mapCur = global.lovecUtil.fun.getMapCur();
-            console.log("[LOVEC] Checking LSAV data validity...");
 
             // If map name not matched, clear the LSAV (creates a backup first)
             if(lsav["save-map"] != "!UNDEF" && lsav["save-map"] !== mapCur) {
@@ -104,7 +103,6 @@
             set("save-revision", VAR.lovecRevi);
 
             TRIGGER.lsavLoad.fire();
-            console.log("[LOVEC] Loaded LSAV data.");
         });
     };
 

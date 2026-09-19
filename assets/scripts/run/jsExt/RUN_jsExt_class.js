@@ -60,16 +60,6 @@
 
 
     /**
-     * Alias of {@link Function#initClass} with proper type for templates.
-     * @return {CLS_contentTemplate}
-     */
-    Function.prototype.initTemplate = function() {
-        // noinspection JSValidateTypes
-        return this.initClass();
-    };
-
-
-    /**
      * Variant of {@link Function#initClass} for abstract class.
      * Creating new instance of this class will not be allowed.
      * For abstract methods, see {@link Function#setAbstr}.

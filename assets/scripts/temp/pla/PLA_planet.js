@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/pla/PLA_basePlanet");
+    /**
+     * @typedef {Planet&PLA_planet} PLAPlanet
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/pla/PLA_basePlanet");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,13 +26,15 @@
 */
 
 
-  /**
-   * Regular planet.
-   * @class PLA_planet
-   * @extends PLA_basePlanet
-   */
-  module.exports = newClass().extendClass(PARENT, "PLA_planet").initClass()
-  .setParent(Planet)
-  .setTags()
-  .setParam({})
-  .setMethod({});
+    /**
+     * Regular planet.
+     * @class PLA_planet
+     * @extends PLA_basePlanet
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "PLA_planet")
+    .initClass()
+    .setParent(Planet)
+    .setTags()
+    .setParam({})
+    .setMethod({});

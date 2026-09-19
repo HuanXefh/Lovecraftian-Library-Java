@@ -17,67 +17,6 @@
 */
 
 
-    /** @global mindustry.world.consumers.Consume */
-    class Consume {};
-    /** @global mindustry.world.consumers.ConsumeItems */
-    class ConsumeItems extends Consume {};
-    /** @global mindustry.world.consumers.ConsumeItemFilter */
-    class ConsumeItemFilter extends Consume {};
-    /** @global mindustry.world.consumers.ConsumeItemDynamic */
-    class ConsumeItemDynamic extends Consume {};
-    /** @global mindustry.world.consumers.ConsumeItemList */
-    class ConsumeItemList extends ConsumeItemFilter {};
-    /** @global mindustry.world.consumers.ConsumeItemEfficiency */
-    class ConsumeItemEfficiency extends ConsumeItemFilter {};
-    /** @global mindustry.world.consumers.ConsumeItemFlammable */
-    class ConsumeItemFlammable extends ConsumeItemEfficiency {};
-    /** @global mindustry.world.consumers.ConsumeItemExplosive */
-    class ConsumeItemExplosive extends ConsumeItemEfficiency {};
-    /** @global mindustry.world.consumers.ConsumeItemRadioactive */
-    class ConsumeItemRadioactive extends ConsumeItemEfficiency {};
-    /** @global mindustry.world.consumers.ConsumeItemCharged */
-    class ConsumeItemCharged extends ConsumeItemEfficiency {};
-    /** @global mindustry.world.consumers.ConsumeLiquidBase */
-    class ConsumeLiquidBase extends Consume {};
-    /** @global mindustry.world.consumers.ConsumeLiquid */
-    class ConsumeLiquid extends ConsumeLiquidBase {};
-    /** @global mindustry.world.consumers.ConsumeLiquids */
-    class ConsumeLiquids extends Consume {};
-    /** @global mindustry.world.consumers.ConsumeLiquidDynamic */
-    class ConsumeLiquidDynamic extends Consume {};
-    /** @global mindustry.world.consumers.ConsumeLiquidFilter */
-    class ConsumeLiquidFilter extends ConsumeLiquidBase {};
-    /** @global mindustry.world.consumers.ConsumeLiquidFlammable */
-    class ConsumeLiquidFlammable extends ConsumeLiquidFilter {};
-    /** @global mindustry.world.consumers.ConsumePower */
-    class ConsumePower extends Consume {};
-    /** @global mindustry.world.consumers.ConsumePowerDynamic */
-    class ConsumePowerDynamic extends ConsumePower {};
-    /** @global mindustry.world.consumers.ConsumePowerCondition */
-    class ConsumePowerCondition extends ConsumePower {};
-    /** @global mindustry.world.consumers.ConsumePayloads */
-    class ConsumePayloads extends Consume {};
-    /** @global mindustry.world.consumers.ConsumePayloadDynamic */
-    class ConsumePayloadDynamic extends Consume {};
-    /** @global mindustry.world.consumers.ConsumePayloadFilter */
-    class ConsumePayloadFilter extends Consume {};
-    /** @global mindustry.world.modules.BlockModule */
-    class BlockModule {};
-    /** @global mindustry.world.modules.ItemModule */
-    class ItemModule extends BlockModule {};
-    /** @global mindustry.world.modules.LiquidModule */
-    class LiquidModule extends BlockModule {};
-    /** @global mindustry.world.modules.PowerModule */
-    class PowerModule extends BlockModule {};
-    /** @global mindustry.world.blocks.power.PowerGraph */
-    class PowerGraph {};
-    /** @global mindustry.world.blocks.AutoTiler */
-    class AutoTiler {};
-    AutoTiler.SliceMode = class {};
-    /** @global mindustry.world.blocks.TileBitmask */
-    class TileBitmask {};
-    /** @global mindustry.world.blocks.ItemSelection */
-    class ItemSelection {};
     /** @global mindustry.world.blocks.payloads.Payload */
     class Payload {};
     /** @global mindustry.world.blocks.payloads.BuildPayload */

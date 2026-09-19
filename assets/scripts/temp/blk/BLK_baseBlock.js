@@ -147,9 +147,8 @@
 
   function comp_onRemoved(b) {
     if(b.liquids != null) {
-      let amt, liqPol;
-      b.liquids.each(liq => {
-        amt = b.liquids.get(liq);
+      let liqPol;
+      b.liquids.each((liq, amt) => {
         liqPol = MDL_pollution.getRsPol(liq);
         if(liqPol > 0.0) {
           MDL_pollution.addLingerPol(liqPol * amt / 150.0);
@@ -163,15 +162,15 @@
     if(b.block.delegee.noLoot) return;
 
     if(b.items != null) {
-      let amt;
-      b.items.each(item => {
-        amt = !(b.block instanceof CoreBlock) ?
-          b.items.get(item) :
-          (b.items.get(item) / Math.max(b.team.cores().size, 1));
-        if(amt >= 20) {
-          amt = amt.randFreq(0.3);
-          b.items.remove(item, amt);
-          MDL_call.spawnLoots_server(b.x, b.y, item, amt, b.block.size * Vars.tilesize * 0.7);
+      let amt_fi;
+      b.items.each((item, amt) => {
+        amt_fi = !(b.block instanceof CoreBlock) ?
+          amt :
+          (amt / Math.max(b.team.cores().size, 1));
+        if(amt_fi >= 20) {
+          amt_fi = amt_fi.randFreq(0.3);
+          b.items.remove(item, amt_fi);
+          MDL_call.spawnLoots_server(b.x, b.y, item, amt_fi, b.block.size * Vars.tilesize * 0.7);
         };
       });
     };

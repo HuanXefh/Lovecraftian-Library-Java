@@ -66,7 +66,7 @@
     /**
      * `ARGS`: countMap, ters.
      * <br> `ARGS`: countMap, ter1, ter2, ter3, ...
-     * @param {Object<string, number>} countMap
+     * @param {ObjectMap<string, number>} countMap
      * @return {number}
      */
     function sumCountTers(countMap) {
@@ -156,7 +156,7 @@
         let ter, cacheMap;
 
         // Use cached result if found
-        cacheMap = terCache[size][checkR].get(t);
+        cacheMap = terCache[size][checkR];
         if(cacheMap.containsKey(t)) {
             return cacheMap.get(t);
         };

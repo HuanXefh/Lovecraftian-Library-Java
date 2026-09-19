@@ -32,7 +32,7 @@
         && b.items != null && b.items.any() && !b.block.delegee.noReac
         && Mathf.chance(0.025)
     ) {
-      b.items.each(item => MDL_reaction.handleReaction(item, "GROUP: air", 40.0, b));
+      b.items.each((item, amt) => MDL_reaction.handleReaction(item, "GROUP: air", 40.0, b));
     };
   };
 

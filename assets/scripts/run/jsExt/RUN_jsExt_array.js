@@ -207,8 +207,10 @@
      * @param {Dynamic<Object>} val_fn
      * @param {number|unset} [len]
      * @return {this}
+     * @lovecTypeSensitive
      */
     Array.prototype.setValue = function(val_fn, len) {
+        if(typeof val_fn === "function") val_fn = prov(val_fn);
         return len == null ?
             LCNativeArray.setValue(this, val_fn) :
             LCNativeArray.setValue(this, val_fn, len);

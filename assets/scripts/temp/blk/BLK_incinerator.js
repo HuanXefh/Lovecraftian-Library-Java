@@ -60,7 +60,7 @@
     if(TIMER.sec) {
       if(b.items != null && !b.justCrafted) {
         b.hasItemTarget = false;
-        b.items.each(item => {
+        b.items.each((item, amt) => {
           if(b.hasItemTarget) return;
           if(!b.block.consumesItem(item)) {
             b.hasItemTarget = true;
@@ -91,15 +91,13 @@
       flam = 0.0,
       explo = 0.0,
       pow = 0.0,
-      canExplo = b.ex_canExploIncinerate(),
-      amt;
+      canExplo = b.ex_canExploIncinerate();
 
     if(b.items != null) {
-      b.items.each(item => {
+      b.items.each((item, amt) => {
         if(b.block.consumesItem(item)) return;
         if(b.block.outputItems != null && b.block.outputItems.some(itemStack => itemStack.item === item)) return;
 
-        amt = b.items.get(item);
         if(canExplo) {
           flam += (item.flammability < EXPLO_FLAM_THR ? 0.0 : item.flammability) * amt * 3.0;
           explo += item.explosiveness * amt * 3.0;

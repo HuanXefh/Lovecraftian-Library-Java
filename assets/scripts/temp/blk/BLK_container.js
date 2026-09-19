@@ -15,10 +15,10 @@
 
 
   function comp_warmup(b) {
-    let amt = 0, typeAmt = 0;
-    b.items.each(item => {
+    let amt_fi = 0, typeAmt = 0;
+    b.items.each((item, amt) => {
       typeAmt++;
-      amt += b.items.get(item);
+      amt_fi += amt;
     });
 
     return typeAmt === 0 ?

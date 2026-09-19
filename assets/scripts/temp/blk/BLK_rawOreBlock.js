@@ -30,7 +30,9 @@
       packer.get(blk.recolorRegStr),
       packer.get(parent),
     );
-    packer.add(blk.name, pix);
+    LCCompatibilityResolver.isV8 ?
+      packer.add(eval("MultiPacker.PageType.main"), blk.name, pix) :
+      packer.add(blk.name, pix);
     pix.dispose();
   };
 
