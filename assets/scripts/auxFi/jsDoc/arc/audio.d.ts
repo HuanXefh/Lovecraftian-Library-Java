@@ -1,10 +1,12 @@
 /** arc.Audio */
 // @ts-ignore
 declare class Audio implements Disposable {}
+interface Audio extends Disposable {}
 
 
 /** arc.audio.AudioSource */
 declare class AudioSource implements Disposable {}
+interface AudioSource extends Disposable {}
 /** arc.audio.AudioFilter */
 declare class AudioFilter {}
 /** arc.audio.AudioBus */

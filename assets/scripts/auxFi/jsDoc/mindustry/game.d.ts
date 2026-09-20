@@ -34,7 +34,7 @@ declare class Gamemode {
     readonly hidden: boolean;
 
     apply(rule: Rules): Rules
-    valid(map: Map): boolean
+    valid(map: mindustry.maps.Map): boolean
 }
 /** mindustry.game.GameStats */
 declare class GameStats {
@@ -55,6 +55,7 @@ declare class GameStats {
 
 /** mindustry.game.Schematic */
 declare class Schematic implements Publishable, java.lang.Comparable<Schematic> {}
+interface Schematic extends Publishable, java.lang.Comparable<Schematic> {}
 /** mindustry.game.Schematics */
 declare class Schematics {}
 
@@ -81,6 +82,7 @@ declare class Team implements java.lang.Comparable<Team>, Senseable {
     hasPalette: boolean;
     name: string;
 }
+interface Team extends java.lang.Comparable<Team>, Senseable {}
 /** mindustry.game.Teams */
 declare class Teams {}
 declare namespace Teams {
@@ -121,3 +123,44 @@ declare class Universe {}
 
 /** mindustry.game.FogControl */
 declare class FogControl implements SaveFileReader.CustomChunk {}
+interface FogControl extends SaveFileReader.CustomChunk {}
+
+
+/** mindustry.game.MapObjectives */
+declare class MapObjectives implements Iterable<MapObjectives.MapObjective>, Eachable<MapObjectives.MapObjective> {}
+interface MapObjectives extends Iterable<MapObjectives.MapObjective>, Eachable<MapObjectives.MapObjective> {}
+declare namespace MapObjectives {
+    class MapObjective implements AllowSerialization {}
+    interface MapObjective extends AllowSerialization {}
+    class ResearchObjective extends MapObjective {}
+    class ProduceObjective extends MapObjective {}
+    class ItemObjective extends MapObjective {}
+    class CoreItemObjective extends MapObjective {}
+    class BuildCountObjective extends MapObjective {}
+    class UnitCountObjective extends MapObjective {}
+    class DestroyUnitsObjective extends MapObjective {}
+    class TimerObjective extends MapObjective {}
+    class DestroyBlockObjective extends MapObjective {}
+    class DestroyBlocksObjective extends MapObjective {}
+    class CommandModeObjective extends MapObjective {}
+    class FlagObjective extends MapObjective {}
+    class DestroyCoreObjective extends MapObjective {}
+
+    class ObjectiveMarker implements Json.JsonSerializable {}
+    interface ObjectiveMarker extends Json.JsonSerializable {}
+    class PosMarker extends ObjectiveMarker {}
+    class ShapeTextMarker extends PosMarker {}
+    class PointMarker extends PosMarker {}
+    class ShapeMarker extends PosMarker {}
+    class TextMarker extends PosMarker {}
+    class LineMarker extends PosMarker {}
+    class TextureMarker extends PosMarker {}
+    class QuadMarker extends ObjectiveMarker {}
+    class LightMarker extends PosMarker {}
+
+    class TextureHolder implements Json.JsonSerializable {}
+    interface TextureHolder extends Json.JsonSerializable {}
+}
+/** mindustry.game.MapMarkers */
+declare class MapMarkers implements Iterable<MapObjectives.ObjectiveMarker> {}
+interface MapMarkers extends Iterable<MapObjectives.ObjectiveMarker> {}

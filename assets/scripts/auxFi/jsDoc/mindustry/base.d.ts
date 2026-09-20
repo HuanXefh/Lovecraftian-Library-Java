@@ -103,7 +103,7 @@ declare class Vars {
     static readonly iconMed: number;
     static readonly iconSmall: number;
 
-    static emptyMap: Map;
+    static emptyMap: mindustry.maps.Map;
     static readonly mapExtension: string;
     static readonly saveExtension: string;
     static emptyTile: Tile;
@@ -150,3 +150,6 @@ declare class Vars {
     static enableDarkness: boolean;
     static debugDrawAvoidance: boolean;
 }
+
+
+type LogicCode = string

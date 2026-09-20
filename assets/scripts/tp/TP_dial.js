@@ -718,7 +718,7 @@
 
         /**
          * @param {Table} tb
-         * @param {UnlockableContent} ct
+         * @param {string|UnlockableContent} ct
          * @param {boolean} isCustomField
          * @return {void}
          */
@@ -730,11 +730,11 @@
                 this.lastScrollY = this.lastPn.getScrollY();
                 this.lastChecked = ct;
                 this.hide();
-                fetchDialog("rcDict").ex_show(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName, ct, true);
+                fetchDialog("rcDict").ex_show(isCustomField ? MDL_recipeDict.getCustomFieldBundle(ct) : ct.localizedName, ct, true);
             })
             .left()
             .pad(this.pad)
-            .tooltip(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName)
+            .tooltip(isCustomField ? MDL_recipeDict.getCustomFieldBundle(ct) : ct.localizedName)
             .get();
             btn.margin(3.0);
             btn.setChecked(ct === this.lastChecked);
@@ -852,7 +852,7 @@
 
         /**
          * @param {Table} tb
-         * @param {UnlockableContent} ct
+         * @param {string|UnlockableContent} ct
          * @param {RecipeDictionaryIoArray} rcDictArr
          * @param {boolean} isCustomField
          */
@@ -918,7 +918,7 @@
                                 btnCell = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
                                     this.hide();
                                     isOtherCustomField ?
-                                        this.ex_show(MDL_recipeDict._customFieldB(oct), oct) :
+                                        this.ex_show(MDL_recipeDict.getCustomFieldBundle(oct), oct) :
                                         Vars.ui.content.show(oct);
                                 }).left();
                                 if(data.ctTableF != null) {
@@ -927,7 +927,7 @@
                                 } else if(data.ctText) {
                                     btnCell.tooltip(data.ctText, true);
                                 } else if(isOtherCustomField) {
-                                    btnCell.tooltip(MDL_recipeDict._customFieldB(oct), true);
+                                    btnCell.tooltip(MDL_recipeDict.getCustomFieldBundle(oct), true);
                                 } else {
                                     btnCell.tooltip(oct.localizedName, true);
                                 };
@@ -990,7 +990,7 @@
                 cont.button(ctIcon, 48.0, () => {
                     this.hide();
                     isCustomField ?
-                        this.ex_show(MDL_recipeDict._customFieldB(ct), ct) :
+                        this.ex_show(MDL_recipeDict.getCustomFieldBundle(ct), ct) :
                         Vars.ui.content.show(ct);
                 })
                 .left()
@@ -1077,12 +1077,12 @@
             });
             MDL_table.btn(this.buttons, MDL_bundle.getTerm("lovec", "new-window"), () => {
                 this.hide();
-                new CLS_window(isCustomField ? MDL_recipeDict._customFieldB(ct) : ct.localizedName, tb => {
+                new CLS_window(isCustomField ? MDL_recipeDict.getCustomFieldBundle(ct) : ct.localizedName, tb => {
                     tb.center();
                     let tmpCt = ct;
                     let tmpIsCustomField = isCustomField;
                     tb.button(ctIcon, 48.0, () => {
-                        fetchDialog("rcDict").ex_show(tmpIsCustomField ? MDL_recipeDict._customFieldB(tmpCt) : tmpCt.localizedName, tmpCt, false);
+                        fetchDialog("rcDict").ex_show(tmpIsCustomField ? MDL_recipeDict.getCustomFieldBundle(tmpCt) : tmpCt.localizedName, tmpCt, false);
                     }).center();
                 }).add();
             });

@@ -150,12 +150,10 @@ declare namespace TypeIO {
     }
     class BuildingBox implements Boxed<Building> {
         pos: number;
-
-        unbox(): Building
     }
+    interface BuildingBox extends Boxed<Building> {}
     class UnitBox implements Boxed<Unit> {
         id: number;
-
-        unbox(): Unit
     }
+    interface UnitBox extends Boxed<Unit> {}
 }

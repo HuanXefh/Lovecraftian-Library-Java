@@ -7,7 +7,6 @@
         "jsdoc": "^4.0.5"
     },
     "scripts": {
-        "jsdoc": "jsdoc -r -c jsdoc.json",
-        "jsdoc-test": "jsdoc assets/scripts/temp/sta/DBCT_databaseContent.js -c jsdoc.json --debug"
+        "jsdoc": "jsdoc -r -c jsdoc.json"
     }
 }

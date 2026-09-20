@@ -6,6 +6,7 @@ import arc.util.pooling.Pool;
 public class PoolableVec2 extends Vec2 implements Pool.Poolable {
 
 
+    @Override
     public void reset() {
         set(0f, 0f);
     };

@@ -4,6 +4,7 @@ declare class ShootPattern implements java.lang.Cloneable {
     firstShotDelay: number;
     shotDelay: number;
 }
+interface ShootPattern extends java.lang.Cloneable {}
 declare namespace ShootPattern {
     interface BulletHandler {
         shoot(x: number, y: number, rotation: number, delay: number): void

@@ -1,5 +1,6 @@
 /** mindustry.core.FileTree */
 declare class FileTree implements FileHandleResolver {}
+interface FileTree extends FileHandleResolver {}
 
 
 /** mindustry.core.ContentLoader */
@@ -51,8 +52,8 @@ declare class GameState {
     updateId: number;
     serverTps: number;
 
-    map: Map;
-    playtestingMap: Map|null;
+    map: mindustry.maps.Map;
+    playtestingMap: mindustry.maps.Map|null;
     rules: Rules;
     stats: GameStats;
     markers: MapMarkers;
@@ -96,24 +97,30 @@ declare class World {}
 
 /** mindustry.core.Control */
 declare class Control implements ApplicationListener, Loadable {}
+interface Control extends ApplicationListener, Loadable {}
 
 
 /** mindustry.core.Logic */
 declare class Logic implements ApplicationListener {}
+interface Logic extends ApplicationListener {}
 
 
 /** mindustry.core.Renderer */
 declare class Renderer implements ApplicationListener {}
+interface Renderer extends ApplicationListener {}
 
 
 /** mindustry.core.UI */
 declare class UI implements ApplicationListener, Loadable {}
+interface UI extends ApplicationListener, Loadable {}
 
 
 /** mindustry.core.NetServer */
 declare class NetServer implements ApplicationListener {}
+interface NetServer extends ApplicationListener {}
 /** mindustry.core.NetClient */
 declare class NetClient implements ApplicationListener {}
+interface NetClient extends ApplicationListener {}
 
 
 /** mindustry.core.ClientLoader */

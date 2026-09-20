@@ -87,6 +87,27 @@ public class LCScript {
     };
 
 
+    /**
+     * Converts JS value to Java byte.
+     */
+    public static byte toByte(Object val) {
+        if(val instanceof Number num) return num.byteValue();
+        return 0;
+    };
+
+
+    /**
+     * Converts JS value to Java short.
+     */
+    public static short toShort(Object val) {
+        if(val instanceof Number num) return num.shortValue();
+        return 0;
+    };
+
+
+    /**
+     * Converts JS value to Java long.
+     */
     public static long toLong(Object val) {
         if(val instanceof Number num) return num.longValue();
         return 0;
@@ -262,9 +283,8 @@ public class LCScript {
     /**
      * Sets a property in a JavaScript object.
      */
-    public static Scriptable set(String nameProp, Object val, Scriptable scope) {
+    public static void set(String nameProp, Object val, Scriptable scope) {
         scope.put(nameProp, scope, val);
-        return scope;
     };
     // Overload
     public static void set(String nameProp, Object val) {
@@ -298,11 +318,11 @@ public class LCScript {
     /**
      * Invokes a function in a JavaScript object.
      */
-    public static Object invoke(String nameFun, Scriptable scope, Object... args) throws NullPointerException {
+    public static @Nullable Object invoke(String nameFun, Scriptable scope, Object... args) throws NullPointerException {
         return thisInvoke(nameFun, scope, Vars.mods.getScripts().scope, args);
     };
     // Overload
-    public static Object invoke(Function fun, Scriptable scope, Object... args) {
+    public static @Nullable Object invoke(Function fun, Scriptable scope, Object... args) {
         return thisInvoke(fun, scope, Vars.mods.getScripts().scope, args);
     };
 
@@ -311,12 +331,12 @@ public class LCScript {
      * Variant of {@link #invoke} with <code>this</code> passed.
      */
     @SuppressWarnings("ConstantConditions")
-    public static Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) throws NullPointerException {
+    public static @Nullable Object thisInvoke(String nameFun, Scriptable scope, Scriptable thisObj, Object... args) throws NullPointerException {
         Function fun = (Function) get(nameFun, scope);
         return thisInvoke(fun, scope, thisObj, args);
     };
     // Overload
-    public static Object thisInvoke(Function fun, Scriptable scope, Scriptable thisObj, Object... args) {
+    public static @Nullable Object thisInvoke(Function fun, Scriptable scope, Scriptable thisObj, Object... args) {
         return fun.call(Context.getContext(), scope, thisObj, args);
     };
 
@@ -324,7 +344,7 @@ public class LCScript {
     /**
      * Variant of {@link #invoke} for JavaScript class instances.
      */
-    public static Object protoInvoke(String nameFun, Scriptable ins, Object... args) throws NullPointerException {
+    public static @Nullable Object protoInvoke(String nameFun, Scriptable ins, Object... args) throws NullPointerException {
         return thisInvoke(nameFun, ins.getPrototype(), ins, args);
     };
 
@@ -335,7 +355,6 @@ public class LCScript {
     public static Object wrapEquality(Object javaObj) {
         if(javaObj instanceof Number num) return toDouble(javaObj);
         if(isUndefined(javaObj)) return Undefined.instance;
-
         return javaObj;
     };
 
@@ -409,7 +428,7 @@ public class LCScript {
     /**
      * Invokes a Java method created with Rhino <code>JavaAdapter</code>.
      */
-    public static Object instanceInvoke(Object ins, String nameFun, Object... args) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public static @Nullable Object instanceInvoke(Object ins, String nameFun, Object... args) throws IllegalArgumentException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if(args.length > objClss.length) throw new IllegalArgumentException("Argument length out of bound: " + args.length + ">" + objClss.length);
         return ins.getClass().getDeclaredMethod(nameFun, objClss[args.length]).invoke(ins, args);
     };

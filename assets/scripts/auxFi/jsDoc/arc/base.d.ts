@@ -40,6 +40,7 @@ interface Application extends Disposable {}
 
 /** arc.Graphics */
 declare class Graphics implements Disposable {}
+interface Graphics extends Disposable {}
 
 
 /** arc.Input */

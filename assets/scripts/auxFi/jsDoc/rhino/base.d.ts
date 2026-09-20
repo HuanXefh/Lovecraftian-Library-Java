@@ -9,10 +9,12 @@ declare namespace rhino {
     interface Scriptable {}
     /** rhino.ScriptableObject */
     class ScriptableObject implements Scriptable {}
+    interface ScriptableObject extends Scriptable {}
     /** rhino.IdFunctionCall */
     interface IdFunctionCall {}
     /** rhino.IdScriptableObject */
     class IdScriptableObject extends ScriptableObject implements IdFunctionCall {}
+    interface IdScriptableObject extends IdFunctionCall {}
     /** rhino.Callable */
     interface Callable {}
 

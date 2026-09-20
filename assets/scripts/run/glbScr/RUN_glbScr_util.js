@@ -213,7 +213,9 @@
         let fun = tryVal(def, Function.air);
         let i = 0, iCap = arr.iCap();
         while(i < iCap) {
-            if(checkInstance(ins, arr[i])) fun = arr[i + 1];
+            if(checkInstance(ins, arr[i])) {
+                fun = arr[i + 1];
+            };
             i += 2;
         };
         return fun;
@@ -406,7 +408,9 @@
         } else if(typeof type === "function") {
             return ins instanceof type;
         } else if(typeof type === "string") {
-            return checkSubInsOfTemp(ins, type);
+            return checkSubInsOfTemp(ins, type) || (ins instanceof UnlockableContent && ins.name === type);
+        } else if(type instanceof Array) {
+            return type.some(type1 => checkInstance(ins, type1));
         };
         return false;
     };

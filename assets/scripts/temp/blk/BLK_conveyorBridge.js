@@ -20,7 +20,9 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.rsCur) b.lastRs = b.items.first();
+    if(TIMER.rsCur) {
+      b.lastRs = b.items.first();
+    };
   };
 
 
@@ -61,7 +63,6 @@
 
 
       unloadable: true,
-      allowConfigInventory: true,
 
 
     })

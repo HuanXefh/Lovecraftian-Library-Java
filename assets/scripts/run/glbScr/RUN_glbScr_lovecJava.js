@@ -40,6 +40,13 @@
     RecipeUpdater = fetchClass("lovec.content.RecipeUpdater");
 
 
+    /* <------------------------------ entities ------------------------------ */
+
+
+    /** @global lovec.entities.LCFx */
+    LCFx = fetchClass("lovec.entities.LCFx");
+
+
     /* <------------------------------ lovec.graphics ------------------------------ */
 
 
@@ -49,14 +56,10 @@
     LCDrawf = fetchClass("lovec.graphics.LCDrawf");
     /** @global lovec.graphics.LCDrawP3D */
     LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
-    /** @global lovec.graphics.LCFx */
-    LCFx = fetchClass("lovec.graphics.LCFx");
     /** @global lovec.graphics.LCRgb */
     LCRgb = fetchClass("lovec.graphics.LCRgb");
     /** @global lovec.graphics.LCTexture */
     LCTexture = fetchClass("lovec.graphics.LCTexture");
-    /** @global lovec.graphics.StackDrawable */
-    StackDrawable = fetchClass("lovec.graphics.StackDrawable");
 
 
     /* <------------------------------ lovec.math ------------------------------ */
@@ -66,6 +69,8 @@
     LCLerp = fetchClass("lovec.math.LCLerp");
     /** @global lovec.math.LCMathFunc */
     LCMathFunc = fetchClass("lovec.math.LCMathFunc");
+    /** @global lovec.math.LCProbability */
+    LCProbability = fetchClass("lovec.math.LCProbability");
     /** @global lovec.math.LCRaycast */
     LCRaycast = fetchClass("lovec.math.LCRaycast");
     /** @global lovec.math.LCStatistics */
@@ -76,6 +81,13 @@
     MathMatrix = fetchClass("lovec.math.struct.MathMatrix");
     /** @global lovec.math.struct.MathMeanArray */
     MathMeanArray = fetchClass("lovec.math.struct.MathMeanArray");
+
+
+    /* <------------------------------ lovec.ui ------------------------------ */
+
+
+    /** @global lovec.ui.StackDrawable */
+    StackDrawable = fetchClass("lovec.ui.StackDrawable");
 
 
     /* <------------------------------ lovec.utils ------------------------------ */

@@ -6,12 +6,15 @@ interface GenericMesh extends Disposable {}
 declare class MultiMesh implements GenericMesh {
     constructor(...meshes: Array<GenericMesh>)
 }
+interface MultiMesh extends GenericMesh {}
 /** mindustry.graphics.g3d.MatMesh */
 declare class MatMesh implements GenericMesh {
     constructor(mesh: GenericMesh, mat: Mat3D)
 }
+interface MatMesh extends GenericMesh {}
 /** mindustry.graphics.g3d.PlanetMesh */
 declare class PlanetMesh implements GenericMesh {}
+interface PlanetMesh extends GenericMesh {}
 /** mindustry.graphics.g3d.ShaderSphereMesh */
 declare class ShaderSphereMesh extends PlanetMesh {
     constructor(pla: Planet, shader: Shader, div: number)
@@ -84,6 +87,7 @@ declare class PlanetRenderer implements Disposable {
     readonly atmosphere: Mesh;
     readonly skybox: CubemapMesh;
 }
+interface PlanetRenderer extends Disposable {}
 declare namespace PlanetRenderer {
     interface PlanetInterfaceRenderer {}
 }

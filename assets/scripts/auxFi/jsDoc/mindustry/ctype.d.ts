@@ -1,5 +1,6 @@
 /** mindustry.ctype.Content */
 declare class Content implements java.lang.Comparable<Content> {}
+interface Content extends java.lang.Comparable<Content> {}
 /** mindustry.type.ErrorContent */
 declare class ErrorContent extends Content {}
 /** mindustry.ctype.ContentType */

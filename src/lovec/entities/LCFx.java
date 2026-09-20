@@ -1,4 +1,4 @@
-package lovec.graphics;
+package lovec.entities;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -9,6 +9,8 @@ import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Position;
 import arc.util.Tmp;
+import lovec.graphics.LCDraw;
+import lovec.graphics.LCDrawf;
 import lovec.utils.LCPos;
 import lovec.utils.LCScript;
 import mindustry.Vars;
@@ -136,7 +138,7 @@ public class LCFx {
             Lines.stroke(2f * eff.rotation * eff.fout(shouldDrawSpike ? Interp.pow10Out : Interp.linear), eff.color);
             Draw.alpha(eff.color.a);
             if(shouldDrawSpike) {
-                LCPos.forEachLinePoint(
+                LCPos.eachLinePoint(
                     e_f == null ? eff.x : e_f.getX(),
                     e_f == null ? eff.y : e_f.getY(),
                     e_t.getX(), e_t.getY(),

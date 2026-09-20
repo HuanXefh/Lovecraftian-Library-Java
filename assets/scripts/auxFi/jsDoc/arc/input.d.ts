@@ -1,5 +1,14 @@
 /** arc.input.InputProcessor */
-interface InputProcessor {}
+interface InputProcessor {
+    keyDown(key: KeyCode): boolean
+    keyUp(key: KeyCode): boolean
+    keyTyped(l: java.lang.Character): boolean
+    touchDown(screenX: number, screenY: number, pointer: number, key: KeyCode): boolean
+    touchUp(screenX: number, screenY: number, pointer: number, key: KeyCode): boolean
+    touchDragged(screenX: number, screenY: number, pointer: number): boolean
+    mouseMoved(screenX: number, screenY: number): boolean
+    scrolled(amtX: number, amtY: number): boolean
+}
 
 
 /** arc.input.KeyCode */
@@ -200,6 +209,7 @@ declare class KeyCode implements KeyBind.KeybindValue {
     value: string;
     axis: boolean;
 }
+interface KeyCode extends KeyBind.KeybindValue {}
 declare namespace KeyCode {
     class KeyType {
         static key: KeyType;

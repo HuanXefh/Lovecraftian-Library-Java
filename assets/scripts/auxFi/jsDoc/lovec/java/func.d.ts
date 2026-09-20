@@ -69,6 +69,20 @@ interface _Floatf6<P1, P2, P3, P4, P5, P6> {
 type Floatf6<P1, P2, P3, P4, P5, P6> = _Floatf6<P1, P2, P3, P4, P5, P6>|F6Function<P1, P2, P3, P4, P5, P6, number>
 
 
+/** lovec.utils.func.DoubleDoublef */
+interface _DoubleDoublef {
+    get(param: number): number
+}
+type DoubleDoublef = _DoubleDoublef|FFunction<number, number>
+
+
+/** lovec.utils.func.Doublep */
+interface _Doublep {
+    get(): number
+}
+type Doublep = _Doublep|F0Function<number>
+
+
 /** lovec.utils.func.Cons5 */
 interface _Cons5<P1, P2, P3, P4, P5> {
     get(param1: P1, param2: P2, param3: P3, param4: P4, param5: P5): void

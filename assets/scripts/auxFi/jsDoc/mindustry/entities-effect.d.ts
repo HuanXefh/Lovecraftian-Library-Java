@@ -15,6 +15,7 @@ declare namespace Effect {
         color: Color;
         data: Object;
     }
+    interface EffectContainer extends Scaled {}
 }
 
 

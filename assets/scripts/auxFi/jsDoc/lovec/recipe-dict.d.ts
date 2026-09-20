@@ -24,7 +24,7 @@ type RecipeDictionaryCustomFieldData = {
     /** This mod is required for the field to show up. */
     mod?: string;
     /** Texture region used. */
-    icon?: string;
+    icon?: string|Drawable;
     /** Whether this field is consumed/produced continuously. */
     isContinuous?: boolean;
     /** Whether this field uses amount instead of rate, like vanilla heat. */

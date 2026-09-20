@@ -16,6 +16,7 @@ public class PoolableNativeArray extends NativeArray implements Pool.Poolable {
     };
 
 
+    @Override
     public void reset() {
         LCNativeArray.clear(this);
     };

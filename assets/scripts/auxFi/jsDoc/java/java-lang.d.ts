@@ -36,7 +36,11 @@ declare namespace java {
 
         /** java.lang.String */
         class _String implements java.io.Serializable, CharSequence, Comparable<_String> {}
+        interface _String extends java.io.Serializable, CharSequence, Comparable<_String> {}
         type String = _String|string
+        /** java.lang.StringBuilder */
+        class StringBuilder implements java.io.Serializable, CharSequence, java.io.Appendable {}
+        interface StringBuilder extends java.io.Serializable, CharSequence, java.io.Appendable {}
 
 
         /** java.lang.Object */
@@ -45,14 +49,17 @@ declare namespace java {
 
         /** java.lang.Class */
         class Class<T> implements java.io.Serializable, java.lang.reflect.GenericDeclaration, java.lang.reflect.Type, java.lang.reflect.AnnotatedElement {}
+        interface Class<T> extends java.io.Serializable, java.lang.reflect.GenericDeclaration, java.lang.reflect.Type, java.lang.reflect.AnnotatedElement {}
 
 
         /** java.lang.Package */
         class Package implements java.lang.reflect.AnnotatedElement {}
+        interface Package extends java.lang.reflect.AnnotatedElement {}
 
 
         /** java.lang.Throwable */
         class _Throwable implements java.io.Serializable {}
+        interface _Throwable extends java.io.Serializable {}
         type Throwable = _Throwable|Error
         /** java.lang.Error */
         class _Error extends _Throwable {}
@@ -77,11 +84,15 @@ declare namespace java {
 
 
         /** java.lang.Comparable */
-        interface Comparable<T> {}
-
-
+        interface Comparable<T> {
+            compareTo(obj: T): Integer
+        }
         /** java.lang.Cloneable */
         interface Cloneable {}
+        /** java.lang.Readable */
+        interface Readable {
+            read(cb: java.nio.CharBuffer): Integer
+        }
 
 
 
@@ -113,16 +124,20 @@ declare namespace java {
 
             /** java.lang.reflect.AccessibleObject */
             class AccessibleObject implements AnnotatedElement {}
+            interface AccessibleObject extends AnnotatedElement {}
             /** java.lang.reflect.Field */
             class Field extends AccessibleObject implements Member {}
+            interface Field extends Member {}
             /** java.lang.reflect.Executable */
             class Executable extends AccessibleObject implements Member, GenericDeclaration {}
+            interface Executable extends Member, GenericDeclaration {}
             /** java.lang.reflect.Constructor */
             class Constructor<T> extends Executable {}
             /** java.lang.reflect.Method */
             class Method extends Executable {}
             /** java.lang.reflect.Parameter */
             class Parameter implements AnnotatedElement {}
+            interface Parameter extends AnnotatedElement {}
         }
     }
 }

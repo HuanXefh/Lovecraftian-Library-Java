@@ -134,7 +134,8 @@
 
 
         /**
-         * `INTERNAL`: Asteroid mesh is fixed.
+         * `INTERNAL`
+         * <br> `REALIZED`: Asteroid mesh is fixed.
          * @override
          * @memberof PLA_asteroid
          * @instance
@@ -142,7 +143,8 @@
          */
         skipMeshParse: true,
         /**
-         * `INTERNAL`: Asteroid has no cloud mesh.
+         * `INTERNAL`
+         * <br> `REALIZED`: Asteroid has no cloud mesh.
          * @override
          * @memberof PLA_asteroid
          * @instance
@@ -161,6 +163,7 @@
 
 
         /**
+         * `REALIZED`
          * @override
          * @memberof PLA_asteroid
          * @instance

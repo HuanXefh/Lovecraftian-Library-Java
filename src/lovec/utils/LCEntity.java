@@ -376,19 +376,19 @@ public class LCEntity {
     /**
      * Gets closest target entity.
      */
-    public static @Nullable Object getTarget(float x, float y, Team team, float rad, boolean targetAir, boolean targetGround, @Nullable Boolf boolF) {
+    public static @Nullable Teamc getTarget(float x, float y, Team team, float rad, boolean targetAir, boolean targetGround, @Nullable Boolf<Teamc> boolF) {
         if(rad < 0.0001f) return null;
 
         return Units.closestTarget(team, x, y, rad, ounit -> ounit.checkTarget(targetAir, targetGround) && (boolF == null || boolF.get(ounit)), ot -> targetGround && boolF.get(ot));
     };
     // Overload
-    public static @Nullable Object getTarget(float x, float y, Team team, float rad, boolean targetAir, boolean targetGround) {
+    public static @Nullable Teamc getTarget(float x, float y, Team team, float rad, boolean targetAir, boolean targetGround) {
         return getTarget(x, y, team, rad, targetAir, targetGround, null);
     };
-    public static @Nullable Object getTarget(float x, float y, Team team, boolean targetAir, boolean targetGround, @Nullable Boolf boolF) {
+    public static @Nullable Teamc getTarget(float x, float y, Team team, boolean targetAir, boolean targetGround, @Nullable Boolf<Teamc> boolF) {
         return getTarget(x, y, team, 999999999999f, targetAir, targetGround, boolF);
     };
-    public static @Nullable Object getTarget(float x, float y, Team team, boolean targetAir, boolean targetGround) {
+    public static @Nullable Teamc getTarget(float x, float y, Team team, boolean targetAir, boolean targetGround) {
         return getTarget(x, y, team, targetAir, targetGround, null);
     };
 
@@ -419,7 +419,7 @@ public class LCEntity {
     /**
      * Gets targets linked by a lightning chain.
      */
-    public static NativeArray getChainTargets(@Nullable NativeArray contArr, float x, float y, Team team, float rad, float chainRad, float chainCap, @Nullable Boolf2 rayCheck) {
+    public static NativeArray getChainTargets(@Nullable NativeArray contArr, float x, float y, Team team, float rad, float chainRad, float chainCap, @Nullable Boolf2<Vec2, Vec2> rayCheck) {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getChainTargets.newArr");
         if(rad < 0.0001f) return arr;
 

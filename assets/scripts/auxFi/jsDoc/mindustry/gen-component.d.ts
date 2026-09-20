@@ -26,8 +26,6 @@ interface Damagec extends Entityc {}
 interface Teamc extends Entityc, Posc {}
 /** mindustry.gen.Velc */
 interface Velc extends Entityc, Posc {}
-/** mindustry.gen.Ranged */
-interface Ranged extends Posc, Teamc {}
 /** mindustry.gen.Itemsc */
 interface Itemsc extends Entityc, Posc {}
 /** mindustry.gen.Statusc */

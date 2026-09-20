@@ -1,5 +1,6 @@
 /** arc.scene.Scene */
 declare class Scene implements InputProcessor {}
+interface Scene extends InputProcessor {}
 
 
 /** arc.scene.Element */
@@ -31,6 +32,7 @@ declare namespace Label {
 
 /** arc.scene.ui.TextField */
 declare class TextField extends Element implements Disposable {}
+interface TextField extends Disposable {}
 declare namespace TextField {
     interface TextFieldListener {
         keyTyped(textField: TextField, l: java.lang.Character): void
@@ -239,17 +241,36 @@ declare class Style {}
 
 
 /** arc.scene.style.Drawable */
-interface Drawable {}
+interface Drawable {
+    draw(x: number, y: number, w: number, h: number): void
+    draw(x: number, y: number, oriX: number, oriY: number, w: number, h: number, sclX: number, sclY: number, ang: number): void
+    getLeftWidth(): number
+    getRightWidth(): number
+    getTopHeight(): number
+    getBottomHeight(): number
+    getMinWidth(): number
+    getMinHeight(): number
+    setLeftWidth(w: number): void
+    setRightWidth(w: number): void
+    setTopHeight(h: number): void
+    setBottomHeight(h: number): void
+    setMinWidth(w: number): void
+    setMinHeight(h: number): void
+    imageSize(): number
+}
 /** arc.scene.style.BaseDrawable */
 declare class BaseDrawable implements Drawable {}
+interface BaseDrawable extends Drawable {}
 /** arc.scene.style.TransformDrawable */
 interface TransformDrawable extends Drawable {}
 /** arc.scene.style.TextureRegionDrawable */
 declare class TextureRegionDrawable extends BaseDrawable implements TransformDrawable {}
+interface TextureRegionDrawable extends TransformDrawable {}
 /** arc.scene.style.TiledDrawable */
 declare class TiledDrawable extends TextureRegionDrawable {}
 /** arc.scene.style.NinePatchDrawable */
 declare class NinePatchDrawable extends BaseDrawable implements TransformDrawable {}
+interface NinePatchDrawable extends TransformDrawable {}
 /** arc.scene.style.ScaledNinePatchDrawable */
 declare class ScaledNinePatchDrawable extends NinePatchDrawable {}
 
@@ -276,6 +297,7 @@ declare class Touchable {}
 
 /** arc.scene.event.SceneEvent */
 declare class SceneEvent implements Pool.Poolable {}
+interface SceneEvent extends Pool.Poolable {}
 /** arc.scene.event.InputEvent */
 declare class InputEvent extends SceneEvent {}
 /** arc.scene.event.SceneResizeEvent */
@@ -285,19 +307,27 @@ declare class VisibilityEvent extends SceneEvent {}
 
 
 /** arc.scene.event.EventListener */
-interface EventListener {}
+interface EventListener {
+    handle(ev: SceneEvent): boolean
+}
 /** arc.scene.event.ChangeListener */
 declare class ChangeListener implements EventListener {}
+interface ChangeListener extends EventListener {}
 /** arc.scene.event.ElementGestureListener */
 declare class ElementGestureListener implements EventListener {}
+interface ElementGestureListener extends EventListener {}
 /** arc.scene.event.FocusListener */
 declare class FocusListener implements EventListener {}
+interface FocusListener extends EventListener {}
 /** arc.scene.event.ResizeListener */
 declare class ResizeListener implements EventListener {}
+interface ResizeListener extends EventListener {}
 /** arc.scene.event.VisibilityListener */
 declare class VisibilityListener implements EventListener {}
+interface VisibilityListener extends EventListener {}
 /** arc.scene.event.InputListener */
 declare class InputListener implements EventListener {}
+interface InputListener extends EventListener {}
 /** arc.scene.event.ClickListener */
 declare class ClickListener extends InputListener {}
 /** arc.scene.event.IbeamCursorListener */

@@ -8,8 +8,6 @@ import mindustry.gen.Building;
 import mindustry.type.Liquid;
 import rhino.*;
 
-import java.util.Objects;
-
 import static lovec.utils.LCScript.*;
 
 /**

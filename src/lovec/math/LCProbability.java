@@ -1,7 +1,7 @@
-package lovec.math.struct;
+package lovec.math;
 
-import arc.func.Prov;
 import arc.math.Rand;
+import lovec.utils.func.Doublep;
 
 public class LCProbability {
 
@@ -13,7 +13,7 @@ public class LCProbability {
     /**
      * Generates distribution using given random number generator.
      */
-    public static double[] generateDistribution(int size, Prov<Double> numF) {
+    public static double[] generateDistribution(int size, Doublep numF) {
         double[] result = new double[size];
         int i = 0;
         while(i < size) {

@@ -72,12 +72,12 @@ public class LCProp {
     public static float getLayer(Object obj) {
         if(obj instanceof Unit unit) {
             return unit.elevation() > 0.5f || (unit.type.flying && unit.dead) ?
-                    unit.type.flyingLayer :
-                    (unit.type.groundLayer + Mathf.clamp(unit.hitSize() / 4000f, 0f, 0.01f));
+                unit.type.flyingLayer :
+                (unit.type.groundLayer + Mathf.clamp(unit.hitSize() / 4000f, 0f, 0.01f));
         } else if(obj instanceof Block blk) {
             return blk.underBullets ?
-                    Layer.blockUnder :
-                    Layer.block;
+                Layer.blockUnder :
+                Layer.block;
         };
         return 0f;
     };

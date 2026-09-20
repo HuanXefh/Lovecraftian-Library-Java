@@ -20,6 +20,12 @@ declare function floatf5<P1, P2, P3, P4, P5>(fun: (param1: P1, param2: P2, param
 declare function floatf6<P1, P2, P3, P4, P5, P6>(fun: (param1: P1, param2: P2, param3: P3, param4: P4, param5: P5, param6: P6) => number): Floatf6<P1, P2, P3, P4, P5, P6>
 
 
+declare function doubledoublef(fun: (param: number) => number): DoubleDoublef
+
+
+declare function doublep(fun: () => number): Doublep
+
+
 declare function cons2<P1, P2>(fun: (param1: P1, param2: P2) => void): Cons2<P1, P2>
 declare function cons3<P1, P2, P3>(fun: (param1: P1, param2: P2, param3: P3) => void): Cons3<P1, P2, P3>
 declare function cons4<P1, P2, P3, P4>(fun: (param1: P1, param2: P2, param3: P3, param4: P4) => void): Cons4<P1, P2, P3, P4>

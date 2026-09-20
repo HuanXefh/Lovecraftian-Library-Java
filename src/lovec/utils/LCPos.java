@@ -25,7 +25,7 @@ import rhino.NativeArray;
 public class LCPos {
 
 
-    public static Point2[][] sizeOffs = {
+    public static final Point2[][] sizeOffs = {
         {},
         {new Point2(0, 0)},
         {
@@ -104,7 +104,6 @@ public class LCPos {
     // Overload
     public static float calcTileDst(@Nullable Tile t1, @Nullable Tile t2) {
         if(t1 == null || t2 == null) return Float.MAX_VALUE;
-
         return calcTileDst(t1.x, t1.y, t2.x, t2.y);
     };
 
@@ -206,7 +205,7 @@ public class LCPos {
     /**
      * Iterates through each point on a line.
      */
-    public static void forEachLinePoint(float x1, float y1, float x2, float y2, Cons3<Float, Float, Float> cons3, float segScl, boolean noStart, boolean noEnd) {
+    public static void eachLinePoint(float x1, float y1, float x2, float y2, Cons3<Float, Float, Float> cons3, float segScl, boolean noStart, boolean noEnd) {
         int segAmt = Mathf.ceil(Mathf.dst(x1, y1, x2, y2) / segScl / 48f);
         int i = noStart ? 1 : 0;
         int iCap = noEnd ? segAmt : (segAmt + 1);
@@ -481,9 +480,7 @@ public class LCPos {
     public static NativeArray getTilesLinked(@Nullable NativeArray contArr, @Nullable Tile t) {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesLinked.newArr");
         if(t == null) return arr;
-
         t.getLinkedTiles(ot -> LCNativeArray.push(arr, ot));
-
         return arr;
     };
 
@@ -493,7 +490,6 @@ public class LCPos {
      */
     public static void eachTileLinked(@Nullable Tile t, Cons<Tile> cons) {
         if(t == null) return;
-
         t.getLinkedTiles(cons);
     };
 

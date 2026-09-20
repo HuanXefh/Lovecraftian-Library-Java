@@ -28,8 +28,15 @@ declare class Interval {
 }
 
 
+/** arc.util.Eachable */
+interface Eachable<T> {
+    each(cons: Cons<T>): void
+}
 /** arc.util.Disposable */
-interface Disposable {}
+interface Disposable {
+    dispose(): void
+    isDisposed(): boolean
+}
 
 
 /** arc.util.pooling.Pool */
@@ -41,7 +48,9 @@ declare class Pool<T> {
     clear(): void
 }
 declare namespace Pool {
-    interface Poolable {}
+    interface Poolable {
+        reset(): void
+    }
 }
 /** arc.util.pooling.Pools */
 declare class Pools {
@@ -272,6 +281,7 @@ declare class Writes implements java.io.Closeable {
     bool(bool: java.lang.Boolean): void
     str(str: java.lang.String): void
 }
+interface Writes extends java.io.Closeable {}
 /** arc.util.io.Reads */
 declare class Reads implements java.io.Closeable {
     input: java.io.DataInput;
@@ -293,6 +303,7 @@ declare class Reads implements java.io.Closeable {
     str(maxLen: number): java.lang.String
     skip(amt: number): void
 }
+interface Reads extends java.io.Closeable {}
 
 
 /** arc.util.serialization.Base64Coder */
@@ -343,6 +354,7 @@ declare namespace Json {
 interface JsonWriter extends java.io.Closeable {}
 /** arc.util.serialization.StringJsonWriter */
 declare class StringJsonWriter extends java.io.Writer implements JsonWriter {}
+interface StringJsonWriter extends JsonWriter {}
 /** arc.util.serialization.Jval */
 interface Jval {}
 declare namespace Jval {
@@ -368,6 +380,8 @@ declare namespace Jval {
         static nil: Jtype;
     }
 }
+/** arc.util.serialization.AllowSerialization */
+interface AllowSerialization {}
 
 
 /** arc.util.Http */

@@ -36,6 +36,7 @@ declare namespace Damage {
 
         set(x: number, y: number, target: Teamc): this
     }
+    interface Collided extends Pool.Poolable {}
 }
 
 
@@ -48,7 +49,6 @@ declare class Lightning {
 
 
 /** mindustry.entities.EntityGroup */
-// @ts-ignore
 declare class EntityGroup<T> implements Iterable<T> {
     static nextId(): number
 
@@ -73,6 +73,7 @@ declare class EntityGroup<T> implements Iterable<T> {
     intersect(x: number, y: number, w: number, h: number, cons: Cons<T>): void
     intersect(x: number, y: number, w: number, h: number, boolF: Boolf<T>): boolean
 }
+interface EntityGroup<T> extends Iterable<T> {}
 
 
 /** mindustry.entities.Puddles */
@@ -178,6 +179,7 @@ declare class BuildPlan implements Position, QuadTree.QuadTreeObject {
     static pointConfig(blk: Block, cfg: Object, cons: Cons<Point2>): Object
     pointConfig(cons: Cons<Point2>): void
 }
+interface BuildPlan extends Position, QuadTree.QuadTreeObject {}
 
 
 /** mindustry.entities.units.StatusEntry */

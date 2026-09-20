@@ -6,7 +6,7 @@
 
 
     /**
-     * Methods to read the bundle.
+     * Methods to read {@link Core.bundle}.
      * @module lovec/mdl/MDL_bundle
      */
 

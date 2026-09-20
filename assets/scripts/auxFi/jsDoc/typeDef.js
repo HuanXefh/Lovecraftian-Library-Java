@@ -17,26 +17,6 @@
 */
 
 
-    /** @global mindustry.world.blocks.payloads.Payload */
-    class Payload {};
-    /** @global mindustry.world.blocks.payloads.BuildPayload */
-    class BuildPayload extends Payload {};
-    /** @global mindustry.world.blocks.payloads.UnitPayload */
-    class UnitPayload extends Payload {};
-    /** @global mindustry.world.blocks.RotBlock */
-    class RotBlock {};
-    /** @global mindustry.world.blocks.ControlBlock */
-    class ControlBlock {};
-    /** @global mindustry.world.blocks.UnitTetherBlock */
-    class UnitTetherBlock {};
-    /** @global mindustry.world.blocks.distribution.ChainedBuilding */
-    class ChainedBuilding {};
-    /** @global mindustry.world.blocks.heat.HeatBlock */
-    class HeatBlock {};
-    /** @global mindustry.world.blocks.heat.HeatConsumer */
-    class HeatConsumer {};
-
-
     /** @global mindustry.world.blocks.ConstructBlock */
     class ConstructBlock extends Block {};
     /** @global mindustry.world.blocks.campaign.Accelerator */

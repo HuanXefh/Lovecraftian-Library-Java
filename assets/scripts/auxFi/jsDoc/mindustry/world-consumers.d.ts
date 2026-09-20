@@ -28,7 +28,7 @@ declare class ConsumeItemFilter extends Consume {
 }
 /** mindustry.world.consumers.ConsumeItemList */
 declare class ConsumeItemList extends ConsumeItemFilter {
-    itemMultipliers: ObjectFloatMap<Item>
+    itemMultipliers: ObjectFloatMap<Item>;
 
     constructor()
     constructor(...items: Array<Item>)
@@ -48,7 +48,7 @@ declare class ConsumeItemExplode extends ConsumeItemFilter {
 }
 /** mindustry.world.consumers.ConsumeItemEfficiency */
 declare class ConsumeItemEfficiency extends ConsumeItemFilter {
-    itemDurationMultipliers: ObjectFloatMap<Item>
+    itemDurationMultipliers: ObjectFloatMap<Item>;
 
     constructor()
     constructor(filter: Boolf<Item>)
@@ -104,7 +104,7 @@ declare class ConsumeLiquids extends Consume {
 }
 /** mindustry.world.consumers.ConsumeLiquidsDynamic */
 declare class ConsumeLiquidsDynamic extends Consume {
-    readonly liquids: Func<Building, Array<LiquidStack>>
+    readonly liquids: Func<Building, Array<LiquidStack>>;
 
     constructor(liqStacksF: Func<Building, Array<LiquidStack>>)
 }

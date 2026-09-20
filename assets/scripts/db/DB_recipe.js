@@ -543,20 +543,17 @@ const db = {
 
                 /* <------------------------------ New Horizon ------------------------------ */
 
-                "new-horizon-photothermal-generator", function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
-                    dictProdItem[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, mergeObj({time: 120.0}, data));
-                },
-
-                "new-horizon-geological-photothermal-generator", function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
+                [
+                    "new-horizon-photothermal-generator",
+                    "new-horizon-geological-photothermal-generator",
+                    "new-horizon-differential-reactor",
+                ],
+                function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
                     dictProdItem[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, mergeObj({time: 120.0}, data));
                 },
 
                 "new-horizon-vector-condenser", function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
                     dictProdItem[Vars.content.item("new-horizon-hard-light").id].push(blk, 2, mergeObj({time: 120.0}, data));
-                },
-
-                "new-horizon-differential-reactor", function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
-                    dictProdItem[Vars.content.item("new-horizon-hard-light").id].push(blk, 1, mergeObj({time: 120.0}, data));
                 },
 
                 "new-horizon-photon-panel", function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {

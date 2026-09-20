@@ -7,6 +7,7 @@ import arc.math.geom.Point3;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.struct.ObjectMap;
+import arc.struct.ObjectSet;
 import arc.struct.Seq;
 
 /**
@@ -16,6 +17,7 @@ public class LCAirObjects {
 
 
     public static final Seq seq = new Seq();
+    public static final ObjectSet objectSet = new ObjectSet();
     public static final ObjectMap objectMap = new ObjectMap();
 
     public static final Point2 point2 = new Point2();

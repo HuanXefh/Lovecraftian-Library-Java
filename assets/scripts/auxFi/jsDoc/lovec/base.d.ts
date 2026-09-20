@@ -36,7 +36,7 @@ type ENumber = number;
 type BundlePiece = string;
 
 
-type ContentTypeGn = Class<Object>|string|null;
+type ContentTypeGn = Class<Object>|string|Array<Class<Object>|string>|null;
 
 
 /** `ROW`: item_gn, amt. */

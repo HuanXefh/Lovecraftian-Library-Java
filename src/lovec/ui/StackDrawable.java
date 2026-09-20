@@ -1,4 +1,4 @@
-package lovec.graphics;
+package lovec.ui;
 
 import arc.math.geom.Vec2;
 import arc.scene.style.BaseDrawable;

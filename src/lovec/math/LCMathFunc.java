@@ -1,7 +1,7 @@
 package lovec.math;
 
-import arc.func.Func;
 import arc.struct.IntMap;
+import lovec.utils.func.DoubleDoublef;
 
 /**
  * Common math functions.
@@ -169,11 +169,11 @@ public class LCMathFunc {
     /**
      * Derivative of some function at `x`.
      */
-    public static double derivative(double x, Func<Double, Double> func, double delta) {
+    public static double derivative(double x, DoubleDoublef func, double delta) {
         return (func.get(x + delta) - func.get(x)) / delta;
     };
     // Overload
-    public static double derivative(double x, Func<Double, Double> func) {
+    public static double derivative(double x, DoubleDoublef func) {
         return derivative(x, func, 1e-5);
     };
 
@@ -181,11 +181,11 @@ public class LCMathFunc {
     /**
      * Variant of {@link #derivative} using central difference method for better precision.
      */
-    public static double derivativePrecise(double x, Func<Double, Double> func, double delta) {
+    public static double derivativePrecise(double x, DoubleDoublef func, double delta) {
         return (func.get(x + delta) - func.get(x - delta)) / (delta * 2);
     };
     // Overload
-    public static double derivativePrecise(double x, Func<Double, Double> func) {
+    public static double derivativePrecise(double x, DoubleDoublef func) {
         return derivativePrecise(x, func, 1e-10);
     };
 
@@ -193,7 +193,7 @@ public class LCMathFunc {
     /**
      * Integral of some function over (base, cap), using trapezoidal rule.
      */
-    public static double integral(double base, double cap, Func<Double, Double> func, int segAmt) {
+    public static double integral(double base, double cap, DoubleDoublef func, int segAmt) {
         double val = (func.get(cap) + func.get(base)) * 0.5;
         double dx = (cap - base) / segAmt;
         for(int i = 1; i < segAmt; i++) {
@@ -202,7 +202,7 @@ public class LCMathFunc {
         return val;
     };
     // Overload
-    public static double integral(double base, double cap, Func<Double, Double> func) {
+    public static double integral(double base, double cap, DoubleDoublef func) {
         return integral(base, cap, func, 1000);
     };
 
@@ -210,7 +210,7 @@ public class LCMathFunc {
     /**
      * Variant of {@link #integral} using Simpson's rule for better precision.
      */
-    public static double integralPrecise(double base, double cap, Func<Double, Double> func, int segAmt) {
+    public static double integralPrecise(double base, double cap, DoubleDoublef func, int segAmt) {
         if(segAmt % 2 != 0) segAmt++;
         double val = func.get(base) + func.get(cap);
         double dx = (func.get(cap) - func.get(base)) / segAmt;
@@ -220,7 +220,7 @@ public class LCMathFunc {
         return val * dx / 3;
     };
     // Overload
-    public static double integralPrecise(double base, double cap, Func<Double, Double> func) {
+    public static double integralPrecise(double base, double cap, DoubleDoublef func) {
         return integralPrecise(base, cap, func, 1000);
     };
 

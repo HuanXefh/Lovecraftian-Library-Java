@@ -67,9 +67,9 @@ public class LCStatistics {
 
 
     /**
-     * Calculates variation.
+     * Calculates variance.
      */
-    public static double variation(NativeArray xs, double mean, boolean notSample) {
+    public static double variance(NativeArray xs, double mean, boolean notSample) {
         double sum = 0;
         int i = 0;
         long n = xs.getLength();
@@ -81,21 +81,21 @@ public class LCStatistics {
         return sum / (notSample ? n : (n - 1));
     };
     // Overload
-    public static double variation(NativeArray xs, double mean) {
-        return variation(xs, mean, false);
+    public static double variance(NativeArray xs, double mean) {
+        return variance(xs, mean, false);
     };
-    public static double variation(NativeArray xs, boolean notSample) {
-        return variation(xs, mean(xs), notSample);
+    public static double variance(NativeArray xs, boolean notSample) {
+        return variance(xs, mean(xs), notSample);
     };
-    public static double variation(NativeArray xs) {
-        return variation(xs, false);
+    public static double variance(NativeArray xs) {
+        return variance(xs, false);
     };
 
 
     /**
-     * Calculates covariation.
+     * Calculates covariance.
      */
-    public static double covariation(NativeArray xs, NativeArray ys, double meanX, double meanY, boolean notSample) throws IllegalArgumentException {
+    public static double covariance(NativeArray xs, NativeArray ys, double meanX, double meanY, boolean notSample) throws IllegalArgumentException {
         long n = xs.getLength();
         if(n != ys.getLength()) throw new IllegalArgumentException("Unmatched array length!");
 
@@ -109,26 +109,26 @@ public class LCStatistics {
         return sum / (notSample ? n : (n - 1));
     };
     // Overload
-    public static double covariation(NativeArray xs, NativeArray ys, double meanX, double meanY) {
-        return covariation(xs, ys, meanX, meanY, false);
+    public static double covariance(NativeArray xs, NativeArray ys, double meanX, double meanY) {
+        return covariance(xs, ys, meanX, meanY, false);
     };
-    public static double covariation(NativeArray xs, NativeArray ys, boolean notSample) {
-        return covariation(xs, ys, mean(xs), mean(ys), notSample);
+    public static double covariance(NativeArray xs, NativeArray ys, boolean notSample) {
+        return covariance(xs, ys, mean(xs), mean(ys), notSample);
     };
-    public static double covariation(NativeArray xs, NativeArray ys) {
-        return covariation(xs, ys, false);
+    public static double covariance(NativeArray xs, NativeArray ys) {
+        return covariance(xs, ys, false);
     };
 
 
     /**
-     * Calculates variation of differences.
+     * Calculates variance of differences.
      */
-    public static double differenceVariation(NativeArray xs, NativeArray ys, boolean notSample) throws IllegalArgumentException {
-        return variation(difference(LCScript.ensureArray("LCStatistics.differenceVariation.tmpArr"), xs, ys), notSample);
+    public static double differenceVariance(NativeArray xs, NativeArray ys, boolean notSample) throws IllegalArgumentException {
+        return variance(difference(LCScript.ensureArray("LCStatistics.differenceVariation.tmpArr"), xs, ys), notSample);
     };
     // Overload
-    public static double differenceVariation(NativeArray xs, NativeArray ys) {
-        return differenceVariation(xs, ys, false);
+    public static double differenceVariance(NativeArray xs, NativeArray ys) {
+        return differenceVariance(xs, ys, false);
     };
 
 

@@ -82,9 +82,9 @@ const BOX_trigger = new CLS_objectBox({
      */
     majorIter: {
         start: new CLS_eventTrigger("lovec-major-iter-start"),
-        /** `ARGS`: b, isActive. */
+        /** `ARGS`: `Building` - b, `boolean` - isActive. */
         building: new CLS_eventTrigger("lovec-major-iter-building"),
-        /** `ARGS`: unit. */
+        /** `ARGS`: `Unit` - unit. */
         unit: new CLS_eventTrigger("lovec-major-iter-unit"),
         end: new CLS_eventTrigger("lovec-major-iter-end"),
     },

@@ -156,7 +156,7 @@ declare class Mesh {}
 
 
 /** arc.graphics.Texture */
-declare class Texture {}
+declare class Texture extends GLTexture {}
 /** arc.graphics.TextureFilter */
 declare class TextureFilter {
     static nearest: TextureFilter;
@@ -178,9 +178,28 @@ declare class TextureRegion {}
 
 
 /** arc.graphics.Pixmap */
-declare class Pixmap {}
+declare class Pixmap implements Disposable {}
+interface Pixmap extends Disposable {}
 /** arc.graphics.g2d.PixmapRegion */
-declare class PixmapRegion {}
+declare class PixmapRegion {
+    pixmap: Pixmap;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+
+    constructor(pixmap: Pixmap)
+    constructor(pixmap: Pixmap, x: number, y: number, width: number, height: number)
+
+    get(x: number, y: number): number
+    get(x: number, y: number, color: Color): number
+    getRaw(x: number, y: number): number
+    getA(x: number, y: number): number
+    set(pixmap: Pixmap): this
+    set(pixmap: Pixmap, x: number, y: number, width: number, height: number): this
+    crop(): Pixmap
+    crop(x: number, y: number, width: number, height: number): Pixmap
+}
 /** arc.graphics.Pixmaps */
 declare class Pixmaps {
     static blankPixmap(): Pixmap
@@ -213,13 +232,16 @@ declare class PixmapIO {
     static readPNG(bytes: Array<java.lang.Byte>): Pixmap
 }
 /** arc.graphics.PixmapPacker */
-declare class PixmapPacker {}
+declare class PixmapPacker implements Disposable {}
+interface PixmapPacker extends Disposable {}
 
 
 /** arc.graphics.g2d.Font */
-declare class Font {}
+declare class Font implements Disposable {}
+interface Font extends Disposable {}
 /** arc.graphics.g2d.GlyphLayout */
-declare class GlyphLayout {}
+declare class GlyphLayout implements Pool.Poolable {}
+interface GlyphLayout extends Pool.Poolable {}
 
 
 /** arc.graphics.GL20 */
@@ -230,5 +252,6 @@ interface GL30 extends GL20 {}
 
 /** arc.graphics.GLTexture */
 declare class GLTexture implements Disposable {}
+interface GLTexture extends Disposable {}
 /** arc.graphics.Cubemap */
 declare class Cubemap extends GLTexture {}

@@ -15,6 +15,7 @@ declare class Category {
 
 /** mindustry.world.Block */
 declare class Block extends UnlockableContent implements Senseable {}
+interface Block extends Senseable {}
 
 
 /** mindustry.type.Item */
@@ -39,6 +40,7 @@ declare class Item extends UnlockableContent implements Senseable {
     isOnPlanet(pla: Planet): boolean
     isHidden(): boolean
 }
+interface Item extends Senseable {}
 /** mindustry.type.Liquid */
 declare class Liquid extends UnlockableContent implements Senseable {
     static readonly animationFrames: number;
@@ -68,12 +70,14 @@ declare class Liquid extends UnlockableContent implements Senseable {
     particleSpacing: number;
     canStayOn: ObjectSet<Liquid>;
 }
+interface Liquid extends Senseable {}
 /** mindustry.type.CellLiquid */
 declare class CellLiquid extends Liquid {}
 
 
 /** mindustry.type.UnitType */
 declare class UnitType extends UnlockableContent implements Senseable {}
+interface UnitType extends Senseable {}
 /** mindustry.type.ErekirUnitType */
 declare class ErekirUnitType extends UnitType {}
 /** mindustry.type.MissileUnitType */
@@ -242,6 +246,7 @@ declare class TeamEntry extends UnlockableContent {
 
 /** mindustry.type.Weapon */
 declare class Weapon implements java.lang.Cloneable {}
+interface Weapon extends java.lang.Cloneable {}
 /** mindustry.type.weapons.BuildWeapon */
 declare class BuildWeapon extends Weapon {}
 /** mindustry.type.weapons.MineWeapon */

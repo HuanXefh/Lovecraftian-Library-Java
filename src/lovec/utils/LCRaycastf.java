@@ -23,8 +23,8 @@ public class LCRaycastf {
      */
     public static boolean checkInsulated(float x1, float y1, float x2, float y2, @Nullable Team team) {
         return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) -> {
-           Building ob = Vars.world.build(tx, ty);
-           return ob != null && ob.isInsulated() && (team == null || ob.team != team);
+            Building ob = Vars.world.build(tx, ty);
+            return ob != null && ob.isInsulated() && (team == null || ob.team != team);
         });
     };
 

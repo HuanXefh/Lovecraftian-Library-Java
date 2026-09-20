@@ -12,6 +12,7 @@ declare class Predict {
 
 /** mindustry.entities.bullet.BulletType */
 declare class BulletType extends Content implements java.lang.Cloneable {}
+interface BulletType extends java.lang.Cloneable {}
 
 
 /** mindustry.entities.bullet.MultiBulletType */

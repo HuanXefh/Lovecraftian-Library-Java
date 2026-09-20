@@ -12,8 +12,10 @@ declare class BlockIndexer {}
 
 /** mindustry.ai.Pathfinder */
 declare class Pathfinder implements java.lang._Runnable {}
+interface Pathfinder extends java.lang._Runnable {}
 /** mindustry.ai.ControlPathFinder */
 declare class ControlPathFinder implements java.lang._Runnable {}
+interface ControlPathFinder extends java.lang._Runnable {}
 
 
 /** mindustry.ai.UnitCommand */
@@ -50,8 +52,10 @@ declare class UnitGroup {}
 interface UnitController {}
 /** mindustry.ai.types.NoAI */
 declare class NoAI implements UnitController {}
+interface NoAI extends UnitController {}
 /** mindustry.entities.units.AIController */
 declare class AIController implements UnitController {}
+interface AIController extends UnitController {}
 /** mindustry.ai.types.AssemblerAI */
 declare class AssemblerAI extends AIController {}
 /** mindustry.ai.types.BoostAI */

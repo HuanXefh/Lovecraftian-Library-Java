@@ -99,20 +99,74 @@ declare class Point3 {
     z: number;
 }
 /** arc.math.geom.Position */
-interface Position {}
+interface Position {
+    getX(): number
+    getY(): number
+    angleTo(oposIns: Position): number
+    angleTo(x: number, y: number): number
+    dst(oposIns: Position): number
+    dst(x: number, y: number): number
+    dst2(oposIns: Position): number
+    dst2(x: number, y: number): number
+    within(oposIns: Position, dst: number): number
+    within(x: number, y: number, dst: number): number
+}
 /** arc.math.geom.Vector */
-interface Vector<T extends Vector<T>> {}
+interface Vector<T extends Vector<T>> {
+    cpy(): T
+
+    len(): number
+    len2(): number
+    limit(limit: number): T
+    limit2(limit2: number): T
+    setLength(len: number): T
+    setLength2(len2: number): T
+    setZero(): T
+    clamp(min: number, max: number): T
+    set(vec: T): T
+    add(vec: T): T
+    plus(vec: T): T
+    sub(vec: T): T
+    minus(vec: T): T
+    scl(scl: number): T
+    scl(vec: T): T
+    unaryMinus(): T
+    dot(vec: T): T
+    times(vec: T): T
+    div(vec: T): T
+    nor(): T
+    mulAdd(vec: T, scl: number): T
+    mulAdd(vec: T, mulVec: T): T
+    dst(vec: T): number
+    dst2(vec: T): number
+    lerp(vec: T, a: number): T
+    interpolate(vec: T, a: number, interp: Interp): T
+    setToRandomDirection(): T
+    isUnit(): boolean
+    isUnit(margin: number): boolean
+    isZero(): boolean
+    isZero(margin: number): boolean
+    epsilonEquals(vec: T, epsilon: number): boolean
+    isOnLine(vec: T, epsilon?: number): boolean
+    isCollinear(vec: T, epsilon?: number): boolean
+    isCollinearOpposite(vec: T, epsilon?: number): boolean
+    isPerpendicular(vec: T, epsilon?: number): boolean
+    hasSameDirection(vec: T): boolean
+    hasOppositeDirection(vec: T): boolean
+}
 /** arc.math.Vec2 */
 declare class Vec2 implements Vector<Vec2>, Position {
     x: number;
     y: number;
 }
+interface Vec2 extends Vector<Vec2>, Position {}
 /** arc.math.Vec3 */
 declare class Vec3 implements Vector<Vec3>, Position {
     x: number;
     y: number;
     z: number;
 }
+interface Vec3 extends Vector<Vec3>, Position {}
 
 
 /** arc.math.Mat */
@@ -125,14 +179,19 @@ declare class Affine2 {}
 interface Shape2D {}
 /** arc.math.geom.Rect */
 declare class Rect implements Shape2D {}
+interface Rect extends Shape2D {}
 /** arc.math.geom.Circle */
 declare class Circle implements Shape2D {}
+interface Circle extends Shape2D {}
 /** arc.math.geom.Ellipse */
 declare class Ellipse implements Shape2D {}
+interface Ellipse extends Shape2D {}
 /** arc.math.geom.Polyline */
 declare class Polyline implements Shape2D {}
+interface Polyline extends Shape2D {}
 /** arc.math.geom.Polygon */
 declare class Polygon implements Shape2D {}
+interface Polygon extends Shape2D {}
 
 
 /** arc.math.geom.Geometry */
@@ -163,6 +222,7 @@ declare class Bezier<T extends Vector<T>> implements Path<T> {
     derivativeAt(out: T, a: number): T
     approxLength(sampleAmt: number): number
 }
+interface Bezier<T extends Vector<T>> extends Path<T> {}
 
 
 /** arc.math.geom.QuadTree */

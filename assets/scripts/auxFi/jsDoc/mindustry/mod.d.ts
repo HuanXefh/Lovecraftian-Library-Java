@@ -18,6 +18,7 @@ declare namespace Mods {
         iconTexture: Texture|null;
         loader: java.lang.ClassLoader|null;
     }
+    interface LoadedMod extends Publishable, Disposable {}
     class ModMeta {
         name: string;
         internalName: string;
@@ -62,5 +63,7 @@ declare class ClassMap {
 declare class ContentParser {}
 
 
+/** mindustry.mod.DataManager */
+declare class DataManager {}
 /** mindustry.mod.DataAssetCache */
 declare class DataAssetCache {}

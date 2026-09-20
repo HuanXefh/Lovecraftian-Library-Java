@@ -17,23 +17,34 @@
 */
 
 
+  /**
+   * Gets a random key in `obj`.
+   * @template K
+   * @param {Object<K, Object>} obj
+   * @return {K}
+   */
+    Object.randKey = function(obj) {
+        return Object.keys(obj).random();
+    };
+
+
     /**
-     * Gets a random key in `obj`.
+     * Variant of {@link Object.randKey} with result cached.
      * @template K
      * @template V
      * @param {Object<K, V>} obj
      * @return {K}
      */
-    Object.randKey = function(obj) {
-        let keys = Object.randKey.cacheMap.get(obj);
+    Object.randKeyCached = function(obj) {
+        let keys = Object.randKeyCached.cacheMap.get(obj);
         if(keys == null) {
             keys = Object.keys(obj);
-            Object.randKey.cacheMap.put(obj, keys);
+            Object.randKeyCached.cacheMap.put(obj, keys);
         };
         return keys.random();
     };
     /** @type {ObjectMap<Object, Array>} */
-    Object.randKey.cacheMap = new ObjectMap();
+    Object.randKeyCached.cacheMap = new ObjectMap();
 
 
     /**

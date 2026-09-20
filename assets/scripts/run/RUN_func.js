@@ -54,6 +54,8 @@
     create("floatf4", fetchClass("lovec.utils.func.Floatf4"));
     create("floatf5", fetchClass("lovec.utils.func.Floatf5"));
     create("floatf6", fetchClass("lovec.utils.func.Floatf6"));
+    create("doubledoublef", fetchClass("lovec.utils.func.DoubleDoublef"));
+    create("doublep", fetchClass("lovec.utils.func.Doublep"));
     create("cons2", Cons2);
     create("cons3", Cons3);
     create("cons4", Cons4);

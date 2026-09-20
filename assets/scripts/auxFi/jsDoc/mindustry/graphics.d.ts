@@ -164,3 +164,4 @@ declare class CubemapMesh implements Disposable {
     setCubemap(cubemap: Cubemap): void
     render(proj: Mat3D): void
 }
+interface CubemapMesh extends Disposable {}

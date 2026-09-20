@@ -12,6 +12,7 @@ declare class TextureAtlas implements Disposable {
     drawable(name: string): Drawable
     getDrawable(name: string): Drawable
 }
+interface TextureAtlas extends Disposable {}
 declare namespace TextureAtlas {
     class AtlasRegion extends TextureRegion {
         pixmapRegion: PixmapRegion;
@@ -31,6 +32,7 @@ declare namespace TextureAtlas {
 
 /** arc.graphics.g2d.Batch */
 declare class Batch implements Disposable {}
+interface Batch extends Disposable {}
 
 
 /** arc.graphics.g2d.Draw */

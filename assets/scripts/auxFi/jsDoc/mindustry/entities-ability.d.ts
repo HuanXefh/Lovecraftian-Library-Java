@@ -3,6 +3,7 @@ declare class Ability implements java.lang.Cloneable {
     display: boolean;
     data: number;
 }
+interface Ability extends java.lang.Cloneable {}
 /** mindustry.entities.abilities.EmptyDataAbility */
 declare class EmptyDataAbility extends Ability {}
 /** mindustry.entities.abilities.ArmorPlateAbility */
