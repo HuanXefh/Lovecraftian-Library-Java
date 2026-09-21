@@ -25,8 +25,8 @@
      * Lets a puddle spread and trigger something.
      * @param {Puddle} puddle
      * @param {number|unset} amtDepos
-     * @param {function(Tile): boolean} boolF - Whether some tile is spreadable.
-     * @param {function(Tile): void} scr - Called when puddle is on some tile.
+     * @param {FFunction<Tile, boolean>} boolF - Whether some tile is spreadable.
+     * @param {CFunction<Tile>} scr - Called when puddle is on some tile.
      * @return {void}
      */
     const spreadPuddle = function thisFun(puddle, amtDepos, boolF, scr) {

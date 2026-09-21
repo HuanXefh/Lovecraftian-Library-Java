@@ -439,7 +439,7 @@
                 let i = 0;
                 opt.forEachRow(4, (ct, amt, p, mtp) => {
                     tb1.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
-                    MDL_table.rcCtIcon(tb1, ct, amt, p).padRight(72.0);
+                    MDL_table.rcCtIcon(tb1, ct, amt, p, false, {padRight: 72.0});
                     tb1.add(MDL_text.getStat(
                         MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
                         mtp.perc(0),
@@ -822,7 +822,7 @@
                             tb.row();
                             tb.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "fuel"))).left();
                             tb.row();
-                            MDL_table.setCtLi(tb, fuelArr, null, 10);
+                            MDL_table.setCtLi(tb, fuelArr, null, {colAmt: 10});
                         });
                     };
                 };

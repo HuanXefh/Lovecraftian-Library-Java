@@ -212,7 +212,7 @@
        * <br> `LATER`
        * @memberof INTF_B_manualStartBlock
        * @instance
-       * @param {any} val
+       * @param {Object} val
        * @return {void}
        */
       ex_onManualStartConfigured: function(val) {

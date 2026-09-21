@@ -60,8 +60,8 @@
             blkRcsMap.get(this.owner).push(this);
         };
 
-        if(!blkCategHeaderObjMap.containsKey(this.owner)) {
-            blkCategHeaderObjMap.put(this.owner, MDL_recipe.getCategHeaderObj(this.rcMdl));
+        if(!blkCategHeadersObjMap.containsKey(this.owner)) {
+            blkCategHeadersObjMap.put(this.owner, MDL_recipe.getCategHeadersObj(this.rcMdl));
         };
 
 
@@ -74,8 +74,8 @@
     const blkRcsMap = new ObjectMap();
     /** @type {ObjectMap<Block, CLS_recipe>} */
     const blkEmptyRcMap = new ObjectMap();
-    /** @type {ObjectMap<Block, Object<string, string>>} */
-    const blkCategHeaderObjMap = new ObjectMap();
+    /** @type {ObjectMap<Block, Object<string, Array<string>>>} */
+    const blkCategHeadersObjMap = new ObjectMap();
     /** @type {Array<CLS_recipe>} */
     const incompleteRcs = [];
     /** @type {Array<CLS_recipe>} */
@@ -178,8 +178,8 @@
      * Gets the block-category-header-object map.
      * @return {ObjectMap}
      */
-    CLS_recipe.getBlkCategHeaderObjMap = function() {
-        return blkCategHeaderObjMap;
+    CLS_recipe.getBlkCategHeadersObjMap = function() {
+        return blkCategHeadersObjMap;
     };
 
 
@@ -647,7 +647,7 @@
         /** @type {Array<string>} */
         this.erroredNames = MDL_recipe.getRcVal(this.rcMdl, this.rcHeader, "erroredNames", Array.air);
         /** @type {string|null} */
-        this.tt = MDL_recipe.getTooltip(this.rcMdl, this.rcHeader);
+        this.tt = MDL_recipe.getTooltipText(this.rcMdl, this.rcHeader);
 
         /* icon */
 
@@ -895,7 +895,7 @@
                     this.displayOutput(tb2, false);
                 }).left().row();
                 MDL_table.br(tb1, 1);
-                MDL_table.bar(tb1, Pal.accent, null, 2.0);
+                MDL_table.bar(tb1, {color: Pal.accent, stroke: 2.0});
                 this.displayStats(tb1, noPane, true);
             };
         })
@@ -948,7 +948,7 @@
                 } else {
                     if(title != null) {
                         tb2.add(title.plain().color(Pal.accent)).left().padLeft(12.0).fontScale(1.1).row();
-                        MDL_table.bar(tb2, Pal.accent, null, 2.0);
+                        MDL_table.bar(tb2, {color: Pal.accent, stroke: 2.0});
                         MDL_table.br(tb2, 2);
                     };
                     if(this.tt != null) {
@@ -959,7 +959,7 @@
                         MDL_table.br(tb2, 1);
                         this.displayBase(tb2, true, 28.0);
                         MDL_table.br(tb2, 1);
-                        MDL_table.bar(tb2, Color.valueOf(Tmp.c1, "303030"), null, 3.0);
+                        MDL_table.bar(tb2, {color: Color.valueOf(Tmp.c1, "303030"), stroke: 3.0});
                     };
                     this.display(tb2, -1, true, false, true);
                 };
@@ -972,7 +972,7 @@
      * Builds the container table for an I/O fragment.
      * @param {Table} tb
      * @param {string} name
-     * @param {function(Table): void} tableM
+     * @param {CFunction<Table>} tableM
      * @return {Cell}
      */
     CLS_recipe.prototype.displayIoFrag = function(tb, name, tableM) {
@@ -992,7 +992,7 @@
     /**
      * Builds the pane for alternative I/O fragment.
      * @param {Table} tb
-     * @param {function(Table): void} tableM
+     * @param {CFunction<Table>} tableM
      * @param {boolean|unset} [noPane]
      * @return {Cell}
      */
@@ -1048,7 +1048,7 @@
                                     if(this.hasBaseIo) {
                                         this.displayBase(tb4, false, 28.0);
                                         MDL_table.br(tb4, 1);
-                                        MDL_table.bar(tb4, Color.valueOf(Tmp.c1, "303030"), null, 3.0);
+                                        MDL_table.bar(tb4, {color: Color.valueOf(Tmp.c1, "303030"), stroke: 3.0});
                                     };
                                     this.display(tb4, -1, false, false);
                                 },
@@ -1058,7 +1058,7 @@
                     };
                 });
             }).width(84.0);
-            MDL_table.barV(tb1, Pal.accent);
+            MDL_table.barV(tb1, {color: Pal.accent});
         })
         .left()
         .growY();
@@ -1116,7 +1116,7 @@
     CLS_recipe.prototype.displayStats = function thisFun(tb, noPane, breakForStats) {
         return tb.table(Styles.none, tb1 => {
             if(!breakForStats) {
-                MDL_table.barV(tb1, Pal.accent);
+                MDL_table.barV(tb1, {color: Pal.accent});
                 tb1.table(Styles.none, tb2 => {}).width(24.0);
             };
             tb1.table(Styles.none, tb2 => {
@@ -1144,7 +1144,7 @@
                         tb3.table(Styles.none, tb4 => {
                             tb4.left();
                             tb4.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "require-unlocking"), "")).left();
-                            this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, 28.0, 0.0, null, VAR.dialog.ct2), true);
+                            this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, {size: 28.0, pad: 0.0, ctDial: VAR.dialog.ct2}), true);
                         })
                         .left()
                         .row();
@@ -1204,7 +1204,7 @@
                         MDL_table.tooltip(attrCell, tb => {
                             tb.table(Styles.black6, tb1 => {
                                 MDL_table.margin(tb1);
-                                MDL_table.setAttr(tb1, this.attr, null, this.attrBoostScl, 40.0, 5);
+                                MDL_table.setAttr(tb1, this.attr, null, this.attrBoostScl, {size: 40.0}, {colAmt: 5});
                             });
                         }).row();
                     };
@@ -1268,11 +1268,11 @@
         return this.displayIoFrag(tb, "bi", tb1 => {
             (isBase ? this.baseBi : this.biNoBase).forEachRow(3, (tmp, amt, p) => {
                 if(!(tmp instanceof Array)) {
-                    MDL_table.rcCtIcon(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
+                    MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: VAR.dialog.ct1});
                 } else {
                     this.displayAltIoFrag(tb1, tb2 => {
                         tmp.forEachRow(3, (tmp1, amt, p) => {
-                            MDL_table.rcCtIcon(tb2, tmp1, amt, p, true, null, VAR.dialog.ct1).row();
+                            MDL_table.rcCtIcon(tb2, tmp1, amt, p, true, {ctDial: VAR.dialog.ct1}).row();
                         }, true);
                     }, noPane);
                 };
@@ -1292,11 +1292,11 @@
         return this.displayIoFrag(tb, "ci", tb1 => {
             (isBase ? this.baseCi : this.ciNoBase).forEachRow(2, (tmp, amt) => {
                 if(!(tmp instanceof Array)) {
-                    MDL_table.rcCtIcon(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
+                    MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: VAR.dialog.ct1});
                 } else {
                     this.displayAltIoFrag(tb1, tb2 => {
                         tmp.forEachRow(2, (tmp1, amt) => {
-                            MDL_table.rcCtIcon(tb2, tmp1, amt, null, false, null, VAR.dialog.ct1).row();
+                            MDL_table.rcCtIcon(tb2, tmp1, amt, null, false, {ctDial: VAR.dialog.ct1}).row();
                         }, true);
                     }, noPane);
                 };
@@ -1314,7 +1314,7 @@
     CLS_recipe.prototype.displayAux = function(tb, isBase) {
         return this.displayIoFrag(tb, "aux", tb1 => {
             (isBase ? this.baseAux : this.auxNoBase).forEachRow(2, (tmp, amt) => {
-                MDL_table.rcCtIcon(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
+                MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: VAR.dialog.ct1});
             }, true);
         });
     };
@@ -1342,7 +1342,7 @@
     CLS_recipe.prototype.displayPayi = function(tb, isBase) {
         return this.displayIoFrag(tb, "payi", tb1 => {
             (isBase ? this.basePayi : this.payiNoBase).forEachRow(2, (name, amt) => {
-                MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
+                MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, {ctDial: VAR.dialog.ct1});
             }, true);
         });
     };
@@ -1357,7 +1357,7 @@
     CLS_recipe.prototype.displayBo = function(tb, isBase) {
         return this.displayIoFrag(tb, "bo", tb1 => {
             (isBase ? this.baseBo : this.boNoBase).forEachRow(3, (tmp, amt, p) => {
-                MDL_table.rcCtIcon(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
+                MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: VAR.dialog.ct1});
             }, true);
         });
     };
@@ -1372,7 +1372,7 @@
     CLS_recipe.prototype.displayCo = function(tb, isBase) {
         return this.displayIoFrag(tb, "co", tb1 => {
             (isBase ? this.baseCo : this.coNoBase).forEachRow(2, (tmp, amt) => {
-                MDL_table.rcCtIcon(tb1, tmp, amt, null, false, null, VAR.dialog.ct1);
+                MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: VAR.dialog.ct1});
             }, true);
         });
     };
@@ -1387,7 +1387,7 @@
     CLS_recipe.prototype.displayFo = function(tb, isBase) {
         return this.displayIoFrag(tb, "fo", tb1 => {
             (isBase ? this.baseFo : this.foNoBase).forEachRow(3, (tmp, amt, p) => {
-                MDL_table.rcCtIcon(tb1, tmp, amt, p, true, null, VAR.dialog.ct1);
+                MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: VAR.dialog.ct1});
             }, true);
         });
     };
@@ -1402,7 +1402,7 @@
     CLS_recipe.prototype.displayPayo = function(tb, isBase) {
         return this.displayIoFrag(tb, "payo", tb1 => {
             (isBase ? this.basePayo : this.payoNoBase).forEachRow(2, (name, amt) => {
-                MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, null, VAR.dialog.ct1);
+                MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, {ctDial: VAR.dialog.ct1});
             }, true);
         });
     };

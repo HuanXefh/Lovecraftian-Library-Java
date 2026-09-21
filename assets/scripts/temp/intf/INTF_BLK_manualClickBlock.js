@@ -181,7 +181,7 @@
        * <br> `LATER`
        * @memberof INTF_B_manualClickBlock
        * @instance
-       * @param {any} val
+       * @param {Object} val
        * @return {void}
        */
       ex_onManualClickConfigured: function(val) {

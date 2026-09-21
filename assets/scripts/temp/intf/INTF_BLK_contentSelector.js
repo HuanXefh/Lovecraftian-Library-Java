@@ -47,8 +47,9 @@
   function comp_ex_buildSelector(b, tb) {
     MDL_table.setCtSelect(
       tb, b.block, b.block.delegee.selectionQueue,
-      () => b.delegee.ctTarget, val => b.configure(val == null ? null : val.name), false,
-      b.block.selectionRows, b.block.selectionColumns,
+      () => b.delegee.ctTarget, val => b.configure(val == null ? null : val.name),
+      null,
+      {rowAmt: b.block.selectionRows, colAmt: b.block.selectionColumns, closeSelect: false},
     );
   };
 

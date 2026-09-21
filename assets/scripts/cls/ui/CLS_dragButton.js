@@ -202,11 +202,16 @@
                 tb.left().setColor(Pal.darkestGray);
                 tb.add("").get().setText(prov(() => Strings.fixed(this.timeScl, 2) + "x"));
                 tb.row();
-                MDL_table.slider(tb, val => {
-                    val = checkCanControlTime() ? val : 1.0;
-                    Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0 * val);
-                    this.timeScl = val;
-                }, 0.25, 3.0, 0.25, this.timeScl, this.prefW);
+                MDL_table.slider(
+                    tb,
+                    val => {
+                        val = checkCanControlTime() ? val : 1.0;
+                        Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0 * val);
+                        this.timeScl = val;
+                    },
+                    0.25, 3.0, 0.25, this.timeScl,
+                    {w: this.prefW},
+                );
             }).left().row();
         };
     };

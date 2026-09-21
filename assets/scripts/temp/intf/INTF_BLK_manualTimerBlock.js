@@ -211,7 +211,7 @@
        * <br> `LATER`
        * @memberof INTF_B_manualTimerBlock
        * @instance
-       * @param {any} val
+       * @param {Object} val
        * @return {void}
        */
       ex_onManualTimerConfigured: function(val) {

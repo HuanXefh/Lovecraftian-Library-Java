@@ -94,7 +94,7 @@
             // `TABLE`: text
             this.cont.pane(pnTb => {
                 MDL_table.margin(pnTb);
-                MDL_table.wrapLine(pnTb, MDL_bundle.getInfo(nameMod, "content-" + nameInfo, true), Align.left, 1);
+                MDL_table.wrapLine(pnTb, MDL_bundle.getInfo(nameMod, "content-" + nameInfo, true), {padOrd: 1});
             })
             .width(MDL_ui.getUiW())
             .row();
@@ -137,14 +137,14 @@
                     pnTb.table(Styles.none, tb => {
                         if(obj.chara === "SPEC: selection") {
                             tb.center();
-                            MDL_table.wrapLine(tb, "<${1}>".format(obj.text), Align.center, 1);
+                            MDL_table.wrapLine(tb, "<${1}>".format(obj.text), {labelAlign: Align.center, padOrd: 1});
                         } else {
                             tb.left();
                             if(!String.isEmpty(obj.chara)) {
                                 tb.add(obj.chara).left().row();
                             };
                             tb.add("").row();
-                            MDL_table.wrapLine(tb, obj.text, Align.left, 1, 48.0);
+                            MDL_table.wrapLine(tb, obj.text, {padOrd: 1, padLeft: 48.0});
                         };
                     }).growX().row();
                     MDL_table.br(pnTb, 3);
@@ -272,7 +272,7 @@
                         pnTb,
                         UTIL_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ),
                         () => fetchDialog("infoListSub").ex_show(categ, map, moddedNames),
-                        500.0,
+                        {w: 500.0},
                     ).row();
                 });
             })
@@ -337,7 +337,7 @@
                                 pnTb,
                                 UTIL_dragButtonInfoList.getLocalizedInfoName(name),
                                 scr,
-                                500.0,
+                                {w: 500.0},
                             ).row();
                         });
                     };
@@ -471,7 +471,7 @@
                 } else {
                     let colAmt = MDL_ui.getColAmt(32.0, 4.0, 2);
                     for(let i = 0, j = 0; i < iCap; i++) {
-                        MDL_table.ctIcon(pnTb, MDL_content.getCt(cts_gn[i], null, true), null, null, !isAfterCt ? null : this);
+                        MDL_table.ctIcon(pnTb, MDL_content.getCt(cts_gn[i], null, true), {dialToHide: !isAfterCt ? null : this});
                         if(j % colAmt === colAmt - 1) pnTb.row();
                         j++;
                     };
@@ -553,7 +553,7 @@
 
             // `TABLE`: bar
             MDL_table.br(this.cont);
-            MDL_table.bar(this.cont, null, MDL_ui.getUiW());
+            MDL_table.bar(this.cont, {w: MDL_ui.getUiW()});
 
             // `TABLE`: content
             MDL_table.br(this.cont);
@@ -570,7 +570,7 @@
                         p = opt[i + 2];
                         mtp = opt[i + 3];
                         pnTb.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
-                        MDL_table.rcCtIcon(pnTb, tmp, amt, p, null, null, this).padRight(72.0);
+                        MDL_table.rcCtIcon(pnTb, tmp, amt, p, false, {padRight: 72.0, dialToHide: this});
                         pnTb.add(MDL_text.getStat(
                             MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
                             mtp.perc(0),
@@ -664,14 +664,18 @@
                             .padLeft(16.0)
                             .expandX()
                             .row();
-                            MDL_table.bar(tb, Pal.accent, null, 2.0);
+                            MDL_table.bar(tb, {color: Pal.accent, stroke: 2.0});
                             MDL_table.br(tb, 1);
                         })
                         .left()
                         .growX()
                         .row();
 
-                        MDL_table.setIconLi(listTb, data.icons, data.ttArgs, data.scrs, 40.0, MDL_ui.getColAmt(40.0, 4.0), data.breakBools);
+                        MDL_table.setIconLi(
+                            listTb, data.icons, data.ttArgs, data.scrs,
+                            {size: 40.0},
+                            {colAmt: MDL_ui.getColAmt(40.0, 4.0), breakBools: data.breakBools},
+                        );
                         modCont.add(coll);
                     })
                     .growX()
@@ -867,7 +871,7 @@
                 rcCont = tb.table(Styles.none, tb1 => tb1.left()).left().width(240.0).height(60.0).get();
                 // `TABLE`: small icon
                 rcCont.table(Styles.none, tb1 => {
-                    MDL_table.ctIcon(tb1, rcDictArr[i], 48.0, 8.0, this);
+                    MDL_table.ctIcon(tb1, rcDictArr[i], {size: 48.0, pad: 8.0, dialToHide: this});
                 });
                 // `TABLE`: recipe text
                 let data = rcDictArr[i + 2];
@@ -939,7 +943,7 @@
                         if(data.icon != null) {
                             let iconCell = tb2.image(Core.atlas.find(data.icon)).left().width(26.0).height(26.0);
                             if(data.iconCts != null) {
-                                MDL_table.tooltip(iconCell, ttTb => MDL_table.setCtLi(ttTb, data.iconCts, 40.0, 4));
+                                MDL_table.tooltip(iconCell, ttTb => MDL_table.setCtLi(ttTb, data.iconCts, {size: 40.0}, {colAmt: 4}));
                             };
                         };
                         // `TABLE`: text icon
@@ -1059,7 +1063,7 @@
                         // `TABLE`: building list
                         cont.table(Tex.whiteui, tb => {
                             tb.center().setColor(Pal.darkestGray);
-                            MDL_table.setCtLi(tb, reqBlks, 48.0, null, this);
+                            MDL_table.setCtLi(tb, reqBlks, {size: 48.0, dialToHide: this});
                         })
                         .left()
                         .growX()

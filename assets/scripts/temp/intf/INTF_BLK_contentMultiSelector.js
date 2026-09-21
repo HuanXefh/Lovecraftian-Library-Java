@@ -75,8 +75,9 @@
   function comp_ex_buildSelector(b, tb) {
     MDL_table.setCtSelectMulti(
       tb, b.block, b.block.delegee.selectionQueue,
-      () => b.ex_accCtTargets("read", false), val => b.configure(val), false,
-      b.block.selectionRows, b.block.selectionColumns,
+      () => b.ex_accCtTargets("read", false), val => b.configure(val),
+      null,
+      {rowAmt: b.block.selectionRows, colAmt: b.block.selectionColumns, closeSelect: false},
     );
   };
 

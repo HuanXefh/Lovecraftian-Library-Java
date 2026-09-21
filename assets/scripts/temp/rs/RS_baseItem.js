@@ -48,7 +48,7 @@
     let oreBlks = MDL_content.getOreBlks(item);
     if(oreBlks.length > 0) item.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
       tb.row();
-      MDL_table.setCtLi(tb, oreBlks, 48.0);
+      MDL_table.setCtLi(tb, oreBlks, {size: 48.0});
     }));
   };
 

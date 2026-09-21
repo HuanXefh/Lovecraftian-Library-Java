@@ -30,6 +30,12 @@
     };
 
 
+    // Why is MindustryX marked as v7???
+    if(fetchClass("mindustryX.VarsX", true) != null && Version.number === 7) {
+        LCCompatibilityResolver.isV8 = true;
+    };
+
+
     if(LCCompatibilityResolver.isV8) {
         LoadShader = eval("Shaders.LoadShader");
         DarknessShader = eval("Shaders.DarknessShader");

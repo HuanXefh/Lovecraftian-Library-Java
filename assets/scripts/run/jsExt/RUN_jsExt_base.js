@@ -26,10 +26,11 @@
      * @return {T&K}
      */
     Object.setProp = function(obj, propObj) {
+        if(propObj == null) return obj;
         for(let key in propObj) {
             obj[key] = propObj[key];
         };
-      return obj;
+        return obj;
     };
 
 

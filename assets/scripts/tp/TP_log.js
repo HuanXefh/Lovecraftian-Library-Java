@@ -57,7 +57,7 @@
                         arr.push("- Current liquid: " + b.liquids.current().localizedName);
                         arr.push("- Liquids:");
                         b.liquids.each((liq, amt) => {
-                            arr.push("  > ${1}: ${2} (${3})".format(liq.localizedName, Strings.fixed(amt, 4), (amt / b.block.liquidCapacity).perc()));
+                            arr.push("    > ${1}: ${2} (${3})".format(liq.localizedName, Strings.fixed(amt, 4), (amt / b.block.liquidCapacity).perc()));
                         });
                     };
                     return arr;

@@ -57,15 +57,20 @@
   function comp_ex_buildManualTriggerButton(b, tb) {
     tb.table(Styles.none, tb1 => {
       tb1.center();
-      MDL_table.btnCfg(tb1, b, () => {
-        Vars.state.paused ?
-          MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
-          b.manualTriggerCd > 0.0 ?
-            MDL_ui.showFadeInfo("lovec", "in-cd") :
-            !b.ex_checkManualTriggerValid() ?
-              undefined :
-              b.configure("SPEC: click");
-      }, b.block.delegee.manualTriggerIcon, b.block.delegee.manualTriggerButtonSize);
+      MDL_table.btnCfg(
+        tb1, b,
+        () => {
+          Vars.state.paused ?
+            MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
+            b.manualTriggerCd > 0.0 ?
+              MDL_ui.showFadeInfo("lovec", "in-cd") :
+              !b.ex_checkManualTriggerValid() ?
+                undefined :
+                b.configure("SPEC: click");
+        },
+        b.block.delegee.manualTriggerIcon,
+        {size: b.block.delegee.manualTriggerButtonSize},
+      );
     }).center();
   };
 

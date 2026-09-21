@@ -106,9 +106,9 @@
         tb1.table(Tex.whiteui, tb2 => {
           tb2.left().setColor(Pal.darkestGray);
           MDL_table.margin(tb2);
-          MDL_table.ctIcon(tb2, blk.placeBlk, 48.0);
+          MDL_table.ctIcon(tb2, blk.placeBlk, {size: 48.0});
           tb2.table(Styles.none, tb3 => {}).width(12.0);
-          MDL_table.barV(tb2, Color.darkGray);
+          MDL_table.barV(tb2, {color: Color.darkGray});
           tb2.table(Styles.none, tb3 => {}).width(12.0);
           tb2.table(Styles.none, tb3 => {
             tb3.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "construction-time"), blk.constructionTimeReq.time(2))).left().row();

@@ -457,7 +457,7 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {string} key
-       * @param {function(Building, Object): void} valC - `ARGS`: b, val.
+       * @param {C2Function<Building, Object>} valC - `ARGS`: b, val.
        * @return {void}
        */
       ex_addConfigM: function(key, valC) {
@@ -474,7 +474,7 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {LAccess} sensor
-       * @param {function(Building): any} valF - `ARGS`: b.
+       * @param {CFunction<Building>} valF
        * @return {void}
        */
       ex_addLogicF: function(sensor, valF) {
@@ -491,7 +491,7 @@
        * @memberof BLK_baseBlock
        * @instance
        * @param {LAccess} sensor
-       * @param {function(Building): void} scr - `ARGS`: b, param1, param2, param3, param4.
+       * @param {(b: Building, param1?: Object, param2?: Object, param3?: Object, param4?: Object) => void} scr
        * @return {void}
        */
       ex_addLogicControl: function(sensor, scr) {

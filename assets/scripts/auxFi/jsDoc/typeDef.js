@@ -17,44 +17,10 @@
 */
 
 
-    /** @global mindustry.world.blocks.ConstructBlock */
-    class ConstructBlock extends Block {};
-    /** @global mindustry.world.blocks.campaign.Accelerator */
-    class Accelerator extends Block {};
-    /** @global mindustry.world.blocks.campaign.LaunchPad */
-    class LaunchPad extends Block {};
-    /** @global mindustry.world.blocks.campaign.LandingPad */
-    class LandingPad extends Block {};
-    /** @global mindustry.world.blocks.defense.Wall */
-    class Wall extends Block {};
-    /** @global mindustry.world.blocks.defense.ShieldWall */
-    class ShieldWall extends Wall {};
-    /** @global mindustry.world.blocks.defense.Thruster */
-    class Thruster extends Wall {};
-    /** @global mindustry.world.blocks.defense.Door */
-    class Door extends Wall {};
-    /** @global mindustry.world.blocks.defense.AutoDoor */
-    class AutoDoor extends Wall {};
-    /** @global mindustry.world.blocks.defense.MendProjector */
-    class MendProjector extends Block {};
-    /** @global mindustry.world.blocks.defense.RegenProjector */
-    class RegenProjector extends Block {};
     /** @global mindustry.world.blocks.units.RepairTower */
     class RepairTower extends Block {};
     /** @global mindustry.world.blocks.units.RepairTurret */
     class RepairTurret extends Block {};
-    /** @global mindustry.world.blocks.defense.OverdriveProjector */
-    class OverdriveProjector extends Block {};
-    /** @global mindustry.world.blocks.defense.BaseShield */
-    class BaseShield extends Block {};
-    /** @global mindustry.world.blocks.defense.ForceProjector */
-    class ForceProjector extends Block {};
-    /** @global mindustry.world.blocks.defense.Radar */
-    class Radar extends Block {};
-    /** @global mindustry.world.blocks.defense.ShockMine */
-    class ShockMine extends Block {};
-    /** @global mindustry.world.blocks.defense.ShockwaveTower */
-    class ShockwaveTower extends Block {};
     /** @global mindustry.world.blocks.defense.turrets.BaseTurret */
     class BaseTurret extends Block {};
     /** @global mindustry.world.blocks.defense.BuildTurret */

@@ -34,8 +34,8 @@
       tb, b,
       () => b.rcHeader, val => b.configure(val),
       b.ex_getSelectorExtraBtnSetters(),
-      b.blk$useAutoSelection,
-      false, b.block.selectionColumns,
+      null,
+      {colAmt: b.block.selectionColumns, closeSelect: false, useAutoSelection: b.blk$useAutoSelection},
     );
   };
 

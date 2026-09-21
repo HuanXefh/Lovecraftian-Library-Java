@@ -31,21 +31,25 @@
     if(!blk.noFuelInput) {
       blk.stats.add(fetchStat("lovec", "blk0fac-fuel"), newStatValue(tb => {
         tb.row();
-        MDL_table.pnFixed(tb, pnTb => {
-          let matArr = [[
-            "",
-            tb1 => tb1.add(fetchStat("lovec", "rs0fuel-point").localized()).tooltip(MDL_bundle.getInfo("lovec", "tt-fuel-point")),
-            tb1 => tb1.add(fetchStat("lovec", "rs0fuel-level").localized()).tooltip(MDL_bundle.getInfo("lovec", "tt-fuel-level")),
-          ]];
-          MDL_fuel.getFuelArr(blk).forEachFast(rs => {
-            matArr.push([
-              rs,
-              rs instanceof Liquid ? "-" : (MDL_fuel.getFuelPon(rs) / blk.fuelConsMtp).color(blk.fuelConsMtp.fEqual(1.0) ? Color.white : blk.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
-              (MDL_fuel.getFuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
-            ]);
-          });
-          MDL_table.setTable(pnTb, matArr);
-        }, null, 300.0).left().padLeft(28.0);
+        MDL_table.pnFixed(
+          tb,
+          pnTb => {
+            let matArr = [[
+              "",
+              tb1 => tb1.add(fetchStat("lovec", "rs0fuel-point").localized()).tooltip(MDL_bundle.getInfo("lovec", "tt-fuel-point")),
+              tb1 => tb1.add(fetchStat("lovec", "rs0fuel-level").localized()).tooltip(MDL_bundle.getInfo("lovec", "tt-fuel-level")),
+            ]];
+            MDL_fuel.getFuelArr(blk).forEachFast(rs => {
+              matArr.push([
+                rs,
+                rs instanceof Liquid ? "-" : (MDL_fuel.getFuelPon(rs) / blk.fuelConsMtp).color(blk.fuelConsMtp.fEqual(1.0) ? Color.white : blk.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
+                (MDL_fuel.getFuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
+              ]);
+            });
+            MDL_table.setTable(pnTb, matArr);
+          },
+          {maxH: 300.0, align: Align.left, padLeft: 28.0},
+        );
       }));
 
       if(!blk.fuelConsMtp.fEqual(1.0)) blk.stats.add(fetchStat("lovec", "blk0fac-fuelconsmtp"), blk.fuelConsMtp.perc());
@@ -156,8 +160,9 @@
   function comp_ex_buildFuelSelector(b, tb) {
     MDL_table.setCtSelect(
       tb, b.block, MDL_fuel.getFuelArr(b.block),
-      () => b.delegee.fuelSel, val => b.configure("FUEL: " + (val == null ? "null" : val.name)), false,
-      b.block.selectionRows, b.block.selectionColumns - 1,
+      () => b.delegee.fuelSel, val => b.configure("FUEL: " + (val == null ? "null" : val.name)),
+      null,
+      {rowAmt: b.block.selectionRows, colAmt: b.block.selectionColumns - 1, closeSelect: false},
     );
   };
 

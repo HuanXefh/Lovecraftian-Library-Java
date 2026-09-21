@@ -93,10 +93,7 @@
             blk.cropData[stage].dur < 0.0001 ? "-" : blk.cropData[stage].dur.time(2),
             tb2 => {
               tb2.center();
-              let cell = MDL_table.rcCtIcon(tb2, blk.cropData[stage].item, blk.cropData[stage].amt, blk.cropData[stage].p);
-              if(cell != null) {
-                cell.marginRight(0.0);
-              };
+              MDL_table.rcCtIcon(tb2, blk.cropData[stage].item, blk.cropData[stage].amt, blk.cropData[stage].p, false, {marginRight: 0.0});
             },
           ]);
           i++;

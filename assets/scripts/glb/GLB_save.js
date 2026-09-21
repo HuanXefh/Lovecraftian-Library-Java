@@ -180,7 +180,7 @@
     /**
      * Sets a LSAV value only if it's marked as safe.
      * @param {string} header
-     * @param {any} val
+     * @param {Object} val
      * @param {boolean|unset} [isPSet] - If true, this method will set a value in PLSAV instead.
      * @return {void}
      */
@@ -196,7 +196,7 @@
      * Gets a value in local LSAV.
      * @param {string} header
      * @param {boolean|unset} [isPGet] - If true, this method will get a value from PLSAV instead.
-     * @return {any}
+     * @return {*}
      */
     const get = function(header, isPGet) {
         return (isPGet ? plsav : lsav)[header];

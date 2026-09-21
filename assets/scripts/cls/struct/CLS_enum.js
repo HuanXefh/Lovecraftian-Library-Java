@@ -88,7 +88,7 @@
 
     /**
      * Whether this enum contains some value.
-     * @param {any} val
+     * @param {Object} val
      * @return {boolean}
      */
     CLS_enum.prototype.has = function(val) {

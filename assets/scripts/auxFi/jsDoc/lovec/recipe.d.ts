@@ -14,6 +14,10 @@ type RecipeRC = {
     base: RecipeBase;
     /** `ROW`: header, rcObj. */
     recipe: F2Array<string, RecipeObject>;
+    /** True if this recipe module is defined in JSON/HJSON. */
+    isFromJson?: boolean;
+    /** Maps deprecated headers to new headers. */
+    headerMigration?: Record<string, string>;
 }
 type RecipeBase = {
     baseAttr?: string;

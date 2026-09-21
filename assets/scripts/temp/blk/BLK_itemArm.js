@@ -112,7 +112,12 @@
     tb.table(Styles.black6, tb1 => {
       MDL_table.margin(tb1);
       tb1.table(Styles.none, tb2 => {
-        MDL_table.sliderCfg(tb2, b, () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "stack-threshold"), b.blk$moveStackAmt), 1, b.block.delegee.moveStackAmt, 1, b.blk$moveStackAmt);
+        MDL_table.sliderCfg(
+          tb2, b,
+          () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "stack-threshold"), b.blk$moveStackAmt),
+          1, b.block.delegee.moveStackAmt, 1, b.blk$moveStackAmt,
+          {align: Align.center},
+        );
       });
     })
     .growX()

@@ -58,7 +58,7 @@
                 tb.row();
                 tb.table(Styles.none, tb1 => {
                     MDL_table.margin(tb1);
-                    MDL_table.setCtLi(tb, sta.childCts, 48.0, 7, null, VAR.dialog.ct1);
+                    MDL_table.setCtLi(tb, sta.childCts, {size: 48.0, ctDial: VAR.dialog.ct1}, {colAmt: 7});
                 }).growX();
             }));
         };
@@ -72,8 +72,8 @@
                         sta.childRcs.map(rc => rc.altIcon),
                         sta.childRcs.map(rc => [MDL_bundle.getTerm("lovec", "recipe-display"), tb => rc.displayTooltip(tb, true, rc.owner.localizedName)]),
                         sta.childRcs.map(rc => () => Vars.ui.content.show(rc.owner)),
-                        64.0,
-                        7,
+                        {size: 64.0},
+                        {colAmt: 7},
                     );
                 });
             }));

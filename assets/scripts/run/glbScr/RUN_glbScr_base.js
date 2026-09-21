@@ -405,15 +405,21 @@
      * @return {T}
      */
     processNullParam = function(paramObj) {
+        if(paramObj == null) paramObj = {}
         let args = Array.from(arguments).splice(1);
-        let i = 0;
-        let iCap = args.iCap();
-        let nameProp, def;
+        let
+            i = 0,
+            iCap = args.iCap(),
+            nameProp,
+            def;
+
         while(i < iCap) {
             nameProp = args[i];
             def = args[i + 1];
             if(paramObj[nameProp] == null) {
                 paramObj[nameProp] = def;
+            } else if(paramObj[nameProp] === "SPEC: to null") {
+                paramObj[nameProp] = null;
             };
             i += 2;
         };

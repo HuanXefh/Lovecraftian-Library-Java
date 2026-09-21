@@ -73,7 +73,7 @@
       liq.stats.add(fetchStat("lovec", "rs-isore"), true);
       liq.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
         tb.row();
-        MDL_table.setCtLi(tb, oreblks, 48.0);
+        MDL_table.setCtLi(tb, oreblks, {size: 48.0});
       }));
     };
 

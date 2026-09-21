@@ -109,8 +109,9 @@
   function comp_buildConfiguration(b, tb) {
     MDL_table.setCtSelectMulti(
       tb, b.block, Vars.content.items().toArray(),
-      () => b.rsTargets, val => b.configure(val), false,
-      b.block.selectionRows, b.block.selectionColumns,
+      () => b.rsTargets, val => b.configure(val),
+      null,
+      {rowAmt: b.block.selectionRows, colAmt: b.block.selectionColumns, closeSelect: false},
     );
 
     tb.row();
