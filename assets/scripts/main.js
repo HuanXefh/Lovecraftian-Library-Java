@@ -424,14 +424,15 @@
         // Set up recipe dictionary stat
         Time.run(VAR.delay.load.addStat, () => {
             VARGEN.allRss
+            .filter(rs => MDL_cond.hasAnyRecipe(rs))
             .concat(VARGEN.payMatBlks)
             .concat(VARGEN.buildableUtps)
             .forEachFast(ct => {
                 VARGEN.rcDictCts.push(ct);
                 // Complete broken in 160 due to `computeStats`
                 /*ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
-                  tb.row();
-                  MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct, false)).left().padLeft(28.0).row();
+                    tb.row();
+                    MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct, false)).left().padLeft(28.0).row();
                 }));*/
             }, true);
         });

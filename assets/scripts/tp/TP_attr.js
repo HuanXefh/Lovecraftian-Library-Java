@@ -18,13 +18,13 @@
 */
 
 
-    /* <------------------------------ base ------------------------------ */
+    /* <------------------------------ base ------------------------------> */
 
 
     exports.attr_placeholder = Attribute.add("lovec-attr-placeholder");
 
 
-    /* <------------------------------ env ------------------------------ */
+    /* <------------------------------ env ------------------------------> */
 
 
     /** Affects crop growth speed. */
@@ -37,13 +37,13 @@
     exports.attr0env_tide = Attribute.add("lovec-attr0env-tide");
 
 
-    /* <------------------------------ floor ------------------------------ */
+    /* <------------------------------ floor ------------------------------> */
 
 
     exports.attrFlr_placer = Attribute.add("lovec-attr0flr-placer");
 
 
-    /* <------------------------------ vent ------------------------------ */
+    /* <------------------------------ vent ------------------------------> */
 
 
     exports.attr0vent_ammonia = Attribute.add("lovec-attr0vent-ammonia");
@@ -55,7 +55,7 @@
     exports.attr0vent0und_hydrogenSulfide = Attribute.add("lovec-attr0vent0und-hydrogen-sulfide");
 
 
-    /* <------------------------------ block ------------------------------ */
+    /* <------------------------------ block ------------------------------> */
 
 
     exports.attr0blk_tree = Attribute.add("lovec-attr0blk-tree");
@@ -65,7 +65,7 @@
     exports.attr0blk_algae = Attribute.add("lovec-attr0blk-algae");
 
 
-    /* <------------------------------ dynamic ------------------------------ */
+    /* <------------------------------ dynamic ------------------------------> */
 
 
     /* depth liquid */

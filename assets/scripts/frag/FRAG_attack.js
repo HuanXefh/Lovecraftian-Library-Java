@@ -18,7 +18,7 @@
 */
 
 
-    /* <------------------------------ base ------------------------------ */
+    /* <------------------------------ base ------------------------------> */
 
 
     /**
@@ -95,7 +95,7 @@
     exports.getImpactDustRad = getImpactDustRad;
 
 
-    /* <------------------------------ damage ------------------------------ */
+    /* <------------------------------ damage ------------------------------> */
 
 
     /**
@@ -195,7 +195,7 @@
     exports.getDmgMtpByTypeMtpArr = getDmgMtpByTypeMtpArr;
 
 
-    /* <------------------------------ event ------------------------------ */
+    /* <------------------------------ event ------------------------------> */
 
 
     /**
@@ -332,7 +332,7 @@
 
             MDL_call.knockback(x, y, unit, dmg / 100.0, rad);
             damage(unit, dmg_fi, 0.0);
-            if(syncChance("unit", Math.max(frac, 0.2))) {
+            if(syncChance("impact", Math.max(frac, 0.2))) {
                 unit.apply(VARGEN.staStunned, staDur);
             };
         });

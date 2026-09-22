@@ -5,7 +5,7 @@
 */
 
 
-    /* <------------------------------ meta ------------------------------ */
+    /* <------------------------------ meta ------------------------------> */
 
 
     /**
@@ -18,23 +18,39 @@
     const INTF_ENTITY_tetheredEntity = require("lovec/temp/intf/INTF_ENTITY_tetheredEntity");
 
 
-    /* <------------------------------ auxiliary ------------------------------ */
+    /* <------------------------------ auxiliary ------------------------------> */
 
 
     /**
      * @private
-     * @type {EntityCollisions.SolidPred}
+     * @type {ObjectMap<Unit, EntityCollisions.SolidPred>}
      */
-    const BASE_SOLID_PRED = extend(EntityCollisions.SolidPred, {
-        solid(tx, ty) {
-            return (unit.super$solidity() != null && unit.super$solidity().solid(tx, ty))
-                // Terrain wall is solid to air units in a cave map
-                || (PARAM.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty));
-        },
+    const solidPredCache = new ObjectMap();
+
+
+    /**
+     * @private
+     * @param {ENTITYBaseUnitEntity} unit
+     * @return {EntityCollisions.SolidPred}
+     */
+    const getBaseSolidPred = function(unit) {
+        return extend(EntityCollisions.SolidPred, {
+            solid(tx, ty) {
+                return (unit.super$solidity() != null && unit.super$solidity().solid(tx, ty))
+                    // Terrain wall is solid to air units in a cave map
+                    || (PARAM.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty));
+            },
+        });
+    }
+    .setCache(solidPredCache)
+    .setAnno("init", function() {
+        TRIGGER.mapChange.addGlobalListener(() => {
+            solidPredCache.clear();
+        });
     });
 
 
-    /* <------------------------------ component ------------------------------ */
+    /* <------------------------------ component ------------------------------> */
 
 
     /**
@@ -57,7 +73,7 @@
      * @return {EntityCollisions.SolidPred}
      */
     function comp_solidity(unit) {
-        return BASE_SOLID_PRED;
+        return getBaseSolidPred(unit);
     };
 
 

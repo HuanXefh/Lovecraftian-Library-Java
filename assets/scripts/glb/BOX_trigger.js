@@ -27,7 +27,7 @@ const BOX_trigger = new CLS_objectBox({
     },
 
 
-    /* <------------------------------ state ------------------------------ */
+    /* <------------------------------ state ------------------------------> */
 
 
     /**
@@ -73,7 +73,7 @@ const BOX_trigger = new CLS_objectBox({
     lsavLoad: new CLS_eventTrigger("lovec-lsav-load"),
 
 
-    /* <------------------------------ event ------------------------------ */
+    /* <------------------------------ event ------------------------------> */
 
 
     /**
@@ -248,7 +248,7 @@ const BOX_trigger = new CLS_objectBox({
     boilerExplosion: new CLS_eventTrigger("lovec-boiler-explosion"),
 
 
-    /* <------------------------------ util ------------------------------ */
+    /* <------------------------------ util ------------------------------> */
 
 
     /**
@@ -281,7 +281,7 @@ const BOX_trigger = new CLS_objectBox({
     torqueBlockConfigure: new CLS_eventTrigger("lovec-torque-block-configure"),
 
 
-    /* <------------------------------ achievement ------------------------------ */
+    /* <------------------------------ achievement ------------------------------> */
 
 
     /**

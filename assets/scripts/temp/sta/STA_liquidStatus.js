@@ -5,7 +5,7 @@
 */
 
 
-    /* <------------------------------ meta ------------------------------ */
+    /* <------------------------------ meta ------------------------------> */
 
     /**
      * @typedef {TemplateInstance<StatusEffect, STA_liquidStatus>} STALiquidStatus
@@ -16,7 +16,7 @@
     const INTF_STA_burstStatus = require("lovec/temp/intf/INTF_STA_burstStatus");
 
 
-    /* <------------------------------ component ------------------------------ */
+    /* <------------------------------ component ------------------------------> */
 
 
     /**

@@ -26,14 +26,15 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED || b.liquids == null || !TIMER.secQuarter || !syncChance("corrosion", 0.25)) return;
-    let liqCur = b.liquids.current();
-    let amt = b.liquids.get(liqCur);
-    if(amt < 0.05) return;
+    if(b.liquids == null || PARAM.UPDATE_SUPPRESSED || !TIMER.secQuarter) return;
 
-    b.ex_updateCorrosion(liqCur, amt);
+    let
+      liqCur = b.liquids.current(),
+      amt = b.liquids.currentAmount();
+
+    MDL_flow.updateCorrosion(b, liqCur, amt);
     if(b.block.delegee.cloggable) {
-      b.ex_updateClogging(liqCur, amt);
+      MDL_flow.updateClogging(b, liqCur, amt);
     };
 
     if(
@@ -41,30 +42,10 @@
         && b.block.delegee.matGrp != null
         && Mathf.chanceDelta(0.1)
         && !b.block.consumesLiquid(liqCur)
-        && b.liquids.get(liqCur) / b.block.liquidCapacity > 0.1
+        && amt > b.block.liquidCapacity * 0.1
     ) {
       MDL_reaction.handleReaction("MATERIAL: " + b.block.delegee.matGrp, liqCur, 10.0, b);
     };
-  };
-
-
-  function comp_ex_updateCorrosion(b, liq, amt) {
-    let corPow = tryJsProp(liq, "corPow", 0.0);
-    let corMtp = MDL_flow.calcCorMtp(b.block, liq);
-    if(corPow < 0.01 && corMtp > 1.0) corPow = 1.0;
-    if(corPow < 0.01) return;
-    let corRes = tryJsProp(b.block, "corRes", 1.0);
-
-    b.damagePierce((b.maxHealth * VAR.param.corDmgFrac + VAR.param.corDmgMin) * corPow * corMtp / corRes);
-    if(Mathf.chance(0.5)) MDL_effect.corrosion(b.x, b.y, b.block.size, liq.color);
-  };
-
-
-  function comp_ex_updateClogging(b, liq, amt) {
-    if(liq.viscosity < VAR.param.clogViscThr) return;
-
-    b.damagePierce((b.maxHealth * VAR.param.clogDmgFrac + VAR.param.clogDmgMin) * Mathf.lerp(0.5, 1.0, amt / b.block.liquidCapacity) * Mathf.lerp(0.5, 1.0, liq.viscosity / VAR.param.clogViscThr * 4.0));
-    if(Mathf.chance(0.5)) MDL_effect.corrosion(b.x, b.y, b.block.size, liq.color, true);
   };
 
 
@@ -88,7 +69,7 @@
       __paramObjM__: () => ({
 
 
-        /* <------------------------------ internal ------------------------------ */
+        /* <------------------------------ internal ------------------------------> */
 
 
         /**
@@ -136,38 +117,6 @@
       updateTile: function() {
         comp_updateTile(this);
       },
-
-
-      /**
-       * @memberof INTF_B_corrosionAcceptor
-       * @instance
-       * @param {Liquid} liq
-       * @param {number} amt
-       * @return {void}
-       */
-      ex_updateCorrosion: function(liq, amt) {
-        comp_ex_updateCorrosion(this, liq, amt);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 2,
-      }),
-
-
-      /**
-       * @memberof INTF_B_corrosionAcceptor
-       * @instance
-       * @param {Liquid} liq
-       * @param {number} amt
-       * @return {void}
-       */
-      ex_updateClogging: function(liq, amt) {
-        comp_ex_updateClogging(this, liq, amt);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 2,
-      }),
 
 
     }),

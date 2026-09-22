@@ -18,7 +18,7 @@
 */
 
 
-    /* <------------------------------ auxiliary ------------------------------ */
+    /* <------------------------------ auxiliary ------------------------------> */
 
 
     /**
@@ -35,7 +35,7 @@
     };
 
 
-    /* <------------------------------ base (group) ------------------------------ */
+    /* <------------------------------ base (group) ------------------------------> */
 
 
     /**
@@ -139,7 +139,7 @@
     exports.getFTagsBundle = getFTagsBundle;
 
 
-    /* <------------------------------ base (param) ------------------------------ */
+    /* <------------------------------ base (param) ------------------------------> */
 
 
     /**
@@ -377,7 +377,7 @@
     exports.getPresByBuild = getPresByBuild;
 
 
-    /* <------------------------------ corrosion ------------------------------ */
+    /* <------------------------------ corrosion ------------------------------> */
 
 
     /**
@@ -477,7 +477,51 @@
     exports.getCorRes = getCorRes;
 
 
-    /* <------------------------------ heat ------------------------------ */
+    /**
+     * Updates corrosion in a building.
+     * @param {Building} b
+     * @param {Liquid} liq
+     * @param {number} amt
+     * @return {void}
+     */
+    const updateCorrosion = function(b, liq, amt) {
+        if(PARAM.UPDATE_SUPPRESSED || !Vars.state.rules.fire || !TIMER.secQuarter || amt < 0.05 || !syncChance("corrosion", 0.25)) return;
+
+        let corPow = tryJsProp(liq, "corPow", 0.0);
+        let corMtp = calcCorMtp(b.block, liq);
+        if(corPow < 0.01 && corMtp > 1.0) {
+            corPow = 1.0;
+        };
+        if(corPow < 0.01) return;
+        let corRes = tryJsProp(b.block, "corRes", 1.0);
+
+        b.damagePierce((b.maxHealth * VAR.param.corDmgFrac + VAR.param.corDmgMin) * corPow * corMtp / corRes);
+        if(Mathf.chance(0.5)) {
+            MDL_effect.corrosion(b.x, b.y, b.block.size, liq.color);
+        };
+    };
+    exports.updateCorrosion = updateCorrosion;
+
+
+    /**
+     * Updates clogging in a building.
+     * @param {Building} b
+     * @param {Liquid} liq
+     * @param {number} amt
+     * @return {void}
+     */
+    const updateClogging = function(b, liq, amt) {
+        if(PARAM.UPDATE_SUPPRESSED || !Vars.state.rules.fire || !TIMER.secQuarter || amt < 0.05 || liq.viscosity < VAR.param.clogViscThr || !syncChance("clogging", 0.25)) return;
+
+        b.damagePierce((b.maxHealth * VAR.param.clogDmgFrac + VAR.param.clogDmgMin) * Mathf.lerp(0.5, 1.0, amt / b.block.liquidCapacity) * Mathf.lerp(0.5, 1.0, liq.viscosity / VAR.param.clogViscThr * 4.0));
+        if(Mathf.chance(0.5)) {
+            MDL_effect.corrosion(b.x, b.y, b.block.size, liq.color, true);
+        };
+    };
+    exports.updateClogging = updateClogging;
+
+
+    /* <------------------------------ heat ------------------------------> */
 
 
     /**

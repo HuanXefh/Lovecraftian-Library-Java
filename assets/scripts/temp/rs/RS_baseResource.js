@@ -18,6 +18,14 @@
     // Ensure that some fields are loaded
     rs.ex_getShortName();
     rs.ex_getIntmdTags();
+
+    // Don't show resources that have no use
+    MDL_event.onLoadDelay(30.0, () => {
+      if(!global.lovecUtil.prop.debug && !MDL_cond.hasAnyRecipe(rs)) {
+        rs.hidden = true;
+      };
+    });
+
   };
 
 
@@ -213,7 +221,7 @@
     setupVanillaProp: true,
 
 
-    /* <------------------------------ internal ------------------------------ */
+    /* <------------------------------ internal ------------------------------> */
 
 
     /**

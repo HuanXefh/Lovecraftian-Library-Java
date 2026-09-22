@@ -81,3 +81,5 @@ ve-halberd: true
 ve-parasite: true
 ve-stab: true
 ve-sweep: true
+ve-pantype: true
+ve-meteor: true

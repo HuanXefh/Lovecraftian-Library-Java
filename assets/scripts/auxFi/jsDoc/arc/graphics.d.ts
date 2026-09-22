@@ -236,6 +236,11 @@ declare class PixmapPacker implements Disposable {}
 interface PixmapPacker extends Disposable {}
 
 
+/** arc.graphics.shader */
+declare class Shader implements Disposable {}
+interface Shader extends Disposable {}
+
+
 /** arc.graphics.g2d.Font */
 declare class Font implements Disposable {}
 interface Font extends Disposable {}

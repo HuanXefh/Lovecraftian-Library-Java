@@ -23,7 +23,7 @@
 
     return typeAmt === 0 ?
       0.0 :
-      amt / typeAmt / b.block.itemCapacity;
+      amt_fi / typeAmt / b.block.itemCapacity;
   };
 
 

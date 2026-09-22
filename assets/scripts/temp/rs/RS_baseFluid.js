@@ -87,11 +87,18 @@
     let t = puddle.tile;
     let ot, ob, opuddle, dmg;
 
-    if(isNaN(puddle.amount)) puddle.remove();
+    if(isNaN(puddle.amount)) {
+      puddle.remove();
+    };
 
     // Fume if possible
     if(!liq.gas && liq.shouldFume && Mathf.chance(MDL_effect.calcEffPByFrac(0.03, puddle.amount * 0.04))) {
       MDL_effect.showAt(puddle.x, puddle.y, EFF.smogHeat);
+    };
+
+    // Corrode building if possible
+    if(!liq.gas && puddle.tile != null && puddle.tile.build != null) {
+      MDL_flow.updateCorrosion(puddle.tile.build, liq, puddle.amount);
     };
 
     // Cause short circuit if possible
@@ -154,7 +161,7 @@
   .setParam({
 
 
-    /* <------------------------------ internal ------------------------------ */
+    /* <------------------------------ internal ------------------------------> */
 
 
     /**
@@ -201,12 +208,13 @@
     corPow: 0.0,
 
 
-    /* <------------------------------ vanilla ------------------------------ */
+    /* <------------------------------ vanilla ------------------------------> */
 
 
     heatCapacity: 0.0,
     incinerable: false,
     coolant: false,
+    moveThroughBlocks: true,
     capPuddles: true,
 
 

@@ -237,13 +237,17 @@
     /** @type {Object<string, number>} */
     exports.randInd = {
         block: 0,
-        crafter: 1,
-        unit: 2,
-        ability: 3,
-        corrosion: 16,
-        pressure: 17,
-        fluidHeat: 18,
-        pollution: 19,
+        pipeShortCircuit: 5,
+        crafter: 10,
+        recipeFail: 15,
+        unit: 20,
+        ability: 30,
+        corrosion: 40,
+        clogging: 41,
+        pressure: 42,
+        fluidHeat: 43,
+        pollution: 50,
+        impact: 60,
     };
 
 

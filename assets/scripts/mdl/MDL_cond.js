@@ -18,7 +18,7 @@
 */
 
 
-    /* <------------------------------ auxiliary ------------------------------ */
+    /* <------------------------------ auxiliary ------------------------------> */
 
 
     function matchTag(ct_gn, tag, mode, suppressWarning) {
@@ -32,7 +32,7 @@
     };
 
 
-    /* <------------------------------ content ------------------------------ */
+    /* <------------------------------ content ------------------------------> */
 
 
     /**
@@ -48,7 +48,7 @@
     exports.isVanilla = isVanilla;
 
 
-  /* <------------------------------ resource ------------------------------ */
+  /* <------------------------------ resource ------------------------------> */
 
 
     /**
@@ -61,6 +61,28 @@
         return rs != null && rs.unlockedNow() && rs.isOnPlanet(Vars.state.getPlanet()) && !rs.isHidden();
     };
     exports.isRsAvailable = isRsAvailable;
+
+
+    /**
+     * Whether this content appears in any valid recipe.
+     * @param {ContentGn} ct_gn
+     * @return {boolean}
+     */
+    const hasAnyRecipe = function(ct_gn) {
+        let cond = false;;
+        MDL_recipeDict.getConsumers(ct_gn, true).forEachRow(3, (blk, amt, data) => {
+            if(cond) return;
+            cond = amt > 0.0 && !data.hidden;
+        });
+        if(cond) return true;
+        MDL_recipeDict.getProducers(ct_gn, true).forEachRow(3, (blk, amt, data) => {
+            if(cond) return;
+            cond = amt > 0.0 && !data.hidden;
+        });
+        return cond;
+    }
+    .setCache();
+    exports.hasAnyRecipe = hasAnyRecipe;
 
 
     /**
@@ -137,7 +159,7 @@
     exports.isConductiveLiquid = isConductiveLiquid;
 
 
-    /* <------------------------------ block ------------------------------ */
+    /* <------------------------------ block ------------------------------> */
 
 
     /**
@@ -721,7 +743,7 @@
     exports.isTurret = isTurret;
 
 
-    /* <------------------------------ env ------------------------------ */
+    /* <------------------------------ env ------------------------------> */
 
 
     /**
@@ -784,7 +806,7 @@
     exports.isScannerTarget = isScannerTarget;
 
 
-    /* <------------------------------ unit type ------------------------------ */
+    /* <------------------------------ unit type ------------------------------> */
 
 
     /**
@@ -825,7 +847,7 @@
     exports.hasNoRemains = hasNoRemains;
 
 
-    /* <------------------------------ entity ------------------------------ */
+    /* <------------------------------ entity ------------------------------> */
 
 
     /**
@@ -1103,7 +1125,7 @@
     exports.isUnitActing = isUnitActing;
 
 
-    /* <------------------------------ status effect ------------------------------ */
+    /* <------------------------------ status effect ------------------------------> */
 
 
     /**

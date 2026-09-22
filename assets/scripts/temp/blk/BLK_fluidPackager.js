@@ -20,13 +20,13 @@
     MDL_event.onLoadPost(() => {
       if(!blk.isUnpacker) {
         global.fcell.fluidItemMap.each((liq, item) => {
-          MDL_recipeDict.addFldConsTerm(blk, liq, blk.packageAmt * blk.liqPerCellItem / blk.craftTime);
-          MDL_recipeDict.addItemProdTerm(blk, item, blk.packageAmt, 1.0);
+          MDL_recipeDict.addFldConsTerm(blk, liq, blk.packageAmt * blk.liqPerCellItem / blk.craftTime, {hidden: true});
+          MDL_recipeDict.addItemProdTerm(blk, item, blk.packageAmt, 1.0, {hidden: true});
         });
       } else {
         global.fcell.fluidItemMap.each((liq, item) => {
-          MDL_recipeDict.addItemConsTerm(blk, item, blk.packageAmt, 1.0);
-          MDL_recipeDict.addFldProdTerm(blk, liq, blk.packageAmt * blk.liqPerCellItem / blk.craftTime);
+          MDL_recipeDict.addItemConsTerm(blk, item, blk.packageAmt, 1.0, {hidden: true});
+          MDL_recipeDict.addFldProdTerm(blk, liq, blk.packageAmt * blk.liqPerCellItem / blk.craftTime, {hidden: true});
         });
       };
     });
@@ -211,7 +211,7 @@
     .setParam({
 
 
-      /* <------------------------------ internal ------------------------------ */
+      /* <------------------------------ internal ------------------------------> */
 
 
       /**

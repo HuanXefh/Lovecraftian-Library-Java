@@ -412,9 +412,10 @@
      * Finds all blocks that consume `ct_gn`.
      * @param {ContentGn} ct_gn - Can be a custom field name.
      * @param {boolean|unset} [appendData] - If true, this method will return a 3-array instead. <br> `ROW`: blk, amt, data.
+     * @param {boolean|unset} [removeHidden]
      * @return {Array<Block>|F3Array<Block, number, RecipeDictionaryData>}
      */
-    const getConsumers = function(ct_gn, appendData) {
+    const getConsumers = function(ct_gn, appendData, removeHidden) {
         let arr = [];
         if(ct_gn == null) return arr;
         let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
@@ -431,21 +432,12 @@
                     ct instanceof UnitType ?
                         rcDict.cons.unit[ct.id] :
                         rcDict.cons.block[ct.id];
-        let
-            i = 0,
-            iCap = arr1.iCap(),
-            blk,
-            amt,
-            data;
-
+        let i = 0, iCap = arr1.iCap();
         while(i < iCap) {
-            blk = arr1[i];
-            if(!appendData) {
-                arr.push(blk);
-            } else {
-                amt = arr1[i + 1];
-                data = arr1[i + 2];
-                arr.push(blk, amt, data);
+            if(!removeHidden || !arr1[i + 2].hidden) {
+                !appendData ?
+                    arr.push(arr1[i]) :
+                    arr.push(arr1[i], arr1[i + 1], arr1[i + 2]);
             };
             i += 3;
         };
@@ -459,10 +451,11 @@
     /**
      * Variant of {@link getConsumers} that finds producers instead.
      * @param {ContentGn} ct_gn - Can be a custom field name.
-     * @param {boolean|unset} [appendData]
+     * @param {boolean|unset} [appendData] - If true, this method will return a 3-array instead. <br> `ROW`: blk, amt, data.
+     * @param {boolean|unset} [removeHidden]
      * @return {Array<Block>|F3Array<Block, number, RecipeDictionaryData>}
      */
-    const getProducers = function(ct_gn, appendData) {
+    const getProducers = function(ct_gn, appendData, removeHidden) {
         let arr = [];
         if(ct_gn == null) return arr;
         let ct = rcDict.customFieldMap.containsKey(ct_gn) ?
@@ -480,21 +473,12 @@
                         rcDict.prod.unit[ct.id] :
                         rcDict.prod.block[ct.id];
 
-        let
-            i = 0,
-            iCap = arr1.iCap(),
-            blk,
-            amt,
-            data;
-
+        let i = 0, iCap = arr1.iCap();
         while(i < iCap) {
-            blk = arr1[i];
-            if(!appendData) {
-                arr.push(blk);
-            } else {
-                amt = arr1[i + 1];
-                data = arr1[i + 2];
-                arr.push(blk, amt, data);
+            if(!removeHidden || !arr1[i + 2].hidden) {
+                !appendData ?
+                    arr.push(arr1[i]) :
+                    arr.push(arr1[i], arr1[i + 1], arr1[i + 2]);
             };
             i += 3;
         };

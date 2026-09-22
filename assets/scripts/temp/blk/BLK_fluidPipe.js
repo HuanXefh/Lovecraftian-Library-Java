@@ -67,7 +67,7 @@
 
 
   function comp_updateTile(b) {
-    if(b.block.delegee.isShortCircuitPipe && syncChanceDelta("block", 0.008)) {
+    if(b.block.delegee.isShortCircuitPipe && syncChanceDelta("pipeShortCircuit", 0.008)) {
       b.block.consPower.trigger(b);
     };
 
@@ -131,7 +131,7 @@
       isShortCircuitPipe: false,
 
 
-      /* <------------------------------ internal ------------------------------ */
+      /* <------------------------------ internal ------------------------------> */
 
 
       /**
@@ -239,7 +239,7 @@
     .setParam({
 
 
-      /* <------------------------------ internal ------------------------------ */
+      /* <------------------------------ internal ------------------------------> */
 
 
       /**

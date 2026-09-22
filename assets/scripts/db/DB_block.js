@@ -7,7 +7,7 @@
 const db = {
 
 
-    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------> */
 
 
     param: {
@@ -39,7 +39,7 @@ const db = {
     },
 
 
-    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------> */
 
 
     map: {
@@ -66,7 +66,7 @@ const db = {
     },
 
 
-    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------> */
 
 
     group: {
@@ -192,7 +192,7 @@ const db = {
     },
 
 
-    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------> */
 
 
     grpParam: {
@@ -318,7 +318,7 @@ const db = {
     },
 
 
-    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------> */
 
 
     class: {
@@ -378,6 +378,7 @@ const db = {
                 NuclearReactor, (blk, isDrillTime, ct) => blk.itemDuration,
                 ImpactReactor, (blk, isDrillTime, ct) => blk.itemDuration,
 
+                Separator, (blk, isDrillTime, ct) => blk.craftTime,
                 GenericCrafter, (blk, isDrillTime, ct) => blk.craftTime,
 
                 Reconstructor, (blk, isDrillTime, ct) => blk.constructTime,
@@ -863,7 +864,7 @@ const db = {
     },
 
 
-    /* <------------------------------ CHUNK SPLITTER ------------------------------ */
+    /* <------------------------------ CHUNK SPLITTER ------------------------------> */
 
 
 };

@@ -18,7 +18,7 @@
 */
 
 
-    /* <------------------------------ auxiliary ------------------------------ */
+    /* <------------------------------ auxiliary ------------------------------> */
 
 
     /**
@@ -38,7 +38,7 @@
     exports.resetDial = resetDial;
 
 
-    /* <------------------------------ base ------------------------------ */
+    /* <------------------------------ base ------------------------------> */
 
 
     /**
@@ -73,7 +73,7 @@
     exports.def = def;
 
 
-    /* <------------------------------ info ------------------------------ */
+    /* <------------------------------ info ------------------------------> */
 
 
     /**
@@ -442,7 +442,7 @@
     exports.achievement = achievement;
 
 
-    /* <------------------------------ content ------------------------------ */
+    /* <------------------------------ content ------------------------------> */
 
 
     /**
@@ -529,7 +529,7 @@
     exports.ctsRow = ctsRow;
 
 
-    /* <------------------------------ recipe ------------------------------ */
+    /* <------------------------------ recipe ------------------------------> */
 
 
     /**
@@ -1002,7 +1002,7 @@
                 pnTb.add(cont).growX();
 
                 // `TABLE`: producer
-                let prodArr = MDL_recipeDict.getProducers(ct, true);
+                let prodArr = MDL_recipeDict.getProducers(ct, true, true);
                 if(prodArr.length > 0) {
                     // `TABLE`: producer title
                     cont.table(Tex.whiteui, tb => {
@@ -1025,7 +1025,7 @@
                 };
 
                 // `TABLE`: consumer
-                let consArr = MDL_recipeDict.getConsumers(ct, true);
+                let consArr = MDL_recipeDict.getConsumers(ct, true, true);
                 if(consArr.length > 0) {
                     // `TABLE`: consumer title
                     cont.table(Tex.whiteui, tb => {

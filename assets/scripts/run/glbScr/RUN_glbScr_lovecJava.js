@@ -17,21 +17,21 @@
 */
 
 
-    /* <------------------------------ lovec.annotation ------------------------------ */
+    /* <------------------------------ lovec.annotation ------------------------------> */
 
 
     /** @global lovec.annotation.FromScript */
     FromScript = fetchClass("lovec.annotation.FromScript");
 
 
-    /* <------------------------------ lovec.audio ------------------------------ */
+    /* <------------------------------ lovec.audio ------------------------------> */
 
 
     /** @global lovec.audio.LCSoundControl */
     LCSoundControl = fetchClass("lovec.audio.LCSoundControl");
 
 
-    /* <------------------------------ lovec.content ------------------------------ */
+    /* <------------------------------ lovec.content ------------------------------> */
 
 
     /** @global lovec.content.LCCraftingHandler */
@@ -40,14 +40,14 @@
     RecipeUpdater = fetchClass("lovec.content.RecipeUpdater");
 
 
-    /* <------------------------------ entities ------------------------------ */
+    /* <------------------------------ entities ------------------------------> */
 
 
     /** @global lovec.entities.LCFx */
     LCFx = fetchClass("lovec.entities.LCFx");
 
 
-    /* <------------------------------ lovec.graphics ------------------------------ */
+    /* <------------------------------ lovec.graphics ------------------------------> */
 
 
     /** @global lovec.graphics.LCDraw */
@@ -62,7 +62,7 @@
     LCTexture = fetchClass("lovec.graphics.LCTexture");
 
 
-    /* <------------------------------ lovec.math ------------------------------ */
+    /* <------------------------------ lovec.math ------------------------------> */
 
 
     /** @global lovec.math.LCLerp */
@@ -83,14 +83,14 @@
     MathMeanArray = fetchClass("lovec.math.struct.MathMeanArray");
 
 
-    /* <------------------------------ lovec.ui ------------------------------ */
+    /* <------------------------------ lovec.ui ------------------------------> */
 
 
     /** @global lovec.ui.StackDrawable */
     StackDrawable = fetchClass("lovec.ui.StackDrawable");
 
 
-    /* <------------------------------ lovec.utils ------------------------------ */
+    /* <------------------------------ lovec.utils ------------------------------> */
 
 
     /** @global lovec.utils.LCAirObjects */

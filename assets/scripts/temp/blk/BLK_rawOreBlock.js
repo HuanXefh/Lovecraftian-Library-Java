@@ -90,7 +90,7 @@
       recolorRegStr: "lovec-gen-raw-ore-1",
 
 
-      /* <------------------------------ vanilla ------------------------------ */
+      /* <------------------------------ vanilla ------------------------------> */
 
 
       placeSound: fetchSound("se-place-rock"),

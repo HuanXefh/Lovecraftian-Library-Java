@@ -31,7 +31,7 @@
         this.add(1, "noCustomShadowRegionFound", nameCt => "[LOVEC] Cannot find custom shadow region for ${1}!".format(nameCt.color(Pal.accent)));
 
 
-        /* <------------------------------ debug info ------------------------------ */
+        /* <------------------------------ debug info ------------------------------> */
 
 
         this.add(0, "liquidInfo", (tx, ty) => {
