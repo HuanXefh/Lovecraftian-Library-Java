@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseGrass");
+    /**
+     * @typedef {TemplateInstance<SeaBush, ENV_grass>} ENVGrass
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseGrass");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,13 +26,15 @@
 */
 
 
-  /**
-   * Unbreakable sea bush.
-   * @class ENV_grass
-   * @extends ENV_baseGrass
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_grass").initClass()
-  .setParent(SeaBush)
-  .setTags()
-  .setParam({})
-  .setMethod({});
+    /**
+     * Unbreakable sea bush.
+     * @class ENV_grass
+     * @extends ENV_baseGrass
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_grass")
+    .initTemplate()
+    .setParent(SeaBush)
+    .setTags()
+    .setParam({})
+    .setMethod({});

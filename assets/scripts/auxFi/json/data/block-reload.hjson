@@ -18,6 +18,18 @@ aquarion-vector: true
 aquarion-thrash: true
 aquarion-flagellate: true
 
+/* <---------- Asthosus ----------> */
+
+asthosus-03c-01-catapult: true
+asthosus-03c-04-skip: true
+asthosus-03c-05-billow: true
+asthosus-03c-07-subtile: true
+asthosus-03c-09-cavalier: true
+asthosus-03c-11-fulmination: true
+asthosus-03c-13-instauro: true
+asthosus-03c-20-draysten-mortar: true
+asthosus-23w-01-fracture: true
+
 /* <---------- Azimuth ----------> */
 
 azimut-yongsin: true

@@ -9,7 +9,7 @@
 
 
     /**
-     * @typedef {Planet&PLA_asteroid} PLAAsteroid
+     * @typedef {TemplateInstance<Planet, PLA_asteroid>} PLAAsteroid
      */
 
 
@@ -80,7 +80,7 @@
      */
     module.exports = newClass()
     .extendClass(PARENT, "PLA_asteroid")
-    .initClass()
+    .initTemplate()
     .setParent(Planet)
     .setTags()
     .setParam({
@@ -167,6 +167,7 @@
          * @override
          * @memberof PLA_asteroid
          * @instance
+         * @func
          * @return {GenericMesh|null}
          */
         ex_getMesh: function() {

@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = CLS_contentTemplate;
+    /**
+     * @typedef {TemplateInstance<Weapon, WP_baseWeapon>} WPBaseWeapon
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = CLS_contentTemplate;
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,94 +26,51 @@
 */
 
 
-  /**
-   * Root of all weapons.
-   * @class WP_baseWeapon
-   * @extends CLS_contentTemplate
-   */
-  module.exports = newClass().extendClass(PARENT, "WP_baseWeapon").initClass()
-  .setParent(null)
-  .setTags()
-  .setParam({
-
-
     /**
-     * `PARAM`: See {@link RS_baseResource}.
-     * @memberof WP_baseWeapon
-     * @instance
+     * Root of all weapons.
+     * @class WP_baseWeapon
+     * @extends CLS_contentTemplate
      */
-    overwriteVanillaStat: true,
-    /**
-     * `PARAM`: See {@link RS_baseResource}.
-     * @memberof WP_baseWeapon
-     * @instance
-     */
-    overwriteVanillaProp: true,
+    module.exports = newClass()
+    .extendClass(PARENT, "WP_baseWeapon")
+    .initTemplate()
+    .setParent(Weapon)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------ */
+        /**
+         * `PARAM`: See {@link RS_baseResource}.
+         * @memberof WP_baseWeapon
+         * @instance
+         * @type {boolean}
+         */
+        setupVanillaStat: true,
+        /**
+         * `PARAM`: See {@link RS_baseResource}.
+         * @memberof WP_baseWeapon
+         * @instance
+         * @type {boolean}
+         */
+        setupVanillaProp: true,
 
 
-    name: null,
-    shootX: 0.0,
-    shootY: 0.0,
-    mirror: false,
-    alternate: true,
-    rotate: false,
-    reload: 1.0,
-    inaccuracy: 0.0,
-    shootCone: 5.0,
-    minWarmup: 0.0,
-    shootWarmupSpeed: 0.1,
-    smoothReloadSpeed: 0.15,
-    linearWarmup: false,
-    shake: 0.0,
-    recoil: 0.0,
-    recoilTime: -1.0,
-    recoilPow: 1.8,
-    heatColor: Pal.turretHeat,
-    cooldownTime: -1.0,
-    controllable: true,
-    aiControllable: true,
-    useAttackRange: true,
-    shootOnDeath: false,
-    parts: tprov(() => []),
+        /* <------------------------------ vanilla ------------------------------ */
 
 
-  })
-  .setParamAlias([
-    "btp", "bullet", Bullets.placeholder,
-    "isTop", "top", false,
-    "shaRad", "shadow", -1.0,
-    "offX", "x", 0.0,
-    "offY", "y", 0.0,
-    "offZ", "layerOffset", 0.0,
-    "randX", "xRand", 0.0,
-    "randY", "yRand", 0.0,
-    "velRand", "velocityRnd", 0.0,
-    "velExtraFrac", "extraVelocity", 0.0,
-    "shootVelReq", "minShootVelocity", -1.0,
-    "baseRot", "baseRotation", 0.0,
-    "rotCap", "rotationLimit", 361.0,
-    "rotSpd", "rotateSpeed", 20.0,
-    "pattern", "shoot", tprov(() => new ShootPattern()),
-    "shootSta", "shootStatus", StatusEffects.none,
-    "shootStaDur", "shootStatusDuration", 300.0,
-    "activeSe", "activeSound", Sounds.unset,
-    "activeSeVol", "activeSoundVolume", 1.0,
-    "shootSe", "shootSound", Sounds.shoot,
-    "shootSeVol", "shootSoundVolume", 1.0,
-    "shootSePitchMin", "soundPitchMin", 0.8,
-    "shootSePitchMax", "shootSePitchMax", 1.0,
-    "firstShootSe", "initialShootSound", Sounds.unset,
-    "chargeSe", "chargeSound", Sounds.unset,
-  ])
-  .setParamParser([
-    "cooldownTime", function(val) {
-      return val >= 0.0 ? val : Math.round(this.reload * 0.75);
-    },
-    "parts", function(val) {
-      return tprov(() => val.get().toSeq());
-    },
-  ])
-  .setMethod({});
+        cooldownTime: -1.0,
+        parts: [],
+
+
+    })
+    .setParamParser([
+        "cooldownTime", function(val) {
+            // Heat region cooldown time is calculated from reload by default
+            return val >= 0.0 ? val : Math.round(this.reload * 0.75);
+        },
+        "parts", function(val) {
+            // Parts are defined as array and finally converted to seq
+            return tprov(() => val.get().toSeq());
+        },
+    ])
+    .setMethod({});

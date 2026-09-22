@@ -9,7 +9,7 @@
 
 
     /**
-     * @typedef {Planet&PLA_basePlanet} PLABasePlanet
+     * @typedef {TemplateInstance<Planet, PLA_basePlanet>} PLABasePlanet
      */
 
 
@@ -28,13 +28,13 @@
 
     /**
      * Root of all planets.
-     * <br> `IMPORTANT`: Do not put .json files under `content/planets`, content parser will create these planets and there's no way to modify them with JS. Put them under `scripts/auxFi/json/planets`.
+     * <br> `IMPORTANT`: Do not put .json files in `content/planets`, content parser will create these planets and there's no way to modify them with JS. Put them in `scripts/auxFi/json/planets` instead.
      * @class PLA_basePlanet
      * @extends CLS_contentTemplate
      */
     module.exports = newClass()
     .extendClass(PARENT, "PLA_basePlanet")
-    .initClass()
+    .initTemplate()
     .setParent(null)
     .setTags()
     .setParam({
@@ -46,14 +46,14 @@
          * @instance
          * @type {boolean}
          */
-        overwriteVanillaStat: true,
+        setupVanillaStat: true,
         /**
          * `PARAM`: See {@link RS_baseResource}.
          * @memberof PLA_basePlanet
          * @instance
          * @type {boolean}
          */
-        overwriteVanillaProp: true,
+        setupVanillaProp: true,
         /**
          * `PARAM`: If true, mesh won't be parsed.
          * @memberof PLA_basePlanet
@@ -81,34 +81,36 @@
     .setMethod({
 
 
-          /**
-           * Mesh used when JSON for this is not parsed.
-           * <br> `LATER`
-           * @memberof PLA_basePlanet
-           * @instance
-           * @return {GenericMesh|null}
-           */
-          ex_getMesh: function() {
-              return null;
-          }
-          .setProp({
-              noSuper: true,
-          }),
+        /**
+         * Mesh used when JSON for this is not parsed.
+         * <br> `LATER`
+         * @memberof PLA_basePlanet
+         * @instance
+         * @func
+         * @return {GenericMesh|null}
+         */
+        ex_getMesh: function() {
+            return null;
+        }
+        .setProp({
+            noSuper: true,
+        }),
 
 
-          /**
-           * Cloud mesh used when JSON for this is not parsed.
-           * <br> `LATER`
-           * @memberof PLA_basePlanet
-           * @instance
-           * @return {GenericMesh|null}
-           */
-          ex_getCloudMesh: function() {
-              return null;
-          }
-          .setProp({
-              noSuper: true,
-          }),
+        /**
+         * Cloud mesh used when JSON for this is not parsed.
+         * <br> `LATER`
+         * @memberof PLA_basePlanet
+         * @instance
+         * @func
+         * @return {GenericMesh|null}
+         */
+        ex_getCloudMesh: function() {
+            return null;
+        }
+        .setProp({
+            noSuper: true,
+        }),
 
 
     });
@@ -117,7 +119,8 @@
     /**
      * @override
      * @memberof PLA_basePlanet
-     * @param {Planet} pla
+     * @func
+     * @param {PLABasePlanet} pla
      * @return {void}
      */
     module.exports.initContent = function thisFun(pla) {

@@ -5,52 +5,66 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseProp");
+    /**
+     * @typedef {TemplateInstance<Block, ENV_baseGrass>} ENVBaseGrass
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseProp");
 
 
-  function comp_init(blk) {
-    blk.breakable = false;
-    blk.unitMoveBreakable = false;
-    blk.solid = false;
-    blk.alwaysReplace = false;
-    blk.floating = true;
-    blk.placeableLiquid = true;
+    /* <------------------------------ component ------------------------------ */
 
-    // Bypass vanilla shadow due to hard-coded alpha value
-    blk.hasShadow = false;
-    blk.customShadow = true;
 
-    if(!Vars.headless) {
-      MDL_event.onLoad(() => {
-        if(!blk.customShadowRegion.found()) LCLogHandler.log("noCustomShadowRegionFound", blk.name);
-        if(blk.variantShadowRegions != null) {
-          let i = 0, iCap = blk.variantShadowRegions.iCap();
-          while(i < iCap) {
-            if(!blk.variantShadowRegions[i].found()) {
-              blk.variantShadowRegions[i] = blk.customShadowRegion;
-            };
-            i++;
-          };
+    /**
+     * @private
+     * @param {ENVBaseGrass} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.breakable = false;
+        blk.unitMoveBreakable = false;
+        blk.solid = false;
+        blk.alwaysReplace = false;
+        blk.floating = true;
+        blk.placeableLiquid = true;
+
+        // Bypass vanilla shadow due to hard-coded alpha value
+        blk.hasShadow = false;
+        blk.customShadow = true;
+
+        if(!Vars.headless) {
+            MDL_event.onLoad(() => {
+                if(!blk.customShadowRegion.found()) LCLogHandler.log("noCustomShadowRegionFound", blk.name);
+                if(blk.variantShadowRegions != null) {
+                    let i = 0, iCap = blk.variantShadowRegions.iCap();
+                    while(i < iCap) {
+                        if(!blk.variantShadowRegions[i].found()) {
+                            blk.variantShadowRegions[i] = blk.customShadowRegion;
+                        };
+                        i++;
+                    };
+                };
+            });
         };
-      });
     };
-  };
 
 
-  function comp_drawBase(blk, t) {
-    if(!blk.customShadowRegion.found()) return;
-
-    let z = Draw.z();
-    Draw.z(Layer.block - 0.1);
-    Draw.rect(blk.customShadowRegion, t.worldx(), t.worldy());
-    Draw.z(z);
-  };
+    /**
+     * @private
+     * @param {ENVBaseGrass} blk
+     * @param {Tile} t
+     * @return {void}
+     */
+    function comp_drawBase(blk, t) {
+        if(!blk.customShadowRegion.found()) return;
+        processZ(Layer.block - 0.1);
+        Draw.rect(blk.customShadowRegion, t.worldx(), t.worldy());
+        processZ(null);
+    };
 
 
 /*
@@ -60,35 +74,38 @@
 */
 
 
-  /**
-   * Parent of shorter plants. These props are part of map decoration and thus being unbreakable.
-   * @class ENV_baseGrass
-   * @extends ENV_baseProp
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_baseGrass").initClass()
-  .setParent(null)
-  .setTags()
-  .setParam({})
-  .setParamAlias([
     /**
-     * `PARAM`: Z-layer of the grass.
-     * @type {number} layGrass
-     * @memberof ENV_baseGrass
-     * @instance
+     * Parent of shorter plants. These props are part of map decoration and thus being unbreakable.
+     * @class ENV_baseGrass
+     * @extends ENV_baseProp
      */
-    "layGrass", "layer", Layer.groundUnit - 1.2,
-  ])
-  .setMethod({
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_baseGrass")
+    .initTemplate()
+    .setParent(null)
+    .setTags()
+    .setParam({})
+    .setParamAlias([
+        /**
+         * `ALIAS`: `layer`.
+         * @memberof ENV_baseGrass
+         * @instance
+         * @name layGrass
+         * @type {number}
+         */
+        "layGrass", "layer", Layer.groundUnit - 1.2,
+    ])
+    .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
+        init: function() {
+            comp_init(this);
+        },
 
 
-    drawBase: function(t) {
-      comp_drawBase(this, t);
-    },
+        drawBase: function(t) {
+            comp_drawBase(this, t);
+        },
 
 
-  });
+    });

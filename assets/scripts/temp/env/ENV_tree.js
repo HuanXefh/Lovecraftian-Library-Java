@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseTree");
+    /**
+     * @typedef {TemplateInstance<TreeBlock, ENV_tree>} ENVTree
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseTree");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,28 +26,32 @@
 */
 
 
-  /**
-   * The easiest lifeform to make in Mindustry.
-   * @class ENV_tree
-   * @extends ENV_baseTree
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_tree").initClass()
-  .setParent(TreeBlock)
-  .setTags("env-tree")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------ */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof ENV_tree
-     * @instance
+     * The easiest lifeform to make in Mindustry.
+     * @class ENV_tree
+     * @extends ENV_baseTree
      */
-    treeGrp: "tree",
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_tree")
+    .initTemplate()
+    .setParent(TreeBlock)
+    .setTags("env-tree")
+    .setParam({
 
 
-  })
-  .setMethod({});
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof ENV_tree
+         * @instance
+         * @type {string}
+         */
+        treeGrp: "tree",
+
+
+    })
+    .setMethod({});

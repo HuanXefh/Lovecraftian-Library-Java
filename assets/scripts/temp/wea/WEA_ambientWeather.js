@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/wea/WEA_baseWeather");
+    /**
+     * @typedef {TemplateInstance<Weather, WEA_ambientWeather>} WEAAmbientWeather
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/wea/WEA_baseWeather");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,13 +26,28 @@
 */
 
 
-  /**
-   * Weathers for ambient sound loop only.
-   * @class WEA_ambientWeather
-   * @extends WEA_baseWeather
-   */
-  module.exports = newClass().extendClass(PARENT, "WEA_ambientWeather").initClass()
-  .setParent(Weather)
-  .setTags()
-  .setParam({})
-  .setMethod({});
+    /**
+     * Weathers for ambient sound loop only.
+     * @class WEA_ambientWeather
+     * @extends WEA_baseWeather
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "WEA_ambientWeather")
+    .initTemplate()
+    .setParent(Weather)
+    .setTags()
+    .setParam({
+
+
+        /* <------------------------------ vanilla ------------------------------ */
+
+
+        sound: Sounds.none,
+        soundVol: 0.1,
+        soundVolMin: 0.0,
+        soundVolOscMag: 0.0,
+        soundVolOscScl: 20.0,
+
+
+    })
+    .setMethod({});

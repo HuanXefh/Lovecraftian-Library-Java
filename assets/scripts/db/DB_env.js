@@ -206,20 +206,20 @@ const db = {
             /**
              * Used to more deeply set properties of some floor material.
              * <br> `ROW`: matGrp, propM.
-             * <br> `ARGS`: flr, overwriteVanillaProp.
+             * <br> `ARGS`: flr, setupVanillaProp.
              * @type {F2Array<string, C2Function<Floor, boolean>>}
              */
             extraSetter: [
 
-                "ice", (flr, overwriteVanillaProp) => {
-                    if(overwriteVanillaProp) {
-                      flr.dragMultiplier = 0.35;
-                      flr.albedo = 0.6;
+                "ice", (flr, setupVanillaProp) => {
+                    if(setupVanillaProp) {
+                        flr.dragMultiplier = 0.35;
+                        flr.albedo = 0.6;
                     };
                 },
 
-                "lava", (flr, overwriteVanillaProp) => {
-                    if(overwriteVanillaProp) {
+                "lava", (flr, setupVanillaProp) => {
+                    if(setupVanillaProp) {
                         flr.speedMultiplier = 0.05;
                         flr.albedo = 0.2;
                         flr.emitLight = true;

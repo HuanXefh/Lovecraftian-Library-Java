@@ -19,7 +19,7 @@
       blk.drawArrow = true;
       blk.laserWidth = 0.0;
     };
-    if(blk.overwriteVanillaProp) {
+    if(blk.setupVanillaProp) {
       blk.sparkRange = blk.size * Vars.tilesize * 0.5;
       blk.sparkSize = 0.5 + blk.size * 0.5;
     };

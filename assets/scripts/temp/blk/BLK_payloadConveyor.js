@@ -16,7 +16,7 @@
 
   function comp_init(blk) {
     blk.canOverdrive = false;
-    if(blk.overwriteVanillaProp) {
+    if(blk.setupVanillaProp) {
       if(blk.hasPower) {
         blk.conductivePower = true;
         blk.connectedPower = false;

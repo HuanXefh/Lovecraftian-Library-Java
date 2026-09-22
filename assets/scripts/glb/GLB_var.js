@@ -97,8 +97,6 @@
         lightningIntv: 40.0,
         unitIntv: 20.0,
 
-        drownDef: 200.0,
-        flrStaDef: 40.0,
         liqStaDef: 150.0,
         unitStaDef: 120.0,
         stackStaExtDef: 120.0,
@@ -216,8 +214,6 @@
 
         ctNameColorMtp: 1.15,
         ctNameColorMtpHigh: 1.5,
-        wallColorDarkLerpA: 0.35,
-        ventColorDarkLerpA: 0.2,
         buildRemainsOffCap: 90.0,
         unitRemainsFloatThr: 17.5001,
         ovCogA1: 0.315,
@@ -251,8 +247,8 @@
     };
 
 
-    /** @type {Object<string, Dialog>} */
     MDL_event.onLoad(() => {
+        /** @type {Object<string, Dialog>} */
         exports.dialog = {
             ct1: Vars.headless ? null : new ContentInfoDialog(),
             ct2: Vars.headless ? null : new ContentInfoDialog(),

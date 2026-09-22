@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/unit/UNIT_baseUnit");
+    /**
+     * @typedef {TemplateInstance<UnitType, UNIT_airUnit>} UNITAirUnit
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/unit/UNIT_baseUnit");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,28 +26,32 @@
 */
 
 
-  /**
-   * Parent of all ground units.
-   * @class UNIT_airUnit
-   * @extends UNIT_baseUnit
-   */
-  module.exports = newClass().extendClass(PARENT, "UNIT_airUnit").initClass()
-  .setParent(UnitType)
-  .setTags("dmg0type-air")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------ */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof UNIT_airUnit
-     * @instance
+     * Parent of all air units.
+     * @class UNIT_airUnit
+     * @extends UNIT_baseUnit
      */
-    entityName: "lovec-air",
+    module.exports = newClass()
+    .extendClass(PARENT, "UNIT_airUnit")
+    .initTemplate()
+    .setParent(UnitType)
+    .setTags("dmg0type-air")
+    .setParam({
 
 
-  })
-  .setMethod({});
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof UNIT_airUnit
+         * @instance
+         * @type {string}
+         */
+        entityName: "lovec-air",
+
+
+    })
+    .setMethod({});

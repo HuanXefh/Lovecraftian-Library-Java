@@ -204,13 +204,13 @@
      * @memberof RS_baseResource
      * @instance
      */
-    overwriteVanillaStat: true,
+    setupVanillaStat: true,
     /**
      * `PARAM`: Whether to automatically set values of some vanilla properties.
      * @memberof RS_baseResource
      * @instance
      */
-    overwriteVanillaProp: true,
+    setupVanillaProp: true,
 
 
     /* <------------------------------ internal ------------------------------ */

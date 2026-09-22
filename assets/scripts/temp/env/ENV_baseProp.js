@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseEnvBlock");
+    /**
+     * @typedef {TemplateInstance<Block, ENV_baseProp>} ENVBaseProp
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseEnvBlock");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,13 +26,15 @@
 */
 
 
-  /**
-   * Featureless prop.
-   * @class ENV_baseProp
-   * @extends ENV_baseEnvBlock
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_baseProp").initClass()
-  .setParent(null)
-  .setTags()
-  .setParam({})
-  .setMethod({});
+    /**
+     * Featureless prop block.
+     * @class ENV_baseProp
+     * @extends ENV_baseEnvBlock
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_baseProp")
+    .initTemplate()
+    .setParent(null)
+    .setTags()
+    .setParam({})
+    .setMethod({});

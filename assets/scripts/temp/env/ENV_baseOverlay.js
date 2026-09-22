@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseEnvBlock");
+    /**
+     * @typedef {TemplateInstance<OverlayFloor, ENV_baseOverlay>} ENVBaseOverlay
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseEnvBlock");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,13 +26,15 @@
 */
 
 
-  /**
-   * Featureless overlay floor.
-   * @class ENV_baseOverlay
-   * @extends ENV_baseEnvBlock
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_baseOverlay").initClass()
-  .setParent(OverlayFloor)
-  .setTags()
-  .setParam({})
-  .setMethod({});
+    /**
+     * Featureless overlay floor.
+     * @class ENV_baseOverlay
+     * @extends ENV_baseEnvBlock
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_baseOverlay")
+    .initTemplate()
+    .setParent(OverlayFloor)
+    .setTags()
+    .setParam({})
+    .setMethod({});

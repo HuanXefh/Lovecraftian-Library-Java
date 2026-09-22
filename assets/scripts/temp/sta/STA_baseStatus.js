@@ -69,26 +69,26 @@
      */
     module.exports = newClass()
     .extendClass(PARENT, "STA_baseStatus")
-    .initClass()
+    .initTemplate()
     .setParent(StatusEffect)
     .setTags()
     .setParam({
 
 
         /**
-         * `PARAM`: See {@link RS_baseResource#overwriteVanillaStat}.
+         * `PARAM`: See {@link RS_baseResource#setupVanillaStat}.
          * @memberof STA_baseStatus
          * @instance
          * @type {boolean}
          */
-        overwriteVanillaStat: true,
+        setupVanillaStat: true,
         /**
-         * `PARAM`: See {@link RS_baseResource#overwriteVanillaProp}.
+         * `PARAM`: See {@link RS_baseResource#setupVanillaProp}.
          * @memberof STA_baseStatus
          * @instance
          * @type {boolean}
          */
-        overwriteVanillaProp: true,
+        setupVanillaProp: true,
 
 
         /* <------------------------------ internal ------------------------------ */
@@ -112,7 +112,7 @@
     })
     .setParamAlias([
         /**
-         * `ALIAS`: effect.
+         * `ALIAS`: `effect`.
          * @memberof STA_baseStatus
          * @instance
          * @name eff
@@ -120,7 +120,7 @@
          */
         "eff", "effect", Fx.none,
         /**
-         * `ALIAS`: effectChance.
+         * `ALIAS`: `effectChance`.
          * @memberof STA_baseStatus
          * @instance
          * @name effP
@@ -140,6 +140,7 @@
          * `init` of status effects can be called twice! Use this method to avoid it.
          * @memberof STA_baseStatus
          * @instance
+         * @func
          * @return {void}
          */
         ex_init: function() {

@@ -5,25 +5,35 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseOverlay");
-  const INTF = require("lovec/temp/intf/INTF_ENV_depthOverlay");
+    /**
+     * @typedef {TemplateInstance<OverlayFloor, ENV_baseOverlay>} ENVBaseOverlay
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseOverlay");
+    const INTF_ENV_depthOverlay = require("lovec/temp/intf/INTF_ENV_depthOverlay");
 
 
-  function comp_init(blk) {
-    blk.playerUnmineable = true;
+    /* <------------------------------ component ------------------------------ */
 
-    if(blk.itemDrop == null) throw new NullArgumentError(blk.name + ".itemDrop");
-    MDL_content.rename(
-      blk,
-      blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + blk.ex_getDepthName() + ")",
-    );
-  };
+
+    /**
+     * @private
+     * @param {ENVBaseOverlay} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.playerUnmineable = true;
+
+        if(blk.itemDrop == null) throw new NullArgumentError(blk.name + ".itemDrop");
+        MDL_content.rename(
+            blk,
+            blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + blk.ex_getDepthName() + ")",
+        );
+    };
 
 
 /*
@@ -33,23 +43,26 @@
 */
 
 
-  /**
-   * Underground ore that is only mineable by certain drills, and requires scanning.
-   * <br> `NAMEGEN`
-   * @class ENV_depthOre
-   * @extends ENV_baseOverlay
-   * @extends INTF_ENV_depthOverlay
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_depthOre").implement(INTF).initClass()
-  .setParent(OverlayFloor)
-  .setTags("env-dpore")
-  .setParam({})
-  .setMethod({
+    /**
+     * Underground ore that is only mineable by certain drills, and requires scanning.
+     * <br> `NAMEGEN`
+     * @class ENV_depthOre
+     * @extends ENV_baseOverlay
+     * @extends INTF_ENV_depthOverlay
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_depthOre")
+    .implement(INTF_ENV_depthOverlay)
+    .initTemplate()
+    .setParent(OverlayFloor)
+    .setTags("env-dpore")
+    .setParam({})
+    .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
+        init: function() {
+            comp_init(this);
+        },
 
 
-  });
+    });

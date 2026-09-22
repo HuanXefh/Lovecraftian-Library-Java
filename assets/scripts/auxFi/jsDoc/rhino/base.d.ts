@@ -4,6 +4,8 @@ declare class JavaAdapter {}
 declare namespace rhino {
     /** rhino.Context */
     class Context {}
+    /** rhino.ContextFactory */
+    class ContextFactory {}
 
     /** rhino.Scriptable */
     interface Scriptable {}

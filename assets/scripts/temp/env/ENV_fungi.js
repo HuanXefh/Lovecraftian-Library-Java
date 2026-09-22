@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseTree");
+    /**
+     * @typedef {TemplateInstance<TreeBlock, ENV_fungi>} ENVFungi
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseTree");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,28 +26,32 @@
 */
 
 
-  /**
-   * Tree-sized mushroom.
-   * @class ENV_fungi
-   * @extends ENV_baseTree
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_fungi").initClass()
-  .setParent(TreeBlock)
-  .setTags("env-tree")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------ */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof ENV_fungi
-     * @instance
+     * Tree-sized mushroom. Yep they are trees.
+     * @class ENV_fungi
+     * @extends ENV_baseTree
      */
-    treeGrp: "fungi",
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_fungi")
+    .initTemplate()
+    .setParent(TreeBlock)
+    .setTags("env-tree")
+    .setParam({
 
 
-  })
-  .setMethod({});
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof ENV_fungi
+         * @instance
+         * @type {string}
+         */
+        treeGrp: "fungi",
+
+
+    })
+    .setMethod({});

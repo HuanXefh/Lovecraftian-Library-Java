@@ -105,6 +105,9 @@ declare class Unit implements Builderc, Drawc, Entityc, Healthc, Hitboxc, Indexa
     inFogTo(team: Team): boolean
 }
 interface Unit extends Builderc, Drawc, Entityc, Healthc, Hitboxc, IndexableEntity__draw, IndexableEntity__sync, IndexableEntity__unit, Itemsc, Minerc, Physicsc, Posc, Rotc, Shieldc, Statusc, Syncc, Teamc, Unitc, Velc, Weaponsc {}
+/** mindustry.gen.UnitEntity */
+declare class UnitEntity extends Unit implements Builderc, Drawc, Entityc, Healthc, Hitboxc, Itemsc, Minerc, Physicsc, Posc, Rotc, Shieldc, Statusc, Syncc, Teamc, Unitc, Velc, Weaponsc {}
+interface UnitEntity extends Builderc, Drawc, Entityc, Healthc, Hitboxc, Itemsc, Minerc, Physicsc, Posc, Rotc, Shieldc, Statusc, Syncc, Teamc, Unitc, Velc, Weaponsc {}
 /** mindustry.gen.Bullet */
 declare class Bullet implements Pool.Poolable, Bulletc, Damagec, Drawc, Entityc, Hitboxc, IndexableEntity__bullet, IndexableEntity__draw, Ownerc, Posc, Shielderc, Teamc, Timedc, Timerc {}
 interface Bullet extends Pool.Poolable, Bulletc, Damagec, Drawc, Entityc, Hitboxc, IndexableEntity__bullet, IndexableEntity__draw, Ownerc, Posc, Shielderc, Teamc, Timedc, Timerc {}

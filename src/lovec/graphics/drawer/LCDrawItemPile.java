@@ -67,7 +67,7 @@ public class LCDrawItemPile extends LCDrawer {
         LCDraw.processZ(z >= 0f ? z : (Draw.z() + 0.5f));
         Angles.randLenVectors(b.id, Math.round(Mathf.maxZero(amountF.get(b) * fracF.get(b))), radius, (dx, dy) -> {
             Draw.color(Color.black, 0.4f);
-            calcRotatedOff(Tmp.v1, b.rotation).add(b);
+            calcRotatedOff(Tmp.v1, b.rotation).add(b).add(dx, dy);
             Draw.rect(shaReg, Tmp.v1.x, Tmp.v1.y, itemWidth * 1.6f, itemWidth * 1.6f);
             Draw.color();
             Draw.rect(item0.fullIcon, Tmp.v1.x, Tmp.v1.y, itemWidth, itemWidth, Mathf.randomSeed((long) (b.pos() + dx + dy * 10000), 0f, 360f));

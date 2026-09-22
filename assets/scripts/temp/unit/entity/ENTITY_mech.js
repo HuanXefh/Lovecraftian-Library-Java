@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/unit/entity/ENTITY_groundUnit");
+    /**
+     * @typedef {TemplateInstance<MechUnit, ENTITY_mech>} ENTITYMech
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/unit/entity/ENTITY_groundUnit");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,12 +26,14 @@
 */
 
 
-  /**
-   * Basic mech units.
-   * @class ENTITY_mech
-   * @extends ENTITY_groundUnit
-   */
-  module.exports = newClass().extendClass(PARENT, "ENTITY_mech").initClass()
-  .setParent(MechUnit)
-  .setParam({})
-  .setMethod({});
+    /**
+     * Basic mech units.
+     * @class ENTITY_mech
+     * @extends ENTITY_groundUnit
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENTITY_mech")
+    .initTemplate()
+    .setParent(MechUnit)
+    .setParam({})
+    .setMethod({});

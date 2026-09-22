@@ -46,7 +46,7 @@
 
 
   function comp_setStats(blk) {
-    if(blk.overwriteVanillaStat) {
+    if(blk.setupVanillaStat) {
       blk.stats.remove(Stat.drillTier);
       blk.stats.remove(Stat.drillSpeed);
 

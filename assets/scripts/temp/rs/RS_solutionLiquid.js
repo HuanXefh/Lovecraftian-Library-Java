@@ -17,7 +17,7 @@
   function comp_init(liq) {
     let liqSolv = MDL_content.getCt(LCDBFileHandler.read("liquid-solvent", liq.solvent, null), ContentGetModes.RS, true);
 
-    if(liqSolv != null && liq.overwriteVanillaProp) {
+    if(liqSolv != null && liq.setupVanillaProp) {
       liq.flammability = liqSolv.flammability;
       liq.explosiveness = liqSolv.explosiveness;
       liq.viscosity = liqSolv.viscosity;

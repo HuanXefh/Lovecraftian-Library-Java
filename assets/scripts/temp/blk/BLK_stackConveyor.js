@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
+    if(blk.setupVanillaProp) {
       if(blk.hasPower) {
         blk.conductivePower = true;
         blk.connectedPower = false;

@@ -76,6 +76,7 @@
 
       solid: false,
       underBullets: true,
+      coreMerge: false,
 
 
     })

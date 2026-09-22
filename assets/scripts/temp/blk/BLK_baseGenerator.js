@@ -31,7 +31,7 @@
 
 
   function comp_setStats(blk) {
-    if(blk.overwriteVanillaStat) {
+    if(blk.setupVanillaStat) {
       if(blk.explosionDamage > 0) {
         blk.stats.add(fetchStat("lovec", "blk-canexplode"), true);
         blk.stats.add(fetchStat("lovec", "blk-explor"), blk.explosionRadius, StatUnit.blocks);

@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/wea/WEA_decoWeather");
+    /**
+     * @typedef {TemplateInstance<RainWeather, WEA_rainWeather>} WEARainWeather
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/wea/WEA_decoWeather");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,13 +26,15 @@
 */
 
 
-  /**
-   * {@link RainWeather}.
-   * @class WEA_rainWeather
-   * @extends WEA_decoWeather
-   */
-  module.exports = newClass().extendClass(PARENT, "WEA_rainWeather").initClass()
-  .setParent(RainWeather)
-  .setTags()
-  .setParam({})
-  .setMethod({});
+    /**
+     * {@link RainWeather}.
+     * @class WEA_rainWeather
+     * @extends WEA_decoWeather
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "WEA_rainWeather")
+    .initTemplate()
+    .setParent(RainWeather)
+    .setTags()
+    .setParam({})
+    .setMethod({});

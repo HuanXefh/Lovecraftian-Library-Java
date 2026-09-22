@@ -5,97 +5,166 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = CLS_contentTemplate;
+    /**
+     * @typedef {TemplateInstance<UnitType, UNIT_baseUnit>} UNITBaseUnit
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = CLS_contentTemplate;
 
 
-  function comp_init(utp) {
-    utp.polTol = MDL_pollution.getPolTol(utp);
+    /* <------------------------------ auxiliary ------------------------------ */
 
-    if(utp.immuneToAll) {
-      MDL_event.onLoadPost(() => {
-        Vars.content.statusEffects().each(
-          sta => !MDL_cond.isNonStatus(sta),
-          sta => utp.immunities.add(sta),
+
+    /**
+     * @private
+     * @type {Color}
+     */
+    const SHIELD_TMP_COLOR = new Color();
+
+
+    /* <------------------------------ component ------------------------------ */
+
+
+    /**
+     * @private
+     * @param {UNITBaseUnit} utp
+     * @return {void}
+     */
+    function comp_init(utp) {
+        utp.polTol = MDL_pollution.getPolTol(utp);
+
+        if(utp.immuneToAll) {
+            MDL_event.onLoadPost(() => {
+                Vars.content.statusEffects().each(
+                    sta => !MDL_cond.isNonStatus(sta),
+                    sta => utp.immunities.add(sta),
+                );
+            });
+        };
+
+        // Set up internal abilities
+        if(utp.unitDurabCap > 0.0) {
+            setAbility(utp, abis => [
+                abis,
+                fetchAbility("unit-ability", {
+                    durabCap: utp.unitDurabCap,
+                }),
+            ]);
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {UNITBaseUnit} utp
+     * @return {void}
+     */
+    function comp_load(utp) {
+        MDL_event.onLoad(() => {
+            // Use "-icon" sprite whenever possible
+            if(!utp.skipOutlineSetup && Core.atlas.has(utp.name + "-icon")) {
+                utp.fullIcon = utp.uiIcon = Core.atlas.find(utp.name + "-icon");
+            };
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {UNITBaseUnit} utp
+     * @return {void}
+     */
+    function comp_setStats(utp) {
+        if(utp.setupVanillaStat) {
+            utp.stats.remove(Stat.mineTier);
+        };
+
+        if(MDL_cond.isNonRobot(utp)) {
+            utp.stats.add(fetchStat("lovec", "utp-notrobot"), true);
+        };
+        if(utp.polTol > 0.0) {
+            utp.stats.add(fetchStat("lovec", "blk-poltol"), utp.polTol, fetchStatUnit("lovec", "polunits"));
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {UNITBaseUnit} utp
+     * @param {Unit} unit
+     * @return {void}
+     */
+    function comp_killed(utp, unit) {
+        UTIL_unitData.remove(unit);
+    };
+
+
+    /**
+     * @private
+     * @param {UNITBaseUnit} utp
+     * @param {Unit} unit
+     * @return {void}
+     */
+    function comp_update(utp, unit) {
+        if(utp.useLovecDamagePenalty) {
+            FRAG_unit.updateDamagedSta(utp, unit);
+        };
+
+        if(utp.hasUnitData && unit.delegee != null && TIMER.secHalf) {
+            if(!UTIL_unitData.includes(unit)) {
+                UTIL_unitData.add(unit, utp.ex_getEmptyUnitData(unit));
+            };
+            utp.ex_writeUnitData(unit, UTIL_unitData.get(unit));
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {UNITBaseUnit} utp
+     * @param {Unit} unit
+     * @return {void}
+     */
+    function comp_draw(utp, unit) {
+        if(utp.drawShields && (utp.baseShieldA > 0.0 || unit.shieldAlpha > 0.0) && unit.shield > 0.0) {
+            utp.ex_drawShield(unit);
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {UNITBaseUnit} utp
+     * @param {Unit} unit
+     * @return {void}
+     */
+    function comp_drawLight(utp, unit) {
+        if(!utp.useConicalLight) {
+            utp.super$drawLight(unit);
+        } else {
+            LCDrawf.lightArc(unit.x, unit.y, 1.0, utp.lightRadius, utp.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {UNITBaseUnit} utp
+     * @param {Unit} unit
+     * @return {void}
+     */
+    function comp_ex_drawShield(utp, unit) {
+        LCDraw.shieldCircle(
+            unit.x, unit.y,
+            unit.hitSize * utp.shieldRadScl * 1.3 + Mathf.lerp(0.0, utp.shieldRadHitInc, unit.shieldAlpha),
+            utp.ex_getShieldColor(unit),
+            Mathf.lerp(utp.baseShieldA, 1.0, unit.shieldAlpha),
         );
-      });
     };
-
-    if(utp.unitDurabCap > 0.0) {
-      setAbility(utp, abis => [
-        abis,
-        fetchAbility("unit-ability", {
-          durabCap: utp.unitDurabCap,
-        }),
-      ]);
-    };
-  };
-
-
-  function comp_load(utp) {
-    // Use "-icon" sprite whenever possible
-    if(!utp.skipOutlineSetup && Core.atlas.has(utp.name + "-icon")) {
-      utp.fullIcon = utp.uiIcon = Core.atlas.find(utp.name + "-icon");
-    };
-  };
-
-
-  function comp_setStats(utp) {
-    if(utp.overwriteVanillaStat) {
-      utp.stats.remove(Stat.mineTier);
-    };
-
-    if(MDL_cond.isNonRobot(utp)) utp.stats.add(fetchStat("lovec", "utp-notrobot"), true);
-    if(utp.polTol > 0.0) utp.stats.add(fetchStat("lovec", "blk-poltol"), utp.polTol, fetchStatUnit("lovec", "polunits"));
-  };
-
-
-  function comp_killed(utp, unit) {
-    UTIL_unitData.remove(unit);
-  };
-
-
-  function comp_update(utp, unit) {
-    if(utp.useLovecDamagePenalty) FRAG_unit.updateDamagedSta(utp, unit);
-
-    if(utp.hasUnitData && unit.delegee != null && TIMER.secHalf) {
-      if(!UTIL_unitData.includes(unit)) {
-        UTIL_unitData.add(unit, {});
-      };
-      utp.ex_writeUnitData(unit, UTIL_unitData.get(unit));
-    };
-  };
-
-
-  function comp_draw(utp, unit) {
-    if(utp.drawShields && (utp.baseShieldA > 0.0 || unit.shieldAlpha > 0.0) && unit.shield > 0.0) {
-      utp.ex_drawShield(unit);
-    };
-  };
-
-
-  function comp_drawLight(utp, unit) {
-    if(!utp.useConicalLight) {
-      utp.super$drawLight(unit);
-    } else {
-      LCDrawf.lightArc(unit.x, unit.y, 1.0, utp.lightRadius, utp.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
-    };
-  };
-
-
-  function comp_ex_drawShield(utp, unit) {
-    LCDraw.shieldCircle(
-      unit.x, unit.y,
-      unit.hitSize * utp.shieldRadScl * 1.3 + Mathf.lerp(0.0, utp.shieldRadHitInc, unit.shieldAlpha),
-      utp.ex_getShieldColor(unit),
-      Mathf.lerp(utp.baseShieldA, 1.0, unit.shieldAlpha),
-    );
-  };
 
 
 /*
@@ -105,334 +174,383 @@
 */
 
 
-  /**
-   * Root of all units.
-   * @class UNIT_baseUnit
-   * @extends CLS_contentTemplate
-   */
-  module.exports = newClass().extendClass(PARENT, "UNIT_baseUnit").initClass()
-  .setParent(null)
-  .setTags()
-  .setParam({
-
-
     /**
-     * `PARAM`: See {@link RS_baseResource}.
-     * @memberof UNIT_baseUnit
-     * @instance
+     * Root of all units.
+     * @class UNIT_baseUnit
+     * @extends CLS_contentTemplate
      */
-    overwriteVanillaStat: true,
+    module.exports = newClass()
+    .extendClass(PARENT, "UNIT_baseUnit")
+    .initTemplate()
+    .setParent(null)
+    .setTags()
+    .setParam({
+
+
+        /**
+         * `PARAM`: See {@link RS_baseResource}.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {boolean}
+         */
+        setupVanillaStat: true,
+        /**
+         * `PARAM`: See {@link RS_baseResource}.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {boolean}
+         */
+        setupVanillaProp: true,
+        /**
+         * `PARAM`: See {@link BLK_baseBlock}.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {boolean}
+         */
+        skipOutlineSetup: false,
+        /**
+         * `PARAM`: Whether to enable health-based status effects for this unit.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {boolean}
+         */
+        useLovecDamagePenalty: true,
+        /**
+         * `PARAM`: If true, this unit is immune to all status effects.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {boolean}
+         */
+        immuneToAll: false,
+        /**
+         * `PARAM`: Items (as name) that this unit cannot take.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {TDynamic<Array<string>>}
+         */
+        itemBlacklist: tprov(() => []),
+        /**
+         * `PARAM`: If larger than 0.0, shield will always be drawn.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {number}
+         */
+        baseShieldA: 0.0,
+        /**
+         * `PARAM`: Shield radius scaling.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {number}
+         */
+        shieldRadScl: 1.0,
+        /**
+         * `PARAM`: Increase of shield radius when hit or regenerated.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {number}
+         */
+        shieldRadHitInc: 0.75,
+        /**
+         * `PARAM`: Whether to use conical light instead of vanilla circular light.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {boolean}
+         */
+        useConicalLight: true,
+        /**
+         * `PARAM`: Affects cone angle of the light. Requires {@link UNIT_baseUnit#useConicalLight} to be true.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {number}
+         */
+        lightConeScl: 0.4,
+        /**
+         * `PARAM`: Durability in frames, the unit will be destroyed by default if run out of durability. Use negative value to disable this mechanics.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {number}
+         */
+        unitDurabCap: -1.0,
+        /**
+         * `PARAM`: If true, this unit will despawn when not bound to a building for too long.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {boolean}
+         */
+        isTetheredUnit: false,
+        /**
+         * `PARAM`: Time required without bound building for this tethered unit to despawn. Use negative value for never despawning.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {number}
+         */
+        noTetherDespawnTime: 180.0,
+
+
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * `INTERNAL`: Determines entity used by this unit type. Do not change unless you know how it works.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {string}
+         */
+        entityName: "flying",
+        /**
+         * `INTERNAL` The content template used for unit entity. Null if entity is not created by template.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {ContentTemplate|null}
+         */
+        entityTemplate: null,
+        /**
+         * `INTERNAL`
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {boolean}
+         */
+        hasUnitData: true,
+        /**
+         * `INTERNAL`: Pollution tolerance.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @type {number}
+         */
+        polTol: -1.0,
+
+
+        /* <------------------------------ vanilla ------------------------------ */
+
+
+        envRequired: 0,
+        envEnabled: Env.any,
+        envDisabled: 0,
+
+
+    })
+    .setMethod({
+
+
+        init: function() {
+            comp_init(this);
+        },
+
+
+        load: function() {
+            comp_load(this);
+        },
+
+
+        setStats: function() {
+            comp_setStats(this);
+        },
+
+
+        killed: function(unit) {
+            comp_killed(this, unit);
+        },
+
+
+        update: function(unit) {
+            comp_update(this, unit);
+        },
+
+
+        draw: function(unit) {
+            comp_draw(this, unit);
+        },
+
+
+        drawLight: function(unit) {
+            comp_drawLight(this, unit);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        drawShield: function(unit) {
+            // Not used
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        /**
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @func
+         * @param {Unit} unit
+         * @return {Color}
+         */
+        ex_getShieldColor: function(unit) {
+            return SHIELD_TMP_COLOR.set(tryVal(this.shieldColor, unit.team.color)).lerp(Color.white, Mathf.clamp(unit.hitTime / 2.0));
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        /**
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @func
+         * @param {Unit} unit
+         * @return {void}
+         */
+        ex_drawShield: function(unit) {
+            comp_ex_drawShield(this, unit);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        /**
+         * Called every frame when this unit is out of durability.
+         * By default, this unit will be destroyed.
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @func
+         * @param {Unit} unit
+         * @return {void}
+         */
+        ex_onDurabOutage: function(unit) {
+            unit.kill();
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * Called when this unit's durability decreases.
+         * <br> `LATER`
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @func
+         * @param {Unit} unit
+         * @return {void}
+         */
+        ex_onDurabDec: function(unit) {
+
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @func
+         * @param {Unit} unit
+         * @return {Object}
+         */
+        ex_getEmptyUnitData: function(unit) {
+            return {};
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @func
+         * @param {Unit} unit
+         * @param {Object} dataObj
+         * @return {void}
+         */
+        ex_writeUnitData: function(unit, dataObj) {
+            if(unit.ex_writeUnitData != null) {
+                unit.ex_writeUnitData(dataObj);
+            };
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 2,
+        }),
+
+
+        /**
+         * @memberof UNIT_baseUnit
+         * @instance
+         * @func
+         * @param {Unit} unit
+         * @param {Object} dataObj
+         * @return {void}
+         */
+        ex_readUnitData: function(unit, dataObj) {
+            if(unit.ex_readUnitData != null) {
+                unit.ex_readUnitData(dataObj);
+            };
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 2,
+        }),
+
+
+    });
+
+
     /**
-     * `PARAM`: See {@link RS_baseResource}.
+     * @override
      * @memberof UNIT_baseUnit
-     * @instance
-     */
-    overwriteVanillaProp: true,
-    /**
-     * `PARAM`: See {@link BLK_baseBlock}.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    skipOutlineSetup: false,
-    /**
-     * `PARAM`: Whether to enable health-based status effects.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    useLovecDamagePenalty: true,
-    /**
-     * `PARAM`: If true, this unit is immune to all status effects.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    immuneToAll: false,
-    /**
-     * `PARAM`: Items (as name) that this unit cannot take.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    itemBlacklist: tprov(() => []),
-    /**
-     * `PARAM`: If larger than 0.0, shield will always be drawn.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    baseShieldA: 0.0,
-    /**
-     * `PARAM`: Shield radius scaling.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    shieldRadScl: 1.0,
-    /**
-     * `PARAM`: Increase of shield radius when hit or regenerated.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    shieldRadHitInc: 0.75,
-    /**
-     * `PARAM`: Whether to use conical light instead of vanilla circular light.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    useConicalLight: true,
-    /**
-     * `PARAM`: Affects cone angle of the light. Requires {@link UNIT_baseUnit#useConicalLight} to be true.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    lightConeScl: 0.4,
-    /**
-     * `PARAM`: Durability in frames, the unit will be destroyed if run out of durability. Use negative value to disable this mechanics.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    unitDurabCap: -1.0,
-    /**
-     * `PARAM`: If true, this unit will despawn when not bound to a building for too long.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    isTetheredUnit: false,
-    /**
-     * `PARAM`: Time required without bound building for this tethered unit to despawn. Use negative value for never despawning.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    noTetherDespawnTime: 180.0,
-
-
-    /* <------------------------------ internal ------------------------------ */
-
-
-    /**
-     * `INTERNAL`: Entity used by this type, do not change unless you know how it works.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    entityName: "flying",
-    /**
-     * `INTERNAL` The content template used for unit entity.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    entityTemplate: null,
-    /**
-     * `INTERNAL`
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    hasUnitData: true,
-    /**
-     * `INTERNAL`: Pollution tolerance.
-     * @memberof UNIT_baseUnit
-     * @instance
-     */
-    polTol: -1.0,
-
-
-    /* <------------------------------ vanilla ------------------------------ */
-
-
-    envRequired: 0,
-    envEnabled: Env.any,
-    envDisabled: 0,
-
-
-  })
-  .setMethod({
-
-
-    init: function() {
-      comp_init(this);
-    },
-
-
-    load: function() {
-      comp_load(this);
-    },
-
-
-    setStats: function() {
-      comp_setStats(this);
-    },
-
-
-    killed: function(unit) {
-      comp_killed(this, unit);
-    },
-
-
-    update: function(unit) {
-      comp_update(this, unit);
-    },
-
-
-    draw: function(unit) {
-      comp_draw(this, unit);
-    },
-
-
-    drawLight: function(unit) {
-      comp_drawLight(this, unit);
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    drawShield: function(unit) {
-
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    /**
-     * @memberof UNIT_baseUnit
-     * @instance
-     * @param {Unit} unit
-     * @return {Color}
-     */
-    ex_getShieldColor: function(unit) {
-      return Tmp.c2.set(tryVal(this.shieldColor, unit.team.color)).lerp(Color.white, Mathf.clamp(unit.hitTime / 2.0));
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    /**
-     * @memberof UNIT_baseUnit
-     * @instance
-     * @param {Unit} unit
+     * @func
+     * @param {UNITBaseUnit} utp
      * @return {void}
      */
-    ex_drawShield: function(unit) {
-      comp_ex_drawShield(this, unit);
-    }
-    .setProp({
-      noSuper: true,
-    }),
+    module.exports.initContent = function(utp) {
+        this.super("initContent", utp);
 
+        // Resolve entity mapping
+        let entityVal = DB_unit.db["map"]["entity"]["type"].read(utp.delegee.entityName, UnitEntity);
 
-    /**
-     * Called when this unit is out of durability.
-     * By default, this unit will be destroyed.
-     * @memberof UNIT_baseUnit
-     * @instance
-     * @param {Unit} unit
-     * @return {void}
-     */
-    ex_onDurabOutage: function(unit) {
-      unit.kill();
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 1,
-    }),
+        // Resolve entity mapping
+        if(entityVal instanceof Prov) {
+            utp.delegee.entityTemplate = entityVal.get();
 
+            let unitProv = EntityMapping.map(utp.delegee.entityName);
+            if(unitProv == null) {
+                unitProv = prov(() => {
+                    processClassLoader(null, VAR.extendInd.entity);
+                    let obj = mergeObj(
+                        utp.delegee.entityTemplate.build(),
+                        {
+                            classId: function() {return id},
+                        },
+                    );
+                    Object.eachPair(obj, (key, val) => {
+                        if(!key.startsWith("utp$")) return;
+                        obj[key] = tryJsProp(utp, key.replace("utp$", ""), undefined);
+                    });
+                    let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
+                    utp.delegee.entityTemplate.initContent(unit);
+                    processClassLoader(null, VAR.extendInd.entity);
+                    return unit;
+                });
+                let id = EntityMapping.register(utp.delegee.entityName, unitProv);
+            };
+            utp.constructor = unitProv;
+        } else {
+            utp.constructor = () => extend(entityVal, {});
+        };
 
-    /**
-     * Called when this unit's durability decreases.
-     * <br> `LATER`
-     * @memberof UNIT_baseUnit
-     * @instance
-     * @param {Unit} unit
-     * @return {void}
-     */
-    ex_onDurabDec: function(unit) {
+        // Resolve unit damage type
+        let dmgType = CLS_unitDamageType.getByUtp(utp);
+        if(dmgType !== CLS_unitDamageType.NONE) {
+            utp.databaseTag = "common-dmg0type-" + dmgType.getName();
+        };
 
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 1,
-    }),
-
-
-    /**
-     * @memberof UNIT_baseUnit
-     * @instance
-     * @param {Unit} unit
-     * @param {Object} dataObj
-     * @return {void}
-     */
-    ex_writeUnitData: function(unit, dataObj) {
-      if(unit.ex_writeUnitData != null) unit.ex_writeUnitData(dataObj);
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 2,
-    }),
-
-
-    /**
-     * @memberof UNIT_baseUnit
-     * @instance
-     * @param {Unit} unit
-     * @param {Object} dataObj
-     * @return {void}
-     */
-    ex_readUnitData: function(unit, dataObj) {
-      if(unit.ex_readUnitData != null) unit.ex_readUnitData(dataObj);
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 2,
-    }),
-
-
-  });
-
-
-  /**
-   * @override
-   * @memberof UNIT_baseUnit
-   * @param {UnitType} utp
-   * @return {void}
-   */
-  module.exports.initContent = function(utp) {
-    this.super("initContent", utp);
-
-    // Resolve entity mapping
-    let entityVal = DB_unit.db["map"]["entity"]["type"].read(utp.delegee.entityName, UnitEntity);
-
-    if(entityVal instanceof Prov) {
-      utp.delegee.entityTemplate = entityVal.get();
-
-      let unitProv = EntityMapping.map(utp.delegee.entityName);
-      if(unitProv == null) {
-        unitProv = prov(() => {
-          processClassLoader(null, VAR.extendInd.entity);
-          let obj = mergeObj(
-            utp.delegee.entityTemplate.build(),
-            {
-              classId: function() {return id},
-            },
-          );
-          Object.eachPair(obj, (key, val) => {
-            if(!key.startsWith("utp$")) return;
-            obj[key] = tryJsProp(utp, key.replace("utp$", ""), undefined);
-          });
-          let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
-          utp.delegee.entityTemplate.initContent(unit);
-          processClassLoader(null, VAR.extendInd.entity);
-
-          return unit;
-        });
-        let id = EntityMapping.register(utp.delegee.entityName, unitProv);
-      };
-      utp.constructor = unitProv;
-    } else {
-      utp.constructor = () => extend(entityVal, {});
+        if(!tryJsProp(utp, "skipOutlineSetup", false)) {
+            FRAG_faci.setupOutline(utp);
+        };
     };
-
-    // Resolve unit damage type
-    let dmgType = CLS_unitDamageType.getByUtp(utp);
-    if(dmgType !== CLS_unitDamageType.NONE) {
-      utp.databaseTag = "common-dmg0type-" + dmgType.getName();
-    };
-
-    if(!tryJsProp(utp, "skipOutlineSetup", false)) FRAG_faci.setupOutline(utp);
-  };

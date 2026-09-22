@@ -5,27 +5,37 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseProp");
+    /**
+     * @typedef {TemplateInstance<TallBlock, ENV_heap>} ENVHeap
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseProp");
 
 
-  function comp_init(blk) {
-    blk.floating = true;
-    blk.placeableLiquid = true;
+    /* <------------------------------ component ------------------------------ */
 
-    blk.flrParent = MDL_content.getCt(blk.flrParent, ContentGetModes.BLK);
-    if(blk.flrParent != null) {
-      MDL_content.rename(
-        blk,
-        blk.flrParent.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "heap") + ")",
-      );
+
+    /**
+     * @private
+     * @param {ENVHeap} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.floating = true;
+        blk.placeableLiquid = true;
+
+        blk.flrParent = MDL_content.getCt(blk.flrParent, ContentGetModes.BLK);
+        if(blk.flrParent != null) {
+            MDL_content.rename(
+                blk,
+                blk.flrParent.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "heap") + ")",
+            );
+        };
     };
-  };
 
 
 /*
@@ -35,41 +45,44 @@
 */
 
 
-  /**
-   * Decorative tall blocks for walls.
-   * Bullets won't collide with {@link TallBlock}, I can't do much with it.
-   * <br> `NAMEGEN`
-   * @class ENV_heap
-   * @extends ENV_baseProp
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_heap").initClass()
-  .setParent(TallBlock)
-  .setTags()
-  .setParam({
-
-
     /**
-     * `PARAM`: See {@link ENV_wall}.
-     * @memberof ENV_heap
-     * @instance
+     * Decorative tall blocks for walls.
+     * <br> Bullets won't collide with {@link TallBlock}, I can't do much with it.
+     * <br> `NAMEGEN`
+     * @class ENV_heap
+     * @extends ENV_baseProp
      */
-    flrParent: null,
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_heap")
+    .initTemplate()
+    .setParent(TallBlock)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------ */
+        /**
+         * `PARAM`: See {@link ENV_wall}.
+         * @memberof ENV_heap
+         * @instance
+         * @type {Floor|null}
+         */
+        flrParent: null,
 
 
-    rotationRand: 60.0,
-    allowRectanglePlacement: true,
+        /* <------------------------------ vanilla ------------------------------ */
 
 
-  })
-  .setMethod({
+        rotationRand: 60.0,
+        allowRectanglePlacement: true,
 
 
-    init: function() {
-      comp_init(this);
-    },
+    })
+    .setMethod({
 
 
-  });
+        init: function() {
+            comp_init(this);
+        },
+
+
+    });

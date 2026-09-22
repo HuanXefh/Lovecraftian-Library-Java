@@ -12,7 +12,7 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
+    if(blk.setupVanillaProp) {
       blk.drawArrow = blk.rotate;
     };
 

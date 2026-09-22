@@ -15,7 +15,7 @@
 
 
   function comp_init(blk) {
-    if(blk.overwriteVanillaProp) {
+    if(blk.setupVanillaProp) {
       if(blk.size === 1) {
         blk.solid = false;
         blk.underBullets = true;

@@ -5,25 +5,35 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseProp");
+    /**
+     * @typedef {TemplateInstance<TallBlock, ENV_deposit>} ENVDeposit
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseProp");
 
 
-  function comp_init(blk) {
-    blk.floating = true;
-    blk.placeableLiquid = true;
+    /* <------------------------------ component ------------------------------ */
 
-    if(blk.itemDrop == null) throw new NullArgumentError(blk.name + ".itemDrop");
-    MDL_content.rename(
-      blk,
-      blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "deposit") + ")",
-    );
-  };
+
+    /**
+     * @private
+     * @param {ENVDeposit} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.floating = true;
+        blk.placeableLiquid = true;
+
+        if(blk.itemDrop == null) throw new NullArgumentError(blk.name + ".itemDrop");
+        MDL_content.rename(
+            blk,
+            blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "deposit") + ")",
+        );
+    };
 
 
 /*
@@ -33,34 +43,36 @@
 */
 
 
-  /**
-   * Mineable tall blocks.
-   * `blk.itemDrop` is required.
-   * <br> `NAMEGEN`
-   * @class ENV_deposit
-   * @extends ENV_baseProp
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_deposit").initClass()
-  .setParent(TallBlock)
-  .setTags()
-  .setParam({
+    /**
+     * Mineable tall blocks.
+     * `blk.itemDrop` is required.
+     * <br> `NAMEGEN`
+     * @class ENV_deposit
+     * @extends ENV_baseProp
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_deposit")
+    .initTemplate()
+    .setParent(TallBlock)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------ */
+        /* <------------------------------ vanilla ------------------------------ */
 
 
-    rotationRand: 40.0,
-    playerUnmineable: true,
-    allowRectanglePlacement: true,
+        rotationRand: 40.0,
+        playerUnmineable: true,
+        allowRectanglePlacement: true,
 
 
-  })
-  .setMethod({
+    })
+    .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
+        init: function() {
+            comp_init(this);
+        },
 
 
-  });
+    });

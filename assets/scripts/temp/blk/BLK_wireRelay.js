@@ -19,7 +19,7 @@
     blk.consumesPower = true;
     blk.conductivePower = false;
     blk.connectedPower = true;
-    if(blk.overwriteVanillaProp) {
+    if(blk.setupVanillaProp) {
       blk.underBullets = blk.size === 1;
     };
   };

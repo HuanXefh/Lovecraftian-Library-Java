@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseTree");
+    /**
+     * @typedef {TemplateInstance<TreeBlock, ENV_bush>} ENVBush
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseTree");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,28 +26,32 @@
 */
 
 
-  /**
-   * Any tree that don't yield log.
-   * @class ENV_bush
-   * @extends ENV_baseTree
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_bush").initClass()
-  .setParent(TreeBlock)
-  .setTags("env-tree")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------ */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof ENV_bush
-     * @instance
+     * Any tree that don't yield log.
+     * @class ENV_bush
+     * @extends ENV_baseTree
      */
-    treeGrp: "bush",
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_bush")
+    .initTemplate()
+    .setParent(TreeBlock)
+    .setTags("env-tree")
+    .setParam({
 
 
-  })
-  .setMethod({});
+        /* <------------------------------ internal ------------------------------ */
+
+
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof ENV_bush
+         * @instance
+         * @type {string}
+         */
+        treeGrp: "bush",
+
+
+    })
+    .setMethod({});

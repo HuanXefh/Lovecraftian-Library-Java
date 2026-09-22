@@ -60,6 +60,16 @@
 
 
     /**
+     * Alias of {@link Function#initClass} used for type check.
+     * @return {typeof CLS_contentTemplate}
+     */
+    Function.prototype.initTemplate = function() {
+        if(!this.__isContentTemplate__) throw new TypeError("Class is not a content template:\n" + this);
+        return this.initClass();
+    };
+
+
+    /**
      * Variant of {@link Function#initClass} for abstract class.
      * Creating new instance of this class will not be allowed.
      * For abstract methods, see {@link Function#setAbstr}.

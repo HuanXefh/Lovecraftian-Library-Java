@@ -230,3 +230,8 @@ declare class WeaponMount {
 
 /** mindustry.entities.EntityCollisions */
 declare class EntityCollisions {}
+declare namespace EntityCollisions {
+    interface SolidPred {
+        solid(x: number, y: number): boolean
+    }
+}

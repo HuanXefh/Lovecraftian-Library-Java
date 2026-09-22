@@ -218,7 +218,7 @@
 
         /**
          * All abstract fluids.
-         * @type {Array<Liquid>}
+         * @type {Array<RSAbstractFluid>}
          */
         exports.auxs = Vars.content.liquids().select(liq => MDL_cond.isAuxiliaryFluid(liq)).toArray();
 
@@ -242,7 +242,7 @@
 
         /**
          * See {@link BLK_rawOreBlock}.
-         * @type {Array<Block>}
+         * @type {Array<BLKRawOreBlock>}
          */
         exports.rawOreBlks = Vars.content.blocks().select(blk => checkSubInsOfTemp(blk, "BLK_rawOreBlock")).toArray();
 
@@ -315,7 +315,7 @@
 
         /**
          * Stackable status effect.
-         * @type {Array<StatusEffect>}
+         * @type {Array<INTFSTABurstStatus>}
          */
         exports.stackStas = Vars.content.statusEffects().select(sta => MDL_cond.isStackStatus(sta)).toArray();
 
@@ -325,7 +325,7 @@
 
         /**
          * Planets added by LovecLab.
-         * @type {Array<Planet>}
+         * @type {Array<PLABasePlanet>}
          */
         exports.lovecPlas = Vars.content.planets().select(pla => pla.accessible && (pla.minfo.mod == null ? "" : pla.minfo.mod.name) === "loveclab").toArray();
 

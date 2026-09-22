@@ -67,5 +67,7 @@ type TDynamic<T> = T|TemplateFunc<ExtendObject, T>|TemplateProv<T>
  * <br> `T` - Content template.
  */
 type TemplateInstance<P, T> = P&T&{
-    delegee: T;
+    readonly factory: rhino.ContextFactory;
+    readonly delegee: T;
+    readonly self: P&T;
 }

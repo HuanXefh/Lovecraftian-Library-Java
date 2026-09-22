@@ -53,7 +53,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "STA_burstStatus")
     .implement(INTF_STA_burstStatus)
-    .initClass()
+    .initTemplate()
     .setParent(StatusEffect)
     .setTags()
     .setParam({

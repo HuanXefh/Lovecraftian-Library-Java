@@ -9,7 +9,7 @@
 
 
     /**
-     * @typedef {Planet&PLA_sun} PLASun
+     * @typedef {TemplateInstance<Planet, PLA_sun>} PLASun
      */
 
 
@@ -45,7 +45,7 @@
      */
     module.exports = newClass()
     .extendClass(PARENT, "PLA_sun")
-    .initClass()
+    .initTemplate()
     .setParent(Planet)
     .setTags()
     .setParam({})

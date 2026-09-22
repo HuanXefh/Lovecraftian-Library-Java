@@ -5,135 +5,161 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/unit/UNIT_technicalUnit");
+    /**
+     * @typedef {TemplateInstance<UnitType, UNIT_lootUnit>} UNITLootUnit
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/unit/UNIT_technicalUnit");
 
 
-  function comp_init(utp) {
-    DB_status.db["group"]["lootImmune"].forEachFast(sta_gn => {
-      let sta = MDL_content.getCt(sta_gn, ContentGetModes.STA, true);
-      if(sta == null) return;
-      utp.immunities.add(sta);
-    }, true);
-    MDL_event.onLoadPost(() => {
-      VARGEN.deathStas.forEachFast(sta => utp.immunities.add(sta), true);
-    });
-  };
+    /* <------------------------------ component ------------------------------ */
 
 
-  function comp_load(utp) {
-    utp.fullIcon = utp.uiIcon = Core.atlas.find("lovec-icon-drop-loot");
-  };
-
-
-  function comp_update(utp, unit) {
-    if(!Vars.net.client() && unit.fin() > 0.5 || unit.stack.amount < 1) {
-      FRAG_item.removeLoot_global(unit);
-    };
-    if(MDL_cond.isLootProtected(unit)) return;
-
-    // If damaged somehow, create explosion
-    if(unit.health < 10.0 && unit.stack.amount > 0) {
-      Damage.dynamicExplosion(
-        unit.x, unit.y,
-        unit.item().flammability * unit.stack.amount / 1.9,
-        unit.item().explosiveness * unit.stack.amount * 1.53,
-        unit.item().charge * Mathf.pow(unit.stack.amount, 1.11) * 160.0,
-        28.0,
-        Vars.state.rules.damageExplosions,
-        unit.item().flammability > 0.9,
-        null, Fx.none, 0.0,
-      );
-      unit.remove();
+    /**
+     * @private
+     * @param {UNITLootUnit} utp
+     * @return {void}
+     */
+    function comp_init(utp) {
+        DB_status.db["group"]["lootImmune"].forEachFast(sta_gn => {
+            let sta = MDL_content.getCt(sta_gn, ContentGetModes.STA, true);
+            if(sta == null) return;
+            utp.immunities.add(sta);
+        }, true);
+        MDL_event.onLoadPost(() => {
+            VARGEN.deathStas.forEachFast(sta => utp.immunities.add(sta), true);
+        });
     };
 
-    // Don't drown this to death
-    if(unit.drownTime > 0.98) {
-      TRIGGER.lootDrown.fire(unit);
-      unit.remove();
+
+    /**
+     * @private
+     * @param {UNITLootUnit} utp
+     * @return {void}
+     */
+    function comp_load(utp) {
+        MDL_event.onLoad(() => {
+            utp.fullIcon = utp.uiIcon = Core.atlas.find("lovec-icon-drop-loot");
+        });
     };
 
-    // Merge loot units randomly
-    if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {
-      let ounit = LCEntity.getOtherLoot(unit.x, unit.y, VAR.range.lootMergeRad, unit);
-      if(ounit != null && ounit.item() === unit.item()) {
-        MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount + ounit.stack.amount);
-        FRAG_item.removeLoot_global(unit);
-        FRAG_item.removeLoot_global(ounit);
-      };
+
+    /**
+     * @private
+     * @param {UNITLootUnit} utp
+     * @param {Unit} unit
+     * @return {void}
+     */
+    function comp_update(utp, unit) {
+        if(!Vars.net.client() && unit.fin() > 0.5 || unit.stack.amount < 1) {
+            FRAG_item.removeLoot_global(unit);
+        };
+        if(MDL_cond.isLootProtected(unit)) return;
+
+        // If damaged somehow, create explosion
+        if(unit.health < 10.0 && unit.stack.amount > 0) {
+            Damage.dynamicExplosion(
+                unit.x, unit.y,
+                unit.item().flammability * unit.stack.amount / 1.9,
+                unit.item().explosiveness * unit.stack.amount * 1.53,
+                unit.item().charge * Mathf.pow(unit.stack.amount, 1.11) * 160.0,
+                28.0,
+                Vars.state.rules.damageExplosions,
+                unit.item().flammability > 0.9,
+                null, Fx.none, 0.0,
+            );
+            unit.remove();
+        };
+
+        // Don't drown this to death
+        if(unit.drownTime > 0.98) {
+            TRIGGER.lootDrown.fire(unit);
+            unit.remove();
+        };
+
+        // Merge loot units randomly
+        if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {
+            let ounit = LCEntity.getOtherLoot(unit.x, unit.y, VAR.range.lootMergeRad, unit);
+            if(ounit != null && ounit.item() === unit.item()) {
+                MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount + ounit.stack.amount);
+                FRAG_item.removeLoot_global(unit);
+                FRAG_item.removeLoot_global(ounit);
+            };
+        };
+
+        // Apply reaction if possible
+        if(!Vars.net.client() && Mathf.chanceDelta(0.05)) {
+            let t = unit.tileOn();
+            let puddle = t == null ? null : Puddles.get(unit.tileOn());
+            if(puddle != null) {
+                MDL_reaction.handleReaction(unit.item(), puddle.liquid, 20.0, unit);
+            };
+        };
     };
 
-    // Apply reaction if possible
-    if(!Vars.net.client() && Mathf.chance(0.05)) {
-      let
-        t = unit.tileOn(),
-        puddle = t == null ? null : Puddles.get(unit.tileOn());
 
-      if(puddle != null) {
-        MDL_reaction.handleReaction(unit.item(), puddle.liquid, 20.0, unit);
-      };
-    };
-  };
+    /**
+     * @private
+     * @param {UNITLootUnit} utp
+     * @param {Unit} unit
+     * @return {void}
+     */
+    function comp_draw(utp, unit) {
+        if(unit.stack.amount === 0) return;
 
+        let
+            regScl = PARAM.SHOULD_DRAW_STATIC_LOOT ? 1.0 : (1.0 + Math.sin(Time.globalTime * 0.065) * 0.15),
+            sizeScl = Math.log(unit.stack.amount + 1.0) * 0.4,
+            shaW = regScl * sizeScl * 10.0,
+            regW = shaW * 0.5,
+            z = VAR.layer.unitRemains + 0.2 + sizeScl / 100.0;
 
-  function comp_draw(utp, unit) {
-    if(unit.stack.amount === 0) return;
-
-    let regScl = PARAM.SHOULD_DRAW_STATIC_LOOT ? 1.0 : (1.0 + Math.sin(Time.globalTime * 0.065) * 0.15);
-    let sizeScl = Math.log(unit.stack.amount + 1.0) * 0.4;
-    let shaW = regScl * sizeScl * 10.0;
-    let regW = shaW * 0.5;
-    let z = VAR.layer.unitRemains + 0.2 + sizeScl / 100.0;
-
-    processZ(z);
-
-    // Soft shadow
-    Draw.color(
-      Color.black,
-      0.4 * (1.0 - Interp.pow10In.apply(unit.fin() * 2.0) - (
+        processZ(z);
+        // Soft shadow
+        Draw.color(
+            Color.black,
+            0.4 * (1.0 - Interp.pow10In.apply(unit.fin() * 2.0) - (
+                unit.lastDrownFloor == null ?
+                    0.0 :
+                    Interp.pow3In.apply(unit.drownTime)
+            )),
+        );
+        Draw.rect(utp.softShadowRegion, unit.x, unit.y, shaW, shaW, 0.0);
+        // Circle, if used
+        if(!PARAM.SHOULD_DRAW_STATIC_LOOT) {
+            unit.lastDrownFloor == null ?
+                Draw.color(Pal.accent) :
+                Draw.color(Pal.accent, Tmp.c2.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
+            Draw.alpha(1.0 - Interp.pow10In.apply(unit.fin() * 2.0) - (unit.lastDrownFloor == null ? 0.0 : Interp.pow2In.apply(unit.drownTime)));
+            Lines.stroke(1.0);
+            Lines.circle(unit.x, unit.y, regScl * sizeScl * 4.5);
+        };
+        // Item icon
         unit.lastDrownFloor == null ?
-          0.0 :
-          Interp.pow3In.apply(unit.drownTime)
-      )),
-    );
-    Draw.rect(utp.softShadowRegion, unit.x, unit.y, shaW, shaW, 0.0);
-    // Circle, if used
-    if(!PARAM.SHOULD_DRAW_STATIC_LOOT) {
-      unit.lastDrownFloor == null ?
-        Draw.color(Pal.accent) :
-        Draw.color(Pal.accent, Tmp.c2.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
-      Draw.alpha(1.0 - Interp.pow10In.apply(unit.fin() * 2.0) - (unit.lastDrownFloor == null ? 0.0 : Interp.pow2In.apply(unit.drownTime)));
-      Lines.stroke(1.0);
-      Lines.circle(unit.x, unit.y, regScl * sizeScl * 4.5);
-    };
-    // Item icon
-    unit.lastDrownFloor == null ?
-      Draw.color(Color.white) :
-      Draw.color(Color.white, Tmp.c3.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
-    Draw.alpha(1.0 - Interp.pow10In.apply(unit.fin() * 2.0) - (unit.lastDrownFloor == null ? 0.0 : Interp.pow2In.apply(unit.drownTime)));
-    Draw.rect(unit.item().fullIcon, unit.x, unit.y, regW, regW, unit.rotation);
-    // Heat
-    if(MDL_cond.isHot(unit)) {
-      Draw.blend(Blending.additive);
-      Draw.mixcol(VAR.color.heatMix, 1.0);
-      Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * 0.75);
-      Draw.rect(unit.item().fullIcon, unit.x, unit.y, regW, regW, unit.rotation);
-      Draw.blend();
-    };
-    Draw.reset();
+            Draw.color(Color.white) :
+            Draw.color(Color.white, Tmp.c3.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
+        Draw.alpha(1.0 - Interp.pow10In.apply(unit.fin() * 2.0) - (unit.lastDrownFloor == null ? 0.0 : Interp.pow2In.apply(unit.drownTime)));
+        Draw.rect(unit.item().fullIcon, unit.x, unit.y, regW, regW, unit.rotation);
+        // Heat
+        if(MDL_cond.isHot(unit)) {
+            Draw.blend(Blending.additive);
+            Draw.mixcol(VAR.color.heatMix, 1.0);
+            Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * 0.75);
+            Draw.rect(unit.item().fullIcon, unit.x, unit.y, regW, regW, unit.rotation);
+            Draw.blend();
+        };
+        Draw.reset();
+        processZ();
 
-    processZ();
-
-    // Amount text
-    if(PARAM.SHOULD_DRAW_LOOT_AMOUNT && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
-      LCDraw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
+        // Amount text
+        if(PARAM.SHOULD_DRAW_LOOT_AMOUNT && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
+            LCDraw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
+        };
     };
-  };
 
 
 /*
@@ -143,65 +169,69 @@
 */
 
 
-  /**
-   * Dropped item as a special unit.
-   * @class UNIT_lootUnit
-   * @extends UNIT_technicalUnit
-   */
-  module.exports = newClass().extendClass(PARENT, "UNIT_lootUnit").initClass()
-  .setParent(UnitType)
-  .setTags()
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------ */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof UNIT_lootUnit
-     * @instance
+     * Dropped item as a special unit.
+     * @class UNIT_lootUnit
+     * @extends UNIT_technicalUnit
      */
-    entityName: "missile",
+    module.exports = newClass()
+    .extendClass(PARENT, "UNIT_lootUnit")
+    .initTemplate()
+    .setParent(UnitType)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------ */
+        /* <------------------------------ internal ------------------------------ */
 
 
-    itemCapacity: 99999,
-    // Doubled to avoid killing the unit somehow
-    lifetime: VAR.time.lootLifetime * 2.0,
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof UNIT_lootUnit
+         * @instance
+         * @type {string}
+         */
+        entityName: "missile",
 
 
-  })
-  .setMethod({
+        /* <------------------------------ vanilla ------------------------------ */
 
 
-    init: function() {
-      comp_init(this);
-    },
+        itemCapacity: 99999,
+        // Doubled to avoid killing the unit somehow
+        lifetime: VAR.time.lootLifetime * 2.0,
 
 
-    load: function() {
-      comp_load(this);
-    },
+    })
+    .setMethod({
 
 
-    update: function(unit) {
-      comp_update(this, unit);
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        init: function() {
+            comp_init(this);
+        },
 
 
-    draw: function(unit) {
-      comp_draw(this, unit);
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        load: function() {
+            comp_load(this);
+        },
 
 
-  });
+        update: function(unit) {
+            comp_update(this, unit);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        draw: function(unit) {
+            comp_draw(this, unit);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+    });

@@ -5,51 +5,88 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = CLS_contentTemplate;
-  const INTF = require("lovec/temp/intf/INTF_ENTITY_unitDurabilityHandler");
-  const INTF_A = require("lovec/temp/intf/INTF_ENTITY_tetheredEntity");
+    /**
+     * @typedef {TemplateInstance<Unit, ENTITY_baseUnitEntity>} ENTITYBaseUnitEntity
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = CLS_contentTemplate;
+    const INTF_ENTITY_unitDurabilityHandler = require("lovec/temp/intf/INTF_ENTITY_unitDurabilityHandler");
+    const INTF_ENTITY_tetheredEntity = require("lovec/temp/intf/INTF_ENTITY_tetheredEntity");
 
 
-  function comp_collisionLayer(unit) {
-    return unit.type.allowLegStep && unit.type.legPhysicsLayer ?
-      PhysicsProcess.layerLegs :
-      !unit.isFlying() ?
-        PhysicsProcess.layerGround :
-        PhysicsProcess.layerFlying;
-  };
+    /* <------------------------------ auxiliary ------------------------------ */
 
 
-  function comp_solidity(unit) {
-    return extend(EntityCollisions.SolidPred, {
-      solid(tx, ty) {
-        return (unit.super$solidity() != null && unit.super$solidity().solid(tx, ty))
-          || (PARAM.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty))
-      },
+    /**
+     * @private
+     * @type {EntityCollisions.SolidPred}
+     */
+    const BASE_SOLID_PRED = extend(EntityCollisions.SolidPred, {
+        solid(tx, ty) {
+            return (unit.super$solidity() != null && unit.super$solidity().solid(tx, ty))
+                // Terrain wall is solid to air units in a cave map
+                || (PARAM.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty));
+        },
     });
-  };
 
 
-  function comp_acceptsItem(unit, item) {
-    return !unit.type.delegee.itemBlacklist.includes(item.name);
-  };
+    /* <------------------------------ component ------------------------------ */
 
 
-  function comp_validMine(unit, t, checkDst) {
-    return t != null
-      && !checkTempTag(t.overlay(), "env-dpore")
-      && (
-        !unit.isPlayer() ?
-          true :
-          !(t.overlay().itemDrop != null ? t.overlay() : (t.block() !== Blocks.air ? t.block() : t.floor())).playerUnmineable
-      )
-      && unit.super$validMine(t, tryVal(checkDst, true));
-  };
+    /**
+     * @private
+     * @param {ENTITYBaseUnitEntity} unit
+     * @return {number}
+     */
+    function comp_collisionLayer(unit) {
+        return unit.type.allowLegStep && unit.type.legPhysicsLayer ?
+            PhysicsProcess.layerLegs :
+            !unit.isFlying() ?
+                PhysicsProcess.layerGround :
+                PhysicsProcess.layerFlying;
+    };
+
+
+    /**
+     * @private
+     * @param {ENTITYBaseUnitEntity} unit
+     * @return {EntityCollisions.SolidPred}
+     */
+    function comp_solidity(unit) {
+        return BASE_SOLID_PRED;
+    };
+
+
+    /**
+     * @private
+     * @param {ENTITYBaseUnitEntity} unit
+     * @param {Item} item
+     * @return {boolean}
+     */
+    function comp_acceptsItem(unit, item) {
+        return !unit.type.delegee.itemBlacklist.includes(item.name);
+    };
+
+
+    /**
+     * @private
+     * @param {ENTITYBaseUnitEntity} unit
+     * @param {Tile} t
+     * @param {boolean} checkDst
+     * @return {boolean}
+     */
+    function comp_validMine(unit, t, checkDst) {
+        return t != null
+            // Depth ore should not be mineable
+            && !checkTempTag(t.overlay(), "env-dpore")
+            // Fixes a bug in tall block mining
+            && (!unit.isPlayer() || !(t.overlay().itemDrop != null ? t.overlay() : (t.block() !== Blocks.air ? t.block() : t.floor())).playerUnmineable)
+            && unit.super$validMine(t, tryVal(checkDst, true));
+    };
 
 
 /*
@@ -59,96 +96,102 @@
 */
 
 
-  /**
-   * Base template for all unit entities.
-   * Unlike blocks, the entity of a unit type is defined as a separate template for more flexibility.
-   * @class ENTITY_baseUnitEntity
-   * @extends CLS_contentTemplate
-   * @extends INTF_ENTITY_unitDurabilityHandler
-   * @extends INTF_ENTITY_tetheredEntity
-   */
-  module.exports = newClass().extendClass(PARENT, "ENTITY_baseUnitEntity").implement(INTF).implement(INTF_A).initClass()
-  .setParent(null)
-  .setParam({})
-  .setMethod({
-
-
-    collisionLayer: function() {
-      return comp_collisionLayer(this);
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    isGrounded: function() {
-      return this.elevation < VAR.param.groundElev;
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    isFlying: function() {
-      return this.elevation >= VAR.param.airElev;
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    solidity: function() {
-      return comp_solidity(this);
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    acceptsItem: function(item) {
-      return comp_acceptsItem(this, item);
-    }
-    .setProp({
-      boolMode: "and",
-    }),
-
-
-    validMine: function(t, checkDst) {
-      return comp_validMine(this, t, checkDst);
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
     /**
-     * @memberof ENTITY_baseUnitEntity
-     * @instance
-     * @param {Object} dataObj
-     * @return {void}
+     * Base template for all unit entities.
+     * Unlike blocks, the entity of a unit type is defined as a separate template for more flexibility.
+     * @class ENTITY_baseUnitEntity
+     * @extends CLS_contentTemplate
+     * @extends INTF_ENTITY_unitDurabilityHandler
+     * @extends INTF_ENTITY_tetheredEntity
      */
-    ex_writeUnitData: function(dataObj) {
-
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 1,
-    }),
-
-
-    /**
-     * @memberof ENTITY_baseUnitEntity
-     * @instance
-     * @param {Object} dataObj
-     * @return {void}
-     */
-    ex_readUnitData: function(dataObj) {
-
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 1,
-    }),
+    module.exports = newClass()
+    .extendClass(PARENT, "ENTITY_baseUnitEntity")
+    .implement(INTF_ENTITY_unitDurabilityHandler)
+    .implement(INTF_ENTITY_tetheredEntity)
+    .initTemplate()
+    .setParent(null)
+    .setParam({})
+    .setMethod({
 
 
-  });
+        collisionLayer: function() {
+            return comp_collisionLayer(this);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        isGrounded: function() {
+            return this.elevation < VAR.param.groundElev;
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        isFlying: function() {
+            return this.elevation >= VAR.param.airElev;
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        solidity: function() {
+            return comp_solidity(this);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        acceptsItem: function(item) {
+            return comp_acceptsItem(this, item);
+        }
+        .setProp({
+            boolMode: "and",
+        }),
+
+
+        validMine: function(t, checkDst) {
+            return comp_validMine(this, t, checkDst);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        /**
+         * @memberof ENTITY_baseUnitEntity
+         * @instance
+         * @func
+         * @param {Object} dataObj
+         * @return {void}
+         */
+        ex_writeUnitData: function(dataObj) {
+
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * @memberof ENTITY_baseUnitEntity
+         * @instance
+         * @func
+         * @param {Object} dataObj
+         * @return {void}
+         */
+        ex_readUnitData: function(dataObj) {
+
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+    });

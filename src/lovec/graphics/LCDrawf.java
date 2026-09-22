@@ -1545,13 +1545,14 @@ public class LCDrawf {
     /**
      * Draws random overlay on floor at a tile.
      */
-    public static void randomOverlay(Tile t, TextureRegion[] regs, int denom, float off1, float off2) {
-        if(regs.length == 0 || Mathf.floor(Mathf.randomSeed((long) (t.pos() + off1), 0, denom)) != 0) return;
+    public static boolean randomOverlay(Tile t, TextureRegion[] regs, int denom, float off1, float off2) {
+        if(regs.length == 0 || Mathf.floor(Mathf.randomSeed((long) (t.pos() + off1), 0, denom)) != 0) return false;
         LCDraw.region(
             t.worldx(), t.worldy(),
             regs[Mathf.round(Mathf.randomSeed((long) (t.pos() + 114514 + off2), 0, regs.length - 1))],
             0f, 1f, Color.white, 1f, randOvLay
         );
+        return true;
     };
 
 

@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/unit/UNIT_xxx");
+    /**
+     * @typedef {TemplateInstance<>}
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/unit/UNIT_xxx");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,12 +26,14 @@
 */
 
 
-  /**
-   * @class UNIT_yyy
-   * @extends UNIT_xxx
-   */
-  module.exports = newClass().extendClass(PARENT, "UNIT_yyy").initClass()
-  .setParent(null)
-  .setTags()
-  .setParam({})
-  .setMethod({});
+    /**
+     * @class UNIT_yyy
+     * @extends UNIT_xxx
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "UNIT_yyy")
+    .initTemplate()
+    .setParent(null)
+    .setTags()
+    .setParam({})
+    .setMethod({});

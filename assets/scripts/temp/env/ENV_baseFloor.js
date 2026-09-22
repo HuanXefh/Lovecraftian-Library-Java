@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseEnvBlock");
+    /**
+     * @typedef {TemplateInstance<Floor, ENV_baseFloor>} ENVBaseFloor
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseEnvBlock");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,16 +26,25 @@
 */
 
 
-  /**
-   * Featureless floor.
-   * @class ENV_baseFloor
-   * @extends ENV_baseEnvBlock
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_baseFloor").initClass()
-  .setParent(Floor)
-  .setTags()
-  .setParam({})
-  .setParamAlias([
-    "cacheLay", "cacheLayer", CacheLayer.normal,
-  ])
-  .setMethod({});
+    /**
+     * Featureless floor block.
+     * @class ENV_baseFloor
+     * @extends ENV_baseEnvBlock
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_baseFloor")
+    .initTemplate()
+    .setParent(Floor)
+    .setTags()
+    .setParam({})
+    .setParamAlias([
+        /**
+         * `ALIAS`: `cacheLayer`.
+         * @memberof ENV_baseFloor
+         * @instance
+         * @name cacheLay
+         * @type {CacheLayer}
+         */
+        "cacheLay", "cacheLayer", CacheLayer.normal,
+    ])
+    .setMethod({});

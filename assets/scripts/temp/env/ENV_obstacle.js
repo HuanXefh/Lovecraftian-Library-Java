@@ -5,28 +5,38 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseProp");
+    /**
+     * @typedef {TemplateInstance<StaticProp, ENV_obstacle>} ENVObstacle
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseProp");
 
 
-  function comp_init(blk) {
-    blk.solid = true;
-    blk.breakable = false;
-    blk.unitMoveBreakable = false;
-    blk.alwaysReplace = false;
-    blk.placeableLiquid = true;
+    /* <------------------------------ component ------------------------------ */
 
-    if(blk.customShadow) {
-      MDL_event.onLoad(() => {
-        if(!Vars.headless && !blk.customShadowRegion.found()) LCLogHandler.log("noCustomShadowRegionFound", blk.name);
-      });
+
+    /**
+     * @private
+     * @param {ENVObstacle} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.solid = true;
+        blk.breakable = false;
+        blk.unitMoveBreakable = false;
+        blk.alwaysReplace = false;
+        blk.placeableLiquid = true;
+
+        if(blk.customShadow) {
+            MDL_event.onLoad(() => {
+                if(!Vars.headless && !blk.customShadowRegion.found()) LCLogHandler.log("noCustomShadowRegionFound", blk.name);
+            });
+        };
     };
-  };
 
 
 /*
@@ -36,21 +46,23 @@
 */
 
 
-  /**
-   * Unbreakable props.
-   * @class ENV_obstacle
-   * @extends ENV_baseProp
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_obstacle").initClass()
-  .setParent(StaticProp)
-  .setTags()
-  .setParam({})
-  .setMethod({
+    /**
+     * Unbreakable props.
+     * @class ENV_obstacle
+     * @extends ENV_baseProp
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_obstacle")
+    .initTemplate()
+    .setParent(StaticProp)
+    .setTags()
+    .setParam({})
+    .setMethod({
 
 
-    init: function() {
-      comp_init(this);
-    },
+        init: function() {
+            comp_init(this);
+        },
 
 
-  });
+    });

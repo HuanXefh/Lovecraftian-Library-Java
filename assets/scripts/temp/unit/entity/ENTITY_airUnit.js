@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/unit/entity/ENTITY_baseUnitEntity");
+    /**
+     * @typedef {TemplateInstance<Unit, ENTITY_airUnit>} ENTITYAirUnit
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/unit/entity/ENTITY_baseUnitEntity");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,12 +26,14 @@
 */
 
 
-  /**
-   * Basic air units.
-   * @class ENTITY_airUnit
-   * @extends ENTITY_baseUnitEntity
-   */
-  module.exports = newClass().extendClass(PARENT, "ENTITY_airUnit").initClass()
-  .setParent(UnitEntity)
-  .setParam({})
-  .setMethod({});
+    /**
+     * Basic air units.
+     * @class ENTITY_airUnit
+     * @extends ENTITY_baseUnitEntity
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "ENTITY_airUnit")
+    .initTemplate()
+    .setParent(Unit)
+    .setParam({})
+    .setMethod({});

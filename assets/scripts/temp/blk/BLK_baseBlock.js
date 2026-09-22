@@ -232,13 +232,13 @@
        * @memberof BLK_baseBlock
        * @instance
        */
-      overwriteVanillaStat: true,
+      setupVanillaStat: true,
       /**
        * `PARAM`: See {@link RS_baseResource}.
        * @memberof BLK_baseBlock
        * @instance
        */
-      overwriteVanillaProp: true,
+      setupVanillaProp: true,
       /**
        * `PARAM`: If true, `blk.drawer` will always be used even if the Java class does not support drawer. Can lead to bugs, use with care.
        * @memberof BLK_baseBlock

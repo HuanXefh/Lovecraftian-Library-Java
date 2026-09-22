@@ -8,12 +8,18 @@
   /* <---------- import ----------> */
 
 
+  /* <---------- auxiliary ----------> */
+
+
+  const DARK_LERP_A = 0.2;
+
+
   /* <---------- component ----------> */
 
 
   function comp_init(blk) {
     blk.blendGroup = blk.parent;
-    if(blk.overwriteVanillaProp) {
+    if(blk.setupVanillaProp) {
       blk.speedMultiplier = blk.parent.speedMultiplier;
     };
 
@@ -23,7 +29,7 @@
 
     if(blk.parent !== Blocks.air) {
       // Set vent color to darkened version of floor color
-      blk.mapColor = blk.parent.mapColor.cpy().lerp(Color.black, VAR.param.ventColorDarkLerpA);
+      blk.mapColor = blk.parent.mapColor.cpy().lerp(Color.black, DARK_LERP_A);
     };
   };
 

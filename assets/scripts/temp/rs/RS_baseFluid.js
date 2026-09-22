@@ -15,7 +15,7 @@
 
 
   function comp_init(liq) {
-    if(liq.overwriteVanillaProp) {
+    if(liq.setupVanillaProp) {
       if(liq.temperature.fEqual(0.5)) liq.temperature = MDL_flow.getTempWrap(liq);
       if(liq.viscosity.fEqual(0.5)) liq.viscosity = MDL_flow.getViscWrap(liq);
 
@@ -42,7 +42,7 @@
 
 
   function comp_setStats(liq) {
-    if(liq.overwriteVanillaStat) {
+    if(liq.setupVanillaStat) {
       liq.stats.remove(Stat.explosiveness);
       liq.stats.remove(Stat.flammability);
       liq.stats.remove(Stat.temperature);

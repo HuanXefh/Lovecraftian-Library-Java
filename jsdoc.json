@@ -10,7 +10,7 @@
     },
     "opts": {
         "destination": "./document/jsdoc/",
-        "template": "node_modules/docdash"
+        "template": "./doc_files/docdash/"
     },
     "plugins": [
         "plugins/markdown"
@@ -21,6 +21,9 @@
             "staticFiles": {
                 "include": [
                     "./doc_files/"
+                ],
+                "exclude": [
+                    "./doc_files/docdash/"
                 ]
             }
         },
@@ -37,7 +40,7 @@
         "search": true,
         "commonNav": false,
         "collapse": true,
-        "wrap": true,
+        "wrap": false,
         "typedefs": true,
         "private": false,
         "removeQuotes": "none",

@@ -67,7 +67,7 @@
      */
     module.exports = newClass()
     .extendClass(PARENT, "DBCT_databaseContent")
-    .initClass()
+    .initTemplate()
     .setParent(null)
     .setTags()
     .setParam({
@@ -126,6 +126,7 @@
          * See {@link STA_baseStatus}.
          * @memberof DBCT_databaseContent
          * @instance
+         * @func
          * @return {void}
          */
         ex_init: function() {
@@ -140,6 +141,7 @@
          * Whether this content should be seen as unlocked (player can interact with this content).
          * @memberof DBCT_databaseContent
          * @instance
+         * @func
          * @return {boolean}
          */
         ex_checkDbctUnlocked: function() {

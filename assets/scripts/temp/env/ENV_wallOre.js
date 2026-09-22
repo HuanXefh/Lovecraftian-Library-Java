@@ -5,23 +5,33 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/env/ENV_baseOverlay");
+    /**
+     * @typedef {TemplateInstance<OreBlock, ENV_wallOre>} ENVWallOre
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/env/ENV_baseOverlay");
 
 
-  function comp_init(blk) {
-    blk.wallOre = true;
+    /* <------------------------------ component ------------------------------ */
 
-    MDL_content.rename(
-      blk,
-      blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "wall-ore") + ")",
-    );
-  };
+
+    /**
+     * @private
+     * @param {ENVWallOre} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.wallOre = true;
+
+        MDL_content.rename(
+            blk,
+            blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "wall-ore") + ")",
+        );
+    };
 
 
 /*
@@ -31,39 +41,43 @@
 */
 
 
-  /**
-   * Vanilla ore overlay, only for wall ores.
-   * @class ENV_wallOre
-   * @extends ENV_baseOverlay
-   */
-  module.exports = newClass().extendClass(PARENT, "ENV_wallOre").initClass()
-  .setParent(OreBlock)
-  .setTags()
-  .setParam({
-
-
-    /* <------------------------------ vanilla ------------------------------ */
-
-
-    needsSurface: false,
-
-
-  })
-  .setParamAlias([
     /**
-     * `PARAM`: See {@link ENV_ore}.
-     * @type {boolean} showOreOnMinimap
-     * @memberof ENV_wallOre
-     * @instance
+     * Vanilla ore overlay, for wall ores only.
+     * @class ENV_wallOre
+     * @extends ENV_baseOverlay
      */
-    "showOreOnMinimap", "useColor", false,
-  ])
-  .setMethod({
+    module.exports = newClass()
+    .extendClass(PARENT, "ENV_wallOre")
+    .initTemplate()
+    .setParent(OreBlock)
+    .setTags()
+    .setParam({
 
 
-    init: function() {
-      comp_init(this);
-    },
+        /* <------------------------------ vanilla ------------------------------ */
 
 
-  });
+        needsSurface: false,
+
+
+    })
+    .setParamAlias([
+        /**
+         * `PARAM`: See {@link ENV_ore#showOreOnMinimap}.
+         * <br> `ALIAS`: `useColor`.
+         * @memberof ENV_wallOre
+         * @instance
+         * @name showOreOnMinimap
+         * @type {boolean}
+         */
+        "showOreOnMinimap", "useColor", false,
+    ])
+    .setMethod({
+
+
+        init: function() {
+            comp_init(this);
+        },
+
+
+    });

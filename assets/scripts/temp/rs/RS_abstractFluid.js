@@ -22,7 +22,7 @@
 
 
   function comp_setStats(liq) {
-    if(liq.overwriteVanillaStat) {
+    if(liq.setupVanillaStat) {
       liq.stats.remove(Stat.explosiveness);
       liq.stats.remove(Stat.flammability);
       liq.stats.remove(Stat.temperature);
