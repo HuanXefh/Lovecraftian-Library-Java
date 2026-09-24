@@ -173,7 +173,7 @@
 
     /**
      * Draws a smaller icon of some content over a pixmap in the bottom right corner.
-     * @param {MultiPacker} packer
+     * @param {PackContext} packer
      * @param {PixmapGn} pixBase
      * @param {ContentGn} ct_gn
      * @return {Pixmap}
@@ -262,7 +262,7 @@
      * Base for methods that packs new icon.
      * New texture regions will be named as `<nameCt>-<suffix>`.
      * @param {UnlockableContent} ct
-     * @param {MultiPacker} packer
+     * @param {PackContext} packer
      * @param {string|unset} suffix
      * @param {F0Function<Pixmap>} pixF
      * @return {void}
@@ -281,7 +281,7 @@
     /**
      * Creates a content icon tag sprite for some content.
      * @param {UnlockableContent} ct
-     * @param {MultiPacker} packer
+     * @param {PackContext} packer
      * @param {string|unset} suffix
      * @param {ContentGn} ctUnd_gn
      * @param {ContentGn} ctOv_gn

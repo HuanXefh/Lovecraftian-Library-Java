@@ -33,9 +33,9 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(blk.generationType);
-    blk.stats.add(blk.generationType, blk.powerProduction * 60.0, StatUnit.powerSecond);
+  function comp_setStats(blk, stats) {
+    stats.remove(blk.generationType);
+    stats.add(blk.generationType, blk.powerProduction * 60.0, StatUnit.powerSecond);
   };
 
 
@@ -186,8 +186,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

@@ -45,33 +45,33 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(blk.setupVanillaStat) {
-      blk.stats.remove(Stat.drillTier);
-      blk.stats.remove(Stat.drillSpeed);
+      stats.remove(Stat.drillTier);
+      stats.remove(Stat.drillSpeed);
 
       let drillSpd = FRAG_faci.getDrillSpd(blk, false);
-      blk.stats.add(fetchStat("lovec", "blk0min-basedrillspd"), drillSpd, StatUnit.itemsSecond);
+      stats.add(fetchStat("lovec", "blk0min-basedrillspd"), drillSpd, StatUnit.itemsSecond);
       let drillSpdBoost = FRAG_faci.getDrillSpd(blk, true);
-      if(!drillSpdBoost.fEqual(drillSpd)) blk.stats.add(fetchStat("lovec", "blk0min-boosteddrillspd"), drillSpdBoost, StatUnit.itemsSecond);
-      blk.stats.add(fetchStat("lovec", "blk0min-drilltier"), blk.tier);
+      if(!drillSpdBoost.fEqual(drillSpd)) stats.add(fetchStat("lovec", "blk0min-boosteddrillspd"), drillSpdBoost, StatUnit.itemsSecond);
+      stats.add(fetchStat("lovec", "blk0min-drilltier"), blk.tier);
     };
 
     if(blk.blockedItems != null && blk.blockedItems.size > 0) {
-      blk.stats.add(fetchStat("lovec", "blk0min-blockeditems"), newStatValue(tb => {
+      stats.add(fetchStat("lovec", "blk0min-blockeditems"), newStatValue(tb => {
         tb.row();
         MDL_table.setCtLi(tb, blk.blockedItems.toArray());
       }));
     } else if(blk.itemWhitelist.length > 0) {
-      blk.stats.add(fetchStat("lovec", "blk0min-alloweditems"), newStatValue(tb => {
+      stats.add(fetchStat("lovec", "blk0min-alloweditems"), newStatValue(tb => {
         tb.row();
         MDL_table.setCtLi(tb, blk.itemWhitelist);
       }));
     };
 
-    if(blk.hasItemCons) blk.stats.add(Stat.productionTime, blk.drillItemDur / 60.0, StatUnit.seconds);
+    if(blk.hasItemCons) stats.add(Stat.productionTime, blk.drillItemDur / 60.0, StatUnit.seconds);
 
-    if(!blk.shouldDropPay) blk.stats.remove(fetchStat("lovec", "blk0fac-payroom"));
+    if(!blk.shouldDropPay) stats.remove(fetchStat("lovec", "blk0fac-payroom"));
   };
 
 
@@ -223,8 +223,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -426,6 +426,11 @@
       }),
 
 
+      draw: function() {
+        this.ex_drawRcIcon();
+      },
+
+
       write: function(wr) {
         wr.f(this.drillItemProg);
         MDL_io.objStrNum(wr, this.payChargeObj);
@@ -454,6 +459,33 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * `REALIZED`
+       * @override
+       * @memberof B_baseDrill
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.block instanceof BeamDrill ?
+          (
+            this.lastItem == null ?
+              null :
+              this.lastItem.uiIcon
+          ) :
+          (
+            this.dominantItem == null ?
+              null :
+              this.dominantItem.uiIcon
+          );
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 

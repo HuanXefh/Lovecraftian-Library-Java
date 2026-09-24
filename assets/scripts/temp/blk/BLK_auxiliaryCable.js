@@ -14,8 +14,8 @@
   /* <---------- component ----------> */
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(fetchStat("lovec", "blk0pow-safepowlvl"));
+  function comp_setStats(blk, stats) {
+    stats.remove(fetchStat("lovec", "blk0pow-safepowlvl"));
   };
 
 
@@ -69,8 +69,8 @@
     .setMethod({
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

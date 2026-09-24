@@ -24,8 +24,8 @@
      * @param {DBCTInfoContent} sta
      * @return {void}
      */
-    function comp_setStats(sta) {
-        sta.stats.add(fetchStat("lovec", "spec-info"), newStatValue(tb => {
+    function comp_setStats(sta, stats) {
+        stats.add(fetchStat("lovec", "spec-info"), newStatValue(tb => {
             tb.row();
             MDL_table.btnSmall(tb, "I", () => {
                 !sta.ex_checkDbctUnlocked() ?
@@ -97,8 +97,8 @@
     .setMethod({
 
 
-        setStats: function() {
-            comp_setStats(this);
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
         },
 
 

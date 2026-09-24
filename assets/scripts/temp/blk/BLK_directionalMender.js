@@ -27,17 +27,17 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.repairTime);
-    blk.stats.remove(Stat.range);
-    blk.stats.remove(Stat.booster);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.repairTime);
+    stats.remove(Stat.range);
+    stats.remove(Stat.booster);
 
-    blk.stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
+    stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
       blk.bHealAmt,
       blk.bHealPerc,
     ));
-    blk.stats.add(fetchStat("lovec", "blk0misc-repairr"), 1.0, StatUnit.blocks);
-    blk.stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
+    stats.add(fetchStat("lovec", "blk0misc-repairr"), 1.0, StatUnit.blocks);
+    stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
   };
 
 
@@ -166,8 +166,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

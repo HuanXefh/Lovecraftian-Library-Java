@@ -5,33 +5,47 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/bul/BUL_baseBullet");
+    /**
+     * @typedef {TemplateInstance<BasicBulletType, BUL_spriteBullet>} BULSpriteBullet
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/bul/BUL_baseBullet");
 
 
-  function comp_load(btp) {
-    btp.shaReg = btp.backRegion;
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_draw(btp, bul) {
-    if(btp.shouldDrawShadow && Vars.world.floorWorld(bul.x, bul.y).canShadow) {
-      processZ(btp.layer - 1.0);
-
-      Draw.color(Pal.shadow, Pal.shadow.a);
-      Draw.rect(btp.shaReg, bul.x + btp.offSha, bul.y + btp.offSha, bul.rotation - 90.0);
-      Draw.color();
-
-      processZ();
+    /**
+     * @private
+     * @param {BULSpriteBullet} btp
+     * @return {void}
+     */
+    function comp_load(btp) {
+        btp.shaReg = btp.backRegion;
     };
 
-    btp.super$draw(bul);
-  };
+
+    /**
+     * @private
+     * @param {BULSpriteBullet} btp
+     * @param {Bullet} bul
+     * @return {void}
+     */
+    function comp_draw(btp, bul) {
+        if(btp.shouldDrawShadow && Vars.world.floorWorld(bul.x, bul.y) != null && Vars.world.floorWorld(bul.x, bul.y).canShadow) {
+            processZ(btp.layer - 1.0);
+            Draw.color(Pal.shadow, Pal.shadow.a);
+            Draw.rect(btp.shaReg, bul.x + btp.offSha, bul.y + btp.offSha, bul.rotation - 90.0);
+            Draw.color();
+            processZ();
+        };
+
+        btp.super$draw(bul);
+    };
 
 
 /*
@@ -41,75 +55,62 @@
 */
 
 
-  /**
-   * {@link BasicBulletType} that supports shadow.
-   * @class BUL_spriteBullet
-   * @extends BUL_baseBullet
-   */
-  module.exports = newClass().extendClass(PARENT, "BUL_spriteBullet").initClass()
-  .setParent(BasicBulletType)
-  .setTags()
-  .setParam({
-
-
     /**
-     * `PARAM`: Whether to draw shadow for this bullet.
-     * @memberof BUL_spriteBullet
-     * @instance
+     * {@link BasicBulletType} that supports shadow.
+     * @class BUL_spriteBullet
+     * @extends BUL_baseBullet
      */
-    shouldDrawShadow: true,
-    /**
-     * `PARAM`: Shadow offset.
-     * @memberof BUL_spriteBullet
-     * @instance
-     */
-    offSha: -4.0,
+    module.exports = newClass()
+    .extendClass(PARENT, "BUL_spriteBullet")
+    .initTemplate()
+    .setParent(BasicBulletType)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ internal ------------------------------> */
+        /**
+         * `PARAM`: Whether to draw shadow for this bullet.
+         * @memberof BUL_spriteBullet
+         * @instance
+         * @type {boolean}
+         */
+        shouldDrawShadow: true,
+        /**
+         * `PARAM`: Shadow offset.
+         * @memberof BUL_spriteBullet
+         * @instance
+         * @type {number}
+         */
+        offSha: -4.0,
 
 
-    /**
-     * `INTERNAL`
-     * @memberof BUL_spriteBullet
-     * @instance
-     */
-    shaReg: null,
+        /* <------------------------------ internal ------------------------------> */
 
 
-    /* <------------------------------ vanilla ------------------------------> */
+        /**
+         * `INTERNAL`
+         * @memberof BUL_spriteBullet
+         * @instance
+         * @type {TextureRegion}
+         */
+        shaReg: null,
 
 
-    frontColor: Pal.bulletYellow,
-    backColor: Pal.bulletYellowBack,
-    shrinkX: 0.0,
-    shrinkY: 0.5,
-    shrinkInterp: Interp.linear,
-    spin: 0.0,
-
-    
-  })
-  .setParamAlias([
-    "w", "width", 5.0,
-    "h", "height", 7.0,
-    "spr", "sprite", "error",
-    "backSpr", "backSprite", null,
-    "sprOffAng", "rotationOffset", 0.0,
-  ])
-  .setMethod({
+    })
+    .setMethod({
 
 
-    load: function() {
-      comp_load(this);
-    },
+        load: function() {
+            comp_load(this);
+        },
 
 
-    draw: function(bul) {
-      comp_draw(this, bul);
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        draw: function(bul) {
+            comp_draw(this, bul);
+        }
+        .setProp({
+            noSuper: true,
+        }),
 
 
-  });
+    });

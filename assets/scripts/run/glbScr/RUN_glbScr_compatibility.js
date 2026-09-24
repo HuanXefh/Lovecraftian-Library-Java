@@ -30,6 +30,21 @@
     };
 
 
+    /**
+     * Handles `setStats` method for v8 compatibility.
+     * <br> `setStats()` is replaced by `setStats(stats)` in v9, which sucks tbh.
+     * @global
+     * @param {UnlockableContent} ct
+     * @param {Stats|unset} [stats]
+     * @return {Stats}
+     */
+    getCtStats = function(ct, stats) {
+        return stats == null ?
+            ct.stats :
+            stats;
+    };
+
+
     // Why is MindustryX marked as v7???
     if(fetchClass("mindustryX.VarsX", true) != null && Version.number === 7) {
         LCCompatibilityResolver.isV8 = true;

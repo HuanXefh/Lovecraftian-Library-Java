@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/rs/RS_intermediateItem");
+    /**
+     * @typedef {TemplateInstance<Item, RS_blendItem>} RSBlendItem
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_intermediateItem");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,47 +26,53 @@
 */
 
 
-  /**
-   * Items produced by mixers or ball mills.
-   * <br> `NAMEGEN`
-   * @class RS_blendItem
-   * @extends RS_intermediateItem
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_blendItem").initClass()
-  .setParent(Item)
-  .setTags("ct-intmd", "rs-blend")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof RS_blendItem
-     * @instance
+     * Items produced by mixers or ball mills.
+     * <br> `NAMEGEN`
+     * @class RS_blendItem
+     * @extends RS_intermediateItem
      */
-    recolorRegStr: "lovec-gen-blend-item",
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_blendItem")
+    .initTemplate()
+    .setParent(Item)
+    .setTags("ct-intmd", "rs-blend")
+    .setParam({
 
 
-  })
-  .setMethod({
+        /* <------------------------------ internal ------------------------------> */
 
 
-    /**
-     * @override
-     * @memberof RS_blendItem
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedMainName: function() {
-      return MDL_bundle.getTerm("common", "intmd-blend");
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_blendItem
+         * @instance
+         * @type {string}
+         */
+        recolorRegStr: "lovec-gen-blend-item",
 
 
-  });
+    })
+    .setMethod({
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof RS_blendItem
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedMainName: function() {
+            return MDL_bundle.getTerm("common", "intmd-blend");
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+    });

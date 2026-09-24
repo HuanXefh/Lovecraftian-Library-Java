@@ -17,9 +17,9 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(isFinite(blk.durabCap) && blk.durabCap > 0.0) {
-      blk.stats.add(fetchStat("lovec", "blk0fac-durabtime"), (blk.durabCap / 3600.0 * (blk.durabRegenFracMin + blk.durabRegenFracMax) * 0.5).roundFixed(2), StatUnit.minutes);
+      stats.add(fetchStat("lovec", "blk0fac-durabtime"), (blk.durabCap / 3600.0 * (blk.durabRegenFracMin + blk.durabRegenFracMax) * 0.5).roundFixed(2), StatUnit.minutes);
     };
   };
 
@@ -150,8 +150,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

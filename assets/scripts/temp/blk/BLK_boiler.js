@@ -28,10 +28,10 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk-canexplode"), true);
-    blk.stats.add(fetchStat("lovec", "blk-explor"), blk.exploRad / Vars.tilesize, StatUnit.blocks);
-    blk.stats.add(fetchStat("lovec", "blk-explodmg"), blk.exploDmg);
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk-canexplode"), true);
+    stats.add(fetchStat("lovec", "blk-explor"), blk.exploRad / Vars.tilesize, StatUnit.blocks);
+    stats.add(fetchStat("lovec", "blk-explodmg"), blk.exploDmg);
   };
 
 
@@ -224,8 +224,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

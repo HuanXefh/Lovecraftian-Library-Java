@@ -20,8 +20,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(Stat.itemsMoved, 60.0 / blk.dumpTime, StatUnit.itemsSecond);
+  function comp_setStats(blk, stats) {
+    stats.add(Stat.itemsMoved, 60.0 / blk.dumpTime, StatUnit.itemsSecond);
   };
 
 
@@ -74,8 +74,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

@@ -31,9 +31,9 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(Stat.powerUse, blk.powConsBase * 60.0, StatUnit.powerSecond);
-    blk.stats.add(fetchStat("lovec", "blk0pow-powuseper100hu"), blk.powConsPerFuelLvl * 60.0, StatUnit.powerSecond);
+  function comp_setStats(blk, stats) {
+    stats.add(Stat.powerUse, blk.powConsBase * 60.0, StatUnit.powerSecond);
+    stats.add(fetchStat("lovec", "blk0pow-powuseper100hu"), blk.powConsPerFuelLvl * 60.0, StatUnit.powerSecond);
   };
 
 
@@ -167,8 +167,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

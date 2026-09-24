@@ -57,14 +57,14 @@
      * @param {ENVBaseTree} blk
      * @return {void}
      */
-    function comp_setStats(blk) {
+    function comp_setStats(blk, stats) {
         let treeGrp = blk.treeGrp;
         if(treeGrp !== "none") {
-            blk.stats.add(fetchStat("lovec", "blk0env-treetype"), MDL_bundle.getTerm("lovec", treeGrp));
+            stats.add(fetchStat("lovec", "blk0env-treetype"), MDL_bundle.getTerm("lovec", treeGrp));
         };
         let rsLvl = FRAG_faci.getTreeRsLvl(blk);
         if(rsLvl > 0.0) {
-            blk.stats.add(fetchStat("lovec", "blk0env-rslvl"), rsLvl.perc());
+            stats.add(fetchStat("lovec", "blk0env-rslvl"), rsLvl.perc());
         };
     };
 
@@ -153,8 +153,8 @@
         },
 
 
-        setStats: function() {
-            comp_setStats(this);
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
         },
 
 

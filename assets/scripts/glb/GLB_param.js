@@ -147,6 +147,8 @@
             /** @type {boolean} */
             exports.SHOULD_DRAW_SCANNER_RESULT = fetchSetting("draw0aux-scanner");
             /** @type {boolean} */
+            exports.SHOULD_DRAW_RECIPE_ICON = fetchSetting("draw0aux-recipe-icon");
+            /** @type {boolean} */
             exports.SHOULD_DRAW_FLUID_HEAT = fetchSetting("draw0aux-fluid-heat");
             /** @type {boolean} */
             exports.SHOULD_DRAW_FURNACE_HEAT = fetchSetting("draw0aux-furnace-heat");

@@ -248,40 +248,56 @@ const db = {
              */
             base: [
 
-                "lovec-player-detach-camera", {
+
+                "lovec-setting-recipe-icon", {
                     rowInd: 0,
-                    icon: "lovec-icon-detach-camera",
+                    icon: "lovec-icon-alt",
                     isToggle: true,
+                    clickScr: function() {
+                        Core.settings.put("lovec-draw0aux-recipe-icon", !fetchSetting("draw0aux-recipe-icon"));
+                        PARAM.forceLoadParam();
+                    },
                     updateScr: function() {
-                        Core.settings.put("detach-camera", this.isChecked());
-                        if(this.isChecked() && Vars.player.unit() != null) Vars.player.unit().apply(StatusEffects.unmoving, 5.0);
+                        this.setChecked(PARAM.SHOULD_DRAW_RECIPE_ICON);
                     },
                 },
 
                 "lovec-setting-unit-health", {
                     rowInd: 0,
                     icon: "lovec-icon-health",
+                    isToggle: true,
                     clickScr: function() {
                         Core.settings.put("lovec-unit0stat-show", !fetchSetting("unit0stat-show"));
                         PARAM.forceLoadParam();
+                    },
+                    updateScr: function() {
+                        this.setChecked(PARAM.SHOULD_DRAW_UNIT_STAT);
                     },
                 },
 
                 "lovec-setting-unit-range", {
                     rowInd: 0,
                     icon: "lovec-icon-range",
+                    isToggle: true,
                     clickScr: function() {
                         Core.settings.put("lovec-unit0stat-range", !fetchSetting("unit0stat-range"));
                         PARAM.forceLoadParam();
+                    },
+                    updateScr: function() {
+                        this.setChecked(PARAM.SHOULD_DRAW_UNIT_RANGE);
                     },
                 },
 
                 "lovec-setting-extra-info", {
                     rowInd: 0,
                     icon: "lovec-icon-extra-info",
+                    isToggle: true,
                     clickScr: function() {
                         Core.settings.put("lovec-draw0aux-extra-info", !fetchSetting("draw0aux-extra-info"));
                         PARAM.forceLoadParam();
+                    },
+                    updateScr: function() {
+                        this.setChecked(PARAM.SHOULD_SHOW_EXTRA_INFO);
                     },
                 },
 
@@ -301,6 +317,16 @@ const db = {
                     },
                 },
 
+                "lovec-player-detach-camera", {
+                    rowInd: 1,
+                    icon: "lovec-icon-detach-camera",
+                    isToggle: true,
+                    updateScr: function() {
+                        Core.settings.put("detach-camera", this.isChecked());
+                        if(this.isChecked() && Vars.player.unit() != null) Vars.player.unit().apply(StatusEffects.unmoving, 5.0);
+                    },
+                },
+
                 "lovec-player-dump-item-to-core", {
                     rowInd: 1,
                     icon: "lovec-icon-to-core",
@@ -314,7 +340,7 @@ const db = {
                 },
 
                 "lovec-player-teleport", {
-                    rowInd: 1,
+                    rowInd: 2,
                     icon: "lovec-icon-teleport",
                     isToggle: true,
                     updateScr: function() {

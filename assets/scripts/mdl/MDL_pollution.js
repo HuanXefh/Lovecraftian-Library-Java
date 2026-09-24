@@ -186,12 +186,13 @@
     /**
      * Sets pollution related stats.
      * @param {Block} blk
+     * @param {Stats} stats
      * @return {void}
      */
-    const setPolStats = function(blk) {
+    const setPolStats = function(blk, stats) {
         let pol = getBlkPol(blk);
         if(!pol.fEqual(0.0)) {
-            blk.stats.add(
+            stats.add(
                 pol > 0.0 ? fetchStat("lovec", "blk-pol") : fetchStat("lovec", "blk-polred"),
                 (Math.abs(pol).numToStr(2) + " " + fetchStatUnit("lovec", "polunits").localized()).color(pol > 0.0 ? Pal.remove : Pal.heal),
             );

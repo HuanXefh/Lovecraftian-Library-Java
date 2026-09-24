@@ -16,6 +16,8 @@
 
 
   function comp_init(blk) {
+    blk.clipSize += blk.itemDrawOff + 12.0;
+
     blk.group = BlockGroup.none;
     blk.priority = TargetPriority.transport;
     blk.update = true;
@@ -47,9 +49,9 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(Stat.itemsMoved, blk.moveStackAmt * 60.0 / (blk.moveTime * 2.0 + blk.pickCooldown), StatUnit.itemsSecond);
-    blk.stats.add(fetchStat("lovec", "blk0item-stackamt"), blk.moveStackAmt);
+  function comp_setStats(blk, stats) {
+    stats.add(Stat.itemsMoved, blk.moveStackAmt * 60.0 / (blk.moveTime * 2.0 + blk.pickCooldown), StatUnit.itemsSecond);
+    stats.add(fetchStat("lovec", "blk0item-stackamt"), blk.moveStackAmt);
   };
 
 
@@ -465,8 +467,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -640,6 +642,7 @@
 
       draw: function() {
         comp_draw(this);
+        this.ex_drawRcIcon();
       }
       .setProp({
         noSuper: true,

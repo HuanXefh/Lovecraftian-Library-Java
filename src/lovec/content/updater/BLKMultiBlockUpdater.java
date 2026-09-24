@@ -21,6 +21,7 @@ import mindustry.type.Liquid;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.meta.Stat;
+import mindustry.world.meta.Stats;
 
 public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
 
@@ -44,11 +45,15 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
     };
 
 
+
+    /**
+     * For v8 compatibility, do not call this method in Java classes.
+     */
     @FragMethod(superMode = "after")
-    public void setStats() {
+    public void setStats(Stats stats) {
         if(target instanceof MultiBlockLinkCenterBlockFrag mblk) {
-            target.stats.remove(Stat.size);
-            target.stats.add(Stat.size, "@x@", mblk.getMultiBlockSizes()[0], mblk.getMultiBlockSizes()[1]);
+            stats.remove(Stat.size);
+            stats.add(Stat.size, "@x@", mblk.getMultiBlockSizes()[0], mblk.getMultiBlockSizes()[1]);
         };
     };
 

@@ -27,11 +27,11 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.output);
-    blk.stats.remove(Stat.productionTime);
-    blk.stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
-    blk.stats.add(fetchStat("lovec", "blk0fac-recipes"), newStatValue(tb => {
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.output);
+    stats.remove(Stat.productionTime);
+    stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
+    stats.add(fetchStat("lovec", "blk0fac-recipes"), newStatValue(tb => {
       tb.row();
 
       if(blk.useAutoSelection) {
@@ -50,7 +50,7 @@
     }));
 
     if(!MDL_recipe.checkAnyPayOutput(blk.rcMdl)) {
-      blk.stats.remove(fetchStat("lovec", "blk0fac-payroom"));
+      stats.remove(fetchStat("lovec", "blk0fac-payroom"));
     };
   };
 
@@ -87,8 +87,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -117,6 +117,25 @@
 
         this.ex_processData(rd);
       },
+
+
+      /**
+       * `REALIZED`
+       * @override
+       * @memberof B_baseFactory
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.rc == null || this.rc.icon == null ?
+          null :
+          this.rc.icon.getRegion();
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
 
 
       /**

@@ -75,8 +75,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0min-cropstage"), newStatValue(tb => {
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk0min-cropstage"), newStatValue(tb => {
       tb.row();
       tb.table(Styles.none, tb1 => {
         let matArr = [[
@@ -103,7 +103,7 @@
       .left()
       .padLeft(28.0);
     }));
-    blk.stats.add(fetchStat("lovec", "blk0min-croptotaltime"), blk.growTotalTime.time(2));
+    stats.add(fetchStat("lovec", "blk0min-croptotaltime"), blk.growTotalTime.time(2));
   };
 
 
@@ -333,8 +333,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

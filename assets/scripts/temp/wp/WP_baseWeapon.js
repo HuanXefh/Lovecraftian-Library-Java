@@ -69,7 +69,7 @@
             return val >= 0.0 ? val : Math.round(this.reload * 0.75);
         },
         "parts", function(val) {
-            // Parts are defined as array and finally converted to seq
+            // Defined as array and finally converted to seq
             return tprov(() => val.get().toSeq());
         },
     ])

@@ -5,19 +5,29 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/rs/RS_intermediateFluid");
+    /**
+     * @typedef {TemplateInstance<Liquid, RS_wasteFluid>} RSWasteFluid
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_intermediateFluid");
 
 
-  function comp_setStats(liq) {
-    liq.stats.remove(fetchStat("lovec", "rs-isintermediate"));
-    liq.stats.add(fetchStat("lovec", "rs-iswaste"), true);
-  };
+    /* <------------------------------ component ------------------------------ */
+
+
+    /**
+     * @private
+     * @param {RSWasteFluid} liq
+     * @return {void}
+     */
+    function comp_setStats(liq, stats) {
+        stats.remove(fetchStat("lovec", "rs-isintermediate"));
+        stats.add(fetchStat("lovec", "rs-iswaste"), true);
+    };
 
 
 /*
@@ -27,43 +37,47 @@
 */
 
 
-  /**
-   * Unwanted fluids.
-   * Technically intermediates, but categorized as waste.
-   * @class RS_wasteFluid
-   * @extends RS_intermediateFluid
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_wasteFluid").initClass()
-  .setParent(Liquid)
-  .setTags("ct-was")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof RS_wasteFluid
-     * @instance
+     * Unwanted fluids.
+     * Technically intermediates, but categorized as waste.
+     * @class RS_wasteFluid
+     * @extends RS_intermediateFluid
      */
-    useParentReg: false,
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_wasteFluid")
+    .initTemplate()
+    .setParent(Liquid)
+    .setTags("ct-was")
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------> */
+        /* <------------------------------ internal ------------------------------> */
 
 
-    databaseTag: null,
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_wasteFluid
+         * @instance
+         * @type {boolean}
+         */
+        useParentReg: false,
 
 
-  })
-  .setMethod({
+        /* <------------------------------ vanilla ------------------------------> */
 
 
-    setStats: function() {
-      comp_setStats(this);
-    },
+        databaseTag: null,
 
 
-  });
+    })
+    .setMethod({
+
+
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
+        },
+
+
+    });

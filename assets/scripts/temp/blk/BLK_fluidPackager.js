@@ -33,12 +33,12 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.productionTime);
-    blk.stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.productionTime);
+    stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
     !blk.isUnpacker ?
-      blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.packageAmt / blk.craftTime * 60.0, StatUnit.itemsSecond) :
-      blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.packageAmt * blk.liqPerCellItem / blk.craftTime * 60.0, StatUnit.liquidSecond);
+      stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.packageAmt / blk.craftTime * 60.0, StatUnit.itemsSecond) :
+      stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.packageAmt * blk.liqPerCellItem / blk.craftTime * 60.0, StatUnit.liquidSecond);
   };
 
 
@@ -181,8 +181,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

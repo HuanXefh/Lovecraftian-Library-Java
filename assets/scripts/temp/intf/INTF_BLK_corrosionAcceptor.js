@@ -18,10 +18,10 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     let matGrpBundle = MDL_flow.getMatGrpBundle(blk);
-    if(matGrpBundle !== TmpStateTag.error) blk.stats.add(fetchStat("lovec", "blk0liq-matgrp"), matGrpBundle);
-    if(blk.cloggable) blk.stats.add(fetchStat("lovec", "blk0liq-cloggable"), true);
+    if(matGrpBundle !== TmpStateTag.error) stats.add(fetchStat("lovec", "blk0liq-matgrp"), matGrpBundle);
+    if(blk.cloggable) stats.add(fetchStat("lovec", "blk0liq-cloggable"), true);
   };
 
 
@@ -100,8 +100,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

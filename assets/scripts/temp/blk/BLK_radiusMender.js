@@ -20,20 +20,20 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.repairTime);
-    blk.stats.remove(Stat.range);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.repairTime);
+    stats.remove(Stat.range);
 
-    if(blk.healsBuilding) blk.stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
+    if(blk.healsBuilding) stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
       blk.bHealAmt,
       blk.bHealPerc,
     ));
-    if(blk.healsUnit) blk.stats.add(fetchStat("lovec", "blk0misc-unitrepairamt"), MDL_text.getHealText(
+    if(blk.healsUnit) stats.add(fetchStat("lovec", "blk0misc-unitrepairamt"), MDL_text.getHealText(
       blk.unitHealAmt,
       blk.unitHealPerc,
     ));
-    blk.stats.add(fetchStat("lovec", "blk0misc-repairr"), blk.range / Vars.tilesize, StatUnit.blocks);
-    blk.stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
+    stats.add(fetchStat("lovec", "blk0misc-repairr"), blk.range / Vars.tilesize, StatUnit.blocks);
+    stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
   };
 
 
@@ -142,8 +142,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

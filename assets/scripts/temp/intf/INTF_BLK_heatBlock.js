@@ -34,9 +34,9 @@
   };
 
 
-  function comp_setStats(blk) {
-    if(isFinite(blk.heatBlkMeltTemp)) blk.stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.heatBlkMeltTemp, fetchStatUnit("lovec", "heatunits"));
-    if(!blk.tempExtMtp.fEqual(1.0)) blk.stats.add(fetchStat("lovec", "blk0fac-extheatmtp"), blk.tempExtMtp.perc());
+  function comp_setStats(blk, stats) {
+    if(isFinite(blk.heatBlkMeltTemp)) stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.heatBlkMeltTemp, fetchStatUnit("lovec", "heatunits"));
+    if(!blk.tempExtMtp.fEqual(1.0)) stats.add(fetchStat("lovec", "blk0fac-extheatmtp"), blk.tempExtMtp.perc());
   };
 
 
@@ -366,8 +366,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

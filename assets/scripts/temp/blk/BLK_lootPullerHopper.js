@@ -30,8 +30,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(Stat.range, blk.blkRad / Vars.tilesize, StatUnit.blocks);
+  function comp_setStats(blk, stats) {
+    stats.add(Stat.range, blk.blkRad / Vars.tilesize, StatUnit.blocks);
   };
 
 
@@ -157,8 +157,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

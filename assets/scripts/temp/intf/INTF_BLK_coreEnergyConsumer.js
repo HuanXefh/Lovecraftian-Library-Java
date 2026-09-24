@@ -16,11 +16,11 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     let cepProv = FRAG_faci.getCepProv(blk);
-    if(cepProv > 0.0) blk.stats.add(fetchStat("lovec", "blk0misc-cepprov"), cepProv);
+    if(cepProv > 0.0) stats.add(fetchStat("lovec", "blk0misc-cepprov"), cepProv);
     let cepUse = FRAG_faci.getCepUse(blk);
-    if(cepUse > 0.0) blk.stats.add(fetchStat("lovec", "blk0misc-cepuse"), cepUse);
+    if(cepUse > 0.0) stats.add(fetchStat("lovec", "blk0misc-cepuse"), cepUse);
   };
 
 
@@ -103,8 +103,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

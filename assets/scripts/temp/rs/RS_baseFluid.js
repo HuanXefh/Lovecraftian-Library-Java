@@ -5,140 +5,202 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/rs/RS_baseResource");
+    /**
+     * @typedef {TemplateInstance<Liquid, RS_baseFluid>} RSBaseFluid
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_baseResource");
 
 
-  function comp_init(liq) {
-    if(liq.setupVanillaProp) {
-      if(liq.temperature.fEqual(0.5)) liq.temperature = MDL_flow.getTempWrap(liq);
-      if(liq.viscosity.fEqual(0.5)) liq.viscosity = MDL_flow.getViscWrap(liq);
-
-      if(liq.gas && liq.vaporEffect === Fx.vapor) {
-        liq.vaporEffect = TP_effect.gasEmission({
-          color: liq.color,
-        });
-      };
-      if(liq.gas) {
-        liq.gasColor = Color.valueOf("bfbfbf");
-      } else {
-        liq.boilPoint = MDL_flow.getBoilPon(liq) / 50.0;
-      };
-    };
-
-    liq.isConductive = MDL_cond.isConductiveLiquid(liq);
-    liq.shouldFume = DB_fluid.db["group"]["fuming"].includes(liq.name);
-    liq.dens = MDL_flow.getDens(liq);
-    liq.fHeat = MDL_flow.getFHeat(liq);
-    liq.eleGrp = MDL_flow.getEleGrp(liq);
-    liq.fTags = MDL_flow.getFTags(liq);
-    liq.corPow = MDL_flow.getCorPow(liq);
-  };
+    /* <------------------------------ component ------------------------------ */
 
 
-  function comp_setStats(liq) {
-    if(liq.setupVanillaStat) {
-      liq.stats.remove(Stat.explosiveness);
-      liq.stats.remove(Stat.flammability);
-      liq.stats.remove(Stat.temperature);
-      liq.stats.remove(Stat.heatCapacity);
-      liq.stats.remove(Stat.viscosity);
-      if(liq.explosiveness > 0.0) liq.stats.addPercent(Stat.explosiveness, liq.explosiveness);
-      if(liq.flammability > 0.0) liq.stats.addPercent(Stat.flammability, liq.flammability);
-      if(!liq.temperature.fEqual(0.5)) liq.stats.add(Stat.temperature, liq.temperature.perc());
-      if(liq.heatCapacity > 0.0) liq.stats.addPercent(Stat.heatCapacity, liq.heatCapacity);
-      if(!liq.gas && !liq.viscosity.fEqual(0.5)) liq.stats.add(Stat.viscosity, liq.viscosity.perc());
-    };
+    /**
+     * @private
+     * @param {RSBaseFluid} liq
+     * @return {void}
+     */
+    function comp_init(liq) {
+        if(liq.setupVanillaProp) {
+            if(liq.temperature.fEqual(0.5)) {
+                liq.temperature = MDL_flow.getTempWrap(liq);
+            };
+            if(liq.viscosity.fEqual(0.5)) {
+                liq.viscosity = MDL_flow.getViscWrap(liq);
+            };
 
-    if(liq.effect !== StatusEffects.none) liq.stats.add(fetchStat("lovec", "rs-fluidstatus"), StatValues.content([liq.effect].toSeq()));
-    if(!liq.gas && MDL_cond.isConductiveLiquid(liq)) liq.stats.add(fetchStat("lovec", "rs-conductiveliq"), true);
-    let dens = MDL_flow.getDens(liq);
-    liq.stats.add(fetchStat("lovec", "rs-dens"), liq.gas ? dens.sci(-3) : Strings.fixed(dens, 2));
-    let fHeat = MDL_flow.getFHeat(liq);
-    if(!fHeat.fEqual(26.0)) liq.stats.add(fetchStat("lovec", "rs-fheat"), fHeat, fetchStatUnit("lovec", "heatunits"));
-    let eleGrpBundle = MDL_flow.getEleGrpBundle(liq);
-    if(eleGrpBundle !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-elegrp"), eleGrpBundle);
-    let fTagsBundle = MDL_flow.getFTagsBundle(liq);
-    if(fTagsBundle !== TmpStateTag.error) liq.stats.add(fetchStat("lovec", "rs-ftags"), fTagsBundle);
-    let corPow = MDL_flow.getCorPow(liq);
-    if(corPow > 0.0) liq.stats.add(fetchStat("lovec", "rs-corpow"), corPow.perc());
-
-    let oreblks = MDL_content.getOreBlks(liq);
-    if(oreblks.length > 0) {
-      liq.stats.add(fetchStat("lovec", "rs-isore"), true);
-      liq.stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
-        tb.row();
-        MDL_table.setCtLi(tb, oreblks, {size: 48.0});
-      }));
-    };
-
-    if(Array.someIncludes(liq, VARGEN.fuelLiqs, VARGEN.fuelGases)) {
-      liq.stats.add(fetchStat("lovec", "rs0fuel-level"), MDL_fuel.getFuelLvl(liq));
-    };
-  };
-
-
-  function comp_update(liq, puddle) {
-    let t = puddle.tile;
-    let ot, ob, opuddle, dmg;
-
-    if(isNaN(puddle.amount)) {
-      puddle.remove();
-    };
-
-    // Fume if possible
-    if(!liq.gas && liq.shouldFume && Mathf.chance(MDL_effect.calcEffPByFrac(0.03, puddle.amount * 0.04))) {
-      MDL_effect.showAt(puddle.x, puddle.y, EFF.smogHeat);
-    };
-
-    // Corrode building if possible
-    if(!liq.gas && puddle.tile != null && puddle.tile.build != null) {
-      MDL_flow.updateCorrosion(puddle.tile.build, liq, puddle.amount);
-    };
-
-    // Cause short circuit if possible
-    if(!PARAM.UPDATE_SUPPRESSED && !liq.gas && liq.isConductive && Mathf.chanceDelta(0.1)) {
-      FRAG_puddle.spreadPuddle(puddle, 0.5, ot => {
-        ob = ot.build;
-        return ob != null && ob.power != null && ob.power.status > 0.0 && tryJsProp(ob.block, "canShortCircuit", false);
-      }, ot => {
-        ob = ot.build;
-        dmg = ob.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0;
-        ob.damagePierce(dmg);
-        if(Mathf.chance(0.15)) MDL_effect.showAt(ob.x, ob.y, EFF.smogHeat);
-        if(!Vars.net.client() && Mathf.chance(0.05)) FRAG_attack.lightning_global(ob.x, ob.y, null, null, null, 6, 4, null, "ground");
-      });
-    };
-
-    // Apply puddle reaction if possible
-    if(!Vars.net.client() && Mathf.chance(0.05)) {
-      for(let i = 0; i < 8; i++) {
-        ot = t.nearby(Geometry.d8[i]);
-        if(ot == null) continue;
-
-        ob = ot.build;
-        if(ob != null && !tryJsProp(ob.block, "noReac", false)) {
-          if(ob.items != null && ob.items.any() && tryJsProp(ob.block, "isExposed", false)) ob.items.each((item, amt) => MDL_reaction.handleReaction(item, liq, 20.0, ob));
-          if(ob.liquids != null && ob.liquids.currentAmount() > 0.001) MDL_reaction.handleReaction(ob.liquids.current(), liq, 20.0, ob);
+            if(liq.gas && liq.vaporEffect === Fx.vapor) {
+                liq.vaporEffect = TP_effect.gasEmission({
+                    color: liq.color,
+                });
+            };
+            if(liq.gas) {
+                liq.gasColor = Color.valueOf("bfbfbf");
+            } else {
+                liq.boilPoint = MDL_flow.getBoilPon(liq) / 50.0;
+            };
         };
 
-        opuddle = Puddles.get(ot);
-        if(opuddle != null) {
-          MDL_reaction.handleReaction(opuddle.liquid, liq, 20.0, ot);
-        };
-      };
+        liq.isConductive = MDL_cond.isConductiveLiquid(liq);
+        liq.shouldFume = DB_fluid.db["group"]["fuming"].includes(liq.name);
+        liq.dens = MDL_flow.getDens(liq);
+        liq.fHeat = MDL_flow.getFHeat(liq);
+        liq.eleGrp = MDL_flow.getEleGrp(liq);
+        liq.fTags = MDL_flow.getFTags(liq);
+        liq.corPow = MDL_flow.getCorPow(liq);
     };
-  };
 
 
-  function comp_willBoil(liq) {
-    return liq.gas || liq.boilPoint * 50.0 < PARAM.GLOBAL_HEAT;
-  };
+    /**
+     * @private
+     * @param {RSBaseFluid} liq
+     * @return {void}
+     */
+    function comp_setStats(liq, stats) {
+        if(liq.setupVanillaStat) {
+            stats.remove(Stat.explosiveness);
+            stats.remove(Stat.flammability);
+            stats.remove(Stat.temperature);
+            stats.remove(Stat.heatCapacity);
+            stats.remove(Stat.viscosity);
+            if(liq.explosiveness > 0.0) {
+                stats.addPercent(Stat.explosiveness, liq.explosiveness);
+            };
+            if(liq.flammability > 0.0) {
+                stats.addPercent(Stat.flammability, liq.flammability);
+            };
+            if(!liq.temperature.fEqual(0.5)) {
+                stats.add(Stat.temperature, liq.temperature.perc());
+            };
+            if(liq.heatCapacity > 0.0) {
+                stats.addPercent(Stat.heatCapacity, liq.heatCapacity);
+            };
+            if(!liq.gas && !liq.viscosity.fEqual(0.5)) {
+                stats.add(Stat.viscosity, liq.viscosity.perc());
+            };
+        };
+
+        if(liq.effect !== StatusEffects.none) {
+            stats.add(fetchStat("lovec", "rs-fluidstatus"), StatValues.content([liq.effect].toSeq()));
+        };
+        if(!liq.gas && MDL_cond.isConductiveLiquid(liq)) {
+            stats.add(fetchStat("lovec", "rs-conductiveliq"), true);
+        };
+        let dens = MDL_flow.getDens(liq);
+        stats.add(fetchStat("lovec", "rs-dens"), liq.gas ? dens.sci(-3) : Strings.fixed(dens, 2));
+        let fHeat = MDL_flow.getFHeat(liq);
+        if(!fHeat.fEqual(26.0)) {
+            stats.add(fetchStat("lovec", "rs-fheat"), fHeat, fetchStatUnit("lovec", "heatunits"));
+        };
+        let eleGrpBundle = MDL_flow.getEleGrpBundle(liq);
+        if(eleGrpBundle !== TmpStateTag.error) {
+            stats.add(fetchStat("lovec", "rs-elegrp"), eleGrpBundle);
+        };
+        let fTagsBundle = MDL_flow.getFTagsBundle(liq);
+        if(fTagsBundle !== TmpStateTag.error) {
+            stats.add(fetchStat("lovec", "rs-ftags"), fTagsBundle);
+        };
+        let corPow = MDL_flow.getCorPow(liq);
+        if(corPow > 0.0) {
+            stats.add(fetchStat("lovec", "rs-corpow"), corPow.perc());
+        };
+
+        let oreblks = MDL_content.getOreBlks(liq);
+        if(oreblks.length > 0) {
+            stats.add(fetchStat("lovec", "rs-isore"), true);
+            stats.add(fetchStat("lovec", "rs-blockrelated"), newStatValue(tb => {
+                tb.row();
+                MDL_table.setCtLi(tb, oreblks, {size: 48.0});
+            }));
+        };
+
+        if(Array.someIncludes(liq, VARGEN.fuelLiqs, VARGEN.fuelGases)) {
+            stats.add(fetchStat("lovec", "rs0fuel-level"), MDL_fuel.getFuelLvl(liq));
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {RSBaseFluid} liq
+     * @param {Puddle} puddle
+     * @return {void}
+     */
+    function comp_update(liq, puddle) {
+        let t = puddle.tile;
+        let ot, ob, opuddle, dmg;
+
+        if(isNaN(puddle.amount)) {
+            puddle.remove();
+        };
+
+        // Fume if possible
+        if(!liq.gas && liq.shouldFume && Mathf.chance(MDL_effect.calcEffPByFrac(0.03, puddle.amount * 0.04))) {
+            MDL_effect.showAt(puddle.x, puddle.y, EFF.smogHeat);
+        };
+
+        // Corrode building if possible
+        if(!liq.gas && puddle.tile != null && puddle.tile.build != null) {
+            MDL_flow.updateCorrosion(puddle.tile.build, liq, puddle.amount);
+        };
+
+        // Cause short circuit if possible
+        if(!PARAM.UPDATE_SUPPRESSED && !liq.gas && liq.isConductive && Mathf.chanceDelta(0.1)) {
+            FRAG_puddle.spreadPuddle(
+                puddle, 0.5,
+                ot => {
+                    ob = ot.build;
+                    return ob != null && ob.power != null && ob.power.status > 0.0 && tryJsProp(ob.block, "canShortCircuit", false);
+                },
+                ot => {
+                    ob = ot.build;
+                    dmg = ob.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0;
+                    ob.damagePierce(dmg);
+                    if(Mathf.chance(0.15)) {
+                        MDL_effect.showAt(ob.x, ob.y, EFF.smogHeat);
+                    };
+                    if(!Vars.net.client() && Mathf.chance(0.05)) {
+                        FRAG_attack.lightning_global(ob.x, ob.y, null, null, null, 6, 4, null, "ground");
+                    };
+                },
+            );
+        };
+
+        // Apply puddle reaction if possible
+        if(!Vars.net.client() && Mathf.chance(0.05)) {
+            for(let i = 0; i < 8; i++) {
+                ot = t.nearby(Geometry.d8[i]);
+                if(ot == null) continue;
+                ob = ot.build;
+                if(ob != null && !tryJsProp(ob.block, "noReac", false)) {
+                    if(ob.items != null && ob.items.any() && tryJsProp(ob.block, "isExposed", false)) {
+                        ob.items.each((item, amt) => MDL_reaction.handleReaction(item, liq, 20.0, ob));
+                    };
+                    if(ob.liquids != null && ob.liquids.currentAmount() > 0.001) {
+                        MDL_reaction.handleReaction(ob.liquids.current(), liq, 20.0, ob);
+                    };
+                };
+                opuddle = Puddles.get(ot);
+                if(opuddle != null) {
+                    MDL_reaction.handleReaction(opuddle.liquid, liq, 20.0, ot);
+                };
+            };
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {RSBaseFluid} liq
+     * @return {boolean}
+     */
+    function comp_willBoil(liq) {
+        return liq.gas || liq.boilPoint * 50.0 < PARAM.GLOBAL_HEAT;
+    };
 
 
 /*
@@ -148,101 +210,110 @@
 */
 
 
-  /**
-   * Fluids without any feature. Most properties are set in {@link DB_fluid}.
-   * For gases, set `liq.gas` in their .json files.
-   * Unlike items, there's no `RS_oreFluid` since every fluid can be ore in some way.
-   * @class RS_baseFluid
-   * @extends RS_baseResource
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_baseFluid").initClass()
-  .setParent(Liquid)
-  .setTags()
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @memberof RS_baseFluid
-     * @instance
+     * Regular fluids. Most properties are set in {@link DB_fluid}.
+     * Unlike items, there's no `RS_oreFluid` since every fluid can be ore in some way.
+     * @class RS_baseFluid
+     * @extends RS_baseResource
      */
-    isConductive: false,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseFluid
-     * @instance
-     */
-    shouldFume: false,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseFluid
-     * @instance
-     */
-    dens: 1.0,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseFluid
-     * @instance
-     */
-    fHeat: 26.0,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseFluid
-     * @instance
-     */
-    eleGrp: null,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseFluid
-     * @instance
-     */
-    fTags: Array.air,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseFluid
-     * @instance
-     */
-    corPow: 0.0,
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_baseFluid")
+    .initTemplate()
+    .setParent(Liquid)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------> */
+        /* <------------------------------ internal ------------------------------> */
 
 
-    heatCapacity: 0.0,
-    incinerable: false,
-    coolant: false,
-    moveThroughBlocks: true,
-    capPuddles: true,
+        /**
+         * `INTERNAL`
+         * @memberof RS_baseFluid
+         * @instance
+         * @type {boolean}
+         */
+        isConductive: false,
+        /**
+         * `INTERNAL`
+         * @memberof RS_baseFluid
+         * @instance
+         * @type {boolean}
+         */
+        shouldFume: false,
+        /**
+         * `INTERNAL`
+         * @memberof RS_baseFluid
+         * @instance
+         * @type {number}
+         */
+        dens: 1.0,
+        /**
+         * `INTERNAL`
+         * @memberof RS_baseFluid
+         * @instance
+         * @type {number}
+         */
+        fHeat: 26.0,
+        /**
+         * `INTERNAL`
+         * @memberof RS_baseFluid
+         * @instance
+         * @type {string|null}
+         */
+        eleGrp: null,
+        /**
+         * `INTERNAL`
+         * @memberof RS_baseFluid
+         * @instance
+         * @type {TDynamic<Array<string>>}
+         */
+        fTags: tprov(() => []),
+        /**
+         * `INTERNAL`
+         * @memberof RS_baseFluid
+         * @instance
+         * @type {number}
+         */
+        corPow: 0.0,
 
 
-  })
-  .setMethod({
+        /* <------------------------------ vanilla ------------------------------> */
 
 
-    init: function() {
-      comp_init(this);
-    },
+        gas: false,
+        heatCapacity: 0.0,
+        incinerable: false,
+        coolant: false,
+        moveThroughBlocks: true,
+        capPuddles: true,
 
 
-    setStats: function() {
-      comp_setStats(this);
-    },
+    })
+    .setMethod({
 
 
-    update: function(puddle) {
-      comp_update(this, puddle);
-    },
+        init: function() {
+            comp_init(this);
+        },
 
 
-    willBoil: function() {
-      return comp_willBoil(this);
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
+        },
 
 
-  });
+        update: function(puddle) {
+            comp_update(this, puddle);
+        },
+
+
+        willBoil: function() {
+            return comp_willBoil(this);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+    });

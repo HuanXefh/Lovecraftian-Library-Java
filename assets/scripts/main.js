@@ -240,20 +240,22 @@
             Vars.content.items().each(item => {
                 rsRedir = oreDict.get(item);
                 if(rsRedir == null) return;
-                item.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
+                // Completely broken in v9
+                /*item.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
                     tb.row();
                     MDL_table.setCtRow(tb, rsRedir);
-                }));
+                }));*/
                 rsRedir.shownPlanets.addAll(item.shownPlanets);
                 rsRedir.databaseTabs.addAll(item.databaseTabs);
             });
             Vars.content.liquids().each(liq => {
                 rsRedir = oreDict.get(liq);
                 if(rsRedir == null) return;
-                liq.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
+                // Completely broken in v9
+                /*liq.stats.add(fetchStat("lovec", "spec-oredict"), newStatValue(tb => {
                     tb.row();
                     MDL_table.setCtRow(tb, rsRedir);
-                }));
+                }));*/
                 rsRedir.shownPlanets.addAll(liq.shownPlanets);
                 rsRedir.databaseTabs.addAll(liq.databaseTabs);
             });
@@ -429,7 +431,7 @@
             .concat(VARGEN.buildableUtps)
             .forEachFast(ct => {
                 VARGEN.rcDictCts.push(ct);
-                // Complete broken in 160 due to `computeStats`
+                // Complete broken in v9
                 /*ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
                     tb.row();
                     MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct, false)).left().padLeft(28.0).row();
@@ -461,7 +463,8 @@
             .map(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA, true))
             .compact()
             .forEachFast(sta => {
-                sta.stats.add(fetchStat("lovec", "sta-robotonly"), true);
+                // Completely broken in v9
+                /*sta.stats.add(fetchStat("lovec", "sta-robotonly"), true);*/
                 VARGEN.bioticUtps.forEachFast(utp => utp.immunities.add(sta), true);
             }, true);
 
@@ -487,15 +490,15 @@
 
         // Set up faction
         (function() {
-            function setFaction(ct) {
+            // Completely broken in v9
+            /*function setFaction(ct) {
                 if(MDL_content.getFaction(ct) !== "none") ct.stats.add(fetchStat("lovec", "spec-faction"), newStatValue(tb => {
                     tb.row();
                     MDL_table.setFaction(tb, ct);
                 }));
             };
-
             Vars.content.blocks().each(blk => setFaction(blk));
-            Vars.content.units().each(utp => setFaction(utp));
+            Vars.content.units().each(utp => setFaction(utp));*/
         })();
 
 
@@ -565,7 +568,7 @@
             PlanetDialog.debugSelect = true;
             PlanetDialog.debugShowNumbers = true;
 
-            // Completely brocken in 160 due to `computeStats`
+            // Completely brocken in v9
             /*[
                 Vars.content.items(),
                 Vars.content.liquids(),
@@ -595,6 +598,10 @@
         MDL_util.addDatabaseButton(
             MDL_bundle.getInfo("lovec", "dial-rc-database"),
             () => fetchDialog("rcDatabase").ex_show(),
+        );
+        MDL_util.addDatabaseButton(
+            MDL_bundle.getInfo("lovec", "dial-rcdict-database"),
+            () => fetchDialog("rcDictDatabase").ex_show(),
         );
 
 

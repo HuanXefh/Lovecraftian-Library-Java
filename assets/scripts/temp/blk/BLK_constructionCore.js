@@ -98,8 +98,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0misc-blktarget"), newStatValue(tb => {
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk0misc-blktarget"), newStatValue(tb => {
       tb.row();
       tb.table(Styles.none, tb1 => {
         MDL_table.br(tb1, 1);
@@ -117,7 +117,7 @@
         MDL_table.br(tb1, 1);
       }).growX();
     }));
-    blk.stats.add(fetchStat("lovec", "blk0misc-struct"), newStatValue(tb => {
+    stats.add(fetchStat("lovec", "blk0misc-struct"), newStatValue(tb => {
       tb.row();
       blk.ex_buildConstructionPlan(tb);
     }));
@@ -603,8 +603,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

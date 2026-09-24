@@ -23,11 +23,11 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.repairTime);
-    blk.stats.remove(Stat.booster);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.repairTime);
+    stats.remove(Stat.booster);
 
-    if(blk.staTarget != null) blk.stats.add(fetchStat("lovec", "blk0misc-status"), StatValues.content([blk.staTarget].toSeq()));
+    if(blk.staTarget != null) stats.add(fetchStat("lovec", "blk0misc-status"), StatValues.content([blk.staTarget].toSeq()));
   };
 
 
@@ -119,8 +119,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

@@ -74,17 +74,17 @@
   };
 
 
-  function comp_setStats(blk) {
-    if(blk.canShortCircuit) blk.stats.add(fetchStat("lovec", "blk-shortcircuit"), true);
+  function comp_setStats(blk, stats) {
+    if(blk.canShortCircuit) stats.add(fetchStat("lovec", "blk-shortcircuit"), true);
 
     if(DB_block.db["map"]["facFami"].colIncludes(blk.name, 2, 0)) {
-      blk.stats.add(fetchStat("lovec", "spec-facfami"), newStatValue(tb => {
+      stats.add(fetchStat("lovec", "spec-facfami"), newStatValue(tb => {
         tb.row();
         MDL_table.setFacFami(tb, blk);
       }));
     };
 
-    MDL_pollution.setPolStats(blk);
+    MDL_pollution.setPolStats(blk, stats);
 
     // Vanilla stat for I/O looks ass in Lovec, to be honest
     if(blk instanceof GenericCrafter) {
@@ -93,32 +93,32 @@
         consLiq = blk.consumers.find(blkCons => blkCons instanceof ConsumeLiquid),
         consLiqs = blk.consumers.find(blkCons => blkCons instanceof ConsumeLiquids);
       if(consItems != null || consLiq != null || consLiqs != null) {
-        blk.stats.remove(Stat.input);
+        stats.remove(Stat.input);
         if(consItems != null) {
-          blk.stats.add(Stat.input, newStatValue(tb => {
+          stats.add(Stat.input, newStatValue(tb => {
             buildIo(tb, consItems.items, blk.craftTime);
           }));
         };
         if(consLiq != null) {
-          blk.stats.add(Stat.input, newStatValue(tb => {
+          stats.add(Stat.input, newStatValue(tb => {
             buildIo(tb, [new LiquidStack(consLiq.liquid, consLiq.amount)], 1.0);
           }));
         };
         if(consLiqs != null) {
-          blk.stats.add(Stat.input, newStatValue(tb => {
+          stats.add(Stat.input, newStatValue(tb => {
             buildIo(tb, consLiqs.liquids, 1.0);
           }));
         };
       };
       if(blk.outputItems != null || blk.outputLiquids != null) {
-        blk.stats.remove(Stat.output);
+        stats.remove(Stat.output);
         if(blk.outputItems != null) {
-          blk.stats.add(Stat.output, newStatValue(tb => {
+          stats.add(Stat.output, newStatValue(tb => {
             buildIo(tb, blk.outputItems, blk.craftTime);
           }));
         };
         if(blk.outputLiquids != null) {
-          blk.stats.add(Stat.output, newStatValue(tb => {
+          stats.add(Stat.output, newStatValue(tb => {
             buildIo(tb, blk.outputLiquids, 1.0);
           }));
         };
@@ -342,8 +342,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -645,6 +645,53 @@
        */
       ex_handleConfigStrDef: function(str) {
 
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * Draws recipe icon when it's enabled.
+       * @memberof B_baseBlock
+       * @instance
+       * @func
+       * @return {void}
+       */
+      ex_drawRcIcon: function() {
+        if(PARAM.SHOULD_DRAW_RECIPE_ICON) {
+          let icon = this.ex_getRcIcon();
+          if(icon != null) {
+            let regScl = Math.min(this.block.size * 0.5, 2.0) * (Mathf.absin(12.0, 0.3) + 1.0);
+            Draw.color(0, 0, 0, 0.75);
+            Draw.rect("circle-shadow", this.x, this.y, 13.5 * regScl, 13.5 * regScl);
+            Draw.color();
+            LCDraw.regionIcon(
+              this.x + Vars.tilesize * this.block.size * 0.5,
+              this.y - Vars.tilesize * this.block.size * 0.5,
+              this.ex_getRcIcon(),
+              this.block.size,
+              regScl,
+              VAR.layer.rcIcon,
+            );
+          };
+        };
+      }
+      .setProp({
+        noSuper: true,
+      }),
+
+
+      /**
+       * Texture region that should be drawn when recipe icon is enabled.
+       * <br> `LATER`
+       * @memberof B_baseBlock
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return null;
       }
       .setProp({
         noSuper: true,

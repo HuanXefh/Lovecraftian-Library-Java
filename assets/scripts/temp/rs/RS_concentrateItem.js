@@ -5,20 +5,32 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/rs/RS_intermediateItem");
+    /**
+     * @typedef {TemplateInstance<Item, RS_concentrateItem>} RSConcentrateItem
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_intermediateItem");
 
 
-  function comp_init(item) {
-    if(item.intmdParent != null) {
-      if(item.flammability < 0.0001) item.flammability = item.intmdParent.flammability * 1.5;
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {RSConcentrateItem} item
+     * @return {void}
+     */
+    function comp_init(item) {
+        if(item.intmdParent != null) {
+            if(item.flammability < 0.0001) {
+                item.flammability = item.intmdParent.flammability * 1.5;
+            };
+        };
     };
-  };
 
 
 /*
@@ -28,52 +40,58 @@
 */
 
 
-  /**
-   * Items produced by sintering purified dust items.
-   * <br> `NAMEGEN`
-   * @class RS_concentrateItem
-   * @extends RS_intermediateItem
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_concentrateItem").initClass()
-  .setParent(Item)
-  .setTags("ct-intmd", "rs-ore0conc")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof RS_concentrateItem
-     * @instance
+     * Items produced by sintering purified dust items.
+     * <br> `NAMEGEN`
+     * @class RS_concentrateItem
+     * @extends RS_intermediateItem
      */
-    recolorRegStr: "lovec-gen-concentrate-item",
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_concentrateItem")
+    .initTemplate()
+    .setParent(Item)
+    .setTags("ct-intmd", "rs-ore0conc")
+    .setParam({
 
 
-  })
-  .setMethod({
+        /* <------------------------------ internal ------------------------------> */
 
 
-    init: function() {
-      comp_init(this);
-    },
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_concentrateItem
+         * @instance
+         * @type {string}
+         */
+        recolorRegStr: "lovec-gen-concentrate-item",
 
 
-    /**
-     * @override
-     * @memberof RS_concentrateItem
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedMainName: function() {
-      return MDL_bundle.getTerm("common", "intmd-concentrate");
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
+    })
+    .setMethod({
 
 
-  });
+        init: function() {
+            comp_init(this);
+        },
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof RS_concentrateItem
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedMainName: function() {
+            return MDL_bundle.getTerm("common", "intmd-concentrate");
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+    });

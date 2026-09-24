@@ -33,12 +33,12 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(Stat.range, blk.attrR, StatUnit.blocks);
+  function comp_setStats(blk, stats) {
+    stats.add(Stat.range, blk.attrR, StatUnit.blocks);
 
-    blk.stats.remove(Stat.tiles);
-    blk.stats.remove(Stat.affinities);
-    blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
+    stats.remove(Stat.tiles);
+    stats.remove(Stat.affinities);
+    stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
       MDL_table.setAttr(tb, blk.attribute);
     }));
@@ -131,8 +131,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -177,6 +177,11 @@
       },
 
 
+      draw: function() {
+        this.ex_drawRcIcon();
+      },
+
+
       read: function(rd, revi) {
         if(this.LCRevi === 5) {
           rd.s();
@@ -208,6 +213,27 @@
        */
       ex_getCraftTimeCur: function() {
         return this.progress * this.block.craftTime;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
+       * `REALIZED`
+       * @override
+       * @memberof B_rangeHarvester
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.block.outputItems != null && this.block.outputItems.length > 0 ?
+          this.block.outputItems[0].item.uiIcon :
+          this.block.outputLiquids != null && this.block.outputLiquids.length > 0 ?
+            this.block.outputLiquids[0].liquid.uiIcon :
+            null;
       }
       .setProp({
         noSuper: true,

@@ -541,7 +541,7 @@
                 break;
 
             case MethodMixModes.BUILD :
-                let nameSuperFun = "super$" + nameFun;
+                let nameSuperFun = "super$" + CLS_contentTemplate.resolveMethodName(nameFun);
                 if(fun.superBoolMode != null) {
                     if(fun.superBoolMode === "and") {
                         fun_fi = function() {

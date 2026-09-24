@@ -113,6 +113,11 @@
       }),
 
 
+      draw: function() {
+        this.ex_drawRcIcon();
+      },
+
+
       drawSelect: function() {
         comp_drawSelect(this);
       },
@@ -148,6 +153,25 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      /**
+       * `REALIZED`
+       * @override
+       * @memberof B_wallHarvester
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.liquidDrop == null ?
+          null :
+          this.liquidDrop.uiIcon;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 

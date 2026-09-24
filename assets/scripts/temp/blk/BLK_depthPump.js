@@ -22,8 +22,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci.getDepthLvlB(blk.maxDepthLvl));
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci.getDepthLvlB(blk.maxDepthLvl));
   };
 
 
@@ -150,8 +150,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -257,6 +257,25 @@
         thisFun.funPrev.apply(this, [rd, revi]);
       }
       .setProp({
+        override: true,
+      }),
+
+
+      /**
+       * `REALIZED`
+       * @override
+       * @memberof B_wallHarvester
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.dynaAttrRs == null ?
+          null :
+          this.dynaAttrRs.uiIcon;
+      }
+      .setProp({
+        noSuper: true,
         override: true,
       }),
 

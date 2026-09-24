@@ -49,12 +49,12 @@
      * @param {DBCTTechNodeContent} sta
      * @return {void}
      */
-    function comp_setStats(sta) {
+    function comp_setStats(sta, stats) {
         if(sta.techNode != null) {
-            sta.stats.add(fetchStat("lovec", "spec-researchreq"), StatValues.items(false, sta.techNode.requirements));
+            stats.add(fetchStat("lovec", "spec-researchreq"), StatValues.items(false, sta.techNode.requirements));
         };
         if(sta.childCts.length > 0) {
-            sta.stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
+            stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
                 tb.row();
                 tb.table(Styles.none, tb1 => {
                     MDL_table.margin(tb1);
@@ -63,7 +63,7 @@
             }));
         };
         if(sta.childRcs.length > 0) {
-            sta.stats.add(fetchStat("lovec", "spec-nodercs"), newStatValue(tb => {
+            stats.add(fetchStat("lovec", "spec-nodercs"), newStatValue(tb => {
                 tb.row();
                 tb.table(Styles.none, tb1 => {
                     MDL_table.margin(tb1);
@@ -151,8 +151,8 @@
     .setMethod({
 
 
-        setStats: function() {
-            comp_setStats(this);
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
         },
 
 

@@ -76,7 +76,7 @@
      * Gets the default color of some content.
      * Should only be called in `createIcons`.
      * @param {Color|unset} contColor
-     * @param {MultiPacker} packer
+     * @param {PackContext} packer
      * @param {ContentGn} ct_gn
      * @param {number|unset} [colorInd] - Index of the result color in colors found (light to dark), leave empty for automatic selection.
      * @return {Color}

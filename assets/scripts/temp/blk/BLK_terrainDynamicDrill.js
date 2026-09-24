@@ -29,9 +29,9 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(blk.terItemMapMap.size > 0) {
-      blk.stats.add(Stat.output, newStatValue(tb => {
+      stats.add(Stat.output, newStatValue(tb => {
         tb.row();
         blk.ex_buildTerrainDynamicOutput(tb);
       }));
@@ -173,8 +173,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

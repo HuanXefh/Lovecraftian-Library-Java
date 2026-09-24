@@ -58,6 +58,11 @@
     .setMethod({
 
 
+      setStats: function(stats) {
+        this.multiBlockUpdater.setStats(getCtStats(this, stats));
+      },
+
+
       /**
        * @override
        * @memberof BLK_multiBlockRecipeFactory

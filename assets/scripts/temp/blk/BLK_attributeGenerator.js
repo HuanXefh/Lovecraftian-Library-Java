@@ -19,16 +19,16 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(blk.generationType);
-    blk.stats.add(blk.generationType, blk.powerProduction * 60.0, StatUnit.powerSecond);
+  function comp_setStats(blk, stats) {
+    stats.remove(blk.generationType);
+    stats.add(blk.generationType, blk.powerProduction * 60.0, StatUnit.powerSecond);
     if(blk.outputLiquid != null) {
-      blk.stats.replace(Stat.output, StatValues.liquid(blk.outputLiquid.liquid, blk.outputLiquid.amount * 60.0, true));
+      stats.replace(Stat.output, StatValues.liquid(blk.outputLiquid.liquid, blk.outputLiquid.amount * 60.0, true));
     };
 
-    blk.stats.remove(Stat.tiles);
-    blk.stats.remove(Stat.affinities);
-    blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
+    stats.remove(Stat.tiles);
+    stats.remove(Stat.affinities);
+    stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
       MDL_table.setAttr(tb, blk.attribute, oblk => blk.attrFilter.get(blk, oblk));
     }));
@@ -123,8 +123,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

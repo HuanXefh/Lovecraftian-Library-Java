@@ -21,10 +21,10 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(blk.canMineDepthOre) {
-      blk.stats.add(fetchStat("lovec", "blk0min-depthmtp"), blk.depthTierMtp.perc(2));
-      blk.stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci.getDepthLvlB(blk.maxDepthLvl));
+      stats.add(fetchStat("lovec", "blk0min-depthmtp"), blk.depthTierMtp.perc(2));
+      stats.add(fetchStat("lovec", "blk0min-maxdepthlvl"), FRAG_faci.getDepthLvlB(blk.maxDepthLvl));
     };
   };
 
@@ -99,7 +99,6 @@
 
   function comp_drawSelect(b) {
     if(b.dominantItem == null) return;
-
     LCDraw.regionIcon(b.x, b.y, b.block.ex_findPlaceRsIcon(b.tileX(), b.tileY(), b.dominantItem), b.block.size, 0.75);
   };
 
@@ -164,8 +163,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

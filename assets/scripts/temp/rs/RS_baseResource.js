@@ -5,169 +5,195 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = CLS_contentTemplate;
+    /**
+     * @typedef {TemplateInstance<Resource, RS_baseResource>} RSBaseResource
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = CLS_contentTemplate;
 
 
-  function comp_init(rs) {
-    // Ensure that some fields are loaded
-    rs.ex_getShortName();
-    rs.ex_getIntmdTags();
-
-    // Don't show resources that have no use
-    MDL_event.onLoadDelay(30.0, () => {
-      if(!global.lovecUtil.prop.debug && !MDL_cond.hasAnyRecipe(rs)) {
-        rs.hidden = true;
-      };
-    });
-
-  };
+    /* <------------------------------ component ------------------------------ */
 
 
-  function comp_setStats(rs) {
-    let shortName = LCDBFileHandler.read("resource-short-name", rs);
-    if(shortName != null) {
-      rs.stats.add(fetchStat("lovec", "rs-shortname"), shortName);
-    };
-    let formula = LCDBFileHandler.read("resource-chemical-formula", rs);
-    if(formula != null) {
-      rs.stats.add(fetchStat("lovec", "rs-formula"), formula);
+    /**
+     * @private
+     * @param {RSBaseResource} rs
+     * @return {void}
+     */
+    function comp_init(rs) {
+        // Ensure that some fields are loaded
+        rs.ex_getShortName();
+        rs.ex_getIntmdTags();
+
+        // Don't show resources that have no use
+        MDL_event.onLoadDelay(30.0, () => {
+            if(!global.lovecUtil.prop.debug && !MDL_cond.hasAnyRecipe(rs)) {
+                rs.hidden = true;
+            };
+        });
     };
 
-    // TODO: Remove this when Anuke decides to add external stats modification support
-    rs.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
-      tb.row();
-      MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(rs.localizedName, rs, false)).left().padLeft(28.0).row();
-    }));
-  };
 
+    /**
+     * @private
+     * @param {RSBaseResource} rs
+     * @return {void}
+     */
+    function comp_setStats(rs, stats) {
+        let shortName = LCDBFileHandler.read("resource-short-name", rs);
+        if(shortName != null) {
+            stats.add(fetchStat("lovec", "rs-shortname"), shortName);
+        };
+        let formula = LCDBFileHandler.read("resource-chemical-formula", rs);
+        if(formula != null) {
+            stats.add(fetchStat("lovec", "rs-formula"), formula);
+        };
 
-  function comp_loadIcon(rs) {
-    // Use a new texture region to keep "ohno" intact
-    if(!rs.fullIcon.found()) {
-      rs.fullIcon = rs.uiIcon = new TextureRegion();
+        // TODO: Remove this when Anuke decides to add external stats modification support
+        stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
+            tb.row();
+            MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(rs.localizedName, rs, false)).left().padLeft(28.0).row();
+        }));
     };
 
-    // If recolored sprite is created, use it instead
-    if(rs.recolorRegStr != null) {
-      let reg = Core.atlas.find(rs.name + "-recolor");
-      rs.fullIcon.set(reg);
-      rs.uiIcon.set(reg);
+
+    /**
+     * @private
+     * @param {RSBaseResource} rs
+     * @return {void}
+     */
+    function comp_loadIcon(rs) {
+        // Use a new texture region to keep "ohno" intact
+        if(!rs.fullIcon.found()) {
+            rs.fullIcon = rs.uiIcon = new TextureRegion();
+        };
+
+        // If recolored sprite is created, use it instead
+        if(rs.recolorRegStr != null) {
+            let reg = Core.atlas.find(rs.name + "-recolor");
+            rs.fullIcon.set(reg);
+            rs.uiIcon.set(reg);
+        };
+
+        if(rs.skipIconTagGen) return;
+        let iCap = rs.alts;
+        if(iCap === 0) return;
+
+        // Set up icon tag-based sprites
+        let
+            regs = [!String.isEmpty(rs.parentRegStr) ? Core.atlas.find(rs.parentRegStr) : Core.atlas.find(rs.name)],
+            regInd;
+        iCap.each(i => {
+            regs.push(Core.atlas.find(rs.name + "-t" + (i + 1)));
+        });
+        MDL_event.onUpdate(() => {
+            regInd = !PARAM.SHOULD_SHOW_FLIKERING_ICON_TAG ?
+                1 :
+                Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % regs.length);
+
+            rs.fullIcon.set(regs[regInd]);
+            rs.uiIcon.set(regs[regInd]);
+        });
     };
 
-    if(rs.skipIconTagGen) return;
-    let iCap = rs.alts;
-    if(iCap === 0) return;
 
-    // Set up icon tag-based sprites
-    let regs = [!String.isEmpty(rs.parentRegStr) ? Core.atlas.find(rs.parentRegStr) : Core.atlas.find(rs.name)], regInd;
-    iCap.each(i => {
-      regs.push(Core.atlas.find(rs.name + "-t" + (i + 1)));
-    });
-    MDL_event.onUpdate(() => {
-      regInd = !PARAM.SHOULD_SHOW_FLIKERING_ICON_TAG ?
-        1 :
-        Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % regs.length);
+    /**
+     * @private
+     * @param {RSBaseResource} rs
+     * @param {PackContext} packer
+     * @return {void}
+     */
+    function comp_createIcons(rs, packer) {
+        // `rs.intmdParent` is still a string at this moment
+        let parent = !rs.useParentReg ? null : tryVal(rs.intmdParent, null);
+        if(parent != null && !packer.has(parent)) {
+            console.warn("[LOVEC] Can't find parent texture region:" + parent);
+        };
+        // Set resource color based on sprite color
+        if(!rs.skipColorAssign) {
+            rs.color = MDL_color.getIconColor(rs.color, packer, tryVal(parent, rs));
+        };
 
-      rs.fullIcon.set(regs[regInd]);
-      rs.uiIcon.set(regs[regInd]);
-    });
-  };
+        let pixBase = packer.get(tryVal(parent, rs.name));
 
+        if(rs.recolorRegStr != null && parent != null && global.lovecUtil.prop.useRecolorSpr) {
+            // Generate recolored sprite
+            let pix = MDL_texture.recolorPix(
+                packer.get(rs.recolorRegStr),
+                packer.get(parent),
+            );
+            LCCompatibilityResolver.isV8 ?
+                packer.add(eval("MultiPacker.PageType.main"), rs.name + "-recolor", pix) :
+                packer.add(rs.name + "-recolor", pix);
+            pix.dispose();
+            pixBase = packer.get(rs.name + "-recolor");
+        } else {
+            rs.recolorRegStr = null;
+        };
 
-  function comp_createIcons(rs, packer) {
-    // `rs.intmdParent` is still a string at this moment
-    let parent = !rs.useParentReg ? null : tryVal(rs.intmdParent, null);
-    if(parent != null && !packer.has(parent)) {
-      console.warn("[LOVEC] Can't find parent texture region:" + parent);
+        if(rs.skipIconTagGen) return;
+        let tags = rs.ex_getIntmdTags();
+        if(tags.length === 0) return;
+
+        // Generate icon tag-based sprites
+        let alts = 0, pixCombine;
+
+        if(parent != null) {
+            if(rs.recolorRegStr == null) {
+                // No base sprite used for this intermediate, free unused space in atlas
+                LCCompatibilityResolver.isV8 ?
+                    packer.add(eval("MultiPacker.PageType.main"), rs.name, LCAirObjects.pixmap) :
+                    packer.add(rs.name, LCAirObjects.pixmap);
+                rs.parentRegStr = parent;
+            } else {
+                // The base sprite is a recolored version
+                rs.parentRegStr = rs.name + "-recolor";
+            };
+        };
+
+        if(rs.recolorRegStr != null && parent != null) {
+            // For recolored sprites, always use parent as the icon tag
+            pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, parent);
+            LCCompatibilityResolver.isV8 ?
+                packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t1", pixCombine) :
+                packer.add(rs.name + "-t1", pixCombine);
+            pixCombine.dispose();
+            alts++;
+            // No need to add dust icon tag if the sprite is a recolored dust
+            tags = Array.air;
+        };
+
+        // Use icon sprite as the icon tag if found, for each intermediate tag
+        let nameMod = MDL_content.getMod(rs), pixTag;
+        if(nameMod != null) {
+            tags.forEachFast(tag => {
+                if(!packer.has(nameMod + "-rs0tag-" + tag)) return;
+                pixTag = packer.get(nameMod + "-rs0tag-" + tag);
+                pixCombine = MDL_texture.stackPix(pixBase, pixTag);
+                LCCompatibilityResolver.isV8 ?
+                    packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
+                    packer.add(rs.name + "-t" + (alts + 1), pixCombine);
+                pixCombine.dispose();
+                alts++;
+            }, true);
+        };
+
+        // Extra resource sprites as icon tags, if used
+        rs.extraIntmdParents.forEachFast(nameRs => {
+            pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, nameRs);
+            LCCompatibilityResolver.isV8 ?
+                packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
+                packer.add(rs.name + "-t" + (alts + 1), pixCombine);
+            pixCombine.dispose();
+            alts++;
+        }, true);
+
+        rs.alts = alts;
     };
-    // Set resource color based on sprite color
-    if(!rs.skipColorAssign) {
-      rs.color = MDL_color.getIconColor(rs.color, packer, tryVal(parent, rs));
-    };
-
-    let pixBase = packer.get(tryVal(parent, rs.name));
-
-    if(rs.recolorRegStr != null && parent != null && global.lovecUtil.prop.useRecolorSpr) {
-      // Generate recolored sprite
-      let pix = MDL_texture.recolorPix(
-        packer.get(rs.recolorRegStr),
-        packer.get(parent),
-      );
-      LCCompatibilityResolver.isV8 ?
-        packer.add(eval("MultiPacker.PageType.main"), rs.name + "-recolor", pix) :
-        packer.add(rs.name + "-recolor", pix);
-      pix.dispose();
-      pixBase = packer.get(rs.name + "-recolor");
-    } else {
-      rs.recolorRegStr = null;
-    };
-
-    if(rs.skipIconTagGen) return;
-    let tags = rs.ex_getIntmdTags();
-    if(tags.length === 0) return;
-
-
-    // Generate icon tag-based sprites
-    let alts = 0, pixCombine;
-
-    if(parent != null) {
-      if(rs.recolorRegStr == null) {
-        // No base sprite used for this intermediate, free unused space in atlas
-        LCCompatibilityResolver.isV8 ?
-          packer.add(eval("MultiPacker.PageType.main"), rs.name, LCAirObjects.pixmap) :
-          packer.add(rs.name, LCAirObjects.pixmap);
-        rs.parentRegStr = parent;
-      } else {
-        // The base sprite is a recolored version
-        rs.parentRegStr = rs.name + "-recolor";
-      };
-    };
-
-    if(rs.recolorRegStr != null && parent != null) {
-      // For recolored sprites, always use parent as the icon tag
-      pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, parent);
-      LCCompatibilityResolver.isV8 ?
-        packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t1", pixCombine) :
-        packer.add(rs.name + "-t1", pixCombine);
-      pixCombine.dispose();
-      alts++;
-      // No need to add dust icon tag if the sprite is a recolored dust
-      tags = Array.air;
-    };
-
-    // Use icon sprite as the icon tag if found, for each intermediate tag
-    let nameMod = MDL_content.getMod(rs), pixTag;
-    if(nameMod != null) {
-      tags.forEachFast(tag => {
-        if(!packer.has(nameMod + "-rs0tag-" + tag)) return;
-        pixTag = packer.get(nameMod + "-rs0tag-" + tag);
-        pixCombine = MDL_texture.stackPix(pixBase, pixTag);
-        LCCompatibilityResolver.isV8 ?
-          packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
-          packer.add(rs.name + "-t" + (alts + 1), pixCombine);
-        pixCombine.dispose();
-        alts++;
-      }, true);
-    };
-
-    // Extra resource sprites as icon tags, if used
-    rs.extraIntmdParents.forEachFast(nameRs => {
-      pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, nameRs);
-      LCCompatibilityResolver.isV8 ?
-        packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
-        packer.add(rs.name + "-t" + (alts + 1), pixCombine);
-      pixCombine.dispose();
-      alts++;
-    }, true);
-
-    rs.alts = alts;
-  };
 
 
 /*
@@ -177,250 +203,275 @@
 */
 
 
-  /**
-   * Items and liquids are both resource.
-   * Resource in Lovec does not support animated sprite by default to allow icon tags.
-   * @class RS_baseResource
-   * @extends CLS_contentTemplate
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_baseResource").initClass()
-  .setParent(null)
-  .setTags()
-  .setParam({
-
-
     /**
-     * `PARAM`: Whether to skip color assignment based on sprite.
-     * @memberof RS_baseResource
-     * @instance
+     * Items and liquids are both resource.
+     * Resource in Lovec does not support animated sprite by default to allow icon tags.
+     * @class RS_baseResource
+     * @extends CLS_contentTemplate
      */
-    skipColorAssign: false,
-    /**
-     * `PARAM`: Whether to skip icon tag generation to allow vanilla animated sprite.
-     * @memberof RS_baseResource
-     * @instance
-     */
-    skipIconTagGen: false,
-    /**
-     * `PARAM`: Whether to skip automatic reaction assignment.
-     * @memberof RS_baseResource
-     * @instance
-     */
-    skipReactionAssign: false,
-    /**
-     * `PARAM`: Whether to clear unnecessary vanilla stats for the resource (e.g. flammability will be shown only when larger than 0.0).
-     * @memberof RS_baseResource
-     * @instance
-     */
-    setupVanillaStat: true,
-    /**
-     * `PARAM`: Whether to automatically set values of some vanilla properties.
-     * @memberof RS_baseResource
-     * @instance
-     */
-    setupVanillaProp: true,
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_baseResource")
+    .initTemplate()
+    .setParent(null)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ internal ------------------------------> */
+        /**
+         * `PARAM`: Whether to skip color assignment based on sprite.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {boolean}
+         */
+        skipColorAssign: false,
+        /**
+         * `PARAM`: Whether to skip icon tag generation to allow vanilla animated sprite.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {boolean}
+         */
+        skipIconTagGen: false,
+        /**
+         * `PARAM`: Whether to skip automatic reaction assignment.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {boolean}
+         */
+        skipReactionAssign: false,
+        /**
+         * `PARAM`: Whether to clear unnecessary vanilla stats for the resource (e.g. flammability will be shown only when larger than 0.0).
+         * @memberof RS_baseResource
+         * @instance
+         * @type {boolean}
+         */
+        setupVanillaStat: true,
+        /**
+         * `PARAM`: Whether to automatically set values of some vanilla properties.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {boolean}
+         */
+        setupVanillaProp: true,
 
 
-    /**
-     * `INTERNAL`: Amount of sprites generated for icon tag.
-     * @memberof RS_baseResource
-     * @instance
-     */
-    alts: 0,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseResource
-     * @instance
-     */
-    parentRegStr: "",
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseResource
-     * @instance
-     */
-    shortName: null,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseResource
-     * @instance
-     */
-    intmdParent: null,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseResource
-     * @instance
-     */
-    intmdTags: null,
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseResource
-     * @instance
-     */
-    extraIntmdParents: tprov(() => []),
-    /**
-     * `INTERNAL`
-     * @memberof RS_baseResource
-     * @instance
-     */
-    useParentReg: false,
-    /**
-     * `INTERNAL`: Sprite used for recolored sprite.
-     * @memberof RS_baseResource
-     * @instance
-     */
-    recolorRegStr: null,
+        /* <------------------------------ internal ------------------------------> */
 
 
-  })
-  .setMethod({
+        /**
+         * `INTERNAL`: Amount of sprites generated for icon tag.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {number}
+         */
+        alts: 0,
+        /**
+         * `INTERNAL`: Name of parent region. Set during icon generation.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {string}
+         */
+        parentRegStr: "",
+        /**
+         * `INTERNAL`: Expected short name for this resource. Used in name generation of intermediates.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {string|null}
+         */
+        shortName: null,
+        /**
+         * `INTERNAL`: Parent resource. Used for intermediates.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {string|UnlockableContent|null}
+         */
+        intmdParent: null,
+        /**
+         * `INTERNAL`: Generated from template tags.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {Array<string>}
+         */
+        intmdTags: null,
+        /**
+         * `INTERNAL`
+         * @memberof RS_baseResource
+         * @instance
+         * @type {TDynamic<Array<string>>}
+         */
+        extraIntmdParents: tprov(() => []),
+        /**
+         * `INTERNAL`: If false, icon generation based on intermediate parent will be skipped.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {boolean}
+         */
+        useParentReg: false,
+        /**
+         * `INTERNAL`: Sprite used to gererate recolored sprite. Null to disable generation.
+         * @memberof RS_baseResource
+         * @instance
+         * @type {string|null}
+         */
+        recolorRegStr: null,
 
 
-    init: function() {
-      comp_init(this);
-    },
+    })
+    .setMethod({
 
 
-    setStats: function() {
-      comp_setStats(this);
-    },
+        init: function() {
+            comp_init(this);
+        },
 
 
-    loadIcon: function() {
-      comp_loadIcon(this);
-    },
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
+        },
 
 
-    createIcons: function(packer) {
-      comp_createIcons(this, packer);
-    },
+        loadIcon: function() {
+            comp_loadIcon(this);
+        },
 
 
-    /**
-     * Gets shortened name for this resource.
-     * For example, "NaOH" for sodium hydroxide.
-     * <br> `DB`: resource-short-name.
-     * <br> `DB`: resource-chemical-formula.
-     * @memberof RS_baseResource
-     * @instance
-     * @return {string}
-     */
-    ex_getShortName: function() {
-      if(this.shortName == null) {
-        this.shortName = LCDBFileHandler.read("resource-short-name", this, LCDBFileHandler.read("resource-chemical-formula", this, this.localizedName));
-      };
-      return this.shortName;
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        createIcons: function(packer) {
+            comp_createIcons(this, packer);
+        },
 
 
-    /**
-     * Used for intermediate name generation.
-     * @memberof RS_baseResource
-     * @instance
-     * @return {void}
-     */
-    ex_generateIntmdName: function() {
-      if(Vars.headless || this.intmdParent == null || this.intmdTags.length === 0) return;
-
-      let str;
-      if(this.intmdTags.length === 1 && DB_item.db["intmd"]["insertName"].colIncludes(this.intmdTags[0], 2)) {
-        // For a single name to insert, use "main (type)" format
-        str = this.intmdParent.localizedName + MDL_text.getSpace() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], TmpStateTag.error.toString()));
-      } else {
-        // For regular intermediate, use "type (insert/main/sub)" format
-        str = String(this.ex_getLocalizedIntmdName());
-        let strs1 = [];
-        DB_item.db["intmd"]["insertName"].forEachRow(2, (tag, str1) => {
-          if(this.intmdTags.includes(tag)) strs1.push(str1);
-        }, true);
-        if(strs1.length > 0) {
-          let strs = str.split("(");
-          if(strs.length !== 1) {
-            str = strs[0];
-            strs1.forEachFast(str1 => str += str1 + " / ", true);
-            str += strs[1];
-          };
-        };
-      };
-
-      MDL_content.rename(this, str);
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        /**
+         * Gets shortened name for this resource.
+         * For example, "NaOH" for sodium hydroxide.
+         * <br> `DB`: `resource-short-name`.
+         * <br> `DB`: `resource-chemical-formula`.
+         * @memberof RS_baseResource
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getShortName: function() {
+            if(this.shortName == null) {
+                this.shortName = LCDBFileHandler.read("resource-short-name", this, LCDBFileHandler.read("resource-chemical-formula", this, this.localizedName));
+            };
+            return this.shortName;
+        }
+        .setProp({
+            noSuper: true,
+        }),
 
 
-    /**
-     * Gets intermediate tags of this resource.
-     * @memberof RS_baseResource
-     * @instance
-     * @return {Array<string>}
-     */
-    ex_getIntmdTags: function() {
-      if(this.intmdTags == null) {
-        this.intmdTags = this.tempTags.filter(tag => DB_item.db["intmd"]["tag"].includes(tag));
-        DB_item.db["intmd"]["tagCheck"].forEachRow(2, (tag, boolF) => {
-          if(boolF(this)) this.intmdTags.pushUnique(tag);
-        }, true);
-        // Should not be stored in template tags anymore, for better performance
-        this.tempTags.pullAll(this.intmdTags);
-      };
-      return this.intmdTags;
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        /**
+         * Used for intermediate name generation.
+         * @memberof RS_baseResource
+         * @instance
+         * @func
+         * @return {void}
+         */
+        ex_generateIntmdName: function() {
+            if(Vars.headless || this.intmdParent == null || this.intmdTags.length === 0) return;
+
+            let str;
+            if(this.intmdTags.length === 1 && DB_item.db["intmd"]["insertName"].colIncludes(this.intmdTags[0], 2)) {
+                // For a single name to insert, use "main (type)" format
+                str = this.intmdParent.localizedName + MDL_text.getSpace() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], TmpStateTag.error.toString()));
+            } else {
+                // For regular intermediate, use "type (insert/main/sub)" format
+                str = String(this.ex_getLocalizedIntmdName());
+                let strs1 = [];
+                DB_item.db["intmd"]["insertName"].forEachRow(2, (tag, str1) => {
+                    if(this.intmdTags.includes(tag)) {
+                        strs1.push(str1);
+                    };
+                }, true);
+                if(strs1.length > 0) {
+                    let strs = str.split("(");
+                    if(strs.length !== 1) {
+                        str = strs[0];
+                        strs1.forEachFast(str1 => str += str1 + "/", true);
+                        str += strs[1];
+                    };
+                };
+            };
+
+            MDL_content.rename(this, str);
+        }
+        .setProp({
+            noSuper: true,
+        }),
 
 
-    /**
-     * Standard way to get localized name for intermediates.
-     * @memberof RS_baseResource
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedIntmdName: function() {
-      return this.ex_getLocalizedMainName() + MDL_text.getSpace() + "(${1})".format(this.ex_getLocalizedSubName());
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        /**
+         * Gets intermediate tags of this resource.
+         * @memberof RS_baseResource
+         * @instance
+         * @func
+         * @return {Array<string>}
+         */
+        ex_getIntmdTags: function() {
+            if(this.intmdTags == null) {
+                this.intmdTags = this.tempTags.filter(tag => DB_item.db["intmd"]["tag"].includes(tag));
+                DB_item.db["intmd"]["tagCheck"].forEachRow(2, (tag, boolF) => {
+                    if(boolF(this)) {
+                        this.intmdTags.pushUnique(tag)
+                    };
+                }, true);
+                // Should not be stored in template tags anymore, for better performance
+                this.tempTags.pullAll(this.intmdTags);
+            };
+            return this.intmdTags;
+        }
+        .setProp({
+            noSuper: true,
+        }),
 
 
-    /**
-     * Gets main name for name generation of intermediates.
-     * <br> `LATER`
-     * @memberof RS_baseResource
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedMainName: function() {
-      return MDL_bundle.getTerm("common", "intmd-mixture");
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        /**
+         * Standard way to get localized name for intermediates.
+         * @memberof RS_baseResource
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedIntmdName: function() {
+            return this.ex_getLocalizedMainName() + MDL_text.getSpace() + "(${1})".format(this.ex_getLocalizedSubName());
+        }
+        .setProp({
+            noSuper: true,
+        }),
 
 
-    /**
-     * Gets subsidiary name for name generation of intermediates.
-     * Will try short name if possible.
-     * @memberof RS_baseResource
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedSubName: function() {
-      let str = tryFun(this.intmdParent.ex_getShortName, this.intmdParent, this.intmdParent.localizedName);
-      this.extraIntmdParents.forEachFast(rs => str += " / " + tryFun(rs.ex_getShortName, rs, rs.localizedName), true);
-      return str;
-    }
-    .setProp({
-      noSuper: true,
-    }),
+        /**
+         * Gets main name for name generation of intermediates.
+         * <br> `LATER`
+         * @memberof RS_baseResource
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedMainName: function() {
+            return MDL_bundle.getTerm("common", "intmd-mixture");
+        }
+        .setProp({
+            noSuper: true,
+        }),
 
 
-  });
+        /**
+         * Gets subsidiary name for name generation of intermediates.
+         * Will try short name if possible.
+         * @memberof RS_baseResource
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedSubName: function() {
+            let str = tryFun(this.intmdParent.ex_getShortName, this.intmdParent, this.intmdParent.localizedName);
+            this.extraIntmdParents.forEachFast(rs => str += " / " + tryFun(rs.ex_getShortName, rs, rs.localizedName), true);
+            return str;
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+    });

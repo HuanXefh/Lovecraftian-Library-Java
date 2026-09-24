@@ -19,8 +19,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
       MDL_table.setAttr(tb, blk.attribute);
     }));
@@ -245,8 +245,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

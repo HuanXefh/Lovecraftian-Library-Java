@@ -23,9 +23,9 @@
   };
 
 
-  function comp_setStats(blk) {
-    if(blk.manualTriggerCooldown > 0.0) blk.stats.add(fetchStat("lovec", "blk-cd"), blk.manualTriggerCooldown * 60.0, StatUnit.seconds);
-    if(blk.manualTriggerCooldownInitial > 0.0) blk.stats.add(fetchStat("lovec", "blk-cdinit"), blk.manualTriggerCooldownInitial * 60.0, StatUnit.seconds)
+  function comp_setStats(blk, stats) {
+    if(blk.manualTriggerCooldown > 0.0) stats.add(fetchStat("lovec", "blk-cd"), blk.manualTriggerCooldown * 60.0, StatUnit.seconds);
+    if(blk.manualTriggerCooldownInitial > 0.0) stats.add(fetchStat("lovec", "blk-cdinit"), blk.manualTriggerCooldownInitial * 60.0, StatUnit.seconds)
   };
 
 
@@ -129,8 +129,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

@@ -15,8 +15,8 @@
   /* <---------- component ----------> */
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0heat-tempreq"), blk.tempReq, fetchStatUnit("lovec", "heatunits"));
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk0heat-tempreq"), blk.tempReq, fetchStatUnit("lovec", "heatunits"));
   };
 
 
@@ -54,8 +54,8 @@
     .setMethod({
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

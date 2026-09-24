@@ -78,16 +78,16 @@
      * @param {UNITBaseUnit} utp
      * @return {void}
      */
-    function comp_setStats(utp) {
+    function comp_setStats(utp, stats) {
         if(utp.setupVanillaStat) {
-            utp.stats.remove(Stat.mineTier);
+            stats.remove(Stat.mineTier);
         };
 
         if(MDL_cond.isNonRobot(utp)) {
-            utp.stats.add(fetchStat("lovec", "utp-notrobot"), true);
+            stats.add(fetchStat("lovec", "utp-notrobot"), true);
         };
         if(utp.polTol > 0.0) {
-            utp.stats.add(fetchStat("lovec", "blk-poltol"), utp.polTol, fetchStatUnit("lovec", "polunits"));
+            stats.add(fetchStat("lovec", "blk-poltol"), utp.polTol, fetchStatUnit("lovec", "polunits"));
         };
     };
 
@@ -342,8 +342,8 @@
         },
 
 
-        setStats: function() {
-            comp_setStats(this);
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
         },
 
 

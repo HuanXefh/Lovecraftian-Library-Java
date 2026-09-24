@@ -15,11 +15,11 @@
   /* <---------- component ----------> */
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.tiles);
-    blk.stats.remove(Stat.affinities);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.tiles);
+    stats.remove(Stat.affinities);
 
-    blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
+    stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
       MDL_table.setAttr(tb, blk.attribute);
     }));
@@ -84,8 +84,8 @@
     .setMethod({
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -123,6 +123,11 @@
     .setMethod({
 
 
+      draw: function() {
+        this.ex_drawRcIcon();
+      },
+
+
       read: function(rd, revi) {
         if(this.LCRevi === 5) {
           rd.s();
@@ -154,6 +159,23 @@
        */
       ex_getCraftTimeCur: function() {
         return this.time;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
+       * `REALIZED`
+       * @override
+       * @memberof B_wallHarvester
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.block.output.uiIcon;
       }
       .setProp({
         noSuper: true,

@@ -43,9 +43,9 @@
      * @param {ENVBaseEnvBlock} blk
      * @return {void}
      */
-    function comp_setStats(blk) {
+    function comp_setStats(blk, stats) {
         if(blk.itemDrop != null) {
-            blk.stats.add(fetchStat("lovec", "rs-hardness"), blk.dropHardness);
+            stats.add(fetchStat("lovec", "rs-hardness"), blk.dropHardness);
         };
     };
 
@@ -102,8 +102,8 @@
         },
 
 
-        setStats: function() {
-            comp_setStats(this);
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
         },
 
 

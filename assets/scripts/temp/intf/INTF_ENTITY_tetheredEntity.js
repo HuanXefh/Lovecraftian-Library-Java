@@ -5,27 +5,37 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  /* <---------- component ----------> */
+    /**
+     * @typedef {TemplateInstance<Unit, INTF_ENTITY_tetheredEntity>} INTFENTITYTetheredEntity
+     */
 
 
-  function comp_update(unit) {
-    if(!unit.type.delegee.isTetheredUnit) return;
+    /* <------------------------------ component ------------------------------> */
 
-    if(isNaN(unit.noTetherDespawnTime)) {
-      unit.noTetherDespawnTime = 0.0;
+
+    /**
+     * @private
+     * @param {INTFENTITYTetheredEntity} unit
+     * @return {void}
+     */
+    function comp_update(unit) {
+        if(!unit.type.delegee.isTetheredUnit) return;
+
+        if(isNaN(unit.noTetherDespawnTime)) {
+            unit.noTetherDespawnTime = 0.0;
+        };
+        if(unit.type.delegee.noTetherDespawnTime >= 0.0 && (unit.bLink == null || !unit.bLink.isValid() || unit.bLink.team !== unit.team)) {
+            unit.noTetherDespawnTimeCur += Time.delta;
+        } else {
+            unit.noTetherDespawnTimeCur = Mathf.maxZero(unit.noTetherDespawnTimeCur - Time.delta);
+        };
+        if(unit.noTetherDespawnTimeCur >= unit.type.delegee.noTetherDespawnTime) {
+            Call.unitDespawn(unit);
+        };
     };
-    if(unit.type.delegee.noTetherDespawnTime >= 0.0 && (unit.bLink == null || !unit.bLink.isValid() || unit.bLink.team !== unit.team)) {
-      unit.noTetherDespawnTimeCur += Time.delta;
-    } else {
-      unit.noTetherDespawnTimeCur = Mathf.maxZero(unit.noTetherDespawnTimeCur - Time.delta);
-    };
-    if(unit.noTetherDespawnTimeCur >= unit.type.delegee.noTetherDespawnTime) {
-      Call.unitDespawn(unit);
-    };
-  };
 
 
 /*
@@ -35,88 +45,95 @@
 */
 
 
-  /**
-   * A unit linked to some building.
-   * @class INTF_ENTITY_tetheredEntity
-   */
-  module.exports = new CLS_interface("INTF_ENTITY_tetheredEntity", {
-
-
-    __paramObjM__: () => ({
-
-
-      /* <------------------------------ internal ------------------------------> */
-
-
-      /**
-       * `INTERNAL`: Tethered building.
-       * @memberof INTF_ENTITY_tetheredEntity
-       * @instance
-       */
-      bLink: null,
-      /**
-       * `INTERNAL`
-       * @memberof INTF_ENTITY_tetheredEntity
-       * @instance
-       */
-      noTetherDespawnTimeCur: 0.0,
-
-
-    }),
-
-
-    update: function() {
-      comp_update(this);
-    },
-
-
     /**
-     * Sets tethered building of this unit.
-     * @memberof INTF_ENTITY_tetheredEntity
-     * @instance
-     * @param {Building} ob
-     * @return {void}
+     * A unit linked to some building.
+     * @class INTF_ENTITY_tetheredEntity
      */
-    ex_setBLink: function(ob) {
-      if(ob == null || (ob.isValid() && ob.team === unit.team)) {
-        this.bLink = ob;
-      };
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 1,
-    }),
+    module.exports = new CLS_interface("INTF_ENTITY_tetheredEntity", {
 
 
-    /**
-     * @memberof INTF_ENTITY_tetheredEntity
-     * @instance
-     * @param {Object} dataObj
-     * @return {void}
-     */
-    ex_writeUnitData: function(dataObj) {
-      dataObj.bLinkPos = this.bLink == null ? -1 : this.bLink.pos();
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 1,
-    }),
+        __paramObjM__: function() {
+            return {
 
 
-    /**
-     * @memberof INTF_ENTITY_tetheredEntity
-     * @instance
-     * @param {Object} dataObj
-     * @return {void}
-     */
-    ex_readUnitData: function(dataObj) {
-      let posInt = Number(dataObj.bLinkPos);
-      this.bLink = Vars.world.build(isNaN(posInt) ? -1 : posInt);
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 1,
-    }),
+                /* <------------------------------ internal ------------------------------> */
 
 
-  });
+                /**
+                 * `INTERNAL`: Tethered building.
+                 * @memberof INTF_ENTITY_tetheredEntity
+                 * @instance
+                 * @type {Building|null}
+                 */
+                bLink: null,
+                /**
+                 * `INTERNAL`
+                 * @memberof INTF_ENTITY_tetheredEntity
+                 * @instance
+                 * @type {number}
+                 */
+                noTetherDespawnTimeCur: 0.0,
+
+
+            };
+        },
+
+
+        update: function() {
+            comp_update(this);
+        },
+
+
+        /**
+         * Sets tethered building of this unit.
+         * @memberof INTF_ENTITY_tetheredEntity
+         * @instance
+         * @func
+         * @param {Building|null} ob
+         * @return {void}
+         */
+        ex_setBLink: function(ob) {
+            if(ob == null || (ob.isValid() && ob.team === unit.team)) {
+                this.bLink = ob;
+            };
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * @memberof INTF_ENTITY_tetheredEntity
+         * @instance
+         * @func
+         * @param {Object} dataObj
+         * @return {void}
+         */
+        ex_writeUnitData: function(dataObj) {
+            dataObj.bLinkPos = this.bLink == null ? -1 : this.bLink.pos();
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * @memberof INTF_ENTITY_tetheredEntity
+         * @instance
+         * @func
+         * @param {Object} dataObj
+         * @return {void}
+         */
+        ex_readUnitData: function(dataObj) {
+            let posInt = Number(dataObj.bLinkPos);
+            this.bLink = Vars.world.build(isNaN(posInt) ? -1 : posInt);
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+    });

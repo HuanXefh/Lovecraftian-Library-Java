@@ -47,22 +47,22 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.tiles);
-    blk.stats.remove(Stat.affinities);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.tiles);
+    stats.remove(Stat.affinities);
 
     if(blk.hasDynaAttrItem && !blk.ex_getDynaAttrBaseAmt_item().fEqual(0.0)) {
-      blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_item() / blk.ex_getCraftTime(), StatUnit.itemsSecond);
+      stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_item() / blk.ex_getCraftTime(), StatUnit.itemsSecond);
     };
     if(blk.hasDynaAttrLiq && !blk.ex_getDynaAttrBaseAmt_liq().fEqual(0.0)) {
-      blk.stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_liq() * 60.0, StatUnit.liquidSecond);
+      stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_liq() * 60.0, StatUnit.liquidSecond);
     };
 
-    blk.stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
+    stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
       tb.row();
       MDL_table.setAttr(tb, MDL_attr.getAttrsInAttrRsArr(blk.attrRsArr));
     }));
-    blk.stats.add(fetchStat("lovec", "blk-attroutput"), newStatValue(tb => {
+    stats.add(fetchStat("lovec", "blk-attroutput"), newStatValue(tb => {
       tb.row();
       MDL_table.setTable(tb, (function() {
         let matArr = [[
@@ -292,8 +292,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

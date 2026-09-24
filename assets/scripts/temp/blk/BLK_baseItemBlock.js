@@ -19,9 +19,9 @@
   };
 
 
-  function comp_setStats(blk) {
-    if(blk.hasItems) blk.stats.add(fetchStat("lovec", "blk0item-unloadable"), blk.unloadable);
-    if(blk.isExposed) blk.stats.add(fetchStat("lovec", "blk0item-exposed"), true);
+  function comp_setStats(blk, stats) {
+    if(blk.hasItems) stats.add(fetchStat("lovec", "blk0item-unloadable"), blk.unloadable);
+    if(blk.isExposed) stats.add(fetchStat("lovec", "blk0item-exposed"), true);
   };
 
 
@@ -79,8 +79,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

@@ -70,7 +70,7 @@
      */
     function comp_onVentUpdate(blk, t, isBlocked) {
         if(blk.ventRs === "fire" && Mathf.chanceDelta(0.003)) {
-            Damage.createIncend(t.worldx() + blk.offDraw, t.worldy() + blk.offDraw, blk.ventSize * Vars.tilesize * 0.65, 1);
+            Damage.createIncend(t.worldx() + blk.ventOffDraw, t.worldy() + blk.ventOffDraw, blk.ventSize * Vars.tilesize * 0.65, 1);
         };
     };
 
@@ -83,7 +83,7 @@
 
 
     /**
-     * Steam vents with varied size, will load parameters from `blk.parent`.
+     * Steam vents with varied size, will load parameters from `parent`.
      * Vents should always be loaded after the parent floors!
      * <br> Special values for {@link ENV_vent#ventRs}:
      * <br> `"none"` - This vent is only for decoration.

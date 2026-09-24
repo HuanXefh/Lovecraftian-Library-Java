@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = CLS_contentTemplate;
+    /**
+     * @typedef {TemplateInstance<DrawPart, PART_basePart>} PARTBasePart
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = CLS_contentTemplate;
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,22 +26,24 @@
 */
 
 
-  /**
-   * Root of all parts.
-   * @class PART_basePart
-   * @extends CLS_contentTemplate
-   */
-  module.exports = newClass().extendClass(PARENT, "PART_basePart").initClass()
-  .setParent(null)
-  .setTags()
-  .setParam({
+    /**
+     * Root of all parts.
+     * @class PART_basePart
+     * @extends CLS_contentTemplate
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "PART_basePart")
+    .initTemplate()
+    .setParent(null)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------> */
+        /* <------------------------------ vanilla ------------------------------> */
 
 
-    under: false,
+        under: false,
 
 
-  })
-  .setMethod({});
+    })
+    .setMethod({});

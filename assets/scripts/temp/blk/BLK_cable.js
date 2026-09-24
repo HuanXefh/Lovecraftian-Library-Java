@@ -26,8 +26,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.itemsMoved);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.itemsMoved);
   };
 
 
@@ -120,8 +120,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

@@ -141,6 +141,19 @@
     };
 
 
+    /**
+     * Gets final version of method name.
+     * @param {string} name
+     * @return {string}
+     */
+    CLS_contentTemplate.resolveMethodName = function(name) {
+        // `createIcons` is removed in v9
+        if(!LCCompatibilityResolver.isV8 && name === "createIcons") return "packSprites";
+
+        return name;
+    };
+
+
     /* <------------------------------ property ------------------------------> */
 
 
@@ -440,8 +453,10 @@
             if(prop instanceof TemplateFunc) obj[name] = prop.get(obj);
         });
         // Gets final version of methods (with wrapped length)
+        let finalMethodName;
         Object.eachPair(this.funObj, (name, fun) => {
-            obj[name] = mixTempMethods(null, fun, MethodMixModes.BUILD, name);
+            finalMethodName = CLS_contentTemplate.resolveMethodName(name);
+            obj[finalMethodName] = mixTempMethods(null, fun, MethodMixModes.BUILD, name);
         });
 
         CLS_contentTemplate.registerCommonMethods(obj, this);

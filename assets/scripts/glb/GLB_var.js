@@ -51,6 +51,7 @@
         effBloom: 109.61,
         p3dRange: 34.52,
         unitRange: 115.03,
+        rcIcon: 118.88,
         overText: 219.81,
         debugFlr: 2.21,
         debugTop: 118.91,

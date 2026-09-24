@@ -59,7 +59,7 @@
 
 
     /** @type {number} */
-    const BUTTON_SIZE = 42.0;
+    const BUTTON_SIZE = 38.0;
     /** @type {Array<CLS_dragButton>} */
     const addedGrps = [];
 
@@ -237,7 +237,7 @@
     CLS_dragButton.prototype.add = function(x, y) {
         if(Core.scene == null) return;
         if(x == null) x = MDL_ui.getCenterX() * 1.2;
-        if(y == null) y = MDL_ui.getCenterY() * 0.4;
+        if(y == null) y = MDL_ui.getCenterY() * 0.45;
 
         this.rebuild();
         this.root.setPosition(x, y, Align.center);

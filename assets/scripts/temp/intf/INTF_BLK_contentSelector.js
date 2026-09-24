@@ -193,6 +193,25 @@
 
 
       /**
+       * `REALIZED`
+       * @override
+       * @memberof INTF_B_contentSelector
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.ctTarget == null ?
+          null :
+          this.ctTarget.uiIcon;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
+
+
+      /**
        * @memberof INTF_B_contentSelector
        * @instance
        * @param {Writes|Reads} wr0rd

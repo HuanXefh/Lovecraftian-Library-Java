@@ -5,20 +5,30 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/rs/RS_intermediateFluid");
+    /**
+     * @typedef {TemplateInstance<Liquid, RS_crudeGas>} RSCrudeGas
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_intermediateFluid");
 
 
-  function comp_init(rs) {
-    if(rs.intmdParent.gas) {
-      rs.dens = rs.intmdParent.dens;
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {RSCrudeGas} liq
+     * @return {void}
+     */
+    function comp_init(liq) {
+        if(liq.intmdParent.gas) {
+            liq.dens = liq.intmdParent.dens;
+        };
     };
-  };
 
 
 /*
@@ -28,52 +38,58 @@
 */
 
 
-  /**
-   * Impure gaseous chemicals.
-   * <br> `NAMEGEN`
-   * @class RS_crudeGas
-   * @extends RS_intermediateFluid
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_crudeGas").initClass()
-  .setParent(Liquid)
-  .setTags("ct-intmd", "rs-crdg")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof RS_crudeGas
-     * @instance
+     * Impure gaseous chemicals.
+     * <br> `NAMEGEN`
+     * @class RS_crudeGas
+     * @extends RS_intermediateFluid
      */
-    recolorRegStr: "lovec-gen-crude-gas",
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_crudeGas")
+    .initTemplate()
+    .setParent(Liquid)
+    .setTags("ct-intmd", "rs-crdg")
+    .setParam({
 
 
-  })
-  .setMethod({
+        /* <------------------------------ internal ------------------------------> */
 
 
-    init: function() {
-      comp_init(this);
-    },
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_crudeGas
+         * @instance
+         * @type {string}
+         */
+        recolorRegStr: "lovec-gen-crude-gas",
 
 
-    /**
-     * @override
-     * @memberof RS_crudeGas
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedMainName: function() {
-      return MDL_bundle.getTerm("common", "intmd-crude-gas");
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
+    })
+    .setMethod({
 
 
-  });
+        init: function() {
+            comp_init(this);
+        },
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof RS_crudeGas
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedMainName: function() {
+            return MDL_bundle.getTerm("common", "intmd-crude-gas");
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+    });

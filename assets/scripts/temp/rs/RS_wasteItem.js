@@ -5,18 +5,28 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/rs/RS_baseItem");
+    /**
+     * @typedef {TemplateInstance<Item, RS_wasteItem>} RSWasteItem
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_baseItem");
 
 
-  function comp_setStats(item) {
-    item.stats.add(fetchStat("lovec", "rs-iswaste"), true);
-  };
+    /* <------------------------------ component ------------------------------ */
+
+
+    /**
+     * @private
+     * @param {RSWasteItem} item
+     * @return {void}
+     */
+    function comp_setStats(item, stats) {
+        stats.add(fetchStat("lovec", "rs-iswaste"), true);
+    };
 
 
 /*
@@ -26,22 +36,24 @@
 */
 
 
-  /**
-   * Unwanted items.
-   * Unlike fluids, waste items have no relation to intermediates.
-   * @class RS_wasteItem
-   * @extends RS_baseItem
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_wasteItem").initClass()
-  .setParent(Item)
-  .setTags("ct-was")
-  .setParam({})
-  .setMethod({
+    /**
+     * Unwanted items.
+     * Unlike fluids, waste items have no relation to intermediates.
+     * @class RS_wasteItem
+     * @extends RS_baseItem
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_wasteItem")
+    .initTemplate()
+    .setParent(Item)
+    .setTags("ct-was")
+    .setParam({})
+    .setMethod({
 
 
-    setStats: function() {
-      comp_setStats(this);
-    },
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
+        },
 
 
-  });
+    });

@@ -49,7 +49,7 @@ declare class Trigger {
 
 
 declare class AtlasPackEvent {
-    readonly multiPacker: MultiPacker;
+    readonly packContext: PackContext;
 }
 declare class FileTreeInitEvent {}
 declare class DisposeEvent {}

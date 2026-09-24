@@ -14,8 +14,8 @@
   /* <---------- component ----------> */
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(fetchStat("lovec", "blk0item-unloadable"));
+  function comp_setStats(blk, stats) {
+    stats.remove(fetchStat("lovec", "blk0item-unloadable"));
   };
 
 
@@ -42,8 +42,8 @@
     .setMethod({
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

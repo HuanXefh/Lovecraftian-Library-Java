@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/rs/RS_intermediateItem");
+    /**
+     * @typedef {TemplateInstance<Item, RS_crudeItem>} RSCrudeItem
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_intermediateItem");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,47 +26,53 @@
 */
 
 
-  /**
-   * Items produced by chemical reactors or gathering, that need to be refined.
-   * <br> `NAMEGEN`
-   * @class RS_crudeItem
-   * @extends RS_intermediateItem
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_crudeItem").initClass()
-  .setParent(Item)
-  .setTags("ct-intmd", "rs-crd")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof RS_crudeItem
-     * @instance
+     * Items produced by chemical reactors or gathering, that need to be refined.
+     * <br> `NAMEGEN`
+     * @class RS_crudeItem
+     * @extends RS_intermediateItem
      */
-    recolorRegStr: "lovec-gen-crude-item",
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_crudeItem")
+    .initTemplate()
+    .setParent(Item)
+    .setTags("ct-intmd", "rs-crd")
+    .setParam({
 
 
-  })
-  .setMethod({
+        /* <------------------------------ internal ------------------------------> */
 
 
-    /**
-     * @override
-     * @memberof RS_crudeItem
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedMainName: function() {
-      return MDL_bundle.getTerm("common", "intmd-crude");
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_crudeItem
+         * @instance
+         * @type {string}
+         */
+        recolorRegStr: "lovec-gen-crude-item",
 
 
-  });
+    })
+    .setMethod({
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof RS_crudeItem
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedMainName: function() {
+            return MDL_bundle.getTerm("common", "intmd-crude");
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+    });

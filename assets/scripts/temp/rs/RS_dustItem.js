@@ -5,21 +5,35 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/rs/RS_intermediateItem");
+    /**
+     * @typedef {TemplateInstance<Item, RS_dustItem>} RSDustItem
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_intermediateItem");
 
 
-  function comp_init(item) {
-    if(item.intmdParent != null) {
-      if(item.flammability < 0.0001) item.flammability = item.intmdParent.flammability * 1.5;
-      if(item.explosiveness < 0.0001) item.explosiveness = item.intmdParent.explosiveness * 1.5;
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {RSDustItem} item
+     * @return {void}
+     */
+    function comp_init(item) {
+        if(item.intmdParent != null) {
+            if(item.flammability < 0.0001) {
+                item.flammability = item.intmdParent.flammability * 1.5;
+            };
+            if(item.explosiveness < 0.0001) {
+                item.explosiveness = item.intmdParent.explosiveness * 1.5;
+            };
+        };
     };
-  };
 
 
 /*
@@ -29,52 +43,58 @@
 */
 
 
-  /**
-   * Items produced by pulverizers.
-   * <br> `NAMEGEN`
-   * @class RS_dustItem
-   * @extends RS_intermediateItem
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_dustItem").initClass()
-  .setParent(Item)
-  .setTags("ct-intmd", "rs-dust")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof RS_dustItem
-     * @instance
+     * Items produced by pulverizers.
+     * <br> `NAMEGEN`
+     * @class RS_dustItem
+     * @extends RS_intermediateItem
      */
-    recolorRegStr: "lovec-gen-dust-item",
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_dustItem")
+    .initTemplate()
+    .setParent(Item)
+    .setTags("ct-intmd", "rs-dust")
+    .setParam({
 
 
-  })
-  .setMethod({
+        /* <------------------------------ internal ------------------------------> */
 
 
-    init: function() {
-      comp_init(this);
-    },
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_dustItem
+         * @instance
+         * @return {string}
+         */
+        recolorRegStr: "lovec-gen-dust-item",
 
 
-    /**
-     * @override
-     * @memberof RS_dustItem
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedMainName: function() {
-      return MDL_bundle.getTerm("common", "intmd-dust");
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
+    })
+    .setMethod({
 
 
-  });
+        init: function() {
+            comp_init(this);
+        },
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof RS_dustItem
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedMainName: function() {
+            return MDL_bundle.getTerm("common", "intmd-dust");
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+    });

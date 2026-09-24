@@ -47,8 +47,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0misc-maxdur"), blk.manualTimerCap / 3600.0, StatUnit.minutes);
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk0misc-maxdur"), blk.manualTimerCap / 3600.0, StatUnit.minutes);
   };
 
 
@@ -148,8 +148,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

@@ -30,13 +30,13 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(blk.setupVanillaStat) {
       if(blk.explosionDamage > 0) {
-        blk.stats.add(fetchStat("lovec", "blk-canexplode"), true);
-        blk.stats.add(fetchStat("lovec", "blk-explor"), blk.explosionRadius, StatUnit.blocks);
-        blk.stats.add(fetchStat("lovec", "blk-explodmg"), blk.explosionDamage);
-        if(blk.explosionPuddleLiquid != null) blk.stats.add(fetchStat("lovec", "blk-exploliq"), StatValues.content([blk.explosionPuddleLiquid].toSeq()));
+        stats.add(fetchStat("lovec", "blk-canexplode"), true);
+        stats.add(fetchStat("lovec", "blk-explor"), blk.explosionRadius, StatUnit.blocks);
+        stats.add(fetchStat("lovec", "blk-explodmg"), blk.explosionDamage);
+        if(blk.explosionPuddleLiquid != null) stats.add(fetchStat("lovec", "blk-exploliq"), StatValues.content([blk.explosionPuddleLiquid].toSeq()));
       };
     };
   };
@@ -113,8 +113,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

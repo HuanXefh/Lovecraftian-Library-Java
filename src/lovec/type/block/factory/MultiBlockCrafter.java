@@ -56,12 +56,6 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
     };
 
 
-    @Override
-    public void setStats() {
-        super.setStats();
-        multiBlockUpdater.setStats();
-    };
-
 
     @Override
     public void setBars() {

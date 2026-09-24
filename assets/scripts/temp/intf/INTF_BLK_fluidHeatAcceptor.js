@@ -21,8 +21,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    if(isFinite(blk.heatRes)) blk.stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.heatRes, fetchStatUnit("lovec", "heatunits"));
+  function comp_setStats(blk, stats) {
+    if(isFinite(blk.heatRes)) stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.heatRes, fetchStatUnit("lovec", "heatunits"));
   };
 
 
@@ -135,8 +135,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

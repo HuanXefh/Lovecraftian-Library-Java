@@ -22,8 +22,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    if(blk.lootCallCooldown > 0.0) blk.stats.add(Stat.itemsMoved, blk.lootCallAmt / blk.lootCallCooldown * 60.0, StatUnit.itemsSecond);
+  function comp_setStats(blk, stats) {
+    if(blk.lootCallCooldown > 0.0) stats.add(Stat.itemsMoved, blk.lootCallAmt / blk.lootCallCooldown * 60.0, StatUnit.itemsSecond);
   };
 
 
@@ -88,8 +88,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

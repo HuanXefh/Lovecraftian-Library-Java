@@ -22,10 +22,10 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.output);
-    blk.stats.remove(Stat.tiles);
-    blk.stats.remove(Stat.drillSpeed);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.output);
+    stats.remove(Stat.tiles);
+    stats.remove(Stat.drillSpeed);
   };
 
 
@@ -125,8 +125,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -269,6 +269,11 @@
       }),
 
 
+      draw: function() {
+        this.ex_drawRcIcon();
+      },
+
+
       write: function(wr) {
         this.ex_processData(wr);
       },
@@ -279,6 +284,24 @@
 
         this.ex_processData(rd);
       },
+
+
+      /**
+       * `REALIZED`
+       * @memberof B_dynamicWallHarvester
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.dynaAttrRs == null ?
+          null :
+          this.dynaAttrRs.uiIcon;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
+      }),
 
 
     }),

@@ -5,84 +5,131 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  /* <---------- auxiliary ----------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_ENV_dynamicSizeVent>} INTFENVDynamicSizeVent
+     */
 
 
-  const DARK_LERP_A = 0.2;
+    /* <------------------------------ auxiliary ------------------------------> */
 
 
-  /* <---------- component ----------> */
+    /**
+     * @private
+     * @type {number}
+     */
+    const DARK_LERP_A = 0.2;
 
 
-  function comp_init(blk) {
-    blk.blendGroup = blk.parent;
-    if(blk.setupVanillaProp) {
-      blk.speedMultiplier = blk.parent.speedMultiplier;
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {INTFENVDynamicSizeVent} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.blendGroup = blk.parent;
+        if(blk.setupVanillaProp) {
+            blk.speedMultiplier = blk.parent.speedMultiplier;
+        };
+
+        blk.ventSize = Math.round(Mathf.clamp(blk.ventSize, 1, 6));
+        blk.ventOffs = LCPos.sizeOffs[blk.ventSize];
+        blk.ventOffDraw = blk.ventSize % 2 === 0 ? 4.0 : 0.0;
+
+        if(blk.parent !== Blocks.air) {
+            // Set vent color to darkened version of floor color
+            blk.mapColor = blk.parent.mapColor.cpy().lerp(Color.black, DARK_LERP_A);
+        };
     };
 
-    blk.ventSize = Math.round(Mathf.clamp(blk.ventSize, 1, 6));
-    blk.offPon2s = LCPos.sizeOffs[blk.ventSize];
-    blk.offDraw = blk.ventSize % 2 === 0 ? 4.0 : 0.0;
 
-    if(blk.parent !== Blocks.air) {
-      // Set vent color to darkened version of floor color
-      blk.mapColor = blk.parent.mapColor.cpy().lerp(Color.black, DARK_LERP_A);
-    };
-  };
-
-
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0env-ventsize"), "${1}x${1}".format(blk.ventSize));
-  };
-
-
-  function comp_drawBase(blk, t) {
-    if(!blk.isCenterVent(t)) return;
-
-    let ot;
-    blk.offPon2s.forEachFast(pon2 => {
-      ot = t.nearby(pon2);
-      if(ot != null) blk.parent.drawBase(ot);
-    }, true);
-
-    let z = Draw.z();
-    Draw.z(VAR.layer.vent);
-    Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx() + blk.offDraw, t.worldy() + blk.offDraw);
-    Draw.z(z);
-  };
-
-
-  function comp_isCenterVent(blk, t) {
-    return t != null && blk.checkAdjacent(t);
-  };
-
-
-  function comp_renderUpdate(blk, renderState) {
-    let t = renderState.tile;
-    if(blk.isCenterVent(t)) {
-      blk.ex_onVentUpdate(t, t.block() !== Blocks.air);
-      if(t.block() === Blocks.air && (renderState.data += Time.delta) >= blk.effectSpacing) {
-        blk.effect.at(t.worldx() + blk.offDraw, t.worldy() + blk.offDraw);
-        renderState.data = 0.0;
-      };
-    };
-  };
-
-
-  function comp_checkAdjacent(blk, t) {
-    let ot;
-    let i = 0, iCap = blk.offPon2s.iCap();
-    while(i < iCap) {
-      ot = Vars.world.tile(t.x + blk.offPon2s[i].x, t.y + blk.offPon2s[i].y);
-      if(ot == null || ot.floor() !== blk) return false;
-      i++;
+    /**
+     * @private
+     * @param {INTFENVDynamicSizeVent} blk
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(fetchStat("lovec", "blk0env-ventsize"), "${1}x${1}".format(blk.ventSize));
     };
 
-    return true;
-  };
+
+    /**
+     * @private
+     * @param {INTFENVDynamicSizeVent} blk
+     * @param {Tile} t
+     * @return {void}
+     */
+    function comp_drawBase(blk, t) {
+        if(!blk.isCenterVent(t)) return;
+
+        let ot;
+        blk.ventOffs.forEachFast(pon2 => {
+            ot = t.nearby(pon2);
+            if(ot != null) {
+                blk.parent.drawBase(ot);
+            };
+        }, true);
+
+        processZ(VAR.layer.vent);
+        Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx() + blk.ventOffDraw, t.worldy() + blk.ventOffDraw);
+        processZ(null);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFENVDynamicSizeVent} blk
+     * @param {Tile} t
+     * @return {boolean}
+     */
+    function comp_isCenterVent(blk, t) {
+        return t != null && blk.checkAdjacent(t);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFENVDynamicSizeVent} blk
+     * @param {Floor.UpdateRenderState} renderState
+     * @return {void}
+     */
+    function comp_renderUpdate(blk, renderState) {
+        let t = renderState.tile;
+        if(blk.isCenterVent(t)) {
+            blk.ex_onVentUpdate(t, t.block() !== Blocks.air);
+            if(t.block() === Blocks.air && (renderState.data += Time.delta) >= blk.effectSpacing) {
+                blk.effect.at(t.worldx() + blk.ventOffDraw, t.worldy() + blk.ventOffDraw);
+                renderState.data = 0.0;
+            };
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {INTFENVDynamicSizeVent} blk
+     * @param {Tile} t
+     * @return {boolean}
+     */
+    function comp_checkAdjacent(blk, t) {
+        let
+            i = 0,
+            iCap = blk.ventOffs.iCap(),
+            ot;
+
+        while(i < iCap) {
+            ot = Vars.world.tile(t.x + blk.ventOffs[i].x, t.y + blk.ventOffs[i].y);
+            if(ot == null || ot.floor() !== blk) return false;
+            i++;
+        };
+
+        return true;
+    };
 
 
 /*
@@ -92,110 +139,119 @@
 */
 
 
-  /**
-   * Handles dynamic vent size.
-   * This will copy some properties from `parent`.
-   * @class INTF_ENV_dynamicSizeVent
-   */
-  module.exports = new CLS_interface("INTF_ENV_dynamicSizeVent", {
-
-
-    __paramObjM__: () => ({
-
-
-      /**
-       * `PARAM`: Size of this vent block.
-       * @memberof INTF_ENV_dynamicSizeVent
-       * @instance
-       */
-      ventSize: 3,
-
-
-      /* <------------------------------ internal ------------------------------> */
-
-
-      /**
-       * `INTERNAL`
-       * @memberof INTF_ENV_dynamicSizeVent
-       * @instance
-       */
-      offPon2s: null,
-      /**
-       * `INTERNAL`
-       * @memberof INTF_ENV_dynamicSizeVent
-       * @instance
-       */
-      offDraw: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof INTF_ENV_dynamicSizeVent
-       * @instance
-       */
-      matGrp: "SPEC: use parent",
-
-
-    }),
-
-
-    init: function() {
-      comp_init(this);
-    },
-
-
-    setStats: function() {
-      comp_setStats(this);
-    },
-
-
-    drawBase: function(t) {
-      comp_drawBase(this, t);
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
-
-
-    isCenterVent: function(t) {
-      return comp_isCenterVent(this, t);
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    renderUpdate: function(renderState) {
-      comp_renderUpdate(this, renderState);
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
-    checkAdjacent: function(t) {
-      return comp_checkAdjacent(this, t);
-    }
-    .setProp({
-      noSuper: true,
-    }),
-
-
     /**
-     * Called every frame (vent center only).
-     * <br> `LATER`
-     * @memberof INTF_ENV_dynamicSizeVent
-     * @instance
-     * @param {Tile} t
-     * @param {boolean} isBlocked - Whether this vent is blocked by some block over it.
-     * @return {void}
+     * Handles dynamic vent size.
+     * Will copy some properties from `parent`.
+     * @class INTF_ENV_dynamicSizeVent
      */
-    ex_onVentUpdate: function(t, isBlocked) {
-
-    }
-    .setProp({
-      noSuper: true,
-      argLen: 2,
-    }),
+    module.exports = new CLS_interface("INTF_ENV_dynamicSizeVent", {
 
 
-  });
+        __paramObjM__: function() {
+            return {
+
+
+                /**
+                 * `PARAM`: Size of this vent block.
+                 * @memberof INTF_ENV_dynamicSizeVent
+                 * @instance
+                 * @type {number}
+                 */
+                ventSize: 3,
+
+
+                /* <------------------------------ internal ------------------------------> */
+
+
+                /**
+                 * `INTERNAL`
+                 * @memberof INTF_ENV_dynamicSizeVent
+                 * @instance
+                 * @type {Array<Point2>}
+                 */
+                ventOffs: null,
+                /**
+                 * `INTERNAL`
+                 * @memberof INTF_ENV_dynamicSizeVent
+                 * @instance
+                 * @type {number}
+                 */
+                ventOffDraw: 0.0,
+                /**
+                 * `INTERNAL`: Vents use material group of the parent floor.
+                 * <br> `REALIZED`
+                 * @override
+                 * @memberof INTF_ENV_dynamicSizeVent
+                 * @instance
+                 * @type {string}
+                 */
+                matGrp: "SPEC: use parent",
+
+
+            };
+        },
+
+
+        init: function() {
+            comp_init(this);
+        },
+
+
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
+        },
+
+
+        drawBase: function(t) {
+            comp_drawBase(this, t);
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+        isCenterVent: function(t) {
+            return comp_isCenterVent(this, t);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        renderUpdate: function(renderState) {
+            comp_renderUpdate(this, renderState);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        checkAdjacent: function(t) {
+            return comp_checkAdjacent(this, t);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        /**
+         * Called every frame (vent center only).
+         * <br> `LATER`
+         * @memberof INTF_ENV_dynamicSizeVent
+         * @instance
+         * @func
+         * @param {Tile} t
+         * @param {boolean} isBlocked - Whether this vent is blocked by some block over it.
+         * @return {void}
+         */
+        ex_onVentUpdate: function(t, isBlocked) {
+
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 2,
+        }),
+
+
+    });

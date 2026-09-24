@@ -33,7 +33,15 @@
     .setParent(MultiBlockCrafter)
     .setTags()
     .setParam({})
-    .setMethod({}),
+    .setMethod({
+
+
+      setStats: function(stats) {
+        this.multiBlockUpdater.setStats(getCtStats(this, stats));
+      },
+
+
+    }),
 
 
     /**

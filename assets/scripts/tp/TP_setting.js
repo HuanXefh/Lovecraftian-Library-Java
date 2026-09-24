@@ -37,6 +37,7 @@
 
 
     exports.drawAuxScanner = new CLS_settingTerm("draw0aux-scanner", useScl => Core.settings.getBool("lovec-draw0aux-scanner", true));
+    exports.drawAuxRecipeIcon = new CLS_settingTerm("draw0aux-recipe-icon", useScl => Core.settings.getBool("lovec-draw0aux-recipe-icon", false));
     exports.windowShow = new CLS_settingTerm("window-show", useScl => Core.settings.getBool("lovec-window-show", true));
 
 

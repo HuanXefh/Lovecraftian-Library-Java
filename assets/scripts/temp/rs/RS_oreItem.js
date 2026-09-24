@@ -5,24 +5,41 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/rs/RS_baseItem");
+    /**
+     * @typedef {TemplateInstance<Item, RS_oreItem>} RSOreItem
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_baseItem");
 
 
-  function comp_init(item) {
-    item.sintTemp = item.sintTemp >= 0.0 ? item.sintTemp : LCDBFileHandler.read("item-sintering-temperature", item, 100.0);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_setStats(item) {
-    item.stats.add(fetchStat("lovec", "rs-isore"), true);
-    if(item.sintTemp > 100.0) item.stats.add(fetchStat("lovec", "rs-sinttemp"), item.sintTemp, fetchStatUnit("lovec", "heatunits"));
-  };
+    /**
+     * @private
+     * @param {RSOreItem} item
+     * @return {void}
+     */
+    function comp_init(item) {
+        item.sintTemp = item.sintTemp >= 0.0 ? item.sintTemp : LCDBFileHandler.read("item-sintering-temperature", item, 100.0);
+    };
+
+
+    /**
+     * @private
+     * @param {RSOreItem} item
+     * @return {void}
+     */
+    function comp_setStats(item, stats) {
+        stats.add(fetchStat("lovec", "rs-isore"), true);
+        if(item.sintTemp > 100.0) {
+            stats.add(fetchStat("lovec", "rs-sinttemp"), item.sintTemp, fetchStatUnit("lovec", "heatunits"));
+        };
+    };
 
 
 /*
@@ -32,44 +49,47 @@
 */
 
 
-  /**
-   * Items that can be obtained through mining.
-   * @class RS_oreItem
-   * @extends RS_baseItem
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_oreItem").initClass()
-  .setParent(Item)
-  .setTags("rs-ore")
-  .setParam({
-
-
     /**
-     * `PARAM`: Sintering temperature.
-     * <br> `DB`: item-sintering-temperature.
-     * @memberof RS_oreItem
-     * @instance
+     * Items that can be obtained through mining.
+     * @class RS_oreItem
+     * @extends RS_baseItem
      */
-    sintTemp: -1.0,
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_oreItem")
+    .initTemplate()
+    .setParent(Item)
+    .setTags("rs-ore")
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------> */
+        /**
+         * `PARAM`: Sintering temperature. Read from DB JSON file if negative.
+         * <br> `DB`: `item-sintering-temperature`.
+         * @memberof RS_oreItem
+         * @instance
+         * @type {number}
+         */
+        sintTemp: -1.0,
 
 
-    databaseTag: "lovec-ore",
+        /* <------------------------------ vanilla ------------------------------> */
 
 
-  })
-  .setMethod({
+        databaseTag: "lovec-ore",
 
 
-    init: function() {
-      comp_init(this);
-    },
+    })
+    .setMethod({
 
 
-    setStats: function() {
-      comp_setStats(this);
-    },
+        init: function() {
+            comp_init(this);
+        },
 
 
-  });
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
+        },
+
+
+    });

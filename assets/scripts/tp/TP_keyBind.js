@@ -47,6 +47,12 @@
     );
 
 
+    newKeyBind(
+        "lovec-setting-toggle-recipe-icon", KeyCode.altLeft, "lovec",
+        (unitPlayer, tMouse) => toggleSetting("draw0aux-recipe-icon"),
+    );
+
+
     /* <------------------------------ modded ------------------------------> */
 
 

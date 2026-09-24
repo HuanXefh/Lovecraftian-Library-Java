@@ -27,9 +27,9 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(!blk.noFuelInput) {
-      blk.stats.add(fetchStat("lovec", "blk0fac-fuel"), newStatValue(tb => {
+      stats.add(fetchStat("lovec", "blk0fac-fuel"), newStatValue(tb => {
         tb.row();
         MDL_table.pnFixed(
           tb,
@@ -52,8 +52,8 @@
         );
       }));
 
-      if(!blk.fuelConsMtp.fEqual(1.0)) blk.stats.add(fetchStat("lovec", "blk0fac-fuelconsmtp"), blk.fuelConsMtp.perc());
-      if(!blk.fuelLvlMtp.fEqual(1.0)) blk.stats.add(fetchStat("lovec", "blk0fac-fuellvlmtp"), blk.fuelLvlMtp.perc());
+      if(!blk.fuelConsMtp.fEqual(1.0)) stats.add(fetchStat("lovec", "blk0fac-fuelconsmtp"), blk.fuelConsMtp.perc());
+      if(!blk.fuelLvlMtp.fEqual(1.0)) stats.add(fetchStat("lovec", "blk0fac-fuellvlmtp"), blk.fuelLvlMtp.perc());
     };
   };
 
@@ -276,8 +276,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

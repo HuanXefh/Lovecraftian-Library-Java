@@ -19,8 +19,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk-cd"), blk.itemSendCooldown / 60.0, StatUnit.seconds);
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk-cd"), blk.itemSendCooldown / 60.0, StatUnit.seconds);
   };
 
 
@@ -112,8 +112,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

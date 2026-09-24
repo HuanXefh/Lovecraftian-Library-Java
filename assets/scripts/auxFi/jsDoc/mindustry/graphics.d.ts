@@ -141,8 +141,13 @@ declare class BuildingCacheLayer {
 }
 
 
-/** mindustry.graphics.MultiPacker */
-declare class MultiPacker {
+/**
+ * mindustry.graphics.MultiPacker
+ * @deprecated
+ */
+declare class MultiPacker {}
+/** mindustry.graphics.PackContext */
+declare class PackContext {
     printStats(): void
     get(reg: TextureRegion): PixmapRegion
     get(regStr: string): PixmapRegion

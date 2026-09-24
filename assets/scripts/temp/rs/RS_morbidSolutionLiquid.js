@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/rs/RS_solutionLiquid");
+    /**
+     * @typedef {TemplateInstance<Liquid, RS_morbidSolutionLiquid>} RSMorbidSolutionLiquid
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_solutionLiquid");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,47 +26,53 @@
 */
 
 
-  /**
-   * Fluids with unwanted insolubles.
-   * <br> `NAMEGEN`
-   * @class RS_morbidSolutionLiquid
-   * @extends RS_solutionLiquid
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_morbidSolutionLiquid").initClass()
-  .setParent(Liquid)
-  .setTags("ct-intmd", "rs-morbid")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof RS_morbidSolutionLiquid
-     * @instance
+     * Fluids with unwanted insolubles.
+     * <br> `NAMEGEN`
+     * @class RS_morbidSolutionLiquid
+     * @extends RS_solutionLiquid
      */
-    recolorRegStr: "lovec-gen-morbid-solution-liquid",
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_morbidSolutionLiquid")
+    .initTemplate()
+    .setParent(Liquid)
+    .setTags("ct-intmd", "rs-morbid")
+    .setParam({
 
 
-  })
-  .setMethod({
+        /* <------------------------------ internal ------------------------------> */
 
 
-    /**
-     * @override
-     * @memberof RS_morbidSolutionLiquid
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedMainName: function() {
-      return MDL_bundle.getTerm("common", "intmd-morbid-solution" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_morbidSolutionLiquid
+         * @instance
+         * @type {string}
+         */
+        recolorRegStr: "lovec-gen-morbid-solution-liquid",
 
 
-  });
+    })
+    .setMethod({
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof RS_morbidSolutionLiquid
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedMainName: function() {
+            return MDL_bundle.getTerm("common", "intmd-morbid-solution" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+    });

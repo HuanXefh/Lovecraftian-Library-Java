@@ -28,8 +28,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(Stat.damage, blk.bulDmg);
+  function comp_setStats(blk, stats) {
+    stats.add(Stat.damage, blk.bulDmg);
   };
 
 
@@ -182,8 +182,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

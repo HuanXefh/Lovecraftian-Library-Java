@@ -11,10 +11,10 @@
   /* <---------- component ----------> */
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(blk.ters.length === 0) return;
 
-    blk.stats.add(
+    stats.add(
       blk.terMode === "enable" ? fetchStat("lovec", "blk-terreq") : fetchStat("lovec", "blk-terban"),
       MDL_text.getTagText(blk.ters.map(ter => MDL_terrain.getTerBundle(ter))).color(blk.terMode === "enable" ? Pal.heal : Pal.remove),
     );
@@ -95,8 +95,8 @@
       }),
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

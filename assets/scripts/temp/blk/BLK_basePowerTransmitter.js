@@ -33,14 +33,14 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(blk.setupVanillaStat) {
-      blk.stats.remove(Stat.powerUse);
+      stats.remove(Stat.powerUse);
       let powLoss = blk.consPower.usage;
-      if(powLoss > 0.0) blk.stats.add(fetchStat("lovec", "blk0pow-powloss"), powLoss * 60.0, StatUnit.powerSecond);
+      if(powLoss > 0.0) stats.add(fetchStat("lovec", "blk0pow-powloss"), powLoss * 60.0, StatUnit.powerSecond);
     };
 
-    if(isFinite(blk.maxPowProdAllowed)) blk.stats.add(fetchStat("lovec", "blk0pow-safepowlvl"), (blk.maxPowProdAllowed / POW_PROD_SCL * 60.0).roundFixed(2), StatUnit.powerSecond);
+    if(isFinite(blk.maxPowProdAllowed)) stats.add(fetchStat("lovec", "blk0pow-safepowlvl"), (blk.maxPowProdAllowed / POW_PROD_SCL * 60.0).roundFixed(2), StatUnit.powerSecond);
   };
 
 
@@ -150,8 +150,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

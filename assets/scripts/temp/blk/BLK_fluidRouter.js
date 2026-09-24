@@ -30,11 +30,11 @@
   };
 
 
-  function comp_setStats(blk) {
+  function comp_setStats(blk, stats) {
     if(!blk.noPresExplode) {
-      blk.stats.add(fetchStat("lovec", "blk-canexplode"), true);
-      blk.stats.add(fetchStat("lovec", "blk-explor"), blk.presExploRad / Vars.tilesize, StatUnit.blocks);
-      blk.stats.add(fetchStat("lovec", "blk-explodmg"), blk.presExploDmg);
+      stats.add(fetchStat("lovec", "blk-canexplode"), true);
+      stats.add(fetchStat("lovec", "blk-explor"), blk.presExploRad / Vars.tilesize, StatUnit.blocks);
+      stats.add(fetchStat("lovec", "blk-explodmg"), blk.presExploDmg);
     };
   };
 
@@ -124,8 +124,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

@@ -17,10 +17,10 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0liq-presres"), blk.presRes);
-    blk.stats.add(fetchStat("lovec", "blk0liq-vacres"), -blk.vacRes);
-    if(!blk.presThr.fEqual(0.0)) blk.stats.add(blk.presThr > 0.0 ? fetchStat("lovec", "blk0liq-presreq") : fetchStat("lovec", "blk0liq-vacreq"), Math.abs(blk.presThr));
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk0liq-presres"), blk.presRes);
+    stats.add(fetchStat("lovec", "blk0liq-vacres"), -blk.vacRes);
+    if(!blk.presThr.fEqual(0.0)) stats.add(blk.presThr > 0.0 ? fetchStat("lovec", "blk0liq-presreq") : fetchStat("lovec", "blk0liq-vacreq"), Math.abs(blk.presThr));
   };
 
 
@@ -239,8 +239,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

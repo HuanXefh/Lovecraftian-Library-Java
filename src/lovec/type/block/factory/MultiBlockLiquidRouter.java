@@ -76,13 +76,6 @@ public class MultiBlockLiquidRouter extends LiquidRouter implements MultiBlockLi
 
 
     @Override
-    public void setStats() {
-        super.setStats();
-        multiBlockUpdater.setStats();
-    };
-
-
-    @Override
     public void placeBegan(Tile t, Block blkPrev) {
         multiBlockUpdater.placeBegan(t, blkPrev);
     };

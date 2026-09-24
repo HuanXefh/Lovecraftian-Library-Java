@@ -16,8 +16,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    if(blk.polTol > 0.0) blk.stats.add(fetchStat("lovec", "blk-poltol"), blk.polTol, fetchStatUnit("lovec", "polunits"));
+  function comp_setStats(blk, stats) {
+    if(blk.polTol > 0.0) stats.add(fetchStat("lovec", "blk-poltol"), blk.polTol, fetchStatUnit("lovec", "polunits"));
   };
 
 
@@ -104,8 +104,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

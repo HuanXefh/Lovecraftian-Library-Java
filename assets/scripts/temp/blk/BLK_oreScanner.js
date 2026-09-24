@@ -37,9 +37,9 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(Stat.range, blk.blkRad / Vars.tilesize, StatUnit.blocks);
-    blk.stats.add(fetchStat("lovec", "blk0min-scantier"), FRAG_faci.getDepthLvlB(blk.scanTier));
+  function comp_setStats(blk, stats) {
+    stats.add(Stat.range, blk.blkRad / Vars.tilesize, StatUnit.blocks);
+    stats.add(fetchStat("lovec", "blk0min-scantier"), FRAG_faci.getDepthLvlB(blk.scanTier));
   };
 
 
@@ -208,8 +208,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

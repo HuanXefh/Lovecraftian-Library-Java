@@ -35,9 +35,9 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.remove(Stat.productionTime);
-    blk.stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
+  function comp_setStats(blk, stats) {
+    stats.remove(Stat.productionTime);
+    stats.add(Stat.productionTime, blk.craftTime / 60.0, StatUnit.seconds);
   };
 
 
@@ -224,8 +224,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -360,6 +360,11 @@
       .setProp({
         noSuper: true,
       }),
+
+
+      draw: function() {
+        this.ex_drawRcIcon();
+      },
 
 
       drawSelect: function() {

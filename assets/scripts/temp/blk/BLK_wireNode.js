@@ -27,8 +27,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    if(blk.minRadFrac > 0.0) blk.stats.add(fetchStat("lovec", "blk-minr"), blk.laserRange * blk.minRadFrac, StatUnit.blocks);
+  function comp_setStats(blk, stats) {
+    if(blk.minRadFrac > 0.0) stats.add(fetchStat("lovec", "blk-minr"), blk.laserRange * blk.minRadFrac, StatUnit.blocks);
   };
 
 
@@ -157,8 +157,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 

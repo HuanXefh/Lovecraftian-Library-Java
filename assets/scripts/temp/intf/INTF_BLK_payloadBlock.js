@@ -21,8 +21,8 @@
   };
 
 
-  function comp_setStats(blk) {
-    blk.stats.add(fetchStat("lovec", "blk0fac-payroom"), blk.payAmtCap);
+  function comp_setStats(blk, stats) {
+    stats.add(fetchStat("lovec", "blk0fac-payroom"), blk.payAmtCap);
   };
 
 
@@ -153,8 +153,8 @@
       },
 
 
-      setStats: function() {
-        comp_setStats(this);
+      setStats: function(stats) {
+        comp_setStats(this, getCtStats(this, stats));
       },
 
 
@@ -324,7 +324,7 @@
        */
       ex_checkPayCons: function() {
         if(TIMER.effcPay) {
-          this.payConsValid = LCNativeObject.numAllLargerThan(b.payReqObj, (nameCt, amt) => b.ex_getPayConsAmt(nameCt), true);
+          this.payConsValid = LCNativeObject.numAllLargerThan(this.payReqObj, (nameCt, amt) => this.ex_getPayConsAmt(nameCt), true);
         };
         return this.payConsValid;
       }

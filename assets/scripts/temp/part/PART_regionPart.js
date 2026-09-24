@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/part/PART_basePart");
+    /**
+     * @typedef {TemplateInstance<RegionPart, PART_regionPart>} PARTRegionPart
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/part/PART_basePart");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,67 +26,35 @@
 */
 
 
-  /**
-   * Vanilla region parts.
-   * @class PART_regionPart
-   * @extends PART_basePart
-   */
-  module.exports = newClass().extendClass(PARENT, "PART_regionPart").initClass()
-  .setParent(RegionPart)
-  .setTags()
-  .setParam({
+    /**
+     * Vanilla region parts.
+     * @class PART_regionPart
+     * @extends PART_basePart
+     */
+    module.exports = newClass()
+    .extendClass(PARENT, "PART_regionPart")
+    .initTemplate()
+    .setParent(RegionPart)
+    .setTags()
+    .setParam({
 
 
-    /* <------------------------------ vanilla ------------------------------> */
+        /* <------------------------------ vanilla ------------------------------> */
 
 
-    name: null,
-    suffix: "",
-    mirror: false,
-    outline: true,
-    blending: Blending.normal,
-    moveX: 0.0,
-    moveY: 0.0,
-    growX: 0.0,
-    growY: 0.0,
-    moveRot: 0.0,
-    color: null,
-    colorTo: null,
-    mixColor: null,
-    mixColorTo: null,
-    heatColor: tprov(() => Pal.turretHeat.cpy()),
-    progress: DrawPart.PartProgress.warmup,
-    growProgress: DrawPart.PartProgress.warmup,
-    heatProgress: DrawPart.PartProgress.heat,
-    children: tprov(() => []),
-    moves: tprov(() => []),
+        children: tprov(() => []),
+        moves: tprov(() => []),
 
 
-  })
-  .setParamAlias([
-    "offX", "x", 0.0,
-    "offY", "y", 0.0,
-    "oriX", "originX", 0.0,
-    "oriY", "originY", 0.0,
-    "sclX", "xScl", 1.0,
-    "sclY", "yScl", 1.0,
-    "z", "layer", -1.0,
-    "offZ", "layerOffset", 0.0,
-    "heatZ", "turretHeatLayer", Layer.turretHeat,
-    "heatOffZ", "heatLayerOffset", 1.0,
-    "outlineOffZ", "outlineLayerOffset", -0.001,
-    "rot", "rotation", 0.0,
-    "shouldClampProg", "clampProgress", true,
-    "shouldDrawReg", "drawRegion", true,
-    "shouldDrawLight", "heatLight", false,
-    "lightA", "heatLightOpacity", 0.3,
-  ])
-  .setParamParser([
-    "children", function(val) {
-      return tprov(() => val.get().toSeq());
-    },
-    "moves", function(val) {
-      return tprov(() => val.get().toSeq());
-    },
-  ])
-  .setMethod({});
+    })
+    .setParamParser([
+        "children", function(val) {
+            // Defined as array and finally converted to seq
+            return tprov(() => val.get().toSeq());
+        },
+        "moves", function(val) {
+            // Defined as array and finally converted to seq
+            return tprov(() => val.get().toSeq());
+        },
+    ])
+    .setMethod({});

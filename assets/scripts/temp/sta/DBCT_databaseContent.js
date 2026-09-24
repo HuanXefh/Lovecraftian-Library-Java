@@ -37,18 +37,18 @@
      * @param {DBCTDatabaseContent} sta
      * @return {void}
      */
-    function comp_setStats(sta) {
-        sta.stats.remove(Stat.damageMultiplier);
-        sta.stats.remove(Stat.healthMultiplier);
-        sta.stats.remove(Stat.speedMultiplier);
-        sta.stats.remove(Stat.reloadMultiplier);
-        sta.stats.remove(Stat.buildSpeedMultiplier);
-        sta.stats.remove(Stat.damage);
-        sta.stats.remove(Stat.frequency);
-        sta.stats.remove(Stat.healing);
-        sta.stats.remove(Stat.affinities);
-        sta.stats.remove(Stat.opposites);
-        sta.stats.remove(Stat.reactive);
+    function comp_setStats(sta, stats) {
+        stats.remove(Stat.damageMultiplier);
+        stats.remove(Stat.healthMultiplier);
+        stats.remove(Stat.speedMultiplier);
+        stats.remove(Stat.reloadMultiplier);
+        stats.remove(Stat.buildSpeedMultiplier);
+        stats.remove(Stat.damage);
+        stats.remove(Stat.frequency);
+        stats.remove(Stat.healing);
+        stats.remove(Stat.affinities);
+        stats.remove(Stat.opposites);
+        stats.remove(Stat.reactive);
     };
 
 
@@ -101,8 +101,8 @@
         },
 
 
-        setStats: function() {
-            comp_setStats(this);
+        setStats: function(stats) {
+            comp_setStats(this, getCtStats(this, stats));
         },
 
 

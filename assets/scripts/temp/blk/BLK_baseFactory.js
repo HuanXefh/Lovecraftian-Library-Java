@@ -23,6 +23,33 @@
         blk.drawArrow = blk.liquidOutputDirections.length === 1 && blk.liquidOutputDirections[0] === -1;
       };
     };
+
+    if(blk.rcMajorIo == null) {
+      let
+        amtItem = null,
+        amtLiq = null,
+        isWasteItem = false,
+        isWasteLiq = false;
+      if(blk.outputItems != null && blk.outputItems.length > 0) {
+        amtItem = blk.outputItems[0].amount;
+        isWasteItem = MDL_cond.isWaste(blk.outputItems[0]);
+      };
+      if(blk.outputLiquids != null && blk.outputLiquids.length > 0) {
+        amtLiq = blk.outputLiquids[0].amount * 10.0;
+        isWasteLiq = MDL_cond.isWaste(blk.outputLiquids[0]);
+      };
+      if(amtItem != null && amtLiq != null) {
+        if((!isWasteItem && !isWasteLiq) || (isWasteItem && isWasteLiq)) {
+          blk.rcMajorIo = amtItem >= amtLiq ? blk.outputItems[0].item : blk.outputLiquids[0].liquid;
+        } else {
+          blk.rcMajorIo = isWasteItem ? blk.outputLiquids[0].liquid : blk.outputItems[0].item
+        };
+      } else if(amtItem != null) {
+        blk.rcMajorIo = blk.outputItems[0].item;
+      } else if(amtLiq != null) {
+        blk.rcMajorIo = blk.outputLiquids[0].liquid;
+      };
+    };
   };
 
 
@@ -119,6 +146,13 @@
        */
       outputDirs: tprov(() => []),
       /**
+       * `PARAM`: Major output for this recipe. If null, this will be automatically set.
+       * @memberof BLK_baseFactory
+       * @instance
+       * @type {UnlockableContent|null}
+       */
+      rcMajorIo: null,
+      /**
        * `PARAM`: Sound played when this building crafts.
        * @memberof BLK_baseFactory
        * @instance
@@ -161,7 +195,22 @@
      */
     newClass().extendClass(PARENT[1], "B_baseFactory").implement(INTF[1]).implement(INTF_A[1]).initClass()
     .setParent(GenericCrafter.GenericCrafterBuild)
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------> */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof B_baseFactory
+       * @instance
+       * @type {UnlockableContent|null}
+       */
+      blk$rcMajorIo: TmpStateTag.needReplace,
+
+
+    })
     .setMethod({
 
 
@@ -196,6 +245,30 @@
       }
       .setProp({
         boolMode: "and",
+      }),
+
+
+      draw: function() {
+        this.ex_drawRcIcon();
+      },
+
+
+      /**
+       * `REALIZED`
+       * @override
+       * @memberof B_baseFactory
+       * @instance
+       * @func
+       * @return {TextureRegion|null}
+       */
+      ex_getRcIcon: function() {
+        return this.blk$rcMajorIo == null ?
+          null :
+          this.blk$rcMajorIo.uiIcon;
+      }
+      .setProp({
+        noSuper: true,
+        override: true,
       }),
 
 

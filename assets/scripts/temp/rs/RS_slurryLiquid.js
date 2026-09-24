@@ -5,13 +5,18 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------ */
 
 
-  const PARENT = require("lovec/temp/rs/RS_solutionLiquid");
+    /**
+     * @typedef {TemplateInstance<Liquid, RS_slurryLiquid>} RSSlurryLiquid
+     */
 
 
-  /* <---------- component ----------> */
+    const PARENT = require("lovec/temp/rs/RS_solutionLiquid");
+
+
+    /* <------------------------------ component ------------------------------ */
 
 
 /*
@@ -21,47 +26,53 @@
 */
 
 
-  /**
-   * Fluids with insolubles as the products.
-   * <br> `NAMEGEN`
-   * @class RS_slurryLiquid
-   * @extends RS_solutionLiquid
-   */
-  module.exports = newClass().extendClass(PARENT, "RS_slurryLiquid").initClass()
-  .setParent(Liquid)
-  .setTags("ct-intmd", "rs-slur")
-  .setParam({
-
-
-    /* <------------------------------ internal ------------------------------> */
-
-
     /**
-     * `INTERNAL`
-     * @override
-     * @memberof RS_slurryLiquid
-     * @instance
+     * Fluids with insolubles as the products.
+     * <br> `NAMEGEN`
+     * @class RS_slurryLiquid
+     * @extends RS_solutionLiquid
      */
-    recolorRegStr: "lovec-gen-slurry-liquid",
+    module.exports = newClass()
+    .extendClass(PARENT, "RS_slurryLiquid")
+    .initTemplate()
+    .setParent(Liquid)
+    .setTags("ct-intmd", "rs-slur")
+    .setParam({
 
 
-  })
-  .setMethod({
+        /* <------------------------------ internal ------------------------------> */
 
 
-    /**
-     * @override
-     * @memberof RS_slurryLiquid
-     * @instance
-     * @return {string}
-     */
-    ex_getLocalizedMainName: function() {
-      return MDL_bundle.getTerm("common", "intmd-slurry" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
-    }
-    .setProp({
-      noSuper: true,
-      override: true,
-    }),
+        /**
+         * `INTERNAL`
+         * <br> `REALIZED`
+         * @override
+         * @memberof RS_slurryLiquid
+         * @instance
+         * @type {string}
+         */
+        recolorRegStr: "lovec-gen-slurry-liquid",
 
 
-  });
+    })
+    .setMethod({
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof RS_slurryLiquid
+         * @instance
+         * @func
+         * @return {string}
+         */
+        ex_getLocalizedMainName: function() {
+            return MDL_bundle.getTerm("common", "intmd-slurry" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+        }),
+
+
+    });
