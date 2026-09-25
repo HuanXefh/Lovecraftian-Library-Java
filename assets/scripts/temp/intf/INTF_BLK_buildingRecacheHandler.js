@@ -5,10 +5,20 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  /* <---------- component ----------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_buildingRecacheHandler>} INTFBLKBuildingRecacheHandler
+     */
+
+
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_buildingRecacheHandler>} INTFBBuildingRecacheHandler
+     */
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -18,125 +28,129 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles recaching of buildings when `blk.drawCached` is true.
-     * @class INTF_BLK_buildingRecacheHandler
-     */
-    new CLS_interface("INTF_BLK_buildingRecacheHandler", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Whether to recache when an item is added or removed.
-         * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
-         * @instance
+         * Handles recaching of buildings when `blk.drawCached` is true.
+         * @class INTF_BLK_buildingRecacheHandler
          */
-        recacheForItem: false,
+        new CLS_interface("INTF_BLK_buildingRecacheHandler", {
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Whether to recache when an item is added or removed.
+                     * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    recacheForItem: false,
+                    /**
+                     * `PARAM`: Whether to recache when a fluid is added or removed.
+                     * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    recacheForFld: false,
+
+
+                };
+            },
+
+
+        }),
+
+
         /**
-         * `PARAM`: Whether to recache when a fluid is added or removed.
-         * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
-         * @instance
+         * @class INTF_B_buildingRecacheHandler
          */
-        recacheForFld: false,
+        new CLS_interface("INTF_B_buildingRecacheHandler", {
 
 
-      }),
+            handleItem: function(b_f, item) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+            },
 
 
-    }),
+            handleStack: function(item, amt, e_f) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+            },
 
 
-    /**
-     * @class INTF_B_buildingRecacheHandler
-     */
-    new CLS_interface("INTF_B_buildingRecacheHandler", {
+            itemTaken: function(item) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+            },
 
 
-      handleItem: function(b_f, item) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-      },
+            removeStack: function(item, amt) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+            }
+            .setProp({
+                mergeMode: function(valPrev, val) {
+                    return valPrev;
+                },
+            }),
 
 
-      handleStack: function(item, amt, e_f) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-      },
+            dump: function(item) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+            }
+            .setProp({
+                mergeMode: function(valPrev, val) {
+                    return valPrev;
+                },
+            }),
 
 
-      itemTaken: function(item) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-      },
+            moveForward: function(item) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
+            }
+            .setProp({
+                mergeMode: function(valPrev, val) {
+                    return valPrev;
+                },
+            }),
 
 
-      removeStack: function(item, amt) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-      }
-      .setProp({
-        mergeMode: function(valPrev, val) {
-          return valPrev;
-        },
-      }),
+            handleLiquid: function(b_f, liq, amt) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
+            },
 
 
-      dump: function(item) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-      }
-      .setProp({
-        mergeMode: function(valPrev, val) {
-          return valPrev;
-        },
-      }),
+            dumpLiquid: function(liq, amt) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
+            },
 
 
-      moveForward: function(item) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForItem) this.recache();
-      }
-      .setProp({
-        mergeMode: function(valPrev, val) {
-          return valPrev;
-        },
-      }),
+            moveLiquid: function(b_t, liq) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
+            }.setProp({
+                mergeMode: function(valPrev, val) {
+                    return valPrev;
+                },
+            }),
 
 
-      handleLiquid: function(b_f, liq, amt) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-      },
+            moveLiquidForward: function(b_t, liq) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
+            }
+            .setProp({
+                mergeMode: function(valPrev, val) {
+                    return valPrev;
+                },
+            }),
 
 
-      dumpLiquid: function(liq, amt) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-      },
+            transferLiquid: function(b_t, amt, liq) {
+                if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
+            },
 
 
-      moveLiquid: function(b_t, liq) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-      }.setProp({
-        mergeMode: function(valPrev, val) {
-          return valPrev;
-        },
-      }),
+        }),
 
 
-      moveLiquidForward: function(b_t, liq) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-      }
-      .setProp({
-        mergeMode: function(valPrev, val) {
-          return valPrev;
-        },
-      }),
-
-
-      transferLiquid: function(b_t, amt, liq) {
-        if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-      },
-
-
-    }),
-
-
-  ];
+    ];

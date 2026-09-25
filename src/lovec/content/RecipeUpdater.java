@@ -430,7 +430,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
             if(LCScriptUtil.checkTimer("secTwo") && amt > 0f) {
                 LCScriptUtil.fireTrigger("fluidProduce", b, liq);
             };
-            b.handleLiquid(b, liq, Math.min(amt * progIncLiq * rcTimeScl, b.block.liquidCapacity - b.liquids.get(liq)));
+            b.handleLiquid(b, liq, Math.min(amt * progIncLiq * rcTimeScl + 0.003f, b.block.liquidCapacity - b.liquids.get(liq)));
             LCScript.set(liq.name, amt / b.timeScale(), prodTmpObj);
             i += 2;
         };

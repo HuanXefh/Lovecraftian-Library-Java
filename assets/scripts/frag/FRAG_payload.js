@@ -92,7 +92,7 @@
 
         let obj = DB_block.db["class"]["group"]["payload"]["site"];
         b.proximity.each(
-            ob => MDL_pos.calcSideFrac(b, ob, mode, true, true) >= 0.5 && (
+            ob => MDL_pos.calcSideFrac(b, ob, mode, false, true) >= 0.5 && (
                 obj["dynamic"].hasIns(ob.block) ?
                     true :
                     obj["fixed"].hasIns(ob.block) && ob.relativeTo(b) !== ob.rotation

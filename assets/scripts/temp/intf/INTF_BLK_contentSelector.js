@@ -5,53 +5,80 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  /* <---------- component ----------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_contentSelector>} INTFBLKContentSelector
+     */
 
 
-  function comp_init(blk) {
-    MDL_event.onLoadPost(() => {
-      blk.selectionQueue.pushAll(blk.ex_findSelectionTargets());
-    });
-
-    blk.configurable = true;
-    blk.saveConfig = true;
-    blk.clearOnDoubleTap = true;
-
-    blk.config(UnlockableContent, (b, ct) => {
-      if(!blk.selectionQueue.includes(ct)) return;
-      b.delegee.ctTarget = ct;
-      b.ex_onSelectorUpdate();
-    });
-    blk.config(JAVA.string, (b, nameCt) => {
-      let ct = MDL_content.getCt(nameCt, null, true);
-      if(!blk.selectionQueue.includes(ct)) return;
-      b.delegee.ctTarget = ct;
-      b.ex_onSelectorUpdate();
-    });
-
-    blk.configClear(b => {
-      b.delegee.ctTarget = null;
-      b.ex_onSelectorUpdate();
-    });
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_contentSelector>} INTFBContentSelector
+     */
 
 
-  function comp_buildConfiguration(b, tb) {
-    b.ex_buildSelector(tb);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_ex_buildSelector(b, tb) {
-    MDL_table.setCtSelect(
-      tb, b.block, b.block.delegee.selectionQueue,
-      () => b.delegee.ctTarget, val => b.configure(val == null ? null : val.name),
-      null,
-      {rowAmt: b.block.selectionRows, colAmt: b.block.selectionColumns, closeSelect: false},
-    );
-  };
+    /**
+     * @private
+     * @param {INTFBLKContentSelector} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        MDL_event.onLoadPost(() => {
+            blk.selectionQueue.pushAll(blk.ex_findSelectionTargets());
+        });
+
+        blk.configurable = true;
+        blk.saveConfig = true;
+        blk.clearOnDoubleTap = true;
+
+        blk.config(UnlockableContent, (b, ct) => {
+            if(!blk.selectionQueue.includes(ct)) return;
+            b.delegee.ctTarget = ct;
+            b.ex_onSelectorUpdate();
+        });
+        blk.config(JAVA.string, (b, nameCt) => {
+            let ct = MDL_content.getCt(nameCt, null, true);
+            if(!blk.selectionQueue.includes(ct)) return;
+            b.delegee.ctTarget = ct;
+            b.ex_onSelectorUpdate();
+        });
+
+        blk.configClear(b => {
+            b.delegee.ctTarget = null;
+            b.ex_onSelectorUpdate();
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBContentSelector} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    function comp_buildConfiguration(b, tb) {
+        b.ex_buildSelector(tb);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBContentSelector} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    function comp_ex_buildSelector(b, tb) {
+        MDL_table.setCtSelect(
+            tb, b.block, b.block.delegee.selectionQueue,
+            () => b.delegee.ctTarget, val => b.configure(val == null ? null : val.name),
+            null,
+            {rowAmt: b.block.selectionRows, colAmt: b.block.selectionColumns, closeSelect: false},
+        );
+    };
 
 
 /*
@@ -61,182 +88,190 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles content selection.
-     * @class INTF_BLK_contentSelector
-     */
-    new CLS_interface("INTF_BLK_contentSelector", {
-
-
-      __paramObjM__: () => ({
-
-
-        /* <------------------------------ internal ------------------------------> */
+    module.exports = [
 
 
         /**
-         * `INTERNAL`
-         * @memberof INTF_BLK_contentSelector
-         * @instance
+         * Handles content selection.
+         * @class INTF_BLK_contentSelector
          */
-        selectionQueue: tprov(() => []),
+        new CLS_interface("INTF_BLK_contentSelector", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      init: function() {
-        comp_init(this);
-      },
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * Finds contents that can be selected for this block.
-       * @memberof INTF_BLK_contentSelector
-       * @instance
-       * @return {Array<UnlockableContent>}
-       */
-      ex_findSelectionTargets: function() {
-        return Vars.content.items().toArray();
-      }
-      .setProp({
-        noSuper: true,
-      }),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_BLK_contentSelector
+                     * @instance
+                     * @type {TDynamic<Array<UnlockableContent>>}
+                     */
+                    selectionQueue: tprov(() => []),
 
 
-    }),
+                };
+            },
 
 
-    /**
-     * @class INTF_B_contentSelector
-     */
-    new CLS_interface("INTF_B_contentSelector", {
+            init: function() {
+                comp_init(this);
+            },
 
 
-      __paramObjM__: () => ({
+            /**
+             * Finds contents that can be selected for this block.
+             * @memberof INTF_BLK_contentSelector
+             * @instance
+             * @func
+             * @return {Array<UnlockableContent>}
+             */
+            ex_findSelectionTargets: function() {
+                return Vars.content.items().toArray();
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-        /* <------------------------------ internal ------------------------------> */
+        }),
 
 
         /**
-         * `INTERNAL`: Selected content.
-         * @memberof INTF_B_contentSelector
-         * @instance
+         * @class INTF_B_contentSelector
          */
-        ctTarget: null,
+        new CLS_interface("INTF_B_contentSelector", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      buildConfiguration: function(tb) {
-        comp_buildConfiguration(this, tb);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      config: function() {
-        return this.ctTarget == null ? "null" : this.ctTarget.name;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+                    /**
+                     * `INTERNAL`: Selected content.
+                     * @memberof INTF_B_contentSelector
+                     * @instance
+                     * @type {UnlockableContent|null}
+                     */
+                    ctTarget: null,
 
 
-      /**
-       * @memberof INTF_B_contentSelector
-       * @instance
-       * @param {Table} tb
-       * @return {void}
-       */
-      ex_buildSelector: function(tb) {
-        comp_ex_buildSelector(this, tb);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+                };
+            },
 
 
-      /**
-       * Called when something is selected.
-       * @memberof INTF_B_contentSelector
-       * @instance
-       * @return {void}
-       */
-      ex_onSelectorUpdate: function() {
-        if(!Vars.headless && this.block.drawCached) this.recache();
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            buildConfiguration: function(tb) {
+                comp_buildConfiguration(this, tb);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * Call this method to draw icon of selected content.
-       * @memberof INTF_B_contentSelector
-       * @instance
-       * @return {void}
-       */
-      ex_drawSelected: function() {
-        LCDraw.contentIcon(this.x, this.y, this.ctTarget, this.block.size, 0.75);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            config: function() {
+                return this.ctTarget == null ? "null" : this.ctTarget.name;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * `REALIZED`
-       * @override
-       * @memberof INTF_B_contentSelector
-       * @instance
-       * @func
-       * @return {TextureRegion|null}
-       */
-      ex_getRcIcon: function() {
-        return this.ctTarget == null ?
-          null :
-          this.ctTarget.uiIcon;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * @memberof INTF_B_contentSelector
+             * @instance
+             * @func
+             * @param {Table} tb
+             * @return {void}
+             */
+            ex_buildSelector: function(tb) {
+                comp_ex_buildSelector(this, tb);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @memberof INTF_B_contentSelector
-       * @instance
-       * @param {Writes|Reads} wr0rd
-       * @return {void}
-       */
-      ex_processData: function(wr0rd) {
-        processData(
-          wr0rd,
-
-          wr => {
-            MDL_io.ct(wr, this.ctTarget);
-          },
-
-          rd => {
-            this.ctTarget = MDL_io.ct(rd);
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
+            /**
+             * Called when something is selected.
+             * @memberof INTF_B_contentSelector
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_onSelectorUpdate: function() {
+                if(!Vars.headless && this.block.drawCached) this.recache();
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+            /**
+             * Call this method to draw icon of selected content.
+             * @memberof INTF_B_contentSelector
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_drawSelected: function() {
+                LCDraw.contentIcon(this.x, this.y, this.ctTarget, this.block.size, 0.75);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-  ];
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof INTF_B_contentSelector
+             * @instance
+             * @func
+             * @return {TextureRegion|null}
+             */
+            ex_getRcIcon: function() {
+                return this.ctTarget == null ?
+                    null :
+                    this.ctTarget.uiIcon;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_contentSelector
+             * @instance
+             * @param {Writes|Reads} wr0rd
+             * @return {void}
+             */
+            ex_processData: function(wr0rd) {
+                processData(
+                    wr0rd,
+                    wr => {
+                        MDL_io.ct(wr, this.ctTarget);
+                    },
+                    rd => {
+                        this.ctTarget = MDL_io.ct(rd);
+                    },
+                );
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
+
+
+        }),
+
+
+    ];

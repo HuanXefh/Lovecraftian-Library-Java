@@ -5,10 +5,20 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  /* <---------- component ----------> */
+    /**
+     * @typedef {TemplateInstance<>}
+     */
+
+
+    /**
+     * @typedef {TemplateInstance<>}
+     */
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -18,31 +28,35 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * @class INTF_BLK_xxx
-     */
-    new CLS_interface("INTF_BLK_xxx", {
+        /**
+         * @class INTF_BLK_xxx
+         */
+        new CLS_interface("INTF_BLK_xxx", {
 
 
-      __paramObjM__: () => ({}),
+            __paramObjM__: function() {
+                return {};
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class INTF_B_xxx
-     */
-    new CLS_interface("INTF_B_xxx", {
+        /**
+         * @class INTF_B_xxx
+         */
+        new CLS_interface("INTF_B_xxx", {
 
 
-      __paramObjM__: () => ({}),
+            __paramObjM__: function() {
+                return {};
+            },
 
 
-    }),
+        }),
 
 
-  ];
+    ];
