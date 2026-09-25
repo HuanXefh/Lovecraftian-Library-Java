@@ -58,6 +58,47 @@ azimut-Whale: [2, 3]
 azimut-Cthulhu: [1, 2]
 azimut-Neptune: [0]
 
+/* <---------- Deep Space ----------> */
+
+ice-unit_hold: [0, 1]
+ice-unit_deathOath: [0, 1]
+ice-unit_zhuFire: [2, 3]
+ice-unit_fuFire: [0, 1]
+ice-unit_huaFire: [0, 1]
+ice-unit_meteoricStar: [4]
+ice-unit_torrentialRain: [0]
+ice-unit_thunder: [0]
+ice-unit_thunderTribulation: [0]
+ice-unit_rapid: [0]
+ice-unit_undercurrents: [3, 4, 5, 6]
+ice-unit_witness: [1, 2]
+ice-unit_execution: [2]
+ice-unit_abyss: [0]
+ice-unit_breakArmy: [0]
+ice-unit_siege: [1]
+ice-unit_scream: [4, 5]
+ice-unit_phantom: [0, 1]
+ice-unit_arcLight: [2]
+ice-unit_swordSpear: [0]
+ice-unit_veto: [0]
+ice-unit_storBolt: [1, 2, 3, 4]
+ice-unit_blackThorns: [1, 2, 3, 4]
+ice-unit_starEater: [8]
+ice-unit_abyssPrison: [6, 7]
+ice-unit_poisonBarb: [0]
+ice-unit_ipsiglon: [2, 3]
+ice-unit_omega: [1, 2]
+ice-unit_constrict: [0, 1, 2, 3, 4, 5]
+ice-unit_gravestone: [2]
+ice-unit_heterogeneous: [0]
+ice-unit_pluto: [1]
+ice-unit_hyun: [1]
+ice-unit_clusterLobes: [0, 1]
+ice-unit_darkCarving: [0]
+ice-unit_fearless: [0, 1]
+ice-unit_aurora: [4]
+ice-unit_emptiness: [12]
+
 /* <---------- Exogenesis (old) ----------> */
 
 exogenesis-T-atlas: [1, 2]
@@ -117,6 +158,12 @@ new-horizon-restriction-enzyme: [0]
 new-horizon-macrophage: [0]
 new-horizon-laugra: [4]
 new-horizon-pester: [6]
+
+/* <---------- Omaloon ----------> */
+
+omaloon-collector: [0]
+omaloon-praetorian: [0, 1]
+omaloon-sage: [0]
 
 /* <---------- Sapphirium ----------> */
 

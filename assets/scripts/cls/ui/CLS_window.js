@@ -31,6 +31,8 @@
         this.root = CLS_window.getRootTable(this);
         /** @type {Table|null} */
         this.base = null;
+        /** @type {Array<Action>|null} */
+        this.acts = [Actions.translateBy(0.0, -50.0, 0.0), Actions.parallel(Actions.fadeIn(0.15), Actions.translateBy(0.0, 50.0, 0.15))];
 
 
     };
@@ -187,7 +189,7 @@
 
 
     /**
-     * Sets colors used for the window.
+     * Sets colors used for this window.
      * @param {Color|unset} [titleColor]
      * @param {Color|unset} [contColor]
      * @return {this}
@@ -195,7 +197,6 @@
     CLS_window.prototype.setColor = function(titleColor, contColor) {
         if(titleColor != null) this.titleColor = titleColor;
         if(contColor != null) this.contColor = contColor;
-
         return this;
     };
 
@@ -213,7 +214,17 @@
         if(maxW != null) this.maxW = maxW;
         if(minH != null) this.minH = minH;
         if(maxH != null) this.maxH = maxH;
+        return this;
+    };
 
+
+    /**
+     * Sets actions for the this window when added to scene.
+     * @param {Array<Action>|unset} [acts]
+     * @return {this}
+     */
+    CLS_window.prototype.setAction = function(acts) {
+        if(acts != null) this.acts = acts;
         return this;
     };
 
@@ -315,11 +326,12 @@
                 tb.table(Tex.whiteui, tb1 => {
                     tb1.left().setColor(this.contColor);
                     MDL_table.margin(tb1);
-                    tb1.pane(pnTb => {
-                        this.tableM(pnTb);
-                        this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW) / global.lovecUtil.prop.uiScale;
-                        this.prefH = Mathf.clamp(pnTb.prefHeight, this.minH, this.maxH) / global.lovecUtil.prop.uiScale;
-                    }).width(this.prefW).height(this.prefH);
+                    let pnTb = new Table();
+                    this.tableM(pnTb);
+                    this.prefW = Mathf.clamp(pnTb.prefWidth, this.minW, this.maxW) / global.lovecUtil.prop.uiScale;
+                    this.prefH = Mathf.clamp(pnTb.prefHeight, this.minH, this.maxH) / global.lovecUtil.prop.uiScale;
+                    let pn = new ScrollPane(pnTb);
+                    tb1.add(pn).width(this.prefW).height(this.prefH);
                     this.prefWCont = tb1.prefWidth / global.lovecUtil.prop.uiScale;
                     this.prefHCont = tb1.prefHeight / global.lovecUtil.prop.uiScale;
                 }).grow().row();
@@ -336,7 +348,7 @@
         };
 
         // Move the window table to center position
-        root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY() + this.prefH * 0.5, Align.center);
+        root.setPosition(MDL_ui.getCenterX(), MDL_ui.getCenterY(), Align.center);
     }
     .setProp({
         /**
@@ -364,10 +376,13 @@
         };
 
         this.rebuild();
-        this.root.setPosition(tryVal(x, MDL_ui.getCenterX()), tryVal(y, MDL_ui.getCenterY()) + this.prefH * 0.5, Align.center);
+        this.root.setPosition(tryVal(x, MDL_ui.getCenterX()) - this.prefW * 0.5, tryVal(y, MDL_ui.getCenterY()) - this.prefH * 0.5, Align.center);
         this.root.toFront();
         Core.scene.add(this.root);
         this.added = true;
+        if(this.acts != null) {
+            MDL_ui.setActorAction(this.root, 0.0, this.acts, true);
+        };
         allWins.pushUnique(this);
     };
 

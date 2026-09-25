@@ -11,6 +11,7 @@ main: lovec.Lovec
 author: MaboroshiX
 repo: HuanXefh/Lovecraftian-Library-Java
 minGameVersion: 160.1
+legacyCompatible: true
 dependencies: []
 softDependencies: [
     tmi
@@ -28,4 +29,4 @@ Main features:
 - QOL functionalities like recipe dictionary, health bar and damage splash text.
 '''
 
-version: 101.4.26092401
+version: 101.4.26092501

@@ -11,6 +11,20 @@ asthosus-16p-05-expound: [4]
 azimut-Whale: [0, 1]
 azimut-Cthulhu: [0]
 
+/* <---------- Deep Space ----------> */
+
+ice-unit_fuFire: [2, 3]
+ice-unit_huaFire: [2, 3]
+ice-unit_thunderTribulation: [1, 2]
+ice-unit_abyss: [5, 6]
+ice-unit_scream: [6]
+ice-unit_storBolt: [0]
+ice-unit_blackThorns: [0]
+ice-unit_starEater: [6, 7, 11, 12]
+ice-unit_abyssPrison: [4, 5]
+ice-unit_ipsiglon: [4]
+ice-unit_fearless: [2]
+
 /* <---------- Exogenesis (old) ----------> */
 
 exogenesis-T-atlas: [0]

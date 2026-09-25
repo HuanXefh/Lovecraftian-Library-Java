@@ -62,7 +62,7 @@
         if(typeof fi0str === "string") {
             str = fi0str;
         } else {
-            str = fi0str.readString("UTF-8");
+            str = !fi0str.exists() ? "{}" : fi0str.readString("UTF-8");
             if(fi0str.extension() === "json") {
                 str = str.replace(/#/g, "\\#");
             };
