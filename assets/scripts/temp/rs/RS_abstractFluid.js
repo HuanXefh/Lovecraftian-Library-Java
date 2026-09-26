@@ -34,10 +34,11 @@
     /**
      * @private
      * @param {RSAbstractFluid} aux
+     * @param {Stats} stats
      * @return {void}
      */
-    function comp_setStats(liq, stats) {
-        if(liq.setupVanillaStat) {
+    function comp_setStats(aux, stats) {
+        if(aux.setupVanillaStat) {
             stats.remove(Stat.explosiveness);
             stats.remove(Stat.flammability);
             stats.remove(Stat.temperature);

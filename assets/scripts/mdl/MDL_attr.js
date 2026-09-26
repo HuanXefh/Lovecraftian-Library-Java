@@ -333,7 +333,7 @@
 
     /**
      * Gets current value of wind attribute at some tile.
-     * Wind force is set in {@link DB_env}.
+     * Wind force is set in {@link DB_env.db.param.pla.wind} and {@link DB_env.db.param.map.wind}.
      * @param {Tile} t
      * @param {number|unset} [scl] - Scaling on oscillation.
      * @param {number|unset} [maxRed] - Max reduction as fraction.

@@ -22,6 +22,7 @@
     /**
      * @private
      * @param {DBCTDialFlowContent} sta
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(sta, stats) {

@@ -20,10 +20,10 @@
         /** @type {Mods.LoadedMod} */
         this.mod = fetchMod(nameMod);
         if(this.mod == null) return;
-        nameMod.nameModParserMap.put(nameMod, this);
+        nameModParserMap.put(nameMod, this);
 
         /** @type {Fi} */
-        this.dirCt = this.mod.root.child("scripts").child("auxFi").child("json").child("content");
+        this.dirCt = this.mod.root.child("scripts").child("auxFi").child("json").child("template");
         /** @type {Array<Fi>} */
         this.jsonFis = [];
         /** @type {ObjectMap<string, Object>} */
@@ -149,6 +149,8 @@
                         dir2 = "sta";
                     } else if(tmpStr.startsWith("PLA_")) {
                         dir2 = "pla";
+                    } else if(tmpStr.startsWith("SEC_")) {
+                        dir2 = "sec";
                     } else if(tmpStr.startsWith("WEA_")) {
                         dir2 = "wea";
                     };

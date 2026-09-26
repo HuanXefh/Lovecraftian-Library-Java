@@ -15,6 +15,7 @@
 
     /**
      * @typedef {TemplateInstance<Building, INTF_B_contentSelector>} INTFBContentSelector
+     * @prop {INTFBLKContentSelector} block
      */
 
 
@@ -106,7 +107,7 @@
 
 
                     /**
-                     * `INTERNAL`
+                     * `INTERNAL`: Cached content selection targets.
                      * @memberof INTF_BLK_contentSelector
                      * @instance
                      * @type {TDynamic<Array<UnlockableContent>>}

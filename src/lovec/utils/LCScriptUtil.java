@@ -3,7 +3,6 @@ package lovec.utils;
 import lovec.annotation.FromScript;
 import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
-import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Building;
 import mindustry.type.Liquid;
 import rhino.*;
@@ -115,7 +114,7 @@ public class LCScriptUtil {
     /**
      * <code>checkTemplate(ct, tempName)</code>.
      */
-    public static boolean checkTemplate(UnlockableContent ct, String tempName) {
+    public static boolean checkTemplate(Object ct, String tempName) {
         NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
         scope.put("LCScriptUtil.checkTemplate.ct", scope, ct);
         scope.put("LCScriptUtil.checkTemplate.tempName", scope, tempName);

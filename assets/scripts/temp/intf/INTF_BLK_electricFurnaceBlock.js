@@ -5,83 +5,141 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  const INTF = require("lovec/temp/intf/INTF_BLK_heatBlock");
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_electricFurnaceBlock>} INTFBLKElectricFurnaceBlock
+     */
 
 
-  /* <---------- component ----------> */
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_electricFurnaceBlock>} INTFBElectricFurnaceBlock
+     * @prop {INTFBLKElectricFurnaceBlock} block
+     */
 
 
-  function comp_init(blk) {
-    if(!blk.hasPower) throw new LCError.NoPowerModuleError(blk);
-
-    MDL_event.onLoad(() => {
-      let blkCons = new ConsumePowerDynamic(b => b.ex_calcFurnPowCons());
-      blk.consumers = [blkCons];
-      blk.consPower = blkCons;
-    });
-
-    blk.configurable = true;
-
-    blk.config(JAVA.float, (b, f) => {
-      b.delegee.tempSet = f;
-    });
-  };
+    const PARENT = require("lovec/temp/intf/INTF_BLK_heatBlock");
 
 
-  function comp_setStats(blk, stats) {
-    stats.add(Stat.powerUse, blk.powConsBase * 60.0, StatUnit.powerSecond);
-    stats.add(fetchStat("lovec", "blk0pow-powuseper100hu"), blk.powConsPerFuelLvl * 60.0, StatUnit.powerSecond);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_setBars(blk) {
-    blk.removeBar("lovec-temp");
-    blk.addBar("lovec-furnace-temp", b => new Bar(
-      prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.delegee.furnEffc.roundFixed(2) * 100.0)),
-      prov(() => Tmp.c2.set(Color.darkGray).lerp(Pal.lightOrange, b.ex_getHeatFrac())),
-      () => b.ex_getHeatFrac(),
-    ));
-  };
+    /**
+     * @private
+     * @param {INTFBLKElectricFurnaceBlock} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        if(!blk.hasPower) throw new LCError.NoPowerModuleError(blk);
+
+        MDL_event.onLoad(() => {
+            let blkCons = new ConsumePowerDynamic(b => b.ex_calcFurnPowCons());
+            blk.consumers = blk.consumers == null ? [blkCons] : blk.consumers.concat([blkCons]);
+            blk.consPower = blkCons;
+        });
+
+        blk.configurable = true;
+
+        blk.config(JAVA.float, (b, f) => {
+            b.delegee.tempSet = f;
+        });
+    };
 
 
-  function comp_updateTile(b) {
-    if(DEBUG.skipFurnUpdate) return;
-
-    // Update furnace efficiency
-    b.furnEffc = Mathf.clamp(Math.min(
-      Math.pow(b.tempCur / b.ex_getHeatTarget(), 1.5),
-      !isFinite(b.ex_getHeatAllowed()) ? Infinity : (b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0,
-    ));
-    if(b.furnEffc < 0.15) b.furnEffc = 0.0;
-  };
-
-
-  function comp_updateEfficiencyMultiplier(b) {
-    b.efficiency *= b.cheating() ? 1.0 : b.furnEffc;
-  };
+    /**
+     * @private
+     * @param {INTFBLKElectricFurnaceBlock} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(Stat.powerUse, blk.powConsBase * 60.0, StatUnit.powerSecond);
+        stats.add(fetchStat("lovec", "blk0pow-powuseper100hu"), blk.powConsPerFuelLvl * 60.0, StatUnit.powerSecond);
+    };
 
 
-  function comp_buildConfiguration(b, tb) {
-    tb.row();
-    b.ex_buildTempSlider(tb);
-  };
+    /**
+     * @private
+     * @param {INTFBLKElectricFurnaceBlock} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        blk.removeBar("lovec-temp");
+        blk.addBar("lovec-furnace-temp", b => new Bar(
+            prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.delegee.furnEffc.roundFixed(2) * 100.0)),
+            prov(() => Tmp.c2.set(Color.darkGray).lerp(Pal.lightOrange, b.ex_getHeatFrac())),
+            () => b.ex_getHeatFrac(),
+        ));
+    };
 
 
-  function comp_ex_postUpdateEfficiencyMultiplier(b) {
-    comp_updateEfficiencyMultiplier(b);
-  };
+    /**
+     * @private
+     * @param {INTFBElectricFurnaceBlock} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(DEBUG.skipFurnUpdate) return;
+
+        // Update furnace efficiency
+        b.furnEffc = Mathf.clamp(Math.min(
+            Math.pow(b.tempCur / b.ex_getHeatTarget(), 1.5),
+            !isFinite(b.ex_getHeatAllowed()) ? Infinity : (b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0,
+        ));
+        if(b.furnEffc < 0.15) {
+            b.furnEffc = 0.0;
+        };
+    };
 
 
-  function comp_ex_buildTempSlider(b, tb) {
-    tb.table(Styles.black3, tb1 => {
-      tb1.left();
-      MDL_table.margin(tb1);
-      MDL_table.sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.ex_getTempSetMax(), 50.0, b.tempSet);
-    }).left().growX();
-  };
+    /**
+     * @private
+     * @param {INTFBElectricFurnaceBlock} b
+     * @return {void}
+     */
+    function comp_updateEfficiencyMultiplier(b) {
+        b.efficiency *= b.cheating() ? 1.0 : b.furnEffc;
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBElectricFurnaceBlock} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    function comp_buildConfiguration(b, tb) {
+        tb.row();
+        b.ex_buildTempSlider(tb);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBElectricFurnaceBlock} b
+     * @return {void}
+     */
+    function comp_ex_postUpdateEfficiencyMultiplier(b) {
+        comp_updateEfficiencyMultiplier(b);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBElectricFurnaceBlock} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    function comp_ex_buildTempSlider(b, tb) {
+        tb.table(Styles.black3, tb1 => {
+            tb1.left();
+            MDL_table.margin(tb1);
+            MDL_table.sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.ex_getTempSetMax(), 50.0, b.tempSet);
+        })
+        .left()
+        .growX();
+    };
 
 
 /*
@@ -91,295 +149,310 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * {@link INTF_BLK_furnaceBlock} but instead of consuming fuel, this will consume power dynamically.
-     * @class INTF_BLK_electricFurnaceBlock
-     * @extends INTF_BLK_heatBlock
-     */
-    new CLS_interface({
-
-
-      __paramObjM__: (() => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Base power consumption regardless of temperature.
-         * @memberof INTF_BLK_electricFurnaceBlock
-         * @instance
+         * {@link INTF_BLK_furnaceBlock} but instead of consuming fuel, this will consume power dynamically.
+         * @class INTF_BLK_electricFurnaceBlock
+         * @extends INTF_BLK_heatBlock
          */
-        powConsBase: 1.0,
+        new CLS_interface({
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Base power consumption regardless of temperature.
+                     * @memberof INTF_BLK_electricFurnaceBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    powConsBase: 1.0,
+                    /**
+                     * `PARAM`: Power consumption added for each 100 HU.
+                     * @memberof INTF_BLK_electricFurnaceBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    powConsPerFuelLvl: 1.0,
+                    /**
+                     * `PARAM`: Affects maximum temperature allowed to reach. The furnace will get damaged when overheated.
+                     * @memberof INTF_BLK_electricFurnaceBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    maxOverheatScl: 1.5,
+                    /**
+                     * @inheritdoc
+                     */
+                    heatWarmupRate: 0.0001,
+                    /**
+                     * @inheritdoc
+                     */
+                    heatLightRad: 40.0,
+
+
+                    /* <------------------------------ internal ------------------------------> */
+
+
+                    /**
+                     * `INTERNAL`
+                     * <br> `REALIZED`
+                     * @override
+                     * @memberof INTF_BLK_furnaceBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    skipHeatTrans: true,
+                    /**
+                     * `INTERNAL`
+                     * <br> `REALIZED`
+                     * @override
+                     * @memberof INTF_BLK_furnaceBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    skipHeatSupply: true,
+
+
+                };
+            }
+            .setProp({
+                mergeMode: "object",
+            }),
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+            setBars: function() {
+                comp_setBars(this);
+            },
+
+
+        })
+        .extendInterface(PARENT[0], "INTF_BLK_electricFurnaceBlock"),
+
+
         /**
-         * `PARAM`: Power consumption added for each 100 HU.
-         * @memberof INTF_BLK_electricFurnaceBlock
-         * @instance
+         * @class INTF_B_electricFurnaceBlock
+         * @extends INTF_B_heatBlock
          */
-        powConsPerFuelLvl: 1.0,
-        /**
-         * `PARAM`: Affects maximum temperature allowed to reach. The furnace will get damaged when overheated.
-         * @memberof INTF_BLK_electricFurnaceBlock
-         * @instance
-         */
-        maxOverheatScl: 1.5,
-        /**
-         * `PARAM`
-         * @override
-         * @memberof INTF_BLK_electricFurnaceBlock
-         * @instance
-         */
-        heatWarmupRate: 0.0001,
-        /**
-         * `PARAM`
-         * @override
-         * @memberof INTF_BLK_electricFurnaceBlock
-         * @instance
-         */
-        heatLightRad: 40.0,
+        new CLS_interface({
 
 
-        /* <------------------------------ internal ------------------------------> */
+            __paramObjM__: function() {
+                return {
 
 
-        /**
-         * `INTERNAL`
-         * @memberof INTF_BLK_furnaceBlock
-         * @instance
-         */
-        skipHeatTrans: true,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_BLK_furnaceBlock
-         * @instance
-         */
-        skipHeatSupply: true,
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      }))
-      .setProp({
-        mergeMode: "object",
-      }),
+                    /**
+                     * `INTERNAL`: Target temperature set with slider.
+                     * @memberof INTF_B_electricFurnaceBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    tempSet: 0.0,
+                    /**
+                     * `INTERNAL`: Furnace efficiency.
+                     * @memberof INTF_B_electricFurnaceBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    furnEffc: 0.0,
 
 
-      init: function() {
-        comp_init(this);
-      },
+                };
+            }
+            .setProp({
+                mergeMode: "object",
+            }),
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      setBars: function() {
-        comp_setBars(this);
-      },
+            updateEfficiencyMultiplier: function() {
+                comp_updateEfficiencyMultiplier(this);
+            },
 
 
-    }).extendInterface(INTF[0], "INTF_BLK_electricFurnaceBlock"),
+            warmupTarget: function() {
+                return this.cheating() ? 1.0 : this.ex_getHeatFrac();
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    /**
-     * @class INTF_B_electricFurnaceBlock
-     * @extends INTF_B_heatBlock
-     */
-    new CLS_interface({
+            buildConfiguration: function(tb) {
+                comp_buildConfiguration(this, tb);
+            },
 
 
-      __paramObjM__: (() => ({
+            /**
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_postUpdateEfficiencyMultiplier: function() {
+                comp_ex_postUpdateEfficiencyMultiplier(this);
+            }
+            .setProp({
+              noSuper: true,
+            }),
 
 
-        /* <------------------------------ internal ------------------------------> */
+            /**
+             * Calculated current power usage.
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcFurnPowCons: function() {
+                return Mathf.maxZero(this.tempSet - Math.max(this.tempExt, PARAM.GLOBAL_HEAT)) / 100.0 * this.block.delegee.powConsPerFuelLvl + this.block.delegee.powConsBase;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_electricFurnaceBlock
-         * @instance
-         */
-        tempSet: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_electricFurnaceBlock
-         * @instance
-         */
-        furnEffc: 0.0,
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcTempTarget: function thisFun() {
+                return Math.max(thisFun.funPrev.apply(this, arguments), this.tempSet);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      }))
-      .setProp({
-        mergeMode: "object",
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcTempTargetFrac: function() {
+                return this.tempSet < 0.0001 ?
+                    0.0 :
+                    Math.max(Mathf.clamp(this.tempExt / this.tempSet), this.power.status);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            /**
+             * @inheritdoc
+             */
+            ex_getHeatTarget: function() {
+                return PARAM.GLOBAL_HEAT;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      updateEfficiencyMultiplier: function() {
-        comp_updateEfficiencyMultiplier(this);
-      },
+            /**
+             * See {@link INTF_B_furnaceBlock#ex_getHeatAllowed}.
+             * <br> `LATER`
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getHeatAllowed: function() {
+                return Infinity;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      warmupTarget: function() {
-        return this.cheating() ? 1.0 : this.ex_getHeatFrac();
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * Maximum target temperature allowed to set.
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getTempSetMax: function() {
+                return this.block.delegee.heatBlkMeltTemp * this.block.delegee.maxOverheatScl;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      buildConfiguration: function(tb) {
-        comp_buildConfiguration(this, tb);
-      },
+            /**
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @param {Table} tb
+             * @return {void}
+             */
+            ex_buildTempSlider: function(tb) {
+                comp_ex_buildTempSlider(this, tb);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      /**
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @return {void}
-       */
-      ex_postUpdateEfficiencyMultiplier: function() {
-        comp_ex_postUpdateEfficiencyMultiplier(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @param {Writes|Reads} wr0rd
+             * @return {void}
+             */
+            ex_processData: function(wr0rd) {
+                processData(
+                    wr0rd,
+                    wr => {
+                        wr.f(this.tempSet);
+                    },
+                    rd => {
+                        this.tempSet = rd.f();
+                    },
+                );
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      /**
-       * Calculated current power usage.
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @return {number}
-       */
-      ex_calcFurnPowCons: function() {
-        return Mathf.maxZero(this.tempSet - Math.max(this.tempExt, PARAM.GLOBAL_HEAT)) / 100.0 * this.block.delegee.powConsPerFuelLvl + this.block.delegee.powConsBase;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+        })
+        .extendInterface(PARENT[1], "INTF_B_electricFurnaceBlock"),
 
 
-      /**
-       * @override
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @return {number}
-       */
-      ex_calcTempTarget: function thisFun() {
-        return Math.max(thisFun.funPrev.apply(this, arguments), this.tempSet);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      /**
-       * @override
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @return {number}
-       */
-      ex_calcTempTargetFrac: function() {
-        return this.tempSet < 0.0001 ?
-          0.0 :
-          Math.max(Mathf.clamp(this.tempExt / this.tempSet), this.power.status);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      /**
-       * `LATER`
-       * @override
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @return {number}
-       */
-      ex_getHeatTarget: function() {
-        return PARAM.GLOBAL_HEAT;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * See {@link INTF_B_furnaceBlock}.
-       * <br> `LATER`
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @return {number}
-       */
-      ex_getHeatAllowed: function() {
-        return Infinity;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Maximum target temperature allowed to set.
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @return {number}
-       */
-      ex_getTempSetMax: function() {
-        return this.block.delegee.heatBlkMeltTemp * this.block.delegee.maxOverheatScl;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @param {Table} tb
-       * @return {void}
-       */
-      ex_buildTempSlider: function(tb) {
-        comp_ex_buildTempSlider(this, tb);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @memberof INTF_B_electricFurnaceBlock
-       * @instance
-       * @param {Writes|Reads} wr0rd
-       * @return {void}
-       */
-      ex_processData: function(wr0rd) {
-        processData(
-          wr0rd,
-
-          wr => {
-            wr.f(this.tempSet);
-          },
-
-          rd => {
-            this.tempSet = rd.f();
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-    }).extendInterface(INTF[1], "INTF_B_electricFurnaceBlock"),
-
-
-  ];
+    ];

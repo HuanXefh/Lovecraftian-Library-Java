@@ -58,6 +58,7 @@
     /**
      * @private
      * @param {RSBaseFluid} liq
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(liq, stats) {
@@ -317,3 +318,21 @@
 
 
     });
+
+
+    /**
+     * @override
+     * @memberof RS_baseFluid
+     * @func
+     * @param {RSBaseFluid} liq
+     * @return {void}
+     */
+    module.exports.initContent = function(liq) {
+        this.super("initContent", liq);
+
+        let jval = LCContentParser.getJval(liq);
+        if(jval != null) {
+            LCContentParser.parseResearch(liq, jval);
+            LCContentParser.setupFields(liq, jval);
+        };
+    };

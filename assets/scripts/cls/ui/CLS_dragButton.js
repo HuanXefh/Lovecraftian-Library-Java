@@ -7,7 +7,7 @@
 
     /**
      * A draggable group of buttons.
-     * New buttons are registered in {@link DB_misc}.
+     * New buttons are registered in {@link DB_misc.db.mod.dragButton}.
      * @class
      */
     const CLS_dragButton = newClass().initClass();

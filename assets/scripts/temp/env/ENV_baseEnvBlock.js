@@ -41,6 +41,7 @@
     /**
      * @private
      * @param {ENVBaseEnvBlock} blk
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(blk, stats) {
@@ -108,3 +109,20 @@
 
 
     });
+
+
+    /**
+     * @override
+     * @memberof ENV_baseEnvBlock
+     * @param {ENVBaseEnvBlock} blk
+     * @return {void}
+     */
+    module.exports.initContent = function(blk) {
+        this.super("initContent", blk);
+
+        let jval = LCContentParser.getJval(blk);
+        if(jval != null) {
+            LCContentParser.parseBlock(blk, jval);
+            LCContentParser.setupFields(blk, jval);
+        };
+    };

@@ -15,6 +15,7 @@
 
     /**
      * @typedef {TemplateInstance<Building, INTF_B_buildingRecacheHandler>} INTFBBuildingRecacheHandler
+     * @prop {INTFBLKBuildingRecacheHandler} block
      */
 
 
@@ -44,14 +45,14 @@
 
                     /**
                      * `PARAM`: Whether to recache when an item is added or removed.
-                     * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
+                     * @memberof INTF_BLK_buildingRecacheHandler
                      * @instance
                      * @type {boolean}
                      */
                     recacheForItem: false,
                     /**
                      * `PARAM`: Whether to recache when a fluid is added or removed.
-                     * @memberof INTF_BLK_INTF_BLK_buildingRecacheHandler
+                     * @memberof INTF_BLK_buildingRecacheHandler
                      * @instance
                      * @type {boolean}
                      */
@@ -128,7 +129,8 @@
 
             moveLiquid: function(b_t, liq) {
                 if(!Vars.headless && this.block.drawCached && this.block.delegee.recacheForFld) this.recache();
-            }.setProp({
+            }
+            .setProp({
                 mergeMode: function(valPrev, val) {
                     return valPrev;
                 },

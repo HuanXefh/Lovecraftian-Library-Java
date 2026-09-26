@@ -41,6 +41,7 @@
     /**
      * @private
      * @param {RSBaseResource} rs
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(rs, stats) {
@@ -126,7 +127,7 @@
                 packer.get(rs.recolorRegStr),
                 packer.get(parent),
             );
-            LCCompatibilityResolver.isV8 ?
+            LCCompatibilityHandler.isV8 ?
                 packer.add(eval("MultiPacker.PageType.main"), rs.name + "-recolor", pix) :
                 packer.add(rs.name + "-recolor", pix);
             pix.dispose();
@@ -145,7 +146,7 @@
         if(parent != null) {
             if(rs.recolorRegStr == null) {
                 // No base sprite used for this intermediate, free unused space in atlas
-                LCCompatibilityResolver.isV8 ?
+                LCCompatibilityHandler.isV8 ?
                     packer.add(eval("MultiPacker.PageType.main"), rs.name, LCAirObjects.pixmap) :
                     packer.add(rs.name, LCAirObjects.pixmap);
                 rs.parentRegStr = parent;
@@ -158,7 +159,7 @@
         if(rs.recolorRegStr != null && parent != null) {
             // For recolored sprites, always use parent as the icon tag
             pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, parent);
-            LCCompatibilityResolver.isV8 ?
+            LCCompatibilityHandler.isV8 ?
                 packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t1", pixCombine) :
                 packer.add(rs.name + "-t1", pixCombine);
             pixCombine.dispose();
@@ -174,7 +175,7 @@
                 if(!packer.has(nameMod + "-rs0tag-" + tag)) return;
                 pixTag = packer.get(nameMod + "-rs0tag-" + tag);
                 pixCombine = MDL_texture.stackPix(pixBase, pixTag);
-                LCCompatibilityResolver.isV8 ?
+                LCCompatibilityHandler.isV8 ?
                     packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
                     packer.add(rs.name + "-t" + (alts + 1), pixCombine);
                 pixCombine.dispose();
@@ -185,7 +186,7 @@
         // Extra resource sprites as icon tags, if used
         rs.extraIntmdParents.forEachFast(nameRs => {
             pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, nameRs);
-            LCCompatibilityResolver.isV8 ?
+            LCCompatibilityHandler.isV8 ?
                 packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
                 packer.add(rs.name + "-t" + (alts + 1), pixCombine);
             pixCombine.dispose();

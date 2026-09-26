@@ -148,7 +148,7 @@
      */
     CLS_contentTemplate.resolveMethodName = function(name) {
         // `createIcons` is removed in v9
-        if(!LCCompatibilityResolver.isV8 && name === "createIcons") return "packSprites";
+        if(!LCCompatibilityHandler.isV8 && name === "createIcons") return "packSprites";
 
         return name;
     };
@@ -414,6 +414,12 @@
                 throw new Error("Do not set `metaObj` with `setParam()`!");
             };
             obj[name] = paramObj == null || paramObj[name] === undefined ? def : paramObj[name];
+        });
+        // Warn invalid fields in `paramObj`
+        Object.eachPair(paramObj, (name, val) => {
+            if(this.paramObj[name] === undefined) {
+                console.warn("[LOVEC] Unknown field for content template ${1}: ".format(this.clsName.color(Pal.accent)) + name);
+            };
         });
         // Handle aliases
         this.paramAliasArr.forEachRow(3, (namePropNew, namePropOld, def) => {

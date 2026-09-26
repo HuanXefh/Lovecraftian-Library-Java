@@ -221,7 +221,12 @@
          */
         init() {
             function convertName(javaCls) {
-                let str = tryVal(javaCls.__javaObject__, javaCls).getSimpleName();
+                let str;
+                if(javaCls === Objective) {
+                    str = "Objective";
+                } else {
+                    str = tryVal(javaCls.__javaObject__, javaCls).getSimpleName();
+                };
                 return str.charAt(0).toLowerCase() + str.slice(1) + "_arr";
             };
             function getArrayClass(javaCls) {
@@ -262,6 +267,7 @@
             Content, ContentType, MappableContent, UnlockableContent,
             Block, UnitType, Item, Liquid, StatusEffect, Planet, SectorPreset, Weather, Weapon,
             Building, Unit, StatusEntry, Sector, WeatherState, WeaponMount,
+            Objective,
         ],
 
 

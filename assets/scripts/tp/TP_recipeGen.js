@@ -720,7 +720,7 @@
     /**
      * Recipe generator: rock crusher.
      * Converts some rocks into aggregate.
-     * See {@link DB_item}.
+     * See {@link DB_item.db.group.aggregate}.
      * @this {CLS_recipeGenerator}
      * @param {RecipeRC} rc
      * @param {RecipeMetaObject} metaObj

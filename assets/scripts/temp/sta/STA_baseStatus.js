@@ -63,7 +63,7 @@
 
     /**
      * Most basic status effects with no features.
-     * Affinities and opposites are defined in {@link DB_status}, do not call `sta.init` anymore!
+     * Affinities and opposites are defined in {@link DB_status.db.map.affinity} and {@link DB_status.db.map.opposite}, do not call `sta.init` anymore!
      * @class STA_baseStatus
      * @extends CLS_contentTemplate
      */
@@ -152,3 +152,21 @@
 
 
     });
+
+
+    /**
+     * @override
+     * @memberof STA_baseStatus
+     * @func
+     * @param {STABaseStatus} sta
+     * @return {void}
+     */
+    module.exports.initContent = function(sta) {
+        this.super("initContent", sta);
+
+        let jval = LCContentParser.getJval(sta);
+        if(jval == null) return;
+
+        // Note that affinities and opposites are handled in DB, do not set them in JSON
+        LCContentParser.setupFields(sta, jval);
+    };

@@ -75,9 +75,10 @@
                 if(mod != null) {
                     ver = String(mod.meta.version);
                 };
-                if(ver === TmpStateTag.pending || !checkVersion(minVer, ver)) {
+                if(ver !== TmpStateTag.pending && !checkVersion(minVer, ver)) {
+                    printAll(minVer, ver);
                     errored = true;
-                    str += "\n" + nameDepend + "        " + minVer + "        " + (ver === TmpStateTag.pending ? "(not found)" : "(outdated)");
+                    str += "\n" + nameDepend + "        " + minVer + "        (outdated)";
                 };
                 i += 2;
             };
@@ -616,6 +617,359 @@
     };
     /** @type {Arguments} */
     mixTempMethods.tmpArgs = [];
+
+
+    /**
+     * Handles content JSON parsing.
+     * @global
+     */
+    LCContentParser = {
+
+
+        /**
+         * Gets JSON value of a content from its JSON/HJSON file in `scripts/auxFi/json/xxx`.
+         * Used to replace vanilla JSON parsing, which no longer supports modification of existing contents in v9.
+         * <br> Don't use `jval.getBool` or `jval.getBoolean` directly.
+         * @param {UnlockableContent} ct
+         * @param {string|unset} [folderNameOverwrite]
+         * @return {Jval|null}
+         */
+        getJval(ct, folderNameOverwrite) {
+            if(ct.minfo.mod == null) return null;
+            VAR.ctParser.checkInit();
+            let dir = MDL_file.getScriptDir(ct.minfo.mod.name).child("auxFi").child("json").child(tryVal(folderNameOverwrite, ct.getContentType().folderName));
+            let fi = (function() {
+                let seq = dir.findAll(ofi => ofi.name() === (MDL_content.getCtNameNoPrefix(ct) + ".json") || ofi.name() === (MDL_content.getCtNameNoPrefix(ct) + ".hjson"));
+                return seq.size === 0 ?
+                    null :
+                    seq.get(0);
+            })();
+            if(fi == null) return null;
+            let jval = jsonToJval(fi);
+            // Convert `Jval` to `JsonValue` in v8
+            if(LCCompatibilityHandler.isV8) {
+                jval = eval("VAR.jsonParser.fromJson(null, jval.toString(Jval.Jformat.plain))");
+            };
+            if(jval.isString()) {
+                jval = null;
+            };
+            if(jval != null) {
+                Reflect.set(ContentParser, VAR.ctParser, "currentFile", fi);
+                Reflect.set(ContentParser, VAR.ctParser, "currentMod", ct.minfo.mod);
+            };
+            return jval;
+        },
+
+
+        /**
+         * @param {Jval} jval
+         * @param {string} name
+         * @param {boolean|unset} [def]
+         */
+        getBool(jval, name, def) {
+            return LCCompatibilityHandler.isV8 ?
+                jval.getBoolean(name, Boolean(def)) :
+                jval.getBool(name, Boolean(def));
+        },
+
+
+        /**
+         * @internal
+         * @param {ContentType} ctType
+         * @param {string} name
+         * @param {UnlockableContent}
+         */
+        locate(ctType, name) {
+            return Reflect.invoke(ContentParser, VAR.ctParser, "locate", [ctType, name], ContentType, JAVA.string);
+        },
+
+
+        /**
+         * @internal
+         * @param {java.lang.Runnable} run
+         * @return {void}
+         */
+        read(run) {
+            Reflect.invoke(ContentParser, VAR.ctParser, "read", [run], JAVA.runnable);
+        },
+
+
+        /**
+         * @internal
+         * @param {Object} obj
+         * @param {Jval} jval
+         * @return {void}
+         */
+        readFields(obj, jval) {
+            Reflect.invoke(ContentParser, VAR.ctParser, "readFields", [obj, jval], JAVA.object, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+        },
+
+
+        /**
+         * @internal
+         * @param {UnlockableContent} ct
+         * @param {Jval} jval
+         * @return {void}
+         */
+        readBundle(ct, jval) {
+            let entryName = ct.getContentType() + "." + ct.minfo.mod.name + "-" + ct.name + ".";
+            let bundle = Core.bundle;
+            while(bundle.getParent() != null) {
+                bundle = bundle.getParent();
+            };
+
+            if(jval.has("name")) {
+                if(!Core.bundle.has(entryName + "name")) {
+                    bundle.getProperties().put(entryName + "name", jval.getString("name"));
+                };
+                ct.localizedName = jval.getString("name");
+                jval.remove("name");
+            };
+
+            if(jval.has("description")) {
+                if(!Core.bundle.has(entryName + "description")) {
+                    bundle.getProperties().put(entryName + "description", jval.getString("description"));
+                };
+                ct.description = jval.getString("description");
+                jval.remove("description");
+            };
+        },
+
+
+        /**
+         * @param {UnlockableContent} ct
+         * @param {Jval} jval
+         * @return {void}
+         */
+        parseResearch(ct, jval) {
+            let research = jval.remove("research");
+            if(research == null) return;
+            let name, reqs;
+            if(research.isString()) {
+                name = research.asString();
+                reqs = null;
+            } else {
+                name = research.getString("parent", null);
+                reqs = research.has("requirements") ?
+                    VAR.ctJsonParser.readValue(JAVA.itemStack_arr, research.get("requirements")) :
+                    null;
+            };
+            let lastNode = TechTree.all.find(onode => onode.content === ct);
+            if(lastNode != null) {
+                lastNode.remove();
+            };
+            let node = new TechTree.TechNode(null, ct, tryVal(reqs, ItemStack.empty));
+            let lastFiCur = Reflect.get(ContentParser, VAR.ctParser, "currentFile");
+            Reflect.get(ContentParser, VAR.ctParser, "postreads").add(run(() => {
+                Reflect.set(ContentParser, VAR.ctParser, "currentContent", ct);
+                Reflect.set(ContentParser, VAR.ctParser, "currentMod", ct.minfo.mod);
+                Reflect.set(ContentParser, VAR.ctParser, "currentFile", lastFiCur);
+                let isObject = research.isObject();
+                // Objectives
+                if(isObject && research.has("objectives")) {
+                    node.objectives.addAll(VAR.ctJsonParser.readValue(JAVA.objective_arr, research.get("objectives")));
+                };
+                // Resource
+                if((ct instanceof Item || ct instanceof Liquid) && !node.objectives.contains(objective => objective instanceof Produce && objective.content === ct)) {
+                    node.objectives.add(new Produce(ct));
+                };
+                // Remove old node from parent
+                if(node.parent != null) {
+                    node.parent.children.remove(node);
+                };
+                // Default requirements
+                if(reqs == null) {
+                    node.setupRequirements(ct.researchRequirements());
+                };
+                // Node planet
+                if(isObject && research.has("planet")) {
+                    node.planet = Reflect.invoke(ContentParser, VAR.ctParser, "find", [ContentType.planet, research.getString("planet")], ContentType, JAVA.string);
+                };
+                // Node root
+                if(isObject && LCContentParser.getBool(research, "root", false)) {
+                    node.name = research.getString("name", ct.name);
+                    node.requiresUnlock = LCContentParser.getBool(research, "requiresUnlock", false);
+                    TechTree.roots.add(node);
+                } else {
+                    if(name != null) {
+                        let parent = TechTree.all.find(onode => onode.content.name === name || onode.content.name === ct.minfo.mod.name + "-" + name || onode.content.name === SaveVersion.mapFallback(name));
+                        if(parent == null) {
+                            console.warn("[LOVEC] Node ${1} is required by ${2}, but not added to any tech tree!".format(name.color(Pal.remove), ct.name.color(Pal.accent)));
+                        } else {
+                            if(!parent.children.contains(node)) {
+                                parent.children.add(node);
+                            };
+                            node.parent = parent;
+                            node.planet = parent.planet;
+                        };
+                    } else {
+                        console.warn("[LOVEC] No parent found for a non-root tech node: " + ct.name.color(Pal.accent));
+                    };
+                };
+            }));
+        },
+
+
+        /**
+         * @param {Block} blk
+         * @param {Jval} jval
+         * @return {void}
+         */
+        parseBlock(blk, jval) {
+            LCContentParser.read(run(() => {
+                if(jval.has("consumes") && jval.get("consumes").isObject()) {
+                    Reflect.invoke(ContentParser, VAR.ctParser, "readBlockConsumers", [blk, jval.get("consumes")], Block, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                    jval.remove("consumes");
+                };
+                if(jval.has("requirements") && blk.buildVisibility === BuildVisibility.hidden) {
+                    blk.buildVisibility = BuildVisibility.shown;
+                };
+            }));
+        },
+
+
+        /**
+         * @param {UnitType} utp
+         * @param {Jval} jval
+         * @return {void}
+         */
+        parseController(utp, jval) {
+            if(jval.has("controller") || jval.has("aiController")) {
+                utp.aiController = Reflect.invoke(ContentParser, VAR.ctParser, "resolveController", [jval.getString("controller", jval.getString("aiController", ""))], JAVA.string);
+                jval.remove("controller");
+                jval.remove("aiController");
+            };
+            if(jval.has("defaultController")) {
+                let ctrlProv = Reflect.invoke(ContentParser, VAR.ctParser, "resolveController", [jval.getString("defaultController")], JAVA.string);
+                utp.controller = func(unit => ctrlProv.get());
+                jval.remove("defaultController");
+            };
+        },
+
+
+        /**
+         * @param {Planet} pla
+         * @param {Jval} jval
+         * @return {void}
+         */
+        parsePlanet(pla, jval) {
+            LCContentParser.read(run(() => {
+                // Mesh
+                if(jval.has("mesh") && !pla.delegee.skipMeshParse) {
+                    let mesh = jval.get("mesh");
+                    if(!mesh.isObject() && !mesh.isArray()) throw new Error("Failed to parse base mesh: " + pla);
+                    jval.remove("mesh");
+                    pla.meshLoader = prov(() => {
+                        let mesh_fi;
+                        try {
+                            mesh_fi = Reflect.invoke(ContentParser, VAR.ctParser, "parseMesh", [pla, mesh], Planet, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                        } catch(err) {
+                            console.err(err);
+                            mesh_fi = new ShaderSphereMesh(pla, Shaders.unlit, 2);
+                        };
+                        return mesh_fi;
+                    });
+                } else {
+                    jval.remove("mesh");
+                    pla.meshLoader = prov(() => pla.ex_getMesh());
+                };
+
+                // Cloud mesh
+                if(jval.has("cloudMesh") && !pla.skipCloudMeshParse) {
+                    let mesh = jval.get("cloudMesh");
+                    if(!mesh.isObject() && !mesh.isArray()) throw new Error("Failed to parse cloud mesh: " + pla);
+                    jval.remove("cloudMesh");
+                    pla.cloudMeshLoader = prov(() => {
+                        let mesh_fi;
+                        try {
+                            mesh_fi = Reflect.invoke(ContentParser, VAR.ctParser, "parseMesh", [pla, mesh], Planet, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                        } catch(err) {
+                            console.err(err);
+                            mesh_fi = null;
+                        };
+                        return mesh_fi;
+                    });
+                } else {
+                    jval.remove("cloudMesh");
+                    pla.cloudMeshLoader = prov(() => pla.ex_getCloudMesh());
+                };
+
+                // Generator
+                if(jval.has("generator") && !pla.skipGeneratorParse) {
+                    // TODO: Generator things, maybe for years.
+                } else {
+                    jval.remove("generator");
+                };
+            }));
+        },
+
+
+        /**
+         * @param {SectorPreset} sec
+         * @param {Jval} jval
+         * @return {void}
+         */
+        parseSector(sec, jval) {
+            if(!jval.has("sector") || !jval.get("sector").isNumber()) throw new Error("`sector` in a sector preset must be a number!");
+            LCContentParser.read(run(() => {
+                let pla = tryVal(sec.planet, Planets.serpulo);
+                if(jval.has("planet")) {
+                    pla = LCContentParser.locate(ContentType.planet, jval.getString("planet", "serpulo"));
+                    if(pla == null) throw new LCError.NullArgumentError(sec.name + ".planet");
+                    jval.remove("planet");
+                };
+                if(jval.has("sector")) {
+                    let prevSector = sec.sector;
+                    if(prevSector != null && prevSector.preset === sec) {
+                        prevSector.preset = null;
+                    };
+                    let secId = jval.getInt("sector", 0) % pla.sectors.size;
+                    sec.initialize(pla, secId, true);
+                    jval.remove("sector");
+                };
+                if(jval.has("rules")) {
+                    rules = jval.remove("rules");
+                    if(!rules.isObject()) throw new Error("`rules` in a sector preset must be an object!");
+                    sec.rules = rules0 => {
+                        try {
+                            JsonIO.json.readFiles(rules0, rules);
+                        } catch(err) {
+                            console.err("[LOVEC] Failed to load rules from sector preset:\n" + err);
+                        };
+                    };
+                };
+            }));
+        },
+
+
+        /**
+         * @param {UnlockableContent} ct
+         * @param {Jval} jval
+         * @param {string} name
+         * @return {void}
+         */
+        setField(ct, jval, name) {
+            ct[name] = LCContentParser.locate(ct.getContentType(), jval.getString(name, ""));
+            jval.remove(name);
+        },
+
+
+        /**
+         * @param {UnlockableContent} ct
+         * @param {Jval} jval
+         * @return {void}
+         */
+        setupFields(ct, jval) {
+            Reflect.set(ContentParser, VAR.ctParser, "currentContent", ct);
+            Reflect.set(ContentParser, VAR.ctParser, "currentMod", ct.minfo.mod);
+            LCContentParser.read(run(() => {
+                LCContentParser.readBundle(ct, jval);
+                LCContentParser.readFields(ct, jval);
+            }));
+        },
+
+
+    };
 
 
     /* <------------------------------ game ------------------------------> */

@@ -51,7 +51,7 @@
     /**
      * @private
      * @param {ENTITYJet} unit
-     * @return {void}
+     * @return {boolean}
      */
     function comp_canShoot(unit) {
         // Jet units can attack only when moving

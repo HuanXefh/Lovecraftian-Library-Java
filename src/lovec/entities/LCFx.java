@@ -14,7 +14,6 @@ import lovec.graphics.LCDrawf;
 import lovec.utils.LCPos;
 import lovec.utils.LCScript;
 import mindustry.Vars;
-import mindustry.ctype.UnlockableContent;
 import mindustry.entities.Effect;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
@@ -162,7 +161,7 @@ public class LCFx {
             NativeArray arr = LCScript.toArray(eff.data);
             float x = LCScript.toFloat(arr.get(0));
             float y = LCScript.toFloat(arr.get(1));
-            UnlockableContent ct = (UnlockableContent) arr.get(2);
+            Object ct = arr.get(2);
             boolean isOut = LCScript.toBoolean(arr.get(3));
 
             Tmp.v1.set(eff.x, eff.y).lerp(Tmp.v2.set(x, y), eff.fin(isOut ? Interp.pow5In : Interp.linear));

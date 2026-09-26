@@ -17,17 +17,8 @@
 */
 
 
-    /**
-     * @global
-     */
-    LCCompatibilityResolver = {
-
-
-        /** @type {boolean} */
-        isV8: Version.number === 8,
-
-
-    };
+    /** @global */
+    LCCompatibilityHandler = fetchClass("lovec.utils.LCCompatibilityHandler");
 
 
     /**
@@ -45,13 +36,7 @@
     };
 
 
-    // Why is MindustryX marked as v7???
-    if(fetchClass("mindustryX.VarsX", true) != null && Version.number === 7) {
-        LCCompatibilityResolver.isV8 = true;
-    };
-
-
-    if(LCCompatibilityResolver.isV8) {
+    if(LCCompatibilityHandler.isV8) {
         LoadShader = eval("Shaders.LoadShader");
         DarknessShader = eval("Shaders.DarknessShader");
         LightShader = eval("Shaders.LightShader");
@@ -70,4 +55,13 @@
         ShieldShader = eval("Shaders.ShieldShader");
         UnitArmorShader = eval("Shaders.UnitArmorShader");
         ShockwaveShader = eval("Shaders.ShockwaveShader");
+
+        Objective = eval("Objectives.Objective");
+        Research = eval("Objectives.Research");
+        Produce = eval("Objectives.Research");
+        OnPlanet = eval("Objectives.OnPlanet");
+        OnSector = eval("Objectives.OnSector");
+        SectorComplete = eval("Objectives.SectorComplete");
+    } else {
+        Objective = eval("UnlockCondition");
     };

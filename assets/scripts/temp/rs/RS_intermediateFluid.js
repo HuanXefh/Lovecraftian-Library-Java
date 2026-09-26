@@ -35,6 +35,7 @@
     /**
      * @private
      * @param {RSIntermediateFluid} liq
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(liq, stats) {
@@ -69,7 +70,7 @@
 
 
         /**
-         * `PARAM`: See {@link RS_intermediateItem}.
+         * `PARAM`: See {@link RS_intermediateItem#intmdParent}.
          * @override
          * @memberof RS_intermediateFluid
          * @instance
@@ -77,7 +78,7 @@
          */
         intmdParent: null,
         /**
-         * `PARAM`: See {@link RS_intermediateItem}.
+         * `PARAM`: See {@link RS_intermediateItem#extraIntmdParents}.
          * @override
          * @memberof RS_intermediateFluid
          * @instance
@@ -85,7 +86,7 @@
          */
         extraIntmdParents: tprov(() => []),
         /**
-         * `PARAM`: See {@link RS_intermediateItem}.
+         * `PARAM`: See {@link RS_intermediateItem#useParentReg}.
          * @override
          * @memberof RS_intermediateFluid
          * @instance
@@ -93,7 +94,7 @@
          */
         useParentReg: true,
         /**
-         * `PARAM`: See {@link RS_intermediateItem}.
+         * `PARAM`: See {@link RS_intermediateItem#recolorRegStr}.
          * @override
          * @memberof RS_intermediateFluid
          * @instance

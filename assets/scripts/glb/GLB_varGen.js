@@ -25,7 +25,7 @@
 
 
         /**
-         * Extra texture regions registered in {@link DB_misc}.
+         * Extra texture regions registered in {@link DB_misc.db.texture.icon}.
          * @type {Object<string, TextureRegion>}
          */
         exports.iconRegs = (function() {
@@ -38,7 +38,7 @@
 
 
         /**
-         * Extra drawable texture regions registered in {@link DB_misc}.
+         * Extra drawable texture regions registered in {@link DB_misc.db.texture.icon}.
          * @type {Object<string, TextureRegionDrawable>}
          */
         exports.icons = (function() {
@@ -51,7 +51,7 @@
 
 
         /**
-         * Extra noise textures registered in {@link DB_misc}.
+         * Extra noise textures registered in {@link DB_misc.db.texture.noise}.
          * @type {Object<string, Texture>}
          */
         exports.noiseTexs = (function() {
@@ -141,7 +141,7 @@
 
 
         /**
-         * Items in the sand group, see {@link DB_item}.
+         * Items in the sand group, see {@link DB_item.db.group.sand}.
          * @type {Array<Item>}
          */
         exports.sandItems = DB_item.db["group"]["sand"].map(name => MDL_content.getCt(name, ContentGetModes.RS)).compact();

@@ -55,6 +55,7 @@
     /**
      * @private
      * @param {ENVBaseTree} blk
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(blk, stats) {

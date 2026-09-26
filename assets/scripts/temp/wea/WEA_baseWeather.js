@@ -40,14 +40,14 @@
 
 
         /**
-         * `PARAM`: See {@link RS_baseResource}.
+         * `PARAM`: See {@link RS_baseResource#setupVanillaStat}.
          * @memberof WEA_baseWeather
          * @instance
          * @type {boolean}
          */
         setupVanillaStat: true,
         /**
-         * `PARAM`: See {@link RS_baseResource}.
+         * `PARAM`: See {@link RS_baseResource#setupVanillaProp}.
          * @memberof WEA_baseWeather
          * @instance
          * @type {boolean}
@@ -57,3 +57,21 @@
 
     })
     .setMethod({});
+
+
+    /**
+     * @override
+     * @memberof WEA_baseWeather
+     * @func
+     * @param {WEABaseWeather} wea
+     * @return {void}
+     */
+    module.exports.initContent = function(wea) {
+        this.super("initContent", wea);
+
+        let jval = LCContentParser.getJval(wea);
+        if(jval != null) {
+            LCContentParser.setupFields(wea, jval);
+        };
+
+    };

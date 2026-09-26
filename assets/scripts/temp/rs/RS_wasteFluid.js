@@ -22,6 +22,7 @@
     /**
      * @private
      * @param {RSWasteFluid} liq
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(liq, stats) {

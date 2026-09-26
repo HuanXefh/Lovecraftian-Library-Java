@@ -15,6 +15,7 @@
 
     /**
      * @typedef {TemplateInstance<Building, INTF_B_contentMultiSelector>} INTFBContentMultiSelector
+     * @prop {INTFBLKContentMultiSelector} block
      */
 
 
@@ -148,7 +149,7 @@
 
 
                     /**
-                     * `INTERNAL`
+                     * `INTERNAL`: See {@link INTF_BLK_contentSelector#selectionQueue}.
                      * @memberof INTF_BLK_contentMultiSelector
                      * @instance
                      * @type {TDynamic<Array<UnlockableContent>>}
@@ -166,7 +167,7 @@
 
 
             /**
-             * See {@link INTF_BLK_contentSelector}.
+             * See {@link INTF_BLK_contentSelector#ex_findSelectionTargets}.
              * @memberof INTF_BLK_contentMultiSelector
              * @instance
              * @func

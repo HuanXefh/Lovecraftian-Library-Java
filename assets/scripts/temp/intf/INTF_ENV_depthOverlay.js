@@ -46,6 +46,7 @@
     /**
      * @private
      * @param {INTFENVDepthOverlay} blk
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(blk, stats) {

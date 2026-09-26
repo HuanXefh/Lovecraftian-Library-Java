@@ -51,6 +51,7 @@
     /**
      * @private
      * @param {INTFENVDynamicSizeVent} blk
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(blk, stats) {
@@ -164,14 +165,14 @@
 
 
                 /**
-                 * `INTERNAL`
+                 * `INTERNAL`: Offsets for checking vent center.
                  * @memberof INTF_ENV_dynamicSizeVent
                  * @instance
                  * @type {Array<Point2>}
                  */
                 ventOffs: null,
                 /**
-                 * `INTERNAL`
+                 * `INTERNAL`: Offset for drawing vent.
                  * @memberof INTF_ENV_dynamicSizeVent
                  * @instance
                  * @type {number}

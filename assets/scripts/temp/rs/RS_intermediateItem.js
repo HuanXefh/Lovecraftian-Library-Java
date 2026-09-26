@@ -39,6 +39,7 @@
     /**
      * @private
      * @param {RSIntermediateItem} item
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(item, stats) {

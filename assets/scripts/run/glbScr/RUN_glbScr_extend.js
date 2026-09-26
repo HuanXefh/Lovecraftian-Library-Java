@@ -344,3 +344,24 @@
         processClassLoader(null, VAR.extendInd.planet);
         return pla;
     };
+
+
+    /**
+     * @Variant of {@link extendBase} for sector presets.
+     * @global
+     * @param {ContentTemplate} temp
+     * @param {string} nameSec
+     * @param {ExtendObject|unset} [objSec]
+     * @return {SectorPreset}
+     */
+    extendSector = function(temp, nameSec, objSec) {
+        processClassLoader(null, VAR.extendInd.sector);
+        objSec = extendBase.setupObj(temp, objSec);
+        /** @type {SectorPreset} */
+        let sec = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objSec, nameSec, Reflect.get(ContentLoader, Vars.content, "currentMod")));
+        extendBase.setupFields(temp, objSec);
+        temp.initContent(sec);
+        LCContentHandler.add(sec);
+        processClassLoader(null, VAR.extendInd.sector);
+        return sec;
+    };

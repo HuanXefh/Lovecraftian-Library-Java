@@ -136,7 +136,7 @@
 
 
     /**
-     * Shows extra information for a tile/building, see {@link DB_misc}.
+     * Shows extra information for a tile/building, see {@link DB_misc.db.block.extraInfo}.
      * @param {Tile|null} t
      * @return {void}
      */

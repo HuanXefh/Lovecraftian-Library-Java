@@ -231,6 +231,7 @@
         unit: 14,
         entity: 15,
         planet: 16,
+        sector: 17,
         tmi: 19,
     };
 

@@ -35,6 +35,7 @@
     /**
      * @private
      * @param {DBCTDatabaseContent} sta
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(sta, stats) {
@@ -123,7 +124,7 @@
 
 
         /**
-         * See {@link STA_baseStatus}.
+         * See {@link STA_baseStatus#ex_init}.
          * @memberof DBCT_databaseContent
          * @instance
          * @func
@@ -153,3 +154,21 @@
 
 
     });
+
+
+    /**
+     * @override
+     * @memberof DBCT_databaseContent
+     * @func
+     * @param {DBCTDatabaseContent} sta
+     * @return {void}
+     */
+    module.exports.initContent = function(sta) {
+        this.super("initContent", sta);
+
+        let jval = LCContentParser.getJval(sta);
+        if(jval != null) {
+            LCContentParser.parseResearch(sta, jval);
+            LCContentParser.setupFields(sta, jval);
+        };
+    };

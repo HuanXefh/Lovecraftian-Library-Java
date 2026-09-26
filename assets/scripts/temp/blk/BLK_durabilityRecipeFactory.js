@@ -16,7 +16,7 @@
 
 
   function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-    b.durabDecMtp = b.rc.durabDecMtp;
+    b.blk$durabDecMtp = b.rc.durabDecMtp;
   };
 
 

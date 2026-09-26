@@ -9,7 +9,7 @@
 
 
     /**
-     * @typedef {TemplateInstance<Weapon, WP_baseWeapon>} WPBaseWeapon
+     * @typedef {TemplateInstance<SectorPreset, SEC_baseSector>} SECBaseSector
      */
 
 
@@ -27,50 +27,51 @@
 
 
     /**
-     * Root of all weapons.
-     * @class WP_baseWeapon
+     * Root for all sector presets.
+     * @class SEC_baseSector
      * @extends CLS_contentTemplate
      */
     module.exports = newClass()
-    .extendClass(PARENT, "WP_baseWeapon")
+    .extendClass(PARENT, "SEC_baseSector")
     .initTemplate()
-    .setParent(Weapon)
+    .setParent(SectorPreset)
     .setTags()
     .setParam({
 
 
         /**
          * `PARAM`: See {@link RS_baseResource#setupVanillaStat}.
-         * @memberof WP_baseWeapon
+         * @memberof SEC_baseSector
          * @instance
          * @type {boolean}
          */
         setupVanillaStat: true,
         /**
          * `PARAM`: See {@link RS_baseResource#setupVanillaProp}.
-         * @memberof WP_baseWeapon
+         * @memberof SEC_baseSector
          * @instance
          * @type {boolean}
          */
         setupVanillaProp: true,
 
 
-        /* <------------------------------ vanilla ------------------------------> */
-
-
-        cooldownTime: -1.0,
-        parts: [],
-
-
     })
-    .setParamParser([
-        "cooldownTime", function(val) {
-            // Heat region cooldown time is calculated from reload by default
-            return val >= 0.0 ? val : Math.round(this.reload * 0.75);
-        },
-        "parts", function(val) {
-            // Defined as array and finally converted to seq
-            return tprov(() => val.get().toSeq());
-        },
-    ])
     .setMethod({});
+
+
+    /**
+     * @override
+     * @memberof SEC_baseSector
+     * @func
+     * @param {SECBaseSector} sec
+     * @return {void}
+     */
+    module.exports.initContent = function(sec) {
+        this.super("initContent", sec);
+
+        let jval = LCContentParser.getJval(sec);
+        if(jval != null) {
+            LCContentParser.parseSector(sec, jval);
+            LCContentParser.setupFields(sec, jval);
+        };
+    };

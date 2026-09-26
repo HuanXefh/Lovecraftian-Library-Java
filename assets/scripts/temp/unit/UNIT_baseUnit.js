@@ -76,6 +76,7 @@
     /**
      * @private
      * @param {UNITBaseUnit} utp
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(utp, stats) {
@@ -188,21 +189,21 @@
 
 
         /**
-         * `PARAM`: See {@link RS_baseResource}.
+         * `PARAM`: See {@link RS_baseResource#setupVanillaStat}.
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
          */
         setupVanillaStat: true,
         /**
-         * `PARAM`: See {@link RS_baseResource}.
+         * `PARAM`: See {@link RS_baseResource#setupVanillaProp}.
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
          */
         setupVanillaProp: true,
         /**
-         * `PARAM`: See {@link BLK_baseBlock}.
+         * `PARAM`: See {@link BLK_baseBlock#skipOutlineSetup}.
          * @memberof UNIT_baseUnit
          * @instance
          * @type {boolean}
@@ -510,6 +511,14 @@
      */
     module.exports.initContent = function(utp) {
         this.super("initContent", utp);
+
+        // Parse JSON
+        let jval = LCContentParser.getJval(utp);
+        if(jval != null) {
+            LCContentParser.parseResearch(utp, jval);
+            LCContentParser.parseController(utp, jval);
+            LCContentParser.setupFields(utp, jval);
+        };
 
         // Resolve entity mapping
         let entityVal = DB_unit.db["map"]["entity"]["type"].read(utp.delegee.entityName, UnitEntity);

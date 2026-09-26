@@ -22,6 +22,7 @@
     /**
      * @private
      * @param {RSWasteItem} item
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(item, stats) {

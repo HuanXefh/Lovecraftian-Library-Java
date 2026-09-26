@@ -118,7 +118,7 @@
 
 
       /**
-       * `PARAM`: Determines filter for valid targets. See {@link DB_misc}.
+       * `PARAM`: Determines filter for valid targets. See {@link DB_misc.db.block.nodeLinkFilter}.
        * @memberof BLK_wireNode
        * @instance
        */

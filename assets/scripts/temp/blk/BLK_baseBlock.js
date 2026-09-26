@@ -246,7 +246,7 @@
        */
       forceUseDrawer: false,
       /**
-       * `PARAM`: If true, outline parameters won't be overwritten by DB data. See {@link DB_unit}.
+       * `PARAM`: If true, outline parameters won't be overwritten by DB data. See {@link DB_unit.db.grpParam.outline}.
        * @memberof BLK_baseBlock
        * @instance
        */
@@ -270,19 +270,19 @@
        */
       payBuiltOnly: false,
       /**
-       * `PARAM`: Whether to skip loot spawning when building of this block is destroyed. Recommended to be set in {@link DB_block}.
+       * `PARAM`: Whether to skip loot spawning when building of this block is destroyed. Recommended to set this in {@link DB_block.db.group.noLoot}.
        * @memberof BLK_baseBlock
        * @instance
        */
       noLoot: false,
       /**
-       * `PARAM`: Whether reactions are ignored in this block. Recommended to be set in {@link DB_block}.
+       * `PARAM`: Whether reactions are ignored in this block. Recommended to set this in {@link DB_block.db.group.noReac}.
        * @memberof BLK_baseBlock
        * @instance
        */
       noReac: false,
       /**
-       * `PARAM`: Whether this block will short-circuit when soaked in puddles of aqueous liquid. Recommended to be set in {@link DB_block}.
+       * `PARAM`: Whether this block will short-circuit when soaked in puddles of aqueous liquid. Recommended to set this in {@link DB_block.db.group.shortCircuit}.
        * @memberof BLK_baseBlock
        * @instance
        */
@@ -737,11 +737,22 @@
   /**
    * @override
    * @memberof BLK_baseBlock
-   * @param {Block} blk
+   * @param {BLKBaseBlock} blk
    * @return {void}
    */
   module.exports[0].initContent = function(blk) {
-    this.super("initContent", blk);
+      this.super("initContent", blk);
 
-    if(!tryJsProp(blk, "skipOutlineSetup", false)) FRAG_faci.setupOutline(blk);
+      // Parse JSON
+      let jval = LCContentParser.getJval(blk);
+      if(jval != null) {
+          LCContentParser.parseResearch(blk, jval);
+          LCContentParser.parseBlock(blk, jval);
+          LCContentParser.setupFields(blk, jval);
+      };
+
+      // Setup outline
+      if(!tryJsProp(blk, "skipOutlineSetup", false)) {
+          FRAG_faci.setupOutline(blk);
+      };
   };

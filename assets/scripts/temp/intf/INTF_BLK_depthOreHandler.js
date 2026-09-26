@@ -5,52 +5,103 @@
 */
 
 
-  /* <---------- import ----------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  /* <---------- component ----------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_depthOreHandler>} INTFBLKDepthOreHandler
+     */
 
 
-  function comp_ex_findPlaceRsIcon(blk, tx, ty, rs) {
-    return blk.ex_isMiningDpore(tx, ty, rs) && !blk.ex_anyDporeRevealed(tx, ty, rs) ?
-      VARGEN.iconRegs.questionMark :
-      rs.fullIcon;
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_depthOreHandler>} INTFBDepthOreHandler
+     * @prop {INTFBLKDepthOreHandler} block
+     */
 
 
-  function comp_ex_findDporesInLinkedTiles(blk, tx, ty, rs) {
-    if(blk.skipDepthOreMethod) return Reflect.get(Block, "tempTiles").clear();
-    let t = Vars.world.tile(tx, ty);
-    if(t == null) return Reflect.get(Block, "tempTiles").clear();
-
-    return t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).removeAll(
-      ot => (rs instanceof Item || rs === "item") ?
-        ((rs !== "item" && ot.overlay().itemDrop !== rs) || !MDL_cond.isDepthOre(ot.overlay())) :
-        (!MDL_cond.isDepthLiquid(ot.overlay()) || (rs !== "liquid" && ot.overlay().ex_getRsDrop() !== rs))
-    );
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_ex_calcDpLvlReq(blk, tx, ty, rs) {
-    let val = 0, tmpVal = 0;
-    blk.ex_findDporesInLinkedTiles(tx, ty, rs).each(ot => {
-      tmpVal = ot.overlay().delegee.depthLvl;
-      if(tmpVal > val) {
-        val = tmpVal;
-      };
-    });
-    return val;
-  };
+    /**
+     * @private
+     * @param {INTFBLKDepthOreHandler} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {Resource} rs
+     * @return {TextureRegion}
+     */
+    function comp_ex_findPlaceRsIcon(blk, tx, ty, rs) {
+        return blk.ex_isMiningDpore(tx, ty, rs) && !blk.ex_anyDporeRevealed(tx, ty, rs) ?
+            VARGEN.iconRegs.questionMark :
+            rs.fullIcon;
+    };
 
 
-  function comp_ex_isMiningDpore(blk, tx, ty, rs) {
-    return blk.ex_findDporesInLinkedTiles(tx, ty, rs).size > 0;
-  };
+    /**
+     * @private
+     * @param {INTFBLKDepthOreHandler} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {Resource} rs
+     * @return {Seq<Tile>}
+     */
+    function comp_ex_findDporesInLinkedTiles(blk, tx, ty, rs) {
+        if(blk.skipDepthOreMethod) return Reflect.get(Block, "tempTiles").clear();
+        let t = Vars.world.tile(tx, ty);
+        if(t == null) return Reflect.get(Block, "tempTiles").clear();
+
+        return t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).removeAll(
+            ot => rs instanceof Item || rs === "item" ?
+                (rs !== "item" && ot.overlay().itemDrop !== rs) || !MDL_cond.isDepthOre(ot.overlay()) :
+                !MDL_cond.isDepthLiquid(ot.overlay()) || (rs !== "liquid" && ot.overlay().ex_getRsDrop() !== rs)
+        );
+    };
 
 
-  function comp_ex_anyDporeRevealed(blk, tx, ty, rs) {
-    return blk.ex_findDporesInLinkedTiles(tx, ty, rs).find(ot => tryFun(ot.overlay().ex_accRevealed, ot.overlay(), true, ot, "read")) != null;
-  };
+    /**
+     * @private
+     * @param {INTFBLKDepthOreHandler} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {Resource} rs
+     * @return {number}
+     */
+    function comp_ex_calcDpLvlReq(blk, tx, ty, rs) {
+        let val = 0, tmpVal = 0;
+        blk.ex_findDporesInLinkedTiles(tx, ty, rs).each(ot => {
+            tmpVal = ot.overlay().delegee.depthLvl;
+            if(tmpVal > val) {
+                val = tmpVal;
+            };
+        });
+        return val;
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBLKDepthOreHandler} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {Resource} rs
+     * @return {boolean}
+     */
+    function comp_ex_isMiningDpore(blk, tx, ty, rs) {
+        return blk.ex_findDporesInLinkedTiles(tx, ty, rs).size > 0;
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBLKDepthOreHandler} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {Resource} rs
+     * @return {boolean}
+     */
+    function comp_ex_anyDporeRevealed(blk, tx, ty, rs) {
+        return blk.ex_findDporesInLinkedTiles(tx, ty, rs).find(ot => tryFun(ot.overlay().ex_accRevealed, ot.overlay(), true, ot, "read")) != null;
+    };
 
 
 /*
@@ -60,124 +111,137 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles utility methods related to depth ore.
-     * @class INTF_BLK_depthOreHandler
-     */
-    new CLS_interface("INTF_BLK_depthOreHandler", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Whether to skip methods here.
-         * @memberof INTF_BLK_depthOreHandler
-         * @instance
+         * Handles utility methods related to depth ore.
+         * @class INTF_BLK_depthOreHandler
          */
-        skipDepthOreMethod: false,
+        new CLS_interface("INTF_BLK_depthOreHandler", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      /**
-       * @override
-       * @memberof INTF_BLK_depthOreHandler
-       * @instance
-       * @param {number} tx
-       * @param {number} ty
-       * @param {Resource} rs
-       * @return {TextureRegion}
-       */
-      ex_findPlaceRsIcon: function(tx, ty, rs) {
-        return comp_ex_findPlaceRsIcon(this, tx, ty, rs);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-        argLen: 3,
-      }),
+                    /**
+                     * `PARAM`: Whether to skip methods related to depth ore.
+                     * @memberof INTF_BLK_depthOreHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    skipDepthOreMethod: false,
 
 
-      /**
-       * @memberof INTF_BLK_depthOreHandler
-       * @instance
-       * @param {number} tx
-       * @param {number} ty
-       * @param {Resource} rs
-       * @return {Array<Tile>}
-       */
-      ex_findDporesInLinkedTiles: function(tx, ty, rs) {
-        return comp_ex_findDporesInLinkedTiles(this, tx, ty, rs);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 3,
-      }),
+                };
+            },
 
 
-      /**
-       * @memberof INTF_BLK_depthOreHandler
-       * @instance
-       * @param {number} tx
-       * @param {number} ty
-       * @param {Resource} rs
-       * @return {number}
-       */
-      ex_calcDpLvlReq: function(tx, ty, rs) {
-        return comp_ex_calcDpLvlReq(this, tx, ty, rs);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 3,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof INTF_BLK_depthOreHandler
+             * @instance
+             * @func
+             * @param {number} tx
+             * @param {number} ty
+             * @param {Resource} rs
+             * @return {TextureRegion}
+             */
+            ex_findPlaceRsIcon: function(tx, ty, rs) {
+                return comp_ex_findPlaceRsIcon(this, tx, ty, rs);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+                argLen: 3,
+            }),
 
 
-      /**
-       * @memberof INTF_BLK_depthOreHandler
-       * @instance
-       * @param {number} tx
-       * @param {number} ty
-       * @param {Resource} rs
-       * @return {boolean}
-       */
-      ex_isMiningDpore: function(tx, ty, rs) {
-        return comp_ex_isMiningDpore(this, tx, ty, rs);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 3,
-      }),
+            /**
+             * Gets tiles that have depth overlay for given resource.
+             * @memberof INTF_BLK_depthOreHandler
+             * @instance
+             * @func
+             * @param {number} tx
+             * @param {number} ty
+             * @param {Resource} rs
+             * @return {Array<Tile>}
+             */
+            ex_findDporesInLinkedTiles: function(tx, ty, rs) {
+                return comp_ex_findDporesInLinkedTiles(this, tx, ty, rs);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 3,
+            }),
 
 
-      /**
-       * @memberof INTF_BLK_depthOreHandler
-       * @instance
-       * @param {number} tx
-       * @param {number} ty
-       * @param {Resource} rs
-       * @return {boolean}
-       */
-      ex_anyDporeRevealed: function(tx, ty, rs) {
-        return comp_ex_anyDporeRevealed(this, tx, ty, rs);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 3,
-      }),
+            /**
+             * Calculates depth level for given resource.
+             * @memberof INTF_BLK_depthOreHandler
+             * @instance
+             * @func
+             * @param {number} tx
+             * @param {number} ty
+             * @param {Resource} rs
+             * @return {number}
+             */
+            ex_calcDpLvlReq: function(tx, ty, rs) {
+                return comp_ex_calcDpLvlReq(this, tx, ty, rs);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 3,
+            }),
 
 
-    }),
+            /**
+             * Checks if there's any depth overlay for given resource.
+             * @memberof INTF_BLK_depthOreHandler
+             * @instance
+             * @func
+             * @param {number} tx
+             * @param {number} ty
+             * @param {Resource} rs
+             * @return {boolean}
+             */
+            ex_isMiningDpore: function(tx, ty, rs) {
+                return comp_ex_isMiningDpore(this, tx, ty, rs);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 3,
+            }),
 
 
-    /**
-     * @class INTF_B_depthOreHandler
-     */
-    new CLS_interface("INTF_B_depthOreHandler", {}),
+            /**
+             * Checks if there's any revealed depth overlay for given resource.
+             * @memberof INTF_BLK_depthOreHandler
+             * @instance
+             * @func
+             * @param {number} tx
+             * @param {number} ty
+             * @param {Resource} rs
+             * @return {boolean}
+             */
+            ex_anyDporeRevealed: function(tx, ty, rs) {
+                return comp_ex_anyDporeRevealed(this, tx, ty, rs);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 3,
+            }),
 
 
-  ];
+        }),
+
+
+        /**
+         * @class INTF_B_depthOreHandler
+         */
+        new CLS_interface("INTF_B_depthOreHandler", {}),
+
+
+    ];

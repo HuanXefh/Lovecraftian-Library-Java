@@ -26,6 +26,8 @@
      */
     function comp_init(item) {
         if(item.setupVanillaProp) {
+            // noinspection JSValidateTypes
+            /** @type {number} */
             let hardness = LCDBFileHandler.read("item-hardness", item, -1.0);
             if(hardness >= 0.0) {
                 item.hardness = hardness;
@@ -37,6 +39,7 @@
     /**
      * @private
      * @param {RSBaseItem} item
+     * @param {Stats} stats
      * @return {void}
      */
     function comp_setStats(item, stats) {
@@ -125,3 +128,21 @@
 
 
     });
+
+
+    /**
+     * @override
+     * @memberof RS_baseItem
+     * @func
+     * @param {RSBaseItem} item
+     * @return {void}
+     */
+    module.exports.initContent = function(item) {
+        this.super("initContent", item);
+
+        let jval = LCContentParser.getJval(item);
+        if(jval != null) {
+            LCContentParser.parseResearch(item, jval);
+            LCContentParser.setupFields(item, jval);
+        };
+    };

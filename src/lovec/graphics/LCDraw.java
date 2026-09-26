@@ -7,10 +7,10 @@ import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Nullable;
 import arc.util.pooling.Pools;
+import lovec.utils.LCCompatibilityHandler;
 import lovec.utils.LCPos;
 import mindustry.gen.Building;
 import mindustry.Vars;
-import mindustry.ctype.UnlockableContent;
 import mindustry.graphics.Layer;
 
 /**
@@ -358,25 +358,26 @@ public class LCDraw {
     /**
      * Draws content icon.
      */
-    public static void content(float x, float y, @Nullable UnlockableContent ct, float size, float ang, float z) {
+    public static void content(float x, float y, @Nullable Object ct, float size, float ang, float z) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
 
+        TextureRegion fullIcon = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
         float
-            w = size * Vars.tilesize * (ct.fullIcon.width > ct.fullIcon.height ? 1f : ((float) ct.fullIcon.width / ct.fullIcon.height)),
-            h = size * Vars.tilesize * (ct.fullIcon.height > ct.fullIcon.width ? 1f : ((float) ct.fullIcon.height / ct.fullIcon.width));
+            w = size * Vars.tilesize * (fullIcon.width > fullIcon.height ? 1f : ((float) fullIcon.width / fullIcon.height)),
+            h = size * Vars.tilesize * (fullIcon.height > fullIcon.width ? 1f : ((float) fullIcon.height / fullIcon.width));
 
         processZ(z, ICON_REGION_Z_IND);
-        Draw.rect(ct.fullIcon, x, y, w, h, ang);
+        Draw.rect(fullIcon, x, y, w, h, ang);
         processZ(-1f, ICON_REGION_Z_IND);
     };
     // Overload
-    public static void content(float x, float y, @Nullable UnlockableContent ct, float size, float ang) {
+    public static void content(float x, float y, @Nullable Object ct, float size, float ang) throws NoSuchFieldException, IllegalAccessException {
         content(x, y, ct, size, ang, -1f);
     };
-    public static void content(float x, float y, @Nullable UnlockableContent ct, float size) {
+    public static void content(float x, float y, @Nullable Object ct, float size) throws NoSuchFieldException, IllegalAccessException {
         content(x, y, ct, size, 0f);
     };
-    public static void content(float x, float y, @Nullable UnlockableContent ct) {
+    public static void content(float x, float y, @Nullable Object ct) throws NoSuchFieldException, IllegalAccessException {
         content(x, y, ct, 1f);
     };
 
@@ -384,18 +385,21 @@ public class LCDraw {
     /**
      * Variant of {@link #content} that usually used for {@link Building#drawSelect}, like in drills.
      */
-    public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size, float wScl) {
+    public static void contentIcon(float x, float y, @Nullable Object ct, float size, float wScl) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        regionIcon(x, y, ct.fullIcon, size, wScl);
+        TextureRegion fullIcon = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
+        regionIcon(x, y, fullIcon, size, wScl);
     };
     // Overload
-    public static void contentIcon(float x, float y, @Nullable UnlockableContent ct, float size) {
+    public static void contentIcon(float x, float y, @Nullable Object ct, float size) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        regionIcon(x, y, ct.fullIcon, size);
+        TextureRegion fullIcon = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
+        regionIcon(x, y, fullIcon, size);
     };
-    public static void contentIcon(float x, float y, @Nullable UnlockableContent ct) {
+    public static void contentIcon(float x, float y, @Nullable Object ct) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        regionIcon(x, y, ct.fullIcon);
+        TextureRegion fullIcon = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
+        regionIcon(x, y, fullIcon);
     };
 
 

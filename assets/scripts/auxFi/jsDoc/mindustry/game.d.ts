@@ -8,12 +8,13 @@ declare class Rules {}
 declare class CampaignRules {}
 /** mindustry.game.Difficulty */
 declare class Difficulty {
-    static casual: Difficulty;
-    static easy: Difficulty;
-    static normal: Difficulty;
-    static hard: Difficulty;
-    static eradication: Difficulty;
+    static readonly casual: Difficulty;
+    static readonly easy: Difficulty;
+    static readonly normal: Difficulty;
+    static readonly hard: Difficulty;
+    static readonly eradication: Difficulty;
 
+    name: string
     enemyHealthMultiplier: number;
     enemySpawnMultiplier: number;
     waveTimeMultiplier: number;
@@ -124,6 +125,54 @@ declare class Universe {}
 /** mindustry.game.FogControl */
 declare class FogControl implements SaveFileReader.CustomChunk {}
 interface FogControl extends SaveFileReader.CustomChunk {}
+
+
+/** mindustry.game.conditions */
+interface UnlockCondition {
+    complete(): boolean
+    display(): string
+    build(tb: Table): void
+}
+/** mindustry.game.Research */
+declare class Research implements UnlockCondition {
+    content: UnlockableContent;
+
+    constructor()
+    constructor(ct: UnlockableContent)
+}
+interface Research extends UnlockCondition {}
+/** mindustry.game.Produce */
+declare class Produce implements UnlockCondition {
+    content: UnlockableContent;
+
+    constructor()
+    constructor(ct: UnlockableContent)
+}
+interface Produce extends UnlockCondition {}
+/** mindustry.game.OnPlanet */
+declare class OnPlanet implements UnlockCondition {
+    planet: Planet;
+
+    constructor()
+    constructor(pla: Planet)
+}
+interface OnPlanet extends UnlockCondition {}
+/** mindustry.game.OnSector */
+declare class OnSector implements UnlockCondition {
+    preset: SectorPreset;
+
+    constructor()
+    constructor(sec: SectorPreset)
+}
+interface OnSector extends UnlockCondition {}
+/** mindustry.game.SectorComplete */
+declare class SectorComplete implements UnlockCondition {
+    preset: SectorPreset;
+
+    constructor()
+    constructor(sec: SectorPreset)
+}
+interface SectorComplete extends UnlockCondition {}
 
 
 /** mindustry.game.MapObjectives */

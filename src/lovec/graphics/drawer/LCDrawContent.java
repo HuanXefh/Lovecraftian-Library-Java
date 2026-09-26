@@ -7,7 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.util.Tmp;
 import lovec.annotation.JSONTypeClass;
 import lovec.annotation.NoJSON;
-import mindustry.ctype.UnlockableContent;
+import lovec.utils.LCCompatibilityHandler;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 
@@ -19,10 +19,13 @@ public class LCDrawContent extends LCDrawer {
 
 
     public float regScl = 1f;
-    public UnlockableContent content;
-    public @NoJSON Func<Building, UnlockableContent> contentF;
+    public Object content;
+    public @NoJSON Func<Building, Object> contentF;
     public Color color;
     public @NoJSON Func<Building, Color> colorF;
+
+    private Object lastCt;
+    private TextureRegion lastReg;
 
 
     @Override
@@ -39,17 +42,26 @@ public class LCDrawContent extends LCDrawer {
     @Override
     public void draw(Building b) {
         if(contentF == null) return;
-        UnlockableContent ct = contentF.get(b);
+        Object ct = contentF.get(b);
         if(ct == null) return;
 
-        TextureRegion reg = ct.fullIcon;
+        if(ct != lastCt) {
+            try {
+                lastReg = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
+                lastCt = ct;
+            } catch(Exception err) {
+                lastReg = null;
+            };
+        };
+        if(lastReg == null) return;
+
         calcRotatedOff(Tmp.v1, b.rotation).add(b);
         if(colorF == null) {
-            Draw.rect(reg, Tmp.v1.x, Tmp.v1.y, reg.width * reg.scl() * regScl, reg.height * reg.scl() * regScl, calcAng(b.rotation));
+            Draw.rect(lastReg, Tmp.v1.x, Tmp.v1.y, lastReg.width * lastReg.scl() * regScl, lastReg.height * lastReg.scl() * regScl, calcAng(b.rotation));
         } else {
             Tmp.c1.set(colorF.get(b));
             Draw.color(Tmp.c1, Tmp.c1.a);
-            Draw.rect(reg, Tmp.v1.x, Tmp.v1.y, reg.width * reg.scl() * regScl, reg.height * reg.scl() * regScl, calcAng(b.rotation));
+            Draw.rect(lastReg, Tmp.v1.x, Tmp.v1.y, lastReg.width * lastReg.scl() * regScl, lastReg.height * lastReg.scl() * regScl, calcAng(b.rotation));
             Draw.color();
         };
     };

@@ -23,7 +23,7 @@
      * @private
      * @param {BULBaseBullet} btp
      * @param {Bullet} bul
-     * @param {e} Hitboxc
+     * @param {Hitboxc} e
      * @param {number} health
      * @return {void}
      */
