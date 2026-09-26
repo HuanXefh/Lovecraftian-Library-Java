@@ -5,14 +5,14 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_basePowerTransmitter");
   const INTF = require("lovec/temp/intf/INTF_BLK_wireDamageInducer");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_init(blk) {

@@ -5,13 +5,13 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseStorageBlock");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_warmup(b) {

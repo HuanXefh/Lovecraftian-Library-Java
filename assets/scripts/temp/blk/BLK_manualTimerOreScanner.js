@@ -5,14 +5,14 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_oreScanner");
   const INTF = require("lovec/temp/intf/INTF_BLK_manualTimerBlock");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_buildConfiguration(b, tb) {

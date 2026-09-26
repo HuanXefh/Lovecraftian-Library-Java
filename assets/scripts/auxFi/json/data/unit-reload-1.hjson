@@ -1,17 +1,17 @@
-/* <---------- Aquarion ----------> */
+/* <------------------------------ Aquarion ------------------------------> */
 
 aquarion-reave: [1]
 
-/* <---------- Asthosus ----------> */
+/* <------------------------------ Asthosus ------------------------------> */
 
 asthosus-16p-05-expound: [4]
 
-/* <---------- Azimuth ----------> */
+/* <------------------------------ Azimuth ------------------------------> */
 
 azimut-Whale: [0, 1]
 azimut-Cthulhu: [0]
 
-/* <---------- Deep Space ----------> */
+/* <------------------------------ Deep Space ------------------------------> */
 
 ice-unit_fuFire: [2, 3]
 ice-unit_huaFire: [2, 3]
@@ -25,7 +25,7 @@ ice-unit_abyssPrison: [4, 5]
 ice-unit_ipsiglon: [4]
 ice-unit_fearless: [2]
 
-/* <---------- Exogenesis (old) ----------> */
+/* <------------------------------ Exogenesis (old) ------------------------------> */
 
 exogenesis-T-atlas: [0]
 exogenesis-apotheosis: [10]
@@ -35,16 +35,16 @@ exogenesis-collapse: [0]
 exogenesis-magnapinna: [2, 3]
 exogenesis-xenoct: [6, 7]
 
-/* <---------- Magic ----------> */
+/* <------------------------------ Magic ------------------------------> */
 
 magic-Ember: [2, 3]
 magic-StarrySky: [0, 1, 2, 3]
 
-/* <---------- New Horizon ----------> */
+/* <------------------------------ New Horizon ------------------------------> */
 
 new-horizon-macrophage: [3]
 
-/* <---------- Sapphirium ----------> */
+/* <------------------------------ Sapphirium ------------------------------> */
 
 sapphirium-snowstorm: [2]
 sapphirium-shriek: [0]

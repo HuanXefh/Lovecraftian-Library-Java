@@ -390,13 +390,13 @@ const db = {
 
                 LandingPad, (blk, isDrillTime, ct) => blk.cooldownTime,
 
-                /* <---------- Carpe Diem ----------> */
+                /* <------------------------------ Carpe Diem ------------------------------> */
 
                 fetchClass("carpediem.world.blocks.power.ThermalConsumeGenerator", true), (blk, isDrillTime, ct) => blk.itemDuration,
 
                 fetchClass("carpediem.world.blocks.payloads.PayloadBurner", true), (blk, isDrillTime, ct) => blk.burnDuration,
 
-                /* <---------- New Horizon ----------> */
+                /* <------------------------------ New Horizon ------------------------------> */
 
                 fetchClass("newhorizon.expand.block.special.HyperReactor", true), (blk, isDrillTime, ct) => blk.itemDuration,
                 fetchClass("newhorizon.expand.block.power.MultiBlockConsumeGenerator", true), (blk, isDrillTime, ct) => blk.itemDuration * blk.itemDurationMultipliers.get(ct, 1.0),
@@ -783,11 +783,11 @@ const db = {
 
                     "BLK_recipeFactory",
 
-                    /* <---------- Carpe Diem ----------> */
+                    /* <------------------------------ Carpe Diem ------------------------------> */
 
                     fetchClass("carpediem.world.blocks.crafting.RecipeCrafter", true),
 
-                    /* <---------- MultiCrafter ----------> */
+                    /* <------------------------------ MultiCrafter ------------------------------> */
 
                     fetchClass("dev.jojofr.multicrafter.MultiCrafterBlock", true),
 
@@ -846,7 +846,7 @@ const db = {
 
                     BaseTurret,
 
-                    /* <---------- New Horizon ----------> */
+                    /* <------------------------------ New Horizon ------------------------------> */
 
                     fetchClass("newhorizon.expand.block.defence.FireExtinguisher", true),
                     fetchClass("newhorizon.expand.block.defence.ShockwaveGenerator", true),

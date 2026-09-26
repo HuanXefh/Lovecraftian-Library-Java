@@ -5,14 +5,14 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseStorageBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_powerProducer");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_updateTile(b) {

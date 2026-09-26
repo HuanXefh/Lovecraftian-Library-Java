@@ -5,7 +5,7 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_liquidPump");
@@ -14,7 +14,7 @@
   const INTF_B = require("lovec/temp/intf/INTF_BLK_oreScannerHandler");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_load(blk) {

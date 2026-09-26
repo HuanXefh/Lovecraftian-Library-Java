@@ -5,14 +5,14 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseLogicBlock");
   const INTF = require("lovec/temp/intf/INTF_BLK_mapBlock");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_updateTile(b) {

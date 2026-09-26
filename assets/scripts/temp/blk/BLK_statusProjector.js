@@ -5,14 +5,14 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseProjector");
   const INTF = require("lovec/temp/intf/INTF_BLK_radiusDisplay");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_init(blk) {

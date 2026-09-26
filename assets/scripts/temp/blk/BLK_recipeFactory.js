@@ -5,7 +5,7 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseFactory");
@@ -13,13 +13,13 @@
   const INTF_A = require("lovec/temp/intf/INTF_BLK_recipeHandler");
 
 
-  /* <---------- auxiliary ----------> */
+  /* <------------------------------ auxiliary ------------------------------> */
 
 
   const tmpIntfs = [];
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_init(blk) {

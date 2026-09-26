@@ -5,14 +5,14 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_recipeFactory");
   const INTF = require("lovec/temp/intf/INTF_BLK_durabilityBlock");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_ex_loadRcParam(b, rcMdl, rcHeader) {

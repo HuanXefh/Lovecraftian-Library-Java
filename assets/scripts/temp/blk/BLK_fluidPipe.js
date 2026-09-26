@@ -5,7 +5,7 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseFluidDistributor");
@@ -13,7 +13,7 @@
   const INTF_A = require("lovec/temp/intf/INTF_BLK_transportBlockSideDisplay");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_init(blk) {

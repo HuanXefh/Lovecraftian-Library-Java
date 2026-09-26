@@ -16,7 +16,7 @@
     const PARENT = require("lovec/temp/sta/DBCT_databaseContent");
 
 
-    /* <---------- component ----------> */
+    /* <------------------------------ component ------------------------------> */
 
 
     /**

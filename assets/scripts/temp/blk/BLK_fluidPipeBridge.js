@@ -5,14 +5,14 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_baseFluidDistributor");
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureBlock");
 
 
-  /* <---------- auxiliary ----------> */
+  /* <------------------------------ auxiliary ------------------------------> */
 
 
   let
@@ -23,7 +23,7 @@
     rot_f;
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_updateTile(b) {

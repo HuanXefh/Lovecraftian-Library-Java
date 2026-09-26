@@ -5,7 +5,7 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = CLS_contentTemplate;
@@ -14,7 +14,7 @@
   const INTF_B = require("lovec/temp/intf/INTF_BLK_buildingRecacheHandler");
 
 
-  /* <---------- auxiliary ----------> */
+  /* <------------------------------ auxiliary ------------------------------> */
 
 
   function buildIo(tb, rsStacks, craftTime) {
@@ -29,7 +29,7 @@
   };
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_init(blk) {

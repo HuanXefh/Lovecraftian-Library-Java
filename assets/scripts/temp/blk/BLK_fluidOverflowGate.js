@@ -5,14 +5,14 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_fluidRouter");
   const INTF = require("lovec/temp/intf/INTF_BLK_pressureBlock");
 
 
-  /* <---------- auxiliary ----------> */
+  /* <------------------------------ auxiliary ------------------------------> */
 
 
   /**
@@ -21,7 +21,7 @@
   const FULL_THRESHOLD = 0.9;
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_init(blk) {

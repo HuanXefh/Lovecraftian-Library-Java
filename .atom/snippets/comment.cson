@@ -12,8 +12,4 @@
 
     'splitter comment':
         prefix: 'lc_split'
-        body: '/* <---------- ${1:name} ----------> */'
-
-    'long splitter comment':
-        prefix: 'lc_splitlong'
         body: '/* <------------------------------ ${1:name} ------------------------------> */'

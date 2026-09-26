@@ -5,7 +5,7 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_furnaceRecipeFactory");
@@ -13,7 +13,7 @@
   const INTF_A = require("lovec/temp/intf/INTF_BLK_fluidHeatAcceptor");
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
 /*

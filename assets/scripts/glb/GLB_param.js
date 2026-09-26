@@ -104,7 +104,7 @@
             shouldLoadParam = false;
 
 
-            /* <---------- param ----------> */
+            /* <------------------------------ param ------------------------------> */
 
 
             /** @type {string|null} */
@@ -121,7 +121,7 @@
             exports.GLOBAL_HEAT = global.lovecUtil.fun.calcGlbHeat();
 
 
-            /* <---------- setting ----------> */
+            /* <------------------------------ setting ------------------------------> */
 
 
             /** @type {boolean} */

@@ -11,14 +11,14 @@ titan: true
 afflict: true
 scathe: true
 
-/* <---------- Aquarion ----------> */
+/* <------------------------------ Aquarion ------------------------------> */
 
 aquarion-truncate: true
 aquarion-vector: true
 aquarion-thrash: true
 aquarion-flagellate: true
 
-/* <---------- Asthosus ----------> */
+/* <------------------------------ Asthosus ------------------------------> */
 
 asthosus-03c-01-catapult: true
 asthosus-03c-04-skip: true
@@ -30,7 +30,7 @@ asthosus-03c-13-instauro: true
 asthosus-03c-20-draysten-mortar: true
 asthosus-23w-01-fracture: true
 
-/* <---------- Azimuth ----------> */
+/* <------------------------------ Azimuth ------------------------------> */
 
 azimut-yongsin: true
 azimut-priority: true
@@ -39,7 +39,7 @@ azimut-jannabi: true
 azimut-retray: true
 azimut-seraphim: true
 
-/* <---------- New Horizon ----------> */
+/* <------------------------------ New Horizon ------------------------------> */
 
 new-horizon-hive: true
 new-horizon-ancient-artillery: true
@@ -56,7 +56,7 @@ new-horizon-pulse: true
 new-horizon-bombard: true
 new-horizon-electro: true
 
-/* <---------- Saturation Firepower ----------> */
+/* <------------------------------ Saturation Firepower ------------------------------> */
 
 sfire-mod-gaosi: true
 sfire-mod-liebao: true
@@ -74,7 +74,7 @@ sfire-mod-luolong: true
 sfire-mod-defense-platform-nuke: true
 sfire-mod-defense-platform-plasma: true
 
-/* <---------- Vanilla Expansion ----------> */
+/* <------------------------------ Vanilla Expansion ------------------------------> */
 
 ve-burst: true
 ve-halberd: true

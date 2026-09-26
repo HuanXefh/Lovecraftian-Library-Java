@@ -5,7 +5,7 @@
 */
 
 
-  /* <---------- import ----------> */
+  /* <------------------------------ import ------------------------------> */
 
 
   const PARENT = require("lovec/temp/blk/BLK_consumeGenerator");
@@ -13,13 +13,13 @@
   const INTF_A = require("lovec/temp/intf/INTF_BLK_rangeDisplay");
 
 
-  /* <---------- auxiliary ----------> */
+  /* <------------------------------ auxiliary ------------------------------> */
 
 
   const POW_PROD_SCL = 1.35;
 
 
-  /* <---------- component ----------> */
+  /* <------------------------------ component ------------------------------> */
 
 
   function comp_init(blk) {

@@ -7,7 +7,7 @@ anthicus: [0, 1]
 collaris: [0, 1]
 obviate: [0]
 
-/* <---------- Aquarion ----------> */
+/* <------------------------------ Aquarion ------------------------------> */
 
 aquarion-cyprin: [0, 1]
 aquarion-bulwark: [0]
@@ -25,7 +25,7 @@ aquarion-verglas: [0]
 aquarion-endure: [0, 1]
 aquarion-gerb-concussor: [0]
 
-/* <---------- Asthosus ----------> */
+/* <------------------------------ Asthosus ------------------------------> */
 
 asthosus-14n-01-shiv: [2]
 asthosus-14n-04-apex: [0, 1]
@@ -42,7 +42,7 @@ asthosus-17q-06-clitelle: [0]
 asthosus-barite-elder: [0]
 asthosus-barite-stalker: [0]
 
-/* <---------- Azimuth ----------> */
+/* <------------------------------ Azimuth ------------------------------> */
 
 azimut-Legate: [0]
 azimut-Paladin: [2]
@@ -58,7 +58,7 @@ azimut-Whale: [2, 3]
 azimut-Cthulhu: [1, 2]
 azimut-Neptune: [0]
 
-/* <---------- Deep Space ----------> */
+/* <------------------------------ Deep Space ------------------------------> */
 
 ice-unit_hold: [0, 1]
 ice-unit_deathOath: [0, 1]
@@ -99,7 +99,7 @@ ice-unit_fearless: [0, 1]
 ice-unit_aurora: [4]
 ice-unit_emptiness: [12]
 
-/* <---------- Exogenesis (old) ----------> */
+/* <------------------------------ Exogenesis (old) ------------------------------> */
 
 exogenesis-T-atlas: [1, 2]
 exogenesis-T-nemesis: [0, 1]
@@ -124,7 +124,7 @@ exogenesis-toxicity: [0]
 exogenesis-war: [0]
 exogenesis-xenoct: [4, 5]
 
-/* <---------- Magical ----------> */
+/* <------------------------------ Magical ------------------------------> */
 
 magic-drizzle: [0]
 magic-drizzlingRain: [0]
@@ -147,7 +147,7 @@ magic-Aoba: [0]
 magic-MoonRise: [0, 1]
 magic-StarrySky: [4]
 
-/* <---------- New Horizon ----------> */
+/* <------------------------------ New Horizon ------------------------------> */
 
 new-horizon-longinus: [0]
 new-horizon-hurricane: [7]
@@ -159,13 +159,13 @@ new-horizon-macrophage: [0]
 new-horizon-laugra: [4]
 new-horizon-pester: [6]
 
-/* <---------- Omaloon ----------> */
+/* <------------------------------ Omaloon ------------------------------> */
 
 omaloon-collector: [0]
 omaloon-praetorian: [0, 1]
 omaloon-sage: [0]
 
-/* <---------- Sapphirium ----------> */
+/* <------------------------------ Sapphirium ------------------------------> */
 
 sapphirium-snowstorm: [0, 1]
 sapphirium-cold-blood: [2]
@@ -187,7 +187,7 @@ sapphirium-gaze: [5, 6]
 sapphirium-epitaph: [0]
 sapphirium-fatum: [1]
 
-/* <---------- Saturation Firepower ----------> */
+/* <------------------------------ Saturation Firepower ------------------------------> */
 
 sfire-mod-knocker: [0]
 sfire-mod-partiality-B: [0]
@@ -213,7 +213,7 @@ sfire-mod-banisher: [4]
 sfire-mod-hammer: [0]
 sfire-mod-UTV-Artillery: [0]
 
-/* <---------- Vanilla Expansion ----------> */
+/* <------------------------------ Vanilla Expansion ------------------------------> */
 
 ve-conscript: [0]
 ve-capture: [0, 1]
