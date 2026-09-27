@@ -127,6 +127,9 @@
     /**
      * @private
      * @param {INTFBTorqueBlock} b
+     * @param {Building} ob
+     * @param {number} rateAdd
+     * @param {number} rateCons
      * @return {void}
      */
 
@@ -229,7 +232,7 @@
                      * `PARAM`: How fast RPM drops to zero spontaneously.
                      * @memberof INTF_BLK_torqueBlock
                      * @instance
-                     * @type {boolean}
+                     * @type {number}
                      */
                     rpmDropRate: 0.002,
 

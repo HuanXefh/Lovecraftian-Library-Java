@@ -46,7 +46,7 @@
        * @memberof BLK_manualTimerPump
        * @instance
        */
-      manualTimerCfgTp: "string",
+      manualTimerCfgType: "string",
 
 
     })

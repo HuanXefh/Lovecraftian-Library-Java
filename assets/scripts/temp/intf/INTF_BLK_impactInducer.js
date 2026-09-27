@@ -37,7 +37,7 @@
      * @private
      * @param {INTFBLKImpactInducer} blk
      * @param {number} tx
-     * @param {number} tx
+     * @param {number} ty
      * @param {number} rot
      * @return {void}
      */

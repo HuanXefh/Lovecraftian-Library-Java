@@ -35,7 +35,7 @@
             blk.configurable = true;
         };
         if(blk.fuelReserveAmt < 0) {
-            blk.fuelReserveAmt = !blk.hasItem ?
+            blk.fuelReserveAmt = !blk.hasItems ?
                 0 :
                 blk.itemCapacity > 20 ?
                     Math.max(Math.round(blk.itemCapacity * 0.25), 5) :

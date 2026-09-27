@@ -51,7 +51,7 @@
        * @memberof BLK_manualTimerOreScanner
        * @instance
        */
-      manualTimerCfgTp: "string",
+      manualTimerCfgType: "string",
       /**
        * `INTERNAL`
        * @override

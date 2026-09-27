@@ -236,7 +236,7 @@
                      * `INTERNAL`
                      * @memberof INTF_B_graphBlock
                      * @instance
-                     * @type {Seq<Building>}
+                     * @type {TDynamic<Seq<Building>>}
                      */
                     graphProximity: tprov(() => new Seq()),
 

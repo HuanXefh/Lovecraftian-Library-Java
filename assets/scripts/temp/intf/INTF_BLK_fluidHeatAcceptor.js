@@ -97,7 +97,7 @@
         if(
             !PARAM.UPDATE_SUPPRESSED && TIMER.secQuarter
                 && syncChance("fluidHeat", 0.25)
-                && isFinite(b.block.delegee.fHeatRes) && b.fHeatCur - b.block.delegee.fHeatRes < 0.0001
+                && isFinite(b.block.delegee.fHeatRes) && b.fHeatCur > b.block.delegee.fHeatRes
         ) {
             b.damagePierce(2.0 * b.fHeatCur / b.block.delegee.fHeatRes);
             MDL_effect.showAt(b.x, b.y, EFF.smogHeat, 0.0);
@@ -175,7 +175,7 @@
                      * `INTERNAL`
                      * @memberof INTF_BLK_fluidHeatAcceptor
                      * @instance
-                     * @type {number}
+                     * @type {TextureRegion|null}
                      */
                     fHeatReg: null,
 

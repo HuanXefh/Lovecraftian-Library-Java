@@ -280,6 +280,8 @@
     /**
      * @private
      * @param {INTFBHeatBlock} b
+     * @param {Building} b_f
+     * @param {number} amt
      * @return {void}
      */
     function comp_ex_handleExtHeat(b, b_f, amt) {
