@@ -23,7 +23,7 @@
 
 
     /**
-     * @typedef {(countMap: ObjectMap<string, number>, totalCount: number, flrThr: number) => TmpStateTag|string} TerrainGetter
+     * @typedef {(countMap: ObjectMap<string, number>, totalCount: number, flrThr: number) => string|TmpStateTag} TerrainGetter
      */
 
 

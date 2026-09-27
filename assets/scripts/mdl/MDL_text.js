@@ -143,7 +143,7 @@
      * Gets tag string from a list of tags.
      * @param {Array<string>} strs - Tags as string, should be translated beforehand.
      * @param {boolean|unset} [ignoreEmpty] - If true, returns empty string when no tags.
-     * @return {TmpStateTag|string}
+     * @return {string|TmpStateTag}
      * @example
      * getTagText(["chloric", "fluoric", "oxidative"]);                // Returns "chloric; fluoric; oxidative"
      */
@@ -160,7 +160,7 @@
     /**
      * Converts tag text back to a list of tags.
      * @param {Array|unset} contArr
-     * @param {TmpStateTag|string} text
+     * @param {string|TmpStateTag} text
      * @return {Array<string>}
      */
     const tagTextToArr = function(contArr, text) {

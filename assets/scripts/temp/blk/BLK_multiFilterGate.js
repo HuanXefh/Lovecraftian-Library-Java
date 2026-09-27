@@ -37,10 +37,15 @@
     blk.config(JAVA.object_arr, (b, cfgArr) => {
       switch(cfgArr[0]) {
         case "selectorBlock" :
-          let i = 2, iCap = cfgArr.iCap();
+          let
+            i = 2,
+            iCap = cfgArr.iCap(),
+            rs;
           while(i < iCap) {
-            let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
-            if(rs != null) b.ex_accRsTargets(rs, true);
+            rs = MDL_content.getCt(cfgArr[i], ContentGetModes.RS);
+            if(rs != null) {
+              b.ex_accRsTargets(rs, true);
+            };
             i++;
           };
           EFF.fadePlacePack[b.block.size].at(b);

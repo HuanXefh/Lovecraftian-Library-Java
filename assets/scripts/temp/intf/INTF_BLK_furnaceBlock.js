@@ -34,6 +34,13 @@
         if(!blk.noFuelInput) {
             blk.configurable = true;
         };
+        if(blk.fuelReserveAmt < 0) {
+            blk.fuelReserveAmt = !blk.hasItem ?
+                0 :
+                blk.itemCapacity > 20 ?
+                    Math.max(Math.round(blk.itemCapacity * 0.25), 5) :
+                    Math.round(blk.itemCapacity * 0.25);
+        };
 
         MDL_event.onLoadPost(() => {
             MDL_fuel.getFuelArr(blk).forEachFast(rs => {
@@ -306,6 +313,13 @@
                      */
                     allowedFuels: null,
                     /**
+                     * `PARAM`: How many fuel items to reserve. Set automatically when negative.
+                     * @memberof INTF_BLK_furnaceBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    fuelReserveAmt: -1,
+                    /**
                      * `PARAM`: Multiplier on fuel consumption.
                      * @memberof INTF_BLK_furnaceBlock
                      * @instance
@@ -416,7 +430,7 @@
 
 
                     /**
-                     * `INTERNAL`: Temperature related to fuel.
+                     * `INTERNAL`: Temperature from fuel.
                      * @memberof INTF_B_furnaceBlock
                      * @instance
                      * @type {number}
@@ -508,7 +522,7 @@
 
 
             canDump: function(b_t, item) {
-                return this.fuelTup[0] == null || this.fuelTup[0].id !== item.id || this.items.has(item, 5);
+                return this.fuelTup[0] == null || this.fuelTup[0].id !== item.id || this.items.has(item, this.block.delegee.fuelReserveAmt);
             }
             .setProp({
                 boolMode: "and",

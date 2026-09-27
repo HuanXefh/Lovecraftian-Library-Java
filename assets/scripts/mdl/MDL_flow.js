@@ -60,7 +60,7 @@
     /**
      * `BUNDLE`: `term.common-term-grp-<eleGrp>.name`.
      * @param {LiquidGn} liq_gn
-     * @return {TmpStateTag|string}
+     * @return {string|TmpStateTag}
      */
     const getEleGrpBundle = function(liq_gn) {
         let eleGrp = getEleGrp(liq_gn);
@@ -94,7 +94,7 @@
     /**
      * `BUNDLE`: `term.common-term-grp-<matGrp>.name`.
      * @param {BlockGn} blk_gn
-     * @return {TmpStateTag|string}
+     * @return {string|TmpStateTag}
      */
     const getMatGrpBundle = function(blk_gn) {
         let matGrp = getMatGrp(blk_gn);

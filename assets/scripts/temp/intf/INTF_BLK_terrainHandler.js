@@ -5,51 +5,86 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_terrainHandler>} INTFBLKTerrainHandler
+     */
 
 
-  function comp_setStats(blk, stats) {
-    if(blk.ters.length === 0) return;
-
-    stats.add(
-      blk.terMode === "enable" ? fetchStat("lovec", "blk-terreq") : fetchStat("lovec", "blk-terban"),
-      MDL_text.getTagText(blk.ters.map(ter => MDL_terrain.getTerBundle(ter))).color(blk.terMode === "enable" ? Pal.heal : Pal.remove),
-    );
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_terrainHandler>} INTFBTerrainHandler
+     * @prop {INTFBLKTerrainHandler} block
+     */
 
 
-  const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
-    if(t == null) return false;
-    if(blk.ters.length === 0) return true;
+    /* <------------------------------ component ------------------------------> */
 
-    if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
-      thisFun.tmpTer = MDL_terrain.getTer(t, blk.size, blk.ex_getTerrainCheckR());
-      thisFun.tmpTerB = MDL_terrain.getTerBundle(thisFun.tmpTer);
+
+    /**
+     * @private
+     * @param {INTFBLKTerrainHandler} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        if(blk.ters.length === 0) return;
+        stats.add(
+            blk.terMode === "enable" ? fetchStat("lovec", "blk-terreq") : fetchStat("lovec", "blk-terban"),
+            MDL_text.getTagText(blk.ters.map(ter => MDL_terrain.getTerBundle(ter))).color(blk.terMode === "enable" ? Pal.heal : Pal.remove),
+        );
     };
 
-    let cond = true;
-    if(blk.terMode === "enable") {
-      if(thisFun.tmpTer == null || !blk.ters.includes(thisFun.tmpTer)) {
-        LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-enabled") + " " + thisFun.tmpTerB, false, blk.terTextOffTy);
-        cond = false;
-      };
-    } else {
-      if(thisFun.tmpTer != null && blk.ters.includes(thisFun.tmpTer)) {
-        LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-disabled") + " " + thisFun.tmpTerB, false, blk.terTextOffTy);
-        cond = false;
-      };
-    };
 
-    return cond;
-  }
-  .setProp({
-    tmpTup: [],
-    tmpTer: null,
-    tmpTerB: "",
-  });
+    /**
+     * @private
+     * @param {INTFBLKTerrainHandler} blk
+     * @param {Tile} t
+     * @param {Team} team
+     * @param {number} rot
+     * @return {boolean}
+     */
+    const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
+        if(t == null) return false;
+        if(blk.ters.length === 0) return true;
+
+        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+            thisFun.tmpTer = MDL_terrain.getTer(t, blk.size, blk.ex_getTerrainCheckR());
+            thisFun.tmpTerB = MDL_terrain.getTerBundle(thisFun.tmpTer);
+        };
+
+        let cond = true;
+        if(blk.terMode === "enable") {
+            if(thisFun.tmpTer == null || !blk.ters.includes(thisFun.tmpTer)) {
+                LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-enabled") + " " + thisFun.tmpTerB, false, blk.terTextOffTy);
+                cond = false;
+            };
+        } else {
+            if(thisFun.tmpTer != null && blk.ters.includes(thisFun.tmpTer)) {
+                LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-disabled") + " " + thisFun.tmpTerB, false, blk.terTextOffTy);
+                cond = false;
+            };
+        };
+        return cond;
+    }
+    .setProp({
+        /**
+         * @memberof comp_canPlaceOn
+         * @type {[Block, Tile, Team, number]}
+         */
+        tmpTup: [],
+        /**
+         * @memberof comp_canPlaceOn
+         * @type {string|null}
+         */
+        tmpTer: null,
+        /**
+         * @memberof comp_canPlaceOn
+         * @type {string}
+         */
+        tmpTerB: "",
+    });
 
 
 /*
@@ -59,77 +94,83 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles methods that check terrain type for valid placement.
-     * @class INTF_BLK_terrainHandler
-     */
-    new CLS_interface("INTF_BLK_terrainHandler", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Terrain types involved.
-         * @memberof INTF_BLK_terrainHandler
-         * @instance
+         * Handles methods that check terrain type for valid placement.
+         * @class INTF_BLK_terrainHandler
          */
-        ters: tprov(() => []),
+        new CLS_interface("INTF_BLK_terrainHandler", {
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Terrain types involved.
+                     * @memberof INTF_BLK_terrainHandler
+                     * @instance
+                     * @type {TDynamic<Array<string>>}
+                     */
+                    ters: tprov(() => []),
+                    /**
+                     * `PARAM`: "enable" for requirement, "disable" for restriction.
+                     * @memberof INTF_BLK_terrainHandler
+                     * @instance
+                     * @type {string}
+                     */
+                    terMode: "enable",
+                    /**
+                     * `PARAM`: Integer offset of the terrain text in `blk.drawPlace`.
+                     * @memberof INTF_BLK_terrainHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    terTextOffTy: 0,
+
+
+                };
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+            canPlaceOn: function(t, team, rot) {
+                return comp_canPlaceOn(this, t, team, rot);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
+
+
+            /**
+             * Range used for terrain check.
+             * Do not set this too large!
+             * @memberof INTF_BLK_terrainHandler
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getTerrainCheckR: function() {
+                return 5;
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+        }),
+
+
         /**
-         * `PARAM`: "enable" for requirement, "disable" for restriction.
-         * @memberof INTF_BLK_terrainHandler
-         * @instance
+         * @class INTF_B_terrainHandler
          */
-        terMode: "enable",
-        /**
-         * `PARAM`: Integer offset of the terrain text in `blk.drawPlace`.
-         * @memberof INTF_BLK_terrainHandler
-         * @instance
-         */
-        terTextOffTy: 0,
+        new CLS_interface("INTF_B_terrainHandler", {}),
 
 
-      }),
-
-
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
-
-
-      canPlaceOn: function(t, team, rot) {
-        return comp_canPlaceOn(this, t, team, rot);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
-
-
-      /**
-       * Range used for terrain check.
-       * Do not set this too large!
-       * @memberof INTF_BLK_terrainHandler
-       * @instance
-       * @return {number}
-       */
-      ex_getTerrainCheckR: function() {
-        return 5;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-    }),
-
-
-    /**
-     * @class INTF_B_terrainHandler
-     */
-    new CLS_interface("INTF_B_terrainHandler", {}),
-
-
-  ];
+    ];

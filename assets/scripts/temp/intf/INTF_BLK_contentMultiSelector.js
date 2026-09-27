@@ -42,9 +42,12 @@
         blk.config(JAVA.object_arr, (b, cfgArr) => {
             switch(cfgArr[0]) {
                 case "selectorBlock" :
-                    let i = 1, iCap = cfgArr.iCap();
+                    let
+                        i = 1,
+                        iCap = cfgArr.iCap(),
+                        ct;
                     while(i < iCap) {
-                        let ct = MDL_content.getCt(cfgArr[i], null, true);
+                        ct = MDL_content.getCt(cfgArr[i], null, true);
                         if(ct != null) {
                             b.ex_accCtTargets(ct, true);
                         };
