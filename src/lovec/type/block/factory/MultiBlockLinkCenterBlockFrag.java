@@ -6,6 +6,7 @@ import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.Tmp;
 import lovec.content.LCMultiBlockHandler;
+import lovec.utils.LCVersionResolver;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -47,7 +48,7 @@ public interface MultiBlockLinkCenterBlockFrag {
             pon_i = seq1.get(i);
             size_i = seq2.get(i);
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, t.build.rotation);
-            t_i = Vars.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
+            t_i = LCVersionResolver.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
             t_i.setBlock(LCMultiBlockHandler.linkConstructBlocks[size_i - 1], t.team(), 0);
             ((MultiBlockLinkConstructBlock.MultiBlockLinkConstructBuild) t_i.build).updateLink(t);
         };
@@ -86,7 +87,7 @@ public interface MultiBlockLinkCenterBlockFrag {
             pon_i = seq1.get(i);
             size_i = seq2.get(i);
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, t.build.rotation);
-            t_i = Vars.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
+            t_i = LCVersionResolver.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
             if(t_i.build == null || t_i.build.team != team || t_i.build.block != findLinkBlocks(blk)[size_i - 1]) {
                 t_i.setBlock(
                     findLinkBlocks(blk)[size_i - 1],

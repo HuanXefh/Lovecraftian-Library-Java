@@ -45,7 +45,13 @@
     b.charge += b.heat * b.delta();
     b.phaseHeat = Mathf.lerpDelta(b.phaseHeat, b.optionalEfficiency, 0.1);
 
-    if(b.optionalEfficiency > 0.0 && b.timer.get(b.block.timerUse, b.block.useTime / b.timeScale) && cond) b.consume();
+    if(b.optionalEfficiency > 0.0 && cond) {
+      b.useTimeCur += b.delta();
+      if(b.useTimeCur >= b.block.useTime) {
+        b.useTimeCur %= b.block.useTime;
+        b.consume();
+      };
+    };
 
     if(b.charge > b.block.reload && cond) {
       b.charge = 0.0;
@@ -156,7 +162,22 @@
      */
     newClass().extendClass(PARENT[1], "B_radiusMender").initClass()
     .setParent(MendProjector.MendBuild)
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------> */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof B_radiusMender
+       * @instance
+       * @type {number}
+       */
+      useTimeCur: 0.0,
+
+
+    })
     .setMethod({
 
 

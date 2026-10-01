@@ -98,7 +98,7 @@ public class LCCheck {
      * Whether floor at (x, y) supports shadow.
      */
     public static boolean checkPosCanShadow(float x, float y) {
-        var flr = Vars.world.floorWorld(x, y);
+        var flr = LCVersionResolver.world.floorWorld(x, y);
         return flr != null && flr.canShadow && !(flr instanceof EmptyFloor);
     };
 

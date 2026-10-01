@@ -32,8 +32,8 @@
 
         blk.config(Vec2, (b, vec2) => {
             b.delegee.posConfigVec2.set(vec2);
-            b.delegee.posConfigT = Vars.world.tileWorld(vec2.x, vec2.y);
-            b.delegee.posConfigB = Vars.world.buildWorld(vec2.x, vec2.y);
+            b.delegee.posConfigT = GLB_var.world.tileWorld(vec2.x, vec2.y);
+            b.delegee.posConfigB = GLB_var.world.buildWorld(vec2.x, vec2.y);
         });
     };
 

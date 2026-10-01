@@ -82,7 +82,7 @@ const db = {
             if(rs == null) return;
             let liq = tryVal(db["solvationTarget"][readParam(paramObj, "solvent", "water")], Array.air).read(rs.name);
             if(liq == null) return;
-            let ot = Vars.world.tileWorld(
+            let ot = GLB_var.world.tileWorld(
                 x + Mathf.range(Vars.tilesize) * (e instanceof Building ? ((e.block.size + (e.block.size % 2 === 0 ? 2 : 1)) / 2) : 1),
                 y + Mathf.range(Vars.tilesize) * (e instanceof Building ? ((e.block.size + (e.block.size % 2 === 0 ? 2 : 1)) / 2) : 1),
             );

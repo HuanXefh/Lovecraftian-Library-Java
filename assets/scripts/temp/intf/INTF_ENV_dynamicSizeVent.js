@@ -124,7 +124,7 @@
             ot;
 
         while(i < iCap) {
-            ot = Vars.world.tile(t.x + blk.ventOffs[i].x, t.y + blk.ventOffs[i].y);
+            ot = GLB_var.world.tile(t.x + blk.ventOffs[i].x, t.y + blk.ventOffs[i].y);
             if(ot == null || ot.floor() !== blk) return false;
             i++;
         };

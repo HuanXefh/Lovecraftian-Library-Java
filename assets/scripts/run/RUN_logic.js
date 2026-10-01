@@ -40,7 +40,7 @@
     function updateUnit() {
         if(!GLB_param.MODDED) return;
 
-        Groups.unit.each(unit => {
+        GLB_var.entities.unit.each(unit => {
             if(MDL_cond.isIrregularUnit(unit)) return;
             if(GLB_param.IS_NO_BUILD_MAP && GLB_varGen.staNoConstruction != null) {
                 unit.apply(GLB_varGen.staNoConstruction, 60.0);
@@ -106,7 +106,7 @@
             let nameWeas = DB_env.db["param"]["map"]["weaEn"].read(GLB_param.MAP_CURRENT, Array.air);
             if(nameWeas.length === 0) return;
 
-            Groups.weather.clear();
+            GLB_var.entities.weather.clear();
             let seq = new Seq(), weaEn;
             nameWeas.forEachFast(nameWea => {
                 weaEn = GLB_varGen.nameWeaEnsMap.get(nameWea);

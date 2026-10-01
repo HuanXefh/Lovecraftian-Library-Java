@@ -12,7 +12,7 @@
 
 
   const comp_ex_getAttrSum = function thisFun(blk, tx, ty, rot) {
-    let t = Vars.world.tile(tx, ty);
+    let t = GLB_var.world.tile(tx, ty);
     if(t == null) return;
 
     if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {

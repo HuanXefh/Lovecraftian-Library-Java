@@ -42,7 +42,7 @@
       for(let i = 0; i < blk.size; i++) {
         blk.nearbySide(t.x, t.y, rot, i, Tmp.p1);
         for(let j = 0; j < blk.range; j++) {
-          ot = Vars.world.tile(Tmp.p1.x + Geometry.d4x[rot] * j, Tmp.p1.y + Geometry.d4y[rot] * j);
+          ot = GLB_var.world.tile(Tmp.p1.x + Geometry.d4x[rot] * j, Tmp.p1.y + Geometry.d4y[rot] * j);
           if(ot != null && ot.solid()) {
             if(ot.overlay().itemDrop != null) {
               item = ot.overlay().itemDrop;
@@ -98,7 +98,9 @@
       b.ex_onCraft();
     };
 
-    if(b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+    b.dumpTimeCur += b.delta();
+    if(b.dumpTimeCur >= b.block.dumpTime) {
+      b.dumpTimeCur %= b.block.dumpTime;
       b.dump();
     };
   };

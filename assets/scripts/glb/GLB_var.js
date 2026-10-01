@@ -25,6 +25,48 @@
     exports.isFoosClient = fetchClass("mindustry.client.Main", true) != null;
 
 
+    /** @type {Entities} */
+    exports.entities = LCVersionResolver.isV8 ? eval("Groups") : eval("Vars.state.entities");
+    /** @type {EntityGroup<Entityc>} */
+    exports.allEntities = module.exports.entities.all;
+    /** @type {EntityGroup<Building>} */
+    exports.buildEntities = module.exports.entities.build;
+    /** @type {EntityGroup<Unit>} */
+    exports.unitEntities = module.exports.entities.unit;
+    /** @type {EntityGroup<Bullet>} */
+    exports.bulletEntities = module.exports.entities.bullet;
+    /** @type {EntityGroup<WeatherState>} */
+    exports.weatherEntities = module.exports.entities.weather;
+    /** @type {EntityGroup<Player>} */
+    exports.playerEntities = module.exports.entities.player;
+    /** @type {EntityGroup<Drawc>} */
+    exports.drawcEntities = module.exports.entities.draw;
+    /** @type {EntityGroup<EffectState>} */
+    exports.effectEntities = module.exports.entities.effect;
+    /** @type {EntityGroup<PowerGraphUpdaterc>} */
+    exports.powerGraphEntities = module.exports.entities.powerGraph;
+    /** @type {EntityGroup<Syncc>} */
+    exports.syncEntities = module.exports.entities.sync;
+    /** @type {EntityCollisions} */
+    exports.collisions = LCVersionResolver.isV8 ? eval("Vars.collisions") : eval("Vars.state.collisions");
+    /** @type {AvoidanceProcess} */
+    exports.avoidance = LCVersionResolver.isV8 ? eval("Vars.avoidance") : eval("Vars.state.avoidance");
+    /** @type {PhysicsProcess} */
+    exports.unitPhysics = LCVersionResolver.isV8 ? eval("Vars.unitPhysics") : eval("Vars.state.unitPhysics");
+    /** @type {World} */
+    exports.world = LCVersionResolver.isV8 ? eval("Vars.world") : eval("Vars.state.world");
+    /** @type {WaveSpawner} */
+    exports.spawner = LCVersionResolver.isV8 ? eval("Vars.spawner") : eval("Vars.state.spawner");
+    /** @type {BlockIndexer} */
+    exports.indexer = LCVersionResolver.isV8 ? eval("Vars.indexer") : eval("Vars.state.indexer");
+    /** @type {Pathfinder} */
+    exports.pathfinder = LCVersionResolver.isV8 ? eval("Vars.pathfinder") : eval("Vars.state.pathfinder");
+    /** @type {ControlPathFinder} */
+    exports.controlPath = LCVersionResolver.isV8 ? eval("Vars.controlPath") : eval("Vars.state.controlPath");
+    /** @type {FogControl} */
+    exports.fogControl = LCVersionResolver.isV8 ? eval("Vars.fogControl") : eval("Vars.state.fogControl");
+
+
     /** @type {ContentParser} */
     exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
     /** @type {Json} */

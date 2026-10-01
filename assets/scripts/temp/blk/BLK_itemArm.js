@@ -327,17 +327,21 @@
 
 
   function comp_ex_doDump(b, b_t) {
-    if(b_t.getPayload() instanceof BuildPayload) {
-      // Dump items into payload
-      if(b.moveItemAmtCur > 0 && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
-        b_t.getPayload().build.handleItem(b, b.moveItemCur);
-        b.moveItemAmtCur--;
-      };
-    } else {
-      // Dump items into building
-      if(b.moveItemAmtCur > 0 && (!(b_t.block instanceof Conveyor) || b_t.items.get(b.moveItemCur) < b_t.getMaximumAccepted(b.moveItemCur)) && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
-        b_t.handleItem(b, b.moveItemCur);
-        b.moveItemAmtCur--;
+    b.dumpTimeCur += b.delta();
+    if(b.dumpTimeCur >= b.block.dumpTime) {
+      b.dumpTimeCur %= b.block.dumpTime;
+      if(b_t.getPayload() instanceof BuildPayload) {
+        // Dump items into payload
+        if(b.moveItemAmtCur > 0) {
+          b_t.getPayload().build.handleItem(b, b.moveItemCur);
+          b.moveItemAmtCur--;
+        };
+      } else {
+        // Dump items into building
+        if(b.moveItemAmtCur > 0 && (!(b_t.block instanceof Conveyor) || b_t.items.get(b.moveItemCur) < b_t.getMaximumAccepted(b.moveItemCur))) {
+          b_t.handleItem(b, b.moveItemCur);
+          b.moveItemAmtCur--;
+        };
       };
     };
   };
@@ -973,7 +977,7 @@
        * @return {Tile|null}
        */
       ex_findMoveT: function(isTo) {
-        return Vars.world.tile(this.ex_calcMoveIntCoord(isTo, false), this.ex_calcMoveIntCoord(isTo, true));
+        return GLB_var.world.tile(this.ex_calcMoveIntCoord(isTo, false), this.ex_calcMoveIntCoord(isTo, true));
       }
       .setProp({
         noSuper: true,
@@ -989,7 +993,7 @@
        * @return {Building|null}
        */
       ex_findMoveB: function(isTo) {
-        let ob = Vars.world.build(this.ex_calcMoveIntCoord(isTo, false), this.ex_calcMoveIntCoord(isTo, true));
+        let ob = GLB_var.world.build(this.ex_calcMoveIntCoord(isTo, false), this.ex_calcMoveIntCoord(isTo, true));
         return ob == null || ob.team !== this.team ?
           null :
           ob;

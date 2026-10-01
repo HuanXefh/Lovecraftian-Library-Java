@@ -58,8 +58,8 @@
                 throw new Error("Unsupported config type: " + blk.manualTimerCfgType);
         };
 
-        blk.ex_addLogicF(LAccess.ammo, b => b.delegee.timeClickCur / 60.0);
-        blk.ex_addLogicF(LAccess.ammoCapacity, b => blk.manualTimerCap / 60.0);
+        blk.ex_addLogicF(LogicProp.ammo, b => b.delegee.timeClickCur / 60.0);
+        blk.ex_addLogicF(LogicProp.ammoCapacity, b => blk.manualTimerCap / 60.0);
     };
 
 

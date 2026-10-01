@@ -556,7 +556,7 @@
     const ripple = function(x, y, rad, color) {
         if(rad == null) rad = 18.0;
         if(color == null) {
-            let t = Vars.world.tileWorld(x, y);
+            let t = GLB_var.world.tileWorld(x, y);
             color = t == null ? Color.white : t.getFloorColor();
         };
         showAt(x, y, LCFx.ripple, rad, color);

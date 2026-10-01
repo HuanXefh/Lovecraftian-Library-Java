@@ -4,14 +4,12 @@ declare class GlobalVars {}
 
 /** mindustry.logic.Ranged */
 interface Ranged extends Posc, Teamc {}
-/** mindustry.logic.Senseable */
-interface Senseable {}
-/** mindustry.logic.Settable */
-interface Settable {}
-/** mindustry.logic.Controllable */
-interface Controllable {}
-/** mindustry.logic.Displayable */
-interface Displayable {}
+/** mindustry.logic.LogicSenseable */
+interface LogicSenseable {}
+/** mindustry.logic.LogicSettable */
+interface LogicSettable {}
+/** mindustry.logic.LogicControllable */
+interface LogicControllable {}
 
 
 /** mindustry.logic.LogicOp */
@@ -105,96 +103,96 @@ declare namespace ConditionOp {
 }
 
 
-/** mindustry.logic.LAccess */
-declare class LAccess {
-    static totalItems: LAccess;
-    static firstItem: LAccess;
-    static totalLiquids: LAccess;
-    static totalPower: LAccess;
-    static itemCapacity: LAccess;
-    static liquidCapacity: LAccess;
-    static powerCapacity: LAccess;
-    static powerNetStored: LAccess;
-    static powerNetCapacity: LAccess;
-    static powerNetIn: LAccess;
-    static powerNetOut: LAccess;
-    static ammo: LAccess;
-    static ammoCapacity: LAccess;
-    static currentAmmoType: LAccess;
-    static memoryCapacity: LAccess;
-    static health: LAccess;
-    static maxHealth: LAccess;
-    static heat: LAccess;
-    static shield: LAccess;
-    static armor: LAccess;
-    static efficiency: LAccess;
-    static progress: LAccess;
-    static timescale: LAccess;
-    static rotation: LAccess;
-    static x: LAccess;
-    static y: LAccess;
-    static velocityX: LAccess;
-    static velocityY: LAccess;
-    static shootX: LAccess;
-    static shootY: LAccess;
-    static cameraX: LAccess;
-    static cameraY: LAccess;
-    static cameraWidth: LAccess;
-    static cameraHeight: LAccess;
-    static displayWidth: LAccess;
-    static displayHeight: LAccess;
-    static bufferSize: LAccess;
-    static operations: LAccess;
-    static size: LAccess;
-    static solid: LAccess;
-    static dead: LAccess;
-    static range: LAccess;
-    static shooting: LAccess;
-    static boosting: LAccess;
-    static mineX: LAccess;
-    static mineY: LAccess;
-    static mining: LAccess;
-    static buildX: LAccess;
-    static buildY: LAccess;
-    static pingX: LAccess;
-    static pingY: LAccess;
-    static pingText: LAccess;
-    static building: LAccess;
-    static breaking: LAccess;
-    static speed: LAccess;
-    static team: LAccess;
-    static type: LAccess;
-    static flag: LAccess;
-    static flying: LAccess;
-    static controlled: LAccess;
-    static controller: LAccess;
-    static name: LAccess;
-    static payloadCount: LAccess;
-    static payloadType: LAccess;
-    static totalPayload: LAccess;
-    static payloadCapacity: LAccess;
-    static maxUnits: LAccess;
-    static id: LAccess;
-    static selectedBlock: LAccess;
-    static selectedRotation: LAccess;
-    static bulletLifetime: LAccess;
-    static bulletTime: LAccess;
-    static enabled: LAccess;
-    static shoot: LAccess;
-    static shootp: LAccess;
-    static config: LAccess;
-    static color: LAccess;
+/** mindustry.logic.LogicProp */
+declare class LogicProp {
+    static totalItems: LogicProp;
+    static firstItem: LogicProp;
+    static totalLiquids: LogicProp;
+    static totalPower: LogicProp;
+    static itemCapacity: LogicProp;
+    static liquidCapacity: LogicProp;
+    static powerCapacity: LogicProp;
+    static powerNetStored: LogicProp;
+    static powerNetCapacity: LogicProp;
+    static powerNetIn: LogicProp;
+    static powerNetOut: LogicProp;
+    static ammo: LogicProp;
+    static ammoCapacity: LogicProp;
+    static currentAmmoType: LogicProp;
+    static memoryCapacity: LogicProp;
+    static health: LogicProp;
+    static maxHealth: LogicProp;
+    static heat: LogicProp;
+    static shield: LogicProp;
+    static armor: LogicProp;
+    static efficiency: LogicProp;
+    static progress: LogicProp;
+    static timescale: LogicProp;
+    static rotation: LogicProp;
+    static x: LogicProp;
+    static y: LogicProp;
+    static velocityX: LogicProp;
+    static velocityY: LogicProp;
+    static shootX: LogicProp;
+    static shootY: LogicProp;
+    static cameraX: LogicProp;
+    static cameraY: LogicProp;
+    static cameraWidth: LogicProp;
+    static cameraHeight: LogicProp;
+    static displayWidth: LogicProp;
+    static displayHeight: LogicProp;
+    static bufferSize: LogicProp;
+    static operations: LogicProp;
+    static size: LogicProp;
+    static solid: LogicProp;
+    static dead: LogicProp;
+    static range: LogicProp;
+    static shooting: LogicProp;
+    static boosting: LogicProp;
+    static mineX: LogicProp;
+    static mineY: LogicProp;
+    static mining: LogicProp;
+    static buildX: LogicProp;
+    static buildY: LogicProp;
+    static pingX: LogicProp;
+    static pingY: LogicProp;
+    static pingText: LogicProp;
+    static building: LogicProp;
+    static breaking: LogicProp;
+    static speed: LogicProp;
+    static team: LogicProp;
+    static type: LogicProp;
+    static flag: LogicProp;
+    static flying: LogicProp;
+    static controlled: LogicProp;
+    static controller: LogicProp;
+    static name: LogicProp;
+    static payloadCount: LogicProp;
+    static payloadType: LogicProp;
+    static totalPayload: LogicProp;
+    static payloadCapacity: LogicProp;
+    static maxUnits: LogicProp;
+    static id: LogicProp;
+    static selectedBlock: LogicProp;
+    static selectedRotation: LogicProp;
+    static bulletLifetime: LogicProp;
+    static bulletTime: LogicProp;
+    static enabled: LogicProp;
+    static shoot: LogicProp;
+    static shootp: LogicProp;
+    static config: LogicProp;
+    static color: LogicProp;
 }
-/** mindustry.logic.LCategory */
-declare class LCategory implements java.lang.Comparable<LCategory> {
-    static readonly all: Seq<LCategory>;
-    static readonly unknown: LCategory;
-    static readonly io: LCategory;
-    static readonly block: LCategory;
-    static readonly operation: LCategory;
-    static readonly control: LCategory;
-    static readonly unit: LCategory;
-    static readonly world: LCategory;
+/** mindustry.logic.LogicCategory */
+declare class LogicCategory implements java.lang.Comparable<LogicCategory> {
+    static readonly all: Seq<LogicCategory>;
+    static readonly unknown: LogicCategory;
+    static readonly io: LogicCategory;
+    static readonly block: LogicCategory;
+    static readonly operation: LogicCategory;
+    static readonly control: LogicCategory;
+    static readonly unit: LogicCategory;
+    static readonly world: LogicCategory;
 
     readonly name: string;
     readonly id: number;
@@ -206,70 +204,70 @@ declare class LCategory implements java.lang.Comparable<LCategory> {
     localized(): string
     description(): string
 }
-interface LCategory extends java.lang.Comparable<LCategory> {}
-/** mindustry.logic.LUnitControl */
-declare class LUnitControl {
-    static idle: LUnitControl;
-    static stop: LUnitControl;
-    static move: LUnitControl;
-    static approach: LUnitControl;
-    static pathfind: LUnitControl;
-    static autoPathfind: LUnitControl;
-    static boost: LUnitControl;
-    static target: LUnitControl;
-    static targetp: LUnitControl;
-    static itemDrop: LUnitControl;
-    static itemTake: LUnitControl;
-    static payDrop: LUnitControl;
-    static payTake: LUnitControl;
-    static payEnter: LUnitControl;
-    static mine: LUnitControl;
-    static flag: LUnitControl;
-    static build: LUnitControl;
-    static deconstruct: LUnitControl;
-    static getBlock: LUnitControl;
-    static within: LUnitControl;
-    static unbind: LUnitControl;
+interface LogicCategory extends java.lang.Comparable<LogicCategory> {}
+/** mindustry.logic.LogicUnitControl */
+declare class LogicUnitControl {
+    static idle: LogicUnitControl;
+    static stop: LogicUnitControl;
+    static move: LogicUnitControl;
+    static approach: LogicUnitControl;
+    static pathfind: LogicUnitControl;
+    static autoPathfind: LogicUnitControl;
+    static boost: LogicUnitControl;
+    static target: LogicUnitControl;
+    static targetp: LogicUnitControl;
+    static itemDrop: LogicUnitControl;
+    static itemTake: LogicUnitControl;
+    static payDrop: LogicUnitControl;
+    static payTake: LogicUnitControl;
+    static payEnter: LogicUnitControl;
+    static mine: LogicUnitControl;
+    static flag: LogicUnitControl;
+    static build: LogicUnitControl;
+    static deconstruct: LogicUnitControl;
+    static getBlock: LogicUnitControl;
+    static within: LogicUnitControl;
+    static unbind: LogicUnitControl;
 
     readonly params: Array<string>;
 }
-/** mindustry.logic.LLocate */
-declare class LLocate {
-    static ore: LLocate;
-    static building: LLocate;
-    static spawn: LLocate;
-    static damaged: LLocate;
+/** mindustry.logic.LogicLocate */
+declare class LogicLocate {
+    static ore: LogicLocate;
+    static building: LogicLocate;
+    static spawn: LogicLocate;
+    static damaged: LogicLocate;
 }
-/** mindustry.logic.LDrawable */
-interface LDrawable {
-    drawable(exec: LExecutor): boolean
+/** mindustry.logic.LogicDrawable */
+interface LogicDrawable {
+    drawable(exec: LogicExecutor): boolean
     draw(buffer: LongSeq): void
 }
-/** mindustry.logic.LCanvas */
-declare class LCanvas extends Table {}
-declare namespace LCanvas {
+/** mindustry.logic.LogicCanvas */
+declare class LogicCanvas extends Table {}
+declare namespace LogicCanvas {
     class StatementElem extends Table {
-        st: LStatement;
+        st: LogicStatement;
         index: number;
     }
 }
-/** mindustry.logic.LPrintable */
-interface LPrintable {
-    printable(exec: LExecutor): boolean
+/** mindustry.logic.LogicPrintable */
+interface LogicPrintable {
+    printable(exec: LogicExecutor): boolean
     print(strBuilder: java.lang.StringBuilder): void
 }
-/** mindustry.logic.LReadable */
-interface LReadable {
-    readable(exce: LExecutor): boolean
-    read(pos: LVar, output: LVar): void
+/** mindustry.logic.LogicReadable */
+interface LogicReadable {
+    readable(exce: LogicExecutor): boolean
+    read(pos: LogicVar, output: LogicVar): void
 }
-/** mindustry.logic.LWritable */
-interface LWritable {
-    writable(exce: LExecutor): boolean
-    write(pos: LVar, output: LVar): void
+/** mindustry.logic.LogicWritable */
+interface LogicWritable {
+    writable(exce: LogicExecutor): boolean
+    write(pos: LogicVar, output: LogicVar): void
 }
-/** mindustry.logic.LVar */
-declare class LVar {
+/** mindustry.logic.LogicVar */
+declare class LogicVar {
     readonly name: string;
     id: number;
     isobj: boolean;
@@ -297,350 +295,44 @@ declare class LVar {
     setobj(obj: Object): void
     setconst(obj: Object): void
     setlink(obj: Object): void
-    set(other: LVar): void
+    set(other: LogicVar): void
 }
-/** mindustry.logic.LParser */
-declare class LParser {}
-/** mindustry.logic.LStatement */
-declare class LStatement {}
-/** mindustry.logic.LStatements */
-declare class LStatements {}
-declare namespace LStatements {
-    class CommentStatement extends LStatement {
-        comment: string;
-    }
-    class InvalidStatement extends LStatement {}
-    class ReadStatement extends LStatement {
-        output: string;
-        target: string;
-        address: string;
-    }
-    class WriteStatement extends LStatement {
-        input: string;
-        target: string;
-        address: string;
-    }
-    class DrawStatement extends LStatement {
-        type: LogicDisplay.GraphicsType;
-        x: string;
-        y: string;
-        p1: string;
-        p2: string;
-        p3: string;
-        p4: string;
-    }
-    class PrintStatement extends LStatement {
-        value: string;
-    }
-    class PrintCharStatement extends LStatement {
-        value: string;
-    }
-    class FormatStatement extends LStatement {
-        value: string;
-    }
-    class DrawFlushStatement extends LStatement {
-        target: string;
-    }
-    class PrintFlushStatement extends LStatement {
-        target: string;
-    }
-    class GetLinkStatement extends LStatement {
-        output: string;
-        address: string;
-    }
-    class ControlStatement extends LStatement {
-        type: LAccess;
-        target: string;
-        p1: string;
-        p2: string;
-        p3: string;
-        p4: string;
-    }
-    class RadarStatement extends LStatement {
-        target1: RadarTarget;
-        target2: RadarTarget;
-        target3: RadarTarget;
-        sort: RadarSort;
-        radar: string;
-        sortOrder: string;
-        output: string;
-    }
-    class SensorStatement extends LStatement {
-        to: string;
-        from: string;
-        type: string;
-    }
-    class SetStatement extends LStatement {
-        to: string;
-        from: string;
-    }
-    class OperationStatement extends LStatement {
-        op: LogicOp;
-        dest: string;
-        a: string;
-        b: string;
-    }
-    class SelectStatement extends LStatement {
-        result: string;
-        op: ConditionOp;
-        comp0: string;
-        comp1: string;
-        a: string;
-        b: string;
-    }
-    class WaitStatement extends LStatement {
-        value: string;
-    }
-    class StopStatement extends LStatement {}
-    class LookupStatement extends LStatement {
-        type: ContentType;
-        result: string;
-        id: string;
-    }
-    class PackColorStatement extends LStatement {
-        result: string;
-        r: string;
-        g: string;
-        b: string;
-        a: string;
-    }
-    class UnpackColorStatement extends LStatement {
-        r: string;
-        g: string;
-        b: string;
-        a: string;
-        value: string;
-    }
-    class EndStatement extends LStatement {}
-    class JumpStatement extends LStatement {
-        dest: LCanvas.StatementElem;
-        destIndex: number;
-        op: ConditionOp;
-        value: string;
-        compare: string;
-    }
-    class UnitBindStatement extends LStatement {
-        type: string;
-    }
-    class UnitControlStatement extends LStatement {
-        type: LUnitControl;
-        p1: string;
-        p2: string;
-        p3: string;
-        p4: string;
-        p5: string;
-    }
-    class UnitRadarStatement extends RadarStatement {}
-    class UnitLocateStatement extends LStatement {
-        locate: LLocate;
-        flag: BlockFlag;
-        enemy: string;
-        ore: string;
-        outX: string;
-        outY: string;
-        outFound: string;
-        outBuild: string;
-    }
-    class QueryStatement extends LStatement {
-        shape: QueryShape;
-        type: QueryType;
-        team: string;
-        x: string;
-        y: string;
-        w: string;
-        h: string;
-    }
-    class GetBlockStatement extends LStatement {
-        layer: TileLayer;
-        result: string;
-        x: string;
-        y: string;
-    }
-    class SetBlockStatement extends LStatement {
-        layer: TileLayer;
-        block: string;
-        x: string;
-        y: string;
-        team: string;
-        rotation: string;
-    }
-    class SpawnUnitStatement extends LStatement {
-        type: string;
-        x: string;
-        y: string;
-        rotation: string;
-        team: string;
-        result: string;
-        effect: string;
-    }
-    class SpawnBulletStatement extends LStatement {
-        result: string;
-        from: string;
-        index: string;
-        x: string;
-        y: string;
-        rotation: string;
-        team: string;
-        owner: string;
-        damage: string;
-        velocityScl: string;
-        lifeScl: string;
-        aimX: string;
-        aimY: string;
-    }
-    class ApplyStatusStatement extends LStatement {
-        clear: boolean;
-        effect: string;
-        unit: string;
-        duration: string;
-    }
-    class WeatherSenseStatement extends LStatement {
-        to: string;
-        weather: string;
-    }
-    class WeatherSetStatement extends LStatement {
-        weather: string;
-        state: string;
-    }
-    class SpawnWaveStatement extends LStatement {
-        x: string;
-        y: string;
-        natural: string;
-    }
-    class SetRuleStatement extends LStatement {
-        rule: LogicRule;
-        value: string;
-        p1: string;
-        p2: string;
-        p3: string;
-        p4: string;
-    }
-    class FlushMessageStatement extends LStatement {
-        type: MessageType;
-        duration: string;
-        outSuccess: string;
-    }
-    class CutsceneStatement extends LStatement {
-        action: CutsceneAction;
-        p1: string;
-        p2: string;
-        p3: string;
-        p4: string;
-    }
-    class EffectStatement extends LStatement {
-        type: string;
-        x: string;
-        y: string;
-        sizerot: string;
-        color: string;
-        data: string;
-    }
-    class ExplosionStatement extends LStatement {
-        team: string;
-        x: string;
-        y: string;
-        radius: string;
-        damage: string;
-        air: string;
-        ground: string;
-        pierce: string;
-        effect: string;
-    }
-    class SetRateStatement extends LStatement {
-        amount: string;
-    }
-    class FetchStatStatement extends LStatement {
-        type: FetchType;
-        result: string;
-        team: string;
-        index: string;
-        extra: string;
-    }
-    class SyncStatement extends LStatement {
-        variable: string;
-    }
-    class ClientDataStatement extends LStatement {
-        channel: string;
-        value: string;
-        reliable: string;
-    }
-    class GetFlagStatement extends LStatement {
-        result: string;
-        flag: string;
-    }
-    class SetFlagStatement extends LStatement {
-        flag: string;
-        value: string;
-    }
-    class SetPropStatement extends LStatement {
-        type: string;
-        of: string;
-        value: string;
-    }
-    class PlaySoundStatement extends LStatement {
-        positional: boolean;
-        id: string;
-        volume: string;
-        pitch: string;
-        pan: string;
-        x: string;
-        y: string;
-        limit: string;
-    }
-    class PlayMusicStatement extends LStatement {
-        name: string;
-        interrupt: string;
-    }
-    class SetMarkerStatement extends LStatement {
-        type: LMarkerControl;
-        id: string;
-        p1: string;
-        p2: string;
-        p3: string;
-    }
-    class MakeMarkerStatement extends LStatement {
-        type: string;
-        id: string;
-        x: string;
-        y: string;
-        replace: string;
-    }
-    class LogicPrintStatement extends LStatement {
-        value: string;
-    }
-}
-/** mindustry.logic.LAssembler */
-declare class LAssembler {}
-/** mindustry.logic.LExecutor */
-declare class LExecutor {}
-/** mindustry.logic.LMarkerControl */
-declare class LMarkerControl {
-    static remove: LMarkerControl;
-    static world: LMarkerControl;
-    static minimap: LMarkerControl;
-    static light: LMarkerControl;
-    static autoscale: LMarkerControl;
-    static pos: LMarkerControl;
-    static endPos: LMarkerControl;
-    static drawLayer: LMarkerControl;
-    static color: LMarkerControl;
-    static radius: LMarkerControl;
-    static stroke: LMarkerControl;
-    static outline: LMarkerControl;
-    static rotation: LMarkerControl;
-    static shape: LMarkerControl;
-    static arc: LMarkerControl;
-    static flushText: LMarkerControl;
-    static fontSize: LMarkerControl;
-    static textHeight: LMarkerControl;
-    static textAlign: LMarkerControl;
-    static lineAlign: LMarkerControl;
-    static labelFlags: LMarkerControl;
-    static texture: LMarkerControl;
-    static textureSize: LMarkerControl;
-    static posi: LMarkerControl;
-    static uvi: LMarkerControl;
-    static colori: LMarkerControl;
+/** mindustry.logic.LogicParser */
+declare class LogicParser {}
+/** mindustry.logic.LogicStatement */
+declare class LogicStatement {}
+/** mindustry.logic.LogicAssembler */
+declare class LogicAssembler {}
+/** mindustry.logic.LogicExecutor */
+declare class LogicExecutor {}
+/** mindustry.logic.LogicMarkerControl */
+declare class LogicMarkerControl {
+    static remove: LogicMarkerControl;
+    static world: LogicMarkerControl;
+    static minimap: LogicMarkerControl;
+    static light: LogicMarkerControl;
+    static autoscale: LogicMarkerControl;
+    static pos: LogicMarkerControl;
+    static endPos: LogicMarkerControl;
+    static drawLayer: LogicMarkerControl;
+    static color: LogicMarkerControl;
+    static radius: LogicMarkerControl;
+    static stroke: LogicMarkerControl;
+    static outline: LogicMarkerControl;
+    static rotation: LogicMarkerControl;
+    static shape: LogicMarkerControl;
+    static arc: LogicMarkerControl;
+    static flushText: LogicMarkerControl;
+    static fontSize: LogicMarkerControl;
+    static textHeight: LogicMarkerControl;
+    static textAlign: LogicMarkerControl;
+    static lineAlign: LogicMarkerControl;
+    static labelFlags: LogicMarkerControl;
+    static texture: LogicMarkerControl;
+    static textureSize: LogicMarkerControl;
+    static posi: LogicMarkerControl;
+    static uvi: LogicMarkerControl;
+    static colori: LogicMarkerControl;
 
     readonly params: Array<string>;
 }

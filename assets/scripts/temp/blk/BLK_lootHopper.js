@@ -28,7 +28,9 @@
 
 
   function comp_updateTile(b) {
-    if(b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+    b.dumpTimeCur += b.delta();
+    if(b.dumpTimeCur >= b.block.dumpTime) {
+      b.dumpTimeCur %= b.block.dumpTime;
       b.dump();
     };
   };

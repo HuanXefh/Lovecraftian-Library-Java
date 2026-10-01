@@ -196,7 +196,6 @@
         let
             cepCapObj = {},
             cepUseObj = {};
-
         BOX_trigger.majorIter.start.addGlobalListener(() => {
             GLB_varGen.mainTeams.forEachFast(team => {
                 cepCapObj[team.name] = 0.0;
@@ -214,7 +213,7 @@
                 cepCapMap.put(team.name, cepCapObj[team]);
                 cepUseMap.put(team.name, cepUseObj[team]);
                 cepFracMap.put(team.name, cepCapObj[team] < 0.0001 ? 1.0 : cepUseObj[team] / cepCapObj[team]);
-                cepEffcMap.put(team.name, cepFracMap.get(team) < 1.0001 ? 1.0 : Mathf.maxZero((2.0 * cepCapObj[team] - cepUseObj[team]) / cepCapObj[team]));
+                cepEffcMap.put(team.name, cepFracMap.get(team.name) < 1.0001 ? 1.0 : Mathf.maxZero((2.0 * cepCapObj[team] - cepUseObj[team]) / cepCapObj[team]));
             }, true);
         });
 

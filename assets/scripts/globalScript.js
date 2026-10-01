@@ -52,6 +52,28 @@
 
 
     /**
+     * Evaluates given string in a try-catch block.
+     * @global
+     * @param {string} scrStr
+     * @param {boolean|unset} [suppressWarning]
+     * @return {*}
+     * @lovecTryBlock
+     */
+    safeEval = function(scrStr, suppressWarning) {
+        let result;
+        try {
+            result = eval(scrStr);
+        } catch(err) {
+            if(!suppressWarning) {
+                Log.err("[LOVEC] Failed to evaluate:\n" + scrStr + "\nDue to:\n" + err);
+            };
+            result = null;
+        };
+        return result;
+    };
+
+
+    /**
      * Evaluates given string in global scope.
      * @global
      * @param {string} scrStr
@@ -544,7 +566,7 @@
                 return t == null ? null : t.build;
             },
             function(tx, ty) {
-                return Vars.world.build(tx, ty);
+                return GLB_var.world.build(tx, ty);
             },
         )
         .setAnno("console");
@@ -576,7 +598,7 @@
          * @return {boolean}
          */
         __checkCheatState__ = function() {
-            return Vars.player.admin || (Groups.player.size() === 1 && !Vars.net.client());
+            return Vars.player.admin || (GLB_var.entities.player.size() === 1 && !Vars.net.client());
         };
 
 
@@ -638,7 +660,7 @@
          */
         __item = function(tx, ty, item_gn, amt) {
             if(!__checkCheatState__()) return;
-            let b = Vars.world.build(tx, ty);
+            let b = GLB_var.world.build(tx, ty);
             if(b == null) {
                 console.err("[LOVEC] No building found at (${1}, ${2})!".format(tx, ty));
                 return;

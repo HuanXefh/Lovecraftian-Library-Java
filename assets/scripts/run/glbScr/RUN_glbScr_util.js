@@ -647,7 +647,7 @@
             if(fi == null) return null;
             let jval = jsonToJval(fi);
             // Convert `Jval` to `JsonValue` in v8
-            if(LCCompatibilityHandler.isV8) {
+            if(LCVersionResolver.isV8) {
                 jval = eval("GLB_var.jsonParser.fromJson(null, jval.toString(Jval.Jformat.plain))");
             };
             if(jval.isString()) {
@@ -667,7 +667,7 @@
          * @param {boolean|unset} [def]
          */
         getBool(jval, name, def) {
-            return LCCompatibilityHandler.isV8 ?
+            return LCVersionResolver.isV8 ?
                 jval.getBoolean(name, Boolean(def)) :
                 jval.getBool(name, Boolean(def));
         },
@@ -701,7 +701,7 @@
          * @return {void}
          */
         readFields(obj, jval) {
-            Reflect.invoke(ContentParser, GLB_var.ctParser, "readFields", [obj, jval], JAVA.object, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+            Reflect.invoke(ContentParser, GLB_var.ctParser, "readFields", [obj, jval], JAVA.object, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
         },
 
 
@@ -818,7 +818,7 @@
         parseBlock(blk, jval) {
             LCContentParser.read(run(() => {
                 if(jval.has("consumes") && jval.get("consumes").isObject()) {
-                    Reflect.invoke(ContentParser, GLB_var.ctParser, "readBlockConsumers", [blk, jval.get("consumes")], Block, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                    Reflect.invoke(ContentParser, GLB_var.ctParser, "readBlockConsumers", [blk, jval.get("consumes")], Block, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
                     jval.remove("consumes");
                 };
                 if(jval.has("requirements") && blk.buildVisibility === BuildVisibility.hidden) {
@@ -862,7 +862,7 @@
                     pla.meshLoader = prov(() => {
                         let mesh_fi;
                         try {
-                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
                         } catch(err) {
                             console.err(err);
                             mesh_fi = new ShaderSphereMesh(pla, Shaders.unlit, 2);
@@ -882,7 +882,7 @@
                     pla.cloudMeshLoader = prov(() => {
                         let mesh_fi;
                         try {
-                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
                         } catch(err) {
                             console.err(err);
                             mesh_fi = null;

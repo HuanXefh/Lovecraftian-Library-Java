@@ -270,7 +270,7 @@
     const packIcon = function(ct, packer, suffix, pixF) {
         if(suffix == null) suffix = "";
         let pix = pixF();
-        LCCompatibilityHandler.isV8 ?
+        LCVersionResolver.isV8 ?
             packer.add(eval("MultiPacker.PageType.main"), ct.name + suffix, pix) :
             packer.add(ct.name + suffix, pix);
         pix.dispose();

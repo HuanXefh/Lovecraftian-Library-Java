@@ -473,7 +473,7 @@
        * Adds a getter function for some logic sensor.
        * @memberof BLK_baseBlock
        * @instance
-       * @param {LAccess} sensor
+       * @param {LogicProp} sensor
        * @param {CFunction<Building>} valF
        * @return {void}
        */
@@ -490,7 +490,7 @@
        * Adds a function to implement logic control by some sensor.
        * @memberof BLK_baseBlock
        * @instance
-       * @param {LAccess} sensor
+       * @param {LogicProp} sensor
        * @param {(b: Building, param1?: Object, param2?: Object, param3?: Object, param4?: Object) => void} scr
        * @return {void}
        */
@@ -539,6 +539,13 @@
        * @instance
        */
       LCReviSub: 0,
+      /**
+       * `INTERNAL`: For v9, where `timers` is removed.
+       * @memberof B_baseBlock
+       * @instance
+       * @type {number}
+       */
+      dumpTimeCur: 0.0,
 
 
     })

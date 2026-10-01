@@ -148,7 +148,7 @@
      */
     CLS_contentTemplate.resolveMethodName = function(name) {
         // `createIcons` is removed in v9
-        if(!LCCompatibilityHandler.isV8 && name === "createIcons") return "packSprites";
+        if(!LCVersionResolver.isV8 && name === "createIcons") return "packSprites";
 
         return name;
     };

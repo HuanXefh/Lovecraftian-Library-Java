@@ -1,7 +1,6 @@
 package lovec.utils;
 
 import arc.math.Mathf;
-import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.ItemBridge;
@@ -32,12 +31,12 @@ public class LCGeometry {
 
 
     public static boolean acceptBridge(ItemBridge.ItemBridgeBuild b, Building b_t, boolean canSideBlend) {
-        if(((ItemBridge) b.block).linkValid(b.tile, Vars.world.tile(b.link)) || b.incoming.size == 0) return false;
+        if(((ItemBridge) b.block).linkValid(b.tile, LCVersionResolver.world.tile(b.link)) || b.incoming.size == 0) return false;
         int rot;
         Tile ot;
         Building ob;
         for(int i = 0; i < b.incoming.size; i++) {
-            ot = Vars.world.tile(b.incoming.get(i));
+            ot = LCVersionResolver.world.tile(b.incoming.get(i));
             if(ot != null) {
                 rot = LCPos.getRotation(b.tile, ot);
                 ob = b.nearby(rot);

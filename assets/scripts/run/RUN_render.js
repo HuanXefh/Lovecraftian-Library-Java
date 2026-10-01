@@ -100,7 +100,7 @@
      * @return {void}
      */
     function drawUnitStat() {
-        Groups.unit.each(
+        GLB_var.entities.unit.each(
             unit => !(
                 (!LCCheck.checkEntityVisible(unit) || MDL_cond.isIrregularUnit(unit))
                     || ((!unit.isPlayer() || !GLB_param.SHOULD_DRAW_PLAYER_STAT) && !unit.isMissile() && GLB_param.SHOULD_DRAW_UNIT_STAT_NEAR_MOUSE && Mathf.dst(Core.input.mouseWorldX(), Core.input.mouseWorldY(), unit.x, unit.y) > GLB_var.range.mouseRad + unit.hitSize * 0.5)
@@ -181,7 +181,7 @@
                 if(GLB_param.SHOULD_DRAW_UNIT_RANGE && unit.payloads != null) {
                     pay = unit.payloads.size === 0 ? null : unit.payloads.peek();
                     if(pay != null && pay instanceof BuildPayload) {
-                        ot = Vars.world.tileWorld(unit.x - pay.block().offset, unit.y - pay.block().offset);
+                        ot = GLB_var.world.tileWorld(unit.x - pay.block().offset, unit.y - pay.block().offset);
                         if(ot != null) {
                             z = Draw.z();
                             Draw.z(GLB_var.layer.effHigh + 1.5);

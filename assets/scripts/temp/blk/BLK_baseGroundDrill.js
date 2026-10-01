@@ -49,7 +49,7 @@
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     LCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
 
-    let t = Vars.world.tile(tx, ty);
+    let t = GLB_var.world.tile(tx, ty);
     if(t == null) return;
 
     Reflect.invoke(Drill, blk, "countOre", [t], Tile);

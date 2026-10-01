@@ -28,8 +28,8 @@
    * @return {void}
    */
   function comp_init(blk) {
-      blk.ex_addLogicF(LAccess.ammo, b => b.delegee.durabFrac * blk.durabCap / 60.0);
-      blk.ex_addLogicF(LAccess.ammoCapacity, b => blk.durabCap / 60.0 * (blk.durabRegenFracMin + blk.durabRegenFracMax) * 0.5);
+      blk.ex_addLogicF(LogicProp.ammo, b => b.delegee.durabFrac * blk.durabCap / 60.0);
+      blk.ex_addLogicF(LogicProp.ammoCapacity, b => blk.durabCap / 60.0 * (blk.durabRegenFracMin + blk.durabRegenFracMax) * 0.5);
   };
 
 

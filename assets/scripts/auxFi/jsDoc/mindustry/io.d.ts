@@ -81,8 +81,8 @@ declare class TypeIO {
     static readController(rd: Reads, prev: UnitController): UnitController
     static writeKick(wr: Writes, reason: Packets.KickReason): void
     static readKick(rd: Reads): Packets.KickReason
-    static writeMarkerControl(wr: Writes, marker: LMarkerControl): void
-    static readMarkerControl(rd: Reads): LMarkerControl
+    static writeMarkerControl(wr: Writes, marker: LogicMarkerControl): void
+    static readMarkerControl(rd: Reads): LogicMarkerControl
     static writeRules(wr: Writes, rule: Rules): void
     static readRules(rd: Reads): Rules
     static writeObjectives(wr: Writes, mapObjectives: MapObjectives): void

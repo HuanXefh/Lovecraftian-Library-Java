@@ -135,7 +135,7 @@
             /** @type {boolean} */
             exports.SHOULD_DRAW_LOOT_AMOUNT = fetchSetting("draw0loot-amount");
             /** @type {number} */
-            exports.TREE_ALPHA = (Groups.player.size() > 1) ? 1.0 : fetchSetting("draw0tree-alpha", true);
+            exports.TREE_ALPHA = (GLB_var.entities.player.size() > 1) ? 1.0 : fetchSetting("draw0tree-alpha", true);
             /** @type {boolean} */
             exports.SHOULD_CHECK_TREE_DISTANCE = fetchSetting("draw0tree-player") && unitPlayer != null && MDL_cond.isUnitCoverable(unitPlayer);
             /** @type {boolean} */

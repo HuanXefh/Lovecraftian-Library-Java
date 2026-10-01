@@ -98,7 +98,7 @@
     function comp_ex_updatePresDumpTs(b) {
         b.presDumpTs.clear();
         b.block.delegee.presDumpPons.forEachFast(pon => {
-            b.presDumpTs.push(LCPos.getTileRectRotCenter(Vars.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), Vars.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
+            b.presDumpTs.push(LCPos.getTileRectRotCenter(GLB_var.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), GLB_var.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
         }, true);
     };
 

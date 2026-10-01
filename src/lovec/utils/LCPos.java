@@ -241,7 +241,7 @@ public class LCPos {
             case 3 -> Tmp.v2.set(Tmp.v1.y, -Tmp.v1.x);
         }
 
-        return Vars.world.tile(
+        return LCVersionResolver.world.tile(
             (int) (tCenter.x + Tmp.v2.x - off + offCenter),
             (int) (tCenter.y + Tmp.v2.y - off + offCenter)
         );
@@ -252,7 +252,7 @@ public class LCPos {
      * Gets closest ore tile.
      */
     public static @Nullable Tile getTileOre(float x, float y, Item item) {
-        return Vars.indexer.findClosestOre(x, y, item);
+        return LCVersionResolver.indexer.findClosestOre(x, y, item);
     };
 
 
@@ -262,7 +262,7 @@ public class LCPos {
     public static @Nullable Tile getTileMouse() {
         return Vars.headless ?
             null :
-            Vars.world.tileWorld(Core.input.mouseWorldX(), Core.input.mouseWorldY());
+            LCVersionResolver.world.tileWorld(Core.input.mouseWorldX(), Core.input.mouseWorldY());
     };
 
 
@@ -372,7 +372,7 @@ public class LCPos {
      * Gets tiles that some block will occupy.
      */
     public static NativeArray getTilesBlock(@Nullable NativeArray contArr, Block blk, int tx, int ty) {
-        return getTilesRect(contArr, Vars.world.tile(tx, ty), 0, blk.size);
+        return getTilesRect(contArr, LCVersionResolver.world.tile(tx, ty), 0, blk.size);
     };
 
 
@@ -394,7 +394,7 @@ public class LCPos {
         getCoordsRectRotCenter(Tmp.v1, toFCoord(t.x, size), toFCoord(t.y, size), r, rot, size).scl(1f / Vars.tilesize).sub(r, r).add(0.5f, 0.5f);
         int tx = LCScript.toInt(Tmp.v1.x);
         int ty = LCScript.toInt(Tmp.v1.y);
-        if(Vars.world.tile(tx, ty) == null) return arr;
+        if(LCVersionResolver.world.tile(tx, ty) == null) return arr;
 
         int i;
         int iCap = r * 2;
@@ -402,7 +402,7 @@ public class LCPos {
         while(j < iCap) {
             i = 0;
             while(i < iCap) {
-                LCNativeArray.pushNonNull(arr, Vars.world.tile(tx + i, ty + j));
+                LCNativeArray.pushNonNull(arr, LCVersionResolver.world.tile(tx + i, ty + j));
                 i++;
             };
             j++;
@@ -421,12 +421,12 @@ public class LCPos {
         if(t == null) return arr;
 
         int
-            w = Vars.world.width(),
-            h = Vars.world.height();
+            w = LCVersionResolver.world.width(),
+            h = LCVersionResolver.world.height();
 
         if(size % 2 != 0) {
             Geometry.circle(t.x, t.y, w, h, r, (tx, ty) -> {
-               Tile ot = Vars.world.tile(tx, ty);
+               Tile ot = LCVersionResolver.world.tile(tx, ty);
                if(ot != null) {
                    LCNativeArray.push(arr, ot);
                };
@@ -437,7 +437,7 @@ public class LCPos {
                 ot0 = t.nearby(sizeOffs[2][i]);
                 if(ot0 == null) continue;
                 Geometry.circle(ot0.x, ot0.y, w, h, r, (tx, ty) -> {
-                   Tile ot = Vars.world.tile(tx, ty);
+                   Tile ot = LCVersionResolver.world.tile(tx, ty);
                    if(ot != null && !LCNativeArray.includes(arr, ot)) {
                        LCNativeArray.push(arr, ot);
                    };

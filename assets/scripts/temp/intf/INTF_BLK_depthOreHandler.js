@@ -47,7 +47,7 @@
      */
     function comp_ex_findDporesInLinkedTiles(blk, tx, ty, rs) {
         if(blk.skipDepthOreMethod) return Reflect.get(Block, "tempTiles").clear();
-        let t = Vars.world.tile(tx, ty);
+        let t = GLB_var.world.tile(tx, ty);
         if(t == null) return Reflect.get(Block, "tempTiles").clear();
 
         return t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).removeAll(

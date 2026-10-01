@@ -44,7 +44,13 @@
     if(b.heat < 0.01) b.heat = 0.0;
     b.charge += b.heat * b.delta();
 
-    if(b.efficiency > 0.0 && b.timer.get(b.block.timerUse, b.block.useTime)) b.consume();
+    if(b.efficiency > 0.0) {
+      b.useTimeCur += b.delta();
+      if(b.useTimeCur >= b.block.useTime) {
+        b.useTimeCur %= b.block.useTime;
+        b.consume();
+      };
+    };
 
     if(b.charge > b.block.reload - 0.0001) {
       b.charge = 0.0;
@@ -159,7 +165,22 @@
      */
     newClass().extendClass(PARENT[1], "B_statusProjector").implement(INTF[1]).initClass()
     .setParent(MendProjector.MendBuild)
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------> */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof B_statusProjector
+       * @instance
+       * @type {number}
+       */
+      useTimeCur: 0.0,
+
+
+    })
     .setMethod({
 
 

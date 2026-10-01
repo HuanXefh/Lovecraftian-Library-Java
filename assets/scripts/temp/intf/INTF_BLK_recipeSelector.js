@@ -37,8 +37,8 @@
             b.ex_showRcChangeEff()
         });
 
-        blk.ex_addLogicF(LAccess.config, b => b.delegee.rcHeader);
-        blk.ex_addLogicControl(LAccess.config, (b, param1) => {
+        blk.ex_addLogicF(LogicProp.config, b => b.delegee.rcHeader);
+        blk.ex_addLogicControl(LogicProp.config, (b, param1) => {
             if(typeof param1 === "string" && param1 !== b.delegee.rcHeader && MDL_recipe.checkHeaderValid(blk.rcMdl, param1)) {
                 b.configure(param1);
             };

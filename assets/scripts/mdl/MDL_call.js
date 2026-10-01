@@ -343,7 +343,7 @@
      */
     const clearLoot = function thisFun() {
         thisFun.tmpUnits.clear();
-        Groups.unit.each(unit => {
+        GLB_var.entities.unit.each(unit => {
             if(MDL_cond.isLoot(unit)) {
                 thisFun.tmpUnits.push(unit);
             };

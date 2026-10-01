@@ -255,7 +255,7 @@
      * @return {void}
      */
     const drawTerPlace = function thisFun(blk, tx, ty, rot, valid, offTy) {
-        let t = Vars.world.tile(tx, ty);
+        let t = GLB_var.world.tile(tx, ty);
         if(t == null) return;
         if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
             thisFun.tmpText = getTerBundle(getTer(t, blk.size, tryFun(blk.ex_getTerrainCheckR, blk, 5)));

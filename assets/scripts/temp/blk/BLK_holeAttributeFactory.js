@@ -33,7 +33,7 @@
       prov(() => Pal.lightOrange),
       () => Mathf.clamp(b.delegee.attrEffc),
     ));
-    if(!GLB_var.mindustryX) {      
+    if(!GLB_var.mindustryX) {
       blk.addBar("lovec-prog", b => new Bar(
         prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
         prov(() => Pal.ammo),
@@ -49,7 +49,7 @@
 
 
   const comp_drawPlace = function thisFun(blk, tx, ty, rot, valid) {
-    let t = Vars.world.tile(tx + blk.holeOffPon.x, ty + blk.holeOffPon.y);
+    let t = GLB_var.world.tile(tx + blk.holeOffPon.x, ty + blk.holeOffPon.y);
     if(t != null) {
       if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t)) {
         LCPos.getTilesRect(thisFun.tmpTs, t, 5, blk.size);
@@ -77,7 +77,7 @@
 
 
   function comp_ex_getAttrSum(blk, tx, ty) {
-    let ot = Vars.world.tile(tx + blk.holeOffPon.x, ty + blk.holeOffPon.y);
+    let ot = GLB_var.world.tile(tx + blk.holeOffPon.x, ty + blk.holeOffPon.y);
     if(ot == null) return 0.0;
 
     return MDL_attr.calcSumRect(ot, 0, blk.holeSize, blk.attribute, blk.attrMode);
@@ -117,7 +117,7 @@
     };
 
     if(Mathf.chanceDelta(b.block.delegee.holeUpdateEffP * b.efficiency)) {
-      let ot = Vars.world.tileWorld(b.holeVec.x, b.holeVec.y);
+      let ot = GLB_var.world.tileWorld(b.holeVec.x, b.holeVec.y);
       let color = ot == null ?
         Color.white :
         (b.block.delegee.attrMode & AttrModes.BLOCK) !== 0 ?

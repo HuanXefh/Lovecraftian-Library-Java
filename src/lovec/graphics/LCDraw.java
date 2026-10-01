@@ -7,7 +7,7 @@ import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Nullable;
 import arc.util.pooling.Pools;
-import lovec.utils.LCCompatibilityHandler;
+import lovec.utils.LCVersionResolver;
 import lovec.utils.LCPos;
 import mindustry.gen.Building;
 import mindustry.Vars;
@@ -361,7 +361,7 @@ public class LCDraw {
     public static void content(float x, float y, @Nullable Object ct, float size, float ang, float z) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
 
-        TextureRegion fullIcon = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
+        TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         float
             w = size * Vars.tilesize * (fullIcon.width > fullIcon.height ? 1f : ((float) fullIcon.width / fullIcon.height)),
             h = size * Vars.tilesize * (fullIcon.height > fullIcon.width ? 1f : ((float) fullIcon.height / fullIcon.width));
@@ -387,18 +387,18 @@ public class LCDraw {
      */
     public static void contentIcon(float x, float y, @Nullable Object ct, float size, float wScl) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        TextureRegion fullIcon = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
+        TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         regionIcon(x, y, fullIcon, size, wScl);
     };
     // Overload
     public static void contentIcon(float x, float y, @Nullable Object ct, float size) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        TextureRegion fullIcon = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
+        TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         regionIcon(x, y, fullIcon, size);
     };
     public static void contentIcon(float x, float y, @Nullable Object ct) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        TextureRegion fullIcon = (TextureRegion) LCCompatibilityHandler.UnlockableContent.getField("fullIcon").get(ct);
+        TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         regionIcon(x, y, fullIcon);
     };
 

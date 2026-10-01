@@ -40,7 +40,6 @@ declare namespace Thruster {
 }
 /** mindustry.world.blocks.defense.Door */
 declare class Door extends Wall {
-    readonly timerToggle: number;
     openFx: Effect;
     closeFx: Effect;
     doorSound: Sound;
@@ -55,7 +54,6 @@ declare namespace {
 }
 /** mindustry.world.blocks.defense.AutoDoor */
 declare class AutoDoor extends Wall {
-    readonly timerToggle: number;
     checkInterval: number;
     openFx: Effect;
     closeFx: Effect;
@@ -72,7 +70,6 @@ declare namespace AutoDoor {
 
 /** mindustry.world.blocks.defense.MendProjector */
 declare class MendProjector extends Block {
-    readonly timerUse: number;
     baseColor: Color;
     phaseColor: Color;
     topRegion: TextureRegion;
@@ -159,7 +156,6 @@ declare namespace BaseShield {
 }
 /** mindustry.world.blocks.defense.ForceProjector */
 declare class ForceProjector extends Block {
-    readonly timerUse: number;
     phaseUseTime: number;
     phaseRadiusBoost: number;
     phaseShieldBoost: number;
@@ -218,7 +214,6 @@ declare namespace Radar {
 
 /** mindustry.world.blocks.defense.ShockMine */
 declare class ShockMine extends Block {
-    readonly timerDamage: number;
     cooldown: number;
     tileDamage: number;
     damage: number;
@@ -237,7 +232,6 @@ declare namespace ShockMine {
 
 /** mindustry.world.blocks.defense.ShockwaveTower */
 declare class ShockwaveTower extends Block {
-    readonly timerCheck: number;
     range: number;
     reload: number;
     bulletDamage: number;

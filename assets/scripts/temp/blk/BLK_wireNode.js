@@ -40,7 +40,7 @@
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     blk.ex_drawRange(tx.toFCoord(blk.size), ty.toFCoord(blk.size), valid);
     if(blk.autolink) {
-      let t = Vars.world.tile(tx, ty);
+      let t = GLB_var.world.tile(tx, ty);
       if(t != null) {
         blk.getPotentialLinks(t, Vars.player.team(), ob => {
           Draw.color(blk.laserColor1, Renderer.laserOpacity * 0.5);
@@ -91,7 +91,7 @@
 
   function comp_ex_findWireTarget(b) {
     let int_t = b.power.links.random();
-    return int_t == null ? null : Vars.world.build(int_t);
+    return int_t == null ? null : GLB_var.world.build(int_t);
   };
 
 

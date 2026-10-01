@@ -2,13 +2,11 @@ package lovec.content;
 
 import arc.math.Mathf;
 import arc.util.Nullable;
-import arc.util.Reflect;
 import lovec.utils.LCScript;
 import lovec.utils.LCScriptUtil;
 import lovec.utils.extend.LCNativeArray;
 import mindustry.type.Item;
 import mindustry.type.Liquid;
-import mindustry.world.Block;
 import mindustry.world.blocks.production.GenericCrafter;
 import rhino.NativeArray;
 import rhino.NativeObject;
@@ -35,6 +33,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
     protected GenericCrafter blk;
     protected NativeObject consTmpObj;
     protected NativeObject prodTmpObj;
+    protected float dumpTimeCur;
 
 
     public RecipeUpdater(NativeObject rc) throws NoSuchFieldException, IllegalAccessException {
@@ -66,6 +65,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
         blk = (GenericCrafter) b.block;
         consTmpObj = LCScript.toObject(get(b, "consTmpObj"));
         prodTmpObj = LCScript.toObject(get(b, "prodTmpObj"));
+        dumpTimeCur = LCScript.toFloat(get(b, "dumpTimeCur"));
     };
 
 
@@ -513,14 +513,19 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
             };
         };
 
-        if(b.items != null && b.timer(Reflect.get(Block.class, blk, "timerDump"), blk.dumpTime / b.timeScale())) {
-            dumpArr = LCScript.toArray(dumpTup.get(0));
-            i = 0;
-            iCap = dumpArr.getLength();
-            while(i < iCap) {
-                b.dump((Item) dumpArr.get(i));
-                i++;
+        if(b.items != null) {
+            dumpTimeCur += b.timeScale();
+            if(dumpTimeCur >= blk.dumpTime) {
+                dumpTimeCur %= blk.dumpTime;
+                dumpArr = LCScript.toArray(dumpTup.get(0));
+                i = 0;
+                iCap = dumpArr.getLength();
+                while(i < iCap) {
+                    b.dump((Item) dumpArr.get(i));
+                    i++;
+                };
             };
+            set(b, "dumpTimeCur", dumpTimeCur);
         };
     };
 

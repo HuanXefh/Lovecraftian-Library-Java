@@ -357,11 +357,11 @@
 
             // Leg
             Tmp.v4.set(vecBase).lerp(leg.joint, 0.5);
-            t = Vars.world.tileWorld(Tmp.v4.x, Tmp.v4.y);
+            t = GLB_var.world.tileWorld(Tmp.v4.x, Tmp.v4.y);
             if(t != null) {
                 hitSize = vecBase.dst(leg.joint);
                 inLiq = !LCRaycast.rayCheck(vecBase.x, vecBase.y, leg.joint.x, leg.joint.y, (tx, ty) => {
-                    ot = Vars.world.tile(tx, ty);
+                    ot = GLB_var.world.tile(tx, ty);
                     return !UTIL_remains.checkInLiq(ot, utp);
                 });
                 if(inLiq) {
@@ -399,11 +399,11 @@
 
             // Leg base
             Tmp.v4.set(vecLegJoint).lerp(leg.base, 0.5);
-            t = Vars.world.tileWorld(Tmp.v4.x, Tmp.v4.y);
+            t = GLB_var.world.tileWorld(Tmp.v4.x, Tmp.v4.y);
             if(t != null) {
                 hitSize = vecLegJoint.dst(leg.base);
                 inLiq = !LCRaycast.rayCheck(vecLegJoint.x, vecLegJoint.y, leg.base.x, leg.base.y, (tx, ty) => {
-                    ot = Vars.world.tile(tx, ty);
+                    ot = GLB_var.world.tile(tx, ty);
                     return !UTIL_remains.checkInLiq(ot, utp);
                 });
                 if(inLiq) {
@@ -490,7 +490,7 @@
                 e0etp;
 
         if(etp instanceof Block && UTIL_remains.DEBRIS_SHADER == null) return;
-        let t = Vars.world.tileWorld(x, y);
+        let t = GLB_var.world.tileWorld(x, y);
         if(!UTIL_remains.checkFloor(t)) return;
 
         let

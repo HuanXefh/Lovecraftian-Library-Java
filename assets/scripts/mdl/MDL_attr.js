@@ -321,7 +321,7 @@
      */
     const getRainLiq = function() {
         if(!Vars.state.isGame()) return null;
-        let weaState = Groups.weather.find(weaState1 => weaState1.weather instanceof RainWeather);
+        let weaState = GLB_var.entities.weather.find(weaState1 => weaState1.weather instanceof RainWeather);
         if(weaState == null) return null;
         return weaState.weather.liquid;
     };

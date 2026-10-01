@@ -28,7 +28,7 @@
       GLB_param.forceLoadParam();
     });
 
-    blk.ex_addLogicF(LAccess.range, b => blk.blkRad / Vars.tilesize);
+    blk.ex_addLogicF(LogicProp.range, b => blk.blkRad / Vars.tilesize);
   };
 
 
@@ -44,7 +44,7 @@
 
 
   function comp_ex_getRevealTargets(blk, tx, ty, rot) {
-    return LCPos.getTilesCircle(blk.tmpRevealedTargets, Vars.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond.isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
+    return LCPos.getTilesCircle(blk.tmpRevealedTargets, GLB_var.world.tile(tx, ty), blk.blkRad / Vars.tilesize, blk.size).inSituFilter(ot => MDL_cond.isScannerTarget(ot.overlay()) && blk.scanTier >= ot.overlay().delegee.depthLvl);
   };
 
 
@@ -54,7 +54,7 @@
     Time.run(0.0, () => {
       b.revealQueue.withAll(b.revealTargets);
       b.revealedInts.forEachFast(int => {
-        let ot = Vars.world.tile(int);
+        let ot = GLB_var.world.tile(int);
         if(ot != null) b.revealQueue.pull(ot);
       }, true);
       b.ex_setRevealed(true);
@@ -109,7 +109,7 @@
 
     let ot;
     b.revealedInts.forEachFast(int => {
-      ot = Vars.world.tile(int);
+      ot = GLB_var.world.tile(int);
       ot.overlay().ex_accRevealed(ot, bool);
     }, true);
   };

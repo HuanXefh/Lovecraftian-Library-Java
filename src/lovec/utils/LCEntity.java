@@ -56,8 +56,7 @@ public class LCEntity {
      */
     public static @Nullable Building getBuildBy(float x, float y, Team team, float rad, Boolf<Building> boolF) {
         if(rad < 0.0001f) return null;
-
-        return Vars.indexer.findTile(team, x, y, rad, boolF);
+        return LCVersionResolver.indexer.findTile(team, x, y, rad, boolF);
     };
     // Overload
     public static @Nullable Building getBuildBy(float x, float y, Team team, Boolf<Building> boolF) {
@@ -72,7 +71,7 @@ public class LCEntity {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getBuilds.newArr");
         if(rad < 0.0001f) return arr;
 
-        Vars.indexer.eachBlock(
+        LCVersionResolver.indexer.eachBlock(
             null, x, y, rad,
             ob -> true,
             ob -> LCNativeArray.push(arr, ob)
@@ -87,8 +86,7 @@ public class LCEntity {
      */
     public static void eachBuild(float x, float y, @Nullable Team team, float rad, @Nullable Boolf<Building> boolF, Cons<Building> cons) {
         if(rad < 0.0001f) return;
-
-        Vars.indexer.eachBlock(
+        LCVersionResolver.indexer.eachBlock(
             team, x, y, rad,
             boolF != null ? boolF : b -> true,
             cons
@@ -101,8 +99,7 @@ public class LCEntity {
      */
     public static void eachBuildRect(float x, float y, Team team, float w, @Nullable Boolf<Building> boolF, Cons<Building> cons) {
         if(w < 0.0001f) return;
-
-        Vars.indexer.eachBlock(
+        LCVersionResolver.indexer.eachBlock(
             team,
             Tmp.r1.setCentered(x, y, w),
             boolF != null ? boolF : b -> true,
@@ -198,7 +195,6 @@ public class LCEntity {
      */
     public static void eachUnit(float x, float y, @Nullable Team team, float rad, @Nullable Boolf<Unit> boolF, Cons<Unit> cons) {
         if(rad < 0.0001f) return;
-
         Units.nearby(team, x, y, rad, ounit -> {
             if(!LCScriptUtil.checkCond("isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
@@ -212,7 +208,6 @@ public class LCEntity {
      */
     public static void eachUnitRect(float x, float y, @Nullable Team team, float w, @Nullable Boolf<Unit> boolF, Cons<Unit> cons) {
         if(w < 0.0001f) return;
-
         Units.nearby(team, x, y, w, w, ounit -> {
             if(!LCScriptUtil.checkCond("isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
@@ -229,7 +224,7 @@ public class LCEntity {
 
         AtomicReference<Unit> unitRef = new AtomicReference<>();
         Tmp.v1.set(0f, rad);
-        Groups.player.each(player -> {
+        LCVersionResolver.playerGroup.each(player -> {
             Unit ounit = player.unit();
             if(ounit != null && (team == null || ounit.team == team)) {
                 Tmp.v1.x = Mathf.dst(x, y, ounit.x, ounit.y);
@@ -248,7 +243,7 @@ public class LCEntity {
      * Gets a player unit by player name.
      */
     public static @Nullable Unit getPlayerUnitByName(String name) {
-        Player player = Groups.player.find(oplayer -> oplayer.name.equals(name));
+        Player player = LCVersionResolver.playerGroup.find(oplayer -> oplayer.name.equals(name));
         return player == null ? null : player.unit();
     };
 
@@ -354,7 +349,7 @@ public class LCEntity {
         NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getBullets.newArr");
         if(rad < 0.0001f) return arr;
 
-        Groups.bullet.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f), obul -> LCNativeArray.push(arr, obul));
+        LCVersionResolver.bulletGroup.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f), obul -> LCNativeArray.push(arr, obul));
 
         return arr;
     };
@@ -365,8 +360,7 @@ public class LCEntity {
      */
     public static void eachBullet(float x, float y, @Nullable Team team, float rad, @Nullable Boolf<Bullet> boolF, Cons<Bullet> cons) {
         if(rad < 0.0001f) return;
-
-        Groups.bullet.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f) && (boolF == null || boolF.get(obul)), cons);
+        LCVersionResolver.bulletGroup.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f) && (boolF == null || boolF.get(obul)), cons);
     };
 
 
@@ -378,7 +372,6 @@ public class LCEntity {
      */
     public static @Nullable Teamc getTarget(float x, float y, Team team, float rad, boolean targetAir, boolean targetGround, @Nullable Boolf<Teamc> boolF) {
         if(rad < 0.0001f) return null;
-
         return Units.closestTarget(team, x, y, rad, ounit -> ounit.checkTarget(targetAir, targetGround) && (boolF == null || boolF.get(ounit)), ot -> targetGround && boolF.get(ot));
     };
     // Overload

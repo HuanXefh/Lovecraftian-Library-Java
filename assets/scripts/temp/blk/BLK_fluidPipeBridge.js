@@ -34,7 +34,7 @@
   function comp_ex_updatePresFetchTargets(b) {
     b.presFetchTargets.clear();
 
-    ot = Vars.world.tile(b.link);
+    ot = GLB_var.world.tile(b.link);
     if(b.block.linkValid(b.tile, ot)) {
       // Find pressure sources only if bridge is connected
       rot_f = ot.build.relativeTo(b);
@@ -68,7 +68,7 @@
 
     // Treat other bridges as pressure sources
     b.incoming.each(posInt => {
-      ob = Vars.world.build(posInt);
+      ob = GLB_var.world.build(posInt);
       if(
         ob != null
           && ob.team === b.team
@@ -81,14 +81,14 @@
 
 
   function comp_ex_updatePresSupplyTargets(b) {
-    if(b.block.linkValid(b.tile, Vars.world.tile(b.link))) {
+    if(b.block.linkValid(b.tile, GLB_var.world.tile(b.link))) {
       // Don't supply pressure if connected to another bridge
       b.presSupplyTargets.clear();
       return;
     };
 
     b.incoming.each(posInt => {
-      ot = Vars.world.tile(posInt);
+      ot = GLB_var.world.tile(posInt);
       if(ot == null) return;
       ob = b.nearby(LCPos.getRotation(b.tile, ot));
       if(ob == null) return;
@@ -205,7 +205,7 @@
        * @return {boolean}
        */
       ex_checkIsPresRouter: function() {
-        return !this.block.linkValid(this.tile, Vars.world.tile(this.link));
+        return !this.block.linkValid(this.tile, GLB_var.world.tile(this.link));
       }
       .setProp({
         noSuper: true,

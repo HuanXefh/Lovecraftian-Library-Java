@@ -128,7 +128,7 @@
          */
         ex_readUnitData: function(dataObj) {
             let posInt = Number(dataObj.bLinkPos);
-            this.bLink = Vars.world.build(isNaN(posInt) ? -1 : posInt);
+            this.bLink = GLB_var.world.build(isNaN(posInt) ? -1 : posInt);
         }
         .setProp({
             noSuper: true,

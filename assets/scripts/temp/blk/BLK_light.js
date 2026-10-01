@@ -21,7 +21,7 @@
       blk.flags.with(BlockFlag.hasFogRadius)
     };
 
-    blk.ex_addLogicF(LAccess.range, b => blk.lightRad * b.delegee.lightWarmup / Vars.tilesize);
+    blk.ex_addLogicF(LogicProp.range, b => blk.lightRad * b.delegee.lightWarmup / Vars.tilesize);
   };
 
 
@@ -40,7 +40,7 @@
     if(GLB_timer.secQuarter && b.block.delegee.fogRadFrac > 0.0) {
       b.fogRad = b.block.delegee.lightRad * b.block.delegee.fogRadFrac * b.lightWarmup / Vars.tilesize;
       if(!b.lastFogRad.fEqual(b.fogRad, 0.5)) {
-        Vars.fogControl.forceUpdate(b.team, b);
+        GLB_var.fogControl.forceUpdate(b.team, b);
         b.lastFogRad = b.fogRad;
       };
     };

@@ -43,11 +43,11 @@ interface Builderc extends Entityc, Posc, Rotc, Statusc, Teamc {}
 /** mindustry.gen.Minerc */
 interface Minerc extends Drawc, Entityc, Itemsc, Posc, Rotc, Teamc {}
 /** mindustry.gen.Buildingc */
-interface Buildingc extends QuadTree.QuadTreeObject, AmbientSource, Sized, Entityc, Healthc, Posc, Teamc, Timerc, Controllable, Senseable, Settable, Displayable {}
+interface Buildingc extends QuadTree.QuadTreeObject, AmbientSource, Sized, Entityc, Healthc, Posc, Teamc, Timerc, LogicControllable, LogicSenseable, LogicSettable {}
 /** mindustry.gen.Unitc */
-interface Unitc extends Builderc, Drawc, Entityc, Healthc, Hitboxc, Itemsc, Minerc, Physicsc, Posc, Rotc, Shieldc, Statusc, Syncc, Teamc, Velc, Weaponsc, Ranged, Senseable, Settable, Displayable {}
+interface Unitc extends Builderc, Drawc, Entityc, Healthc, Hitboxc, Itemsc, Minerc, Physicsc, Posc, Rotc, Shieldc, Statusc, Syncc, Teamc, Velc, Weaponsc, Ranged, LogicSenseable, LogicSettable {}
 /** mindustry.gen.Bulletc */
-interface Bulletc extends Damagec, Drawc, Entityc, Hitboxc, Ownerc, Posc, Shielderc, Teamc, Timedc, Timerc, Senseable, Settable {}
+interface Bulletc extends Damagec, Drawc, Entityc, Hitboxc, Ownerc, Posc, Shielderc, Teamc, Timedc, Timerc, LogicSenseable, LogicSettable {}
 /** mindustry.gen.WeatherStatec */
 interface WeatherStatec extends Drawc, Entityc, Posc, Syncc {}
 /** mindustry.gen.Playerc */

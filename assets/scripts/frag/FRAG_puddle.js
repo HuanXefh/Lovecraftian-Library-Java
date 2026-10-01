@@ -91,7 +91,7 @@
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-puddle-change", payload => {
             let args = unpackSplitterPayload(payload);
-            let puddle = Puddles.get(Vars.world.tile(args[0]));
+            let puddle = Puddles.get(GLB_var.world.tile(args[0]));
             if(puddle == null) return;
 
             changePuddle(puddle, args[1], args[2]);

@@ -39,7 +39,7 @@
                 LCLogHandler.log("notInGame");
                 return;
             };
-            let b = Vars.world.build(tx, ty);
+            let b = GLB_var.world.build(tx, ty);
             if(b == null) {
                 LCLogHandler.log("noBuildingFound", tx, ty);
                 return;

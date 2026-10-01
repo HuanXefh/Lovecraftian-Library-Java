@@ -18,7 +18,6 @@ declare class Vars {
     static net: Net;
     static content: ContentLoader;
     static state: GameState;
-    static collisions: EntityCollisions;
     static waves: Waves;
     static platform: Platform;
     static mods: Mods;
@@ -28,19 +27,11 @@ declare class Vars {
     static bases: BaseRegistry;
     static logicVars: GlobalVars;
     static editor: MapEditor;
-    static avoidance: AvoidanceProcess;
-    static unitPhysics: PhysicsProcess;
     static assetCache: DataAssetCache;
     static service: GameService;
 
     static universe: Universe;
-    static world: World;
     static maps: Maps;
-    static spawner: WaveSpawner;
-    static indexer: BlockIndexer;
-    static pathfinder: Pathfinder;
-    static controlPath: ControlPathFinder;
-    static fogControl: FogControl;
 
     static control: Control;
     static logic: Logic;

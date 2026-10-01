@@ -183,7 +183,7 @@
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.SERVER, "lovec-client-reaction", payload => {
             let args = unpackPayload(payload);
-            applyReaction(args[0], args[1], args[2], args[3], Vars.world.build(args[4]), args[5]);
+            applyReaction(args[0], args[1], args[2], args[3], GLB_var.world.build(args[4]), args[5]);
         });
     })
     .setAnno("client");

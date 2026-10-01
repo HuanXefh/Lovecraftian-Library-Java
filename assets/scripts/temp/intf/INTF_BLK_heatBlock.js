@@ -53,7 +53,7 @@
             blk.heatLightRad = blk.size * Vars.tilesize * 0.7;
         };
 
-        blk.ex_addLogicF(LAccess.heat, b => b.delegee.tempCur / 100.0);
+        blk.ex_addLogicF(LogicProp.heat, b => b.delegee.tempCur / 100.0);
     };
 
 

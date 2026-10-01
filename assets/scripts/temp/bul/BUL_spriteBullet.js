@@ -36,7 +36,7 @@
      * @return {void}
      */
     function comp_draw(btp, bul) {
-        if(btp.shouldDrawShadow && Vars.world.floorWorld(bul.x, bul.y) != null && Vars.world.floorWorld(bul.x, bul.y).canShadow) {
+        if(btp.shouldDrawShadow && GLB_var.world.floorWorld(bul.x, bul.y) != null && GLB_var.world.floorWorld(bul.x, bul.y).canShadow) {
             processZ(btp.layer - 1.0);
             Draw.color(Pal.shadow, Pal.shadow.a);
             Draw.rect(btp.shaReg, bul.x + btp.offSha, bul.y + btp.offSha, bul.rotation - 90.0);

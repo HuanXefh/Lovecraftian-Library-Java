@@ -75,7 +75,7 @@
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.CLIENT, "lovec-server-item-offload", payload => {
             let args = unpackSplitterPayload(payload);
-            offload(Vars.world.build(args[0]), Vars.world.build(args[1]), Vars.content.item(args[2]), args[3], args[4]);
+            offload(GLB_var.world.build(args[0]), GLB_var.world.build(args[1]), Vars.content.item(args[2]), args[3], args[4]);
         });
     })
     .setAnno("server", null, false);
@@ -479,7 +479,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-remove-loot", payload => {
-            let loot = Groups.unit.getByID(Number(payload));
+            let loot = GLB_var.entities.unit.getByID(Number(payload));
             if(loot == null) return;
 
             removeLoot(loot);
@@ -517,7 +517,7 @@
     }
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-destroy-loot", payload => {
-            let loot = Groups.unit.getByID(Number(payload));
+            let loot = GLB_var.entities.unit.getByID(Number(payload));
             if(loot == null) return;
 
             destroyLoot(loot);
@@ -626,7 +626,7 @@
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-unit-set-item", payload => {
             let args = unpackSplitterPayload(payload);
-            let unit = Groups.unit.getByID(args[0]);
+            let unit = GLB_var.entities.unit.getByID(args[0]);
             let item = MDL_content.getCt(args[1], ContentGetModes.RS);
             if(unit == null || item == null) return;
 
@@ -728,8 +728,8 @@
     .setAnno("init", function() {
         MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-unit-take-loot", payload => {
             let args = unpackSplitterPayload(payload);
-            let unit = Groups.unit.getByID(args[0]);
-            let loot = Groups.unit.getByID(args[1]);
+            let unit = GLB_var.entities.unit.getByID(args[0]);
+            let loot = GLB_var.entities.unit.getByID(args[1]);
             if(unit == null || loot == null) return;
 
             takeUnitLoot(unit, loot, args[2]);

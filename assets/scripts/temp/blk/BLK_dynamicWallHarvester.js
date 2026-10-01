@@ -154,7 +154,7 @@
        * @return {Array<Tile>}
        */
       ex_findDynaAttrTs: function(contArr, tx, ty, rot) {
-        return LCPos.getTilesRot(contArr, Vars.world.tile(tx, ty), rot, this.size);
+        return LCPos.getTilesRot(contArr, GLB_var.world.tile(tx, ty), rot, this.size);
       }
       .setProp({
         noSuper: true,

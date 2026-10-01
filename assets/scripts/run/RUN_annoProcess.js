@@ -27,6 +27,7 @@
 
 
     __annoTargetMap__.put("FromScript", [
+        "LCVersionResolver",
         "LCScriptUtil",
     ]);
 

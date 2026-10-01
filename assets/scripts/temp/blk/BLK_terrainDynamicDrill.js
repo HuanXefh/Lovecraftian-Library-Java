@@ -45,7 +45,7 @@
 
 
   const comp_ex_findPlaceRsIcon = function thisFun(blk, tx, ty, item) {
-    let t = Vars.world.tile(tx, ty);
+    let t = GLB_var.world.tile(tx, ty);
     if(t == null) return GLB_varGen.iconRegs.ohno;
 
     if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, item)) {

@@ -32,10 +32,10 @@
             blk.payAmtCap = blk.ex_calcPayRoomDef();
         };
 
-        blk.ex_addLogicF(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
-        blk.ex_addLogicF(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
-        blk.ex_addLogicF(LAccess.totalPayload, b => LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt)));
-        blk.ex_addLogicF(LAccess.payloadCapacity, b => blk.payAmtCap);
+        blk.ex_addLogicF(LogicProp.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
+        blk.ex_addLogicF(LogicProp.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
+        blk.ex_addLogicF(LogicProp.totalPayload, b => LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt)));
+        blk.ex_addLogicF(LogicProp.payloadCapacity, b => blk.payAmtCap);
     };
 
 

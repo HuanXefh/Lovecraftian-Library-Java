@@ -34,7 +34,7 @@
 
     MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-flammable-gas-emission", payload => {
       let args = unpackSplitterPayload(payload);
-      let b = Vars.world.build(args[0]);
+      let b = GLB_var.world.build(args[0]);
       if(b == null || b.ex_onFlamEmission == null) return;
 
       b.ex_onFlamEmission(args[1], args[2]);

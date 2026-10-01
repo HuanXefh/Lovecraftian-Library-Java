@@ -216,7 +216,7 @@
                 } else break;
             };
         } else if(b.block instanceof ItemBridge) {
-            let ot = Vars.world.tile(b.link);
+            let ot = GLB_var.world.tile(b.link);
             tmpOb = null;
             thisFun.tmpBs.with(tmpB);
             while(ot != null) {
@@ -229,7 +229,7 @@
                     tmpB = ot.build;
                     // On rare occasions this throws `NullPointerException`, WTF
                     if(tmpB == null || tmpB.block !== b.block) break;
-                    ot = Vars.world.tile(tmpB.link);
+                    ot = GLB_var.world.tile(tmpB.link);
                     isFirst = false;
                 } else break;
             };

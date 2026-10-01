@@ -62,7 +62,7 @@ declare class Schematics {}
 
 
 /** mindustry.game.Team */
-declare class Team implements java.lang.Comparable<Team>, Senseable {
+declare class Team implements java.lang.Comparable<Team>, LogicSenseable {
     static derelict: Team;
     static sharded: Team;
     static crux: Team;
@@ -83,7 +83,7 @@ declare class Team implements java.lang.Comparable<Team>, Senseable {
     hasPalette: boolean;
     name: string;
 }
-interface Team extends java.lang.Comparable<Team>, Senseable {}
+interface Team extends java.lang.Comparable<Team>, LogicSenseable {}
 /** mindustry.game.Teams */
 declare class Teams {}
 declare namespace Teams {

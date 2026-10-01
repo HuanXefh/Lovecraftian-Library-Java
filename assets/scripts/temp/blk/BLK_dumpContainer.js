@@ -28,8 +28,9 @@
   function comp_updateTile(b) {
     if(b.ctTargets.length === 0) return;
 
-    let bSpd = MDL_prop.getBuildSpd(b);
-    if(bSpd > 0.0 && b.timer.get(b.block.timerDump, b.block.dumpTime / Math.max(bSpd, 0.0001))) {
+    b.dumpTimeCur += b.edelta();
+    if(b.dumpTimeCur >= b.block.dumpTime) {
+      b.dumpTimeCur %= b.block.dumpTime;
       b.dump(b.ctTargets.random());
     };
   };

@@ -32,7 +32,7 @@
             blk.drawArrow = blk.rotate;
         };
 
-        blk.ex_addLogicF(LAccess.progress, b => b.ex_getCraftProg());
+        blk.ex_addLogicF(LogicProp.progress, b => b.ex_getCraftProg());
     };
 
 

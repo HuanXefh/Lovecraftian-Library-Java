@@ -19,7 +19,9 @@
     if(b.dominantItem != null) {
       if(b.invertTime > 0.0) b.invertTime -= b.delta() / b.block.invertedTime;
 
-      if(b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+      b.dumpTimeCur += b.delta();
+      if(b.dumpTimeCur >= b.block.dumpTime) {
+        b.dumpTimeCur %= b.block.dumpTime;
         b.dump(b.items.has(b.dominantItem) ? b.dominantItem : null);
       };
 

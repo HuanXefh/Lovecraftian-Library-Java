@@ -23,7 +23,7 @@ public class LCRaycastf {
      */
     public static boolean checkInsulated(float x1, float y1, float x2, float y2, @Nullable Team team) {
         return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) -> {
-            Building ob = Vars.world.build(tx, ty);
+            Building ob = LCVersionResolver.world.build(tx, ty);
             return ob != null && ob.isInsulated() && (team == null || ob.team != team);
         });
     };
@@ -34,7 +34,7 @@ public class LCRaycastf {
      */
     public static boolean checkLaser(float x1, float y1, float x2, float y2, @Nullable Team team) {
         return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) -> {
-            Building ob = Vars.world.build(tx, ty);
+            Building ob = LCVersionResolver.world.build(tx, ty);
             return ob != null && ob.block.absorbLasers && (team == null || ob.team != team);
         });
     };
@@ -45,7 +45,7 @@ public class LCRaycastf {
      */
     public static boolean checkSolid(float x1, float y1, float x2, float y2) {
         return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) -> {
-            Tile ot = Vars.world.tile(tx, ty);
+            Tile ot = LCVersionResolver.world.tile(tx, ty);
             return ot != null && ot.solid();
         });
     };
@@ -64,7 +64,7 @@ public class LCRaycastf {
      */
     public static boolean checkMobileFloor(float x1, float y1, float x2, float y2, float minRad) {
         return LCRaycast.rayCheck(x1, y1, x2, y2, (tx, ty) -> {
-            Tile ot = Vars.world.tile(tx, ty);
+            Tile ot = LCVersionResolver.world.tile(tx, ty);
             return ot != null && Mathf.dst(x1, y1, x2, y2) >= minRad && (ot.floor() instanceof EmptyFloor || ot.floor().isLiquid);
         });
     };
@@ -78,7 +78,7 @@ public class LCRaycastf {
      */
     public static @Nullable Building findInsulated(float x1, float y1, float x2, float y2, @Nullable Team team) {
         return (Building) LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) -> {
-            Building ob = Vars.world.build(tx, ty);
+            Building ob = LCVersionResolver.world.build(tx, ty);
             return ob != null && !ob.isInsulated() && (team == null || ob.team == team) ?
                 ob :
                 null;
@@ -91,7 +91,7 @@ public class LCRaycastf {
      */
     public static @Nullable Building findLaser(float x1, float y1, float x2, float y2, @Nullable Team team) {
         return (Building) LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) -> {
-            Building ob = Vars.world.build(tx, ty);
+            Building ob = LCVersionResolver.world.build(tx, ty);
             return ob != null && ob.block.absorbLasers && (team == null || ob.team == team) ?
                 ob :
                 null;
@@ -104,7 +104,7 @@ public class LCRaycastf {
      */
     public static @Nullable Tile findSolid(float x1, float y1, float x2, float y2) {
         return (Tile) LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) -> {
-            Tile ot = Vars.world.tile(tx, ty);
+            Tile ot = LCVersionResolver.world.tile(tx, ty);
             return ot != null && ot.solid() ?
                 ot :
                 null;
@@ -117,7 +117,7 @@ public class LCRaycastf {
      */
     public static @Nullable Tile findLegSolid(float x1, float y1, float x2, float y2) {
         return (Tile) LCRaycast.rayFind(x1, y1, x2, y2, (tx, ty) -> {
-            Tile ot = Vars.world.tile(tx, ty);
+            Tile ot = LCVersionResolver.world.tile(tx, ty);
             return ot != null && EntityCollisions.legsSolid(tx, ty) ?
                     ot :
                     null;

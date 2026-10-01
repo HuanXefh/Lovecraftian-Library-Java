@@ -38,9 +38,7 @@
   function comp_ex_findWeatherLiquid(blk) {
     let liq = null;
     if(GLB_param.IS_CAVE_MAP) return liq;
-
-    Groups.weather.each(weaSta => weaSta.weather instanceof RainWeather, weaSta => liq = weaSta.weather.liquid);
-
+    GLB_var.entities.weather.each(weaSta => weaSta.weather instanceof RainWeather, weaSta => liq = weaSta.weather.liquid);
     return liq;
   };
 

@@ -81,7 +81,7 @@
      * @return {boolean}
      */
     function checkCanControlTime() {
-        return Vars.state.isGame() && Groups.player.size() === 1 && !Vars.state.getPlanet().campaignRules.pauseDisabled;
+        return Vars.state.isGame() && GLB_var.entities.player.size() === 1 && !Vars.state.getPlanet().campaignRules.pauseDisabled;
     };
 
 

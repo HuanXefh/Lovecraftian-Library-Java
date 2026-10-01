@@ -17,7 +17,7 @@
   function comp_init(blk) {
     blk.rotate = true;
 
-    blk.ex_addLogicF(LAccess.range, b => 1);
+    blk.ex_addLogicF(LogicProp.range, b => 1);
   };
 
 
@@ -43,12 +43,10 @@
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     LCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
-
-    let t = Vars.world.tile(tx, ty);
+    let t = GLB_var.world.tile(tx, ty);
     if(t == null) return;
     let ot = t.nearby(rot);
     if(ot == null) return;
-
     LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
   };
 
@@ -60,16 +58,25 @@
     b.heat = Mathf.lerpDelta(b.heat, cond && b.efficiency > 0.0 ? 1.0 : 0.0, 0.08);
     b.charge += b.heat * b.delta();
 
-    if(b.timer.get(b.block.timerUse, b.block.useTime) && cond) b.consume();
+    if(cond) {
+      b.useTimeCur += b.delta();
+      if(b.useTimeCur >= b.block.useTime) {
+        b.useTimeCur %= b.block.useTime;
+        b.consume();
+      };
+    };
 
     if(b.charge > b.block.reload && cond) {
       b.charge = 0.0;
-
-      let ob = b.nearby(b.rotation);
-      if(ob != null && MDL_cond.canHeal(ob)) {
-        FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt) * b.efficiency, true);
+      if(b.lastHealTarget != null && MDL_cond.canHeal(b.lastHealTarget)) {
+        FRAG_attack.heal(b.lastHealTarget, (b.lastHealTarget.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt) * b.efficiency, true);
       };
     };
+  };
+
+
+  function comp_onProximityUpdate(b) {
+    b.lastHealTarget = b.nearby(b.rotation);
   };
 
 
@@ -85,9 +92,9 @@
 
   function comp_drawSelect(b) {
     let ot = b.tile.nearby(b.rotation);
-    if(ot == null) return;
-
-    LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
+    if(ot != null) {
+      LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
+    };
   };
 
 
@@ -203,8 +210,42 @@
      */
     newClass().extendClass(PARENT[1], "B_directionalMender").initClass()
     .setParent(MendProjector.MendBuild)
-    .setParam({})
+    .setParam({
+
+
+      /* <------------------------------ internal ------------------------------> */
+
+
+      /**
+       * `INTERNAL`
+       * @memberof B_directionalMender
+       * @instance
+       * @type {Building|null}
+       */
+      lastHealTarget: null,
+      /**
+       * `INTERNAL`
+       * @memberof B_directionalMender
+       * @instance
+       * @type {boolean}
+       */
+      lastCanHeal: false,
+      /**
+       * `INTERNAL`
+       * @memberof B_directionalMender
+       * @instance
+       * @type {number}
+       */
+      useTimeCur: 0.0,
+
+
+    })
     .setMethod({
+
+
+      onProximityUpdate: function() {
+        comp_onProximityUpdate(this);
+      },
 
 
       updateTile: function() {
@@ -212,6 +253,17 @@
       }
       .setProp({
         noSuper: true,
+      }),
+
+
+      shouldConsume: function() {
+        if(GLB_timer.sec) {
+          this.lastCanHeal = this.lastHealTarget != null && MDL_cond.canHeal(this.lastHealTarget);
+        };
+        return this.lastCanHeal;
+      }
+      .setProp({
+        boolMode: "and",
       }),
 
 

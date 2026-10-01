@@ -163,7 +163,7 @@
      * @return {number}
      */
     const comp_ex_getAttrSum = function thisFun(blk, tx, ty, rot) {
-        let t = Vars.world.tile(tx, ty);
+        let t = GLB_var.world.tile(tx, ty);
         if(t == null) return 0.0;
         if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
             let tup = MDL_attr.getDynaAttrTup(thisFun.tmpDynaAttrTup, blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
@@ -241,8 +241,12 @@
             };
             b.dumpLiquid(b.dynaAttrRs, 2.0);
         };
-        if(b.dynaAttrRs instanceof Item && b.items != null && b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
-            b.dump(b.dynaAttrRs);
+        if(b.dynaAttrRs instanceof Item && b.items != null) {
+            b.dumpTimeCur += b.delta();
+            if(b.dumpTimeCur >= b.block.dumpTime) {
+                b.dumpTimeCur %= b.block.dumpTime;
+                b.dump(b.dynaAttrRs);
+            };
         };
     };
 

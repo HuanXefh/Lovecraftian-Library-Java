@@ -55,7 +55,7 @@
 
   function comp_drawPlace(blk, tx, ty, rot, valid) {
     LCDrawf.rectPlaceRot(blk, tx, ty, blk.range * 0.5, rot, true, valid ? Pal.accent : Pal.remove);
-    if(Vars.world.tile(tx, ty) == null || blk.tmpMineRsTup[0] == null) return;
+    if(GLB_var.world.tile(tx, ty) == null || blk.tmpMineRsTup[0] == null) return;
     blk.ex_drawDrillText(tx, ty, valid, 60.0 / blk.ex_calcDrillTime(blk.tmpMineRsTup[0], Math.pow(blk.range, 2)) * blk.tmpTotalOreAmt, blk.tmpMineRsTup[1].length > 1 ? null : blk.ex_findPlaceRsIcon(tx, ty, blk.tmpMineRsTup[0]));
   };
 
@@ -87,7 +87,7 @@
 
   function comp_ex_findOreTs(blk, contArr, tx, ty, rot) {
     let item, oblk;
-    return LCPos.getTilesRectRotCenter(contArr, Vars.world.tile(tx, ty), blk.range * 0.5, rot, blk.size).inSituFilter(ot => {
+    return LCPos.getTilesRectRotCenter(contArr, GLB_var.world.tile(tx, ty), blk.range * 0.5, rot, blk.size).inSituFilter(ot => {
       item = null;
       oblk = Blocks.air;
       if(blk.mineMode === "wall" || blk.mineMode === "any") {
@@ -140,7 +140,9 @@
       };
     };
 
-    if(b.timer.get(b.block.timerDump, b.block.dumpTime / b.timeScale)) {
+    b.dumpTimeCur += b.delta();
+    if(b.dumpTimeCur >= b.block.dumpTime) {
+      b.dumpTimeCur %= b.block.dumpTime;
       b.dump();
     };
   };

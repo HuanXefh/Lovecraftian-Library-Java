@@ -97,7 +97,7 @@
      * Method is only available on client.
      */
     exports.clienter = new CLS_annotation("client", function() {
-        return Groups.player.size() <= 1 || !Vars.net.client();
+        return GLB_var.entities.player.size() <= 1 || !Vars.net.client();
     });
 
 

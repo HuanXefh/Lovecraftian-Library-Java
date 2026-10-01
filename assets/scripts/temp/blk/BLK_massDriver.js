@@ -45,7 +45,7 @@
 
 
   function comp_drawSelect(b) {
-    let ob = Vars.world.build(b.link);
+    let ob = GLB_var.world.build(b.link);
     if(ob == null) return;
 
     LCDrawf.lineFlick(

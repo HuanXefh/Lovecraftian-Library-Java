@@ -14,12 +14,12 @@ declare class Category {
 
 
 /** mindustry.world.Block */
-declare class Block extends UnlockableContent implements Senseable {}
-interface Block extends Senseable {}
+declare class Block extends UnlockableContent implements LogicSenseable {}
+interface Block extends LogicSenseable {}
 
 
 /** mindustry.type.Item */
-declare class Item extends UnlockableContent implements Senseable {
+declare class Item extends UnlockableContent implements LogicSenseable {
     hidden: boolean;
     color: Color;
     explosiveness: number;
@@ -40,9 +40,9 @@ declare class Item extends UnlockableContent implements Senseable {
     isOnPlanet(pla: Planet): boolean
     isHidden(): boolean
 }
-interface Item extends Senseable {}
+interface Item extends LogicSenseable {}
 /** mindustry.type.Liquid */
-declare class Liquid extends UnlockableContent implements Senseable {
+declare class Liquid extends UnlockableContent implements LogicSenseable {
     static readonly animationFrames: number;
     static animationScaleGas: number;
     static animationScaleLiquid: number;
@@ -70,14 +70,14 @@ declare class Liquid extends UnlockableContent implements Senseable {
     particleSpacing: number;
     canStayOn: ObjectSet<Liquid>;
 }
-interface Liquid extends Senseable {}
+interface Liquid extends LogicSenseable {}
 /** mindustry.type.CellLiquid */
 declare class CellLiquid extends Liquid {}
 
 
 /** mindustry.type.UnitType */
-declare class UnitType extends UnlockableContent implements Senseable {}
-interface UnitType extends Senseable {}
+declare class UnitType extends UnlockableContent implements LogicSenseable {}
+interface UnitType extends LogicSenseable {}
 /** mindustry.type.ErekirUnitType */
 declare class ErekirUnitType extends UnitType {}
 /** mindustry.type.MissileUnitType */

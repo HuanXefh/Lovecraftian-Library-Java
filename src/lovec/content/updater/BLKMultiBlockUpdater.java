@@ -10,6 +10,7 @@ import lovec.content.BuildUpdater;
 import lovec.content.ContentUpdater;
 import lovec.type.block.factory.MultiBlockLinkCenterBlockFrag;
 import lovec.type.block.factory.MultiBlockLinkCenterBuildFrag;
+import lovec.utils.LCVersionResolver;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -233,7 +234,7 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
         @FragMethod
         public void drawTeam() {
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-                Tile t = Vars.world.tile(b.tileX() + teamOverlayOffset.x, b.tileY() + teamOverlayOffset.y);
+                Tile t = LCVersionResolver.world.tile(b.tileX() + teamOverlayOffset.x, b.tileY() + teamOverlayOffset.y);
                 if(t != null) {
                     Draw.color(b.team.color);
                     Draw.rect("block-border", t.worldx(), t.worldy());
@@ -246,7 +247,7 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
         @FragMethod
         public void drawStatus() {
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-                Tile t = Vars.world.tile(b.tileX() + statusOverlayOffset.x, b.tileY() + statusOverlayOffset.y);
+                Tile t = LCVersionResolver.world.tile(b.tileX() + statusOverlayOffset.x, b.tileY() + statusOverlayOffset.y);
                 if(t != null) {
                     float mtp = mblk.getMultiBlockSizes()[0] > 1 && mblk.getMultiBlockSizes()[1] > 1 ? 1f : 0.64f;
                     float off = mtp == 1f ? 0f : (mtp * Vars.tilesize / 4f);

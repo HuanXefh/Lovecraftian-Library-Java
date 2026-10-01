@@ -174,18 +174,26 @@ declare class Decal implements Pool.Poolable, Decalc, Drawc, Entityc, IndexableE
 interface Decal extends Pool.Poolable, Decalc, Drawc, Entityc, IndexableEntity__all, IndexableEntity__draw, Posc, Rotc, Timedc {}
 
 
-/** mindustry.gen.Groups */
-declare class Groups {
-    static all: EntityGroup<Entityc>;
-    static build: EntityGroup<Building>;
-    static unit: EntityGroup<Unit>;
-    static bullet: EntityGroup<Bullet>;
-    static weather: EntityGroup<WeatherState>;
-    static player: EntityGroup<Player>;
-    static draw: EntityGroup<Drawc>;
-    static effect: EntityGroup<EffectState>;
-    static powerGraph: EntityGroup<PowerGraphUpdaterc>;
-    static sync: EntityGroup<Syncc>;
+/**
+ * mindustry.gen.Groups
+ * @deprecated v8
+ */
+declare class Groups {}
+/**
+ * mindustry.gen.Entities
+ * @deprecated v9
+ */
+declare class Entities {
+    all: EntityGroup<Entityc>;
+    build: EntityGroup<Building>;
+    unit: EntityGroup<Unit>;
+    bullet: EntityGroup<Bullet>;
+    weather: EntityGroup<WeatherState>;
+    player: EntityGroup<Player>;
+    draw: EntityGroup<Drawc>;
+    effect: EntityGroup<EffectState>;
+    powerGraph: EntityGroup<PowerGraphUpdaterc>;
+    sync: EntityGroup<Syncc>;
 }
 
 

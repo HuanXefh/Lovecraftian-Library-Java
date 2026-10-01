@@ -18,7 +18,7 @@
 
 
     /** @global */
-    LCCompatibilityHandler = fetchClass("lovec.utils.LCCompatibilityHandler");
+    LCVersionResolver = fetchClass("lovec.utils.LCVersionResolver");
 
 
     /**
@@ -36,7 +36,7 @@
     };
 
 
-    if(LCCompatibilityHandler.isV8) {
+    if(LCVersionResolver.isV8) {
         PlayerJoinEvent = eval(EventType.PlayerJoin);
         PlayerConnectEvent = eval(EventType.PlayerConnect);
         PlayerLeaveEvent = eval(EventType.PlayerLeave);
@@ -92,4 +92,23 @@
         QuadMarker = eval("MapObjectives.QuadMarker");
         LightMarker = eval("MapObjectives.LightMarker");
         TextureHolder = eval("MapObjectives.TextureHolder");
+
+        LogicSenseable = eval("Senseable");
+        LogicSettable = eval("Settable");
+        LogicControllable = eval("Controllable");
+        LogicProp = eval("LAccess");
+        LogicCategory = eval("LCategory");
+        LogicUnitControl = eval("LUnitControl");
+        LogicLocate = eval("LLocate");
+        LogicDrawable = eval("LDrawable");
+        LogicCanvas = eval("LCanvas");
+        LogicPrintable = eval("LPrintable");
+        LogicReadable = eval("LReadable");
+        LogicWritable = eval("LWritable");
+        LogicVar = eval("LVar");
+        LogicParser = eval("LParser");
+        LogicStatement = eval("LStatement");
+        LogicAssembler = eval("LAssembler");
+        LogicExecutor = eval("LExecutor");
+        LogicMarkerControl = eval("LMarkerControl");
     };

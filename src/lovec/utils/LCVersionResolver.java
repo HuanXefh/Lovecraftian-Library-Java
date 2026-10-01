@@ -1,14 +1,30 @@
 package lovec.utils;
 
+import lovec.annotation.FromScript;
+import mindustry.ai.BlockIndexer;
 import mindustry.core.Version;
+import mindustry.core.World;
+import mindustry.entities.EntityGroup;
+import mindustry.gen.Bullet;
+import mindustry.gen.Player;
 
-public class LCCompatibilityHandler {
+public class LCVersionResolver {
 
 
     public static boolean isV8 = Version.number < 9;
 
     public static Class<?> MappableContent;
     public static Class<?> UnlockableContent;
+
+    @FromScript(source = "GLB_var")
+    public static World world;
+    @FromScript(source = "GLB_var")
+    public static BlockIndexer indexer;
+
+    @FromScript(source = "GLB_var", name = "bulletEntities")
+    public static EntityGroup<Bullet> bulletGroup;
+    @FromScript(source = "GLB_var", name = "playerEntities")
+    public static EntityGroup<Player> playerGroup;
 
 
     public static void load() {

@@ -19,7 +19,7 @@
     blk.drawCached = false;
     blk.drawDynamic = true;
 
-    blk.ex_addLogicF(LAccess.range, b => blk.blkRad / Vars.tilesize);
+    blk.ex_addLogicF(LogicProp.range, b => blk.blkRad / Vars.tilesize);
   };
 
 

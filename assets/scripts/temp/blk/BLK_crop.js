@@ -378,7 +378,7 @@
        */
       ex_calcGrowEffc: function thisFun(tx, ty) {
         if(LCNativeArray.checkTupChange(thisFun.tmpTup, tx, ty)) {
-          thisFun.tmpVal = MDL_attr.calcSumRect(Vars.world.tile(tx, ty), this.placeRestrictR, this.size, TP_attr.attr0env_growth, AttrModes.FLOOR | AttrModes.OVERLAY) / Mathf.pow(this.size + this.placeRestrictR * 2, 2);
+          thisFun.tmpVal = MDL_attr.calcSumRect(GLB_var.world.tile(tx, ty), this.placeRestrictR, this.size, TP_attr.attr0env_growth, AttrModes.FLOOR | AttrModes.OVERLAY) / Mathf.pow(this.size + this.placeRestrictR * 2, 2);
         };
 
         return thisFun.tmpVal;
