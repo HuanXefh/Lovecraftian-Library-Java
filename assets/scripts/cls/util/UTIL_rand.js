@@ -57,13 +57,13 @@
 
 
     /**
-     * Gets a {@link Rand} by name, the name must be mapped to an index in {@link VAR.randInd}.
+     * Gets a {@link Rand} by name, the name must be mapped to an index in {@link GLB_var.randInd}.
      * @param {string} name
      * @return {Rand}
      */
     UTIL_rand.get = function(name) {
-        if(VAR.randInd[name] == null) throw new Error("Name ${1} is not used".format(name));
-        return UTIL_rand.getByInd(VAR.randInd[name]);
+        if(GLB_var.randInd[name] == null) throw new Error("Name ${1} is not used".format(name));
+        return UTIL_rand.getByInd(GLB_var.randInd[name]);
     };
 
 

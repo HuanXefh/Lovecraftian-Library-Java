@@ -267,7 +267,7 @@
         let rs = getCt(rs_gn, ContentGetModes.RS);
         if(rs == null) return null;
         if(tryJsProp(rs, "intmdParent") != null) rs = rs.delegee.intmdParent;
-        let arr = VARGEN.tagIntmdsMap.get(intmdTag);
+        let arr = GLB_varGen.tagIntmdsMap.get(intmdTag);
         if(arr == null) return null;
         return arr.find(ors => ors.delegee.intmdParent === rs);
     }

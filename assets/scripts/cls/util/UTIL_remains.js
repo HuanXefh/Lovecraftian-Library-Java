@@ -21,7 +21,7 @@
 
 
     MDL_event.onLoad(() => {
-        TRIGGER.mapExit.addGlobalListener(() => {
+        BOX_trigger.mapExit.addGlobalListener(() => {
             blkRemainsMap.clear();
             unitRemainsArr.clear();
             legRemainsArr.clear();
@@ -61,7 +61,7 @@
      */
     UTIL_remains.checkRemainsValid = function(e) {
         return e instanceof Building ?
-            PARAM.SHOULD_CREATE_BUILD_REMAINS && !(instanceOfAny(e.block, ConstructBlock, MultiBlockLinkBlock, MultiBlockLinkConstructBlock)) && (e.block.size > 1 || Mathf.chance(0.5)) && !MDL_cond.hasNoRemains(e.block) :
+            GLB_param.SHOULD_CREATE_BUILD_REMAINS && !(instanceOfAny(e.block, ConstructBlock, MultiBlockLinkBlock, MultiBlockLinkConstructBlock)) && (e.block.size > 1 || Mathf.chance(0.5)) && !MDL_cond.hasNoRemains(e.block) :
             !MDL_cond.hasNoRemains(e.type);
     };
 
@@ -103,7 +103,7 @@
      * @return {boolean}
      */
     UTIL_remains.checkFloating = function(etp, hitSize) {
-        return !(etp instanceof Block) && tryVal(hitSize, LCProp.getHitSize(etp)) < VAR.param.unitRemainsFloatThr;
+        return !(etp instanceof Block) && tryVal(hitSize, LCProp.getHitSize(etp)) < GLB_var.param.unitRemainsFloatThr;
     };
 
 
@@ -125,17 +125,17 @@
         return extend(Decal, {
 
 
-            lifetime: isPermanent ? Number.n8 : PARAM.UNIT_REMAINS_LIFETIME,
+            lifetime: isPermanent ? Number.n8 : GLB_param.UNIT_REMAINS_LIFETIME,
             x: x,
             y: y,
             t: t,
             hitSize: LCProp.getHitSize(blk),
             rotation: Mathf.random(90.0) - 45.0,
-            color: VAR.color.darkMix,
+            color: GLB_var.color.darkMix,
             a: a,
             aSha: 0.3,
             z: z,
-            off: Mathf.random(VAR.param.buildRemainsOffCap),
+            off: Mathf.random(GLB_var.param.buildRemainsOffCap),
             region: LCTexture.getBlockRegion(blk),
 
 
@@ -154,7 +154,7 @@
                     UTIL_remains.DEBRIS_SHADER.delegee.mulColor.set(this.color);
                     UTIL_remains.DEBRIS_SHADER.delegee.a = this.a - Mathf.curve(this.fin(), 0.98) * this.a;
                     UTIL_remains.DEBRIS_SHADER.delegee.off = this.off;
-                    UTIL_remains.DEBRIS_SHADER.delegee.offCap = VAR.param.buildRemainsOffCap;
+                    UTIL_remains.DEBRIS_SHADER.delegee.offCap = GLB_var.param.buildRemainsOffCap;
                     Draw.shader(UTIL_remains.DEBRIS_SHADER);
                     Draw.rect(this.region, this.x, this.y, this.rotation);
                     Draw.shader();
@@ -193,7 +193,7 @@
         return extend(Decal, {
 
 
-            lifetime: isPermanent ? Number.n8 : PARAM.UNIT_REMAINS_LIFETIME,
+            lifetime: isPermanent ? Number.n8 : GLB_param.UNIT_REMAINS_LIFETIME,
             offTime: Mathf.random(1200.0),
             x: x,
             y: y,
@@ -206,7 +206,7 @@
             clipRad: null,
             rotation: unit == null ? Mathf.random(360.0) : (unit.rotation - 90.0 + Mathf.range(25.0)),
             team: team,
-            color: VAR.color.darkMix,
+            color: GLB_var.color.darkMix,
             tint: tint,
             a: a,
             aSha: 0.5,
@@ -274,7 +274,7 @@
                     };
                     if(this.isHot) {
                         Draw.blend(Blending.additive);
-                        Draw.mixcol(VAR.color.heatMix, 1.0);
+                        Draw.mixcol(GLB_var.color.heatMix, 1.0);
                         Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * (!this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.5 - Mathf.curve(this.fin(), 0.98) * 0.5) : (0.5 - Interp.pow2Out.apply(this.fin()) * 0.5)));
                         Draw.rect(this.region, this.x, this.y, this.rotation);
                         Draw.blend();
@@ -285,7 +285,7 @@
                     Lines.line(this.lineRegion, this.lineVec_f.x + Tmp.v1.x, this.lineVec_f.y + Tmp.v1.y, this.lineVec_t.x + Tmp.v1.x, this.lineVec_t.y + Tmp.v1.y, false);
                     if(this.isHot) {
                         Draw.blend(Blending.additive);
-                        Draw.mixcol(VAR.color.heatMix, 1.0);
+                        Draw.mixcol(GLB_var.color.heatMix, 1.0);
                         Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * (!this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.35 - Mathf.curve(this.fin(), 0.98) * 0.35) : (0.35 - Interp.pow2Out.apply(this.fin()) * 0.35)));
                         Lines.line(this.lineRegion, this.lineVec_f.x + Tmp.v1.x, this.lineVec_f.y + Tmp.v1.y, this.lineVec_t.x + Tmp.v1.x, this.lineVec_t.y + Tmp.v1.y, false);
                         Draw.blend();
@@ -351,7 +351,7 @@
 
             tint = null;
             a = 0.7;
-            z = VAR.layer.unitRemains - 0.01;
+            z = GLB_var.layer.unitRemains - 0.01;
             liq = null;
             shouldFloat = false;
 
@@ -370,7 +370,7 @@
                         liq = ot.floor().liquidDrop;
                         tint = liq != null ? liq.color : t.getFloorColor();
                         a = 0.4;
-                        z = VAR.layer.unitRemainsDrown - 0.01;
+                        z = GLB_var.layer.unitRemainsDrown - 0.01;
                     };
                 };
                 remainsLeg = UTIL_remains.getUnitRemains(
@@ -393,7 +393,7 @@
             offY = Mathf.random(8.0);
             tint = null;
             a = 0.7;
-            z = VAR.layer.unitRemains - 0.01;
+            z = GLB_var.layer.unitRemains - 0.01;
             liq = null;
             shouldFloat = false;
 
@@ -412,7 +412,7 @@
                         liq = ot.floor().liquidDrop;
                         tint = liq != null ? liq.color : t.getFloorColor();
                         a = 0.4;
-                        z = VAR.layer.unitRemainsDrown - 0.01;
+                        z = GLB_var.layer.unitRemainsDrown - 0.01;
                     };
                 };
                 remainsLegBase = UTIL_remains.getUnitRemains(
@@ -496,7 +496,7 @@
         let
             tint = null,
             a = 1.0,
-            z = etp instanceof Block ? VAR.layer.buildRemains : VAR.layer.unitRemains,
+            z = etp instanceof Block ? GLB_var.layer.buildRemains : GLB_var.layer.unitRemains,
             inLiq = false,
             shouldFloat = false;
 
@@ -511,7 +511,7 @@
                 let liq = t.floor().liquidDrop;
                 tint = liq != null ? liq.color : t.getFloorColor();
                 a = 0.5;
-                z = etp instanceof Block ? VAR.layer.buildRemainsDrown : VAR.layer.unitRemainsDrown;
+                z = etp instanceof Block ? GLB_var.layer.buildRemainsDrown : GLB_var.layer.unitRemainsDrown;
             };
         };
 

@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    blk.priority = VAR.priority.powGen;
+    blk.priority = GLB_var.priority.powGen;
 
     if(blk.overwriteExploParam) {
       blk.explosionRadius = Math.round(FRAG_attack.getPresExploRad(blk.size) / Vars.tilesize);

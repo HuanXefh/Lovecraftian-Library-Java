@@ -59,10 +59,10 @@
     function comp_created(b) {
         b.torqueBlockBuildUpdater = new INTFBTorqueBlockUpdater(b.block.delegee.torqueBlockUpdater, b);
 
-        TRIGGER.torqueBlockPlace.fire(b);
+        BOX_trigger.torqueBlockPlace.fire(b);
         Time.run(0.0, () => {
-            TRIGGER.torqueBlockPlace.addListener(ob => b.torProg = 0.0);
-            TRIGGER.torqueBlockConfigure.addListener(ob => b.torProg = 0.0);
+            BOX_trigger.torqueBlockPlace.addListener(ob => b.torProg = 0.0);
+            BOX_trigger.torqueBlockConfigure.addListener(ob => b.torProg = 0.0);
         });
 
         // Just in case
@@ -108,7 +108,7 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipTorUpdate) return;
+        if(GLB_param.UPDATE_SUPPRESSED || DEBUG.skipTorUpdate) return;
 
         b.torProg += b.rpmCur / 6.0 * Time.delta;
         b.ex_updateTor();
@@ -138,7 +138,7 @@
 
         Core.app.post(() => {
             // I have to delay this or crash happens somehow, idk why
-            ob.damagePierce(ob.maxHealth * (VAR.param.rpmDmgFrac + (rateAdd - rateCons * 3.0) / rateCons));
+            ob.damagePierce(ob.maxHealth * (GLB_var.param.rpmDmgFrac + (rateAdd - rateCons * 3.0) / rateCons));
         });
         MDL_effect.fadeText(ob.x, ob.y, MDL_bundle.getInfo("lovec", "rpm-overload"), Pal.remove, ob.block.size * 0.5);
     };
@@ -161,7 +161,7 @@
                 if(ob.block instanceof MultiBlockLinkBlock) {
                     ob = ob.linkedBuild;
                 };
-                rateProd = MDL_recipeDict.getProdAmt(VARGEN.auxTor, ob.block);
+                rateProd = MDL_recipeDict.getProdAmt(GLB_varGen.auxTor, ob.block);
                 if(rateProd < 0.0001) return;
                 b.torFetchTargets.push(ob, rateProd);
             };
@@ -185,8 +185,8 @@
                 if(ob.block instanceof MultiBlockLinkBlock) {
                     ob = ob.linkedBuild;
                 };
-                if(ob.block.consumesLiquid(VARGEN.auxTor) || ob.block.consumesLiquid(VARGEN.auxRpm)) {
-                    b.torSupplyTargets.push(ob, MDL_recipeDict.getConsAmt(VARGEN.auxTor, ob.block));
+                if(ob.block.consumesLiquid(GLB_varGen.auxTor) || ob.block.consumesLiquid(GLB_varGen.auxRpm)) {
+                    b.torSupplyTargets.push(ob, MDL_recipeDict.getConsAmt(GLB_varGen.auxTor, ob.block));
                 };
             };
         });

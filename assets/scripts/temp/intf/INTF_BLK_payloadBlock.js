@@ -5,104 +5,185 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_payloadBlock>} INTFBLKPayloadBlock
+     */
 
 
-  function comp_init(blk) {
-    if(blk.payAmtCap < 0.0) blk.payAmtCap = blk.ex_calcPayRoomDef();
-
-    blk.ex_addLogicF(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
-    blk.ex_addLogicF(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
-    blk.ex_addLogicF(LAccess.totalPayload, b => LCNativeObject.numSum(b.delegee.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
-    blk.ex_addLogicF(LAccess.payloadCapacity, b => blk.payAmtCap);
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_payloadBlock>} INTFBPayloadBlock
+     * @prop {INTFBLKPayloadBlock} block
+     */
 
 
-  function comp_setStats(blk, stats) {
-    stats.add(fetchStat("lovec", "blk0fac-payroom"), blk.payAmtCap);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_onProximityUpdate(b) {
-    b.ex_updatePaySite();
-  };
-
-
-  function comp_pickedUp(b) {
-    b.payInputBs.clear();
-    b.payOutputBs.clear();
-  };
-
-
-  function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED) return;
-
-    if(b.hasPayOutput && TIMER.effcPay) {
-      b.payAmtTotal = LCNativeObject.numSum(b.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt);
-      b.payAmtTotalAfterProd = LCNativeObject.numSum(b.payStockObj, (nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.ex_getPayProdAmt(nameCt)));
-    };
-
-    if(TIMER.secHalf) {
-      b.payInputBs.forEachCond(
-        ob => b.ex_acceptPay(ob, ob.getPayload()) && b.hasPayInput,
-        ob => {
-          let pay = FRAG_payload.takeAt(ob);
-          MDL_effect.payloadDeposit(ob.x, ob.y, b.x, b.y, pay.content(), false);
-          LCNativeObject.numIncre(b.payReqObj, pay.content().name);
-        },
-        true,
-      );
-    };
-
-    // Payload dumping is not affected by {blk.disableDump}, because you cannot manually take payload out of the building
-    if(b.hasPayOutput && TIMER.secHalf && b.payOutputBs.length > 0) {
-      if(b.lastDumpPay == null) {
-        let nameCt = Object.randKey(b.payStockObj);
-        if(nameCt != null && b.payStockObj[nameCt] > 0) {
-          b.lastDumpPay = FRAG_payload.makePay(nameCt, b.team);
+    /**
+     * @private
+     * @param {INTFBLKPayloadBlock} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        if(blk.payAmtCap < 0.0) {
+            blk.payAmtCap = blk.ex_calcPayRoomDef();
         };
-      } else {
-        let b_t = b.payOutputBs[b.payDumpIncre % b.payOutputBs.length];
-        b.payDumpIncre++;
-        if(b_t.isAdded() && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
-          MDL_effect.payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content(), true);
-          LCNativeObject.numIncre(b.payStockObj, b.lastDumpPay.content().name, -1);
-          b.lastDumpPay = null;
+
+        blk.ex_addLogicF(LAccess.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
+        blk.ex_addLogicF(LAccess.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
+        blk.ex_addLogicF(LAccess.totalPayload, b => LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt)));
+        blk.ex_addLogicF(LAccess.payloadCapacity, b => blk.payAmtCap);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBLKPayloadBlock} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(fetchStat("lovec", "blk0fac-payroom"), blk.payAmtCap);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPayloadBlock} b
+     * @return {void}
+     */
+    function comp_onProximityUpdate(b) {
+        b.ex_updatePaySite();
+
+        Object.eachPair(b.payReqObj, (nameCt, amt) => {
+            if(amt < 0) {
+                b.payReqObj[nameCt] = 0;
+            };
+        });
+        Object.eachPair(b.payStockObj, (nameCt, amt) => {
+            if(amt < 0) {
+                b.payStockObj[nameCt] = 0;
+            };
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPayloadBlock} b
+     * @return {void}
+     */
+    function comp_pickedUp(b) {
+        b.payInputBs.clear();
+        b.payOutputBs.clear();
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPayloadBlock} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(GLB_param.UPDATE_SUPPRESSED) return;
+
+        if(b.hasPayOutput && GLB_timer.effcPay) {
+            b.payAmtTotal = LCNativeObject.numSum(b.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
+            b.payAmtTotalAfterProd = LCNativeObject.numSum(b.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.ex_getPayProdAmt(nameCt))));
         };
-      };
+
+        if(GLB_timer.secHalf && b.hasPayInput) {
+            b.payInputBs.forEachFast(ob => {
+                b.ex_takePay(ob);
+            }, true);
+        };
+
+        // Payload dumping is not affected by `blk.disableDump`, because you cannot manually take payload out of the building
+        if(b.hasPayOutput && GLB_timer.secHalf && b.payOutputBs.length > 0) {
+            if(b.lastDumpPay == null) {
+                let nameCt = Object.randKey(b.payStockObj);
+                if(nameCt != null && b.payStockObj[nameCt] > 0) {
+                    b.lastDumpPay = FRAG_payload.makePay(nameCt, b.team);
+                };
+            } else {
+                let b_t = b.payOutputBs[b.payDumpIncre % b.payOutputBs.length];
+                b.payDumpIncre++;
+                if(b_t.isAdded() && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
+                    MDL_effect.payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content(), true);
+                    LCNativeObject.numIncre(b.payStockObj, b.lastDumpPay.content().name, -1);
+                    b.lastDumpPay = null;
+                };
+            };
+        };
     };
-  };
 
 
-  function comp_updateEfficiencyMultiplier(b) {
-    if(b.hasPayInput && !b.ex_checkPayCons()) b.efficiency = 0.0;
-  };
-
-
-  function comp_displayBars(b, tb) {
-    if(b.hasPayOutput) {
-      tb.add(new Bar(
-        prov(() => Core.bundle.format("bar.lovec-bar-pay-cap-amt", (b.payAmtTotal / b.block.delegee.payAmtCap).perc(0))),
-        prov(() => Pal.items),
-        () => Mathf.clamp(b.payAmtTotal / b.block.delegee.payAmtCap),
-      )).growX();
-      tb.row();
+    /**
+     * @private
+     * @param {INTFBPayloadBlock} b
+     * @return {void}
+     */
+    function comp_updateEfficiencyMultiplier(b) {
+        if(b.hasPayInput && !b.ex_checkPayCons()) {
+            b.efficiency = 0.0;
+        };
     };
-  };
 
 
-  function comp_ex_postUpdateEfficiencyMultiplier(b) {
-    comp_updateEfficiencyMultiplier(b);
-  };
+    /**
+     * @private
+     * @param {INTFBPayloadBlock} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    function comp_displayBars(b, tb) {
+        if(b.hasPayOutput) {
+            tb.add(new Bar(
+                prov(() => Core.bundle.format("bar.lovec-bar-pay-cap-amt", (b.payAmtTotal / b.block.delegee.payAmtCap).perc(0))),
+                prov(() => Pal.items),
+                () => Mathf.clamp(b.payAmtTotal / b.block.delegee.payAmtCap),
+            )).growX();
+            tb.row();
+        };
+    };
 
 
-  function comp_ex_updatePaySite(b) {
-    FRAG_payload.findPayInputBs(b.payInputBs, b, b.block.delegee.payInputSideFracMode);
-    FRAG_payload.findPayOutputBs(b.payOutputBs, b, b.block.delegee.payOutputSideFracMode);
-  };
+    /**
+     * @private
+     * @param {INTFBPayloadBlock} b
+     * @return {void}
+     */
+    function comp_ex_postUpdateEfficiencyMultiplier(b) {
+        comp_updateEfficiencyMultiplier(b);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPayloadBlock} b
+     * @return {void}
+     */
+    function comp_ex_updatePaySite(b) {
+        FRAG_payload.findPayInputBs(b.payInputBs, b, b.block.delegee.payInputSideFracMode);
+        FRAG_payload.findPayOutputBs(b.payOutputBs, b, b.block.delegee.payOutputSideFracMode);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPayloadBlock} b
+     * @param {Building} b_f
+     * @return {void}
+     */
+    function comp_ex_takePay(b, b_f) {
+        if(!b.ex_acceptPay(b_f, b_f.getPayload())) return;
+        let pay = FRAG_payload.takeAt(b_f);
+        MDL_effect.payloadDeposit(b_f.x, b_f.y, b.x, b.y, pay.content(), false);
+        LCNativeObject.numIncre(b.payReqObj, pay.content().name);
+    };
 
 
 /*
@@ -112,307 +193,350 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Lovec payload block that stores payload as abstract data.
-     * @class INTF_BLK_payloadBlock
-     */
-    new CLS_interface("INTF_BLK_payloadBlock", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Payload capacity. A 2-block large payload takes 2 units, NOT SQUARED.
-         * @memberof INTF_BLK_payloadBlock
-         * @instance
+         * Lovec payload block that stores payload as abstract data.
+         * @class INTF_BLK_payloadBlock
          */
-        payAmtCap: -1.0,
+        new CLS_interface("INTF_BLK_payloadBlock", {
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Payload capacity. A 2-block large payload takes 2 units, NON-SQUARED.
+                     * @memberof INTF_BLK_payloadBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    payAmtCap: -1.0,
+                    /**
+                     * `PARAM`: Determines which sides can be used for input.
+                     * @memberof INTF_BLK_payloadBlock
+                     * @instance
+                     * @type {ENumber}
+                     */
+                    payInputSideFracMode: SideFracModes.FRONT,
+                    /**
+                     * `PARAM`: Determines which sides can be used for output.
+                     * @memberof INTF_BLK_payloadBlock
+                     * @instance
+                     * @type {ENumber}
+                     */
+                    payOutputSideFracMode: SideFracModes.FRONT,
+
+
+                };
+            },
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+            /**
+             * Calculates default payload room for this block.
+             * @memberof INTF_BLK_payloadBlock
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcPayRoomDef: function() {
+                return this.size;
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+        }),
+
+
         /**
-         * `PARAM`: Determines which sides can be used for input.
-         * @memberof INTF_BLK_payloadBlock
-         * @instance
+         * @class INTF_B_payloadBlock
          */
-        payInputSideFracMode: SideFracModes.FRONT,
-        /**
-         * `PARAM`: Determines which sides can be used for output.
-         * @memberof INTF_BLK_payloadBlock
-         * @instance
-         */
-        payOutputSideFracMode: SideFracModes.FRONT,
+        new CLS_interface("INTF_B_payloadBlock", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      init: function() {
-        comp_init(this);
-      },
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    hasPayInput: false,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    hasPayOutput: false,
+                    /**
+                     * `INTERNAL`: Total payload room used.
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    payAmtTotal: 0.0,
+                    /**
+                     * `INTERNAL`: Total payload room used after production.
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    payAmtTotalAfterProd: 0.0,
+                    /**
+                     * `INTERNAL`: Whether it's expected to consume payload currently.
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    payConsValid: false,
+                    /**
+                     * `INTERNAL`: Stores payloads to be consumed.
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {TDynamic<Object<string, number>>}
+                     */
+                    payReqObj: tprov(() => ({})),
+                    /**
+                     * `INTERNAL`: Stores payloads produced.
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {TDynamic<Object<string, number>>}
+                     */
+                    payStockObj: tprov(() => ({})),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {TDynamic<Array<Building>>}
+                     */
+                    payInputBs: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {TDynamic<Array<Building>>}
+                     */
+                    payOutputBs: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {Payload|null}
+                     */
+                    lastDumpPay: null,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_payloadBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    payDumpIncre: 0,
 
 
-      /**
-       * Calculates default payload room for this block.
-       * @memberof INTF_BLK_payloadBlock
-       * @instance
-       * @return {number}
-       */
-      ex_calcPayRoomDef: function() {
-        return this.size;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+                };
+            },
 
 
-    }),
+            onProximityUpdate: function() {
+                comp_onProximityUpdate(this);
+            },
 
 
-    /**
-     * @class INTF_B_payloadBlock
-     */
-    new CLS_interface("INTF_B_payloadBlock", {
+            pickedUp: function() {
+                comp_pickedUp(this);
+            },
 
 
-      __paramObjM__: () => ({
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-        /* <------------------------------ internal ------------------------------> */
+            updateEfficiencyMultiplier: function() {
+                comp_updateEfficiencyMultiplier(this);
+            },
 
 
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        hasPayInput: false,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        hasPayOutput: false,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        payAmtTotal: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        payAmtTotalAfterProd: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        payConsValid: false,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        payReqObj: tprov(() => ({})),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        payStockObj: tprov(() => ({})),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        payInputBs: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        payOutputBs: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        lastDumpPay: null,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_payloadBlock
-         * @instance
-         */
-        payDumpIncre: 0,
+            shouldConsume: function() {
+                return !this.hasPayOutput || this.payAmtTotalAfterProd <= this.block.delegee.payAmtCap;
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      }),
+            displayBars: function(tb) {
+                comp_displayBars(this, tb);
+            },
 
 
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
+            /**
+             * @memberof INTF_B_payloadBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_postUpdateEfficiencyMultiplier: function() {
+                comp_ex_postUpdateEfficiencyMultiplier(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      pickedUp: function() {
-        comp_pickedUp(this);
-      },
+            /**
+             * @memberof INTF_B_payloadBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updatePaySite: function() {
+                comp_ex_updatePaySite(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            /**
+             * Tries taking payload from a building.
+             * @memberof INTF_B_payloadBlock
+             * @instance
+             * @func
+             * @param {Building} b_f
+             * @return {void}
+             */
+            ex_takePay: function(b_f) {
+                comp_ex_takePay(this, b_f);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      updateEfficiencyMultiplier: function() {
-        comp_updateEfficiencyMultiplier(this);
-      },
+            /**
+             * Checks if payload requirement is met.
+             * @memberof INTF_B_payloadBlock
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_checkPayCons: function() {
+                if(GLB_timer.effcPay) {
+                    this.payConsValid = LCNativeObject.numAllLargerThan(this.payReqObj, floatf2((nameCt, amt) => this.ex_getPayConsAmt(nameCt)), true);
+                };
+                return this.payConsValid;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      shouldConsume: function() {
-        return !this.hasPayOutput ? true : this.payAmtTotalAfterProd <= this.block.delegee.payAmtCap;
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            /**
+             * Expected consumption amount of some content, for crafters only.
+             * <br> `LATER`
+             * @memberof INTF_B_payloadBlock
+             * @instance
+             * @func
+             * @param {string} nameCt
+             * @return {number}
+             */
+            ex_getPayConsAmt: function(nameCt) {
+                return 0;
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      displayBars: function(tb) {
-        comp_displayBars(this, tb);
-      },
+            /**
+             * Expected production amount of some content, for crafters only.
+             * <br> `LATER`
+             * @memberof INTF_B_payloadBlock
+             * @instance
+             * @func
+             * @param {string} nameCt
+             * @return {number}
+             */
+            ex_getPayProdAmt: function(nameCt) {
+                return 1;
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      /**
-       * @memberof INTF_B_payloadBlock
-       * @instance
-       * @return {void}
-       */
-      ex_postUpdateEfficiencyMultiplier: function() {
-        comp_ex_postUpdateEfficiencyMultiplier(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * Whether this block accepts given payload.
+             * @memberof INTF_B_payloadBlock
+             * @instance
+             * @func
+             * @param {Building} b_f
+             * @param {Payload} pay
+             * @return {boolean}
+             */
+            ex_acceptPay: function(b_f, pay) {
+                return pay != null && this.ex_getPayConsAmt(pay.content().name) / tryVal(this.payReqObj[pay.content().name], 0.0001) > 0.5;
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
 
 
-      /**
-       * @memberof INTF_B_payloadBlock
-       * @instance
-       * @return {void}
-       */
-      ex_updatePaySite: function() {
-        comp_ex_updatePaySite(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * @memberof INTF_B_payloadBlock
+             * @instance
+             * @func
+             * @param {Writes|Reads} wr0rd
+             * @return {void}
+             */
+            ex_processData: function(wr0rd) {
+                processData(
+                    wr0rd,
+                    wr => {
+                        MDL_io.objStrNum(wr, this.payReqObj);
+                        MDL_io.objStrNum(wr, this.payStockObj);
+                    },
+                    rd => {
+                        if(this.LCReviSub >= 0 || !this.block.ex_isSubInsOf("BLK_baseDrill")) {
+                            MDL_io.objStrNum(rd, this.payReqObj);
+                            MDL_io.objStrNum(rd, this.payStockObj);
+                        };
+                    },
+                );
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      /**
-       * @memberof INTF_B_payloadBlock
-       * @instance
-       * @return {boolean}
-       */
-      ex_checkPayCons: function() {
-        if(TIMER.effcPay) {
-          this.payConsValid = LCNativeObject.numAllLargerThan(this.payReqObj, (nameCt, amt) => this.ex_getPayConsAmt(nameCt), true);
-        };
-        return this.payConsValid;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+        }),
 
 
-      /**
-       * Expected consumption amount of some content, for crafters only.
-       * <br> `LATER`
-       * @memberof INTF_B_payloadBlock
-       * @instance
-       * @param {string} nameCt
-       * @return {number}
-       */
-      ex_getPayConsAmt: function(nameCt) {
-        return 0;
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * Expected production amount of some content, for crafters only.
-       * <br> `LATER`
-       * @memberof INTF_B_payloadBlock
-       * @instance
-       * @param {string} nameCt
-       * @return {number}
-       */
-      ex_getPayProdAmt: function(nameCt) {
-        return 1;
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @memberof INTF_B_payloadBlock
-       * @instance
-       * @param {Building} b_f
-       * @param {Payload} pay
-       * @return {boolean}
-       */
-      ex_acceptPay: function(b_f, pay) {
-        return pay != null && this.ex_getPayConsAmt(pay.content().name) / tryVal(this.payReqObj[pay.content().name], 0.0001) > 0.5;
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 2,
-      }),
-
-
-      /**
-       * @memberof INTF_B_payloadBlock
-       * @instance
-       * @param {Writes|Reads} wr0rd
-       * @return {void}
-       */
-      ex_processData: function(wr0rd) {
-        processData(
-          wr0rd,
-
-          wr => {
-            MDL_io.objStrNum(wr, this.payReqObj);
-            MDL_io.objStrNum(wr, this.payStockObj);
-          },
-
-          rd => {
-            if(this.LCReviSub >= 0 || !this.block.ex_isSubInsOf("BLK_baseDrill")) {
-              MDL_io.objStrNum(rd, this.payReqObj);
-              MDL_io.objStrNum(rd, this.payStockObj);
-            };
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-    }),
-
-
-  ];
+    ];

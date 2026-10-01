@@ -42,7 +42,7 @@
      * @return {void}
      */
     function comp_setBars(blk) {
-        if(!VAR.isMindustryX) {
+        if(!GLB_var.isMindustryX) {
             blk.addBar("lovec-prog", b => new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.ex_getCraftProg().perc(0))),
                 prov(() => Pal.ammo),

@@ -636,7 +636,7 @@
          */
         getJval(ct, folderNameOverwrite) {
             if(ct.minfo.mod == null) return null;
-            VAR.ctParser.checkInit();
+            GLB_var.ctParser.checkInit();
             let dir = MDL_file.getScriptDir(ct.minfo.mod.name).child("auxFi").child("json").child(tryVal(folderNameOverwrite, ct.getContentType().folderName));
             let fi = (function() {
                 let seq = dir.findAll(ofi => ofi.name() === (MDL_content.getCtNameNoPrefix(ct) + ".json") || ofi.name() === (MDL_content.getCtNameNoPrefix(ct) + ".hjson"));
@@ -648,14 +648,14 @@
             let jval = jsonToJval(fi);
             // Convert `Jval` to `JsonValue` in v8
             if(LCCompatibilityHandler.isV8) {
-                jval = eval("VAR.jsonParser.fromJson(null, jval.toString(Jval.Jformat.plain))");
+                jval = eval("GLB_var.jsonParser.fromJson(null, jval.toString(Jval.Jformat.plain))");
             };
             if(jval.isString()) {
                 jval = null;
             };
             if(jval != null) {
-                Reflect.set(ContentParser, VAR.ctParser, "currentFile", fi);
-                Reflect.set(ContentParser, VAR.ctParser, "currentMod", ct.minfo.mod);
+                Reflect.set(ContentParser, GLB_var.ctParser, "currentFile", fi);
+                Reflect.set(ContentParser, GLB_var.ctParser, "currentMod", ct.minfo.mod);
             };
             return jval;
         },
@@ -680,7 +680,7 @@
          * @param {UnlockableContent}
          */
         locate(ctType, name) {
-            return Reflect.invoke(ContentParser, VAR.ctParser, "locate", [ctType, name], ContentType, JAVA.string);
+            return Reflect.invoke(ContentParser, GLB_var.ctParser, "locate", [ctType, name], ContentType, JAVA.string);
         },
 
 
@@ -690,7 +690,7 @@
          * @return {void}
          */
         read(run) {
-            Reflect.invoke(ContentParser, VAR.ctParser, "read", [run], JAVA.runnable);
+            Reflect.invoke(ContentParser, GLB_var.ctParser, "read", [run], JAVA.runnable);
         },
 
 
@@ -701,7 +701,7 @@
          * @return {void}
          */
         readFields(obj, jval) {
-            Reflect.invoke(ContentParser, VAR.ctParser, "readFields", [obj, jval], JAVA.object, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+            Reflect.invoke(ContentParser, GLB_var.ctParser, "readFields", [obj, jval], JAVA.object, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
         },
 
 
@@ -751,7 +751,7 @@
             } else {
                 name = research.getString("parent", null);
                 reqs = research.has("requirements") ?
-                    VAR.ctJsonParser.readValue(JAVA.itemStack_arr, research.get("requirements")) :
+                    GLB_var.ctJsonParser.readValue(JAVA.itemStack_arr, research.get("requirements")) :
                     null;
             };
             let lastNode = TechTree.all.find(onode => onode.content === ct);
@@ -759,15 +759,15 @@
                 lastNode.remove();
             };
             let node = new TechTree.TechNode(null, ct, tryVal(reqs, ItemStack.empty));
-            let lastFiCur = Reflect.get(ContentParser, VAR.ctParser, "currentFile");
-            Reflect.get(ContentParser, VAR.ctParser, "postreads").add(run(() => {
-                Reflect.set(ContentParser, VAR.ctParser, "currentContent", ct);
-                Reflect.set(ContentParser, VAR.ctParser, "currentMod", ct.minfo.mod);
-                Reflect.set(ContentParser, VAR.ctParser, "currentFile", lastFiCur);
+            let lastFiCur = Reflect.get(ContentParser, GLB_var.ctParser, "currentFile");
+            Reflect.get(ContentParser, GLB_var.ctParser, "postreads").add(run(() => {
+                Reflect.set(ContentParser, GLB_var.ctParser, "currentContent", ct);
+                Reflect.set(ContentParser, GLB_var.ctParser, "currentMod", ct.minfo.mod);
+                Reflect.set(ContentParser, GLB_var.ctParser, "currentFile", lastFiCur);
                 let isObject = research.isObject();
                 // Objectives
                 if(isObject && research.has("objectives")) {
-                    node.objectives.addAll(VAR.ctJsonParser.readValue(JAVA.objective_arr, research.get("objectives")));
+                    node.objectives.addAll(GLB_var.ctJsonParser.readValue(JAVA.unlockCondition_arr, research.get("objectives")));
                 };
                 // Resource
                 if((ct instanceof Item || ct instanceof Liquid) && !node.objectives.contains(objective => objective instanceof Produce && objective.content === ct)) {
@@ -783,7 +783,7 @@
                 };
                 // Node planet
                 if(isObject && research.has("planet")) {
-                    node.planet = Reflect.invoke(ContentParser, VAR.ctParser, "find", [ContentType.planet, research.getString("planet")], ContentType, JAVA.string);
+                    node.planet = Reflect.invoke(ContentParser, GLB_var.ctParser, "find", [ContentType.planet, research.getString("planet")], ContentType, JAVA.string);
                 };
                 // Node root
                 if(isObject && LCContentParser.getBool(research, "root", false)) {
@@ -818,7 +818,7 @@
         parseBlock(blk, jval) {
             LCContentParser.read(run(() => {
                 if(jval.has("consumes") && jval.get("consumes").isObject()) {
-                    Reflect.invoke(ContentParser, VAR.ctParser, "readBlockConsumers", [blk, jval.get("consumes")], Block, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                    Reflect.invoke(ContentParser, GLB_var.ctParser, "readBlockConsumers", [blk, jval.get("consumes")], Block, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
                     jval.remove("consumes");
                 };
                 if(jval.has("requirements") && blk.buildVisibility === BuildVisibility.hidden) {
@@ -835,12 +835,12 @@
          */
         parseController(utp, jval) {
             if(jval.has("controller") || jval.has("aiController")) {
-                utp.aiController = Reflect.invoke(ContentParser, VAR.ctParser, "resolveController", [jval.getString("controller", jval.getString("aiController", ""))], JAVA.string);
+                utp.aiController = Reflect.invoke(ContentParser, GLB_var.ctParser, "resolveController", [jval.getString("controller", jval.getString("aiController", ""))], JAVA.string);
                 jval.remove("controller");
                 jval.remove("aiController");
             };
             if(jval.has("defaultController")) {
-                let ctrlProv = Reflect.invoke(ContentParser, VAR.ctParser, "resolveController", [jval.getString("defaultController")], JAVA.string);
+                let ctrlProv = Reflect.invoke(ContentParser, GLB_var.ctParser, "resolveController", [jval.getString("defaultController")], JAVA.string);
                 utp.controller = func(unit => ctrlProv.get());
                 jval.remove("defaultController");
             };
@@ -862,7 +862,7 @@
                     pla.meshLoader = prov(() => {
                         let mesh_fi;
                         try {
-                            mesh_fi = Reflect.invoke(ContentParser, VAR.ctParser, "parseMesh", [pla, mesh], Planet, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
                         } catch(err) {
                             console.err(err);
                             mesh_fi = new ShaderSphereMesh(pla, Shaders.unlit, 2);
@@ -882,7 +882,7 @@
                     pla.cloudMeshLoader = prov(() => {
                         let mesh_fi;
                         try {
-                            mesh_fi = Reflect.invoke(ContentParser, VAR.ctParser, "parseMesh", [pla, mesh], Planet, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
+                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, LCCompatibilityHandler.isV8 ? eval("JsonValue") : Jval);
                         } catch(err) {
                             console.err(err);
                             mesh_fi = null;
@@ -960,8 +960,8 @@
          * @return {void}
          */
         setupFields(ct, jval) {
-            Reflect.set(ContentParser, VAR.ctParser, "currentContent", ct);
-            Reflect.set(ContentParser, VAR.ctParser, "currentMod", ct.minfo.mod);
+            Reflect.set(ContentParser, GLB_var.ctParser, "currentContent", ct);
+            Reflect.set(ContentParser, GLB_var.ctParser, "currentMod", ct.minfo.mod);
             LCContentParser.read(run(() => {
                 LCContentParser.readBundle(ct, jval);
                 LCContentParser.readFields(ct, jval);

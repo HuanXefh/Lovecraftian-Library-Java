@@ -163,7 +163,7 @@
             };
         });
         tb.released(() => win.isDragged = false);
-        tb.visibility = () => Vars.ui.hudfrag.shown && PARAM.SHOULD_SHOW_WINDOW;
+        tb.visibility = () => Vars.ui.hudfrag.shown && GLB_param.SHOULD_SHOW_WINDOW;
         return tb;
     };
 

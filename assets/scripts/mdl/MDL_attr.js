@@ -347,7 +347,7 @@
 
         let attrSum = (1.0 - Math.pow(Math.sin(Time.time / 6400.0 / scl), 2) * maxRed);
         if(thisFun.sumScl == null) {
-            thisFun.sumScl = DB_env.db["param"]["map"]["wind"].read(PARAM.MAP_CURRENT, DB_env.db["param"]["pla"]["wind"].read(PARAM.PLANET_CURRENT, 1.0));
+            thisFun.sumScl = DB_env.db["param"]["map"]["wind"].read(GLB_param.MAP_CURRENT, DB_env.db["param"]["pla"]["wind"].read(GLB_param.PLANET_CURRENT, 1.0));
         };
         attrSum *= thisFun.sumScl * DEBUG.windMtp;
         if(t != null && attrSum > 0.0 && posVari > 0.0) {
@@ -367,7 +367,7 @@
         sumScl: null,
     })
     .setAnno("init", function() {
-        TRIGGER.mapChange.addGlobalListener(() => {
+        BOX_trigger.mapChange.addGlobalListener(() => {
             this.sumScl = null;
         });
     });

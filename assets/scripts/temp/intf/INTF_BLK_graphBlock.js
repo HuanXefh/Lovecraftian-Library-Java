@@ -39,7 +39,7 @@
      */
     function comp_ex_updateGraph(b) {
         UTIL_graph.queueUpdate(b.graphCur);
-        if(TIMER.secFive) {
+        if(GLB_timer.secFive) {
             b.ex_updateGraphState();
         };
     };

@@ -57,7 +57,7 @@
      * @return {void}
      */
     function loadLsav() {
-        Time.run(VAR.delay.worldLoad.loadLsav, () => {
+        Time.run(GLB_var.delay.worldLoad.loadLsav, () => {
             if(Vars.state.isEditor()) return;
             if(Vars.net.client()) {
                 requestSync();
@@ -100,9 +100,9 @@
 
             set("save-map", mapCur);
             set("save-map", mapCur, true);
-            set("save-revision", VAR.lovecRevi);
+            set("save-revision", GLB_var.lovecRevi);
 
-            TRIGGER.lsavLoad.fire();
+            BOX_trigger.lsavLoad.fire();
         });
     };
 

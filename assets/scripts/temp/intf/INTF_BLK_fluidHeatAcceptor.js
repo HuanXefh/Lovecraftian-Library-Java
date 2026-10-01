@@ -76,7 +76,7 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.fHeatCur = PARAM.GLOBAL_HEAT;
+        b.fHeatCur = GLB_param.GLOBAL_HEAT;
         b.fHeatTarget = MDL_flow.getFHeatInBuild(b, true);
     };
 
@@ -87,20 +87,20 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        if(TIMER.heat && syncChance("fluidHeat", 0.25)) {
+        if(GLB_timer.heat && syncChance("fluidHeat", 0.25)) {
             b.fHeatTarget = MDL_flow.getFHeatInBuild(b, true);
         };
-        if(TIMER.heat) {
-            b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTarget, b.block.delegee.fHeatWarmupRate * VAR.time.heatIntv);
+        if(GLB_timer.heat) {
+            b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTarget, b.block.delegee.fHeatWarmupRate * GLB_var.time.heatIntv);
         };
 
         if(
-            !PARAM.UPDATE_SUPPRESSED && TIMER.secQuarter
+            !GLB_param.UPDATE_SUPPRESSED && GLB_timer.secQuarter
                 && syncChance("fluidHeat", 0.25)
                 && isFinite(b.block.delegee.fHeatRes) && b.fHeatCur > b.block.delegee.fHeatRes
         ) {
             b.damagePierce(2.0 * b.fHeatCur / b.block.delegee.fHeatRes);
-            MDL_effect.showAt(b.x, b.y, EFF.smogHeat, 0.0);
+            MDL_effect.showAt(b.x, b.y, GLB_eff.smogHeat, 0.0);
         };
     };
 
@@ -111,7 +111,7 @@
      * @return {void}
      */
     function comp_draw(b) {
-        if(!PARAM.SHOULD_DRAW_FLUID_HEAT || !VARGEN.hotFlds.includes(b.liquids.current())) return;
+        if(!GLB_param.SHOULD_DRAW_FLUID_HEAT || !GLB_varGen.hotFlds.includes(b.liquids.current())) return;
         let fHeatRes = b.block.delegee.fHeatRes;
         if(!isFinite(fHeatRes)) return;
         LCDrawf.heat(

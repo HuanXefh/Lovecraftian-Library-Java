@@ -44,7 +44,7 @@
     const grpBitsetMapTup = (function() {
         let itemMap = new ObjectMap();
         let liqMap = new ObjectMap();
-        MDL_event.onLoadDelayTask(VAR.delay.load.loadReacGrp, () => {
+        MDL_event.onLoadDelayTask(GLB_var.delay.load.loadReacGrp, () => {
             let itemBitset, liqBitset;
             DB_reaction.db["groupCond"].forEachRow(2, (grp, boolF) => {
                 itemBitset = new Bits();

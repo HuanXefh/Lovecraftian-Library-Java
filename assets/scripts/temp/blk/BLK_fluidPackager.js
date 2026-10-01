@@ -49,7 +49,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.secQuarter) {
+    if(GLB_timer.secQuarter) {
       b.justCrafted = false;
     };
     if(b.efficiency < 0.0001) {

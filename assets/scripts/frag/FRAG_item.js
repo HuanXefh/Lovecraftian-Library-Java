@@ -177,7 +177,7 @@
         if(p == null) p = 1.0;
         let amtTrans = amt.randFreq(p);
         if(amtTrans > 0) {
-          TRIGGER.itemProduce.fire(b, item, amtTrans);
+          BOX_trigger.itemProduce.fire(b, item, amtTrans);
         };
 
         return Vars.net.client() ?
@@ -399,7 +399,7 @@
         let loot = LCEntity.getLoot(x, y);
         if(loot == null) {
             MDL_call.spawnLoot_server(x, y, item, amt);
-            TRIGGER.itemProduce.fire(b, item, amt);
+            BOX_trigger.itemProduce.fire(b, item, amt);
             b.produced(item, amt);
             return true;
         };
@@ -407,7 +407,7 @@
         if(!Vars.net.client()) {
             setUnitItem_global(loot, loot.item(), loot.stack.amount + amt);
         };
-        TRIGGER.itemProduce.fire(b, item, amt);
+        BOX_trigger.itemProduce.fire(b, item, amt);
         b.produced(item, amt);
 
         return true;
@@ -441,7 +441,7 @@
                     setUnitItem_global(loot, item, amt);
                 };
             };
-            TRIGGER.itemProduce.fire(b, item, amt);
+            BOX_trigger.itemProduce.fire(b, item, amt);
             b.produced(item, amt);
         };
 
@@ -495,7 +495,7 @@
      */
     const destroyLoot = function(loot) {
         if(!MDL_cond.isLoot(loot)) return;
-        TRIGGER.lootDestroy.fire(loot);
+        BOX_trigger.lootDestroy.fire(loot);
         loot.remove();
     };
     exports.destroyLoot = destroyLoot;
@@ -698,7 +698,7 @@
         let amtTrans = Mathf.maxZero(Math.min(amt, unit.itemCapacity() - unit.stack.amount, max));
         if(amtTrans < 1) return false;
 
-        Core.app.post(() => TRIGGER.lootTake.fire(unit, item, amtTrans));
+        Core.app.post(() => BOX_trigger.lootTake.fire(unit, item, amtTrans));
         addUnitItem(unit, item, amtTrans);
         setUnitItem(loot, loot.item(), Mathf.maxZero(loot.stack.amount - amtTrans));
 

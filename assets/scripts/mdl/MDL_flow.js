@@ -371,7 +371,7 @@
     const getPresByBuild = function(b) {
         return tryFun(
             b.ex_getPres, b,
-            b.liquids == null ? 0.0 : (b.liquids.get(VARGEN.auxPres) - b.liquids.get(VARGEN.auxVac))
+            b.liquids == null ? 0.0 : (b.liquids.get(GLB_varGen.auxPres) - b.liquids.get(GLB_varGen.auxVac))
         );
     };
     exports.getPresByBuild = getPresByBuild;
@@ -485,7 +485,7 @@
      * @return {void}
      */
     const updateCorrosion = function(b, liq, amt) {
-        if(PARAM.UPDATE_SUPPRESSED || !Vars.state.rules.fire || !TIMER.secQuarter || amt < 0.05 || !syncChance("corrosion", 0.25)) return;
+        if(GLB_param.UPDATE_SUPPRESSED || !Vars.state.rules.fire || !GLB_timer.secQuarter || amt < 0.05 || !syncChance("corrosion", 0.25)) return;
 
         let corPow = tryJsProp(liq, "corPow", 0.0);
         let corMtp = calcCorMtp(b.block, liq);
@@ -495,7 +495,7 @@
         if(corPow < 0.01) return;
         let corRes = tryJsProp(b.block, "corRes", 1.0);
 
-        b.damagePierce((b.maxHealth * VAR.param.corDmgFrac + VAR.param.corDmgMin) * corPow * corMtp / corRes);
+        b.damagePierce((b.maxHealth * GLB_var.param.corDmgFrac + GLB_var.param.corDmgMin) * corPow * corMtp / corRes);
         if(Mathf.chance(0.5)) {
             MDL_effect.corrosion(b.x, b.y, b.block.size, liq.color);
         };
@@ -511,9 +511,9 @@
      * @return {void}
      */
     const updateClogging = function(b, liq, amt) {
-        if(PARAM.UPDATE_SUPPRESSED || !Vars.state.rules.fire || !TIMER.secQuarter || amt < 0.05 || liq.viscosity < VAR.param.clogViscThr || !syncChance("clogging", 0.25)) return;
+        if(GLB_param.UPDATE_SUPPRESSED || !Vars.state.rules.fire || !GLB_timer.secQuarter || amt < 0.05 || liq.viscosity < GLB_var.param.clogViscThr || !syncChance("clogging", 0.25)) return;
 
-        b.damagePierce((b.maxHealth * VAR.param.clogDmgFrac + VAR.param.clogDmgMin) * Mathf.lerp(0.5, 1.0, amt / b.block.liquidCapacity) * Mathf.lerp(0.5, 1.0, liq.viscosity / VAR.param.clogViscThr * 4.0));
+        b.damagePierce((b.maxHealth * GLB_var.param.clogDmgFrac + GLB_var.param.clogDmgMin) * Mathf.lerp(0.5, 1.0, amt / b.block.liquidCapacity) * Mathf.lerp(0.5, 1.0, liq.viscosity / GLB_var.param.clogViscThr * 4.0));
         if(Mathf.chance(0.5)) {
             MDL_effect.corrosion(b.x, b.y, b.block.size, liq.color, true);
         };
@@ -560,7 +560,7 @@
     const getHeatInBuild = function(b) {
         return tryFun(
             b.ex_getHeat, b,
-            b.liquids == null ? 0.0 : b.liquids.get(VARGEN.auxHeat) * 100.0,
+            b.liquids == null ? 0.0 : b.liquids.get(GLB_varGen.auxHeat) * 100.0,
         );
     };
     exports.getHeatInBuild = getHeatInBuild;
@@ -573,7 +573,7 @@
      * @return {number}
      */
     const getFHeatInBuild = function(b, forceCalc) {
-        let def = PARAM.GLOBAL_HEAT;
+        let def = GLB_param.GLOBAL_HEAT;
         if(!forceCalc) {
             if(tryJsProp(b, "fHeatCur") != null) return b.delegee.fHeatCur;
         };
@@ -599,7 +599,7 @@
     const calcRHeat = function(t) {
         if(t == null) return 0.0;
 
-        let rHeat = PARAM.GLOBAL_HEAT + calcStaticRHeat(t);
+        let rHeat = GLB_param.GLOBAL_HEAT + calcStaticRHeat(t);
         let ot;
 
         // Building
@@ -640,7 +640,7 @@
         staticRHeatCache: new ObjectMap(),
     })
     .setAnno("init", function() {
-        TRIGGER.mapChange.addGlobalListener(() => {
+        BOX_trigger.mapChange.addGlobalListener(() => {
             this.staticRHeatCache.clear();
         });
     });

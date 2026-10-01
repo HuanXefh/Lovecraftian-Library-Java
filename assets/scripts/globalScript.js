@@ -222,8 +222,8 @@
         init() {
             function convertName(javaCls) {
                 let str;
-                if(javaCls === Objective) {
-                    str = "Objective";
+                if(javaCls === UnlockCondition) {
+                    str = "UnlockCondition";
                 } else {
                     str = tryVal(javaCls.__javaObject__, javaCls).getSimpleName();
                 };
@@ -267,7 +267,7 @@
             Content, ContentType, MappableContent, UnlockableContent,
             Block, UnitType, Item, Liquid, StatusEffect, Planet, SectorPreset, Weather, Weapon,
             Building, Unit, StatusEntry, Sector, WeatherState, WeaponMount,
-            Objective,
+            UnlockCondition,
         ],
 
 

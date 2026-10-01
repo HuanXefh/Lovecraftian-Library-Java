@@ -170,7 +170,7 @@
                      * @instance
                      * @type {Effect}
                      */
-                    exploEff: EFF.explosion,
+                    exploEff: GLB_eff.explosion,
                     /**
                      * `PARAM`: Explosion sound.
                      * @memberof INTF_BLK_explosionInducer
@@ -205,7 +205,7 @@
              * @memberof INTF_BLK_explosionInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBExplosionInducer} b
              * @return {number}
              */
             ex_calcExploDmg: function(b) {
@@ -221,7 +221,7 @@
              * @memberof INTF_BLK_explosionInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBExplosionInducer} b
              * @return {number}
              */
             ex_calcExploRad: function(b) {
@@ -237,7 +237,7 @@
              * @memberof INTF_BLK_explosionInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBExplosionInducer} b
              * @return {Liquid|null}
              */
             ex_findExploLiq: function(b) {
@@ -253,7 +253,7 @@
              * @memberof INTF_BLK_explosionInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBExplosionInducer} b
              * @return {number}
              */
             ex_calcExploPuddleAmt: function(b) {
@@ -269,7 +269,7 @@
              * @memberof INTF_BLK_explosionInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBExplosionInducer} b
              * @return {number}
              */
             ex_calcExploPuddleRad: function(b) {
@@ -285,7 +285,7 @@
              * @memberof INTF_BLK_explosionInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBExplosionInducer} b
              * @return {number}
              */
             ex_calcExploPuddleLiqAmt: function(b) {
@@ -301,7 +301,7 @@
              * @memberof INTF_BLK_explosionInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBExplosionInducer} b
              * @return {number}
              */
             ex_calcExploShake: function(b) {
@@ -317,7 +317,7 @@
              * @memberof INTF_BLK_explosionInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBExplosionInducer} b
              * @return {number}
              */
             ex_calcExploShakeDur: function(b) {

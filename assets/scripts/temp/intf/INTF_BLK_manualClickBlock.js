@@ -66,7 +66,7 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        if(TIMER.secQuarter) {
+        if(GLB_timer.secQuarter) {
             b.manualClickFrac = Mathf.maxZero(b.manualClickFrac - 0.03);
         };
     };

@@ -5,39 +5,63 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_recipeSelector>} INTFBLKRecipeSelector
+     */
 
 
-  function comp_init(blk) {
-    blk.configurable = true;
-    blk.saveConfig = true;
-    blk.clearOnDoubleTap = false;
-
-    blk.ex_addConfigM("rcHeader", (b, val) => {
-      b.delegee.rcHeader = val;
-      b.ex_showRcChangeEff()
-    });
-
-    blk.ex_addLogicF(LAccess.config, b => b.delegee.rcHeader);
-    blk.ex_addLogicControl(LAccess.config, (b, param1) => {
-      if(typeof param1 === "string" && param1 !== b.delegee.rcHeader && MDL_recipe.checkHeaderValid(blk.rcMdl, param1)) b.configure(param1);
-    });
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_recipeSelector>} INTFBRecipeSelector
+     * @prop {INTFBLKRecipeSelector} block
+     */
 
 
-  function comp_buildConfiguration(b, tb) {
-    tb.row();
-    MDL_table.setRcSelect(
-      tb, b,
-      () => b.rcHeader, val => b.configure(val),
-      b.ex_getSelectorExtraBtnSetters(),
-      null,
-      {colAmt: b.block.selectionColumns, closeSelect: false, useAutoSelection: b.blk$useAutoSelection},
-    );
-  };
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {INTFBLKRecipeSelector} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.configurable = true;
+        blk.saveConfig = true;
+        blk.clearOnDoubleTap = false;
+
+        blk.ex_addConfigM("rcHeader", (b, val) => {
+            b.delegee.rcHeader = val;
+            b.ex_showRcChangeEff()
+        });
+
+        blk.ex_addLogicF(LAccess.config, b => b.delegee.rcHeader);
+        blk.ex_addLogicControl(LAccess.config, (b, param1) => {
+            if(typeof param1 === "string" && param1 !== b.delegee.rcHeader && MDL_recipe.checkHeaderValid(blk.rcMdl, param1)) {
+                b.configure(param1);
+            };
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeSelector} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    function comp_buildConfiguration(b, tb) {
+        tb.row();
+        MDL_table.setRcSelect(
+            tb, b,
+            () => b.rcHeader, val => b.configure(val),
+            b.ex_getSelectorExtraBtnSetters(),
+            null,
+            {colAmt: b.block.selectionColumns, closeSelect: false, useAutoSelection: b.blk$useAutoSelection},
+        );
+    };
 
 
 /*
@@ -47,106 +71,109 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles recipe selection, must be implemented before {@link INTF_BLK_recipeHandler}.
-     * @class INTF_BLK_recipeSelector
-     */
-    new CLS_interface("INTF_BLK_recipeSelector", {
-
-
-      __paramObjM__: () => ({
-
-
-        /* <------------------------------ internal ------------------------------> */
+    module.exports = [
 
 
         /**
-         * `INTERNAL`
-         * @memberof INTF_BLK_recipeSelector
-         * @instance
+         * Handles recipe selection, must be implemented before {@link INTF_BLK_recipeHandler}.
+         * @class INTF_BLK_recipeSelector
          */
-        useConfigStr: true,
+        new CLS_interface("INTF_BLK_recipeSelector", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      init: function() {
-        comp_init(this);
-      },
+                    /* <------------------------------ internal ------------------------------> */
 
 
-    }),
+                    /**
+                     * `INTERNAL`
+                     * <br> `REALIZED`
+                     * @override
+                     * @memberof INTF_BLK_recipeSelector
+                     * @instance
+                     * @type {boolean}
+                     */
+                    useConfigStr: true,
 
 
-    /**
-     * @class INTF_B_recipeSelector
-     */
-    new CLS_interface("INTF_B_recipeSelector", {
+                };
+            },
 
 
-      buildConfiguration: function(tb) {
-        comp_buildConfiguration(this, tb)
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            init: function() {
+                comp_init(this);
+            },
 
 
-      config: function() {
-        return this.rcHeader;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+        }),
 
 
-      /**
-       * @override
-       * @memberof INTF_B_recipeSelector
-       * @instance
-       * @param {string} str
-       * @return {void}
-       */
-      ex_handleConfigStrDef: function(str) {
-        this.ex_updateRcParam(this.block.delegee.rcMdl, str, true);
-        this.ex_resetRcParam();
-        this.rcHeader = str;
-        if(!this.blk$useAutoSelection) {
-          this.ex_showRcChangeEff();
-        };
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+        /**
+         * @class INTF_B_recipeSelector
+         */
+        new CLS_interface("INTF_B_recipeSelector", {
 
 
-      /**
-       * Used to add extra buttons to recipe selector table (tiny buttons over selection menu).
-       * @memberof INTF_B_recipeSelector
-       * @instance
-       * @return {Array<function(Table): void>}
-       * @example
-       * // Adds two buttons ("A" and "B") to print something to console
-       * return [
-       *   tb => tb.button("A", () => print("ohno")),
-       *   tb => tb.button("B", () => print("ohyes")),
-       * ];
-       */
-      ex_getSelectorExtraBtnSetters: function() {
-        return [];
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            buildConfiguration: function(tb) {
+                comp_buildConfiguration(this, tb)
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+            config: function() {
+                return this.rcHeader;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-  ];
+            /**
+             * @inheritdoc
+             */
+            ex_handleConfigStrDef: function(str) {
+                this.ex_updateRcParam(this.block.delegee.rcMdl, str, true);
+                this.ex_resetRcParam();
+                this.rcHeader = str;
+                if(!this.blk$useAutoSelection) {
+                    this.ex_showRcChangeEff();
+                };
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+                argLen: 1,
+            }),
+
+
+            /**
+             * Used to add extra buttons to recipe selector table (tiny buttons over selection menu).
+             * @memberof INTF_B_recipeSelector
+             * @instance
+             * @func
+             * @return {Array<CFunction<Table>>}
+             * @example
+             * // Adds two buttons ("A" and "B") to print something to console
+             * return [
+             *     tb => tb.button("A", () => print("ohno")),
+             *     tb => tb.button("B", () => print("ohyes")),
+             * ];
+             */
+            ex_getSelectorExtraBtnSetters: function() {
+                return [];
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+        }),
+
+
+    ];

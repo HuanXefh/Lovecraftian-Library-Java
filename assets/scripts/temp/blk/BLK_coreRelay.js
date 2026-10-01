@@ -39,7 +39,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.secTwo) b.sendBCur = b.ex_findSendB();
+    if(GLB_timer.secTwo) b.sendBCur = b.ex_findSendB();
     if(b.sendBCur == null || !b.sendBCur.isAdded()) return;
 
     b.itemSendCd = Mathf.maxZero(b.itemSendCd - b.edelta());

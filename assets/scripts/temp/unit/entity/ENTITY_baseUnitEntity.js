@@ -38,13 +38,13 @@
             solid(tx, ty) {
                 return (unit.super$solidity() != null && unit.super$solidity().solid(tx, ty))
                     // Terrain wall is solid to air units in a cave map
-                    || (PARAM.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty));
+                    || (GLB_param.IS_CAVE_MAP && EntityCollisions.legsSolid(tx, ty));
             },
         });
     }
     .setCache(solidPredCache)
     .setAnno("init", function() {
-        TRIGGER.mapChange.addGlobalListener(() => {
+        BOX_trigger.mapChange.addGlobalListener(() => {
             solidPredCache.clear();
         });
     });
@@ -139,7 +139,7 @@
 
 
         isGrounded: function() {
-            return this.elevation < VAR.param.groundElev;
+            return this.elevation < GLB_var.param.groundElev;
         }
         .setProp({
             noSuper: true,
@@ -147,7 +147,7 @@
 
 
         isFlying: function() {
-            return this.elevation >= VAR.param.airElev;
+            return this.elevation >= GLB_var.param.airElev;
         }
         .setProp({
             noSuper: true,

@@ -65,7 +65,7 @@
             offY = (offTy + size * 0.5 + 1.5) * Vars.tilesize,
             amtSeg = Math.ceil(w / 4.0 / segScl);
 
-        CLS_unitStatDisplayMode.getById(PARAM.UNIT_STAT_STYLE).draw(
+        CLS_unitStatDisplayMode.getById(GLB_param.UNIT_STAT_STYLE).draw(
             e, x, y, frac,
             color, a, w, offY, amtSeg,
             armor, shield, speedMtp, dpsMtp,
@@ -98,7 +98,7 @@
         if(a < 0.0001) return;
         if(offW == null) offW = 0.0;
         if(offTy == null) offTy = 0.0;
-        if(z == null) z = Layer.effect + VAR.layer.offDraw + 1.0;
+        if(z == null) z = Layer.effect + GLB_var.layer.offDraw + 1.0;
 
         let frac;
         if(fracOverwrite != null) {
@@ -146,7 +146,7 @@
             thisFun.tmpCd--;
         } else {
             thisFun.tmpT = t;
-            thisFun.tmpCd = VAR.time.extraInfoCooldown;
+            thisFun.tmpCd = GLB_var.time.extraInfoCooldown;
             thisFun.tmpStr = null;
         };
         if(thisFun.tmpCd > 0.0) return;
@@ -163,8 +163,8 @@
         };
 
         LCDraw.text(
-            (t.build == null ? t.worldx() : t.build.x) + (!PARAM.SHOULD_DRAW_UNIT_STAT || !PARAM.SHOULD_DRAW_BUILD_STAT || t.build == null ? 0.0 : ((VAR.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
-            (t.build == null ? t.worldy() : t.build.y) - (!PARAM.SHOULD_DRAW_UNIT_STAT || !PARAM.SHOULD_DRAW_BUILD_STAT || t.build == null ? 10.0 : ((VAR.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize + 2.0)),
+            (t.build == null ? t.worldx() : t.build.x) + (!GLB_param.SHOULD_DRAW_UNIT_STAT || !GLB_param.SHOULD_DRAW_BUILD_STAT || t.build == null ? 0.0 : ((GLB_var.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
+            (t.build == null ? t.worldy() : t.build.y) - (!GLB_param.SHOULD_DRAW_UNIT_STAT || !GLB_param.SHOULD_DRAW_BUILD_STAT || t.build == null ? 10.0 : ((GLB_var.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize + 2.0)),
             thisFun.tmpStr, Fonts.outline,
             0.8, Color.white, Align.left, 0.0, 0.0, 10.0,
         );
@@ -194,7 +194,7 @@
      * @return {void}
      */
     const bridgeLine = function thisFun(b) {
-        if(!PARAM.SHOULD_DRAW_BRIDGE_LINE) return;
+        if(!GLB_param.SHOULD_DRAW_BRIDGE_LINE) return;
 
         let
             tmpB = b,

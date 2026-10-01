@@ -31,7 +31,7 @@
             utp.immunities.add(sta);
         }, true);
         MDL_event.onLoadPost(() => {
-            VARGEN.deathStas.forEachFast(sta => utp.immunities.add(sta), true);
+            GLB_varGen.deathStas.forEachFast(sta => utp.immunities.add(sta), true);
         });
     };
 
@@ -77,13 +77,13 @@
 
         // Don't drown this to death
         if(unit.drownTime > 0.98) {
-            TRIGGER.lootDrown.fire(unit);
+            BOX_trigger.lootDrown.fire(unit);
             unit.remove();
         };
 
         // Merge loot units randomly
         if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {
-            let ounit = LCEntity.getOtherLoot(unit.x, unit.y, VAR.range.lootMergeRad, unit);
+            let ounit = LCEntity.getOtherLoot(unit.x, unit.y, GLB_var.range.lootMergeRad, unit);
             if(ounit != null && ounit.item() === unit.item()) {
                 MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount + ounit.stack.amount);
                 FRAG_item.removeLoot_global(unit);
@@ -112,11 +112,11 @@
         if(unit.stack.amount === 0) return;
 
         let
-            regScl = PARAM.SHOULD_DRAW_STATIC_LOOT ? 1.0 : (1.0 + Math.sin(Time.globalTime * 0.065) * 0.15),
+            regScl = GLB_param.SHOULD_DRAW_STATIC_LOOT ? 1.0 : (1.0 + Math.sin(Time.globalTime * 0.065) * 0.15),
             sizeScl = Math.log(unit.stack.amount + 1.0) * 0.4,
             shaW = regScl * sizeScl * 10.0,
             regW = shaW * 0.5,
-            z = VAR.layer.unitRemains + 0.2 + sizeScl / 100.0;
+            z = GLB_var.layer.unitRemains + 0.2 + sizeScl / 100.0;
 
         processZ(z);
         // Soft shadow
@@ -130,7 +130,7 @@
         );
         Draw.rect(utp.softShadowRegion, unit.x, unit.y, shaW, shaW, 0.0);
         // Circle, if used
-        if(!PARAM.SHOULD_DRAW_STATIC_LOOT) {
+        if(!GLB_param.SHOULD_DRAW_STATIC_LOOT) {
             unit.lastDrownFloor == null ?
                 Draw.color(Pal.accent) :
                 Draw.color(Pal.accent, Tmp.c2.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
@@ -147,7 +147,7 @@
         // Heat
         if(MDL_cond.isHot(unit)) {
             Draw.blend(Blending.additive);
-            Draw.mixcol(VAR.color.heatMix, 1.0);
+            Draw.mixcol(GLB_var.color.heatMix, 1.0);
             Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * 0.75);
             Draw.rect(unit.item().fullIcon, unit.x, unit.y, regW, regW, unit.rotation);
             Draw.blend();
@@ -156,7 +156,7 @@
         processZ();
 
         // Amount text
-        if(PARAM.SHOULD_DRAW_LOOT_AMOUNT && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
+        if(GLB_param.SHOULD_DRAW_LOOT_AMOUNT && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
             LCDraw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
         };
     };
@@ -201,7 +201,7 @@
 
         itemCapacity: 99999,
         // Doubled to avoid killing the unit somehow
-        lifetime: VAR.time.lootLifetime * 2.0,
+        lifetime: GLB_var.time.lootLifetime * 2.0,
 
 
     })

@@ -110,7 +110,7 @@
      * @return {void}
      */
     const newBankTerF = function(ter, liqMatGrp) {
-        bankTerFs.push((map, count, thr) => map.get(liqMatGrp, 0) / count < thr * VAR.param.terBankLiqFrac || sumCountTers(map, tryVal(bankTerMatGrps[ter], Array.air)) / count < thr * VAR.param.terBankGroundFrac ? TmpStateTag.pending : ter);
+        bankTerFs.push((map, count, thr) => map.get(liqMatGrp, 0) / count < thr * GLB_var.param.terBankLiqFrac || sumCountTers(map, tryVal(bankTerMatGrps[ter], Array.air)) / count < thr * GLB_var.param.terBankGroundFrac ? TmpStateTag.pending : ter);
     };
     exports.newBankTerF = newBankTerF;
 
@@ -176,7 +176,7 @@
         thisFun.countMap.clear();
         ts.forEachFast(ot => {
             // For debug
-            if(PARAM.ENABLE_TEST_DRAW && ot != null) {
+            if(GLB_param.ENABLE_TEST_DRAW && ot != null) {
                 Fx.placeBlock.at(ot);
             };
 
@@ -192,13 +192,13 @@
         let tmpTer;
         ter = null;
         terFs.forEachFast(getter => {
-            tmpTer = getter(thisFun.countMap, count, VAR.param.terFlrThr);
+            tmpTer = getter(thisFun.countMap, count, GLB_var.param.terFlrThr);
             if(tmpTer !== TmpStateTag.pending) {
                 ter = tmpTer;
             };
         }, true);
         bankTerFs.forEachFast(getter => {
-            tmpTer = getter(thisFun.countMap, count, VAR.param.terFlrThr);
+            tmpTer = getter(thisFun.countMap, count, GLB_var.param.terFlrThr);
             if(tmpTer !== TmpStateTag.pending) {
                 ter = tmpTer;
             };
@@ -223,7 +223,7 @@
         Events.on(TileFloorChangeEvent, ev => {
             terCache.forEachFast(maps => maps.forEachFast(map => map.clear()));
         });
-        TRIGGER.mapChange.addGlobalListener(() => {
+        BOX_trigger.mapChange.addGlobalListener(() => {
             terCache.forEachFast(maps => maps.forEachFast(map => map.clear()));
         });
     });

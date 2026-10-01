@@ -51,7 +51,7 @@
     if(Vars.net.client() || b.power == null || b.power.status < 0.1 || !b.block.delegee.canShortCircuit || !Mathf.chanceDelta(0.03) || !MDL_cond.isUnitWet(unit)) return;
 
     FRAG_attack.lightning_global(b.x, b.y, null, null, null, 6, 4, null, "ground");
-    TRIGGER.wetStepOnCable.fire();
+    BOX_trigger.wetStepOnCable.fire();
   };
 
 

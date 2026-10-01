@@ -24,14 +24,14 @@
     function comp_init(blk) {
         blk.useColor = false;
 
-        TRIGGER.mapExit.addGlobalListener(() => {
+        BOX_trigger.mapExit.addGlobalListener(() => {
             blk.drawnMap.clear();
         });
 
         MDL_event.onDraw(() => {
-            if(!Vars.state.isGame() || (!Vars.state.isEditor() && !PARAM.SHOULD_DRAW_SCANNER_RESULT)) return;
+            if(!Vars.state.isGame() || (!Vars.state.isEditor() && !GLB_param.SHOULD_DRAW_SCANNER_RESULT)) return;
 
-            processZ(VAR.layer.dporeRevealed, 4);
+            processZ(GLB_var.layer.dporeRevealed, 4);
             Draw.alpha(0.65);
             blk.drawnMap.each((t, cond) => {
                 if(!cond || !LCCheck.checkPosVisible(t.worldx(), t.worldy(), 8.0)) return;
@@ -78,7 +78,7 @@
     function comp_getDisplayIcon(blk, t) {
         return blk.ex_accRevealed(t, "read") ?
             blk.super$getDisplayIcon(t) :
-            VARGEN.iconRegs.questionMark;
+            GLB_varGen.iconRegs.questionMark;
     };
 
 

@@ -13,10 +13,10 @@ import java.lang.reflect.InvocationTargetException;
 public class LCScript {
 
 
-    public static NativeObject PARAM;
-    public static NativeObject TIMER;
-    public static NativeObject TRIGGER;
-    public static NativeObject VAR;
+    public static NativeObject GLB_param;
+    public static NativeObject GLB_timer;
+    public static NativeObject BOX_trigger;
+    public static NativeObject GLB_var;
     public static NativeObject MDL_cond;
     public static NativeObject MDL_effect;
     public static NativeObject MDL_prop;
@@ -42,10 +42,10 @@ public class LCScript {
 
 
     public static void init() {
-        PARAM = toObject(get("PARAM"));
-        TIMER = toObject(get("TIMER"));
-        TRIGGER = toObject(get("TRIGGER"));
-        VAR = toObject(get("VAR"));
+        GLB_param = toObject(get("PARAM"));
+        GLB_timer = toObject(get("GLB_timer"));
+        BOX_trigger = toObject(get("BOX_trigger"));
+        GLB_var = toObject(get("GLB_var"));
         MDL_cond = toObject(get("MDL_cond"));
         MDL_effect = toObject(get("MDL_effect"));
         MDL_prop = toObject(get("MDL_prop"));

@@ -36,7 +36,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.minTwo) b.rodProg = 0.0;
+    if(GLB_timer.minTwo) b.rodProg = 0.0;
 
     b.rodProg += b.block.delegee.rodFrameAmt * b.rpmCur * Time.delta;
   };

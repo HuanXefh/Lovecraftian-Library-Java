@@ -216,7 +216,7 @@
                     if(matArr.length === 1) {
                         MDL_table.textNothing(pnTb);
                     } else {
-                        if(PARAM.SECRET_APRIL) {
+                        if(GLB_param.SECRET_APRIL) {
                             matArr.push([
                                 UnitTypes.alpha,
                                 UnitTypes.alpha.localizedName,
@@ -323,7 +323,7 @@
                     subMap.each((name, scr) => {
                         if(this.hasAnyName) return;
                         this.lastInfoString = UTIL_dragButtonInfoList.getInfoString(name, categ, subCateg);
-                        this.hasAnyName = PARAM.MODDED || !moddedNames.includes(this.lastInfoString);
+                        this.hasAnyName = GLB_param.MODDED || !moddedNames.includes(this.lastInfoString);
                     });
                     if(this.hasAnyName) {
                         if(subCateg !== "uncategorized") {
@@ -332,7 +332,7 @@
                         };
                         subMap.each((name, scr) => {
                             this.lastInfoString = UTIL_dragButtonInfoList.getInfoString(name, categ, subCateg);
-                            if(!PARAM.MODDED && moddedNames.includes(this.lastInfoString)) return;
+                            if(!GLB_param.MODDED && moddedNames.includes(this.lastInfoString)) return;
                             MDL_table.btn(
                                 pnTb,
                                 UTIL_dragButtonInfoList.getLocalizedInfoName(name),
@@ -789,7 +789,7 @@
                     j = -1;
                     tb.row();
                     MDL_table.br(tb);
-                    VARGEN.rcDictCts.forEachFast(ct => {
+                    GLB_varGen.rcDictCts.forEachFast(ct => {
                         if(lastCt != null && this.ex_shouldBreak(ct, lastCt)) {
                             j = -1;
                             tb.row();

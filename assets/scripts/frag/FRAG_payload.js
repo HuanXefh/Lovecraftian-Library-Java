@@ -172,7 +172,7 @@
         },
     })
     .setAnno("init", function() {
-        TRIGGER.mapChange.addGlobalListener(nameMap => {
+        BOX_trigger.mapChange.addGlobalListener(nameMap => {
             this.queueMap.clear();
         });
     });

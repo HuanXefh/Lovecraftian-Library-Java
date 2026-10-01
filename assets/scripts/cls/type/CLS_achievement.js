@@ -32,7 +32,7 @@
         /** @type {string} */
         this.mod = nameMod;
         /** @type {TextureRegionDrawable} */
-        this.icon = tryVal(icon, VARGEN.icons.ohno);
+        this.icon = tryVal(icon, GLB_varGen.icons.ohno);
 
 
         listener == null ?

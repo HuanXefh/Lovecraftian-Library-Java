@@ -197,20 +197,20 @@
             cepCapObj = {},
             cepUseObj = {};
 
-        TRIGGER.majorIter.start.addGlobalListener(() => {
-            VARGEN.mainTeams.forEachFast(team => {
+        BOX_trigger.majorIter.start.addGlobalListener(() => {
+            GLB_varGen.mainTeams.forEachFast(team => {
                 cepCapObj[team.name] = 0.0;
                 cepUseObj[team.name] = 0.0;
             }, true);
         });
-        TRIGGER.majorIter.building.addGlobalListener((b, isActive) => {
+        BOX_trigger.majorIter.building.addGlobalListener((b, isActive) => {
             if(!isActive) return;
             cepCapObj[b.team.name] += getCepProv(b.block);
             if(b.cheating()) return;
             cepUseObj[b.team.name] += getCepUse(b.block);
         });
-        TRIGGER.majorIter.end.addGlobalListener(() => {
-            VARGEN.mainTeams.forEachFast(team => {
+        BOX_trigger.majorIter.end.addGlobalListener(() => {
+            GLB_varGen.mainTeams.forEachFast(team => {
                 cepCapMap.put(team.name, cepCapObj[team]);
                 cepUseMap.put(team.name, cepUseObj[team]);
                 cepFracMap.put(team.name, cepCapObj[team] < 0.0001 ? 1.0 : cepUseObj[team] / cepCapObj[team]);

@@ -79,8 +79,8 @@ const db = {
 
                 return String.multiline(
                     MDL_bundle.getTerm("lovec", "item") + MDL_text.getColon() + item.localizedName.plain(),
-                    !VARGEN.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text.getColon() + MDL_fuel.getFuelPon(item)),
-                    !VARGEN.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text.getColon() + MDL_fuel.getFuelLvl(item)),
+                    !GLB_varGen.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-point").localized() + MDL_text.getColon() + MDL_fuel.getFuelPon(item)),
+                    !GLB_varGen.fuelItems.includes(item) ? null : (fetchStat("lovec", "rs0fuel-level").localized() + MDL_text.getColon() + MDL_fuel.getFuelLvl(item)),
                 );
             },
 
@@ -126,25 +126,25 @@ const db = {
             update: [
 
                 "test", function(graph) {
-                    if(TIMER.secTwo) print(graph);
+                    if(GLB_timer.secTwo) print(graph);
                 },
 
                 "cable", function(graph) {
-                    if(PARAM.UPDATE_DEEP_SUPPRESSED || !isFinite(graph.graphData.maxPowProdAllowed) || graph.getSize() === 0) return;
+                    if(GLB_param.UPDATE_DEEP_SUPPRESSED || !isFinite(graph.graphData.maxPowProdAllowed) || graph.getSize() === 0) return;
 
                     let powProd = graph.getData(0).power.graph.getLastPowerProduced() / Time.delta;
-                    if(TIMER.secHalf) {
-                        graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > VAR.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
+                    if(GLB_timer.secHalf) {
+                        graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > GLB_var.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
                     };
-                    if(graph.graphData.overloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) {
+                    if(graph.graphData.overloadFrac < 1.0 || powProd > GLB_var.param.powSourceStdProd) {
                         graph.graphData.overloadTimeCur = 0.0;
                     } else {
                         graph.graphData.overloadTimeCur += Time.delta;
                     };
-                    if(graph.graphData.overloadTimeCur > VAR.time.powTransOverloadTime) {
+                    if(graph.graphData.overloadTimeCur > GLB_var.time.powTransOverloadTime) {
                         graph.each(
                             (ob, vert) => ob.isAdded() && !ob.isPayload(),
-                            (ob, vert) => ob.damagePierce(ob.maxHealth * VAR.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
+                            (ob, vert) => ob.damagePierce(ob.maxHealth * GLB_var.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
                         );
                     };
                 },
@@ -203,7 +203,7 @@ const db = {
 
         /**
          * List of names of Lovec-based mods.
-         * {@link PARAM.MODDED} will be true if any of these exists, which enables extra mechanics.
+         * {@link GLB_param.MODDED} will be true if any of these exists, which enables extra mechanics.
          * You don't need to put your mod name here, just use write `dependencies` or `softDependencies` in your mod.json.
          * @type {Array<string>}
          * @lovecContentGen
@@ -255,10 +255,10 @@ const db = {
                     isToggle: true,
                     clickScr: function() {
                         Core.settings.put("lovec-draw0aux-recipe-icon", !fetchSetting("draw0aux-recipe-icon"));
-                        PARAM.forceLoadParam();
+                        GLB_param.forceLoadParam();
                     },
                     updateScr: function() {
-                        this.setChecked(PARAM.SHOULD_DRAW_RECIPE_ICON);
+                        this.setChecked(GLB_param.SHOULD_DRAW_RECIPE_ICON);
                     },
                 },
 
@@ -268,10 +268,10 @@ const db = {
                     isToggle: true,
                     clickScr: function() {
                         Core.settings.put("lovec-unit0stat-show", !fetchSetting("unit0stat-show"));
-                        PARAM.forceLoadParam();
+                        GLB_param.forceLoadParam();
                     },
                     updateScr: function() {
-                        this.setChecked(PARAM.SHOULD_DRAW_UNIT_STAT);
+                        this.setChecked(GLB_param.SHOULD_DRAW_UNIT_STAT);
                     },
                 },
 
@@ -281,10 +281,10 @@ const db = {
                     isToggle: true,
                     clickScr: function() {
                         Core.settings.put("lovec-unit0stat-range", !fetchSetting("unit0stat-range"));
-                        PARAM.forceLoadParam();
+                        GLB_param.forceLoadParam();
                     },
                     updateScr: function() {
-                        this.setChecked(PARAM.SHOULD_DRAW_UNIT_RANGE);
+                        this.setChecked(GLB_param.SHOULD_DRAW_UNIT_RANGE);
                     },
                 },
 
@@ -294,10 +294,10 @@ const db = {
                     isToggle: true,
                     clickScr: function() {
                         Core.settings.put("lovec-draw0aux-extra-info", !fetchSetting("draw0aux-extra-info"));
-                        PARAM.forceLoadParam();
+                        GLB_param.forceLoadParam();
                     },
                     updateScr: function() {
-                        this.setChecked(PARAM.SHOULD_SHOW_EXTRA_INFO);
+                        this.setChecked(GLB_param.SHOULD_SHOW_EXTRA_INFO);
                     },
                 },
 
@@ -347,12 +347,12 @@ const db = {
                         if(!this.isChecked()) return;
                         if(!global.lovecUtil.fun.checkSandbox()) {
                             this.setChecked(false);
-                            PARAM.IS_TELEPORTING = false;
+                            GLB_param.IS_TELEPORTING = false;
                             MDL_ui.showFadeInfo("lovec", "sandbox-only");
                             return;
                         };
 
-                        PARAM.IS_TELEPORTING = true;
+                        GLB_param.IS_TELEPORTING = true;
                         if(Core.input.keyTap(KeyCode.mouseLeft)) {
                             let unit = Vars.player.unit();
                             let vec = Core.input.mouseWorld();
@@ -362,10 +362,10 @@ const db = {
                                 MDL_effect.line(unit.x, unit.y, null, vecPrev, Pal.accent, 1.5);
                             };
                             this.setChecked(false);
-                            PARAM.IS_TELEPORTING = false;
+                            GLB_param.IS_TELEPORTING = false;
                         } else if(Core.input.keyTap(KeyCode.mouseRight)) {
                             this.setChecked(false);
-                            PARAM.IS_TELEPORTING = false;
+                            GLB_param.IS_TELEPORTING = false;
                         };
                     },
                 },
@@ -374,7 +374,7 @@ const db = {
 
 
             /**
-             * Added only if `PARAM.MODDED` is true.
+             * Added only if `GLB_param.MODDED` is true.
              * <br> `ROW`: name, paramObj.
              * @type {F2Array<string, DragButtonParamObject>}
              */
@@ -386,7 +386,7 @@ const db = {
                     clickScr: function() {
                         let unit = Vars.player.unit();
                         if(unit == null) return;
-                        let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
+                        let loot = Units.closest(null, unit.x, unit.y, GLB_var.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
                         if(loot == null) return;
                         if(FRAG_item.takeUnitLoot_global(unit, loot)) {
                             MDL_effect.itemTransfer(loot.x, loot.y, unit, null, null, true);
@@ -415,7 +415,7 @@ const db = {
                     clickScr: function() {
                         let unit = Vars.player.unit();
                         if(unit == null) return;
-                        let loot = Units.closest(null, unit.x, unit.y, VAR.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
+                        let loot = Units.closest(null, unit.x, unit.y, GLB_var.range.lootPickRad, ounit => MDL_cond.isLoot(ounit));
                         if(loot == null) return;
                         FRAG_item.destroyLoot_global(loot);
                     },
@@ -468,7 +468,7 @@ const db = {
             "explosive", ct => ct.explosiveness != null && ct.explosiveness > 0.0,
             "charged", ct => ct.charge != null && ct.charge > 0.0,
             "radioactive", ct => ct.radioactivity != null && ct.radioactivity > 0.0,
-            "viscous", ct => ct.viscosity != null && ct.viscosity > VAR.param.clogViscThr,
+            "viscous", ct => ct.viscosity != null && ct.viscosity > GLB_var.param.clogViscThr,
             "coolant", ct => ct.coolanet != null && ct.coolant && ct.temperature != null && ct.temperature <= 0.5 && ct.flammability != null && ct.flammability < 0.1,
 
             "intermediate", ct => MDL_cond.isIntermediate(ct),
@@ -562,7 +562,7 @@ const db = {
 
 
         /**
-         * Icons populated in {@link VARGEN.icons} and {@link VARGEN.iconRegs}.
+         * Icons populated in {@link GLB_varGen.icons} and {@link GLB_varGen.iconRegs}.
          * <br> `ROW`: name, regStr.
          * @type {F2Array<string, string>}
          */
@@ -585,7 +585,7 @@ const db = {
 
 
         /**
-         * Noise textures populated in {@link VARGEN.noiseTexs}.
+         * Noise textures populated in {@link GLB_varGen.noiseTexs}.
          * <br> `ROW`: name, imgPath.
          * @type {F2Array<string, string>}
          */

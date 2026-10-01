@@ -184,7 +184,7 @@ const db = {
 
         /**
          * Intermediate tags, which are used in `rs.tempTags`.
-         * Items and fluids with these tags will be categorized in `VARGEN.tagIntmdsMap`.
+         * Items and fluids with these tags will be categorized in `GLB_varGen.tagIntmdsMap`.
          * If tag sprite ("rs0tag-<tag>") is found, it will be used for icon tag generation.
          * @type {Array<string>}
          */

@@ -307,7 +307,7 @@ const db = {
 
 
     /**
-     * Extra teams to be added into {@link VARGEN.mainTeams}.
+     * Extra teams to be added into {@link GLB_varGen.mainTeams}.
      * This affects team-based mechanics like CEP.
      * @type {Array<Team>}
      */

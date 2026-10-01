@@ -40,8 +40,8 @@
       b.ex_onFlamEmission(args[1], args[2]);
     }, true);
 
-    MDL_event.onLoadDelay(VAR.delay.load.loadExtraSound, () => {
-      if(!Vars.headless && PARAM.SECRET_METAL_PIPE && String(blk.matGrp).equalsAny(
+    MDL_event.onLoadDelay(GLB_var.delay.load.loadExtraSound, () => {
+      if(!Vars.headless && GLB_param.SECRET_METAL_PIPE && String(blk.matGrp).equalsAny(
         "iron", "steel", "galvanized-steel", "stainless-steel",
       )) {
         blk.placeSound = fetchSound("se-meme-steel-pipe");
@@ -71,7 +71,7 @@
       b.block.consPower.trigger(b);
     };
 
-    if(TIMER.sec && b.isLeak) {
+    if(GLB_timer.sec && b.isLeak) {
       let amt = b.liquids.currentAmount();
       if(amt > 0.001) {
         let liq = b.liquids.current();

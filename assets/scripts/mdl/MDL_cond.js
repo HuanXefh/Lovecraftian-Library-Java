@@ -902,7 +902,7 @@
      * @return {boolean}
      */
     const isLootProtected = function(loot) {
-        return loot.fin() * 2.0 < VAR.time.lootProtection / loot.type.lifetime;
+        return loot.fin() * 2.0 < GLB_var.time.lootProtection / loot.type.lifetime;
     };
     exports.isLootProtected = isLootProtected;
 
@@ -925,7 +925,7 @@
      * @return {boolean}
      */
     const isUnitCoverable = function(unit, includeSize) {
-        return !unit.flying && unit.type.groundLayer < 76.0 && (!includeSize ? true : unit.hitSize <= VAR.range.treeHideMaxRad);
+        return !unit.flying && unit.type.groundLayer < 76.0 && (!includeSize ? true : unit.hitSize <= GLB_var.range.treeHideMaxRad);
     };
     exports.isUnitCoverable = isUnitCoverable;
 
@@ -936,7 +936,7 @@
      * @return {boolean}
      */
     const isUnitCovered = function(unit) {
-        return VARGEN.staHiddenWell != null && unit.hasEffect(VARGEN.staHiddenWell);
+        return GLB_varGen.staHiddenWell != null && unit.hasEffect(GLB_varGen.staHiddenWell);
     };
     exports.isUnitCovered = isUnitCovered;
 
@@ -980,7 +980,7 @@
      * @return {boolean}
      */
     const isUnitInHighAir = function(unit) {
-        return unit.flying && unit.elevation >= VAR.param.highAirElev;
+        return unit.flying && unit.elevation >= GLB_var.param.highAirElev;
     };
     exports.isUnitInHighAir = isUnitInHighAir;
 

@@ -327,7 +327,7 @@
         if(id != null && thisFun.ids.includes(id)) return;
         if(id != null) thisFun.ids.push(id);
 
-        Events.on(PlayerJoin, ev => {
+        Events.on(PlayerJoinEvent, ev => {
             scr(ev.player);
         });
     };

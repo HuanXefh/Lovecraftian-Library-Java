@@ -17,7 +17,7 @@
 
 
   function comp_init(blk) {
-    blk.priority = VAR.priority.powGen;
+    blk.priority = GLB_var.priority.powGen;
   };
 
 

@@ -57,23 +57,23 @@
      * @return {void}
      */
     const updateDamagedSta = function(utp, unit) {
-        if(!TIMER.unit || !syncChance("unit", VAR.chance.unitUpdateP)) return;
+        if(!GLB_timer.unit || !syncChance("unit", GLB_var.chance.unitUpdateP)) return;
 
         let healthFrac = Mathf.clamp(unit.health / unit.maxHealth);
 
         if(MDL_cond.isNonRobot(utp)) {
             if(healthFrac < 0.25) {
-                unit.apply(VARGEN.staHeavilyInjured, VAR.time.unitStaDef);
-                unit.unapply(VARGEN.staSlightlyInjured);
-                unit.unapply(VARGEN.staInjured);
+                unit.apply(GLB_varGen.staHeavilyInjured, GLB_var.time.unitStaDef);
+                unit.unapply(GLB_varGen.staSlightlyInjured);
+                unit.unapply(GLB_varGen.staInjured);
             } else if(healthFrac < 0.5) {
-                unit.apply(VARGEN.staInjured, VAR.time.unitStaDef);
-                unit.unapply(VARGEN.staSlightlyInjured);
-                unit.unapply(VARGEN.staHeavilyInjured);
+                unit.apply(GLB_varGen.staInjured, GLB_var.time.unitStaDef);
+                unit.unapply(GLB_varGen.staSlightlyInjured);
+                unit.unapply(GLB_varGen.staHeavilyInjured);
             } else if(healthFrac < 0.75) {
-                unit.apply(VARGEN.staSlightlyInjured, VAR.time.unitStaDef);
-                unit.unapply(VARGEN.staInjured);
-                unit.unapply(VARGEN.staHeavilyInjured);
+                unit.apply(GLB_varGen.staSlightlyInjured, GLB_var.time.unitStaDef);
+                unit.unapply(GLB_varGen.staInjured);
+                unit.unapply(GLB_varGen.staHeavilyInjured);
             } else {
                 unit.unapply(sta1);
                 unit.unapply(sta2);
@@ -81,14 +81,14 @@
             };
         } else {
             if(healthFrac < 0.25) {
-                unit.apply(VARGEN.staSeverelyDamaged, VAR.time.unitStaDef);
-                unit.unapply(VARGEN.staDamaged)
+                unit.apply(GLB_varGen.staSeverelyDamaged, GLB_var.time.unitStaDef);
+                unit.unapply(GLB_varGen.staDamaged)
             } else if(healthFrac < 0.5) {
-                unit.apply(VARGEN.staDamaged, VAR.time.unitStaDef);
-                unit.unapply(VARGEN.staSeverelyDamaged)
+                unit.apply(GLB_varGen.staDamaged, GLB_var.time.unitStaDef);
+                unit.unapply(GLB_varGen.staSeverelyDamaged)
             } else {
-                unit.unapply(VARGEN.staDamaged);
-                unit.unapply(VARGEN.staSeverelyDamaged)
+                unit.unapply(GLB_varGen.staDamaged);
+                unit.unapply(GLB_varGen.staSeverelyDamaged)
             };
         };
     };
@@ -103,11 +103,11 @@
      * @return {void}
      */
     const updateSurrounding = function thisFun(utp, unit) {
-        if(!TIMER.unit || !syncChance("unit", VAR.chance.unitUpdateP)) return;
+        if(!GLB_timer.unit || !syncChance("unit", GLB_var.chance.unitUpdateP)) return;
 
         let t = unit.tileOn();
         if(t == null) return;
-        let ts = LCPos.getTilesDstManhattan(thisFun.tmpTs, t, VAR.range.unitSurR);
+        let ts = LCPos.getTilesDstManhattan(thisFun.tmpTs, t, GLB_var.range.unitSurR);
 
         // Floor
         if(MDL_cond.isUnitOnFloor(unit)) {
@@ -129,10 +129,10 @@
                         || (MDL_cond.isTallGrassBlock(oblk) && oblk.delegee.hidable && dst < oblk.size * Vars.tilesize * 0.5)
                         || (MDL_cond.isCrop(oblk) && ob.delegee.stageHidable && dst < ob.delegee.stageCropRad)
                 ) {
-                    if(VARGEN.staHiddenWell != null && !unit.hasEffect(VARGEN.staHiddenWell)) {
-                        TRIGGER.treeHide.fire(unit);
+                    if(GLB_varGen.staHiddenWell != null && !unit.hasEffect(GLB_varGen.staHiddenWell)) {
+                        BOX_trigger.treeHide.fire(unit);
                     };
-                    unit.apply(VARGEN.staHiddenWell, VAR.time.unitStaDef);
+                    unit.apply(GLB_varGen.staHiddenWell, GLB_var.time.unitStaDef);
                 };
             };
         }, true);
@@ -154,24 +154,24 @@
      * @return {void}
      */
     const updateHeat = function(utp, unit) {
-        if(!TIMER.unit || !syncChance("unit", VAR.chance.unitUpdateP * 0.3)) return;
+        if(!GLB_timer.unit || !syncChance("unit", GLB_var.chance.unitUpdateP * 0.3)) return;
         if(!MDL_cond.isHeatDamageable(unit)) return;
 
         let rHeat = MDL_flow.calcRHeat(unit.tileOn());
         let rHeatRes = MDL_flow.getRHeatRes(utp);
         let dmg = Mathf.maxZero(rHeat - rHeatRes) * 0.65;
         if(dmg < 0.0001) return;
-        let dmg_fi = Math.min(dmg, VAR.param.heatDmgMax);
-        let staStackAmt = Math.round((dmg - dmg_fi) / VAR.param.overheatedConversionDmg);
+        let dmg_fi = Math.min(dmg, GLB_var.param.heatDmgMax);
+        let staStackAmt = Math.round((dmg - dmg_fi) / GLB_var.param.overheatedConversionDmg);
 
         FRAG_attack.damage(unit, dmg_fi, 0.0, "heat");
         let i = 0;
         while(i < staStackAmt) {
-            unit.apply(VARGEN.staOverheated);
+            unit.apply(GLB_varGen.staOverheated);
             i++;
         };
         if(Mathf.chance(0.5)) {
-            EFF.smogHeat.at(unit);
+            GLB_eff.smogHeat.at(unit);
         };
     };
     exports.updateHeat = updateHeat;

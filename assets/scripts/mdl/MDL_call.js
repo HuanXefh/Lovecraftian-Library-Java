@@ -43,7 +43,7 @@
     })
     .setAnno("init", function() {
         MDL_event.onLoad(() => {
-            TRIGGER.mapChange.addGlobalListener(nameMap => callOnce.idCurMap.clear());
+            BOX_trigger.mapChange.addGlobalListener(nameMap => callOnce.idCurMap.clear());
         });
     });
     exports.callOnce = callOnce;
@@ -230,15 +230,15 @@
      * @return {LootUnit}
      */
     const spawnLoot_server = function(x, y, item_gn, itemAmt) {
-        if(!PARAM.MODDED || itemAmt < 1) return;
+        if(!GLB_param.MODDED || itemAmt < 1) return;
         let item = MDL_content.getCt(item_gn, ContentGetModes.RS);
         if(item == null) return;
 
         return spawnUnit_server(
-            x, y, VARGEN.utpLoot, Vars.player.team(), null,
+            x, y, GLB_varGen.utpLoot, Vars.player.team(), null,
             unit => {
                 unit.addItem(item, itemAmt);
-                Core.app.post(() => TRIGGER.lootSpawn.fire());
+                Core.app.post(() => BOX_trigger.lootSpawn.fire());
             },
         );
     }
@@ -257,17 +257,17 @@
      * @return {void}
      */
     const spawnLoots_server = function(x, y, item_gn, itemAmt, rad, amt) {
-        if(!PARAM.MODDED || itemAmt < 1) return;
+        if(!GLB_param.MODDED || itemAmt < 1) return;
         let item = MDL_content.getCt(item_gn, ContentGetModes.RS);
         if(item == null) return;
-        if(rad == null) rad = VAR.range.unitLootRad;
+        if(rad == null) rad = GLB_var.range.unitLootRad;
         if(amt == null) amt = 1;
 
         spawnUnits_server(
-            x, y, VARGEN.utpLoot, Vars.player.team(), null, rad, amt,
+            x, y, GLB_varGen.utpLoot, Vars.player.team(), null, rad, amt,
             unit => {
                 unit.addItem(item, itemAmt);
-                Core.app.post(() => TRIGGER.lootSpawn.fire());
+                Core.app.post(() => BOX_trigger.lootSpawn.fire());
             },
         );
     }
@@ -284,7 +284,7 @@
      * @return {void}
      */
     const spawnLoot_client = function(x, y, item_gn, itemAmt) {
-        if(!PARAM.MODDED || itemAmt < 1) return;
+        if(!GLB_param.MODDED || itemAmt < 1) return;
         let item = MDL_content.getCt(item_gn, ContentGetModes.RS);
         if(item == null) return;
 
@@ -316,7 +316,7 @@
      * @return {void}
      */
     const spawnLoots_client = function(x, y, item_gn, itemAmt, rad, amt) {
-        if(!PARAM.MODDED || itemAmt < 1) return;
+        if(!GLB_param.MODDED || itemAmt < 1) return;
         let item = MDL_content.getCt(item_gn, ContentGetModes.RS);
         if(item == null) return;
 

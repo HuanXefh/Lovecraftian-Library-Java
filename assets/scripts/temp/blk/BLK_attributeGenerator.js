@@ -41,7 +41,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.effc) {
+    if(GLB_timer.effc) {
       b.lastEffc = (b.sum + b.block.attribute.env()) * b.efficiency / Math.pow(b.block.size, 2);
     };
 

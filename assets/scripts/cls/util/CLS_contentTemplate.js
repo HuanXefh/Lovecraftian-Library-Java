@@ -436,7 +436,7 @@
         }, true);
         // Handle meta object in `paramObj`
         if(paramObj != null && typeof paramObj.metaObj === "object") {
-            let fields = VAR.ctJsonParser.getFields(parent);
+            let fields = GLB_var.ctJsonParser.getFields(parent);
             let metaData;
             paramObj.metaObj.eachPair((name, val) => {
                 metaData = fields.get(name.replace(/ /g, "_"));

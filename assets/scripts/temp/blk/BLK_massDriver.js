@@ -52,7 +52,7 @@
       b.x, b.y, ob.x, ob.y, false, 1.0, 0.5,
       !b.block.delegee.bulCollidesTerrain ?
         Pal.accent :
-        b.block.delegee.bulCollidesTerrainCaveOnly && !PARAM.IS_CAVE_MAP ?
+        b.block.delegee.bulCollidesTerrainCaveOnly && !GLB_param.IS_CAVE_MAP ?
           Pal.accent :
           !LCRaycastf.checkLegSolid(b.x, b.y, ob.x, ob.y) ?
             Pal.accent :
@@ -151,7 +151,7 @@
               && tryJsProp(bul.shooter.block, "bulCollidesTerrain", false)
               && (
                 tryJsProp(bul.shooter.block, "bulCollidesTerrainCaveOnly", false) ?
-                  PARAM.IS_CAVE_MAP :
+                  GLB_param.IS_CAVE_MAP :
                   true
               )
               && EntityCollisions.legsSolid(bul.tileX(), bul.tileY())

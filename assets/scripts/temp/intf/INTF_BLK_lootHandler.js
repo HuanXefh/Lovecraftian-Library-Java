@@ -67,7 +67,7 @@
             };
         };
         if(b.efficiency > 0.0 && b.lootCallCd > b.block.delegee.lootCallCooldown) {
-            if(TIMER.secQuarter) {
+            if(GLB_timer.secQuarter) {
                 b.ex_updateLootQueue();
             };
             if(b.lootQueue.length > 0) {

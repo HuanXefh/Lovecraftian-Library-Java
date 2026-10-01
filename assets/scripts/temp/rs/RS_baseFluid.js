@@ -119,7 +119,7 @@
             }));
         };
 
-        if(Array.someIncludes(liq, VARGEN.fuelLiqs, VARGEN.fuelGases)) {
+        if(Array.someIncludes(liq, GLB_varGen.fuelLiqs, GLB_varGen.fuelGases)) {
             stats.add(fetchStat("lovec", "rs0fuel-level"), MDL_fuel.getFuelLvl(liq));
         };
     };
@@ -141,7 +141,7 @@
 
         // Fume if possible
         if(!liq.gas && liq.shouldFume && Mathf.chance(MDL_effect.calcEffPByFrac(0.03, puddle.amount * 0.04))) {
-            MDL_effect.showAt(puddle.x, puddle.y, EFF.smogHeat);
+            MDL_effect.showAt(puddle.x, puddle.y, GLB_eff.smogHeat);
         };
 
         // Corrode building if possible
@@ -150,7 +150,7 @@
         };
 
         // Cause short circuit if possible
-        if(!PARAM.UPDATE_SUPPRESSED && !liq.gas && liq.isConductive && Mathf.chanceDelta(0.1)) {
+        if(!GLB_param.UPDATE_SUPPRESSED && !liq.gas && liq.isConductive && Mathf.chanceDelta(0.1)) {
             FRAG_puddle.spreadPuddle(
                 puddle, 0.5,
                 ot => {
@@ -159,10 +159,10 @@
                 },
                 ot => {
                     ob = ot.build;
-                    dmg = ob.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0;
+                    dmg = ob.maxHealth * GLB_var.param.shortCircuitDmgFrac / 60.0;
                     ob.damagePierce(dmg);
                     if(Mathf.chance(0.15)) {
-                        MDL_effect.showAt(ob.x, ob.y, EFF.smogHeat);
+                        MDL_effect.showAt(ob.x, ob.y, GLB_eff.smogHeat);
                     };
                     if(!Vars.net.client() && Mathf.chance(0.05)) {
                         FRAG_attack.lightning_global(ob.x, ob.y, null, null, null, 6, 4, null, "ground");
@@ -200,7 +200,7 @@
      * @return {boolean}
      */
     function comp_willBoil(liq) {
-        return liq.gas || liq.boilPoint * 50.0 < PARAM.GLOBAL_HEAT;
+        return liq.gas || liq.boilPoint * 50.0 < GLB_param.GLOBAL_HEAT;
     };
 
 

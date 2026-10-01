@@ -66,15 +66,15 @@
 
 
   function comp_updateTile(b) {
-    if((b.playingWithUnit || b.playingWithCrank) && b.efficiency > VAR.param.buildActiveEffcThr) {
+    if((b.playingWithUnit || b.playingWithCrank) && b.efficiency > GLB_var.param.buildActiveEffcThr) {
       b.moveAng = Math.sin(Time.time / 10.0) * b.block.delegee.armPlayAng;
-      if(b.playingWithUnit && TIMER.secFive) {
+      if(b.playingWithUnit && GLB_timer.secFive) {
         let unit = LCEntity.getUnit(b.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
         if(unit != null && unit.isGrounded() && MDL_cond.canHeal(unit, b.team)) {
           FRAG_attack.heal(unit, 1.0);
         };
       };
-      if(!Vars.net.client() && b.playingWithCrank && TIMER.minHalf) {
+      if(!Vars.net.client() && b.playingWithCrank && GLB_timer.minHalf) {
         let ob = b.ex_findMoveB(false);
         if(ob != null && checkSubInsOfTemp(ob.block, "BLK_manualTurbine")) {
           MDL_call.callOnce("arm plays crank: " + ob.pos(), () => ob.ex_configureClick());
@@ -82,7 +82,7 @@
       };
     };
 
-    if(TIMER.secHalf) {
+    if(GLB_timer.secHalf) {
       b.moveTarget = b.ex_findMoveB(true);
     };
     if(b.moveTarget === TmpStateTag.pending) return;
@@ -125,7 +125,7 @@
     .growX()
     .row();
     tb.table(Styles.none, tb1 => {
-      MDL_table.btnCfgToggleColor(tb1, b, VARGEN.icons.dropLoot, b.shouldDropLoot)
+      MDL_table.btnCfgToggleColor(tb1, b, GLB_varGen.icons.dropLoot, b.shouldDropLoot)
       .tooltip(MDL_bundle.getInfo("lovec", "tt-switch-loot-dropping"), true);
     });
   };
@@ -224,7 +224,7 @@
 
 
   function comp_ex_doFloorPick(b) {
-    if(TIMER.secHalf) {
+    if(GLB_timer.secHalf) {
       let unit = LCEntity.getUnit(b.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
       if(unit != null && unit.isGrounded() && unit.stack.amount > 0) {
         b.playingWithUnit = false;

@@ -19,7 +19,7 @@
 
 
     MDL_event.onLoad(() => {
-        TRIGGER.majorIter.start.addGlobalListener(() => {
+        BOX_trigger.majorIter.start.addGlobalListener(() => {
             expiredUnits.clear();
             unitDataMap.each((unit, dataObj) => {
                 if(!unit.isAdded()) expiredUnits.push(unit);

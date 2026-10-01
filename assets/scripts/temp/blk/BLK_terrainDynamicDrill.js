@@ -46,11 +46,11 @@
 
   const comp_ex_findPlaceRsIcon = function thisFun(blk, tx, ty, item) {
     let t = Vars.world.tile(tx, ty);
-    if(t == null) return VARGEN.iconRegs.ohno;
+    if(t == null) return GLB_varGen.iconRegs.ohno;
 
     if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, item)) {
       if(blk.ex_isMiningDpore(tx, ty, item) && !blk.ex_anyDporeRevealed(tx, ty, item)) {
-        thisFun.tmpIcon = VARGEN.iconRegs.questionMark;
+        thisFun.tmpIcon = GLB_varGen.iconRegs.questionMark;
       } else {
         let ter = MDL_terrain.getTer(t, blk.size);
         let terItemMap = blk.terItemMapMap.get(item == null ? "null" : item.name);

@@ -37,7 +37,7 @@
 
   function comp_updateTile(b) {
     b.lightWarmup = Mathf.approachDelta(b.lightWarmup, Mathf.clamp(b.efficiency), 0.004);
-    if(TIMER.secQuarter && b.block.delegee.fogRadFrac > 0.0) {
+    if(GLB_timer.secQuarter && b.block.delegee.fogRadFrac > 0.0) {
       b.fogRad = b.block.delegee.lightRad * b.block.delegee.fogRadFrac * b.lightWarmup / Vars.tilesize;
       if(!b.lastFogRad.fEqual(b.fogRad, 0.5)) {
         Vars.fogControl.forceUpdate(b.team, b);

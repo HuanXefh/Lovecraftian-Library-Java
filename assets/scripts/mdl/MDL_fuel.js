@@ -82,13 +82,13 @@
 
         let fuelType = tryJsProp(blk, "fuelType", FuelTypes.ITEM);
         if((fuelType & FuelTypes.ITEM) !== 0) {
-            arr.pushAll(VARGEN.fuelItems);
+            arr.pushAll(GLB_varGen.fuelItems);
         };
         if((fuelType & FuelTypes.LIQUID) !== 0) {
-            arr.pushAll(VARGEN.fuelLiqs);
+            arr.pushAll(GLB_varGen.fuelLiqs);
         };
         if((fuelType & FuelTypes.GAS) !== 0) {
-            arr.pushAll(VARGEN.fuelGases);
+            arr.pushAll(GLB_varGen.fuelGases);
         };
 
         return arr.inSituFilter(rs => !tryJsProp(blk, "blockedFuels", Array.air).includes(rs.name));
@@ -116,12 +116,12 @@
         if(tryJsProp(blk, "blockedFuels", Array.air).includes(rs.name)) return false;
 
         switch(tryJsProp(blk, "fuelType", FuelTypes.ITEM)) {
-            case FuelTypes.ITEM : return VARGEN.fuelItems.includes(rs);
-            case FuelTypes.LIQUID : return VARGEN.fuelLiqs.includes(rs);
-            case FuelTypes.GAS : return VARGEN.fuelGases.includes(rs);
+            case FuelTypes.ITEM : return GLB_varGen.fuelItems.includes(rs);
+            case FuelTypes.LIQUID : return GLB_varGen.fuelLiqs.includes(rs);
+            case FuelTypes.GAS : return GLB_varGen.fuelGases.includes(rs);
         };
 
-        return VARGEN.fuelItems.includes(rs) || VARGEN.fuelLiqs.includes(rs) || VARGEN.fuelGases.includes(rs);
+        return GLB_varGen.fuelItems.includes(rs) || GLB_varGen.fuelLiqs.includes(rs) || GLB_varGen.fuelGases.includes(rs);
     }
     .setCache();
     exports.checkFuelInput = checkFuelInput;
@@ -154,7 +154,7 @@
 
         // Find fuel with the highest fuel level
         let tmpLvl;
-        if(b.items != null && (fuelType & FuelTypes.ITEM) !== 0) VARGEN.fuelItems.forEachFast(item => {
+        if(b.items != null && (fuelType & FuelTypes.ITEM) !== 0) GLB_varGen.fuelItems.forEachFast(item => {
             if(b.items.has(item) && (allowedFuels != null ? allowedFuels.includes(item.name) : !blockedFuels.includes(item.name))) {
                 tmpLvl = getFuelLvl(item);
                 if(tmpLvl > fuelLvl) {
@@ -166,7 +166,7 @@
             };
         }, true);
         if(b.liquids != null) {
-            if((fuelType & FuelTypes.LIQUID) !== 0) VARGEN.fuelLiqs.forEachFast(liq => {
+            if((fuelType & FuelTypes.LIQUID) !== 0) GLB_varGen.fuelLiqs.forEachFast(liq => {
                 if(b.liquids.get(liq) > 0.01 && (allowedFuels != null ? allowedFuels.includes(liq.name) : !blockedFuels.includes(liq.name))) {
                     tmpLvl = getFuelLvl(liq);
                     if(tmpLvl > fuelLvl) {
@@ -177,7 +177,7 @@
                     };
                 };
             }, true);
-            if((fuelType & FuelTypes.GAS) !== 0) VARGEN.fuelGases.forEachFast(gas => {
+            if((fuelType & FuelTypes.GAS) !== 0) GLB_varGen.fuelGases.forEachFast(gas => {
                 if(b.liquids.get(gas) > 0.01 && (allowedFuels != null ? allowedFuels.includes(gas.name) : !blockedFuels.includes(gas.name))) {
                     tmpLvl = getFuelLvl(gas);
                     if(tmpLvl > fuelLvl) {

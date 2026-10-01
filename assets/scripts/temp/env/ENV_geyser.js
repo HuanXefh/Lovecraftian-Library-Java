@@ -23,7 +23,7 @@
      * @private
      * @type {number}
      */
-    const PARTICLE_LAYER = VAR.layer.effSmog - 0.5;
+    const PARTICLE_LAYER = GLB_var.layer.effSmog - 0.5;
 
 
     /* <------------------------------ component ------------------------------> */

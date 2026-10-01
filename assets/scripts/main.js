@@ -62,9 +62,9 @@
 
 
         // Sync random number generator
-        Object.eachPair(VAR.randInd, (name, ind) => {
+        Object.eachPair(GLB_var.randInd, (name, ind) => {
             let rand = new Rand();
-            TRIGGER.majorIter.start.addGlobalListener(() => {
+            BOX_trigger.majorIter.start.addGlobalListener(() => {
                 UTIL_rand.sync(ind, Number(rand.nextLong()));
             });
         });
@@ -172,10 +172,10 @@
         // Set up major sync
         (function() {
             MDL_net.addPacketHandler(PacketModes.BOTH, "lovec-both-major-sync", payload => {
-                TRIGGER.majorSync.fire();
+                BOX_trigger.majorSync.fire();
             });
             let majorIterCount = 0;
-            TRIGGER.majorIter.end.addGlobalListener(() => {
+            BOX_trigger.majorIter.end.addGlobalListener(() => {
                 if(!Vars.net.client() && Groups.player.size() > 1) {
                     majorIterCount++;
                     if(majorIterCount >= 6) {
@@ -193,7 +193,7 @@
 
 
         // Set up ore dictionary, EXPERIMENTAL!
-        if(PARAM.MODDED && fetchSetting("load-ore-dict")) {
+        if(GLB_param.MODDED && fetchSetting("load-ore-dict")) {
             console.log("[LOVEC] Loading " + "ore dictionary".color(Pal.accent) + " settings...");
             if(!fetchSetting("load-ore-dict-def")) {
                 console.log("[LOVEC] Skipped default lists for ore dictionary.");
@@ -314,7 +314,7 @@
 
 
         // Menu flyer
-        if(!Vars.headless && PARAM.MODDED && !fetchSetting("load-vanilla-flyer")) {
+        if(!Vars.headless && GLB_param.MODDED && !fetchSetting("load-vanilla-flyer")) {
             try {
                 Reflect.set(MenuRenderer, Reflect.get(Vars.ui.menufrag, "renderer"), "flyerType", MDL_content.getCt(DB_misc.db["mod"]["menuFlyer"].random(), ContentGetModes.UTP));
             } catch(err) {
@@ -327,9 +327,9 @@
         if(!Vars.headless) {
             DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr), true);
 
-            Time.run(VAR.delay.load.loadExtraSound, () => {
+            Time.run(GLB_var.delay.load.loadExtraSound, () => {
 
-                if(PARAM.SECRET_LEGACY_SOUND) {
+                if(GLB_param.SECRET_LEGACY_SOUND) {
                     try {
                         Vars.content.units().each(utp => {
                             if(utp.deathSound === Sounds.unitExplode1 || utp.deathSound === Sounds.unitExplode2 || utp.deathSound === Sounds.unitExplode3) {
@@ -359,7 +359,7 @@
                     };
                 };
 
-                if(PARAM.SECRET_FITH) {
+                if(GLB_param.SECRET_FITH) {
                     let pitchBase;
                     function fireInTheHole(wp) {
                         wp.shootSound = fetchSound("se-meme-fith");
@@ -379,12 +379,12 @@
                     });
                 };
 
-                if(PARAM.SECRET_METAL_PIPE) {
+                if(GLB_param.SECRET_METAL_PIPE) {
                     Vars.content.blocks().each(blk => {
                         if(blk.placeSound === fetchSound("se-place-metal-pipe")) blk.placeSound = fetchSound("se-meme-steel-pipe");
                     });
                 };
-                Core.settings.put("lovec-misc-fire-in-the-hole", PARAM.SECRET_FITH);
+                Core.settings.put("lovec-misc-fire-in-the-hole", GLB_param.SECRET_FITH);
 
             });
         };
@@ -412,25 +412,25 @@
                             lightness > 0.75 ?
                                 1.0 :
                                 lightness > 0.45 ?
-                                    VAR.param.ctNameColorMtp :
-                                    VAR.param.ctNameColorMtpHigh
+                                    GLB_var.param.ctNameColorMtp :
+                                    GLB_var.param.ctNameColorMtpHigh
                         );
                 };
 
-                VARGEN.allRss.forEachFast(rs => rs.localizedName = rs.localizedName.color(fetchColor(rs)), true);
-                VARGEN.factionBlksMap.each((faction, cts) => cts.forEachFast(ct => ct.localizedName = ct.localizedName.color(MDL_content.getFactionColor(Tmp.c1, faction)), true));
+                GLB_varGen.allRss.forEachFast(rs => rs.localizedName = rs.localizedName.color(fetchColor(rs)), true);
+                GLB_varGen.factionBlksMap.each((faction, cts) => cts.forEachFast(ct => ct.localizedName = ct.localizedName.color(MDL_content.getFactionColor(Tmp.c1, faction)), true));
             });
         };
 
 
         // Set up recipe dictionary stat
-        Time.run(VAR.delay.load.addStat, () => {
-            VARGEN.allRss
+        Time.run(GLB_var.delay.load.addStat, () => {
+            GLB_varGen.allRss
             .filter(rs => MDL_cond.hasAnyRecipe(rs))
-            .concat(VARGEN.payMatBlks)
-            .concat(VARGEN.buildableUtps)
+            .concat(GLB_varGen.payMatBlks)
+            .concat(GLB_varGen.buildableUtps)
             .forEachFast(ct => {
-                VARGEN.rcDictCts.push(ct);
+                GLB_varGen.rcDictCts.push(ct);
                 // Complete broken in v9
                 /*ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
                     tb.row();
@@ -465,7 +465,7 @@
             .forEachFast(sta => {
                 // Completely broken in v9
                 /*sta.stats.add(fetchStat("lovec", "sta-robotonly"), true);*/
-                VARGEN.bioticUtps.forEachFast(utp => utp.immunities.add(sta), true);
+                GLB_varGen.bioticUtps.forEachFast(utp => utp.immunities.add(sta), true);
             }, true);
 
             // Oceanic status
@@ -473,16 +473,16 @@
             .map(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA, true))
             .compact()
             .forEachFast(sta => {
-                VARGEN.navalUtps.forEachFast(utp => utp.immunities.add(sta), true);
+                GLB_varGen.navalUtps.forEachFast(utp => utp.immunities.add(sta), true);
             }, true);
 
             // Missile immunities
             DB_status.db["group"]["missileImmune"]
             .map(nameSta => MDL_content.getCt(nameSta, ContentGetModes.STA, true))
-            .pushAll(VARGEN.deathStas)
+            .pushAll(GLB_varGen.deathStas)
             .compact()
             .forEachFast(sta => {
-                VARGEN.missileUtps.forEachFast(utp => utp.immunities.add(sta), true);
+                GLB_varGen.missileUtps.forEachFast(utp => utp.immunities.add(sta), true);
             }, true);
 
         })();
@@ -606,8 +606,8 @@
 
 
         // Screw it
-        if(!PARAM.MODDED && fetchMod("projreind") != null) {
-            throw new Error("PARAM.MODDED is broken again, WTF D:");
+        if(!GLB_param.MODDED && fetchMod("projreind") != null) {
+            throw new Error("GLB_param.MODDED is broken again, WTF D:");
         };
 
 
@@ -619,9 +619,9 @@
     MDL_event.onWorldLoad(() => {
 
 
-        Time.run(VAR.delay.worldLoad.triggerSecretCrash, () => {
+        Time.run(GLB_var.delay.worldLoad.triggerSecretCrash, () => {
             if(Core.settings.getBool("lovec-misc-secret-code-crashed", false)) {
-                TRIGGER.secretCodeCrash.fire();
+                BOX_trigger.secretCodeCrash.fire();
             };
         });
 

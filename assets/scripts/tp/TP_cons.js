@@ -274,8 +274,8 @@
                     || b.liquids == null || !tryJsProp(b.liquids.current(), "isConductive", false)
             ) return;
 
-            FRAG_attack.lightning_global(b.x, b.y, null, VAR.param.lightningDmg * b.power.status * this.dmgMtp, null, 6, 4, null, "ground");
-            TRIGGER.poweredMetalPipe.fire();
+            FRAG_attack.lightning_global(b.x, b.y, null, GLB_var.param.lightningDmg * b.power.status * this.dmgMtp, null, 6, 4, null, "ground");
+            BOX_trigger.poweredMetalPipe.fire();
         },
 
 

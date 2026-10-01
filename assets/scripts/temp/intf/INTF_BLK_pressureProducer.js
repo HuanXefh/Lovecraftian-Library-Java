@@ -5,105 +5,158 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_pressureProducer>} INTFBLKPressureProducer
+     */
 
 
-  function comp_init(blk) {
-    if(!blk.hasLiquids) throw new LCError.NoLiquidModuleError(blk);
-
-    if(!blk.presProd.fEqual(0.0)) {
-      MDL_event.onLoadPost(() => {
-        MDL_recipeDict.addFldProdTerm(blk, blk.presProd > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, Math.abs(blk.presProd), null);
-      });
-    };
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_pressureProducer>} INTFBPressureProducer
+     * @prop {INTFBLKPressureProducer} block
+     */
 
 
-  function comp_setStats(blk, stats) {
-    if(!blk.presProd.fEqual(0.0)) {
-      stats.add(blk.presProd > 0.0 ? fetchStat("lovec", "blk0liq-presoutput") : fetchStat("lovec", "blk0liq-vacoutput"), Math.abs(blk.presProd * 60.0), StatUnit.perSecond);
-    };
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_onProximityUpdate(b) {
-    b.ex_updatePresDumpTs();
-    b.ex_updatePresDumpTargets();
-  };
+    /**
+     * @private
+     * @param {INTFBLKPressureProducer} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        if(!blk.hasLiquids) throw new LCError.NoLiquidModuleError(blk);
 
-
-  function comp_pickedUp(b) {
-    b.presDumpTargets.clear();
-  };
-
-
-  function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED) return;
-    let presProd = b.ex_calcPresDumpRate();
-    if(presProd.fEqual(0.0)) return;
-    let aux = presProd > 0.0 ? VARGEN.auxPres : VARGEN.auxVac;
-
-    LCCraftingHandler.addLiquid(b, b, aux, Math.abs(presProd) / b.timeScale, true);
-    if(!b.ex_dumpPres(Math.abs(presProd), presProd < 0.0)) {
-      b.dumpLiquid(aux, 2.0);
-    };
-  };
-
-
-  function comp_ex_updatePresDumpTs(b) {
-    b.presDumpTs.clear();
-    b.block.delegee.presDumpPons.forEachFast(pon => {
-      b.presDumpTs.push(LCPos.getTileRectRotCenter(Vars.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), Vars.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
-    }, true);
-  };
-
-
-  function comp_ex_updatePresDumpTargets(b) {
-    b.presDumpTargets.clear();
-    let fldType1, fldType2;
-    if(b.presDumpTs.length > 0) {
-      let ob;
-      b.presDumpTs.forEachFast(ot => {
-        ob = ot.build;
-        if(ob == null || ob.team !== b.team) return;
-        if(ob.block instanceof MultiBlockLinkBlock) {
-          ob = ob.linkedBuild;
+        if(!blk.presProd.fEqual(0.0)) {
+            MDL_event.onLoadPost(() => {
+                MDL_recipeDict.addFldProdTerm(blk, blk.presProd > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, Math.abs(blk.presProd), null);
+            });
         };
-        if(tryJsProp(ob, "presBase") == null) return;
-        if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
-        fldType1 = b.block.delegee.presFldType;
-        fldType2 = tryJsProp(ob.block, "fldType", "any");
-        if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
-        b.presDumpTargets.push(ob);
-      }, true);
-    } else {
-      b.proximity.each(ob => {
-        if(tryJsProp(ob, "presBase") == null) return;
-        if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
-        fldType1 = b.block.delegee.presFldType;
-        fldType2 = tryJsProp(ob.block, "fldType", "any");
-        if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
-        b.presDumpTargets.push(ob);
-      });
     };
-  };
 
 
-  function comp_ex_dumpPres(b, rate, isVac) {
-    if(b.presDumpTargets.length === 0) return false;
-    let b_t = b.presDumpTargets[b.presDumpIncre % b.presDumpTargets.length];
-    b.presDumpIncre++;
-    if(!b_t.isAdded() || b_t.isPayload()) return false;
-    let amtTrans = LCCraftingHandler.addLiquid(b, b, !isVac ? VARGEN.auxPres : VARGEN.auxVac, -(rate - 0.0001));
-    if(amtTrans < 0.0001) return false;
+    /**
+     * @private
+     * @param {INTFBLKPressureProducer} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        if(!blk.presProd.fEqual(0.0)) {
+            stats.add(blk.presProd > 0.0 ? fetchStat("lovec", "blk0liq-presoutput") : fetchStat("lovec", "blk0liq-vacoutput"), Math.abs(blk.presProd * 60.0), StatUnit.perSecond);
+        };
+    };
 
-    b_t.delegee.presBase = b_t.delegee.presBase + amtTrans * (isVac ? -1.0 : 1.0);
 
-    return true;
-  };
+    /**
+     * @private
+     * @param {INTFBPressureProducer} b
+     * @return {void}
+     */
+    function comp_onProximityUpdate(b) {
+        b.ex_updatePresDumpTs();
+        b.ex_updatePresDumpTargets();
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureProducer} b
+     * @return {void}
+     */
+    function comp_pickedUp(b) {
+        b.presDumpTargets.clear();
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureProducer} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(GLB_param.UPDATE_SUPPRESSED) return;
+        let presProd = b.ex_calcPresDumpRate();
+        if(presProd.fEqual(0.0)) return;
+        let aux = presProd > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac;
+
+        LCCraftingHandler.addLiquid(b, b, aux, Math.abs(presProd) / b.timeScale, true);
+        if(!b.ex_dumpPres(Math.abs(presProd), presProd < 0.0)) {
+            b.dumpLiquid(aux, 2.0);
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureProducer} b
+     * @return {void}
+     */
+    function comp_ex_updatePresDumpTs(b) {
+        b.presDumpTs.clear();
+        b.block.delegee.presDumpPons.forEachFast(pon => {
+            b.presDumpTs.push(LCPos.getTileRectRotCenter(Vars.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), Vars.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
+        }, true);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureProducer} b
+     * @return {void}
+     */
+    function comp_ex_updatePresDumpTargets(b) {
+        b.presDumpTargets.clear();
+        let fldType1, fldType2;
+        if(b.presDumpTs.length > 0) {
+            let ob;
+            b.presDumpTs.forEachFast(ot => {
+                ob = ot.build;
+                if(ob == null || ob.team !== b.team) return;
+                if(ob.block instanceof MultiBlockLinkBlock) {
+                    ob = ob.linkedBuild;
+                };
+                if(tryJsProp(ob, "presBase") == null) return;
+                if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
+                fldType1 = b.block.delegee.presFldType;
+                fldType2 = tryJsProp(ob.block, "fldType", "any");
+                if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
+                b.presDumpTargets.push(ob);
+            }, true);
+        } else {
+            b.proximity.each(ob => {
+                if(tryJsProp(ob, "presBase") == null) return;
+                if(ob.block.rotate && (!MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === ob.rotation : b.relativeTo(ob) !== ob.rotation)) return;
+                fldType1 = b.block.delegee.presFldType;
+                fldType2 = tryJsProp(ob.block, "fldType", "any");
+                if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
+                b.presDumpTargets.push(ob);
+            });
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureProducer} b
+     * @param {number} rate
+     * @param {boolean} isVac
+     * @return {boolean}
+     */
+    function comp_ex_dumpPres(b, rate, isVac) {
+        if(b.presDumpTargets.length === 0) return false;
+        let b_t = b.presDumpTargets[b.presDumpIncre % b.presDumpTargets.length];
+        b.presDumpIncre++;
+        if(!b_t.isAdded() || b_t.isPayload()) return false;
+        let amtTrans = LCCraftingHandler.addLiquid(b, b, !isVac ? GLB_varGen.auxPres : GLB_varGen.auxVac, -(rate - 0.0001));
+        if(amtTrans < 0.0001) return false;
+
+        b_t.delegee.presBase = b_t.delegee.presBase + amtTrans * (isVac ? -1.0 : 1.0);
+        return true;
+    };
 
 
 /*
@@ -113,164 +166,178 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles pressure production methods.
-     * @class INTF_BLK_pressureProducer
-     */
-    new CLS_interface("INTF_BLK_pressureProducer", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Pressure produced by this block per frame, negative for vacuum.
-         * @memberof INTF_BLK_pressureProducer
-         * @instance
+         * Handles pressure production methods.
+         * @class INTF_BLK_pressureProducer
          */
-        presProd: 0.0,
+        new CLS_interface("INTF_BLK_pressureProducer", {
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Pressure produced by this block per frame, negative for vacuum.
+                     * @memberof INTF_BLK_pressureProducer
+                     * @instance
+                     * @type {number}
+                     */
+                    presProd: 0.0,
+                    /**
+                     * `PARAM`: Fluid type restriction for pressure dumping. See {@link INTF_BLK_fluidTypeFilter#fldType}.
+                     * @memberof INTF_BLK_pressureProducer
+                     * @instance
+                     * @type {string}
+                     */
+                    presFldType: "any",
+                    /**
+                     * `PARAM`: Dump positions (relative to tile center). Leave empty if not used.
+                     * @memberof INTF_BLK_pressureProducer
+                     * @instance
+                     * @type {TDynamic<Array<Point2>>}
+                     */
+                    presDumpPons: tprov(() => []),
+
+
+                };
+            },
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+        }),
+
+
         /**
-         * `PARAM`: Fluid type restriction for pressure dumping. See {@link INTF_BLK_fluidTypeFilter}.
-         * @memberof INTF_BLK_pressureProducer
-         * @instance
+         * @class INTF_B_pressureProducer
          */
-        presFldType: "any",
-        /**
-         * `PARAM`: Dump positions (relative to tile center). Leave empty if not used.
-         * @memberof INTF_BLK_pressureProducer
-         * @instance
-         */
-        presDumpPons: tprov(() => []),
+        new CLS_interface("INTF_B_pressureProducer", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      init: function() {
-        comp_init(this);
-      },
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pressureProducer
+                     * @instance
+                     * @type {TDynamic<Array<Tile>>}
+                     */
+                    presDumpTs: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pressureProducer
+                     * @instance
+                     * @type {TDynamic<Array<Building>>}
+                     */
+                    presDumpTargets: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pressureProducer
+                     * @instance
+                     * @type {number}
+                     */
+                    presDumpIncre: 0,
 
 
-    }),
+                };
+            },
 
 
-    /**
-     * @class INTF_B_pressureProducer
-     */
-    new CLS_interface("INTF_B_pressureProducer", {
+            onProximityUpdate: function() {
+                comp_onProximityUpdate(this);
+            },
 
 
-      __paramObjM__: () => ({
+            pickedUp: function() {
+                comp_pickedUp(this);
+            },
 
 
-        /* <------------------------------ internal ------------------------------> */
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pressureProducer
-         * @instance
-         */
-        presDumpTs: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pressureProducer
-         * @instance
-         */
-        presDumpTargets: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pressureProducer
-         * @instance
-         */
-        presDumpIncre: 0,
+            /**
+             * @memberof INTF_B_pressureProducer
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updatePresDumpTs: function() {
+                comp_ex_updatePresDumpTs(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      }),
+            /**
+             * @memberof INTF_B_pressureProducer
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updatePresDumpTargets: function() {
+                comp_ex_updatePresDumpTargets(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
+            /**
+             * @memberof INTF_B_pressureProducer
+             * @instance
+             * @func
+             * @param {number} rate
+             * @param {boolean} isVac
+             * @return {void}
+             */
+            ex_dumpPres: function(rate, isVac) {
+                comp_ex_dumpPres(this, rate, isVac);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
 
 
-      pickedUp: function() {
-        comp_pickedUp(this);
-      },
+            /**
+             * Override this method for dynamic dump rate.
+             * Efficiency should not be involved!
+             * <br> `LATER`
+             * @memberof INTF_B_pressureProducer
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcPresDumpRate: function() {
+                return this.block.delegee.presProd;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+        }),
 
 
-      /**
-       * @memberof INTF_B_pressureProducer
-       * @instance
-       * @return {void}
-       */
-      ex_updatePresDumpTs: function() {
-        comp_ex_updatePresDumpTs(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_pressureProducer
-       * @instance
-       * @return {void}
-       */
-      ex_updatePresDumpTargets: function() {
-        comp_ex_updatePresDumpTargets(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_pressureProducer
-       * @instance
-       * @param {number} rate
-       * @param {boolean} isVac
-       * @return {void}
-       */
-      ex_dumpPres: function(rate, isVac) {
-        comp_ex_dumpPres(this, rate, isVac);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 2,
-      }),
-
-
-      /**
-       * Override this method for dynamic dump rate.
-       * Efficiency should not be involved!
-       * <br> `LATER`
-       * @memberof INTF_B_pressureProducer
-       * @instance
-       * @return {number}
-       */
-      ex_calcPresDumpRate: function() {
-        return this.block.delegee.presProd;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-    }),
-
-
-  ];
+    ];

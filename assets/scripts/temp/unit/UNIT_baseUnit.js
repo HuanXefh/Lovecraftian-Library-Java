@@ -115,7 +115,7 @@
             FRAG_unit.updateDamagedSta(utp, unit);
         };
 
-        if(utp.hasUnitData && unit.delegee != null && TIMER.secHalf) {
+        if(utp.hasUnitData && unit.delegee != null && GLB_timer.secHalf) {
             if(!UTIL_unitData.includes(unit)) {
                 UTIL_unitData.add(unit, utp.ex_getEmptyUnitData(unit));
             };
@@ -530,7 +530,7 @@
             let unitProv = EntityMapping.map(utp.delegee.entityName);
             if(unitProv == null) {
                 unitProv = prov(() => {
-                    processClassLoader(null, VAR.extendInd.entity);
+                    processClassLoader(null, GLB_var.extendInd.entity);
                     let obj = mergeObj(
                         utp.delegee.entityTemplate.build(),
                         {
@@ -543,7 +543,7 @@
                     });
                     let unit = extend(utp.delegee.entityTemplate.getParent(), obj);
                     utp.delegee.entityTemplate.initContent(unit);
-                    processClassLoader(null, VAR.extendInd.entity);
+                    processClassLoader(null, GLB_var.extendInd.entity);
                     return unit;
                 });
                 let id = EntityMapping.register(utp.delegee.entityName, unitProv);

@@ -20,7 +20,7 @@
     /** @global */
     MDL_event = require("lovec/mdl/MDL_event");
     /** @global */
-    VAR = require("lovec/glb/GLB_var");
+    GLB_var = require("lovec/glb/GLB_var");
     require("lovec/run/RUN_error");
     require("lovec/tp/TP_log");
     require("lovec/tp/TP_db");
@@ -63,9 +63,9 @@
     /** @global */
     CLS_eventTrigger = require("lovec/cls/util/CLS_eventTrigger");
     /** @global */
-    TRIGGER = require("lovec/glb/BOX_trigger");
+    BOX_trigger = require("lovec/glb/BOX_trigger");
     /** @global */
-    TIMER = require("lovec/glb/GLB_timer");
+    GLB_timer = require("lovec/glb/GLB_timer");
     /** @global */
     MDL_file = require("lovec/mdl/MDL_file");
     require("lovec/run/RUN_classExposure");
@@ -90,7 +90,7 @@
     /** @global */
     TP_effect = require("lovec/tp/TP_effect");
     /** @global */
-    EFF = require("lovec/glb/GLB_eff");
+    GLB_eff = require("lovec/glb/GLB_eff");
     /** @global */
     DB_env = require("lovec/db/DB_env");
     /** @global */
@@ -114,7 +114,7 @@
     /** @global */
     MDL_recipeDict = require("lovec/mdl/MDL_recipeDict");
     /** @global */
-    PARAM = require("lovec/glb/GLB_param");
+    GLB_param = require("lovec/glb/GLB_param");
     /** @global */
     CLS_settingTerm = require("lovec/cls/util/CLS_settingTerm");
     /** @global */
@@ -126,7 +126,7 @@
     /** @global */
     FRAG_faci = require("lovec/frag/FRAG_faci");
     /** @global */
-    SAVE = require("lovec/glb/GLB_save");
+    GLB_save = require("lovec/glb/GLB_save");
     /** @global */
     MDL_flag = require("lovec/mdl/MDL_flag");
     /** @global */
@@ -134,7 +134,7 @@
     /** @global */
     MDL_planet = require("lovec/mdl/MDL_planet");
     /** @global */
-    VARGEN = require("lovec/glb/GLB_varGen");
+    GLB_varGen = require("lovec/glb/GLB_varGen");
     require("lovec/run/RUN_annoProcess");
     /** @global */
     UTIL_rand = require("lovec/cls/util/UTIL_rand");

@@ -164,7 +164,7 @@
       processZ();
     };
     if(b.block.delegee.topGlowReg.found()) {
-      processZ(VAR.layer.mineBeam + 0.2);
+      processZ(GLB_var.layer.mineBeam + 0.2);
       Draw.blend(Blending.additive);
       Draw.color(color, glowA);
       Draw.rect(b.block.delegee.topGlowReg, b.x, b.y);

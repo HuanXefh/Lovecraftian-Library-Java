@@ -212,19 +212,19 @@
 
     MDL_event.onLoad(() => {
 
-        TRIGGER.majorIter.start.addGlobalListener(() => {
+        BOX_trigger.majorIter.start.addGlobalListener(() => {
             basePol = 0.0;
         });
-        TRIGGER.majorIter.building.addGlobalListener((b, isActive) => {
-            if(isActive && syncChance("pollution", VAR.chance.polUpdateP)) {
+        BOX_trigger.majorIter.building.addGlobalListener((b, isActive) => {
+            if(isActive && syncChance("pollution", GLB_var.chance.polUpdateP)) {
                 basePol += b.ex_getBlkPol != null ?
                     b.ex_getBlkPol() :
                     getBlkPol(b.block);
             };
         });
-        TRIGGER.majorIter.end.addGlobalListener(() => {
+        BOX_trigger.majorIter.end.addGlobalListener(() => {
             basePol = Mathf.maxZero(basePol);
-            basePol /= VAR.chance.polUpdateP;
+            basePol /= GLB_var.chance.polUpdateP;
         });
 
     });
@@ -234,13 +234,13 @@
 
     MDL_event.onWorldLoad(() => {
 
-        Time.run(VAR.delay.worldLoad.loadPol, () => {
+        Time.run(GLB_var.delay.worldLoad.loadPol, () => {
             mapPol = DB_env.db["param"]["map"]["pol"].read(
-                PARAM.MAP_CURRENT,
-                DB_env.db["param"]["pla"]["pol"].read(PARAM.PLANET_CURRENT, 0.0),
+                GLB_param.MAP_CURRENT,
+                DB_env.db["param"]["pla"]["pol"].read(GLB_param.PLANET_CURRENT, 0.0),
             );
-            dynaPol = SAVE.get("dynamic-pollution");
-            lingerPol = SAVE.get("lingering-pollution");
+            dynaPol = GLB_save.get("dynamic-pollution");
+            lingerPol = GLB_save.get("lingering-pollution");
         });
 
     });
@@ -250,18 +250,18 @@
 
     MDL_event.onUpdate(() => {
 
-        if(PARAM.MODDED) {
+        if(GLB_param.MODDED) {
             if(!Vars.state.isGame()) {
                 dynaPol = 0.0;
                 glbPol = 0.0;
             } else {
-                if(TIMER.sec) {
+                if(GLB_timer.sec) {
                     dynaPol *= 0.984;
                     lingerPol = Mathf.maxZero(lingerPol - 0.05);
                 };
-                if(TIMER.paramLarge) {
-                    SAVE.set("dynamic-pollution", dynaPol);
-                    SAVE.set("lingering-pollution", lingerPol);
+                if(GLB_timer.paramLarge) {
+                    GLB_save.set("dynamic-pollution", dynaPol);
+                    GLB_save.set("lingering-pollution", lingerPol);
                     glbPolMeanArr.push(basePol + mapPol + dynaPol * 0.25 + lingerPol);
                 };
             };

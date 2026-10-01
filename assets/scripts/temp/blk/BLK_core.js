@@ -16,7 +16,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.secHalf) {
+    if(GLB_timer.secHalf) {
       b.powProdEffc = Mathf.clamp(1.0 - FRAG_faci.getCepFracCur(b.team))
     };
     if(b.powProdEffc < 0.0001 && Mathf.chanceDelta(b.block.delegee.cepOutageEffP)) {
@@ -53,7 +53,7 @@
        * @memberof BLK_core
        * @instance
        */
-      cepOutageEff: EFF.sparkPower,
+      cepOutageEff: GLB_eff.sparkPower,
       /**
        * `PARAM`: Effect chance.
        * @memberof BLK_core

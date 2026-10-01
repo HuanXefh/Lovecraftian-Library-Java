@@ -68,7 +68,7 @@
 
     if(b.glowHeat > 0.01) {
       b.pullTargets.forEachFast(loot => {
-        if(loot.isAdded()) LCDrawf.arrowLine(loot.x, loot.y, b.x, b.y, 2.0, 1.0, Color.white, 0.35 * b.glowHeat, VAR.layer.effFlr);
+        if(loot.isAdded()) LCDrawf.arrowLine(loot.x, loot.y, b.x, b.y, 2.0, 1.0, Color.white, 0.35 * b.glowHeat, GLB_var.layer.effFlr);
       }, true);
     };
   };

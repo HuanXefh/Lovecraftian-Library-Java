@@ -95,7 +95,7 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        if(TIMER.secFive) {
+        if(GLB_timer.secFive) {
             b.placeRestrictEffc = LCEntity.getBuildsByTiles(b.placeRestrictTmpBs, b.placeRestrictTmpTs).some(ob => ob.id !== b.id && b.block.delegee.sameTypeFilter.get(b.block, ob.block)) ?
                 0.0 :
                 1.0;

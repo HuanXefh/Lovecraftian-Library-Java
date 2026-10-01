@@ -22,15 +22,15 @@
 
     blk.config(JAVA.string, (b, str) => {
       b.ex_accRsTargets(str, false);
-      EFF.fadePlacePack[b.block.size].at(b);
+      GLB_eff.fadePlacePack[b.block.size].at(b);
       b.sortItem = b.ex_accRsTargets("read", false).first();
     });
 
     blk.config(JAVA.boolean, (b, bool) => {
       if(bool !== b.delegee.isInv) {
         b.delegee.isInv = bool;
-        EFF.fadePlacePack[b.block.size].at(b);
-        TRIGGER.invertSelection.fire();
+        GLB_eff.fadePlacePack[b.block.size].at(b);
+        BOX_trigger.invertSelection.fire();
       };
     });
 
@@ -48,14 +48,14 @@
             };
             i++;
           };
-          EFF.fadePlacePack[b.block.size].at(b);
+          GLB_eff.fadePlacePack[b.block.size].at(b);
           b.delegee.isInv = cfgArr[1];
           b.sortItem = b.ex_accRsTargets("read", false).first();
           break;
 
         case "selector" :
           b.ex_accRsTargets(cfgArr[1], cfgArr[2]);
-          EFF.fadePlacePack[b.block.size].at(b);
+          GLB_eff.fadePlacePack[b.block.size].at(b);
           b.sortItem = b.ex_accRsTargets("read", false).first();
       };
     });
@@ -77,7 +77,7 @@
 
     b.displayedRsTarget = b.rsTargets.length === 0 ?
       null :
-      b.rsTargets[Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % b.rsTargets.length)];
+      b.rsTargets[Math.floor((Time.globalTime / GLB_param.ICON_TAG_FLICKERING_INTERVAL) % b.rsTargets.length)];
   };
 
 
@@ -121,12 +121,12 @@
 
     tb.row();
     tb.table(Styles.none, tb1 => {
-      MDL_table.btnCfgToggle(tb1, b, VARGEN.icons.swap, VARGEN.icons.swap, b.isInv)
+      MDL_table.btnCfgToggle(tb1, b, GLB_varGen.icons.swap, GLB_varGen.icons.swap, b.isInv)
       .tooltip(MDL_bundle.getInfo("lovec", "tt-invert-selection"), true);
       MDL_table.btnCfg(tb1, b, b => {
         b.configure("clear");
         b.deselect();
-      }, VARGEN.icons.cross)
+      }, GLB_varGen.icons.cross)
       .tooltip(MDL_bundle.getInfo("lovec", "tt-clear-selection"), true);
     });
   };

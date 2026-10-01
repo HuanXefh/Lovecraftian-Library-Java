@@ -42,7 +42,7 @@
 
 
   function comp_setBars(blk) {
-    if(!VAR.isMindustryX) {
+    if(!GLB_var.isMindustryX) {
       blk.addBar("lovec-prog", b => new Bar(
         MDL_bundle.getTerm("lovec", "progress"),
         Pal.ammo,
@@ -57,7 +57,7 @@
       b.progress = 0.0;
     };
 
-    if(TIMER.sec) {
+    if(GLB_timer.sec) {
       if(b.items != null && !b.justCrafted) {
         b.hasItemTarget = false;
         b.items.each((item, amt) => {
@@ -120,7 +120,7 @@
     };
 
     if(flam > 0.0 || explo > 0.0 || pow > 0.0) {
-      TRIGGER.incineratorExplosion.fire();
+      BOX_trigger.incineratorExplosion.fire();
       MDL_sound.playAt(b.x, b.y, "SOUNDS: unitExplode1");
       Damage.dynamicExplosion(b.x, b.y, flam, explo, pow, FRAG_attack.getPresExploRad(b.block.size) / Vars.tilesize, true);
     };

@@ -161,9 +161,9 @@
      * @return {T}
      */
     extendSafe = function(javaCls) {
-        processClassLoader(null, VAR.extendInd.safe);
+        processClassLoader(null, GLB_var.extendInd.safe);
         let ins = extend.apply(this, arguments);
-        processClassLoader(null, VAR.extendInd.safe);
+        processClassLoader(null, GLB_var.extendInd.safe);
         return ins;
     };
 
@@ -178,7 +178,7 @@
      * @return {UnlockableContent}
      */
     extendBase = function(temp, nameCt, obj) {
-        processClassLoader(null, VAR.extendInd.base);
+        processClassLoader(null, GLB_var.extendInd.base);
         obj = extendBase.setupObj(temp, obj);
         // Can't implement interfaces with `extend`, that's why `new JavaAdapter(...)` is used
         // You cannot pass an array as arguments to a constructor function directly, here it's wrapped in `ctorCall`
@@ -186,7 +186,7 @@
         extendBase.setupFields(ct, obj);
         temp.initContent(ct);
         LCContentHandler.add(ct);
-        processClassLoader(null, VAR.extendInd.base);
+        processClassLoader(null, GLB_var.extendInd.base);
         return ct;
     };
     /**
@@ -207,7 +207,8 @@
     extendBase.setupArgs = function(temp, obj) {
         let args = [temp.getParent()];
         if(args[0] == null) throw new Error("${1} has no parent Java class!".format(temp.clsName));
-        args.pushAll(temp.getParentIntfs(obj));
+        // No `pushAll` here, otherwise Java will f**k up everything
+        temp.getParentIntfs(obj).forEach(intf => args.push(intf));
         args.push(obj);
 
         let restArgs = Array.from(arguments);
@@ -242,7 +243,7 @@
      * @return {Block}
      */
     extendBlock = function(temp, nameBlk, objBlk, objB) {
-        processClassLoader(null, VAR.extendInd.block);
+        processClassLoader(null, GLB_var.extendInd.block);
         let obj = extendBase.setupObj(temp[0], objBlk);
         if(obj.forceUseDrawer) {
             let load = obj.load;
@@ -268,7 +269,7 @@
         let blk = ctorCall(JavaAdapter, extendBase.setupArgs(temp[0], obj, nameBlk));
         extendBase.setupFields(blk, obj);
         blk.buildType = () => {
-            processClassLoader(null, VAR.extendInd.build);
+            processClassLoader(null, GLB_var.extendInd.build);
             let obj1 = extendBase.setupObj(temp[1], objB);
             if(obj.forceUseDrawer) {
                 obj1.draw = function() {
@@ -293,12 +294,12 @@
             let b = ctorCall(JavaAdapter, extendBase.setupArgs(temp[1], obj1, blk));
             extendBase.setupFields(b, obj1);
             temp[1].initContent(b);
-            processClassLoader(null, VAR.extendInd.build);
+            processClassLoader(null, GLB_var.extendInd.build);
             return b;
         };
         temp[0].initContent(blk);
         LCContentHandler.add(blk);
-        processClassLoader(null, VAR.extendInd.block);
+        processClassLoader(null, GLB_var.extendInd.block);
         return blk;
     };
 
@@ -312,14 +313,14 @@
      * @return {UnitType}
      */
     extendUnit = function(temp, nameUtp, objUtp) {
-        processClassLoader(null, VAR.extendInd.unit);
+        processClassLoader(null, GLB_var.extendInd.unit);
         objUtp = extendBase.setupObj(temp, objUtp);
         /** @type {UnitType} */
         let utp = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objUtp, nameUtp));
         extendBase.setupFields(utp, objUtp);
         temp.initContent(utp);
         LCContentHandler.add(utp);
-        processClassLoader(null, VAR.extendInd.unit);
+        processClassLoader(null, GLB_var.extendInd.unit);
         return utp;
     };
 
@@ -334,14 +335,14 @@
      * @return {Planet}
      */
     extendPlanet = function(temp, namePla, sectorSize, objPla) {
-        processClassLoader(null, VAR.extendInd.planet);
+        processClassLoader(null, GLB_var.extendInd.planet);
         objPla = extendBase.setupObj(temp, objPla);
         /** @type {Planet} */
         let pla = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objPla, namePla, null, 1.0, sectorSize));
         extendBase.setupFields(temp, objPla);
         temp.initContent(pla);
         LCContentHandler.add(pla);
-        processClassLoader(null, VAR.extendInd.planet);
+        processClassLoader(null, GLB_var.extendInd.planet);
         return pla;
     };
 
@@ -355,13 +356,13 @@
      * @return {SectorPreset}
      */
     extendSector = function(temp, nameSec, objSec) {
-        processClassLoader(null, VAR.extendInd.sector);
+        processClassLoader(null, GLB_var.extendInd.sector);
         objSec = extendBase.setupObj(temp, objSec);
         /** @type {SectorPreset} */
         let sec = ctorCall(JavaAdapter, extendBase.setupArgs(temp, objSec, nameSec, Reflect.get(ContentLoader, Vars.content, "currentMod")));
         extendBase.setupFields(temp, objSec);
         temp.initContent(sec);
         LCContentHandler.add(sec);
-        processClassLoader(null, VAR.extendInd.sector);
+        processClassLoader(null, GLB_var.extendInd.sector);
         return sec;
     };

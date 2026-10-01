@@ -61,7 +61,7 @@
                 stats.addPercent(Stat.charge, item.charge);
             };
 
-            if(!VAR.isMindustryX && item.buildable) {
+            if(!GLB_var.isMindustryX && item.buildable) {
                 stats.add(fetchStat("lovec", "rs-buildable"), true);
             };
             if(item.hardness > 0) {
@@ -69,7 +69,7 @@
             };
         };
 
-        if(VARGEN.fuelItems.includes(item)) {
+        if(GLB_varGen.fuelItems.includes(item)) {
             stats.add(fetchStat("lovec", "rs0fuel-point"), MDL_fuel.getFuelPon(item));
             stats.add(fetchStat("lovec", "rs0fuel-level"), MDL_fuel.getFuelLvl(item));
         };

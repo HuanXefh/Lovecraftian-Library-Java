@@ -29,7 +29,9 @@
     Function.prototype.wrapLen = function(len) {
         const thisFun = this;
 
-        let len_fi = len < 0 || len == null ? -1 : Math.max(Math.round(len), 0);
+        let len_fi = len == null || isNaN(len) || len < 0 ?
+            -1 :
+            Math.max(Math.round(len), 0);
         if(thisFun.length === len_fi) return thisFun;
 
         switch(len_fi) {

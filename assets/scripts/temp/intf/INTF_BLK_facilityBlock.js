@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        MDL_event.onLoadDelay(VAR.delay.load.blkCheck, () => {
+        MDL_event.onLoadDelay(GLB_var.delay.load.blkCheck, () => {
             blk.canHandleAux = blk.ex_checkHandleAuxPossible();
             blk.canFireExplode = blk.ex_checkFireExplodePossible();
         });
@@ -41,18 +41,18 @@
      * @return {void}
      */
     const comp_updateTile = function thisFun(b) {
-        if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipFacilityUpdate) return;
+        if(GLB_param.UPDATE_SUPPRESSED || DEBUG.skipFacilityUpdate) return;
 
         // Handle auxiliary liquids
-        if(b.liquids != null && TIMER.secTwo && b.block.delegee.canHandleAux) {
+        if(b.liquids != null && GLB_timer.secTwo && b.block.delegee.canHandleAux) {
             b.liquids.each((liq, amt) => {
                 if(!MDL_cond.isAuxiliaryFluid(liq)) return;
                 if(b.efficiency < 0.0001 && b.block.delegee.shouldClearAuxOnStop) {
                     b.liquids.set(liq, 0.0);
                     return;
                 };
-                if(b.block.delegee.shouldCapAux && !MDL_cond.isNoCapAuxiliaryFluid(liq) && b.liquids.get(liq) > VAR.param.auxCap) {
-                    b.liquids.set(liq, VAR.param.auxCap);
+                if(b.block.delegee.shouldCapAux && !MDL_cond.isNoCapAuxiliaryFluid(liq) && b.liquids.get(liq) > GLB_var.param.auxCap) {
+                    b.liquids.set(liq, GLB_var.param.auxCap);
                 };
             });
         };
@@ -69,13 +69,13 @@
             if(b.fireExplodeReady) {
                 b.fireExplodeCd += Time.delta;
                 if(Mathf.chanceDelta(0.4)) {
-                    EFF.smogFireExplo.at(b);
+                    GLB_eff.smogFireExplo.at(b);
                 };
             } else {
                 b.fireExplodeCd = Mathf.maxZero(b.fireExplodeCd - Time.delta);
             };
             if(b.fireExplodeCd >= b.block.delegee.fireExplodeCooldown) {
-                TRIGGER.buildingFireExplosion.fire(b);
+                BOX_trigger.buildingFireExplosion.fire(b);
                 FRAG_attack.explosion_global(
                     b.x, b.y,
                     FRAG_attack.getPresExploDmg(b.block.size),
@@ -93,7 +93,7 @@
         tmpTs: [],
         /**
          * @memberof comp_updateTile
-         * @param {Building} b
+         * @param {INTFBFacilityBlock} b
          * @return {boolean}
          */
         checkExplosiveLiquid: function(b) {
@@ -101,19 +101,19 @@
             let cond = false;
             b.liquids.each((liq, amt) => {
                 if(cond || amt < 0.01) return;
-                cond = VARGEN.exploFlds.includes(liq);
+                cond = GLB_varGen.exploFlds.includes(liq);
             });
             return cond;
         },
         /**
          * @memberof comp_updateTile
-         * @param {Building} b
+         * @param {INTFBFacilityBlock} b
          * @return {boolean}
          */
         checkExplosiveItem: function(b) {
             return b.items == null ?
                 false :
-                VARGEN.exploItems.some(item => b.items.has(item));
+                GLB_varGen.exploItems.some(item => b.items.has(item));
         },
     });
 
@@ -205,7 +205,7 @@
              * @return {boolean}
              */
             ex_checkHandleAuxPossible: function() {
-                return MDL_recipeDict.checkAnyIo(VARGEN.auxs, this);
+                return MDL_recipeDict.checkAnyIo(GLB_varGen.auxs, this);
             }
             .setProp({
                 noSuper: true,
@@ -220,7 +220,7 @@
              * @return {boolean}
              */
             ex_checkFireExplodePossible: function() {
-                return MDL_recipeDict.checkAnyIo(VARGEN.exploItems, this) || MDL_recipeDict.checkAnyIo(VARGEN.exploFlds, this);
+                return MDL_recipeDict.checkAnyIo(GLB_varGen.exploItems, this) || MDL_recipeDict.checkAnyIo(GLB_varGen.exploFlds, this);
             }
             .setProp({
                 noSuper: true,

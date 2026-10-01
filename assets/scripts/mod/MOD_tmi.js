@@ -120,11 +120,11 @@
      * @return {tmi.recipe.RecipeParser}
      */
     const regisParser = function(obj) {
-        processClassLoader(null, VAR.extendInd.tmi);
+        processClassLoader(null, GLB_var.extendInd.tmi);
         // noinspection JSValidateTypes
         /** @type {tmi.recipe.RecipeParser} */
         let rcParser = extend(classes.RecipeParser, obj);
-        processClassLoader(null, VAR.extendInd.tmi);
+        processClassLoader(null, GLB_var.extendInd.tmi);
         classes.TooManyItems.recipesManager.registerParser(rcParser);
         return rcParser;
     };

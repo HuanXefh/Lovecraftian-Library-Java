@@ -77,7 +77,7 @@
      * @return {void}
      */
     function comp_drawBase(blk, t) {
-        LCDrawf.tree(blk.region, blk.shadow, t, blk.treeRad, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], PARAM.TREE_ALPHA, blk.drawTup[0], PARAM.SHOULD_DRAW_WOBBLE, PARAM.SHOULD_CHECK_TREE_DISTANCE);
+        LCDrawf.tree(blk.region, blk.shadow, t, blk.treeRad, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], GLB_param.TREE_ALPHA, blk.drawTup[0], GLB_param.SHOULD_DRAW_WOBBLE, GLB_param.SHOULD_CHECK_TREE_DISTANCE);
     };
 
 

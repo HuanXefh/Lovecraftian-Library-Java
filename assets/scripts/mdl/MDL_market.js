@@ -38,9 +38,9 @@
      * @return {number}
      */
     const getBitAmt = function(team, isGlobal) {
-        let raw = SAVE.get("bits", isGlobal).read(team.toString(), null);
+        let raw = GLB_save.get("bits", isGlobal).read(team.toString(), null);
         let amt = raw == null ? 0.0 : Number(raw);
-        let hash = Number(SAVE.get("bit-hash", isGlobal).read(team.toString(), 48.0));
+        let hash = Number(GLB_save.get("bit-hash", isGlobal).read(team.toString(), 48.0));
         if(calcBitHash(amt) === hash) return amt;
 
         console.warn("[LOVEC] Bit amount does not match the hash value???");
@@ -60,15 +60,15 @@
      */
     const setBitAmt = function thisFun(team, amt, isGlobal) {
         if(amt < 0.0) amt = 0.0;
-        thisFun.tmpArr1.cpy(SAVE.get("bits", isGlobal)).write(team.toString(), String(amt));
-        thisFun.tmpArr2.cpy(SAVE.get("bit-hash", isGlobal)).write(team.toString(), calcBitHash(amt));
+        thisFun.tmpArr1.cpy(GLB_save.get("bits", isGlobal)).write(team.toString(), String(amt));
+        thisFun.tmpArr2.cpy(GLB_save.get("bit-hash", isGlobal)).write(team.toString(), calcBitHash(amt));
 
         if(!Vars.net.client()) {
-            SAVE.set("bits", thisFun.tmpArr1, isGlobal);
-            SAVE.set("bit-hash", thisFun.tmpArr2, isGlobal);
+            GLB_save.set("bits", thisFun.tmpArr1, isGlobal);
+            GLB_save.set("bit-hash", thisFun.tmpArr2, isGlobal);
         } else {
-            SAVE.requestSet("bits", thisFun.tmpArr1, isGlobal);
-            SAVE.requestSet("bit-hash", thisFun.tmpArr2, isGlobal);
+            GLB_save.requestSet("bits", thisFun.tmpArr1, isGlobal);
+            GLB_save.requestSet("bit-hash", thisFun.tmpArr2, isGlobal);
         };
 
         return amt;

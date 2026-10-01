@@ -76,7 +76,7 @@
      * @return {void}
      */
     const sendPacket = function (mode, header, payload, isReliable) {
-        if(!PARAM.MODDED || payload == null) return;
+        if(!GLB_param.MODDED || payload == null) return;
         if(mode == null) mode = PacketModes.SERVER;
         if(!PacketModes.has(mode)) return;
 

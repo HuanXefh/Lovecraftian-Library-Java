@@ -27,7 +27,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.secFive) b.onProximityUpdate();
+    if(GLB_timer.secFive) b.onProximityUpdate();
   };
 
 

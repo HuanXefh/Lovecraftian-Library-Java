@@ -133,8 +133,8 @@
             {
                 haltTimeS: 0.0,
                 scr: () => {
-                    UTIL_dialogFlow.TRIGGER_BACKGROUND = true;
-                    MDL_ui.createBg(0.0, nameBg, () => UTIL_dialogFlow.TRIGGER_BACKGROUND);
+                    UTIL_dialogFlow.BOX_trigger_BACKGROUND = true;
+                    MDL_ui.createBg(0.0, nameBg, () => UTIL_dialogFlow.BOX_trigger_BACKGROUND);
                 },
             },
         );
@@ -154,7 +154,7 @@
             null, null,
             {
                 haltTimeS: 0.0,
-                scr: () => UTIL_dialogFlow.TRIGGER_BACKGROUND = false,
+                scr: () => UTIL_dialogFlow.BOX_trigger_BACKGROUND = false,
             },
         );
         this.offInd = 3;
@@ -175,8 +175,8 @@
             {
                 haltTimeS: 0.0,
                 scr: () => {
-                    UTIL_dialogFlow.TRIGGER_MUSIC = true;
-                    MDL_ui.createBgm(0.0, mus_gn, () => !UTIL_dialogFlow.TRIGGER_MUSIC);
+                    UTIL_dialogFlow.BOX_trigger_MUSIC = true;
+                    MDL_ui.createBgm(0.0, mus_gn, () => !UTIL_dialogFlow.BOX_trigger_MUSIC);
                 },
             },
         );
@@ -196,7 +196,7 @@
             null, null,
             {
                 haltTimeS: 0.0,
-                scr: () => UTIL_dialogFlow.TRIGGER_MUSIC = false,
+                scr: () => UTIL_dialogFlow.BOX_trigger_MUSIC = false,
             },
         );
         this.offInd = 3;

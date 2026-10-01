@@ -110,10 +110,10 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.tempCur = PARAM.GLOBAL_HEAT;
+        b.tempCur = GLB_param.GLOBAL_HEAT;
         Time.run(0.0, () => {
             if(isNaN(b.tempCur)) {
-                b.tempCur = PARAM.GLOBAL_HEAT;
+                b.tempCur = GLB_param.GLOBAL_HEAT;
             };
         });
     };
@@ -154,11 +154,11 @@
         if(DEBUG.skipHeatUpdate) return;
 
         // Update temperature and apply damage if overheated
-        if(!PARAM.UPDATE_SUPPRESSED && TIMER.secHalf) {
+        if(!GLB_param.UPDATE_SUPPRESSED && GLB_timer.secHalf) {
             b.tempRiseTarget = b.ex_calcTempTarget();
-            b.tempCur = Math.max(Mathf.lerp(b.tempCur, Mathf.lerp(PARAM.GLOBAL_HEAT, b.tempRiseTarget, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTargetFrac()), (b.tempCur <= b.tempRiseTarget ? b.block.delegee.heatWarmupRate : b.block.delegee.heatCooldownRate) * 30.0), PARAM.GLOBAL_HEAT);
+            b.tempCur = Math.max(Mathf.lerp(b.tempCur, Mathf.lerp(GLB_param.GLOBAL_HEAT, b.tempRiseTarget, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTargetFrac()), (b.tempCur <= b.tempRiseTarget ? b.block.delegee.heatWarmupRate : b.block.delegee.heatCooldownRate) * 30.0), GLB_param.GLOBAL_HEAT);
             if(b.tempCur > b.block.delegee.heatBlkMeltTemp) {
-                FRAG_attack.damage(b, (VAR.param.corDmgMin + VAR.param.corDmgFrac * b.maxHealth) * (b.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
+                FRAG_attack.damage(b, (GLB_var.param.corDmgMin + GLB_var.param.corDmgFrac * b.maxHealth) * (b.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
             };
         };
 
@@ -172,7 +172,7 @@
         };
 
         // Update heat state
-        if(TIMER.secQuarter) {
+        if(GLB_timer.secQuarter) {
             b.heatBlkHeatFrac = Mathf.clamp(b.tempCur / Math.max(b.ex_getHeatTarget(), 100.0));
             b.heatSupplied = b.ex_calcHeatSupplied();
         };
@@ -187,7 +187,7 @@
                     (b.heatSupplied / 3.0);
                 b_t.ex_handleExtHeat != null ?
                     b_t.ex_handleExtHeat(b, heatAmt) :
-                    LCCraftingHandler.addLiquid(b_t, null, VARGEN.auxHeat, heatAmt / 6000.0 * b_t.timeScale, false, false, true);
+                    LCCraftingHandler.addLiquid(b_t, null, GLB_varGen.auxHeat, heatAmt / 6000.0 * b_t.timeScale, false, false, true);
             };
         };
     };
@@ -201,7 +201,7 @@
     function comp_draw(b) {
         if(b.isPayload()) return;
 
-        if(PARAM.SHOULD_DRAW_FURNACE_HEAT && b.block.delegee.heatA > 0.0) {
+        if(GLB_param.SHOULD_DRAW_FURNACE_HEAT && b.block.delegee.heatA > 0.0) {
             if(!b.block.delegee.shouldDrawDoubleHeat) {
                 LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.ex_getHeatFrac(), 3) * 0.7 * b.block.delegee.heatA, b.block.size, b.drawrot());
             } else {
@@ -229,7 +229,7 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
-            if(ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(VARGEN.auxHeat, ob.block) > 0.0) {
+            if(ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(GLB_varGen.auxHeat, ob.block) > 0.0) {
                 b.heatFetchTargets.push(ob, MDL_pos.calcSideFrac(ob, b));
             };
         });
@@ -269,7 +269,7 @@
             };
             if((!b.block.rotate ? true : b.relativeTo(ob) === b.rotation)
                 && !ob.block.delegee.skipHeatFetch
-                && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(VARGEN.auxHeat))
+                && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(GLB_varGen.auxHeat))
             ) {
                 b.heatSupplyTargets.push(ob);
             };
@@ -305,7 +305,7 @@
                 if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
                 heat = ob.ex_getHeatProd != null ?
                     (ob.ex_getHeatProd() * sideFrac) :
-                    (LCCraftingHandler.addLiquid(ob, ob, VARGEN.auxHeat, -MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(VARGEN.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
+                    (LCCraftingHandler.addLiquid(ob, ob, GLB_varGen.auxHeat, -MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
                 b.maxHeaterProd = Math.max(heat, b.maxHeaterProd);
                 heatTarget += heat * b.block.delegee.tempExtMtp;
             }, true);
@@ -336,7 +336,7 @@
             heatTarget = b.tempExt;
         };
 
-        return Math.max(heatTarget, PARAM.GLOBAL_HEAT);
+        return Math.max(heatTarget, GLB_param.GLOBAL_HEAT);
     };
 
 

@@ -80,7 +80,7 @@
           -b.block.delegee.boilerInstabIncRate
       ) * Time.delta);
     if(b.boilerInstab > 0.9999) {
-      TRIGGER.boilerExplosion.fire(b);
+      BOX_trigger.boilerExplosion.fire(b);
       b.kill();
     };
 

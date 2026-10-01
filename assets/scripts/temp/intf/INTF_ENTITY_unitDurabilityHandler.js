@@ -22,7 +22,7 @@
      * @return {void}
      */
     function comp_update(unit) {
-        if(PARAM.UPDATE_SUPPRESSED || unit.type.delegee.unitDurabCap < 0.0) return;
+        if(GLB_param.UPDATE_SUPPRESSED || unit.type.delegee.unitDurabCap < 0.0) return;
 
         unit.unitDurabUsed += unit.ex_getDurabDec();
         if(unit.unitDurabUsed >= unit.type.unitDurabCap) {

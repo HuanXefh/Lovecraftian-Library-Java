@@ -76,7 +76,7 @@
             };
         }, true);
 
-        processZ(VAR.layer.vent);
+        processZ(GLB_var.layer.vent);
         Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx() + blk.ventOffDraw, t.worldy() + blk.ventOffDraw);
         processZ(null);
     };

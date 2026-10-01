@@ -25,7 +25,7 @@
 
 
   function comp_init(blk) {
-    blk.priority = VAR.priority.powTrans;
+    blk.priority = GLB_var.priority.powTrans;
 
     if(isFinite(blk.maxPowProdAllowed)) {
       blk.maxPowProdAllowed *= POW_PROD_SCL;
@@ -81,19 +81,19 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_DEEP_SUPPRESSED || !isFinite(b.ex_getMaxPowProdAllowed())) return;
+    if(GLB_param.UPDATE_DEEP_SUPPRESSED || !isFinite(b.ex_getMaxPowProdAllowed())) return;
 
     let powProd = b.power.graph.getLastPowerProduced() / Time.delta;
-    if(TIMER.secHalf) {
-      b.transmitterOverloadFrac = Mathf.approach(b.transmitterOverloadFrac, powProd > VAR.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.ex_getMaxPowProdAllowed()), 0.2);
+    if(GLB_timer.secHalf) {
+      b.transmitterOverloadFrac = Mathf.approach(b.transmitterOverloadFrac, powProd > GLB_var.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / b.ex_getMaxPowProdAllowed()), 0.2);
     };
-    if(b.transmitterOverloadFrac < 1.0 || powProd > VAR.param.powSourceStdProd) {
+    if(b.transmitterOverloadFrac < 1.0 || powProd > GLB_var.param.powSourceStdProd) {
       b.transmitterOverloadTimeCur = 0.0;
     } else {
       b.transmitterOverloadTimeCur += Time.delta;
     };
     if(b.transmitterOverloadTimeCur > 120.0) {
-      b.damagePierce(b.maxHealth * VAR.param.shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverloadDmgScl);
+      b.damagePierce(b.maxHealth * GLB_var.param.shortCircuitDmgFrac / 60.0 * b.block.delegee.transmitterOverloadDmgScl);
     };
   };
 

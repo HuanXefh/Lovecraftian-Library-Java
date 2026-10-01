@@ -57,7 +57,7 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-      if(b.liquids == null || PARAM.UPDATE_SUPPRESSED || !TIMER.secQuarter) return;
+      if(b.liquids == null || GLB_param.UPDATE_SUPPRESSED || !GLB_timer.secQuarter) return;
 
       let
           liqCur = b.liquids.current(),

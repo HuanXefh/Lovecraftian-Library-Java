@@ -17,7 +17,7 @@
   function comp_onProximityUpdate(b) {
     let ob = b.nearby(Mathf.mod(b.rotation + 2, 4));
     if(ob != null && ob.team === b.team && ob.block instanceof CoreBlock) {
-      TRIGGER.remoteCoreUnloaderNearCore.fire();
+      BOX_trigger.remoteCoreUnloaderNearCore.fire();
     };
   };
 

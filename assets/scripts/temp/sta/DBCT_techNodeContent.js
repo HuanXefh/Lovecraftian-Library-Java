@@ -59,7 +59,7 @@
                 tb.row();
                 tb.table(Styles.none, tb1 => {
                     MDL_table.margin(tb1);
-                    MDL_table.setCtLi(tb, sta.childCts, {size: 48.0, ctDial: VAR.dialog.ct1}, {colAmt: 7});
+                    MDL_table.setCtLi(tb, sta.childCts, {size: 48.0, ctDial: GLB_var.dialog.ct1}, {colAmt: 7});
                 }).growX();
             }));
         };
@@ -95,7 +95,7 @@
                 appendChildren(sta.childCts, sta.techNode);
                 sta.childCts.sort((ct1, ct2) => ct2.id - ct1.id);
             };
-            Time.run(VAR.delay.load.loadNodeRcs, () => {
+            Time.run(GLB_var.delay.load.loadNodeRcs, () => {
                 sta.childRcs.pushAll(CLS_recipe.getNodeRcsMap().get(sta, Array.air));
             });
         });

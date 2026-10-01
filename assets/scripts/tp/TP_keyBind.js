@@ -22,7 +22,7 @@
 
     function toggleSetting(nameCfg) {
         Core.settings.put("lovec-" + nameCfg, !fetchSetting(nameCfg));
-        PARAM.forceLoadParam();
+        GLB_param.forceLoadParam();
     };
 
 
@@ -56,7 +56,7 @@
     /* <------------------------------ modded ------------------------------> */
 
 
-    if(PARAM.MODDED) {
+    if(GLB_param.MODDED) {
 
 
         newKeyBind(

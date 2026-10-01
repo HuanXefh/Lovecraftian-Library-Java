@@ -5,74 +5,127 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_manualTriggerBlock>} INTFBLKManualTriggerBlock
+     */
 
 
-  function comp_init(blk) {
-    blk.configurable = true;
-
-    blk.config(JAVA.string, (b, str) => {
-      if(str === "SPEC: click") {
-        b.delegee.manualTriggerCd = blk.manualTriggerCooldown;
-        b.ex_manualTriggerCall();
-      };
-    });
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_manualTriggerBlock>} INTFBManualTriggerBlock
+     * @prop {INTFBLKManualTriggerBlock} block
+     */
 
 
-  function comp_setStats(blk, stats) {
-    if(blk.manualTriggerCooldown > 0.0) stats.add(fetchStat("lovec", "blk-cd"), blk.manualTriggerCooldown * 60.0, StatUnit.seconds);
-    if(blk.manualTriggerCooldownInitial > 0.0) stats.add(fetchStat("lovec", "blk-cdinit"), blk.manualTriggerCooldownInitial * 60.0, StatUnit.seconds)
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_setBars(blk) {
-    blk.addBar("lovec-cd", b => new Bar(
-      prov(() => Core.bundle.format("bar.lovec-bar-cd-amt", b.ex_getManualTriggerCdFrac().perc(0))),
-      prov(() => Pal.accent),
-      () => b.ex_getManualTriggerCdFrac(),
-    ));
-  };
+    /**
+     * @private
+     * @param {INTFBLKManualTriggerBlock} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.configurable = true;
+
+        blk.config(JAVA.string, (b, str) => {
+            if(str === "SPEC: click") {
+                b.delegee.manualTriggerCd = blk.manualTriggerCooldown;
+                b.ex_manualTriggerCall();
+            };
+        });
+    };
 
 
-  function comp_created(b) {
-    b.manualTriggerCd = b.block.delegee.manualTriggerCooldownInitial;
-  };
+    /**
+     * @private
+     * @param {INTFBLKManualTriggerBlock} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        if(blk.manualTriggerCooldown > 0.0) {
+            stats.add(fetchStat("lovec", "blk-cd"), blk.manualTriggerCooldown * 60.0, StatUnit.seconds);
+        };
+        if(blk.manualTriggerCooldownInit > 0.0) {
+            stats.add(fetchStat("lovec", "blk-cdinit"), blk.manualTriggerCooldownInit * 60.0, StatUnit.seconds);
+        };
+    };
 
 
-  function comp_updateTile(b) {
-    b.manualTriggerCd -= b.edelta();
-  };
+    /**
+     * @private
+     * @param {INTFBLKManualTriggerBlock} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        blk.addBar("lovec-cd", b => new Bar(
+            prov(() => Core.bundle.format("bar.lovec-bar-cd-amt", b.ex_getManualTriggerCdFrac().perc(0))),
+            prov(() => Pal.accent),
+            () => b.ex_getManualTriggerCdFrac(),
+        ));
+    };
 
 
-  function comp_buildConfiguration(b, tb) {
-    tb.row();
-    b.ex_buildManualTriggerButton(tb);
-  };
+    /**
+     * @private
+     * @param {INTFBManualTriggerBlock} b
+     * @return {void}
+     */
+    function comp_created(b) {
+        b.manualTriggerCd = b.block.delegee.manualTriggerCooldownInit;
+    };
 
 
-  function comp_ex_buildManualTriggerButton(b, tb) {
-    tb.table(Styles.none, tb1 => {
-      tb1.center();
-      MDL_table.btnCfg(
-        tb1, b,
-        () => {
-          Vars.state.paused ?
-            MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
-            b.manualTriggerCd > 0.0 ?
-              MDL_ui.showFadeInfo("lovec", "in-cd") :
-              !b.ex_checkManualTriggerValid() ?
-                undefined :
-                b.configure("SPEC: click");
-        },
-        b.block.delegee.manualTriggerIcon,
-        {size: b.block.delegee.manualTriggerButtonSize},
-      );
-    }).center();
-  };
+    /**
+     * @private
+     * @param {INTFBManualTriggerBlock} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        b.manualTriggerCd -= b.edelta();
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBManualTriggerBlock} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    function comp_buildConfiguration(b, tb) {
+        tb.row();
+        b.ex_buildManualTriggerButton(tb);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBManualTriggerBlock} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    function comp_ex_buildManualTriggerButton(b, tb) {
+        tb.table(Styles.none, tb1 => {
+            tb1.center();
+            MDL_table.btnCfg(
+                tb1, b,
+                () => {
+                    Vars.state.paused ?
+                        MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
+                        b.manualTriggerCd > 0.0 ?
+                            MDL_ui.showFadeInfo("lovec", "in-cd") :
+                            !b.ex_checkManualTriggerValid() ?
+                                undefined :
+                                b.configure("SPEC: click");
+                },
+                b.block.delegee.manualTriggerIcon,
+                {size: b.block.delegee.manualTriggerBtnSize},
+            );
+        }).center();
+    };
 
 
 /*
@@ -82,190 +135,203 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * This block is expected to be clicked to trigger something.
-     * @class INTF_BLK_manualTriggerBlock
-     */
-    new CLS_interface("INTF_BLK_manualTriggerBlock", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Anything that can be drawn in a button.
-         * @memberof INTF_BLK_manualTriggerBlock
-         * @instance
+         * This block is expected to be clicked to trigger something.
+         * @todo Untested.
+         * @class INTF_BLK_manualTriggerBlock
          */
-        manualTriggerIcon: "?",
+        new CLS_interface("INTF_BLK_manualTriggerBlock", {
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Anything that can be drawn in a button.
+                     * @memberof INTF_BLK_manualTriggerBlock
+                     * @instance
+                     * @type {string|Drawable}
+                     */
+                    manualTriggerIcon: "?",
+                    /**
+                     * `PARAM`: Size of the button.
+                     * @memberof INTF_BLK_manualTriggerBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    manualTriggerBtnSize: 72.0,
+                    /**
+                     * `PARAM`: Trigger Cooldown.
+                     * @memberof INTF_BLK_manualTriggerBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    manualTriggerCooldown: 0.0,
+                    /**
+                     * `PARAM`: Cooldown set when the building has just been placed.
+                     * @memberof INTF_BLK_manualTriggerBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    manualTriggerCooldownInit: 0.0,
+
+
+                };
+            },
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+            setBars: function() {
+                comp_setBars(this);
+            },
+
+
+        }),
+
+
         /**
-         * `PARAM`: Size of the button.
-         * @memberof INTF_BLK_manualTriggerBlock
-         * @instance
+         * @class INTF_B_manualTriggerBlock
          */
-        manualTriggerButtonSize: 72.0,
-        /**
-         * `PARAM`: Trigger Cooldown.
-         * @memberof INTF_BLK_manualTriggerBlock
-         * @instance
-         */
-        manualTriggerCooldown: 0.0,
-        /**
-         * `PARAM`: Cooldown set when the building has just been placed.
-         * @memberof INTF_BLK_manualTriggerBlock
-         * @instance
-         */
-        manualTriggerCooldownInitial: 0.0,
+        new CLS_interface("INTF_B_manualTriggerBlock", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      init: function() {
-        comp_init(this);
-      },
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_manualTriggerBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    manualTriggerCd: 0.0,
 
 
-      setBars: function() {
-        comp_setBars(this);
-      },
+                };
+            },
 
 
-    }),
+            created: function() {
+                comp_created(this);
+            },
 
 
-    /**
-     * @class INTF_B_manualTriggerBlock
-     */
-    new CLS_interface("INTF_B_manualTriggerBlock", {
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      __paramObjM__: () => ({
+            buildConfiguration: function(tb) {
+                comp_buildConfiguration(this, tb);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-        /* <------------------------------ internal ------------------------------> */
+            /**
+             * Called when the button is clicked.
+             * <br> `LATER`
+             * @memberof INTF_B_manualTriggerBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_manualTriggerCall: function() {
+
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_manualTriggerBlock
-         * @instance
-         */
-        manualTriggerCd: 0.0,
+            /**
+             * Extra condition for a valid trigger.
+             * <br> `LATER`
+             * @memberof INTF_B_manualTriggerBlock
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_checkManualTriggerValid: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      }),
+            /**
+             * @memberof INTF_B_manualTriggerBlock
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getManualTriggerCdFrac: function() {
+                return 1.0 - Mathf.clamp(Mathf.maxZero(this.manualTriggerCd) / this.block.delegee.manualTriggerCooldown);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      created: function() {
-        comp_created(this);
-      },
+            /**
+             * @memberof INTF_B_manualTriggerBlock
+             * @instance
+             * @func
+             * @param {Table} tb
+             * @return {void}
+             */
+            ex_buildManualTriggerButton: function(tb) {
+                comp_ex_buildManualTriggerButton(this, tb);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            /**
+             * @memberof INTF_B_manualTriggerBlock
+             * @instance
+             * @func
+             * @param {Writes|Reads} wr0rd
+             * @return {void}
+             */
+            ex_processData: function(wr0rd) {
+                processData(
+                    wr0rd,
+                    wr => {
+                        wr.f(this.manualTriggerCd);
+                    },
+                    rd => {
+                        this.manualTriggerCd = rd.f();
+                    },
+                );
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      buildConfiguration: function(tb) {
-        comp_buildConfiguration(this, tb);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+        }),
 
 
-      /**
-       * Called when the button is clicked.
-       * <br> `LATER`
-       * @memberof INTF_B_manualTriggerBlock
-       * @instance
-       * @return {void}
-       */
-      ex_manualTriggerCall: function() {
-
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Extra condition for a valid trigger.
-       * <br> `LATER`
-       * @memberof INTF_B_manualTriggerBlock
-       * @instance
-       * @return {boolean}
-       */
-      ex_checkManualTriggerValid: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_manualTriggerBlock
-       * @instance
-       * @return {number}
-       */
-      ex_getManualTriggerCdFrac: function() {
-        return 1.0 - Mathf.clamp(Mathf.maxZero(this.manualTriggerCd) / this.block.delegee.manualTriggerCooldown);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_manualTriggerBlock
-       * @instance
-       * @param {Table} tb
-       * @return {void}
-       */
-      ex_buildManualTriggerButton: function(tb) {
-        comp_ex_buildManualTriggerButton(this, tb);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_manualTriggerBlock
-       * @instance
-       * @param {Writes|Reads} wr0rd
-       * @return {void}
-       */
-      ex_processData: function(wr0rd) {
-        processData(
-          wr0rd,
-
-          wr => {
-            wr.f(this.manualTriggerCd);
-          },
-
-          rd => {
-            this.manualTriggerCd = rd.f();
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-    }),
-
-
-  ];
+    ];

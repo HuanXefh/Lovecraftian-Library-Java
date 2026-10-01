@@ -175,41 +175,64 @@ declare class SectorComplete implements UnlockCondition {
 interface SectorComplete extends UnlockCondition {}
 
 
-/** mindustry.game.MapObjectives */
+/** mindustry.game.objectives.MapObjectives */
 declare class MapObjectives implements Iterable<MapObjectives.MapObjective>, Eachable<MapObjectives.MapObjective> {}
-interface MapObjectives extends Iterable<MapObjectives.MapObjective>, Eachable<MapObjectives.MapObjective> {}
-declare namespace MapObjectives {
-    class MapObjective implements AllowSerialization {}
-    interface MapObjective extends AllowSerialization {}
-    class ResearchObjective extends MapObjective {}
-    class ProduceObjective extends MapObjective {}
-    class ItemObjective extends MapObjective {}
-    class CoreItemObjective extends MapObjective {}
-    class BuildCountObjective extends MapObjective {}
-    class UnitCountObjective extends MapObjective {}
-    class DestroyUnitsObjective extends MapObjective {}
-    class TimerObjective extends MapObjective {}
-    class DestroyBlockObjective extends MapObjective {}
-    class DestroyBlocksObjective extends MapObjective {}
-    class CommandModeObjective extends MapObjective {}
-    class FlagObjective extends MapObjective {}
-    class DestroyCoreObjective extends MapObjective {}
+/** mindustry.game.objectives.MapObjective */
+declare class MapObjective implements AllowSerialization {}
+interface MapObjective extends AllowSerialization {}
+/** mindustry.game.objectives.ResearchObjective */
+declare class ResearchObjective extends MapObjective {}
+/** mindustry.game.objectives.ProduceObjective */
+declare class ProduceObjective extends MapObjective {}
+/** mindustry.game.objectives.ItemObjective */
+declare class ItemObjective extends MapObjective {}
+/** mindustry.game.objectives.CoreItemObjective */
+declare class CoreItemObjective extends MapObjective {}
+/** mindustry.game.objectives.BuildCountObjective */
+declare class BuildCountObjective extends MapObjective {}
+/** mindustry.game.objectives.UnitCountObjective */
+declare class UnitCountObjective extends MapObjective {}
+/** mindustry.game.objectives.DestroyUnitsObjective */
+declare class DestroyUnitsObjective extends MapObjective {}
+/** mindustry.game.markers.TimerObjective */
+declare class TimerObjective extends MapObjective {}
+/** mindustry.game.objectives.DestroyBlockObjective */
+declare class DestroyBlockObjective extends MapObjective {}
+/** mindustry.game.objectives.DestroyBlocksObjective */
+declare class DestroyBlocksObjective extends MapObjective {}
+/** mindustry.game.objectives.CommandModeObjective */
+declare class CommandModeObjective extends MapObjective {}
+/** mindustry.game.objectives.FlagObjective */
+declare class FlagObjective extends MapObjective {}
+/** mindustry.game.objectives.DestroyCoreObjective */
+declare class DestroyCoreObjective extends MapObjective {}
 
-    class ObjectiveMarker implements Json.JsonSerializable {}
-    interface ObjectiveMarker extends Json.JsonSerializable {}
-    class PosMarker extends ObjectiveMarker {}
-    class ShapeTextMarker extends PosMarker {}
-    class PointMarker extends PosMarker {}
-    class ShapeMarker extends PosMarker {}
-    class TextMarker extends PosMarker {}
-    class LineMarker extends PosMarker {}
-    class TextureMarker extends PosMarker {}
-    class QuadMarker extends ObjectiveMarker {}
-    class LightMarker extends PosMarker {}
-
-    class TextureHolder implements Json.JsonSerializable {}
-    interface TextureHolder extends Json.JsonSerializable {}
+/** mindustry.game.markers.ObjectiveMarker */
+declare class ObjectiveMarker implements Json.JsonSerializable {}
+interface ObjectiveMarker extends Json.JsonSerializable {}
+/** mindustry.game.markers.PosMarker */
+declare class PosMarker extends ObjectiveMarker {}
+/** mindustry.game.markers.ShapeMarker */
+declare class ShapeTextMarker extends PosMarker {}
+/** mindustry.game.markers.PointMarker */
+declare class PointMarker extends PosMarker {}
+/** mindustry.game.markers.ShapeMarker */
+declare class ShapeMarker extends PosMarker {}
+/** mindustry.game.markers.TextMarker */
+declare class TextMarker extends PosMarker {}
+/** mindustry.game.markers.LineMarker */
+declare class LineMarker extends PosMarker {}
+/** mindustry.game.markers.TextureMarker */
+declare class TextureMarker extends PosMarker {}
+/** mindustry.game.markers.QuadMarker */
+declare class QuadMarker extends ObjectiveMarker {}
+/** mindustry.game.markers.LightMarker */
+declare class LightMarker extends PosMarker {}
+/** mindustry.game.markers.TextureHolder */
+declare class TextureHolder implements Json.JsonSerializable {
+    value: Object;
 }
-/** mindustry.game.MapMarkers */
+interface TextureHolder extends Json.JsonSerializable {}
+/** mindustry.game.markers.MapMarkers */
 declare class MapMarkers implements Iterable<MapObjectives.ObjectiveMarker> {}
 interface MapMarkers extends Iterable<MapObjectives.ObjectiveMarker> {}

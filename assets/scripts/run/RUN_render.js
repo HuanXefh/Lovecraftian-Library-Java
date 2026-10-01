@@ -64,12 +64,12 @@
      * @return {void}
      */
     const drawDebug = function thisFun() {
-        if(!PARAM.ENABLE_TEST_DRAW) return;
+        if(!GLB_param.ENABLE_TEST_DRAW) return;
 
         unitPlayer = Vars.player.unit();
         if(unitPlayer != null) {
             // Draw surrounding range
-            LCPos.getTilesDstManhattan(thisFun.tmpTs, unitPlayer.tileOn(), VAR.range.unitSurR).forEachFast(ot => LCDrawf.areaShrink(ot, 1, Pal.accent, 0.5, VAR.layer.debugFlr), true);
+            LCPos.getTilesDstManhattan(thisFun.tmpTs, unitPlayer.tileOn(), GLB_var.range.unitSurR).forEachFast(ot => LCDrawf.areaShrink(ot, 1, Pal.accent, 0.5, GLB_var.layer.debugFlr), true);
         };
     }
     .setProp({
@@ -103,15 +103,15 @@
         Groups.unit.each(
             unit => !(
                 (!LCCheck.checkEntityVisible(unit) || MDL_cond.isIrregularUnit(unit))
-                    || ((!unit.isPlayer() || !PARAM.SHOULD_DRAW_PLAYER_STAT) && !unit.isMissile() && PARAM.SHOULD_DRAW_UNIT_STAT_NEAR_MOUSE && Mathf.dst(Core.input.mouseWorldX(), Core.input.mouseWorldY(), unit.x, unit.y) > VAR.range.mouseRad + unit.hitSize * 0.5)
-                    || (unit.isMissile() && !PARAM.SHOULD_DRAW_MISSILE_STAT)
+                    || ((!unit.isPlayer() || !GLB_param.SHOULD_DRAW_PLAYER_STAT) && !unit.isMissile() && GLB_param.SHOULD_DRAW_UNIT_STAT_NEAR_MOUSE && Mathf.dst(Core.input.mouseWorldX(), Core.input.mouseWorldY(), unit.x, unit.y) > GLB_var.range.mouseRad + unit.hitSize * 0.5)
+                    || (unit.isMissile() && !GLB_param.SHOULD_DRAW_MISSILE_STAT)
                     || (!unit.type.logicControllable && !unit.type.playerControllable && unit.type.hidden && !unit.type.drawCell && !unit.isMissile())
             ),
             unit => {
                 // Unit range display
-                if(PARAM.SHOULD_DRAW_UNIT_RANGE && (VARGEN.staHiddenWell == null || !unit.hasEffect(VARGEN.staHiddenWell))) {
+                if(GLB_param.SHOULD_DRAW_UNIT_RANGE && (GLB_varGen.staHiddenWell == null || !unit.hasEffect(GLB_varGen.staHiddenWell))) {
                     z = Draw.z();
-                    Draw.z(VAR.layer.unitRange);
+                    Draw.z(GLB_var.layer.unitRange);
 
                     rot = unit.rotation - 90.0;
                     cond = false;
@@ -132,7 +132,7 @@
                                         wp.noAttack ?
                                             Color.white :
                                             unit.team.color,
-                                PARAM.UNIT_RANGE_ALPHA,
+                                GLB_param.UNIT_RANGE_ALPHA,
                             );
                             Fill.arc(x, y, wp.range(), wp.shootCone / 180.0, rot + mt.rotation + 90.0 - wp.shootCone);
                         } else if(
@@ -145,13 +145,13 @@
                             Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0);
                             Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0 + 180.0);
                             Lines.stroke(1.0);
-                            Draw.color(Pal.accent, PARAM.UNIT_RANGE_ALPHA);
+                            Draw.color(Pal.accent, GLB_param.UNIT_RANGE_ALPHA);
                             LCDraw.circle(unit.x, unit.y, wp.bullet.splashDamageRadius, false);
                         };
                     }, true);
                     if(!cond) {
                         Lines.stroke(1.0);
-                        Draw.color(Pal.accent, PARAM.UNIT_RANGE_ALPHA);
+                        Draw.color(Pal.accent, GLB_param.UNIT_RANGE_ALPHA);
                         LCDraw.circle(unit.x, unit.y, unit.range(), false);
                     };
                     Draw.reset();
@@ -159,7 +159,7 @@
                     Draw.z(z);
                 };
 
-                if(!PARAM.SHOULD_DRAW_UNIT_STAT) return;
+                if(!GLB_param.SHOULD_DRAW_UNIT_STAT) return;
 
                 // Unit stat display
                 MDL_draw.unitStat(
@@ -169,7 +169,7 @@
                 );
 
                 // Unit reload display
-                if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
+                if(GLB_param.SHOULD_DRAW_UNIT_RELOAD) {
                     for(let i = 0; i < 3; i++) {
                         mtIds = LCDBFileHandler.read("unit-reload-" + i, unit.type.name, null);
                         if(mtIds == null) continue;
@@ -178,13 +178,13 @@
                 };
 
                 // Payload placement display
-                if(PARAM.SHOULD_DRAW_UNIT_RANGE && unit.payloads != null) {
+                if(GLB_param.SHOULD_DRAW_UNIT_RANGE && unit.payloads != null) {
                     pay = unit.payloads.size === 0 ? null : unit.payloads.peek();
                     if(pay != null && pay instanceof BuildPayload) {
                         ot = Vars.world.tileWorld(unit.x - pay.block().offset, unit.y - pay.block().offset);
                         if(ot != null) {
                             z = Draw.z();
-                            Draw.z(VAR.layer.effHigh + 1.5);
+                            Draw.z(GLB_var.layer.effHigh + 1.5);
                             Draw.color(
                                 Build.validPlace(pay.block(), unit.team, ot.x, ot.y, pay.build.rotation, false) ?
                                     Pal.items :
@@ -214,12 +214,12 @@
         bPlayer = (unitPlayer == null || !(unitPlayer instanceof BlockUnitc)) ? null : unitPlayer.tile();
 
         // Draw player building
-        if(bPlayer != null && PARAM.SHOULD_DRAW_PLAYER_STAT) {
+        if(bPlayer != null && GLB_param.SHOULD_DRAW_PLAYER_STAT) {
             thisFun.drawBaseBuildStats(bPlayer);
         };
 
         // Draw mouse building if not player
-        if(b != null && !b.block.privileged && !(instanceOfAny(b.block, MultiBlockLinkBlock, MultiBlockLinkConstructBlock)) && b.team !== Team.derelict && (!PARAM.SHOULD_DRAW_PLAYER_STAT || b !== bPlayer)) {
+        if(b != null && !b.block.privileged && !(instanceOfAny(b.block, MultiBlockLinkBlock, MultiBlockLinkConstructBlock)) && b.team !== Team.derelict && (!GLB_param.SHOULD_DRAW_PLAYER_STAT || b !== bPlayer)) {
             thisFun.drawBaseBuildStats(b);
 
             if(b.team !== Vars.player.team()) return;
@@ -240,33 +240,33 @@
          * @return {void}
          */
         drawBaseBuildStats: function(b) {
-            if(PARAM.SHOULD_DRAW_UNIT_RANGE && b.block instanceof Turret && b.block.shootCone > 0.0 && b.block.shootCone < 179.99) {
+            if(GLB_param.SHOULD_DRAW_UNIT_RANGE && b.block instanceof Turret && b.block.shootCone > 0.0 && b.block.shootCone < 179.99) {
                 z = Draw.z();
-                Draw.z(VAR.layer.unitRange);
-                Draw.color(b.team.color, PARAM.UNIT_RANGE_ALPHA);
+                Draw.z(GLB_var.layer.unitRange);
+                Draw.color(b.team.color, GLB_param.UNIT_RANGE_ALPHA);
                 Fill.arc(b.x, b.y, b.range() + b.block.shootY, b.block.shootCone / 180.0, b.rotation - b.block.shootCone);
                 Draw.reset();
                 Draw.z(z);
             };
 
-            if(!PARAM.SHOULD_DRAW_UNIT_STAT || !PARAM.SHOULD_DRAW_BUILD_STAT) return;
+            if(!GLB_param.SHOULD_DRAW_UNIT_STAT || !GLB_param.SHOULD_DRAW_BUILD_STAT) return;
 
             MDL_draw.unitStat(
                 b, b.health / b.maxHealth, b.block.size, b.team.color,
-                1.0, 0.0, -1 + VAR.range.offBuildStatR, 1.0, b.block.armor,
+                1.0, 0.0, -1 + GLB_var.range.offBuildStatR, 1.0, b.block.armor,
                 MDL_prop.getBuildShield(b), MDL_prop.getBuildSpd(b), null,
             );
-            if(PARAM.SHOULD_DRAW_UNIT_RELOAD) {
+            if(GLB_param.SHOULD_DRAW_UNIT_RELOAD) {
                 cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || LCDBFileHandler.read("block-reload", b.block.name, false);
                 if(cond) {
-                    MDL_draw.unitReload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + VAR.range.offBuildStatR, MDL_prop.getReloadFrac(b));
+                    MDL_draw.unitReload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + GLB_var.range.offBuildStatR, MDL_prop.getReloadFrac(b));
                 };
-                MDL_draw.unitReload(b, null, Pal.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + VAR.range.offBuildStatR, MDL_prop.getWarmupFrac(b, true));
+                MDL_draw.unitReload(b, null, Pal.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + GLB_var.range.offBuildStatR, MDL_prop.getWarmupFrac(b, true));
             };
-            processZ(VAR.layer.debugTop - 0.02, 2);
+            processZ(GLB_var.layer.debugTop - 0.02, 2);
             Lines.stroke(1.0);
             Draw.color(Pal.accent, 0.3);
-            LCDraw.rect(b.x, b.y, VAR.range.offBuildStatR, b.block.size, false);
+            LCDraw.rect(b.x, b.y, GLB_var.range.offBuildStatR, b.block.size, false);
             Draw.reset();
             processZ(null, 2);
         },
@@ -277,7 +277,7 @@
      * @return {void}
      */
     function drawExtraInfo() {
-        if(!PARAM.SHOULD_SHOW_EXTRA_INFO) return;
+        if(!GLB_param.SHOULD_SHOW_EXTRA_INFO) return;
         MDL_draw.extraInfo(LCPos.getTileMouse());
     };
 
@@ -290,7 +290,7 @@
         vec = Core.input.mouseWorld();
 
         processZ(Layer.max - 0.1, 2);
-        if(PARAM.IS_TELEPORTING && unitPlayer != null) {
+        if(GLB_param.IS_TELEPORTING && unitPlayer != null) {
             Drawf.target(vec.x, vec.y, 6.0, 1.0, unitPlayer.canPass(vec.x.toIntCoord(), vec.y.toIntCoord()) ? Pal.accent : Pal.remove);
         };
         processZ(null, 2);
@@ -305,7 +305,7 @@
      */
     function updateNoiseArgs() {
         if(Vars.headless) return;
-        noiseArgs = DB_env.db["param"]["map"]["noise"].read(PARAM.MAP_CURRENT, null);
+        noiseArgs = DB_env.db["param"]["map"]["noise"].read(GLB_param.MAP_CURRENT, null);
     };
 
 
@@ -314,7 +314,7 @@
      */
     function drawNoise() {
         if(Vars.state.isMenu() || Vars.state.isEditor() || noiseArgs == null || !Core.settings.getBool("showweather", true)) return;
-        tex = VARGEN.noiseTexs[noiseArgs[0]];
+        tex = GLB_varGen.noiseTexs[noiseArgs[0]];
         if(tex == null) return;
 
         processZ(Layer.weather - 0.9, 3);
@@ -338,11 +338,11 @@
 
 
 
-    TRIGGER.gameLoad.addGlobalListener(() => {
+    BOX_trigger.gameLoad.addGlobalListener(() => {
 
         showFadeIn();
 
-        Time.run(VAR.delay.gameLoad.setNoise, () => {
+        Time.run(GLB_var.delay.gameLoad.setNoise, () => {
             updateNoiseArgs();
         });
 

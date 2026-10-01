@@ -5,51 +5,91 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_powerProducer>} INTFBLKPowerProducer
+     */
 
 
-  function comp_init(blk) {
-    blk.consumesPower = false;
-    blk.outputsPower = true;
-    blk.conductivePower = true;
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_powerProducer>} INTFBPowerProducer
+     * @prop {INTFBLKPowerProducer} block
+     */
 
 
-  function comp_setStats(blk, stats) {
-    stats.add(Stat.basePowerGeneration, blk.powProd * 60.0, StatUnit.powerSecond);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_setBars(blk) {
-    if(!blk.hasPower) return;
-
-    if(blk.showPowProdBar) blk.addBar("poweroutput", b => new Bar(
-      prov(() => Core.bundle.format("bar.poweroutput", Strings.fixed(b.getPowerProduction() * 60.0 * tryProp(b.timeScale, b), 1))),
-      prov(() => Pal.powerBar),
-      () => b.delegee.powProdEffc,
-    ));
-
-    if(blk.showPowBalanceBar) blk.addBar("power", b => new Bar(
-      prov(() => Core.bundle.format("bar.powerbalance", (b.power.graph.getPowerBalance() >= 0.0 ? "+" : "") + (!isFinite(b.power.graph.getPowerBalance()) ? "-∞" : UI.formatAmount(b.power.graph.getPowerBalance() * 60.0)))),
-      prov(() => Pal.powerBar),
-      () => Mathf.clamp(b.power.graph.getLastPowerProduced() / b.power.graph.getLastPowerNeeded()),
-    ));
-  };
+    /**
+     * @private
+     * @param {INTFBLKPowerProducer} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.consumesPower = false;
+        blk.outputsPower = true;
+        blk.conductivePower = true;
+    };
 
 
-  function comp_getPowerProduction(b) {
-    return !b.enabled || b.power == null ?
-      0.0 :
-      b.block.ex_calcPowProd(b) * Math.max(b.powProdEffc, 0.0);
-  };
+    /**
+     * @private
+     * @param {INTFBLKPowerProducer} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(Stat.basePowerGeneration, blk.powProd * 60.0, StatUnit.powerSecond);
+    };
 
 
-  function comp_conductsTo(b, ob) {
-    return !MDL_cond.isFluidConduit(ob.block);
-  };
+    /**
+     * @private
+     * @param {INTFBLKPowerProducer} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        if(!blk.hasPower) return;
+        if(blk.showPowProdBar) {
+            blk.addBar("poweroutput", b => new Bar(
+                prov(() => Core.bundle.format("bar.poweroutput", Strings.fixed(b.getPowerProduction() * 60.0 * tryProp(b.timeScale, b), 1))),
+                prov(() => Pal.powerBar),
+                () => b.delegee.powProdEffc,
+            ));
+        };
+        if(blk.showPowBalanceBar) {
+            blk.addBar("power", b => new Bar(
+                prov(() => Core.bundle.format("bar.powerbalance", (b.power.graph.getPowerBalance() >= 0.0 ? "+" : "") + (!isFinite(b.power.graph.getPowerBalance()) ? "-∞" : UI.formatAmount(b.power.graph.getPowerBalance() * 60.0)))),
+                prov(() => Pal.powerBar),
+                () => Mathf.clamp(b.power.graph.getLastPowerProduced() / b.power.graph.getLastPowerNeeded()),
+            ));
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPowerProducer} b
+     * @return {number}
+     */
+    function comp_getPowerProduction(b) {
+        return !b.enabled || b.power == null ?
+            0.0 :
+            b.block.ex_calcPowProd(b) * Math.max(b.powProdEffc, 0.0);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPowerProducer} b
+     * @param {Building} ob
+     * @return {boolean}
+     */
+    function comp_conductsTo(b, ob) {
+        return !MDL_cond.isFluidConduit(ob.block);
+    };
 
 
 /*
@@ -59,117 +99,126 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles power production methods for non-generator blocks.
-     * @class INTF_BLK_powerProducer
-     */
-    new CLS_interface("INTF_BLK_powerProducer", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Base power production.
-         * @memberof INTF_BLK_powerProducer
-         * @instance
+         * Handles power production methods for non-generator classes.
+         * @class INTF_BLK_powerProducer
          */
-        powProd: 0.0,
+        new CLS_interface("INTF_BLK_powerProducer", {
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Base power production.
+                     * @memberof INTF_BLK_powerProducer
+                     * @instance
+                     * @type {number}
+                     */
+                    powProd: 0.0,
+                    /**
+                     * `PARAM`: Whether to add power output bar.
+                     * @memberof INTF_BLK_powerProducer
+                     * @instance
+                     * @type {boolean}
+                     */
+                    showPowProdBar: true,
+                    /**
+                     * `PARAM`: Whether to add power balance bar.
+                     * @memberof INTF_BLK_powerProducer
+                     * @instance
+                     * @type {boolean}
+                     */
+                    showPowBalanceBar: false,
+
+
+                };
+            },
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+            setBars: function() {
+                comp_setBars(this);
+            },
+
+
+            /**
+             * Override this method for dynamic power production.
+             * <br> `LATER`
+             * @memberof INTF_BLK_powerProducer
+             * @instance
+             * @func
+             * @param {INTFBPowerProducer} b
+             * @return {number}
+             */
+            ex_calcPowProd: function(b) {
+                return this.powProd;
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
+
+
+        }),
+
+
         /**
-         * `PARAM`: Whether to add power output bar.
-         * @memberof INTF_BLK_powerProducer
-         * @instance
+         * @class INTF_B_powerProducer
          */
-        showPowProdBar: true,
-        /**
-         * `PARAM`: Whether to add power balance bar.
-         * @memberof INTF_BLK_powerProducer
-         * @instance
-         */
-        showPowBalanceBar: false,
+        new CLS_interface("INTF_B_powerProducer", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      init: function() {
-        comp_init(this);
-      },
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+                    /**
+                     * `INTERNAL`: Power production efficiency, affects output. Should be set later.
+                     * @memberof INTF_B_powerProducer
+                     * @instance
+                     * @type {number}
+                     */
+                    powProdEffc: 0.0,
 
 
-      setBars: function() {
-        comp_setBars(this);
-      },
+                };
+            },
 
 
-      /**
-       * Override this method for dynamic power production.
-       * <br> `LATER`
-       * @memberof INTF_BLK_powerProducer
-       * @instance
-       * @param {Building} b
-       * @return {number}
-       */
-      ex_calcPowProd: function(b) {
-        return this.powProd;
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
+            getPowerProduction: function() {
+                return comp_getPowerProduction(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+            conductsTo: function(ob) {
+                return comp_conductsTo(this, ob);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-    /**
-     * @class INTF_B_powerProducer
-     */
-    new CLS_interface("INTF_B_powerProducer", {
+        }),
 
 
-      __paramObjM__: () => ({
-
-
-        /* <------------------------------ internal ------------------------------> */
-
-
-        /**
-         * `INTERNAL`: Power production efficiency, affects output. Should be set later.
-         * @memberof INTF_B_powerProducer
-         * @instance
-         */
-        powProdEffc: 0.0,
-
-
-      }),
-
-
-      getPowerProduction: function() {
-        return comp_getPowerProduction(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      conductsTo: function(ob) {
-        return comp_conductsTo(this, ob);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
-
-
-    }),
-
-
-  ];
+    ];

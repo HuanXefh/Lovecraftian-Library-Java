@@ -16,7 +16,7 @@
 
 
   function comp_init(blk) {
-    blk.priority = VAR.priority.min;
+    blk.priority = GLB_var.priority.min;
   };
 
 

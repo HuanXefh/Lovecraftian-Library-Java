@@ -20,7 +20,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.rsCur) {
+    if(GLB_timer.rsCur) {
       b.lastRs = b.items.first();
     };
   };

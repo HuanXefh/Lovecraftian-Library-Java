@@ -36,7 +36,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.liq) {
+    if(GLB_timer.liq) {
       let ob = b.nearby(b.rotation), liq = b.liquids.current();
       b.isFrontFull = ob == null || ob.liquids == null || !ob.acceptLiquid(b, liq) || ob.liquids.get(liq) / ob.block.liquidCapacity >= FULL_THRESHOLD;
     };

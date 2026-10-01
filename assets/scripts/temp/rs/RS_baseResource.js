@@ -92,9 +92,9 @@
             regs.push(Core.atlas.find(rs.name + "-t" + (i + 1)));
         });
         MDL_event.onUpdate(() => {
-            regInd = !PARAM.SHOULD_SHOW_FLIKERING_ICON_TAG ?
+            regInd = !GLB_param.SHOULD_SHOW_FLIKERING_ICON_TAG ?
                 1 :
-                Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % regs.length);
+                Math.floor((Time.globalTime / GLB_param.ICON_TAG_FLICKERING_INTERVAL) % regs.length);
 
             rs.fullIcon.set(regs[regInd]);
             rs.uiIcon.set(regs[regInd]);

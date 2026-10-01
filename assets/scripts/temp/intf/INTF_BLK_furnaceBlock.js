@@ -117,7 +117,7 @@
         if(DEBUG.skipFurnUpdate) return;
 
         // Update currently used fuel
-        if(TIMER.secFive && !b.block.delegee.noFuelInput) {
+        if(GLB_timer.secFive && !b.block.delegee.noFuelInput) {
             b.fuelTup = MDL_fuel.getFuelTup(b.fuelTup, b);
             b.tempFuel = b.fuelTup[0] == null ?
                 0.0 :
@@ -128,12 +128,12 @@
         };
 
         // Add dynamic pollution
-        if(TIMER.sec && b.fuelPonCur > 0.0) {
+        if(GLB_timer.sec && b.fuelPonCur > 0.0) {
             MDL_pollution.addDynaPol(b.fuelPolProd);
         };
 
         // Occasionally update fuel consumption status
-        if(TIMER.heat && b.fuelTup[0] != null) {
+        if(GLB_timer.heat && b.fuelTup[0] != null) {
             b.ex_updateFuelConsumption(b.fuelTup[0], b.fuelTup[1]);
         };
 
@@ -209,9 +209,9 @@
             if(b.fuelPonCur < 1.0) {
                 b.fuelEffc = 0.0;
             };
-            b.fuelPonCur = Mathf.maxZero(b.fuelPonCur - VAR.time.heatIntv / 60.0 * b.block.delegee.fuelConsMtp);
+            b.fuelPonCur = Mathf.maxZero(b.fuelPonCur - GLB_var.time.heatIntv / 60.0 * b.block.delegee.fuelConsMtp);
         } else {
-            b.fuelPonCur = LCCraftingHandler.addLiquid(b, b, fuel, -pon * b.block.delegee.fuelConsMtp * VAR.time.heatIntv, false, false, true);
+            b.fuelPonCur = LCCraftingHandler.addLiquid(b, b, fuel, -pon * b.block.delegee.fuelConsMtp * GLB_var.time.heatIntv, false, false, true);
             b.fuelEffc = Math.min(b.fuelPonCur, 1.0);
         };
     };
@@ -599,7 +599,7 @@
              * @inheritdoc
              */
             ex_getHeatTarget: function() {
-                return PARAM.GLOBAL_HEAT;
+                return GLB_param.GLOBAL_HEAT;
             }
             .setProp({
                 noSuper: true,
@@ -627,7 +627,7 @@
              * @inheritdoc
              */
             ex_checkHeatingValid: function() {
-                return this.tempRiseTarget - PARAM.GLOBAL_HEAT >= 10.0;
+                return this.tempRiseTarget - GLB_param.GLOBAL_HEAT >= 10.0;
             }
             .setProp({
                 noSuper: true,

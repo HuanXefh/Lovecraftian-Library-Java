@@ -37,7 +37,7 @@
 
   function comp_ex_findWeatherLiquid(blk) {
     let liq = null;
-    if(PARAM.IS_CAVE_MAP) return liq;
+    if(GLB_param.IS_CAVE_MAP) return liq;
 
     Groups.weather.each(weaSta => weaSta.weather instanceof RainWeather, weaSta => liq = weaSta.weather.liquid);
 
@@ -46,7 +46,7 @@
 
 
   const comp_updateTile = function thisFun(b) {
-    if(TIMER.secFive) b.rsTarget = b.block.ex_findWeatherLiquid();
+    if(GLB_timer.secFive) b.rsTarget = b.block.ex_findWeatherLiquid();
 
     if(b.rsTarget !== null && !Vars.net.client()) {
       LCCraftingHandler.addLiquid(b, b, b.rsTarget, b.scaleOutput(b.block.delegee.liqProdRate), true);

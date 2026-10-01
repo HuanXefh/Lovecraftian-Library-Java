@@ -5,21 +5,38 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_mapBlock>} INTFBLKMapBlock
+     */
 
 
-  function comp_init(blk) {
-    blk.buildVisibility = BuildVisibility.editorOnly;
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_mapBlock>} INTFBMapBlock
+     * @prop {INTFBLKMapBlock} block
+     */
 
-    if(blk.isWorldBlock) {
-      blk.targetable = false;
-      blk.breakable = false;
-      blk.privileged = true;
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {INTFBLKMapBlock} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.buildVisibility = BuildVisibility.editorOnly;
+        blk.allowedInPayloads = false;
+
+        if(blk.isWorldBlock) {
+            blk.targetable = false;
+            blk.breakable = false;
+            blk.privileged = true;
+        };
     };
-  };
 
 
 /*
@@ -29,71 +46,74 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * For blocks that are only used for map making.
-     * Templates implementing this should be name like "MAP_xxx".
-     * @class INTF_BLK_mapBlock
-     */
-    new CLS_interface("INTF_BLK_mapBlock", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Whether this is a block like world processor.
-         * @memberof INTF_BLK_mapBlock
-         * @instance
+         * For blocks that are only used for map making.
+         * Templates implementing this should be name like "MAP_xxx".
+         * @class INTF_BLK_mapBlock
          */
-        isWorldBlock: false,
+        new CLS_interface("INTF_BLK_mapBlock", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      init: function() {
-        comp_init(this);
-      },
+                    /**
+                     * `PARAM`: Whether this is a block like world processor.
+                     * @memberof INTF_BLK_mapBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    isWorldBlock: false,
 
 
-    }),
+                };
+            },
 
 
-    /**
-     * @class INTF_B_mapBlock
-     */
-    new CLS_interface("INTF_B_mapBlock", {
+            init: function() {
+                comp_init(this);
+            },
 
 
-      damage: function() {
-        if(this.block.privileged) return;
-        this.super$damage.apply(this, arguments);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+        }),
 
 
-      canPickup: function() {
-        return false;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+        /**
+         * @class INTF_B_mapBlock
+         */
+        new CLS_interface("INTF_B_mapBlock", {
 
 
-      collide: function(bul) {
-        return !this.block.privileged;
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            damage: function() {
+                if(this.block.privileged) return;
+                this.super$damage.apply(this, arguments);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+            canPickup: function() {
+                return false;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-  ];
+            collide: function(bul) {
+                return !this.block.privileged;
+            }
+            .setProp({
+                boolMode: "and",
+            }),
+
+
+        }),
+
+
+    ];

@@ -67,7 +67,7 @@
      * @return {boolean}
      */
     const checkLsavFlag = function(flag) {
-        return SAVE.get("flags").includes(flag);
+        return GLB_save.get("flags").includes(flag);
     };
     exports.checkLsavFlag = checkLsavFlag;
 
@@ -79,7 +79,7 @@
      */
     const addLsavFlag = function thisFun(flag) {
         if(checkLsavFlag(flag)) return false;
-        SAVE.set("flags", thisFun.tmpArr.cpy(SAVE.get("flags")).pushAll(flag));
+        GLB_save.set("flags", thisFun.tmpArr.cpy(GLB_save.get("flags")).pushAll(flag));
         return true;
     }
     .setProp({
@@ -99,7 +99,7 @@
      */
     const removeLsavFlag = function thisFun(flag) {
         if(!checkLsavFlag(flag)) return false;
-        SAVE.set("flags", thisFun.tmpArr.cpy(SAVE.get("flags")).removeAll(flag));
+        GLB_save.set("flags", thisFun.tmpArr.cpy(GLB_save.get("flags")).removeAll(flag));
         return true;
     }
     .setProp({

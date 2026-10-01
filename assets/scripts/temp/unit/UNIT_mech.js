@@ -26,7 +26,7 @@
      * @return {void}
      */
     function comp_update(utp, unit) {
-        if(!PARAM.IS_SPACE_MAP && TIMER.jetTrail && utp.jetTrailVelThr > 0.0 && unit.isFlying() && unit.vel.len() > utp.jetTrailVelThr) {
+        if(!GLB_param.IS_SPACE_MAP && GLB_timer.jetTrail && utp.jetTrailVelThr > 0.0 && unit.isFlying() && unit.vel.len() > utp.jetTrailVelThr) {
             MDL_effect.trailJet(unit.x, unit.y, unit);
         };
     };

@@ -22,9 +22,9 @@
     blk.config(JAVA.boolean, (b, bool) => {
       if(bool !== b.delegee.isInv) {
         b.delegee.isInv = bool;
-        EFF.fadePlacePack[b.block.size].at(b);
+        GLB_eff.fadePlacePack[b.block.size].at(b);
         b.recache();
-        TRIGGER.invertSelection.fire();
+        BOX_trigger.invertSelection.fire();
       };
     });
   };
@@ -65,7 +65,7 @@
 
 
   function comp_buildConfiguration(b, tb) {
-    MDL_table.btnCfgToggle(tb, b, VARGEN.icons.swap, VARGEN.icons.swap, b.isInv)
+    MDL_table.btnCfgToggle(tb, b, GLB_varGen.icons.swap, GLB_varGen.icons.swap, b.isInv)
     .tooltip(MDL_bundle.getInfo("lovec", "tt-invert-selection"), true);
   };
 

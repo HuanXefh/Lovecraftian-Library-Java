@@ -28,7 +28,7 @@
     function comp_setStats(sta, stats) {
         stats.add(fetchStat("lovec", "spec-dialflow"), newStatValue(tb => {
             tb.row();
-            MDL_table.btnSmall(tb, VARGEN.icons.play, () => {
+            MDL_table.btnSmall(tb, GLB_varGen.icons.play, () => {
                 !sta.ex_checkDbctUnlocked() ?
                     MDL_ui.showFadeInfo("lovec", "info-locked") :
                     MDL_ui.createFlow(sta.nameDialFlow);

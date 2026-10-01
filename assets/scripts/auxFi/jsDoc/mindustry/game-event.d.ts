@@ -286,13 +286,13 @@ declare class ConnectPacketEvent {
 declare class PlayerConnectionConfirmed {
     readonly player: Player;
 }
-declare class PlayerJoin {
+declare class PlayerJoinEvent {
     readonly player: Player;
 }
-declare class PlayerConnect {
+declare class PlayerConnectEvent {
     readonly player: Player;
 }
-declare class PlayerLeave {
+declare class PlayerLeaveEvent {
     readonly player: Player;
 }
 declare class PlayerBanEvent {

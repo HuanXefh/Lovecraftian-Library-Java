@@ -38,12 +38,12 @@
      * @return {void}
      */
     function updateUnit() {
-        if(!PARAM.MODDED) return;
+        if(!GLB_param.MODDED) return;
 
         Groups.unit.each(unit => {
             if(MDL_cond.isIrregularUnit(unit)) return;
-            if(PARAM.IS_NO_BUILD_MAP && VARGEN.staNoConstruction != null) {
-                unit.apply(VARGEN.staNoConstruction, 60.0);
+            if(GLB_param.IS_NO_BUILD_MAP && GLB_varGen.staNoConstruction != null) {
+                unit.apply(GLB_varGen.staNoConstruction, 60.0);
             };
             FRAG_unit.updateSurrounding(unit.type, unit);
             FRAG_unit.updateHeat(unit.type, unit);
@@ -63,16 +63,16 @@
      * @return {void}
      */
     function triggerMajorIter() {
-        TRIGGER.majorIter.start.fire();
-        VARGEN.mainTeams.forEachFast(team => {
+        BOX_trigger.majorIter.start.fire();
+        GLB_varGen.mainTeams.forEachFast(team => {
             team.data().buildings.each(b => {
-                TRIGGER.majorIter.building.fire(b, MDL_cond.isBuildingActive(b));
+                BOX_trigger.majorIter.building.fire(b, MDL_cond.isBuildingActive(b));
             });
             team.data().units.each(unit => {
-                TRIGGER.majorIter.unit.fire(unit);
+                BOX_trigger.majorIter.unit.fire(unit);
             });
         }, true);
-        TRIGGER.majorIter.end.fire();
+        BOX_trigger.majorIter.end.fire();
     };
 
 
@@ -102,14 +102,14 @@
         if(!shouldInitWea || !Vars.state.isGame() || Vars.state.isEditor()) return;
 
         shouldInitWea = false;
-        Time.run(VAR.delay.mapChange.setWeather, () => {
-            let nameWeas = DB_env.db["param"]["map"]["weaEn"].read(PARAM.MAP_CURRENT, Array.air);
+        Time.run(GLB_var.delay.mapChange.setWeather, () => {
+            let nameWeas = DB_env.db["param"]["map"]["weaEn"].read(GLB_param.MAP_CURRENT, Array.air);
             if(nameWeas.length === 0) return;
 
             Groups.weather.clear();
             let seq = new Seq(), weaEn;
             nameWeas.forEachFast(nameWea => {
-                weaEn = VARGEN.nameWeaEnsMap.get(nameWea);
+                weaEn = GLB_varGen.nameWeaEnsMap.get(nameWea);
                 weaEn == null ?
                     console.warn("[LOVEC] Invalid weather name: " + nameWea.color(Pal.accent)) :
                     seq.add(weaEn);
@@ -160,12 +160,12 @@
      * @lovecTypeSensitive
      */
     function createDamageDisplay(e, bul) {
-        if(!PARAM.ENABLE_DAMAGE_DISPLAY || e == null || bul == null) return;
+        if(!GLB_param.ENABLE_DAMAGE_DISPLAY || e == null || bul == null) return;
         if(e instanceof Unit && (
-            e.isMissile() && !PARAM.SHOULD_DRAW_MISSILE_STAT
+            e.isMissile() && !GLB_param.SHOULD_DRAW_MISSILE_STAT
         )) return;
         let dmg = MDL_prop.calcBulDmg(bul, e);
-        if(dmg < PARAM.DAMAGE_DISPLAY_THRESHOLD) return;
+        if(dmg < GLB_param.DAMAGE_DISPLAY_THRESHOLD) return;
 
         MDL_effect.damage(
             e.x, e.y, dmg, bul.team,
@@ -196,7 +196,7 @@
      */
     function triggerDeathStatus(unit) {
         let scr;
-        VARGEN.deathStas.forEachFast(sta => {
+        GLB_varGen.deathStas.forEachFast(sta => {
             if(!unit.hasEffect(sta)) return;
             scr = sta.delegee.killedScr;
             if(scr == null) return;
@@ -213,9 +213,9 @@
 
 
 
-    TRIGGER.mapChange.addGlobalListener(nameMap => {
+    BOX_trigger.mapChange.addGlobalListener(nameMap => {
 
-        PARAM.forceLoadParam();
+        GLB_param.forceLoadParam();
         shouldInitRules = true;
 
         updateTitle();
@@ -227,7 +227,7 @@
 
         if(Vars.state.isPaused()) return;
 
-        if(TIMER.secQuarter && DEBUG.shouldLogDelta) {
+        if(GLB_timer.secQuarter && DEBUG.shouldLogDelta) {
             console.log("[LOVEC] Current delta: " + Time.delta);
         };
 
@@ -238,7 +238,7 @@
         updateDebug();
         updateUnit();
 
-        if(Vars.state.isGame() && TIMER.paramLarge) {
+        if(Vars.state.isGame() && GLB_timer.paramLarge) {
             triggerMajorIter();
         };
 

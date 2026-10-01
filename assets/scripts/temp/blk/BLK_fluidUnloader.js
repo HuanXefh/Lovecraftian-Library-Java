@@ -116,7 +116,7 @@
        * @return {Array<Liquid>}
        */
       ex_findSelectionTargets: function() {
-        return VARGEN.nonAuxs;
+        return GLB_varGen.nonAuxs;
       }
       .setProp({
         noSuper: true,

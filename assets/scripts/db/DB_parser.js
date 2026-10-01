@@ -35,13 +35,13 @@ const db = {
         /* effect */
 
         "class.Fx", raw => Fx[raw.name],
-        "module.EFF", raw => raw.index !== "number" ? EFF[raw.name] : EFF[raw.name][raw.index],
+        "module.GLB_eff", raw => raw.index !== "number" ? GLB_eff[raw.name] : GLB_eff[raw.name][raw.index],
         "module.TP_effect", raw => TP_effect[raw.name](CLS_contentTemplateParser.parseFields(raw.param)),
 
         /* layer */
 
         "class.Layer", raw => Layer[raw.name] + tryVal(raw.offset, 0.0),
-        "module.VAR.layer", raw => VAR.layer[raw.name] + tryVal(raw.offset, 0.0),
+        "module.GLB_var.layer", raw => GLB_var.layer[raw.name] + tryVal(raw.offset, 0.0),
 
     ],
 

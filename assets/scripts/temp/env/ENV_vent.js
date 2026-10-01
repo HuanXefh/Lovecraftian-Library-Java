@@ -39,7 +39,7 @@
                 break;
 
             case "fire" :
-                blk.effect = new MultiEffect(EFF.smogFireExplo, Fx.fire);
+                blk.effect = new MultiEffect(GLB_eff.smogFireExplo, Fx.fire);
                 blk.effectSpacing = 4.0;
                 MDL_content.rename(
                     blk,

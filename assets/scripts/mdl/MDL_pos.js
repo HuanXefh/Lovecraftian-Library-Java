@@ -64,11 +64,13 @@
                         frac = LCPos
                         .getTilesEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false)
                         .count(b_t, ot => ot.build)
+                        * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     } else {
                         frac = LCPos
                         .getTilesEdge(thisFun.tmpTs, b_t.tile, b_t.block.size, false)
                         .count(b_f, ot => ot.build)
+                        * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     };
                     break;
@@ -134,13 +136,13 @@
                         frac = LCPos
                         .getTilesEdge(thisFun.tmpTs, b_f.tile, b_f.block.size)
                         .count(b_t, ot => b_f.block.rotate && LCPos.getRotation(b_f.tile, ot) === b_f.rotation ? null : ot.build)
-                        * 4
+                        * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     } else {
                         frac = LCPos
                         .getTilesEdge(thisFun.tmpTs, b_t.tile, b_t.block.size)
                         .count(b_f, ot => b_f.block.rotate && LCPos.getRotation(b_f.tile, ot) === b_f.rotation ? null : ot.build)
-                        * 4
+                        * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     }
                     break;
@@ -150,13 +152,13 @@
                         frac = LCPos
                         .getTilesEdge(thisFun.tmpTs, b_f.tile, b_f.block.size)
                         .count(b_t, ot => b_f.block.rotate && Mathf.mod(LCPos.getRotation(b_f.tile, ot) + 2, 4) === b_f.rotation ? null : ot.build)
-                        * 4
+                        * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     } else {
                         frac = LCPos
                         .getTilesEdge(thisFun.tmpTs, b_t.tile, b_t.block.size)
                         .count(b_f, ot => b_f.block.rotate && Mathf.mod(LCPos.getRotation(b_f.tile, ot) + 2, 4) === b_f.rotation ? null : ot.build)
-                        * 4
+                        * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     }
                     break;

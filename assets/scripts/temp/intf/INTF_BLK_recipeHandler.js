@@ -96,7 +96,7 @@
 
 
   function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
+    if(GLB_param.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
 
     b.rc.updateAutoSelection(b);
 
@@ -189,7 +189,7 @@
   function comp_acceptLiquid(b, b_f, liq) {
     if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
     if(
-      b.blk$useAutoSelection && TIMER.sec && b.rc.keyFldHeaderMap != null
+      b.blk$useAutoSelection && GLB_timer.sec && b.rc.keyFldHeaderMap != null
         && liq !== b.keyCt && b_f !== b
         && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)
     ) {
@@ -317,7 +317,7 @@
       tb.add(new Bar(
         prov(() => Core.bundle.format("bar.heatpercent", (b.erekirHeatI + 0.01).roundFixed(1), (b.erekirHeatEffc * 100.0 + 0.01).roundFixed(1))),
         prov(() => Pal.lightOrange),
-        () => Mathf.clamp(b.erekirHeatI / b.erekirHeatReq),
+        () => Mathf.clamp(b.heatFrac()),
       ));
       tb.row();
     };
@@ -325,7 +325,7 @@
       tb.add(new Bar(
         "bar.heat",
         Pal.lightOrange,
-        () => Mathf.clamp(b.erekirHeatO / b.erekirHeatProd),
+        () => Mathf.clamp(b.heatFrac()),
       ));
       tb.row();
     };
@@ -357,7 +357,7 @@
       tb.add(new Bar(
         liq.localizedName,
         tryVal(liq.barColor, liq.color),
-        () => MDL_cond.isAuxiliaryFluid(liq) && !MDL_cond.isNoCapAuxiliaryFluid(liq) ? Mathf.clamp(b.liquids.get(liq) / VAR.param.auxCap) : (b.liquids.get(liq) / b.block.liquidCapacity),
+        () => MDL_cond.isAuxiliaryFluid(liq) && !MDL_cond.isNoCapAuxiliaryFluid(liq) ? Mathf.clamp(b.liquids.get(liq) / GLB_var.param.auxCap) : (b.liquids.get(liq) / b.block.liquidCapacity),
       )).growX();
       tb.row();
     },
@@ -406,7 +406,7 @@
     b.liqAcceptCacheArr.clear();
     forceUpdateBlockFrag();
 
-    if(!PARAM.UPDATE_SUPPRESSED) {
+    if(!GLB_param.UPDATE_SUPPRESSED) {
       b.progress = 0.0;
       if(b.liquids != null) b.liquids.clear();
     };
@@ -539,7 +539,7 @@
          * @memberof INTF_BLK_recipeHandler
          * @instance
          */
-        failEff: EFF.smogFail,
+        failEff: GLB_eff.smogFail,
 
 
         /* <------------------------------ internal ------------------------------> */
@@ -893,7 +893,11 @@
 
 
       heatFrac: function() {
-        return this.erekirHeatO / this.rc.erekirHeatProd;
+        return this.rc.erekirHeatReq > 0.0 ?
+          this.erekirHeatI / this.rc.erekirHeatReq :
+          this.rc.erekirHeatProd > 0.0 ?
+            this.erekirHeatO / this.rc.erekirHeatProd :
+            0.0;
       }
       .setProp({
         noSuper: true,
@@ -1094,7 +1098,7 @@
        * @return {void}
        */
       ex_showRcChangeEff: function() {
-        EFF.fadePlacePack[this.block.size].at(this);
+        GLB_eff.fadePlacePack[this.block.size].at(this);
       }
       .setProp({
         noSuper: true,
@@ -1165,7 +1169,7 @@
        * @return {boolean}
        */
       ex_shouldUpdateRcParam: function() {
-        return TIMER.effc;
+        return GLB_timer.effc;
       }
       .setProp({
         noSuper: true,

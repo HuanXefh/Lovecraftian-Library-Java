@@ -29,7 +29,7 @@
      * @return {number}
      */
     const calcEffPByFrac = function(p, frac) {
-        return Math.min(p * frac, VAR.chance.effPCap);
+        return Math.min(p * frac, GLB_var.chance.effPCap);
     };
     exports.calcEffPByFrac = calcEffPByFrac;
 
@@ -250,7 +250,7 @@
     * @return {void}
     */
     const damage = function thisFun(x, y, dmg, team, mode) {
-        if(!PARAM.ENABLE_DAMAGE_DISPLAY || dmg < 0.0001 || dmg < PARAM.DAMAGE_DISPLAY_THRESHOLD) return;
+        if(!GLB_param.ENABLE_DAMAGE_DISPLAY || dmg < 0.0001 || dmg < GLB_param.DAMAGE_DISPLAY_THRESHOLD) return;
         if(mode == null) mode = "health";
         if(team == null) team = Team.derelict;
         let dmgTextMode = CLS_damageTextMode.get(mode);
@@ -588,19 +588,19 @@
                 Lines.circle(eff.x, eff.y, eff.rotation * eff.fin());
                 Draw.reset();
             });
-            tmp.layer = VAR.layer.effFlr;
+            tmp.layer = GLB_var.layer.effFlr;
             return tmp;
         })(),
         /**
          * @memberof rotorWave
          * @type {Color}
          */
-        effColor1: VAR.color.rotorWhite,
+        effColor1: GLB_var.color.rotorWhite,
         /**
          * @memberof rotorWave
          * @type {Color}
          */
-        effColor2: VAR.color.whiteClear,
+        effColor2: GLB_var.color.whiteClear,
     })
     .setAnno("effect");
     exports.rotorWave = rotorWave;

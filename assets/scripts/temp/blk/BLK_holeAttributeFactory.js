@@ -33,7 +33,7 @@
       prov(() => Pal.lightOrange),
       () => Mathf.clamp(b.delegee.attrEffc),
     ));
-    if(!VAR.mindustryX) {      
+    if(!GLB_var.mindustryX) {      
       blk.addBar("lovec-prog", b => new Bar(
         prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
         prov(() => Pal.ammo),
@@ -112,7 +112,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.effc) {
+    if(GLB_timer.effc) {
       b.attrEffc = b.block.ex_getAttrEffc(b.tileX(), b.tileY());
     };
 

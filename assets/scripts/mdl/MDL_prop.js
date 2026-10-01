@@ -220,9 +220,9 @@
     const getStackStas = function(contArr, unit) {
         let arr = contArr != null ? contArr.clear() : [];
 
-        let i = 0, iCap = VARGEN.stackStas.iCap();
+        let i = 0, iCap = GLB_varGen.stackStas.iCap();
         while(i < iCap) {
-            if(unit.hasEffect(VARGEN.stackStas[i])) arr.push(VARGEN.stackStas[i]);
+            if(unit.hasEffect(GLB_varGen.stackStas[i])) arr.push(GLB_varGen.stackStas[i]);
             i++;
         };
 

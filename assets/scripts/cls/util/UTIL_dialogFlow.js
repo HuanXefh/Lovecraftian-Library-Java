@@ -35,9 +35,9 @@
 
 
     /** @type {boolean} */
-    UTIL_dialogFlow.TRIGGER_BACKGROUND = false;
+    UTIL_dialogFlow.BOX_trigger_BACKGROUND = false;
     /** @type {boolean} */
-    UTIL_dialogFlow.TRIGGER_MUSIC = false;
+    UTIL_dialogFlow.BOX_trigger_MUSIC = false;
 
 
 /*

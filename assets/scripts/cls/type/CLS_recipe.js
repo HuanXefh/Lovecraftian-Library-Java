@@ -88,7 +88,7 @@
     let rcIncompleteCount = 0;
 
 
-    MDL_event.onLoadDelayTask(VAR.delay.load.logRcRegis, () => {
+    MDL_event.onLoadDelayTask(GLB_var.delay.load.logRcRegis, () => {
         console.log("[LOVEC] Registered ${1} recipe(s) in total.".format(rcCount.color(Pal.accent)));
         if(rcIncompleteCount > 0) {
             console.log("[LOVEC] ${1} recipe(s) are incomplete!".format(rcIncompleteCount.color(Pal.accent)));
@@ -1041,7 +1041,7 @@
                 tb2.table(Styles.none, tb3 => {
                     tb3.button(this.icon, Styles.clearNonei, 28.0, () => {});
                     if(showWinBtn) {
-                        tb3.button(VARGEN.icons.window, Styles.clearNonei, 28.0, () => {
+                        tb3.button(GLB_varGen.icons.window, Styles.clearNonei, 28.0, () => {
                             new CLS_window(
                                 "${1} (${2})".format(MDL_bundle.getTerm("lovec", "recipe-display"), this.owner.localizedName + " [${1}]".format(ord)),
                                 tb4 => {
@@ -1144,7 +1144,7 @@
                         tb3.table(Styles.none, tb4 => {
                             tb4.left();
                             tb4.add(MDL_text.getStat(MDL_bundle.getTerm("lovec", "require-unlocking"), "")).left();
-                            this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, {size: 28.0, pad: 0.0, ctDial: VAR.dialog.ct2}), true);
+                            this.lockedByCts.forEachFast(ct => MDL_table.ctIcon(tb4, ct, {size: 28.0, pad: 0.0, ctDial: GLB_var.dialog.ct2}), true);
                         })
                         .left()
                         .row();
@@ -1268,11 +1268,11 @@
         return this.displayIoFrag(tb, "bi", tb1 => {
             (isBase ? this.baseBi : this.biNoBase).forEachRow(3, (tmp, amt, p) => {
                 if(!(tmp instanceof Array)) {
-                    MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: VAR.dialog.ct1});
+                    MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: GLB_var.dialog.ct1});
                 } else {
                     this.displayAltIoFrag(tb1, tb2 => {
                         tmp.forEachRow(3, (tmp1, amt, p) => {
-                            MDL_table.rcCtIcon(tb2, tmp1, amt, p, true, {ctDial: VAR.dialog.ct1}).row();
+                            MDL_table.rcCtIcon(tb2, tmp1, amt, p, true, {ctDial: GLB_var.dialog.ct1}).row();
                         }, true);
                     }, noPane);
                 };
@@ -1292,11 +1292,11 @@
         return this.displayIoFrag(tb, "ci", tb1 => {
             (isBase ? this.baseCi : this.ciNoBase).forEachRow(2, (tmp, amt) => {
                 if(!(tmp instanceof Array)) {
-                    MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: VAR.dialog.ct1});
+                    MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: GLB_var.dialog.ct1});
                 } else {
                     this.displayAltIoFrag(tb1, tb2 => {
                         tmp.forEachRow(2, (tmp1, amt) => {
-                            MDL_table.rcCtIcon(tb2, tmp1, amt, null, false, {ctDial: VAR.dialog.ct1}).row();
+                            MDL_table.rcCtIcon(tb2, tmp1, amt, null, false, {ctDial: GLB_var.dialog.ct1}).row();
                         }, true);
                     }, noPane);
                 };
@@ -1314,7 +1314,7 @@
     CLS_recipe.prototype.displayAux = function(tb, isBase) {
         return this.displayIoFrag(tb, "aux", tb1 => {
             (isBase ? this.baseAux : this.auxNoBase).forEachRow(2, (tmp, amt) => {
-                MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: VAR.dialog.ct1});
+                MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: GLB_var.dialog.ct1});
             }, true);
         });
     };
@@ -1342,7 +1342,7 @@
     CLS_recipe.prototype.displayPayi = function(tb, isBase) {
         return this.displayIoFrag(tb, "payi", tb1 => {
             (isBase ? this.basePayi : this.payiNoBase).forEachRow(2, (name, amt) => {
-                MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, {ctDial: VAR.dialog.ct1});
+                MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, {ctDial: GLB_var.dialog.ct1});
             }, true);
         });
     };
@@ -1357,7 +1357,7 @@
     CLS_recipe.prototype.displayBo = function(tb, isBase) {
         return this.displayIoFrag(tb, "bo", tb1 => {
             (isBase ? this.baseBo : this.boNoBase).forEachRow(3, (tmp, amt, p) => {
-                MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: VAR.dialog.ct1});
+                MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: GLB_var.dialog.ct1});
             }, true);
         });
     };
@@ -1372,7 +1372,7 @@
     CLS_recipe.prototype.displayCo = function(tb, isBase) {
         return this.displayIoFrag(tb, "co", tb1 => {
             (isBase ? this.baseCo : this.coNoBase).forEachRow(2, (tmp, amt) => {
-                MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: VAR.dialog.ct1});
+                MDL_table.rcCtIcon(tb1, tmp, amt, null, false, {ctDial: GLB_var.dialog.ct1});
             }, true);
         });
     };
@@ -1387,7 +1387,7 @@
     CLS_recipe.prototype.displayFo = function(tb, isBase) {
         return this.displayIoFrag(tb, "fo", tb1 => {
             (isBase ? this.baseFo : this.foNoBase).forEachRow(3, (tmp, amt, p) => {
-                MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: VAR.dialog.ct1});
+                MDL_table.rcCtIcon(tb1, tmp, amt, p, true, {ctDial: GLB_var.dialog.ct1});
             }, true);
         });
     };
@@ -1402,7 +1402,7 @@
     CLS_recipe.prototype.displayPayo = function(tb, isBase) {
         return this.displayIoFrag(tb, "payo", tb1 => {
             (isBase ? this.basePayo : this.payoNoBase).forEachRow(2, (name, amt) => {
-                MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, {ctDial: VAR.dialog.ct1});
+                MDL_table.rcCtIcon(tb1, MDL_content.getCt(name, null, true), amt, 1.0, true, {ctDial: GLB_var.dialog.ct1});
             }, true);
         });
     };

@@ -37,7 +37,7 @@
         blk.config(JAVA.string, (b, str) => {
             b.ex_accCtTargets(str, false);
             b.ex_onSelectorUpdate();
-            EFF.fadePlacePack[blk.size].at(b);
+            GLB_eff.fadePlacePack[blk.size].at(b);
         });
         blk.config(JAVA.object_arr, (b, cfgArr) => {
             switch(cfgArr[0]) {
@@ -54,13 +54,13 @@
                         i++;
                     };
                     b.ex_onSelectorConfigLoad(cfgArr);
-                    EFF.fadePlacePack[blk.size].at(b);
+                    GLB_eff.fadePlacePack[blk.size].at(b);
                     break;
 
                 case "selector" :
                     b.ex_accCtTargets(cfgArr[1], cfgArr[2]);
                     b.ex_onSelectorUpdate();
-                    EFF.fadePlacePack[blk.size].at(b);
+                    GLB_eff.fadePlacePack[blk.size].at(b);
                     break;
             };
         });
@@ -92,7 +92,7 @@
                 b.configure("clear");
                 b.deselect();
             },
-            VARGEN.icons.cross,
+            GLB_varGen.icons.cross,
         ).tooltip(MDL_bundle.getInfo("lovec", "tt-clear-selection"), true)
     };
 
@@ -107,7 +107,7 @@
 
         b.displayedCtTarget = b.ctTargets.length === 0 ?
             null :
-            b.ctTargets[Math.floor((Time.globalTime / PARAM.ICON_TAG_FLICKERING_INTERVAL) % b.ctTargets.length)];
+            b.ctTargets[Math.floor((Time.globalTime / GLB_param.ICON_TAG_FLICKERING_INTERVAL) % b.ctTargets.length)];
     };
 
 

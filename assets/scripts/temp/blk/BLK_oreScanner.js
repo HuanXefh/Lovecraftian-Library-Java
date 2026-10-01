@@ -25,7 +25,7 @@
     blk.config(JAVA.boolean, (b, bool) => {
       if(b.team !== Vars.player.team()) return;
       Core.settings.put("lovec-draw0aux-scanner", bool);
-      PARAM.forceLoadParam();
+      GLB_param.forceLoadParam();
     });
 
     blk.ex_addLogicF(LAccess.range, b => blk.blkRad / Vars.tilesize);
@@ -96,7 +96,7 @@
 
   function comp_draw(b) {
     let z = Draw.z();
-    Draw.z(VAR.layer.effFlr + 0.01);
+    Draw.z(GLB_var.layer.effFlr + 0.01);
     Draw.color(Pal.accent, b.warmup * 0.2);
     Fill.arc(b.x, b.y, b.block.delegee.blkRad, 0.125, b.offConeAng + b.totalProgress * 2.0);
     Draw.color();

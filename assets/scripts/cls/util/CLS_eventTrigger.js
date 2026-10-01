@@ -40,9 +40,9 @@
                 this.clearListener();
                 this.clearOnceListener();
                 if(String.isEmpty(this.mapCur) || !String.isEmpty(this.mapLast)) {
-                    TRIGGER.mapExit.fire(this.mapLast);
+                    BOX_trigger.mapExit.fire(this.mapLast);
                 };
-                TRIGGER.mapChange.fire(this.mapCur);
+                BOX_trigger.mapChange.fire(this.mapCur);
                 this.mapLast = this.mapCur;
             };
         }, "eventTrigger: ${1}".format(this.name));

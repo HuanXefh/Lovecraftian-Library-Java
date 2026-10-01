@@ -5,172 +5,269 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_pressureBlock>} INTFBLKPressureBlock
+     */
 
 
-  function comp_init(blk) {
-    blk.presRes = MDL_flow.getPresRes(blk);
-    blk.vacRes = MDL_flow.getVacRes(blk);
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_pressureBlock>} INTFBPressureBlock
+     * @prop {INTFBLKPressureBlock} block
+     */
 
 
-  function comp_setStats(blk, stats) {
-    stats.add(fetchStat("lovec", "blk0liq-presres"), blk.presRes);
-    stats.add(fetchStat("lovec", "blk0liq-vacres"), -blk.vacRes);
-    if(!blk.presThr.fEqual(0.0)) stats.add(blk.presThr > 0.0 ? fetchStat("lovec", "blk0liq-presreq") : fetchStat("lovec", "blk0liq-vacreq"), Math.abs(blk.presThr));
-  };
+    /* <------------------------------ auxiliary ------------------------------> */
 
 
-  function comp_setBars(blk) {
-    blk.addBar("lovec-pressure", b => new Bar(
-      prov(() => Core.bundle.format(b.delegee.presTmp >= 0.0 ? "bar.lovec-bar-pressure-amt" : "bar.lovec-bar-vacuum-amt", Strings.fixed(Math.abs(b.delegee.presTmp), 2))),
-      prov(() => b.delegee.presTmp >= 0.0 ? Color.valueOf(Tmp.c1, "cce5ff") : Color.valueOf(Tmp.c1, "e1d5e5")),
-      () => Mathf.clamp(Math.abs(b.delegee.presTmp + b.delegee.presExtra) / Math.max(b.delegee.presTmp >= 0.0 ? blk.presRes : -blk.vacRes, 0.0001)),
-    ));
-  };
+    /**
+     * @private
+     * @type {number}
+     */
+    const PRES_RES_TOL = 0.5;
 
 
-  function comp_onDestroyed(b) {
-    if(Math.abs(b.presTmp) > 0.5) {
-      Damage.damage(b.x, b.y, b.block.size * Vars.tilesize * 2.5, b.maxHealth * Math.abs(b.presTmp) * 0.2);
-      Fx.explosion.at(b.x, b.y, b.block.size * Vars.tilesize * 2.5);
-    };
-  };
+    /**
+     * @private
+     * @type {number}
+     */
+    const PRES_THR_TOL = 0.15;
 
 
-  function comp_onProximityUpdate(b) {
-    b.presTransCount = 0;
-    b.presTransCountTmpBs.clear();
-    Time.run(60.0, () => {
-      b.ex_updatePresFetchTargets();
-      b.ex_updatePresSupplyTargets();
-    });
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_pickedUp(b) {
-    b.presFetchTargets.clear();
-    b.presSupplyTargets.clear();
-  };
-
-
-  function comp_updateTile(b) {
-    if(PARAM.UPDATE_SUPPRESSED) return;
-
-    if(TIMER.secQuarter) {
-      b.ex_updatePresTarget();
-      b.presTmp = (b.presTmp + b.presTarget) * 0.5;
-      if(Math.abs(b.presTmp) < 0.005) b.presTmp = 0.0;
-    };
-    if(Math.abs(b.presTmp) > 0.0) {
-      b.noSleep();
-      if(b.next != null && b.next() != null) b.next().noSleep();
+    /**
+     * @private
+     * @param {INTFBLKPressureBlock} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.presRes = MDL_flow.getPresRes(blk);
+        blk.vacRes = MDL_flow.getVacRes(blk);
     };
 
-    if(TIMER.sec && Math.abs(b.presTmp) > 0.0) {
-      b.ex_updatePresSupplyTargets();
-    };
 
-    // Apply damage if over limit
-    if(
-      !PARAM.UPDATE_DEEP_SUPPRESSED && TIMER.secQuarter && LCRand.chance(UTIL_rand.get("pressure"), 0.25)
-        && (
-          (b.presTmp + b.presExtra) > 0.0 ?
-            ((b.presTmp + b.presExtra) > (b.block.delegee.presRes + 0.5)) :
-            ((b.presTmp + b.presExtra) < (b.block.delegee.vacRes - 0.5))
-        )
-    ) {
-      b.damagePierce((b.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) * (
-        b.presTmp > 0.0 ?
-          (b.presTmp / Math.max(b.block.delegee.presRes, 0.0001)) :
-          (-b.presTmp / Math.max(-b.block.delegee.vacRes, 0.0001))
-      ));
-    };
-
-    // Pressure drop
-    b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase / 60.0 * Time.delta);
-
-    // Supply abstract fluid
-    if(!b.block.delegee.skipPresSupply && b.presSupplyTargets.length > 0 && Math.abs(b.presTmp) > 0.0) {
-      b.presSupplyIncre++;
-      let b_t = b.presSupplyTargets[b.presSupplyIncre % b.presSupplyTargets.length];
-      if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
-        let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
-        let consAmt = MDL_recipeDict.getConsAmtByBuild(b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, b_t);
-        LCCraftingHandler.addLiquid(b_t, null, b.presTmp > 0.0 ? VARGEN.auxPres : VARGEN.auxVac, addAmt, false, false, true);
-        if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
-          b_t.damagePierce((b_t.maxHealth * VAR.param.presDmgFrac + VAR.param.presDmgMin) / 5.0);
+    /**
+     * @private
+     * @param {INTFBLKPressureBlock} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(fetchStat("lovec", "blk0liq-presres"), blk.presRes);
+        stats.add(fetchStat("lovec", "blk0liq-vacres"), -blk.vacRes);
+        if(!blk.presThr.fEqual(0.0)) {
+            stats.add(blk.presThr > 0.0 ? fetchStat("lovec", "blk0liq-presreq") : fetchStat("lovec", "blk0liq-vacreq"), Math.abs(blk.presThr));
         };
-      };
     };
-  };
 
 
-  function comp_acceptItem(b, b_f, item) {
-    let presThr = b.block.delegee.presThr;
-    if(presThr.fEqual(0.0)) return true;
-
-    return presThr > 0.0 ?
-      b.presTmp >= presThr - 0.15 :
-      b.presTmp <= presThr + 0.15;
-  };
-
-
-  function comp_acceptLiquid(b, b_f, liq) {
-    let presThr = b.block.delegee.presThr;
-    if(presThr.fEqual(0.0)) return true;
-
-    return presThr > 0.0 ?
-      b.presTmp >= presThr - 0.15 :
-      b.presTmp <= presThr + 0.15;
-  };
+    /**
+     * @private
+     * @param {INTFBLKPressureBlock} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        blk.addBar("lovec-pressure", b => new Bar(
+            prov(() => Core.bundle.format(b.delegee.presTmp >= 0.0 ? "bar.lovec-bar-pressure-amt" : "bar.lovec-bar-vacuum-amt", Strings.fixed(Math.abs(b.delegee.presTmp), 2))),
+            prov(() => b.delegee.presTmp >= 0.0 ? Color.valueOf(Tmp.c1, "cce5ff") : Color.valueOf(Tmp.c1, "e1d5e5")),
+            () => Mathf.clamp(Math.abs(b.delegee.presTmp + b.delegee.presExtra) / Math.max(b.delegee.presTmp >= 0.0 ? blk.presRes : -blk.vacRes, 0.0001)),
+        ));
+    };
 
 
-  function comp_ex_updatePresFetchTargets(b) {
-    b.presFetchTargets.clear();
-    // Find all possible pressure sources
-    b.proximity.each(ob => {
-      if(ob.block instanceof MultiBlockLinkBlock) {
-        ob = ob.linkedBuild;
-      };
-      if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b) && !b.presTransCountTmpBs.includes(ob)) {
-        b.presTransCount++;
-        b.presTransCountTmpBs.push(ob);
-      };
-      if(ob.ex_getPres != null && b.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.ex_checkPresSupplyValid(b))) {
-        b.presFetchTargets.push(ob);
-      };
-    });
-  };
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @return {void}
+     */
+    function comp_onDestroyed(b) {
+        if(Math.abs(b.presTmp) > 0.5) {
+            Damage.damage(b.x, b.y, b.block.size * Vars.tilesize * 2.5, b.maxHealth * Math.abs(b.presTmp) * 0.2);
+            Fx.explosion.at(b.x, b.y, b.block.size * Vars.tilesize * 2.5);
+        };
+    };
 
 
-  function comp_ex_updatePresSupplyTargets(b) {
-    b.presSupplyTargets.clear();
-    // Find all possible pressure consumers
-    b.proximity.each(ob => {
-      ob = ob.getLiquidDestination(b, VARGEN.auxPres);
-      if(ob == null) return;
-      if(ob.block instanceof MultiBlockLinkBlock) {
-        ob = ob.linkedBuild;
-      };
-      if((ob.acceptLiquid(b, VARGEN.auxPres) || ob.acceptLiquid(b, VARGEN.auxVac)) && b.ex_checkPresSupplyValid(ob)) {
-        b.presSupplyTargets.push(ob);
-      };
-    });
-  };
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @return {void}
+     */
+    function comp_onProximityUpdate(b) {
+        b.presTransCount = 0;
+        b.presTransCountTmpBs.clear();
+        Time.run(60.0, () => {
+            b.ex_updatePresFetchTargets();
+            b.ex_updatePresSupplyTargets();
+        });
+    };
 
 
-  function comp_ex_updatePresTarget(b) {
-    b.presTarget = b.presBase;
-    b.presFetchTargets.forEachFast(ob => {
-      if(ob.isAdded() && ob.enabled && !ob.isPayload()) {
-        b.presTarget += tryFun(ob.ex_getPres, ob, 0.0) * tryFun(ob.ex_getPresTransScl, ob, 1.0, b);
-      };
-    }, true);
-  };
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @return {void}
+     */
+    function comp_pickedUp(b) {
+        b.presFetchTargets.clear();
+        b.presSupplyTargets.clear();
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(GLB_param.UPDATE_SUPPRESSED) return;
+
+        if(GLB_timer.secQuarter) {
+            b.ex_updatePresTarget();
+            b.presTmp = (b.presTmp + b.presTarget) * 0.5;
+            if(Math.abs(b.presTmp) < 0.005) {
+                b.presTmp = 0.0;
+            };
+        };
+        if(Math.abs(b.presTmp) > 0.0) {
+            b.noSleep();
+            if(b.next != null && b.next() != null) {
+                b.next().noSleep();
+            };
+        };
+
+        if(GLB_timer.sec && Math.abs(b.presTmp) > 0.0) {
+            b.ex_updatePresSupplyTargets();
+        };
+
+        // Apply damage if over limit
+        if(
+            !GLB_param.UPDATE_DEEP_SUPPRESSED && GLB_timer.secQuarter && LCRand.chance(UTIL_rand.get("pressure"), 0.25)
+                && (
+                    (b.presTmp + b.presExtra) > 0.0 ?
+                        ((b.presTmp + b.presExtra) > (b.block.delegee.presRes + PRES_RES_TOL)) :
+                        ((b.presTmp + b.presExtra) < (b.block.delegee.vacRes - PRES_RES_TOL))
+                )
+        ) {
+            b.damagePierce((b.maxHealth * GLB_var.param.presDmgFrac + GLB_var.param.presDmgMin) * (
+                b.presTmp > 0.0 ?
+                    (b.presTmp / Math.max(b.block.delegee.presRes, 0.0001)) :
+                    (-b.presTmp / Math.max(-b.block.delegee.vacRes, 0.0001))
+            ));
+        };
+
+        // Pressure drop
+        b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase / 60.0 * Time.delta);
+
+        // Supply abstract fluid
+        if(!b.block.delegee.skipPresSupply && b.presSupplyTargets.length > 0 && Math.abs(b.presTmp) > 0.0) {
+            b.presSupplyIncre++;
+            let b_t = b.presSupplyTargets[b.presSupplyIncre % b.presSupplyTargets.length];
+            if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
+                let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
+                let consAmt = MDL_recipeDict.getConsAmtByBuild(b.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, b_t);
+                LCCraftingHandler.addLiquid(b_t, null, b.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, addAmt, false, false, true);
+                if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
+                    b_t.damagePierce((b_t.maxHealth * GLB_var.param.presDmgFrac + GLB_var.param.presDmgMin) / 5.0);
+                };
+            };
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @param {Building} b_f
+     * @param {Item} item
+     * @return {boolean}
+     */
+    function comp_acceptItem(b, b_f, item) {
+        let presThr = b.block.delegee.presThr;
+        if(presThr.fEqual(0.0)) return true;
+        return presThr > 0.0 ?
+            b.presTmp >= presThr - PRES_THR_TOL :
+            b.presTmp <= presThr + PRES_THR_TOL;
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @param {Building} b_f
+     * @param {Liquid} liq
+     * @return {boolean}
+     */
+    function comp_acceptLiquid(b, b_f, liq) {
+        let presThr = b.block.delegee.presThr;
+        if(presThr.fEqual(0.0)) return true;
+        return presThr > 0.0 ?
+            b.presTmp >= presThr - 0.15 :
+            b.presTmp <= presThr + 0.15;
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @return {void}
+     */
+    function comp_ex_updatePresFetchTargets(b) {
+        b.presFetchTargets.clear();
+        // Find all possible pressure sources
+        b.proximity.each(ob => {
+            if(ob.block instanceof MultiBlockLinkBlock) {
+                ob = ob.linkedBuild;
+            };
+            if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b) && !b.presTransCountTmpBs.includes(ob)) {
+                b.presTransCount++;
+                b.presTransCountTmpBs.push(ob);
+            };
+            if(ob.ex_getPres != null && b.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.ex_checkPresSupplyValid(b))) {
+                b.presFetchTargets.push(ob);
+            };
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @return {void}
+     */
+    function comp_ex_updatePresSupplyTargets(b) {
+        b.presSupplyTargets.clear();
+        // Find all possible pressure consumers
+        b.proximity.each(ob => {
+            ob = ob.getLiquidDestination(b, GLB_varGen.auxPres);
+            if(ob == null) return;
+            if(ob.block instanceof MultiBlockLinkBlock) {
+                ob = ob.linkedBuild;
+            };
+            if((ob.acceptLiquid(b, GLB_varGen.auxPres) || ob.acceptLiquid(b, GLB_varGen.auxVac)) && b.ex_checkPresSupplyValid(ob)) {
+                b.presSupplyTargets.push(ob);
+            };
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPressureBlock} b
+     * @return {void}
+     */
+    function comp_ex_updatePresTarget(b) {
+        b.presTarget = b.presBase;
+        b.presFetchTargets.forEachFast(ob => {
+            if(ob.isAdded() && ob.enabled && !ob.isPayload()) {
+                b.presTarget += tryFun(ob.ex_getPres, ob, 0.0) * tryFun(ob.ex_getPresTransScl, ob, 1.0, b);
+            };
+        }, true);
+    };
 
 
 /*
@@ -180,346 +277,374 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles methods for pressure.
-     * Only used for rotatable blocks for now, due to how pressure is transferred.
-     * @class INTF_BLK_pressureBlock
-     */
-    new CLS_interface("INTF_BLK_pressureBlock", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Pressure required for this block to operate, negative for vacuum.
-         * @memberof INTF_BLK_pressureBlock
-         * @instance
+         * Handles methods for pressure.
+         * Only used for rotatable blocks for now, due to how pressure is transferred.
+         * @class INTF_BLK_pressureBlock
          */
-        presThr: 0.0,
+        new CLS_interface("INTF_BLK_pressureBlock", {
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Pressure required for this block to operate, negative for vacuum.
+                     * @memberof INTF_BLK_pressureBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    presThr: 0.0,
+                    /**
+                     * `PARAM`: If true, this block does not supply pressure/vacuum for nearby consumers.
+                     * @memberof INTF_BLK_pressureBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    skipPresSupply: false,
+                    /**
+                     * `PARAM`: If true, pressure will be transferred in three directions.
+                     * @memberof INTF_BLK_pressureBlock
+                     * @instance
+                     * @type {boolean}
+                     */
+                    isPresRouter: false,
+
+
+                    /* <------------------------------ internal ------------------------------> */
+
+
+                    /**
+                     * `INTERNAL`: Pressure resistance.
+                     * @memberof INTF_BLK_pressureBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    presRes: 0.0,
+                    /**
+                     * `INTERNAL`: Vacuum resistance.
+                     * @memberof INTF_BLK_pressureBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    vacRes: 0.0,
+
+
+                };
+            },
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+            setBars: function() {
+                comp_setBars(this);
+            },
+
+
+        }),
+
+
         /**
-         * `PARAM`: If true, this block does not supply pressure/vacuum for nearby consumers.
-         * @memberof INTF_BLK_pressureBlock
-         * @instance
+         * @class INTF_B_pressureBlock
          */
-        skipPresSupply: false,
-        /**
-         * `PARAM`: If true, pressure will be transferred in three directions.
-         * @memberof INTF_BLK_pressureBlock
-         * @instance
-         */
-        isPresRouter: false,
+        new CLS_interface("INTF_B_pressureBlock", {
 
 
-        /* <------------------------------ internal ------------------------------> */
+            __paramObjM__: function() {
+                return {
 
 
-        /**
-         * `INTERNAL`
-         * @memberof INTF_BLK_pressureBlock
-         * @instance
-         */
-        presRes: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_BLK_pressureBlock
-         * @instance
-         */
-        vacRes: 0.0,
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      }),
+                    /**
+                     * `INTERNAL` Gained from other buildings that actively dump pressure. See {@link INTF_BLK_pressureProducer}.
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    presBase: 0.0,
+                    /**
+                     * `INTERNAL` Current real amount of pressure.
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    presTmp: 0.0,
+                    /**
+                     * `INTERNAL` Target pressure, very volatile. Sum of base pressure and transferred pressure.
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    presTarget: 0.0,
+                    /**
+                     * `INTERNAL`: Will be added for bars and pressure damage check, has no effect on pressure transferred.
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {number}
+                     */
+                    presExtra: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {TDynamic<Array<Building>>}
+                     */
+                    presFetchTargets: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {TDynamic<Array<Building>>}
+                     */
+                    presTransCount: 0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {TDynamic<Array<Building>>}
+                     */
+                    presTransCountTmpBs: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {TDynamic<Array<Building>>}
+                     */
+                    presSupplyTargets: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pressureBlock
+                     * @instance
+                     * @type {TDynamic<Array<Building>>}
+                     */
+                    presSupplyIncre: 0,
 
 
-      init: function() {
-        comp_init(this);
-      },
+                };
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            onDestroyed: function() {
+                comp_onDestroyed(this);
+            },
 
 
-      setBars: function() {
-        comp_setBars(this);
-      },
+            onProximityUpdate: function() {
+                comp_onProximityUpdate(this);
+            },
 
 
-    }),
+            pickedUp: function() {
+                comp_pickedUp(this);
+            },
 
 
-    /**
-     * @class INTF_B_pressureBlock
-     */
-    new CLS_interface("INTF_B_pressureBlock", {
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      __paramObjM__: () => ({
+            acceptItem: function(b_f, item) {
+                return comp_acceptItem(this, b_f, item);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-        /* <------------------------------ internal ------------------------------> */
+            acceptLiquid: function(b_f, liq) {
+                return comp_acceptLiquid(this, b_f, liq);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-        /**
-         * `INTERNAL` Gained from other buildings that actively dump pressure. See {@link INTF_BLK_pressureProducer}.
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presBase: 0.0,
-        /**
-         * `INTERNAL` Current real amount of pressure.
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presTmp: 0.0,
-        /**
-         * `INTERNAL` Target pressure, very volatile. Sum of base pressure and transferred pressure.
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presTarget: 0.0,
-        /**
-         * `INTERNAL`: Will be added for bars and pressure damage check, has no effect on pressure transferred.
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presExtra: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presFetchTargets: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presTransCount: 0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presTransCountTmpBs: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presSupplyTargets: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pressureBlock
-         * @instance
-         */
-        presSupplyIncre: 0,
+            /**
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updatePresFetchTargets: function() {
+                comp_ex_updatePresFetchTargets(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      }),
+            /**
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updatePresSupplyTargets: function() {
+                comp_ex_updatePresSupplyTargets(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      onDestroyed: function() {
-        comp_onDestroyed(this);
-      },
+            /**
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updatePresTarget: function() {
+                comp_ex_updatePresTarget(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
+            /**
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_checkIsPresRouter: function() {
+                return this.block.delegee.isPresRouter;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      pickedUp: function() {
-        comp_pickedUp(this);
-      },
+            /**
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @param {Building} ob
+             * @return {boolean}
+             */
+            ex_checkPresFetchSideValid: function(ob) {
+                return this.ex_checkIsPresRouter() ?
+                    false :
+                    !MDL_cond.isNoSideBlock(this.block) ?
+                        true :
+                        (MDL_cond.isFluidConduit(this.block) && MDL_cond.isFluidConduit(ob.block));
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            /**
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @param {Building} ob
+             * @return {boolean}
+             */
+            ex_checkPresFetchValid: function(ob) {
+                return LCGeometry.accept(
+                    ob, this, ob.ex_checkIsPresRouter(),
+                    this.ex_checkPresFetchSideValid(ob),
+                );
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      acceptItem: function(b_f, item) {
-        return comp_acceptItem(this, b_f, item);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            /**
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @param {Building} ob
+             * @return {boolean}
+             */
+            ex_checkPresSupplyValid: function(ob) {
+                return LCGeometry.accept(this, ob, this.ex_checkIsPresRouter(), true);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      acceptLiquid: function(b_f, liq) {
-        return comp_acceptLiquid(this, b_f, liq);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            /**
+             * `REALIZED`
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @return {number}
+             * @lovecAttached
+             */
+            ex_getPres: function() {
+                return this.presTmp;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @return {void}
-       */
-      ex_updatePresFetchTargets: function() {
-        comp_ex_updatePresFetchTargets(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * Extra multiplier on pressure transferred to another pressure block.
+             * @memberof INTF_B_pressureBlock
+             * @instance
+             * @func
+             * @param {Building} b_t
+             * @return {number}
+             */
+            ex_getPresTransScl: function(b_t) {
+                return !this.ex_checkIsPresRouter() || this.presTransCount === 0 ? 1.0 : (1.0 / this.presTransCount);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      /**
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @return {void}
-       */
-      ex_updatePresSupplyTargets: function() {
-        comp_ex_updatePresSupplyTargets(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * @memberof INTF_BLK_pressureBlock
+             * @instance
+             * @func
+             * @param {Writes|Reads} wr0rd
+             * @return {void}
+             */
+            ex_processData: function(wr0rd) {
+                processData(
+                    wr0rd,
+                    wr => {
+                        wr.f(this.presTmp);
+                    },
+                    rd => {
+                        let pres = rd.f();
+                        this.presTmp = pres;
+                        this.presTarget = pres;
+                    },
+                );
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-      /**
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @return {void}
-       */
-      ex_updatePresTarget: function() {
-        comp_ex_updatePresTarget(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+        }),
 
 
-      /**
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @return {boolean}
-       */
-      ex_checkIsPresRouter: function() {
-        return this.block.delegee.isPresRouter;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @param {Building} ob
-       * @return {boolean}
-       */
-      ex_checkPresFetchSideValid: function(ob) {
-        return this.ex_checkIsPresRouter() ?
-          false :
-          !MDL_cond.isNoSideBlock(this.block) ?
-            true :
-            (MDL_cond.isFluidConduit(this.block) && MDL_cond.isFluidConduit(ob.block));
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @param {Building} ob
-       * @return {boolean}
-       */
-      ex_checkPresFetchValid: function(ob) {
-        return LCGeometry.accept(
-          ob, this, ob.ex_checkIsPresRouter(),
-          this.ex_checkPresFetchSideValid(ob),
-        );
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @param {Building} ob
-       * @return {boolean}
-       */
-      ex_checkPresSupplyValid: function(ob) {
-        return LCGeometry.accept(this, ob, this.ex_checkIsPresRouter(), true);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @return {number}
-       */
-      ex_getPres: function() {
-        return this.presTmp;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Extra multiplier on pressure transferred to another pressure block.
-       * @memberof INTF_B_pressureBlock
-       * @instance
-       * @param {Building} b_t
-       * @return {number}
-       */
-      ex_getPresTransScl: function(b_t) {
-        return !this.ex_checkIsPresRouter() || this.presTransCount === 0 ? 1.0 : (1.0 / this.presTransCount);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @memberof INTF_BLK_pressureBlock
-       * @instance
-       * @param {Writes|Reads} wr0rd
-       * @return {void}
-       */
-      ex_processData: function(wr0rd) {
-        processData(
-          wr0rd,
-
-          wr => {
-            wr.f(this.presTmp);
-          },
-
-          rd => {
-            let pres = rd.f();
-            this.presTmp = pres;
-            this.presTarget = pres;
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-    }),
-
-
-  ];
+    ];

@@ -81,7 +81,7 @@
               blk.ex_placePlanTarget(b.team, b.tileX(), b.tileY(), b.rotation);
             });
             let ot = blk.ex_getPlanT(b.tileX(), b.tileY(), b.rotation, blk.centerPon2.x, blk.centerPon2.y);
-            MDL_effect.showAt(ot.worldx() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), ot.worldy() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), EFF.fadePlacePack[blk.planSize], 0.0);
+            MDL_effect.showAt(ot.worldx() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), ot.worldy() + (blk.planSize % 2 === 0 ? 4.0 : 0.0), GLB_eff.fadePlacePack[blk.planSize], 0.0);
             MDL_sound.playAt(ot.worldx(), ot.worldy(), blk.placeBlk.placeSound);
             blk.ex_removePlanBlks(b.delegee.constructionPlan);
           };
@@ -177,7 +177,7 @@
       ot.setBlock(blk.placeBlk, team, Mathf.mod(rot + blk.placeOffRot, 4));
       MDL_effect.fadeText(ot.worldx() + blk.placeBlk.offset, ot.worldy() + blk.placeBlk.offset, MDL_bundle.getInfo("lovec", "construction-complete"), Pal.accent, blk.placeBlk.size * 0.5);
       Time.run(0.0, () => {
-        if(ot.build != null && ot.build.block === blk.placeBlk) TRIGGER.constructionComplete.fire(ot.build);
+        if(ot.build != null && ot.build.block === blk.placeBlk) BOX_trigger.constructionComplete.fire(ot.build);
       });
     };
   };
@@ -327,7 +327,7 @@
         };
         if(blkCur !== Blocks.air && blkCur.size === 1) {
           matArr[j][i] = (function(blkCur) {
-            return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture.getRegBlk(blkCur)), Styles.clearNonei, 32.0, () => VAR.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
+            return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture.getRegBlk(blkCur)), Styles.clearNonei, 32.0, () => GLB_var.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
           })(blkCur);
         } else if(blkCur === Blocks.air) {
           k = j;
@@ -340,7 +340,7 @@
                 l = kCap;
                 while(l >= 0) {
                   matArr[j + k][i + l] = (function(blkCur, k, l) {
-                    return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture.getRegBlkTileCut(blkCur, l, k)), Styles.clearNonei, 32.0, () => VAR.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
+                    return tb1 => tb1.button(new TextureRegionDrawable(MDL_texture.getRegBlkTileCut(blkCur, l, k)), Styles.clearNonei, 32.0, () => GLB_var.dialog.ct3.show(blkCur)).tooltip(blkCur.localizedName, true);
                   })(blkCur, k, l);
                   l--;
                 };
@@ -365,7 +365,7 @@
           if(matArr[j][i] != null) {
             matArr[j][i](tb1);
           } else {
-            tb1.button(VARGEN.icons.dot, Styles.clearNonei, 32.0, () => {});
+            tb1.button(GLB_varGen.icons.dot, Styles.clearNonei, 32.0, () => {});
           };
           i++;
         };
@@ -405,7 +405,7 @@
 
 
   function comp_updateTile(b) {
-    if(!PARAM.UPDATE_SUPPRESSED && b.underConstruction) {
+    if(!GLB_param.UPDATE_SUPPRESSED && b.underConstruction) {
       if(!Vars.net.client() && b.constructionTimeCur >= b.block.delegee.constructionTimeReq) {
         b.configure("SPEC: complete");
       };
@@ -414,7 +414,7 @@
         Vars.control.sound.loop(fetchSound("SOUNDS: loopBuild"), b, 1.3);
       };
 
-      if(!Vars.net.client() && TIMER.secFive) {
+      if(!Vars.net.client() && GLB_timer.secFive) {
         // Deconstruction during construction?
         if(!b.block.ex_checkPlanComplete(b.team, b.constructionPlan)) b.configure("SPEC: stop");
       };
@@ -441,7 +441,7 @@
        MDL_table.btnCfg(tb, b, () => {
          b.configure("SPEC: stop");
          b.deselect();
-       }, VARGEN.icons.cross).tooltip(MDL_bundle.getTerm("lovec", "construction-stop"), true) :
+       }, GLB_varGen.icons.cross).tooltip(MDL_bundle.getTerm("lovec", "construction-stop"), true) :
        MDL_table.btnCfg(tb, b, () => {
          if(!b.block.ex_checkPlanComplete(b.team, b.constructionPlan)) {
            MDL_ui.showFadeInfo("lovec", "structure-incomplete");
@@ -449,14 +449,14 @@
          };
          b.configure("SPEC: start");
          b.deselect();
-       }, VARGEN.icons.check).tooltip(MDL_bundle.getTerm("lovec", "construction-start"), true);
+       }, GLB_varGen.icons.check).tooltip(MDL_bundle.getTerm("lovec", "construction-start"), true);
   };
 
 
   function comp_ex_stopConstruction(b) {
     b.underConstruction = false;
     b.constructionTimeCur = 0.0;
-    EFF.fadeRemovePack[b.block.size].at(b);
+    GLB_eff.fadeRemovePack[b.block.size].at(b);
   };
 
 

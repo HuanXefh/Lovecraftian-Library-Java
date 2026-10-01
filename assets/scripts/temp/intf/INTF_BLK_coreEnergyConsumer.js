@@ -78,10 +78,10 @@
     function comp_updateTile(b) {
         if(!b.block.delegee.useCep) return;
 
-        if(TIMER.effc) {
+        if(GLB_timer.effc) {
             b.cepEffc = FRAG_faci.getCepEffcCur(b.team);
         };
-        if(TIMER.coreSignal && b.efficiency > 0.0 && b.shouldConsume()) {
+        if(GLB_timer.coreSignal && b.efficiency > 0.0 && b.shouldConsume()) {
             MDL_effect.coreSignal(b.x, b.y, b.team, b.block.size * 0.6 * Vars.tilesize);
         };
     };

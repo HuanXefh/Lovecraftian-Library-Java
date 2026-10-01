@@ -287,7 +287,7 @@
 
         let cell = tb.add(str).wrap();
         if(readParam(paramObj, "w") == null) {
-            cell.width(MDL_ui.getUiW(null, null, readParam(paramObj, "padOrd", 0) * VAR.length.ordW));
+            cell.width(MDL_ui.getUiW(null, null, readParam(paramObj, "padOrd", 0) * GLB_var.length.ordW));
         };
         handleParamObj(cell, paramObj);
 
@@ -949,7 +949,7 @@
         innerParamObj = processNullParam(
             innerParamObj,
             "size", 32.0,
-            "ctDial", VAR.dialog.ct1,
+            "ctDial", GLB_var.dialog.ct1,
         );
         boxParamObj = processNullParam(
             boxParamObj,
@@ -1101,7 +1101,7 @@
             if(scr != null) {
                 tb.table(Styles.none, tb1 => {
                     tb1.left();
-                    tb1.button("?", () => scr()).size(VAR.length.charBtnW);
+                    tb1.button("?", () => scr()).size(GLB_var.length.charBtnW);
                 });
             };
         },
@@ -1547,7 +1547,7 @@
                         btn.setDisabled(useAutoSelection);
                         // Double equality, string returned here is an object
                         btn.setChecked(headerF() == rcHeader);
-                        if(TIMER.secHalf) {
+                        if(GLB_timer.secHalf) {
                             btn.getStyle().imageUp = !rc.validCheck(b) ?
                                 Icon.lock :
                                 rc.unlockedCheck() ?
@@ -1592,7 +1592,7 @@
         iconParamObj = processNullParam(
             iconParamObj,
             "size", 64.0,
-            "ctDial", VAR.dialog.ct2,
+            "ctDial", GLB_var.dialog.ct2,
         );
         boxParamObj = processNullParam(
             boxParamObj,
@@ -1662,7 +1662,7 @@
                 )),
                 () => fetchDialog("cts").ex_show(
                     factionBundle.color(factionColor),
-                    VARGEN.factionBlksMap.get(faction),
+                    GLB_varGen.factionBlksMap.get(faction),
                     true,
                 ),
             )
@@ -1724,7 +1724,7 @@
             cont.table(Tex.whiteui, tb1 => {
                 tb1.left().setColor(Pal.darkestGray);
                 margin(tb1, 0.5);
-                setCtLi(tb1, VARGEN.famiBlksMap.get(fami), iconParamObj);
+                setCtLi(tb1, GLB_varGen.famiBlksMap.get(fami), iconParamObj);
             })
             .left()
             .growX()

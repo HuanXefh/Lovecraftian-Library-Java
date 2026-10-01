@@ -464,7 +464,7 @@
         );
         this.handleCtLi(
             rc,
-            VARGEN.tagIntmdsMap.get("rs-sol").filter(liq => liq.delegee.intmdParent != null && LCDBFileHandler.read("liquid-solvent", liq.delegee.solvent) != null),
+            GLB_varGen.tagIntmdsMap.get("rs-sol").filter(liq => liq.delegee.intmdParent != null && LCDBFileHandler.read("liquid-solvent", liq.delegee.solvent) != null),
             null,
             metaObj,
             (liq, metaObj) => {
@@ -505,7 +505,7 @@
 
         this.handleCtLi(
             rc,
-            VARGEN.tagIntmdsMap.get("rs-dust").filter(item => !DB_recipe.db["genData"]["pulverization"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !VARGEN.tagIntmdsMap.get("rs-chunks").some(oitem => item.delegee.intmdParent === oitem.delegee.intmdParent)),
+            GLB_varGen.tagIntmdsMap.get("rs-dust").filter(item => !DB_recipe.db["genData"]["pulverization"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !GLB_varGen.tagIntmdsMap.get("rs-chunks").some(oitem => item.delegee.intmdParent === oitem.delegee.intmdParent)),
             null,
             metaObj,
             (item, metaObj) => ({
@@ -703,7 +703,7 @@
 
         this.handleCtLi(
             rc,
-            VARGEN.tagIntmdsMap.get("rs-chunks").filter(item => !DB_recipe.db["genData"]["rockCrushing"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+            GLB_varGen.tagIntmdsMap.get("rs-chunks").filter(item => !DB_recipe.db["genData"]["rockCrushing"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
             null,
             metaObj,
             (item, metaObj) => ({
@@ -778,7 +778,7 @@
         this.setCateg("raw-ore-block-crushing");
         this.handleCtLi(
             rc,
-            VARGEN.rawOreBlks,
+            GLB_varGen.rawOreBlks,
             blk => MDL_content.getCt(Object.keyByVal(LCDBFileHandler.getDataObj("item-payload-block"), blk.name, null), ContentGetModes.RS),
             metaObj,
             (item, metaObj) => ({
@@ -809,7 +809,7 @@
             this.setCateg("sintering");
             this.handleCtLi(
                 rc,
-                VARGEN.tagIntmdsMap.get("rs-dust").filter(item => !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+                GLB_varGen.tagIntmdsMap.get("rs-dust").filter(item => !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
                 null,
                 metaObj,
                 (item, metaObj) => ({
@@ -823,7 +823,7 @@
             this.setCateg("concentrate-sintering");
             this.handleCtLi(
                 rc,
-                VARGEN.tagIntmdsMap.get("rs-chunks").concat(VARGEN.tagIntmdsMap.get("rs-dust")).filter(item => item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+                GLB_varGen.tagIntmdsMap.get("rs-chunks").concat(GLB_varGen.tagIntmdsMap.get("rs-dust")).filter(item => item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
                 null,
                 metaObj,
                 (item, metaObj) => ({

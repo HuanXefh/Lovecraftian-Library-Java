@@ -48,7 +48,7 @@
 
 
         this.load();
-        TRIGGER.mapChange.addGlobalListener(nameMap => {
+        BOX_trigger.mapChange.addGlobalListener(nameMap => {
             this.timeScl = 1.0;
             Time.setDeltaProvider(() => Core.graphics.getDeltaTime() * 60.0);
             this.rebuild();
@@ -111,7 +111,7 @@
 
         (function() {
             let obj = DB_misc.db["mod"]["dragButton"];
-            return !PARAM.MODDED ?
+            return !GLB_param.MODDED ?
                 obj["base"] :
                 obj["base"].concat(obj["modded"]);
         })()

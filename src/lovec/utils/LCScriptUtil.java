@@ -23,13 +23,13 @@ public class LCScriptUtil {
     private static final String splitterStringTag = "S@";
     private static final String splitterNullTag = "N@";
 
-    @FromScript(source = "VARGEN")
+    @FromScript(source = "GLB_varGen")
     public static Liquid auxPres;
-    @FromScript(source = "VARGEN")
+    @FromScript(source = "GLB_varGen")
     public static Liquid auxVac;
-    @FromScript(source = "VARGEN")
+    @FromScript(source = "GLB_varGen")
     public static Liquid auxTor;
-    @FromScript(source = "VARGEN")
+    @FromScript(source = "GLB_varGen")
     public static Liquid auxRpm;
 
 
@@ -162,55 +162,55 @@ public class LCScriptUtil {
     };
 
 
-    /* <-------------------- PARAM --------------------> */
+    /* <-------------------- GLB_param --------------------> */
 
 
     /**
-     * Gets a condition in <code>PARAM</code>.
+     * Gets a condition in <code>GLB_param</code>.
      */
     @SuppressWarnings("ConstantConditions")
     public static boolean getParamCond(String name) {
-        return (boolean) LCScript.get(name, PARAM);
+        return (boolean) LCScript.get(name, GLB_param);
     };
 
 
     /**
-     * Gets a number in <code>PARAM</code>.
+     * Gets a number in <code>GLB_param</code>.
      */
     public static float getParamNum(String name) {
-        return LCScript.toFloat(LCScript.get(name, PARAM));
+        return LCScript.toFloat(LCScript.get(name, GLB_param));
     };
 
 
     /**
-     * Gets a string in <code>PARAM</code>.
+     * Gets a string in <code>GLB_param</code>.
      */
     public static String getParamStr(String name) {
-        return LCScript.toString(LCScript.get(name, PARAM));
+        return LCScript.toString(LCScript.get(name, GLB_param));
     };
 
 
-    /* <-------------------- TIMER --------------------> */
+    /* <-------------------- GLB_timer --------------------> */
 
 
     /**
-     * Gets timer state in <code>TIMER</code>.
+     * Gets timer state in <code>GLB_timer</code>.
      */
     @SuppressWarnings("ConstantConditions")
     public static boolean checkTimer(String name) {
-        return (boolean) LCScript.get(name, TIMER);
+        return (boolean) LCScript.get(name, GLB_timer);
     };
 
 
-    /* <-------------------- PARAM --------------------> */
+    /* <-------------------- BOX_trigger --------------------> */
 
 
     /**
-     * Fires a trigger defined in <code>TRIGGER</code>.
+     * Fires a trigger defined in <code>BOX_trigger</code>.
      * The first argument should be trigger name.
      */
     public static void fireTrigger(Object... args) {
-        LCScript.invoke("fire", TRIGGER, args);
+        LCScript.invoke("fire", BOX_trigger, args);
     };
 
 

@@ -556,7 +556,7 @@
 
 
       version: function() {
-        return this.super$version() + VAR.lovecReviOff + VAR.lovecRevi;
+        return this.super$version() + GLB_var.lovecReviOff + GLB_var.lovecRevi;
       },
 
 
@@ -573,7 +573,7 @@
 
       readAll: function(rd, revi) {
         this.readBase(rd);
-        this.LCRevi = revi < VAR.lovecReviOff ? 5 : (revi - VAR.lovecReviOff - this.super$version());
+        this.LCRevi = revi < GLB_var.lovecReviOff ? 5 : (revi - GLB_var.lovecReviOff - this.super$version());
         if(this.LCRevi >= 6) {
           this.LCReviSub = rd.s();
         };
@@ -659,7 +659,7 @@
        * @return {void}
        */
       ex_drawRcIcon: function() {
-        if(PARAM.SHOULD_DRAW_RECIPE_ICON) {
+        if(GLB_param.SHOULD_DRAW_RECIPE_ICON) {
           let icon = this.ex_getRcIcon();
           if(icon != null) {
             let regScl = Math.min(this.block.size * 0.5, 2.0) * (Mathf.absin(12.0, 0.3) + 1.0);
@@ -672,7 +672,7 @@
               this.ex_getRcIcon(),
               this.block.size,
               regScl,
-              VAR.layer.rcIcon,
+              GLB_var.layer.rcIcon,
             );
           };
         };

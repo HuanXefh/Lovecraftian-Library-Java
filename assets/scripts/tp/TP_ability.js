@@ -97,7 +97,7 @@
                 ounit.apply(this.sta, this.staDur);
             });
 
-            MDL_effect.showAt(unit.x, unit.y, this.rad < 16.0 ? EFF.explosionSmall : EFF.explosion, 0.0);
+            MDL_effect.showAt(unit.x, unit.y, this.rad < 16.0 ? GLB_eff.explosionSmall : GLB_eff.explosion, 0.0);
             MDL_effect.shake(unit.x, unit.y, this.dmg / 160.0);
             MDL_sound.playAt(unit.x, unit.y, this.sound, 1.0, 1.0, 0.1);
         },
@@ -145,7 +145,7 @@
          * @return {void}
          */
         init(utp) {
-            TRIGGER.abilityDataInit.addGlobalListener(() => {
+            BOX_trigger.abilityDataInit.addGlobalListener(() => {
                 this.timerMap.clear();
             });
         },
@@ -241,7 +241,7 @@
          * @return {void}
          */
         init(utp) {
-            TRIGGER.abilityDataInit.addGlobalListener(() => {
+            BOX_trigger.abilityDataInit.addGlobalListener(() => {
                 this.progMap.clear();
                 this.inCdMap.clear();
             });
@@ -312,7 +312,7 @@
          * @return {void}
          */
         draw(unit) {
-            if(!PARAM.SHOULD_DRAW_UNIT_RELOAD) return;
+            if(!GLB_param.SHOULD_DRAW_UNIT_RELOAD) return;
 
             MDL_draw.unitReload(
                 unit, null,
@@ -367,7 +367,7 @@
          * @return {void}
          */
         init(utp) {
-            TRIGGER.abilityDataInit.addGlobalListener(() => {
+            BOX_trigger.abilityDataInit.addGlobalListener(() => {
                 this.timerMap.clear();
             });
         },

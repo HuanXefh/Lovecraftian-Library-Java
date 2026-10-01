@@ -33,7 +33,7 @@
       b.delegee.rpmCur = b.ex_calcRpmTarget();
       MDL_effect.click(b.x, b.y, b.team.color);
       MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
-      TRIGGER.torqueBlockConfigure.fire(b);
+      BOX_trigger.torqueBlockConfigure.fire(b);
     });
   };
 
@@ -56,8 +56,8 @@
       unit.impulse(Tmp.v1.set(unit).sub(b).rotate90(Mathf.sign(!b.isInv)).nor().scl(b.rpmCur * 3.0 * b.block.size / Math.max(dst * 0.7, 1.0))) :
       MDL_call.rotateUnit(unit, b.rpmCur * 0.2 * Mathf.sign(!b.isInv));
 
-    if(TIMER.sec && b.rpmCur > 1.0) {
-      TRIGGER.cogwheelUnitSpin.fire(b, unit);
+    if(GLB_timer.sec && b.rpmCur > 1.0) {
+      BOX_trigger.cogwheelUnitSpin.fire(b, unit);
     };
   };
 
@@ -117,7 +117,7 @@
       return null;
     };
 
-    if(PARAM.ENABLE_TEST_DRAW) {
+    if(GLB_param.ENABLE_TEST_DRAW) {
       Fx.placeBlock.at(ob);
     };
 

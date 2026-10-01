@@ -128,7 +128,7 @@
      * @return {number}
      */
     const getUiScl = function() {
-        return Math.min(getScreenW() / VAR.length.bgW, getScreenH() / VAR.length.bgH);
+        return Math.min(getScreenW() / GLB_var.length.bgW, getScreenH() / GLB_var.length.bgH);
     };
     exports.getUiScl = getUiScl;
 
@@ -144,7 +144,7 @@
         if(w == null) w = 32.0;
         if(pad == null) pad = 4.0;
         if(ord == null) ord = 1;
-        return Math.max(Math.floor(getUiW(null, null, ord * VAR.length.ordW, 0.0) / (w + pad)), 7);
+        return Math.max(Math.floor(getUiW(null, null, ord * GLB_var.length.ordW, 0.0) / (w + pad)), 7);
     };
     exports.getColAmt = getColAmt;
 
@@ -198,7 +198,7 @@
     const showToast = function(nameMod, bp, icon, w) {
         if(nameMod == null) nameMod = "lovec";
         if(bp == null) bp = "test";
-        if(icon == null) icon = VARGEN.icons.ohno;
+        if(icon == null) icon = GLB_varGen.icons.ohno;
         if(w == null) w = -1.0;
         Vars.ui.hudfrag.showToast(icon, w, MDL_bundle.getInfo(nameMod, bp));
     }
@@ -311,8 +311,8 @@
      * @return {void}
      */
     const clearDialFlow = function() {
-        UTIL_dialogFlow.TRIGGER_BACKGROUND = false;
-        UTIL_dialogFlow.TRIGGER_MUSIC = false;
+        UTIL_dialogFlow.BOX_trigger_BACKGROUND = false;
+        UTIL_dialogFlow.BOX_trigger_MUSIC = false;
         LCSoundControl.stop();
         UTIL_dialogFlow.removeTextCur();
         UTIL_dialogFlow.clearRead();
@@ -390,8 +390,8 @@
         UTIL_dialogFlow.getPool("bg").push(actor);
 
         actor.table(new TextureRegionDrawable(Core.atlas.find(nameBg)), tb => {})
-        .width(VAR.length.bgW * getUiScl())
-        .height(VAR.length.bgH * getUiScl())
+        .width(GLB_var.length.bgW * getUiScl())
+        .height(GLB_var.length.bgH * getUiScl())
         .row();
 
         setActorPos(actor);
@@ -467,11 +467,11 @@
             if(charaColorArg instanceof Color) {
                 tb.setColor(charaColorArg);
             } else if(typeof charaColorArg === "boolean" && charaColorArg) {
-                tb.setColor(VAR.color.darkMix);
+                tb.setColor(GLB_var.color.darkMix);
             };
         })
-        .width(VAR.length.charaW * getUiScl() / global.lovecUtil.prop.uiScale)
-        .height(VAR.length.charaH * getUiScl() / global.lovecUtil.prop.uiScale)
+        .width(GLB_var.length.charaW * getUiScl() / global.lovecUtil.prop.uiScale)
+        .height(GLB_var.length.charaH * getUiScl() / global.lovecUtil.prop.uiScale)
         .row();
 
         let done = false;

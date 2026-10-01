@@ -25,7 +25,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.rsCur) b.lastRs = b.items.first();
+    if(GLB_timer.rsCur) b.lastRs = b.items.first();
   };
 
 
@@ -38,7 +38,7 @@
   function comp_drawSelect(b) {
     LCDraw.contentIcon(b.x, b.y, b.lastRs, b.block.size, 0.75);
 
-    if(PARAM.SHOULD_DRAW_ROUTER_HERESY && b.nextToRouter) {
+    if(GLB_param.SHOULD_DRAW_ROUTER_HERESY && b.nextToRouter) {
       b.proximity.each(ob => {
         if(MDL_cond.isClassicRouter(ob.block)) LCDrawf.areaShrink(ob.tile, ob.block.size, Pal.remove);
       });

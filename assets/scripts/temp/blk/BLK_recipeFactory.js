@@ -168,6 +168,5 @@
     tmpIntfs.clear();
     if(obj.blk$isErekirHeatConsumer) tmpIntfs.push(HeatConsumer);
     if(obj.blk$isErekirHeatProducer) tmpIntfs.push(HeatBlock);
-
     return tmpIntfs;
   };

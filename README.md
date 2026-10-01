@@ -10,7 +10,7 @@ Library features:
 
 - Prototype-based JavaScript class structure and methods.
 
-- Content templates that inherits properties and methods for adding contents, which also supports JSON/HJSON.
+- Content templates that inherit properties and methods for adding contents, which also support JSON/HJSON.
 
 - Code for multi-crafters and more.
 

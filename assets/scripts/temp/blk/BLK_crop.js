@@ -32,7 +32,7 @@
     blk.config(JAVA.string, (b, str) => {
       if(str === "SPEC: harvest") {
         b.ex_harvest();
-        TRIGGER.cropHarvest.fire(b, b.delegee.stageItem);
+        BOX_trigger.cropHarvest.fire(b, b.delegee.stageItem);
       };
     });
 
@@ -133,7 +133,7 @@
         "scl", 1.0,
         "mag", 1.0,
         "wob", 1.0,
-        "z", VAR.layer.cropLow,
+        "z", GLB_var.layer.cropLow,
         "offSha", -4.0,
         "drawF", function(b) {b.block.ex_drawCropDef(b)},
       );
@@ -159,7 +159,7 @@
 
 
   function comp_updateTile(b) {
-    if(TIMER.secQuarter) {
+    if(GLB_timer.secQuarter) {
       b.growFrac = b.growTime / b.block.delegee.growTotalTime;
     };
     if(!b.isFinalStage) {
@@ -228,7 +228,7 @@
 
 
   function comp_ex_harvest(b) {
-    MDL_call.spawnLoots_server(b.x, b.y, b.stageItem, b.stageItemAmt.randFreq(b.stageItemP), VAR.range.cropLootRad);
+    MDL_call.spawnLoots_server(b.x, b.y, b.stageItem, b.stageItemAmt.randFreq(b.stageItemP), GLB_var.range.cropLootRad);
     b.ex_changeStage(b.stageBackTo, true);
     MDL_effect.showAt(b.x, b.y, b.block.destroyEffect, 0.0);
     MDL_sound.playAt(b.x, b.y, b.block.destroySound);
@@ -313,7 +313,7 @@
       solid: false,
       underBullets: true,
       hasShadow: false,
-      destroyEffect: EFF.crackPlant,
+      destroyEffect: GLB_eff.crackPlant,
       placeSound: fetchSound("se-step-grass"),
       breakSound: fetchSound("se-step-grass"),
       destroySound: fetchSound("se-step-grass"),
@@ -424,8 +424,8 @@
           b.delegee.stageReg, b.delegee.stageShaReg,
           b.tile, b.delegee.stageCropRad, b.delegee.stageOffSha,
           b.delegee.stageCropScl, b.delegee.stageCropMag, b.delegee.stageCropWob,
-          PARAM.TREE_ALPHA, b.delegee.stageCropZ,
-          PARAM.SHOULD_DRAW_WOBBLE && !b.delegee.stageStatic, PARAM.SHOULD_CHECK_TREE_DISTANCE,
+          GLB_param.TREE_ALPHA, b.delegee.stageCropZ,
+          GLB_param.SHOULD_DRAW_WOBBLE && !b.delegee.stageStatic, GLB_param.SHOULD_CHECK_TREE_DISTANCE,
         );
       }
       .setProp({

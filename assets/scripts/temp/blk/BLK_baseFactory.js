@@ -17,7 +17,7 @@
 
 
   function comp_init(blk) {
-    blk.priority = VAR.priority.fac;
+    blk.priority = GLB_var.priority.fac;
     if(blk.setupVanillaProp) {
       if(blk.liquidOutputDirections != null) {
         blk.drawArrow = blk.liquidOutputDirections.length === 1 && blk.liquidOutputDirections[0] === -1;
@@ -59,7 +59,7 @@
 
 
   function comp_setBars(blk) {
-    if(!VAR.isMindustryX) {
+    if(!GLB_var.isMindustryX) {
       blk.addBar("lovec-prog", b => new Bar(
         prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
         prov(() => Pal.ammo),

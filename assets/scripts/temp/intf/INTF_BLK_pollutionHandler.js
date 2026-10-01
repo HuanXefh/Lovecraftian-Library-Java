@@ -5,57 +5,101 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_pollutionHandler>} INTFBLKPollutionHandler
+     */
 
 
-  function comp_init(blk) {
-    blk.polTol = MDL_pollution.getPolTol(blk);
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_pollutionHandler>} INTFBPollutionHandler
+     * @prop {INTFBLKPollutionHandler} block
+     */
 
 
-  function comp_setStats(blk, stats) {
-    if(blk.polTol > 0.0) stats.add(fetchStat("lovec", "blk-poltol"), blk.polTol, fetchStatUnit("lovec", "polunits"));
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_updateTile(b) {
-    if(b.blk$polTol < 0.0001) return;
-
-    b.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.blk$polTol);
-    b.polEffc = b.ex_calcPolEffc();
-
-    if(b.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {
-      MDL_effect.corrosion(b.x, b.y, b.block.size, Color.valueOf(Tmp.c1, "2f4108"));
+    /**
+     * @private
+     * @param {INTFBLKPollutionHandler} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.polTol = MDL_pollution.getPolTol(blk);
     };
-  };
 
 
-  function comp_updateEfficiencyMultiplier(b) {
-    b.efficiency *= b.polEffc;
-  };
+    /**
+     * @private
+     * @param {INTFBLKPollutionHandler} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        if(blk.polTol > 0.0) {
+            stats.add(fetchStat("lovec", "blk-poltol"), blk.polTol, fetchStatUnit("lovec", "polunits"));
+        };
+    };
 
 
-  function comp_ex_postUpdateEfficiencyMultiplier(b) {
-    comp_updateEfficiencyMultiplier(b);
-  };
+    /**
+     * @private
+     * @param {INTFBPollutionHandler} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(b.blk$polTol > 0.0) {
+            b.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.blk$polTol);
+            b.polEffc = b.ex_calcPolEffc();
+
+            if(b.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {
+                MDL_effect.corrosion(b.x, b.y, b.block.size, Color.valueOf(Tmp.c1, "2f4108"));
+            };
+        };
+    };
 
 
-  function comp_ex_calcPolEffc(b) {
-    return b.polExcess < 0.0001 ?
-      (
-        b.block.delegee.revertedPolEffc ?
-          0.0 :
-          1.0
-      ) :
-      Mathf.clamp(
-        b.block.delegee.revertedPolEffc ?
-          b.polExcess / b.blk$polTol :
-          (1.0 - b.polExcess / b.blk$polTol)
-      );
-  };
+    /**
+     * @private
+     * @param {INTFBPollutionHandler} b
+     * @return {void}
+     */
+    function comp_updateEfficiencyMultiplier(b) {
+        b.efficiency *= b.polEffc;
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPollutionHandler} b
+     * @return {void}
+     */
+    function comp_ex_postUpdateEfficiencyMultiplier(b) {
+        comp_updateEfficiencyMultiplier(b);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBPollutionHandler} b
+     * @return {void}
+     */
+    function comp_ex_calcPolEffc(b) {
+        return b.polExcess < 0.0001 ?
+            (
+                b.block.delegee.revertedPolEffc ?
+                    0.0 :
+                    1.0
+            ) :
+            Mathf.clamp(
+                b.block.delegee.revertedPolEffc ?
+                    (b.polExcess / b.blk$polTol) :
+                    (1.0 - b.polExcess / b.blk$polTol)
+            );
+    };
 
 
 /*
@@ -65,121 +109,131 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * @class INTF_BLK_pollutionHandler
-     */
-    new CLS_interface("INTF_BLK_pollutionHandler", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: If true, this block requires pollution to reache 100% efficiency. But why?
-         * @memberof INTF_BLK_pollutionHandler
-         * @instance
+         * @class INTF_BLK_pollutionHandler
          */
-        revertedPolEffc: false,
+        new CLS_interface("INTF_BLK_pollutionHandler", {
 
 
-        /* <------------------------------ internal ------------------------------> */
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: If true, this block requires pollution to reach 100% efficiency. But why?
+                     * @memberof INTF_BLK_pollutionHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    revertedPolEffc: false,
+
+
+                    /* <------------------------------ internal ------------------------------> */
+
+
+                    /**
+                     * `INTERNAL`: Pollution tolerance. If {@link INTF_BLK_pollutionHandler#revertedPolEffc} is true, this is pollution points required for 100% efficiency.
+                     * @memberof INTF_BLK_pollutionHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    polTol: -1.0,
+
+
+                };
+            },
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+        }),
 
 
         /**
-         * `INTERNAL`: Pollution tolerance.
-         * @memberof INTF_BLK_pollutionHandler
-         * @instance
+         * @class INTF_B_pollutionHandler
          */
-        polTol: -1.0,
+        new CLS_interface("INTF_B_pollutionHandler", {
 
 
-      }),
+            __paramObjM__: function() {
+                return {
 
 
-      init: function() {
-        comp_init(this);
-      },
+                    /* <------------------------------ internal ------------------------------> */
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+                    /**
+                     * `INTERNAL`: Efficiency related to pollution.
+                     * @memberof INTF_B_pollutionHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    polEffc: 1.0,
+                    /**
+                     * `INTERNAL`: Pollution points above tolerance.
+                     * @memberof INTF_B_pollutionHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    polExcess: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_pollutionHandler
+                     * @instance
+                     * @type {number|TmpStateTag}
+                     */
+                    blk$polTol: TmpStateTag.needReplace,
 
 
-    }),
+                };
+            },
 
 
-    /**
-     * @class INTF_B_pollutionHandler
-     */
-    new CLS_interface("INTF_B_pollutionHandler", {
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      __paramObjM__: () => ({
+            updateEfficiencyMultiplier: function() {
+                comp_updateEfficiencyMultiplier(this);
+            },
 
 
-        /* <------------------------------ internal ------------------------------> */
+            ex_postUpdateEfficiencyMultiplier: function() {
+                comp_ex_postUpdateEfficiencyMultiplier(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-        /**
-         * `INTERNAL`: Efficiency related to pollution.
-         * @memberof INTF_B_pollutionHandler
-         * @instance
-         */
-        polEffc: 1.0,
-        /**
-         * `INTERNAL`: Pollution points above tolerance.
-         * @memberof INTF_B_pollutionHandler
-         * @instance
-         */
-        polExcess: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_pollutionHandler
-         * @instance
-         */
-        blk$polTol: TmpStateTag.needReplace,
+            /**
+             * Calculates efficiency related to pollution.
+             * @memberof INTF_B_pollutionHandler
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcPolEffc: function() {
+                return comp_ex_calcPolEffc(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      }),
+        }),
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
-
-
-      updateEfficiencyMultiplier: function() {
-        comp_updateEfficiencyMultiplier(this);
-      },
-
-
-      ex_postUpdateEfficiencyMultiplier: function() {
-        comp_ex_postUpdateEfficiencyMultiplier(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Calculates efficiency related to pollution.
-       * @memberof INTF_B_pollutionHandler
-       * @instance
-       * @return {number}
-       */
-      ex_calcPolEffc: function() {
-        return comp_ex_calcPolEffc(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-    }),
-
-
-  ];
+    ];

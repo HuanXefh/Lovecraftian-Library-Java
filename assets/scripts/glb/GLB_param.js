@@ -80,7 +80,7 @@
 
     MDL_event.onWorldLoad(() => {
 
-        Time.run(VAR.delay.worldLoad.loadParam, () => forceLoadParam());
+        Time.run(GLB_var.delay.worldLoad.loadParam, () => forceLoadParam());
 
     });
 
@@ -95,7 +95,7 @@
         exports.UPDATE_DEEP_SUPPRESSED = updateSuppressCd > -updateSuppressCooldown;
 
 
-        if(TIMER.paramGlobal || shouldLoadParam) {
+        if(GLB_timer.paramGlobal || shouldLoadParam) {
 
 
             // Param load

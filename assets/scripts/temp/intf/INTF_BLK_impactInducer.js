@@ -95,7 +95,7 @@
      * @return {void}
      */
     function comp_createImpactWave(b) {
-        TRIGGER.impactWave.fire(b.x, b.y, b.block.ex_calcImpactDmg(b), b.block.ex_calcImpactRad(b));
+        BOX_trigger.impactWave.fire(b.x, b.y, b.block.ex_calcImpactDmg(b), b.block.ex_calcImpactRad(b));
         FRAG_attack.impact(
             b.x, b.y,
             b.block.ex_calcImpactDmg(b),
@@ -160,7 +160,7 @@
              * @memberof INTF_BLK_impactInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBImpactInducer} b
              * @return {number}
              */
             ex_calcImpactIntv: function(b) {
@@ -177,7 +177,7 @@
              * @memberof INTF_BLK_impactInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBImpactInducer} b
              * @return {number}
              */
             ex_calcImpactDmg: function(b) {
@@ -194,7 +194,7 @@
              * @memberof INTF_BLK_impactInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBImpactInducer} b
              * @return {number}
              */
             ex_calcImpactDur: function(b) {
@@ -211,7 +211,7 @@
              * @memberof INTF_BLK_impactInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBImpactInducer} b
              * @return {number}
              */
             ex_calcImpactRad: function(b) {
@@ -228,7 +228,7 @@
              * @memberof INTF_BLK_impactInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBImpactInducer} b
              * @return {number}
              */
             ex_calcImpactMinRad: function(b) {
@@ -245,7 +245,7 @@
              * @memberof INTF_BLK_impactInducer
              * @instance
              * @func
-             * @param {Building} b
+             * @param {INTFBImpactInducer} b
              * @return {number}
              */
             ex_calcImpactShake: function(b) {

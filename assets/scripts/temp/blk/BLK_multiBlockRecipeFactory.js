@@ -125,7 +125,7 @@
        * @return {void}
        */
       ex_showRcChangeEff: function() {
-        this.linkedBuilds.each(ob => EFF.fadePlacePack[ob.block.size].at(ob));
+        this.linkedBuilds.each(ob => GLB_eff.fadePlacePack[ob.block.size].at(ob));
       }
       .setProp({
         noSuper: true,

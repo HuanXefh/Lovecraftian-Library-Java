@@ -68,10 +68,10 @@ public class LCDrawf {
 
 
     public static void init() {
-        shapeLay = Layer.effect + LCScript.toFloat(LCScript.search(VAR, "layer", "offDraw"));
-        mineBeamLay = LCScript.toFloat(LCScript.search(VAR, "layer", "mineBeam"));
-        bulFlameLay = LCScript.toFloat(LCScript.search(VAR, "layer", "bulFlame"));
-        randOvLay = LCScript.toFloat(LCScript.search(VAR, "layer", "randOv"));
+        shapeLay = Layer.effect + LCScript.toFloat(LCScript.search(GLB_var, "layer", "offDraw"));
+        mineBeamLay = LCScript.toFloat(LCScript.search(GLB_var, "layer", "mineBeam"));
+        bulFlameLay = LCScript.toFloat(LCScript.search(GLB_var, "layer", "bulFlame"));
+        randOvLay = LCScript.toFloat(LCScript.search(GLB_var, "layer", "randOv"));
 
         if(!Vars.headless) {
             arrowReg = Core.atlas.find("bridge-arrow");
