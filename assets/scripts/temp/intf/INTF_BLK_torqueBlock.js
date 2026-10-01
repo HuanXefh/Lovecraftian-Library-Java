@@ -465,7 +465,7 @@
 
 
             /**
-             * RPM transfered to another torque block.
+             * RPM transferred to another torque block.
              * <br> A cogwheel's transported RPM should be affected by block size, so this value should be dynamic.
              * <br> `LATER`
              * @memberof INTF_B_torqueBlock

@@ -5,481 +5,657 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const INTF = require("lovec/temp/intf/INTF_BLK_payloadBlock");
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_recipeHandler>} INTFBLKRecipeHandler
+     */
 
 
-  /* <------------------------------ auxiliary ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_recipeHandler>} INTFBRecipeHandler
+     * @prop {INTFBLKRecipeHandler} block
+     */
 
 
-  const STOP_TIME = 300.0;
+    const PARENT = require("lovec/temp/intf/INTF_BLK_payloadBlock");
 
 
-  let
-    i,
-    iCap,
-    j,
-    jCap,
-    tmp,
-    tmp1,
-    amt,
-    p,
-    cond,
-    val,
-    tmpVal,
-    scl,
-    inc,
-    rcMdl,
-    header;
+    /* <------------------------------ auxiliary ------------------------------> */
 
 
-  function checkSelectedUnloader(b) {
-    // Unloaders must be configured, otherwise auto-selection will break
-    return b.block instanceof Unloader ?
-      b.sortItem != null :
-        b.block instanceof DirectionalUnloader ?
-          b.unloadItem != null :
-          true;
-  };
+    /**
+     * @private
+     * @type {number}
+     */
+    const STOP_TIME = 300.0;
 
 
-  /* <------------------------------ component ------------------------------> */
+    let
+        /** @type {number} */
+        i,
+        /** @type {number} */
+        iCap,
+        /** @type {number} */
+        j,
+        /** @type {number} */
+        jCap,
+        /** @type {Object} */
+        tmp,
+        /** @type {Object} */
+        tmp1,
+        /** @type {number} */
+        amt,
+        /** @type {number} */
+        p,
+        /** @type {boolean} */
+        cond,
+        /** @type {number} */
+        val,
+        /** @type {number} */
+        tmpVal,
+        /** @type {number} */
+        scl,
+        /** @type {number} */
+        inc,
+        /** @type {RecipeModule} */
+        rcMdl,
+        /** @type {string} */
+        header;
 
 
-  function comp_init(blk) {
-    // Have to keep these to prevent crash on specific client sides like MindustryX
-    blk.outputItems = [];
-    blk.outputLiquids = [];
-
-    CLS_recipe.register(blk, blk.rcMdl);
-
-    MDL_event.onLoad(() => {
-      blk.outputsLiquid = MDL_recipe.checkAnyFldOutput(blk.rcMdl, false);
-      blk.hasConsumers = true;
-
-      blk.isErekirHeatConsumer = MDL_recipe.checkErekirHeatInput(blk.rcMdl);
-      blk.isErekirHeatProducer = MDL_recipe.checkErekirHeatOutput(blk.rcMdl);
-      if(blk.isErekirHeatConsumer && blk.isErekirHeatProducer) {
-        console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(Pal.accent)));
-      };
-    });
-  };
-
-
-  function comp_setBars(blk) {
-    // Flashing liquid bar bug in old Multi-Crafter Lib
-    // Liquid bars are created in `b.displayBars` for dynamic amount of bars
-    blk.removeBar("liquid");
-  };
-
-
-  function comp_created(b) {
-    // Use empty recipe to prevent null pointer
-    b.rc = CLS_recipe.get(b.block, "SPEC: empty");
-
-    Time.run(0.0, () => {
-      rcMdl = b.block.delegee.rcMdl;
-      if(MDL_recipe.checkHeaderValid(rcMdl, b.rcHeader)) {
-        b.ex_updateRcParam(rcMdl, b.rcHeader, true);
-      } else {
-        header = MDL_recipe.getFirstHeader(rcMdl);
-        b.ex_updateRcParam(rcMdl, header, true);
-        b.rcHeader = header;
-      };
-
-      // Without this consumption is bugged
-      b.ex_resetRcParam();
-    });
-  };
-
-
-  function comp_updateTile(b) {
-    if(GLB_param.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
-
-    b.rc.updateAutoSelection(b);
-
-    b.ex_updateRcParam(b.block.delegee.rcMdl, b.rcHeader, false);
-    b.ex_onRcUpdate();
-    b.hasStopped = b.stopTimeCur > STOP_TIME;
-
-    b.rc.updateErekirHeat(b);
-
-    if(b.efficiency < 0.0001 || !b.shouldConsume()) {
-      // Crafter is inactive
-      b.warmup = Mathf.approachDelta(b.warmup, 0.0, b.block.warmupSpeed);
-      if(b.hasRun) {
-        b.stopTimeCur = b.warmup < 0.1 ?
-          (b.stopTimeCur + Time.delta) :
-          0.0;
-      };
-    } else {
-      // Crafter is active
-      b.warmup = Mathf.approachDelta(b.warmup, b.warmupTarget(), b.block.warmupSpeed);
-      b.progress += b.lastProgInc * b.warmup;
-      if(b.warmup > 0.9) {
-        b.hasRun = true;
-        b.stopTimeCur = b.efficiency < 0.3 ?
-          (b.stopTimeCur + Time.delta) :
-          0.0;
-      };
-      if(b.progress >= 1.0) {
-        b.progress %= 1.0;
-        b.craft();
-      };
-
-      b.rc.craftContinuous(b, b.lastLiqProgInc);
-      b.rc.consumeContinuous(b, b.lastLiqProgInc);
-      if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup)) {
-        MDL_effect.showAround(b.x, b.y, b.block.updateEffect, b.block.size * 0.5 * Vars.tilesize, 0.0);
-      };
-      b.ex_onRcRun();
-      if(b.hasStopped) {
-        b.ex_onRcStoppedRun();
-      };
+    /**
+     * @private
+     * @param {Building} b
+     * @return {boolean}
+     */
+    function checkSelectedUnloader(b) {
+        // Unloaders must be configured, otherwise auto-selection will break
+        return b.block instanceof Unloader ?
+            b.sortItem != null :
+            b.block instanceof DirectionalUnloader ?
+                b.unloadItem != null :
+                true;
     };
 
-    b.totalProgress += b.warmup * b.edelta();
-    if(!b.block.delegee.disableDump) {
-      b.rc.dump(b);
-    };
-  };
+
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_updateEfficiencyMultiplier(b) {
-    // Efficiency is overwritten
-    b.efficiency = b.shouldConsume() && (b.block.consumesPower && b.power != null ? b.power.status > 0.01 : true) ?
-      b.rcEffc :
-      0.0;
-
-    b.ex_postUpdateEfficiencyMultiplier();
-    if(b.rc.erekirHeatReq > 0.0) b.efficiency *= b.erekirHeatEffc;
-    if(!b.rc.validCheck(b)) b.efficiency = 0.0;
-  };
-
-
-  function comp_craft(b) {
-    b.rc.craftBatch(b, b.ex_calcFailP());
-    b.rc.craftPay(b);
-    b.rc.consumeBatch(b);
-
-    b.ex_onRcCraft();
-  };
-
-
-  function comp_acceptItem(b, b_f, item) {
-    if(b.items == null || b.items.get(item) >= b.getMaximumAccepted(item)) return false;
-    if(
-      b.blk$useAutoSelection && b.rc.keyItemHeaderMap != null
-        && item !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f)
-        && b.rc.keyItemHeaderMap.containsKey(item) && !b.rc.checkOutput(item)
-    ) {
-      b.keyCt = item;
-    };
-
-    if(b.itemAcceptCacheArr[item.id] == null) {
-      b.itemAcceptCacheArr[item.id] = b.rc.checkInput(item);
-    };
-
-    return b.itemAcceptCacheArr[item.id];
-  };
-
-
-  function comp_acceptLiquid(b, b_f, liq) {
-    if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
-    if(
-      b.blk$useAutoSelection && GLB_timer.sec && b.rc.keyFldHeaderMap != null
-        && liq !== b.keyCt && b_f !== b
-        && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)
-    ) {
-      b.keyCt = liq;
-    };
-
-    if(b.liqAcceptCacheArr[liq.id] == null) {
-      b.liqAcceptCacheArr[liq.id] = b.rc.checkInput(liq);
-    };
-
-    return b.liqAcceptCacheArr[liq.id];
-  };
-
-
-  const comp_displayConsumption = function thisFun(b, tb) {
-    tb.left();
-
-    // BI
-    i = 0;
-    iCap = b.rc.bi.iCap();
-    while(i < iCap) {
-      tmp = b.rc.bi[i];
-      if(!(tmp instanceof Array)) {
-        amt = b.rc.bi[i + 1];
-        if(amt > 0) MDL_table.reqRs(tb, b, tmp, amt);
-      } else {
-        thisFun.tmpCts.clear();
-        thisFun.tmpAmts.clear();
-        j = 0;
-        jCap = tmp.iCap();
-        while(j < jCap) {
-          tmp1 = tmp[j];
-          amt = tmp[j + 1];
-          if(amt > 0) {
-            thisFun.tmpCts.push(tmp1);
-            thisFun.tmpAmts.push(amt);
-          };
-          j += 3;
+    /**
+     * @private
+     * @param {INTFBLKRecipeHandler} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        // Have to keep these to prevent crash on specific client sides like MindustryX
+        if(blk.outputItems != null || blk.outputLiquids != null) {
+            console.warn("[LOVEC] Do not set outputs for multi-crafter ${1} using vanilla fields. Define a recipe module instead!".format(blk.name.color(Pal.accent)));
         };
-        if(thisFun.tmpCts.length > 0) {
-          MDL_table.reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
+        blk.outputItems = [];
+        blk.outputLiquids = [];
+
+        CLS_recipe.register(blk, blk.rcMdl);
+
+        MDL_event.onLoad(() => {
+            blk.outputsLiquid = MDL_recipe.checkAnyFldOutput(blk.rcMdl, false);
+            blk.hasConsumers = true;
+
+            blk.isErekirHeatConsumer = MDL_recipe.checkErekirHeatInput(blk.rcMdl);
+            blk.isErekirHeatProducer = MDL_recipe.checkErekirHeatOutput(blk.rcMdl);
+            if(blk.isErekirHeatConsumer && blk.isErekirHeatProducer) {
+                console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(Pal.accent)));
+            };
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBLKRecipeHandler} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        // Fixes flashing liquid bar bug in old Multi-Crafter Lib
+        // Liquid bars are created in `b.displayBars` for dynamic amount of bars
+        blk.removeBar("liquid");
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_created(b) {
+        // Use empty recipe to prevent null pointer in this frame
+        b.rc = CLS_recipe.get(b.block, "SPEC: empty");
+
+        // Recipe header is not read yet, delay check
+        Time.run(0.0, () => {
+            // noinspection JSValidateTypes
+            rcMdl = b.block.delegee.rcMdl;
+            if(MDL_recipe.checkHeaderValid(rcMdl, b.rcHeader)) {
+                b.ex_updateRcParam(rcMdl, b.rcHeader, true);
+            } else {
+                // Recipe may be removed, default to first one
+                header = MDL_recipe.getFirstHeader(rcMdl);
+                b.ex_updateRcParam(rcMdl, header, true);
+                b.rcHeader = header;
+            };
+
+            // Without this consumption is bugged
+            b.ex_resetRcParam();
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(GLB_param.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
+
+        b.rc.updateAutoSelection(b);
+
+        b.ex_updateRcParam(b.block.delegee.rcMdl, b.rcHeader, false);
+        b.ex_onRcUpdate();
+        b.hasStopped = b.stopTimeCur > STOP_TIME;
+
+        b.rc.updateErekirHeat(b);
+
+        if(b.efficiency < 0.0001 || !b.shouldConsume()) {
+            // Crafter is inactive
+            b.warmup = Mathf.approachDelta(b.warmup, 0.0, b.block.warmupSpeed);
+            if(b.hasRun) {
+                b.stopTimeCur = b.warmup < 0.1 ?
+                    (b.stopTimeCur + Time.delta) :
+                    0.0;
+            };
+        } else {
+            // Crafter is active
+            b.warmup = Mathf.approachDelta(b.warmup, b.warmupTarget(), b.block.warmupSpeed);
+            b.progress += b.lastProgInc * b.warmup;
+            if(b.warmup > 0.9) {
+                b.hasRun = true;
+                b.stopTimeCur = b.efficiency < 0.3 ?
+                    (b.stopTimeCur + Time.delta) :
+                    0.0;
+            };
+            if(b.progress >= 1.0) {
+                b.progress %= 1.0;
+                b.craft();
+            };
+
+            b.rc.craftContinuous(b, b.lastLiqProgInc);
+            b.rc.consumeContinuous(b, b.lastLiqProgInc);
+            if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup)) {
+                MDL_effect.showAround(b.x, b.y, b.block.updateEffect, b.block.size * 0.5 * Vars.tilesize, 0.0);
+            };
+            b.ex_onRcRun();
+            if(b.hasStopped) {
+                b.ex_onRcStoppedRun();
+            };
         };
-      };
-      i += 3;
-    };
 
-    // CI
-    i = 0;
-    iCap = b.rc.ci.iCap();
-    while(i < iCap) {
-      tmp = b.rc.ci[i];
-      if(!(tmp instanceof Array)) {
-        if(b.rc.ci[i + 1] > 0.0) MDL_table.reqRs(tb, b, tmp);
-      } else {
-        thisFun.tmpCts.clear();
-        j = 0;
-        jCap = tmp.iCap();
-        while(j < jCap) {
-          tmp1 = tmp[j];
-          if(tmp[j + 1] > 0.0) {
-            thisFun.tmpCts.push(tmp1);
-          };
-          j += 2;
+        b.totalProgress += b.warmup * b.edelta();
+        if(!b.block.delegee.disableDump) {
+            b.rc.dump(b);
         };
-        if(thisFun.tmpCts.length > 0) {
-          MDL_table.reqMultiCt(tb, b, thisFun.tmpCts);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_updateEfficiencyMultiplier(b) {
+        // Efficiency is overwritten
+        b.efficiency = b.shouldConsume() && (b.block.consumesPower && b.power != null ? b.power.status > 0.01 : true) ?
+            b.rcEffc :
+            0.0;
+
+        b.ex_postUpdateEfficiencyMultiplier();
+        if(b.rc.erekirHeatReq > 0.0) {
+            b.efficiency *= b.erekirHeatEffc;
         };
-      };
-      i += 2;
-    };
-
-    // AUX
-    i = 0;
-    iCap = b.rc.aux.iCap();
-    while(i < iCap) {
-      tmp = b.rc.aux[i];
-      if(b.rc.aux[i + 1] > 0.0) {
-        MDL_table.reqRs(tb, b, tmp);
-      };
-      i += 2;
-    };
-
-    // OPT
-    if(b.reqOpt) {
-      thisFun.tmpCts.clear();
-      thisFun.tmpAmts.clear();
-      i = 0;
-      iCap = b.rc.opt.iCap();
-      while(i < iCap) {
-        tmp = b.rc.opt[i];
-        amt = b.rc.opt[i + 1];
-        if(amt > 0) {
-          thisFun.tmpCts.push(tmp);
-          thisFun.tmpAmts.push(amt);
+        if(!b.rc.validCheck(b)) {
+            b.efficiency = 0.0;
         };
-        i += 4;
-      };
-      if(thisFun.tmpCts.length > 0) {
-        MDL_table.reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
-      };
     };
 
-    // PAYI
-    if(b.hasPayInput) {
-      i = 0;
-      iCap = b.rc.payi.iCap();
-      while(i < iCap) {
-        tmp = MDL_content.getCt(b.rc.payi[i], null, true);
-        amt = b.rc.payi[i + 1];
-        if(amt > 0) {
-          MDL_table.reqCt(tb, tmp, amt, ct => tryVal(b.payReqObj[ct.name], 0))
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_craft(b) {
+        b.rc.craftBatch(b, b.ex_calcFailP());
+        b.rc.craftPay(b);
+        b.rc.consumeBatch(b);
+
+        b.ex_onRcCraft();
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @param {Building} b_f
+     * @param {Item} item
+     * @return {boolean}
+     */
+    function comp_acceptItem(b, b_f, item) {
+        if(b.items == null || b.items.get(item) >= b.getMaximumAccepted(item)) return false;
+        if(
+            b.blk$useAutoSelection && b.rc.keyItemHeaderMap != null
+                && item !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f)
+                && b.rc.keyItemHeaderMap.containsKey(item) && !b.rc.checkOutput(item)
+        ) {
+            b.keyCt = item;
         };
-        i += 2;
-      };
-    };
-  }
-  .setProp({
-    tmpCts: [],
-    tmpAmts: [],
-  });
 
+        if(b.itemAcceptCacheArr[item.id] == null) {
+            b.itemAcceptCacheArr[item.id] = b.rc.checkInput(item);
+        };
 
-  const comp_displayBars = function thisFun(b, tb) {
-    if(b.rc.erekirHeatReq > 0.0) {
-      tb.add(new Bar(
-        prov(() => Core.bundle.format("bar.heatpercent", (b.erekirHeatI + 0.01).roundFixed(1), (b.erekirHeatEffc * 100.0 + 0.01).roundFixed(1))),
-        prov(() => Pal.lightOrange),
-        () => Mathf.clamp(b.heatFrac()),
-      ));
-      tb.row();
-    };
-    if(b.rc.erekirHeatProd > 0.0) {
-      tb.add(new Bar(
-        "bar.heat",
-        Pal.lightOrange,
-        () => Mathf.clamp(b.heatFrac()),
-      ));
-      tb.row();
+        return b.itemAcceptCacheArr[item.id];
     };
 
-    if(b.rc.attr != null) {
-      tb.add(new Bar(
-        prov(() => Core.bundle.format("bar.efficiency", Math.round(b.attrEffc * 100.0))),
-        prov(() => Pal.lightOrange),
-        () => Mathf.clamp(b.attrEffc),
-      )).growX();
-      tb.row();
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @param {Building} b_f
+     * @param {Liquid} liq
+     * @return {boolean}
+     */
+    function comp_acceptLiquid(b, b_f, liq) {
+        if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
+        if(
+            b.blk$useAutoSelection && GLB_timer.sec && b.rc.keyFldHeaderMap != null
+                && liq !== b.keyCt && b_f !== b
+                && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)
+        ) {
+            b.keyCt = liq;
+        };
+
+        if(b.liqAcceptCacheArr[liq.id] == null) {
+            b.liqAcceptCacheArr[liq.id] = b.rc.checkInput(liq);
+        };
+
+        return b.liqAcceptCacheArr[liq.id];
     };
 
-    thisFun.addedLiqs.clear();
-    b.rc.inputFlds.forEachFast(liq => {
-      if(thisFun.addedLiqs.includes(liq)) return;
-      thisFun.addLiqBar(tb, b, liq);
-      thisFun.addedLiqs.push(liq);
-    }, true);
-    b.rc.outputFlds.forEachFast(liq => {
-      if(thisFun.addedLiqs.includes(liq)) return;
-      thisFun.addLiqBar(tb, b, liq);
-      thisFun.addedLiqs.push(liq);
-    }, true);
-  }
-  .setProp({
-    addedLiqs: [],
-    addLiqBar: (tb, b, liq) => {
-      tb.add(new Bar(
-        liq.localizedName,
-        tryVal(liq.barColor, liq.color),
-        () => MDL_cond.isAuxiliaryFluid(liq) && !MDL_cond.isNoCapAuxiliaryFluid(liq) ? Mathf.clamp(b.liquids.get(liq) / GLB_var.param.auxCap) : (b.liquids.get(liq) / b.block.liquidCapacity),
-      )).growX();
-      tb.row();
-    },
-  });
 
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    const comp_displayConsumption = function thisFun(b, tb) {
+        tb.left();
 
-  function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rc.rcIconName), b.block.size, 0.75);
-  };
-
-
-  function comp_drawStatus(b) {
-    if(!b.block.enableDrawStatus) return;
-
-    LCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
-  };
-
-
-  function comp_ex_onRcParamUpdate(b) {
-    b.rcEffc = b.ex_calcRcEffcTarget();
-    b.lastProgInc = b.ex_calcProgInc(b.block.craftTime);
-    b.lastLiqProgInc = b.ex_calcProgInc(1.0);
-    b.lastCanAdd = b.rc.checkCanAdd(b);
-
-    b.ex_updateAttrEffc();
-  };
-
-
-  function comp_ex_updateAttrEffc(b) {
-    b.attrEffc = b.rc.calcAttrEffc(b.attrSum);
-  };
-
-
-  function comp_ex_updateRcParam(b, rcMdl, rcHeader, forceLoad) {
-    if(rcHeader !== b.rcHeader || forceLoad) {
-      b.ex_loadRcParam(rcMdl, rcHeader);
-    };
-    if(b.ex_shouldUpdateRcParam()) {
-      b.ex_onRcParamUpdate();
-    };
-  };
-
-
-  function comp_ex_resetRcParam(b) {
-    b.itemAcceptCacheArr.clear();
-    b.liqAcceptCacheArr.clear();
-    forceUpdateBlockFrag();
-
-    if(!GLB_param.UPDATE_SUPPRESSED) {
-      b.progress = 0.0;
-      if(b.liquids != null) b.liquids.clear();
-    };
-    b.efficiency = 0.0;
-    b.lastOptEffc = 1.0;
-    b.rcEffcMeanArr.clear();
-
-    b.proximity.each(ob => {
-      ob.onProximityUpdate();
-    });
-  };
-
-
-  function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-    b.rc = CLS_recipe.get(b.block, rcHeader);
-
-    Time.run(0.0, () => {
-      b.hasPayInput = b.rc.hasPayInput;
-      b.hasPayOutput = b.rc.hasPayOutput;
-      if(b.hasPayInput) {
-        b.rc.payi.forEachRow(2, (tmp, amt) => {
-          if(amt > 0 && b.payReqObj[tmp] == null) {
-            b.payReqObj[tmp] = 0;
-          };
-        }, true);
-      };
-
-      b.attrSum = MDL_attr.calcSumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR);
-      b.ex_updateAttrEffc();
-
-      Object.clear(b.consTmpObj);
-      Object.clear(b.prodTmpObj);
-    });
-  };
-
-
-  function comp_ex_calcProgInc(b, time) {
-    if(b.block.ignoreLiquidFullness) {
-      inc = b.edelta() / time / b.rc.rcTimeScl;
-    } else {
-      val = 1.0;
-      scl = 1.0;
-      cond = false;
-      iCap = b.rc.co.iCap();
-      if(b.liquids != null && iCap > 0) {
-        val = 0.0;
+        // BI
         i = 0;
+        iCap = b.rc.bi.iCap();
         while(i < iCap) {
-          tmp = b.rc.co[i];
-          amt = b.rc.co[i + 1];
-          tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(tmp)) / (amt * b.edelta());
-          val = Math.max(val, tmpVal);
-          if(!MDL_cond.isAuxiliaryFluid(tmp)) {
-            scl = Math.min(scl, tmpVal);
-          };
-          cond = true;
-          i += 2;
+            tmp = b.rc.bi[i];
+            if(!(tmp instanceof Array)) {
+                amt = b.rc.bi[i + 1];
+                if(amt > 0) {
+                    MDL_table.reqRs(tb, b, tmp, amt);
+                };
+            } else {
+                thisFun.tmpCts.clear();
+                thisFun.tmpAmts.clear();
+                j = 0;
+                jCap = tmp.iCap();
+                while(j < jCap) {
+                    tmp1 = tmp[j];
+                    amt = tmp[j + 1];
+                    if(amt > 0) {
+                        thisFun.tmpCts.push(tmp1);
+                        thisFun.tmpAmts.push(amt);
+                    };
+                    j += 3;
+                };
+                if(thisFun.tmpCts.length > 0) {
+                    MDL_table.reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
+                };
+            };
+            i += 3;
         };
-      };
-      if(!cond) val = 1.0;
-      inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rc.rcTimeScl;
+
+        // CI
+        i = 0;
+        iCap = b.rc.ci.iCap();
+        while(i < iCap) {
+            tmp = b.rc.ci[i];
+            if(!(tmp instanceof Array)) {
+                if(b.rc.ci[i + 1] > 0.0) MDL_table.reqRs(tb, b, tmp);
+            } else {
+                thisFun.tmpCts.clear();
+                j = 0;
+                jCap = tmp.iCap();
+                while(j < jCap) {
+                    tmp1 = tmp[j];
+                    if(tmp[j + 1] > 0.0) {
+                        thisFun.tmpCts.push(tmp1);
+                    };
+                    j += 2;
+                };
+                if(thisFun.tmpCts.length > 0) {
+                    MDL_table.reqMultiCt(tb, b, thisFun.tmpCts);
+                };
+            };
+            i += 2;
+        };
+
+        // AUX
+        i = 0;
+        iCap = b.rc.aux.iCap();
+        while(i < iCap) {
+            tmp = b.rc.aux[i];
+            if(b.rc.aux[i + 1] > 0.0) {
+                MDL_table.reqRs(tb, b, tmp);
+            };
+            i += 2;
+        };
+
+        // OPT
+        if(b.reqOpt) {
+            thisFun.tmpCts.clear();
+            thisFun.tmpAmts.clear();
+            i = 0;
+            iCap = b.rc.opt.iCap();
+            while(i < iCap) {
+              tmp = b.rc.opt[i];
+              amt = b.rc.opt[i + 1];
+              if(amt > 0) {
+                  thisFun.tmpCts.push(tmp);
+                  thisFun.tmpAmts.push(amt);
+              };
+              i += 4;
+            };
+            if(thisFun.tmpCts.length > 0) {
+                MDL_table.reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
+            };
+        };
+
+        // PAYI
+        if(b.hasPayInput) {
+            i = 0;
+            iCap = b.rc.payi.iCap();
+            while(i < iCap) {
+                tmp = MDL_content.getCt(b.rc.payi[i], null, true);
+                amt = b.rc.payi[i + 1];
+                if(amt > 0) {
+                    MDL_table.reqCt(tb, tmp, amt, ct => tryVal(b.payReqObj[ct.name], 0))
+                };
+                i += 2;
+            };
+        };
+    }
+    .setProp({
+        /**
+         * @memberof comp_displayConsumption
+         * @type {Array<UnlockableContent>}
+         */
+        tmpCts: [],
+        /**
+         * @memberof comp_displayConsumption
+         * @type {Array<number>}
+         */
+        tmpAmts: [],
+    });
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @param {Table} tb
+     * @return {void}
+     */
+    const comp_displayBars = function thisFun(b, tb) {
+        if(b.block.delegee.isErekirHeatConsumer) {
+            tb.add(new Bar(
+                prov(() => Core.bundle.format("bar.heatpercent", (b.erekirHeatI + 0.01).roundFixed(1), (b.erekirHeatEffc * 100.0 + 0.01).roundFixed(1))),
+                prov(() => Pal.lightOrange),
+                () => Mathf.clamp(b.heatFrac()),
+            ));
+            tb.row();
+        };
+        if(b.block.delegee.isErekirHeatProducer) {
+            tb.add(new Bar(
+                "bar.heat",
+                Pal.lightOrange,
+                () => Mathf.clamp(b.heatFrac()),
+            ));
+            tb.row();
+        };
+
+        if(b.rc.attr != null) {
+            tb.add(new Bar(
+                prov(() => Core.bundle.format("bar.efficiency", Math.round(b.attrEffc * 100.0))),
+                prov(() => Pal.lightOrange),
+                () => Mathf.clamp(b.attrEffc),
+            )).growX();
+            tb.row();
+        };
+
+        thisFun.addedLiqs.clear();
+        b.rc.inputFlds.forEachFast(liq => {
+            if(thisFun.addedLiqs.includes(liq)) return;
+            thisFun.addLiqBar(tb, b, liq);
+            thisFun.addedLiqs.push(liq);
+        }, true);
+        b.rc.outputFlds.forEachFast(liq => {
+            if(thisFun.addedLiqs.includes(liq)) return;
+            thisFun.addLiqBar(tb, b, liq);
+            thisFun.addedLiqs.push(liq);
+        }, true);
+    }
+    .setProp({
+        /**
+         * @memberof comp_displayBars
+         * @type {Array<Liquid>}
+         */
+        addedLiqs: [],
+        /**
+         * @memberof comp_displayBars
+         * @param {Table} tb
+         * @param {INTFBRecipeHandler} b
+         * @param {Liquid} liq
+         * @return {void}
+         */
+        addLiqBar: (tb, b, liq) => {
+            tb.add(new Bar(
+                liq.localizedName,
+                tryVal(liq.barColor, liq.color),
+                () => MDL_cond.isAuxiliaryFluid(liq) && !MDL_cond.isNoCapAuxiliaryFluid(liq) ? Mathf.clamp(b.liquids.get(liq) / GLB_var.param.auxCap) : (b.liquids.get(liq) / b.block.liquidCapacity),
+            )).growX();
+            tb.row();
+        },
+    });
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rc.rcIconName), b.block.size, 0.75);
     };
 
-    return isNaN(inc) ?
-      0.0 :
-      inc;
-  };
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_drawStatus(b) {
+        if(!b.block.enableDrawStatus) return;
+        LCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
+    };
 
 
-  function comp_ex_calcRcEffcTarget(b) {
-    b.rcEffcMeanArr.push(b.rc.calcEffc(b));
-    return b.rcEffcMeanArr.getMean() * b.attrEffc;
-  };
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_ex_onRcParamUpdate(b) {
+        b.rcEffc = b.ex_calcRcEffcTarget();
+        b.lastProgInc = b.ex_calcProgInc(b.block.craftTime);
+        b.lastLiqProgInc = b.ex_calcProgInc(1.0);
+        b.lastCanAdd = b.rc.checkCanAdd(b);
+
+        b.ex_updateAttrEffc();
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_ex_updateAttrEffc(b) {
+        b.attrEffc = b.rc.calcAttrEffc(b.attrSum);
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @param {RecipeModule} rcMdl
+     * @param {string} rcHeader
+     * @param {boolean} forceLoad
+     * @return {void}
+     */
+    function comp_ex_updateRcParam(b, rcMdl, rcHeader, forceLoad) {
+        if(rcHeader !== b.rcHeader || forceLoad) {
+            b.ex_loadRcParam(rcMdl, rcHeader);
+        };
+        if(b.ex_shouldUpdateRcParam()) {
+            b.ex_onRcParamUpdate();
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {void}
+     */
+    function comp_ex_resetRcParam(b) {
+        b.itemAcceptCacheArr.clear();
+        b.liqAcceptCacheArr.clear();
+        forceUpdateBlockFrag();
+
+        if(!GLB_param.UPDATE_SUPPRESSED) {
+            b.progress = 0.0;
+            if(b.liquids != null) {
+                b.liquids.clear();
+            };
+        };
+        b.efficiency = 0.0;
+        b.lastOptEffc = 1.0;
+        b.rcEffcMeanArr.clear();
+
+        b.proximity.each(ob => {
+            ob.onProximityUpdate();
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @param {RecipeModule} rcMdl
+     * @param {string} rcHeader
+     * @return {void}
+     */
+    function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
+        b.rc = CLS_recipe.get(b.block, rcHeader);
+
+        Time.run(0.0, () => {
+            b.hasPayInput = b.rc.hasPayInput;
+            b.hasPayOutput = b.rc.hasPayOutput;
+            if(b.hasPayInput) {
+                b.rc.payi.forEachRow(2, (tmp, amt) => {
+                    if(amt > 0 && b.payReqObj[tmp] == null) {
+                        b.payReqObj[tmp] = 0;
+                    };
+                }, true);
+            };
+
+            b.attrSum = MDL_attr.calcSumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR);
+            b.ex_updateAttrEffc();
+
+            Object.clear(b.consTmpObj);
+            Object.clear(b.prodTmpObj);
+        });
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @param {number} time
+     * @return {number}
+     */
+    function comp_ex_calcProgInc(b, time) {
+        if(b.block.ignoreLiquidFullness) {
+            inc = b.edelta() / time / b.rc.rcTimeScl;
+        } else {
+            val = 1.0;
+            scl = 1.0;
+            cond = false;
+            iCap = b.rc.co.iCap();
+            if(b.liquids != null && iCap > 0) {
+                val = 0.0;
+                i = 0;
+                while(i < iCap) {
+                    tmp = b.rc.co[i];
+                    amt = b.rc.co[i + 1];
+                    tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(tmp)) / (amt * b.edelta());
+                    val = Math.max(val, tmpVal);
+                    if(!MDL_cond.isAuxiliaryFluid(tmp)) {
+                        scl = Math.min(scl, tmpVal);
+                    };
+                    cond = true;
+                    i += 2;
+                };
+            };
+            if(!cond) {
+                val = 1.0;
+            };
+            inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rc.rcTimeScl;
+        };
+
+        return isNaN(inc) ?
+            0.0 :
+            inc;
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBRecipeHandler} b
+     * @return {number}
+     */
+    function comp_ex_calcRcEffcTarget(b) {
+        b.rcEffcMeanArr.push(b.rc.calcEffc(b));
+        return b.rcEffcMeanArr.getMean() * b.attrEffc;
+    };
 
 
 /*
@@ -489,821 +665,881 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles basic multi-crafter methods, should be implemented after {@link INTF_BLK_recipeSelector}.
-     * Does not affect stats and recipe selection.
-     * @class INTF_BLK_recipeHandler
-     * @extends INTF_BLK_payloadBlock
-     */
-    new CLS_interface({
-
-
-      __paramObjM__: (() => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Recipe module (.js file) for this block (as string), usually the block name without mod name. The file should be located at "scripts/auxFi/rc".
-         * @memberof INTF_BLK_recipeHandler
-         * @instance
+         * Handles basic multi-crafter methods, should be implemented after {@link INTF_BLK_recipeSelector}.
+         * Does not affect stats and recipe selection.
+         * @class INTF_BLK_recipeHandler
+         * @extends INTF_BLK_payloadBlock
          */
-        rcMdl: null,
+        new CLS_interface({
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Recipe module (.js file) for this block (as string), usually the block name without mod name. The file should be located at `scripts/auxFi/rc`. Converted to actual object later.
+                     * @memberof INTF_BLK_recipeHandler
+                     * @instance
+                     * @type {string|RecipeModule}
+                     */
+                    rcMdl: null,
+                    /**
+                     * `PARAM`: Mod (as string) to search module from.
+                     * @memberof INTF_BLK_recipeHandler
+                     * @instance
+                     * @type {String}
+                     */
+                    rcSourceMod: null,
+                    /**
+                     * `PARAM`: Warmup rate of Erekir heat output.
+                     * @memberof INTF_BLK_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    erekirHeatWarmupRate: 0.05,
+                    /**
+                     * `PARAM`: If true, this crafter will select recipe automatically. Make sure every recipe is assigned with a unique key content!
+                     * @memberof INTF_BLK_recipeHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    useAutoSelection: false,
+                    /**
+                     * `PARAM`: Whether this block does not actively dump resources.
+                     * @memberof INTF_BLK_recipeHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    disableDump: false,
+                    /**
+                     * `PARAM`: Effect used when this crafter fails its recipe.
+                     * @memberof INTF_BLK_recipeHandler
+                     * @instance
+                     * @type {Effect}
+                     */
+                    failEff: GLB_eff.smogFail,
+
+
+                    /* <------------------------------ internal ------------------------------> */
+
+
+                    /**
+                     * `INTERNAL`: Whether this block consumes Erekir heat.
+                     * @memberof INTF_BLK_recipeHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    isErekirHeatConsumer: false,
+                    /**
+                     * `INTERNAL`: Whether this block produces Erekir heat.
+                     * @memberof INTF_BLK_recipeHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    isErekirHeatProducer: false,
+
+
+                };
+            }
+            .setProp({
+                mergeMode: "object",
+            }),
+
+
+            __paramParserM__: function() {
+                return [
+                    "rcMdl", function(val) {
+                        // Convert name to actual recipe module object
+                        if(val == null) throw new LCError.NullArgumentError("rcMdl");
+                        let nameMod = this.rcSourceMod;
+                        if(nameMod == null) throw new LCError.NullArgumentError("rcSourceMod");
+                        return MDL_recipe.getRcMdl(nameMod, val);
+                    },
+                ]
+            }
+            .setProp({
+                mergeMode: "array",
+            }),
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setBars: function() {
+                comp_setBars(this);
+            },
+
+
+            consumesItem: function(item) {
+                return MDL_recipe.checkInput(item, this.rcMdl);
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
+
+
+            consumesLiquid: function(liq) {
+                return MDL_recipe.checkInput(liq, this.rcMdl);
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
+
+
+            outputsItems: function() {
+                return MDL_recipe.checkAnyItemOutput(this.rcMdl);
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            })
+            .setCache(),
+
+
+        })
+        .extendInterface(PARENT[0], "INTF_BLK_recipeHandler"),
+
+
         /**
-         * `PARAM`: Mod (as string) to search module from.
-         * @memberof INTF_BLK_recipeHandler
-         * @instance
+         * @class INTF_B_recipeHandler
+         * @extends INTF_B_payloadBlock
          */
-        rcSourceMod: null,
-        /**
-         * `PARAM`: Warmup rate of Erekir heat output.
-         * @memberof INTF_BLK_recipeHandler
-         * @instance
-         */
-        erekirHeatWarmupRate: 0.05,
-        /**
-         * `PARAM`: If true, this crafter will select recipe automatically.
-         * @memberof INTF_BLK_recipeHandler
-         * @instance
-         */
-        useAutoSelection: false,
-        /**
-         * `PARAM`: Whether this block does not actively dump resources.
-         * @memberof INTF_BLK_recipeHandler
-         * @instance
-         */
-        disableDump: false,
-        /**
-         * `PARAM`: Effect used when this crafter fails its recipe.
-         * @memberof INTF_BLK_recipeHandler
-         * @instance
-         */
-        failEff: GLB_eff.smogFail,
-
-
-        /* <------------------------------ internal ------------------------------> */
-
-
-        /**
-         * `INTERNAL`: Whether this block consumes Erekir heat.
-         * @memberof INTF_BLK_recipeHandler
-         * @instance
-         */
-        isErekirHeatConsumer: false,
-        /**
-         * `INTERNAL`: Whether this block produces Erekir heat.
-         * @memberof INTF_BLK_recipeHandler
-         * @instance
-         */
-        isErekirHeatProducer: false,
-
-
-      }))
-      .setProp({
-        mergeMode: "object",
-      }),
-      __paramParserM__: (() => [
-        "rcMdl", function(val) {
-          if(val == null) throw new LCError.NullArgumentError("rcMdl");
-          let nameMod = this.rcSourceMod;
-          if(nameMod == null) throw new LCError.NullArgumentError("rcSourceMod");
-
-          return MDL_recipe.getRcMdl(nameMod, val);
-        },
-      ])
-      .setProp({
-        mergeMode: "array",
-      }),
-
-
-      init: function() {
-        comp_init(this);
-      },
-
-
-      setBars: function() {
-        comp_setBars(this);
-      },
-
-
-      consumesItem: function(item) {
-        return MDL_recipe.checkInput(item, this.rcMdl);
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
-
-
-      consumesLiquid: function(liq) {
-        return MDL_recipe.checkInput(liq, this.rcMdl);
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
-
-
-      outputsItems: function() {
-        return MDL_recipe.checkAnyItemOutput(this.rcMdl);
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      })
-      .setCache(),
-
-
-    }).extendInterface(INTF[0], "INTF_BLK_recipeHandler"),
-
-
-    /**
-     * @class INTF_B_recipeHandler
-     * @extends INTF_B_payloadBlock
-     */
-    new CLS_interface({
-
-
-      __paramObjM__: (() => ({
-
-
-        /* <------------------------------ internal ------------------------------> */
-
-
-        /**
-         * `INTERNAL`: Recipe header selected.
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        rcHeader: "",
-        /**
-         * `INTERNAL`: Recipe selected.
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        rc: null,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        rcEffc: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        rcEffcMeanArr: tprov(() => new MathMeanArray(5)),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        erekirHeatI: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        erekirHeatO: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        erekirSideHeats: tprov(() => Array.newFArr(4)),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        erekirHeatEffc: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        attrSum: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        attrEffc: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        lastProgInc: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        lastLiqProgInc: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        lastCanAdd: false,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        lastOptEffc: 1.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        keyCt: null,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        lastKeyCt: null,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        itemAcceptCacheArr: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        liqAcceptCacheArr: tprov(() => []),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        consTmpObj: tprov(() => ({})),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        prodTmpObj: tprov(() => ({})),
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        hasRun: false,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        hasStopped: false,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        stopTimeCur: 0.0,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        blk$useAutoSelection: TmpStateTag.needReplace,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        blk$isErekirHeatConsumer: TmpStateTag.needReplace,
-        /**
-         * `INTERNAL`
-         * @memberof INTF_B_recipeHandler
-         * @instance
-         */
-        blk$isErekirHeatProducer: TmpStateTag.needReplace,
-
-
-      }))
-      .setProp({
-        mergeMode: "object",
-      }),
-
-
-      created: function() {
-        comp_created(this);
-      },
-
-
-      updateTile: function() {
-        comp_updateTile(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      updateEfficiencyMultiplier: function() {
-        comp_updateEfficiencyMultiplier(this);
-      }
-      .setProp({
-        override: true,
-        final: true,
-      }),
-
-
-      acceptItem: function(b_f, item) {
-        return comp_acceptItem(this, b_f, item);
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
-
-
-      acceptLiquid: function(b_f, liq) {
-        return comp_acceptLiquid(this, b_f, liq);
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
-
-
-      shouldConsume: function() {
-        return this.enabled && this.lastCanAdd && (this.rc.erekirHeatReq <= 0.0 || this.erekirHeatI > 0.0);
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
-
-
-      craft: function() {
-        comp_craft(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      warmupTarget: function() {
-        // `b.cheating()` should not be checked here because Anuke said no
-        // Yep, it's intentional that heat is required even when cheating
-        return this.rc.erekirHeatReq <= 0.0 ? 1.0 : Mathf.clamp(this.erekirHeatI / this.rc.erekirHeatReq);
-      }
-      .setProp({
-        noSuper: true,
-        mergeMode: function(valPrev, val) {
-          return val * valPrev;
-        },
-      }),
-
-
-      heatRequirement: function() {
-        return this.rc.erekirHeatReq;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      heat: function() {
-        return this.erekirHeatO;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      sideHeat: function() {
-        return this.erekirSideHeats;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      heatFrac: function() {
-        return this.rc.erekirHeatReq > 0.0 ?
-          this.erekirHeatI / this.rc.erekirHeatReq :
-          this.rc.erekirHeatProd > 0.0 ?
-            this.erekirHeatO / this.rc.erekirHeatProd :
-            0.0;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      displayConsumption: function(tb) {
-        comp_displayConsumption(this, tb);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      displayBars: function(tb) {
-        comp_displayBars(this, tb);
-      },
-
-
-      drawSelect: function() {
-        comp_drawSelect(this);
-      },
-
-
-      drawStatus: function() {
-        comp_drawStatus(this);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      /**
-       * Called every several frames to update some universal parameters.
-       * To update additional parameters, override {@link INTF_B_recipeHandler#ex_updateRcParam} instead.
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_onRcParamUpdate: function() {
-        comp_ex_onRcParamUpdate(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_onRcUpdate: function() {
-        if(this.rc.scrTup != null) this.rc.scrTup[0](this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_onRcRun: function() {
-        if(this.rc.scrTup != null) this.rc.scrTup[1](this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_onRcStoppedRun: function() {
-        if(this.rc.scrTup != null) this.rc.scrTup[3](this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_onRcCraft: function() {
-        if(this.rc.scrTup != null) this.rc.scrTup[2](this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_onRcFail: function() {
-        if(this.rc.scrTup != null) this.rc.scrTup[4](this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Multi-crafter efficiency should be updated here, as it's been reset.
-       * `b.updateEfficiencyMultiplier` is final now and cannot be mixed.
-       * <br> `LATER`
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_postUpdateEfficiencyMultiplier: function() {
-
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Updates attribute efficiency.
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_updateAttrEffc: function() {
-        comp_ex_updateAttrEffc(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Updates parameters related to a specific recipe.
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {RecipeModule} rcMdl
-       * @param {string} rcHeader
-       * @param {boolean} forceLoad - If true, some parameters will be loaded even if header is not changed.
-       * @return {void}
-       */
-      ex_updateRcParam: function(rcMdl, rcHeader, forceLoad) {
-        comp_ex_updateRcParam(this, rcMdl, rcHeader, forceLoad);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 3,
-      }),
-
-
-      /**
-       * Called whenever recipe is changed.
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_resetRcParam: function() {
-        comp_ex_resetRcParam(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * When recipe is changed, this method will be called to load some recipe-specific parameters.
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {RecipeModule} rcMdl
-       * @param {string} header
-       * @return {void}
-       */
-      ex_loadRcParam: function(rcMdl, rcHeader) {
-        comp_ex_loadRcParam(this, rcMdl, rcHeader);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 2,
-      }),
-
-
-      /**
-       * Creates effect when recipe is changed.
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {void}
-       */
-      ex_showRcChangeEff: function() {
-        GLB_eff.fadePlacePack[this.block.size].at(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @override
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {Building} b_f
-       * @param {Payload} pay
-       * @return {boolean}
-       */
-      ex_acceptPay: function thisFun(b_f, pay) {
-        if(pay == null) return false;
-        let ct = pay.content();
-        if(this.blk$useAutoSelection && this.rc.keyPayHeaderMap != null && ct !== this.keyCt && b_f !== this && this.rc.keyPayHeaderMap.containsKey(ct)) {
-          this.keyCt = ct;
-        };
-
-        return thisFun.funPrev.apply(this, arguments);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-        argLen: 2,
-      }),
-
-
-      /**
-       * @override
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {string} nameCt
-       * @return {number}
-       */
-      ex_getPayConsAmt: function(nameCt) {
-        return this.rc.payi.read(nameCt, 0);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @override
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {string} nameCt
-       * @return {number}
-       */
-      ex_getPayProdAmt: function(nameCt) {
-        return this.rc.payo.read(nameCt, 0);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {boolean}
-       */
-      ex_shouldUpdateRcParam: function() {
-        return GLB_timer.effc;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {number} time
-       * @return {number}
-       */
-      ex_calcProgInc: function(time) {
-        return comp_ex_calcProgInc(this, time);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {number}
-       */
-      ex_calcRcEffcTarget: function() {
-        return comp_ex_calcRcEffcTarget(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * Override this method for dynamic chance to fail.
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {number}
-       */
-      ex_calcFailP: function() {
-        return this.rc.failP;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {Effect}
-       */
-      ex_getFailEff: function() {
-        return tryVal(this.rc.failEff, this.block.delegee.failEff);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @return {number}
-       */
-      ex_getBlkPol: function() {
-        return MDL_pollution.getBlkPol(this.block) + this.rc.pol;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {UnlockableContent|null} ct
-       * @return {number}
-       */
-      ex_getConsAmt: function(ct) {
-        return ct == null ? 0.0 : tryVal(this.consTmpObj[ct.name], 0.0);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {UnlockableContent|null} ct
-       * @return {number}
-       */
-      ex_getProdAmt: function(ct) {
-        return ct == null ? 0.0 : tryVal(this.prodTmpObj[ct.name], 0.0);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof INTF_B_recipeHandler
-       * @instance
-       * @param {Writes|Reads} wr0rd
-       * @return {void}
-       */
-      ex_processData: function(wr0rd) {
-        processData(
-          wr0rd,
-
-          wr => {
-            wr.str(this.rcHeader);
-            wr.bool(this.hasStopped);
-            wr.f(this.erekirHeatO);
-          },
-
-          rd => {
-            this.rcHeader = rd.str();
-            this.hasStopped = rd.bool();
-
-            if(this.LCReviSub >= 1) {
-              this.erekirHeatO = rd.f();
-            };
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-    }).extendInterface(INTF[1], "INTF_B_recipeHandler"),
-
-
-  ];
+        new CLS_interface({
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /* <------------------------------ internal ------------------------------> */
+
+
+                    /**
+                     * `INTERNAL`: Recipe header currently selected.
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {string}
+                     */
+                    rcHeader: "",
+                    /**
+                     * `INTERNAL`: Recipe selected. See {@link CLS_recipe}.
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {CLS_recipe}
+                     */
+                    rc: null,
+                    /**
+                     * `INTERNAL`: Efficiency for current recipe.
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    rcEffc: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {MathMeanArray}
+                     */
+                    rcEffcMeanArr: tprov(() => new MathMeanArray(5)),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    erekirHeatI: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    erekirHeatO: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {TDynamic<JavaArray<java.lang.Float>>}
+                     */
+                    erekirSideHeats: tprov(() => Array.newFArr(4)),
+                    /**
+                     * `INTERNAL`: Efficiency related to Erekir heat. Used only when Erekir heat is involved.
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    erekirHeatEffc: 0.0,
+                    /**
+                     * `INTERNAL`: Attribute sum for current recipe.
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    attrSum: 0.0,
+                    /**
+                     * `INTERNAL`: Attribute efficiency for current recipe.
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    attrEffc: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    lastProgInc: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    lastLiqProgInc: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    lastCanAdd: false,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    lastOptEffc: 1.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {UnlockableContent|null}
+                     */
+                    keyCt: null,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {UnlockableContent|null}
+                     */
+                    lastKeyCt: null,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {TDynamic<Array<boolean>>}
+                     */
+                    itemAcceptCacheArr: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {TDynamic<Array<boolean>>}
+                     */
+                    liqAcceptCacheArr: tprov(() => []),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {TDynamic<Object<string, number>>}
+                     */
+                    consTmpObj: tprov(() => ({})),
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {TDynamic<Object<string, number>>}
+                     */
+                    prodTmpObj: tprov(() => ({})),
+                    /**
+                     * `INTERNAL`: Whether this building has been active before.
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    hasRun: false,
+                    /**
+                     * `INTERNAL`: Whether this building is inactive right now after being active before.
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {boolean}
+                     */
+                    hasStopped: false,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {number}
+                     */
+                    stopTimeCur: 0.0,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {boolean|TmpStateTag}
+                     */
+                    blk$useAutoSelection: TmpStateTag.needReplace,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {boolean|TmpStateTag}
+                     */
+                    blk$isErekirHeatConsumer: TmpStateTag.needReplace,
+                    /**
+                     * `INTERNAL`
+                     * @memberof INTF_B_recipeHandler
+                     * @instance
+                     * @type {boolean|TmpStateTag}
+                     */
+                    blk$isErekirHeatProducer: TmpStateTag.needReplace,
+
+
+                };
+            }
+            .setProp({
+                mergeMode: "object",
+            }),
+
+
+            created: function() {
+                comp_created(this);
+            },
+
+
+            updateTile: function() {
+                comp_updateTile(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            updateEfficiencyMultiplier: function() {
+                comp_updateEfficiencyMultiplier(this);
+            }
+            .setProp({
+                override: true,
+                final: true,
+            }),
+
+
+            acceptItem: function(b_f, item) {
+                return comp_acceptItem(this, b_f, item);
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
+
+
+            acceptLiquid: function(b_f, liq) {
+                return comp_acceptLiquid(this, b_f, liq);
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
+
+
+            shouldConsume: function() {
+                return this.enabled && this.lastCanAdd && (this.rc.erekirHeatReq <= 0.0 || this.erekirHeatI > 0.0);
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
+
+
+            craft: function() {
+                comp_craft(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            warmupTarget: function() {
+                // `b.cheating()` should not be checked here because Anuke said no
+                // Yep, it's intentional that heat is required even when cheating
+                return this.rc.erekirHeatReq <= 0.0 ? 1.0 : Mathf.clamp(this.erekirHeatI / this.rc.erekirHeatReq);
+            }
+            .setProp({
+                noSuper: true,
+                mergeMode: function(valPrev, val) {
+                    return val * valPrev;
+                },
+            }),
+
+
+            heatRequirement: function() {
+                return this.rc.erekirHeatReq;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+            heat: function() {
+                return this.erekirHeatO;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+            sideHeat: function() {
+                return this.erekirSideHeats;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+            heatFrac: function() {
+                return this.block.delegee.isErekirHeatConsumer ?
+                    this.erekirHeatI / this.rc.erekirHeatReq :
+                    this.block.delegee.isErekirHeatProducer ?
+                        this.erekirHeatO / this.rc.erekirHeatProd :
+                        0.0;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+            displayConsumption: function(tb) {
+                comp_displayConsumption(this, tb);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            displayBars: function(tb) {
+                comp_displayBars(this, tb);
+            },
+
+
+            drawSelect: function() {
+                comp_drawSelect(this);
+            },
+
+
+            drawStatus: function() {
+                comp_drawStatus(this);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+            /**
+             * Called every several frames to update some universal parameters.
+             * To update additional parameters, override {@link INTF_B_recipeHandler#ex_updateRcParam} instead.
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @return {void}
+             */
+            ex_onRcParamUpdate: function() {
+                comp_ex_onRcParamUpdate(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @return {void}
+             */
+            ex_onRcUpdate: function() {
+                if(this.rc.scrTup != null) {
+                    this.rc.scrTup[0](this);
+                };
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @return {void}
+             */
+            ex_onRcRun: function() {
+                if(this.rc.scrTup != null) {
+                    this.rc.scrTup[1](this);
+                };
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @return {void}
+             */
+            ex_onRcStoppedRun: function() {
+                if(this.rc.scrTup != null) {
+                    this.rc.scrTup[3](this);
+                };
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @return {void}
+             */
+            ex_onRcCraft: function() {
+                if(this.rc.scrTup != null) {
+                    this.rc.scrTup[2](this);
+                };
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @return {void}
+             */
+            ex_onRcFail: function() {
+                if(this.rc.scrTup != null) {
+                    this.rc.scrTup[4](this);
+                };
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * Multi-crafter efficiency should be updated here, as it's been reset in `b.updateEfficiencyMultiplier`.
+             * <br> `b.updateEfficiencyMultiplier` is final now and cannot be mixed.
+             * <br> `LATER`
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_postUpdateEfficiencyMultiplier: function() {
+
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * Updates attribute efficiency.
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updateAttrEffc: function() {
+                comp_ex_updateAttrEffc(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * Updates parameters related to a specific recipe.
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @param {RecipeModule} rcMdl
+             * @param {string} rcHeader
+             * @param {boolean} forceLoad - If true, some parameters will be loaded even if header is not changed.
+             * @return {void}
+             */
+            ex_updateRcParam: function(rcMdl, rcHeader, forceLoad) {
+                comp_ex_updateRcParam(this, rcMdl, rcHeader, forceLoad);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 3,
+            }),
+
+
+            /**
+             * Called whenever recipe is changed.
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_resetRcParam: function() {
+                comp_ex_resetRcParam(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * When recipe is changed, this method will be called to load some recipe-specific parameters.
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @param {RecipeModule} rcMdl
+             * @param {string} header
+             * @return {void}
+             */
+            ex_loadRcParam: function(rcMdl, rcHeader) {
+                comp_ex_loadRcParam(this, rcMdl, rcHeader);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
+
+
+            /**
+             * Creates effect when recipe is changed.
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_showRcChangeEff: function() {
+                GLB_eff.fadePlacePack[this.block.size].at(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @inheritdoc
+             */
+            ex_acceptPay: function thisFun(b_f, pay) {
+                if(pay == null) return false;
+                let ct = pay.content();
+                if(this.blk$useAutoSelection && this.rc.keyPayHeaderMap != null && ct !== this.keyCt && b_f !== this && this.rc.keyPayHeaderMap.containsKey(ct)) {
+                    this.keyCt = ct;
+                };
+                return thisFun.funPrev.apply(this, arguments);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+                argLen: 2,
+            }),
+
+
+            /**
+             * @inheritdoc
+             */
+            ex_getPayConsAmt: function(nameCt) {
+                return this.rc.payi.read(nameCt, 0);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+                argLen: 1,
+            }),
+
+
+            /**
+             * @inheritdoc
+             */
+            ex_getPayProdAmt: function(nameCt) {
+                return this.rc.payo.read(nameCt, 0);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+                argLen: 1,
+            }),
+
+
+            /**
+             * Override this method to change param update frequency.
+             * <br> `LATER`
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_shouldUpdateRcParam: function() {
+                return GLB_timer.effc;
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @param {number} time
+             * @return {number}
+             */
+            ex_calcProgInc: function(time) {
+                return comp_ex_calcProgInc(this, time);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcRcEffcTarget: function() {
+                return comp_ex_calcRcEffcTarget(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * Override this method for dynamic chance to fail.
+             * <br> `LATER`
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcFailP: function() {
+                return this.rc.failP;
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {Effect}
+             */
+            ex_getFailEff: function() {
+                return tryVal(this.rc.failEff, this.block.delegee.failEff);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @return {number}
+             * @lovecAttached
+             */
+            ex_getBlkPol: function() {
+                return MDL_pollution.getBlkPol(this.block) + this.rc.pol;
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @param {UnlockableContent|null} ct
+             * @return {number}
+             * @lovecAttached
+             */
+            ex_getConsAmt: function(ct) {
+                return ct == null ? 0.0 : tryVal(this.consTmpObj[ct.name], 0.0);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @param {UnlockableContent|null} ct
+             * @return {number}
+             * @lovecAttached
+             */
+            ex_getProdAmt: function(ct) {
+                return ct == null ? 0.0 : tryVal(this.prodTmpObj[ct.name], 0.0);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @param {Writes|Reads} wr0rd
+             * @return {void}
+             */
+            ex_processData: function(wr0rd) {
+                processData(
+                    wr0rd,
+                    wr => {
+                        wr.str(this.rcHeader);
+                        wr.bool(this.hasStopped);
+                        wr.f(this.erekirHeatO);
+                    },
+                    rd => {
+                        this.rcHeader = rd.str();
+                        this.hasStopped = rd.bool();
+                        if(this.LCReviSub >= 1) {
+                            this.erekirHeatO = rd.f();
+                        };
+                    },
+                );
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
+
+
+        })
+        .extendInterface(PARENT[1], "INTF_B_recipeHandler"),
+
+
+    ];

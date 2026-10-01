@@ -408,7 +408,7 @@
                      * `INTERNAL`
                      * @memberof INTF_B_pressureBlock
                      * @instance
-                     * @type {TDynamic<Array<Building>>}
+                     * @type {number}
                      */
                     presTransCount: 0,
                     /**
@@ -429,7 +429,7 @@
                      * `INTERNAL`
                      * @memberof INTF_B_pressureBlock
                      * @instance
-                     * @type {TDynamic<Array<Building>>}
+                     * @type {number}
                      */
                     presSupplyIncre: 0,
 

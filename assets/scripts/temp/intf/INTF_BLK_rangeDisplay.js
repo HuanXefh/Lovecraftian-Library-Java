@@ -5,33 +5,63 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_rangeDisplay>} INTFBLKRangeDisplay
+     */
 
 
-  function comp_drawPlace(blk, tx, ty, rot, valid) {
-    blk.useP3dRange ?
-      LCDrawP3D.roomFade(tx.toFCoord(blk.size), ty.toFCoord(blk.size), 1.0, blk.blkR.toRectW(blk.size), blk.blkR.toRectW(blk.size), blk.ex_getBlkRColor(valid)) :
-      LCDrawf.rectPlace(blk, tx, ty, blk.blkR, true, blk.ex_getBlkRColor(valid));
-  };
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_rangeDisplay>} INTFBRangeDisplay
+     * @prop {INTFBLKRangeDisplay} block
+     */
 
 
-  function comp_draw(b) {
-    if(!b.isPayload() && b.block.delegee.useP3dRange && LCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
-      processZ(GLB_var.layer.p3dRange);
-      LCDrawP3D.roomFade(b.x, b.y, 1.0, b.block.delegee.blkR.toRectW(b.block.size), b.block.delegee.blkR.toRectW(b.block.size), b.block.ex_getBlkRColor(true));
-      processZ();
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {INTFBLKRangeDisplay} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {number} rot
+     * @param {boolean} valid
+     * @return {void}
+     */
+    function comp_drawPlace(blk, tx, ty, rot, valid) {
+        blk.useP3dRange ?
+            LCDrawP3D.roomFade(tx.toFCoord(blk.size), ty.toFCoord(blk.size), 1.0, blk.blkR.toRectW(blk.size), blk.blkR.toRectW(blk.size), blk.ex_getBlkRColor(valid)) :
+            LCDrawf.rectPlace(blk, tx, ty, blk.blkR, true, blk.ex_getBlkRColor(valid));
     };
-  };
 
 
-  function comp_drawSelect(b) {
-    if(!b.block.delegee.useP3dRange) {
-      LCDrawf.rectSelect(b, b.block.delegee.blkR, true, b.block.ex_getBlkRColor(true));
+    /**
+     * @private
+     * @param {INTFBRangeDisplay} b
+     * @return {void}
+     */
+    function comp_draw(b) {
+        if(!b.isPayload() && b.block.delegee.useP3dRange && LCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
+            processZ(GLB_var.layer.p3dRange);
+            LCDrawP3D.roomFade(b.x, b.y, 1.0, b.block.delegee.blkR.toRectW(b.block.size), b.block.delegee.blkR.toRectW(b.block.size), b.block.ex_getBlkRColor(true));
+            processZ();
+        };
     };
-  };
+
+
+    /**
+     * @private
+     * @param {INTFBRangeDisplay} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        if(!b.block.delegee.useP3dRange) {
+            LCDrawf.rectSelect(b, b.block.delegee.blkR, true, b.block.ex_getBlkRColor(true));
+        };
+    };
 
 
 /*
@@ -41,78 +71,83 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Handles rectangular range display.
-     * No stat is added.
-     * @class INTF_BLK_rangeDisplay
-     */
-    new CLS_interface("INTF_BLK_rangeDisplay", {
-
-
-      __paramObjM__: () => ({
+    module.exports = [
 
 
         /**
-         * `PARAM`: Range (in blocks) to show.
-         * @memberof INTF_BLK_rangeDisplay
-         * @instance
+         * Handles rectangular range display.
+         * No stat is added.
+         * @class INTF_BLK_rangeDisplay
          */
-        blkR: 5,
+        new CLS_interface("INTF_BLK_rangeDisplay", {
+
+
+            __paramObjM__: function() {
+                return {
+
+
+                    /**
+                     * `PARAM`: Range (in blocks) to show.
+                     * @memberof INTF_BLK_rangeDisplay
+                     * @instance
+                     * @type {number}
+                     */
+                    blkR: 5,
+                    /**
+                     * `PARAM`: See {@link INTF_BLK_radiusDisplay#useP3dRange}.
+                     * @memberof INTF_BLK_rangeDisplay
+                     * @instance
+                     * @param {boolean}
+                     */
+                    useP3dRange: true,
+
+
+                };
+            },
+
+
+            drawPlace: function(tx, ty, rot, valid) {
+                comp_drawPlace(this, tx, ty, rot, valid);
+            },
+
+
+            /**
+             * `LATER`
+             * @memberof INTF_BLK_rangeDisplay
+             * @instance
+             * @func
+             * @param {boolean} valid
+             * @return {Color}
+             */
+            ex_getBlkRColor: function(valid) {
+                return valid ? Pal.accent : Pal.remove;
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
+
+
+        }),
+
+
         /**
-         * `PARAM`: See {@link INTF_BLK_radiusDisplay}.
-         * @memberof INTF_BLK_rangeDisplay
-         * @instance
+         * @class INTF_B_rangeDisplay
          */
-        useP3dRange: true,
+        new CLS_interface("INTF_B_rangeDisplay", {
 
 
-      }),
+            draw: function() {
+                comp_draw(this);
+            },
 
 
-      drawPlace: function(tx, ty, rot, valid) {
-        comp_drawPlace(this, tx, ty, rot, valid);
-      },
+            drawSelect: function() {
+                comp_drawSelect(this);
+            },
 
 
-      /**
-       * `LATER`
-       * @memberof INTF_BLK_rangeDisplay
-       * @instance
-       * @param {boolean} valid
-       * @return {Color}
-       */
-      ex_getBlkRColor: function(valid) {
-        return valid ? Pal.accent : Pal.remove;
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
+        }),
 
 
-    }),
-
-
-    /**
-     * @class INTF_B_rangeDisplay
-     */
-    new CLS_interface("INTF_B_rangeDisplay", {
-
-
-      draw: function() {
-        comp_draw(this);
-      },
-
-
-      drawSelect: function() {
-        comp_drawSelect(this);
-      },
-
-
-    }),
-
-
-  ];
+    ];
