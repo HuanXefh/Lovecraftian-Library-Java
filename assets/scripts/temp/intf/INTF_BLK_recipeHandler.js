@@ -33,35 +33,80 @@
 
 
     let
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         i,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         iCap,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         j,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         jCap,
-        /** @type {Object} */
+        /**
+         * @private
+         * @type {Object}
+         */
         tmp,
-        /** @type {Object} */
+        /**
+         * @private
+         * @type {Object}
+         */
         tmp1,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         amt,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         p,
-        /** @type {boolean} */
+        /**
+         * @private
+         * @type {boolean}
+         */
         cond,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         val,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         tmpVal,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         scl,
-        /** @type {number} */
+        /**
+         * @private
+         * @type {number}
+         */
         inc,
-        /** @type {RecipeModule} */
+        /**
+         * @private
+         * @type {RecipeModule}
+         */
         rcMdl,
-        /** @type {string} */
+        /**
+         * @private
+         * @type {string}
+         */
         header;
 
 
@@ -1296,7 +1341,7 @@
              * Called whenever recipe is changed.
              * @memberof INTF_B_recipeHandler
              * @instance
-             * @func
+             * @func ex_resetRcParam
              * @return {void}
              */
             ex_resetRcParam: function() {
@@ -1341,7 +1386,13 @@
 
 
             /**
-             * @inheritdoc
+             * @override
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @param {Building} b_f
+             * @param {Payload} pay
+             * @return {boolean}
              */
             ex_acceptPay: function thisFun(b_f, pay) {
                 if(pay == null) return false;
@@ -1359,7 +1410,13 @@
 
 
             /**
-             * @inheritdoc
+             * `REALIZED`
+             * @override
+             * @memberof INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @param {string} nameCt
+             * @return {number}
              */
             ex_getPayConsAmt: function(nameCt) {
                 return this.rc.payi.read(nameCt, 0);
@@ -1372,7 +1429,13 @@
 
 
             /**
-             * @inheritdoc
+             * `REALIZED`
+             * @override
+             * @memberOf INTF_B_recipeHandler
+             * @instance
+             * @func
+             * @param {string} nameCt
+             * @return {number}
              */
             ex_getPayProdAmt: function(nameCt) {
                 return this.rc.payo.read(nameCt, 0);

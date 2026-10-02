@@ -335,10 +335,14 @@
                     fuelLvlMtp: 1.0,
                     /**
                      * @inheritdoc
+                     * @memberof INTF_BLK_furnaceBlock
+                     * @instance
                      */
                     heatWarmupRate: 0.0001,
                     /**
                      * @inheritdoc
+                     * @memberof INTF_BLK_furnaceBlock
+                     * @instance
                      */
                     heatLightRad: 40.0,
 
@@ -572,7 +576,11 @@
 
 
             /**
-             * @inheritdoc
+             * @override
+             * @memberof INTF_BLK_furnaceBlock
+             * @instance
+             * @func
+             * @return {number}
              */
             ex_calcTempTarget: function thisFun() {
                 return Math.max(thisFun.funPrev.apply(this, arguments), this.tempFuel);
@@ -584,7 +592,11 @@
 
 
             /**
-             * @inheritdoc
+             * @override
+             * @memberof INTF_BLK_furnaceBlock
+             * @instance
+             * @func
+             * @return {number}
              */
             ex_calcTempTargetFrac: function() {
                 return comp_ex_calcTempTargetFrac(this);
@@ -596,7 +608,11 @@
 
 
             /**
-             * @inheritdoc
+             * @override
+             * @memberof INTF_BLK_furnaceBlock
+             * @instance
+             * @func
+             * @return {number}
              */
             ex_getHeatTarget: function() {
                 return GLB_param.GLOBAL_HEAT;
@@ -624,7 +640,11 @@
 
 
             /**
-             * @inheritdoc
+             * @override
+             * @memberof INTF_BLK_furnaceBlock
+             * @instance
+             * @func
+             * @return {boolean}
              */
             ex_checkHeatingValid: function() {
                 return this.tempRiseTarget - GLB_param.GLOBAL_HEAT >= 10.0;

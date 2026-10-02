@@ -5,13 +5,24 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseFactory");
+    /**
+     * @typedef {TemplateInstance<AttributeCrafter, BLK_attributeFactory>} BLKAttributeFactory
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<AttributeCrafter.AttributeCrafterBuild, B_attributeFactory>} BAttributeFactory
+     * @prop {BLKAttributeFactory} block
+     */
+
+
+    const PARENT = require("lovec/temp/blk/BLK_baseFactory");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,30 +32,34 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Vanilla attribute crafter.
-     * To be honest I don't like this as a pure factory.
-     * @class BLK_attributeFactory
-     * @extends BLK_baseFactory
-     */
-    newClass().extendClass(PARENT[0], "BLK_attributeFactory").initClass()
-    .setParent(AttributeCrafter)
-    .setTags()
-    .setParam({})
-    .setMethod({}),
+        /**
+         * Vanilla attribute crafter.
+         * <br> To be honest I don't like this as a pure factory.
+         * @class BLK_attributeFactory
+         * @extends BLK_baseFactory
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_attributeFactory")
+        .initTemplate()
+        .setParent(AttributeCrafter)
+        .setTags()
+        .setParam({})
+        .setMethod({}),
 
 
-    /**
-     * @class B_attributeFactory
-     * @extends B_baseFactory
-     */
-    newClass().extendClass(PARENT[1], "B_attributeFactory").initClass()
-    .setParent(AttributeCrafter.AttributeCrafterBuild)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_attributeFactory
+         * @extends B_baseFactory
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_attributeFactory")
+        .initTemplate()
+        .setParent(AttributeCrafter.AttributeCrafterBuild)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

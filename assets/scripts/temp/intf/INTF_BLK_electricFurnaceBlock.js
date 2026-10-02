@@ -187,10 +187,14 @@
                     maxOverheatScl: 1.5,
                     /**
                      * @inheritdoc
+                     * @memberof INTF_BLK_electricFurnaceBlock
+                     * @instance
                      */
                     heatWarmupRate: 0.0001,
                     /**
                      * @inheritdoc
+                     * @memberof INTF_BLK_electricFurnaceBlock
+                     * @instance
                      */
                     heatLightRad: 40.0,
 
@@ -370,13 +374,18 @@
 
 
             /**
-             * @inheritdoc
+             * @override
+             * @memberof INTF_B_electricFurnaceBlock
+             * @instance
+             * @func
+             * @return {number}
              */
             ex_getHeatTarget: function() {
                 return GLB_param.GLOBAL_HEAT;
             }
             .setProp({
                 noSuper: true,
+                override: true,
             }),
 
 

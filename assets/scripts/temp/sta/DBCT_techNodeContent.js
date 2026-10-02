@@ -167,7 +167,11 @@
 
 
         /**
-         * @inheritdoc
+         * @override
+         * @memberof DBCT_techNodeContent
+         * @instance
+         * @func
+         * @return {void}
          */
         ex_init: function() {
             comp_ex_init(this);

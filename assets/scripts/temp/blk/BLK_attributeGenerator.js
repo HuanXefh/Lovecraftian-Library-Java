@@ -5,64 +5,99 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseGenerator");
+    /**
+     * @typedef {TemplateInstance<ThermalGenerator, BLK_attributeGenerator>} BLKAttributeGenerator
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<ThermalGenerator.ThermalGeneratorBuild, B_attributeGenerator>} BAttributeGenerator
+     * @prop {BLKAttributeGenerator} block
+     */
 
 
-  function comp_init(blk) {
-    blk.displayEfficiencyScale = 1.0 / Math.pow(blk.size, 2);
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseGenerator");
 
 
-  function comp_setStats(blk, stats) {
-    stats.remove(blk.generationType);
-    stats.add(blk.generationType, blk.powerProduction * 60.0, StatUnit.powerSecond);
-    if(blk.outputLiquid != null) {
-      stats.replace(Stat.output, StatValues.liquid(blk.outputLiquid.liquid, blk.outputLiquid.amount * 60.0, true));
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKAttributeGenerator} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.displayEfficiencyScale = 1.0 / Math.pow(blk.size, 2);
     };
 
-    stats.remove(Stat.tiles);
-    stats.remove(Stat.affinities);
-    stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
-      tb.row();
-      MDL_table.setAttr(tb, blk.attribute, oblk => blk.attrFilter.get(blk, oblk));
-    }));
-  };
 
+    /**
+     * @private
+     * @param {BLKAttributeGenerator} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.remove(blk.generationType);
+        stats.add(blk.generationType, blk.powerProduction * 60.0, StatUnit.powerSecond);
+        if(blk.outputLiquid != null) {
+            stats.replace(Stat.output, StatValues.liquid(blk.outputLiquid.liquid, blk.outputLiquid.amount * 60.0, true));
+        };
 
-  function comp_canPlaceOn(blk, t, team, rot) {
-    return blk.attrFilter.get(blk, t.floor());
-  };
-
-
-  function comp_updateTile(b) {
-    if(GLB_timer.effc) {
-      b.lastEffc = (b.sum + b.block.attribute.env()) * b.efficiency / Math.pow(b.block.size, 2);
+        stats.remove(Stat.tiles);
+        stats.remove(Stat.affinities);
+        stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
+            tb.row();
+            MDL_table.setAttr(tb, blk.attribute, oblk => blk.attrFilter.get(blk, oblk));
+        }));
     };
 
-    b.lastWarmup = Mathf.approachDelta(b.lastWarmup, Mathf.num(b.lastEffc > 0.0), b.block.delegee.warmupRate);
-    b.productionEfficiency = Mathf.approachDelta(b.productionEfficiency, b.lastEffc, b.block.delegee.warmupRate);
-    b.attrGenItemProg += b.productionEfficiency * b.delta();
-    b.attrGenProg += b.productionEfficiency * b.delta();
-    if(Mathf.chanceDelta(b.block.effectChance * b.productionEfficiency)) {
-      MDL_effect.showAround(b.x, b.y, b.block.generateEffect, b.block.delegee.generateEffectRange, 0.0);
+
+    /**
+     * @private
+     * @param {BLKAttributeGenerator} blk
+     * @param {Tile} t
+     * @param {Team} team
+     * @param {number} rot
+     * @return {boolean}
+     */
+    function comp_canPlaceOn(blk, t, team, rot) {
+        return blk.attrFilter.get(blk, t.floor());
     };
 
-    if(b.items != null && b.attrGenItemProg > b.block.delegee.attrGenItemDur) {
-      b.attrGenItemProg %= b.block.delegee.attrGenItemDur;
-      b.consume();
-      MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
+
+    /**
+     * @private
+     * @param {BAttributeGenerator} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(GLB_timer.effc) {
+            b.lastEffc = (b.sum + b.block.attribute.env()) * b.efficiency / Math.pow(b.block.size, 2);
+        };
+
+        b.lastWarmup = Mathf.approachDelta(b.lastWarmup, Mathf.num(b.lastEffc > 0.0), b.block.delegee.warmupRate);
+        b.productionEfficiency = Mathf.approachDelta(b.productionEfficiency, b.lastEffc, b.block.delegee.warmupRate);
+        b.attrGenItemProg += b.productionEfficiency * b.delta();
+        b.attrGenProg += b.productionEfficiency * b.delta();
+        if(Mathf.chanceDelta(b.block.effectChance * b.productionEfficiency)) {
+            MDL_effect.showAround(b.x, b.y, b.block.generateEffect, b.block.delegee.generateEffectRange, 0.0);
+        };
+
+        if(b.items != null && b.attrGenItemProg > b.block.delegee.attrGenItemDur) {
+            b.attrGenItemProg %= b.block.delegee.attrGenItemDur;
+            b.consume();
+            MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
+        };
+        if(b.block.outputLiquid != null) {
+            b.liquids.add(b.block.outputLiquid.liquid, Math.min(b.productionEfficiency * b.delta() * b.block.outputLiquid.amount, b.block.liquidCapacity - b.liquids.get(b.block.outputLiquid.liquid)));
+            b.dumpLiquid(b.block.outputLiquid.liquid);
+        };
     };
-    if(b.block.outputLiquid != null) {
-      b.liquids.add(b.block.outputLiquid.liquid, Math.min(b.productionEfficiency * b.delta() * b.block.outputLiquid.amount, b.block.liquidCapacity - b.liquids.get(b.block.outputLiquid.liquid)));
-      b.dumpLiquid(b.block.outputLiquid.liquid);
-    };
-  };
 
 
 /*
@@ -72,165 +107,180 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Better {@link ThermalGenerator} with proper consumption functionality.
-     * You don't need to scale everything by squared size here.
-     * @class BLK_attributeGenerator
-     * @extends BLK_baseGenerator
-     */
-    newClass().extendClass(PARENT[0], "BLK_attributeGenerator").initClass()
-    .setParent(ThermalGenerator)
-    .setTags()
-    .setParam({
+        /**
+         * Better {@link ThermalGenerator} with proper consumption functionality.
+         * You don't need to scale everything by squared size here.
+         * @class BLK_attributeGenerator
+         * @extends BLK_baseGenerator
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_attributeGenerator")
+        .initTemplate()
+        .setParent(ThermalGenerator)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`: How fast this generator warms up.
-       * @memberof BLK_attributeGenerator
-       * @instance
-       */
-      warmupRate: 0.008,
-      /**
-       * `PARAM`: Item duration.
-       * @memberof BLK_attributeGenerator
-       * @instance
-       */
-      attrGenItemDur: 120.0,
-      /**
-       * `PARAM`: Used to filter out valid blocks with matching attribute.
-       * <br> `ARGS`: blk, oblk.
-       * @memberof BLK_attributeGenerator
-       * @instance
-       */
-      attrFilter: tprov(() => boolf2(function(blk, oblk) {return true})),
-      /**
-       * `PARAM`: Effect created when item is consumed.
-       * @memberof BLK_attributeGenerator
-       * @instance
-       */
-      consEff: Fx.none,
+            /**
+             * `PARAM`: How fast this generator warms up.
+             * @memberof BLK_attributeGenerator
+             * @instance
+             * @type {number}
+             */
+            warmupRate: 0.008,
+            /**
+             * `PARAM`: Item duration.
+             * @memberof BLK_attributeGenerator
+             * @instance
+             * @type {number}
+             */
+            attrGenItemDur: 120.0,
+            /**
+             * `PARAM`: Used to filter out valid blocks from those with matching attribute.
+             * <br> `ARGS`: blk, oblk.
+             * @memberof BLK_attributeGenerator
+             * @instance
+             * @type {TDynamic<Boolf2<Block, Block>>}
+             */
+            attrFilter: tprov(() => boolf2(function(blk, oblk) {return true})),
+            /**
+             * `PARAM`: Effect created when item is consumed.
+             * @memberof BLK_attributeGenerator
+             * @instance
+             * @type {Effect}
+             */
+            consEff: Fx.none,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-      canPlaceOn: function(t, team, rot) {
-        return comp_canPlaceOn(this, t, team, rot);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            canPlaceOn: function(t, team, rot) {
+                return comp_canPlaceOn(this, t, team, rot);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      getDisplayedPowerProduction: function() {
-        return this.powerProduction;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            getDisplayedPowerProduction: function() {
+                return this.powerProduction;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @memberof BLK_attributeGenerator
-       * @instance
-       * @return {number}
-       */
-      ex_getRcDictOutputScl: function() {
-        return 1.0 / Math.pow(this.size, 2);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * `REALIZED`
+             * @memberof BLK_attributeGenerator
+             * @instance
+             * @func
+             * @return {number}
+             * @lovecAttached
+             */
+            ex_getRcDictOutputScl: function() {
+                return 1.0 / Math.pow(this.size, 2);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_attributeGenerator
-     * @extends B_baseGenerator
-     */
-    newClass().extendClass(PARENT[1], "B_attributeGenerator").initClass()
-    .setParent(ThermalGenerator.ThermalGeneratorBuild)
-    .setParam({
+        /**
+         * @class B_attributeGenerator
+         * @extends B_baseGenerator
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_attributeGenerator")
+        .initTemplate()
+        .setParent(ThermalGenerator.ThermalGeneratorBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_attributeGenerator
-       * @instance
-       */
-      lastEffc: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_attributeGenerator
-       * @instance
-       */
-      lastWarmup: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_attributeGenerator
-       * @instance
-       */
-      attrGenItemProg: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_attributeGenerator
-       * @instance
-       */
-      attrGenProg: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_attributeGenerator
+             * @instance
+             * @type {number}
+             */
+            lastEffc: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_attributeGenerator
+             * @instance
+             * @type {number}
+             */
+            lastWarmup: 0.0,
+            /**
+             * `INTERNAL`: Item consumption progress.
+             * @memberof B_attributeGenerator
+             * @instance
+             * @type {number}
+             */
+            attrGenItemProg: 0.0,
+            /**
+             * `INTERNAL`: Visual progress.
+             * @memberof B_attributeGenerator
+             * @instance
+             * @type {number}
+             */
+            attrGenProg: 0.0,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            updateTile: function() {
+                comp_updateTile(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      warmup: function() {
-        // In vanilla case warmup can be over 1.0, which breaks drawers
-        return this.lastWarmup;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            warmup: function() {
+                // In vanilla case warmup can be over 1.0, which breaks drawers
+                return this.lastWarmup;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      totalProgress: function() {
-        return this.attrGenProg;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            totalProgress: function() {
+                return this.attrGenProg;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

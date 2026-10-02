@@ -9,7 +9,7 @@
         "excludePattern": ""
     },
     "opts": {
-        "destination": "./document/jsdoc/",
+        "destination": "./jsdoc/",
         "template": "./doc_files/docdash/"
     },
     "plugins": [

@@ -5,135 +5,197 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseMiner");
-  const INTF = require("lovec/temp/intf/INTF_BLK_payloadBlock");
+    /**
+     * @typedef {TemplateInstance<Block, BLK_baseDrill>} BLKBaseDrill
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, B_baseDrill>} BBaseDrill
+     * @prop {BLKBaseDrill} block
+     */
 
 
-  function comp_init(blk) {
-    blk.group = BlockGroup.drills;
+    const PARENT = require("lovec/temp/blk/BLK_baseMiner");
+    const INTF_BLK_payloadBlock = require("lovec/temp/intf/INTF_BLK_payloadBlock");
 
-    if(blk.noSandOutput) {
-      if(blk.blockedItems == null) blk.blockedItems = new Seq();
-      DB_item.db["group"]["sand"].forEachFast(name => {
-        let item = MDL_content.getCt(name, ContentGetModes.RS);
-        if(item != null) blk.blockedItems.add(item);
-      }, true);
-    };
 
-    blk.itemWhitelist = blk.itemWhitelist.map(nameItem => MDL_content.getCt(nameItem, ContentGetModes.RS)).compact();
+    /* <------------------------------ component ------------------------------> */
 
-    MDL_event.onLoadPost(() => {
-      blk.hasItemCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
-      if(blk.drillItemDur < 0.0) {
-        blk.drillItemDur = blk.drillTime;
-      };
 
-      if(blk.shouldDropPay) {
-        Vars.content.items().each(item => {
-          let oblk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
-          if(oblk == null || !blk.ex_canMine(oblk, item, 1.0)) return;
-          MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(item)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
+    /**
+     * @private
+     * @param {BLKBaseDrill} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.group = BlockGroup.drills;
+
+        if(blk.noSandOutput) {
+            if(blk.blockedItems == null) {
+                blk.blockedItems = new Seq();
+            };
+            let item;
+            DB_item.db["group"]["sand"].forEachFast(name => {
+                item = MDL_content.getCt(name, ContentGetModes.RS);
+                if(item != null) {
+                    blk.blockedItems.add(item);
+                };
+            }, true);
+        };
+
+        blk.itemWhitelist = blk.itemWhitelist.map(nameItem => MDL_content.getCt(nameItem, ContentGetModes.RS)).compact();
+
+        MDL_event.onLoadPost(() => {
+            blk.hasItemCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
+            if(blk.drillItemDur < 0.0) {
+                blk.drillItemDur = blk.drillTime;
+            };
+
+            if(blk.shouldDropPay) {
+                let oblk;
+                Vars.content.items().each(item => {
+                    oblk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
+                    if(oblk == null || !blk.ex_canMine(oblk, item, 1.0)) return;
+                    MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(item)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
+                });
+            };
         });
-      };
-    });
-  };
-
-
-  function comp_setStats(blk, stats) {
-    if(blk.setupVanillaStat) {
-      stats.remove(Stat.drillTier);
-      stats.remove(Stat.drillSpeed);
-
-      let drillSpd = FRAG_faci.getDrillSpd(blk, false);
-      stats.add(fetchStat("lovec", "blk0min-basedrillspd"), drillSpd, StatUnit.itemsSecond);
-      let drillSpdBoost = FRAG_faci.getDrillSpd(blk, true);
-      if(!drillSpdBoost.fEqual(drillSpd)) stats.add(fetchStat("lovec", "blk0min-boosteddrillspd"), drillSpdBoost, StatUnit.itemsSecond);
-      stats.add(fetchStat("lovec", "blk0min-drilltier"), blk.tier);
     };
 
-    if(blk.blockedItems != null && blk.blockedItems.size > 0) {
-      stats.add(fetchStat("lovec", "blk0min-blockeditems"), newStatValue(tb => {
-        tb.row();
-        MDL_table.setCtLi(tb, blk.blockedItems.toArray());
-      }));
-    } else if(blk.itemWhitelist.length > 0) {
-      stats.add(fetchStat("lovec", "blk0min-alloweditems"), newStatValue(tb => {
-        tb.row();
-        MDL_table.setCtLi(tb, blk.itemWhitelist);
-      }));
+
+    /**
+     * @private
+     * @param {BLKBaseDrill} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        if(blk.setupVanillaStat) {
+            stats.remove(Stat.drillTier);
+            stats.remove(Stat.drillSpeed);
+
+            let drillSpd = FRAG_faci.getDrillSpd(blk, false);
+            stats.add(fetchStat("lovec", "blk0min-basedrillspd"), drillSpd, StatUnit.itemsSecond);
+            let drillSpdBoost = FRAG_faci.getDrillSpd(blk, true);
+            if(!drillSpdBoost.fEqual(drillSpd)) {
+                stats.add(fetchStat("lovec", "blk0min-boosteddrillspd"), drillSpdBoost, StatUnit.itemsSecond);
+            };
+            stats.add(fetchStat("lovec", "blk0min-drilltier"), blk.tier);
+        };
+
+        if(blk.blockedItems != null && blk.blockedItems.size > 0) {
+            stats.add(fetchStat("lovec", "blk0min-blockeditems"), newStatValue(tb => {
+                tb.row();
+                MDL_table.setCtLi(tb, blk.blockedItems.toArray());
+            }));
+        } else if(blk.itemWhitelist.length > 0) {
+            stats.add(fetchStat("lovec", "blk0min-alloweditems"), newStatValue(tb => {
+                tb.row();
+                MDL_table.setCtLi(tb, blk.itemWhitelist);
+            }));
+        };
+
+        if(blk.hasItemCons) {
+            stats.add(Stat.productionTime, blk.drillItemDur / 60.0, StatUnit.seconds);
+        };
+
+        if(!blk.shouldDropPay) {
+            stats.remove(fetchStat("lovec", "blk0fac-payroom"));
+        };
     };
 
-    if(blk.hasItemCons) stats.add(Stat.productionTime, blk.drillItemDur / 60.0, StatUnit.seconds);
 
-    if(!blk.shouldDropPay) stats.remove(fetchStat("lovec", "blk0fac-payroom"));
-  };
-
-
-  function comp_setBars(blk) {
-    if(!blk.shouldDropPay) return;
-
-    blk.addBar("lovec-pay-mine-prog", b => new Bar(
-      prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.delegee.payChargeFrac.perc(0))),
-      prov(() => Pal.ammo),
-      () => b.delegee.payChargeFrac,
-    ));
-  };
-
-
-  function comp_ex_canMine(blk, oblk, item, tierMtp) {
-    if(blk.blockedItems != null && blk.blockedItems.size > 0) {
-      if(blk.blockedItems.contains(item)) return false;
-    } else {
-      if(blk.itemWhitelist.length > 0 && !blk.itemWhitelist.includes(item)) return false;
+    /**
+     * @private
+     * @param {BLKBaseDrill} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        if(blk.shouldDropPay) {
+            blk.addBar("lovec-pay-mine-prog", b => new Bar(
+                prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.delegee.payChargeFrac.perc(0))),
+                prov(() => Pal.ammo),
+                () => b.delegee.payChargeFrac,
+            ));
+        };
     };
 
-    if(blk.shouldDropPay) {
-      let payBlk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
-      if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
+
+    /**
+     * @private
+     * @param {BLKBaseDrill} blk
+     * @param {Block} oblk
+     * @param {Item} item
+     * @param {number} tierMtp
+     * @return {boolean}
+     */
+    function comp_ex_canMine(blk, oblk, item, tierMtp) {
+        if(blk.blockedItems != null && blk.blockedItems.size > 0) {
+            if(blk.blockedItems.contains(item)) return false;
+        } else {
+            if(blk.itemWhitelist.length > 0 && !blk.itemWhitelist.includes(item)) return false;
+        };
+        if(blk.shouldDropPay) {
+            let payBlk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
+            if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
+        };
+        return blk.ex_calcDropHardness(oblk, item) <= blk.tier * tierMtp;
     };
 
-    return blk.ex_calcDropHardness(oblk, item) <= blk.tier * tierMtp;
-  };
 
-
-  function comp_created(b) {
-    if(b.block.delegee.shouldDropPay) b.hasPayOutput = true;
-  };
-
-
-  function comp_updateTile(b) {
-    if(!b.block.delegee.hasItemCons) return;
-
-    b.drillItemProg += b.edelta();
-    if(b.drillItemProg >= b.block.delegee.drillItemDur) {
-      b.drillItemProg %= b.block.delegee.drillItemDur;
-      b.consume();
-      MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
-    };
-  };
-
-
-  function comp_offload(b, item) {
-    if(!b.block.delegee.shouldDropPay) {
-      b.super$offload(item);
-      return;
+    /**
+     * @private
+     * @param {BBaseDrill} b
+     * @return {void}
+     */
+    function comp_created(b) {
+        if(b.block.delegee.shouldDropPay) {
+            b.hasPayOutput = true;
+        };
     };
 
-    let blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
-    if(blkTarget == null) return;
-    LCNativeObject.numIncre(b.payChargeObj, item.name);
-    if(b.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {
-      b.payChargeObj[item.name] %= blkTarget.requirements[0].amount;
-      LCNativeObject.numIncre(b.payStockObj, blkTarget.name);
+
+    /**
+     * @private
+     * @param {BBaseDrill} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(b.block.delegee.hasItemCons) {
+            b.drillItemProg += b.edelta();
+            if(b.drillItemProg >= b.block.delegee.drillItemDur) {
+                b.drillItemProg %= b.block.delegee.drillItemDur;
+                b.consume();
+                MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
+            };
+        };
     };
-    b.payChargeFrac = b.payChargeObj[item.name] / blkTarget.requirements[0].amount;
-  };
+
+
+    /**
+     * @private
+     * @param {BBaseDrill} b
+     * @param {Item} item
+     * @return {void}
+     */
+    function comp_offload(b, item) {
+        if(!b.block.delegee.shouldDropPay) {
+            b.super$offload(item);
+            return;
+        };
+        let blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
+        if(blkTarget == null) return;
+        LCNativeObject.numIncre(b.payChargeObj, item.name);
+        if(b.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {
+            b.payChargeObj[item.name] %= blkTarget.requirements[0].amount;
+            LCNativeObject.numIncre(b.payStockObj, blkTarget.name);
+        };
+        b.payChargeFrac = b.payChargeObj[item.name] / blkTarget.requirements[0].amount;
+    };
 
 
 /*
@@ -143,368 +205,400 @@
 */
 
 
-  module.exports = [
-
-
-    /**
-     * Parent of ground drills and wall drills.
-     * @class BLK_baseDrill
-     * @extends BLK_baseMiner
-     * @extends INTF_BLK_payloadBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseDrill").implement(INTF[0]).initClass()
-    .setParent(null)
-    .setTags()
-    .setParam({
-
-
-      /**
-       * `PARAM`: Multiplier on amount of items outputted each round. Mostly used for {@link BurstDrill} to alter drill speed.
-       * @memberof BLK_baseDrill
-       * @instance
-       */
-      drillAmtMtp: 1.0,
-      /**
-       * `PARAM`: Whether this drill cannot mine sand.
-       * @memberof BLK_baseDrill
-       * @instance
-       */
-      noSandOutput: true,
-      /**
-       * `PARAM`: The only items that this drill can mine. Works only when `blockedItems` is not used.
-       * @memberof BLK_baseDrill
-       * @instance
-       */
-      itemWhitelist: tprov(() => []),
-      /**
-       * `PARAM`: Item duration, `drillTime` by default.
-       * @memberof BLK_baseDrill
-       * @instance
-       */
-      drillItemDur: -1.0,
-      /**
-       * `PARAM`: If true, this drill outputs payload instead of item. Only ores that have payload form can be mined.
-       * @memberof BLK_baseDrill
-       * @instance
-       */
-      shouldDropPay: false,
-      /**
-       * `PARAM`: By default, a payload drill can store 2 raw ore blocks.
-       * @override
-       * @memberof BLK_baseDrill
-       * @instance
-       */
-      payAmtCap: 4,
-      /**
-       * `PARAM`: Effect created when item is consumed.
-       * @memberof BLK_baseDrill
-       * @instance
-       */
-      consEff: Fx.none,
-
-
-      /* <------------------------------ internal ------------------------------> */
-
-
-      /**
-       * `INTERNAL`
-       * @memberof BLK_baseDrill
-       * @instance
-       */
-      hasItemCons: false,
-
-
-    })
-    .setMethod({
-
-
-      init: function() {
-        comp_init(this);
-      },
-
-
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
-
-
-      setBars: function() {
-        comp_setBars(this);
-      },
-
-
-      /**
-       * Not used in BLK_wallDrill!
-       * @memberof BLK_baseDrill
-       * @instance
-       * @param {number} tx
-       * @param {number} ty
-       * @param {Resource} rs
-       * @return {TextureRegion}
-       */
-      ex_findPlaceRsIcon: function(tx, ty, rs) {
-        return rs.fullIcon;
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 3,
-      }),
-
-
-      /**
-       * Gets final hardness of some item drop from some block.
-       * @memberof BLK_baseDrill
-       * @instance
-       * @param {Block} oblk
-       * @param {Item} item
-       * @return {number}
-       */
-      ex_calcDropHardness: function(oblk, item) {
-        return tryJsProp(oblk, "dropHardness", item.hardness);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 2,
-      }),
-
-
-      /**
-       * Whether this drill can obtain `item` from `oblk`.
-       * <br> WTF why is there no `canMine` for `BeamDrill`???
-       * @memberof BLK_baseDrill
-       * @instance
-       * @param {Block} oblk
-       * @param {Item} item
-       * @param {number} tierMtp
-       * @return {boolean}
-       */
-      ex_canMine: function(oblk, item, tierMtp) {
-        return comp_ex_canMine(this, oblk, item, tierMtp);
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 3,
-      }),
-
-
-      /**
-       * Calculates expected amount of items outputted each round when all tiles have valid ore.
-       * @memberof BLK_baseDrill
-       * @instance
-       * @param {boolean} noAmtMtp
-       * @return {number}
-       */
-      ex_getEachRoundOutputAmt: function(noAmtMtp) {
-        let amt = this instanceof BurstDrill ?
-          Math.pow(this.size, 2) :
-          this instanceof BeamDrill ?
-            this.size :
-            1;
-        return noAmtMtp ? Math.round(amt * this.drillAmtMtp) : amt;
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
-
-
-      /**
-       * @memberof BLK_baseDrill
-       * @instance
-       * @return {number}
-       */
-      ex_getRcDictOutputScl: function() {
-        return this.ex_getEachRoundOutputAmt(false) / this.ex_getEachRoundOutputAmt(true);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * @memberof BLK_baseDrill
-       * @instance
-       * @param {number} tx
-       * @param {number} ty
-       * @param {boolean} valid
-       * @param {number} rate
-       * @param {Resource|TextureRegion} rs0reg
-       * @return {void}
-       */
-      ex_drawDrillText: function(tx, ty, valid, rate, rs0reg) {
-        let w = this.drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", rate, 2), tx, ty, valid);
-        if(rs0reg != null) {
-          let dx = tx * Vars.tilesize + this.offset - w * 0.5 - 4.0;
-          let dy = ty * Vars.tilesize + this.offset + this.size * Vars.tilesize * 0.5 + 5.0;
-          let size = Vars.iconSmall / 4.0;
-
-          Draw.mixcol(Color.darkGray, 1.0);
-          Draw.rect(rs0reg instanceof TextureRegion ? rs0reg : rs0reg.fullIcon, dx, dy - 1.0, size, size);
-          Draw.reset();
-          Draw.rect(rs0reg instanceof TextureRegion ? rs0reg : rs0reg.fullIcon, dx, dy, size, size);
-        };
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 5,
-      }),
-
-
-    }),
-
-
-    /**
-     * @class B_baseDrill
-     * @extends B_baseMiner
-     * @extends INTF_B_payloadBlock
-     */
-    newClass().extendClass(PARENT[1], "B_baseDrill").implement(INTF[1]).initClass()
-    .setParent(null)
-    .setParam({
-
-
-      /* <------------------------------ internal ------------------------------> */
-
-
-      /**
-       * `INTERNAL`
-       * @memberof B_baseDrill
-       * @instance
-       */
-      drillItemProg: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_baseDrill
-       * @instance
-       */
-      payChargeObj: tprov(() => ({})),
-      /**
-       * `INTERNAL`
-       * @memberof B_baseDrill
-       * @instance
-       */
-      payChargeFrac: 0.0,
-
-
-    })
-    .setMethod({
-
-
-      created: function() {
-        comp_created(this);
-      },
-
-
-      updateTile: function() {
-        comp_updateTile(this);
-      },
-
-
-      offload: function(item) {
-        comp_offload(this, item);
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      consumeTriggerValid: function() {
-        return this.block.delegee.drillItemDur > 0.0;
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      canDump: function(b_t, item) {
-        // Yep this line is borrowed from Carpe Diem
-        return !this.block.consumesItem(item) || (this.dominantItem === item && this.items.has(item, this.getMaximumAccepted(item) * 0.5));
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
-
-
-      draw: function() {
-        this.ex_drawRcIcon();
-      },
-
-
-      write: function(wr) {
-        wr.f(this.drillItemProg);
-        MDL_io.objStrNum(wr, this.payChargeObj);
-      },
-
-
-      read: function(rd, revi) {
-        if(this.LCReviSub >= 2) {
-          this.drillItemProg = rd.f();
-        };
-        if(this.LCReviSub >= 1) {
-          MDL_io.objStrNum(rd, this.payChargeObj);
-        };
-      },
-
-
-      /**
-       * Called whenever this drill crafts.
-       * <br> `LATER`
-       * @memberof B_baseDrill
-       * @instance
-       * @return {void}
-       */
-      ex_onCraft: function() {
-
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-      /**
-       * `REALIZED`
-       * @override
-       * @memberof B_baseDrill
-       * @instance
-       * @func
-       * @return {TextureRegion|null}
-       */
-      ex_getRcIcon: function() {
-        return this.block instanceof BeamDrill ?
-          (
-            this.lastItem == null ?
-              null :
-              this.lastItem.uiIcon
-          ) :
-          (
-            this.dominantItem == null ?
-              null :
-              this.dominantItem.uiIcon
-          );
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-      /**
-       * @override
-       * @memberof B_baseDrill
-       * @instance
-       * @return {number}
-       */
-      ex_subRevi: function() {
-        return 2;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
-
-
-    }),
-
-
-  ];
+    module.exports = [
+
+
+        /**
+         * Parent of ground drills and wall drills.
+         * @class BLK_baseDrill
+         * @extends BLK_baseMiner
+         * @extends INTF_BLK_payloadBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseDrill")
+        .implement(INTF_BLK_payloadBlock[0])
+        .initTemplate()
+        .setParent(null)
+        .setTags()
+        .setParam({
+
+
+            /**
+             * `PARAM`: Multiplier on amount of items outputted each round. Mostly used for {@link BurstDrill} to alter drill speed.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @type {number}
+             */
+            drillAmtMtp: 1.0,
+            /**
+             * `PARAM`: Whether this drill cannot mine sand.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @type {boolean}
+             */
+            noSandOutput: true,
+            /**
+             * `PARAM`: The only items that this drill can mine. Works only when `blk.blockedItems` is not used. Converted to contents later.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @type {TDynamic<Array<string|UnlockableContent>>}
+             */
+            itemWhitelist: tprov(() => []),
+            /**
+             * `PARAM`: Item duration, `drillTime` by default.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @type {number}
+             */
+            drillItemDur: -1.0,
+            /**
+             * `PARAM`: If true, this drill outputs payload instead of item. Only ores that have payload form can be mined. See {@link BLK_rawOreBlock}.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @type {boolean}
+             */
+            shouldDropPay: false,
+            /**
+             * `PARAM`: By default, a payload drill can store 2 raw ore blocks.
+             * @override
+             * @memberof BLK_baseDrill
+             * @instance
+             * @type {number}
+             */
+            payAmtCap: 4,
+            /**
+             * `PARAM`: Effect created when item is consumed.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @type {Effect}
+             */
+            consEff: Fx.none,
+
+
+            /* <------------------------------ internal ------------------------------> */
+
+
+            /**
+             * `INTERNAL`
+             * @memberof BLK_baseDrill
+             * @instance
+             * @type {boolean}
+             */
+            hasItemCons: false,
+
+
+        })
+        .setMethod({
+
+
+            init: function() {
+                comp_init(this);
+            },
+
+
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
+
+
+            setBars: function() {
+                comp_setBars(this);
+            },
+
+
+            /**
+             * Gets icon used when placing this drill.
+             * Not used in {@link BLK_wallDrill}!
+             * @memberof BLK_baseDrill
+             * @instance
+             * @func
+             * @param {number} tx
+             * @param {number} ty
+             * @param {Resource} rs
+             * @return {TextureRegion}
+             */
+            ex_findPlaceRsIcon: function(tx, ty, rs) {
+                return rs.fullIcon;
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 3,
+            }),
+
+
+            /**
+             * Gets final hardness of some item drop from some block.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @func
+             * @param {Block} oblk
+             * @param {Item} item
+             * @return {number}
+             */
+            ex_calcDropHardness: function(oblk, item) {
+                return tryJsProp(oblk, "dropHardness", item.hardness);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
+
+
+            /**
+             * Whether this drill can obtain `item` from `oblk`.
+             * <br> WTF why is there no `canMine` for {@link BeamDrill}???
+             * @memberof BLK_baseDrill
+             * @instance
+             * @func
+             * @param {Block} oblk
+             * @param {Item} item
+             * @param {number} tierMtp
+             * @return {boolean}
+             */
+            ex_canMine: function(oblk, item, tierMtp) {
+                return comp_ex_canMine(this, oblk, item, tierMtp);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 3,
+            }),
+
+
+            /**
+             * Calculates expected amount of items outputted each round when all tiles have valid ore.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @func
+             * @param {boolean} noAmtMtp - If true, {@link BLK_baseDrill#drillAmtMtp} will be ignored.
+             * @return {number}
+             */
+            ex_getEachRoundOutputAmt: function(noAmtMtp) {
+                let amt = this instanceof BurstDrill ?
+                    Math.pow(this.size, 2) :
+                    this instanceof BeamDrill ?
+                        this.size :
+                        1;
+                return noAmtMtp ?
+                    Math.round(amt * this.drillAmtMtp) :
+                    amt;
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @memberof BLK_baseDrill
+             * @instance
+             * @func
+             * @return {number}
+             * @lovecAttached
+             */
+            ex_getRcDictOutputScl: function() {
+                return this.ex_getEachRoundOutputAmt(false) / this.ex_getEachRoundOutputAmt(true);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * Draws placement text for this drill.
+             * @memberof BLK_baseDrill
+             * @instance
+             * @func
+             * @param {number} tx
+             * @param {number} ty
+             * @param {boolean} valid
+             * @param {number} rate
+             * @param {Resource|TextureRegion|null} rs0reg
+             * @return {void}
+             */
+            ex_drawDrillText: function(tx, ty, valid, rate, rs0reg) {
+                let w = this.drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", rate, 2), tx, ty, valid);
+                if(rs0reg != null) {
+                    let dx = tx * Vars.tilesize + this.offset - w * 0.5 - 4.0;
+                    let dy = ty * Vars.tilesize + this.offset + this.size * Vars.tilesize * 0.5 + 5.0;
+                    let size = Vars.iconSmall / 4.0;
+
+                    Draw.mixcol(Color.darkGray, 1.0);
+                    Draw.rect(rs0reg instanceof TextureRegion ? rs0reg : rs0reg.fullIcon, dx, dy - 1.0, size, size);
+                    Draw.reset();
+                    Draw.rect(rs0reg instanceof TextureRegion ? rs0reg : rs0reg.fullIcon, dx, dy, size, size);
+                };
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 5,
+            }),
+
+
+        }),
+
+
+        /**
+         * @class B_baseDrill
+         * @extends B_baseMiner
+         * @extends INTF_B_payloadBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseDrill")
+        .implement(INTF_BLK_payloadBlock[1])
+        .initTemplate()
+        .setParent(null)
+        .setParam({
+
+
+            /* <------------------------------ internal ------------------------------> */
+
+
+            /**
+             * `INTERNAL`: Item consumption progress.
+             * @memberof B_baseDrill
+             * @instance
+             * @type {number}
+             */
+            drillItemProg: 0.0,
+            /**
+             * `INTERNAL`: Stores amounts of mined items.
+             * @memberof B_baseDrill
+             * @instance
+             * @type {TDynamic<Object<string, number>>}
+             */
+            payChargeObj: tprov(() => ({})),
+            /**
+             * `INTERNAL`
+             * @memberof B_baseDrill
+             * @instance
+             * @type {number}
+             */
+            payChargeFrac: 0.0,
+
+
+        })
+        .setMethod({
+
+
+            created: function() {
+                comp_created(this);
+            },
+
+
+            updateTile: function() {
+                comp_updateTile(this);
+            },
+
+
+            offload: function(item) {
+                comp_offload(this, item);
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            consumeTriggerValid: function() {
+                return this.block.delegee.drillItemDur > 0.0;
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            canDump: function(b_t, item) {
+                // Yep this line is borrowed from Carpe Diem
+                return !this.block.consumesItem(item) || (this.dominantItem === item && this.items.has(item, this.getMaximumAccepted(item) * 0.5));
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
+
+
+            draw: function() {
+                this.ex_drawRcIcon();
+            },
+
+
+            write: function(wr) {
+                wr.f(this.drillItemProg);
+                MDL_io.objStrNum(wr, this.payChargeObj);
+            },
+
+
+            read: function(rd, revi) {
+                if(this.LCReviSub >= 2) {
+                    this.drillItemProg = rd.f();
+                };
+                if(this.LCReviSub >= 1) {
+                    MDL_io.objStrNum(rd, this.payChargeObj);
+                };
+            },
+
+
+            /**
+             * Called whenever this drill crafts.
+             * <br> `LATER`
+             * @memberof B_baseDrill
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_onCraft: function() {
+
+            }
+            .setProp({
+                noSuper: true,
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_baseDrill
+             * @instance
+             * @func
+             * @return {TextureRegion|null}
+             */
+            ex_getRcIcon: function() {
+                return this.block instanceof BeamDrill ?
+                    (
+                        this.lastItem == null ?
+                            null :
+                            this.lastItem.uiIcon
+                    ) :
+                    (
+                        this.dominantItem == null ?
+                            null :
+                            this.dominantItem.uiIcon
+                    );
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_baseDrill
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_subRevi: function() {
+                return 2;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+        }),
+
+
+    ];

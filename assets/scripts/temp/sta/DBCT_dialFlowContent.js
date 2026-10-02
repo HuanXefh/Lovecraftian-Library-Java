@@ -103,7 +103,11 @@
 
 
         /**
-         * @inheritdoc
+         * @override
+         * @memberof DBCT_dialFlowContent
+         * @instance
+         * @func
+         * @return {void}
          */
         ex_init: function() {
             comp_ex_init(this);

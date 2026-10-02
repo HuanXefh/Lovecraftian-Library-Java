@@ -4,6 +4,10 @@ type JSONConfigObject = Object
 type JSONConfigString = string
 
 
+/** See {@link BLK_baseBlock}. */
+type LogicControlFunction = (b: Building, param1?: Object, param2?: Object, param3?: Object, param4?: Object) => void
+
+
 /** See {@link BLK_crop}. */
 type CropData = {
     /** Duration of this stage. */

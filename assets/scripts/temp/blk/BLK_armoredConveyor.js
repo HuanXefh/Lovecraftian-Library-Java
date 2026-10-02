@@ -5,13 +5,24 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_conveyor");
+    /**
+     * @typedef {TemplateInstance<ArmoredConveyor, BLK_armoredConveyor>} BLKArmoredConveyor
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<ArmoredConveyor.ArmoredConveyorBuild, B_armoredConveyor>} BArmoredConveyor
+     * @prop {BLKArmoredConveyor} block
+     */
+
+
+    const PARENT = require("lovec/temp/blk/BLK_conveyor");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,30 +32,34 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Similar to vanilla armored conveyor.
-     * <br> `SINGLESIZE`
-     * @class BLK_armoredConveyor
-     * @extends BLK_conveyor
-     */
-    newClass().extendClass(PARENT[0], "BLK_armoredConveyor").initClass()
-    .setParent(ArmoredConveyor)
-    .setTags()
-    .setParam({})
-    .setMethod({}),
+        /**
+         * Similar to vanilla armored conveyor.
+         * <br> `SINGLESIZE`
+         * @class BLK_armoredConveyor
+         * @extends BLK_conveyor
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_armoredConveyor")
+        .initTemplate()
+        .setParent(ArmoredConveyor)
+        .setTags()
+        .setParam({})
+        .setMethod({}),
 
 
-    /**
-     * @class B_armoredConveyor
-     * @extends B_conveyor
-     */
-    newClass().extendClass(PARENT[1], "B_armoredConveyor").initClass()
-    .setParent(ArmoredConveyor.ArmoredConveyorBuild)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_armoredConveyor
+         * @extends B_conveyor
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_armoredConveyor")
+        .initTemplate()
+        .setParent(ArmoredConveyor.ArmoredConveyorBuild)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

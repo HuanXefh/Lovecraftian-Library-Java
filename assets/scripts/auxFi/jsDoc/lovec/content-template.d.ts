@@ -59,15 +59,3 @@ type ExtendObject = Object
  * For example, blocks created with the same template using the same array.
  */
 type TDynamic<T> = T|TemplateFunc<ExtendObject, T>|TemplateProv<T>
-
-
-/**
- * Mixed type for contents created with template.
- * <br> `P` - Parent class.
- * <br> `T` - Content template.
- */
-type TemplateInstance<P, T> = P&T&{
-    readonly factory: rhino.ContextFactory;
-    readonly delegee: T;
-    readonly self: P&T;
-}

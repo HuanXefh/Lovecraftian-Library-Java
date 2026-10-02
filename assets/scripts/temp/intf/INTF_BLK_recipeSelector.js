@@ -135,7 +135,12 @@
 
 
             /**
-             * @inheritdoc
+             * @override
+             * @memberof INTF_B_recipeSelector
+             * @instance
+             * @func
+             * @param {string} str
+             * @return {void}
              */
             ex_handleConfigStrDef: function(str) {
                 this.ex_updateRcParam(this.block.delegee.rcMdl, str, true);
