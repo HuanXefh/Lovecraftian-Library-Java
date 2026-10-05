@@ -29,10 +29,13 @@
         stats.add(fetchStat("lovec", "spec-dialflow"), newStatValue(tb => {
             tb.row();
             MDL_table.btnSmall(tb, GLB_varGen.icons.play, () => {
-                !sta.ex_checkDbctUnlocked() ?
+                !sta.self.ex_checkDbctUnlocked() ?
                     MDL_ui.showFadeInfo("lovec", "info-locked") :
-                    MDL_ui.createFlow(sta.nameDialFlow);
-            }).left().padLeft(28.0).tooltip(MDL_bundle.getTerm("lovec", "dialog-flow-play"), true);
+                    MDL_ui.createFlow(sta.delegee.nameDialFlow);
+            })
+            .left()
+            .padLeft(28.0)
+            .tooltip(MDL_bundle.getTerm("lovec", "dialog-flow-play"), true);
         }));
     };
 
@@ -49,7 +52,7 @@
         if(!Vars.headless) {
             MDL_content.rename(
                 sta,
-                Core.bundle.get("dial." + sta.nameDialFlow),
+                Core.bundle.get("dial." + sta.delegee.nameDialFlow),
             );
         };
         MDL_event.onLoad(() => {
@@ -57,7 +60,7 @@
                 sta.fullIcon = sta.uiIcon = Core.atlas.find("lovec-icon-dialog-flow");
             };
         });
-        UTIL_dialogFlow.getNameCtMap().put(sta.nameDialFlow, sta);
+        UTIL_dialogFlow.getNameCtMap().put(sta.delegee.nameDialFlow, sta);
     };
 
 
@@ -98,7 +101,7 @@
 
 
         setStats: function(stats) {
-          comp_setStats(this, getCtStats(this, stats));
+            comp_setStats(this, getCtStats(this, stats));
         },
 
 

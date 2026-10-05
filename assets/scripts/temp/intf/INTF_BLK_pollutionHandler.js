@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.polTol = MDL_pollution.getPolTol(blk);
+        blk.delegee.polTol = MDL_pollution.getPolTol(blk);
     };
 
 
@@ -39,8 +39,8 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(blk.polTol > 0.0) {
-            stats.add(fetchStat("lovec", "blk-poltol"), blk.polTol, fetchStatUnit("lovec", "polunits"));
+        if(blk.delegee.polTol > 0.0) {
+            stats.add(fetchStat("lovec", "blk-poltol"), blk.delegee.polTol, fetchStatUnit("lovec", "polunits"));
         };
     };
 
@@ -51,11 +51,11 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        if(b.blk$polTol > 0.0) {
-            b.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.blk$polTol);
-            b.polEffc = b.ex_calcPolEffc();
+        if(b.delegee.blk$polTol > 0.0) {
+            b.delegee.polExcess = Mathf.maxZero(MDL_pollution.getGlbPol() - b.delegee.blk$polTol);
+            b.delegee.polEffc = b.self.ex_calcPolEffc();
 
-            if(b.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {
+            if(b.delegee.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {
                 MDL_effect.corrosion(b.x, b.y, b.block.size, Color.valueOf(Tmp.c1, "2f4108"));
             };
         };
@@ -68,7 +68,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        b.efficiency *= b.polEffc;
+        b.efficiency *= b.delegee.polEffc;
     };
 
 
@@ -85,10 +85,10 @@
     /**
      * @private
      * @param {INTFBPollutionHandler} b
-     * @return {void}
+     * @return {number}
      */
     function comp_ex_calcPolEffc(b) {
-        return b.polExcess < 0.0001 ?
+        return b.delegee.polExcess < 0.0001 ?
             (
                 b.block.delegee.revertedPolEffc ?
                     0.0 :
@@ -96,8 +96,8 @@
             ) :
             Mathf.clamp(
                 b.block.delegee.revertedPolEffc ?
-                    (b.polExcess / b.blk$polTol) :
-                    (1.0 - b.polExcess / b.blk$polTol)
+                    (b.delegee.polExcess / b.delegee.blk$polTol) :
+                    (1.0 - b.delegee.polExcess / b.delegee.blk$polTol)
             );
     };
 

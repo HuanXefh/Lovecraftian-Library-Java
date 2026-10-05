@@ -143,7 +143,7 @@
                     let json = stream.readUTF();
                     i++;
 
-                    Time.run(0.0, () => {
+                    MDL_event.onDelayRun(0.0, () => {
                         unit = LCEntity.getUnits(this.tmpUnits, x, y, 6.0).inSituFilter(ounit => ounit.type.name == str).first();
                         if(unit != null && unit.delegee != null && checkSubInsOfTemp(unit.type, "UNIT_baseUnit")) {
                             try {
@@ -185,7 +185,7 @@
                 };
             });
             MDL_event.onPlayerJoin(player => {
-                Time.run(30.0, () => {
+                MDL_event.onDelayRun(30.0, () => {
                     MDL_net.sendPacket(PacketModes.BOTH, "lovec-both-major-sync", "", true);
                 });
             });
@@ -327,7 +327,7 @@
         if(!Vars.headless) {
             DB_misc.db["mod"]["extraSound"].forEachFast(seStr => Vars.tree.loadSound(seStr), true);
 
-            Time.run(GLB_var.delay.load.loadExtraSound, () => {
+            MDL_event.onDelayRun(GLB_var.delay.load.loadExtraSound, () => {
 
                 if(GLB_param.SECRET_LEGACY_SOUND) {
                     try {
@@ -424,7 +424,7 @@
 
 
         // Set up recipe dictionary stat
-        Time.run(GLB_var.delay.load.addStat, () => {
+        MDL_event.onDelayRun(GLB_var.delay.load.addStat, () => {
             GLB_varGen.allRss
             .filter(rs => MDL_cond.hasAnyRecipe(rs))
             .concat(GLB_varGen.payMatBlks)
@@ -619,7 +619,7 @@
     MDL_event.onWorldLoad(() => {
 
 
-        Time.run(GLB_var.delay.worldLoad.triggerSecretCrash, () => {
+        MDL_event.onDelayRun(GLB_var.delay.worldLoad.triggerSecretCrash, () => {
             if(Core.settings.getBool("lovec-misc-secret-code-crashed", false)) {
                 BOX_trigger.secretCodeCrash.fire();
             };

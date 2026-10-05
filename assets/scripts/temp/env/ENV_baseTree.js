@@ -38,16 +38,18 @@
         blk.floating = true;
         blk.placeableLiquid = true;
 
-        let treeGrp = blk.treeGrp;
-        blk.drawTup = [
-            Mathf.clamp(blk.layTree, 76.0, 80.0),
+        let treeGrp = blk.delegee.treeGrp;
+        blk.delegee.drawTup = [
+            Mathf.clamp(blk.delegee.layTree, 76.0, 80.0),
             readParam(TREE_PARAMS.read(treeGrp), "scl", 1.0),
             readParam(TREE_PARAMS.read(treeGrp), "mag", 1.0),
             readParam(TREE_PARAMS.read(treeGrp), "wob", 1.0),
         ];
 
         MDL_event.onLoad(() => {
-            if(!Vars.headless && !blk.shadow.found()) LCLogHandler.log("noCustomShadowRegionFound", blk.name);
+            if(!Vars.headless && !blk.shadow.found()) {
+                LCLogHandler.log("noCustomShadowRegionFound", blk.name);
+            };
         });
     };
 
@@ -59,7 +61,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        let treeGrp = blk.treeGrp;
+        let treeGrp = blk.delegee.treeGrp;
         if(treeGrp !== "none") {
             stats.add(fetchStat("lovec", "blk0env-treetype"), MDL_bundle.getTerm("lovec", treeGrp));
         };
@@ -77,7 +79,7 @@
      * @return {void}
      */
     function comp_drawBase(blk, t) {
-        LCDrawf.tree(blk.region, blk.shadow, t, blk.treeRad, blk.shadowOffset, blk.drawTup[1], blk.drawTup[2], blk.drawTup[3], GLB_param.TREE_ALPHA, blk.drawTup[0], GLB_param.SHOULD_DRAW_WOBBLE, GLB_param.SHOULD_CHECK_TREE_DISTANCE);
+        LCDrawf.tree(blk.region, blk.shadow, t, blk.delegee.treeRad, blk.shadowOffset, blk.delegee.drawTup[1], blk.delegee.drawTup[2], blk.delegee.drawTup[3], GLB_param.TREE_ALPHA, blk.delegee.drawTup[0], GLB_param.SHOULD_DRAW_WOBBLE, GLB_param.SHOULD_CHECK_TREE_DISTANCE);
     };
 
 

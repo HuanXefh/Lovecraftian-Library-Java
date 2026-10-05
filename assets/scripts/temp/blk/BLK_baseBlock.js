@@ -60,50 +60,45 @@
     function comp_init(blk) {
         if(blk.ex_isSingleSized() && blk.size > 1) throw new Error("Block size should be 1: " + blk);
 
-        if(blk.isWaterborne) {
+        if(blk.delegee.isWaterborne) {
             blk.floating = true;
         };
 
-        blk.noLoot = blk.noLoot || DB_block.db["group"]["noLoot"].includes(blk.name);
-        blk.noReac = blk.noReac || blk instanceof CoreBlock || DB_block.db["group"]["noReac"].includes(blk.name);
-        blk.canShortCircuit = blk.canShortCircuit || DB_block.db["group"]["shortCircuit"].includes(blk.name);
+        blk.delegee.noLoot = blk.delegee.noLoot || DB_block.db["group"]["noLoot"].includes(blk.name);
+        blk.delegee.noReac = blk.delegee.noReac || blk instanceof CoreBlock || DB_block.db["group"]["noReac"].includes(blk.name);
+        blk.delegee.canShortCircuit = blk.delegee.canShortCircuit || DB_block.db["group"]["shortCircuit"].includes(blk.name);
 
-        if(blk.useConfigStr) {
+        if(blk.delegee.useConfigStr) {
             Core.app.post(() => {
                 blk.config(JAVA.string, (b, str) => {
-                    b.ex_handleConfigStr(str);
+                    b.self.ex_handleConfigStr(str);
                 });
             });
         };
 
-        if(blk.payBuiltOnly) {
+        if(blk.delegee.payBuiltOnly) {
             blk.rebuildable = false;
             blk.buildVisibility = BuildVisibility.sandboxOnly;
-            blk.hiddenNonPlaceable = true;
+            blk.delegee.hiddenNonPlaceable = true;
         };
-    };
 
-
-    /**
-     * @private
-     * @param {BLKBaseBlock} blk
-     * @return {void}
-     */
-    function comp_load(blk) {
-        MDL_event.onLoad(() => {
-          if(!String.isEmpty(blk.fullOverride)) {
-              blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.fullOverride);
-          } else if(Core.atlas.has(blk.name + "-full")) {
-              blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-full");
-          } else if(Core.atlas.has(blk.name + "-icon")) {
-              blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-icon");
-          } else {
-              blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name);
-          };
-          if(Core.atlas.has(blk.name + "-ui")) {
-              blk.uiIcon = Core.atlas.find(blk.name + "-ui");
-          };
-        });
+        // Don't try putting these into `blk.load`, which spawns mysterious bugs
+        if(!Vars.headless) {
+            MDL_event.onLoad(() => {
+                if(!String.isEmpty(blk.fullOverride)) {
+                    blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.fullOverride);
+                } else if(Core.atlas.has(blk.name + "-full")) {
+                    blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-full");
+                } else if(Core.atlas.has(blk.name + "-icon")) {
+                    blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-icon");
+                } else {
+                    blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name);
+                };
+                if(Core.atlas.has(blk.name + "-ui")) {
+                    blk.uiIcon = Core.atlas.find(blk.name + "-ui");
+                };
+            });
+        };
     };
 
 
@@ -114,7 +109,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(blk.canShortCircuit) {
+        if(blk.delegee.canShortCircuit) {
             stats.add(fetchStat("lovec", "blk-shortcircuit"), true);
         };
 
@@ -193,8 +188,8 @@
     function comp_canPlaceOn(blk, t, team, rot) {
         return !(
             t == null
-                || (blk.hiddenNonPlaceable && !blk.isVisible())
-                || (blk.isWaterborne && t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).find(ot => !ot.floor().isLiquid) != null)
+                || (blk.delegee.hiddenNonPlaceable && !blk.isVisible())
+                || (blk.delegee.isWaterborne && t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).find(ot => !ot.floor().isLiquid) != null)
         );
     };
 
@@ -447,11 +442,6 @@
             },
 
 
-            load: function() {
-                comp_load(this);
-            },
-
-
             setStats: function(stats) {
                 comp_setStats(this, getCtStats(this, stats));
             },
@@ -578,7 +568,7 @@
              * @return {void}
              */
             ex_addConfigM: function(key, valC) {
-                this.configKeyCArr.write(key, valC);
+                this.delegee.configKeyCArr.write(key, valC);
             }
             .setProp({
                 noSuper: true,
@@ -596,7 +586,7 @@
              * @return {void}
              */
             ex_addLogicF: function(sensor, valF) {
-                this.logicSensorFMap.put(sensor, valF);
+                this.delegee.logicSensorFMap.put(sensor, valF);
             }
             .setProp({
                 noSuper: true,
@@ -614,7 +604,7 @@
              * @return {void}
              */
             ex_addLogicControl: function(sensor, scr) {
-                this.logicSensorControlMap.put(sensor, scr);
+                this.delegee.logicSensorControlMap.put(sensor, scr);
             }
             .setProp({
                 noSuper: true,
@@ -696,8 +686,8 @@
 
             writeAll: function(wr) {
                 this.writeBase(wr);
-                wr.s(this.ex_subRevi());
-                wr.s(this.ex_majorRevi());
+                wr.s(this.self.ex_subRevi());
+                wr.s(this.self.ex_majorRevi());
                 this.write(wr);
             }
             .setProp({
@@ -707,12 +697,12 @@
 
             readAll: function(rd, revi) {
                 this.readBase(rd);
-                this.LCRevi = revi < GLB_var.lovecReviOff ? 5 : (revi - GLB_var.lovecReviOff - this.super$version());
-                if(this.LCRevi >= 6) {
-                    this.LCReviSub = rd.s();
+                this.delegee.LCRevi = revi < GLB_var.lovecReviOff ? 5 : (revi - GLB_var.lovecReviOff - this.super$version());
+                if(this.delegee.LCRevi >= 6) {
+                    this.delegee.LCReviSub = rd.s();
                 };
-                if(this.LCRevi >= 7) {
-                    this.LCReviMajor = rd.s();
+                if(this.delegee.LCRevi >= 7) {
+                    this.delegee.LCReviMajor = rd.s();
                 };
                 this.read(rd, this.super$version());
             }
@@ -763,7 +753,7 @@
                         this.block.delegee.configKeyCArr.read(key, Function.air)(this, val);
                     });
                 } else {
-                    this.ex_handleConfigStrDef(str);
+                    this.self.ex_handleConfigStrDef(str);
                 };
             }
             .setProp({
@@ -797,7 +787,7 @@
              */
             ex_drawRcIcon: function() {
                 if(GLB_param.SHOULD_DRAW_RECIPE_ICON) {
-                    let icon = this.ex_getRcIcon();
+                    let icon = this.self.ex_getRcIcon();
                     if(icon != null) {
                         let regScl = Math.min(this.block.size * 0.5, 2.0) * (Mathf.absin(12.0, 0.3) + 1.0);
                         Draw.color(0, 0, 0, 0.75);
@@ -806,7 +796,7 @@
                         LCDraw.regionIcon(
                             this.x + Vars.tilesize * this.block.size * 0.5,
                             this.y - Vars.tilesize * this.block.size * 0.5,
-                            this.ex_getRcIcon(),
+                            icon,
                             this.block.size,
                             regScl,
                             GLB_var.layer.rcIcon,

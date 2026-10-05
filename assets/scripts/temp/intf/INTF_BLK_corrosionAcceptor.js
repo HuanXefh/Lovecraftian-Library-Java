@@ -28,9 +28,9 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.matGrp = MDL_flow.getMatGrp(blk);
-        blk.corRes = MDL_flow.getCorRes(blk);
-        blk.cloggable = MDL_cond.isCloggableBlock(blk);
+        blk.delegee.matGrp = MDL_flow.getMatGrp(blk);
+        blk.delegee.corRes = MDL_flow.getCorRes(blk);
+        blk.delegee.cloggable = MDL_cond.isCloggableBlock(blk);
     };
 
 
@@ -45,7 +45,7 @@
         if(matGrpBundle !== TmpStateTag.error) {
             stats.add(fetchStat("lovec", "blk0liq-matgrp"), matGrpBundle);
         };
-        if(blk.cloggable) {
+        if(blk.delegee.cloggable) {
             stats.add(fetchStat("lovec", "blk0liq-cloggable"), true);
         };
     };
@@ -57,26 +57,26 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-      if(b.liquids == null || GLB_param.UPDATE_SUPPRESSED || !GLB_timer.secQuarter) return;
+        if(b.liquids == null || GLB_param.UPDATE_SUPPRESSED || !GLB_timer.secQuarter) return;
 
-      let
-          liqCur = b.liquids.current(),
-          amt = b.liquids.currentAmount();
+        let
+            liqCur = b.liquids.current(),
+            amt = b.liquids.currentAmount();
 
-      MDL_flow.updateCorrosion(b, liqCur, amt);
-      if(b.block.delegee.cloggable) {
-          MDL_flow.updateClogging(b, liqCur, amt);
-      };
+        MDL_flow.updateCorrosion(b, liqCur, amt);
+        if(b.block.delegee.cloggable) {
+            MDL_flow.updateClogging(b, liqCur, amt);
+        };
 
-      if(
-          !Vars.net.client()
-              && b.block.delegee.matGrp != null
-              && Mathf.chanceDelta(0.1)
-              && !b.block.consumesLiquid(liqCur)
-              && amt > b.block.liquidCapacity * 0.1
-      ) {
-          MDL_reaction.handleReaction("MATERIAL: " + b.block.delegee.matGrp, liqCur, 10.0, b);
-      };
+        if(
+            !Vars.net.client()
+                && b.block.delegee.matGrp != null
+                && Mathf.chanceDelta(0.1)
+                && !b.block.consumesLiquid(liqCur)
+                && amt > b.block.liquidCapacity * 0.1
+        ) {
+            MDL_reaction.handleReaction("MATERIAL: " + b.block.delegee.matGrp, liqCur, 10.0, b);
+        };
     };
 
 
@@ -108,7 +108,7 @@
                      * `INTERNAL`: Material group of this block.
                      * @memberof INTF_BLK_corrosionAcceptor
                      * @instance
-                     * @type {string|null}
+                     * @type {String|null}
                      */
                     matGrp: null,
                     /**

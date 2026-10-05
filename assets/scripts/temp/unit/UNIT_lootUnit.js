@@ -157,7 +157,7 @@
 
         // Amount text
         if(GLB_param.SHOULD_DRAW_LOOT_AMOUNT && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
-            LCDraw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
+            MDL_draw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
         };
     };
 
@@ -201,7 +201,7 @@
 
         itemCapacity: 99999,
         // Doubled to avoid killing the unit somehow
-        lifetime: GLB_var.time.lootLifetime * 2.0,
+        lifetime: GLB_var.timeParam.lootLifetime * 2.0,
 
 
     })

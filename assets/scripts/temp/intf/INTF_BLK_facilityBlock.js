@@ -29,8 +29,8 @@
      */
     function comp_init(blk) {
         MDL_event.onLoadDelay(GLB_var.delay.load.blkCheck, () => {
-            blk.canHandleAux = blk.ex_checkHandleAuxPossible();
-            blk.canFireExplode = blk.ex_checkFireExplodePossible();
+            blk.delegee.canHandleAux = blk.self.ex_checkHandleAuxPossible();
+            blk.delegee.canFireExplode = blk.self.ex_checkFireExplodePossible();
         });
     };
 
@@ -62,19 +62,19 @@
         // Explode if near fire
         if(!Vars.net.client() && Vars.state.rules.reactorExplosions && b.block.delegee.canFireExplode) {
             if(Mathf.chanceDelta(0.005)) {
-                b.fireExplodeReady = !Vars.net.client()
+                b.delegee.fireExplodeReady = !Vars.net.client()
                     && LCPos.getTilesEdge(thisFun.tmpTs, b.tile, b.block.size, false).some(ot => Fires.get(ot) != null)
                     && (thisFun.checkExplosiveLiquid(b) || thisFun.checkExplosiveItem(b));
             };
-            if(b.fireExplodeReady) {
-                b.fireExplodeCd += Time.delta;
+            if(b.delegee.fireExplodeReady) {
+                b.delegee.fireExplodeCd += Time.delta;
                 if(Mathf.chanceDelta(0.4)) {
                     GLB_eff.smogFireExplo.at(b);
                 };
             } else {
-                b.fireExplodeCd = Mathf.maxZero(b.fireExplodeCd - Time.delta);
+                b.delegee.fireExplodeCd = Mathf.maxZero(b.delegee.fireExplodeCd - Time.delta);
             };
-            if(b.fireExplodeCd >= b.block.delegee.fireExplodeCooldown) {
+            if(b.delegee.fireExplodeCd >= b.block.delegee.fireExplodeCooldown) {
                 BOX_trigger.buildingFireExplosion.fire(b);
                 FRAG_attack.explosion_global(
                     b.x, b.y,

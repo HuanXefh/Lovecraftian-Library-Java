@@ -24,11 +24,11 @@
     function comp_update(unit) {
         if(GLB_param.UPDATE_SUPPRESSED || unit.type.delegee.unitDurabCap < 0.0) return;
 
-        unit.unitDurabUsed += unit.ex_getDurabDec();
-        if(unit.unitDurabUsed >= unit.type.unitDurabCap) {
-            unit.type.ex_onDurabOutage(unit);
+        unit.delegee.unitDurabUsed += unit.self.ex_getDurabDec();
+        if(unit.delegee.unitDurabUsed >= unit.type.delegee.unitDurabCap) {
+            unit.type.self.ex_onDurabOutage(unit);
         } else {
-            unit.type.ex_onDurabDec(unit);
+            unit.type.self.ex_onDurabDec(unit);
         };
     };
 
@@ -95,7 +95,7 @@
          * @return {void}
          */
         ex_writeUnitData: function(dataObj) {
-            dataObj.unitDurabUsed = this.unitDurabUsed;
+            dataObj.unitDurabUsed = this.delegee.unitDurabUsed;
         }
         .setProp({
             noSuper: true,
@@ -111,7 +111,7 @@
          * @return {void}
          */
         ex_readUnitData: function(dataObj) {
-            this.unitDurabUsed = Number(dataObj.unitDurabUsed);
+            this.delegee.unitDurabUsed = Number(dataObj.unitDurabUsed);
         }
         .setProp({
             noSuper: true,

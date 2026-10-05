@@ -244,8 +244,8 @@
 
             draw() {
                 if(this.shouldFloat) {
-                    this.floatOffX = Math.sin((Time.time + this.offTime) * 0.01) * 0.35 * Vars.tilesize;
-                    this.floatOffY = Math.cos((Time.time + this.offTime) * 0.05 + 32.0) * 0.15 * Vars.tilesize;
+                    this.floatOffX = Math.sin((GLB_var.time + this.offTime) * 0.01) * 0.35 * Vars.tilesize;
+                    this.floatOffY = Math.cos((GLB_var.time + this.offTime) * 0.05 + 32.0) * 0.15 * Vars.tilesize;
                 };
                 this.x = this.xOri + this.floatOffX;
                 this.y = this.yOri + this.floatOffY;

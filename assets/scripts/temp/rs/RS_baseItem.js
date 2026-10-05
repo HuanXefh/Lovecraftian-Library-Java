@@ -25,7 +25,7 @@
      * @return {void}
      */
     function comp_init(item) {
-        if(item.setupVanillaProp) {
+        if(item.delegee.setupVanillaProp) {
             // noinspection JSValidateTypes
             /** @type {number} */
             let hardness = LCDBFileHandler.read("item-hardness", item, -1.0);
@@ -43,7 +43,7 @@
      * @return {void}
      */
     function comp_setStats(item, stats) {
-        if(item.setupVanillaStat) {
+        if(item.delegee.setupVanillaStat) {
             stats.remove(Stat.explosiveness);
             stats.remove(Stat.flammability);
             stats.remove(Stat.radioactivity);

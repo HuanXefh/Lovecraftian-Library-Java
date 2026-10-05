@@ -35,9 +35,9 @@
      * @return {void}
      */
     function comp_init(utp) {
-        utp.polTol = MDL_pollution.getPolTol(utp);
+        utp.delegee.polTol = MDL_pollution.getPolTol(utp);
 
-        if(utp.immuneToAll) {
+        if(utp.delegee.immuneToAll) {
             MDL_event.onLoadPost(() => {
                 Vars.content.statusEffects().each(
                     sta => !MDL_cond.isNonStatus(sta),
@@ -47,11 +47,11 @@
         };
 
         // Set up internal abilities
-        if(utp.unitDurabCap > 0.0) {
+        if(utp.delegee.unitDurabCap > 0.0) {
             setAbility(utp, abis => [
                 abis,
                 fetchAbility("unit-ability", {
-                    durabCap: utp.unitDurabCap,
+                    durabCap: utp.delegee.unitDurabCap,
                 }),
             ]);
         };
@@ -66,7 +66,7 @@
     function comp_load(utp) {
         MDL_event.onLoad(() => {
             // Use "-icon" sprite whenever possible
-            if(!utp.skipOutlineSetup && Core.atlas.has(utp.name + "-icon")) {
+            if(!utp.delegee.skipOutlineSetup && Core.atlas.has(utp.name + "-icon")) {
                 utp.fullIcon = utp.uiIcon = Core.atlas.find(utp.name + "-icon");
             };
         });
@@ -80,15 +80,15 @@
      * @return {void}
      */
     function comp_setStats(utp, stats) {
-        if(utp.setupVanillaStat) {
+        if(utp.delegee.setupVanillaStat) {
             stats.remove(Stat.mineTier);
         };
 
         if(MDL_cond.isNonRobot(utp)) {
             stats.add(fetchStat("lovec", "utp-notrobot"), true);
         };
-        if(utp.polTol > 0.0) {
-            stats.add(fetchStat("lovec", "blk-poltol"), utp.polTol, fetchStatUnit("lovec", "polunits"));
+        if(utp.delegee.polTol > 0.0) {
+            stats.add(fetchStat("lovec", "blk-poltol"), utp.delegee.polTol, fetchStatUnit("lovec", "polunits"));
         };
     };
 
@@ -111,15 +111,15 @@
      * @return {void}
      */
     function comp_update(utp, unit) {
-        if(utp.useLovecDamagePenalty) {
+        if(utp.delegee.useLovecDamagePenalty) {
             FRAG_unit.updateDamagedSta(utp, unit);
         };
 
-        if(utp.hasUnitData && unit.delegee != null && GLB_timer.secHalf) {
+        if(utp.delegee.hasUnitData && unit.delegee != null && GLB_timer.secHalf) {
             if(!UTIL_unitData.includes(unit)) {
-                UTIL_unitData.add(unit, utp.ex_getEmptyUnitData(unit));
+                UTIL_unitData.add(unit, utp.self.ex_getEmptyUnitData(unit));
             };
-            utp.ex_writeUnitData(unit, UTIL_unitData.get(unit));
+            utp.self.ex_writeUnitData(unit, UTIL_unitData.get(unit));
         };
     };
 
@@ -131,8 +131,8 @@
      * @return {void}
      */
     function comp_draw(utp, unit) {
-        if(utp.drawShields && (utp.baseShieldA > 0.0 || unit.shieldAlpha > 0.0) && unit.shield > 0.0) {
-            utp.ex_drawShield(unit);
+        if(utp.delegee.drawShields && (utp.delegee.baseShieldA > 0.0 || unit.shieldAlpha > 0.0) && unit.shield > 0.0) {
+            utp.self.ex_drawShield(unit);
         };
     };
 
@@ -144,10 +144,10 @@
      * @return {void}
      */
     function comp_drawLight(utp, unit) {
-        if(!utp.useConicalLight) {
+        if(!utp.delegee.useConicalLight) {
             utp.super$drawLight(unit);
         } else {
-            LCDrawf.lightArc(unit.x, unit.y, 1.0, utp.lightRadius, utp.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
+            LCDrawf.lightArc(unit.x, unit.y, 1.0, utp.lightRadius, utp.delegee.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
         };
     };
 
@@ -161,9 +161,9 @@
     function comp_ex_drawShield(utp, unit) {
         LCDraw.shieldCircle(
             unit.x, unit.y,
-            unit.hitSize * utp.shieldRadScl * 1.3 + Mathf.lerp(0.0, utp.shieldRadHitInc, unit.shieldAlpha),
-            utp.ex_getShieldColor(unit),
-            Mathf.lerp(utp.baseShieldA, 1.0, unit.shieldAlpha),
+            unit.hitSize * utp.delegee.shieldRadScl * 1.3 + Mathf.lerp(0.0, utp.delegee.shieldRadHitInc, unit.shieldAlpha),
+            utp.self.ex_getShieldColor(unit),
+            Mathf.lerp(utp.delegee.baseShieldA, 1.0, unit.shieldAlpha),
         );
     };
 

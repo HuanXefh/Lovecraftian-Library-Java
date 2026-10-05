@@ -25,7 +25,7 @@
      * @return {void}
      */
     function comp_init(liq) {
-        if(liq.setupVanillaProp) {
+        if(liq.delegee.setupVanillaProp) {
             if(liq.temperature.fEqual(0.5)) {
                 liq.temperature = MDL_flow.getTempWrap(liq);
             };
@@ -45,13 +45,13 @@
             };
         };
 
-        liq.isConductive = MDL_cond.isConductiveLiquid(liq);
-        liq.shouldFume = DB_fluid.db["group"]["fuming"].includes(liq.name);
-        liq.dens = MDL_flow.getDens(liq);
-        liq.fHeat = MDL_flow.getFHeat(liq);
-        liq.eleGrp = MDL_flow.getEleGrp(liq);
-        liq.fTags = MDL_flow.getFTags(liq);
-        liq.corPow = MDL_flow.getCorPow(liq);
+        liq.delegee.isConductive = MDL_cond.isConductiveLiquid(liq);
+        liq.delegee.shouldFume = DB_fluid.db["group"]["fuming"].includes(liq.name);
+        liq.delegee.dens = MDL_flow.getDens(liq);
+        liq.delegee.fHeat = MDL_flow.getFHeat(liq);
+        liq.delegee.eleGrp = MDL_flow.getEleGrp(liq);
+        liq.delegee.fTags = MDL_flow.getFTags(liq);
+        liq.delegee.corPow = MDL_flow.getCorPow(liq);
     };
 
 
@@ -62,7 +62,7 @@
      * @return {void}
      */
     function comp_setStats(liq, stats) {
-        if(liq.setupVanillaStat) {
+        if(liq.delegee.setupVanillaStat) {
             stats.remove(Stat.explosiveness);
             stats.remove(Stat.flammability);
             stats.remove(Stat.temperature);
@@ -140,7 +140,7 @@
         };
 
         // Fume if possible
-        if(!liq.gas && liq.shouldFume && Mathf.chance(MDL_effect.calcEffPByFrac(0.03, puddle.amount * 0.04))) {
+        if(!liq.gas && liq.delegee.shouldFume && Mathf.chance(MDL_effect.calcEffPByFrac(0.03, puddle.amount * 0.04))) {
             MDL_effect.showAt(puddle.x, puddle.y, GLB_eff.smogHeat);
         };
 
@@ -150,7 +150,7 @@
         };
 
         // Cause short circuit if possible
-        if(!GLB_param.UPDATE_SUPPRESSED && !liq.gas && liq.isConductive && Mathf.chanceDelta(0.1)) {
+        if(!GLB_param.UPDATE_SUPPRESSED && !liq.gas && liq.delegee.isConductive && Mathf.chanceDelta(0.1)) {
             FRAG_puddle.spreadPuddle(
                 puddle, 0.5,
                 ot => {
@@ -260,7 +260,7 @@
          * `INTERNAL`
          * @memberof RS_baseFluid
          * @instance
-         * @type {string|null}
+         * @type {String|null}
          */
         eleGrp: null,
         /**

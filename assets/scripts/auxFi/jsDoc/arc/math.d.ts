@@ -171,6 +171,8 @@ interface Vec3 extends Vector<Vec3>, Position {}
 
 /** arc.math.Mat */
 declare class Mat {}
+/** arc.math.Mat3D */
+declare class Mat3D {}
 /** arc.math.Affine2 */
 declare class Affine2 {}
 
@@ -192,6 +194,18 @@ interface Polyline extends Shape2D {}
 /** arc.math.geom.Polygon */
 declare class Polygon implements Shape2D {}
 interface Polygon extends Shape2D {}
+
+
+/** arc.math.geom.Plane */
+declare class Plane {}
+/** arc.math.geom.Sphere */
+declare class Sphere {}
+/** arc.math.geom.Icosphere */
+declare class Icosphere {}
+/** arc.math.geom.Quat */
+declare class Quat {}
+/** arc.math.geom.Ray */
+declare class Ray {}
 
 
 /** arc.math.geom.Geometry */

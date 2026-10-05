@@ -46,7 +46,7 @@
         b.proximity.each(
             ob => MDL_cond.isCable(ob.block),
             ob => {
-                tmpSafeLvl = ob.ex_getMaxPowProdAllowed();
+                tmpSafeLvl = tryFun(ob.ex_getMaxPowProdAllowed, ob, Number.n8);
                 if(tmpSafeLvl < safeLvl) {
                     safeLvl = tmpSafeLvl;
                 };
@@ -147,7 +147,7 @@
              * @return {number}
              */
             ex_getMaxPowProdAllowed: function() {
-                return this.blk$maxPowProdAllowed;
+                return this.delegee.blk$maxPowProdAllowed;
             }
             .setProp({
                 noSuper: true,

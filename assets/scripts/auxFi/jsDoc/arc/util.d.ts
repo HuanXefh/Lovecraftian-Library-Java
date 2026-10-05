@@ -5,26 +5,15 @@ declare class Log {}
 /** arc.util.Time */
 declare class Time {
     static delta: number;
+    /** @deprecated Removed in v9. */
     static time: number;
     static globalTime: number;
 
+    /** @deprecated Removed in v9. */
     static run(delay: number, run: java.lang.Runnable): void
     static runTask(delay: number, run: java.lang.Runnable): void
     static mark(): void
     static elapsed(): number
-}
-/** arc.util.Interval */
-declare class Interval {
-    constructor()
-    constructor(cap: number)
-
-    get(time: number): boolean
-    get(id: number, time: number): boolean
-    check(id: number, time: number): boolean
-    reset(id: number, time: number): void
-    clear(): void
-    getTime(id: number): number
-    getTimes(id: number): Array<number>
 }
 
 
@@ -366,9 +355,15 @@ declare namespace Jval {
     class JsonMap extends ArrayMap<string, Jval> implements Jval {}
     class JsonArray extends Seq<Jval> implements Jval {}
     class Jformat {
+        /** @deprecated Removed in v9. */
         static plain: Jformat;
+        /** @deprecated Added in v9. */
+        static json: Jformat;
         static minimal: Jformat;
+        /** @deprecated Removed in v9. */
         static formatted: Jformat;
+        /** @deprecated Added in v9. */
+        static jsonFormatted: JFormat;
         static hjson: Jformat;
     }
     class Jtype {

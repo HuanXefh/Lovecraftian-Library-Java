@@ -29,7 +29,7 @@
      */
     function comp_init(blk) {
         MDL_event.onLoadPost(() => {
-            blk.selectionQueue.pushAll(blk.ex_findSelectionTargets());
+            blk.delegee.selectionQueue.pushAll(blk.self.ex_findSelectionTargets());
         });
 
         blk.configurable = true;
@@ -37,20 +37,20 @@
         blk.clearOnDoubleTap = true;
 
         blk.config(UnlockableContent, (b, ct) => {
-            if(!blk.selectionQueue.includes(ct)) return;
+            if(!blk.delegee.selectionQueue.includes(ct)) return;
             b.delegee.ctTarget = ct;
-            b.ex_onSelectorUpdate();
+            b.self.ex_onSelectorUpdate();
         });
         blk.config(JAVA.string, (b, nameCt) => {
             let ct = MDL_content.getCt(nameCt, null, true);
-            if(!blk.selectionQueue.includes(ct)) return;
+            if(!blk.delegee.selectionQueue.includes(ct)) return;
             b.delegee.ctTarget = ct;
-            b.ex_onSelectorUpdate();
+            b.self.ex_onSelectorUpdate();
         });
 
         blk.configClear(b => {
             b.delegee.ctTarget = null;
-            b.ex_onSelectorUpdate();
+            b.self.ex_onSelectorUpdate();
         });
     };
 
@@ -62,7 +62,7 @@
      * @return {void}
      */
     function comp_buildConfiguration(b, tb) {
-        b.ex_buildSelector(tb);
+        b.self.ex_buildSelector(tb);
     };
 
 
@@ -177,7 +177,7 @@
 
 
             config: function() {
-                return this.ctTarget == null ? "null" : this.ctTarget.name;
+                return this.delegee.ctTarget == null ? "null" : this.delegee.ctTarget.name;
             }
             .setProp({
                 noSuper: true,
@@ -223,7 +223,7 @@
              * @return {void}
              */
             ex_drawSelected: function() {
-                LCDraw.contentIcon(this.x, this.y, this.ctTarget, this.block.size, 0.75);
+                LCDraw.contentIcon(this.x, this.y, this.delegee.ctTarget, this.block.size, 0.75);
             }
             .setProp({
                 noSuper: true,
@@ -239,9 +239,9 @@
              * @return {TextureRegion|null}
              */
             ex_getRcIcon: function() {
-                return this.ctTarget == null ?
+                return this.delegee.ctTarget == null ?
                     null :
-                    this.ctTarget.uiIcon;
+                    this.delegee.ctTarget.uiIcon;
             }
             .setProp({
                 noSuper: true,
@@ -259,10 +259,10 @@
                 processData(
                     wr0rd,
                     wr => {
-                        MDL_io.ct(wr, this.ctTarget);
+                        MDL_io.ct(wr, this.delegee.ctTarget);
                     },
                     rd => {
-                        this.ctTarget = MDL_io.ct(rd);
+                        this.delegee.ctTarget = MDL_io.ct(rd);
                     },
                 );
             }

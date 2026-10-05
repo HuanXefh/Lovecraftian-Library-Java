@@ -31,31 +31,31 @@
         blk.configurable = true;
 
         let scr = b => {
-            b.delegee.manualStartWarmup = Mathf.lerp(b.delegee.manualStartWarmup, 1.2, blk.manualStartIncRate * 1.65);
+            b.delegee.manualStartWarmup = Mathf.lerp(b.delegee.manualStartWarmup, 1.2, blk.delegee.manualStartIncRate * 1.65);
             MDL_effect.click(b.x, b.y, b.team.color);
             MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
         };
-        switch(blk.manualStartCfgType) {
+        switch(blk.delegee.manualStartCfgType) {
             case "boolean" :
                 blk.config(JAVA.boolean, (b, bool) => {
                     if(bool) scr(b);
-                    b.ex_onManualStartConfigured(bool);
+                    b.self.ex_onManualStartConfigured(bool);
                 });
                 break;
             case "string" :
                 blk.config(JAVA.string, (b, str) => {
                     if(str === "SPEC: click") scr(b);
-                    b.ex_onManualStartConfigured(str);
+                    b.self.ex_onManualStartConfigured(str);
                 });
                 break;
             case "float" :
                 blk.config(JAVA.float, (b, f) => {
                     scr(b);
-                    b.ex_onManualStartConfigured(f);
+                    b.self.ex_onManualStartConfigured(f);
                 });
                 break;
             default :
-                throw new Error("Unsupported config type: " + blk.manualStartCfgType);
+                throw new Error("Unsupported config type: " + blk.delegee.manualStartCfgType);
         };
     };
 
@@ -67,9 +67,9 @@
      */
     function comp_setBars(blk) {
         blk.addBar("lovec-warmup", b => new Bar(
-            prov(() => Core.bundle.format("bar.lovec-bar-warmup-amt", b.ex_getManualStartFrac().perc())),
+            prov(() => Core.bundle.format("bar.lovec-bar-warmup-amt", b.self.ex_getManualStartFrac().perc())),
             prov(() => Pal.ammo),
-            () => b.ex_getManualStartFrac(),
+            () => b.self.ex_getManualStartFrac(),
         ));
     };
 
@@ -81,12 +81,12 @@
      */
     function comp_updateTile(b) {
         if(b.efficiency < 0.0001 || !b.shouldConsume()) {
-            b.manualStartWarmup = Mathf.lerpDelta(b.manualStartWarmup, 0.0, b.block.delegee.manualStartDecRate);
+            b.delegee.manualStartWarmup = Mathf.lerpDelta(b.delegee.manualStartWarmup, 0.0, b.block.delegee.manualStartDecRate);
         } else {
-            b.manualStartWarmup = Mathf.lerpDelta(b.manualStartWarmup, 1.4, b.block.delegee.manualStartIncRate);
+            b.delegee.manualStartWarmup = Mathf.lerpDelta(b.delegee.manualStartWarmup, 1.4, b.block.delegee.manualStartIncRate);
         };
-        if(b.manualStartWarmup < 0.001) {
-            b.manualStartWarmup = 0.0;
+        if(b.delegee.manualStartWarmup < 0.001) {
+            b.delegee.manualStartWarmup = 0.0;
         };
     };
 
@@ -97,7 +97,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        b.efficiency *= b.ex_getManualStartFrac();
+        b.efficiency *= b.self.ex_getManualStartFrac();
     };
 
 
@@ -110,7 +110,7 @@
         if(b.block.delegee.skipTapConfig) return true;
         Vars.state.paused ?
             MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
-            b.ex_configureClick();
+            b.self.ex_configureClick();
         return false;
     };
 
@@ -334,10 +334,10 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.manualStartWarmup);
+                        wr.f(this.delegee.manualStartWarmup);
                     },
                     rd => {
-                        this.manualStartWarmup = rd.f();
+                        this.delegee.manualStartWarmup = rd.f();
                     },
                 );
             }

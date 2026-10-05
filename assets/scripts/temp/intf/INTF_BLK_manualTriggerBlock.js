@@ -32,8 +32,8 @@
 
         blk.config(JAVA.string, (b, str) => {
             if(str === "SPEC: click") {
-                b.delegee.manualTriggerCd = blk.manualTriggerCooldown;
-                b.ex_manualTriggerCall();
+                b.delegee.manualTriggerCd = blk.delegee.manualTriggerCooldown;
+                b.self.ex_manualTriggerCall();
             };
         });
     };
@@ -46,11 +46,11 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(blk.manualTriggerCooldown > 0.0) {
-            stats.add(fetchStat("lovec", "blk-cd"), blk.manualTriggerCooldown * 60.0, StatUnit.seconds);
+        if(blk.delegee.manualTriggerCooldown > 0.0) {
+            stats.add(fetchStat("lovec", "blk-cd"), blk.delegee.manualTriggerCooldown * 60.0, StatUnit.seconds);
         };
-        if(blk.manualTriggerCooldownInit > 0.0) {
-            stats.add(fetchStat("lovec", "blk-cdinit"), blk.manualTriggerCooldownInit * 60.0, StatUnit.seconds);
+        if(blk.delegee.manualTriggerCooldownInit > 0.0) {
+            stats.add(fetchStat("lovec", "blk-cdinit"), blk.delegee.manualTriggerCooldownInit * 60.0, StatUnit.seconds);
         };
     };
 
@@ -62,9 +62,9 @@
      */
     function comp_setBars(blk) {
         blk.addBar("lovec-cd", b => new Bar(
-            prov(() => Core.bundle.format("bar.lovec-bar-cd-amt", b.ex_getManualTriggerCdFrac().perc(0))),
+            prov(() => Core.bundle.format("bar.lovec-bar-cd-amt", b.self.ex_getManualTriggerCdFrac().perc(0))),
             prov(() => Pal.accent),
-            () => b.ex_getManualTriggerCdFrac(),
+            () => b.self.ex_getManualTriggerCdFrac(),
         ));
     };
 
@@ -75,7 +75,7 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.manualTriggerCd = b.block.delegee.manualTriggerCooldownInit;
+        b.delegee.manualTriggerCd = b.block.delegee.manualTriggerCooldownInit;
     };
 
 
@@ -85,7 +85,7 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        b.manualTriggerCd -= b.edelta();
+        b.delegee.manualTriggerCd -= b.edelta();
     };
 
 
@@ -97,7 +97,7 @@
      */
     function comp_buildConfiguration(b, tb) {
         tb.row();
-        b.ex_buildManualTriggerButton(tb);
+        b.self.ex_buildManualTriggerButton(tb);
     };
 
 
@@ -115,9 +115,9 @@
                 () => {
                     Vars.state.paused ?
                         MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
-                        b.manualTriggerCd > 0.0 ?
+                        b.delegee.manualTriggerCd > 0.0 ?
                             MDL_ui.showFadeInfo("lovec", "in-cd") :
-                            !b.ex_checkManualTriggerValid() ?
+                            !b.self.ex_checkManualTriggerValid() ?
                                 undefined :
                                 b.configure("SPEC: click");
                 },
@@ -285,7 +285,7 @@
              * @return {number}
              */
             ex_getManualTriggerCdFrac: function() {
-                return 1.0 - Mathf.clamp(Mathf.maxZero(this.manualTriggerCd) / this.block.delegee.manualTriggerCooldown);
+                return 1.0 - Mathf.clamp(Mathf.maxZero(this.delegee.manualTriggerCd) / this.block.delegee.manualTriggerCooldown);
             }
             .setProp({
                 noSuper: true,
@@ -318,10 +318,10 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.manualTriggerCd);
+                        wr.f(this.delegee.manualTriggerCd);
                     },
                     rd => {
-                        this.manualTriggerCd = rd.f();
+                        this.delegee.manualTriggerCd = rd.f();
                     },
                 );
             }

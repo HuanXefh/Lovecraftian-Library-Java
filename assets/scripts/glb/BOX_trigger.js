@@ -11,7 +11,7 @@ const BOX_trigger = new CLS_objectBox({
     /**
      * Triggers some event trigger by name.
      * Mostly for invocation from Java.
-     * @param {String} name
+     * @param {string} name
      * @param {Object|unset} [arg1]
      * @param {Object|unset} [arg2]
      * @param {Object|unset} [arg3]
@@ -256,7 +256,7 @@ const BOX_trigger = new CLS_objectBox({
      * @type {CLS_eventTrigger}
      */
     abilityDataInit: (function() {
-        Time.run(0.0, () => {
+        MDL_event.onDelayRun(0.0, () => {
             MDL_event.onWorldLoad(() => BOX_trigger.abilityDataInit.fire());
             BOX_trigger.majorSync.addGlobalListener(() => BOX_trigger.abilityDataInit.fire());
         });

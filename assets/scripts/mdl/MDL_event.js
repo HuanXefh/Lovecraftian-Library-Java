@@ -19,6 +19,24 @@
 
 
     /**
+     * Called several frames later.
+     * @param {number} delay
+     * @param {C0Function} scr
+     * @param {number|string|unset} [id]
+     * @return {void}
+     */
+    const onDelayRun = function thisFun(delay, scr, id) {
+        if(id != null && thisFun.ids.includes(id)) return;
+        if(id != null) thisFun.ids.push(id);
+
+        eval(LCVersionResolver.isV8 ? eval("Time.run") : eval("Time.state.run"))(delay, () => {
+            scr();
+        });
+    };
+    exports.onDelayRun = onDelayRun;
+
+
+    /**
      * Called just after script is loaded.
      * @param {C0Function} scr
      * @param {number|string|unset} [id]
@@ -100,7 +118,7 @@
         if(id != null) thisFun.ids.push(id);
 
         Events.run(ClientLoadEvent, () => {
-            Time.run(delay, () => {
+            eval(LCVersionResolver.isV8 ? "Time.run" : "Vars.state.run")(delay, () => {
                 scr();
             });
         });

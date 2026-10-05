@@ -45,8 +45,8 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.presRes = MDL_flow.getPresRes(blk);
-        blk.vacRes = MDL_flow.getVacRes(blk);
+        blk.delegee.presRes = MDL_flow.getPresRes(blk);
+        blk.delegee.vacRes = MDL_flow.getVacRes(blk);
     };
 
 
@@ -57,10 +57,10 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(fetchStat("lovec", "blk0liq-presres"), blk.presRes);
-        stats.add(fetchStat("lovec", "blk0liq-vacres"), -blk.vacRes);
-        if(!blk.presThr.fEqual(0.0)) {
-            stats.add(blk.presThr > 0.0 ? fetchStat("lovec", "blk0liq-presreq") : fetchStat("lovec", "blk0liq-vacreq"), Math.abs(blk.presThr));
+        stats.add(fetchStat("lovec", "blk0liq-presres"), blk.delegee.presRes);
+        stats.add(fetchStat("lovec", "blk0liq-vacres"), -blk.delegee.vacRes);
+        if(!blk.delegee.presThr.fEqual(0.0)) {
+            stats.add(blk.delegee.presThr > 0.0 ? fetchStat("lovec", "blk0liq-presreq") : fetchStat("lovec", "blk0liq-vacreq"), Math.abs(blk.delegee.presThr));
         };
     };
 
@@ -74,7 +74,7 @@
         blk.addBar("lovec-pressure", b => new Bar(
             prov(() => Core.bundle.format(b.delegee.presTmp >= 0.0 ? "bar.lovec-bar-pressure-amt" : "bar.lovec-bar-vacuum-amt", Strings.fixed(Math.abs(b.delegee.presTmp), 2))),
             prov(() => b.delegee.presTmp >= 0.0 ? Color.valueOf(Tmp.c1, "cce5ff") : Color.valueOf(Tmp.c1, "e1d5e5")),
-            () => Mathf.clamp(Math.abs(b.delegee.presTmp + b.delegee.presExtra) / Math.max(b.delegee.presTmp >= 0.0 ? blk.presRes : -blk.vacRes, 0.0001)),
+            () => Mathf.clamp(Math.abs(b.delegee.presTmp + b.delegee.presExtra) / Math.max(b.delegee.presTmp >= 0.0 ? blk.delegee.presRes : -blk.delegee.vacRes, 0.0001)),
         ));
     };
 
@@ -85,8 +85,8 @@
      * @return {void}
      */
     function comp_onDestroyed(b) {
-        if(Math.abs(b.presTmp) > 0.5) {
-            Damage.damage(b.x, b.y, b.block.size * Vars.tilesize * 2.5, b.maxHealth * Math.abs(b.presTmp) * 0.2);
+        if(Math.abs(b.delegee.presTmp) > 0.5) {
+            Damage.damage(b.x, b.y, b.block.size * Vars.tilesize * 2.5, b.maxHealth * Math.abs(b.delegee.presTmp) * 0.2);
             Fx.explosion.at(b.x, b.y, b.block.size * Vars.tilesize * 2.5);
         };
     };
@@ -98,11 +98,11 @@
      * @return {void}
      */
     function comp_onProximityUpdate(b) {
-        b.presTransCount = 0;
-        b.presTransCountTmpBs.clear();
-        Time.run(60.0, () => {
-            b.ex_updatePresFetchTargets();
-            b.ex_updatePresSupplyTargets();
+        b.delegee.presTransCount = 0;
+        b.delegee.presTransCountTmpBs.clear();
+        MDL_event.onDelayRun(60.0, () => {
+            b.self.ex_updatePresFetchTargets();
+            b.self.ex_updatePresSupplyTargets();
         });
     };
 
@@ -113,8 +113,8 @@
      * @return {void}
      */
     function comp_pickedUp(b) {
-        b.presFetchTargets.clear();
-        b.presSupplyTargets.clear();
+        b.delegee.presFetchTargets.clear();
+        b.delegee.presSupplyTargets.clear();
     };
 
 
@@ -127,50 +127,50 @@
         if(GLB_param.UPDATE_SUPPRESSED) return;
 
         if(GLB_timer.secQuarter) {
-            b.ex_updatePresTarget();
-            b.presTmp = (b.presTmp + b.presTarget) * 0.5;
-            if(Math.abs(b.presTmp) < 0.005) {
-                b.presTmp = 0.0;
+            b.self.ex_updatePresTarget();
+            b.delegee.presTmp = (b.delegee.presTmp + b.delegee.presTarget) * 0.5;
+            if(Math.abs(b.delegee.presTmp) < 0.005) {
+                b.delegee.presTmp = 0.0;
             };
         };
-        if(Math.abs(b.presTmp) > 0.0) {
+        if(Math.abs(b.delegee.presTmp) > 0.0) {
             b.noSleep();
             if(b.next != null && b.next() != null) {
                 b.next().noSleep();
             };
         };
 
-        if(GLB_timer.sec && Math.abs(b.presTmp) > 0.0) {
-            b.ex_updatePresSupplyTargets();
+        if(GLB_timer.sec && Math.abs(b.delegee.presTmp) > 0.0) {
+            b.self.ex_updatePresSupplyTargets();
         };
 
         // Apply damage if over limit
         if(
             !GLB_param.UPDATE_DEEP_SUPPRESSED && GLB_timer.secQuarter && LCRand.chance(UTIL_rand.get("pressure"), 0.25)
                 && (
-                    (b.presTmp + b.presExtra) > 0.0 ?
-                        ((b.presTmp + b.presExtra) > (b.block.delegee.presRes + PRES_RES_TOL)) :
-                        ((b.presTmp + b.presExtra) < (b.block.delegee.vacRes - PRES_RES_TOL))
+                    (b.delegee.presTmp + b.presExtra) > 0.0 ?
+                        ((b.delegee.presTmp + b.presExtra) > (b.block.delegee.presRes + PRES_RES_TOL)) :
+                        ((b.delegee.presTmp + b.presExtra) < (b.block.delegee.vacRes - PRES_RES_TOL))
                 )
         ) {
             b.damagePierce((b.maxHealth * GLB_var.param.presDmgFrac + GLB_var.param.presDmgMin) * (
-                b.presTmp > 0.0 ?
-                    (b.presTmp / Math.max(b.block.delegee.presRes, 0.0001)) :
-                    (-b.presTmp / Math.max(-b.block.delegee.vacRes, 0.0001))
+                b.delegee.presTmp > 0.0 ?
+                    (b.delegee.presTmp / Math.max(b.block.delegee.presRes, 0.0001)) :
+                    (-b.delegee.presTmp / Math.max(-b.block.delegee.vacRes, 0.0001))
             ));
         };
 
         // Pressure drop
-        b.presBase -= b.presBase.fEqual(0.0, 0.005) ? b.presBase : (b.presBase / 60.0 * Time.delta);
+        b.delegee.presBase -= b.delegee.presBase.fEqual(0.0, 0.005) ? b.delegee.presBase : (b.delegee.presBase / 60.0 * Time.delta);
 
         // Supply abstract fluid
-        if(!b.block.delegee.skipPresSupply && b.presSupplyTargets.length > 0 && Math.abs(b.presTmp) > 0.0) {
-            b.presSupplyIncre++;
-            let b_t = b.presSupplyTargets[b.presSupplyIncre % b.presSupplyTargets.length];
+        if(!b.block.delegee.skipPresSupply && b.delegee.presSupplyTargets.length > 0 && Math.abs(b.delegee.presTmp) > 0.0) {
+            b.delegee.presSupplyIncre++;
+            let b_t = b.delegee.presSupplyTargets[b.delegee.presSupplyIncre % b.delegee.presSupplyTargets.length];
             if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
-                let addAmt = Math.abs(b.presTmp.roundFixed(0)) / 60.0;
-                let consAmt = MDL_recipeDict.getConsAmtByBuild(b.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, b_t);
-                LCCraftingHandler.addLiquid(b_t, null, b.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, addAmt, false, false, true);
+                let addAmt = Math.abs(b.delegee.presTmp.roundFixed(0)) / 60.0;
+                let consAmt = MDL_recipeDict.getConsAmtByBuild(b.delegee.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, b_t);
+                LCCraftingHandler.addLiquid(b_t, null, b.delegee.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, addAmt, false, false, true);
                 if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
                     b_t.damagePierce((b_t.maxHealth * GLB_var.param.presDmgFrac + GLB_var.param.presDmgMin) / 5.0);
                 };
@@ -190,8 +190,8 @@
         let presThr = b.block.delegee.presThr;
         if(presThr.fEqual(0.0)) return true;
         return presThr > 0.0 ?
-            b.presTmp >= presThr - PRES_THR_TOL :
-            b.presTmp <= presThr + PRES_THR_TOL;
+            b.delegee.presTmp >= presThr - PRES_THR_TOL :
+            b.delegee.presTmp <= presThr + PRES_THR_TOL;
     };
 
 
@@ -206,8 +206,8 @@
         let presThr = b.block.delegee.presThr;
         if(presThr.fEqual(0.0)) return true;
         return presThr > 0.0 ?
-            b.presTmp >= presThr - 0.15 :
-            b.presTmp <= presThr + 0.15;
+            b.delegee.presTmp >= presThr - 0.15 :
+            b.delegee.presTmp <= presThr + 0.15;
     };
 
 
@@ -217,18 +217,18 @@
      * @return {void}
      */
     function comp_ex_updatePresFetchTargets(b) {
-        b.presFetchTargets.clear();
+        b.delegee.presFetchTargets.clear();
         // Find all possible pressure sources
         b.proximity.each(ob => {
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
-            if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b) && !b.presTransCountTmpBs.includes(ob)) {
-                b.presTransCount++;
-                b.presTransCountTmpBs.push(ob);
+            if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b) && !b.delegee.presTransCountTmpBs.includes(ob)) {
+                b.delegee.presTransCount++;
+                b.delegee.presTransCountTmpBs.push(ob);
             };
-            if(ob.ex_getPres != null && b.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.ex_checkPresSupplyValid(b))) {
-                b.presFetchTargets.push(ob);
+            if(ob.ex_getPres != null && b.self.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.ex_checkPresSupplyValid(b))) {
+                b.delegee.presFetchTargets.push(ob);
             };
         });
     };
@@ -240,7 +240,7 @@
      * @return {void}
      */
     function comp_ex_updatePresSupplyTargets(b) {
-        b.presSupplyTargets.clear();
+        b.delegee.presSupplyTargets.clear();
         // Find all possible pressure consumers
         b.proximity.each(ob => {
             ob = ob.getLiquidDestination(b, GLB_varGen.auxPres);
@@ -248,8 +248,8 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
-            if((ob.acceptLiquid(b, GLB_varGen.auxPres) || ob.acceptLiquid(b, GLB_varGen.auxVac)) && b.ex_checkPresSupplyValid(ob)) {
-                b.presSupplyTargets.push(ob);
+            if((ob.acceptLiquid(b, GLB_varGen.auxPres) || ob.acceptLiquid(b, GLB_varGen.auxVac)) && b.self.ex_checkPresSupplyValid(ob)) {
+                b.delegee.presSupplyTargets.push(ob);
             };
         });
     };
@@ -261,10 +261,10 @@
      * @return {void}
      */
     function comp_ex_updatePresTarget(b) {
-        b.presTarget = b.presBase;
-        b.presFetchTargets.forEachFast(ob => {
+        b.delegee.presTarget = b.delegee.presBase;
+        b.delegee.presFetchTargets.forEachFast(ob => {
             if(ob.isAdded() && ob.enabled && !ob.isPayload()) {
-                b.presTarget += tryFun(ob.ex_getPres, ob, 0.0) * tryFun(ob.ex_getPresTransScl, ob, 1.0, b);
+                b.delegee.presTarget += tryFun(ob.ex_getPres, ob, 0.0) * tryFun(ob.ex_getPresTransScl, ob, 1.0, b);
             };
         }, true);
     };
@@ -538,7 +538,7 @@
              * @return {boolean}
              */
             ex_checkPresFetchSideValid: function(ob) {
-                return this.ex_checkIsPresRouter() ?
+                return this.self.ex_checkIsPresRouter() ?
                     false :
                     !MDL_cond.isNoSideBlock(this.block) ?
                         true :
@@ -559,8 +559,8 @@
              */
             ex_checkPresFetchValid: function(ob) {
                 return LCGeometry.accept(
-                    ob, this, ob.ex_checkIsPresRouter(),
-                    this.ex_checkPresFetchSideValid(ob),
+                    ob, this, tryFun(ob.ex_checkIsPresRouter, ob, false),
+                    this.self.ex_checkPresFetchSideValid(ob),
                 );
             }
             .setProp({
@@ -577,7 +577,7 @@
              * @return {boolean}
              */
             ex_checkPresSupplyValid: function(ob) {
-                return LCGeometry.accept(this, ob, this.ex_checkIsPresRouter(), true);
+                return LCGeometry.accept(this, ob, this.self.ex_checkIsPresRouter(), true);
             }
             .setProp({
                 noSuper: true,
@@ -594,7 +594,7 @@
              * @lovecAttached
              */
             ex_getPres: function() {
-                return this.presTmp;
+                return this.delegee.presTmp;
             }
             .setProp({
                 noSuper: true,
@@ -610,7 +610,7 @@
              * @return {number}
              */
             ex_getPresTransScl: function(b_t) {
-                return !this.ex_checkIsPresRouter() || this.presTransCount === 0 ? 1.0 : (1.0 / this.presTransCount);
+                return !this.self.ex_checkIsPresRouter() || this.delegee.presTransCount === 0 ? 1.0 : (1.0 / this.delegee.presTransCount);
             }
             .setProp({
                 noSuper: true,
@@ -629,12 +629,12 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.presTmp);
+                        wr.f(this.delegee.presTmp);
                     },
                     rd => {
                         let pres = rd.f();
-                        this.presTmp = pres;
-                        this.presTarget = pres;
+                        this.delegee.presTmp = pres;
+                        this.delegee.presTarget = pres;
                     },
                 );
             }

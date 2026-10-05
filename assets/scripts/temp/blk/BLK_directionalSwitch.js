@@ -46,7 +46,7 @@
 
 
   function comp_created(b) {
-    Time.run(0.0, () => {
+    MDL_event.onDelayRun(0.0, () => {
       let ob = b.nearby(b.rotation);
       b.ex_toggle(ob);
     });

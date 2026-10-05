@@ -28,11 +28,11 @@
         Core.app.post(() => {
             // Set drop hardness of this env block
             if(blk.itemDrop != null) {
-                if(blk.dropHardness < 0.0) {
-                    blk.dropHardness = blk.itemDrop.hardness;
+                if(blk.delegee.dropHardness < 0.0) {
+                    blk.delegee.dropHardness = blk.itemDrop.hardness;
                 };
             } else {
-                blk.dropHardness = Number.n4;
+                blk.delegee.dropHardness = Number.n4;
             };
         });
     };
@@ -46,7 +46,7 @@
      */
     function comp_setStats(blk, stats) {
         if(blk.itemDrop != null) {
-            stats.add(fetchStat("lovec", "rs-hardness"), blk.dropHardness);
+            stats.add(fetchStat("lovec", "rs-hardness"), blk.delegee.dropHardness);
         };
     };
 

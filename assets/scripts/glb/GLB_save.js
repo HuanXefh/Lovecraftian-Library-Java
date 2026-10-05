@@ -57,7 +57,7 @@
      * @return {void}
      */
     function loadLsav() {
-        Time.run(GLB_var.delay.worldLoad.loadLsav, () => {
+        MDL_event.onDelayRun(GLB_var.delay.worldLoad.loadLsav, () => {
             if(Vars.state.isEditor()) return;
             if(Vars.net.client()) {
                 requestSync();

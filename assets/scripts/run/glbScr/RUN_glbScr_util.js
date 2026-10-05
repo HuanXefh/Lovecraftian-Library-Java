@@ -611,6 +611,7 @@
             argLen: superFun == null ? fun.argLen : Math.max(superFun.argLen, fun.argLen),
             funPrev: superFun == null ? "!JAVASUPER" : superFun,
             funCur: fun,
+            temp: CLS_contentTemplate.getTempCur(),
         });
 
         return fun_fi;
@@ -913,6 +914,61 @@
             if(!jval.has("sector") || !jval.get("sector").isNumber()) throw new Error("`sector` in a sector preset must be a number!");
             LCContentParser.read(run(() => {
                 let pla = tryVal(sec.planet, Planets.serpulo);
+                if(jval.has("difficulty")) {
+                    let difficulty = jval.remove("difficulty");
+                    let difficulty_fi;
+                    if(LCVersionResolver.isV8) {
+                        if(difficulty.isNumber()) {
+                            difficulty_fi = difficulty.asInt();
+                        } else {
+                            difficulty_fi = difficulty.asString();
+                            switch(difficulty_fi) {
+                                case "low" :
+                                    difficulty_fi = 0;
+                                    break;
+                                case "medium" :
+                                    difficulty_fi = 3;
+                                    break;
+                                case "high" :
+                                    difficulty_fi = 5;
+                                    break;
+                                case "extreme" :
+                                    difficulty_fi = 8;
+                                    break;
+                                case "eradication" :
+                                    difficulty_fi = 10;
+                                    break;
+                                case "unreasonable" :
+                                    difficulty_fi = 13;
+                                    break;
+                                default :
+                                    difficulty_fi = 0;
+                            };
+                        };
+                        sec.difficulty = difficulty_fi;
+                    } else {
+                        if(!difficulty.isNumber()) {
+                            difficulty_fi = difficulty.asFloat();
+                            if(difficulty_fi < 3) {
+                                difficulty_fi = "low";
+                            } else if(difficulty_fi < 5) {
+                                difficulty_fi = "medium";
+                            } else if(difficulty_fi < 8) {
+                                difficulty_fi = "high";
+                            } else if(difficulty_fi < 10) {
+                                difficulty_fi = "extreme";
+                            } else if(difficulty_fi < 13) {
+                                difficulty_fi = "eradication";
+                            } else {
+                                difficulty_fi = "unreasonable";
+                            };
+                        } else {
+                            difficulty_fi = difficulty.asString();
+                        };
+                        difficulty_fi = eval("SectorThreat[" + difficulty_fi + "]");
+                        sec.threat = difficulty_fi;
+                    };
+                };
                 if(jval.has("planet")) {
                     pla = LCContentParser.locate(ContentType.planet, jval.getString("planet", "serpulo"));
                     if(pla == null) throw new LCError.NullArgumentError(sec.name + ".planet");

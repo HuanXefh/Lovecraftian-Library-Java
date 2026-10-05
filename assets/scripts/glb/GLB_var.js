@@ -67,6 +67,14 @@
     exports.fogControl = LCVersionResolver.isV8 ? eval("Vars.fogControl") : eval("Vars.state.fogControl");
 
 
+    /**
+     * Updated every frame.
+     * <br> Do not use `Time.time`, which is moved in v9.
+     * @type {number}
+     */
+    exports.time = 0.0;
+
+
     /** @type {ContentParser} */
     exports.ctParser = Reflect.get(Mods, Vars.mods, "parser");
     /** @type {Json} */
@@ -131,7 +139,7 @@
 
 
     /** @type {Object<string, number>} */
-    exports.time = {
+    exports.timeParam = {
         liqIntv: 4.0,
         heatIntv: 20.0,
         paramIntv: 90.0,

@@ -31,35 +31,35 @@
         blk.configurable = true;
 
         let scr = b => {
-            b.delegee.timeClickCur = Math.min(b.delegee.timeClickCur + blk.manualTimerClickInc, blk.manualTimerCap);
+            b.delegee.timeClickCur = Math.min(b.delegee.timeClickCur + blk.delegee.manualTimerClickInc, blk.delegee.manualTimerCap);
             MDL_effect.click(b.x, b.y, b.team.color);
             MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
         };
-        switch(blk.manualTimerCfgType) {
+        switch(blk.delegee.manualTimerCfgType) {
             case "boolean" :
                 blk.config(JAVA.boolean, (b, bool) => {
                     if(bool) scr(b);
-                    b.ex_onManualTimerConfigured(bool);
+                    b.self.ex_onManualTimerConfigured(bool);
                 });
                 break;
             case "string" :
                 blk.config(JAVA.string, (b, str) => {
                     if(str === "SPEC: click") scr(b);
-                    b.ex_onManualTimerConfigured(str);
+                    b.self.ex_onManualTimerConfigured(str);
                 });
                 break;
             case "float" :
                 blk.config(JAVA.float, (b, f) => {
                     scr(b);
-                    b.ex_onManualTimerConfigured(f);
+                    b.self.ex_onManualTimerConfigured(f);
                 });
                 break;
             default :
-                throw new Error("Unsupported config type: " + blk.manualTimerCfgType);
+                throw new Error("Unsupported config type: " + blk.delegee.manualTimerCfgType);
         };
 
-        blk.ex_addLogicF(LogicProp.ammo, b => b.delegee.timeClickCur / 60.0);
-        blk.ex_addLogicF(LogicProp.ammoCapacity, b => blk.manualTimerCap / 60.0);
+        blk.self.ex_addLogicF(LogicProp.ammo, b => b.delegee.timeClickCur / 60.0);
+        blk.self.ex_addLogicF(LogicProp.ammoCapacity, b => blk.delegee.manualTimerCap / 60.0);
     };
 
 
@@ -70,7 +70,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(fetchStat("lovec", "blk0misc-maxdur"), blk.manualTimerCap / 3600.0, StatUnit.minutes);
+        stats.add(fetchStat("lovec", "blk0misc-maxdur"), blk.delegee.manualTimerCap / 3600.0, StatUnit.minutes);
     };
 
 
@@ -82,7 +82,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-timer", b => new Bar(
             prov(() => MDL_bundle.getInfo("lovec", "text-remaining-time") + " " + Strings.fixed(b.delegee.timeClickCur / 60.0, 0) + " " + StatUnit.seconds.localized()),
-            prov(() => Tmp.c1.set(Pal.remove).lerp(Pal.heal, Mathf.clamp(b.delegee.timeClickCur / blk.manualTimerCap))),
+            prov(() => Tmp.c1.set(Pal.remove).lerp(Pal.heal, Mathf.clamp(b.delegee.timeClickCur / blk.delegee.manualTimerCap))),
             () => 1.0,
         ));
     };
@@ -95,7 +95,7 @@
      */
     function comp_updateTile(b) {
         if(b.efficiency > 0.0) {
-            b.timeClickCur = Mathf.maxZero(b.timeClickCur - b.edelta() / b.timeScale);
+            b.delegee.timeClickCur = Mathf.maxZero(b.delegee.timeClickCur - b.edelta() / b.timeScale);
         };
     };
 
@@ -109,7 +109,7 @@
         if(b.block.delegee.skipTapConfig) return true;
         Vars.state.paused ?
             MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
-            b.ex_configureClick();
+            b.self.ex_configureClick();
         return false;
     };
 
@@ -243,7 +243,7 @@
 
 
             shouldConsume: function() {
-                return this.timeClickCur > 0.0;
+                return this.delegee.timeClickCur > 0.0;
             }
             .setProp({
                 boolMode: "and",
@@ -303,10 +303,10 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.timeClickCur);
+                        wr.f(this.delegee.timeClickCur);
                     },
                     rd => {
-                        this.timeClickCur = rd.f();
+                        this.delegee.timeClickCur = rd.f();
                     },
                 );
             }

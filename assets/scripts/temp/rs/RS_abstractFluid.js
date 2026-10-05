@@ -38,7 +38,7 @@
      * @return {void}
      */
     function comp_setStats(aux, stats) {
-        if(aux.setupVanillaStat) {
+        if(aux.delegee.setupVanillaStat) {
             stats.remove(Stat.explosiveness);
             stats.remove(Stat.flammability);
             stats.remove(Stat.temperature);

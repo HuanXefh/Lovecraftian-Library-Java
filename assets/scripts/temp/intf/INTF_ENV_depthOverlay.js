@@ -25,7 +25,7 @@
         blk.useColor = false;
 
         BOX_trigger.mapExit.addGlobalListener(() => {
-            blk.drawnMap.clear();
+            blk.delegee.drawnMap.clear();
         });
 
         MDL_event.onDraw(() => {
@@ -33,7 +33,7 @@
 
             processZ(GLB_var.layer.dporeRevealed, 4);
             Draw.alpha(0.65);
-            blk.drawnMap.each((t, cond) => {
+            blk.delegee.drawnMap.each((t, cond) => {
                 if(!cond || !LCCheck.checkPosVisible(t.worldx(), t.worldy(), 8.0)) return;
                 Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx(), t.worldy());
             });
@@ -50,7 +50,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(fetchStat("lovec", "blk0env-depthlvl"), blk.depthLvl);
+        stats.add(fetchStat("lovec", "blk0env-depthlvl"), blk.delegee.depthLvl);
     };
 
 
@@ -64,7 +64,7 @@
         if(!Vars.state.isGame() && t instanceof EditorTile) {
             blk.super$drawBase(t);
         } else {
-            blk.ex_accRevealed(t, t instanceof EditorTile);
+            blk.self.ex_accRevealed(t, t instanceof EditorTile);
         };
     };
 
@@ -76,7 +76,7 @@
      * @return {TextureRegion}
      */
     function comp_getDisplayIcon(blk, t) {
-        return blk.ex_accRevealed(t, "read") ?
+        return blk.self.ex_accRevealed(t, "read") ?
             blk.super$getDisplayIcon(t) :
             GLB_varGen.iconRegs.questionMark;
     };
@@ -89,7 +89,7 @@
      * @return {string}
      */
     function comp_getDisplayName(blk, t) {
-        return blk.ex_accRevealed(t, "read") ?
+        return blk.self.ex_accRevealed(t, "read") ?
             blk.super$getDisplayName(t) :
             MDL_bundle.getTerm("lovec", "unknown");
     };
@@ -101,7 +101,7 @@
      * @return {string}
      */
     function comp_ex_getDepthName(blk) {
-        return MDL_bundle.getTerm.apply(null, DB_misc.db["block"]["depthName"].read(blk.depthLvl, ["lovec", "unknown"]))
+        return MDL_bundle.getTerm.apply(null, DB_misc.db["block"]["depthName"].read(blk.delegee.depthLvl, ["lovec", "unknown"]))
     };
 
 
@@ -114,8 +114,8 @@
      */
     function comp_ex_accRevealed(blk, t, param) {
         return param === "read" ?
-            blk.drawnMap.get(t, false) :
-            blk.drawnMap.put(t, param);
+            blk.delegee.drawnMap.get(t, false) :
+            blk.delegee.drawnMap.put(t, param);
     };
 
 

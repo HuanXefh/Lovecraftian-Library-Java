@@ -20,6 +20,48 @@
 */
 
 
+    /* <------------------------------ text ------------------------------> */
+
+
+    /**
+     * Draws test.
+     * <br> This method has to be defined in JS due to path change of {@Link Font} in v9.
+     * @param {number} x
+     * @param {number} y
+     * @param {string|unset} [str]
+     * @param {Font|unset} [font]
+     * @param {sizeScl|unset} [sizeScl]
+     * @param {Color|unset} [Color]
+     * @param {number|unset} [align]
+     * @param {number|unset} [offX]
+     * @param {number|unset} [offY]
+     * @param {number|unset} [offZ]
+     * @return {void}
+     */
+    const text = function thisFun(
+        x, y, str, font,
+        sizeScl, color, align, offX, offY, offZ
+    ) {
+        if(str == null || String.isEmpty(str)) return;
+        let zPrev = Draw.z();
+        let layout = Pools.obtain(GlyphLayout, () => new GlyphLayout());
+        let useInt = font.usesIntegerPositions();
+        Draw.z(Layer.playerName + 0.5 + tryVal(offZ, 0.0));
+        font.setUseIntegerPositions(false);
+        font.getData().setScale(0.25 / Scl.scl(1.0) * tryVal(sizeScl, 1.0));
+        layout.setText(tryVal(font, Fonts.def), str);
+        font.setColor(tryVal(color, Color.white));
+        font.draw(str, x + tryVal(offX, 0.0), y + tryVal(offY, 0.0), 0.0, tryVal(align, Align.center), false);
+        Draw.reset();
+        Draw.z(zPrev);
+        Pools.free(layout);
+        font.getData().setScale(1.0);
+        font.setColor(Color.white);
+        font.setUseIntegerPositions(useInt);
+    };
+    exports.text = text;
+
+
     /* <------------------------------ unit ------------------------------> */
 
 
@@ -146,7 +188,7 @@
             thisFun.tmpCd--;
         } else {
             thisFun.tmpT = t;
-            thisFun.tmpCd = GLB_var.time.extraInfoCooldown;
+            thisFun.tmpCd = GLB_var.timeParam.extraInfoCooldown;
             thisFun.tmpStr = null;
         };
         if(thisFun.tmpCd > 0.0) return;
@@ -162,7 +204,7 @@
             }, true);
         };
 
-        LCDraw.text(
+        text(
             (t.build == null ? t.worldx() : t.build.x) + (!GLB_param.SHOULD_DRAW_UNIT_STAT || !GLB_param.SHOULD_DRAW_BUILD_STAT || t.build == null ? 0.0 : ((GLB_var.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize - 8.0)),
             (t.build == null ? t.worldy() : t.build.y) - (!GLB_param.SHOULD_DRAW_UNIT_STAT || !GLB_param.SHOULD_DRAW_BUILD_STAT || t.build == null ? 10.0 : ((GLB_var.range.offBuildStatR + t.build.block.size * 0.5) * Vars.tilesize + 2.0)),
             thisFun.tmpStr, Fonts.outline,
@@ -181,7 +223,7 @@
         tmpCd: 0.0,
         /**
          * @memberof extraInfo
-         * @type {string|null}
+         * @type {String|null}
          */
         tmpStr: null,
     });

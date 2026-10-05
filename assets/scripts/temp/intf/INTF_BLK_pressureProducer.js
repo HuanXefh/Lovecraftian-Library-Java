@@ -30,9 +30,9 @@
     function comp_init(blk) {
         if(!blk.hasLiquids) throw new LCError.NoLiquidModuleError(blk);
 
-        if(!blk.presProd.fEqual(0.0)) {
+        if(!blk.delegee.presProd.fEqual(0.0)) {
             MDL_event.onLoadPost(() => {
-                MDL_recipeDict.addFldProdTerm(blk, blk.presProd > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, Math.abs(blk.presProd), null);
+                MDL_recipeDict.addFldProdTerm(blk, blk.delegee.presProd > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, Math.abs(blk.delegee.presProd), null);
             });
         };
     };
@@ -45,8 +45,8 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(!blk.presProd.fEqual(0.0)) {
-            stats.add(blk.presProd > 0.0 ? fetchStat("lovec", "blk0liq-presoutput") : fetchStat("lovec", "blk0liq-vacoutput"), Math.abs(blk.presProd * 60.0), StatUnit.perSecond);
+        if(!blk.delegee.presProd.fEqual(0.0)) {
+            stats.add(blk.delegee.presProd > 0.0 ? fetchStat("lovec", "blk0liq-presoutput") : fetchStat("lovec", "blk0liq-vacoutput"), Math.abs(blk.delegee.presProd * 60.0), StatUnit.perSecond);
         };
     };
 
@@ -57,8 +57,8 @@
      * @return {void}
      */
     function comp_onProximityUpdate(b) {
-        b.ex_updatePresDumpTs();
-        b.ex_updatePresDumpTargets();
+        b.self.ex_updatePresDumpTs();
+        b.self.ex_updatePresDumpTargets();
     };
 
 
@@ -68,7 +68,7 @@
      * @return {void}
      */
     function comp_pickedUp(b) {
-        b.presDumpTargets.clear();
+        b.delegee.presDumpTargets.clear();
     };
 
 
@@ -79,12 +79,12 @@
      */
     function comp_updateTile(b) {
         if(GLB_param.UPDATE_SUPPRESSED) return;
-        let presProd = b.ex_calcPresDumpRate();
+        let presProd = b.self.ex_calcPresDumpRate();
         if(presProd.fEqual(0.0)) return;
         let aux = presProd > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac;
 
         LCCraftingHandler.addLiquid(b, b, aux, Math.abs(presProd) / b.timeScale, true);
-        if(!b.ex_dumpPres(Math.abs(presProd), presProd < 0.0)) {
+        if(!b.self.ex_dumpPres(Math.abs(presProd), presProd < 0.0)) {
             b.dumpLiquid(aux, 2.0);
         };
     };
@@ -96,9 +96,9 @@
      * @return {void}
      */
     function comp_ex_updatePresDumpTs(b) {
-        b.presDumpTs.clear();
+        b.delegee.presDumpTs.clear();
         b.block.delegee.presDumpPons.forEachFast(pon => {
-            b.presDumpTs.push(LCPos.getTileRectRotCenter(GLB_var.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), GLB_var.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
+            b.delegee.presDumpTs.push(LCPos.getTileRectRotCenter(GLB_var.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), GLB_var.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
         }, true);
     };
 
@@ -109,11 +109,11 @@
      * @return {void}
      */
     function comp_ex_updatePresDumpTargets(b) {
-        b.presDumpTargets.clear();
+        b.delegee.presDumpTargets.clear();
         let fldType1, fldType2;
-        if(b.presDumpTs.length > 0) {
+        if(b.delegee.presDumpTs.length > 0) {
             let ob;
-            b.presDumpTs.forEachFast(ot => {
+            b.delegee.presDumpTs.forEachFast(ot => {
                 ob = ot.build;
                 if(ob == null || ob.team !== b.team) return;
                 if(ob.block instanceof MultiBlockLinkBlock) {
@@ -124,7 +124,7 @@
                 fldType1 = b.block.delegee.presFldType;
                 fldType2 = tryJsProp(ob.block, "fldType", "any");
                 if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
-                b.presDumpTargets.push(ob);
+                b.delegee.presDumpTargets.push(ob);
             }, true);
         } else {
             b.proximity.each(ob => {
@@ -133,7 +133,7 @@
                 fldType1 = b.block.delegee.presFldType;
                 fldType2 = tryJsProp(ob.block, "fldType", "any");
                 if(fldType1 !== "any" && fldType2 !== "any" && fldType1 !== fldType2) return;
-                b.presDumpTargets.push(ob);
+                b.delegee.presDumpTargets.push(ob);
             });
         };
     };
@@ -147,13 +147,12 @@
      * @return {boolean}
      */
     function comp_ex_dumpPres(b, rate, isVac) {
-        if(b.presDumpTargets.length === 0) return false;
-        let b_t = b.presDumpTargets[b.presDumpIncre % b.presDumpTargets.length];
-        b.presDumpIncre++;
+        if(b.delegee.presDumpTargets.length === 0) return false;
+        let b_t = b.delegee.presDumpTargets[b.delegee.presDumpIncre % b.delegee.presDumpTargets.length];
+        b.delegee.presDumpIncre++;
         if(!b_t.isAdded() || b_t.isPayload()) return false;
         let amtTrans = LCCraftingHandler.addLiquid(b, b, !isVac ? GLB_varGen.auxPres : GLB_varGen.auxVac, -(rate - 0.0001));
         if(amtTrans < 0.0001) return false;
-
         b_t.delegee.presBase = b_t.delegee.presBase + amtTrans * (isVac ? -1.0 : 1.0);
         return true;
     };

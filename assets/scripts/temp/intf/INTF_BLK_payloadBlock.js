@@ -28,14 +28,14 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.payAmtCap < 0.0) {
-            blk.payAmtCap = blk.ex_calcPayRoomDef();
+        if(blk.delegee.payAmtCap < 0.0) {
+            blk.delegee.payAmtCap = blk.self.ex_calcPayRoomDef();
         };
 
-        blk.ex_addLogicF(LogicProp.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
-        blk.ex_addLogicF(LogicProp.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
-        blk.ex_addLogicF(LogicProp.totalPayload, b => LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt)));
-        blk.ex_addLogicF(LogicProp.payloadCapacity, b => blk.payAmtCap);
+        blk.self.ex_addLogicF(LogicProp.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
+        blk.self.ex_addLogicF(LogicProp.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
+        blk.self.ex_addLogicF(LogicProp.totalPayload, b => LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt)));
+        blk.self.ex_addLogicF(LogicProp.payloadCapacity, b => blk.delegee.payAmtCap);
     };
 
 
@@ -46,7 +46,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(fetchStat("lovec", "blk0fac-payroom"), blk.payAmtCap);
+        stats.add(fetchStat("lovec", "blk0fac-payroom"), blk.delegee.payAmtCap);
     };
 
 
@@ -56,16 +56,16 @@
      * @return {void}
      */
     function comp_onProximityUpdate(b) {
-        b.ex_updatePaySite();
+        b.self.ex_updatePaySite();
 
-        Object.eachPair(b.payReqObj, (nameCt, amt) => {
+        Object.eachPair(b.delegee.payReqObj, (nameCt, amt) => {
             if(amt < 0) {
-                b.payReqObj[nameCt] = 0;
+                b.delegee.payReqObj[nameCt] = 0;
             };
         });
-        Object.eachPair(b.payStockObj, (nameCt, amt) => {
+        Object.eachPair(b.delegee.payStockObj, (nameCt, amt) => {
             if(amt < 0) {
-                b.payStockObj[nameCt] = 0;
+                b.delegee.payStockObj[nameCt] = 0;
             };
         });
     };
@@ -77,8 +77,8 @@
      * @return {void}
      */
     function comp_pickedUp(b) {
-        b.payInputBs.clear();
-        b.payOutputBs.clear();
+        b.delegee.payInputBs.clear();
+        b.delegee.payOutputBs.clear();
     };
 
 
@@ -90,31 +90,31 @@
     function comp_updateTile(b) {
         if(GLB_param.UPDATE_SUPPRESSED) return;
 
-        if(b.hasPayOutput && GLB_timer.effcPay) {
-            b.payAmtTotal = LCNativeObject.numSum(b.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
-            b.payAmtTotalAfterProd = LCNativeObject.numSum(b.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.ex_getPayProdAmt(nameCt))));
+        if(b.delegee.hasPayOutput && GLB_timer.effcPay) {
+            b.delegee.payAmtTotal = LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
+            b.delegee.payAmtTotalAfterProd = LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.self.ex_getPayProdAmt(nameCt))));
         };
 
-        if(GLB_timer.secHalf && b.hasPayInput) {
-            b.payInputBs.forEachFast(ob => {
-                b.ex_takePay(ob);
+        if(GLB_timer.secHalf && b.delegee.hasPayInput) {
+            b.delegee.payInputBs.forEachFast(ob => {
+                b.self.ex_takePay(ob);
             }, true);
         };
 
         // Payload dumping is not affected by `blk.disableDump`, because you cannot manually take payload out of the building
-        if(b.hasPayOutput && GLB_timer.secHalf && b.payOutputBs.length > 0) {
-            if(b.lastDumpPay == null) {
-                let nameCt = Object.randKey(b.payStockObj);
-                if(nameCt != null && b.payStockObj[nameCt] > 0) {
-                    b.lastDumpPay = FRAG_payload.makePay(nameCt, b.team);
+        if(b.delegee.hasPayOutput && GLB_timer.secHalf && b.delegee.payOutputBs.length > 0) {
+            if(b.delegee.lastDumpPay == null) {
+                let nameCt = Object.randKey(b.delegee.payStockObj);
+                if(nameCt != null && b.delegee.payStockObj[nameCt] > 0) {
+                    b.delegee.lastDumpPay = FRAG_payload.makePay(nameCt, b.team);
                 };
             } else {
-                let b_t = b.payOutputBs[b.payDumpIncre % b.payOutputBs.length];
-                b.payDumpIncre++;
-                if(b_t.isAdded() && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.lastDumpPay)) {
-                    MDL_effect.payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.lastDumpPay.content(), true);
-                    LCNativeObject.numIncre(b.payStockObj, b.lastDumpPay.content().name, -1);
-                    b.lastDumpPay = null;
+                let b_t = b.delegee.payOutputBs[b.delegee.payDumpIncre % b.delegee.payOutputBs.length];
+                b.delegee.payDumpIncre++;
+                if(b_t.isAdded() && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.delegee.lastDumpPay)) {
+                    MDL_effect.payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.delegee.lastDumpPay.content(), true);
+                    LCNativeObject.numIncre(b.delegee.payStockObj, b.delegee.lastDumpPay.content().name, -1);
+                    b.delegee.lastDumpPay = null;
                 };
             };
         };
@@ -127,7 +127,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        if(b.hasPayInput && !b.ex_checkPayCons()) {
+        if(b.delegee.hasPayInput && !b.self.ex_checkPayCons()) {
             b.efficiency = 0.0;
         };
     };
@@ -140,11 +140,11 @@
      * @return {void}
      */
     function comp_displayBars(b, tb) {
-        if(b.hasPayOutput) {
+        if(b.delegee.hasPayOutput) {
             tb.add(new Bar(
-                prov(() => Core.bundle.format("bar.lovec-bar-pay-cap-amt", (b.payAmtTotal / b.block.delegee.payAmtCap).perc(0))),
+                prov(() => Core.bundle.format("bar.lovec-bar-pay-cap-amt", (b.delegee.payAmtTotal / b.block.delegee.payAmtCap).perc(0))),
                 prov(() => Pal.items),
-                () => Mathf.clamp(b.payAmtTotal / b.block.delegee.payAmtCap),
+                () => Mathf.clamp(b.delegee.payAmtTotal / b.block.delegee.payAmtCap),
             )).growX();
             tb.row();
         };
@@ -167,8 +167,8 @@
      * @return {void}
      */
     function comp_ex_updatePaySite(b) {
-        FRAG_payload.findPayInputBs(b.payInputBs, b, b.block.delegee.payInputSideFracMode);
-        FRAG_payload.findPayOutputBs(b.payOutputBs, b, b.block.delegee.payOutputSideFracMode);
+        FRAG_payload.findPayInputBs(b.delegee.payInputBs, b, b.block.delegee.payInputSideFracMode);
+        FRAG_payload.findPayOutputBs(b.delegee.payOutputBs, b, b.block.delegee.payOutputSideFracMode);
     };
 
 
@@ -179,10 +179,10 @@
      * @return {void}
      */
     function comp_ex_takePay(b, b_f) {
-        if(!b.ex_acceptPay(b_f, b_f.getPayload())) return;
+        if(!b.self.ex_acceptPay(b_f, b_f.getPayload())) return;
         let pay = FRAG_payload.takeAt(b_f);
         MDL_effect.payloadDeposit(b_f.x, b_f.y, b.x, b.y, pay.content(), false);
-        LCNativeObject.numIncre(b.payReqObj, pay.content().name);
+        LCNativeObject.numIncre(b.delegee.payReqObj, pay.content().name);
     };
 
 
@@ -379,7 +379,7 @@
 
 
             shouldConsume: function() {
-                return !this.hasPayOutput || this.payAmtTotalAfterProd <= this.block.delegee.payAmtCap;
+                return !this.delegee.hasPayOutput || this.delegee.payAmtTotalAfterProd <= this.block.delegee.payAmtCap;
             }
             .setProp({
                 boolMode: "and",
@@ -445,9 +445,9 @@
              */
             ex_checkPayCons: function() {
                 if(GLB_timer.effcPay) {
-                    this.payConsValid = LCNativeObject.numAllLargerThan(this.payReqObj, floatf2((nameCt, amt) => this.ex_getPayConsAmt(nameCt)), true);
+                    this.delegee.payConsValid = LCNativeObject.numAllLargerThan(this.delegee.payReqObj, floatf2((nameCt, amt) => this.self.ex_getPayConsAmt(nameCt)), true);
                 };
-                return this.payConsValid;
+                return this.delegee.payConsValid;
             }
             .setProp({
                 noSuper: true,
@@ -500,7 +500,7 @@
              * @return {boolean}
              */
             ex_acceptPay: function(b_f, pay) {
-                return pay != null && this.ex_getPayConsAmt(pay.content().name) / tryVal(this.payReqObj[pay.content().name], 0.0001) > 0.5;
+                return pay != null && this.self.ex_getPayConsAmt(pay.content().name) / tryVal(this.delegee.payReqObj[pay.content().name], 0.0001) > 0.5;
             }
             .setProp({
                 noSuper: true,
@@ -519,13 +519,13 @@
                 processData(
                     wr0rd,
                     wr => {
-                        MDL_io.objStrNum(wr, this.payReqObj);
-                        MDL_io.objStrNum(wr, this.payStockObj);
+                        MDL_io.objStrNum(wr, this.delegee.payReqObj);
+                        MDL_io.objStrNum(wr, this.delegee.payStockObj);
                     },
                     rd => {
-                        if(this.LCReviSub >= 0 || !this.block.ex_isSubInsOf("BLK_baseDrill")) {
-                            MDL_io.objStrNum(rd, this.payReqObj);
-                            MDL_io.objStrNum(rd, this.payStockObj);
+                        if(this.delegee.LCReviSub >= 0 || !this.block.self.ex_isSubInsOf("BLK_baseDrill")) {
+                            MDL_io.objStrNum(rd, this.delegee.payReqObj);
+                            MDL_io.objStrNum(rd, this.delegee.payStockObj);
                         };
                     },
                 );

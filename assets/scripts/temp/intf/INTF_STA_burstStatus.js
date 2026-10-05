@@ -23,11 +23,11 @@
      * @return {void}
      */
     function comp_setStats(sta, stats) {
-        if(sta.burstTime > 0.0) {
-            stats.add(fetchStat("lovec", "sta-bursttime"), sta.burstTime / 60.0, StatUnit.seconds);
+        if(sta.delegee.burstTime > 0.0) {
+            stats.add(fetchStat("lovec", "sta-bursttime"), sta.delegee.burstTime / 60.0, StatUnit.seconds);
         };
-        if(sta.burstDamage > 0.0) {
-            stats.add(fetchStat("lovec", "sta-burstdmg"), MDL_text.getDmgText(sta.burstDamage, sta.burstDamagePerc));
+        if(sta.delegee.burstDamage > 0.0) {
+            stats.add(fetchStat("lovec", "sta-burstdmg"), MDL_text.getDmgText(sta.delegee.burstDamage, sta.delegee.burstDamagePerc));
         };
     };
 
@@ -40,14 +40,14 @@
      * @return {void}
      */
     function comp_update(sta, unit, staEn) {
-        if(sta.burstTime < 0.0001 || staEn.time <= sta.burstTime) return;
+        if(sta.delegee.burstTime < 0.0001 || staEn.time <= sta.delegee.burstTime) return;
 
-        let dmg = sta.burstDamage + unit.maxHealth * sta.burstDamagePerc;
-        FRAG_attack.damage(unit, dmg, 0.0, MDL_cond.isHotStatus(sta) ? "heat" : null, sta.burstDamageIgnoreShield);
-        if(sta.burstScr != null) {
-            sta.burstScr.get(unit);
+        let dmg = sta.delegee.burstDamage + unit.maxHealth * sta.delegee.burstDamagePerc;
+        FRAG_attack.damage(unit, dmg, 0.0, MDL_cond.isHotStatus(sta) ? "heat" : null, sta.delegee.burstDamageIgnoreShield);
+        if(sta.delegee.burstScr != null) {
+            sta.delegee.burstScr.get(unit);
         };
-        sta.burstEff.at(unit.x, unit.y, unit.hitSize * 1.1, sta.burstEffColor);
+        sta.delegee.burstEff.at(unit.x, unit.y, unit.hitSize * 1.1, sta.delegee.burstEffColor);
         staEn.time = 15.0;
     };
 
@@ -144,7 +144,7 @@
          * @return {boolean}
          */
         ex_isStackSta: function() {
-            return this.burstTime > 0.0;
+            return this.delegee.burstTime > 0.0;
         }
         .setProp({
             noSuper: true,

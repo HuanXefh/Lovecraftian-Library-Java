@@ -31,7 +31,7 @@
         blk.buildVisibility = BuildVisibility.editorOnly;
         blk.allowedInPayloads = false;
 
-        if(blk.isWorldBlock) {
+        if(blk.delegee.isWorldBlock) {
             blk.targetable = false;
             blk.breakable = false;
             blk.privileged = true;

@@ -37,7 +37,7 @@ declare class Fonts {
     static getUnicode(str: string): number
     static getUnicodeString(str: string): string
     static hasUnicodeStr(str: string): boolean
-    static unicodeToName(unicode: number): string|null
+    static unicodeToName(unicode: number): String|null
     static getLargeIcon(name: string): TextureRegion
 
     static registerIcon(name: string, id: number, reg: TextureRegion): void

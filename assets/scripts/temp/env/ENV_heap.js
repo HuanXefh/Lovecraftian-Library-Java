@@ -28,11 +28,12 @@
         blk.floating = true;
         blk.placeableLiquid = true;
 
-        blk.flrParent = MDL_content.getCt(blk.flrParent, ContentGetModes.BLK);
-        if(blk.flrParent != null) {
+        // noinspection JSValidateTypes
+        blk.delegee.flrParent = MDL_content.getCt(blk.delegee.flrParent, ContentGetModes.BLK);
+        if(blk.delegee.flrParent != null) {
             MDL_content.rename(
                 blk,
-                blk.flrParent.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "heap") + ")",
+                blk.delegee.flrParent.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "heap") + ")",
             );
         };
     };
@@ -61,10 +62,10 @@
 
 
         /**
-         * `PARAM`: See {@link ENV_wall}.
+         * `PARAM`: See {@link ENV_wall#flrParent}.
          * @memberof ENV_heap
          * @instance
-         * @type {Floor|null}
+         * @type {string|Floor|null}
          */
         flrParent: null,
 

@@ -50,7 +50,7 @@
     const arrivedPackets = [];
     /** @type {Array<CLS_sectorResourcePacket>} */
     const arrivedLocalPackets = [];
-    /** @type {string|null} */
+    /** @type {String|null} */
     let mapCur = null;
 
 

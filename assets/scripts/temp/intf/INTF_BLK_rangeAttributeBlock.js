@@ -34,7 +34,7 @@
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return;
         if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
-            thisFun.tmpSum = MDL_attr.calcSumRect(t, blk.attrR, blk.size, blk.ex_getAttrTarget(), blk.delegee.attrMode) + blk.ex_getAttrTarget().env();
+            thisFun.tmpSum = MDL_attr.calcSumRect(t, blk.attrR, blk.size, blk.self.ex_getAttrTarget(), blk.delegee.attrMode) + blk.self.ex_getAttrTarget().env();
         };
         return thisFun.tmpSum;
     }
@@ -102,7 +102,7 @@
 
 
             sumAttribute: function(attr, tx, ty) {
-                return this.ex_getAttrSum(tx, ty, 0);
+                return this.self.ex_getAttrSum(tx, ty, 0);
             }
             .setProp({
                 noSuper: true,
@@ -151,7 +151,7 @@
              * @memberof INTF_BLK_rangeAttributeBlock
              * @instance
              * @func
-             * @return {string|null}
+             * @return {String|null}
              */
             ex_getRangeAttrProdTypeStr: function() {
                 return null;

@@ -45,6 +45,11 @@
              * @type {boolean}
              */
             useRecolorSpr: Core.settings.getBool("lovec-load-gen-recolor", true),
+            /**
+             * Extremely unsightreadable jumpscare.
+             * @type {boolean}
+             */
+            secretEnchanted: Core.settings.getString("lovec-misc-secret-code", "").includesAny("<enchant>", "<enchanted>", "<enchantment>", "enchant-book"),
 
 
         },
@@ -56,6 +61,16 @@
          * Internal functions, do not abuse.
          */
         fun: {
+
+
+            /**
+             * Wrapped `Time.time` for v9 compatibility.
+             * @internal
+             * @return {number}
+             */
+            getTime() {
+                return LCVersionResolver.isV8 ? eval("Time.time") : eval("Vars.state.time");
+            },
 
 
             /**

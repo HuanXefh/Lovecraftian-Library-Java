@@ -51,7 +51,7 @@
   function comp_created(b) {
     b.offConeAng = Mathf.range(180.0);
     b.revealTargets.withAll(b.block.ex_getRevealTargets(b.tileX(), b.tileY(), b.rotation));
-    Time.run(0.0, () => {
+    MDL_event.onDelayRun(0.0, () => {
       b.revealQueue.withAll(b.revealTargets);
       b.revealedInts.forEachFast(int => {
         let ot = GLB_var.world.tile(int);

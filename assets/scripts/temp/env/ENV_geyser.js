@@ -44,7 +44,7 @@
             let color_f = blk.parent.mapColor.cpy().mul(1.5);
             let color_t = blk.parent.mapColor.cpy().mul(2.2);
             color_t.a = 0.0;
-            blk.updateEff = new MultiEffect(
+            blk.delegee.updateEff = new MultiEffect(
                 extend(ParticleEffect, {
                     lifetime: 150.0,
                     startDelay: 16.0,

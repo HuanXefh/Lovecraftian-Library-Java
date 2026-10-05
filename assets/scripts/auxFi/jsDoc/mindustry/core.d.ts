@@ -45,6 +45,11 @@ declare class ContentLoader {
 
 /** mindustry.cpre.GameState */
 declare class GameState {
+    /** @deprecated Added in v9. */
+    time: number;
+    /** @deprecated Added in v9. */
+    timePrecise: number;
+
     wave: number;
     waveTime: number;
     enemies: number;
@@ -65,25 +70,25 @@ declare class GameState {
     afterGameOver: boolean;
     won: boolean;
 
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     entities: Entities;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     collisions: EntityCollisions;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     avoidance: AvoidanceProcess;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     unitPhysics: PhysicsProcess;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     world: World;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     spawner: WaveSpawner;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     indexer: BlockIndexer;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     pathfinder: Pathfinder;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     controlPath: ControlPathFinder;
-    /** @deprecated v9 */
+    /** @deprecated Added in v9. */
     fogControl: FogControl;
 
     boss(): Unit|null;

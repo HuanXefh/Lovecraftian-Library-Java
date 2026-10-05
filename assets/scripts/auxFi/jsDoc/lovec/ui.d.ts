@@ -1,5 +1,5 @@
 /** `ROW`: name, icon, isToggle, clickScr, updateScr. */
-type DragButtonData = F5Array<string|null, Drawable, boolean, C0Function, C0Function>
+type DragButtonData = F5Array<String|null, Drawable, boolean, C0Function, C0Function>
 type DragButtonParamObject = {
     rowInd: number;
     icon: string;

@@ -29,10 +29,10 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(blk.ters.length === 0) return;
+        if(blk.delegee.ters.length === 0) return;
         stats.add(
-            blk.terMode === "enable" ? fetchStat("lovec", "blk-terreq") : fetchStat("lovec", "blk-terban"),
-            MDL_text.getTagText(blk.ters.map(ter => MDL_terrain.getTerBundle(ter))).color(blk.terMode === "enable" ? Pal.heal : Pal.remove),
+            blk.delegee.terMode === "enable" ? fetchStat("lovec", "blk-terreq") : fetchStat("lovec", "blk-terban"),
+            MDL_text.getTagText(blk.delegee.ters.map(ter => MDL_terrain.getTerBundle(ter))).color(blk.delegee.terMode === "enable" ? Pal.heal : Pal.remove),
         );
     };
 
@@ -47,22 +47,22 @@
      */
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
         if(t == null) return false;
-        if(blk.ters.length === 0) return true;
+        if(blk.delegee.ters.length === 0) return true;
 
         if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
-            thisFun.tmpTer = MDL_terrain.getTer(t, blk.size, blk.ex_getTerrainCheckR());
+            thisFun.tmpTer = MDL_terrain.getTer(t, blk.size, blk.self.ex_getTerrainCheckR());
             thisFun.tmpTerB = MDL_terrain.getTerBundle(thisFun.tmpTer);
         };
 
         let cond = true;
-        if(blk.terMode === "enable") {
-            if(thisFun.tmpTer == null || !blk.ters.includes(thisFun.tmpTer)) {
-                LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-enabled") + " " + thisFun.tmpTerB, false, blk.terTextOffTy);
+        if(blk.delegee.terMode === "enable") {
+            if(thisFun.tmpTer == null || !blk.delegee.ters.includes(thisFun.tmpTer)) {
+                LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-enabled") + " " + thisFun.tmpTerB, false, blk.delegee.terTextOffTy);
                 cond = false;
             };
         } else {
-            if(thisFun.tmpTer != null && blk.ters.includes(thisFun.tmpTer)) {
-                LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-disabled") + " " + thisFun.tmpTerB, false, blk.terTextOffTy);
+            if(thisFun.tmpTer != null && blk.delegee.ters.includes(thisFun.tmpTer)) {
+                LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-disabled") + " " + thisFun.tmpTerB, false, blk.delegee.terTextOffTy);
                 cond = false;
             };
         };
@@ -76,7 +76,7 @@
         tmpTup: [],
         /**
          * @memberof comp_canPlaceOn
-         * @type {string|null}
+         * @type {String|null}
          */
         tmpTer: null,
         /**

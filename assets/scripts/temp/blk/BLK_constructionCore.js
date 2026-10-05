@@ -77,7 +77,7 @@
           if(!b.block.ex_checkPlanComplete(b.team, b.delegee.constructionPlan)) {
             b.ex_stopConstruction();
           } else {
-            Time.run(0.0, () => {
+            MDL_event.onDelayRun(0.0, () => {
               blk.ex_placePlanTarget(b.team, b.tileX(), b.tileY(), b.rotation);
             });
             let ot = blk.ex_getPlanT(b.tileX(), b.tileY(), b.rotation, blk.centerPon2.x, blk.centerPon2.y);
@@ -176,7 +176,7 @@
     if(ot != null) {
       ot.setBlock(blk.placeBlk, team, Mathf.mod(rot + blk.placeOffRot, 4));
       MDL_effect.fadeText(ot.worldx() + blk.placeBlk.offset, ot.worldy() + blk.placeBlk.offset, MDL_bundle.getInfo("lovec", "construction-complete"), Pal.accent, blk.placeBlk.size * 0.5);
-      Time.run(0.0, () => {
+      MDL_event.onDelayRun(0.0, () => {
         if(ot.build != null && ot.build.block === blk.placeBlk) BOX_trigger.constructionComplete.fire(ot.build);
       });
     };

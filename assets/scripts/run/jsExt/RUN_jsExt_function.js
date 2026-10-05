@@ -80,7 +80,7 @@
      * @return {void}
      */
     Function.prototype.delay = function(delay, args, thisVal) {
-        Time.run(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
+        MDL_event.onDelayRun(delay, args == null ? () => this.call(tryVal(thisVal, null)) : () => this.apply(tryVal(thisVal, null), args));
     };
 
 
@@ -242,7 +242,7 @@
 
         let timeCur;
         let fun = function() {
-            timeCur = useGlobalTime ? Time.globalTime : Time.time;
+            timeCur = useGlobalTime ? Time.globalTime : GLB_var.time;
             if(timeCur - fun.__lastCallTime__ < time) {
                 return skipVal;
             };

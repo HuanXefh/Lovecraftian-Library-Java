@@ -25,7 +25,7 @@
      * @return {void}
      */
     function comp_init(item) {
-        item.sintTemp = item.sintTemp >= 0.0 ? item.sintTemp : LCDBFileHandler.read("item-sintering-temperature", item, 100.0);
+        item.delegee.sintTemp = item.delegee.sintTemp >= 0.0 ? item.delegee.sintTemp : LCDBFileHandler.read("item-sintering-temperature", item, 100.0);
     };
 
 
@@ -37,8 +37,8 @@
      */
     function comp_setStats(item, stats) {
         stats.add(fetchStat("lovec", "rs-isore"), true);
-        if(item.sintTemp > 100.0) {
-            stats.add(fetchStat("lovec", "rs-sinttemp"), item.sintTemp, fetchStatUnit("lovec", "heatunits"));
+        if(item.delegee.sintTemp > 100.0) {
+            stats.add(fetchStat("lovec", "rs-sinttemp"), item.delegee.sintTemp, fetchStatUnit("lovec", "heatunits"));
         };
     };
 

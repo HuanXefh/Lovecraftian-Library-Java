@@ -7,10 +7,10 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Rand;
 import arc.struct.IntFloatMap;
-import arc.util.Time;
 import arc.util.Tmp;
 import lovec.annotation.JSONTypeClass;
 import lovec.utils.LCScriptUtil;
+import lovec.utils.LCVersionResolver;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -77,7 +77,7 @@ public class LCDrawRipple extends LCDrawer {
         int i = 0;
         while(i < amount) {
             calcRotatedOff(Tmp.v1, b.rotation).add(b).add(rand.range(radius), rand.range(radius));
-            float life = 1f - ((Time.time / scl + rand.random(recur)) % recur);
+            float life = 1f - ((LCVersionResolver.time / scl + rand.random(recur)) % recur);
             if(life > 0f) {
                 if(filled) {
                     Fill.circle(Tmp.v1.x, Tmp.v1.y, size);

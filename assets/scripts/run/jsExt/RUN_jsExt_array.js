@@ -599,7 +599,7 @@
     /**
      * Creates an object by categorizing elements in this array.
      * Elements in null category will be omitted.
-     * @param {FFunction<Object, string|null>} categF
+     * @param {FFunction<Object, String|null>} categF
      * @return {Object<string, Object>} New object.
      */
     Array.prototype.categorize = function(categF) {

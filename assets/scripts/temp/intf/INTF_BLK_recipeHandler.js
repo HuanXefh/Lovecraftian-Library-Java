@@ -141,15 +141,15 @@
         blk.outputItems = [];
         blk.outputLiquids = [];
 
-        CLS_recipe.register(blk, blk.rcMdl);
+        CLS_recipe.register(blk, blk.delegee.rcMdl);
 
         MDL_event.onLoad(() => {
-            blk.outputsLiquid = MDL_recipe.checkAnyFldOutput(blk.rcMdl, false);
+            blk.outputsLiquid = MDL_recipe.checkAnyFldOutput(blk.delegee.rcMdl, false);
             blk.hasConsumers = true;
 
-            blk.isErekirHeatConsumer = MDL_recipe.checkErekirHeatInput(blk.rcMdl);
-            blk.isErekirHeatProducer = MDL_recipe.checkErekirHeatOutput(blk.rcMdl);
-            if(blk.isErekirHeatConsumer && blk.isErekirHeatProducer) {
+            blk.delegee.isErekirHeatConsumer = MDL_recipe.checkErekirHeatInput(blk.delegee.rcMdl);
+            blk.delegee.isErekirHeatProducer = MDL_recipe.checkErekirHeatOutput(blk.delegee.rcMdl);
+            if(blk.delegee.isErekirHeatConsumer && blk.delegee.isErekirHeatProducer) {
                 console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(Pal.accent)));
             };
         });
@@ -175,23 +175,23 @@
      */
     function comp_created(b) {
         // Use empty recipe to prevent null pointer in this frame
-        b.rc = CLS_recipe.get(b.block, "SPEC: empty");
+        b.delegee.rc = CLS_recipe.get(b.block, "SPEC: empty");
 
         // Recipe header is not read yet, delay check
-        Time.run(0.0, () => {
+        MDL_event.onDelayRun(0.0, () => {
             // noinspection JSValidateTypes
             rcMdl = b.block.delegee.rcMdl;
-            if(MDL_recipe.checkHeaderValid(rcMdl, b.rcHeader)) {
-                b.ex_updateRcParam(rcMdl, b.rcHeader, true);
+            if(MDL_recipe.checkHeaderValid(rcMdl, b.delegee.rcHeader)) {
+                b.self.ex_updateRcParam(rcMdl, b.delegee.rcHeader, true);
             } else {
                 // Recipe may be removed, default to first one
                 header = MDL_recipe.getFirstHeader(rcMdl);
-                b.ex_updateRcParam(rcMdl, header, true);
-                b.rcHeader = header;
+                b.self.ex_updateRcParam(rcMdl, header, true);
+                b.delegee.rcHeader = header;
             };
 
             // Without this consumption is bugged
-            b.ex_resetRcParam();
+            b.self.ex_resetRcParam();
         });
     };
 
@@ -204,30 +204,30 @@
     function comp_updateTile(b) {
         if(GLB_param.UPDATE_SUPPRESSED || DEBUG.skipRcUpdate) return;
 
-        b.rc.updateAutoSelection(b);
+        b.delegee.rc.updateAutoSelection(b);
 
-        b.ex_updateRcParam(b.block.delegee.rcMdl, b.rcHeader, false);
-        b.ex_onRcUpdate();
-        b.hasStopped = b.stopTimeCur > STOP_TIME;
+        b.self.ex_updateRcParam(b.block.delegee.rcMdl, b.delegee.rcHeader, false);
+        b.self.ex_onRcUpdate();
+        b.delegee.hasStopped = b.delegee.stopTimeCur > STOP_TIME;
 
-        b.rc.updateErekirHeat(b);
+        b.delegee.rc.updateErekirHeat(b);
 
         if(b.efficiency < 0.0001 || !b.shouldConsume()) {
             // Crafter is inactive
             b.warmup = Mathf.approachDelta(b.warmup, 0.0, b.block.warmupSpeed);
-            if(b.hasRun) {
-                b.stopTimeCur = b.warmup < 0.1 ?
-                    (b.stopTimeCur + Time.delta) :
+            if(b.delegee.hasRun) {
+                b.delegee.stopTimeCur = b.warmup < 0.1 ?
+                    (b.delegee.stopTimeCur + Time.delta) :
                     0.0;
             };
         } else {
             // Crafter is active
             b.warmup = Mathf.approachDelta(b.warmup, b.warmupTarget(), b.block.warmupSpeed);
-            b.progress += b.lastProgInc * b.warmup;
+            b.progress += b.delegee.lastProgInc * b.warmup;
             if(b.warmup > 0.9) {
-                b.hasRun = true;
-                b.stopTimeCur = b.efficiency < 0.3 ?
-                    (b.stopTimeCur + Time.delta) :
+                b.delegee.hasRun = true;
+                b.delegee.stopTimeCur = b.efficiency < 0.3 ?
+                    (b.delegee.stopTimeCur + Time.delta) :
                     0.0;
             };
             if(b.progress >= 1.0) {
@@ -235,20 +235,20 @@
                 b.craft();
             };
 
-            b.rc.craftContinuous(b, b.lastLiqProgInc);
-            b.rc.consumeContinuous(b, b.lastLiqProgInc);
+            b.delegee.rc.craftContinuous(b, b.delegee.lastLiqProgInc);
+            b.delegee.rc.consumeContinuous(b, b.delegee.lastLiqProgInc);
             if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup)) {
                 MDL_effect.showAround(b.x, b.y, b.block.updateEffect, b.block.size * 0.5 * Vars.tilesize, 0.0);
             };
-            b.ex_onRcRun();
-            if(b.hasStopped) {
-                b.ex_onRcStoppedRun();
+            b.self.ex_onRcRun();
+            if(b.delegee.hasStopped) {
+                b.self.ex_onRcStoppedRun();
             };
         };
 
         b.totalProgress += b.warmup * b.edelta();
         if(!b.block.delegee.disableDump) {
-            b.rc.dump(b);
+            b.delegee.rc.dump(b);
         };
     };
 
@@ -261,14 +261,14 @@
     function comp_updateEfficiencyMultiplier(b) {
         // Efficiency is overwritten
         b.efficiency = b.shouldConsume() && (b.block.consumesPower && b.power != null ? b.power.status > 0.01 : true) ?
-            b.rcEffc :
+            b.delegee.rcEffc :
             0.0;
 
-        b.ex_postUpdateEfficiencyMultiplier();
-        if(b.rc.erekirHeatReq > 0.0) {
-            b.efficiency *= b.erekirHeatEffc;
+        b.self.ex_postUpdateEfficiencyMultiplier();
+        if(b.delegee.rc.erekirHeatReq > 0.0) {
+            b.efficiency *= b.delegee.erekirHeatEffc;
         };
-        if(!b.rc.validCheck(b)) {
+        if(!b.delegee.rc.validCheck(b)) {
             b.efficiency = 0.0;
         };
     };
@@ -280,11 +280,11 @@
      * @return {void}
      */
     function comp_craft(b) {
-        b.rc.craftBatch(b, b.ex_calcFailP());
-        b.rc.craftPay(b);
-        b.rc.consumeBatch(b);
+        b.delegee.rc.craftBatch(b, b.self.ex_calcFailP());
+        b.delegee.rc.craftPay(b);
+        b.delegee.rc.consumeBatch(b);
 
-        b.ex_onRcCraft();
+        b.self.ex_onRcCraft();
     };
 
 
@@ -298,18 +298,18 @@
     function comp_acceptItem(b, b_f, item) {
         if(b.items == null || b.items.get(item) >= b.getMaximumAccepted(item)) return false;
         if(
-            b.blk$useAutoSelection && b.rc.keyItemHeaderMap != null
-                && item !== b.keyCt && b_f !== b && checkSelectedUnloader(b_f)
-                && b.rc.keyItemHeaderMap.containsKey(item) && !b.rc.checkOutput(item)
+            b.delegee.blk$useAutoSelection && b.delegee.rc.keyItemHeaderMap != null
+                && item !== b.delegee.keyCt && b_f !== b && checkSelectedUnloader(b_f)
+                && b.delegee.rc.keyItemHeaderMap.containsKey(item) && !b.delegee.rc.checkOutput(item)
         ) {
-            b.keyCt = item;
+            b.delegee.keyCt = item;
         };
 
-        if(b.itemAcceptCacheArr[item.id] == null) {
-            b.itemAcceptCacheArr[item.id] = b.rc.checkInput(item);
+        if(b.delegee.itemAcceptCacheArr[item.id] == null) {
+            b.delegee.itemAcceptCacheArr[item.id] = b.delegee.rc.checkInput(item);
         };
 
-        return b.itemAcceptCacheArr[item.id];
+        return b.delegee.itemAcceptCacheArr[item.id];
     };
 
 
@@ -323,18 +323,18 @@
     function comp_acceptLiquid(b, b_f, liq) {
         if(b.liquids == null || b.liquids.get(liq) >= b.block.liquidCapacity) return false;
         if(
-            b.blk$useAutoSelection && GLB_timer.sec && b.rc.keyFldHeaderMap != null
-                && liq !== b.keyCt && b_f !== b
-                && b.rc.keyFldHeaderMap.containsKey(liq) && !b.rc.checkOutput(liq)
+            b.delegee.blk$useAutoSelection && GLB_timer.sec && b.delegee.rc.keyFldHeaderMap != null
+                && liq !== b.delegee.keyCt && b_f !== b
+                && b.delegee.rc.keyFldHeaderMap.containsKey(liq) && !b.delegee.rc.checkOutput(liq)
         ) {
-            b.keyCt = liq;
+            b.delegee.keyCt = liq;
         };
 
-        if(b.liqAcceptCacheArr[liq.id] == null) {
-            b.liqAcceptCacheArr[liq.id] = b.rc.checkInput(liq);
+        if(b.delegee.liqAcceptCacheArr[liq.id] == null) {
+            b.delegee.liqAcceptCacheArr[liq.id] = b.delegee.rc.checkInput(liq);
         };
 
-        return b.liqAcceptCacheArr[liq.id];
+        return b.delegee.liqAcceptCacheArr[liq.id];
     };
 
 
@@ -349,11 +349,11 @@
 
         // BI
         i = 0;
-        iCap = b.rc.bi.iCap();
+        iCap = b.delegee.rc.bi.iCap();
         while(i < iCap) {
-            tmp = b.rc.bi[i];
+            tmp = b.delegee.rc.bi[i];
             if(!(tmp instanceof Array)) {
-                amt = b.rc.bi[i + 1];
+                amt = b.delegee.rc.bi[i + 1];
                 if(amt > 0) {
                     MDL_table.reqRs(tb, b, tmp, amt);
                 };
@@ -380,11 +380,11 @@
 
         // CI
         i = 0;
-        iCap = b.rc.ci.iCap();
+        iCap = b.delegee.rc.ci.iCap();
         while(i < iCap) {
-            tmp = b.rc.ci[i];
+            tmp = b.delegee.rc.ci[i];
             if(!(tmp instanceof Array)) {
-                if(b.rc.ci[i + 1] > 0.0) MDL_table.reqRs(tb, b, tmp);
+                if(b.delegee.rc.ci[i + 1] > 0.0) MDL_table.reqRs(tb, b, tmp);
             } else {
                 thisFun.tmpCts.clear();
                 j = 0;
@@ -405,29 +405,29 @@
 
         // AUX
         i = 0;
-        iCap = b.rc.aux.iCap();
+        iCap = b.delegee.rc.aux.iCap();
         while(i < iCap) {
-            tmp = b.rc.aux[i];
-            if(b.rc.aux[i + 1] > 0.0) {
+            tmp = b.delegee.rc.aux[i];
+            if(b.delegee.rc.aux[i + 1] > 0.0) {
                 MDL_table.reqRs(tb, b, tmp);
             };
             i += 2;
         };
 
         // OPT
-        if(b.reqOpt) {
+        if(b.delegee.rc.reqOpt) {
             thisFun.tmpCts.clear();
             thisFun.tmpAmts.clear();
             i = 0;
-            iCap = b.rc.opt.iCap();
+            iCap = b.delegee.rc.opt.iCap();
             while(i < iCap) {
-              tmp = b.rc.opt[i];
-              amt = b.rc.opt[i + 1];
-              if(amt > 0) {
-                  thisFun.tmpCts.push(tmp);
-                  thisFun.tmpAmts.push(amt);
-              };
-              i += 4;
+                tmp = b.delegee.rc.opt[i];
+                amt = b.delegee.rc.opt[i + 1];
+                if(amt > 0) {
+                    thisFun.tmpCts.push(tmp);
+                    thisFun.tmpAmts.push(amt);
+                };
+                i += 4;
             };
             if(thisFun.tmpCts.length > 0) {
                 MDL_table.reqMultiCt(tb, b, thisFun.tmpCts, thisFun.tmpAmts);
@@ -435,14 +435,14 @@
         };
 
         // PAYI
-        if(b.hasPayInput) {
+        if(b.delegee.hasPayInput) {
             i = 0;
-            iCap = b.rc.payi.iCap();
+            iCap = b.delegee.rc.payi.iCap();
             while(i < iCap) {
-                tmp = MDL_content.getCt(b.rc.payi[i], null, true);
-                amt = b.rc.payi[i + 1];
+                tmp = MDL_content.getCt(b.delegee.rc.payi[i], null, true);
+                amt = b.delegee.rc.payi[i + 1];
                 if(amt > 0) {
-                    MDL_table.reqCt(tb, tmp, amt, ct => tryVal(b.payReqObj[ct.name], 0))
+                    MDL_table.reqCt(tb, tmp, amt, ct => tryVal(b.delegee.payReqObj[ct.name], 0))
                 };
                 i += 2;
             };
@@ -471,7 +471,7 @@
     const comp_displayBars = function thisFun(b, tb) {
         if(b.block.delegee.isErekirHeatConsumer) {
             tb.add(new Bar(
-                prov(() => Core.bundle.format("bar.heatpercent", (b.erekirHeatI + 0.01).roundFixed(1), (b.erekirHeatEffc * 100.0 + 0.01).roundFixed(1))),
+                prov(() => Core.bundle.format("bar.heatpercent", (b.delegee.erekirHeatI + 0.01).roundFixed(1), (b.delegee.erekirHeatEffc * 100.0 + 0.01).roundFixed(1))),
                 prov(() => Pal.lightOrange),
                 () => Mathf.clamp(b.heatFrac()),
             ));
@@ -486,22 +486,22 @@
             tb.row();
         };
 
-        if(b.rc.attr != null) {
+        if(b.delegee.rc.attr != null) {
             tb.add(new Bar(
-                prov(() => Core.bundle.format("bar.efficiency", Math.round(b.attrEffc * 100.0))),
+                prov(() => Core.bundle.format("bar.efficiency", Math.round(b.delegee.attrEffc * 100.0))),
                 prov(() => Pal.lightOrange),
-                () => Mathf.clamp(b.attrEffc),
+                () => Mathf.clamp(b.delegee.attrEffc),
             )).growX();
             tb.row();
         };
 
         thisFun.addedLiqs.clear();
-        b.rc.inputFlds.forEachFast(liq => {
+        b.delegee.rc.inputFlds.forEachFast(liq => {
             if(thisFun.addedLiqs.includes(liq)) return;
             thisFun.addLiqBar(tb, b, liq);
             thisFun.addedLiqs.push(liq);
         }, true);
-        b.rc.outputFlds.forEachFast(liq => {
+        b.delegee.rc.outputFlds.forEachFast(liq => {
             if(thisFun.addedLiqs.includes(liq)) return;
             thisFun.addLiqBar(tb, b, liq);
             thisFun.addedLiqs.push(liq);
@@ -537,7 +537,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.rc.rcIconName), b.block.size, 0.75);
+        LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.delegee.rc.rcIconName), b.block.size, 0.75);
     };
 
 
@@ -558,12 +558,12 @@
      * @return {void}
      */
     function comp_ex_onRcParamUpdate(b) {
-        b.rcEffc = b.ex_calcRcEffcTarget();
-        b.lastProgInc = b.ex_calcProgInc(b.block.craftTime);
-        b.lastLiqProgInc = b.ex_calcProgInc(1.0);
-        b.lastCanAdd = b.rc.checkCanAdd(b);
+        b.delegee.rcEffc = b.self.ex_calcRcEffcTarget();
+        b.delegee.lastProgInc = b.self.ex_calcProgInc(b.block.craftTime);
+        b.delegee.lastLiqProgInc = b.self.ex_calcProgInc(1.0);
+        b.delegee.lastCanAdd = b.delegee.rc.checkCanAdd(b);
 
-        b.ex_updateAttrEffc();
+        b.self.ex_updateAttrEffc();
     };
 
 
@@ -573,7 +573,7 @@
      * @return {void}
      */
     function comp_ex_updateAttrEffc(b) {
-        b.attrEffc = b.rc.calcAttrEffc(b.attrSum);
+        b.delegee.attrEffc = b.delegee.rc.calcAttrEffc(b.delegee.attrSum);
     };
 
 
@@ -586,11 +586,11 @@
      * @return {void}
      */
     function comp_ex_updateRcParam(b, rcMdl, rcHeader, forceLoad) {
-        if(rcHeader !== b.rcHeader || forceLoad) {
-            b.ex_loadRcParam(rcMdl, rcHeader);
+        if(rcHeader !== b.delegee.rcHeader || forceLoad) {
+            b.self.ex_loadRcParam(rcMdl, rcHeader);
         };
-        if(b.ex_shouldUpdateRcParam()) {
-            b.ex_onRcParamUpdate();
+        if(b.self.ex_shouldUpdateRcParam()) {
+            b.self.ex_onRcParamUpdate();
         };
     };
 
@@ -601,8 +601,8 @@
      * @return {void}
      */
     function comp_ex_resetRcParam(b) {
-        b.itemAcceptCacheArr.clear();
-        b.liqAcceptCacheArr.clear();
+        b.delegee.itemAcceptCacheArr.clear();
+        b.delegee.liqAcceptCacheArr.clear();
         forceUpdateBlockFrag();
 
         if(!GLB_param.UPDATE_SUPPRESSED) {
@@ -612,8 +612,8 @@
             };
         };
         b.efficiency = 0.0;
-        b.lastOptEffc = 1.0;
-        b.rcEffcMeanArr.clear();
+        b.delegee.lastOptEffc = 1.0;
+        b.delegee.rcEffcMeanArr.clear();
 
         b.proximity.each(ob => {
             ob.onProximityUpdate();
@@ -629,24 +629,24 @@
      * @return {void}
      */
     function comp_ex_loadRcParam(b, rcMdl, rcHeader) {
-        b.rc = CLS_recipe.get(b.block, rcHeader);
+        b.delegee.rc = CLS_recipe.get(b.block, rcHeader);
 
-        Time.run(0.0, () => {
-            b.hasPayInput = b.rc.hasPayInput;
-            b.hasPayOutput = b.rc.hasPayOutput;
-            if(b.hasPayInput) {
-                b.rc.payi.forEachRow(2, (tmp, amt) => {
-                    if(amt > 0 && b.payReqObj[tmp] == null) {
-                        b.payReqObj[tmp] = 0;
+        MDL_event.onDelayRun(0.0, () => {
+            b.delegee.hasPayInput = b.delegee.rc.hasPayInput;
+            b.delegee.hasPayOutput = b.delegee.rc.hasPayOutput;
+            if(b.delegee.hasPayInput) {
+                b.delegee.rc.payi.forEachRow(2, (tmp, amt) => {
+                    if(amt > 0 && b.delegee.payReqObj[tmp] == null) {
+                        b.delegee.payReqObj[tmp] = 0;
                     };
                 }, true);
             };
 
-            b.attrSum = MDL_attr.calcSumRect(b.tile, 0, b.block.size, b.attr, AttrModes.FLOOR);
-            b.ex_updateAttrEffc();
+            b.delegee.attrSum = MDL_attr.calcSumRect(b.tile, 0, b.block.size, b.delegee.attr, AttrModes.FLOOR);
+            b.self.ex_updateAttrEffc();
 
-            Object.clear(b.consTmpObj);
-            Object.clear(b.prodTmpObj);
+            Object.clear(b.delegee.consTmpObj);
+            Object.clear(b.delegee.prodTmpObj);
         });
     };
 
@@ -659,18 +659,18 @@
      */
     function comp_ex_calcProgInc(b, time) {
         if(b.block.ignoreLiquidFullness) {
-            inc = b.edelta() / time / b.rc.rcTimeScl;
+            inc = b.edelta() / time / b.delegee.rc.rcTimeScl;
         } else {
             val = 1.0;
             scl = 1.0;
             cond = false;
-            iCap = b.rc.co.iCap();
+            iCap = b.delegee.rc.co.iCap();
             if(b.liquids != null && iCap > 0) {
                 val = 0.0;
                 i = 0;
                 while(i < iCap) {
-                    tmp = b.rc.co[i];
-                    amt = b.rc.co[i + 1];
+                    tmp = b.delegee.rc.co[i];
+                    amt = b.delegee.rc.co[i + 1];
                     tmpVal = amt < 0.0001 ? 1.0 : (b.block.liquidCapacity - b.liquids.get(tmp)) / (amt * b.edelta());
                     val = Math.max(val, tmpVal);
                     if(!MDL_cond.isAuxiliaryFluid(tmp)) {
@@ -683,7 +683,7 @@
             if(!cond) {
                 val = 1.0;
             };
-            inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.rc.rcTimeScl;
+            inc = b.edelta() / time * (b.block.dumpExtraLiquid ? Math.min(val, 1.0) : scl) / b.delegee.rc.rcTimeScl;
         };
 
         return isNaN(inc) ?
@@ -698,8 +698,8 @@
      * @return {number}
      */
     function comp_ex_calcRcEffcTarget(b) {
-        b.rcEffcMeanArr.push(b.rc.calcEffc(b));
-        return b.rcEffcMeanArr.getMean() * b.attrEffc;
+        b.delegee.rcEffcMeanArr.push(b.delegee.rc.calcEffc(b));
+        return b.delegee.rcEffcMeanArr.getMean() * b.delegee.attrEffc;
     };
 
 
@@ -823,7 +823,7 @@
 
 
             consumesItem: function(item) {
-                return MDL_recipe.checkInput(item, this.rcMdl);
+                return MDL_recipe.checkInput(item, this.delegee.rcMdl);
             }
             .setProp({
                 noSuper: true,
@@ -832,7 +832,7 @@
 
 
             consumesLiquid: function(liq) {
-                return MDL_recipe.checkInput(liq, this.rcMdl);
+                return MDL_recipe.checkInput(liq, this.delegee.rcMdl);
             }
             .setProp({
                 noSuper: true,
@@ -841,7 +841,7 @@
 
 
             outputsItems: function() {
-                return MDL_recipe.checkAnyItemOutput(this.rcMdl);
+                return MDL_recipe.checkAnyItemOutput(this.delegee.rcMdl);
             }
             .setProp({
                 noSuper: true,
@@ -1100,7 +1100,7 @@
 
 
             shouldConsume: function() {
-                return this.enabled && this.lastCanAdd && (this.rc.erekirHeatReq <= 0.0 || this.erekirHeatI > 0.0);
+                return this.enabled && this.delegee.lastCanAdd && (this.delegee.rc.erekirHeatReq <= 0.0 || this.delegee.erekirHeatI > 0.0);
             }
             .setProp({
                 noSuper: true,
@@ -1119,7 +1119,7 @@
             warmupTarget: function() {
                 // `b.cheating()` should not be checked here because Anuke said no
                 // Yep, it's intentional that heat is required even when cheating
-                return this.rc.erekirHeatReq <= 0.0 ? 1.0 : Mathf.clamp(this.erekirHeatI / this.rc.erekirHeatReq);
+                return this.delegee.rc.erekirHeatReq <= 0.0 ? 1.0 : Mathf.clamp(this.delegee.erekirHeatI / this.delegee.rc.erekirHeatReq);
             }
             .setProp({
                 noSuper: true,
@@ -1130,7 +1130,7 @@
 
 
             heatRequirement: function() {
-                return this.rc.erekirHeatReq;
+                return this.delegee.rc.erekirHeatReq;
             }
             .setProp({
                 noSuper: true,
@@ -1139,7 +1139,7 @@
 
 
             heat: function() {
-                return this.erekirHeatO;
+                return this.delegee.erekirHeatO;
             }
             .setProp({
                 noSuper: true,
@@ -1148,7 +1148,7 @@
 
 
             sideHeat: function() {
-                return this.erekirSideHeats;
+                return this.delegee.erekirSideHeats;
             }
             .setProp({
                 noSuper: true,
@@ -1158,9 +1158,9 @@
 
             heatFrac: function() {
                 return this.block.delegee.isErekirHeatConsumer ?
-                    this.erekirHeatI / this.rc.erekirHeatReq :
+                    this.delegee.erekirHeatI / this.delegee.rc.erekirHeatReq :
                     this.block.delegee.isErekirHeatProducer ?
-                        this.erekirHeatO / this.rc.erekirHeatProd :
+                        this.delegee.erekirHeatO / this.delegee.rc.erekirHeatProd :
                         0.0;
             }
             .setProp({
@@ -1217,8 +1217,8 @@
              * @return {void}
              */
             ex_onRcUpdate: function() {
-                if(this.rc.scrTup != null) {
-                    this.rc.scrTup[0](this);
+                if(this.delegee.rc.scrTup != null) {
+                    this.delegee.rc.scrTup[0](this);
                 };
             }
             .setProp({
@@ -1232,8 +1232,8 @@
              * @return {void}
              */
             ex_onRcRun: function() {
-                if(this.rc.scrTup != null) {
-                    this.rc.scrTup[1](this);
+                if(this.delegee.rc.scrTup != null) {
+                    this.delegee.rc.scrTup[1](this);
                 };
             }
             .setProp({
@@ -1247,8 +1247,8 @@
              * @return {void}
              */
             ex_onRcStoppedRun: function() {
-                if(this.rc.scrTup != null) {
-                    this.rc.scrTup[3](this);
+                if(this.delegee.rc.scrTup != null) {
+                    this.delegee.rc.scrTup[3](this);
                 };
             }
             .setProp({
@@ -1262,8 +1262,8 @@
              * @return {void}
              */
             ex_onRcCraft: function() {
-                if(this.rc.scrTup != null) {
-                    this.rc.scrTup[2](this);
+                if(this.delegee.rc.scrTup != null) {
+                    this.delegee.rc.scrTup[2](this);
                 };
             }
             .setProp({
@@ -1277,8 +1277,8 @@
              * @return {void}
              */
             ex_onRcFail: function() {
-                if(this.rc.scrTup != null) {
-                    this.rc.scrTup[4](this);
+                if(this.delegee.rc.scrTup != null) {
+                    this.delegee.rc.scrTup[4](this);
                 };
             }
             .setProp({
@@ -1397,8 +1397,8 @@
             ex_acceptPay: function thisFun(b_f, pay) {
                 if(pay == null) return false;
                 let ct = pay.content();
-                if(this.blk$useAutoSelection && this.rc.keyPayHeaderMap != null && ct !== this.keyCt && b_f !== this && this.rc.keyPayHeaderMap.containsKey(ct)) {
-                    this.keyCt = ct;
+                if(this.delegee.blk$useAutoSelection && this.delegee.rc.keyPayHeaderMap != null && ct !== this.delegee.keyCt && b_f !== this && this.delegee.rc.keyPayHeaderMap.containsKey(ct)) {
+                    this.delegee.keyCt = ct;
                 };
                 return thisFun.funPrev.apply(this, arguments);
             }
@@ -1419,7 +1419,7 @@
              * @return {number}
              */
             ex_getPayConsAmt: function(nameCt) {
-                return this.rc.payi.read(nameCt, 0);
+                return this.delegee.rc.payi.read(nameCt, 0);
             }
             .setProp({
                 noSuper: true,
@@ -1438,7 +1438,7 @@
              * @return {number}
              */
             ex_getPayProdAmt: function(nameCt) {
-                return this.rc.payo.read(nameCt, 0);
+                return this.delegee.rc.payo.read(nameCt, 0);
             }
             .setProp({
                 noSuper: true,
@@ -1501,7 +1501,7 @@
              * @return {number}
              */
             ex_calcFailP: function() {
-                return this.rc.failP;
+                return this.delegee.rc.failP;
             }
             .setProp({
                 noSuper: true,
@@ -1515,7 +1515,7 @@
              * @return {Effect}
              */
             ex_getFailEff: function() {
-                return tryVal(this.rc.failEff, this.block.delegee.failEff);
+                return tryVal(this.delegee.rc.failEff, this.block.delegee.failEff);
             }
             .setProp({
                 noSuper: true,
@@ -1531,7 +1531,7 @@
              * @lovecAttached
              */
             ex_getBlkPol: function() {
-                return MDL_pollution.getBlkPol(this.block) + this.rc.pol;
+                return MDL_pollution.getBlkPol(this.block) + this.delegee.rc.pol;
             }
             .setProp({
                 noSuper: true,
@@ -1548,7 +1548,7 @@
              * @lovecAttached
              */
             ex_getConsAmt: function(ct) {
-                return ct == null ? 0.0 : tryVal(this.consTmpObj[ct.name], 0.0);
+                return ct == null ? 0.0 : tryVal(this.delegee.consTmpObj[ct.name], 0.0);
             }
             .setProp({
                 noSuper: true,
@@ -1565,7 +1565,7 @@
              * @lovecAttached
              */
             ex_getProdAmt: function(ct) {
-                return ct == null ? 0.0 : tryVal(this.prodTmpObj[ct.name], 0.0);
+                return ct == null ? 0.0 : tryVal(this.delegee.prodTmpObj[ct.name], 0.0);
             }
             .setProp({
                 noSuper: true,
@@ -1582,15 +1582,15 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.str(this.rcHeader);
-                        wr.bool(this.hasStopped);
-                        wr.f(this.erekirHeatO);
+                        wr.str(this.delegee.rcHeader);
+                        wr.bool(this.delegee.hasStopped);
+                        wr.f(this.delegee.erekirHeatO);
                     },
                     rd => {
-                        this.rcHeader = rd.str();
-                        this.hasStopped = rd.bool();
-                        if(this.LCReviSub >= 1) {
-                            this.erekirHeatO = rd.f();
+                        this.delegee.rcHeader = rd.str();
+                        this.delegee.hasStopped = rd.bool();
+                        if(this.delegee.LCReviSub >= 1) {
+                            this.delegee.erekirHeatO = rd.f();
                         };
                     },
                 );

@@ -63,15 +63,15 @@
 
         if(MDL_cond.isNonRobot(utp)) {
             if(healthFrac < 0.25) {
-                unit.apply(GLB_varGen.staHeavilyInjured, GLB_var.time.unitStaDef);
+                unit.apply(GLB_varGen.staHeavilyInjured, GLB_var.timeParam.unitStaDef);
                 unit.unapply(GLB_varGen.staSlightlyInjured);
                 unit.unapply(GLB_varGen.staInjured);
             } else if(healthFrac < 0.5) {
-                unit.apply(GLB_varGen.staInjured, GLB_var.time.unitStaDef);
+                unit.apply(GLB_varGen.staInjured, GLB_var.timeParam.unitStaDef);
                 unit.unapply(GLB_varGen.staSlightlyInjured);
                 unit.unapply(GLB_varGen.staHeavilyInjured);
             } else if(healthFrac < 0.75) {
-                unit.apply(GLB_varGen.staSlightlyInjured, GLB_var.time.unitStaDef);
+                unit.apply(GLB_varGen.staSlightlyInjured, GLB_var.timeParam.unitStaDef);
                 unit.unapply(GLB_varGen.staInjured);
                 unit.unapply(GLB_varGen.staHeavilyInjured);
             } else {
@@ -81,10 +81,10 @@
             };
         } else {
             if(healthFrac < 0.25) {
-                unit.apply(GLB_varGen.staSeverelyDamaged, GLB_var.time.unitStaDef);
+                unit.apply(GLB_varGen.staSeverelyDamaged, GLB_var.timeParam.unitStaDef);
                 unit.unapply(GLB_varGen.staDamaged)
             } else if(healthFrac < 0.5) {
-                unit.apply(GLB_varGen.staDamaged, GLB_var.time.unitStaDef);
+                unit.apply(GLB_varGen.staDamaged, GLB_var.timeParam.unitStaDef);
                 unit.unapply(GLB_varGen.staSeverelyDamaged)
             } else {
                 unit.unapply(GLB_varGen.staDamaged);
@@ -132,7 +132,7 @@
                     if(GLB_varGen.staHiddenWell != null && !unit.hasEffect(GLB_varGen.staHiddenWell)) {
                         BOX_trigger.treeHide.fire(unit);
                     };
-                    unit.apply(GLB_varGen.staHiddenWell, GLB_var.time.unitStaDef);
+                    unit.apply(GLB_varGen.staHiddenWell, GLB_var.timeParam.unitStaDef);
                 };
             };
         }, true);

@@ -52,7 +52,7 @@
         stats.remove(Stat.affinities);
         stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
             tb.row();
-            MDL_table.setAttr(tb, blk.attribute, oblk => blk.attrFilter.get(blk, oblk));
+            MDL_table.setAttr(tb, blk.attribute, oblk => blk.delegee.attrFilter.get(blk, oblk));
         }));
     };
 
@@ -66,7 +66,7 @@
      * @return {boolean}
      */
     function comp_canPlaceOn(blk, t, team, rot) {
-        return blk.attrFilter.get(blk, t.floor());
+        return blk.delegee.attrFilter.get(blk, t.floor());
     };
 
 
@@ -77,19 +77,19 @@
      */
     function comp_updateTile(b) {
         if(GLB_timer.effc) {
-            b.lastEffc = (b.sum + b.block.attribute.env()) * b.efficiency / Math.pow(b.block.size, 2);
+            b.delegee.lastEffc = (b.sum + b.block.attribute.env()) * b.efficiency / Math.pow(b.block.size, 2);
         };
 
-        b.lastWarmup = Mathf.approachDelta(b.lastWarmup, Mathf.num(b.lastEffc > 0.0), b.block.delegee.warmupRate);
-        b.productionEfficiency = Mathf.approachDelta(b.productionEfficiency, b.lastEffc, b.block.delegee.warmupRate);
-        b.attrGenItemProg += b.productionEfficiency * b.delta();
-        b.attrGenProg += b.productionEfficiency * b.delta();
+        b.delegee.lastWarmup = Mathf.approachDelta(b.delegee.lastWarmup, Mathf.num(b.delegee.lastEffc > 0.0), b.block.delegee.warmupRate);
+        b.productionEfficiency = Mathf.approachDelta(b.productionEfficiency, b.delegee.lastEffc, b.block.delegee.warmupRate);
+        b.delegee.attrGenItemProg += b.productionEfficiency * b.delta();
+        b.delegee.attrGenProg += b.productionEfficiency * b.delta();
         if(Mathf.chanceDelta(b.block.effectChance * b.productionEfficiency)) {
             MDL_effect.showAround(b.x, b.y, b.block.generateEffect, b.block.delegee.generateEffectRange, 0.0);
         };
 
-        if(b.items != null && b.attrGenItemProg > b.block.delegee.attrGenItemDur) {
-            b.attrGenItemProg %= b.block.delegee.attrGenItemDur;
+        if(b.items != null && b.delegee.attrGenItemProg > b.block.delegee.attrGenItemDur) {
+            b.delegee.attrGenItemProg %= b.block.delegee.attrGenItemDur;
             b.consume();
             MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
         };
@@ -263,7 +263,7 @@
 
             warmup: function() {
                 // In vanilla case warmup can be over 1.0, which breaks drawers
-                return this.lastWarmup;
+                return this.delegee.lastWarmup;
             }
             .setProp({
                 noSuper: true,
@@ -272,7 +272,7 @@
 
 
             totalProgress: function() {
-                return this.attrGenProg;
+                return this.delegee.attrGenProg;
             }
             .setProp({
                 noSuper: true,

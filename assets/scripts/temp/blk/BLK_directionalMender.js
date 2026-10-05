@@ -84,7 +84,7 @@
     Draw.rect(b.block.region, b.x, b.y);
     Draw.rect(b.rotation < 2 ? b.block.delegee.sideReg1 : b.block.delegee.sideReg2, b.x, b.y, b.drawrot());
     Draw.color(b.block.baseColor);
-    Draw.alpha(b.heat * Mathf.absin(Time.time, 50.0 / Mathf.PI2, 1.0) * 0.5);
+    Draw.alpha(b.heat * Mathf.absin(GLB_var.time, 50.0 / Mathf.PI2, 1.0) * 0.5);
     Draw.rect(b.block.topRegion, b.x, b.y, b.drawrot());
     Draw.alpha(1.0);
   };

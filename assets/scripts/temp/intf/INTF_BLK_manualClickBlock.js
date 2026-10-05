@@ -35,27 +35,27 @@
             MDL_effect.click(b.x, b.y, b.team.color);
             MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
         };
-        switch(blk.manualClickCfgType) {
+        switch(blk.delegee.manualClickCfgType) {
             case "boolean" :
                 blk.config(JAVA.boolean, (b, bool) => {
                     if(bool) scr(b);
-                    b.ex_onManualClickConfigured(bool);
+                    b.self.ex_onManualClickConfigured(bool);
                 });
                 break;
             case "string" :
                 blk.config(JAVA.string, (b, str) => {
                     if(str === "SPEC: click") scr(b);
-                    b.ex_onManualClickConfigured(str);
+                    b.self.ex_onManualClickConfigured(str);
                 });
                 break;
             case "float" :
                 blk.config(JAVA.float, (b, f) => {
                     scr(b);
-                    b.ex_onManualClickConfigured(f);
+                    b.self.ex_onManualClickConfigured(f);
                 });
                 break;
             default :
-                throw new Error("Unsupported config type: " + blk.manualClickCfgType);
+                throw new Error("Unsupported config type: " + blk.delegee.manualClickCfgType);
         };
     };
 
@@ -67,7 +67,7 @@
      */
     function comp_updateTile(b) {
         if(GLB_timer.secQuarter) {
-            b.manualClickFrac = Mathf.maxZero(b.manualClickFrac - 0.03);
+            b.delegee.manualClickFrac = Mathf.maxZero(b.delegee.manualClickFrac - 0.03);
         };
     };
 
@@ -78,7 +78,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        b.efficiency *= Math.min(b.manualClickFrac, 1.0);
+        b.efficiency *= Math.min(b.delegee.manualClickFrac, 1.0);
     };
 
 
@@ -91,7 +91,7 @@
         if(b.block.delegee.skipTapConfig) return true;
         Vars.state.paused ?
             MDL_ui.showFadeInfo("lovec", "paused-manual-click") :
-            b.ex_configureClick();
+            b.self.ex_configureClick();
         return false;
     };
 

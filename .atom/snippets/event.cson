@@ -11,7 +11,7 @@
     'Time.run':
         prefix: 'lc_time'
         body: '''
-        Time.run(${1:delay}, () => {
+        MDL_event.onDelayRun(${1:delay}, () => {
             ${2:}
         });
         '''

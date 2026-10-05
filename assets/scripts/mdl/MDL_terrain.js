@@ -146,7 +146,7 @@
      * @param {Tile} t
      * @param {number|unset} [size]
      * @param {number|unset} [checkR]
-     * @return {string|null} - Terrain type "transition" is null.
+     * @return {String|null} - Terrain type "transition" is null.
      */
     const getTer = function thisFun(t, size, checkR) {
         if(t == null) return null;

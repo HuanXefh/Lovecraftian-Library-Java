@@ -29,7 +29,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(fetchStat("lovec", "blk-impactr"), blk.impactRad / Vars.tilesize, StatUnit.blocks);
+        stats.add(fetchStat("lovec", "blk-impactr"), blk.delegee.impactRad / Vars.tilesize, StatUnit.blocks);
     };
 
 
@@ -42,7 +42,7 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot) {
-        LCDrawf.pulseCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.impactRad);
+        LCDrawf.pulseCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.impactRad);
     };
 
 
@@ -53,7 +53,7 @@
      * @return {number}
      */
     function comp_ex_calcImpactDmg(blk, b) {
-        return FRAG_attack.getImpactDmg(blk.size, blk.ex_calcImpactIntv(b));
+        return FRAG_attack.getImpactDmg(blk.size, blk.self.ex_calcImpactIntv(b));
     };
 
 
@@ -64,7 +64,7 @@
      * @return {number}
      */
     function comp_ex_calcImpactDur(blk, b) {
-        return FRAG_attack.getImpactDur(blk.ex_calcImpactIntv(b));
+        return FRAG_attack.getImpactDur(blk.self.ex_calcImpactIntv(b));
     };
 
 
@@ -85,7 +85,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDrawf.pulseCircle(b.x, b.y, b.block.ex_calcImpactRad(b));
+        LCDrawf.pulseCircle(b.x, b.y, b.block.self.ex_calcImpactRad(b));
     };
 
 
@@ -95,14 +95,14 @@
      * @return {void}
      */
     function comp_createImpactWave(b) {
-        BOX_trigger.impactWave.fire(b.x, b.y, b.block.ex_calcImpactDmg(b), b.block.ex_calcImpactRad(b));
+        BOX_trigger.impactWave.fire(b.x, b.y, b.block.self.ex_calcImpactDmg(b), b.block.self.ex_calcImpactRad(b));
         FRAG_attack.impact(
             b.x, b.y,
-            b.block.ex_calcImpactDmg(b),
-            b.block.ex_calcImpactDur(b),
-            b.block.ex_calcImpactRad(b),
-            b.block.ex_calcImpactMinRad(b),
-            b.block.ex_calcImpactShake(b),
+            b.block.self.ex_calcImpactDmg(b),
+            b.block.self.ex_calcImpactDur(b),
+            b.block.self.ex_calcImpactRad(b),
+            b.block.self.ex_calcImpactMinRad(b),
+            b.block.self.ex_calcImpactShake(b),
         );
         MDL_effect.dust(b.x, b.y, FRAG_attack.getImpactDustRad(b.block.size), Math.pow(b.block.size, 2));
         MDL_effect.colorDust(b.x, b.y, FRAG_attack.getImpactDustRad(b.block.size) * 1.5, b.tile.getFloorColor());
@@ -215,7 +215,7 @@
              * @return {number}
              */
             ex_calcImpactRad: function(b) {
-                return this.impactRad;
+                return this.delegee.impactRad;
             }
             .setProp({
                 noSuper: true,

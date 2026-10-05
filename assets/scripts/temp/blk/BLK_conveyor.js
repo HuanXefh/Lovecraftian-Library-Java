@@ -49,7 +49,7 @@
        * @memberof BLK_conveyor
        * @instance
        */
-      sideRegZ: Layer.block - 0.19,
+      transSideRegZ: Layer.block - 0.19,
 
 
     })

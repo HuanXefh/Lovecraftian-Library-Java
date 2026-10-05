@@ -24,6 +24,8 @@
     const registeredTags = [];
     /** @type {number} */
     let buildTaskAmt = 0;
+    /** @type {String|null} */
+    let currentlyBuilding = null;
 
 
     /** @type {boolean} */
@@ -392,6 +394,15 @@
 
 
     /**
+     * For debug only. Do not modify.
+     * @return {String|null}
+     */
+    CLS_contentTemplate.getTempCur = function() {
+        return currentlyBuilding;
+    };
+
+
+    /**
      * Builds the object used in `extend`.
      * @param {ExtendParamObject} paramObj
      * @param {Object|unset} [baseObj] - In case that someone needs raw fields without type check.
@@ -401,6 +412,8 @@
         let obj = baseObj != null ? baseObj : {};
         let parent = this.getParent();
         if(parent == null) throw new Error("Content template has null parent: " + this.clsName);
+
+        currentlyBuilding = this.clsName;
 
         // Copy valid values from `paramObj` to `this.paramObj`
         Object.eachPair(this.paramObj, (name, def) => {
@@ -467,6 +480,7 @@
 
         CLS_contentTemplate.registerCommonMethods(obj, this);
         buildTaskAmt++;
+        currentlyBuilding = null;
 
         return obj;
     };

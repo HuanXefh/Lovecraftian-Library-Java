@@ -18,6 +18,7 @@ import arc.util.Tmp;
 import lovec.utils.LCPos;
 import lovec.utils.LCScript;
 import lovec.utils.LCScriptUtil;
+import lovec.utils.LCVersionResolver;
 import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -199,7 +200,7 @@ public class LCDrawf {
      * Draws laser line.
      */
     public static void laser(float x1, float y1, float x2, float y2, float strokeScl, Color color1, Color color2, float a, boolean hasLight, float z) {
-        float strokeScl_fi = (1f + Mathf.sin(Time.time * 0.065f) * 0.2f) * strokeScl;
+        float strokeScl_fi = (1f + Mathf.sin(LCVersionResolver.time * 0.065f) * 0.2f) * strokeScl;
 
         LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
         Lines.stroke(3f * strokeScl_fi, color1);
@@ -249,7 +250,7 @@ public class LCDrawf {
         float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
         Color color1, Color color2, float a, boolean hasLight, float z
     ) {
-        Vec2 vec = getRandWalkVec(tmpVec1, Time.time + offTime).rotate90(rot);
+        Vec2 vec = getRandWalkVec(tmpVec1, LCVersionResolver.time + offTime).rotate90(rot);
         laser(x, y, cx + vec.x * rad, cy + vec.y * rad, strokeScl, color1, color2, a, hasLight, z);
         return vec;
     };
@@ -307,8 +308,8 @@ public class LCDrawf {
     ) {
         laserRandWalk(
             x, y,
-            cx + Mathf.cos(Time.time * 0.025f) * 4f,
-            cy + Mathf.sin(Time.time * 0.025f) * 4f,
+            cx + Mathf.cos(LCVersionResolver.time * 0.025f) * 4f,
+            cy + Mathf.sin(LCVersionResolver.time * 0.025f) * 4f,
             rad, offTime, rot, strokeScl, color1, color2, a, hasLight, z
         );
         if(!Vars.state.isPaused() && LCScriptUtil.checkTimer("trailCircle")) {
@@ -994,7 +995,7 @@ public class LCDrawf {
     public static void fade(float x, float y, @Nullable TextureRegion reg, float fadeScl, float ang, float regScl, Color color, float a, float z) {
         if(reg == null) return;
 
-        float a_fi = a * Math.abs(Mathf.sin(Time.time * 0.065f / fadeScl));
+        float a_fi = a * Math.abs(Mathf.sin(LCVersionResolver.time * 0.065f / fadeScl));
         LCDraw.region(x, y, reg, ang, regScl, color, a_fi, z);
     };
     // Overload
@@ -1227,9 +1228,9 @@ public class LCDrawf {
             param1 = 0.3f,
             param2 = 0.06f,
             param3 = Mathf.random(0.1f),
-            a_fi = a * ((1f - param1) + Mathf.absin(Time.time, 8f, param1) + Mathf.random(param2) - param2) * warmup,
-            rad_fi = rad + Mathf.absin(Time.time, radScl, radMag) + param3,
-            radIn_fi = radIn + Mathf.absin(Time.time, radScl, radInMag) + param3;
+            a_fi = a * ((1f - param1) + Mathf.absin(LCVersionResolver.time, 8f, param1) + Mathf.random(param2) - param2) * warmup,
+            rad_fi = rad + Mathf.absin(LCVersionResolver.time, radScl, radMag) + param3,
+            radIn_fi = radIn + Mathf.absin(LCVersionResolver.time, radScl, radInMag) + param3;
 
         LCDraw.processZ(z, LCDraw.NORMAL_REGION_Z_IND);
         Draw.alpha(a * warmup);
@@ -1293,7 +1294,7 @@ public class LCDrawf {
             len_t = len * warmup,
             w_f = w * 0.3f * warmup,
             w_t = w * 1.2f * warmup,
-            lenScl = 1f + Mathf.sin(Time.time, 1f, 0.07f);
+            lenScl = 1f + Mathf.sin(LCVersionResolver.time, 1f, 0.07f);
 
         Drawf.light(x_fi, y_fi, x + Mathf.cosDeg(ang) * len * 1.2f, y + Mathf.sinDeg(ang) * len * 1.2f, w_t * 6f, color, a * 0.65f);
         LCDraw.processZ(z, LCDraw.BULLET_REGION_Z_IND);
@@ -1564,7 +1565,7 @@ public class LCDrawf {
 
         Draw.draw(z, () -> {
             Shaders.blockbuild.region = reg;
-            Shaders.blockbuild.time = Time.time;
+            Shaders.blockbuild.time = LCVersionResolver.time;
             Shaders.blockbuild.progress = frac;
             Draw.color(color);
             Draw.rect(reg, x, y, ang);
@@ -1663,10 +1664,10 @@ public class LCDrawf {
             Draw.rectv(
                 reg, t.worldx(), t.worldy(),
                 reg.width * reg.scl(), reg.height * reg.scl(),
-                Mathf.randomSeed(t.pos(), -45f, 45f) + Mathf.sin(Time.time + t.worldx(), 50f, 0.5f) + Mathf.sin(Time.time - t.worldy(), 65f, 0.9f) + Mathf.sin(Time.time + t.worldy() - t.worldx(), 85f, 0.9f),
+                Mathf.randomSeed(t.pos(), -45f, 45f) + Mathf.sin(LCVersionResolver.time + t.worldx(), 50f, 0.5f) + Mathf.sin(LCVersionResolver.time - t.worldy(), 65f, 0.9f) + Mathf.sin(LCVersionResolver.time + t.worldy() - t.worldx(), 85f, 0.9f),
                 vec2 -> vec2.add(
-                    (Mathf.sin(vec2.y * 3f + Time.time, 60f * scl, 0.5f * mag) + Mathf.sin(vec2.x * 3f - Time.time, 70f * scl, 0.8f * mag)) * 1.5f * wob,
-                    (Mathf.sin(vec2.x * 3f + Time.time + 8f, 66f * scl, 0.55f * mag) + Mathf.sin(vec2.y * 3f - Time.time, 50f * scl, 0.2f * mag)) * 1.5f * wob
+                    (Mathf.sin(vec2.y * 3f + LCVersionResolver.time, 60f * scl, 0.5f * mag) + Mathf.sin(vec2.x * 3f - LCVersionResolver.time, 70f * scl, 0.8f * mag)) * 1.5f * wob,
+                    (Mathf.sin(vec2.x * 3f + LCVersionResolver.time + 8f, 66f * scl, 0.55f * mag) + Mathf.sin(vec2.y * 3f - LCVersionResolver.time, 50f * scl, 0.2f * mag)) * 1.5f * wob
                 )
             );
         };

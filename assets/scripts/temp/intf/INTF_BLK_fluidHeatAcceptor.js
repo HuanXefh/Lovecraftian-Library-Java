@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.fHeatRes = MDL_flow.getHeatRes(blk);
+        blk.delegee.fHeatRes = MDL_flow.getHeatRes(blk);
     };
 
 
@@ -38,7 +38,7 @@
      * @return {void}
      */
     function comp_load(blk) {
-        blk.fHeatReg = fetchRegionOrNull(blk, "-fluid-heat", "-heat");
+        blk.delegee.fHeatReg = fetchRegionOrNull(blk, "-fluid-heat", "-heat");
     };
 
 
@@ -49,8 +49,8 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(isFinite(blk.fHeatRes)) {
-            stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.fHeatRes, fetchStatUnit("lovec", "heatunits"));
+        if(isFinite(blk.delegee.fHeatRes)) {
+            stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.delegee.fHeatRes, fetchStatUnit("lovec", "heatunits"));
         };
     };
 
@@ -65,7 +65,7 @@
         blk.addBar("lovec-fheat", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-fluid-heat-amt", Strings.fixed(b.delegee.fHeatCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized())),
             prov(() => Pal.lightOrange),
-            () => Mathf.clamp(b.delegee.fHeatCur / blk.fHeatRes),
+            () => Mathf.clamp(b.delegee.fHeatCur / blk.delegee.fHeatRes),
         ));
     };
 
@@ -76,8 +76,8 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.fHeatCur = GLB_param.GLOBAL_HEAT;
-        b.fHeatTarget = MDL_flow.getFHeatInBuild(b, true);
+        b.delegee.fHeatCur = GLB_param.GLOBAL_HEAT;
+        b.delegee.fHeatTarget = MDL_flow.getFHeatInBuild(b, true);
     };
 
 
@@ -88,18 +88,18 @@
      */
     function comp_updateTile(b) {
         if(GLB_timer.heat && syncChance("fluidHeat", 0.25)) {
-            b.fHeatTarget = MDL_flow.getFHeatInBuild(b, true);
+            b.delegee.fHeatTarget = MDL_flow.getFHeatInBuild(b, true);
         };
         if(GLB_timer.heat) {
-            b.fHeatCur = Mathf.lerpDelta(b.fHeatCur, b.fHeatTarget, b.block.delegee.fHeatWarmupRate * GLB_var.time.heatIntv);
+            b.delegee.fHeatCur = Mathf.lerpDelta(b.delegee.fHeatCur, b.delegee.fHeatTarget, b.block.delegee.fHeatWarmupRate * GLB_var.timeParam.heatIntv);
         };
 
         if(
             !GLB_param.UPDATE_SUPPRESSED && GLB_timer.secQuarter
                 && syncChance("fluidHeat", 0.25)
-                && isFinite(b.block.delegee.fHeatRes) && b.fHeatCur > b.block.delegee.fHeatRes
+                && isFinite(b.block.delegee.fHeatRes) && b.delegee.fHeatCur > b.block.delegee.fHeatRes
         ) {
-            b.damagePierce(2.0 * b.fHeatCur / b.block.delegee.fHeatRes);
+            b.damagePierce(2.0 * b.delegee.fHeatCur / b.block.delegee.fHeatRes);
             MDL_effect.showAt(b.x, b.y, GLB_eff.smogHeat, 0.0);
         };
     };
@@ -117,7 +117,7 @@
         LCDrawf.heat(
             b.x, b.y,
             b.block.delegee.fHeatReg,
-            Math.pow(Mathf.clamp(b.fHeatCur * 0.75 / fHeatRes), 3),
+            Math.pow(Mathf.clamp(b.delegee.fHeatCur * 0.75 / fHeatRes), 3),
             b.block.size,
             b.block.delegee.shouldRotFHeatReg ? b.drawrot() : 0.0,
         );
@@ -266,11 +266,11 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.fHeatCur);
+                        wr.f(this.delegee.fHeatCur);
                     },
                     rd => {
-                        if(this.LCReviSub >= 0 || !this.block.ex_isSubInsOf("BLK_rainCollector")) {
-                            this.fHeatCur = rd.f();
+                        if(this.delegee.LCReviSub >= 0 || !this.block.ex_isSubInsOf("BLK_rainCollector")) {
+                            this.delegee.fHeatCur = rd.f();
                         };
                     },
                 );

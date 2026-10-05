@@ -44,16 +44,16 @@
      */
     function comp_init(blk) {
         blk.clipSize += 140.0;
-        if(blk.heatCooldownRate < 0.0) {
-            blk.heatCooldownRate = blk.heatWarmupRate;
+        if(blk.delegee.heatCooldownRate < 0.0) {
+            blk.delegee.heatCooldownRate = blk.delegee.heatWarmupRate;
         };
-        blk.heatBlkMeltTemp = MDL_flow.getHeatRes(blk);
-        blk.heatLightTempReq = Math.max(blk.heatLightTempReq, 60.01);
-        if(blk.heatLightRad < 0.0) {
-            blk.heatLightRad = blk.size * Vars.tilesize * 0.7;
+        blk.delegee.heatBlkMeltTemp = MDL_flow.getHeatRes(blk);
+        blk.delegee.heatLightTempReq = Math.max(blk.delegee.heatLightTempReq, 60.01);
+        if(blk.delegee.heatLightRad < 0.0) {
+            blk.delegee.heatLightRad = blk.size * Vars.tilesize * 0.7;
         };
 
-        blk.ex_addLogicF(LogicProp.heat, b => b.delegee.tempCur / 100.0);
+        blk.self.ex_addLogicF(LogicProp.heat, b => b.delegee.tempCur / 100.0);
     };
 
 
@@ -63,7 +63,7 @@
      * @return {void}
      */
     function comp_load(blk) {
-        blk.heatReg = fetchRegionOrNull(blk, "-heat");
+        blk.delegee.heatReg = fetchRegionOrNull(blk, "-heat");
     };
 
 
@@ -74,11 +74,11 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(isFinite(blk.heatBlkMeltTemp)) {
-            stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.heatBlkMeltTemp, fetchStatUnit("lovec", "heatunits"));
+        if(isFinite(blk.delegee.heatBlkMeltTemp)) {
+            stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.delegee.heatBlkMeltTemp, fetchStatUnit("lovec", "heatunits"));
         };
-        if(!blk.tempExtMtp.fEqual(1.0)) {
-            stats.add(fetchStat("lovec", "blk0fac-extheatmtp"), blk.tempExtMtp.perc());
+        if(!blk.delegee.tempExtMtp.fEqual(1.0)) {
+            stats.add(fetchStat("lovec", "blk0fac-extheatmtp"), blk.delegee.tempExtMtp.perc());
         };
     };
 
@@ -89,18 +89,18 @@
      * @return {void}
      */
     function comp_setBars(blk) {
-      if(!blk.skipHeatSupply) {
-          blk.addBar("lovec-heat-supplied", b => new Bar(
-              prov(() => Core.bundle.format("bar.lovec-bar-heat-supplied-amt", Strings.fixed(b.delegee.heatSupplied, 2) + " " + fetchStatUnit("lovec", "heatunits").localized())),
-              prov(() => Pal.lightOrange),
-              () => Mathf.clamp(b.delegee.heatSupplied / Math.max(b.delegee.tempCur, 0.01)),
-          ));
-      };
-      blk.addBar("lovec-temp", b => new Bar(
-          prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.ex_getHeatFrac().roundFixed(2) * 100.0)),
-          prov(() => Pal.lightOrange),
-          () => b.ex_getHeatFrac(),
-      ));
+        if(!blk.delegee.skipHeatSupply) {
+            blk.addBar("lovec-heat-supplied", b => new Bar(
+                prov(() => Core.bundle.format("bar.lovec-bar-heat-supplied-amt", Strings.fixed(b.delegee.heatSupplied, 2) + " " + fetchStatUnit("lovec", "heatunits").localized())),
+                prov(() => Pal.lightOrange),
+                () => Mathf.clamp(b.delegee.heatSupplied / Math.max(b.delegee.tempCur, 0.01)),
+            ));
+        };
+        blk.addBar("lovec-temp", b => new Bar(
+            prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.self.ex_getHeatFrac().roundFixed(2) * 100.0)),
+            prov(() => Pal.lightOrange),
+            () => b.self.ex_getHeatFrac(),
+        ));
     };
 
 
@@ -110,10 +110,10 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.tempCur = GLB_param.GLOBAL_HEAT;
-        Time.run(0.0, () => {
-            if(isNaN(b.tempCur)) {
-                b.tempCur = GLB_param.GLOBAL_HEAT;
+        b.delegee.tempCur = GLB_param.GLOBAL_HEAT;
+        MDL_event.onDelayRun(0.0, () => {
+            if(isNaN(b.delegee.tempCur)) {
+                b.delegee.tempCur = GLB_param.GLOBAL_HEAT;
             };
         });
     };
@@ -125,10 +125,10 @@
      * @return {void}
      */
     function comp_onProximityUpdate(b) {
-        Time.run(60.0, () => {
-            b.ex_updateHeatFetchTargets();
-            b.ex_updateHeatTransTargets();
-            b.ex_updateHeatSupplyTargets();
+        MDL_event.onDelayRun(60.0, () => {
+            b.self.ex_updateHeatFetchTargets();
+            b.self.ex_updateHeatTransTargets();
+            b.self.ex_updateHeatSupplyTargets();
         });
     };
 
@@ -139,9 +139,9 @@
      * @return {void}
      */
     function comp_pickedUp(b) {
-        b.heatFetchTargets.clear();
-        b.heatTransTargets.clear();
-        b.heatSupplyTargets.clear();
+        b.delegee.heatFetchTargets.clear();
+        b.delegee.heatTransTargets.clear();
+        b.delegee.heatSupplyTargets.clear();
     };
 
 
@@ -155,36 +155,36 @@
 
         // Update temperature and apply damage if overheated
         if(!GLB_param.UPDATE_SUPPRESSED && GLB_timer.secHalf) {
-            b.tempRiseTarget = b.ex_calcTempTarget();
-            b.tempCur = Math.max(Mathf.lerp(b.tempCur, Mathf.lerp(GLB_param.GLOBAL_HEAT, b.tempRiseTarget, !b.ex_checkHeatingValid() ? 0.0 : b.ex_calcTempTargetFrac()), (b.tempCur <= b.tempRiseTarget ? b.block.delegee.heatWarmupRate : b.block.delegee.heatCooldownRate) * 30.0), GLB_param.GLOBAL_HEAT);
-            if(b.tempCur > b.block.delegee.heatBlkMeltTemp) {
-                FRAG_attack.damage(b, (GLB_var.param.corDmgMin + GLB_var.param.corDmgFrac * b.maxHealth) * (b.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
+            b.delegee.tempRiseTarget = b.self.ex_calcTempTarget();
+            b.delegee.tempCur = Math.max(Mathf.lerp(b.delegee.tempCur, Mathf.lerp(GLB_param.GLOBAL_HEAT, b.delegee.tempRiseTarget, !b.self.ex_checkHeatingValid() ? 0.0 : b.self.ex_calcTempTargetFrac()), (b.delegee.tempCur <= b.delegee.tempRiseTarget ? b.block.delegee.heatWarmupRate : b.block.delegee.heatCooldownRate) * 30.0), GLB_param.GLOBAL_HEAT);
+            if(b.delegee.tempCur > b.block.delegee.heatBlkMeltTemp) {
+                FRAG_attack.damage(b, (GLB_var.param.corDmgMin + GLB_var.param.corDmgFrac * b.maxHealth) * (b.delegee.tempCur - b.block.delegee.heatBlkMeltTemp) / 50.0, 0.0, "heat");
             };
         };
 
         // External heat control
         if(b.block.delegee.tempExtMtp > 0.0) {
-            if(b.extHeatCd > 0.0) {
-                b.extHeatCd -= Time.delta;
+            if(b.delegee.extHeatCd > 0.0) {
+                b.delegee.extHeatCd -= Time.delta;
             } else {
-                b.tempExt = Mathf.lerpDelta(b.tempExt, 0.0, 0.02);
+                b.delegee.tempExt = Mathf.lerpDelta(b.delegee.tempExt, 0.0, 0.02);
             };
         };
 
         // Update heat state
         if(GLB_timer.secQuarter) {
-            b.heatBlkHeatFrac = Mathf.clamp(b.tempCur / Math.max(b.ex_getHeatTarget(), 100.0));
-            b.heatSupplied = b.ex_calcHeatSupplied();
+            b.delegee.heatBlkHeatFrac = Mathf.clamp(b.delegee.tempCur / Math.max(b.self.ex_getHeatTarget(), 100.0));
+            b.delegee.heatSupplied = b.self.ex_calcHeatSupplied();
         };
 
         // Occasionally supply abstract fluid, or output external heat
-        if(!b.block.delegee.skipHeatSupply && b.heatSupplyTargets.length > 0) {
-            b.heatSupplyIncre++;
-            let b_t = b.heatSupplyTargets[b.heatSupplyIncre % b.heatSupplyTargets.length];
+        if(!b.block.delegee.skipHeatSupply && b.delegee.heatSupplyTargets.length > 0) {
+            b.delegee.heatSupplyIncre++;
+            let b_t = b.delegee.heatSupplyTargets[b.delegee.heatSupplyIncre % b.delegee.heatSupplyTargets.length];
             if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
                 let heatAmt = !b.block.delegee.isHeatRouter ?
-                    b.heatSupplied :
-                    (b.heatSupplied / 3.0);
+                    b.delegee.heatSupplied :
+                    (b.delegee.heatSupplied / 3.0);
                 b_t.ex_handleExtHeat != null ?
                     b_t.ex_handleExtHeat(b, heatAmt) :
                     LCCraftingHandler.addLiquid(b_t, null, GLB_varGen.auxHeat, heatAmt / 6000.0 * b_t.timeScale, false, false, true);
@@ -203,15 +203,15 @@
 
         if(GLB_param.SHOULD_DRAW_FURNACE_HEAT && b.block.delegee.heatA > 0.0) {
             if(!b.block.delegee.shouldDrawDoubleHeat) {
-                LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.ex_getHeatFrac(), 3) * 0.7 * b.block.delegee.heatA, b.block.size, b.drawrot());
+                LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.self.ex_getHeatFrac(), 3) * 0.7 * b.block.delegee.heatA, b.block.size, b.drawrot());
             } else {
-                LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.size, b.drawrot());
-                LCDrawf.heat(b.x, b.y, LCDrawf.heatRegs[b.block.size + 2], Math.pow(b.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, b.block.size, b.drawrot());
+                LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.self.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.size, b.drawrot());
+                LCDrawf.heat(b.x, b.y, LCDrawf.heatRegs[b.block.size + 2], Math.pow(b.self.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, b.block.size, b.drawrot());
             };
         };
 
         if(b.block.delegee.shouldDrawHeatLight) {
-            LCDrawf.light(b.x, b.y, Mathf.clamp((b.tempCur - 60.0) / (b.block.delegee.heatLightTempReq - 60.0)), b.block.delegee.heatLightRad, b.block.size);
+            LCDrawf.light(b.x, b.y, Mathf.clamp((b.delegee.tempCur - 60.0) / (b.block.delegee.heatLightTempReq - 60.0)), b.block.delegee.heatLightRad, b.block.size);
         };
     };
 
@@ -224,13 +224,13 @@
     function comp_ex_updateHeatFetchTargets(b) {
         if(b.block.delegee.skipHeatFetch) return;
 
-        b.heatFetchTargets.clear();
+        b.delegee.heatFetchTargets.clear();
         b.proximity.each(ob => {
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
             if(ob.ex_getHeatProd != null || MDL_recipeDict.getProdAmt(GLB_varGen.auxHeat, ob.block) > 0.0) {
-                b.heatFetchTargets.push(ob, MDL_pos.calcSideFrac(ob, b));
+                b.delegee.heatFetchTargets.push(ob, MDL_pos.calcSideFrac(ob, b));
             };
         });
     };
@@ -243,13 +243,13 @@
      */
     function comp_ex_updateHeatTransTargets(b) {
         if(b.block.delegee.skipHeatTrans) return;
-        b.heatTransTargets.clear();
+        b.delegee.heatTransTargets.clear();
         b.proximity.each(ob => {
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
             if(ob.ex_getHeatTransferred != null && !ob.block.delegee.skipHeatTrans && LCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) {
-                b.heatTransTargets.push(ob);
+                b.delegee.heatTransTargets.push(ob);
             };
         });
     };
@@ -262,7 +262,7 @@
      */
     function comp_ex_updateHeatSupplyTargets(b) {
         if(b.block.delegee.skipHeatSupply) return;
-        b.heatSupplyTargets.clear();
+        b.delegee.heatSupplyTargets.clear();
         b.proximity.each(ob => {
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
@@ -271,7 +271,7 @@
                 && !ob.block.delegee.skipHeatFetch
                 && (ob.ex_handleExtHeat != null || ob.block.consumesLiquid(GLB_varGen.auxHeat))
             ) {
-                b.heatSupplyTargets.push(ob);
+                b.delegee.heatSupplyTargets.push(ob);
             };
         });
     };
@@ -285,9 +285,9 @@
      * @return {void}
      */
     function comp_ex_handleExtHeat(b, b_f, amt) {
-        if(b.block.delegee.tempExtMtp.fEqual(0.0) || (!b.block.delegee.skipHeatFetch && b.heatFetchTargets.includes(b_f))) return;
-        b.tempExt = (b.tempExt + amt * b.block.delegee.tempExtMtp) * 0.5;
-        b.extHeatCd = 60.0;
+        if(b.block.delegee.tempExtMtp.fEqual(0.0) || (!b.block.delegee.skipHeatFetch && b.delegee.heatFetchTargets.includes(b_f))) return;
+        b.delegee.tempExt = (b.delegee.tempExt + amt * b.block.delegee.tempExtMtp) * 0.5;
+        b.delegee.extHeatCd = 60.0;
     };
 
 
@@ -298,42 +298,42 @@
      */
     function comp_ex_calcTempTarget(b) {
         let heat, heatTarget = 0.0;
-        b.maxHeaterProd = 0.0;
+        b.delegee.maxHeaterProd = 0.0;
 
         if(!b.block.delegee.skipHeatFetch) {
-            b.heatFetchTargets.forEachRow(2, (ob, sideFrac) => {
+            b.delegee.heatFetchTargets.forEachRow(2, (ob, sideFrac) => {
                 if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
                 heat = ob.ex_getHeatProd != null ?
                     (ob.ex_getHeatProd() * sideFrac) :
                     (LCCraftingHandler.addLiquid(ob, ob, GLB_varGen.auxHeat, -MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
-                b.maxHeaterProd = Math.max(heat, b.maxHeaterProd);
+                b.delegee.maxHeaterProd = Math.max(heat, b.delegee.maxHeaterProd);
                 heatTarget += heat * b.block.delegee.tempExtMtp;
             }, true);
         };
 
         if(!b.block.delegee.skipHeatTrans) {
             heat = 0.0;
-            b.heatTransCount = 0;
-            b.heatTransTargets.forEachFast(ob => {
+            b.delegee.heatTransCount = 0;
+            b.delegee.heatTransTargets.forEachFast(ob => {
                 if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
                 heat += !ob.block.delegee.isHeatRouter ?
                     ob.ex_getHeatTransferred() :
                     (ob.ex_getHeatTransferred() / 3.0);
-                b.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.maxHeaterProd);
-                b.heatTransCount++;
+                b.delegee.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.delegee.maxHeaterProd);
+                b.delegee.heatTransCount++;
             }, true);
-            heatTarget += b.heatTransCount < 2 ?
+            heatTarget += b.delegee.heatTransCount < 2 ?
                 heat :
-                b.heatTransCount === 2 ?
+                b.delegee.heatTransCount === 2 ?
                     (heat * HEAT_MERGE_FRAC_BI) :
                     (heat * HEAT_MERGE_FRAC_TRI);
         };
 
         if(b.ex_getHeatProd != null) {
-            b.maxHeaterProd = Math.max(b.ex_getHeatProd(), b.maxHeaterProd);
+            b.delegee.maxHeaterProd = Math.max(b.ex_getHeatProd(), b.delegee.maxHeaterProd);
         };
-        if(b.tempExt > heatTarget) {
-            heatTarget = b.tempExt;
+        if(b.delegee.tempExt > heatTarget) {
+            heatTarget = b.delegee.tempExt;
         };
 
         return Math.max(heatTarget, GLB_param.GLOBAL_HEAT);
@@ -720,9 +720,9 @@
             */
             ex_calcHeatSupplied: function() {
                 // Single heater with larger output rate => more efficient heat transfer
-                return this.tempCur <= this.maxHeaterProd ?
-                    this.tempCur :
-                    (Math.sqrt(Math.pow(this.maxHeaterProd, 2) * 4.0 + this.tempCur * this.maxHeaterProd * 4.0) - this.maxHeaterProd * (Math.sqrt(2) * 2.0 - 1.0));
+                return this.delegee.tempCur <= this.delegee.maxHeaterProd ?
+                    this.delegee.tempCur :
+                    (Math.sqrt(Math.pow(this.delegee.maxHeaterProd, 2) * 4.0 + this.delegee.tempCur * this.delegee.maxHeaterProd * 4.0) - this.delegee.maxHeaterProd * (Math.sqrt(2) * 2.0 - 1.0));
             }
             .setProp({
                 noSuper: true,
@@ -738,7 +738,7 @@
              * @lovecAttached
              */
             ex_getHeat: function() {
-                return this.tempCur;
+                return this.delegee.tempCur;
             }
             .setProp({
                 noSuper: true,
@@ -768,7 +768,7 @@
              * @return {number}
              */
             ex_getHeatFrac: function() {
-                return this.heatBlkHeatFrac;
+                return this.delegee.heatBlkHeatFrac;
             }
             .setProp({
                 noSuper: true,
@@ -782,7 +782,7 @@
              * @return {number}
              */
             ex_getHeatTransferred: function() {
-                return this.tempCur;
+                return this.delegee.tempCur;
             }
             .setProp({
                 noSuper: true,
@@ -796,7 +796,7 @@
              * @return {number}
              */
             ex_getMaxHeaterProd: function() {
-                return this.maxHeaterProd;
+                return this.delegee.maxHeaterProd;
             }
             .setProp({
                 noSuper: true,
@@ -830,12 +830,12 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.tempCur);
+                        wr.f(this.delegee.tempCur);
                     },
                     rd => {
                         let temp = rd.f();
-                        this.tempCur = temp;
-                        this.tempRiseTarget = temp;
+                        this.delegee.tempCur = temp;
+                        this.delegee.tempRiseTarget = temp;
                     },
                 );
             }

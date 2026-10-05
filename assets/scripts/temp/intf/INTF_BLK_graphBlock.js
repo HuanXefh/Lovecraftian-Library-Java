@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        b.ex_updateGraph();
+        b.self.ex_updateGraph();
     };
 
 
@@ -38,9 +38,9 @@
      * @return {void}
      */
     function comp_ex_updateGraph(b) {
-        UTIL_graph.queueUpdate(b.graphCur);
+        UTIL_graph.queueUpdate(b.delegee.graphCur);
         if(GLB_timer.secFive) {
-            b.ex_updateGraphState();
+            b.self.ex_updateGraphState();
         };
     };
 
@@ -51,19 +51,19 @@
      * @return {void}
      */
     function comp_ex_updateGraphState(b) {
-        b.graphProximity.each(
-            ob => ob.delegee.graphCur !== b.delegee.graphCur && ob.delegee.graphCur.getSize() >= b.graphCur.getSize(),
+        b.delegee.graphProximity.each(
+            ob => ob.delegee.graphCur !== b.delegee.graphCur && ob.delegee.graphCur.getSize() >= b.delegee.graphCur.getSize(),
             ob => {
-                ob.delegee.graphCur.merge(b.graphCur);
-                b.graphCur = ob.delegee.graphCur;
+                ob.delegee.graphCur.merge(b.delegee.graphCur);
+                b.delegee.graphCur = ob.delegee.graphCur;
             },
         );
-        if(b.graphCur.graphData != null && !b.graphCur.graphData.justShrunk) {
-            b.graphCur.graphData.justShrunk = true;
+        if(b.delegee.graphCur.graphData != null && !b.delegee.graphCur.graphData.justShrunk) {
+            b.delegee.graphCur.graphData.justShrunk = true;
             Core.app.post(() => {
-                b.graphCur.shrink((ob, vert) => !ob.ex_isExpiredVert());
-                b.graphCur.shrink((ob, vert) => ob.isAdded() && !ob.isPayload());
-                b.graphCur.graphData.justShrunk = false;
+                b.delegee.graphCur.shrink((ob, vert) => !ob.ex_isExpiredVert());
+                b.delegee.graphCur.shrink((ob, vert) => ob.isAdded() && !ob.isPayload());
+                b.delegee.graphCur.graphData.justShrunk = false;
             });
         };
     };
@@ -75,13 +75,13 @@
      * @return {void}
      */
     function comp_ex_updateGraphProximity(b) {
-        b.graphProximity.clear();
+        b.delegee.graphProximity.clear();
         b.proximity.each(
-            ob => b.ex_isSameGraphType(ob),
-            ob => b.graphProximity.add(ob),
+            ob => b.self.ex_isSameGraphType(ob),
+            ob => b.delegee.graphProximity.add(ob),
         );
-        b.ex_updateGraphState();
-        b.ex_updateGraphEdge();
+        b.self.ex_updateGraphState();
+        b.self.ex_updateGraphEdge();
     };
 
 
@@ -91,61 +91,61 @@
      * @return {void}
      */
     function comp_ex_updateGraphEdge(b) {
-        let vert_b = b.graphCur.getVertByData(b), vert_ob;
+        let vert_b = b.delegee.graphCur.getVertByData(b), vert_ob;
         if(vert_b === -1) return;
-        b.graphProximity.each(ob => {
-            vert_ob = b.graphCur.getVertByData(ob);
+        b.delegee.graphProximity.each(ob => {
+            vert_ob = b.delegee.graphCur.getVertByData(ob);
             if(b.block.delegee.isNoRotGraph || (!b.block.rotate && !ob.block.rotate)) {
                 if(vert_ob === -1) {
-                    b.graphCur.addVert(ob);
-                    vert_ob = b.graphCur.getSize() - 1;
+                    b.delegee.graphCur.addVert(ob);
+                    vert_ob = b.delegee.graphCur.getSize() - 1;
                 };
-                b.graphCur.addEdge(vert_b, vert_ob, b.block.ex_calcGraphDst(b, ob));
-                b.graphCur.addEdge(vert_ob, vert_b, b.block.ex_calcGraphDst(ob, b));
+                b.delegee.graphCur.addEdge(vert_b, vert_ob, b.block.self.ex_calcGraphDst(b, ob));
+                b.delegee.graphCur.addEdge(vert_ob, vert_b, b.block.self.ex_calcGraphDst(ob, b));
             } else if(!b.block.rotate && ob.block.rotate) {
                 if(ob.relativeTo(b) === ob.rotation) {
                     if(vert_ob === -1) {
-                        b.graphCur.addVert(ob);
-                        vert_ob = b.graphCur.getSize() - 1;
+                        b.delegee.graphCur.addVert(ob);
+                        vert_ob = b.delegee.graphCur.getSize() - 1;
                     };
-                    b.graphCur.addEdge(vert_ob, vert_b, b.block.ex_calcGraphDst(ob, b));
+                    b.delegee.graphCur.addEdge(vert_ob, vert_b, b.block.self.ex_calcGraphDst(ob, b));
                 };
                 if(b.relativeTo(ob) === ob.rotation) {
                     if(vert_ob === -1) {
-                        b.graphCur.addVert(ob);
-                        vert_ob = b.graphCur.getSize() - 1;
+                        b.delegee.graphCur.addVert(ob);
+                        vert_ob = b.delegee.graphCur.getSize() - 1;
                     };
-                    b.graphCur.addEdge(vert_b, vert_ob, b.block.ex_calcGraphDst(b, ob));
+                    b.delegee.graphCur.addEdge(vert_b, vert_ob, b.block.self.ex_calcGraphDst(b, ob));
                 };
             } else if(b.block.rotate && !ob.block.rotate) {
                 if(b.relativeTo(ob) === b.rotation) {
                     if(vert_ob === -1) {
-                        b.graphCur.addVert(ob);
-                        vert_ob = b.graphCur.getSize() - 1;
+                        b.delegee.graphCur.addVert(ob);
+                        vert_ob = b.delegee.graphCur.getSize() - 1;
                     };
-                    b.graphCur.addEdge(vert_b, vert_ob, b.block.ex_calcGraphDst(b, ob));
+                    b.delegee.graphCur.addEdge(vert_b, vert_ob, b.block.self.ex_calcGraphDst(b, ob));
                 };
                 if(ob.relativeTo(b) === b.rotation) {
                     if(vert_ob === -1) {
-                        b.graphCur.addVert(ob);
-                        vert_ob = b.graphCur.getSize() - 1;
+                        b.delegee.graphCur.addVert(ob);
+                        vert_ob = b.delegee.graphCur.getSize() - 1;
                     };
-                    b.graphCur.addEdge(vert_ob, vert_b, b.block.ex_calcGraphDst(ob, b));
+                    b.delegee.graphCur.addEdge(vert_ob, vert_b, b.block.self.ex_calcGraphDst(ob, b));
                 };
             } else {
                 if(MDL_cond.isNoSideBlock(ob.block) ? b.relativeTo(ob) === ob.rotation : ob.relativeTo(b) !== b.rotation) {
                     if(vert_ob === -1) {
-                        b.graphCur.addVert(ob);
-                        vert_ob = b.graphCur.getSize() - 1;
+                        b.delegee.graphCur.addVert(ob);
+                        vert_ob = b.delegee.graphCur.getSize() - 1;
                     };
-                    b.graphCur.addEdge(vert_b, vert_ob, b.block.ex_calcGraphDst(b, ob));
+                    b.delegee.graphCur.addEdge(vert_b, vert_ob, b.block.self.ex_calcGraphDst(b, ob));
                 };
                 if(MDL_cond.isNoSideBlock(ob.block) ? ob.relativeTo(b) === b.rotation : b.relativeTo(ob) !== ob.rotation) {
                     if(vert_ob === -1) {
-                        b.graphCur.addVert(ob);
-                        vert_ob = b.graphCur.getSize() - 1;
+                        b.delegee.graphCur.addVert(ob);
+                        vert_ob = b.delegee.graphCur.getSize() - 1;
                     };
-                    b.graphCur.addEdge(vert_ob, vert_b, b.block.ex_calcGraphDst(ob, b));
+                    b.delegee.graphCur.addEdge(vert_ob, vert_b, b.block.self.ex_calcGraphDst(ob, b));
                 };
             };
         });
@@ -236,7 +236,7 @@
                      * `INTERNAL`
                      * @memberof INTF_B_graphBlock
                      * @instance
-                     * @type {TDynamic<Seq<Building>>}
+                     * @type {TDynamic<Seq<INTFBGraphBlock>>}
                      */
                     graphProximity: tprov(() => new Seq()),
 
@@ -246,13 +246,13 @@
 
 
             created: function() {
-                this.graphCur = new MathGraph(1, this, true);
-                this.graphCur.graphTag = this.block.delegee.graphType;
+                this.delegee.graphCur = new MathGraph(1, this, true);
+                this.delegee.graphCur.graphTag = this.block.delegee.graphType;
             },
 
 
             onProximityUpdate: function() {
-                this.ex_updateGraphProximity();
+                this.self.ex_updateGraphProximity();
             },
 
 

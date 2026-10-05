@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.torqueBlockUpdater = new INTFBLKTorqueBlockUpdater(blk);
+        blk.delegee.torqueBlockUpdater = new INTFBLKTorqueBlockUpdater(blk);
     };
 
 
@@ -57,18 +57,18 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.torqueBlockBuildUpdater = new INTFBTorqueBlockUpdater(b.block.delegee.torqueBlockUpdater, b);
+        b.delegee.torqueBlockBuildUpdater = new INTFBTorqueBlockUpdater(b.block.delegee.torqueBlockUpdater, b);
 
         BOX_trigger.torqueBlockPlace.fire(b);
-        Time.run(0.0, () => {
-            BOX_trigger.torqueBlockPlace.addListener(ob => b.torProg = 0.0);
-            BOX_trigger.torqueBlockConfigure.addListener(ob => b.torProg = 0.0);
+        MDL_event.onDelayRun(0.0, () => {
+            BOX_trigger.torqueBlockPlace.addListener(ob => b.delegee.torProg = 0.0);
+            BOX_trigger.torqueBlockConfigure.addListener(ob => b.delegee.torProg = 0.0);
         });
 
         // Just in case
-        Time.run(5.0, () => {
-            if(isNaN(b.torCur)) b.torCur = 0.0;
-            if(isNaN(b.rpmCur)) b.rpmCur = 0.0;
+        MDL_event.onDelayRun(5.0, () => {
+            if(isNaN(b.delegee.torCur)) b.delegee.torCur = 0.0;
+            if(isNaN(b.delegee.rpmCur)) b.delegee.rpmCur = 0.0;
         });
     };
 
@@ -79,10 +79,10 @@
      * @return {void}
      */
     function comp_onProximityUpdate(b) {
-        Time.run(60.0, () => {
-            b.ex_updateTorFetchTargets();
-            b.ex_updateTorSupplyTargets();
-            b.ex_updateTorTransTargets();
+        MDL_event.onDelayRun(60.0, () => {
+            b.self.ex_updateTorFetchTargets();
+            b.self.ex_updateTorSupplyTargets();
+            b.self.ex_updateTorTransTargets();
         });
     };
 
@@ -93,12 +93,12 @@
      * @return {void}
      */
     function comp_pickedUp(b) {
-        b.torFetchTargets.clear();
-        b.torSupplyTargets.clear();
-        b.torTransTargets.clear();
+        b.delegee.torFetchTargets.clear();
+        b.delegee.torSupplyTargets.clear();
+        b.delegee.torTransTargets.clear();
 
-        b.torCur = 0.0;
-        b.rpmCur = 0.0;
+        b.delegee.torCur = 0.0;
+        b.delegee.rpmCur = 0.0;
     };
 
 
@@ -110,16 +110,16 @@
     function comp_updateTile(b) {
         if(GLB_param.UPDATE_SUPPRESSED || DEBUG.skipTorUpdate) return;
 
-        b.torProg += b.rpmCur / 6.0 * Time.delta;
-        b.ex_updateTor();
+        b.delegee.torProg += b.delegee.rpmCur / 6.0 * Time.delta;
+        b.self.ex_updateTor();
         if(!b.block.delegee.skipTorSupply) {
-            b.ex_supplyTor();
+            b.self.ex_supplyTor();
         };
 
         // RPM spontaneously drops
-        b.rpmCur = Mathf.maxZero(b.rpmCur - b.rpmCur * b.block.delegee.rpmDropRate * Time.delta / b.block.size);
+        b.delegee.rpmCur = Mathf.maxZero(b.delegee.rpmCur - b.delegee.rpmCur * b.block.delegee.rpmDropRate * Time.delta / b.block.size);
         // Infinite RPM kill
-        if(b.rpmCur > Number.n8) {
+        if(b.delegee.rpmCur > Number.n8) {
             b.kill();
         };
     };
@@ -152,18 +152,18 @@
     function comp_ex_updateTorFetchTargets(b) {
         if(b.block.delegee.skipTorFetch) return;
 
-        b.torFetchTargets.clear();
+        b.delegee.torFetchTargets.clear();
         let rateProd;
         b.proximity.each(ob => {
             if(ob.block instanceof LiquidSource) {
-                b.torFetchTargets.push(ob, 100.0 / 60.0);
+                b.delegee.torFetchTargets.push(ob, 100.0 / 60.0);
             } else {
                 if(ob.block instanceof MultiBlockLinkBlock) {
                     ob = ob.linkedBuild;
                 };
                 rateProd = MDL_recipeDict.getProdAmt(GLB_varGen.auxTor, ob.block);
                 if(rateProd < 0.0001) return;
-                b.torFetchTargets.push(ob, rateProd);
+                b.delegee.torFetchTargets.push(ob, rateProd);
             };
         });
     };
@@ -177,16 +177,16 @@
     function comp_ex_updateTorSupplyTargets(b) {
         if(b.block.delegee.skipTorSupply) return;
 
-        b.torSupplyTargets.clear();
+        b.delegee.torSupplyTargets.clear();
         b.proximity.each(ob => {
             if(ob.block instanceof LiquidVoid) {
-                b.torSupplyTargets.push(ob, 100.0 / 60.0);
+                b.delegee.torSupplyTargets.push(ob, 100.0 / 60.0);
             } else {
                 if(ob.block instanceof MultiBlockLinkBlock) {
                     ob = ob.linkedBuild;
                 };
                 if(ob.block.consumesLiquid(GLB_varGen.auxTor) || ob.block.consumesLiquid(GLB_varGen.auxRpm)) {
-                    b.torSupplyTargets.push(ob, MDL_recipeDict.getConsAmt(GLB_varGen.auxTor, ob.block));
+                    b.delegee.torSupplyTargets.push(ob, MDL_recipeDict.getConsAmt(GLB_varGen.auxTor, ob.block));
                 };
             };
         });
@@ -368,7 +368,7 @@
              * @return {void}
              */
             ex_updateTor: function() {
-                this.torqueBlockBuildUpdater.ex_updateTor();
+                this.delegee.torqueBlockBuildUpdater.ex_updateTor();
             }
             .setProp({
                 noSuper: true,
@@ -382,7 +382,7 @@
              * @return {void}
              */
             ex_supplyTor: function() {
-                this.torqueBlockBuildUpdater.ex_supplyTor();
+                this.delegee.torqueBlockBuildUpdater.ex_supplyTor();
             }
             .setProp({
                 noSuper: true,
@@ -457,7 +457,7 @@
              * @return {number}
              */
             ex_calcRpmTarget: function() {
-                return this.torqueBlockBuildUpdater.ex_calcRpmTarget();
+                return this.delegee.torqueBlockBuildUpdater.ex_calcRpmTarget();
             }
             .setProp({
                 noSuper: true,
@@ -475,7 +475,7 @@
              * @return {number}
              */
             ex_calcRpmTrans: function(b_t) {
-                return this.rpmCur;
+                return this.delegee.rpmCur;
             }
             .setProp({
                 noSuper: true,
@@ -529,12 +529,12 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.rpmCur);
-                        wr.f(this.torCur);
+                        wr.f(this.delegee.rpmCur);
+                        wr.f(this.delegee.torCur);
                     },
                     rd => {
-                        this.rpmCur = rd.f();
-                        this.torCur = rd.f();
+                        this.delegee.rpmCur = rd.f();
+                        this.delegee.torCur = rd.f();
                     },
                 );
             }

@@ -25,9 +25,9 @@
      * @return {void}
      */
     function comp_init(sta) {
-        if(!sta.exInitCalled) {
-            sta.ex_init();
-            sta.exInitCalled = true;
+        if(!sta.delegee.exInitCalled) {
+            sta.self.ex_init();
+            sta.delegee.exInitCalled = true;
         };
     };
 
@@ -42,14 +42,18 @@
 
         DB_status.db["map"]["affinity"].read(sta.name, Array.air).forEachRow(2, (nameSta, scr) => {
             osta = MDL_content.getCt(nameSta, ContentGetModes.STA);
-            if(osta != null) sta.affinity(osta, scr);
+            if(osta != null) {
+                sta.affinity(osta, scr);
+            };
         }, true);
 
         let oppoTmp = DB_status.db["map"]["opposite"].read(sta.name, Array.air);
         let oppoArr = typeof oppoTmp === "function" ? oppoTmp() : oppoTmp;
         oppoArr.forEachFast(sta_gn => {
             osta = MDL_content.getCt(sta_gn, ContentGetModes.STA);
-            if(osta != null) sta.opposite(osta);
+            if(osta != null) {
+                sta.opposite(osta);
+            };
         }, true);
     };
 

@@ -102,7 +102,7 @@
         if(!shouldInitWea || !Vars.state.isGame() || Vars.state.isEditor()) return;
 
         shouldInitWea = false;
-        Time.run(GLB_var.delay.mapChange.setWeather, () => {
+        MDL_event.onDelayRun(GLB_var.delay.mapChange.setWeather, () => {
             let nameWeas = DB_env.db["param"]["map"]["weaEn"].read(GLB_param.MAP_CURRENT, Array.air);
             if(nameWeas.length === 0) return;
 
@@ -225,6 +225,7 @@
 
     MDL_event.onUpdate(() => {
 
+        GLB_var.time = global.lovecUtil.fun.getTime();
         if(Vars.state.isPaused()) return;
 
         if(GLB_timer.secQuarter && DEBUG.shouldLogDelta) {

@@ -46,7 +46,7 @@
      * @return {boolean}
      */
     function comp_onConfigureTapped(b, x, y) {
-        if(Mathf.dst(b.x, b.y, x, y) <= b.ex_getPosConfigRad() && b.ex_checkPosConfigValid(x, y)) {
+        if(Mathf.dst(b.x, b.y, x, y) <= b.self.ex_getPosConfigRad() && b.self.ex_checkPosConfigValid(x, y)) {
             b.configure(Tmp.v1.set(x, y));
             return true;
         };

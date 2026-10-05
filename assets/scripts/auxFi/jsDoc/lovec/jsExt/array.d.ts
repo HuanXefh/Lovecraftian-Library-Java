@@ -76,7 +76,7 @@ interface Array<T> {
     random(ord?: number, off?: number): T|null
     sample(amt?: number): Array<T>
     toCountArray(ord?: number, off?: number): F2Array<T, number>
-    categorize(categF: FFunction<T, string|null>): Record<string, T>
+    categorize(categF: FFunction<T, String|null>): Record<string, T>
 
     read(keys_p: Plural<T>, def?: T, isUnordered?: boolean): T|null
     readList(keys_p: Plural<T>, isUnordered?: boolean): Array<T>

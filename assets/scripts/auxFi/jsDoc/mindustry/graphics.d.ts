@@ -143,12 +143,12 @@ declare class BuildingCacheLayer {
 
 /**
  * mindustry.graphics.MultiPacker
- * @deprecated v8
+ * @deprecated Removed in v9.
  */
 declare class MultiPacker {}
 /**
  * mindustry.graphics.PackContext
- * @deprecated v9
+ * @deprecated Added in v9.
  */
 declare class PackContext {
     printStats(): void

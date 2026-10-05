@@ -80,7 +80,7 @@
 
     MDL_event.onWorldLoad(() => {
 
-        Time.run(GLB_var.delay.worldLoad.loadParam, () => forceLoadParam());
+        MDL_event.onDelayRun(GLB_var.delay.worldLoad.loadParam, () => forceLoadParam());
 
     });
 
@@ -107,9 +107,9 @@
             /* <------------------------------ param ------------------------------> */
 
 
-            /** @type {string|null} */
+            /** @type {String|null} */
             exports.PLANET_CURRENT = global.lovecUtil.fun.getPlaCur();
-            /** @type {string|null} */
+            /** @type {String|null} */
             exports.MAP_CURRENT = global.lovecUtil.fun.getMapCur();
             /** @type {boolean} */
             exports.IS_SPACE_MAP = (Vars.state.rules.env & Env.space) !== 0;

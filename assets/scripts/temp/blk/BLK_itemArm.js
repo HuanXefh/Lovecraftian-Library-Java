@@ -67,7 +67,7 @@
 
   function comp_updateTile(b) {
     if((b.playingWithUnit || b.playingWithCrank) && b.efficiency > GLB_var.param.buildActiveEffcThr) {
-      b.moveAng = Math.sin(Time.time / 10.0) * b.block.delegee.armPlayAng;
+      b.moveAng = Math.sin(GLB_var.time / 10.0) * b.block.delegee.armPlayAng;
       if(b.playingWithUnit && GLB_timer.secFive) {
         let unit = LCEntity.getUnit(b.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
         if(unit != null && unit.isGrounded() && MDL_cond.canHeal(unit, b.team)) {

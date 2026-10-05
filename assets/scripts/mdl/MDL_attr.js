@@ -345,7 +345,7 @@
         if(maxRed == null) maxRed = 0.7;
         if(posVari == null) posVari = 0.0;
 
-        let attrSum = (1.0 - Math.pow(Math.sin(Time.time / 6400.0 / scl), 2) * maxRed);
+        let attrSum = (1.0 - Math.pow(Math.sin(GLB_var.time / 6400.0 / scl), 2) * maxRed);
         if(thisFun.sumScl == null) {
             thisFun.sumScl = DB_env.db["param"]["map"]["wind"].read(GLB_param.MAP_CURRENT, DB_env.db["param"]["pla"]["wind"].read(GLB_param.PLANET_CURRENT, 1.0));
         };

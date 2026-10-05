@@ -28,8 +28,8 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        if(b.requiresScanner && GLB_timer.effc) {
-            b.scannerCur = LCEntity.getBuildBy(
+        if(b.delegee.requiresScanner && GLB_timer.effc) {
+            b.delegee.scannerCur = LCEntity.getBuildBy(
                 b.x, b.y, b.team,
                 ob => MDL_cond.isOreScanner(ob.block) && ob.block.delegee.scanTier >= b.delegee.depthLvlReqCur && ob.efficiency > 0.0 && Mathf.dst(b.x, b.y, ob.x, ob.y) < ob.block.delegee.blkRad,
             );
@@ -43,8 +43,8 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        if(b.requiresScanner) {
-            b.efficiency *= b.scannerCur == null ? 0.0 : b.scannerCur.ex_getScanFrac();
+        if(b.delegee.requiresScanner) {
+            b.efficiency *= b.delegee.scannerCur == null ? 0.0 : b.delegee.scannerCur.self.ex_getScanFrac();
         };
     };
 
@@ -55,10 +55,10 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        if(!b.requiresScanner) return;
-        b.scannerCur == null ?
+        if(!b.delegee.requiresScanner) return;
+        b.delegee.scannerCur == null ?
             LCDrawf.textSelect(b, MDL_bundle.getInfo("lovec", "text-no-scanner"), false, b.block.delegee.noScannerTextOffTy) :
-            LCDrawf.connectorArea(b, b.scannerCur);
+            LCDrawf.connectorArea(b, b.delegee.scannerCur);
     };
 
 
@@ -84,7 +84,7 @@
 
         /**
          * Handles methods related to ore scanner check.
-         * To make a building check nearby scanners, simply set `b.requiresScanner` to true.
+         * To make a building check nearby scanners, simply set `b.delegee.requiresScanner` to true.
          * @class INTF_BLK_oreScannerHandler
          */
         new CLS_interface("INTF_BLK_oreScannerHandler", {

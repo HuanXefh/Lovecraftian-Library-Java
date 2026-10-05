@@ -31,7 +31,7 @@
         if(blk.itemDrop == null) throw new NullArgumentError(blk.name + ".itemDrop");
         MDL_content.rename(
             blk,
-            blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + blk.ex_getDepthName() + ")",
+            blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + blk.self.ex_getDepthName() + ")",
         );
     };
 

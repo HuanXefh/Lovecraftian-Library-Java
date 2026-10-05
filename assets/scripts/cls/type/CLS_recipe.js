@@ -646,7 +646,7 @@
         this.isIncomplete = MDL_recipe.checkIsIncomplete(this.rcMdl, this.rcHeader);
         /** @type {Array<string>} */
         this.erroredNames = MDL_recipe.getRcVal(this.rcMdl, this.rcHeader, "erroredNames", Array.air);
-        /** @type {string|null} */
+        /** @type {String|null} */
         this.tt = MDL_recipe.getTooltipText(this.rcMdl, this.rcHeader);
 
         /* icon */
@@ -1465,7 +1465,7 @@
     }
     .setProp({
         /**
-         * @type {string|null}
+         * @type {String|null}
          * @memberof CLS_recipe#updateAutoSelection
          */
         lastHeader: null,

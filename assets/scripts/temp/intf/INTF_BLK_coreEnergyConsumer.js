@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.useCep = DB_block.db["param"]["cep"]["use"].read(blk.name) != null;
+        blk.delegee.useCep = DB_block.db["param"]["cep"]["use"].read(blk.name) != null;
     };
 
 
@@ -79,7 +79,7 @@
         if(!b.block.delegee.useCep) return;
 
         if(GLB_timer.effc) {
-            b.cepEffc = FRAG_faci.getCepEffcCur(b.team);
+            b.delegee.cepEffc = FRAG_faci.getCepEffcCur(b.team);
         };
         if(GLB_timer.coreSignal && b.efficiency > 0.0 && b.shouldConsume()) {
             MDL_effect.coreSignal(b.x, b.y, b.team, b.block.size * 0.6 * Vars.tilesize);
@@ -94,7 +94,7 @@
      */
     function comp_updateEfficiencyMultiplier(b) {
         if(b.block.delegee.useCep) {
-            b.efficiency *= b.cepEffc;
+            b.efficiency *= b.delegee.cepEffc;
         };
     };
 

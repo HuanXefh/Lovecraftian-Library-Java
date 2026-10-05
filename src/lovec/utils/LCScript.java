@@ -18,6 +18,7 @@ public class LCScript {
     public static NativeObject BOX_trigger;
     public static NativeObject GLB_var;
     public static NativeObject MDL_cond;
+    public static NativeObject MDL_draw;
     public static NativeObject MDL_effect;
     public static NativeObject MDL_prop;
     public static NativeObject MDL_reaction;
@@ -47,6 +48,7 @@ public class LCScript {
         BOX_trigger = toObject(get("BOX_trigger"));
         GLB_var = toObject(get("GLB_var"));
         MDL_cond = toObject(get("MDL_cond"));
+        MDL_draw = toObject(get("MDL_draw"));
         MDL_effect = toObject(get("MDL_effect"));
         MDL_prop = toObject(get("MDL_prop"));
         MDL_reaction = toObject(get("MDL_reaction"));

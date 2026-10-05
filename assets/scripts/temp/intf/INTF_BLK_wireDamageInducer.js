@@ -45,7 +45,7 @@
         let b = GLB_var.world.buildWorld(x1, y1);
         let b_t = GLB_var.world.buildWorld(x2, y2);
         if(b == null || b_t == null || b.power == null || b_t.power == null) return 0.0;
-        return Math.max(b.power.status, b_t.power.status) * LCDrawf.getLaserA(blk.ex_getWireStrokeScl(), false, false, true);
+        return Math.max(b.power.status, b_t.power.status) * LCDrawf.getLaserA(blk.self.ex_getWireStrokeScl(), false, false, true);
     };
 
 
@@ -58,7 +58,7 @@
         if(Vars.net.client() || !GLB_timer.secQuarter) return;
         let dmg = b.block.delegee.wireTouchDmg * b.power.status;
         if(dmg < 0.0001) return;
-        let b_t = b.ex_findWireTarget();
+        let b_t = b.self.ex_findWireTarget();
         if(b_t == null || b_t.power == null || b_t.power < 0.01) return;
         let unit = LCRaycastf.findUnit(b.x, b.y, b_t.x, b_t.y, ounit => MDL_cond.isUnitBoosting(ounit));
         if(unit == null) return;

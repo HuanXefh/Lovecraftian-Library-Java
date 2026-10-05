@@ -342,7 +342,7 @@
 
         showFadeIn();
 
-        Time.run(GLB_var.delay.gameLoad.setNoise, () => {
+        MDL_event.onDelayRun(GLB_var.delay.gameLoad.setNoise, () => {
             updateNoiseArgs();
         });
 

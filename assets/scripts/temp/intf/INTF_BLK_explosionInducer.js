@@ -28,7 +28,8 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.exploLiq = MDL_content.getCt(blk.exploLiq, ContentGetModes.RS);
+        // noinspection JSValidateTypes
+        blk.delegee.exploLiq = MDL_content.getCt(blk.delegee.exploLiq, ContentGetModes.RS);
     };
 
 
@@ -38,7 +39,7 @@
      * @return {void}
      */
     function comp_load(blk) {
-        blk.exploSe = fetchSound(blk.exploSe);
+        blk.delegee.exploSe = fetchSound(blk.delegee.exploSe);
     };
 
 
@@ -48,34 +49,34 @@
      * @return {void}
      */
     function comp_ex_createExplosion(b) {
-        let dmg = b.block.ex_calcExploDmg(b);
+        let dmg = b.block.self.ex_calcExploDmg(b);
         if(dmg > 0.0) {
-            Damage.damage(b.x, b.y, b.block.ex_calcExploRad(b), dmg);
+            Damage.damage(b.x, b.y, b.block.self.ex_calcExploRad(b), dmg);
         };
         b.block.delegee.exploEff.at(b);
         b.block.delegee.exploSe.at(b);
-        let liq = b.block.ex_findExploLiq(b);
+        let liq = b.block.self.ex_findExploLiq(b);
         if(liq != null) {
             let
                 i = 0,
-                iCap = b.block.ex_calcExploPuddleAmt(b),
+                iCap = b.block.self.ex_calcExploPuddleAmt(b),
                 t,
-                liqAmt = b.block.ex_calcExploPuddleLiqAmt(b);
+                liqAmt = b.block.self.ex_calcExploPuddleLiqAmt(b);
             while(i < iCap) {
-                Tmp.v1.trns(Mathf.random(360.0), Mathf.random(b.block.ex_calcExploPuddleRad()));
-                t = Vars.Vars.tileWorld(b.x + Tmp.v1.x, b.y + Tmp.v1.y);
+                Tmp.v1.trns(Mathf.random(360.0), Mathf.random(b.block.self.ex_calcExploPuddleRad()));
+                t = GLB_var.world.tileWorld(b.x + Tmp.v1.x, b.y + Tmp.v1.y);
                 if(t != null) {
                     Puddles.deposit(t, liq, liqAmt);
                 };
                 i++;
             };
         };
-        let shake = b.block.ex_calcExploShake(b);
+        let shake = b.block.self.ex_calcExploShake(b);
         if(shake > 0.0) {
-            MDL_effect.shake(b.x, b.y, shake, b.block.ex_calcExploShakeDur(b));
+            MDL_effect.shake(b.x, b.y, shake, b.block.self.ex_calcExploShakeDur(b));
         };
         if(b.block.delegee.hasImpactOnExplosion) {
-            FRAG_attack.impact(b.x, b.y, b.block.ex_calcExploDmg(b) * 0.5, 480.0, b.block.ex_calcExploRad(b), 0.0, 0.0);
+            FRAG_attack.impact(b.x, b.y, b.block.self.ex_calcExploDmg(b) * 0.5, 480.0, b.block.self.ex_calcExploRad(b), 0.0, 0.0);
         };
     };
 
@@ -195,8 +196,8 @@
 
 
             drawPlace: function(tx, ty, rot, valid) {
-                if(this.exploDmg > 0.0) {
-                    LCDrawf.diskWarning(tx.toFCoord(this.size), ty.toFCoord(this.size), this.exploRad);
+                if(this.delegee.exploDmg > 0.0) {
+                    LCDrawf.diskWarning(tx.toFCoord(this.size), ty.toFCoord(this.size), this.delegee.exploRad);
                 };
             },
 
@@ -209,7 +210,7 @@
              * @return {number}
              */
             ex_calcExploDmg: function(b) {
-                return this.exploDmg;
+                return this.delegee.exploDmg;
             }
             .setProp({
                 noSuper: true,
@@ -225,7 +226,7 @@
              * @return {number}
              */
             ex_calcExploRad: function(b) {
-                return this.exploRad;
+                return this.delegee.exploRad;
             }
             .setProp({
                 noSuper: true,
@@ -241,7 +242,7 @@
              * @return {Liquid|null}
              */
             ex_findExploLiq: function(b) {
-                return this.exploLiq;
+                return this.delegee.exploLiq;
             }
             .setProp({
                 noSuper: true,
@@ -257,7 +258,7 @@
              * @return {number}
              */
             ex_calcExploPuddleAmt: function(b) {
-                return this.exploPuddleAmt;
+                return this.delegee.exploPuddleAmt;
             }
             .setProp({
                 noSuper: true,
@@ -273,7 +274,7 @@
              * @return {number}
              */
             ex_calcExploPuddleRad: function(b) {
-                return this.exploPuddleRad;
+                return this.delegee.exploPuddleRad;
             }
             .setProp({
                 noSuper: true,
@@ -289,7 +290,7 @@
              * @return {number}
              */
             ex_calcExploPuddleLiqAmt: function(b) {
-                return this.exploPuddleLiqAmt;
+                return this.delegee.exploPuddleLiqAmt;
             }
             .setProp({
                 noSuper: true,
@@ -305,7 +306,7 @@
              * @return {number}
              */
             ex_calcExploShake: function(b) {
-                return this.exploShake;
+                return this.delegee.exploShake;
             }
             .setProp({
                 noSuper: true,
@@ -321,7 +322,7 @@
              * @return {number}
              */
             ex_calcExploShakeDur: function(b) {
-                return this.exploShakeDur;
+                return this.delegee.exploShakeDur;
             }
             .setProp({
                 noSuper: true,
@@ -339,15 +340,15 @@
 
 
             onDestroyed: function() {
-                if(this.ex_shouldExplodeOnDestroyed()) {
-                    this.ex_createExplosion();
+                if(this.self.ex_shouldExplodeOnDestroyed()) {
+                    this.self.ex_createExplosion();
                 };
             },
 
 
             drawSelect: function() {
-                if(this.block.ex_calcExploDmg(this) > 0.0) {
-                    LCDrawf.diskWarning(this.x, this.y, this.block.ex_calcExploRad(this));
+                if(this.block.self.ex_calcExploDmg(this) > 0.0) {
+                    LCDrawf.diskWarning(this.x, this.y, this.block.self.ex_calcExploRad(this));
                 };
             },
 

@@ -83,7 +83,7 @@
 
 
   function comp_drawConfigure(b) {
-    Drawf.circles(b.x, b.y, b.block.size * Vars.tilesize * 0.5 + 1.0 + Mathf.absin(Time.time, 4.0, 1.0));
+    Drawf.circles(b.x, b.y, b.block.size * Vars.tilesize * 0.5 + 1.0 + Mathf.absin(GLB_var.time, 4.0, 1.0));
     b.block.ex_drawRange(b.x, b.y, true);
     b.ex_drawLinkTargets();
   };

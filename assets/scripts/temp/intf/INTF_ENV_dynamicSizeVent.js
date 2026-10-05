@@ -33,13 +33,13 @@
      */
     function comp_init(blk) {
         blk.blendGroup = blk.parent;
-        if(blk.setupVanillaProp) {
+        if(blk.delegee.setupVanillaProp) {
             blk.speedMultiplier = blk.parent.speedMultiplier;
         };
 
-        blk.ventSize = Math.round(Mathf.clamp(blk.ventSize, 1, 6));
-        blk.ventOffs = LCPos.sizeOffs[blk.ventSize];
-        blk.ventOffDraw = blk.ventSize % 2 === 0 ? 4.0 : 0.0;
+        blk.delegee.ventSize = Math.round(Mathf.clamp(blk.delegee.ventSize, 1, 6));
+        blk.delegee.ventOffs = LCPos.sizeOffs[blk.delegee.ventSize];
+        blk.delegee.ventOffDraw = blk.delegee.ventSize % 2 === 0 ? 4.0 : 0.0;
 
         if(blk.parent !== Blocks.air) {
             // Set vent color to darkened version of floor color
@@ -55,7 +55,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(fetchStat("lovec", "blk0env-ventsize"), "${1}x${1}".format(blk.ventSize));
+        stats.add(fetchStat("lovec", "blk0env-ventsize"), "${1}x${1}".format(blk.delegee.ventSize));
     };
 
 
@@ -69,7 +69,7 @@
         if(!blk.isCenterVent(t)) return;
 
         let ot;
-        blk.ventOffs.forEachFast(pon2 => {
+        blk.delegee.ventOffs.forEachFast(pon2 => {
             ot = t.nearby(pon2);
             if(ot != null) {
                 blk.parent.drawBase(ot);
@@ -77,7 +77,7 @@
         }, true);
 
         processZ(GLB_var.layer.vent);
-        Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx() + blk.ventOffDraw, t.worldy() + blk.ventOffDraw);
+        Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx() + blk.delegee.ventOffDraw, t.worldy() + blk.delegee.ventOffDraw);
         processZ(null);
     };
 
@@ -102,9 +102,9 @@
     function comp_renderUpdate(blk, renderState) {
         let t = renderState.tile;
         if(blk.isCenterVent(t)) {
-            blk.ex_onVentUpdate(t, t.block() !== Blocks.air);
+            blk.self.ex_onVentUpdate(t, t.block() !== Blocks.air);
             if(t.block() === Blocks.air && (renderState.data += Time.delta) >= blk.effectSpacing) {
-                blk.effect.at(t.worldx() + blk.ventOffDraw, t.worldy() + blk.ventOffDraw);
+                blk.effect.at(t.worldx() + blk.delegee.ventOffDraw, t.worldy() + blk.delegee.ventOffDraw);
                 renderState.data = 0.0;
             };
         };
@@ -120,11 +120,11 @@
     function comp_checkAdjacent(blk, t) {
         let
             i = 0,
-            iCap = blk.ventOffs.iCap(),
+            iCap = blk.delegee.ventOffs.iCap(),
             ot;
 
         while(i < iCap) {
-            ot = GLB_var.world.tile(t.x + blk.ventOffs[i].x, t.y + blk.ventOffs[i].y);
+            ot = GLB_var.world.tile(t.x + blk.delegee.ventOffs[i].x, t.y + blk.delegee.ventOffs[i].y);
             if(ot == null || ot.floor() !== blk) return false;
             i++;
         };

@@ -1,3 +1,18 @@
+/** mindustry.game.Interval */
+declare class Interval {
+    constructor()
+    constructor(cap: number)
+
+    get(time: number): boolean
+    get(id: number, time: number): boolean
+    check(id: number, time: number): boolean
+    reset(id: number, time: number): void
+    clear(): void
+    getTime(id: number): number
+    getTimes(id: number): Array<number>
+}
+
+
 /** mindustry.game.Waves */
 declare class Waves {}
 

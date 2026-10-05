@@ -28,14 +28,14 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
+        if(blk.delegee.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
 
         if(blk instanceof AttributeCrafter) {
             blk.displayEfficiency = false;
         };
 
         let hasDynaAttrItem = false, hasDynaAttrLiq = false;
-        blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
+        blk.delegee.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
             if(hasDynaAttrItem && cond2) return;
             let rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
             if(rs == null) return;
@@ -43,25 +43,25 @@
             if(!hasDynaAttrLiq) hasDynaAttrLiq = rs instanceof Liquid;
         }, true);
         if(hasDynaAttrItem) {
-            blk.hasDynaAttrItem = true;
+            blk.delegee.hasDynaAttrItem = true;
         };
         if(hasDynaAttrLiq) {
-            blk.hasDynaAttrLiq = true;
+            blk.delegee.hasDynaAttrLiq = true;
             blk.outputsLiquid = true;
         };
 
         MDL_event.onLoadPost(() => {
             let rs;
-            blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
+            blk.delegee.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
                 rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
                 if(rs == null) return;
                 rs instanceof Item ?
-                    MDL_recipeDict.addItemProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs), 1.0, {time: blk.ex_getCraftTime() / blk.dynaAttrRsEffcMap.get(rs.name, 1.0)}) :
-                    MDL_recipeDict.addFldProdTerm(blk, rs, blk.ex_getDynaAttrProdAmt(rs) * blk.dynaAttrRsEffcMap.get(rs.name, 1.0));
+                    MDL_recipeDict.addItemProdTerm(blk, rs, blk.self.ex_getDynaAttrProdAmt(rs), 1.0, {time: blk.self.ex_getCraftTime() / blk.delegee.dynaAttrRsEffcMap.get(rs.name, 1.0)}) :
+                    MDL_recipeDict.addFldProdTerm(blk, rs, blk.self.ex_getDynaAttrProdAmt(rs) * blk.delegee.dynaAttrRsEffcMap.get(rs.name, 1.0));
             }, true);
         });
 
-        MOD_tmi.regisRc_dynamicAttributeBlock(blk, blk.attrRsArr, blk.ex_getDynaAttrProdTypeStr());
+        MOD_tmi.regisRc_dynamicAttributeBlock(blk, blk.delegee.attrRsArr, blk.self.ex_getDynaAttrProdTypeStr());
     };
 
 
@@ -75,16 +75,16 @@
         stats.remove(Stat.tiles);
         stats.remove(Stat.affinities);
 
-        if(blk.hasDynaAttrItem && !blk.ex_getDynaAttrBaseAmt_item().fEqual(0.0)) {
-            stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_item() / blk.ex_getCraftTime(), StatUnit.itemsSecond);
+        if(blk.delegee.hasDynaAttrItem && !blk.self.ex_getDynaAttrBaseAmt_item().fEqual(0.0)) {
+            stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.self.ex_getDynaAttrBaseAmt_item() / blk.self.ex_getCraftTime(), StatUnit.itemsSecond);
         };
-        if(blk.hasDynaAttrLiq && !blk.ex_getDynaAttrBaseAmt_liq().fEqual(0.0)) {
-            stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.ex_getDynaAttrBaseAmt_liq() * 60.0, StatUnit.liquidSecond);
+        if(blk.delegee.hasDynaAttrLiq && !blk.self.ex_getDynaAttrBaseAmt_liq().fEqual(0.0)) {
+            stats.add(fetchStat("lovec", "blk0fac-prodspd"), blk.self.ex_getDynaAttrBaseAmt_liq() * 60.0, StatUnit.liquidSecond);
         };
 
         stats.add(fetchStat("lovec", "blk-attrreq"), newStatValue(tb => {
             tb.row();
-            MDL_table.setAttr(tb, MDL_attr.getAttrsInAttrRsArr(blk.attrRsArr));
+            MDL_table.setAttr(tb, MDL_attr.getAttrsInAttrRsArr(blk.delegee.attrRsArr));
         }));
         stats.add(fetchStat("lovec", "blk-attroutput"), newStatValue(tb => {
             tb.row();
@@ -96,10 +96,10 @@
                     MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
                 ]];
                 let rs;
-                blk.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
+                blk.delegee.attrRsArr.forEachRow(2, (nameAttr, nameRs) => {
                     rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
                     if(rs == null) return;
-                    matArr.push([rs, rs.localizedName, MDL_attr.getAttrBundle(nameAttr), blk.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
+                    matArr.push([rs, rs.localizedName, MDL_attr.getAttrBundle(nameAttr), blk.delegee.dynaAttrRsEffcMap.get(rs.name, 1.0).percColor(0)]);
                 }, true);
                 return matArr;
             })());
@@ -131,7 +131,7 @@
      * @return {boolean}
      */
     function comp_canPlaceOn(blk, t, team, rot) {
-        return t != null && blk.ex_getAttrSum(t.x, t.y, rot) > 0.0;
+        return t != null && blk.self.ex_getAttrSum(t.x, t.y, rot) > 0.0;
     };
 
 
@@ -145,11 +145,11 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
-        if(!blk.shouldDrawDynaAttrText) return;
+        if(!blk.delegee.shouldDrawDynaAttrText) return;
         LCDrawf.textPlace(
             blk, tx, ty,
-            Core.bundle.format("bar.efficiency", Math.round(blk.ex_getAttrSum(tx, ty, rot) / blk.ex_getAttrReq() * 100.0)),
-            valid, blk.dynaAttrTextOffTy,
+            Core.bundle.format("bar.efficiency", Math.round(blk.self.ex_getAttrSum(tx, ty, rot) / blk.self.ex_getAttrReq() * 100.0)),
+            valid, blk.delegee.dynaAttrTextOffTy,
         );
     };
 
@@ -166,7 +166,7 @@
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return 0.0;
         if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
-            let tup = MDL_attr.getDynaAttrTup(thisFun.tmpDynaAttrTup, blk.attrRsArr, blk.ex_findDynaAttrTs(blk.dynaAttrTmpTs, tx, ty, rot), blk.attrMode);
+            let tup = MDL_attr.getDynaAttrTup(thisFun.tmpDynaAttrTup, blk.delegee.attrRsArr, blk.self.ex_findDynaAttrTs(blk.delegee.dynaAttrTmpTs, tx, ty, rot), blk.delegee.attrMode);
             thisFun.tmpSum = tryVal(tup[1], 0.0);
         };
         return thisFun.tmpSum;
@@ -196,16 +196,16 @@
      * @return {void}
      */
     const comp_onProximityUpdate = function thisFun(b) {
-        b.dynaAttrTs = b.block.ex_findDynaAttrTs(b.dynaAttrTs, b.tileX(), b.tileY(), b.rotation);
-        let tup = MDL_attr.getDynaAttrTup(thisFun.tmpDynaAttrTup, b.block.delegee.attrRsArr, b.dynaAttrTs, b.block.delegee.attrMode);
+        b.delegee.dynaAttrTs = b.block.self.ex_findDynaAttrTs(b.delegee.dynaAttrTs, b.tileX(), b.tileY(), b.rotation);
+        let tup = MDL_attr.getDynaAttrTup(thisFun.tmpDynaAttrTup, b.block.delegee.attrRsArr, b.delegee.dynaAttrTs, b.block.delegee.attrMode);
         if(tup == null) {
-            b.dynaAttrSum = 0.0;
-            b.dynaAttrRs = null;
+            b.delegee.dynaAttrSum = 0.0;
+            b.delegee.dynaAttrRs = null;
         } else {
-            b.dynaAttrSum = tup[1];
-            b.dynaAttrRs = tup[2];
+            b.delegee.dynaAttrSum = tup[1];
+            b.delegee.dynaAttrRs = tup[2];
         };
-        b.dynaAttrEffc = b.dynaAttrSum / b.block.ex_getAttrReq();
+        b.delegee.dynaAttrEffc = b.delegee.dynaAttrSum / b.block.self.ex_getAttrReq();
     }
     .setProp({
         /**
@@ -222,9 +222,9 @@
      * @return {void}
      */
     function comp_pickedUp(b) {
-        b.dynaAttrSum = 0.0;
-        b.dynaAttrRs = null;
-        b.dynaAttrEffc = 0.0;
+        b.delegee.dynaAttrSum = 0.0;
+        b.delegee.dynaAttrRs = null;
+        b.delegee.dynaAttrEffc = 0.0;
     };
 
 
@@ -234,18 +234,18 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        if(b.dynaAttrRs == null) return;
-        if(b.dynaAttrRs instanceof Liquid && b.liquids != null) {
-            if(b.liquids.get(b.dynaAttrRs) < b.block.liquidCapacity) {
-                b.handleLiquid(b, b.dynaAttrRs, b.block.ex_getDynaAttrProdAmt(b.dynaAttrRs) * b.getProgressIncrease(1.0));
+        if(b.delegee.dynaAttrRs == null) return;
+        if(b.delegee.dynaAttrRs instanceof Liquid && b.liquids != null) {
+            if(b.liquids.get(b.delegee.dynaAttrRs) < b.block.liquidCapacity) {
+                b.handleLiquid(b, b.delegee.dynaAttrRs, b.block.self.ex_getDynaAttrProdAmt(b.delegee.dynaAttrRs) * b.getProgressIncrease(1.0));
             };
-            b.dumpLiquid(b.dynaAttrRs, 2.0);
+            b.dumpLiquid(b.delegee.dynaAttrRs, 2.0);
         };
-        if(b.dynaAttrRs instanceof Item && b.items != null) {
-            b.dumpTimeCur += b.delta();
-            if(b.dumpTimeCur >= b.block.dumpTime) {
-                b.dumpTimeCur %= b.block.dumpTime;
-                b.dump(b.dynaAttrRs);
+        if(b.delegee.dynaAttrRs instanceof Item && b.items != null) {
+            b.delegee.dumpTimeCur += b.delta();
+            if(b.delegee.dumpTimeCur >= b.block.dumpTime) {
+                b.delegee.dumpTimeCur %= b.block.dumpTime;
+                b.dump(b.delegee.dynaAttrRs);
             };
         };
     };
@@ -257,10 +257,10 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        b.efficiency *= b.dynaAttrEffc;
-        if(b.dynaAttrRs != null) {
+        b.efficiency *= b.delegee.dynaAttrEffc;
+        if(b.delegee.dynaAttrRs != null) {
             // noinspection JSValidateTypes
-            b.efficiency *= b.block.delegee.dynaAttrRsEffcMap.get(b.dynaAttrRs.name, 1.0);
+            b.efficiency *= b.block.delegee.dynaAttrRsEffcMap.get(b.delegee.dynaAttrRs.name, 1.0);
         };
     };
 
@@ -271,10 +271,10 @@
      * @return {boolean}
      */
     function comp_shouldConsume(b) {
-        return b.dynaAttrRs instanceof Liquid ?
-            (b.liquids != null && b.liquids.get(b.dynaAttrRs) < b.block.liquidCapacity) :
-            b.dynaAttrRs instanceof Item ?
-                (b.items != null && b.items.get(b.dynaAttrRs) <= b.getMaximumAccepted(b.dynaAttrRs) - b.block.ex_getDynaAttrProdAmt(b.dynaAttrRs)) :
+        return b.delegee.dynaAttrRs instanceof Liquid ?
+            (b.liquids != null && b.liquids.get(b.delegee.dynaAttrRs) < b.block.liquidCapacity) :
+            b.delegee.dynaAttrRs instanceof Item ?
+                (b.items != null && b.items.get(b.delegee.dynaAttrRs) <= b.getMaximumAccepted(b.delegee.dynaAttrRs) - b.block.self.ex_getDynaAttrProdAmt(b.delegee.dynaAttrRs)) :
                 true;
     };
 
@@ -306,8 +306,8 @@
      * @return {void}
      */
     function comp_ex_dynaAttrCraft(b) {
-        if(!(b.dynaAttrRs instanceof Item) || b.items == null) return;
-        FRAG_item.produceItem(b, b.dynaAttrRs, b.block.ex_getDynaAttrProdAmt(b.dynaAttrRs));
+        if(!(b.delegee.dynaAttrRs instanceof Item) || b.items == null) return;
+        FRAG_item.produceItem(b, b.delegee.dynaAttrRs, b.block.self.ex_getDynaAttrProdAmt(b.delegee.dynaAttrRs));
     };
 
 
@@ -500,7 +500,7 @@
              * @return {number}
              */
             ex_getAttrReq: function() {
-                return this.attrRcType === AttrRecipeTypes.PROP ? 1.0 : MDL_attr.getAttrReq(this.size, 1.0, this.attrRcType === AttrRecipeTypes.WALL);
+                return this.delegee.attrRcType === AttrRecipeTypes.PROP ? 1.0 : MDL_attr.getAttrReq(this.size, 1.0, this.delegee.attrRcType === AttrRecipeTypes.WALL);
             }
             .setProp({
                 noSuper: true,
@@ -520,8 +520,8 @@
                 return rs == null ?
                     0.0 :
                     rs instanceof Item ?
-                        this.ex_getDynaAttrBaseAmt_item() :
-                        this.ex_getDynaAttrBaseAmt_liq();
+                        this.self.ex_getDynaAttrBaseAmt_item() :
+                        this.self.ex_getDynaAttrBaseAmt_liq();
             }
             .setProp({
                 noSuper: true,
@@ -542,9 +542,9 @@
                     0.0 :
                     (
                         rs instanceof Item ?
-                            this.ex_getDynaAttrBaseAmt_item() / this.ex_getCraftTime() :
-                            this.ex_getDynaAttrBaseAmt_liq() * 60.0
-                    ) * this.dynaAttrRsEffcMap.get(rs.name, 1.0);
+                            this.self.ex_getDynaAttrBaseAmt_item() / this.self.ex_getCraftTime() :
+                            this.self.ex_getDynaAttrBaseAmt_liq() * 60.0
+                    ) * this.delegee.dynaAttrRsEffcMap.get(rs.name, 1.0);
             }
             .setProp({
                 noSuper: true,
@@ -590,7 +590,7 @@
              * @memberof INTF_BLK_dynamicAttributeBlock
              * @instance
              * @func
-             * @return {string|null}
+             * @return {String|null}
              */
             ex_getDynaAttrProdTypeStr: function() {
                 return null;

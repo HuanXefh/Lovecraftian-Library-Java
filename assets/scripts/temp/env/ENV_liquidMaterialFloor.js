@@ -9,7 +9,7 @@
 
 
     /**
-     * @typedef {TemplateInstance<Floor, ENV_baseFloor>} ENVBaseFloor
+     * @typedef {TemplateInstance<Floor, ENV_liquidMaterialFloor>} ENVLiquidMaterialFloor
      */
 
 
@@ -21,37 +21,37 @@
 
     /**
      * @private
-     * @param {ENVBaseFloor} blk
+     * @param {ENVLiquidMaterialFloor} blk
      * @return {void}
      */
     function comp_init(blk) {
         let liq = blk.liquidDrop;
 
-        if(blk.setupVanillaProp) {
+        if(blk.delegee.setupVanillaProp) {
             if(!Vars.headless && (blk.walkSound === Sounds.none || blk.walkSound === Sounds.unset)) {
                 blk.walkSound = DB_env.db["grpParam"]["floor"]["splashMaterial"].includes(blk.delegee.matGrp) ?
                     fetchSound("SOUNDS: stepWater") :
-                    fetchSound("se-step-" + blk.matGrp);
-                blk.walkSoundVolume = blk.defStepVol;
-                blk.walkSoundPitchMin = blk.defStepPitchMin;
-                blk.walkSoundPitchMax = blk.defStepPitchMax;
+                    fetchSound("se-step-" + blk.delegee.matGrp);
+                blk.walkSoundVolume = blk.delegee.defStepVol;
+                blk.walkSoundPitchMin = blk.delegee.defStepPitchMin;
+                blk.walkSoundPitchMax = blk.delegee.defStepPitchMax;
             };
 
             blk.isLiquid = true;
             if(blk.speedMultiplier.fEqual(1.0)) {
-                blk.speedMultiplier = blk.shallow ? blk.shallowDefSpdMtp : blk.deepDefSpdMtp;
+                blk.speedMultiplier = blk.shallow ? blk.delegee.shallowDefSpdMtp : blk.delegee.deepDefSpdMtp;
                 if(liq != null) {
                     blk.speedMultiplier *= LCLerp.applyInterp(
-                        1.0, blk.fullViscSpdMtp, liq.viscosity,
+                        1.0, blk.delegee.fullViscSpdMtp, liq.viscosity,
                         Interp.linear, 0.5, 1.0,
                     );
                 };
             };
             if(blk.drownTime.fEqual(0.0)) {
-                blk.drownTime = blk.shallow ? 0.0 : blk.defDrownTime;
+                blk.drownTime = blk.shallow ? 0.0 : blk.delegee.defDrownTime;
             };
             if(blk.status !== StatusEffects.none) {
-                blk.statusDuration = blk.defStaDur * (blk.shallow ? 1.0 : blk.staDurDeepMtp);
+                blk.statusDuration = blk.delegee.defStaDur * (blk.shallow ? 1.0 : blk.delegee.staDurDeepMtp);
             };
             blk.supportsOverlay = true;
 
@@ -59,17 +59,18 @@
                 blk.cacheLayer = DB_env.db["grpParam"]["floor"]["cacheLayer"].read(blk.delegee.matGrp, CacheLayer.water);
             };
             if(blk.albedo.fEqual(0.0)) {
-                blk.albedo = blk.defAlbedo;
+                blk.albedo = blk.delegee.defAlbedo;
             };
             if(blk.walkEffect === Fx.none) {
-                blk.walkEffect = blk.defStepEff;
+                blk.walkEffect = blk.delegee.defStepEff;
             };
 
             if(liq != null && blk.liquidMultiplier.fEqual(1.0)) {
-                blk.liquidMultiplier = blk.shallow ? blk.shallowDefLiqMtp : blk.deepDefLiqMtp;
+                blk.liquidMultiplier = blk.shallow ? blk.delegee.shallowDefLiqMtp : blk.delegee.deepDefLiqMtp;
             };
         };
-        DB_env.db["grpParam"]["floor"]["extraSetter"].read(blk.delegee.matGrp, Function.air)(blk, blk.setupVanillaProp);
+        // noinspection JSValidateTypes
+        DB_env.db["grpParam"]["floor"]["extraSetter"].read(blk.delegee.matGrp, Function.air)(blk, blk.delegee.setupVanillaProp);
 
         if(liq != null) {
             MDL_content.rename(
@@ -82,26 +83,26 @@
 
     /**
      * @private
-     * @param {ENVBaseFloor} blk
+     * @param {ENVLiquidMaterialFloor} blk
      * @param {Tile} t
      * @return {boolean}
      */
     function comp_updateRender(blk, t) {
-        return blk.updateEff !== Fx.none && Mathf.randomSeed(t.pos(), 0.0, 1.0) > blk.updateEffThr;
+        return blk.delegee.updateEff !== Fx.none && Mathf.randomSeed(t.pos(), 0.0, 1.0) > blk.delegee.updateEffThr;
     };
 
 
     /**
      * @private
-     * @param {ENVBaseFloor} blk
+     * @param {ENVLiquidMaterialFloor} blk
      * @param {Floor.UpdateRenderState} renderState
      * @return {void}
      */
     function comp_renderUpdate(blk, renderState) {
-        if(Mathf.chanceDelta(blk.updateEffP)) {
-            blk.updateEff.at(
-                renderState.tile.worldx() + Mathf.range(blk.updateEffSpread),
-                renderState.tile.worldy() + Mathf.range(blk.updateEffSpread),
+        if(Mathf.chanceDelta(blk.delegee.updateEffP)) {
+            blk.delegee.updateEff.at(
+                renderState.tile.worldx() + Mathf.range(blk.delegee.updateEffSpread),
+                renderState.tile.worldy() + Mathf.range(blk.delegee.updateEffSpread),
             );
         };
     };
@@ -131,33 +132,38 @@
 
 
         /**
-         * `PARAM`: See {@link ENV_materialFloor}.
+         * `PARAM`: See {@link ENV_materialFloor#matGrp}.
          * @memberof ENV_liquidMaterialFloor
          * @instance
+         * @type {string}
          */
         matGrp: "none",
         /**
          * `PARAM`: Effect shown when updating the floor.
          * @memberof ENV_liquidMaterialFloor
          * @instance
+         * @type {Effect}
          */
         updateEff: Fx.none,
         /**
          * `PARAM`: Chance for update effect.
          * @memberof ENV_liquidMaterialFloor
          * @instance
+         * @type {number}
          */
         updateEffP: 0.02,
         /**
          * `PARAM`: Spread radius of update effect.
          * @memberof ENV_liquidMaterialFloor
          * @instance
+         * @type {number}
          */
         updateEffSpread: 3.0,
         /**
          * `PARAM`: Affects intensity of update effect, larger value leads to fewer tiles being able to create the effect.
          * @memberof ENV_liquidMaterialFloor
          * @instance
+         * @type {number}
          */
         updateEffThr: 0.4,
 

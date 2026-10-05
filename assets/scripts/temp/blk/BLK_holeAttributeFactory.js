@@ -303,7 +303,7 @@
        * <br> `LATER`
        * @memberof BLK_holeAttributeFactory
        * @instance
-       * @return {string|null}
+       * @return {String|null}
        */
       ex_getHoleAttrProdTypeStr: function() {
         return null;

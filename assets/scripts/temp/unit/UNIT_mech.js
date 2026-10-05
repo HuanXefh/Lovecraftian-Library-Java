@@ -26,7 +26,7 @@
      * @return {void}
      */
     function comp_update(utp, unit) {
-        if(!GLB_param.IS_SPACE_MAP && GLB_timer.jetTrail && utp.jetTrailVelThr > 0.0 && unit.isFlying() && unit.vel.len() > utp.jetTrailVelThr) {
+        if(!GLB_param.IS_SPACE_MAP && GLB_timer.jetTrail && utp.delegee.jetTrailVelThr > 0.0 && unit.isFlying() && unit.vel.len() > utp.delegee.jetTrailVelThr) {
             MDL_effect.trailJet(unit.x, unit.y, unit);
         };
     };
@@ -53,7 +53,7 @@
 
 
         /**
-         * `PARAM`: Velocity threshold for jet trail. Use 0.0 to disable jet trail effect.
+         * `PARAM`: Velocity threshold for jet trail. Use 0.0 to disable jet trail effect. Value is empirical.
          * @memberof UNIT_mech
          * @instance
          * @type {number}

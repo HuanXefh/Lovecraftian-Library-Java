@@ -31,7 +31,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.armoredCableUpdater = new BLKArmoredCableUpdater(blk);
+        blk.delegee.armoredCableUpdater = new BLKArmoredCableUpdater(blk);
     };
 
 
@@ -41,7 +41,7 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.armoredCableBuildUpdater = new BArmoredCableUpdater(b.block.delegee.armoredCableUpdater, b);
+        b.delegee.armoredCableBuildUpdater = new BArmoredCableUpdater(b.block.delegee.armoredCableUpdater, b);
     };
 
 
@@ -104,7 +104,7 @@
 
 
             blends: function() {
-                return this.armoredCableUpdater.blends.apply(this.armoredCableUpdater, arguments);
+                return this.delegee.armoredCableUpdater.blends.apply(this.delegee.armoredCableUpdater, arguments);
             }
             .setProp({
                 noSuper: true,
@@ -113,7 +113,7 @@
 
 
             blendsArmored: function(t, rot, otx, oty, orot, oblk) {
-                return this.armoredCableUpdater.blendsArmored.apply(this.armoredCableUpdater, arguments);
+                return this.delegee.armoredCableUpdater.blendsArmored.apply(this.delegee.armoredCableUpdater, arguments);
             }
             .setProp({
                 noSuper: true,

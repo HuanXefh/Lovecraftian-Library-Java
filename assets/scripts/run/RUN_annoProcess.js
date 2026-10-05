@@ -62,7 +62,11 @@
                 if(name == "!UNDEF") {
                     name = field.getName();
                 };
-                eval(nameCls + "." + field.getName() + " = " + anno.source() + "." + name);
+                let scrStr = nameCls + "." + field.getName() + " = " + anno.source() + "." + name;
+                eval(scrStr);
+                if(anno.updated()) {
+                    MDL_event.onUpdate(() => eval(scrStr));
+                };
             }, true);
         }, true);
 

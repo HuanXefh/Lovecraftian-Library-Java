@@ -41,7 +41,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(Stat.basePowerGeneration, blk.powProd * 60.0, StatUnit.powerSecond);
+        stats.add(Stat.basePowerGeneration, blk.delegee.powProd * 60.0, StatUnit.powerSecond);
     };
 
 
@@ -52,14 +52,14 @@
      */
     function comp_setBars(blk) {
         if(!blk.hasPower) return;
-        if(blk.showPowProdBar) {
+        if(blk.delegee.showPowProdBar) {
             blk.addBar("poweroutput", b => new Bar(
                 prov(() => Core.bundle.format("bar.poweroutput", Strings.fixed(b.getPowerProduction() * 60.0 * tryProp(b.timeScale, b), 1))),
                 prov(() => Pal.powerBar),
                 () => b.delegee.powProdEffc,
             ));
         };
-        if(blk.showPowBalanceBar) {
+        if(blk.delegee.showPowBalanceBar) {
             blk.addBar("power", b => new Bar(
                 prov(() => Core.bundle.format("bar.powerbalance", (b.power.graph.getPowerBalance() >= 0.0 ? "+" : "") + (!isFinite(b.power.graph.getPowerBalance()) ? "-∞" : UI.formatAmount(b.power.graph.getPowerBalance() * 60.0)))),
                 prov(() => Pal.powerBar),
@@ -77,7 +77,7 @@
     function comp_getPowerProduction(b) {
         return !b.enabled || b.power == null ?
             0.0 :
-            b.block.ex_calcPowProd(b) * Math.max(b.powProdEffc, 0.0);
+            b.block.self.ex_calcPowProd(b) * Math.max(b.delegee.powProdEffc, 0.0);
     };
 
 

@@ -54,25 +54,25 @@
         if(sta.techNode != null) {
             stats.add(fetchStat("lovec", "spec-researchreq"), StatValues.items(false, sta.techNode.requirements));
         };
-        if(sta.childCts.length > 0) {
+        if(sta.delegee.childCts.length > 0) {
             stats.add(fetchStat("lovec", "spec-nodects"), newStatValue(tb => {
                 tb.row();
                 tb.table(Styles.none, tb1 => {
                     MDL_table.margin(tb1);
-                    MDL_table.setCtLi(tb, sta.childCts, {size: 48.0, ctDial: GLB_var.dialog.ct1}, {colAmt: 7});
+                    MDL_table.setCtLi(tb, sta.delegee.childCts, {size: 48.0, ctDial: GLB_var.dialog.ct1}, {colAmt: 7});
                 }).growX();
             }));
         };
-        if(sta.childRcs.length > 0) {
+        if(sta.delegee.childRcs.length > 0) {
             stats.add(fetchStat("lovec", "spec-nodercs"), newStatValue(tb => {
                 tb.row();
                 tb.table(Styles.none, tb1 => {
                     MDL_table.margin(tb1);
                     MDL_table.setIconLi(
                         tb1,
-                        sta.childRcs.map(rc => rc.altIcon),
-                        sta.childRcs.map(rc => [MDL_bundle.getTerm("lovec", "recipe-display"), tb => rc.displayTooltip(tb, true, rc.owner.localizedName)]),
-                        sta.childRcs.map(rc => () => Vars.ui.content.show(rc.owner)),
+                        sta.delegee.childRcs.map(rc => rc.altIcon),
+                        sta.delegee.childRcs.map(rc => [MDL_bundle.getTerm("lovec", "recipe-display"), tb => rc.displayTooltip(tb, true, rc.owner.localizedName)]),
+                        sta.delegee.childRcs.map(rc => () => Vars.ui.content.show(rc.owner)),
                         {size: 64.0},
                         {colAmt: 7},
                     );
@@ -92,11 +92,11 @@
             if(sta.techNode == null) {
                 console.warn("[LOVEC] Tech node ${1} has never been used in tech tree!".format(sta.name.color(Pal.accent)));
             } else {
-                appendChildren(sta.childCts, sta.techNode);
-                sta.childCts.sort((ct1, ct2) => ct2.id - ct1.id);
+                appendChildren(sta.delegee.childCts, sta.techNode);
+                sta.delegee.childCts.sort((ct1, ct2) => ct2.id - ct1.id);
             };
-            Time.run(GLB_var.delay.load.loadNodeRcs, () => {
-                sta.childRcs.pushAll(CLS_recipe.getNodeRcsMap().get(sta, Array.air));
+            MDL_event.onDelayRun(GLB_var.delay.load.loadNodeRcs, () => {
+                sta.delegee.childRcs.pushAll(CLS_recipe.getNodeRcsMap().get(sta, Array.air));
             });
         });
     };

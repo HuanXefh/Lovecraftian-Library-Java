@@ -112,7 +112,7 @@ public class LCScriptUtil {
 
 
     /**
-     * <code>checkTemplate(ct, tempName)</code>.
+     * <code>checkSubInsOfTemp(ct, tempName)</code>.
      */
     public static boolean checkTemplate(Object ct, String tempName) {
         NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
@@ -121,7 +121,7 @@ public class LCScriptUtil {
 
         return (boolean) Context.getContext().evaluateString(
             Vars.mods.getScripts().scope,
-            "checkCreatedByTemp(__javaInternal__['LCScriptUtil.checkTemplate.ct'], __javaInternal__['LCScriptUtil.checkTemplate.tempName'])",
+            "checkSubInsOfTemp(__javaInternal__['LCScriptUtil.checkTemplate.ct'], __javaInternal__['LCScriptUtil.checkTemplate.tempName'])",
             "LCScriptUtil_checkTemplate.js",
             0
         );

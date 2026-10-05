@@ -25,12 +25,12 @@
      * @return {void}
      */
     function comp_init(item) {
-        if(item.intmdParent != null) {
+        if(item.delegee.intmdParent != null) {
             if(item.flammability < 0.0001) {
-                item.flammability = item.intmdParent.flammability * 1.25;
+                item.flammability = item.delegee.intmdParent.flammability * 1.25;
             };
             if(item.explosiveness < 0.0001) {
-                item.explosiveness = item.intmdParent.explosiveness * 1.25;
+                item.explosiveness = item.delegee.intmdParent.explosiveness * 1.25;
             };
         };
     };

@@ -34,7 +34,7 @@
     function comp_init(blk) {
         blk.group = BlockGroup.drills;
 
-        if(blk.noSandOutput) {
+        if(blk.delegee.noSandOutput) {
             if(blk.blockedItems == null) {
                 blk.blockedItems = new Seq();
             };
@@ -47,19 +47,19 @@
             }, true);
         };
 
-        blk.itemWhitelist = blk.itemWhitelist.map(nameItem => MDL_content.getCt(nameItem, ContentGetModes.RS)).compact();
+        blk.delegee.itemWhitelist = blk.delegee.itemWhitelist.map(nameItem => MDL_content.getCt(nameItem, ContentGetModes.RS)).compact();
 
         MDL_event.onLoadPost(() => {
-            blk.hasItemCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
-            if(blk.drillItemDur < 0.0) {
-                blk.drillItemDur = blk.drillTime;
+            blk.delegee.hasItemCons = blk.findConsumer(blkCons => instanceOfAny(blkCons, ConsumeItems, ConsumeItemFilter)) != null;
+            if(blk.delegee.drillItemDur < 0.0) {
+                blk.delegee.drillItemDur = blk.drillTime;
             };
 
-            if(blk.shouldDropPay) {
+            if(blk.delegee.shouldDropPay) {
                 let oblk;
                 Vars.content.items().each(item => {
                     oblk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
-                    if(oblk == null || !blk.ex_canMine(oblk, item, 1.0)) return;
+                    if(oblk == null || !blk.self.ex_canMine(oblk, item, 1.0)) return;
                     MDL_recipeDict.addPayProdTerm(blk, oblk, Math.pow(blk.size, blk instanceof BeamDrill ? 1 : 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(item)) / oblk.requirements[0].amount, {icon: "lovec-icon-mining"});
                 });
             };
@@ -74,7 +74,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(blk.setupVanillaStat) {
+        if(blk.delegee.setupVanillaStat) {
             stats.remove(Stat.drillTier);
             stats.remove(Stat.drillSpeed);
 
@@ -92,18 +92,18 @@
                 tb.row();
                 MDL_table.setCtLi(tb, blk.blockedItems.toArray());
             }));
-        } else if(blk.itemWhitelist.length > 0) {
+        } else if(blk.delegee.itemWhitelist.length > 0) {
             stats.add(fetchStat("lovec", "blk0min-alloweditems"), newStatValue(tb => {
                 tb.row();
-                MDL_table.setCtLi(tb, blk.itemWhitelist);
+                MDL_table.setCtLi(tb, blk.delegee.itemWhitelist);
             }));
         };
 
-        if(blk.hasItemCons) {
-            stats.add(Stat.productionTime, blk.drillItemDur / 60.0, StatUnit.seconds);
+        if(blk.delegee.hasItemCons) {
+            stats.add(Stat.productionTime, blk.delegee.drillItemDur / 60.0, StatUnit.seconds);
         };
 
-        if(!blk.shouldDropPay) {
+        if(!blk.delegee.shouldDropPay) {
             stats.remove(fetchStat("lovec", "blk0fac-payroom"));
         };
     };
@@ -115,7 +115,7 @@
      * @return {void}
      */
     function comp_setBars(blk) {
-        if(blk.shouldDropPay) {
+        if(blk.delegee.shouldDropPay) {
             blk.addBar("lovec-pay-mine-prog", b => new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.delegee.payChargeFrac.perc(0))),
                 prov(() => Pal.ammo),
@@ -137,13 +137,13 @@
         if(blk.blockedItems != null && blk.blockedItems.size > 0) {
             if(blk.blockedItems.contains(item)) return false;
         } else {
-            if(blk.itemWhitelist.length > 0 && !blk.itemWhitelist.includes(item)) return false;
+            if(blk.delegee.itemWhitelist.length > 0 && !blk.delegee.itemWhitelist.includes(item)) return false;
         };
-        if(blk.shouldDropPay) {
+        if(blk.delegee.shouldDropPay) {
             let payBlk = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
             if(payBlk == null || !payBlk.supportsEnv(Vars.state.rules.env)) return false;
         };
-        return blk.ex_calcDropHardness(oblk, item) <= blk.tier * tierMtp;
+        return blk.self.ex_calcDropHardness(oblk, item) <= blk.tier * tierMtp;
     };
 
 
@@ -154,7 +154,7 @@
      */
     function comp_created(b) {
         if(b.block.delegee.shouldDropPay) {
-            b.hasPayOutput = true;
+            b.delegee.hasPayOutput = true;
         };
     };
 
@@ -166,9 +166,9 @@
      */
     function comp_updateTile(b) {
         if(b.block.delegee.hasItemCons) {
-            b.drillItemProg += b.edelta();
-            if(b.drillItemProg >= b.block.delegee.drillItemDur) {
-                b.drillItemProg %= b.block.delegee.drillItemDur;
+            b.delegee.drillItemProg += b.edelta();
+            if(b.delegee.drillItemProg >= b.block.delegee.drillItemDur) {
+                b.delegee.drillItemProg %= b.block.delegee.drillItemDur;
                 b.consume();
                 MDL_effect.showAt(b.x, b.y, b.block.delegee.consEff, 0.0);
             };
@@ -189,12 +189,12 @@
         };
         let blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
         if(blkTarget == null) return;
-        LCNativeObject.numIncre(b.payChargeObj, item.name);
-        if(b.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {
-            b.payChargeObj[item.name] %= blkTarget.requirements[0].amount;
-            LCNativeObject.numIncre(b.payStockObj, blkTarget.name);
+        LCNativeObject.numIncre(b.delegee.payChargeObj, item.name);
+        if(b.delegee.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {
+            b.delegee.payChargeObj[item.name] %= blkTarget.requirements[0].amount;
+            LCNativeObject.numIncre(b.delegee.payStockObj, blkTarget.name);
         };
-        b.payChargeFrac = b.payChargeObj[item.name] / blkTarget.requirements[0].amount;
+        b.payChargeFrac = b.delegee.payChargeObj[item.name] / blkTarget.requirements[0].amount;
     };
 
 
@@ -379,7 +379,7 @@
                         this.size :
                         1;
                 return noAmtMtp ?
-                    Math.round(amt * this.drillAmtMtp) :
+                    Math.round(amt * this.delegee.drillAmtMtp) :
                     amt;
             }
             .setProp({
@@ -397,7 +397,7 @@
              * @lovecAttached
              */
             ex_getRcDictOutputScl: function() {
-                return this.ex_getEachRoundOutputAmt(false) / this.ex_getEachRoundOutputAmt(true);
+                return this.self.ex_getEachRoundOutputAmt(false) / this.self.ex_getEachRoundOutputAmt(true);
             }
             .setProp({
                 noSuper: true,
@@ -523,17 +523,17 @@
 
 
             write: function(wr) {
-                wr.f(this.drillItemProg);
-                MDL_io.objStrNum(wr, this.payChargeObj);
+                wr.f(this.delegee.drillItemProg);
+                MDL_io.objStrNum(wr, this.delegee.payChargeObj);
             },
 
 
             read: function(rd, revi) {
-                if(this.LCReviSub >= 2) {
-                    this.drillItemProg = rd.f();
+                if(this.delegee.LCReviSub >= 2) {
+                    this.delegee.drillItemProg = rd.f();
                 };
-                if(this.LCReviSub >= 1) {
-                    MDL_io.objStrNum(rd, this.payChargeObj);
+                if(this.delegee.LCReviSub >= 1) {
+                    MDL_io.objStrNum(rd, this.delegee.payChargeObj);
                 };
             },
 

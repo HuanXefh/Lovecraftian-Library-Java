@@ -135,7 +135,7 @@ declare class HoverPart extends DrawPart {
 /** mindustry.entities.part.RegionPart */
 declare class RegionPart extends DrawPart {
     suffix: string;
-    name: string|null;
+    name: String|null;
     mirror: boolean;
     outline: boolean;
     replaceOutline: boolean;

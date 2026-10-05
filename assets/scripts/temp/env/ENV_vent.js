@@ -26,14 +26,14 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.setupVanillaProp) {
+        if(blk.delegee.setupVanillaProp) {
             if(blk.itemDrop == null) {
                 blk.itemDrop = blk.parent.itemDrop;
                 blk.playerUnmineable = blk.parent.playerUnmineable;
             };
         };
 
-        switch(blk.ventRs) {
+        switch(blk.delegee.ventRs) {
             case "none" :
                 // Do nothing
                 break;
@@ -48,13 +48,14 @@
                 break;
 
             default :
-                blk.rsDrop = MDL_content.getCt(blk.ventRs, ContentGetModes.RS);
-                if(blk.rsDrop != null) {
-                    blk.effect = TP_effect.smogVent({color: blk.rsDrop.color});
+                // noinspection JSValidateTypes
+                blk.delegee.rsDrop = MDL_content.getCt(blk.delegee.ventRs, ContentGetModes.RS);
+                if(blk.delegee.rsDrop != null) {
+                    blk.effect = TP_effect.smogVent({color: blk.delegee.rsDrop.color});
                     blk.effectSpacing = 20.0;
                     MDL_content.rename(
                         blk,
-                        blk.rsDrop.localizedName + MDL_text.getSpace() + MDL_bundle.getTerm("lovec", "vent") + MDL_text.getSpace() + "(" + blk.parent.localizedName + ")",
+                        blk.delegee.rsDrop.localizedName + MDL_text.getSpace() + MDL_bundle.getTerm("lovec", "vent") + MDL_text.getSpace() + "(" + blk.parent.localizedName + ")",
                     );
                 };
         };
@@ -69,8 +70,8 @@
      * @return {void}
      */
     function comp_onVentUpdate(blk, t, isBlocked) {
-        if(blk.ventRs === "fire" && Mathf.chanceDelta(0.003)) {
-            Damage.createIncend(t.worldx() + blk.ventOffDraw, t.worldy() + blk.ventOffDraw, blk.ventSize * Vars.tilesize * 0.65, 1);
+        if(blk.delegee.ventRs === "fire" && Mathf.chanceDelta(0.003)) {
+            Damage.createIncend(t.worldx() + blk.delegee.ventOffDraw, t.worldy() + blk.delegee.ventOffDraw, blk.delegee.ventSize * Vars.tilesize * 0.65, 1);
         };
     };
 
@@ -162,6 +163,7 @@
          * @instance
          * @func
          * @return {Liquid|null}
+         * @lovecAttached
          */
         ex_getRsDrop: function() {
             return this.rsDrop;

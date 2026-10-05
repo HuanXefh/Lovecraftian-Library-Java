@@ -28,15 +28,15 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.selectionQueue.pushAll(blk.ex_findSelectionTargets());
+        blk.delegee.selectionQueue.pushAll(blk.self.ex_findSelectionTargets());
 
         blk.configurable = true;
         blk.saveConfig = false;
         blk.clearOnDoubleTap = false;
 
         blk.config(JAVA.string, (b, str) => {
-            b.ex_accCtTargets(str, false);
-            b.ex_onSelectorUpdate();
+            b.self.ex_accCtTargets(str, false);
+            b.self.ex_onSelectorUpdate();
             GLB_eff.fadePlacePack[blk.size].at(b);
         });
         blk.config(JAVA.object_arr, (b, cfgArr) => {
@@ -49,17 +49,17 @@
                     while(i < iCap) {
                         ct = MDL_content.getCt(cfgArr[i], null, true);
                         if(ct != null) {
-                            b.ex_accCtTargets(ct, true);
+                            b.self.ex_accCtTargets(ct, true);
                         };
                         i++;
                     };
-                    b.ex_onSelectorConfigLoad(cfgArr);
+                    b.self.ex_onSelectorConfigLoad(cfgArr);
                     GLB_eff.fadePlacePack[blk.size].at(b);
                     break;
 
                 case "selector" :
-                    b.ex_accCtTargets(cfgArr[1], cfgArr[2]);
-                    b.ex_onSelectorUpdate();
+                    b.self.ex_accCtTargets(cfgArr[1], cfgArr[2]);
+                    b.self.ex_onSelectorUpdate();
                     GLB_eff.fadePlacePack[blk.size].at(b);
                     break;
             };
@@ -73,7 +73,7 @@
      * @return {void}
      */
     function comp_updateTile(b) {
-        b.ex_updateDisplayedCtTarget();
+        b.self.ex_updateDisplayedCtTarget();
     };
 
 
@@ -84,7 +84,7 @@
      * @return {void}
      */
     function comp_buildConfiguration(b, tb) {
-        b.ex_buildSelector(tb);
+        b.self.ex_buildSelector(tb);
         tb.row();
         MDL_table.btnCfg(
             tb, b,
@@ -105,9 +105,9 @@
     function comp_ex_updateDisplayedCtTarget(b) {
         if(Vars.headless) return;
 
-        b.displayedCtTarget = b.ctTargets.length === 0 ?
+        b.delegee.displayedCtTarget = b.delegee.ctTargets.length === 0 ?
             null :
-            b.ctTargets[Math.floor((Time.globalTime / GLB_param.ICON_TAG_FLICKERING_INTERVAL) % b.ctTargets.length)];
+            b.delegee.ctTargets[Math.floor((Time.globalTime / GLB_param.ICON_TAG_FLICKERING_INTERVAL) % b.delegee.ctTargets.length)];
     };
 
 
@@ -120,7 +120,7 @@
     function comp_ex_buildSelector(b, tb) {
         MDL_table.setCtSelectMulti(
             tb, b.block, b.block.delegee.selectionQueue,
-            () => b.ex_accCtTargets("read", false), val => b.configure(val),
+            () => b.self.ex_accCtTargets("read", false), val => b.configure(val),
             null,
             {rowAmt: b.block.selectionRows, colAmt: b.block.selectionColumns, closeSelect: false},
         );
@@ -235,7 +235,7 @@
 
             config: function() {
                 return ["selectorBlock"]
-                .pushAll(this.ctTargets.map(ct => ct == null ? "null" : ct.name))
+                .pushAll(this.delegee.ctTargets.map(ct => ct == null ? "null" : ct.name))
                 .toJavaArr(JAVA.object);
             }
             .setProp({
@@ -256,15 +256,15 @@
             ex_accCtTargets: function(param, isAdd) {
                 switch(param) {
                     case "read" :
-                        return this.ctTargets;
+                        return this.delegee.ctTargets;
                     case "clear" :
                         this.block.lastConfig = "clear";
-                        return this.ctTargets.clear();
+                        return this.delegee.ctTargets.clear();
                 };
 
                 return isAdd ?
-                    this.ctTargets.pushUnique(param) :
-                    this.ctTargets.removeAll(param);
+                    this.delegee.ctTargets.pushUnique(param) :
+                    this.delegee.ctTargets.removeAll(param);
             }
             .setProp({
                 noSuper: true,
@@ -341,7 +341,7 @@
              * @return {void}
              */
             ex_drawSelected: function() {
-                LCDraw.contentIcon(this.x, this.y, this.displayedCtTarget, this.block.size, 0.75);
+                LCDraw.contentIcon(this.x, this.y, this.delegee.displayedCtTarget, this.block.size, 0.75);
             }
             .setProp({
                 noSuper: true,
@@ -357,9 +357,9 @@
              * @return {TextureRegion|null}
              */
             ex_getRcIcon: function() {
-                return this.displayedCtTarget == null ?
+                return this.delegee.displayedCtTarget == null ?
                     null :
-                    this.displayedCtTarget.uiIcon;
+                    this.delegee.displayedCtTarget.uiIcon;
             }
             .setProp({
                 noSuper: true,
@@ -378,10 +378,10 @@
                 processData(
                     wr0rd,
                     wr => {
-                        MDL_io.cts(wr, this.ctTargets);
+                        MDL_io.cts(wr, this.delegee.ctTargets);
                     },
                     rd => {
-                        MDL_io.cts(rd, this.ctTargets);
+                        MDL_io.cts(rd, this.delegee.ctTargets);
                     },
                 );
             }

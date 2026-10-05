@@ -3,15 +3,11 @@ package lovec.graphics;
 import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.Mathf;
-import arc.scene.ui.layout.Scl;
-import arc.util.Align;
 import arc.util.Nullable;
-import arc.util.pooling.Pools;
 import lovec.utils.LCVersionResolver;
 import lovec.utils.LCPos;
 import mindustry.gen.Building;
 import mindustry.Vars;
-import mindustry.graphics.Layer;
 
 /**
  * Elementary draw methods used in Lovec.
@@ -400,56 +396,6 @@ public class LCDraw {
         if(ct == null) return;
         TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         regionIcon(x, y, fullIcon);
-    };
-
-
-    /* <-------------------- text --------------------> */
-
-
-    /**
-     * Draws text.
-     */
-    public static void text(
-        float x, float y, @Nullable String str, Font font,
-        float sizeScl, Color color, int align, float offX, float offY, float offZ
-    ) {
-        if(str == null || str.isEmpty()) return;
-
-        float zPrev = Draw.z();
-        GlyphLayout layout = Pools.obtain(GlyphLayout.class, GlyphLayout::new);
-        boolean useInt = font.usesIntegerPositions();
-        Draw.z(Layer.playerName + 0.5f + offZ);
-        font.setUseIntegerPositions(false);
-        font.getData().setScale(0.25f / Scl.scl(1f) * sizeScl);
-        layout.setText(font, str);
-        font.setColor(color);
-        font.draw(str, x + offX, y + offY, 0f, align, false);
-        Draw.reset();
-        Draw.z(zPrev);
-
-        Pools.free(layout);
-        font.getData().setScale(1f);
-        font.setColor(Color.white);
-        font.setUseIntegerPositions(useInt);
-    };
-    // Overload
-    public static void text(
-        float x, float y, @Nullable String str, Font font,
-        float sizeScl, Color color, int align, float offX, float offY
-    ) {
-        text(x, y, str, font, sizeScl, color, align, offX, offY, 0f);
-    };
-    public static void text(
-        float x, float y, @Nullable String str, Font font,
-        float sizeScl, Color color, int align
-    ) {
-        text(x, y, str, font, sizeScl, color, align, 0f, 0f);
-    };
-    public static void text(
-        float x, float y, @Nullable String str, Font font,
-        float sizeScl, Color color
-    ) {
-        text(x, y, str, font, sizeScl, color, Align.center);
     };
 
 

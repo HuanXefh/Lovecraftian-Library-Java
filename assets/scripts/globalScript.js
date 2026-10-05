@@ -682,7 +682,7 @@
             let unit = Vars.player.unit();
             if(unit == null) return;
             Vars.state.rules.teams.get(unit.team).cheat = !Vars.state.rules.teams.get(unit.team).cheat;
-            Time.run(2.0, () => {
+            MDL_event.onDelayRun(2.0, () => {
                 console.log("[LOVEC] Cheat production: " + (Vars.state.rules.teams.get(unit.team).cheat ? "ON" : "OFF").color(Pal.accent));
             });
         }
@@ -701,7 +701,7 @@
             unit.hasEffect(StatusEffects.invincible) ?
                 unit.unapply(StatusEffects.invincible) :
                 unit.apply(StatusEffects.invincible, Number.fMax);
-            Time.run(2.0, () => {
+            MDL_event.onDelayRun(2.0, () => {
                 console.log("[LOVEC] Player invincibility: " + (unit.hasEffect(StatusEffects.invincible) ? "ON" : "OFF").color(Pal.accent));
             });
         }
@@ -716,7 +716,7 @@
         __cinv = function thisFun() {
             if(!__checkCheatState__()) return;
             thisFun.isOn = !thisFun.isOn;
-            Time.run(2.0, () => {
+            MDL_event.onDelayRun(2.0, () => {
                 console.log("[LOVEC] Core invincibility: " + (thisFun.isOn ? "ON" : "OFF").color(Pal.accent));
             });
         }

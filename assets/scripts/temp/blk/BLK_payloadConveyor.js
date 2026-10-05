@@ -104,7 +104,7 @@
 
 
       time: function() {
-        return this.ex_shouldOperate() ? Time.time : 0.0;
+        return this.ex_shouldOperate() ? GLB_var.time : 0.0;
       }
       .setProp({
         noSuper: true,

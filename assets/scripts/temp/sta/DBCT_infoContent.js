@@ -29,9 +29,9 @@
         stats.add(fetchStat("lovec", "spec-info"), newStatValue(tb => {
             tb.row();
             MDL_table.btnSmall(tb, "I", () => {
-                !sta.ex_checkDbctUnlocked() ?
-                  MDL_ui.showFadeInfo("lovec", "info-locked") :
-                  fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.nameInfo);
+                !sta.self.ex_checkDbctUnlocked() ?
+                    MDL_ui.showFadeInfo("lovec", "info-locked") :
+                    fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.delegee.nameInfo);
             })
             .left()
             .padLeft(28.0)
@@ -46,12 +46,12 @@
      * @return {void}
      */
     function comp_ex_init(sta) {
-        if(sta.nameInfo == null) throw new LCError.NullArgumentError(sta.name + ".nameInfo");
+        if(sta.delegee.nameInfo == null) throw new LCError.NullArgumentError(sta.name + ".nameInfo");
 
         sta.databaseCategory = "lovec-information";
         MDL_content.rename(
             sta,
-            MDL_bundle.getInfo(sta.minfo.mod.name, "content-" + sta.nameInfo),
+            MDL_bundle.getInfo(sta.minfo.mod.name, "content-" + sta.delegee.nameInfo),
         );
         MDL_event.onLoad(() => {
             if(!Vars.headless && !sta.uiIcon.found()) {

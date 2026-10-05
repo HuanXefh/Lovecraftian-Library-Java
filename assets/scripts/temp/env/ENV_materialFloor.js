@@ -9,7 +9,7 @@
 
 
     /**
-     * @typedef {TemplateInstance<Floor, ENV_baseFloor>} ENVBaseFloor
+     * @typedef {TemplateInstance<Floor, ENV_materialFloor>} ENVMaterialFloor
      */
 
 
@@ -21,56 +21,57 @@
 
     /**
      * @private
-     * @param {ENVBaseFloor} blk
+     * @param {ENVMaterialFloor} blk
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.matGrp === "SPEC: use parent") {
-            blk.matGrp = tryJsProp(blk.parent, "matGrp", "none");
+        if(blk.delegee.matGrp === "SPEC: use parent") {
+            blk.delegee.matGrp = tryJsProp(blk.parent, "matGrp", "none");
         };
 
-        if(blk.setupVanillaProp) {
-            if(!Vars.headless && blk.matGrp !== "none" && blk.walkSound === Sounds.unset) {
-                blk.walkSound = fetchSound("se-step-" + blk.matGrp);
+        if(blk.delegee.setupVanillaProp) {
+            if(!Vars.headless && blk.delegee.matGrp !== "none" && blk.walkSound === Sounds.unset) {
+                blk.walkSound = fetchSound("se-step-" + blk.delegee.matGrp);
             };
-            blk.walkSoundVolume = blk.defStepVol;
-            blk.walkSoundPitchMin = blk.defStepPitchMin;
-            blk.walkSoundPitchMax = blk.defStepPitchMax;
+            blk.walkSoundVolume = blk.delegee.defStepVol;
+            blk.walkSoundPitchMin = blk.delegee.defStepPitchMin;
+            blk.walkSoundPitchMax = blk.delegee.defStepPitchMax;
             if(blk.status !== StatusEffects.none) {
-                blk.statusDuration = blk.defStaDur;
+                blk.statusDuration = blk.delegee.defStaDur;
             };
             if(blk.speedMultiplier.fEqual(1.0)) {
-                blk.speedMultiplier = DB_env.db["grpParam"]["floor"]["speed"].read(blk.matGrp, 1.0);
+                blk.speedMultiplier = DB_env.db["grpParam"]["floor"]["speed"].read(blk.delegee.matGrp, 1.0);
             };
         };
-        DB_env.db["grpParam"]["floor"]["extraSetter"].read(blk.matGrp, Function.air)(blk, blk.setupVanillaProp);
+        // noinspection JSValidateTypes
+        DB_env.db["grpParam"]["floor"]["extraSetter"].read(blk.delegee.matGrp, Function.air)(blk, blk.delegee.setupVanillaProp);
 
         // Get random overlay regions by tags
         let randRegs = [];
-        blk.randRegs.forEachFast(tag => {
+        blk.delegee.randRegs.forEachFast(tag => {
             randRegs.pushNonNull((
                 Vars.headless ?
                     Function.air :
                     DB_env.db["map"]["randRegTag"].read(tag, Function.air)
             )());
         }, true);
-        blk.randRegs = randRegs;
+        blk.delegee.randRegs = randRegs;
     };
 
 
     /**
      * @private
-     * @param {ENVBaseFloor} blk
+     * @param {ENVMaterialFloor} blk
      * @param {Floor} t
      * @return {void}
      */
     function comp_drawBase(blk, t) {
         if(t.overlay() !== Blocks.air) return;
-        blk.randOvDrawnMap.clear();
-        let i = 0, iCap = blk.randRegs.iCap();
+        blk.delegee.randOvDrawnMap.clear();
+        let i = 0, iCap = blk.delegee.randRegs.iCap();
         while(i < iCap) {
-            if(!blk.randOvDrawnMap.get(t, false) && LCDrawf.randomOverlay(t, blk.randRegs[i], blk.randRegDenoms[i], blk.randRegOffs[0], blk.randRegOffs[1])) {
-                blk.randOvDrawnMap.put(t, true);
+            if(!blk.delegee.randOvDrawnMap.get(t, false) && LCDrawf.randomOverlay(t, blk.delegee.randRegs[i], blk.delegee.randRegDenoms[i], blk.delegee.randRegOffs[0], blk.delegee.randRegOffs[1])) {
+                blk.delegee.randOvDrawnMap.put(t, true);
             };
             i++;
         };

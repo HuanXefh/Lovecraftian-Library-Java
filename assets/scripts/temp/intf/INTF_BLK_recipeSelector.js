@@ -32,13 +32,13 @@
         blk.saveConfig = true;
         blk.clearOnDoubleTap = false;
 
-        blk.ex_addConfigM("rcHeader", (b, val) => {
+        blk.self.ex_addConfigM("rcHeader", (b, val) => {
             b.delegee.rcHeader = val;
-            b.ex_showRcChangeEff()
+            b.self.ex_showRcChangeEff()
         });
 
-        blk.ex_addLogicF(LogicProp.config, b => b.delegee.rcHeader);
-        blk.ex_addLogicControl(LogicProp.config, (b, param1) => {
+        blk.self.ex_addLogicF(LogicProp.config, b => b.delegee.rcHeader);
+        blk.self.ex_addLogicControl(LogicProp.config, (b, param1) => {
             if(typeof param1 === "string" && param1 !== b.delegee.rcHeader && MDL_recipe.checkHeaderValid(blk.rcMdl, param1)) {
                 b.configure(param1);
             };
@@ -56,10 +56,10 @@
         tb.row();
         MDL_table.setRcSelect(
             tb, b,
-            () => b.rcHeader, val => b.configure(val),
-            b.ex_getSelectorExtraBtnSetters(),
+            () => b.delegee.rcHeader, val => b.configure(val),
+            b.self.ex_getSelectorExtraBtnSetters(),
             null,
-            {colAmt: b.block.selectionColumns, closeSelect: false, useAutoSelection: b.blk$useAutoSelection},
+            {colAmt: b.block.selectionColumns, closeSelect: false, useAutoSelection: b.delegee.blk$useAutoSelection},
         );
     };
 
@@ -126,7 +126,7 @@
 
 
             config: function() {
-                return this.rcHeader;
+                return this.delegee.rcHeader;
             }
             .setProp({
                 noSuper: true,
@@ -143,11 +143,11 @@
              * @return {void}
              */
             ex_handleConfigStrDef: function(str) {
-                this.ex_updateRcParam(this.block.delegee.rcMdl, str, true);
-                this.ex_resetRcParam();
-                this.rcHeader = str;
-                if(!this.blk$useAutoSelection) {
-                    this.ex_showRcChangeEff();
+                this.self.ex_updateRcParam(this.block.delegee.rcMdl, str, true);
+                this.self.ex_resetRcParam();
+                this.delegee.rcHeader = str;
+                if(!this.delegee.blk$useAutoSelection) {
+                    this.self.ex_showRcChangeEff();
                 };
             }
             .setProp({

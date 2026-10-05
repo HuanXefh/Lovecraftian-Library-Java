@@ -35,18 +35,19 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.flrParent = MDL_content.getCt(blk.flrParent, ContentGetModes.BLK);
-        if(blk.flrParent != null) {
-            if(blk.flrParent.wall === Blocks.air) {
-                blk.flrParent.wall = blk
+        // noinspection JSValidateTypes
+        blk.delegee.flrParent = MDL_content.getCt(blk.delegee.flrParent, ContentGetModes.BLK);
+        if(blk.delegee.flrParent != null) {
+            if(blk.delegee.flrParent.wall === Blocks.air) {
+                blk.delegee.flrParent.wall = blk
             };
             MDL_content.rename(
                 blk,
-                blk.flrParent.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "wall") + ")",
+                blk.delegee.flrParent.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "wall") + ")",
             );
 
             // Set wall color to darkened version of floor color
-            blk.mapColor = blk.flrParent.mapColor.cpy().lerp(Color.black, DARK_LERP_A);
+            blk.mapColor = blk.delegee.flrParent.mapColor.cpy().lerp(Color.black, DARK_LERP_A);
         };
     };
 
@@ -73,10 +74,10 @@
 
 
         /**
-         * `PARAM`: Parent floor of this wall.
+         * `PARAM`: Parent floor of this wall. Converted to block on INIT.
          * @memberof ENV_wall
          * @instance
-         * @type {Floor|null}
+         * @type {string|Floor|null}
          */
         flrParent: null,
 

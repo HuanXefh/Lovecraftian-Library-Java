@@ -70,7 +70,7 @@
 
 
   function comp_created(b) {
-    Time.run(0.0, () => {
+    MDL_event.onDelayRun(0.0, () => {
       if(isNaN(b.warmup)) b.warmup = 0.0;
       if(isNaN(b.progress)) b.progress = 0.0;
     });

@@ -35,7 +35,7 @@ const db = {
          * Extra text information shown when mouse hovered over a tile, see {@link MDL_draw.extraInfo}.
          * Put string getters here to build final string. Yep, string only.
          * Tile won't be null here, and it's safe to return null, result will be skipped.
-         * @type {Array<F2Function<Tile, Building, string|null>>}
+         * @type {Array<F2Function<Tile, Building, String|null>>}
          */
         extraInfo: [
 
@@ -141,7 +141,7 @@ const db = {
                     } else {
                         graph.graphData.overloadTimeCur += Time.delta;
                     };
-                    if(graph.graphData.overloadTimeCur > GLB_var.time.powTransOverloadTime) {
+                    if(graph.graphData.overloadTimeCur > GLB_var.timeParam.powTransOverloadTime) {
                         graph.each(
                             (ob, vert) => ob.isAdded() && !ob.isPayload(),
                             (ob, vert) => ob.damagePierce(ob.maxHealth * GLB_var.param.shortCircuitDmgFrac / 30.0 * ob.block.delegee.transmitterOverloadDmgScl),
@@ -496,7 +496,7 @@ const db = {
         /**
          * Properties that are saved in a LSAV.
          * <br> `ROW`: header, def, arrMode.
-         * @type {F3Array<string, Object, string|null>}
+         * @type {F3Array<string, Object, String|null>}
          */
         header: [
 
@@ -528,7 +528,7 @@ const db = {
         /**
          * Properties that are saved in a PLSAV.
          * <br> `ROW`: header, def, arrMode.
-         * @type {F3Array<string, Object, string|null>}
+         * @type {F3Array<string, Object, String|null>}
          */
         pHeader: [
 

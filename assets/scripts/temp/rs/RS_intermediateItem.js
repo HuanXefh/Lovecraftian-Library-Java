@@ -25,13 +25,14 @@
      * @return {void}
      */
     function comp_init(item) {
-        item.intmdParent = MDL_content.getCt(item.intmdParent, ContentGetModes.RS);
-        item.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS)).compact();
+        // noinspection JSValidateTypes
+        item.delegee.intmdParent = MDL_content.getCt(item.delegee.intmdParent, ContentGetModes.RS);
+        item.delegee.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS)).compact();
 
-        item.ex_generateIntmdName();
+        item.self.ex_generateIntmdName();
 
-        if(item.intmdParent != null && item.hardness === 0) {
-            item.hardness = item.intmdParent.hardness;
+        if(item.delegee.intmdParent != null && item.hardness === 0) {
+            item.hardness = item.delegee.intmdParent.hardness;
         };
     };
 
@@ -47,7 +48,7 @@
         if(item.intmdParent != null) {
             stats.add(fetchStat("lovec", "rs0int-parent"), newStatValue(tb => {
                 tb.row();
-                MDL_table.setCtRow(tb, item.intmdParent);
+                MDL_table.setCtRow(tb, item.delegee.intmdParent);
             }));
         };
     };
@@ -103,7 +104,7 @@
          * @override
          * @memberof RS_intermediateItem
          * @instance
-         * @type {string|null}
+         * @type {String|null}
          */
         recolorRegStr: null,
 

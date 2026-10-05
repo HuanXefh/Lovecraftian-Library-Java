@@ -4,16 +4,24 @@ interface Sized extends Position {}
 
 /** mindustry.entities.Damage */
 declare class Damage {
-    static applySuppression(team: Team, x: number, y: number, rad: number, reload: number, maxDelay: number, effP: number, e_f: Position|null, effColor?: Color): void
+    static applySuppression(team: Team, x: number, y: number, rad: number, reload: number, maxDelay: number, effP: number, e_f: Position|null, effColor: Color): void
     static dynamicExplosion(x: number, y: number, flam: number, explo: number, charge: number, rad: number, dealDamage: boolean, exploEff?: Effect, baseShake?: number): void
     static dynamicExplosion(x: number, y: number, flam: number, explo: number, charge: number, rad: number, dealDamage: boolean, createFire: boolean, ignoreTeam: Team|null, exploEff?: Effect, baseShake?: number): void
     static createIncend(x: number, y: number, w: number, amt: number): void
+    /** @deprecated Added in v9. */
+    static absorbExplosion(team: Team|null, x: number, y: number, dmg: number): number
     static findAbsorber(team: Team, x1: number, y1: number, x2: number, y2: number): void
     static findLength(bul: Bullet, len: number, isLaser: boolean, pierceCap: number): number
+    /** @deprecated Removed in v9. */
     static findLaserLength(bul: Bullet, len: number): number
+    /** @deprecated Removed in v9. */
     static findPierceLength(bul: Bullet, pierceCap: number, isLaser: boolean, len: number): number
+    /** @deprecated Added in v9. */
+    static raycastRegularPolygon(sideAmt: number, cx: number, cy: number, rad: number, x1: number, y1: number, x2: number, y2: number): Vec2|null
+    /** @deprecated Added in v9. */
+    static findShieldLength(bul: Bullet, len: number, absorb: boolean): number
     static collideLaser(bul: Bullet, len: number, isLarge: boolean, isLaser: boolean, pierceCap: number): void
-    static collideLine(bul: Bullet, team: Team, x: number, y: number, ang: number, len: number, isLarge?: boolean, isLaser?: boolean, pierceCap?: number): void
+    static collideLine(bul: Bullet, team: Team, x: number, y: number, ang: number, len: number, isLarge: boolean, isLaser: boolean, pierceCap: number, absorb: boolean): void
     static collidePoint(bul: Bullet, team: Team, eff: Effect, x: number, y: number): void
     static lineCast(bul: Bullet, x: number, y: number, ang: number, len: number): Healthc
     static damageUnits(x: number, y: number, rad: number, dmg: number): void
@@ -25,7 +33,7 @@ declare class Damage {
     static damage(team: Team, x: number, y: number, rad: number, dmg: number, complete: boolean, targetAir: boolean, targetGound: boolean): void
     static damage(team: Team, x: number, y: number, rad: number, dmg: number, complete: boolean, targetAir: boolean, targetGound: boolean, scaled: boolean, bul: Bullet|null): void
     static damage(team: Team, x: number, y: number, rad: number, dmg: number, complete: boolean, targetAir: boolean, targetGound: boolean, scaled: boolean, bul: Bullet|null, armorMtp: number): void
-    static tileDamage(team: Team, tx: number, ty: number, baseRad: number, dmg: number, bul?: Bullet|null): void
+    static tileDamage(team: Team, tx: number, ty: number, baseRad: number, dmg: number, bul: Bullet|null): void
     static applyArmor(dmg: number, armor: number): number
 }
 declare namespace Damage {

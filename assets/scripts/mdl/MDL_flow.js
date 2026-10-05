@@ -42,7 +42,7 @@
      * Gets elementary group of a fluid, null if not found.
      * See {@link DB_fluid.db.group.elementary}.
      * @param {LiquidGn} liq_gn
-     * @returns {string|null}
+     * @returns {String|null}
      */
     const getEleGrp = function(liq_gn) {
         let liq = MDL_content.getCt(liq_gn, ContentGetModes.RS);
@@ -76,7 +76,7 @@
      * See {@link DB_block.db.group.material}.
      * <br> Not floor material in {@link ENV_materialFloor}!
      * @param {BlockGn} blk_gn
-     * @returns {string|null}
+     * @returns {String|null}
      */
     const getMatGrp = function(blk_gn) {
         let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);

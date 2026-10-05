@@ -26,8 +26,8 @@
      */
     function comp_init(rs) {
         // Ensure that some fields are loaded
-        rs.ex_getShortName();
-        rs.ex_getIntmdTags();
+        rs.self.ex_getShortName();
+        rs.self.ex_getIntmdTags();
 
         // Don't show resources that have no use
         MDL_event.onLoadDelay(30.0, () => {
@@ -73,20 +73,27 @@
             rs.fullIcon = rs.uiIcon = new TextureRegion();
         };
 
+        // Nightmare
+        if(global.lovecUtil.prop.secretEnchanted) {
+            rs.fullIcon.set(Core.atlas.find("lovec-gen-enchant-book"));
+            rs.uiIcon.set(Core.atlas.find("lovec-gen-enchant-book"));
+            return;
+        };
+
         // If recolored sprite is created, use it instead
-        if(rs.recolorRegStr != null) {
+        if(rs.delegee.recolorRegStr != null) {
             let reg = Core.atlas.find(rs.name + "-recolor");
             rs.fullIcon.set(reg);
             rs.uiIcon.set(reg);
         };
 
-        if(rs.skipIconTagGen) return;
-        let iCap = rs.alts;
+        if(rs.delegee.skipIconTagGen) return;
+        let iCap = rs.delegee.alts;
         if(iCap === 0) return;
 
         // Set up icon tag-based sprites
         let
-            regs = [!String.isEmpty(rs.parentRegStr) ? Core.atlas.find(rs.parentRegStr) : Core.atlas.find(rs.name)],
+            regs = [!String.isEmpty(rs.delegee.parentRegStr) ? Core.atlas.find(rs.delegee.parentRegStr) : Core.atlas.find(rs.name)],
             regInd;
         iCap.each(i => {
             regs.push(Core.atlas.find(rs.name + "-t" + (i + 1)));
@@ -110,21 +117,21 @@
      */
     function comp_createIcons(rs, packer) {
         // `rs.intmdParent` is still a string at this moment
-        let parent = !rs.useParentReg ? null : tryVal(rs.intmdParent, null);
+        let parent = !rs.delegee.useParentReg ? null : tryVal(rs.delegee.intmdParent, null);
         if(parent != null && !packer.has(parent)) {
             console.warn("[LOVEC] Can't find parent texture region:" + parent);
         };
         // Set resource color based on sprite color
-        if(!rs.skipColorAssign) {
+        if(!rs.delegee.skipColorAssign) {
             rs.color = MDL_color.getIconColor(rs.color, packer, tryVal(parent, rs));
         };
 
         let pixBase = packer.get(tryVal(parent, rs.name));
 
-        if(rs.recolorRegStr != null && parent != null && global.lovecUtil.prop.useRecolorSpr) {
+        if(rs.delegee.recolorRegStr != null && parent != null && global.lovecUtil.prop.useRecolorSpr) {
             // Generate recolored sprite
             let pix = MDL_texture.recolorPix(
-                packer.get(rs.recolorRegStr),
+                packer.get(rs.delegee.recolorRegStr),
                 packer.get(parent),
             );
             LCVersionResolver.isV8 ?
@@ -133,30 +140,30 @@
             pix.dispose();
             pixBase = packer.get(rs.name + "-recolor");
         } else {
-            rs.recolorRegStr = null;
+            rs.delegee.recolorRegStr = null;
         };
 
-        if(rs.skipIconTagGen) return;
-        let tags = rs.ex_getIntmdTags();
+        if(rs.delegee.skipIconTagGen) return;
+        let tags = rs.self.ex_getIntmdTags();
         if(tags.length === 0) return;
 
         // Generate icon tag-based sprites
         let alts = 0, pixCombine;
 
         if(parent != null) {
-            if(rs.recolorRegStr == null) {
+            if(rs.delegee.recolorRegStr == null) {
                 // No base sprite used for this intermediate, free unused space in atlas
                 LCVersionResolver.isV8 ?
                     packer.add(eval("MultiPacker.PageType.main"), rs.name, LCAirObjects.pixmap) :
                     packer.add(rs.name, LCAirObjects.pixmap);
-                rs.parentRegStr = parent;
+                rs.delegee.parentRegStr = parent;
             } else {
                 // The base sprite is a recolored version
-                rs.parentRegStr = rs.name + "-recolor";
+                rs.delegee.parentRegStr = rs.name + "-recolor";
             };
         };
 
-        if(rs.recolorRegStr != null && parent != null) {
+        if(rs.delegee.recolorRegStr != null && parent != null) {
             // For recolored sprites, always use parent as the icon tag
             pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, parent);
             LCVersionResolver.isV8 ?
@@ -184,7 +191,7 @@
         };
 
         // Extra resource sprites as icon tags, if used
-        rs.extraIntmdParents.forEachFast(nameRs => {
+        rs.delegee.extraIntmdParents.forEachFast(nameRs => {
             pixCombine = MDL_texture.stackPixWithCt(packer, pixBase, nameRs);
             LCVersionResolver.isV8 ?
                 packer.add(eval("MultiPacker.PageType.main"), rs.name + "-t" + (alts + 1), pixCombine) :
@@ -193,7 +200,7 @@
             alts++;
         }, true);
 
-        rs.alts = alts;
+        rs.delegee.alts = alts;
     };
 
 
@@ -276,7 +283,7 @@
          * `INTERNAL`: Expected short name for this resource. Used in name generation of intermediates.
          * @memberof RS_baseResource
          * @instance
-         * @type {string|null}
+         * @type {String|null}
          */
         shortName: null,
         /**
@@ -311,7 +318,7 @@
          * `INTERNAL`: Sprite used to gererate recolored sprite. Null to disable generation.
          * @memberof RS_baseResource
          * @instance
-         * @type {string|null}
+         * @type {String|null}
          */
         recolorRegStr: null,
 
@@ -351,10 +358,10 @@
          * @return {string}
          */
         ex_getShortName: function() {
-            if(this.shortName == null) {
-                this.shortName = LCDBFileHandler.read("resource-short-name", this, LCDBFileHandler.read("resource-chemical-formula", this, this.localizedName));
+            if(this.delegee.shortName == null) {
+                this.delegee.shortName = LCDBFileHandler.read("resource-short-name", this, LCDBFileHandler.read("resource-chemical-formula", this, this.localizedName));
             };
-            return this.shortName;
+            return this.delegee.shortName;
         }
         .setProp({
             noSuper: true,
@@ -369,18 +376,18 @@
          * @return {void}
          */
         ex_generateIntmdName: function() {
-            if(Vars.headless || this.intmdParent == null || this.intmdTags.length === 0) return;
+            if(Vars.headless || this.delegee.intmdParent == null || this.delegee.intmdTags.length === 0) return;
 
             let str;
-            if(this.intmdTags.length === 1 && DB_item.db["intmd"]["insertName"].colIncludes(this.intmdTags[0], 2)) {
+            if(this.delegee.intmdTags.length === 1 && DB_item.db["intmd"]["insertName"].colIncludes(this.delegee.intmdTags[0], 2)) {
                 // For a single name to insert, use "main (type)" format
-                str = this.intmdParent.localizedName + MDL_text.getSpace() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.intmdTags[0], TmpStateTag.error.toString()));
+                str = this.delegee.intmdParent.localizedName + MDL_text.getSpace() + "(${1})".format(DB_item.db["intmd"]["insertName"].read(this.delegee.intmdTags[0], TmpStateTag.error.toString()));
             } else {
                 // For regular intermediate, use "type (insert/main/sub)" format
-                str = String(this.ex_getLocalizedIntmdName());
+                str = String(this.self.ex_getLocalizedIntmdName());
                 let strs1 = [];
                 DB_item.db["intmd"]["insertName"].forEachRow(2, (tag, str1) => {
-                    if(this.intmdTags.includes(tag)) {
+                    if(this.delegee.intmdTags.includes(tag)) {
                         strs1.push(str1);
                     };
                 }, true);
@@ -409,17 +416,17 @@
          * @return {Array<string>}
          */
         ex_getIntmdTags: function() {
-            if(this.intmdTags == null) {
-                this.intmdTags = this.tempTags.filter(tag => DB_item.db["intmd"]["tag"].includes(tag));
+            if(this.delegee.intmdTags == null) {
+                this.delegee.intmdTags = this.delegee.tempTags.filter(tag => DB_item.db["intmd"]["tag"].includes(tag));
                 DB_item.db["intmd"]["tagCheck"].forEachRow(2, (tag, boolF) => {
                     if(boolF(this)) {
-                        this.intmdTags.pushUnique(tag)
+                        this.delegee.intmdTags.pushUnique(tag)
                     };
                 }, true);
                 // Should not be stored in template tags anymore, for better performance
-                this.tempTags.pullAll(this.intmdTags);
+                this.delegee.tempTags.pullAll(this.delegee.intmdTags);
             };
-            return this.intmdTags;
+            return this.delegee.intmdTags;
         }
         .setProp({
             noSuper: true,
@@ -434,7 +441,7 @@
          * @return {string}
          */
         ex_getLocalizedIntmdName: function() {
-            return this.ex_getLocalizedMainName() + MDL_text.getSpace() + "(${1})".format(this.ex_getLocalizedSubName());
+            return this.self.ex_getLocalizedMainName() + MDL_text.getSpace() + "(${1})".format(this.self.ex_getLocalizedSubName());
         }
         .setProp({
             noSuper: true,
@@ -466,8 +473,8 @@
          * @return {string}
          */
         ex_getLocalizedSubName: function() {
-            let str = tryFun(this.intmdParent.ex_getShortName, this.intmdParent, this.intmdParent.localizedName);
-            this.extraIntmdParents.forEachFast(rs => str += " / " + tryFun(rs.ex_getShortName, rs, rs.localizedName), true);
+            let str = tryFun(this.delegee.intmdParent.ex_getShortName, this.delegee.intmdParent, this.delegee.intmdParent.localizedName);
+            this.delegee.extraIntmdParents.forEachFast(rs => str += " / " + tryFun(rs.ex_getShortName, rs, rs.localizedName), true);
             return str;
         }
         .setProp({

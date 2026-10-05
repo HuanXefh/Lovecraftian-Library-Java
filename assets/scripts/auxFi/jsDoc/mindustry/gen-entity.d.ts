@@ -176,12 +176,12 @@ interface Decal extends Pool.Poolable, Decalc, Drawc, Entityc, IndexableEntity__
 
 /**
  * mindustry.gen.Groups
- * @deprecated v8
+ * @deprecated Removed in v9.
  */
 declare class Groups {}
 /**
  * mindustry.gen.Entities
- * @deprecated v9
+ * @deprecated Added in v9.
  */
 declare class Entities {
     all: EntityGroup<Entityc>;

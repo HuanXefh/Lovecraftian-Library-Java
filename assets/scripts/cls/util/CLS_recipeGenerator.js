@@ -20,9 +20,9 @@
 
         /** @type {(rc: RecipeRC, metaObj: RecipeMetaObject) => void} */
         this.setter = tryVal(setter, Function.air);
-        /** @type {string|null} */
+        /** @type {String|null} */
         this.__categ__ = null;
-        /** @type {string|null} */
+        /** @type {String|null} */
         this.__tag__ = null;
 
 

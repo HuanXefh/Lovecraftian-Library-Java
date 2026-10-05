@@ -31,11 +31,11 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(!blk.noFuelInput) {
+        if(!blk.delegee.noFuelInput) {
             blk.configurable = true;
         };
-        if(blk.fuelReserveAmt < 0) {
-            blk.fuelReserveAmt = !blk.hasItems ?
+        if(blk.delegee.fuelReserveAmt < 0) {
+            blk.delegee.fuelReserveAmt = !blk.hasItems ?
                 0 :
                 blk.itemCapacity > 20 ?
                     Math.max(Math.round(blk.itemCapacity * 0.25), 5) :
@@ -45,8 +45,8 @@
         MDL_event.onLoadPost(() => {
             MDL_fuel.getFuelArr(blk).forEachFast(rs => {
                 rs instanceof Item ?
-                    MDL_recipeDict.addItemConsTerm(blk, rs, 1, 1.0, {icon: "lovec-icon-fuel", item: MDL_fuel.getFuelPon(rs) * 60.0 / blk.fuelConsMtp}) :
-                    MDL_recipeDict.addFldConsTerm(blk, rs, MDL_fuel.getFuelPon(rs) * blk.fuelConsMtp, {icon: "lovec-icon-fuel"});
+                    MDL_recipeDict.addItemConsTerm(blk, rs, 1, 1.0, {icon: "lovec-icon-fuel", item: MDL_fuel.getFuelPon(rs) * 60.0 / blk.delegee.fuelConsMtp}) :
+                    MDL_recipeDict.addFldConsTerm(blk, rs, MDL_fuel.getFuelPon(rs) * blk.delegee.fuelConsMtp, {icon: "lovec-icon-fuel"});
             });
         });
     };
@@ -59,7 +59,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        if(!blk.noFuelInput) {
+        if(!blk.delegee.noFuelInput) {
             stats.add(fetchStat("lovec", "blk0fac-fuel"), newStatValue(tb => {
                 tb.row();
                 MDL_table.pnFixed(
@@ -73,8 +73,8 @@
                         MDL_fuel.getFuelArr(blk).forEachFast(rs => {
                             matArr.push([
                                 rs,
-                                rs instanceof Liquid ? "-" : (MDL_fuel.getFuelPon(rs) / blk.fuelConsMtp).color(blk.fuelConsMtp.fEqual(1.0) ? Color.white : blk.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
-                                (MDL_fuel.getFuelLvl(rs) * blk.fuelLvlMtp).color(blk.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
+                                rs instanceof Liquid ? "-" : (MDL_fuel.getFuelPon(rs) / blk.delegee.fuelConsMtp).color(blk.delegee.fuelConsMtp.fEqual(1.0) ? Color.white : blk.delegee.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
+                                (MDL_fuel.getFuelLvl(rs) * blk.delegee.fuelLvlMtp).color(blk.delegee.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.delegee.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
                             ]);
                         });
                         MDL_table.setTable(pnTb, matArr);
@@ -83,11 +83,11 @@
                 );
             }));
 
-            if(!blk.fuelConsMtp.fEqual(1.0)) {
-                stats.add(fetchStat("lovec", "blk0fac-fuelconsmtp"), blk.fuelConsMtp.perc());
+            if(!blk.delegee.fuelConsMtp.fEqual(1.0)) {
+                stats.add(fetchStat("lovec", "blk0fac-fuelconsmtp"), blk.delegee.fuelConsMtp.perc());
             };
-            if(!blk.fuelLvlMtp.fEqual(1.0)) {
-                stats.add(fetchStat("lovec", "blk0fac-fuellvlmtp"), blk.fuelLvlMtp.perc());
+            if(!blk.delegee.fuelLvlMtp.fEqual(1.0)) {
+                stats.add(fetchStat("lovec", "blk0fac-fuellvlmtp"), blk.delegee.fuelLvlMtp.perc());
             };
         };
     };
@@ -102,8 +102,8 @@
         blk.removeBar("lovec-temp");
         blk.addBar("lovec-furnace-temp", b => new Bar(
             prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.delegee.furnEffc.roundFixed(2) * 100.0)),
-            prov(() => Tmp.c2.set(Color.darkGray).lerp(Pal.lightOrange, b.ex_getHeatFrac())),
-            () => b.ex_getHeatFrac(),
+            prov(() => Tmp.c2.set(Color.darkGray).lerp(Pal.lightOrange, b.self.ex_getHeatFrac())),
+            () => b.self.ex_getHeatFrac(),
         ));
     };
 
@@ -118,39 +118,39 @@
 
         // Update currently used fuel
         if(GLB_timer.secFive && !b.block.delegee.noFuelInput) {
-            b.fuelTup = MDL_fuel.getFuelTup(b.fuelTup, b);
-            b.tempFuel = b.fuelTup[0] == null ?
+            b.delegee.fuelTup = MDL_fuel.getFuelTup(b.delegee.fuelTup, b);
+            b.delegee.tempFuel = b.delegee.fuelTup[0] == null ?
                 0.0 :
-                (b.fuelTup[2] * 100.0 * b.block.delegee.fuelLvlMtp);
-            b.fuelPolProd = b.fuelTup[0] == null ?
+                (b.delegee.fuelTup[2] * 100.0 * b.block.delegee.fuelLvlMtp);
+            b.delegee.fuelPolProd = b.delegee.fuelTup[0] == null ?
                 0.0 :
-                MDL_pollution.getRsPol(b.fuelTup[0]);
+                MDL_pollution.getRsPol(b.delegee.fuelTup[0]);
         };
 
         // Add dynamic pollution
-        if(GLB_timer.sec && b.fuelPonCur > 0.0) {
-            MDL_pollution.addDynaPol(b.fuelPolProd);
+        if(GLB_timer.sec && b.delegee.fuelPonCur > 0.0) {
+            MDL_pollution.addDynaPol(b.delegee.fuelPolProd);
         };
 
         // Occasionally update fuel consumption status
-        if(GLB_timer.heat && b.fuelTup[0] != null) {
-            b.ex_updateFuelConsumption(b.fuelTup[0], b.fuelTup[1]);
+        if(GLB_timer.heat && b.delegee.fuelTup[0] != null) {
+            b.self.ex_updateFuelConsumption(b.delegee.fuelTup[0], b.delegee.fuelTup[1]);
         };
 
         // Update furnace efficiency
-          b.furnEffc = b.cheating() ?
+          b.delegee.furnEffc = b.cheating() ?
             1.0 :
             Mathf.clamp(Math.min(
-                Math.pow(b.tempCur / b.ex_getHeatTarget(), 1.5),
-                !isFinite(b.ex_getHeatAllowed()) ?
+                Math.pow(b.delegee.tempCur / b.self.ex_getHeatTarget(), 1.5),
+                !isFinite(b.self.ex_getHeatAllowed()) ?
                     Infinity :
-                    ((b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0),
+                    ((b.self.ex_getHeatAllowed() - 2.0 * b.delegee.tempCur) / b.self.ex_getHeatAllowed() + 2.0),
             ));
-        if(b.furnEffc < 0.15) {
-            b.furnEffc = 0.0;
+        if(b.delegee.furnEffc < 0.15) {
+            b.delegee.furnEffc = 0.0;
         };
-        if(b.tempExt <= b.tempFuel && b.maxHeaterProd <= b.tempFuel) {
-            b.furnEffc *= b.fuelEffc;
+        if(b.delegee.tempExt <= b.delegee.tempFuel && b.delegee.maxHeaterProd <= b.delegee.tempFuel) {
+            b.delegee.furnEffc *= b.delegee.fuelEffc;
         };
     };
 
@@ -161,7 +161,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        b.efficiency *= b.cheating() ? 1.0 : b.furnEffc;
+        b.efficiency *= b.cheating() ? 1.0 : b.delegee.furnEffc;
     };
 
 
@@ -175,7 +175,7 @@
     function comp_acceptItem(b, b_f, item) {
         return b.block.delegee.noFuelInput ?
             b.items != null :
-            b.items != null && b.items.get(item) < b.getMaximumAccepted(item) && (b.fuelSel != null ? item === b.fuelSel : MDL_fuel.checkFuelInput(b.block, item));
+            b.items != null && b.items.get(item) < b.getMaximumAccepted(item) && (b.delegee.fuelSel != null ? item === b.delegee.fuelSel : MDL_fuel.checkFuelInput(b.block, item));
     };
 
 
@@ -189,7 +189,7 @@
     function comp_acceptLiquid(b, b_f, liq) {
         return b.block.delegee.noFuelInput ?
             b.liquids != null :
-            b.liquids != null && b.liquids.get(liq) < b.block.liquidCapacity && (b.fuelSel != null ? liq === b.fuelSel : MDL_fuel.checkFuelInput(b.block, liq));
+            b.liquids != null && b.liquids.get(liq) < b.block.liquidCapacity && (b.delegee.fuelSel != null ? liq === b.delegee.fuelSel : MDL_fuel.checkFuelInput(b.block, liq));
     };
 
 
@@ -201,18 +201,18 @@
      * @return {void}
      */
     function comp_ex_updateFuelConsumption(b, fuel, pon) {
-        b.fuelEffc = 1.0;
+        b.delegee.fuelEffc = 1.0;
         if(fuel instanceof Item) {
-            if(b.fuelPonCur < 1.0 && pon > 0.0 && FRAG_item.consumeItem(b, fuel, 1)) {
-                b.fuelPonCur += pon;
+            if(b.delegee.fuelPonCur < 1.0 && pon > 0.0 && FRAG_item.consumeItem(b, fuel, 1)) {
+                b.delegee.fuelPonCur += pon;
             };
-            if(b.fuelPonCur < 1.0) {
-                b.fuelEffc = 0.0;
+            if(b.delegee.fuelPonCur < 1.0) {
+                b.delegee.fuelEffc = 0.0;
             };
-            b.fuelPonCur = Mathf.maxZero(b.fuelPonCur - GLB_var.time.heatIntv / 60.0 * b.block.delegee.fuelConsMtp);
+            b.delegee.fuelPonCur = Mathf.maxZero(b.delegee.fuelPonCur - GLB_var.timeParam.heatIntv / 60.0 * b.block.delegee.fuelConsMtp);
         } else {
-            b.fuelPonCur = LCCraftingHandler.addLiquid(b, b, fuel, -pon * b.block.delegee.fuelConsMtp * GLB_var.time.heatIntv, false, false, true);
-            b.fuelEffc = Math.min(b.fuelPonCur, 1.0);
+            b.delegee.fuelPonCur = LCCraftingHandler.addLiquid(b, b, fuel, -pon * b.block.delegee.fuelConsMtp * GLB_var.timeParam.heatIntv, false, false, true);
+            b.delegee.fuelEffc = Math.min(b.delegee.fuelPonCur, 1.0);
         };
     };
 
@@ -234,13 +234,13 @@
      */
     function comp_ex_calcTempTargetFrac(b) {
         // If external heat outruns fuel heat
-        if(b.tempExt > b.tempFuel || b.maxHeaterProd > b.tempFuel) return 1.0;
+        if(b.delegee.tempExt > b.delegee.tempFuel || b.delegee.maxHeaterProd > b.delegee.tempFuel) return 1.0;
         // If no fuel supplied
-        if(b.fuelTup[0] == null || b.fuelPonCur < 0.0001) return 0.0;
-        if(b.fuelTup[0] instanceof Item) {
-            if(b.items == null || !b.items.has(b.fuelTup[0])) return 0.0;
+        if(b.delegee.fuelTup[0] == null || b.delegee.fuelPonCur < 0.0001) return 0.0;
+        if(b.delegee.fuelTup[0] instanceof Item) {
+            if(b.items == null || !b.items.has(b.delegee.fuelTup[0])) return 0.0;
         } else {
-            if(b.liquids == null || !b.liquids.get(b.fuelTup[0]) < 0.01) return 0.0;
+            if(b.liquids == null || !b.liquids.get(b.delegee.fuelTup[0]) < 0.01) return 0.0;
         };
         return 1.0;
     };
@@ -526,7 +526,7 @@
 
 
             canDump: function(b_t, item) {
-                return this.fuelTup[0] == null || this.fuelTup[0].id !== item.id || this.items.has(item, this.block.delegee.fuelReserveAmt);
+                return this.delegee.fuelTup[0] == null || this.delegee.fuelTup[0].id !== item.id || this.items.has(item, this.block.delegee.fuelReserveAmt);
             }
             .setProp({
                 boolMode: "and",
@@ -534,7 +534,7 @@
 
 
             warmupTarget: function() {
-                return this.cheating() ? 1.0 : this.ex_getHeatFrac();
+                return this.cheating() ? 1.0 : this.self.ex_getHeatFrac();
             }
             .setProp({
                 noSuper: true,
@@ -583,7 +583,7 @@
              * @return {number}
              */
             ex_calcTempTarget: function thisFun() {
-                return Math.max(thisFun.funPrev.apply(this, arguments), this.tempFuel);
+                return Math.max(thisFun.funPrev.apply(this, arguments), this.delegee.tempFuel);
             }
             .setProp({
                 noSuper: true,
@@ -647,7 +647,7 @@
              * @return {boolean}
              */
             ex_checkHeatingValid: function() {
-                return this.tempRiseTarget - GLB_param.GLOBAL_HEAT >= 10.0;
+                return this.delegee.tempRiseTarget - GLB_param.GLOBAL_HEAT >= 10.0;
             }
             .setProp({
                 noSuper: true,
@@ -681,10 +681,10 @@
                 processData(
                     wr0rd,
                     wr => {
-                        MDL_io.ct(wr, this.fuelSel);
+                        MDL_io.ct(wr, this.delegee.fuelSel);
                     },
                     rd => {
-                        this.fuelSel = MDL_io.ct(rd);
+                        this.delegee.fuelSel = MDL_io.ct(rd);
                     },
                 );
             }

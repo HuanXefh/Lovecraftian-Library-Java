@@ -29,11 +29,11 @@
      * @return {void}
      */
     function comp_applied(sta, unit, time, isExtend) {
-        if(sta.justApplied) return;
+        if(sta.delegee.justApplied) return;
 
-        sta.justApplied = true;
-        unit.apply(sta, time + sta.timeF.get(unit, time));
-        sta.justApplied = false;
+        sta.delegee.justApplied = true;
+        unit.apply(sta, time + sta.delegee.timeF.get(unit, time));
+        sta.delegee.justApplied = false;
     };
 
 

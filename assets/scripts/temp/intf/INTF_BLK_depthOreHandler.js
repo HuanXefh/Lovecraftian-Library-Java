@@ -31,7 +31,7 @@
      * @return {TextureRegion}
      */
     function comp_ex_findPlaceRsIcon(blk, tx, ty, rs) {
-        return blk.ex_isMiningDpore(tx, ty, rs) && !blk.ex_anyDporeRevealed(tx, ty, rs) ?
+        return blk.self.ex_isMiningDpore(tx, ty, rs) && !blk.self.ex_anyDporeRevealed(tx, ty, rs) ?
             GLB_varGen.iconRegs.questionMark :
             rs.fullIcon;
     };
@@ -46,7 +46,7 @@
      * @return {Seq<Tile>}
      */
     function comp_ex_findDporesInLinkedTiles(blk, tx, ty, rs) {
-        if(blk.skipDepthOreMethod) return Reflect.get(Block, "tempTiles").clear();
+        if(blk.self.skipDepthOreMethod) return Reflect.get(Block, "tempTiles").clear();
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return Reflect.get(Block, "tempTiles").clear();
 
@@ -68,7 +68,7 @@
      */
     function comp_ex_calcDpLvlReq(blk, tx, ty, rs) {
         let val = 0, tmpVal = 0;
-        blk.ex_findDporesInLinkedTiles(tx, ty, rs).each(ot => {
+        blk.self.ex_findDporesInLinkedTiles(tx, ty, rs).each(ot => {
             tmpVal = ot.overlay().delegee.depthLvl;
             if(tmpVal > val) {
                 val = tmpVal;
@@ -87,7 +87,7 @@
      * @return {boolean}
      */
     function comp_ex_isMiningDpore(blk, tx, ty, rs) {
-        return blk.ex_findDporesInLinkedTiles(tx, ty, rs).size > 0;
+        return blk.self.ex_findDporesInLinkedTiles(tx, ty, rs).size > 0;
     };
 
 
@@ -100,7 +100,7 @@
      * @return {boolean}
      */
     function comp_ex_anyDporeRevealed(blk, tx, ty, rs) {
-        return blk.ex_findDporesInLinkedTiles(tx, ty, rs).find(ot => tryFun(ot.overlay().ex_accRevealed, ot.overlay(), true, ot, "read")) != null;
+        return blk.self.ex_findDporesInLinkedTiles(tx, ty, rs).find(ot => tryFun(ot.overlay().ex_accRevealed, ot.overlay(), true, ot, "read")) != null;
     };
 
 

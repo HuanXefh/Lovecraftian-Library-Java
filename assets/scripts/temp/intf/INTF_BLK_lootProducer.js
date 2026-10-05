@@ -28,11 +28,11 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.setupVanillaProp) {
+        if(blk.delegee.setupVanillaProp) {
             blk.drawArrow = blk.rotate;
         };
 
-        blk.ex_addLogicF(LogicProp.progress, b => b.ex_getCraftProg());
+        blk.self.ex_addLogicF(LogicProp.progress, b => b.self.ex_getCraftProg());
     };
 
 
@@ -44,9 +44,9 @@
     function comp_setBars(blk) {
         if(!GLB_var.isMindustryX) {
             blk.addBar("lovec-prog", b => new Bar(
-                prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.ex_getCraftProg().perc(0))),
+                prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.self.ex_getCraftProg().perc(0))),
                 prov(() => Pal.ammo),
-                () => Mathf.clamp(b.ex_getCraftProg()),
+                () => Mathf.clamp(b.self.ex_getCraftProg()),
             ));
         };
     };
@@ -59,9 +59,9 @@
      */
     function comp_onProximityUpdate(b) {
         if(!b.block.rotate) {
-            b.lootDumpVec.set(b.x, b.y);
+            b.delegee.lootDumpVec.set(b.x, b.y);
         } else {
-            LCPos.getCoordsBack(b.lootDumpVec, b.x, b.y, b.block.size, b.rotation);
+            LCPos.getCoordsBack(b.delegee.lootDumpVec, b.x, b.y, b.block.size, b.rotation);
         };
     };
 
@@ -72,7 +72,7 @@
      * @return {void}
      */
     function comp_pickedUp(b) {
-        b.lootDumpVec.set(-1.0, -1.0);
+        b.delegee.lootDumpVec.set(-1.0, -1.0);
     };
 
 
@@ -83,16 +83,16 @@
      * @return {void}
      */
     function comp_offload(b, item) {
-        if(!b.ex_shouldDropLoot()) {
+        if(!b.self.ex_shouldDropLoot()) {
             b.super$offload(item);
             return;
         };
-        if(b.lootDumpVec.x < 0.0 || b.lootDumpVec.y < 0.0) return;
+        if(b.delegee.lootDumpVec.x < 0.0 || b.delegee.lootDumpVec.y < 0.0) return;
 
-        b.lootCharge++;
-        if(b.lootCharge >= b.ex_getDumpAmt()) {
-            b.lootCharge = 0;
-            FRAG_item.produceLootAt(b.lootDumpVec.x, b.lootDumpVec.y, b, item, b.ex_getDumpAmt(), true);
+        b.delegee.lootCharge++;
+        if(b.delegee.lootCharge >= b.self.ex_getDumpAmt()) {
+            b.delegee.lootCharge = 0;
+            FRAG_item.produceLootAt(b.delegee.lootDumpVec.x, b.delegee.lootDumpVec.y, b, item, b.self.ex_getDumpAmt(), true);
         };
     };
 
@@ -103,9 +103,9 @@
      * @return {number}
      */
     function comp_ex_getCraftProg(b) {
-        return !b.ex_shouldDropLoot() ?
-            b.ex_getCraftTimeCur() / b.block.ex_getCraftTime() :
-            (b.lootCharge * b.block.ex_getCraftTime() + b.ex_getCraftTimeCur()) / (b.block.itemCapacity * b.block.ex_getCraftTime());
+        return !b.self.ex_shouldDropLoot() ?
+            b.self.ex_getCraftTimeCur() / b.block.self.ex_getCraftTime() :
+            (b.delegee.lootCharge * b.block.self.ex_getCraftTime() + b.self.ex_getCraftTimeCur()) / (b.block.itemCapacity * b.block.self.ex_getCraftTime());
     };
 
 
@@ -277,11 +277,11 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.i(this.lootCharge);
+                        wr.i(this.delegee.lootCharge);
                     },
                     rd => {
-                        if(this.LCRevi === 5) return;
-                        this.lootCharge = rd.i();
+                        if(this.delegee.LCRevi === 5) return;
+                        this.delegee.lootCharge = rd.i();
                     },
                 );
             }

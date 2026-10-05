@@ -224,7 +224,7 @@ declare namespace KeyCode {
 declare class KeyBind {
     readonly name: string;
     readonly defaultValue: KeyBind.KeybindValue;
-    readonly category: string|null;
+    readonly category: String|null;
     value: KeyBind.Axis;
 
     static add(name: string, defVal: KeyBind.KeybindValue, categ?: string): KeyBind

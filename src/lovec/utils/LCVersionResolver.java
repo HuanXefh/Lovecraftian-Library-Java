@@ -16,6 +16,9 @@ public class LCVersionResolver {
     public static Class<?> MappableContent;
     public static Class<?> UnlockableContent;
 
+    @FromScript(source = "GLB_var", updated = true)
+    public static float time;
+
     @FromScript(source = "GLB_var")
     public static World world;
     @FromScript(source = "GLB_var")

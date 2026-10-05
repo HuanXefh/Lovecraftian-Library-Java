@@ -32,9 +32,9 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
-        blk.useP3dRange ?
-            LCDrawP3D.roomFade(tx.toFCoord(blk.size), ty.toFCoord(blk.size), 1.0, blk.blkR.toRectW(blk.size), blk.blkR.toRectW(blk.size), blk.ex_getBlkRColor(valid)) :
-            LCDrawf.rectPlace(blk, tx, ty, blk.blkR, true, blk.ex_getBlkRColor(valid));
+        blk.delegee.useP3dRange ?
+            LCDrawP3D.roomFade(tx.toFCoord(blk.size), ty.toFCoord(blk.size), 1.0, blk.delegee.blkR.toRectW(blk.size), blk.delegee.blkR.toRectW(blk.size), blk.self.ex_getBlkRColor(valid)) :
+            LCDrawf.rectPlace(blk, tx, ty, blk.delegee.blkR, true, blk.self.ex_getBlkRColor(valid));
     };
 
 
@@ -46,7 +46,7 @@
     function comp_draw(b) {
         if(!b.isPayload() && b.block.delegee.useP3dRange && LCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
             processZ(GLB_var.layer.p3dRange);
-            LCDrawP3D.roomFade(b.x, b.y, 1.0, b.block.delegee.blkR.toRectW(b.block.size), b.block.delegee.blkR.toRectW(b.block.size), b.block.ex_getBlkRColor(true));
+            LCDrawP3D.roomFade(b.x, b.y, 1.0, b.block.delegee.blkR.toRectW(b.block.size), b.block.delegee.blkR.toRectW(b.block.size), b.block.self.ex_getBlkRColor(true));
             processZ();
         };
     };
@@ -59,7 +59,7 @@
      */
     function comp_drawSelect(b) {
         if(!b.block.delegee.useP3dRange) {
-            LCDrawf.rectSelect(b, b.block.delegee.blkR, true, b.block.ex_getBlkRColor(true));
+            LCDrawf.rectSelect(b, b.block.delegee.blkR, true, b.block.self.ex_getBlkRColor(true));
         };
     };
 

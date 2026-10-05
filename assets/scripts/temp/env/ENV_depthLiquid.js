@@ -36,11 +36,11 @@
      * @return {void}
      */
     function comp_init(blk) {
-        blk.rsDrop = MDL_attr.getDynaAttrRs(DYNA_ATTR_DATA, blk);
-        if(blk.rsDrop == null) throw new NullArgumentError(blk.name + ".liquidDrop");
+        blk.delegee.rsDrop = MDL_attr.getDynaAttrRs(DYNA_ATTR_DATA, blk);
+        if(blk.delegee.rsDrop == null) throw new NullArgumentError(blk.name + ".liquidDrop");
         MDL_content.rename(
             blk,
-            blk.rsDrop.localizedName + MDL_text.getSpace() + "(" + blk.ex_getDepthName() + ")",
+            blk.delegee.rsDrop.localizedName + MDL_text.getSpace() + "(" + blk.self.ex_getDepthName() + ")",
         );
     };
 
@@ -95,6 +95,7 @@
          * @instance
          * @func
          * @return {Liquid}
+         * @lovecAttached
          */
         ex_getRsDrop: function() {
             return this.rsDrop;

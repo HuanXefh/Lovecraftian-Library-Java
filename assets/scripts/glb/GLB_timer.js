@@ -72,16 +72,16 @@
         exports.effc = timers.update.get(0, fetchSetting("interval-efficiency", true));
         exports.effcPay = timers.update.get(1, 30.0);
         exports.rsCur = timers.update.get(2, 180.0);
-        exports.liq = timers.update.get(3, GLB_var.time.liqIntv);
-        exports.heat = timers.update.get(4, GLB_var.time.heatIntv);
-        exports.unit = timers.update.get(5, GLB_var.time.unitIntv);
-        exports.stackSta = timers.update.get(6, GLB_var.time.stackStaExtDef * 0.5);
+        exports.liq = timers.update.get(3, GLB_var.timeParam.liqIntv);
+        exports.heat = timers.update.get(4, GLB_var.timeParam.heatIntv);
+        exports.unit = timers.update.get(5, GLB_var.timeParam.unitIntv);
+        exports.stackSta = timers.update.get(6, GLB_var.timeParam.stackStaExtDef * 0.5);
 
-        exports.param = timers.param.get(0, GLB_var.time.paramIntv);
-        exports.paramGlobal = timers.param.get(1, GLB_var.time.paramGlobalIntv);
-        exports.paramLarge = timers.param.get(2, GLB_var.time.paramLargeIntv);
+        exports.param = timers.param.get(0, GLB_var.timeParam.paramIntv);
+        exports.paramGlobal = timers.param.get(1, GLB_var.timeParam.paramGlobalIntv);
+        exports.paramLarge = timers.param.get(2, GLB_var.timeParam.paramLargeIntv);
 
-        exports.lightning = timers.effect.get(0, GLB_var.time.lightningIntv);
+        exports.lightning = timers.effect.get(0, GLB_var.timeParam.lightningIntv);
         exports.coreSignal = timers.effect.get(1, 32.0);
         exports.trailCircle = timers.effect.get(2, 15.0);
         exports.jetTrail = timers.effect.get(3, 2.0);

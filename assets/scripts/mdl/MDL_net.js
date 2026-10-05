@@ -154,7 +154,7 @@
      * If errored the result will be null.
      * @param {string} owner
      * @param {string} repo
-     * @param {CFunction<string|null>} callback
+     * @param {CFunction<String|null>} callback
      * @return {void}
      */
     const fetchLatestVer = function(owner, repo, callback) {

@@ -24,15 +24,15 @@
     function comp_update(unit) {
         if(!unit.type.delegee.isTetheredUnit) return;
 
-        if(isNaN(unit.noTetherDespawnTime)) {
-            unit.noTetherDespawnTime = 0.0;
+        if(isNaN(unit.delegee.noTetherDespawnTime)) {
+            unit.delegee.noTetherDespawnTime = 0.0;
         };
-        if(unit.type.delegee.noTetherDespawnTime >= 0.0 && (unit.bLink == null || !unit.bLink.isValid() || unit.bLink.team !== unit.team)) {
-            unit.noTetherDespawnTimeCur += Time.delta;
+        if(unit.type.delegee.noTetherDespawnTime >= 0.0 && (unit.delegee.bLink == null || !unit.delegee.bLink.isValid() || unit.delegee.bLink.team !== unit.team)) {
+            unit.delegee.noTetherDespawnTimeCur += Time.delta;
         } else {
-            unit.noTetherDespawnTimeCur = Mathf.maxZero(unit.noTetherDespawnTimeCur - Time.delta);
+            unit.delegee.noTetherDespawnTimeCur = Mathf.maxZero(unit.delegee.noTetherDespawnTimeCur - Time.delta);
         };
-        if(unit.noTetherDespawnTimeCur >= unit.type.delegee.noTetherDespawnTime) {
+        if(unit.delegee.noTetherDespawnTimeCur >= unit.type.delegee.noTetherDespawnTime) {
             Call.unitDespawn(unit);
         };
     };
@@ -94,7 +94,7 @@
          */
         ex_setBLink: function(ob) {
             if(ob == null || (ob.isValid() && ob.team === unit.team)) {
-                this.bLink = ob;
+                this.delegee.bLink = ob;
             };
         }
         .setProp({
@@ -111,7 +111,7 @@
          * @return {void}
          */
         ex_writeUnitData: function(dataObj) {
-            dataObj.bLinkPos = this.bLink == null ? -1 : this.bLink.pos();
+            dataObj.bLinkPos = this.delegee.bLink == null ? -1 : this.delegee.bLink.pos();
         }
         .setProp({
             noSuper: true,
@@ -128,7 +128,7 @@
          */
         ex_readUnitData: function(dataObj) {
             let posInt = Number(dataObj.bLinkPos);
-            this.bLink = GLB_var.world.build(isNaN(posInt) ? -1 : posInt);
+            this.delegee.bLink = GLB_var.world.build(isNaN(posInt) ? -1 : posInt);
         }
         .setProp({
             noSuper: true,

@@ -28,7 +28,7 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.lootCallCd = Mathf.random(b.block.delegee.lootCallCooldown);
+        b.delegee.lootCallCd = Mathf.random(b.block.delegee.lootCallCooldown);
     };
 
 
@@ -38,7 +38,7 @@
      * @return {void}
      */
     function comp_onProximityUpdate(b) {
-        b.ex_updateLootTs();
+        b.self.ex_updateLootTs();
     };
 
 
@@ -48,7 +48,7 @@
      * @return {void}
      */
     function comp_pickedUp(b) {
-        b.lootTs.clear();
+        b.delegee.lootTs.clear();
     };
 
 
@@ -60,19 +60,19 @@
     function comp_updateTile(b) {
         if(b.block.delegee.lootCallCooldown < 1.0) return;
 
-        if(b.lootCallCd < b.block.delegee.lootCallCooldown) {
-            b.lootCallCd += b.edelta();
-            if(b.lootCallCd > b.block.delegee.lootCallCooldown) {
-                b.ex_updateLootQueue();
+        if(b.delegee.lootCallCd < b.block.delegee.lootCallCooldown) {
+            b.delegee.lootCallCd += b.edelta();
+            if(b.delegee.lootCallCd > b.block.delegee.lootCallCooldown) {
+                b.self.ex_updateLootQueue();
             };
         };
-        if(b.efficiency > 0.0 && b.lootCallCd > b.block.delegee.lootCallCooldown) {
+        if(b.efficiency > 0.0 && b.delegee.lootCallCd > b.block.delegee.lootCallCooldown) {
             if(GLB_timer.secQuarter) {
-                b.ex_updateLootQueue();
+                b.self.ex_updateLootQueue();
             };
-            if(b.lootQueue.length > 0) {
-                b.ex_lootCall(b.lootQueue, b.block.delegee.lootCallAmt);
-                b.lootCallCd = 0.0;
+            if(b.delegee.lootQueue.length > 0) {
+                b.self.ex_lootCall(b.delegee.lootQueue, b.block.delegee.lootCallAmt);
+                b.delegee.lootCallCd = 0.0;
             };
         };
     };
@@ -205,7 +205,7 @@
              * @return {void}
              */
             ex_updateLootQueue: function() {
-                LCEntity.getLootsByTiles(this.lootQueue, this.lootTs);
+                LCEntity.getLootsByTiles(this.delegee.lootQueue, this.delegee.lootTs);
             }
             .setProp({
                 noSuper: true,
@@ -242,7 +242,7 @@
             ex_getReloadFrac: function() {
                 return this.block.delegee.lootCallCooldown < 1.0 ?
                     1.0 :
-                    Mathf.clamp(this.lootCallCd / this.block.delegee.lootCallCooldown);
+                    Mathf.clamp(this.delegee.lootCallCd / this.block.delegee.lootCallCooldown);
             }
             .setProp({
                 noSuper: true,

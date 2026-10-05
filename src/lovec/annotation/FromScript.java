@@ -15,5 +15,6 @@ public @interface FromScript {
 
     String source();
     String name() default "!UNDEF";
+    boolean updated() default false;
 
 };

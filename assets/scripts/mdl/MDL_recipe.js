@@ -643,7 +643,7 @@
     * <br> `BUNDLE`: `info.common-info-tt-<tooltip>.name`.
     * @param {RecipeModule} rcMdl
     * @param {string} rcHeader
-    * @return {string|null}
+    * @return {String|null}
     */
     const getTooltipText = function(rcMdl, rcHeader) {
         let tt = getRcVal(rcMdl, rcHeader, "tooltip", null);

@@ -27,16 +27,16 @@
      * @return {void}
      */
     function comp_update(sta, unit, staEn) {
-        if(sta.burstTime < 0.0001 || !GLB_timer.stackSta) return;
+        if(sta.delegee.burstTime < 0.0001 || !GLB_timer.stackSta) return;
         let t = unit.tileOn();
         if(t == null || !MDL_cond.isUnitOnFloor(unit)) return;
 
         let flr = t.floor();
         let puddle = Puddles.get(t);
         if(puddle != null && puddle.liquid.effect === sta) {
-            unit.apply(sta, staEn.time + GLB_var.time.stackStaExtDef);
+            unit.apply(sta, staEn.time + GLB_var.timeParam.stackStaExtDef);
         } else if(flr.status === sta && flr.statusDuration > 0.0) {
-            unit.apply(sta, staEn.time + GLB_var.time.stackStaExtDef * (flr.shallow ? 1.0 : 2.0));
+            unit.apply(sta, staEn.time + GLB_var.timeParam.stackStaExtDef * (flr.shallow ? 1.0 : 2.0));
         };
     };
 

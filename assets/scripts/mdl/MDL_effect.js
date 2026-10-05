@@ -266,7 +266,7 @@
          * @type {Effect}
          */
         eff: new Effect(40.0, eff => {
-            LCDraw.text(
+            MDL_draw.text(
                 eff.x, eff.y, eff.data[0], Fonts.def,
                 eff.data[1] - Interp.pow3In.apply(eff.fin()) * eff.data[1],
                 eff.color, Align.center, 0.0, 8.0 * eff.fin(), Math.min(eff.rotation / 10000.0, 10.0),

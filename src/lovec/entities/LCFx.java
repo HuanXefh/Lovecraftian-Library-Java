@@ -24,6 +24,8 @@ import mindustry.ui.Fonts;
 import mindustry.world.Block;
 import rhino.NativeArray;
 
+import static lovec.utils.LCScript.MDL_draw;
+
 public class LCFx {
 
 
@@ -96,7 +98,7 @@ public class LCFx {
 
         fadeText = new Effect(80f, eff -> {
             Tmp.c1.set(eff.color).a(1f - Interp.pow2In.apply(eff.fin()));
-            LCDraw.text(eff.x, eff.y + 2f * eff.fin(), (String) eff.data, Fonts.outline, 0.85f, Tmp.c1);
+            LCScript.invoke("text", MDL_draw, eff.x, eff.y + 2f * eff.fin(), eff.data, Fonts.outline, 0.85f, Tmp.c1);
         }),
 
 

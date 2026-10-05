@@ -57,7 +57,7 @@
         Draw.reset();
 
         if(armor != null) {
-            LCDraw.text(
+            MDL_draw.text(
                 x, y,
                 Strings.autoFixed(armor, 0), Fonts.def,
                 1.2, Color.gray, Align.right,
@@ -66,7 +66,7 @@
             );
         };
         if(shield != null && shield > 0.0) {
-            LCDraw.text(
+            MDL_draw.text(
                 x, y,
                 Strings.autoFixed(shield, 0), Fonts.def,
                 1.2, Pal.techBlue, Align.left,
@@ -74,14 +74,14 @@
                 offY + 4.5,
             );
         };
-        LCDraw.text(
+        MDL_draw.text(
             x, y,
             Strings.autoFixed(e.maxHealth, 0), Fonts.def,
             0.8, color, Align.center,
             0.0, offY + 6.0,
         );
         if(speedMtp != null && w >= 32.0) {
-            LCDraw.text(
+            MDL_draw.text(
                 x, y,
                 "S: " + Strings.fixed(speedMtp, 2), Fonts.def,
                 0.6, Color.gray, Align.left,
@@ -90,7 +90,7 @@
             );
         };
         if(dpsMtp != null && w >= 32.0) {
-            LCDraw.text(
+            MDL_draw.text(
                 x, y,
                 "D: " + Strings.fixed(dpsMtp, 2), Fonts.def,
                 0.6, Color.gray, Align.right,
@@ -146,7 +146,7 @@
         Draw.reset();
 
         if(armor != null) {
-            LCDraw.text(
+            MDL_draw.text(
                 x, y,
                 Strings.autoFixed(armor, 0), Fonts.def,
                 1.2, Color.gray, Align.right,
@@ -155,7 +155,7 @@
             );
         };
         if(shield != null && shield > 0.0) {
-            LCDraw.text(
+            MDL_draw.text(
                 x, y,
                 Strings.autoFixed(shield, 0), Fonts.def,
                 1.2, Pal.techBlue, Align.left,
@@ -218,7 +218,7 @@
         let zPrev = Draw.z();
         Draw.z(z);
 
-        LCDraw.text(
+        MDL_draw.text(
             x, y + offY,
             (Strings.fixed(e.health, 0) + "/" + Strings.fixed(e.maxHealth, 0)).color(color) + (armor == null || armor < 0.0001 ? "" : ("\n" + Strings.fixed(armor, 0))).color(Color.gray) + (shield == null || shield < 0.0001 ? "" : ("\n" + Strings.fixed(shield, 0))).color(Pal.techBlue), Fonts.def,
             0.8, Color.white, Align.center,

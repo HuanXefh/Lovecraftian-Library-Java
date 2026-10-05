@@ -34,7 +34,7 @@
         if(!blk.hasPower) throw new LCError.NoPowerModuleError(blk);
 
         MDL_event.onLoad(() => {
-            let blkCons = new ConsumePowerDynamic(b => b.ex_calcFurnPowCons());
+            let blkCons = new ConsumePowerDynamic(b => b.self.ex_calcFurnPowCons());
             blk.consumers = blk.consumers == null ? [blkCons] : blk.consumers.concat([blkCons]);
             blk.consPower = blkCons;
         });
@@ -54,8 +54,8 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(Stat.powerUse, blk.powConsBase * 60.0, StatUnit.powerSecond);
-        stats.add(fetchStat("lovec", "blk0pow-powuseper100hu"), blk.powConsPerFuelLvl * 60.0, StatUnit.powerSecond);
+        stats.add(Stat.powerUse, blk.delegee.powConsBase * 60.0, StatUnit.powerSecond);
+        stats.add(fetchStat("lovec", "blk0pow-powuseper100hu"), blk.delegee.powConsPerFuelLvl * 60.0, StatUnit.powerSecond);
     };
 
 
@@ -68,8 +68,8 @@
         blk.removeBar("lovec-temp");
         blk.addBar("lovec-furnace-temp", b => new Bar(
             prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.delegee.furnEffc.roundFixed(2) * 100.0)),
-            prov(() => Tmp.c2.set(Color.darkGray).lerp(Pal.lightOrange, b.ex_getHeatFrac())),
-            () => b.ex_getHeatFrac(),
+            prov(() => Tmp.c2.set(Color.darkGray).lerp(Pal.lightOrange, b.self.ex_getHeatFrac())),
+            () => b.self.ex_getHeatFrac(),
         ));
     };
 
@@ -83,12 +83,12 @@
         if(DEBUG.skipFurnUpdate) return;
 
         // Update furnace efficiency
-        b.furnEffc = Mathf.clamp(Math.min(
-            Math.pow(b.tempCur / b.ex_getHeatTarget(), 1.5),
-            !isFinite(b.ex_getHeatAllowed()) ? Infinity : (b.ex_getHeatAllowed() - 2.0 * b.tempCur) / b.ex_getHeatAllowed() + 2.0,
+        b.delegee.furnEffc = Mathf.clamp(Math.min(
+            Math.pow(b.delegee.tempCur / b.self.ex_getHeatTarget(), 1.5),
+            !isFinite(b.self.ex_getHeatAllowed()) ? Infinity : (b.self.ex_getHeatAllowed() - 2.0 * b.delegee.tempCur) / b.self.ex_getHeatAllowed() + 2.0,
         ));
-        if(b.furnEffc < 0.15) {
-            b.furnEffc = 0.0;
+        if(b.delegee.furnEffc < 0.15) {
+            b.delegee.furnEffc = 0.0;
         };
     };
 
@@ -99,7 +99,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        b.efficiency *= b.cheating() ? 1.0 : b.furnEffc;
+        b.efficiency *= b.cheating() ? 1.0 : b.delegee.furnEffc;
     };
 
 
@@ -111,7 +111,7 @@
      */
     function comp_buildConfiguration(b, tb) {
         tb.row();
-        b.ex_buildTempSlider(tb);
+        b.self.ex_buildTempSlider(tb);
     };
 
 
@@ -135,7 +135,7 @@
         tb.table(Styles.black3, tb1 => {
             tb1.left();
             MDL_table.margin(tb1);
-            MDL_table.sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "temperature"), Strings.fixed(b.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.ex_getTempSetMax(), 50.0, b.tempSet);
+            MDL_table.sliderCfg(tb1, b, () => "${1}: ${2}".format(MDL_bundle.getTerm("lovec", "temperature"), Strings.fixed(b.delegee.tempSet, 2) + " " + fetchStatUnit("lovec", "heatunits").localized()), 0.0, b.self.ex_getTempSetMax(), 50.0, b.delegee.tempSet);
         })
         .left()
         .growX();
@@ -296,7 +296,7 @@
 
 
             warmupTarget: function() {
-                return this.cheating() ? 1.0 : this.ex_getHeatFrac();
+                return this.cheating() ? 1.0 : this.self.ex_getHeatFrac();
             }
             .setProp({
                 noSuper: true,
@@ -330,7 +330,7 @@
              * @return {number}
              */
             ex_calcFurnPowCons: function() {
-                return Mathf.maxZero(this.tempSet - Math.max(this.tempExt, GLB_param.GLOBAL_HEAT)) / 100.0 * this.block.delegee.powConsPerFuelLvl + this.block.delegee.powConsBase;
+                return Mathf.maxZero(this.delegee.tempSet - Math.max(this.delegee.tempExt, GLB_param.GLOBAL_HEAT)) / 100.0 * this.block.delegee.powConsPerFuelLvl + this.block.delegee.powConsBase;
             }
             .setProp({
                 noSuper: true,
@@ -346,7 +346,7 @@
              * @return {number}
              */
             ex_calcTempTarget: function thisFun() {
-                return Math.max(thisFun.funPrev.apply(this, arguments), this.tempSet);
+                return Math.max(thisFun.funPrev.apply(this, arguments), this.delegee.tempSet);
             }
             .setProp({
                 noSuper: true,
@@ -363,9 +363,9 @@
              * @return {number}
              */
             ex_calcTempTargetFrac: function() {
-                return this.tempSet < 0.0001 ?
+                return this.delegee.tempSet < 0.0001 ?
                     0.0 :
-                    Math.max(Mathf.clamp(this.tempExt / this.tempSet), this.power.status);
+                    Math.max(Mathf.clamp(this.delegee.tempExt / this.delegee.tempSet), this.power.status);
             }
             .setProp({
                 noSuper: true,
@@ -447,10 +447,10 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.tempSet);
+                        wr.f(this.delegee.tempSet);
                     },
                     rd => {
-                        this.tempSet = rd.f();
+                        this.delegee.tempSet = rd.f();
                     },
                 );
             }

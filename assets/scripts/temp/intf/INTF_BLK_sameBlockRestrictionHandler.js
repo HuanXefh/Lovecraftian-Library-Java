@@ -29,7 +29,7 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(fetchStat("lovec", "blk0misc-restrictr"), blk.placeRestrictR, StatUnit.blocks);
+        stats.add(fetchStat("lovec", "blk0misc-restrictr"), blk.delegee.placeRestrictR, StatUnit.blocks);
     };
 
 
@@ -43,8 +43,8 @@
      */
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
         if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
-            blk.ex_findPlaceRestrictTs(blk.placeRestrictTmpTs, t, rot);
-            thisFun.tmpCond = !LCEntity.getBuildsByTiles(blk.placeRestrictTmpBs, blk.placeRestrictTmpTs).some(ob => blk.sameTypeFilter.get(blk, ob.block));
+            blk.self.ex_findPlaceRestrictTs(blk.delegee.placeRestrictTmpTs, t, rot);
+            thisFun.tmpCond = !LCEntity.getBuildsByTiles(blk.delegee.placeRestrictTmpBs, blk.delegee.placeRestrictTmpTs).some(ob => blk.delegee.sameTypeFilter.get(blk, ob.block));
         };
         return thisFun.tmpCond;
     }
@@ -72,10 +72,10 @@
      */
     function comp_ex_findPlaceRestrictTs(blk, contArr, t, rot) {
         return blk.rotate ?
-            LCPos.getTilesRectRotCenter(contArr, t, blk.placeRestrictR, blk.size, rot) :
-            !blk.useCircularPlaceRestrict ?
-                LCPos.getTilesRect(contArr, t, blk.placeRestrictR, blk.size) :
-                LCPos.getTilesCircle(contArr, t, blk.placeRestrictR, blk.size);
+            LCPos.getTilesRectRotCenter(contArr, t, blk.delegee.placeRestrictR, blk.size, rot) :
+            !blk.delegee.useCircularPlaceRestrict ?
+                LCPos.getTilesRect(contArr, t, blk.delegee.placeRestrictR, blk.size) :
+                LCPos.getTilesCircle(contArr, t, blk.delegee.placeRestrictR, blk.size);
     };
 
 
@@ -85,7 +85,7 @@
      * @return {void}
      */
     function comp_onProximityUpdate(b) {
-        b.block.ex_findPlaceRestrictTs(b.placeRestrictTmpTs, b.tile, b.rotation);
+        b.block.self.ex_findPlaceRestrictTs(b.delegee.placeRestrictTmpTs, b.tile, b.rotation);
     };
 
 
@@ -96,7 +96,7 @@
      */
     function comp_updateTile(b) {
         if(GLB_timer.secFive) {
-            b.placeRestrictEffc = LCEntity.getBuildsByTiles(b.placeRestrictTmpBs, b.placeRestrictTmpTs).some(ob => ob.id !== b.id && b.block.delegee.sameTypeFilter.get(b.block, ob.block)) ?
+            b.delegee.placeRestrictEffc = LCEntity.getBuildsByTiles(b.delegee.placeRestrictTmpBs, b.delegee.placeRestrictTmpTs).some(ob => ob.id !== b.id && b.block.delegee.sameTypeFilter.get(b.block, ob.block)) ?
                 0.0 :
                 1.0;
         };
@@ -109,7 +109,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        b.efficiency *= b.placeRestrictEffc;
+        b.efficiency *= b.delegee.placeRestrictEffc;
     };
 
 

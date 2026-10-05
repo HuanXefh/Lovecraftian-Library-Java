@@ -25,7 +25,7 @@
      * @return {void}
      */
     function comp_load(sta) {
-        sta.fadeReg = fetchRegionOrNull(sta, "-fade");
+        sta.delegee.fadeReg = fetchRegionOrNull(sta, "-fade");
     };
 
 
@@ -39,9 +39,9 @@
         let isAfter = false;
         if(!GLB_varGen.fadeStas.some(osta => {
             if(osta === sta) isAfter = true;
-            return !isAfter && sta.fadeReg != null && unit.hasEffect(osta) && osta !== sta;
+            return !isAfter && sta.delegee.fadeReg != null && unit.hasEffect(osta) && osta !== sta;
         })) {
-            LCDrawf.fade(unit.x, unit.y, sta.fadeReg, 0.5, 0.0, LCProp.getHitSize(unit) * 0.1, sta.fadeColor, 0.5, Layer.effect + GLB_var.layer.offDrawOver);
+            LCDrawf.fade(unit.x, unit.y, sta.delegee.fadeReg, 0.5, 0.0, LCProp.getHitSize(unit) * 0.1, sta.delegee.fadeColor, 0.5, Layer.effect + GLB_var.layer.offDrawOver);
         };
     };
 

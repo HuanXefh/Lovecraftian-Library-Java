@@ -902,7 +902,7 @@
      * @return {boolean}
      */
     const isLootProtected = function(loot) {
-        return loot.fin() * 2.0 < GLB_var.time.lootProtection / loot.type.lifetime;
+        return loot.fin() * 2.0 < GLB_var.timeParam.lootProtection / loot.type.lifetime;
     };
     exports.isLootProtected = isLootProtected;
 

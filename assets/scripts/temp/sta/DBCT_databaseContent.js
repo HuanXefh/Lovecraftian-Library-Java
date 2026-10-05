@@ -25,9 +25,9 @@
      * @return {void}
      */
     function comp_init(sta) {
-        if(!sta.exInitCalled) {
-            sta.ex_init();
-            sta.exInitCalled = true;
+        if(!sta.delegee.exInitCalled) {
+            sta.self.ex_init();
+            sta.delegee.exInitCalled = true;
         };
     };
 

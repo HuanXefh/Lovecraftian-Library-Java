@@ -25,9 +25,9 @@
      * @return {void}
      */
     function comp_init(liq) {
-        let liqSolv = MDL_content.getCt(LCDBFileHandler.read("liquid-solvent", liq.solvent, null), ContentGetModes.RS, true);
+        let liqSolv = MDL_content.getCt(LCDBFileHandler.read("liquid-solvent", liq.delegee.solvent, null), ContentGetModes.RS, true);
 
-        if(liqSolv != null && liq.setupVanillaProp) {
+        if(liqSolv != null && liq.delegee.setupVanillaProp) {
             liq.flammability = liqSolv.flammability;
             liq.explosiveness = liqSolv.explosiveness;
             liq.viscosity = liqSolv.viscosity;
@@ -36,15 +36,15 @@
             };
         };
 
-        if(!liq.skipReactionAssign && liq.intmdParent != null) {
+        if(!liq.delegee.skipReactionAssign && liq.delegee.intmdParent != null) {
             MDL_event.onLoad(() => {
-                if(liq.intmdParent instanceof Item) {
+                if(liq.delegee.intmdParent instanceof Item) {
                     // Make the parent item soluble in puddles of the solvent, which yields this liquid
                     let obj = DB_reaction.db["solvationTarget"];
-                    if(obj[liq.solvent] === undefined) {
-                        obj[liq.solvent] = [];
+                    if(obj[liq.delegee.solvent] === undefined) {
+                        obj[liq.delegee.solvent] = [];
                     };
-                    obj[liq.solvent].push(liq.intmdParent.name, liq.name);
+                    obj[liq.delegee.solvent].push(liq.delegee.intmdParent.name, liq.name);
                 };
             });
         };
@@ -114,7 +114,7 @@
          * @return {string}
          */
         ex_getLocalizedMainName: function() {
-            return MDL_bundle.getTerm("common", "intmd-solution" + (this.solvent === "water" ? "" : ("-" + this.solvent)));
+            return MDL_bundle.getTerm("common", "intmd-solution" + (this.delegee.solvent === "water" ? "" : ("-" + this.delegee.solvent)));
         }
         .setProp({
             noSuper: true,

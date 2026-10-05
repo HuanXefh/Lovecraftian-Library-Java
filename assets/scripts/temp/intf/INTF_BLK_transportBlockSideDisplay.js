@@ -28,9 +28,9 @@
      * @return {void}
      */
     function comp_load(blk) {
-        if(blk.noTransSideReg) return;
-        blk.transSideReg1 = fetchRegionOrNull(blk, "-side1", "-side");
-        blk.transSideReg2 = fetchRegionOrNull(blk, "-side2", "-side");
+        if(blk.delegee.noTransSideReg) return;
+        blk.delegee.transSideReg1 = fetchRegionOrNull(blk, "-side1", "-side");
+        blk.delegee.transSideReg2 = fetchRegionOrNull(blk, "-side2", "-side");
     };
 
 
@@ -41,8 +41,8 @@
      */
     function comp_onProximityUpdate(b) {
         if(b.block.delegee.noTransSideReg) return;
-        b.shouldDrawTransSide1 = LCGeometry.showBackSide(b);
-        b.shouldDrawTransSide2 = LCGeometry.showFrontSide(b);
+        b.delegee.shouldDrawTransSide1 = LCGeometry.showBackSide(b);
+        b.delegee.shouldDrawTransSide2 = LCGeometry.showFrontSide(b);
     };
 
 
@@ -54,7 +54,7 @@
     function comp_pickedUp(b) {
         if(b.block.delegee.noTransSideReg) return;
         // Is it even possible to see the payload???
-        b.shouldDrawTransSide1 = b.shouldDrawTransSide2 = true;
+        b.delegee.shouldDrawTransSide1 = b.delegee.shouldDrawTransSide2 = true;
     };
 
 
@@ -65,10 +65,10 @@
      */
     function comp_draw(b) {
         if(b.block.delegee.noTransSideReg) return;
-        if(b.shouldDrawTransSide1) {
+        if(b.delegee.shouldDrawTransSide1) {
             LCDrawf.side(b.x, b.y, b.block.delegee.transSideReg1, b.rotation, Color.white, 1.0, b.block.delegee.transSideRegZ);
         };
-        if(b.shouldDrawTransSide2) {
+        if(b.delegee.shouldDrawTransSide2) {
             LCDrawf.side(b.x, b.y, b.block.delegee.transSideReg2, b.rotation + 2, Color.white, 1.0, b.block.delegee.transSideRegZ);
         };
     };

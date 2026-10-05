@@ -25,8 +25,8 @@
      * @return {void}
      */
     function comp_init(liq) {
-        if(liq.intmdParent.gas) {
-            liq.dens = liq.intmdParent.dens;
+        if(liq.delegee.intmdParent.gas) {
+            liq.dens = tryJsProp(liq.delegee.intmdParent, "dens", 0.0);
         };
     };
 

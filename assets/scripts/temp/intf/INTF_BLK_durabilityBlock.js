@@ -5,120 +5,120 @@
 */
 
 
-  /* <------------------------------ meta ------------------------------> */
+    /* <------------------------------ meta ------------------------------> */
 
 
-  /**
-   * @typedef {TemplateInstance<Block, INTF_BLK_durabilityBlock>} INTFBLKDurabilityBlock
-   */
+    /**
+     * @typedef {TemplateInstance<Block, INTF_BLK_durabilityBlock>} INTFBLKDurabilityBlock
+     */
 
 
-  /**
-   * @typedef {TemplateInstance<Building, INTF_B_durabilityBlock>} INTFBDurabilityBlock
-   * @prop {INTFBLKDurabilityBlock} block
-   */
+    /**
+     * @typedef {TemplateInstance<Building, INTF_B_durabilityBlock>} INTFBDurabilityBlock
+     * @prop {INTFBLKDurabilityBlock} block
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /* <------------------------------ component ------------------------------> */
 
 
-  /**
-   * @private
-   * @param {INTFBLKDurabilityBlock} blk
-   * @return {void}
-   */
-  function comp_init(blk) {
-      blk.ex_addLogicF(LogicProp.ammo, b => b.delegee.durabFrac * blk.durabCap / 60.0);
-      blk.ex_addLogicF(LogicProp.ammoCapacity, b => blk.durabCap / 60.0 * (blk.durabRegenFracMin + blk.durabRegenFracMax) * 0.5);
-  };
+    /**
+     * @private
+     * @param {INTFBLKDurabilityBlock} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.self.ex_addLogicF(LogicProp.ammo, b => b.delegee.durabFrac * blk.delegee.durabCap / 60.0);
+        blk.self.ex_addLogicF(LogicProp.ammoCapacity, b => blk.delegee.durabCap / 60.0 * (blk.delegee.durabRegenFracMin + blk.delegee.durabRegenFracMax) * 0.5);
+    };
 
 
-  /**
-   * @private
-   * @param {INTFBLKDurabilityBlock} blk
-   * @param {Stats} stats
-   * @return {void}
-   */
-  function comp_setStats(blk, stats) {
-      if(isFinite(blk.durabCap) && blk.durabCap > 0.0) {
-          stats.add(fetchStat("lovec", "blk0fac-durabtime"), (blk.durabCap / 3600.0 * (blk.durabRegenFracMin + blk.durabRegenFracMax) * 0.5).roundFixed(2), StatUnit.minutes);
-      };
-  };
+    /**
+     * @private
+     * @param {INTFBLKDurabilityBlock} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        if(isFinite(blk.delegee.durabCap) && blk.delegee.durabCap > 0.0) {
+            stats.add(fetchStat("lovec", "blk0fac-durabtime"), (blk.delegee.durabCap / 3600.0 * (blk.delegee.durabRegenFracMin + blk.delegee.durabRegenFracMax) * 0.5).roundFixed(2), StatUnit.minutes);
+        };
+    };
 
 
-  /**
-   * @private
-   * @param {INTFBLKDurabilityBlock} blk
-   * @return {void}
-   */
-  function comp_setBars(blk) {
-      if(!isFinite(blk.durabCap)) return;
-      blk.addBar("lovec-durability", b => new Bar(
-          prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", b.delegee.durabFrac.perc(0))),
-          prov(() => Pal.sap),
-          () => Mathf.clamp(b.delegee.durabFrac),
-      ));
-  };
+    /**
+     * @private
+     * @param {INTFBLKDurabilityBlock} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        if(!isFinite(blk.delegee.durabCap)) return;
+        blk.addBar("lovec-durability", b => new Bar(
+            prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", b.delegee.durabFrac.perc(0))),
+            prov(() => Pal.sap),
+            () => Mathf.clamp(b.delegee.durabFrac),
+        ));
+    };
 
 
-  /**
-   * @private
-   * @param {INTFBDurabilityBlock} b
-   * @return {void}
-   */
-  function comp_updateTile(b) {
-      if(!isFinite(b.block.delegee.durabCap)) return;
+    /**
+     * @private
+     * @param {INTFBDurabilityBlock} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(!isFinite(b.block.delegee.durabCap)) return;
 
-      if(b.durabMode === "dec") {
-          b.durabFrac -= 1.0 / b.block.delegee.durabCap * b.edelta();
-          // Enter increase mode (need repairing) when run out of durability
-          if(b.durabFrac < 0.0) {
-              b.durabFrac = 0.0;
-              b.durabMode = "inc";
-              FRAG_attack.damage(b, Math.min(b.maxHealth * b.block.delegee.durabDmgFrac, !b.block.delegee.noDurabDmgKill ? Infinity : b.health - 1.0), 0.0);
-          };
-      } else {
-          // Exit increase mode when fully repaired
-          if(b.health / b.maxHealth > 0.9999) {
-              b.durabFrac = Mathf.lerp(b.block.delegee.durabRegenFracMin, b.block.delegee.durabRegenFracMax, Math.random());
-              b.durabMode = "dec";
-          };
-      };
-  };
-
-
-  /**
-   * @private
-   * @param {INTFBDurabilityBlock} b
-   * @return {void}
-   */
-  function comp_updateEfficiencyMultiplier(b) {
-      if(b.durabMode !== "dec") {
-          b.efficiency *= 0.0;
-      };
-  };
+        if(b.delegee.durabMode === "dec") {
+            b.delegee.durabFrac -= 1.0 / b.block.delegee.durabCap * b.edelta();
+            // Enter increase mode (need repairing) when run out of durability
+            if(b.delegee.durabFrac < 0.0) {
+                b.delegee.durabFrac = 0.0;
+                b.delegee.durabMode = "inc";
+                FRAG_attack.damage(b, Math.min(b.maxHealth * b.block.delegee.durabDmgFrac, !b.block.delegee.noDurabDmgKill ? Infinity : b.health - 1.0), 0.0);
+            };
+        } else {
+            // Exit increase mode when fully repaired
+            if(b.health / b.maxHealth > 0.9999) {
+                b.delegee.durabFrac = Mathf.lerp(b.block.delegee.durabRegenFracMin, b.block.delegee.durabRegenFracMax, Math.random());
+                b.delegee.durabMode = "dec";
+            };
+        };
+    };
 
 
-  /**
-   * @private
-   * @param {INTFBDurabilityBlock} b
-   * @return {void}
-   */
-  function comp_drawSelect(b) {
-      if(b.durabMode !== "dec") {
-          LCDrawf.textSelect(b, MDL_bundle.getInfo("lovec", "text-require-repair"), false, b.block.delegee.durabTextOffTy);
-      };
-  };
+    /**
+     * @private
+     * @param {INTFBDurabilityBlock} b
+     * @return {void}
+     */
+    function comp_updateEfficiencyMultiplier(b) {
+        if(b.delegee.durabMode !== "dec") {
+            b.efficiency *= 0.0;
+        };
+    };
 
 
-  /**
-   * @private
-   * @param {INTFBDurabilityBlock} b
-   * @return {void}
-   */
-  function comp_ex_postUpdateEfficiencyMultiplier(b) {
-      comp_updateEfficiencyMultiplier(b);
-  };
+    /**
+     * @private
+     * @param {INTFBDurabilityBlock} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        if(b.delegee.durabMode !== "dec") {
+            LCDrawf.textSelect(b, MDL_bundle.getInfo("lovec", "text-require-repair"), false, b.block.delegee.durabTextOffTy);
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {INTFBDurabilityBlock} b
+     * @return {void}
+     */
+    function comp_ex_postUpdateEfficiencyMultiplier(b) {
+        comp_updateEfficiencyMultiplier(b);
+    };
 
 
 /*
@@ -296,13 +296,13 @@
                 processData(
                     wr0rd,
                     wr => {
-                        wr.f(this.durabFrac);
-                        wr.str(this.durabMode);
+                        wr.f(this.delegee.durabFrac);
+                        wr.str(this.delegee.durabMode);
                     },
                     rd => {
-                        if(this.LCRevi === 5 && this.block.ex_isSubInsOf("BLK_baseMiner")) return;
-                        this.durabFrac = rd.f();
-                        this.durabMode = rd.str();
+                        if(this.delegee.LCRevi === 5 && this.block.ex_isSubInsOf("BLK_baseMiner")) return;
+                        this.delegee.durabFrac = rd.f();
+                        this.delegee.durabMode = rd.str();
                     },
                 );
             }

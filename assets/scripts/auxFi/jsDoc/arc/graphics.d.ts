@@ -241,12 +241,14 @@ declare class Shader implements Disposable {}
 interface Shader extends Disposable {}
 
 
-/** arc.graphics.g2d.Font */
-declare class Font implements Disposable {}
-interface Font extends Disposable {}
 /** arc.graphics.g2d.GlyphLayout */
 declare class GlyphLayout implements Pool.Poolable {}
 interface GlyphLayout extends Pool.Poolable {}
+
+
+/** arc.graphics.g2d.font.Font */
+declare class Font implements Disposable {}
+interface Font extends Disposable {}
 
 
 /** arc.graphics.GL20 */

@@ -25,7 +25,7 @@
      * @return {void}
      */
     function comp_load(btp) {
-        btp.shaReg = btp.backRegion;
+        btp.delegee.shaReg = btp.backRegion;
     };
 
 
@@ -36,10 +36,10 @@
      * @return {void}
      */
     function comp_draw(btp, bul) {
-        if(btp.shouldDrawShadow && GLB_var.world.floorWorld(bul.x, bul.y) != null && GLB_var.world.floorWorld(bul.x, bul.y).canShadow) {
+        if(btp.delegee.shouldDrawShadow && GLB_var.world.floorWorld(bul.x, bul.y) != null && GLB_var.world.floorWorld(bul.x, bul.y).canShadow) {
             processZ(btp.layer - 1.0);
             Draw.color(Pal.shadow, Pal.shadow.a);
-            Draw.rect(btp.shaReg, bul.x + btp.offSha, bul.y + btp.offSha, bul.rotation - 90.0);
+            Draw.rect(btp.delegee.shaReg, bul.x + btp.delegee.offSha, bul.y + btp.delegee.offSha, bul.rotation - 90.0);
             Draw.color();
             processZ();
         };

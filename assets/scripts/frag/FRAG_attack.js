@@ -318,14 +318,14 @@
             dmg_fi = dmg * (Mathf.random(0.6) + 0.7) * Math.max(frac, 0.1) + GLB_var.param.impactDmgMin;
 
             if(unit === Vars.player.unit()) {
-                Time.run(2.0, () => {
+                MDL_event.onDelayRun(2.0, () => {
                     if(unit.dead) {
-                      BOX_trigger.impactWavePlayerDeath.fire();
-                      BOX_trigger.impactWaveDeath.fire(x, y, unit);
+                        BOX_trigger.impactWavePlayerDeath.fire();
+                        BOX_trigger.impactWaveDeath.fire(x, y, unit);
                     };
                 });
             } else {
-                Time.run(2.0, () => {
+                MDL_event.onDelayRun(2.0, () => {
                     if(unit.dead) {
                         BOX_trigger.impactWaveDeath.fire(x, y, unit);
                     };

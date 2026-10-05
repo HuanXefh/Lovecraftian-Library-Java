@@ -25,10 +25,11 @@
      * @return {void}
      */
     function comp_init(liq) {
-        liq.intmdParent = MDL_content.getCt(liq.intmdParent, ContentGetModes.RS);
-        liq.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS));
+        // noinspection JSValidateTypes
+        liq.delegee.intmdParent = MDL_content.getCt(liq.delegee.intmdParent, ContentGetModes.RS);
+        liq.delegee.extraIntmdParents.inSituMap(nameRs => MDL_content.getCt(nameRs, ContentGetModes.RS));
 
-        liq.ex_generateIntmdName();
+        liq.self.ex_generateIntmdName();
     };
 
 
@@ -40,10 +41,10 @@
      */
     function comp_setStats(liq, stats) {
         stats.add(fetchStat("lovec", "rs-isintermediate"), true);
-        if(liq.intmdParent != null) {
+        if(liq.delegee.intmdParent != null) {
             stats.add(fetchStat("lovec", "rs0int-parent"), newStatValue(tb => {
                 tb.row();
-                MDL_table.setCtRow(tb, liq.intmdParent);
+                MDL_table.setCtRow(tb, liq.delegee.intmdParent);
             }));
         };
     };
@@ -98,7 +99,7 @@
          * @override
          * @memberof RS_intermediateFluid
          * @instance
-         * @type {string|null}
+         * @type {String|null}
          */
         recolorRegStr: null,
 

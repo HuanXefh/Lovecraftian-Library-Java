@@ -234,7 +234,7 @@
 
     MDL_event.onWorldLoad(() => {
 
-        Time.run(GLB_var.delay.worldLoad.loadPol, () => {
+        MDL_event.onDelayRun(GLB_var.delay.worldLoad.loadPol, () => {
             mapPol = DB_env.db["param"]["map"]["pol"].read(
                 GLB_param.MAP_CURRENT,
                 DB_env.db["param"]["pla"]["pol"].read(GLB_param.PLANET_CURRENT, 0.0),

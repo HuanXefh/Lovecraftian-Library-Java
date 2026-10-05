@@ -39,7 +39,7 @@
          * @return {void}
          */
         add(ct) {
-            if(!checkCreatedByTemp(ct)) throw new NotCreatedByTemplateError(ct);
+            if(!checkCreatedByTemp(ct)) throw new LCError.NotCreatedByTemplateError(ct);
             LCContentHandler.__nameMap__.put(ct.name, ct);
             if(LCContentHandler.__typeMaps__[ct.getContentType().toString()] !== undefined) {
                 LCContentHandler.__typeMaps__[ct.getContentType().toString()].put(ct.name, ct);
