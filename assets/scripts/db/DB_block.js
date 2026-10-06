@@ -529,37 +529,6 @@ const db = {
                 ],
 
 
-                /**
-                 * These blocks will be treated as payload I/O sites.
-                 */
-                site: {
-
-
-                    /**
-                     * Payload sites with fixed direction.
-                     * @type {Array<ContentTypeGn>}
-                     */
-                    fixed: [
-
-                        PayloadConveyor,
-
-                    ],
-
-
-                    /**
-                     * Payload sites with dynamic direction.
-                     * @type {Array<ContentTypeGn>}
-                     */
-                    dynamic: [
-
-                        PayloadRouter,
-
-                    ],
-
-
-                },
-
-
             },
 
 

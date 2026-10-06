@@ -106,6 +106,23 @@
 
     /**
      * @private
+     * @param {INTFBLKHeatBlock} blk
+     * @param {Building} b
+     * @param {number} a
+     * @return {void}
+     */
+    function comp_ex_drawHeat(blk, b, a) {
+        if(!blk.delegee.shouldDrawDoubleHeat) {
+            LCDrawf.heat(b.x, b.y, blk.delegee.heatReg, a, b.block.size, b.drawrot());
+        } else {
+            LCDrawf.heat(b.x, b.y, blk.delegee.heatReg, a / 1.4, b.block.size, b.drawrot());
+            LCDrawf.heat(b.x, b.y, LCDrawf.heatRegs[b.block.size + 2], a / 2.0, b.block.size, b.drawrot());
+        };
+    };
+
+
+    /**
+     * @private
      * @param {INTFBHeatBlock} b
      * @return {void}
      */
@@ -202,11 +219,10 @@
         if(b.isPayload()) return;
 
         if(GLB_param.SHOULD_DRAW_FURNACE_HEAT && b.block.delegee.heatA > 0.0) {
-            if(!b.block.delegee.shouldDrawDoubleHeat) {
-                LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.self.ex_getHeatFrac(), 3) * 0.7 * b.block.delegee.heatA, b.block.size, b.drawrot());
-            } else {
-                LCDrawf.heat(b.x, b.y, b.block.delegee.heatReg, Math.pow(b.self.ex_getHeatFrac(), 3) * 0.5 * b.block.delegee.heatA, b.block.size, b.drawrot());
-                LCDrawf.heat(b.x, b.y, LCDrawf.heatRegs[b.block.size + 2], Math.pow(b.self.ex_getHeatFrac(), 3) * 0.35 * b.block.delegee.heatA, b.block.size, b.drawrot());
+            let a = Math.pow(b.self.ex_getHeatFrac(), 3) * 0.7 * b.block.delegee.heatA;
+            b.block.self.ex_drawHeat(b, a);
+            if(b.linkedBuilds != null) {
+                b.linkedBuilds.each(ob => b.block.self.ex_drawHeat(ob, a));
             };
         };
 
@@ -488,6 +504,23 @@
             setBars: function() {
                 comp_setBars(this);
             },
+
+
+            /**
+             * @memberof INTF_BLK_heatBlock
+             * @instance
+             * @func
+             * @param {Building} b
+             * @param {number} a
+             * @return {void}
+             */
+            ex_drawHeat: function(b, a) {
+                comp_ex_drawHeat(this, b, a);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
 
 
         }),

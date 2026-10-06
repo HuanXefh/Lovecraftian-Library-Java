@@ -21,102 +21,10 @@
     class RepairTower extends Block {};
     /** @global mindustry.world.blocks.units.RepairTurret */
     class RepairTurret extends Block {};
-    /** @global mindustry.world.blocks.defense.turrets.BaseTurret */
-    class BaseTurret extends Block {};
-    /** @global mindustry.world.blocks.defense.BuildTurret */
-    class BuildTurret extends BaseTurret {};
-    /** @global mindustry.world.blocks.defense.turrets.TractorBeamTurret */
-    class TractorBeamTurret extends BaseTurret {};
-    /** @global mindustry.world.blocks.defense.turrets.ReloadTurret */
-    class ReloadTurret extends BaseTurret {};
-    /** @global mindustry.world.blocks.defense.turrets.PointDefenseTurret */
-    class PointDefenseTurret extends ReloadTurret {};
-    /** @global mindustry.world.blocks.defense.turrets.Turret */
-    class Turret extends ReloadTurret {};
-    /** @global mindustry.world.blocks.defense.turrets.ItemTurret */
-    class ItemTurret extends Turret {};
-    /** @global mindustry.world.blocks.defense.turrets.LiquidTurret */
-    class LiquidTurret extends Turret {};
-    /** @global mindustry.world.blocks.defense.turrets.PowerTurret */
-    class PowerTurret extends Turret {};
-    /** @global mindustry.world.blocks.defense.turrets.LaserTurret */
-    class LaserTurret extends PowerTurret {};
-    /** @global mindustry.world.blocks.defense.turrets.PayloadAmmoTurret */
-    class PayloadAmmoTurret extends Turret {};
-    /** @global mindustry.world.blocks.defense.turrets.ContinuousTurret */
-    class ContinuousTurret extends Turret {};
-    /** @global mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret */
-    class ContinuousLiquidTurret extends ContinuousTurret {};
-    /** @global mindustry.world.blocks.distribution.Conveyor */
-    class Conveyor extends Block {};
-    /** @global mindustry.world.blocks.distribution.ArmoredConveyor */
-    class ArmoredConveyor extends Conveyor {};
-    /** @global mindustry.world.blocks.distribution.StackConveyor */
-    class StackConveyor extends Block {};
-    /** @global mindustry.world.blocks.distribution.Duct */
-    class Duct extends Block {};
-    /** @global mindustry.world.blocks.distribution.ItemBridge */
-    class ItemBridge extends Block {};
-    /** @global mindustry.world.blocks.distribution.BufferedItemBridge */
-    class BufferedItemBridge extends ItemBridge {};
-    /** @global mindustry.world.blocks.distribution.DirectionBridge */
-    class DirectionBridge extends Block {};
-    /** @global mindustry.world.blocks.distribution.DuctBridge */
-    class DuctBridge extends DirectionBridge {};
-    /** @global mindustry.world.blocks.distribution.Junction */
-    class Junction extends Block {};
-    /** @global mindustry.world.blocks.distribution.DuctJunction */
-    class DuctJunction extends Block {};
-    /** @global mindustry.world.blocks.distribution.Router */
-    class Router extends Block {};
-    /** @global mindustry.world.blocks.distribution.DuctRouter */
-    class DuctRouter extends Block {};
-    /** @global mindustry.world.blocks.distribution.StackRouter */
-    class StackRouter extends DuctRouter {};
-    /** @global mindustry.world.blocks.distribution.Sorter */
-    class Sorter extends Block {};
-    /** @global mindustry.world.blocks.distribution.OverflowGate */
-    class OverflowGate extends Block {};
-    /** @global mindustry.world.blocks.distribution.OverflowDuct */
-    class OverflowDuct extends Block {};
-    /** @global mindustry.world.blocks.storage.Unloader */
-    class Unloader extends Block {};
-    /** @global mindustry.world.blocks.distribution.DirectionalUnloader */
-    class DirectionalUnloader extends Block {};
-    /** @global mindustry.world.blocks.distribution.MassDriver */
-    class MassDriver extends Block {};
-    /** @global mindustry.world.blocks.storage.StorageBlock */
-    class StorageBlock extends Block {};
-    /** @global mindustry.world.blocks.storage.CoreBlock */
-    class CoreBlock extends StorageBlock {};
-    /** @global mindustry.world.blocks.sandbox.ItemSource */
-    class ItemSource extends Block {};
-    /** @global mindustry.world.blocks.sandbox.ItemVoid */
-    class ItemVoid extends Block {};
-    /** @global mindustry.world.blocks.heat.HeatConductor */
-    class HeatConductor extends Block {};
     /** @global mindustry.world.blocks.power.HeaterGenerator */
     class HeaterGenerator extends ConsumeGenerator {};
-    /** @global mindustry.world.blocks.heat.HeatProducer */
-    class HeatProducer extends GenericCrafter {};
     /** @global mindustry.world.blocks.production.HeatCrafter */
     class HeatCrafter extends GenericCrafter {};
-    /** @global mindustry.world.blocks.liquid.LiquidBlock */
-    class LiquidBlock extends Block {};
-    /** @global mindustry.world.blocks.liquid.Conduit */
-    class Conduit extends LiquidBlock {};
-    /** @global mindustry.world.blocks.liquid.ArmoredConduit */
-    class ArmoredConduit extends Conduit {};
-    /** @global mindustry.world.blocks.liquid.LiquidBridge */
-    class LiquidBridge extends ItemBridge {};
-    /** @global mindustry.world.blocks.liquid.LiquidJunction */
-    class LiquidJunction extends LiquidBlock {};
-    /** @global mindustry.world.blocks.distribution.DirectionLiquidBridge */
-    class DirectionLiquidBridge extends DirectionBridge {};
-    /** @global mindustry.world.blocks.sandbox.LiquidSource */
-    class LiquidSource extends Block {};
-    /** @global mindustry.world.blocks.sandbox.LiquidVoid */
-    class LiquidVoid extends Block {};
     /** @global mindustry.world.blocks.logic.LogicBlock */
     class LogicBlock extends Block {};
     /** @global mindustry.world.blocks.logic.CanvasBlock */
@@ -131,28 +39,6 @@
     class MessageBlock extends Block {};
     /** @global mindustry.world.blocks.logic.SwitchBlock */
     class SwitchBlock extends Block {};
-    /** @global mindustry.world.blocks.payloads.PayloadBlock */
-    class PayloadBlock extends Block {};
-    /** @global mindustry.world.blocks.payloads.PayloadConveyor */
-    class PayloadConveyor extends Block {};
-    /** @global mindustry.world.blocks.payloads.PayloadRouter */
-    class PayloadRouter extends PayloadConveyor {};
-    /** @global mindustry.world.blocks.payloads.BlockProducer */
-    class BlockProducer extends PayloadBlock {};
-    /** @global mindustry.world.blocks.production.SingleBlockProducer */
-    class SingleBlockProducer extends BlockProducer {};
-    /** @global mindustry.world.blocks.payloads.Constructor */
-    class Constructor extends BlockProducer {};
-    /** @global mindustry.world.blocks.payloads.PayloadDeconstructor */
-    class PayloadDeconstructor extends PayloadBlock {};
-    /** @global mindustry.world.blocks.payloads.PayloadLoader */
-    class PayloadLoader extends PayloadBlock {};
-    /** @global mindustry.world.blocks.payloads.PayloadUnloader */
-    class PayloadUnloader extends PayloadLoader {};
-    /** @global mindustry.world.blocks.payloads.PayloadMassDriver */
-    class PayloadMassDriver extends PayloadBlock {};
-    /** @global mindustry.world.blocks.payloads.PayloadSource */
-    class PayloadSource extends PayloadBlock {};
     /** @global mindustry.world.blocks.units.UnitBlock */
     class UnitBlock extends PayloadBlock {};
     /** @global mindustry.world.blocks.units.UnitFactory */
@@ -197,10 +83,6 @@
     class VariableReactor extends PowerGenerator {};
     /** @global mindustry.world.blocks.power.SolarGenerator */
     class SolarGenerator extends PowerGenerator {};
-    /** @global mindustry.world.blocks.sandbox.PowerSource */
-    class PowerSource extends PowerNode {};
-    /** @global mindustry.world.blocks.sandbox.PowerVoid */
-    class PowerVoid extends PowerBlock {};
     /** @global mindustry.world.blocks.power.LightBlock */
     class LightBlock extends Block {};
     /** @global mindustry.world.blocks.production.Incinerator */

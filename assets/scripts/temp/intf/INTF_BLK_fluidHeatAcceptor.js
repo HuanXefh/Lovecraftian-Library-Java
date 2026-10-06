@@ -72,6 +72,24 @@
 
     /**
      * @private
+     * @param {INTFBLKFluidHeatAcceptor} blk
+     * @param {Building} b
+     * @param {number} a
+     * @return {void}
+     */
+    function comp_ex_drawFHeat(blk, b, a) {
+        LCDrawf.heat(
+            b.x, b.y,
+            blk.delegee.fHeatReg,
+            a,
+            b.block.size,
+            blk.delegee.shouldRotFHeatReg ? b.drawrot() : 0.0,
+        );
+    };
+
+
+    /**
+     * @private
      * @param {INTFBFluidHeatAcceptor} b
      * @return {void}
      */
@@ -112,15 +130,11 @@
      */
     function comp_draw(b) {
         if(!GLB_param.SHOULD_DRAW_FLUID_HEAT || !GLB_varGen.hotFlds.includes(b.liquids.current())) return;
-        let fHeatRes = b.block.delegee.fHeatRes;
-        if(!isFinite(fHeatRes)) return;
-        LCDrawf.heat(
-            b.x, b.y,
-            b.block.delegee.fHeatReg,
-            Math.pow(Mathf.clamp(b.delegee.fHeatCur * 0.75 / fHeatRes), 3),
-            b.block.size,
-            b.block.delegee.shouldRotFHeatReg ? b.drawrot() : 0.0,
-        );
+        let a = Math.pow(Mathf.clamp(b.delegee.fHeatCur / b.block.delegee.visualFullFHeatThr), 3) * 0.5;
+        b.block.self.ex_drawFHeat(b, a);
+        if(b.linkedBuilds != null) {
+            b.linkedBuilds.each(ob => b.block.self.ex_drawFHeat(ob, a));
+        };
     };
 
 
@@ -152,6 +166,13 @@
                      * @type {number}
                      */
                     fHeatWarmupRate: 0.004,
+                    /**
+                     * `PARAM`: See {@link BLK_heatConductor#visualFullHeatThr}.
+                     * @memberof INTF_BLK_fluidHeatAcceptor
+                     * @instance
+                     * @type {number}
+                     */
+                    visualFullFHeatThr: 160.0,
                     /**
                      * `PARAM`: Whether fluid heat region is rotatable.
                      * @memberof INTF_BLK_fluidHeatAcceptor
@@ -202,6 +223,23 @@
             setBars: function() {
                 comp_setBars(this);
             },
+
+
+            /**
+             * @memberof INTF_BLK_fluidHeatAcceptor
+             * @instance
+             * @func
+             * @param {Building} b
+             * @param {number} a
+             * @return {void}
+             */
+            ex_drawFHeat: function(b, a) {
+                comp_ex_drawFHeat(this, b, a);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
 
 
         }),

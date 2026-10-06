@@ -31,7 +31,10 @@ interface ControlBlock {
     canControl(): boolean
     shouldAutoTarget(): boolean
 }
-/** mindustry.world.blocks.ShieldProvider */
+/**
+ * mindustry.world.blocks.ShieldProvider
+ * @deprecated Added in v9.
+ */
 interface ShieldProvider {
     absorbExplosion(x: number, y: number, dmg: number): number
     getShieldBounds(): number

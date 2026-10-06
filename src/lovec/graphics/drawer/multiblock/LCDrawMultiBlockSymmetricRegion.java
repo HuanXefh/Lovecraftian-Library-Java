@@ -12,7 +12,7 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 
 /**
- * Draw a non-square region that is symmetric.
+ * Draws a non-square region that is symmetric.
  * For multi-block structure.
  * <br> <code>DEDICATION</code>: Inspired by MultiBlockLib.
  */

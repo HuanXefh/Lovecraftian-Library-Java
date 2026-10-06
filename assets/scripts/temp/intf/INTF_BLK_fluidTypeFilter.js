@@ -30,6 +30,7 @@
      * @return {boolean}
      */
     function comp_acceptLiquid(b, b_f, liq) {
+        if(MDL_cond.isAuxiliaryFluid(liq)) return true;
         switch(b.block.delegee.fldType) {
             case "liquid" : return !liq.gas && !liq.willBoil();
             case "gas" : return liq.gas || liq.willBoil();

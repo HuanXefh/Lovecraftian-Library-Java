@@ -10,6 +10,11 @@ declare class DrawMulti extends DrawBlock {}
 declare class DrawRegion extends DrawBlock {}
 /** mindustry.world.draw.DrawSideRegion */
 declare class DrawSideRegion extends DrawBlock {}
+/**
+ * mindustry.world.draw.DrawTeam
+ * @deprecated Added in v9.
+ */
+declare class DrawTeam extends DrawBlock {}
 /** mindustry.world.draw.DrawWarmupRegion */
 declare class DrawWarmupRegion extends DrawBlock {}
 /** mindustry.world.draw.DrawFade */

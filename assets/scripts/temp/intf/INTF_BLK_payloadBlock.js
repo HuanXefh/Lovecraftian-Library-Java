@@ -181,6 +181,9 @@
     function comp_ex_takePay(b, b_f) {
         if(!b.self.ex_acceptPay(b_f, b_f.getPayload())) return;
         let pay = FRAG_payload.takeAt(b_f);
+        if(checkSubInsOfTemp(b_f.block, "BLK_payloadConveyor") && b_f.block.delegee.isRouter) {
+            b_f.delegee.payJustTaken = true;
+        };
         MDL_effect.payloadDeposit(b_f.x, b_f.y, b.x, b.y, pay.content(), false);
         LCNativeObject.numIncre(b.delegee.payReqObj, pay.content().name);
     };
@@ -500,7 +503,7 @@
              * @return {boolean}
              */
             ex_acceptPay: function(b_f, pay) {
-                return pay != null && this.self.ex_getPayConsAmt(pay.content().name) / tryVal(this.delegee.payReqObj[pay.content().name], 0.0001) > 0.5;
+                return pay != null && this.self.ex_getPayConsAmt(pay.content().name) / tryVal(this.delegee.payReqObj[pay.content().name], 0.0001) > 0.33333333;
             }
             .setProp({
                 noSuper: true,
