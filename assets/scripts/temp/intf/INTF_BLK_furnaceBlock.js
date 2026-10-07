@@ -458,7 +458,7 @@
                      * `INTERNAL`: Current fuel, fuel point and fuel level.
                      * @memberof INTF_B_furnaceBlock
                      * @instance
-                     * @type {TDynamic<[Resource, number, number]>}
+                     * @type {TDynamic<Tup3<Resource, number, number>>}
                      */
                     fuelTup: tprov(() => []),
                     /**

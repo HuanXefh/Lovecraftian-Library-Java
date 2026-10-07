@@ -277,7 +277,7 @@
      * @param {F2Array<string, ResourceGn>} attrRsArr
      * @param {Array<Tile>} ts
      * @param {ENumber|unset} [mode] - See {@link AttrModes}.
-     * @return {[Attribute, number, Resource]} `TUPLE`: attr, attrSum, rs.
+     * @return {Tup3<Attribute, number, Resource>} `TUPLE`: attr, attrSum, rs.
      */
     const getDynaAttrTup = function(contTup, attrRsArr, ts, mode) {
         let tup = contTup != null ? contTup.clear() : [];

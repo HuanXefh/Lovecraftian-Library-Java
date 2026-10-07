@@ -131,7 +131,7 @@
      * Gets preferred fuel tuple for some building, which should be a furnace.
      * @param {Array|unset} contTup
      * @param {Building} b
-     * @return {[Resource, number, number]|null} `TUPLE`: fuel, fuelPon, fuelLvl.
+     * @return {Tup3<Resource, number, number>|null} `TUPLE`: fuel, fuelPon, fuelLvl.
      */
     const getFuelTup = function(contTup, b) {
         let tup = contTup != null ? contTup.clear() : [];

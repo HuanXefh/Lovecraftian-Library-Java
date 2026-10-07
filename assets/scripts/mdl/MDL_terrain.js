@@ -265,7 +265,7 @@
     .setProp({
         /**
          * @memberof drawTerPlace
-         * @type {[Block, Tile, number]}
+         * @type {Tup3<Block, Tile, number>}
          */
         tmpTup: [],
         /**

@@ -450,7 +450,7 @@
          * @instance
          * @func
          * @param {Unit} unit
-         * @return {Object}
+         * @return {JSONObject}
          */
         ex_getEmptyUnitData: function(unit) {
             return {};
@@ -466,7 +466,7 @@
          * @instance
          * @func
          * @param {Unit} unit
-         * @param {Object} dataObj
+         * @param {JSONObject} dataObj
          * @return {void}
          */
         ex_writeUnitData: function(unit, dataObj) {
@@ -485,7 +485,7 @@
          * @instance
          * @func
          * @param {Unit} unit
-         * @param {Object} dataObj
+         * @param {JSONObject} dataObj
          * @return {void}
          */
         ex_readUnitData: function(unit, dataObj) {

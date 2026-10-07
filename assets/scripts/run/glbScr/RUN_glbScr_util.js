@@ -1115,7 +1115,7 @@
         /**
          * Finds log type and string getter for given name.
          * @param {string} name
-         * @return {[ENumber, F0Function<string>]|null}
+         * @return {Tup2<ENumber, F0Function<string>>|null}
          */
         find(name) {
             let strF;

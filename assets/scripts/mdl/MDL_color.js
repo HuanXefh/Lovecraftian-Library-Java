@@ -160,7 +160,7 @@
     .setProp({
         /**
          * @memberof getCharaColor
-         * @type {[string, string]}
+         * @type {Tup2<string, string>}
          */
         tmpArgs: [],
     });

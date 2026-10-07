@@ -236,7 +236,7 @@
     /**
      * Variant of {@link extendBase} for blocks.
      * @global
-     * @param {[ContentTemplate, ContentTemplate]} temp - Block template and building template.
+     * @param {Tup2<ContentTemplate, ContentTemplate>} temp - Block template and building template.
      * @param {string} nameBlk
      * @param {ExtendObject|unset} [objBlk]
      * @param {ExtendObject|unset} [objB]

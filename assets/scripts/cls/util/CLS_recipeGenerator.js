@@ -63,7 +63,7 @@
      * @param {number} amtI
      * @param {RecipeMetaObject} metaObj
      * @param {RecipeParamObject|unset} [paramObj]
-     * @return {[string, number]} `TUPLE`: nameCt, amt.
+     * @return {Tup2<string, number>} `TUPLE`: nameCt, amt.
      */
     CLS_recipeGenerator.prototype.processCi = function(ct_gn, amtI, metaObj, paramObj) {
         return [
@@ -80,7 +80,7 @@
      * @param {number} pI
      * @param {RecipeMetaObject} metaObj
      * @param {RecipeParamObject|unset} [paramObj]
-     * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
+     * @return {Tup3<string, number, number>} `TUPLE`: nameCt, amt, p.
      */
     CLS_recipeGenerator.prototype.processBi = function(ct_gn, amtI, pI, metaObj, paramObj) {
         return [
@@ -97,7 +97,7 @@
      * @param {number} payAmtI
      * @param {RecipeMetaObject} metaObj
      * @param {RecipeParamObject|unset} [paramObj]
-     * @return {[string, number]} `TUPLE`: nameCt, amt.
+     * @return {Tup2<string, number>} `TUPLE`: nameCt, amt.
      */
     CLS_recipeGenerator.prototype.processPayi = function(ct_gn, payAmtI, metaObj, paramObj) {
         return [
@@ -113,7 +113,7 @@
      * @param {number} amtO
      * @param {RecipeMetaObject} metaObj
      * @param {RecipeParamObject|unset} [paramObj]
-     * @return {[string, number]} `TUPLE`: nameCt, amt.
+     * @return {Tup2<string, number>} `TUPLE`: nameCt, amt.
      */
     CLS_recipeGenerator.prototype.processCo = function(ct_gn, amtO, metaObj, paramObj) {
         return [
@@ -130,7 +130,7 @@
      * @param {number} pO
      * @param {RecipeMetaObject} metaObj
      * @param {RecipeParamObject|unset} [paramObj]
-     * @return {[string, number, number]} `TUPLE`: nameCt, amt, p.
+     * @return {Tup3<string, number, number>} `TUPLE`: nameCt, amt, p.
      */
     CLS_recipeGenerator.prototype.processBo = function(ct_gn, amtO, pO, metaObj, paramObj) {
         return [
@@ -147,7 +147,7 @@
      * @param {number} payAmtO
      * @param {RecipeMetaObject} metaObj
      * @param {RecipeParamObject|unset} [paramObj]
-     * @return {[string, number]} `TUPLE`: nameCt, amt.
+     * @return {Tup2<string, number>} `TUPLE`: nameCt, amt.
      */
     CLS_recipeGenerator.prototype.processPayo = function(ct_gn, payAmtO, metaObj, paramObj) {
         return [
@@ -362,7 +362,7 @@
     .setProp({
         /**
          * @memberof CLS_recipeGenerator#addRc
-         * @type {[string, string]}
+         * @type {Tup2<string, string>}
          */
         tmpTup: [],
     });

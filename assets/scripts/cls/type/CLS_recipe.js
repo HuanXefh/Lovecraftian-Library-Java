@@ -534,7 +534,7 @@
      * CO not included due to `liquidOutputDirections`.
      * @param {Array|unset} contTup
      * @param {CLS_recipe} rc
-     * @return {[Array<Item>, Array<Liquid>]}
+     * @return {Tup2<Array<Item>, Array<Liquid>>}
      */
     CLS_recipe.getDumpTup = function(contTup, rc) {
         let tup = contTup != null ? contTup : [[], []];
@@ -818,7 +818,7 @@
         this.hasPayInput = CLS_recipe.checkAnyPayInput(this);
         /** @type {boolean} */
         this.hasPayOutput = CLS_recipe.checkAnyPayOutput(this);
-        /** @type {[Array<Item>, Array[Liquid]]} */
+        /** @type {Tup2<Array<Item>, Array<Liquid>>} */
         this.dumpTup = CLS_recipe.getDumpTup(null, this);
 
         /** @type {boolean} */
@@ -1425,7 +1425,7 @@
      * Gets a 4-tuple of preferred optional input.
      * Returns null if no optional input.
      * @param {Building} b
-     * @return {[Item, number, number, number]|null} `TUPLE`: item, amt, p, mtp.
+     * @return {Tup4<Item, number, number, number>|null} `TUPLE`: item, amt, p, mtp.
      */
     CLS_recipe.prototype.getOptTup = function(b) {
         return this.updater.getOptTup(b);

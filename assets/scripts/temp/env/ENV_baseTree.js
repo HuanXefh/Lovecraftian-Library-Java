@@ -142,7 +142,7 @@
          * <br> `TUP`: z, scl, mag, wob.
          * @memberof ENV_baseTree
          * @instance
-         * @type {[number, number, number, number]}
+         * @type {Tup4<number, number, number, number>}
          */
         drawTup: null,
 

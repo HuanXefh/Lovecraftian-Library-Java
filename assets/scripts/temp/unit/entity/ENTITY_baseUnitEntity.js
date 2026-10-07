@@ -182,7 +182,7 @@
          * @memberof ENTITY_baseUnitEntity
          * @instance
          * @func
-         * @param {Object} dataObj
+         * @param {JSONObject} dataObj
          * @return {void}
          */
         ex_writeUnitData: function(dataObj) {
@@ -198,7 +198,7 @@
          * @memberof ENTITY_baseUnitEntity
          * @instance
          * @func
-         * @param {Object} dataObj
+         * @param {JSONObject} dataObj
          * @return {void}
          */
         ex_readUnitData: function(dataObj) {

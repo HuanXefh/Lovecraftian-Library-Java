@@ -41,7 +41,7 @@
     .setProp({
         /**
          * @memberof comp_ex_getAttrSum
-         * @type {[Block, Tile, number]}
+         * @type {Tup3<Block, Tile, number>}
          */
         tmpTup: [],
         /**

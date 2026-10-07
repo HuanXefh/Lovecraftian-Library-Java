@@ -40,7 +40,7 @@
     exports.reactionCache = reactionCache;
 
 
-    /** @type {[ObjectMap<string, Bits>, ObjectMap<string, Bits>]} */
+    /** @type {Tup2<ObjectMap<string, Bits>, ObjectMap<string, Bits>>} */
     const grpBitsetMapTup = (function() {
         let itemMap = new ObjectMap();
         let liqMap = new ObjectMap();
@@ -118,12 +118,12 @@
     .setProp({
         /**
          * @memberof getReactions
-         * @type {[string, string]}
+         * @type {Tup2<string, string>}
          */
         tmpTup: [],
         /**
          * @memberof getReactions
-         * @type {[Array<string>, Array<string>]}
+         * @type {Tup2<Array<string>, Array<string>>}
          */
         grpsCaches: [[], []],
     })

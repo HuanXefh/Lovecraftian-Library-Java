@@ -229,7 +229,7 @@ declare class Tooltip extends InputListener {}
 declare namespace Tooltip {
     class Tooltips {}
 }
-type TooltipArgument = string|CFunction<Table>|[string, CFunction<Table>]
+type TooltipArgument = string|CFunction<Table>|Tup2<string, CFunction<Table>>
 
 
 /** arc.scene.ui.layout.Scl */

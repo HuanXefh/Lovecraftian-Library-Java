@@ -174,12 +174,12 @@
     .setProp({
         /**
          * @memberof comp_ex_getAttrSum
-         * @type {[Block, Tile, number]}
+         * @type {Tup3<Block, Tile, number>}
          */
         tmpTup: [],
         /**
          * @memberof comp_ex_getAttrSum
-         * @type {[Attribute, number, Resource]}
+         * @type {Tup3<Attribute, number, Resource>}
          */
         tmpDynaAttrTup: [],
         /**
@@ -210,7 +210,7 @@
     .setProp({
         /**
          * @memberof comp_onProximityUpdate
-         * @type {[Attribute, number, Resource]}
+         * @type {Tup3<Attribute, number, Resource>}
          */
         tmpDynaAttrTup: [],
     });

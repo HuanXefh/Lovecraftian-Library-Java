@@ -107,7 +107,7 @@
          * @memberof INTF_ENTITY_tetheredEntity
          * @instance
          * @func
-         * @param {Object} dataObj
+         * @param {JSONObject} dataObj
          * @return {void}
          */
         ex_writeUnitData: function(dataObj) {
@@ -123,7 +123,7 @@
          * @memberof INTF_ENTITY_tetheredEntity
          * @instance
          * @func
-         * @param {Object} dataObj
+         * @param {JSONObject} dataObj
          * @return {void}
          */
         ex_readUnitData: function(dataObj) {

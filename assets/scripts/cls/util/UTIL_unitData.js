@@ -14,7 +14,7 @@
 
     /** @type {Array<Unit>} */
     const expiredUnits = [];
-    /** @type {ObjectMap<Unit, Object>} */
+    /** @type {ObjectMap<Unit, JSONObject>} */
     const unitDataMap = new ObjectMap();
 
 
@@ -42,7 +42,7 @@
      * Gets a data from the unit data map.
      * @param {Unit} unit
      * @param {Object|unset} [def]
-     * @return {Object|null}
+     * @return {*}
      */
     UTIL_unitData.get = function(unit, def) {
         return def == null ?
@@ -53,7 +53,7 @@
 
     /**
      * Gets the unit data map.
-     * @return {ObjectMap<Unit, Object>}
+     * @return {ObjectMap<Unit, JSONObject>}
      */
     UTIL_unitData.getUnitDataMap = function() {
         return unitDataMap;
@@ -73,7 +73,7 @@
     /**
      * Adds a unit data pair into the unit data map.
      * @param {Unit} unit
-     * @param {Object} dataObj
+     * @param {JSONObject} dataObj
      * @return {void}
      */
     UTIL_unitData.add = function(unit, dataObj) {

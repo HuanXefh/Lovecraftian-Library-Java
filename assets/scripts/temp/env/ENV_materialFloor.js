@@ -125,7 +125,7 @@
          * `PARAM`: Random overlay offsets as a 2-tuple.
          * @memberof ENV_materialFloor
          * @instance
-         * @type {TDynamic<[number, number]>}
+         * @type {TDynamic<Tup2<number, number>>}
          */
         randRegOffs: tprov(() => [0, 0]),
 

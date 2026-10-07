@@ -558,7 +558,7 @@ const db = {
                 ],
 
 
-                /** @type {Array<[ContentTypeGn, FFunction<Block, boolean>]>} */
+                /** @type {Array<Tup2<ContentTypeGn, FFunction<Block, boolean>>>} */
                 noSide: [
 
                     [ArmoredConveyor, blk => true],
@@ -702,7 +702,7 @@ const db = {
                 ],
 
 
-                /** @type {Array<[ContentTypeGn, FFunction<Block, boolean>]>} */
+                /** @type {Array<Tup2<ContentTypeGn, FFunction<Block, boolean>>>} */
                 powerReactor: [
 
                     [ConsumeGenerator, blk => blk.explodeOnFull && blk.outputLiquid != null],

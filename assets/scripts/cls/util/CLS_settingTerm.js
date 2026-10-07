@@ -125,7 +125,7 @@
     .setProp({
         /**
          * @memberof CLS_settingTerm#setDialM
-         * @type {[string, string]}
+         * @type {Tup2<string, string>}
          */
         tmpTup: [],
     });

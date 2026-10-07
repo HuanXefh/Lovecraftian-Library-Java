@@ -51,7 +51,7 @@
     .setProp({
         /**
          * @memberof comp_canPlaceOn
-         * @type {[Block, Tile, Team, number]}
+         * @type {Tup4<Block, Tile, Team, number>}
          */
         tmpTup: [],
         /**

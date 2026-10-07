@@ -134,7 +134,7 @@
     .setProp({
         /**
          * @memberof getDepthLvlB
-         * @type {[string, string]}
+         * @type {Tup2<string, string>}
          */
         tmpTup: [],
     });

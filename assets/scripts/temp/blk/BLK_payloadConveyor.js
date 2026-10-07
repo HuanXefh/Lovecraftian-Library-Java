@@ -59,6 +59,7 @@
     function comp_onProximityUpdate(b) {
         // noinspection JSValidateTypes
         b.delegee.backPayRouter = b.back();
+        // noinspection JSIncompatibleTypesComparison
         if(
             b.delegee.backPayRouter != null && (
                 !checkSubInsOfTemp(b.delegee.backPayRouter.block, "BLK_payloadConveyor")
