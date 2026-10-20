@@ -112,7 +112,7 @@
             /** @type {String|null} */
             exports.MAP_CURRENT = global.lovecUtil.fun.getMapCur();
             /** @type {boolean} */
-            exports.IS_SPACE_MAP = (Vars.state.rules.env & Env.space) !== 0;
+            exports.IS_SPACE_MAP = includesEnv(Vars.state.rules.env, Env.space);
             /** @type {boolean} */
             exports.IS_CAVE_MAP = DB_env.db["group"]["map"]["cave"].includes(module.exports.MAP_CURRENT);
             /** @type {boolean} */

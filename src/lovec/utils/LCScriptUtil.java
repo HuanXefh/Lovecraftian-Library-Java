@@ -1,6 +1,6 @@
 package lovec.utils;
 
-import lovec.annotation.FromScript;
+import lovec.annotation.LCFromScript;
 import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.gen.Building;
@@ -23,13 +23,13 @@ public class LCScriptUtil {
     private static final String splitterStringTag = "S@";
     private static final String splitterNullTag = "N@";
 
-    @FromScript(source = "GLB_varGen")
+    @LCFromScript(source = "GLB_varGen")
     public static Liquid auxPres;
-    @FromScript(source = "GLB_varGen")
+    @LCFromScript(source = "GLB_varGen")
     public static Liquid auxVac;
-    @FromScript(source = "GLB_varGen")
+    @LCFromScript(source = "GLB_varGen")
     public static Liquid auxTor;
-    @FromScript(source = "GLB_varGen")
+    @LCFromScript(source = "GLB_varGen")
     public static Liquid auxRpm;
 
 

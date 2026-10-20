@@ -6,7 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Eachable;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -14,7 +14,7 @@ import mindustry.world.Block;
 /**
  * Draws pistons for non-square structure.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawMultiBlockPistons extends LCDrawMultiBlock {
 
 

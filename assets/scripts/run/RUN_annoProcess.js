@@ -26,7 +26,7 @@
     globalize(new ObjectMap(), "__annoTargetMap__");
 
 
-    __annoTargetMap__.put("FromScript", [
+    __annoTargetMap__.put("LCFromScript", [
         "LCVersionResolver",
         "LCScriptUtil",
     ]);
@@ -52,11 +52,11 @@
     MDL_event.onLoad(() => {
 
 
-        // @FromScript
-        __annoTargetMap__.get("FromScript").forEachFast(nameCls => {
+        // @LCFromScript
+        __annoTargetMap__.get("LCFromScript").forEachFast(nameCls => {
             cls = eval(nameCls);
             cls.__javaObject__.getDeclaredFields().forEachFast(field => {
-                anno = field.getDeclaredAnnotation(FromScript);
+                anno = field.getDeclaredAnnotation(LCFromScript);
                 if(anno == null) return;
                 name = anno.name();
                 if(name == "!UNDEF") {

@@ -5,36 +5,62 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseHeatBlock");
+    /**
+     * @typedef {TemplateInstance<Wall, BLK_heatConductor>} BLKHeatConductor
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Wall.WallBuild, B_heatConductor>} BHeatConductor
+     * @prop {BLKHeatConductor} block
+     */
 
 
-  function comp_init(blk) {
-    blk.rotate = true;
-    blk.update = true;
-    blk.group = BlockGroup.none;
-    blk.priority = TargetPriority.base;
-    blk.drawCached = false;
-    blk.drawDynamic = true;
-
-    blk.heatLightTempReq = blk.fullHeatThr;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseHeatBlock");
 
 
-  function comp_load(blk) {
-    blk.dirReg = fetchRegion(blk, "-dir");
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_draw(b) {
-    Draw.rect(b.block.region, b.x, b.y);
-    Draw.rect(b.block.delegee.dirReg, b.x, b.y, b.drawrot());
-  };
+    /**
+     * @private
+     * @param {BLKHeatConductor} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.rotate = true;
+        blk.update = true;
+        blk.group = BlockGroup.none;
+        blk.priority = TargetPriority.base;
+        blk.drawCached = false;
+        blk.drawDynamic = true;
+
+        blk.delegee.heatLightTempReq = blk.delegee.visualFullHeatThr;
+    };
+
+
+    /**
+     * @private
+     * @param {BLKHeatConductor} blk
+     * @return {void}
+     */
+    function comp_load(blk) {
+        blk.delegee.dirReg = fetchRegion(blk, "-dir");
+    };
+
+
+    /**
+     * @private
+     * @param {BHeatConductor} b
+     * @return {void}
+     */
+    function comp_draw(b) {
+        Draw.rect(b.block.region, b.x, b.y);
+        Draw.rect(b.block.delegee.dirReg, b.x, b.y, b.drawrot());
+    };
 
 
 /*
@@ -44,112 +70,122 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Conducts Lovec heat.
-     * Note that this is not vanilla Erekir {@link HeatConductor}.
-     * @class BLK_heatConductor
-     * @extends BLK_baseHeatBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_heatConductor").initClass()
-    .setParent(Wall)
-    .setTags("blk-non-wall")
-    .setParam({
+        /**
+         * Conducts Lovec heat.
+         * Note that this is not vanilla Erekir {@link HeatConductor}.
+         * @class BLK_heatConductor
+         * @extends BLK_baseHeatBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_heatConductor")
+        .initTemplate()
+        .setParent(Wall)
+        .setTags("blk-non-wall")
+        .setParam({
 
 
-      /**
-       * `PARAM`: Temperature at which heat region is drawn with maximum alpha.
-       * @memberof BLK_heatConductor
-       * @instance
-       */
-      fullHeatThr: 100.0,
-      /**
-       * `PARAM`: For heat conductors one heat region is just bright enough on most occasions.
-       * @override
-       * @memberof BLK_heatConductor
-       * @instance
-       */
-      shouldDrawDoubleHeat: false,
+            /**
+             * `PARAM`: Temperature at which heat region is drawn with maximum alpha.
+             * @memberof BLK_heatConductor
+             * @instance
+             * @type {number}
+             */
+            visualFullHeatThr: 100.0,
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_heatConductor
-       * @instance
-       */
-      dirReg: null,
-      /**
-       * `INTERNAL`
-       * @override
-       * @memberof INTF_BLK_heatBlock
-       * @instance
-       */
-      heatLightTempReq: 100.0,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_heatConductor
+             * @instance
+             * @type {TextureRegion}
+             */
+            dirReg: null,
+            /**
+             * `INTERNAL`: For heat conductors one heat region is just bright enough on most occasions.
+             * @override
+             * @memberof BLK_heatConductor
+             * @instance
+             * @type {boolean}
+             */
+            shouldDrawDoubleHeat: false,
+            /**
+             * `INTERNAL`
+             * @override
+             * @memberof BLK_heatConductor
+             * @instance
+             * @type {number}
+             */
+            heatLightTempReq: 100.0,
 
 
-      /* <------------------------------ vanilla ------------------------------> */
+            /* <------------------------------ vanilla ------------------------------> */
 
 
-      solid: false,
-      underBullets: true,
+            solid: false,
+            underBullets: true,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      load: function() {
-        comp_load(this);
-      },
+            load: function() {
+                comp_load(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_heatConductor
-     * @extends B_baseHeatBlock
-     */
-    newClass().extendClass(PARENT[1], "B_heatConductor").initClass()
-    .setParent(Wall.WallBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_heatConductor
+         * @extends B_baseHeatBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_heatConductor")
+        .initTemplate()
+        .setParent(Wall.WallBuild)
+        .setParam({})
+        .setMethod({
 
 
-      draw: function() {
-        comp_draw(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            draw: function() {
+                comp_draw(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof B_heatConductor
-       * @instance
-       * @return {number}
-       */
-      ex_getHeatTarget: function() {
-        return this.block.delegee.fullHeatThr;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_heatConductor
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getHeatTarget: function() {
+                return this.block.delegee.visualFullHeatThr;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

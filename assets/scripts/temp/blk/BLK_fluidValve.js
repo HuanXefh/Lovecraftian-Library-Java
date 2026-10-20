@@ -5,47 +5,87 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_fluidJunction");
+    /**
+     * @typedef {TemplateInstance<LiquidJunction, BLK_fluidValve>} BLKFluidValve
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<LiquidJunction.LiquidJunctionBuild, B_fluidValve>} BFluidValve
+     * @prop {BLKFluidValve} block
+     */
 
 
-  function comp_init(blk) {
-    blk.configurable = true;
-
-    blk.config(JAVA.boolean, (b, bool) => {
-      b.delegee.isOn = bool;
-      MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
-      b.recache();
-    });
-  };
+    const PARENT = require("lovec/temp/blk/BLK_fluidJunction");
 
 
-  function comp_load(blk) {
-    blk.onReg = fetchRegion(blk, "-on");
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_getLiquidDestination(b, b_f, liq) {
-    return !b.enabled || b.isOn || MDL_cond.isAuxiliaryFluid(liq) ?
-      b :
-      b.super$getLiquidDestination(b_f, liq);
-  };
+    /**
+     * @private
+     * @param {BLKFluidValve} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.configurable = true;
+
+        blk.config(JAVA.boolean, (b, bool) => {
+            b.delegee.isOn = bool;
+            MDL_sound.playAt(b.x, b.y, "SOUNDS: click");
+            b.recache();
+        });
+    };
 
 
-  function comp_configTapped(b) {
-    b.configure(!b.isOn);
-    return false;
-  };
+    /**
+     * @private
+     * @param {BLKFluidValve} blk
+     * @return {void}
+     */
+    function comp_load(blk) {
+        blk.delegee.onReg = fetchRegion(blk, "-on");
+    };
 
 
-  function comp_draw(b) {
-    if(b.isOn) Draw.rect(b.block.delegee.onReg, b.x, b.y, b.drawrot());
-  };
+    /**
+     * @private
+     * @param {BFluidValve} b
+     * @param {Building} b_f
+     * @param {Liquid} liq
+     * @return {Building|null}
+     */
+    function comp_getLiquidDestination(b, b_f, liq) {
+        return !b.enabled || b.delegee.isOn || MDL_cond.isAuxiliaryFluid(liq) ?
+            b :
+            b.super$getLiquidDestination(b_f, liq);
+    };
+
+
+    /**
+     * @private
+     * @param {BFluidValve} b
+     * @return {boolean}
+     */
+    function comp_configTapped(b) {
+        b.configure(!b.delegee.isOn);
+        return false;
+    };
+
+
+    /**
+     * @private
+     * @param {BFluidValve} b
+     * @return {void}
+     */
+    function comp_draw(b) {
+        if(b.delegee.isOn) {
+            Draw.rect(b.block.delegee.onReg, b.x, b.y, b.drawrot());
+        };
+    };
 
 
 /*
@@ -55,107 +95,114 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Togglable liquid junction.
-     * <br> `SINGLESIZE`
-     * @class BLK_fluidValve
-     * @extends BLK_fluidJunction
-     */
-    newClass().extendClass(PARENT[0], "BLK_fluidValve").initClass()
-    .setParent(LiquidJunction)
-    .setTags()
-    .setParam({
+        /**
+         * Togglable liquid junction.
+         * <br> `SINGLESIZE`
+         * @class BLK_fluidValve
+         * @extends BLK_fluidJunction
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_fluidValve")
+        .initTemplate()
+        .setParent(LiquidJunction)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_fluidValve
-       * @instance
-       */
-      onReg: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_fluidValve
+             * @instance
+             * @type {TextureRegion}
+             */
+            onReg: null,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      load: function() {
-        comp_load(this);
-      },
+            load: function() {
+                comp_load(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_fluidValve
-     * @extends B_fluidJunction
-     */
-    newClass().extendClass(PARENT[1], "B_fluidValve").initClass()
-    .setParent(LiquidJunction.LiquidJunctionBuild)
-    .setParam({
+        /**
+         * @class B_fluidValve
+         * @extends B_fluidJunction
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_fluidValve")
+        .initTemplate()
+        .setParent(LiquidJunction.LiquidJunctionBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_fluidValve
-       * @instance
-       */
-      isOn: false,
+            /**
+             * `INTERNAL`
+             * @memberof B_fluidValve
+             * @instance
+             * @type {boolean}
+             */
+            isOn: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      getLiquidDestination: function(b_f, liq) {
-        return comp_getLiquidDestination(this, b_f, liq);
-      }.setProp({
-        noSuper: true,
-        override: true,
-      }),
+            getLiquidDestination: function(b_f, liq) {
+                return comp_getLiquidDestination(this, b_f, liq);
+            }.setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      configTapped: function() {
-        return comp_configTapped(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            configTapped: function() {
+                return comp_configTapped(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      draw: function() {
-        comp_draw(this);
-      },
+            draw: function() {
+                comp_draw(this);
+            },
 
 
-      write: function(wr) {
-        wr.bool(this.isOn);
-      },
+            write: function(wr) {
+                wr.bool(this.delegee.isOn);
+            },
 
 
-      read: function(rd, revi) {
-        if(this.LCRevi === 5) rd.s();
-
-        this.isOn = rd.bool();
-      },
-
-
-    }),
+            read: function(rd, revi) {
+                if(this.delegee.LCRevi === 5) {
+                    rd.s();
+                };
+                this.delegee.isOn = rd.bool();
+            },
 
 
-  ];
+        }),
+
+
+    ];

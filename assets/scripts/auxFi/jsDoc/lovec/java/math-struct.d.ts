@@ -1,5 +1,5 @@
-/** lovec.math.struct.MathMeanArray */
-declare class MathMeanArray {
+/** lovec.math.struct.LCMeanArray */
+declare class LCMeanArray {
     constructor(cap: number)
 
     getMean(): number
@@ -10,11 +10,11 @@ declare class MathMeanArray {
 }
 
 
-/** lovec.math.struct.MathMatrix */
-declare class MathMatrix implements Iterable<java.lang.Double> {}
-interface MathMatrix extends Iterable<java.lang.Double> {}
+/** lovec.math.struct.LCMatrix */
+declare class LCMatrix implements Iterable<java.lang.Double> {}
+interface LCMatrix extends Iterable<java.lang.Double> {}
 
 
-/** lovec.math.struct.MathGraph */
-declare class MathGraph implements Iterable<java.lang.Integer> {}
-interface MathGraph extends Iterable<java.lang.Integer> {}
+/** lovec.math.struct.LCGraph */
+declare class LCGraph implements Iterable<java.lang.Integer> {}
+interface LCGraph extends Iterable<java.lang.Integer> {}

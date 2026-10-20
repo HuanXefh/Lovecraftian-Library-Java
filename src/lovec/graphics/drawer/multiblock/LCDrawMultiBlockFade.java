@@ -5,14 +5,14 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 
 /**
  * Draws fading region for non-square structure.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawMultiBlockFade extends LCDrawMultiBlock {
 
 

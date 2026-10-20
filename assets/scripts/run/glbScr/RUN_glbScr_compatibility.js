@@ -36,6 +36,69 @@
     };
 
 
+    /**
+     * Handles `Env` for v8 compatibility.
+     * <br> `ARGS`: envName1, envName2, envName3, ...
+     * @global
+     * @return {number|Environments}
+     */
+    getEnvSet = function() {
+        if(LCVersionResolver.isV8) {
+            if(String(arguments[0]) === "any") {
+                return -1;
+            } else if(String(arguments[0]) === "none") {
+                return 0;
+            };
+
+            let
+                envInt = 0,
+                i = 0,
+                iCap = arguments.length,
+                envName;
+            while(i < iCap) {
+                envName = String(arguments[i]);
+                if(envName.equalsAny(
+                    "terrestrial",
+                    "space",
+                    "underwater",
+                    "spores",
+                    "scorching",
+                    "groundOil",
+                    "groundWater",
+                    "oxygen",
+                )) {
+                    envInt |= Env[envName];
+                };
+                i++;
+            };
+            return envInt;
+        };
+
+        if(String(arguments[0]) === "any") {
+            return Environments.any;
+        } else if(String(arguments[0] === "none")) {
+            return Environments.none;
+        };
+
+        let envs = Array.from(arguments).inSituMap(arg => Env.get(String(arg))).compact();
+        return Environments.of.apply(Environments, envs);
+    };
+
+
+    /**
+     * Whether some `Env` is present.
+     * @global
+     * @param {number|Environments}
+     * @param {number|Env}
+     * @return {boolean}
+     */
+    includesEnv = function(envSet, env) {
+        return LCVersionResolver.isV8 ?
+            (envSet & env) !== 0 :
+            envSet.has(env);
+    };
+
+
     if(LCVersionResolver.isV8) {
         PlayerJoinEvent = eval(EventType.PlayerJoin);
         PlayerConnectEvent = eval(EventType.PlayerConnect);
@@ -111,4 +174,18 @@
         LogicAssembler = eval("LAssembler");
         LogicExecutor = eval("LExecutor");
         LogicMarkerControl = eval("LMarkerControl");
+
+        Environments = null;
+    } else {
+        HeatBlock = null;
+        HeatConsumer = null;
+        HeatProducer = null;
+        HeatCrafter = null;
+        HeaterGenerator = null;
+
+        ArmoredConveyor = null;
+        ArmoredConduit = null;
+        AttributeCrafter = null;
+        Fracker = null;
+        SolidPump = null;
     };

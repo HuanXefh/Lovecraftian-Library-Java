@@ -6,7 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Eachable;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import lovec.graphics.LCDraw;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -16,7 +16,7 @@ import mindustry.world.Block;
  * Draws rotating sprite.
  * Supports clockwise rotation.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawRotator extends LCDrawer implements SpinSpriteFrag {
 
 

@@ -53,7 +53,7 @@
         return t.getLinkedTilesAs(blk, Reflect.get(Block, "tempTiles")).removeAll(
             ot => rs instanceof Item || rs === "item" ?
                 (rs !== "item" && ot.overlay().itemDrop !== rs) || !MDL_cond.isDepthOre(ot.overlay()) :
-                !MDL_cond.isDepthLiquid(ot.overlay()) || (rs !== "liquid" && ot.overlay().ex_getRsDrop() !== rs)
+                !MDL_cond.isDepthLiquid(ot.overlay()) || (rs !== "liquid" && ot.overlay().self.ex_getRsDrop() !== rs)
         );
     };
 
@@ -100,7 +100,7 @@
      * @return {boolean}
      */
     function comp_ex_anyDporeRevealed(blk, tx, ty, rs) {
-        return blk.self.ex_findDporesInLinkedTiles(tx, ty, rs).find(ot => tryFun(ot.overlay().ex_accRevealed, ot.overlay(), true, ot, "read")) != null;
+        return blk.self.ex_findDporesInLinkedTiles(tx, ty, rs).find(ot => tryFun(ot.overlay().self.ex_accRevealed, ot.overlay(), true, ot, "SPEC: read")) != null;
     };
 
 
@@ -139,7 +139,6 @@
 
 
             /**
-             * `REALIZED`
              * @override
              * @memberof INTF_BLK_depthOreHandler
              * @instance

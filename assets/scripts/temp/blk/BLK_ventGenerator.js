@@ -5,19 +5,35 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_attributeGenerator");
+    /**
+     * @typedef {TemplateInstance<GenericCrafter, BLK_ventGenerator>} BLKVentGenerator
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_ventGenerator>} BVentGenerator
+     * @prop {BLKVentGenerator} block
+     */
 
 
-  function comp_init(blk) {
-    blk.displayEfficiency = false;
-    blk.minEfficiency = Math.pow(blk.size, 2) - 0.0001;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_attributeGenerator");
+
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKVentGenerator} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.displayEfficiency = false;
+        blk.minEfficiency = Math.pow(blk.size, 2) - 0.0001;
+    };
 
 
 /*
@@ -27,67 +43,76 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Generators built on vents. It checks vent size now since vents are not strictly 3x3 in Lovec.
-     * @class BLK_ventGenerator
-     * @extends BLK_attributeGenerator
-     */
-    newClass().extendClass(PARENT[0], "BLK_ventGenerator").initClass()
-    .setParent(ThermalGenerator)
-    .setTags()
-    .setParam({
+        /**
+         * Generators built on vents. It checks vent size now since vents are not strictly 3x3 in Lovec.
+         * @class BLK_ventGenerator
+         * @extends BLK_attributeGenerator
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_ventGenerator")
+        .initTemplate()
+        .setParent(ThermalGenerator)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @override
-       * @memberof BLK_ventGenerator
-       * @instance
-       */
-      attrFilter: tprov(() => boolf2(function(blk, oblk) {
-        return checkSubInsOfTemp(oblk, "INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size;
-      })),
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_ventGenerator
+             * @instance
+             * @type {Boolf2<BLKVentGenerator, Block>}
+             */
+            attrFilter: boolf2(function(blk, oblk) {
+                return checkSubInsOfTemp(oblk, "INTF_ENV_dynamicSizeVent") && oblk.delegee.ventSize === blk.size;
+            }),
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      /**
-       * @memberof BLK_ventGenerator
-       * @instance
-       * @return {number}
-       */
-      ex_getRcDictPowOutputScl: function() {
-        return 1.0 / Math.pow(this.size, 2);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * `REALIZED`
+             * @memberof BLK_ventGenerator
+             * @instance
+             * @func
+             * @return {number}
+             * @lovecAttached
+             */
+            ex_getRcDictPowOutputScl: function() {
+                return 1.0 / Math.pow(this.size, 2);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_ventGenerator
-     * @extends B_attributeGenerator
-     */
-    newClass().extendClass(PARENT[1], "B_ventGenerator").initClass()
-    .setParent(ThermalGenerator.ThermalGeneratorBuild)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_ventGenerator
+         * @extends B_attributeGenerator
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_ventGenerator")
+        .initTemplate()
+        .setParent(ThermalGenerator.ThermalGeneratorBuild)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

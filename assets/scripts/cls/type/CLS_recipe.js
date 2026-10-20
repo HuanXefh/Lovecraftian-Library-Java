@@ -665,7 +665,7 @@
             Time.runTask(70.0, () => {
                 this.icon = MDL_recipe.makeIcon(this.rcMdl, this.rcHeader);
                 this.lockedIcon = this.icon.tint(Color.darkGray);
-                this.altIcon = new StackDrawable(
+                this.altIcon = new LCStackDrawable(
                     [new TextureRegionDrawable(this.owner.uiIcon), MDL_recipe.makeIcon(this.rcMdl, this.rcHeader)].toSeq(),
                     [new Vec2(0.0, 0.0), new Vec2(12.0, 12.0)].toSeq(),
                     [0.8, 0.5],
@@ -851,8 +851,8 @@
         };
 
         Core.app.post(() => {
-            /** @type {RecipeUpdater} */
-            this.updater = new RecipeUpdater(this);
+            /** @type {LCRecipeUpdater} */
+            this.updater = new LCRecipeUpdater(this);
         });
 
         return this;
@@ -1328,7 +1328,7 @@
      */
     CLS_recipe.prototype.displayOpt = function(tb, isBase) {
         return this.displayIoFrag(tb, "opt", tb1 => {
-            tb1.button("?", () => fetchDialog("rcOpt").ex_show(MDL_bundle.getTerm("lovec", "opt"), (isBase ? this.baseOpt : this.optNoBase))).size(34.0).pad(3.0);
+            tb1.button("?", () => fetchDialog("rcOpt").self.ex_show(MDL_bundle.getTerm("lovec", "opt"), (isBase ? this.baseOpt : this.optNoBase))).size(34.0).pad(3.0);
         });
     };
 
@@ -1413,7 +1413,7 @@
 
     /**
      * Whether a multi-crafter can add resource anymore.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @return {boolean}
      */
     CLS_recipe.prototype.checkCanAdd = function(b) {
@@ -1424,7 +1424,7 @@
     /**
      * Gets a 4-tuple of preferred optional input.
      * Returns null if no optional input.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @return {Tup4<Item, number, number, number>|null} `TUPLE`: item, amt, p, mtp.
      */
     CLS_recipe.prototype.getOptTup = function(b) {
@@ -1434,7 +1434,7 @@
 
     /**
      * Calculates current efficiency of a multi-crafter.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @return {number}
      */
     CLS_recipe.prototype.calcEffc = function(b) {
@@ -1444,7 +1444,7 @@
 
     /**
      * Changes recipe of a multi-crafter if its key content has changed.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @return {void}
      */
     CLS_recipe.prototype.updateAutoSelection = function thisFun(b) {
@@ -1474,7 +1474,7 @@
 
     /**
      * Updates state of Erekir heat in a multi-crafter.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @return {void}
      */
     CLS_recipe.prototype.updateErekirHeat = function(b) {
@@ -1484,13 +1484,16 @@
         };
         if(this.erekirHeatProd > 0.0) {
             b.delegee.erekirHeatO = Mathf.approachDelta(b.delegee.erekirHeatO, this.erekirHeatProd * b.efficiency, b.block.delegee.erekirHeatWarmupRate * b.delta());
+            if(!LCVersionResolver.isV8 && b.heatModule != null) {
+                b.heatModule.output = b.delete.erekirHeatO;
+            };
         };
     };
 
 
     /**
      * Lets a multi-crafter consume items.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @return {void}
      */
     CLS_recipe.prototype.consumeBatch = function(b) {
@@ -1500,7 +1503,7 @@
 
     /**
      * Lets a multi-crafter consume liquids.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @param {number} progIncLiq
      * @return {void}
      */
@@ -1511,7 +1514,7 @@
 
     /**
      * Lets a multi-crafter produce items.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @param {number} failP
      * @return {void}
      */
@@ -1521,15 +1524,15 @@
         if(!failed) {
             MDL_effect.showAt(b.x, b.y, b.block.craftEffect, 0.0);
         } else {
-            MDL_effect.showAt(b.x, b.y, b.ex_getFailEff(), 0.0);
-            b.ex_onRcFail();
+            MDL_effect.showAt(b.x, b.y, b.self.ex_getFailEff(), 0.0);
+            b.self.ex_onRcFail();
         };
     };
 
 
     /**
      * Lets a multi-crafter produce liquids.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @param {number} progIncLiq
      * @return {void}
      */
@@ -1540,7 +1543,7 @@
 
     /**
      * Consumes and produces payload in a multi-crafter.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @return {void}
      */
     CLS_recipe.prototype.craftPay = function(b) {
@@ -1569,7 +1572,7 @@
 
     /**
      * Lets a multi-crafter dump resource in it.
-     * @param {Building} b
+     * @param {INTFBRecipeHandler} b
      * @return {void}
      */
     CLS_recipe.prototype.dump = function(b) {

@@ -1,8 +1,8 @@
 package lovec.content.updater;
 
 import arc.math.Mathf;
-import lovec.content.BuildUpdater;
-import lovec.content.ContentUpdater;
+import lovec.content.LCBuildUpdater;
+import lovec.content.LCContentUpdater;
 import lovec.utils.LCScriptUtil;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -10,7 +10,7 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
 
-public class BLKCableUpdater extends ContentUpdater<Conveyor> {
+public class BLKCableUpdater extends LCContentUpdater<Conveyor> {
 
 
     public BLKCableUpdater(Conveyor blk) throws NoSuchFieldException, IllegalAccessException {
@@ -48,7 +48,7 @@ public class BLKCableUpdater extends ContentUpdater<Conveyor> {
 
 
 
-    public class BCableUpdater extends BuildUpdater<Conveyor.ConveyorBuild, Conveyor> {
+    public class BCableUpdater extends LCBuildUpdater<Conveyor.ConveyorBuild, Conveyor> {
 
 
         public BCableUpdater(Conveyor.ConveyorBuild b) throws NoSuchFieldException, IllegalAccessException {

@@ -201,7 +201,7 @@
          * @return {void}
          */
         addContentReader(key) {
-            LCDBFileHandler.addReader(key, (dbFiObj, ct_gn, def) => tryVal(dbFiObj[typeof ct_gn === "string" ? ct_gn : ct_gn.name], def));
+            LCDBFileHandler.addReader(key, (dbFiObj, ct_gn, def) => tryVal(dbFiObj[tryVal(ct_gn.name, ct_gn)], def));
         },
 
 

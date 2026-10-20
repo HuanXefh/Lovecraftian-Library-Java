@@ -46,7 +46,7 @@ declare class Door extends Wall {
     chainEffect: boolean;
     openRegion: TextureRegion;
 }
-declare namespace {
+declare namespace Door {
     class DoorBuild extends Building {
         open: boolean;
         chained: Seq<DoorBuild>;
@@ -287,4 +287,5 @@ declare namespace TargetDummy {
         unitArmor: number;
         unitTeam: Team;
     }
+    interface TargetDummyBuild extends UnitTetherBlock {}
 }

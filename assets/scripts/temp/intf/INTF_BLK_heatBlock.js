@@ -320,7 +320,7 @@
             b.delegee.heatFetchTargets.forEachRow(2, (ob, sideFrac) => {
                 if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
                 heat = ob.ex_getHeatProd != null ?
-                    (ob.ex_getHeatProd() * sideFrac) :
+                    (ob.self.ex_getHeatProd() * sideFrac) :
                     (LCCraftingHandler.addLiquid(ob, ob, GLB_varGen.auxHeat, -MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
                 b.delegee.maxHeaterProd = Math.max(heat, b.delegee.maxHeaterProd);
                 heatTarget += heat * b.block.delegee.tempExtMtp;
@@ -333,8 +333,8 @@
             b.delegee.heatTransTargets.forEachFast(ob => {
                 if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
                 heat += !ob.block.delegee.isHeatRouter ?
-                    ob.ex_getHeatTransferred() :
-                    (ob.ex_getHeatTransferred() / 3.0);
+                    ob.self.ex_getHeatTransferred() :
+                    (ob.self.ex_getHeatTransferred() / 3.0);
                 b.delegee.maxHeaterProd = Math.max(tryFun(ob.ex_getMaxHeaterProd, ob, 0.0), b.delegee.maxHeaterProd);
                 b.delegee.heatTransCount++;
             }, true);
@@ -346,7 +346,7 @@
         };
 
         if(b.ex_getHeatProd != null) {
-            b.delegee.maxHeaterProd = Math.max(b.ex_getHeatProd(), b.delegee.maxHeaterProd);
+            b.delegee.maxHeaterProd = Math.max(b.self.ex_getHeatProd(), b.delegee.maxHeaterProd);
         };
         if(b.delegee.tempExt > heatTarget) {
             heatTarget = b.delegee.tempExt;

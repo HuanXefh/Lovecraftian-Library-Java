@@ -339,6 +339,12 @@
         rcGenData: [],
         /** Target: {@link DB_recipe.db.genData.assembly}. */
         rcGenAssemblyData: [],
+        /** Target: {@link DB_recipe.db.genData.drying}. */
+        rcGenDryingData: [],
+        /** Target: {@link DB_recipe.db.genData.electrolysis}. */
+        rcGenElectrolysisData: [],
+        /** Target: {@link DB_recipe.db.genData.reaction}. */
+        rcGenReactionData: [],
         /** Target: {@link DB_reaction.db.solvationTarget}. */
         reacSolvTarget: [],
 

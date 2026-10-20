@@ -4,8 +4,8 @@ import arc.math.geom.Point2;
 import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.Nullable;
-import lovec.annotation.JSONTypeClass;
-import lovec.annotation.NoJSON;
+import lovec.annotation.LCJSONTypeClass;
+import lovec.annotation.LCNoJSON;
 import lovec.content.updater.BLKMultiBlockUpdater;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -19,16 +19,17 @@ import mindustry.world.blocks.production.GenericCrafter;
  * Multi-block version of {@link GenericCrafter}.
  * <br> <code>DEDICATION</code>: Inspired by MultiBlockLib.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkCenterBlockFrag {
 
 
-    public @NoJSON @Nullable BLKMultiBlockUpdater multiBlockUpdater;
+    public @LCNoJSON
+    @Nullable BLKMultiBlockUpdater multiBlockUpdater;
 
     public int[] linkValues = {};
-    public @NoJSON Seq<Point2> linkPoints = new Seq<>();
-    public @NoJSON IntSeq linkSizes = new IntSeq();
-    public @NoJSON int[] multiBlockSizes = new int[2];
+    public @LCNoJSON Seq<Point2> linkPoints = new Seq<>();
+    public @LCNoJSON IntSeq linkSizes = new IntSeq();
+    public @LCNoJSON int[] multiBlockSizes = new int[2];
     public int[] linkRotations = {0, 1, 2, 3, 0, 1, 2, 3};
 
 
@@ -120,7 +121,7 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
     public class MultiBlockCrafterBuild extends GenericCrafterBuild implements MultiBlockLinkCenterBuildFrag {
 
 
-        public @NoJSON @Nullable BLKMultiBlockUpdater.BMultiBlockUpdater multiBlockBuildUpdater;
+        public @LCNoJSON @Nullable BLKMultiBlockUpdater.BMultiBlockUpdater multiBlockBuildUpdater;
 
         public boolean isLinkCreated = false;
         public boolean isLinkValid = true;

@@ -223,11 +223,11 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
-            if(ob.ex_getPres != null && ob.ex_checkPresFetchValid(b) && !b.delegee.presTransCountTmpBs.includes(ob)) {
+            if(ob.ex_getPres != null && ob.self.ex_checkPresFetchValid(b) && !b.delegee.presTransCountTmpBs.includes(ob)) {
                 b.delegee.presTransCount++;
                 b.delegee.presTransCountTmpBs.push(ob);
             };
-            if(ob.ex_getPres != null && b.self.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.ex_checkPresSupplyValid(b))) {
+            if(ob.ex_getPres != null && b.self.ex_checkPresFetchValid(ob) && (ob.ex_checkPresSupplyValid == null || ob.self.ex_checkPresSupplyValid(b))) {
                 b.delegee.presFetchTargets.push(ob);
             };
         });

@@ -5,51 +5,92 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseLootBlock");
+    /**
+     * @typedef {TemplateInstance<StorageBlock, BLK_lootHopper>} BLKLootHopper
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<StorageBlock.StorageBuild, B_lootHopper>} BLootHopper
+     * @prop {BLKLootHopper} block
+     */
 
 
-  function comp_init(blk) {
-    resetBlockFlag(blk, []);
-
-    blk.update = true;
-    blk.canOverdrive = true;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseLootBlock");
 
 
-  function comp_setStats(blk, stats) {
-    if(blk.lootCallCooldown > 0.0) stats.add(Stat.itemsMoved, blk.lootCallAmt / blk.lootCallCooldown * 60.0, StatUnit.itemsSecond);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_updateTile(b) {
-    b.dumpTimeCur += b.delta();
-    if(b.dumpTimeCur >= b.block.dumpTime) {
-      b.dumpTimeCur %= b.block.dumpTime;
-      b.dump();
+    /**
+     * @private
+     * @param {BLKLootHopper} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        resetBlockFlag(blk, []);
+
+        blk.update = true;
+        blk.canOverdrive = true;
     };
-  };
 
 
-  function comp_ex_updateLootTs(b) {
-    LCPos.getTilesRect(b.lootTs, b.tile, 1, b.block.size);
-  };
-
-
-  function comp_ex_lootCall(b, loots, amt) {
-    let loot = loots.first();
-    if(loot != null) {
-      if(FRAG_item.takeLoot(b, loot, amt, true)) {
-        loot.time = 0.0;
-        MDL_effect.itemTransfer(loot.x, loot.y, b);
-      };
+    /**
+     * @private
+     * @param {BLKLootHopper} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        if(blk.delegee.lootCallCooldown > 0.0) {
+            stats.add(Stat.itemsMoved, blk.delegee.lootCallAmt / blk.delegee.lootCallCooldown * 60.0, StatUnit.itemsSecond);
+        };
     };
-  };
+
+
+    /**
+     * @private
+     * @param {BLootHopper} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        b.delegee.dumpTimeCur += b.delta();
+        if(b.delegee.dumpTimeCur >= b.block.dumpTime) {
+            b.delegee.dumpTimeCur %= b.block.dumpTime;
+            b.dump();
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {BLootHopper} b
+     * @return {void}
+     */
+    function comp_ex_updateLootTs(b) {
+        LCPos.getTilesRect(b.delegee.lootTs, b.tile, 1, b.block.size);
+    };
+
+
+    /**
+     * @private
+     * @param {BLootHopper} b
+     * @param {Array<LootUnit>} loots
+     * @param {number} amt
+     * @return {void}
+     */
+    function comp_ex_lootCall(b, loots, amt) {
+        let loot = loots.first();
+        if(loot != null) {
+            if(FRAG_item.takeLoot(b, loot, amt, true)) {
+                loot.time = 0.0;
+                MDL_effect.itemTransfer(loot.x, loot.y, b);
+            };
+        };
+    };
 
 
 /*
@@ -59,108 +100,115 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Collects loot on top of the block.
-     * @class BLK_lootHopper
-     * @extends BLK_baseLootBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_lootHopper").initClass()
-    .setParent(StorageBlock)
-    .setTags("blk-non-cont")
-    .setParam({
+        /**
+         * Collects loot on top of the block.
+         * @class BLK_lootHopper
+         * @extends BLK_baseLootBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_lootHopper")
+        .initTemplate()
+        .setParent(StorageBlock)
+        .setTags("blk-non-cont")
+        .setParam({
 
 
-      /* <------------------------------ vanilla ------------------------------> */
+            /* <------------------------------ vanilla ------------------------------> */
 
 
-      solid: false,
-      underBullets: true,
-      coreMerge: false,
+            solid: false,
+            underBullets: true,
+            coreMerge: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-      outputsItems: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            outputsItems: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_lootHopper
-     * @extends B_baseLootBlock
-     */
-    newClass().extendClass(PARENT[1], "B_lootHopper").initClass()
-    .setParent(StorageBlock.StorageBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_lootHopper
+         * @extends B_baseLootBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_lootHopper")
+        .initTemplate()
+        .setParent(StorageBlock.StorageBuild)
+        .setParam({})
+        .setMethod({
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      acceptItem: function(b_f, item) {
-        return false;
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
+            acceptItem: function(b_f, item) {
+                return false;
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
 
 
-      /**
-       * @override
-       * @memberof B_baseLootBlock
-       * @instance
-       * @return {void}
-       */
-      ex_updateLootTs: function() {
-        comp_ex_updateLootTs(this);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_baseLootBlock
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updateLootTs: function() {
+                comp_ex_updateLootTs(this);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @memberof B_baseLootBlock
-       * @instance
-       * @param {Array<Unit>} loots
-       * @param {number} amt
-       * @return {void}
-       */
-      ex_lootCall: function(loots, amt) {
-        comp_ex_lootCall(this, loots, amt);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * @memberof B_baseLootBlock
+             * @instance
+             * @func
+             * @param {Array<LootUnit>} loots
+             * @param {number} amt
+             * @return {void}
+             */
+            ex_lootCall: function(loots, amt) {
+                comp_ex_lootCall(this, loots, amt);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

@@ -2,9 +2,9 @@ package lovec.content.updater;
 
 import arc.math.Mathf;
 import arc.util.Time;
-import lovec.content.ContentUpdater;
+import lovec.content.LCContentUpdater;
 import lovec.content.LCCraftingHandler;
-import lovec.content.BuildUpdater;
+import lovec.content.LCBuildUpdater;
 import lovec.utils.LCScript;
 import lovec.utils.LCScriptUtil;
 import mindustry.gen.Building;
@@ -14,7 +14,7 @@ import rhino.NativeArray;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class INTFBLKTorqueBlockUpdater extends ContentUpdater<Block> {
+public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
 
 
     protected boolean skipTorFetch;
@@ -35,7 +35,7 @@ public class INTFBLKTorqueBlockUpdater extends ContentUpdater<Block> {
 
 
 
-    public class INTFBTorqueBlockUpdater extends BuildUpdater<Building, Block> {
+    public class INTFBTorqueBlockUpdater extends LCBuildUpdater<Building, Block> {
 
 
         protected float torCur;

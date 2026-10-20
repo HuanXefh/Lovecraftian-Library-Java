@@ -1,6 +1,6 @@
 package lovec.utils;
 
-import lovec.annotation.FromScript;
+import lovec.annotation.LCFromScript;
 import mindustry.ai.BlockIndexer;
 import mindustry.core.Version;
 import mindustry.core.World;
@@ -16,17 +16,17 @@ public class LCVersionResolver {
     public static Class<?> MappableContent;
     public static Class<?> UnlockableContent;
 
-    @FromScript(source = "GLB_var", updated = true)
+    @LCFromScript(source = "GLB_var", updated = true)
     public static float time;
 
-    @FromScript(source = "GLB_var")
+    @LCFromScript(source = "GLB_var")
     public static World world;
-    @FromScript(source = "GLB_var")
+    @LCFromScript(source = "GLB_var")
     public static BlockIndexer indexer;
 
-    @FromScript(source = "GLB_var", name = "bulletEntities")
+    @LCFromScript(source = "GLB_var", name = "bulletEntities")
     public static EntityGroup<Bullet> bulletGroup;
-    @FromScript(source = "GLB_var", name = "playerEntities")
+    @LCFromScript(source = "GLB_var", name = "playerEntities")
     public static EntityGroup<Player> playerGroup;
 
 

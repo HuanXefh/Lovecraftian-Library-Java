@@ -5,7 +5,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Eachable;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import lovec.graphics.LCDraw;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -16,7 +16,7 @@ import mindustry.world.Block;
  * For multi-block structure.
  * <br> <code>DEDICATION</code>: Inspired by MultiBlockLib.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawMultiBlockSymmetricRegion extends LCDrawMultiBlock {
 
 

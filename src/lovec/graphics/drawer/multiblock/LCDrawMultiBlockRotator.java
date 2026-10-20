@@ -6,7 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Eachable;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import lovec.graphics.LCDraw;
 import lovec.graphics.drawer.SpinSpriteFrag;
 import mindustry.entities.units.BuildPlan;
@@ -16,7 +16,7 @@ import mindustry.world.Block;
 /**
  * Draws rotator for non-square structure.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawMultiBlockRotator extends LCDrawMultiBlock implements SpinSpriteFrag {
 
 

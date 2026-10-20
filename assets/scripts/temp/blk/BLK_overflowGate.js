@@ -8,72 +8,116 @@
   /* <------------------------------ import ------------------------------> */
 
 
+  /**
+   * @typedef {TemplateInstance<OverflowGate, BLK_overflowGate>} BLKOverflowGate
+   */
+
+
+  /**
+   * @typedef {TemplateInstance<OverflowGate.OverflowGateBuild, B_overflowGate>} BOverflowGate
+   * @prop {BLKOverflowGate} block
+   */
+
+
   const PARENT = require("lovec/temp/blk/BLK_baseItemGate");
 
 
   /* <------------------------------ component ------------------------------> */
 
 
+  /**
+   * @private
+   * @param {BLKOverflowGate} blk
+   * @return {void}
+   */
   function comp_init(blk) {
-    blk.configurable = true;
-    blk.saveConfig = true;
-    blk.clearOnDoubleTap = false;
+      blk.configurable = true;
+      blk.saveConfig = true;
+      blk.clearOnDoubleTap = false;
 
-    blk.config(JAVA.boolean, (b, bool) => {
-      if(bool !== b.delegee.isInv) {
-        b.delegee.isInv = bool;
-        GLB_eff.fadePlacePack[b.block.size].at(b);
-        b.recache();
-        BOX_trigger.invertSelection.fire();
-      };
-    });
+      blk.config(JAVA.boolean, (b, bool) => {
+          if(bool !== b.delegee.isInv) {
+              b.delegee.isInv = bool;
+              GLB_eff.fadePlacePack[b.block.size].at(b);
+              b.recache();
+              BOX_trigger.invertSelection.fire();
+          };
+      });
   };
 
 
+  /**
+   * @private
+   * @param {BLKOverflowGate} blk
+   * @return {void}
+   */
   function comp_load(blk) {
-    blk.invReg = fetchRegion(blk, "-inv");
+      blk.delegee.invReg = fetchRegion(blk, "-inv");
   };
 
 
+  /**
+   * @private
+   * @param {BOverflowGate} b
+   * @param {Item} item
+   * @param {Building} b_f
+   * @param {boolean} isFlip
+   * @return {Building|null}
+   */
   function comp_getTileTarget(b, item, b_f, isFlip) {
-    let rot = b_f.relativeTo(b);
-    let b_t = b.nearby(rot);
-    let target = b_t;
-    let cond0 = b_t != null && b_t.team === b.team && !(b_t.block.instantTransfer && b_f.block.instantTransfer) && b_t.acceptItem(b, item);
+      let
+          rot = b_f.relativeTo(b),
+          b_t = b.nearby(rot),
+          target = b_t,
+          cond0 = b_t != null && b_t.team === b.team && !(b_t.block.instantTransfer && b_f.block.instantTransfer) && b_t.acceptItem(b, item);
 
-    if(!cond0 || b.isInv === b.enabled) {
-      let b_s1 = b.nearby(Mathf.mod(rot - 1, 4));
-      let b_s2 = b.nearby(Mathf.mod(rot + 1, 4));
-      let cond1 = b_s1 != null && b_s1.team === b.team && !(b_s1.block.instantTransfer && b_f.block.instantTransfer) && b_s1.acceptItem(b, item);
-      let cond2 = b_s2 != null && b_s2.team === b.team && !(b_s2.block.instantTransfer && b_f.block.instantTransfer) && b_s2.acceptItem(b, item);
+      if(!cond0 || b.delegee.isInv === b.enabled) {
+          let
+              b_s1 = b.nearby(Mathf.mod(rot - 1, 4)),
+              b_s2 = b.nearby(Mathf.mod(rot + 1, 4)),
+              cond1 = b_s1 != null && b_s1.team === b.team && !(b_s1.block.instantTransfer && b_f.block.instantTransfer) && b_s1.acceptItem(b, item),
+              cond2 = b_s2 != null && b_s2.team === b.team && !(b_s2.block.instantTransfer && b_f.block.instantTransfer) && b_s2.acceptItem(b, item);
 
-      if(!cond1 && !cond2) {
-        return b.isInv === b.enabled && cond0 ? b_t : null;
+          if(!cond1 && !cond2) {
+              return b.delegee.isInv === b.enabled && cond0 ? b_t : null;
+          };
+          if(cond1 && !cond2) {
+              target = b_s1;
+          } else if(!cond1 && cond2) {
+              target = b_s2;
+          } else {
+              target = (b.rotation & (1 << rot)) === 0 ? b_s1 : b_s2;
+              if(isFlip) {
+                  b.rotation ^= (1 << rot)
+              };
+          };
       };
-      if(cond1 && !cond2) {
-        target = b_s1;
-      } else if(!cond1 && cond2) {
-        target = b_s2;
-      } else {
-        target = (b.rotation & (1 << rot)) === 0 ? b_s1 : b_s2;
-        if(isFlip) b.rotation ^= (1 << rot);
-      };
-    };
 
-    return target;
+      return target;
   };
 
 
+  /**
+   * @private
+   * @param {BOverflowGate} b
+   * @param {Table} tb
+   * @return {void}
+   */
   function comp_buildConfiguration(b, tb) {
-    MDL_table.btnCfgToggle(tb, b, GLB_varGen.icons.swap, GLB_varGen.icons.swap, b.isInv)
-    .tooltip(MDL_bundle.getInfo("lovec", "tt-invert-selection"), true);
+      MDL_table.btnCfgToggle(tb, b, GLB_varGen.icons.swap, GLB_varGen.icons.swap, b.delegee.isInv)
+      .tooltip(MDL_bundle.getInfo("lovec", "tt-invert-selection"), true);
   };
 
 
+  /**
+   * @private
+   * @param {BOverflowGate} b
+   * @return {void}
+   */
   function comp_draw(b) {
-    if(b.isInv) {
-      Draw.rect(b.block.delegee.invReg, b.x, b.y);
-    };
+      if(b.delegee.isInv) {
+          Draw.rect(b.block.delegee.invReg, b.x, b.y);
+      };
   };
 
 
@@ -84,116 +128,123 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Overflow gate with `blk.invert` being useless.
-     * <br> `SINGLESIZE`
-     * @class BLK_overflowGate
-     * @extends BLK_baseItemGate
-     */
-    newClass().extendClass(PARENT[0], "BLK_overflowGate").initClass()
-    .setParent(OverflowGate)
-    .setTags()
-    .setParam({
+        /**
+         * Overflow gate with `blk.invert` being useless.
+         * <br> `SINGLESIZE`
+         * @class BLK_overflowGate
+         * @extends BLK_baseItemGate
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_overflowGate")
+        .initTemplate()
+        .setParent(OverflowGate)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_overflowGate
-       * @instance
-       */
-      invReg: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_overflowGate
+             * @instance
+             * @type {TextureRegion}
+             */
+            invReg: null,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      load: function() {
-        comp_load(this);
-      },
+            load: function() {
+                comp_load(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_overflowGate
-     * @extends B_baseItemGate
-     */
-    newClass().extendClass(PARENT[1], "B_overflowGate").initClass()
-    .setParent(OverflowGate.OverflowGateBuild)
-    .setParam({
+        /**
+         * @class B_overflowGate
+         * @extends B_baseItemGate
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_overflowGate")
+        .initTemplate()
+        .setParent(OverflowGate.OverflowGateBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_overflowGate
-       * @instance
-       */
-      isInv: false,
+            /**
+             * `INTERNAL`
+             * @memberof B_overflowGate
+             * @instance
+             * @type {boolean}
+             */
+            isInv: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      getTileTarget: function(item, b_f, isFlip) {
-        return comp_getTileTarget(this, item, b_f, isFlip);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            getTileTarget: function(item, b_f, isFlip) {
+                return comp_getTileTarget(this, item, b_f, isFlip);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      buildConfiguration: function(tb) {
-        comp_buildConfiguration(this, tb);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            buildConfiguration: function(tb) {
+                comp_buildConfiguration(this, tb);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      config: function() {
-        return this.isInv;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            config: function() {
+                return this.delegee.isInv;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      draw: function() {
-        comp_draw(this);
-      },
+            draw: function() {
+                comp_draw(this);
+            },
 
 
-      write: function(wr) {
-        wr.bool(this.isInv);
-      },
+            write: function(wr) {
+                wr.bool(this.delegee.isInv);
+            },
 
 
-      read: function(rd, revi) {
-        if(this.LCRevi === 5) rd.s();
-
-        this.isInv = rd.bool();
-      },
-
-
-    }),
+            read: function(rd, revi) {
+                if(this.delegee.LCRevi === 5) {
+                  rd.s();
+                };
+                this.delegee.isInv = rd.bool();
+            },
 
 
-  ];
+        }),
+
+
+    ];

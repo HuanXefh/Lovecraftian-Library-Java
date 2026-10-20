@@ -4,9 +4,10 @@ import arc.func.Func;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
+import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
-import lovec.annotation.NoJSON;
+import lovec.annotation.LCJSONTypeClass;
+import lovec.annotation.LCNoJSON;
 import lovec.utils.LCVersionResolver;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -14,15 +15,17 @@ import mindustry.world.Block;
 /**
  * Draws icon of some content.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawContent extends LCDrawer {
 
 
     public float regScl = 1f;
     public Object content;
-    public @NoJSON Func<Building, Object> contentF;
+    public @LCNoJSON
+    @Nullable Func<Building, Object> contentF;
     public Color color;
-    public @NoJSON Func<Building, Color> colorF;
+    public @LCNoJSON
+    @Nullable Func<Building, Color> colorF;
 
     private Object lastCt;
     private TextureRegion lastReg;

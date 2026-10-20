@@ -20,8 +20,8 @@
     /* <------------------------------ lovec.annotation ------------------------------> */
 
 
-    /** @global lovec.annotation.FromScript */
-    FromScript = fetchClass("lovec.annotation.FromScript");
+    /** @global lovec.annotation.LCFromScript */
+    LCFromScript = fetchClass("lovec.annotation.LCFromScript");
 
 
     /* <------------------------------ lovec.audio ------------------------------> */
@@ -36,8 +36,8 @@
 
     /** @global lovec.content.LCCraftingHandler */
     LCCraftingHandler = fetchClass("lovec.content.LCCraftingHandler");
-    /** @global lovec.content.RecipeUpdater */
-    RecipeUpdater = fetchClass("lovec.content.RecipeUpdater");
+    /** @global lovec.content.LCRecipeUpdater */
+    LCRecipeUpdater = fetchClass("lovec.content.LCRecipeUpdater");
 
 
     /* <------------------------------ entities ------------------------------> */
@@ -75,19 +75,19 @@
     LCRaycast = fetchClass("lovec.math.LCRaycast");
     /** @global lovec.math.LCStatistics */
     LCStatistics = fetchClass("lovec.math.LCStatistics");
-    /** @global lovec.math.struct.MathGraph */
-    MathGraph = fetchClass("lovec.math.struct.MathGraph");
-    /** @global lovec.math.struct.MathMatrix */
-    MathMatrix = fetchClass("lovec.math.struct.MathMatrix");
-    /** @global lovec.math.struct.MathMeanArray */
-    MathMeanArray = fetchClass("lovec.math.struct.MathMeanArray");
+    /** @global lovec.math.struct.LCGraph */
+    LCGraph = fetchClass("lovec.math.struct.LCGraph");
+    /** @global lovec.math.struct.LCMatrix */
+    LCMatrix = fetchClass("lovec.math.struct.LCMatrix");
+    /** @global lovec.math.struct.LCMeanArray */
+    LCMeanArray = fetchClass("lovec.math.struct.LCMeanArray");
 
 
     /* <------------------------------ lovec.ui ------------------------------> */
 
 
-    /** @global lovec.ui.StackDrawable */
-    StackDrawable = fetchClass("lovec.ui.StackDrawable");
+    /** @global lovec.ui.LCStackDrawable */
+    LCStackDrawable = fetchClass("lovec.ui.LCStackDrawable");
 
 
     /* <------------------------------ lovec.utils ------------------------------> */

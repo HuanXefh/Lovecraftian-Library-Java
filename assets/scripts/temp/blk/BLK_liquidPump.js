@@ -5,41 +5,71 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseFluidBlock");
-  const INTF = require("lovec/temp/intf/INTF_BLK_corrosionAcceptor");
-  const INTF_A = require("lovec/temp/intf/INTF_BLK_fluidHeatAcceptor");
-  const INTF_B = require("lovec/temp/intf/INTF_BLK_pressureProducer");
-  const INTF_C = require("lovec/temp/intf/INTF_BLK_facilityBlock");
+    /**
+     * @typedef {TemplateInstance<Pump, BLK_liquidPump>} BLKLiquidPump
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Pump.PumpBuild, B_liquidPump>} BLiquidPump
+     * @prop {BLKLiquidPump} block
+     */
 
 
-  function comp_init(blk) {
-    blk.hasConsumers = true;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseFluidBlock");
+    const INTF_BLK_corrosionAcceptor = require("lovec/temp/intf/INTF_BLK_corrosionAcceptor");
+    const INTF_BLK_fluidHeatAcceptor = require("lovec/temp/intf/INTF_BLK_fluidHeatAcceptor");
+    const INTF_BLK_pressureProducer = require("lovec/temp/intf/INTF_BLK_pressureProducer");
+    const INTF_BLK_facilityBlock = require("lovec/temp/intf/INTF_BLK_facilityBlock");
 
 
-  function comp_shouldConsume(b) {
-    return b.enabled
-      && !(b.block instanceof Pump) ? true : b.ex_getRsTarget() != null
-      && !b.block.delegee.presProd.fEqual(0.0) ? true : b.liquids.get(b.ex_getRsTarget()) < (b.block.liquidCapacity - 0.01)
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, b.ex_getRsTarget(), b.block.size, 0.75);
-  };
+    /**
+     * @private
+     * @param {BLKLiquidPump} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.hasConsumers = true;
+    };
 
 
-  function comp_drawStatus(b) {
-    if(!b.block.enableDrawStatus) return;
+    /**
+     * @private
+     * @param {BLiquidPump} b
+     * @return {boolean}
+     */
+    function comp_shouldConsume(b) {
+        return b.enabled
+            && (!(b.block instanceof Pump) || b.self.ex_getRsTarget() != null)
+            && (!b.block.delegee.presProd.fEqual(0.0) || b.liquids.get(b.self.ex_getRsTarget()) < (b.block.liquidCapacity - 0.01))
+    };
 
-    LCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
-  };
+
+    /**
+     * @private
+     * @param {BLiquidPump} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        LCDraw.contentIcon(b.x, b.y, b.self.ex_getRsTarget(), b.block.size, 0.75);
+    };
+
+
+    /**
+     * @private
+     * @param {BLiquidPump} b
+     * @return {void}
+     */
+    function comp_drawStatus(b) {
+        if(!b.block.enableDrawStatus) return;
+        LCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
+    };
 
 
 /*
@@ -49,133 +79,151 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Lovec version of pump that is capable of producing pressure.
-     * @class BLK_liquidPump
-     * @extends BLK_baseFluidBlock
-     * @extends INTF_BLK_corrosionAcceptor
-     * @extends INTF_BLK_fluidHeatAcceptor
-     * @extends INTF_BLK_pressureProducer
-     * @extends INTF_BLK_facilityBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_liquidPump").implement(INTF[0]).implement(INTF_A[0]).implement(INTF_B[0]).implement(INTF_C[0]).initClass()
-    .setParent(Pump)
-    .setTags()
-    .setParam({
+        /**
+         * Lovec version of pump that is capable of producing pressure.
+         * @class BLK_liquidPump
+         * @extends BLK_baseFluidBlock
+         * @extends INTF_BLK_corrosionAcceptor
+         * @extends INTF_BLK_fluidHeatAcceptor
+         * @extends INTF_BLK_pressureProducer
+         * @extends INTF_BLK_facilityBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_liquidPump")
+        .implement(INTF_BLK_corrosionAcceptor[0])
+        .implement(INTF_BLK_fluidHeatAcceptor[0])
+        .implement(INTF_BLK_pressureProducer[0])
+        .implement(INTF_BLK_facilityBlock[0])
+        .initTemplate()
+        .setParent(Pump)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`: Pressure and vacuum are abstract fluids, this field must be true.
-       * @override
-       * @memberof BLK_liquidPump
-       * @instance
-       */
-      allowAux: true,
+            /**
+             * `INTERNAL`: Pressure and vacuum are abstract fluids, this field must be true.
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_liquidPump
+             * @instance
+             * @type {boolean}
+             */
+            allowAux: true,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_liquidPump
-     * @extends B_baseFluidBlock
-     * @extends INTF_B_corrosionAcceptor
-     * @extends INTF_B_fluidHeatAcceptor
-     * @extends INTF_B_pressureProducer
-     * @extends INTF_B_facilityBlock
-     */
-    newClass().extendClass(PARENT[1], "B_liquidPump").implement(INTF[1]).implement(INTF_A[1]).implement(INTF_B[1]).implement(INTF_C[1]).initClass()
-    .setParent(Pump.PumpBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_liquidPump
+         * @extends B_baseFluidBlock
+         * @extends INTF_B_corrosionAcceptor
+         * @extends INTF_B_fluidHeatAcceptor
+         * @extends INTF_B_pressureProducer
+         * @extends INTF_B_facilityBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_liquidPump")
+        .implement(INTF_BLK_corrosionAcceptor[1])
+        .implement(INTF_BLK_fluidHeatAcceptor[1])
+        .implement(INTF_BLK_pressureProducer[1])
+        .implement(INTF_BLK_facilityBlock[1])
+        .initTemplate()
+        .setParent(Pump.PumpBuild)
+        .setParam({})
+        .setMethod({
 
 
-      shouldConsume: function() {
-        return comp_shouldConsume(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            shouldConsume: function() {
+                return comp_shouldConsume(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      draw: function() {
-        this.ex_drawRcIcon();
-      },
+            draw: function() {
+                this.self.ex_drawRcIcon();
+            },
 
 
-      drawSelect: function() {
-        comp_drawSelect(this);
-      },
+            drawSelect: function() {
+                comp_drawSelect(this);
+            },
 
 
-      drawStatus: function() {
-        comp_drawStatus(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawStatus: function() {
+                comp_drawStatus(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      write: function(wr) {
-        this.ex_processData(wr);
-      },
+            write: function(wr) {
+                this.self.ex_processData(wr);
+            },
 
 
-      read: function(rd, revi) {
-        if(this.LCRevi === 5) rd.s();
-
-        this.ex_processData(rd);
-      },
-
-
-      /**
-       * @memberof B_liquidPump
-       * @instance
-       * @return {Liquid|null}
-       */
-      ex_getRsTarget: function() {
-        return tryVal(this.liquidDrop, null);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            read: function(rd, revi) {
+                if(this.delegee.LCRevi === 5) {
+                    rd.s();
+                };
+                this.self.ex_processData(rd);
+            },
 
 
-      /**
-       * `REALIZED`
-       * @override
-       * @memberof B_wallHarvester
-       * @instance
-       * @func
-       * @return {TextureRegion|null}
-       */
-      ex_getRcIcon: function() {
-        return this.liquidDrop == null ?
-          null :
-          this.liquidDrop.uiIcon;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @memberof B_liquidPump
+             * @instance
+             * @func
+             * @return {Liquid|null}
+             * @lovecAttached
+             */
+            ex_getRsTarget: function() {
+                return tryVal(this.liquidDrop, null);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_wallHarvester
+             * @instance
+             * @func
+             * @return {TextureRegion|null}
+             */
+            ex_getRcIcon: function() {
+                return this.liquidDrop == null ?
+                    null :
+                    this.liquidDrop.uiIcon;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-  ];
+        }),
+
+
+    ];

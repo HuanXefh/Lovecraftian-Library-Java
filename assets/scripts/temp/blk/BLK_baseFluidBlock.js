@@ -5,23 +5,46 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseBlock");
+    /**
+     * @typedef {TemplateInstance<Block, BLK_baseFluidBlock>} BLKBaseFluidBlock
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, B_baseFluidBlock>} BBaseFluidBlock
+     * @prop {BLKBaseFluidBlock} block
+     */
 
 
-  function comp_init(blk) {
-    blk.group = BlockGroup.liquids;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseBlock");
 
 
-  function comp_acceptLiquid(b, b_f, liq) {
-    return !(!b.block.delegee.allowAux && MDL_cond.isAuxiliaryFluid(liq));
-  };
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKBaseFluidBlock} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.group = BlockGroup.liquids;
+    };
+
+
+    /**
+     * @private
+     * @param {BBaseFluidBlock} b
+     * @param {Building} b_f
+     * @param {Liquid} liq
+     * @return {boolean}
+     */
+    function comp_acceptLiquid(b, b_f, liq) {
+        return !(!b.block.delegee.allowAux && MDL_cond.isAuxiliaryFluid(liq));
+    };
 
 
 /*
@@ -31,60 +54,65 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Base template for all fluid blocks.
-     * Fluid blocks won't accept abstract fluids by default.
-     * @class BLK_baseFluidBlock
-     * @extends BLK_baseBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseFluidBlock").initClass()
-    .setParent(null)
-    .setTags()
-    .setParam({
+        /**
+         * Base template for all fluid blocks.
+         * Fluid blocks won't accept abstract fluids by default.
+         * @class BLK_baseFluidBlock
+         * @extends BLK_baseBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseFluidBlock")
+        .initTemplate()
+        .setParent(null)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`: Whether abstract fluid is allowed in this block.
-       * @memberof BLK_baseFluidBlock
-       * @instance
-       */
-      allowAux: false,
+            /**
+             * `PARAM`: Whether abstract fluid is allowed in this liquid block.
+             * @memberof BLK_baseFluidBlock
+             * @instance
+             * @type {boolean}
+             */
+            allowAux: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_baseFluidBlock
-     * @extends B_baseBlock
-     */
-    newClass().extendClass(PARENT[1], "B_baseFluidBlock").initClass()
-    .setParent(null)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_baseFluidBlock
+         * @extends B_baseBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseFluidBlock")
+        .initTemplate()
+        .setParent(null)
+        .setParam({})
+        .setMethod({
 
 
-      acceptLiquid: function(b_f, liq) {
-        return comp_acceptLiquid(this, b_f, liq);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            acceptLiquid: function(b_f, liq) {
+                return comp_acceptLiquid(this, b_f, liq);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

@@ -36,12 +36,13 @@
     /**
      * @private
      * @param {INTFBLKSameBlockRestrictionHandler} blk
-     * @param {Tile} t
+     * @param {Tile|null} t
      * @param {Team} team
      * @param {number} rot
      * @return {boolean}
      */
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
+        if(t == null) return false;
         if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
             blk.self.ex_findPlaceRestrictTs(blk.delegee.placeRestrictTmpTs, t, rot);
             thisFun.tmpCond = !LCEntity.getBuildsByTiles(blk.delegee.placeRestrictTmpBs, blk.delegee.placeRestrictTmpTs).some(ob => blk.delegee.sameTypeFilter.get(blk, ob.block));

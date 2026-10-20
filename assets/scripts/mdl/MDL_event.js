@@ -19,6 +19,26 @@
 
 
     /**
+     * @param {number} delay
+     * @param {C0Function} scr
+     * @return {void}
+     */
+    function delayRunV8(delay, scr) {
+        Time.run(delay, () => scr());
+    };
+
+
+    /**
+     * @param {number} delay
+     * @param {C0Function} scr
+     * @return {void}
+     */
+    function delayRunV9(delay, scr) {
+        Vars.state.run(delay, () => scr());
+    };
+
+
+    /**
      * Called several frames later.
      * @param {number} delay
      * @param {C0Function} scr
@@ -29,9 +49,9 @@
         if(id != null && thisFun.ids.includes(id)) return;
         if(id != null) thisFun.ids.push(id);
 
-        eval(LCVersionResolver.isV8 ? eval("Time.run") : eval("Time.state.run"))(delay, () => {
-            scr();
-        });
+        LCVersionResolver.isV8 ?
+            delayRunV8(delay, scr) :
+            delayRunV9(delay, scr);
     };
     exports.onDelayRun = onDelayRun;
 

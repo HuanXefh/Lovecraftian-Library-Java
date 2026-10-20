@@ -30,7 +30,7 @@
     function comp_init(blk) {
         if(blk.delegee.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
 
-        if(blk instanceof AttributeCrafter) {
+        if(!LCVersionResolver.isV8 || blk instanceof AttributeCrafter) {
             blk.displayEfficiency = false;
         };
 
@@ -125,7 +125,7 @@
     /**
      * @private
      * @param {INTFBLKDynamicAttributeBlock} blk
-     * @param {Tile} t
+     * @param {Tile|null} t
      * @param {Team} team
      * @param {number} rot
      * @return {boolean}

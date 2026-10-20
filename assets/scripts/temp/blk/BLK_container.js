@@ -5,26 +5,44 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseStorageBlock");
+    /**
+     * @typedef {TemplateInstance<StorageBlock, BLK_container>} BLKContainer
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<StorageBlock.StorageBuild, B_container>} BContainer
+     * @prop {BLKContainer} block
+     */
 
 
-  function comp_warmup(b) {
-    let amt_fi = 0, typeAmt = 0;
-    b.items.each((item, amt) => {
-      typeAmt++;
-      amt_fi += amt;
-    });
+    const PARENT = require("lovec/temp/blk/BLK_baseStorageBlock");
 
-    return typeAmt === 0 ?
-      0.0 :
-      amt_fi / typeAmt / b.block.itemCapacity;
-  };
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BContainer} b
+     * @return {number}
+     */
+    function comp_warmup(b) {
+        let
+            amt_fi = 0,
+            typeAmt = 0;
+        b.items.each((item, amt) => {
+            typeAmt++;
+            amt_fi += amt;
+        });
+
+        return typeAmt === 0 ?
+            0.0 :
+            amt_fi / typeAmt / b.block.itemCapacity;
+    };
 
 
 /*
@@ -34,56 +52,60 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Vanilla container for item storage.
-     * Won't be shown on minimap if in derelict team (for hidden treasure in map).
-     * @class BLK_container
-     * @extends BLK_baseStorageBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_container").initClass()
-    .setParent(StorageBlock)
-    .setTags()
-    .setParam({})
-    .setMethod({
+        /**
+         * Vanilla container for item storage.
+         * Won't be shown on minimap if in derelict team (for hidden treasure in map).
+         * @class BLK_container
+         * @extends BLK_baseStorageBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_container")
+        .initTemplate()
+        .setParent(StorageBlock)
+        .setTags()
+        .setParam({})
+        .setMethod({
 
 
-      minimapColor: function(t) {
-        // Derelict containers should not appear on minimap
-        let b = t.build;
-        return b == null || b.team !== Team.derelict ?
-          this.super$minimapColor(t) :
-          t.getFloorColor().rgba();
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            minimapColor: function(t) {
+                // Derelict containers should not appear on minimap
+                let b = t.build;
+                return b == null || b.team !== Team.derelict ?
+                    this.super$minimapColor(t) :
+                    t.getFloorColor().rgba();
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_container
-     * @extends B_baseStorageBlock
-     */
-    newClass().extendClass(PARENT[1], "B_container").initClass()
-    .setParent(StorageBlock.StorageBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_container
+         * @extends B_baseStorageBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_container")
+        .initTemplate()
+        .setParent(StorageBlock.StorageBuild)
+        .setParam({})
+        .setMethod({
 
 
-      warmup: function() {
-        return comp_warmup(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            warmup: function() {
+                return comp_warmup(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

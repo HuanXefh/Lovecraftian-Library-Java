@@ -717,7 +717,7 @@
                 .size(40.0)
                 .tooltip(MDL_bundle.getInfo("lovec", "tt-skip-dial"), true)
                 .row();
-                tb1.button("L", () => fetchDialog("dialFlowLog").ex_show())
+                tb1.button("L", () => fetchDialog("dialFlowLog").self.ex_show())
                 .size(40.0)
                 .tooltip(MDL_bundle.getInfo("lovec", "tt-dial-flow-log"), true)
                 .row();

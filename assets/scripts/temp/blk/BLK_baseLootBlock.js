@@ -5,14 +5,25 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseItemBlock");
-  const INTF = require("lovec/temp/intf/INTF_BLK_lootHandler");
+    /**
+     * @typedef {TemplateInstance<Block, BLK_baseLootBlock>} BLKBaseLootBlock
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, B_baseLootBlock>} BBaseLootBlock
+     * @prop {BLKBaseLootBlock} block
+     */
+
+
+    const PARENT = require("lovec/temp/blk/BLK_baseItemBlock");
+    const INTF_BLK_lootHandler = require("lovec/temp/intf/INTF_BLK_lootHandler");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -22,49 +33,57 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Base template for all loot-related blocks.
-     * @class BLK_baseLootBlock
-     * @extends BLK_baseItemBlock
-     * @extends INTF_BLK_lootHandler
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseLootBlock").implement(INTF[0]).initClass()
-    .setParent(null)
-    .setTags()
-    .setParam({})
-    .setMethod({
+        /**
+         * Base template for all loot-related blocks.
+         * @class BLK_baseLootBlock
+         * @extends BLK_baseItemBlock
+         * @extends INTF_BLK_lootHandler
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseLootBlock")
+        .implement(INTF_BLK_lootHandler[0])
+        .initTemplate()
+        .setParent(null)
+        .setTags()
+        .setParam({})
+        .setMethod({
 
 
-      /**
-       * @override
-       * @memberof BLK_baseLootBlock
-       * @instance
-       * @return {boolean}
-       */
-      ex_isSwitchDisableTarget: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_baseLootBlock
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_isSwitchDisableTarget: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_baseLootBlock
-     * @extends B_baseItemBlock
-     * @extends INTF_B_lootHandler
-     */
-    newClass().extendClass(PARENT[1], "B_baseLootBlock").implement(INTF[1]).initClass()
-    .setParent(null)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_baseLootBlock
+         * @extends B_baseItemBlock
+         * @extends INTF_B_lootHandler
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseLootBlock")
+        .implement(INTF_BLK_lootHandler[1])
+        .initTemplate()
+        .setParent(null)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

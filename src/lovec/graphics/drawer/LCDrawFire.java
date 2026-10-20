@@ -9,7 +9,7 @@ import arc.math.Mathf;
 import arc.struct.IntFloatMap;
 import arc.util.Time;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import lovec.graphics.LCDraw;
 import mindustry.Vars;
 import mindustry.game.EventType;
@@ -19,7 +19,7 @@ import mindustry.world.Block;
 /**
  * Draws fake fire that won't spread.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawFire extends LCDrawer {
 
 

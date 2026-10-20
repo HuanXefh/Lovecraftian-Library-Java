@@ -36,7 +36,7 @@
         classes.RecipeParser = fetchClass("tmi.recipe.RecipeParser");
         classes.RecipeType = fetchClass("tmi.recipe.RecipeType");
 
-        classes.AttributeCrafterParser = fetchClass("tmi.recipe.parser.AttributeCrafterParser");
+        classes.AttributeCrafterParser = fetchClass(LCVersionResolver.isV8 ? "tmi.recipe.parser.AttributeCrafterParser" : "tmi.recipe.parser.GenericCrafterParser");
         classes.BeamDrillParser = fetchClass("tmi.recipe.parser.BeamDrillParser");
         classes.DrillParser = fetchClass("tmi.recipe.parser.DrillParser");
         classes.GenericCrafterParser = fetchClass("tmi.recipe.parser.GenericCrafterParser");
@@ -401,7 +401,7 @@
         // Handle content template fields
         if(checkCreatedByTemp(blk)) {
             // Handle pressure/vacuum production
-            if(blk.ex_isSubInsOf("INTF_BLK_pressureProducer") && !blk.delegee.presProd.fEqual(0.0)) {
+            if(blk.self.ex_isSubInsOf("INTF_BLK_pressureProducer") && !blk.delegee.presProd.fEqual(0.0)) {
                 addProd(rawRc, blk.delegee.presProd > 0.0 ? "loveclab-aux0aux-pressure" : "loveclab-aux0aux-vacuum", Math.abs(blk.delegee.presProd), true);
             };
         };
@@ -474,13 +474,13 @@
                 rs = MDL_content.getCt(nameRs, ContentGetModes.RS);
                 if(rs == null) return;
 
-                rawRc = makeRawRc(tryVal(typeStrOverwrite, "factory"), blk, blk.ex_getCraftTime(), true);
+                rawRc = makeRawRc(tryVal(typeStrOverwrite, "factory"), blk, blk.self.ex_getCraftTime(), true);
                 rcGrp = new classes.RecipeItemGroup();
                 baseParse(blk, rawRc);
                 MDL_attr.getBlkAttrArr(nameAttr).forEachRow(3, (oblk, attrVal, nameAttr) => {
                     addAttr(rawRc, rcGrp, oblk, attrVal, blk.size, true, blk.delegee.attrRcType);
                 });
-                addProd(rawRc, rs, blk.ex_getDynaAttrProdSpd(rs) / (rs instanceof Liquid ? 60.0 : (1.0 / blk.ex_getCraftTime())), rs instanceof Liquid);
+                addProd(rawRc, rs, blk.self.ex_getDynaAttrProdSpd(rs) / (rs instanceof Liquid ? 60.0 : (1.0 / blk.self.ex_getCraftTime())), rs instanceof Liquid);
 
                 rawRc.complete();
                 regisRc(rawRc);
@@ -544,7 +544,7 @@
             let oreGrpMap = new ObjectMap();
             let rawRc, rcGrp, blkTarget;
             thisFun.modeBlksMap[blk.mineMode].forEachFast(oblk => {
-                if(!blk.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
+                if(!blk.self.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
 
                 blkTarget = null;
                 if(blk.shouldDropPay) {
@@ -598,7 +598,7 @@
         if(!ENABLED) return;
 
         MDL_event.onLoad(() => {
-            let blksReq = blk.ex_calcBlksReq([]);
+            let blksReq = blk.self.ex_calcBlksReq([]);
             let rawRc = makeRawRc("building", blk.delegee.placeBlk, blk.constructionTimeReq);
 
             blksReq.forEachRow(2, (oblk, amt) => {
@@ -606,7 +606,7 @@
             });
             addSubInfo(rawRc, tb => {
                 tb.row();
-                blk.ex_buildConstructionPlan(tb);
+                blk.self.ex_buildConstructionPlan(tb);
             });
 
             rawRc.complete();
@@ -638,7 +638,7 @@
                 amt = blk.delegee.cropData[i].amt;
                 p = blk.delegee.cropData[i].p;
                 if(item != null && amt * p > 0.0) {
-                    rawRc = makeRawRc("factory", blk, blk.ex_calcStageTotalTime(i) - blk.ex_calcStageTotalTime(blk.delegee.cropData[i].stageTo));
+                    rawRc = makeRawRc("factory", blk, blk.self.ex_calcStageTotalTime(i) - blk.self.ex_calcStageTotalTime(blk.delegee.cropData[i].stageTo));
                     addProd(rawRc, item, amt * p);
 
                     rawRc.complete();
@@ -803,10 +803,10 @@
                 if(rc.failP > 0.0) addSubInfo(rawRc, MDL_text.getStat(MDL_bundle.getTerm("lovec", "chance-to-fail"), rc.failP.perc(1)));
 
                 // For furnaces
-                if(blk.ex_isSubInsOf("BLK_furnaceRecipeFactory") || blk.ex_isSubInsOf("BLK_electricFurnaceRecipeFactory")) {
+                if(blk.self.ex_isSubInsOf("BLK_furnaceRecipeFactory") || blk.self.ex_isSubInsOf("BLK_electricFurnaceRecipeFactory")) {
                     // Specific
                     let fuelArr = Array.air;
-                    if(blk.ex_isSubInsOf("INTF_BLK_furnaceBlock")) {
+                    if(blk.self.ex_isSubInsOf("INTF_BLK_furnaceBlock")) {
                         fuelArr = MDL_fuel.getFuelArr(blk);
                     };
 

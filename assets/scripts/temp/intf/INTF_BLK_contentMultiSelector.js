@@ -41,7 +41,7 @@
         });
         blk.config(JAVA.object_arr, (b, cfgArr) => {
             switch(cfgArr[0]) {
-                case "selectorBlock" :
+                case "SPEC: selector chunk" :
                     let
                         i = 1,
                         iCap = cfgArr.iCap(),
@@ -57,7 +57,7 @@
                     GLB_eff.fadePlacePack[blk.size].at(b);
                     break;
 
-                case "selector" :
+                case "SPEC: selector" :
                     b.self.ex_accCtTargets(cfgArr[1], cfgArr[2]);
                     b.self.ex_onSelectorUpdate();
                     GLB_eff.fadePlacePack[blk.size].at(b);
@@ -89,7 +89,7 @@
         MDL_table.btnCfg(
             tb, b,
             b => {
-                b.configure("clear");
+                b.configure("SPEC: lear");
                 b.deselect();
             },
             GLB_varGen.icons.cross,
@@ -120,7 +120,7 @@
     function comp_ex_buildSelector(b, tb) {
         MDL_table.setCtSelectMulti(
             tb, b.block, b.block.delegee.selectionQueue,
-            () => b.self.ex_accCtTargets("read", false), val => b.configure(val),
+            () => b.self.ex_accCtTargets("SPEC: read", false), val => b.configure(val),
             null,
             {rowAmt: b.block.selectionRows, colAmt: b.block.selectionColumns, closeSelect: false},
         );
@@ -177,7 +177,7 @@
              * @return {Array<UnlockableContent>}
              */
             ex_findSelectionTargets: function() {
-                return Vars.content.items().toArray();
+                return GLB_varGen.allItems;
             }
             .setProp({
                 noSuper: true,
@@ -234,7 +234,7 @@
 
 
             config: function() {
-                return ["selectorBlock"]
+                return ["SPEC: selector chunk"]
                 .pushAll(this.delegee.ctTargets.map(ct => ct == null ? "null" : ct.name))
                 .toJavaArr(JAVA.object);
             }
@@ -255,10 +255,10 @@
              */
             ex_accCtTargets: function(param, isAdd) {
                 switch(param) {
-                    case "read" :
+                    case "SPEC: read" :
                         return this.delegee.ctTargets;
-                    case "clear" :
-                        this.block.lastConfig = "clear";
+                    case "SPEC: clear" :
+                        this.block.lastConfig = "SPEC: clear";
                         return this.delegee.ctTargets.clear();
                 };
 

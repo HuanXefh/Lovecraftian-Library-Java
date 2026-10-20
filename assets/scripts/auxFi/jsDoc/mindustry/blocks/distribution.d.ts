@@ -3,7 +3,10 @@ declare class Conveyor extends Block {}
 declare namespace Conveyor {
     class ConveyorBuild extends Building {}
 }
-/** mindustry.world.blocks.distribution.ArmoredConveyor */
+/**
+ * mindustry.world.blocks.distribution.ArmoredConveyor
+ * @deprecated Removed in v9.
+ */
 declare class ArmoredConveyor extends Conveyor {}
 declare namespace ArmoredConveyor {
     class ArmoredConveyorBuild extends Conveyor.ConveyorBuild {}

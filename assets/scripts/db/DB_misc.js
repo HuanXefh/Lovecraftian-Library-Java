@@ -25,6 +25,7 @@ const db = {
 
             "loveclab-env0tree0bush-rocky-furn", "loveclab-env0tree0bush-rocky-fern",
 
+            "projreind-bliq0aux-primitive-pressure-valve", "projreind-bliq0aux-relief-valve",
             "projreind-bliq0stor-pressure-router", "projreind-bliq0aux-pressure-router",
             "projreind-pow0turb-primitive-steam-turbine", "projreind-pow0tor-primitive-steam-turbine",
 
@@ -104,14 +105,14 @@ const db = {
              * Maps graph type to its init method.
              * See {@Link INTF_BLK_graphBlock}.
              * <br> `ROW`: graphType, initScr.
-             * @type {F2Array<string, CFunction<MathGraph>>}
+             * @type {F2Array<string, CFunction<LCGraph>>}
              */
             init: [
 
                 "cable", function(graph) {
                     graph.graphData.overloadFrac = 0.0;
                     graph.graphData.overloadTimeCur = 0.0;
-                    graph.graphData.maxPowProdAllowed = graph.getData(0).ex_getMaxPowProdAllowed();
+                    graph.graphData.maxPowProdAllowed = graph.getData(0).self.ex_getMaxPowProdAllowed();
                 },
 
             ],
@@ -121,7 +122,7 @@ const db = {
              * Maps graph type to its update method.
              * See {@Link INTF_BLK_graphBlock}.
              * <br> `ROW`: graphType, updateScr.
-             * @type {F2Array<string, CFunction<MathGraph>>}
+             * @type {F2Array<string, CFunction<LCGraph>>}
              */
             update: [
 
@@ -134,7 +135,7 @@ const db = {
 
                     let powProd = graph.getData(0).power.graph.getLastPowerProduced() / Time.delta;
                     if(GLB_timer.secHalf) {
-                        graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > GLB_var.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).ex_getMaxPowProdAllowed()), 0.2);
+                        graph.graphData.overloadFrac = Mathf.approach(graph.graphData.overloadFrac, powProd > GLB_var.param.powSourceStdProd ? 0.0 : Mathf.clamp(powProd / graph.getData(0).self.ex_getMaxPowProdAllowed()), 0.2);
                     };
                     if(graph.graphData.overloadFrac < 1.0 || powProd > GLB_var.param.powSourceStdProd) {
                         graph.graphData.overloadTimeCur = 0.0;
@@ -305,7 +306,7 @@ const db = {
                     rowInd: 0,
                     icon: "units",
                     clickScr: function() {
-                        fetchDialog("waveInfo").ex_show(null);
+                        fetchDialog("waveInfo").self.ex_show(null);
                     },
                 },
 

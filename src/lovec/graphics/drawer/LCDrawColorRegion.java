@@ -5,22 +5,24 @@ import arc.func.Func;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
+import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
-import lovec.annotation.NoJSON;
+import lovec.annotation.LCJSONTypeClass;
+import lovec.annotation.LCNoJSON;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 
 /**
  * Draws region with dynamic color.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawColorRegion extends LCDrawer {
 
 
     public String suffix = "-color";
     public Color color;
-    public @NoJSON Func<Building, Color> colorF;
+    public @LCNoJSON
+    @Nullable Func<Building, Color> colorF;
 
     protected TextureRegion colorReg;
 

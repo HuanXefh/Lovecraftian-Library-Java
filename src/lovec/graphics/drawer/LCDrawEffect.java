@@ -3,9 +3,10 @@ package lovec.graphics.drawer;
 import arc.func.Func3;
 import arc.graphics.Color;
 import arc.math.Mathf;
-import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
-import lovec.annotation.NoJSON;
+import arc.math.geom.Vec2;
+import arc.util.Nullable;
+import lovec.annotation.LCJSONTypeClass;
+import lovec.annotation.LCNoJSON;
 import lovec.utils.func.Floatf3;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -16,7 +17,7 @@ import mindustry.world.Block;
 /**
  * A drawer that spawns effect.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawEffect extends LCDrawer {
 
 
@@ -25,11 +26,17 @@ public class LCDrawEffect extends LCDrawer {
     public boolean rotate = false;
     public float angle = -1f;
     public boolean randomAngle = false;
-    public @NoJSON Floatf3<Building, Float, Float> angleF;
-    public Color color;
-    public @NoJSON Func3<Building, Float, Float, Color> colorF;
-    public @NoJSON Object data;
-    public @NoJSON Func3<Building, Float, Float, Object> dataF;
+    public @LCNoJSON
+    @Nullable Floatf3<Building, Float, Float> angleF;
+    public @Nullable Color color;
+    public @LCNoJSON
+    @Nullable Func3<Building, Float, Float, Color> colorF;
+    public @LCNoJSON
+    @Nullable Object data;
+    public @LCNoJSON
+    @Nullable Func3<Building, Float, Float, Object> dataF;
+
+    protected Vec2 lastEffPos = new Vec2();
 
 
     @Override
@@ -55,12 +62,12 @@ public class LCDrawEffect extends LCDrawer {
     public void draw(Building b) {
         if(Vars.state.isPaused() || !Mathf.chance(effectChance * b.edelta())) return;
 
-        calcRotatedOff(Tmp.v1, b.rotation).add(b);
+        calcRotatedOff(lastEffPos, b.rotation).add(b);
         effect.at(
-            Tmp.v1.x, Tmp.v1.y,
-            angleF == null ? 0f : angleF.get(b, Tmp.v1.x, Tmp.v1.y),
-            colorF == null ? Color.white : colorF.get(b, Tmp.v1.x, Tmp.v1.y),
-            dataF == null ? null : dataF.get(b, Tmp.v1.x, Tmp.v1.y)
+            lastEffPos.x, lastEffPos.y,
+            angleF == null ? 0f : angleF.get(b, lastEffPos.x, lastEffPos.y),
+            colorF == null ? Color.white : colorF.get(b, lastEffPos.x, lastEffPos.y),
+            dataF == null ? null : dataF.get(b, lastEffPos.x, lastEffPos.y)
         );
     };
 

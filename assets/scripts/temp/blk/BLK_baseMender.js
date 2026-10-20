@@ -5,13 +5,24 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseProjector");
+    /**
+     * @typedef {TemplateInstance<Block, BLK_baseMender>} BLKBaseMender
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, B_baseMender>} BBaseMender
+     * @prop {BLKBaseMender} block
+     */
+
+
+    const PARENT = require("lovec/temp/blk/BLK_baseProjector");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,38 +32,42 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Any block that can repair blocks and/or units.
-     * @class BLK_baseMender
-     * @extends BLK_baseProjector
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseMender").initClass()
-    .setParent(null)
-    .setTags()
-    .setParam({
+        /**
+         * Any block that can repair blocks and/or units.
+         * @class BLK_baseMender
+         * @extends BLK_baseProjector
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseMender")
+        .initTemplate()
+        .setParent(null)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ vanilla ------------------------------> */
+            /* <------------------------------ vanilla ------------------------------> */
 
 
-      suppressable: true,
+            suppressable: true,
 
 
-    })
-    .setMethod({}),
+        })
+        .setMethod({}),
 
 
-    /**
-     * @class B_baseMender
-     * @extends B_baseProjector
-     */
-    newClass().extendClass(PARENT[1], "B_baseMender").initClass()
-    .setParent(null)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_baseMender
+         * @extends B_baseProjector
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseMender")
+        .initTemplate()
+        .setParent(null)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

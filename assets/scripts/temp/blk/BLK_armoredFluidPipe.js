@@ -44,9 +44,18 @@
         newClass()
         .extendClass(PARENT[0], "BLK_armoredFluidPipe")
         .initTemplate()
-        .setParent(ArmoredConduit)
+        .setParent(LCVersionResolver.isV8 ? ArmoredConduit : Conduit)
         .setTags()
-        .setParam({})
+        .setParam({
+
+
+            /* <------------------------------ vanilla ------------------------------> */
+
+
+            noSideBlend: true,
+
+
+        })
         .setMethod({
 
 
@@ -70,7 +79,7 @@
         newClass()
         .extendClass(PARENT[1], "B_armoredFluidPipe")
         .initTemplate()
-        .setParent(ArmoredConduit.ArmoredConduitBuild)
+        .setParent(LCVersionResolver.isV8 ? ArmoredConduit.ArmoredConduitBuild : Conduit.ConduitBuild)
         .setParam({})
         .setMethod({}),
 

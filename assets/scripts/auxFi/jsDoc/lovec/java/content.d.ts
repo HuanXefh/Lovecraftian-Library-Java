@@ -1,8 +1,8 @@
-/** lovec.content.ContentUpdater */
-declare class ContentUpdater<T> {
+/** lovec.content.LCContentUpdater */
+declare class LCContentUpdater<T> {
     constructor(target: T)
 }
-/** lovec.content.BuildUpdater */
-declare class BuildUpdater<T, K> extends ContentUpdater<T> {
+/** lovec.content.LCBuildUpdater */
+declare class LCBuildUpdater<T, K> extends LCContentUpdater<T> {
     constructor(b: T)
 }

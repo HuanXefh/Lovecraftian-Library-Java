@@ -84,7 +84,7 @@
 
 
     /** @type {number} */
-    exports.lovecRevi = 7;
+    exports.lovecRevi = 8;
     /** @type {number} */
     exports.lovecReviOff = 96;
 

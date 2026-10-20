@@ -44,9 +44,18 @@
         newClass()
         .extendClass(PARENT[0], "BLK_armoredConveyor")
         .initTemplate()
-        .setParent(ArmoredConveyor)
+        .setParent(LCVersionResolver.isV8 ? ArmoredConveyor : Conveyor)
         .setTags()
-        .setParam({})
+        .setParam({
+
+
+            /* <------------------------------ vanilla ------------------------------> */
+
+
+            noSideBlend: true,
+
+
+        })
         .setMethod({}),
 
 
@@ -57,7 +66,7 @@
         newClass()
         .extendClass(PARENT[1], "B_armoredConveyor")
         .initTemplate()
-        .setParent(ArmoredConveyor.ArmoredConveyorBuild)
+        .setParent(LCVersionResolver.isV8 ? ArmoredConveyor.ArmoredConveyorBuild : Conveyor.ConveyorBuild)
         .setParam({})
         .setMethod({}),
 

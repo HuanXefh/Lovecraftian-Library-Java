@@ -5,45 +5,86 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseItemGate");
+    /**
+     * @typedef {TemplateInstance<Router, BLK_router>} BLKRouter
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Router.RouterBuild, B_router>} BRouter
+     * @prop {BLKRouter} block
+     */
 
 
-  function comp_onProximityUpdate(b) {
-    b.nextToRouter = b.proximity.find(ob => MDL_cond.isClassicRouter(ob.block)) != null;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseItemGate");
 
 
-  function comp_pickedUp(b) {
-    b.nextToRouter = false;
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_updateTile(b) {
-    if(GLB_timer.rsCur) b.lastRs = b.items.first();
-  };
-
-
-  function comp_acceptItem(b, b_f, item) {
-    b.lastRs = item;
-    return true;
-  };
-
-
-  function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, b.lastRs, b.block.size, 0.75);
-
-    if(GLB_param.SHOULD_DRAW_ROUTER_HERESY && b.nextToRouter) {
-      b.proximity.each(ob => {
-        if(MDL_cond.isClassicRouter(ob.block)) LCDrawf.areaShrink(ob.tile, ob.block.size, Pal.remove);
-      });
+    /**
+     * @private
+     * @param {BRouter} b
+     * @return {void}
+     */
+    function comp_onProximityUpdate(b) {
+        b.delegee.nextToRouter = b.proximity.find(ob => MDL_cond.isClassicRouter(ob.block)) != null;
     };
-  };
+
+
+    /**
+     * @private
+     * @param {BRouter} b
+     * @return {void}
+     */
+    function comp_pickedUp(b) {
+        b.delegee.nextToRouter = false;
+    };
+
+
+    /**
+     * @private
+     * @param {BRouter} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(GLB_timer.rsCur) {
+            b.delegee.lastRs = b.items.first();
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {BRouter} b
+     * @param {Building} b_f
+     * @param {Item} item
+     * @return {boolean}
+     */
+    function comp_acceptItem(b, b_f, item) {
+        b.delegee.lastRs = item;
+        return true;
+    };
+
+
+    /**
+     * @private
+     * @param {BRouter} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        LCDraw.contentIcon(b.x, b.y, b.delegee.lastRs, b.block.size, 0.75);
+        if(GLB_param.SHOULD_DRAW_ROUTER_HERESY && b.delegee.nextToRouter) {
+            b.proximity.each(ob => {
+                if(MDL_cond.isClassicRouter(ob.block)) {
+                    LCDrawf.areaShrink(ob.tile, ob.block.size, Pal.remove);
+                };
+            });
+        };
+    };
 
 
 /*
@@ -53,98 +94,106 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Router.
-     * @class BLK_router
-     * @extends BLK_baseItemGate
-     */
-    newClass().extendClass(PARENT[0], "BLK_router").initClass()
-    .setParent(Router)
-    .setTags()
-    .setParam({})
-    .setMethod({
+        /**
+         * Router.
+         * @class BLK_router
+         * @extends BLK_baseItemGate
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_router")
+        .initTemplate()
+        .setParent(Router)
+        .setTags()
+        .setParam({})
+        .setMethod({
 
 
-      /**
-       * @override
-       * @memberof BLK_router
-       * @instance
-       * @return {boolean}
-       */
-      ex_isSingleSized: function() {
-        return false;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_router
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_isSingleSized: function() {
+                return false;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_router
-     * @extends B_baseItemGate
-     */
-    newClass().extendClass(PARENT[1], "B_router").initClass()
-    .setParent(Router.RouterBuild)
-    .setParam({
+        /**
+         * @class B_router
+         * @extends B_baseItemGate
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_router")
+        .initTemplate()
+        .setParent(Router.RouterBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_router
-       * @instance
-       */
-      lastRs: null,
-      /**
-       * `INTERNAL`
-       * @memberof B_router
-       * @instance
-       */
-      nextToRouter: false,
+            /**
+             * `INTERNAL`
+             * @memberof B_router
+             * @instance
+             * @type {Resource|null}
+             */
+            lastRs: null,
+            /**
+             * `INTERNAL`
+             * @memberof B_router
+             * @instance
+             * @type {boolean}
+             */
+            nextToRouter: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
+            onProximityUpdate: function() {
+                comp_onProximityUpdate(this);
+            },
 
 
-      pickedUp: function() {
-        comp_pickedUp(this);
-      },
+            pickedUp: function() {
+                comp_pickedUp(this);
+            },
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      acceptItem: function(b_f, item) {
-        return comp_acceptItem(this, b_f, item);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            acceptItem: function(b_f, item) {
+                return comp_acceptItem(this, b_f, item);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      drawSelect: function() {
-        comp_drawSelect(this);
-      },
+            drawSelect: function() {
+                comp_drawSelect(this);
+            },
 
 
-    }),
+        }),
 
 
-  ];
+    ];

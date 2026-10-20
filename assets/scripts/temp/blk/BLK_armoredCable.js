@@ -77,7 +77,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_armoredCable")
         .initTemplate()
-        .setParent(ArmoredConveyor)
+        .setParent(LCVersionResolver.isV8 ? ArmoredConveyor : Conveyor)
         .setTags()
         .setParam({
 
@@ -89,9 +89,15 @@
              * `INTERNAL`
              * @memberof BLK_armoredCable
              * @instance
-             * @type {ContentUpdater<ArmoredConveyor>}
+             * @type {LCContentUpdater<ArmoredConveyor>}
              */
             armoredCableUpdater: null,
+
+
+            /* <------------------------------ vanilla ------------------------------> */
+
+
+            noSideBlend: true,
 
 
         })
@@ -130,7 +136,7 @@
         newClass()
         .extendClass(PARENT[1], "B_armoredCable")
         .initTemplate()
-        .setParent(ArmoredConveyor.ArmoredConveyorBuild)
+        .setParent(LCVersionResolver.isV8 ? ArmoredConveyor.ArmoredConveyorBuild : Conveyor.ConveyorBuild)
         .setParam({
 
 
@@ -141,7 +147,7 @@
              * `INTERNAL`
              * @memberof B_armoredCable
              * @instance
-             * @type {BuildUpdater<ArmoredConveyor.ArmoredConveyorBuild, ArmoredConveyor>}
+             * @type {LCBuildUpdater<ArmoredConveyor.ArmoredConveyorBuild, ArmoredConveyor>}
              */
             armoredCableBuildUpdater: null,
 

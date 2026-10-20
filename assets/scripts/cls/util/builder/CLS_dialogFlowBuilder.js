@@ -337,8 +337,7 @@
         this.completeRow();
 
         // Set up the final row
-        this.dialFlowData[this.dialFlowData.length - 2] = tryVal(this.dialFlowData[this.dialFlowData.length - 2], {});
-        this.dialFlowData[this.dialFlowData.length - 2].isTail = true;
+        this.dialFlowData.push(null, null, {isTail: true}, null);
 
         return this.dialFlowData;
     };

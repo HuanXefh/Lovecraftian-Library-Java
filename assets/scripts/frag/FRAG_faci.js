@@ -125,7 +125,7 @@
      * @param {number} depthLvl
      * @return {string}
      */
-    const getDepthLvlB = function thisFun(depthLvl) {
+    const getDepthLvlBundle = function thisFun(depthLvl) {
         return "${1} (${2})".format(
             depthLvl,
             MDL_bundle.getTerm.apply(null, DB_misc.db["block"]["depthName"].read(depthLvl, thisFun.tmpTup.with("lovec", "unknown"))),
@@ -133,12 +133,12 @@
     }
     .setProp({
         /**
-         * @memberof getDepthLvlB
+         * @memberof getDepthLvlBundle
          * @type {Tup2<string, string>}
          */
         tmpTup: [],
     });
-    exports.getDepthLvlB = getDepthLvlB;
+    exports.getDepthLvlBundle = getDepthLvlBundle;
 
 
     /**

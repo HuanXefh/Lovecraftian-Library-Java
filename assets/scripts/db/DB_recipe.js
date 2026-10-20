@@ -130,7 +130,7 @@ const db = {
 
                 /* <------------------------------ block ------------------------------> */
 
-                HeatCrafter, function(blk, cons, data, dictConsItem, dictConsFld, dictConsBlk, dictConsUtp) {
+                LCVersionResolver.isV8 ? HeatCrafter : null, function(blk, cons, data, dictConsItem, dictConsFld, dictConsBlk, dictConsUtp) {
                     if(blk.heatRequirement < 0.0001) return;
                     MDL_recipeDict.addCustomConsTerm(blk, "heat", blk.heatRequirement, mergeObj(data));
                 },
@@ -331,7 +331,7 @@ const db = {
                     if(tryJsProp(blk, "shouldDropPay", false)) return;
                     Vars.content.items().each(item => {
                         if(blk.blockedItems != null && blk.blockedItems.contains(item)) return;
-                        let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === item && ((oblk instanceof Floor && !(oblk instanceof OverlayFloor)) || (oblk instanceof OverlayFloor && !oblk.wallOre)) && (blk.ex_canMine == null || blk.ex_canMine(oblk, item, !MDL_cond.isDepthOre(oblk) ? 1.0 : tryJsProp(blk, "canMineDepthOre", true) ? tryJsProp(blk, "depthTierMtp", 1.0) : 0.0))).toArray();
+                        let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === item && ((oblk instanceof Floor && !(oblk instanceof OverlayFloor)) || (oblk instanceof OverlayFloor && !oblk.wallOre)) && (blk.ex_canMine == null || blk.self.ex_canMine(oblk, item, !MDL_cond.isDepthOre(oblk) ? 1.0 : tryJsProp(blk, "canMineDepthOre", true) ? tryJsProp(blk, "depthTierMtp", 1.0) : 0.0))).toArray();
                         if(oblks.length > 0) {
                             dictProdItem[item.id].push(blk, Math.pow(blk.size, 2) * (blk instanceof BurstDrill ? 1.0 : blk.drillTime / blk.getDrillTime(item)) * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({icon: "lovec-icon-mining", iconCts: oblks}, data));
                         };
@@ -342,7 +342,7 @@ const db = {
                     if(tryJsProp(blk, "shouldDropPay", false)) return;
                     Vars.content.items().each(item => {
                         if(blk.blockedItems != null && blk.blockedItems.contains(item)) return;
-                        let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === item && (DB_block.db["class"]["group"]["ore"]["wall"].hasIns(oblk) || (oblk instanceof OverlayFloor && oblk.wallOre)) && (blk.ex_canMine == null || blk.ex_canMine(oblk, item, 1.0))).toArray();
+                        let oblks = Vars.content.blocks().select(oblk => oblk.itemDrop === item && (DB_block.db["class"]["group"]["ore"]["wall"].hasIns(oblk) || (oblk instanceof OverlayFloor && oblk.wallOre)) && (blk.ex_canMine == null || blk.self.ex_canMine(oblk, item, 1.0))).toArray();
                         if(oblks.length > 0) {
                             dictProdItem[item.id].push(blk, blk.size * tryFun(blk.ex_getRcDictOutputScl, blk, 1.0), mergeObj({icon: "lovec-icon-mining", iconCts: oblks}, data));
                         };
@@ -410,7 +410,7 @@ const db = {
                     }, true);
                 },
 
-                HeatProducer, function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
+                LCVersionResolver.isV8 ? HeatProducer : null, function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
                     db["dict"]["reader"]["produce"].read(GenericCrafter).apply(this, arguments);
                     if(blk.heatOutput > 0.0 && blk.heatOutput < 1000.0) {
                         MDL_recipeDict.addCustomProdTerm(blk, "heat", blk.heatOutput, mergeObj(data));
@@ -889,6 +889,10 @@ const db = {
 
 
             /** @type {RecipeRawData2Array} */
+            fabric: [],
+
+
+            /** @type {RecipeRawData2Array} */
             membrane: [],
 
 
@@ -933,59 +937,83 @@ const db = {
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenDryingData}
          */
-        dryingItem: [],
+        drying: {
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            item: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            liquid: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            liquidAcidic: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            liquidBasic: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            gas: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            gasAcidic: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            gasBasic: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            freeze: [],
+
+
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenElectrolysisData}
          */
-        dryingLiquid: [],
+        electrolysis: {
 
 
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        dryingLiquidAcidic: [],
+            /** @type {RecipeRawData2Array} */
+            main: [],
 
 
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        dryingLiquidBasic: [],
-
-
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        dryingGas: [],
-
-
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        dryingGasAcidic: [],
-
-
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        dryingGasBasic: [],
-
-
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        dryingFreeze: [],
+        },
 
 
         /**
@@ -1064,28 +1092,38 @@ const db = {
         purificationFloat: [],
 
 
-        /** @type {RecipeRawData2Array} */
-        reactionGas: [],
+        /**
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenReactionData}
+         */
+        reaction: {
 
 
-        /** @type {RecipeRawData2Array} */
-        reactionLiquid: [],
+            /** @type {RecipeRawData2Array} */
+            gas: [],
 
 
-        /** @type {RecipeRawData2Array} */
-        reactionMelt: [],
+            /** @type {RecipeRawData2Array} */
+            liquid: [],
 
 
-        /** @type {RecipeRawData2Array} */
-        reactionBurnGas: [],
+            /** @type {RecipeRawData2Array} */
+            melt: [],
 
 
-        /** @type {RecipeRawData2Array} */
-        reactionBurnLiquid: [],
+            /** @type {RecipeRawData2Array} */
+            burnGas: [],
 
 
-        /** @type {RecipeRawData2Array} */
-        reactionBurnSolid: [],
+            /** @type {RecipeRawData2Array} */
+            burnLiquid: [],
+
+
+            /** @type {RecipeRawData2Array} */
+            burnSolid: [],
+
+
+        },
 
 
         /**
@@ -1099,14 +1137,14 @@ const db = {
          * @type {RecipeRawData2Array}
          * @lovecAutoRecipe
          */
-        rockCrushing: [],
+        concentrateRoasting: [],
 
 
         /**
          * @type {RecipeRawData2Array}
          * @lovecAutoRecipe
          */
-        concentrateRoasting: [],
+        rockCrushing: [],
 
 
         /**

@@ -6,8 +6,8 @@ import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.content.BuildUpdater;
-import lovec.content.ContentUpdater;
+import lovec.content.LCBuildUpdater;
+import lovec.content.LCContentUpdater;
 import lovec.type.block.factory.MultiBlockLinkCenterBlockFrag;
 import lovec.type.block.factory.MultiBlockLinkCenterBuildFrag;
 import lovec.utils.LCVersionResolver;
@@ -24,7 +24,7 @@ import mindustry.world.Tile;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.Stats;
 
-public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
+public class BLKMultiBlockUpdater extends LCContentUpdater<Block> {
 
 
     public BLKMultiBlockUpdater(Block blk) throws NoSuchFieldException, IllegalAccessException {
@@ -89,7 +89,7 @@ public class BLKMultiBlockUpdater extends ContentUpdater<Block> {
 
 
 
-    public class BMultiBlockUpdater extends BuildUpdater<Building, Block> {
+    public class BMultiBlockUpdater extends LCBuildUpdater<Building, Block> {
 
 
         protected Point2 statusOverlayOffset = new Point2();

@@ -49,16 +49,6 @@ interface UnitTetherBlock {
 interface ChainedBuilding {
     next(): Building
 }
-/** mindustry.world.blocks.HeatBlock */
-interface HeatBlock {
-    heat(): number
-    heatFrac(): number
-}
-/** mindustry.world.blocks.HeatConsumer */
-interface HeatConsumer {
-    sideHeat(): JavaArray<java.lang.Float>
-    heatRequirement(): number
-}
 
 
 /** mindustry.world.blocks.Autotiler */

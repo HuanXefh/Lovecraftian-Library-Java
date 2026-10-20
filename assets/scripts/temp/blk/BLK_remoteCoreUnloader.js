@@ -5,22 +5,37 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_directionalUnloader");
+    /**
+     * @typedef {TemplateInstance<DirectionalUnloader, BLK_remoteCoreUnloader>} BLKRemoteCoreUnloader
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<DirectionalUnloader.DirectionalUnloaderBuild, B_remoteCoreUnloader>} BRemoteCoreUnloader
+     * @prop {BLKRemoteCoreUnloader} block
+     */
 
 
-  function comp_onProximityUpdate(b) {
-    let ob = b.nearby(Mathf.mod(b.rotation + 2, 4));
-    if(ob != null && ob.team === b.team && ob.block instanceof CoreBlock) {
-      BOX_trigger.remoteCoreUnloaderNearCore.fire();
+    const PARENT = require("lovec/temp/blk/BLK_directionalUnloader");
+
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BRemoteCoreUnloader} b
+     * @return {void}
+     */
+    function comp_onProximityUpdate(b) {
+        let ob = b.nearby(Mathf.mod(b.rotation + 2, 4));
+        if(ob != null && ob.team === b.team && ob.block instanceof CoreBlock) {
+            BOX_trigger.remoteCoreUnloaderNearCore.fire();
+        };
     };
-  };
-
 
 
 /*
@@ -30,54 +45,58 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * A special directional unloader that always unloads items from the nearest core.
-     * <br> `SINGLESIZE`
-     * @class BLK_remoteCoreUnloader
-     * @extends BLK_directionalUnloader
-     */
-    newClass().extendClass(PARENT[0], "BLK_remoteCoreUnloader").initClass()
-    .setParent(DirectionalUnloader)
-    .setTags()
-    .setParam({})
-    .setMethod({}),
+        /**
+         * A special directional unloader that always unloads items from the nearest core.
+         * <br> `SINGLESIZE`
+         * @class BLK_remoteCoreUnloader
+         * @extends BLK_directionalUnloader
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_remoteCoreUnloader")
+        .initTemplate()
+        .setParent(DirectionalUnloader)
+        .setTags()
+        .setParam({})
+        .setMethod({}),
 
 
-    /**
-     * @class B_remoteCoreUnloader
-     * @extends B_directionalUnloader
-     */
-    newClass().extendClass(PARENT[1], "B_remoteCoreUnloader").initClass()
-    .setParent(DirectionalUnloader.DirectionalUnloaderBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_remoteCoreUnloader
+         * @extends B_directionalUnloader
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_remoteCoreUnloader")
+        .initTemplate()
+        .setParent(DirectionalUnloader.DirectionalUnloaderBuild)
+        .setParam({})
+        .setMethod({
 
 
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
+            onProximityUpdate: function() {
+                comp_onProximityUpdate(this);
+            },
 
 
-      back: function() {
-        return this.closestCore();
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            back: function() {
+                return this.closestCore();
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      shouldConsume: function() {
-        return this.enabled && this.unloadItem != null;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            shouldConsume: function() {
+                return this.enabled && this.unloadItem != null;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

@@ -77,7 +77,7 @@
         let ct = ctType == null ?
             LCContentHandler.fetch(nameCt) :
             LCContentHandler.fetch(nameCt, ctType);
-        if(ct == null) throw new NotCreatedByTemplateError(nameCt);
+        if(ct == null) throw new LCError.NotCreatedByTemplateError(nameCt);
         return ct;
     };
 

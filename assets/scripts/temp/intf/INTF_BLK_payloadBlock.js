@@ -169,6 +169,7 @@
     function comp_ex_updatePaySite(b) {
         FRAG_payload.findPayInputBs(b.delegee.payInputBs, b, b.block.delegee.payInputSideFracMode);
         FRAG_payload.findPayOutputBs(b.delegee.payOutputBs, b, b.block.delegee.payOutputSideFracMode);
+        b.delegee.payOutputBs.pullAll(b.delegee.payInputBs);
     };
 
 
@@ -526,7 +527,7 @@
                         MDL_io.objStrNum(wr, this.delegee.payStockObj);
                     },
                     rd => {
-                        if(this.delegee.LCReviSub >= 0 || !this.block.self.ex_isSubInsOf("BLK_baseDrill")) {
+                        if(this.delegee.LCReviJson["INTF_B_payloadBlock"] >= 0 || !this.block.self.ex_isSubInsOf("BLK_baseDrill")) {
                             MDL_io.objStrNum(rd, this.delegee.payReqObj);
                             MDL_io.objStrNum(rd, this.delegee.payStockObj);
                         };

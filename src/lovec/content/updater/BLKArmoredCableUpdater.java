@@ -3,20 +3,20 @@ package lovec.content.updater;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
-import lovec.content.BuildUpdater;
-import lovec.content.ContentUpdater;
+import lovec.content.LCBuildUpdater;
+import lovec.content.LCContentUpdater;
 import lovec.utils.LCScriptUtil;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.Edges;
 import mindustry.world.Tile;
-import mindustry.world.blocks.distribution.ArmoredConveyor;
+import mindustry.world.blocks.distribution.Conveyor;
 
-public class BLKArmoredCableUpdater extends ContentUpdater<ArmoredConveyor> {
+public class BLKArmoredCableUpdater extends LCContentUpdater<Conveyor> {
 
 
-    public BLKArmoredCableUpdater(ArmoredConveyor blk) throws NoSuchFieldException, IllegalAccessException {
+    public BLKArmoredCableUpdater(Conveyor blk) throws NoSuchFieldException, IllegalAccessException {
         super(blk);
     };
 
@@ -69,10 +69,10 @@ public class BLKArmoredCableUpdater extends ContentUpdater<ArmoredConveyor> {
 
 
 
-    public class BArmoredCableUpdater extends BuildUpdater<ArmoredConveyor.ArmoredConveyorBuild, ArmoredConveyor> {
+    public class BArmoredCableUpdater extends LCBuildUpdater<Conveyor.ConveyorBuild, Conveyor> {
 
 
-        public BArmoredCableUpdater(ArmoredConveyor.ArmoredConveyorBuild b) throws NoSuchFieldException, IllegalAccessException {
+        public BArmoredCableUpdater(Conveyor.ConveyorBuild b) throws NoSuchFieldException, IllegalAccessException {
             super(b);
         };
 

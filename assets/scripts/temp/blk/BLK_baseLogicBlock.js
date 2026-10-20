@@ -5,13 +5,24 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseBlock");
+    /**
+     * @typedef {TemplateInstance<Block, BLK_baseLogicBlock>} BLKBaseLogicBlock
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, B_baseLogicBlock>} BBaseLogicBlock
+     * @prop {BLKBaseLogicBlock} block
+     */
+
+
+    const PARENT = require("lovec/temp/blk/BLK_baseBlock");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,29 +32,33 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Parent template for all logic-related blocks.
-     * @class BLK_baseLogicBlock
-     * @extendsd BLK_baseBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseLogicBlock").initClass()
-    .setParent(null)
-    .setTags()
-    .setParam({})
-    .setMethod({}),
+        /**
+         * Parent template for all logic-related blocks.
+         * @class BLK_baseLogicBlock
+         * @extendsd BLK_baseBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseLogicBlock")
+        .initTemplate()
+        .setParent(null)
+        .setTags()
+        .setParam({})
+        .setMethod({}),
 
 
-    /**
-     * @class B_baseLogicBlock
-     * @extends B_baseBlock
-     */
-    newClass().extendClass(PARENT[1], "B_baseLogicBlock").initClass()
-    .setParent(null)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_baseLogicBlock
+         * @extends B_baseBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseLogicBlock")
+        .initTemplate()
+        .setParent(null)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

@@ -5,61 +5,95 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseHarvester");
-  const INTF = require("lovec/temp/intf/INTF_BLK_dynamicAttributeBlock");
+    /**
+     * @typedef {TemplateInstance<WallCrafter, BLK_dynamicWallHarvester>} BLKDynamicWallHarvester
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<WallCrafter.WallCrafterBuild, B_dynamicWallHarvester>} BDynamicWallHarvester
+     * @prop {BLKDynamicWallHarvester} block
+     */
 
 
-  function comp_init(blk) {
-    if(blk.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
-
-    blk.attribute = TP_attr.attr_placeholder;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseHarvester");
+    const INTF_BLK_dynamicAttributeBlock = require("lovec/temp/intf/INTF_BLK_dynamicAttributeBlock");
 
 
-  function comp_setStats(blk, stats) {
-    stats.remove(Stat.output);
-    stats.remove(Stat.tiles);
-    stats.remove(Stat.drillSpeed);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_setBars(blk) {
-    blk.removeBar("drillspeed");
-    blk.addBar("drillspeed", b => new Bar(
-      prov(() => Core.bundle.format("bar.drillspeed", Strings.fixed(b.efficiency * b.timeScale * b.block.ex_getDynaAttrProdSpd(b.delegee.dynaAttrRs), 2))),
-      prov(() => Pal.ammo),
-      () => b.warmup,
-    ));
-  };
+    /**
+     * @private
+     * @param {BLKDynamicWallHarvester} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        if(blk.delegee.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
 
-
-  function comp_updateTile(b) {
-    if(b.dynaAttrRs == null) return;
-
-    b.warmup = Mathf.approachDelta(b.warmup, Number(b.efficiency > 0), 0.025);
-    b.totalTime += b.edelta() * b.warmup;
-
-    if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup * 2.0)) {
-      b.dynaAttrTs.forEachFast(ot => {
-        if(Mathf.chance(0.5)) b.block.updateEffect.at(
-          ot.worldx() + Mathf.range(3.0),
-          ot.worldy() + Mathf.range(3.0),
-          ot.block().getColor(ot),
-        );
-      }, true);
+        blk.attribute = TP_attr.attr_placeholder;
     };
 
-    if(b.time += b.edelta() >= b.block.drillTime) {
-      b.time %= b.block.drillTime;
-      b.ex_dynaAttrCraft();
+
+    /**
+     * @private
+     * @param {BLKDynamicWallHarvester} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.remove(Stat.output);
+        stats.remove(Stat.tiles);
+        stats.remove(Stat.drillSpeed);
     };
-  };
+
+
+    /**
+     * @private
+     * @param {BLKDynamicWallHarvester} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        blk.removeBar("drillspeed");
+        blk.addBar("drillspeed", b => new Bar(
+            prov(() => Core.bundle.format("bar.drillspeed", Strings.fixed(b.efficiency * b.timeScale * b.block.self.ex_getDynaAttrProdSpd(b.delegee.dynaAttrRs), 2))),
+            prov(() => Pal.ammo),
+            () => b.warmup,
+        ));
+    };
+
+
+    /**
+     * @private
+     * @param {BDynamicWallHarvester} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(b.delegee.dynaAttrRs == null) return;
+
+        b.warmup = Mathf.approachDelta(b.warmup, Number(b.efficiency > 0), 0.025);
+        b.totalTime += b.edelta() * b.warmup;
+
+        if(Mathf.chanceDelta(b.block.updateEffectChance * b.warmup * 2.0)) {
+            b.delegee.dynaAttrTs.forEachFast(ot => {
+                if(Mathf.chance(0.5)) {
+                    b.block.updateEffect.at(
+                        ot.worldx() + Mathf.range(3.0),
+                        ot.worldy() + Mathf.range(3.0),
+                        ot.block().getColor(ot),
+                    );
+                };
+            }, true);
+        };
+
+        if(b.time += b.edelta() >= b.block.drillTime) {
+            b.time %= b.block.drillTime;
+            b.self.ex_dynaAttrCraft();
+        };
+    };
 
 
 /*
@@ -69,242 +103,280 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * A wall crafter that outputs something based on highest attribute.
-     * Can output fluids.
-     * @class BLK_dynamicWallHarvester
-     * @extends BLK_baseHarvester
-     * @extends INTF_BLK_dynamicAttributeBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_dynamicWallHarvester").implement(INTF[0]).initClass()
-    .setParent(WallCrafter)
-    .setTags()
-    .setParam({
+        /**
+         * A wall crafter that outputs something based on highest attribute.
+         * Can output fluids.
+         * @class BLK_dynamicWallHarvester
+         * @extends BLK_baseHarvester
+         * @extends INTF_BLK_dynamicAttributeBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_dynamicWallHarvester")
+        .implement(INTF_BLK_dynamicAttributeBlock[0])
+        .initTemplate()
+        .setParent(WallCrafter)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`: Liquid production rate, used only if this block produces liquid.
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       */
-      liqProdRate: 0.1,
+            /**
+             * `PARAM`: Liquid production rate, used only if this block produces liquid.
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @type {number}
+             */
+            liqProdRate: 0.1,
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`: This is a wall crafter, it should only check wall attributes.
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       */
-      attrMode: AttrModes.BLOCK,
-      /**
-       * `INTERNAL`
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       */
-      attrRcType: "wall",
+            /**
+             * `INTERNAL`: This is a wall crafter, it should only check wall attributes.
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @type {ENumber}
+             */
+            attrMode: AttrModes.BLOCK,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @type {string}
+             */
+            attrRcType: "wall",
 
 
-    })
-    .setParamAlias([
-      "updateEff", "updateEffect", Fx.none,
-      "updateEffP", "updateEffectChance", 0.02,
-    ])
-    .setMethod({
+        })
+        .setParamAlias([
+            /**
+             * `ALIAS`: `updateEffect`.
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @name updateEff
+             * @type {Effect}
+             */
+            "updateEff", "updateEffect", Fx.none,
+            /**
+             * `ALIAS`: `updateEffectChance`.
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @name updateEffP
+             * @type {number}
+             */
+            "updateEffP", "updateEffectChance", 0.02,
+        ])
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-      setBars: function() {
-        comp_setBars(this);
-      },
+            setBars: function() {
+                comp_setBars(this);
+            },
 
 
-      drawPlace: function(tx, ty, rot, valid) {
-        // Do nothing
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawPlace: function(tx, ty, rot, valid) {
+                // Do nothing
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       * @param {Array|unset} contArr
-       * @param {number} tx
-       * @param {number} ty
-       * @param {number} rot
-       * @return {Array<Tile>}
-       */
-      ex_findDynaAttrTs: function(contArr, tx, ty, rot) {
-        return LCPos.getTilesRot(contArr, GLB_var.world.tile(tx, ty), rot, this.size);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-        argLen: 4,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @func
+             * @param {Array|unset} contArr
+             * @param {number} tx
+             * @param {number} ty
+             * @param {number} rot
+             * @return {Array<Tile>}
+             */
+            ex_findDynaAttrTs: function(contArr, tx, ty, rot) {
+                return LCPos.getTilesRot(contArr, GLB_var.world.tile(tx, ty), rot, this.size);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+                argLen: 4,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       * @return {number}
-       */
-      ex_getCraftTime: function() {
-        return this.drillTime;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getCraftTime: function() {
+                return this.drillTime;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       * @return {number}
-       */
-      ex_getAttrReq: function() {
-        return this.size;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getAttrReq: function() {
+                return this.size;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       * @return {number}
-       */
-      ex_getDynaAttrBaseAmt_item: function() {
-        return this.size;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getDynaAttrBaseAmt_item: function() {
+                return this.size;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       * @return {number}
-       */
-      ex_getDynaAttrBaseAmt_liq: function() {
-        return this.liqProdRate;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getDynaAttrBaseAmt_liq: function() {
+                return this.delegee.liqProdRate;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_dynamicWallHarvester
-       * @instance
-       * @return {string}
-       */
-      ex_getDynaAttrProdTypeStr: function() {
-        return "collecting";
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_dynamicWallHarvester
+             * @instance
+             * @func
+             * @return {string}
+             */
+            ex_getDynaAttrProdTypeStr: function() {
+                return "collecting";
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_dynamicWallHarvester
-     * @extends B_baseHarvester
-     * @extends INTF_B_dynamicAttributeBlock
-     */
-    newClass().extendClass(PARENT[1], "B_dynamicWallHarvester").implement(INTF[1]).initClass()
-    .setParent(WallCrafter.WallCrafterBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_dynamicWallHarvester
+         * @extends B_baseHarvester
+         * @extends INTF_B_dynamicAttributeBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_dynamicWallHarvester")
+        .implement(INTF_BLK_dynamicAttributeBlock[1])
+        .initTemplate()
+        .setParent(WallCrafter.WallCrafterBuild)
+        .setParam({})
+        .setMethod({
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            updateTile: function() {
+                comp_updateTile(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      shouldConsume: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
+            shouldConsume: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
 
 
-      draw: function() {
-        this.ex_drawRcIcon();
-      },
+            draw: function() {
+                this.self.ex_drawRcIcon();
+            },
 
 
-      write: function(wr) {
-        this.ex_processData(wr);
-      },
+            write: function(wr) {
+                this.self.ex_processData(wr);
+            },
 
 
-      read: function(rd, revi) {
-        if(this.LCRevi === 5) rd.s();
-
-        this.ex_processData(rd);
-      },
-
-
-      /**
-       * `REALIZED`
-       * @memberof B_dynamicWallHarvester
-       * @instance
-       * @func
-       * @return {TextureRegion|null}
-       */
-      ex_getRcIcon: function() {
-        return this.dynaAttrRs == null ?
-          null :
-          this.dynaAttrRs.uiIcon;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            read: function(rd, revi) {
+                if(this.delegee.LCRevi === 5) {
+                    rd.s();
+                };
+                this.self.ex_processData(rd);
+            },
 
 
-    }),
+            /**
+             * `REALIZED`
+             * @memberof B_dynamicWallHarvester
+             * @instance
+             * @func
+             * @return {TextureRegion|null}
+             */
+            ex_getRcIcon: function() {
+                return this.delegee.dynaAttrRs == null ?
+                    null :
+                    this.delegee.dynaAttrRs.uiIcon;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-  ];
+        }),
+
+
+    ];

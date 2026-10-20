@@ -58,7 +58,7 @@
      * @return {void}
      */
     function comp_init(blk) {
-        if(blk.ex_isSingleSized() && blk.size > 1) throw new Error("Block size should be 1: " + blk);
+        if(blk.self.ex_isSingleSized() && blk.size > 1) throw new Error("Block size should be 1: " + blk);
 
         if(blk.delegee.isWaterborne) {
             blk.floating = true;
@@ -180,7 +180,7 @@
     /**
      * @private
      * @param {BLKBaseBlock} blk
-     * @param {Tile} t
+     * @param {Tile|null} t
      * @param {Team} team
      * @param {number} rot
      * @return {boolean}
@@ -428,9 +428,9 @@
 
 
             selectionColumns: 10,
-            envRequired: 0,
-            envEnabled: Env.any,
-            envDisabled: 0,
+            envRequired: getEnvSet("none"),
+            envEnabled: getEnvSet("any"),
+            envDisabled: getEnvSet("none"),
 
 
         })
@@ -648,14 +648,22 @@
              * @instance
              * @type {number}
              */
-            LCReviMajor: 0,
+            LCReviBlk: 0,
             /**
-             * `INTERNAL`: Revision for a specific template.
+             * `INTERNAL`: Revision data as JSON object for each template.
              * @memberof B_baseBlock
              * @instance
-             * @type {number}
+             * @type {TDynamic<Object<string, number>>}
              */
-            LCReviSub: 0,
+            LCReviJson: tprov(() => ({
+                B_baseDrill: 2,
+                B_itemArm: 1,
+                B_massDriver: 1,
+                B_rainCollector: 1,
+                B_recipeFactory: 1,
+                INTF_B_fluidHeatAcceptor: 0,
+                INTF_B_payloadBlock: 0,
+            })),
             /**
              * `INTERNAL`: For v9 compatibility, where `timers` is removed.
              * @memberof B_baseBlock
@@ -686,8 +694,8 @@
 
             writeAll: function(wr) {
                 this.writeBase(wr);
-                wr.s(this.self.ex_subRevi());
-                wr.s(this.self.ex_majorRevi());
+                wr.s(this.self.ex_reviBlk());
+                wr.str(toJsonSafe(this.delegee.LCReviJson));
                 this.write(wr);
             }
             .setProp({
@@ -698,11 +706,14 @@
             readAll: function(rd, revi) {
                 this.readBase(rd);
                 this.delegee.LCRevi = revi < GLB_var.lovecReviOff ? 5 : (revi - GLB_var.lovecReviOff - this.super$version());
-                if(this.delegee.LCRevi >= 6) {
-                    this.delegee.LCReviSub = rd.s();
+                if(this.delegee.LCRevi === 7) {
+                    rd.s();
                 };
                 if(this.delegee.LCRevi >= 7) {
-                    this.delegee.LCReviMajor = rd.s();
+                    this.delegee.LCReviBlk = rd.s();
+                };
+                if(this.delegee.LCReviBlk >= 1) {
+                    this.delegee.LCReviJson = jsonToJsObj(rd.str());
                 };
                 this.read(rd, this.super$version());
             }
@@ -832,28 +843,12 @@
              * @func
              * @return {number}
              */
-            ex_majorRevi: function() {
-                return 0;
+            ex_reviBlk: function() {
+                return 1;
             }
             .setProp({
                 noSuper: true,
                 final: true,
-            }),
-
-
-            /**
-             * Revision used for this content template.
-             * <br> `LATER`
-             * @memberof B_baseBlock
-             * @instance
-             * @func
-             * @return {number}
-             */
-            ex_subRevi: function() {
-                return 0;
-            }
-            .setProp({
-                noSuper: true,
             }),
 
 

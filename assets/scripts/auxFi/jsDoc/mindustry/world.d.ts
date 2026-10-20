@@ -58,16 +58,49 @@ declare class Attribute {
 
 /** mindustry.world.meta.Env */
 declare class Env {
-    static terrestrial: number;
-    static space: number;
-    static underwater: number;
-    static spores: number;
-    static scorching: number;
-    static groundOil: number;
-    static groundWater: number;
-    static oxygen: number;
-    static any: number;
-    static none: number;
+    static readonly terrestrial: Env;
+    static readonly space: Env;
+    static readonly underwater: Env;
+    static readonly spores: Env;
+    static readonly scorching: Env;
+    static readonly groundOil: Env;
+    static readonly groundWater: Env;
+    static readonly oxygen: Env;
+    static readonly any: Env;
+    static readonly none: Env;
+
+    /** @deprecated Added in v9. */
+    readonly id: number;
+    /** @deprecated Added in v9. */
+    readonly name: string;
+
+    /** @deprecated Added in v9. */
+    static get(name: string): Env|null
+}
+
+
+/**
+ * mindustry.world.meta.Environments
+ * @deprecated Added in v9.
+ */
+declare class Environments {
+    static readonly none: Environments;
+    static readonly any: Environments;
+
+    static of(...envs: Array<Env>): Environments
+    static of(...envSets: Array<Environments>): Environments
+    static fromBits(legacyInt: number): Environments
+
+    with(env: Env): Environments
+    with(envSet: Environments): Environments
+    without(env: Env): Environments
+    without(envSet: Environments): Environments
+    has(env: Env): boolean
+    isEmpty(): boolean
+    isAny(): boolean
+    containsAny(envSet: Environments): boolean
+    containsAll(envSet: Environments): boolean
+    each(cons: Cons<Env>): void
 }
 
 

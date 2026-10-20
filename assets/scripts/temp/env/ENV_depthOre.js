@@ -28,7 +28,7 @@
     function comp_init(blk) {
         blk.playerUnmineable = true;
 
-        if(blk.itemDrop == null) throw new NullArgumentError(blk.name + ".itemDrop");
+        if(blk.itemDrop == null) throw new LCError.NullArgumentError(blk.name + ".itemDrop");
         MDL_content.rename(
             blk,
             blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + blk.self.ex_getDepthName() + ")",

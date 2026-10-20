@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class MathGraph implements Iterable<Integer> {
+public class LCGraph implements Iterable<Integer> {
 
 
     protected static final PQueue<Integer> pQueue = new PQueue<>();
@@ -18,62 +18,62 @@ public class MathGraph implements Iterable<Integer> {
 
     protected int vertices;
     protected final boolean isDirectional;
-    protected Seq<Seq<MathGraphEdge>> adjSeq;
+    protected Seq<Seq<GraphEdge>> adjSeq;
     protected Seq dataSeq;
     protected FloatSeq weightSeq;
-    private @Nullable MathGraphIterator iterator;
+    private @Nullable GraphIterator iterator;
 
     public String graphTag = "";
     public @Nullable Object graphData;
 
 
-    public static class MathGraphEdge {
+    public static class GraphEdge {
         protected int vert_f;
         protected int vert_t;
         protected float dst;
 
-        public MathGraphEdge(int vert_f, int vert_t, float dst) {
+        public GraphEdge(int vert_f, int vert_t, float dst) {
             this.vert_f = vert_f;
             this.vert_t = vert_t;
             this.dst = dst;
         };
         // Overload
-        public MathGraphEdge(int vert_f, int vert_t) {
+        public GraphEdge(int vert_f, int vert_t) {
             this(vert_f, vert_t, 1f);
         };
     };
 
 
-    public MathGraph(int vertices, Object data, float weight, boolean isDirectional) {
+    public LCGraph(int vertices, Object data, float weight, boolean isDirectional) {
         this.vertices = vertices;
         this.adjSeq = new Seq(vertices);
         this.dataSeq = new Seq(vertices);
         this.weightSeq = new FloatSeq(vertices);
         for(int i = 0; i < vertices; i++) {
-            this.adjSeq.add(new Seq<MathGraphEdge>());
+            this.adjSeq.add(new Seq<GraphEdge>());
             this.dataSeq.add(data);
             this.weightSeq.add(weight);
         };
         this.isDirectional = isDirectional;
     };
     // Overload
-    public MathGraph(int vertices, Object data, float weight) {
+    public LCGraph(int vertices, Object data, float weight) {
         this(vertices, data, weight, false);
     };
-    public MathGraph(int vertices, Object data, boolean isDirectional) {
+    public LCGraph(int vertices, Object data, boolean isDirectional) {
         this(vertices, data, 0, isDirectional);
     };
-    public MathGraph(int vertices, Object data) {
+    public LCGraph(int vertices, Object data) {
         this(vertices, data, 0);
     };
-    public MathGraph(boolean isDirectional) {
+    public LCGraph(boolean isDirectional) {
         this.vertices = 0;
         this.adjSeq = new Seq(0);
         this.dataSeq = new Seq(0);
         this.weightSeq = new FloatSeq(0);
         this.isDirectional = isDirectional;
     };
-    public MathGraph() {
+    public LCGraph() {
         this(false);
     };
 
@@ -148,7 +148,7 @@ public class MathGraph implements Iterable<Integer> {
         if(vert_f >= vertices) throw new IllegalArgumentException("Vertex not used: " + vert_f);
         if(vert_t >= vertices) throw new IllegalArgumentException("Vertex not used: " + vert_t);
         if(vert_f == vert_t) return true;
-        for(MathGraphEdge edge : adjSeq.get(vert_f)) {
+        for(GraphEdge edge : adjSeq.get(vert_f)) {
             if(edge.vert_t == vert_t) return true;
         };
         return false;
@@ -188,7 +188,7 @@ public class MathGraph implements Iterable<Integer> {
         if(filter.get(getData(vert), vert)) {
             result[0] = vert;
         };
-        for(MathGraphEdge edge : adjSeq.get(vert)) {
+        for(GraphEdge edge : adjSeq.get(vert)) {
             int overt = edge.vert_t;
             if(!visited[overt]) {
                 stepDFS(overt, visited, result, filter);
@@ -225,7 +225,7 @@ public class MathGraph implements Iterable<Integer> {
         queue.addLast(vert);
         while(!queue.isEmpty() && result[0] == -1) {
             int vertCur = queue.removeFirst();
-            for(MathGraphEdge edge : adjSeq.get(vertCur)) {
+            for(GraphEdge edge : adjSeq.get(vertCur)) {
                 int overt = edge.vert_t;
                 if(!visited[overt]) {
                     visited[overt] = true;
@@ -253,7 +253,7 @@ public class MathGraph implements Iterable<Integer> {
         pQueue.add(vert);
         while(!pQueue.empty()) {
             int vertCur = pQueue.poll();
-            for(MathGraphEdge edge : adjSeq.get(vertCur)) {
+            for(GraphEdge edge : adjSeq.get(vertCur)) {
                 int overt = edge.vert_t;
                 float weight = getWeight(overt);
                 if(dsts[vertCur] < dsts[overt] - weight) {
@@ -292,7 +292,7 @@ public class MathGraph implements Iterable<Integer> {
             visited[vertCur] = true;
             if(vertCur == vert_t) break;
 
-            for(MathGraphEdge edge : adjSeq.get(vertCur)) {
+            for(GraphEdge edge : adjSeq.get(vertCur)) {
                 int overt = edge.vert_t;
                 float weight = getWeight(overt);
                 if(!visited[overt] && dsts[vertCur] < dsts[overt] - weight) {
@@ -327,7 +327,7 @@ public class MathGraph implements Iterable<Integer> {
     /**
      * Sets data of a vertex.
      */
-    public MathGraph setData(int vert, Object data) throws IllegalArgumentException {
+    public LCGraph setData(int vert, Object data) throws IllegalArgumentException {
         if(vert >= vertices) throw new IllegalArgumentException("Vertex not used: " + vert);
         dataSeq.set(vert, data);
         return this;
@@ -337,7 +337,7 @@ public class MathGraph implements Iterable<Integer> {
     /**
      * Sets weight of a vertex.
      */
-    public MathGraph setWeight(int vert, float weight) throws IllegalArgumentException {
+    public LCGraph setWeight(int vert, float weight) throws IllegalArgumentException {
         if(vert >= vertices) throw new IllegalArgumentException("Vertex not used: " + vert);
         weightSeq.set(vert, weight);
         return this;
@@ -347,18 +347,18 @@ public class MathGraph implements Iterable<Integer> {
     /**
      * Adds a new vertex to the graph.
      */
-    public MathGraph addVert(Object data, float weight) {
+    public LCGraph addVert(Object data, float weight) {
         if(hasData(data)) {
             return this;
         };
         vertices++;
-        adjSeq.add(new Seq<MathGraphEdge>());
+        adjSeq.add(new Seq<GraphEdge>());
         dataSeq.add(data);
         weightSeq.add(weight);
         return this;
     };
     // Overload
-    public MathGraph addVert(Object data) {
+    public LCGraph addVert(Object data) {
         return addVert(data, 0f);
     };
 
@@ -366,7 +366,7 @@ public class MathGraph implements Iterable<Integer> {
     /**
      * Adds a new vertex that is linked by/to some vertices.
      */
-    public MathGraph appendVert(int[] overts, Object data, float weight, float dst, boolean revDir) throws IllegalArgumentException {
+    public LCGraph appendVert(int[] overts, Object data, float weight, float dst, boolean revDir) throws IllegalArgumentException {
         addVert(data, weight);
         int vert = vertices - 1;
         for(int overt : overts) {
@@ -380,25 +380,25 @@ public class MathGraph implements Iterable<Integer> {
         return this;
     };
     // Overload
-    public MathGraph appendVert(int[] overts, Object data, float weight, float dst) {
+    public LCGraph appendVert(int[] overts, Object data, float weight, float dst) {
         return appendVert(overts, data, weight, dst, false);
     };
-    public MathGraph appendVert(int[] overts, Object data, boolean revDir) {
+    public LCGraph appendVert(int[] overts, Object data, boolean revDir) {
         return appendVert(overts, data, 0f, 1f, revDir);
     };
-    public MathGraph appendVert(int[] overts, Object data) {
+    public LCGraph appendVert(int[] overts, Object data) {
         return appendVert(overts, data, 0f, 1f);
     };
-    public MathGraph appendVert(int overt, Object data, float weight, float dst, boolean revDir) {
+    public LCGraph appendVert(int overt, Object data, float weight, float dst, boolean revDir) {
         return appendVert(new int[]{overt}, data, weight, dst, revDir);
     };
-    public MathGraph appendVert(int overt, Object data, float weight, float dst) {
+    public LCGraph appendVert(int overt, Object data, float weight, float dst) {
         return appendVert(overt, data, weight, dst, false);
     };
-    public MathGraph appendVert(int overt, Object data, boolean revDir) {
+    public LCGraph appendVert(int overt, Object data, boolean revDir) {
         return appendVert(overt, data, 0f, 1f, revDir);
     };
-    public MathGraph appendVert(int overt, Object data) {
+    public LCGraph appendVert(int overt, Object data) {
         return appendVert(overt, data, 0f, 1f);
     };
 
@@ -406,18 +406,18 @@ public class MathGraph implements Iterable<Integer> {
     /**
      * Adds an edge to the graph.
      */
-    public MathGraph addEdge(int vert_f, int vert_t, float dst) {
+    public LCGraph addEdge(int vert_f, int vert_t, float dst) {
         if(hasEdge(vert_f, vert_t)) {
             return this;
         };
-        adjSeq.get(vert_f).add(new MathGraphEdge(vert_f, vert_t, dst));
+        adjSeq.get(vert_f).add(new GraphEdge(vert_f, vert_t, dst));
         if(!isDirectional) {
-            adjSeq.get(vert_t).add(new MathGraphEdge(vert_t, vert_f, dst));
+            adjSeq.get(vert_t).add(new GraphEdge(vert_t, vert_f, dst));
         };
         return this;
     };
     // Overload
-    public MathGraph addEdge(int vert_f, int vert_t) {
+    public LCGraph addEdge(int vert_f, int vert_t) {
         return addEdge(vert_f, vert_t, 1f);
     };
 
@@ -425,7 +425,7 @@ public class MathGraph implements Iterable<Integer> {
     /**
      * Merge another graph into this graph.
      */
-    public MathGraph merge(MathGraph graph, Boolf2 equalCheck) {
+    public LCGraph merge(LCGraph graph, Boolf2 equalCheck) {
         mergeVertMap.clear();
         // Set up migration map
         for(int i = 0; i < graph.vertices; i++) {
@@ -440,7 +440,7 @@ public class MathGraph implements Iterable<Integer> {
         };
         // Set up edges
         for(int i = 0; i < graph.vertices; i++) {
-            for(MathGraphEdge edge : graph.adjSeq.get(i)) {
+            for(GraphEdge edge : graph.adjSeq.get(i)) {
                 addEdge(mergeVertMap.get(edge.vert_f), mergeVertMap.get(edge.vert_t), edge.dst);
             };
         };
@@ -453,7 +453,7 @@ public class MathGraph implements Iterable<Integer> {
         return this;
     };
     // Overload
-    public MathGraph merge(MathGraph graph) {
+    public LCGraph merge(LCGraph graph) {
         return merge(graph, Object::equals);
     };
 
@@ -461,7 +461,7 @@ public class MathGraph implements Iterable<Integer> {
     /**
      * Removes unnecessary vertices.
      */
-    public MathGraph shrink(Boolf2<Object, Integer> filter) {
+    public LCGraph shrink(Boolf2<Object, Integer> filter) {
         mergeVertMap.clear();
         // Set up migration map
         for(int i = 0, j = 0; i < vertices; i++) {
@@ -472,14 +472,14 @@ public class MathGraph implements Iterable<Integer> {
         };
         if(mergeVertMap.size == vertices) return this;
 
-        var graph = new MathGraph(isDirectional);
+        var graph = new LCGraph(isDirectional);
         // Set up vertices
         for(int i = 0; i < mergeVertMap.size; i++) {
             graph.addVert(getData(mergeVertMap.get(i)), getWeight(mergeVertMap.get(i)));
         };
         // Set up edges
         for(int i = 0; i < mergeVertMap.size; i++) {
-            for(MathGraphEdge edge : adjSeq.get(mergeVertMap.get(i))) {
+            for(GraphEdge edge : adjSeq.get(mergeVertMap.get(i))) {
                 if(mergeVertMap.containsKey(edge.vert_f) && mergeVertMap.containsKey(edge.vert_t)) {
                     graph.addEdge(mergeVertMap.findKey(edge.vert_f, 0), mergeVertMap.findKey(edge.vert_t, 0), edge.dst);
                 };
@@ -503,7 +503,7 @@ public class MathGraph implements Iterable<Integer> {
         strBuilder.append("{");
         for(int i = 0; i < vertices; i++) {
             strBuilder.append(i).append(":").append("[");
-            for(MathGraphEdge edge : adjSeq.get(i)) {
+            for(GraphEdge edge : adjSeq.get(i)) {
                 strBuilder.append(edge.vert_t).append(",");
                 anyLinked = true;
             };
@@ -527,12 +527,12 @@ public class MathGraph implements Iterable<Integer> {
 
     @Override
     public Iterator<Integer> iterator() {
-        if(iterator == null) iterator = new MathGraphIterator();
+        if(iterator == null) iterator = new GraphIterator();
         return iterator;
     };
 
 
-    private class MathGraphIterator implements Iterator<Integer> {
+    private class GraphIterator implements Iterator<Integer> {
 
 
         int ind;
@@ -541,7 +541,9 @@ public class MathGraph implements Iterable<Integer> {
 
         @Override
         public boolean hasNext() {
-            if(ind >= vertices) done = true;
+            if(ind >= vertices) {
+                done = true;
+            };
             return ind < vertices;
         };
 

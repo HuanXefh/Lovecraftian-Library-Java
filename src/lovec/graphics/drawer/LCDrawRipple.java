@@ -8,7 +8,7 @@ import arc.graphics.g2d.Lines;
 import arc.math.Rand;
 import arc.struct.IntFloatMap;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import lovec.utils.LCScriptUtil;
 import lovec.utils.LCVersionResolver;
 import mindustry.game.EventType;
@@ -18,7 +18,7 @@ import mindustry.world.Block;
 /**
  * Draws bubbles.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawRipple extends LCDrawer {
 
 

@@ -1391,7 +1391,7 @@
 
                     let btnCell = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(ct.selectionSize, 0.0, 40.0), () => {if(closeSelect) Vars.control.input.config.hideConfig()}).tooltip(ct.localizedName, true).group(btnGrp);
                     let btn = btnCell.get();
-                    btn.changed(() => cfgC((btn.isChecked() ? ["selector", ct, true] : ["selector", ct, false]).toJavaArr(JAVA.object)));
+                    btn.changed(() => cfgC((btn.isChecked() ? ["SPEC: selector", ct, true] : ["SPEC: selector", ct, false]).toJavaArr(JAVA.object)));
                     btn.getStyle().imageUp = new TextureRegionDrawable(ct.uiIcon);
                     btn.update(() => btn.setChecked(ctsF().includes(ct)));
                     iconTmpParamObj.setProp(iconParamObj);
@@ -1660,7 +1660,7 @@
                         "lovec-faction-none" :
                         MDL_content.getMod(ct) + "-faction-" + faction,
                 )),
-                () => fetchDialog("cts").ex_show(
+                () => fetchDialog("cts").self.ex_show(
                     factionBundle.color(factionColor),
                     GLB_varGen.factionBlksMap.get(faction),
                     true,

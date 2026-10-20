@@ -5,36 +5,70 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseItemDistributor");
+    /**
+     * @typedef {TemplateInstance<ItemBridge, BLK_conveyorBridge>} BLKConveyorBridge
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<ItemBridge.ItemBridgeBuild, B_conveyorBridge>} BConveyorBridge
+     * @prop {BLKConveyorBridge} block
+     */
 
 
-  function comp_setStats(blk, stats) {
-    stats.add(Stat.range, blk.range, StatUnit.blocks);
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseItemDistributor");
 
 
-  function comp_updateTile(b) {
-    if(GLB_timer.rsCur) {
-      b.lastRs = b.items.first();
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKConveyorBridge} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(Stat.range, blk.range, StatUnit.blocks);
     };
-  };
 
 
-  function comp_acceptItem(b, b_f, item) {
-    b.lastRs = item;
-    return true;
-  };
+    /**
+     * @private
+     * @param {BConveyorBridge} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(GLB_timer.rsCur) {
+            b.delegee.lastRs = b.items.first();
+        };
+    };
 
 
-  function comp_drawSelect(b) {
-    LCDraw.contentIcon(b.x, b.y, b.lastRs, b.block.size, 0.75);
-  };
+    /**
+     * @private
+     * @param {BConveyorBridge} b
+     * @param {Building} b_f
+     * @param {Item} item
+     * @return {boolean}
+     */
+    function comp_acceptItem(b, b_f, item) {
+        b.delegee.lastRs = item;
+        return true;
+    };
+
+
+    /**
+     * @private
+     * @param {BConveyorBridge} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        LCDraw.contentIcon(b.x, b.y, b.delegee.lastRs, b.block.size, 0.75);
+    };
 
 
 /*
@@ -44,97 +78,104 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Simply item bridge.
-     * <br> `SINGLESIZE`
-     * @class BLK_conveyorBridge
-     * @extends BLK_baseItemDistributor
-     */
-    newClass().extendClass(PARENT[0], "BLK_conveyorBridge").initClass()
-    .setParent(ItemBridge)
-    .setTags()
-    .setParam({
+        /**
+         * Simply item bridge.
+         * <br> `SINGLESIZE`
+         * @class BLK_conveyorBridge
+         * @extends BLK_baseItemDistributor
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_conveyorBridge")
+        .initTemplate()
+        .setParent(ItemBridge)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ vanilla ------------------------------> */
+            /* <------------------------------ vanilla ------------------------------> */
 
 
-      unloadable: true,
+            unloadable: true,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-      /**
-       * @override
-       * @memberof BLK_conveyorBridge
-       * @instance
-       * @return {boolean}
-       */
-      ex_isSingleSized: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_conveyorBridge
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_isSingleSized: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_conveyorBridge
-     * @extends B_baseItemDistributor
-     */
-    newClass().extendClass(PARENT[1], "B_conveyorBridge").initClass()
-    .setParent(ItemBridge.ItemBridgeBuild)
-    .setParam({
+        /**
+         * @class B_conveyorBridge
+         * @extends B_baseItemDistributor
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_conveyorBridge")
+        .initTemplate()
+        .setParent(ItemBridge.ItemBridgeBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_conveyorBridge
-       * @instance
-       */
-      lastRs: null,
+            /**
+             * `INTERNAL`
+             * @memberof B_conveyorBridge
+             * @instance
+             * @type {Item|null}
+             */
+            lastRs: null,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      acceptItem: function(b_f, item) {
-        return comp_acceptItem(this, b_f, item);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            acceptItem: function(b_f, item) {
+                return comp_acceptItem(this, b_f, item);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      drawSelect: function() {
-        comp_drawSelect(this);
-      },
+            drawSelect: function() {
+                comp_drawSelect(this);
+            },
 
 
-    }),
+        }),
 
 
-  ];
+    ];

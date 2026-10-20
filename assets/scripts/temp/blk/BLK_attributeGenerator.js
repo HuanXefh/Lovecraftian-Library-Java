@@ -60,13 +60,13 @@
     /**
      * @private
      * @param {BLKAttributeGenerator} blk
-     * @param {Tile} t
+     * @param {Tile|null} t
      * @param {Team} team
      * @param {number} rot
      * @return {boolean}
      */
     function comp_canPlaceOn(blk, t, team, rot) {
-        return blk.delegee.attrFilter.get(blk, t.floor());
+        return t != null && blk.delegee.attrFilter.get(blk, t.floor());
     };
 
 

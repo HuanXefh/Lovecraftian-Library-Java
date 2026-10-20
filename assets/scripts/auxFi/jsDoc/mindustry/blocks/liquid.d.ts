@@ -10,7 +10,10 @@ declare class Conduit extends LiquidBlock {}
 declare namespace Conduit {
     class ConduitBuild extends LiquidBlock.LiquidBuild {}
 }
-/** mindustry.world.blocks.liquid.ArmoredConduit */
+/**
+ * mindustry.world.blocks.liquid.ArmoredConduit
+ * @deprecated Removed in v9.
+ */
 declare class ArmoredConduit extends Conduit {}
 declare namespace ArmoredConduit {
     class ArmoredConduitBuild extends Conduit.ConduitBuild {}
@@ -33,4 +36,11 @@ declare namespace DirectionLiquidBridge {
 declare class LiquidJunction extends LiquidBlock {}
 declare namespace LiquidJunction {
     class LiquidJunctionBuild extends LiquidBlock.LiquidBuild {}
+}
+
+
+/** mindustry.world.blocks.liquid.LiquidRouter */
+declare class LiquidRouter extends LiquidBlock {}
+declare namespace LiquidRouter {
+    class LiquidRouterBuild extends LiquidBlock.LiquidBuild {}
 }

@@ -10,7 +10,7 @@ import arc.util.Nullable;
 /**
  * Stacked version of {@link TextureRegionDrawable}.
  */
-public class StackDrawable extends BaseDrawable implements TransformDrawable {
+public class LCStackDrawable extends BaseDrawable implements TransformDrawable {
 
 
     protected Seq<TextureRegionDrawable> drawables = new Seq<>();
@@ -23,7 +23,7 @@ public class StackDrawable extends BaseDrawable implements TransformDrawable {
     protected float stackW;
 
 
-    public StackDrawable(Seq<TextureRegionDrawable> drawables, @Nullable Seq<Vec2> offsets, @Nullable float[] scls) {
+    public LCStackDrawable(Seq<TextureRegionDrawable> drawables, @Nullable Seq<Vec2> offsets, @Nullable float[] scls) {
         this.scls = new float[drawables.size];
         for(int i = 0; i < drawables.size; i++) {
             this.drawables.add(drawables.get(i));
@@ -33,13 +33,13 @@ public class StackDrawable extends BaseDrawable implements TransformDrawable {
         computeHw();
     };
     // Overload
-    public StackDrawable(Seq<TextureRegionDrawable> drawables, Seq<Vec2> offsets) {
+    public LCStackDrawable(Seq<TextureRegionDrawable> drawables, Seq<Vec2> offsets) {
         this(drawables, offsets, null);
     };
-    public StackDrawable(Seq<TextureRegionDrawable> drawables) {
+    public LCStackDrawable(Seq<TextureRegionDrawable> drawables) {
         this(drawables, null);
     };
-    public StackDrawable() {
+    public LCStackDrawable() {
         // Do nothing
     };
 

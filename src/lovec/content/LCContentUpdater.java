@@ -10,13 +10,13 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class ContentUpdater<T> {
+public abstract class LCContentUpdater<T> {
 
 
     protected T target;
 
 
-    public ContentUpdater(T target) throws NoSuchFieldException, IllegalAccessException {
+    public LCContentUpdater(T target) throws NoSuchFieldException, IllegalAccessException {
         this.target = target;
         targetSetInit();
         Events.on(EventType.ClientLoadEvent.class, ev -> {

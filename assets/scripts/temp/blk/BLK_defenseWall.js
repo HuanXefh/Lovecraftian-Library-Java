@@ -5,13 +5,24 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_materialBlock");
+    /**
+     * @typedef {TemplateInstance<Wall, BLK_defenseWall>} BLKDefenseWall
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Wall.WallBuild, B_defenseWall>} BDefenseWall
+     * @prop {BLKDefenseWall} block
+     */
+
+
+    const PARENT = require("lovec/temp/blk/BLK_materialBlock");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,39 +32,43 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Wall blocks that are used for defense.
-     * @class BLK_defenseWall
-     * @extends BLK_materialBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_defenseWall").initClass()
-    .setParent(Wall)
-    .setTags()
-    .setParam({
+        /**
+         * Wall blocks that are used for defense.
+         * @class BLK_defenseWall
+         * @extends BLK_materialBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_defenseWall")
+        .initTemplate()
+        .setParent(Wall)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ vanilla ------------------------------> */
+            /* <------------------------------ vanilla ------------------------------> */
 
 
-      flashHit: true,
-      flashColor: Color.white,
+            flashHit: true,
+            flashColor: Color.white,
 
 
-    })
-    .setMethod({}),
+        })
+        .setMethod({}),
 
 
-    /**
-     * @class B_defenseWall
-     * @extends B_materialBlock
-     */
-    newClass().extendClass(PARENT[1], "B_defenseWall").initClass()
-    .setParent(Wall.WallBuild)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_defenseWall
+         * @extends B_materialBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_defenseWall")
+        .initTemplate()
+        .setParent(Wall.WallBuild)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

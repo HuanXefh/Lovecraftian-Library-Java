@@ -244,7 +244,7 @@
                      * `INTERNAL`
                      * @memberof INTF_BLK_torqueBlock
                      * @instance
-                     * @type {ContentUpdater<Block>}
+                     * @type {LCContentUpdater<Block>}
                      */
                     torqueBlockUpdater: null,
 
@@ -283,7 +283,7 @@
                      * `INTERNAL`
                      * @memberof INTF_B_torqueBlock
                      * @instance
-                     * @type {BuildUpdater<Building, Block>}
+                     * @type {LCBuildUpdater<Building, Block>}
                      */
                     torqueBlockBuildUpdater: null,
                     /**

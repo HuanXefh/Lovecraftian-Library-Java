@@ -5,102 +5,138 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseBlock");
-  const INTF = require("lovec/temp/intf/INTF_BLK_facilityBlock");
-  const INTF_A = require("lovec/temp/intf/INTF_BLK_terrainHandler");
+    /**
+     * @typedef {TemplateInstance<GenericCrafter, BLK_baseFactory>} BLKBaseFactory
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_baseFactory>} BBaseFactory
+     * @prop {BLKBaseFactory} block
+     */
 
 
-  function comp_init(blk) {
-    blk.priority = GLB_var.priority.fac;
-    if(blk.setupVanillaProp) {
-      if(blk.liquidOutputDirections != null) {
-        blk.drawArrow = blk.liquidOutputDirections.length === 1 && blk.liquidOutputDirections[0] === -1;
-      };
-    };
+    const PARENT = require("lovec/temp/blk/BLK_baseBlock");
+    const INTF_BLK_facilityBlock = require("lovec/temp/intf/INTF_BLK_facilityBlock");
+    const INTF_BLK_terrainHandler = require("lovec/temp/intf/INTF_BLK_terrainHandler");
 
-    if(blk.rcMajorIo == null) {
-      let
-        amtItem = null,
-        amtLiq = null,
-        isWasteItem = false,
-        isWasteLiq = false;
-      if(blk.outputItems != null && blk.outputItems.length > 0) {
-        amtItem = blk.outputItems[0].amount;
-        isWasteItem = MDL_cond.isWaste(blk.outputItems[0]);
-      };
-      if(blk.outputLiquids != null && blk.outputLiquids.length > 0) {
-        amtLiq = blk.outputLiquids[0].amount * 10.0;
-        isWasteLiq = MDL_cond.isWaste(blk.outputLiquids[0]);
-      };
-      if(amtItem != null && amtLiq != null) {
-        if((!isWasteItem && !isWasteLiq) || (isWasteItem && isWasteLiq)) {
-          blk.rcMajorIo = amtItem >= amtLiq ? blk.outputItems[0].item : blk.outputLiquids[0].liquid;
-        } else {
-          blk.rcMajorIo = isWasteItem ? blk.outputLiquids[0].liquid : blk.outputItems[0].item
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKBaseFactory} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.priority = GLB_var.priority.fac;
+        if(blk.delegee.setupVanillaProp) {
+            if(blk.liquidOutputDirections != null) {
+                blk.drawArrow = blk.liquidOutputDirections.length === 1 && blk.liquidOutputDirections[0] === -1;
+            };
         };
-      } else if(amtItem != null) {
-        blk.rcMajorIo = blk.outputItems[0].item;
-      } else if(amtLiq != null) {
-        blk.rcMajorIo = blk.outputLiquids[0].liquid;
-      };
+
+        if(blk.delegee.rcMajorIo == null) {
+            blk.delegee.rcMajorIo = MDL_content.getMajorIo(blk);
+        };
     };
-  };
 
 
-  function comp_load(blk) {
-    blk.craftSe = fetchSound(blk.craftSe);
-  };
-
-
-  function comp_setBars(blk) {
-    if(!GLB_var.isMindustryX) {
-      blk.addBar("lovec-prog", b => new Bar(
-        prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
-        prov(() => Pal.ammo),
-        () => Mathf.clamp(b.progress, 0.0, 1.0),
-      ));
+    /**
+     * @private
+     * @param {BLKBaseFactory} blk
+     * @return {void}
+     */
+    function comp_load(blk) {
+        blk.delegee.craftSe = fetchSound(blk.delegee.craftSe);
     };
-  };
 
 
-  function comp_created(b) {
-    MDL_event.onDelayRun(0.0, () => {
-      if(isNaN(b.warmup)) b.warmup = 0.0;
-      if(isNaN(b.progress)) b.progress = 0.0;
-    });
-  };
+    /**
+     * @private
+     * @param {BLKBaseFactory} blk
+     * @return {void}
+     */
+    function comp_setBars(blk) {
+        if(!GLB_var.isMindustryX) {
+            blk.addBar("lovec-prog", b => new Bar(
+                prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
+                prov(() => Pal.ammo),
+                () => Mathf.clamp(b.progress, 0.0, 1.0),
+            ));
+        };
+    };
 
 
-  function comp_craft(b) {
-    MDL_sound.playAt(b.x, b.y, b.craftSe, Math.min(b.block.ambientSoundVolume * 2.0, 1.0), 1.0, 0.1);
-  };
+    /**
+     * @private
+     * @param {BBaseFactory} b
+     * @return {void}
+     */
+    function comp_created(b) {
+        MDL_event.onDelayRun(0.0, () => {
+            if(isNaN(b.warmup)) {
+                b.warmup = 0.0;
+            };
+            if(isNaN(b.progress)) {
+                b.progress = 0.0;
+            };
+        });
+    };
 
 
-  function comp_acceptItem(b, b_f, item) {
-    if(!b.block.rotate || b.block.delegee.inputDirs.length === 0) return true;
-
-    return b.block.delegee.inputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
-  };
-
-
-  function comp_acceptLiquid(b, b_f, liq) {
-    if(!b.block.rotate || b.block.delegee.fldInputDirs.length === 0 || MDL_cond.isAuxiliaryFluid(liq)) return true;
-
-    return b.block.delegee.fldInputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
-  };
+    /**
+     * @private
+     * @param {BBaseFactory} b
+     * @return {void}
+     */
+    function comp_craft(b) {
+        MDL_sound.playAt(b.x, b.y, b.block.delegee.craftSe, Math.min(b.block.ambientSoundVolume * 2.0, 1.0), 1.0, 0.1);
+    };
 
 
-  function comp_canDump(b, b_t, item) {
-    if(!b.block.rotate || b.block.delegee.outputDirs.length === 0) return true;
+    /**
+     * @private
+     * @param {BBaseFactory} b
+     * @param {Building} b_f
+     * @param {Item} item
+     * @return {boolean}
+     */
+    function comp_acceptItem(b, b_f, item) {
+        return !b.block.rotate || b.block.delegee.inputDirs.length === 0
+            || b.block.delegee.inputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
+    };
 
-    return b.block.delegee.outputDirs.some(offRot => b.relativeTo(b_t) === Mathf.mod(b.rotation + offRot, 4));
-  };
+
+    /**
+     * @private
+     * @param {BBaseFactory} b
+     * @param {Building} b_f
+     * @param {Liquid} liq
+     * @return {boolean}
+     */
+    function comp_acceptLiquid(b, b_f, liq) {
+        return !b.block.rotate || b.block.delegee.fldInputDirs.length === 0
+            || MDL_cond.isAuxiliaryFluid(liq)
+            || b.block.delegee.fldInputDirs.some(offRot => b.relativeTo(b_f) === Mathf.mod(b.rotation + offRot, 4));
+    };
+
+
+    /**
+     * @private
+     * @param {BBaseFactory} b
+     * @param {Building} b_t
+     * @param {Item} item
+     * @return {boolean}
+     */
+    function comp_canDump(b, b_t, item) {
+        return !b.block.rotate || b.block.delegee.outputDirs.length === 0
+            || b.block.delegee.outputDirs.some(offRot => b.relativeTo(b_t) === Mathf.mod(b.rotation + offRot, 4));
+    };
 
 
 /*
@@ -110,169 +146,202 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Parent for all factories.
-     * This template also serves as the Lovec version of {@link GenericCrafter}.
-     * @class BLK_baseFactory
-     * @extends BLK_baseBlock
-     * @extends INTF_BLK_facilityBlock
-     * @extends INTF_BLK_terrainHandler
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseFactory").implement(INTF[0]).implement(INTF_A[0]).initClass()
-    .setParent(GenericCrafter)
-    .setTags()
-    .setParam({
+        /**
+         * Parent for all factories.
+         * This template also serves as the Lovec version of {@link GenericCrafter}.
+         * @class BLK_baseFactory
+         * @extends BLK_baseBlock
+         * @extends INTF_BLK_facilityBlock
+         * @extends INTF_BLK_terrainHandler
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseFactory")
+        .implement(INTF_BLK_facilityBlock[0])
+        .implement(INTF_BLK_terrainHandler[0])
+        .initTemplate()
+        .setParent(GenericCrafter)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`: Relative directions of item input sides.
-       * @memberof BLK_baseFactory
-       * @instance
-       */
-      inputDirs: tprov(() => []),
-      /**
-       * `PARAM`: Relative directions of fluid input sides (not abstract fluid).
-       * @memberof BLK_baseFactory
-       * @instance
-       */
-      fldInputDirs: tprov(() => []),
-      /**
-       * `PARAM`: Relative directions of item output sides.
-       * @memberof BLK_baseFactory
-       * @instance
-       */
-      outputDirs: tprov(() => []),
-      /**
-       * `PARAM`: Major output for this recipe. If null, this will be automatically set.
-       * @memberof BLK_baseFactory
-       * @instance
-       * @type {UnlockableContent|null}
-       */
-      rcMajorIo: null,
-      /**
-       * `PARAM`: Sound played when this building crafts.
-       * @memberof BLK_baseFactory
-       * @instance
-       */
-      craftSe: Sounds.unset,
+            /**
+             * `PARAM`: Relative directions of item input sides.
+             * @memberof BLK_baseFactory
+             * @instance
+             * @type {TDynamic<Array<number>>}
+             */
+            inputDirs: tprov(() => []),
+            /**
+             * `PARAM`: Relative directions of fluid input sides (not abstract fluid).
+             * @memberof BLK_baseFactory
+             * @instance
+             * @type {TDynamic<Array<number>>}
+             */
+            fldInputDirs: tprov(() => []),
+            /**
+             * `PARAM`: Relative directions of item output sides.
+             * @memberof BLK_baseFactory
+             * @instance
+             * @type {TDynamic<Array<number>>}
+             */
+            outputDirs: tprov(() => []),
+            /**
+             * `PARAM`: Major output for this recipe. If null, this will be automatically set.
+             * @memberof BLK_baseFactory
+             * @instance
+             * @type {UnlockableContent|null}
+             */
+            rcMajorIo: null,
+            /**
+             * `PARAM`: Sound played when this building crafts.
+             * @memberof BLK_baseFactory
+             * @instance
+             * @type {SoundGn}
+             */
+            craftSe: Sounds.unset,
 
 
-    })
-    .setParamAlias([
-      "craftEff", "craftEffect", Fx.none,
-      "updateEff", "updateEffect", Fx.none,
-      "updateEffP", "updateEffectChance", 0.02,
-    ])
-    .setMethod({
+        })
+        .setParamAlias([
+            /**
+             * `ALIAS`: `craftEffect`.
+             * @memberof BLK_baseFactory
+             * @instance
+             * @name craftEff
+             * @type {Effect}
+             */
+            "craftEff", "craftEffect", Fx.none,
+            /**
+             * `ALIAS`: `updateEffect`.
+             * @memberof BLK_baseFactory
+             * @instance
+             * @name updateEff
+             * @type {Effect}
+             */
+            "updateEff", "updateEffect", Fx.none,
+            /**
+             * `ALIAS`: `updateEffectChance`.
+             * @memberof BLK_baseFactory
+             * @instance
+             * @name updateEffP
+             * @type {number}
+             */
+            "updateEffP", "updateEffectChance", 0.02,
+        ])
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      load: function() {
-        comp_load(this);
-      },
+            load: function() {
+                comp_load(this);
+            },
 
 
-      setBars: function() {
-        comp_setBars(this);
-      },
+            setBars: function() {
+                comp_setBars(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_baseFactory
-     * @extends B_baseBlock
-     * @extends INTF_B_facilityBlock
-     * @extends INTF_B_terrainHandler
-     */
-    newClass().extendClass(PARENT[1], "B_baseFactory").implement(INTF[1]).implement(INTF_A[1]).initClass()
-    .setParent(GenericCrafter.GenericCrafterBuild)
-    .setParam({
+        /**
+         * @class B_baseFactory
+         * @extends B_baseBlock
+         * @extends INTF_B_facilityBlock
+         * @extends INTF_B_terrainHandler
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseFactory")
+        .implement(INTF_BLK_facilityBlock[1])
+        .implement(INTF_BLK_terrainHandler[1])
+        .initTemplate()
+        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_baseFactory
-       * @instance
-       * @type {UnlockableContent|null}
-       */
-      blk$rcMajorIo: TmpStateTag.needReplace,
+            /**
+             * `INTERNAL`
+             * @memberof B_baseFactory
+             * @instance
+             * @type {UnlockableContent|null|TmpStateTag}
+             */
+            blk$rcMajorIo: TmpStateTag.needReplace,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      created: function() {
-        comp_created(this);
-      },
+            created: function() {
+                comp_created(this);
+            },
 
 
-      craft: function() {
-        comp_craft(this);
-      },
+            craft: function() {
+                comp_craft(this);
+            },
 
 
-      acceptItem: function(b_f, item) {
-        return comp_acceptItem(this, b_f, item);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            acceptItem: function(b_f, item) {
+                return comp_acceptItem(this, b_f, item);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      acceptLiquid: function(b_f, liq) {
-        return comp_acceptLiquid(this, b_f, liq);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            acceptLiquid: function(b_f, liq) {
+                return comp_acceptLiquid(this, b_f, liq);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      canDump: function(b_t, item) {
-        return comp_canDump(this, b_t, item);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            canDump: function(b_t, item) {
+                return comp_canDump(this, b_t, item);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      draw: function() {
-        this.ex_drawRcIcon();
-      },
+            draw: function() {
+                this.self.ex_drawRcIcon();
+            },
 
 
-      /**
-       * `REALIZED`
-       * @override
-       * @memberof B_baseFactory
-       * @instance
-       * @func
-       * @return {TextureRegion|null}
-       */
-      ex_getRcIcon: function() {
-        return this.blk$rcMajorIo == null ?
-          null :
-          this.blk$rcMajorIo.uiIcon;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_baseFactory
+             * @instance
+             * @func
+             * @return {TextureRegion|null}
+             */
+            ex_getRcIcon: function() {
+                return this.delegee.blk$rcMajorIo == null ?
+                    null :
+                    this.delegee.blk$rcMajorIo.uiIcon;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

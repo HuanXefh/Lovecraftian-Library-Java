@@ -300,7 +300,7 @@
                         wr.str(this.delegee.durabMode);
                     },
                     rd => {
-                        if(this.delegee.LCRevi === 5 && this.block.ex_isSubInsOf("BLK_baseMiner")) return;
+                        if(this.delegee.LCRevi === 5 && this.block.self.ex_isSubInsOf("BLK_baseMiner")) return;
                         this.delegee.durabFrac = rd.f();
                         this.delegee.durabMode = rd.str();
                     },

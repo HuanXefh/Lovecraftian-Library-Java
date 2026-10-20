@@ -6,17 +6,17 @@
 
 
     /**
-     * Utility class for handling {@link MathGraph}.
+     * Utility class for handling {@link LCGraph}.
      * @class
      */
     const UTIL_graph = newClass().initClass();
 
 
-    /** @type {Array<MathGraph>} */
+    /** @type {Array<LCGraph>} */
     const updateQueue = [];
-    /** @type {ObjectMap<string, CFunction<MathGraph>>} */
+    /** @type {ObjectMap<string, CFunction<LCGraph>>} */
     const typeInitMap = new ObjectMap();
-    /** @type {ObjectMap<string, CFunction<MathGraph>>} */
+    /** @type {ObjectMap<string, CFunction<LCGraph>>} */
     const typeUpdateMap = new ObjectMap();
 
 
@@ -52,7 +52,7 @@
 
     /**
      * Adds a graph to the update queue.
-     * @param {MathGraph|null} graph
+     * @param {LCGraph|null} graph
      * @return {void}
      */
     UTIL_graph.queueUpdate = function(graph) {
@@ -64,7 +64,7 @@
     /**
      * Sets init method of a graph type. See {@link INTF_BLK_graphBlock}.
      * @param {string} graphType
-     * @param {CFunction<MathGraph>} scr
+     * @param {CFunction<LCGraph>} scr
      * @return {void}
      */
     UTIL_graph.setInit = function(graphType, scr) {
@@ -75,7 +75,7 @@
     /**
      * Sets update method of a graph type. See {@link INTF_BLK_graphBlock}.
      * @param {string} graphType
-     * @param {CFunction<MathGraph>} scr
+     * @param {CFunction<LCGraph>} scr
      * @return {void}
      */
     UTIL_graph.setUpdate = function(graphType, scr) {

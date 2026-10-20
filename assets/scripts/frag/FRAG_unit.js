@@ -124,11 +124,7 @@
 
             // Tree
             if(!(oblk instanceof AirBlock) && MDL_cond.isUnitCoverable(unit, true)) {
-                if(
-                    (MDL_cond.isTreeBlock(oblk) && oblk.delegee.hidable && dst < oblk.delegee.treeRad)
-                        || (MDL_cond.isTallGrassBlock(oblk) && oblk.delegee.hidable && dst < oblk.size * Vars.tilesize * 0.5)
-                        || (MDL_cond.isCrop(oblk) && ob.delegee.stageHidable && dst < ob.delegee.stageCropRad)
-                ) {
+                if(checkSubInsOfTemp(oblk, "INTF_ENV_unitHider") && oblk.self.ex_checkHidable(ot.x, ot.y) && dst < oblk.self.ex_getHideRad(ot.x, ot.y)) {
                     if(GLB_varGen.staHiddenWell != null && !unit.hasEffect(GLB_varGen.staHiddenWell)) {
                         BOX_trigger.treeHide.fire(unit);
                     };

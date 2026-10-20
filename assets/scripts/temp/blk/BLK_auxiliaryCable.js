@@ -75,7 +75,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_auxiliaryCable")
         .initTemplate()
-        .setParent(ArmoredConveyor)
+        .setParent(LCVersionResolver.isV8 ? ArmoredConveyor : Conveyor)
         .setTags()
         .setParam({
 
@@ -109,7 +109,7 @@
         newClass()
         .extendClass(PARENT[1], "B_auxiliaryCable")
         .initTemplate()
-        .setParent(ArmoredConveyor.ArmoredConveyorBuild)
+        .setParent(LCVersionResolver.isV8 ? ArmoredConveyor.ArmoredConveyorBuild : Conveyor.ConveyorBuild)
         .setParam({
 
 

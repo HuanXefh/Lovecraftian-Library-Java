@@ -44,7 +44,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_attributeFactory")
         .initTemplate()
-        .setParent(AttributeCrafter)
+        .setParent(LCVersionResolver.isV8 ? AttributeCrafter : GenericCrafter)
         .setTags()
         .setParam({})
         .setMethod({}),
@@ -57,7 +57,7 @@
         newClass()
         .extendClass(PARENT[1], "B_attributeFactory")
         .initTemplate()
-        .setParent(AttributeCrafter.AttributeCrafterBuild)
+        .setParent(LCVersionResolver.isV8 ? AttributeCrafter.AttributeCrafterBuild : GenericCrafter.GenericCrafterBuild)
         .setParam({})
         .setMethod({}),
 

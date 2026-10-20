@@ -14,6 +14,7 @@
 
 
     const PARENT = require("lovec/temp/env/ENV_baseProp");
+    const INTF_ENV_unitHider = require("lovec/temp/intf/INTF_ENV_unitHider");
 
 
     /* <------------------------------ auxiliary ------------------------------> */
@@ -95,9 +96,11 @@
      * No variants!
      * @class ENV_baseTree
      * @extends ENV_baseProp
+     * @extends INTF_ENV_unitHider
      */
     module.exports = newClass()
     .extendClass(PARENT, "ENV_baseTree")
+    .implement(INTF_ENV_unitHider)
     .initTemplate()
     .setParent(null)
     .setTags("env-tree")
@@ -118,13 +121,6 @@
          * @type {number}
          */
         treeRad: 0.0,
-        /**
-         * `PARAM`: Whether this tree can hide units.
-         * @memberof ENV_baseTree
-         * @instance
-         * @type {boolean}
-         */
-        hidable: false,
 
 
         /* <------------------------------ internal ------------------------------> */
@@ -183,6 +179,26 @@
         .setProp({
             noSuper: true,
             override: true,
+        }),
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof ENV_baseTree
+         * @instance
+         * @func
+         * @param {number} tx
+         * @param {number} ty
+         * @return {number}
+         */
+        ex_getHideRad: function(tx, ty) {
+            return this.delegee.treeRad;
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+            argLen: 2,
         }),
 
 

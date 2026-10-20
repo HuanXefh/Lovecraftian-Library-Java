@@ -33,7 +33,7 @@
        * @return {void}
        */
       load(blk) {
-          if(!checkCreatedByTemp(blk) || !blk.ex_isSubInsOf("INTF_BLK_recipeHandler")) throw new Error("DrawRecipe can only be used for recipe factories! Exception: {$1}".format(blk.name));
+          if(!checkCreatedByTemp(blk) || !blk.self.ex_isSubInsOf("INTF_BLK_recipeHandler")) throw new Error("DrawRecipe can only be used for recipe factories! Exception: {$1}".format(blk.name));
       },
 
 

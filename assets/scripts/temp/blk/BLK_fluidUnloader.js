@@ -5,50 +5,91 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_fluidRouter");
-  const INTF = require("lovec/temp/intf/INTF_BLK_contentSelector");
+    /**
+     * @typedef {TemplateInstance<LiquidRouter, BLK_fluidUnloader>} BLKFluidUnloader
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<LiquidRouter.LiquidRouterBuild, B_fluidUnloader>} BFluidUnloader
+     * @prop {BLKFluidUnloader} block
+     */
 
 
-  function comp_init(blk) {
-    blk.rotate = true;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_fluidRouter");
+    const INTF_BLK_contentSelector = require("lovec/temp/intf/INTF_BLK_contentSelector");
 
 
-  function comp_load(blk) {
-    blk.sideReg1 = fetchRegion(blk, "-side1", "-side");
-    blk.sideReg2 = fetchRegion(blk, "-side2", "-side");
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_onProximityUpdate(b) {
-    b.unloadTarget = b.back();
-    if(b.unloadTarget == null || b.unloadTarget.liquids == null || MDL_cond.isFluidConduit(b.unloadTarget.block) || MDL_cond.isGate(b.unloadTarget.block)) {
-      b.unloadTarget = null;
+    /**
+     * @private
+     * @param {BLKFluidUnloader} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.rotate = true;
     };
-  };
 
 
-  function comp_updateTile(b) {
-    if(b.unloadTarget != null && b.ctTarget != null) {
-      LCCraftingHandler.transLiquid(b.unloadTarget, b, b.ctTarget, 2.0, true);
+    /**
+     * @private
+     * @param {BLKFluidUnloader} blk
+     * @return {void}
+     */
+    function comp_load(blk) {
+        blk.delegee.sideReg1 = fetchRegion(blk, "-side1", "-side");
+        blk.delegee.sideReg2 = fetchRegion(blk, "-side2", "-side");
     };
-  };
 
 
-  function comp_draw(b) {
-    LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
-  };
+    /**
+     * @private
+     * @param {BFluidUnloader} b
+     * @return {void}
+     */
+    function comp_onProximityUpdate(b) {
+        b.delegee.unloadTarget = b.back();
+        if(b.delegee.unloadTarget == null || b.delegee.unloadTarget.liquids == null || MDL_cond.isFluidConduit(b.delegee.unloadTarget.block) || MDL_cond.isGate(b.delegee.unloadTarget.block)) {
+            b.delegee.unloadTarget = null;
+        };
+    };
 
 
-  function comp_drawSelect(b) {
-    b.ex_drawSelected();
-  };
+    /**
+     * @private
+     * @param {BFluidUnloader} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(b.delegee.unloadTarget != null && b.delegee.ctTarget != null) {
+            LCCraftingHandler.transLiquid(b.delegee.unloadTarget, b, b.delegee.ctTarget, 2.0, true);
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {BFluidUnloader} b
+     * @return {void}
+     */
+    function comp_draw(b) {
+        LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
+    };
+
+
+    /**
+     * @private
+     * @param {BFluidUnloader} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        b.self.ex_drawSelected();
+    };
 
 
 /*
@@ -58,176 +99,200 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * @class BLK_fluidUnloader
-     * @extends BLK_fluidRouter
-     */
-    newClass().extendClass(PARENT[0], "BLK_fluidUnloader").implement(INTF[0]).initClass()
-    .setParent(LiquidRouter)
-    .setTags()
-    .setParam({
+        /**
+         * @class BLK_fluidUnloader
+         * @extends BLK_fluidRouter
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_fluidUnloader")
+        .implement(INTF_BLK_contentSelector[0])
+        .initTemplate()
+        .setParent(LiquidRouter)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_fluidUnloader
-       * @instance
-       */
-      sideReg1: null,
-      /**
-       * `INTERNAL`
-       * @memberof BLK_fluidUnloader
-       * @instance
-       */
-      sideReg2: null,
-      /**
-      * `INTERNAL`
-      * @override
-      * @memberof BLK_fluidUnloader
-      * @instance
-      */
-      noPresExplode: true,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_fluidUnloader
+             * @instance
+             * @type {TextureRegion}
+             */
+            sideReg1: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_fluidUnloader
+             * @instance
+             * @type {TextureRegion}
+             */
+            sideReg2: null,
+            /**
+            * `INTERNAL`
+            * <br> `REALIZED`
+            * @override
+            * @memberof BLK_fluidUnloader
+            * @instance
+            * @type {boolean}
+            */
+            noPresExplode: true,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      load: function() {
-        comp_load(this);
-      },
+            load: function() {
+                comp_load(this);
+            },
 
 
-      /**
-       * @override
-       * @memberof BLK_fluidUnloader
-       * @instance
-       * @return {Array<Liquid>}
-       */
-      ex_findSelectionTargets: function() {
-        return GLB_varGen.nonAuxs;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_fluidUnloader
+             * @instance
+             * @func
+             * @return {Array<Liquid>}
+             */
+            ex_findSelectionTargets: function() {
+                return GLB_varGen.nonAuxs;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_fluidUnloader
-       * @instance
-       * @return {boolean}
-       */
-      ex_isGateBlk: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_fluidUnloader
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_isGateBlk: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_fluidUnloader
-       * @instance
-       * @return {boolean}
-       */
-      ex_noSideOutput: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_fluidUnloader
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_noSideOutput: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_fluidUnloader
-     * @extends B_fluidRouter
-     */
-    newClass().extendClass(PARENT[1], "B_fluidUnloader").implement(INTF[1]).initClass()
-    .setParent(LiquidRouter.LiquidRouterBuild)
-    .setParam({
+        /**
+         * @class B_fluidUnloader
+         * @extends B_fluidRouter
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_fluidUnloader")
+        .implement(INTF_BLK_contentSelector[1])
+        .initTemplate()
+        .setParent(LiquidRouter.LiquidRouterBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_fluidUnloader
-       * @instance
-       */
-      unloadTarget: null,
+            /**
+             * `INTERNAL`
+             * @memberof B_fluidUnloader
+             * @instance
+             * @type {Building|null}
+             */
+            unloadTarget: null,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
+            onProximityUpdate: function() {
+                comp_onProximityUpdate(this);
+            },
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      acceptLiquid: function(b_f, liq) {
-        return false;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            acceptLiquid: function(b_f, liq) {
+                return false;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      canDumpLiquid: function(b_t, liq) {
-        return this.relativeTo(b_t) === this.rotation;
-      }
-      .setProp({
-        noSuper: true,
-        boolMode: "and",
-      }),
+            canDumpLiquid: function(b_t, liq) {
+                return this.relativeTo(b_t) === this.rotation;
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
 
 
-      draw: function() {
-        comp_draw(this);
-      },
+            draw: function() {
+                comp_draw(this);
+            },
 
 
-      drawSelect: function() {
-        comp_drawSelect(this);
-      },
+            drawSelect: function() {
+                comp_drawSelect(this);
+            },
 
 
-      ex_onSelectorUpdate: function() {
-        this.liquids.clear();
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            /**
+             * `REALIZED`
+             * @memberof B_fluidUnloader
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_onSelectorUpdate: function() {
+                this.liquids.clear();
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

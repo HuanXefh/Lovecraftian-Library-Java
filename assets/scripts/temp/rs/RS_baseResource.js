@@ -57,7 +57,7 @@
         // TODO: Remove this when Anuke decides to add external stats modification support
         stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
             tb.row();
-            MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(rs.localizedName, rs, false)).left().padLeft(28.0).row();
+            MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").self.ex_show(rs.localizedName, rs, false)).left().padLeft(28.0).row();
         }));
     };
 
@@ -290,7 +290,7 @@
          * `INTERNAL`: Parent resource. Used for intermediates.
          * @memberof RS_baseResource
          * @instance
-         * @type {string|UnlockableContent|null}
+         * @type {ContentGn}
          */
         intmdParent: null,
         /**

@@ -14,6 +14,7 @@
 
 
     const PARENT = require("lovec/temp/env/ENV_heap");
+    const INTF_ENV_unitHider = require("lovec/temp/intf/INTF_ENV_unitHider");
 
 
     /* <------------------------------ component ------------------------------> */
@@ -26,6 +27,10 @@
      */
     function comp_init(blk) {
         blk.solid = false;
+
+        if(blk.delegee.grassRad < 0.0) {
+            blk.delegee.grassRad = blk.size * Vars.tilesize * 0.5 + 2.0;
+        };
     };
 
 
@@ -52,9 +57,11 @@
      * <br> `NAMEGEN`
      * @class ENV_grassHeap
      * @extends ENV_heap
+     * @extends INTF_ENV_unitHider
      */
     module.exports = newClass()
     .extendClass(PARENT, "ENV_grassHeap")
+    .implement(INTF_ENV_unitHider)
     .initTemplate()
     .setParent(TallBlock)
     .setTags("env-grass-tall")
@@ -69,12 +76,12 @@
          */
         layGrass: 76.0,
         /**
-         * `PARAM`: See {@link ENV_baseTree}.
+         * `PARAM`: See {@link ENV_baseTree#treeRad}. Set automatically if negative.
          * @memberof ENV_grassHeap
          * @instance
-         * @type {boolean}
+         * @type {number}
          */
-        hidable: false,
+        grassRad: -1.0,
 
 
         /* <------------------------------ vanilla ------------------------------> */
@@ -97,6 +104,26 @@
         }
         .setProp({
             noSuper: true,
+        }),
+
+
+        /**
+         * `REALIZED`
+         * @override
+         * @memberof ENV_baseTree
+         * @instance
+         * @func
+         * @param {number} tx
+         * @param {number} ty
+         * @return {number}
+         */
+        ex_getHideRad: function(tx, ty) {
+            return this.delegee.grassRad;
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+            argLen: 2,
         }),
 
 

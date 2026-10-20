@@ -406,6 +406,46 @@ const db = {
             ],
 
 
+            /**
+             * Used to get major output/input for recipe icon display.
+             * <br> `ROW`: type, ctF.
+             * <br> `ARGS`: blk.
+             * @type {F2Array<ContentTypeGn, FFunction<Block, UnlockableContent|null>>}
+             */
+            majorIo: [
+
+                GenericCrafter, function(blk) {
+                    let
+                        amtItem = null,
+                        amtLiq = null,
+                        isWasteItem = false,
+                        isWasteLiq = false,
+                        ct = null;
+                    if(blk.outputItems != null && blk.outputItems.length > 0) {
+                        amtItem = blk.outputItems[0].amount;
+                        isWasteItem = MDL_cond.isWaste(blk.outputItems[0]);
+                    };
+                    if(blk.outputLiquids != null && blk.outputLiquids.length > 0) {
+                        amtLiq = blk.outputLiquids[0].amount * 10.0;
+                        isWasteLiq = MDL_cond.isWaste(blk.outputLiquids[0]);
+                    };
+                    if(amtItem != null && amtLiq != null) {
+                        if((!isWasteItem && !isWasteLiq) || (isWasteItem && isWasteLiq)) {
+                            ct = amtItem >= amtLiq ? blk.outputItems[0].item : blk.outputLiquids[0].liquid;
+                        } else {
+                            ct = isWasteItem ? blk.outputLiquids[0].liquid : blk.outputItems[0].item
+                        };
+                    } else if(amtItem != null) {
+                        ct = blk.outputItems[0].item;
+                    } else if(amtLiq != null) {
+                        ct = blk.outputLiquids[0].liquid;
+                    };
+                    return ct;
+                },
+
+            ],
+
+
         },
 
 
@@ -561,9 +601,9 @@ const db = {
                 /** @type {Array<Tup2<ContentTypeGn, FFunction<Block, boolean>>>} */
                 noSide: [
 
-                    [ArmoredConveyor, blk => true],
-                    [ArmoredConduit, blk => true],
-                    [Duct, blk => blk.armored],
+                    [LCVersionResolver.isV8 ? ArmoredConveyor : Conveyor, blk => LCVersionResolver.isV8 || blk.noSideBlend],
+                    [LCVersionResolver.isV8 ? ArmoredConduit : Conduit, blk => LCVersionResolver.isV8 || blk.noSideBlend],
+                    [Duct, blk => LCVersionResolver.isV8 ? blk.armored : blk.noSideBlend],
 
                 ],
 

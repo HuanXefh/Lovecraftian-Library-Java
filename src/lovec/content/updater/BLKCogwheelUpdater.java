@@ -3,14 +3,14 @@ package lovec.content.updater;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
-import lovec.content.BuildUpdater;
-import lovec.content.ContentUpdater;
+import lovec.content.LCBuildUpdater;
+import lovec.content.LCContentUpdater;
 import lovec.graphics.LCDraw;
 import lovec.utils.LCScript;
 import mindustry.graphics.Layer;
 import mindustry.world.blocks.defense.Wall;
 
-public class BLKCogwheelUpdater extends ContentUpdater<Wall> {
+public class BLKCogwheelUpdater extends LCContentUpdater<Wall> {
 
 
     protected float cogInvOffAng;
@@ -38,7 +38,7 @@ public class BLKCogwheelUpdater extends ContentUpdater<Wall> {
 
 
 
-    public class BCogwheelUpdater extends BuildUpdater<Wall.WallBuild, Wall> {
+    public class BCogwheelUpdater extends LCBuildUpdater<Wall.WallBuild, Wall> {
 
 
         public BCogwheelUpdater(Wall.WallBuild b) throws NoSuchFieldException, IllegalAccessException {

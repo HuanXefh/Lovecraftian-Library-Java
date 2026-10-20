@@ -5,61 +5,107 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseFactory");
+    /**
+     * @typedef {TemplateInstance<GenericCrafter, BLK_light>} BLKLight
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_light>} BLight
+     * @prop {BLKLight} block
+     */
 
 
-  function comp_init(blk) {
-    blk.emitLight = true;
-    blk.allowedInPayloads = false;
-    if(blk.fogRadFrac > 0.0) {
-      blk.flags.with(BlockFlag.hasFogRadius)
+    const PARENT = require("lovec/temp/blk/BLK_baseFactory");
+
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKLight} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.emitLight = true;
+        blk.allowedInPayloads = false;
+        if(blk.delegee.fogRadFrac > 0.0) {
+            blk.flags.with(BlockFlag.hasFogRadius)
+        };
+
+        blk.self.ex_addLogicF(LogicProp.range, b => blk.delegee.lightRad * b.delegee.lightWarmup / Vars.tilesize);
     };
 
-    blk.ex_addLogicF(LogicProp.range, b => blk.lightRad * b.delegee.lightWarmup / Vars.tilesize);
-  };
 
-
-  function comp_setStats(blk, stats) {
-    stats.add(Stat.range, blk.lightRad / Vars.tilesize, StatUnit.blocks);
-  };
-
-
-  function comp_drawPlace(blk, tx, ty, rot, valid) {
-    Drawf.dashCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.lightRad, valid ? Pal.accent : Pal.remove);
-  };
-
-
-  function comp_updateTile(b) {
-    b.lightWarmup = Mathf.approachDelta(b.lightWarmup, Mathf.clamp(b.efficiency), 0.004);
-    if(GLB_timer.secQuarter && b.block.delegee.fogRadFrac > 0.0) {
-      b.fogRad = b.block.delegee.lightRad * b.block.delegee.fogRadFrac * b.lightWarmup / Vars.tilesize;
-      if(!b.lastFogRad.fEqual(b.fogRad, 0.5)) {
-        GLB_var.fogControl.forceUpdate(b.team, b);
-        b.lastFogRad = b.fogRad;
-      };
+    /**
+     * @private
+     * @param {BLKLight} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(Stat.range, blk.delegee.lightRad / Vars.tilesize, StatUnit.blocks);
     };
-  };
 
 
-  function comp_drawSelect(b) {
-    Drawf.dashCircle(b.x, b.y, b.block.delegee.lightRad * b.lightWarmup, Pal.accent);
-  };
+    /**
+     * @private
+     * @param {BLKLight} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {number} rot
+     * @param {boolean} valid
+     * @return {void}
+     */
+    function comp_drawPlace(blk, tx, ty, rot, valid) {
+        Drawf.dashCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.lightRad, valid ? Pal.accent : Pal.remove);
+    };
 
 
-  function comp_drawLight(b) {
-    LCDrawf.light(
-      b.x, b.y, b.lightWarmup,
-      b.block.delegee.lightRad * b.lightWarmup * 0.6,
-      b.block.size, LCDrawf.lightColor,
-      b.block.delegee.lightA * Interp.pow3In.apply(b.lightWarmup),
-    );
-  };
+    /**
+     * @private
+     * @param {BLight} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        b.delegee.lightWarmup = Mathf.approachDelta(b.delegee.lightWarmup, Mathf.clamp(b.efficiency), 0.004);
+        if(GLB_timer.secQuarter && b.block.delegee.fogRadFrac > 0.0) {
+            b.delegee.fogRad = b.block.delegee.lightRad * b.block.delegee.fogRadFrac * b.delegee.lightWarmup / Vars.tilesize;
+            if(!b.delegee.lastFogRad.fEqual(b.delegee.fogRad, 0.5)) {
+                GLB_var.fogControl.forceUpdate(b.team, b);
+                b.delegee.lastFogRad = b.delegee.fogRad;
+            };
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {BLight} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        Drawf.dashCircle(b.x, b.y, b.block.delegee.lightRad * b.delegee.lightWarmup, Pal.accent);
+    };
+
+
+    /**
+     * @private
+     * @param {BLight} b
+     * @return {void}
+     */
+    function comp_drawLight(b) {
+        LCDrawf.light(
+            b.x, b.y, b.delegee.lightWarmup,
+            b.block.delegee.lightRad * b.delegee.lightWarmup * 0.6,
+            b.block.size, LCDrawf.lightColor,
+            b.block.delegee.lightA * Interp.pow3In.apply(b.delegee.lightWarmup),
+        );
+    };
 
 
 /*
@@ -69,171 +115,183 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Light block but actually a factory.
-     * The range and lightness are determined by efficiency.
-     * @class BLK_light
-     * @extends BLK_baseFactory
-     */
-    newClass().extendClass(PARENT[0], "BLK_light").initClass()
-    .setParent(GenericCrafter)
-    .setTags("blk-non-fac")
-    .setParam({
+        /**
+         * Light block but actually a crafter.
+         * The range and lightness are determined by efficiency.
+         * @class BLK_light
+         * @extends BLK_baseFactory
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_light")
+        .initTemplate()
+        .setParent(GenericCrafter)
+        .setTags("blk-non-fac")
+        .setParam({
 
 
-      /**
-       * `PARAM`: Light radius of this block at efficiency of 1.0.
-       * @memberof BLK_light
-       * @instance
-       */
-      lightRad: 200.0,
-      /**
-       * `PARAM`: Lightness of this block.
-       * @memberof BLK_light
-       * @instance
-       */
-      lightA: 0.65,
-      /**
-       * `PARAM`: Fraction of light radius as fog radius. Uses static fog radius if not set.
-       * @memberof BLK_light
-       * @instance
-       */
-      fogRadFrac: 0.0,
+            /**
+             * `PARAM`: Light radius of this block at efficiency of 1.0.
+             * @memberof BLK_light
+             * @instance
+             * @type {number}
+             */
+            lightRad: 200.0,
+            /**
+             * `PARAM`: Lightness of this block.
+             * @memberof BLK_light
+             * @instance
+             * @type {number}
+             */
+            lightA: 0.65,
+            /**
+             * `PARAM`: Fraction of light radius as fog radius. Uses static fog radius if not set.
+             * @memberof BLK_light
+             * @instance
+             * @type {number}
+             */
+            fogRadFrac: 0.0,
 
 
-    })
-    .setParamParser([
-      "lightRad", function(val) {
-        this["lightClipSize"] = val * 3.0;
-        return val;
-      },
-    ])
-    .setMethod({
+        })
+        .setParamParser([
+            "lightRad", function(val) {
+                this["lightClipSize"] = val * 3.0;
+                return val;
+            },
+        ])
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-      drawPlace: function(tx, ty, rot, valid) {
-        comp_drawPlace(this, tx, ty, rot, valid);
-      },
+            drawPlace: function(tx, ty, rot, valid) {
+                comp_drawPlace(this, tx, ty, rot, valid);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_light
-     * @extends B_baseFactory
-     */
-    newClass().extendClass(PARENT[1], "B_light").initClass()
-    .setParent(GenericCrafter.GenericCrafterBuild)
-    .setParam({
+        /**
+         * @class B_light
+         * @extends B_baseFactory
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_light")
+        .initTemplate()
+        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_light
-       * @instance
-       */
-      lightWarmup: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_light
-       * @instance
-       */
-      fogRad: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_light
-       * @instance
-       */
-      lastFogRad: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_light
+             * @instance
+             * @type {number}
+             */
+            lightWarmup: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_light
+             * @instance
+             * @type {number}
+             */
+            fogRad: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_light
+             * @instance
+             * @type {number}
+             */
+            lastFogRad: 0.0,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      warmup: function() {
-        return this.lightWarmup;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            warmup: function() {
+                return this.delegee.lightWarmup;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      fogRadius: function() {
-        return this.block.delegee.fogRadFrac < 0.0001 ?
-          this.block.fogRadius :
-          this.fogRad;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            fogRadius: function() {
+                return this.block.delegee.fogRadFrac < 0.0001 ?
+                    this.block.fogRadius :
+                    this.delegee.fogRad;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      drawSelect: function() {
-        comp_drawSelect(this);
-      },
+            drawSelect: function() {
+                comp_drawSelect(this);
+            },
 
 
-      drawLight: function() {
-        comp_drawLight(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawLight: function() {
+                comp_drawLight(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      write: function(wr) {
-        this.ex_processData(wr);
-        wr.f(this.lightWarmup);
-      },
+            write: function(wr) {
+                this.self.ex_processData(wr);
+                wr.f(this.delegee.lightWarmup);
+            },
 
 
-      read: function(rd, revi) {
-        if(this.LCRevi === 5) rd.s();
-
-        this.ex_processData(rd);
-        this.lightWarmup = rd.f();
-      },
-
-
-      /**
-       * @memberof B_light
-       * @instance
-       * @param {Writes|Reads} wr0rd
-       * @return {void}
-       */
-      ex_processData: function(wr0rd) {
-        // Do nothing
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 1,
-      }),
+            read: function(rd, revi) {
+                if(this.delegee.LCRevi === 5) {
+                    rd.s();
+                };
+                this.self.ex_processData(rd);
+                this.delegee.lightWarmup = rd.f();
+            },
 
 
-    }),
+            /**
+             * @memberof B_light
+             * @instance
+             * @func
+             * @param {Writes|Reads} wr0rd
+             * @return {void}
+             */
+            ex_processData: function(wr0rd) {
+                // Do nothing
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 1,
+            }),
 
 
-  ];
+        }),
+
+
+    ];

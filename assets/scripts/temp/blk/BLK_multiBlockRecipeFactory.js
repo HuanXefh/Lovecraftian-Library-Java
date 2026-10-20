@@ -5,13 +5,24 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_recipeFactory");
+    /**
+     * @typedef {TemplateInstance<MultiBlockCrafter, BLK_multiBlockRecipeFactory>} BLKMultiBlockRecipeFactory
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<MultiBlockCrafter.MultiBlockCrafterBuild, B_multiBlockRecipeFactory>} BMultiBlockRecipeFactory
+     * @prop {BLKMultiBlockRecipeFactory} block
+     */
+
+
+    const PARENT = require("lovec/temp/blk/BLK_recipeFactory");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -21,118 +32,144 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Non-square multi-crafter.
-     * @class BLK_multiBlockRecipeFactory
-     * @extends BLK_recipeFactory
-     */
-    newClass().extendClass(PARENT[0], "BLK_multiBlockRecipeFactory").initClass()
-    .setParent(MultiBlockCrafter)
-    .setTags()
-    .setParam({
+        /**
+         * Non-square multi-crafter.
+         * @class BLK_multiBlockRecipeFactory
+         * @extends BLK_recipeFactory
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_multiBlockRecipeFactory")
+        .initTemplate()
+        .setParent(MultiBlockCrafter)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @override
-       * @memberof BLK_multiBlockRecipeFactory
-       * @instance
-       */
-      payInputSideFracMode: SideFracModes.ALL,
-      /**
-       * `INTERNAL`
-       * @override
-       * @memberof BLK_multiBlockRecipeFactory
-       * @instance
-       */
-      payOutputSideFracMode: SideFracModes.ALL,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_multiBlockRecipeFactory
+             * @instance
+             * @type {ENumber}
+             */
+            payInputSideFracMode: SideFracModes.ALL,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_multiBlockRecipeFactory
+             * @instance
+             * @type {ENumber}
+             */
+            payOutputSideFracMode: SideFracModes.ALL,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      setStats: function(stats) {
-        this.multiBlockUpdater.setStats(getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                this.multiBlockUpdater.setStats(getCtStats(this, stats));
+            },
 
 
-      /**
-       * @override
-       * @memberof BLK_multiBlockRecipeFactory
-       * @instance
-       * @return {number}
-       */
-      ex_calcPayRoomDef: function() {
-        this.calcMaxSize(Tmp.p1, this.size, 0);
-        return Math.round((Tmp.p1.x + Tmp.p1.y) * 0.5);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * @override
+             * @memberof BLK_multiBlockRecipeFactory
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcPayRoomDef: function() {
+                this.calcMaxSize(Tmp.p1, this.size, 0);
+                return Math.round((Tmp.p1.x + Tmp.p1.y) * 0.5);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_multiBlockRecipeFactory
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_canSwitchDisable: function() {
+                return false;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    /**
-     * @class B_multiBlockRecipeFactory
-     * @extends B_recipeFactory
-     */
-    newClass().extendClass(PARENT[1], "B_multiBlockRecipeFactory").initClass()
-    .setParent(MultiBlockCrafterBuild)
-    .setParam({})
-    .setMethod({
+        }),
 
 
-      updateTile: function thisFun() {
-        this.updateLinkedBuilds();
-        thisFun.funPrev.call(this);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+        /**
+         * @class B_multiBlockRecipeFactory
+         * @extends B_recipeFactory
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_multiBlockRecipeFactory")
+        .initTemplate()
+        .setParent(MultiBlockCrafterBuild)
+        .setParam({})
+        .setMethod({
 
 
-      shouldDrawStatus: function() {
-        return this.block.enableDrawStatus;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            updateTile: function thisFun() {
+                this.updateLinkedBuilds();
+                thisFun.funPrev.call(this);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      drawStatus: function() {
-        // Use Java class method instead
-      }
-      .setProp({
-        override: true,
-      }),
+            shouldDrawStatus: function() {
+                return this.block.enableDrawStatus;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof B_multiBlockRecipeFactory
-       * @instance
-       * @return {void}
-       */
-      ex_showRcChangeEff: function() {
-        this.linkedBuilds.each(ob => GLB_eff.fadePlacePack[ob.block.size].at(ob));
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawStatus: function() {
+                // Use Java class method instead
+            }
+            .setProp({
+                override: true,
+            }),
 
 
-    }),
+            /**
+             * @override
+             * @memberof B_multiBlockRecipeFactory
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_showRcChangeEff: function() {
+                this.linkedBuilds.each(ob => GLB_eff.fadePlacePack[ob.block.size].at(ob));
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-  ];
+        }),
+
+
+    ];

@@ -5,30 +5,56 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_fluidRouter");
-  const INTF = require("lovec/temp/intf/INTF_BLK_pressureBlock");
+    /**
+     * @typedef {TemplateInstance<LiquidRouter, BLK_directionalFluidRouter>} BLKDirectionalFluidRouter
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<LiquidRouter.LiquidRouterBuild, B_directionalFluidRouter>} BDirectionalFluidRouter
+     * @prop {BLKDirectionalFluidRouter} block
+     */
 
 
-  function comp_init(blk) {
-    blk.rotate = true;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_fluidRouter");
+    const INTF_BLK_pressureBlock = require("lovec/temp/intf/INTF_BLK_pressureBlock");
 
 
-  function comp_load(blk) {
-    blk.sideReg1 = fetchRegion(blk, "-side1", "-side");
-    blk.sideReg2 = fetchRegion(blk, "-side2", "-side");
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_draw(b) {
-    LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
-  };
+    /**
+     * @private
+     * @param {BLKDirectionalFluidRouter} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.rotate = true;
+    };
+
+
+    /**
+     * @private
+     * @param {BLKDirectionalFluidRouter} blk
+     * @return {void}
+     */
+    function comp_load(blk) {
+        blk.delegee.sideReg1 = fetchRegion(blk, "-side1", "-side");
+        blk.delegee.sideReg2 = fetchRegion(blk, "-side2", "-side");
+    };
+
+
+    /**
+     * @private
+     * @param {BDirectionalFluidRouter} b
+     * @return {void}
+     */
+    function comp_draw(b) {
+        LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
+    };
 
 
 /*
@@ -38,107 +64,121 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Liquid router with rotation, so that it supports pressure transportation.
-     * @class BLK_directionalFluidRouter
-     * @extends BLK_fluidRouter
-     */
-    newClass().extendClass(PARENT[0], "BLK_directionalFluidRouter").implement(INTF[0]).initClass()
-    .setParent(LiquidRouter)
-    .setTags()
-    .setParam({
+        /**
+         * Liquid router with rotation, so that it supports pressure transportation.
+         * @class BLK_directionalFluidRouter
+         * @extends BLK_fluidRouter
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_directionalFluidRouter")
+        .implement(INTF_BLK_pressureBlock[0])
+        .initTemplate()
+        .setParent(LiquidRouter)
+        .setTags()
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /**
+             * @inheritdoc
+             * @memberof BLK_directionalFluidRouter
+             * @instance
+             * @type {boolean}
+             */
+            noPresExplode: true,
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_directionalFluidRouter
-       * @instance
-       */
-      sideReg1: null,
-      /**
-       * `INTERNAL`
-       * @memberof BLK_directionalFluidRouter
-       * @instance
-       */
-      sideReg2: null,
-      /**
-      * `INTERNAL`
-      * @override
-      * @memberof BLK_directionalFluidRouter
-      * @instance
-      */
-      isPresRouter: true,
-      /**
-      * `INTERNAL`
-      * @override
-      * @memberof BLK_directionalFluidRouter
-      * @instance
-      */
-      noPresExplode: true,
+            /* <------------------------------ internal ------------------------------> */
 
 
-    })
-    .setMethod({
+            /**
+             * `INTERNAL`
+             * @memberof BLK_directionalFluidRouter
+             * @instance
+             * @type {TextureRegion}
+             */
+            sideReg1: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_directionalFluidRouter
+             * @instance
+             * @type {TextureRegion}
+             */
+            sideReg2: null,
+            /**
+            * `INTERNAL`
+            * <br> `REALIZED`
+            * @override
+            * @memberof BLK_directionalFluidRouter
+            * @instance
+            * @type {boolean}
+            */
+            isPresRouter: true,
 
 
-      init: function() {
-        comp_init(this);
-      },
+        })
+        .setMethod({
 
 
-      load: function() {
-        comp_load(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      /**
-       * @override
-       * @memberof BLK_directionalFluidRouter
-       * @instance
-       * @return {boolean}
-       */
-      ex_isGateBlk: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            load: function() {
+                comp_load(this);
+            },
 
 
-    }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_directionalFluidRouter
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_isGateBlk: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    /**
-     * @class B_directionalFluidRouter
-     * @extends B_fluidRouter
-     */
-    newClass().extendClass(PARENT[1], "B_directionalFluidRouter").implement(INTF[1]).initClass()
-    .setParent(LiquidRouter.LiquidRouterBuild)
-    .setParam({})
-    .setMethod({
+        }),
 
 
-      acceptLiquid: function(b_f, liq) {
-        return LCGeometry.accept(b_f, this, MDL_cond.isFluidRouter(b_f.block), false);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+        /**
+         * @class B_directionalFluidRouter
+         * @extends B_fluidRouter
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_directionalFluidRouter")
+        .implement(INTF_BLK_pressureBlock[1])
+        .initTemplate()
+        .setParent(LiquidRouter.LiquidRouterBuild)
+        .setParam({})
+        .setMethod({
 
 
-      draw: function() {
-        comp_draw(this);
-      },
+            acceptLiquid: function(b_f, liq) {
+                return LCGeometry.accept(b_f, this, MDL_cond.isFluidRouter(b_f.block), false);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-    }),
+            draw: function() {
+                comp_draw(this);
+            },
 
 
-  ];
+        }),
+
+
+    ];

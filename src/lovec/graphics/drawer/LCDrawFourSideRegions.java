@@ -4,7 +4,7 @@ import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Eachable;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import lovec.graphics.LCDraw;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -13,7 +13,7 @@ import mindustry.world.Block;
 /**
  * Draws different regions for each rotation.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawFourSideRegions extends LCDrawer {
 
 

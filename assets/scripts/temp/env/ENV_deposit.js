@@ -28,7 +28,7 @@
         blk.floating = true;
         blk.placeableLiquid = true;
 
-        if(blk.itemDrop == null) throw new NullArgumentError(blk.name + ".itemDrop");
+        if(blk.itemDrop == null) throw new LCError.NullArgumentError(blk.name + ".itemDrop");
         MDL_content.rename(
             blk,
             blk.itemDrop.localizedName + MDL_text.getSpace() + "(" + MDL_bundle.getTerm("lovec", "deposit") + ")",

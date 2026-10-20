@@ -41,8 +41,8 @@
          * @return {boolean}
          */
         function checkTarget(parser, blk) {
-            return (parser.tempBlacklist == null || !checkCreatedByTemp(blk) || !parser.tempBlacklist.includes(blk.ex_getTempName()))
-                && (parser.tempWhitelist == null || !checkCreatedByTemp(blk) || parser.tempWhitelist.includes(blk.ex_getTempName()));
+            return (parser.tempBlacklist == null || !checkCreatedByTemp(blk) || !parser.tempBlacklist.includes(blk.self.ex_getTempName()))
+                && (parser.tempWhitelist == null || !checkCreatedByTemp(blk) || parser.tempWhitelist.includes(blk.self.ex_getTempName()));
         };
 
 
@@ -122,7 +122,7 @@
                 if(blk instanceof BeamDrill) {
                     this.wallDropSet.each(
                         oblk => {
-                            if(!blk.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
+                            if(!blk.self.ex_canMine(oblk, oblk.itemDrop, 1.0)) return;
 
                             let blkTarget;
                             if(blk.delegee.shouldDropPay) {
@@ -153,7 +153,7 @@
                 } else {
                     this.flrDropSet.each(
                         oblk => {
-                            if(!blk.ex_canMine(
+                            if(!blk.self.ex_canMine(
                                 oblk, oblk.itemDrop,
                                 !MDL_cond.isDepthOre(oblk) ?
                                     1.0 :
@@ -234,7 +234,7 @@
              */
             parse(blk) {
                 let seq = new Seq();
-                global.fcell.fluidItemMap.each((liq, item) => {
+                global.fcell.eachPair((liq, item) => {
                     let rawRc = MOD_tmi.makeRawRc(
                         "factory",
                         blk,
@@ -300,7 +300,7 @@
              */
             parse(blk) {
                 let rawRc = MOD_tmi.makeRawRc(
-                    tryVal(blk.ex_getRangeAttrProdTypeStr(), "collecting"),
+                    tryVal(blk.self.ex_getRangeAttrProdTypeStr(), "collecting"),
                     blk,
                     MDL_content.getCraftTime(blk),
                     true,
@@ -311,8 +311,8 @@
                 });
                 let rcGrp = new MOD_tmi.classes.RecipeItemGroup();
                 Vars.content.blocks().each(
-                    oblk => !oblk.attributes.get(blk.ex_getAttrTarget()).fEqual(0.0),
-                    oblk => MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.attributes.get(blk.ex_getAttrTarget()), blk.size, true, AttrRecipeTypes.PROP),
+                    oblk => !oblk.attributes.get(blk.self.ex_getAttrTarget()).fEqual(0.0),
+                    oblk => MOD_tmi.addAttr(rawRc, rcGrp, oblk, oblk.attributes.get(blk.self.ex_getAttrTarget()), blk.size, true, AttrRecipeTypes.PROP),
                 );
 
                 rawRc.complete();
@@ -377,7 +377,7 @@
             parse(blk) {
                 let seq = new Seq();
                 // Depth pumps don't use this parser
-                if(blk.ex_isSubInsOf("BLK_depthPump")) return seq;
+                if(blk.self.ex_isSubInsOf("BLK_depthPump")) return seq;
                 this.liqBlksMap.each((liq, blks) => {
                     let rawRc = MOD_tmi.makeRawRc("collecting", blk, blk.consumeTime, true);
                     let rcGrp = new MOD_tmi.classes.RecipeItemGroup();
@@ -501,8 +501,8 @@
              */
             isTarget(blk) {
                 return checkCreatedByTemp(blk) && (
-                    (blk.ex_isSubInsOf("BLK_baseFactory") && !blk.ex_isSubInsOf("BLK_recipeFactory") && checkTarget(this, blk))
-                        || this.tempTypeMap.containsKey(blk.ex_getTempName())
+                    (blk.self.ex_isSubInsOf("BLK_baseFactory") && !blk.self.ex_isSubInsOf("BLK_recipeFactory") && checkTarget(this, blk))
+                        || this.tempTypeMap.containsKey(blk.self.ex_getTempName())
                 );
             },
 
@@ -513,7 +513,7 @@
              */
             parse(blk) {
                 let rawRc = MOD_tmi.makeRawRc(
-                    this.tempTypeMap.get(blk.ex_getTempName(), "factory"),
+                    this.tempTypeMap.get(blk.self.ex_getTempName(), "factory"),
                     blk,
                     MDL_content.getCraftTime(blk),
                 );

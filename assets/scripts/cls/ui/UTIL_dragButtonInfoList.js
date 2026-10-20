@@ -124,7 +124,7 @@
      * @return {void}
      */
     UTIL_dragButtonInfoList.show = function() {
-        fetchDialog("infoListMain").ex_show(infoListData, moddedNames);
+        fetchDialog("infoListMain").self.ex_show(infoListData, moddedNames);
     };
 
 

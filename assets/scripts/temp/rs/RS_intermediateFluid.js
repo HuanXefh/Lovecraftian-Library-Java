@@ -75,7 +75,7 @@
          * @override
          * @memberof RS_intermediateFluid
          * @instance
-         * @type {string|Resource|null}
+         * @type {ResourceGn}
          */
         intmdParent: null,
         /**

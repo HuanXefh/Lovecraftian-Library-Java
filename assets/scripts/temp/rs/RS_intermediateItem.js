@@ -80,7 +80,7 @@
          * @override
          * @memberof RS_intermediateItem
          * @instance
-         * @type {string|Resource|null}
+         * @type {ResourceGn}
          */
         intmdParent: null,
         /**

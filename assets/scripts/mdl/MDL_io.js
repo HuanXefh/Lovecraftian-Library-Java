@@ -327,10 +327,10 @@
 
 
     /**
-     * Writes or reads a Lovec math matrix.
+     * Writes or reads a Lovec matrix.
      * @param {Writes|Reads} wr0rd
-     * @param {MathMatrix|unset} [mat]
-     * @return {MathMatrix|unset}
+     * @param {LCMatrix|unset} [mat]
+     * @return {LCMatrix|unset}
      */
     const lcMat = function(wr0rd, mat) {
         return processData(
@@ -343,7 +343,7 @@
             rd => {
                 let nums = fs(rd, []);
                 let colAmt = nums.shift();
-                return new MathMatrix(nums.chunk(colAmt, 0));
+                return new LCMatrix(nums.chunk(colAmt, 0));
             },
         );
     };

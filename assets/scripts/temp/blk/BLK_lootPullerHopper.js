@@ -5,73 +5,110 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_lootHopper");
-  const INTF = require("lovec/temp/intf/INTF_BLK_radiusDisplay");
+    /**
+     * @typedef {TemplateInstance<StorageBlock, BLK_lootPullerHopper>} BLKLootPullerHopper
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<StorageBlock.StorageBuild, B_lootPullerHopper>} BLootPullerHopper
+     * @prop {BLKLootPullerHopper} block
+     */
 
 
-  function comp_init(blk) {
-    blk.drawCached = false;
-    blk.drawDynamic = true;
-
-    blk.ex_addLogicF(LogicProp.range, b => blk.blkRad / Vars.tilesize);
-  };
+    const PARENT = require("lovec/temp/blk/BLK_lootHopper");
+    const INTF_BLK_radiusDisplay = require("lovec/temp/intf/INTF_BLK_radiusDisplay");
 
 
-  function comp_load(blk) {
-    blk.glowReg = fetchRegionOrNull(blk, "-glow");
-
-    blk.pullSe = fetchSound(blk.pullSe);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_setStats(blk, stats) {
-    stats.add(Stat.range, blk.blkRad / Vars.tilesize, StatUnit.blocks);
-  };
+    /**
+     * @private
+     * @param {BLKLootPullerHopper} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.drawCached = false;
+        blk.drawDynamic = true;
 
-
-  function comp_updateTile(b) {
-    if(!b.isPulling) {
-      b.progWait += b.edelta();
-      if(b.progWait > b.block.delegee.intvPull) {
-        b.progWait %= b.block.delegee.intvPull;
-        LCEntity.getLoots(b.pullTargets, b.x, b.y, b.block.delegee.blkRad).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
-        b.isPulling = b.pullTargets.length > 0;
-      };
-    } else {
-      b.progPull += Time.delta;
-      if(b.progPull > b.block.delegee.durPull) {
-        b.progPull %= b.block.delegee.durPull;
-        b.isPulling = false;
-      } else {
-        b.pullTargets.forEachFast(loot => {
-          loot.impulse(Tmp.v2.set(loot).sub(b.x, b.y).nor().scl(-b.block.delegee.powPull * b.glowHeat));
-        }, true);
-      };
-
-      if(!Vars.headless) {
-        Vars.control.sound.loop(b.block.delegee.pullSe, b, 0.7);
-      };
+        blk.self.ex_addLogicF(LogicProp.range, b => blk.delegee.blkRad / Vars.tilesize);
     };
 
-    b.glowHeat = Mathf.approachDelta(b.glowHeat, b.isPulling ? 1.0 : 0.0, b.isPulling ? 0.006 : 0.02);
-  };
 
-
-  function comp_draw(b) {
-    LCDrawf.fade(b.x, b.y, b.block.delegee.glowReg, 1.0, 0.0, 1.0, Color.white, b.glowHeat * 0.7);
-
-    if(b.glowHeat > 0.01) {
-      b.pullTargets.forEachFast(loot => {
-        if(loot.isAdded()) LCDrawf.arrowLine(loot.x, loot.y, b.x, b.y, 2.0, 1.0, Color.white, 0.35 * b.glowHeat, GLB_var.layer.effFlr);
-      }, true);
+    /**
+     * @private
+     * @param {BLKLootPullerHopper} blk
+     * @return {void}
+     */
+    function comp_load(blk) {
+        blk.delegee.glowReg = fetchRegionOrNull(blk, "-glow");
+        blk.delegee.pullSe = fetchSound(blk.delegee.pullSe);
     };
-  };
+
+
+    /**
+     * @private
+     * @param {BLKLootPullerHopper} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(Stat.range, blk.delegee.blkRad / Vars.tilesize, StatUnit.blocks);
+    };
+
+
+    /**
+     * @private
+     * @param {BLootPullerHopper} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(!b.delegee.isPulling) {
+            b.delegee.progWait += b.edelta();
+            if(b.delegee.progWait > b.block.delegee.intvPull) {
+                b.delegee.progWait %= b.block.delegee.intvPull;
+                LCEntity.getLoots(b.delegee.pullTargets, b.x, b.y, b.block.delegee.blkRad).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
+                b.delegee.isPulling = b.delegee.pullTargets.length > 0;
+            };
+        } else {
+            b.delegee.progPull += Time.delta;
+            if(b.delegee.progPull > b.block.delegee.durPull) {
+                b.delegee.progPull %= b.block.delegee.durPull;
+                b.delegee.isPulling = false;
+            } else {
+                b.delegee.pullTargets.forEachFast(loot => {
+                    loot.impulse(Tmp.v2.set(loot).sub(b.x, b.y).nor().scl(-b.block.delegee.powPull * b.delegee.glowHeat));
+                }, true);
+            };
+
+            if(!Vars.headless) {
+                Vars.control.sound.loop(b.block.delegee.pullSe, b, 0.7);
+            };
+        };
+
+        b.delegee.glowHeat = Mathf.approachDelta(b.delegee.glowHeat, b.delegee.isPulling ? 1.0 : 0.0, b.delegee.isPulling ? 0.006 : 0.02);
+    };
+
+
+    /**
+     * @private
+     * @param {BLootPullerHopper} b
+     * @return {void}
+     */
+    function comp_draw(b) {
+        LCDrawf.fade(b.x, b.y, b.block.delegee.glowReg, 1.0, 0.0, 1.0, Color.white, b.delegee.glowHeat * 0.7);
+        if(b.delegee.glowHeat > 0.01) {
+            b.delegee.pullTargets.forEachFast(loot => {
+                if(loot.isAdded()) {
+                    LCDrawf.arrowLine(loot.x, loot.y, b.x, b.y, 2.0, 1.0, Color.white, 0.35 * b.delegee.glowHeat, GLB_var.layer.effFlr);
+                };
+            }, true);
+        };
+    };
 
 
 /*
@@ -81,150 +118,167 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Loot hopper that actively pulls nearby loots towards it.
-     * <br> Nah I won't do regular radius loot collector.
-     * @class BLK_lootPullerHopper
-     * @extends BLK_lootHopper
-     * @extends INTF_BLK_radiusDisplay
-     */
-    newClass().extendClass(PARENT[0], "BLK_lootPullerHopper").implement(INTF[0]).initClass()
-    .setParent(StorageBlock)
-    .setTags("blk-non-cont")
-    .setParam({
+        /**
+         * Loot hopper that actively pulls nearby loots towards it.
+         * <br> Nah I won't do regular radius loot collector.
+         * @class BLK_lootPullerHopper
+         * @extends BLK_lootHopper
+         * @extends INTF_BLK_radiusDisplay
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_lootPullerHopper")
+        .implement(INTF_BLK_radiusDisplay[0])
+        .initTemplate()
+        .setParent(StorageBlock)
+        .setTags("blk-non-cont")
+        .setParam({
 
 
-      /**
-       * `PARAM`: Pull power.
-       * @memberof BLK_lootPullerHopper
-       * @instance
-       */
-      powPull: 8.0,
-      /**
-       * `PARAM`: Duration of each pull.
-       * @memberof BLK_lootPullerHopper
-       * @instance
-       */
-      durPull: 240.0,
-      /**
-       * `PARAM`: Duration between each pull.
-       * @memberof BLK_lootPullerHopper
-       * @instance
-       */
-      intvPull: 240.0,
-      /**
-       * `PARAM`: Loop sound played when pulling loots.
-       * @memberof BLK_lootPullerHopper
-       * @instance
-       */
-      pullSe: "SOUNDS: beamParallax",
+            /**
+             * `PARAM`: Pull power.
+             * @memberof BLK_lootPullerHopper
+             * @instance
+             * @type {number}
+             */
+            powPull: 8.0,
+            /**
+             * `PARAM`: Duration of each pull.
+             * @memberof BLK_lootPullerHopper
+             * @instance
+             * @type {number}
+             */
+            durPull: 240.0,
+            /**
+             * `PARAM`: Duration between each pull.
+             * @memberof BLK_lootPullerHopper
+             * @instance
+             * @type {number}
+             */
+            intvPull: 240.0,
+            /**
+             * `PARAM`: Loop sound played when pulling loots.
+             * @memberof BLK_lootPullerHopper
+             * @instance
+             * @type {SoundGn}
+             */
+            pullSe: "SOUNDS: beamParallax",
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_lootPullerHopper
-       * @instance
-       */
-      glowReg: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_lootPullerHopper
+             * @instance
+             * @type {TextureRegion|null}
+             */
+            glowReg: null,
 
 
-    })
-    .setParamAlias([
-      /**
-       * `PARAM`: Maximum radius to pull.
-       * @type {number} pullRad
-       * @memberof BLK_lootPullerHopper
-       * @instance
-       */
-      "pullRad", "blkRad", 5 * 8.0,
-    ])
-    .setMethod({
+        })
+        .setParamAlias([
+            /**
+             * `ALIAS`: `blkRad`.
+             * @memberof BLK_lootPullerHopper
+             * @instance
+             * @name pullRad
+             * @type {number}
+             */
+            "pullRad", "blkRad", 5 * 8.0,
+        ])
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      load: function() {
-        comp_load(this);
-      },
+            load: function() {
+                comp_load(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_lootPullerHopper
-     * @extends B_lootHopper
-     * @extends INTF_B_radiusDisplay
-     */
-    newClass().extendClass(PARENT[1], "B_lootPullerHopper").implement(INTF[1]).initClass()
-    .setParent(StorageBlock.StorageBuild)
-    .setParam({
+        /**
+         * @class B_lootPullerHopper
+         * @extends B_lootHopper
+         * @extends INTF_B_radiusDisplay
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_lootPullerHopper")
+        .implement(INTF_BLK_radiusDisplay[1])
+        .initTemplate()
+        .setParent(StorageBlock.StorageBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_lootPullerHopper
-       * @instance
-       */
-      isPulling: false,
-      /**
-       * `INTERNAL`
-       * @memberof B_lootPullerHopper
-       * @instance
-       */
-      pullTargets: tprov(() => []),
-      /**
-       * `INTERNAL`
-       * @memberof B_lootPullerHopper
-       * @instance
-       */
-      progPull: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_lootPullerHopper
-       * @instance
-       */
-      progWait: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_lootPullerHopper
-       * @instance
-       */
-      glowHeat: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_lootPullerHopper
+             * @instance
+             * @type {boolean}
+             */
+            isPulling: false,
+            /**
+             * `INTERNAL`
+             * @memberof B_lootPullerHopper
+             * @instance
+             * @type {TDynamic<Array<LootUnit>>}
+             */
+            pullTargets: tprov(() => []),
+            /**
+             * `INTERNAL`
+             * @memberof B_lootPullerHopper
+             * @instance
+             * @type {number}
+             */
+            progPull: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_lootPullerHopper
+             * @instance
+             * @type {number}
+             */
+            progWait: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_lootPullerHopper
+             * @instance
+             * @type {number}
+             */
+            glowHeat: 0.0,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      draw: function() {
-        comp_draw(this);
-      },
+            draw: function() {
+                comp_draw(this);
+            },
 
 
-    }),
+        }),
 
 
-  ];
+    ];

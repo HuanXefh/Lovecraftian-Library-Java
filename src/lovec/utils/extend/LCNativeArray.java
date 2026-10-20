@@ -4,7 +4,7 @@ import arc.func.*;
 import arc.math.Mathf;
 import arc.util.Nullable;
 import arc.util.pooling.Pools;
-import lovec.annotation.JSPurpose;
+import lovec.annotation.LCForJavaScript;
 import lovec.utils.LCScript;
 import lovec.utils.TmpStateTag;
 import lovec.utils.func.Func4;
@@ -1576,7 +1576,7 @@ public class LCNativeArray {
      * @return Whether tuple is updated.
      */
     @SuppressWarnings("CollectionAddedToSelf")
-    @JSPurpose
+    @LCForJavaScript
     public static boolean checkTupChange(NativeArray tup, Object... eles) {
         boolean cond = tup.getLength() == 0;
         int i;

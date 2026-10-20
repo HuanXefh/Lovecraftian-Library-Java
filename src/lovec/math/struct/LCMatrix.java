@@ -11,7 +11,7 @@ import arc.util.Nullable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class MathMatrix implements Iterable<Double> {
+public class LCMatrix implements Iterable<Double> {
 
 
     protected static final StringBuilder strBuilder = new StringBuilder();
@@ -19,21 +19,21 @@ public class MathMatrix implements Iterable<Double> {
     protected double[][] data;
     protected final int rowAmt;
     protected final int colAmt;
-    private @Nullable MathMatrixIterator iterator;
+    private @Nullable MatrixIterator iterator;
 
 
-    public MathMatrix(int m, int n) {
+    public LCMatrix(int m, int n) {
         this.rowAmt = m;
         this.colAmt = n;
         this.data = new double[m][n];
     };
     // Overload
-    public MathMatrix(int n) {
+    public LCMatrix(int n) {
         this(n, n);
     };
 
 
-    public MathMatrix(double[][] matArr) {
+    public LCMatrix(double[][] matArr) {
         this.rowAmt = matArr.length;
         this.colAmt = matArr[0].length;
         this.data = matArr;
@@ -53,11 +53,11 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Gets an n-unit matrix.
      */
-    public static MathMatrix getUnitMat(int n, double def) {
-        return new MathMatrix(n).setEach((i, j) -> i == j ? def : 0);
+    public static LCMatrix getUnitMat(int n, double def) {
+        return new LCMatrix(n).setEach((i, j) -> i == j ? def : 0);
     };
     // Overload
-    public static MathMatrix getUnitMat(int n) {
+    public static LCMatrix getUnitMat(int n) {
         return getUnitMat(n, 1);
     };
 
@@ -65,7 +65,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Gets arbitrary rotation matrix.
      */
-    public static MathMatrix getRotMat(int n, int p, int q, float ang) throws IllegalArgumentException {
+    public static LCMatrix getRotMat(int n, int p, int q, float ang) throws IllegalArgumentException {
         if(p == q) throw new IllegalArgumentException("`p` and `q` cannot be equal in a rotation matrix!");
         double[][] matArr = new double[n][n];
         for(int j = 0; j < n; j++) {
@@ -81,32 +81,32 @@ public class MathMatrix implements Iterable<Double> {
                 };
             };
         };
-        return new MathMatrix(matArr);
+        return new LCMatrix(matArr);
     };
 
 
     /**
      * Gets a 2D-rotation matrix.
      */
-    public static MathMatrix getRotMat2d(float ang) {
+    public static LCMatrix getRotMat2d(float ang) {
         double[][] matArr = {
             {Mathf.cosDeg(ang), -Mathf.sinDeg(ang)},
             {Mathf.sinDeg(ang), Mathf.cosDeg(ang)}
         };
-        return new MathMatrix(matArr);
+        return new LCMatrix(matArr);
     };
 
 
     /**
      * Gets a 3D-rotation matrix.
      */
-    public static MathMatrix getRotMat3d(float angZ, float angY, float angX) {
+    public static LCMatrix getRotMat3d(float angZ, float angY, float angX) {
         double[][] matArr = {
             {Mathf.cosDeg(angZ) * Mathf.cosDeg(angY), Mathf.cosDeg(angZ) * Mathf.sinDeg(angY) * Mathf.sinDeg(angX) - Mathf.sinDeg(angZ) * Mathf.cosDeg(angX), Mathf.cosDeg(angZ) * Mathf.sinDeg(angY) * Mathf.cosDeg(angX) + Mathf.sinDeg(angZ) * Mathf.sinDeg(angX)},
             {Mathf.sinDeg(angZ) * Mathf.cosDeg(angY), Mathf.sinDeg(angZ) * Mathf.sinDeg(angY) * Mathf.sinDeg(angX) + Mathf.cosDeg(angZ) * Mathf.cosDeg(angX), Mathf.sinDeg(angZ) * Mathf.sinDeg(angY) * Mathf.cosDeg(angX) - Mathf.cosDeg(angZ) * Mathf.sinDeg(angX)},
             {-Mathf.sinDeg(angY), Mathf.cosDeg(angY) * Mathf.sinDeg(angX), Mathf.cosDeg(angY) * Mathf.cosDeg(angX)}
         };
-        return new MathMatrix(matArr);
+        return new LCMatrix(matArr);
     };
 
 
@@ -167,7 +167,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Whether the two matrices are of the same size.
      */
-    public boolean isSameSizeWith(MathMatrix mat) {
+    public boolean isSameSizeWith(LCMatrix mat) {
         return isSameSizeWith(mat.data);
     };
     // Overload
@@ -179,7 +179,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Whether this matrix can multiply with {@code mat}.
      */
-    public boolean canMultiply(MathMatrix mat) {
+    public boolean canMultiply(LCMatrix mat) {
         return canMultiply(mat.data);
     };
     // Overload
@@ -215,7 +215,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Sets up this matrix with given values.
      */
-    public MathMatrix set(double[][] matArr) throws IllegalArgumentException {
+    public LCMatrix set(double[][] matArr) throws IllegalArgumentException {
         if(matArr.length != rowAmt || matArr[0].length != colAmt) throw new IllegalArgumentException("Unmatched matrix size");
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < colAmt; i++) {
@@ -225,7 +225,7 @@ public class MathMatrix implements Iterable<Double> {
         return this;
     };
     // Overload
-    public MathMatrix set(double num) {
+    public LCMatrix set(double num) {
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < colAmt; i++) {
                 data[j][i] = num;
@@ -238,7 +238,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Sets element at (x, y).
      */
-    public MathMatrix set(int x, int y, double num) {
+    public LCMatrix set(int x, int y, double num) {
         data[y][x] = num;
         return this;
     };
@@ -247,7 +247,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Sets each element in this matrix by using a {@link Func2}.
      */
-    public MathMatrix setEach(Func2<Integer, Integer, Double> mapper) {
+    public LCMatrix setEach(Func2<Integer, Integer, Double> mapper) {
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < colAmt; i++) {
                 data[j][i] = mapper.get(i, j);
@@ -263,11 +263,11 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Adds another matrix.
      */
-    public MathMatrix add(MathMatrix mat) throws IllegalArgumentException {
+    public LCMatrix add(LCMatrix mat) throws IllegalArgumentException {
         return add(mat.data);
     };
     // Overload
-    public MathMatrix add(double[][] matArr) throws IllegalArgumentException {
+    public LCMatrix add(double[][] matArr) throws IllegalArgumentException {
         if(!isSameSizeWith(matArr)) throw new IllegalArgumentException("Unmatched matrix size");
         setEach((i, j) -> data[j][i] + matArr[j][i]);
         return this;
@@ -277,11 +277,11 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Subtracts another matrix.
      */
-    public MathMatrix sub(MathMatrix mat) throws IllegalArgumentException {
+    public LCMatrix sub(LCMatrix mat) throws IllegalArgumentException {
         return sub(mat.data);
     };
     // Overload
-    public MathMatrix sub(double[][] matArr) throws IllegalArgumentException {
+    public LCMatrix sub(double[][] matArr) throws IllegalArgumentException {
         if(!isSameSizeWith(matArr)) throw new IllegalArgumentException("Unmatched matrix size");
         return scl(-1).add(matArr).scl(-1);
     };
@@ -290,12 +290,12 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Multiplies a scalar.
      */
-    public MathMatrix scl(double num) {
+    public LCMatrix scl(double num) {
         setEach((i, j) -> data[j][i] * num);
         return this;
     };
     // Overload
-    public MathMatrix scl(MathMatrix mat) throws IllegalArgumentException {
+    public LCMatrix scl(LCMatrix mat) throws IllegalArgumentException {
         if(mat.rowAmt != 1 || mat.colAmt != 1) throw new IllegalArgumentException("Given matrix is not 1x1!");
         return scl(mat.get(0, 0));
     };
@@ -305,13 +305,13 @@ public class MathMatrix implements Iterable<Double> {
      * Multiplies another matrix.
      * Result is returned as a new matrix.
      */
-    public MathMatrix mul(MathMatrix mat) throws IllegalArgumentException {
+    public LCMatrix mul(LCMatrix mat) throws IllegalArgumentException {
         return mul(mat.data);
     };
     // Overload
-    public MathMatrix mul(double[][] matArr) throws IllegalArgumentException {
+    public LCMatrix mul(double[][] matArr) throws IllegalArgumentException {
         if(!canMultiply(matArr)) throw new IllegalArgumentException("Unmatched matrix size");
-        var mat0 = new MathMatrix(rowAmt, matArr[0].length);
+        var mat0 = new LCMatrix(rowAmt, matArr[0].length);
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < matArr[0].length; i++) {
                 double sum = 0;
@@ -329,8 +329,8 @@ public class MathMatrix implements Iterable<Double> {
      * Transpose this matrix.
      * Result is returned as a new matrix.
      */
-    public MathMatrix transpose() {
-        var mat0 = new MathMatrix(colAmt, rowAmt);
+    public LCMatrix transpose() {
+        var mat0 = new LCMatrix(colAmt, rowAmt);
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < colAmt; i++) {
                 mat0.data[i][j] = data[j][i];
@@ -364,8 +364,8 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Gets submatrix at (x, y).
      */
-    public MathMatrix submat(int x, int y) {
-        var mat0 = new MathMatrix(rowAmt - 1, colAmt - 1);
+    public LCMatrix submat(int x, int y) {
+        var mat0 = new LCMatrix(rowAmt - 1, colAmt - 1);
         for(int j = 0; j < rowAmt - 1; j++) {
             for(int i = 0; i < colAmt - 1; i++) {
                 mat0.set(i, j, data[j >= y ? j + 1 : j][i >= x ? i + 1 : i]);
@@ -414,9 +414,9 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Gets adjugate of this matrix.
      */
-    public MathMatrix adjugate() throws IllegalArgumentException {
+    public LCMatrix adjugate() throws IllegalArgumentException {
         if(!isSquare()) throw new IllegalArgumentException("Only square matrices can have adjugate!");
-        var mat = new MathMatrix(rowAmt, colAmt);
+        var mat = new LCMatrix(rowAmt, colAmt);
         for(int j = 0; j < rowAmt; j++) {
             for(int i = 0; i < colAmt; i++) {
                 mat.set(i, j, cofactor(i, j));
@@ -430,7 +430,7 @@ public class MathMatrix implements Iterable<Double> {
      * Calculates inverse of this matrix.
      * Returns null if no inverse.
      */
-    public @Nullable MathMatrix inverse() throws IllegalArgumentException {
+    public @Nullable LCMatrix inverse() throws IllegalArgumentException {
         if(!isSquare()) throw new IllegalArgumentException("Only square matrices can have inverse!");
         var det = det();
         if(Math.abs(det) < 0.000001) return null;
@@ -455,8 +455,8 @@ public class MathMatrix implements Iterable<Double> {
     /* <-------------------- util --------------------> */
 
 
-    public MathMatrix cpy() {
-        return new MathMatrix(data);
+    public LCMatrix cpy() {
+        return new LCMatrix(data);
     };
 
 
@@ -529,19 +529,19 @@ public class MathMatrix implements Iterable<Double> {
      * Converts `arr` to a vector.
      * Result is a column vector by default.
      */
-    public static MathMatrix getVec(double[] arr, boolean isRowVec) {
+    public static LCMatrix getVec(double[] arr, boolean isRowVec) {
         if(!isRowVec) {
             double[][] matArr = {arr};
-            return new MathMatrix(matArr);
+            return new LCMatrix(matArr);
         };
         var matArr = new double[1][arr.length];
         for(int i = 0; i < arr.length; i++) {
             matArr[i][0] = arr[i];
         };
-        return new MathMatrix(matArr);
+        return new LCMatrix(matArr);
     };
     // Overload
-    public static MathMatrix getVec(double[] arr) {
+    public static LCMatrix getVec(double[] arr) {
         return getVec(arr, false);
     };
 
@@ -549,7 +549,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Converts an Arc vector into matrix vector.
      */
-    public static @Nullable MathMatrix fromArcVec(Object arcVec, boolean isRowVec) {
+    public static @Nullable LCMatrix fromArcVec(Object arcVec, boolean isRowVec) {
         if(arcVec instanceof Vec2 vec2) {
             double[] arr = {vec2.x, vec2.y};
             return getVec(arr, isRowVec);
@@ -561,7 +561,7 @@ public class MathMatrix implements Iterable<Double> {
         return null;
     };
     // Overload
-    public static @Nullable MathMatrix fromArcVec(Object arcVec) {
+    public static @Nullable LCMatrix fromArcVec(Object arcVec) {
         return fromArcVec(arcVec, false);
     };
 
@@ -569,7 +569,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Converts a matrix vector into Arc vector.
      */
-    public static @Nullable Object toArcVec(MathMatrix vec) throws IllegalArgumentException {
+    public static @Nullable Object toArcVec(LCMatrix vec) throws IllegalArgumentException {
         if(!vec.isVec()) throw new IllegalArgumentException("Argument is not a vector:\n" + vec);
         var arr = vec.toArray();
         if(arr.length == 2) {
@@ -652,7 +652,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Normalizes this vector.
      */
-    public MathMatrix nor(double len) throws IllegalArgumentException {
+    public LCMatrix nor(double len) throws IllegalArgumentException {
         if(!this.isVec()) throw new IllegalArgumentException("Argument is not a vector:\n" + this);
         // Do nothing for zero vector
         if(Math.abs(len) < 0.0001) return this;
@@ -669,7 +669,7 @@ public class MathMatrix implements Iterable<Double> {
         return this;
     };
     // Overload
-    public MathMatrix nor() throws IllegalArgumentException {
+    public LCMatrix nor() throws IllegalArgumentException {
         return nor(1);
     };
 
@@ -680,7 +680,7 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Calculates dot product with another vector.
      */
-    public double dotMul(MathMatrix vec) throws IllegalArgumentException {
+    public double dotMul(LCMatrix vec) throws IllegalArgumentException {
         if(!this.isVec()) throw new IllegalArgumentException("Argument is not a vector:\n" + this);
         if(!vec.isVec()) throw new IllegalArgumentException("Argument is not a vector:\n" + vec);
         return dotMul(vec.toArray());
@@ -695,19 +695,19 @@ public class MathMatrix implements Iterable<Double> {
     /**
      * Calculates cross product with another vector (3D only).
      */
-    public MathMatrix crossMul(MathMatrix vec) throws IllegalArgumentException {
+    public LCMatrix crossMul(LCMatrix vec) throws IllegalArgumentException {
         var vec0 = isRowVec() ? this : this.transpose();
         return crossMul(vec.toArray());
     };
     // Overload
-    public MathMatrix crossMul(double[] arr) throws IllegalArgumentException {
+    public LCMatrix crossMul(double[] arr) throws IllegalArgumentException {
         if(getDimension() != 3 || arr.length != 3) throw new IllegalArgumentException("Cross product is only for 3D-vectors!");
         double[][] matArr = {
             {0, data[2][0], data[1][0]},
             {data[2][0], 0, -data[0][0]},
             {-data[1][0], data[0][0], 0}
         };
-        return new MathMatrix(matArr).mul(getVec(arr));
+        return new LCMatrix(matArr).mul(getVec(arr));
     };
 
 
@@ -727,12 +727,12 @@ public class MathMatrix implements Iterable<Double> {
 
     @Override
     public Iterator<Double> iterator() {
-        if(iterator == null) iterator = new MathMatrixIterator();
+        if(iterator == null) iterator = new MatrixIterator();
         return iterator;
     };
 
 
-    private class MathMatrixIterator implements Iterator<Double> {
+    private class MatrixIterator implements Iterator<Double> {
 
 
         int ind = -1;

@@ -61,7 +61,7 @@
         if(b.delegee.graphCur.graphData != null && !b.delegee.graphCur.graphData.justShrunk) {
             b.delegee.graphCur.graphData.justShrunk = true;
             Core.app.post(() => {
-                b.delegee.graphCur.shrink((ob, vert) => !ob.ex_isExpiredVert());
+                b.delegee.graphCur.shrink((ob, vert) => !ob.self.ex_isExpiredVert());
                 b.delegee.graphCur.shrink((ob, vert) => ob.isAdded() && !ob.isPayload());
                 b.delegee.graphCur.graphData.justShrunk = false;
             });
@@ -229,7 +229,7 @@
                      * `INTERNAL`: Current graph of this building, null when just created. Graph is not initialized in the first frame!
                      * @memberof INTF_B_graphBlock
                      * @instance
-                     * @type {MathGraph|null}
+                     * @type {LCGraph|null}
                      */
                     graphCur: null,
                     /**
@@ -246,7 +246,7 @@
 
 
             created: function() {
-                this.delegee.graphCur = new MathGraph(1, this, true);
+                this.delegee.graphCur = new LCGraph(1, this, true);
                 this.delegee.graphCur.graphTag = this.block.delegee.graphType;
             },
 
@@ -342,6 +342,7 @@
              * If true, this building will be removed from graph.
              * @memberof INTF_B_graphBlock
              * @instance
+             * @func
              * @return {boolean}
              */
             ex_isExpiredVert: function() {
@@ -349,6 +350,26 @@
             }
             .setProp({
                 noSuper: true,
+            }),
+
+
+            /**
+             * Gets a property from graph data.
+             * @memberof INTF_B_graphBlock
+             * @instance
+             * @func
+             * @param {string} nameProp
+             * @param {Object|null} def
+             * @return {*}
+             */
+            ex_getGraphProp: function(nameProp, def) {
+                return this.delegee.graphCur == null || this.delegee.graphCur.graphData == null ?
+                    def :
+                    this.delegee.graphCur.graphData[nameProp];
+            }
+            .setProp({
+                noSuper: true,
+                final: true,
             }),
 
 

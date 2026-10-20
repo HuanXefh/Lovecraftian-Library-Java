@@ -9,9 +9,10 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
+import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
-import lovec.annotation.NoJSON;
+import lovec.annotation.LCJSONTypeClass;
+import lovec.annotation.LCNoJSON;
 import lovec.graphics.LCDraw;
 import mindustry.gen.Building;
 import mindustry.type.Item;
@@ -21,7 +22,7 @@ import mindustry.world.Block;
  * Draws piled items.
  * <br> <code>DEDICATION</code>: Inspired by Psammos.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawItemPile extends LCDrawer {
 
 
@@ -29,11 +30,14 @@ public class LCDrawItemPile extends LCDrawer {
     public float itemWidth = 7f;
     public float z = -1f;
     public Item item;
-    public @NoJSON Func<Building, Item> itemF;
+    public @LCNoJSON
+    @Nullable Func<Building, Item> itemF;
     public float frac = -1f;
-    public @NoJSON Floatf<Building> fracF;
+    public @LCNoJSON
+    @Nullable Floatf<Building> fracF;
     public int amount = -1;
-    public @NoJSON Intf<Building> amountF;
+    public @LCNoJSON
+    @Nullable Intf<Building> amountF;
 
     protected TextureRegion shaReg;
 
@@ -60,7 +64,7 @@ public class LCDrawItemPile extends LCDrawer {
 
     @Override
     public void draw(Building b) {
-        if(itemF == null) return;
+        if(itemF == null || fracF == null || amountF == null) return;
         Item item0 = itemF.get(b);
         if(item0 == null) return;
 

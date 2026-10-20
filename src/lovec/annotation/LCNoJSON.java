@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This class has been registered in <code>ClassMap</code> and can be used as type in JSON.
+ * This field should not be set with JSON.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface JSONTypeClass {
+@Target(ElementType.FIELD)
+public @interface LCNoJSON {
 
 };

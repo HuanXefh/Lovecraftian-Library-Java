@@ -5,94 +5,160 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_basePowerTransmitter");
-  const INTF = require("lovec/temp/intf/INTF_BLK_wireDamageInducer");
+    /**
+     * @typedef {TemplateInstance<PowerNode, BLK_wireNode>} BLKWireNode
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<PowerNode.PowerNodeBuild, B_wireNode>} BWireNode
+     * @prop {BLKWireNode} block
+     */
 
 
-  function comp_init(blk) {
-    blk.consumesPower = true;
-    blk.conductivePower = true;
-    blk.connectedPower = true;
-    if(blk.setupVanillaProp) {
-      blk.underBullets = blk.size === 1;
+    const PARENT = require("lovec/temp/blk/BLK_basePowerTransmitter");
+    const INTF_BLK_wireDamageInducer = require("lovec/temp/intf/INTF_BLK_wireDamageInducer");
+
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKWireNode} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.consumesPower = true;
+        blk.conductivePower = true;
+        blk.connectedPower = true;
+        if(blk.delegee.setupVanillaProp) {
+            blk.underBullets = blk.size === 1;
+        };
+
+        // noinspection JSValidateTypes
+        blk.delegee.linkFilter = boolf2(DB_misc.db["block"]["nodeLinkFilter"].read(blk.delegee.linkMode, Function.airTrue));
     };
 
-    blk.linkFilter = boolf2(DB_misc.db["block"]["nodeLinkFilter"].read(blk.linkMode, Function.airTrue));
-  };
 
-
-  function comp_setStats(blk, stats) {
-    if(blk.minRadFrac > 0.0) stats.add(fetchStat("lovec", "blk-minr"), blk.laserRange * blk.minRadFrac, StatUnit.blocks);
-  };
-
-
-  function comp_linkValid(blk, b, b_t) {
-    return Mathf.dst(b.x, b.y, b_t.x, b_t.y) >= blk.laserRange * Vars.tilesize * blk.minRadFrac && blk.linkFilter.get(b, b_t);
-  };
-
-
-  function comp_drawPlace(blk, tx, ty, rot, valid) {
-    blk.ex_drawRange(tx.toFCoord(blk.size), ty.toFCoord(blk.size), valid);
-    if(blk.autolink) {
-      let t = GLB_var.world.tile(tx, ty);
-      if(t != null) {
-        blk.getPotentialLinks(t, Vars.player.team(), ob => {
-          Draw.color(blk.laserColor1, Renderer.laserOpacity * 0.5);
-          blk.drawLaser(tx.toFCoord(blk.size), ty.toFCoord(blk.size), ob.x, ob.y, blk.size, ob.block.size);
-          Drawf.square(ob.x, ob.y, ob.block.size * Vars.tilesize * 0.5 + 2.0, Pal.place);
-        });
-        Draw.color();
-      };
+    /**
+     * @private
+     * @param {BLKWireNode} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        if(blk.delegee.minRadFrac > 0.0) {
+            stats.add(fetchStat("lovec", "blk-minr"), blk.laserRange * blk.delegee.minRadFrac, StatUnit.blocks);
+        };
     };
-  };
 
 
-  function comp_drawLaser(blk, x1, y1, x2, y2, size1, size2) {
-    let
-      ang = Angles.angle(x1, y1, x2, y2),
-      offX = Mathf.cosDeg(ang),
-      offY = Mathf.sinDeg(ang),
-      offScl1 = size1 * Vars.tilesize * 0.5 - 0.5,
-      offScl2 = size2 * Vars.tilesize * 0.5 - 0.5;
-
-    LCDrawf.wire(
-      x1 + offX * offScl1,
-      y1 + offY * offScl1,
-      x2 - offX * offScl2,
-      y2 - offY * offScl2,
-      blk.wireMat,
-      blk.ex_getWireStrokeScl(),
-      blk.ex_getWireGlowAlpha(x1, y1, x2, y2),
-      Layer.power + blk.size * 0.001,
-    );
-  };
+    /**
+     * @private
+     * @param {BLKWireNode} blk
+     * @param {BWireNode} b
+     * @param {Building} b_t
+     * @return {boolean}
+     */
+    function comp_linkValid(blk, b, b_t) {
+        return Mathf.dst(b.x, b.y, b_t.x, b_t.y) >= blk.laserRange * Vars.tilesize * blk.delegee.minRadFrac && blk.delegee.linkFilter.get(b, b_t);
+    };
 
 
-  function comp_drawSelect(b) {
-    if(Vars.control.input.config.isShown()) return;
+    /**
+     * @private
+     * @param {BLKWireNode} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {number} rot
+     * @param {boolean} valid
+     * @return {void}
+     */
+    function comp_drawPlace(blk, tx, ty, rot, valid) {
+        blk.self.ex_drawRange(tx.toFCoord(blk.size), ty.toFCoord(blk.size), valid);
+        if(blk.autolink) {
+            let t = GLB_var.world.tile(tx, ty);
+            if(t != null) {
+                blk.getPotentialLinks(t, Vars.player.team(), ob => {
+                    Draw.color(blk.laserColor1, Renderer.laserOpacity * 0.5);
+                    blk.drawLaser(tx.toFCoord(blk.size), ty.toFCoord(blk.size), ob.x, ob.y, blk.size, ob.block.size);
+                    Drawf.square(ob.x, ob.y, ob.block.size * Vars.tilesize * 0.5 + 2.0, Pal.place);
+                });
+                Draw.color();
+            };
+        };
+    };
 
-    b.block.ex_drawRange(b.x, b.y, true);
-    b.ex_drawLinkTargets();
-  };
+
+    /**
+     * @private
+     * @param {BLKWireNode} blk
+     * @param {number} x1
+     * @param {number} y1
+     * @param {number} x2
+     * @param {number} y2
+     * @param {number} size1
+     * @param {number} size2
+     * @return {void}
+     */
+    function comp_drawLaser(blk, x1, y1, x2, y2, size1, size2) {
+        let
+            ang = Angles.angle(x1, y1, x2, y2),
+            offX = Mathf.cosDeg(ang),
+            offY = Mathf.sinDeg(ang),
+            offScl1 = size1 * Vars.tilesize * 0.5 - 0.5,
+            offScl2 = size2 * Vars.tilesize * 0.5 - 0.5;
+
+        LCDrawf.wire(
+            x1 + offX * offScl1,
+            y1 + offY * offScl1,
+            x2 - offX * offScl2,
+            y2 - offY * offScl2,
+            blk.delegee.wireMat,
+            blk.self.ex_getWireStrokeScl(),
+            blk.self.ex_getWireGlowAlpha(x1, y1, x2, y2),
+            Layer.power + blk.size * 0.001,
+        );
+    };
 
 
-  function comp_drawConfigure(b) {
-    Drawf.circles(b.x, b.y, b.block.size * Vars.tilesize * 0.5 + 1.0 + Mathf.absin(GLB_var.time, 4.0, 1.0));
-    b.block.ex_drawRange(b.x, b.y, true);
-    b.ex_drawLinkTargets();
-  };
+    /**
+     * @private
+     * @param {BWireNode} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        if(Vars.control.input.config.isShown()) return;
+        b.block.self.ex_drawRange(b.x, b.y, true);
+        b.self.ex_drawLinkTargets();
+    };
 
 
-  function comp_ex_findWireTarget(b) {
-    let int_t = b.power.links.random();
-    return int_t == null ? null : GLB_var.world.build(int_t);
-  };
+    /**
+     * @private
+     * @param {BWireNode} b
+     * @return {void}
+     */
+    function comp_drawConfigure(b) {
+        Drawf.circles(b.x, b.y, b.block.size * Vars.tilesize * 0.5 + 1.0 + Mathf.absin(GLB_var.time, 4.0, 1.0));
+        b.block.self.ex_drawRange(b.x, b.y, true);
+        b.self.ex_drawLinkTargets();
+    };
+
+
+    /**
+     * @private
+     * @param {BWireNode} b
+     * @return {Building}
+     */
+    function comp_ex_findWireTarget(b) {
+        let int_t = b.power.links.random();
+        return int_t == null ? null : GLB_var.world.build(int_t);
+    };
 
 
 /*
@@ -102,195 +168,209 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * A greatly nerfed power node with minimum range.
-     * @class BLK_wireNode
-     * @extends BLK_basePowerTransmitter
-     * @extends INTF_BLK_wireDamageInducer
-     */
-    newClass().extendClass(PARENT[0], "BLK_wireNode").implement(INTF[0]).initClass()
-    .setParent(PowerNode)
-    .setTags()
-    .setParam({
+        /**
+         * A greatly nerfed power node with minimum range.
+         * @class BLK_wireNode
+         * @extends BLK_basePowerTransmitter
+         * @extends INTF_BLK_wireDamageInducer
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_wireNode")
+        .implement(INTF_BLK_wireDamageInducer[0])
+        .initTemplate()
+        .setParent(PowerNode)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`: Determines filter for valid targets. See {@link DB_misc.db.block.nodeLinkFilter}.
-       * @memberof BLK_wireNode
-       * @instance
-       */
-      linkMode: "any",
-      /**
-       * `PARAM`: Minimum radius as fraction of maximum radius.
-       * @memberof BLK_wireNode
-       * @instance
-       */
-      minRadFrac: 0.0,
+            /**
+             * `PARAM`: Determines filter for valid targets. See {@link DB_misc.db.block.nodeLinkFilter}.
+             * @memberof BLK_wireNode
+             * @instance
+             * @type {string}
+             */
+            linkMode: "any",
+            /**
+             * `PARAM`: Minimum radius as fraction of maximum radius.
+             * @memberof BLK_wireNode
+             * @instance
+             * @type {number}
+             */
+            minRadFrac: 0.0,
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_wireNode
-       * @instance
-       */
-      linkFilter: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_wireNode
+             * @instance
+             * @type {Boolf2<BWireNode, Building>}
+             */
+            linkFilter: null,
 
 
-      /* <------------------------------ vanilla ------------------------------> */
+            /* <------------------------------ vanilla ------------------------------> */
 
 
-      autolink: false,
+            autolink: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-      linkValid: function(b, b_t) {
-        return comp_linkValid(this, b, b_t);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            linkValid: function(b, b_t) {
+                return comp_linkValid(this, b, b_t);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      drawPlace: function(tx, ty, rot, valid) {
-        comp_drawPlace(this, tx, ty, rot, valid);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawPlace: function(tx, ty, rot, valid) {
+                comp_drawPlace(this, tx, ty, rot, valid);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      drawLaser: function(x1, y1, x2, y2, size1, size2) {
-        comp_drawLaser(this, x1, y1, x2, y2, size1, size2);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawLaser: function(x1, y1, x2, y2, size1, size2) {
+                comp_drawLaser(this, x1, y1, x2, y2, size1, size2);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_wireNode
-       * @instance
-       * @return {number}
-       */
-      ex_getWireStrokeScl: function() {
-        return this.laserScale;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_wireNode
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getWireStrokeScl: function() {
+                return this.laserScale;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @memberof BLK_wireNode
-       * @instance
-       * @param {number} x
-       * @param {number} y
-       * @param {boolean} valid
-       * @return {void}
-       */
-      ex_drawRange: function(x, y, valid) {
-        if(this.drawRange) {
-          Draw.color(valid ? Pal.accent : Pal.remove, 0.3);
-          LCDraw.ring(x, y, this.laserRange * Vars.tilesize * this.minRadFrac, this.laserRange * Vars.tilesize);
-          Draw.color();
-        };
-      }
-      .setProp({
-        noSuper: true,
-        argLen: 3,
-      })
+            /**
+             * @memberof BLK_wireNode
+             * @instance
+             * @func
+             * @param {number} x
+             * @param {number} y
+             * @param {boolean} valid
+             * @return {void}
+             */
+            ex_drawRange: function(x, y, valid) {
+                if(this.drawRange) {
+                    Draw.color(valid ? Pal.accent : Pal.remove, 0.3);
+                    LCDraw.ring(x, y, this.laserRange * Vars.tilesize * this.delegee.minRadFrac, this.laserRange * Vars.tilesize);
+                    Draw.color();
+                };
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 3,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_wireNode
-     * @extends B_basePowerTransmitter
-     * @extends INTF_B_wireDamageInducer
-     */
-    newClass().extendClass(PARENT[1], "B_wireNode").implement(INTF[1]).initClass()
-    .setParent(PowerNode.PowerNodeBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_wireNode
+         * @extends B_basePowerTransmitter
+         * @extends INTF_B_wireDamageInducer
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_wireNode")
+        .implement(INTF_BLK_wireDamageInducer[1])
+        .initTemplate()
+        .setParent(PowerNode.PowerNodeBuild)
+        .setParam({})
+        .setMethod({
 
 
-      drawSelect: function() {
-        comp_drawSelect(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawSelect: function() {
+                comp_drawSelect(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      drawConfigure: function() {
-        comp_drawConfigure(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawConfigure: function() {
+                comp_drawConfigure(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * See {@link B_wireRelay#ex_findWireTarget}.
-       * @override
-       * @memberof B_wireNode
-       * @instance
-       * @return {Building|null}
-       */
-      ex_findWireTarget: function() {
-        return comp_ex_findWireTarget(this);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_wireNode
+             * @instance
+             * @func
+             * @return {Building|null}
+             */
+            ex_findWireTarget: function() {
+                return comp_ex_findWireTarget(this);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @memberof B_wireNode
-       * @instance
-       * @return {void}
-       */
-      ex_drawLinkTargets: function() {
-        LCEntity.eachBuild(
-          this.x, this.y, this.team,
-          this.block.laserRange * Vars.tilesize,
-          ob => ob.dst(this) >= this.block.laserRange * Vars.tilesize * this.block.delegee.minRadFrac && this.block.linkValid(this, ob),
-          ob => {
-            Tmp.c1.set(Pal.accent);
-            Tmp.c1.a = Mathf.absin(4.0, 1.0);
-            Drawf.selected(ob, Tmp.c1);
-          },
-        );
-      }
-      .setProp({
-        noSuper: true,
-      })
+            /**
+             * @memberof B_wireNode
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_drawLinkTargets: function() {
+                LCEntity.eachBuild(
+                    this.x, this.y, this.team,
+                    this.block.laserRange * Vars.tilesize,
+                    ob => ob.dst(this) >= this.block.laserRange * Vars.tilesize * this.block.delegee.minRadFrac && this.block.linkValid(this, ob),
+                    ob => {
+                        Tmp.c1.set(Pal.accent);
+                        Tmp.c1.a = Mathf.absin(4.0, 1.0);
+                        Drawf.selected(ob, Tmp.c1);
+                    },
+                );
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

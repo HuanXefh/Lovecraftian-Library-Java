@@ -5,45 +5,84 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_container");
-  const INTF = require("lovec/temp/intf/INTF_BLK_contentMultiSelector");
+    /**
+     * @typedef {TemplateInstance<DirectionalUnloader, BLK_dumpContainer>} BLKDumpContainer
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<DirectionalUnloader.DirectionalUnloaderBuild, B_dumpContainer>} BDumpContainer
+     * @prop {BLKDumpContainer} block
+     */
 
 
-  function comp_init(blk) {
-    blk.update = true;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_container");
+    const INTF_BLK_contentMultiSelector = require("lovec/temp/intf/INTF_BLK_contentMultiSelector");
 
 
-  function comp_setStats(blk, stats) {
-    stats.add(Stat.itemsMoved, 60.0 / blk.dumpTime, StatUnit.itemsSecond);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_updateTile(b) {
-    if(b.ctTargets.length === 0) return;
-
-    b.dumpTimeCur += b.edelta();
-    if(b.dumpTimeCur >= b.block.dumpTime) {
-      b.dumpTimeCur %= b.block.dumpTime;
-      b.dump(b.ctTargets.random());
+    /**
+     * @private
+     * @param {BLKDumpContainer} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.update = true;
     };
-  };
 
 
-  function comp_acceptItem(b, b_f, item) {
-    return b_f === b || !MDL_cond.isContainer(b_f.block);
-  };
+    /**
+     * @private
+     * @param {BLKDumpContainer} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.add(Stat.itemsMoved, 60.0 / blk.dumpTime, StatUnit.itemsSecond);
+    };
 
 
-  function comp_drawSelect(b) {
-    b.ex_drawSelected();
-  };
+    /**
+     * @private
+     * @param {BDumpContainer} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(b.delegee.ctTargets.length === 0) return;
+
+        b.delegee.dumpTimeCur += b.edelta();
+        if(b.delegee.dumpTimeCur >= b.block.dumpTime) {
+            b.delegee.dumpTimeCur %= b.block.dumpTime;
+            b.dump(b.delegee.ctTargets.random());
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {BDumpContainer} b
+     * @param {Building} b_f
+     * @param {Item} item
+     * @return {boolean}
+     */
+    function comp_acceptItem(b, b_f, item) {
+        return b_f === b || !MDL_cond.isContainer(b_f.block);
+    };
+
+
+    /**
+     * @private
+     * @param {BDumpContainer} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        b.self.ex_drawSelected();
+    };
 
 
 /*
@@ -53,101 +92,110 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Unlike vanilla container, this block can dump selected items actively.
-     * The output speed is controlled by `dumpTime`.
-     * @class BLK_dumpContainer
-     * @extends BLK_container
-     * @extends INTF_BLK_contentMultiSelector
-     */
-    newClass().extendClass(PARENT[0], "BLK_dumpContainer").implement(INTF[0]).initClass()
-    .setParent(StorageBlock)
-    .setTags()
-    .setParam({})
-    .setMethod({
+        /**
+         * Unlike vanilla container, this block can dump selected items actively.
+         * The output speed is controlled by `dumpTime`.
+         * @class BLK_dumpContainer
+         * @extends BLK_container
+         * @extends INTF_BLK_contentMultiSelector
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_dumpContainer")
+        .implement(INTF_BLK_contentMultiSelector[0])
+        .initTemplate()
+        .setParent(StorageBlock)
+        .setTags()
+        .setParam({})
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-      outputsItems: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            outputsItems: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_dumpContainer
-       * @instance
-       * @return {boolean}
-       */
-      ex_isSwitchDisableTarget: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_dumpContainer
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_isSwitchDisableTarget: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_dumpContainer
-     * @extends B_container
-     * @extends INTF_B_contentMultiSelector
-     */
-    newClass().extendClass(PARENT[1], "B_dumpContainer").implement(INTF[1]).initClass()
-    .setParent(StorageBlock.StorageBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_dumpContainer
+         * @extends B_container
+         * @extends INTF_B_contentMultiSelector
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_dumpContainer")
+        .implement(INTF_BLK_contentMultiSelector[1])
+        .initTemplate()
+        .setParent(StorageBlock.StorageBuild)
+        .setParam({})
+        .setMethod({
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      acceptItem: function(b_f, item) {
-        return comp_acceptItem(this, b_f, item);
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            acceptItem: function(b_f, item) {
+                return comp_acceptItem(this, b_f, item);
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      drawSelect: function() {
-        comp_drawSelect(this);
-      },
+            drawSelect: function() {
+                comp_drawSelect(this);
+            },
 
 
-      write: function(wr) {
-        this.ex_processData(wr);
-      },
+            write: function(wr) {
+                this.self.ex_processData(wr);
+            },
 
 
-      read: function(rd, revi) {
-        if(this.LCRevi === 5) rd.s();
-
-        this.ex_processData(rd);
-      },
-
-
-    }),
+            read: function(rd, revi) {
+                if(this.delegee.LCRevi === 5) {
+                    rd.s();
+                };
+                this.self.ex_processData(rd);
+            },
 
 
-  ];
+        }),
+
+
+    ];

@@ -5,33 +5,54 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseBlock");
+    /**
+     * @typedef {TemplateInstance<Block, BLK_baseTurret>} BLKBaseTurret
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, B_baseTurret>} BBaseTurret
+     * @prop {BLKBaseTurret} block
+     */
 
 
-  function comp_init(blk) {
-    blk.priority = TargetPriority.turret;
+    const PARENT = require("lovec/temp/blk/BLK_baseBlock");
 
-    if(!Vars.headless && !blk.skipOutlineSetup) {
-      MDL_event.onLoad(() => {
-        if(Core.atlas.has(blk.name + "-icon")) {
-          blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-icon");
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKBaseTurret} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.priority = TargetPriority.turret;
+
+        if(!Vars.headless && !blk.skipOutlineSetup) {
+            MDL_event.onLoad(() => {
+                if(Core.atlas.has(blk.name + "-icon")) {
+                    blk.fullIcon = blk.uiIcon = Core.atlas.find(blk.name + "-icon");
+                };
+            });
         };
-      });
     };
-  };
 
 
-  function comp_icons(blk) {
-    return Core.atlas.has(blk.name + "-full") ?
-      [blk.baseRegion, Core.atlas.find(blk.name + "-full")] :
-      blk.super$icons();
-  };
+    /**
+     * @private
+     * @param {BLKBaseTurret} blk
+     * @return {Array<TextureRegion>}
+     */
+    function comp_icons(blk) {
+        return Core.atlas.has(blk.name + "-full") ?
+            [blk.baseRegion, Core.atlas.find(blk.name + "-full")] :
+            blk.super$icons();
+    };
 
 
 /*
@@ -41,47 +62,51 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Parent template of all turrets.
-     * <br> `IMPORTANT`: "-icon" is used for ui icon of turrets instead of "-full", since "-full" is used when parts exist.
-     * @class BLK_baseTurret
-     * @extends BLK_baseBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseTurret").initClass()
-    .setParent(null)
-    .setTags()
-    .setParam({})
-    .setMethod({
+        /**
+         * Parent template of all turrets.
+         * <br> `IMPORTANT`: "-icon" is used for ui icon of turrets instead of "-full", since "-full" is used when parts exist.
+         * @class BLK_baseTurret
+         * @extends BLK_baseBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseTurret")
+        .initTemplate()
+        .setParent(null)
+        .setTags()
+        .setParam({})
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      icons: function() {
-        return comp_icons(this);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            icons: function() {
+                return comp_icons(this);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_baseTurret
-     * @extends B_baseBlock
-     */
-    newClass().extendClass(PARENT[1], "B_baseTurret").initClass()
-    .setParent(null)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_baseTurret
+         * @extends B_baseBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseTurret")
+        .initTemplate()
+        .setParent(null)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

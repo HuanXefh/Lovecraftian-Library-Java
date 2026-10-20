@@ -324,9 +324,9 @@
         /* <------------------------------ vanilla ------------------------------> */
 
 
-        envRequired: 0,
-        envEnabled: Env.any,
-        envDisabled: 0,
+        envRequired: getEnvSet("none"),
+        envEnabled: getEnvSet("any"),
+        envDisabled: getEnvSet("none"),
 
 
     })

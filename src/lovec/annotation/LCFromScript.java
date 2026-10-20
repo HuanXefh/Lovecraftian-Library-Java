@@ -6,10 +6,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This field should not be set with JSON.
+ * Value of this field is populated in JavaScript.
+ * For static fields only.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface NoJSON {
+public @interface LCFromScript {
+
+    String source();
+    String name() default "!UNDEF";
+    boolean updated() default false;
 
 };

@@ -96,6 +96,7 @@
     newStat("lovec", "blk0heat-heatprod", fetchStatCategory("lovec", "heat"));
     newStat("lovec", "blk0heat-tempreq", fetchStatCategory("lovec", "heat"));
     newStat("lovec", "blk0heat-heatres", fetchStatCategory("lovec", "heat"));
+    newStat("lovec", "blk0heat-fheatres", fetchStatCategory("lovec", "heat"));
 
 
     newStat("lovec", "blk0pow-powmtp", StatCat.power);

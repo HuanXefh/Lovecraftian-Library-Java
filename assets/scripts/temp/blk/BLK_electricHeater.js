@@ -5,19 +5,35 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_heatProducer");
-  const INTF = require("lovec/temp/intf/INTF_BLK_electricFurnaceBlock");
+    /**
+     * @typedef {TemplateInstance<GenericCrafter, BLK_electricHeater>} BLKElectricHeater
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_electricHeater>} BElectricHeater
+     * @prop {BLKElectricHeater} block
+     */
 
 
-  function comp_init(blk) {
-    blk.ex_addConfigM("tempSet", (b, val) => b.delegee.tempSet = val);
-  };
+    const PARENT = require("lovec/temp/blk/BLK_heatProducer");
+    const INTF_BLK_electricFurnaceBlock = require("lovec/temp/intf/INTF_BLK_electricFurnaceBlock");
+
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKElectricHeater} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.self.ex_addConfigM("tempSet", (b, val) => b.delegee.tempSet = val);
+    };
 
 
 /*
@@ -27,146 +43,171 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * @class BLK_electricHeater
-     * @extends BLK_heatProducer
-     * @extend INTF_BLK_electricFurnaceBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_electricHeater").implement(INTF[0]).initClass()
-    .setParent(GenericCrafter)
-    .setTags()
-    .setParam({
+        /**
+         * A heater that consumes power dynamically, with the target temperature controlled by a slider.
+         * @class BLK_electricHeater
+         * @extends BLK_heatProducer
+         * @extend INTF_BLK_electricFurnaceBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_electricHeater")
+        .implement(INTF_BLK_electricFurnaceBlock[0])
+        .initTemplate()
+        .setParent(GenericCrafter)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`: See {@link BLK_furnaceHeater}.
-       * @memberof BLK_electricHeater
-       * @instance
-       */
-      heatProd: 100.0,
+            /**
+             * @inheritdoc
+             * @memberof BLK_electricHeater
+             * @instance
+             * @type {number}
+             */
+            heatProd: 100.0,
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @override
-       * @memberof BLK_furnaceHeater
-       * @instance
-       */
-      useAndOperForAccept: true,
-      /**
-       * `INTERNAL`
-       * @memberof BLK_furnaceHeater
-       * @instance
-       */
-      skipHeatFetch: true,
-      /**
-       * `INTERNAL`
-       * @memberof BLK_furnaceHeater
-       * @instance
-       */
-      skipHeatSupply: false,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_furnaceHeater
+             * @instance
+             * @type {boolean}
+             */
+            useAndOperForAccept: true,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_furnaceHeater
+             * @instance
+             * @type {boolean}
+             */
+            skipHeatFetch: true,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_furnaceHeater
+             * @instance
+             * @type {boolean}
+             */
+            skipHeatSupply: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_electricHeater
-     * @extends B_heatProducer
-     * @extends INTF_B_electricFurnaceBlock
-     */
-    newClass().extendClass(PARENT[1], "B_electricHeater").implement(INTF[1]).initClass()
-    .setParent(GenericCrafter.GenericCrafterBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_electricHeater
+         * @extends B_heatProducer
+         * @extends INTF_B_electricFurnaceBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_electricHeater")
+        .implement(INTF_BLK_electricFurnaceBlock[1])
+        .initTemplate()
+        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParam({})
+        .setMethod({
 
 
-      write: function(wr) {
-        this.ex_processData(wr);
-      },
+            write: function(wr) {
+                this.self.ex_processData(wr);
+            },
 
 
-      read: function(rd, revi) {
-        this.ex_processData(rd);
-      },
+            read: function(rd, revi) {
+                this.self.ex_processData(rd);
+            },
 
 
-      /**
-       * @override
-       * @memberof B_electricHeater
-       * @instance
-       * @return {number}
-       */
-      ex_calcHeatSupplied: function() {
-        return this.ex_getHeatProd();
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_electricHeater
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_calcHeatSupplied: function() {
+                return this.self.ex_getHeatProd();
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof B_electricHeater
-       * @instance
-       * @return {number}
-       */
-      ex_getHeatTarget: function() {
-        return this.blk$heatProd;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_electricHeater
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getHeatTarget: function() {
+                return this.delegee.blk$heatProd;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof B_electricHeater
-       * @instance
-       * @return {number}
-       */
-      ex_getTempSetMax: function() {
-        return this.blk$heatProd * this.block.delegee.maxOverheatScl;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_electricHeater
+             * @instance
+             * @func
+             * @return {number}
+             */
+            ex_getTempSetMax: function() {
+                return this.delegee.blk$heatProd * this.block.delegee.maxOverheatScl;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof B_electricHeater
-       * @instance
-       * @return {number}
-       */
-      ex_getHeatProd: function() {
-        return Math.min(this.tempCur, this.blk$heatProd);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_electricHeater
+             * @instance
+             * @func
+             * @return {number}
+             * @lovecAttached
+             */
+            ex_getHeatProd: function() {
+                return Math.min(this.delegee.tempCur, this.delegee.blk$heatProd);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

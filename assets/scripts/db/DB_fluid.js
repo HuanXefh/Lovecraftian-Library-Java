@@ -400,6 +400,22 @@ const db = {
              * `ROW`: eleGrp, scl.
              * @type {F2Array<string, number>}
              */
+            aluminum: [
+
+                "basicAq", 5.0,
+                "basicGas", 5.0,
+                "basicSub", 5.0,
+                "basicAlc", 5.0,
+                "basicOil", 5.0,
+                "basicSlurry", 5.0,
+
+            ],
+
+
+            /**
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
+             */
             cement: [
 
                 "brine", 4.0,

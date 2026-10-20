@@ -5,66 +5,109 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseTorqueBlock");
+    /**
+     * @typedef {TemplateInstance<Wall, BLK_transmissionRod>} BLKTransmissionRod
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Wall.WallBuild, B_transmissionRod>} BTransmissionRod
+     * @prop {BLKTransmissionRod} block
+     */
 
 
-  function comp_init(blk) {
-    blk.group = BlockGroup.none;
-    blk.priority = TargetPriority.transport;
-    blk.update = true;
-    blk.drawDisabled = true;
-    blk.drawCached = false;
-    blk.drawDynamic = true;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseTorqueBlock");
 
 
-  function comp_load(blk) {
-    blk.rodRegs = fetchRegions(blk, "-frame", 2, blk.rodFrameAmt);
-    blk.dirReg = fetchRegion(blk, "-dir", "-arrow");
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_onProximityUpdate(b) {
-    b.isVerticalRod = Mathf.mod(b.rotation, 4) !== 0;
-  };
-
-
-  function comp_updateTile(b) {
-    if(GLB_timer.minTwo) b.rodProg = 0.0;
-
-    b.rodProg += b.block.delegee.rodFrameAmt * b.rpmCur * Time.delta;
-  };
-
-
-  function comp_draw(b) {
-    LCDrawf.frameFade(
-      b.x, b.y,
-      b.block.delegee.rodRegs[b.isVerticalRod ? 1 : 0],
-      b.rodProg, 60.0,
-    );
-    Draw.rect(b.block.delegee.dirReg, b.x, b.y, b.drawrot());
-  };
-
-
-  function comp_ex_updateTorTransTargets(b) {
-    b.torTransTargets.clear();
-    let ob = b.back();
-    if(ob == null || ob.team !== b.team) return;
-
-    if(
-      MDL_cond.isTransmissionRod(ob.block) ?
-        ob.relativeTo(b) === ob.rotation :
-        MDL_cond.isGearBox(ob.block)
-    ) {
-      b.torTransTargets.push(ob);
+    /**
+     * @private
+     * @param {BLKTransmissionRod} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.group = BlockGroup.none;
+        blk.priority = TargetPriority.transport;
+        blk.update = true;
+        blk.drawDisabled = true;
+        blk.drawCached = false;
+        blk.drawDynamic = true;
     };
-  };
+
+
+    /**
+     * @private
+     * @param {BLKTransmissionRod} blk
+     * @return {void}
+     */
+    function comp_load(blk) {
+        // noinspection JSValidateTypes
+        blk.delegee.rodRegs = fetchRegions(blk, "-frame", 2, blk.delegee.rodFrameAmt);
+        blk.delegee.dirReg = fetchRegion(blk, "-dir", "-arrow");
+    };
+
+
+    /**
+     * @private
+     * @param {BTransmissionRod} b
+     * @return {void}
+     */
+    function comp_onProximityUpdate(b) {
+        b.delegee.isVerticalRod = Mathf.mod(b.rotation, 4) !== 0;
+    };
+
+
+    /**
+     * @private
+     * @param {BTransmissionRod} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        if(GLB_timer.minTwo) {
+            b.delegee.rodProg = 0.0;
+        };
+        b.delegee.rodProg += b.block.delegee.rodFrameAmt * b.delegee.rpmCur * Time.delta;
+    };
+
+
+    /**
+     * @private
+     * @param {BTransmissionRod} b
+     * @return {void}
+     */
+    function comp_draw(b) {
+        LCDrawf.frameFade(
+            b.x, b.y,
+            b.block.delegee.rodRegs[b.delegee.isVerticalRod ? 1 : 0],
+            b.delegee.rodProg, 60.0,
+        );
+        Draw.rect(b.block.delegee.dirReg, b.x, b.y, b.drawrot());
+    };
+
+
+    /**
+     * @private
+     * @param {BTransmissionRod} b
+     * @return {void}
+     */
+    function comp_ex_updateTorTransTargets(b) {
+        b.delegee.torTransTargets.clear();
+        let ob = b.back();
+        if(ob == null || ob.team !== b.team) return;
+
+        if(
+            MDL_cond.isTransmissionRod(ob.block) ?
+                ob.relativeTo(b) === ob.rotation :
+                MDL_cond.isGearBox(ob.block)
+        ) {
+            b.delegee.torTransTargets.push(ob);
+        };
+    };
 
 
 /*
@@ -74,164 +117,181 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * An axial torque transmitter.
-     * Better than cogwheel for remote torque transfer.
-     * <br> `SINGLESIZE`
-     * @todo Unfinished: untested.
-     * @class BLK_transmissionRod
-     * @extends BLK_baseTorqueBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_transmissionRod").initClass()
-    .setParent(Wall)
-    .setTags("blk-tor-rod", "blk-non-wall")
-    .setParam({
+        /**
+         * An axial torque transmitter.
+         * Better than cogwheel for long-range torque transfer.
+         * <br> `SINGLESIZE`
+         * @todo Unfinished: untested.
+         * @class BLK_transmissionRod
+         * @extends BLK_baseTorqueBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_transmissionRod")
+        .initTemplate()
+        .setParent(Wall)
+        .setTags("blk-tor-rod", "blk-non-wall")
+        .setParam({
 
 
-      /**
-       * `PARAM`: Amount if frames for the rod sprite.
-       * @memberof BLK_transmissionRod
-       * @instance
-       */
-      rodFrameAmt: 8,
+            /**
+             * `PARAM`: Amount of frames for the rod sprite.
+             * @memberof BLK_transmissionRod
+             * @instance
+             * @type {number}
+             */
+            rodFrameAmt: 8,
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_transmissionRod
-       * @instance
-       */
-      rodRegs: null,
-      /**
-       * `INTERNAL`
-       * @memberof BLK_transmissionRod
-       * @instance
-       */
-      dirReg: null,
-      /**
-      * `INTERNAL`
-      * @override
-      * @memberof BLK_transmissionRod
-      * @instance
-      */
-      skipTorFetch: true,
-      /**
-      * `INTERNAL`
-      * @override
-      * @memberof BLK_transmissionRod
-      * @instance
-      */
-      skipTorSupply: true,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_transmissionRod
+             * @instance
+             * @type {TDynamic<D2Array<TextureRegion>>}
+             */
+            rodRegs: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_transmissionRod
+             * @instance
+             * @type {TextureRegion}
+             */
+            dirReg: null,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_transmissionRod
+             * @instance
+             * @type {boolean}
+             */
+            skipTorFetch: true,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_transmissionRod
+             * @instance
+             * @type {boolean}
+             */
+            skipTorSupply: true,
 
 
-      /* <------------------------------ vanilla ------------------------------> */
+            /* <------------------------------ vanilla ------------------------------> */
 
 
-      underBullets: true,
+            underBullets: true,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      load: function() {
-        comp_load(this);
-      },
+            load: function() {
+                comp_load(this);
+            },
 
 
-      /**
-       * @override
-       * @memberof BLK_transmissionRod
-       * @instance
-       * @return {boolean}
-       */
-      ex_isSingleSized: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_transmissionRod
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_isSingleSized: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_transmissionRod
-     * @extends B_baseTorqueBlock
-     */
-    newClass().extendClass(PARENT[1], "B_transmissionRod").initClass()
-    .setParent(Wall.WallBuild)
-    .setParam({
+        /**
+         * @class B_transmissionRod
+         * @extends B_baseTorqueBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_transmissionRod")
+        .initTemplate()
+        .setParent(Wall.WallBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_transmissionRod
-       * @instance
-       */
-      rotProg: 0.0,
-      /**
-       * `INTERNAL`
-       * @memberof B_transmissionRod
-       * @instance
-       */
-      isVerticalRod: false,
+            /**
+             * `INTERNAL`
+             * @memberof B_transmissionRod
+             * @instance
+             * @type {number}
+             */
+            rotProg: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_transmissionRod
+             * @instance
+             * @type {boolean}
+             */
+            isVerticalRod: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
+            onProximityUpdate: function() {
+                comp_onProximityUpdate(this);
+            },
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      },
+            updateTile: function() {
+                comp_updateTile(this);
+            },
 
 
-      draw: function() {
-        comp_draw(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            draw: function() {
+                comp_draw(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof B_transmissionRod
-       * @instance
-       * @return {void}
-       */
-      ex_updateTorTransTargets: function() {
-        comp_ex_updateTorTransTargets(this);
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_transmissionRod
+             * @instance
+             * @func
+             * @return {void}
+             */
+            ex_updateTorTransTargets: function() {
+                comp_ex_updateTorTransTargets(this);
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

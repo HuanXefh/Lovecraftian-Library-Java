@@ -518,7 +518,7 @@
 
 
             draw: function() {
-                this.ex_drawRcIcon();
+                this.self.ex_drawRcIcon();
             },
 
 
@@ -529,10 +529,10 @@
 
 
             read: function(rd, revi) {
-                if(this.delegee.LCReviSub >= 2) {
+                if(this.delegee.LCReviJson["B_baseDrill"] >= 2) {
                     this.delegee.drillItemProg = rd.f();
                 };
-                if(this.delegee.LCReviSub >= 1) {
+                if(this.delegee.LCReviJson["B_baseDrill"] >= 1) {
                     MDL_io.objStrNum(rd, this.delegee.payChargeObj);
                 };
             },
@@ -574,23 +574,6 @@
                             null :
                             this.dominantItem.uiIcon
                     );
-            }
-            .setProp({
-                noSuper: true,
-                override: true,
-            }),
-
-
-            /**
-             * `REALIZED`
-             * @override
-             * @memberof B_baseDrill
-             * @instance
-             * @func
-             * @return {number}
-             */
-            ex_subRevi: function() {
-                return 2;
             }
             .setProp({
                 noSuper: true,

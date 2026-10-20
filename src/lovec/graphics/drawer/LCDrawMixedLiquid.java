@@ -5,7 +5,7 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import lovec.utils.LCScript;
 import lovec.utils.LCScriptUtil;
 import mindustry.gen.Building;
@@ -14,7 +14,7 @@ import mindustry.world.Block;
 /**
  * Draws liquid region, color is determined by all liquids in the building.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawMixedLiquid extends LCDrawer {
 
 

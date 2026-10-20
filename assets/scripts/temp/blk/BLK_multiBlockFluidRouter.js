@@ -5,20 +5,36 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_fluidRouter");
+    /**
+     * @typedef {TemplateInstance<MultiBlockLiquidRouter, BLK_multiBlockFluidRouter>} BLKMultiBlockFluidRouter
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<MultiBlockLiquidRouter.MultiBlockLiquidRouterBuild, B_multiBlockFluidRouter>} BMultiBlockFluidRouter
+     * @prop {BLKMultiBlockFluidRouter} block
+     */
 
 
-  function comp_init(blk) {
-    blk.solid = true;
-    blk.underBullets = false;
-    blk.group = BlockGroup.none;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_fluidRouter");
+
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKMultiBlockFluidRouter} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.solid = true;
+        blk.underBullets = false;
+        blk.group = BlockGroup.none;
+    };
 
 
 /*
@@ -28,37 +44,41 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Multi-block version of liquid router.
-     * @class BLK_multiBlockFluidRouter
-     * @extends BLK_fluidRouter
-     */
-    newClass().extendClass(PARENT[0], "BLK_multiBlockFluidRouter").initClass()
-    .setParent(MultiBlockLiquidRouter)
-    .setTags()
-    .setParam({})
-    .setMethod({
+        /**
+         * Multi-block version of liquid router.
+         * @class BLK_multiBlockFluidRouter
+         * @extends BLK_fluidRouter
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_multiBlockFluidRouter")
+        .initTemplate()
+        .setParent(MultiBlockLiquidRouter)
+        .setTags()
+        .setParam({})
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_multiBlockFluidRouter
-     * @extends B_fluidRouter
-     */
-    newClass().extendClass(PARENT[1], "B_multiBlockFluidRouter").initClass()
-    .setParent(MultiBlockLiquidRouterBuild)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_multiBlockFluidRouter
+         * @extends B_fluidRouter
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_multiBlockFluidRouter")
+        .initTemplate()
+        .setParent(MultiBlockLiquidRouterBuild)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

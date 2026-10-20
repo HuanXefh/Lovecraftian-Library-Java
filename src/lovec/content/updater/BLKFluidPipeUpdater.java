@@ -1,8 +1,8 @@
 package lovec.content.updater;
 
 import arc.math.Mathf;
-import lovec.content.BuildUpdater;
-import lovec.content.ContentUpdater;
+import lovec.content.LCBuildUpdater;
+import lovec.content.LCContentUpdater;
 import lovec.content.LCCraftingHandler;
 import lovec.utils.LCScriptUtil;
 import mindustry.Vars;
@@ -13,7 +13,7 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.liquid.Conduit;
 
-public class BLKFluidPipeUpdater extends ContentUpdater<Conduit> {
+public class BLKFluidPipeUpdater extends LCContentUpdater<Conduit> {
 
 
     public BLKFluidPipeUpdater(Conduit blk) throws NoSuchFieldException, IllegalAccessException {
@@ -45,7 +45,7 @@ public class BLKFluidPipeUpdater extends ContentUpdater<Conduit> {
 
 
 
-    public class BFluidPipeUpdater extends BuildUpdater<Conduit.ConduitBuild, Conduit> {
+    public class BFluidPipeUpdater extends LCBuildUpdater<Conduit.ConduitBuild, Conduit> {
 
 
         public BFluidPipeUpdater(Conduit.ConduitBuild b) throws NoSuchFieldException, IllegalAccessException {

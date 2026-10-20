@@ -2,7 +2,7 @@ package lovec.graphics.drawer.multiblock;
 
 import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.annotation.JSONTypeClass;
+import lovec.annotation.LCJSONTypeClass;
 import lovec.type.block.factory.MultiBlockLinkCenterBlockFrag;
 import mindustry.Vars;
 import mindustry.gen.Building;
@@ -13,7 +13,7 @@ import mindustry.world.blocks.liquid.LiquidBlock;
 /**
  * Draws liquid tile for non-square structure.
  */
-@JSONTypeClass
+@LCJSONTypeClass
 public class LCDrawMultiBlockLiquidTile extends LCDrawMultiBlock {
 
 

@@ -83,8 +83,8 @@
         /* <------------------------------ vanilla ------------------------------> */
 
 
-        envEnabled: Env.any,
-        envDisabled: Env.none,
+        envEnabled: getEnvSet("any"),
+        envDisabled: getEnvSet("none"),
         fogRadius: 0,
         createWreck: false,
         createScorch: false,

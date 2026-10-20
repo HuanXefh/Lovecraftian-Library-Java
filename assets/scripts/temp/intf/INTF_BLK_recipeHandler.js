@@ -152,6 +152,21 @@
             if(blk.delegee.isErekirHeatConsumer && blk.delegee.isErekirHeatProducer) {
                 console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(Pal.accent)));
             };
+
+            if(!LCVersionResolver.isV8 && blk.delegee.isErekirHeatConsumer) {
+                let consHeat = extend(eval("ConsumeHeat"), 0.0, {
+                    fraction(b) {
+                        return b.heatFrac();
+                    },
+                    efficiencyScale(b) {
+                        return 1.0;
+                    },
+                    displayStats(stats) {
+                        // Do nothing
+                    },
+                });
+                consHeat.apply(blk);
+            };
         });
     };
 
@@ -850,6 +865,15 @@
             .setCache(),
 
 
+            emitsHeat: function() {
+                return this.delegee.isErekirHeatProducer;
+            }
+            .setProp({
+                noSuper: true,
+                boolMode: "and",
+            }),
+
+
         })
         .extendInterface(PARENT[0], "INTF_BLK_recipeHandler"),
 
@@ -893,9 +917,9 @@
                      * `INTERNAL`
                      * @memberof INTF_B_recipeHandler
                      * @instance
-                     * @type {MathMeanArray}
+                     * @type {LCMeanArray}
                      */
-                    rcEffcMeanArr: tprov(() => new MathMeanArray(5)),
+                    rcEffcMeanArr: tprov(() => new LCMeanArray(5)),
                     /**
                      * `INTERNAL`
                      * @memberof INTF_B_recipeHandler
@@ -1140,6 +1164,15 @@
 
             heat: function() {
                 return this.delegee.erekirHeatO;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
+
+
+            heatOutputTarget: function() {
+                return this.delegee.rc.erekirHeatProd * this.efficiency;
             }
             .setProp({
                 noSuper: true,
@@ -1589,7 +1622,7 @@
                     rd => {
                         this.delegee.rcHeader = rd.str();
                         this.delegee.hasStopped = rd.bool();
-                        if(this.delegee.LCReviSub >= 1) {
+                        if(this.delegee.LCReviJson["B_recipeFactory"] >= 1) {
                             this.delegee.erekirHeatO = rd.f();
                         };
                     },

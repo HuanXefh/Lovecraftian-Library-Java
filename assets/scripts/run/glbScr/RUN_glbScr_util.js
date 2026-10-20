@@ -702,6 +702,18 @@
          * @return {void}
          */
         readFields(obj, jval) {
+            if(jval.has("envDisabled")) {
+                obj.envDisabled = LCContentParser.parseEnv(jval.remove("envDisabled"));
+            };
+            if(jval.has("envEnabled")) {
+                obj.envEnabled = LCContentParser.parseEnv(jval.remove("envEnabled"));
+            };
+            if(jval.has("envRequired")) {
+                obj.envRequired = LCContentParser.parseEnv(jval.remove("envRequired"));
+            };
+            if(jval.has("defaultEnv")) {
+                obj.defaultEnv = LCContentParser.parseEnv(jval.remove("defaultEnv"));
+            };
             Reflect.invoke(ContentParser, GLB_var.ctParser, "readFields", [obj, jval], JAVA.object, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
         },
 
@@ -812,6 +824,27 @@
 
 
         /**
+         * @param {Jval} jval
+         */
+        parseEnv(jval) {
+            if(jval.isNumber()) {
+                console.warn("[LOVEC] Lovec JSON parser does not support legacy env integer:\n" + jval);
+            };
+            if(jval.isString()) {
+                return getEnvSet(jval.asString());
+            };
+            if(jval.isArray()) {
+                let names = [];
+                LCVersionResolver.isV8 ?
+                    jval.asStringArray().forEach(str => names.push(str)) :
+                    jval.asArray().each(ojval => names.push(ojval.asString()));
+                return getEnvSet.apply(null, names);
+            };
+            return getEnvSet("none");
+        },
+
+
+        /**
          * @param {Block} blk
          * @param {Jval} jval
          * @return {void}
@@ -824,6 +857,10 @@
                 };
                 if(jval.has("requirements") && blk.buildVisibility === BuildVisibility.hidden) {
                     blk.buildVisibility = BuildVisibility.shown;
+                };
+                if(!LCVersionResolver.isV8 && jval.has("armored") && blk instanceof Duct) {
+                    blk.noSideBlend = LCContentParser.getBool(jval, "armored", false);
+                    jval.remove("armored");
                 };
             }));
         },
@@ -947,7 +984,7 @@
                         };
                         sec.difficulty = difficulty_fi;
                     } else {
-                        if(!difficulty.isNumber()) {
+                        if(difficulty.isNumber()) {
                             difficulty_fi = difficulty.asFloat();
                             if(difficulty_fi < 3) {
                                 difficulty_fi = "low";
@@ -965,7 +1002,7 @@
                         } else {
                             difficulty_fi = difficulty.asString();
                         };
-                        difficulty_fi = eval("SectorThreat[" + difficulty_fi + "]");
+                        difficulty_fi = eval("SectorThreat['" + difficulty_fi + "']");
                         sec.threat = difficulty_fi;
                     };
                 };

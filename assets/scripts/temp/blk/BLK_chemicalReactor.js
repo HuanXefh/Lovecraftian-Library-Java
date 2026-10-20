@@ -5,15 +5,26 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_furnaceRecipeFactory");
-  const INTF = require("lovec/temp/intf/INTF_BLK_corrosionAcceptor");
-  const INTF_A = require("lovec/temp/intf/INTF_BLK_fluidHeatAcceptor");
+    /**
+     * @typedef {TemplateInstance<GenericCrafter, BLK_chemicalReactor>} BLKChemicalReactor
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_chemicalReactor>} BChemicalReactor
+     * @prop {BLKChemicalReactor} block
+     */
+
+
+    const PARENT = require("lovec/temp/blk/BLK_furnaceRecipeFactory");
+    const INTF_BLK_corrosionAcceptor = require("lovec/temp/intf/INTF_BLK_corrosionAcceptor");
+    const INTF_BLK_fluidHeatAcceptor = require("lovec/temp/intf/INTF_BLK_fluidHeatAcceptor");
+
+
+    /* <------------------------------ component ------------------------------> */
 
 
 /*
@@ -23,68 +34,78 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Essentially an externally heated furnace with fluid block mechanics.
-     * @class BLK_chemicalReactor
-     * @extends BLK_furnaceRecipeFactory
-     * @extends INTF_BLK_corrosionAcceptor
-     * @extends INTF_BLK_fluidHeatAcceptor
-     */
-    newClass().extendClass(PARENT[0], "BLK_chemicalReactor").implement(INTF[0]).implement(INTF_A[0]).initClass()
-    .setParent(GenericCrafter)
-    .setTags()
-    .setParam({
+        /**
+         * Essentially an externally heated furnace with fluid block mechanics.
+         * @class BLK_chemicalReactor
+         * @extends BLK_furnaceRecipeFactory
+         * @extends INTF_BLK_corrosionAcceptor
+         * @extends INTF_BLK_fluidHeatAcceptor
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_chemicalReactor")
+        .implement(INTF_BLK_corrosionAcceptor[0])
+        .implement(INTF_BLK_fluidHeatAcceptor[0])
+        .initTemplate()
+        .setParent(GenericCrafter)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`
-       * @override
-       * @memberof BLK_chemicalReactor
-       * @instance
-       */
-      furnHeatA: 0.3,
+            /**
+             * @inheritdoc
+             * @memberof BLK_chemicalReactor
+             * @instance
+             * @type {number}
+             */
+            furnHeatA: 0.3,
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @override
-       * @memberof BLK_chemicalReactor
-       * @instance
-       */
-      noFuelInput: true,
+            /**
+             * `INTERNAL`
+             * <br> `REALIZED`
+             * @override
+             * @memberof BLK_chemicalReactor
+             * @instance
+             * @type {boolean}
+             */
+            noFuelInput: true,
 
 
-    })
-    .setMethod({}),
+        })
+        .setMethod({}),
 
 
-    /**
-     * @class B_chemicalReactor
-     * @extends B_furnaceRecipeFactory
-     * @extends INTF_B_corrosionAcceptor
-     * @extends INTF_B_fluidHeatAcceptor
-     */
-    newClass().extendClass(PARENT[1], "B_chemicalReactor").implement(INTF[1]).implement(INTF_A[1]).initClass()
-    .setParent(GenericCrafter.GenericCrafterBuild)
-    .setParam({})
-    .setMethod({
+        /**
+         * @class B_chemicalReactor
+         * @extends B_furnaceRecipeFactory
+         * @extends INTF_B_corrosionAcceptor
+         * @extends INTF_B_fluidHeatAcceptor
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_chemicalReactor")
+        .implement(INTF_BLK_corrosionAcceptor[1])
+        .implement(INTF_BLK_fluidHeatAcceptor[1])
+        .initTemplate()
+        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParam({})
+        .setMethod({
 
 
-      updateTile: function() {
+            updateTile: function() {
 
-      }
-      .setProp({
-        noSuper: true,
-      }),
-
-
-    }),
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-  ];
+        }),
+
+
+    ];

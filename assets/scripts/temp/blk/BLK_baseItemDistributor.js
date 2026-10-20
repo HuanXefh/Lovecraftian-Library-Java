@@ -5,19 +5,35 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseItemBlock");
+    /**
+     * @typedef {TemplateInstance<Block, BLK_baseItemDistributor>} BLKBaseItemDistributor
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, B_baseItemDistributor>} BBaseItemDistributor
+     * @prop {BLKBaseItemDistributor} block
+     */
 
 
-  function comp_init(blk) {
-    blk.group = BlockGroup.transportation;
-    blk.priority = TargetPriority.transport;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseItemBlock");
+
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKBaseItemDistributor} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.group = BlockGroup.transportation;
+        blk.priority = TargetPriority.transport;
+    };
 
 
 /*
@@ -27,37 +43,41 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Parent of all item distribution blocks.
-     * @class BLK_baseItemDistributor
-     * @extends BLK_baseItemBlock
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseItemDistributor").initClass()
-    .setParent(null)
-    .setTags()
-    .setParam({})
-    .setMethod({
+        /**
+         * Parent of all item distribution blocks.
+         * @class BLK_baseItemDistributor
+         * @extends BLK_baseItemBlock
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseItemDistributor")
+        .initTemplate()
+        .setParent(null)
+        .setTags()
+        .setParam({})
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_baseItemDistributor
-     * @extends B_baseItemBlock
-     */
-    newClass().extendClass(PARENT[1], "B_baseItemDistributor").initClass()
-    .setParent(null)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_baseItemDistributor
+         * @extends B_baseItemBlock
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseItemDistributor")
+        .initTemplate()
+        .setParent(null)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

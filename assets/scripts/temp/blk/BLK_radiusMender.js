@@ -5,73 +5,104 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseMender");
+    /**
+     * @typedef {TemplateInstance<MendProjector, BLK_radiusMender>} BLKRadiusMender
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<MendProjector.MendBuild, B_radiusMender>} BRadiusMender
+     * @prop {BLKRadiusMender} block
+     */
 
 
-  function comp_init(blk) {
-    blk.healsBuilding = blk.bHealAmt > 0.0 || blk.bHealPerc > 0.0;
-    blk.healsUnit = blk.unitHealAmt > 0.0 || blk.unitHealPerc > 0.0;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseMender");
 
 
-  function comp_setStats(blk, stats) {
-    stats.remove(Stat.repairTime);
-    stats.remove(Stat.range);
-
-    if(blk.healsBuilding) stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
-      blk.bHealAmt,
-      blk.bHealPerc,
-    ));
-    if(blk.healsUnit) stats.add(fetchStat("lovec", "blk0misc-unitrepairamt"), MDL_text.getHealText(
-      blk.unitHealAmt,
-      blk.unitHealPerc,
-    ));
-    stats.add(fetchStat("lovec", "blk0misc-repairr"), blk.range / Vars.tilesize, StatUnit.blocks);
-    stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_updateTile(b) {
-    let cond = !b.checkSuppression();
-
-    b.smoothEfficiency = Mathf.lerpDelta(b.smoothEfficiency, b.efficiency, 0.08);
-    b.heat = Mathf.lerpDelta(b.heat, cond && b.efficiency > 0.0 ? 1.0 : 0.0, 0.08);
-    b.charge += b.heat * b.delta();
-    b.phaseHeat = Mathf.lerpDelta(b.phaseHeat, b.optionalEfficiency, 0.1);
-
-    if(b.optionalEfficiency > 0.0 && cond) {
-      b.useTimeCur += b.delta();
-      if(b.useTimeCur >= b.block.useTime) {
-        b.useTimeCur %= b.block.useTime;
-        b.consume();
-      };
+    /**
+     * @private
+     * @param {BLKRadiusMender} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.delegee.healsBuilding = blk.delegee.bHealAmt > 0.0 || blk.delegee.bHealPerc > 0.0;
+        blk.delegee.healsUnit = blk.delegee.unitHealAmt > 0.0 || blk.delegee.unitHealPerc > 0.0;
     };
 
-    if(b.charge > b.block.reload && cond) {
-      b.charge = 0.0;
-      let rad = b.block.range + b.phaseHeat * b.block.phaseRangeBoost;
 
-      if(b.block.delegee.healsBuilding) {
-        LCEntity.eachBuild(b.x, b.y, b.team, rad, ob => MDL_cond.canHeal(ob), ob => {
-          FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency, true);
-        });
-      };
+    /**
+     * @private
+     * @param {BLKRadiusMender} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.remove(Stat.repairTime);
+        stats.remove(Stat.range);
 
-      if(b.block.delegee.healsUnit) {
-        LCEntity.eachUnit(b.x, b.y, b.team, rad, ounit => MDL_cond.canHeal(ounit), ounit => {
-          if(FRAG_attack.heal(ounit, (ounit.maxHealth * b.block.delegee.unitHealPerc + b.block.delegee.unitHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency)) {
-            MDL_effect.line(b.x, b.y, null, ounit, Pal.heal);
-          };
-        });
-      };
+        if(blk.delegee.healsBuilding) {
+            stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
+                blk.delegee.bHealAmt,
+                blk.delegee.bHealPerc,
+            ));
+        };
+        if(blk.delegee.healsUnit) {
+            stats.add(fetchStat("lovec", "blk0misc-unitrepairamt"), MDL_text.getHealText(
+                blk.delegee.unitHealAmt,
+                blk.delegee.unitHealPerc,
+            ));
+        };
+        stats.add(fetchStat("lovec", "blk0misc-repairr"), blk.range / Vars.tilesize, StatUnit.blocks);
+        stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
     };
-  };
+
+
+    /**
+     * @private
+     * @param {BRadiusMender} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        let cond = !b.checkSuppression();
+
+        b.smoothEfficiency = Mathf.lerpDelta(b.smoothEfficiency, b.efficiency, 0.08);
+        b.heat = Mathf.lerpDelta(b.heat, cond && b.efficiency > 0.0 ? 1.0 : 0.0, 0.08);
+        b.charge += b.heat * b.delta();
+        b.phaseHeat = Mathf.lerpDelta(b.phaseHeat, b.optionalEfficiency, 0.1);
+
+        if(b.optionalEfficiency > 0.0 && cond) {
+            b.delegee.useTimeCur += b.delta();
+            if(b.delegee.useTimeCur >= b.block.useTime) {
+                b.delegee.useTimeCur %= b.block.useTime;
+                b.consume();
+            };
+        };
+
+        if(b.charge > b.block.reload && cond) {
+            b.charge = 0.0;
+            let rad = b.block.range + b.phaseHeat * b.block.phaseRangeBoost;
+
+            if(b.block.delegee.healsBuilding) {
+                LCEntity.eachBuild(b.x, b.y, b.team, rad, ob => MDL_cond.canHeal(ob), ob => {
+                    FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency, true);
+                });
+            };
+
+            if(b.block.delegee.healsUnit) {
+                LCEntity.eachUnit(b.x, b.y, b.team, rad, ounit => MDL_cond.canHeal(ounit), ounit => {
+                    if(FRAG_attack.heal(ounit, (ounit.maxHealth * b.block.delegee.unitHealPerc + b.block.delegee.unitHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency)) {
+                        MDL_effect.line(b.x, b.y, null, ounit, Pal.heal);
+                    };
+                });
+            };
+        };
+    };
 
 
 /*
@@ -81,115 +112,125 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Vanilla mender, but heal numbers are shown.
-     * Capable of healing units also.
-     * @class BLK_radiusMender
-     * @extends BLK_baseMender
-     */
-    newClass().extendClass(PARENT[0], "BLK_radiusMender").initClass()
-    .setParent(MendProjector)
-    .setTags()
-    .setParam({
+        /**
+         * Vanilla mender, but heal numbers are shown.
+         * Capable of healing units also.
+         * @class BLK_radiusMender
+         * @extends BLK_baseMender
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_radiusMender")
+        .initTemplate()
+        .setParent(MendProjector)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`: Heal amount for buildings.
-       * @memberof BLK_radiusMender
-       * @instance
-       */
-      bHealAmt: 0.0,
-      /**
-       * `PARAM`: Heal percentage for buildings.
-       * @memberof BLK_radiusMender
-       * @instance
-       */
-      bHealPerc: 0.0,
-      /**
-       * `PARAM`: Heal amount for units.
-       * @memberof BLK_radiusMender
-       * @instance
-       */
-      unitHealAmt: 0.0,
-      /**
-       * `PARAM`: Heal percentage for units.
-       * @memberof BLK_radiusMender
-       * @instance
-       */
-      unitHealPerc: 0.0,
+            /**
+             * `PARAM`: Heal amount for buildings.
+             * @memberof BLK_radiusMender
+             * @instance
+             * @type {number}
+             */
+            bHealAmt: 0.0,
+            /**
+             * `PARAM`: Heal percentage for buildings.
+             * @memberof BLK_radiusMender
+             * @instance
+             * @type {number}
+             */
+            bHealPerc: 0.0,
+            /**
+             * `PARAM`: Heal amount for units.
+             * @memberof BLK_radiusMender
+             * @instance
+             * @type {number}
+             */
+            unitHealAmt: 0.0,
+            /**
+             * `PARAM`: Heal percentage for units.
+             * @memberof BLK_radiusMender
+             * @instance
+             * @type {number}
+             */
+            unitHealPerc: 0.0,
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_radiusMender
-       * @instance
-       */
-      healsBuilding: false,
-      /**
-       * `INTERNAL`
-       * @memberof BLK_radiusMender
-       * @instance
-       */
-      healsUnit: false,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_radiusMender
+             * @instance
+             * @type {boolean}
+             */
+            healsBuilding: false,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_radiusMender
+             * @instance
+             * @type {boolean}
+             */
+            healsUnit: false,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_radiusMender
-     * @extends B_baseMender
-     */
-    newClass().extendClass(PARENT[1], "B_radiusMender").initClass()
-    .setParent(MendProjector.MendBuild)
-    .setParam({
+        /**
+         * @class B_radiusMender
+         * @extends B_baseMender
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_radiusMender")
+        .initTemplate()
+        .setParent(MendProjector.MendBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_radiusMender
-       * @instance
-       * @type {number}
-       */
-      useTimeCur: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_radiusMender
+             * @instance
+             * @type {number}
+             */
+            useTimeCur: 0.0,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            updateTile: function() {
+                comp_updateTile(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

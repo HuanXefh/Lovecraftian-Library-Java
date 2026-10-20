@@ -50,7 +50,7 @@
      */
     function comp_setStats(blk, stats) {
         if(isFinite(blk.delegee.fHeatRes)) {
-            stats.add(fetchStat("lovec", "blk0heat-heatres"), blk.delegee.fHeatRes, fetchStatUnit("lovec", "heatunits"));
+            stats.add(fetchStat("lovec", "blk0heat-fheatres"), blk.delegee.fHeatRes, fetchStatUnit("lovec", "heatunits"));
         };
     };
 
@@ -307,7 +307,7 @@
                         wr.f(this.delegee.fHeatCur);
                     },
                     rd => {
-                        if(this.delegee.LCReviSub >= 0 || !this.block.ex_isSubInsOf("BLK_rainCollector")) {
+                        if(this.delegee.LCReviJson["INTF_B_fluidHeatAcceptor"] >= 0 || !this.block.self.ex_isSubInsOf("BLK_rainCollector")) {
                             this.delegee.fHeatCur = rd.f();
                         };
                     },

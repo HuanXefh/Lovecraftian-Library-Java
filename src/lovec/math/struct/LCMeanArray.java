@@ -7,7 +7,7 @@ import rhino.NativeArray;
 /**
  * Used to calculate mean value.
  */
-public class MathMeanArray {
+public class LCMeanArray {
 
 
     protected int cap;
@@ -15,9 +15,9 @@ public class MathMeanArray {
     protected float mean = 0f;
 
 
-    public MathMeanArray(int cap) {
+    public LCMeanArray(int cap) {
         this.cap = cap;
-        dataArr = LCScript.newArray("MathMeanArray#newArr");
+        dataArr = LCScript.newArray("LCMeanArray#newArr");
     };
 
 
@@ -75,7 +75,7 @@ public class MathMeanArray {
     /**
      * Clears all stored numbers.
      */
-    public MathMeanArray clear() {
+    public LCMeanArray clear() {
         LCNativeArray.clear(dataArr);
         mean = 0f;
         return this;

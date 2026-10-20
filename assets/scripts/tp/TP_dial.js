@@ -236,8 +236,8 @@
             // `TABLE`: buttons
             MDL_table.br(this.cont);
             MDL_table.btnClose(this.buttons, this);
-            MDL_table.btn(this.buttons, MDL_bundle.getTerm("lovec", "previous-wave"), () => this.ex_show(Math.max(this.tmpCount - 1, 1)));
-            MDL_table.btn(this.buttons, MDL_bundle.getTerm("lovec", "next-wave"), () => this.ex_show(this.tmpCount + 1));
+            MDL_table.btn(this.buttons, MDL_bundle.getTerm("lovec", "previous-wave"), () => this.self.ex_show(Math.max(this.tmpCount - 1, 1)));
+            MDL_table.btn(this.buttons, MDL_bundle.getTerm("lovec", "next-wave"), () => this.self.ex_show(this.tmpCount + 1));
 
             this.show();
         },
@@ -271,7 +271,7 @@
                     MDL_table.btn(
                         pnTb,
                         UTIL_dragButtonInfoList.getLocalizedCategName(categ === "uncategorized" ? "global" : categ),
-                        () => fetchDialog("infoListSub").ex_show(categ, map, moddedNames),
+                        () => fetchDialog("infoListSub").self.ex_show(categ, map, moddedNames),
                         {w: 500.0},
                     ).row();
                 });
@@ -417,7 +417,7 @@
                             iCap = arr.iCap();
                             j = 0;
                             while(i < iCap) {
-                                this.ex_buildBox(tb, arr[i]);
+                                this.self.ex_buildBox(tb, arr[i]);
                                 if(j % colAmt === colAmt - 1) tb.row();
                                 j++;
                                 i++;
@@ -734,7 +734,7 @@
                 this.lastScrollY = this.lastPn.getScrollY();
                 this.lastChecked = ct;
                 this.hide();
-                fetchDialog("rcDict").ex_show(isCustomField ? MDL_recipeDict.getCustomFieldBundle(ct) : ct.localizedName, ct, true);
+                fetchDialog("rcDict").self.ex_show(isCustomField ? MDL_recipeDict.getCustomFieldBundle(ct) : ct.localizedName, ct, true);
             })
             .left()
             .pad(this.pad)
@@ -781,7 +781,7 @@
                     tb.left().setColor(Pal.darkestGray);
                     MDL_table.margin(tb, 0.5);
                     MDL_recipeDict.rcDict.customFieldMap.each((name, obj) => {
-                        this.ex_buildCtBtn(tb, name, true);
+                        this.self.ex_buildCtBtn(tb, name, true);
                         if(j % colAmt === colAmt - 1) tb.row();
                         i++;
                         j++;
@@ -790,7 +790,7 @@
                     tb.row();
                     MDL_table.br(tb);
                     GLB_varGen.rcDictCts.forEachFast(ct => {
-                        if(lastCt != null && this.ex_shouldBreak(ct, lastCt)) {
+                        if(lastCt != null && this.self.ex_shouldBreak(ct, lastCt)) {
                             j = -1;
                             tb.row();
                             MDL_table.br(tb);
@@ -798,7 +798,7 @@
                             j = -1;
                             tb.row();
                         };
-                        this.ex_buildCtBtn(tb, ct, false);
+                        this.self.ex_buildCtBtn(tb, ct, false);
                         i++;
                         j++;
                         lastCt = ct;
@@ -901,10 +901,10 @@
                     // `TABLE`: rate text
                     tb1.add(MDL_text.getStat(
                         MDL_bundle.getTerm("lovec", isStatic ? "amount" : "rate"),
-                        this.ex_getRateStr(craftRate, 3, isStatic),
+                        this.self.ex_getRateStr(craftRate, 3, isStatic),
                     ))
                     .left()
-                    .tooltip(this.ex_getRateStr(craftRate, 7, isStatic), true)
+                    .tooltip(this.self.ex_getRateStr(craftRate, 7, isStatic), true)
                     .row();
                     // `TABLE`: extra icon
                     tb1.table(Styles.none, tb2 => {
@@ -922,7 +922,7 @@
                                 btnCell = tb2.button(Tex.whiteui, Styles.clearNoneTogglei, 28.0, () => {
                                     this.hide();
                                     isOtherCustomField ?
-                                        this.ex_show(MDL_recipeDict.getCustomFieldBundle(oct), oct) :
+                                        this.self.ex_show(MDL_recipeDict.getCustomFieldBundle(oct), oct) :
                                         Vars.ui.content.show(oct);
                                 }).left();
                                 if(data.ctTableF != null) {
@@ -994,7 +994,7 @@
                 cont.button(ctIcon, 48.0, () => {
                     this.hide();
                     isCustomField ?
-                        this.ex_show(MDL_recipeDict.getCustomFieldBundle(ct), ct) :
+                        this.self.ex_show(MDL_recipeDict.getCustomFieldBundle(ct), ct) :
                         Vars.ui.content.show(ct);
                 })
                 .left()
@@ -1017,7 +1017,7 @@
                     cont.table(Tex.whiteui, tb => {
                         tb.left().setColor(Pal.darkestGray);
                         MDL_table.margin(tb);
-                        this.ex_buildList(tb, ct, prodArr, isCustomField);
+                        this.self.ex_buildList(tb, ct, prodArr, isCustomField);
                     })
                     .left()
                     .growX()
@@ -1040,7 +1040,7 @@
                     cont.table(Tex.whiteui, tb => {
                         tb.left().setColor(Pal.darkestGray);
                         MDL_table.margin(tb);
-                        this.ex_buildList(tb, ct, consArr, isCustomField);
+                        this.self.ex_buildList(tb, ct, consArr, isCustomField);
                     })
                     .left()
                     .growX()
@@ -1076,7 +1076,7 @@
             MDL_table.br(this.cont);
             MDL_table.btnCloseCallback(this.buttons, this, () => {
                 if(fromDatabase) {
-                    fetchDialog("rcDictDatabase").ex_show();
+                    fetchDialog("rcDictDatabase").self.ex_show();
                 };
             });
             MDL_table.btn(this.buttons, MDL_bundle.getTerm("lovec", "new-window"), () => {
@@ -1086,13 +1086,13 @@
                     let tmpCt = ct;
                     let tmpIsCustomField = isCustomField;
                     tb.button(ctIcon, 48.0, () => {
-                        fetchDialog("rcDict").ex_show(tmpIsCustomField ? MDL_recipeDict.getCustomFieldBundle(tmpCt) : tmpCt.localizedName, tmpCt, false);
+                        fetchDialog("rcDict").self.ex_show(tmpIsCustomField ? MDL_recipeDict.getCustomFieldBundle(tmpCt) : tmpCt.localizedName, tmpCt, false);
                     }).center();
                 }).add();
             });
             MDL_table.btn(this.buttons, MDL_bundle.getInfo("lovec", "dial-rcdict-database"), () => {
                 this.hide();
-                fetchDialog("rcDictDatabase").ex_show();
+                fetchDialog("rcDictDatabase").self.ex_show();
             });
 
             this.show();

@@ -5,18 +5,34 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseMiner");
+    /**
+     * @typedef {TemplateInstance<Block, BLK_baseHarvester>} BLKBaseHarvester
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<Building, B_baseHarvester>} BBaseHarvester
+     * @prop {BLKBaseHarvester} block
+     */
 
 
-  function comp_init(blk) {
-    blk.group = BlockGroup.drills;
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseMiner");
+
+
+    /* <------------------------------ component ------------------------------> */
+
+
+    /**
+     * @private
+     * @param {BLKBaseHarvester} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.group = BlockGroup.drills;
+    };
 
 
 /*
@@ -26,37 +42,41 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * Miners that obtain resource mostly based on attributes instead of `itemDrop`.
-     * @class BLK_baseHarvester
-     * @extends BLK_baseMiner
-     */
-    newClass().extendClass(PARENT[0], "BLK_baseHarvester").initClass()
-    .setParent(null)
-    .setTags()
-    .setParam({})
-    .setMethod({
+        /**
+         * Miners that obtain resource mostly based on attributes instead of `itemDrop`.
+         * @class BLK_baseHarvester
+         * @extends BLK_baseMiner
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_baseHarvester")
+        .initTemplate()
+        .setParent(null)
+        .setTags()
+        .setParam({})
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_baseHarvester
-     * @extends B_baseMiner
-     */
-    newClass().extendClass(PARENT[1], "B_baseHarvester").initClass()
-    .setParent(null)
-    .setParam({})
-    .setMethod({}),
+        /**
+         * @class B_baseHarvester
+         * @extends B_baseMiner
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_baseHarvester")
+        .initTemplate()
+        .setParent(null)
+        .setParam({})
+        .setMethod({}),
 
 
-  ];
+    ];

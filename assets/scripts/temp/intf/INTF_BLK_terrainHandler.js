@@ -40,7 +40,7 @@
     /**
      * @private
      * @param {INTFBLKTerrainHandler} blk
-     * @param {Tile} t
+     * @param {Tile|null} t
      * @param {Team} team
      * @param {number} rot
      * @return {boolean}

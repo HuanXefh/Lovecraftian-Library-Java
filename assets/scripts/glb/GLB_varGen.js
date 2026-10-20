@@ -134,10 +134,24 @@
 
 
         /**
-         * All shown items and liquids.
+         * All items.
+         * @type {Array<Item>}
+         */
+        exports.allItems = Vars.content.items().toArray().cpy();
+
+
+        /**
+         * All fluids.
+         * @type {Array<Item>}
+         */
+        exports.allFlds = Vars.content.liquids().toArray().cpy();
+
+
+        /**
+         * All items and liquids.
          * @type {Array<Resource>}
          */
-        exports.allRss = Vars.content.items().toArray().concat(Vars.content.liquids().toArray()).inSituFilter(rs => !rs.hidden);
+        exports.allRss = module.exports.allItems.concat(module.exports.allFlds);
 
 
         /**
@@ -151,7 +165,7 @@
          * Fluids with fluid heat.
          * @type {Array<Liquid>}
          */
-        exports.hotFlds = Vars.content.liquids().select(liq => LCDBFileHandler.read("liquid-fluid-heat", liq, 0.0) >= 50.0).toArray();
+        exports.hotFlds = module.exports.allFlds.filter(liq => LCDBFileHandler.read("liquid-fluid-heat", liq, 0.0) >= 50.0);
 
 
         /**
@@ -192,59 +206,66 @@
          * All waste items.
          * @type {Array<Item>}
          */
-        exports.wasItems = Vars.content.items().select(item => MDL_cond.isWaste(item)).toArray();
+        exports.wasItems = module.exports.allItems.filter(item => MDL_cond.isWaste(item));
 
 
         /**
          * All waste fluids.
          * @type {Array<Liquid>}
          */
-        exports.wasFlds = Vars.content.liquids().select(liq => MDL_cond.isWaste(liq)).toArray();
+        exports.wasFlds = module.exports.allFlds.filter(liq => MDL_cond.isWaste(liq));
 
 
         /**
          * Items that are considered explosive.
          * @type {Array<Item>}
          */
-        exports.exploItems = Vars.content.items().select(item => item.explosiveness >= 0.3 && item.flammability >= 0.3).toArray();
+        exports.exploItems = module.exports.allItems.filter(item => item.explosiveness >= 0.3 && item.flammability >= 0.3);
 
 
         /**
          * Fluids that are considered explosive.
          * @type {Array<Liquid>}
          */
-        exports.exploFlds = Vars.content.liquids().select(liq => (liq.explosiveness >= 0.3 || liq.flammability >= 0.3) && !MDL_cond.isAuxiliaryFluid(liq)).toArray();
+        exports.exploFlds = module.exports.allFlds.filter(liq => (liq.explosiveness >= 0.3 || liq.flammability >= 0.3) && !MDL_cond.isAuxiliaryFluid(liq));
 
 
         /**
          * All abstract fluids.
          * @type {Array<RSAbstractFluid>}
          */
-        exports.auxs = Vars.content.liquids().select(liq => MDL_cond.isAuxiliaryFluid(liq)).toArray();
+        exports.auxs = module.exports.allFlds.filter(liq => MDL_cond.isAuxiliaryFluid(liq));
 
 
         /**
          * All non-abstract fluids.
          * @type {Array<Liquid>}
          */
-        exports.nonAuxs = Vars.content.liquids().select(liq => !MDL_cond.isAuxiliaryFluid(liq)).toArray();
+        exports.nonAuxs = module.exports.allFlds.filter(liq => !MDL_cond.isAuxiliaryFluid(liq));
 
 
         /* <------------------------------ block ------------------------------> */
 
 
         /**
+         * All blocks.
+         * @type {Array<Block>}
+         */
+        exports.allBlks = Vars.content.blocks().toArray().cpy();
+
+
+        /**
          * All non-environmental blocks.
          * @type {Array<Block>}
          */
-        exports.nonEnvBlks = Vars.content.blocks().select(blk => blk.synthetic()).toArray();
+        exports.nonEnvBlks = module.exports.allBlks.filter(blk => blk.synthetic());
 
 
         /**
          * See {@link BLK_rawOreBlock}.
          * @type {Array<BLKRawOreBlock>}
          */
-        exports.rawOreBlks = Vars.content.blocks().select(blk => checkSubInsOfTemp(blk, "BLK_rawOreBlock")).toArray();
+        exports.rawOreBlks = module.exports.allBlks.filter(blk => checkSubInsOfTemp(blk, "BLK_rawOreBlock"));
 
 
         MDL_event.onDelayRun(0.0, () => {
@@ -259,12 +280,19 @@
         /* unit type */
 
 
+        /**
+         * All unit types.
+         * @type {Array<UnitType>}
+         */
+        exports.allUtps = Vars.content.units().toArray().cpy();
+
+
         MDL_event.onDelayRun(0.0, () => {
             /**
              * Unit types that can be crafted.
              * @type {Array<UnitType>}
              */
-            exports.buildableUtps = Vars.content.units().select(utp => !utp.internal && (MDL_recipeDict.rcDict.cons.unit[utp.id].length > 0 || MDL_recipeDict.rcDict.prod.unit[utp.id].length > 0)).toArray();
+            exports.buildableUtps = module.exports.allUtps.filter(utp => !utp.internal && (MDL_recipeDict.rcDict.cons.unit[utp.id].length > 0 || MDL_recipeDict.rcDict.prod.unit[utp.id].length > 0));
         });
 
 
@@ -272,65 +300,86 @@
          * All vanilla unit types.
          * @type {Array<UnitType>}
          */
-        exports.vanillaUtps = Vars.content.units().select(utp => MDL_content.getMod(utp) === "vanilla").toArray();
+        exports.vanillaUtps = module.exports.allUtps.filter(utp => MDL_content.getMod(utp) === "vanilla");
 
 
         /**
          * Non-robot unit types.
          * @type {Array<UnitType>}
          */
-        exports.bioticUtps = Vars.content.units().select(utp => MDL_cond.isNonRobot(utp)).toArray();
+        exports.bioticUtps = module.exports.allUtps.filter(utp => MDL_cond.isNonRobot(utp));
 
 
         /**
          * Naval unit types.
          * @type {Array<UnitType>}
          */
-        exports.navalUtps = Vars.content.units().select(utp => utp.naval).toArray();
+        exports.navalUtps = module.exports.allUtps.filter(utp => utp.naval);
 
 
         /**
          * Missile unit types.
          * @type {Array<UnitType>}
          */
-        exports.missileUtps = Vars.content.units().select(utp => utp instanceof MissileUnitType).toArray();
+        exports.missileUtps = module.exports.allUtps.filter(utp => utp instanceof MissileUnitType);
 
 
         /* <------------------------------ status effect ------------------------------> */
 
 
         /**
+         * All status effects.
+         * @type {Array<statusEffect>}
+         */
+        exports.allStas = Vars.content.statusEffects().toArray().cpy();
+
+
+        /**
          * Fading status effect.
          * @type {Array<STAFadeStatus>}
          */
-        exports.fadeStas = Vars.content.statusEffects().select(sta => MDL_cond.isFadeStatus(sta)).toArray();
+        exports.fadeStas = module.exports.allStas.filter(sta => MDL_cond.isFadeStatus(sta));
 
 
         /**
          * On-death status effect.
          * @type {Array<STADeathStatus>}
          */
-        exports.deathStas = Vars.content.statusEffects().select(sta => MDL_cond.isDeathStatus(sta)).toArray();
+        exports.deathStas = module.exports.allStas.filter(sta => MDL_cond.isDeathStatus(sta));
 
 
         /**
          * Stackable status effect.
          * @type {Array<INTFSTABurstStatus>}
          */
-        exports.stackStas = Vars.content.statusEffects().select(sta => MDL_cond.isStackStatus(sta)).toArray();
+        exports.stackStas = module.exports.allStas.filter(sta => MDL_cond.isStackStatus(sta));
 
 
         /* <------------------------------ planet ------------------------------> */
 
 
         /**
+         * All planets.
+         * @type {Array<Planet>}
+         */
+        exports.allPlas = Vars.content.planets().toArray().cpy();
+
+
+        /**
          * Planets added by LovecLab.
          * @type {Array<PLABasePlanet>}
          */
-        exports.lovecPlas = Vars.content.planets().select(pla => pla.accessible && (pla.minfo.mod == null ? "" : pla.minfo.mod.name) === "loveclab").toArray();
+        exports.lovecPlas = module.exports.allPlas.filter(pla => pla.accessible && (pla.minfo.mod == null ? "" : pla.minfo.mod.name) === "loveclab");
 
 
         /* <------------------------------ weather ------------------------------> */
+
+
+        /**
+         * All weathers.
+         * @type {Array<Weather>}
+         */
+        exports.allWeas = Vars.content.weathers().toArray().cpy();
 
 
         /**

@@ -3,8 +3,8 @@ package lovec.content.updater;
 import arc.math.Mathf;
 import arc.util.Nullable;
 import arc.util.Time;
-import lovec.content.BuildUpdater;
-import lovec.content.ContentUpdater;
+import lovec.content.LCBuildUpdater;
+import lovec.content.LCContentUpdater;
 import lovec.type.block.factory.MultiBlockCrafter;
 import lovec.type.block.factory.MultiBlockLinkBlock;
 import lovec.utils.LCPos;
@@ -15,7 +15,7 @@ import mindustry.type.Liquid;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class BLKPipePumpUpdater extends ContentUpdater<MultiBlockCrafter> {
+public class BLKPipePumpUpdater extends LCContentUpdater<MultiBlockCrafter> {
 
 
     public BLKPipePumpUpdater(MultiBlockCrafter blk) throws NoSuchFieldException, IllegalAccessException {
@@ -25,7 +25,7 @@ public class BLKPipePumpUpdater extends ContentUpdater<MultiBlockCrafter> {
 
 
 
-    public class BPipePumpUpdater extends BuildUpdater<MultiBlockCrafter.MultiBlockCrafterBuild, MultiBlockCrafter> {
+    public class BPipePumpUpdater extends LCBuildUpdater<MultiBlockCrafter.MultiBlockCrafterBuild, MultiBlockCrafter> {
 
 
         protected @Nullable Building pumpBackB;

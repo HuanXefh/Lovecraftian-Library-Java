@@ -132,7 +132,7 @@
              * @return {Array<UnlockableContent>}
              */
             ex_findSelectionTargets: function() {
-                return Vars.content.items().toArray();
+                return GLB_varGen.allItems;
             }
             .setProp({
                 noSuper: true,

@@ -5,97 +5,153 @@
 */
 
 
-  /* <------------------------------ import ------------------------------> */
+    /* <------------------------------ import ------------------------------> */
 
 
-  const PARENT = require("lovec/temp/blk/BLK_baseMender");
+    /**
+     * @typedef {TemplateInstance<MendProjector, BLK_directionalMender>} BLKDirectionalMender
+     */
 
 
-  /* <------------------------------ component ------------------------------> */
+    /**
+     * @typedef {TemplateInstance<MendProjector.MendBuild, B_directionalMender>} BDirectionalMender
+     * @prop {BLKDirectionalMender} block
+     */
 
 
-  function comp_init(blk) {
-    blk.rotate = true;
-
-    blk.ex_addLogicF(LogicProp.range, b => 1);
-  };
+    const PARENT = require("lovec/temp/blk/BLK_baseMender");
 
 
-  function comp_load(blk) {
-    blk.sideReg1 = fetchRegion(blk, "-side1", "-side");
-    blk.sideReg2 = fetchRegion(blk, "-side2", "-side");
-  };
+    /* <------------------------------ component ------------------------------> */
 
 
-  function comp_setStats(blk, stats) {
-    stats.remove(Stat.repairTime);
-    stats.remove(Stat.range);
-    stats.remove(Stat.booster);
+    /**
+     * @private
+     * @param {BLKDirectionalMender} blk
+     * @return {void}
+     */
+    function comp_init(blk) {
+        blk.rotate = true;
 
-    stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
-      blk.bHealAmt,
-      blk.bHealPerc,
-    ));
-    stats.add(fetchStat("lovec", "blk0misc-repairr"), 1.0, StatUnit.blocks);
-    stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
-  };
-
-
-  function comp_drawPlace(blk, tx, ty, rot, valid) {
-    LCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
-    let t = GLB_var.world.tile(tx, ty);
-    if(t == null) return;
-    let ot = t.nearby(rot);
-    if(ot == null) return;
-    LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
-  };
-
-
-  function comp_updateTile(b) {
-    let cond = !b.checkSuppression();
-
-    b.smoothEfficiency = Mathf.lerpDelta(b.smoothEfficiency, b.efficiency, 0.08);
-    b.heat = Mathf.lerpDelta(b.heat, cond && b.efficiency > 0.0 ? 1.0 : 0.0, 0.08);
-    b.charge += b.heat * b.delta();
-
-    if(cond) {
-      b.useTimeCur += b.delta();
-      if(b.useTimeCur >= b.block.useTime) {
-        b.useTimeCur %= b.block.useTime;
-        b.consume();
-      };
+        blk.self.ex_addLogicF(LogicProp.range, b => 1);
     };
 
-    if(b.charge > b.block.reload && cond) {
-      b.charge = 0.0;
-      if(b.lastHealTarget != null && MDL_cond.canHeal(b.lastHealTarget)) {
-        FRAG_attack.heal(b.lastHealTarget, (b.lastHealTarget.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt) * b.efficiency, true);
-      };
+
+    /**
+     * @private
+     * @param {BLKDirectionalMender} blk
+     * @return {void}
+     */
+    function comp_load(blk) {
+        blk.delegee.sideReg1 = fetchRegion(blk, "-side1", "-side");
+        blk.delegee.sideReg2 = fetchRegion(blk, "-side2", "-side");
     };
-  };
 
 
-  function comp_onProximityUpdate(b) {
-    b.lastHealTarget = b.nearby(b.rotation);
-  };
+    /**
+     * @private
+     * @param {BLKDirectionalMender} blk
+     * @param {Stats} stats
+     * @return {void}
+     */
+    function comp_setStats(blk, stats) {
+        stats.remove(Stat.repairTime);
+        stats.remove(Stat.range);
+        stats.remove(Stat.booster);
 
-
-  function comp_draw(b) {
-    Draw.rect(b.block.region, b.x, b.y);
-    Draw.rect(b.rotation < 2 ? b.block.delegee.sideReg1 : b.block.delegee.sideReg2, b.x, b.y, b.drawrot());
-    Draw.color(b.block.baseColor);
-    Draw.alpha(b.heat * Mathf.absin(GLB_var.time, 50.0 / Mathf.PI2, 1.0) * 0.5);
-    Draw.rect(b.block.topRegion, b.x, b.y, b.drawrot());
-    Draw.alpha(1.0);
-  };
-
-
-  function comp_drawSelect(b) {
-    let ot = b.tile.nearby(b.rotation);
-    if(ot != null) {
-      LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
+        stats.add(fetchStat("lovec", "blk0misc-repairamt"), MDL_text.getHealText(
+            blk.delegee.bHealAmt,
+            blk.delegee.bHealPerc,
+        ));
+        stats.add(fetchStat("lovec", "blk0misc-repairr"), 1.0, StatUnit.blocks);
+        stats.add(fetchStat("lovec", "blk0misc-repairintv"), blk.reload / 60.0, StatUnit.seconds);
     };
-  };
+
+
+    /**
+     * @private
+     * @param {BLKDirectionalMender} blk
+     * @param {number} tx
+     * @param {number} ty
+     * @param {number} rot
+     * @param {boolean} valid
+     * @return {void}
+     */
+    function comp_drawPlace(blk, tx, ty, rot, valid) {
+        LCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
+        let t = GLB_var.world.tile(tx, ty);
+        if(t == null) return;
+        let ot = t.nearby(rot);
+        if(ot == null) return;
+        LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
+    };
+
+
+    /**
+     * @private
+     * @param {BDirectionalMender} b
+     * @return {void}
+     */
+    function comp_onProximityUpdate(b) {
+        b.delegee.lastHealTarget = b.nearby(b.rotation);
+    };
+
+
+    /**
+     * @private
+     * @param {BDirectionalMender} b
+     * @return {void}
+     */
+    function comp_updateTile(b) {
+        let cond = !b.checkSuppression();
+
+        b.smoothEfficiency = Mathf.lerpDelta(b.smoothEfficiency, b.efficiency, 0.08);
+        b.heat = Mathf.lerpDelta(b.heat, cond && b.efficiency > 0.0 ? 1.0 : 0.0, 0.08);
+        b.charge += b.heat * b.delta();
+
+        if(cond) {
+            b.delegee.useTimeCur += b.delta();
+            if(b.delegee.useTimeCur >= b.block.useTime) {
+                b.delegee.useTimeCur %= b.block.useTime;
+                b.consume();
+            };
+        };
+
+        if(b.charge > b.block.reload && cond) {
+            b.charge = 0.0;
+            if(b.delegee.lastHealTarget != null && MDL_cond.canHeal(b.delegee.lastHealTarget)) {
+                FRAG_attack.heal(b.delegee.lastHealTarget, (b.delegee.lastHealTarget.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt) * b.efficiency, true);
+            };
+        };
+    };
+
+
+    /**
+     * @private
+     * @param {BDirectionalMender} b
+     * @return {void}
+     */
+    function comp_draw(b) {
+        Draw.rect(b.block.region, b.x, b.y);
+        Draw.rect(b.rotation < 2 ? b.block.delegee.sideReg1 : b.block.delegee.sideReg2, b.x, b.y, b.drawrot());
+        Draw.color(b.block.baseColor);
+        Draw.alpha(b.heat * Mathf.absin(GLB_var.time, 50.0 / Mathf.PI2, 1.0) * 0.5);
+        Draw.rect(b.block.topRegion, b.x, b.y, b.drawrot());
+        Draw.alpha(1.0);
+    };
+
+
+    /**
+     * @private
+     * @param {BDirectionalMender} b
+     * @return {void}
+     */
+    function comp_drawSelect(b) {
+        let ot = b.tile.nearby(b.rotation);
+        if(ot != null) {
+            LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
+        };
+    };
 
 
 /*
@@ -105,185 +161,195 @@
 */
 
 
-  module.exports = [
+    module.exports = [
 
 
-    /**
-     * A tiny mender that repairs the building in front of it.
-     * No optional input since I don't need it.
-     * <br> Can heal enemy blocks, just for fun :D
-     * <br> `SINGLESIZE`
-     * @class BLK_directionalMender
-     * @extends BLK_baseMender
-     */
-    newClass().extendClass(PARENT[0], "BLK_directionalMender").initClass()
-    .setParent(MendProjector)
-    .setTags()
-    .setParam({
+        /**
+         * A tiny mender that repairs the building in front of it.
+         * No optional input since I don't need it.
+         * <br> Can heal enemy blocks, just for fun :D
+         * <br> `SINGLESIZE`
+         * @class BLK_directionalMender
+         * @extends BLK_baseMender
+         */
+        newClass()
+        .extendClass(PARENT[0], "BLK_directionalMender")
+        .initTemplate()
+        .setParent(MendProjector)
+        .setTags()
+        .setParam({
 
 
-      /**
-       * `PARAM`: See {@link BLK_radiusMender}.
-       * @memberof BLK_directionalMender
-       * @instance
-       */
-      bHealAmt: 0.0,
-      /**
-       * `PARAM`: See {@link BLK_radiusMender}.
-       * @memberof BLK_directionalMender
-       * @instance
-       */
-      bHealPerc: 0.0,
+            /**
+             * `PARAM`: See {@link BLK_radiusMender#bHealAmt}.
+             * @memberof BLK_directionalMender
+             * @instance
+             * @type {number}
+             */
+            bHealAmt: 0.0,
+            /**
+             * `PARAM`: See {@link BLK_radiusMender#bHealPerc}.
+             * @memberof BLK_directionalMender
+             * @instance
+             * @type {number}
+             */
+            bHealPerc: 0.0,
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof BLK_directionalMender
-       * @instance
-       */
-      sideReg1: null,
-      /**
-       * `INTERNAL`
-       * @memberof BLK_directionalMender
-       * @instance
-       */
-      sideReg2: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_directionalMender
+             * @instance
+             * @type {TextureRegion}
+             */
+            sideReg1: null,
+            /**
+             * `INTERNAL`
+             * @memberof BLK_directionalMender
+             * @instance
+             * @type {TextureRegion}
+             */
+            sideReg2: null,
 
 
-      /* <------------------------------ vanilla ------------------------------> */
+            /* <------------------------------ vanilla ------------------------------> */
 
 
-      lightRadius: 24.0,
+            lightRadius: 24.0,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      init: function() {
-        comp_init(this);
-      },
+            init: function() {
+                comp_init(this);
+            },
 
 
-      load: function() {
-        comp_load(this);
-      },
+            load: function() {
+                comp_load(this);
+            },
 
 
-      setStats: function(stats) {
-        comp_setStats(this, getCtStats(this, stats));
-      },
+            setStats: function(stats) {
+                comp_setStats(this, getCtStats(this, stats));
+            },
 
 
-      drawPlace: function(tx, ty, rot, valid) {
-        comp_drawPlace(this, tx, ty, rot, valid);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawPlace: function(tx, ty, rot, valid) {
+                comp_drawPlace(this, tx, ty, rot, valid);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      /**
-       * @override
-       * @memberof BLK_directionalMender
-       * @instance
-       * @return {boolean}
-       */
-      ex_isSingleSized: function() {
-        return true;
-      }
-      .setProp({
-        noSuper: true,
-        override: true,
-      }),
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof BLK_directionalMender
+             * @instance
+             * @func
+             * @return {boolean}
+             */
+            ex_isSingleSized: function() {
+                return true;
+            }
+            .setProp({
+                noSuper: true,
+                override: true,
+            }),
 
 
-    }),
+        }),
 
 
-    /**
-     * @class B_directionalMender
-     * @extends B_baseMender
-     */
-    newClass().extendClass(PARENT[1], "B_directionalMender").initClass()
-    .setParent(MendProjector.MendBuild)
-    .setParam({
+        /**
+         * @class B_directionalMender
+         * @extends B_baseMender
+         */
+        newClass()
+        .extendClass(PARENT[1], "B_directionalMender")
+        .initTemplate()
+        .setParent(MendProjector.MendBuild)
+        .setParam({
 
 
-      /* <------------------------------ internal ------------------------------> */
+            /* <------------------------------ internal ------------------------------> */
 
 
-      /**
-       * `INTERNAL`
-       * @memberof B_directionalMender
-       * @instance
-       * @type {Building|null}
-       */
-      lastHealTarget: null,
-      /**
-       * `INTERNAL`
-       * @memberof B_directionalMender
-       * @instance
-       * @type {boolean}
-       */
-      lastCanHeal: false,
-      /**
-       * `INTERNAL`
-       * @memberof B_directionalMender
-       * @instance
-       * @type {number}
-       */
-      useTimeCur: 0.0,
+            /**
+             * `INTERNAL`
+             * @memberof B_directionalMender
+             * @instance
+             * @type {Building|null}
+             */
+            lastHealTarget: null,
+            /**
+             * `INTERNAL`
+             * @memberof B_directionalMender
+             * @instance
+             * @type {boolean}
+             */
+            lastCanHeal: false,
+            /**
+             * `INTERNAL`
+             * @memberof B_directionalMender
+             * @instance
+             * @type {number}
+             */
+            useTimeCur: 0.0,
 
 
-    })
-    .setMethod({
+        })
+        .setMethod({
 
 
-      onProximityUpdate: function() {
-        comp_onProximityUpdate(this);
-      },
+            onProximityUpdate: function() {
+                comp_onProximityUpdate(this);
+            },
 
 
-      updateTile: function() {
-        comp_updateTile(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            updateTile: function() {
+                comp_updateTile(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      shouldConsume: function() {
-        if(GLB_timer.sec) {
-          this.lastCanHeal = this.lastHealTarget != null && MDL_cond.canHeal(this.lastHealTarget);
-        };
-        return this.lastCanHeal;
-      }
-      .setProp({
-        boolMode: "and",
-      }),
+            shouldConsume: function() {
+                if(GLB_timer.sec) {
+                  this.delegee.lastCanHeal = this.delegee.lastHealTarget != null && MDL_cond.canHeal(this.delegee.lastHealTarget);
+                };
+                return this.delegee.lastCanHeal;
+            }
+            .setProp({
+                boolMode: "and",
+            }),
 
 
-      draw: function() {
-        comp_draw(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            draw: function() {
+                comp_draw(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-      drawSelect: function() {
-        comp_drawSelect(this);
-      }
-      .setProp({
-        noSuper: true,
-      }),
+            drawSelect: function() {
+                comp_drawSelect(this);
+            }
+            .setProp({
+                noSuper: true,
+            }),
 
 
-    }),
+        }),
 
 
-  ];
+    ];

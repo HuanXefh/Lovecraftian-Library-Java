@@ -76,7 +76,7 @@
      * @return {TextureRegion}
      */
     function comp_getDisplayIcon(blk, t) {
-        return blk.self.ex_accRevealed(t, "read") ?
+        return blk.self.ex_accRevealed(t, "SPEC: read") ?
             blk.super$getDisplayIcon(t) :
             GLB_varGen.iconRegs.questionMark;
     };
@@ -89,7 +89,7 @@
      * @return {string}
      */
     function comp_getDisplayName(blk, t) {
-        return blk.self.ex_accRevealed(t, "read") ?
+        return blk.self.ex_accRevealed(t, "SPEC: read") ?
             blk.super$getDisplayName(t) :
             MDL_bundle.getTerm("lovec", "unknown");
     };
@@ -113,7 +113,7 @@
      * @return {boolean}
      */
     function comp_ex_accRevealed(blk, t, param) {
-        return param === "read" ?
+        return param === "SPEC: read" ?
             blk.delegee.drawnMap.get(t, false) :
             blk.delegee.drawnMap.put(t, param);
     };

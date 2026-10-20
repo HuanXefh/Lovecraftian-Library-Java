@@ -3,6 +3,7 @@ package lovec;
 import lovec.graphics.drawer.*;
 import lovec.graphics.drawer.multiblock.*;
 import lovec.type.block.factory.MultiBlockCrafter;
+import lovec.type.block.factory.MultiBlockLiquidRouter;
 import mindustry.mod.ClassMap;
 
 public class LCClassMap {
@@ -27,6 +28,7 @@ public class LCClassMap {
         add("LCDrawMultiBlockPistons", LCDrawMultiBlockPistons.class);
 
         // Block
+        add("MultiBlockLiquidRouter", MultiBlockLiquidRouter.class);
         add("MultiBlockCrafter", MultiBlockCrafter.class);
     };
 

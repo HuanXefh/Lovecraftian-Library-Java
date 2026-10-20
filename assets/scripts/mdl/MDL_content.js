@@ -290,9 +290,9 @@
         let blk = getCt(blk_gn, ContentGetModes.BLK);
         if(blk == null) return val;
 
-        let valC = readTypeValArr(DB_block.db["class"]["map"]["craftTime"], blk);
-        if(valC != null) {
-            val = valC(blk, isDrillTime, getCt(ct_gn, null, true));
+        let valF = readTypeValArr(DB_block.db["class"]["map"]["craftTime"], blk);
+        if(valF != null) {
+            val = valF(blk, isDrillTime, getCt(ct_gn, null, true));
             if(isDrillTime) {
                 val /= tryJsProp(blk, "drillAmtMtp", 1.0);
             };
@@ -301,6 +301,27 @@
         return val;
     };
     exports.getCraftTime = getCraftTime;
+
+
+    /**
+     * Gets major output/input for recipe icon display.
+     * @param {BlockGn} blk_gn
+     * @return {UnlockableContent|null}
+     */
+    const getMajorIo = function(blk_gn) {
+        let blk = getCt(blk_gn, ContentGetModes.BLK);
+        if(blk == null) return null;
+
+        let ct = null;
+        let ctF = readTypeValArr(DB_block.db["class"]["map"]["majorIo"], blk);
+        if(ctF != null) {
+            ct = ctF(blk);
+        };
+
+        return ct;
+    }
+    .setCache();
+    exports.getMajorIo = getMajorIo;
 
 
     /* <------------------------------ unit type ------------------------------> */

@@ -23,7 +23,7 @@
         mapPol = 0.0,
         dynaPol = 0.0,
         lingerPol = 0.0,
-        glbPolMeanArr = new MathMeanArray(8);
+        glbPolMeanArr = new LCMeanArray(8);
 
 
     /**
@@ -218,7 +218,7 @@
         BOX_trigger.majorIter.building.addGlobalListener((b, isActive) => {
             if(isActive && syncChance("pollution", GLB_var.chance.polUpdateP)) {
                 basePol += b.ex_getBlkPol != null ?
-                    b.ex_getBlkPol() :
+                    b.self.ex_getBlkPol() :
                     getBlkPol(b.block);
             };
         });

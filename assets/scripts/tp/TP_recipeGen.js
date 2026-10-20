@@ -283,28 +283,14 @@
      */
     const dryer = function(rc, metaObj) {
         let
-            includeItem = readParam(metaObj, "includeItem", true),
-            includeLiquid = readParam(metaObj, "includeLiquid", false),
-            includeGas = readParam(metaObj, "includeGas", false),
-            mode = readParam(metaObj, "mode", "neutral");
+            mode = readParam(metaObj, "mode");
 
-        let arr = [];
-        if(includeItem) arr.pushAll(DB_recipe.db["genData"]["dryingItem"]);
-        if(includeLiquid) {
-            arr.pushAll(DB_recipe.db["genData"]["dryingLiquid"]);
-            if(mode === neutral || mode === "acidic") arr.pushAll(DB_recipe.db["genData"]["dryingLiquidAcidic"]);
-            if(mode === neutral || mode === "basic") arr.pushAll(DB_recipe.db["genData"]["dryingLiquidBasic"]);
-        };
-        if(includeGas) {
-            arr.pushAll(DB_recipe.db["genData"]["dryingGas"]);
-            if(mode === neutral || mode === "acidic") arr.pushAll(DB_recipe.db["genData"]["dryingGasAcidic"]);
-            if(mode === neutral || mode === "basic") arr.pushAll(DB_recipe.db["genData"]["dryingGasBasic"]);
-        };
+        if(mode == null) throw new LCError.NullArgumentError("mode");
 
         this.setCateg("drying");
         this.handle2Arr(
             rc,
-            arr,
+            DB_recipe.db["genData"]["drying"][mode],
             null,
             metaObj,
         );
@@ -325,13 +311,39 @@
         this.setCateg("drying");
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"]["dryingFreeze"],
+            DB_recipe.db["genData"]["drying"]["freeze"],
             null,
             metaObj,
         );
     };
     newRecipeGenerator("lovec", "dryerFreeze", dryerFreeze);
     exports.dryerFreeze = dryerFreeze;
+
+
+    /**
+     * Recipe generator: electrolyzer.
+     * Electrolyzes fluid.
+     * @this {CLS_recipeGenerator}
+     * @param {RecipeRC} rc
+     * @param {RecipeMetaObject} metaObj
+     * @return {void}
+     */
+    const electrolyzer = function(rc, metaObj) {
+        let
+            mode = readParam(metaObj, "mode");
+
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        this.setCateg("electrolysis");
+        this.handle2Arr(
+            rc,
+            DB_recipe.db["genData"]["electrolysis"][mode],
+            null,
+            metaObj,
+        );
+    };
+    newRecipeGenerator("lovec", "electrolyzer", electrolyzer);
+    exports.electrolyzer = electrolyzer;
 
 
     /**
@@ -584,48 +596,42 @@
 
 
     /**
-     * Recipe generator: mixing reactor.
+     * Recipe generator: reactor.
      * Handles regular chemical reactions.
      * @this {CLS_recipeGenerator}
      * @param {RecipeRC} rc
      * @param {RecipeMetaObject} metaObj
      * @return {void}
      */
-    const reactorMixing = function(rc, metaObj) {
+    const reactor = function(rc, metaObj) {
         let
-            isGasReactor = readParam(metaObj, "isGasReactor", false);
+            mode = readParam(metaObj, "mode");
 
-        this.setCateg(isGasReactor ? "gas-reaction" : "liquid-reaction");
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categStr = "uncategorized";
+        switch(mode) {
+            case "gas" :
+                categStr = "gas-reaction";
+                break;
+            case "liquid" :
+                categStr = "liquid-reaction";
+                break;
+            case "melt" :
+                categStr = "melt-reaction";
+                break;
+        };
+
+        this.setCateg(categStr);
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"][isGasReactor ? "reactionGas" : "reactionLiquid"],
+            DB_recipe.db["genData"]["reaction"][mode],
             null,
             metaObj,
         );
     };
-    newRecipeGenerator("lovec", "reactorMixing", reactorMixing);
-    exports.reactorMixing = reactorMixing;
-
-
-    /**
-     * Recipe generator: furnace reactor.
-     * Handles reactions under high temperature.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const reactorMelt = function(rc, metaObj) {
-        this.setCateg("melt-reaction");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["reactionMelt"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "reactorMelt", reactorMelt);
-    exports.reactorMelt = reactorMelt;
+    newRecipeGenerator("lovec", "reactor", reactor);
+    exports.reactor = reactor;
 
 
     /**
@@ -641,9 +647,9 @@
             fuelType = readParam(metaObj, "fuelType", FuelTypes.ITEM);
 
         let arr = [];
-        if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnSolid"]);
-        if((fuelType & FuelTypes.LIQUID) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnLiquid"]);
-        if((fuelType & FuelTypes.GAS) !== 0) arr.pushAll(DB_recipe.db["genData"]["reactionBurnGas"]);
+        if((fuelType & FuelTypes.ITEM) !== 0) arr.pushAll(DB_recipe.db["genData"]["reaction"]["burnSolid"]);
+        if((fuelType & FuelTypes.LIQUID) !== 0) arr.pushAll(DB_recipe.db["genData"]["reaction"]["burnLiquid"]);
+        if((fuelType & FuelTypes.GAS) !== 0) arr.pushAll(DB_recipe.db["genData"]["reaction"]["burnGas"]);
 
         this.setCateg("combustion");
         this.handle2Arr(

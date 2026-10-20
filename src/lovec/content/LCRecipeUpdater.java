@@ -13,7 +13,7 @@ import rhino.NativeObject;
 
 import static lovec.utils.LCScript.FRAG_item;
 
-public class RecipeUpdater extends ContentUpdater<NativeObject> {
+public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
 
 
     protected float rcTimeScl;
@@ -36,7 +36,7 @@ public class RecipeUpdater extends ContentUpdater<NativeObject> {
     protected float dumpTimeCur;
 
 
-    public RecipeUpdater(NativeObject rc) throws NoSuchFieldException, IllegalAccessException {
+    public LCRecipeUpdater(NativeObject rc) throws NoSuchFieldException, IllegalAccessException {
         super(rc);
     };
 

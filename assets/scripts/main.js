@@ -72,8 +72,8 @@
 
         // Register global category for {@link UTIL_dragButtonInfoList}
         UTIL_dragButtonInfoList
-        .add("achievement", () => fetchDialog("achievement").ex_show())
-        .add("recipe-dictionary", () => fetchDialog("rcDictDatabase").ex_show());
+        .add("achievement", () => fetchDialog("achievement").self.ex_show())
+        .add("recipe-dictionary", () => fetchDialog("rcDictDatabase").self.ex_show());
 
 
         // Register custom fields for recipe dictionary
@@ -434,7 +434,7 @@
                 // Complete broken in v9
                 /*ct.stats.add(fetchStat("lovec", "spec-fromto"), newStatValue(tb => {
                     tb.row();
-                    MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").ex_show(ct.localizedName, ct, false)).left().padLeft(28.0).row();
+                    MDL_table.btnSmall(tb, "?", () => fetchDialog("rcDict").self.ex_show(ct.localizedName, ct, false)).left().padLeft(28.0).row();
                 }));*/
             }, true);
         });
@@ -597,11 +597,11 @@
         // Add database buttons
         MDL_util.addDatabaseButton(
             MDL_bundle.getInfo("lovec", "dial-rc-database"),
-            () => fetchDialog("rcDatabase").ex_show(),
+            () => fetchDialog("rcDatabase").self.ex_show(),
         );
         MDL_util.addDatabaseButton(
             MDL_bundle.getInfo("lovec", "dial-rcdict-database"),
-            () => fetchDialog("rcDictDatabase").ex_show(),
+            () => fetchDialog("rcDictDatabase").self.ex_show(),
         );
 
 

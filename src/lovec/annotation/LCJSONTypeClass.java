@@ -6,15 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Value of this field is populated in JavaScript.
- * For static fields only.
+ * This class has been registered in <code>ClassMap</code> and can be used as type in JSON.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
-public @interface FromScript {
-
-    String source();
-    String name() default "!UNDEF";
-    boolean updated() default false;
+@Target(ElementType.TYPE)
+public @interface LCJSONTypeClass {
 
 };

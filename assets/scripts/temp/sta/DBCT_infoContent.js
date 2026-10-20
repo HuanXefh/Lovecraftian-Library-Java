@@ -31,7 +31,7 @@
             MDL_table.btnSmall(tb, "I", () => {
                 !sta.self.ex_checkDbctUnlocked() ?
                     MDL_ui.showFadeInfo("lovec", "info-locked") :
-                    fetchDialog("infoContent").ex_show(sta.minfo.mod.name, sta.delegee.nameInfo);
+                    fetchDialog("infoContent").self.ex_show(sta.minfo.mod.name, sta.delegee.nameInfo);
             })
             .left()
             .padLeft(28.0)
