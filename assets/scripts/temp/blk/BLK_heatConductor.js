@@ -82,7 +82,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_heatConductor")
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags("blk-non-wall")
         .setParam({
 
@@ -155,7 +155,7 @@
         newClass()
         .extendClass(PARENT[1], "B_heatConductor")
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({})
         .setMethod({
 

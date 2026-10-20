@@ -46,7 +46,7 @@
         .extendClass(PARENT[0], "BLK_manualTimerPump")
         .implement(INTF_BLK_manualTimerBlock[0])
         .initTemplate()
-        .setParent(Pump)
+        .setParent("Pump")
         .setTags()
         .setParam({
 
@@ -78,7 +78,7 @@
         .extendClass(PARENT[1], "B_manualTimerPump")
         .implement(INTF_BLK_manualTimerBlock[1])
         .initTemplate()
-        .setParent(Pump.PumpBuild)
+        .setParent("Pump.PumpBuild")
         .setParam({})
         .setMethod({
 

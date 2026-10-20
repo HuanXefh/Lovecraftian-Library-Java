@@ -54,7 +54,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_turbineFactory")
         .initClass()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags("blk-non-fac")
         .setParam({})
         .setMethod({
@@ -92,7 +92,7 @@
         newClass()
         .extendClass(PARENT[1], "B_turbineFactory")
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({})
         .setMethod({}),
 

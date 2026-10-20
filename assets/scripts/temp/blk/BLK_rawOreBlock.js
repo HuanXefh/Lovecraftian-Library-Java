@@ -99,7 +99,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_rawOreBlock")
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags("blk-non-wall")
         .setParam({
 
@@ -157,7 +157,7 @@
         newClass()
         .extendClass(PARENT[1], "B_rawOreBlock")
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({})
         .setMethod({}),
 

@@ -70,7 +70,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_unloader")
         .initTemplate()
-        .setParent(Unloader)
+        .setParent("Unloader")
         .setTags()
         .setParam({})
         .setMethod({
@@ -91,7 +91,7 @@
         newClass()
         .extendClass(PARENT[1], "B_unloader")
         .initTemplate()
-        .setParent(Unloader.UnloaderBuild)
+        .setParent("Unloader.UnloaderBuild")
         .setParam({})
         .setMethod({
 

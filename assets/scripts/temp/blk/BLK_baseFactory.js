@@ -162,7 +162,7 @@
         .implement(INTF_BLK_facilityBlock[0])
         .implement(INTF_BLK_terrainHandler[0])
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags()
         .setParam({
 
@@ -263,7 +263,7 @@
         .implement(INTF_BLK_facilityBlock[1])
         .implement(INTF_BLK_terrainHandler[1])
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({
 
 

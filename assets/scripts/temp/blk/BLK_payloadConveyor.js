@@ -171,7 +171,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_payloadConveyor")
         .initTemplate()
-        .setParent(PayloadConveyor)
+        .setParent("PayloadConveyor")
         .setTags()
         .setParam({
 
@@ -227,7 +227,7 @@
         newClass()
         .extendClass(PARENT[1], "B_payloadConveyor")
         .initTemplate()
-        .setParent(PayloadConveyor.PayloadConveyorBuild)
+        .setParent("PayloadConveyor.PayloadConveyorBuild")
         .setParam({
 
 

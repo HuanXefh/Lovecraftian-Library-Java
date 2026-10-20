@@ -64,7 +64,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_container")
         .initTemplate()
-        .setParent(StorageBlock)
+        .setParent("StorageBlock")
         .setTags()
         .setParam({})
         .setMethod({
@@ -92,7 +92,7 @@
         newClass()
         .extendClass(PARENT[1], "B_container")
         .initTemplate()
-        .setParent(StorageBlock.StorageBuild)
+        .setParent("StorageBlock.StorageBuild")
         .setParam({})
         .setMethod({
 

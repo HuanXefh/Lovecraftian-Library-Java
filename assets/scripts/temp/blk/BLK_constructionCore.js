@@ -700,7 +700,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_constructionCore")
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags()
         .setParam({
 
@@ -1063,7 +1063,7 @@
         newClass()
         .extendClass(PARENT[1], "B_constructionCore")
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({
 
 

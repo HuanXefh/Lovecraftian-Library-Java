@@ -63,7 +63,7 @@
     .extendClass(PARENT, "ENV_depthLiquid")
     .implement(INTF_ENV_depthOverlay)
     .initTemplate()
-    .setParent(OverlayFloor)
+    .setParent("OverlayFloor")
     .setTags("env-dpliq")
     .setParam({
 

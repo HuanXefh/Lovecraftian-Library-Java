@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_grass")
     .initTemplate()
-    .setParent(SeaBush)
+    .setParent("SeaBush")
     .setTags()
     .setParam({})
     .setMethod({});

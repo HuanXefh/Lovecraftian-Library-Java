@@ -63,7 +63,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "BUL_spriteBullet")
     .initTemplate()
-    .setParent(BasicBulletType)
+    .setParent("BasicBulletType")
     .setTags()
     .setParam({
 

@@ -117,7 +117,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "DBCT_techNodeContent")
     .initTemplate()
-    .setParent(StatusEffect)
+    .setParent("StatusEffect")
     .setTags()
     .setParam({
 

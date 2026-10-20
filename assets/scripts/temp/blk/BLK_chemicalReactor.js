@@ -49,7 +49,7 @@
         .implement(INTF_BLK_corrosionAcceptor[0])
         .implement(INTF_BLK_fluidHeatAcceptor[0])
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags()
         .setParam({
 
@@ -92,7 +92,7 @@
         .implement(INTF_BLK_corrosionAcceptor[1])
         .implement(INTF_BLK_fluidHeatAcceptor[1])
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({})
         .setMethod({
 

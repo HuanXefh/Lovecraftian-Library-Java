@@ -98,7 +98,7 @@
         .implement(INTF_BLK_pressureProducer[0])
         .implement(INTF_BLK_facilityBlock[0])
         .initTemplate()
-        .setParent(Pump)
+        .setParent("Pump")
         .setTags()
         .setParam({
 
@@ -144,7 +144,7 @@
         .implement(INTF_BLK_pressureProducer[1])
         .implement(INTF_BLK_facilityBlock[1])
         .initTemplate()
-        .setParent(Pump.PumpBuild)
+        .setParent("Pump.PumpBuild")
         .setParam({})
         .setMethod({
 

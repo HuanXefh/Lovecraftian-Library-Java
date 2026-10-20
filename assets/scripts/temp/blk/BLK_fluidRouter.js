@@ -130,7 +130,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_fluidRouter")
         .initTemplate()
-        .setParent(LiquidRouter)
+        .setParent("LiquidRouter")
         .setTags()
         .setParam({
 
@@ -192,7 +192,7 @@
         newClass()
         .extendClass(PARENT[1], "B_fluidRouter")
         .initTemplate()
-        .setParent(LiquidRouter.LiquidRouterBuild)
+        .setParent("LiquidRouter.LiquidRouterBuild")
         .setParam({})
         .setMethod({
 

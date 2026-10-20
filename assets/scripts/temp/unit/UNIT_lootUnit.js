@@ -177,7 +177,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "UNIT_lootUnit")
     .initTemplate()
-    .setParent(UnitType)
+    .setParent("UnitType")
     .setTags()
     .setParam({
 

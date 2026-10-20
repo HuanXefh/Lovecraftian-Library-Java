@@ -215,7 +215,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_terrainDynamicDrill")
         .initTemplate()
-        .setParent(Drill)
+        .setParent("Drill")
         .setTags()
         .setParam({
 
@@ -304,7 +304,7 @@
         newClass()
         .extendClass(PARENT[1], "B_terrainDynamicDrill")
         .initTemplate()
-        .setParent(Drill.DrillBuild)
+        .setParent("Drill.DrillBuild")
         .setParam({
 
 

@@ -63,7 +63,7 @@
     .extendClass(PARENT, "ENV_grassHeap")
     .implement(INTF_ENV_unitHider)
     .initTemplate()
-    .setParent(TallBlock)
+    .setParent("TallBlock")
     .setTags("env-grass-tall")
     .setParam({
 

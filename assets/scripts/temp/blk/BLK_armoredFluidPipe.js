@@ -44,7 +44,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_armoredFluidPipe")
         .initTemplate()
-        .setParent(LCVersionResolver.isV8 ? ArmoredConduit : Conduit)
+        .setParent("ArmoredConduit")
         .setTags()
         .setParam({
 
@@ -79,7 +79,7 @@
         newClass()
         .extendClass(PARENT[1], "B_armoredFluidPipe")
         .initTemplate()
-        .setParent(LCVersionResolver.isV8 ? ArmoredConduit.ArmoredConduitBuild : Conduit.ConduitBuild)
+        .setParent("ArmoredConduit.ArmoredConduitBuild")
         .setParam({})
         .setMethod({}),
 

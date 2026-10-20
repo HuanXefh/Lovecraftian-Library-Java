@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "WEA_particleWeather")
     .initTemplate()
-    .setParent(ParticleWeather)
+    .setParent("ParticleWeather")
     .setTags()
     .setParam({})
     .setMethod({});

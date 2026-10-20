@@ -166,7 +166,7 @@
         .extendClass(PARENT[0], "BLK_fluidPipeBridge")
         .implement(INTF_BLK_pressureBlock[0])
         .initTemplate()
-        .setParent(LiquidBridge)
+        .setParent("LiquidBridge")
         .setTags()
         .setParam({
 
@@ -218,7 +218,7 @@
         .extendClass(PARENT[1], "B_fluidPipeBridge")
         .implement(INTF_BLK_pressureBlock[1])
         .initTemplate()
-        .setParent(LiquidBridge.LiquidBridgeBuild)
+        .setParent("LiquidBridge.LiquidBridgeBuild")
         .setParam({})
         .setMethod({
 

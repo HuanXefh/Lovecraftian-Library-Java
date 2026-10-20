@@ -46,7 +46,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "PLA_sun")
     .initTemplate()
-    .setParent(Planet)
+    .setParent("Planet")
     .setTags()
     .setParam({})
     .setMethod({

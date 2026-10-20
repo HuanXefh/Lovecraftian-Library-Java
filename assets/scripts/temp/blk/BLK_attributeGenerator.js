@@ -119,7 +119,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_attributeGenerator")
         .initTemplate()
-        .setParent(ThermalGenerator)
+        .setParent("ThermalGenerator")
         .setTags()
         .setParam({
 
@@ -212,7 +212,7 @@
         newClass()
         .extendClass(PARENT[1], "B_attributeGenerator")
         .initTemplate()
-        .setParent(ThermalGenerator.ThermalGeneratorBuild)
+        .setParent("ThermalGenerator.ThermalGeneratorBuild")
         .setParam({
 
 

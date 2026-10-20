@@ -9,12 +9,12 @@
 
 
     /**
-     * @typedef {TemplateInstance<ItemBridge, BLK_conveyor>} BLKConveyor
+     * @typedef {TemplateInstance<Conveyor, BLK_conveyor>} BLKConveyor
      */
 
 
     /**
-     * @typedef {TemplateInstance<ItemBridge.ItemBridgeBuild, B_conveyor>} BConveyor
+     * @typedef {TemplateInstance<Conveyor.ConveyorBuild, B_conveyor>} BConveyor
      * @prop {BLKConveyor} block
      */
 
@@ -52,7 +52,7 @@
         .implement(INTF_BLK_transportBlockSideDisplay[0])
         .implement(INTF_BLK_mainBusInputSite[0])
         .initTemplate()
-        .setParent(Conveyor)
+        .setParent("Conveyor")
         .setTags()
         .setParam({
 
@@ -163,7 +163,7 @@
         .implement(INTF_BLK_transportBlockSideDisplay[1])
         .implement(INTF_BLK_mainBusInputSite[1])
         .initTemplate()
-        .setParent(Conveyor.ConveyorBuild)
+        .setParent("Conveyor.ConveyorBuild")
         .setParam({})
         .setMethod({}),
 

@@ -49,7 +49,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_ore")
     .initTemplate()
-    .setParent(OreBlock)
+    .setParent("OreBlock")
     .setTags()
     .setParam({
 

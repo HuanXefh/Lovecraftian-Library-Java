@@ -46,7 +46,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_wasteItem")
     .initTemplate()
-    .setParent(Item)
+    .setParent("Item")
     .setTags("ct-was")
     .setParam({})
     .setMethod({

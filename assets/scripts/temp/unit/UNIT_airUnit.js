@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "UNIT_airUnit")
     .initTemplate()
-    .setParent(UnitType)
+    .setParent("UnitType")
     .setTags("dmg0type-air")
     .setParam({
 

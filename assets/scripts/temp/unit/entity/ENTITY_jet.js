@@ -74,7 +74,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENTITY_jet")
     .initTemplate()
-    .setParent(Unit)
+    .setParent("Unit")
     .setParam({})
     .setMethod({
 

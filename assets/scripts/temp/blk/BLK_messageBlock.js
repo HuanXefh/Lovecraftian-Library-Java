@@ -43,7 +43,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_messageBlock")
         .initTemplate()
-        .setParent(MessageBlock)
+        .setParent("MessageBlock")
         .setTags()
         .setParam({})
         .setMethod({}),
@@ -56,7 +56,7 @@
         newClass()
         .extendClass(PARENT[1], "B_messageBlock")
         .initTemplate()
-        .setParent(MessageBlock.MessageBuild)
+        .setParent("MessageBlock.MessageBuild")
         .setParam({})
         .setMethod({}),
 

@@ -44,7 +44,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_itemJunction")
         .initTemplate()
-        .setParent(Junction)
+        .setParent("Junction")
         .setTags()
         .setParam({})
         .setMethod({}),
@@ -57,7 +57,7 @@
         newClass()
         .extendClass(PARENT[1], "B_itemJunction")
         .initTemplate()
-        .setParent(Junction.JunctionBuild)
+        .setParent("Junction.JunctionBuild")
         .setParam({})
         .setMethod({}),
 

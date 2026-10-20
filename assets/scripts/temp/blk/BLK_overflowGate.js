@@ -140,7 +140,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_overflowGate")
         .initTemplate()
-        .setParent(OverflowGate)
+        .setParent("OverflowGate")
         .setTags()
         .setParam({
 
@@ -181,7 +181,7 @@
         newClass()
         .extendClass(PARENT[1], "B_overflowGate")
         .initTemplate()
-        .setParent(OverflowGate.OverflowGateBuild)
+        .setParent("OverflowGate.OverflowGateBuild")
         .setParam({
 
 

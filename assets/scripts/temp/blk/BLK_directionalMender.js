@@ -175,7 +175,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_directionalMender")
         .initTemplate()
-        .setParent(MendProjector)
+        .setParent("MendProjector")
         .setTags()
         .setParam({
 
@@ -275,7 +275,7 @@
         newClass()
         .extendClass(PARENT[1], "B_directionalMender")
         .initTemplate()
-        .setParent(MendProjector.MendBuild)
+        .setParent("MendProjector.MendBuild")
         .setParam({
 
 

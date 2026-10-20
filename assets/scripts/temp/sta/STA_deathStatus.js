@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "STA_deathStatus")
     .initTemplate()
-    .setParent(StatusEffect)
+    .setParent("StatusEffect")
     .setTags("sta-death")
     .setParam({
 

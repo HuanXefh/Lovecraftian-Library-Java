@@ -117,7 +117,7 @@
         .extendClass(PARENT[0], "BLK_dynamicWallHarvester")
         .implement(INTF_BLK_dynamicAttributeBlock[0])
         .initTemplate()
-        .setParent(WallCrafter)
+        .setParent("WallCrafter")
         .setTags()
         .setParam({
 
@@ -318,7 +318,7 @@
         .extendClass(PARENT[1], "B_dynamicWallHarvester")
         .implement(INTF_BLK_dynamicAttributeBlock[1])
         .initTemplate()
-        .setParent(WallCrafter.WallCrafterBuild)
+        .setParent("WallCrafter.WallCrafterBuild")
         .setParam({})
         .setMethod({
 

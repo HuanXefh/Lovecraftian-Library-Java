@@ -104,7 +104,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_consumeGenerator")
         .initTemplate()
-        .setParent(ConsumeGenerator)
+        .setParent("ConsumeGenerator")
         .setTags()
         .setParam({
 
@@ -147,7 +147,7 @@
         newClass()
         .extendClass(PARENT[1], "B_consumeGenerator")
         .initTemplate()
-        .setParent(ConsumeGenerator.ConsumeGeneratorBuild)
+        .setParent("ConsumeGenerator.ConsumeGeneratorBuild")
         .setParam({
 
 

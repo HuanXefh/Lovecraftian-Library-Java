@@ -113,7 +113,7 @@
         .extendClass(PARENT[0], "BLK_massDriver")
         .implement(INTF_BLK_impactInducer[0])
         .initTemplate()
-        .setParent(MassDriver)
+        .setParent("MassDriver")
         .setTags()
         .setParam({
 
@@ -301,7 +301,7 @@
         .extendClass(PARENT[1], "B_massDriver")
         .implement(INTF_BLK_impactInducer[1])
         .initTemplate()
-        .setParent(MassDriver.MassDriverBuild)
+        .setParent("MassDriver.MassDriverBuild")
         .setParam({
 
 

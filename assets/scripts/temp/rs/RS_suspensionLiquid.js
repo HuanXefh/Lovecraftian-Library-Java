@@ -36,7 +36,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_suspensionLiquid")
     .initTemplate()
-    .setParent(Liquid)
+    .setParent("Liquid")
     .setTags("ct-intmd", "rs-susp")
     .setParam({
 

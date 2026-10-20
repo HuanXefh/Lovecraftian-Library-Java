@@ -124,7 +124,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_radiusMender")
         .initTemplate()
-        .setParent(MendProjector)
+        .setParent("MendProjector")
         .setTags()
         .setParam({
 
@@ -202,7 +202,7 @@
         newClass()
         .extendClass(PARENT[1], "B_radiusMender")
         .initTemplate()
-        .setParent(MendProjector.MendBuild)
+        .setParent("MendProjector.MendBuild")
         .setParam({
 
 

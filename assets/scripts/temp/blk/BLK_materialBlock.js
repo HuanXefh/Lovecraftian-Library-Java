@@ -55,7 +55,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_materialBlock")
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags("blk-non-wall")
         .setParam({})
         .setMethod({
@@ -76,7 +76,7 @@
         newClass()
         .extendClass(PARENT[1], "B_materialBlock")
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({})
         .setMethod({}),
 

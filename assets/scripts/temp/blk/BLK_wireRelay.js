@@ -127,7 +127,7 @@
         .extendClass(PARENT[0], "BLK_wireRelay")
         .implement(INTF_BLK_wireDamageInducer[0])
         .initTemplate()
-        .setParent(BeamNode)
+        .setParent("BeamNode")
         .setTags("blk-pow-relay")
         .setParam({})
         .setMethod({
@@ -175,7 +175,7 @@
         .extendClass(PARENT[1], "B_wireRelay")
         .implement(INTF_BLK_wireDamageInducer[1])
         .initTemplate()
-        .setParent(BeamNode.BeamNodeBuild)
+        .setParent("BeamNode.BeamNodeBuild")
         .setParam({})
         .setMethod({
 

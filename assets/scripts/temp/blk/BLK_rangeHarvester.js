@@ -9,12 +9,12 @@
 
 
     /**
-     * @typedef {TemplateInstance<GenericCrafter, BLK_rangeHarvester>} BLKRangeHarvester
+     * @typedef {TemplateInstance<AttributeCrafter, BLK_rangeHarvester>} BLKRangeHarvester
      */
 
 
     /**
-     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_rangeHarvester>} BRangeHarvester
+     * @typedef {TemplateInstance<AttributeCrafter.AttributeCrafterBuild, B_rangeHarvester>} BRangeHarvester
      * @prop {BLKRangeHarvester} block
      */
 
@@ -144,7 +144,7 @@
         .implement(INTF_BLK_rangeDisplay[0])
         .implement(INTF_BLK_lootProducer[0])
         .initTemplate()
-        .setParent(LCVersionResolver.isV8 ? AttributeCrafter : GenericCrafter)
+        .setParent("AttributeCrafter")
         .setTags("blk-non-fac")
         .setParam({
 
@@ -261,7 +261,7 @@
         .implement(INTF_BLK_rangeDisplay[1])
         .implement(INTF_BLK_lootProducer[1])
         .initTemplate()
-        .setParent(LCVersionResolver.isV8 ? AttributeCrafter.AttributeCrafterBuild : GenericCrafter.GenericCrafterBuild)
+        .setParent("AttributeCrafter.AttributeCrafterBuild")
         .setParam({})
         .setMethod({
 

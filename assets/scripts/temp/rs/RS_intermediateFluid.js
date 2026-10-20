@@ -65,7 +65,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_intermediateFluid")
     .initTemplate()
-    .setParent(Liquid)
+    .setParent("Liquid")
     .setTags("ct-intmd")
     .setParam({
 

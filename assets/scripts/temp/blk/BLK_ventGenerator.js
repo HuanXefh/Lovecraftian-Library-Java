@@ -9,12 +9,12 @@
 
 
     /**
-     * @typedef {TemplateInstance<GenericCrafter, BLK_ventGenerator>} BLKVentGenerator
+     * @typedef {TemplateInstance<ThermalGenerator, BLK_ventGenerator>} BLKVentGenerator
      */
 
 
     /**
-     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_ventGenerator>} BVentGenerator
+     * @typedef {TemplateInstance<ThermalGenerator.ThermalGeneratorBuild, B_ventGenerator>} BVentGenerator
      * @prop {BLKVentGenerator} block
      */
 
@@ -54,7 +54,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_ventGenerator")
         .initTemplate()
-        .setParent(ThermalGenerator)
+        .setParent("ThermalGenerator")
         .setTags()
         .setParam({
 
@@ -110,7 +110,7 @@
         newClass()
         .extendClass(PARENT[1], "B_ventGenerator")
         .initTemplate()
-        .setParent(ThermalGenerator.ThermalGeneratorBuild)
+        .setParent("ThermalGenerator.ThermalGeneratorBuild")
         .setParam({})
         .setMethod({}),
 

@@ -57,7 +57,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_remoteCoreUnloader")
         .initTemplate()
-        .setParent(DirectionalUnloader)
+        .setParent("DirectionalUnloader")
         .setTags()
         .setParam({})
         .setMethod({}),
@@ -70,7 +70,7 @@
         newClass()
         .extendClass(PARENT[1], "B_remoteCoreUnloader")
         .initTemplate()
-        .setParent(DirectionalUnloader.DirectionalUnloaderBuild)
+        .setParent("DirectionalUnloader.DirectionalUnloaderBuild")
         .setParam({})
         .setMethod({
 

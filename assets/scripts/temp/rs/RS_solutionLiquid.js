@@ -67,7 +67,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_solutionLiquid")
     .initTemplate()
-    .setParent(Liquid)
+    .setParent("Liquid")
     .setTags("ct-intmd", "rs-sol")
     .setParam({
 

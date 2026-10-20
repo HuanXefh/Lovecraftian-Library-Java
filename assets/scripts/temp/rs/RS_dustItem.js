@@ -52,7 +52,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_dustItem")
     .initTemplate()
-    .setParent(Item)
+    .setParent("Item")
     .setTags("ct-intmd", "rs-dust")
     .setParam({
 

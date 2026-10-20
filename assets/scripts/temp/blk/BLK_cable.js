@@ -125,7 +125,7 @@
         .extendClass(PARENT[0], "BLK_cable")
         .implement(INTF_BLK_graphBlock[0])
         .initTemplate()
-        .setParent(LCVersionResolver.isV8 ? ArmoredConveyor : Conveyor)
+        .setParent("ArmoredConveyor")
         .setTags()
         .setParam({
 
@@ -230,7 +230,7 @@
         .extendClass(PARENT[1], "B_cable")
         .implement(INTF_BLK_graphBlock[1])
         .initTemplate()
-        .setParent(LCVersionResolver.isV8 ? ArmoredConveyor.ArmoredConveyorBuild : Conveyor.ConveyorBuild)
+        .setParent("ArmoredConveyor.ArmoredConveyorBuild")
         .setParam({
 
 

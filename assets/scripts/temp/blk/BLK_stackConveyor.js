@@ -59,7 +59,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_stackConveyor")
         .initTemplate()
-        .setParent(StackConveyor)
+        .setParent("StackConveyor")
         .setTags()
         .setParam({
 
@@ -134,7 +134,7 @@
         newClass()
         .extendClass(PARENT[1], "B_stackConveyor")
         .initTemplate()
-        .setParent(StackConveyor.StackConveyorBuild)
+        .setParent("StackConveyor.StackConveyorBuild")
         .setParam({})
         .setMethod({
 

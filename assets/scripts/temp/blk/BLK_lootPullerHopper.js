@@ -132,7 +132,7 @@
         .extendClass(PARENT[0], "BLK_lootPullerHopper")
         .implement(INTF_BLK_radiusDisplay[0])
         .initTemplate()
-        .setParent(StorageBlock)
+        .setParent("StorageBlock")
         .setTags("blk-non-cont")
         .setParam({
 
@@ -220,7 +220,7 @@
         .extendClass(PARENT[1], "B_lootPullerHopper")
         .implement(INTF_BLK_radiusDisplay[1])
         .initTemplate()
-        .setParent(StorageBlock.StorageBuild)
+        .setParent("StorageBlock.StorageBuild")
         .setParam({
 
 

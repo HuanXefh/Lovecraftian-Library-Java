@@ -88,7 +88,7 @@
         .extendClass(PARENT[0], "BLK_resourceDisplay")
         .implement(INTF_BLK_contentSelector[0])
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags("blk-non-wall")
         .setParam({
 
@@ -164,7 +164,7 @@
         .extendClass(PARENT[1], "B_resourceDisplay")
         .implement(INTF_BLK_contentSelector[1])
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({})
         .setMethod({
 

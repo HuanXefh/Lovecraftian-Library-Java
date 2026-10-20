@@ -9,12 +9,12 @@
 
 
     /**
-     * @typedef {TemplateInstance<GenericCrafter, BLK_windGenerator>} BLKWindGenerator
+     * @typedef {TemplateInstance<ConsumeGenerator, BLK_windGenerator>} BLKWindGenerator
      */
 
 
     /**
-     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_windGenerator>} BWindGenerator
+     * @typedef {TemplateInstance<ConsumeGenerator.ConsumeGeneratorBuild, B_windGenerator>} BWindGenerator
      * @prop {BLKWindGenerator} block
      */
 
@@ -144,7 +144,7 @@
         .implement(INTF_BLK_sameBlockRestrictionHandler[0])
         .implement(INTF_BLK_rangeDisplay[0])
         .initTemplate()
-        .setParent(ConsumeGenerator)
+        .setParent("ConsumeGenerator")
         .setTags()
         .setParam({
 
@@ -271,7 +271,7 @@
         .implement(INTF_BLK_sameBlockRestrictionHandler[1])
         .implement(INTF_BLK_rangeDisplay[1])
         .initTemplate()
-        .setParent(ConsumeGenerator.ConsumeGeneratorBuild)
+        .setParent("ConsumeGenerator.ConsumeGeneratorBuild")
         .setParam({
 
 

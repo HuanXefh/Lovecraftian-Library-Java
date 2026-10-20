@@ -181,7 +181,7 @@
         .extendClass(PARENT[0], "BLK_wireNode")
         .implement(INTF_BLK_wireDamageInducer[0])
         .initTemplate()
-        .setParent(PowerNode)
+        .setParent("PowerNode")
         .setTags()
         .setParam({
 
@@ -309,7 +309,7 @@
         .extendClass(PARENT[1], "B_wireNode")
         .implement(INTF_BLK_wireDamageInducer[1])
         .initTemplate()
-        .setParent(PowerNode.PowerNodeBuild)
+        .setParent("PowerNode.PowerNodeBuild")
         .setParam({})
         .setMethod({
 

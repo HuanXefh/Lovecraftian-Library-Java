@@ -90,7 +90,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_conveyorBridge")
         .initTemplate()
-        .setParent(ItemBridge)
+        .setParent("ItemBridge")
         .setTags()
         .setParam({
 
@@ -137,7 +137,7 @@
         newClass()
         .extendClass(PARENT[1], "B_conveyorBridge")
         .initTemplate()
-        .setParent(ItemBridge.ItemBridgeBuild)
+        .setParent("ItemBridge.ItemBridgeBuild")
         .setParam({
 
 

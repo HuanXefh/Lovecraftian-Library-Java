@@ -180,7 +180,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_directionalSwitch")
         .initTemplate()
-        .setParent(SwitchBlock)
+        .setParent("SwitchBlock")
         .setTags()
         .setParam({
 
@@ -254,7 +254,7 @@
         newClass()
         .extendClass(PARENT[1], "B_directionalSwitch")
         .initTemplate()
-        .setParent(SwitchBlock.SwitchBuild)
+        .setParent("SwitchBlock.SwitchBuild")
         .setParam({})
         .setMethod({
 

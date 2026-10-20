@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_baseOverlay")
     .initTemplate()
-    .setParent(OverlayFloor)
+    .setParent("OverlayFloor")
     .setTags()
     .setParam({})
     .setMethod({});

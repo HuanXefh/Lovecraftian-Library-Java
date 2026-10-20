@@ -54,7 +54,7 @@
     .extendClass(PARENT, "ENV_depthOre")
     .implement(INTF_ENV_depthOverlay)
     .initTemplate()
-    .setParent(OverlayFloor)
+    .setParent("OverlayFloor")
     .setTags("env-dpore")
     .setParam({})
     .setMethod({

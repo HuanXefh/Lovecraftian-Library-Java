@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_weed")
     .initTemplate()
-    .setParent(Seaweed)
+    .setParent("Seaweed")
     .setTags()
     .setParam({})
     .setMethod({});

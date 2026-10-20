@@ -56,7 +56,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_heap")
     .initTemplate()
-    .setParent(TallBlock)
+    .setParent("TallBlock")
     .setTags()
     .setParam({
 

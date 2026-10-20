@@ -121,7 +121,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_pipePump")
         .initTemplate()
-        .setParent(MultiBlockCrafter)
+        .setParent("MultiBlockCrafter")
         .setTags("blk-non-fac")
         .setParam({
 
@@ -194,7 +194,7 @@
         newClass()
         .extendClass(PARENT[1], "B_pipePump")
         .initTemplate()
-        .setParent(MultiBlockCrafterBuild)
+        .setParent("MultiBlockCrafterBuild")
         .setParam({
 
 

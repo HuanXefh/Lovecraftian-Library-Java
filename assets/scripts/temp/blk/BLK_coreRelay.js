@@ -129,7 +129,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_coreRelay")
         .initTemplate()
-        .setParent(StorageBlock)
+        .setParent("StorageBlock")
         .setTags()
         .setParam({
 
@@ -207,7 +207,7 @@
         newClass()
         .extendClass(PARENT[1], "B_coreRelay")
         .initTemplate()
-        .setParent(StorageBlock.StorageBuild)
+        .setParent("StorageBlock.StorageBuild")
         .setParam({
 
 

@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_baseFloor")
     .initTemplate()
-    .setParent(Floor)
+    .setParent("Floor")
     .setTags()
     .setParam({})
     .setParamAlias([

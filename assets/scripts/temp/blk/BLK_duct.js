@@ -9,12 +9,12 @@
 
 
     /**
-     * @typedef {TemplateInstance<DirectionalUnloader, BLK_duct>} BLKDuct
+     * @typedef {TemplateInstance<Duct, BLK_duct>} BLKDuct
      */
 
 
     /**
-     * @typedef {TemplateInstance<DirectionalUnloader.DirectionalUnloaderBuild, B_duct>} BDuct
+     * @typedef {TemplateInstance<Duct.DuctBuild, B_duct>} BDuct
      * @prop {BLKDuct} block
      */
 
@@ -50,7 +50,7 @@
         .implement(INTF_BLK_transportBlockSideDisplay[0])
         .implement(INTF_BLK_mainBusInputSite[0])
         .initTemplate()
-        .setParent(Duct)
+        .setParent("Duct")
         .setTags()
         .setParam({})
         .setMethod({
@@ -144,7 +144,7 @@
         .implement(INTF_BLK_transportBlockSideDisplay[1])
         .implement(INTF_BLK_mainBusInputSite[1])
         .initTemplate()
-        .setParent(Duct.DuctBuild)
+        .setParent("Duct.DuctBuild")
         .setParam({})
         .setMethod({}),
 

@@ -87,7 +87,7 @@
         .extendClass(PARENT[0], "BLK_electricFurnaceRecipeFactory")
         .implement(INTF_BLK_electricFurnaceBlock[0])
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags()
         .setParam({})
         .setMethod({
@@ -110,7 +110,7 @@
         .extendClass(PARENT[1], "B_electricFurnaceRecipeFactory")
         .implement(INTF_BLK_electricFurnaceBlock[1])
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({
 
 

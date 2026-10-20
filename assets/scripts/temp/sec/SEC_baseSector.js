@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "SEC_baseSector")
     .initTemplate()
-    .setParent(SectorPreset)
+    .setParent("SectorPreset")
     .setTags()
     .setParam({
 

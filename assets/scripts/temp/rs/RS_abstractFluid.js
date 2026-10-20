@@ -65,7 +65,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_abstractFluid")
     .initTemplate()
-    .setParent(Liquid)
+    .setParent("Liquid")
     .setTags("rs-aux")
     .setParam({
 

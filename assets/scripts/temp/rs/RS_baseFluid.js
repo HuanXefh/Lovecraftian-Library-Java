@@ -220,7 +220,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_baseFluid")
     .initTemplate()
-    .setParent(Liquid)
+    .setParent("Liquid")
     .setTags()
     .setParam({
 

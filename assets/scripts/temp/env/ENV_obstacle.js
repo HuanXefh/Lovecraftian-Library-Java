@@ -54,7 +54,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_obstacle")
     .initTemplate()
-    .setParent(StaticProp)
+    .setParent("StaticProp")
     .setTags()
     .setParam({})
     .setMethod({

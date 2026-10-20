@@ -107,7 +107,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_fluidValve")
         .initTemplate()
-        .setParent(LiquidJunction)
+        .setParent("LiquidJunction")
         .setTags()
         .setParam({
 
@@ -148,7 +148,7 @@
         newClass()
         .extendClass(PARENT[1], "B_fluidValve")
         .initTemplate()
-        .setParent(LiquidJunction.LiquidJunctionBuild)
+        .setParent("LiquidJunction.LiquidJunctionBuild")
         .setParam({
 
 

@@ -138,7 +138,7 @@
         .extendClass(PARENT[0], "BLK_statusProjector")
         .implement(INTF_BLK_radiusDisplay[0])
         .initTemplate()
-        .setParent(MendProjector)
+        .setParent("MendProjector")
         .setTags("blk-non-mend")
         .setParam({
 
@@ -220,7 +220,7 @@
         .extendClass(PARENT[1], "B_statusProjector")
         .implement(INTF_BLK_radiusDisplay[1])
         .initTemplate()
-        .setParent(MendProjector.MendBuild)
+        .setParent("MendProjector.MendBuild")
         .setParam({
 
 

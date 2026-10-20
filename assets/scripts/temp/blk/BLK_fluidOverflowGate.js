@@ -100,7 +100,7 @@
         .extendClass(PARENT[0], "BLK_fluidOverflowGate")
         .implement(INTF_BLK_pressureBlock[0])
         .initTemplate()
-        .setParent(LiquidRouter)
+        .setParent("LiquidRouter")
         .setTags()
         .setParam({
 
@@ -184,7 +184,7 @@
         .extendClass(PARENT[1], "B_fluidOverflowGate")
         .implement(INTF_BLK_pressureBlock[1])
         .initTemplate()
-        .setParent(LiquidRouter.LiquidRouterBuild)
+        .setParent("LiquidRouter.LiquidRouterBuild")
         .setParam({
 
 

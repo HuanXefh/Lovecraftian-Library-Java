@@ -131,7 +131,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_transmissionRod")
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags("blk-tor-rod", "blk-non-wall")
         .setParam({
 
@@ -229,7 +229,7 @@
         newClass()
         .extendClass(PARENT[1], "B_transmissionRod")
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({
 
 

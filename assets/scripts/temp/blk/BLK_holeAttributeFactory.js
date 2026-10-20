@@ -238,7 +238,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_holeAttributeFactory")
         .initTemplate()
-        .setParent(MultiBlockCrafter)
+        .setParent("MultiBlockCrafter")
         .setTags()
         .setParam({
 
@@ -426,7 +426,7 @@
         newClass()
         .extendClass(PARENT[1], "B_holeAttributeFactory")
         .initTemplate()
-        .setParent(MultiBlockCrafterBuild)
+        .setParent("MultiBlockCrafterBuild")
         .setParam({
 
 

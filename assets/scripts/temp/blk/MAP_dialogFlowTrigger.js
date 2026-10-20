@@ -107,7 +107,7 @@
         newClass()
         .extendClass(PARENT[0], "MAP_dialogFlowTrigger")
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags("blk-non-wall")
         .setParam({
 
@@ -163,7 +163,7 @@
         newClass()
         .extendClass(PARENT[1], "B_dialogFlowTrigger")
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({
 
 

@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "PART_regionPart")
     .initTemplate()
-    .setParent(RegionPart)
+    .setParent("RegionPart")
     .setTags()
     .setParam({
 

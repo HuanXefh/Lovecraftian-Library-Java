@@ -9,12 +9,12 @@
 
 
     /**
-     * @typedef {TemplateInstance<DirectionalUnloader, BLK_dumpContainer>} BLKDumpContainer
+     * @typedef {TemplateInstance<StorageBlock, BLK_dumpContainer>} BLKDumpContainer
      */
 
 
     /**
-     * @typedef {TemplateInstance<DirectionalUnloader.DirectionalUnloaderBuild, B_dumpContainer>} BDumpContainer
+     * @typedef {TemplateInstance<StorageBlock.StorageBuild, B_dumpContainer>} BDumpContainer
      * @prop {BLKDumpContainer} block
      */
 
@@ -106,7 +106,7 @@
         .extendClass(PARENT[0], "BLK_dumpContainer")
         .implement(INTF_BLK_contentMultiSelector[0])
         .initTemplate()
-        .setParent(StorageBlock)
+        .setParent("StorageBlock")
         .setTags()
         .setParam({})
         .setMethod({
@@ -159,7 +159,7 @@
         .extendClass(PARENT[1], "B_dumpContainer")
         .implement(INTF_BLK_contentMultiSelector[1])
         .initTemplate()
-        .setParent(StorageBlock.StorageBuild)
+        .setParent("StorageBlock.StorageBuild")
         .setParam({})
         .setMethod({
 

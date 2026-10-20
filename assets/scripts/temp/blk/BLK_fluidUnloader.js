@@ -110,7 +110,7 @@
         .extendClass(PARENT[0], "BLK_fluidUnloader")
         .implement(INTF_BLK_contentSelector[0])
         .initTemplate()
-        .setParent(LiquidRouter)
+        .setParent("LiquidRouter")
         .setTags()
         .setParam({
 
@@ -219,7 +219,7 @@
         .extendClass(PARENT[1], "B_fluidUnloader")
         .implement(INTF_BLK_contentSelector[1])
         .initTemplate()
-        .setParent(LiquidRouter.LiquidRouterBuild)
+        .setParent("LiquidRouter.LiquidRouterBuild")
         .setParam({
 
 

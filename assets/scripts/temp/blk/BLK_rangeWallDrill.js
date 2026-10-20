@@ -302,7 +302,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_rangeWallDrill")
         .initTemplate()
-        .setParent(BeamDrill)
+        .setParent("BeamDrill")
         .setTags()
         .setParam({
 
@@ -491,7 +491,7 @@
         newClass()
         .extendClass(PARENT[1], "B_rangeWallDrill")
         .initTemplate()
-        .setParent(BeamDrill.BeamDrillBuild)
+        .setParent("BeamDrill.BeamDrillBuild")
         .setParam({
 
 

@@ -60,7 +60,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_directionalUnloader")
         .initTemplate()
-        .setParent(DirectionalUnloader)
+        .setParent("DirectionalUnloader")
         .setTags()
         .setParam({
 
@@ -101,7 +101,7 @@
          * @extends B_baseItemGate
          */
         newClass().extendClass(PARENT[1], "B_directionalUnloader").initClass()
-        .setParent(DirectionalUnloader.DirectionalUnloaderBuild)
+        .setParent("DirectionalUnloader.DirectionalUnloaderBuild")
         .setParam({})
         .setMethod({
 

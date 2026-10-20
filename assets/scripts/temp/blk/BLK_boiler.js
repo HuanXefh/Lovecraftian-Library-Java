@@ -185,7 +185,7 @@
         .extendClass(PARENT[0], "BLK_boiler")
         .implement(INTF_BLK_pressureProducer[0])
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags()
         .setParam({
 
@@ -352,7 +352,7 @@
         .extendClass(PARENT[1], "B_boiler")
         .implement(INTF_BLK_pressureProducer[1])
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({
 
 

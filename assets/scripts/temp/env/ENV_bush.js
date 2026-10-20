@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_bush")
     .initTemplate()
-    .setParent(TreeBlock)
+    .setParent("TreeBlock")
     .setTags("env-tree")
     .setParam({
 

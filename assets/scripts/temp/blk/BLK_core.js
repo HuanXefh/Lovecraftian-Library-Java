@@ -62,7 +62,7 @@
         .extendClass(PARENT[0], "BLK_core")
         .implement(INTF_BLK_powerProducer[0])
         .initTemplate()
-        .setParent(CoreBlock)
+        .setParent("CoreBlock")
         .setTags()
         .setParam({
 
@@ -96,7 +96,7 @@
         .extendClass(PARENT[1], "B_core")
         .implement(INTF_BLK_powerProducer[1])
         .initTemplate()
-        .setParent(CoreBlock.CoreBuild)
+        .setParent("CoreBlock.CoreBuild")
         .setParam({})
         .setMethod({
 

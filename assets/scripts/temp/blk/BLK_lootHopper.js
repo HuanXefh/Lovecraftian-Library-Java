@@ -111,7 +111,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_lootHopper")
         .initTemplate()
-        .setParent(StorageBlock)
+        .setParent("StorageBlock")
         .setTags("blk-non-cont")
         .setParam({
 
@@ -156,7 +156,7 @@
         newClass()
         .extendClass(PARENT[1], "B_lootHopper")
         .initTemplate()
-        .setParent(StorageBlock.StorageBuild)
+        .setParent("StorageBlock.StorageBuild")
         .setParam({})
         .setMethod({
 

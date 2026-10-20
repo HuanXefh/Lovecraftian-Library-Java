@@ -49,7 +49,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_wallOre")
     .initTemplate()
-    .setParent(OreBlock)
+    .setParent("OreBlock")
     .setTags()
     .setParam({
 

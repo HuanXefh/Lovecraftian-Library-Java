@@ -126,7 +126,7 @@
         .extendClass(PARENT[0], "BLK_fluidPressureValve")
         .implement(INTF_BLK_pressureBlock[0])
         .initTemplate()
-        .setParent(LiquidJunction)
+        .setParent("LiquidJunction")
         .setTags()
         .setParam({
 
@@ -169,7 +169,7 @@
         .extendClass(PARENT[1], "B_fluidPressureValve")
         .implement(INTF_BLK_pressureBlock[1])
         .initTemplate()
-        .setParent(LiquidJunction.LiquidJunctionBuild)
+        .setParent("LiquidJunction.LiquidJunctionBuild")
         .setParam({
 
 

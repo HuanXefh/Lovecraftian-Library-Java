@@ -106,7 +106,7 @@
         .implement(INTF_BLK_recipeSelector[0])
         .implement(INTF_BLK_recipeHandler[0])
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags()
         .setParam({})
         .setMethod({
@@ -136,7 +136,7 @@
         .implement(INTF_BLK_recipeSelector[1])
         .implement(INTF_BLK_recipeHandler[1])
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({})
         .setMethod({
 

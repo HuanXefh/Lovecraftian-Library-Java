@@ -58,7 +58,7 @@
     .extendClass(PARENT, "STA_liquidStatus")
     .implement(INTF_STA_burstStatus)
     .initTemplate()
-    .setParent(StatusEffect)
+    .setParent("StatusEffect")
     .setTags()
     .setParam({})
     .setMethod({

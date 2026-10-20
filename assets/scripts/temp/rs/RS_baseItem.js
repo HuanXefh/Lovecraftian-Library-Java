@@ -100,7 +100,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_baseItem")
     .initTemplate()
-    .setParent(Item)
+    .setParent("Item")
     .setTags()
     .setParam({
 

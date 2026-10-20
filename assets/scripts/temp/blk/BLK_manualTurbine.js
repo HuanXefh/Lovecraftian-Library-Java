@@ -46,7 +46,7 @@
         .extendClass(PARENT[0], "BLK_manualTurbine")
         .implement(INTF_BLK_manualTimerBlock[0])
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags("blk-non-fac")
         .setParam({})
         .setMethod({}),
@@ -61,7 +61,7 @@
         .extendClass(PARENT[1], "B_manualTurbine")
         .implement(INTF_BLK_manualTimerBlock[1])
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({})
         .setMethod({}),
 

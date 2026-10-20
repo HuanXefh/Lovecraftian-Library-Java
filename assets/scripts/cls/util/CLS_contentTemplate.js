@@ -28,6 +28,27 @@
     let currentlyBuilding = null;
 
 
+    /** @type {ObjectMap<string, string>} */
+    const v9ClassMigrationMap = ObjectMap.of(
+        "ArmoredConveyor", "Conveyor",
+        "ArmoredConveyor.ArmoredConveyorBuild", "Conveyor.ConveyorBuild",
+        "ArmoredConduit", "Conduit",
+        "ArmoredConduit.ArmoredConduitBuild", "Conduit.ConduitBuild",
+        "SolidPump", "GenericCrafter",
+        "SolidPump.SolidPumpBuild", "GenericCrafter.GenericCrafterBuild",
+        "HeaterGenerator", "ConsumeGenerator",
+        "HeaterGenerator.HeaterGeneratorBuild", "ConsumeGenerator.ConsumeGeneratorBuild",
+        "Fracker", "GenericCrafter",
+        "Fracker.FrackerBuild", "GenericCrafter.GenericCrafterBuild",
+        "AttributeCrafter", "GenericCrafter",
+        "AttributeCrafter.AttributeCrafterBuild", "GenericCrafter.GenericCrafterBuild",
+        "HeatProducer", "GenericCrafter",
+        "HeatProducer.HeatProducerBuild", "GenericCrafter.GenericCrafterBuild",
+        "HeatCrafter", "GenericCrafter",
+        "HeatCrafter.HeatCrafterBuild", "GenericCrafter.GenericCrafterBuild",
+    );
+
+
     /** @type {boolean} */
     CLS_contentTemplate.__isContentTemplate__ = true;
     /** @type {string} */
@@ -250,12 +271,21 @@
 
     /**
      * Sets the Java class used in `extend`.
-     * @param {Class} javaCls
+     * @param {String|null} javaClsName
      * @return {this}
-     * @lovecTypeSensitive
      */
-    CLS_contentTemplate.setParent = function(javaCls) {
-        if(javaCls != null && (typeof javaCls !== "function" || javaCls.__javaObject__ == null)) throw new Error("Cannot set parent of ${1} to a non-Java class".format(this.clsName));
+    CLS_contentTemplate.setParent = function(javaClsName) {
+        if(javaClsName == null) {
+            this.paramObj.tempParent = null;
+            return this;
+        };
+        let javaCls;
+        if(LCVersionResolver.isV8) {
+            javaCls = eval(javaClsName);
+        } else {
+            javaCls = eval(v9ClassMigrationMap.get(javaClsName, javaClsName));
+        };
+        if(javaCls == null || typeof javaCls !== "function" || javaCls.__javaObject__ == null) throw new Error("Cannot set parent of ${1} to a non-Java class ${2}".format(this.clsName, javaClsName));
         this.paramObj.tempParent = javaCls;
         return this;
     };

@@ -105,7 +105,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_router")
         .initTemplate()
-        .setParent(Router)
+        .setParent("Router")
         .setTags()
         .setParam({})
         .setMethod({
@@ -138,7 +138,7 @@
         newClass()
         .extendClass(PARENT[1], "B_router")
         .initTemplate()
-        .setParent(Router.RouterBuild)
+        .setParent("Router.RouterBuild")
         .setParam({
 
 

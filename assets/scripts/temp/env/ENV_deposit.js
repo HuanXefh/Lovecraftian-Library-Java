@@ -53,7 +53,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_deposit")
     .initTemplate()
-    .setParent(TallBlock)
+    .setParent("TallBlock")
     .setTags()
     .setParam({
 

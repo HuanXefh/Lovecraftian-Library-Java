@@ -70,7 +70,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_intermediateItem")
     .initTemplate()
-    .setParent(Item)
+    .setParent("Item")
     .setTags("ct-intmd")
     .setParam({
 

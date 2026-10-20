@@ -162,7 +162,7 @@
         .implement(INTF_BLK_depthOreHandler[0])
         .implement(INTF_BLK_oreScannerHandler[0])
         .initTemplate()
-        .setParent(LCVersionResolver.isV8 ? AttributeCrafter : GenericCrafter)
+        .setParent("AttributeCrafter")
         .setTags("blk-non-fac")
         .setParam({
 
@@ -339,7 +339,7 @@
         .implement(INTF_BLK_depthOreHandler[1])
         .implement(INTF_BLK_oreScannerHandler[1])
         .initTemplate()
-        .setParent(LCVersionResolver.isV8 ? AttributeCrafter.AttributeCrafterBuild : GenericCrafter.GenericCrafterBuild)
+        .setParent("AttributeCrafter.AttributeCrafterBuild")
         .setParam({})
         .setMethod({
 

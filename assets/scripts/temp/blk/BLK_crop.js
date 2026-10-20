@@ -347,7 +347,7 @@
         .implement(INTF_BLK_sameBlockRestrictionHandler[0])
         .implement(INTF_ENV_unitHider)
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags("blk-crop")
         .setParam({
 
@@ -606,7 +606,7 @@
         .implement(INTF_BLK_terrainHandler[1])
         .implement(INTF_BLK_sameBlockRestrictionHandler[1])
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({
 
 

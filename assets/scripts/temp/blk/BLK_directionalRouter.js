@@ -44,7 +44,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_directionalRouter")
         .initTemplate()
-        .setParent(DuctRouter)
+        .setParent("DuctRouter")
         .setTags()
         .setParam({})
         .setMethod({}),
@@ -57,7 +57,7 @@
         newClass()
         .extendClass(PARENT[1], "B_directionalRouter")
         .initTemplate()
-        .setParent(DuctRouter.DuctRouterBuild)
+        .setParent("DuctRouter.DuctRouterBuild")
         .setParam({})
         .setMethod({}),
 

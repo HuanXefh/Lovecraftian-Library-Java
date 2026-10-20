@@ -163,7 +163,7 @@
         .implement(INTF_BLK_pressureBlock[0])
         .implement(INTF_BLK_transportBlockSideDisplay[0])
         .initTemplate()
-        .setParent(Conduit)
+        .setParent("Conduit")
         .setTags()
         .setParam({
 
@@ -294,7 +294,7 @@
         .implement(INTF_BLK_pressureBlock[1])
         .implement(INTF_BLK_transportBlockSideDisplay[1])
         .initTemplate()
-        .setParent(Conduit.ConduitBuild)
+        .setParent("Conduit.ConduitBuild")
         .setParam({
 
 

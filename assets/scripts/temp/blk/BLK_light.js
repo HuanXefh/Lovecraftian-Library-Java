@@ -127,7 +127,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_light")
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags("blk-non-fac")
         .setParam({
 
@@ -190,7 +190,7 @@
         newClass()
         .extendClass(PARENT[1], "B_light")
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({
 
 

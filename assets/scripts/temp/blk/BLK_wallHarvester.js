@@ -9,12 +9,12 @@
 
 
     /**
-     * @typedef {TemplateInstance<GenericCrafter, BLK_wallHarvester>} BLKWallHarvester
+     * @typedef {TemplateInstance<WallCrafter, BLK_wallHarvester>} BLKWallHarvester
      */
 
 
     /**
-     * @typedef {TemplateInstance<GenericCrafter.GenericCrafterBuild, B_wallHarvester>} BWallHarvester
+     * @typedef {TemplateInstance<WallCrafter.WallCrafterBuild, B_wallHarvester>} BWallHarvester
      * @prop {BLKWallHarvester} block
      */
 
@@ -100,7 +100,7 @@
         .extendClass(PARENT[0], "BLK_wallHarvester")
         .implement(INTF_BLK_lootProducer[0])
         .initTemplate()
-        .setParent(WallCrafter)
+        .setParent("WallCrafter")
         .setTags()
         .setParam({
 
@@ -175,7 +175,7 @@
         .extendClass(PARENT[1], "B_wallHarvester")
         .implement(INTF_BLK_lootProducer[1])
         .initTemplate()
-        .setParent(WallCrafter.WallCrafterBuild)
+        .setParent("WallCrafter.WallCrafterBuild")
         .setParam({})
         .setMethod({
 

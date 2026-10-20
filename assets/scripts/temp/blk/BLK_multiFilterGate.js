@@ -221,7 +221,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_multiFilterGate")
         .initTemplate()
-        .setParent(Sorter)
+        .setParent("Sorter")
         .setTags()
         .setParam({
 
@@ -277,7 +277,7 @@
         newClass()
         .extendClass(PARENT[1], "B_multiFilterGate")
         .initTemplate()
-        .setParent(Sorter.SorterBuild)
+        .setParent("Sorter.SorterBuild")
         .setParam({
 
 

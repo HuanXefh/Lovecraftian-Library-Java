@@ -98,7 +98,7 @@
     .extendClass(PARENT, "ENV_vent")
     .implement(INTF_ENV_dynamicSizeVent)
     .initTemplate()
-    .setParent(SteamVent)
+    .setParent("SteamVent")
     .setTags()
     .setParam({
 

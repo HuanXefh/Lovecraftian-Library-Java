@@ -81,7 +81,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "DBCT_dialFlowContent")
     .initTemplate()
-    .setParent(StatusEffect)
+    .setParent("StatusEffect")
     .setTags()
     .setParam({
 

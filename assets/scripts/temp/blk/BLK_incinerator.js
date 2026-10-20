@@ -241,7 +241,7 @@
         .implement(INTF_BLK_contentMultiSelector[0])
         .implement(INTF_BLK_fluidTypeFilter[0])
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags("blk-non-fac")
         .setParam({
 
@@ -397,7 +397,7 @@
         .implement(INTF_BLK_contentMultiSelector[1])
         .implement(INTF_BLK_fluidTypeFilter[1])
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({
 
 

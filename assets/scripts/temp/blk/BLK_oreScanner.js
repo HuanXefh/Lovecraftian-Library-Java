@@ -220,7 +220,7 @@
         .extendClass(PARENT[0], "BLK_oreScanner")
         .implement(INTF_BLK_radiusDisplay[0])
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags("blk-scan", "blk-non-fac")
         .setParam({
 
@@ -368,7 +368,7 @@
         .extendClass(PARENT[1], "B_oreScanner")
         .implement(INTF_BLK_radiusDisplay[1])
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({
 
 

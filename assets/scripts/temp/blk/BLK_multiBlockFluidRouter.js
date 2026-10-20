@@ -55,7 +55,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_multiBlockFluidRouter")
         .initTemplate()
-        .setParent(MultiBlockLiquidRouter)
+        .setParent("MultiBlockLiquidRouter")
         .setTags()
         .setParam({})
         .setMethod({
@@ -76,7 +76,7 @@
         newClass()
         .extendClass(PARENT[1], "B_multiBlockFluidRouter")
         .initTemplate()
-        .setParent(MultiBlockLiquidRouterBuild)
+        .setParent("MultiBlockLiquidRouterBuild")
         .setParam({})
         .setMethod({}),
 

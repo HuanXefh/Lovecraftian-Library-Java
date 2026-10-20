@@ -47,7 +47,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "UNIT_mech")
     .initTemplate()
-    .setParent(UnitType)
+    .setParent("UnitType")
     .setTags("dmg0type-inf")
     .setParam({
 

@@ -68,7 +68,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_wall")
     .initTemplate()
-    .setParent(StaticWall)
+    .setParent("StaticWall")
     .setTags()
     .setParam({
 

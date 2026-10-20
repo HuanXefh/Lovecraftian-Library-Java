@@ -34,6 +34,6 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENTITY_mech")
     .initTemplate()
-    .setParent(MechUnit)
+    .setParent("MechUnit")
     .setParam({})
     .setMethod({});

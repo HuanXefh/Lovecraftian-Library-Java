@@ -67,7 +67,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_infoFactory")
         .initTemplate()
-        .setParent(GenericCrafter)
+        .setParent("GenericCrafter")
         .setTags()
         .setParam({
 
@@ -100,7 +100,7 @@
         newClass()
         .extendClass(PARENT[1], "B_infoFactory")
         .initTemplate()
-        .setParent(GenericCrafter.GenericCrafterBuild)
+        .setParent("GenericCrafter.GenericCrafterBuild")
         .setParam({
 
 

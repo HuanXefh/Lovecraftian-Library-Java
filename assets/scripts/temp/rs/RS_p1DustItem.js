@@ -35,7 +35,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_p1DustItem")
     .initTemplate()
-    .setParent(Item)
+    .setParent("Item")
     .setTags("ct-intmd", "rs-dust", "rs-p1")
     .setParam({
 

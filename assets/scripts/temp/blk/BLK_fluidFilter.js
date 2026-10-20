@@ -107,7 +107,7 @@
         .extendClass(PARENT[0], "BLK_fluidFilter")
         .implement(INTF_BLK_contentSelector[0])
         .initTemplate()
-        .setParent(LiquidJunction)
+        .setParent("LiquidJunction")
         .setTags()
         .setParam({
 
@@ -167,7 +167,7 @@
         .extendClass(PARENT[1], "B_fluidFilter")
         .implement(INTF_BLK_contentSelector[1])
         .initTemplate()
-        .setParent(LiquidJunction.LiquidJunctionBuild)
+        .setParent("LiquidJunction.LiquidJunctionBuild")
         .setParam({})
         .setMethod({
 

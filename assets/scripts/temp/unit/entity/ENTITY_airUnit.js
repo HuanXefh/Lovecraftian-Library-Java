@@ -34,6 +34,6 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENTITY_airUnit")
     .initTemplate()
-    .setParent(Unit)
+    .setParent("Unit")
     .setParam({})
     .setMethod({});

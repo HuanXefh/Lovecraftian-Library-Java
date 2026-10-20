@@ -105,7 +105,7 @@
         newClass()
         .extendClass(PARENT[0], "BLK_heatSource")
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags("blk-non-wall")
         .setParam({
 
@@ -194,7 +194,7 @@
         newClass()
         .extendClass(PARENT[1], "B_heatSource")
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({
 
 

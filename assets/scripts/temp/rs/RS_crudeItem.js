@@ -35,7 +35,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_crudeItem")
     .initTemplate()
-    .setParent(Item)
+    .setParent("Item")
     .setTags("ct-intmd", "rs-crd")
     .setParam({
 

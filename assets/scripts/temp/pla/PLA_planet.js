@@ -34,7 +34,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "PLA_planet")
     .initTemplate()
-    .setParent(Planet)
+    .setParent("Planet")
     .setTags()
     .setParam({})
     .setMethod({});

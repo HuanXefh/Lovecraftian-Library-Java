@@ -95,7 +95,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "ENV_materialFloor")
     .initTemplate()
-    .setParent(Floor)
+    .setParent("Floor")
     .setTags("env-mat-flr")
     .setParam({
 

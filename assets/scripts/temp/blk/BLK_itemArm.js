@@ -500,7 +500,7 @@
         .extendClass(PARENT[0], "BLK_itemArm")
         .implement(INTF_BLK_contentSelector[0])
         .initTemplate()
-        .setParent(Wall)
+        .setParent("Wall")
         .setTags()
         .setParam({
 
@@ -659,7 +659,7 @@
         .extendClass(PARENT[1], "B_itemArm")
         .implement(INTF_BLK_contentSelector[1])
         .initTemplate()
-        .setParent(Wall.WallBuild)
+        .setParent("Wall.WallBuild")
         .setParam({
 
 

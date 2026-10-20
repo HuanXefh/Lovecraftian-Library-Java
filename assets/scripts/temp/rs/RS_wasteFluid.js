@@ -47,7 +47,7 @@
     module.exports = newClass()
     .extendClass(PARENT, "RS_wasteFluid")
     .initTemplate()
-    .setParent(Liquid)
+    .setParent("Liquid")
     .setTags("ct-was")
     .setParam({
 

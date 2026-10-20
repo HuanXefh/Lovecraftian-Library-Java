@@ -90,7 +90,7 @@
         .extendClass(PARENT[0], "BLK_impactDrill")
         .implement(INTF_BLK_impactInducer[0])
         .initTemplate()
-        .setParent(BurstDrill)
+        .setParent("BurstDrill")
         .setTags()
         .setParam({
 
@@ -167,7 +167,7 @@
         .extendClass(PARENT[1], "B_impactDrill")
         .implement(INTF_BLK_impactInducer[1])
         .initTemplate()
-        .setParent(BurstDrill.BurstDrillBuild)
+        .setParent("BurstDrill.BurstDrillBuild")
         .setParam({})
         .setMethod({
 
