@@ -51,6 +51,7 @@ public class LCDrawf {
     public static ObjectMap<String, TextureRegion> wireMatEndRegMap = new ObjectMap<>();
     public static TextureRegion wireGlowReg;
     public static TextureRegion wireShaReg;
+    public static float wireSegScl = 0.5f;
 
     public static Color lightColor = Color.valueOf("ffc999");
     public static Color heatColor = Color.valueOf("ff3838");
@@ -423,10 +424,9 @@ public class LCDrawf {
 
         LCDraw.processZ(z, LCDraw.NORMAL_REGION_Z_IND);
         Draw.color(Color.white, 1f);
+        LCDraw.segLine(wireReg, x1, y1, x2, y2, wireSegScl, strokeScl);
         Draw.rect(wireEndReg, x1, y1, wireEndReg.width * wireEndReg.scl() * 0.5f * strokeScl, wireEndReg.height * wireEndReg.scl() * 0.5f * strokeScl, ang + 180f);
         Draw.rect(wireEndReg, x2, y2, wireEndReg.width * wireEndReg.scl() * 0.5f * strokeScl, wireEndReg.height * wireEndReg.scl() * 0.5f * strokeScl, ang);
-        Lines.stroke(6f * strokeScl);
-        Lines.line(wireReg, x1 + dx, y1 + dy, x2 - dx, y2 - dy, false);
         LCDraw.processZ(-1f, LCDraw.NORMAL_REGION_Z_IND);
         LCDraw.processZ(Layer.block + 0.1f, LCDraw.SHADOW_REGION_Z_IND);
         Lines.stroke(20f * strokeScl);

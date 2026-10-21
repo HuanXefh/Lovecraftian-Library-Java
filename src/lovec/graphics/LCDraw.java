@@ -4,6 +4,7 @@ import arc.graphics.Color;
 import arc.graphics.g2d.*;
 import arc.math.Mathf;
 import arc.util.Nullable;
+import arc.util.Tmp;
 import lovec.utils.LCVersionResolver;
 import lovec.utils.LCPos;
 import mindustry.gen.Building;
@@ -129,6 +130,35 @@ public class LCDraw {
     // Overload
     public static void line(float x1, float y1, float x2, float y2) {
         line(x1, y1, x2, y2, false);
+    };
+
+
+    private static void drawLineSeg(TextureRegion segReg, float x, float y, float ang, float segW, float strokeScl) {
+        Draw.rect(segReg, x, y, segW, segReg.height * segReg.scl() * strokeScl / 2f, ang);
+    };
+
+
+    /**
+     * Draws segmented line.
+     * <br> <code>DEDICATION</code>: Inspired by Carpe Diem.
+     */
+    public static void segLine(TextureRegion segReg, float x1, float y1, float x2, float y2, float segScl, float strokeScl) {
+        float ang = Mathf.angle(x2 - x1, y2 - y1);
+        float dst = Mathf.dst(x1, y1, x2, y2);
+        float segW = Vars.tilesize * segScl;
+
+        Tmp.v1.setZero();
+        for(int i = 0; i <= dst / segW; i++) {
+            drawLineSeg(segReg, x1 + Tmp.v1.x, y1 + Tmp.v1.y, ang, segW, strokeScl);
+            Tmp.v1.add(Tmp.v2.trns(ang, segW));
+        };
+    };
+    // Overload
+    public static void segLine(TextureRegion segReg, float x1, float y1, float x2, float y2, float segScl) {
+        segLine(segReg, x1, y1, x2, y2, segScl, 1f);
+    };
+    public static void segLine(TextureRegion segReg, float x1, float y1, float x2, float y2) {
+        segLine(segReg, x1, y1, x2, y2, 1f);
     };
 
 

@@ -70,11 +70,32 @@
                             tb1 => tb1.add(fetchStat("lovec", "rs0fuel-point").localized()).tooltip(MDL_bundle.getInfo("lovec", "tt-fuel-point")),
                             tb1 => tb1.add(fetchStat("lovec", "rs0fuel-level").localized()).tooltip(MDL_bundle.getInfo("lovec", "tt-fuel-level")),
                         ]];
+                        let
+                            realPon,
+                            realLvl;
                         MDL_fuel.getFuelArr(blk).forEachFast(rs => {
+                            realPon = MDL_fuel.getFuelPon(rs) / blk.delegee.fuelConsMtp;
+                            realLvl = MDL_fuel.getFuelLvl(rs) * blk.delegee.fuelLvlMtp;
                             matArr.push([
                                 rs,
-                                rs instanceof Liquid ? "-" : (MDL_fuel.getFuelPon(rs) / blk.delegee.fuelConsMtp).color(blk.delegee.fuelConsMtp.fEqual(1.0) ? Color.white : blk.delegee.fuelConsMtp > 1.0 ? Pal.remove : Pal.heal),
-                                (MDL_fuel.getFuelLvl(rs) * blk.delegee.fuelLvlMtp).color(blk.delegee.fuelLvlMtp.fEqual(1.0) ? Color.white : blk.delegee.fuelLvlMtp < 1.0 ? Pal.remove : Pal.heal),
+                                rs instanceof Liquid ?
+                                    "-" :
+                                    realPon.color(
+                                        blk.delegee.fuelConsMtp.fEqual(1.0) ?
+                                            Color.white :
+                                            blk.delegee.fuelConsMtp > 1.0 ?
+                                                Pal.remove :
+                                                Pal.heal,
+                                    ),
+                                realLvl.color(
+                                    realLvl * 100.0 >= blk.delegee.heatBlkMeltTemp ?
+                                        Pal.ammo :
+                                        blk.delegee.fuelLvlMtp.fEqual(1.0) ?
+                                            Color.white :
+                                            blk.delegee.fuelLvlMtp < 1.0 ?
+                                                Pal.remove :
+                                                Pal.heal,
+                                ),
                             ]);
                         });
                         MDL_table.setTable(pnTb, matArr);

@@ -991,6 +991,7 @@
                     tbInner.left().setColor(j === 0 ? readParam(boxParamObj, "colorTitle") : readParam(boxParamObj, "colorBase"));
                     margin(tbInner, 0.25);
                     inner = matArr[j][i];
+                    Object.clear(innerTmpParamObj);
                     innerTmpParamObj.setProp(innerParamObj);
                     if(inner instanceof TextureRegion) {
                         tbInner.image(inner).width(readParam(innerParamObj, "size")).height(readParam(innerParamObj, "size"));
@@ -1170,8 +1171,8 @@
                 iCap = icons.iCap(),
                 j = 0,
                 iconTmpParamObj = {};
-
             while(i < iCap) {
+                Object.clear(iconTmpParamObj);
                 iconTmpParamObj.setProp(iconParamObj);
                 iconTmpParamObj.ttArg = ttArgs[i];
                 clickIcon(
@@ -1293,6 +1294,7 @@
                         ctCur = ctF();
                         btn.setChecked(ctCur != null && ctCur.name == ct.name);
                     });
+                    Object.clear(iconTmpParamObj);
                     iconTmpParamObj.setProp(iconParamObj);
                     handleParamObj(btnCell, iconTmpParamObj);
 
@@ -1394,6 +1396,7 @@
                     btn.changed(() => cfgC((btn.isChecked() ? ["SPEC: selector", ct, true] : ["SPEC: selector", ct, false]).toJavaArr(JAVA.object)));
                     btn.getStyle().imageUp = new TextureRegionDrawable(ct.uiIcon);
                     btn.update(() => btn.setChecked(ctsF().includes(ct)));
+                    Object.clear(iconTmpParamObj);
                     iconTmpParamObj.setProp(iconParamObj);
                     handleParamObj(btnCell, iconTmpParamObj);
 
@@ -1555,6 +1558,7 @@
                                     rc.lockedIcon;
                         };
                     });
+                    Object.clear(iconTmpParamObj);
                     iconTmpParamObj.setProp(iconParamObj);
                     iconTmpParamObj.ttArg = tb => iconParamObj.ttArg(tb, rc);
                     handleParamObj(btnCell, iconTmpParamObj);
