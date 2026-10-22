@@ -471,7 +471,7 @@
          */
         ex_writeUnitData: function(unit, dataObj) {
             if(unit.ex_writeUnitData != null) {
-                unit.ex_writeUnitData(dataObj);
+                unit.self.ex_writeUnitData(dataObj);
             };
         }
         .setProp({
@@ -490,7 +490,7 @@
          */
         ex_readUnitData: function(unit, dataObj) {
             if(unit.ex_readUnitData != null) {
-                unit.ex_readUnitData(dataObj);
+                unit.self.ex_readUnitData(dataObj);
             };
         }
         .setProp({

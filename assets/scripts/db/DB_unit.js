@@ -130,7 +130,7 @@ const db = {
          * Outline parameters used for units & turrets in some mods.
          * Note that only contents created with content template will be affected.
          * <br> `ROW`: nameMod, [stroke, color].
-         * @type {F2Array<string, [number, ColorGn]>}
+         * @type {F2Array<string, Tup2<number, ColorGn>>}
          */
         outline: [
 

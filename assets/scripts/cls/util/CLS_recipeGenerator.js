@@ -312,6 +312,25 @@
 
 
     /**
+     * Gets category for a recipe mode.
+     * @param {string} name
+     * @param {string} mode
+     * @param {string|unset} [def]
+     * @return {BundlePiece}
+     */
+    CLS_recipeGenerator.prototype.getCategByMode = function thisFun(name, mode, def) {
+        return DB_recipe.db["gen"]["categMap"].read(thisFun.tmpTup.with(name, mode), def === undefined ? "uncategorized" : def);
+    }
+    .setProp({
+        /**
+         * @memberof CLS_recipeGenerator#getCategByMode
+         * @type {Tup2<string, string>}
+         */
+        tmpTup: [],
+    });
+
+
+    /**
      * Adds a recipe.
      * Any recipe added by this method will be tagged as GENERATED.
      * @param {RecipeRC} rc

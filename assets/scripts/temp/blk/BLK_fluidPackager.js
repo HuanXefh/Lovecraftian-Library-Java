@@ -159,7 +159,7 @@
         if(!global.fcell.isCell(item)) return false;
 
         b.delegee.unpackItemCur = item;
-        b.delegee.packageOutputCur = item.ex_getFluid();
+        b.delegee.packageOutputCur = item.self.ex_getFluid();
 
         return true;
     };

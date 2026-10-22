@@ -339,12 +339,34 @@
         rcGenData: [],
         /** Target: {@link DB_recipe.db.genData.assembly}. */
         rcGenAssemblyData: [],
+        /** Target: {@link DB_recipe.db.genData.cooling}. */
+        rcGenCoolingData: [],
+        /** Target: {@link DB_recipe.db.genData.crushing}. */
+        rcGenCrushingData: [],
         /** Target: {@link DB_recipe.db.genData.drying}. */
         rcGenDryingData: [],
         /** Target: {@link DB_recipe.db.genData.electrolysis}. */
         rcGenElectrolysisData: [],
+        /** Target: {@link DB_recipe.db.genData.filtration}. */
+        rcGenFiltrationData: [],
+        /** Target: {@link DB_recipe.db.genData.heating}. */
+        rcGenHeatingData: [],
+        /** Target: {@link DB_recipe.db.genData.mixing}. */
+        rcGenMixingData: [],
+        /** Target: {@link DB_recipe.db.genData.pulverization}. */
+        rcGenPulverizationData: [],
+        /** Target: {@link DB_recipe.db.genData.purification}. */
+        rcGenPurificationData: [],
         /** Target: {@link DB_recipe.db.genData.reaction}. */
         rcGenReactionData: [],
+        /** Target: {@link DB_recipe.db.genData.roasting}. */
+        rcGenRoastingData: [],
+        /** Target: {@link DB_recipe.db.genData.shaping}. */
+        rcGenShapingData: [],
+        /** Target: {@link DB_recipe.db.genData.sintering}. */
+        rcGenSinteringData: [],
+        /** Target: {@link DB_recipe.db.genData.smelting}. */
+        rcGenSmeltingData: [],
         /** Target: {@link DB_reaction.db.solvationTarget}. */
         reacSolvTarget: [],
 

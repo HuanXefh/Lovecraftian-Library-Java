@@ -387,7 +387,7 @@
      * @return {boolean}
      */
     checkSubInsOfTemp = function(ct, tempName) {
-        return ct.ex_isSubInsOf != null && ct.ex_isSubInsOf(tempName);
+        return ct.ex_isSubInsOf != null && ct.self.ex_isSubInsOf(tempName);
     };
 
 
@@ -858,9 +858,38 @@
                 if(jval.has("requirements") && blk.buildVisibility === BuildVisibility.hidden) {
                     blk.buildVisibility = BuildVisibility.shown;
                 };
+                // `armored` in duct
                 if(!LCVersionResolver.isV8 && jval.has("armored") && blk instanceof Duct) {
                     blk.noSideBlend = LCContentParser.getBool(jval, "armored", false);
                     jval.remove("armored");
+                };
+                // turret
+                if(blk instanceof Turret) {
+                    if(LCVersionResolver.isV8) {
+                        if(jval.has("maxAmmo") && instanceOfAny(blk, ItemTurret, LiquidTurret)) {
+                            console.warn("[LOVEC] Do not use `maxAmmo` for item turret and liquid turret! Set capacity instead.");
+                            jval.remove("maxAmmo");
+                        };
+                        if(jval.has("ammoPerShot")) {
+                            console.warn("[LOVEC] Do not use `ammoPerShot`!");
+                            jval.remove("ammoPerShot");
+                        };
+                        if(jval.has("ammoUsed")) {
+                            let frac = Number(jval.remove("ammoUsed").asString());
+                            blk.ammoMultiplier = 1.0 / frac;
+                        };
+                        if(jval.has("displayAmmoUsed")) {
+                            blk.displayAmmoMultiplier = LCContentParser.getBool(jval, "displayAmmoUsed", true);
+                            jval.remove("displayAmmoUsed");
+                        };
+                        Core.app.post(() => {
+                            if(blk instanceof ItemTurret) {
+                                blk.maxAmmo = blk.itemCapacity;
+                            } else if(blk instanceof LiquidTurret) {
+                                blk.maxAmmo = blk.liquidCapacity;
+                            };
+                        });
+                    };
                 };
             }));
         },
@@ -909,7 +938,7 @@
                     });
                 } else {
                     jval.remove("mesh");
-                    pla.meshLoader = prov(() => pla.ex_getMesh());
+                    pla.meshLoader = prov(() => pla.self.ex_getMesh());
                 };
 
                 // Cloud mesh
@@ -929,7 +958,7 @@
                     });
                 } else {
                     jval.remove("cloudMesh");
-                    pla.cloudMeshLoader = prov(() => pla.ex_getCloudMesh());
+                    pla.cloudMeshLoader = prov(() => pla.self.ex_getCloudMesh());
                 };
 
                 // Generator

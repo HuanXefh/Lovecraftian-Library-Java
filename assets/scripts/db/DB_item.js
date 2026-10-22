@@ -19,7 +19,7 @@ const db = {
             /**
              * Fuel parameters for an item.
              * <br> `ROW`: item, [fuelPon, fuelLvl].
-             * @type {F2Array<ItemGn, [number, number]>}
+             * @type {F2Array<ItemGn, Tup2<number, number>>}
              */
             item: [
 
@@ -33,7 +33,7 @@ const db = {
             /**
              * Fuel parameters for a fluid.
              * <br> `ROW`: liq, [consRate, fuelLvl].
-             * @type {F2Array<LiquidGn, [number, number]>}
+             * @type {F2Array<LiquidGn, Tup2<number, number>>}
              */
             fluid: [],
 

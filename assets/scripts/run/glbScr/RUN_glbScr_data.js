@@ -163,7 +163,7 @@
     LCDBFileHandler = {
 
 
-        /** @type {ObjectMap<string, [Object, (dbFiObj: Object, ...args: Array<Object>) => Object]>} */
+        /** @type {ObjectMap<string, Tup2<Object, (dbFiObj: Object, ...args: Array<Object>) => Object>>} */
         __keyTupMap__: new ObjectMap(),
         /** @type {Arguments} */
         __tmpArgs__: [],

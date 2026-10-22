@@ -38,8 +38,10 @@
     function comp_draw(sta, unit) {
         let isAfter = false;
         if(!GLB_varGen.fadeStas.some(osta => {
-            if(osta === sta) isAfter = true;
-            return !isAfter && sta.delegee.fadeReg != null && unit.hasEffect(osta) && osta !== sta;
+            if(osta.id === sta.id) {
+                isAfter = true;
+            };
+            return !isAfter && sta.delegee.fadeReg != null && unit.hasEffect(osta) && osta.id !== sta.id;
         })) {
             LCDrawf.fade(unit.x, unit.y, sta.delegee.fadeReg, 0.5, 0.0, LCProp.getHitSize(unit) * 0.1, sta.delegee.fadeColor, 0.5, Layer.effect + GLB_var.layer.offDrawOver);
         };

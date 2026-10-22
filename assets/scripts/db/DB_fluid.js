@@ -113,6 +113,10 @@ const db = {
 
 
             /** @type {Array<LiquidGn>} */
+            nitrate: [],
+
+
+            /** @type {Array<LiquidGn>} */
             oxidative: [],
 
 
@@ -375,6 +379,42 @@ const db = {
              * `ROW`: eleGrp, scl.
              * @type {F2Array<string, number>}
              */
+            stainless: [
+
+                "brine", 4.0,
+                "acidAq", 2.0,
+                "acidGas", 2.5,
+                "acidSub", 2.0,
+                "acidSlurry", 2.0,
+
+            ],
+
+
+            /**
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
+             */
+            brineProof: [
+
+                "acidAq", 2.0,
+                "acidGas", 2.5,
+                "acidSub", 2.0,
+                "acidSlurry", 2.0,
+
+            ],
+
+
+            /**
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
+             */
+            acidProof: [],
+
+
+            /**
+             * `ROW`: eleGrp, scl.
+             * @type {F2Array<string, number>}
+             */
             galvanized: [
 
                 "acidAq", 5.0,
@@ -389,11 +429,7 @@ const db = {
              * `ROW`: eleGrp, scl.
              * @type {F2Array<string, number>}
              */
-            stainless: [
-
-                "brine", 5.0,
-
-            ],
+            glass: [],
 
 
             /**
@@ -402,6 +438,7 @@ const db = {
              */
             aluminum: [
 
+                "brine", 2.5,
                 "basicAq", 5.0,
                 "basicGas", 5.0,
                 "basicSub", 5.0,
@@ -478,6 +515,7 @@ const db = {
 
                 "ammoniacal", 8.0,
                 "chloric", 6.0,
+                "nitrate", 6.0,
                 "acetylene", 1.0,
 
             ],
@@ -489,6 +527,7 @@ const db = {
              */
             lead: [
 
+                "nitrate", 6.0,
                 "oxidative", 4.5,
 
             ],
@@ -500,9 +539,53 @@ const db = {
              */
             iron: [
 
+                "nitrate", 5.0,
                 "oxidative", 0.7,
 
             ],
+
+
+            /**
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
+             */
+            steel: [
+
+                "nitrate", 5.0,
+
+            ],
+
+
+            /**
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
+             */
+            stainless: [
+
+                "chloric", 2.5,
+
+            ],
+
+
+            /**
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
+             */
+            brineProof: [],
+
+
+            /**
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
+             */
+            acidProof: [],
+
+
+            /**
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
+             */
+            galvanized: [],
 
 
             /**
@@ -520,9 +603,28 @@ const db = {
              * `ROW`: fTag, scl.
              * @type {F2Array<string, number>}
              */
+            aluminum: [
+
+                "chloric", 4.0,
+
+            ],
+
+
+            /**
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
+             */
+            cement: [],
+
+
+            /**
+             * `ROW`: fTag, scl.
+             * @type {F2Array<string, number>}
+             */
             rubber: [
 
                 "fluoric", 7.5,
+                "nitrate", 6.0,
                 "oxidative", 4.5,
 
             ],

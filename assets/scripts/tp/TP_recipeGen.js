@@ -71,7 +71,8 @@
 
         if(mode == null) throw new LCError.NullArgumentError("mode");
 
-        this.setCateg("assembly");
+        let categ = this.getCategByMode("assembler", mode, "assembly");
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
             DB_recipe.db["genData"]["assembly"][mode],
@@ -84,123 +85,44 @@
 
 
     /**
-     * Recipe generator: alloy furnace.
-     * Converts materials into alloy metal.
+     * Recipe generator: cooler.
      * @this {CLS_recipeGenerator}
      * @param {RecipeRC} rc
      * @param {RecipeMetaObject} metaObj
      * @return {void}
      */
-    const alloyFurnace = function(rc, metaObj) {
-        this.setCateg("alloying");
+    const cooler = function(rc, metaObj) {
+        let
+            mode = readParam(metaObj, "mode");
+
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("cooler", mode);
+        this.setCateg(categ);
+        if(mode === "condensation") {
+            // Steam condensation recipe on top of everything
+            let steamRefundFrac = 0.85;
+            this.handleSingle(
+                rc,
+                "loveclab-gas0misc-steam",
+                metaObj,
+                {
+                    keyCt: "GROUP: steam",
+                    liqI: "GROUP: steam",
+                    liqO: "loveclab-liq0ore-water",
+                    amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * steamRefundFrac,
+                },
+            );
+        };
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"]["alloying"],
+            DB_recipe.db["genData"]["cooling"][mode],
             null,
             metaObj,
         );
     };
-    newRecipeGenerator("lovec", "alloyFurnace", alloyFurnace);
-    exports.alloyFurnace = alloyFurnace;
-
-
-    /**
-     * Recipe generator: brick kiln.
-     * Converts brick blend to brick.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const brickKiln = function(rc, metaObj) {
-        this.setCateg("brick-baking");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["brickBaking"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "brickKiln", brickKiln);
-    exports.brickKiln = brickKiln;
-
-
-    /**
-     * Recipe generator: carbonization furnace.
-     * Handles recipes for charcoal, active carbon, etc.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const carbonizationFurnace = function(rc, metaObj) {
-        this.setCateg("carbonization");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["carbonization"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "carbonizationFurnace", carbonizationFurnace);
-    exports.carbonizationFurnace = carbonizationFurnace;
-
-
-    /**
-     * Recipe generator: caster.
-     * Converts materials into casting target items.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const caster = function(rc, metaObj) {
-        this.setCateg("casting");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["casting"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "caster", caster);
-    exports.caster = caster;
-
-
-    /**
-     * Recipe generator: condenser.
-     * Converts evaporized liquid into liquid.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const condenser = function(rc, metaObj) {
-        this.setCateg("condensation");
-
-        // Steam condensation recipe on top of everything
-        const STEAM_REFUND_FRAC = 0.85;
-        this.handleSingle(
-            rc,
-            "loveclab-gas0misc-steam",
-            metaObj,
-            {
-                keyCt: "GROUP: steam",
-                liqI: "GROUP: steam",
-                liqO: "loveclab-liq0ore-water",
-                amtO: readParam(metaObj, "amtI", readParam(metaObj, "amt", 1)) * STEAM_REFUND_FRAC,
-            },
-        );
-
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["condensation"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "condenser", condenser);
-    exports.condenser = condenser;
+    newRecipeGenerator("lovec", "cooler", cooler);
+    exports.cooler = cooler;
 
 
     /**
@@ -233,6 +155,15 @@
             this.setTag();
         };
 
+        this.setTag("specific");
+        this.handle2Arr(
+            rc,
+            DB_recipe.db["genData"]["crushing"]["biomass"],
+            null,
+            metaObj,
+        );
+        this.setTag();
+
         this.handleNameNumArr(
             rc,
             DB_item.db["group"]["biomass"],
@@ -253,27 +184,6 @@
 
 
     /**
-     * Recipe generator: decorticator.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const crusherDecortication = function(rc, metaObj) {
-        this.setCateg("misc");
-
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["decortication"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "crusherDecortication", crusherDecortication);
-    exports.crusherDecortication = crusherDecortication;
-
-
-    /**
      * Recipe generator: dryer.
      * Removes moisture.
      * @this {CLS_recipeGenerator}
@@ -287,7 +197,8 @@
 
         if(mode == null) throw new LCError.NullArgumentError("mode");
 
-        this.setCateg("drying");
+        let categ = this.getCategByMode("dryer", mode, "drying");
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
             DB_recipe.db["genData"]["drying"][mode],
@@ -297,27 +208,6 @@
     };
     newRecipeGenerator("lovec", "dryer", dryer);
     exports.dryer = dryer;
-
-
-    /**
-     * Recipe generator: freeze dryer.
-     * Removes moisture through sublimation of ice.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const dryerFreeze = function(rc, metaObj) {
-        this.setCateg("drying");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["drying"]["freeze"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "dryerFreeze", dryerFreeze);
-    exports.dryerFreeze = dryerFreeze;
 
 
     /**
@@ -334,7 +224,8 @@
 
         if(mode == null) throw new LCError.NullArgumentError("mode");
 
-        this.setCateg("electrolysis");
+        let categ = this.getCategByMode("electrolyzer", mode, "electrolysis");
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
             DB_recipe.db["genData"]["electrolysis"][mode],
@@ -348,7 +239,6 @@
 
     /**
      * Recipe generator: filter.
-     * Separates items from slurry, or liquids from morbid solution.
      * @this {CLS_recipeGenerator}
      * @param {RecipeRC} rc
      * @param {RecipeMetaObject} metaObj
@@ -356,12 +246,15 @@
      */
     const filter = function(rc, metaObj) {
         let
-            isItemFilter = readParam(metaObj, "isItemFilter", false);
+            mode = readParam(metaObj, "mode");
 
-        this.setCateg("filtration");
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("filter", mode, "filtration");
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"][isItemFilter ? "filtration" : "filtrationLiquid"],
+            DB_recipe.db["genData"]["filtration"][mode],
             null,
             metaObj,
         );
@@ -371,71 +264,35 @@
 
 
     /**
-     * Recipe generator: forge.
-     * Converts materials into forging target items.
+     * Recipe generator: heater.
+     * Produces heat, or heats up materials.
      * @this {CLS_recipeGenerator}
      * @param {RecipeRC} rc
      * @param {RecipeMetaObject} metaObj
      * @return {void}
      */
-    const forge = function(rc, metaObj) {
-        this.setCateg("forging");
+    const heater = function(rc, metaObj) {
+        let
+            mode = readParam(metaObj, "mode");
+
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("heater", mode, "heating");
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"]["forging"],
+            DB_recipe.db["genData"]["heating"][mode],
             null,
             metaObj,
         );
     };
-    newRecipeGenerator("lovec", "forge", forge);
-    exports.forge = forge;
-
-
-    /**
-     * Recipe generator: heat exchanger.
-     * Produces heat from hot fluids.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const heaterExchange = function(rc, metaObj) {
-        this.setCateg("heating");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["heatingExchange"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "heaterExchange", heaterExchange);
-    exports.heaterExchange = heaterExchange;
-
-
-    /**
-     * Recipe generator: gas heater.
-     * Heats up some gases.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const heaterGas = function(rc, metaObj) {
-        this.setCateg("heating");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["heatingGas"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "heaterGas", heaterGas);
-    exports.heaterGas = heaterGas;
+    newRecipeGenerator("lovec", "heater", heater);
+    exports.heater = heater;
 
 
     /**
      * Recipe generator: mixer.
-     * Mixes materials into blend.
+     * Mixes materials into a mixture.
      * @this {CLS_recipeGenerator}
      * @param {RecipeRC} rc
      * @param {RecipeMetaObject} metaObj
@@ -443,13 +300,15 @@
      */
     const mixer = function(rc, metaObj) {
         let
-            isBallMill = readParam(metaObj, "isBallMill", false);
+            mode = readParam(metaObj, "mode");
 
-        metaObj.useCalculatedHardness = isBallMill;
-        this.setCateg(isBallMill ? "ball-mill-mixing" : "mixing");
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("mixer", mode, "mixing");
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"][isBallMill ? "ballMillMixing" : "mixing"],
+            DB_recipe.db["genData"]["mixing"][mode],
             null,
             metaObj,
         );
@@ -470,7 +329,7 @@
         this.setCateg("liquid-mixing");
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"]["mixingLiquid"],
+            DB_recipe.db["genData"]["mixing"]["liquid"],
             null,
             metaObj,
         );
@@ -504,28 +363,43 @@
      * @return {void}
      */
     const pulverizer = function(rc, metaObj) {
-        this.setCateg("pulverization");
+        let
+            mode = readParam(metaObj, "mode");
 
-        this.setTag("specific");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["pulverization"],
-            null,
-            metaObj,
-        );
-        this.setTag();
+        if(mode == null) throw new LCError.NullArgumentError("mode");
 
-        this.handleCtLi(
-            rc,
-            GLB_varGen.tagIntmdsMap.get("rs-dust").filter(item => !DB_recipe.db["genData"]["pulverization"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !GLB_varGen.tagIntmdsMap.get("rs-chunks").some(oitem => item.delegee.intmdParent === oitem.delegee.intmdParent)),
-            null,
-            metaObj,
-            (item, metaObj) => ({
-                keyCt: item.delegee.intmdParent.name,
-                itemI: item.delegee.intmdParent,
-                itemO: item,
-            }),
-        );
+        let categ = this.getCategByMode("pulverizer", mode, "pulverization");
+        this.setCateg(categ);
+
+        if(mode === "main") {
+            this.setTag("specific");
+            this.handle2Arr(
+                rc,
+                DB_recipe.db["genData"]["pulverization"]["main"],
+                null,
+                metaObj,
+            );
+            this.setTag();
+
+            this.handleCtLi(
+                rc,
+                GLB_varGen.tagIntmdsMap.get("rs-dust").filter(item => !DB_recipe.db["genData"]["pulverization"]["main"].colIncludes(item.name, 2, 0) && !item.self.ex_getIntmdTags().includesAny("rs-p1", "rs-p2") && !GLB_varGen.tagIntmdsMap.get("rs-chunks").some(oitem => item.delegee.intmdParent === oitem.delegee.intmdParent)),
+                null,
+                metaObj,
+                (item, metaObj) => ({
+                    keyCt: item.delegee.intmdParent.name,
+                    itemI: item.delegee.intmdParent,
+                    itemO: item,
+                }),
+            );
+        } else {
+            this.handle2Arr(
+                rc,
+                DB_recipe.db["genData"]["pulverization"][mode],
+                null,
+                metaObj,
+            );
+        };
     };
     newRecipeGenerator("lovec", "pulverizer", pulverizer);
     exports.pulverizer = pulverizer;
@@ -541,17 +415,13 @@
      */
     const purifier = function(rc, metaObj) {
         let
-            tier = readParam(metaObj, "tier", 1);
+            mode = readParam(metaObj, "mode");
 
-        this.setCateg("purification");
-        if(tier !== 0) {
-            this.handle2Arr(
-                rc,
-                DB_recipe.db["genData"][tier === 2 ? "purificationII" : "purificationI"],
-                null,
-                metaObj,
-            );
-        } else {
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("purifier", mode, "purification");
+        this.setCateg(categ);
+        if(mode === "wash") {
             metaObj.paramObjF = paramObj => {
                 if(MDL_cond.isWaste(paramObj.bo[0])) {
                     // No purification target in the recipe
@@ -564,7 +434,14 @@
             };
             this.handle2Arr(
                 rc,
-                DB_recipe.db["genData"]["purificationI"],
+                DB_recipe.db["genData"]["purification"]["i"],
+                null,
+                metaObj,
+            );
+        } else {
+            this.handle2Arr(
+                rc,
+                DB_recipe.db["genData"]["purification"][mode],
                 null,
                 metaObj,
             );
@@ -572,27 +449,6 @@
     };
     newRecipeGenerator("lovec", "purifier", purifier);
     exports.purifier = purifier;
-
-
-    /**
-     * Recipe generator: purifier.
-     * Purifies ore chunks/dusts. Specially designed for magnetic separators.
-     * @this {CLS_recipeGenerator}
-     * @param {RecipeRC} rc
-     * @param {RecipeMetaObject} metaObj
-     * @return {void}
-     */
-    const purifierMagnetic = function(rc, metaObj) {
-        this.setCateg("purification");
-        this.handle2Arr(
-            rc,
-            DB_recipe.db["genData"]["purificationMagnetic"],
-            null,
-            metaObj,
-        );
-    };
-    newRecipeGenerator("lovec", "purifierMagnetic", purifierMagnetic);
-    exports.purifierMagnetic = purifierMagnetic;
 
 
     /**
@@ -609,20 +465,8 @@
 
         if(mode == null) throw new LCError.NullArgumentError("mode");
 
-        let categStr = "uncategorized";
-        switch(mode) {
-            case "gas" :
-                categStr = "gas-reaction";
-                break;
-            case "liquid" :
-                categStr = "liquid-reaction";
-                break;
-            case "melt" :
-                categStr = "melt-reaction";
-                break;
-        };
-
-        this.setCateg(categStr);
+        let categ = this.getCategByMode("reactor", mode);
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
             DB_recipe.db["genData"]["reaction"][mode],
@@ -673,12 +517,15 @@
      */
     const roastingFurnace = function(rc, metaObj) {
         let
-            isConcentrate = readParam(metaObj, "isConcentrate", false);
+            mode = readParam(metaObj, "mode");
 
-        this.setCateg("roasting");
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("roastingFurnace", mode, "roasting");
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"][!isConcentrate ? "roasting" : "concentrateRoasting"],
+            DB_recipe.db["genData"]["roasting"][mode],
             null,
             metaObj,
         );
@@ -701,7 +548,7 @@
         this.setTag("specific");
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"]["rockCrushing"],
+            DB_recipe.db["genData"]["crushing"]["rock"],
             null,
             metaObj,
         );
@@ -709,7 +556,7 @@
 
         this.handleCtLi(
             rc,
-            GLB_varGen.tagIntmdsMap.get("rs-chunks").filter(item => !DB_recipe.db["genData"]["rockCrushing"].colIncludes(item.name, 2, 0) && !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+            GLB_varGen.tagIntmdsMap.get("rs-chunks").filter(item => !DB_recipe.db["genData"]["crushing"]["rock"].colIncludes(item.name, 2, 0) && !item.self.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
             null,
             metaObj,
             (item, metaObj) => ({
@@ -800,6 +647,32 @@
 
 
     /**
+     * Recipe generator: shaper.
+     * @this {CLS_recipeGenerator}
+     * @param {RecipeRC} rc
+     * @param {RecipeMetaObject} metaObj
+     * @return {void}
+     */
+    const shaper = function(rc, metaObj) {
+        let
+            mode = readParam(metaObj, "mode");
+
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("shaper", mode);
+        this.setCateg(categ);
+        this.handle2Arr(
+            rc,
+            DB_recipe.db["genData"]["shaping"][mode],
+            null,
+            metaObj,
+        );
+    };
+    newRecipeGenerator("lovec", "shaper", shaper);
+    exports.shaper = shaper;
+
+
+    /**
      * Recipe generator: sintering furnace.
      * Converts dust items back into their parent items (the ore at most time).
      * @this {CLS_recipeGenerator}
@@ -809,13 +682,16 @@
      */
     const sinteringFurnace = function(rc, metaObj) {
         let
-            isConcentrate = readParam(metaObj, "isConcentrate", false);
+            mode = readParam(metaObj, "mode");
 
-        if(!isConcentrate) {
-            this.setCateg("sintering");
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("sinteringFurnace", mode, "sintering");
+        this.setCateg(categ);
+        if(mode === "main") {
             this.handleCtLi(
                 rc,
-                GLB_varGen.tagIntmdsMap.get("rs-dust").filter(item => !item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+                GLB_varGen.tagIntmdsMap.get("rs-dust").filter(item => !item.self.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
                 null,
                 metaObj,
                 (item, metaObj) => ({
@@ -825,11 +701,16 @@
                     itemO: item.delegee.intmdParent,
                 }),
             );
-        } else {
-            this.setCateg("concentrate-sintering");
+            this.handle2Arr(
+                rc,
+                DB_recipe.db["genData"]["sintering"]["main"],
+                null,
+                metaObj,
+            );
+        } else if(mode === "concentrate") {
             this.handleCtLi(
                 rc,
-                GLB_varGen.tagIntmdsMap.get("rs-chunks").concat(GLB_varGen.tagIntmdsMap.get("rs-dust")).filter(item => item.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
+                GLB_varGen.tagIntmdsMap.get("rs-chunks").concat(GLB_varGen.tagIntmdsMap.get("rs-dust")).filter(item => item.self.ex_getIntmdTags().includesAny("rs-p1", "rs-p2")),
                 null,
                 metaObj,
                 (item, metaObj) => ({
@@ -840,6 +721,19 @@
                     itemO: MDL_content.getIntmd(item.delegee.intmdParent, "rs-ore0conc"),
                 }),
                 item => item.delegee.intmdParent.name,
+            );
+            this.handle2Arr(
+                rc,
+                DB_recipe.db["genData"]["sintering"]["concentrate"],
+                null,
+                metaObj,
+            );
+        } else {
+            this.handle2Arr(
+                rc,
+                DB_recipe.db["genData"]["sintering"][mode],
+                null,
+                metaObj,
             );
         };
     };
@@ -857,12 +751,15 @@
      */
     const smelter = function(rc, metaObj) {
         let
-            isConcentrate = readParam(metaObj, "isConcentrate", false);
+            mode = readParam(metaObj, "mode");
 
-        this.setCateg("smelting");
+        if(mode == null) throw new LCError.NullArgumentError("mode");
+
+        let categ = this.getCategByMode("smelter", mode, "smelting");
+        this.setCateg(categ);
         this.handle2Arr(
             rc,
-            DB_recipe.db["genData"][!isConcentrate ? "smelting" : "concentrateSmelting"],
+            DB_recipe.db["genData"]["smelting"][mode],
             null,
             metaObj,
         );

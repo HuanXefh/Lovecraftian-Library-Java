@@ -130,7 +130,7 @@ const db = {
 
                 /* <------------------------------ block ------------------------------> */
 
-                LCVersionResolver.isV8 ? HeatCrafter : null, function(blk, cons, data, dictConsItem, dictConsFld, dictConsBlk, dictConsUtp) {
+                HeatCrafter, function(blk, cons, data, dictConsItem, dictConsFld, dictConsBlk, dictConsUtp) {
                     if(blk.heatRequirement < 0.0001) return;
                     MDL_recipeDict.addCustomConsTerm(blk, "heat", blk.heatRequirement, mergeObj(data));
                 },
@@ -410,7 +410,7 @@ const db = {
                     }, true);
                 },
 
-                LCVersionResolver.isV8 ? HeatProducer : null, function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
+                HeatProducer, function(blk, data, dictProdItem, dictProdFld, dictProdBlk, dictProdUtp) {
                     db["dict"]["reader"]["produce"].read(GenericCrafter).apply(this, arguments);
                     if(blk.heatOutput > 0.0 && blk.heatOutput < 1000.0) {
                         MDL_recipeDict.addCustomProdTerm(blk, "heat", blk.heatOutput, mergeObj(data));
@@ -854,9 +854,40 @@ const db = {
         /**
          * "GROUP: xxx" in recipe I/O arrays.
          * <br> `ROW`: grpStr, [nameRs, data].
-         * @type {F2Array<string, [string, RecipeGroupData]>}
+         * @type {F2Array<string, Tup2<string, RecipeGroupData>>}
          */
         group: [],
+
+
+        /**
+         * Used to get category for some recipe generators.
+         * <br> `ROW`: name, mode, categ.
+         * @type {F3Array<string, string, string>}
+         */
+        categMap: [
+
+            "assembler", "fabric", "weaving",
+            "assembler", "decortication", "misc",
+
+            "cooler", "condensation", "condensation",
+
+            "mixer", "ballMill", "ball-mill-mixing",
+            "mixer", "gas", "gas-mixing",
+            "mixer", "alloying", "alloying",
+
+            "reactor", "gas", "gas-reaction",
+            "reactor", "liquid", "liquid-reaction",
+            "reactor", "melt", "melt-reaction",
+
+            "roastingFurnace", "brick", "brick-baking",
+            "roastingFurnace", "carbonization", "carbonization",
+
+            "shaper", "casting", "casting",
+            "shaper", "forging", "forging",
+
+            "sinteringFurnace", "concentrate", "concentrate-sintering",
+
+        ],
 
 
     },
@@ -900,40 +931,57 @@ const db = {
             brickBlock: [],
 
 
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            decortication: [],
+
+
         },
 
 
-        /** @type {RecipeRawData2Array} */
-        alloying: [],
+        /**
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenCoolingData}
+         */
+        cooling: {
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            condensation: [],
+
+
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenCrushingData}
          */
-        brickBaking: [],
+        crushing: {
 
 
-        /** @type {RecipeRawData2Array} */
-        carbonization: [],
+            /**
+             * Reserved mode.
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            biomass: [],
 
 
-        /** @type {RecipeRawData2Array} */
-        casting: [],
+            /**
+             * Reserved mode.
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            rock: [],
 
 
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        condensation: [],
-
-
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        decortication: [],
+        },
 
 
         /**
@@ -1017,79 +1065,146 @@ const db = {
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenFiltrationData}
          */
-        filtration: [],
+        filtration: {
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            slurry: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            solution: [],
+
+
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenHeatingData}
          */
-        filtrationLiquid: [],
+        heating: {
 
 
-        /** @type {RecipeRawData2Array} */
-        forging: [],
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            exchange: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            liquid: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            gas: [],
+
+
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenMixingData}
          */
-        heatingExchange: [],
+        mixing: {
+
+
+            /** @type {RecipeRawData2Array} */
+            dust: [],
+
+
+            /** @type {RecipeRawData2Array} */
+            ballMill: [],
+
+
+            /**
+             * Reserved mode.
+             * @type {RecipeRawData2Array}
+             */
+            liquid: [],
+
+
+            /** @type {RecipeRawData2Array} */
+            gas: [],
+
+
+            /** @type {RecipeRawData2Array} */
+            alloying: [],
+
+
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenPulverizationData}
          */
-        heatingGas: [],
+        pulverization: {
 
 
-        /** @type {RecipeRawData2Array} */
-        mixing: [],
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            main: [],
 
 
-        /** @type {RecipeRawData2Array} */
-        ballMillMixing: [],
-
-
-        /** @type {RecipeRawData2Array} */
-        mixingLiquid: [],
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenPurificationData}
          */
-        pulverization: [],
+        purification: {
 
 
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        purificationI: [],
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            i: [],
 
 
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        purificationII: [],
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            ii: [],
 
 
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        purificationMagnetic: [],
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            magnetic: [],
 
 
-        /** @type {RecipeRawData2Array} */
-        purificationFloat: [],
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            float: [],
+
+
+        },
 
 
         /**
@@ -1111,15 +1226,24 @@ const db = {
             melt: [],
 
 
-            /** @type {RecipeRawData2Array} */
+            /**
+             * Reserved mode.
+             * @type {RecipeRawData2Array}
+             */
             burnGas: [],
 
 
-            /** @type {RecipeRawData2Array} */
+            /**
+             * Reserved mode.
+             * @type {RecipeRawData2Array}
+             */
             burnLiquid: [],
 
 
-            /** @type {RecipeRawData2Array} */
+            /**
+             * Reserved mode.
+             * @type {RecipeRawData2Array}
+             */
             burnSolid: [],
 
 
@@ -1127,38 +1251,104 @@ const db = {
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenRoastingData}
          */
-        roasting: [],
+        roasting: {
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            main: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            concentrate: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            brick: [],
+
+
+            /** @type {RecipeRawData2Array} */
+            carbonization: [],
+
+
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenShapingData}
          */
-        concentrateRoasting: [],
+        shaping: {
+
+
+            /** @type {RecipeRawData2Array} */
+            casting: [],
+
+
+            /** @type {RecipeRawData2Array} */
+            forging: [],
+
+
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenSinteringData}
          */
-        rockCrushing: [],
+        sintering: {
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            main: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            concentrate: [],
+
+
+        },
 
 
         /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
+         * @type {Object<string, Array>}
+         * @lovecExtensible {@link LCModDBRegister.rcGenSmeltingData}
          */
-        smelting: [],
+        smelting: {
 
 
-        /**
-         * @type {RecipeRawData2Array}
-         * @lovecAutoRecipe
-         */
-        concentrateSmelting: [],
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            main: [],
+
+
+            /**
+             * @type {RecipeRawData2Array}
+             * @lovecAutoRecipe
+             */
+            concentrate: [],
+
+
+        },
 
 
     },

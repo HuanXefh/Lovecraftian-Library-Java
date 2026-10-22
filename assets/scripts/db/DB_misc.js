@@ -161,7 +161,7 @@ const db = {
          * See {@link INTF_ENV_depthOverlay}.
          * <br> `ROW`: lvl, [nameMod, bp].
          * <br> `BUNDLE`: `term.<nameMod>-term-<bp>.name`.
-         * @type {F2Array<number, [string, BundlePiece]>}
+         * @type {F2Array<number, Tup2<string, BundlePiece>>}
          */
         depthName: [
 

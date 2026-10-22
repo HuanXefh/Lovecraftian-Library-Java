@@ -140,7 +140,7 @@ const db = {
     /**
      * List of fluid reactants and the event called.
      * <br> `ROW`: reac1, reac2, [reaction, paramObj].
-     * @type {F3Array<Reactant, Reactant, [string, ReactionParamObject]>}
+     * @type {F3Array<Reactant, Reactant, Tup2<string, ReactionParamObject>>}
      * @lovecOrderless
      */
     fluid: [
@@ -153,7 +153,7 @@ const db = {
     /**
      * List of item reactant, fluid reactant and the event called (item cannot react with item directly).
      * <br> `ROW`: reac1, reac2, [reaction, paramObj].
-     * @type {F3Array<Reactant, Reactant, [string, ReactionParamObject]>}
+     * @type {F3Array<Reactant, Reactant, Tup2<string, ReactionParamObject>>}
      * @lovecOrderless
      */
     item: [
@@ -172,7 +172,7 @@ const db = {
     /**
      * List of block material group, fluid reactant and the event called.
      * <br> `ROW`: matGrp, reac, [reaction, paramObj].
-     * @type {F3Array<string, Reactant, [string, ReactionParamObject]>}
+     * @type {F3Array<string, Reactant, Tup2<string, ReactionParamObject>>}
      * @lovecOrderless
      */
     material: [
