@@ -167,7 +167,7 @@
      * @return {void}
      */
     const click = function thisFun(x, y, color) {
-        if(color == null) color = Pal.accent;
+        if(color == null) color = GLB_color.accent;
         showAt(x, y, thisFun.eff, 0.0, color);
     }
     .setProp({
@@ -342,7 +342,7 @@
                 showAt(MDL_ui.getCameraX(), MDL_ui.getCameraY(), LCFx.flashBuild, tryFun(e.ex_getFlashEffAng, e, 0.0), color, [reg, e, tryFun(e.ex_getFlashEffRotSpd, e, 0.0)]);
             };
         } else {
-            color.equals(Pal.heal) ?
+            color.equals(GLB_color.heal) ?
             unit.healTime = 1.0 :
             unit.hitTime = 1.0;
         };
@@ -391,7 +391,7 @@
      */
     const itemTransfer = function(x, y, posIns, color, repeat, isGlobal) {
         if(posIns == null) return;
-        if(color == null) color = Pal.accent;
+        if(color == null) color = GLB_color.accent;
         if(repeat == null) repeat = 3;
         for(let i = 0; i < repeat; i++) {
             (isGlobal ? showAt_global : showAt)(x, y, Fx.itemTransfer, 0.0, color, posIns);
@@ -414,7 +414,7 @@
      */
     const laser = function thisFun(x, y, e_f, e_t, color, strokeScl, hasLight) {
         if(e_t == null) return;
-        if(color == null) color = Pal.accent;
+        if(color == null) color = GLB_color.accent;
         showAt(x, y, LCFx.laser, tryVal(strokeScl, 1.0), color, [e_f, e_t, tryVal(hasLight, false)]);
     }
     .setAnno("effect");
@@ -432,7 +432,7 @@
      */
     const lightning = function(x, y, e, color, hasSound) {
         if(posIns == null) return;
-        if(color == null) color = Pal.accent;
+        if(color == null) color = GLB_color.accent;
         showAt(x, y, Fx.chainLightning, 0.0, color, e);
         if(hasSound) {
             MDL_sound.playAt(x, y, "SOUNDS: shootArc");
@@ -533,7 +533,7 @@
      */
     const pointLaser = function(x, y, e, color, se_gn) {
         if(e == null) return;
-        if(color == null) color = Pal.remove;
+        if(color == null) color = GLB_color.remove;
         showAt(x, y, LCFx.pointLaserLine, 0.0, color, e);
         showAt(x, y, LCFx.pointLaserEnd, 0.0, color, e);
         showAt(x, y, LCFx.pointLaserEnd, 0.0, color);
@@ -595,12 +595,12 @@
          * @memberof rotorWave
          * @type {Color}
          */
-        effColor1: GLB_var.color.rotorWhite,
+        effColor1: GLB_color.rotorWhite,
         /**
          * @memberof rotorWave
          * @type {Color}
          */
-        effColor2: GLB_var.color.whiteClear,
+        effColor2: GLB_color.whiteClear,
     })
     .setAnno("effect");
     exports.rotorWave = rotorWave;
@@ -616,7 +616,7 @@
      */
     const trailCircle = function(x, y, rad, color) {
         if(rad == null) rad = 4.0;
-        if(color == null) color = Pal.accent;
+        if(color == null) color = GLB_color.accent;
         showAt(x, y, LCFx.trailCircle, rad, color);
     }
     .setAnno("effect");

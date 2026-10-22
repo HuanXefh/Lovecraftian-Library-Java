@@ -40,12 +40,12 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-rpm", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-rpm-amt", Strings.fixed(b.delegee.rpmCur, 1))),
-            prov(() => Pal.powerBar),
+            prov(() => GLB_color.powerBar),
             () => Mathf.clamp(b.delegee.rpmCur / 10.0),
         ));
         blk.addBar("lovec-tor", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-tor-amt", Strings.fixed(b.delegee.torCur, 1))),
-            prov(() => Pal.metalGrayDark),
+            prov(() => GLB_color.metalGrayDark),
             () => Mathf.clamp(b.delegee.torCur / blk.size / Math.max(b.delegee.rpmCur, 0.1)),
         ));
     };
@@ -140,7 +140,7 @@
             // I have to delay this or crash happens somehow, idk why
             ob.damagePierce(ob.maxHealth * (GLB_var.param.rpmDmgFrac + (rateAdd - rateCons * 3.0) / rateCons));
         });
-        MDL_effect.fadeText(ob.x, ob.y, MDL_bundle.getInfo("lovec", "rpm-overload"), Pal.remove, ob.block.size * 0.5);
+        MDL_effect.fadeText(ob.x, ob.y, MDL_bundle.getInfo("lovec", "rpm-overload"), GLB_color.remove, ob.block.size * 0.5);
     };
 
 

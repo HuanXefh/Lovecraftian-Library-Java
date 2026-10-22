@@ -64,7 +64,7 @@
 
         blk.addBar("lovec-cep", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-cep-amt", (FRAG_faci.getCepCapCur(b.team) - FRAG_faci.getCepUseCur(b.team)) + "/" + FRAG_faci.getCepCapCur(b.team))),
-            prov(() => FRAG_faci.getCepFracCur(b.team) < 1.0 ? Pal.accent : Tmp.c1.set(Color.scarlet).lerp(Color.clear, Math.abs(Math.sin(Time.globalTime * 0.03)))),
+            prov(() => FRAG_faci.getCepFracCur(b.team) < 1.0 ? GLB_color.accent : Tmp.c1.set(Color.scarlet).lerp(Color.clear, Math.abs(Math.sin(Time.globalTime * 0.03)))),
             () => FRAG_faci.getCepFracCur(b.team) > 1.0 ? 1.0 : Mathf.clamp(1.0 - FRAG_faci.getCepFracCur(b.team)),
         ));
     };

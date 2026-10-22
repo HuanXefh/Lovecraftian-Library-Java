@@ -62,7 +62,7 @@
 
         thisFun.tmpTs.forEachFast(ot => {
             if(ot.block().attributes.get(blk.attribute) > 0.0) {
-                LCDrawf.areaShrink(ot, 1, valid ? Pal.accent : Pal.remove);
+                LCDrawf.areaShrink(ot, 1, valid ? GLB_color.accent : GLB_color.remove);
             };
         }, true);
     }

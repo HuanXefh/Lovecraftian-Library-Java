@@ -73,7 +73,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-pressure", b => new Bar(
             prov(() => Core.bundle.format(b.delegee.presTmp >= 0.0 ? "bar.lovec-bar-pressure-amt" : "bar.lovec-bar-vacuum-amt", Strings.fixed(Math.abs(b.delegee.presTmp), 2))),
-            prov(() => b.delegee.presTmp >= 0.0 ? Color.valueOf(Tmp.c1, "cce5ff") : Color.valueOf(Tmp.c1, "e1d5e5")),
+            prov(() => b.delegee.presTmp >= 0.0 ? GLB_color.pressure : GLB_color.vacuum),
             () => Mathf.clamp(Math.abs(b.delegee.presTmp + b.delegee.presExtra) / Math.max(b.delegee.presTmp >= 0.0 ? blk.delegee.presRes : -blk.delegee.vacRes, 0.0001)),
         ));
     };

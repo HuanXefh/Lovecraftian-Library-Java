@@ -28,6 +28,8 @@
 
     __annoTargetMap__.put("LCFromScript", [
         "LCVersionResolver",
+
+        "LCPal",
         "LCScriptUtil",
     ]);
 

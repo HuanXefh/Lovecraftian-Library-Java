@@ -92,13 +92,13 @@
         if(!blk.delegee.skipHeatSupply) {
             blk.addBar("lovec-heat-supplied", b => new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-heat-supplied-amt", Strings.fixed(b.delegee.heatSupplied, 2) + " " + fetchStatUnit("lovec", "heatunits").localized())),
-                prov(() => Pal.lightOrange),
+                prov(() => GLB_color.lightOrange),
                 () => Mathf.clamp(b.delegee.heatSupplied / Math.max(b.delegee.tempCur, 0.01)),
             ));
         };
         blk.addBar("lovec-temp", b => new Bar(
             prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.self.ex_getHeatFrac().roundFixed(2) * 100.0)),
-            prov(() => Pal.lightOrange),
+            prov(() => GLB_color.lightOrange),
             () => b.self.ex_getHeatFrac(),
         ));
     };

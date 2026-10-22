@@ -111,7 +111,7 @@
             nameWeas.forEachFast(nameWea => {
                 weaEn = GLB_varGen.nameWeaEnsMap.get(nameWea);
                 weaEn == null ?
-                    console.warn("[LOVEC] Invalid weather name: " + nameWea.color(Pal.accent)) :
+                    console.warn("[LOVEC] Invalid weather name: " + nameWea.color(GLB_color.accent)) :
                     seq.add(weaEn);
             }, true);
             Vars.state.rules.weather = seq;

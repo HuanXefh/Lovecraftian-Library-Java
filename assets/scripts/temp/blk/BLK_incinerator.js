@@ -81,7 +81,7 @@
         if(!GLB_var.isMindustryX) {
             blk.addBar("lovec-prog", b => new Bar(
                 MDL_bundle.getTerm("lovec", "progress"),
-                Pal.ammo,
+                GLB_color.ammo,
                 () => Mathf.clamp(b.progress, 0.0, 1.0),
             ));
         };

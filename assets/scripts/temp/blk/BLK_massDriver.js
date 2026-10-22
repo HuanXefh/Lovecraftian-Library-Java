@@ -84,12 +84,12 @@
         LCDrawf.lineFlick(
             b.x, b.y, ob.x, ob.y, false, 1.0, 0.5,
             !b.block.delegee.bulCollidesTerrain ?
-                Pal.accent :
+                GLB_color.accent :
                 b.block.delegee.bulCollidesTerrainCaveOnly && !GLB_param.IS_CAVE_MAP ?
-                    Pal.accent :
+                    GLB_color.accent :
                     !LCRaycastf.checkLegSolid(b.x, b.y, ob.x, ob.y) ?
-                        Pal.accent :
-                        Pal.remove,
+                        GLB_color.accent :
+                        GLB_color.remove,
         );
     };
 

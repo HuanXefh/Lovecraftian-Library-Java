@@ -222,18 +222,6 @@
     };
 
 
-    /** @type {Object<string, Color>} */
-    exports.color = {
-        whiteClear: Color.valueOf("ffffff00"),
-        darkMix: Color.valueOf("606060"),
-        heatMix: Color.valueOf("ff3838"),
-        smogWhite: Color.valueOf("ffffff40"),
-        smogWhiteThick: Color.valueOf("ffffff60"),
-        smogWhiteThickest: Color.valueOf("ffffffc0"),
-        rotorWhite: Color.valueOf("ffffff30"),
-    };
-
-
     /** @type {Object<string, number>} */
     exports.param = {
         presExploDmg: 1800.0,

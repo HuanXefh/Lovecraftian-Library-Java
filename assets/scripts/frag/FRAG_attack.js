@@ -147,7 +147,7 @@
 
         if(e instanceof Building) {
             MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
-            MDL_effect.flash(e, Pal.heal);
+            MDL_effect.flash(e, GLB_color.heal);
             e.recentlyHealed();
         } else if(e instanceof Unit) {
             MDL_effect.damage(e.x, e.y, healAmt, null, "heal");
@@ -389,7 +389,7 @@
         };
 
         let i = 0;
-        let r_fi, color = MDL_color.getColor(tryVal(color_gn, Pal.accent));
+        let r_fi, color = MDL_color.getColor(tryVal(color_gn, GLB_color.accent));
         while(i < amt) {
             r_fi = Math.round(r + Mathf.random() * offR);
             Lightning.create(

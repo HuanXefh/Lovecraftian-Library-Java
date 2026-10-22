@@ -120,7 +120,7 @@
              * @return {Color}
              */
             ex_getBlkRColor: function(valid) {
-                return valid ? Pal.accent : Pal.remove;
+                return valid ? GLB_color.accent : GLB_color.remove;
             }
             .setProp({
                 noSuper: true,

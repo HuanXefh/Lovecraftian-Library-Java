@@ -31,7 +31,7 @@
         dial.cont.clear();
         dial.buttons.clear();
         if(title != null) {
-            dial.title.setText(title.color(Pal.accent));
+            dial.title.setText(title.color(GLB_color.accent));
             dial.title.getStyle().fontColor = Color.white;
         };
     };
@@ -375,7 +375,7 @@
             tb.table(Styles.none, tb1 => {
                 MDL_table.margin(tb1, 0.5);
                 tb1.table(Tex.whiteui, tb2 => {
-                    tb2.center().setColor(achievement.isCompleted() ? Color.darkGray : Pal.darkestGray);
+                    tb2.center().setColor(achievement.isCompleted() ? Color.darkGray : GLB_color.darkestGray);
                     tb2.imageDraw(() => achievement.getIcon()).width(64.0).height(64.0).color(!achievement.isCompleted() ? Color.darkGray : Color.white).tooltip(!achievement.isCompleted() && !global.lovecUtil.prop.debug ? "???" : achievement.getText(), true);
                 })
                 .width(72.0)
@@ -411,7 +411,7 @@
                         tmpObj[nameMod].push(achievement);
                     }, true);
                     Object.eachPair(tmpObj, (nameMod, arr) => {
-                        pnTb.add(fetchMod(nameMod, true).meta.displayName).left().fontScale(1.1).color(Pal.accent).row();
+                        pnTb.add(fetchMod(nameMod, true).meta.displayName).left().fontScale(1.1).color(GLB_color.accent).row();
                         pnTb.table(Styles.none, tb => {
                             i = 0;
                             iCap = arr.iCap();
@@ -569,7 +569,7 @@
                         amt = opt[i + 1];
                         p = opt[i + 2];
                         mtp = opt[i + 3];
-                        pnTb.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
+                        pnTb.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(GLB_color.accent).padRight(36.0);
                         MDL_table.rcCtIcon(pnTb, tmp, amt, p, false, {padRight: 72.0, dialToHide: this});
                         pnTb.add(MDL_text.getStat(
                             MDL_bundle.getTerm("lovec", "efficiency-multiplier"),
@@ -656,7 +656,7 @@
 
                         modCont.table(Styles.none, tb => {
                             tb.left();
-                            tb.add(mod.meta.displayName).color(Pal.accent).left();
+                            tb.add(mod.meta.displayName).color(GLB_color.accent).left();
                             tb.button(Icon.downOpen, Styles.emptyi, () => coll.toggle(true))
                             .left()
                             .update(btn => btn.getStyle().imageUp = !coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)
@@ -664,7 +664,7 @@
                             .padLeft(16.0)
                             .expandX()
                             .row();
-                            MDL_table.bar(tb, {color: Pal.accent, stroke: 2.0});
+                            MDL_table.bar(tb, {color: GLB_color.accent, stroke: 2.0});
                             MDL_table.br(tb, 1);
                         })
                         .left()
@@ -778,7 +778,7 @@
                     colAmt = MDL_ui.getColAmt(this.w, 0.0, 2),
                     lastCt = null;
                 pnTb.table(Tex.whiteui, tb => {
-                    tb.left().setColor(Pal.darkestGray);
+                    tb.left().setColor(GLB_color.darkestGray);
                     MDL_table.margin(tb, 0.5);
                     MDL_recipeDict.rcDict.customFieldMap.each((name, obj) => {
                         this.self.ex_buildCtBtn(tb, name, true);
@@ -1015,7 +1015,7 @@
                     .row();
                     // `TABLE`: producer list
                     cont.table(Tex.whiteui, tb => {
-                        tb.left().setColor(Pal.darkestGray);
+                        tb.left().setColor(GLB_color.darkestGray);
                         MDL_table.margin(tb);
                         this.self.ex_buildList(tb, ct, prodArr, isCustomField);
                     })
@@ -1038,7 +1038,7 @@
                     .row();
                     // `TABLE`: consumer list
                     cont.table(Tex.whiteui, tb => {
-                        tb.left().setColor(Pal.darkestGray);
+                        tb.left().setColor(GLB_color.darkestGray);
                         MDL_table.margin(tb);
                         this.self.ex_buildList(tb, ct, consArr, isCustomField);
                     })
@@ -1062,7 +1062,7 @@
                         .row();
                         // `TABLE`: building list
                         cont.table(Tex.whiteui, tb => {
-                            tb.center().setColor(Pal.darkestGray);
+                            tb.center().setColor(GLB_color.darkestGray);
                             MDL_table.setCtLi(tb, reqBlks, {size: 48.0, dialToHide: this});
                         })
                         .left()

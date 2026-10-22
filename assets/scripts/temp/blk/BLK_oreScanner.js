@@ -163,7 +163,7 @@
      */
     function comp_draw(b) {
         processZ(GLB_var.layer.effFlr + 0.01);
-        Draw.color(Pal.accent, b.warmup * 0.2);
+        Draw.color(GLB_color.accent, b.warmup * 0.2);
         Fill.arc(b.x, b.y, b.block.delegee.blkRad, 0.125, b.delegee.offConeAng + b.totalProgress * 2.0);
         Draw.color();
         processZ(null);
@@ -238,7 +238,7 @@
              * @instance
              * @type {Color}
              */
-            scanColor: Pal.techBlue,
+            scanColor: GLB_color.techBlue,
             /**
              * `PARAM`: Sounds played when this scanner crafts.
              * @memberof BLK_oreScanner

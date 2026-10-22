@@ -79,7 +79,7 @@
         blk.removeBar("lovec-warmup");
         blk.addBar("lovec-wind-effc", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-wind-effc-amt", b.delegee.windEffc.perc(0))),
-            prov(() => Tmp.c1.set(Pal.accent).lerp(Pal.heal, b.delegee.windEffc)),
+            prov(() => Tmp.c1.set(GLB_color.accent).lerp(GLB_color.heal, b.delegee.windEffc)),
             () => Mathf.clamp(b.delegee.windEffc, 0.0, 1.0),
         ));
     };

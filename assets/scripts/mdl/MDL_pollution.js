@@ -194,7 +194,7 @@
         if(!pol.fEqual(0.0)) {
             stats.add(
                 pol > 0.0 ? fetchStat("lovec", "blk-pol") : fetchStat("lovec", "blk-polred"),
-                (Math.abs(pol).numToStr(2) + " " + fetchStatUnit("lovec", "polunits").localized()).color(pol > 0.0 ? Pal.remove : Pal.heal),
+                (Math.abs(pol).numToStr(2) + " " + fetchStatUnit("lovec", "polunits").localized()).color(pol > 0.0 ? GLB_color.remove : GLB_color.heal),
             );
         };
     };

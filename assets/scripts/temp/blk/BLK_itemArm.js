@@ -204,8 +204,8 @@
      */
     function comp_drawSelect(b) {
         b.self.ex_drawSelected();
-        LCDrawf.areaShrink(b.self.ex_findMoveT(false), 1, Pal.heal, 0.85);
-        LCDrawf.areaShrink(b.self.ex_findMoveT(true), 1, Pal.techBlue, 0.85);
+        LCDrawf.areaShrink(b.self.ex_findMoveT(false), 1, GLB_color.heal, 0.85);
+        LCDrawf.areaShrink(b.self.ex_findMoveT(true), 1, GLB_color.techBlue, 0.85);
     };
 
 

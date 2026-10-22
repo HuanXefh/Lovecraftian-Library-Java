@@ -54,8 +54,8 @@
              */
             close: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
-                fontColor: Pal.remove,
-                downFontColor: Pal.remove,
+                fontColor: GLB_color.remove,
+                downFontColor: GLB_color.remove,
                 overFontColor: Color.white,
             }),
             /**
@@ -64,8 +64,8 @@
              */
             minimize: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
-                fontColor: Pal.heal,
-                downFontColor: Pal.heal,
+                fontColor: GLB_color.heal,
+                downFontColor: GLB_color.heal,
                 overFontColor: Color.white,
             }),
             /**
@@ -74,8 +74,8 @@
              */
             restore: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
-                fontColor: Pal.accent,
-                downFontColor: Pal.accent,
+                fontColor: GLB_color.accent,
+                downFontColor: GLB_color.accent,
                 overFontColor: Color.white,
             }),
             /**
@@ -84,8 +84,8 @@
              */
             help: extend(TextButton.TextButtonStyle, {
                 font: Fonts.outline,
-                fontColor: Pal.techBlue,
-                downFontColor: Pal.techBlue,
+                fontColor: GLB_color.techBlue,
+                downFontColor: GLB_color.techBlue,
                 overFontColor: Color.white,
             }),
         });
@@ -264,7 +264,7 @@
         /** @type {Color} */
         this.titleColor = Color.darkGray;
         /** @type {Color} */
-        this.contColor = Pal.darkestGray;
+        this.contColor = GLB_color.darkestGray;
 
         return this;
     };
@@ -282,7 +282,7 @@
         root.add(base).top().growX();
 
         base.update(() => {
-            base.setColor(selectedWins.includes(this) ? Pal.accent : Color.white);
+            base.setColor(selectedWins.includes(this) ? GLB_color.accent : Color.white);
         });
         base.top();
 

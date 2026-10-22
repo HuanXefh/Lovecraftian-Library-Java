@@ -146,7 +146,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-grow-prog", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-grow-prog-amt", Strings.fixed(b.delegee.stageCur, 0) + " (" + b.delegee.growFrac.perc(2) + ")")),
-            prov(() => Pal.ammo),
+            prov(() => GLB_color.ammo),
             () => Mathf.clamp(b.delegee.growFrac, 0.0, 1.0),
         ));
     };

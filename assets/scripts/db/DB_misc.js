@@ -360,7 +360,7 @@ const db = {
                             if(unit != null && unit.canPass(vec.x.toIntCoord(), vec.y.toIntCoord())) {
                                 let vecPrev = new Vec2(unit.x, unit.y);
                                 unit.set(vec);
-                                MDL_effect.line(unit.x, unit.y, null, vecPrev, Pal.accent, 1.5);
+                                MDL_effect.line(unit.x, unit.y, null, vecPrev, GLB_color.accent, 1.5);
                             };
                             this.setChecked(false);
                             GLB_param.IS_TELEPORTING = false;

@@ -14,6 +14,7 @@
 
 
     const PARENT = require("lovec/temp/bul/BUL_baseBullet");
+    const INTF_BUL_trailHandler = require("lovec/temp/intf/INTF_BUL_trailHandler");
 
 
     /* <------------------------------ component ------------------------------> */
@@ -42,8 +43,8 @@
                 offSha = btp.delegee.offSha * btp.self.ex_calcShaH(bul);
 
             processZ(btp.delegee.shaZ);
-            Draw.mixcol(Pal.shadow, 1.0);
-            Draw.color(Pal.shadow.a);
+            Draw.mixcol(GLB_color.shadow, 1.0);
+            Draw.color(GLB_color.shadow.a);
             Draw.rect(
                 btp.delegee.shaReg,
                 bul.x + offSha,
@@ -71,9 +72,11 @@
      * {@link BasicBulletType} that supports shadow.
      * @class BUL_spriteBullet
      * @extends BUL_baseBullet
+     * @extends INTF_BUL_trailHandler
      */
     module.exports = newClass()
     .extendClass(PARENT, "BUL_spriteBullet")
+    .implement(INTF_BUL_trailHandler)
     .initTemplate()
     .setParent("BasicBulletType")
     .setTags()
@@ -136,6 +139,24 @@
         }
         .setProp({
             noSuper: true,
+        }),
+
+
+        /**
+         * @override
+         * @memberof BUL_spriteBullet
+         * @instance
+         * @func
+         * @param {Bullet} bul
+         * @return {number}
+         */
+        ex_getTrailWScl: function(bul) {
+            return this.self.ex_calcShaH(bul);
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+            argLen: 1,
         }),
 
 

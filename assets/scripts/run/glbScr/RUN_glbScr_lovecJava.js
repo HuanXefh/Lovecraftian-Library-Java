@@ -56,6 +56,8 @@
     LCDrawf = fetchClass("lovec.graphics.LCDrawf");
     /** @global lovec.graphics.LCDrawP3D */
     LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
+    /** @global lovec.graphics.LCPal */
+    LCPal = fetchClass("lovec.graphics.LCPal");
     /** @global lovec.graphics.LCRgb */
     LCRgb = fetchClass("lovec.graphics.LCRgb");
     /** @global lovec.graphics.LCTexture */

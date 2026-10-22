@@ -68,7 +68,7 @@
         blk.removeBar("lovec-temp");
         blk.addBar("lovec-furnace-temp", b => new Bar(
             prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.delegee.furnEffc.roundFixed(2) * 100.0)),
-            prov(() => Tmp.c2.set(Color.darkGray).lerp(Pal.lightOrange, b.self.ex_getHeatFrac())),
+            prov(() => Tmp.c2.set(Color.darkGray).lerp(GLB_color.lightOrange, b.self.ex_getHeatFrac())),
             () => b.self.ex_getHeatFrac(),
         ));
     };

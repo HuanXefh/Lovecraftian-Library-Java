@@ -61,7 +61,7 @@
             [Liquid, null], (liq, contColor) => contColor == "new" ? liq.color.cpy() : liq.color,
             [Team, null], (team, contColor) => contColor == "new" ? team.color.cpy() : team.color,
             ["number", null], (num, contColor) => contColor == "new" ? new Color(Math.round(num)) : contColor.set(Math.round(num)),
-            ["boolean", null], (bool, contColor) => contColor == "new" ? (bool ? Pal.accent : Pal.remove).cpy() : (bool ? Pal.accent : Pal.remove),
+            ["boolean", null], (bool, contColor) => contColor == "new" ? (bool ? GLB_color.accent : GLB_color.remove).cpy() : (bool ? GLB_color.accent : GLB_color.remove),
             ["string", null], (str, contColor) => contColor == "new" ? Color.valueOf(str) : Color.valueOf(contColor, str),
             [Color, null], (color, contColor) => contColor == "new" ? color.cpy() : color,
         ),

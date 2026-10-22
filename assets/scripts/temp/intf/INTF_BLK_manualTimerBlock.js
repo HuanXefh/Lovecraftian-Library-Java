@@ -82,7 +82,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-timer", b => new Bar(
             prov(() => MDL_bundle.getInfo("lovec", "text-remaining-time") + " " + Strings.fixed(b.delegee.timeClickCur / 60.0, 0) + " " + StatUnit.seconds.localized()),
-            prov(() => Tmp.c1.set(Pal.remove).lerp(Pal.heal, Mathf.clamp(b.delegee.timeClickCur / blk.delegee.manualTimerCap))),
+            prov(() => Tmp.c1.set(GLB_color.remove).lerp(GLB_color.heal, Mathf.clamp(b.delegee.timeClickCur / blk.delegee.manualTimerCap))),
             () => 1.0,
         ));
     };

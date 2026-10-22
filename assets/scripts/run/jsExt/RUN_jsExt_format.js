@@ -86,7 +86,7 @@
      * @return {string}
      */
     Number.prototype.percColor = function(deciAmt, overColor, lessColor, midColor, midTol) {
-        return LCFormat.percColor(this, tryVal(deciAmt, 2), tryVal(overColor, Pal.heal), tryVal(lessColor, Pal.remove), tryVal(midColor, Pal.accent), tryVal(midTol, 0.025));
+        return LCFormat.percColor(this, tryVal(deciAmt, 2), tryVal(overColor, GLB_color.heal), tryVal(lessColor, GLB_color.remove), tryVal(midColor, GLB_color.accent), tryVal(midTol, 0.025));
     };
 
 

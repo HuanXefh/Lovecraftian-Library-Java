@@ -34,7 +34,7 @@
         if(blk.genWarmupRate < 0.0) {
             blk.addBar("lovec-warmup", b => new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-warmup-amt", b.delegee.genWarmup.perc())),
-                prov(() => Pal.ammo),
+                prov(() => GLB_color.ammo),
                 () => Mathf.clamp(b.delegee.genWarmup),
             ));
         };

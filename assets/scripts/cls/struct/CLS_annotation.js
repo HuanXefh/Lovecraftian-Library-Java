@@ -45,7 +45,7 @@
             };
         };
         if(this.type === "undefined") {
-            console.warn("[LOVEC] Annotation ${1} has undefined type!".format(this.name.color(Pal.accent)));
+            console.warn("[LOVEC] Annotation ${1} has undefined type!".format(this.name.color(GLB_color.accent)));
         };
 
 

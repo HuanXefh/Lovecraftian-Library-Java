@@ -68,7 +68,7 @@
 
 
     MDL_event.onLoad(() => {
-        console.log("[LOVEC] ${1} objects built with content template.".format(buildTaskAmt.color(Pal.accent)));
+        console.log("[LOVEC] ${1} objects built with content template.".format(buildTaskAmt.color(GLB_color.accent)));
     });
 
 
@@ -306,7 +306,7 @@
                             && !tag.startsWith("dmg0type")
                             && !DB_item.db["intmd"]["tag"].includes(tag)
                     ) {
-                        console.warn("[LOVEC] Template tag ${1} has not been registered yet!".format(tag.color(Pal.accent)));
+                        console.warn("[LOVEC] Template tag ${1} has not been registered yet!".format(tag.color(GLB_color.accent)));
                     };
                 }, true);
             });
@@ -368,10 +368,10 @@
                 let superFun = thisCls.funObj[name];
                 if(superFun != null) {
                     if((fetchSetting("test-intf-nosuper-warning") || !isFromIntf) && !fun.override && superFun.noSuper && fun.noSuper !== superFun.noSuper) {
-                        console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(name.color(Pal.accent), !isFromIntf ? "" : " (from interface)", this.clsName.color(Pal.accent)));
+                        console.warn("[LOVEC] ${1}${2} has mismatched `noSuper` with super method in ${3}!".format(name.color(GLB_color.accent), !isFromIntf ? "" : " (from interface)", this.clsName.color(GLB_color.accent)));
                     };
                     if(!fun.override && fun.argLen >= 0 && superFun.argLen !== fun.argLen) {
-                        console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(name.color(Pal.accent), fun.argLen, this.clsName.color(Pal.accent)));
+                        console.warn("[LOVEC] ${1} has mismatched argument length (${2}) with super method in ${3}!".format(name.color(GLB_color.accent), fun.argLen, this.clsName.color(GLB_color.accent)));
                     };
                 };
                 thisCls.funObj[name] = mixTempMethods(superFun, fun, MethodMixModes.NORMAL);
@@ -384,7 +384,7 @@
                     str += fun;
                 });
                 console.warn(String.multiline(
-                    '[LOVEC] Found an "${1}xxx" method without `noSuper = true` in ${2}:'.format(thisCls.paramObj.tempFunPrefix, this.clsName.color(Pal.accent)),
+                    '[LOVEC] Found an "${1}xxx" method without `noSuper = true` in ${2}:'.format(thisCls.paramObj.tempFunPrefix, this.clsName.color(GLB_color.accent)),
                     name,
                     thisCls.funObj[name],
                     "Full object:",
@@ -461,7 +461,7 @@
         // Warn invalid fields in `paramObj`
         Object.eachPair(paramObj, (name, val) => {
             if(this.paramObj[name] === undefined) {
-                console.warn("[LOVEC] Unknown field for content template ${1}: ".format(this.clsName.color(Pal.accent)) + name);
+                console.warn("[LOVEC] Unknown field for content template ${1}: ".format(this.clsName.color(GLB_color.accent)) + name);
             };
         });
         // Handle aliases
@@ -484,7 +484,7 @@
             paramObj.metaObj.eachPair((name, val) => {
                 metaData = fields.get(name.replace(/ /g, "_"));
                 if(metaData == null) {
-                    console.warn("[LOVEC] Unknown field ${1} for class ${2}!".format(name.color(Pal.remove), parent.__javaObject__.getSimpleName().color(Pal.accent)));
+                    console.warn("[LOVEC] Unknown field ${1} for class ${2}!".format(name.color(GLB_color.remove), parent.__javaObject__.getSimpleName().color(GLB_color.accent)));
                     printObj(paramObj);
                     printObj(paramObj.metaObj);
                     return;

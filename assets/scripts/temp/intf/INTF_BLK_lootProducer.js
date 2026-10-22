@@ -45,7 +45,7 @@
         if(!GLB_var.isMindustryX) {
             blk.addBar("lovec-prog", b => new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.self.ex_getCraftProg().perc(0))),
-                prov(() => Pal.ammo),
+                prov(() => GLB_color.ammo),
                 () => Mathf.clamp(b.self.ex_getCraftProg()),
             ));
         };

@@ -62,7 +62,7 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
-        Drawf.dashCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.lightRad, valid ? Pal.accent : Pal.remove);
+        Drawf.dashCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.lightRad, valid ? GLB_color.accent : GLB_color.remove);
     };
 
 
@@ -89,7 +89,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        Drawf.dashCircle(b.x, b.y, b.block.delegee.lightRad * b.delegee.lightWarmup, Pal.accent);
+        Drawf.dashCircle(b.x, b.y, b.block.delegee.lightRad * b.delegee.lightWarmup, GLB_color.accent);
     };
 
 

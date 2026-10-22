@@ -131,7 +131,7 @@
             t: t,
             hitSize: LCProp.getHitSize(blk),
             rotation: Mathf.random(90.0) - 45.0,
-            color: GLB_var.color.darkMix,
+            color: GLB_color.darkMix,
             a: a,
             aSha: 0.3,
             z: z,
@@ -206,7 +206,7 @@
             clipRad: null,
             rotation: unit == null ? Mathf.random(360.0) : (unit.rotation - 90.0 + Mathf.range(25.0)),
             team: team,
-            color: GLB_var.color.darkMix,
+            color: GLB_color.darkMix,
             tint: tint,
             a: a,
             aSha: 0.5,
@@ -264,7 +264,7 @@
                     Draw.tint(this.color, this.tint, 0.5) :
                     !this.isHot ?
                         Draw.color(this.color) :
-                        Draw.color(Color.valueOf(Tmp.c1, "ea8878").lerp(this.color, Interp.pow2Out.apply(this.fin())));
+                        Draw.color(Tmp.c1.set(GLB_color.remainsHeatMix).lerp(this.color, Interp.pow2Out.apply(this.fin())));
                 Draw.alpha(this.a - Mathf.curve(this.fin(), 0.98) * this.a);
                 if(this.region != null) {
                     Draw.rect(this.region, this.x, this.y, this.rotation);
@@ -274,7 +274,7 @@
                     };
                     if(this.isHot) {
                         Draw.blend(Blending.additive);
-                        Draw.mixcol(GLB_var.color.heatMix, 1.0);
+                        Draw.mixcol(GLB_color.heatMix, 1.0);
                         Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * (!this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.5 - Mathf.curve(this.fin(), 0.98) * 0.5) : (0.5 - Interp.pow2Out.apply(this.fin()) * 0.5)));
                         Draw.rect(this.region, this.x, this.y, this.rotation);
                         Draw.blend();
@@ -285,7 +285,7 @@
                     Lines.line(this.lineRegion, this.lineVec_f.x + Tmp.v1.x, this.lineVec_f.y + Tmp.v1.y, this.lineVec_t.x + Tmp.v1.x, this.lineVec_t.y + Tmp.v1.y, false);
                     if(this.isHot) {
                         Draw.blend(Blending.additive);
-                        Draw.mixcol(GLB_var.color.heatMix, 1.0);
+                        Draw.mixcol(GLB_color.heatMix, 1.0);
                         Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * (!this.isHot ? 0.0 : !this.shouldFadeHeat ? (0.35 - Mathf.curve(this.fin(), 0.98) * 0.35) : (0.35 - Interp.pow2Out.apply(this.fin()) * 0.35)));
                         Lines.line(this.lineRegion, this.lineVec_f.x + Tmp.v1.x, this.lineVec_f.y + Tmp.v1.y, this.lineVec_t.x + Tmp.v1.x, this.lineVec_t.y + Tmp.v1.y, false);
                         Draw.blend();

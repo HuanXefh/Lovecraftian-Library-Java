@@ -36,7 +36,7 @@
 
 
     MDL_event.onLoadDelayTask(GLB_var.delay.load.logRcGen, () => {
-        console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(String(runCount).color(Pal.accent), String(rcCount).color(Pal.accent)));
+        console.log("[LOVEC] Handled ${1} recipe generation tasks. Generated ${2} recipes in total.".format(String(runCount).color(GLB_color.accent), String(rcCount).color(GLB_color.accent)));
     });
 
 

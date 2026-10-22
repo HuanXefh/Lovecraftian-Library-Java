@@ -64,7 +64,7 @@
         if(!isFinite(MDL_flow.getHeatRes(blk))) return;
         blk.addBar("lovec-fheat", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-fluid-heat-amt", Strings.fixed(b.delegee.fHeatCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized())),
-            prov(() => Pal.lightOrange),
+            prov(() => GLB_color.lightOrange),
             () => Mathf.clamp(b.delegee.fHeatCur / blk.delegee.fHeatRes),
         ));
     };

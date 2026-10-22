@@ -143,7 +143,7 @@
         if(b.delegee.hasPayOutput) {
             tb.add(new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-pay-cap-amt", (b.delegee.payAmtTotal / b.block.delegee.payAmtCap).perc(0))),
-                prov(() => Pal.items),
+                prov(() => GLB_color.items),
                 () => Mathf.clamp(b.delegee.payAmtTotal / b.block.delegee.payAmtCap),
             )).growX();
             tb.row();

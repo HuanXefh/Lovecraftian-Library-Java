@@ -68,7 +68,7 @@
         } else {
             thisFun.defSeqs.forEachFast(seq => seq.each(
                 ct => thisFun.checkTarget(ct, nameMod),
-                ct => {isUnlocking ? ct.unlock() : ct.clearUnlock(); console.log("[LOVEC] Changed unlock state for " + ct.name.color(Pal.accent) + ".")},
+                ct => {isUnlocking ? ct.unlock() : ct.clearUnlock(); console.log("[LOVEC] Changed unlock state for " + ct.name.color(GLB_color.accent) + ".")},
             ), true);
             TechTree.all.each(node => thisFun.checkTarget(node.content, nameMod), node => node.reset());
         };

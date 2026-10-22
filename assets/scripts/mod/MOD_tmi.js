@@ -295,7 +295,7 @@
         .setGroup(rcGrp);
         if(!hideEffc) {
             rcStack.setFormat({format(f) {
-                return ((reqAttr ? "" : "+") + tryVal(val, 0.0).perc(0)).color(tryVal(val, 0.0) > 0.0 ? Pal.heal : Pal.remove);
+                return ((reqAttr ? "" : "+") + tryVal(val, 0.0).perc(0)).color(tryVal(val, 0.0) > 0.0 ? GLB_color.heal : GLB_color.remove);
             }});
         };
         return rawRc;
@@ -347,7 +347,7 @@
         .setEfficiency(mtp)
         .setGroup(rcGrp)
         .setFormat({format(f) {
-            return (!isContinuous ? amt.amount() : ((amt * 60.0).amount() + "/"  + StatUnit.seconds.localized())) + "\n" + ((reqOpt ? "" : "+") + mtp.perc(0)).color(mtp > 0.0 ? Pal.heal : Pal.remove);
+            return (!isContinuous ? amt.amount() : ((amt * 60.0).amount() + "/"  + StatUnit.seconds.localized())) + "\n" + ((reqOpt ? "" : "+") + mtp.perc(0)).color(mtp > 0.0 ? GLB_color.heal : GLB_color.remove);
         }});
         return rawRc;
     };
@@ -438,7 +438,7 @@
             tb.table(Styles.none, tb1 => {
                 let i = 0;
                 opt.forEachRow(4, (ct, amt, p, mtp) => {
-                    tb1.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(Pal.accent).padRight(36.0);
+                    tb1.add("[" + Strings.fixed(i / 4.0 + 1.0, 0) + "]").center().color(GLB_color.accent).padRight(36.0);
                     MDL_table.rcCtIcon(tb1, ct, amt, p, false, {padRight: 72.0});
                     tb1.add(MDL_text.getStat(
                         MDL_bundle.getTerm("lovec", "efficiency-multiplier"),

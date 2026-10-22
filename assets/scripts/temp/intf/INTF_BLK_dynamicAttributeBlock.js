@@ -116,7 +116,7 @@
         blk.removeBar("efficiency");
         blk.addBar("efficiency", b => new Bar(
             prov(() => Core.bundle.format("bar.efficiency", Math.round(b.delegee.dynaAttrEffc * 100.0))),
-            prov(() => Pal.lightOrange),
+            prov(() => GLB_color.lightOrange),
             () => Mathf.clamp(b.delegee.dynaAttrEffc),
         ));
     };

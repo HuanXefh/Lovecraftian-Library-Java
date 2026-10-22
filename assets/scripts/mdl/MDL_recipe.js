@@ -986,7 +986,7 @@
                                     outArr.push(tmpArr, -1.0, -1.0)
                             );
                 } else {
-                    console.warn("[LOVEC] No content found under ${1}!".format(target.color(Pal.accent)));
+                    console.warn("[LOVEC] No content found under ${1}!".format(target.color(GLB_color.accent)));
                 };
             } else if(target.startsWith("COST: ")) {
                 // COST: xxx

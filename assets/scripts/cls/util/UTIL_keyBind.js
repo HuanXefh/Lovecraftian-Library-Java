@@ -42,7 +42,7 @@
      */
     UTIL_keyBind.add = function(name, keyCodeDef, categ) {
         if(nameBindingMap.containsKey(name)) {
-            console.warn("[LOVEC] Key binding ${1} has already been registered!".format(name.color(Pal.accent)));
+            console.warn("[LOVEC] Key binding ${1} has already been registered!".format(name.color(GLB_color.accent)));
             return false;
         };
         GLB_var.isFoosClient ?

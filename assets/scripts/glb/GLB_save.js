@@ -158,11 +158,11 @@
             cond = true;
         } else {
             if(val === undefined) {
-                console.warn("[LOVEC] Passing " + "undefined".color(Pal.remove) + " as LSAV value to " + header.color(Pal.accent) + "!");
+                console.warn("[LOVEC] Passing " + "undefined".color(GLB_color.remove) + " as LSAV value to " + header.color(GLB_color.accent) + "!");
             } else if(obj[header] === undefined) {
-                console.warn("[LOVEC] The LSAV field " + header.color(Pal.accent) + " is " + "undefined".color(Pal.remove) + "!");
+                console.warn("[LOVEC] The LSAV field " + header.color(GLB_color.accent) + " is " + "undefined".color(GLB_color.remove) + "!");
             } else if(typeof val !== typeof obj[header]) {
-                console.warn("[LOVEC] LSAV value for ${1} changed to a different type!".format(header.color(Pal.accent)));
+                console.warn("[LOVEC] LSAV value for ${1} changed to a different type!".format(header.color(GLB_color.accent)));
             } else {
                 cond = true;
             };

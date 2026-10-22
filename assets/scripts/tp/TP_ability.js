@@ -291,7 +291,7 @@
                 this.lastBul = LCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.rad);
                 if(this.lastBul != null) {
                     this.lastProg = Mathf.maxZero(this.lastProg - Mathf.clamp((bul.damage + bul.type.splashDamage) / this.dmg, 0.25, 1.0) * this.dmg);
-                    MDL_effect.pointLaser(unit.x, unit.y, this.lastBul, Pal.remove, this.sound);
+                    MDL_effect.pointLaser(unit.x, unit.y, this.lastBul, GLB_color.remove, this.sound);
                     MDL_call.damageBul(this.lastBul, this.dmg);
                 };
             };
@@ -316,7 +316,7 @@
 
             MDL_draw.unitReload(
                 unit, null,
-                this.inCdMap.get(unit.id, false) ? Color.white : Pal.remove, 1.0, 0.0, 1,
+                this.inCdMap.get(unit.id, false) ? Color.white : GLB_color.remove, 1.0, 0.0, 1,
                 this.progMap.get(unit.id, 0.0) / this.chargeCap,
             );
         },
@@ -412,7 +412,7 @@
             if(this.lastB == null) return;
 
             FRAG_attack.heal(this.lastB, this.lastB.maxHealth * this.healPerc + this.healAmt);
-            MDL_effect.laser(unit.x, unit.y, unit, this.lastB, Pal.heal, this.strokeScl);
+            MDL_effect.laser(unit.x, unit.y, unit, this.lastB, GLB_color.heal, this.strokeScl);
         },
 
 
@@ -464,7 +464,7 @@
         displayBars(unit, tb) {
             tb.add(new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", (1.0 - Mathf.clamp(tryJsProp(unit, "unitDurabUsed", 0.0) / this.durabCap)).perc())),
-                prov(() => Pal.sap),
+                prov(() => GLB_color.sap),
                 () => 1.0 - Mathf.clamp(tryJsProp(unit, "unitDurabUsed", 0.0) / this.durabCap),
             ));
         },

@@ -85,14 +85,14 @@
                 Call.serverPacketReliable(header, payload) :
                 Call.serverPacketUnreliable(header, payload);
             if(DEBUG.shouldLogServerPacket) {
-                console.log("[LOVEC] Sent server packet ${1}.".format(header.color(Pal.accent)));
+                console.log("[LOVEC] Sent server packet ${1}.".format(header.color(GLB_color.accent)));
             };
         } else if(mode === PacketModes.CLIENT) {
             isReliable ?
                 Call.clientPacketReliable(header, payload) :
                 Call.clientPacketUnreliable(header, payload);
             if(DEBUG.shouldLogClientPacket) {
-                console.log("[LOVEC] Sent client packet ${2}.".format(header.color(Pal.accent)));
+                console.log("[LOVEC] Sent client packet ${2}.".format(header.color(GLB_color.accent)));
             };
         } else if(mode === PacketModes.BOTH) {
             sendPacket(Vars.net.client() ? PacketModes.SERVER : PacketModes.CLIENT, header, payload, isReliable);

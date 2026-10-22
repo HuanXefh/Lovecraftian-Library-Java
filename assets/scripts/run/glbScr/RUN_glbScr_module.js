@@ -21,6 +21,8 @@
     MDL_event = require("lovec/mdl/MDL_event");
     /** @global */
     GLB_var = require("lovec/glb/GLB_var");
+    /** @global */
+    GLB_color = require("lovec/glb/GLB_color");
     require("lovec/run/RUN_error");
     require("lovec/tp/TP_log");
     require("lovec/tp/TP_db");

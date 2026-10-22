@@ -199,7 +199,7 @@
         // Time control
         if(!this.isHidden) {
             this.root.table(Tex.whiteui, tb => {
-                tb.left().setColor(Pal.darkestGray);
+                tb.left().setColor(GLB_color.darkestGray);
                 tb.add("").get().setText(prov(() => Strings.fixed(this.timeScl, 2) + "x"));
                 tb.row();
                 MDL_table.slider(

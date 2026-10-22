@@ -86,7 +86,7 @@
                 blk.getPotentialLinks(t, Vars.player.team(), ob => {
                     Draw.color(blk.laserColor1, Renderer.laserOpacity * 0.5);
                     blk.drawLaser(tx.toFCoord(blk.size), ty.toFCoord(blk.size), ob.x, ob.y, blk.size, ob.block.size);
-                    Drawf.square(ob.x, ob.y, ob.block.size * Vars.tilesize * 0.5 + 2.0, Pal.place);
+                    Drawf.square(ob.x, ob.y, ob.block.size * Vars.tilesize * 0.5 + 2.0, GLB_color.place);
                 });
                 Draw.color();
             };
@@ -286,7 +286,7 @@
              */
             ex_drawRange: function(x, y, valid) {
                 if(this.drawRange) {
-                    Draw.color(valid ? Pal.accent : Pal.remove, 0.3);
+                    Draw.color(valid ? GLB_color.accent : GLB_color.remove, 0.3);
                     LCDraw.ring(x, y, this.laserRange * Vars.tilesize * this.delegee.minRadFrac, this.laserRange * Vars.tilesize);
                     Draw.color();
                 };
@@ -359,7 +359,7 @@
                     this.block.laserRange * Vars.tilesize,
                     ob => ob.dst(this) >= this.block.laserRange * Vars.tilesize * this.block.delegee.minRadFrac && this.block.linkValid(this, ob),
                     ob => {
-                        Tmp.c1.set(Pal.accent);
+                        Tmp.c1.set(GLB_color.accent);
                         Tmp.c1.a = Mathf.absin(4.0, 1.0);
                         Drawf.selected(ob, Tmp.c1);
                     },

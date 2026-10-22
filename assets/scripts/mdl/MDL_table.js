@@ -498,7 +498,7 @@
      * @return {Cell}
      */
     const btnCfgToggleColor = function(tb, b, icon, bool, colorTrue, colorFalse, paramObj) {
-        if(colorTrue == null) colorTrue = Pal.heal;
+        if(colorTrue == null) colorTrue = GLB_color.heal;
         if(colorFalse == null) colorFalse = Color.darkGray;
         paramObj = processNullParam(
             paramObj,
@@ -663,7 +663,7 @@
                 tb2.table(Styles.none, tb3 => {
                     tb3.left();
                     br(tb3);
-                    tb3.add(str).fontScale(0.85).left().style(Styles.outlineLabel).color(mtp < 0.0 ? Pal.remove : Pal.accent);
+                    tb3.add(str).fontScale(0.85).left().style(Styles.outlineLabel).color(mtp < 0.0 ? GLB_color.remove : GLB_color.accent);
                 });
             }).padRight(4.0);
         });
@@ -923,7 +923,7 @@
         );
 
         let cell = tb.table(Tex.whiteui, tb1 => {
-            tb1.center().setColor(Pal.darkestGray);
+            tb1.center().setColor(GLB_color.darkestGray);
             margin(tb1, 1.5);
             wrapLine(tb1, text.color(Color.gray), lineParamObj);
         });
@@ -955,7 +955,7 @@
             boxParamObj,
             "colorLine", Color.darkGray,
             "colorTitle", Color.darkGray,
-            "colorBase", Pal.darkestGray,
+            "colorBase", GLB_color.darkestGray,
             "stroke", 2.0,
         );
 
@@ -1047,7 +1047,7 @@
         br(cont, 1);
         icons.forEachFast(icon => {
             cont.table(Tex.whiteui, tb1 => {
-                tb1.left().setColor(Pal.darkestGray);
+                tb1.left().setColor(GLB_color.darkestGray);
                 margin(tb1);
                 thisFun.buildOrder(tb1, showOrd, ordCur);
                 thisFun.buildRowContent(tb1, icon, names[ordCur], scrs[ordCur]);
@@ -1074,7 +1074,7 @@
                 tb1.left();
                 tb1.table(Styles.none, tb2 => {
                     tb2.center();
-                    tb2.add("[" + Strings.fixed(ordCur + 1, 0) + "]").color(Pal.accent);
+                    tb2.add("[" + Strings.fixed(ordCur + 1, 0) + "]").color(GLB_color.accent);
                 }).width(48.0);
             }).marginRight(18.0).growY();
         },
@@ -1163,7 +1163,7 @@
             breakBools = readParam(boxParamObj, "breakBools");
 
         let contCell = tb.table(Tex.whiteui, tb1 => {
-            tb1.left().setColor(Pal.darkestGray);
+            tb1.left().setColor(GLB_color.darkestGray);
             margin(tb1, 0.5);
 
             let
@@ -1512,7 +1512,7 @@
 
             if(useAutoSelection) {
                 cont.table(Styles.none, tb1 => {
-                    tb1.add(MDL_bundle.getInfo("lovec", "recipe-auto-selection")).color(Pal.remove).row();
+                    tb1.add(MDL_bundle.getInfo("lovec", "recipe-auto-selection")).color(GLB_color.remove).row();
                     tb1.add("").row();
                 })
                 .left()
@@ -1655,7 +1655,7 @@
             factionColor = MDL_content.getFactionColor(null, faction);
 
         let cell = tb.table(Tex.whiteui, tb1 => {
-            tb1.center().setColor(Pal.darkestGray);
+            tb1.center().setColor(GLB_color.darkestGray);
             margin(tb1);
 
             let btn = tb1.button(
@@ -1726,7 +1726,7 @@
             .row();
             // `TABLE`: contents
             cont.table(Tex.whiteui, tb1 => {
-                tb1.left().setColor(Pal.darkestGray);
+                tb1.left().setColor(GLB_color.darkestGray);
                 margin(tb1, 0.5);
                 setCtLi(tb1, GLB_varGen.famiBlksMap.get(fami), iconParamObj);
             })
@@ -1789,7 +1789,7 @@
 
             // `TABLE`: category title
             chunk.table(Tex.whiteui, tb1 => {
-                tb1.center().setColor(categ !== "SPEC: base" ? Color.darkGray : Tmp.c1.set(Pal.accent).lerp(Color.black, 0.4));
+                tb1.center().setColor(categ !== "SPEC: base" ? Color.darkGray : Tmp.c1.set(GLB_color.accent).lerp(Color.black, 0.4));
                 margin(tb1, 0.5);
                 if(!uncategorizedOnly && categ !== "SPEC: base") {
                     tb1.table(Styles.none, tb2 => {
@@ -1822,7 +1822,7 @@
 
             categHeadersObj[categ].forEachFast(rcHeader => {
                 CLS_recipe.get(blk, rcHeader).display(rcRoot, i, false, true);
-                bar(rcRoot, {color: Color.valueOf(Tmp.c1, "303030"), stroke: 1.0});
+                bar(rcRoot, {color: GLB_color.lineGray, stroke: 1.0});
                 i++;
             }, true);
         };

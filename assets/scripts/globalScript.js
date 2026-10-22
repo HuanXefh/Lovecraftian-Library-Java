@@ -205,7 +205,7 @@
      */
     exposeClasses = function(packagePath) {
         fetchClasses(packagePath).forEach(cls => exposeClass(cls));
-        console.log("[LOVEC] Exposed Java classes in ${1} to JavaScript environment.".format(packagePath.color(Pal.accent)));
+        console.log("[LOVEC] Exposed Java classes in ${1} to JavaScript environment.".format(packagePath.color(GLB_color.accent)));
     };
 
 
@@ -646,7 +646,7 @@
                 if(!__checkCheatState__()) return;
                 let unit = LCEntity.getPlayerUnitByName(name);
                 if(unit == null) {
-                    console.err("[LOVEC] No player found with name ${1}!".format(String(name).color(Pal.accent)));
+                    console.err("[LOVEC] No player found with name ${1}!".format(String(name).color(GLB_color.accent)));
                     return;
                 };
                 unit.kill();
@@ -711,7 +711,7 @@
             if(unit == null) return;
             Vars.state.rules.teams.get(unit.team).cheat = !Vars.state.rules.teams.get(unit.team).cheat;
             MDL_event.onDelayRun(2.0, () => {
-                console.log("[LOVEC] Cheat production: " + (Vars.state.rules.teams.get(unit.team).cheat ? "ON" : "OFF").color(Pal.accent));
+                console.log("[LOVEC] Cheat production: " + (Vars.state.rules.teams.get(unit.team).cheat ? "ON" : "OFF").color(GLB_color.accent));
             });
         }
         .setAnno("console");
@@ -730,7 +730,7 @@
                 unit.unapply(StatusEffects.invincible) :
                 unit.apply(StatusEffects.invincible, Number.fMax);
             MDL_event.onDelayRun(2.0, () => {
-                console.log("[LOVEC] Player invincibility: " + (unit.hasEffect(StatusEffects.invincible) ? "ON" : "OFF").color(Pal.accent));
+                console.log("[LOVEC] Player invincibility: " + (unit.hasEffect(StatusEffects.invincible) ? "ON" : "OFF").color(GLB_color.accent));
             });
         }
         .setAnno("console");
@@ -745,7 +745,7 @@
             if(!__checkCheatState__()) return;
             thisFun.isOn = !thisFun.isOn;
             MDL_event.onDelayRun(2.0, () => {
-                console.log("[LOVEC] Core invincibility: " + (thisFun.isOn ? "ON" : "OFF").color(Pal.accent));
+                console.log("[LOVEC] Core invincibility: " + (thisFun.isOn ? "ON" : "OFF").color(GLB_color.accent));
             });
         }
         .setProp({

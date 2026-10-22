@@ -32,7 +32,7 @@
         let zPrev = Draw.z();
         Draw.z(z);
 
-        Lines.stroke(10.0, Pal.gray);
+        Lines.stroke(10.0, Color.gray);
         Draw.alpha(a_fi);
         Lines.line(x - w * 0.5 + 2.5, y + offY + 2.5, x + w * 0.5 - 2.5, y + offY + 2.5);
         Lines.stroke(3.0, color);
@@ -42,7 +42,7 @@
         Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y + offY);
 
         let segW = (w + 5.0) / (amtSeg + 1);
-        Lines.stroke(1.0, Pal.gray);
+        Lines.stroke(1.0, Color.gray);
         Draw.alpha(a_fi);
         let
             x_i,
@@ -69,7 +69,7 @@
             MDL_draw.text(
                 x, y,
                 Strings.autoFixed(shield, 0), Fonts.def,
-                1.2, Pal.techBlue, Align.left,
+                1.2, GLB_color.techBlue, Align.left,
                 w * 0.5 + 4.0,
                 offY + 4.5,
             );
@@ -121,7 +121,7 @@
         let zPrev = Draw.z();
         Draw.z(z);
 
-        Lines.stroke(5.0, Pal.gray);
+        Lines.stroke(5.0, Color.gray);
         Draw.alpha(a_fi);
         Lines.line(x - w * 0.5, y + offY, x + w * 0.5, y + offY);
         Lines.stroke(3.0, color);
@@ -131,7 +131,7 @@
         Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y + offY);
 
         let segW = (w + 5.0) / (amtSeg + 1);
-        Lines.stroke(1.0, Pal.gray);
+        Lines.stroke(1.0, Color.gray);
         Draw.alpha(a_fi);
         let
             x_i,
@@ -158,7 +158,7 @@
             MDL_draw.text(
                 x, y,
                 Strings.autoFixed(shield, 0), Fonts.def,
-                1.2, Pal.techBlue, Align.left,
+                1.2, GLB_color.techBlue, Align.left,
                 w * 0.5 + 4.0,
                 offY + 2.75,
             );
@@ -187,7 +187,7 @@
         let zPrev = Draw.z();
         Draw.z(z);
 
-        Lines.stroke(3.5, Pal.gray);
+        Lines.stroke(3.5, Color.gray);
         Draw.alpha(a_fi);
         Lines.line(x - w * 0.5, y + offY, x + w * 0.5, y + offY);
         Lines.stroke(2.5, color);
@@ -220,7 +220,7 @@
 
         MDL_draw.text(
             x, y + offY,
-            (Strings.fixed(e.health, 0) + "/" + Strings.fixed(e.maxHealth, 0)).color(color) + (armor == null || armor < 0.0001 ? "" : ("\n" + Strings.fixed(armor, 0))).color(Color.gray) + (shield == null || shield < 0.0001 ? "" : ("\n" + Strings.fixed(shield, 0))).color(Pal.techBlue), Fonts.def,
+            (Strings.fixed(e.health, 0) + "/" + Strings.fixed(e.maxHealth, 0)).color(color) + (armor == null || armor < 0.0001 ? "" : ("\n" + Strings.fixed(armor, 0))).color(Color.gray) + (shield == null || shield < 0.0001 ? "" : ("\n" + Strings.fixed(shield, 0))).color(GLB_color.techBlue), Fonts.def,
             0.8, Color.white, Align.center,
         );
 

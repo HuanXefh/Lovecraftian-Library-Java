@@ -109,7 +109,7 @@
             try{
                 utp.weapons = getter(wps).compact().flatten().toSeq();
             } catch(err) {
-                console.err("[LOVEC] Failed to set weapons for ${1}\n".format(utp.name.color(Pal.accent)) + err);
+                console.err("[LOVEC] Failed to set weapons for ${1}\n".format(utp.name.color(GLB_color.accent)) + err);
             };
         });
     };
@@ -131,7 +131,7 @@
                     if(!abis.includes(abi)) abi.init(utp);
                 });
             } catch(err) {
-                console.err("[LOVEC] Failed to set abilities for ${1}:\n".format(utp.name.color(Pal.accent)) + err);
+                console.err("[LOVEC] Failed to set abilities for ${1}:\n".format(utp.name.color(GLB_color.accent)) + err);
             };
         });
     };
@@ -149,7 +149,7 @@
             try{
                 utp.controller = func(getter);
             } catch(err) {
-                console.err("[LOVEC] Failed to set AI controller for ${1}:\n".format(utp.name.color(Pal.accent)) + err);
+                console.err("[LOVEC] Failed to set AI controller for ${1}:\n".format(utp.name.color(GLB_color.accent)) + err);
             };
         });
     };
@@ -165,7 +165,7 @@
     setDrawer = function(blk, getter) {
         Events.run(ClientLoadEvent, () => {
             if(blk.drawer == null && (blk.delegee != null ? blk.delegee.drawer == null : true)) {
-                console.warn("[LOVEC] Can't find field ${1} in ${2}!".format("drawer".color(Pal.accent), blk.name.color(Pal.accent)));
+                console.warn("[LOVEC] Can't find field ${1} in ${2}!".format("drawer".color(GLB_color.accent), blk.name.color(GLB_color.accent)));
                 return;
             };
 
@@ -180,7 +180,7 @@
                     drawerNew.load(blk);
                 };
             } catch(err) {
-                console.err("[LOVEC] Failed to set drawers for ${1}:\n".format(blk.name.color(Pal.accent)) + err);
+                console.err("[LOVEC] Failed to set drawers for ${1}:\n".format(blk.name.color(GLB_color.accent)) + err);
             };
         });
     };
@@ -875,7 +875,7 @@
          * @return {void}
          */
         function warnShaderLoadFail(name, err) {
-            console.warn("[LOVEC] Failed to load shader " + name.color(Pal.accent) + ":\n" + err);
+            console.warn("[LOVEC] Failed to load shader " + name.color(GLB_color.accent) + ":\n" + err);
         };
 
 

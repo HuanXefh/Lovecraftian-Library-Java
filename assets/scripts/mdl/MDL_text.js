@@ -109,13 +109,13 @@
      */
     const getDmgText = function(dmg, dmgPerc) {
         let
-            str1 = dmg == null || dmg < 0.0001 ? null : dmg.numToStr(2).color(Pal.remove),
-            str2 = dmgPerc == null || dmgPerc < 0.0001 ? null : dmgPerc.perc().color(Pal.remove);
+            str1 = dmg == null || dmg < 0.0001 ? null : dmg.numToStr(2).color(GLB_color.remove),
+            str2 = dmgPerc == null || dmgPerc < 0.0001 ? null : dmgPerc.perc().color(GLB_color.remove);
 
         if(str1 == null && str2 == null) return TmpStateTag.error.toString();
         if(str1 == null) return str2;
         if(str2 == null) return str1;
-        return str1 + " + ".color(Pal.remove) + str2;
+        return str1 + " + ".color(GLB_color.remove) + str2;
     };
     exports.getDmgText = getDmgText;
 
@@ -128,13 +128,13 @@
      */
     const getHealText = function(healAmt, healPerc) {
         let
-            str1 = healAmt == null || healAmt < 0.0001 ? null : healAmt.numToStr(2).color(Pal.heal),
-            str2 = healPerc == null || healPerc < 0.0001 ? null : healPerc.perc().color(Pal.heal);
+            str1 = healAmt == null || healAmt < 0.0001 ? null : healAmt.numToStr(2).color(GLB_color.heal),
+            str2 = healPerc == null || healPerc < 0.0001 ? null : healPerc.perc().color(GLB_color.heal);
 
         if(str1 == null && str2 == null) return TmpStateTag.error.toString();
         if(str1 == null) return str2;
         if(str2 == null) return str1;
-        return str1 + " + ".color(Pal.heal) + str2;
+        return str1 + " + ".color(GLB_color.heal) + str2;
     };
     exports.getHealText = getHealText;
 

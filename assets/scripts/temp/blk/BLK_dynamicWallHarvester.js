@@ -60,7 +60,7 @@
         blk.removeBar("drillspeed");
         blk.addBar("drillspeed", b => new Bar(
             prov(() => Core.bundle.format("bar.drillspeed", Strings.fixed(b.efficiency * b.timeScale * b.block.self.ex_getDynaAttrProdSpd(b.delegee.dynaAttrRs), 2))),
-            prov(() => Pal.ammo),
+            prov(() => GLB_color.ammo),
             () => b.warmup,
         ));
     };

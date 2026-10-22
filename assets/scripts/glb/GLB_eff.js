@@ -38,7 +38,7 @@
     exports.particleHarvester = TP_effect.particleShrink({
         spr: "lovec-efr-square",
         size: 4.0,
-        color: Pal.accent,
+        color: GLB_color.accent,
         scl: 0.7,
         hasBloom: true,
         noLight: true,
@@ -49,7 +49,7 @@
         amt: 3,
         size: 1.2,
         rad: 8.0,
-        color: Pal.accent,
+        color: GLB_color.accent,
     });
 
 
@@ -80,7 +80,7 @@
     /** @type {Effect} */
     exports.sparkPower = TP_effect.sparkLine({
         amt: 5,
-        color: Pal.accent,
+        color: GLB_color.accent,
     });
 
 
@@ -178,7 +178,7 @@
         (10).each(size => {
             arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
                 r: size * 0.5,
-                color: Pal.accent,
+                color: GLB_color.accent,
             }));
         });
         return arr;
@@ -189,7 +189,7 @@
         (10).each(size => {
             arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
                 r: size * 0.5,
-                color: Pal.remove,
+                color: GLB_color.remove,
             }));
         });
         return arr;
@@ -200,7 +200,7 @@
         (10).each(size => {
             arr.push(size === 0 ? Fx.none : TP_effect.fadeSquare({
                 r: size * 0.5,
-                color: Pal.sap,
+                color: GLB_color.sap,
             }));
         });
         return arr;
@@ -234,7 +234,7 @@
         (10).each(size => {
             arr.push(size === 0 ? Fx.none : TP_effect.pulseRect({
                 r: size * 0.5,
-                color: Pal.techBlue,
+                color: GLB_color.techBlue,
             }));
         });
         return arr;

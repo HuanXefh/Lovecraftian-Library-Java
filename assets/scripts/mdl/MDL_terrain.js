@@ -57,7 +57,7 @@
      */
     function warnUnusedMatGrp(matGrp) {
         if(!warnedMatGrps.includes(matGrp) && !usedMatGrps.includes(matGrp)) {
-            console.warn("[LOVEC] Material group ${1} is not used by any block!".format(matGrp.color(Pal.accent)));
+            console.warn("[LOVEC] Material group ${1} is not used by any block!".format(matGrp.color(GLB_color.accent)));
             warnedMatGrps.push(matGrp);
         };
     };

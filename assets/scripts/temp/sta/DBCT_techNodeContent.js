@@ -90,7 +90,7 @@
     function comp_ex_init(sta) {
         MDL_event.onLoad(() => {
             if(sta.techNode == null) {
-                console.warn("[LOVEC] Tech node ${1} has never been used in tech tree!".format(sta.name.color(Pal.accent)));
+                console.warn("[LOVEC] Tech node ${1} has never been used in tech tree!".format(sta.name.color(GLB_color.accent)));
             } else {
                 appendChildren(sta.delegee.childCts, sta.techNode);
                 sta.delegee.childCts.sort((ct1, ct2) => ct2.id - ct1.id);

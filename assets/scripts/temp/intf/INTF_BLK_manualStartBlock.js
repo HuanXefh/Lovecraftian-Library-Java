@@ -68,7 +68,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-warmup", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-warmup-amt", b.self.ex_getManualStartFrac().perc())),
-            prov(() => Pal.ammo),
+            prov(() => GLB_color.ammo),
             () => b.self.ex_getManualStartFrac(),
         ));
     };

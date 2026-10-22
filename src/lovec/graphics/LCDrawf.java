@@ -105,7 +105,7 @@ public class LCDrawf {
     };
     // Overload
     public static void debug(float x, float y) {
-        debug(x, y, Pal.heal);
+        debug(x, y, LCPal.heal);
     };
     public static void debug(float x1, float y1, float x2, float y2, Color color) {
         LCDraw.processZ(Layer.max, LCDraw.DEBUG_Z_IND);
@@ -115,7 +115,7 @@ public class LCDrawf {
         LCDraw.processZ(-1f, LCDraw.DEBUG_Z_IND);
     };
     public static void debug(float x1, float y1, float x2, float y2) {
-        debug(x1, y1, x2, y2, Pal.heal);
+        debug(x1, y1, x2, y2, LCPal.heal);
     };
 
 
@@ -127,7 +127,7 @@ public class LCDrawf {
      */
     public static void line(float x1, float y1, float x2, float y2, boolean isDashed, Color color, float a, float z) {
         LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
-        Lines.stroke(3f, Tmp.c1.set(Pal.gray).a(a));
+        Lines.stroke(3f, Tmp.c1.set(Color.gray).a(a));
         LCDraw.line(x1, y1, x2, y2, isDashed);
         Lines.stroke(1f, color);
         Draw.alpha(a);
@@ -143,7 +143,7 @@ public class LCDrawf {
         line(x1, y1, x2, y2, isDashed, color, 1f);
     };
     public static void line(float x1, float y1, float x2, float y2, boolean isDashed) {
-        line(x1, y1, x2, y2, isDashed, Pal.accent);
+        line(x1, y1, x2, y2, isDashed, LCPal.accent);
     };
     public static void line(float x1, float y1, float x2, float y2) {
         line(x1, y1, x2, y2, false);
@@ -166,7 +166,7 @@ public class LCDrawf {
         lineFlick(x1, y1, x2, y2, isDashed, stroke, scl, color, shapeLay);
     };
     public static void lineFlick(float x1, float y1, float x2, float y2, boolean isDashed, float stroke, float scl) {
-        lineFlick(x1, y1, x2, y2, isDashed, stroke, scl, Pal.accent);
+        lineFlick(x1, y1, x2, y2, isDashed, stroke, scl, LCPal.accent);
     };
     public static void lineFlick(float x1, float y1, float x2, float y2, boolean isDashed, float stroke) {
         lineFlick(x1, y1, x2, y2, isDashed, stroke, 1f);
@@ -402,7 +402,7 @@ public class LCDrawf {
         arrowLine(x1, y1, x2, y2, strokeScl, scl, color, 1f);
     };
     public static void arrowLine(float x1, float y1, float x2, float y2, float strokeScl, float scl) {
-        arrowLine(x1, y1, x2, y2, strokeScl, scl, Pal.accent);
+        arrowLine(x1, y1, x2, y2, strokeScl, scl, LCPal.accent);
     };
 
 
@@ -462,7 +462,7 @@ public class LCDrawf {
      */
     public static void rect(float x, float y, float r, float size, boolean isDashed, Color color, float a, float z) {
         LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
-        Lines.stroke(3f, Tmp.c1.set(Pal.gray).a(a));
+        Lines.stroke(3f, Tmp.c1.set(Color.gray).a(a));
         LCDraw.rect(x, y, r, size, isDashed);
         Lines.stroke(1f, color);
         Draw.alpha(a);
@@ -478,7 +478,7 @@ public class LCDrawf {
         rect(x, y, r, size, isDashed, color, 1f);
     };
     public static void rect(float x, float y, float r, float size, boolean isDashed) {
-        rect(x, y, r, size, isDashed, Pal.accent);
+        rect(x, y, r, size, isDashed, LCPal.accent);
     };
     public static void rect(float x, float y, float r, float size) {
         rect(x, y, r, size, false);
@@ -536,7 +536,7 @@ public class LCDrawf {
         area(x, y, size, color, 1f);
     };
     public static void area(float x, float y, float size) {
-        area(x, y, size, Pal.accent);
+        area(x, y, size, LCPal.accent);
     };
     public static void area(float x, float y) {
         area(x, y, 1f);
@@ -560,7 +560,7 @@ public class LCDrawf {
         areaShrink(t, size, color, 1f);
     };
     public static void areaShrink(@Nullable Tile t, int size) {
-        areaShrink(t, size, Pal.accent);
+        areaShrink(t, size, LCPal.accent);
     };
     public static void areaShrink(@Nullable Tile t) {
         areaShrink(t, 1);
@@ -585,7 +585,7 @@ public class LCDrawf {
         areaBuild(b, pad, color, 1f);
     };
     public static void areaBuild(Building b, float pad) {
-        areaBuild(b, pad, Pal.accent);
+        areaBuild(b, pad, LCPal.accent);
     };
     public static void areaBuild(Building b) {
         areaBuild(b, 0f);
@@ -631,7 +631,7 @@ public class LCDrawf {
         pulseRect(x, y, rad, scl, color, 1f);
     };
     public static void pulseRect(float x, float y, float rad, float scl) {
-        pulseRect(x, y, rad, scl, Pal.accent);
+        pulseRect(x, y, rad, scl, LCPal.accent);
     };
     public static void pulseRect(float x, float y, float rad) {
         pulseRect(x, y, rad, 1f);
@@ -648,7 +648,7 @@ public class LCDrawf {
         if(rad < 0.0001f) return;
 
         LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
-        Lines.stroke(3f, Tmp.c1.set(Pal.gray).a(a));
+        Lines.stroke(3f, Tmp.c1.set(Color.gray).a(a));
         LCDraw.circle(x, y, rad, isDashed);
         Lines.stroke(1f, color);
         Draw.alpha(a);
@@ -664,7 +664,7 @@ public class LCDrawf {
         circle(x, y, rad, isDashed, color, 1f);
     };
     public static void circle(float x, float y, float rad, boolean isDashed) {
-        circle(x, y, rad, isDashed, Pal.accent);
+        circle(x, y, rad, isDashed, LCPal.accent);
     };
     public static void circle(float x, float y, float rad) {
         circle(x, y, rad, false);
@@ -708,7 +708,7 @@ public class LCDrawf {
         diskExpand(x, y, rad, scl, color, 1f);
     };
     public static void diskExpand(float x, float y, float rad, float scl) {
-        diskExpand(x, y, rad, scl, Pal.accent);
+        diskExpand(x, y, rad, scl, LCPal.accent);
     };
     public static void diskExpand(float x, float y, float rad) {
         diskExpand(x, y, rad, 1f);
@@ -736,7 +736,7 @@ public class LCDrawf {
         diskWarning(x, y, rad, scl, color, 1f);
     };
     public static void diskWarning(float x, float y, float rad, float scl) {
-        diskWarning(x, y, rad, scl, Pal.remove);
+        diskWarning(x, y, rad, scl, LCPal.remove);
     };
     public static void diskWarning(float x, float y, float rad) {
         diskWarning(x, y, rad, 1f);
@@ -783,7 +783,7 @@ public class LCDrawf {
         pulseCircle(x, y, rad, scl, color, 1f);
     };
     public static void pulseCircle(float x, float y, float rad, float scl) {
-        pulseCircle(x, y, rad, scl, Pal.accent);
+        pulseCircle(x, y, rad, scl, LCPal.accent);
     };
     public static void pulseCircle(float x, float y, float rad) {
         pulseCircle(x, y, rad, 1f);
@@ -799,8 +799,8 @@ public class LCDrawf {
     public static void connectorRect(@Nullable Building b, @Nullable Building ob) {
         if(b == null || ob == null) return;
 
-        rectSelect(b, 0, true, Pal.accent);
-        rectSelect(ob, 0, true, Pal.accent);
+        rectSelect(b, 0, true, LCPal.accent);
+        rectSelect(ob, 0, true, LCPal.accent);
         line(b.x, b.y, ob.x, ob.y, true);
     };
 
@@ -828,27 +828,27 @@ public class LCDrawf {
             param1 = b.block.size == 1 ? 1f : b.block.size * 0.5f + 1f,
             param2;
 
-        Drawf.circles(b.x, b.y, param1 * Vars.tilesize + param - 2f, Pal.accent);
+        Drawf.circles(b.x, b.y, param1 * Vars.tilesize + param - 2f, LCPal.accent);
         if(b_f != null) {
-            Drawf.circles(b_f.x, b_f.y, param1 * Vars.tilesize + param - 2f, Pal.place);
-            Drawf.arrow(b_f.x, b_f.y, b.x, b.y, b.block.size * Vars.tilesize + param, param + 4f, Pal.place);
+            Drawf.circles(b_f.x, b_f.y, param1 * Vars.tilesize + param - 2f, LCPal.place);
+            Drawf.arrow(b_f.x, b_f.y, b.x, b.y, b.block.size * Vars.tilesize + param, param + 4f, LCPal.place);
         };
         if(b_t != null) {
             param2 = b_t.block.size == 1 ? 1f : b_t.block.size * 0.5f + 1f;
-            Drawf.circles(b_t.x, b_t.y, param2 * Vars.tilesize + param - 2f, Pal.place);
-            Drawf.arrow(b.x, b.y, b_t.x, b_t.y, b.block.size * Vars.tilesize + param, param + 4f, Pal.accent);
+            Drawf.circles(b_t.x, b_t.y, param2 * Vars.tilesize + param - 2f, LCPal.place);
+            Drawf.arrow(b.x, b.y, b_t.x, b_t.y, b.block.size * Vars.tilesize + param, param + 4f, LCPal.accent);
         };
         if(bs_f != null) {
             for(Building ob : bs_f) {
-                Drawf.circles(ob.x, ob.y, param1 * Vars.tilesize + param - 2f, Pal.place);
-                Drawf.arrow(ob.x, ob.y, b.x, b.y, b.block.size * Vars.tilesize + param, param + 4f, Pal.place);
+                Drawf.circles(ob.x, ob.y, param1 * Vars.tilesize + param - 2f, LCPal.place);
+                Drawf.arrow(ob.x, ob.y, b.x, b.y, b.block.size * Vars.tilesize + param, param + 4f, LCPal.place);
             };
         };
         if(bs_t != null) {
             for(Building ob : bs_t) {
                 param2 = ob.block.size == 1 ? 1f : ob.block.size * 0.5f + 1f;
-                Drawf.circles(ob.x, ob.y, param2 * Vars.tilesize + param - 2f, Pal.place);
-                Drawf.arrow(b.x, b.y, ob.x, ob.y, b.block.size * Vars.tilesize + param, param + 4f, Pal.accent);
+                Drawf.circles(ob.x, ob.y, param2 * Vars.tilesize + param - 2f, LCPal.place);
+                Drawf.arrow(b.x, b.y, ob.x, ob.y, b.block.size * Vars.tilesize + param, param + 4f, LCPal.accent);
             };
         };
     };
@@ -1213,7 +1213,7 @@ public class LCDrawf {
         scan(x, y, prog, warmup, size, color, 1f);
     };
     public static void scan(float x, float y, float prog, float warmup, float size) {
-        scan(x, y, prog, warmup, size, Pal.accent);
+        scan(x, y, prog, warmup, size, LCPal.accent);
     };
 
 
@@ -1385,7 +1385,7 @@ public class LCDrawf {
             offY = (offTy + size * 0.5f + 0.5f) * Vars.tilesize;
 
         LCDraw.processZ(z, LCDraw.UI_REGION_Z_IND);
-        Lines.stroke(5f, Tmp.c1.set(Pal.gray).a(a * 0.7f));
+        Lines.stroke(5f, Tmp.c1.set(Color.gray).a(a * 0.7f));
         Lines.line(x - w * 0.5f, y + offY, x + w * 0.5f, y + offY);
         Lines.stroke(3f, color);
         Draw.alpha(a * 0.2f);
@@ -1409,7 +1409,7 @@ public class LCDrawf {
         progressBar(x, y, frac, size, color, 1f);
     };
     public static void progressBar(float x, float y, float frac, float size) {
-        progressBar(x, y, frac, size, Pal.accent);
+        progressBar(x, y, frac, size, LCPal.accent);
     };
     public static void progressBar(float x, float y, float frac) {
         progressBar(x, y, frac, 1f);
@@ -1421,7 +1421,7 @@ public class LCDrawf {
      */
     public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad, float ang, Color color, float a, float z) {
         LCDraw.processZ(z, LCDraw.UI_REGION_Z_IND);
-        Lines.stroke(stroke, Tmp.c1.set(Pal.gray).a(a * 0.7f));
+        Lines.stroke(stroke, Tmp.c1.set(Color.gray).a(a * 0.7f));
         Lines.circle(x, y, rad);
         Lines.stroke(stroke * 0.6f, color);
         Draw.alpha(a * 0.2f);
@@ -1439,7 +1439,7 @@ public class LCDrawf {
         progressRing(x, y, frac, rev, stroke, rad, ang, color, 1f);
     };
     public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad, float ang) {
-        progressRing(x, y, frac, rev, stroke, rad, ang, Pal.accent);
+        progressRing(x, y, frac, rev, stroke, rad, ang, LCPal.accent);
     };
     public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad) {
         progressRing(x, y, frac, rev, stroke, rad, 0f);
@@ -1491,7 +1491,7 @@ public class LCDrawf {
         float y_fi = y - size * Vars.tilesize / 2f + mtp * Vars.tilesize / 2f;
 
         LCDraw.processZ(z, LCDraw.UI_REGION_Z_IND);
-        Draw.color(Pal.gray, Lod.alpha2);
+        Draw.color(Color.gray, Lod.alpha2);
         Fill.square(x_fi, y_fi, mtp * 2.5f, 45f);
         Draw.color(color, Lod.alpha2);
         Fill.square(x_fi, y_fi, mtp * 1.5f, 45f);
@@ -1579,7 +1579,7 @@ public class LCDrawf {
         construct(x, y, reg, frac, ang, color, Layer.blockBuilding);
     };
     public static void construct(float x, float y, @Nullable TextureRegion reg, float frac, float ang) {
-        construct(x, y, reg, frac, ang, Pal.accent);
+        construct(x, y, reg, frac, ang, LCPal.accent);
     };
     public static void construct(float x, float y, @Nullable TextureRegion reg, float frac) {
         construct(x, y, reg, frac, 0f);
@@ -1626,7 +1626,7 @@ public class LCDrawf {
      */
     public static void planPlace(Block blk, @Nullable Tile t, float ang) {
         if(t == null) return;
-        Color color = t.getLinkedTilesAs(blk, tmpTsSeq).find(ot -> ot.solid() || ot.build != null) == null ? Color.white : Pal.remove;
+        Color color = t.getLinkedTilesAs(blk, tmpTsSeq).find(ot -> ot.solid() || ot.build != null) == null ? Color.white : LCPal.remove;
         plan(LCPos.toFCoord(t.x, blk.size), LCPos.toFCoord(t.y, blk.size), LCTexture.getBlockRegion(blk), ang, 1f, color);
     };
     // Overload

@@ -55,14 +55,14 @@
         if(blk.delegee.showPowProdBar) {
             blk.addBar("poweroutput", b => new Bar(
                 prov(() => Core.bundle.format("bar.poweroutput", Strings.fixed(b.getPowerProduction() * 60.0 * tryProp(b.timeScale, b), 1))),
-                prov(() => Pal.powerBar),
+                prov(() => GLB_color.powerBar),
                 () => b.delegee.powProdEffc,
             ));
         };
         if(blk.delegee.showPowBalanceBar) {
             blk.addBar("power", b => new Bar(
                 prov(() => Core.bundle.format("bar.powerbalance", (b.power.graph.getPowerBalance() >= 0.0 ? "+" : "") + (!isFinite(b.power.graph.getPowerBalance()) ? "-∞" : UI.formatAmount(b.power.graph.getPowerBalance() * 60.0)))),
-                prov(() => Pal.powerBar),
+                prov(() => GLB_color.powerBar),
                 () => Mathf.clamp(b.power.graph.getLastPowerProduced() / b.power.graph.getLastPowerNeeded()),
             ));
         };

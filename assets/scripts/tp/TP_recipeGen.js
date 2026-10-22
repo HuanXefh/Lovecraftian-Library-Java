@@ -147,7 +147,7 @@
                 "loveclab-item0bio-log",
                 metaObj,
                 {
-                    tint: Pal.heal,
+                    tint: GLB_color.heal,
                     itemI: "loveclab-item0bio-log",
                     itemO: "loveclab-item0bio-sawdust",
                 },

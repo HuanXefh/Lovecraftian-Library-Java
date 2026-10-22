@@ -65,7 +65,7 @@
         if(!GLB_var.isMindustryX) {
             blk.addBar("lovec-prog", b => new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
-                prov(() => Pal.ammo),
+                prov(() => GLB_color.ammo),
                 () => Mathf.clamp(b.progress, 0.0, 1.0),
             ));
         };

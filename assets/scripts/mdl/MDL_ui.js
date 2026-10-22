@@ -467,7 +467,7 @@
             if(charaColorArg instanceof Color) {
                 tb.setColor(charaColorArg);
             } else if(typeof charaColorArg === "boolean" && charaColorArg) {
-                tb.setColor(GLB_var.color.darkMix);
+                tb.setColor(GLB_color.darkMix);
             };
         })
         .width(GLB_var.length.charaW * getUiScl() / global.lovecUtil.prop.uiScale)
@@ -688,7 +688,7 @@
         };
         // `TABLE`: text box
         actor.table(Tex.bar, tb => {
-            tb.top().setColor(Pal.darkestGray);
+            tb.top().setColor(GLB_color.darkestGray);
             // `TABLE`: left text container
             tb.table(Styles.none, tb1 => {
                 let flab = new FLabel((MDL_text.getSpace() === "" ? "{slower}" : "{normal}") + dialText);

@@ -84,17 +84,17 @@
                                         blk.delegee.fuelConsMtp.fEqual(1.0) ?
                                             Color.white :
                                             blk.delegee.fuelConsMtp > 1.0 ?
-                                                Pal.remove :
-                                                Pal.heal,
+                                                GLB_color.remove :
+                                                GLB_color.heal,
                                     ),
                                 realLvl.color(
                                     realLvl * 100.0 >= blk.delegee.heatBlkMeltTemp ?
-                                        Pal.ammo :
+                                        GLB_color.ammo :
                                         blk.delegee.fuelLvlMtp.fEqual(1.0) ?
                                             Color.white :
                                             blk.delegee.fuelLvlMtp < 1.0 ?
-                                                Pal.remove :
-                                                Pal.heal,
+                                                GLB_color.remove :
+                                                GLB_color.heal,
                                 ),
                             ]);
                         });
@@ -123,7 +123,7 @@
         blk.removeBar("lovec-temp");
         blk.addBar("lovec-furnace-temp", b => new Bar(
             prov(() => Core.bundle.format("bar.heatpercent", Strings.fixed(b.delegee.tempCur, 2) + " " + fetchStatUnit("lovec", "heatunits").localized(), b.delegee.furnEffc.roundFixed(2) * 100.0)),
-            prov(() => Tmp.c2.set(Color.darkGray).lerp(Pal.lightOrange, b.self.ex_getHeatFrac())),
+            prov(() => Tmp.c2.set(Color.darkGray).lerp(GLB_color.lightOrange, b.self.ex_getHeatFrac())),
             () => b.self.ex_getHeatFrac(),
         ));
     };

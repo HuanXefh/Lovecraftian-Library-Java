@@ -127,7 +127,7 @@
             tb.table(Styles.none, tb1 => {
                 MDL_table.br(tb1, 1);
                 tb1.table(Tex.whiteui, tb2 => {
-                    tb2.left().setColor(Pal.darkestGray);
+                    tb2.left().setColor(GLB_color.darkestGray);
                     MDL_table.margin(tb2);
                     MDL_table.ctIcon(tb2, blk.delegee.placeBlk, {size: 48.0});
                     tb2.table(Styles.none, tb3 => {}).width(12.0);
@@ -155,7 +155,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-prog", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.self.ex_getConstructionFrac().perc(0))),
-            prov(() => Pal.ammo),
+            prov(() => GLB_color.ammo),
             () => b.self.ex_getConstructionFrac(),
         ));
     };
@@ -241,7 +241,7 @@
         let ot = blk.self.ex_getPlanT(tx, ty, rot, blk.delegee.placeDataX, blk.delegee.placeDataY);
         if(ot != null) {
             ot.setBlock(blk.delegee.placeBlk, team, Mathf.mod(rot + blk.delegee.placeOffRot, 4));
-            MDL_effect.fadeText(ot.worldx() + blk.delegee.placeBlk.offset, ot.worldy() + blk.delegee.placeBlk.offset, MDL_bundle.getInfo("lovec", "construction-complete"), Pal.accent, blk.delegee.placeBlk.size * 0.5);
+            MDL_effect.fadeText(ot.worldx() + blk.delegee.placeBlk.offset, ot.worldy() + blk.delegee.placeBlk.offset, MDL_bundle.getInfo("lovec", "construction-complete"), GLB_color.accent, blk.delegee.placeBlk.size * 0.5);
             MDL_event.onDelayRun(0.0, () => {
                 if(ot.build != null && ot.build.block === blk.delegee.placeBlk) {
                     BOX_trigger.constructionComplete.fire(ot.build);

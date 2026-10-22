@@ -57,13 +57,13 @@
     function comp_setBars(blk) {
         blk.addBar("efficiency", b => new Bar(
             prov(() => Core.bundle.format("bar.efficiency", Math.round(b.delegee.attrEffc * 100.0))),
-            prov(() => Pal.lightOrange),
+            prov(() => GLB_color.lightOrange),
             () => Mathf.clamp(b.delegee.attrEffc),
         ));
         if(!GLB_var.mindustryX) {
             blk.addBar("lovec-prog", b => new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.progress.perc(0))),
-                prov(() => Pal.ammo),
+                prov(() => GLB_color.ammo),
                 () => Mathf.clamp(b.progress, 0.0, 1.0),
             ));
         };
@@ -102,7 +102,7 @@
 
             thisFun.tmpTs.forEachFast(ot => {
                 if(ot.block().attributes.get(blk.delegee.attribute) > 0.0) {
-                    LCDrawf.areaShrink(ot, 1, valid ? Pal.accent : Pal.remove);
+                    LCDrawf.areaShrink(ot, 1, valid ? GLB_color.accent : GLB_color.remove);
                 };
             }, true);
         };

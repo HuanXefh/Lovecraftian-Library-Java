@@ -69,7 +69,7 @@
         unitPlayer = Vars.player.unit();
         if(unitPlayer != null) {
             // Draw surrounding range
-            LCPos.getTilesDstManhattan(thisFun.tmpTs, unitPlayer.tileOn(), GLB_var.range.unitSurR).forEachFast(ot => LCDrawf.areaShrink(ot, 1, Pal.accent, 0.5, GLB_var.layer.debugFlr), true);
+            LCPos.getTilesDstManhattan(thisFun.tmpTs, unitPlayer.tileOn(), GLB_var.range.unitSurR).forEachFast(ot => LCDrawf.areaShrink(ot, 1, GLB_color.accent, 0.5, GLB_var.layer.debugFlr), true);
         };
     }
     .setProp({
@@ -126,9 +126,9 @@
                             y = unit.y + Angles.trnsy(rot, wp.x, wp.y);
                             Draw.color(
                                 wp instanceof RepairBeamWeapon ?
-                                    Pal.heal :
+                                    GLB_color.heal :
                                     wp instanceof PointDefenseWeapon || wp instanceof PointDefenseBulletWeapon ?
-                                        Pal.techBlue :
+                                        GLB_color.techBlue :
                                         wp.noAttack ?
                                             Color.white :
                                             unit.team.color,
@@ -145,13 +145,13 @@
                             Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0);
                             Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0 + 180.0);
                             Lines.stroke(1.0);
-                            Draw.color(Pal.accent, GLB_param.UNIT_RANGE_ALPHA);
+                            Draw.color(GLB_color.accent, GLB_param.UNIT_RANGE_ALPHA);
                             LCDraw.circle(unit.x, unit.y, wp.bullet.splashDamageRadius, false);
                         };
                     }, true);
                     if(!cond) {
                         Lines.stroke(1.0);
-                        Draw.color(Pal.accent, GLB_param.UNIT_RANGE_ALPHA);
+                        Draw.color(GLB_color.accent, GLB_param.UNIT_RANGE_ALPHA);
                         LCDraw.circle(unit.x, unit.y, unit.range(), false);
                     };
                     Draw.reset();
@@ -173,7 +173,7 @@
                     for(let i = 0; i < 3; i++) {
                         mtIds = LCDBFileHandler.read("unit-reload-" + i, unit.type.name, null);
                         if(mtIds == null) continue;
-                        MDL_draw.unitReload(unit, mtIds, Pal.techBlue, 1.0, 0.0, i, null);
+                        MDL_draw.unitReload(unit, mtIds, GLB_color.techBlue, 1.0, 0.0, i, null);
                     };
                 };
 
@@ -187,10 +187,10 @@
                             Draw.z(GLB_var.layer.effHigh + 1.5);
                             Draw.color(
                                 Build.validPlace(pay.block(), unit.team, ot.x, ot.y, pay.build.rotation, false) ?
-                                    Pal.items :
+                                    GLB_color.items :
                                     ot.build != null && ot.build.acceptPayload(ot.build, pay) ?
-                                        Pal.techBlue :
-                                        Pal.remove,
+                                        GLB_color.techBlue :
+                                        GLB_color.remove,
                                 0.5,
                             );
                             Fill.rect(ot.worldx() + pay.block().offset, ot.worldy() + pay.block().offset, pay.block().size * Vars.tilesize, pay.block().size * Vars.tilesize);
@@ -259,13 +259,13 @@
             if(GLB_param.SHOULD_DRAW_UNIT_RELOAD) {
                 cond = b.ex_getReloadFrac != null || DB_block.db["class"]["group"]["reload"]["class"].hasIns(b.block) || LCDBFileHandler.read("block-reload", b.block.name, false);
                 if(cond) {
-                    MDL_draw.unitReload(b, null, Pal.techBlue, 1.0, -16.0, -1.25 + GLB_var.range.offBuildStatR, MDL_prop.getReloadFrac(b));
+                    MDL_draw.unitReload(b, null, GLB_color.techBlue, 1.0, -16.0, -1.25 + GLB_var.range.offBuildStatR, MDL_prop.getReloadFrac(b));
                 };
-                MDL_draw.unitReload(b, null, Pal.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + GLB_var.range.offBuildStatR, MDL_prop.getWarmupFrac(b, true));
+                MDL_draw.unitReload(b, null, GLB_color.accent, 1.0, -16.0, (cond ? -0.25 : -1.25) + GLB_var.range.offBuildStatR, MDL_prop.getWarmupFrac(b, true));
             };
             processZ(GLB_var.layer.debugTop - 0.02, 2);
             Lines.stroke(1.0);
-            Draw.color(Pal.accent, 0.3);
+            Draw.color(GLB_color.accent, 0.3);
             LCDraw.rect(b.x, b.y, GLB_var.range.offBuildStatR, b.block.size, false);
             Draw.reset();
             processZ(null, 2);
@@ -291,7 +291,7 @@
 
         processZ(Layer.max - 0.1, 2);
         if(GLB_param.IS_TELEPORTING && unitPlayer != null) {
-            Drawf.target(vec.x, vec.y, 6.0, 1.0, unitPlayer.canPass(vec.x.toIntCoord(), vec.y.toIntCoord()) ? Pal.accent : Pal.remove);
+            Drawf.target(vec.x, vec.y, 6.0, 1.0, unitPlayer.canPass(vec.x.toIntCoord(), vec.y.toIntCoord()) ? GLB_color.accent : GLB_color.remove);
         };
         processZ(null, 2);
     };

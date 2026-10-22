@@ -1,5 +1,6 @@
 package lovec.content.updater;
 
+import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.math.geom.Point2;
@@ -15,7 +16,6 @@ import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.graphics.Layer;
-import mindustry.graphics.Pal;
 import mindustry.input.Placement;
 import mindustry.type.Item;
 import mindustry.type.Liquid;
@@ -254,7 +254,7 @@ public class BLKMultiBlockUpdater extends LCContentUpdater<Block> {
                     float x = t.worldx() + off;
                     float y = t.worldy() - off;
                     Draw.z(Layer.power + 1f);
-                    Draw.color(Pal.gray);
+                    Draw.color(Color.gray);
                     Fill.square(x, y, 2.5f * mtp, 45f);
                     Draw.color(b.status().color);
                     Fill.square(x, y, 1.5f * mtp, 45f);

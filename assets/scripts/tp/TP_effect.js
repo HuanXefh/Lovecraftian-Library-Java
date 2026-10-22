@@ -29,7 +29,7 @@
         let
             size = readParam(paramObj, "size", 40.0),
             ang = readParam(paramObj, "ang", 0.0),
-            color = MDL_color.getColor(readParam(paramObj, "color", Pal.accent), "new"),
+            color = MDL_color.getColor(readParam(paramObj, "color", GLB_color.accent), "new"),
             scl = readParam(paramObj, "scl", 1.0),
             noLight = readParam(paramObj, "noLight", false);
 
@@ -740,8 +740,8 @@
             followParent: true,
             rotWithParent: false,
             useRotation: true,
-            colorFrom: GLB_var.color.smogWhite,
-            colorTo: GLB_var.color.whiteClear,
+            colorFrom: GLB_color.smogWhite,
+            colorTo: GLB_color.whiteClear,
             lightScl: 2.0,
             lightOpacity: 0.0,
 
@@ -803,8 +803,8 @@
             followParent: true,
             rotWithParent: false,
             useRotation: true,
-            colorFrom: GLB_var.color.smogWhite,
-            colorTo: GLB_var.color.whiteClear,
+            colorFrom: GLB_color.smogWhite,
+            colorTo: GLB_color.whiteClear,
             lightScl: 2.0,
             lightOpacity: 0.0,
 
@@ -865,8 +865,8 @@
             followParent: false,
             rotWithParent: false,
             useRotation: true,
-            colorFrom: GLB_var.color.smogWhiteThick,
-            colorTo: GLB_var.color.whiteClear,
+            colorFrom: GLB_color.smogWhiteThick,
+            colorTo: GLB_color.whiteClear,
             lightScl: 2.0,
             lightOpacity: 0.0,
 
@@ -925,8 +925,8 @@
             followParent: true,
             rotWithParent: false,
             useRotation: true,
-            colorFrom: GLB_var.color.smogWhiteThickest,
-            colorTo: GLB_var.color.whiteClear,
+            colorFrom: GLB_color.smogWhiteThickest,
+            colorTo: GLB_color.whiteClear,
             lightScl: 2.0,
             lightOpacity: 0.0,
 
@@ -985,8 +985,8 @@
             followParent: true,
             rotWithParent: false,
             useRotation: true,
-            colorFrom: GLB_var.color.smogWhite,
-            colorTo: GLB_var.color.whiteClear,
+            colorFrom: GLB_color.smogWhite,
+            colorTo: GLB_color.whiteClear,
             lightScl: 2.0,
             lightOpacity: 0.0,
 
@@ -1209,7 +1209,7 @@
     const diskExplo = function(paramObj) {
         let
             rad = readParam(paramObj, "rad", 40.0),
-            color = MDL_color.getColor(readParam(paramObj, "color", Pal.accent), "new"),
+            color = MDL_color.getColor(readParam(paramObj, "color", GLB_color.accent), "new"),
             scl = readParam(paramObj, "scl", 1.0),
             noLight = readParam(paramObj, "noLight", false);
 
@@ -1277,7 +1277,7 @@
                 rotWithParent: false,
                 useRotation: true,
                 colorFrom: Color.white,
-                colorTo: GLB_var.color.whiteClear,
+                colorTo: GLB_color.whiteClear,
                 lightScl: 2.0,
                 lightOpacity: 0.65,
 
@@ -1394,7 +1394,7 @@
             rad = readParam(paramObj, "rad", 56.0),
             radDyna = readParam(paramObj, "rad", null),
             color = readParam(paramObj, "color", "feb380"),
-            colorCenter = readParam(paramObj, "colorCenter", Pal.accent),
+            colorCenter = readParam(paramObj, "colorCenter", GLB_color.accent),
             noSmog = readParam(paramObj, "noSmog", false);
 
         return noSmog ?

@@ -93,7 +93,7 @@
         };
 
         thisFun.tmpTs.forEachFast(ot => {
-            LCDrawf.areaShrink(ot, (blk.delegee.attrMode & AttrModes.BLOCK) !== 0 ? ot.block().size : 1, valid ? Pal.accent : Pal.remove);
+            LCDrawf.areaShrink(ot, (blk.delegee.attrMode & AttrModes.BLOCK) !== 0 ? ot.block().size : 1, valid ? GLB_color.accent : GLB_color.remove);
         }, true);
     }
     .setProp({

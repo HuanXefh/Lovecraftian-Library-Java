@@ -83,7 +83,7 @@
         if(t == null) return;
         let ot = t.nearby(rot);
         if(ot == null) return;
-        LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
+        LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, GLB_color.heal);
     };
 
 
@@ -149,7 +149,7 @@
     function comp_drawSelect(b) {
         let ot = b.tile.nearby(b.rotation);
         if(ot != null) {
-            LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, Pal.heal);
+            LCDrawf.rect(ot.worldx(), ot.worldy(), 0, 1, true, GLB_color.heal);
         };
     };
 

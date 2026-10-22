@@ -24,7 +24,7 @@
         function runGlbScr(mod) {
             let fi = findGlbScr(mod);
             if(fi == null) {
-                Log.info("[LOVEC] No globalScript.js found for " + mod.meta.name.color(Pal.accent) + ".");
+                Log.info("[LOVEC] No globalScript.js found for " + mod.meta.name.color(GLB_color.accent) + ".");
                 return;
             };
             // Don't use `try` for loading global scripts, which makes debugging impossible
@@ -194,7 +194,7 @@
 
         // Set up ore dictionary, EXPERIMENTAL!
         if(GLB_param.MODDED && fetchSetting("load-ore-dict")) {
-            console.log("[LOVEC] Loading " + "ore dictionary".color(Pal.accent) + " settings...");
+            console.log("[LOVEC] Loading " + "ore dictionary".color(GLB_color.accent) + " settings...");
             if(!fetchSetting("load-ore-dict-def")) {
                 console.log("[LOVEC] Skipped default lists for ore dictionary.");
             };
@@ -527,8 +527,8 @@
 
             // Damage text modes
             new CLS_damageTextMode("health", team => team === Team.derelict ? Color.white : team.color);
-            new CLS_damageTextMode("shield", team => Pal.techBlue, str => "<" + str + ">");
-            new CLS_damageTextMode("heal", team => Pal.heal, str => "+" + str);
+            new CLS_damageTextMode("shield", team => GLB_color.techBlue, str => "<" + str + ">");
+            new CLS_damageTextMode("heal", team => GLB_color.heal, str => "+" + str);
             new CLS_damageTextMode("heat", team => Color.orange, str => "^" + str);
 
             // Draggable button

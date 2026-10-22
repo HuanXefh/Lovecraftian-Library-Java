@@ -55,7 +55,7 @@
         if(!isFinite(blk.delegee.durabCap)) return;
         blk.addBar("lovec-durability", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", b.delegee.durabFrac.perc(0))),
-            prov(() => Pal.sap),
+            prov(() => GLB_color.sap),
             () => Mathf.clamp(b.delegee.durabFrac),
         ));
     };

@@ -63,7 +63,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-cd", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-cd-amt", b.self.ex_getManualTriggerCdFrac().perc(0))),
-            prov(() => Pal.accent),
+            prov(() => GLB_color.accent),
             () => b.self.ex_getManualTriggerCdFrac(),
         ));
     };

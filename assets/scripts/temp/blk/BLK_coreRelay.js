@@ -64,7 +64,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-cd", b => new Bar(
             prov(() => Core.bundle.format("bar.lovec-bar-cd-amt", Strings.fixed(b.delegee.itemSendCd / 60.0, 1) + " " + StatUnit.seconds.localized())),
-            prov(() => Pal.ammo),
+            prov(() => GLB_color.ammo),
             () => (blk.delegee.itemSendCooldown - b.delegee.itemSendCd) / blk.delegee.itemSendCooldown,
         ));
     };

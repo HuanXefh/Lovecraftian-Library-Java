@@ -110,7 +110,7 @@
                      * @instance
                      * @type {Color}
                      */
-                    wireArcColor: Pal.accent,
+                    wireArcColor: GLB_color.accent,
 
 
                 };

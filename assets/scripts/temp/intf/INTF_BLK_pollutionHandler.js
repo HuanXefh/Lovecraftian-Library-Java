@@ -56,7 +56,7 @@
             b.delegee.polEffc = b.self.ex_calcPolEffc();
 
             if(b.delegee.polEffc < 1.0 && Mathf.chanceDelta(0.03)) {
-                MDL_effect.corrosion(b.x, b.y, b.block.size, Color.valueOf(Tmp.c1, "2f4108"));
+                MDL_effect.corrosion(b.x, b.y, b.block.size, GLB_color.pollution);
             };
         };
     };

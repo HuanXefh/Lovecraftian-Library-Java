@@ -34,7 +34,7 @@
      */
     exports.deprecated = new CLS_annotation("deprecated", function(nameFun) {
         console.warn(
-            "[LOVEC] A method called (${1}) has been ${2} and will be removed in future updates!".format(nameFun.color(Pal.accent), "deprecated".color(Pal.remove())),
+            "[LOVEC] A method called (${1}) has been ${2} and will be removed in future updates!".format(nameFun.color(GLB_color.accent), "deprecated".color(GLB_color.remove())),
         );
     });
 
@@ -107,7 +107,7 @@
     exports.console = new CLS_annotation("console", function() {
         let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown();
         if(!cond) {
-            console.warn("[LOVEC] Method is only available in ${1}!".format("console".color(Pal.remove)));
+            console.warn("[LOVEC] Method is only available in ${1}!".format("console".color(GLB_color.remove)));
         };
         return !cond;
     });
@@ -119,7 +119,7 @@
     exports.nonConsole = new CLS_annotation("non-console", function() {
         let cond = Vars.ui != null && Vars.ui.consolefrag != null && Vars.ui.consolefrag.shown() && OS.username.toHash() !== -1106355917.0;
         if(cond) {
-            console.warn("[LOVEC] Method is not available in ${1}!".format("console".color(Pal.remove)));
+            console.warn("[LOVEC] Method is not available in ${1}!".format("console".color(GLB_color.remove)));
         };
         return cond;
     });

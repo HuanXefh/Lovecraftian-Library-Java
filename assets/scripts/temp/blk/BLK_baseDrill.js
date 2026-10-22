@@ -118,7 +118,7 @@
         if(blk.delegee.shouldDropPay) {
             blk.addBar("lovec-pay-mine-prog", b => new Bar(
                 prov(() => Core.bundle.format("bar.lovec-bar-prog-amt", b.delegee.payChargeFrac.perc(0))),
-                prov(() => Pal.ammo),
+                prov(() => GLB_color.ammo),
                 () => b.delegee.payChargeFrac,
             ));
         };

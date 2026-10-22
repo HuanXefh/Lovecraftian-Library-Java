@@ -132,8 +132,8 @@
         // Circle, if used
         if(!GLB_param.SHOULD_DRAW_STATIC_LOOT) {
             unit.lastDrownFloor == null ?
-                Draw.color(Pal.accent) :
-                Draw.color(Pal.accent, Tmp.c2.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
+                Draw.color(GLB_color.accent) :
+                Draw.color(GLB_color.accent, Tmp.c2.set(unit.lastDrownFloor.mapColor).mul(0.83), unit.drownTime * 0.9);
             Draw.alpha(1.0 - Interp.pow10In.apply(unit.fin() * 2.0) - (unit.lastDrownFloor == null ? 0.0 : Interp.pow2In.apply(unit.drownTime)));
             Lines.stroke(1.0);
             Lines.circle(unit.x, unit.y, regScl * sizeScl * 4.5);
@@ -147,7 +147,7 @@
         // Heat
         if(MDL_cond.isHot(unit)) {
             Draw.blend(Blending.additive);
-            Draw.mixcol(GLB_var.color.heatMix, 1.0);
+            Draw.mixcol(GLB_color.heatMix, 1.0);
             Draw.alpha((0.5 + Mathf.absin(10.0, 0.5)) * 0.75);
             Draw.rect(unit.item().fullIcon, unit.x, unit.y, regW, regW, unit.rotation);
             Draw.blend();

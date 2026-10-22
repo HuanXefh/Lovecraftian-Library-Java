@@ -32,7 +32,7 @@
         if(blk.delegee.ters.length === 0) return;
         stats.add(
             blk.delegee.terMode === "enable" ? fetchStat("lovec", "blk-terreq") : fetchStat("lovec", "blk-terban"),
-            MDL_text.getTagText(blk.delegee.ters.map(ter => MDL_terrain.getTerBundle(ter))).color(blk.delegee.terMode === "enable" ? Pal.heal : Pal.remove),
+            MDL_text.getTagText(blk.delegee.ters.map(ter => MDL_terrain.getTerBundle(ter))).color(blk.delegee.terMode === "enable" ? GLB_color.heal : GLB_color.remove),
         );
     };
 

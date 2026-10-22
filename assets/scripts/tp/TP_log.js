@@ -20,15 +20,15 @@
 
     batchCall(LCLogHandler, function() {
 
-        this.add(1, "invalidArguments", () => "[LOVEC] ${1}".format("Invalid arguments!".color(Pal.remove)));
-        this.add(1, "notInGame", () => "[LOVEC] ${1}".format("Method is unavailable outside of game!".color(Pal.remove)));
-        this.add(1, "noBuildingFound", (tx, ty) => "[LOVEC] ${1}".format("No building found at (${1}, ${2})!".format(tx, ty).color(Pal.remove)));
+        this.add(1, "invalidArguments", () => "[LOVEC] ${1}".format("Invalid arguments!".color(GLB_color.remove)));
+        this.add(1, "notInGame", () => "[LOVEC] ${1}".format("Method is unavailable outside of game!".color(GLB_color.remove)));
+        this.add(1, "noBuildingFound", (tx, ty) => "[LOVEC] ${1}".format("No building found at (${1}, ${2})!".format(tx, ty).color(GLB_color.remove)));
 
-        this.add(1, "forceModded", () => "[LOVEC] Lovec has been force to ${1}, but no mod requires Lovec to load.".format("MODDED MODE".color(Pal.remove)));
-        this.add(1, "noContentFound", nameCt => "[LOVEC] Content ${1} is not found!".format(nameCt.color(Pal.accent)));
-        this.add(1, "noContentFoundWithMode", (nameCt, mode) => "[LOVEC] Content ${1} is not found using mode ${2}!".format(nameCt.color(Pal.accent), String(mode).color(Pal.remove)));
-        this.add(1, "costyContentSearch", nameCt => "[LOVEC] Performing costy search for ${1}!".format(nameCt.color(Pal.accent)));
-        this.add(1, "noCustomShadowRegionFound", nameCt => "[LOVEC] Cannot find custom shadow region for ${1}!".format(nameCt.color(Pal.accent)));
+        this.add(1, "forceModded", () => "[LOVEC] Lovec has been force to ${1}, but no mod requires Lovec to load.".format("MODDED MODE".color(GLB_color.remove)));
+        this.add(1, "noContentFound", nameCt => "[LOVEC] Content ${1} is not found!".format(nameCt.color(GLB_color.accent)));
+        this.add(1, "noContentFoundWithMode", (nameCt, mode) => "[LOVEC] Content ${1} is not found using mode ${2}!".format(nameCt.color(GLB_color.accent), String(mode).color(GLB_color.remove)));
+        this.add(1, "costyContentSearch", nameCt => "[LOVEC] Performing costy search for ${1}!".format(nameCt.color(GLB_color.accent)));
+        this.add(1, "noCustomShadowRegionFound", nameCt => "[LOVEC] Cannot find custom shadow region for ${1}!".format(nameCt.color(GLB_color.accent)));
 
 
         /* <------------------------------ debug info ------------------------------> */

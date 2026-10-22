@@ -14,7 +14,6 @@
 
 
     const PARENT = require("lovec/temp/bul/BUL_spriteBullet");
-    const INTF_BUL_trailHandler = require("lovec/temp/intf/INTF_BUL_trailHandler");
 
 
     /* <------------------------------ component ------------------------------> */
@@ -53,11 +52,9 @@
      * Used in {@link BLK_massDriver}.
      * @class BUL_massDriverBullet
      * @extends BUL_spriteBullet
-     * @extends INTF_BUL_trailHandler
      */
     module.exports = newClass()
     .extendClass(PARENT, "BUL_massDriverBullet")
-    .implement(INTF_BUL_trailHandler)
     .initTemplate()
     .setParent("MassDriverBolt")
     .setTags()
@@ -92,14 +89,6 @@
 
         update: function(bul) {
             comp_update(this, bul);
-        }
-        .setProp({
-            noSuper: true,
-        }),
-
-
-        draw: function(bul) {
-            // No super
         }
         .setProp({
             noSuper: true,

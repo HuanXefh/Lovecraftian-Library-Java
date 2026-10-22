@@ -24,7 +24,7 @@
 
 
     /**
-     * Used to show trail for bullets that don't support trail by default.
+     * Used to show trail for bullets. Bypasses vanilla trail for more custom effects.
      * @class INTF_BUL_trailHandler
      */
     module.exports = new CLS_interface("INTF_BUL_trailHandler", {
@@ -54,7 +54,7 @@
                  * @instance
                  * @type {Color}
                  */
-                trailColor: Pal.accent,
+                trailColor: GLB_color.accent,
                 /**
                  * `PARAM`: Interpolation pattern for trail.
                  * @memberof INTF_BUL_trailHandler
@@ -114,13 +114,30 @@
                 bul.trail.length = this.delegee.trailLen;
                 bul.trail.update(
                     bul.x, bul.y,
-                    this.delegee.trailInterp.apply(bul.fin()) * (1.0 + (
+                    this.delegee.trailInterp.apply(this.self.ex_getTrailWScl(bul)) * (1.0 + (
                         this.delegee.trailSinMag > 0.0 ?
                             Mathf.absin(GLB_var.time, this.delegee.trailSinScl, this.delegee.trailSinMag) :
                             0.0
                     )),
                 );
             };
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * Gets scaling of trail width (clamped).
+         * @memberof INTF_BUL_trailHandler
+         * @instance
+         * @func
+         * @param {Bullet} bul
+         * @return {number}
+         */
+        ex_getTrailWScl: function(bul) {
+            return bul.fin();
         }
         .setProp({
             noSuper: true,

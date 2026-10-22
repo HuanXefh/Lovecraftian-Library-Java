@@ -3,8 +3,8 @@ package lovec.utils;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.util.Strings;
+import lovec.graphics.LCPal;
 import lovec.utils.extend.LCNumber;
-import mindustry.graphics.Pal;
 
 public class LCFormat {
 
@@ -114,10 +114,10 @@ public class LCFormat {
         return percColor(num, deciAmt, overColor, lessColor, midColor, 0.025f);
     };
     public static String percColor(float num, int deciAmt, Color overColor, Color lessColor) {
-        return percColor(num, deciAmt, overColor, lessColor, Pal.accent);
+        return percColor(num, deciAmt, overColor, lessColor, LCPal.accent);
     };
     public static String percColor(float num, int deciAmt) {
-        return percColor(num, deciAmt, Pal.heal, Pal.remove);
+        return percColor(num, deciAmt, LCPal.heal, LCPal.remove);
     };
     public static String percColor(float num) {
         return percColor(num, 2);

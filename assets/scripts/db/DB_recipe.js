@@ -217,7 +217,7 @@ const db = {
                     let i = 0, ordText;
                     blk.recipes.each(rc => {
                         i++;
-                        ordText = ("[" + i + "]").color(Pal.accent);
+                        ordText = ("[" + i + "]").color(GLB_color.accent);
                         if(rc.input.items != null) {
                             rc.input.items.forEachFast(itemStack => {
                                 if(itemStack.amount <= 0) return;
@@ -251,7 +251,7 @@ const db = {
                     let i = 0, ordText;
                     blk.recipes.each(rc => {
                         i++;
-                        ordText = ("[" + i + "]").color(Pal.accent);
+                        ordText = ("[" + i + "]").color(GLB_color.accent);
                         rc.inputItem.each(itemStack => {
                             if(itemStack.amount <= 0) return;
                             dictConsItem[itemStack.item.id].push(blk, itemStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
@@ -292,7 +292,7 @@ const db = {
                     let i = 0, ordText;
                     blk.recipes.each(rc => {
                         i++;
-                        ordText = ("[" + i + "]").color(Pal.accent);
+                        ordText = ("[" + i + "]").color(GLB_color.accent);
                         rc.inputItems.forEachFast(itemStack => {
                             if(itemStack.amount <= 0) return;
                             dictConsItem[itemStack.item.id].push(blk, itemStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
@@ -487,7 +487,7 @@ const db = {
                     let i = 0, ordText;
                     blk.recipes.each(rc => {
                         i++;
-                        ordText = ("[" + i + "]").color(Pal.accent);
+                        ordText = ("[" + i + "]").color(GLB_color.accent);
                         if(rc.output.items != null) {
                             rc.output.items.forEachFast(itemStack => {
                                 if(itemStack.amount <= 0) return;
@@ -531,7 +531,7 @@ const db = {
                     let i = 0, ordText;
                     blk.recipes.each(rc => {
                         i++;
-                        ordText = ("[" + i + "]").color(Pal.accent);
+                        ordText = ("[" + i + "]").color(GLB_color.accent);
                         rc.outputItem.each(itemStack => {
                             if(itemStack.amount <= 0) return;
                             dictProdItem[itemStack.item.id].push(blk, itemStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));
@@ -574,7 +574,7 @@ const db = {
                     let i = 0, ordText;
                     blk.recipes.each(rc => {
                         i++;
-                        ordText = ("[" + i + "]").color(Pal.accent);
+                        ordText = ("[" + i + "]").color(GLB_color.accent);
                         rc.outputItems.forEachFast(itemStack => {
                             if(itemStack.amount <= 0) return;
                             dictProdItem[itemStack.item.id].push(blk, itemStack.amount, mergeObj({time: rc.craftTime, iconText: ordText}, data));

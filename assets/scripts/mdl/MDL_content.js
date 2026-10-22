@@ -224,7 +224,7 @@
             },
         );
         if(arr.length > 0 && !item.buildable) {
-            console.warn("[LOVEC] Item ${1} is marked as not buildable, but actually used for ${2} blocks!".format(item.name.color(Pal.accent), arr.length));
+            console.warn("[LOVEC] Item ${1} is marked as not buildable, but actually used for ${2} blocks!".format(item.name.color(GLB_color.accent), arr.length));
         };
 
         return arr;

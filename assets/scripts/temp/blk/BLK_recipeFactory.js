@@ -62,7 +62,7 @@
 
             if(blk.delegee.useAutoSelection) {
                 MDL_table.br(tb, 1);
-                tb.add(MDL_bundle.getInfo("lovec", "recipe-auto-selection")).left().padLeft(32.0).color(Pal.remove).row();
+                tb.add(MDL_bundle.getInfo("lovec", "recipe-auto-selection")).left().padLeft(32.0).color(GLB_color.remove).row();
                 MDL_table.br(tb, 1);
             };
 

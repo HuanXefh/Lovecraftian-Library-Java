@@ -83,7 +83,7 @@
             Core.app.post(() => {
                 blk.addBar("lovec-power-transmitter-overload", b => new Bar(
                     prov(() => Core.bundle.format("bar.lovec-bar-transmitter-overload-amt", b.self.ex_getTransmitterOverloadFrac().perc())),
-                    prov(() => Tmp.c1.set(Pal.heal).lerp(Pal.remove, b.self.ex_getTransmitterOverloadFrac())),
+                    prov(() => Tmp.c1.set(GLB_color.heal).lerp(GLB_color.remove, b.self.ex_getTransmitterOverloadFrac())),
                     () => 1.0,
                 ));
             });

@@ -136,7 +136,7 @@
     function comp_init(blk) {
         // Have to keep these to prevent crash on specific client sides like MindustryX
         if(blk.outputItems != null || blk.outputLiquids != null) {
-            console.warn("[LOVEC] Do not set outputs for multi-crafter ${1} using vanilla fields. Define a recipe module instead!".format(blk.name.color(Pal.accent)));
+            console.warn("[LOVEC] Do not set outputs for multi-crafter ${1} using vanilla fields. Define a recipe module instead!".format(blk.name.color(GLB_color.accent)));
         };
         blk.outputItems = [];
         blk.outputLiquids = [];
@@ -150,7 +150,7 @@
             blk.delegee.isErekirHeatConsumer = MDL_recipe.checkErekirHeatInput(blk.delegee.rcMdl);
             blk.delegee.isErekirHeatProducer = MDL_recipe.checkErekirHeatOutput(blk.delegee.rcMdl);
             if(blk.delegee.isErekirHeatConsumer && blk.delegee.isErekirHeatProducer) {
-                console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(Pal.accent)));
+                console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(GLB_color.accent)));
             };
 
             if(!LCVersionResolver.isV8 && blk.delegee.isErekirHeatConsumer) {
@@ -487,7 +487,7 @@
         if(b.block.delegee.isErekirHeatConsumer) {
             tb.add(new Bar(
                 prov(() => Core.bundle.format("bar.heatpercent", (b.delegee.erekirHeatI + 0.01).roundFixed(1), (b.delegee.erekirHeatEffc * 100.0 + 0.01).roundFixed(1))),
-                prov(() => Pal.lightOrange),
+                prov(() => GLB_color.lightOrange),
                 () => Mathf.clamp(b.heatFrac()),
             ));
             tb.row();
@@ -495,7 +495,7 @@
         if(b.block.delegee.isErekirHeatProducer) {
             tb.add(new Bar(
                 "bar.heat",
-                Pal.lightOrange,
+                GLB_color.lightOrange,
                 () => Mathf.clamp(b.heatFrac()),
             ));
             tb.row();
@@ -504,7 +504,7 @@
         if(b.delegee.rc.attr != null) {
             tb.add(new Bar(
                 prov(() => Core.bundle.format("bar.efficiency", Math.round(b.delegee.attrEffc * 100.0))),
-                prov(() => Pal.lightOrange),
+                prov(() => GLB_color.lightOrange),
                 () => Mathf.clamp(b.delegee.attrEffc),
             )).growX();
             tb.row();

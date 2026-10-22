@@ -74,7 +74,7 @@
     function comp_setBars(blk) {
         blk.addBar("lovec-instab", b => new Bar(
             "bar.instability",
-            Pal.sap,
+            GLB_color.sap,
             () => b.delegee.boilerInstab,
         ));
     };

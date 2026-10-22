@@ -306,7 +306,7 @@
             } catch(err) {
                 dbMdl = null;
                 if(!err.message.startsWith("Module ")) {
-                    console.err("[LOVEC] Error loading DB file from ${1}:\n".format(mod.name.color(Pal.accent)) + err);
+                    console.err("[LOVEC] Error loading DB file from ${1}:\n".format(mod.name.color(GLB_color.accent)) + err);
                 };
             };
 
@@ -316,7 +316,7 @@
             };
         });
 
-        console.log("[LOVEC] Merged ${1} DB file(s) for ${2} in ${3} from other mods.".format(i, nameFi, nameModCur.color(Pal.accent)));
+        console.log("[LOVEC] Merged ${1} DB file(s) for ${2} in ${3} from other mods.".format(i, nameFi, nameModCur.color(GLB_color.accent)));
     };
     /**
      * @param {Object} obj0
@@ -344,7 +344,7 @@
                                             // Depth: 4
                                             val5 instanceof Array ?
                                                 mergeDB.applyMerge(key5, Object.searchByKeys(obj, [key1, key2, key3, key4], Object.air), val5) :
-                                                console.err("[LOVEC] Cannot fully merge an object due to " + "too many layers".color(Pal.remove) + ".");
+                                                console.err("[LOVEC] Cannot fully merge an object due to " + "too many layers".color(GLB_color.remove) + ".");
                                         });
                                 });
                         });
@@ -807,7 +807,7 @@
                     if(name != null) {
                         let parent = TechTree.all.find(onode => onode.content.name === name || onode.content.name === ct.minfo.mod.name + "-" + name || onode.content.name === SaveVersion.mapFallback(name));
                         if(parent == null) {
-                            console.warn("[LOVEC] Node ${1} is required by ${2}, but not added to any tech tree!".format(name.color(Pal.remove), ct.name.color(Pal.accent)));
+                            console.warn("[LOVEC] Node ${1} is required by ${2}, but not added to any tech tree!".format(name.color(GLB_color.remove), ct.name.color(GLB_color.accent)));
                         } else {
                             if(!parent.children.contains(node)) {
                                 parent.children.add(node);
@@ -816,7 +816,7 @@
                             node.planet = parent.planet;
                         };
                     } else {
-                        console.warn("[LOVEC] No parent found for a non-root tech node: " + ct.name.color(Pal.accent));
+                        console.warn("[LOVEC] No parent found for a non-root tech node: " + ct.name.color(GLB_color.accent));
                     };
                 };
             }));

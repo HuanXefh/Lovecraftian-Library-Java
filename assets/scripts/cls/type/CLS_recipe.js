@@ -51,7 +51,7 @@
             blkEmptyRcMap.put(this.owner, this);
         } else {
             if(nameRcMap.containsKey(this.name)) {
-                console.warn("[LOVEC] Recipe name ${1} already used!".format(this.name.color(Pal.accent)));
+                console.warn("[LOVEC] Recipe name ${1} already used!".format(this.name.color(GLB_color.accent)));
             };
             nameRcMap.put(this.name, this);
             if(!blkRcsMap.containsKey(this.owner)) {
@@ -89,9 +89,9 @@
 
 
     MDL_event.onLoadDelayTask(GLB_var.delay.load.logRcRegis, () => {
-        console.log("[LOVEC] Registered ${1} recipe(s) in total.".format(rcCount.color(Pal.accent)));
+        console.log("[LOVEC] Registered ${1} recipe(s) in total.".format(rcCount.color(GLB_color.accent)));
         if(rcIncompleteCount > 0) {
-            console.log("[LOVEC] ${1} recipe(s) are incomplete!".format(rcIncompleteCount.color(Pal.accent)));
+            console.log("[LOVEC] ${1} recipe(s) are incomplete!".format(rcIncompleteCount.color(GLB_color.accent)));
         };
 
         let str = new Date().toLocaleDateString();
@@ -873,7 +873,7 @@
      */
     CLS_recipe.prototype.display = function(tb, ord, noPane, showWinBtn, breakForStats) {
         return tb.table(Tex.whiteui, tb1 => {
-            tb1.left().setColor(Pal.darkestGray);
+            tb1.left().setColor(GLB_color.darkestGray);
             if(!breakForStats) {
                 if(ord >= 0) {
                     this.displayOrder(tb1, ord, showWinBtn);
@@ -895,7 +895,7 @@
                     this.displayOutput(tb2, false);
                 }).left().row();
                 MDL_table.br(tb1, 1);
-                MDL_table.bar(tb1, {color: Pal.accent, stroke: 2.0});
+                MDL_table.bar(tb1, {color: GLB_color.accent, stroke: 2.0});
                 this.displayStats(tb1, noPane, true);
             };
         })
@@ -914,7 +914,7 @@
     */
     CLS_recipe.prototype.displayBase = function(tb, noPane, pad) {
         return tb.table(Tex.whiteui, tb1 => {
-            tb1.left().setColor(Tmp.c1.set(Pal.accent).lerp(Color.black, 0.8));
+            tb1.left().setColor(Tmp.c1.set(GLB_color.accent).lerp(Color.black, 0.8));
             this.displayInput(tb1, true, noPane);
             tb1.table(Styles.none, tb2 => {}).left().width(48.0).growX().growY();
             this.displayOutput(tb1, true);
@@ -940,15 +940,15 @@
 
         return MDL_table.edge(tb, tb1 => {
             tb1.table(Tex.whiteui, tb2 => {
-                tb2.left().setColor(Pal.darkestGray);
+                tb2.left().setColor(GLB_color.darkestGray);
                 MDL_table.margin(tb2);
 
                 if(!valid) {
-                    tb2.add(MDL_bundle.getInfo("lovec", "recipe-unavailable")).color(Pal.remove).row();
+                    tb2.add(MDL_bundle.getInfo("lovec", "recipe-unavailable")).color(GLB_color.remove).row();
                 } else {
                     if(title != null) {
-                        tb2.add(title.plain().color(Pal.accent)).left().padLeft(12.0).fontScale(1.1).row();
-                        MDL_table.bar(tb2, {color: Pal.accent, stroke: 2.0});
+                        tb2.add(title.plain().color(GLB_color.accent)).left().padLeft(12.0).fontScale(1.1).row();
+                        MDL_table.bar(tb2, {color: GLB_color.accent, stroke: 2.0});
                         MDL_table.br(tb2, 2);
                     };
                     if(this.tt != null) {
@@ -959,7 +959,7 @@
                         MDL_table.br(tb2, 1);
                         this.displayBase(tb2, true, 28.0);
                         MDL_table.br(tb2, 1);
-                        MDL_table.bar(tb2, {color: Color.valueOf(Tmp.c1, "303030"), stroke: 3.0});
+                        MDL_table.bar(tb2, {color: GLB_color.lineGray, stroke: 3.0});
                     };
                     this.display(tb2, -1, true, false, true);
                 };
@@ -1002,7 +1002,7 @@
 
             if(noPane) {
                 tb1.table(Tex.whiteui, tb2 => {
-                    tb2.left().setColor(Pal.darkerGray);
+                    tb2.left().setColor(GLB_color.darkerGray);
                     tableM(tb2);
                 }).growX();
                 return;
@@ -1010,7 +1010,7 @@
 
             let pn = tb1.pane(pnTb => {
                 pnTb.setBackground(Tex.whiteui);
-                pnTb.setColor(Pal.darkerGray);
+                pnTb.setColor(GLB_color.darkerGray);
                 pnTb.left();
                 tableM(pnTb);
             })
@@ -1036,7 +1036,7 @@
             tb1.left();
             tb1.table(Styles.none, tb2 => {
                 tb2.center();
-                tb2.add("[" + Strings.fixed(ord, 0) + "]").color(Pal.accent).tooltip(this.rcHeader, true).row();
+                tb2.add("[" + Strings.fixed(ord, 0) + "]").color(GLB_color.accent).tooltip(this.rcHeader, true).row();
                 MDL_table.br(tb2, 1);
                 tb2.table(Styles.none, tb3 => {
                     tb3.button(this.icon, Styles.clearNonei, 28.0, () => {});
@@ -1048,7 +1048,7 @@
                                     if(this.hasBaseIo) {
                                         this.displayBase(tb4, false, 28.0);
                                         MDL_table.br(tb4, 1);
-                                        MDL_table.bar(tb4, {color: Color.valueOf(Tmp.c1, "303030"), stroke: 3.0});
+                                        MDL_table.bar(tb4, {color: GLB_color.lineGray, stroke: 3.0});
                                     };
                                     this.display(tb4, -1, false, false);
                                 },
@@ -1058,7 +1058,7 @@
                     };
                 });
             }).width(84.0);
-            MDL_table.barV(tb1, {color: Pal.accent});
+            MDL_table.barV(tb1, {color: GLB_color.accent});
         })
         .left()
         .growY();
@@ -1116,7 +1116,7 @@
     CLS_recipe.prototype.displayStats = function thisFun(tb, noPane, breakForStats) {
         return tb.table(Styles.none, tb1 => {
             if(!breakForStats) {
-                MDL_table.barV(tb1, {color: Pal.accent});
+                MDL_table.barV(tb1, {color: GLB_color.accent});
                 tb1.table(Styles.none, tb2 => {}).width(24.0);
             };
             tb1.table(Styles.none, tb2 => {
@@ -1128,12 +1128,12 @@
                     // `TABLE`: Stats
                     thisFun.addStat(
                         tb3, this.isGen,
-                        MDL_bundle.getTerm("lovec", "generated-recipe").color(Pal.gray),
+                        MDL_bundle.getTerm("lovec", "generated-recipe").color(Color.gray),
                     );
                     if(this.isIncomplete) {
                         let str = MDL_bundle.getInfo("lovec", "tt-recipe-errored-names") + "\n";
-                        this.erroredNames.forEachFast(name => str += ("\n- " + name).color(Pal.accent), true);
-                        tb3.add(MDL_bundle.getTerm("lovec", "incomplete-recipe").color(Pal.remove)).left().tooltip(str, true).row();
+                        this.erroredNames.forEachFast(name => str += ("\n- " + name).color(GLB_color.accent), true);
+                        tb3.add(MDL_bundle.getTerm("lovec", "incomplete-recipe").color(GLB_color.remove)).left().tooltip(str, true).row();
                     };
                     thisFun.addStat(
                         tb3, true,
@@ -1170,17 +1170,17 @@
                     thisFun.addStat(
                         tb3, this.opt.length > 0,
                         MDL_bundle.getTerm("lovec", "require-optional"),
-                        this.reqOpt ? MDL_bundle.getBase("yes").color(Pal.remove) : MDL_bundle.getBase("no").color(Pal.heal),
+                        this.reqOpt ? MDL_bundle.getBase("yes").color(GLB_color.remove) : MDL_bundle.getBase("no").color(GLB_color.heal),
                     );
                     thisFun.addStat(
                         tb3, this.failP > 0.0,
                         MDL_bundle.getTerm("lovec", "chance-to-fail"),
-                        this.failP.perc(1).color(this.failP > 0.25 ? Pal.remove : Pal.accent),
+                        this.failP.perc(1).color(this.failP > 0.25 ? GLB_color.remove : GLB_color.accent),
                     );
                     thisFun.addStat(
                         tb3, !this.powProdMtp.fEqual(1.0),
                         fetchStat("lovec", "blk0pow-powmtp").localized(),
-                        this.powProdMtp.perc().color(this.powProdMtp < 1.0 ? Pal.remove : Pal.heal),
+                        this.powProdMtp.perc().color(this.powProdMtp < 1.0 ? GLB_color.remove : GLB_color.heal),
                     );
                     thisFun.addStat(
                         tb3, this.tempReq > 0.0,

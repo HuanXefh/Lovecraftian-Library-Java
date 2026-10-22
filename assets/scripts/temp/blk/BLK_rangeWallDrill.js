@@ -59,7 +59,7 @@
     function comp_setBars(blk) {
         blk.addBar("drillspeed", b => new Bar(
             prov(() => Core.bundle.format("bar.drillspeed", Strings.fixed(b.lastDrillSpeed * 60.0, 2))),
-            prov(() => Pal.ammo),
+            prov(() => GLB_color.ammo),
             () => Mathf.clamp(b.time / blk.self.ex_calcDrillTime(b.delegee.mineRsTup[0], b.delegee.totalOreAmt)),
         ));
     };
@@ -98,7 +98,7 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
-        LCDrawf.rectPlaceRot(blk, tx, ty, blk.range * 0.5, rot, true, valid ? Pal.accent : Pal.remove);
+        LCDrawf.rectPlaceRot(blk, tx, ty, blk.range * 0.5, rot, true, valid ? GLB_color.accent : GLB_color.remove);
         if(GLB_var.world.tile(tx, ty) == null || blk.delegee.tmpMineRsTup[0] == null) return;
         blk.self.ex_drawDrillText(tx, ty, valid, 60.0 / blk.self.ex_calcDrillTime(blk.delegee.tmpMineRsTup[0], Math.pow(blk.range, 2)) * blk.delegee.tmpTotalOreAmt, blk.delegee.tmpMineRsTup[1].length > 1 ? null : blk.self.ex_findPlaceRsIcon(tx, ty, blk.delegee.tmpMineRsTup[0]));
     };
@@ -277,7 +277,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDrawf.rectSelectRot(b, b.block.range * 0.5, b.rotation, true, Pal.accent);
+        LCDrawf.rectSelectRot(b, b.block.range * 0.5, b.rotation, true, GLB_color.accent);
         if(b.delegee.mineRsTup[0] == null) return;
         b.drawItemSelection(b.delegee.mineRsTup[0]);
     };
