@@ -1268,13 +1268,6 @@ const db = {
              * @type {RecipeRawData2Array}
              * @lovecAutoRecipe
              */
-            concentrate: [],
-
-
-            /**
-             * @type {RecipeRawData2Array}
-             * @lovecAutoRecipe
-             */
             brick: [],
 
 

@@ -126,6 +126,24 @@ declare class Pal {
 declare class Drawf {}
 
 
+/** mindustry.graphics.Trail */
+declare class Trail {
+    length: number;
+
+    constructor(len: number)
+
+    copy(): Trail
+    clear(): void
+    width(): number
+    size(): number
+
+    update(x: number, y: number, w?: number): void
+    shorten(): void
+    drawCap(color: Color, w: number): void
+    draw(color: Color, w: number): void
+}
+
+
 /** mindustry.graphics.Shaders */
 declare class Shaders {}
 

@@ -39,6 +39,7 @@
             blk.bullet.sprite = blk.delegee.bulSpr;
             blk.bullet.width = blk.delegee.bulW;
             blk.bullet.height = blk.delegee.bulH;
+            blk.bullet.shrinkX = blk.delegee.bulShrinkX;
             blk.bullet.shrinkY = blk.delegee.bulShrinkY;
         });
     };
@@ -175,40 +176,32 @@
              */
             bulH: 12.0,
             /**
+             * `PARAM`: `shrinkX` of the bullet.
+             * @memberof BLK_massDriver
+             * @instance
+             * @type {number}
+             */
+            bulShrinkX: 0.0,
+            /**
              * `PARAM`: `shrinkY` of the bullet.
              * @memberof BLK_massDriver
              * @instance
              * @type {number}
              */
-            bulShrinkY: 0.0,
+            bulShrinkY: 0.5,
+            /**
+             * `PARAM`: Used to build the mass driver bullet.
+             * @memberof BLK_massDriver
+             * @instance
+             * @type {ExtendParamObject|null}
+             */
+            bulParamObj: null,
 
 
             /* <------------------------------ vanilla ------------------------------> */
 
 
-            bullet: tprov(() => extend(MassDriverBolt, {
-
-
-                update(bul) {
-                    if(
-                        bul.shooter != null && bul.shooter instanceof MassDriver.MassDriverBuild
-                            && tryJsProp(bul.shooter.block, "bulCollidesTerrain", false)
-                            && (
-                              tryJsProp(bul.shooter.block, "bulCollidesTerrainCaveOnly", false) ?
-                                GLB_param.IS_CAVE_MAP :
-                                true
-                            )
-                            && EntityCollisions.legsSolid(bul.tileX(), bul.tileY())
-                    ) {
-                        this.hit(bul, bul.tileX() * Vars.tilesize, bul.tileY() * Vars.tilesize);
-                        bul.remove();
-                        return;
-                    };
-                    this.super$update(bul);
-                },
-
-
-            })),
+            bullet: tfunc(paramObj => fetchBullet("MassDriverBullet", paramObj.bulParamObj)),
 
 
         })

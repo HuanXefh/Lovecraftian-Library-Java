@@ -144,6 +144,22 @@
         false, false, false, false, false,
         false, false, false, false, false,
         false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
+        false, false, false, false, false,
     ];
     /** @type {java.lang.ClassLoader} */
     processClassLoader.defLoader = CONTEXT.getApplicationClassLoader();

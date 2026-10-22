@@ -282,7 +282,8 @@
         entity: 15,
         planet: 16,
         sector: 17,
-        tmi: 19,
+        tmi: 30,
+        // 50 and larger indexes are reserved for anonymous `extend`!
     };
 
 

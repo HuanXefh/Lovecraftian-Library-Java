@@ -51,6 +51,19 @@
     }, "MethodMixModes");
 
 
+    /** @global */
+    const BulletFlyingModes = newEnum({
+        /** @type {ENumber} */
+        CONSTANT: 0,
+        /** @type {ENumber} */
+        BALLISTIC: 1,
+        /** @type {ENumber} */
+        DROP: 2,
+        /** @type {ENumber} */
+        LIFT: 3,
+    }, "BulletFlyingModes");
+
+
 
 
     require("lovec/run/jsExt/RUN_jsPostExt_function");

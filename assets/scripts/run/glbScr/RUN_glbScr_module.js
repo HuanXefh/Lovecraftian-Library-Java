@@ -206,6 +206,7 @@
     UTIL_dragButtonInfoList = require("lovec/cls/ui/UTIL_dragButtonInfoList");
     /** @global */
     CLS_dragButton = require("lovec/cls/ui/CLS_dragButton");
+    require("lovec/tp/TP_bullet");
     /** @global */
     TP_ability = require("lovec/tp/TP_ability");
     /** @global */

@@ -1168,9 +1168,9 @@
                         StatUnit.heatUnits.localized(),
                     );
                     thisFun.addStat(
-                        tb3, this.reqOpt,
+                        tb3, this.opt.length > 0,
                         MDL_bundle.getTerm("lovec", "require-optional"),
-                        MDL_bundle.getBase("yes"),
+                        this.reqOpt ? MDL_bundle.getBase("yes").color(Pal.remove) : MDL_bundle.getBase("no").color(Pal.heal),
                     );
                     thisFun.addStat(
                         tb3, this.failP > 0.0,
@@ -1485,7 +1485,7 @@
         if(this.erekirHeatProd > 0.0) {
             b.delegee.erekirHeatO = Mathf.approachDelta(b.delegee.erekirHeatO, this.erekirHeatProd * b.efficiency, b.block.delegee.erekirHeatWarmupRate * b.delta());
             if(!LCVersionResolver.isV8 && b.heatModule != null) {
-                b.heatModule.output = b.delete.erekirHeatO;
+                b.heatModule.output = b.delegee.erekirHeatO;
             };
         };
     };

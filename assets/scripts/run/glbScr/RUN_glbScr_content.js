@@ -484,12 +484,26 @@
 
             // Template-built content
             case 2 :
+                if(__createFetchXxx__.fetchExtendInd < 0) {
+                    __createFetchXxx__.fetchExtendInd = 50;
+                } else {
+                    __createFetchXxx__.fetchExtendInd++;
+                };
+                let extendInd = __createFetchXxx__.fetchExtendInd;
                 return function(name, paramObj) {
                     if(def instanceof Prov) def = def.get();
-                    let temp = cont.read(name);
+                    // noinspection JSValidateTypes
+                    let temp = cont.read(name, Function.airNull)();
                     if(temp == null && def !== undefined) temp = def;
                     if(isNullable ? temp === undefined : temp == null) throw new Error("Cannot find content template: " + name);
-                    return temp.build(paramObj);
+                    processClassLoader(null, extendInd);
+                    let obj = temp.build(paramObj != null ? paramObj : {});
+                    let ct = ctorCall(JavaAdapter, extendBase.setupArgs(temp, obj));
+                    extendBase.setupFields(temp, obj);
+                    temp.initContent(ct);
+                    LCContentHandler.add(ct);
+                    processClassLoader(null, extendInd);
+                    return ct;
                 };
 
             // Getter-based content
@@ -512,6 +526,7 @@
                 throw new Error("Unknown content mode: " + mode);
         };
     };
+    __createFetchXxx__.fetchExtendInd = -1;
 
 
     /**
