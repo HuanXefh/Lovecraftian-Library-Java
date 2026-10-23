@@ -799,8 +799,12 @@
                 addSubInfo_opt(rawRc, rc.opt);
 
                 // Stat
-                if(rc.isGen) addSubInfo(rawRc, MDL_bundle.getTerm("lovec", "generated-recipe").color(Color.gray));
-                if(rc.failP > 0.0) addSubInfo(rawRc, MDL_text.getStat(MDL_bundle.getTerm("lovec", "chance-to-fail"), rc.failP.perc(1)));
+                if(rc.isGen) {
+                    addSubInfo(rawRc, MDL_bundle.getTerm("lovec", "generated-recipe").color(Color.gray));
+                };
+                if(rc.failP > 0.0) {
+                    addSubInfo(rawRc, MDL_text.getStat(MDL_bundle.getTerm("lovec", "chance-to-fail"), rc.failP.perc(1)));
+                };
 
                 // For furnaces
                 if(blk.self.ex_isSubInsOf("BLK_furnaceRecipeFactory") || blk.self.ex_isSubInsOf("BLK_electricFurnaceRecipeFactory")) {

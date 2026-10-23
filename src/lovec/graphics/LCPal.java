@@ -10,6 +10,8 @@ public class LCPal {
     public static Color accent;
     @LCFromScript(source = "GLB_color")
     public static Color techBlue;
+    @LCFromScript(source = "GLB_color")
+    public static Color gray;
 
     @LCFromScript(source = "GLB_color")
     public static Color place;

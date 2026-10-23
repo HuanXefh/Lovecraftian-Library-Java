@@ -27,6 +27,7 @@
     exports.lightishOrange = Pal.lightishOrange;
     exports.lighterOrange = Pal.lighterOrange;
     exports.lightishGray = Pal.lightishGray;
+    exports.gray = Pal.gray;
     exports.darkishGray = Pal.darkishGray;
     exports.darkerGray = Pal.darkerGray;
     exports.darkestGray = Pal.darkestGray;

@@ -32,7 +32,7 @@
         let zPrev = Draw.z();
         Draw.z(z);
 
-        Lines.stroke(10.0, Color.gray);
+        Lines.stroke(10.0, GLB_color.gray);
         Draw.alpha(a_fi);
         Lines.line(x - w * 0.5 + 2.5, y + offY + 2.5, x + w * 0.5 - 2.5, y + offY + 2.5);
         Lines.stroke(3.0, color);
@@ -42,7 +42,7 @@
         Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y + offY);
 
         let segW = (w + 5.0) / (amtSeg + 1);
-        Lines.stroke(1.0, Color.gray);
+        Lines.stroke(1.0, GLB_color.gray);
         Draw.alpha(a_fi);
         let
             x_i,
@@ -121,7 +121,7 @@
         let zPrev = Draw.z();
         Draw.z(z);
 
-        Lines.stroke(5.0, Color.gray);
+        Lines.stroke(5.0, GLB_color.gray);
         Draw.alpha(a_fi);
         Lines.line(x - w * 0.5, y + offY, x + w * 0.5, y + offY);
         Lines.stroke(3.0, color);
@@ -131,7 +131,7 @@
         Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y + offY);
 
         let segW = (w + 5.0) / (amtSeg + 1);
-        Lines.stroke(1.0, Color.gray);
+        Lines.stroke(1.0, GLB_color.gray);
         Draw.alpha(a_fi);
         let
             x_i,
@@ -187,7 +187,7 @@
         let zPrev = Draw.z();
         Draw.z(z);
 
-        Lines.stroke(3.5, Color.gray);
+        Lines.stroke(3.5, GLB_color.gray);
         Draw.alpha(a_fi);
         Lines.line(x - w * 0.5, y + offY, x + w * 0.5, y + offY);
         Lines.stroke(2.5, color);

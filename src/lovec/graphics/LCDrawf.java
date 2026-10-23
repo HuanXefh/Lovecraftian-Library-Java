@@ -127,7 +127,7 @@ public class LCDrawf {
      */
     public static void line(float x1, float y1, float x2, float y2, boolean isDashed, Color color, float a, float z) {
         LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
-        Lines.stroke(3f, Tmp.c1.set(Color.gray).a(a));
+        Lines.stroke(3f, Tmp.c1.set(LCPal.gray).a(a));
         LCDraw.line(x1, y1, x2, y2, isDashed);
         Lines.stroke(1f, color);
         Draw.alpha(a);
@@ -462,7 +462,7 @@ public class LCDrawf {
      */
     public static void rect(float x, float y, float r, float size, boolean isDashed, Color color, float a, float z) {
         LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
-        Lines.stroke(3f, Tmp.c1.set(Color.gray).a(a));
+        Lines.stroke(3f, Tmp.c1.set(LCPal.gray).a(a));
         LCDraw.rect(x, y, r, size, isDashed);
         Lines.stroke(1f, color);
         Draw.alpha(a);
@@ -648,7 +648,7 @@ public class LCDrawf {
         if(rad < 0.0001f) return;
 
         LCDraw.processZ(z, LCDraw.SHAPE_Z_IND);
-        Lines.stroke(3f, Tmp.c1.set(Color.gray).a(a));
+        Lines.stroke(3f, Tmp.c1.set(LCPal.gray).a(a));
         LCDraw.circle(x, y, rad, isDashed);
         Lines.stroke(1f, color);
         Draw.alpha(a);
@@ -1385,7 +1385,7 @@ public class LCDrawf {
             offY = (offTy + size * 0.5f + 0.5f) * Vars.tilesize;
 
         LCDraw.processZ(z, LCDraw.UI_REGION_Z_IND);
-        Lines.stroke(5f, Tmp.c1.set(Color.gray).a(a * 0.7f));
+        Lines.stroke(5f, Tmp.c1.set(LCPal.gray).a(a * 0.7f));
         Lines.line(x - w * 0.5f, y + offY, x + w * 0.5f, y + offY);
         Lines.stroke(3f, color);
         Draw.alpha(a * 0.2f);
@@ -1421,7 +1421,7 @@ public class LCDrawf {
      */
     public static void progressRing(float x, float y, float frac, boolean rev, float stroke, float rad, float ang, Color color, float a, float z) {
         LCDraw.processZ(z, LCDraw.UI_REGION_Z_IND);
-        Lines.stroke(stroke, Tmp.c1.set(Color.gray).a(a * 0.7f));
+        Lines.stroke(stroke, Tmp.c1.set(LCPal.gray).a(a * 0.7f));
         Lines.circle(x, y, rad);
         Lines.stroke(stroke * 0.6f, color);
         Draw.alpha(a * 0.2f);
@@ -1491,7 +1491,7 @@ public class LCDrawf {
         float y_fi = y - size * Vars.tilesize / 2f + mtp * Vars.tilesize / 2f;
 
         LCDraw.processZ(z, LCDraw.UI_REGION_Z_IND);
-        Draw.color(Color.gray, Lod.alpha2);
+        Draw.color(LCPal.gray, Lod.alpha2);
         Fill.square(x_fi, y_fi, mtp * 2.5f, 45f);
         Draw.color(color, Lod.alpha2);
         Fill.square(x_fi, y_fi, mtp * 1.5f, 45f);

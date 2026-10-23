@@ -884,7 +884,7 @@
                     .left()
                     .fontScale(0.85)
                     .style(Styles.outlineLabel)
-                    .color(Color.gray)
+                    .color(GLB_color.gray)
                     .row();
                     // Amount (bottom right)
                     tb3.add(str).left().fontScale(0.85).style(Styles.outlineLabel);

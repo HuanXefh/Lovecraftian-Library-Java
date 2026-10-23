@@ -952,7 +952,7 @@
                         MDL_table.br(tb2, 2);
                     };
                     if(this.tt != null) {
-                        tb2.add(this.tt.color(Color.gray)).left().labelAlign(Align.left).wrap().padLeft(28.0).padRight(28.0).padTop(14.0).padBottom(14.0).grow().row();
+                        tb2.add(this.tt.color(GLB_color.gray)).left().labelAlign(Align.left).wrap().padLeft(28.0).padRight(28.0).padTop(14.0).padBottom(14.0).grow().row();
                         MDL_table.br(tb2, 1);
                     };
                     if(this.hasBaseIo) {

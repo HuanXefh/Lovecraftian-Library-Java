@@ -160,7 +160,7 @@
             offY = hitSize * 0.5 + 4.0 + (offTy + 1.25) * Vars.tilesize;
 
         processZ(z);
-        Lines.stroke(5.0, Color.gray);
+        Lines.stroke(5.0, GLB_color.gray);
         Draw.alpha(a * 0.5);
         Lines.line(x - w * 0.5, y - offY, x + w * 0.5, y - offY);
         Lines.stroke(3.0, MDL_color.getColor(tryVal(color_gn, GLB_color.techBlue)));

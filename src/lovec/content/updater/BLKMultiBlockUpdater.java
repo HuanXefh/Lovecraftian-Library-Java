@@ -1,6 +1,5 @@
 package lovec.content.updater;
 
-import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.math.geom.Point2;
@@ -9,6 +8,7 @@ import arc.util.Nullable;
 import arc.util.Tmp;
 import lovec.content.LCBuildUpdater;
 import lovec.content.LCContentUpdater;
+import lovec.graphics.LCPal;
 import lovec.type.block.factory.MultiBlockLinkCenterBlockFrag;
 import lovec.type.block.factory.MultiBlockLinkCenterBuildFrag;
 import lovec.utils.LCVersionResolver;
@@ -254,7 +254,7 @@ public class BLKMultiBlockUpdater extends LCContentUpdater<Block> {
                     float x = t.worldx() + off;
                     float y = t.worldy() - off;
                     Draw.z(Layer.power + 1f);
-                    Draw.color(Color.gray);
+                    Draw.color(LCPal.gray);
                     Fill.square(x, y, 2.5f * mtp, 45f);
                     Draw.color(b.status().color);
                     Fill.square(x, y, 1.5f * mtp, 45f);
