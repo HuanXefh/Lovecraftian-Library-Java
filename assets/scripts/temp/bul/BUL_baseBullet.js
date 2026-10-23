@@ -105,6 +105,9 @@
         /* <------------------------------ vanilla ------------------------------> */
 
 
+        lifetime: 1.0,
+        speed: 1.0,
+        hitSize: 4.0,
         drawSize: -1.0,
         maxRange: -1.0,
         circleShooterRadiusSmooth: -1.0,
@@ -113,13 +116,48 @@
 
 
     })
+    .setParamAlias([
+        /**
+         * `ALIAS`: `healPercent`.
+         * @memberof BUL_baseBullet
+         * @instance
+         * @name healPerc
+         * @type {number}
+         */
+        "healPerc", "healPercent", 0.0,
+        /**
+         * `ALIAS`: `healAmount`.
+         * @memberof BUL_baseBullet
+         * @instance
+         * @name healAmt
+         * @type {number}
+         */
+        "healAmt", "healAmount", 0.0,
+        /**
+         * `ALIAS`: `circleShooterRadius`.
+         * @memberof BUL_baseBullet
+         * @instance
+         * @name circleShooterRad
+         * @type {number}
+         */
+        "circleShooterRad", "circleShooterRadius", 13.0,
+    ])
     .setParamParser([
         "drawSize", function(val) {
             // Calculate default draw size
             return val >= 0.0 ? val : (this.hitSize * 10.0);
         },
-        "collidesTeam", function(val) {
-            return this.healPercent > 0.0 || this.healAmount > 0.0;
+        "healPercent", function(val) {
+            if(val > 0.0) {
+                this.collidesTeam = true;
+            };
+            return val;
+        },
+        "healAmount", function(val) {
+            if(val > 0.0) {
+                this.collidesTeam = true;
+            };
+            return val;
         },
         "maxRange", function(val) {
             // Calculate max range automatically
@@ -140,11 +178,85 @@
     .setMethod({
 
 
+        init: function(bul) {
+            bul == null ?
+                this.self.ex_init() :
+                this.self.ex_initBul(bul);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
         hitEntity: function(bul, e, hp) {
             comp_hitEntity(this, bul, e, hp);
         }
         .setProp({
             noSuper: true,
+        }),
+
+
+        /**
+         * `this.init()`.
+         * @memberof BUL_baseBullet
+         * @instance
+         * @func
+         * @return {void}
+         */
+        ex_init: function() {
+
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        /**
+         * `this.init(bul)`.
+         * @memberof BUL_baseBullet
+         * @instance
+         * @func
+         * @param {Bullet} bul
+         * @return {void}
+         */
+        ex_initBul: function(bul) {
+
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * @memberof BUL_baseBullet
+         * @instance
+         * @func
+         * @param {Bullet} bul
+         * @return {number}
+         */
+        ex_getVisualX: function(bul) {
+            return bul.x;
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * @memberof BUL_baseBullet
+         * @instance
+         * @func
+         * @param {Bullet} bul
+         * @return {number}
+         */
+        ex_getVisualY: function(bul) {
+            return bul.y;
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
         }),
 
 

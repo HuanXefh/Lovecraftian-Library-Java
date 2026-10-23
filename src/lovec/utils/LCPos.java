@@ -6,6 +6,7 @@ import arc.func.Cons3;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
+import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.util.Nullable;
 import arc.util.Tmp;
@@ -89,6 +90,14 @@ public class LCPos {
      */
     public static float calcRectHW(float r, float size) {
         return (r + size * 0.5f) * Vars.tilesize;
+    };
+
+
+    /**
+     * Whether a position is near world origin.
+     */
+    public static boolean posAtWorldOrigin(Position posIns) {
+        return Mathf.equal(posIns.getX(), 0f, 0.5f) && Mathf.equal(posIns.getY(), 0f, 0.5f);
     };
 
 

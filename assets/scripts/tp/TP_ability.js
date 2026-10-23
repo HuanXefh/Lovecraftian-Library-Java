@@ -253,13 +253,13 @@
          * @return {void}
          */
         addStats(tb) {
-          addLovecStats(this, tb, tb => {
-            tb.add(MDL_text.getStat(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
-            tb.row();
-            tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-reloadtime"), Strings.autoFixed(this.chargeCap / 60.0 / this.chargeMtp, 2), StatUnit.seconds.localized()));
-            tb.row();
-            tb.add(MDL_text.getStat(Stat.range.localized(), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
-          });
+            addLovecStats(this, tb, tb => {
+                tb.add(MDL_text.getStat(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
+                tb.row();
+                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-reloadtime"), Strings.autoFixed(this.chargeCap / 60.0 / this.chargeMtp, 2), StatUnit.seconds.localized()));
+                tb.row();
+                tb.add(MDL_text.getStat(Stat.range.localized(), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
+            });
         },
 
 
@@ -268,8 +268,8 @@
          * @return {void}
          */
         death(unit) {
-          this.progMap.remove(unit.id, -1.0);
-          this.inCdMap.remove(unit.id);
+            this.progMap.remove(unit.id, -1.0);
+            this.inCdMap.remove(unit.id);
         },
 
 
@@ -290,8 +290,8 @@
             if(this.lastProg > 0.0 && !this.lastInCd) {
                 this.lastBul = LCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.rad);
                 if(this.lastBul != null) {
-                    this.lastProg = Mathf.maxZero(this.lastProg - Mathf.clamp((bul.damage + bul.type.splashDamage) / this.dmg, 0.25, 1.0) * this.dmg);
-                    MDL_effect.pointLaser(unit.x, unit.y, this.lastBul, GLB_color.remove, this.sound);
+                    this.lastProg = Mathf.maxZero(this.lastProg - Mathf.clamp((this.lastBul.damage + this.lastBul.type.splashDamage) / this.dmg, 0.25, 1.0) * this.dmg);
+                    MDL_effect.pointLaser(unit.x, unit.y, unit, this.lastBul, GLB_color.remove, this.sound);
                     MDL_call.damageBul(this.lastBul, this.dmg);
                 };
             };

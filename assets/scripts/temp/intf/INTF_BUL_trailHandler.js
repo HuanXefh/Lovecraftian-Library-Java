@@ -84,7 +84,7 @@
 
         removed: function(bul) {
             if(this.delegee.trailLen > 0 && bul.trail != null && bul.trail.size() > 0) {
-                Fx.trailFade.at(bul.x, bul.y, this.delegee.trailW, this.delegee.trailColor, bul.trail.copy());
+                Fx.trailFade.at(this.self.ex_getVisualX(bul), this.self.ex_getVisualY(bul), this.delegee.trailW, this.delegee.trailColor, bul.trail.copy());
             };
         },
 
@@ -113,7 +113,7 @@
                 };
                 bul.trail.length = this.delegee.trailLen;
                 bul.trail.update(
-                    bul.x, bul.y,
+                    this.self.ex_getVisualX(bul), this.self.ex_getVisualY(bul),
                     this.delegee.trailInterp.apply(this.self.ex_getTrailWScl(bul)) * (1.0 + (
                         this.delegee.trailSinMag > 0.0 ?
                             Mathf.absin(GLB_var.time, this.delegee.trailSinScl, this.delegee.trailSinMag) :

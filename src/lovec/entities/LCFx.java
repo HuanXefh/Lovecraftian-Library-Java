@@ -8,14 +8,18 @@ import arc.math.Angles;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.util.Nullable;
 import arc.util.Tmp;
 import lovec.graphics.LCDraw;
 import lovec.graphics.LCDrawf;
 import lovec.utils.LCPos;
 import lovec.utils.LCScript;
+import lovec.utils.LCScriptUtil;
 import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.gen.Building;
+import mindustry.gen.Bullet;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -181,22 +185,76 @@ public class LCFx {
         .layer(Layer.flyingUnitLow - 5f),
 
 
+
         pointLaserLine = new Effect(30f, 300f, eff -> {
-            Position e = (Position) eff.data;
+            NativeArray arr = (NativeArray) eff.data;
+            @Nullable Position e_f = (Position) arr.get(0);
+            Position e_t = (Position) arr.get(1);
+            Vec2 lastPos = (Vec2) arr.get(2);
+            boolean removed = (boolean) arr.get(3);
+            float x_f, y_f, x_t, y_t;
+            if(removed) {
+                x_t = lastPos.x;
+                y_t = lastPos.y;
+            } else {
+                if(e_t instanceof Bullet bul) {
+                    if(bul.isAdded() && !LCPos.posAtWorldOrigin(bul)) {
+                        x_t = LCScriptUtil.getBulX(bul);
+                        y_t = LCScriptUtil.getBulY(bul);
+                    } else {
+                        arr.put(3, arr, true);
+                        x_t = lastPos.x;
+                        y_t = lastPos.y;
+                    };
+                } else {
+                    x_t = e_t.getX();
+                    y_t = e_t.getY();
+                };
+                lastPos.set(x_t, y_t);
+            };
+            x_f = e_f == null ? eff.x : e_f.getX();
+            y_f = e_f == null ? eff.y : e_f.getY();
 
             Draw.color(eff.color, eff.fout());
             Lines.stroke(2f);
-            Lines.line(eff.x, eff.y, e.getX(), e.getY());
-            Drawf.light(eff.x, eff.y, e.getX(), e.getY(), 20f, eff.color, 0.65f * eff.fout());
+            Lines.line(x_f, y_f, x_t, y_t);
+            Drawf.light(x_f, y_f, x_t, y_t, 20f, eff.color, 0.65f * eff.fout());
             Draw.reset();
         }),
 
 
         pointLaserEnd = new Effect(30f, eff -> {
-            Position e = (Position) eff.data;
+            NativeArray arr = (NativeArray) eff.data;
+            @Nullable Position e = (Position) arr.get(0);
+            Vec2 lastPos = (Vec2) arr.get(1);
+            boolean removed = (boolean) arr.get(2);
+            float x, y;
+            if(removed) {
+                x = lastPos.x;
+                y = lastPos.y;
+            } else {
+                if(e == null) {
+                    x = eff.x;
+                    y = eff.y;
+                    arr.put(2, arr, true);
+                } else if (e instanceof Bullet bul) {
+                    if(bul.isAdded() && !LCPos.posAtWorldOrigin(bul)) {
+                        x = LCScriptUtil.getBulX(bul);
+                        y = LCScriptUtil.getBulY(bul);
+                    } else {
+                        arr.put(2, arr, true);
+                        x = lastPos.x;
+                        y = lastPos.y;
+                    };
+                } else {
+                    x = e.getX();
+                    y = e.getY();
+                };
+                lastPos.set(x, y);
+            };
 
             Draw.color(eff.color, eff.fout());
-            Fill.circle(e == null ? eff.x : e.getX(), e == null ? eff.y : e.getY(), 2f + eff.fout());
+            Fill.circle(x, y, 2f + eff.fout());
         }),
 
 

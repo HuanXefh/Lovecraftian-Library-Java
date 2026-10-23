@@ -235,6 +235,28 @@
 
 
     /**
+     * Gets visual x coordinate of a bullet.
+     * @param {Bullet} bul
+     * @return {number}
+     */
+    const getBulX = function(bul) {
+        return bul.type.ex_getVisualX == null ? bul.x : bul.type.self.ex_getVisualX(bul);
+    };
+    exports.getBulX = getBulX;
+
+
+    /**
+     * Gets visual y coordinate of a bullet.
+     * @param {Bullet} bul
+     * @return {number}
+     */
+    const getBulY = function(bul) {
+        return bul.type.ex_getVisualY == null ? bul.y : bul.type.self.ex_getVisualY(bul);
+    };
+    exports.getBulY = getBulY;
+
+
+    /**
      * Calculates bullet damage for damage display.
      * @param {Bullet} bul
      * @param {Building|Unit} e - The entity to hit.

@@ -4,6 +4,7 @@ import lovec.annotation.LCFromScript;
 import lovec.utils.extend.LCNativeArray;
 import mindustry.Vars;
 import mindustry.gen.Building;
+import mindustry.gen.Bullet;
 import mindustry.type.Liquid;
 import rhino.*;
 
@@ -222,6 +223,25 @@ public class LCScriptUtil {
      */
     public static boolean checkCond(String nameFun, Object... args) {
         return (boolean) LCScript.invoke(nameFun, MDL_cond, args);
+    };
+
+
+    /* <-------------------- MDL_prop --------------------> */
+
+
+    /**
+     * <code>MDL_prop.getBulX(bul)</code>.
+     */
+    public static float getBulX(Bullet bul) {
+        return LCScript.toFloat(LCScript.invoke("getBulX", MDL_prop, bul));
+    };
+
+
+    /**
+     * <code>MDL_prop.getBulY(bul)</code>.
+     */
+    public static float getBulY(Bullet bul) {
+        return LCScript.toFloat(LCScript.invoke("getBulY", MDL_prop, bul));
     };
 
 

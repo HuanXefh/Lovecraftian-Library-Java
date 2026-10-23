@@ -52,7 +52,9 @@
      * @return {void}
      */
     function comp_setStats(blk, stats) {
-        stats.add(Stat.damage, blk.delegee.bulDmg);
+        if(blk.delegee.bulDmg >= 0.0) {
+            stats.add(Stat.damage, blk.delegee.bulDmg);
+        };
     };
 
 
@@ -120,7 +122,7 @@
 
 
             /**
-             * `PARAM`: Damage dealt by the mass driver bolt.
+             * `PARAM`: Damage dealt by the mass driver bolt. Use negative value for vanilla behavior.
              * @memberof BLK_massDriver
              * @instance
              * @type {number}

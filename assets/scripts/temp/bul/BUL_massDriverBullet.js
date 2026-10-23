@@ -67,6 +67,13 @@
          * @instance
          * @type {number}
          */
+        offH: 4.0,
+        /**
+         * @inheritdoc
+         * @memberof BUL_massDriverBullet
+         * @instance
+         * @type {number}
+         */
         offSha: -14.0,
 
 
@@ -92,6 +99,25 @@
         }
         .setProp({
             noSuper: true,
+        }),
+
+
+        /**
+         * @override
+         * @memberof BUL_massDriverBullet
+         * @instance
+         * @func
+         * @param {Bullet} bul
+         * @return {void}
+         */
+        ex_initBul: function(bul) {
+            if(bul.shooter != null && bul.shooter instanceof MassDriver.MassDriverBuild && bul.shooter.block.delegee != null && bul.shooter.block.delegee.bulDmg >= 0.0) {
+                bul.damage = bul.shooter.block.delegee.bulDmg;
+            };
+        }
+        .setProp({
+            noSuper: true,
+            argLen: 1,
         }),
 
 

@@ -37,27 +37,36 @@
      * @return {void}
      */
     function comp_draw(btp, bul) {
-        if(btp.delegee.shouldDrawShadow && GLB_var.world.floorWorld(bul.x, bul.y) != null && GLB_var.world.floorWorld(bul.x, bul.y).canShadow) {
-            let
-                shrink = btp.shrinkInterp.apply(bul.fout()),
-                offSha = btp.delegee.offSha * btp.self.ex_calcShaH(bul);
+        let
+            bulHFrac = btp.self.ex_calcBulHFrac(bul),
+            shrink = btp.shrinkInterp.apply(bulHFrac),
+            w = btp.width * ((1.0 - btp.shrinkX) + btp.shrinkX * shrink),
+            h = btp.height * ((1.0 - btp.shrinkY) + btp.shrinkY * shrink),
+            ang = bul.rotation() - 90.0 + (btp.spin === 0.0 ? 0.0 : (Mathf.randomSeed(bul.id, 360.0) + bul.time * btp.spin)) + btp.rotationOffset,
+            offH = btp.delegee.offH * bulHFrac,
+            offSha = btp.delegee.offSha * bulHFrac,
+            x = bul.x,
+            y = bul.y + offH;
 
+        if(btp.delegee.shouldDrawShadow && GLB_var.world.floorWorld(bul.x, bul.y) != null && GLB_var.world.floorWorld(bul.x, bul.y).canShadow) {
             processZ(btp.delegee.shaZ);
             Draw.mixcol(GLB_color.shadow, 1.0);
             Draw.color(GLB_color.shadow.a);
-            Draw.rect(
-                btp.delegee.shaReg,
-                bul.x + offSha,
-                bul.y + offSha,
-                btp.width * ((1.0 - btp.shrinkX) + btp.shrinkX * shrink),
-                btp.height * ((1.0 - btp.shrinkY) + btp.shrinkY * shrink),
-                bul.rotation() - 90.0 + (btp.spin === 0.0 ? 0.0 : (Mathf.randomSeed(bul.id, 360.0) + bul.time * btp.spin)) + btp.rotationOffset,
-            );
+            Draw.rect(btp.delegee.shaReg, bul.x + offSha, bul.y + offSha, w, h, ang);
             Draw.reset();
             processZ();
         };
 
-        btp.super$draw(bul);
+        btp.drawParts(bul);
+        Tmp.c1.set(btp.mixColorFrom).lerp(btp.mixColorTo, 1.0 - bulHFrac);
+        Draw.mixcol(Tmp.c1, Tmp.c1.a);
+        if(btp.backRegion.found()) {
+            Draw.color(btp.backColor);
+            Draw.rect(btp.backRegion, x, y, w, h, ang);
+        };
+        Draw.color(btp.frontColor);
+        Draw.rect(btp.frontRegion, x, y, w, h, ang);
+        Draw.reset();
     };
 
 
@@ -83,6 +92,13 @@
     .setParam({
 
 
+        /**
+         * `PARAM`: Height offset.
+         * @memberof BUL_spriteBullet
+         * @instance
+         * @type {number}
+         */
+        offH: 0.0,
         /**
          * `PARAM`: Whether to draw shadow for this bullet.
          * @memberof BUL_spriteBullet
@@ -150,8 +166,8 @@
          * @param {Bullet} bul
          * @return {number}
          */
-        ex_getTrailWScl: function(bul) {
-            return this.self.ex_calcShaH(bul);
+        ex_getVisualY: function(bul) {
+            return bul.y + this.self.ex_calcBulHFrac(bul) * this.delegee.offH;;
         }
         .setProp({
             noSuper: true,
@@ -161,17 +177,35 @@
 
 
         /**
-         * Calculates height for shadow (normalized).
+         * @override
          * @memberof BUL_spriteBullet
          * @instance
          * @func
          * @param {Bullet} bul
          * @return {number}
          */
-        ex_calcShaH: function(bul) {
+        ex_getTrailWScl: function(bul) {
+            return this.self.ex_calcBulHFrac(bul);
+        }
+        .setProp({
+            noSuper: true,
+            override: true,
+            argLen: 1,
+        }),
+
+
+        /**
+         * Calculates bullet height fraction.
+         * @memberof BUL_spriteBullet
+         * @instance
+         * @func
+         * @param {Bullet} bul
+         * @return {number}
+         */
+        ex_calcBulHFrac: function(bul) {
             switch(this.delegee.flyingMode) {
                 case BulletFlyingModes.CONSTANT : return 1.0;
-                case BulletFlyingModes.BALLISTIC : return Interp.pow2Out.apply(1.0 - Math.abs(bul.fout() - 0.5) * 2.0);
+                case BulletFlyingModes.BALLISTIC : return 1.0 - Math.pow(bul.fin() * 2.0 - 1.0, 2);
                 case BulletFlyingModes.DROP : return bul.fout();
                 case BulletFlyingModes.LIFT : return bul.fin();
             };

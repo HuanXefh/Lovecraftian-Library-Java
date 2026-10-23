@@ -526,17 +526,18 @@
      * Point laser effect.
      * @param {number} x
      * @param {number} y
-     * @param {Posc|null} e
+     * @param {Posc|null} e_f
+     * @param {Posc|null} e_t
      * @param {Color|unset} [color]
      * @param {SoundGn|unset} [se_gn]
      * @return {void}
      */
-    const pointLaser = function(x, y, e, color, se_gn) {
-        if(e == null) return;
+    const pointLaser = function(x, y, e_f, e_t, color, se_gn) {
+        if(e_t == null) return;
         if(color == null) color = GLB_color.remove;
-        showAt(x, y, LCFx.pointLaserLine, 0.0, color, e);
-        showAt(x, y, LCFx.pointLaserEnd, 0.0, color, e);
-        showAt(x, y, LCFx.pointLaserEnd, 0.0, color);
+        showAt(x, y, LCFx.pointLaserLine, 0.0, color, [e_f, e_t, new Vec2(), false]);
+        showAt(x, y, LCFx.pointLaserEnd, 0.0, color, [e_t, new Vec2(), false]);
+        showAt(x, y, LCFx.pointLaserEnd, 0.0, color, [e_f, new Vec2(), false]);
         if(se_gn != null) {
             MDL_sound.playAt(x, y, se_gn, 1.0, 1.0, 0.05);
         };
