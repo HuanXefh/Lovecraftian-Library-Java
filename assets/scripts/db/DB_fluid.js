@@ -105,6 +105,10 @@ const db = {
 
 
             /** @type {Array<LiquidGn>} */
+            ammoniacal: [],
+
+
+            /** @type {Array<LiquidGn>} */
             chloric: [],
 
 

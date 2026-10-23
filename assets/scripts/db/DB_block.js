@@ -115,13 +115,22 @@ const db = {
             steel: [],
 
 
-            galvanized: [],
-
-
             stainless: [],
 
 
+            brineProof: [],
+
+
+            acidProof: [],
+
+
+            galvanized: [],
+
+
             glass: [],
+
+
+            aluminum: [],
 
 
             cement: [],
