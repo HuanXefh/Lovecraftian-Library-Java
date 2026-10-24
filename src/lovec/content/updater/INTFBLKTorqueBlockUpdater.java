@@ -17,6 +17,10 @@ import java.lang.reflect.InvocationTargetException;
 public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
 
 
+    private static final float torTransLoss = 0.0004f;
+    private static final float torSupplyInc = 0.0001f;
+    private static final float rpmSupplyInc = 0.0001f;
+
     protected boolean skipTorFetch;
     protected boolean skipTorSupply;
 
@@ -77,6 +81,19 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
             int i;
             long iCap;
 
+            // Transport torque
+            i = 0;
+            iCap = torTransTargets.getLength();
+            while(i < iCap) {
+                ob = (Building) torTransTargets.get(i);
+                if((boolean) invoke("ex_checkTorTransValid", ob)) {
+                    amtTransTarget = (LCScript.toFloat(get(ob, "torCur")) + torCur) / 2f - torTransLoss * Time.delta;
+                    set(ob, "torCur", amtTransTarget);
+                    torCur = amtTransTarget;
+                };
+                i++;
+            };
+
             // Update current torque
             if(!skipTorFetch) {
                 i = 0;
@@ -96,22 +113,10 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
                     i += 2;
                 };
             };
+
             if(torCap >= 0f) {
                 // Cap torque by transported RPM
                 torCur = Mathf.clamp(torCur + rateAddNet * Time.delta, 0f, torCap);
-            };
-
-            // Transport torque
-            i = 0;
-            iCap = torTransTargets.getLength();
-            while(i < iCap) {
-                ob = (Building) torTransTargets.get(i);
-                if((boolean) invoke("ex_checkTorTransValid", ob)) {
-                    amtTransTarget = (LCScript.toFloat(get(ob, "torCur")) + torCur) / 2f;
-                    set(ob, "torCur", amtTransTarget);
-                    torCur = amtTransTarget;
-                };
-                i++;
             };
 
             // Update current RPM
@@ -140,8 +145,8 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
             long iCap = torSupplyTargets.getLength();
             while(i < iCap) {
                 ob = (Building) torSupplyTargets.get(i);
-                torRate = Math.min(LCScript.toFloat(torSupplyTargets.get(i + 1)), torCur) + 0.0001f;
-                rpmRate = rpmCur / 60f + 0.0001f;
+                torRate = Math.min(LCScript.toFloat(torSupplyTargets.get(i + 1)), torCur) + torSupplyInc;
+                rpmRate = rpmCur / 60f + rpmSupplyInc;
                 if(ob.acceptLiquid(b, LCScriptUtil.auxTor)) {
                     ob.handleLiquid(b, LCScriptUtil.auxTor, torRate * b.edelta());
                 };
