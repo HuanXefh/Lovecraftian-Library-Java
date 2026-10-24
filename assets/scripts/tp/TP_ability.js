@@ -28,7 +28,7 @@
      * @return {void}
      */
     const addLovecStats = function(abi, tb, tableM) {
-        tb.add("\n\n[gray]" + Core.bundle.get("ability.lovec-abi-" + abi.name + ".description") + "[]\n\n").wrap().width(350.0);
+        tb.add("\n\n[gray]" + Core.bundle.get("ability.lovec-abi-" + abi.delegee.name + ".description") + "[]\n\n").wrap().width(350.0);
         tb.row();
         tableM(tb);
     };
@@ -41,7 +41,7 @@
      * @return {string}
      */
     const getLocalizedName = function(abi, nameMod) {
-        return Vars.headless ? "" : Core.bundle.get("ability." + tryVal(nameMod, "lovec") + "-abi-" + abi.name + ".name");
+        return Vars.headless ? "" : Core.bundle.get("ability." + tryVal(nameMod, "lovec") + "-abi-" + abi.delegee.name + ".name");
     };
     exports.getLocalizedName = getLocalizedName;
 
@@ -76,12 +76,12 @@
          */
         addStats(tb) {
             addLovecStats(this, tb, tb => {
-                tb.add(MDL_text.getStat(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
+                tb.add(MDL_text.getStat(Stat.damage.localized(), Strings.autoFixed(this.delegee.dmg, 2)));
                 tb.row();
-                tb.add(MDL_text.getStat(Stat.range.localized(), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
+                tb.add(MDL_text.getStat(Stat.range.localized(), Strings.autoFixed(this.delegee.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
                 tb.row();
-                if(this.sta !== StatusEffects.none) {
-                    tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-status"), this.sta.localizedName));
+                if(this.delegee.sta !== StatusEffects.none) {
+                    tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-status"), this.delegee.sta.localizedName));
                 };
             });
         },
@@ -92,14 +92,14 @@
          * @return {void}
          */
         death(unit) {
-            Damage.damage(unit.team, unit.x, unit.y, this.rad, this.dmg);
-            LCEntity.eachUnit(unit.x, unit.y, unit.team, this.rad, null, ounit => {
-                ounit.apply(this.sta, this.staDur);
+            Damage.damage(unit.team, unit.x, unit.y, this.delegee.rad, this.delegee.dmg);
+            LCEntity.eachUnit(unit.x, unit.y, unit.team, this.delegee.rad, null, ounit => {
+                ounit.apply(this.delegee.sta, this.delegee.staDur);
             });
 
-            MDL_effect.showAt(unit.x, unit.y, this.rad < 16.0 ? GLB_eff.explosionSmall : GLB_eff.explosion, 0.0);
-            MDL_effect.shake(unit.x, unit.y, this.dmg / 160.0);
-            MDL_sound.playAt(unit.x, unit.y, this.sound, 1.0, 1.0, 0.1);
+            MDL_effect.showAt(unit.x, unit.y, this.delegee.rad < 16.0 ? GLB_eff.explosionSmall : GLB_eff.explosion, 0.0);
+            MDL_effect.shake(unit.x, unit.y, this.delegee.dmg / 160.0);
+            MDL_sound.playAt(unit.x, unit.y, this.delegee.sound, 1.0, 1.0, 0.1);
         },
 
 
@@ -146,7 +146,7 @@
          */
         init(utp) {
             BOX_trigger.abilityDataInit.addGlobalListener(() => {
-                this.timerMap.clear();
+                this.delegee.timerMap.clear();
             });
         },
 
@@ -157,9 +157,9 @@
          */
         addStats(tb) {
             addLovecStats(this, tb, tb => {
-                tb.add(MDL_text.getStat(Stat.shieldHealth.localized(), Strings.autoFixed(this.maxShield, 2)));
+                tb.add(MDL_text.getStat(Stat.shieldHealth.localized(), Strings.autoFixed(this.delegee.maxShield, 2)));
                 tb.row();
-                tb.add(MDL_text.getStat(Stat.repairSpeed.localized(), Strings.autoFixed(this.regenAmt / this.regenIntv * 60.0, 2), StatUnit.perSecond.localized()));
+                tb.add(MDL_text.getStat(Stat.repairSpeed.localized(), Strings.autoFixed(this.delegee.regenAmt / this.delegee.regenIntv * 60.0, 2), StatUnit.perSecond.localized()));
             });
         },
 
@@ -169,7 +169,7 @@
          * @return {void}
          */
         death(unit) {
-            this.timerMap.remove(unit.id);
+            this.delegee.timerMap.remove(unit.id);
         },
 
 
@@ -178,15 +178,15 @@
          * @return {void}
          */
         update(unit) {
-            if(unit.shield >= this.maxShield) return;
-            this.lastTimer = this.timerMap.get(unit.id);
-            if(this.lastTimer == null) {
-                this.lastTimer = new Interval(1);
-                this.timerMap.put(unit.id, this.lastTimer);
+            if(unit.shield >= this.delegee.maxShield) return;
+            this.delegee.lastTimer = this.delegee.timerMap.get(unit.id);
+            if(this.delegee.lastTimer == null) {
+                this.delegee.lastTimer = new Interval(1);
+                this.delegee.timerMap.put(unit.id, this.delegee.lastTimer);
             };
-            if(!this.lastTimer.get(this.regenIntv)) return;
+            if(!this.delegee.lastTimer.get(this.delegee.regenIntv)) return;
 
-            unit.shield = Math.min(unit.shield + this.regenAmt, this.maxShield);
+            unit.shield = Math.min(unit.shield + this.delegee.regenAmt, this.delegee.maxShield);
             unit.shieldAlpha = 1.0;
         },
 
@@ -242,8 +242,8 @@
          */
         init(utp) {
             BOX_trigger.abilityDataInit.addGlobalListener(() => {
-                this.progMap.clear();
-                this.inCdMap.clear();
+                this.delegee.progMap.clear();
+                this.delegee.inCdMap.clear();
             });
         },
 
@@ -254,11 +254,11 @@
          */
         addStats(tb) {
             addLovecStats(this, tb, tb => {
-                tb.add(MDL_text.getStat(Stat.damage.localized(), Strings.autoFixed(this.dmg, 2)));
+                tb.add(MDL_text.getStat(Stat.damage.localized(), Strings.autoFixed(this.delegee.dmg, 2)));
                 tb.row();
-                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-reloadtime"), Strings.autoFixed(this.chargeCap / 60.0 / this.chargeMtp, 2), StatUnit.seconds.localized()));
+                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-reloadtime"), Strings.autoFixed(this.delegee.chargeCap / 60.0 / this.delegee.chargeMtp, 2), StatUnit.seconds.localized()));
                 tb.row();
-                tb.add(MDL_text.getStat(Stat.range.localized(), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
+                tb.add(MDL_text.getStat(Stat.range.localized(), Strings.autoFixed(this.delegee.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
             });
         },
 
@@ -268,8 +268,8 @@
          * @return {void}
          */
         death(unit) {
-            this.progMap.remove(unit.id, -1.0);
-            this.inCdMap.remove(unit.id);
+            this.delegee.progMap.remove(unit.id, -1.0);
+            this.delegee.inCdMap.remove(unit.id);
         },
 
 
@@ -279,31 +279,31 @@
          */
         update(unit) {
             if(!syncChanceDelta("ability", 0.2)) return;
-            this.lastProg = this.progMap.get(unit.id, -1.0);
-            if(this.lastProg < 0.0) {
-                this.lastProg = this.chargeCap;
-                this.progMap.put(unit.id, this.chargeCap);
+            this.delegee.lastProg = this.delegee.progMap.get(unit.id, -1.0);
+            if(this.delegee.lastProg < 0.0) {
+                this.delegee.lastProg = this.delegee.chargeCap;
+                this.delegee.progMap.put(unit.id, this.delegee.chargeCap);
             };
-            this.lastInCd = this.inCdMap.get(unit.id, false);
+            this.delegee.lastInCd = this.delegee.inCdMap.get(unit.id, false);
 
-            this.lastProg = Math.min(this.lastProg + Time.delta * 5.0 * this.chargeMtp * LCProp.getReloadMultiplier(unit), this.chargeCap);
-            if(this.lastProg > 0.0 && !this.lastInCd) {
-                this.lastBul = LCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.rad);
-                if(this.lastBul != null) {
-                    this.lastProg = Mathf.maxZero(this.lastProg - Mathf.clamp((this.lastBul.damage + this.lastBul.type.splashDamage) / this.dmg, 0.25, 1.0) * this.dmg);
-                    MDL_effect.pointLaser(unit.x, unit.y, unit, this.lastBul, GLB_color.remove, this.sound);
-                    MDL_call.damageBul(this.lastBul, this.dmg);
+            this.delegee.lastProg = Math.min(this.delegee.lastProg + Time.delta * 5.0 * this.delegee.chargeMtp * LCProp.getReloadMultiplier(unit), this.delegee.chargeCap);
+            if(this.delegee.lastProg > 0.0 && !this.delegee.lastInCd) {
+                this.delegee.lastBul = LCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.delegee.rad);
+                if(this.delegee.lastBul != null) {
+                    this.delegee.lastProg = Mathf.maxZero(this.delegee.lastProg - Mathf.clamp((this.delegee.lastBul.damage + this.delegee.lastBul.type.splashDamage) / this.delegee.dmg, 0.25, 1.0) * this.delegee.dmg);
+                    MDL_effect.pointLaser(unit.x, unit.y, unit, this.delegee.lastBul, GLB_color.remove, this.delegee.sound);
+                    MDL_call.damageBul(this.delegee.lastBul, this.delegee.dmg);
                 };
             };
-            if(this.lastProg < 0.0001) {
-                this.lastInCd = true;
-                this.inCdMap.put(unit.id, this.lastInCd);
+            if(this.delegee.lastProg < 0.0001) {
+                this.delegee.lastInCd = true;
+                this.delegee.inCdMap.put(unit.id, this.delegee.lastInCd);
             };
-            if(this.lastProg > this.chargeCap - 0.0001 && this.lastInCd) {
-                this.lastInCd = false;
-                this.inCdMap.put(unit.id, this.lastInCd);
+            if(this.delegee.lastProg > this.delegee.chargeCap - 0.0001 && this.delegee.lastInCd) {
+                this.delegee.lastInCd = false;
+                this.delegee.inCdMap.put(unit.id, this.delegee.lastInCd);
             };
-            this.progMap.put(unit.id, this.lastProg);
+            this.delegee.progMap.put(unit.id, this.delegee.lastProg);
         },
 
 
@@ -316,8 +316,8 @@
 
             MDL_draw.unitReload(
                 unit, null,
-                this.inCdMap.get(unit.id, false) ? Color.white : GLB_color.remove, 1.0, 0.0, 1,
-                this.progMap.get(unit.id, 0.0) / this.chargeCap,
+                this.delegee.inCdMap.get(unit.id, false) ? Color.white : GLB_color.remove, 1.0, 0.0, 1,
+                this.delegee.progMap.get(unit.id, 0.0) / this.delegee.chargeCap,
             );
         },
 
@@ -368,7 +368,7 @@
          */
         init(utp) {
             BOX_trigger.abilityDataInit.addGlobalListener(() => {
-                this.timerMap.clear();
+                this.delegee.timerMap.clear();
             });
         },
 
@@ -379,11 +379,11 @@
          */
         addStats(tb) {
             addLovecStats(this, tb, tb => {
-                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairamt"), MDL_text.getHealText(this.healAmt, this.healPerc)));
+                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairamt"), MDL_text.getHealText(this.delegee.healAmt, this.delegee.healPerc)));
                 tb.row();
-                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairintv"), Strings.autoFixed(this.intv / 60.0, 2), StatUnit.seconds.localized()));
+                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairintv"), Strings.autoFixed(this.delegee.intv / 60.0, 2), StatUnit.seconds.localized()));
                 tb.row();
-                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairr"), Strings.autoFixed(this.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
+                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0misc-repairr"), Strings.autoFixed(this.delegee.rad / Vars.tilesize, 2), StatUnit.blocks.localized()));
             });
         },
 
@@ -393,7 +393,7 @@
          * @return {void}
          */
         death(unit) {
-            this.timerMap.remove(unit.id);
+            this.delegee.timerMap.remove(unit.id);
         },
 
 
@@ -402,17 +402,17 @@
          * @return {void}
          */
         update(unit) {
-            this.lastTimer = this.timerMap.get(unit.id);
-            if(this.lastTimer == null) {
-                this.lastTimer = new Interval(1);
-                this.timerMap.put(unit.id, this.lastTimer);
+            this.delegee.lastTimer = this.delegee.timerMap.get(unit.id);
+            if(this.delegee.lastTimer == null) {
+                this.delegee.lastTimer = new Interval(1);
+                this.delegee.timerMap.put(unit.id, this.delegee.lastTimer);
             };
-            if(!this.lastTimer.get(this.intv)) return;
-            this.lastB = LCEntity.getBuildBy(unit.x, unit.y, unit.team, this.rad, b => MDL_cond.canHeal(b));
-            if(this.lastB == null) return;
+            if(!this.delegee.lastTimer.get(this.delegee.intv)) return;
+            this.delegee.lastB = LCEntity.getBuildBy(unit.x, unit.y, unit.team, this.delegee.rad, b => MDL_cond.canHeal(b));
+            if(this.delegee.lastB == null) return;
 
-            FRAG_attack.heal(this.lastB, this.lastB.maxHealth * this.healPerc + this.healAmt);
-            MDL_effect.laser(unit.x, unit.y, unit, this.lastB, GLB_color.heal, this.strokeScl);
+            FRAG_attack.heal(this.delegee.lastB, this.delegee.lastB.maxHealth * this.delegee.healPerc + this.delegee.healAmt);
+            MDL_effect.laser(unit.x, unit.y, unit, this.delegee.lastB, GLB_color.heal, this.delegee.strokeScl);
         },
 
 
@@ -451,7 +451,7 @@
          */
         addStats(tb) {
             addLovecStats(this, tb, tb => {
-                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0fac-durabtime"), Strings.autoFixed(this.durabCap / 60.0, 2), StatUnit.seconds.localized()));
+                tb.add(MDL_text.getStat(Core.bundle.get("stat.lovec-stat-blk0fac-durabtime"), Strings.autoFixed(this.delegee.durabCap / 60.0, 2), StatUnit.seconds.localized()));
             });
         },
 
@@ -463,9 +463,9 @@
          */
         displayBars(unit, tb) {
             tb.add(new Bar(
-                prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", (1.0 - Mathf.clamp(tryJsProp(unit, "unitDurabUsed", 0.0) / this.durabCap)).perc())),
+                prov(() => Core.bundle.format("bar.lovec-bar-durability-amt", (1.0 - Mathf.clamp(tryJsProp(unit, "unitDurabUsed", 0.0) / this.delegee.durabCap)).perc())),
                 prov(() => GLB_color.sap),
-                () => 1.0 - Mathf.clamp(tryJsProp(unit, "unitDurabUsed", 0.0) / this.durabCap),
+                () => 1.0 - Mathf.clamp(tryJsProp(unit, "unitDurabUsed", 0.0) / this.delegee.durabCap),
             ));
         },
 

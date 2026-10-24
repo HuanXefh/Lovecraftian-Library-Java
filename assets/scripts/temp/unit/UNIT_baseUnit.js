@@ -131,7 +131,7 @@
      * @return {void}
      */
     function comp_draw(utp, unit) {
-        if(utp.delegee.drawShields && (utp.delegee.baseShieldA > 0.0 || unit.shieldAlpha > 0.0) && unit.shield > 0.0) {
+        if(utp.drawShields && (utp.delegee.baseShieldA > 0.0 || unit.shieldAlpha > 0.0) && unit.shield > 0.0) {
             utp.self.ex_drawShield(unit);
         };
     };

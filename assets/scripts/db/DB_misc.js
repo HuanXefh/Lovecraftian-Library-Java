@@ -371,6 +371,38 @@ const db = {
                     },
                 },
 
+                "lovec-player-team-change", {
+                    rowInd: 2,
+                    icon: "lovec-icon-flag",
+                    clickScr: function() {
+                        if(!global.lovecUtil.fun.checkSandbox()) {
+                            MDL_ui.showFadeInfo("lovec", "sandbox-only");
+                            return;
+                        };
+                        fetchDialog("teamChange").self.ex_show();
+                    },
+                },
+
+                "lovec-player-cheat-production", {
+                    rowInd: 2,
+                    icon: "lovec-icon-infinity",
+                    isToggle: true,
+                    updateScr: function() {
+                        if(!Vars.state.isGame()) {
+                            this.setChecked(false);
+                            return;
+                        };
+                        this.setChecked(Vars.state.rules.teams.get(Vars.player.team()).cheat);
+                    },
+                    clickScr: function() {
+                        if(!global.lovecUtil.fun.checkSandbox()) {
+                            MDL_ui.showFadeInfo("lovec", "sandbox-only");
+                            return;
+                        };
+                        Vars.state.rules.teams.get(Vars.player.team()).cheat = !Vars.state.rules.teams.get(Vars.player.team()).cheat;
+                    },
+                },
+
             ],
 
 

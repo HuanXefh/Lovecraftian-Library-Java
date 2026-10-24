@@ -701,23 +701,6 @@
 
 
         /**
-         * Toggles cheat production.
-         * @global
-         * @return {void}
-         */
-        __inf = function() {
-            if(!__checkCheatState__()) return;
-            let unit = Vars.player.unit();
-            if(unit == null) return;
-            Vars.state.rules.teams.get(unit.team).cheat = !Vars.state.rules.teams.get(unit.team).cheat;
-            MDL_event.onDelayRun(2.0, () => {
-                console.log("[LOVEC] Cheat production: " + (Vars.state.rules.teams.get(unit.team).cheat ? "ON" : "OFF").color(GLB_color.accent));
-            });
-        }
-        .setAnno("console");
-
-
-        /**
          * Toggles player invincibility.
          * @global
          * @return {void}

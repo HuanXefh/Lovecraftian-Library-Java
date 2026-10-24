@@ -97,7 +97,7 @@ public class LCPos {
      * Whether a position is near world origin.
      */
     public static boolean posAtWorldOrigin(Position posIns) {
-        return Mathf.equal(posIns.getX(), 0f, 0.5f) && Mathf.equal(posIns.getY(), 0f, 0.5f);
+        return Mathf.equal(posIns.getX(), 0f, 4f) && Mathf.equal(posIns.getY(), 0f, 4f);
     };
 
 

@@ -1102,3 +1102,58 @@
     });
     newDialog("rcDict", rcDict);
     exports.rcDict = rcDict;
+
+
+    /* <------------------------------ debug ------------------------------> */
+
+
+    /**
+     * A dialog for team change.
+     * @type {F0Function<BaseDialog>}
+     */
+    const teamChange = () => extend(BaseDialog, MDL_bundle.getInfo("lovec", "dial-team-change"), {
+
+
+        /**
+         * @return {void}
+         */
+        ex_show() {
+            resetDial(this);
+
+            // `TABLE`: info
+            MDL_table.br(this.cont);
+            MDL_table.setNote(this.cont, MDL_bundle.getInfo("lovec", "dial-team-change", true));
+
+            // `TABLE`: bar
+            MDL_table.br(this.cont);
+            MDL_table.bar(this.cont, {w: MDL_ui.getUiW()});
+
+            // `TABLE`: content
+            MDL_table.br(this.cont);
+            this.cont.pane(pnTb => {
+                MDL_table.margin(pnTb);
+                GLB_varGen.mainTeams.forEachFast(team => {
+                    pnTb.button(team.coloredName(), () => {
+                        Vars.player.team(team);
+                        this.hide();
+                    })
+                    .center()
+                    .size(300.0, 50.0)
+                    .row();
+                    MDL_table.br(pnTb, 1);
+                }, true);
+            })
+            .width(MDL_ui.getUiW())
+            .row();
+
+            // `TABLE`: buttons
+            MDL_table.br(this.cont);
+            MDL_table.btnClose(this.buttons, this);
+
+            this.show();
+        },
+
+
+    });
+    newDialog("teamChange", teamChange);
+    exports.teamChange = teamChange;

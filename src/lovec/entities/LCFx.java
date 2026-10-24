@@ -212,6 +212,7 @@ public class LCFx {
                 };
                 lastPos.set(x_t, y_t);
             };
+            if(LCPos.posAtWorldOrigin(lastPos)) return;
             x_f = e_f == null ? eff.x : e_f.getX();
             y_f = e_f == null ? eff.y : e_f.getY();
 
@@ -252,6 +253,7 @@ public class LCFx {
                 };
                 lastPos.set(x, y);
             };
+            if(LCPos.posAtWorldOrigin(lastPos)) return;
 
             Draw.color(eff.color, eff.fout());
             Fill.circle(x, y, 2f + eff.fout());
