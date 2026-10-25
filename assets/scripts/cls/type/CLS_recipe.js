@@ -1138,7 +1138,7 @@
                     thisFun.addStat(
                         tb3, true,
                         MDL_bundle.getTerm("lovec", "time-required"),
-                        Strings.fixed(this.rcTimeScl, 1) + "x (" + (this.owner.craftTime * this.rcTimeScl).time(2) + ")",
+                        "${1} (${2}x)".format((this.owner.craftTime * this.rcTimeScl).time(2), Strings.fixed(this.rcTimeScl, 1)).color(this.rcTimeScl > 1.0 ? GLB_color.remove : this.rcTimeScl < 1.0 ? GLB_color.heal : Color.white),
                     );
                     if(this.lockedByCts.length > 0) {
                         tb3.table(Styles.none, tb4 => {

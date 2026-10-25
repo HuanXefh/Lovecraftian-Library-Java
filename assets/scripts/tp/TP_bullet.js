@@ -18,4 +18,5 @@
 */
 
 
+    newBulletTemplate("SpriteBullet", () => require("lovec/temp/bul/BUL_spriteBullet"));
     newBulletTemplate("MassDriverBullet", () => require("lovec/temp/bul/BUL_massDriverBullet"));

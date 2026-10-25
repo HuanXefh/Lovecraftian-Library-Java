@@ -809,6 +809,9 @@
                         if(parent == null) {
                             console.warn("[LOVEC] Node ${1} is required by ${2}, but not added to any tech tree!".format(name.color(GLB_color.remove), ct.name.color(GLB_color.accent)));
                         } else {
+                            if(name === ct.name) {
+                                console.warn("[LOVEC] Node ${1} is required by itself!".format(name.color(GLB_color.accent)));
+                            };
                             if(!parent.children.contains(node)) {
                                 parent.children.add(node);
                             };
