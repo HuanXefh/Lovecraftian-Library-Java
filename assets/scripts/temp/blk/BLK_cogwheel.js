@@ -69,16 +69,6 @@
     /**
      * @private
      * @param {BCogwheel} b
-     * @return {void}
-     */
-    function comp_created(b) {
-        b.delegee.cogwheelBuildUpdater = new BCogwheelUpdater(b.block.delegee.cogwheelUpdater, b);
-    };
-
-
-    /**
-     * @private
-     * @param {BCogwheel} b
      * @param {Unit} unit
      * @return {void}
      */
@@ -112,6 +102,18 @@
      */
     function comp_draw(b) {
         b.self.ex_drawCog();
+    };
+
+
+    /**
+     * @private
+     * @param {BCogwheel} b
+     * @param {BLKCogwheel} blk
+     * @param {Team} team
+     * @return {void}
+     */
+    function comp_ex_justCreated(b, blk, team) {
+        b.delegee.cogwheelBuildUpdater = new BCogwheelUpdater(blk.delegee.cogwheelUpdater, b);
     };
 
 
@@ -318,11 +320,6 @@
         .setMethod({
 
 
-            created: function() {
-                comp_created(this);
-            },
-
-
             unitOn: function(unit) {
                 comp_unitOn(this, unit);
             },
@@ -365,6 +362,25 @@
             }
             .setProp({
                 noSuper: true,
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_cogwheel
+             * @instance
+             * @func
+             * @param {BLKCogwheel} blk
+             * @param {Team} team
+             * @return {void}
+             */
+            ex_justCreated: function(blk, team) {
+                comp_ex_justCreated(this, blk, team);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
             }),
 
 

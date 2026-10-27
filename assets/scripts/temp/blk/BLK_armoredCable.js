@@ -38,16 +38,6 @@
     /**
      * @private
      * @param {BArmoredCable} b
-     * @return {void}
-     */
-    function comp_created(b) {
-        b.delegee.armoredCableBuildUpdater = new BArmoredCableUpdater(b.block.delegee.armoredCableUpdater, b);
-    };
-
-
-    /**
-     * @private
-     * @param {BArmoredCable} b
      * @param {Building} ob
      * @return {boolean}
      */
@@ -55,6 +45,18 @@
         return !MDL_cond.isArmoredCable(ob.block) ?
             (b.front() === ob || b.back() === ob) :
             (b.front() === ob || ob.front() === b);
+    };
+
+
+    /**
+     * @private
+     * @param {BArmoredCable} b
+     * @param {BLKArmoredCable} blk
+     * @param {Team} team
+     * @return {void}
+     */
+    function comp_ex_justCreated(b, blk, team) {
+        b.delegee.armoredCableBuildUpdater = new BArmoredCableUpdater(blk.delegee.armoredCableUpdater, b);
     };
 
 
@@ -156,16 +158,30 @@
         .setMethod({
 
 
-            created: function() {
-                comp_created(this);
-            },
-
-
             conductsTo: function(ob) {
                 return comp_conductsTo(this, ob);
             }
             .setProp({
                 boolMode: "and",
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_armoredCable
+             * @instance
+             * @func
+             * @param {BLKArmoredCable} blk
+             * @param {Team} team
+             * @return {void}
+             */
+            ex_justCreated: function(blk, team) {
+                comp_ex_justCreated(this, blk, team);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
             }),
 
 

@@ -46,11 +46,8 @@ public class BLKMultiBlockUpdater extends LCContentUpdater<Block> {
     };
 
 
-
-    /**
-     * For v8 compatibility, do not call this method in Java classes.
-     */
     @FragMethod(superMode = "after")
+    @MutatedMethod
     public void setStats(Stats stats) {
         if(target instanceof MultiBlockLinkCenterBlockFrag mblk) {
             stats.remove(Stat.size);
@@ -71,8 +68,8 @@ public class BLKMultiBlockUpdater extends LCContentUpdater<Block> {
     public void changePlacementPath(Seq<Point2> ponSeq, int rot) {
         if(target instanceof MultiBlockLinkCenterBlockFrag mblk) {
             Placement.calculateNodes(ponSeq, target, rot, (pon, opon) -> rot % 2 == 0 ?
-                    Math.abs(pon.x - opon.x) <= mblk.getMultiBlockSizes()[0] :
-                    Math.abs(pon.y - opon.y) <= mblk.getMultiBlockSizes()[0]
+                Math.abs(pon.x - opon.x) <= mblk.getMultiBlockSizes()[0] :
+                Math.abs(pon.y - opon.y) <= mblk.getMultiBlockSizes()[0]
             );
         };
     };

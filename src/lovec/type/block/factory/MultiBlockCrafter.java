@@ -134,6 +134,7 @@ public class MultiBlockCrafter extends GenericCrafter implements MultiBlockLinkC
         public void created() {
             super.created();
             try {
+                // It's fine to set up updater here since multi-block structure is not allowed in payloads
                 multiBlockBuildUpdater = multiBlockUpdater.new BMultiBlockUpdater(this);
             } catch(Exception err) {
                 throw new RuntimeException(err);

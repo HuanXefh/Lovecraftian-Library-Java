@@ -117,4 +117,16 @@ public abstract class LCContentUpdater<T> {
     };
 
 
+    /**
+     * Arguments of this method do not always match those of the original method.
+     * <br> For example, <code>setStats()</code> has been replaced with <code>setStats(Stats stats)</code> in v9.
+     * <br> Mutated methods should be carefully handled in content templates (JavaScript environment) instead, do not call them from Java classes!
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.METHOD)
+    public @interface MutatedMethod {
+
+    };
+
+
 };

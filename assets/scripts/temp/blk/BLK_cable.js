@@ -69,16 +69,6 @@
      * @param {BCable} b
      * @return {void}
      */
-    function comp_created(b) {
-        b.delegee.cableBuildUpdater = new BCableUpdater(b.block.delegee.cableUpdater, b);
-    };
-
-
-    /**
-     * @private
-     * @param {BCable} b
-     * @return {void}
-     */
     function comp_updateTile(b) {
         b.self.ex_updateGraph();
     };
@@ -99,6 +89,18 @@
             FRAG_attack.lightning_global(b.x, b.y, null, null, null, 6, 4, null, "ground");
             BOX_trigger.wetStepOnCable.fire();
         };
+    };
+
+
+    /**
+     * @private
+     * @param {BCable} b
+     * @param {BLKCable} blk
+     * @param {Team} team
+     * @return {void}
+     */
+    function comp_ex_justCreated(b, blk, team) {
+        b.delegee.cableBuildUpdater = new BCableUpdater(blk.delegee.cableUpdater, b);
     };
 
 
@@ -250,11 +252,6 @@
         .setMethod({
 
 
-            created: function() {
-                comp_created(this);
-            },
-
-
             updateTile: function() {
                 comp_updateTile(this);
             }
@@ -287,6 +284,25 @@
                 noSuper: true,
                 override: true,
                 final: true,
+            }),
+
+
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_cable
+             * @instance
+             * @func
+             * @param {BLKCable} blk
+             * @param {Team} team
+             * @return {void}
+             */
+            ex_justCreated: function(blk, team) {
+                comp_ex_justCreated(this, blk, team);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
             }),
 
 

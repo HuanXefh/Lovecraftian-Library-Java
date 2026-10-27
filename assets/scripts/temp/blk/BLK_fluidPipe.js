@@ -70,16 +70,6 @@
      * @param {BFluidPipe} b
      * @return {void}
      */
-    function comp_created(b) {
-        b.delegee.fluidPipeBuildUpdater = new BFluidPipeUpdater(b.block.delegee.fluidPipeUpdater, b);
-    };
-
-
-    /**
-     * @private
-     * @param {BFluidPipe} b
-     * @return {void}
-     */
     function comp_onProximityUpdate(b) {
         let ot = b.tile.nearby(b.rotation);
         b.delegee.isLeak = b.block.leaks && (ot == null || (ot.build == null && !ot.solid()));
@@ -130,11 +120,23 @@
     /**
      * @private
      * @param {BFluidPipe} b
+     * @param {BLKFluidPipe} blk
+     * @param {Team} team
+     * @return {void}
+     */
+    function comp_ex_justCreated(b, blk, team) {
+        b.delegee.fluidPipeBuildUpdater = new BFluidPipeUpdater(blk.delegee.fluidPipeUpdater, b);
+    };
+
+
+    /**
+     * @private
+     * @param {BFluidPipe} b
      * @param {number} flam
      * @param {number} explo
      * @return {void}
      */
-    function comp_onFlamEmission(b, flam, explo) {
+    function comp_ex_onFlamEmission(b, flam, explo) {
         if(!b.delegee.isLeak || flam < 0.0001) return;
         fetchSound("se-shot-explosion").at(b);
         Damage.dynamicExplosion(b.x, b.y, flam, explo, 0.0, FRAG_attack.getPresExploRad(b.block.size) / Vars.tilesize, true);
@@ -321,11 +323,6 @@
         .setMethod({
 
 
-            created: function() {
-                comp_created(this);
-            },
-
-
             onProximityUpdate: function() {
                 comp_onProximityUpdate(this);
             },
@@ -350,6 +347,25 @@
 
 
             /**
+             * `REALIZED`
+             * @override
+             * @memberof B_fluidPipe
+             * @instance
+             * @func
+             * @param {BLKFluidPipe} blk
+             * @param {Team} team
+             * @return {void}
+             */
+            ex_justCreated: function(blk, team) {
+                comp_ex_justCreated(this, blk, team);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
+
+
+            /**
              * @memberof B_fluidPipe
              * @instance
              * @func
@@ -358,7 +374,7 @@
              * @return {void}
              */
             ex_onFlamEmission: function(flam, explo) {
-                comp_onFlamEmission(this, flam, explo);
+                comp_ex_onFlamEmission(this, flam, explo);
             }
             .setProp({
                 noSuper: true,

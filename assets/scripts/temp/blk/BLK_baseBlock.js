@@ -677,6 +677,17 @@
         .setMethod({
 
 
+            create: function(blk, team) {
+                let b = this.super$create(blk, team);
+                this.ex_justCreated(blk, team);
+                return b;
+            }
+            .setProp({
+                noSuper: true,
+                final: true,
+            }),
+
+
             onRemoved: function() {
                 comp_onRemoved(this);
             },
@@ -750,6 +761,26 @@
 
 
             /**
+             * Callded right after the building has been created, but not put onto a tile.
+             * <br> `LATER`
+             * @override
+             * @memberof B_baseBlock
+             * @instance
+             * @func
+             * @param {Block} blk
+             * @param {Team} team
+             * @return {void}
+             */
+            ex_justCreated: function(blk, team) {
+
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
+
+
+            /**
              * A more generic way to handle multiple configs using config object string.
              * Requires {@link BLK_baseBlock#useConfigStr} to be true.
              * @memberof B_baseBlock
@@ -769,6 +800,7 @@
             }
             .setProp({
                 noSuper: true,
+                argLen: 1,
             }),
 
 
@@ -785,6 +817,7 @@
             }
             .setProp({
                 noSuper: true,
+                argLen: 1,
             }),
 
 

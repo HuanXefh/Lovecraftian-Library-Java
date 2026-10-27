@@ -57,8 +57,6 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.delegee.torqueBlockBuildUpdater = new INTFBTorqueBlockUpdater(b.block.delegee.torqueBlockUpdater, b);
-
         BOX_trigger.torqueBlockPlace.fire(b);
         MDL_event.onDelayRun(0.0, () => {
             BOX_trigger.torqueBlockPlace.addListener(ob => b.delegee.torProg = 0.0);
@@ -124,6 +122,19 @@
         };
     };
 
+
+    /**
+     * @private
+     * @param {INTFBTorqueBlock} b
+     * @param {INTFBLKTorqueBlock} blk
+     * @param {Team} team
+     * @return {void}
+     */
+    function comp_ex_justCreated(b, blk, team) {
+        b.delegee.torqueBlockBuildUpdater = new INTFBTorqueBlockUpdater(blk.delegee.torqueBlockUpdater, b);
+    };
+
+
     /**
      * @private
      * @param {INTFBTorqueBlock} b
@@ -132,7 +143,6 @@
      * @param {number} rateCons
      * @return {void}
      */
-
     function comp_ex_updateRpmDmg(b, ob, rateAdd, rateCons) {
         if(rateCons < 0.0001 || rateAdd <= rateCons * 3.0) return;
 
@@ -359,6 +369,25 @@
             updateTile: function() {
                 comp_updateTile(this);
             },
+
+
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof INTF_B_torqueBlock
+             * @instance
+             * @func
+             * @param {INTFBLKTorqueBlock} blk
+             * @param {Team} team
+             * @return {void}
+             */
+            ex_justCreated: function(blk, team) {
+                comp_ex_justCreated(this, blk, team);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
 
 
             /**

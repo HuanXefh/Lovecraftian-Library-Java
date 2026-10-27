@@ -71,8 +71,6 @@
      * @return {void}
      */
     function comp_created(b) {
-        b.delegee.pipePumpBuildUpdater = new BPipePumpUpdater(b.block.delegee.pipePumpUpdater, b);
-
         b.totalProgress += Mathf.random(360.0);
     };
 
@@ -100,6 +98,18 @@
         if(b.delegee.pumpLiqCur != null) {
             b.dumpLiquid(b.delegee.pumpLiqCur, 2.0);
         };
+    };
+
+
+    /**
+     * @private
+     * @param {BPipePump} b
+     * @param {BLKPipePump} blk
+     * @param {Team} team
+     * @return {void}
+     */
+    function comp_ex_justCreated(b, blk, team) {
+        b.delegee.pipePumpBuildUpdater = new BPipePumpUpdater(blk.delegee.pipePumpUpdater, b);
     };
 
 
@@ -294,6 +304,25 @@
             read: function(rd, revi) {
                 this.delegee.pumpLiqCur = MDL_io.ct(rd);
             },
+
+
+            /**
+             * `REALIZED`
+             * @override
+             * @memberof B_pipePump
+             * @instance
+             * @func
+             * @param {BLKPipePump} blk
+             * @param {Team} team
+             * @return {void}
+             */
+            ex_justCreated: function(blk, team) {
+                comp_ex_justCreated(this, blk, team);
+            }
+            .setProp({
+                noSuper: true,
+                argLen: 2,
+            }),
 
 
             /**
