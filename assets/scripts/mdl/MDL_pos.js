@@ -83,7 +83,7 @@
                         / thisFun.tmpTs.length;
                     } else {
                         frac = LCPos
-                        .getTilesRot(thisFun.tmpTs, b_t.tile, Mathf.mod(b_f.rotation + 2, 4), b_t.block.size)
+                        .getTilesRot(thisFun.tmpTs, b_t.tile, Mathf.mod(b_t.rotation + 2, 4), b_t.block.size)
                         .count(b_f, ot => ot.build)
                         / thisFun.tmpTs.length;
                     };
@@ -141,7 +141,7 @@
                     } else {
                         frac = LCPos
                         .getTilesEdge(thisFun.tmpTs, b_t.tile, b_t.block.size)
-                        .count(b_f, ot => b_f.block.rotate && LCPos.getRotation(b_f.tile, ot) === b_f.rotation ? null : ot.build)
+                        .count(b_f, ot => b_f.block.rotate && LCPos.getRotation(b_f.tile, ot) === b_t.rotation ? null : ot.build)
                         * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     }
@@ -157,7 +157,7 @@
                     } else {
                         frac = LCPos
                         .getTilesEdge(thisFun.tmpTs, b_t.tile, b_t.block.size)
-                        .count(b_f, ot => b_f.block.rotate && Mathf.mod(LCPos.getRotation(b_f.tile, ot) + 2, 4) === b_f.rotation ? null : ot.build)
+                        .count(b_f, ot => b_f.block.rotate && Mathf.mod(LCPos.getRotation(b_f.tile, ot) + 2, 4) === b_t.rotation ? null : ot.build)
                         * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     }
