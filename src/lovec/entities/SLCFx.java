@@ -11,11 +11,11 @@ import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.graphics.LCDraw;
-import lovec.graphics.LCDrawf;
-import lovec.utils.LCPos;
-import lovec.utils.LCScript;
-import lovec.utils.LCScriptUtil;
+import lovec.graphics.SLCDraw;
+import lovec.graphics.SLCDrawf;
+import lovec.utils.SLCPos;
+import lovec.utils.SLCScript;
+import lovec.utils.SLCScriptUtil;
 import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.gen.Building;
@@ -28,9 +28,9 @@ import mindustry.ui.Fonts;
 import mindustry.world.Block;
 import rhino.NativeArray;
 
-import static lovec.utils.LCScript.MDL_draw;
+import static lovec.utils.SLCScript.MDL_draw;
 
-public class LCFx {
+public class SLCFx {
 
 
     public static final Effect
@@ -52,10 +52,10 @@ public class LCFx {
 
 
         coreSignal = new Effect(200f, eff -> {
-            NativeArray arr = LCScript.toArray(eff.data);
+            NativeArray arr = SLCScript.toArray(eff.data);
             Building b = (Building) arr.get(0);
-            float pad = LCScript.toFloat(arr.get(1));
-            boolean rev = LCScript.toBoolean(arr.get(2));
+            float pad = SLCScript.toFloat(arr.get(1));
+            boolean rev = SLCScript.toBoolean(arr.get(2));
             float
                 ang = Mathf.angle(b.x - eff.x, b.y - eff.y),
                 size = 18f - 14f * Interp.pow2Out.apply(eff.fin());
@@ -73,7 +73,7 @@ public class LCFx {
 
 
         corrosion = new Effect(120f, eff -> {
-            boolean isClogging = LCScript.toBoolean(eff.data);
+            boolean isClogging = SLCScript.toBoolean(eff.data);
             Draw.color(eff.color);
             if(isClogging) {
                 Draw.rect(
@@ -95,35 +95,35 @@ public class LCFx {
             TextureRegion reg = (TextureRegion) eff.data;
             eff.lifetime = 40f * eff.rotation;
 
-            LCDraw.region(eff.x, eff.y, reg, 0f, 1f, eff.color, eff.fout() * eff.color.a);
+            SLCDraw.region(eff.x, eff.y, reg, 0f, 1f, eff.color, eff.fout() * eff.color.a);
         })
         .layer(136.13f),
 
 
         fadeText = new Effect(80f, eff -> {
             Tmp.c1.set(eff.color).a(1f - Interp.pow2In.apply(eff.fin()));
-            LCScript.invoke("text", MDL_draw, eff.x, eff.y + 2f * eff.fin(), eff.data, Fonts.outline, 0.85f, Tmp.c1);
+            SLCScript.invoke("text", MDL_draw, eff.x, eff.y + 2f * eff.fin(), eff.data, Fonts.outline, 0.85f, Tmp.c1);
         }),
 
 
         flashBuild = new Effect(20f, eff -> {
-            NativeArray arr = LCScript.toArray(eff.data);
+            NativeArray arr = SLCScript.toArray(eff.data);
             TextureRegion reg = (TextureRegion) arr.get(0);
             Building b = (Building) arr.get(1);
-            float rotSpd = LCScript.toFloat(arr.get(2));
+            float rotSpd = SLCScript.toFloat(arr.get(2));
 
-            LCDraw.regionMixcol(b.x, b.y, reg, b.drawrot() + eff.rotation + eff.lifetime * eff.fin() * rotSpd, 1f, eff.color, eff.color.a * eff.fout(), 1f);
+            SLCDraw.regionMixcol(b.x, b.y, reg, b.drawrot() + eff.rotation + eff.lifetime * eff.fin() * rotSpd, 1f, eff.color, eff.color.a * eff.fout(), 1f);
         })
         .layer(136.13f),
 
 
         laser = new Effect(30f, eff -> {
-            NativeArray arr = LCScript.toArray(eff.data);
+            NativeArray arr = SLCScript.toArray(eff.data);
             Position e_f = (Position) arr.get(0);
             Position e_t = (Position) arr.get(1);
-            boolean hasLight = LCScript.toBoolean(arr.get(2));
+            boolean hasLight = SLCScript.toBoolean(arr.get(2));
 
-            LCDrawf.laser(
+            SLCDrawf.laser(
                 e_f == null ? eff.x : e_f.getX(),
                 e_f == null ? eff.y : e_f.getY(),
                 e_t.getX(), e_t.getY(),
@@ -134,16 +134,16 @@ public class LCFx {
 
 
         line = new Effect(40f, eff -> {
-            NativeArray arr = LCScript.toArray(eff.data);
+            NativeArray arr = SLCScript.toArray(eff.data);
             Position e_f = (Position) arr.get(0);
             Position e_t = (Position) arr.get(1);
-            boolean shouldDrawSpike = LCScript.toBoolean(arr.get(2));
-            boolean shouldInvertSpike = LCScript.toBoolean(arr.get(3));
+            boolean shouldDrawSpike = SLCScript.toBoolean(arr.get(2));
+            boolean shouldInvertSpike = SLCScript.toBoolean(arr.get(3));
 
             Lines.stroke(2f * eff.rotation * eff.fout(shouldDrawSpike ? Interp.pow10Out : Interp.linear), eff.color);
             Draw.alpha(eff.color.a);
             if(shouldDrawSpike) {
-                LCPos.eachLinePoint(
+                SLCPos.eachLinePoint(
                     e_f == null ? eff.x : e_f.getX(),
                     e_f == null ? eff.y : e_f.getY(),
                     e_t.getX(), e_t.getY(),
@@ -164,14 +164,14 @@ public class LCFx {
 
 
         payloadDeposit = new Effect(30f, eff -> {
-            NativeArray arr = LCScript.toArray(eff.data);
-            float x = LCScript.toFloat(arr.get(0));
-            float y = LCScript.toFloat(arr.get(1));
+            NativeArray arr = SLCScript.toArray(eff.data);
+            float x = SLCScript.toFloat(arr.get(0));
+            float y = SLCScript.toFloat(arr.get(1));
             Object ct = arr.get(2);
-            boolean isOut = LCScript.toBoolean(arr.get(3));
+            boolean isOut = SLCScript.toBoolean(arr.get(3));
 
             Tmp.v1.set(eff.x, eff.y).lerp(Tmp.v2.set(x, y), eff.fin(isOut ? Interp.pow5In : Interp.linear));
-            LCDraw.processScl((isOut ? eff.fin() : eff.fout(Interp.pow3Out)) * 1.05f);
+            SLCDraw.processScl((isOut ? eff.fin() : eff.fout(Interp.pow3Out)) * 1.05f);
             if(ct instanceof Block blk) {
                 Drawf.squareShadow(Tmp.v1.x, Tmp.v1.y, blk.size * Vars.tilesize * 1.85f, 1f);
                 Draw.rect(blk.fullIcon, Tmp.v1.x, Tmp.v1.y, 0f);
@@ -180,7 +180,7 @@ public class LCFx {
                 Drawf.shadow(Tmp.v1.x, Tmp.v1.y, 18f, 1f);
                 Draw.rect(utp.fullIcon, Tmp.v1.x, Tmp.v1.y, eff.rotation - 90f);
             };
-            LCDraw.processScl(-1f);
+            SLCDraw.processScl(-1f);
         })
         .layer(Layer.flyingUnitLow - 5f),
 
@@ -198,9 +198,9 @@ public class LCFx {
                 y_t = lastPos.y;
             } else {
                 if(e_t instanceof Bullet bul) {
-                    if(bul.isAdded() && !LCPos.posAtWorldOrigin(bul)) {
-                        x_t = LCScriptUtil.getBulX(bul);
-                        y_t = LCScriptUtil.getBulY(bul);
+                    if(bul.isAdded() && !SLCPos.posAtWorldOrigin(bul)) {
+                        x_t = SLCScriptUtil.getBulX(bul);
+                        y_t = SLCScriptUtil.getBulY(bul);
                     } else {
                         arr.put(3, arr, true);
                         x_t = lastPos.x;
@@ -212,7 +212,7 @@ public class LCFx {
                 };
                 lastPos.set(x_t, y_t);
             };
-            if(LCPos.posAtWorldOrigin(lastPos)) return;
+            if(SLCPos.posAtWorldOrigin(lastPos)) return;
             x_f = e_f == null ? eff.x : e_f.getX();
             y_f = e_f == null ? eff.y : e_f.getY();
 
@@ -239,9 +239,9 @@ public class LCFx {
                     y = eff.y;
                     arr.put(2, arr, true);
                 } else if (e instanceof Bullet bul) {
-                    if(bul.isAdded() && !LCPos.posAtWorldOrigin(bul)) {
-                        x = LCScriptUtil.getBulX(bul);
-                        y = LCScriptUtil.getBulY(bul);
+                    if(bul.isAdded() && !SLCPos.posAtWorldOrigin(bul)) {
+                        x = SLCScriptUtil.getBulX(bul);
+                        y = SLCScriptUtil.getBulY(bul);
                     } else {
                         arr.put(2, arr, true);
                         x = lastPos.x;
@@ -253,7 +253,7 @@ public class LCFx {
                 };
                 lastPos.set(x, y);
             };
-            if(LCPos.posAtWorldOrigin(lastPos)) return;
+            if(SLCPos.posAtWorldOrigin(lastPos)) return;
 
             Draw.color(eff.color, eff.fout());
             Fill.circle(x, y, 2f + eff.fout());

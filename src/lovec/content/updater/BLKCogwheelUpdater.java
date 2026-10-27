@@ -5,8 +5,8 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import lovec.content.LCBuildUpdater;
 import lovec.content.LCContentUpdater;
-import lovec.graphics.LCDraw;
-import lovec.utils.LCScript;
+import lovec.graphics.SLCDraw;
+import lovec.utils.SLCScript;
 import mindustry.graphics.Layer;
 import mindustry.world.blocks.defense.Wall;
 
@@ -25,8 +25,8 @@ public class BLKCogwheelUpdater extends LCContentUpdater<Wall> {
 
     @Override
     protected void targetSetInit() throws NoSuchFieldException, IllegalAccessException {
-        cogInvOffAng = LCScript.toFloat(get("cogInvOffAng"));
-        cogDrawW = LCScript.toFloat(get("cogDrawW"));
+        cogInvOffAng = SLCScript.toFloat(get("cogInvOffAng"));
+        cogDrawW = SLCScript.toFloat(get("cogDrawW"));
     };
 
 
@@ -48,9 +48,9 @@ public class BLKCogwheelUpdater extends LCContentUpdater<Wall> {
 
         @FragMethod
         public void ex_drawCog() throws NoSuchFieldException, IllegalAccessException {
-            float ang = Mathf.mod(LCScript.toFloat(get("torProg")), 90f);
+            float ang = Mathf.mod(SLCScript.toFloat(get("torProg")), 90f);
 
-            LCDraw.processZ(Layer.block + b.block.size * 0.001f + 0.72f, 1);
+            SLCDraw.processZ(Layer.block + b.block.size * 0.001f + 0.72f, 1);
             if((boolean) get("isInv")) {
                 Draw.rect(invReg, b.x, b.y, cogDrawW, cogDrawW, -ang + 90f + cogInvOffAng);
                 Draw.alpha(1f - ang / 90f);
@@ -61,7 +61,7 @@ public class BLKCogwheelUpdater extends LCContentUpdater<Wall> {
                 Draw.rect(blk.region, b.x, b.y, cogDrawW, cogDrawW, ang - 90f);
             };
             Draw.color();
-            LCDraw.processZ(-1f, 1);
+            SLCDraw.processZ(-1f, 1);
         };
 
 

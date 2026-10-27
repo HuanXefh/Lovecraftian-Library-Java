@@ -171,7 +171,7 @@
      * @return {void}
      */
     const comp_drawPlace = function thisFun(blk, tx, ty, rot, valid) {
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, tx, ty, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, tx, ty, rot)) {
             blk.self.ex_findPlan(blk.delegee.constructionTmpPlan, tx, ty, rot);
         };
         blk.self.ex_drawPlan(Vars.player.team(), blk.delegee.constructionTmpPlan);
@@ -394,7 +394,7 @@
      * @return {Tile|null}
      */
     function comp_ex_getPlanT(blk, tx, ty, rot, dataX, dataY) {
-        return LCPos.getTileRectRotCenter(
+        return SLCPos.getTileRectRotCenter(
             GLB_var.world.tile(tx - blk.delegee.corePon2.x + dataX, ty + blk.delegee.corePon2.y - dataY),
             GLB_var.world.tile(tx, ty),
             rot,
@@ -553,7 +553,7 @@
             iCap = plan.iCap();
         while(i < iCap) {
             if(plan[i] !== blk && !blk.self.ex_checkPlanTileComplete(plan[i + 1], plan[i], plan[i + 2], team, true)) {
-                LCDrawf.planPlace(
+                SLCDrawf.planPlace(
                     plan[i], plan[i + 1],
                     plan[i + 2] < 0 ? 0.0 : (plan[i + 2] * 90.0),
                 );
@@ -614,7 +614,7 @@
     function comp_draw(b) {
         Draw.rect(b.block.region, b.x, b.y);
         if(b.delegee.underConstruction) {
-            LCDrawf.construct(b.delegee.constructionPlanCx, b.delegee.constructionPlanCy, MDL_texture.getRegBlk(b.block.delegee.placeBlk), b.self.ex_getConstructionFrac(), b.drawrot());
+            SLCDrawf.construct(b.delegee.constructionPlanCx, b.delegee.constructionPlanCy, MDL_texture.getRegBlk(b.block.delegee.placeBlk), b.self.ex_getConstructionFrac(), b.drawrot());
         } else {
             if(b.delegee.shouldDrawConstructionPlan && Vars.player.team() === b.team) {
                 b.block.self.ex_drawPlan(b.team, b.delegee.constructionPlan);

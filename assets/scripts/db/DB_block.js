@@ -610,9 +610,9 @@ const db = {
                 /** @type {Array<Tup2<ContentTypeGn, FFunction<Block, boolean>>>} */
                 noSide: [
 
-                    [LCVersionResolver.isV8 ? ArmoredConveyor : Conveyor, blk => LCVersionResolver.isV8 || blk.noSideBlend],
-                    [LCVersionResolver.isV8 ? ArmoredConduit : Conduit, blk => LCVersionResolver.isV8 || blk.noSideBlend],
-                    [Duct, blk => LCVersionResolver.isV8 ? blk.armored : blk.noSideBlend],
+                    [SLCVersionResolver.isV8 ? ArmoredConveyor : Conveyor, blk => SLCVersionResolver.isV8 || blk.noSideBlend],
+                    [SLCVersionResolver.isV8 ? ArmoredConduit : Conduit, blk => SLCVersionResolver.isV8 || blk.noSideBlend],
+                    [Duct, blk => SLCVersionResolver.isV8 ? blk.armored : blk.noSideBlend],
 
                 ],
 

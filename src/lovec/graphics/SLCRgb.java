@@ -6,7 +6,7 @@ import arc.math.Mathf;
 /**
  * Handles RGB color conversion.
  */
-public class LCRgb {
+public class SLCRgb {
 
 
     static final Color[] tmpColors = {

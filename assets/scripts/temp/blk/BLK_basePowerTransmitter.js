@@ -102,13 +102,13 @@
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
         if(t == null) return false;
         if(blk.delegee.ignoreShortCircuitPlacement) return true;
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
             thisFun.tmpCond = tryJsProp(blk, "canShortCircuit", false)
                 && t.floor().liquidDrop != null
                 && MDL_cond.isConductiveLiquid(t.floor().liquidDrop);
         };
         if(thisFun.tmpCond) {
-            LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-short-circuit"), false);
+            SLCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-short-circuit"), false);
             return false;
         };
         return true;

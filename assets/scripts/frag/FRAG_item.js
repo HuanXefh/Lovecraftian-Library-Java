@@ -364,7 +364,7 @@
         let amtTrans = Math.min(amtCur, max);
         if(amtTrans < 1) return false;
 
-        let loot = LCEntity.getLoot(x, y);
+        let loot = SLCEntity.getLoot(x, y);
         if(loot == null) {
             MDL_call.spawnLoot_server(x, y, item, amtTrans);
             setItem(b, item, amtCur - amtTrans);
@@ -396,7 +396,7 @@
         if(amt == null) amt = 0;
         if(amt < 1) return false;
 
-        let loot = LCEntity.getLoot(x, y);
+        let loot = SLCEntity.getLoot(x, y);
         if(loot == null) {
             MDL_call.spawnLoot_server(x, y, item, amt);
             BOX_trigger.itemProduce.fire(b, item, amt);

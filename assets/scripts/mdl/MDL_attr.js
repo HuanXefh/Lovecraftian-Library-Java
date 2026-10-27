@@ -93,7 +93,7 @@
      */
     const calcAttrEffc = function(sum, min, max, boostScl, boostCap) {
         return Mathf.clamp(
-            LCLerp.lerp(0.0, 1.0, sum, tryVal(min, 0.0), tryVal(max, 1.0)) * tryVal(boostScl, 1.0),
+            SLCLerp.lerp(0.0, 1.0, sum, tryVal(min, 0.0), tryVal(max, 1.0)) * tryVal(boostScl, 1.0),
             0.0,
             tryVal(boostCap, 1.0),
         );
@@ -194,7 +194,7 @@
      * @return {number}
      */
     const calcSumRect = function thisFun(t, r, size, attr_gn, mode) {
-        return calcSumByTs(LCPos.getTilesRect(thisFun.tmpTs, t, r, size), attr_gn, mode);
+        return calcSumByTs(SLCPos.getTilesRect(thisFun.tmpTs, t, r, size), attr_gn, mode);
     }
     .setProp({
         /**
@@ -216,7 +216,7 @@
      * @return {number}
      */
     const calcSumCircle = function thisFun(t, r, size, attr_gn, mode) {
-        return calcSumByTs(LCPos.getTilesCircle(thisFun.tmpTs, t, r, size), attr_gn, mode);
+        return calcSumByTs(SLCPos.getTilesCircle(thisFun.tmpTs, t, r, size), attr_gn, mode);
     }
     .setProp({
         /**

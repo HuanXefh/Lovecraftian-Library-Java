@@ -10,7 +10,7 @@ import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.utils.extend.LCNativeArray;
+import lovec.utils.extend.SLCNativeArray;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
@@ -23,7 +23,7 @@ import rhino.NativeArray;
 /**
  * Handles position-related calculation and tile search.
  */
-public class LCPos {
+public class SLCPos {
 
 
     public static final Point2[][] sizeOffs = {
@@ -250,7 +250,7 @@ public class LCPos {
             case 3 -> Tmp.v2.set(Tmp.v1.y, -Tmp.v1.x);
         }
 
-        return LCVersionResolver.world.tile(
+        return SLCVersionResolver.world.tile(
             (int) (tCenter.x + Tmp.v2.x - off + offCenter),
             (int) (tCenter.y + Tmp.v2.y - off + offCenter)
         );
@@ -261,7 +261,7 @@ public class LCPos {
      * Gets closest ore tile.
      */
     public static @Nullable Tile getTileOre(float x, float y, Item item) {
-        return LCVersionResolver.indexer.findClosestOre(x, y, item);
+        return SLCVersionResolver.indexer.findClosestOre(x, y, item);
     };
 
 
@@ -271,7 +271,7 @@ public class LCPos {
     public static @Nullable Tile getTileMouse() {
         return Vars.headless ?
             null :
-            LCVersionResolver.world.tileWorld(Core.input.mouseWorldX(), Core.input.mouseWorldY());
+            SLCVersionResolver.world.tileWorld(Core.input.mouseWorldX(), Core.input.mouseWorldY());
     };
 
 
@@ -282,7 +282,7 @@ public class LCPos {
      * Gets tiles on an edge.
      */
     public static NativeArray getTilesRot(@Nullable NativeArray contArr, @Nullable Tile t, int rot, int size) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesRot.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCPos.getTilesRot.newArr");
         if(t == null) return arr;
 
         int iBase, iCap;
@@ -304,7 +304,7 @@ public class LCPos {
                     case 2 -> {px = size / -2; py = i;}
                     case 3 -> {px = i; py = size / -2;}
                 };
-                LCNativeArray.pushUnique(arr, t.nearby(px, py));
+                SLCNativeArray.pushUnique(arr, t.nearby(px, py));
                 i++;
             };
         } else {
@@ -315,7 +315,7 @@ public class LCPos {
                     case 2 -> {px = (size + 1) / -2; py = i;}
                     case 3 -> {px = i; py = (size + 1) / -2;}
                 };
-                LCNativeArray.pushUnique(arr, t.nearby(px, py));
+                SLCNativeArray.pushUnique(arr, t.nearby(px, py));
                 i++;
             };
         };
@@ -328,14 +328,14 @@ public class LCPos {
      * Gets tiles on all four edges.
      */
     public static NativeArray getTilesEdge(@Nullable NativeArray contArr, @Nullable Tile t, int size, boolean isInnerEdge) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesEdge.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCPos.getTilesEdge.newArr");
         if(t == null) return arr;
 
         Point2[] pons = isInnerEdge ? Edges.getInsideEdges(size) : Edges.getEdges(size);
         int i = 0;
         int iCap = size * 4;
         while(i < iCap) {
-            LCNativeArray.pushNonNull(arr, t.nearby(pons[i]));
+            SLCNativeArray.pushNonNull(arr, t.nearby(pons[i]));
             i++;
         };
 
@@ -351,7 +351,7 @@ public class LCPos {
      * Gets tiles in a rectangular range.
      */
     public static NativeArray getTilesRect(@Nullable NativeArray contArr, @Nullable Tile t, int r, int size) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesRect.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCPos.getTilesRect.newArr");
         if(t == null) return arr;
 
         int iBase, iCap;
@@ -367,7 +367,7 @@ public class LCPos {
         while(j < iCap) {
             i = iBase;
             while(i < iCap) {
-                LCNativeArray.pushNonNull(arr, t.nearby(i, j));
+                SLCNativeArray.pushNonNull(arr, t.nearby(i, j));
                 i++;
             };
             j++;
@@ -381,7 +381,7 @@ public class LCPos {
      * Gets tiles that some block will occupy.
      */
     public static NativeArray getTilesBlock(@Nullable NativeArray contArr, Block blk, int tx, int ty) {
-        return getTilesRect(contArr, LCVersionResolver.world.tile(tx, ty), 0, blk.size);
+        return getTilesRect(contArr, SLCVersionResolver.world.tile(tx, ty), 0, blk.size);
     };
 
 
@@ -397,13 +397,13 @@ public class LCPos {
      * Variant of {@link #getTilesRect} where the rectangle is rotated.
      */
     public static NativeArray getTilesRectRotCenter(@Nullable NativeArray contArr, @Nullable Tile t, int r, int rot, int size) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesRectRotCenter.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCPos.getTilesRectRotCenter.newArr");
         if(t == null) return arr;
 
         getCoordsRectRotCenter(Tmp.v1, toFCoord(t.x, size), toFCoord(t.y, size), r, rot, size).scl(1f / Vars.tilesize).sub(r, r).add(0.5f, 0.5f);
-        int tx = LCScript.toInt(Tmp.v1.x);
-        int ty = LCScript.toInt(Tmp.v1.y);
-        if(LCVersionResolver.world.tile(tx, ty) == null) return arr;
+        int tx = SLCScript.toInt(Tmp.v1.x);
+        int ty = SLCScript.toInt(Tmp.v1.y);
+        if(SLCVersionResolver.world.tile(tx, ty) == null) return arr;
 
         int i;
         int iCap = r * 2;
@@ -411,7 +411,7 @@ public class LCPos {
         while(j < iCap) {
             i = 0;
             while(i < iCap) {
-                LCNativeArray.pushNonNull(arr, LCVersionResolver.world.tile(tx + i, ty + j));
+                SLCNativeArray.pushNonNull(arr, SLCVersionResolver.world.tile(tx + i, ty + j));
                 i++;
             };
             j++;
@@ -426,18 +426,18 @@ public class LCPos {
      * <br> TODO: This is dumb and should be improved someday.
      */
     public static NativeArray getTilesCircle(@Nullable NativeArray contArr, @Nullable Tile t, int r, int size) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesCircle.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCPos.getTilesCircle.newArr");
         if(t == null) return arr;
 
         int
-            w = LCVersionResolver.world.width(),
-            h = LCVersionResolver.world.height();
+            w = SLCVersionResolver.world.width(),
+            h = SLCVersionResolver.world.height();
 
         if(size % 2 != 0) {
             Geometry.circle(t.x, t.y, w, h, r, (tx, ty) -> {
-               Tile ot = LCVersionResolver.world.tile(tx, ty);
+               Tile ot = SLCVersionResolver.world.tile(tx, ty);
                if(ot != null) {
-                   LCNativeArray.push(arr, ot);
+                   SLCNativeArray.push(arr, ot);
                };
             });
         } else {
@@ -446,9 +446,9 @@ public class LCPos {
                 ot0 = t.nearby(sizeOffs[2][i]);
                 if(ot0 == null) continue;
                 Geometry.circle(ot0.x, ot0.y, w, h, r, (tx, ty) -> {
-                   Tile ot = LCVersionResolver.world.tile(tx, ty);
-                   if(ot != null && !LCNativeArray.includes(arr, ot)) {
-                       LCNativeArray.push(arr, ot);
+                   Tile ot = SLCVersionResolver.world.tile(tx, ty);
+                   if(ot != null && !SLCNativeArray.includes(arr, ot)) {
+                       SLCNativeArray.push(arr, ot);
                    };
                 });
             };
@@ -462,7 +462,7 @@ public class LCPos {
      * Gets tiles in range by Manhattan distance.
      */
     public static NativeArray getTilesDstManhattan(@Nullable NativeArray contArr, @Nullable Tile t, int r) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesDstManhattan.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCPos.getTilesDstManhattan.newArr");
         if(t == null) return arr;
 
         int
@@ -475,7 +475,7 @@ public class LCPos {
             jBase = -(r - Math.abs(i));
             jCap = -jBase + 1;
             for(int j = jBase; j < jCap; j++) {
-                LCNativeArray.pushNonNull(arr, t.nearby(i, j));
+                SLCNativeArray.pushNonNull(arr, t.nearby(i, j));
             };
         };
 
@@ -487,9 +487,9 @@ public class LCPos {
      * Gets linked tiles of some tile.
      */
     public static NativeArray getTilesLinked(@Nullable NativeArray contArr, @Nullable Tile t) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCPos.getTilesLinked.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCPos.getTilesLinked.newArr");
         if(t == null) return arr;
-        t.getLinkedTiles(ot -> LCNativeArray.push(arr, ot));
+        t.getLinkedTiles(ot -> SLCNativeArray.push(arr, ot));
         return arr;
     };
 

@@ -4,13 +4,13 @@ import arc.func.Boolf2;
 import arc.func.Func2;
 import arc.struct.Seq;
 import arc.util.Nullable;
-import lovec.utils.LCPos;
+import lovec.utils.SLCPos;
 import mindustry.core.World;
 
 /**
  * Utility class that handles raycast calculation.
  */
-public class LCRaycast {
+public class SLCRaycast {
 
 
     static Object rayFindObj;
@@ -21,7 +21,7 @@ public class LCRaycast {
      * Base method for raycast methods that return a boolean.
      */
     public static boolean rayCheck(float x1, float y1, float x2, float y2, Boolf2<Integer, Integer> boolF) {
-        return World.raycast(LCPos.toIntCoord(x1), LCPos.toIntCoord(y1), LCPos.toIntCoord(x2), LCPos.toIntCoord(y2), boolF::get);
+        return World.raycast(SLCPos.toIntCoord(x1), SLCPos.toIntCoord(y1), SLCPos.toIntCoord(x2), SLCPos.toIntCoord(y2), boolF::get);
     };
 
 
@@ -29,7 +29,7 @@ public class LCRaycast {
      * Base method for raycast methods that return the first matching object.
      */
     public static @Nullable Object rayFind(float x1, float y1, float x2, float y2, Func2<Integer, Integer, Object> func) {
-        return World.raycast(LCPos.toIntCoord(x1), LCPos.toIntCoord(y1), LCPos.toIntCoord(x2), LCPos.toIntCoord(y2), (tx, ty) -> {
+        return World.raycast(SLCPos.toIntCoord(x1), SLCPos.toIntCoord(y1), SLCPos.toIntCoord(x2), SLCPos.toIntCoord(y2), (tx, ty) -> {
             rayFindObj = func.get(tx, ty);
             return rayFindObj != null;
         }) ? rayFindObj : null;
@@ -41,7 +41,7 @@ public class LCRaycast {
      */
     public static Seq rayFindAll(float x1, float y1, float x2, float y2, Func2<Integer, Integer, Object> func) {
         rayFindObjSeq.clear();
-        World.raycast(LCPos.toIntCoord(x1), LCPos.toIntCoord(y1), LCPos.toIntCoord(x2), LCPos.toIntCoord(y2), (tx, ty) -> {
+        World.raycast(SLCPos.toIntCoord(x1), SLCPos.toIntCoord(y1), SLCPos.toIntCoord(x2), SLCPos.toIntCoord(y2), (tx, ty) -> {
             rayFindObj = func.get(tx, ty);
             if(rayFindObj != null) {
                 rayFindObjSeq.add(rayFindObj);

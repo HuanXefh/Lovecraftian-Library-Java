@@ -29,7 +29,7 @@
      */
     function comp_updateTile(b) {
         if(b.delegee.requiresScanner && GLB_timer.effc) {
-            b.delegee.scannerCur = LCEntity.getBuildBy(
+            b.delegee.scannerCur = SLCEntity.getBuildBy(
                 b.x, b.y, b.team,
                 ob => MDL_cond.isOreScanner(ob.block) && ob.block.delegee.scanTier >= b.delegee.depthLvlReqCur && ob.efficiency > 0.0 && Mathf.dst(b.x, b.y, ob.x, ob.y) < ob.block.delegee.blkRad,
             );
@@ -57,8 +57,8 @@
     function comp_drawSelect(b) {
         if(!b.delegee.requiresScanner) return;
         b.delegee.scannerCur == null ?
-            LCDrawf.textSelect(b, MDL_bundle.getInfo("lovec", "text-no-scanner"), false, b.block.delegee.noScannerTextOffTy) :
-            LCDrawf.connectorArea(b, b.delegee.scannerCur);
+            SLCDrawf.textSelect(b, MDL_bundle.getInfo("lovec", "text-no-scanner"), false, b.block.delegee.noScannerTextOffTy) :
+            SLCDrawf.connectorArea(b, b.delegee.scannerCur);
     };
 
 

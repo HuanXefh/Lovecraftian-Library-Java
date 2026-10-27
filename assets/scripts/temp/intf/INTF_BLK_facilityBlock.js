@@ -63,7 +63,7 @@
         if(!Vars.net.client() && Vars.state.rules.reactorExplosions && b.block.delegee.canFireExplode) {
             if(Mathf.chanceDelta(0.005)) {
                 b.delegee.fireExplodeReady = !Vars.net.client()
-                    && LCPos.getTilesEdge(thisFun.tmpTs, b.tile, b.block.size, false).some(ot => Fires.get(ot) != null)
+                    && SLCPos.getTilesEdge(thisFun.tmpTs, b.tile, b.block.size, false).some(ot => Fires.get(ot) != null)
                     && (thisFun.checkExplosiveLiquid(b) || thisFun.checkExplosiveItem(b));
             };
             if(b.delegee.fireExplodeReady) {

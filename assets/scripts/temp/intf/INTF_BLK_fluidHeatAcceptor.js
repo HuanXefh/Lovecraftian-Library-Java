@@ -78,7 +78,7 @@
      * @return {void}
      */
     function comp_ex_drawFHeat(blk, b, a) {
-        LCDrawf.heat(
+        SLCDrawf.heat(
             b.x, b.y,
             blk.delegee.fHeatReg,
             a,

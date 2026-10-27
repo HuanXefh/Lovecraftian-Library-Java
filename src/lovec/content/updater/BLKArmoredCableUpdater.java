@@ -5,7 +5,7 @@ import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import lovec.content.LCBuildUpdater;
 import lovec.content.LCContentUpdater;
-import lovec.utils.LCScriptUtil;
+import lovec.utils.SLCScriptUtil;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -25,12 +25,12 @@ public class BLKArmoredCableUpdater extends LCContentUpdater<Conveyor> {
     public boolean blends(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
         return (
             (oblk.consPower != null || oblk.outputsPower)
-                && !LCScriptUtil.checkCond("isFluidConduit", oblk)
+                && !SLCScriptUtil.checkCond("isFluidConduit", oblk)
                 && target.blendsArmored(t, rot, otx, oty, orot, oblk)
         ) || (
             target.lookingAt(t, rot, otx, oty, oblk)
                 && oblk.hasPower
-                && !LCScriptUtil.checkCond("isFluidConduit", oblk)
+                && !SLCScriptUtil.checkCond("isFluidConduit", oblk)
         );
     };
     // Overload
@@ -59,7 +59,7 @@ public class BLKArmoredCableUpdater extends LCContentUpdater<Conveyor> {
                         && Edges.getFacingEdge(oblk, otx, oty, t) != null
                         && Edges.getFacingEdge(oblk, otx, oty, t).relativeTo(t) == rot
                 ) || (
-                    LCScriptUtil.checkCond("isArmoredCable", oblk)
+                    SLCScriptUtil.checkCond("isArmoredCable", oblk)
                         && oblk.rotatedOutput(otx, oty, t)
                         && Point2.equals(otx + Geometry.d4(orot).x, oty + Geometry.d4(orot).y, t.x, t.y)
                 )

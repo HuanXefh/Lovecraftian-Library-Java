@@ -232,7 +232,7 @@
             };
             b.delegee.fuelPonCur = Mathf.maxZero(b.delegee.fuelPonCur - GLB_var.timeParam.heatIntv / 60.0 * b.block.delegee.fuelConsMtp);
         } else {
-            b.delegee.fuelPonCur = LCCraftingHandler.addLiquid(b, b, fuel, -pon * b.block.delegee.fuelConsMtp * GLB_var.timeParam.heatIntv, false, false, true);
+            b.delegee.fuelPonCur = SLCCraftingHandler.addLiquid(b, b, fuel, -pon * b.block.delegee.fuelConsMtp * GLB_var.timeParam.heatIntv, false, false, true);
             b.delegee.fuelEffc = Math.min(b.delegee.fuelPonCur, 1.0);
         };
     };

@@ -113,10 +113,10 @@
      */
     function comp_ex_drawHeat(blk, b, a) {
         if(!blk.delegee.shouldDrawDoubleHeat) {
-            LCDrawf.heat(b.x, b.y, blk.delegee.heatReg, a, b.block.size, b.drawrot());
+            SLCDrawf.heat(b.x, b.y, blk.delegee.heatReg, a, b.block.size, b.drawrot());
         } else {
-            LCDrawf.heat(b.x, b.y, blk.delegee.heatReg, a / 1.4, b.block.size, b.drawrot());
-            LCDrawf.heat(b.x, b.y, LCDrawf.heatRegs[b.block.size + 2], a / 2.0, b.block.size, b.drawrot());
+            SLCDrawf.heat(b.x, b.y, blk.delegee.heatReg, a / 1.4, b.block.size, b.drawrot());
+            SLCDrawf.heat(b.x, b.y, SLCDrawf.heatRegs[b.block.size + 2], a / 2.0, b.block.size, b.drawrot());
         };
     };
 
@@ -204,7 +204,7 @@
                     (b.delegee.heatSupplied / 3.0);
                 b_t.ex_handleExtHeat != null ?
                     b_t.ex_handleExtHeat(b, heatAmt) :
-                    LCCraftingHandler.addLiquid(b_t, null, GLB_varGen.auxHeat, heatAmt / 6000.0 * b_t.timeScale, false, false, true);
+                    SLCCraftingHandler.addLiquid(b_t, null, GLB_varGen.auxHeat, heatAmt / 6000.0 * b_t.timeScale, false, false, true);
             };
         };
     };
@@ -227,7 +227,7 @@
         };
 
         if(b.block.delegee.shouldDrawHeatLight) {
-            LCDrawf.light(b.x, b.y, Mathf.clamp((b.delegee.tempCur - 60.0) / (b.block.delegee.heatLightTempReq - 60.0)), b.block.delegee.heatLightRad, b.block.size);
+            SLCDrawf.light(b.x, b.y, Mathf.clamp((b.delegee.tempCur - 60.0) / (b.block.delegee.heatLightTempReq - 60.0)), b.block.delegee.heatLightRad, b.block.size);
         };
     };
 
@@ -264,7 +264,7 @@
             if(ob.block instanceof MultiBlockLinkBlock) {
                 ob = ob.linkedBuild;
             };
-            if(ob.ex_getHeatTransferred != null && !ob.block.delegee.skipHeatTrans && LCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) {
+            if(ob.ex_getHeatTransferred != null && !ob.block.delegee.skipHeatTrans && SLCGeometry.accept(ob, b, ob.block.delegee.isHeatRouter, !b.block.delegee.isHeatRouter)) {
                 b.delegee.heatTransTargets.push(ob);
             };
         });
@@ -321,7 +321,7 @@
                 if(!ob.isAdded() || !ob.enabled || ob.isPayload()) return;
                 heat = ob.ex_getHeatProd != null ?
                     (ob.self.ex_getHeatProd() * sideFrac) :
-                    (LCCraftingHandler.addLiquid(ob, ob, GLB_varGen.auxHeat, -MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
+                    (SLCCraftingHandler.addLiquid(ob, ob, GLB_varGen.auxHeat, -MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * 30.0 * sideFrac, true, true) * MDL_recipeDict.getProdAmtByBuild(GLB_varGen.auxHeat, ob) * sideFrac * 6000.0 / Time.delta);
                 b.delegee.maxHeaterProd = Math.max(heat, b.delegee.maxHeaterProd);
                 heatTarget += heat * b.block.delegee.tempExtMtp;
             }, true);

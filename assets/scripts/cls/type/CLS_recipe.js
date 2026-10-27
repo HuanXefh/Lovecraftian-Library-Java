@@ -1484,7 +1484,7 @@
         };
         if(this.erekirHeatProd > 0.0) {
             b.delegee.erekirHeatO = Mathf.approachDelta(b.delegee.erekirHeatO, this.erekirHeatProd * b.efficiency, b.block.delegee.erekirHeatWarmupRate * b.delta());
-            if(!LCVersionResolver.isV8 && b.heatModule != null) {
+            if(!SLCVersionResolver.isV8 && b.heatModule != null) {
                 b.heatModule.output = b.delegee.erekirHeatO;
             };
         };
@@ -1555,7 +1555,7 @@
             i = 0;
             iCap = this.payi.iCap();
             while(i < iCap) {
-                LCNativeObject.numIncre(b.delegee.payReqObj, this.payi[i], -this.payi[i + 1]);
+                SLCNativeObject.numIncre(b.delegee.payReqObj, this.payi[i], -this.payi[i + 1]);
                 i += 2;
             };
         };
@@ -1563,7 +1563,7 @@
             i = 0;
             iCap = this.payo.iCap();
             while(i < iCap) {
-                LCNativeObject.numIncre(b.delegee.payStockObj, this.payo[i], this.payo[i + 1]);
+                SLCNativeObject.numIncre(b.delegee.payStockObj, this.payo[i], this.payo[i + 1]);
                 i += 2;
             };
         };

@@ -43,9 +43,9 @@
      */
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
         if(t == null) return false;
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
             blk.self.ex_findPlaceRestrictTs(blk.delegee.placeRestrictTmpTs, t, rot);
-            thisFun.tmpCond = !LCEntity.getBuildsByTiles(blk.delegee.placeRestrictTmpBs, blk.delegee.placeRestrictTmpTs).some(ob => blk.delegee.sameTypeFilter.get(blk, ob.block));
+            thisFun.tmpCond = !SLCEntity.getBuildsByTiles(blk.delegee.placeRestrictTmpBs, blk.delegee.placeRestrictTmpTs).some(ob => blk.delegee.sameTypeFilter.get(blk, ob.block));
         };
         return thisFun.tmpCond;
     }
@@ -73,10 +73,10 @@
      */
     function comp_ex_findPlaceRestrictTs(blk, contArr, t, rot) {
         return blk.rotate ?
-            LCPos.getTilesRectRotCenter(contArr, t, blk.delegee.placeRestrictR, blk.size, rot) :
+            SLCPos.getTilesRectRotCenter(contArr, t, blk.delegee.placeRestrictR, blk.size, rot) :
             !blk.delegee.useCircularPlaceRestrict ?
-                LCPos.getTilesRect(contArr, t, blk.delegee.placeRestrictR, blk.size) :
-                LCPos.getTilesCircle(contArr, t, blk.delegee.placeRestrictR, blk.size);
+                SLCPos.getTilesRect(contArr, t, blk.delegee.placeRestrictR, blk.size) :
+                SLCPos.getTilesCircle(contArr, t, blk.delegee.placeRestrictR, blk.size);
     };
 
 
@@ -97,7 +97,7 @@
      */
     function comp_updateTile(b) {
         if(GLB_timer.secFive) {
-            b.delegee.placeRestrictEffc = LCEntity.getBuildsByTiles(b.delegee.placeRestrictTmpBs, b.delegee.placeRestrictTmpTs).some(ob => ob.id !== b.id && b.block.delegee.sameTypeFilter.get(b.block, ob.block)) ?
+            b.delegee.placeRestrictEffc = SLCEntity.getBuildsByTiles(b.delegee.placeRestrictTmpBs, b.delegee.placeRestrictTmpTs).some(ob => ob.id !== b.id && b.block.delegee.sameTypeFilter.get(b.block, ob.block)) ?
                 0.0 :
                 1.0;
         };

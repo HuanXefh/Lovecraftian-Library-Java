@@ -62,8 +62,8 @@
      * @return {void}
      */
     function comp_draw(b) {
-        LCDrawf.baseBuildingDraw(b);
-        LCDraw.content(b.x, b.y, b.delegee.ctTarget, b.block.size - b.block.delegee.ctRegPad / Vars.tilesize);
+        SLCDrawf.baseBuildingDraw(b);
+        SLCDraw.content(b.x, b.y, b.delegee.ctTarget, b.block.size - b.block.delegee.ctRegPad / Vars.tilesize);
         Draw.rect(b.block.delegee.topReg, b.x, b.y);
     };
 

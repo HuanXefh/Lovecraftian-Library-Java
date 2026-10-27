@@ -80,8 +80,8 @@
      */
     UTIL_dragButtonInfoList.findMap = function(categ, subCateg, noRegister) {
         if(noRegister) {
-            let map = infoListData.get(categ, LCAirObjects.objectMap).get(subCateg, LCAirObjects.objectMap);
-            if(map === LCAirObjects.objectMap) throw new Error("Cannot find info list under ${1}/${2}".format(categ, subCateg));
+            let map = infoListData.get(categ, SLCAirObjects.objectMap).get(subCateg, SLCAirObjects.objectMap);
+            if(map === SLCAirObjects.objectMap) throw new Error("Cannot find info list under ${1}/${2}".format(categ, subCateg));
             return map;
         };
 

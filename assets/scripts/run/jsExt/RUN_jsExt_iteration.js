@@ -65,7 +65,7 @@
      * @return {void}
      */
     Number.prototype.each = function(scr, gap, base) {
-        LCNumber.each(Number(this), scr, tryVal(gap, 1), tryVal(base, 0));
+        SLCNumber.each(Number(this), scr, tryVal(gap, 1), tryVal(base, 0));
     };
 
 
@@ -85,7 +85,7 @@
      * @return {void}
      */
     Array.forEachPair = function(arr1, arr2, scr, noWrap) {
-        LCNativeArray.forEachPair(arr1, arr2, scr, tryVal(noWrap, false));
+        SLCNativeArray.forEachPair(arr1, arr2, scr, tryVal(noWrap, false));
     };
 
 
@@ -97,7 +97,7 @@
      * @return {void}
      */
     Array.prototype.forEachFast = function(scr, noWrap) {
-        LCNativeArray.forEachFast(this, scr, tryVal(noWrap, false));
+        SLCNativeArray.forEachFast(this, scr, tryVal(noWrap, false));
     };
 
 
@@ -109,7 +109,7 @@
      * @return {void}
      */
     Array.prototype.forEachCond = function(boolF, scr, noWrap) {
-        LCNativeArray.forEachCond(this, boolF, scr, tryVal(noWrap, false));
+        SLCNativeArray.forEachCond(this, boolF, scr, tryVal(noWrap, false));
     };
 
 
@@ -121,7 +121,7 @@
      * @return {void}
      */
     Array.prototype.forEachRow = function(ord, scr, noWrap) {
-        LCNativeArray.forEachRow(this, ord, arr => scr.apply(null, arr), tryVal(noWrap, false));
+        SLCNativeArray.forEachRow(this, ord, arr => scr.apply(null, arr), tryVal(noWrap, false));
     };
 
 
@@ -133,5 +133,5 @@
      * @return {void}
      */
     Array.prototype.forEachAll = function(scr, noWrap) {
-        LCNativeArray.forEachAll(this, scr, tryVal(noWrap, false));
+        SLCNativeArray.forEachAll(this, scr, tryVal(noWrap, false));
     };

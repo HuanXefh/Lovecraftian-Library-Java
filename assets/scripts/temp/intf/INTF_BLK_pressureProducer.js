@@ -83,7 +83,7 @@
         if(presProd.fEqual(0.0)) return;
         let aux = presProd > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac;
 
-        LCCraftingHandler.addLiquid(b, b, aux, Math.abs(presProd) / b.timeScale, true);
+        SLCCraftingHandler.addLiquid(b, b, aux, Math.abs(presProd) / b.timeScale, true);
         if(!b.self.ex_dumpPres(Math.abs(presProd), presProd < 0.0)) {
             b.dumpLiquid(aux, 2.0);
         };
@@ -98,7 +98,7 @@
     function comp_ex_updatePresDumpTs(b) {
         b.delegee.presDumpTs.clear();
         b.block.delegee.presDumpPons.forEachFast(pon => {
-            b.delegee.presDumpTs.push(LCPos.getTileRectRotCenter(GLB_var.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), GLB_var.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
+            b.delegee.presDumpTs.push(SLCPos.getTileRectRotCenter(GLB_var.world.tile(b.tileX() + pon.x, b.tileY() + pon.y), GLB_var.world.tile(b.tileX(), b.tileY()), b.rotation, 1, b.block.size));
         }, true);
     };
 
@@ -151,7 +151,7 @@
         let b_t = b.delegee.presDumpTargets[b.delegee.presDumpIncre % b.delegee.presDumpTargets.length];
         b.delegee.presDumpIncre++;
         if(!b_t.isAdded() || b_t.isPayload()) return false;
-        let amtTrans = LCCraftingHandler.addLiquid(b, b, !isVac ? GLB_varGen.auxPres : GLB_varGen.auxVac, -(rate - 0.0001));
+        let amtTrans = SLCCraftingHandler.addLiquid(b, b, !isVac ? GLB_varGen.auxPres : GLB_varGen.auxVac, -(rate - 0.0001));
         if(amtTrans < 0.0001) return false;
         b_t.delegee.presBase = b_t.delegee.presBase + amtTrans * (isVac ? -1.0 : 1.0);
         return true;

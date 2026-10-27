@@ -61,7 +61,7 @@
         if(!b.block.rotate) {
             b.delegee.lootDumpVec.set(b.x, b.y);
         } else {
-            LCPos.getCoordsBack(b.delegee.lootDumpVec, b.x, b.y, b.block.size, b.rotation);
+            SLCPos.getCoordsBack(b.delegee.lootDumpVec, b.x, b.y, b.block.size, b.rotation);
         };
     };
 

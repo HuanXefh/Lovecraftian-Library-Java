@@ -33,8 +33,8 @@
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
         blk.delegee.useP3dRange ?
-            LCDrawP3D.cylinderFade(tx.toFCoord(blk.size), ty.toFCoord(blk.size), 1.0, blk.delegee.blkRad, blk.self.ex_getBlkRadColor(valid)) :
-            LCDrawf.circlePlace(blk, tx, ty, blk.delegee.blkRad, true, blk.self.ex_getBlkRadColor(valid));
+            SLCDrawP3d.cylinderFade(tx.toFCoord(blk.size), ty.toFCoord(blk.size), 1.0, blk.delegee.blkRad, blk.self.ex_getBlkRadColor(valid)) :
+            SLCDrawf.circlePlace(blk, tx, ty, blk.delegee.blkRad, true, blk.self.ex_getBlkRadColor(valid));
     };
 
 
@@ -44,9 +44,9 @@
      * @return {void}
      */
     function comp_draw(b) {
-        if(!b.isPayload() && b.block.delegee.useP3dRange && LCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
+        if(!b.isPayload() && b.block.delegee.useP3dRange && SLCCheck.checkPosHoveredRect(b.x, b.y, 0, b.block.size)) {
             processZ(GLB_var.layer.p3dRange);
-            LCDrawP3D.cylinderFade(b.x, b.y, 1.0, b.block.delegee.blkRad, b.block.self.ex_getBlkRadColor(true));
+            SLCDrawP3d.cylinderFade(b.x, b.y, 1.0, b.block.delegee.blkRad, b.block.self.ex_getBlkRadColor(true));
             processZ();
         };
     };
@@ -59,7 +59,7 @@
      */
     function comp_drawSelect(b) {
         if(!b.block.delegee.useP3dRange) {
-            LCDrawf.circleSelect(b, b.block.delegee.blkRad, true, b.block.self.ex_getBlkRadColor(true));
+            SLCDrawf.circleSelect(b, b.block.delegee.blkRad, true, b.block.self.ex_getBlkRadColor(true));
         };
     };
 

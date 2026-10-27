@@ -7,9 +7,9 @@ import lovec.content.LCBuildUpdater;
 import lovec.content.LCContentUpdater;
 import lovec.type.block.factory.MultiBlockCrafter;
 import lovec.type.block.factory.MultiBlockLinkBlock;
-import lovec.utils.LCPos;
-import lovec.utils.LCScript;
-import lovec.utils.LCScriptUtil;
+import lovec.utils.SLCPos;
+import lovec.utils.SLCScript;
+import lovec.utils.SLCScriptUtil;
 import mindustry.gen.Building;
 import mindustry.type.Liquid;
 
@@ -42,7 +42,7 @@ public class BLKPipePumpUpdater extends LCContentUpdater<MultiBlockCrafter> {
         protected void resolve() throws NoSuchFieldException, IllegalAccessException {
             pumpBackB = (Building) get("pumpBackB");
             pumpLiqCur = (Liquid) get("pumpLiqCur");
-            presBase = LCScript.toFloat(get("presBase"));
+            presBase = SLCScript.toFloat(get("presBase"));
         };
 
 
@@ -50,7 +50,7 @@ public class BLKPipePumpUpdater extends LCContentUpdater<MultiBlockCrafter> {
         public void updateTile() throws NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
             resolve();
 
-            if(LCScriptUtil.checkTimer("sec")) {
+            if(SLCScriptUtil.checkTimer("sec")) {
                 b.onProximityUpdate();
                 float pumpPresCur = 0f;
                 if(pumpBackB != null) {
@@ -58,9 +58,9 @@ public class BLKPipePumpUpdater extends LCContentUpdater<MultiBlockCrafter> {
                         pumpBackB = omb.linkedBuild;
                     };
                     if(has(pumpBackB, "ex_getPres")) {
-                        pumpPresCur = LCScript.toFloat(invoke(pumpBackB, "ex_getPres"));
+                        pumpPresCur = SLCScript.toFloat(invoke(pumpBackB, "ex_getPres"));
                     };
-                    if(LCScriptUtil.checkTemplate(pumpBackB.block, "BLK_pipePump")) {
+                    if(SLCScriptUtil.checkTemplate(pumpBackB.block, "BLK_pipePump")) {
                         pumpPresCur = presBase;
                     };
                 };
@@ -82,8 +82,8 @@ public class BLKPipePumpUpdater extends LCContentUpdater<MultiBlockCrafter> {
         public boolean acceptLiquid(Building b_f, Liquid liq) throws NoSuchFieldException, IllegalAccessException {
             if(b.liquids.get(liq) / blk.liquidCapacity >= 0.98f) return false;
             if(blk.consumesLiquid(liq)) return true;
-            if(LCScriptUtil.checkCond("isAuxiliaryFluid", liq)) return false;
-            if(LCPos.getRotation(b_f, b) != b.rotation) return false;
+            if(SLCScriptUtil.checkCond("isAuxiliaryFluid", liq)) return false;
+            if(SLCPos.getRotation(b_f, b) != b.rotation) return false;
 
             pumpLiqCur = (Liquid) get("pumpLiqCur");
             if(pumpLiqCur != null && liq != pumpLiqCur) return false;

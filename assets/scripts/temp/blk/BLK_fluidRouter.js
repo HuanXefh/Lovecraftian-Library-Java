@@ -74,7 +74,7 @@
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
         if(!blk.delegee.noPresExplode) {
-            LCDrawf.diskWarning(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.presExploRad);
+            SLCDrawf.diskWarning(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.presExploRad);
         };
     };
 
@@ -107,7 +107,7 @@
      */
     function comp_drawSelect(b) {
         if(!b.block.delegee.noPresExplode) {
-            LCDrawf.diskWarning(b.x, b.y, b.block.delegee.presExploRad);
+            SLCDrawf.diskWarning(b.x, b.y, b.block.delegee.presExploRad);
         };
     };
 

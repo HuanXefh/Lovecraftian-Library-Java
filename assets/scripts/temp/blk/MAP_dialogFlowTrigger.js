@@ -71,7 +71,7 @@
      */
     function comp_drawSelect(b) {
         if(!Vars.state.isEditor()) return;
-        LCDrawf.textSelect(b, b.delegee.nameDialFlow, true);
+        SLCDrawf.textSelect(b, b.delegee.nameDialFlow, true);
     };
 
 

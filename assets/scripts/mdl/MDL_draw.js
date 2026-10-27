@@ -7,7 +7,7 @@
 
     /**
      * Methods related to draw.
-     * Most draw methods are defined in {@link LCDraw} and {@link LCDrawf}.
+     * Most draw methods are defined in {@link SLCDraw} and {@link SLCDrawf}.
      * This module is reserved for very tricky ones.
      * @module lovec/mdl/MDL_draw
      */
@@ -155,7 +155,7 @@
         let
             x = e.x,
             y = e.y,
-            hitSize = LCProp.getHitSize(e),
+            hitSize = SLCProp.getHitSize(e),
             w = Math.max((hitSize + 8.0 + offW) * 1.7, 14.0),
             offY = hitSize * 0.5 + 4.0 + (offTy + 1.25) * Vars.tilesize;
 
@@ -249,7 +249,7 @@
             while(tmpOb != null) {
                 if(!thisFun.tmpBs.includes(tmpOb)) {
                     if(!isFirst) {
-                        LCDrawf.connectorCircleArrow(tmpOb, tmpB, null);
+                        SLCDrawf.connectorCircleArrow(tmpOb, tmpB, null);
                     };
                     thisFun.tmpBs.push(tmpOb);
                     tmpB = tmpOb;
@@ -265,7 +265,7 @@
                 tmpOb = ot.build;
                 if(tmpOb != null && tmpOb.block === b.block && !thisFun.tmpBs.includes(tmpOb)) {
                     if(!isFirst) {
-                        LCDrawf.connectorCircleArrow(tmpOb, tmpB, null);
+                        SLCDrawf.connectorCircleArrow(tmpOb, tmpB, null);
                     };
                     thisFun.tmpBs.push(tmpOb);
                     tmpB = ot.build;

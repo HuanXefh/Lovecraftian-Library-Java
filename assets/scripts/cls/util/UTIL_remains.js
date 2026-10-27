@@ -84,7 +84,7 @@
      */
     UTIL_remains.checkInLiq = function thisFun(t, etp) {
         return t != null
-            && LCPos.getTilesRect(thisFun.tmpTs, t, 1, 1).every(ot => ot.floor().isLiquid)
+            && SLCPos.getTilesRect(thisFun.tmpTs, t, 1, 1).every(ot => ot.floor().isLiquid)
             && (etp instanceof Block || (t.build == null && !(t.solid() && MDL_cond.isTreeBlock(t.block()))))
     }
     .setProp({
@@ -103,7 +103,7 @@
      * @return {boolean}
      */
     UTIL_remains.checkFloating = function(etp, hitSize) {
-        return !(etp instanceof Block) && tryVal(hitSize, LCProp.getHitSize(etp)) < GLB_var.param.unitRemainsFloatThr;
+        return !(etp instanceof Block) && tryVal(hitSize, SLCProp.getHitSize(etp)) < GLB_var.param.unitRemainsFloatThr;
     };
 
 
@@ -129,14 +129,14 @@
             x: x,
             y: y,
             t: t,
-            hitSize: LCProp.getHitSize(blk),
+            hitSize: SLCProp.getHitSize(blk),
             rotation: Mathf.random(90.0) - 45.0,
             color: GLB_color.darkMix,
             a: a,
             aSha: 0.3,
             z: z,
             off: Mathf.random(GLB_var.param.buildRemainsOffCap),
-            region: LCTexture.getBlockRegion(blk),
+            region: SLCTexture.getBlockRegion(blk),
 
 
             remove() {
@@ -202,7 +202,7 @@
             floatOffX: 0.0,
             floatOffY: 0.0,
             t: t,
-            hitSize: LCProp.getHitSize(utp),
+            hitSize: SLCProp.getHitSize(utp),
             clipRad: null,
             rotation: unit == null ? Mathf.random(360.0) : (unit.rotation - 90.0 + Mathf.range(25.0)),
             team: team,
@@ -360,7 +360,7 @@
             t = GLB_var.world.tileWorld(Tmp.v4.x, Tmp.v4.y);
             if(t != null) {
                 hitSize = vecBase.dst(leg.joint);
-                inLiq = !LCRaycast.rayCheck(vecBase.x, vecBase.y, leg.joint.x, leg.joint.y, (tx, ty) => {
+                inLiq = !SLCRaycast.rayCheck(vecBase.x, vecBase.y, leg.joint.x, leg.joint.y, (tx, ty) => {
                     ot = GLB_var.world.tile(tx, ty);
                     return !UTIL_remains.checkInLiq(ot, utp);
                 });
@@ -402,7 +402,7 @@
             t = GLB_var.world.tileWorld(Tmp.v4.x, Tmp.v4.y);
             if(t != null) {
                 hitSize = vecLegJoint.dst(leg.base);
-                inLiq = !LCRaycast.rayCheck(vecLegJoint.x, vecLegJoint.y, leg.base.x, leg.base.y, (tx, ty) => {
+                inLiq = !SLCRaycast.rayCheck(vecLegJoint.x, vecLegJoint.y, leg.base.x, leg.base.y, (tx, ty) => {
                     ot = GLB_var.world.tile(tx, ty);
                     return !UTIL_remains.checkInLiq(ot, utp);
                 });

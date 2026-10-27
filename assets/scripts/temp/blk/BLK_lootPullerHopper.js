@@ -71,7 +71,7 @@
             b.delegee.progWait += b.edelta();
             if(b.delegee.progWait > b.block.delegee.intvPull) {
                 b.delegee.progWait %= b.block.delegee.intvPull;
-                LCEntity.getLoots(b.delegee.pullTargets, b.x, b.y, b.block.delegee.blkRad).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
+                SLCEntity.getLoots(b.delegee.pullTargets, b.x, b.y, b.block.delegee.blkRad).inSituFilter(loot => Mathf.dst(loot.x, loot.y, b.x, b.y) > b.block.size * 0.5 * Vars.tilesize);
                 b.delegee.isPulling = b.delegee.pullTargets.length > 0;
             };
         } else {
@@ -100,11 +100,11 @@
      * @return {void}
      */
     function comp_draw(b) {
-        LCDrawf.fade(b.x, b.y, b.block.delegee.glowReg, 1.0, 0.0, 1.0, Color.white, b.delegee.glowHeat * 0.7);
+        SLCDrawf.fade(b.x, b.y, b.block.delegee.glowReg, 1.0, 0.0, 1.0, Color.white, b.delegee.glowHeat * 0.7);
         if(b.delegee.glowHeat > 0.01) {
             b.delegee.pullTargets.forEachFast(loot => {
                 if(loot.isAdded()) {
-                    LCDrawf.arrowLine(loot.x, loot.y, b.x, b.y, 2.0, 1.0, Color.white, 0.35 * b.delegee.glowHeat, GLB_var.layer.effFlr);
+                    SLCDrawf.arrowLine(loot.x, loot.y, b.x, b.y, 2.0, 1.0, Color.white, 0.35 * b.delegee.glowHeat, GLB_var.layer.effFlr);
                 };
             }, true);
         };

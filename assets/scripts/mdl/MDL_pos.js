@@ -7,7 +7,7 @@
 
     /**
      * Methods to calculate position.
-     * Most methods are defined in {@link LCPos}.
+     * Most methods are defined in {@link SLCPos}.
      * @module lovec/mdl/MDL_pos
      */
 
@@ -51,7 +51,7 @@
 
         let frac = 0.0;
         if(!useToAsParent ? !b_f.block.rotate : !b_t.block.rotate) {
-            frac = LCPos
+            frac = SLCPos
             .getTilesEdge(thisFun.tmpTs, (useToAsParent ? b_t : b_f).tile, (useToAsParent ? b_t : b_f).block.size, false)
             .count(useToAsParent ? b_f : b_t, ot => ot.build)
             / thisFun.tmpTs.length
@@ -61,13 +61,13 @@
 
                 case SideFracModes.ALL :
                     if(!useToAsParent) {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesEdge(thisFun.tmpTs, b_f.tile, b_f.block.size, false)
                         .count(b_t, ot => ot.build)
                         * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     } else {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesEdge(thisFun.tmpTs, b_t.tile, b_t.block.size, false)
                         .count(b_f, ot => ot.build)
                         * (forceOneSide ? 4.0 : 1.0)
@@ -77,12 +77,12 @@
 
                 case SideFracModes.FRONT :
                     if(!useToAsParent) {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesRot(thisFun.tmpTs, b_f.tile, b_f.rotation, b_f.block.size)
                         .count(b_t, ot => ot.build)
                         / thisFun.tmpTs.length;
                     } else {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesRot(thisFun.tmpTs, b_t.tile, Mathf.mod(b_t.rotation + 2, 4), b_t.block.size)
                         .count(b_f, ot => ot.build)
                         / thisFun.tmpTs.length;
@@ -91,12 +91,12 @@
 
                 case SideFracModes.BACK :
                     if(!useToAsParent) {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesRot(thisFun.tmpTs, b_f.tile, Mathf.mod(b_f.rotation + 2, 4), b_f.block.size)
                         .count(b_t, ot => ot.build)
                         / thisFun.tmpTs.length;
                     } else {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesRot(thisFun.tmpTs, b_t.tile, b_t.rotation, b_t.block.size)
                         .count(b_f, ot => ot.build)
                         / thisFun.tmpTs.length;
@@ -107,11 +107,11 @@
                     if(!useToAsParent) {
                         frac = (
                             (
-                                LCPos
+                                SLCPos
                                 .getTilesRot(thisFun.tmpTs, b_f.tile, Mathf.mod(b_f.rotation + 1, 4), b_f.block.size)
                                 .count(b_t, ot => ot.build)
                             ) + (
-                                LCPos
+                                SLCPos
                                 .getTilesRot(thisFun.tmpTs, b_f.tile, Mathf.mod(b_f.rotation - 1, 4), b_f.block.size)
                                 .count(b_t, ot => ot.build)
                             )
@@ -119,11 +119,11 @@
                     } else {
                         frac = (
                             (
-                                LCPos
+                                SLCPos
                                 .getTilesRot(thisFun.tmpTs, b_t.tile, Mathf.mod(b_t.rotation + 1, 4), b_t.block.size)
                                 .count(b_f, ot => ot.build)
                             ) + (
-                                LCPos
+                                SLCPos
                                 .getTilesRot(thisFun.tmpTs, b_t.tile, Mathf.mod(b_t.rotation - 1, 4), b_t.block.size)
                                 .count(b_f, ot => ot.build)
                             )
@@ -133,15 +133,15 @@
 
                 case SideFracModes.NON_FRONT :
                     if(!useToAsParent) {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesEdge(thisFun.tmpTs, b_f.tile, b_f.block.size)
-                        .count(b_t, ot => b_f.block.rotate && LCPos.getRotation(b_f.tile, ot) === b_f.rotation ? null : ot.build)
+                        .count(b_t, ot => b_f.block.rotate && SLCPos.getRotation(b_f.tile, ot) === b_f.rotation ? null : ot.build)
                         * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     } else {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesEdge(thisFun.tmpTs, b_t.tile, b_t.block.size)
-                        .count(b_f, ot => b_f.block.rotate && LCPos.getRotation(b_f.tile, ot) === b_t.rotation ? null : ot.build)
+                        .count(b_f, ot => b_f.block.rotate && SLCPos.getRotation(b_f.tile, ot) === b_t.rotation ? null : ot.build)
                         * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     }
@@ -149,15 +149,15 @@
 
                 case SideFracModes.NON_BACK :
                     if(!useToAsParent) {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesEdge(thisFun.tmpTs, b_f.tile, b_f.block.size)
-                        .count(b_t, ot => b_f.block.rotate && Mathf.mod(LCPos.getRotation(b_f.tile, ot) + 2, 4) === b_f.rotation ? null : ot.build)
+                        .count(b_t, ot => b_f.block.rotate && Mathf.mod(SLCPos.getRotation(b_f.tile, ot) + 2, 4) === b_f.rotation ? null : ot.build)
                         * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     } else {
-                        frac = LCPos
+                        frac = SLCPos
                         .getTilesEdge(thisFun.tmpTs, b_t.tile, b_t.block.size)
-                        .count(b_f, ot => b_f.block.rotate && Mathf.mod(LCPos.getRotation(b_f.tile, ot) + 2, 4) === b_t.rotation ? null : ot.build)
+                        .count(b_f, ot => b_f.block.rotate && Mathf.mod(SLCPos.getRotation(b_f.tile, ot) + 2, 4) === b_t.rotation ? null : ot.build)
                         * (forceOneSide ? 4.0 : 1.0)
                         / thisFun.tmpTs.length;
                     }

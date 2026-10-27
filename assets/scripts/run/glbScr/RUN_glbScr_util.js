@@ -648,7 +648,7 @@
             if(fi == null) return null;
             let jval = jsonToJval(fi);
             // Convert `Jval` to `JsonValue` in v8
-            if(LCVersionResolver.isV8) {
+            if(SLCVersionResolver.isV8) {
                 jval = eval("GLB_var.jsonParser.fromJson(null, jval.toString(Jval.Jformat.plain))");
             };
             if(jval.isString()) {
@@ -668,7 +668,7 @@
          * @param {boolean|unset} [def]
          */
         getBool(jval, name, def) {
-            return LCVersionResolver.isV8 ?
+            return SLCVersionResolver.isV8 ?
                 jval.getBoolean(name, Boolean(def)) :
                 jval.getBool(name, Boolean(def));
         },
@@ -714,7 +714,7 @@
             if(jval.has("defaultEnv")) {
                 obj.defaultEnv = LCContentParser.parseEnv(jval.remove("defaultEnv"));
             };
-            Reflect.invoke(ContentParser, GLB_var.ctParser, "readFields", [obj, jval], JAVA.object, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
+            Reflect.invoke(ContentParser, GLB_var.ctParser, "readFields", [obj, jval], JAVA.object, SLCVersionResolver.isV8 ? eval("JsonValue") : Jval);
         },
 
 
@@ -838,7 +838,7 @@
             };
             if(jval.isArray()) {
                 let names = [];
-                LCVersionResolver.isV8 ?
+                SLCVersionResolver.isV8 ?
                     jval.asStringArray().forEach(str => names.push(str)) :
                     jval.asArray().each(ojval => names.push(ojval.asString()));
                 return getEnvSet.apply(null, names);
@@ -855,20 +855,20 @@
         parseBlock(blk, jval) {
             LCContentParser.read(run(() => {
                 if(jval.has("consumes") && jval.get("consumes").isObject()) {
-                    Reflect.invoke(ContentParser, GLB_var.ctParser, "readBlockConsumers", [blk, jval.get("consumes")], Block, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
+                    Reflect.invoke(ContentParser, GLB_var.ctParser, "readBlockConsumers", [blk, jval.get("consumes")], Block, SLCVersionResolver.isV8 ? eval("JsonValue") : Jval);
                     jval.remove("consumes");
                 };
                 if(jval.has("requirements") && blk.buildVisibility === BuildVisibility.hidden) {
                     blk.buildVisibility = BuildVisibility.shown;
                 };
                 // `armored` in duct
-                if(!LCVersionResolver.isV8 && jval.has("armored") && blk instanceof Duct) {
+                if(!SLCVersionResolver.isV8 && jval.has("armored") && blk instanceof Duct) {
                     blk.noSideBlend = LCContentParser.getBool(jval, "armored", false);
                     jval.remove("armored");
                 };
                 // turret
                 if(blk instanceof Turret) {
-                    if(LCVersionResolver.isV8) {
+                    if(SLCVersionResolver.isV8) {
                         if(jval.has("maxAmmo") && instanceOfAny(blk, ItemTurret, LiquidTurret)) {
                             console.warn("[LOVEC] Do not use `maxAmmo` for item turret and liquid turret! Set capacity instead.");
                             jval.remove("maxAmmo");
@@ -932,7 +932,7 @@
                     pla.meshLoader = prov(() => {
                         let mesh_fi;
                         try {
-                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
+                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, SLCVersionResolver.isV8 ? eval("JsonValue") : Jval);
                         } catch(err) {
                             console.err(err);
                             mesh_fi = new ShaderSphereMesh(pla, Shaders.unlit, 2);
@@ -952,7 +952,7 @@
                     pla.cloudMeshLoader = prov(() => {
                         let mesh_fi;
                         try {
-                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, LCVersionResolver.isV8 ? eval("JsonValue") : Jval);
+                            mesh_fi = Reflect.invoke(ContentParser, GLB_var.ctParser, "parseMesh", [pla, mesh], Planet, SLCVersionResolver.isV8 ? eval("JsonValue") : Jval);
                         } catch(err) {
                             console.err(err);
                             mesh_fi = null;
@@ -986,7 +986,7 @@
                 if(jval.has("difficulty")) {
                     let difficulty = jval.remove("difficulty");
                     let difficulty_fi;
-                    if(LCVersionResolver.isV8) {
+                    if(SLCVersionResolver.isV8) {
                         if(difficulty.isNumber()) {
                             difficulty_fi = difficulty.asInt();
                         } else {
@@ -1108,7 +1108,7 @@
      * @return {boolean}
      */
     syncChance = function(name, trueChance) {
-        return LCRand.chance(UTIL_rand.get(name), trueChance);
+        return SLCRand.chance(UTIL_rand.get(name), trueChance);
     };
 
 
@@ -1120,7 +1120,7 @@
      * @return {boolean}
      */
     syncChanceDelta = function(name, trueChance) {
-        return LCRand.chanceDelta(UTIL_rand.get(name), trueChance);
+        return SLCRand.chanceDelta(UTIL_rand.get(name), trueChance);
     };
 
 

@@ -88,12 +88,12 @@
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return;
 
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
-            LCPos.getTilesRect(thisFun.tmpTs, t, blk.delegee.attrR, blk.size).inSituFilter(ot => MDL_attr.calcSumByTs([ot], blk.attribute, blk.delegee.attrMode) > 0.0);
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+            SLCPos.getTilesRect(thisFun.tmpTs, t, blk.delegee.attrR, blk.size).inSituFilter(ot => MDL_attr.calcSumByTs([ot], blk.attribute, blk.delegee.attrMode) > 0.0);
         };
 
         thisFun.tmpTs.forEachFast(ot => {
-            LCDrawf.areaShrink(ot, (blk.delegee.attrMode & AttrModes.BLOCK) !== 0 ? ot.block().size : 1, valid ? GLB_color.accent : GLB_color.remove);
+            SLCDrawf.areaShrink(ot, (blk.delegee.attrMode & AttrModes.BLOCK) !== 0 ? ot.block().size : 1, valid ? GLB_color.accent : GLB_color.remove);
         }, true);
     }
     .setProp({

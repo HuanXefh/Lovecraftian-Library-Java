@@ -11,7 +11,7 @@ import mindustry.game.EventType;
 /**
  * Used to mute vanilla sound control and play custom music.
  */
-public class LCSoundControl {
+public class SLCSoundControl {
 
 
     protected static Music musCur;
@@ -21,7 +21,7 @@ public class LCSoundControl {
 
 
     public static void load() {
-        Events.run(EventType.Trigger.update, LCSoundControl::update);
+        Events.run(EventType.Trigger.update, SLCSoundControl::update);
     };
 
 

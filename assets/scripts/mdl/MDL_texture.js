@@ -28,14 +28,14 @@
      * @return {TextureRegion|string}
      */
     const getRegBlk = function(blk_gn, shouldReturnName) {
-        if(Vars.headless) return shouldReturnName ? "" : LCAirObjects.textureRegion;
+        if(Vars.headless) return shouldReturnName ? "" : SLCAirObjects.textureRegion;
 
         let blk = findContent(blk_gn);
-        if(blk == null) return LCAirObjects.textureRegion;
+        if(blk == null) return SLCAirObjects.textureRegion;
 
         return shouldReturnName ?
-            LCTexture.getBlockRegionString(blk) :
-            LCTexture.getBlockRegion(blk);
+            SLCTexture.getBlockRegionString(blk) :
+            SLCTexture.getBlockRegion(blk);
     }
     .setCache();
     exports.getRegBlk = getRegBlk;
@@ -53,7 +53,7 @@
     const getRegBlkTileCut = function(blk_gn, offTx, offTy, tileWidth) {
         if(tileWidth == null) tileWidth = 32.0;
         let reg = getRegBlk(blk_gn);
-        if(reg === LCAirObjects.textureRegion) return reg;
+        if(reg === SLCAirObjects.textureRegion) return reg;
         return new TextureRegion(reg, offTx * tileWidth, offTy * tileWidth, tileWidth, tileWidth);
     }
     .setCache();
@@ -68,9 +68,9 @@
      * @return {TextureRegion}
      */
     const getRegVari = function(blk_gn, t, off) {
-        if(Vars.headless) return LCAirObjects.textureRegion;
+        if(Vars.headless) return SLCAirObjects.textureRegion;
         let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
-        if(blk == null) return LCAirObjects.textureRegion;
+        if(blk == null) return SLCAirObjects.textureRegion;
         if(blk.variants === 0) return blk.region;
         if(off == null) off = 0;
         return blk.variantRegions[Math.floor(Mathf.randomSeed(t.pos() + off, 0.0, Mathf.maxZero(blk.variantRegions.length - 1) + 0.9999))];
@@ -84,9 +84,9 @@
      * @return {TextureRegion}
      */
     const getRegTurBase = function(blk_gn) {
-        if(Vars.headless) return LCAirObjects.textureRegion;
+        if(Vars.headless) return SLCAirObjects.textureRegion;
         let blk = MDL_content.getCt(blk_gn, ContentGetModes.BLK);
-        if(blk == null) return LCAirObjects.textureRegion;
+        if(blk == null) return SLCAirObjects.textureRegion;
         if(blk.baseRegion != null) return blk.baseRegion;
 
         if(blk instanceof Turret) {
@@ -98,7 +98,7 @@
             };
         };
 
-        return LCAirObjects.textureRegion;
+        return SLCAirObjects.textureRegion;
     }
     .setCache();
     exports.getRegTurBase = getRegTurBase;
@@ -270,7 +270,7 @@
     const packIcon = function(ct, packer, suffix, pixF) {
         if(suffix == null) suffix = "";
         let pix = pixF();
-        LCVersionResolver.isV8 ?
+        SLCVersionResolver.isV8 ?
             packer.add(eval("MultiPacker.PageType.main"), ct.name + suffix, pix) :
             packer.add(ct.name + suffix, pix);
         pix.dispose();

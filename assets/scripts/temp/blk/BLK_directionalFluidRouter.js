@@ -53,7 +53,7 @@
      * @return {void}
      */
     function comp_draw(b) {
-        LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
+        SLCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
     };
 
 
@@ -166,7 +166,7 @@
 
 
             acceptLiquid: function(b_f, liq) {
-                return LCGeometry.accept(b_f, this, MDL_cond.isFluidRouter(b_f.block), false);
+                return SLCGeometry.accept(b_f, this, MDL_cond.isFluidRouter(b_f.block), false);
             }
             .setProp({
                 boolMode: "and",

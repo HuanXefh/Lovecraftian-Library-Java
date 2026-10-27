@@ -27,10 +27,10 @@
 
 
     __annoTargetMap__.put("LCFromScript", [
-        "LCVersionResolver",
+        "SLCVersionResolver",
 
-        "LCPal",
-        "LCScriptUtil",
+        "SLCPal",
+        "SLCScriptUtil",
     ]);
 
 

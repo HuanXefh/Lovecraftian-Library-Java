@@ -10,7 +10,7 @@ import arc.struct.IntFloatMap;
 import arc.util.Time;
 import arc.util.Tmp;
 import lovec.annotation.LCJSONTypeClass;
-import lovec.graphics.LCDraw;
+import lovec.graphics.SLCDraw;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
@@ -53,10 +53,10 @@ public class LCDrawFire extends LCDrawer {
         };
         float warmup = b.warmup();
         Draw.color(Color.white, warmup > 0f ? 1f : 0f);
-        LCDraw.processScl(warmup);
+        SLCDraw.processScl(warmup);
         calcRotatedOff(Tmp.v1, b.rotation).add(b);
         Draw.rect(regs[Mathf.floor(frameCurMap.get(posInt))], Tmp.v1.x, Tmp.v1.y);
-        LCDraw.processScl(-1f);
+        SLCDraw.processScl(-1f);
         Draw.color();
     };
 

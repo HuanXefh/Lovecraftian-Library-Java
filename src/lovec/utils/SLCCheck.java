@@ -13,7 +13,7 @@ import mindustry.world.blocks.environment.EmptyFloor;
 /**
  * For various condition check.
  */
-public class LCCheck {
+public class SLCCheck {
 
 
     static Polygon tmpTriangle;
@@ -85,7 +85,7 @@ public class LCCheck {
      * Whether a rectangular range at (x, y) has mouse.
      */
     public static boolean checkPosHoveredRect(float x, float y, float r, float size) {
-        var hw = LCPos.calcRectHW(r, size);
+        var hw = SLCPos.calcRectHW(r, size);
         return Math.abs(x - Core.input.mouseWorldX()) < hw && Math.abs(y - Core.input.mouseWorldY()) < hw;
     };
     // Overload
@@ -98,7 +98,7 @@ public class LCCheck {
      * Whether floor at (x, y) supports shadow.
      */
     public static boolean checkPosCanShadow(float x, float y) {
-        var flr = LCVersionResolver.world.floorWorld(x, y);
+        var flr = SLCVersionResolver.world.floorWorld(x, y);
         return flr != null && flr.canShadow && !(flr instanceof EmptyFloor);
     };
 
@@ -111,11 +111,11 @@ public class LCCheck {
      */
     public static boolean checkEntityVisible(Object obj) {
         if(obj instanceof Building b) {
-            return checkPosVisible(b.x, b.y, LCProp.getClipSize(b));
+            return checkPosVisible(b.x, b.y, SLCProp.getClipSize(b));
         } else if(obj instanceof Unit unit) {
-            return !unit.inFogTo(Vars.player.team()) && checkPosVisible(unit.x, unit.y, LCProp.getClipSize(unit));
+            return !unit.inFogTo(Vars.player.team()) && checkPosVisible(unit.x, unit.y, SLCProp.getClipSize(unit));
         } else if(obj instanceof Bullet bul) {
-            return checkPosVisible(bul.x, bul.y, LCProp.getClipSize(bul));
+            return checkPosVisible(bul.x, bul.y, SLCProp.getClipSize(bul));
         };
         return true;
     };

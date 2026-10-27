@@ -162,8 +162,8 @@
      */
     Number.prototype.toFCoord = function(size) {
         return size == null ?
-            LCPos.toFCoord(this) :
-            LCPos.toFCoord(this, size);
+            SLCPos.toFCoord(this) :
+            SLCPos.toFCoord(this, size);
     };
 
 
@@ -172,7 +172,7 @@
      * @return {number}
      */
     Number.prototype.toIntCoord = function() {
-        return LCPos.toIntCoord(this);
+        return SLCPos.toIntCoord(this);
     };
 
 
@@ -182,7 +182,7 @@
      * @return {number}
      */
     Number.prototype.toRectW = function(size) {
-        return LCPos.calcRectW(this, size);
+        return SLCPos.calcRectW(this, size);
     };
 
 
@@ -192,7 +192,7 @@
      * @return {number}
      */
     Number.prototype.toRectHW = function(size) {
-        return LCPos.calcRectHW(this, size);
+        return SLCPos.calcRectHW(this, size);
     };
 
 

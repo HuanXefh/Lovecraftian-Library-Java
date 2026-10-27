@@ -6,7 +6,7 @@ import arc.util.Time;
 import mindustry.gen.Building;
 import mindustry.type.Liquid;
 
-public class LCCraftingHandler {
+public class SLCCraftingHandler {
 
 
     /* <-------------------- fluid --------------------> */

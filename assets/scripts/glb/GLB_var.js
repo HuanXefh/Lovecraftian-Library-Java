@@ -26,7 +26,7 @@
 
 
     /** @type {Entities} */
-    exports.entities = LCVersionResolver.isV8 ? eval("Groups") : eval("Vars.state.entities");
+    exports.entities = SLCVersionResolver.isV8 ? eval("Groups") : eval("Vars.state.entities");
     /** @type {EntityGroup<Entityc>} */
     exports.allEntities = module.exports.entities.all;
     /** @type {EntityGroup<Building>} */
@@ -48,23 +48,23 @@
     /** @type {EntityGroup<Syncc>} */
     exports.syncEntities = module.exports.entities.sync;
     /** @type {EntityCollisions} */
-    exports.collisions = LCVersionResolver.isV8 ? eval("Vars.collisions") : eval("Vars.state.collisions");
+    exports.collisions = SLCVersionResolver.isV8 ? eval("Vars.collisions") : eval("Vars.state.collisions");
     /** @type {AvoidanceProcess} */
-    exports.avoidance = LCVersionResolver.isV8 ? eval("Vars.avoidance") : eval("Vars.state.avoidance");
+    exports.avoidance = SLCVersionResolver.isV8 ? eval("Vars.avoidance") : eval("Vars.state.avoidance");
     /** @type {PhysicsProcess} */
-    exports.unitPhysics = LCVersionResolver.isV8 ? eval("Vars.unitPhysics") : eval("Vars.state.unitPhysics");
+    exports.unitPhysics = SLCVersionResolver.isV8 ? eval("Vars.unitPhysics") : eval("Vars.state.unitPhysics");
     /** @type {World} */
-    exports.world = LCVersionResolver.isV8 ? eval("Vars.world") : eval("Vars.state.world");
+    exports.world = SLCVersionResolver.isV8 ? eval("Vars.world") : eval("Vars.state.world");
     /** @type {WaveSpawner} */
-    exports.spawner = LCVersionResolver.isV8 ? eval("Vars.spawner") : eval("Vars.state.spawner");
+    exports.spawner = SLCVersionResolver.isV8 ? eval("Vars.spawner") : eval("Vars.state.spawner");
     /** @type {BlockIndexer} */
-    exports.indexer = LCVersionResolver.isV8 ? eval("Vars.indexer") : eval("Vars.state.indexer");
+    exports.indexer = SLCVersionResolver.isV8 ? eval("Vars.indexer") : eval("Vars.state.indexer");
     /** @type {Pathfinder} */
-    exports.pathfinder = LCVersionResolver.isV8 ? eval("Vars.pathfinder") : eval("Vars.state.pathfinder");
+    exports.pathfinder = SLCVersionResolver.isV8 ? eval("Vars.pathfinder") : eval("Vars.state.pathfinder");
     /** @type {ControlPathFinder} */
-    exports.controlPath = LCVersionResolver.isV8 ? eval("Vars.controlPath") : eval("Vars.state.controlPath");
+    exports.controlPath = SLCVersionResolver.isV8 ? eval("Vars.controlPath") : eval("Vars.state.controlPath");
     /** @type {FogControl} */
-    exports.fogControl = LCVersionResolver.isV8 ? eval("Vars.fogControl") : eval("Vars.state.fogControl");
+    exports.fogControl = SLCVersionResolver.isV8 ? eval("Vars.fogControl") : eval("Vars.state.fogControl");
 
 
     /**

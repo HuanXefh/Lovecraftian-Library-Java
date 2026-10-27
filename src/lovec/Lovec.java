@@ -1,34 +1,34 @@
 package lovec;
 
 import arc.util.*;
-import lovec.audio.LCSoundControl;
-import lovec.content.LCMultiBlockHandler;
-import lovec.graphics.LCDrawf;
-import lovec.utils.LCVersionResolver;
-import lovec.utils.LCScript;
+import lovec.audio.SLCSoundControl;
+import lovec.content.SLCMultiBlockHandler;
+import lovec.graphics.SLCDrawf;
+import lovec.utils.SLCVersionResolver;
+import lovec.utils.SLCScript;
 import mindustry.mod.*;
 
 public class Lovec extends Mod{
 
 
     public Lovec() {
-        LCVersionResolver.load();
-        LCSoundControl.load();
-        LCClassMap.load();
+        SLCVersionResolver.load();
+        SLCSoundControl.load();
+        SLCClassMap.load();
         Log.info("[LOVEC] Loaded Java classes.");
     };
 
 
     @Override
     public void init() {
-        LCScript.init();
-        LCDrawf.init();
+        SLCScript.init();
+        SLCDrawf.init();
     };
 
 
     @Override
     public void loadContent() {
-        LCMultiBlockHandler.loadBlock();
+        SLCMultiBlockHandler.loadBlock();
     };
 
 

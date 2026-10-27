@@ -13,7 +13,7 @@ import mindustry.world.Block;
 /**
  * Handles generalized properties.
  */
-public class LCProp {
+public class SLCProp {
 
 
     /**

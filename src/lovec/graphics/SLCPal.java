@@ -3,7 +3,7 @@ package lovec.graphics;
 import arc.graphics.Color;
 import lovec.annotation.LCFromScript;
 
-public class LCPal {
+public class SLCPal {
 
 
     @LCFromScript(source = "GLB_color")

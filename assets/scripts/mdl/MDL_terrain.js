@@ -162,7 +162,7 @@
         };
 
         // Set up tile array
-        let ts = LCPos.getTilesRect(thisFun.tmpTs, t, checkR, size);
+        let ts = SLCPos.getTilesRect(thisFun.tmpTs, t, checkR, size);
         if(ts.length === 0) {
             cacheMap.put(t, null);
             return null;
@@ -257,10 +257,10 @@
     const drawTerPlace = function thisFun(blk, tx, ty, rot, valid, offTy) {
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return;
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
             thisFun.tmpText = getTerBundle(getTer(t, blk.size, tryFun(blk.ex_getTerrainCheckR, blk, 5)));
         };
-        LCDrawf.textPlace(blk, tx, ty, MDL_bundle.getInfo("lovec", "text-terrain") + " " + thisFun.tmpText, valid, offTy);
+        SLCDrawf.textPlace(blk, tx, ty, MDL_bundle.getInfo("lovec", "text-terrain") + " " + thisFun.tmpText, valid, offTy);
     }
     .setProp({
         /**

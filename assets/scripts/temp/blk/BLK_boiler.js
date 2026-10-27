@@ -91,7 +91,7 @@
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
         if(blk.delegee.exploDmg > 0.0) {
-            LCDrawf.diskWarning(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.exploRad);
+            SLCDrawf.diskWarning(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.exploRad);
         };
     };
 
@@ -149,7 +149,7 @@
      * @return {void}
      */
     function comp_draw(b) {
-        LCDrawf.fadeProg(b.x, b.y, b.block.delegee.flashReg, b.delegee.boilerInstabProg, 1.0, 0.0, 1.0, Color.white, b.delegee.boilerInstab * 0.7);
+        SLCDrawf.fadeProg(b.x, b.y, b.block.delegee.flashReg, b.delegee.boilerInstabProg, 1.0, 0.0, 1.0, Color.white, b.delegee.boilerInstab * 0.7);
     };
 
 
@@ -160,7 +160,7 @@
      */
     function comp_drawSelect(b) {
         if(b.block.delegee.exploDmg > 0.0) {
-            LCDrawf.diskWarning(b.x, b.y, b.block.delegee.exploRad);
+            SLCDrawf.diskWarning(b.x, b.y, b.block.delegee.exploRad);
         };
     };
 

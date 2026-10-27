@@ -83,13 +83,13 @@
         let ob = GLB_var.world.build(b.link);
         if(ob == null) return;
 
-        LCDrawf.lineFlick(
+        SLCDrawf.lineFlick(
             b.x, b.y, ob.x, ob.y, false, 1.0, 0.5,
             !b.block.delegee.bulCollidesTerrain ?
                 GLB_color.accent :
                 b.block.delegee.bulCollidesTerrainCaveOnly && !GLB_param.IS_CAVE_MAP ?
                     GLB_color.accent :
-                    !LCRaycastf.checkLegSolid(b.x, b.y, ob.x, ob.y) ?
+                    !SLCRaycastf.checkLegSolid(b.x, b.y, ob.x, ob.y) ?
                         GLB_color.accent :
                         GLB_color.remove,
         );

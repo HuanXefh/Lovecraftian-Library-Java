@@ -76,11 +76,11 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDraw.contentIcon(b.x, b.y, b.delegee.lastRs, b.block.size, 0.75);
+        SLCDraw.contentIcon(b.x, b.y, b.delegee.lastRs, b.block.size, 0.75);
         if(GLB_param.SHOULD_DRAW_ROUTER_HERESY && b.delegee.nextToRouter) {
             b.proximity.each(ob => {
                 if(MDL_cond.isClassicRouter(ob.block)) {
-                    LCDrawf.areaShrink(ob.tile, ob.block.size, GLB_color.remove);
+                    SLCDrawf.areaShrink(ob.tile, ob.block.size, GLB_color.remove);
                 };
             });
         };

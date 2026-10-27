@@ -6,7 +6,7 @@ import lovec.type.block.factory.MultiBlockCrafter;
 import lovec.type.block.factory.MultiBlockLiquidRouter;
 import mindustry.mod.ClassMap;
 
-public class LCClassMap {
+public class SLCClassMap {
 
 
     public static void load() {

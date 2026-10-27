@@ -81,10 +81,10 @@
         };
 
         if(b.delegee.rsTarget !== null && !Vars.net.client()) {
-            LCCraftingHandler.addLiquid(b, b, b.delegee.rsTarget, b.scaleOutput(b.block.delegee.liqProdRate), true);
+            SLCCraftingHandler.addLiquid(b, b, b.delegee.rsTarget, b.scaleOutput(b.block.delegee.liqProdRate), true);
             // Spill liquid if full
             if(b.efficiency > 0.0 && Mathf.chanceDelta(0.04) && b.liquids.get(b.delegee.rsTarget) > b.block.liquidCapacity * 0.98) {
-                LCPos.getTilesEdge(thisFun.tmpTs, b.tile, b.block.size, true).forEachFast(ot => {
+                SLCPos.getTilesEdge(thisFun.tmpTs, b.tile, b.block.size, true).forEachFast(ot => {
                     if(Mathf.chance(0.5)) {
                         Puddles.deposit(ot, b.delegee.rsTarget, 4.0);
                     };

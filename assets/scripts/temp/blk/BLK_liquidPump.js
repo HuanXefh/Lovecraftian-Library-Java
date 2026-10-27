@@ -57,7 +57,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDraw.contentIcon(b.x, b.y, b.self.ex_getRsTarget(), b.block.size, 0.75);
+        SLCDraw.contentIcon(b.x, b.y, b.self.ex_getRsTarget(), b.block.size, 0.75);
     };
 
 
@@ -68,7 +68,7 @@
      */
     function comp_drawStatus(b) {
         if(!b.block.enableDrawStatus) return;
-        LCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
+        SLCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
     };
 
 

@@ -71,7 +71,7 @@
      * @return {void}
      */
     function comp_ex_updateLootTs(b) {
-        LCPos.getTilesRect(b.delegee.lootTs, b.tile, 1, b.block.size);
+        SLCPos.getTilesRect(b.delegee.lootTs, b.tile, 1, b.block.size);
     };
 
 

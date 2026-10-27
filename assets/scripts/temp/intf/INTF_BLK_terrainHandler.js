@@ -49,7 +49,7 @@
         if(t == null) return false;
         if(blk.delegee.ters.length === 0) return true;
 
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
             thisFun.tmpTer = MDL_terrain.getTer(t, blk.size, blk.self.ex_getTerrainCheckR());
             thisFun.tmpTerB = MDL_terrain.getTerBundle(thisFun.tmpTer);
         };
@@ -57,12 +57,12 @@
         let cond = true;
         if(blk.delegee.terMode === "enable") {
             if(thisFun.tmpTer == null || !blk.delegee.ters.includes(thisFun.tmpTer)) {
-                LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-enabled") + " " + thisFun.tmpTerB, false, blk.delegee.terTextOffTy);
+                SLCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-enabled") + " " + thisFun.tmpTerB, false, blk.delegee.terTextOffTy);
                 cond = false;
             };
         } else {
             if(thisFun.tmpTer != null && blk.delegee.ters.includes(thisFun.tmpTer)) {
-                LCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-disabled") + " " + thisFun.tmpTerB, false, blk.delegee.terTextOffTy);
+                SLCDrawf.textPlace(blk, t.x, t.y, MDL_bundle.getInfo("lovec", "text-terrain-disabled") + " " + thisFun.tmpTerB, false, blk.delegee.terTextOffTy);
                 cond = false;
             };
         };

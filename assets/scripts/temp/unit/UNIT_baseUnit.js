@@ -147,7 +147,7 @@
         if(!utp.delegee.useConicalLight) {
             utp.super$drawLight(unit);
         } else {
-            LCDrawf.lightArc(unit.x, unit.y, 1.0, utp.lightRadius, utp.delegee.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
+            SLCDrawf.lightArc(unit.x, unit.y, 1.0, utp.lightRadius, utp.delegee.lightConeScl, unit.rotation - 90.0, utp.lightColor, utp.lightOpacity);
         };
     };
 
@@ -159,7 +159,7 @@
      * @return {void}
      */
     function comp_ex_drawShield(utp, unit) {
-        LCDraw.shieldCircle(
+        SLCDraw.shieldCircle(
             unit.x, unit.y,
             unit.hitSize * utp.delegee.shieldRadScl * 1.3 + Mathf.lerp(0.0, utp.delegee.shieldRadHitInc, unit.shieldAlpha),
             utp.self.ex_getShieldColor(unit),

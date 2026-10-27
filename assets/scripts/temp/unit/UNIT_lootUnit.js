@@ -83,7 +83,7 @@
 
         // Merge loot units randomly
         if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {
-            let ounit = LCEntity.getOtherLoot(unit.x, unit.y, GLB_var.range.lootMergeRad, unit);
+            let ounit = SLCEntity.getOtherLoot(unit.x, unit.y, GLB_var.range.lootMergeRad, unit);
             if(ounit != null && ounit.item() === unit.item()) {
                 MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount + ounit.stack.amount);
                 FRAG_item.removeLoot_global(unit);
@@ -156,7 +156,7 @@
         processZ();
 
         // Amount text
-        if(GLB_param.SHOULD_DRAW_LOOT_AMOUNT && LCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
+        if(GLB_param.SHOULD_DRAW_LOOT_AMOUNT && SLCCheck.checkPosHovered(unit.x, unit.y, Math.max(sizeScl * 8.0, 6.0))) {
             MDL_draw.text(unit.x, unit.y - 4.0, String(unit.stack.amount), Fonts.outline, 0.85, unit.team.color);
         };
     };

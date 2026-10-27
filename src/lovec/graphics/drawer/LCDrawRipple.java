@@ -9,8 +9,8 @@ import arc.math.Rand;
 import arc.struct.IntFloatMap;
 import arc.util.Tmp;
 import lovec.annotation.LCJSONTypeClass;
-import lovec.utils.LCScriptUtil;
-import lovec.utils.LCVersionResolver;
+import lovec.utils.SLCScriptUtil;
+import lovec.utils.SLCVersionResolver;
 import mindustry.game.EventType;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -57,7 +57,7 @@ public class LCDrawRipple extends LCDrawer {
             noLiq = true;
             b.liquids.each((liq, amt) -> {
                 if(!noLiq) return;
-                if(amt > 0.01f && !liq.gas && !LCScriptUtil.checkCond("isAuxiliaryFluid", liq)) {
+                if(amt > 0.01f && !liq.gas && !SLCScriptUtil.checkCond("isAuxiliaryFluid", liq)) {
                     noLiq = false;
                     lastA = Math.min(amt / b.block.liquidCapacity, lastA);
                 };
@@ -77,7 +77,7 @@ public class LCDrawRipple extends LCDrawer {
         int i = 0;
         while(i < amount) {
             calcRotatedOff(Tmp.v1, b.rotation).add(b).add(rand.range(radius), rand.range(radius));
-            float life = 1f - ((LCVersionResolver.time / scl + rand.random(recur)) % recur);
+            float life = 1f - ((SLCVersionResolver.time / scl + rand.random(recur)) % recur);
             if(life > 0f) {
                 if(filled) {
                     Fill.circle(Tmp.v1.x, Tmp.v1.y, size);

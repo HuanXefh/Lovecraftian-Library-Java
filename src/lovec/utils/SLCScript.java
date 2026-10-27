@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * Used for interaction with JavaScript.
  */
-public class LCScript {
+public class SLCScript {
 
 
     public static NativeObject GLB_param;
@@ -57,7 +57,7 @@ public class LCScript {
         DB_block = toObject(get("DB_block"));
         DB_misc = toObject(get("DB_misc"));
 
-        Log.info("[LOVEC] Initialized Lovec module references in LCScript.");
+        Log.info("[LOVEC] Initialized Lovec module references in SLCScript.");
     };
 
 
@@ -212,7 +212,7 @@ public class LCScript {
      */
     @SuppressWarnings("CollectionAddedToSelf")
     public static NativeArray ensureLength(NativeArray arr, int len, @Nullable Object def) {
-        int lenPrev = LCScript.toInt(arr.getLength());
+        int lenPrev = SLCScript.toInt(arr.getLength());
         if(lenPrev < len) {
             int i = 0;
             while(lenPrev + i < len) {

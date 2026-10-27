@@ -1275,7 +1275,7 @@
             cont.clearChildren();
 
             searchText = search == null ? "" : search.getText().replace(/=/g, "");
-            searchArr = LCNativeArray.filter(cts, ct => String.isEmpty(searchText) || MDL_text.checkSearchValid(ct, searchText));
+            searchArr = SLCNativeArray.filter(cts, ct => String.isEmpty(searchText) || MDL_text.checkSearchValid(ct, searchText));
             countRow = 0;
             i = 0;
             iCap = searchArr.iCap();
@@ -1381,7 +1381,7 @@
             cont.clearChildren();
 
             searchText = search == null ? "" : search.getText().replace(/=/g, "");
-            searchArr = LCNativeArray.filter(cts, ct => String.isEmpty(searchText) || MDL_text.checkSearchValid(ct, searchText));
+            searchArr = SLCNativeArray.filter(cts, ct => String.isEmpty(searchText) || MDL_text.checkSearchValid(ct, searchText));
             countRow = 0;
             i = 0;
             iCap = searchArr.iCap();

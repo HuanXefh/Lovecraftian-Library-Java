@@ -2,16 +2,16 @@ package lovec.content;
 
 import arc.math.Mathf;
 import arc.util.Nullable;
-import lovec.utils.LCScript;
-import lovec.utils.LCScriptUtil;
-import lovec.utils.extend.LCNativeArray;
+import lovec.utils.SLCScript;
+import lovec.utils.SLCScriptUtil;
+import lovec.utils.extend.SLCNativeArray;
 import mindustry.type.Item;
 import mindustry.type.Liquid;
 import mindustry.world.blocks.production.GenericCrafter;
 import rhino.NativeArray;
 import rhino.NativeObject;
 
-import static lovec.utils.LCScript.FRAG_item;
+import static lovec.utils.SLCScript.FRAG_item;
 
 public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
 
@@ -43,18 +43,18 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
 
     @Override
     protected void targetSetInit() {
-        rcTimeScl = LCScript.toFloat(target.get("rcTimeScl"));
-        ignoreItemFullness = LCScript.toBoolean(target.get("ignoreItemFullness"));
-        ci = LCScript.toArray(target.get("ci"));
-        bi = LCScript.toArray(target.get("bi"));
-        aux = LCScript.toArray(target.get("aux"));
-        reqOpt = LCScript.toBoolean(target.get("reqOpt"));
-        opt = LCScript.toArray(target.get("opt"));
-        co = LCScript.toArray(target.get("co"));
-        bo = LCScript.toArray(target.get("bo"));
-        fo = LCScript.toArray(target.get("fo"));
-        hasAnyFldOutputIncludeAux = LCScript.toBoolean(target.get("hasAnyFldOutputIncludeAux"));
-        dumpTup = LCScript.toArray(target.get("dumpTup"));
+        rcTimeScl = SLCScript.toFloat(target.get("rcTimeScl"));
+        ignoreItemFullness = SLCScript.toBoolean(target.get("ignoreItemFullness"));
+        ci = SLCScript.toArray(target.get("ci"));
+        bi = SLCScript.toArray(target.get("bi"));
+        aux = SLCScript.toArray(target.get("aux"));
+        reqOpt = SLCScript.toBoolean(target.get("reqOpt"));
+        opt = SLCScript.toArray(target.get("opt"));
+        co = SLCScript.toArray(target.get("co"));
+        bo = SLCScript.toArray(target.get("bo"));
+        fo = SLCScript.toArray(target.get("fo"));
+        hasAnyFldOutputIncludeAux = SLCScript.toBoolean(target.get("hasAnyFldOutputIncludeAux"));
+        dumpTup = SLCScript.toArray(target.get("dumpTup"));
     };
 
 
@@ -63,9 +63,9 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
 
         lastResolvedId = b.id;
         blk = (GenericCrafter) b.block;
-        consTmpObj = LCScript.toObject(get(b, "consTmpObj"));
-        prodTmpObj = LCScript.toObject(get(b, "prodTmpObj"));
-        dumpTimeCur = LCScript.toFloat(get(b, "dumpTimeCur"));
+        consTmpObj = SLCScript.toObject(get(b, "consTmpObj"));
+        prodTmpObj = SLCScript.toObject(get(b, "prodTmpObj"));
+        dumpTimeCur = SLCScript.toFloat(get(b, "dumpTimeCur"));
     };
 
 
@@ -85,10 +85,10 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
             iCap = co.getLength();
             while(i < iCap) {
                 tmp = co.get(i);
-                fAmt = b.scaleOutput(LCScript.toFloat(co.get(i + 1)));
+                fAmt = b.scaleOutput(SLCScript.toFloat(co.get(i + 1)));
                 if(b.liquids.get((Liquid) tmp) / b.block.liquidCapacity <= 0.98f) {
                     allFull = false;
-                } else if(!blk.ignoreLiquidFullness && !blk.dumpExtraLiquid && fAmt > 0f && !LCScriptUtil.checkCond("isAuxiliaryFluid", tmp)) {
+                } else if(!blk.ignoreLiquidFullness && !blk.dumpExtraLiquid && fAmt > 0f && !SLCScriptUtil.checkCond("isAuxiliaryFluid", tmp)) {
                     return false;
                 };
                 i += 2;
@@ -101,9 +101,9 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
         iCap = bo.getLength();
         while(i < iCap) {
             tmp = bo.get(i);
-            intAmt = LCScript.toInt(b.scaleOutput(LCScript.toFloat(bo.get(i + 1))));
-            fAmt = b.scaleOutput(LCScript.toFloat(bo.get(i + 1)));
-            p = LCScript.toFloat(bo.get(i + 2));
+            intAmt = SLCScript.toInt(b.scaleOutput(SLCScript.toFloat(bo.get(i + 1))));
+            fAmt = b.scaleOutput(SLCScript.toFloat(bo.get(i + 1)));
+            p = SLCScript.toFloat(bo.get(i + 2));
             if(b.items != null && tmp instanceof Item item) {
                 if(intAmt > 0 && !ignoreItemFullness && b.items.get(item) > b.getMaximumAccepted(item) - intAmt * p) return false;
             };
@@ -119,7 +119,7 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
             iCap = fo.getLength();
             while(i < iCap) {
                 tmp = fo.get(i);
-                intAmt = LCScript.toInt(b.scaleOutput(LCScript.toFloat(fo.get(i + 1))));
+                intAmt = SLCScript.toInt(b.scaleOutput(SLCScript.toFloat(fo.get(i + 1))));
                 if(intAmt > 0 && !ignoreItemFullness && b.items.get((Item) tmp) > b.getMaximumAccepted((Item) tmp) - intAmt) return false;
                 i += 3;
             };
@@ -133,7 +133,7 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
         if(b.items == null) return null;
 
         resolve(b);
-        NativeArray tup = LCScript.newArray("LCRecipeHandler.getOptTup.newArr");
+        NativeArray tup = SLCScript.newArray("LCRecipeHandler.getOptTup.newArr");
         int i = 0;
         long iCap = opt.getLength();
         Item item;
@@ -144,12 +144,12 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
 
         while(i < iCap) {
             item = (Item) opt.get(i);
-            amt = LCScript.toInt(opt.get(i + 1));
-            p = LCScript.toFloat(opt.get(i + 2));
-            mtp = LCScript.toFloat(opt.get(i + 3));
+            amt = SLCScript.toInt(opt.get(i + 1));
+            p = SLCScript.toFloat(opt.get(i + 2));
+            mtp = SLCScript.toFloat(opt.get(i + 3));
             if(b.items.get(item) >= amt && mtp >= tmpMtp) {
                 tmpMtp = mtp;
-                LCNativeArray.with(tup, item, amt, p, mtp);
+                SLCNativeArray.with(tup, item, amt, p, mtp);
             };
             i += 4;
         };
@@ -183,14 +183,14 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
         if(effc > 0f && opt.getLength() > 0) {
             NativeArray tup = getOptTup(b);
             if(reqOpt && tup == null) {
-                LCScript.instanceSet(b, "lastOptEffc", 0f);
+                SLCScript.instanceSet(b, "lastOptEffc", 0f);
                 return 0f;
             };
             if(tup != null) {
-                float optEffc = LCScript.toFloat(tup.get(3));
+                float optEffc = SLCScript.toFloat(tup.get(3));
                 effc *= optEffc;
-                LCScript.instanceSet(b, "lastOptEffc", optEffc);
-                LCNativeArray.clear(tup);
+                SLCScript.instanceSet(b, "lastOptEffc", optEffc);
+                SLCNativeArray.clear(tup);
             };
         };
 
@@ -207,10 +207,10 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
                     allAbsent = true;
                     while(j < jCap) {
                         if(b.liquids.get((Liquid) arr.get(j)) > 0.01f) {
-                            fAmt = LCScript.toFloat(arr.get(j + 1));
-                            mtp = b.efficiencyScale() < 0.0001f || LCScript.toFloat(LCScript.instanceGet(b, "lastOptEffc")) < 0.0001f ?
+                            fAmt = SLCScript.toFloat(arr.get(j + 1));
+                            mtp = b.efficiencyScale() < 0.0001f || SLCScript.toFloat(SLCScript.instanceGet(b, "lastOptEffc")) < 0.0001f ?
                                 0f :
-                                Math.min(b.liquids.get((Liquid) arr.get(j)) / fAmt / LCScript.toFloat(LCScript.instanceGet(b, "lastOptEffc")) * b.delta() * b.efficiencyScale(), 1f);
+                                Math.min(b.liquids.get((Liquid) arr.get(j)) / fAmt / SLCScript.toFloat(SLCScript.instanceGet(b, "lastOptEffc")) * b.delta() * b.efficiencyScale(), 1f);
                             allAbsent = false;
                             break;
                         };
@@ -220,12 +220,12 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
                         mtp = 0f;
                     };
                 } else {
-                    fAmt = LCScript.toFloat(ci.get(i + 1));
-                    mtp = b.efficiencyScale() < 0.0001f || LCScript.toFloat(LCScript.instanceGet(b, "lastOptEffc")) < 0.0001f ?
+                    fAmt = SLCScript.toFloat(ci.get(i + 1));
+                    mtp = b.efficiencyScale() < 0.0001f || SLCScript.toFloat(SLCScript.instanceGet(b, "lastOptEffc")) < 0.0001f ?
                         0f :
                         fAmt < 0.0001f ?
                             1f:
-                            Math.min(b.liquids.get((Liquid) tmp) / fAmt / LCScript.toFloat(LCScript.instanceGet(b, "lastOptEffc")) * b.delta() * b.efficiencyScale(), 1f);
+                            Math.min(b.liquids.get((Liquid) tmp) / fAmt / SLCScript.toFloat(SLCScript.instanceGet(b, "lastOptEffc")) * b.delta() * b.efficiencyScale(), 1f);
                 };
                 effc *= mtp;
                 i += 2;
@@ -246,8 +246,8 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
                     while(j < jCap) {
                         if(!allAbsent) break;
                         tmp1 = arr.get(j);
-                        intAmt = LCScript.toInt(arr.get(j + 1));
-                        fAmt = LCScript.toFloat(arr.get(j + 1));
+                        intAmt = SLCScript.toInt(arr.get(j + 1));
+                        fAmt = SLCScript.toFloat(arr.get(j + 1));
                         if(b.items != null && tmp1 instanceof Item item) {
                             if(b.items.get(item) >= intAmt) allAbsent = false;
                         };
@@ -258,8 +258,8 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
                     };
                     if(allAbsent) return 0f;
                 } else {
-                    intAmt = LCScript.toInt(bi.get(i + 1));
-                    fAmt = LCScript.toInt(bi.get(i + 1));
+                    intAmt = SLCScript.toInt(bi.get(i + 1));
+                    fAmt = SLCScript.toInt(bi.get(i + 1));
                     if(b.items != null && tmp instanceof Item item) {
                         if(b.items.get(item) < intAmt) return 0f;
                     };
@@ -278,7 +278,7 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
             while(i < iCap) {
                 if(effc < 0.0001f) return 0f;
                 tmp = aux.get(i);
-                fAmt = LCScript.toFloat(aux.get(i + 1));
+                fAmt = SLCScript.toFloat(aux.get(i + 1));
                 mtp = b.efficiencyScale() < 0.0001f ?
                     0f :
                     fAmt < 0.0001f ?
@@ -316,18 +316,18 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
                 while(j < jCap) {
                     liq = (Liquid) arr.get(j);
                     if(b.liquids.get(liq) > 0.01f) {
-                        amt = LCScript.toFloat(arr.get(j + 1));
+                        amt = SLCScript.toFloat(arr.get(j + 1));
                         b.liquids.remove(liq, Math.min(amt * progIncLiq * rcTimeScl, b.liquids.get(liq)));
-                        LCScript.set(liq.name, amt, consTmpObj);
+                        SLCScript.set(liq.name, amt, consTmpObj);
                         break;
                     };
                     j += 2;
                 };
             } else {
                 liq = (Liquid) tmp;
-                amt = LCScript.toFloat(ci.get(i + 1));
+                amt = SLCScript.toFloat(ci.get(i + 1));
                 b.liquids.remove(liq, Math.min(amt * progIncLiq * rcTimeScl, b.liquids.get(liq)));
-                LCScript.set(liq.name, amt, consTmpObj);
+                SLCScript.set(liq.name, amt, consTmpObj);
             };
             i += 2;
         };
@@ -337,9 +337,9 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
         iCap = aux.getLength();
         while(i < iCap) {
             liq = (Liquid) aux.get(i);
-            amt = LCScript.toFloat(aux.get(i + 1));
+            amt = SLCScript.toFloat(aux.get(i + 1));
             b.liquids.remove(liq, Math.min(amt * progIncLiq * rcTimeScl, b.liquids.get(liq)));
-            LCScript.set(liq.name, amt, consTmpObj);
+            SLCScript.set(liq.name, amt, consTmpObj);
             i += 2;
         };
     };
@@ -369,30 +369,30 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
                 jCap = arr.getLength();
                 while(j < jCap) {
                     tmp1 = arr.get(j);
-                    intAmt = LCScript.toInt(arr.get(j + 1));
-                    fAmt = LCScript.toFloat(arr.get(j + 1));
-                    p = LCScript.toFloat(arr.get(j + 2));
-                    if(b.items != null && tmp1 instanceof Item item && (boolean) LCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p)) {
-                        LCScript.set(item.name, intAmt * p, consTmpObj);
+                    intAmt = SLCScript.toInt(arr.get(j + 1));
+                    fAmt = SLCScript.toFloat(arr.get(j + 1));
+                    p = SLCScript.toFloat(arr.get(j + 2));
+                    if(b.items != null && tmp1 instanceof Item item && (boolean) SLCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p)) {
+                        SLCScript.set(item.name, intAmt * p, consTmpObj);
                         break;
                     };
-                    if(b.liquids != null && tmp1 instanceof Liquid liq && LCCraftingHandler.addLiquidBatch(b, b, liq, -fAmt) > 0f) {
-                        LCScript.set(liq.name, fAmt, consTmpObj);
+                    if(b.liquids != null && tmp1 instanceof Liquid liq && SLCCraftingHandler.addLiquidBatch(b, b, liq, -fAmt) > 0f) {
+                        SLCScript.set(liq.name, fAmt, consTmpObj);
                         break;
                     };
                     j += 3;
                 };
             } else {
-                intAmt = LCScript.toInt(bi.get(i + 1));
-                fAmt = LCScript.toFloat(bi.get(i + 1));
-                p = LCScript.toFloat(bi.get(i + 2));
+                intAmt = SLCScript.toInt(bi.get(i + 1));
+                fAmt = SLCScript.toFloat(bi.get(i + 1));
+                p = SLCScript.toFloat(bi.get(i + 2));
                 if(b.items != null && tmp instanceof Item item) {
-                    LCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p);
-                    LCScript.set(item.name, intAmt * p, consTmpObj);
+                    SLCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p);
+                    SLCScript.set(item.name, intAmt * p, consTmpObj);
                 };
                 if(b.liquids != null && tmp instanceof Liquid liq) {
-                    LCCraftingHandler.addLiquidBatch(b, b, liq, -fAmt);
-                    LCScript.set(liq.name, fAmt, consTmpObj);
+                    SLCCraftingHandler.addLiquidBatch(b, b, liq, -fAmt);
+                    SLCScript.set(liq.name, fAmt, consTmpObj);
                 };
             };
             i += 3;
@@ -403,10 +403,10 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
             NativeArray tup = getOptTup(b);
             if(tup != null) {
                 Item item = (Item) tup.get(0);
-                intAmt = LCScript.toInt(tup.get(1));
-                p = LCScript.toFloat(tup.get(2));
-                LCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p);
-                LCScript.set(item.name, intAmt * p, consTmpObj);
+                intAmt = SLCScript.toInt(tup.get(1));
+                p = SLCScript.toFloat(tup.get(2));
+                SLCScript.invoke("consumeItem", FRAG_item, b, item, intAmt, p);
+                SLCScript.set(item.name, intAmt * p, consTmpObj);
             };
         };
     };
@@ -426,12 +426,12 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
         iCap = co.getLength();
         while(i < iCap) {
             liq = (Liquid) co.get(i);
-            amt = b.scaleOutput(LCScript.toFloat(co.get(i + 1)));
-            if(LCScriptUtil.checkTimer("secTwo") && amt > 0f) {
-                LCScriptUtil.fireTrigger("fluidProduce", b, liq);
+            amt = b.scaleOutput(SLCScript.toFloat(co.get(i + 1)));
+            if(SLCScriptUtil.checkTimer("secTwo") && amt > 0f) {
+                SLCScriptUtil.fireTrigger("fluidProduce", b, liq);
             };
             b.handleLiquid(b, liq, Math.min(amt * progIncLiq * rcTimeScl + 0.003f, b.block.liquidCapacity - b.liquids.get(liq)));
-            LCScript.set(liq.name, amt / b.timeScale(), prodTmpObj);
+            SLCScript.set(liq.name, amt / b.timeScale(), prodTmpObj);
             i += 2;
         };
     };
@@ -452,16 +452,16 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
             iCap = bo.getLength();
             while(i < iCap) {
                 tmp = bo.get(i);
-                intAmt = LCScript.toInt(b.scaleOutput(LCScript.toFloat(bo.get(i + 1))));
-                fAmt = b.scaleOutput(LCScript.toFloat(bo.get(i + 1)));
-                p = LCScript.toFloat(bo.get(i + 2));
+                intAmt = SLCScript.toInt(b.scaleOutput(SLCScript.toFloat(bo.get(i + 1))));
+                fAmt = b.scaleOutput(SLCScript.toFloat(bo.get(i + 1)));
+                p = SLCScript.toFloat(bo.get(i + 2));
                 if(b.items != null && tmp instanceof Item item && b.items.get(item) < b.getMaximumAccepted(item)) {
-                    LCScript.invoke("produceItem", FRAG_item, b, item, intAmt, p);
-                    LCScript.set(item.name, intAmt * p, prodTmpObj);
+                    SLCScript.invoke("produceItem", FRAG_item, b, item, intAmt, p);
+                    SLCScript.set(item.name, intAmt * p, prodTmpObj);
                 };
                 if(b.liquids != null && tmp instanceof Liquid liq) {
-                    LCCraftingHandler.addLiquidBatch(b, b, liq, fAmt, true);
-                    LCScript.set(liq.name, fAmt, prodTmpObj);
+                    SLCCraftingHandler.addLiquidBatch(b, b, liq, fAmt, true);
+                    SLCScript.set(liq.name, fAmt, prodTmpObj);
                 };
                 i += 3;
             };
@@ -474,11 +474,11 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
             Item item;
             while(i < iCap) {
                 item = (Item) fo.get(i);
-                intAmt = LCScript.toInt(b.scaleOutput(LCScript.toFloat(fo.get(i + 1))));
-                p = LCScript.toFloat(fo.get(i + 2));
+                intAmt = SLCScript.toInt(b.scaleOutput(SLCScript.toFloat(fo.get(i + 1))));
+                p = SLCScript.toFloat(fo.get(i + 2));
                 if(b.items.get(item) < b.getMaximumAccepted(item)) {
-                    LCScript.invoke("produceItem", FRAG_item, b, item, intAmt, p);
-                    LCScript.set(item.name, intAmt * p, prodTmpObj);
+                    SLCScript.invoke("produceItem", FRAG_item, b, item, intAmt, p);
+                    SLCScript.set(item.name, intAmt * p, prodTmpObj);
                 };
                 i += 3;
             };
@@ -504,7 +504,7 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
                 i += 2;
             };
 
-            dumpArr = LCScript.toArray(dumpTup.get(1));
+            dumpArr = SLCScript.toArray(dumpTup.get(1));
             i = 0;
             iCap = dumpArr.getLength();
             while(i < iCap) {
@@ -517,7 +517,7 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
             dumpTimeCur += b.timeScale();
             if(dumpTimeCur >= blk.dumpTime) {
                 dumpTimeCur %= blk.dumpTime;
-                dumpArr = LCScript.toArray(dumpTup.get(0));
+                dumpArr = SLCScript.toArray(dumpTup.get(0));
                 i = 0;
                 iCap = dumpArr.getLength();
                 while(i < iCap) {

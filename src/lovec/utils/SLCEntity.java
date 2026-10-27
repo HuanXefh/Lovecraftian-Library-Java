@@ -10,7 +10,7 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.utils.extend.LCNativeArray;
+import lovec.utils.extend.SLCNativeArray;
 import mindustry.Vars;
 import mindustry.entities.Units;
 import mindustry.game.Team;
@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * Handles entity search.
  */
-public class LCEntity {
+public class SLCEntity {
 
 
     /* <-------------------- building --------------------> */
@@ -56,7 +56,7 @@ public class LCEntity {
      */
     public static @Nullable Building getBuildBy(float x, float y, Team team, float rad, Boolf<Building> boolF) {
         if(rad < 0.0001f) return null;
-        return LCVersionResolver.indexer.findTile(team, x, y, rad, boolF);
+        return SLCVersionResolver.indexer.findTile(team, x, y, rad, boolF);
     };
     // Overload
     public static @Nullable Building getBuildBy(float x, float y, Team team, Boolf<Building> boolF) {
@@ -68,13 +68,13 @@ public class LCEntity {
      * Gets buildings in a circular range.
      */
     public static NativeArray getBuilds(@Nullable NativeArray contArr, float x, float y, float rad) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getBuilds.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCEntity.getBuilds.newArr");
         if(rad < 0.0001f) return arr;
 
-        LCVersionResolver.indexer.eachBlock(
+        SLCVersionResolver.indexer.eachBlock(
             null, x, y, rad,
             ob -> true,
-            ob -> LCNativeArray.push(arr, ob)
+            ob -> SLCNativeArray.push(arr, ob)
         );
 
         return arr;
@@ -86,7 +86,7 @@ public class LCEntity {
      */
     public static void eachBuild(float x, float y, @Nullable Team team, float rad, @Nullable Boolf<Building> boolF, Cons<Building> cons) {
         if(rad < 0.0001f) return;
-        LCVersionResolver.indexer.eachBlock(
+        SLCVersionResolver.indexer.eachBlock(
             team, x, y, rad,
             boolF != null ? boolF : b -> true,
             cons
@@ -99,7 +99,7 @@ public class LCEntity {
      */
     public static void eachBuildRect(float x, float y, Team team, float w, @Nullable Boolf<Building> boolF, Cons<Building> cons) {
         if(w < 0.0001f) return;
-        LCVersionResolver.indexer.eachBlock(
+        SLCVersionResolver.indexer.eachBlock(
             team,
             Tmp.r1.setCentered(x, y, w),
             boolF != null ? boolF : b -> true,
@@ -112,13 +112,13 @@ public class LCEntity {
      * Gets buildings on given tiles.
      */
     public static NativeArray getBuildsByTiles(@Nullable NativeArray contArr, NativeArray ts) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getBuildsByTiles.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCEntity.getBuildsByTiles.newArr");
 
         Tile ot;
         for(Object rawOt : ts) {
             ot = (Tile) rawOt;
-            if(ot.build != null && !LCNativeArray.includes(arr, ot.build)) {
-                LCNativeArray.push(arr, ot.build);
+            if(ot.build != null && !SLCNativeArray.includes(arr, ot.build)) {
+                SLCNativeArray.push(arr, ot.build);
             };
         };
 
@@ -153,11 +153,11 @@ public class LCEntity {
      * Gets a random unit in a circular range.
      */
     public static @Nullable Unit getUnit(float x, float y, float rad) {
-        return (Unit) LCNativeArray.random(getUnits(LCScript.ensureArray("LCEntity.getUnit.tmpArr"), x, y, rad));
+        return (Unit) SLCNativeArray.random(getUnits(SLCScript.ensureArray("SLCEntity.getUnit.tmpArr"), x, y, rad));
     };
     // Overload
     public static @Nullable Unit getUnit(float x, float y) {
-        return (Unit) LCNativeArray.first(getUnits(LCScript.ensureArray("LCEntity.getUnit.tmpArr"), x, y, 8f));
+        return (Unit) SLCNativeArray.first(getUnits(SLCScript.ensureArray("SLCEntity.getUnit.tmpArr"), x, y, 8f));
     };
 
 
@@ -165,11 +165,11 @@ public class LCEntity {
      * Variant of {@link #getUnit} that excludes some unit.
      */
     public static @Nullable Unit getOtherUnit(float x, float y, float rad, Unit unit) {
-        return (Unit) LCNativeArray.random(LCNativeArray.pullAll(getUnits(LCScript.ensureArray("LCEntity.getOtherUnit.tmpArr"), x, y, rad), unit));
+        return (Unit) SLCNativeArray.random(SLCNativeArray.pullAll(getUnits(SLCScript.ensureArray("SLCEntity.getOtherUnit.tmpArr"), x, y, rad), unit));
     };
     // Overload
     public static @Nullable Unit getOtherUnit(float x, float y, Unit unit) {
-        return (Unit) LCNativeArray.first(LCNativeArray.pullAll(getUnits(LCScript.ensureArray("LCEntity.getOtherUnit.tmpArr"), x, y, 8f), unit));
+        return (Unit) SLCNativeArray.first(SLCNativeArray.pullAll(getUnits(SLCScript.ensureArray("SLCEntity.getOtherUnit.tmpArr"), x, y, 8f), unit));
     };
 
 
@@ -177,12 +177,12 @@ public class LCEntity {
      * Gets units in a circular range.
      */
     public static NativeArray getUnits(@Nullable NativeArray contArr, float x, float y, float rad) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getUnits.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCEntity.getUnits.newArr");
         if(rad < 0.0001f) return contArr;
 
         Units.nearby(null, x, y, rad, ounit -> {
-            if(!LCScriptUtil.checkCond("isIrregularUnit", ounit)) {
-                LCNativeArray.push(arr, ounit);
+            if(!SLCScriptUtil.checkCond("isIrregularUnit", ounit)) {
+                SLCNativeArray.push(arr, ounit);
             };
         });
 
@@ -196,7 +196,7 @@ public class LCEntity {
     public static void eachUnit(float x, float y, @Nullable Team team, float rad, @Nullable Boolf<Unit> boolF, Cons<Unit> cons) {
         if(rad < 0.0001f) return;
         Units.nearby(team, x, y, rad, ounit -> {
-            if(!LCScriptUtil.checkCond("isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
+            if(!SLCScriptUtil.checkCond("isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
             };
         });
@@ -209,7 +209,7 @@ public class LCEntity {
     public static void eachUnitRect(float x, float y, @Nullable Team team, float w, @Nullable Boolf<Unit> boolF, Cons<Unit> cons) {
         if(w < 0.0001f) return;
         Units.nearby(team, x, y, w, w, ounit -> {
-            if(!LCScriptUtil.checkCond("isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
+            if(!SLCScriptUtil.checkCond("isIrregularUnit", ounit) && (boolF == null || boolF.get(ounit))) {
                 cons.get(ounit);
             };
         });
@@ -224,7 +224,7 @@ public class LCEntity {
 
         AtomicReference<Unit> unitRef = new AtomicReference<>();
         Tmp.v1.set(0f, rad);
-        LCVersionResolver.playerGroup.each(player -> {
+        SLCVersionResolver.playerGroup.each(player -> {
             Unit ounit = player.unit();
             if(ounit != null && (team == null || ounit.team == team)) {
                 Tmp.v1.x = Mathf.dst(x, y, ounit.x, ounit.y);
@@ -243,7 +243,7 @@ public class LCEntity {
      * Gets a player unit by player name.
      */
     public static @Nullable Unit getPlayerUnitByName(String name) {
-        Player player = LCVersionResolver.playerGroup.find(oplayer -> oplayer.name.equals(name));
+        Player player = SLCVersionResolver.playerGroup.find(oplayer -> oplayer.name.equals(name));
         return player == null ? null : player.unit();
     };
 
@@ -255,11 +255,11 @@ public class LCEntity {
      * Gets a random loot in a circular range.
      */
     public static @Nullable Unit getLoot(float x, float y, float rad) {
-        return (Unit) LCNativeArray.random(getLoots(LCScript.ensureArray("LCEntity.getLoot.tmpArr"), x, y, rad));
+        return (Unit) SLCNativeArray.random(getLoots(SLCScript.ensureArray("SLCEntity.getLoot.tmpArr"), x, y, rad));
     };
     // Overload
     public static @Nullable Unit getLoot(float x, float y) {
-        return (Unit) LCNativeArray.first(getLoots(LCScript.ensureArray("LCEntity.getLoot.tmpArr"), x, y, 8f));
+        return (Unit) SLCNativeArray.first(getLoots(SLCScript.ensureArray("SLCEntity.getLoot.tmpArr"), x, y, 8f));
     };
 
 
@@ -267,11 +267,11 @@ public class LCEntity {
      * Variant of {@link #getLoot} that excludes some loot.
      */
     public static @Nullable Unit getOtherLoot(float x, float y, float rad, Unit loot) {
-        return (Unit) LCNativeArray.random(LCNativeArray.pullAll(getLoots(LCScript.ensureArray("LCEntity.getOtherLoot.tmpArr"), x, y, rad), loot));
+        return (Unit) SLCNativeArray.random(SLCNativeArray.pullAll(getLoots(SLCScript.ensureArray("SLCEntity.getOtherLoot.tmpArr"), x, y, rad), loot));
     };
     // Overload
     public static @Nullable Unit getOtherLoot(float x, float y, Unit loot) {
-        return (Unit) LCNativeArray.first(LCNativeArray.pullAll(getLoots(LCScript.ensureArray("LCEntity.getOtherLoot.tmpArr"), x, y, 8f), loot));
+        return (Unit) SLCNativeArray.first(SLCNativeArray.pullAll(getLoots(SLCScript.ensureArray("SLCEntity.getOtherLoot.tmpArr"), x, y, 8f), loot));
     };
 
 
@@ -279,12 +279,12 @@ public class LCEntity {
      * Gets loots in a circular range.
      */
     public static NativeArray getLoots(@Nullable NativeArray contArr, float x, float y, float rad) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getLoots.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCEntity.getLoots.newArr");
         if(rad < 0.0001f) return contArr;
 
         Units.nearby(null, x, y, rad, ounit -> {
-            if(LCScriptUtil.checkCond("isLoot", ounit)) {
-                LCNativeArray.push(arr, ounit);
+            if(SLCScriptUtil.checkCond("isLoot", ounit)) {
+                SLCNativeArray.push(arr, ounit);
             };
         });
 
@@ -296,15 +296,15 @@ public class LCEntity {
      * Gets loots on given tiles.
      */
     public static NativeArray getLootsByTiles(@Nullable NativeArray contArr, NativeArray ts) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getLootsByTiles.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCEntity.getLootsByTiles.newArr");
 
         Tile ot;
         NativeArray loots;
         for(Object rawOt : ts) {
             ot = (Tile) rawOt;
-            loots = getLoots(LCScript.ensureArray("LCEntity.getLootsByTiles.tmpArr"), ot.worldx() + Vars.tilesize * 0.5f, ot.worldy() + Vars.tilesize * 0.5f, 6f);
+            loots = getLoots(SLCScript.ensureArray("SLCEntity.getLootsByTiles.tmpArr"), ot.worldx() + Vars.tilesize * 0.5f, ot.worldy() + Vars.tilesize * 0.5f, 6f);
             for(Object loot : loots) {
-                LCNativeArray.pushUnique(arr, loot);
+                SLCNativeArray.pushUnique(arr, loot);
             };
         };
 
@@ -346,10 +346,10 @@ public class LCEntity {
      * Gets bullets in a circular range.
      */
     public static NativeArray getBullets(@Nullable NativeArray contArr, float x, float y, @Nullable Team team, float rad) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getBullets.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCEntity.getBullets.newArr");
         if(rad < 0.0001f) return arr;
 
-        LCVersionResolver.bulletGroup.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f), obul -> LCNativeArray.push(arr, obul));
+        SLCVersionResolver.bulletGroup.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f), obul -> SLCNativeArray.push(arr, obul));
 
         return arr;
     };
@@ -360,7 +360,7 @@ public class LCEntity {
      */
     public static void eachBullet(float x, float y, @Nullable Team team, float rad, @Nullable Boolf<Bullet> boolF, Cons<Bullet> cons) {
         if(rad < 0.0001f) return;
-        LCVersionResolver.bulletGroup.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f) && (boolF == null || boolF.get(obul)), cons);
+        SLCVersionResolver.bulletGroup.intersect(x - rad, y - rad, rad * 2f, rad * 2f).each(obul -> obul.team != Team.derelict && (team == null || obul.team() != team) && obul.within(x, y, rad + obul.hitSize() / 2f) && (boolF == null || boolF.get(obul)), cons);
     };
 
 
@@ -390,11 +390,11 @@ public class LCEntity {
      * Gets all valid target entities.
      */
     public static NativeArray getTargets(@Nullable NativeArray contArr, float x, float y, Team team, float rad) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getTargets.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCEntity.getTargets.newArr");
         if(rad < 0.0001f) return arr;
 
-        eachUnit(x, y, null, rad, ounit -> LCScriptUtil.checkCond("isEnemy", ounit, team), ounit -> LCNativeArray.push(arr, ounit));
-        eachBuild(x, y, null, rad, ob -> LCScriptUtil.checkCond("isEnemy", ob, team), ob -> LCNativeArray.push(arr, ob));
+        eachUnit(x, y, null, rad, ounit -> SLCScriptUtil.checkCond("isEnemy", ounit, team), ounit -> SLCNativeArray.push(arr, ounit));
+        eachBuild(x, y, null, rad, ob -> SLCScriptUtil.checkCond("isEnemy", ob, team), ob -> SLCNativeArray.push(arr, ob));
 
         return arr;
     };
@@ -413,10 +413,10 @@ public class LCEntity {
      * Gets targets linked by a lightning chain.
      */
     public static NativeArray getChainTargets(@Nullable NativeArray contArr, float x, float y, Team team, float rad, float chainRad, float chainCap, @Nullable Boolf2<Vec2, Vec2> rayCheck) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCEntity.getChainTargets.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCEntity.getChainTargets.newArr");
         if(rad < 0.0001f) return arr;
 
-        NativeArray targets = getTargets(LCScript.ensureArray("LCEntity.getChainTargets.tmpArr"), x, y, team, rad * 2f);
+        NativeArray targets = getTargets(SLCScript.ensureArray("SLCEntity.getChainTargets.tmpArr"), x, y, team, rad * 2f);
         getChainTargetsSeq.clear();
         for(Object rawTarget : targets) {
             getChainTargetsSeq.add((Position) rawTarget);
@@ -433,7 +433,7 @@ public class LCEntity {
             getChainTargetsVec2.set(tmpTarget.getX(), tmpTarget.getY());
             if(getChainTargetsVec1.dst(getChainTargetsVec2) > (isFirst ? rad : chainRad) + 0.0001f || (rayCheck != null && rayCheck.get(getChainTargetsVec1, getChainTargetsVec2))) break;
 
-            LCNativeArray.push(arr, tmpTarget);
+            SLCNativeArray.push(arr, tmpTarget);
             getChainTargetsSeq.remove(tmpTarget);
             tmpX = tmpTarget.getX();
             tmpY = tmpTarget.getY();

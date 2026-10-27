@@ -87,7 +87,7 @@
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return GLB_varGen.iconRegs.ohno;
 
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, item)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, item)) {
             if(blk.self.ex_isMiningDpore(tx, ty, item) && !blk.self.ex_anyDporeRevealed(tx, ty, item)) {
                 thisFun.tmpIcon = GLB_varGen.iconRegs.questionMark;
             } else {

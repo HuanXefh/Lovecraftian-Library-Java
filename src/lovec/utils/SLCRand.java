@@ -6,7 +6,7 @@ import arc.util.Time;
 /**
  * Handles random number.
  */
-public class LCRand {
+public class SLCRand {
 
 
     /**

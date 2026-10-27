@@ -2,7 +2,7 @@ package lovec.type.block.factory;
 
 import arc.Core;
 import arc.func.Func2;
-import lovec.content.LCMultiBlockHandler;
+import lovec.content.SLCMultiBlockHandler;
 import mindustry.world.Block;
 
 /**
@@ -15,7 +15,7 @@ public interface MultiBlockUniqueLinkBlockHandler {
 
 
     default MultiBlockLinkBlock[] getLinkBlocks() {
-        return LCMultiBlockHandler.uniqueLinkBlockMap.get(getUniqueLinkName());
+        return SLCMultiBlockHandler.uniqueLinkBlockMap.get(getUniqueLinkName());
     };
 
 
@@ -25,7 +25,7 @@ public interface MultiBlockUniqueLinkBlockHandler {
      */
     default void requestUniqueLink(Block blk, Func2<Integer, Block, MultiBlockLinkBlock> linkBlkF) {
         Core.app.post(() -> {
-            int maxSize = LCMultiBlockHandler.maxLinkBlockSize;
+            int maxSize = SLCMultiBlockHandler.maxLinkBlockSize;
             boolean[] used = new boolean[maxSize];
             if(blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
                 int[] linkValues = mblk.getLinkValues();
@@ -44,7 +44,7 @@ public interface MultiBlockUniqueLinkBlockHandler {
                 if(!used[i]) continue;
                 blks[i] = linkBlkF.get(i + 1, blk);
             };
-            LCMultiBlockHandler.uniqueLinkBlockMap.put(getUniqueLinkName(), blks);
+            SLCMultiBlockHandler.uniqueLinkBlockMap.put(getUniqueLinkName(), blks);
         });
     };
 

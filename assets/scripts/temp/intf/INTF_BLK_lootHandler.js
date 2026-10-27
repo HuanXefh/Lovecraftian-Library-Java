@@ -205,7 +205,7 @@
              * @return {void}
              */
             ex_updateLootQueue: function() {
-                LCEntity.getLootsByTiles(this.delegee.lootQueue, this.delegee.lootTs);
+                SLCEntity.getLootsByTiles(this.delegee.lootQueue, this.delegee.lootTs);
             }
             .setProp({
                 noSuper: true,

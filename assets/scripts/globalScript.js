@@ -590,7 +590,7 @@
          */
         _b = newMultiFunction(
             function() {
-                let t = LCPos.getTileMouse();
+                let t = SLCPos.getTileMouse();
                 return t == null ? null : t.build;
             },
             function(tx, ty) {
@@ -612,7 +612,7 @@
                 return Vars.player.unit();
             },
             function(tx, ty) {
-                return LCEntity.getUnit((tx + 0.5) * Vars.tilesize, (ty + 0.5) * Vars.tilesize);
+                return SLCEntity.getUnit((tx + 0.5) * Vars.tilesize, (ty + 0.5) * Vars.tilesize);
             },
         )
         .setAnno("console");
@@ -644,7 +644,7 @@
             },
             function(name) {
                 if(!__checkCheatState__()) return;
-                let unit = LCEntity.getPlayerUnitByName(name);
+                let unit = SLCEntity.getPlayerUnitByName(name);
                 if(unit == null) {
                     console.err("[LOVEC] No player found with name ${1}!".format(String(name).color(GLB_color.accent)));
                     return;

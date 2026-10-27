@@ -32,7 +32,7 @@
     const spreadPuddle = function thisFun(puddle, amtDepos, boolF, scr) {
         if(amtDepos == null) amtDepos = 0.5;
 
-        LCPos.getTilesRect(thisFun.tmpTs, puddle.tile, 1, 0).forEachFast(ot => {
+        SLCPos.getTilesRect(thisFun.tmpTs, puddle.tile, 1, 0).forEachFast(ot => {
             if(boolF != null && boolF(ot)) {
                 Puddles.deposit(ot, puddle.liquid, Time.delta * amtDepos);
                 if(ot === puddle.tile && scr != null) scr(ot);

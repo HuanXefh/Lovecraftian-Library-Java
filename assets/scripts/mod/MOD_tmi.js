@@ -36,7 +36,7 @@
         classes.RecipeParser = fetchClass("tmi.recipe.RecipeParser");
         classes.RecipeType = fetchClass("tmi.recipe.RecipeType");
 
-        classes.AttributeCrafterParser = fetchClass(LCVersionResolver.isV8 ? "tmi.recipe.parser.AttributeCrafterParser" : "tmi.recipe.parser.GenericCrafterParser");
+        classes.AttributeCrafterParser = fetchClass(SLCVersionResolver.isV8 ? "tmi.recipe.parser.AttributeCrafterParser" : "tmi.recipe.parser.GenericCrafterParser");
         classes.BeamDrillParser = fetchClass("tmi.recipe.parser.BeamDrillParser");
         classes.DrillParser = fetchClass("tmi.recipe.parser.DrillParser");
         classes.GenericCrafterParser = fetchClass("tmi.recipe.parser.GenericCrafterParser");

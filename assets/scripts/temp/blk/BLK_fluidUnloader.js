@@ -67,7 +67,7 @@
      */
     function comp_updateTile(b) {
         if(b.delegee.unloadTarget != null && b.delegee.ctTarget != null) {
-            LCCraftingHandler.transLiquid(b.delegee.unloadTarget, b, b.delegee.ctTarget, 2.0, true);
+            SLCCraftingHandler.transLiquid(b.delegee.unloadTarget, b, b.delegee.ctTarget, 2.0, true);
         };
     };
 
@@ -78,7 +78,7 @@
      * @return {void}
      */
     function comp_draw(b) {
-        LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
+        SLCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
     };
 
 

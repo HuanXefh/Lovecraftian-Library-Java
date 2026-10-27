@@ -13,7 +13,7 @@ import arc.struct.Seq;
 /**
  * Stores various empty objects.
  */
-public class LCAirObjects {
+public class SLCAirObjects {
 
 
     public static final Seq seq = new Seq();

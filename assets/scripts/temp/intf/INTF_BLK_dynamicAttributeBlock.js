@@ -30,7 +30,7 @@
     function comp_init(blk) {
         if(blk.delegee.attrRsArr == null) throw new LCError.NullArgumentError(blk.name + ".attrRsArr");
 
-        if(!LCVersionResolver.isV8 || blk instanceof AttributeCrafter) {
+        if(!SLCVersionResolver.isV8 || blk instanceof AttributeCrafter) {
             blk.displayEfficiency = false;
         };
 
@@ -146,7 +146,7 @@
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
         if(!blk.delegee.shouldDrawDynaAttrText) return;
-        LCDrawf.textPlace(
+        SLCDrawf.textPlace(
             blk, tx, ty,
             Core.bundle.format("bar.efficiency", Math.round(blk.self.ex_getAttrSum(tx, ty, rot) / blk.self.ex_getAttrReq() * 100.0)),
             valid, blk.delegee.dynaAttrTextOffTy,
@@ -165,7 +165,7 @@
     const comp_ex_getAttrSum = function thisFun(blk, tx, ty, rot) {
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return 0.0;
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
             let tup = MDL_attr.getDynaAttrTup(thisFun.tmpDynaAttrTup, blk.delegee.attrRsArr, blk.self.ex_findDynaAttrTs(blk.delegee.dynaAttrTmpTs, tx, ty, rot), blk.delegee.attrMode);
             thisFun.tmpSum = tryVal(tup[1], 0.0);
         };

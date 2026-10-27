@@ -5,8 +5,8 @@ import arc.math.geom.Vec2;
 import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.Tmp;
-import lovec.content.LCMultiBlockHandler;
-import lovec.utils.LCVersionResolver;
+import lovec.content.SLCMultiBlockHandler;
+import lovec.utils.SLCVersionResolver;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -48,8 +48,8 @@ public interface MultiBlockLinkCenterBlockFrag {
             pon_i = seq1.get(i);
             size_i = seq2.get(i);
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, t.build.rotation);
-            t_i = LCVersionResolver.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
-            t_i.setBlock(LCMultiBlockHandler.linkConstructBlocks[size_i - 1], t.team(), 0);
+            t_i = SLCVersionResolver.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
+            t_i.setBlock(SLCMultiBlockHandler.linkConstructBlocks[size_i - 1], t.team(), 0);
             ((MultiBlockLinkConstructBlock.MultiBlockLinkConstructBuild) t_i.build).updateLink(t);
         };
     };
@@ -63,13 +63,13 @@ public interface MultiBlockLinkCenterBlockFrag {
         return !blk.hasPower ?
             (
                 !blk.outputsLiquid ?
-                    LCMultiBlockHandler.linkBlocks :
-                    LCMultiBlockHandler.linkLiquidBlocks
+                    SLCMultiBlockHandler.linkBlocks :
+                    SLCMultiBlockHandler.linkLiquidBlocks
             ) :
             (
                 !blk.outputsLiquid ?
-                    LCMultiBlockHandler.linkPowerBlocks :
-                    LCMultiBlockHandler.linkLiquidPowerBlocks
+                    SLCMultiBlockHandler.linkPowerBlocks :
+                    SLCMultiBlockHandler.linkLiquidPowerBlocks
             );
     };
 
@@ -87,7 +87,7 @@ public interface MultiBlockLinkCenterBlockFrag {
             pon_i = seq1.get(i);
             size_i = seq2.get(i);
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, t.build.rotation);
-            t_i = LCVersionResolver.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
+            t_i = SLCVersionResolver.world.tile(t.x + ponRot_i.x, t.y + ponRot_i.y);
             if(t_i.build == null || t_i.build.team != team || t_i.build.block != findLinkBlocks(blk)[size_i - 1]) {
                 t_i.setBlock(
                     findLinkBlocks(blk)[size_i - 1],
@@ -126,7 +126,7 @@ public interface MultiBlockLinkCenterBlockFrag {
             pon_i = seq1.get(i);
             size_i = seq2.get(i);
             ponRot_i = rotateLinkPos(Tmp.p3, pon_i, size, size_i, rot);
-            if(!Build.validPlace(LCMultiBlockHandler.linkBlocks[size_i - 1], team, t.x + ponRot_i.x, t.y + ponRot_i.y, 0, false)) return false;
+            if(!Build.validPlace(SLCMultiBlockHandler.linkBlocks[size_i - 1], team, t.x + ponRot_i.x, t.y + ponRot_i.y, 0, false)) return false;
         };
         return true;
     };

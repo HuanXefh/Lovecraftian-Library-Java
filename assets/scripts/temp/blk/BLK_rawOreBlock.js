@@ -52,7 +52,7 @@
             packer.get(blk.delegee.recolorRegStr),
             packer.get(parent),
         );
-        LCVersionResolver.isV8 ?
+        SLCVersionResolver.isV8 ?
             packer.add(eval("MultiPacker.PageType.main"), blk.name, pix) :
             packer.add(blk.name, pix);
         pix.dispose();

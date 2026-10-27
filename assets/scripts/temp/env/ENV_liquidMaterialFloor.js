@@ -41,7 +41,7 @@
             if(blk.speedMultiplier.fEqual(1.0)) {
                 blk.speedMultiplier = blk.shallow ? blk.delegee.shallowDefSpdMtp : blk.delegee.deepDefSpdMtp;
                 if(liq != null) {
-                    blk.speedMultiplier *= LCLerp.applyInterp(
+                    blk.speedMultiplier *= SLCLerp.applyInterp(
                         1.0, blk.delegee.fullViscSpdMtp, liq.viscosity,
                         Interp.linear, 0.5, 1.0,
                     );

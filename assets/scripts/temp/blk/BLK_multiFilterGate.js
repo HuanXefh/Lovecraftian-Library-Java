@@ -198,7 +198,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDraw.contentIcon(b.x, b.y, b.delegee.displayedRsTarget, b.block.size, 0.75);
+        SLCDraw.contentIcon(b.x, b.y, b.delegee.displayedRsTarget, b.block.size, 0.75);
     };
 
 

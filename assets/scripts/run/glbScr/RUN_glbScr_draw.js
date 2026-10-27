@@ -31,8 +31,8 @@
     processZ = function(z, ind) {
         if(z == null) z = -1;
         ind == null ?
-            LCDraw.processZ(z) :
-            LCDraw.processZ(z, ind);
+            SLCDraw.processZ(z) :
+            SLCDraw.processZ(z, ind);
     };
 
 
@@ -48,5 +48,5 @@
     processScl = function(xscl, yscl, ind) {
         if(xscl == null) xscl = 1.0;
         if(yscl == null) yscl = xscl;
-        LCDraw.processScl(xscl, yscl, tryVal(ind, 0))
+        SLCDraw.processScl(xscl, yscl, tryVal(ind, 0))
     };

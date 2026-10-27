@@ -559,7 +559,7 @@
          */
         count: function(tag) {
             if(tag == null) tag = "default";
-            console.log("Count for " + tag + ": " + LCNativeObject.numIncre(console.__countObj__, tag));
+            console.log("Count for " + tag + ": " + SLCNativeObject.numIncre(console.__countObj__, tag));
         },
 
 

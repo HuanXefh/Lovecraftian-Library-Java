@@ -7,9 +7,10 @@ import mindustry.Vars;
 import mindustry.world.Block;
 
 /**
- * Handles texture and pixmap.
+ * Handles texture.
+ * Rarely used due to overhaul to texture packing in v9.
  */
-public class LCTexture {
+public class SLCTexture {
 
 
     public static TextureRegion empty = new TextureRegion();

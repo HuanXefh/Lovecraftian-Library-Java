@@ -26,7 +26,7 @@
         // No negative value
         if(num < 0) return NaN;
 
-        return LCMathFunc.factorial(num);
+        return SLCMathFunc.factorial(num);
     };
 
 
@@ -37,8 +37,8 @@
      */
     Number.prototype.roundFixed = function(deciAmt) {
         return deciAmt == null ?
-            LCNumber.roundFixed(this) :
-            LCNumber.roundFixed(this, deciAmt);
+            SLCNumber.roundFixed(this) :
+            SLCNumber.roundFixed(this, deciAmt);
     };
 
 
@@ -49,8 +49,8 @@
      */
     Number.prototype.randInt = function(base) {
         return base == null ?
-            LCNumber.randInt(this) :
-            LCNumber.randInt(base, this);
+            SLCNumber.randInt(this) :
+            SLCNumber.randInt(base, this);
     };
 
 
@@ -60,7 +60,7 @@
      * @return {number}
      */
     Number.prototype.randFreq = function(p) {
-        return LCNumber.randFreq(this, p);
+        return SLCNumber.randFreq(this, p);
     };
 
 
@@ -79,8 +79,8 @@
      */
     Array.getIndexArray = function(cap, startsAtOne) {
         return startsAtOne == null ?
-            LCNativeArray.getIndexArray(cap) :
-            LCNativeArray.getIndexArray(cap, startsAtOne);
+            SLCNativeArray.getIndexArray(cap) :
+            SLCNativeArray.getIndexArray(cap, startsAtOne);
     };
 
 
@@ -91,8 +91,8 @@
      */
     Array.prototype.sum = function(mapF) {
         return mapF == null ?
-            LCNativeArray.sum(this) :
-            LCNativeArray.sum(this, mapF);
+            SLCNativeArray.sum(this) :
+            SLCNativeArray.sum(this, mapF);
     };
 
 
@@ -103,8 +103,8 @@
      */
     Array.prototype.prod = function(mapF) {
         return mapF == null ?
-            LCNativeArray.prod(this) :
-            LCNativeArray.prod(this, mapF);
+            SLCNativeArray.prod(this) :
+            SLCNativeArray.prod(this, mapF);
     };
 
 
@@ -115,8 +115,8 @@
      */
     Array.prototype.mean = function(mapF) {
         return mapF == null ?
-            LCNativeArray.mean(this) :
-            LCNativeArray.mean(this, mapF);
+            SLCNativeArray.mean(this) :
+            SLCNativeArray.mean(this, mapF);
     };
 
 
@@ -126,7 +126,7 @@
      * @return {number}
      */
     Array.prototype.meanPow = function(pow) {
-        return LCNativeArray.meanPow(this, pow);
+        return SLCNativeArray.meanPow(this, pow);
     };
 
 
@@ -138,7 +138,7 @@
      * @return {Array}
      */
     Array.prototype.operWith = function(arr, fun) {
-        return LCNativeArray.operWith(this, arr, fun);
+        return SLCNativeArray.operWith(this, arr, fun);
     };
 
 
@@ -148,7 +148,7 @@
      * @return {this}
      */
     Array.prototype.addWith = function(arr) {
-        return LCNativeArray.addWith(this, arr);
+        return SLCNativeArray.addWith(this, arr);
     };
 
 
@@ -158,7 +158,7 @@
      * @return {this}
      */
     Array.prototype.subWith = function(arr) {
-        return LCNativeArray.subWith(this, arr);
+        return SLCNativeArray.subWith(this, arr);
     };
 
 
@@ -168,7 +168,7 @@
      * @return {this}
      */
     Array.prototype.mulWith = function(arr) {
-        return LCNativeArray.mulWith(this, arr);
+        return SLCNativeArray.mulWith(this, arr);
     };
 
 
@@ -178,7 +178,7 @@
      * @return {this}
      */
     Array.prototype.divWith = function(arr) {
-        return LCNativeArray.divWith(this, arr);
+        return SLCNativeArray.divWith(this, arr);
     };
 
 
@@ -188,7 +188,7 @@
      * @return {this}
      */
     Array.prototype.modWith = function(arr) {
-        return LCNativeArray.modWith(this, arr);
+        return SLCNativeArray.modWith(this, arr);
     };
 
 
@@ -198,7 +198,7 @@
      * @return {this}
      */
     Array.prototype.powWith = function(arr) {
-        return LCNativeArray.powWith(this, arr);
+        return SLCNativeArray.powWith(this, arr);
     };
 
 
@@ -208,7 +208,7 @@
      * @return {Array<number>} New array.
      */
     Array.prototype.cumOper = function(fun) {
-        return LCNativeArray.cumOper(this, fun);
+        return SLCNativeArray.cumOper(this, fun);
     };
 
 
@@ -217,7 +217,7 @@
      * @return {Array<number>}
      */
     Array.prototype.cumSum = function() {
-        return LCNativeArray.cumSum(this);
+        return SLCNativeArray.cumSum(this);
     };
 
 
@@ -226,7 +226,7 @@
      * @return {Array<number>}
      */
     Array.prototype.cumProd = function() {
-        return LCNativeArray.cumProd(this);
+        return SLCNativeArray.cumProd(this);
     };
 
 
@@ -240,8 +240,8 @@
      */
     Array.prototype.diff = function(repeat) {
         return repeat == null ?
-            LCNativeArray.diff(this) :
-            LCNativeArray.diff(this, repeat);
+            SLCNativeArray.diff(this) :
+            SLCNativeArray.diff(this, repeat);
     };
 
 
@@ -280,7 +280,7 @@
      * @return {number}
      */
     Math.permutation = function(n, x) {
-        return LCMathFunc.permutation(n, x);
+        return SLCMathFunc.permutation(n, x);
     };
 
 
@@ -291,7 +291,7 @@
      * @return {number}
      */
     Math.combination = function(n, x) {
-        return LCMathFunc.combination(n, x);
+        return SLCMathFunc.combination(n, x);
     };
 
 
@@ -302,7 +302,7 @@
      * @return {number}
      */
     Math.gcd = function(a, b) {
-        return LCMathFunc.gcd(a, b);
+        return SLCMathFunc.gcd(a, b);
     };
 
 
@@ -313,5 +313,5 @@
      * @return {number}
      */
     Math.lcm = function(a, b) {
-        return LCMathFunc.lcm(a, b);
+        return SLCMathFunc.lcm(a, b);
     };

@@ -52,7 +52,7 @@
      */
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
         if(t == null) return;
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
             thisFun.tmpCond = thisFun.checkOreValid(blk, t, team, rot);
         };
         return thisFun.tmpCond;

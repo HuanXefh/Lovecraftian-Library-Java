@@ -21,7 +21,7 @@ import mindustry.world.modules.ItemModule;
 import mindustry.world.modules.LiquidModule;
 import mindustry.world.modules.PowerModule;
 
-import static lovec.utils.LCScript.GLB_var;
+import static lovec.utils.SLCScript.GLB_var;
 
 /**
  * Internal block type for multi-block structure.

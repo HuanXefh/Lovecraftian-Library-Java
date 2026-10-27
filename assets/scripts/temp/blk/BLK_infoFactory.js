@@ -44,7 +44,7 @@
      */
     function comp_drawSelect(b) {
         if(b.delegee.infoCur != null) {
-            LCDrawf.textSelect(b, b.delegee.infoCur, b.efficiency > 0.0001, b.block.delegee.infoOffTy);
+            SLCDrawf.textSelect(b, b.delegee.infoCur, b.efficiency > 0.0001, b.block.delegee.infoOffTy);
         };
     };
 

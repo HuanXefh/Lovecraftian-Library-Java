@@ -124,7 +124,7 @@
         if(arr.length === 0) return arr;
 
         // Cursed color comparison
-        arr.sort((rgba1, rgba2) => LCRgb.calcLightness(thisFun.tmpColors[0].set(rgba1)) - LCRgb.calcLightness(thisFun.tmpColors[1].set(rgba2)));
+        arr.sort((rgba1, rgba2) => SLCRgb.calcLightness(thisFun.tmpColors[0].set(rgba1)) - SLCRgb.calcLightness(thisFun.tmpColors[1].set(rgba2)));
 
         return !useArcColor ?
             arr :

@@ -106,7 +106,7 @@
         if((b.delegee.playingWithUnit || b.delegee.playingWithCrank) && b.efficiency > GLB_var.param.buildActiveEffcThr) {
             b.delegee.moveAng = Math.sin(GLB_var.time / 10.0) * b.block.delegee.armPlayAng;
             if(b.delegee.playingWithUnit && GLB_timer.secFive) {
-                let unit = LCEntity.getUnit(b.self.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
+                let unit = SLCEntity.getUnit(b.self.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
                 if(unit != null && unit.isGrounded() && MDL_cond.canHeal(unit, b.team)) {
                     FRAG_attack.heal(unit, 1.0);
                 };
@@ -191,7 +191,7 @@
             Draw.color();
         };
         if(b.delegee.moveItemCur != null && b.delegee.moveItemAmtCur > 0) {
-            LCDraw.content(b.x + b.block.delegee.itemDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itemDrawOff * Mathf.sinDeg(ang), b.delegee.moveItemCur, 0.6, b.delegee.moveAng);
+            SLCDraw.content(b.x + b.block.delegee.itemDrawOff * Mathf.cosDeg(ang), b.y + b.block.delegee.itemDrawOff * Mathf.sinDeg(ang), b.delegee.moveItemCur, 0.6, b.delegee.moveAng);
         };
         processZ();
     };
@@ -204,8 +204,8 @@
      */
     function comp_drawSelect(b) {
         b.self.ex_drawSelected();
-        LCDrawf.areaShrink(b.self.ex_findMoveT(false), 1, GLB_color.heal, 0.85);
-        LCDrawf.areaShrink(b.self.ex_findMoveT(true), 1, GLB_color.techBlue, 0.85);
+        SLCDrawf.areaShrink(b.self.ex_findMoveT(false), 1, GLB_color.heal, 0.85);
+        SLCDrawf.areaShrink(b.self.ex_findMoveT(true), 1, GLB_color.techBlue, 0.85);
     };
 
 
@@ -298,15 +298,15 @@
      */
     function comp_ex_doFloorPick(b) {
         if(GLB_timer.secHalf) {
-            let unit = LCEntity.getUnit(b.self.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
+            let unit = SLCEntity.getUnit(b.self.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
             if(unit != null && unit.isGrounded() && unit.stack.amount > 0) {
                 b.delegee.playingWithUnit = false;
                 b.self.ex_doUnitPick(unit);
-            } else if(unit != null && unit.isGrounded() && LCProp.getHitSize(unit) <= 8.0) {
+            } else if(unit != null && unit.isGrounded() && SLCProp.getHitSize(unit) <= 8.0) {
                 b.delegee.playingWithUnit = true;
             } else {
                 b.delegee.playingWithUnit = false;
-                let loot = LCEntity.getLoot(b.self.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
+                let loot = SLCEntity.getLoot(b.self.ex_calcMoveIntCoord(false, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(false, true) * Vars.tilesize);
                 if(loot != null && loot.stack.amount > 0) {
                     b.self.ex_doLootPick(loot);
                 };
@@ -386,14 +386,14 @@
      * @return {void}
      */
     function comp_ex_doFloorInsert(b) {
-        let unit = LCEntity.getUnit(b.self.ex_calcMoveIntCoord(true, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(true, true) * Vars.tilesize);
+        let unit = SLCEntity.getUnit(b.self.ex_calcMoveIntCoord(true, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(true, true) * Vars.tilesize);
         if(unit != null && unit.isGrounded() && unit.acceptsItem(b.delegee.moveItemCur)) {
             b.self.ex_doUnitInsert(unit);
         };
         if(b.delegee.moveItemAmtCur <= 0) {
             b.self.ex_moveBack();
         } else if(b.delegee.shouldDropLoot) {
-            let loot = LCEntity.getLoot(b.self.ex_calcMoveIntCoord(true, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(true, true) * Vars.tilesize);
+            let loot = SLCEntity.getLoot(b.self.ex_calcMoveIntCoord(true, false) * Vars.tilesize, b.self.ex_calcMoveIntCoord(true, true) * Vars.tilesize);
             if(loot != null && loot.acceptsItem(b.delegee.moveItemCur)) {
                 b.self.ex_doLootInsert(loot);
             };

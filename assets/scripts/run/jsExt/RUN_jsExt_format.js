@@ -24,8 +24,8 @@
      */
     Number.prototype.numToStr = function(deciAmt) {
         return deciAmt == null ?
-            LCFormat.numToStr(this) :
-            LCFormat.numToStr(this, deciAmt);
+            SLCFormat.numToStr(this) :
+            SLCFormat.numToStr(this, deciAmt);
     };
 
 
@@ -36,8 +36,8 @@
      */
     Number.prototype.perc = function(deciAmt) {
         return deciAmt == null ?
-            LCFormat.perc(this) :
-            LCFormat.perc(this, deciAmt);
+            SLCFormat.perc(this) :
+            SLCFormat.perc(this, deciAmt);
     };
 
 
@@ -49,8 +49,8 @@
     */
     Number.prototype.sci = function(pow, deciAmt) {
         return deciAmt == null ?
-            LCFormat.sci(this, pow) :
-            LCFormat.sci(this, pow, deciAmt);
+            SLCFormat.sci(this, pow) :
+            SLCFormat.sci(this, pow, deciAmt);
     };
 
 
@@ -71,8 +71,8 @@
      */
     Number.prototype.color = function(color, deciAmt) {
         return deciAmt == null ?
-            LCFormat.colorNum(this, color) :
-            LCFormat.colorNum(this, color, deciAmt);
+            SLCFormat.colorNum(this, color) :
+            SLCFormat.colorNum(this, color, deciAmt);
     };
 
 
@@ -86,7 +86,7 @@
      * @return {string}
      */
     Number.prototype.percColor = function(deciAmt, overColor, lessColor, midColor, midTol) {
-        return LCFormat.percColor(this, tryVal(deciAmt, 2), tryVal(overColor, GLB_color.heal), tryVal(lessColor, GLB_color.remove), tryVal(midColor, GLB_color.accent), tryVal(midTol, 0.025));
+        return SLCFormat.percColor(this, tryVal(deciAmt, 2), tryVal(overColor, GLB_color.heal), tryVal(lessColor, GLB_color.remove), tryVal(midColor, GLB_color.accent), tryVal(midTol, 0.025));
     };
 
 
@@ -97,8 +97,8 @@
      */
     Number.prototype.time = function(deciAmt) {
         return deciAmt == null ?
-            LCFormat.time(this) :
-            LCFormat.time(this, deciAmt);
+            SLCFormat.time(this) :
+            SLCFormat.time(this, deciAmt);
     };
 
 
@@ -167,7 +167,7 @@
      * @return {string}
      */
     String.prototype.color = function(color) {
-        return LCFormat.color(this, color);
+        return SLCFormat.color(this, color);
     };
 
 
@@ -176,7 +176,7 @@
     * @return {string}
     */
     String.prototype.plain = function() {
-        return LCFormat.plain(this);
+        return SLCFormat.plain(this);
     };
 
 

@@ -110,7 +110,7 @@
 
         if(GLB_timer.secHalf && b.block.delegee.bladeTouchRad > 0.0 && b.delegee.windEffc >= b.block.delegee.bladeTouchWarmupThr) {
             let hasHit = false;
-            LCEntity.eachUnit(b.x, b.y, null, b.block.delegee.bladeTouchRad, ounit => MDL_cond.isUnitInLowAir(ounit) || MDL_cond.isUnitBoosting(ounit), ounit => {
+            SLCEntity.eachUnit(b.x, b.y, null, b.block.delegee.bladeTouchRad, ounit => MDL_cond.isUnitInLowAir(ounit) || MDL_cond.isUnitBoosting(ounit), ounit => {
                 FRAG_attack.damage(ounit, b.block.delegee.bladeTouchDmg * b.delegee.windEffc);
                 hasHit = true;
             });

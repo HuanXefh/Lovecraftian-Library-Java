@@ -4,7 +4,7 @@ import arc.struct.ObjectMap;
 import lovec.type.block.factory.MultiBlockLinkBlock;
 import lovec.type.block.factory.MultiBlockLinkConstructBlock;
 
-public class LCMultiBlockHandler {
+public class SLCMultiBlockHandler {
 
 
     public static final int maxLinkBlockSize = 4;

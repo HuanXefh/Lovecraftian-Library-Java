@@ -3,7 +3,7 @@ package lovec.content.updater;
 import arc.math.Mathf;
 import lovec.content.LCBuildUpdater;
 import lovec.content.LCContentUpdater;
-import lovec.utils.LCScriptUtil;
+import lovec.utils.SLCScriptUtil;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -22,12 +22,12 @@ public class BLKCableUpdater extends LCContentUpdater<Conveyor> {
     public boolean blends(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
         return (
             (oblk.consPower != null || oblk.outputsPower)
-                && !LCScriptUtil.checkCond("isFluidConduit", oblk)
-                && !LCScriptUtil.checkCond("isArmoredCable", oblk)
+                && !SLCScriptUtil.checkCond("isFluidConduit", oblk)
+                && !SLCScriptUtil.checkCond("isArmoredCable", oblk)
         ) || (
             target.lookingAt(t, rot, otx, oty, oblk)
                 && oblk.hasPower
-                && !LCScriptUtil.checkCond("isFluidConduit", oblk)
+                && !SLCScriptUtil.checkCond("isFluidConduit", oblk)
         );
     };
     // Overload

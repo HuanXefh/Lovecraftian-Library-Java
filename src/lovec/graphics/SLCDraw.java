@@ -5,8 +5,8 @@ import arc.graphics.g2d.*;
 import arc.math.Mathf;
 import arc.util.Nullable;
 import arc.util.Tmp;
-import lovec.utils.LCVersionResolver;
-import lovec.utils.LCPos;
+import lovec.utils.SLCVersionResolver;
+import lovec.utils.SLCPos;
 import mindustry.gen.Building;
 import mindustry.Vars;
 
@@ -14,7 +14,7 @@ import mindustry.Vars;
  * Elementary draw methods used in Lovec.
  * These are defined in Java for better performance.
  */
-public class LCDraw {
+public class SLCDraw {
 
 
     static Color[] tmpColors = {
@@ -169,7 +169,7 @@ public class LCDraw {
      * Draws rectangle with colored lines.
      */
     public static void rect(float x, float y, float r, float size, boolean isDashed) {
-        float hw = LCPos.calcRectHW(r, size);
+        float hw = SLCPos.calcRectHW(r, size);
         int amtSeg = (int) (!isDashed ? 0 : (size + r * 2) * 2);
 
         if(isDashed) {
@@ -387,7 +387,7 @@ public class LCDraw {
     public static void content(float x, float y, @Nullable Object ct, float size, float ang, float z) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
 
-        TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
+        TextureRegion fullIcon = (TextureRegion) SLCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         float
             w = size * Vars.tilesize * (fullIcon.width > fullIcon.height ? 1f : ((float) fullIcon.width / fullIcon.height)),
             h = size * Vars.tilesize * (fullIcon.height > fullIcon.width ? 1f : ((float) fullIcon.height / fullIcon.width));
@@ -413,18 +413,18 @@ public class LCDraw {
      */
     public static void contentIcon(float x, float y, @Nullable Object ct, float size, float wScl) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
+        TextureRegion fullIcon = (TextureRegion) SLCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         regionIcon(x, y, fullIcon, size, wScl);
     };
     // Overload
     public static void contentIcon(float x, float y, @Nullable Object ct, float size) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
+        TextureRegion fullIcon = (TextureRegion) SLCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         regionIcon(x, y, fullIcon, size);
     };
     public static void contentIcon(float x, float y, @Nullable Object ct) throws NoSuchFieldException, IllegalAccessException {
         if(ct == null) return;
-        TextureRegion fullIcon = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
+        TextureRegion fullIcon = (TextureRegion) SLCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
         regionIcon(x, y, fullIcon);
     };
 

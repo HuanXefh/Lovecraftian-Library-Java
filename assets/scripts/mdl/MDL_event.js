@@ -49,7 +49,7 @@
         if(id != null && thisFun.ids.includes(id)) return;
         if(id != null) thisFun.ids.push(id);
 
-        LCVersionResolver.isV8 ?
+        SLCVersionResolver.isV8 ?
             delayRunV8(delay, scr) :
             delayRunV9(delay, scr);
     };
@@ -138,9 +138,9 @@
         if(id != null) thisFun.ids.push(id);
 
         Events.run(ClientLoadEvent, () => {
-            eval(LCVersionResolver.isV8 ? "Time.run" : "Vars.state.run")(delay, () => {
-                scr();
-            });
+            SLCVersionResolver.isV8 ?
+                delayRunV8(delay, scr) :
+                delayRunV9(delay, scr);
         });
     };
     exports.onLoadDelay = onLoadDelay;

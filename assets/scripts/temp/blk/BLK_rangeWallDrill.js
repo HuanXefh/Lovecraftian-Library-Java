@@ -75,7 +75,7 @@
      */
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
         if(t == null) return false;
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
             blk.self.ex_updateMineMap(blk.delegee.tmpMineMap, blk.delegee.tmpMineRsTup, blk.delegee.tmpOreTs, t.x, t.y, rot);
         };
         return blk.delegee.tmpMineRsTup[0] != null;
@@ -98,7 +98,7 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
-        LCDrawf.rectPlaceRot(blk, tx, ty, blk.range * 0.5, rot, true, valid ? GLB_color.accent : GLB_color.remove);
+        SLCDrawf.rectPlaceRot(blk, tx, ty, blk.range * 0.5, rot, true, valid ? GLB_color.accent : GLB_color.remove);
         if(GLB_var.world.tile(tx, ty) == null || blk.delegee.tmpMineRsTup[0] == null) return;
         blk.self.ex_drawDrillText(tx, ty, valid, 60.0 / blk.self.ex_calcDrillTime(blk.delegee.tmpMineRsTup[0], Math.pow(blk.range, 2)) * blk.delegee.tmpTotalOreAmt, blk.delegee.tmpMineRsTup[1].length > 1 ? null : blk.self.ex_findPlaceRsIcon(tx, ty, blk.delegee.tmpMineRsTup[0]));
     };
@@ -156,7 +156,7 @@
         let
             item,
             oblk;
-        return LCPos.getTilesRectRotCenter(tryVal(contArr, null), GLB_var.world.tile(tx, ty), blk.range * 0.5, rot, blk.size).inSituFilter(ot => {
+        return SLCPos.getTilesRectRotCenter(tryVal(contArr, null), GLB_var.world.tile(tx, ty), blk.range * 0.5, rot, blk.size).inSituFilter(ot => {
             item = null;
             oblk = Blocks.air;
             if(blk.delegee.mineMode === "wall" || blk.delegee.mineMode === "any") {
@@ -194,7 +194,7 @@
         b.delegee.totalOreAmt = b.block.delegee.tmpTotalOreAmt;
         b.delegee.mineRsTargets.cpy(b.delegee.mineRsTup[1]);
 
-        LCPos.getCoordsRectRotCenter(Tmp.v1, b.x, b.y, b.block.range * 0.5, b.rotation, b.block.size);
+        SLCPos.getCoordsRectRotCenter(Tmp.v1, b.x, b.y, b.block.range * 0.5, b.rotation, b.block.size);
         b.delegee.mineRectCx = Tmp.v1.x;
         b.delegee.mineRectCy = Tmp.v1.y;
     };
@@ -263,10 +263,10 @@
             processZ();
         };
         if(b.warmup > 0.0) {
-            let a = b.warmup * 0.75 * LCDrawf.getLaserA(1.0, false, true, false);
-            LCDrawf.laserRandMine(b.x, b.y, b.delegee.mineRectCx, b.delegee.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.delegee.beamOffTime, 0, 1.0, color, a, true);
-            LCDrawf.laserRandMine(b.x, b.y, b.delegee.mineRectCx, b.delegee.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.delegee.beamOffTime + 1800.0, 1, 1.0, color, a, true);
-            LCDrawf.laserRandMine(b.x, b.y, b.delegee.mineRectCx, b.delegee.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.delegee.beamOffTime + 4200.0, -1, 1.0, color, a, true);
+            let a = b.warmup * 0.75 * SLCDrawf.getLaserA(1.0, false, true, false);
+            SLCDrawf.laserRandMine(b.x, b.y, b.delegee.mineRectCx, b.delegee.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.delegee.beamOffTime, 0, 1.0, color, a, true);
+            SLCDrawf.laserRandMine(b.x, b.y, b.delegee.mineRectCx, b.delegee.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.delegee.beamOffTime + 1800.0, 1, 1.0, color, a, true);
+            SLCDrawf.laserRandMine(b.x, b.y, b.delegee.mineRectCx, b.delegee.mineRectCy, b.block.range * 0.5 * Vars.tilesize, b.delegee.beamOffTime + 4200.0, -1, 1.0, color, a, true);
         };
     };
 
@@ -277,7 +277,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDrawf.rectSelectRot(b, b.block.range * 0.5, b.rotation, true, GLB_color.accent);
+        SLCDrawf.rectSelectRot(b, b.block.range * 0.5, b.rotation, true, GLB_color.accent);
         if(b.delegee.mineRsTup[0] == null) return;
         b.drawItemSelection(b.delegee.mineRsTup[0]);
     };

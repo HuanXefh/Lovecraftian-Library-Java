@@ -1,7 +1,7 @@
 package lovec.utils.pooling;
 
 import arc.util.pooling.Pool;
-import lovec.utils.extend.LCNativeArray;
+import lovec.utils.extend.SLCNativeArray;
 import rhino.NativeArray;
 
 public class PoolableNativeArray extends NativeArray implements Pool.Poolable {
@@ -18,7 +18,7 @@ public class PoolableNativeArray extends NativeArray implements Pool.Poolable {
 
     @Override
     public void reset() {
-        LCNativeArray.clear(this);
+        SLCNativeArray.clear(this);
     };
 
 

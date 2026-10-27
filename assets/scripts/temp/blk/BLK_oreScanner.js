@@ -79,7 +79,7 @@
      * @return {Array<Tile>}
      */
     function comp_ex_getRevealTargets(blk, tx, ty, rot) {
-        return LCPos
+        return SLCPos
         .getTilesCircle(blk.delegee.tmpRevealedTargets, GLB_var.world.tile(tx, ty), blk.delegee.blkRad / Vars.tilesize, blk.size)
         .inSituFilter(ot => MDL_cond.isScannerTarget(ot.overlay()) && blk.delegee.scanTier >= ot.overlay().delegee.depthLvl);
     };
@@ -116,7 +116,7 @@
         if(b.team !== Vars.player.team()) return;
         b.self.ex_setRevealed(false);
         // Update other scanners in range
-        LCEntity.eachBuild(b.x, b.y, b.team, b.block.delegee.blkRad * 2.2, ob => MDL_cond.isOreScanner(ob.block), ob => ob.self.ex_setRevealed(true));
+        SLCEntity.eachBuild(b.x, b.y, b.team, b.block.delegee.blkRad * 2.2, ob => MDL_cond.isOreScanner(ob.block), ob => ob.self.ex_setRevealed(true));
     };
 
 

@@ -1,7 +1,7 @@
 package lovec.content;
 
 import arc.Events;
-import lovec.utils.LCScript;
+import lovec.utils.SLCScript;
 import mindustry.game.EventType;
 
 import java.lang.annotation.ElementType;
@@ -60,7 +60,7 @@ public abstract class LCContentUpdater<T> {
      * Whether a property exists in the delegee.
      */
     protected boolean has(Object ins, String name) throws NoSuchFieldException, IllegalAccessException {
-        return LCScript.instanceHas(ins, name);
+        return SLCScript.instanceHas(ins, name);
     };
     // Overload
     protected boolean has(String name) throws NoSuchFieldException, IllegalAccessException {
@@ -72,7 +72,7 @@ public abstract class LCContentUpdater<T> {
      * Gets a property in the delegee.
      */
     protected Object get(Object ins, String name) throws NoSuchFieldException, IllegalAccessException {
-        return LCScript.instanceGet(ins, name);
+        return SLCScript.instanceGet(ins, name);
     };
     // Overload
     protected Object get(String name) throws NoSuchFieldException, IllegalAccessException {
@@ -84,7 +84,7 @@ public abstract class LCContentUpdater<T> {
      * Sets a property in the delegee.
      */
     protected void set(Object ins, String name, Object val) throws NoSuchFieldException, IllegalAccessException {
-        LCScript.instanceSet(ins, name, val);
+        SLCScript.instanceSet(ins, name, val);
     };
     // Overload
     protected void set(String name, Object val) throws NoSuchFieldException, IllegalAccessException {
@@ -96,7 +96,7 @@ public abstract class LCContentUpdater<T> {
      * Calls a method.
      */
     protected Object invoke(Object ins, String name, Object... args) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {
-        return LCScript.instanceInvoke(ins, name, args);
+        return SLCScript.instanceInvoke(ins, name, args);
     };
     // Overload
     protected Object invoke(String name, Object... args) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException {

@@ -1,14 +1,14 @@
 package lovec.utils.extend;
 
 import arc.util.Nullable;
-import lovec.utils.LCScript;
+import lovec.utils.SLCScript;
 import lovec.utils.func.Floatf2;
 import rhino.NativeObject;
 
 /**
  * Various methods for Rhino native object.
  */
-public class LCNativeObject {
+public class SLCNativeObject {
 
 
     /* <-------------------- base --------------------> */
@@ -22,7 +22,7 @@ public class LCNativeObject {
         if(!(val instanceof Number)) {
             val = 0f;
         };
-        float val_fi = LCScript.toFloat(val) + num;
+        float val_fi = SLCScript.toFloat(val) + num;
         obj.put(key, obj, val_fi);
         return val_fi;
     };
@@ -42,7 +42,7 @@ public class LCNativeObject {
         for(Object id : ids) {
             val = obj.get(id);
             if(val instanceof Number num) {
-                sum += mapF == null ? LCScript.toFloat(num) : mapF.get(LCScript.toString(id), LCScript.toFloat(num));
+                sum += mapF == null ? SLCScript.toFloat(num) : mapF.get(SLCScript.toString(id), SLCScript.toFloat(num));
             };
         };
         return sum;
@@ -64,7 +64,7 @@ public class LCNativeObject {
         for(Object id : ids) {
             val = obj.get(id);
             if(val instanceof Number) {
-                tmp = mapF == null ? LCScript.toFloat(val) : mapF.get(LCScript.toString(id), LCScript.toFloat(val));
+                tmp = mapF == null ? SLCScript.toFloat(val) : mapF.get(SLCScript.toString(id), SLCScript.toFloat(val));
                 if(tmp > max) {
                     max = tmp;
                 };
@@ -89,7 +89,7 @@ public class LCNativeObject {
         for(Object id : ids) {
             val = obj.get(id);
             if(val instanceof Number) {
-                tmp = mapF == null ? LCScript.toFloat(val) : mapF.get(LCScript.toString(id), LCScript.toFloat(val));
+                tmp = mapF == null ? SLCScript.toFloat(val) : mapF.get(SLCScript.toString(id), SLCScript.toFloat(val));
                 if(tmp < min) {
                     min = tmp;
                 };
@@ -105,7 +105,7 @@ public class LCNativeObject {
 
     private static float getNumWithDef(NativeObject obj, Object id, float def) {
         Object val = obj.get(id);
-        return val instanceof Number ? LCScript.toFloat(val) : def;
+        return val instanceof Number ? SLCScript.toFloat(val) : def;
     };
     // Overload
     private static float getNumWithDef(NativeObject obj, Object id) {
@@ -141,7 +141,7 @@ public class LCNativeObject {
         float val1, val2;
         for(Object id: ids) {
             val1 = getNumWithDef(obj, id);
-            val2 = valF.get(LCScript.toString(id), val1);
+            val2 = valF.get(SLCScript.toString(id), val1);
             if(equal ? val1 >= val2 : val1 > val2) return true;
         };
         return false;
@@ -176,7 +176,7 @@ public class LCNativeObject {
         float val1, val2;
         for(Object id: ids) {
             val1 = getNumWithDef(obj, id);
-            val2 = valF.get(LCScript.toString(id), val1);
+            val2 = valF.get(SLCScript.toString(id), val1);
             if(equal ? val1 <= val2 : val1 < val2) return true;
         };
         return false;

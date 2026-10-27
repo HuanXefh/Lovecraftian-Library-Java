@@ -18,7 +18,7 @@
 
 
     /** @global */
-    LCVersionResolver = fetchClass("lovec.utils.LCVersionResolver");
+    SLCVersionResolver = fetchClass("lovec.utils.SLCVersionResolver");
 
 
     /**
@@ -43,7 +43,7 @@
      * @return {number|Environments}
      */
     getEnvSet = function() {
-        if(LCVersionResolver.isV8) {
+        if(SLCVersionResolver.isV8) {
             if(String(arguments[0]) === "any") {
                 return -1;
             } else if(String(arguments[0]) === "none") {
@@ -93,13 +93,13 @@
      * @return {boolean}
      */
     includesEnv = function(envSet, env) {
-        return LCVersionResolver.isV8 ?
+        return SLCVersionResolver.isV8 ?
             (envSet & env) !== 0 :
             envSet.has(env);
     };
 
 
-    if(LCVersionResolver.isV8) {
+    if(SLCVersionResolver.isV8) {
         PlayerJoinEvent = eval(EventType.PlayerJoin);
         PlayerConnectEvent = eval(EventType.PlayerConnect);
         PlayerLeaveEvent = eval(EventType.PlayerLeave);

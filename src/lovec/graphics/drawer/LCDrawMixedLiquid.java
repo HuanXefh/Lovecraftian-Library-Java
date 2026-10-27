@@ -6,8 +6,8 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Tmp;
 import lovec.annotation.LCJSONTypeClass;
-import lovec.utils.LCScript;
-import lovec.utils.LCScriptUtil;
+import lovec.utils.SLCScript;
+import lovec.utils.SLCScriptUtil;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 
@@ -37,7 +37,7 @@ public class LCDrawMixedLiquid extends LCDrawer {
         Tmp.c1.set(Color.clear);
         firstLiq = true;
         b.liquids.each((liq, amt) -> {
-            if(amt > 0.01 && !liq.gas && !LCScriptUtil.checkCond("isAuxiliaryFluid", LCScript.wrap(liq))) {
+            if(amt > 0.01 && !liq.gas && !SLCScriptUtil.checkCond("isAuxiliaryFluid", SLCScript.wrap(liq))) {
                 if(firstLiq) {
                     firstLiq = false;
                     Tmp.c1.set(liq.color).a(amt / b.block.liquidCapacity);

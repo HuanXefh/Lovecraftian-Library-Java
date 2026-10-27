@@ -186,7 +186,7 @@
      */
     module.exports[1].getParentIntfs = function(obj) {
         tmpIntfs.clear();
-        if(LCVersionResolver.isV8) {
+        if(SLCVersionResolver.isV8) {
             if(obj.blk$isErekirHeatConsumer) {
                 tmpIntfs.push(eval("HeatConsumer"));
             };

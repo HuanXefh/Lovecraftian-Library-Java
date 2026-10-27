@@ -8,10 +8,10 @@ import arc.util.Nullable;
 import arc.util.Tmp;
 import lovec.content.LCBuildUpdater;
 import lovec.content.LCContentUpdater;
-import lovec.graphics.LCPal;
+import lovec.graphics.SLCPal;
 import lovec.type.block.factory.MultiBlockLinkCenterBlockFrag;
 import lovec.type.block.factory.MultiBlockLinkCenterBuildFrag;
-import lovec.utils.LCVersionResolver;
+import lovec.utils.SLCVersionResolver;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -231,7 +231,7 @@ public class BLKMultiBlockUpdater extends LCContentUpdater<Block> {
         @FragMethod
         public void drawTeam() {
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-                Tile t = LCVersionResolver.world.tile(b.tileX() + teamOverlayOffset.x, b.tileY() + teamOverlayOffset.y);
+                Tile t = SLCVersionResolver.world.tile(b.tileX() + teamOverlayOffset.x, b.tileY() + teamOverlayOffset.y);
                 if(t != null) {
                     Draw.color(b.team.color);
                     Draw.rect("block-border", t.worldx(), t.worldy());
@@ -244,14 +244,14 @@ public class BLKMultiBlockUpdater extends LCContentUpdater<Block> {
         @FragMethod
         public void drawStatus() {
             if(b instanceof MultiBlockLinkCenterBuildFrag mb && blk instanceof MultiBlockLinkCenterBlockFrag mblk) {
-                Tile t = LCVersionResolver.world.tile(b.tileX() + statusOverlayOffset.x, b.tileY() + statusOverlayOffset.y);
+                Tile t = SLCVersionResolver.world.tile(b.tileX() + statusOverlayOffset.x, b.tileY() + statusOverlayOffset.y);
                 if(t != null) {
                     float mtp = mblk.getMultiBlockSizes()[0] > 1 && mblk.getMultiBlockSizes()[1] > 1 ? 1f : 0.64f;
                     float off = mtp == 1f ? 0f : (mtp * Vars.tilesize / 4f);
                     float x = t.worldx() + off;
                     float y = t.worldy() - off;
                     Draw.z(Layer.power + 1f);
-                    Draw.color(LCPal.gray);
+                    Draw.color(SLCPal.gray);
                     Fill.square(x, y, 2.5f * mtp, 45f);
                     Draw.color(b.status().color);
                     Fill.square(x, y, 1.5f * mtp, 45f);

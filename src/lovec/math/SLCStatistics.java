@@ -1,21 +1,21 @@
 package lovec.math;
 
 import arc.util.Nullable;
-import lovec.utils.LCScript;
-import lovec.utils.extend.LCNativeArray;
+import lovec.utils.SLCScript;
+import lovec.utils.extend.SLCNativeArray;
 import rhino.NativeArray;
 
 /**
  * Various statistical methods for data processing, using native array.
  */
-public class LCStatistics {
+public class SLCStatistics {
 
 
     /**
      * Calculates mean value.
      */
     public static double mean(NativeArray xs) {
-        return LCNativeArray.mean(xs);
+        return SLCNativeArray.mean(xs);
     };
 
 
@@ -27,11 +27,11 @@ public class LCStatistics {
         long n = xs.getLength();
         if(n != ys.getLength()) throw new IllegalArgumentException("Unmatched array length!");
 
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCStatistics.difference.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCStatistics.difference.newArr");
 
         int i = 0;
         while(i < n) {
-            arr.put(i, arr, LCScript.toDouble(xs.get(i)) - LCScript.toDouble((ys.get(i))));
+            arr.put(i, arr, SLCScript.toDouble(xs.get(i)) - SLCScript.toDouble((ys.get(i))));
             i++;
         };
 
@@ -43,7 +43,7 @@ public class LCStatistics {
      * Calculates mean value of differences.
      */
     public static double differenceMean(NativeArray xs, NativeArray ys) throws IllegalArgumentException {
-        return mean(difference(LCScript.ensureArray("LCStatistics.meanDifference.tmpArr"), xs, ys));
+        return mean(difference(SLCScript.ensureArray("SLCStatistics.meanDifference.tmpArr"), xs, ys));
     };
 
 
@@ -55,7 +55,7 @@ public class LCStatistics {
         int i = 0;
         long n = xs.getLength();
         while(i < n) {
-            sum += Math.pow(LCScript.toDouble(xs.get(i)) - mean, 2);
+            sum += Math.pow(SLCScript.toDouble(xs.get(i)) - mean, 2);
             i++;
         };
         return Math.sqrt(sum / n);
@@ -74,7 +74,7 @@ public class LCStatistics {
         int i = 0;
         long n = xs.getLength();
         while(i < n) {
-            sum += Math.pow(LCScript.toDouble(xs.get(i)) - mean, 2);
+            sum += Math.pow(SLCScript.toDouble(xs.get(i)) - mean, 2);
             i++;
         };
 
@@ -102,7 +102,7 @@ public class LCStatistics {
         double sum = 0;
         int i = 0;
         while(i < n) {
-            sum += (LCScript.toDouble(xs.get(i)) - meanX) * (LCScript.toDouble(ys.get(i)) - meanY);
+            sum += (SLCScript.toDouble(xs.get(i)) - meanX) * (SLCScript.toDouble(ys.get(i)) - meanY);
             i++;
         };
 
@@ -124,7 +124,7 @@ public class LCStatistics {
      * Calculates variance of differences.
      */
     public static double differenceVariance(NativeArray xs, NativeArray ys, boolean notSample) throws IllegalArgumentException {
-        return variance(difference(LCScript.ensureArray("LCStatistics.differenceVariation.tmpArr"), xs, ys), notSample);
+        return variance(difference(SLCScript.ensureArray("SLCStatistics.differenceVariation.tmpArr"), xs, ys), notSample);
     };
     // Overload
     public static double differenceVariance(NativeArray xs, NativeArray ys) {
@@ -141,14 +141,14 @@ public class LCStatistics {
     // Overload
     @SuppressWarnings("CollectionAddedToSelf")
     public static NativeArray zScore(@Nullable NativeArray contArr, NativeArray xs) {
-        NativeArray arr = contArr != null ? LCNativeArray.clear(contArr) : LCScript.newArray("LCStatistics.zScore.newArr");
+        NativeArray arr = contArr != null ? SLCNativeArray.clear(contArr) : SLCScript.newArray("SLCStatistics.zScore.newArr");
 
         int i = 0;
         long n = xs.getLength();
         double mean = mean(xs);
         double stdDev = standardDeviation(xs, mean);
         while(i < n) {
-            arr.put(i, arr, zScore(LCScript.toDouble(xs.get(i)), mean, stdDev));
+            arr.put(i, arr, zScore(SLCScript.toDouble(xs.get(i)), mean, stdDev));
             i++;
         };
 
@@ -181,8 +181,8 @@ public class LCStatistics {
         double tmp2 = 0;
         int i = 0;
         while(i < n) {
-            tmp1 += Math.pow(LCScript.toDouble(xs.get(i)) - meanX, 2);
-            tmp2 += (LCScript.toDouble(xs.get(i)) - meanX) * (LCScript.toDouble(ys.get(i)) - meanY);
+            tmp1 += Math.pow(SLCScript.toDouble(xs.get(i)) - meanX, 2);
+            tmp2 += (SLCScript.toDouble(xs.get(i)) - meanX) * (SLCScript.toDouble(ys.get(i)) - meanY);
             i++;
         };
         lrSlope = tmp2 / tmp1;

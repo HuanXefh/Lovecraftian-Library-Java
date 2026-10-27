@@ -6,7 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.util.Eachable;
 import arc.util.Tmp;
 import lovec.annotation.LCJSONTypeClass;
-import lovec.graphics.LCDraw;
+import lovec.graphics.SLCDraw;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -53,10 +53,10 @@ public class LCDrawMultiBlockSymmetricRegion extends LCDrawMultiBlock {
 
     @Override
     public void draw(Building b) {
-        LCDraw.processZ(z);
+        SLCDraw.processZ(z);
         calcMultiBlockOff(Tmp.v1, b.rotation).add(b);
         Draw.rect(regs[b.rotation % 2], Tmp.v1.x, Tmp.v1.y);
-        LCDraw.processZ(-1f);
+        SLCDraw.processZ(-1f);
     };
 
 

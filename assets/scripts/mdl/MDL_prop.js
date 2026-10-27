@@ -7,7 +7,7 @@
 
     /**
      * Methods to calculate some entity properties.
-     * Most basic ones are defined in {@link LCProp}.
+     * Most basic ones are defined in {@link SLCProp}.
      * @module lovec/mdl/MDL_prop
      */
 
@@ -109,7 +109,7 @@
      * @return {number}
      */
     const getDmgTake = function(e, dmg, armorMtp, useHealthMtp) {
-        return Damage.applyArmor(dmg, LCProp.getArmor(e) * tryVal(armorMtp, 1.0) / (
+        return Damage.applyArmor(dmg, SLCProp.getArmor(e) * tryVal(armorMtp, 1.0) / (
             !useHealthMtp ?
                 1.0 :
                 (
@@ -270,7 +270,7 @@
           dmg_fi = 0.0,
           dst = Mathf.dst(bul.x, bul.y, e.x, e.y),
           isRemote = DB_unit.db["class"]["bullet"]["remote"].hasIns(bul.type),
-          isRemoteCur = (dst > (bul.hitSize + LCProp.getHitSize(e)) * 0.7499);
+          isRemoteCur = (dst > (bul.hitSize + SLCProp.getHitSize(e)) * 0.7499);
 
         if(e instanceof Unit && tryJsProp(bul.type, "typeMtpArr") != null) {
             dmg *= FRAG_attack.getDmgMtpByTypeMtpArr(e, bul.type.delegee.typeMtpArr);
@@ -280,7 +280,7 @@
           mtp = e instanceof Unit ?
               (1.0 / e.healthMultiplier * (e.shield > dmg ? 1.0 : bul.type.shieldDamageMultiplier)) :
               (bul.type.buildingDamageMultiplier * (getBuildShield(e, true) > dmg ? 1.0 : bul.type.shieldDamageMultiplier)),
-          armor = LCProp.getArmor(e);
+          armor = SLCProp.getArmor(e);
 
         if(bul.type.pierceArmor) {
             dmg_fi += (!isRemote && isRemoteCur) ? 0.0 : dmg;

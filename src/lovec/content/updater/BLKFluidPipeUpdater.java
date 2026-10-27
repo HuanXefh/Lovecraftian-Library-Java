@@ -3,8 +3,8 @@ package lovec.content.updater;
 import arc.math.Mathf;
 import lovec.content.LCBuildUpdater;
 import lovec.content.LCContentUpdater;
-import lovec.content.LCCraftingHandler;
-import lovec.utils.LCScriptUtil;
+import lovec.content.SLCCraftingHandler;
+import lovec.utils.SLCScriptUtil;
 import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -25,7 +25,7 @@ public class BLKFluidPipeUpdater extends LCContentUpdater<Conduit> {
     public boolean blends(Tile t, int rot, int otx, int oty, int orot, Block oblk) {
         return oblk.hasLiquids
             && (oblk.outputsLiquid || target.lookingAt(t, rot, otx, oty, oblk))
-            && (target.lookingAtEither(t, rot, otx, oty, orot, oblk) || LCScriptUtil.checkCond("isFluidRouter", oblk) || LCScriptUtil.checkCond("isFullRouter", oblk));
+            && (target.lookingAtEither(t, rot, otx, oty, orot, oblk) || SLCScriptUtil.checkCond("isFluidRouter", oblk) || SLCScriptUtil.checkCond("isFullRouter", oblk));
     };
     // Overload
     @FragMethod
@@ -60,7 +60,7 @@ public class BLKFluidPipeUpdater extends LCContentUpdater<Conduit> {
             b_t = b_t.getLiquidDestination(b, liq);
             if(b_t == null || b_t.liquids == null) return amtTrans;
 
-            amtTrans = LCCraftingHandler.transLiquid(
+            amtTrans = SLCCraftingHandler.transLiquid(
                 b, b_t, liq,
                 blk.liquidCapacity * Math.max(b.liquids.get(liq) / blk.liquidCapacity - b_t.liquids.get(liq) / b_t.block.liquidCapacity, 0f)
             );
@@ -73,7 +73,7 @@ public class BLKFluidPipeUpdater extends LCContentUpdater<Conduit> {
                     && b.liquids.get(liq) / b.block.liquidCapacity > 0.1f
                     && b_t.liquids.get(oliq) / b_t.block.liquidCapacity > 0.1f
             ) {
-                LCScriptUtil.handleReaction(liq, oliq, 10f, b_t);
+                SLCScriptUtil.handleReaction(liq, oliq, 10f, b_t);
             };
 
             return amtTrans;

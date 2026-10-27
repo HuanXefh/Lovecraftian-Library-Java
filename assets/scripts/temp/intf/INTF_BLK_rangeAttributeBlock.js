@@ -33,7 +33,7 @@
     const comp_ex_getAttrSum = function thisFun(blk, tx, ty, rot) {
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return;
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
             thisFun.tmpSum = MDL_attr.calcSumRect(t, blk.attrR, blk.size, blk.self.ex_getAttrTarget(), blk.delegee.attrMode) + blk.self.ex_getAttrTarget().env();
         };
         return thisFun.tmpSum;

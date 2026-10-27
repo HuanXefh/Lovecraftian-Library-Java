@@ -1,5 +1,5 @@
-/** lovec.math.LCLerp */
-declare class LCLerp {
+/** lovec.math.SLCLerp */
+declare class SLCLerp {
     static calcParamFrac(param: number, param_f: number, param_t: number): number
     static lerp(val_f: number, val_t: number, param: number): number
     static lerp(val_f: number, val_t: number, param: number, param_f: number, param_t: number): number
@@ -16,8 +16,8 @@ declare class LCLerp {
 }
 
 
-/** lovec.math.LCMathFunc */
-declare class LCMathFunc {
+/** lovec.math.SLCMathFunc */
+declare class SLCMathFunc {
     static factorial(x: number): number
     static permutation(n: number, x: number): number
     static combination(n: number, x: number): number
@@ -38,24 +38,24 @@ declare class LCMathFunc {
 }
 
 
-/** lovec.math.LCProbability */
-declare class LCProbability {
+/** lovec.math.SLCProbability */
+declare class SLCProbability {
     static generateDistribution(size: number, numF: Doublep): JavaArray<java.lang.Double>
     static randomDistribution(size: number, base: number, cap: number, seed?: number): JavaArray<java.lang.Double>
     static normalDistribution(size: number, mu: number, sigma: number): JavaArray<java.lang.Double>
 }
 
 
-/** lovec.math.LCRaycast */
-declare class LCRaycast {
+/** lovec.math.SLCRaycast */
+declare class SLCRaycast {
     static rayCheck(x1: number, y1: number, x2: number, y2: number, boolF: Boolf2<java.lang.Integer, java.lang.Integer>): boolean
     static rayFind<T>(x1: number, y1: number, x2: number, y2: number, func: Func2<java.lang.Integer, java.lang.Integer, T>): T|null
     static rayFindAll<T>(x1: number, y1: number, x2: number, y2: number, func: Func2<java.lang.Integer, java.lang.Integer, T>): Seq<T>
 }
 
 
-/** lovec.math.LCStatistics */
-declare class LCStatistics {
+/** lovec.math.SLCStatistics */
+declare class SLCStatistics {
     static mean(xs: Array<number>): number
     static difference(contArr: Array<Object>|null, xs: Array<number>, ys: Array<number>): Array<number>
     static differenceMean(xs: Array<number>, ys: Array<number>): number

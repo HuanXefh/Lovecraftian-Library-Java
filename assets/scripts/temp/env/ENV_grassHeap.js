@@ -41,7 +41,7 @@
      * @return {void}
      */
     function comp_drawBase(blk, t) {
-        LCDrawf.tree(blk.region, blk.customShadowRegion, t, blk.size * Vars.tilesize * 1.2, blk.shadowOffset, 0.6, 0.6, 0.6, GLB_param.TREE_ALPHA, blk.delegee.layGrass + Mathf.randomSeed(t.pos(), 0.0, 0.015), GLB_param.SHOULD_DRAW_WOBBLE, GLB_param.SHOULD_CHECK_TREE_DISTANCE);
+        SLCDrawf.tree(blk.region, blk.customShadowRegion, t, blk.size * Vars.tilesize * 1.2, blk.shadowOffset, 0.6, 0.6, 0.6, GLB_param.TREE_ALPHA, blk.delegee.layGrass + Mathf.randomSeed(t.pos(), 0.0, 0.015), GLB_param.SHOULD_DRAW_WOBBLE, GLB_param.SHOULD_CHECK_TREE_DISTANCE);
     };
 
 

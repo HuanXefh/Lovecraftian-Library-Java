@@ -89,13 +89,13 @@
             let rad = b.block.range + b.phaseHeat * b.block.phaseRangeBoost;
 
             if(b.block.delegee.healsBuilding) {
-                LCEntity.eachBuild(b.x, b.y, b.team, rad, ob => MDL_cond.canHeal(ob), ob => {
+                SLCEntity.eachBuild(b.x, b.y, b.team, rad, ob => MDL_cond.canHeal(ob), ob => {
                     FRAG_attack.heal(ob, (ob.maxHealth * b.block.delegee.bHealPerc + b.block.delegee.bHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency, true);
                 });
             };
 
             if(b.block.delegee.healsUnit) {
-                LCEntity.eachUnit(b.x, b.y, b.team, rad, ounit => MDL_cond.canHeal(ounit), ounit => {
+                SLCEntity.eachUnit(b.x, b.y, b.team, rad, ounit => MDL_cond.canHeal(ounit), ounit => {
                     if(FRAG_attack.heal(ounit, (ounit.maxHealth * b.block.delegee.unitHealPerc + b.block.delegee.unitHealAmt * (1.0 + b.phaseHeat * b.block.phaseBoost)) * b.efficiency)) {
                         MDL_effect.line(b.x, b.y, null, ounit, GLB_color.heal);
                     };

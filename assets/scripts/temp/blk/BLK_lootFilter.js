@@ -74,7 +74,7 @@
      * @return {void}
      */
     function comp_onProximityUpdate(b) {
-        LCPos.getCoordsBack(b.delegee.lootDumpVec, b.x, b.y, b.block.size, b.rotation);
+        SLCPos.getCoordsBack(b.delegee.lootDumpVec, b.x, b.y, b.block.size, b.rotation);
     };
 
 
@@ -95,7 +95,7 @@
      */
     function comp_draw(b) {
         Draw.rect(b.block.region, b.x, b.y);
-        LCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
+        SLCDrawf.side(b.x, b.y, b.block.delegee.sideReg1, b.block.delegee.sideReg2, b.rotation);
         if(b.delegee.ctTarget != null) {
             Draw.color(b.delegee.ctTarget.color);
             Draw.rect(b.block.delegee.itemReg, b.x, b.y, b.drawrot());
@@ -120,7 +120,7 @@
      * @return {void}
      */
     function comp_ex_updateLootTs(b) {
-        LCPos.getTilesRot(b.delegee.lootTs, b.tile, b.rotation, b.block.size);
+        SLCPos.getTilesRot(b.delegee.lootTs, b.tile, b.rotation, b.block.size);
     };
 
 

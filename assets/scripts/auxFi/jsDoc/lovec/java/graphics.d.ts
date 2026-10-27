@@ -1,13 +1,15 @@
-/** lovec.graphics.LCDraw */
-declare class LCDraw {}
-/** lovec.graphics.LCDrawf */
-declare class LCDrawf {}
-/** lovec.graphics.LCDrawP3D */
-declare class LCDrawP3D {}
+/** lovec.graphics.SLCDraw */
+declare class SLCDraw {}
+/** lovec.graphics.SLCDrawf */
+declare class SLCDrawf {}
+/** lovec.graphics.SLCDrawP3D */
+declare class SLCDrawP3D {}
 
 
-/** lovec.graphics.LCRgb */
-declare class LCRgb {
+/** lovec.graphics.SLCPal */
+declare class SLCPal {}
+/** lovec.graphics.SLCRgb */
+declare class SLCRgb {
     static calcLuminance(color: Color): number
     static calcLuminance(r: number, g: number, b: number, a?: number): number
     static calcLightness(color: Color): number
@@ -19,5 +21,5 @@ declare class LCRgb {
 }
 
 
-/** lovec.graphics.LCTexture */
-declare class LCTexture {}
+/** lovec.graphics.SLCTexture */
+declare class SLCTexture {}

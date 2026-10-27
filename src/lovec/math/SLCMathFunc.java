@@ -6,7 +6,7 @@ import lovec.utils.func.DoubleDoublef;
 /**
  * Common math functions.
  */
-public class LCMathFunc {
+public class SLCMathFunc {
 
 
     static IntMap<IntMap<Integer>> P_N_X = new IntMap<>();

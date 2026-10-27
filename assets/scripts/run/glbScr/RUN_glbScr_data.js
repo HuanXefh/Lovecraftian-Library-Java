@@ -78,7 +78,7 @@
      * @return {Object}
      */
     jsonToJsObj = function(fi0str) {
-        return JSON.parse(jsonToJval(fi0str).toString(Jval.Jformat[LCVersionResolver.isV8 ? "formatted" : "jsonFormatted"]));
+        return JSON.parse(jsonToJval(fi0str).toString(Jval.Jformat[SLCVersionResolver.isV8 ? "formatted" : "jsonFormatted"]));
     };
 
 

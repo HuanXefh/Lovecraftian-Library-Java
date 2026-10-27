@@ -8,7 +8,7 @@ import arc.util.Nullable;
 import arc.util.Tmp;
 import lovec.annotation.LCJSONTypeClass;
 import lovec.annotation.LCNoJSON;
-import lovec.utils.LCVersionResolver;
+import lovec.utils.SLCVersionResolver;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 
@@ -50,7 +50,7 @@ public class LCDrawContent extends LCDrawer {
 
         if(ct != lastCt) {
             try {
-                lastReg = (TextureRegion) LCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
+                lastReg = (TextureRegion) SLCVersionResolver.UnlockableContent.getField("fullIcon").get(ct);
                 lastCt = ct;
             } catch(Exception err) {
                 lastReg = null;

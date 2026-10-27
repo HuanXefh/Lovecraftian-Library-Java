@@ -66,8 +66,8 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
-        LCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
-        LCDrawf.diskExpand(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.range, 1.5, blk.baseColor, 0.3);
+        SLCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
+        SLCDrawf.diskExpand(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.range, 1.5, blk.baseColor, 0.3);
     };
 
 
@@ -97,7 +97,7 @@
             b.charge = 0.0;
             let rad = b.block.range * b.heat;
             if(rad > 1.0) {
-                LCEntity.eachUnit(
+                SLCEntity.eachUnit(
                     b.x, b.y, null, rad,
                     ounit => b.block.delegee.filterScr.get(b, ounit),
                     ounit => ounit.apply(b.block.delegee.staTarget, b.block.delegee.staDur),
@@ -113,7 +113,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDrawf.diskExpand(b.x, b.y, b.block.range * b.heat, 1.5, b.block.baseColor, 0.3);
+        SLCDrawf.diskExpand(b.x, b.y, b.block.range * b.heat, 1.5, b.block.baseColor, 0.3);
     };
 
 

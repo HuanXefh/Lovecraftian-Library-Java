@@ -196,7 +196,7 @@
     const colorDust = function(x, y, rad, color) {
         if(rad == null) rad = 20.0;
         if(color == null) color = Color.white;
-        showAt(x, y, LCFx.colorDust, rad, color);
+        showAt(x, y, SLCFx.colorDust, rad, color);
     }
     .setAnno("effect");
     exports.colorDust = colorDust;
@@ -216,7 +216,7 @@
         if(b == null) return;
         if(pad == null) pad = 0.0;
         if(rad == null) rad = 40.0;
-        showAt(x, y, LCFx.coreSignal, rad, team.color, [b, pad, Math.random() > 0.5]);
+        showAt(x, y, SLCFx.coreSignal, rad, team.color, [b, pad, Math.random() > 0.5]);
     }
     .setAnno("effect");
     exports.coreSignal = coreSignal;
@@ -234,7 +234,7 @@
     const corrosion = function(x, y, size, color, isClogging) {
         if(size == null) size = 1;
         if(color == null) color = Color.white;
-        showAround(x, y, LCFx.corrosion, size * Vars.tilesize * 0.5, null, color, tryVal(isClogging, false));
+        showAround(x, y, SLCFx.corrosion, size * Vars.tilesize * 0.5, null, color, tryVal(isClogging, false));
     }
     .setAnno("effect");
     exports.corrosion = corrosion;
@@ -302,7 +302,7 @@
         if(reg == null) return;
         if(color == null) color = Color.white;
         if(scl == null) scl = 1.0;
-        showAt(x, y, LCFx.fadeRegion, scl, color, reg);
+        showAt(x, y, SLCFx.fadeRegion, scl, color, reg);
     }
     .setAnno("effect");
     exports.fadeRegion = fadeRegion;
@@ -319,7 +319,7 @@
      */
     const fadeText = function(x, y, text, color, offTy) {
         if(color == null) color = Color.white;
-        showAt(x, y + (tryVal(offTy, 0) + 0.5) * Vars.tilesize, LCFx.fadeText, 0.0, color, String(text));
+        showAt(x, y + (tryVal(offTy, 0) + 0.5) * Vars.tilesize, SLCFx.fadeText, 0.0, color, String(text));
     }
     .setAnno("effect");
     exports.fadeText = fadeText;
@@ -339,7 +339,7 @@
                 e.block.fullIcon :
                 tryVal(MDL_texture.getRegTurBase(e.block), e.block.region);
             if(reg != null) {
-                showAt(MDL_ui.getCameraX(), MDL_ui.getCameraY(), LCFx.flashBuild, tryFun(e.ex_getFlashEffAng, e, 0.0), color, [reg, e, tryFun(e.ex_getFlashEffRotSpd, e, 0.0)]);
+                showAt(MDL_ui.getCameraX(), MDL_ui.getCameraY(), SLCFx.flashBuild, tryFun(e.ex_getFlashEffAng, e, 0.0), color, [reg, e, tryFun(e.ex_getFlashEffRotSpd, e, 0.0)]);
             };
         } else {
             color.equals(GLB_color.heal) ?
@@ -415,7 +415,7 @@
     const laser = function thisFun(x, y, e_f, e_t, color, strokeScl, hasLight) {
         if(e_t == null) return;
         if(color == null) color = GLB_color.accent;
-        showAt(x, y, LCFx.laser, tryVal(strokeScl, 1.0), color, [e_f, e_t, tryVal(hasLight, false)]);
+        showAt(x, y, SLCFx.laser, tryVal(strokeScl, 1.0), color, [e_f, e_t, tryVal(hasLight, false)]);
     }
     .setAnno("effect");
     exports.laser = laser;
@@ -497,7 +497,7 @@
         if(e_t == null) return;
         if(color == null) color = Color.white;
         if(strokeScl == null) strokeScl = 1.0;
-        showAt(x, y, LCFx.line, strokeScl, color, [e_f, e_t, Boolean(shouldDrawSpike), Boolean(shouldInvertSpike)]);
+        showAt(x, y, SLCFx.line, strokeScl, color, [e_f, e_t, Boolean(shouldDrawSpike), Boolean(shouldInvertSpike)]);
     }
     .setAnno("effect");
     exports.line = line;
@@ -516,7 +516,7 @@
     const payloadDeposit = function(x1, y1, x2, y2, ct_gn, isOut) {
         let ct = MDL_content.getCt(ct_gn, null, true);
         if(ct == null) return;
-        showAt(x1, y1, LCFx.payloadDeposit, Angles.angle(x1, y1, x2, y2), null, [x2, y2, ct, Boolean(isOut)]);
+        showAt(x1, y1, SLCFx.payloadDeposit, Angles.angle(x1, y1, x2, y2), null, [x2, y2, ct, Boolean(isOut)]);
     }
     .setAnno("effect");
     exports.payloadDeposit = payloadDeposit;
@@ -535,9 +535,9 @@
     const pointLaser = function(x, y, e_f, e_t, color, se_gn) {
         if(e_t == null) return;
         if(color == null) color = GLB_color.remove;
-        showAt(x, y, LCFx.pointLaserLine, 0.0, color, [e_f, e_t, new Vec2(), false]);
-        showAt(x, y, LCFx.pointLaserEnd, 0.0, color, [e_t, new Vec2(), false]);
-        showAt(x, y, LCFx.pointLaserEnd, 0.0, color, [e_f, new Vec2(), false]);
+        showAt(x, y, SLCFx.pointLaserLine, 0.0, color, [e_f, e_t, new Vec2(), false]);
+        showAt(x, y, SLCFx.pointLaserEnd, 0.0, color, [e_t, new Vec2(), false]);
+        showAt(x, y, SLCFx.pointLaserEnd, 0.0, color, [e_f, new Vec2(), false]);
         if(se_gn != null) {
             MDL_sound.playAt(x, y, se_gn, 1.0, 1.0, 0.05);
         };
@@ -560,7 +560,7 @@
             let t = GLB_var.world.tileWorld(x, y);
             color = t == null ? Color.white : t.getFloorColor();
         };
-        showAt(x, y, LCFx.ripple, rad, color);
+        showAt(x, y, SLCFx.ripple, rad, color);
     }
     .setAnno("effect");
     exports.ripple = ripple;
@@ -618,7 +618,7 @@
     const trailCircle = function(x, y, rad, color) {
         if(rad == null) rad = 4.0;
         if(color == null) color = GLB_color.accent;
-        showAt(x, y, LCFx.trailCircle, rad, color);
+        showAt(x, y, SLCFx.trailCircle, rad, color);
     }
     .setAnno("effect");
     exports.trailCircle = trailCircle;
@@ -632,7 +632,7 @@
      * @return {void}
      */
     const trailJet = function(x, y, unit) {
-        showAt(x, y, LCFx.trailJet, unit.rotation - 90.0, null, unit);
+        showAt(x, y, SLCFx.trailJet, unit.rotation - 90.0, null, unit);
     }
     .setAnno("effect");
     exports.trailJet = trailJet;

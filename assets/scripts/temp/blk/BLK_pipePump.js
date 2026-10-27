@@ -259,7 +259,7 @@
         .setMethod({
 
 
-            create: function() {
+            created: function() {
                 comp_created(this);
             },
 

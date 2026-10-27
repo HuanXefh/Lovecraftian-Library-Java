@@ -246,7 +246,7 @@
         if(suffixFallback == null) suffixFallback = "";
 
         return Vars.headless ?
-            LCAirObjects.textureRegion :
+            SLCAirObjects.textureRegion :
             Core.atlas.find(name + suffix, Core.atlas.find(name + suffixFallback));
     };
 
@@ -350,7 +350,7 @@
         return reg0regStr instanceof TextureRegion ?
             reg0regStr :
             Vars.headless ?
-                LCAirObjects.textureRegion :
+                SLCAirObjects.textureRegion :
                 Core.atlas.find(reg0regStr);
     };
 

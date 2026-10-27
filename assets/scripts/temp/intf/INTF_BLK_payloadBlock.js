@@ -34,7 +34,7 @@
 
         blk.self.ex_addLogicF(LogicProp.payloadCount, b => b.delegee.lastDumpPay == null ? 0 : tryVal(b.delegee.payStockObj[b.delegee.lastDumpPay], 0));
         blk.self.ex_addLogicF(LogicProp.payloadType, b => b.delegee.lastDumpPay == null ? null : b.delegee.lastDumpPay.content());
-        blk.self.ex_addLogicF(LogicProp.totalPayload, b => LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt)));
+        blk.self.ex_addLogicF(LogicProp.totalPayload, b => SLCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt)));
         blk.self.ex_addLogicF(LogicProp.payloadCapacity, b => blk.delegee.payAmtCap);
     };
 
@@ -91,8 +91,8 @@
         if(GLB_param.UPDATE_SUPPRESSED) return;
 
         if(b.delegee.hasPayOutput && GLB_timer.effcPay) {
-            b.delegee.payAmtTotal = LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
-            b.delegee.payAmtTotalAfterProd = LCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.self.ex_getPayProdAmt(nameCt))));
+            b.delegee.payAmtTotal = SLCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * amt));
+            b.delegee.payAmtTotalAfterProd = SLCNativeObject.numSum(b.delegee.payStockObj, floatf2((nameCt, amt) => FRAG_payload.getPaySize(nameCt) * (amt + b.self.ex_getPayProdAmt(nameCt))));
         };
 
         if(GLB_timer.secHalf && b.delegee.hasPayInput) {
@@ -113,7 +113,7 @@
                 b.delegee.payDumpIncre++;
                 if(b_t.isAdded() && !b_t.isPayload() && FRAG_payload.produceAt(b_t, b.delegee.lastDumpPay)) {
                     MDL_effect.payloadDeposit(b.x, b.y, b_t.x, b_t.y, b.delegee.lastDumpPay.content(), true);
-                    LCNativeObject.numIncre(b.delegee.payStockObj, b.delegee.lastDumpPay.content().name, -1);
+                    SLCNativeObject.numIncre(b.delegee.payStockObj, b.delegee.lastDumpPay.content().name, -1);
                     b.delegee.lastDumpPay = null;
                 };
             };
@@ -186,7 +186,7 @@
             b_f.delegee.payJustTaken = true;
         };
         MDL_effect.payloadDeposit(b_f.x, b_f.y, b.x, b.y, pay.content(), false);
-        LCNativeObject.numIncre(b.delegee.payReqObj, pay.content().name);
+        SLCNativeObject.numIncre(b.delegee.payReqObj, pay.content().name);
     };
 
 
@@ -449,7 +449,7 @@
              */
             ex_checkPayCons: function() {
                 if(GLB_timer.effcPay) {
-                    this.delegee.payConsValid = LCNativeObject.numAllLargerThan(this.delegee.payReqObj, floatf2((nameCt, amt) => this.self.ex_getPayConsAmt(nameCt)), true);
+                    this.delegee.payConsValid = SLCNativeObject.numAllLargerThan(this.delegee.payReqObj, floatf2((nameCt, amt) => this.self.ex_getPayConsAmt(nameCt)), true);
                 };
                 return this.delegee.payConsValid;
             }

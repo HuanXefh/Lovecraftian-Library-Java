@@ -483,7 +483,7 @@
              * @return {number}
              */
             ex_calcGrowEffc: function thisFun(tx, ty) {
-                if(LCNativeArray.checkTupChange(thisFun.tmpTup, tx, ty)) {
+                if(SLCNativeArray.checkTupChange(thisFun.tmpTup, tx, ty)) {
                     thisFun.tmpVal = MDL_attr.calcSumRect(GLB_var.world.tile(tx, ty), this.delegee.placeRestrictR, this.size, TP_attr.attr0env_growth, AttrModes.FLOOR | AttrModes.OVERLAY) / Mathf.pow(this.size + this.delegee.placeRestrictR * 2, 2);
                 };
                 return thisFun.tmpVal;
@@ -579,7 +579,7 @@
              * @return {void}
              */
             ex_drawCropDef: function(b) {
-                LCDrawf.tree(
+                SLCDrawf.tree(
                     b.delegee.stageReg, b.delegee.stageShaReg,
                     b.tile, b.delegee.stageCropRad, b.delegee.stageOffSha,
                     b.delegee.stageCropScl, b.delegee.stageCropMag, b.delegee.stageCropWob,

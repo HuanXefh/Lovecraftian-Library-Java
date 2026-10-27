@@ -106,7 +106,7 @@
      */
     function comp_drawSelect(b) {
         if(b.delegee.durabMode !== "dec") {
-            LCDrawf.textSelect(b, MDL_bundle.getInfo("lovec", "text-require-repair"), false, b.block.delegee.durabTextOffTy);
+            SLCDrawf.textSelect(b, MDL_bundle.getInfo("lovec", "text-require-repair"), false, b.block.delegee.durabTextOffTy);
         };
     };
 

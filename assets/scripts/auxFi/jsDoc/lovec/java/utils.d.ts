@@ -1,5 +1,5 @@
-/** lovec.utils.LCAirObjects */
-declare class LCAirObjects {
+/** lovec.utils.SLCAirObjects */
+declare class SLCAirObjects {
     static readonly seq: Seq<Object>;
     static readonly objectSet: ObjectSet<Object>;
     static readonly objectMap: ObjectMap<Object, Object>;
@@ -14,8 +14,8 @@ declare class LCAirObjects {
 }
 
 
-/** lovec.utils.LCCheck */
-declare class LCCheck {
+/** lovec.utils.SLCCheck */
+declare class SLCCheck {
     static checkPosInTriangle(x: number, y: number, cx: number, cy: number, rad: number, ang?: number): boolean
     static checkPosInHexagon(x: number, y: number, cx: number, cy: number, rad: number, ang?: number): boolean
     static checkPosVisible(x: number, y: number, clipSize?: number): boolean
@@ -30,8 +30,8 @@ declare class LCCheck {
 }
 
 
-/** lovec.utils.LCEntity */
-declare class LCEntity {
+/** lovec.utils.SLCEntity */
+declare class SLCEntity {
     static getBuildCount(blk: Block, team: Team): number
     static eachSomeBlock(blk: Block, team: Team, cons: Cons<Building>): void
     static getBuildBy(x: number, y: number, team: Team, boolF: Boolf<Building>): Building|null
@@ -69,8 +69,8 @@ declare class LCEntity {
 }
 
 
-/** lovec.utils.LCFormat */
-declare class LCFormat {
+/** lovec.utils.SLCFormat */
+declare class SLCFormat {
     static numToStr(num: number, deciAmt?: number): string
     static perc(num: number, deciAmt?: number): string
     static sci(num: number, pow: number, deciAmt?: number): string
@@ -83,22 +83,23 @@ declare class LCFormat {
 }
 
 
-/** lovec.utils.LCGeometry */
-declare class LCGeometry {
+/** lovec.utils.SLCGeometry */
+declare class SLCGeometry {
     static accept(b_f: Building, b_t: Building, fromRouter: boolean, canSideBlend: boolean): boolean
     static showBackSide(b: Building): boolean
     static showFrontSide(b: Building): boolean
 }
 
 
-/** lovec.utils.LCPos */
-declare class LCPos {
+/** lovec.utils.SLCPos */
+declare class SLCPos {
     static readonly sizeOffs: D2Array<Point2>;
 
     static toIntCoord(x: number): number
     static toFCoord(x: number, size?: number): number
     static calcRectW(r: number, size: number): number
     static calcRectHW(r: number, size: number): number
+    static posAtWorldOrigin(posIns: Position): boolean
 
     static calcTileDst(t1: Tile|null, t2: Tile|null): number
     static calcTileDst(tx1: number, ty1: number, tx2: number, ty2: number): number
@@ -129,8 +130,8 @@ declare class LCPos {
 }
 
 
-/** lovec.utils.LCProp */
-declare class LCProp {
+/** lovec.utils.SLCProp */
+declare class SLCProp {
     static getSize(obj: Object): number
     static getHitSize(obj: Object): number
     static getClipSize(obj: Object): number
@@ -144,8 +145,8 @@ declare class LCProp {
 }
 
 
-/** lovec.utils.LCRand */
-declare class LCRand {
+/** lovec.utils.SLCRand */
+declare class SLCRand {
     static randomInt(rand: Rand): java.lang.Integer
     static randomInt(rand: Rand, to: number): java.lang.Integer
     static randomInt(rand: Rand, from: number, to: number): java.lang.Integer
@@ -163,8 +164,8 @@ declare class LCRand {
 }
 
 
-/** lovec.utils.LCRaycastf */
-declare class LCRaycastf {
+/** lovec.utils.SLCRaycastf */
+declare class SLCRaycastf {
     static checkInsulated(x1: number, y1: number, x2: number, y2: number, team: Team|null): boolean
     static checkLaser(x1: number, y1: number, x2: number, y2: number, team: Team|null): boolean
     static checkSolid(x1: number, y1: number, x2: number, y2: number): boolean
@@ -179,8 +180,8 @@ declare class LCRaycastf {
 }
 
 
-/** lovec.utils.LCScript */
-declare class LCScript {
+/** lovec.utils.SLCScript */
+declare class SLCScript {
     static isUndefined(val: Object): boolean
     static isNull(val: Object): boolean
     static toInt(val: Object): java.lang.Integer
@@ -222,8 +223,8 @@ declare class LCScript {
 }
 
 
-/** lovec.utils.LCScriptUtil */
-declare class LCScriptUtil {
+/** lovec.utils.SLCScriptUtil */
+declare class SLCScriptUtil {
     static packSplitterPayload(args: IArguments): string
     static unpackSplitterPayload(payload: string, ind?: number): Array<Object>
 }

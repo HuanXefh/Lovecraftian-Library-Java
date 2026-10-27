@@ -341,7 +341,7 @@
              * @return {void}
              */
             ex_drawSelected: function() {
-                LCDraw.contentIcon(this.x, this.y, this.delegee.displayedCtTarget, this.block.size, 0.75);
+                SLCDraw.contentIcon(this.x, this.y, this.delegee.displayedCtTarget, this.block.size, 0.75);
             }
             .setProp({
                 noSuper: true,

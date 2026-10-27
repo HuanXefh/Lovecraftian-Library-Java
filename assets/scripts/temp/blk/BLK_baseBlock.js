@@ -837,7 +837,7 @@
                         Draw.color(0, 0, 0, 0.75);
                         Draw.rect("circle-shadow", this.x, this.y, 13.5 * regScl, 13.5 * regScl);
                         Draw.color();
-                        LCDraw.regionIcon(
+                        SLCDraw.regionIcon(
                             this.x + Vars.tilesize * this.block.size * 0.5,
                             this.y - Vars.tilesize * this.block.size * 0.5,
                             icon,

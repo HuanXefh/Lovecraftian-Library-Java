@@ -58,7 +58,7 @@
 
         let offSize = (dst - (size1 + size2) * 0.5) * Vars.tilesize;
         let pon2 = Geometry.d4[Tile.relativeTo(x1, y1, x2, y2)];
-        LCDrawf.wire(
+        SLCDrawf.wire(
             x1 + pon2.x * blk.size * 0.5 * Vars.tilesize,
             y1 + pon2.y * blk.size * 0.5 * Vars.tilesize,
             x1 + pon2.x * (blk.size * 0.5 * Vars.tilesize + offSize),
@@ -77,7 +77,7 @@
      * @return {void}
      */
     function comp_draw(b) {
-        LCDrawf.baseBuildingDraw(b);
+        SLCDrawf.baseBuildingDraw(b);
         if(b.team === Team.derelict) return;
 
         let

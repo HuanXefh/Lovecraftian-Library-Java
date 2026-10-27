@@ -99,10 +99,10 @@
      * @return {void}
      */
     function comp_drawLight(b) {
-        LCDrawf.light(
+        SLCDrawf.light(
             b.x, b.y, b.delegee.lightWarmup,
             b.block.delegee.lightRad * b.delegee.lightWarmup * 0.6,
-            b.block.size, LCDrawf.lightColor,
+            b.block.size, SLCDrawf.lightColor,
             b.block.delegee.lightA * Interp.pow3In.apply(b.delegee.lightWarmup),
         );
     };

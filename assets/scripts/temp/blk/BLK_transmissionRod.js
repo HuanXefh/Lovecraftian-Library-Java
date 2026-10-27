@@ -81,7 +81,7 @@
      * @return {void}
      */
     function comp_draw(b) {
-        LCDrawf.frameFade(
+        SLCDrawf.frameFade(
             b.x, b.y,
             b.block.delegee.rodRegs[b.delegee.isVerticalRod ? 1 : 0],
             b.delegee.rodProg, 60.0,

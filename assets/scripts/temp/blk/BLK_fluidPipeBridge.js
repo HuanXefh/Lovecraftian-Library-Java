@@ -138,7 +138,7 @@
         b.incoming.each(posInt => {
             ot = GLB_var.world.tile(posInt);
             if(ot == null) return;
-            ob = b.nearby(LCPos.getRotation(b.tile, ot));
+            ob = b.nearby(SLCPos.getRotation(b.tile, ot));
             if(ob == null) return;
             b.delegee.presSupplyTargets.pull(ob);
         });

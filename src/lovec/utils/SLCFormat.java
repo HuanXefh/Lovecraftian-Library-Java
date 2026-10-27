@@ -3,10 +3,10 @@ package lovec.utils;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.util.Strings;
-import lovec.graphics.LCPal;
-import lovec.utils.extend.LCNumber;
+import lovec.graphics.SLCPal;
+import lovec.utils.extend.SLCNumber;
 
-public class LCFormat {
+public class SLCFormat {
 
 
     protected static final StringBuilder strBuilder = new StringBuilder();
@@ -16,7 +16,7 @@ public class LCFormat {
      * Converts a number to string with capped amount of digits.
      */
     public static String numToStr(float num, int deciAmt) {
-        return Strings.autoFixed(LCNumber.roundFixed(num, deciAmt), deciAmt);
+        return Strings.autoFixed(SLCNumber.roundFixed(num, deciAmt), deciAmt);
     };
     // Overload
     public static String numToStr(float num) {
@@ -28,7 +28,7 @@ public class LCFormat {
      * Converts a number to percentage string.
      */
     public static String perc(float num, int deciAmt) {
-        return Strings.fixed(LCNumber.roundFixed(num * 100, deciAmt), deciAmt) + "%";
+        return Strings.fixed(SLCNumber.roundFixed(num * 100, deciAmt), deciAmt) + "%";
     };
     // Overload
     public static String perc(float num) {
@@ -57,14 +57,14 @@ public class LCFormat {
      */
     public static String time(float num, int deciAmt) {
         if(num < 3600f) {
-            return LCNumber.roundFixed(num / 60f, deciAmt) + "s";
+            return SLCNumber.roundFixed(num / 60f, deciAmt) + "s";
         } else if(num < 216000f) {
-            return LCNumber.roundFixed(num / 3600f, deciAmt) + " min";
+            return SLCNumber.roundFixed(num / 3600f, deciAmt) + " min";
         } else if(num < 5184000f) {
-            return LCNumber.roundFixed(num / 216000f, deciAmt) + "h";
+            return SLCNumber.roundFixed(num / 216000f, deciAmt) + "h";
         };
 
-        return LCNumber.roundFixed(num / 5184000f, deciAmt) + "d";
+        return SLCNumber.roundFixed(num / 5184000f, deciAmt) + "d";
     };
     // Overload
     public static String time(float num) {
@@ -114,10 +114,10 @@ public class LCFormat {
         return percColor(num, deciAmt, overColor, lessColor, midColor, 0.025f);
     };
     public static String percColor(float num, int deciAmt, Color overColor, Color lessColor) {
-        return percColor(num, deciAmt, overColor, lessColor, LCPal.accent);
+        return percColor(num, deciAmt, overColor, lessColor, SLCPal.accent);
     };
     public static String percColor(float num, int deciAmt) {
-        return percColor(num, deciAmt, LCPal.heal, LCPal.remove);
+        return percColor(num, deciAmt, SLCPal.heal, SLCPal.remove);
     };
     public static String percColor(float num) {
         return percColor(num, 2);

@@ -25,7 +25,7 @@
      * @return {Object|null}
      */
     Array.prototype.first = function() {
-        return LCNativeArray.first(this);
+        return SLCNativeArray.first(this);
     };
 
 
@@ -34,7 +34,7 @@
      * @return {Object|null}
      */
     Array.prototype.last = function() {
-        return LCNativeArray.last(this);
+        return SLCNativeArray.last(this);
     };
 
 
@@ -43,7 +43,7 @@
      * @return {number}
      */
     Array.prototype.lastIndex = function() {
-        return LCNativeArray.lastIndex(this);
+        return SLCNativeArray.lastIndex(this);
     };
 
 
@@ -56,8 +56,8 @@
      */
     Array.prototype.calcIndexFrac = function(ele, useInd) {
       return useInd == null ?
-        LCNativeArray.calcIndexFrac(this, ele) :
-        LCNativeArray.calcIndexFrac(this, ele, useInd);
+        SLCNativeArray.calcIndexFrac(this, ele) :
+        SLCNativeArray.calcIndexFrac(this, ele, useInd);
     };
 
 
@@ -70,7 +70,7 @@
      * @return {boolean}
      */
     Array.someIncludes = function() {
-        return LCNativeArray.someIncludes.apply(null, arguments);
+        return SLCNativeArray.someIncludes.apply(null, arguments);
     };
 
 
@@ -80,7 +80,7 @@
      * @return {boolean}
      */
     Array.everyIncludes = function() {
-        return LCNativeArray.everyIncludes.apply(null, arguments);
+        return SLCNativeArray.everyIncludes.apply(null, arguments);
     };
 
 
@@ -91,7 +91,7 @@
      * @return {boolean}
      */
     Array.prototype.includes = function(ele) {
-        return LCNativeArray.includes(this, ele);
+        return SLCNativeArray.includes(this, ele);
     };
 
 
@@ -101,7 +101,7 @@
      * @return {boolean}
      */
     Array.prototype.includesAny = function() {
-        return LCNativeArray.includesAnyArguments(this, arguments);
+        return SLCNativeArray.includesAnyArguments(this, arguments);
     };
 
 
@@ -111,7 +111,7 @@
      * @return {boolean}
      */
     Array.prototype.includesAll = function() {
-        return LCNativeArray.includesAllArguments(this, arguments);
+        return SLCNativeArray.includesAllArguments(this, arguments);
     };
 
 
@@ -184,8 +184,8 @@
      */
     Array.prototype.colIncludes = function(ele, ord, off) {
         return off == null ?
-            LCNativeArray.colIncludes(this, ele, ord) :
-            LCNativeArray.colIncludes(this, ele, ord, off);
+            SLCNativeArray.colIncludes(this, ele, ord) :
+            SLCNativeArray.colIncludes(this, ele, ord, off);
     };
 
 
@@ -195,7 +195,7 @@
      * @return {boolean}
      */
     Array.prototype.subsetOf = function(arr) {
-        return LCNativeArray.subsetOf(this, arr);
+        return SLCNativeArray.subsetOf(this, arr);
     };
 
 
@@ -212,8 +212,8 @@
     Array.prototype.setValue = function(val_fn, len) {
         if(typeof val_fn === "function") val_fn = prov(val_fn);
         return len == null ?
-            LCNativeArray.setValue(this, val_fn) :
-            LCNativeArray.setValue(this, val_fn, len);
+            SLCNativeArray.setValue(this, val_fn) :
+            SLCNativeArray.setValue(this, val_fn, len);
     };
 
 
@@ -223,7 +223,7 @@
      * @return {this}
      */
     Array.prototype.pushUnique = function(ele) {
-        return LCNativeArray.pushUnique(this, ele);
+        return SLCNativeArray.pushUnique(this, ele);
     };
 
 
@@ -233,7 +233,7 @@
      * @return {this}
      */
     Array.prototype.pushNonNull = function(ele) {
-        return LCNativeArray.pushNonNull(this, ele);
+        return SLCNativeArray.pushNonNull(this, ele);
     };
 
 
@@ -243,7 +243,7 @@
      * @return {this}
      */
     Array.prototype.pushAll = function(eles_p) {
-        return LCNativeArray.pushAll(this, eles_p);
+        return SLCNativeArray.pushAll(this, eles_p);
     };
 
 
@@ -254,7 +254,7 @@
      * @return {number} Array length.
      */
     Array.prototype.insert = function(ind, ele) {
-        return LCNativeArray.insert(this, ind, ele);
+        return SLCNativeArray.insert(this, ind, ele);
     };
 
 
@@ -265,7 +265,7 @@
      * @return {this}
      */
     Array.prototype.insertAll = function(ind, eles_p) {
-        return LCNativeArray.insertAll(this, ind, eles_p);
+        return SLCNativeArray.insertAll(this, ind, eles_p);
     };
 
 
@@ -275,7 +275,7 @@
      * @return {this}
      */
     Array.prototype.with = function() {
-        return LCNativeArray.withArguments(this, arguments);
+        return SLCNativeArray.withArguments(this, arguments);
     };
 
 
@@ -285,7 +285,7 @@
      * @return {this}
      */
     Array.prototype.withAll = function(eles) {
-        return LCNativeArray.withAll(this, eles);
+        return SLCNativeArray.withAll(this, eles);
     };
 
 
@@ -297,8 +297,8 @@
      */
     Array.prototype.remove = function(ele, mapF) {
         return mapF == null ?
-            LCNativeArray.remove(this, ele) :
-            LCNativeArray.remove(this, ele, mapF);
+            SLCNativeArray.remove(this, ele) :
+            SLCNativeArray.remove(this, ele, mapF);
     };
 
 
@@ -308,7 +308,7 @@
      * @return {this}
      */
     Array.prototype.removeAll = function(eles_p) {
-        return LCNativeArray.removeAll(this, eles_p);
+        return SLCNativeArray.removeAll(this, eles_p);
     };
 
 
@@ -318,7 +318,7 @@
      * @return {Object|null} Removed element.
      */
     Array.prototype.removeAt = function(ind) {
-        return LCNativeArray.removeAt(this, ind);
+        return SLCNativeArray.removeAt(this, ind);
     };
 
 
@@ -328,7 +328,7 @@
      * @return {number} Array length.
      */
     Array.prototype.pull = function(ele) {
-        return LCNativeArray.pull(this, ele);
+        return SLCNativeArray.pull(this, ele);
     };
 
 
@@ -338,7 +338,7 @@
      * @return {this}
      */
     Array.prototype.pullAll = function(eles_p) {
-        return LCNativeArray.pullAll(this, eles_p);
+        return SLCNativeArray.pullAll(this, eles_p);
     };
 
 
@@ -347,7 +347,7 @@
      * @return {this}
      */
     Array.prototype.compact = function() {
-        return LCNativeArray.compact(this);
+        return SLCNativeArray.compact(this);
     };
 
 
@@ -359,8 +359,8 @@
      */
     Array.prototype.shiftAll = function(amt, resultOut) {
         return resultOut == null ?
-            LCNativeArray.shiftAll(this, amt) :
-            LCNativeArray.shiftAll(this, amt, resultOut);
+            SLCNativeArray.shiftAll(this, amt) :
+            SLCNativeArray.shiftAll(this, amt, resultOut);
     };
 
 
@@ -384,7 +384,7 @@
      * @return {this}
      */
     Array.prototype.swap = function(ele1, ele2) {
-        return LCNativeArray.swap(this, ele1, ele2);
+        return SLCNativeArray.swap(this, ele1, ele2);
     };
 
 
@@ -395,7 +395,7 @@
      * @return {this}
      */
     Array.prototype.swapByIndex = function(ind1, ind2) {
-        return LCNativeArray.swapByIndex(this, ind1, ind2);
+        return SLCNativeArray.swapByIndex(this, ind1, ind2);
     };
 
 
@@ -405,7 +405,7 @@
      * @return {this}
      */
     Array.prototype.inSituMap = function(mapF) {
-        return LCNativeArray.inSituMap(this, mapF);
+        return SLCNativeArray.inSituMap(this, mapF);
     };
 
 
@@ -415,7 +415,7 @@
      * @return {this}
      */
     Array.prototype.inSituFilter = function(boolF) {
-        return LCNativeArray.inSituFilter(this, boolF);
+        return SLCNativeArray.inSituFilter(this, boolF);
     };
 
 
@@ -462,8 +462,8 @@
      */
     Array.prototype.shuffle = function(ord) {
         return ord == null ?
-            LCNativeArray.shuffle(this) :
-            LCNativeArray.shuffle(this, ord);
+            SLCNativeArray.shuffle(this) :
+            SLCNativeArray.shuffle(this, ord);
     };
 
 
@@ -480,7 +480,7 @@
      * @return {number}
      */
     Array.prototype.count = function(ele, mapF, ord, off) {
-        return LCNativeArray.count(this, ele, tryVal(mapF, null), tryVal(ord, 1), tryVal(off, 0));
+        return SLCNativeArray.count(this, ele, tryVal(mapF, null), tryVal(ord, 1), tryVal(off, 0));
     };
 
 
@@ -493,7 +493,7 @@
      * @return {number}
      */
     Array.prototype.countBy = function(boolF, ord, off) {
-        return LCNativeArray.countBy(this, boolF, tryVal(ord, 1), tryVal(off, 0));
+        return SLCNativeArray.countBy(this, boolF, tryVal(ord, 1), tryVal(off, 0));
     };
 
 
@@ -504,8 +504,8 @@
      */
     Array.prototype.uniquify = function(mapF) {
         return mapF == null ?
-            LCNativeArray.uniquify(this) :
-            LCNativeArray.uniquify(this, mapF);
+            SLCNativeArray.uniquify(this) :
+            SLCNativeArray.uniquify(this, mapF);
     };
 
 
@@ -517,8 +517,8 @@
      */
     Array.prototype.intersect = function(arr, mapF) {
         return mapF == null ?
-            LCNativeArray.intersect(this, arr) :
-            LCNativeArray.intersect(this, arr, mapF);
+            SLCNativeArray.intersect(this, arr) :
+            SLCNativeArray.intersect(this, arr, mapF);
     };
 
 
@@ -530,8 +530,8 @@
      */
     Array.prototype.differ = function(arr, mapF) {
         return mapF == null ?
-            LCNativeArray.differ(this, arr) :
-            LCNativeArray.differ(this, arr, mapF);
+            SLCNativeArray.differ(this, arr) :
+            SLCNativeArray.differ(this, arr, mapF);
     };
 
 
@@ -543,8 +543,8 @@
      */
     Array.prototype.chunk = function(ord, def) {
         return def == null ?
-            LCNativeArray.chunk(this, ord) :
-            LCNativeArray.chunk(this, ord, def);
+            SLCNativeArray.chunk(this, ord) :
+            SLCNativeArray.chunk(this, ord, def);
     };
 
 
@@ -553,7 +553,7 @@
      * @return {Array}
      */
     Array.prototype.flatten = function() {
-        return LCNativeArray.flatten(this);
+        return SLCNativeArray.flatten(this);
     };
 
 
@@ -568,7 +568,7 @@
      * @return {Object|null}
      */
     Array.prototype.random = function(ord, off) {
-        return LCNativeArray.random(this, tryVal(ord, 1), tryVal(off, 0));
+        return SLCNativeArray.random(this, tryVal(ord, 1), tryVal(off, 0));
     };
 
 
@@ -579,8 +579,8 @@
      */
     Array.prototype.sample = function(amt) {
         return amt == null ?
-            LCNativeArray.sample(this) :
-            LCNativeArray.sample(this, amt);
+            SLCNativeArray.sample(this) :
+            SLCNativeArray.sample(this, amt);
     };
 
 
@@ -592,7 +592,7 @@
      * @return {F2Array<Object, number>} New array. <br> `ROW`: ele, count.
      */
     Array.prototype.toCountArray = function(ord, off) {
-        return LCNativeArray.toCountArray(this, tryVal(ord, 1), tryVal(off, 0));
+        return SLCNativeArray.toCountArray(this, tryVal(ord, 1), tryVal(off, 0));
     };
 
 
@@ -603,7 +603,7 @@
      * @return {Object<string, Object>} New object.
      */
     Array.prototype.categorize = function(categF) {
-        return LCNativeArray.categorize(this, categF);
+        return SLCNativeArray.categorize(this, categF);
     };
 
 
@@ -624,7 +624,7 @@
      * ].read(["b", "c"]);                // Returns 1
      */
     Array.prototype.read = function(keys_p, def, isUnordered) {
-        return LCNativeArray.read(this, keys_p, tryVal(def, null), tryVal(isUnordered, false));
+        return SLCNativeArray.read(this, keys_p, tryVal(def, null), tryVal(isUnordered, false));
     };
 
 
@@ -635,7 +635,7 @@
     * @return {Array} New array.
     */
     Array.prototype.readList = function(keys_p, isUnordered) {
-        return LCNativeArray.readList(this, keys_p, tryVal(isUnordered, false));
+        return SLCNativeArray.readList(this, keys_p, tryVal(isUnordered, false));
     };
 
 
@@ -646,7 +646,7 @@
      * @return {number}
      */
     Array.prototype.readRowIndex = function(keys_p, isUnordered) {
-        return LCNativeArray.readRowIndex(this, keys_p, tryVal(isUnordered, false));
+        return SLCNativeArray.readRowIndex(this, keys_p, tryVal(isUnordered, false));
     };
 
 
@@ -657,7 +657,7 @@
      * @return {Array}
      */
     Array.prototype.readCol = function(ord, off) {
-        return LCNativeArray.readCol(this, ord, tryVal(off, 0));
+        return SLCNativeArray.readCol(this, ord, tryVal(off, 0));
     };
 
 
@@ -669,7 +669,7 @@
      * @return {this}
      */
     Array.prototype.write = function(keys_p, val, isUnordered) {
-        return LCNativeArray.write(this, keys_p, val, tryVal(isUnordered, false));
+        return SLCNativeArray.write(this, keys_p, val, tryVal(isUnordered, false));
     };
 
 
@@ -680,5 +680,5 @@
      * @return {this}
      */
     Array.prototype.removeRow = function(ord, rowInd) {
-        return LCNativeArray.removeRow(this, ord, rowInd);
+        return SLCNativeArray.removeRow(this, ord, rowInd);
     };

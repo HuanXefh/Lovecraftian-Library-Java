@@ -107,7 +107,7 @@
 
         let t = unit.tileOn();
         if(t == null) return;
-        let ts = LCPos.getTilesDstManhattan(thisFun.tmpTs, t, GLB_var.range.unitSurR);
+        let ts = SLCPos.getTilesDstManhattan(thisFun.tmpTs, t, GLB_var.range.unitSurR);
 
         // Floor
         if(MDL_cond.isUnitOnFloor(unit)) {

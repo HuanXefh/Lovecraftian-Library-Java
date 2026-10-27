@@ -146,7 +146,7 @@
 
         // Apply damage if over limit
         if(
-            !GLB_param.UPDATE_DEEP_SUPPRESSED && GLB_timer.secQuarter && LCRand.chance(UTIL_rand.get("pressure"), 0.25)
+            !GLB_param.UPDATE_DEEP_SUPPRESSED && GLB_timer.secQuarter && SLCRand.chance(UTIL_rand.get("pressure"), 0.25)
                 && (
                     (b.delegee.presTmp + b.presExtra) > 0.0 ?
                         ((b.delegee.presTmp + b.presExtra) > (b.block.delegee.presRes + PRES_RES_TOL)) :
@@ -170,7 +170,7 @@
             if(b_t.isAdded() && b_t.enabled && !b_t.isPayload()) {
                 let addAmt = Math.abs(b.delegee.presTmp.roundFixed(0)) / 60.0;
                 let consAmt = MDL_recipeDict.getConsAmtByBuild(b.delegee.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, b_t);
-                LCCraftingHandler.addLiquid(b_t, null, b.delegee.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, addAmt, false, false, true);
+                SLCCraftingHandler.addLiquid(b_t, null, b.delegee.presTmp > 0.0 ? GLB_varGen.auxPres : GLB_varGen.auxVac, addAmt, false, false, true);
                 if(consAmt > 0.0 && addAmt > (consAmt + 5.5 / 60.0)) {
                     b_t.damagePierce((b_t.maxHealth * GLB_var.param.presDmgFrac + GLB_var.param.presDmgMin) / 5.0);
                 };
@@ -558,7 +558,7 @@
              * @return {boolean}
              */
             ex_checkPresFetchValid: function(ob) {
-                return LCGeometry.accept(
+                return SLCGeometry.accept(
                     ob, this, tryFun(ob.ex_checkIsPresRouter, ob, false),
                     this.self.ex_checkPresFetchSideValid(ob),
                 );
@@ -577,7 +577,7 @@
              * @return {boolean}
              */
             ex_checkPresSupplyValid: function(ob) {
-                return LCGeometry.accept(this, ob, this.self.ex_checkIsPresRouter(), true);
+                return SLCGeometry.accept(this, ob, this.self.ex_checkIsPresRouter(), true);
             }
             .setProp({
                 noSuper: true,

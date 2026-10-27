@@ -805,7 +805,7 @@ const db = {
             // Check payload size
             function(ct, metaObj, paramObj) {
                 if(!instanceOfAny(ct, Block, UnitType)) return true;
-                return LCProp.getSize(ct) <= readParam(metaObj, "sizeCap", Infinity);
+                return SLCProp.getSize(ct) <= readParam(metaObj, "sizeCap", Infinity);
             },
 
         ],

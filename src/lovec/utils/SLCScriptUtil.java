@@ -1,19 +1,19 @@
 package lovec.utils;
 
 import lovec.annotation.LCFromScript;
-import lovec.utils.extend.LCNativeArray;
+import lovec.utils.extend.SLCNativeArray;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.type.Liquid;
 import rhino.*;
 
-import static lovec.utils.LCScript.*;
+import static lovec.utils.SLCScript.*;
 
 /**
  * Utility methods directly related to Lovec modules.
  */
-public class LCScriptUtil {
+public class SLCScriptUtil {
 
 
     private static final StringBuilder splitterPayloadStrBuilder = new StringBuilder();
@@ -43,12 +43,12 @@ public class LCScriptUtil {
      */
     public static String packSplitterPayload(Scriptable arguments) {
         int i = 0;
-        int iCap = LCScript.toInt(ScriptableObject.getProperty(arguments, "length"));
+        int iCap = SLCScript.toInt(ScriptableObject.getProperty(arguments, "length"));
         Object val;
         splitterPayloadStrBuilder.setLength(0);
         while(i < iCap) {
             val = ScriptableObject.getProperty(arguments, i);
-            if(LCScript.isNull(val)) {
+            if(SLCScript.isNull(val)) {
                 splitterPayloadStrBuilder.append(splitterNullTag);
             } else if(val instanceof Number) {
                 splitterPayloadStrBuilder.append(splitterNumberTag);
@@ -84,8 +84,8 @@ public class LCScriptUtil {
      * Result array is reused!
      */
     public static NativeArray unpackSplitterPayload(String payload, int ind) {
-        NativeArray arr = LCScript.ensureArray("LCScriptUtil.unpackSplitterPayload.tmpArr" + ind);
-        LCNativeArray.clear(arr);
+        NativeArray arr = SLCScript.ensureArray("SLCScriptUtil.unpackSplitterPayload.tmpArr" + ind);
+        SLCNativeArray.clear(arr);
         int i = 0;
         int iCap = payload.length() - 1;
         char l1, l2;
@@ -96,7 +96,7 @@ public class LCScriptUtil {
                 l2 = payload.charAt(i + 1);
                 if(l2 == splitterChar) {
                     i++;
-                    LCNativeArray.push(arr, processSplitterPayloadVal(splitterPayloadStrBuilder.toString()));
+                    SLCNativeArray.push(arr, processSplitterPayloadVal(splitterPayloadStrBuilder.toString()));
                     splitterPayloadStrBuilder.setLength(0);
                 };
             } else {
@@ -116,13 +116,13 @@ public class LCScriptUtil {
      * <code>checkSubInsOfTemp(ct, tempName)</code>.
      */
     public static boolean checkTemplate(Object ct, String tempName) {
-        NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
-        scope.put("LCScriptUtil.checkTemplate.ct", scope, ct);
-        scope.put("LCScriptUtil.checkTemplate.tempName", scope, tempName);
+        NativeObject scope = SLCScript.toObject(SLCScript.get("__javaInternal__"));
+        scope.put("SLCScriptUtil.checkTemplate.ct", scope, ct);
+        scope.put("SLCScriptUtil.checkTemplate.tempName", scope, tempName);
 
         return (boolean) Context.getContext().evaluateString(
             Vars.mods.getScripts().scope,
-            "checkSubInsOfTemp(__javaInternal__['LCScriptUtil.checkTemplate.ct'], __javaInternal__['LCScriptUtil.checkTemplate.tempName'])",
+            "checkSubInsOfTemp(__javaInternal__['SLCScriptUtil.checkTemplate.ct'], __javaInternal__['SLCScriptUtil.checkTemplate.tempName'])",
             "LCScriptUtil_checkTemplate.js",
             0
         );
@@ -133,13 +133,13 @@ public class LCScriptUtil {
      * <code>syncChance(name, trueChance)</code>.
      */
     public static boolean syncChance(String name, float trueChance) {
-        NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
-        scope.put("LCScriptUtil.syncChance.name", scope, name);
-        scope.put("LCScriptUtil.syncChance.trueChance", scope, trueChance);
+        NativeObject scope = SLCScript.toObject(SLCScript.get("__javaInternal__"));
+        scope.put("SLCScriptUtil.syncChance.name", scope, name);
+        scope.put("SLCScriptUtil.syncChance.trueChance", scope, trueChance);
 
         return (boolean) Context.getContext().evaluateString(
             Vars.mods.getScripts().scope,
-            "syncChance(__javaInternal__['LCScriptUtil.syncChance.name'], __javaInternal__['LCScriptUtil.syncChance.trueChance'])",
+            "syncChance(__javaInternal__['SLCScriptUtil.syncChance.name'], __javaInternal__['SLCScriptUtil.syncChance.trueChance'])",
             "LCScriptUtil_syncChance.js",
             0
         );
@@ -150,13 +150,13 @@ public class LCScriptUtil {
      * <code>syncChanceDelta(name, trueChance)</code>.
      */
     public static boolean syncChanceDelta(String name, float trueChance) {
-        NativeObject scope = LCScript.toObject(LCScript.get("__javaInternal__"));
-        scope.put("LCScriptUtil.syncChanceDelta.name", scope, name);
-        scope.put("LCScriptUtil.syncChanceDelta.trueChance", scope, trueChance);
+        NativeObject scope = SLCScript.toObject(SLCScript.get("__javaInternal__"));
+        scope.put("SLCScriptUtil.syncChanceDelta.name", scope, name);
+        scope.put("SLCScriptUtil.syncChanceDelta.trueChance", scope, trueChance);
 
         return (boolean) Context.getContext().evaluateString(
                 Vars.mods.getScripts().scope,
-                "syncChanceDelta(__javaInternal__['LCScriptUtil.syncChanceDelta.name'], __javaInternal__['LCScriptUtil.syncChanceDelta.trueChance'])",
+                "syncChanceDelta(__javaInternal__['SLCScriptUtil.syncChanceDelta.name'], __javaInternal__['SLCScriptUtil.syncChanceDelta.trueChance'])",
                 "LCScriptUtil_syncChanceDelta.js",
                 0
         );
@@ -171,7 +171,7 @@ public class LCScriptUtil {
      */
     @SuppressWarnings("ConstantConditions")
     public static boolean getParamCond(String name) {
-        return (boolean) LCScript.get(name, GLB_param);
+        return (boolean) SLCScript.get(name, GLB_param);
     };
 
 
@@ -179,7 +179,7 @@ public class LCScriptUtil {
      * Gets a number in <code>GLB_param</code>.
      */
     public static float getParamNum(String name) {
-        return LCScript.toFloat(LCScript.get(name, GLB_param));
+        return SLCScript.toFloat(SLCScript.get(name, GLB_param));
     };
 
 
@@ -187,7 +187,7 @@ public class LCScriptUtil {
      * Gets a string in <code>GLB_param</code>.
      */
     public static String getParamStr(String name) {
-        return LCScript.toString(LCScript.get(name, GLB_param));
+        return SLCScript.toString(SLCScript.get(name, GLB_param));
     };
 
 
@@ -199,7 +199,7 @@ public class LCScriptUtil {
      */
     @SuppressWarnings("ConstantConditions")
     public static boolean checkTimer(String name) {
-        return (boolean) LCScript.get(name, GLB_timer);
+        return (boolean) SLCScript.get(name, GLB_timer);
     };
 
 
@@ -211,7 +211,7 @@ public class LCScriptUtil {
      * The first argument should be trigger name.
      */
     public static void fireTrigger(Object... args) {
-        LCScript.invoke("fire", BOX_trigger, args);
+        SLCScript.invoke("fire", BOX_trigger, args);
     };
 
 
@@ -222,7 +222,7 @@ public class LCScriptUtil {
      * Applies condition check base off <code>MDL_cond</code>.
      */
     public static boolean checkCond(String nameFun, Object... args) {
-        return (boolean) LCScript.invoke(nameFun, MDL_cond, args);
+        return (boolean) SLCScript.invoke(nameFun, MDL_cond, args);
     };
 
 
@@ -233,7 +233,7 @@ public class LCScriptUtil {
      * <code>MDL_prop.getBulX(bul)</code>.
      */
     public static float getBulX(Bullet bul) {
-        return LCScript.toFloat(LCScript.invoke("getBulX", MDL_prop, bul));
+        return SLCScript.toFloat(SLCScript.invoke("getBulX", MDL_prop, bul));
     };
 
 
@@ -241,7 +241,7 @@ public class LCScriptUtil {
      * <code>MDL_prop.getBulY(bul)</code>.
      */
     public static float getBulY(Bullet bul) {
-        return LCScript.toFloat(LCScript.invoke("getBulY", MDL_prop, bul));
+        return SLCScript.toFloat(SLCScript.invoke("getBulY", MDL_prop, bul));
     };
 
 
@@ -252,7 +252,7 @@ public class LCScriptUtil {
      * Simply calls <code>MDL_reaction.handleReaction</code>.
      */
     public static void handleReaction(Object reac1, Object reac2, float pMtp, Object t0e) {
-        LCScript.invoke("handleReaction", MDL_reaction, LCScript.wrap(reac1), LCScript.wrap(reac2), pMtp, LCScript.wrap(t0e));
+        SLCScript.invoke("handleReaction", MDL_reaction, SLCScript.wrap(reac1), SLCScript.wrap(reac2), pMtp, SLCScript.wrap(t0e));
     };
     // Overload
     public static void handleReaction(Object reac1, Object reac2, float pMtp) {
@@ -267,11 +267,11 @@ public class LCScriptUtil {
      * Gets consumption amount from recipe dictionary.
      */
     public static float getConsAmt(String ctName, String blkName) {
-        return LCScript.toFloat(LCScript.invoke("getConsAmt", MDL_recipeDict, ctName, blkName));
+        return SLCScript.toFloat(SLCScript.invoke("getConsAmt", MDL_recipeDict, ctName, blkName));
     };
     // Overload
     public static float getConsAmt(String ctName, Building b) {
-        return LCScript.toFloat(LCScript.invoke("getConsAmtByBuild", MDL_recipeDict, ctName, b));
+        return SLCScript.toFloat(SLCScript.invoke("getConsAmtByBuild", MDL_recipeDict, ctName, b));
     };
 
 
@@ -279,11 +279,11 @@ public class LCScriptUtil {
      * Gets production amount from recipe dictionary.
      */
     public static float getProdAmt(String ctName, String blkName) {
-        return LCScript.toFloat(LCScript.invoke("getProdAmt", MDL_recipeDict, ctName, blkName));
+        return SLCScript.toFloat(SLCScript.invoke("getProdAmt", MDL_recipeDict, ctName, blkName));
     };
     // Overload
     public static float getProdAmt(String ctName, Building b) {
-        return LCScript.toFloat(LCScript.invoke("getProdAmtByBuild", MDL_recipeDict, ctName, b));
+        return SLCScript.toFloat(SLCScript.invoke("getProdAmtByBuild", MDL_recipeDict, ctName, b));
     };
 
 

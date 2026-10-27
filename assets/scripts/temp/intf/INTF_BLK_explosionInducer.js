@@ -197,7 +197,7 @@
 
             drawPlace: function(tx, ty, rot, valid) {
                 if(this.delegee.exploDmg > 0.0) {
-                    LCDrawf.diskWarning(tx.toFCoord(this.size), ty.toFCoord(this.size), this.delegee.exploRad);
+                    SLCDrawf.diskWarning(tx.toFCoord(this.size), ty.toFCoord(this.size), this.delegee.exploRad);
                 };
             },
 
@@ -348,7 +348,7 @@
 
             drawSelect: function() {
                 if(this.block.self.ex_calcExploDmg(this) > 0.0) {
-                    LCDrawf.diskWarning(this.x, this.y, this.block.self.ex_calcExploRad(this));
+                    SLCDrawf.diskWarning(this.x, this.y, this.block.self.ex_calcExploRad(this));
                 };
             },
 

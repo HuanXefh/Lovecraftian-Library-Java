@@ -857,7 +857,7 @@
      * @return {boolean}
      */
     const isEnemy = function(e, team) {
-        return LCCheck.checkHostile(e, tryVal(team, null));
+        return SLCCheck.checkHostile(e, tryVal(team, null));
     };
     exports.isEnemy = isEnemy;
 
@@ -869,7 +869,7 @@
      * @return {boolean}
      */
     const canHeal = function(e, team) {
-        return LCCheck.checkHealable(e, tryVal(team, null));
+        return SLCCheck.checkHealable(e, tryVal(team, null));
     };
     exports.canHeal = canHeal;
 

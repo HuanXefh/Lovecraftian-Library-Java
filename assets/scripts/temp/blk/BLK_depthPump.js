@@ -74,7 +74,7 @@
      */
     const comp_canPlaceOn = function thisFun(blk, t, team, rot) {
         if(t == null) return false;
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, team, rot)) {
             thisFun.tmpCond = blk.self.ex_anyDporeRevealed(t.x, t.y, "liquid");
         };
         return thisFun.tmpCond;
@@ -134,7 +134,7 @@
      */
     function comp_draw(b) {
         if(b.delegee.dynaAttrRs == null) return;
-        LCDraw.region(b.x, b.y, b.block.delegee.liqReg, 0.0, 1.0, MDL_color.getColor(b.delegee.dynaAttrRs), b.liquids.get(b.delegee.dynaAttrRs) / b.block.liquidCapacity);
+        SLCDraw.region(b.x, b.y, b.block.delegee.liqReg, 0.0, 1.0, MDL_color.getColor(b.delegee.dynaAttrRs), b.liquids.get(b.delegee.dynaAttrRs) / b.block.liquidCapacity);
     };
 
 
@@ -263,7 +263,7 @@
              * @return {Array<Tile>}
              */
             ex_findDynaAttrTs: function(contArr, tx, ty, rot) {
-                return LCPos.getTilesBlock(contArr, this, tx, ty);
+                return SLCPos.getTilesBlock(contArr, this, tx, ty);
             }
             .setProp({
                 noSuper: true,

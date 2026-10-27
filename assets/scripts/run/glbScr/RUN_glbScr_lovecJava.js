@@ -27,15 +27,15 @@
     /* <------------------------------ lovec.audio ------------------------------> */
 
 
-    /** @global lovec.audio.LCSoundControl */
-    LCSoundControl = fetchClass("lovec.audio.LCSoundControl");
+    /** @global lovec.audio.SLCSoundControl */
+    SLCSoundControl = fetchClass("lovec.audio.SLCSoundControl");
 
 
     /* <------------------------------ lovec.content ------------------------------> */
 
 
-    /** @global lovec.content.LCCraftingHandler */
-    LCCraftingHandler = fetchClass("lovec.content.LCCraftingHandler");
+    /** @global lovec.content.SLCCraftingHandler */
+    SLCCraftingHandler = fetchClass("lovec.content.SLCCraftingHandler");
     /** @global lovec.content.LCRecipeUpdater */
     LCRecipeUpdater = fetchClass("lovec.content.LCRecipeUpdater");
 
@@ -43,40 +43,40 @@
     /* <------------------------------ entities ------------------------------> */
 
 
-    /** @global lovec.entities.LCFx */
-    LCFx = fetchClass("lovec.entities.LCFx");
+    /** @global lovec.entities.SLCFx */
+    SLCFx = fetchClass("lovec.entities.SLCFx");
 
 
     /* <------------------------------ lovec.graphics ------------------------------> */
 
 
-    /** @global lovec.graphics.LCDraw */
-    LCDraw = fetchClass("lovec.graphics.LCDraw");
-    /** @global lovec.graphics.LCDrawf */
-    LCDrawf = fetchClass("lovec.graphics.LCDrawf");
-    /** @global lovec.graphics.LCDrawP3D */
-    LCDrawP3D = fetchClass("lovec.graphics.LCDrawP3D");
-    /** @global lovec.graphics.LCPal */
-    LCPal = fetchClass("lovec.graphics.LCPal");
-    /** @global lovec.graphics.LCRgb */
-    LCRgb = fetchClass("lovec.graphics.LCRgb");
-    /** @global lovec.graphics.LCTexture */
-    LCTexture = fetchClass("lovec.graphics.LCTexture");
+    /** @global lovec.graphics.SLCDraw */
+    SLCDraw = fetchClass("lovec.graphics.SLCDraw");
+    /** @global lovec.graphics.SLCDrawf */
+    SLCDrawf = fetchClass("lovec.graphics.SLCDrawf");
+    /** @global lovec.graphics.SLCDrawP3D */
+    SLCDrawP3D = fetchClass("lovec.graphics.SLCDrawP3D");
+    /** @global lovec.graphics.SLCPal */
+    SLCPal = fetchClass("lovec.graphics.SLCPal");
+    /** @global lovec.graphics.SLCRgb */
+    SLCRgb = fetchClass("lovec.graphics.SLCRgb");
+    /** @global lovec.graphics.SLCTexture */
+    SLCTexture = fetchClass("lovec.graphics.SLCTexture");
 
 
     /* <------------------------------ lovec.math ------------------------------> */
 
 
-    /** @global lovec.math.LCLerp */
-    LCLerp = fetchClass("lovec.math.LCLerp");
-    /** @global lovec.math.LCMathFunc */
-    LCMathFunc = fetchClass("lovec.math.LCMathFunc");
-    /** @global lovec.math.LCProbability */
-    LCProbability = fetchClass("lovec.math.LCProbability");
-    /** @global lovec.math.LCRaycast */
-    LCRaycast = fetchClass("lovec.math.LCRaycast");
-    /** @global lovec.math.LCStatistics */
-    LCStatistics = fetchClass("lovec.math.LCStatistics");
+    /** @global lovec.math.SLCLerp */
+    SLCLerp = fetchClass("lovec.math.SLCLerp");
+    /** @global lovec.math.SLCMathFunc */
+    SLCMathFunc = fetchClass("lovec.math.SLCMathFunc");
+    /** @global lovec.math.SLCProbability */
+    SLCProbability = fetchClass("lovec.math.SLCProbability");
+    /** @global lovec.math.SLCRaycast */
+    SLCRaycast = fetchClass("lovec.math.SLCRaycast");
+    /** @global lovec.math.SLCStatistics */
+    SLCStatistics = fetchClass("lovec.math.SLCStatistics");
     /** @global lovec.math.struct.LCGraph */
     LCGraph = fetchClass("lovec.math.struct.LCGraph");
     /** @global lovec.math.struct.LCMatrix */
@@ -95,36 +95,36 @@
     /* <------------------------------ lovec.utils ------------------------------> */
 
 
-    /** @global lovec.utils.LCAirObjects */
-    LCAirObjects = fetchClass("lovec.utils.LCAirObjects");
-    /** @global lovec.utils.LCCheck */
-    LCCheck = fetchClass("lovec.utils.LCCheck");
-    /** @global lovec.utils.LCEntity */
-    LCEntity = fetchClass("lovec.utils.LCEntity");
-    /** @global lovec.utils.LCFormat */
-    LCFormat = fetchClass("lovec.utils.LCFormat");
-    /** @global lovec.utils.LCGeometry */
-    LCGeometry = fetchClass("lovec.utils.LCGeometry");
-    /** @global lovec.utils.LCPos */
-    LCPos = fetchClass("lovec.utils.LCPos");
-    /** @global lovec.utils.LCProp */
-    LCProp = fetchClass("lovec.utils.LCProp");
-    /** @global lovec.utils.LCRand */
-    LCRand = fetchClass("lovec.utils.LCRand");
-    /** @global lovec.utils.LCRaycastf */
-    LCRaycastf = fetchClass("lovec.utils.LCRaycastf");
-    /** @global lovec.utils.LCScript */
-    LCScript = fetchClass("lovec.utils.LCScript");
-    /** @global lovec.utils.LCScriptUtil */
-    LCScriptUtil = fetchClass("lovec.utils.LCScriptUtil");
+    /** @global lovec.utils.SLCAirObjects */
+    SLCAirObjects = fetchClass("lovec.utils.SLCAirObjects");
+    /** @global lovec.utils.SLCCheck */
+    SLCCheck = fetchClass("lovec.utils.SLCCheck");
+    /** @global lovec.utils.SLCEntity */
+    SLCEntity = fetchClass("lovec.utils.SLCEntity");
+    /** @global lovec.utils.SLCFormat */
+    SLCFormat = fetchClass("lovec.utils.SLCFormat");
+    /** @global lovec.utils.SLCGeometry */
+    SLCGeometry = fetchClass("lovec.utils.SLCGeometry");
+    /** @global lovec.utils.SLCPos */
+    SLCPos = fetchClass("lovec.utils.SLCPos");
+    /** @global lovec.utils.SLCProp */
+    SLCProp = fetchClass("lovec.utils.SLCProp");
+    /** @global lovec.utils.SLCRand */
+    SLCRand = fetchClass("lovec.utils.SLCRand");
+    /** @global lovec.utils.SLCRaycastf */
+    SLCRaycastf = fetchClass("lovec.utils.SLCRaycastf");
+    /** @global lovec.utils.SLCScript */
+    SLCScript = fetchClass("lovec.utils.SLCScript");
+    /** @global lovec.utils.SLCScriptUtil */
+    SLCScriptUtil = fetchClass("lovec.utils.SLCScriptUtil");
     /** @global lovec.utils.TmpStateTag */
     TmpStateTag = fetchClass("lovec.utils.TmpStateTag");
-    /** @global lovec.utils.extend.LCNativeArray */
-    LCNativeArray = fetchClass("lovec.utils.extend.LCNativeArray");
-    /** @global lovec.utils.extend.LCNativeObject */
-    LCNativeObject = fetchClass("lovec.utils.extend.LCNativeObject");
-    /** @global lovec.utils.extend.LCNumber */
-    LCNumber = fetchClass("lovec.utils.extend.LCNumber");
+    /** @global lovec.utils.extend.SLCNativeArray */
+    SLCNativeArray = fetchClass("lovec.utils.extend.SLCNativeArray");
+    /** @global lovec.utils.extend.SLCNativeObject */
+    SLCNativeObject = fetchClass("lovec.utils.extend.SLCNativeObject");
+    /** @global lovec.utils.extend.SLCNumber */
+    SLCNumber = fetchClass("lovec.utils.extend.SLCNumber");
     /** @global lovec.utils.func.TemplateFunc */
     TemplateFunc = fetchClass("lovec.utils.func.TemplateFunc");
     /** @global lovec.utils.func.TemplateProv */

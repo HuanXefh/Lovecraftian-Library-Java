@@ -84,7 +84,7 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot, valid) {
-        LCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
+        SLCDrawf.baseBlockDrawPlace(blk, tx, ty, rot, valid);
 
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return;
@@ -97,7 +97,7 @@
             let x = tx.toFCoord(blk.size) - w * 0.5 - 4.0;
             let y = ty.toFCoord(blk.size) + blk.size * Vars.tilesize * 0.5 + 5.0;
 
-            LCDraw.regionIcon(x, y, blk.self.ex_findPlaceRsIcon(tx, ty, returnItem), 0, 0.75);
+            SLCDraw.regionIcon(x, y, blk.self.ex_findPlaceRsIcon(tx, ty, returnItem), 0, 0.75);
 
             if(blk.drawMineItem) {
                 Draw.color(returnItem.color);
@@ -160,7 +160,7 @@
      */
     function comp_drawSelect(b) {
         if(b.dominantItem == null) return;
-        LCDraw.regionIcon(b.x, b.y, b.block.self.ex_findPlaceRsIcon(b.tileX(), b.tileY(), b.dominantItem), b.block.size, 0.75);
+        SLCDraw.regionIcon(b.x, b.y, b.block.self.ex_findPlaceRsIcon(b.tileX(), b.tileY(), b.dominantItem), b.block.size, 0.75);
     };
 
 

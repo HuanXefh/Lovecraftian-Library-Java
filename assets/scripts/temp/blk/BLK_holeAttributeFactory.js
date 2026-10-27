@@ -96,19 +96,19 @@
     const comp_drawPlace = function thisFun(blk, tx, ty, rot, valid) {
         let t = GLB_var.world.tile(tx + blk.delegee.holeOffPon.x, ty + blk.delegee.holeOffPon.y);
         if(t != null) {
-            if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t)) {
-                LCPos.getTilesRect(thisFun.tmpTs, t, 5, blk.size);
+            if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t)) {
+                SLCPos.getTilesRect(thisFun.tmpTs, t, 5, blk.size);
             };
 
             thisFun.tmpTs.forEachFast(ot => {
                 if(ot.block().attributes.get(blk.delegee.attribute) > 0.0) {
-                    LCDrawf.areaShrink(ot, 1, valid ? GLB_color.accent : GLB_color.remove);
+                    SLCDrawf.areaShrink(ot, 1, valid ? GLB_color.accent : GLB_color.remove);
                 };
             }, true);
         };
 
         if(blk.delegee.shouldDrawAttrText) {
-            LCDrawf.textPlace(
+            SLCDrawf.textPlace(
                 blk, tx + blk.delegee.holeOffPon.x, ty + blk.delegee.holeOffPon.y + blk.size,
                 Core.bundle.format("bar.efficiency", Math.round(blk.self.ex_getAttrEffc(tx, ty) * 100.0)),
                 valid, blk.delegee.attrTextOffTy,

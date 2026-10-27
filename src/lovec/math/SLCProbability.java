@@ -3,7 +3,7 @@ package lovec.math;
 import arc.math.Rand;
 import lovec.utils.func.Doublep;
 
-public class LCProbability {
+public class SLCProbability {
 
 
     private static final Rand rand = new Rand();

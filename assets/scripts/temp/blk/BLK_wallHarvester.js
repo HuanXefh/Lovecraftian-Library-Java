@@ -56,13 +56,13 @@
         let t = GLB_var.world.tile(tx, ty);
         if(t == null) return;
 
-        if(LCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
-            LCPos.getTilesRect(thisFun.tmpTs, t, 5, blk.size);
+        if(SLCNativeArray.checkTupChange(thisFun.tmpTup, blk, t, rot)) {
+            SLCPos.getTilesRect(thisFun.tmpTs, t, 5, blk.size);
         };
 
         thisFun.tmpTs.forEachFast(ot => {
             if(ot.block().attributes.get(blk.attribute) > 0.0) {
-                LCDrawf.areaShrink(ot, 1, valid ? GLB_color.accent : GLB_color.remove);
+                SLCDrawf.areaShrink(ot, 1, valid ? GLB_color.accent : GLB_color.remove);
             };
         }, true);
     }

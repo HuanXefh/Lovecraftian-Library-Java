@@ -144,7 +144,7 @@
                     i++;
 
                     MDL_event.onDelayRun(0.0, () => {
-                        unit = LCEntity.getUnits(this.tmpUnits, x, y, 6.0).inSituFilter(ounit => ounit.type.name == str).first();
+                        unit = SLCEntity.getUnits(this.tmpUnits, x, y, 6.0).inSituFilter(ounit => ounit.type.name == str).first();
                         if(unit != null && unit.delegee != null && checkSubInsOfTemp(unit.type, "UNIT_baseUnit")) {
                             try {
                                 unit.type.ex_readUnitData(unit, JSON.parse(json));
@@ -405,7 +405,7 @@
         if(!Vars.headless && fetchSetting("load-colored-name")) {
             Core.app.post(() => {
                 function fetchColor(rs) {
-                    let lightness = LCRgb.calcLightness(rs.color);
+                    let lightness = SLCRgb.calcLightness(rs.color);
                     return lightness < 0.1 ?
                         Tmp.c1.set(Color.white) :
                         Tmp.c1.set(rs.color).mul(

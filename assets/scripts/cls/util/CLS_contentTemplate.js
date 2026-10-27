@@ -171,7 +171,7 @@
      */
     CLS_contentTemplate.resolveMethodName = function(name) {
         // `createIcons` is removed in v9
-        if(!LCVersionResolver.isV8 && name === "createIcons") return "packSprites";
+        if(!SLCVersionResolver.isV8 && name === "createIcons") return "packSprites";
 
         return name;
     };
@@ -280,7 +280,7 @@
             return this;
         };
         let javaCls;
-        if(LCVersionResolver.isV8) {
+        if(SLCVersionResolver.isV8) {
             javaCls = eval(javaClsName);
         } else {
             javaCls = eval(v9ClassMigrationMap.get(javaClsName, javaClsName));

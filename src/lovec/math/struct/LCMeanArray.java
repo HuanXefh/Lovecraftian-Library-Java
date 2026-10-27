@@ -1,7 +1,7 @@
 package lovec.math.struct;
 
-import lovec.utils.LCScript;
-import lovec.utils.extend.LCNativeArray;
+import lovec.utils.SLCScript;
+import lovec.utils.extend.SLCNativeArray;
 import rhino.NativeArray;
 
 /**
@@ -17,7 +17,7 @@ public class LCMeanArray {
 
     public LCMeanArray(int cap) {
         this.cap = cap;
-        dataArr = LCScript.newArray("LCMeanArray#newArr");
+        dataArr = SLCScript.newArray("LCMeanArray#newArr");
     };
 
 
@@ -64,10 +64,10 @@ public class LCMeanArray {
     public long push(float num) {
         if(cap <= 0) return 0;
         while(dataArr.getLength() >= cap) {
-            LCNativeArray.shift(dataArr);
+            SLCNativeArray.shift(dataArr);
         };
-        LCNativeArray.push(dataArr, num);
-        mean = LCScript.toFloat(LCNativeArray.mean(dataArr));
+        SLCNativeArray.push(dataArr, num);
+        mean = SLCScript.toFloat(SLCNativeArray.mean(dataArr));
         return dataArr.getLength();
     };
 
@@ -76,7 +76,7 @@ public class LCMeanArray {
      * Clears all stored numbers.
      */
     public LCMeanArray clear() {
-        LCNativeArray.clear(dataArr);
+        SLCNativeArray.clear(dataArr);
         mean = 0f;
         return this;
     };

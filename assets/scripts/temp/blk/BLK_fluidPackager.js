@@ -104,11 +104,11 @@
      */
     function comp_craft(b) {
         if(!b.block.delegee.isUnpacker) {
-            LCCraftingHandler.addLiquidBatch(b, b, b.delegee.packLiqCur, -b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem, true);
+            SLCCraftingHandler.addLiquidBatch(b, b, b.delegee.packLiqCur, -b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem, true);
             FRAG_item.produceItem(b, b.delegee.packageOutputCur, b.block.delegee.packageAmt);
         } else {
             FRAG_item.consumeItem(b, b.delegee.unpackItemCur, b.block.delegee.packageAmt);
-            LCCraftingHandler.addLiquidBatch(b, b, b.delegee.packageOutputCur, b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem, true);
+            SLCCraftingHandler.addLiquidBatch(b, b, b.delegee.packageOutputCur, b.block.delegee.packageAmt * b.block.delegee.liqPerCellItem, true);
         };
         b.delegee.unpackItemCur = null;
         b.delegee.packLiqCur = null;
@@ -192,7 +192,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDraw.contentIcon(b.x, b.y, b.delegee.packageOutputCur, b.block.size, 0.75);
+        SLCDraw.contentIcon(b.x, b.y, b.delegee.packageOutputCur, b.block.size, 0.75);
     };
 
 

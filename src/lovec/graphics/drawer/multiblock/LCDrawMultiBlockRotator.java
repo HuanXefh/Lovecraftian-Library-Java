@@ -7,7 +7,7 @@ import arc.math.Mathf;
 import arc.util.Eachable;
 import arc.util.Tmp;
 import lovec.annotation.LCJSONTypeClass;
-import lovec.graphics.LCDraw;
+import lovec.graphics.SLCDraw;
 import lovec.graphics.drawer.SpinSpriteFrag;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -71,14 +71,14 @@ public class LCDrawMultiBlockRotator extends LCDrawMultiBlock implements SpinSpr
         blurred = blurRotReg.found() && ang - b.warmup() >= blurThreshold;
         ang = Mathf.mod(ang, sideAng);
 
-        LCDraw.processZ(z);
+        SLCDraw.processZ(z);
         calcMultiBlockOff(Tmp.v1, b.rotation).add(b);
         if(!spinSprite) {
             Draw.rect(blurred ? blurRotReg : rotReg, Tmp.v1.x, Tmp.v1.y, ang);
         } else {
             drawRotator(blurred ? blurRotReg : rotReg, Tmp.v1.x, Tmp.v1.y, ang, speed, sideAng);
         };
-        LCDraw.processZ(-1f);
+        SLCDraw.processZ(-1f);
     };
 
 

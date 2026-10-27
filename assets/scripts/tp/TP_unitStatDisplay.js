@@ -100,7 +100,7 @@
         };
 
         if(e instanceof Unit) {
-            LCDrawf.stackStatus(e);
+            SLCDrawf.stackStatus(e);
         };
 
         Draw.z(zPrev);
@@ -165,7 +165,7 @@
         };
 
         if(e instanceof Unit) {
-            LCDrawf.stackStatus(e);
+            SLCDrawf.stackStatus(e);
         };
 
         Draw.z(zPrev);
@@ -197,7 +197,7 @@
         Lines.line(x - w * 0.5, y + offY, Mathf.lerp(x - w * 0.5, x + w * 0.5, frac), y + offY);
 
         if(e instanceof Unit) {
-            LCDrawf.stackStatus(e);
+            SLCDrawf.stackStatus(e);
         };
 
         Draw.z(zPrev);
@@ -225,7 +225,7 @@
         );
 
         if(e instanceof Unit) {
-            LCDrawf.stackStatus(e);
+            SLCDrawf.stackStatus(e);
         };
 
         Draw.z(zPrev);

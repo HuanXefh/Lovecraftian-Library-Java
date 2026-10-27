@@ -3,10 +3,10 @@ package lovec.content.updater;
 import arc.math.Mathf;
 import arc.util.Time;
 import lovec.content.LCContentUpdater;
-import lovec.content.LCCraftingHandler;
+import lovec.content.SLCCraftingHandler;
 import lovec.content.LCBuildUpdater;
-import lovec.utils.LCScript;
-import lovec.utils.LCScriptUtil;
+import lovec.utils.SLCScript;
+import lovec.utils.SLCScriptUtil;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.blocks.sandbox.LiquidSource;
@@ -32,8 +32,8 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
 
     @Override
     protected void resolve() throws NoSuchFieldException, IllegalAccessException {
-        skipTorFetch = LCScript.toBoolean(get("skipTorFetch"));
-        skipTorSupply = LCScript.toBoolean(get("skipTorSupply"));
+        skipTorFetch = SLCScript.toBoolean(get("skipTorFetch"));
+        skipTorSupply = SLCScript.toBoolean(get("skipTorSupply"));
     };
 
 
@@ -57,17 +57,17 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
 
         @Override
         protected void targetSetInit() throws NoSuchFieldException, IllegalAccessException {
-            torFetchTargets = LCScript.toArray(get("torFetchTargets"));
-            torTransTargets = LCScript.toArray(get("torTransTargets"));
-            torSupplyTargets = LCScript.toArray(get("torSupplyTargets"));
+            torFetchTargets = SLCScript.toArray(get("torFetchTargets"));
+            torTransTargets = SLCScript.toArray(get("torTransTargets"));
+            torSupplyTargets = SLCScript.toArray(get("torSupplyTargets"));
         };
 
 
         @Override
         public void resolve() throws NoSuchFieldException, IllegalAccessException {
-            torCur = LCScript.toFloat(get("torCur"));
-            torCap = LCScript.toFloat(get("torCap"));
-            rpmCur = LCScript.toFloat(get("rpmCur"));
+            torCur = SLCScript.toFloat(get("torCur"));
+            torCap = SLCScript.toFloat(get("torCap"));
+            rpmCur = SLCScript.toFloat(get("rpmCur"));
         };
 
 
@@ -87,7 +87,7 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
             while(i < iCap) {
                 ob = (Building) torTransTargets.get(i);
                 if((boolean) invoke("ex_checkTorTransValid", ob)) {
-                    amtTransTarget = (LCScript.toFloat(get(ob, "torCur")) + torCur) / 2f - torTransLoss * Time.delta;
+                    amtTransTarget = (SLCScript.toFloat(get(ob, "torCur")) + torCur) / 2f - torTransLoss * Time.delta;
                     set(ob, "torCur", amtTransTarget);
                     torCur = amtTransTarget;
                 };
@@ -100,7 +100,7 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
                 iCap = torFetchTargets.getLength();
                 while(i < iCap) {
                     ob = (Building) torFetchTargets.get(i);
-                    rateAddNet += ob.efficiency * LCScript.toFloat(torFetchTargets.get(i + 1));
+                    rateAddNet += ob.efficiency * SLCScript.toFloat(torFetchTargets.get(i + 1));
                     i += 2;
                 };
             };
@@ -109,7 +109,7 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
                 iCap = torSupplyTargets.getLength();
                 while(i < iCap) {
                     ob = (Building) torSupplyTargets.get(i);
-                    rateAddNet -= ob.efficiency * LCScript.toFloat(torSupplyTargets.get(i + 1));
+                    rateAddNet -= ob.efficiency * SLCScript.toFloat(torSupplyTargets.get(i + 1));
                     i += 2;
                 };
             };
@@ -120,8 +120,8 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
             };
 
             // Update current RPM
-            if(LCScriptUtil.checkTimer("secQuarter")) {
-                rpmCur = LCScript.toFloat(invoke("ex_calcRpmTarget"));
+            if(SLCScriptUtil.checkTimer("secQuarter")) {
+                rpmCur = SLCScript.toFloat(invoke("ex_calcRpmTarget"));
                 if(rpmCur < 0.25f) {
                     rpmCur = 0f;
                 };
@@ -145,16 +145,16 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
             long iCap = torSupplyTargets.getLength();
             while(i < iCap) {
                 ob = (Building) torSupplyTargets.get(i);
-                torRate = Math.min(LCScript.toFloat(torSupplyTargets.get(i + 1)), torCur) + torSupplyInc;
+                torRate = Math.min(SLCScript.toFloat(torSupplyTargets.get(i + 1)), torCur) + torSupplyInc;
                 rpmRate = rpmCur / 60f + rpmSupplyInc;
-                if(ob.acceptLiquid(b, LCScriptUtil.auxTor)) {
-                    ob.handleLiquid(b, LCScriptUtil.auxTor, torRate * b.edelta());
+                if(ob.acceptLiquid(b, SLCScriptUtil.auxTor)) {
+                    ob.handleLiquid(b, SLCScriptUtil.auxTor, torRate * b.edelta());
                 };
-                if(ob.acceptLiquid(b, LCScriptUtil.auxRpm)) {
-                    ob.handleLiquid(b, LCScriptUtil.auxRpm, rpmRate * b.edelta());
+                if(ob.acceptLiquid(b, SLCScriptUtil.auxRpm)) {
+                    ob.handleLiquid(b, SLCScriptUtil.auxRpm, rpmRate * b.edelta());
                 };
-                if(LCScriptUtil.checkTimer("secFive") && ob.block.consumesLiquid(LCScriptUtil.auxRpm)) {
-                    invoke("ex_updateRpmDmg", ob, rpmRate, LCScriptUtil.getConsAmt(LCScriptUtil.auxRpm.name, ob));
+                if(SLCScriptUtil.checkTimer("secFive") && ob.block.consumesLiquid(SLCScriptUtil.auxRpm)) {
+                    invoke("ex_updateRpmDmg", ob, rpmRate, SLCScriptUtil.getConsAmt(SLCScriptUtil.auxRpm.name, ob));
                 };
                 i += 2;
             };
@@ -181,14 +181,14 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
                 while(i < iCap) {
                     ob = (Building) torFetchTargets.get(i);
                     if(ob.isAdded() && ob.enabled && !ob.isPayload()) {
-                        amt = LCScript.toFloat(torFetchTargets.get(i + 1));
+                        amt = SLCScript.toFloat(torFetchTargets.get(i + 1));
                         if(ob instanceof LiquidSource.LiquidSourceBuild ob1) {
-                            if(ob1.source == LCScriptUtil.auxTor) {
+                            if(ob1.source == SLCScriptUtil.auxTor) {
                                 rpmTarget += 100f;
                                 torCap += 100f;
                             };
                         } else {
-                            rpmFetched = LCCraftingHandler.addLiquid(ob, ob, LCScriptUtil.auxTor, -amt * ob.efficiency / ob.timeScale() * 15f, true, true, true) * amt * 60f;
+                            rpmFetched = SLCCraftingHandler.addLiquid(ob, ob, SLCScriptUtil.auxTor, -amt * ob.efficiency / ob.timeScale() * 15f, true, true, true) * amt * 60f;
                             rpmTarget += rpmFetched;
                             torCap += rpmFetched;
                         };
@@ -204,8 +204,8 @@ public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
                 while(i < iCap) {
                     ob = (Building) torTransTargets.get(i);
                     if(ob.isAdded() && ob.enabled && !ob.isPayload() && has(ob, "ex_calcRpmTrans") && (boolean) invoke("ex_checkTorTransValid", ob)) {
-                        float rpmTrans = LCScript.toFloat(invoke(ob, "ex_calcRpmTrans", b));
-                        rpmTarget = Math.max(rpmTarget, rpmTrans * LCScript.toFloat(invoke("ex_calcRpmAcceptScl", ob)));
+                        float rpmTrans = SLCScript.toFloat(invoke(ob, "ex_calcRpmTrans", b));
+                        rpmTarget = Math.max(rpmTarget, rpmTrans * SLCScript.toFloat(invoke("ex_calcRpmAcceptScl", ob)));
                         torCap = Math.max(torCap, rpmTrans);
                     };
                     i++;

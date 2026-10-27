@@ -34,7 +34,7 @@
             processZ(GLB_var.layer.dporeRevealed, 4);
             Draw.alpha(0.65);
             blk.delegee.drawnMap.each((t, cond) => {
-                if(!cond || !LCCheck.checkPosVisible(t.worldx(), t.worldy(), 8.0)) return;
+                if(!cond || !SLCCheck.checkPosVisible(t.worldx(), t.worldy(), 8.0)) return;
                 Draw.rect(MDL_texture.getRegVari(blk, t), t.worldx(), t.worldy());
             });
             Draw.color();

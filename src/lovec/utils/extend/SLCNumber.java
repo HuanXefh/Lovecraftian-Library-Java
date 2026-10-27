@@ -4,12 +4,12 @@ import arc.func.Cons;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.util.Nullable;
-import lovec.utils.LCRand;
+import lovec.utils.SLCRand;
 
 /**
  * Handles numerical calculation.
  */
-public class LCNumber {
+public class SLCNumber {
 
 
     /**
@@ -66,7 +66,7 @@ public class LCNumber {
         if(n == 0) return 0;
         int freq = 0;
         for(int i = 0; i < n; i++) {
-            if(rand == null ? Mathf.chance(p) : LCRand.chance(rand, p)) freq++;
+            if(rand == null ? Mathf.chance(p) : SLCRand.chance(rand, p)) freq++;
         };
         return freq;
     };

@@ -41,8 +41,8 @@
      */
     function comp_onProximityUpdate(b) {
         if(b.block.delegee.noTransSideReg) return;
-        b.delegee.shouldDrawTransSide1 = LCGeometry.showBackSide(b);
-        b.delegee.shouldDrawTransSide2 = LCGeometry.showFrontSide(b);
+        b.delegee.shouldDrawTransSide1 = SLCGeometry.showBackSide(b);
+        b.delegee.shouldDrawTransSide2 = SLCGeometry.showFrontSide(b);
     };
 
 
@@ -66,10 +66,10 @@
     function comp_draw(b) {
         if(b.block.delegee.noTransSideReg) return;
         if(b.delegee.shouldDrawTransSide1) {
-            LCDrawf.side(b.x, b.y, b.block.delegee.transSideReg1, b.rotation, Color.white, 1.0, b.block.delegee.transSideRegZ);
+            SLCDrawf.side(b.x, b.y, b.block.delegee.transSideReg1, b.rotation, Color.white, 1.0, b.block.delegee.transSideRegZ);
         };
         if(b.delegee.shouldDrawTransSide2) {
-            LCDrawf.side(b.x, b.y, b.block.delegee.transSideReg2, b.rotation + 2, Color.white, 1.0, b.block.delegee.transSideRegZ);
+            SLCDrawf.side(b.x, b.y, b.block.delegee.transSideReg2, b.rotation + 2, Color.white, 1.0, b.block.delegee.transSideRegZ);
         };
     };
 

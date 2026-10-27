@@ -42,7 +42,7 @@
      * @return {void}
      */
     function comp_drawPlace(blk, tx, ty, rot) {
-        LCDrawf.pulseCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.impactRad);
+        SLCDrawf.pulseCircle(tx.toFCoord(blk.size), ty.toFCoord(blk.size), blk.delegee.impactRad);
     };
 
 
@@ -85,7 +85,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDrawf.pulseCircle(b.x, b.y, b.block.self.ex_calcImpactRad(b));
+        SLCDrawf.pulseCircle(b.x, b.y, b.block.self.ex_calcImpactRad(b));
     };
 
 

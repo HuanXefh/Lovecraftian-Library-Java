@@ -13,7 +13,7 @@ import arc.util.Nullable;
 import arc.util.Tmp;
 import lovec.annotation.LCJSONTypeClass;
 import lovec.annotation.LCNoJSON;
-import lovec.graphics.LCDraw;
+import lovec.graphics.SLCDraw;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.world.Block;
@@ -68,7 +68,7 @@ public class LCDrawItemPile extends LCDrawer {
         Item item0 = itemF.get(b);
         if(item0 == null) return;
 
-        LCDraw.processZ(z >= 0f ? z : (Draw.z() + 0.5f));
+        SLCDraw.processZ(z >= 0f ? z : (Draw.z() + 0.5f));
         Angles.randLenVectors(b.id, Math.round(Mathf.maxZero(amountF.get(b) * fracF.get(b))), radius, (dx, dy) -> {
             Draw.color(Color.black, 0.4f);
             calcRotatedOff(Tmp.v1, b.rotation).add(b).add(dx, dy);
@@ -76,7 +76,7 @@ public class LCDrawItemPile extends LCDrawer {
             Draw.color();
             Draw.rect(item0.fullIcon, Tmp.v1.x, Tmp.v1.y, itemWidth, itemWidth, Mathf.randomSeed((long) (b.pos() + dx + dy * 10000), 0f, 360f));
         });
-        LCDraw.processZ(-1f);
+        SLCDraw.processZ(-1f);
     };
 
 

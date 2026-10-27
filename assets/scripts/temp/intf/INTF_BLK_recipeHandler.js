@@ -153,7 +153,7 @@
                 console.warn("[LOVEC] Block ${1} is both heat consumer and producer, which can lead to broken heat calculation!".format(blk.name.color(GLB_color.accent)));
             };
 
-            if(!LCVersionResolver.isV8 && blk.delegee.isErekirHeatConsumer) {
+            if(!SLCVersionResolver.isV8 && blk.delegee.isErekirHeatConsumer) {
                 let consHeat = extend(eval("ConsumeHeat"), 0.0, {
                     fraction(b) {
                         return b.heatFrac();
@@ -552,7 +552,7 @@
      * @return {void}
      */
     function comp_drawSelect(b) {
-        LCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.delegee.rc.rcIconName), b.block.size, 0.75);
+        SLCDraw.contentIcon(b.x, b.y, Vars.content.byName(b.delegee.rc.rcIconName), b.block.size, 0.75);
     };
 
 
@@ -563,7 +563,7 @@
      */
     function comp_drawStatus(b) {
         if(!b.block.enableDrawStatus) return;
-        LCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
+        SLCDrawf.blockStatus(b.x, b.y, b.block.size, b.status().color);
     };
 
 

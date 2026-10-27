@@ -14,7 +14,7 @@ import arc.util.Tmp;
  * Draw methods used for pseudo-3D things.
  * This runs much faster when defined in Java.
  */
-public class LCDrawP3D {
+public class SLCDrawP3D {
 
 
     static final float camOffY = 48f;

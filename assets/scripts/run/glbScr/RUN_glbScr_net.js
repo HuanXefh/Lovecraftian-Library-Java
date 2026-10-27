@@ -51,7 +51,7 @@
      * @return {string}
      */
     packSplitterPayload = function() {
-        return LCScriptUtil.packSplitterPayload(arguments);
+        return SLCScriptUtil.packSplitterPayload(arguments);
     };
 
 
@@ -65,8 +65,8 @@
      */
     unpackSplitterPayload = function(payload, ind) {
         return ind == null ?
-            LCScriptUtil.unpackSplitterPayload(payload) :
-            LCScriptUtil.unpackSplitterPayload(payload, ind);
+            SLCScriptUtil.unpackSplitterPayload(payload) :
+            SLCScriptUtil.unpackSplitterPayload(payload, ind);
     };
 
 

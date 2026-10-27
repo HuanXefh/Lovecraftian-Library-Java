@@ -313,7 +313,7 @@
     const clearDialFlow = function() {
         UTIL_dialogFlow.BOX_trigger_BACKGROUND = false;
         UTIL_dialogFlow.BOX_trigger_MUSIC = false;
-        LCSoundControl.stop();
+        SLCSoundControl.stop();
         UTIL_dialogFlow.removeTextCur();
         UTIL_dialogFlow.clearRead();
         UTIL_dialogFlow.clearLog();
@@ -422,11 +422,11 @@
 
         setActorAction(actor, delay, [
             Actions.run(() => {
-                LCSoundControl.setMusic(fetchMusic(mus_gn));
+                SLCSoundControl.setMusic(fetchMusic(mus_gn));
             }),
             Actions.run(() => actor.update(() => {
                 if(endF()) {
-                    LCSoundControl.stop();
+                    SLCSoundControl.stop();
                     removeActor(actor);
                 };
             })),

@@ -311,8 +311,8 @@
             frac,
             dmg_fi;
 
-        LCEntity.getUnits(thisFun.tmpUnits, x, y, rad).forEachFast(unit => {
-            if(FRAG_unit.checkCaller(unit, caller) || !MDL_cond.isUnitOnFloor(unit) || LCRaycastf.checkMobileFloor(x, y, unit.x, unit.y, minRad)) return;
+        SLCEntity.getUnits(thisFun.tmpUnits, x, y, rad).forEachFast(unit => {
+            if(FRAG_unit.checkCaller(unit, caller) || !MDL_cond.isUnitOnFloor(unit) || SLCRaycastf.checkMobileFloor(x, y, unit.x, unit.y, minRad)) return;
             dst = Mathf.dst(x, y, unit.x, unit.y);
             frac = 1.0 - dst / rad;
             dmg_fi = dmg * (Mathf.random(0.6) + 0.7) * Math.max(frac, 0.1) + GLB_var.param.impactDmgMin;

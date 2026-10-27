@@ -57,7 +57,7 @@
         MDL_event.onUpdate(() => {
 
           unitPlayer = Vars.player.unit();
-          tMouse = LCPos.getTileMouse();
+          tMouse = SLCPos.getTileMouse();
 
           updateKeybind(unitPlayer, tMouse);
 

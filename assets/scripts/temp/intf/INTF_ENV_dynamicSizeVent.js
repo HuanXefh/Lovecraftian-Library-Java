@@ -38,7 +38,7 @@
         };
 
         blk.delegee.ventSize = Math.round(Mathf.clamp(blk.delegee.ventSize, 1, 6));
-        blk.delegee.ventOffs = LCPos.sizeOffs[blk.delegee.ventSize];
+        blk.delegee.ventOffs = SLCPos.sizeOffs[blk.delegee.ventSize];
         blk.delegee.ventOffDraw = blk.delegee.ventSize % 2 === 0 ? 4.0 : 0.0;
 
         if(blk.parent !== Blocks.air) {

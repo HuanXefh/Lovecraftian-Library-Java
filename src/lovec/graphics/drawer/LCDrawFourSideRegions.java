@@ -5,7 +5,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Eachable;
 import lovec.annotation.LCJSONTypeClass;
-import lovec.graphics.LCDraw;
+import lovec.graphics.SLCDraw;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -42,9 +42,9 @@ public class LCDrawFourSideRegions extends LCDrawer {
 
     @Override
     public void draw(Building b) {
-        LCDraw.processZ(z);
+        SLCDraw.processZ(z);
         Draw.rect(sideRegs[b.rotation % 4], b.x, b.y);
-        LCDraw.processZ(-1f);
+        SLCDraw.processZ(-1f);
     };
 
 

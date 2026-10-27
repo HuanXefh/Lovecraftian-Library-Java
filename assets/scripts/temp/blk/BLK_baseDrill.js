@@ -189,10 +189,10 @@
         };
         let blkTarget = MDL_content.getCt(LCDBFileHandler.read("item-payload-block", item.name, null), ContentGetModes.BLK);
         if(blkTarget == null) return;
-        LCNativeObject.numIncre(b.delegee.payChargeObj, item.name);
+        SLCNativeObject.numIncre(b.delegee.payChargeObj, item.name);
         if(b.delegee.payChargeObj[item.name] >= blkTarget.requirements[0].amount) {
             b.delegee.payChargeObj[item.name] %= blkTarget.requirements[0].amount;
-            LCNativeObject.numIncre(b.delegee.payStockObj, blkTarget.name);
+            SLCNativeObject.numIncre(b.delegee.payStockObj, blkTarget.name);
         };
         b.payChargeFrac = b.delegee.payChargeObj[item.name] / blkTarget.requirements[0].amount;
     };

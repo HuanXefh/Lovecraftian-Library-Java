@@ -6,7 +6,7 @@ import arc.math.Mathf;
 /**
  * Interpolation, not only linear one.
  */
-public class LCLerp {
+public class SLCLerp {
 
 
     public static float calcParamFrac(float param, float param_f, float param_t) {

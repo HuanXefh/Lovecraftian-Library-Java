@@ -8,7 +8,7 @@ import mindustry.entities.EntityGroup;
 import mindustry.gen.Bullet;
 import mindustry.gen.Player;
 
-public class LCVersionResolver {
+public class SLCVersionResolver {
 
 
     public static boolean isV8 = Version.number < 9;

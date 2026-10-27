@@ -69,7 +69,7 @@
         unitPlayer = Vars.player.unit();
         if(unitPlayer != null) {
             // Draw surrounding range
-            LCPos.getTilesDstManhattan(thisFun.tmpTs, unitPlayer.tileOn(), GLB_var.range.unitSurR).forEachFast(ot => LCDrawf.areaShrink(ot, 1, GLB_color.accent, 0.5, GLB_var.layer.debugFlr), true);
+            SLCPos.getTilesDstManhattan(thisFun.tmpTs, unitPlayer.tileOn(), GLB_var.range.unitSurR).forEachFast(ot => SLCDrawf.areaShrink(ot, 1, GLB_color.accent, 0.5, GLB_var.layer.debugFlr), true);
         };
     }
     .setProp({
@@ -102,7 +102,7 @@
     function drawUnitStat() {
         GLB_var.entities.unit.each(
             unit => !(
-                (!LCCheck.checkEntityVisible(unit) || MDL_cond.isIrregularUnit(unit))
+                (!SLCCheck.checkEntityVisible(unit) || MDL_cond.isIrregularUnit(unit))
                     || ((!unit.isPlayer() || !GLB_param.SHOULD_DRAW_PLAYER_STAT) && !unit.isMissile() && GLB_param.SHOULD_DRAW_UNIT_STAT_NEAR_MOUSE && Mathf.dst(Core.input.mouseWorldX(), Core.input.mouseWorldY(), unit.x, unit.y) > GLB_var.range.mouseRad + unit.hitSize * 0.5)
                     || (unit.isMissile() && !GLB_param.SHOULD_DRAW_MISSILE_STAT)
                     || (!unit.type.logicControllable && !unit.type.playerControllable && unit.type.hidden && !unit.type.drawCell && !unit.isMissile())
@@ -146,13 +146,13 @@
                             Fill.arc(unit.x, unit.y, wp.bullet.splashDamageRadius, 0.25, Time.globalTime * 3.0 + 180.0);
                             Lines.stroke(1.0);
                             Draw.color(GLB_color.accent, GLB_param.UNIT_RANGE_ALPHA);
-                            LCDraw.circle(unit.x, unit.y, wp.bullet.splashDamageRadius, false);
+                            SLCDraw.circle(unit.x, unit.y, wp.bullet.splashDamageRadius, false);
                         };
                     }, true);
                     if(!cond) {
                         Lines.stroke(1.0);
                         Draw.color(GLB_color.accent, GLB_param.UNIT_RANGE_ALPHA);
-                        LCDraw.circle(unit.x, unit.y, unit.range(), false);
+                        SLCDraw.circle(unit.x, unit.y, unit.range(), false);
                     };
                     Draw.reset();
 
@@ -163,9 +163,9 @@
 
                 // Unit stat display
                 MDL_draw.unitStat(
-                    unit, LCProp.getHealthFrac(unit), unit.type.hitSize / Vars.tilesize, unit.team.color,
+                    unit, SLCProp.getHealthFrac(unit), unit.type.hitSize / Vars.tilesize, unit.team.color,
                     1.0, 0.0, 0, 1.0,
-                    LCProp.getArmor(unit), unit.shield, unit.speedMultiplier, unit.damageMultiplier * unit.reloadMultiplier,
+                    SLCProp.getArmor(unit), unit.shield, unit.speedMultiplier, unit.damageMultiplier * unit.reloadMultiplier,
                 );
 
                 // Unit reload display
@@ -208,7 +208,7 @@
      * @return {void}
      */
     const drawBuildStat = function thisFun() {
-        t = LCPos.getTileMouse();
+        t = SLCPos.getTileMouse();
         b = t == null ? null : t.build;
         unitPlayer = Vars.player.unit();
         bPlayer = (unitPlayer == null || !(unitPlayer instanceof BlockUnitc)) ? null : unitPlayer.tile();
@@ -266,7 +266,7 @@
             processZ(GLB_var.layer.debugTop - 0.02, 2);
             Lines.stroke(1.0);
             Draw.color(GLB_color.accent, 0.3);
-            LCDraw.rect(b.x, b.y, GLB_var.range.offBuildStatR, b.block.size, false);
+            SLCDraw.rect(b.x, b.y, GLB_var.range.offBuildStatR, b.block.size, false);
             Draw.reset();
             processZ(null, 2);
         },
@@ -278,7 +278,7 @@
      */
     function drawExtraInfo() {
         if(!GLB_param.SHOULD_SHOW_EXTRA_INFO) return;
-        MDL_draw.extraInfo(LCPos.getTileMouse());
+        MDL_draw.extraInfo(SLCPos.getTileMouse());
     };
 
 

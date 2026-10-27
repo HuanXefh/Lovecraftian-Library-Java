@@ -113,7 +113,7 @@
             offScl1 = size1 * Vars.tilesize * 0.5 - 0.5,
             offScl2 = size2 * Vars.tilesize * 0.5 - 0.5;
 
-        LCDrawf.wire(
+        SLCDrawf.wire(
             x1 + offX * offScl1,
             y1 + offY * offScl1,
             x2 - offX * offScl2,
@@ -287,7 +287,7 @@
             ex_drawRange: function(x, y, valid) {
                 if(this.drawRange) {
                     Draw.color(valid ? GLB_color.accent : GLB_color.remove, 0.3);
-                    LCDraw.ring(x, y, this.laserRange * Vars.tilesize * this.delegee.minRadFrac, this.laserRange * Vars.tilesize);
+                    SLCDraw.ring(x, y, this.laserRange * Vars.tilesize * this.delegee.minRadFrac, this.laserRange * Vars.tilesize);
                     Draw.color();
                 };
             }
@@ -354,7 +354,7 @@
              * @return {void}
              */
             ex_drawLinkTargets: function() {
-                LCEntity.eachBuild(
+                SLCEntity.eachBuild(
                     this.x, this.y, this.team,
                     this.block.laserRange * Vars.tilesize,
                     ob => ob.dst(this) >= this.block.laserRange * Vars.tilesize * this.block.delegee.minRadFrac && this.block.linkValid(this, ob),

@@ -155,7 +155,7 @@
      * @return {this}
      */
     Array.prototype.clear = function() {
-        return LCNativeArray.clear(this);
+        return SLCNativeArray.clear(this);
     };
 
 
@@ -167,8 +167,8 @@
      */
     Array.prototype.cpy = function(arr) {
         return arr == null ?
-            LCNativeArray.cpy(this) :
-            LCNativeArray.cpy(this, arr);
+            SLCNativeArray.cpy(this) :
+            SLCNativeArray.cpy(this, arr);
     };
 
 
@@ -177,5 +177,5 @@
      * @return {Array}
      */
     Array.prototype.deepCpy = function() {
-        return LCNativeArray.deepCpy(this);
+        return SLCNativeArray.deepCpy(this);
     };

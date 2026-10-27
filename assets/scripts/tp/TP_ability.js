@@ -93,7 +93,7 @@
          */
         death(unit) {
             Damage.damage(unit.team, unit.x, unit.y, this.delegee.rad, this.delegee.dmg);
-            LCEntity.eachUnit(unit.x, unit.y, unit.team, this.delegee.rad, null, ounit => {
+            SLCEntity.eachUnit(unit.x, unit.y, unit.team, this.delegee.rad, null, ounit => {
                 ounit.apply(this.delegee.sta, this.delegee.staDur);
             });
 
@@ -286,9 +286,9 @@
             };
             this.delegee.lastInCd = this.delegee.inCdMap.get(unit.id, false);
 
-            this.delegee.lastProg = Math.min(this.delegee.lastProg + Time.delta * 5.0 * this.delegee.chargeMtp * LCProp.getReloadMultiplier(unit), this.delegee.chargeCap);
+            this.delegee.lastProg = Math.min(this.delegee.lastProg + Time.delta * 5.0 * this.delegee.chargeMtp * SLCProp.getReloadMultiplier(unit), this.delegee.chargeCap);
             if(this.delegee.lastProg > 0.0 && !this.delegee.lastInCd) {
-                this.delegee.lastBul = LCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.delegee.rad);
+                this.delegee.lastBul = SLCEntity.getEnemyBullet(unit.x, unit.y, unit.team, this.delegee.rad);
                 if(this.delegee.lastBul != null) {
                     this.delegee.lastProg = Mathf.maxZero(this.delegee.lastProg - Mathf.clamp((this.delegee.lastBul.damage + this.delegee.lastBul.type.splashDamage) / this.delegee.dmg, 0.25, 1.0) * this.delegee.dmg);
                     MDL_effect.pointLaser(unit.x, unit.y, unit, this.delegee.lastBul, GLB_color.remove, this.delegee.sound);
@@ -408,7 +408,7 @@
                 this.delegee.timerMap.put(unit.id, this.delegee.lastTimer);
             };
             if(!this.delegee.lastTimer.get(this.delegee.intv)) return;
-            this.delegee.lastB = LCEntity.getBuildBy(unit.x, unit.y, unit.team, this.delegee.rad, b => MDL_cond.canHeal(b));
+            this.delegee.lastB = SLCEntity.getBuildBy(unit.x, unit.y, unit.team, this.delegee.rad, b => MDL_cond.canHeal(b));
             if(this.delegee.lastB == null) return;
 
             FRAG_attack.heal(this.delegee.lastB, this.delegee.lastB.maxHealth * this.delegee.healPerc + this.delegee.healAmt);
