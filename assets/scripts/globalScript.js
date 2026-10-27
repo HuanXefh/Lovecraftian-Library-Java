@@ -52,6 +52,20 @@
 
 
     /**
+     * Used to process Java annotations in {@link RUN_annoProcess}.
+     * @global
+     * @type {ObjectMap<string, Array<string>>}
+     */
+    __annoProcData__ = ObjectMap.of(
+        "LCFromScript", [
+            "SLCVersionResolver",
+            "SLCPal",
+            "SLCScriptUtil",
+        ],
+    );
+
+
+    /**
      * Evaluates given string in a try-catch block.
      * @global
      * @param {string} scrStr

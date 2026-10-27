@@ -2,8 +2,8 @@
 declare class SLCDraw {}
 /** lovec.graphics.SLCDrawf */
 declare class SLCDrawf {}
-/** lovec.graphics.SLCDrawP3D */
-declare class SLCDrawP3D {}
+/** lovec.graphics.SLCDrawP3d */
+declare class SLCDrawP3d {}
 
 
 /** lovec.graphics.SLCPal */

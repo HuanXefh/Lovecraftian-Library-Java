@@ -133,7 +133,7 @@ public class LCRecipeUpdater extends LCContentUpdater<NativeObject> {
         if(b.items == null) return null;
 
         resolve(b);
-        NativeArray tup = SLCScript.newArray("LCRecipeHandler.getOptTup.newArr");
+        NativeArray tup = SLCScript.newArray("LCRecipeUpdater.getOptTup.newArr");
         int i = 0;
         long iCap = opt.getLength();
         Item item;

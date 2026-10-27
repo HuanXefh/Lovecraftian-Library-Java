@@ -54,8 +54,8 @@
     SLCDraw = fetchClass("lovec.graphics.SLCDraw");
     /** @global lovec.graphics.SLCDrawf */
     SLCDrawf = fetchClass("lovec.graphics.SLCDrawf");
-    /** @global lovec.graphics.SLCDrawP3D */
-    SLCDrawP3D = fetchClass("lovec.graphics.SLCDrawP3D");
+    /** @global lovec.graphics.SLCDrawP3d */
+    SLCDrawP3d = fetchClass("lovec.graphics.SLCDrawP3d");
     /** @global lovec.graphics.SLCPal */
     SLCPal = fetchClass("lovec.graphics.SLCPal");
     /** @global lovec.graphics.SLCRgb */

@@ -12,30 +12,6 @@
 
 /*
   ========================================
-  Section: Definition
-  ========================================
-*/
-
-
-    /**
-     * @global
-     * @internal
-     * @name __annoTargetMap__
-     * @type {ObjectMap<string, Array<string>>}
-     */
-    globalize(new ObjectMap(), "__annoTargetMap__");
-
-
-    __annoTargetMap__.put("LCFromScript", [
-        "SLCVersionResolver",
-
-        "SLCPal",
-        "SLCScriptUtil",
-    ]);
-
-
-/*
-  ========================================
   Section: Application
   ========================================
 */
@@ -55,7 +31,7 @@
 
 
         // @LCFromScript
-        __annoTargetMap__.get("LCFromScript").forEachFast(nameCls => {
+        __annoProcData__.get("LCFromScript").forEachFast(nameCls => {
             cls = eval(nameCls);
             cls.__javaObject__.getDeclaredFields().forEachFast(field => {
                 anno = field.getDeclaredAnnotation(LCFromScript);
