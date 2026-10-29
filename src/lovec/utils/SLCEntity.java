@@ -404,9 +404,9 @@ public class SLCEntity {
     };
 
 
-    static Vec2 getChainTargetsVec1 = new Vec2();
-    static Vec2 getChainTargetsVec2 = new Vec2();
-    static Seq<Position> getChainTargetsSeq = new Seq<>();
+    private static final Vec2 getChainTargetsVec1 = new Vec2();
+    private static final Vec2 getChainTargetsVec2 = new Vec2();
+    private static final Seq<Position> getChainTargetsSeq = new Seq<>();
 
 
     /**

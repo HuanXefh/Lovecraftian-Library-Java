@@ -51,18 +51,15 @@ public class SLCDrawf {
     public static ObjectMap<String, TextureRegion> wireMatEndRegMap = new ObjectMap<>();
     public static TextureRegion wireGlowReg;
     public static TextureRegion wireShaReg;
-    public static float wireSegScl = 0.5f;
+    public static final float wireSegScl = 0.5f;
 
-    public static Color lightColor = Color.valueOf("ffc999");
-    public static Color heatColor = Color.valueOf("ff3838");
+    private static final Vec2[] tmpVecs = {
+        new Vec2(), new Vec2(), new Vec2(), new Vec2(), new Vec2(),
+        new Vec2(), new Vec2(), new Vec2(), new Vec2(), new Vec2(),
+    };
+    private static final Seq<Tile> tmpTSeq = new Seq<>();
 
-
-    static Vec2 tmpVec1 = new Vec2();
-    static Vec2 tmpVec2 = new Vec2();
-    static Vec2 tmpVec3 = new Vec2();
-    static Seq<Tile> tmpTsSeq = new Seq<>();
-
-    static float
+    private static float
         shapeLay,
         mineBeamLay,
         bulFlameLay,
@@ -251,7 +248,7 @@ public class SLCDrawf {
         float x, float y, float cx, float cy, float rad, float offTime, int rot, float strokeScl,
         Color color1, Color color2, float a, boolean hasLight, float z
     ) {
-        Vec2 vec = getRandWalkVec(tmpVec1, SLCVersionResolver.time + offTime).rotate90(rot);
+        Vec2 vec = getRandWalkVec(tmpVecs[0], SLCVersionResolver.time + offTime).rotate90(rot);
         laser(x, y, cx + vec.x * rad, cy + vec.y * rad, strokeScl, color1, color2, a, hasLight, z);
         return vec;
     };
@@ -315,15 +312,15 @@ public class SLCDrawf {
         );
         if(!Vars.state.isPaused() && SLCScriptUtil.checkTimer("trailCircle")) {
             float
-                offX = tmpVec1.x * rad,
-                offY = tmpVec1.y * rad;
+                offX = tmpVecs[0].x * rad,
+                offY = tmpVecs[0].y * rad;
 
             SLCScript.invoke("trailCircle", MDL_effect, cx + offX, cy + offY, strokeScl, color1);
             if(Mathf.chanceDelta(0.15f)) {
                 Fx.mineSmall.at(cx + offX, cy + offY);
             };
         };
-        return tmpVec1;
+        return tmpVecs[0];
     };
     // Overload
     public static Vec2 laserRandMine(
@@ -497,7 +494,7 @@ public class SLCDrawf {
      * Variant of {@link #rectPlace} for rotated range.
      */
     public static void rectPlaceRot(Block blk, int tx, int ty, float r, int rot, boolean isDashed, Color color) {
-        Vec2 vec = SLCPos.getCoordsRectRotCenter(tmpVec1, SLCPos.toFCoord(tx, blk.size), SLCPos.toFCoord(ty, blk.size), r, rot, blk.size);
+        Vec2 vec = SLCPos.getCoordsRectRotCenter(tmpVecs[0], SLCPos.toFCoord(tx, blk.size), SLCPos.toFCoord(ty, blk.size), r, rot, blk.size);
         rect(vec.x, vec.y, r, 0, isDashed, color);
     };
 
@@ -1125,7 +1122,7 @@ public class SLCDrawf {
         heat(x, y, reg, frac, size, ang, color, Layer.blockAdditive);
     };
     public static void heat(float x, float y, @Nullable TextureRegion reg, float frac, int size, float ang) {
-        heat(x, y, reg, frac, size, ang, heatColor);
+        heat(x, y, reg, frac, size, ang, SLCPal.heatDef);
     };
     public static void heat(float x, float y, @Nullable TextureRegion reg, float frac, int size) {
         heat(x, y, reg, frac, size, 0f);
@@ -1340,7 +1337,7 @@ public class SLCDrawf {
         light(x, y, warmup, rad, size, color, 0.65f);
     };
     public static void light(float x, float y, float warmup, float rad, float size) {
-        light(x, y, warmup, rad, size, lightColor);
+        light(x, y, warmup, rad, size, SLCPal.lightDef);
     };
     public static void light(float x, float y, float warmup, float rad) {
         light(x, y, warmup, rad, 1);
@@ -1369,7 +1366,7 @@ public class SLCDrawf {
         lightArc(x, y, warmup, rad, coneScl, ang, color, 0.65f);
     };
     public static void lightArc(float x, float y, float warmup, float rad, float coneScl, float ang) {
-        lightArc(x, y, warmup, rad, coneScl, ang, lightColor);
+        lightArc(x, y, warmup, rad, coneScl, ang, SLCPal.lightDef);
     };
 
 
@@ -1626,7 +1623,7 @@ public class SLCDrawf {
      */
     public static void planPlace(Block blk, @Nullable Tile t, float ang) {
         if(t == null) return;
-        Color color = t.getLinkedTilesAs(blk, tmpTsSeq).find(ot -> ot.solid() || ot.build != null) == null ? Color.white : SLCPal.remove;
+        Color color = t.getLinkedTilesAs(blk, tmpTSeq).find(ot -> ot.solid() || ot.build != null) == null ? Color.white : SLCPal.remove;
         plan(SLCPos.toFCoord(t.x, blk.size), SLCPos.toFCoord(t.y, blk.size), SLCTexture.getBlockRegion(blk), ang, 1f, color);
     };
     // Overload

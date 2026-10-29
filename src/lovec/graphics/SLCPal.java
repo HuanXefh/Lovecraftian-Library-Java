@@ -20,5 +20,10 @@ public class SLCPal {
     @LCFromScript(source = "GLB_color")
     public static Color heal;
 
+    @LCFromScript(source = "GLB_color")
+    public static Color lightDef;
+    @LCFromScript(source = "GLB_color")
+    public static Color heatDef;
+
 
 };

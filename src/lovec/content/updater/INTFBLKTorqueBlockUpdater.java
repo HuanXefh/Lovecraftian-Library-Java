@@ -17,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 public class INTFBLKTorqueBlockUpdater extends LCContentUpdater<Block> {
 
 
-    private static final float torTransLoss = 0.005f;
+    private static final float torTransLoss = 0.004f;
     private static final float torSupplyInc = 0.0001f;
     private static final float rpmSupplyInc = 0.0001f;
 

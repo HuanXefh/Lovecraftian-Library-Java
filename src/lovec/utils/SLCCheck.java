@@ -16,10 +16,10 @@ import mindustry.world.blocks.environment.EmptyFloor;
 public class SLCCheck {
 
 
-    static Polygon tmpTriangle;
-    static float[] tmpTriangleVertices = new float[6];
-    static Polygon tmpHexagon;
-    static float[] tmpHexagonVertices = new float[12];
+    private static Polygon tmpTriangle;
+    private static final float[] tmpTriangleVertices = new float[6];
+    private static Polygon tmpHexagon;
+    private static final float[] tmpHexagonVertices = new float[12];
 
 
     /* <------------------------------ position ------------------------------> */

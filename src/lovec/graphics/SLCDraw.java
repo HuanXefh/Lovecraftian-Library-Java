@@ -17,41 +17,42 @@ import mindustry.Vars;
 public class SLCDraw {
 
 
-    static Color[] tmpColors = {
+    private static final Color[] tmpColors = {
         new Color(), new Color(), new Color(), new Color(), new Color(),
         new Color(), new Color(), new Color(), new Color(), new Color(),
     };
-    static float[] zs = {
+    private static final float[] zs = {
         0f, 0f, 0f, 0f, 0f,
         0f, 0f, 0f, 0f, 0f,
         0f, 0f, 0f, 0f, 0f,
         0f, 0f, 0f, 0f, 0f,
     };
-    static boolean[] zTailBools = {
+    private static final boolean[] zTailBools = {
         false, false, false, false, false,
         false, false, false, false, false,
         false, false, false, false, false,
         false, false, false, false, false,
     };
-    static float[] xScls = {
+    private static final float[] xScls = {
         1f, 1f, 1f, 1f, 1f,
         1f, 1f, 1f, 1f, 1f,
         1f, 1f, 1f, 1f, 1f,
         1f, 1f, 1f, 1f, 1f,
     };
-    static float[] yScls = {
+    private static final float[] yScls = {
         1f, 1f, 1f, 1f, 1f,
         1f, 1f, 1f, 1f, 1f,
         1f, 1f, 1f, 1f, 1f,
         1f, 1f, 1f, 1f, 1f,
     };
-    static boolean[] sclTailBools = {
+    private static final boolean[] sclTailBools = {
         false, false, false, false, false,
         false, false, false, false, false,
         false, false, false, false, false,
         false, false, false, false, false,
     };
-    static final int
+
+    public static final int
         NORMAL_REGION_Z_IND = 10,
         SHADOW_REGION_Z_IND = 11,
         GLOW_REGION_Z_IND = 12,
