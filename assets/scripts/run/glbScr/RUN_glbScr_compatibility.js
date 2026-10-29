@@ -88,8 +88,8 @@
     /**
      * Whether some `Env` is present.
      * @global
-     * @param {number|Environments}
-     * @param {number|Env}
+     * @param {number|Environments} envSet
+     * @param {number|Env} env
      * @return {boolean}
      */
     includesEnv = function(envSet, env) {

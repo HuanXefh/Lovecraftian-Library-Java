@@ -900,13 +900,7 @@
     module.exports[0].initContent = function(blk) {
         this.super("initContent", blk);
 
-        // Parse JSON
-        let jval = LCContentParser.getJval(blk);
-        if(jval != null) {
-            LCContentParser.parseResearch(blk, jval);
-            LCContentParser.parseBlock(blk, jval);
-            LCContentParser.setupFields(blk, jval);
-        };
+        UTIL_templatePatch.handleBlock(blk);
 
         // Setup outline
         if(!tryJsProp(blk, "skipOutlineSetup", false)) {

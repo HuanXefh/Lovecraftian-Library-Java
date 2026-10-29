@@ -405,7 +405,7 @@
      * @return {T}
      */
     processNullParam = function(paramObj) {
-        if(paramObj == null) paramObj = {}
+        if(paramObj == null) paramObj = {};
         let args = Array.from(arguments).splice(1);
         let
             i = 0,

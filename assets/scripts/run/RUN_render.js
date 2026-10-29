@@ -305,6 +305,7 @@
      */
     function updateNoiseArgs() {
         if(Vars.headless) return;
+        // noinspection JSValidateTypes
         noiseArgs = DB_env.db["param"]["map"]["noise"].read(GLB_param.MAP_CURRENT, null);
     };
 

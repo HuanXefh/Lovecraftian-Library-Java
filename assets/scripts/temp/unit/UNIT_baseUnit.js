@@ -512,13 +512,7 @@
     module.exports.initContent = function(utp) {
         this.super("initContent", utp);
 
-        // Parse JSON
-        let jval = LCContentParser.getJval(utp);
-        if(jval != null) {
-            LCContentParser.parseResearch(utp, jval);
-            LCContentParser.parseController(utp, jval);
-            LCContentParser.setupFields(utp, jval);
-        };
+        UTIL_templatePatch.handleUnitType(utp);
 
         // Resolve entity mapping
         let entityVal = DB_unit.db["map"]["entity"]["type"].read(utp.delegee.entityName, UnitEntity);

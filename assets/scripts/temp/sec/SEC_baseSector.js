@@ -69,9 +69,5 @@
     module.exports.initContent = function(sec) {
         this.super("initContent", sec);
 
-        let jval = LCContentParser.getJval(sec);
-        if(jval != null) {
-            LCContentParser.parseSector(sec, jval);
-            LCContentParser.setupFields(sec, jval);
-        };
+        UTIL_templatePatch.handleSector(sec);
     };

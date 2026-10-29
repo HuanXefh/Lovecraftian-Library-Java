@@ -168,9 +168,5 @@
     module.exports.initContent = function(sta) {
         this.super("initContent", sta);
 
-        let jval = LCContentParser.getJval(sta);
-        if(jval == null) return;
-
-        // Note that affinities and opposites are handled in DB, do not set them in JSON
-        LCContentParser.setupFields(sta, jval);
+        UTIL_templatePatch.handleStatusEffect(sta, false);
     };

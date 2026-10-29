@@ -98,7 +98,7 @@
          * <br> `REALIZED`
          * @memberof BUL_massDriverBullet
          * @instance
-         * @type {ENumber}
+         * @type {string|CLS_bulletFlyingMode}
          */
         flyingMode: "ballistic",
 

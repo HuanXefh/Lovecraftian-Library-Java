@@ -330,9 +330,5 @@
     module.exports.initContent = function(liq) {
         this.super("initContent", liq);
 
-        let jval = LCContentParser.getJval(liq);
-        if(jval != null) {
-            LCContentParser.parseResearch(liq, jval);
-            LCContentParser.setupFields(liq, jval);
-        };
+        UTIL_templatePatch.handleLiquid(liq);
     };

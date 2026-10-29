@@ -191,6 +191,8 @@
     /** @global */
     TP_recipeGen = require("lovec/tp/TP_recipeGen");
     /** @global */
+    UTIL_templatePatch = require("lovec/cls/util/UTIL_templatePatch");
+    /** @global */
     MDL_ui = require("lovec/mdl/MDL_ui");
     /** @global */
     MDL_table = require("lovec/mdl/MDL_table");

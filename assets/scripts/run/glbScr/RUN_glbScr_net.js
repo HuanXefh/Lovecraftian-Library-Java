@@ -45,7 +45,7 @@
 
     /**
      * Converts arguments into splitter payload string for packets.
-     * Shoulds only be used for primitive values. Does not support array and JSON object.
+     * Should only be used for primitive values. Does not support array and JSON object.
      * <br> Faster than {@link packPayload}.
      * <br> `ARGS`: arg1, arg2, arg3, ...
      * @return {string}

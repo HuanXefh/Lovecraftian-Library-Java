@@ -94,3 +94,17 @@
 
 
     });
+
+
+    /**
+     * @override
+     * @memberof RS_abstractFluid
+     * @func
+     * @param {RSAbstractFluid} aux
+     * @return {void}
+     */
+    module.exports.initContent = function(aux) {
+        this.super("initContent", aux);
+
+        UTIL_templatePatch.handleLiquid(aux);
+    };

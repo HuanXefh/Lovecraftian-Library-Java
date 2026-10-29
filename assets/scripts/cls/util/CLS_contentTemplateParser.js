@@ -7,6 +7,7 @@
 
     /**
      * Utility class for creating content template-based contents with JSON/HJSON.
+     * <br> Only template properties are handled (like in CT files). To set vanilla fields, see {@link UTIL_templatePatch}.
      * @class
      * @param {string} nameMod
      */
@@ -71,6 +72,7 @@
         delete raw.type;
         let parser = DB_parser.db["template"].read(type);
         if(parser == null) throw new Error("Cannot find parser for type: ${1}".format(type));
+        // noinspection JSValidateTypes
         return parser(raw);
     };
 

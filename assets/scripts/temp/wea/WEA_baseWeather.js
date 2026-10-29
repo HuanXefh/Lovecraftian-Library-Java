@@ -69,9 +69,5 @@
     module.exports.initContent = function(wea) {
         this.super("initContent", wea);
 
-        let jval = LCContentParser.getJval(wea);
-        if(jval != null) {
-            LCContentParser.setupFields(wea, jval);
-        };
-
+        UTIL_templatePatch.handleWeather(wea);
     };

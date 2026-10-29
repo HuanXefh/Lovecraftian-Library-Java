@@ -193,7 +193,7 @@
          * @return {number}
          */
         ex_getVisualY: function(bul) {
-            return bul.y + this.self.ex_calcBulHFrac(bul) * this.delegee.offH;;
+            return bul.y + this.self.ex_calcBulHFrac(bul) * this.delegee.offH;
         }
         .setProp({
             noSuper: true,

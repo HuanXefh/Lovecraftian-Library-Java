@@ -83,6 +83,36 @@
         }, true);
 
 
+        // Set up template patch parser
+        UTIL_templatePatch
+        .addCallback(
+            "envDisabled",
+            (obj, jval) => obj.envDisabled = UTIL_templatePatch.readEnv(jval),
+        )
+        .addCallback(
+            "envEnabled",
+            (obj, jval) => obj.envEnabled = UTIL_templatePatch.readEnv(jval),
+        )
+        .addCallback(
+            "envRequired",
+            (obj, jval) => obj.envRequired = UTIL_templatePatch.readEnv(jval),
+        )
+        .addCallback(
+            "defaultEnv",
+            (obj, jval) => obj.defaultEnv = UTIL_templatePatch.readEnv(jval),
+        )
+        .addCallback(
+            "armored",
+            (obj, jval) => {obj.noSideBlend = UTIL_templatePatch.getBool(jval, "armored", false); jval.remove("armored")},
+            (obj, jval) => !SLCVersionResolver.isV8 && obj instanceof Duct,
+        )
+        .addCallback(
+            "parent",
+            (obj, jval) => obj.parent = UTIL_templatePatch.locate(ContentType.planet, jval.asString()),
+            (obj, jval) => obj instanceof Planet,
+        );
+
+
     })();
 
 

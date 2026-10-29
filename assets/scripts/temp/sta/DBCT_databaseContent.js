@@ -166,9 +166,5 @@
     module.exports.initContent = function(sta) {
         this.super("initContent", sta);
 
-        let jval = LCContentParser.getJval(sta);
-        if(jval != null) {
-            LCContentParser.parseResearch(sta, jval);
-            LCContentParser.setupFields(sta, jval);
-        };
+        UTIL_templatePatch.handleStatusEffect(sta, true);
     };

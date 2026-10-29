@@ -120,9 +120,5 @@
     module.exports.initContent = function(blk) {
         this.super("initContent", blk);
 
-        let jval = LCContentParser.getJval(blk);
-        if(jval != null) {
-            LCContentParser.parseBlock(blk, jval);
-            LCContentParser.setupFields(blk, jval);
-        };
+        UTIL_templatePatch.handleEnvBlock(blk);
     };
