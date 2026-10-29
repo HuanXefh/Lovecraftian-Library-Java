@@ -14,10 +14,10 @@ import mindustry.game.EventType;
 public class SLCSoundControl {
 
 
-    protected static Music musCur;
-    protected static boolean isActive = false;
-    protected static Boolp endF;
-    protected static Boolp pauseF;
+    private static Music musCur;
+    private static boolean isActive = false;
+    private static Boolp endF;
+    private static Boolp pauseF;
 
 
     public static void load() {

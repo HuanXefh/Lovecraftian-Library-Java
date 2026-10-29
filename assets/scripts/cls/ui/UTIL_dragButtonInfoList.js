@@ -12,9 +12,9 @@
     const UTIL_dragButtonInfoList = newClass().initClass();
 
 
-    /** @type {ObjectMap<string, ObjectMap<string, ObjectMap<string, C0Function>>>} */
-    const infoListData = ObjectMap.of(
-        "uncategorized", ObjectMap.of("uncategorized", new ObjectMap()),
+    /** @type {OrderedMap<string, OrderedMap<string, OrderedMap<string, C0Function>>>} */
+    const infoListData = OrderedMap.of(
+        "uncategorized", OrderedMap.of("uncategorized", new OrderedMap()),
     );
     /** @type {Array<string>} */
     const moddedNames = [];
@@ -87,12 +87,12 @@
 
         if(categ == null) categ = "uncategorized";
         if(!infoListData.containsKey(categ)) {
-            infoListData.add(categ, new ObjectMap());
+            infoListData.add(categ, new OrderedMap());
         };
         if(subCateg == null) subCateg = "uncategorized";
         let map = infoListData.get(categ);
         if(!map.containsKey(subCateg)) {
-            map.add(subCateg, new ObjectMap());
+            map.add(subCateg, new OrderedMap());
         };
 
         return map.get(subCateg);

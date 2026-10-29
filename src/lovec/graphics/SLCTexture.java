@@ -3,6 +3,7 @@ package lovec.graphics;
 import arc.Core;
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.ObjectMap;
+import lovec.utils.SLCAirObjects;
 import mindustry.Vars;
 import mindustry.world.Block;
 
@@ -13,10 +14,8 @@ import mindustry.world.Block;
 public class SLCTexture {
 
 
-    public static TextureRegion empty = new TextureRegion();
-
-    static ObjectMap<String, TextureRegion> blockRegionCache = new ObjectMap<>();
-    static ObjectMap<String, String> blockRegionNameCache = new ObjectMap<>();
+    private static final ObjectMap<String, TextureRegion> blockRegionCache = new ObjectMap<>();
+    private static final ObjectMap<String, String> blockRegionNameCache = new ObjectMap<>();
 
 
     /* <-------------------- texture region --------------------> */
@@ -26,7 +25,7 @@ public class SLCTexture {
      * Gets the region used for some block.
      */
     public static TextureRegion getBlockRegion(String nameBlk) {
-        if(Vars.headless) return empty;
+        if(Vars.headless) return SLCAirObjects.textureRegion;
         if(blockRegionCache.containsKey(nameBlk)) return blockRegionCache.get(nameBlk);
 
         TextureRegion reg = Core.atlas.find(getBlockRegionString(nameBlk));

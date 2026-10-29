@@ -17,11 +17,11 @@ import arc.util.Tmp;
 public class SLCDrawP3d {
 
 
-    static final float camOffY = 48f;
-    static final float camOffScl = 0.06f;
+    public static final float camOffY = 48f;
+    public static final float camOffScl = 0.06f;
 
 
-    /* <-------------------- calculation --------------------> */
+    /* <------------------------------ calculation ------------------------------ */
 
 
     /**
@@ -80,7 +80,7 @@ public class SLCDrawP3d {
     };
 
 
-    /* <-------------------- draw --------------------> */
+    /* <------------------------------ draw ------------------------------> */
 
 
     /**

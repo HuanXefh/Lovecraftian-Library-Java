@@ -1,7 +1,7 @@
 @echo off
 
 @rem Version of game to launch.
-set LAUNCHER=H:\Dropbox\_gm_mdt\Mindustry\Mindustry-BE-Desktop-27910.jar
+set LAUNCHER=H:\Dropbox\_gm_mdt\Mindustry\Mindustry-160.7.jar
 
 @rem Project root path.
 set LOCAL=H:\Dropbox\_gm_mdt\lovec

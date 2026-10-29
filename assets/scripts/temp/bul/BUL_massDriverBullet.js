@@ -41,6 +41,19 @@
     };
 
 
+    /**
+     * @private
+     * @param {BULMassDriverBullet} btp
+     * @param {Bullet} bul
+     * @return {void}
+     */
+    function comp_ex_initBul(btp, bul) {
+        if(bul.shooter != null && bul.shooter instanceof MassDriver.MassDriverBuild && bul.shooter.block.delegee != null && bul.shooter.block.delegee.bulDmg >= 0.0) {
+            bul.damage = bul.shooter.block.delegee.bulDmg;
+        };
+    };
+
+
 /*
   ========================================
   Section: Application
@@ -87,7 +100,7 @@
          * @instance
          * @type {ENumber}
          */
-        flyingMode: BulletFlyingModes.BALLISTIC,
+        flyingMode: "ballistic",
 
 
     })
@@ -111,9 +124,7 @@
          * @return {void}
          */
         ex_initBul: function(bul) {
-            if(bul.shooter != null && bul.shooter instanceof MassDriver.MassDriverBuild && bul.shooter.block.delegee != null && bul.shooter.block.delegee.bulDmg >= 0.0) {
-                bul.damage = bul.shooter.block.delegee.bulDmg;
-            };
+            comp_ex_initBul(this, bul);
         }
         .setProp({
             noSuper: true,

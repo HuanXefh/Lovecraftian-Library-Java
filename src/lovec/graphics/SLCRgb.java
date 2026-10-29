@@ -9,7 +9,7 @@ import arc.math.Mathf;
 public class SLCRgb {
 
 
-    static final Color[] tmpColors = {
+    private static final Color[] tmpColors = {
         new Color(), new Color(), new Color(), new Color(), new Color(),
         new Color(), new Color(), new Color(), new Color(), new Color()
     };

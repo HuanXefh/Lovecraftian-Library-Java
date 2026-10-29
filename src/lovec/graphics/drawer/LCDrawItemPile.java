@@ -30,14 +30,11 @@ public class LCDrawItemPile extends LCDrawer {
     public float itemWidth = 7f;
     public float z = -1f;
     public Item item;
-    public @LCNoJSON
-    @Nullable Func<Building, Item> itemF;
+    public @LCNoJSON @Nullable Func<Building, Item> itemF;
     public float frac = -1f;
-    public @LCNoJSON
-    @Nullable Floatf<Building> fracF;
+    public @LCNoJSON @Nullable Floatf<Building> fracF;
     public int amount = -1;
-    public @LCNoJSON
-    @Nullable Intf<Building> amountF;
+    public @LCNoJSON @Nullable Intf<Building> amountF;
 
     protected TextureRegion shaReg;
 

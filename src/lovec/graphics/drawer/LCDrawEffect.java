@@ -26,15 +26,11 @@ public class LCDrawEffect extends LCDrawer {
     public boolean rotate = false;
     public float angle = -1f;
     public boolean randomAngle = false;
-    public @LCNoJSON
-    @Nullable Floatf3<Building, Float, Float> angleF;
+    public @LCNoJSON @Nullable Floatf3<Building, Float, Float> angleF;
     public @Nullable Color color;
-    public @LCNoJSON
-    @Nullable Func3<Building, Float, Float, Color> colorF;
-    public @LCNoJSON
-    @Nullable Object data;
-    public @LCNoJSON
-    @Nullable Func3<Building, Float, Float, Object> dataF;
+    public @LCNoJSON @Nullable Func3<Building, Float, Float, Color> colorF;
+    public @LCNoJSON @Nullable Object data;
+    public @LCNoJSON @Nullable Func3<Building, Float, Float, Object> dataF;
 
     protected Vec2 lastEffPos = new Vec2();
 

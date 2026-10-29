@@ -122,6 +122,8 @@
     /** @global */
     CLS_unitStatDisplayMode = require("lovec/cls/ui/CLS_unitStatDisplayMode");
     /** @global */
+    CLS_bulletFlyingMode = require("lovec/cls/type/CLS_bulletFlyingMode");
+    /** @global */
     CLS_unitDamageType = require("lovec/cls/type/CLS_unitDamageType");
     /** @global */
     MDL_attr = require("lovec/mdl/MDL_attr");
@@ -225,6 +227,8 @@
     TP_setting = require("lovec/tp/TP_setting");
     /** @global */
     TP_shoot = require("lovec/tp/TP_shoot");
+    /** @global */
+    TP_bulletFlyingMode = require("lovec/tp/TP_bulletFlyingMode");
     require("lovec/tp/TP_sortF");
     require("lovec/tp/TP_stat");
     /** @global */

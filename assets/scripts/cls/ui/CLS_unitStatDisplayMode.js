@@ -64,7 +64,7 @@
     /**
      * Gets mode by name.
      * @param {string} name
-     * @return {CLS_unitStatDisplayMode}
+     * @return {CLS_unitStatDisplayMode|null}
      */
     CLS_unitStatDisplayMode.get = function(name) {
         return nameModeMap.get(name);

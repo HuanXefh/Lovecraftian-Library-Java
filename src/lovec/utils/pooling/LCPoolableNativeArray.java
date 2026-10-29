@@ -4,14 +4,14 @@ import arc.util.pooling.Pool;
 import lovec.utils.extend.SLCNativeArray;
 import rhino.NativeArray;
 
-public class PoolableNativeArray extends NativeArray implements Pool.Poolable {
+public class LCPoolableNativeArray extends NativeArray implements Pool.Poolable {
 
 
-    public PoolableNativeArray(long cap) {
+    public LCPoolableNativeArray(long cap) {
         super(cap);
     };
     // Overload
-    public PoolableNativeArray(Object... eles) {
+    public LCPoolableNativeArray(Object... eles) {
         super(eles);
     };
 

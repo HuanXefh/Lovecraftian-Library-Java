@@ -127,7 +127,7 @@
      * @return {void}
      */
     function comp_updateEfficiencyMultiplier(b) {
-        if(b.delegee.hasPayInput && !b.self.ex_checkPayCons()) {
+        if(b.delegee.hasPayInput && !b.cheating() && !b.self.ex_checkPayCons()) {
             b.efficiency = 0.0;
         };
     };
@@ -504,7 +504,7 @@
              * @return {boolean}
              */
             ex_acceptPay: function(b_f, pay) {
-                return pay != null && this.self.ex_getPayConsAmt(pay.content().name) / tryVal(this.delegee.payReqObj[pay.content().name], 0.0001) > 0.33333333;
+                return pay != null && this.self.ex_getPayConsAmt(pay.content().name) / tryVal(this.delegee.payReqObj[pay.content().name], 0.0001) > 0.335;
             }
             .setProp({
                 noSuper: true,

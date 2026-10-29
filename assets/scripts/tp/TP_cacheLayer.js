@@ -17,9 +17,6 @@
 */
 
 
-    /* <------------------------------ base ------------------------------> */
-
-
     newShaderCacheLayer(
         "lovec-lava", fetchShader("shader0surf-flr0liq-lava"), CacheLayer.water,
     );

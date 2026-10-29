@@ -8,7 +8,7 @@ import lovec.annotation.LCForJavaScript;
 import lovec.utils.SLCScript;
 import lovec.utils.TmpStateTag;
 import lovec.utils.func.Func4;
-import lovec.utils.pooling.PoolableNativeArray;
+import lovec.utils.pooling.LCPoolableNativeArray;
 import mindustry.Vars;
 import rhino.*;
 
@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class SLCNativeArray {
 
 
-    /* <-------------------- base --------------------> */
+    /* <------------------------------ base ------------------------------> */
 
 
     /**
@@ -224,7 +224,7 @@ public class SLCNativeArray {
      * Used to wrap <code>Object[]</code> in native array methods.
      */
     public static void wrapCons(Object[] objs, Cons<NativeArray> cons) {
-        NativeArray arr0 = Pools.obtain(PoolableNativeArray.class, () -> new PoolableNativeArray(0));
+        NativeArray arr0 = Pools.obtain(LCPoolableNativeArray.class, () -> new LCPoolableNativeArray(0));
         cons.get(wrapObjectArray(arr0, objs));
         Pools.free(arr0);
     };
@@ -234,7 +234,7 @@ public class SLCNativeArray {
      * Used to wrap <code>Object[]</code> in native array methods that have returned value.
      */
     public static Object wrapFunc(Object[] objs, Func<NativeArray, Object> func) {
-        NativeArray arr0 = Pools.obtain(PoolableNativeArray.class, () -> new PoolableNativeArray(0));
+        NativeArray arr0 = Pools.obtain(LCPoolableNativeArray.class, () -> new LCPoolableNativeArray(0));
         Object val = func.get(wrapObjectArray(arr0, objs));
         Pools.free(arr0);
         return val;
@@ -301,7 +301,7 @@ public class SLCNativeArray {
         long iCap = fArr.getLength();
         if(iCap == 0) return;
         // Don't use the same array, to avoid reference corruption
-        NativeArray tmpArr = Pools.obtain(PoolableNativeArray.class, () -> new PoolableNativeArray(0));
+        NativeArray tmpArr = Pools.obtain(LCPoolableNativeArray.class, () -> new LCPoolableNativeArray(0));
         int i = 0;
         int j;
         while(i < iCap) {
@@ -380,7 +380,7 @@ public class SLCNativeArray {
     };
 
 
-    /* <-------------------- condition --------------------> */
+    /* <------------------------------ condition ------------------------------> */
 
 
     /**
@@ -636,7 +636,7 @@ public class SLCNativeArray {
     };
 
 
-    /* <-------------------- modification --------------------> */
+    /* <------------------------------ modification ------------------------------> */
 
 
     /**
@@ -1088,7 +1088,7 @@ public class SLCNativeArray {
     };
 
 
-    /* <-------------------- operation --------------------> */
+    /* <------------------------------ operation ------------------------------> */
 
 
     /**
@@ -1464,7 +1464,7 @@ public class SLCNativeArray {
     };
 
 
-    /* <-------------------- util --------------------> */
+    /* <------------------------------ util ------------------------------> */
 
 
     /**
@@ -1603,7 +1603,7 @@ public class SLCNativeArray {
     };
 
 
-    /* <-------------------- formatted array --------------------> */
+    /* <------------------------------ formatted array ------------------------------> */
 
 
     /**
@@ -1804,7 +1804,7 @@ public class SLCNativeArray {
     };
 
 
-    /* <-------------------- math --------------------> */
+    /* <------------------------------ math ------------------------------> */
 
 
     /**

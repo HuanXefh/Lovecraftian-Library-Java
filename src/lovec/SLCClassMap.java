@@ -19,6 +19,7 @@ public class SLCClassMap {
         add("LCDrawFourSideRegions", LCDrawFourSideRegions.class);
         add("LCDrawItemPile", LCDrawItemPile.class);
         add("LCDrawMixedLiquid", LCDrawMixedLiquid.class);
+        add("LCDrawProgressRegion", LCDrawProgressRegion.class);
         add("LCDrawRipple", LCDrawRipple.class);
         add("LCDrawRotator", LCDrawRotator.class);
         add("LCDrawMultiBlockSymmetricRegion", LCDrawMultiBlockSymmetricRegion.class);

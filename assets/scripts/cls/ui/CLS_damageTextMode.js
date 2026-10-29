@@ -52,7 +52,7 @@
     /**
      * Gets mode by name.
      * @param {string} name
-     * @return {CLS_damageTextMode}
+     * @return {CLS_damageTextMode|null}
      */
     CLS_damageTextMode.get = function(name) {
         return nameModeMap.get(name);

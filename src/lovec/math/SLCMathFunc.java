@@ -9,11 +9,11 @@ import lovec.utils.func.DoubleDoublef;
 public class SLCMathFunc {
 
 
-    static IntMap<IntMap<Integer>> P_N_X = new IntMap<>();
-    static IntMap<IntMap<Integer>> C_N_X = new IntMap<>();
+    private static final IntMap<IntMap<Integer>> P_N_X = new IntMap<>();
+    private static final IntMap<IntMap<Integer>> C_N_X = new IntMap<>();
 
 
-    /* <-------------------- base --------------------> */
+    /* <------------------------------ base ------------------------------> */
 
 
     /**
@@ -78,7 +78,7 @@ public class SLCMathFunc {
     };
 
 
-    static final double[] lanczosCoeffs = {
+    private static final double[] lanczosCoeffs = {
         0.99999999999980993,
         676.5203681218851,
         -1259.1392167224028,
@@ -129,7 +129,7 @@ public class SLCMathFunc {
     };
 
 
-    /* <-------------------- vibration --------------------> */
+    /* <------------------------------ vibration ------------------------------> */
 
 
     /**
@@ -144,7 +144,7 @@ public class SLCMathFunc {
     };
 
 
-    /* <-------------------- distribution --------------------> */
+    /* <------------------------------ distribution ------------------------------> */
 
 
     /**
@@ -163,7 +163,7 @@ public class SLCMathFunc {
     };
 
 
-    /* <-------------------- calculus --------------------> */
+    /* <------------------------------ calculus ------------------------------> */
 
 
     /**

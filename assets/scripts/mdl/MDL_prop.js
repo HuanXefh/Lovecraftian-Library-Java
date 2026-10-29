@@ -192,6 +192,7 @@
      */
     const getBuildShield = function(b, isSelfShield) {
         if(b.power != null && b.power.status < 0.0001) return 0.0;
+        // noinspection JSValidateTypes
         return readTypeValArr(DB_block.db["class"]["map"]["shield"], b.block, Function.airZero)(b, isSelfShield);
     };
     exports.getBuildShield = getBuildShield;
@@ -264,28 +265,28 @@
      */
     const calcBulDmg = function(bul, e) {
         let
-          dmg = bul.damage,
-          sDmg = bul.type.splashDamage,
-          sDmgRad = bul.type.splashDamageRadius,
-          dmg_fi = 0.0,
-          dst = Mathf.dst(bul.x, bul.y, e.x, e.y),
-          isRemote = DB_unit.db["class"]["bullet"]["remote"].hasIns(bul.type),
-          isRemoteCur = (dst > (bul.hitSize + SLCProp.getHitSize(e)) * 0.7499);
+            dmg = bul.damage,
+            sDmg = bul.type.splashDamage,
+            sDmgRad = bul.type.splashDamageRadius,
+            dmg_fi = 0.0,
+            dst = Mathf.dst(bul.x, bul.y, e.x, e.y),
+            isRemote = DB_unit.db["class"]["bullet"]["remote"].hasIns(bul.type),
+            isRemoteCur = dst > (bul.hitSize + SLCProp.getHitSize(e)) * 0.7499;
 
         if(e instanceof Unit && tryJsProp(bul.type, "typeMtpArr") != null) {
             dmg *= FRAG_attack.getDmgMtpByTypeMtpArr(e, bul.type.delegee.typeMtpArr);
         };
 
         let
-          mtp = e instanceof Unit ?
-              (1.0 / e.healthMultiplier * (e.shield > dmg ? 1.0 : bul.type.shieldDamageMultiplier)) :
-              (bul.type.buildingDamageMultiplier * (getBuildShield(e, true) > dmg ? 1.0 : bul.type.shieldDamageMultiplier)),
-          armor = SLCProp.getArmor(e);
+            mtp = e instanceof Unit ?
+                (1.0 / e.healthMultiplier * (e.shield > dmg ? 1.0 : bul.type.shieldDamageMultiplier)) :
+                (bul.type.buildingDamageMultiplier * (getBuildShield(e, true) > dmg ? 1.0 : bul.type.shieldDamageMultiplier)),
+            armor = SLCProp.getArmor(e);
 
         if(bul.type.pierceArmor) {
-            dmg_fi += (!isRemote && isRemoteCur) ? 0.0 : dmg;
+            dmg_fi += !isRemote && isRemoteCur ? 0.0 : dmg;
         } else {
-            dmg_fi += (!isRemote && isRemoteCur) ? 0.0 : Damage.applyArmor(dmg, armor);
+            dmg_fi += !isRemote && isRemoteCur ? 0.0 : Damage.applyArmor(dmg, armor);
         };
         if(sDmgRad > 0.0) dmg_fi += sDmg * (1.0 - Mathf.clamp(dst / sDmgRad));
 
@@ -308,7 +309,9 @@
         let arr = [];
         Vars.state.rules.spawns.each(spawnGrp => spawnGrp.team == null || spawnGrp.team === Vars.state.rules.waveTeam, spawnGrp => {
             let amt = spawnGrp.getSpawned(countWave);
-            if(amt > 0) arr.push(spawnGrp.type, amt, spawnGrp.getShield(countWave), spawnGrp.effect);
+            if(amt > 0) {
+                arr.push(spawnGrp.type, amt, spawnGrp.getShield(countWave), spawnGrp.effect);
+            };
         });
 
         return arr;

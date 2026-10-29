@@ -70,6 +70,17 @@
     };
 
 
+    /**
+     * @private
+     * @param {BULSpriteBullet} btp
+     * @return {void}
+     */
+    function comp_ex_init(btp) {
+        btp.delegee.flyingMode = CLS_bulletFlyingMode.get(btp.delegee.flyingMode);
+        if(btp.delegee.flyingMode == null) throw new LCError.NullArgumentError("flyingMode");
+    };
+
+
 /*
   ========================================
   Section: Application
@@ -126,12 +137,12 @@
 
 
         /**
-         * `INTERNAL`: Affects shadow. See {@link BulletFlyingModes}.
+         * `INTERNAL`: Affects shadow. Converted to mode on INIT. See {@link CLS_bulletFlyingMode}.
          * @memberof BUL_spriteBullet
          * @instance
-         * @type {ENumber}
+         * @type {string|CLS_bulletFlyingMode}
          */
-        flyingMode: BulletFlyingModes.CONSTANT,
+        flyingMode: "constant",
         /**
          * `INTERNAL`
          * @memberof BUL_spriteBullet
@@ -152,6 +163,21 @@
 
         draw: function(bul) {
             comp_draw(this, bul);
+        }
+        .setProp({
+            noSuper: true,
+        }),
+
+
+        /**
+         * @override
+         * @memberof BUL_spriteBullet
+         * @instance
+         * @func
+         * @return {void}
+         */
+        ex_init: function() {
+            comp_ex_init(this);
         }
         .setProp({
             noSuper: true,
@@ -203,13 +229,7 @@
          * @return {number}
          */
         ex_calcBulHFrac: function(bul) {
-            switch(this.delegee.flyingMode) {
-                case BulletFlyingModes.CONSTANT : return 1.0;
-                case BulletFlyingModes.BALLISTIC : return 1.0 - Math.pow(bul.fin() * 2.0 - 1.0, 2);
-                case BulletFlyingModes.DROP : return bul.fout();
-                case BulletFlyingModes.LIFT : return bul.fin();
-            };
-            return 1.0;
+            return this.delegee.flyingMode.apply(bul);
         }
         .setProp({
             noSuper: true,

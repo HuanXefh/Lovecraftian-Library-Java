@@ -84,7 +84,7 @@
         // Merge loot units randomly
         if(!Vars.net.client() && Mathf.chanceDelta(0.005)) {
             let ounit = SLCEntity.getOtherLoot(unit.x, unit.y, GLB_var.range.lootMergeRad, unit);
-            if(ounit != null && ounit.item() === unit.item()) {
+            if(ounit != null && ounit.item() === unit.item() && ounit.stack.amount + unit.stack.amount <= utp.itemCapacity) {
                 MDL_call.spawnLoot_server(unit.x, unit.y, unit.item(), unit.stack.amount + ounit.stack.amount);
                 FRAG_item.removeLoot_global(unit);
                 FRAG_item.removeLoot_global(ounit);
@@ -199,7 +199,7 @@
         /* <------------------------------ vanilla ------------------------------> */
 
 
-        itemCapacity: 99999,
+        itemCapacity: 2000,
         // Doubled to avoid killing the unit somehow
         lifetime: GLB_var.timeParam.lootLifetime * 2.0,
 

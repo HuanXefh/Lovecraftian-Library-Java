@@ -13,8 +13,8 @@ import mindustry.core.World;
 public class SLCRaycast {
 
 
-    static Object rayFindObj;
-    static final Seq rayFindObjSeq = new Seq();
+    public static Object rayFindObj;
+    public static final Seq rayFindObjSeq = new Seq();
 
 
     /**

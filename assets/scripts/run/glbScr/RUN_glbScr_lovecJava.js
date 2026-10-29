@@ -129,9 +129,5 @@
     TemplateFunc = fetchClass("lovec.utils.func.TemplateFunc");
     /** @global lovec.utils.func.TemplateProv */
     TemplateProv = fetchClass("lovec.utils.func.TemplateProv");
-    /** @global lovec.utils.pooling.PoolableNativeArray */
-    PoolableNativeArray = fetchClass("lovec.utils.pooling.PoolableNativeArray");
-    /** @global lovec.utils.pooling.PoolableVec2 */
-    PoolableVec2 = fetchClass("lovec.utils.pooling.PoolableVec2");
-    /** @global lovec.utils.pooling.PoolableVec3 */
-    PoolableVec3 = fetchClass("lovec.utils.pooling.PoolableVec3");
+    /** @global lovec.utils.pooling.LCPoolableNativeArray */
+    LCPoolableNativeArray = fetchClass("lovec.utils.pooling.LCPoolableNativeArray");

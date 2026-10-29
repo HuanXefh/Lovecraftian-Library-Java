@@ -21,8 +21,7 @@ public class LCDrawColorRegion extends LCDrawer {
 
     public String suffix = "-color";
     public Color color;
-    public @LCNoJSON
-    @Nullable Func<Building, Color> colorF;
+    public @LCNoJSON @Nullable Func<Building, Color> colorF;
 
     protected TextureRegion colorReg;
 

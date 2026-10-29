@@ -92,7 +92,7 @@ public class LCGraph implements Iterable<Integer> {
     */
 
 
-    /* <-------------------- property --------------------> */
+    /* <------------------------------ property ------------------------------> */
 
 
     /**
@@ -138,7 +138,7 @@ public class LCGraph implements Iterable<Integer> {
     };
 
 
-    /* <-------------------- condition --------------------> */
+    /* <------------------------------ condition ------------------------------> */
 
 
     /**
@@ -163,7 +163,7 @@ public class LCGraph implements Iterable<Integer> {
     };
 
 
-    /* <-------------------- iteration --------------------> */
+    /* <------------------------------ iteration ------------------------------> */
 
 
     /**
@@ -321,7 +321,7 @@ public class LCGraph implements Iterable<Integer> {
     };
 
 
-    /* <-------------------- modification --------------------> */
+    /* <------------------------------ modification ------------------------------> */
 
 
     /**
@@ -493,7 +493,7 @@ public class LCGraph implements Iterable<Integer> {
     };
 
 
-    /* <-------------------- util --------------------> */
+    /* <------------------------------ util ------------------------------> */
 
 
     @Override
@@ -522,7 +522,7 @@ public class LCGraph implements Iterable<Integer> {
     };
 
 
-    /* <-------------------- iterator --------------------> */
+    /* <------------------------------ iterator ------------------------------> */
 
 
     @Override

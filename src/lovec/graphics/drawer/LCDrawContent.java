@@ -21,11 +21,9 @@ public class LCDrawContent extends LCDrawer {
 
     public float regScl = 1f;
     public Object content;
-    public @LCNoJSON
-    @Nullable Func<Building, Object> contentF;
+    public @LCNoJSON @Nullable Func<Building, Object> contentF;
     public Color color;
-    public @LCNoJSON
-    @Nullable Func<Building, Color> colorF;
+    public @LCNoJSON @Nullable Func<Building, Color> colorF;
 
     private Object lastCt;
     private TextureRegion lastReg;

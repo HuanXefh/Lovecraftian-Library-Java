@@ -47,7 +47,7 @@ public class LCMatrix implements Iterable<Double> {
     */
 
 
-    /* <-------------------- modification --------------------> */
+    /* <------------------------------ modification ------------------------------> */
 
 
     /**
@@ -117,7 +117,7 @@ public class LCMatrix implements Iterable<Double> {
     */
 
 
-    /* <-------------------- property --------------------> */
+    /* <------------------------------ property ------------------------------> */
 
 
     /**
@@ -153,7 +153,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- condition --------------------> */
+    /* <------------------------------ condition ------------------------------> */
 
 
     /**
@@ -188,7 +188,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- iteration --------------------> */
+    /* <------------------------------ iteration ------------------------------> */
 
 
     /**
@@ -209,7 +209,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- modification --------------------> */
+    /* <------------------------------ modification ------------------------------> */
 
 
     /**
@@ -257,7 +257,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- operation --------------------> */
+    /* <------------------------------ operation ------------------------------> */
 
 
     /**
@@ -340,7 +340,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- calculation --------------------> */
+    /* <------------------------------ calculation ------------------------------> */
 
 
     /**
@@ -452,7 +452,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- util --------------------> */
+    /* <------------------------------ util ------------------------------> */
 
 
     public LCMatrix cpy() {
@@ -522,7 +522,7 @@ public class LCMatrix implements Iterable<Double> {
     */
 
 
-    /* <-------------------- modification --------------------> */
+    /* <------------------------------ modification ------------------------------> */
 
 
     /**
@@ -589,7 +589,7 @@ public class LCMatrix implements Iterable<Double> {
     */
 
 
-    /* <-------------------- property --------------------> */
+    /* <------------------------------ property ------------------------------> */
 
 
     /**
@@ -619,7 +619,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- condition --------------------> */
+    /* <------------------------------ condition ------------------------------> */
 
 
     /**
@@ -646,7 +646,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- modification --------------------> */
+    /* <------------------------------ modification ------------------------------> */
 
 
     /**
@@ -674,7 +674,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- operation --------------------> */
+    /* <------------------------------ operation ------------------------------> */
 
 
     /**
@@ -711,7 +711,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- util --------------------> */
+    /* <------------------------------ util ------------------------------> */
 
 
     /**
@@ -722,7 +722,7 @@ public class LCMatrix implements Iterable<Double> {
     };
 
 
-    /* <-------------------- iterator --------------------> */
+    /* <------------------------------ iterator ------------------------------> */
 
 
     @Override

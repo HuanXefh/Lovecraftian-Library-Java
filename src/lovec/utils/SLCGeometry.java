@@ -10,7 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 public class SLCGeometry {
 
 
-    /* <-------------------- input --------------------> */
+    /* <------------------------------ input ------------------------------> */
 
 
     public static boolean acceptLine(Building b_f, Building b_t, boolean canSideBlend) {
@@ -63,7 +63,7 @@ public class SLCGeometry {
     };
 
 
-    /* <-------------------- side display --------------------> */
+    /* <------------------------------ side display ------------------------------> */
 
 
     private static boolean backSideFromRouter(Building b_s) {

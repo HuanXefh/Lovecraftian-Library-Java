@@ -73,6 +73,7 @@
         // Register global category for {@link UTIL_dragButtonInfoList}
         UTIL_dragButtonInfoList
         .add("achievement", () => fetchDialog("achievement").self.ex_show())
+        .add("recipe-database", () => fetchDialog("rcDatabase").self.ex_show())
         .add("recipe-dictionary", () => fetchDialog("rcDictDatabase").self.ex_show());
 
 
@@ -592,17 +593,6 @@
                 });
             });*/
         };
-
-
-        // Add database buttons
-        MDL_util.addDatabaseButton(
-            MDL_bundle.getInfo("lovec", "dial-rc-database"),
-            () => fetchDialog("rcDatabase").self.ex_show(),
-        );
-        MDL_util.addDatabaseButton(
-            MDL_bundle.getInfo("lovec", "dial-rcdict-database"),
-            () => fetchDialog("rcDictDatabase").self.ex_show(),
-        );
 
 
         // Screw it
