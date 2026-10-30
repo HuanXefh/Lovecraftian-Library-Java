@@ -47,6 +47,21 @@
 
 
     /**
+     * Gets the target JSON/HJSON file to parse.
+     * @param {UnlockableContent} ct
+     * @param {string|unset} [folderNameOverwrite]
+     * @return {Fi|null}
+     */
+    UTIL_templatePatch.findFile = function(ct, folderNameOverwrite) {
+        let dir = MDL_file.getScriptDir(ct.minfo.mod.name).child("auxFi").child("json").child(tryVal(folderNameOverwrite, ct.getContentType().folderName));
+        let seq = dir.findAll(ofi => ofi.name() === (MDL_content.getCtNameNoPrefix(ct) + ".json") || ofi.name() === (MDL_content.getCtNameNoPrefix(ct) + ".hjson"));
+        return seq.size === 0 ?
+            null :
+            seq.get(0);
+    };
+
+
+    /**
      * Gets a boolean value.
      * @param {Jval} jval
      * @param {string} name
@@ -522,13 +537,7 @@
     UTIL_templatePatch.getJval = function(ct, folderNameOverwrite) {
         if(ct.minfo.mod == null) return null;
         GLB_var.ctParser.checkInit();
-        let dir = MDL_file.getScriptDir(ct.minfo.mod.name).child("auxFi").child("json").child(tryVal(folderNameOverwrite, ct.getContentType().folderName));
-        let fi = (function() {
-            let seq = dir.findAll(ofi => ofi.name() === (MDL_content.getCtNameNoPrefix(ct) + ".json") || ofi.name() === (MDL_content.getCtNameNoPrefix(ct) + ".hjson"));
-            return seq.size === 0 ?
-                null :
-                seq.get(0);
-        })();
+        let fi = UTIL_templatePatch.findFile(ct, folderNameOverwrite);
         if(fi == null) return null;
         let jval = jsonToJval(fi);
         // Convert `Jval` to `JsonValue` in v8

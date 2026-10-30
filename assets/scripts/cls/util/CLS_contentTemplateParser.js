@@ -10,12 +10,13 @@
      * <br> Only template properties are handled (like in CT files). To set vanilla fields, see {@link UTIL_templatePatch}.
      * @class
      * @param {string} nameMod
+     * @param {string|unset} [targetSuffix]
      */
     const CLS_contentTemplateParser = newClass().initClass();
 
 
     /** @private */
-    CLS_contentTemplateParser.prototype.init = function(nameMod) {
+    CLS_contentTemplateParser.prototype.init = function(nameMod, targetSuffix) {
 
 
         /** @type {Mods.LoadedMod} */
@@ -23,12 +24,14 @@
         if(this.mod == null) return;
         nameModParserMap.put(nameMod, this);
 
+        /** @type {string} */
+        this.targetSuffix = tryVal(targetSuffix, "-extend");
         /** @type {Fi} */
-        this.dirCt = this.mod.root.child("scripts").child("auxFi").child("json").child("template");
+        this.dirCt = this.mod.root.child("scripts").child("auxFi").child("json");
         /** @type {Array<Fi>} */
         this.jsonFis = [];
-        /** @type {ObjectMap<string, Object>} */
-        this.parsedMap = new ObjectMap();
+        /** @type {OrderedMap<string, Object>} */
+        this.parsedMap = new OrderedMap();
         /** @type {Array<UnlockableContent>} */
         this.parsedCts = [];
 
@@ -108,7 +111,7 @@
      */
     CLS_contentTemplateParser.prototype.findJsonFis = function() {
         if(this.dirCt.exists()) {
-          this.dirCt.findAll(fi => (fi.extension() === "json") || (fi.extension() === "hjson")).each(fi => this.jsonFis.push(fi));
+            this.dirCt.findAll(fi => (fi.extension() === "json") || (fi.extension() === "hjson") && fi.nameWithoutExtension().endsWith(this.targetSuffix)).each(fi => this.jsonFis.push(fi));
         };
         return this.jsonFis;
     };
@@ -168,7 +171,7 @@
         };
         delete obj.template;
 
-        let nameCt = jsonFi.nameWithoutExtension();
+        let nameCt = jsonFi.nameWithoutExtension().slice(0, -this.targetSuffix.length);
         let ct;
         if(temp instanceof Array) {
             let objB = obj.build;
@@ -184,6 +187,9 @@
             delete obj.sectorSize;
             this.parseFields(obj);
             ct = extendPlanet(temp, nameCt, sectorSize, temp.build(obj));
+        } else if(temp.clsName.startsWithAny("SEC_", "EXT_SEC_")) {
+            this.parseField(obj);
+            ct = extendSector(temp, nameCt, temp.build(obj));
         } else {
             this.parseFields(obj);
             ct = extendBase(temp, nameCt, temp.build(obj));
