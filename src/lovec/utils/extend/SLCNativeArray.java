@@ -64,14 +64,14 @@ public class SLCNativeArray {
         return arr0;
     };
     // Overload
-    public static NativeArray cpy(Object[] objs) {
-        return SLCScript.toArray(wrapFunc(objs, SLCNativeArray::cpy));
+    public static NativeArray cpy(Object typeArr) {
+        return SLCScript.toArray(wrapFunc(typeArr, SLCNativeArray::cpy));
     };
     public static NativeArray cpy(NativeArray arr1, NativeArray arr2) {
         return withAll(arr1, arr2);
     };
-    public static NativeArray cpy(NativeArray arr, Object[] objs) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> cpy(arr, objs)));
+    public static NativeArray cpy(NativeArray arr, Object typeArr) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> cpy(arr, arr0)));
     };
 
 
@@ -87,8 +87,8 @@ public class SLCNativeArray {
             tmpEle = arr.get(i);
             if(tmpEle instanceof NativeArray arrIn) {
                 push(arr0, deepCpy(arrIn));
-            } else if(tmpEle instanceof Object[] objs) {
-                push(arr0, deepCpy(objs));
+            } else if(isTypeArray(tmpEle)) {
+                push(arr0, deepCpy(tmpEle));
             } else {
                 push(arr0, tmpEle);
             };
@@ -97,8 +97,8 @@ public class SLCNativeArray {
         return arr0;
     };
     // Overload
-    public static NativeArray deepCpy(Object[] objs) {
-        return SLCScript.toArray(wrapFunc(objs, SLCNativeArray::deepCpy));
+    public static NativeArray deepCpy(Object typeArr) {
+        return SLCScript.toArray(wrapFunc(typeArr, SLCNativeArray::deepCpy));
     };
 
 
@@ -126,11 +126,11 @@ public class SLCNativeArray {
     public static int indexOf(NativeArray arr, Object ele) {
         return indexOf(arr, ele, null);
     };
-    public static int indexOf(Object[] objs, Object ele, @Nullable Func mapF) {
-        return SLCScript.toInt(wrapFunc(objs, arr0 -> indexOf(arr0, ele, mapF)));
+    public static int indexOf(Object typeArr, Object ele, @Nullable Func mapF) {
+        return SLCScript.toInt(wrapFunc(typeArr, arr0 -> indexOf(arr0, ele, mapF)));
     };
-    public static int indexOf(Object[] objs, Object ele) {
-        return indexOf(objs, ele, null);
+    public static int indexOf(Object typeArr, Object ele) {
+        return indexOf(typeArr, ele, null);
     };
 
 
@@ -142,8 +142,8 @@ public class SLCNativeArray {
         return cap == 0 ? null : arr.get(0);
     };
     // Overload
-    public static @Nullable Object first(Object[] objs) {
-        return wrapFunc(objs, SLCNativeArray::first);
+    public static @Nullable Object first(Object typeArr) {
+        return wrapFunc(typeArr, SLCNativeArray::first);
     };
 
 
@@ -155,8 +155,8 @@ public class SLCNativeArray {
         return cap == 0 ? null : arr.get(cap - 1);
     };
     // Overload
-    public static @Nullable Object last(Object[] objs) {
-        return wrapFunc(objs, SLCNativeArray::last);
+    public static @Nullable Object last(Object typeArr) {
+        return wrapFunc(typeArr, SLCNativeArray::last);
     };
 
 
@@ -168,8 +168,8 @@ public class SLCNativeArray {
         return SLCScript.toInt(cap == 0 ? 0 : (cap - 1));
     };
     // Overload
-    public static int lastIndex(Object[] objs) {
-        return SLCScript.toInt(wrapFunc(objs, SLCNativeArray::lastIndex));
+    public static int lastIndex(Object typeArr) {
+        return SLCScript.toInt(wrapFunc(typeArr, SLCNativeArray::lastIndex));
     };
 
 
@@ -195,11 +195,137 @@ public class SLCNativeArray {
     public static float calcIndexFrac(NativeArray arr, Object ele) {
         return calcIndexFrac(arr, ele, false);
     };
-    public static float calcIndexFrac(Object[] objs, Object ele, boolean useInd) {
-        return SLCScript.toFloat(wrapFunc(objs, arr0 -> calcIndexFrac(arr0, ele, useInd)));
+    public static float calcIndexFrac(Object typeArr, Object ele, boolean useInd) {
+        return SLCScript.toFloat(wrapFunc(typeArr, arr0 -> calcIndexFrac(arr0, ele, useInd)));
     };
-    public static float calcIndexFrac(Object[] objs, Object ele) {
-        return calcIndexFrac(objs, ele, false);
+    public static float calcIndexFrac(Object typeArr, Object ele) {
+        return calcIndexFrac(typeArr, ele, false);
+    };
+
+
+    private static boolean isTypeArray(Object obj) {
+        return obj instanceof Object[]
+            || obj instanceof int[] || obj instanceof byte[] || obj instanceof short[] || obj instanceof long[]
+            || obj instanceof float[] || obj instanceof double[]
+            || obj instanceof char[]
+            || obj instanceof boolean[];
+    };
+
+
+    private static int getTypeArrayLength(Object obj) {
+        if (obj instanceof Object[] objs) {
+            return objs.length;
+        } else if(obj instanceof int[] ints) {
+            return ints.length;
+        } else if(obj instanceof byte[] bytes) {
+            return bytes.length;
+        } else if(obj instanceof short[] shorts) {
+            return shorts.length;
+        } else if(obj instanceof long[] longs) {
+            return longs.length;
+        } else if(obj instanceof float[] fs) {
+            return fs.length;
+        } else if(obj instanceof double[] doubles) {
+            return doubles.length;
+        } else if(obj instanceof char[] chars) {
+            return chars.length;
+        } else if(obj instanceof boolean[] bools) {
+            return bools.length;
+        };
+        return 0;
+    };
+
+
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, Object[] objs) {
+        int i = 0;
+        int iCap = objs.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, objs[i]);
+            i++;
+        };
+        return contArr;
+    };
+    // Overload
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, int[] ints) {
+        int i = 0;
+        int iCap = ints.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, ints[i]);
+            i++;
+        };
+        return contArr;
+    };
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, byte[] bytes) {
+        int i = 0;
+        int iCap = bytes.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, bytes[i]);
+            i++;
+        };
+        return contArr;
+    };
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, short[] shorts) {
+        int i = 0;
+        int iCap = shorts.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, shorts[i]);
+            i++;
+        };
+        return contArr;
+    };
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, long[] longs) {
+        int i = 0;
+        int iCap = longs.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, longs[i]);
+            i++;
+        };
+        return contArr;
+    };
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, float[] fs) {
+        int i = 0;
+        int iCap = fs.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, fs[i]);
+            i++;
+        };
+        return contArr;
+    };
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, double[] doubles) {
+        int i = 0;
+        int iCap = doubles.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, doubles[i]);
+            i++;
+        };
+        return contArr;
+    };
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, char[] chars) {
+        int i = 0;
+        int iCap = chars.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, chars[i]);
+            i++;
+        };
+        return contArr;
+    };
+    @SuppressWarnings("CollectionAddedToSelf")
+    private static NativeArray wrapTypeArray(NativeArray contArr, boolean[] bools) {
+        int i = 0;
+        int iCap = bools.length;
+        while(i < iCap) {
+            contArr.put(i, contArr, bools[i]);
+            i++;
+        };
+        return contArr;
     };
 
 
@@ -207,14 +333,26 @@ public class SLCNativeArray {
      * Wraps Java object array to native array.
      * Used when an array prototype method is called on a Java array.
      */
-    @SuppressWarnings("CollectionAddedToSelf")
-    public static NativeArray wrapObjectArray(@Nullable NativeArray contArr, Object[] objs) {
+    public static NativeArray wrapObjectArray(@Nullable NativeArray contArr, Object typeArr) {
         NativeArray arr = contArr != null ? clear(contArr) : SLCScript.newArray("SLCNativeArray.wrapObjectArray.newArr");
-        int i = 0;
-        int iCap = objs.length;
-        while(i < iCap) {
-            arr.put(i, arr, objs[i]);
-            i++;
+        if (typeArr instanceof Object[] objs) {
+            return wrapTypeArray(arr, objs);
+        } else if(typeArr instanceof int[] ints) {
+            return wrapTypeArray(arr, ints);
+        } else if(typeArr instanceof byte[] bytes) {
+            return wrapTypeArray(arr, bytes);
+        } else if(typeArr instanceof short[] shorts) {
+            return wrapTypeArray(arr, shorts);
+        } else if(typeArr instanceof long[] longs) {
+            return wrapTypeArray(arr, longs);
+        } else if(typeArr instanceof float[] fs) {
+            return wrapTypeArray(arr, fs);
+        } else if(typeArr instanceof double[] doubles) {
+            return wrapTypeArray(arr, doubles);
+        } else if(typeArr instanceof char[] chars) {
+            return wrapTypeArray(arr, chars);
+        } else if(typeArr instanceof boolean[] bools) {
+            return wrapTypeArray(arr, bools);
         };
         return arr;
     };
@@ -223,9 +361,9 @@ public class SLCNativeArray {
     /**
      * Used to wrap <code>Object[]</code> in native array methods.
      */
-    public static void wrapCons(Object[] objs, Cons<NativeArray> cons) {
+    public static void wrapCons(Object typeArr, Cons<NativeArray> cons) {
         NativeArray arr0 = Pools.obtain(LCPoolableNativeArray.class, () -> new LCPoolableNativeArray(0));
-        cons.get(wrapObjectArray(arr0, objs));
+        cons.get(wrapObjectArray(arr0, typeArr));
         Pools.free(arr0);
     };
 
@@ -233,9 +371,9 @@ public class SLCNativeArray {
     /**
      * Used to wrap <code>Object[]</code> in native array methods that have returned value.
      */
-    public static Object wrapFunc(Object[] objs, Func<NativeArray, Object> func) {
+    public static Object wrapFunc(Object typeArr, Func<NativeArray, Object> func) {
         NativeArray arr0 = Pools.obtain(LCPoolableNativeArray.class, () -> new LCPoolableNativeArray(0));
-        Object val = func.get(wrapObjectArray(arr0, objs));
+        Object val = func.get(wrapObjectArray(arr0, typeArr));
         Pools.free(arr0);
         return val;
     };
@@ -258,11 +396,11 @@ public class SLCNativeArray {
     public static void forEachFast(NativeArray arr, Cons cons) {
         forEachFast(arr, cons, false);
     };
-    public static void forEachFast(Object[] objs, Cons cons, boolean noWrap) {
-        wrapCons(objs, arr0 -> forEachFast(arr0, cons, noWrap));
+    public static void forEachFast(Object typeArr, Cons cons, boolean noWrap) {
+        wrapCons(typeArr, arr0 -> forEachFast(arr0, cons, noWrap));
     };
-    public static void forEachFast(Object[] objs, Cons cons) {
-        forEachFast(objs, cons, false);
+    public static void forEachFast(Object typeArr, Cons cons) {
+        forEachFast(typeArr, cons, false);
     };
 
 
@@ -284,11 +422,11 @@ public class SLCNativeArray {
     public static void forEachCond(NativeArray arr, @Nullable Boolf boolF, Cons cons) {
         forEachCond(arr, boolF, cons, false);
     };
-    public static void forEachCond(Object[] objs, @Nullable Boolf boolF, Cons cons, boolean noWrap) {
-        wrapCons(objs, arr0 -> forEachCond(arr0, boolF, cons, noWrap));
+    public static void forEachCond(Object typeArr, @Nullable Boolf boolF, Cons cons, boolean noWrap) {
+        wrapCons(typeArr, arr0 -> forEachCond(arr0, boolF, cons, noWrap));
     };
-    public static void forEachCond(Object[] objs, @Nullable Boolf boolF, Cons cons) {
-        forEachCond(objs, boolF, cons, false);
+    public static void forEachCond(Object typeArr, @Nullable Boolf boolF, Cons cons) {
+        forEachCond(typeArr, boolF, cons, false);
     };
 
 
@@ -320,11 +458,11 @@ public class SLCNativeArray {
     public static void forEachRow(NativeArray fArr, int ord, Cons<NativeArray> cons) {
         forEachRow(fArr, ord, cons, false);
     };
-    public static void forEachRow(Object[] objs, int ord, Cons<NativeArray> cons, boolean noWrap) {
-        wrapCons(objs, arr0 -> forEachRow(arr0, ord, cons, noWrap));
+    public static void forEachRow(Object typeArr, int ord, Cons<NativeArray> cons, boolean noWrap) {
+        wrapCons(typeArr, arr0 -> forEachRow(arr0, ord, cons, noWrap));
     };
-    public static void forEachRow(Object[] objs, int ord, Cons<NativeArray> cons) {
-        forEachRow(objs, ord, cons, false);
+    public static void forEachRow(Object typeArr, int ord, Cons<NativeArray> cons) {
+        forEachRow(typeArr, ord, cons, false);
     };
 
 
@@ -393,7 +531,7 @@ public class SLCNativeArray {
         while(i < iCap) {
             arr = arrs[i];
             if(arr instanceof NativeArray arr1 && includes(arr1, ele)) return true;
-            if(arr instanceof Object[] objs && includes(objs, ele)) return true;
+            if(isTypeArray(arr) && includes(arr, ele)) return true;
             i++;
         };
         return false;
@@ -410,7 +548,7 @@ public class SLCNativeArray {
         while(i < iCap) {
             arr = arrs[i];
             if(arr instanceof NativeArray arr1 && !includes(arr1, ele)) return false;
-            if(arr instanceof Object[] objs && !includes(objs, ele)) return false;
+            if(isTypeArray(arr) && !includes(arr, ele)) return false;
             i++;
         };
         return true;
@@ -431,8 +569,8 @@ public class SLCNativeArray {
         return false;
     };
     // Overload
-    public static boolean includes(Object[] objs, Object ele) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> includes(arr0, ele)));
+    public static boolean includes(Object typeArr, Object ele) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> includes(arr0, ele)));
     };
 
 
@@ -457,8 +595,8 @@ public class SLCNativeArray {
         return false;
     };
     // Overload
-    public static boolean includesAny(Object[] objs, Object... eles) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> includesAny(arr0, eles)));
+    public static boolean includesAny(Object typeArr, Object... eles) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> includesAny(arr0, eles)));
     };
 
 
@@ -483,8 +621,8 @@ public class SLCNativeArray {
         return false;
     };
     // Overload
-    public static boolean includesAnyArguments(Object[] objs, Scriptable arguments) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> includesAnyArguments(arr0, arguments)));
+    public static boolean includesAnyArguments(Object typeArr, Scriptable arguments) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> includesAnyArguments(arr0, arguments)));
     };
 
 
@@ -509,8 +647,8 @@ public class SLCNativeArray {
         return true;
     };
     // Overload
-    public static boolean includesAll(Object[] objs, Object... eles) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> includesAll(arr0, eles)));
+    public static boolean includesAll(Object typeArr, Object... eles) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> includesAll(arr0, eles)));
     };
 
 
@@ -535,8 +673,8 @@ public class SLCNativeArray {
         return true;
     };
     // Overload
-    public static boolean includesAllArguments(Object[] objs, Scriptable arguments) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> includesAllArguments(arr0, arguments)));
+    public static boolean includesAllArguments(Object typeArr, Scriptable arguments) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> includesAllArguments(arr0, arguments)));
     };
 
 
@@ -557,11 +695,11 @@ public class SLCNativeArray {
     public static boolean colIncludes(NativeArray fArr, Object ele, int ord) {
         return colIncludes(fArr, ele, ord, 0);
     };
-    public static boolean colIncludes(Object[] objs, Object ele, int ord, int off) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> colIncludes(arr0, ele, ord, off)));
+    public static boolean colIncludes(Object typeArr, Object ele, int ord, int off) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> colIncludes(arr0, ele, ord, off)));
     };
-    public static boolean colIncludes(Object[] objs, Object ele, int ord) {
-        return colIncludes(objs, ele, ord, 0);
+    public static boolean colIncludes(Object typeArr, Object ele, int ord) {
+        return colIncludes(typeArr, ele, ord, 0);
     };
 
 
@@ -581,11 +719,11 @@ public class SLCNativeArray {
     public static boolean some(NativeArray arr, Boolf boolF) {
         return some(arr, boolF, false);
     };
-    public static boolean some(Object[] objs, Boolf boolF, boolean noWrap) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> some(arr0, boolF, noWrap)));
+    public static boolean some(Object typeArr, Boolf boolF, boolean noWrap) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> some(arr0, boolF, noWrap)));
     };
-    public static boolean some(Object[] objs, Boolf boolF) {
-        return some(objs, boolF, false);
+    public static boolean some(Object typeArr, Boolf boolF) {
+        return some(typeArr, boolF, false);
     };
 
 
@@ -605,11 +743,11 @@ public class SLCNativeArray {
     public static boolean every(NativeArray arr, Boolf boolF) {
         return every(arr, boolF, false);
     };
-    public static boolean every(Object[] objs, Boolf boolF, boolean noWrap) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> every(arr0, boolF, noWrap)));
+    public static boolean every(Object typeArr, Boolf boolF, boolean noWrap) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> every(arr0, boolF, noWrap)));
     };
-    public static boolean every(Object[] objs, Boolf boolF) {
-        return every(objs, boolF, false);
+    public static boolean every(Object typeArr, Boolf boolF) {
+        return every(typeArr, boolF, false);
     };
 
 
@@ -631,8 +769,8 @@ public class SLCNativeArray {
         return true;
     };
     // Overload
-    public static boolean subsetOf(Object[] objs, NativeArray arr) {
-        return SLCScript.toBoolean(wrapFunc(objs, arr0 -> subsetOf(arr0, arr)));
+    public static boolean subsetOf(Object typeArr, NativeArray arr) {
+        return SLCScript.toBoolean(wrapFunc(typeArr, arr0 -> subsetOf(arr0, arr)));
     };
 
 
@@ -1114,14 +1252,14 @@ public class SLCNativeArray {
     public static NativeArray slice(NativeArray arr) {
         return slice(arr, 0);
     };
-    public static NativeArray slice(Object[] objs, int ind, int amt) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> slice(arr0, ind, amt)));
+    public static NativeArray slice(Object typeArr, int ind, int amt) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> slice(arr0, ind, amt)));
     };
-    public static NativeArray slice(Object[] objs, int ind) {
-        return slice(objs, ind, objs.length - ind);
+    public static NativeArray slice(Object typeArr, int ind) {
+        return slice(typeArr, ind, getTypeArrayLength(typeArr) - ind);
     };
-    public static NativeArray slice(Object[] objs) {
-        return slice(objs, 0);
+    public static NativeArray slice(Object typeArr) {
+        return slice(typeArr, 0);
     };
 
 
@@ -1141,8 +1279,8 @@ public class SLCNativeArray {
         return arr0;
     };
     // Overload
-    public static NativeArray map(Object[] objs, Func mapF) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> map(arr0, mapF)));
+    public static NativeArray map(Object typeArr, Func mapF) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> map(arr0, mapF)));
     };
 
 
@@ -1162,8 +1300,8 @@ public class SLCNativeArray {
         return arr0;
     };
     // Overload
-    public static NativeArray filter(Object[] objs, Boolf boolF) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> filter(arr0, boolF)));
+    public static NativeArray filter(Object typeArr, Boolf boolF) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> filter(arr0, boolF)));
     };
 
 
@@ -1220,17 +1358,17 @@ public class SLCNativeArray {
     public static int count(NativeArray arr, Object ele) {
         return count(arr, ele, null);
     };
-    public static int count(Object[] objs, Object ele, @Nullable Func mapF, int ord, int off) {
-        return SLCScript.toInt(wrapFunc(objs, arr0 -> count(arr0, ele, mapF, ord, off)));
+    public static int count(Object typeArr, Object ele, @Nullable Func mapF, int ord, int off) {
+        return SLCScript.toInt(wrapFunc(typeArr, arr0 -> count(arr0, ele, mapF, ord, off)));
     };
-    public static int count(Object[] objs, Object ele, @Nullable Func mapF, int ord) {
-        return count(objs, ele, mapF, ord, 0);
+    public static int count(Object typeArr, Object ele, @Nullable Func mapF, int ord) {
+        return count(typeArr, ele, mapF, ord, 0);
     };
-    public static int count(Object[] objs, Object ele, @Nullable Func mapF) {
-        return count(objs, ele, mapF, 1);
+    public static int count(Object typeArr, Object ele, @Nullable Func mapF) {
+        return count(typeArr, ele, mapF, 1);
     };
-    public static int count(Object[] objs, Object ele) {
-        return count(objs, ele, null);
+    public static int count(Object typeArr, Object ele) {
+        return count(typeArr, ele, null);
     };
 
 
@@ -1255,14 +1393,14 @@ public class SLCNativeArray {
     public static int countBy(NativeArray arr, Boolf boolF) {
         return countBy(arr, boolF, 1);
     };
-    public static int countBy(Object[] objs, Boolf boolF, int ord, int off) {
-        return SLCScript.toInt(wrapFunc(objs, arr0 -> countBy(arr0, boolF, ord, off)));
+    public static int countBy(Object typeArr, Boolf boolF, int ord, int off) {
+        return SLCScript.toInt(wrapFunc(typeArr, arr0 -> countBy(arr0, boolF, ord, off)));
     };
-    public static int countBy(Object[] objs, Boolf boolF, int ord) {
-        return countBy(objs, boolF, ord, 0);
+    public static int countBy(Object typeArr, Boolf boolF, int ord) {
+        return countBy(typeArr, boolF, ord, 0);
     };
-    public static int countBy(Object[] objs, Boolf boolF) {
-        return countBy(objs, boolF, 1);
+    public static int countBy(Object typeArr, Boolf boolF) {
+        return countBy(typeArr, boolF, 1);
     };
 
 
@@ -1301,11 +1439,11 @@ public class SLCNativeArray {
     public static NativeArray uniquify(NativeArray arr) {
         return uniquify(arr, null);
     };
-    public static NativeArray uniquify(Object[] objs, @Nullable Func mapF) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> uniquify(arr0, mapF)));
+    public static NativeArray uniquify(Object typeArr, @Nullable Func mapF) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> uniquify(arr0, mapF)));
     };
-    public static NativeArray uniquify(Object[] objs) {
-        return uniquify(objs, null);
+    public static NativeArray uniquify(Object typeArr) {
+        return uniquify(typeArr, null);
     };
 
 
@@ -1345,11 +1483,11 @@ public class SLCNativeArray {
     public static NativeArray intersect(NativeArray arr1, NativeArray arr2) {
         return intersect(arr1, arr2, null);
     };
-    public static NativeArray intersect(Object[] objs, NativeArray arr, @Nullable Func mapF) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> intersect(arr0, arr, mapF)));
+    public static NativeArray intersect(Object typeArr, NativeArray arr, @Nullable Func mapF) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> intersect(arr0, arr, mapF)));
     };
-    public static NativeArray intersect(Object[] objs, NativeArray arr) {
-        return intersect(objs, arr, null);
+    public static NativeArray intersect(Object typeArr, NativeArray arr) {
+        return intersect(typeArr, arr, null);
     };
 
 
@@ -1388,11 +1526,11 @@ public class SLCNativeArray {
     public static NativeArray differ(NativeArray arr1, NativeArray arr2) {
         return differ(arr1, arr2, null);
     };
-    public static NativeArray differ(Object[] objs, NativeArray arr, @Nullable Func mapF) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> differ(arr0, arr, mapF)));
+    public static NativeArray differ(Object typeArr, NativeArray arr, @Nullable Func mapF) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> differ(arr0, arr, mapF)));
     };
-    public static NativeArray differ(Object[] objs, NativeArray arr) {
-        return differ(objs, arr, null);
+    public static NativeArray differ(Object typeArr, NativeArray arr) {
+        return differ(typeArr, arr, null);
     };
 
 
@@ -1425,16 +1563,17 @@ public class SLCNativeArray {
     public static NativeArray chunk(NativeArray fArr, int ord) {
         return chunk(fArr, ord, null);
     };
-    public static NativeArray chunk(Object[] objs, int ord, @Nullable Object def) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> chunk(arr0, ord, def)));
+    public static NativeArray chunk(Object typeArr, int ord, @Nullable Object def) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> chunk(arr0, ord, def)));
     };
-    public static NativeArray chunk(Object[] objs, int ord) {
-        return chunk(objs, ord, null);
+    public static NativeArray chunk(Object typeArr, int ord) {
+        return chunk(typeArr, ord, null);
     };
 
 
     /**
      * <code>Array.prototype.flat</code>, which doesn't exist in Rhino.
+     * <br> Does not support primitive type array.
      */
     public static NativeArray flatten(NativeArray arr) {
         NativeArray arr0 = SLCScript.newArray("SLCNativeArray.flatten.newArr");
@@ -1459,8 +1598,8 @@ public class SLCNativeArray {
         return arr0;
     };
     // Overload
-    public static NativeArray flatten(Object[] objs) {
-        return SLCScript.toArray(wrapFunc(objs, SLCNativeArray::flatten));
+    public static NativeArray flatten(Object typeArr) {
+        return SLCScript.toArray(wrapFunc(typeArr, SLCNativeArray::flatten));
     };
 
 
@@ -1482,14 +1621,14 @@ public class SLCNativeArray {
     public static @Nullable Object random(NativeArray arr) {
         return random(arr, 1);
     };
-    public static @Nullable Object random(Object[] objs, int ord, int off) {
-        return wrapFunc(objs, arr0 -> random(arr0, ord, off));
+    public static @Nullable Object random(Object typeArr, int ord, int off) {
+        return wrapFunc(typeArr, arr0 -> random(arr0, ord, off));
     };
-    public static @Nullable Object random(Object[] objs, int ord) {
-        return random(objs, ord, 0);
+    public static @Nullable Object random(Object typeArr, int ord) {
+        return random(typeArr, ord, 0);
     };
-    public static @Nullable Object random(Object[] objs) {
-        return random(objs, 1);
+    public static @Nullable Object random(Object typeArr) {
+        return random(typeArr, 1);
     };
 
 
@@ -1509,11 +1648,11 @@ public class SLCNativeArray {
     public static NativeArray sample(NativeArray arr) {
         return sample(arr, SLCScript.toInt(arr.getLength()));
     };
-    public static NativeArray sample(Object[] objs, int amt) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> sample(arr0, amt)));
+    public static NativeArray sample(Object typeArr, int amt) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> sample(arr0, amt)));
     };
-    public static NativeArray sample(Object[] objs) {
-        return sample(objs, objs.length);
+    public static NativeArray sample(Object typeArr) {
+        return sample(typeArr, getTypeArrayLength(typeArr));
     };
 
 
@@ -1565,8 +1704,8 @@ public class SLCNativeArray {
         }, SLCScript.newObject("SLCNativeArray.categorize.newObj"));
     };
     // Overload
-    public static NativeObject categorize(Object[] objs, Func<Object, String> categF) {
-        return SLCScript.toObject(wrapFunc(objs, arr0 -> categorize(arr0, categF)));
+    public static NativeObject categorize(Object typeArr, Func<Object, String> categF) {
+        return SLCScript.toObject(wrapFunc(typeArr, arr0 -> categorize(arr0, categF)));
     };
 
 
@@ -1617,8 +1756,8 @@ public class SLCNativeArray {
             (int) ((cap - cap % ord) / ord + (cap % ord != 0 ? 1 : 0));
     };
     // Overload
-    public static int calcRowAmt(Object[] objs, int ord) {
-        return SLCScript.toInt(wrapFunc(objs, arr0 -> calcRowAmt(arr0, ord)));
+    public static int calcRowAmt(Object typeArr, int ord) {
+        return SLCScript.toInt(wrapFunc(typeArr, arr0 -> calcRowAmt(arr0, ord)));
     };
 
 
@@ -1853,11 +1992,11 @@ public class SLCNativeArray {
     public static double sum(NativeArray arr) {
         return sum(arr, null);
     };
-    public static double sum(Object[] objs, @Nullable Func mapF) {
-        return SLCScript.toDouble(wrapFunc(objs, arr0 -> sum(arr0, mapF)));
+    public static double sum(Object typeArr, @Nullable Func mapF) {
+        return SLCScript.toDouble(wrapFunc(typeArr, arr0 -> sum(arr0, mapF)));
     };
-    public static double sum(Object[] objs) {
-        return sum(objs, null);
+    public static double sum(Object typeArr) {
+        return sum(typeArr, null);
     };
 
 
@@ -1885,11 +2024,11 @@ public class SLCNativeArray {
     public static double prod(NativeArray arr) {
         return prod(arr, null);
     };
-    public static double prod(Object[] objs, @Nullable Func mapF) {
-        return SLCScript.toDouble(wrapFunc(objs, arr0 -> prod(arr0, mapF)));
+    public static double prod(Object typeArr, @Nullable Func mapF) {
+        return SLCScript.toDouble(wrapFunc(typeArr, arr0 -> prod(arr0, mapF)));
     };
-    public static double prod(Object[] objs) {
-        return prod(objs, null);
+    public static double prod(Object typeArr) {
+        return prod(typeArr, null);
     };
 
 
@@ -1903,11 +2042,11 @@ public class SLCNativeArray {
     public static double mean(NativeArray arr) {
         return mean(arr, null);
     };
-    public static double mean(Object[] objs, @Nullable Func mapF) {
-        return SLCScript.toDouble(wrapFunc(objs, arr0 -> mean(arr0, mapF)));
+    public static double mean(Object typeArr, @Nullable Func mapF) {
+        return SLCScript.toDouble(wrapFunc(typeArr, arr0 -> mean(arr0, mapF)));
     };
-    public static double mean(Object[] objs) {
-        return mean(objs, null);
+    public static double mean(Object typeArr) {
+        return mean(typeArr, null);
     };
 
 
@@ -1921,8 +2060,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static double meanPow(Object[] objs, double pow) {
-        return SLCScript.toDouble(wrapFunc(objs, arr0 -> meanPow(arr0, pow)));
+    public static double meanPow(Object typeArr, double pow) {
+        return SLCScript.toDouble(wrapFunc(typeArr, arr0 -> meanPow(arr0, pow)));
     };
 
 
@@ -1941,8 +2080,8 @@ public class SLCNativeArray {
         return arr1;
     };
     // Overload
-    public static NativeArray operWith(Object[] objs, NativeArray arr, Func2 func2) throws IllegalArgumentException {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> operWith(arr0, arr, func2)));
+    public static NativeArray operWith(Object typeArr, NativeArray arr, Func2 func2) throws IllegalArgumentException {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> operWith(arr0, arr, func2)));
     };
 
 
@@ -1956,8 +2095,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static NativeArray addWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> addWith(arr0, arr)));
+    public static NativeArray addWith(Object typeArr, NativeArray arr) throws IllegalArgumentException {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> addWith(arr0, arr)));
     };
 
 
@@ -1971,8 +2110,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static NativeArray subWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> subWith(arr0, arr)));
+    public static NativeArray subWith(Object typeArr, NativeArray arr) throws IllegalArgumentException {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> subWith(arr0, arr)));
     };
 
 
@@ -1986,8 +2125,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static NativeArray mulWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> mulWith(arr0, arr)));
+    public static NativeArray mulWith(Object typeArr, NativeArray arr) throws IllegalArgumentException {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> mulWith(arr0, arr)));
     };
 
 
@@ -2001,8 +2140,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static NativeArray divWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> divWith(arr0, arr)));
+    public static NativeArray divWith(Object typeArr, NativeArray arr) throws IllegalArgumentException {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> divWith(arr0, arr)));
     };
 
 
@@ -2016,8 +2155,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static NativeArray modWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> modWith(arr0, arr)));
+    public static NativeArray modWith(Object typeArr, NativeArray arr) throws IllegalArgumentException {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> modWith(arr0, arr)));
     };
 
 
@@ -2031,8 +2170,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static NativeArray powWith(Object[] objs, NativeArray arr) throws IllegalArgumentException {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> powWith(arr0, arr)));
+    public static NativeArray powWith(Object typeArr, NativeArray arr) throws IllegalArgumentException {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> powWith(arr0, arr)));
     };
 
 
@@ -2056,8 +2195,8 @@ public class SLCNativeArray {
         return arr0;
     };
     // Overload
-    public static NativeArray cumOper(Object[] objs, Func2 func2) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> cumOper(arr0, func2)));
+    public static NativeArray cumOper(Object typeArr, Func2 func2) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> cumOper(arr0, func2)));
     };
 
 
@@ -2071,8 +2210,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static NativeArray cumSum(Object[] objs) {
-        return SLCScript.toArray(wrapFunc(objs, SLCNativeArray::cumSum));
+    public static NativeArray cumSum(Object typeArr) {
+        return SLCScript.toArray(wrapFunc(typeArr, SLCNativeArray::cumSum));
     };
 
 
@@ -2086,8 +2225,8 @@ public class SLCNativeArray {
         );
     };
     // Overload
-    public static NativeArray cumProd(Object[] objs) {
-        return SLCScript.toArray(wrapFunc(objs, SLCNativeArray::cumProd));
+    public static NativeArray cumProd(Object typeArr) {
+        return SLCScript.toArray(wrapFunc(typeArr, SLCNativeArray::cumProd));
     };
 
 
@@ -2120,11 +2259,11 @@ public class SLCNativeArray {
     public static NativeArray diff(NativeArray arr) {
         return applyDiff(arr);
     };
-    public static NativeArray diff(Object[] objs, int repeat) {
-        return SLCScript.toArray(wrapFunc(objs, arr0 -> diff(arr0, repeat)));
+    public static NativeArray diff(Object typeArr, int repeat) {
+        return SLCScript.toArray(wrapFunc(typeArr, arr0 -> diff(arr0, repeat)));
     };
-    public static NativeArray diff(Object[] objs) {
-        return SLCScript.toArray(wrapFunc(objs, SLCNativeArray::diff));
+    public static NativeArray diff(Object typeArr) {
+        return SLCScript.toArray(wrapFunc(typeArr, SLCNativeArray::diff));
     };
 
 

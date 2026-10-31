@@ -128,7 +128,9 @@
             try{
                 utp.abilities = getter(abis).compact().flatten().toSeq();
                 utp.abilities.each(abi => {
-                    if(!abis.includes(abi)) abi.init(utp);
+                    if(!abis.includes(abi)) {
+                        abi.init(utp);
+                    };
                 });
             } catch(err) {
                 console.err("[LOVEC] Failed to set abilities for ${1}:\n".format(utp.name.color(GLB_color.accent)) + err);
