@@ -39,6 +39,7 @@
 
         blk.delegee.ventSize = Math.round(Mathf.clamp(blk.delegee.ventSize, 1, 6));
         blk.delegee.ventOffs = SLCPos.sizeOffs[blk.delegee.ventSize];
+        blk.delegee.edgeVentOffs = SLCPos.sizeOffs[blk.delegee.ventSize + 1].cpy().pullAll(blk.delegee.ventOffs);
         blk.delegee.ventOffDraw = blk.delegee.ventSize % 2 === 0 ? 4.0 : 0.0;
 
         if(blk.parent !== Blocks.air) {
@@ -119,17 +120,33 @@
      */
     function comp_checkAdjacent(blk, t) {
         let
-            i = 0,
-            iCap = blk.delegee.ventOffs.iCap(),
-            ot;
+            i,
+            iCap,
+            ot,
+            cond = true;
 
-        while(i < iCap) {
+        i = 0;
+        iCap = blk.delegee.ventOffs.iCap();
+        while(i < iCap && cond) {
             ot = GLB_var.world.tile(t.x + blk.delegee.ventOffs[i].x, t.y + blk.delegee.ventOffs[i].y);
-            if(ot == null || ot.floor() !== blk) return false;
+            if(ot == null || ot.floor() !== blk) {
+                cond = false;
+            };
             i++;
         };
+        if(cond) {
+            i = 0;
+            iCap = blk.delegee.edgeVentOffs.iCap();
+            while(i < iCap && cond) {
+                ot = GLB_var.world.tile(t.x + blk.delegee.edgeVentOffs[i].x, t.y + blk.delegee.edgeVentOffs[i].y);
+                if(ot != null && ot.floor() === blk) {
+                    cond = false;
+                };
+                i++;
+            };
+        };
 
-        return true;
+        return cond;
     };
 
 
@@ -171,6 +188,13 @@
                  * @type {Array<Point2>}
                  */
                 ventOffs: null,
+                /**
+                 * `INTERNAL`: Offsets for checking vent edge.
+                 * @memberof INTF_ENV_dynamicSizeVent
+                 * @instance
+                 * @type {Array<Point2>}
+                 */
+                edgeVentOffs: null,
                 /**
                  * `INTERNAL`: Offset for drawing vent.
                  * @memberof INTF_ENV_dynamicSizeVent

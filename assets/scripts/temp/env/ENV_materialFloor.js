@@ -68,7 +68,9 @@
     function comp_drawBase(blk, t) {
         if(t.overlay() !== Blocks.air) return;
         blk.delegee.randOvDrawnMap.clear();
-        let i = 0, iCap = blk.delegee.randRegs.iCap();
+        let
+            i = 0,
+            iCap = blk.delegee.randRegs.iCap();
         while(i < iCap) {
             if(!blk.delegee.randOvDrawnMap.get(t, false) && SLCDrawf.randomOverlay(t, blk.delegee.randRegs[i], blk.delegee.randRegDenoms[i], blk.delegee.randRegOffs[0], blk.delegee.randRegOffs[1])) {
                 blk.delegee.randOvDrawnMap.put(t, true);
