@@ -95,6 +95,8 @@
                     ob != null
                         && ob.team === b.team
                         && ob.ex_getPres != null
+                        && !b.incoming.contains(ob.pos())
+                        && (!checkSubInsOfTemp(ob, "B_fluidPipeBridge") || !ob.block.linkValid(ob.tile, GLB_var.world.tile(ob.link)))
                         && b.self.ex_checkPresFetchValid(ob)
                 ) {
                     b.delegee.presFetchTargets.push(ob);

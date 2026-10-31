@@ -199,6 +199,7 @@
         /* <------------------------------ vanilla ------------------------------> */
 
 
+        drag: 8.0,
         itemCapacity: 2000,
         // Doubled to avoid killing the unit somehow
         lifetime: GLB_var.timeParam.lootLifetime * 2.0,
